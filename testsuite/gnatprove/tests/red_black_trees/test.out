@@ -175,6 +175,7 @@ binary_trees.adb:363:38: info: for F before the call at binary_trees.ads:45
 binary_trees.adb:363:38: info: invariant check proved (CVC5: 2 VC)
 binary_trees.adb:363:38: medium: precondition might fail
 binary_trees.adb:364:46: medium: range check might fail, cannot prove lower bound for F1.C (J).Position [reason for check: input value must fit in parameter type]
+binary_trees.adb:370:16: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
 binary_trees.adb:371:21: info: for F before the call at binary_trees.ads:45
 binary_trees.adb:371:21: info: invariant check proved (CVC5: 2 VC)
 binary_trees.adb:371:21: medium: precondition might fail
@@ -185,7 +186,6 @@ binary_trees.adb:371:54: medium: precondition might fail
 binary_trees.adb:371:72: info: index check proved (CVC5: 4 VC)
 binary_trees.adb:372:20: info: for F before the call at binary_trees.ads:45
 binary_trees.adb:372:20: info: invariant check proved (CVC5: 2 VC)
-binary_trees.adb:372:20: medium: loop invariant might fail in first iteration, cannot prove ( Model (F2, Root) (I).A = Model (F1, Root) (I).A)
 binary_trees.adb:372:20: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove ( Model (F2, Root) (I).A = Model (F1, Root) (I).A)
 binary_trees.adb:372:20: medium: precondition might fail
 binary_trees.adb:372:38: info: index check proved (CVC5: 4 VC)
@@ -1008,18 +1008,15 @@ binary_trees.adb:941:30: medium: precondition might fail
 binary_trees.adb:947:30: info: for F before the call at binary_trees.ads:45
 binary_trees.adb:947:30: info: invariant check proved (CVC5: 1 VC)
 binary_trees.adb:947:30: medium: precondition might fail
-binary_trees.adb:952:18: medium: for F before the call at binary_trees.ads:45
-binary_trees.adb:952:18: medium: in inlined invariant at binary_trees.ads:422
-binary_trees.adb:952:18: medium: invariant check might fail, cannot prove Tree_Structure (Forest)
+binary_trees.adb:952:18: info: for F before the call at binary_trees.ads:45
+binary_trees.adb:952:18: info: invariant check proved (CVC5: 1 VC)
 binary_trees.adb:952:18: medium: precondition might fail
-binary_trees.adb:952:49: medium: for F before the call at binary_trees.ads:45
-binary_trees.adb:952:49: medium: in inlined invariant at binary_trees.ads:422
-binary_trees.adb:952:49: medium: invariant check might fail, cannot prove Tree_Structure (Forest)
+binary_trees.adb:952:49: info: for F before the call at binary_trees.ads:45
+binary_trees.adb:952:49: info: invariant check proved (CVC5: 1 VC)
 binary_trees.adb:952:49: medium: postcondition might fail, cannot prove Model (F, Root) (I).K
 binary_trees.adb:952:49: medium: precondition might fail
-binary_trees.adb:955:20: medium: for F before the call at binary_trees.ads:45
-binary_trees.adb:955:20: medium: in inlined invariant at binary_trees.ads:422
-binary_trees.adb:955:20: medium: invariant check might fail, cannot prove Tree_Structure (Forest)
+binary_trees.adb:955:20: info: for F before the call at binary_trees.ads:45
+binary_trees.adb:955:20: info: invariant check proved (CVC5: 1 VC)
 binary_trees.adb:955:20: medium: precondition might fail
 binary_trees.adb:960:26: medium: for F before the call at binary_trees.ads:45
 binary_trees.adb:960:26: medium: in inlined invariant at binary_trees.ads:422
@@ -1132,9 +1129,8 @@ binary_trees.adb:1018:47: medium: in inlined invariant at binary_trees.ads:422
 binary_trees.adb:1018:47: medium: invariant check might fail, cannot prove Tree_Structure (Forest)
 binary_trees.adb:1018:47: medium: precondition might fail
 binary_trees.adb:1018:68: info: index check proved (CVC5: 4 VC)
-binary_trees.adb:1031:16: medium: for F before the call at binary_trees.ads:109
-binary_trees.adb:1031:16: medium: in inlined invariant at binary_trees.ads:422
-binary_trees.adb:1031:16: medium: invariant check might fail, cannot prove Tree_Structure (Forest)
+binary_trees.adb:1031:16: info: for F before the call at binary_trees.ads:109
+binary_trees.adb:1031:16: info: invariant check proved (CVC5: 2 VC)
 binary_trees.adb:1031:16: medium: precondition might fail, cannot prove Valid_Root (F, T1)
 binary_trees.adb:1032:16: medium: precondition might fail, cannot prove F1.C (I) = F2.C (I)
 binary_trees.adb:1039:44: medium: array index check might fail [reason for check: value must be a valid index into the array]
@@ -1328,9 +1324,8 @@ binary_trees.ads:155:25: info: precondition proved (CVC5: 1 VC)
 binary_trees.ads:155:25: medium: for F before the call at binary_trees.ads:29
 binary_trees.ads:155:25: medium: in inlined invariant at binary_trees.ads:422
 binary_trees.ads:155:25: medium: invariant check might fail, cannot prove Tree_Structure (Forest)
-binary_trees.ads:155:43: medium: for F before the call at binary_trees.ads:29
-binary_trees.ads:155:43: medium: in inlined invariant at binary_trees.ads:422
-binary_trees.ads:155:43: medium: invariant check might fail, cannot prove Tree_Structure (Forest)
+binary_trees.ads:155:43: info: for F before the call at binary_trees.ads:29
+binary_trees.ads:155:43: info: invariant check proved (CVC5: 1 VC)
 binary_trees.ads:155:43: medium: precondition might fail
 binary_trees.ads:161:27: medium: for F before the call at binary_trees.ads:33
 binary_trees.ads:161:27: medium: in inlined invariant at binary_trees.ads:422
@@ -1450,18 +1445,15 @@ binary_trees.ads:243:23: info: for F before the call at binary_trees.ads:20
 binary_trees.ads:243:23: info: invariant check proved (CVC5: 1 VC)
 binary_trees.ads:243:46: info: for F before the call at binary_trees.ads:20
 binary_trees.ads:243:46: info: invariant check proved (CVC5: 1 VC)
-binary_trees.ads:248:25: medium: for F before the call at binary_trees.ads:24
-binary_trees.ads:248:25: medium: in inlined invariant at binary_trees.ads:422
-binary_trees.ads:248:25: medium: invariant check might fail, cannot prove Tree_Structure (Forest)
+binary_trees.ads:248:25: info: for F before the call at binary_trees.ads:24
+binary_trees.ads:248:25: info: invariant check proved (CVC5: 1 VC)
 binary_trees.ads:248:41: info: for F before the call at binary_trees.ads:24
 binary_trees.ads:248:41: info: invariant check proved (CVC5: 1 VC)
-binary_trees.ads:253:34: medium: for F before the call at binary_trees.ads:24
-binary_trees.ads:253:34: medium: in inlined invariant at binary_trees.ads:422
-binary_trees.ads:253:34: medium: invariant check might fail, cannot prove Tree_Structure (Forest)
+binary_trees.ads:253:34: info: for F before the call at binary_trees.ads:24
+binary_trees.ads:253:34: info: invariant check proved (CVC5: 1 VC)
+binary_trees.ads:254:25: info: for F before the call at binary_trees.ads:29
+binary_trees.ads:254:25: info: invariant check proved (CVC5: 1 VC)
 binary_trees.ads:254:25: info: precondition proved (CVC5: 1 VC)
-binary_trees.ads:254:25: medium: for F before the call at binary_trees.ads:29
-binary_trees.ads:254:25: medium: in inlined invariant at binary_trees.ads:422
-binary_trees.ads:254:25: medium: invariant check might fail, cannot prove Tree_Structure (Forest)
 binary_trees.ads:254:43: info: for F before the call at binary_trees.ads:29
 binary_trees.ads:254:43: info: invariant check proved (CVC5: 1 VC)
 binary_trees.ads:254:43: medium: precondition might fail
@@ -1507,18 +1499,16 @@ binary_trees.ads:280:31: info: precondition proved (CVC5: 1 VC)
 binary_trees.ads:280:31: medium: for F before the call at binary_trees.ads:45
 binary_trees.ads:280:31: medium: in inlined invariant at binary_trees.ads:422
 binary_trees.ads:280:31: medium: invariant check might fail, cannot prove Tree_Structure (Forest)
+binary_trees.ads:284:23: info: for F before the call at binary_trees.ads:45
+binary_trees.ads:284:23: info: invariant check proved (CVC5: 1 VC)
 binary_trees.ads:284:23: info: precondition proved (CVC5: 1 VC)
-binary_trees.ads:284:23: medium: for F before the call at binary_trees.ads:45
-binary_trees.ads:284:23: medium: in inlined invariant at binary_trees.ads:422
-binary_trees.ads:284:23: medium: invariant check might fail, cannot prove Tree_Structure (Forest)
 binary_trees.ads:285:25: medium: for F before the call at binary_trees.ads:45
 binary_trees.ads:285:25: medium: in inlined invariant at binary_trees.ads:422
 binary_trees.ads:285:25: medium: invariant check might fail, cannot prove Tree_Structure (Forest)
 binary_trees.ads:285:25: medium: precondition might fail
+binary_trees.ads:285:49: info: for F before the call at binary_trees.ads:45
+binary_trees.ads:285:49: info: invariant check proved (CVC5: 1 VC)
 binary_trees.ads:285:49: info: precondition proved (CVC5: 1 VC)
-binary_trees.ads:285:49: medium: for F before the call at binary_trees.ads:45
-binary_trees.ads:285:49: medium: in inlined invariant at binary_trees.ads:422
-binary_trees.ads:285:49: medium: invariant check might fail, cannot prove Tree_Structure (Forest)
 binary_trees.ads:291:43: medium: for F before the call at binary_trees.ads:45
 binary_trees.ads:291:43: medium: in inlined invariant at binary_trees.ads:422
 binary_trees.ads:291:43: medium: invariant check might fail, cannot prove Tree_Structure (Forest)
@@ -1553,9 +1543,8 @@ binary_trees.ads:299:40: info: precondition proved (CVC5: 1 VC)
 binary_trees.ads:299:40: medium: for F before the call at binary_trees.ads:45
 binary_trees.ads:299:40: medium: in inlined invariant at binary_trees.ads:422
 binary_trees.ads:299:40: medium: invariant check might fail, cannot prove Tree_Structure (Forest)
-binary_trees.ads:301:14: medium: for F at the end of Insert at binary_trees.ads:301
-binary_trees.ads:301:14: medium: in inlined invariant at binary_trees.ads:422
-binary_trees.ads:301:14: medium: invariant check might fail, cannot prove Tree_Structure (Forest)
+binary_trees.ads:301:14: info: for F at the end of Insert at binary_trees.ads:301
+binary_trees.ads:301:14: info: invariant check proved (CVC5: 1 VC)
 binary_trees.ads:304:22: info: initialization of "V" proved
 binary_trees.ads:311:08: info: for F before the call at binary_trees.ads:20
 binary_trees.ads:311:08: info: invariant check proved (CVC5: 1 VC)
@@ -1566,15 +1555,13 @@ binary_trees.ads:317:17: info: for F before the call at binary_trees.ads:33
 binary_trees.ads:317:17: info: invariant check proved (CVC5: 1 VC)
 binary_trees.ads:320:17: info: for F before the call at binary_trees.ads:17
 binary_trees.ads:320:17: info: invariant check proved (CVC5: 1 VC)
-binary_trees.ads:323:08: medium: for F before the call at binary_trees.ads:17
-binary_trees.ads:323:08: medium: in inlined invariant at binary_trees.ads:422
-binary_trees.ads:323:08: medium: invariant check might fail, cannot prove Tree_Structure (Forest)
+binary_trees.ads:323:08: info: for F before the call at binary_trees.ads:17
+binary_trees.ads:323:08: info: invariant check proved (CVC5: 1 VC)
 binary_trees.ads:323:08: medium: postcondition might fail
 binary_trees.ads:323:19: info: for F before the call at binary_trees.ads:17
 binary_trees.ads:323:19: info: invariant check proved (CVC5: 1 VC)
-binary_trees.ads:326:17: medium: for F before the call at binary_trees.ads:45
-binary_trees.ads:326:17: medium: in inlined invariant at binary_trees.ads:422
-binary_trees.ads:326:17: medium: invariant check might fail, cannot prove Tree_Structure (Forest)
+binary_trees.ads:326:17: info: for F before the call at binary_trees.ads:45
+binary_trees.ads:326:17: info: invariant check proved (CVC5: 1 VC)
 binary_trees.ads:326:17: medium: precondition might fail
 binary_trees.ads:329:17: medium: for F before the call at binary_trees.ads:33
 binary_trees.ads:329:17: medium: in inlined invariant at binary_trees.ads:422
@@ -2239,7 +2226,7 @@ search_trees.adb:130:33: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:130:62: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:130:100: info: overflow check proved (CVC5: 2 VC)
 search_trees.adb:133:35: info: precondition proved (CVC5: 1 VC)
-search_trees.adb:138:31: medium: loop variant might fail
+search_trees.adb:138:31: info: loop variant proved (CVC5: 1 VC)
 search_trees.adb:138:44: info: range check proved (CVC5: 2 VC)
 search_trees.adb:138:76: info: range check proved (CVC5: 2 VC)
 search_trees.adb:139:33: info: loop invariant initialization proved (CVC5: 2 VC)
@@ -2399,9 +2386,9 @@ search_trees.adb:367:43: info: index check proved (CVC5: 4 VC)
 search_trees.adb:368:29: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:368:50: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:368:64: info: index check proved (CVC5: 4 VC)
+search_trees.adb:369:23: info: precondition proved (CVC5: 6 VC)
 search_trees.adb:369:23: medium: loop invariant might fail in first iteration, cannot prove Ordered_Prefix (Model (F, V), Values, I, K)
 search_trees.adb:369:23: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Ordered_Prefix (Model (F, V), Values, I, K)
-search_trees.adb:369:23: medium: precondition might fail, cannot prove Model (I).A < Model (J).A
 search_trees.adb:369:39: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:369:64: info: range check proved (CVC5: 4 VC)
 search_trees.adb:377:17: info: precondition proved (CVC5: 1 VC)
@@ -2536,7 +2523,7 @@ search_trees.adb:556:54: info: overflow check proved (CVC5: 4 VC)
 search_trees.adb:557:31: info: precondition proved (CVC5: 4 VC)
 search_trees.adb:557:31: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Last and function Get or turning them into expression functions in their unit spec]
 search_trees.adb:557:45: info: precondition proved (CVC5: 2 VC)
-search_trees.adb:557:69: medium: overflow check might fail, cannot prove upper bound for Last (Model (F1, Root) (I).A) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+search_trees.adb:557:69: info: overflow check proved (CVC5: 4 VC)
 search_trees.adb:558:31: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:558:31: medium: assertion might fail, cannot prove Values (J) < V
 search_trees.adb:558:31: medium: in inlined expression function body at search_trees.adb:80
@@ -2546,10 +2533,10 @@ search_trees.adb:559:31: medium: in inlined expression function body at search_t
 search_trees.adb:561:31: info: precondition proved (CVC5: 4 VC)
 search_trees.adb:561:31: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Last and function Get or turning them into expression functions in their unit spec]
 search_trees.adb:561:45: info: precondition proved (CVC5: 2 VC)
-search_trees.adb:561:69: medium: overflow check might fail, cannot prove upper bound for Last (Model (F1, Root) (I).A) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+search_trees.adb:561:69: info: overflow check proved (CVC5: 4 VC)
+search_trees.adb:562:31: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:562:31: medium: assertion might fail, cannot prove Values (J) > V
 search_trees.adb:562:31: medium: in inlined expression function body at search_trees.adb:84
-search_trees.adb:562:31: medium: precondition might fail
 search_trees.adb:563:31: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:563:31: medium: assertion might fail, cannot prove Values (J) > V
 search_trees.adb:563:31: medium: in inlined expression function body at search_trees.adb:84
@@ -2690,7 +2677,7 @@ search_trees.adb:768:28: medium: in inlined expression function body at search_t
 search_trees.adb:774:16: medium: precondition might fail, cannot prove Valid_Root (F1, Root), in call inlined at search_trees.adb:958
 search_trees.adb:774:59: medium: range check might fail, cannot prove lower bound for T.Root, in call inlined at search_trees.adb:958 [reason for check: input value must fit in parameter type]
 search_trees.adb:778:16: medium: precondition might fail, in call inlined at search_trees.adb:958
-search_trees.adb:778:42: medium: range check might fail, cannot prove lower bound for T.Root, in call inlined at search_trees.adb:958 [reason for check: input value must fit in parameter type]
+search_trees.adb:778:42: info: range check proved (CVC5: 2 VC), in call inlined at search_trees.adb:958
 search_trees.adb:779:25: info: precondition proved (CVC5: 1 VC), in call inlined at search_trees.adb:958
 search_trees.adb:780:25: medium: precondition might fail, in call inlined at search_trees.adb:958
 search_trees.adb:782:25: medium: assertion might fail, cannot prove Values (J) > V, in call inlined at search_trees.adb:958
@@ -2829,7 +2816,7 @@ search_trees.adb:957:07: medium: precondition might fail, cannot prove Valid_Roo
 search_trees.adb:957:39: medium: in value of subprogram parameter after the call at search_trees.adb:957
 search_trees.adb:957:39: medium: range check might fail, cannot prove lower bound for Y [reason for check: output value must fit in argument type]
 search_trees.adb:958:07: info: analyzing call to "Prove_Extract_Y" in context
-search_trees.adb:962:07: medium: precondition might fail, cannot prove Valid_Root (F, Root)
+search_trees.adb:962:07: medium: precondition might fail, cannot prove Model (F, Root) (I).K
 search_trees.adb:963:07: info: analyzing call to "Prove_Extract_YL" in context
 search_trees.adb:967:07: medium: precondition might fail, cannot prove Valid_Root (F, Root)
 search_trees.adb:968:07: info: analyzing call to "Prove_Plug_YL" in context
@@ -2910,7 +2897,7 @@ search_trees.adb:1049:28: medium: in inlined expression function body at search_
 search_trees.adb:1055:16: medium: precondition might fail, cannot prove Valid_Root (F1, Root), in call inlined at search_trees.adb:1239
 search_trees.adb:1055:59: medium: range check might fail, cannot prove lower bound for T.Root, in call inlined at search_trees.adb:1239 [reason for check: input value must fit in parameter type]
 search_trees.adb:1059:16: medium: precondition might fail, in call inlined at search_trees.adb:1239
-search_trees.adb:1059:42: medium: range check might fail, cannot prove lower bound for T.Root, in call inlined at search_trees.adb:1239 [reason for check: input value must fit in parameter type]
+search_trees.adb:1059:42: info: range check proved (CVC5: 2 VC), in call inlined at search_trees.adb:1239
 search_trees.adb:1060:25: medium: precondition might fail, in call inlined at search_trees.adb:1239
 search_trees.adb:1061:25: info: precondition proved (CVC5: 1 VC), in call inlined at search_trees.adb:1239
 search_trees.adb:1063:25: medium: assertion might fail, cannot prove Values (J) < V, in call inlined at search_trees.adb:1239
@@ -3040,7 +3027,7 @@ search_trees.adb:1219:46: info: range check proved (CVC5: 2 VC), in call inlined
 search_trees.adb:1228:16: info: range check proved (CVC5: 2 VC)
 search_trees.adb:1230:15: info: range check proved (CVC5: 2 VC)
 search_trees.adb:1231:15: info: precondition proved (CVC5: 1 VC)
-search_trees.adb:1232:10: medium: precondition might fail, cannot prove Model (F, Root) (I).K
+search_trees.adb:1232:10: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:1232:30: info: range check proved (CVC5: 2 VC)
 search_trees.adb:1232:43: medium: in value of subprogram parameter after the call at search_trees.adb:1232
 search_trees.adb:1232:43: medium: range check might fail, cannot prove lower bound for Y [reason for check: output value must fit in argument type]
@@ -3049,7 +3036,7 @@ search_trees.adb:1238:07: medium: precondition might fail, cannot prove Valid_Ro
 search_trees.adb:1238:38: medium: in value of subprogram parameter after the call at search_trees.adb:1238
 search_trees.adb:1238:38: medium: range check might fail, cannot prove lower bound for X [reason for check: output value must fit in argument type]
 search_trees.adb:1239:07: info: analyzing call to "Prove_Extract_X" in context
-search_trees.adb:1243:07: medium: precondition might fail, cannot prove Valid_Root (F, Root)
+search_trees.adb:1243:07: medium: precondition might fail, cannot prove Model (F, Root) (I).K
 search_trees.adb:1244:07: info: analyzing call to "Prove_Extract_XR" in context
 search_trees.adb:1248:07: medium: precondition might fail, cannot prove Valid_Root (F, Root)
 search_trees.adb:1249:07: info: analyzing call to "Prove_Plug_XR" in context
@@ -3164,9 +3151,9 @@ search_trees.adb:1385:48: info: range check proved (CVC5: 2 VC)
 search_trees.adb:1388:30: info: index check proved (CVC5: 2 VC)
 search_trees.adb:1390:11: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:1390:11: medium: postcondition might fail
-search_trees.adb:1390:37: medium: range check might fail, cannot prove lower bound for T.Root [reason for check: input value must fit in parameter type] [possible fix: add precondition (T.Root >= Index_Type'First) to subprogram at line 1335]
+search_trees.adb:1390:37: info: range check proved (CVC5: 2 VC)
 search_trees.adb:1403:16: info: precondition proved (CVC5: 6 VC)
-search_trees.adb:1403:50: medium: range check might fail, cannot prove lower bound for T.Root [reason for check: input value must fit in parameter type] [possible fix: add precondition (T.Root >= Index_Type'First) to subprogram at line 1335]
+search_trees.adb:1403:50: info: range check proved (CVC5: 4 VC)
 search_trees.adb:1409:24: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:1409:46: info: range check proved (CVC5: 4 VC)
 search_trees.adb:1410:32: info: precondition proved (CVC5: 2 VC)
@@ -3189,7 +3176,7 @@ search_trees.adb:1417:54: info: index check proved (CVC5: 4 VC)
 search_trees.adb:1417:61: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:1417:79: info: range check proved (CVC5: 4 VC)
 search_trees.adb:1427:24: info: precondition proved (CVC5: 2 VC)
-search_trees.adb:1427:42: medium: range check might fail, cannot prove lower bound for T.Root [reason for check: input value must fit in parameter type] [possible fix: add precondition (T.Root >= Index_Type'First) to subprogram at line 1335]
+search_trees.adb:1427:42: info: range check proved (CVC5: 4 VC)
 search_trees.adb:1428:32: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:1428:50: info: range check proved (CVC5: 4 VC)
 search_trees.adb:1430:32: info: precondition proved (CVC5: 2 VC)
@@ -3349,9 +3336,8 @@ search_trees.ads:62:31: info: invariant check proved (CVC5: 4 VC)
 search_trees.ads:63:20: medium: for T before the call at search_trees.ads:38
 search_trees.ads:63:20: medium: in inlined invariant at search_trees.ads:319
 search_trees.ads:63:20: medium: invariant check might fail, cannot prove Root = Empty
-search_trees.ads:63:33: medium: for T before the call at search_trees.ads:38
-search_trees.ads:63:33: medium: in inlined invariant at search_trees.ads:319
-search_trees.ads:63:33: medium: invariant check might fail, cannot prove Root = Empty
+search_trees.ads:63:33: info: for T before the call at search_trees.ads:38
+search_trees.ads:63:33: info: invariant check proved (CVC5: 4 VC)
 search_trees.ads:64:48: medium: for T before the call at search_trees.ads:25
 search_trees.ads:64:48: medium: in inlined invariant at search_trees.ads:319
 search_trees.ads:64:48: medium: invariant check might fail, cannot prove Root = Empty
