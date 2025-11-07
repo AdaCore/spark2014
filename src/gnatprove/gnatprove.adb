@@ -295,17 +295,13 @@ procedure Gnatprove with SPARK_Mode is
          Args.Append ("-gnates=" & Opt_File);
       else
          Args.Append ("-S");  --  Stop after compilation and do not assemble
+         Args.Append ("-gnatR2js");  --  Generate data representation files
+         Args.Append ("-gnatws");    --  Suppress all warnings
+         Args.Append ("-gnatx");     --  Suppress cross-ref information
       end if;
 
       if GnateT_Switch /= null and then GnateT_Switch.all /= "" then
          Args.Append (Configuration.GnateT_Switch.all);
-      end if;
-
-      if not Call_Gnat2Why then
-         Args.Append ("-gnatR2js");  --  Generate data representation files
-         Args.Append ("-gnatws");    --  Suppress all warnings
-         Args.Append ("-gnatx");     --  Suppress cross-ref information
-
       end if;
 
       if Translation_Phase /= GS_Gnat2Why then
