@@ -19,7 +19,7 @@ def run_testsuite(tempdir):
     subprocess.run(
         [
             "./run-tests",
-            "--testlist=sparklib.txt",
+            "--testlist=sparklib/coverage.manifest",
             "--coverage",
             "--disc=large",
             "-d",
