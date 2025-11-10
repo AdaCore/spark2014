@@ -24,9 +24,9 @@
 with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
 with Ada.Text_IO;         use Ada.Text_IO;
-with Ada.Unchecked_Deallocation;
 with GNAT.OS_Lib;         use GNAT.OS_Lib;
 with GNAT.Strings;
+with System.Pool_Local;
 
 with Hashing; use Hashing;
 
@@ -654,18 +654,17 @@ package body Graphs is
         null;
       Reversed      : Boolean := False)
    is
+      Local_Heap : System.Pool_Local.Unbounded_Reclaim_Pool;
+      --  Local pool of memory that will be released at subprogram exit
+
       type Bit_Field is
         array (Valid_Vertex_Id range 1 .. G.Vertices.Last_Index) of Boolean;
 
-      type Bit_Field_Ptr is access Bit_Field;
+      type Bit_Field_Ptr is access Bit_Field with Storage_Pool => Local_Heap;
       --  We must keep track of visited vertices using heap memory, because the
       --  graph might be large.
 
-      procedure Free is new
-        Ada.Unchecked_Deallocation (Bit_Field, Bit_Field_Ptr);
-      --  Release heap memory
-
-      Will_Visit : Bit_Field_Ptr := new Bit_Field'(others => False);
+      Will_Visit : constant Bit_Field_Ptr := new Bit_Field'(others => False);
       Stack      : Vertex_Index_List := VIL.Empty_Vector;
       TV         : Simple_Traversal_Instruction;
 
@@ -771,8 +770,6 @@ package body Graphs is
             end case;
          end;
       end loop;
-
-      Free (Will_Visit);
    end DFS;
 
    ------------------------
@@ -812,25 +809,24 @@ package body Graphs is
    is
       pragma Annotate (GNATSAS, Skip_Analysis);
 
+      Local_Heap : System.Pool_Local.Unbounded_Reclaim_Pool;
+      --  Local pool of memory that will be released at subprogram exit
+
       subtype V_To_V is Vertex_To_Vertex_T (0 .. G.Vertices.Last_Index);
       type V_To_VIL is
         array (Valid_Vertex_Id range 1 .. G.Vertices.Last_Index)
         of Vertex_Index_List;
 
-      type V_To_V_Ptr is access V_To_V;
-      type V_To_VIL_Ptr is access V_To_VIL;
+      type V_To_V_Ptr is access V_To_V with Storage_Pool => Local_Heap;
+      type V_To_VIL_Ptr is access V_To_VIL with Storage_Pool => Local_Heap;
       --  Arrays for vertices must be allocated on the heap, because the graph
       --  might be large.
 
-      procedure Free is new Ada.Unchecked_Deallocation (V_To_V, V_To_V_Ptr);
-      procedure Free is new
-        Ada.Unchecked_Deallocation (V_To_VIL, V_To_VIL_Ptr);
-      --  Release heap memory
+      Parent, Ancestor, Child, Vertex : constant V_To_V_Ptr := new V_To_V;
+      Label, Semi, Size               : constant V_To_V_Ptr :=
+        new V_To_V'(others => 0);
 
-      Parent, Ancestor, Child, Vertex : V_To_V_Ptr := new V_To_V;
-      Label, Semi, Size               : V_To_V_Ptr := new V_To_V'(others => 0);
-
-      Bucket : V_To_VIL_Ptr := new V_To_VIL;
+      Bucket : constant V_To_VIL_Ptr := new V_To_VIL;
 
       N : Vertex_Id := 0;
 
@@ -1054,17 +1050,6 @@ package body Graphs is
          end loop;
 
          Dom (R) := 0;
-
-         Free (Parent);
-         Free (Ancestor);
-         Free (Child);
-         Free (Vertex);
-
-         Free (Label);
-         Free (Semi);
-         Free (Size);
-
-         Free (Bucket);
 
       end return;
    end Dominator_Tree_Internal;
