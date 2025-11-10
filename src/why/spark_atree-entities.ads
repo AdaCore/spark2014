@@ -577,11 +577,10 @@ package SPARK_Atree.Entities is
    --  Same as Einfo.Next_Discriminants
 
    function Component_Bit_Offset (Comp : Record_Field_Kind_Id) return Uint
-   is (Einfo.Entities.Component_Bit_Offset (Comp));
+   renames Einfo.Entities.Component_Bit_Offset;
 
-   function Component_Size (Typ : Type_Kind_Id) return Uint
-   is (Einfo.Entities.Component_Size (Typ))
-   with Pre => Is_Array_Type (Typ);
+   function Component_Size (Typ : Array_Kind_Id) return Uint
+   renames Einfo.Entities.Component_Size;
 
    function Stored_Constraint (Typ : Type_Kind_Id) return Elist_Id
    with
