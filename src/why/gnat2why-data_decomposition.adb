@@ -256,9 +256,6 @@ package body Gnat2Why.Data_Decomposition is
                end if;
             exception
                when others =>
-                  pragma
-                    Annotate
-                      (Xcov, Exempt_On, "only triggered by older buggy GNAT");
                   Ada.Text_IO.Put_Line
                     (Ada.Text_IO.Standard_Error,
                      "error: GNAT generated an ill-formed JSON file "
@@ -273,7 +270,6 @@ package body Gnat2Why.Data_Decomposition is
                      & "PATH or use the switch -gnateT=<target.atp> to pass "
                      & "an explicit target parametrization file.");
                   GNAT.OS_Lib.OS_Exit (1);
-                  pragma Annotate (Xcov, Exempt_Off);
             end;
          end if;
       end loop;
