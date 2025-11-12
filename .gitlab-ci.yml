@@ -12,6 +12,9 @@ include:
 # merging a MR to a protected branch (only for the gnatsas job).
 workflow:
   rules:
+    # 1. Skip the pipeline if the MR has the 'skip-ci' label
+    - if: $CI_MERGE_REQUEST_LABELS =~ /skip-ci/
+      when: never
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || ($CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_REF_PROTECTED == "true") || $CI_PIPELINE_SOURCE == "schedule"
       when: always
     # Run on pipelines created by selecting "Run pipeline" in the GitLab UI,
