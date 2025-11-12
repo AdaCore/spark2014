@@ -665,19 +665,21 @@ package body Gnat2Why.Unchecked_Conversion is
 
          elsif Is_Array_Type (Typ) then
             declare
-               Index : constant Node_Id := First_Index (Typ);
-               Rng   : constant Node_Id := Get_Range (Index);
-               Low   : constant Uint := Expr_Value (Low_Bound (Rng));
-               High  : constant Uint := Expr_Value (High_Bound (Rng));
-               Cur   : Uint;
+               Index     : constant Node_Id := First_Index (Typ);
+               Rng       : constant Node_Id := Get_Range (Index);
+               Low       : constant Uint := Expr_Value (Low_Bound (Rng));
+               High      : constant Uint := Expr_Value (High_Bound (Rng));
+               Cur       : Uint;
+               Comp_Size : constant Uint :=
+                 Get_Attribute_Value (Typ, Attribute_Component_Size);
             begin
                if Low <= High then
                   Cur := Low;
                   while Cur <= High loop
                      Get_Source_Elements
                        (Typ      => Retysp (Component_Type (Typ)),
-                        Offset   => (Cur - Low) * Component_Size (Typ),
-                        Size     => Component_Size (Typ),
+                        Offset   => (Cur - Low) * Comp_Size,
+                        Size     => Comp_Size,
                         Expr     =>
                           New_Array_Access
                             (Ar    => Expr,
@@ -798,13 +800,14 @@ package body Gnat2Why.Unchecked_Conversion is
                   Cur := Low;
                   while Cur <= High loop
                      declare
-                        C_Value : constant Target_Value :=
+                        Comp_Size : constant Uint :=
+                          Get_Attribute_Value (Typ, Attribute_Component_Size);
+                        C_Value   : constant Target_Value :=
                           Reconstruct_Value
                             (Base   => Base,
                              Bits   => Bits,
-                             Offset =>
-                               Offset + (Cur - Low) * Component_Size (Typ),
-                             Size   => Component_Size (Typ),
+                             Offset => Offset + (Cur - Low) * Comp_Size,
+                             Size   => Comp_Size,
                              Typ    => Retysp (Component_Type (Typ)));
                      begin
                         Ar :=
