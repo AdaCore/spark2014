@@ -620,18 +620,24 @@ package body Gnat2Why.Unchecked_Conversion is
                Comp : Node_Id := First_Component (Typ);
             begin
                while Present (Comp) loop
-                  Get_Source_Elements
-                    (Typ      => Retysp (Etype (Comp)),
-                     Offset   => Offset + Component_Bit_Offset (Comp),
-                     Size     => Esize (Comp),
-                     Expr     =>
-                       New_Ada_Record_Access
-                         (Ada_Node => Types.Empty,
-                          Name     => +Expr,
-                          Ty       => Typ,
-                          Field    => Comp),
-                     Elements => Elements);
-                  Next_Component (Comp);
+                  declare
+                     Size          : Uint;
+                     Size_Str, Exp : Unbounded_String;
+                  begin
+                     Record_Component_Size (Typ, Comp, Size, Exp, Size_Str);
+                     Get_Source_Elements
+                       (Typ      => Retysp (Etype (Comp)),
+                        Offset   => Offset + Component_Bit_Offset (Comp),
+                        Size     => Size,
+                        Expr     =>
+                          New_Ada_Record_Access
+                            (Ada_Node => Types.Empty,
+                             Name     => +Expr,
+                             Ty       => Typ,
+                             Field    => Comp),
+                        Elements => Elements);
+                     Next_Component (Comp);
+                  end;
                end loop;
             end;
 
