@@ -997,6 +997,7 @@ package body Why.Gen.Names is
          when WNE_Validity_Tree_Get           => "__get",
          when WNE_Validity_Tree_Set           => "__set",
          when WNE_Validity_Tree_Slide         => "__slide",
+         when WNE_Valid_Wrapper               => "__valid_wrapper",
 
          --  please use these only in conjunction with E_Symb function
 
@@ -1096,7 +1097,6 @@ package body Why.Gen.Names is
             | WNE_Type_Invariant
             | WNE_User_Eq
             | WNE_Empty
-            | WNE_Valid_Wrapper
             | WNE_Valid_Wrapper_Flag
             | WNE_Valid_Wrapper_Result        => raise Program_Error);
 

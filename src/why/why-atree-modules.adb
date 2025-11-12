@@ -225,8 +225,7 @@ package body Why.Atree.Modules is
          when Validity_Wrapper
          =>
             pragma
-              Assert
-                (Ekind (E) = E_Function and then Is_Potentially_Invalid (E));
+              Assert (E in Type_Kind_Id and then Type_Might_Be_Invalid (E));
 
          when Type_Completion | Type_Representative
          =>
@@ -3170,36 +3169,6 @@ package body Why.Atree.Modules is
                   Domain => EW_Prog,
                   Typ    => EW_Unit_Type));
          end if;
-
-         if Is_Potentially_Invalid (E) then
-            declare
-               VM : constant W_Module_Id := E_Module (E, Validity_Wrapper);
-            begin
-               Insert_Symbol
-                 (E,
-                  WNE_Valid_Wrapper,
-                  New_Identifier
-                    (Symb   => NID ("__valid_wrapper"),
-                     Module => VM,
-                     Domain => EW_Term));
-               Insert_Symbol
-                 (E,
-                  WNE_Valid_Wrapper_Flag,
-                  New_Identifier
-                    (Symb   => NID ("__valid_wrapper_flag"),
-                     Module => VM,
-                     Domain => EW_Term,
-                     Typ    => EW_Bool_Type));
-               Insert_Symbol
-                 (E,
-                  WNE_Valid_Wrapper_Result,
-                  New_Identifier
-                    (Symb   => NID ("__valid_wrapper_result"),
-                     Module => VM,
-                     Domain => EW_Term,
-                     Typ    => Type_Of_Node (E)));
-            end;
-         end if;
       end Insert_Subprogram_Symbols;
 
       --------------------------------
@@ -3893,56 +3862,94 @@ package body Why.Atree.Modules is
             end if;
          end if;
 
-         --  Symbols for validity trees if any
+         --  Symbols for validity trees and wrapper for function result
 
-         if Type_Might_Be_Invalid (E) and then not Has_Scalar_Type (E) then
+         if Type_Might_Be_Invalid (E) then
+
+            --  For non-scalar types, introduce symbols for validity trees.
+            --  They are shared in the module of the root retysp.
+
+            if not Has_Scalar_Type (E) then
+               declare
+                  V_M     : constant W_Module_Id :=
+                    E_Module (Base_Retysp (E), Validity_Tree);
+                  Tree_Ty : constant W_Type_Id := Get_Validity_Tree_Type (E);
+               begin
+                  Insert_Symbol
+                    (E,
+                     WNE_Is_Valid,
+                     New_Identifier
+                       (Symb   => NID (To_String (WNE_Is_Valid)),
+                        Module => V_M,
+                        Domain => EW_Pred));
+                  Insert_Symbol
+                    (E,
+                     WNE_Valid_Value,
+                     New_Identifier
+                       (Symb   => NID (To_String (WNE_Valid_Value)),
+                        Module => V_M,
+                        Domain => EW_Pterm,
+                        Typ    => Tree_Ty));
+
+                  if Is_Array_Type (E) then
+                     Insert_Symbol
+                       (E,
+                        WNE_Validity_Tree_Get,
+                        New_Identifier
+                          (Domain => EW_Term,
+                           Symb   => NID (To_String (WNE_Validity_Tree_Get)),
+                           Typ    =>
+                             Get_Validity_Tree_Type (Component_Type (E)),
+                           Module => V_M));
+                     Insert_Symbol
+                       (E,
+                        WNE_Validity_Tree_Set,
+                        New_Identifier
+                          (Domain => EW_Prog,
+                           Symb   => NID (To_String (WNE_Validity_Tree_Set)),
+                           Typ    => Tree_Ty,
+                           Module => V_M));
+                     Insert_Symbol
+                       (E,
+                        WNE_Validity_Tree_Slide,
+                        New_Identifier
+                          (Domain => EW_Prog,
+                           Symb   => NID (To_String (WNE_Validity_Tree_Slide)),
+                           Typ    => Tree_Ty,
+                           Module => V_M));
+                  end if;
+               end;
+            end if;
+
+            --  Generate the symbols for function results
+
             declare
-               V_M     : constant W_Module_Id :=
-                 E_Module (Base_Retysp (E), Validity_Tree);
-               Tree_Ty : constant W_Type_Id := Get_Validity_Tree_Type (E);
+               VM : constant W_Module_Id :=
+                 E_Module (Retysp (E), Validity_Wrapper);
             begin
                Insert_Symbol
                  (E,
-                  WNE_Is_Valid,
+                  WNE_Valid_Wrapper,
                   New_Identifier
-                    (Symb   => NID (To_String (WNE_Is_Valid)),
-                     Module => V_M,
-                     Domain => EW_Pred));
+                    (Symb   => NID (To_String (WNE_Valid_Wrapper)),
+                     Module => VM,
+                     Domain => EW_Term));
                Insert_Symbol
                  (E,
-                  WNE_Valid_Value,
+                  WNE_Valid_Wrapper_Flag,
                   New_Identifier
-                    (Symb   => NID (To_String (WNE_Valid_Value)),
-                     Module => V_M,
-                     Domain => EW_Pterm,
-                     Typ    => Tree_Ty));
-
-               if Is_Array_Type (E) then
-                  Insert_Symbol
-                    (E,
-                     WNE_Validity_Tree_Get,
-                     New_Identifier
-                       (Domain => EW_Term,
-                        Symb   => NID (To_String (WNE_Validity_Tree_Get)),
-                        Typ    => Get_Validity_Tree_Type (Component_Type (E)),
-                        Module => V_M));
-                  Insert_Symbol
-                    (E,
-                     WNE_Validity_Tree_Set,
-                     New_Identifier
-                       (Domain => EW_Prog,
-                        Symb   => NID (To_String (WNE_Validity_Tree_Set)),
-                        Typ    => Tree_Ty,
-                        Module => V_M));
-                  Insert_Symbol
-                    (E,
-                     WNE_Validity_Tree_Slide,
-                     New_Identifier
-                       (Domain => EW_Prog,
-                        Symb   => NID (To_String (WNE_Validity_Tree_Slide)),
-                        Typ    => Tree_Ty,
-                        Module => V_M));
-               end if;
+                    (Symb   => NID ("__valid_wrapper_flag"),
+                     Module => VM,
+                     Domain => EW_Term,
+                     Typ    => EW_Bool_Type));
+               Insert_Symbol
+                 (E,
+                  WNE_Valid_Wrapper_Result,
+                  New_Identifier
+                    (Symb   => NID ("__valid_wrapper_result"),
+                     Module => VM,
+                     Domain => EW_Term,
+                     Typ    => Type_Of_Node (E)));
             end;
          end if;
 
