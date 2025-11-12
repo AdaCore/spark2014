@@ -857,13 +857,13 @@ def preprocess_sparklib_source_file(filepath):
 def update_projectpath_for_sparklib(newpath):
     """check the paths in GPR_PROJECT_PATH; replace the one that contains
     sparklib by the path in argument."""
-    gpp = os.environ["GPR_PROJECT_PATH"].split(":")
+    gpp = os.environ["GPR_PROJECT_PATH"].split(os.pathsep)
     gpp = [
         path
         for path in gpp
         if not os.path.isfile(os.path.join(path, "sparklib_internal.gpr"))
     ]
-    os.environ["GPR_PROJECT_PATH"] = ":".join([newpath] + gpp)
+    os.environ["GPR_PROJECT_PATH"] = os.pathsep.join([newpath] + gpp)
 
 
 def create_sparklib(sparklib_bodymode=False):
