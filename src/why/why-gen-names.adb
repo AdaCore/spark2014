@@ -967,6 +967,9 @@ package body Why.Gen.Names is
          when WNE_Refine_Module               => "Refine",
          when WNE_Hidden_Module               => "Hide",
          when WNE_Ref                         => "__ref",
+         when WNE_Potentially_Invalid_Suffix  => "___potentially_invalid",
+         when WNE_UC_Function                 => "_uc",
+         when WNE_UC_Prefix                   => "Uc",
 
          --  these are used both by E_Symb function and by To_String
 

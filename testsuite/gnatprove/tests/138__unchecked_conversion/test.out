@@ -23,8 +23,8 @@ enums.adb:46:13: info: types in unchecked conversion have the same size (Trivial
 enums.adb:46:63: info: type is suitable as source for unchecked conversion (Trivial)
 enums.adb:46:78: info: type is suitable for unchecked conversion (Trivial)
 enums.adb:49:11: info: data dependencies proved
-enums.adb:54:22: medium: assertion might fail [possible fix: subprogram at line 48 should mention X in a precondition] [provers reached step limit before completing the proof]
-enums.adb:56:22: medium: assertion might fail [possible fix: subprogram at line 48 should mention Y in a precondition] [provers reached step limit before completing the proof]
+enums.adb:54:22: medium: assertion might fail [possible fix: subprogram at line 48 should mention X in a precondition] [provers reached step and memory limit before completing the proof]
+enums.adb:56:22: medium: assertion might fail [possible fix: subprogram at line 48 should mention Y in a precondition] [provers reached step and memory limit before completing the proof]
 imprecise.adb:12:13: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type U32 and type U16 differ]
 imprecise.adb:12:13: warning: imprecise handling of Unchecked_Conversion (types in unchecked conversion do not have the same size) [imprecise-unchecked-conversion]
 imprecise.adb:12:60: info: type is suitable as source for unchecked conversion (Trivial)
@@ -133,7 +133,7 @@ modular.adb:134:22: info: assertion proved (CVC5: 1 VC)
 modular.adb:134:49: info: division check proved (CVC5: 1 VC)
 modular.adb:135:22: info: assertion proved (CVC5: 1 VC)
 modular.adb:137:22: info: assertion proved (CVC5: 1 VC)
-modular.adb:143:22: info: assertion proved (Z3: 1 VC)
+modular.adb:143:22: medium: assertion might fail [possible fix: subprogram at line 123 should mention Y in a precondition] [provers reached step limit before completing the proof]
 modular.adb:148:13: info: types in unchecked conversion have the same size (Trivial)
 modular.adb:148:69: info: type is suitable as source for unchecked conversion (Trivial)
 modular.adb:148:83: info: type is suitable for unchecked conversion (Trivial)
