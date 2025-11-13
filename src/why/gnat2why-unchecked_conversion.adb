@@ -847,7 +847,7 @@ package body Gnat2Why.Unchecked_Conversion is
            Precise_Integer_UC
              (Arg           => +Arg,
               Size          => No_Uint,
-              Source_Type   => EW_Abstract (Source_Type),
+              Source_Type   => Type_Of_Node (Source_Type),
               Target_Type   => Base,
               Source_Status => Get_Scalar_Status (Source_Type),
               Target_Status => Modular);
@@ -889,7 +889,7 @@ package body Gnat2Why.Unchecked_Conversion is
              (Arg                 => Conv,
               Size                => No_Uint,
               Source_Type         => Base,
-              Target_Type         => Base_Why_Type_No_Bool (Target_Type),
+              Target_Type         => Type_Of_Node (Target_Type),
               Source_Status       => Modular,
               Target_Status       => Get_Scalar_Status (Target_Type),
               Potentially_Invalid => Potentially_Invalid,

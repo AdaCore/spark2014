@@ -3390,8 +3390,8 @@ package body Gnat2Why.Subprograms is
                    (Arg                 => +Arg,
                     Size                =>
                       Get_Attribute_Value (Source_Type, Attribute_Size),
-                    Source_Type         => EW_Abstract (Source_Type),
-                    Target_Type         => Base_Why_Type_No_Bool (Target_Type),
+                    Source_Type         => Type_Of_Node (Source_Type),
+                    Target_Type         => Type_Of_Node (Target_Type),
                     Source_Status       => Get_Scalar_Status (Source_Type),
                     Target_Status       => Get_Scalar_Status (Target_Type),
                     Potentially_Invalid => Is_Potentially_Invalid (E),
