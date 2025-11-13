@@ -12,269 +12,269 @@ check_ho_pre.adb:48:13: info: implicit aspect Always_Terminates on "Value_OK" ha
 check_ho_pre.adb:49:24: info: range check proved (CVC5: 2 VC)
 check_ho_pre.adb:54:32: info: data dependencies proved
 check_ho_pre.adb:56:32: info: assertion proved (CVC5: 1 VC)
-spark-containers-functional-maps-higher_order.ads:20:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:20:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:38:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:38:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:21:18: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:21:18: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:39:18: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:39:18: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
 spark-containers-functional-maps-higher_order.ads:56:29: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
 spark-containers-functional-maps-higher_order.ads:56:29: info: function contract feasibility proved (Z3: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:57:29: info: function contract feasibility proved (Z3: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:57:29: info: function contract feasibility proved (Z3: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:69:39: info: predicate check proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:69:39: info: predicate check proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:69:44: info: predicate check proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:69:44: info: predicate check proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:70:47: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:70:47: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:70:61: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:70:61: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:88:33: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:88:33: info: function contract feasibility proved (Z3: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:89:33: info: function contract feasibility proved (Z3: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:89:33: info: function contract feasibility proved (Z3: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:121:33: info: function contract feasibility proved (Z3: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:121:33: info: function contract feasibility proved (Z3: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:142:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:142:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:152:54: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:152:54: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:157:25: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:157:25: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:167:37: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:167:37: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:174:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:174:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:184:60: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:184:60: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:191:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:191:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:200:46: info: precondition proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:200:46: info: precondition proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:205:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:205:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:214:50: info: precondition proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:214:50: info: precondition proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:219:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:219:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:229:54: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:229:54: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:241:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:241:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:251:54: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:251:54: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:255:25: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:255:25: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:265:37: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:265:37: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps-higher_order.ads:272:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-maps-higher_order.ads:272:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:58:18: info: function contract feasibility proved (Z3: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:58:18: info: function contract feasibility proved (Z3: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:66:39: info: predicate check proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:66:39: info: predicate check proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:66:44: info: predicate check proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:66:44: info: predicate check proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:67:47: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:67:47: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:67:61: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:67:61: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:84:33: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:84:33: info: function contract feasibility proved (Z3: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:86:18: info: function contract feasibility proved (Z3: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:86:18: info: function contract feasibility proved (Z3: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:116:18: info: function contract feasibility proved (Z3: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:116:18: info: function contract feasibility proved (Z3: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:135:18: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:135:18: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:140:54: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:140:54: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:149:18: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:149:18: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:157:27: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:157:27: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:168:18: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:168:18: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:178:60: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:178:60: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:187:18: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:187:18: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:196:46: info: precondition proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:196:46: info: precondition proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:202:18: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:202:18: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:211:50: info: precondition proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:211:50: info: precondition proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:217:18: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:217:18: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:222:54: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:222:54: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:238:18: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:238:18: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:244:54: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:244:54: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:252:18: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:252:18: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:263:27: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:263:27: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
+spark-containers-functional-maps-higher_order.ads:272:18: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-maps-higher_order.ads:272:18: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
 spark-containers-functional-maps-higher_order.ads:282:60: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
 spark-containers-functional-maps-higher_order.ads:282:60: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:13
-spark-containers-functional-maps.ads:35:19: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:35:19: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:37:19: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:37:19: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:39:19: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:39:19: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:45:19: info: aspect Always_Terminates on "Equivalent_Keys_Reflexive" has been proved, subprogram will terminate, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:45:19: info: aspect Always_Terminates on "Equivalent_Keys_Reflexive" has been proved, subprogram will terminate, in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:47:19: info: aspect Always_Terminates on "Equivalent_Keys_Symmetric" has been proved, subprogram will terminate, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:47:19: info: aspect Always_Terminates on "Equivalent_Keys_Symmetric" has been proved, subprogram will terminate, in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:49:19: info: aspect Always_Terminates on "Equivalent_Keys_Transitive" has been proved, subprogram will terminate, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:49:19: info: aspect Always_Terminates on "Equivalent_Keys_Transitive" has been proved, subprogram will terminate, in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:55:19: info: aspect Always_Terminates on "Equivalent_Elements_Reflexive" has been proved, subprogram will terminate, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:55:19: info: aspect Always_Terminates on "Equivalent_Elements_Reflexive" has been proved, subprogram will terminate, in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:57:19: info: aspect Always_Terminates on "Equivalent_Elements_Symmetric" has been proved, subprogram will terminate, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:57:19: info: aspect Always_Terminates on "Equivalent_Elements_Symmetric" has been proved, subprogram will terminate, in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:59:19: info: aspect Always_Terminates on "Equivalent_Elements_Transitive" has been proved, subprogram will terminate, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:59:19: info: aspect Always_Terminates on "Equivalent_Elements_Transitive" has been proved, subprogram will terminate, in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:73:16: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:73:16: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate, in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:97:06: info: Container_Aggregates annotation proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:97:06: info: Container_Aggregates annotation proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:97:06: info: Container_Aggregates annotation proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:97:06: info: Container_Aggregates annotation proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:97:06: info: Container_Aggregates annotation proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:97:06: info: Container_Aggregates annotation proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:97:06: info: Container_Aggregates annotation proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:97:06: info: Container_Aggregates annotation proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:97:06: info: Container_Aggregates annotation proved (CVC5: 3 VC), in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:97:06: info: Container_Aggregates annotation proved (CVC5: 3 VC), in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:97:06: info: Container_Aggregates annotation proved (Z3: 1 VC), in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:97:06: info: after a call to Aggr_Include at spark-containers-functional-maps.ads:608, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:97:06: info: after a call to Aggr_Include at spark-containers-functional-maps.ads:608, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:97:06: info: after a call to Aggr_Include at spark-containers-functional-maps.ads:608, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:97:06: info: after a call to Aggr_Include at spark-containers-functional-maps.ads:608, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:97:06: info: after a call to Aggr_Include at spark-containers-functional-maps.ads:608, in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:97:06: info: after a call to Aggr_Include at spark-containers-functional-maps.ads:608, in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:97:06: info: after a call to Aggr_Include at spark-containers-functional-maps.ads:608, in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:97:06: info: after a call to Empty_Map at spark-containers-functional-maps.ads:282, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:97:06: info: after a call to Empty_Map at spark-containers-functional-maps.ads:282, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:97:06: info: after a call to Empty_Map at spark-containers-functional-maps.ads:282, in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:97:06: info: after a call to Empty_Map at spark-containers-functional-maps.ads:282, in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:97:06: info: when establishing invariant on Has_Key at spark-containers-functional-maps.ads:120, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:97:06: info: when establishing invariant on Has_Key at spark-containers-functional-maps.ads:120, in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:97:06: info: when establishing invariant on Length at spark-containers-functional-maps.ads:167, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:97:06: info: when establishing invariant on Length at spark-containers-functional-maps.ads:167, in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:97:06: info: when reestablishing invariant on Get at spark-containers-functional-maps.ads:138, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:97:06: info: when reestablishing invariant on Get at spark-containers-functional-maps.ads:138, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:97:06: info: when reestablishing invariant on Get at spark-containers-functional-maps.ads:138, in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:97:06: info: when reestablishing invariant on Has_Key at spark-containers-functional-maps.ads:120, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:97:06: info: when reestablishing invariant on Has_Key at spark-containers-functional-maps.ads:120, in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:97:06: info: when reestablishing invariant on Length at spark-containers-functional-maps.ads:167, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:97:06: info: when reestablishing invariant on Length at spark-containers-functional-maps.ads:167, in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:120:13: info: during checks for quantification at spark-containers-functional-maps.ads:89, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:120:13: info: during checks for quantification at spark-containers-functional-maps.ads:89, in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:120:13: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:120:13: info: precondition proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:395:13: info: during checks for quantification at spark-containers-functional-maps.ads:358, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:395:13: info: during checks for quantification at spark-containers-functional-maps.ads:358, in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:395:13: info: precondition proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:395:13: info: precondition proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:405:13: info: during checks for quantification at spark-containers-functional-maps.ads:358, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:405:13: info: during checks for quantification at spark-containers-functional-maps.ads:358, in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:405:13: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:405:13: info: precondition proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:413:13: info: during checks for quantification at spark-containers-functional-maps.ads:358, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:413:13: info: during checks for quantification at spark-containers-functional-maps.ads:358, in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:413:13: info: precondition proved (CVC5: 2 VC), in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:413:13: info: precondition proved (CVC5: 2 VC), in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:425:13: info: during checks for quantification at spark-containers-functional-maps.ads:358, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:425:13: info: during checks for quantification at spark-containers-functional-maps.ads:358, in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:425:13: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:425:13: info: precondition proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:524:13: info: implicit aspect Always_Terminates on "Copy_Key" has been proved, subprogram will terminate, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:524:13: info: implicit aspect Always_Terminates on "Copy_Key" has been proved, subprogram will terminate, in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:525:13: info: implicit aspect Always_Terminates on "Copy_Element" has been proved, subprogram will terminate, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:525:13: info: implicit aspect Always_Terminates on "Copy_Element" has been proved, subprogram will terminate, in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:574:13: info: during checks for quantification at spark-containers-functional-maps.ads:89, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:574:13: info: during checks for quantification at spark-containers-functional-maps.ads:89, in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:574:13: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:574:13: info: precondition proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:578:13: info: during checks for quantification at spark-containers-functional-maps.ads:89, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:578:13: info: during checks for quantification at spark-containers-functional-maps.ads:89, in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:578:13: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:578:13: info: precondition proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:585:13: info: during checks for quantification at spark-containers-functional-maps.ads:89, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:585:13: info: during checks for quantification at spark-containers-functional-maps.ads:89, in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:585:13: info: precondition proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:585:13: info: precondition proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:591:13: info: during checks for quantification at spark-containers-functional-maps.ads:89, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:591:13: info: during checks for quantification at spark-containers-functional-maps.ads:89, in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:591:13: info: precondition proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:591:13: info: precondition proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:601:13: info: implicit aspect Always_Terminates on "Aggr_Eq_Keys" has been proved, subprogram will terminate, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:601:13: info: implicit aspect Always_Terminates on "Aggr_Eq_Keys" has been proved, subprogram will terminate, in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:604:06: info: data dependencies proved, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:604:06: info: data dependencies proved, in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:614:39: info: during checks for container aggregates at spark-containers-functional-maps.ads:97, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:614:39: info: during checks for container aggregates at spark-containers-functional-maps.ads:97, in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:614:39: info: precondition proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:614:39: info: precondition proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.adb:32:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:537, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.adb:32:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:537, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.adb:32:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:546, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.adb:32:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:546, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.adb:45:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:537, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.adb:45:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:537, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.adb:45:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:546, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.adb:45:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:546, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.adb:48:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:537, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.adb:48:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:537, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.adb:48:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:546, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.adb:48:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:546, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.adb:63:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:537, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.adb:63:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:537, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.adb:63:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:546, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.adb:63:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:546, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.adb:64:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:537, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.adb:64:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:537, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.adb:64:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:546, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.adb:64:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:546, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.adb:65:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:537, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.adb:65:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:537, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.adb:65:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:546, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.adb:65:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:546, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.adb:96:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:556, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.adb:96:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:556, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.ads:32:22: info: aspect Always_Terminates on "Param_Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:537, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.ads:32:22: info: aspect Always_Terminates on "Param_Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:537, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.ads:32:22: info: aspect Always_Terminates on "Param_Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:546, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.ads:32:22: info: aspect Always_Terminates on "Param_Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:546, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.ads:37:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:537, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.ads:37:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:537, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.ads:37:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:546, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.ads:37:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:546, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.ads:38:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:537, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.ads:38:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:537, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.ads:38:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:546, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.ads:38:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:546, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.ads:39:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:537, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.ads:39:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:537, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.ads:39:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:546, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.ads:39:19: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-maps.ads:546, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.ads:41:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:537, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.ads:41:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:537, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.ads:41:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:546, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.ads:41:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:546, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.ads:42:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:537, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.ads:42:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:537, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.ads:42:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:546, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.ads:42:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:546, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.ads:44:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:537, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.ads:44:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:537, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.ads:44:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:546, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.ads:44:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:546, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.ads:46:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:537, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.ads:46:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:537, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.ads:46:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:546, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.ads:46:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:546, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.ads:47:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:537, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.ads:47:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:537, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.ads:47:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:546, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.ads:47:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:546, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.ads:49:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:537, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.ads:49:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:537, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.ads:49:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:546, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.ads:49:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:546, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.ads:55:17: info: aspect Always_Terminates on "Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:537, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.ads:55:17: info: aspect Always_Terminates on "Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:537, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.ads:55:17: info: aspect Always_Terminates on "Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:546, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.ads:55:17: info: aspect Always_Terminates on "Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:546, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.ads:56:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:537, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.ads:56:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:537, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.ads:56:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:546, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.ads:56:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:546, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.ads:58:19: info: postcondition proved (CVC5: 2 VC), in instantiation at spark-containers-functional-maps.ads:537, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.ads:58:19: info: postcondition proved (CVC5: 2 VC), in instantiation at spark-containers-functional-maps.ads:537, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.ads:58:19: info: postcondition proved (CVC5: 2 VC), in instantiation at spark-containers-functional-maps.ads:546, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.ads:58:19: info: postcondition proved (CVC5: 2 VC), in instantiation at spark-containers-functional-maps.ads:546, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.ads:80:22: info: aspect Always_Terminates on "Param_Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:556, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.ads:80:22: info: aspect Always_Terminates on "Param_Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:556, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.ads:85:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:556, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.ads:85:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:556, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.ads:86:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:556, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.ads:86:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:556, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.ads:88:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:556, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.ads:88:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:556, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.ads:93:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:556, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.ads:93:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:556, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.ads:94:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:556, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.ads:94:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:556, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.ads:95:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:556, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.ads:95:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:556, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.ads:97:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:556, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.ads:97:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:556, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.ads:98:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:556, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.ads:98:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:556, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.ads:100:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:556, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.ads:100:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:556, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.ads:102:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:556, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.ads:102:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:556, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.ads:103:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:556, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.ads:103:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:556, in instantiation at use_map_ho.adb:9
-spark-containers-parameter_checks.ads:105:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:556, in instantiation at check_ho_pre.adb:10
-spark-containers-parameter_checks.ads:105:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:556, in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:36:16: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:36:16: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:39:16: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:39:16: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:42:16: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:42:16: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:49:16: info: aspect Always_Terminates on "Equivalent_Keys_Reflexive" has been proved, subprogram will terminate, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:49:16: info: aspect Always_Terminates on "Equivalent_Keys_Reflexive" has been proved, subprogram will terminate, in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:52:16: info: aspect Always_Terminates on "Equivalent_Keys_Symmetric" has been proved, subprogram will terminate, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:52:16: info: aspect Always_Terminates on "Equivalent_Keys_Symmetric" has been proved, subprogram will terminate, in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:55:16: info: aspect Always_Terminates on "Equivalent_Keys_Transitive" has been proved, subprogram will terminate, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:55:16: info: aspect Always_Terminates on "Equivalent_Keys_Transitive" has been proved, subprogram will terminate, in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:62:16: info: aspect Always_Terminates on "Equivalent_Elements_Reflexive" has been proved, subprogram will terminate, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:62:16: info: aspect Always_Terminates on "Equivalent_Elements_Reflexive" has been proved, subprogram will terminate, in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:65:16: info: aspect Always_Terminates on "Equivalent_Elements_Symmetric" has been proved, subprogram will terminate, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:65:16: info: aspect Always_Terminates on "Equivalent_Elements_Symmetric" has been proved, subprogram will terminate, in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:68:16: info: aspect Always_Terminates on "Equivalent_Elements_Transitive" has been proved, subprogram will terminate, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:68:16: info: aspect Always_Terminates on "Equivalent_Elements_Transitive" has been proved, subprogram will terminate, in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:79:16: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:79:16: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate, in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:105:06: info: Container_Aggregates annotation proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:105:06: info: Container_Aggregates annotation proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:105:06: info: Container_Aggregates annotation proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:105:06: info: Container_Aggregates annotation proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:105:06: info: Container_Aggregates annotation proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:105:06: info: Container_Aggregates annotation proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:105:06: info: Container_Aggregates annotation proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:105:06: info: Container_Aggregates annotation proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:105:06: info: Container_Aggregates annotation proved (CVC5: 3 VC), in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:105:06: info: Container_Aggregates annotation proved (CVC5: 3 VC), in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:105:06: info: Container_Aggregates annotation proved (Z3: 1 VC), in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:105:06: info: after a call to Aggr_Include at spark-containers-functional-maps.ads:609, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:105:06: info: after a call to Aggr_Include at spark-containers-functional-maps.ads:609, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:105:06: info: after a call to Aggr_Include at spark-containers-functional-maps.ads:609, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:105:06: info: after a call to Aggr_Include at spark-containers-functional-maps.ads:609, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:105:06: info: after a call to Aggr_Include at spark-containers-functional-maps.ads:609, in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:105:06: info: after a call to Aggr_Include at spark-containers-functional-maps.ads:609, in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:105:06: info: after a call to Aggr_Include at spark-containers-functional-maps.ads:609, in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:105:06: info: after a call to Empty_Map at spark-containers-functional-maps.ads:297, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:105:06: info: after a call to Empty_Map at spark-containers-functional-maps.ads:297, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:105:06: info: after a call to Empty_Map at spark-containers-functional-maps.ads:297, in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:105:06: info: after a call to Empty_Map at spark-containers-functional-maps.ads:297, in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:105:06: info: when establishing invariant on Has_Key at spark-containers-functional-maps.ads:131, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:105:06: info: when establishing invariant on Has_Key at spark-containers-functional-maps.ads:131, in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:105:06: info: when establishing invariant on Length at spark-containers-functional-maps.ads:178, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:105:06: info: when establishing invariant on Length at spark-containers-functional-maps.ads:178, in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:105:06: info: when reestablishing invariant on Get at spark-containers-functional-maps.ads:148, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:105:06: info: when reestablishing invariant on Get at spark-containers-functional-maps.ads:148, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:105:06: info: when reestablishing invariant on Get at spark-containers-functional-maps.ads:148, in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:105:06: info: when reestablishing invariant on Has_Key at spark-containers-functional-maps.ads:131, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:105:06: info: when reestablishing invariant on Has_Key at spark-containers-functional-maps.ads:131, in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:105:06: info: when reestablishing invariant on Length at spark-containers-functional-maps.ads:178, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:105:06: info: when reestablishing invariant on Length at spark-containers-functional-maps.ads:178, in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:131:13: info: during checks for quantification at spark-containers-functional-maps.ads:95, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:131:13: info: during checks for quantification at spark-containers-functional-maps.ads:95, in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:131:13: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:131:13: info: precondition proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:407:13: info: during checks for quantification at spark-containers-functional-maps.ads:368, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:407:13: info: during checks for quantification at spark-containers-functional-maps.ads:368, in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:407:13: info: precondition proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:407:13: info: precondition proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:417:13: info: during checks for quantification at spark-containers-functional-maps.ads:368, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:417:13: info: during checks for quantification at spark-containers-functional-maps.ads:368, in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:417:13: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:417:13: info: precondition proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:426:13: info: during checks for quantification at spark-containers-functional-maps.ads:368, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:426:13: info: during checks for quantification at spark-containers-functional-maps.ads:368, in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:426:13: info: precondition proved (CVC5: 2 VC), in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:426:13: info: precondition proved (CVC5: 2 VC), in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:440:13: info: during checks for quantification at spark-containers-functional-maps.ads:368, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:440:13: info: during checks for quantification at spark-containers-functional-maps.ads:368, in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:440:13: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:440:13: info: precondition proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:527:13: info: implicit aspect Always_Terminates on "Copy_Key" has been proved, subprogram will terminate, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:527:13: info: implicit aspect Always_Terminates on "Copy_Key" has been proved, subprogram will terminate, in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:529:13: info: implicit aspect Always_Terminates on "Copy_Element" has been proved, subprogram will terminate, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:529:13: info: implicit aspect Always_Terminates on "Copy_Element" has been proved, subprogram will terminate, in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:579:13: info: during checks for quantification at spark-containers-functional-maps.ads:95, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:579:13: info: during checks for quantification at spark-containers-functional-maps.ads:95, in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:579:13: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:579:13: info: precondition proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:582:13: info: during checks for quantification at spark-containers-functional-maps.ads:95, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:582:13: info: during checks for quantification at spark-containers-functional-maps.ads:95, in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:582:13: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:582:13: info: precondition proved (Trivial: 1 VC), in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:586:13: info: during checks for quantification at spark-containers-functional-maps.ads:95, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:586:13: info: during checks for quantification at spark-containers-functional-maps.ads:95, in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:586:13: info: precondition proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:586:13: info: precondition proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:592:13: info: during checks for quantification at spark-containers-functional-maps.ads:95, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:592:13: info: during checks for quantification at spark-containers-functional-maps.ads:95, in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:592:13: info: precondition proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:592:13: info: precondition proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:602:13: info: implicit aspect Always_Terminates on "Aggr_Eq_Keys" has been proved, subprogram will terminate, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:602:13: info: implicit aspect Always_Terminates on "Aggr_Eq_Keys" has been proved, subprogram will terminate, in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:605:06: info: data dependencies proved, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:605:06: info: data dependencies proved, in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:613:39: info: during checks for container aggregates at spark-containers-functional-maps.ads:105, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:613:39: info: during checks for container aggregates at spark-containers-functional-maps.ads:105, in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:613:39: info: precondition proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:613:39: info: precondition proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.adb:33:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:542, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.adb:33:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:542, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.adb:33:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:551, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.adb:33:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:551, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.adb:46:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:542, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.adb:46:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:542, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.adb:46:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:551, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.adb:46:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:551, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.adb:49:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:542, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.adb:49:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:542, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.adb:49:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:551, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.adb:49:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:551, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.adb:64:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:542, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.adb:64:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:542, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.adb:64:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:551, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.adb:64:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:551, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.adb:65:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:542, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.adb:65:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:542, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.adb:65:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:551, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.adb:65:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:551, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.adb:66:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:542, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.adb:66:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:542, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.adb:66:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:551, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.adb:66:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:551, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.adb:97:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:561, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.adb:97:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:561, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.ads:39:19: info: aspect Always_Terminates on "Param_Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:39:19: info: aspect Always_Terminates on "Param_Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.ads:39:19: info: aspect Always_Terminates on "Param_Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:39:19: info: aspect Always_Terminates on "Param_Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.ads:45:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:45:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.ads:45:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:45:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.ads:46:12: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:46:12: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.ads:46:12: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:46:12: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.ads:46:36: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:542, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:46:36: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:542, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.ads:46:36: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:551, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:46:36: info: postcondition proved (Trivial: 1 VC), in instantiation at spark-containers-functional-maps.ads:551, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.ads:48:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:48:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.ads:48:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:48:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.ads:49:12: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:49:12: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.ads:49:12: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:49:12: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.ads:49:54: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:542, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:49:54: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:542, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.ads:49:54: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:551, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:49:54: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:551, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.ads:51:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:51:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.ads:51:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:51:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.ads:52:12: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:52:12: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.ads:52:12: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:52:12: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.ads:52:68: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:542, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:52:68: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:542, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.ads:52:68: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:551, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:52:68: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:551, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.ads:57:17: info: aspect Always_Terminates on "Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:57:17: info: aspect Always_Terminates on "Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.ads:57:17: info: aspect Always_Terminates on "Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:57:17: info: aspect Always_Terminates on "Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.ads:59:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:59:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.ads:59:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:59:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.ads:61:19: info: postcondition proved (CVC5: 2 VC), in instantiation at spark-containers-functional-maps.ads:542, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:61:19: info: postcondition proved (CVC5: 2 VC), in instantiation at spark-containers-functional-maps.ads:542, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.ads:61:19: info: postcondition proved (CVC5: 2 VC), in instantiation at spark-containers-functional-maps.ads:551, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:61:19: info: postcondition proved (CVC5: 2 VC), in instantiation at spark-containers-functional-maps.ads:551, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.ads:92:19: info: aspect Always_Terminates on "Param_Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:92:19: info: aspect Always_Terminates on "Param_Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.ads:98:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:98:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.ads:99:12: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:99:12: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.ads:99:50: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:561, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:99:50: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:561, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.ads:104:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:104:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.ads:105:12: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:105:12: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.ads:105:36: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:561, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:105:36: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:561, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.ads:107:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:107:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.ads:108:12: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:108:12: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.ads:108:54: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:561, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:108:54: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:561, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.ads:110:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:110:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.ads:111:12: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:111:12: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at use_map_ho.adb:9
+spark-containers-parameter_checks.ads:111:68: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:561, in instantiation at check_ho_pre.adb:10
+spark-containers-parameter_checks.ads:111:68: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:561, in instantiation at use_map_ho.adb:9
 use_map_ho.adb:17:16: info: implicit aspect Always_Terminates on "Is_Even" has been proved, subprogram will terminate
 use_map_ho.adb:17:38: warning: unused variable "S"
 use_map_ho.adb:18:12: info: division check proved (CVC5: 1 VC)
