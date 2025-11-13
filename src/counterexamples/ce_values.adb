@@ -594,7 +594,7 @@ package body CE_Values is
          when Scalar_K   =>
            (if V.Initialized_Attr.Present
             then
-              "('Initialize => "
+              "('Initialized => "
               & V.Initialized_Attr.Content'Image
               & ", Value => "
             else "")
@@ -611,5 +611,18 @@ package body CE_Values is
 
    function To_String (V : Opt_Value_Type) return String
    is (if V.Present then To_String (V.Content) else "NONE");
+
+   function To_String (Attribute : Supported_Attribute) return String is
+   begin
+      return Result : String := Attribute'Img do
+
+         --  The 1st character is already in upper case.
+         --  The following characters needs to be converted to lower case.
+
+         for Position in 2 .. Result'Last loop
+            Result (Position) := To_Lower (Result (Position));
+         end loop;
+      end return;
+   end To_String;
 
 end CE_Values;
