@@ -13,6 +13,45 @@
   "prjs": {
     "gnatprove.gpr": [
       {
+        "file_info": { "basename": "gnatprove.adb", "path": "./" },
+        "subps": {
+          "gnatprove.set_environment": [
+            {
+              "msg_id": {
+                "tool_kind": [ "Infer", "Cleartext_storage" ],
+                "key": "364fed49c43e2cd39d3ee34371df002c",
+                "key_seq": 1
+              },
+              "data": [
+                {
+                  "date": "2025-11-13 21:38:53",
+                  "status": "Intentional",
+                  "author": "Andres Toom",
+                  "text": "Modification of PATH is intentional and does not expose sensitive data. The modifications just add GNATprove configuration information.",
+                  "from_source": false
+                }
+              ]
+            },
+            {
+              "msg_id": {
+                "tool_kind": [ "Infer", "Cleartext_storage" ],
+                "key": "8a6ba88e58f749de05c509b262a9d155",
+                "key_seq": 1
+              },
+              "data": [
+                {
+                  "date": "2025-11-13 21:39:34",
+                  "status": "Intentional",
+                  "author": "Andres Toom",
+                  "text": "Modification of GPR_PROJECT_PATH is intentional and does not expose sensitive data. The modifications just add GNATprove configuration information.",
+                  "from_source": false
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
         "file_info": { "basename": "named_semaphores.adb", "path": "./" },
         "subps": {
           "named_semaphores.close": [
