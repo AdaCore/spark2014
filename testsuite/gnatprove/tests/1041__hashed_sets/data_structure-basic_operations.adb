@@ -2591,6 +2591,7 @@ is
            Assert
              (for all K of Reachable_Set (S.Buckets (B), S.Memory) =>
                 S.Memory (K).Value'Initialized);
+         pragma Assert (LL_Correct_Free_List (S));
          pragma Assert (LL_Correct (S));
          pragma
            Assert

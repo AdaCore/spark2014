@@ -17,7 +17,7 @@ test.adb:20:04: warning: make sure that all overlapping objects have Async_Write
 test.adb:22:18: warning: unused initial value of "X"
 test.adb:24:04: warning: analyzing unreferenced procedure "P1" [unreferenced-procedure]
 test.adb:26:10: warning: unused assignment
-test.adb:26:13: medium: validity check might fail [possible fix: subprogram at line 22 should mention X in a precondition]
+test.adb:26:13: medium: validity check might fail (e.g. when X.F'Valid = False) [possible fix: subprogram at line 22 should mention X in a precondition]
 test.adb:30:18: warning: unused initial value of "X"
 test.adb:32:04: warning: analyzing unreferenced procedure "P2" [unreferenced-procedure]
 test.adb:34:10: warning: unused assignment

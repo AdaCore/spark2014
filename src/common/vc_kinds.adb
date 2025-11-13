@@ -1075,7 +1075,8 @@ package body VC_Kinds is
            "a null aggregate which is a subaggregate of a multidimensional "
            & " array  aggregate with multiple associations",
          when Lim_Object_Before_Inv                                       =>
-           "a non-scalar object declared in a loop before the loop invariant",
+           "a non-scalar object or an object with an address clause declared"
+           & " before the loop-invariant",
          when Lim_Op_Fixed_Float                                          =>
            "a multiplication or division between a fixed-point and a floating-"
            & "point value",

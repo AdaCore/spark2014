@@ -403,8 +403,75 @@ package body Gnat2Why.Decls is
    ------------------------
 
    procedure Translate_Variable (E : Object_Kind_Id) is
-      Var : constant Item_Type := Mk_Item_Of_Entity (E);
-      Th  : Theory_UC;
+      Var      : constant Item_Type := Mk_Item_Of_Entity (E);
+      Alias    : constant Opt_Object_Kind_Id := Ultimate_Overlaid_Entity (E);
+      Alias_Id : constant W_Identifier_Id :=
+        (if Present (Alias)
+         then
+           New_Temp_Identifier
+             (Base_Name => "overlaid", Typ => Type_Of_Node (Alias))
+         else Why_Empty);
+      Th       : Theory_UC;
+
+      procedure Emit_Global_Ref_Or_Function
+        (Name : W_Identifier_Id; Mutable : Boolean; Labels : Symbol_Sets.Set);
+      --  Declare a part of the object E. Emit a constant declaration if the
+      --  object is not mutable, a global reference if it is mutable but not
+      --  an overlay, and a function taking the overlaid object as a parameter
+      --  for mutable parts of overlays.
+
+      ---------------------------------
+      -- Emit_Global_Ref_Or_Function --
+      ---------------------------------
+
+      procedure Emit_Global_Ref_Or_Function
+        (Name : W_Identifier_Id; Mutable : Boolean; Labels : Symbol_Sets.Set)
+      is
+      begin
+         --  For non-mutable objects, always generate a constant
+
+         if not Mutable then
+            Emit
+              (Th,
+               Why.Atree.Builders.New_Function_Decl
+                 (Domain      => EW_Pterm,
+                  Name        => To_Local (Name),
+                  Binders     => (1 .. 0 => <>),
+                  Labels      => Labels,
+                  Location    => Safe_First_Sloc (E),
+                  Return_Type => Get_Typ (Name)));
+
+         --  If the object is not aliased, generate a global ref
+
+         elsif No (Alias) then
+            Emit
+              (Th,
+               New_Global_Ref_Declaration
+                 (Name     => To_Local (Name),
+                  Labels   => Labels,
+                  Location => Safe_First_Sloc (E),
+                  Ref_Type => Get_Typ (Name)));
+
+         --  Otherwise, generate a function that takes Alias_Id as a parameter
+
+         else
+            Emit
+              (Th,
+               Why.Atree.Builders.New_Function_Decl
+                 (Domain      => EW_Pterm,
+                  Name        => To_Local (Name),
+                  Binders     =>
+                    (1 =>
+                       New_Binder
+                         (Domain   => EW_Pterm,
+                          Name     => Alias_Id,
+                          Arg_Type => Get_Typ (Alias_Id))),
+                  Labels      => Labels,
+                  Location    => Safe_First_Sloc (E),
+                  Return_Type => Get_Typ (Name)));
+         end if;
+      end Emit_Global_Ref_Or_Function;
+
    begin
       Th :=
         Open_Theory
@@ -430,88 +497,55 @@ package body Gnat2Why.Decls is
 
                --  Generate a global ref for the fields
 
-               Emit
-                 (Th,
-                  New_Global_Ref_Declaration
-                    (Name     => To_Local (Var.Fields.Binder.B_Name),
-                     Labels   =>
-                       Get_Counterexample_Labels
-                         (E, Append_To_Name => "'" & Field_Label),
-                     Location => Safe_First_Sloc (E),
-                     Ref_Type => Get_Typ (Var.Fields.Binder.B_Name)));
+               Emit_Global_Ref_Or_Function
+                 (Name    => Var.Fields.Binder.B_Name,
+                  Labels  =>
+                    Get_Counterexample_Labels
+                      (E, Append_To_Name => "'" & Field_Label),
+                  Mutable => True);
             end if;
 
             if Var.Discrs.Present then
 
                --  Generate a global ref or constant for the fields
 
-               if Var.Discrs.Binder.Mutable then
-                  Emit
-                    (Th,
-                     New_Global_Ref_Declaration
-                       (Name     => To_Local (Var.Discrs.Binder.B_Name),
-                        Labels   =>
-                          Get_Counterexample_Labels
-                            (E, Append_To_Name => "'" & Discr_Label),
-                        Location => Safe_First_Sloc (E),
-                        Ref_Type => Get_Typ (Var.Discrs.Binder.B_Name)));
-               else
-                  Emit
-                    (Th,
-                     Why.Atree.Builders.New_Function_Decl
-                       (Domain      => EW_Pterm,
-                        Name        => To_Local (Var.Discrs.Binder.B_Name),
-                        Binders     => (1 .. 0 => <>),
-                        Labels      =>
-                          Get_Counterexample_Labels
-                            (E, Append_To_Name => "'" & Discr_Label),
-                        Location    => Safe_First_Sloc (E),
-                        Return_Type => Get_Typ (Var.Discrs.Binder.B_Name)));
-               end if;
+               Emit_Global_Ref_Or_Function
+                 (Name    => Var.Discrs.Binder.B_Name,
+                  Labels  =>
+                    Get_Counterexample_Labels
+                      (E, Append_To_Name => "'" & Discr_Label),
+                  Mutable => Var.Discrs.Binder.Mutable);
             end if;
 
             if Var.Constr.Present then
 
                --  Generate a constant for 'Constrained attribute
 
-               Emit
-                 (Th,
-                  Why.Atree.Builders.New_Function_Decl
-                    (Domain      => EW_Pterm,
-                     Name        => To_Local (Var.Constr.Id),
-                     Binders     => (1 .. 0 => <>),
-                     Labels      =>
-                       Get_Counterexample_Labels (E, "'" & Constrained_Label),
-                     Location    => Safe_First_Sloc (E),
-                     Return_Type => Get_Typ (Var.Constr.Id)));
+               Emit_Global_Ref_Or_Function
+                 (Name    => Var.Constr.Id,
+                  Labels  =>
+                    Get_Counterexample_Labels (E, "'" & Constrained_Label),
+                  Mutable => False);
             end if;
 
             if Var.Tag.Present then
 
                --  Generate a constant for 'Tag attribute
 
-               Emit
-                 (Th,
-                  Why.Atree.Builders.New_Function_Decl
-                    (Domain      => EW_Pterm,
-                     Name        => To_Local (Var.Tag.Id),
-                     Binders     => (1 .. 0 => <>),
-                     Labels      => Symbol_Sets.Empty_Set,
-                     Location    => Safe_First_Sloc (E),
-                     Return_Type => Get_Typ (Var.Tag.Id)));
+               Emit_Global_Ref_Or_Function
+                 (Name    => Var.Tag.Id,
+                  Labels  => Symbol_Sets.Empty_Set,
+                  Mutable => False);
             end if;
 
          when UCArray                =>
 
             --  Generate a global ref for the content
 
-            Emit
-              (Th,
-               New_Global_Ref_Declaration
-                 (Name     => To_Local (Var.Content.B_Name),
-                  Labels   => Get_Counterexample_Labels (E),
-                  Location => Safe_First_Sloc (E),
-                  Ref_Type => Get_Typ (Var.Content.B_Name)));
+            Emit_Global_Ref_Or_Function
+              (Name    => Var.Content.B_Name,
+               Labels  => Get_Counterexample_Labels (E),
+               Mutable => True);
 
             for D in 1 .. Var.Dim loop
                declare
@@ -526,41 +560,26 @@ package body Gnat2Why.Decls is
                         & Trim (Integer'Image (Num_Dim), Both)
                         & ")");
 
-                  Ty_First : constant W_Type_Id :=
-                    Get_Typ (Var.Bounds (D).First);
-                  Ty_Last  : constant W_Type_Id :=
-                    Get_Typ (Var.Bounds (D).Last);
-
                begin
                   --  Generate constants for bounds
 
-                  Emit
-                    (Th,
-                     Why.Atree.Builders.New_Function_Decl
-                       (Domain      => EW_Pterm,
-                        Name        => To_Local (Var.Bounds (D).First),
-                        Binders     => (1 .. 0 => <>),
-                        Labels      =>
-                          Get_Counterexample_Labels
-                            (E,
-                             Bound_Dimension_To_Str
-                               (Var.Dim, D, "'" & First_Label)),
-                        Location    => Safe_First_Sloc (E),
-                        Return_Type => Ty_First));
+                  Emit_Global_Ref_Or_Function
+                    (Name    => Var.Bounds (D).First,
+                     Labels  =>
+                       Get_Counterexample_Labels
+                         (E,
+                          Bound_Dimension_To_Str
+                            (Var.Dim, D, "'" & First_Label)),
+                     Mutable => False);
 
-                  Emit
-                    (Th,
-                     Why.Atree.Builders.New_Function_Decl
-                       (Domain      => EW_Pterm,
-                        Name        => To_Local (Var.Bounds (D).Last),
-                        Binders     => (1 .. 0 => <>),
-                        Labels      =>
-                          Get_Counterexample_Labels
-                            (E,
-                             Bound_Dimension_To_Str
-                               (Var.Dim, D, "'" & Last_Label)),
-                        Location    => Safe_First_Sloc (E),
-                        Return_Type => Ty_Last));
+                  Emit_Global_Ref_Or_Function
+                    (Name    => Var.Bounds (D).Last,
+                     Labels  =>
+                       Get_Counterexample_Labels
+                         (E,
+                          Bound_Dimension_To_Str
+                            (Var.Dim, D, "'" & Last_Label)),
+                     Mutable => False);
                end;
             end loop;
 
@@ -568,40 +587,17 @@ package body Gnat2Why.Decls is
 
             --  Generate a global ref for the value
 
-            Emit
-              (Th,
-               New_Global_Ref_Declaration
-                 (Name     => To_Local (Var.Value.B_Name),
-                  Location => Safe_First_Sloc (E),
-                  Labels   => Get_Counterexample_Labels (E, "'" & All_Label),
-                  Ref_Type => Get_Typ (Var.Value.B_Name)));
+            Emit_Global_Ref_Or_Function
+              (Name    => Var.Value.B_Name,
+               Labels  => Get_Counterexample_Labels (E, "'" & All_Label),
+               Mutable => True);
 
             --  Generate a global ref for the is_null if the pointer is mutable
 
-            if Var.Mutable then
-               Emit
-                 (Th,
-                  New_Global_Ref_Declaration
-                    (Name     => To_Local (Var.Is_Null),
-                     Location => Safe_First_Sloc (E),
-                     Labels   =>
-                       Get_Counterexample_Labels (E, "'" & Is_Null_Label),
-                     Ref_Type => Get_Typ (Var.Is_Null)));
-
-            --  Otherwise generate a constant
-
-            else
-               Emit
-                 (Th,
-                  Why.Atree.Builders.New_Function_Decl
-                    (Domain      => EW_Pterm,
-                     Name        => To_Local (Var.Is_Null),
-                     Binders     => (1 .. 0 => <>),
-                     Location    => Safe_First_Sloc (E),
-                     Labels      =>
-                       Get_Counterexample_Labels (E, "'" & Is_Null_Label),
-                     Return_Type => Get_Typ (Var.Is_Null)));
-            end if;
+            Emit_Global_Ref_Or_Function
+              (Name    => Var.Is_Null,
+               Labels  => Get_Counterexample_Labels (E, "'" & Is_Null_Label),
+               Mutable => Var.Mutable);
 
          when Regular                =>
             begin
@@ -610,13 +606,10 @@ package body Gnat2Why.Decls is
 
                --  generate a global ref
 
-               Emit
-                 (Th,
-                  New_Global_Ref_Declaration
-                    (Name     => To_Local (Var.Main.B_Name),
-                     Labels   => Get_Counterexample_Labels (E),
-                     Location => Safe_First_Sloc (E),
-                     Ref_Type => Get_Typ (Var.Main.B_Name)));
+               Emit_Global_Ref_Or_Function
+                 (Name    => Var.Main.B_Name,
+                  Labels  => Get_Counterexample_Labels (E),
+                  Mutable => True);
             end;
 
          when Subp | Concurrent_Self =>
@@ -626,38 +619,28 @@ package body Gnat2Why.Decls is
       --  generate a global ref for the initialization flag if any
 
       if Var.Init.Present then
-         Emit
-           (Th,
-            New_Global_Ref_Declaration
-              (Name     => To_Local (Var.Init.Id),
-               Labels   =>
-                 Get_Counterexample_Labels (E, "'" & Initialized_Label),
-               Location => Safe_First_Sloc (E),
-               Ref_Type => EW_Bool_Type));
+         Emit_Global_Ref_Or_Function
+           (Name    => Var.Init.Id,
+            Labels  => Get_Counterexample_Labels (E, "'" & Initialized_Label),
+            Mutable => True);
       end if;
 
       --  Generate a variable for the move tree
 
       if Var.Is_Moved.Present then
-         Emit
-           (Th,
-            New_Global_Ref_Declaration
-              (Name     => To_Local (Var.Is_Moved.Id),
-               Location => Safe_First_Sloc (E),
-               Labels   => Symbol_Sets.Empty_Set,
-               Ref_Type => Get_Typ (Var.Is_Moved.Id)));
+         Emit_Global_Ref_Or_Function
+           (Name    => Var.Is_Moved.Id,
+            Labels  => Symbol_Sets.Empty_Set,
+            Mutable => True);
       end if;
 
       --  Generate a variable for the validity flag
 
       if Var.Valid.Present then
-         Emit
-           (Th,
-            New_Global_Ref_Declaration
-              (Name     => To_Local (Var.Valid.Id),
-               Labels   => Get_Counterexample_Labels (E, "'" & Valid_Label),
-               Location => Safe_First_Sloc (E),
-               Ref_Type => Get_Typ (Var.Valid.Id)));
+         Emit_Global_Ref_Or_Function
+           (Name    => Var.Valid.Id,
+            Labels  => Get_Counterexample_Labels (E, "'" & Valid_Label),
+            Mutable => True);
       end if;
 
       --  Declare the variable for the value at end of E

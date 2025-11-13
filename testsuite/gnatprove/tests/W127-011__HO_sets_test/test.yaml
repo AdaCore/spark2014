@@ -1,4 +1,6 @@
+comment: "disable CE to avoid runaway cvc5 processes"
+large: true
 prove_all:
-  sparklib: True
-  counterexample: False #runaway cvc5 process
-  filter_sparklib: False
+  counterexample: false
+  filter_sparklib: false
+  sparklib: true

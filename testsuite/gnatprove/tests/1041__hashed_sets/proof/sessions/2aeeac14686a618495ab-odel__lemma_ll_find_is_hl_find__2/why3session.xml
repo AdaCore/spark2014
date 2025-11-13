@@ -1698,7 +1698,7 @@
   <goal name="def&#39;vc.385" proved="true">
   <proof prover="0"><result status="valid" steps="57503"/></proof>
   <proof prover="1"><result status="valid" steps="133465"/></proof>
-  <proof prover="2"><result status="valid" steps="572244"/></proof>
+  <proof prover="2"><result status="valid" steps="586528"/></proof>
   </goal>
  </transf>
  </goal>

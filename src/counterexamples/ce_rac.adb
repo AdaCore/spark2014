@@ -89,12 +89,23 @@ package body CE_RAC is
        others         => <>);
    --  Make a value of kind scalar out of a scalar value
 
-   function Enum_Value (E : Entity_Id; Ty : Entity_Id) return Value_Type
-   is (Scalar_Value ((K => Enum_K, Enum_Entity => E), Retysp (Ty)));
-   --  Make an enum value from an enumeration literal E
+   function Char_Value (N : Node_Id; Ty : Entity_Id) return Value_Type
+   is (Scalar_Value ((K => Char_K, Char_Node => N), Retysp (Ty)))
+   with Pre => Is_Character_Type (Ty);
+   --  Make a character value from a character node N
 
-   function Enum_Value (I : Uint; Ty : Entity_Id) return Value_Type;
-   --  Make an enum value from an enum index I
+   function Char_Value (I : Uint; Ty : Entity_Id) return Value_Type
+   with Pre => Is_Character_Type (Ty);
+   --  Make a character value from an index I
+
+   function Enum_Value (E : Entity_Id; Ty : Entity_Id) return Value_Type
+   is (Scalar_Value ((K => Enum_K, Enum_Entity => E), Retysp (Ty)))
+   with Pre => Is_Enumeration_Type (Ty) and then not Is_Character_Type (Ty);
+   --  Make an enum value from an entity enumeration literal E
+
+   function Enum_Value (I : Uint; Ty : Entity_Id) return Value_Type
+   with Pre => Is_Enumeration_Type (Ty) and then not Is_Character_Type (Ty);
+   --  Make an enum value from an index I
 
    function Record_Value
      (F : Entity_To_Value_Maps.Map; Ty : Entity_Id) return Value_Type;
@@ -235,9 +246,11 @@ package body CE_RAC is
    function Fuzz_Value (Ty : Node_Id) return Value_Type;
    --  Return a random value amongst those that often highlight bugs
 
+   function Char_Node_To_Integer (N : Node_Id) return Uint;
+   --  Convert a character literal to an integer based on its position
+
    function Enum_Entity_To_Integer (E : Entity_Id) return Uint;
-   --  Convert an enum entity (enum literal entity or character literal) to an
-   --  integer (enum pos for enumerations, character pos for characters).
+   --  Convert an enum entity to an integer based on its position
 
    function "=" (F1, F2 : Entity_To_Value_Maps.Map) return Boolean;
 
@@ -654,7 +667,7 @@ package body CE_RAC is
       Set_Character_Literal_Name (CC);
 
       return
-        Enum_Value
+        Char_Value
           (Make_Character_Literal (No_Location, Name_Find, UI_From_CC ((CC))),
            Ty);
    end Character_Value;
@@ -1514,20 +1527,47 @@ package body CE_RAC is
    function Do_RAC_Info return Boolean
    is (Gnat2Why_Opts.Reading.Debug_Mode or else Do_RAC_Info_Env);
 
+   --------------------------
+   -- Char_Node_To_Integer --
+   --------------------------
+
+   function Char_Node_To_Integer (N : Node_Id) return Uint is
+   begin
+      if Nkind (N) = N_Character_Literal then
+         return Char_Literal_Value (N);
+      else
+         raise Program_Error with "Char_Node_To_Integer";
+      end if;
+   end Char_Node_To_Integer;
+
    ----------------------------
    -- Enum_Entity_To_Integer --
    ----------------------------
 
    function Enum_Entity_To_Integer (E : Entity_Id) return Uint is
    begin
-      if Nkind (E) = N_Character_Literal then
-         return Char_Literal_Value (E);
-      elsif Is_Enumeration_Type (Etype (E)) then
+      if Is_Enumeration_Type (Etype (E)) then
          return Enumeration_Pos (E);
       else
          raise Program_Error with "Enum_Entity_To_Integer";
       end if;
    end Enum_Entity_To_Integer;
+
+   ----------------
+   -- Char_Value --
+   ----------------
+
+   function Char_Value (I : Uint; Ty : Entity_Id) return Value_Type is
+      Lit : Node_Id;
+   begin
+      Check_Supported_Type (Ty);
+      Lit := Get_Enum_Lit_From_Pos (Ty, I);
+      pragma Assert (Nkind (Lit) = N_Character_Literal);
+      return Scalar_Value ((K => Char_K, Char_Node => Lit), Ty);
+   exception
+      when Constraint_Error =>
+         RAC_Stuck ("Char_Value: value outside of range");
+   end Char_Value;
 
    ----------------
    -- Enum_Value --
@@ -1538,14 +1578,8 @@ package body CE_RAC is
    begin
       Check_Supported_Type (Ty);
       Lit := Get_Enum_Lit_From_Pos (Ty, I);
-      return
-        Scalar_Value
-          ((K           => Enum_K,
-            Enum_Entity =>
-              (if Nkind (Lit) = N_Character_Literal
-               then Lit
-               else Entity (Lit))),
-           Ty);
+      pragma Assert (Nkind (Lit) /= N_Character_Literal);
+      return Scalar_Value ((K => Enum_K, Enum_Entity => Entity (Lit)), Ty);
    exception
       when Constraint_Error =>
          RAC_Stuck ("Enum_Value: value outside of range");
@@ -1702,9 +1736,9 @@ package body CE_RAC is
       end if;
    end Find_Old_Value;
 
-   -----------------------
-   -- Flush_RAC_Failure --
-   -----------------------
+   --------------------------
+   -- Flush_Exn_RAC_Result --
+   --------------------------
 
    function Flush_Exn_RAC_Result return Result is
       Res : Result;
@@ -2118,6 +2152,9 @@ package body CE_RAC is
                   then
                     (if Is_Integer_Type (Iter_Typ)
                      then Integer_Value (Curr, Iter_Typ, Empty)
+                     elsif Is_Character_Type (Iter_Typ)
+                     then
+                       Char_Value (UI_From_String (To_String (Curr)), Iter_Typ)
                      elsif Is_Enumeration_Type (Iter_Typ)
                      then
                        Enum_Value (UI_From_String (To_String (Curr)), Iter_Typ)
@@ -3515,15 +3552,15 @@ package body CE_RAC is
 
                elsif Is_Enumeration_Type (Etype (N)) then
                   declare
-                     Ex  : constant Node_Id := First (Expressions (N));
-                     E   : constant Entity_Id :=
-                       RAC_Expr (Ex).Scalar_Content.Enum_Entity;
-                     Ty  : constant Entity_Id := Etype (N);
-                     Val : Uint :=
-                       (if Nkind (E) = N_Character_Literal
-                        then Char_Literal_Value (E)
-                        else Enumeration_Pos (E));
-                     Res : Node_Id;
+                     Ty         : constant Entity_Id := Etype (N);
+                     Ex         : constant Node_Id := First (Expressions (N));
+                     Ex_Content : constant Scalar_Value_Type :=
+                       RAC_Expr (Ex).Scalar_Content.all;
+                     Val        : Uint :=
+                       (if Ex_Content.K = Char_K
+                        then Char_Literal_Value (Ex_Content.Char_Node)
+                        else Enumeration_Pos (Ex_Content.Enum_Entity));
+                     Res        : Node_Id;
                   begin
                      case Attribute_Name (N) is
                         when Snames.Name_Succ =>
@@ -3542,7 +3579,11 @@ package body CE_RAC is
                         Res := Entity (Res);
                      end if;
 
-                     return Enum_Value (Res, Ty);
+                     return
+                       (if Ex_Content.K = Char_K
+                        then Char_Value (Res, Ty)
+                        else Enum_Value (Res, Ty));
+
                   exception
                      when Constraint_Error =>
                         RAC_Failure (Ex, VC_Range_Check);
@@ -4561,7 +4602,7 @@ package body CE_RAC is
             Res := Integer_Value (From_String (UI_Image (Intval (N))), N);
 
          when N_Character_Literal             =>
-            Res := Enum_Value (N, Etype (N));
+            Res := Char_Value (N, Etype (N));
 
          when N_String_Literal                =>
             Res := String_Value (Stringt.To_String (Strval (N)));
@@ -5707,7 +5748,7 @@ package body CE_RAC is
          Values.Insert
            (To_Big_Integer (I),
             new Value_Type'
-              (Enum_Value
+              (Char_Value
                  (UI_From_Int (Character'Pos (Str (I))), Standard_Character)));
       end loop;
       return Array_Value (First, Last, Values, Other, Standard_String);
@@ -5882,14 +5923,14 @@ package body CE_RAC is
    begin
       if V.K /= Scalar_K
         or else V.Scalar_Content = null
-        or else V.Scalar_Content.K /= Enum_K
+        or else V.Scalar_Content.K /= Char_K
       then
          raise Program_Error with "Value_Character";
       end if;
 
       return
         Character'Val
-          (To_Integer (Char_Literal_Value (V.Scalar_Content.Enum_Entity)));
+          (To_Integer (Char_Literal_Value (V.Scalar_Content.Char_Node)));
    end Value_Character;
 
    ------------------------
@@ -5908,6 +5949,11 @@ package body CE_RAC is
 
          when Fixed_K   =>
             return V.Scalar_Content.Fixed_Content;
+
+         when Char_K    =>
+            return
+              To_Big_Integer
+                (Char_Node_To_Integer (V.Scalar_Content.Char_Node));
 
          when Enum_K    =>
             return

@@ -5280,7 +5280,10 @@ package body Why.Gen.Records is
    end Record_From_Split_Form;
 
    function Record_From_Split_Form
-     (I : Item_Type; Ref_Allowed : Boolean) return W_Term_Id
+     (I           : Item_Type;
+      Domain      : EW_Domain;
+      Ref_Allowed : Boolean := True;
+      Alias       : W_Expr_Id := Why_Empty) return W_Expr_Id
    is
       E            : constant Entity_Id :=
         (if I.Fields.Present
@@ -5297,29 +5300,33 @@ package body Why.Gen.Records is
       Index        : Positive := 1;
 
    begin
+      --  No need to introduce a temporary for Alias, overlays cannot have
+      --  discriminants, so it will be referenced only once.
+
+      pragma Assert (if Present (Alias) then not I.Discrs.Present);
+
       --  Store association for the top-level field for fields
 
       if I.Fields.Present then
-         if Ref_Allowed then
-            Values (Index) :=
-              New_Deref
-                (E, I.Fields.Binder.B_Name, Get_Typ (I.Fields.Binder.B_Name));
-         else
-            Values (Index) := +I.Fields.Binder.B_Name;
-         end if;
+         Values (Index) :=
+           Reconstruct_Binder
+             (I.Fields.Binder.B_Name,
+              I.Fields.Binder.Mutable,
+              Domain,
+              Ref_Allowed,
+              Alias);
          Index := Index + 1;
       end if;
 
       --  Store association for the top-level field for discriminants
 
       if I.Discrs.Present then
-         if I.Discrs.Binder.Mutable and then Ref_Allowed then
-            Values (Index) :=
-              New_Deref
-                (E, I.Discrs.Binder.B_Name, Get_Typ (I.Discrs.Binder.B_Name));
-         else
-            Values (Index) := +I.Discrs.Binder.B_Name;
-         end if;
+         Values (Index) :=
+           Reconstruct_Binder
+             (I.Discrs.Binder.B_Name,
+              I.Discrs.Binder.Mutable,
+              Domain,
+              Ref_Allowed);
          Index := Index + 1;
       end if;
 
@@ -5340,7 +5347,7 @@ package body Why.Gen.Records is
 
       pragma Assert (Index = Values'Last + 1);
 
-      return Record_From_Split_Form (E, Values, Ty, Relaxed_Init);
+      return +Record_From_Split_Form (E, Values, Ty, Relaxed_Init);
    end Record_From_Split_Form;
 
    --------------------------------

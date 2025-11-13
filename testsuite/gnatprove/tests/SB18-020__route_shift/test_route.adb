@@ -37,7 +37,7 @@ procedure Test_Route with SPARK_Mode is
 
    package Int_Seqs is new SPARK.Containers.Functional.Vectors
      (Index_Type   => Positive,
-      Element_Type => Integer);
+      Element_Type => Integer, Use_Logical_Equality => True);
    type Int_Seq is new Int_Seqs.Sequence;
 
    function All_X (R : access constant Route) return Int_Seq with

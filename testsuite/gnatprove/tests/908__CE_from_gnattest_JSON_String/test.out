@@ -1,2 +1,2 @@
-simple.adb:7:22: high: assertion might fail (e.g. when Name = "Michel" and Name'First = 5195837) [possible fix: subprogram at simple.ads:5 should mention Name in a precondition]
+simple.adb:7:22: high: assertion might fail (e.g. when Name = (5195837 => 'M', 5195838 => 'i', 5195839 => 'c', 5195840 => 'h', 5195841 => 'LC_E_Grave', 5195842 => 'l', 5195843 => 'e')) [possible fix: subprogram at simple.ads:5 should mention Name in a precondition]
 simple.ads:5:14: warning: subprogram "Not_Michel" has no effect

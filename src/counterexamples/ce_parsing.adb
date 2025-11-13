@@ -1159,12 +1159,17 @@ package body CE_Parsing is
                   --  there is no literal value for the position.
 
                   Lit := Get_Enum_Lit_From_Pos (AST_Type, Value);
-                  return
-                    (K           => Enum_K,
-                     Enum_Entity =>
-                       (if Nkind (Lit) = N_Character_Literal
-                        then Lit
-                        else Entity (Lit)));
+
+                  if Nkind (Lit) = N_Character_Literal then
+                     if Char_Literal_Value (Lit) < Uint_256 then
+                        return (K => Char_K, Char_Node => Lit);
+                     else
+                        raise Parse_Error
+                          with "Character value outside the Latin-1 range";
+                     end if;
+                  else
+                     return (K => Enum_K, Enum_Entity => Entity (Lit));
+                  end if;
 
                --  An exception is raised by Get_Enum_Lit_From_Pos if the
                --  position Value is outside the bounds of the enumeration.

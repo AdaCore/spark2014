@@ -244,14 +244,6 @@ package SPARK_Util is
    --  @param E classwide type
    --  @return the specific tagged type corresponding to classwide type E
 
-   procedure Set_Overlay_Alias (New_Id, Old_Id : Object_Kind_Id);
-   --  Register that New_Id is aliasing Old_Id via overlays
-
-   function Overlay_Alias (E : Object_Kind_Id) return Node_Sets.Set
-   with Post => not Overlay_Alias'Result.Contains (E);
-   --  Return the objects which are aliases of E via overlays. This does not
-   --  return E itself.
-
    procedure Set_Visible_Overridden_Operation (E, Inh : Callable_Kind_Id)
    with
      Pre =>
@@ -666,15 +658,15 @@ package SPARK_Util is
    --  A trivial wrapper to be used in assertions when converting from the
    --  frontend to flow representation of discriminants and components.
 
-   procedure Objects_Have_Compatible_Alignments
+   procedure Compatible_Alignments
      (X           : Constant_Or_Variable_Kind_Id;
-      Y           : Object_Kind_Id;
+      YY          : Node_Id;
       Result      : out Boolean;
       Explanation : out Unbounded_String)
    with Post => Result = (Explanation = Null_Unbounded_String);
    --  @param X a stand-alone object that overlays the other
    --            (object with Address clause)
-   --  @param Y object that is overlaid (object whose 'Address is used in
+   --  @param YY object that is overlaid (object whose 'Address is used in
    --            the Address clause of X)
    --  @return True iff X'Alignment and Y'Alignment are known and Y'Alignment
    --          is an integral multiple of X'Alignment

@@ -36,6 +36,7 @@ with Why.Gen.Binders;      use Why.Gen.Binders;
 with Why.Gen.Expr;         use Why.Gen.Expr;
 with Why.Ids;              use Why.Ids;
 with Why.Sinfo;            use Why.Sinfo;
+with Why.Types;            use Why.Types;
 
 package Why.Gen.Arrays is
    --  This package encapsulates the encoding of Ada arrays into Why.
@@ -164,7 +165,10 @@ package Why.Gen.Arrays is
    --  type is constrained.
 
    function Array_From_Split_Form
-     (I : Item_Type; Ref_Allowed : Boolean) return W_Term_Id
+     (I           : Item_Type;
+      Domain      : EW_Domain;
+      Ref_Allowed : Boolean := True;
+      Alias       : W_Expr_Id := Why_Empty) return W_Expr_Id
    with Pre => I.Kind = UCArray;
    --  Reconstructs a complete array from an item in split form.
 

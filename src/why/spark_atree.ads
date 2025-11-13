@@ -331,7 +331,7 @@ package SPARK_Atree is
         | N_Generic_Association
         | N_Iterated_Component_Association;
 
-   function Char_Literal_Value (N : Node_Id) return Uint
+   function Char_Literal_Value (N : Node_Id) return Unat
    with Pre => Nkind (N) = N_Character_Literal;
 
    function Chars (N : Node_Id) return Name_Id

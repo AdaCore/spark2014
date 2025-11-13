@@ -22,10 +22,6 @@ SPARK User's Guide
    A copy of the license is included in the section entitled 'GNU
    Free Documentation License'.
 
-   .. only:: core_ja
-
-      Translation to Japanese by Mr. Masao Ito (NIL)
-
 .. only : : core
 
    .. toctree::

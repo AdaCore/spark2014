@@ -184,7 +184,7 @@ package CE_Values is
         Long_Float'Copy_Sign,
         Long_Long_Float'Copy_Sign);
 
-   type Scalar_Kind is (Integer_K, Enum_K, Float_K, Fixed_K);
+   type Scalar_Kind is (Integer_K, Enum_K, Char_K, Float_K, Fixed_K);
    --  Kind for a counterexample value for a scalar type
 
    type Scalar_Value_Type (K : Scalar_Kind := Integer_K) is record
@@ -194,6 +194,9 @@ package CE_Values is
 
          when Enum_K =>
             Enum_Entity : Entity_Id;
+
+         when Char_K =>
+            Char_Node : Node_Id;
 
          when Float_K =>
             Float_Content : Float_Value;

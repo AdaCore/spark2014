@@ -1,0 +1,2 @@
+test_loop.adb:7:10: error: non-scalar object or object with address clause declared before loop-invariant is not yet supported
+gnatprove: error during flow analysis and proof
