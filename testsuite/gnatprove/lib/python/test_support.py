@@ -1464,7 +1464,8 @@ def sparklib_exec_test(project_file="test.gpr", binary="./obj/test"):
     if cov_mode:
         opt += ["--src-subdirs=gnatcov-instr", "--implicit-with=gnatcov_rts.gpr"]
     gprbuild(opt=opt)
-    Run([binary])
+    p = Run([binary])
+    print(p.stdout)
 
 
 def print_version():
