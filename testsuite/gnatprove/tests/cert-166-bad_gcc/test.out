@@ -1,0 +1,4 @@
+error: As possible workarounds, remove GNAT from your PATH or use the switch -gnateT=<target.atp> to pass an explicit target parametrization file.
+error: GNAT generated an ill-formed JSON file data_representation/p.ads.json for data representation.
+error: Try installing a more recent version of GNAT.
+gnatprove: error during flow analysis and proof
