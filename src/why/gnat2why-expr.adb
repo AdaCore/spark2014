@@ -1897,6 +1897,74 @@ package body Gnat2Why.Expr is
 
             return Default_Checks;
          end;
+
+      --  If N is a constant overlay, use an UC to assume its value
+
+      elsif Is_Constant_In_SPARK (Lvalue)
+        and then Present (Overlaid_Entity (Lvalue))
+      then
+         pragma Assert (Is_Overlay_Handled_As_UC (Lvalue).Ok);
+
+         declare
+            Pref    : constant Node_Id := Prefix (Get_Address_Expr (N));
+            Pref_Ty : constant Type_Kind_Id := Type_Of_Node (Pref);
+            W_Ty    : constant W_Type_Id := Type_Of_Node (Pref_Ty);
+            W_Pref  : constant W_Term_Id :=
+              Transform_Term (Pref, W_Ty, Body_Params);
+            --  Do not emit checks here, they are already emitted on the
+            --  declaration.
+
+            Binder     : constant Item_Type :=
+              Ada_Ent_To_Why.Element (Symbol_Table, Lvalue);
+            UC_Id      : constant W_Identifier_Id :=
+              Get_UC_Function
+                (Pref_Ty,
+                 Type_Of_Node (Lvalue),
+                 Potentially_Invalid => Binder.Valid.Present);
+            UC_Call    : constant W_Term_Id :=
+              +New_Temp_For_Expr
+                 (New_Call
+                    (Domain => EW_Term,
+                     Name   => UC_Id,
+                     Args   => (1 => +W_Pref),
+                     Typ    => Get_Typ (UC_Id)),
+                  Need_Temp => Binder.Valid.Present);
+            Assumption : W_Prog_Id :=
+              New_Assume_Statement
+                (Ada_Node => N,
+                 Pred     =>
+                   New_Comparison
+                     (Symbol => Why_Eq,
+                      Left   => +Binder.Main.B_Name,
+                      Right  =>
+                        (if Binder.Valid.Present
+                         then
+                           +New_Function_Valid_Value_Access
+                              (Empty, Type_Of_Node (Lvalue), +UC_Call)
+                         else UC_Call)));
+
+         begin
+            if Binder.Valid.Present then
+               Assumption :=
+                 Sequence
+                   (Left  =>
+                      New_Assume_Statement
+                        (Ada_Node => N,
+                         Pred     =>
+                           New_Comparison
+                             (Symbol => Why_Eq,
+                              Left   => +Binder.Valid.Id,
+                              Right  =>
+                                +New_Function_Valid_Flag_Access
+                                   (Type_Of_Node (Lvalue), +UC_Call))),
+                    Right => Assumption);
+               Assumption :=
+                 Binding_For_Temp (Tmp => UC_Call, Context => Assumption);
+            end if;
+
+            return Assumption;
+         end;
+
       else
          return +Void;
       end if;
@@ -22354,8 +22422,7 @@ package body Gnat2Why.Expr is
                         declare
                            Valid       : Boolean;
                            Explanation : Unbounded_String;
-                           Pref        : constant Entity_Id :=
-                             Prefix (Address);
+                           Pref        : constant Node_Id := Prefix (Address);
                            Addr_Ty     : constant Type_Kind_Id :=
                              Retysp (Etype (Pref));
                         begin

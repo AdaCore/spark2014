@@ -12,6 +12,7 @@ low_level.adb:22:83: info: type is suitable for unchecked conversion (Trivial)
 low_level.adb:25:09: info: address in address clause is compatible with object alignment (Trivial)
 low_level.adb:25:09: info: object is suitable for aliasing via address clause (Trivial)
 low_level.adb:25:09: info: type is suitable as source for unchecked conversion (Trivial)
+low_level.adb:25:09: warning: imprecise handling of overlay (component offset not known) [imprecise-overlay]
 low_level.adb:26:33: info: object is suitable for aliasing via address clause (Trivial)
 low_level.adb:26:33: info: type is suitable as source for unchecked conversion (Trivial)
 low_level.adb:26:33: info: types of aliased objects have the same size (Trivial)

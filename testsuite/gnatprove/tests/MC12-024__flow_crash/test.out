@@ -3,6 +3,7 @@ p.adb:32:28: medium: float overflow check might fail [reason for check: result o
 p.ads:21:04: info: address in address clause is compatible with object alignment (Trivial)
 p.ads:21:04: info: object is suitable for aliasing via address clause (Trivial)
 p.ads:21:04: info: type is suitable as source for unchecked conversion (Trivial)
+p.ads:21:04: warning: imprecise handling of overlay (component offset not known) [imprecise-overlay]
 p.ads:22:26: high: object is unsuitable for aliasing via address clause [possible explanation: floating-point types have invalid bit patterns for SPARK; aliased object could have invalid values [SPARK RM 13.7]]
 p.ads:22:26: info: type is suitable as source for unchecked conversion (Trivial)
 p.ads:22:26: info: types of aliased objects have the same size (Trivial)

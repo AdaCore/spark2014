@@ -1,12 +1,14 @@
 test.adb:13:04: info: address in address clause is compatible with object alignment (Trivial)
 test.adb:13:04: info: object is suitable for aliasing via address clause (Trivial)
 test.adb:13:04: info: type is suitable as source for unchecked conversion (Trivial)
+test.adb:13:04: warning: imprecise handling of overlay (component offset not known) [imprecise-overlay]
 test.adb:13:41: high: object is unsuitable for aliasing via address clause [possible explanation: type Positive has 16#7FFF_FFFF# values but type Positive has Object_Size 32, which allows 16#1000_0000_0# possible values; aliased object could have invalid values [SPARK RM 13.7]]
 test.adb:13:41: info: type is suitable as source for unchecked conversion (Trivial)
 test.adb:13:41: info: types of aliased objects have the same size (Trivial)
 test.adb:16:04: high: object is unsuitable for aliasing via address clause [possible explanation: type Positive has 16#7FFF_FFFF# values but type Positive has Object_Size 32, which allows 16#1000_0000_0# possible values; aliased object could have invalid values [SPARK RM 13.7]]
 test.adb:16:04: info: address in address clause is compatible with object alignment (Trivial)
 test.adb:16:04: info: type is suitable as source for unchecked conversion (Trivial)
+test.adb:16:04: warning: imprecise handling of overlay (type is unsuitable as target for unchecked conversion) [imprecise-overlay]
 test.adb:16:35: info: object is suitable for aliasing via address clause (Trivial)
 test.adb:16:35: info: type is suitable as source for unchecked conversion (Trivial)
 test.adb:16:35: info: types of aliased objects have the same size (Trivial)

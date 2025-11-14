@@ -10,3 +10,5 @@ gf.adb:27:21: high: types of aliased objects do not have the same size, in insta
 gf.adb:27:21: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at main.ads:3
 gf.adb:31:31: warning: "Data" is set by "In_Data" but not used after the call, in instantiation at main.ads:3
 gf.ads:4:25: info: initialization of "Data" proved, in instantiation at main.ads:3
+main.ads:3:01: warning: imprecise handling of overlay (types in unchecked conversion do not have the same size) [imprecise-overlay]
+main.ads:3:01: warning: in instantiation at gf.adb:25

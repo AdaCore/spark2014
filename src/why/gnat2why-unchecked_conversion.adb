@@ -224,6 +224,46 @@ package body Gnat2Why.Unchecked_Conversion is
       Explanation := Null_Unbounded_String;
    end Have_Same_Known_RM_Size;
 
+   ------------------------------
+   -- Is_Overlay_Handled_As_UC --
+   ------------------------------
+
+   function Is_Overlay_Handled_As_UC
+     (Obj : Object_Kind_Id) return True_Or_Explain is
+
+   begin
+      --  Constant objects are always translated using UC
+
+      if Is_Constant_In_SPARK (Obj) then
+         return (Ok => True);
+      end if;
+
+      --  Variable objects are only translated using UC if they overlay the
+      --  whole object for now.
+
+      declare
+         Current : Object_Kind_Id := Obj;
+      begin
+         while Present (Overlaid_Entity (Current)) loop
+            declare
+               Decl    : constant Node_Id := Enclosing_Declaration (Current);
+               Address : constant Node_Id := Get_Address_Expr (Decl);
+            begin
+               if Nkind (Prefix (Address)) in N_Identifier | N_Expanded_Name
+               then
+                  Current := Entity (Prefix (Address));
+               else
+                  return
+                    False_With_Explain
+                      ("mutable overlay of a subcomponent of an object");
+               end if;
+            end;
+         end loop;
+      end;
+
+      return (Ok => True);
+   end Is_Overlay_Handled_As_UC;
+
    -----------------------------------
    -- Is_UC_With_Precise_Definition --
    -----------------------------------

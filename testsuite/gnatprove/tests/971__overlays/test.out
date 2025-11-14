@@ -13,6 +13,7 @@ p.adb:42:23: info: types of aliased objects have the same size (Trivial)
 p.adb:48:17: warning: subprogram "Parse_T2_Invalid_Values" has no effect
 p.adb:49:10: info: address in address clause is compatible with object alignment (Trivial)
 p.adb:49:10: info: object is suitable for aliasing via address clause (Trivial)
+p.adb:49:10: warning: imprecise handling of overlay (component offset not known) [imprecise-overlay]
 p.adb:51:23: info: object is suitable for aliasing via address clause (Trivial)
 p.adb:51:23: info: type is suitable as source for unchecked conversion (Trivial)
 p.adb:51:23: info: types of aliased objects have the same size (Trivial)

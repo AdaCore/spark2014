@@ -825,6 +825,10 @@ package body VC_Kinds is
          when Warn_Imprecise_UC                    =>
            "Unchecked conversion might not be handled precisely by SPARK, "
            & "nothing will be known about their result",
+         when Warn_Imprecise_Overlay               =>
+           "Overlay might not be handled precisely by SPARK, the value of "
+           & "other overlaid objects will be unknown after an object is "
+           & "updated",
          when Warn_Imprecise_Value                 =>
            "References to the attribute Value are handled in an imprecise "
            & "way; its precondition is impossible to prove and nothing will "
@@ -1891,6 +1895,7 @@ package body VC_Kinds is
          when Warn_Record_Component_Attr           =>
            "imprecise-record-component-attribute",
          when Warn_Imprecise_Size                  => "imprecise-size",
+         when Warn_Imprecise_Overlay               => "imprecise-overlay",
          when Warn_Imprecise_UC                    =>
            "imprecise-unchecked-conversion",
          when Warn_Imprecise_Value                 => "imprecise-value",
