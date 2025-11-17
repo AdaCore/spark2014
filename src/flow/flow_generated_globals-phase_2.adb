@@ -4844,19 +4844,6 @@ package body Flow_Generated_Globals.Phase_2 is
                   E : constant Entity_Id := Get_Direct_Mapping_Id (F);
 
                begin
-                  --  Entities in SPARK are represented by Entity_Id; those
-                  --  not in SPARK are represented by Entity_Name, because
-                  --  they behave as "blobs".
-
-                  if Is_Object (E) then
-                     for Alias of Overlay_Alias (E) loop
-                        Aliases.Insert
-                          (if Entity_In_SPARK (Alias)
-                           then Direct_Mapping_Id (Alias, Normal_Use)
-                           else Magic_String_Id (To_Entity_Name (Alias)));
-                     end loop;
-                  end if;
-
                   --  Proof expects objects that are not in SPARK to be
                   --  represented as Magic_Strings. Deferred constants which
                   --  only have partial view in SPARK will be represented by

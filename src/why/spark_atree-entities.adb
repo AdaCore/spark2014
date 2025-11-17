@@ -802,6 +802,16 @@ package body SPARK_Atree.Entities is
    is (Sem_Aux.First_Subtype
          (Einfo.Utils.Root_Type (Einfo.Utils.Base_Type (Typ))));
 
+   ------------------------------
+   -- Ultimate_Overlaid_Entity --
+   ------------------------------
+
+   function Ultimate_Overlaid_Entity
+     (Obj : Entity_Id) return Opt_Object_Kind_Id
+   is (if Ekind (Obj) in E_Constant | E_Variable
+       then Sem_Util.Ultimate_Overlaid_Entity (Obj)
+       else Empty);
+
    -------------------------------------
    -- Visible_Declarations_Of_Package --
    -------------------------------------

@@ -4,9 +4,9 @@ main.adb:23:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
 main.adb:23:09: info: after a call to Append at main.adb:35
 main.adb:23:09: info: after a call to Append at main.adb:35
 main.adb:23:09: info: after a call to Empty at main.adb:30
-main.adb:23:09: info: when establishing invariant on Last at spark-containers-functional-vectors.ads:94, in instantiation at main.adb:16
-main.adb:23:09: info: when reestablishing invariant on Get at spark-containers-functional-vectors.ads:101, in instantiation at main.adb:16
-main.adb:23:09: info: when reestablishing invariant on Last at spark-containers-functional-vectors.ads:94, in instantiation at main.adb:16
+main.adb:23:09: info: when establishing invariant on Last at spark-containers-functional-vectors.ads:105, in instantiation at main.adb:16
+main.adb:23:09: info: when reestablishing invariant on Get at spark-containers-functional-vectors.ads:112, in instantiation at main.adb:16
+main.adb:23:09: info: when reestablishing invariant on Last at spark-containers-functional-vectors.ads:105, in instantiation at main.adb:16
 main.adb:39:33: info: during checks for container aggregates at main.adb:23
 main.adb:39:33: info: precondition proved (CVC5: 1 VC)
 main.adb:53:46: info: index check proved (CVC5: 2 VC)

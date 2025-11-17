@@ -36,6 +36,9 @@ with Uintp;                   use Uintp;
 
 package body CE_Values is
 
+   function Char_Node_To_String (N : Node_Id) return String;
+   --  Return a string for an enum entity
+
    function Enum_Entity_To_String (E : Entity_Id) return String;
    --  Return a string for an enum entity
 
@@ -76,13 +79,14 @@ package body CE_Values is
    function "=" (V1, V2 : Scalar_Value_Type) return Boolean
    is (V1.K = V2.K
        and then (case V1.K is
+                   when Char_K    =>
+                     Nkind (V1.Char_Node) = Nkind (V2.Char_Node)
+                     and then Char_Literal_Value (V1.Char_Node)
+                              = Char_Literal_Value (V2.Char_Node),
+
                    when Enum_K    =>
-                     Nkind (V1.Enum_Entity) = Nkind (V2.Enum_Entity)
-                     and then (if Nkind (V1.Enum_Entity) = N_Character_Literal
-                               then
-                                 Char_Literal_Value (V1.Enum_Entity)
-                                 = Char_Literal_Value (V2.Enum_Entity)
-                               else V1.Enum_Entity = V2.Enum_Entity),
+                     Ekind (V1.Enum_Entity) = Ekind (V2.Enum_Entity)
+                     and then V1.Enum_Entity = V2.Enum_Entity,
                    when Integer_K => V1.Integer_Content = V2.Integer_Content,
                    --  The 2 following cases are currently unused as the rac
                    --  does not support real values.
@@ -255,26 +259,34 @@ package body CE_Values is
       return (Fixed_L * N_L * D_R * D_Res) / (Fixed_R * N_R * D_L * N_Res);
    end Div_Fixed_Point;
 
+   -------------------------
+   -- Char_Node_To_String --
+   -------------------------
+
+   function Char_Node_To_String (N : Node_Id) return String is
+   begin
+      pragma Assert (Nkind (N) = N_Character_Literal);
+
+      declare
+         CC : constant Char_Code := UI_To_CC (Char_Literal_Value (N));
+      begin
+         if In_Character_Range (CC) then
+            return (1 => Get_Character (CC));
+         else
+            CE_RAC.RAC_Stuck ("Bad value of character");
+         end if;
+      end;
+   end Char_Node_To_String;
+
    ---------------------------
    -- Enum_Entity_To_String --
    ---------------------------
 
    function Enum_Entity_To_String (E : Entity_Id) return String is
    begin
-      if Nkind (E) = N_Character_Literal then
-         declare
-            C : constant Char_Code := UI_To_CC (Char_Literal_Value (E));
-         begin
-            if C <= 255 then
-               return (1 => Get_Character (C));
-            else
-               CE_RAC.RAC_Stuck ("Bad value of character");
-            end if;
-         end;
-      else
-         pragma Assert (Ekind (E) = E_Enumeration_Literal);
-         return To_Upper (Get_Name_String (Chars (E)));
-      end if;
+      pragma Assert (Ekind (E) = E_Enumeration_Literal);
+
+      return To_Upper (Get_Name_String (Chars (E)));
    end Enum_Entity_To_String;
 
    ----------------------
@@ -484,6 +496,7 @@ package body CE_Values is
 
    function To_String (V : Scalar_Value_Type) return String
    is (case V.K is
+         when Char_K    => Char_Node_To_String (V.Char_Node),
          when Enum_K    => Enum_Entity_To_String (V.Enum_Entity),
          when Integer_K => To_String (V.Integer_Content),
          when Fixed_K   => To_String (V.Fixed_Content),

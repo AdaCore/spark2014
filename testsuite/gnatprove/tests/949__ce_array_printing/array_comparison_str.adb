@@ -194,83 +194,63 @@ package body Array_Comparison_Str is
             end;
 
          when 52 =>
-            --  TODO Enable this case after eng/spark/spark2014#1032 is fixed.
-            --  See the latter issue for a dedicated test with this pattern.
-            --
-            --  declare
-            --     --  The same string as above, aggregate notation, no 'others'.
-            --     X : String :=
-            --       (1        => 'b',
-            --        2 .. 5   => 'a',
-            --        6        => ASCII.SOH,
-            --        7 .. 19  => 'a',
-            --        20       => 'd',
-            --        21       => 'e',
-            --        22 .. 23 => 'f');
-            --  begin
-            --     pragma Assert (X /= X);
-            --  end;
-            null;
+            declare
+               --  The same string as above, aggregate notation, no 'others'.
+               X : String :=
+                 (1        => 'b',
+                  2 .. 5   => 'a',
+                  6        => ASCII.SOH,
+                  7 .. 19  => 'a',
+                  20       => 'd',
+                  21       => 'e',
+                  22 .. 23 => 'f');
+            begin
+               pragma Assert (X /= X);
+            end;
 
          when 53 =>
-            --  TODO Enable this case after eng/spark/spark2014#1032 is fixed.
-            --  See the latter issue for a dedicated test with this pattern.
-            --
-            --  declare
-            --     --  "Long" string literal with an unprintable character that
-            --     --  occurs beyond the truncation limit. No others.
-            --     X : String (1 .. 2 * Str_Trunc_Limit) :=
-            --       (1                                          => 'a',
-            --        2 .. Str_Trunc_Limit + 2                   => 'b',
-            --        Str_Trunc_Limit + 3 .. 2 * Str_Trunc_Limit => ASCII.SOH);
-            --  begin
-            --     pragma Assert (X /= X);
-            --  end;
-            null;
+            declare
+               --  "Long" string literal with an unprintable character that
+               --  occurs beyond the truncation limit. No others.
+               X : String (1 .. 2 * Str_Trunc_Limit) :=
+                 (1                                          => 'a',
+                  2 .. Str_Trunc_Limit + 2                   => 'b',
+                  Str_Trunc_Limit + 3 .. 2 * Str_Trunc_Limit => ASCII.SOH);
+            begin
+               pragma Assert (X /= X);
+            end;
 
          when 54 =>
-            --  TODO Enable this case after eng/spark/spark2014#1032 is fixed.
-            --  See the latter issue for a dedicated test with this pattern.
-            --
-            --  declare
-            --     --  "Long" string literal with an unprintable character that
-            --     --  occurs before the truncation limit. No others.
-            --     X : String (1 .. 2 * Str_Trunc_Limit) :=
-            --       (1 => 'a', 2 => ASCII.SOH, 3 .. 2 * Str_Trunc_Limit => 'b');
-            --  begin
-            --     pragma Assert (X /= X);
-            --  end;
-            null;
+            declare
+               --  "Long" string literal with an unprintable character that
+               --  occurs before the truncation limit. No others.
+               X : String (1 .. 2 * Str_Trunc_Limit) :=
+                 (1 => 'a', 2 => ASCII.SOH, 3 .. 2 * Str_Trunc_Limit => 'b');
+            begin
+               pragma Assert (X /= X);
+            end;
 
          when 55 =>
-            --  TODO Enable this case after eng/spark/spark2014#1032 is fixed.
-            --  See the latter issue for a dedicated test with this pattern.
-            --
-            --  declare
-            --     --  "Long" string literal with an unprintable character that
-            --     --  occurs beyond the truncation limit. With others.
-            --     X : String (1 .. 2 * Str_Trunc_Limit) :=
-            --       (1                        => 'a',
-            --        2 .. Str_Trunc_Limit + 2 => 'b',
-            --        others                   => ASCII.SOH);
-            --  begin
-            --     pragma Assert (X /= X);
-            --  end;
-            null;
+            declare
+               --  "Long" string literal with an unprintable character that
+               --  occurs beyond the truncation limit. With others.
+               X : String (1 .. 2 * Str_Trunc_Limit) :=
+                 (1                        => 'a',
+                  2 .. Str_Trunc_Limit + 2 => 'b',
+                  others                   => ASCII.SOH);
+            begin
+               pragma Assert (X /= X);
+            end;
 
          when 56 =>
-            --  TODO Enable this case after eng/spark/spark2014#1032 is fixed.
-            --  See the latter issue for a dedicated test with this pattern.
-            --
-            --  declare
-            --     --  "Long" string literal with an unprintable character that
-            --     --  occurs before the truncation limit. With others.
-            --     X : String (1 .. 2 * Str_Trunc_Limit) :=
-            --       (1 => 'a', 2 => ASCII.SOH, others => 'b');
-            --  begin
-            --     pragma Assert (X /= X);
-            --  end;
-            null;
+            declare
+               --  "Long" string literal with an unprintable character that
+               --  occurs before the truncation limit. With others.
+               X : String (1 .. 2 * Str_Trunc_Limit) :=
+                 (1 => 'a', 2 => ASCII.SOH, others => 'b');
+            begin
+               pragma Assert (X /= X);
+            end;
 
          when others =>
             null;

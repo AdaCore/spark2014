@@ -122,7 +122,7 @@ package CE_RAC is
    --  applying modulo for type Etype (N), signaling errors for node N.
 
    function Character_Value (C : Character; Ty : Entity_Id) return Value_Type;
-   --  Make a character value, i.e. an enum value
+   --  Make a character value from the given character
 
    function Real_Value (R : Big_Real; N : Node_Id) return Value_Type;
    function Real_Value

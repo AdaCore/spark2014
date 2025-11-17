@@ -5,7 +5,7 @@ arrays.ads:16:04: warning: aliased objects must have the same volatility and ato
 arrays.ads:16:26: high: types of aliased objects do not have the same size [possible explanation: sizes of overlaid objects differ: type Tarr_2s has Object_Size 2080, while type Tarr_1s has Object_Size 2048]
 arrays.ads:16:26: info: object is suitable for aliasing via address clause (Trivial)
 arrays.ads:16:26: info: type is suitable as source for unchecked conversion (Trivial)
-arrays.ads:20:04: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: unknown alignment for object] [possible fix: overlaid object should have an Alignment representation clause]
+arrays.ads:20:04: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: alignment of overlaid object (which is 1) must be a multiple of the alignment of Arr_3 (which is 4)] [possible fix: overlaid object should have an Alignment representation clause]
 arrays.ads:20:04: high: object with non-trivial address clause or prefix of the 'Address reference does not have asynchronous writers
 arrays.ads:20:04: info: object is suitable for aliasing via address clause (Trivial)
 arrays.ads:20:04: info: type is suitable as source for unchecked conversion (Trivial)

@@ -386,12 +386,24 @@ package Why.Gen.Binders is
    --  @return True if B is mutable
 
    function Reconstruct_Item
-     (E : Item_Type; Ref_Allowed : Boolean := True) return W_Term_Id;
+     (E           : Item_Type;
+      Domain      : EW_Domain;
+      Ref_Allowed : Boolean := True;
+      Alias       : W_Expr_Id := Why_Empty) return W_Expr_Id;
    --  Create an expression out of an item. It does not havoc the content
    --  of volatile objects.
    --  @param E item to be reconstructed.
    --  @param Ref_Allowed use dereference for variables.
-   --  @return an Item representing the Entity E.
+   --  @param Alias expression used for the ultimate alias for overlays.
+   --  @return an expression representing the Entity E.
+
+   function Reconstruct_Binder
+     (Id          : W_Identifier_Id;
+      Mutable     : Boolean;
+      Domain      : EW_Domain;
+      Ref_Allowed : Boolean := True;
+      Alias       : W_Expr_Id := Why_Empty) return W_Expr_Id;
+   --  Create an expression out of a binder for a part of an object
 
    function Get_Binders_From_Variables
      (Variables : Flow_Id_Sets.Set; Ignore_Self : Boolean := False)

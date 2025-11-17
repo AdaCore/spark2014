@@ -44,7 +44,6 @@ with Why.Gen.Names;             use Why.Gen.Names;
 with Why.Gen.Terms;             use Why.Gen.Terms;
 with Why.Images;                use Why.Images;
 with Why.Inter;                 use Why.Inter;
-with Why.Types;                 use Why.Types;
 
 package body Why.Gen.Arrays is
 
@@ -411,7 +410,10 @@ package body Why.Gen.Arrays is
    ---------------------------
 
    function Array_From_Split_Form
-     (I : Item_Type; Ref_Allowed : Boolean) return W_Term_Id
+     (I           : Item_Type;
+      Domain      : EW_Domain;
+      Ref_Allowed : Boolean := True;
+      Alias       : W_Expr_Id := Why_Empty) return W_Expr_Id
    is
       Ty           : constant W_Type_Id := Get_Typ (I.Content.B_Name);
       Ty_Ent       : constant Entity_Id := Get_Ada_Node (+Ty);
@@ -421,13 +423,9 @@ package body Why.Gen.Arrays is
       Args         : W_Expr_Array (1 .. Len);
       Arr          : W_Expr_Id;
    begin
-      if Ref_Allowed and then I.Content.Mutable then
-         Arr :=
-           New_Deref
-             (Right => I.Content.B_Name, Typ => Get_Typ (I.Content.B_Name));
-      else
-         Arr := +I.Content.B_Name;
-      end if;
+      Arr :=
+        Reconstruct_Binder
+          (I.Content.B_Name, I.Content.Mutable, Domain, Ref_Allowed, Alias);
 
       for Count in 1 .. Integer (Number_Dimensions (Ty_Ent)) loop
          Args (Count * 2 - 1) :=

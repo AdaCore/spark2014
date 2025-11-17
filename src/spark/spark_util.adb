@@ -312,11 +312,6 @@ package body SPARK_Util is
    --  Map from full views of entities to their partial views, for deferred
    --  constants and private types.
 
-   Overlay_Aliases : Node_Graphs.Map;
-   --  Map from an entity to all its overlay aliases. This map is filled during
-   --  marking and queried (via a getter function) during flow and proof.
-   --  ??? this could be a map from nodes to lists of nodes (not set of nodes)
-
    Exceptions : Node_Sets.Set;
    --  All exceptions visible from analyzed code
 
@@ -458,60 +453,6 @@ package body SPARK_Util is
    begin
       return Specific_Tagged_Types.Element (E);
    end Specific_Tagged;
-
-   -----------------------
-   -- Set_Overlay_Alias --
-   -----------------------
-
-   procedure Set_Overlay_Alias (New_Id, Old_Id : Object_Kind_Id) is
-      New_Aliases : Node_Sets.Set;
-      C           : Node_Graphs.Cursor;
-      Inserted    : Boolean;
-   begin
-      --  Find existing aliases of Old_Id
-
-      Overlay_Aliases.Insert
-        (Key => Old_Id, Position => C, Inserted => Inserted);
-
-      --  New_Id is overlaying all the aliases of Old_Id; all those aliases of
-      --  Old_Id overlay New_Id as well.
-
-      for Old_Alias of Overlay_Aliases (C) loop
-         New_Aliases.Insert (Old_Alias);
-         Overlay_Aliases (Old_Alias).Insert (New_Id);
-      end loop;
-
-      --  New_Id is overlaying the Old_Id; Old_Id is overlaying New_Id as well
-
-      New_Aliases.Insert (Old_Id);
-      Overlay_Aliases (C).Insert (New_Id);
-
-      --  Finally, move the collected aliases of New_Id to map
-
-      Overlay_Aliases.Insert
-        (Key => New_Id, Position => C, Inserted => Inserted);
-      pragma Assert (Inserted);
-
-      Node_Sets.Move (Target => Overlay_Aliases (C), Source => New_Aliases);
-   end Set_Overlay_Alias;
-
-   -------------------
-   -- Overlay_Alias --
-   -------------------
-
-   function Overlay_Alias (E : Object_Kind_Id) return Node_Sets.Set is
-      C : constant Node_Graphs.Cursor := Overlay_Aliases.Find (E);
-      use Node_Graphs;
-   begin
-      --  Given that the alias set for E contains E itself, we remove it here
-
-      if Has_Element (C) then
-         return Overlay_Aliases (C);
-      else
-         return Node_Sets.Empty_Set;
-      end if;
-
-   end Overlay_Alias;
 
    --------------------------------------
    -- Set_Visible_Overridden_Operation --
@@ -6477,23 +6418,63 @@ package body SPARK_Util is
       end if;
    end Obj_Has_Relaxed_Init;
 
-   ----------------------------------------
-   -- Objects_Have_Compatible_Alignments --
-   ----------------------------------------
+   ---------------------------
+   -- Compatible_Alignments --
+   ---------------------------
 
-   procedure Objects_Have_Compatible_Alignments
+   procedure Compatible_Alignments
      (X           : Constant_Or_Variable_Kind_Id;
-      Y           : Object_Kind_Id;
+      YY          : Node_Id;
       Result      : out Boolean;
       Explanation : out Unbounded_String)
    is
-      AX : constant Uint := Get_Attribute_Value (X, Attribute_Alignment);
-      AY : Uint := Get_Attribute_Value (Y, Attribute_Alignment);
-      --  Alignment, which is coming either from the aspect or representation
-      --  clause (when specified explicitly for stand-alone object) or from the
-      --  type (when possible).
-
+      AX     : constant Uint := Get_Attribute_Value (X, Attribute_Alignment);
+      AY     : Uint;
+      Y      : Node_Id := YY;
+      Y_Name : Unbounded_String;
    begin
+
+      case Nkind (YY) is
+         when N_Indexed_Component | N_Slice =>
+            if Has_Aliased_Components (Etype (Prefix (YY))) then
+               AY :=
+                 Get_Attribute_Value
+                   (Component_Type (Etype (Prefix (YY))), Attribute_Alignment);
+               Y_Name := To_Unbounded_String ("overlaid object");
+            else
+               Result := False;
+               Explanation :=
+                 To_Unbounded_String
+                   ("slice or indexed component of array "
+                    & "type without aliased components");
+               return;
+            end if;
+
+         when N_Selected_Component          =>
+            if Is_Aliased (Entity (Selector_Name (YY))) then
+               AY :=
+                 Get_Attribute_Value
+                   ((Etype (Selector_Name (YY))), Attribute_Alignment);
+               Y_Name := To_Unbounded_String ("overlaid object");
+            else
+               Result := False;
+               Explanation :=
+                 To_Unbounded_String ("component of record is not aliased");
+               return;
+            end if;
+
+         when N_Has_Entity                  =>
+            Y := Entity (Y);
+            Y_Name := To_Unbounded_String (Source_Name (Y));
+            AY := Get_Attribute_Value (Y, Attribute_Alignment);
+
+         when others                        =>
+            Result := False;
+            Explanation :=
+              To_Unbounded_String ("unknown alignment for object");
+            return;
+      end case;
+
       --  Stand-alone objects can have alignment specified explicitly
 
       if No (AX) then
@@ -6506,8 +6487,8 @@ package body SPARK_Util is
          return;
       end if;
 
-      --  Similar for the second object, but also recognize implicit alignment
-      --  for formal parameters.
+      --  Similar for the second object, but also recognize implicit
+      --  alignment for formal parameters.
 
       if No (AY) and then Is_Formal (Y) then
          declare
@@ -6521,7 +6502,7 @@ package body SPARK_Util is
                   Result := False;
                   Explanation :=
                     To_Unbounded_String
-                      (Source_Name (Y)
+                      (To_String (Y_Name)
                        & " must be aliased for its alignment to be known");
                   return;
                end if;
@@ -6533,7 +6514,7 @@ package body SPARK_Util is
          Result := False;
          Explanation :=
            To_Unbounded_String
-             (Source_Name (Y)
+             (To_String (Y_Name)
               & " doesn't have an "
               & "Alignment representation clause or aspect");
          return;
@@ -6544,7 +6525,7 @@ package body SPARK_Util is
          Explanation :=
            To_Unbounded_String
              ("alignment of "
-              & Source_Name (Y)
+              & To_String (Y_Name)
               & " (which is "
               & UI_Image (AY)
               & ")"
@@ -6559,7 +6540,7 @@ package body SPARK_Util is
       end if;
       Result := True;
       Explanation := Null_Unbounded_String;
-   end Objects_Have_Compatible_Alignments;
+   end Compatible_Alignments;
 
    ----------------------------------
    -- Path_Contains_Qualified_Expr --

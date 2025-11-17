@@ -1409,7 +1409,7 @@ package body CE_Display is
      (Cntexmp : Cntexample_File_Maps.Map) return Cntexample_File_Maps.Map
    is
 
-      package Supp_Lines is new Ce_Interval_Sets (N => Physical_Line_Number);
+      package Supp_Lines is new CE_Interval_Sets (N => Physical_Line_Number);
 
       function Get_Interval_Case
         (N : Node_Id; B : Boolean) return Supp_Lines.Interval_Set

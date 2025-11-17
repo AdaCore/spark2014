@@ -1763,7 +1763,7 @@ package body Gnat2Why.Subprograms is
          declare
             Ada_Node : constant Node_Id := Get_Ada_Node_From_Item (B);
             Expr     : constant W_Term_Id :=
-              Reconstruct_Item (B, Params.Ref_Allowed);
+              +Reconstruct_Item (B, EW_Term, Params.Ref_Allowed);
             Ty_Node  : constant Entity_Id :=
               (if Present (Ada_Node)
                  and then not Specialized_Call_Params.Contains (Ada_Node)
@@ -7330,9 +7330,10 @@ package body Gnat2Why.Subprograms is
                                    Def     =>
                                      Insert_Simple_Conversion
                                        (Expr =>
-                                          Reconstruct_Item
-                                            (New_Binders (I),
-                                             Ref_Allowed => False),
+                                          +Reconstruct_Item
+                                             (New_Binders (I),
+                                              EW_Term,
+                                              Ref_Allowed => False),
                                         To   =>
                                           Get_Typ
                                             (Desc_Params (I).Main.B_Name)),
@@ -7382,9 +7383,10 @@ package body Gnat2Why.Subprograms is
                                    Def     =>
                                      Insert_Simple_Conversion
                                        (Expr =>
-                                          Reconstruct_Item
-                                            (Old_Binders (I),
-                                             Ref_Allowed => False),
+                                          +Reconstruct_Item
+                                             (Old_Binders (I),
+                                              EW_Term,
+                                              Ref_Allowed => False),
                                         To   =>
                                           Get_Typ
                                             (Desc_Params (I).Main.B_Name)),

@@ -34,9 +34,12 @@ with Ada.Numerics.Big_Numbers.Big_Reals;
 use Ada.Numerics.Big_Numbers.Big_Reals;
 with Ada.Strings;                           use Ada.Strings;
 with Ada.Strings.Fixed;                     use Ada.Strings.Fixed;
+with Ada.Strings.UTF_Encoding.Strings;
+use Ada.Strings.UTF_Encoding.Strings;
 with Ada.Text_IO;
 with Casing;                                use Casing;
 with CE_Parsing;                            use CE_Parsing;
+with CE_RAC;                                use CE_RAC;
 with CE_Utils;                              use CE_Utils;
 with Gnat2Why.Tables;                       use Gnat2Why.Tables;
 with Namet;                                 use Namet;
@@ -264,7 +267,7 @@ package body CE_Pretty_Printing is
                Res.Value :=
                  Make_CNT_Unbounded_String
                    (Str =>
-                      "new " & Source_Name (Des_Ty) & "'(" & V.Value.Str & ")",
+                      "new " & Source_Name (Des_Ty) & "'(" & V.Value.Str & ')',
                     Cnt => V.Value.Count,
                     Els => Elems);
 
@@ -378,7 +381,7 @@ package body CE_Pretty_Printing is
                Elmt_Attr : Name_Value_Lists.List :=
                  Prefix_Names
                    (Element.Attributes,
-                    " (" & To_String (Ind_Printed.Str) & ")");
+                    ' ' & '(' & To_String (Ind_Printed.Str) & ')');
             begin
 
                --  ??? TODO Truncation is currently not applied to attributes
@@ -748,7 +751,7 @@ package body CE_Pretty_Printing is
          else
             Res.Value :=
               Make_CNT_Unbounded_String
-                (Str => "(" & S & Truncate_Marker & ")",
+                (Str => '(' & S & Truncate_Marker & ')',
                  Cnt => Count,
                  Els => Elems);
          end if;
@@ -1012,7 +1015,7 @@ package body CE_Pretty_Printing is
          Orig_Decl : constant Entity_Id := Original_Declaration (Comp);
          Prefix    : constant String :=
            (if Ekind (Comp) /= E_Discriminant and then Visibility = Duplicated
-            then Source_Name (Orig_Decl) & "."
+            then Source_Name (Orig_Decl) & '.'
             else "");
          --  Explanation. It is empty except for duplicated
          --  components where it points to the declaration of the
@@ -1255,7 +1258,38 @@ package body CE_Pretty_Printing is
                   return Pretty_Print (Value.Integer_Content, AST_Type);
                end;
 
+            when Char_K    =>
+
+               --  Determine the underlying character and print it
+               --  to a human-readable form. The printing is using a
+               --  custom translation that is currently defined for
+               --  the Latin-1 character range (0 .. 255).
+
+               --  Note: As we are using a custom printing routine
+               --  there is no need to go through the decoding
+               --  provided by the 'Namet' package. Using the
+               --  character code directly is sufficient and more
+               --  efficient.
+
+               declare
+                  CC : constant Char_Code :=
+                    UI_To_CC (Char_Literal_Value (Value.Char_Node));
+                  C  : Character;
+               begin
+                  if In_Character_Range (CC) then
+                     C := Get_Character (CC);
+                     return ''' & Char_To_String_Representation (C) & ''';
+                  else
+                     RAC_Stuck ("Character value outside the Latin-1 range");
+                  end if;
+               end;
+
             when Enum_K    =>
+
+               pragma
+                 Assert
+                   (Is_Enumeration_Type (AST_Type)
+                      and then not Is_Character_Type (AST_Type));
 
                --  Necessary for some types that makes boolean be translated to
                --  integers like: "subype only_true := True .. True".
@@ -1268,43 +1302,11 @@ package body CE_Pretty_Printing is
                   end if;
 
                else
+                  --  Call Get_Enum_Lit_From_Pos to get a corresponding
+                  --  enumeration entity, then Source_Name to get a
+                  --  correctly capitalized enumeration value.
 
-                  pragma Assert (Is_Enumeration_Type (AST_Type));
-
-                  declare
-                     Lit : constant Entity_Id := Value.Enum_Entity;
-
-                  begin
-                     --  Special case for characters, which are defined in the
-                     --  standard unit Standard.ASCII, and as such do not have
-                     --  a source code representation.
-
-                     if Is_Character_Type (AST_Type) then
-
-                        --  Call Get_Unqualified_Decoded_Name_String to get a
-                        --  correctly printed character in Name_Buffer.
-
-                        Get_Unqualified_Decoded_Name_String (Chars (Lit));
-
-                        --  The call to Get_Unqualified_Decoded_Name_String set
-                        --  Name_Buffer to '<char>' where <char> is the
-                        --  character we are interested in. Just retrieve it
-                        --  directly at Name_Buffer(2).
-
-                        return
-                          "'"
-                          & Char_To_String_Representation (Name_Buffer (2))
-                          & "'";
-
-                     --  For all enumeration types that are not character,
-                     --  call Get_Enum_Lit_From_Pos to get a corresponding
-                     --  enumeratio n entity, then Source_Name to get a
-                     --  correctly capitalized enumeration value.
-
-                     else
-                        return Source_Name (Lit);
-                     end if;
-                  end;
+                  return Source_Name (Value.Enum_Entity);
                end if;
 
             when Fixed_K   =>
@@ -1445,7 +1447,7 @@ package body CE_Pretty_Printing is
                         Attributes.Append
                           ((Name  =>
                               To_Unbounded_String
-                                ("'First (" & Trim (I'Image, Left) & ")"),
+                                ("'First (" & Trim (I'Image, Left) & ')'),
                             Value => Bound_Val));
                      end;
                   end if;
@@ -1463,7 +1465,7 @@ package body CE_Pretty_Printing is
                         Attributes.Append
                           ((Name  =>
                               To_Unbounded_String
-                                ("'Last (" & Trim (I'Image, Left) & ")"),
+                                ("'Last (" & Trim (I'Image, Left) & ')'),
                             Value => Bound_Val));
                      end;
                   end if;
@@ -1638,17 +1640,28 @@ package body CE_Pretty_Printing is
                               True)));
                      Set_Field (JSON_Obj, "quotient", True);
 
-                  when others    =>
-                     case Nkind (Value.Scalar_Content.Enum_Entity) is
-                        when N_Character_Literal =>
-                           JSON_Obj :=
-                             Create
-                               (To_String (Value)
-                                  (To_String (Value)'First)'Image);
+                  when Char_K    =>
 
-                        when others              =>
-                           JSON_Obj := Create (To_String (Value));
-                     end case;
+                     declare
+                        Value_As_String : constant String := To_String (Value);
+                     begin
+
+                        --  The direct conversion to String should always yield
+                        --  1 character. Unlike pretty-printing where
+                        --  non-printable or non-ASCII characters are
+                        --  represented with longer strings.
+
+                        pragma Assert (Value_As_String'Length = 1);
+
+                        --  The JSON constructor expects UTF-8 strings. The
+                        --  characters in CE-s are Latin-1, so a conversion
+                        --  is needed.
+
+                        JSON_Obj := Create (Encode (Value_As_String));
+                     end;
+
+                  when Enum_K    =>
+                     JSON_Obj := Create (To_String (Value));
                end case;
             end if;
 

@@ -106,8 +106,8 @@
   <proof prover="2"><result status="valid" steps="29115"/></proof>
   </goal>
   <goal name="def&#39;vc.21" proved="true">
-  <proof prover="0"><result status="valid" steps="197"/></proof>
-  <proof prover="1"><result status="valid" steps="16194"/></proof>
+  <proof prover="0"><result status="highfailure"/></proof>
+  <proof prover="1"><result status="highfailure"/></proof>
   <proof prover="2"><result status="valid" steps="33697"/></proof>
   </goal>
   <goal name="def&#39;vc.22" proved="true">

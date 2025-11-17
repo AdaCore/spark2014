@@ -90,7 +90,7 @@ package body SPARK_Atree is
    -- Char_Literal_Value --
    ------------------------
 
-   function Char_Literal_Value (N : Node_Id) return Uint
+   function Char_Literal_Value (N : Node_Id) return Unat
    is (Sinfo.Nodes.Char_Literal_Value (N));
 
    -----------

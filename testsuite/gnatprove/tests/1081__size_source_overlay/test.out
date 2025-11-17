@@ -54,8 +54,7 @@ p.adb:66:54: info: type is suitable as source for unchecked conversion (Trivial)
 p.adb:66:54: info: types of aliased objects have the same size (Trivial)
 p.adb:75:04: warning: analyzing unreferenced procedure "Test_Object_Size_Check_On_Source_8" [unreferenced-procedure]
 p.adb:75:14: warning: subprogram "Test_Object_Size_Check_On_Source_8" has no effect
-p.adb:77:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: unknown alignment for object] [possible fix: overlaying object should have an Alignment representation clause]
-p.adb:77:07: high: object with non-trivial address clause or prefix of the 'Address reference does not have asynchronous writers
+p.adb:77:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: component of record is not aliased] [possible fix: overlaying object should have an Alignment representation clause]
 p.adb:77:07: info: object is suitable for aliasing via address clause (Trivial)
 p.adb:77:07: info: type is suitable as source for unchecked conversion (Trivial)
 p.adb:78:31: high: type is unsuitable as a source for unchecked conversion [possible explanation: type R2b has Object_Size 24, but type R2b has Size 17; object might have unused bits that are not modelled in SPARK]
