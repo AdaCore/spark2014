@@ -74,6 +74,30 @@ package Errout_Wrapper is
    No_Suppressed_Message : constant Suppressed_Message :=
      Suppressed_Message'(Suppression_Kind => None);
 
+   type FPA_Status is (FPA_Unknown, FPA_Gave_Up, FPA_Limit);
+   --  Type to represent the status of a failed prover answer
+   type Failed_Prover_Answer (Kind : FPA_Status := FPA_Unknown) is record
+      case Kind is
+         when FPA_Unknown | FPA_Gave_Up =>
+            null;
+
+         when FPA_Limit =>
+            Timeout : Boolean;
+            Step    : Boolean;
+            Memory  : Boolean;
+      end case;
+   end record;
+   --  Type to represent the reason for a failed prover answer
+   --  (summary for a check)
+
+   FPA_Unknown_Rec : constant Failed_Prover_Answer := (Kind => FPA_Unknown);
+
+   function From_JSON (J : JSON_Value) return Failed_Prover_Answer;
+   function To_JSON (FPA : Failed_Prover_Answer) return JSON_Value;
+
+   function To_User_Msg (FPA : Failed_Prover_Answer) return String;
+   --  translate FPA into a user-friendly message
+
    type JSON_Result_Type is record
       Tag           : Unbounded_String;
       Severity      : Msg_Severity;
@@ -94,6 +118,7 @@ package Errout_Wrapper is
       VC_File       : Unbounded_String;
       VC_Loc        : Source_Ptr := No_Location;
       Stats         : Prover_Stat_Maps.Map;
+      Unproved_Stat : Failed_Prover_Answer := FPA_Unknown_Rec;
       Editor_Cmd    : Unbounded_String;
    end record
    with

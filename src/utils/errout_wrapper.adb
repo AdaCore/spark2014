@@ -138,6 +138,7 @@ package body Errout_Wrapper is
            (Value, "entity", To_JSON (Entity_To_Subp_Assumption (Obj.E)));
       end if;
       Set_Field (Value, "check_tree", Obj.Check_Tree);
+      Set_Field (Value, "unproved_status", To_JSON (Obj.Unproved_Stat));
 
       if Obj.VC_Loc /= No_Location then
          declare
@@ -187,6 +188,28 @@ package body Errout_Wrapper is
 
       Append (Msg_List, Value);
    end Add_Json_Msg;
+
+   ---------------
+   -- From_JSON --
+   ---------------
+
+   function From_JSON (J : JSON_Value) return Failed_Prover_Answer is
+      Status : constant String := Get (J, "status");
+   begin
+      if Status = "unknown" then
+         return (Kind => FPA_Unknown);
+      elsif Status = "gave_up" then
+         return (Kind => FPA_Gave_Up);
+      elsif Status = "limit" then
+         return
+           (Kind    => FPA_Limit,
+            Timeout => Get (J, "time"),
+            Step    => Get (J, "steps"),
+            Memory  => Get (J, "memory"));
+      else
+         raise Program_Error;
+      end if;
+   end From_JSON;
 
    -----------
    -- Print --
@@ -645,6 +668,29 @@ package body Errout_Wrapper is
       return Result;
    end To_JSON;
 
+   -------------
+   -- To_JSON --
+   -------------
+
+   function To_JSON (FPA : Failed_Prover_Answer) return JSON_Value is
+      Result : constant JSON_Value := Create_Object;
+   begin
+      case FPA.Kind is
+         when FPA_Unknown =>
+            Set_Field (Result, "status", "unknown");
+
+         when FPA_Gave_Up =>
+            Set_Field (Result, "status", "gave_up");
+
+         when FPA_Limit   =>
+            Set_Field (Result, "status", "limit");
+            Set_Field (Result, "time", FPA.Timeout);
+            Set_Field (Result, "steps", FPA.Step);
+            Set_Field (Result, "memory", FPA.Memory);
+      end case;
+      return Result;
+   end To_JSON;
+
    -----------------------
    -- To_SARIF_Msg_Text --
    -----------------------
@@ -689,6 +735,54 @@ package body Errout_Wrapper is
       end loop;
       return To_String (Result);
    end To_SARIF_Msg_Text;
+
+   -----------------
+   -- To_User_Msg --
+   -----------------
+
+   function To_User_Msg (FPA : Failed_Prover_Answer) return String is
+   begin
+      case FPA.Kind is
+         when FPA_Unknown =>
+            return "";
+
+         when FPA_Gave_Up =>
+            return "provers gave up before completing the proof";
+
+         when FPA_Limit   =>
+            declare
+               Limits_Text : Unbounded_String := Null_Unbounded_String;
+            begin
+               if FPA.Timeout then
+                  Append (Limits_Text, "time");
+               end if;
+               if FPA.Step then
+                  if Length (Limits_Text) > 0 then
+                     if FPA.Memory then
+                        Append (Limits_Text, ", ");
+                     else
+                        Append (Limits_Text, " and ");
+                     end if;
+                  end if;
+                  Append (Limits_Text, "step");
+               end if;
+               if FPA.Memory then
+                  if Length (Limits_Text) > 0 then
+                     Append (Limits_Text, " and ");
+                  end if;
+                  Append (Limits_Text, "memory");
+               end if;
+               if Limits_Text = Null_Unbounded_String then
+                  --  Should not happen
+                  raise Program_Error;
+               end if;
+               return
+                 "provers reached "
+                 & To_String (Limits_Text)
+                 & " limit before completing the proof";
+            end;
+      end case;
+   end To_User_Msg;
 
    ---------------------------
    -- Warning_Is_Suppressed --

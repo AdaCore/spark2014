@@ -612,22 +612,23 @@ package body Flow_Error_Messages is
    ---------------------
 
    procedure Error_Msg_Proof
-     (N           : Node_Id;
-      Extra_Msg   : String;
-      Is_Proved   : Boolean;
-      Tag         : VC_Kind;
-      Cntexmp     : JSON_Value;
-      Verdict     : Cntexmp_Verdict;
-      Check_Tree  : JSON_Value;
-      VC_File     : String;
-      VC_Loc      : Node_Id;
-      Editor_Cmd  : String;
-      Explanation : String;
-      E           : Entity_Id;
-      How_Proved  : Prover_Category;
-      Stats       : Prover_Stat_Maps.Map;
-      Check_Info  : Check_Info_Type;
-      CE_From_RAC : Boolean := False)
+     (N             : Node_Id;
+      Extra_Msg     : String;
+      Is_Proved     : Boolean;
+      Tag           : VC_Kind;
+      Cntexmp       : JSON_Value;
+      Verdict       : Cntexmp_Verdict;
+      Check_Tree    : JSON_Value;
+      VC_File       : String;
+      VC_Loc        : Node_Id;
+      Editor_Cmd    : String;
+      Explanation   : String;
+      E             : Entity_Id;
+      How_Proved    : Prover_Category;
+      Stats         : Prover_Stat_Maps.Map;
+      Unproved_Stat : Failed_Prover_Answer;
+      Check_Info    : Check_Info_Type;
+      CE_From_RAC   : Boolean := False)
    is
       function Get_Fix_Or_Verdict
         (N          : Node_Id;
@@ -869,19 +870,20 @@ package body Flow_Error_Messages is
 
       Result : JSON_Result_Type :=
         JSON_Result_Type'
-          (Msg        => Create (Message),
-           Tag        => To_Unbounded_String (VC_Kind'Image (Tag)),
-           Severity   => Severity,
-           Span       => Span,
-           E          => E,
-           Cntexmp    => Pretty_Cntexmp,
-           Check_Tree => Check_Tree,
-           VC_File    => To_Unbounded_String (VC_File),
-           VC_Loc     => VC_Slc,
-           How_Proved => How_Proved,
-           Stats      => Stats,
-           Editor_Cmd => To_Unbounded_String (Editor_Cmd),
-           others     => <>);
+          (Msg           => Create (Message),
+           Tag           => To_Unbounded_String (VC_Kind'Image (Tag)),
+           Severity      => Severity,
+           Span          => Span,
+           E             => E,
+           Cntexmp       => Pretty_Cntexmp,
+           Check_Tree    => Check_Tree,
+           VC_File       => To_Unbounded_String (VC_File),
+           VC_Loc        => VC_Slc,
+           How_Proved    => How_Proved,
+           Stats         => Stats,
+           Editor_Cmd    => To_Unbounded_String (Editor_Cmd),
+           Unproved_Stat => Unproved_Stat,
+           others        => <>);
 
       --  Start of processing for Error_Msg_Proof
 
@@ -3944,37 +3946,44 @@ package body Flow_Error_Messages is
 
          when GPO_Oneline =>
             declare
-               User_Msg        : constant String :=
+               User_Msg         : constant String :=
                  (if Obj.User_Message /= Null_Unbounded_String
                   then " [user message: " & To_String (Obj.User_Message) & "]"
                   else "");
-               CE_Msg          : constant String :=
+               CE_Msg           : constant String :=
                  (if Obj.CE /= Null_Unbounded_String
                   then " (e.g. when " & To_String (Obj.CE) & ")"
                   else "");
-               Details_Msg     : constant String :=
+               Details_Msg      : constant String :=
                  (if not Is_Suppressed
                     and then Obj.Details /= Null_Unbounded_String
                   then " [reason for check: " & To_String (Obj.Details) & "]"
                   else "");
-               Explanation_Msg : constant String :=
+               Explanation_Msg  : constant String :=
                  (if Obj.Explanation /= Null_Unbounded_String
                   then
                     " [possible explanation: "
                     & To_String (Obj.Explanation)
                     & "]"
                   else "");
-               Fix_Msg         : constant String :=
+               Fix_Msg          : constant String :=
                  (if Obj.Fix /= No_Message
                   then " [possible fix: " & To_String (Obj.Fix.Msg) & "]"
                   else "");
-               Msg4            : constant Message :=
+               Unproved_Msg_Raw : constant String :=
+                 To_User_Msg (Obj.Unproved_Stat);
+               Unproved_Msg     : constant String :=
+                 (if Unproved_Msg_Raw /= ""
+                  then " [" & Unproved_Msg_Raw & "]"
+                  else "");
+               Msg4             : constant Message :=
                  Obj.Msg
                  & User_Msg
                  & CE_Msg
                  & Details_Msg
                  & Explanation_Msg
-                 & Fix_Msg;
+                 & Fix_Msg
+                 & Unproved_Msg;
             begin
                pragma Assert (Obj.Fix.Names.Is_Empty);
                pragma Assert (Obj.Msg.Secondary_Loc = No_Location);
@@ -4036,6 +4045,18 @@ package body Flow_Error_Messages is
                      & To_String (Obj.Fix.Msg),
                      Secondary_Loc => Obj.Fix.Secondary_Loc));
             end if;
+            declare
+               Unproved_Msg_Raw : constant String :=
+                 To_User_Msg (Obj.Unproved_Stat);
+            begin
+               if Unproved_Msg_Raw /= "" then
+                  My_Conts.Append
+                    (Create
+                       (Erroutc.SGR_Note
+                        & Unproved_Msg_Raw
+                        & Erroutc.SGR_Reset));
+               end if;
+            end;
             Wrap_Error_Msg (Obj.Msg);
       end case;
 
