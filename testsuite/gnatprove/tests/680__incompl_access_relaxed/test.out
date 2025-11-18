@@ -5,5 +5,5 @@ foo.adb:29:08: info: absence of resource or memory leak proved (CVC5: 1 VC)
 foo.adb:29:37: info: for pointer allocation at foo.adb:13
 foo.adb:29:37: info: initialization check proved (CVC5: 1 VC)
 foo.adb:30:25: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
-foo.adb:31:07: medium: assertion might fail
+foo.adb:31:07: medium: assertion might fail [provers reached step limit before completing the proof]
 foo.adb:32:11: warning: this statement is never reached

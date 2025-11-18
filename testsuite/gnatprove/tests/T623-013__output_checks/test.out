@@ -8,6 +8,7 @@ default command-line output
       + possible fix: subprogram at line 1 should mention X in a precondition
     1 |    procedure Incr (X : in out Integer) is
       |    ^
+      + provers gave up before completing the proof
 
 brief output
 ------------
@@ -24,10 +25,11 @@ pretty output
       + possible fix: subprogram at line 1 should mention X in a precondition
     1 |    procedure Incr (X : in out Integer) is
       |    ^
+      + provers gave up before completing the proof
 
 one-line output
 ---------------
-incr.adb:3:11: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 1 should mention X in a precondition]
+incr.adb:3:11: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 1 should mention X in a precondition] [provers gave up before completing the proof]
 
 incorrect output value
 ----------------------

@@ -2,18 +2,18 @@ test_basic.adb:16:14: warning: subprogram "Test_Assign" has no effect
 test_basic.adb:21:07: info: initialization of "Y" proved
 test_basic.adb:24:22: info: assertion proved (CVC5: 1 VC)
 test_basic.adb:26:22: info: assertion proved (CVC5: 1 VC)
-test_basic.adb:27:15: medium: validity check might fail (e.g. when X3 = (I => ?) and X3.I'Valid = False) [possible fix: precondition of subprogram at line 16 should mention X3]
+test_basic.adb:27:15: medium: validity check might fail (e.g. when X3 = (I => ?) and X3.I'Valid = False) [possible fix: precondition of subprogram at line 16 should mention X3] [provers reached step limit before completing the proof]
 test_basic.adb:28:22: info: assertion proved (CVC5: 1 VC)
-test_basic.adb:30:22: medium: assertion might fail (e.g. when Y = (I => ?) and Y.I'Valid = False)
+test_basic.adb:30:22: medium: assertion might fail (e.g. when Y = (I => ?) and Y.I'Valid = False) [provers reached step limit before completing the proof]
 test_basic.adb:33:26: info: initialization of "Y" proved
 test_basic.adb:35:14: info: postcondition proved (CVC5: 2 VC)
 test_basic.adb:41:14: warning: subprogram "Test_Call" has no effect
 test_basic.adb:47:07: info: initialization of "Y" proved
 test_basic.adb:50:22: info: assertion proved (CVC5: 1 VC)
 test_basic.adb:52:22: info: assertion proved (CVC5: 1 VC)
-test_basic.adb:53:15: medium: validity check might fail (e.g. when X3 = (I => ?) and X3.I'Valid = False) [possible fix: precondition of subprogram at line 41 should mention X3]
+test_basic.adb:53:15: medium: validity check might fail (e.g. when X3 = (I => ?) and X3.I'Valid = False) [possible fix: precondition of subprogram at line 41 should mention X3] [provers reached step limit before completing the proof]
 test_basic.adb:54:22: info: assertion proved (CVC5: 1 VC)
-test_basic.adb:56:22: medium: assertion might fail (e.g. when Y = (I => ?) and Y.I'Valid = False)
+test_basic.adb:56:22: medium: assertion might fail (e.g. when Y = (I => ?) and Y.I'Valid = False) [provers reached step limit before completing the proof]
 test_basic.adb:59:14: warning: subprogram "Test_Call_2" has no effect
 test_basic.adb:65:07: info: initialization of "Y" proved
 test_basic.adb:67:16: info: in value of subprogram parameter after the call at test_basic.adb:67
@@ -21,7 +21,7 @@ test_basic.adb:67:16: info: validity check proved (CVC5: 1 VC)
 test_basic.adb:68:16: info: in value of subprogram parameter after the call at test_basic.adb:68
 test_basic.adb:68:16: info: validity check proved (CVC5: 1 VC)
 test_basic.adb:69:16: medium: in value of subprogram parameter after the call at test_basic.adb:69
-test_basic.adb:69:16: medium: validity check might fail (e.g. when Y = (I => 1))
+test_basic.adb:69:16: medium: validity check might fail (e.g. when Y = (I => 1)) [provers reached step limit before completing the proof]
 test_basic.adb:70:22: info: assertion proved (Trivial: 1 VC)
 test_basic.adb:70:22: warning: attribute "Valid_Scalars" is assumed to return True [attribute-valid-always-true]
 test_basic.adb:73:28: info: initialization of "Y" proved
@@ -31,23 +31,23 @@ test_basic.adb:84:07: info: initialization of "Y" proved
 test_basic.adb:87:14: info: validity check proved (CVC5: 1 VC)
 test_basic.adb:88:22: info: assertion proved (CVC5: 1 VC)
 test_basic.adb:90:22: info: assertion proved (CVC5: 1 VC)
-test_basic.adb:91:14: medium: validity check might fail (e.g. when X3 = (I => ?) and X3.I'Valid = False) [possible fix: precondition of subprogram at line 79 should mention X3]
+test_basic.adb:91:14: medium: validity check might fail (e.g. when X3 = (I => ?) and X3.I'Valid = False) [possible fix: precondition of subprogram at line 79 should mention X3] [provers reached step limit before completing the proof]
 test_basic.adb:92:22: info: assertion proved (CVC5: 1 VC)
 test_basic.adb:95:14: warning: subprogram "Test_Declare" has no effect
 test_basic.adb:104:25: info: assertion proved (CVC5: 1 VC)
 test_basic.adb:109:25: info: assertion proved (CVC5: 1 VC)
-test_basic.adb:112:22: medium: validity check might fail (e.g. when X3 = (I => ?) and X3.I'Valid = False) [possible fix: precondition of subprogram at line 95 should mention X3]
+test_basic.adb:112:22: medium: validity check might fail (e.g. when X3 = (I => ?) and X3.I'Valid = False) [possible fix: precondition of subprogram at line 95 should mention X3] [provers reached step limit before completing the proof]
 test_basic.adb:114:25: info: assertion proved (CVC5: 1 VC)
-test_basic.adb:119:25: medium: assertion might fail (e.g. when Y = (I => ?) and Y.I'Valid = False) [possible fix: precondition of subprogram at line 95 should mention X4]
+test_basic.adb:119:25: medium: assertion might fail (e.g. when Y = (I => ?) and Y.I'Valid = False) [possible fix: precondition of subprogram at line 95 should mention X4] [provers reached step limit before completing the proof]
 test_basic.adb:123:14: warning: subprogram "Test_Declare_Cst" has no effect
 test_basic.adb:132:25: info: assertion proved (CVC5: 1 VC)
 test_basic.adb:137:25: info: assertion proved (CVC5: 1 VC)
-test_basic.adb:140:31: medium: validity check might fail (e.g. when X3 = (I => ?) and X3.I'Valid = False) [possible fix: precondition of subprogram at line 123 should mention X3]
+test_basic.adb:140:31: medium: validity check might fail (e.g. when X3 = (I => ?) and X3.I'Valid = False) [possible fix: precondition of subprogram at line 123 should mention X3] [provers reached step limit before completing the proof]
 test_basic.adb:142:25: info: assertion proved (CVC5: 1 VC)
-test_basic.adb:147:25: medium: assertion might fail (e.g. when Y = (I => ?) and Y.I'Valid = False) [possible fix: precondition of subprogram at line 123 should mention X4]
+test_basic.adb:147:25: medium: assertion might fail (e.g. when Y = (I => ?) and Y.I'Valid = False) [possible fix: precondition of subprogram at line 123 should mention X4] [provers reached step limit before completing the proof]
 test_basic.adb:155:40: info: data dependencies proved
 test_basic.adb:159:22: info: assertion proved (CVC5: 1 VC)
-test_basic.adb:160:22: medium: assertion might fail (e.g. when C2 = (I => ?) and C2.I'Valid = False)
+test_basic.adb:160:22: medium: assertion might fail (e.g. when C2 = (I => ?) and C2.I'Valid = False) [provers reached step limit before completing the proof]
 test_basic.adb:163:14: warning: subprogram "Test_Old" has no effect
 test_basic.adb:165:34: warning: "X2" is not modified, could be IN
 test_basic.adb:168:09: warning: postcondition does not check the outcome of calling "Test_Old_1" [-gnatw.t]
@@ -55,21 +55,21 @@ test_basic.adb:168:17: info: postcondition proved (CVC5: 1 VC)
 test_basic.adb:170:07: info: no contextual analysis of "Test_Old" (nested subprogram)
 test_basic.adb:175:30: warning: unused initial value of "X"
 test_basic.adb:177:09: warning: postcondition does not check the outcome of calling "Test_Old_2" [-gnatw.t]
-test_basic.adb:177:17: medium: postcondition might fail
+test_basic.adb:177:17: medium: postcondition might fail [provers reached step limit before completing the proof]
 test_basic.adb:184:30: warning: unused initial value of "X"
 test_basic.adb:186:09: warning: postcondition does not check the outcome of calling "Test_Old_3" [-gnatw.t]
 test_basic.adb:186:17: info: postcondition proved (Trivial: 1 VC)
 test_basic.adb:186:17: warning: attribute "Valid_Scalars" is assumed to return True [attribute-valid-always-true]
-test_basic.adb:186:18: medium: validity check might fail (e.g. when X = (I => ?) and X.I'Valid = False) [possible fix: add or complete related loop invariants or postconditions]
+test_basic.adb:186:18: medium: validity check might fail (e.g. when X = (I => ?) and X.I'Valid = False) [possible fix: add or complete related loop invariants or postconditions] [provers reached step limit before completing the proof]
 test_basic.adb:193:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 test_basic.adb:193:19: warning: unused variable "X"
 test_basic.adb:195:30: warning: unused initial value of "X"
 test_basic.adb:197:17: info: postcondition proved (CVC5: 1 VC)
-test_basic.adb:197:20: medium: validity check might fail
+test_basic.adb:197:20: medium: validity check might fail [provers reached step limit before completing the proof]
 test_basic.adb:206:09: warning: postcondition does not check the outcome of calling "Test_Old_5" [-gnatw.t]
-test_basic.adb:206:17: medium: postcondition might fail (e.g. when X'Old = (C1 => (I => ?), C2 => (I => ?)) and X'Old.C1.I'Valid = False and X'Old.C2.I'Valid = True)
+test_basic.adb:206:17: medium: postcondition might fail (e.g. when X'Old = (C1 => (I => ?), C2 => (I => ?)) and X'Old.C1.I'Valid = False and X'Old.C2.I'Valid = True) [provers reached step limit before completing the proof]
 test_basic.adb:215:17: info: postcondition proved (CVC5: 1 VC)
-test_basic.adb:215:21: medium: validity check might fail
+test_basic.adb:215:21: medium: validity check might fail [provers reached step limit before completing the proof]
 test_basic.adb:225:14: warning: subprogram "Test_Loop_Entry" has no effect
 test_basic.adb:227:41: warning: "X2" is not modified, could be IN
 test_basic.adb:231:07: info: no contextual analysis of "Test_Loop_Entry" (nested subprogram)
@@ -77,34 +77,34 @@ test_basic.adb:234:36: info: loop invariant initialization proved (CVC5: 1 VC)
 test_basic.adb:234:36: info: loop invariant preservation proved (CVC5: 1 VC)
 test_basic.adb:239:37: warning: "X1" is not modified, could be IN
 test_basic.adb:246:36: info: loop invariant preservation proved (CVC5: 1 VC)
-test_basic.adb:246:36: medium: loop invariant might fail in first iteration (e.g. when X2'Loop_Entry = (I => 1))
+test_basic.adb:246:36: medium: loop invariant might fail in first iteration (e.g. when X2'Loop_Entry = (I => 1)) [provers reached step limit before completing the proof]
 test_basic.adb:251:37: warning: "X1" is not modified, could be IN
 test_basic.adb:258:36: info: loop invariant initialization proved (Trivial: 1 VC)
 test_basic.adb:258:36: info: loop invariant preservation proved (Trivial: 1 VC)
 test_basic.adb:258:36: warning: attribute "Valid_Scalars" is assumed to return True [attribute-valid-always-true]
-test_basic.adb:258:38: medium: validity check might fail (e.g. when X2 = (I => ?) and X2.I'Valid = False) [possible fix: loop invariant at line 258 should mention X2]
+test_basic.adb:258:38: medium: validity check might fail (e.g. when X2 = (I => ?) and X2.I'Valid = False) [possible fix: loop invariant at line 258 should mention X2] [provers reached step limit before completing the proof]
 test_basic.adb:263:37: warning: "X1" is not modified, could be IN
 test_basic.adb:270:36: info: loop invariant preservation proved (CVC5: 1 VC)
-test_basic.adb:270:36: medium: loop invariant might fail in first iteration (e.g. when X2'Loop_Entry = (I => 1))
-test_basic.adb:270:38: medium: validity check might fail (e.g. when X2'Loop_Entry = (I => 12))
+test_basic.adb:270:36: medium: loop invariant might fail in first iteration (e.g. when X2'Loop_Entry = (I => 1)) [provers reached step limit before completing the proof]
+test_basic.adb:270:38: medium: validity check might fail (e.g. when X2'Loop_Entry = (I => 12)) [provers reached step limit before completing the proof]
 test_basic.adb:282:13: info: implicit aspect Always_Terminates on "Read_V" has been proved, subprogram will terminate
 test_basic.adb:284:06: info: data dependencies proved
 test_basic.adb:287:14: info: validity check proved (CVC5: 1 VC)
 test_basic.adb:290:13: info: implicit aspect Always_Terminates on "Read_V_Bad" has been proved, subprogram will terminate
 test_basic.adb:291:06: info: data dependencies proved
-test_basic.adb:294:14: medium: validity check might fail (e.g. when V = (I => ?) and V.I'Valid = False) [possible fix: subprogram at line 290 should mention V in a precondition]
+test_basic.adb:294:14: medium: validity check might fail (e.g. when V = (I => ?) and V.I'Valid = False) [possible fix: subprogram at line 290 should mention V in a precondition] [provers reached step limit before completing the proof]
 test_basic.adb:297:13: info: implicit aspect Always_Terminates on "Read_V_Inv" has been proved, subprogram will terminate
 test_basic.adb:299:06: info: data dependencies proved
 test_basic.adb:316:22: info: assertion proved (CVC5: 2 VC)
 test_basic.adb:318:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
-test_basic.adb:319:47: medium: assertion might fail, cannot prove X2_Old'Valid_Scalars (e.g. when X2_Old = (C1 => (I => ?), C2 => (I => 1)) and X2_Old.C1.I'Valid = False and X2_Old.C2.I'Valid = True)
+test_basic.adb:319:47: medium: assertion might fail, cannot prove X2_Old'Valid_Scalars (e.g. when X2_Old = (C1 => (I => ?), C2 => (I => 1)) and X2_Old.C1.I'Valid = False and X2_Old.C2.I'Valid = True) [provers gave up before completing the proof]
 test_basic.adb:321:22: info: assertion proved (CVC5: 2 VC)
 test_basic.adb:323:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
-test_basic.adb:324:47: medium: assertion might fail, cannot prove X4_Old'Valid_Scalars (e.g. when X4_Old = (C1 => (I => ?), C2 => (I => 1)) and X4_Old.C1.I'Valid = False and X4_Old.C2.I'Valid = True)
+test_basic.adb:324:47: medium: assertion might fail, cannot prove X4_Old'Valid_Scalars (e.g. when X4_Old = (C1 => (I => ?), C2 => (I => 1)) and X4_Old.C1.I'Valid = False and X4_Old.C2.I'Valid = True) [provers gave up before completing the proof]
 test_basic.adb:331:23: warning: unused initial value of "X"
 test_basic.adb:332:33: info: exceptional case proved (Trivial: 1 VC)
 test_basic.adb:341:25: medium: "X" might not be initialized in "Exp_Store" [reason for check: OUT parameter should be fully initialized on return] [possible explanation: value of "X" is unknown following exceptional exit] [possible fix: initialize "X" on all paths or annotate it with aspect Relaxed_Initialization]
 test_basic.adb:342:33: info: exceptional case proved (Trivial: 1 VC)
 test_basic.adb:347:07: info: only expected exception raised (CVC5: 1 VC)
 test_basic.adb:350:10: high: "X" is not initialized [possible explanation: value of "X" is unknown following exceptional exit]
-test_basic.adb:350:25: medium: assertion might fail
+test_basic.adb:350:25: medium: assertion might fail [provers reached step limit before completing the proof]

@@ -1,5 +1,5 @@
-p.adb:31:28: medium: overflow check might fail, cannot prove lower bound for Full_S.A + X [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at p.ads:30 should mention Full_S and X in a precondition]
-p.adb:32:28: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at p.ads:30 should mention Full_S and Y in a precondition]
+p.adb:31:28: medium: overflow check might fail, cannot prove lower bound for Full_S.A + X [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at p.ads:30 should mention Full_S and X in a precondition] [provers gave up before completing the proof]
+p.adb:32:28: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at p.ads:30 should mention Full_S and Y in a precondition] [provers reached step limit before completing the proof]
 p.ads:21:04: info: address in address clause is compatible with object alignment (Trivial)
 p.ads:21:04: info: object is suitable for aliasing via address clause (Trivial)
 p.ads:21:04: info: type is suitable as source for unchecked conversion (Trivial)
@@ -9,6 +9,6 @@ p.ads:22:26: info: types of aliased objects have the same size (Trivial)
 p.ads:25:11: info: data dependencies proved
 p.ads:25:33: info: initialization of "Full_S" proved
 p.ads:26:11: info: flow dependencies proved
-p.ads:28:22: medium: postcondition might fail, cannot prove Raw_S = Null_Raw_R
+p.ads:28:22: medium: postcondition might fail, cannot prove Raw_S = Null_Raw_R [provers gave up before completing the proof]
 p.ads:32:11: info: data dependencies proved
 p.ads:33:11: info: flow dependencies proved

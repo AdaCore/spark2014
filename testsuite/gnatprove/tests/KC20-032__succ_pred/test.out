@@ -24,6 +24,6 @@ p.adb:52:31: info: range check proved (CVC5: 2 VC)
 p.adb:52:38: info: overflow check proved (CVC5: 1 VC)
 p.adb:52:38: info: range check proved (CVC5: 2 VC)
 p.adb:55:13: info: implicit aspect Always_Terminates on "Ident" has been proved, subprogram will terminate
-p.adb:57:14: medium: postcondition might fail
+p.adb:57:14: medium: postcondition might fail [provers reached step limit before completing the proof]
 p.adb:61:31: info: float overflow check proved (CVC5: 1 VC)
 p.adb:61:38: info: float overflow check proved (CVC5: 1 VC)

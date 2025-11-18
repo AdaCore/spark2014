@@ -23,8 +23,8 @@ enums.adb:46:13: info: types in unchecked conversion have the same size (Trivial
 enums.adb:46:63: info: type is suitable as source for unchecked conversion (Trivial)
 enums.adb:46:78: info: type is suitable for unchecked conversion (Trivial)
 enums.adb:49:11: info: data dependencies proved
-enums.adb:54:22: medium: assertion might fail [possible fix: subprogram at line 48 should mention X in a precondition]
-enums.adb:56:22: medium: assertion might fail [possible fix: subprogram at line 48 should mention Y in a precondition]
+enums.adb:54:22: medium: assertion might fail [possible fix: subprogram at line 48 should mention X in a precondition] [provers reached step limit before completing the proof]
+enums.adb:56:22: medium: assertion might fail [possible fix: subprogram at line 48 should mention Y in a precondition] [provers reached step limit before completing the proof]
 imprecise.adb:12:13: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type U32 and type U16 differ]
 imprecise.adb:12:13: warning: imprecise handling of Unchecked_Conversion (types in unchecked conversion do not have the same size) [imprecise-unchecked-conversion]
 imprecise.adb:12:60: info: type is suitable as source for unchecked conversion (Trivial)
@@ -171,10 +171,10 @@ signed.adb:15:13: info: types in unchecked conversion have the same size (Trivia
 signed.adb:15:64: info: type is suitable as source for unchecked conversion (Trivial)
 signed.adb:15:78: info: type is suitable for unchecked conversion (Trivial)
 signed.adb:18:11: info: data dependencies proved
-signed.adb:23:22: medium: assertion might fail [possible fix: subprogram at line 17 should mention X in a precondition]
+signed.adb:23:22: medium: assertion might fail [possible fix: subprogram at line 17 should mention X in a precondition] [provers reached step limit before completing the proof]
 signed.adb:24:22: info: assertion proved (colibri: 1 VC)
-signed.adb:26:22: medium: assertion might fail [possible fix: subprogram at line 17 should mention Y in a precondition]
-signed.adb:27:22: medium: assertion might fail [possible fix: subprogram at line 17 should mention Y in a precondition]
+signed.adb:26:22: medium: assertion might fail [possible fix: subprogram at line 17 should mention Y in a precondition] [provers reached step limit before completing the proof]
+signed.adb:27:22: medium: assertion might fail [possible fix: subprogram at line 17 should mention Y in a precondition] [provers reached step limit before completing the proof]
 signed.adb:61:13: info: types in unchecked conversion have the same size (Trivial)
 signed.adb:61:64: info: type is suitable as source for unchecked conversion (Trivial)
 signed.adb:61:79: info: type is suitable for unchecked conversion (Trivial)
@@ -195,10 +195,10 @@ signed.adb:81:25: info: assertion proved (Z3: 1 VC)
 signed.adb:82:25: info: assertion proved (Z3: 1 VC)
 signed.adb:83:25: info: assertion proved (Z3: 1 VC)
 signed.adb:84:25: info: assertion proved (Z3: 1 VC)
-signed.adb:85:25: medium: assertion might fail
-signed.adb:87:22: medium: assertion might fail [possible fix: subprogram at line 64 should mention X in a precondition]
-signed.adb:97:25: medium: assertion might fail
-signed.adb:99:22: medium: assertion might fail [possible fix: subprogram at line 64 should mention Y in a precondition]
+signed.adb:85:25: medium: assertion might fail [provers reached step limit before completing the proof]
+signed.adb:87:22: medium: assertion might fail [possible fix: subprogram at line 64 should mention X in a precondition] [provers reached step limit before completing the proof]
+signed.adb:97:25: medium: assertion might fail [provers reached step limit before completing the proof]
+signed.adb:99:22: medium: assertion might fail [possible fix: subprogram at line 64 should mention Y in a precondition] [provers reached step limit before completing the proof]
 uc.adb:7:23: info: assertion proved (CVC5: 1 VC)
 uc.adb:8:23: info: assertion proved (CVC5: 1 VC)
 uc.adb:8:60: info: division check proved (CVC5: 1 VC)

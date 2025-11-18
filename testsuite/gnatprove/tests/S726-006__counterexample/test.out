@@ -32,4 +32,4 @@ finnuc.ads:38:13: info: implicit aspect Always_Terminates on "R_5" has been prov
 finnuc.ads:49:07: info: initialization of "A" proved
 finnuc.ads:50:07: info: initialization of "B" proved
 finnuc.ads:51:07: info: initialization of "OldA" proved
-finnuc.ads:53:14: medium: postcondition might fail
+finnuc.ads:53:14: medium: postcondition might fail [provers reached step limit before completing the proof]

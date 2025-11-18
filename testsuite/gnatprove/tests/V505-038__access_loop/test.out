@@ -1,5 +1,5 @@
 p.adb:10:20: warning: assuming "To_Access" has no effect on global items
 p.adb:10:20: warning: no Global contract available for "To_Access" [assumed-global-null]
 p.adb:12:08: info: index check proved (CVC5: 2 VC)
-p.adb:12:08: medium: pointer dereference check might fail
+p.adb:12:08: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 p.adb:12:26: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]

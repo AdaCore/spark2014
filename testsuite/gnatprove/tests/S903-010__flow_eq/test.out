@@ -42,9 +42,9 @@ x.adb:175:29: info: overflow check proved (CVC5: 2 VC)
 x.adb:180:19: medium: implicit aspect Always_Terminates on overriding operator "**" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 x.adb:180:19: warning: statement has no effect
 x.adb:183:29: info: overflow check proved (CVC5: 2 VC)
-x.adb:189:19: medium: assertion might fail [possible fix: you should consider adding a postcondition to operator "=" or turning it into an expression function]
+x.adb:189:19: medium: assertion might fail [possible fix: you should consider adding a postcondition to operator "=" or turning it into an expression function] [provers gave up before completing the proof]
 x.adb:189:21: info: precondition proved (Trivial: 1 VC)
-x.adb:190:19: medium: assertion might fail [possible fix: you should consider adding a postcondition to operator "=" or turning it into an expression function]
+x.adb:190:19: medium: assertion might fail [possible fix: you should consider adding a postcondition to operator "=" or turning it into an expression function] [provers gave up before completing the proof]
 x.adb:190:21: info: precondition proved (Trivial: 1 VC)
 x.adb:191:19: info: assertion proved (CVC5: 1 VC)
 x.adb:191:21: info: precondition proved (Trivial: 1 VC)

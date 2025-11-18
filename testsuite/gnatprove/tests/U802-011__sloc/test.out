@@ -4,4 +4,4 @@ repr.adb:4:21: warning: "D2" is not modified, could be IN
 repr.adb:4:25: warning: "D3" is not modified, could be IN
 repr.adb:4:29: warning: "D4" is not modified, could be IN
 repr.adb:4:33: warning: "D5" is not modified, could be IN
-repr.adb:8:15: high: postcondition might fail, cannot prove My_Prop (D3, D4, D5) (e.g. when D3 = False and D4 = True and D5 = True)
+repr.adb:8:15: high: postcondition might fail, cannot prove My_Prop (D3, D4, D5) (e.g. when D3 = False and D4 = True and D5 = True) [provers gave up before completing the proof]

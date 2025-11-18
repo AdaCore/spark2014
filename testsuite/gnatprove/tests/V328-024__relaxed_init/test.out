@@ -1,3 +1,3 @@
 test.adb:11:23: info: data dependencies proved
-test.adb:13:33: medium: initialization check might fail (e.g. when C'Initialized = False) [possible fix: subprogram at line 11 should mention C'Initialized in a precondition]
+test.adb:13:33: medium: initialization check might fail (e.g. when C'Initialized = False) [possible fix: subprogram at line 11 should mention C'Initialized in a precondition] [provers reached step limit before completing the proof]
 test.adb:18:23: info: data dependencies proved

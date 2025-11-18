@@ -1,6 +1,6 @@
 borrow.adb:9:13: info: implicit aspect Always_Terminates on "Next" has been proved, subprogram will terminate
 borrow.adb:11:15: info: dynamic accessibility check proved (Trivial)
-borrow.adb:11:15: medium: pointer dereference check might fail [possible fix: precondition of subprogram at line 9 should mention X]
+borrow.adb:11:15: medium: pointer dereference check might fail [possible fix: precondition of subprogram at line 9 should mention X] [provers reached step limit before completing the proof]
 borrow.adb:16:13: info: implicit aspect Always_Terminates on "Next_Next" has been proved, subprogram will terminate
 borrow.adb:17:33: info: pointer dereference check proved (CVC5: 1 VC)
 borrow.adb:20:48: info: null exclusion check proved (CVC5: 1 VC)
@@ -9,16 +9,16 @@ borrow.adb:22:14: info: dynamic accessibility check proved (Trivial)
 borrow.adb:27:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 borrow.adb:28:38: info: precondition proved (Trivial: 1 VC)
 borrow.adb:28:44: info: precondition proved (Trivial: 1 VC)
-borrow.adb:30:18: medium: pointer dereference check might fail
+borrow.adb:30:18: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 borrow.adb:33:16: info: implicit aspect Always_Terminates on "Get_2" has been proved, subprogram will terminate
 borrow.adb:34:10: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 borrow.adb:34:10: info: initialization of "X" proved
 borrow.adb:35:29: info: precondition proved (Trivial: 1 VC)
 borrow.adb:35:35: info: precondition proved (Trivial: 1 VC)
-borrow.adb:37:18: medium: pointer dereference check might fail
+borrow.adb:37:18: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 borrow.adb:40:26: info: precondition proved (Trivial: 1 VC)
 borrow.adb:40:32: info: precondition proved (Trivial: 1 VC)
-borrow.adb:42:08: medium: pointer dereference check might fail
+borrow.adb:42:08: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 traversal_funcs.adb:9:13: info: implicit aspect Always_Terminates on "Next" has been proved, subprogram will terminate
 traversal_funcs.adb:12:18: info: dynamic accessibility check proved (Trivial)
 traversal_funcs.adb:12:18: info: pointer dereference check proved (CVC5: 1 VC)

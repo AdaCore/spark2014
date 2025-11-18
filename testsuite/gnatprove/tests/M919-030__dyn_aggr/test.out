@@ -1,6 +1,6 @@
 dyn.adb:2:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 dyn.adb:3:04: info: range check proved (CVC5: 2 VC)
-dyn.adb:3:27: high: range check might fail
+dyn.adb:3:27: high: range check might fail [provers reached step limit before completing the proof]
 dyn.adb:3:27: info: length check proved (CVC5: 3 VC)
 dyn.adb:3:30: info: overflow check proved (CVC5: 2 VC)
 dyn.adb:3:30: info: range check proved (CVC5: 2 VC)

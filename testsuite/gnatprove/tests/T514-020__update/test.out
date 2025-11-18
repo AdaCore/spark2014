@@ -6,7 +6,7 @@ test_callback.adb:27:14: warning: assuming "In_Range" has no effect on global it
 test_callback.adb:27:14: warning: no Global contract available for "In_Range" [assumed-global-null]
 test_callback.adb:28:14: warning: assuming "Relation" has no effect on global items
 test_callback.adb:28:14: warning: no Global contract available for "Relation" [assumed-global-null]
-test_callback.adb:32:22: medium: precondition of target might not be strong enough to imply precondition of source
+test_callback.adb:32:22: medium: precondition of target might not be strong enough to imply precondition of source [provers reached step limit before completing the proof]
 test_callback.adb:32:34: info: null exclusion check proved (Trivial: 1 VC)
 test_callback.adb:36:14: warning: assuming "In_Range" has no effect on global items
 test_callback.adb:36:14: warning: no Global contract available for "In_Range" [assumed-global-null]
@@ -38,5 +38,5 @@ test_callback.adb:61:75: warning: assuming "In_Range" has no effect on global it
 test_callback.adb:61:75: warning: no Global contract available for "In_Range" [assumed-global-null]
 test_callback.adb:63:07: info: precondition proved (CVC5: 1 VC)
 test_callback.adb:63:24: info: precondition of target is strong enough to imply precondition of source (CVC5: 1 VC)
-test_callback.adb:63:24: medium: postcondition of source might not be strong enough to imply postcondition of target
+test_callback.adb:63:24: medium: postcondition of source might not be strong enough to imply postcondition of target [provers reached step limit before completing the proof]
 test_callback.adb:63:36: info: null exclusion check proved (Trivial: 1 VC)

@@ -5,9 +5,11 @@
       + e.g. when In2 = Integer'First+1
       and R = Integer'First
       + reason for check: result of addition must fit in a 32-bits machine integer
+      + provers gave up before completing the proof
 
  high: assertion might fail
 --> counterex.adb:11:25
    11 |             pragma Assert (R < 42);
       |                            ^~~~~~
       + e.g. when R = 42
+      + provers gave up before completing the proof

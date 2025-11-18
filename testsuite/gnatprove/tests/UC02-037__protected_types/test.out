@@ -6,4 +6,4 @@ exc_prot.ads:11:17: info: postcondition proved (CVC5: 1 VC)
 exc_prot.ads:13:43: info: exceptional case proved (CVC5: 1 VC)
 exc_prot.ads:15:43: info: exceptional case proved (CVC5: 1 VC)
 use_exc_prot.adb:3:11: info: ceiling priority protocol is respected for "Exc_Prot.Counter" (CVC5: 1 VC)
-use_exc_prot.adb:5:11: medium: unexpected exception might be raised [reason for check: Use_Exc_Prot allows propagating no exceptions] [possible explanation: Overflow might be unexpectedly raised]
+use_exc_prot.adb:5:11: medium: unexpected exception might be raised [reason for check: Use_Exc_Prot allows propagating no exceptions] [possible explanation: Overflow might be unexpectedly raised] [provers gave up before completing the proof]

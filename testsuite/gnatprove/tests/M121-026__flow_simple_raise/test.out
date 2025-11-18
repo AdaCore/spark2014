@@ -1,5 +1,5 @@
 simple_exceptions.adb:3:04: warning: analyzing unreferenced procedure "In_SPARK" [unreferenced-procedure]
-simple_exceptions.adb:6:10: medium: unexpected exception might be raised [reason for check: In_SPARK allows propagating no exceptions] [possible explanation: Program_Error might be unexpectedly raised]
+simple_exceptions.adb:6:10: medium: unexpected exception might be raised [reason for check: In_SPARK allows propagating no exceptions] [possible explanation: Program_Error might be unexpectedly raised] [provers gave up before completing the proof]
 simple_exceptions.adb:9:14: info: overflow check proved (CVC5: 2 VC)
 simple_exceptions.adb:13:04: warning: analyzing unreferenced function "In_SPARK_2" [unreferenced-function]
 simple_exceptions.adb:13:13: info: implicit aspect Always_Terminates on "In_SPARK_2" has been proved, subprogram will terminate

@@ -4,12 +4,12 @@ test_qualif.adb:7:07: info: range check proved (CVC5: 2 VC)
 test_qualif.adb:7:40: info: length check proved (CVC5: 3 VC)
 test_qualif.adb:7:40: info: range check proved (CVC5: 2 VC)
 test_qualif.adb:8:32: info: range check proved (CVC5: 1 VC)
-test_qualif.adb:8:32: medium: predicate check might fail
+test_qualif.adb:8:32: medium: predicate check might fail [provers reached step limit before completing the proof]
 test_qualif.adb:13:25: info: data dependencies proved
 test_qualif.adb:14:16: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 test_qualif.adb:21:16: info: range check proved (CVC5: 2 VC)
 test_qualif.adb:21:22: info: discriminant check proved (CVC5: 1 VC)
-test_qualif.adb:22:21: medium: predicate check might fail (e.g. when Z = (D => 1, F => 0))
+test_qualif.adb:22:21: medium: predicate check might fail (e.g. when Z = (D => 1, F => 0)) [provers reached step limit before completing the proof]
 test_qualif.adb:27:25: info: data dependencies proved
 test_qualif.adb:29:16: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
-test_qualif.adb:32:35: medium: predicate check might fail (e.g. when X = 0)
+test_qualif.adb:32:35: medium: predicate check might fail (e.g. when X = 0) [provers gave up before completing the proof]

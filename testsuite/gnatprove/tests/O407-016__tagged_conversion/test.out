@@ -4,17 +4,17 @@ tagged_conv.adb:18:14: warning: subprogram "Conv_Child_To_Root_Ok2" has no effec
 tagged_conv.adb:23:29: info: tag check proved (CVC5: 1 VC)
 tagged_conv.adb:28:14: warning: subprogram "Conv_Root_To_Child_Ok" has no effect
 tagged_conv.adb:36:14: warning: subprogram "Bad1" has no effect
-tagged_conv.adb:37:41: medium: tag check might fail
+tagged_conv.adb:37:41: medium: tag check might fail [provers reached step limit before completing the proof]
 tagged_conv.adb:42:14: warning: subprogram "Bad12" has no effect
-tagged_conv.adb:45:41: medium: tag check might fail
+tagged_conv.adb:45:41: medium: tag check might fail [provers gave up before completing the proof]
 tagged_conv.adb:50:14: warning: subprogram "Bad2" has no effect
-tagged_conv.adb:51:29: medium: tag check might fail
+tagged_conv.adb:51:29: medium: tag check might fail [provers reached step limit before completing the proof]
 tagged_conv.adb:56:14: warning: subprogram "Bad3" has no effect
-tagged_conv.adb:59:29: medium: tag check might fail
+tagged_conv.adb:59:29: medium: tag check might fail [provers reached step limit before completing the proof]
 tagged_conv.adb:64:14: warning: subprogram "Bad4" has no effect
-tagged_conv.adb:67:28: medium: tag check might fail
+tagged_conv.adb:67:28: medium: tag check might fail [provers reached step limit before completing the proof]
 tagged_conv.adb:72:14: warning: subprogram "Bad5" has no effect
-tagged_conv.adb:75:29: medium: tag check might fail
+tagged_conv.adb:75:29: medium: tag check might fail [provers reached step limit before completing the proof]
 tagged_conv.adb:80:04: info: precondition proved (Trivial: 1 VC)
 tagged_conv.adb:81:04: info: precondition proved (Trivial: 1 VC)
 tagged_conv.adb:82:04: info: precondition proved (Trivial: 1 VC)

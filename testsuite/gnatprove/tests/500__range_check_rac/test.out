@@ -1,10 +1,10 @@
 s.adb:1:11: warning: subprogram "S" has no effect
-s.adb:6:04: medium: resource or memory leak might occur at end of scope
+s.adb:6:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 s.adb:6:11: info: range check proved (CVC5: 2 VC)
 s.adb:6:15: info: range check proved (CVC5: 2 VC)
 s.adb:8:08: info: absence of resource or memory leak proved (CVC5: 1 VC)
 s.adb:8:11: info: range check proved (CVC5: 1 VC)
-s.adb:8:22: high: range check might fail (e.g. when HX = 0 and LX = 0)
+s.adb:8:22: high: range check might fail (e.g. when HX = 0 and LX = 0) [provers reached step limit before completing the proof]
 s.adb:8:26: info: range check proved (CVC5: 2 VC)
 counterexample expected for check at s.adb:8
   trace at s.adb:1 --> HX = 0 and LX = 0

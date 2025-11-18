@@ -1,22 +1,22 @@
 main.adb:11:45: info: exceptional case proved (CVC5: 1 VC)
 main.adb:12:27: info: postcondition proved (CVC5: 1 VC)
 main.adb:20:68: info: postcondition proved (Trivial: 1 VC)
-main.adb:22:07: medium: unexpected exception might be raised [reason for check: ghost subprogram call shall not propagate exceptions] [possible explanation: Program_Error might be unexpectedly raised]
+main.adb:22:07: medium: unexpected exception might be raised [reason for check: ghost subprogram call shall not propagate exceptions] [possible explanation: Program_Error might be unexpectedly raised] [provers gave up before completing the proof]
 main.adb:23:33: info: assertion proved (CVC5: 1 VC)
 main.adb:30:61: info: exceptional case proved (CVC5: 1 VC)
 main.adb:30:73: info: postcondition proved (CVC5: 1 VC)
 main.adb:38:65: info: postcondition proved (Trivial: 1 VC)
-main.adb:40:07: medium: unexpected exception might be raised [reason for check: ghost subprogram call shall not propagate exceptions] [possible explanation: Program_Error might be unexpectedly raised]
+main.adb:40:07: medium: unexpected exception might be raised [reason for check: ghost subprogram call shall not propagate exceptions] [possible explanation: Program_Error might be unexpectedly raised] [provers gave up before completing the proof]
 main.adb:41:33: info: assertion proved (CVC5: 1 VC)
 main.adb:48:61: info: exceptional case proved (CVC5: 1 VC)
 main.adb:48:73: info: postcondition proved (CVC5: 1 VC)
 main.adb:56:69: info: postcondition proved (Trivial: 1 VC)
-main.adb:58:07: medium: unexpected exception might be raised [reason for check: ghost subprogram call shall not propagate exceptions] [possible explanation: Program_Error might be unexpectedly raised]
+main.adb:58:07: medium: unexpected exception might be raised [reason for check: ghost subprogram call shall not propagate exceptions] [possible explanation: Program_Error might be unexpectedly raised] [provers gave up before completing the proof]
 main.adb:59:33: info: assertion proved (CVC5: 1 VC)
 main.adb:66:55: info: exceptional case proved (CVC5: 1 VC)
 main.adb:66:67: info: postcondition proved (CVC5: 1 VC)
 main.adb:74:70: info: postcondition proved (Trivial: 1 VC)
-main.adb:76:07: medium: unexpected exception might be raised [reason for check: ghost subprogram call shall not propagate exceptions] [possible explanation: Program_Error might be unexpectedly raised]
+main.adb:76:07: medium: unexpected exception might be raised [reason for check: ghost subprogram call shall not propagate exceptions] [possible explanation: Program_Error might be unexpectedly raised] [provers gave up before completing the proof]
 main.adb:77:33: info: assertion proved (CVC5: 1 VC)
 main.adb:84:66: info: exceptional case proved (Trivial: 1 VC)
 main.adb:90:45: info: postcondition proved (Trivial: 1 VC)

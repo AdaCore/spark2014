@@ -5,11 +5,11 @@ main.adb:4:09: info: data dependencies proved
 main.adb:7:09: info: data dependencies proved
 main.adb:12:13: info: implicit aspect Always_Terminates on "F_NOK" has been proved, subprogram will terminate
 main.adb:12:59: medium: "X" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(19))
-main.adb:13:22: medium: precondition might fail
+main.adb:13:22: medium: precondition might fail [provers gave up before completing the proof]
 main.adb:17:13: info: implicit aspect Always_Terminates on "F_OK" has been proved, subprogram will terminate
 main.adb:17:38: info: data dependencies proved
-main.adb:18:22: medium: precondition might fail
+main.adb:18:22: medium: precondition might fail [provers gave up before completing the proof]
 main.adb:23:45: medium: "X" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(19))
-main.adb:25:07: medium: precondition might fail
+main.adb:25:07: medium: precondition might fail [provers gave up before completing the proof]
 main.adb:28:24: info: data dependencies proved
-main.adb:30:07: medium: precondition might fail
+main.adb:30:07: medium: precondition might fail [provers gave up before completing the proof]

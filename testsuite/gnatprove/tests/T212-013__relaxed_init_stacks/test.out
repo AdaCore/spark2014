@@ -4,7 +4,7 @@ test_stack.adb:5:24: info: overflow check proved (CVC5: 2 VC)
 test_stack.adb:6:08: info: predicate check proved (CVC5: 2 VC)
 test_stack.adb:6:22: info: overflow check proved (CVC5: 2 VC)
 test_stack.adb:11:08: medium: in inlined predicate at test_stack.ads:37
-test_stack.adb:11:08: medium: predicate check might fail, cannot prove Content (K)'Initialized
+test_stack.adb:11:08: medium: predicate check might fail, cannot prove Content (K)'Initialized [provers gave up before completing the proof]
 test_stack.adb:11:22: info: overflow check proved (CVC5: 2 VC)
 test_stack.adb:12:08: info: predicate check proved (CVC5: 2 VC)
 test_stack.adb:12:19: info: index check proved (CVC5: 2 VC)
@@ -35,5 +35,5 @@ test_stack.ads:34:07: info: range check proved (CVC5: 2 VC)
 test_stack.ads:37:50: info: index check proved (CVC5: 2 VC)
 test_stack.ads:41:08: info: initialization check proved (CVC5: 1 VC)
 test_stack.ads:41:18: info: index check proved (CVC5: 2 VC)
-test_stack.ads:43:08: medium: initialization check might fail
+test_stack.ads:43:08: medium: initialization check might fail [provers reached step limit before completing the proof]
 test_stack.ads:43:18: info: index check proved (CVC5: 2 VC)

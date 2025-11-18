@@ -25,3 +25,4 @@
       + possible fix: precondition of subprogram at line 3 should mention S4
     3 |    procedure More_Use_Geometry (S1, S2, S3, S4 : in out Shape'Class) with
       |    ^
+      + provers reached step limit before completing the proof

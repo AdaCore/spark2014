@@ -13,7 +13,7 @@ test_first_bound.adb:14:25: info: index check proved (CVC5: 2 VC)
 test_first_bound.adb:15:22: info: assertion proved (CVC5: 1 VC)
 test_first_bound.adb:18:26: info: data dependencies proved
 test_first_bound.adb:23:29: info: range check proved (CVC5: 2 VC)
-test_first_bound.adb:23:29: medium: range check might fail, cannot prove lower bound for W [reason for check: value must be convertible to the target type of the conversion]
+test_first_bound.adb:23:29: medium: range check might fail, cannot prove lower bound for W [reason for check: value must be convertible to the target type of the conversion] [provers reached step limit before completing the proof]
 test_first_bound.adb:28:26: info: data dependencies proved
 test_first_bound.adb:31:16: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 test_first_bound.adb:32:21: info: range check proved (CVC5: 1 VC)
@@ -78,10 +78,10 @@ test_first_bound.adb:81:28: info: range check proved (CVC5: 2 VC)
 test_first_bound.adb:81:34: info: index check proved (CVC5: 2 VC)
 test_first_bound.adb:84:26: info: data dependencies proved
 test_first_bound.adb:88:21: info: range check proved (CVC5: 2 VC)
-test_first_bound.adb:88:21: medium: range check might fail, cannot prove upper bound for X [reason for check: default component value must fit in the type]
+test_first_bound.adb:88:21: medium: range check might fail, cannot prove upper bound for X [reason for check: default component value must fit in the type] [provers gave up before completing the proof]
 test_first_bound.adb:93:26: info: data dependencies proved
 test_first_bound.adb:95:16: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
-test_first_bound.adb:96:07: medium: range check might fail
+test_first_bound.adb:96:07: medium: range check might fail [provers gave up before completing the proof]
 test_first_bound.adb:101:41: info: data dependencies proved
 test_first_bound.adb:103:07: info: range check proved (CVC5: 2 VC)
 test_first_bound.adb:104:16: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
@@ -136,7 +136,7 @@ test_first_bound.adb:144:07: info: range check proved (CVC5: 2 VC)
 test_first_bound.adb:144:40: info: length check proved (CVC5: 3 VC)
 test_first_bound.adb:144:40: info: range check proved (CVC5: 2 VC)
 test_first_bound.adb:145:27: info: range check proved (CVC5: 2 VC)
-test_first_bound.adb:145:27: medium: array index check might fail [reason for check: value must be a valid index into the array]
+test_first_bound.adb:145:27: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
 test_first_bound.adb:147:22: info: assertion proved (CVC5: 1 VC)
 test_first_bound.adb:147:32: info: index check proved (CVC5: 1 VC)
 test_first_bound.adb:148:22: info: assertion proved (CVC5: 1 VC)
@@ -145,7 +145,7 @@ test_first_bound.adb:148:33: info: range check proved (CVC5: 2 VC)
 test_first_bound.adb:151:27: info: data dependencies proved
 test_first_bound.adb:153:16: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 test_first_bound.adb:155:07: info: range check proved (CVC5: 2 VC)
-test_first_bound.adb:155:07: medium: range check might fail
+test_first_bound.adb:155:07: medium: range check might fail [provers gave up before completing the proof]
 test_first_bound.adb:160:27: info: data dependencies proved
 test_first_bound.adb:162:16: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 test_first_bound.adb:164:07: info: range check proved (CVC5: 1 VC)
@@ -154,13 +154,13 @@ test_first_bound.adb:169:27: info: data dependencies proved
 test_first_bound.adb:171:16: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 test_first_bound.adb:173:07: info: range check proved (CVC5: 2 VC)
 test_first_bound.adb:174:21: info: range check proved (CVC5: 1 VC)
-test_first_bound.adb:175:21: medium: length check might fail [reason for check: array must be of the appropriate length]
+test_first_bound.adb:175:21: medium: length check might fail [reason for check: array must be of the appropriate length] [provers gave up before completing the proof]
 test_first_bound.adb:180:27: info: data dependencies proved
 test_first_bound.adb:181:16: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 test_first_bound.adb:185:07: info: range check proved (CVC5: 2 VC)
 test_first_bound.adb:186:21: info: length check proved (CVC5: 3 VC)
 test_first_bound.adb:186:21: info: range check proved (CVC5: 2 VC)
-test_first_bound.adb:187:29: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]
+test_first_bound.adb:187:29: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [provers reached step limit before completing the proof]
 test_first_bound.adb:196:04: info: precondition proved (CVC5: 1 VC)
 test_matrix.adb:1:11: warning: subprogram "Test_Matrix" has no effect
 test_matrix.adb:10:24: info: index check proved (CVC5: 2 VC)
@@ -168,20 +168,20 @@ test_matrix.adb:10:47: info: index check proved (CVC5: 2 VC)
 test_matrix.adb:11:30: info: range check proved (CVC5: 2 VC)
 test_matrix.adb:12:30: info: range check proved (CVC5: 2 VC)
 test_matrix.adb:13:30: info: range check proved (CVC5: 2 VC)
-test_matrix.adb:19:22: medium: assertion might fail
-test_matrix.adb:21:22: medium: assertion might fail
-test_matrix.adb:23:22: medium: assertion might fail
-test_matrix.adb:29:22: medium: assertion might fail
+test_matrix.adb:19:22: medium: assertion might fail [provers reached step limit before completing the proof]
+test_matrix.adb:21:22: medium: assertion might fail [provers reached step limit before completing the proof]
+test_matrix.adb:23:22: medium: assertion might fail [provers reached step limit before completing the proof]
+test_matrix.adb:29:22: medium: assertion might fail [provers reached step limit before completing the proof]
 test_matrix.adb:29:25: info: index check proved (CVC5: 2 VC)
 test_matrix.adb:29:28: info: index check proved (CVC5: 2 VC)
 test_matrix.adb:29:42: info: index check proved (CVC5: 2 VC)
 test_matrix.adb:29:45: info: index check proved (CVC5: 2 VC)
-test_matrix.adb:31:22: medium: assertion might fail
+test_matrix.adb:31:22: medium: assertion might fail [provers reached step limit before completing the proof]
 test_matrix.adb:31:25: info: index check proved (CVC5: 2 VC)
 test_matrix.adb:31:28: info: index check proved (CVC5: 2 VC)
 test_matrix.adb:31:42: info: index check proved (CVC5: 2 VC)
 test_matrix.adb:31:45: info: index check proved (CVC5: 2 VC)
-test_matrix.adb:33:22: medium: assertion might fail
+test_matrix.adb:33:22: medium: assertion might fail [provers reached step limit before completing the proof]
 test_matrix.adb:33:25: info: index check proved (CVC5: 2 VC)
 test_matrix.adb:33:28: info: index check proved (CVC5: 2 VC)
 test_matrix.adb:33:42: info: index check proved (CVC5: 2 VC)

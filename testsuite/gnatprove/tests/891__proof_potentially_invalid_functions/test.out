@@ -3,30 +3,30 @@ test_function_result.adb:22:16: info: implicit aspect Always_Terminates on "F" h
 test_function_result.adb:22:19: warning: unused variable "X"
 test_function_result.adb:23:16: info: implicit aspect Always_Terminates on "Id_OK" has been proved, subprogram will terminate
 test_function_result.adb:25:17: info: postcondition proved (CVC5: 1 VC)
-test_function_result.adb:25:32: medium: validity check might fail
+test_function_result.adb:25:32: medium: validity check might fail [provers reached step limit before completing the proof]
 test_function_result.adb:32:16: info: implicit aspect Always_Terminates on "Id_KO" has been proved, subprogram will terminate
 test_function_result.adb:33:09: info: data dependencies proved
-test_function_result.adb:38:17: medium: validity check might fail [possible fix: subprogram at line 32 should mention X in a precondition]
+test_function_result.adb:38:17: medium: validity check might fail [possible fix: subprogram at line 32 should mention X in a precondition] [provers reached step limit before completing the proof]
 test_function_result.adb:41:16: info: implicit aspect Always_Terminates on "Id_Ext_OK" has been proved, subprogram will terminate
-test_function_result.adb:43:17: medium: postcondition might fail (e.g. when Id_Ext_OK'Result = (I => 1))
+test_function_result.adb:43:17: medium: postcondition might fail (e.g. when Id_Ext_OK'Result = (I => 1)) [provers reached step limit before completing the proof]
 test_function_result.adb:43:33: info: validity check proved (CVC5: 1 VC)
 test_function_result.adb:47:17: info: initialization of "Y" proved
-test_function_result.adb:48:18: medium: validity check might fail (e.g. when X = (I => ?) and X.I'Valid = False) [possible fix: subprogram at line 41 should mention X in a precondition]
+test_function_result.adb:48:18: medium: validity check might fail (e.g. when X = (I => ?) and X.I'Valid = False) [possible fix: subprogram at line 41 should mention X in a precondition] [provers reached step limit before completing the proof]
 test_function_result.adb:52:16: info: implicit aspect Always_Terminates on "Id_Ext_KO" has been proved, subprogram will terminate
 test_function_result.adb:53:09: info: data dependencies proved
 test_function_result.adb:58:17: info: initialization of "Y" proved
-test_function_result.adb:59:18: medium: validity check might fail (e.g. when X = (I => ?) and X.I'Valid = False) [possible fix: subprogram at line 52 should mention X in a precondition]
+test_function_result.adb:59:18: medium: validity check might fail (e.g. when X = (I => ?) and X.I'Valid = False) [possible fix: subprogram at line 52 should mention X in a precondition] [provers reached step limit before completing the proof]
 test_function_result.adb:63:16: info: implicit aspect Always_Terminates on "Id_Fun_OK" has been proved, subprogram will terminate
 test_function_result.adb:65:17: info: postcondition proved (CVC5: 1 VC)
-test_function_result.adb:65:36: medium: validity check might fail
+test_function_result.adb:65:36: medium: validity check might fail [provers reached step limit before completing the proof]
 test_function_result.adb:69:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 test_function_result.adb:69:19: warning: unused variable "X"
 test_function_result.adb:70:16: info: implicit aspect Always_Terminates on "Id_Fun_OK_2" has been proved, subprogram will terminate
 test_function_result.adb:72:17: info: postcondition proved (CVC5: 1 VC)
-test_function_result.adb:72:31: medium: validity check might fail
+test_function_result.adb:72:31: medium: validity check might fail [provers reached step limit before completing the proof]
 test_function_result.adb:76:16: info: implicit aspect Always_Terminates on "Id_Fun_KO" has been proved, subprogram will terminate
 test_function_result.adb:77:09: info: data dependencies proved
-test_function_result.adb:80:47: medium: validity check might fail [possible fix: subprogram at line 76 should mention X in a precondition]
+test_function_result.adb:80:47: medium: validity check might fail [possible fix: subprogram at line 76 should mention X in a precondition] [provers reached step limit before completing the proof]
 test_function_result.adb:87:34: info: data dependencies proved
 test_function_result.adb:93:16: info: implicit aspect Always_Terminates on "Read_Expr_Fun_1" has been proved, subprogram will terminate
 test_function_result.adb:96:16: info: implicit aspect Always_Terminates on "Read_Expr_Fun_2" has been proved, subprogram will terminate
@@ -41,8 +41,8 @@ test_function_result.adb:121:22: info: assertion proved (CVC5: 1 VC)
 test_function_result.adb:121:24: info: validity check proved (CVC5: 1 VC)
 test_function_result.adb:122:22: info: assertion proved (CVC5: 1 VC)
 test_function_result.adb:122:24: info: validity check proved (CVC5: 1 VC)
-test_function_result.adb:123:22: medium: assertion might fail (e.g. when C6 = (I => 2) and C6.I'Valid = True)
-test_function_result.adb:123:24: medium: validity check might fail
+test_function_result.adb:123:22: medium: assertion might fail (e.g. when C6 = (I => 2) and C6.I'Valid = True) [provers reached step limit before completing the proof]
+test_function_result.adb:123:24: medium: validity check might fail [provers reached step limit before completing the proof]
 test_function_result.adb:128:29: info: data dependencies proved
 test_function_result.adb:140:27: info: data dependencies proved
 test_function_result.adb:141:20: info: validity check proved (CVC5: 1 VC)
@@ -69,26 +69,26 @@ test_function_result.adb:171:25: info: assertion proved (CVC5: 1 VC)
 test_function_result.adb:173:25: info: assertion proved (CVC5: 1 VC)
 test_function_result.adb:174:14: info: validity check proved (CVC5: 1 VC)
 test_function_result.adb:181:31: info: data dependencies proved
-test_function_result.adb:182:20: medium: validity check might fail
-test_function_result.adb:184:25: medium: assertion might fail (e.g. when B = False)
-test_function_result.adb:186:25: medium: assertion might fail (e.g. when C2 = (I => ?) and C2.I'Valid = False)
-test_function_result.adb:187:27: medium: validity check might fail
-test_function_result.adb:189:25: medium: assertion might fail (e.g. when I2'Valid = False)
+test_function_result.adb:182:20: medium: validity check might fail [provers reached step limit before completing the proof]
+test_function_result.adb:184:25: medium: assertion might fail (e.g. when B = False) [provers reached step limit before completing the proof]
+test_function_result.adb:186:25: medium: assertion might fail (e.g. when C2 = (I => ?) and C2.I'Valid = False) [provers reached step limit before completing the proof]
+test_function_result.adb:187:27: medium: validity check might fail [provers reached step limit before completing the proof]
+test_function_result.adb:189:25: medium: assertion might fail (e.g. when I2'Valid = False) [provers reached step limit before completing the proof]
 test_function_result.adb:192:12: warning: postcondition does not check the outcome of calling "P_Old_1" [-gnatw.t]
-test_function_result.adb:192:20: medium: postcondition might fail
+test_function_result.adb:192:20: medium: postcondition might fail [provers reached step limit before completing the proof]
 test_function_result.adb:196:12: warning: postcondition does not check the outcome of calling "P_Old_2" [-gnatw.t]
-test_function_result.adb:196:20: medium: postcondition might fail (e.g. when I = 0)
-test_function_result.adb:196:32: medium: validity check might fail [possible fix: subprogram at line 195 should mention I in a precondition]
+test_function_result.adb:196:20: medium: postcondition might fail (e.g. when I = 0) [provers reached step limit before completing the proof]
+test_function_result.adb:196:32: medium: validity check might fail [possible fix: subprogram at line 195 should mention I in a precondition] [provers reached step limit before completing the proof]
 test_function_result.adb:200:12: warning: postcondition does not check the outcome of calling "P_Old_3" [-gnatw.t]
 test_function_result.adb:200:20: info: postcondition proved (Trivial: 1 VC)
-test_function_result.adb:200:20: medium: validity check might fail (e.g. when I = 0)
+test_function_result.adb:200:20: medium: validity check might fail (e.g. when I = 0) [provers gave up before completing the proof]
 test_function_result.adb:200:20: warning: attribute "Valid" is assumed to return True [attribute-valid-always-true]
 test_function_result.adb:204:12: warning: postcondition does not check the outcome of calling "P_Old_4" [-gnatw.t]
 test_function_result.adb:204:20: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
-test_function_result.adb:204:35: medium: validity check might fail (e.g. when I = 0) [possible explanation: enclosing 'Old attribute reference is unconditionally evaluated on subprogram entry]
-test_function_result.adb:207:16: medium: validity check might fail
-test_function_result.adb:209:25: medium: assertion might fail
-test_function_result.adb:210:16: medium: validity check might fail
-test_function_result.adb:212:25: medium: assertion might fail
-test_function_result.adb:214:25: medium: assertion might fail
-test_function_result.adb:215:14: medium: validity check might fail
+test_function_result.adb:204:35: medium: validity check might fail (e.g. when I = 0) [possible explanation: enclosing 'Old attribute reference is unconditionally evaluated on subprogram entry] [provers gave up before completing the proof]
+test_function_result.adb:207:16: medium: validity check might fail [provers reached step limit before completing the proof]
+test_function_result.adb:209:25: medium: assertion might fail [provers reached step limit before completing the proof]
+test_function_result.adb:210:16: medium: validity check might fail [provers reached step limit before completing the proof]
+test_function_result.adb:212:25: medium: assertion might fail [provers reached step limit before completing the proof]
+test_function_result.adb:214:25: medium: assertion might fail [provers reached step limit before completing the proof]
+test_function_result.adb:215:14: medium: validity check might fail [provers reached step limit before completing the proof]

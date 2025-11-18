@@ -2,13 +2,16 @@
 --> test.adb:9:04
     9 |       X : Int_Ptr     := new Integer'(10);  -- memory leak at end of scope
       |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      + provers reached step limit before completing the proof
 
  medium: resource or memory leak might occur
 --> test.adb:13:10
    13 |       Z.all := X;  -- memory leak on assignment
       |       ~~~~~~^~~~
+      + provers reached step limit before completing the proof
 
  medium: resource or memory leak might occur
 --> test.adb:15:04
    15 |       Free (Z);    -- memory leak on deallocation
       |       ^~~~~~~
+      + provers gave up before completing the proof

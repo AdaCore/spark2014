@@ -1,9 +1,9 @@
 test_copy_scalar.adb:3:31: info: data dependencies proved
 test_copy_scalar.adb:4:07: info: initialization of "X" proved
 test_copy_scalar.adb:5:07: info: initialization of "Y" proved
-test_copy_scalar.adb:7:12: medium: validity check might fail (e.g. when X'Valid = False)
+test_copy_scalar.adb:7:12: medium: validity check might fail (e.g. when X'Valid = False) [provers gave up before completing the proof]
 test_copy_scalar.adb:8:22: info: assertion proved (CVC5: 2 VC)
 test_copy_scalar.adb:11:29: info: data dependencies proved
 test_copy_scalar.adb:12:07: info: initialization of "X" proved
-test_copy_scalar.adb:13:23: medium: validity check might fail (e.g. when X'Valid = False)
+test_copy_scalar.adb:13:23: medium: validity check might fail (e.g. when X'Valid = False) [provers gave up before completing the proof]
 test_copy_scalar.adb:15:22: info: assertion proved (CVC5: 2 VC)

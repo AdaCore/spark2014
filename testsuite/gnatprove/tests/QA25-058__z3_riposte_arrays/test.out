@@ -2,28 +2,28 @@ arrays.adb:48:13: info: implicit aspect Always_Terminates on "Contains_A" has be
 arrays.adb:51:18: info: postcondition proved (CVC5: 2 VC)
 arrays.adb:57:13: info: implicit aspect Always_Terminates on "Contains_B" has been proved, subprogram will terminate
 arrays.adb:60:11: info: flow dependencies proved
-arrays.adb:62:22: high: postcondition might fail (e.g. when C = ''' and Contains_B'Result = True and S = (''' => False, others => True))
+arrays.adb:62:22: high: postcondition might fail (e.g. when C = ''' and Contains_B'Result = True and S = (''' => False, others => True)) [provers gave up before completing the proof]
 arrays.adb:68:13: info: implicit aspect Always_Terminates on "Is_Id_1" has been proved, subprogram will terminate
 arrays.adb:71:19: info: postcondition proved (CVC5: 2 VC)
 arrays.adb:77:13: info: implicit aspect Always_Terminates on "Is_Id_2" has been proved, subprogram will terminate
-arrays.adb:80:19: high: postcondition might fail (e.g. when C = 'FS' and Is_Id_2'Result = True and M = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+arrays.adb:80:19: high: postcondition might fail (e.g. when C = 'FS' and Is_Id_2'Result = True and M = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa") [provers reached step limit before completing the proof]
 arrays.adb:88:11: info: flow dependencies proved
 arrays.adb:94:22: info: assertion proved (CVC5: 1 VC)
 arrays.adb:99:11: info: flow dependencies proved
-arrays.adb:104:22: medium: assertion might fail [possible fix: precondition of subprogram at line 97 should mention C]
+arrays.adb:104:22: medium: assertion might fail [possible fix: precondition of subprogram at line 97 should mention C] [provers reached step limit before completing the proof]
 arrays.adb:108:11: info: flow dependencies proved
-arrays.adb:112:22: high: assertion might fail (e.g. when M = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA") [possible fix: subprogram at line 107 should mention M in a precondition]
+arrays.adb:112:22: high: assertion might fail (e.g. when M = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA") [possible fix: subprogram at line 107 should mention M in a precondition] [provers reached step limit before completing the proof]
 arrays.adb:116:11: info: flow dependencies proved
-arrays.adb:120:22: high: assertion might fail (e.g. when M = (others => Elem_2)) [possible fix: subprogram at line 115 should mention M in a precondition]
+arrays.adb:120:22: high: assertion might fail (e.g. when M = (others => Elem_2)) [possible fix: subprogram at line 115 should mention M in a precondition] [provers reached step limit before completing the proof]
 arrays.adb:124:11: info: flow dependencies proved
-arrays.adb:128:22: high: assertion might fail (e.g. when MM = (others => (others => Elem_0))) [possible fix: subprogram at line 123 should mention MM in a precondition]
+arrays.adb:128:22: high: assertion might fail (e.g. when MM = (others => (others => Elem_0))) [possible fix: subprogram at line 123 should mention MM in a precondition] [provers reached step limit before completing the proof]
 arrays.adb:131:22: info: initialization of "M" proved
 arrays.adb:132:11: info: flow dependencies proved
 arrays.adb:136:22: info: assertion proved (CVC5: 1 VC)
 arrays.adb:140:11: info: flow dependencies proved
-arrays.adb:144:22: high: assertion might fail (e.g. when R = (A => (others => 5), Exists => False)) [possible fix: subprogram at line 139 should mention R in a precondition]
+arrays.adb:144:22: high: assertion might fail (e.g. when R = (A => (others => 5), Exists => False)) [possible fix: subprogram at line 139 should mention R in a precondition] [provers reached step limit before completing the proof]
 arrays.adb:146:22: info: assertion proved (CVC5: 1 VC)
-arrays.adb:148:22: high: assertion might fail (e.g. when R = (A => (3 => 5, others => 0), Exists => True)) [possible fix: subprogram at line 139 should mention R in a precondition]
+arrays.adb:148:22: high: assertion might fail (e.g. when R = (A => (3 => 5, others => 0), Exists => True)) [possible fix: subprogram at line 139 should mention R in a precondition] [provers reached step limit before completing the proof]
 arrays.adb:152:11: info: flow dependencies proved
 arrays.adb:153:31: info: range check proved (CVC5: 2 VC)
 arrays.adb:154:33: info: index check proved (CVC5: 2 VC)
@@ -36,7 +36,7 @@ arrays.adb:165:12: info: flow dependencies proved
 arrays.adb:170:22: info: assertion proved (CVC5: 1 VC)
 arrays.adb:170:31: info: index check proved (CVC5: 2 VC)
 arrays.adb:175:11: info: flow dependencies proved
-arrays.adb:178:22: high: assertion might fail (e.g. when A = (others => 0)) [possible fix: subprogram at line 174 should mention A in a precondition]
+arrays.adb:178:22: high: assertion might fail (e.g. when A = (others => 0)) [possible fix: subprogram at line 174 should mention A in a precondition] [provers reached step limit before completing the proof]
 arrays.adb:182:13: info: implicit aspect Always_Terminates on "Single_Char_Set" has been proved, subprogram will terminate
 arrays.adb:183:19: info: postcondition proved (CVC5: 2 VC)
 arrays.adb:189:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
@@ -46,7 +46,7 @@ arrays.adb:191:41: info: range check proved (CVC5: 4 VC)
 arrays.adb:192:57: medium: "R" might not be initialized
 arrays.adb:194:14: medium: "R" might not be initialized
 arrays.adb:197:13: info: implicit aspect Always_Terminates on "Single_Char_Set_Broken" has been proved, subprogram will terminate
-arrays.adb:199:22: medium: postcondition might fail, cannot prove Single_Char_Set_Broken'Result (I) = (I > C)
+arrays.adb:199:22: medium: postcondition might fail, cannot prove Single_Char_Set_Broken'Result (I) = (I > C) [provers reached step limit before completing the proof]
 arrays.adb:204:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 arrays.adb:206:33: info: loop invariant initialization proved (CVC5: 2 VC)
 arrays.adb:206:33: info: loop invariant preservation proved (CVC5: 2 VC)
@@ -55,19 +55,19 @@ arrays.adb:207:57: medium: "R" might not be initialized
 arrays.adb:209:14: medium: "R" might not be initialized
 arrays.adb:213:11: info: flow dependencies proved
 arrays.adb:215:07: info: initialization of "A" proved
-arrays.adb:218:22: medium: assertion might fail
+arrays.adb:218:22: medium: assertion might fail [provers gave up before completing the proof]
 arrays.adb:222:11: info: flow dependencies proved
 arrays.adb:224:07: info: initialization of "A" proved
 arrays.adb:227:22: info: assertion proved (CVC5: 1 VC)
 arrays.adb:231:11: info: flow dependencies proved
 arrays.adb:233:07: info: initialization of "A" proved
-arrays.adb:236:22: medium: assertion might fail
+arrays.adb:236:22: medium: assertion might fail [provers reached step limit before completing the proof]
 arrays.adb:240:11: info: flow dependencies proved
 arrays.adb:242:07: info: initialization of "A" proved
 arrays.adb:245:22: info: assertion proved (CVC5: 1 VC)
 arrays.adb:249:11: info: flow dependencies proved
 arrays.adb:251:07: info: initialization of "A" proved
-arrays.adb:254:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Random_Array or turning it into an expression function in its unit spec]
+arrays.adb:254:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Random_Array or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
 counterexample expected for check at arrays.adb:62
   trace at arrays.adb:57 --> C = ''' and S = (''' => False, others => True)
   trace at arrays.adb:62 --> C = ''' and Contains_B'Result = True and S = (''' => False, others => True)

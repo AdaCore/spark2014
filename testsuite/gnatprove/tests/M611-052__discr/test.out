@@ -1,17 +1,17 @@
 list.adb:12:26: info: range check proved (CVC5: 2 VC)
 list.adb:14:14: info: initialization of "Res" proved
 list.adb:15:50: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
-list.adb:16:10: medium: precondition might fail [possible fix: loop at line 15 should mention S in a loop invariant]
+list.adb:16:10: medium: precondition might fail [possible fix: loop at line 15 should mention S in a loop invariant] [provers reached step limit before completing the proof]
 list.adb:16:16: medium: private part of "S" might not be initialized
 list.adb:16:19: info: precondition proved (CVC5: 2 VC)
-list.adb:20:10: medium: precondition might fail
-list.adb:20:23: medium: precondition might fail [possible fix: loop invariant at line 22 should mention S]
+list.adb:20:10: medium: precondition might fail [provers gave up before completing the proof]
+list.adb:20:23: medium: precondition might fail [possible fix: loop invariant at line 22 should mention S] [provers reached step limit before completing the proof]
 list.adb:20:28: medium: private part of "S" might not be initialized
-list.adb:21:10: medium: precondition might fail [possible fix: loop invariant at line 22 should mention S]
+list.adb:21:10: medium: precondition might fail [possible fix: loop invariant at line 22 should mention S] [provers reached step limit before completing the proof]
 list.adb:21:15: medium: private part of "S" might not be initialized
 list.adb:22:33: info: loop invariant initialization proved (CVC5: 1 VC)
-list.adb:22:54: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Element (Res, J) = Element (L, Last_Index (L) - J + 1) [possible fix: subprogram at list.ads:11 should mention L in a precondition]
-list.adb:22:54: medium: precondition might fail
+list.adb:22:54: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Element (Res, J) = Element (L, Last_Index (L) - J + 1) [possible fix: subprogram at list.ads:11 should mention L in a precondition] [provers reached step limit before completing the proof]
+list.adb:22:54: medium: precondition might fail [provers gave up before completing the proof]
 list.adb:22:68: info: range check proved (CVC5: 4 VC)
 list.adb:22:73: info: precondition proved (CVC5: 4 VC)
 list.adb:22:104: info: range check proved (CVC5: 4 VC)
@@ -21,14 +21,14 @@ list.ads:11:13: info: implicit aspect Always_Terminates on "Reverse_List" has be
 list.ads:12:14: info: postcondition proved (CVC5: 1 VC)
 list.ads:13:17: info: precondition proved (CVC5: 2 VC)
 list.ads:13:29: info: range check proved (CVC5: 2 VC)
-list.ads:13:34: medium: precondition might fail
+list.ads:13:34: medium: precondition might fail [provers gave up before completing the proof]
 list.ads:13:79: info: overflow check proved (CVC5: 2 VC)
 list.ads:13:83: info: overflow check proved (CVC5: 2 VC)
 list.ads:13:83: info: range check proved (CVC5: 2 VC)
 stack.adb:6:47: info: range check proved (CVC5: 1 VC)
-stack.adb:6:47: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at stack.ads:10 should mention S in a precondition]
+stack.adb:6:47: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at stack.ads:10 should mention S in a precondition] [provers gave up before completing the proof]
 stack.adb:7:55: info: range check proved (CVC5: 1 VC)
-stack.adb:7:55: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at stack.ads:11 should mention S in a precondition]
+stack.adb:7:55: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at stack.ads:11 should mention S in a precondition] [provers gave up before completing the proof]
 stack.adb:22:22: info: range check proved (CVC5: 2 VC)
 stack.adb:23:19: info: index check proved (CVC5: 2 VC)
 stack.adb:34:22: info: range check proved (CVC5: 2 VC)
@@ -38,6 +38,6 @@ stack.ads:13:16: info: implicit aspect Always_Terminates on "Is_Full" has been p
 stack.ads:14:16: info: implicit aspect Always_Terminates on "Is_Empty" has been proved, subprogram will terminate
 stack.ads:18:13: info: implicit aspect Always_Terminates on "Top" has been proved, subprogram will terminate
 stack.ads:23:14: info: precondition proved (CVC5: 1 VC)
-stack.ads:23:14: medium: postcondition might fail, cannot prove Top (S) = X
+stack.ads:23:14: medium: postcondition might fail, cannot prove Top (S) = X [provers reached step limit before completing the proof]
 stack.ads:27:14: info: postcondition proved (CVC5: 1 VC)
 stack.ads:37:07: info: range check proved (CVC5: 2 VC)

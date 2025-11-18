@@ -29,4 +29,4 @@ p.adb:29:10: info: type is suitable as source for unchecked conversion (Trivial)
 p.adb:29:41: info: object is suitable for aliasing via address clause (Trivial)
 p.adb:29:41: info: type is suitable as source for unchecked conversion (Trivial)
 p.adb:29:41: info: types of aliased objects have the same size (Trivial)
-p.adb:35:04: high: assertion might fail
+p.adb:35:04: high: assertion might fail [provers reached step limit before completing the proof]

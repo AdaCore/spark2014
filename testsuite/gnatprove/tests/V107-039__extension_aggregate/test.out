@@ -6,5 +6,5 @@ inherited_discr.adb:15:53: info: division check proved (CVC5: 1 VC)
 inherited_discr.adb:15:53: info: range check proved (CVC5: 2 VC)
 inherited_discr.adb:20:30: info: range check proved (CVC5: 2 VC)
 inherited_discr.adb:21:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
-inherited_discr.adb:21:31: medium: discriminant check might fail
+inherited_discr.adb:21:31: medium: discriminant check might fail [provers reached step limit before completing the proof]
 inherited_discr.adb:22:26: info: discriminant check proved (CVC5: 1 VC)

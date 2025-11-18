@@ -9,6 +9,7 @@
       --> only_flow_dependencies.ads:6:04
     6 |       procedure Add (X : Integer) with
       |       ^
+      + provers gave up before completing the proof
 
  info: flow dependencies proved
 --> only_flow_dependencies.ads:7:06

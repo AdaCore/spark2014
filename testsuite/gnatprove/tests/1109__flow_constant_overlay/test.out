@@ -17,4 +17,4 @@ p.adb:25:52: info: type is suitable as source for unchecked conversion (Trivial)
 p.adb:25:52: info: types of aliased objects have the same size (Trivial)
 p.adb:26:07: warning: analyzing unreferenced procedure "Test" [unreferenced-procedure]
 p.adb:26:17: warning: subprogram "Test" has no effect
-p.adb:28:25: medium: assertion might fail
+p.adb:28:25: medium: assertion might fail [provers gave up before completing the proof]

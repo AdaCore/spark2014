@@ -1,5 +1,5 @@
 discr.adb:7:09: info: discriminant check proved (CVC5: 1 VC)
-discr.adb:8:09: high: discriminant check might fail (e.g. when D = (C => 1))
+discr.adb:8:09: high: discriminant check might fail (e.g. when D = (C => 1)) [provers reached step limit before completing the proof]
 discr.adb:14:26: info: range check proved (CVC5: 2 VC)
 discr.adb:17:22: info: assertion proved (Trivial: 1 VC)
 discr.adb:18:22: info: assertion proved (Trivial: 1 VC)
@@ -11,15 +11,15 @@ discr.adb:23:22: info: assertion proved (CVC5: 1 VC)
 discr.adb:24:10: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 discr.adb:28:25: info: range check proved (CVC5: 2 VC)
 discr.adb:30:12: info: discriminant check proved (CVC5: 1 VC)
-discr.adb:31:12: high: discriminant check might fail (e.g. when C = 1)
+discr.adb:31:12: high: discriminant check might fail (e.g. when C = 1) [provers reached step limit before completing the proof]
 discr.adb:36:26: info: range check proved (CVC5: 2 VC)
 discr.adb:36:32: info: discriminant check proved (CVC5: 1 VC)
-discr.adb:43:12: high: discriminant check might fail (e.g. when D = (C => 1) and D'Constrained = True) [possible fix: precondition of subprogram at line 38 should mention D]
+discr.adb:43:12: high: discriminant check might fail (e.g. when D = (C => 1) and D'Constrained = True) [possible fix: precondition of subprogram at line 38 should mention D] [provers gave up before completing the proof]
 discr.adb:51:12: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 discr.adb:55:07: info: precondition proved (Trivial: 1 VC)
 discr.adb:56:07: info: precondition proved (Trivial: 1 VC)
 discr.adb:57:07: info: precondition proved (CVC5: 1 VC)
-discr.adb:58:07: high: precondition might fail (e.g. when D2 = (C => 0))
+discr.adb:58:07: high: precondition might fail (e.g. when D2 = (C => 0)) [provers reached step limit before completing the proof]
 discr.adb:62:26: info: range check proved (CVC5: 2 VC)
 discr.adb:62:32: info: discriminant check proved (CVC5: 1 VC)
 discr.adb:66:22: info: assertion proved (CVC5: 1 VC)
@@ -33,13 +33,13 @@ discr.adb:73:22: info: assertion proved (CVC5: 1 VC)
 discr.adb:77:48: info: in default value at discr.adb:78
 discr.adb:77:48: info: range check proved (CVC5: 2 VC)
 discr.adb:77:48: medium: in default value at discr.adb:78
-discr.adb:77:48: medium: overflow check might fail, cannot prove upper bound for C + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (C <= Integer'Last - 1) to subprogram at discr.ads:18]
+discr.adb:77:48: medium: overflow check might fail, cannot prove upper bound for C + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (C <= Integer'Last - 1) to subprogram at discr.ads:18] [provers gave up before completing the proof]
 discr.adb:80:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 discr.adb:80:53: info: range check proved (CVC5: 2 VC)
 discr.adb:83:46: medium: in default value at discr.adb:84
-discr.adb:83:46: medium: precondition might fail [possible fix: subprogram at discr.ads:18 should mention C in a precondition]
+discr.adb:83:46: medium: precondition might fail [possible fix: subprogram at discr.ads:18 should mention C in a precondition] [provers reached step limit before completing the proof]
 discr.adb:92:09: info: discriminant check proved (CVC5: 1 VC)
-discr.adb:93:09: medium: discriminant check might fail
+discr.adb:93:09: medium: discriminant check might fail [provers reached step limit before completing the proof]
 discr.adb:99:28: info: range check proved (CVC5: 2 VC)
 discr.adb:102:22: info: assertion proved (Trivial: 1 VC)
 discr.adb:103:22: info: assertion proved (Trivial: 1 VC)
@@ -50,17 +50,17 @@ discr.adb:107:22: info: assertion proved (CVC5: 1 VC)
 discr.adb:108:10: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 discr.adb:112:27: info: range check proved (CVC5: 2 VC)
 discr.adb:114:12: info: discriminant check proved (CVC5: 1 VC)
-discr.adb:115:12: medium: discriminant check might fail
+discr.adb:115:12: medium: discriminant check might fail [provers reached step limit before completing the proof]
 discr.adb:120:28: info: range check proved (CVC5: 2 VC)
 discr.adb:120:34: info: discriminant check proved (CVC5: 1 VC)
 discr.adb:122:26: info: initialization of "D" proved
-discr.adb:127:12: medium: discriminant check might fail [possible fix: precondition of subprogram at line 122 should mention D'Constrained or D.C]
+discr.adb:127:12: medium: discriminant check might fail [possible fix: precondition of subprogram at line 122 should mention D'Constrained or D.C] [provers gave up before completing the proof]
 discr.adb:130:26: info: initialization of "D" proved
 discr.adb:135:12: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 discr.adb:139:07: info: precondition proved (Trivial: 1 VC)
 discr.adb:140:07: info: precondition proved (Trivial: 1 VC)
 discr.adb:141:07: info: precondition proved (CVC5: 1 VC)
-discr.adb:142:07: medium: precondition might fail
+discr.adb:142:07: medium: precondition might fail [provers reached step limit before completing the proof]
 discr.adb:146:28: info: range check proved (CVC5: 2 VC)
 discr.adb:146:34: info: discriminant check proved (CVC5: 1 VC)
 discr.adb:150:22: info: assertion proved (CVC5: 1 VC)

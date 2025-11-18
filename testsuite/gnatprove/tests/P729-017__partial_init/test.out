@@ -1,4 +1,4 @@
-partial_init.adb:5:22: high: assertion might fail (e.g. when V = (X => -1, Y => (others => -1)))
+partial_init.adb:5:22: high: assertion might fail (e.g. when V = (X => -1, Y => (others => -1))) [provers reached step limit before completing the proof]
 partial_init.adb:5:22: medium: "V.X" is not set
 partial_init.adb:9:07: info: initialization of "V" proved
 partial_init.adb:12:22: info: assertion proved (CVC5: 1 VC)

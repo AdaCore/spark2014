@@ -3,11 +3,11 @@ incorrect_lemmas.adb:10:32: info: function contract feasibility proved (CVC5: 1 
 incorrect_lemmas.adb:13:14: info: postcondition proved (CVC5: 1 VC)
 incorrect_lemmas.adb:17:14: info: implicit aspect Always_Terminates on "Bad_Lemma_1" has been proved, subprogram will terminate
 incorrect_lemmas.adb:17:40: info: function contract feasibility proved (CVC5: 1 VC)
-incorrect_lemmas.adb:22:14: medium: postcondition might fail
+incorrect_lemmas.adb:22:14: medium: postcondition might fail [provers gave up before completing the proof]
 incorrect_lemmas.adb:22:20: info: null exclusion check proved (CVC5: 1 VC)
 incorrect_lemmas.adb:24:14: info: implicit aspect Always_Terminates on "Bad_Lemma_2" has been proved, subprogram will terminate
 incorrect_lemmas.adb:24:40: info: function contract feasibility proved (CVC5: 1 VC)
-incorrect_lemmas.adb:29:14: medium: postcondition might fail
+incorrect_lemmas.adb:29:14: medium: postcondition might fail [provers gave up before completing the proof]
 incorrect_lemmas.adb:29:20: info: null exclusion check proved (CVC5: 1 VC)
 incorrect_lemmas.adb:33:16: info: implicit aspect Always_Terminates on "Read_V" has been proved, subprogram will terminate
 incorrect_lemmas.adb:35:22: info: assertion proved (CVC5: 1 VC)

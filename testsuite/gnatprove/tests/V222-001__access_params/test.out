@@ -11,8 +11,8 @@ pointarr.adb:24:15: info: pointer dereference check proved (CVC5: 1 VC)
 pointarr.adb:24:19: info: index check proved (CVC5: 2 VC)
 pointarr.adb:28:08: info: pointer dereference check proved (CVC5: 1 VC)
 pointarr.adb:28:12: info: index check proved (CVC5: 2 VC)
-pointarr.adb:31:04: medium: resource or memory leak might occur at end of scope
-pointarr.adb:32:04: medium: resource or memory leak might occur at end of scope
+pointarr.adb:31:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
+pointarr.adb:32:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 pointarr.adb:34:19: info: assertion proved (CVC5: 1 VC)
 pointarr.adb:34:19: info: pointer dereference check proved (CVC5: 1 VC)
 pointarr.adb:35:04: info: precondition proved (CVC5: 3 VC)

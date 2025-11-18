@@ -6,10 +6,10 @@ state_machine.adb:25:08: info: disjoint contract or exit cases proved (CVC5: 1 V
 state_machine.adb:25:27: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 state_machine.adb:26:27: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 state_machine.adb:27:27: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
-state_machine.adb:28:27: medium: contract case might fail (e.g. when Flag = False and Num = 0)
+state_machine.adb:28:27: medium: contract case might fail (e.g. when Flag = False and Num = 0) [provers gave up before completing the proof]
 state_machine.adb:29:27: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 state_machine.adb:29:38: warning: unreachable branch (CVC5: 1 VC)
 state_machine.adb:36:20: info: overflow check proved (CVC5: 2 VC)
 state_machine.adb:39:17: info: overflow check proved (CVC5: 2 VC)
 state_machine.adb:41:20: info: overflow check proved (CVC5: 2 VC)
-state_machine.adb:44:09: medium: assertion might fail
+state_machine.adb:44:09: medium: assertion might fail [provers gave up before completing the proof]

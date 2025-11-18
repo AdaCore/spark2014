@@ -1,19 +1,19 @@
 test.adb:12:04: warning: analyzing unreferenced procedure "Call_P1" [unreferenced-procedure]
 test.adb:12:14: warning: subprogram "Call_P1" has no effect
-test.adb:14:07: medium: call might exit the program
+test.adb:14:07: medium: call might exit the program [provers gave up before completing the proof]
 test.adb:32:14: warning: subprogram "Call_F1_Ghost" has no effect
-test.adb:38:12: medium: call might exit the program [possible fix: you should consider adding a postcondition to function F1 or turning it into an expression function in its unit spec]
+test.adb:38:12: medium: call might exit the program [possible fix: you should consider adding a postcondition to function F1 or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 test.adb:41:04: warning: analyzing unreferenced procedure "Call_P2_No_Exit_OK" [unreferenced-procedure]
-test.adb:43:07: medium: call might exit the program
+test.adb:43:07: medium: call might exit the program [provers gave up before completing the proof]
 test.adb:46:04: warning: analyzing unreferenced procedure "Call_P2_No_Exit_Bad" [unreferenced-procedure]
 test.adb:49:07: info: call cannot exit the program proved (CVC5: 1 VC)
 test.adb:55:22: info: program exit postcondition proved (CVC5: 1 VC)
-test.adb:64:22: medium: program exit postcondition might fail [possible fix: subprogram at line 63 should mention G in a precondition]
+test.adb:64:22: medium: program exit postcondition might fail [possible fix: subprogram at line 63 should mention G in a precondition] [provers gave up before completing the proof]
 test.adb:73:22: info: program exit postcondition proved (CVC5: 1 VC)
-test.adb:81:22: medium: program exit postcondition might fail [possible fix: subprogram at line 80 should mention G in a precondition]
+test.adb:81:22: medium: program exit postcondition might fail [possible fix: subprogram at line 80 should mention G in a precondition] [provers gave up before completing the proof]
 test.adb:90:14: warning: subprogram "Call_P1_Post_Old" has no effect
 test.adb:91:22: info: program exit postcondition proved (CVC5: 1 VC)
-test.adb:102:14: medium: exit case might fail
+test.adb:102:14: medium: exit case might fail [provers gave up before completing the proof]
 test.adb:102:14: medium: on program exit from Call_P2_Exit_Cases_Bad at test.adb:100
 test.adb:112:14: info: exit case proved (CVC5: 1 VC)
 test.adb:112:14: info: on program exit from Call_P2_Exit_Cases_OK at test.adb:110
@@ -35,7 +35,7 @@ test.adb:154:17: info: for GT at the end of Call_P1_Bad_Inv at test.adb:133
 test.adb:154:17: info: invariant check proved (CVC5: 1 VC)
 test.adb:154:17: medium: for GT on program exit at test.adb:133
 test.adb:154:17: medium: in inlined invariant at test.adb:129
-test.adb:154:17: medium: invariant check might fail, cannot prove T >= 0
+test.adb:154:17: medium: invariant check might fail, cannot prove T >= 0 [provers gave up before completing the proof]
 test.adb:155:25: info: program exit postcondition proved (CVC5: 1 VC)
 test.adb:171:17: info: for GT at the end of Call_P3 at test.adb:133
 test.adb:171:17: info: for GT on program exit at test.adb:133

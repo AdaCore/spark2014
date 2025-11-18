@@ -1,5 +1,5 @@
 po_t.adb:9:34: info: overflow check proved (CVC5: 2 VC)
 po_t.adb:21:34: info: overflow check proved (CVC5: 2 VC)
-po_t.adb:36:22: medium: assertion might fail (e.g. when X = -1 and Y = 0)
+po_t.adb:36:22: medium: assertion might fail (e.g. when X = -1 and Y = 0) [provers reached step limit before completing the proof]
 po_t.ads:44:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 po_t.ads:59:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate

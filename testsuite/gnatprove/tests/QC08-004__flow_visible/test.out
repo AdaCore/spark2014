@@ -1,4 +1,4 @@
-main.adb:10:19: medium: assertion might fail [possible fix: subprogram at line 4 should mention Parent.Privchild.X in a precondition]
+main.adb:10:19: medium: assertion might fail [possible fix: subprogram at line 4 should mention Parent.Privchild.X in a precondition] [provers gave up before completing the proof]
 parent-privchild.adb:6:53: info: initialization of "X" constituent of "Child_State" proved
 parent-privchild.ads:4:13: info: implicit aspect Always_Terminates on "Read" has been proved, subprogram will terminate
 parent-privchild.ads:4:38: info: data dependencies proved

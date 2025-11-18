@@ -1,4 +1,4 @@
 p.ads:7:13: info: implicit aspect Always_Terminates on "Zero" has been proved, subprogram will terminate
-p.ads:10:46: medium: divide by zero might fail
-p.ads:10:46: medium: this interrupt might be reserved
+p.ads:10:46: medium: divide by zero might fail [provers gave up before completing the proof]
+p.ads:10:46: medium: this interrupt might be reserved [provers gave up before completing the proof]
 p.ads:10:77: info: range check proved (CVC5: 2 VC)

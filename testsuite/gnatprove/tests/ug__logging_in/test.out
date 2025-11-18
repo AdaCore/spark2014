@@ -8,6 +8,7 @@
       --> logging_in.ads:10:04
    10 |       procedure Get with
       |       ^
+      + provers gave up before completing the proof
 
  high: array index check might fail
 --> logging_in.adb:7:12
@@ -19,6 +20,7 @@
       --> logging_in.ads:10:04
    10 |       procedure Get with
       |       ^
+      + provers gave up before completing the proof
 
  info: data dependencies proved
 --> logging_in.ads:11:06

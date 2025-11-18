@@ -1,3 +1,3 @@
-main.adb:5:11: medium: ceiling priority protocol might not be respected for "Q.Po" [reason for check: ceiling priority of the protected object "Q.Po" must be >= the priority of the caller "Main" in the call chain "Main" (elaboration) -> "Q" (elaboration) -> "Q.Po.Foo"]
+main.adb:5:11: medium: ceiling priority protocol might not be respected for "Q.Po" [reason for check: ceiling priority of the protected object "Q.Po" must be >= the priority of the caller "Main" in the call chain "Main" (elaboration) -> "Q" (elaboration) -> "Q.Po.Foo"] [provers gave up before completing the proof]
 main.adb:6:21: info: range check proved (CVC5: 2 VC)
 q.ads:3:24: info: range check proved (CVC5: 2 VC)

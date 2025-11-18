@@ -12,7 +12,7 @@ test_false_precondition.adb:10:14: high: all paths in "Test" raise exceptions or
 test_false_precondition.adb:10:14: warning: subprogram "Test" has no effect
 test_false_precondition.adb:12:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 test_false_precondition.adb:12:41: info: precondition proved (CVC5: 1 VC)
-test_false_precondition.adb:13:07: high: assertion might fail
+test_false_precondition.adb:13:07: high: assertion might fail [provers gave up before completing the proof]
 test_false_predicate.adb:3:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 test_false_predicate.adb:6:13: info: implicit aspect Always_Terminates on "Bad2" has been proved, subprogram will terminate
 test_false_predicate.adb:6:13: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
@@ -25,4 +25,4 @@ test_false_predicate.adb:12:14: high: all paths in "Test" raise exceptions or do
 test_false_predicate.adb:12:14: warning: subprogram "Test" has no effect
 test_false_predicate.adb:14:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 test_false_predicate.adb:14:46: info: predicate check proved (CVC5: 1 VC)
-test_false_predicate.adb:15:07: high: assertion might fail
+test_false_predicate.adb:15:07: high: assertion might fail [provers gave up before completing the proof]

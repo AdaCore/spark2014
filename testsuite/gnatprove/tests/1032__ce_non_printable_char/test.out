@@ -1,6 +1,6 @@
 p.adb:1:11: warning: subprogram "P" has no effect
-p.adb:10:28: high: assertion might fail (e.g. when X = 'SOH')
-p.adb:18:28: high: assertion might fail (e.g. when X = 'LC_E_Acute')
-p.adb:25:13: high: assertion might fail
-p.adb:32:28: high: assertion might fail (e.g. when X = (1 => 'SOH', 2 => 'LC_E_Acute'))
-p.adb:39:28: high: assertion might fail (e.g. when X = (1 => 'SOH', 2 => 'LC_E_Acute'))
+p.adb:10:28: high: assertion might fail (e.g. when X = 'SOH') [provers reached step limit before completing the proof]
+p.adb:18:28: high: assertion might fail (e.g. when X = 'LC_E_Acute') [provers reached step limit before completing the proof]
+p.adb:25:13: high: assertion might fail [provers reached step limit before completing the proof]
+p.adb:32:28: high: assertion might fail (e.g. when X = (1 => 'SOH', 2 => 'LC_E_Acute')) [provers reached step limit before completing the proof]
+p.adb:39:28: high: assertion might fail (e.g. when X = (1 => 'SOH', 2 => 'LC_E_Acute')) [provers reached step limit before completing the proof]

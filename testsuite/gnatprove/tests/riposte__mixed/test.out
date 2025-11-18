@@ -4,9 +4,9 @@ mixed.adb:20:13: info: implicit aspect Always_Terminates on "Id" has been proved
 mixed.adb:21:19: info: postcondition proved (CVC5: 1 VC)
 mixed.adb:29:11: info: flow dependencies proved
 mixed.adb:31:07: info: initialization of "N" proved
-mixed.adb:34:22: high: assertion might fail (e.g. when N = -1)
+mixed.adb:34:22: high: assertion might fail (e.g. when N = -1) [provers reached step limit before completing the proof]
 mixed.adb:39:24: info: initialization of "X" proved
 mixed.adb:40:11: info: flow dependencies proved
 mixed.adb:42:07: info: initialization of "N" proved
 mixed.adb:43:07: info: initialization of "S" proved
-mixed.adb:48:22: high: assertion might fail (e.g. when X = False)
+mixed.adb:48:22: high: assertion might fail (e.g. when X = False) [provers reached step limit before completing the proof]

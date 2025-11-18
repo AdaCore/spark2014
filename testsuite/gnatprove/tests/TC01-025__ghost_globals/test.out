@@ -2,15 +2,15 @@ caller_package-ghost.ads:6:24: info: initial condition proved (CVC5: 4 VC)
 caller_package-ghost.ads:12:13: info: implicit aspect Always_Terminates on "caller_func_pre_success_state" has been proved, subprogram will terminate
 caller_package-ghost.ads:20:13: info: implicit aspect Always_Terminates on "caller_func_post_success_state" has been proved, subprogram will terminate
 caller_package.adb:12:22: medium: in inlined expression function body at caller_package-ghost.ads:23
-caller_package.adb:12:22: medium: refined postcondition might fail, cannot prove test_func_post_success_state
-caller_package.adb:15:07: medium: precondition might fail
-caller_package.adb:16:07: medium: precondition might fail
+caller_package.adb:12:22: medium: refined postcondition might fail, cannot prove test_func_post_success_state [provers gave up before completing the proof]
+caller_package.adb:15:07: medium: precondition might fail [provers gave up before completing the proof]
+caller_package.adb:16:07: medium: precondition might fail [provers gave up before completing the proof]
 caller_package.ads:6:03: info: flow dependencies proved
-caller_package.ads:7:24: medium: initial condition might fail
+caller_package.ads:7:24: medium: initial condition might fail [provers gave up before completing the proof]
 caller_package.ads:7:28: high: "Global_a" must be mentioned as an input of the Initializes aspect of "caller_package" (SPARK RM 7.1.5(11))
 caller_package.ads:7:28: high: "test_package.test_state" must be mentioned as an input of the Initializes aspect of "caller_package" (SPARK RM 7.1.5(11))
 caller_package.ads:16:08: info: data dependencies proved
-caller_package.ads:18:16: medium: postcondition might fail [possible explanation: validity of the postcondition of caller_func should be implied by its refined postcondition]
+caller_package.ads:18:16: medium: postcondition might fail [possible explanation: validity of the postcondition of caller_func should be implied by its refined postcondition] [provers gave up before completing the proof]
 caller_package.ads:22:16: info: implicit aspect Always_Terminates on "caller_func_pre_success_state" has been proved, subprogram will terminate
 caller_package.ads:25:16: info: implicit aspect Always_Terminates on "caller_func_post_success_state" has been proved, subprogram will terminate
 main.adb:6:12: info: precondition of main program proved (CVC5: 1 VC)

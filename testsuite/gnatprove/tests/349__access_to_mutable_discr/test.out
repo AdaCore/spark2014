@@ -2,8 +2,8 @@ p.adb:10:14: warning: subprogram "Test_1" has no effect
 p.adb:22:07: info: no contextual analysis of "Test_1" (nested subprogram)
 p.adb:24:25: info: assertion proved (Trivial: 1 VC)
 p.adb:25:12: info: range check proved (CVC5: 1 VC)
-p.adb:25:16: medium: discriminant check might fail (e.g. when X.all = (Present => True, The_Value => 0)) [possible fix: subprogram at line 22 should mention X in a precondition]
-p.adb:25:19: medium: discriminant check might fail
+p.adb:25:16: medium: discriminant check might fail (e.g. when X.all = (Present => True, The_Value => 0)) [possible fix: subprogram at line 22 should mention X in a precondition] [provers gave up before completing the proof]
+p.adb:25:19: medium: discriminant check might fail [provers reached step limit before completing the proof]
 p.adb:32:27: info: range check proved (CVC5: 1 VC)
 p.adb:32:36: info: discriminant check proved (CVC5: 1 VC)
 p.adb:36:27: info: null exclusion check proved (CVC5: 1 VC)
@@ -11,10 +11,10 @@ p.adb:37:27: info: null exclusion check proved (CVC5: 1 VC)
 p.adb:39:23: warning: "Y" is not modified, could be IN
 p.adb:39:60: info: data dependencies proved
 p.adb:42:25: info: assertion proved (Trivial: 2 VC)
-p.adb:43:35: medium: assertion might fail, cannot prove X.H.Present = Y.H.Present (e.g. when X = (H => new Option'((Present => True, The_Value => 0))) and Y = (H => new Option'((Present => False)))) [possible fix: subprogram at line 39 should mention X and Y in a precondition]
+p.adb:43:35: medium: assertion might fail, cannot prove X.H.Present = Y.H.Present (e.g. when X = (H => new Option'((Present => True, The_Value => 0))) and Y = (H => new Option'((Present => False)))) [possible fix: subprogram at line 39 should mention X and Y in a precondition] [provers gave up before completing the proof]
 p.adb:44:14: info: range check proved (CVC5: 1 VC)
-p.adb:44:18: medium: discriminant check might fail (e.g. when X = (H => new Option'((Present => True, The_Value => 0)))) [possible fix: subprogram at line 39 should mention X in a precondition]
-p.adb:44:21: medium: discriminant check might fail
+p.adb:44:18: medium: discriminant check might fail (e.g. when X = (H => new Option'((Present => True, The_Value => 0)))) [possible fix: subprogram at line 39 should mention X in a precondition] [provers gave up before completing the proof]
+p.adb:44:21: medium: discriminant check might fail [provers reached step limit before completing the proof]
 p.adb:56:14: warning: subprogram "Test_2" has no effect
 p.adb:57:07: info: no contextual analysis of "Test_2" (nested package declaration)
 p.adb:77:16: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)

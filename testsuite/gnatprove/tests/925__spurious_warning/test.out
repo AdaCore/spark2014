@@ -1,2 +1,2 @@
 main.adb:2:13: info: implicit aspect Always_Terminates on "Random" has been proved, subprogram will terminate
-main.adb:6:11: high: overflow check might fail, cannot prove upper bound for X + X (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
+main.adb:6:11: high: overflow check might fail, cannot prove upper bound for X + X (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]

@@ -108,13 +108,13 @@ use_sequence_ho.adb:33:13: info: predicate check proved (Trivial: 1 VC)
 use_sequence_ho.adb:37:16: info: implicit aspect Always_Terminates on "Starts_With_Z" has been proved, subprogram will terminate
 use_sequence_ho.adb:38:36: info: index check proved (CVC5: 2 VC)
 use_sequence_ho.adb:40:16: info: implicit aspect Always_Terminates on "Add_Zero" has been proved, subprogram will terminate
-use_sequence_ho.adb:42:19: medium: postcondition might fail
+use_sequence_ho.adb:42:19: medium: postcondition might fail [provers reached step limit before completing the proof]
 use_sequence_ho.adb:43:13: info: precondition proved (CVC5: 1 VC)
 use_sequence_ho.adb:45:16: info: implicit aspect Always_Terminates on "Add_One" has been proved, subprogram will terminate
 use_sequence_ho.adb:46:10: info: precondition proved (CVC5: 1 VC)
-use_sequence_ho.adb:49:19: medium: postcondition might fail
+use_sequence_ho.adb:49:19: medium: postcondition might fail [provers reached step limit before completing the proof]
 use_sequence_ho.adb:56:37: info: precondition proved (CVC5: 1 VC)
-use_sequence_ho.adb:58:25: medium: assertion might fail
+use_sequence_ho.adb:58:25: medium: assertion might fail [provers reached step limit before completing the proof]
 use_sequence_ho.adb:58:60: info: precondition proved (CVC5: 1 VC)
 use_sequence_ho.adb:64:16: info: implicit aspect Always_Terminates on "Value" has been proved, subprogram will terminate
 use_sequence_ho.adb:65:36: info: range check proved (CVC5: 2 VC)

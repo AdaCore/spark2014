@@ -10,6 +10,6 @@ p.adb:14:17: info: precondition proved (Trivial: 1 VC)
 p.adb:17:38: info: precondition proved (Trivial: 1 VC)
 p.adb:19:38: info: precondition proved (Trivial: 1 VC)
 p.adb:19:65: info: refined post proved (CVC5: 1 VC)
-p.adb:22:19: medium: assertion might fail
-p.adb:24:19: medium: assertion might fail
-p.adb:26:19: medium: assertion might fail
+p.adb:22:19: medium: assertion might fail [provers gave up before completing the proof]
+p.adb:24:19: medium: assertion might fail [provers gave up before completing the proof]
+p.adb:26:19: medium: assertion might fail [provers gave up before completing the proof]

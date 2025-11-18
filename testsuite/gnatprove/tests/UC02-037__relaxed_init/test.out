@@ -31,8 +31,8 @@ main.adb:45:42: info: initialization check proved (CVC5: 1 VC)
 main.adb:46:14: info: initialization check proved (CVC5: 1 VC)
 main.adb:46:14: info: postcondition proved (CVC5: 1 VC)
 main.adb:46:20: info: overflow check proved (CVC5: 2 VC)
-main.adb:47:40: medium: exceptional case might fail [possible fix: subprogram at line 45 should mention Y in a precondition]
-main.adb:47:70: medium: initialization check might fail
+main.adb:47:40: medium: exceptional case might fail [possible fix: subprogram at line 45 should mention Y in a precondition] [provers gave up before completing the proof]
+main.adb:47:70: medium: initialization check might fail [provers gave up before completing the proof]
 main.adb:52:07: info: only expected exception raised (CVC5: 1 VC)
 main.adb:52:17: info: initialization check proved (CVC5: 1 VC)
 main.adb:53:07: info: only expected exception raised (CVC5: 1 VC)

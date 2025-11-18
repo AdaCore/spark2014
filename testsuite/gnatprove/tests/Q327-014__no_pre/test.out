@@ -1,5 +1,5 @@
 dispatch.adb:5:24: info: overflow check proved (CVC5: 2 VC)
-dispatch.adb:10:24: high: overflow check might fail, cannot prove upper bound for X.F + 1 (e.g. when X = (F => Integer'Last) and X'Constrained = False) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X.F <= Integer'Last - 1) to subprogram at dispatch.ads:10]
+dispatch.adb:10:24: high: overflow check might fail, cannot prove upper bound for X.F + 1 (e.g. when X = (F => Integer'Last) and X'Constrained = False) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X.F <= Integer'Last - 1) to subprogram at dispatch.ads:10] [provers gave up before completing the proof]
 dispatch.adb:16:27: info: overflow check proved (CVC5: 2 VC)
 dispatch.adb:18:10: warning: unreachable code (CVC5: 1 VC)
 dispatch.adb:24:24: info: overflow check proved (CVC5: 2 VC)
@@ -13,17 +13,17 @@ dispatch.ads:10:13: info: implicit aspect Always_Terminates on "Incr2" has been 
 dispatch.ads:13:19: info: postcondition proved (CVC5: 1 VC)
 dispatch.ads:13:40: info: overflow check proved (CVC5: 2 VC)
 dispatch.ads:15:13: info: implicit aspect Always_Terminates on "Incr3" has been proved, subprogram will terminate
-dispatch.ads:18:41: medium: overflow check might fail, cannot prove upper bound for X.F + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+dispatch.ads:18:41: medium: overflow check might fail, cannot prove upper bound for X.F + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
 dispatch.ads:19:20: info: postcondition is stronger than class-wide postcondition (CVC5: 1 VC)
 dispatch.ads:19:20: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 dispatch.ads:19:73: info: overflow check proved (CVC5: 2 VC)
 dispatch.ads:21:13: info: implicit aspect Always_Terminates on "Incr4" has been proved, subprogram will terminate
 dispatch.ads:23:20: info: postcondition proved (CVC5: 1 VC)
-dispatch.ads:23:41: medium: overflow check might fail, cannot prove upper bound for X.F + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+dispatch.ads:23:41: medium: overflow check might fail, cannot prove upper bound for X.F + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
 dispatch.ads:25:13: info: implicit aspect Always_Terminates on "Incr5" has been proved, subprogram will terminate
 dispatch.ads:27:20: info: postcondition proved (Trivial: 1 VC)
-dispatch.ads:27:20: medium: postcondition might be weaker than class-wide postcondition
-dispatch.ads:28:41: medium: overflow check might fail, cannot prove upper bound for X.F + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+dispatch.ads:27:20: medium: postcondition might be weaker than class-wide postcondition [provers reached step limit before completing the proof]
+dispatch.ads:28:41: medium: overflow check might fail, cannot prove upper bound for X.F + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
 dispatch.ads:30:13: info: implicit aspect Always_Terminates on "Incr6" has been proved, subprogram will terminate
 dispatch.ads:33:20: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 dispatch.ads:33:73: info: overflow check proved (CVC5: 2 VC)

@@ -1,8 +1,8 @@
 assignment_error.adb:4:09: high: "X" is not initialized
-assignment_error.adb:4:11: medium: overflow check might fail, cannot prove upper bound for X + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
-longest_common_prefix.adb:8:15: medium: overflow check might fail, cannot prove upper bound for X + L [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at longest_common_prefix.ads:8 should mention X in a precondition]
+assignment_error.adb:4:11: medium: overflow check might fail, cannot prove upper bound for X + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
+longest_common_prefix.adb:8:15: medium: overflow check might fail, cannot prove upper bound for X + L [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at longest_common_prefix.ads:8 should mention X in a precondition] [provers gave up before completing the proof]
 longest_common_prefix.adb:8:17: medium: "L" might not be initialized
-longest_common_prefix.adb:9:20: medium: overflow check might fail, cannot prove upper bound for Y + L [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at longest_common_prefix.ads:8 should mention Y in a precondition]
+longest_common_prefix.adb:9:20: medium: overflow check might fail, cannot prove upper bound for Y + L [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at longest_common_prefix.ads:8 should mention Y in a precondition] [provers gave up before completing the proof]
 longest_common_prefix.adb:10:23: info: index check proved (CVC5: 4 VC)
 longest_common_prefix.adb:10:23: info: overflow check proved (CVC5: 4 VC)
 longest_common_prefix.adb:10:35: info: index check proved (CVC5: 4 VC)

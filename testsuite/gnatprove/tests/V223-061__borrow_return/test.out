@@ -1,11 +1,11 @@
 bar.adb:5:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
-bar.adb:8:12: medium: pointer dereference check might fail (e.g. when Z = null) [possible fix: loop at line 7 should mention Z in a loop invariant]
-bar.adb:9:12: medium: resource or memory leak might occur [possible fix: loop at line 7 should mention X in a loop invariant]
-bar.adb:13:09: medium: pointer dereference check might fail [possible fix: loop at line 7 should mention Z in a loop invariant]
-bar.adb:13:18: medium: pointer dereference check might fail [possible fix: loop at line 7 should mention Z in a loop invariant]
-bar.adb:13:22: medium: overflow check might fail, cannot prove lower bound for Z.all * 2 (e.g. when Z.all = -1073741825) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 7 should mention Z in a loop invariant]
+bar.adb:8:12: medium: pointer dereference check might fail (e.g. when Z = null) [possible fix: loop at line 7 should mention Z in a loop invariant] [provers reached step limit before completing the proof]
+bar.adb:9:12: medium: resource or memory leak might occur [possible fix: loop at line 7 should mention X in a loop invariant] [provers reached step limit before completing the proof]
+bar.adb:13:09: medium: pointer dereference check might fail [possible fix: loop at line 7 should mention Z in a loop invariant] [provers reached step limit before completing the proof]
+bar.adb:13:18: medium: pointer dereference check might fail [possible fix: loop at line 7 should mention Z in a loop invariant] [provers reached step limit before completing the proof]
+bar.adb:13:22: medium: overflow check might fail, cannot prove lower bound for Z.all * 2 (e.g. when Z.all = -1073741825) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 7 should mention Z in a loop invariant] [provers reached step limit before completing the proof]
 blob.adb:3:10: info: implicit aspect Always_Terminates on "Blob" has been proved, subprogram will terminate
-blob.adb:5:04: medium: resource or memory leak might occur at end of scope
+blob.adb:5:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 blob.adb:6:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 blob.adb:8:09: info: pointer dereference check proved (CVC5: 1 VC)
 blob.adb:9:14: info: initialization of "Res" proved
@@ -14,13 +14,13 @@ blob.adb:10:11: warning: unused assignment
 blob.adb:15:06: info: pointer dereference check proved (CVC5: 1 VC)
 blob.adb:15:10: warning: unused assignment
 blob.adb:15:15: info: pointer dereference check proved (CVC5: 1 VC)
-blob.adb:15:19: medium: overflow check might fail, cannot prove lower bound for Z.all * 2 (e.g. when Z.all = -1073741825) [reason for check: result of multiplication must fit in a 32-bits machine integer]
+blob.adb:15:19: medium: overflow check might fail, cannot prove lower bound for Z.all * 2 (e.g. when Z.all = -1073741825) [reason for check: result of multiplication must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
 blob.adb:17:06: info: absence of resource or memory leak proved (CVC5: 1 VC)
 blob.adb:17:06: warning: unused assignment
 foo.adb:5:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
-foo.adb:7:09: medium: pointer dereference check might fail (e.g. when Z = null)
+foo.adb:7:09: medium: pointer dereference check might fail (e.g. when Z = null) [provers reached step limit before completing the proof]
 foo.adb:8:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
-foo.adb:13:06: medium: pointer dereference check might fail
-foo.adb:13:15: medium: pointer dereference check might fail
-foo.adb:13:19: medium: overflow check might fail, cannot prove lower bound for Z.all * 2 (e.g. when Z.all = -1073741825) [reason for check: result of multiplication must fit in a 32-bits machine integer]
+foo.adb:13:06: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+foo.adb:13:15: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+foo.adb:13:19: medium: overflow check might fail, cannot prove lower bound for Z.all * 2 (e.g. when Z.all = -1073741825) [reason for check: result of multiplication must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
 foo.adb:15:06: info: absence of resource or memory leak proved (CVC5: 1 VC)

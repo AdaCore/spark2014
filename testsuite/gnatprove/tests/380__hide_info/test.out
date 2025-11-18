@@ -1,13 +1,13 @@
 main.adb:5:16: info: implicit aspect Always_Terminates on "My_And" has been proved, subprogram will terminate
 main.adb:7:16: info: implicit aspect Always_Terminates on "Use_And" has been proved, subprogram will terminate
-main.adb:8:17: medium: postcondition might fail (e.g. when Use_And'Result = True and X = False and Y = True) [possible fix: add or complete related loop invariants or postconditions]
+main.adb:8:17: medium: postcondition might fail (e.g. when Use_And'Result = True and X = False and Y = True) [possible fix: add or complete related loop invariants or postconditions] [provers gave up before completing the proof]
 main.adb:11:16: info: implicit aspect Always_Terminates on "Use_And_2" has been proved, subprogram will terminate
 main.adb:12:17: info: postcondition proved (CVC5: 3 VC)
 main.adb:14:16: info: implicit aspect Always_Terminates on "Use_And_3" has been proved, subprogram will terminate
-main.adb:15:17: medium: postcondition might fail (e.g. when Use_And_3'Result = True and X = False and Y = True) [possible fix: add or complete related loop invariants or postconditions]
+main.adb:15:17: medium: postcondition might fail (e.g. when Use_And_3'Result = True and X = False and Y = True) [possible fix: add or complete related loop invariants or postconditions] [provers gave up before completing the proof]
 main.adb:31:16: info: implicit aspect Always_Terminates on "My_And" has been proved, subprogram will terminate
 main.adb:34:16: info: implicit aspect Always_Terminates on "Use_And" has been proved, subprogram will terminate
-main.adb:35:17: medium: postcondition might fail (e.g. when Use_And'Result = True and X = False and Y = True) [possible fix: add or complete related loop invariants or postconditions]
+main.adb:35:17: medium: postcondition might fail (e.g. when Use_And'Result = True and X = False and Y = True) [possible fix: add or complete related loop invariants or postconditions] [provers gave up before completing the proof]
 main.adb:37:16: info: implicit aspect Always_Terminates on "Use_And_2" has been proved, subprogram will terminate
 main.adb:38:17: info: postcondition proved (CVC5: 3 VC)
 main.adb:41:16: info: implicit aspect Always_Terminates on "Use_And_3" has been proved, subprogram will terminate
@@ -16,30 +16,30 @@ main.adb:60:16: info: implicit aspect Always_Terminates on "Rec_And" has been pr
 main.adb:60:16: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
 main.adb:60:16: warning: function contract might not be available on recursive calls [contracts-recursive]
 main.adb:61:57: info: subprogram variant proved (CVC5: 1 VC)
-main.adb:64:32: medium: postcondition might fail, cannot prove Rec_And'Result = Y (e.g. when Rec_And'Result = True and Y = False) [possible fix: add or complete related loop invariants or postconditions]
+main.adb:64:32: medium: postcondition might fail, cannot prove Rec_And'Result = Y (e.g. when Rec_And'Result = True and Y = False) [possible fix: add or complete related loop invariants or postconditions] [provers gave up before completing the proof]
 main.adb:69:16: info: implicit aspect Always_Terminates on "Rec_And_2" has been proved, subprogram will terminate
 main.adb:69:16: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
 main.adb:69:16: warning: function contract might not be available on recursive calls [contracts-recursive]
 main.adb:70:57: info: subprogram variant proved (CVC5: 1 VC)
 main.adb:73:21: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC)
 main.adb:79:16: info: implicit aspect Always_Terminates on "Use_Rec_And_2" has been proved, subprogram will terminate
-main.adb:80:17: medium: postcondition might fail (e.g. when Use_Rec_And_2'Result = True and X = False and Y = True) [possible fix: add or complete related loop invariants or postconditions]
+main.adb:80:17: medium: postcondition might fail (e.g. when Use_Rec_And_2'Result = True and X = False and Y = True) [possible fix: add or complete related loop invariants or postconditions] [provers gave up before completing the proof]
 main.adb:84:16: info: implicit aspect Always_Terminates on "Rec_And_3" has been proved, subprogram will terminate
 main.adb:84:16: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
 main.adb:84:16: warning: function contract might not be available on recursive calls [contracts-recursive]
 main.adb:85:57: info: subprogram variant proved (CVC5: 1 VC)
 main.adb:88:21: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC)
 main.adb:92:16: info: implicit aspect Always_Terminates on "Use_Rec_And_3" has been proved, subprogram will terminate
-main.adb:93:17: medium: postcondition might fail (e.g. when Use_Rec_And_3'Result = True and X = False and Y = True) [possible fix: add or complete related loop invariants or postconditions]
+main.adb:93:17: medium: postcondition might fail (e.g. when Use_Rec_And_3'Result = True and X = False and Y = True) [possible fix: add or complete related loop invariants or postconditions] [provers gave up before completing the proof]
 test_dispatch.adb:8:16: info: implicit aspect Always_Terminates on "Get_F" has been proved, subprogram will terminate
 test_dispatch.adb:13:06: info: data dependencies proved
 test_dispatch.adb:17:22: info: assertion proved (CVC5: 1 VC)
 test_dispatch.adb:21:06: info: data dependencies proved
 test_dispatch.adb:26:22: info: assertion proved (CVC5: 1 VC)
 test_dispatch.adb:30:06: info: data dependencies proved
-test_dispatch.adb:35:22: medium: assertion might fail
+test_dispatch.adb:35:22: medium: assertion might fail [provers reached step limit before completing the proof]
 test_dispatch.adb:39:06: info: data dependencies proved
-test_dispatch.adb:45:22: medium: assertion might fail
+test_dispatch.adb:45:22: medium: assertion might fail [provers reached step limit before completing the proof]
 test_traversal.adb:8:13: info: implicit aspect Always_Terminates on "Get_F" has been proved, subprogram will terminate
 test_traversal.adb:8:79: info: dynamic accessibility check proved (Trivial)
 test_traversal.adb:10:27: warning: "X" is not modified, parameter type could be rewritten as 'access constant R'
@@ -50,7 +50,7 @@ test_traversal.adb:21:14: info: postcondition proved (CVC5: 1 VC)
 test_traversal.adb:25:09: info: pointer dereference check proved (CVC5: 1 VC)
 test_traversal.adb:28:27: warning: "X" is not modified, parameter type could be rewritten as 'access constant R'
 test_traversal.adb:29:06: info: data dependencies proved
-test_traversal.adb:34:22: medium: assertion might fail
+test_traversal.adb:34:22: medium: assertion might fail [provers reached step limit before completing the proof]
 test_traversal.adb:38:06: info: data dependencies proved
-test_traversal.adb:40:14: medium: postcondition might fail
+test_traversal.adb:40:14: medium: postcondition might fail [provers reached step limit before completing the proof]
 test_traversal.adb:45:09: info: pointer dereference check proved (CVC5: 1 VC)

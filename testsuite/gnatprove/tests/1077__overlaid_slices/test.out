@@ -34,7 +34,7 @@ main.adb:44:14: warning: subprogram "P4" has no effect
 main.adb:46:74: info: overflow check proved (CVC5: 2 VC)
 main.adb:49:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: alignment of overlaid object (which is 1) must be a multiple of the alignment of Y (which is 8)] [possible fix: overlaid object should have an Alignment representation clause]
 main.adb:49:07: info: object is suitable for aliasing via address clause (Trivial)
-main.adb:52:22: high: types of aliased objects do not have the same size
+main.adb:52:22: high: types of aliased objects do not have the same size [provers reached step limit before completing the proof]
 main.adb:52:22: info: object is suitable for aliasing via address clause (Trivial)
 main.adb:52:22: info: range check proved (CVC5: 4 VC)
 main.adb:52:22: info: type is suitable as source for unchecked conversion (Trivial)
@@ -43,8 +43,8 @@ main.adb:52:37: warning: alignment of object is not precisely known [imprecise-a
 main.adb:55:07: info: analyzing call to "Parse_T1" in context
 main.adb:62:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 main.adb:64:14: warning: subprogram "P5" has no effect
-main.adb:67:07: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaid object should have an Alignment representation clause]
+main.adb:67:07: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaid object should have an Alignment representation clause] [provers reached step limit before completing the proof]
 main.adb:67:07: warning: address specification on "Y" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes through a potential alias, and valid reads [imprecise-address-specification] [E0012]
 main.adb:67:07: warning: launch "gnatprove --explain=E0012" for more information
-main.adb:70:22: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at line 64 should mention X in a precondition]
+main.adb:70:22: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at line 64 should mention X in a precondition] [provers reached step limit before completing the proof]
 main.adb:70:37: warning: alignment of object is not precisely known [imprecise-align]

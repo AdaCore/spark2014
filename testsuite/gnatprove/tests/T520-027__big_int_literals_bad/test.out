@@ -1,12 +1,12 @@
 test.adb:8:22: info: predicate check proved (Trivial: 1 VC)
-test.adb:8:22: medium: assertion might fail
+test.adb:8:22: medium: assertion might fail [provers reached step limit before completing the proof]
 test.adb:8:27: info: predicate check proved (Trivial: 1 VC)
 test.adb:14:22: info: predicate check proved (Trivial: 1 VC)
-test.adb:14:22: medium: assertion might fail
+test.adb:14:22: medium: assertion might fail [provers reached step limit before completing the proof]
 test.adb:14:27: info: predicate check proved (Trivial: 1 VC)
-test.ads:9:14: low: precondition might fail [possible explanation: the check might be unprovable due to proof limitations; use --info for more information]
+test.ads:9:14: low: precondition might fail [possible explanation: the check might be unprovable due to proof limitations; use --info for more information] [provers reached step limit before completing the proof]
 test.ads:9:14: warning: call to "From_String" is not handled precisely [imprecise-call]
 test.ads:9:72: info: predicate check proved (Trivial: 1 VC)
-test.ads:15:14: low: precondition might fail [possible explanation: the check might be unprovable due to proof limitations; use --info for more information]
+test.ads:15:14: low: precondition might fail [possible explanation: the check might be unprovable due to proof limitations; use --info for more information] [provers reached step limit before completing the proof]
 test.ads:15:14: warning: call to "From_String" is not handled precisely [imprecise-call]
 test.ads:15:35: info: predicate check proved (Trivial: 1 VC)

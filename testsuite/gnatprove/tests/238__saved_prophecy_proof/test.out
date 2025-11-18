@@ -21,9 +21,9 @@ main.adb:37:32: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:37:37: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:37:55: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:37:60: info: pointer dereference check proved (CVC5: 1 VC)
-main.adb:38:22: medium: assertion might fail
+main.adb:38:22: medium: assertion might fail [provers reached step limit before completing the proof]
 main.adb:38:23: info: pointer dereference check proved (CVC5: 1 VC)
-main.adb:38:28: medium: pointer dereference check might fail
+main.adb:38:28: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 main.adb:46:30: info: in reconstructed value at the end of the borrow at main.adb:46
 main.adb:46:30: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:48:11: info: pointer dereference check proved (CVC5: 1 VC)
@@ -35,9 +35,9 @@ main.adb:55:32: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:55:37: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:55:55: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:55:60: info: pointer dereference check proved (CVC5: 1 VC)
-main.adb:56:22: medium: assertion might fail
+main.adb:56:22: medium: assertion might fail [provers reached step limit before completing the proof]
 main.adb:56:23: info: pointer dereference check proved (CVC5: 1 VC)
-main.adb:56:28: medium: pointer dereference check might fail
+main.adb:56:28: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 main.adb:63:13: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:64:22: info: assertion proved (CVC5: 1 VC)
 main.adb:65:23: info: assertion proved (CVC5: 2 VC)
@@ -48,6 +48,6 @@ main.adb:66:46: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:66:51: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:66:68: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:67:08: info: pointer dereference check proved (CVC5: 1 VC)
-main.adb:68:22: medium: assertion might fail
+main.adb:68:22: medium: assertion might fail [provers reached step limit before completing the proof]
 main.adb:68:23: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:68:28: info: pointer dereference check proved (CVC5: 1 VC)

@@ -68,7 +68,7 @@ test_list_search.adb:43:32: medium: resource or memory leak might occur [possibl
 test_list_search.adb:44:37: medium: resource or memory leak might occur [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
 test_list_search.adb:44:71: medium: resource or memory leak might occur [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
 test_list_search.adb:49:07: medium: on exceptional exit at test_list_search.adb:48
-test_list_search.adb:49:07: medium: resource or memory leak might occur at end of scope
+test_list_search.adb:49:07: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 test_list_search.adb:55:13: info: loop invariant initialization proved (CVC5: 2 VC)
 test_list_search.adb:55:13: info: loop invariant preservation proved (CVC5: 2 VC)
 test_list_search.adb:56:33: info: loop invariant initialization proved (CVC5: 1 VC)

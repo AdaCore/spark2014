@@ -44,7 +44,7 @@ test_borrow_and_leaks.adb:52:14: info: exceptional case proved (CVC5: 1 VC)
 test_borrow_and_leaks.adb:52:41: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow_and_leaks.adb:55:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 test_borrow_and_leaks.adb:55:07: medium: on exceptional exit at test_borrow_and_leaks.adb:54
-test_borrow_and_leaks.adb:55:07: medium: resource or memory leak might occur at end of scope
+test_borrow_and_leaks.adb:55:07: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 test_borrow_and_leaks.adb:60:11: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow_and_leaks.adb:60:17: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test_borrow_and_leaks.adb:60:21: info: pointer dereference check proved (CVC5: 1 VC)
@@ -55,7 +55,7 @@ test_borrow_and_leaks.adb:63:38: info: pointer dereference check proved (CVC5: 1
 test_borrow_and_leaks.adb:63:43: info: in reconstructed value at the end of the borrow at test_borrow_and_leaks.adb:63
 test_borrow_and_leaks.adb:63:43: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow_and_leaks.adb:64:13: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
-test_borrow_and_leaks.adb:64:13: medium: resource or memory leak might occur at end of scope
+test_borrow_and_leaks.adb:64:13: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 test_borrow_and_leaks.adb:64:13: medium: when an exception is raised at test_borrow_and_leaks.adb:67
 test_borrow_and_leaks.adb:69:17: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow_and_leaks.adb:69:23: info: absence of resource or memory leak proved (CVC5: 1 VC)
@@ -110,7 +110,7 @@ test_borrow_and_leaks.adb:121:14: info: exceptional case proved (CVC5: 1 VC)
 test_borrow_and_leaks.adb:121:41: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow_and_leaks.adb:124:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 test_borrow_and_leaks.adb:124:07: medium: on exceptional exit at test_borrow_and_leaks.adb:123
-test_borrow_and_leaks.adb:124:07: medium: resource or memory leak might occur at end of scope
+test_borrow_and_leaks.adb:124:07: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 test_borrow_and_leaks.adb:129:11: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow_and_leaks.adb:129:17: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test_borrow_and_leaks.adb:129:21: info: pointer dereference check proved (CVC5: 1 VC)
@@ -121,7 +121,7 @@ test_borrow_and_leaks.adb:132:38: info: pointer dereference check proved (CVC5: 
 test_borrow_and_leaks.adb:132:43: info: in reconstructed value at the end of the borrow at test_borrow_and_leaks.adb:132
 test_borrow_and_leaks.adb:132:43: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow_and_leaks.adb:133:13: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
-test_borrow_and_leaks.adb:133:13: medium: resource or memory leak might occur at end of scope
+test_borrow_and_leaks.adb:133:13: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 test_borrow_and_leaks.adb:133:13: medium: when an exception is raised at test_borrow_and_leaks.adb:136
 test_borrow_and_leaks.adb:136:16: info: only expected exception raised (CVC5: 1 VC)
 test_borrow_and_leaks.adb:138:17: info: pointer dereference check proved (CVC5: 1 VC)
@@ -133,35 +133,35 @@ test_call_basic.adb:12:34: info: exceptional case proved (CVC5: 2 VC)
 test_call_basic.adb:12:49: info: exceptional case proved (CVC5: 1 VC)
 test_call_basic.adb:12:62: info: exceptional case proved (CVC5: 1 VC)
 test_call_basic.adb:27:34: info: exceptional case proved (Trivial: 1 VC)
-test_call_basic.adb:31:07: medium: unexpected exception might be raised [reason for check: Raise_E1_Only_Bad_1 allows propagating E1] [possible explanation: E2 and E3 might be unexpectedly raised]
+test_call_basic.adb:31:07: medium: unexpected exception might be raised [reason for check: Raise_E1_Only_Bad_1 allows propagating E1] [possible explanation: E2 and E3 might be unexpectedly raised] [provers gave up before completing the proof]
 test_call_basic.adb:37:34: info: exceptional case proved (Trivial: 1 VC)
 test_call_basic.adb:41:07: info: only expected exception raised (CVC5: 1 VC)
 test_call_basic.adb:46:34: info: exceptional case proved (Trivial: 1 VC)
-test_call_basic.adb:53:10: medium: unexpected exception might be raised [reason for check: Raise_E1_Only_Bad_2 allows propagating E1] [possible explanation: E2 might be unexpectedly raised]
+test_call_basic.adb:53:10: medium: unexpected exception might be raised [reason for check: Raise_E1_Only_Bad_2 allows propagating E1] [possible explanation: E2 might be unexpectedly raised] [provers gave up before completing the proof]
 test_call_basic.adb:59:34: info: exceptional case proved (Trivial: 1 VC)
 test_call_basic.adb:64:10: info: only expected exception raised (CVC5: 1 VC)
 test_call_basic.adb:72:39: info: exceptional case proved (Trivial: 1 VC)
-test_call_basic.adb:76:07: medium: unexpected exception might be raised [reason for check: Raise_E1_Or_E2_Bad_1 allows propagating E1 and E2] [possible explanation: E3 might be unexpectedly raised]
+test_call_basic.adb:76:07: medium: unexpected exception might be raised [reason for check: Raise_E1_Or_E2_Bad_1 allows propagating E1 and E2] [possible explanation: E3 might be unexpectedly raised] [provers gave up before completing the proof]
 test_call_basic.adb:82:39: info: exceptional case proved (Trivial: 1 VC)
 test_call_basic.adb:86:07: info: only expected exception raised (CVC5: 1 VC)
 test_call_basic.adb:91:39: info: exceptional case proved (Trivial: 1 VC)
-test_call_basic.adb:98:10: medium: unexpected exception might be raised [reason for check: Raise_E1_Or_E2_Bad_2 allows propagating E1 and E2] [possible explanation: E3 might be unexpectedly raised]
+test_call_basic.adb:98:10: medium: unexpected exception might be raised [reason for check: Raise_E1_Or_E2_Bad_2 allows propagating E1 and E2] [possible explanation: E3 might be unexpectedly raised] [provers gave up before completing the proof]
 test_call_basic.adb:106:39: info: exceptional case proved (Trivial: 1 VC)
 test_call_basic.adb:111:10: info: only expected exception raised (CVC5: 1 VC)
 test_call_others.adb:12:34: info: exceptional case proved (CVC5: 1 VC)
 test_call_others.adb:12:51: info: exceptional case proved (Trivial: 1 VC)
-test_call_others.adb:17:10: medium: unexpected exception might be raised [reason for check: No_E1_Bad allows propagating any exception but E1] [possible explanation: E1 might be unexpectedly raised]
+test_call_others.adb:17:10: medium: unexpected exception might be raised [reason for check: No_E1_Bad allows propagating any exception but E1] [possible explanation: E1 might be unexpectedly raised] [provers gave up before completing the proof]
 test_call_others.adb:25:34: info: exceptional case proved (CVC5: 1 VC)
 test_call_others.adb:25:51: info: exceptional case proved (Trivial: 1 VC)
 test_call_others.adb:38:34: info: exceptional case proved (CVC5: 1 VC)
 test_call_others.adb:38:47: info: exceptional case proved (CVC5: 1 VC)
 test_call_others.adb:38:64: info: exceptional case proved (Trivial: 1 VC)
-test_call_others.adb:43:10: medium: unexpected exception might be raised [reason for check: No_E1_Bad_2 allows propagating any exception but E1] [possible explanation: E1 might be unexpectedly raised]
+test_call_others.adb:43:10: medium: unexpected exception might be raised [reason for check: No_E1_Bad_2 allows propagating any exception but E1] [possible explanation: E1 might be unexpectedly raised] [provers gave up before completing the proof]
 test_call_others.adb:51:34: info: exceptional case proved (CVC5: 1 VC)
 test_call_others.adb:51:47: info: exceptional case proved (CVC5: 1 VC)
 test_call_others.adb:51:64: info: exceptional case proved (Trivial: 1 VC)
 test_call_others.adb:64:38: info: exceptional case proved (Trivial: 1 VC)
-test_call_others.adb:79:34: medium: exceptional case might fail [possible fix: subprogram at line 77 should mention A in a precondition]
+test_call_others.adb:79:34: medium: exceptional case might fail [possible fix: subprogram at line 77 should mention A in a precondition] [provers gave up before completing the proof]
 test_call_others.adb:79:51: info: exceptional case proved (Trivial: 1 VC)
 test_call_others.adb:84:10: info: only expected exception raised (CVC5: 1 VC)
 test_call_others.adb:92:34: info: exceptional case proved (CVC5: 1 VC)
@@ -178,7 +178,7 @@ test_invariants.ads:14:14: info: for X at the end of Q at test_invariants.ads:14
 test_invariants.ads:14:14: info: invariant check proved (CVC5: 1 VC)
 test_invariants.ads:14:14: medium: for X at the end of Q at test_invariants.ads:14
 test_invariants.ads:14:14: medium: in inlined invariant at test_invariants.ads:23
-test_invariants.ads:14:14: medium: invariant check might fail, cannot prove F < G (e.g. when B = True and X = (F => 0, G => 1))
+test_invariants.ads:14:14: medium: invariant check might fail, cannot prove F < G (e.g. when B = True and X = (F => 0, G => 1)) [provers reached step limit before completing the proof]
 test_invariants.ads:14:14: medium: on exceptional exit at test_invariants.adb:12
 test_invariants.ads:15:33: info: exceptional case proved (Trivial: 1 VC)
 test_invariants.ads:19:09: info: invariant check proved on default value (CVC5: 1 VC)
@@ -194,7 +194,7 @@ test_parameter_passing.adb:36:07: info: only expected exception raised (CVC5: 1 
 test_parameter_passing.adb:36:07: warning: assuming "P" always terminates
 test_parameter_passing.adb:36:07: warning: no Always_Terminates aspect available for "P" [assumed-always-terminates]
 test_parameter_passing.adb:48:28: medium: "X" might not be initialized in "Test_Unknown" [reason for check: OUT parameter should be fully initialized on return] [possible explanation: value of "X" is unknown following exceptional exit] [possible fix: initialize "X" on all paths or annotate it with aspect Relaxed_Initialization]
-test_parameter_passing.adb:49:33: medium: exceptional case might fail
+test_parameter_passing.adb:49:33: medium: exceptional case might fail [provers reached step limit before completing the proof]
 test_parameter_passing.adb:49:37: high: "X" is not initialized [possible explanation: value of "X" is unknown following exceptional exit]
 test_parameter_passing.adb:54:07: info: only expected exception raised (CVC5: 1 VC)
 test_parameter_passing.adb:54:07: warning: assuming "P" always terminates
@@ -211,7 +211,7 @@ test_relaxed_parameters.adb:29:10: info: initialization check proved (CVC5: 2 VC
 test_relaxed_parameters.adb:29:10: info: predicate check proved (CVC5: 1 VC)
 test_relaxed_parameters.adb:29:10: info: predicate check proved (CVC5: 1 VC)
 test_relaxed_parameters.adb:29:10: medium: in value of subprogram parameter after the call when an exception is raised at test_relaxed_parameters.adb:29
-test_relaxed_parameters.adb:29:10: medium: initialization check might fail [possible fix: call at line 29 should mention X'Initialized (for argument X) in a postcondition]
+test_relaxed_parameters.adb:29:10: medium: initialization check might fail [possible fix: call at line 29 should mention X'Initialized (for argument X) in a postcondition] [provers reached step limit before completing the proof]
 test_relaxed_parameters.adb:35:33: info: exceptional case proved (CVC5: 2 VC)
 test_relaxed_parameters.adb:39:12: info: predicate check proved (CVC5: 1 VC)
 test_relaxed_parameters.adb:43:22: info: initialization of "X" proved

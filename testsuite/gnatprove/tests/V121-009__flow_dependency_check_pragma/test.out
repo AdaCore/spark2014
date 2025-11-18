@@ -1,6 +1,6 @@
 assert_flow.adb:1:11: warning: subprogram "Assert_Flow" has no effect
 assert_flow.adb:3:24: info: data dependencies proved
-assert_flow.adb:18:22: medium: assertion might fail
+assert_flow.adb:18:22: medium: assertion might fail [provers gave up before completing the proof]
 assert_flow.adb:19:22: info: assertion proved (CVC5: 1 VC)
 p.adb:1:32: info: initialization of "Y1" proved
 p.adb:1:36: info: initialization of "Y2" proved

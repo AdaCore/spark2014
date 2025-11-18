@@ -1,14 +1,14 @@
 typeinv.adb:6:14: medium: in inlined invariant at typeinv.ads:10
-typeinv.adb:6:14: medium: invariant check might fail, cannot prove Is_Valid (T) (e.g. when X = 1) [possible fix: subprogram at typeinv.ads:4 should mention X in a precondition]
-typeinv.adb:6:17: high: range check might fail, cannot prove lower bound for X (e.g. when X = -1) [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (X >= Integer(T'First)) to subprogram at typeinv.ads:4]
+typeinv.adb:6:14: medium: invariant check might fail, cannot prove Is_Valid (T) (e.g. when X = 1) [possible fix: subprogram at typeinv.ads:4 should mention X in a precondition] [provers gave up before completing the proof]
+typeinv.adb:6:17: high: range check might fail, cannot prove lower bound for X (e.g. when X = -1) [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (X >= Integer(T'First)) to subprogram at typeinv.ads:4] [provers gave up before completing the proof]
 typeinv.adb:12:14: info: division check proved (CVC5: 1 VC)
 typeinv.ads:4:13: info: for the result of New_T at typeinv.ads:4
 typeinv.ads:4:13: info: implicit aspect Always_Terminates on "New_T" has been proved, subprogram will terminate
 typeinv.ads:4:13: info: invariant check proved (CVC5: 1 VC)
 typeinv.ads:6:14: medium: for X at the end of Divide at typeinv.ads:6
 typeinv.ads:6:14: medium: in inlined invariant at typeinv.ads:10
-typeinv.ads:6:14: medium: invariant check might fail, cannot prove Is_Valid (T) (e.g. when X = 2)
+typeinv.ads:6:14: medium: invariant check might fail, cannot prove Is_Valid (T) (e.g. when X = 2) [provers gave up before completing the proof]
 typeinv.ads:9:09: medium: in inlined invariant at typeinv.ads:10
-typeinv.ads:9:09: medium: invariant check might fail on default value, cannot prove Is_Valid (T)
+typeinv.ads:9:09: medium: invariant check might fail on default value, cannot prove Is_Valid (T) [provers gave up before completing the proof]
 typeinv.ads:12:13: info: implicit aspect Always_Terminates on "Is_Valid" has been proved, subprogram will terminate
 typeinv.ads:13:10: info: division check proved (CVC5: 1 VC)

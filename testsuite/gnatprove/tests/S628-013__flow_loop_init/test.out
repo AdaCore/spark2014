@@ -1,5 +1,5 @@
 show_composite_types_shortcoming.adb:5:24: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 show_composite_types_shortcoming.adb:7:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 show_composite_types_shortcoming.adb:9:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
-show_composite_types_shortcoming.adb:9:16: medium: array index check might fail [reason for check: value must be a valid index into the array]
+show_composite_types_shortcoming.adb:9:16: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers gave up before completing the proof]
 show_composite_types_shortcoming.ads:5:25: medium: "A" might not be initialized in "Init_Loop" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "A" on all paths, make "A" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]

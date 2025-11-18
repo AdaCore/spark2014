@@ -16,7 +16,7 @@ callee2.adb:23:14: warning: unused assignment
 callee2.adb:33:04: info: only expected exception raised (CVC5: 1 VC)
 cases1.adb:2:08: info: data dependencies proved
 cases1.adb:8:34: info: exceptional case proved (CVC5: 1 VC)
-cases1.adb:9:34: medium: exceptional case might fail [possible fix: subprogram at line 6 should mention B in a precondition]
+cases1.adb:9:34: medium: exceptional case might fail [possible fix: subprogram at line 6 should mention B in a precondition] [provers gave up before completing the proof]
 cases1.adb:10:11: info: data dependencies proved
 cases1.adb:19:25: info: assertion proved (CVC5: 1 VC)
 cases1.adb:24:04: high: "A" is not initialized
@@ -28,7 +28,7 @@ choice1.adb:3:08: info: flow dependencies proved
 choice1.adb:9:40: info: exceptional case proved (CVC5: 1 VC)
 choice1.adb:9:52: info: exceptional case proved (CVC5: 1 VC)
 choice1.adb:20:04: info: only expected exception raised (CVC5: 1 VC)
-choice1.adb:21:04: medium: unexpected exception might be raised [reason for check: Choice1 allows propagating no exceptions] [possible explanation: Program_Error might be unexpectedly raised]
+choice1.adb:21:04: medium: unexpected exception might be raised [reason for check: Choice1 allows propagating no exceptions] [possible explanation: Program_Error might be unexpectedly raised] [provers gave up before completing the proof]
 copy1.adb:1:34: info: initialization of "Z" proved
 copy1.adb:2:08: info: flow dependencies proved
 copy1.adb:13:04: info: only expected exception raised (CVC5: 1 VC)
@@ -56,14 +56,14 @@ depends4.adb:9:50: info: exceptional case proved (Trivial: 1 VC)
 depends4.adb:10:11: info: flow dependencies proved
 depends4.adb:22:04: info: only expected exception raised (CVC5: 1 VC)
 depends4.adb:25:07: high: "Z" is not initialized [possible explanation: value of "Z" is unknown following exceptional exit]
-depends4.adb:25:22: medium: assertion might fail
+depends4.adb:25:22: medium: assertion might fail [provers gave up before completing the proof]
 depends5.adb:2:08: info: data dependencies proved
 depends5.adb:8:33: info: initialization of "Y" proved
 depends5.adb:9:50: info: exceptional case proved (Trivial: 1 VC)
 depends5.adb:10:11: info: flow dependencies proved
 depends5.adb:22:04: info: only expected exception raised (CVC5: 1 VC)
 depends5.adb:25:07: high: "Z" is not initialized [possible explanation: value of "Z" is unknown following exceptional exit]
-depends5.adb:25:22: medium: assertion might fail
+depends5.adb:25:22: medium: assertion might fail [provers gave up before completing the proof]
 effect.adb:5:45: info: exceptional case proved (CVC5: 1 VC)
 effect1.adb:1:33: info: initialization of "Y" proved
 effect1.adb:2:08: info: flow dependencies proved
@@ -93,7 +93,7 @@ global_havoc.adb:25:45: medium: "G" might not be initialized [possible explanati
 global_havoc.adb:28:07: info: only expected exception raised (CVC5: 1 VC)
 global_havoc.adb:31:10: high: "G" is not an input in the Global contract of subprogram "Test" at line 23
 global_havoc.adb:31:10: high: either make "G" an input in the Global contract or initialize it before use
-global_havoc.adb:31:25: medium: assertion might fail
+global_havoc.adb:31:25: medium: assertion might fail [provers gave up before completing the proof]
 global_havoc.adb:34:04: info: precondition proved (Trivial: 1 VC)
 inout1.adb:1:32: info: initialization of "Z" proved
 inout1.adb:2:03: info: flow dependencies proved
@@ -106,7 +106,7 @@ main.adb:1:20: warning: unused variable "B"
 main.adb:1:36: info: initialization of "Z" proved
 main.adb:2:08: medium: missing dependency "null => B"
 main.adb:2:29: medium: incorrect dependency "Z => B"
-main.adb:3:34: medium: postcondition might fail, cannot prove Z = 1
+main.adb:3:34: medium: postcondition might fail, cannot prove Z = 1 [provers gave up before completing the proof]
 main.adb:19:07: medium: "By_Copy" might not be initialized in "Try" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize "By_Copy" on all paths or make "By_Copy" an IN OUT parameter]
 main.adb:20:07: high: "By_Reference" is not initialized in "Try" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "By_Reference" on all paths, make "By_Reference" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 main.adb:20:07: warning: unused variable "By_Reference"
@@ -115,15 +115,15 @@ main.adb:23:19: info: postcondition proved (Trivial: 1 VC)
 main.adb:24:50: info: exceptional case proved (CVC5: 1 VC)
 main.adb:24:77: info: exceptional case proved (CVC5: 1 VC)
 main.adb:37:04: info: initialization of "By_R" proved
-main.adb:41:19: medium: assertion might fail [possible fix: subprogram at line 1 should mention A in a precondition]
+main.adb:41:19: medium: assertion might fail [possible fix: subprogram at line 1 should mention A in a precondition] [provers gave up before completing the proof]
 main.adb:41:21: info: division check proved (CVC5: 1 VC)
 main.adb:42:04: info: only expected exception raised (CVC5: 1 VC)
 main.adb:42:04: info: precondition proved (Trivial: 1 VC)
 main.adb:45:14: info: overflow check proved (CVC5: 2 VC)
-main.adb:47:12: medium: overflow check might fail, cannot prove upper bound for - Integer (By_C) [reason for check: result of negation must fit in a 32-bits machine integer] [possible fix: postcondition of call at line 42 should mention By_Copy (for argument By_C)]
+main.adb:47:12: medium: overflow check might fail, cannot prove upper bound for - Integer (By_C) [reason for check: result of negation must fit in a 32-bits machine integer] [possible fix: postcondition of call at line 42 should mention By_Copy (for argument By_C)] [provers gave up before completing the proof]
 main.adb:51:09: high: "By_U" is not initialized [possible explanation: value of "By_U" is unknown following exceptional exit]
-main.adb:51:19: medium: overflow check might fail, cannot prove lower bound for By_U.C + By_R.C [reason for check: result of addition must fit in a 32-bits machine integer]
-main.adb:51:28: medium: overflow check might fail, cannot prove lower bound for By_U.C + By_R.C + Integer (By_C) [reason for check: result of addition must fit in a 32-bits machine integer]
+main.adb:51:19: medium: overflow check might fail, cannot prove lower bound for By_U.C + By_R.C [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
+main.adb:51:28: medium: overflow check might fail, cannot prove lower bound for By_U.C + By_R.C + Integer (By_C) [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
 main.adb:51:39: high: "By_C" is not initialized
 main0.adb:1:31: info: initialization of "Y" proved
 main0.adb:2:08: info: data dependencies proved
@@ -135,12 +135,12 @@ main2.adb:17:35: info: initialization of "Y" proved
 main2.adb:18:06: info: flow dependencies proved
 main2.adb:19:14: info: postcondition proved (CVC5: 2 VC)
 main2.adb:23:07: info: only expected exception raised (CVC5: 1 VC)
-reclaim_call_1.adb:3:04: medium: resource or memory leak might occur at end of scope
+reclaim_call_1.adb:3:04: medium: resource or memory leak might occur at end of scope [provers gave up before completing the proof]
 reclaim_call_1.adb:13:09: info: pointer dereference check proved (CVC5: 1 VC)
 reclaim_call_1.adb:14:07: info: only expected exception raised (CVC5: 1 VC)
 reclaim_call_1.adb:17:12: info: pointer dereference check proved (CVC5: 1 VC)
 reclaim_call_1.adb:19:06: info: pointer dereference check proved (CVC5: 1 VC)
-reclaim_call_2.adb:3:04: medium: resource or memory leak might occur at end of scope
+reclaim_call_2.adb:3:04: medium: resource or memory leak might occur at end of scope [provers gave up before completing the proof]
 reclaim_call_2.adb:14:15: info: pointer dereference check proved (CVC5: 1 VC)
 reclaim_call_2.adb:14:19: info: division check proved (CVC5: 1 VC)
 reclaim_call_2.adb:15:15: info: pointer dereference check proved (CVC5: 1 VC)
@@ -148,7 +148,7 @@ reclaim_call_2.adb:16:13: info: only expected exception raised (CVC5: 1 VC)
 reclaim_call_2.adb:18:15: info: pointer dereference check proved (CVC5: 1 VC)
 reclaim_call_2.adb:23:25: info: assertion proved (CVC5: 1 VC)
 reclaim_call_2.adb:23:27: info: pointer dereference check proved (CVC5: 1 VC)
-reclaim_call_3.adb:3:04: medium: resource or memory leak might occur at end of scope
+reclaim_call_3.adb:3:04: medium: resource or memory leak might occur at end of scope [provers gave up before completing the proof]
 reclaim_call_3.adb:15:15: info: pointer dereference check proved (CVC5: 1 VC)
 reclaim_call_3.adb:15:19: info: division check proved (CVC5: 1 VC)
 reclaim_call_3.adb:16:15: info: pointer dereference check proved (CVC5: 1 VC)
@@ -157,18 +157,18 @@ reclaim_call_3.adb:19:15: info: pointer dereference check proved (CVC5: 1 VC)
 reclaim_call_3.adb:23:15: info: pointer dereference check proved (CVC5: 1 VC)
 reclaim_call_3.adb:27:25: info: assertion proved (CVC5: 1 VC)
 reclaim_call_3.adb:27:27: info: pointer dereference check proved (CVC5: 1 VC)
-reclaim_raise_1.adb:3:04: medium: resource or memory leak might occur at end of scope
+reclaim_raise_1.adb:3:04: medium: resource or memory leak might occur at end of scope [provers gave up before completing the proof]
 reclaim_raise_1.adb:8:09: info: pointer dereference check proved (CVC5: 1 VC)
 reclaim_raise_1.adb:12:12: info: pointer dereference check proved (CVC5: 1 VC)
 reclaim_raise_1.adb:14:06: info: pointer dereference check proved (CVC5: 1 VC)
-reclaim_raise_2.adb:3:04: medium: resource or memory leak might occur at end of scope
+reclaim_raise_2.adb:3:04: medium: resource or memory leak might occur at end of scope [provers gave up before completing the proof]
 reclaim_raise_2.adb:9:15: info: pointer dereference check proved (CVC5: 1 VC)
 reclaim_raise_2.adb:9:19: info: division check proved (CVC5: 1 VC)
 reclaim_raise_2.adb:10:15: info: pointer dereference check proved (CVC5: 1 VC)
 reclaim_raise_2.adb:13:15: info: pointer dereference check proved (CVC5: 1 VC)
 reclaim_raise_2.adb:18:25: info: assertion proved (CVC5: 1 VC)
 reclaim_raise_2.adb:18:27: info: pointer dereference check proved (CVC5: 1 VC)
-reclaim_raise_3.adb:3:04: medium: resource or memory leak might occur at end of scope
+reclaim_raise_3.adb:3:04: medium: resource or memory leak might occur at end of scope [provers gave up before completing the proof]
 reclaim_raise_3.adb:9:15: info: pointer dereference check proved (CVC5: 1 VC)
 reclaim_raise_3.adb:9:19: info: division check proved (CVC5: 1 VC)
 reclaim_raise_3.adb:10:15: info: pointer dereference check proved (CVC5: 1 VC)

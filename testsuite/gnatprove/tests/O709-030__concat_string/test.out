@@ -1,5 +1,5 @@
 concat_string.adb:1:10: info: implicit aspect Always_Terminates on "Concat_String" has been proved, subprogram will terminate
-concat_string.adb:4:21: low: range check might fail, cannot prove upper bound for S & ";" [reason for check: default component value must fit in the type] [possible fix: subprogram at line 1 should mention S in a precondition]
+concat_string.adb:4:21: low: range check might fail, cannot prove upper bound for S & ";" [reason for check: default component value must fit in the type] [possible fix: subprogram at line 1 should mention S in a precondition] [provers gave up before completing the proof]
 concat_string.adb:5:31: info: range check proved (CVC5: 2 VC)
 concat_string.adb:5:40: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
-concat_string.adb:7:14: low: range check might fail, cannot prove upper bound for S1 & S2 [reason for check: returned value must fit in the result type of the function]
+concat_string.adb:7:14: low: range check might fail, cannot prove upper bound for S1 & S2 [reason for check: returned value must fit in the result type of the function] [provers gave up before completing the proof]

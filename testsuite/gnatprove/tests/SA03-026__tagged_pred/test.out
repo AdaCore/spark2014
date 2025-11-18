@@ -5,4 +5,4 @@ preds.ads:11:09: info: predicate check proved on default value (CVC5: 1 VC)
 preds.ads:11:09: info: predicate check proved on default value (CVC5: 1 VC)
 preds.ads:11:09: medium: for inherited predicate at preds.ads:9
 preds.ads:11:09: medium: in default value of private type at preds.ads:11
-preds.ads:11:09: medium: predicate check might fail on default value
+preds.ads:11:09: medium: predicate check might fail on default value [provers reached step limit before completing the proof]

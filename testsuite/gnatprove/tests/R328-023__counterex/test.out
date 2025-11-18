@@ -1,4 +1,4 @@
 p.ads:7:13: info: implicit aspect Always_Terminates on "Last_Length" has been proved, subprogram will terminate
-p.ads:8:14: high: overflow check might fail, cannot prove lower bound for A'Last - B'First (e.g. when A'First = 0 and A'Last = Integer'First and B'First = 1 and B'Last = 0) [reason for check: result of subtraction must fit in a 32-bits machine integer]
-p.ads:8:24: high: overflow check might fail, cannot prove lower bound for A'Last - B'First - 2 * B'Length (e.g. when A'First = 0 and A'Last = Integer'First and B = (0 => Integer'First)) [reason for check: result of subtraction must fit in a 32-bits machine integer]
+p.ads:8:14: high: overflow check might fail, cannot prove lower bound for A'Last - B'First (e.g. when A'First = 0 and A'Last = Integer'First and B'First = 1 and B'Last = 0) [reason for check: result of subtraction must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
+p.ads:8:24: high: overflow check might fail, cannot prove lower bound for A'Last - B'First - 2 * B'Length (e.g. when A'First = 0 and A'Last = Integer'First and B = (0 => Integer'First)) [reason for check: result of subtraction must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
 p.ads:8:31: info: range check proved (CVC5: 2 VC)

@@ -25,6 +25,6 @@ main.adb:20:30: info: index check proved (CVC5: 2 VC)
 main.adb:21:19: info: assertion proved (CVC5: 1 VC)
 main.adb:21:22: info: index check proved (CVC5: 2 VC)
 main.adb:21:30: info: index check proved (CVC5: 2 VC)
-main.adb:22:19: medium: assertion might fail
+main.adb:22:19: medium: assertion might fail [provers reached step limit before completing the proof]
 main.adb:22:22: info: index check proved (CVC5: 2 VC)
 main.adb:22:30: info: index check proved (CVC5: 2 VC)

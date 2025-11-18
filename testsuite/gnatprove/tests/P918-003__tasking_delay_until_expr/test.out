@@ -1,8 +1,8 @@
-main.adb:6:27: medium: range check might fail
-main.adb:6:44: medium: divide by zero might fail
-main.adb:6:44: medium: range check might fail [reason for check: input value must fit in parameter type]
+main.adb:6:27: medium: range check might fail [provers reached step limit before completing the proof]
+main.adb:6:44: medium: divide by zero might fail [provers gave up before completing the proof]
+main.adb:6:44: medium: range check might fail [reason for check: input value must fit in parameter type] [provers reached step limit before completing the proof]
 main2.adb:5:13: info: implicit aspect Always_Terminates on "Div" has been proved, subprogram will terminate
 main2.adb:11:16: info: division check proved (CVC5: 1 VC)
-main2.adb:11:16: medium: range check might fail [reason for check: returned value must fit in the result type of the function] [possible fix: precondition of subprogram at line 5 should mention A]
-main2.adb:16:27: medium: range check might fail [possible fix: you should consider adding a postcondition to function Div or turning it into an expression function]
-main2.adb:16:29: medium: precondition might fail
+main2.adb:11:16: medium: range check might fail [reason for check: returned value must fit in the result type of the function] [possible fix: precondition of subprogram at line 5 should mention A] [provers reached step limit before completing the proof]
+main2.adb:16:27: medium: range check might fail [possible fix: you should consider adding a postcondition to function Div or turning it into an expression function] [provers gave up before completing the proof]
+main2.adb:16:29: medium: precondition might fail [provers gave up before completing the proof]

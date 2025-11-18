@@ -1,14 +1,14 @@
 usergroup_examples.adb:35:11: info: flow dependencies proved
-usergroup_examples.adb:39:32: high: range check might fail, cannot prove lower bound for (Current + 1) mod Index_T'Last (e.g. when Current = Index_T'Last-1) [reason for check: result of operation must fit in the target type of the assignment] [possible fix: subprogram at line 33 should mention Current in a precondition]
+usergroup_examples.adb:39:32: high: range check might fail, cannot prove lower bound for (Current + 1) mod Index_T'Last (e.g. when Current = Index_T'Last-1) [reason for check: result of operation must fit in the target type of the assignment] [possible fix: subprogram at line 33 should mention Current in a precondition] [provers reached step limit before completing the proof]
 usergroup_examples.adb:39:32: info: division check proved (CVC5: 1 VC)
 usergroup_examples.adb:43:04: warning: analyzing unreferenced function "Example_3" [unreferenced-function]
 usergroup_examples.adb:43:13: info: implicit aspect Always_Terminates on "Example_3" has been proved, subprogram will terminate
 usergroup_examples.adb:48:07: info: initialization of "Tmp" proved
-usergroup_examples.adb:52:27: high: range check might fail, cannot prove upper bound for Tmp (e.g. when Tmp = 18446744071562067970) [reason for check: value must be convertible to the target type of the conversion]
+usergroup_examples.adb:52:27: high: range check might fail, cannot prove upper bound for Tmp (e.g. when Tmp = 18446744071562067970) [reason for check: value must be convertible to the target type of the conversion] [provers gave up before completing the proof]
 usergroup_examples.adb:52:32: info: division check proved (CVC5: 1 VC)
-usergroup_examples.adb:52:32: medium: array index check might fail [reason for check: result of operation must be a valid index into the array]
+usergroup_examples.adb:52:32: medium: array index check might fail [reason for check: result of operation must be a valid index into the array] [provers reached step limit before completing the proof]
 usergroup_examples.adb:56:13: info: implicit aspect Always_Terminates on "Example_5" has been proved, subprogram will terminate
-usergroup_examples.adb:60:19: high: postcondition might fail (e.g. when Example_5'Result = 0)
+usergroup_examples.adb:60:19: high: postcondition might fail (e.g. when Example_5'Result = 0) [provers reached step limit before completing the proof]
 usergroup_examples.adb:69:25: info: initialization of "V" proved
 usergroup_examples.adb:70:11: info: flow dependencies proved
 usergroup_examples.adb:74:22: info: postcondition proved (CVC5: 1 VC)

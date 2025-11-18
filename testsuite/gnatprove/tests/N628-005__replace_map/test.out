@@ -1,14 +1,14 @@
 replacement.adb:7:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 replacement.adb:7:44: info: precondition proved (CVC5: 1 VC)
 replacement.adb:7:68: info: precondition proved (CVC5: 1 VC)
-replacement.adb:7:68: medium: array index check might fail [reason for check: value must be a valid index into the array]
+replacement.adb:7:68: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
 replacement.adb:7:86: info: precondition proved (CVC5: 1 VC)
 replacement.adb:8:07: info: precondition proved (CVC5: 1 VC)
 replacement.adb:10:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 replacement.adb:10:44: info: precondition proved (CVC5: 1 VC)
 replacement.adb:10:68: info: precondition proved (CVC5: 1 VC)
-replacement.adb:10:68: medium: array index check might fail [reason for check: value must be a valid index into the array]
+replacement.adb:10:68: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
 replacement.adb:10:86: info: precondition proved (CVC5: 1 VC)
 replacement.ads:16:35: info: precondition proved (CVC5: 1 VC)
-replacement.ads:16:35: medium: array index check might fail [reason for check: value must be a valid index into the array]
+replacement.ads:16:35: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
 replacement.ads:16:53: info: precondition proved (CVC5: 1 VC)

@@ -16,5 +16,5 @@ p_warn.ads:21:19: info: assertion proved (CVC5: 1 VC)
 p_warn.ads:21:21: warning: references to the "Img" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 p_warn.ads:22:19: info: assertion proved (CVC5: 1 VC)
 p_warn.ads:22:38: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
-p_warn.ads:23:19: medium: assertion might fail
+p_warn.ads:23:19: medium: assertion might fail [provers reached step limit before completing the proof]
 p_warn.ads:23:38: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]

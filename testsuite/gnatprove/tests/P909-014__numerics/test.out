@@ -29,12 +29,12 @@ numerics.ads:11:13: info: implicit aspect Always_Terminates on overriding operat
 numerics.ads:12:13: info: implicit aspect Always_Terminates on overriding operator "-" has been proved, subprogram will terminate
 numerics.ads:13:13: info: implicit aspect Always_Terminates on overriding operator "*" has been proved, subprogram will terminate
 numerics.ads:14:13: info: implicit aspect Always_Terminates on overriding operator "/" has been proved, subprogram will terminate
-numerics.ads:20:99: info: float overflow check justified
+numerics.ads:20:99: info: float overflow check justified [provers reached step limit before completing the proof]
 numerics.ads:20:99: info: range check proved (Trivial)
-numerics.ads:23:99: info: float overflow check justified
+numerics.ads:23:99: info: float overflow check justified [provers reached step limit before completing the proof]
 numerics.ads:23:99: info: range check proved (Trivial)
-numerics.ads:26:99: info: float overflow check justified
+numerics.ads:26:99: info: float overflow check justified [provers reached step limit before completing the proof]
 numerics.ads:26:99: info: range check proved (Trivial)
 numerics.ads:29:99: info: division check proved (CVC5: 1 VC)
-numerics.ads:29:99: info: float overflow check justified
+numerics.ads:29:99: info: float overflow check justified [provers reached step limit before completing the proof]
 numerics.ads:29:99: info: range check proved (Trivial)

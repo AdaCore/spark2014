@@ -28,7 +28,7 @@ mutable_discrs.adb:30:04: warning: no Global contract available for "Do_Somethin
 mutable_discrs.adb:30:04: warning: statement has no effect
 mutable_discrs.adb:30:20: info: length check proved (CVC5: 3 VC)
 mutable_discrs.adb:30:20: warning: "A" is set by "Do_Something_3" but not used after the call
-mutable_discrs.adb:31:19: medium: assertion might fail
+mutable_discrs.adb:31:19: medium: assertion might fail [provers reached step limit before completing the proof]
 tagged_type.adb:7:16: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
 tagged_type.adb:13:16: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
 tagged_type.adb:20:19: info: assertion proved (CVC5: 1 VC)

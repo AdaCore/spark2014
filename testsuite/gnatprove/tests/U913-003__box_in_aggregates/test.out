@@ -7,7 +7,7 @@ main.adb:14:48: info: default initial condition proved (Trivial: 1 VC)
 main.adb:14:48: info: in default value of box association at main.adb:14
 main.adb:17:38: info: data dependencies proved
 main.adb:18:54: medium: in default value of box association at main.adb:27
-main.adb:18:54: medium: range check might fail, cannot prove lower bound for -5 [reason for check: default value must fit in the type]
+main.adb:18:54: medium: range check might fail, cannot prove lower bound for -5 [reason for check: default value must fit in the type] [provers reached step limit before completing the proof]
 main.adb:19:16: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 main.adb:20:15: info: range check proved (CVC5: 2 VC)
 main.adb:25:16: info: implicit aspect Always_Terminates on "P" has been proved, subprogram will terminate
@@ -24,18 +24,18 @@ main.adb:41:54: info: range check proved (CVC5: 2 VC)
 main.adb:42:16: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 main.adb:43:15: info: range check proved (CVC5: 2 VC)
 main.adb:56:22: info: assertion proved (CVC5: 1 VC)
-main.adb:57:07: medium: assertion might fail
+main.adb:57:07: medium: assertion might fail [provers reached step limit before completing the proof]
 main.adb:60:38: info: data dependencies proved
 main.adb:65:10: medium: type "T" is not fully initialized
 main.adb:76:22: info: assertion proved (CVC5: 1 VC)
-main.adb:76:28: medium: initialization check might fail
-main.adb:76:47: medium: initialization check might fail
+main.adb:76:28: medium: initialization check might fail [provers reached step limit before completing the proof]
+main.adb:76:47: medium: initialization check might fail [provers reached step limit before completing the proof]
 main.adb:79:52: info: data dependencies proved
-main.adb:96:25: medium: assertion might fail
+main.adb:96:25: medium: assertion might fail [provers gave up before completing the proof]
 main.adb:96:42: warning: default initial condition on type "T" not available for proof in an assertion context [dic-ignored]
 main.adb:101:28: info: assertion proved (CVC5: 1 VC)
 main.adb:106:52: info: data dependencies proved
-main.adb:123:25: medium: assertion might fail
+main.adb:123:25: medium: assertion might fail [provers gave up before completing the proof]
 main.adb:123:42: warning: default initial condition on type "T" not available for proof in an assertion context [dic-ignored]
 main.adb:128:28: info: assertion proved (CVC5: 1 VC)
 main.adb:133:52: info: data dependencies proved
@@ -45,14 +45,14 @@ main.adb:145:60: info: in default value of box association at main.adb:157
 main.adb:145:60: info: range check proved (CVC5: 2 VC)
 main.adb:145:60: info: range check proved (CVC5: 2 VC)
 main.adb:145:60: info: range check proved (CVC5: 2 VC)
-main.adb:153:25: medium: assertion might fail
+main.adb:153:25: medium: assertion might fail [provers reached step limit before completing the proof]
 main.adb:153:42: warning: default initial condition on type "T" not available for proof in an assertion context [dic-ignored]
 main.adb:154:25: info: assertion proved (CVC5: 1 VC)
 main.adb:154:32: warning: default initial condition on type "T" not available for proof in an assertion context [dic-ignored]
 main.adb:159:28: info: assertion proved (CVC5: 1 VC)
 main.adb:159:39: info: initialization check proved (CVC5: 1 VC)
 main.adb:164:52: info: data dependencies proved
-main.adb:182:25: medium: assertion might fail
+main.adb:182:25: medium: assertion might fail [provers reached step limit before completing the proof]
 main.adb:182:42: warning: default initial condition on type "T" not available for proof in an assertion context [dic-ignored]
 main.adb:183:25: info: assertion proved (CVC5: 1 VC)
 main.adb:183:32: warning: default initial condition on type "T" not available for proof in an assertion context [dic-ignored]
@@ -65,7 +65,7 @@ main.adb:194:51: info: range check proved (CVC5: 2 VC)
 main.adb:198:22: info: assertion proved (CVC5: 1 VC)
 main.adb:201:39: info: data dependencies proved
 main.adb:202:54: medium: in default value of box association at main.adb:209
-main.adb:202:54: medium: range check might fail, cannot prove lower bound for -5 [reason for check: default value must fit in the type]
+main.adb:202:54: medium: range check might fail, cannot prove lower bound for -5 [reason for check: default value must fit in the type] [provers reached step limit before completing the proof]
 main.adb:203:16: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 main.adb:204:15: info: range check proved (CVC5: 2 VC)
 main.adb:207:16: info: implicit aspect Always_Terminates on "P" has been proved, subprogram will terminate
@@ -79,7 +79,7 @@ main.adb:217:22: info: assertion proved (CVC5: 1 VC)
 main.adb:218:22: info: assertion proved (CVC5: 1 VC)
 main.adb:221:39: info: data dependencies proved
 main.adb:222:54: medium: in default value of box association at main.adb:229
-main.adb:222:54: medium: range check might fail, cannot prove lower bound for -5 [reason for check: default value must fit in the type]
+main.adb:222:54: medium: range check might fail, cannot prove lower bound for -5 [reason for check: default value must fit in the type] [provers reached step limit before completing the proof]
 main.adb:223:16: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 main.adb:224:15: info: range check proved (CVC5: 2 VC)
 main.adb:227:16: info: implicit aspect Always_Terminates on "P" has been proved, subprogram will terminate

@@ -1,6 +1,6 @@
-main1.adb:3:11: medium: ceiling priority protocol might not be respected for "U2.Po" [reason for check: ceiling priority of the protected object "U2.Po" must be >= the priority of the caller "Main1" in the call chain "Main1" -> "U1.P1" -> "U1.P2" -> "U1.P3" -> "U2.P4" -> "U2.P5" -> "U2.P6" -> "U2.P7" -> "U2.P8" -> "U2.Po.Pp1"]
+main1.adb:3:11: medium: ceiling priority protocol might not be respected for "U2.Po" [reason for check: ceiling priority of the protected object "U2.Po" must be >= the priority of the caller "Main1" in the call chain "Main1" -> "U1.P1" -> "U1.P2" -> "U1.P3" -> "U2.P4" -> "U2.P5" -> "U2.P6" -> "U2.P7" -> "U2.P8" -> "U2.Po.Pp1"] [provers gave up before completing the proof]
 main1.adb:4:21: info: range check proved (CVC5: 2 VC)
-main2.adb:3:11: medium: ceiling priority protocol might not be respected for "U2.Po" [reason for check: ceiling priority of the protected object "U2.Po" must be >= the priority of the caller "Main2" in the call chain "Main2" -> "U1.Paa" -> "U2.Pa" -> "U2.P7" -> "U2.P8" -> "U2.Po.Pp1"]
+main2.adb:3:11: medium: ceiling priority protocol might not be respected for "U2.Po" [reason for check: ceiling priority of the protected object "U2.Po" must be >= the priority of the caller "Main2" in the call chain "Main2" -> "U1.Paa" -> "U2.Pa" -> "U2.P7" -> "U2.P8" -> "U2.Po.Pp1"] [provers gave up before completing the proof]
 main2.adb:4:21: info: range check proved (CVC5: 2 VC)
 u1.adb:5:14: info: add a contract to analyze it separately from calling contexts
 u1.adb:5:14: info: local subprogram "P3" only analyzed in the context of calls [info-unrolling-inlining]

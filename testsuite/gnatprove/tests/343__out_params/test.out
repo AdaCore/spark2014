@@ -12,7 +12,7 @@ p.adb:34:13: info: initialization check proved (CVC5: 1 VC)
 p.adb:34:19: info: initialization check proved (CVC5: 1 VC)
 p.adb:35:09: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 p.adb:38:28: info: data dependencies proved
-p.adb:44:07: medium: precondition might fail, cannot prove X'Initialized (e.g. when B = False and X = (D => True, A => 2, B => ?) and X'Constrained = False and X.A'Initialized = True and X.B'Initialized = False)
+p.adb:44:07: medium: precondition might fail, cannot prove X'Initialized (e.g. when B = False and X = (D => True, A => 2, B => ?) and X'Constrained = False and X.A'Initialized = True and X.B'Initialized = False) [provers gave up before completing the proof]
 p.adb:44:12: info: for mutable discriminants at p.adb:3
 p.adb:44:12: info: initialization check proved (Trivial: 1 VC)
 p.adb:44:12: warning: mutable discriminants of a standalone object or parameter with relaxed initialization are enforced to always be initialized [relaxed-mutable-discriminants]
@@ -26,4 +26,4 @@ p.adb:70:06: info: flow dependencies proved
 p.adb:76:31: info: initialization check proved (CVC5: 1 VC)
 p.adb:77:09: info: length check proved (CVC5: 3 VC)
 p.adb:80:32: info: data dependencies proved
-p.adb:86:07: medium: precondition might fail
+p.adb:86:07: medium: precondition might fail [provers reached step limit before completing the proof]

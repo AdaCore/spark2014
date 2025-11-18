@@ -2,7 +2,7 @@ fixed_point_unary.adb:5:12: info: overflow check proved (CVC5: 2 VC)
 fixed_point_unary.adb:5:12: info: range check proved (CVC5: 2 VC)
 fixed_point_unary.ads:5:33: warning: "X" is not modified, could be IN
 fixed_point_unary.ads:6:23: info: overflow check proved (CVC5: 2 VC)
-fixed_point_unary.ads:7:14: high: postcondition might fail (e.g. when X = 1/2 and Y = 1/2)
+fixed_point_unary.ads:7:14: high: postcondition might fail (e.g. when X = 1/2 and Y = 1/2) [provers reached step limit before completing the proof]
 fixed_point_unary.ads:11:13: info: implicit aspect Always_Terminates on "Opposite" has been proved, subprogram will terminate
-fixed_point_unary.ads:12:07: high: range check might fail, cannot prove lower bound for -Y (e.g. when Y = 201/2) [reason for check: returned value must fit in the result type of the function] [possible fix: subprogram at line 11 should mention Y in a precondition]
+fixed_point_unary.ads:12:07: high: range check might fail, cannot prove lower bound for -Y (e.g. when Y = 201/2) [reason for check: returned value must fit in the result type of the function] [possible fix: subprogram at line 11 should mention Y in a precondition] [provers gave up before completing the proof]
 fixed_point_unary.ads:12:07: info: overflow check proved (CVC5: 2 VC)

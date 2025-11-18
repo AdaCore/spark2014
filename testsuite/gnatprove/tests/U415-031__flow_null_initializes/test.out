@@ -1,7 +1,7 @@
 test.adb:4:23: info: data dependencies proved
 test.adb:6:19: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
-test.adb:11:25: medium: assertion might fail [possible fix: subprogram at line 4 should mention I in a precondition]
+test.adb:11:25: medium: assertion might fail [possible fix: subprogram at line 4 should mention I in a precondition] [provers gave up before completing the proof]
 test2.adb:6:19: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 test2.adb:11:25: high: "I" must be listed in the Global aspect of "Foo" (SPARK RM 6.1.4(15))
-test2.adb:11:25: medium: assertion might fail
+test2.adb:11:25: medium: assertion might fail [provers gave up before completing the proof]
 test2.adb:13:41: high: "J" must be listed in the Global aspect of "Foo" (SPARK RM 6.1.4(15))

@@ -6,3 +6,4 @@
       --> binary_search.ads:18:04
    18 |       function Search (A : Ar; I : Integer) return Opt_Index with
       |       ^
+      + provers reached step limit before completing the proof

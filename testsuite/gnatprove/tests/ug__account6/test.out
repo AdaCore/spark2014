@@ -3,6 +3,7 @@
     7 |             The_Data := The_Data + 1;
       |                         ~~~~~~~~~^~~
       + reason for check: result of addition must fit in a 32-bits machine integer
+      + provers gave up before completing the proof
 
  info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 --> account6.ads:6:16

@@ -2,8 +2,8 @@ demo_problem.adb:9:14: info: add a contract to analyze it separately from callin
 demo_problem.adb:9:14: info: local subprogram "Print" only analyzed in the context of calls [info-unrolling-inlining]
 demo_problem.adb:12:11: info: precondition proved (Trivial: 1 VC), in call inlined at demo_problem.adb:19
 demo_problem.adb:12:11: medium: in inlined expression function body at q.ads:25
-demo_problem.adb:12:11: medium: precondition might fail, cannot prove C <= Contained_Element'Pos (Contained_Element'Last), in call inlined at demo_problem.adb:19
-demo_problem.adb:12:11: medium: precondition might fail, cannot prove Position < Cursor'Last, in call inlined at demo_problem.adb:19
+demo_problem.adb:12:11: medium: precondition might fail, cannot prove C <= Contained_Element'Pos (Contained_Element'Last), in call inlined at demo_problem.adb:19 [provers gave up before completing the proof]
+demo_problem.adb:12:11: medium: precondition might fail, cannot prove Position < Cursor'Last, in call inlined at demo_problem.adb:19 [provers reached step limit before completing the proof]
 demo_problem.adb:19:04: info: analyzing call to "Print" in context
 q.adb:11:14: info: range check proved (CVC5: 2 VC)
 q.adb:12:19: info: precondition proved (CVC5: 1 VC)
@@ -31,7 +31,7 @@ q.ads:39:14: info: postcondition proved (CVC5: 1 VC)
 q.ads:40:14: info: precondition proved (CVC5: 1 VC)
 q.ads:44:13: info: implicit aspect Always_Terminates on "Next_Iter_Index" has been proved, subprogram will terminate
 q.ads:44:13: medium: during checks for quantification at q.ads:67
-q.ads:44:13: medium: precondition might fail, cannot prove Position < Cursor'Last
+q.ads:44:13: medium: precondition might fail, cannot prove Position < Cursor'Last [provers gave up before completing the proof]
 q.ads:47:14: info: postcondition proved (CVC5: 1 VC)
 q.ads:48:14: info: precondition proved (CVC5: 1 VC)
 q.ads:48:78: info: overflow check proved (CVC5: 2 VC)
@@ -40,7 +40,7 @@ q.ads:52:13: info: implicit aspect Always_Terminates on "Iter_Has_Element" has b
 q.ads:52:13: info: precondition proved (Trivial: 1 VC)
 q.ads:59:13: info: implicit aspect Always_Terminates on "Iter_Element" has been proved, subprogram will terminate
 q.ads:59:13: medium: during checks for quantification at q.ads:67
-q.ads:59:13: medium: precondition might fail
+q.ads:59:13: medium: precondition might fail [provers gave up before completing the proof]
 q.ads:75:13: info: implicit aspect Always_Terminates on "As_Contained_Element" has been proved, subprogram will terminate
 q.ads:76:36: info: range check proved (CVC5: 2 VC)
 q.ads:81:13: info: precondition proved (CVC5: 1 VC)

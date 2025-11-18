@@ -43,8 +43,8 @@ test.adb:70:09: medium: aspect Always_Terminates on "P_Proc_Access" could be inc
 test.adb:73:14: info: aspect Always_Terminates on "P_Global_OK" has been proved, subprogram will terminate
 test.adb:73:27: info: initialization of "I" proved
 test.adb:75:09: warning: unused assignment
-test.adb:75:25: medium: pointer dereference check might fail [possible fix: subprogram at line 73 should mention Glob_No_Call in a precondition]
-test.adb:76:22: medium: pointer dereference check might fail [possible fix: subprogram at line 73 should mention Glob_Call in a precondition]
+test.adb:75:25: medium: pointer dereference check might fail [possible fix: subprogram at line 73 should mention Glob_No_Call in a precondition] [provers gave up before completing the proof]
+test.adb:76:22: medium: pointer dereference check might fail [possible fix: subprogram at line 73 should mention Glob_Call in a precondition] [provers gave up before completing the proof]
 test.adb:79:04: warning: analyzing unreferenced procedure "P_Ghost_Terminates" [unreferenced-procedure]
 test.adb:79:14: warning: subprogram "P_Ghost_Terminates" has no effect
 test.adb:80:23: info: precondition of target is strong enough to imply precondition of source (Trivial: 1 VC)

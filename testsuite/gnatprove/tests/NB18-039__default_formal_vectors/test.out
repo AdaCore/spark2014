@@ -2,5 +2,5 @@ bounded.adb:6:07: info: initialization of "V" proved
 bounded.adb:6:19: info: range check proved (CVC5: 2 VC)
 bounded.adb:8:07: info: precondition proved (CVC5: 1 VC)
 bounded.adb:9:07: info: precondition proved (CVC5: 1 VC)
-bounded.adb:10:07: medium: precondition might fail
+bounded.adb:10:07: medium: precondition might fail [provers reached step limit before completing the proof]
 bounded.ads:12:14: warning: subprogram "Test" has no effect

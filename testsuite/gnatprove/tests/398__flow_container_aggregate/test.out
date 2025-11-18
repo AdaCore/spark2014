@@ -8,9 +8,9 @@ p.adb:18:07: info: precondition proved (Trivial: 1 VC)
 p.adb:18:07: warning: statement has no effect
 p.adb:18:16: high: "My_S" is not initialized
 p.adb:18:16: warning: "My_S" is set by "Include" but not used after the call
-p.ads:11:11: medium: Container_Aggregates annotation might be incorrect
-p.ads:11:11: medium: Container_Aggregates annotation might be incorrect
-p.ads:11:11: medium: Container_Aggregates annotation might be incorrect
+p.ads:11:11: medium: Container_Aggregates annotation might be incorrect [provers gave up before completing the proof]
+p.ads:11:11: medium: Container_Aggregates annotation might be incorrect [provers gave up before completing the proof]
+p.ads:11:11: medium: Container_Aggregates annotation might be incorrect [provers gave up before completing the proof]
 p.ads:11:11: medium: after a call to Empty_Set at p.ads:13
 p.ads:11:11: medium: after a call to Include at p.ads:19
 p.ads:11:11: medium: after a call to Include at p.ads:19
@@ -20,6 +20,6 @@ p.ads:11:11: medium: when reestablishing invariant on Length at spark-containers
 p.ads:13:13: info: implicit aspect Always_Terminates on "Empty_Set" has been proved, subprogram will terminate
 p.ads:15:13: info: implicit aspect Always_Terminates on "Model" has been proved, subprogram will terminate
 p.ads:15:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
-p.ads:16:53: medium: postcondition might fail, cannot prove S = P.Empty_Set [possible fix: you should consider adding a postcondition to function Empty_Set or turning it into an expression function]
+p.ads:16:53: medium: postcondition might fail, cannot prove S = P.Empty_Set [possible fix: you should consider adding a postcondition to function Empty_Set or turning it into an expression function] [provers gave up before completing the proof]
 p.ads:20:21: medium: during checks for container aggregates at p.ads:11
-p.ads:20:21: medium: precondition might fail
+p.ads:20:21: medium: precondition might fail [provers gave up before completing the proof]

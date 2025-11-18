@@ -7,4 +7,4 @@ test.adb:17:07: info: in inlined body at line 6
 test.adb:17:07: info: unrolling loop [info-unrolling-inlining]
 test.adb:20:10: info: initialization of "Temp_Table" proved
 test.adb:22:26: info: unrolling loop [info-unrolling-inlining]
-test.adb:26:48: medium: assertion might fail, cannot prove Table (X) /= Temp_Table (X) [possible fix: subprogram at line 15 should mention Table in a precondition]
+test.adb:26:48: medium: assertion might fail, cannot prove Table (X) /= Temp_Table (X) [possible fix: subprogram at line 15 should mention Table in a precondition] [provers reached step limit before completing the proof]

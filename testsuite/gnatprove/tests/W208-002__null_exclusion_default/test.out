@@ -1,3 +1,3 @@
 badvardecl.adb:10:16: medium: in default initialization of component "F" at badvardecl.adb:10
 badvardecl.adb:10:16: medium: in default value at badvardecl.adb:16
-badvardecl.adb:10:16: medium: null exclusion check might fail
+badvardecl.adb:10:16: medium: null exclusion check might fail [provers reached step limit before completing the proof]

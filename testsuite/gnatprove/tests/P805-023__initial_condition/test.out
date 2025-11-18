@@ -1,4 +1,4 @@
-indirect.adb:10:19: medium: assertion might fail (e.g. when X = False)
+indirect.adb:10:19: medium: assertion might fail (e.g. when X = False) [provers gave up before completing the proof]
 indirect.ads:4:04: info: initialization of "X" proved
 indirect.ads:5:14: warning: subprogram "Proc" has no effect
 p.ads:6:13: info: implicit aspect Always_Terminates on "P" has been proved, subprogram will terminate

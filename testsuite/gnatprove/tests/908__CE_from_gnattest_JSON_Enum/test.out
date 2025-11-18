@@ -1,2 +1,2 @@
-simple.adb:7:22: high: assertion might fail (e.g. when A = Chicken) [possible fix: subprogram at simple.ads:7 should mention A in a precondition]
+simple.adb:7:22: high: assertion might fail (e.g. when A = Chicken) [possible fix: subprogram at simple.ads:7 should mention A in a precondition] [provers gave up before completing the proof]
 simple.ads:7:14: warning: subprogram "Mammals" has no effect

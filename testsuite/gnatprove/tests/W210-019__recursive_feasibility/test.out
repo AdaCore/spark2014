@@ -3,5 +3,5 @@ test.adb:3:13: warning: function contract might not be available on implicit rec
 test.adb:5:14: info: postcondition proved (CVC5: 2 VC)
 test.adb:7:04: info: function contract feasibility proved (Z3: 1 VC)
 test.adb:10:13: info: implicit aspect Always_Terminates on "V" has been proved, subprogram will terminate
-test.adb:13:16: medium: postcondition of source might not be strong enough to imply postcondition of target, cannot prove F (T'Result)
+test.adb:13:16: medium: postcondition of source might not be strong enough to imply postcondition of target, cannot prove F (T'Result) [provers gave up before completing the proof]
 test.adb:13:17: info: null exclusion check proved (Trivial: 1 VC)

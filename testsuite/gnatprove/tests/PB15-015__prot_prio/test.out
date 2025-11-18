@@ -1,1 +1,1 @@
-p.ads:8:24: medium: range check might fail
+p.ads:8:24: medium: range check might fail [provers gave up before completing the proof]

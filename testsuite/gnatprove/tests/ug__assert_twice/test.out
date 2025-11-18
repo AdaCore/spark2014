@@ -6,6 +6,7 @@
       + possible fix: subprogram at line 1 should mention X in a precondition
     1 |    procedure Assert_Twice (X : Integer) with
       |    ^
+      + provers gave up before completing the proof
 
  info: assertion proved
 --> assert_twice.adb:6:19

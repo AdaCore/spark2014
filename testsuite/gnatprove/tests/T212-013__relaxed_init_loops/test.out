@@ -16,7 +16,7 @@ test_loops.adb:59:32: info: index check proved (CVC5: 2 VC)
 test_loops.adb:60:09: info: length check proved (CVC5: 3 VC)
 test_loops.adb:63:28: info: initialization of "X" proved
 test_loops.adb:67:16: medium: in value of subprogram parameter after the call at test_loops.adb:67
-test_loops.adb:67:16: medium: initialization check might fail
+test_loops.adb:67:16: medium: initialization check might fail [provers reached step limit before completing the proof]
 test_loops.adb:68:16: info: in value of subprogram parameter after the call at test_loops.adb:68
 test_loops.adb:68:16: info: initialization check proved (CVC5: 1 VC)
 test_loops.adb:69:07: info: precondition proved (CVC5: 2 VC)
@@ -28,7 +28,7 @@ test_loops.adb:72:16: info: index check proved (CVC5: 2 VC)
 test_loops.adb:72:22: warning: unused assignment
 test_loops.adb:74:07: info: precondition proved (CVC5: 2 VC)
 test_loops.adb:74:19: medium: in value of subprogram parameter after the call at test_loops.adb:74
-test_loops.adb:74:19: medium: initialization check might fail [possible fix: call at line 74 should mention X (for argument X) in a postcondition]
+test_loops.adb:74:19: medium: initialization check might fail [possible fix: call at line 74 should mention X (for argument X) in a postcondition] [provers reached step limit before completing the proof]
 test_loops.adb:74:33: info: range check proved (CVC5: 1 VC)
 test_loops.adb:75:27: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 test_loops.adb:76:10: info: precondition proved (CVC5: 2 VC)
@@ -51,7 +51,7 @@ test_loops.adb:101:36: info: range check proved (CVC5: 1 VC)
 test_loops.adb:103:13: info: precondition proved (CVC5: 4 VC)
 test_loops.adb:103:37: info: range check proved (CVC5: 2 VC)
 test_loops.adb:104:36: info: loop invariant preservation proved (Z3: 1 VC)
-test_loops.adb:104:59: medium: loop invariant might fail in first iteration, cannot prove X.G1 (K).F1'Initialized
+test_loops.adb:104:59: medium: loop invariant might fail in first iteration, cannot prove X.G1 (K).F1'Initialized [provers reached step limit before completing the proof]
 test_loops.adb:104:65: info: index check proved (CVC5: 4 VC)
 test_loops.adb:107:19: info: index check proved (CVC5: 4 VC)
 test_loops.adb:108:36: info: loop invariant initialization proved (CVC5: 1 VC)
@@ -90,7 +90,7 @@ test_loops_2.adb:67:14: info: postcondition proved (CVC5: 1 VC)
 test_loops_2.adb:67:17: info: index check proved (CVC5: 2 VC)
 test_loops_2.adb:71:19: info: index check proved (CVC5: 2 VC)
 test_loops_2.adb:78:17: medium: in value of subprogram parameter after the call at test_loops_2.adb:78
-test_loops_2.adb:78:17: medium: initialization check might fail
+test_loops_2.adb:78:17: medium: initialization check might fail [provers reached step limit before completing the proof]
 test_loops_2.adb:79:17: info: in value of subprogram parameter after the call at test_loops_2.adb:79
 test_loops_2.adb:79:17: info: initialization check proved (CVC5: 1 VC)
 test_loops_2.adb:80:07: info: precondition proved (CVC5: 2 VC)

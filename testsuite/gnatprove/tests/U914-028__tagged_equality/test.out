@@ -3,4 +3,4 @@ unsound_eq.adb:27:16: info: implicit aspect Always_Terminates on overriding oper
 unsound_eq.adb:51:19: info: assertion proved (CVC5: 1 VC)
 unsound_eq.adb:52:19: info: assertion proved (CVC5: 1 VC)
 unsound_eq.adb:57:19: info: assertion proved (CVC5: 1 VC)
-unsound_eq.adb:58:19: medium: assertion might fail
+unsound_eq.adb:58:19: medium: assertion might fail [provers reached step limit before completing the proof]

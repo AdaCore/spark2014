@@ -11,5 +11,5 @@ overlay.adb:17:07: info: object is suitable for aliasing via address clause (Tri
 overlay.adb:17:44: info: object is suitable for aliasing via address clause (Trivial)
 overlay.adb:17:44: info: type is suitable as source for unchecked conversion (Trivial)
 overlay.adb:17:44: info: types of aliased objects have the same size (Trivial)
-overlay.adb:17:48: medium: pointer dereference check might fail [possible fix: subprogram at line 16 should mention X in a precondition]
+overlay.adb:17:48: medium: pointer dereference check might fail [possible fix: subprogram at line 16 should mention X in a precondition] [provers reached step limit before completing the proof]
 overlay.adb:17:51: warning: alignment of object is not precisely known [imprecise-align]

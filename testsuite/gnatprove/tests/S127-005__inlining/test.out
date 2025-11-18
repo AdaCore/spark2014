@@ -1,8 +1,8 @@
 inline_in_expr.adb:3:13: info: implicit aspect Always_Terminates on "Dummy" has been proved, subprogram will terminate
 inline_in_expr.adb:6:25: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
-inline_in_expr.adb:7:21: medium: overflow check might fail, cannot prove upper bound for Tmp + 1 (e.g. when Tmp = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 6 should mention Tmp in a loop invariant]
-inline_in_expr.adb:7:21: medium: overflow check might fail, cannot prove upper bound for Tmp + 1, in call inlined at inline_in_expr.adb:12 (e.g. when Tmp = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
-inline_in_expr.adb:7:21: medium: overflow check might fail, cannot prove upper bound for Tmp + 1, in call inlined at inline_in_expr.adb:16 [reason for check: result of addition must fit in a 32-bits machine integer]
+inline_in_expr.adb:7:21: medium: overflow check might fail, cannot prove upper bound for Tmp + 1 (e.g. when Tmp = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 6 should mention Tmp in a loop invariant] [provers gave up before completing the proof]
+inline_in_expr.adb:7:21: medium: overflow check might fail, cannot prove upper bound for Tmp + 1, in call inlined at inline_in_expr.adb:12 (e.g. when Tmp = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
+inline_in_expr.adb:7:21: medium: overflow check might fail, cannot prove upper bound for Tmp + 1, in call inlined at inline_in_expr.adb:16 [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
 inline_in_expr.adb:12:19: info: analyzing call to "Dummy" in context
 inline_in_expr.adb:12:19: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 inline_in_expr.adb:12:19: info: in inlined body at line 6

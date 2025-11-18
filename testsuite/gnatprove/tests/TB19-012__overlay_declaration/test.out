@@ -6,7 +6,7 @@ decl1.adb:10:07: info: type is suitable as source for unchecked conversion (Triv
 decl1.adb:11:21: info: object is suitable for aliasing via address clause (Trivial)
 decl1.adb:11:21: info: type is suitable as source for unchecked conversion (Trivial)
 decl1.adb:11:21: info: types of aliased objects have the same size (Trivial)
-decl1.adb:13:22: medium: assertion might fail
+decl1.adb:13:22: medium: assertion might fail [provers reached step limit before completing the proof]
 decl1.adb:17:04: info: precondition proved (Trivial: 1 VC)
 decl2.adb:2:04: info: data dependencies proved
 decl2.adb:6:50: info: in default value at decl2.adb:13
@@ -18,5 +18,5 @@ decl2.adb:13:07: info: type is suitable as source for unchecked conversion (Triv
 decl2.adb:14:21: info: object is suitable for aliasing via address clause (Trivial)
 decl2.adb:14:21: info: type is suitable as source for unchecked conversion (Trivial)
 decl2.adb:14:21: info: types of aliased objects have the same size (Trivial)
-decl2.adb:16:22: medium: assertion might fail
+decl2.adb:16:22: medium: assertion might fail [provers reached step limit before completing the proof]
 decl2.adb:20:04: info: precondition proved (Trivial: 1 VC)
