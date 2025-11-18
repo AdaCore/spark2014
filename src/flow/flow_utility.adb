@@ -4413,17 +4413,6 @@ package body Flow_Utility is
              (Nkind (Root_Node)
               in N_Identifier | N_Expanded_Name | N_Target_Name);
 
-         --  If the root is a constant without variable inputs and we are
-         --  looking for genuine inputs, then we will find none.
-
-         if Fold_Functions = Inputs
-           and then Nkind (Root_Node) in N_Identifier | N_Expanded_Name
-           and then Ekind (Entity (Root_Node)) = E_Constant
-           and then not Has_Variable_Input (Entity (Root_Node))
-         then
-            return Flow_Id_Sets.Empty_Set;
-         end if;
-
          --  Set the Current_Field to the object (or its component) that is is
          --  being untangled. Likewise, set Comp_Id to the index of the current
          --  component that is being untangled. ??? Actually, Comp_Id could be
@@ -4467,13 +4456,6 @@ package body Flow_Utility is
                          (Etype (Encapsulating_State (Root_Entity))),
                        Root_Entity);
 
-               elsif Ekind (Root_Entity) in E_Constant | E_Variable
-                 and then Present (Ultimate_Overlaid_Entity (Root_Entity))
-               then
-                  return
-                    Flatten_Variable
-                      (Ultimate_Overlaid_Entity (Root_Entity), Scope);
-
                else
                   Comp_Id := 1;
                   Current_Field :=
@@ -4490,7 +4472,54 @@ package body Flow_Utility is
          --     r.y -> r.y
 
          for F of Flatten_Variable (Current_Field, Scope) loop
-            M.Insert (F, Flow_Id_Sets.To_Set (F));
+            declare
+               Root_Entity : constant Entity_Id :=
+                 Get_Direct_Mapping_Id (Current_Field);
+               Alias       : constant Entity_Id :=
+                 (if Ekind (Root_Entity) in E_Constant | E_Variable
+                  then Ultimate_Overlaid_Entity (Root_Entity)
+                  else Empty);
+
+               Inserted : Boolean;
+               Position : Flow_Id_Maps.Cursor;
+               --  We first insert key into the map and later fill its value
+
+            begin
+               M.Insert (F, Position, Inserted);
+               pragma Assert (Inserted);
+
+               --  Handle overlays
+
+               if Present (Alias) then
+
+                  --  Reading an overlaid constant without variable input is
+                  --  represented as reading no data.
+
+                  if Ekind (Alias) = E_Constant
+                    and then not Has_Variable_Input (Alias)
+                  then
+                     pragma Assert (M (Position).Is_Empty);
+
+                  --  Other overlays are represented as reading the entire
+                  --  overlaid object.
+
+                  else
+                     M (Position) := Flatten_Variable (Alias, Scope);
+                  end if;
+
+               --  Likewise for ordinary constants without variable inputs
+
+               elsif Ekind (Root_Entity) = E_Constant
+                 and then not Has_Variable_Input (Root_Entity)
+               then
+                  pragma Assert (M (Position).Is_Empty);
+
+               --  Finally, ordinary reads are represented as an identity map
+
+               else
+                  M (Position).Insert (F);
+               end if;
+            end;
          end loop;
 
          pragma Annotate (Xcov, Exempt_On, "Debugging code");
