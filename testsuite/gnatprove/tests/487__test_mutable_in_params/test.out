@@ -79,6 +79,8 @@ test_mutable_in_parameters.adb:159:10: info: range check proved (CVC5: 2 VC)
 test_mutable_in_parameters.adb:159:34: info: range check proved (CVC5: 2 VC)
 test_mutable_in_parameters.adb:159:46: info: length check proved (CVC5: 3 VC)
 test_mutable_in_parameters.adb:161:17: info: predicate check proved (CVC5: 1 VC)
+test_mutable_in_parameters.adb:168:19: info: in value of subprogram parameter after the call at test_mutable_in_parameters.adb:168
+test_mutable_in_parameters.adb:168:19: info: predicate check proved (CVC5: 1 VC)
 test_mutable_in_parameters.adb:171:64: info: pointer dereference check proved (CVC5: 1 VC)
 test_mutable_in_parameters.adb:178:22: info: pointer dereference check proved (CVC5: 1 VC)
 test_mutable_in_parameters.adb:178:26: info: range check proved (CVC5: 2 VC)
