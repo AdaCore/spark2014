@@ -2,6 +2,7 @@
 This module contains support functions for all test.py
 """
 
+import fileinput
 import glob
 import json
 import os
@@ -9,7 +10,8 @@ import re
 import sys
 from fnmatch import fnmatch
 from time import sleep
-from shutil import which
+from pathlib import Path
+from shutil import copy, copytree, rmtree, which
 import subprocess
 from test_util import sort_key_for_errors
 
@@ -794,8 +796,84 @@ def strip_provers_output_from_testout():
             f.write(content)
 
 
-def create_sparklib():
-    """Create local project file sparklib.gpr as the user would"""
+def preprocess_sparklib_source_file(filepath):
+    """
+    Reads a file line by line and replaces specific SPARK_Mode patterns
+    in-place, preserving line numbers.
+
+    Args:
+        filepath (str): The path to the file to be processed.
+    """
+    # Pattern 1: Recognizes '... SPARK_Mode => Off --  #BODYMODE' at the end of a line.
+    # It's case-insensitive and handles variable whitespace.
+    # This will be used with re.sub to replace 'Off' with 'On' while preserving
+    # any leading content on the line.
+    pattern_to_enable = re.compile(
+        r"(SPARK_Mode\s*=>\s*)Off(\s*--  #BODYMODE\s*$)", re.IGNORECASE
+    )
+
+    # Pattern 2: Recognizes a line containing only
+    # 'pragma SPARK_Mode (Off); -- # #BODYMODE'
+    # It's case-insensitive and handles variable whitespace.
+    pattern_to_remove = re.compile(
+        r"^\s*pragma\s+SPARK_Mode\s*\(\s*Off\s*\)\s*;\s*--  #BODYMODE\s*$",
+        re.IGNORECASE,
+    )
+
+    try:
+        # fileinput.input with inplace=True handles the in-place replacement.
+        # It redirects stdout to the file, so print() writes to the file.
+        for line in fileinput.input(files=[filepath], inplace=True):
+            # Test for the first pattern and replace using re.subn.
+            # re.subn returns a tuple: (new_string, number_of_subs_made).
+            # This handles cases where the pattern is not at the start of the line.
+            new_line, count = pattern_to_enable.subn(r"\1On\2", line)
+            if count > 0:
+                # If a substitution was made, write the modified line.
+                # new_line already contains the original newline character.
+                sys.stdout.write(new_line)
+                continue
+
+            # Test for the second pattern (this logic remains the same).
+            # This pattern is expected to match the entire line.
+            match_remove = pattern_to_remove.match(line)
+            if match_remove:
+                # Replace the line with an empty line to preserve line numbering.
+                sys.stdout.write("\n")
+                continue
+
+            # If no pattern is matched, write the original line back to the file.
+            # 'line' already contains a newline character.
+            sys.stdout.write(line)
+
+    except FileNotFoundError:
+        print(f"Error: The file {filepath!r} was not found.", file=sys.stderr)
+        sys.exit(1)
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}", file=sys.stderr)
+        sys.exit(1)
+
+
+def update_projectpath_for_sparklib(newpath):
+    """check the paths in GPR_PROJECT_PATH; replace the one that contains
+    sparklib by the path in argument."""
+    gpp = os.environ["GPR_PROJECT_PATH"].split(":")
+    gpp = [
+        path
+        for path in gpp
+        if not os.path.isfile(os.path.join(path, "sparklib_internal.gpr"))
+    ]
+    os.environ["GPR_PROJECT_PATH"] = ":".join([newpath] + gpp)
+
+
+def create_sparklib(sparklib_bodymode=False):
+    """If sparklib_bodymode is false, simply create a sparklib.gpr.
+    If sparklib_bodymode is true, in addition, create a copy of sparklib,
+    with the following changes:
+      - some SPARK_Mode => Off are replaced,
+      - spark__exec.ads replaces spark.ads in both full and light runtime
+    then change GPR_PROJECT_PATH to point to this new sparklib.
+    """
     with open("sparklib.gpr", "w") as f_prj:
         f_prj.write('project SPARKlib extends "sparklib_internal" is\n')
         f_prj.write('   for Object_Dir use "sparklib_obj";\n')
@@ -805,6 +883,28 @@ def create_sparklib():
             + "SPARKlib_Internal'Excluded_Source_Files;\n"
         )
         f_prj.write("end SPARKlib;\n")
+    if sparklib_bodymode:
+        # goal is to create the following folders
+        # lib/gnat - contains project files
+        # include/spark - contains src
+        # then preprocess the src
+        sparkinstall = spark_install_path()
+        for path in ["lib", "include"]:
+            if os.path.isdir(path):
+                rmtree(path)
+        copytree(os.path.join(sparkinstall, "lib"), "lib")
+        copytree(os.path.join(sparkinstall, "include"), "include")
+        src_prefix = os.path.join("include", "spark")
+        for target in [
+            os.path.join(src_prefix, "full", "spark.ads"),
+            os.path.join(src_prefix, "light", "spark.ads"),
+        ]:
+            copy(os.path.join(src_prefix, "spark__exec.ads"), target)
+        for path_obj in Path("include").rglob("*"):
+            if path_obj.is_file():
+                preprocess_sparklib_source_file(path_obj)
+        newpath = os.path.join(os.getcwd(), "lib", "gnat")
+        update_projectpath_for_sparklib(newpath)
 
 
 def generate_project_file(ada=default_ada, sparklib=False):
@@ -849,6 +949,7 @@ def gnatprove(
     info=True,
     report=None,
     do_sarif_check=False,
+    sparklib_bodymode=False,
 ):
     """Invoke gnatprove, and in case of success return list of output lines
 
@@ -869,7 +970,7 @@ def gnatprove(
 
     # Generate sparklib.gpr if the project depends on SPARKlib
     if sparklib:
-        create_sparklib()
+        create_sparklib(sparklib_bodymode=sparklib_bodymode)
 
     cmd = ["gnatprove"]
     # Continue on errors, to get the maximum number of messages for tests
@@ -1040,6 +1141,7 @@ def prove_all(
     sparklib=False,
     filter_sparklib=True,
     enable_sarif_check=False,
+    sparklib_bodymode=False,
 ):
     """Call gnatprove with standard options.
 
@@ -1118,6 +1220,7 @@ def prove_all(
         filter_sparklib=filter_sparklib,
         report=report,
         do_sarif_check=enable_sarif_check and not sparklib and not has_limit_switch,
+        sparklib_bodymode=sparklib_bodymode,
     )
     verify_counterexamples()
 
@@ -1173,15 +1276,22 @@ def do_flow_only(opt=None, procs=parallel_procs, no_fail=False, ada=default_ada)
 def no_crash(
     sparklib=False,
     opt=None,
+    sparklib_bodymode=False,
 ):
     """
     Only attempt to detect crashes and other unexpected behavior. No expected
     tool output is filed for such tests.
     """
     if benchmark_mode():
-        prove_all(sparklib=sparklib)
+        prove_all(sparklib=sparklib, sparklib_bodymode=sparklib_bodymode)
     else:
-        gnatprove(no_output=True, exit_status=0, sparklib=sparklib, opt=opt)
+        gnatprove(
+            no_output=True,
+            exit_status=0,
+            sparklib=sparklib,
+            opt=opt,
+            sparklib_bodymode=sparklib_bodymode,
+        )
 
 
 def clean():

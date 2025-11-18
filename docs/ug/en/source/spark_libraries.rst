@@ -57,10 +57,6 @@ You may need to update the environment variable ``GPR_PROJECT_PATH`` for the
 lemma library project to be found by GNAT compiler, as described in
 :ref:`Installation of GNATprove`.
 
-Finally, if you instantiate in your code a generic from the SPARK library, you
-may also need to pass ``-gnateDSPARK_BODY_MODE=Off`` as a compilation switch
-for the units with these instantiations.
-
 In addition, it is possible to enable (or disable, if assertions are enabled
 by default) assertion levels defined in the |SPARK| library globally for your
 project. It can be done by supplying ``Check_Policy`` or ``Assertion_Policy``

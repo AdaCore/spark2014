@@ -1,17 +1,15 @@
 from subprocess import call
 from test_support import prove_all, gprbuild
-import os
 
 contains_manual_proof = False
-os.environ["SPARKLIB_BODY_MODE"] = "On"
 
 
 def replay():
-    prove_all(level=3, procs=0, sparklib=True)
+    prove_all(level=3, procs=0, sparklib=True, sparklib_bodymode=True)
 
 
 if __name__ == "__main__":
-    prove_all(replay=True, sparklib=True)
+    prove_all(replay=True, sparklib=True, sparklib_bodymode=True)
 
     gprbuild(["-q", "-P", "test.gpr"])
     call(["./obj/test"])

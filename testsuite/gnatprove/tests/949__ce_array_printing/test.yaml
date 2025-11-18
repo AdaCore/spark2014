@@ -1,3 +1,2 @@
-large: true
 prove_all:
   prover: ["cvc5"]
