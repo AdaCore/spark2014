@@ -1,0 +1,5 @@
+test.adb:3:11: high: all paths in "Test" raise exceptions or do not terminate normally
+test.adb:8:19: info: predicate check proved (CVC5: 1 VC)
+test.adb:10:10: info: predicate check proved (CVC5: 1 VC)
+test.adb:10:10: medium: predicate check might fail
+test.adb:11:04: info: assertion proved (CVC5: 1 VC)
