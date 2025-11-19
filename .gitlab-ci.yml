@@ -148,6 +148,7 @@ build:
                                --add-dep eng/spark/why3"
     - if [[ $CI_PIPELINE_SOURCE == "schedule" ]]; then GENERIC_ANOD_CI_OPTIONS="$GENERIC_ANOD_CI_OPTIONS --continuous-builder-mode"; fi
     - *setup_repos
+    - export ANOD_ENABLE_DOC=false
 
     # Build using anod
     - anod run build
