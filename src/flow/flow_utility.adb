@@ -4283,7 +4283,9 @@ package body Flow_Utility is
          while Nkind (Root_Node) = N_Selected_Component
            or else ((Is_Attribute_Update (Root_Node)
                      or else Nkind (Root_Node)
-                             in N_Delta_Aggregate | N_Type_Conversion)
+                             in N_Delta_Aggregate
+                              | N_Type_Conversion
+                              | N_Qualified_Expression)
                     and then Is_Record_Type
                                (Unchecked_Full_Type (Etype (Root_Node))))
            or else Is_Ignored_Attribute (Root_Node)
@@ -4298,7 +4300,10 @@ package body Flow_Utility is
             end if;
 
             Root_Node :=
-              (if Nkind (Root_Node) in N_Delta_Aggregate | N_Type_Conversion
+              (if Nkind (Root_Node)
+                  in N_Delta_Aggregate
+                   | N_Type_Conversion
+                   | N_Qualified_Expression
                then Expression (Root_Node)
                else Prefix (Root_Node));
 
@@ -4352,7 +4357,7 @@ package body Flow_Utility is
 
                for N of Seq loop
                   case Nkind (N) is
-                     when N_Attribute_Reference                    =>
+                     when N_Attribute_Reference  =>
                         pragma Assert (Is_Attribute_Update (N));
                         pragma Assert (List_Length (Expressions (N)) = 1);
 
@@ -4372,7 +4377,7 @@ package body Flow_Utility is
                            end loop;
                         end;
 
-                     when N_Delta_Aggregate                        =>
+                     when N_Delta_Aggregate      =>
                         declare
                            Component_Association : Node_Id :=
                              First (Component_Associations (N));
@@ -4386,10 +4391,12 @@ package body Flow_Utility is
                            end loop;
                         end;
 
-                     when N_Selected_Component | N_Type_Conversion =>
+                     when N_Selected_Component
+                        | N_Type_Conversion
+                        | N_Qualified_Expression =>
                         null;
 
-                     when others                                   =>
+                     when others                 =>
                         raise Why.Unexpected_Node;
                   end case;
                end loop;
@@ -4577,7 +4584,7 @@ package body Flow_Utility is
             pragma Annotate (Xcov, Exempt_Off);
 
             case Nkind (N) is
-               when N_Delta_Aggregate     =>
+               when N_Delta_Aggregate      =>
                   pragma Annotate (Xcov, Exempt_On, "Debugging code");
                   if Debug_Trace_Untangle_Fields then
                      Write_Str ("Updating the map at ");
@@ -4588,7 +4595,7 @@ package body Flow_Utility is
 
                   Untangle_Delta_Fields (Component_Associations (N));
 
-               when N_Attribute_Reference =>
+               when N_Attribute_Reference  =>
                   pragma Assert (Is_Attribute_Update (N));
                   pragma Assert (List_Length (Expressions (N)) = 1);
 
@@ -4603,7 +4610,7 @@ package body Flow_Utility is
                   Untangle_Delta_Fields
                     (Component_Associations (First (Expressions (N))));
 
-               when N_Selected_Component  =>
+               when N_Selected_Component   =>
                   declare
                      Comp : constant Entity_Id :=
                        Unique_Component (Entity (Selector_Name (N)));
@@ -4642,7 +4649,7 @@ package body Flow_Utility is
                      Comp_Id := Comp_Id + 1;
                   end;
 
-               when N_Type_Conversion     =>
+               when N_Type_Conversion      =>
                   declare
                      New_T     : constant Entity_Id :=
                        Get_Type (Etype (N), Scope);
@@ -4724,7 +4731,10 @@ package body Flow_Utility is
                      M.Move (Source => New_Map);
                   end;
 
-               when others                =>
+               when N_Qualified_Expression =>
+                  null;
+
+               when others                 =>
                   raise Why.Unexpected_Node;
             end case;
 
