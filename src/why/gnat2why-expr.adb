@@ -26120,7 +26120,7 @@ package body Gnat2Why.Expr is
          T :=
            New_Function_Valid_Value_Access
              (Ada_Node => Expr,
-              Fun      => Subp,
+              Ty       => Etype (Subp),
               Name     => T,
               Do_Check => Validity_Check = Do_Check and then Domain = EW_Prog);
       end if;
@@ -27421,9 +27421,7 @@ package body Gnat2Why.Expr is
                Tmp : constant W_Identifier_Id :=
                  New_Temp_Identifier
                    (Base_Name => "valid",
-                    Typ       =>
-                      New_Named_Type
-                        (Get_Name (E_Symb (Fun, WNE_Valid_Wrapper))));
+                    Typ       => Validity_Wrapper_Type (Etype (Fun)));
                Def : W_Expr_Id :=
                  Transform_Function_Call
                    (Expr           => Expr,
@@ -27438,10 +27436,12 @@ package body Gnat2Why.Expr is
                end if;
 
                W_Expr :=
-                 New_Function_Valid_Value_Access (Fun => Fun, Name => +Tmp);
+                 New_Function_Valid_Value_Access
+                   (Ty => Etype (Fun), Name => +Tmp);
 
                Valid_Flag :=
-                 +New_Function_Valid_Flag_Access (Fun => Fun, Name => +Tmp);
+                 +New_Function_Valid_Flag_Access
+                    (Ty => Etype (Fun), Name => +Tmp);
 
                Context.Append
                  (Ref_Type'(Mutable => False, Name => Tmp, Value => Def));

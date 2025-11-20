@@ -29,12 +29,13 @@ with Gnat2Why.Util;        use Gnat2Why.Util;
 with Snames;               use Snames;
 with SPARK_Atree;          use SPARK_Atree;
 with SPARK_Atree.Entities; use SPARK_Atree.Entities;
-with Why.Atree.Modules;    use Why.Atree.Modules;
+with SPARK_Definition;     use SPARK_Definition;
 with SPARK_Util;           use SPARK_Util;
 with Types;                use Types;
 with Uintp;                use Uintp;
 with VC_Kinds;             use VC_Kinds;
 with Why.Atree.Builders;   use Why.Atree.Builders;
+with Why.Atree.Modules;    use Why.Atree.Modules;
 with Why.Conversions;      use Why.Conversions;
 with Why.Ids;              use Why.Ids;
 with Why.Inter;            use Why.Inter;
@@ -743,9 +744,10 @@ package Why.Gen.Expr is
    --  @param Id Identifier of a variable
    --  @result Program havocing the value of Id
 
-   function Validity_Wrapper_Type (Fun : E_Function_Id) return W_Type_Id
-   with Pre => Is_Potentially_Invalid (Fun);
-   --  Type for the validity wrapper used for the result of Fun
+   function Validity_Wrapper_Type (Ty : Type_Kind_Id) return W_Type_Id
+   with Pre => Type_Might_Be_Invalid (Ty);
+   --  Type for the validity wrapper used for the result of functions with
+   --  return type Ty.
 
    function Get_Valid_Flag_For_Id
      (Id : W_Identifier_Id; Ty : Type_Kind_Id) return W_Identifier_Id;
@@ -754,27 +756,29 @@ package Why.Gen.Expr is
    --  name.
 
    function New_Function_Valid_Flag_Access
-     (Fun : E_Function_Id; Name : W_Expr_Id) return W_Expr_Id
-   with Pre => Is_Potentially_Invalid (Fun);
+     (Ty : Type_Kind_Id; Name : W_Expr_Id) return W_Expr_Id
+   with Pre => Type_Might_Be_Invalid (Ty);
    --  Access to the validity flag in the validity wrapper used for the result
-   --  of Fun.
+   --  of a function with return type Ty.
 
    function New_Function_Valid_Value_Access
      (Ada_Node : Node_Id := Empty;
-      Fun      : E_Function_Id;
+      Ty       : Type_Kind_Id;
       Name     : W_Expr_Id;
       Do_Check : Boolean := False) return W_Expr_Id
    with
      Pre =>
-       Is_Potentially_Invalid (Fun)
+       Type_Might_Be_Invalid (Ty)
        and then (if Do_Check then Present (Ada_Node));
-   --  Access to the value in the validity wrapper used for the result of Fun
+   --  Access to the value in the validity wrapper used for the result of a
+   --  function with return type Ty.
 
    function New_Function_Validity_Wrapper_Value
-     (Fun : E_Function_Id; Valid_Flag : W_Expr_Id; Value : W_Expr_Id)
+     (Ty : Type_Kind_Id; Valid_Flag : W_Expr_Id; Value : W_Expr_Id)
       return W_Expr_Id
-   with Pre => Is_Potentially_Invalid (Fun);
-   --  Construct a value of the validity wrapper used for the result of Fun
+   with Pre => Type_Might_Be_Invalid (Ty);
+   --  Construct a value of the validity wrapper used for the result of a
+   --  function with return type Ty.
 
    function New_Is_Valid_Call_For_Constrained_Ty
      (Tree   : W_Term_Id;

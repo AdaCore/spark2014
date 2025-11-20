@@ -28,7 +28,6 @@ with Gnat2Why.Data_Decomposition; use Gnat2Why.Data_Decomposition;
 with Gnat2Why.Tables;             use Gnat2Why.Tables;
 with Gnat2Why.Util;               use Gnat2Why.Util;
 with Snames;                      use Snames;
-with SPARK_Atree;                 use SPARK_Atree;
 with SPARK_Definition;            use SPARK_Definition;
 with SPARK_Definition.Annotate;   use SPARK_Definition.Annotate;
 with SPARK_Util.Subprograms;      use SPARK_Util.Subprograms;
@@ -281,12 +280,11 @@ package body Gnat2Why.Unchecked_Conversion is
    --------------------------
 
    function Precise_Composite_UC
-     (Arg          : W_Term_Id;
-      Source_Type  : Type_Kind_Id;
-      Target_Type  : Type_Kind_Id;
-      Ada_Function : E_Function_Id) return W_Term_Id
+     (Arg                 : W_Term_Id;
+      Source_Type         : Type_Kind_Id;
+      Target_Type         : Type_Kind_Id;
+      Potentially_Invalid : Boolean) return W_Term_Id
    is
-      Do_Validity : constant Boolean := Is_Potentially_Invalid (Ada_Function);
 
       --  Representation of a subcomponent of Source
       type Source_Element is record
@@ -304,7 +302,7 @@ package body Gnat2Why.Unchecked_Conversion is
          Value      : W_Term_Id;
          Valid_Flag : W_Term_Id;
       end record
-      with Predicate => (Valid_Flag /= Why_Empty) = Do_Validity;
+      with Predicate => (Valid_Flag /= Why_Empty) = Potentially_Invalid;
 
       --  Local subprograms
 
@@ -490,7 +488,7 @@ package body Gnat2Why.Unchecked_Conversion is
                     Else_Part => +False_Term,
                     Typ       => EW_Bool_Type),
                Valid_Flag =>
-                 (if Do_Validity
+                 (if Potentially_Invalid
                   then
                     New_Or_Term
                       (Left  =>
@@ -524,7 +522,7 @@ package body Gnat2Why.Unchecked_Conversion is
                      Expr   => Value,
                      To     => EW_Abstract (Typ)),
                Valid_Flag =>
-                 (if Do_Validity
+                 (if Potentially_Invalid
                   then
                     Is_Valid_Scalar
                       (Typ,
@@ -578,16 +576,16 @@ package body Gnat2Why.Unchecked_Conversion is
                         Expr   => B_Value,
                         To     => EW_Abstract (Typ)),
                   Valid_Flag =>
-                    (if Do_Validity
+                    (if Potentially_Invalid
                      then Is_Valid_Scalar (Typ, +B_Value)
                      else Why_Empty));
             end;
          end if;
 
-         --  If Do_Validity is set, avoid assuming invalid values that could
-         --  be incompatible with the dynamic invariant of the object.
+         --  If Potentially_Invalid is set, avoid assuming invalid values that
+         --  could be incompatible with the dynamic invariant of the object.
 
-         if Do_Validity then
+         if Potentially_Invalid then
             Res.Value :=
               New_Conditional
                 (Condition => Res.Valid_Flag,
@@ -722,7 +720,7 @@ package body Gnat2Why.Unchecked_Conversion is
                           Value  => +F_Value.Value);
                      Index := Index + 1;
 
-                     if Do_Validity
+                     if Potentially_Invalid
                        and then not Comp_Has_Only_Valid_Values (Comp, Typ).Ok
                      then
                         Flags (F_Index) :=
@@ -753,7 +751,7 @@ package body Gnat2Why.Unchecked_Conversion is
                                    (Associations => Assocs))),
                        Typ          => EW_Abstract (Typ)),
                   Valid_Flag =>
-                    (if Do_Validity
+                    (if Potentially_Invalid
                      then
                        New_Record_Aggregate
                          (Associations => Flags (1 .. F_Index - 1),
@@ -770,7 +768,7 @@ package body Gnat2Why.Unchecked_Conversion is
                Cur   : Uint;
                Ar    : W_Expr_Id := +E_Symb (Typ, WNE_Dummy);
                Flags : W_Term_Id :=
-                 (if Do_Validity
+                 (if Potentially_Invalid
                   then New_Valid_Value_For_Type (Typ)
                   else Why_Empty);
             begin
@@ -796,7 +794,7 @@ package body Gnat2Why.Unchecked_Conversion is
                              Value    => +C_Value.Value,
                              Domain   => EW_Term);
 
-                        if Do_Validity then
+                        if Potentially_Invalid then
                            Flags :=
                              +New_Validity_Tree_Array_Update
                                 (Name   => +Flags,
@@ -849,7 +847,7 @@ package body Gnat2Why.Unchecked_Conversion is
            Precise_Integer_UC
              (Arg           => +Arg,
               Size          => No_Uint,
-              Source_Type   => EW_Abstract (Source_Type),
+              Source_Type   => Type_Of_Node (Source_Type),
               Target_Type   => Base,
               Source_Status => Get_Scalar_Status (Source_Type),
               Target_Status => Modular);
@@ -888,13 +886,14 @@ package body Gnat2Why.Unchecked_Conversion is
       if Is_Scalar_Type (Target_Type) then
          Def :=
            Precise_Integer_UC
-             (Arg           => Conv,
-              Size          => No_Uint,
-              Source_Type   => Base,
-              Target_Type   => Base_Why_Type_No_Bool (Target_Type),
-              Source_Status => Modular,
-              Target_Status => Get_Scalar_Status (Target_Type),
-              Ada_Function  => Ada_Function);
+             (Arg                 => Conv,
+              Size                => No_Uint,
+              Source_Type         => Base,
+              Target_Type         => Type_Of_Node (Target_Type),
+              Source_Status       => Modular,
+              Target_Status       => Get_Scalar_Status (Target_Type),
+              Potentially_Invalid => Potentially_Invalid,
+              Ada_Target          => Target_Type);
 
       --  2.b Otherwise recursively reconstruct all scalar
       --  subcomponents from the value of type Base.
@@ -911,13 +910,12 @@ package body Gnat2Why.Unchecked_Conversion is
          begin
             Def := Val.Value;
 
-            --  If the result of Ada_Function is potentially invalid,
-            --  reconstruct the wrapper.
+            --  If Potentially_Invalid is set, reconstruct the wrapper
 
-            if Do_Validity then
+            if Potentially_Invalid then
                Def :=
                  +New_Function_Validity_Wrapper_Value
-                    (Fun        => Ada_Function,
+                    (Ty         => Target_Type,
                      Valid_Flag => +Val.Valid_Flag,
                      Value      => +Val.Value);
             end if;
@@ -931,13 +929,14 @@ package body Gnat2Why.Unchecked_Conversion is
    ------------------------
 
    function Precise_Integer_UC
-     (Arg           : W_Term_Id;
-      Size          : Uint;
-      Source_Type   : W_Type_Id;
-      Target_Type   : W_Type_Id;
-      Source_Status : Scalar_Status;
-      Target_Status : Scalar_Status;
-      Ada_Function  : Opt_E_Function_Id := Empty) return W_Term_Id
+     (Arg                 : W_Term_Id;
+      Size                : Uint;
+      Source_Type         : W_Type_Id;
+      Target_Type         : W_Type_Id;
+      Source_Status       : Scalar_Status;
+      Target_Status       : Scalar_Status;
+      Potentially_Invalid : Boolean := False;
+      Ada_Target          : Type_Kind_Id := Empty) return W_Term_Id
    is
       Source_Base_Type : constant W_Type_Id :=
         Base_Why_Type_No_Bool (Source_Type);
@@ -1028,16 +1027,14 @@ package body Gnat2Why.Unchecked_Conversion is
          end;
       end if;
 
-      --  If Ada_Function is set and its result is potentially invalid, it is
-      --  necessary to reconstruct the wrapper. Only assume the value of the
-      --  result if it is valid to avoid inconsistent assumptions with the
-      --  dynamic invariant of the result. Otherwise use a dummy of the type.
+      --  If Potentially_Invalid is True, it is necessary to reconstruct the
+      --  wrapper. Only assume the value of the result if it is valid to avoid
+      --  inconsistent assumptions with the dynamic invariant of the result.
+      --  Otherwise use a dummy of the type.
 
-      if Present (Ada_Function) and then Is_Potentially_Invalid (Ada_Function)
-      then
+      if Potentially_Invalid then
          declare
-            Range_Ty     : constant Type_Kind_Id :=
-              Retysp (Etype (Ada_Function));
+            Range_Ty     : constant Type_Kind_Id := Retysp (Ada_Target);
             Conv_To_Base : constant W_Term_Id :=
               New_Temp_For_Expr
                 (Insert_Simple_Conversion
@@ -1054,7 +1051,7 @@ package body Gnat2Why.Unchecked_Conversion is
                      (Tmp     => Valid_Flag,
                       Context =>
                         +New_Function_Validity_Wrapper_Value
-                           (Fun        => Ada_Function,
+                           (Ty         => Range_Ty,
                             Valid_Flag => +Valid_Flag,
                             Value      =>
                               +New_Conditional

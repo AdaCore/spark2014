@@ -34,7 +34,6 @@ with Gnat2Why.Expr;                 use Gnat2Why.Expr;
 with Gnat2Why.Subprograms;          use Gnat2Why.Subprograms;
 with Gnat2Why.Subprograms.Pointers; use Gnat2Why.Subprograms.Pointers;
 with GNATCOLL.Utils;                use GNATCOLL.Utils;
-with SPARK_Definition;              use SPARK_Definition;
 with SPARK_Definition.Annotate;     use SPARK_Definition.Annotate;
 with SPARK_Util.Types;              use SPARK_Util.Types;
 with Stand;                         use Stand;
@@ -5171,11 +5170,11 @@ package body Why.Gen.Expr is
    ------------------------------------
 
    function New_Function_Valid_Flag_Access
-     (Fun : E_Function_Id; Name : W_Expr_Id) return W_Expr_Id
+     (Ty : Type_Kind_Id; Name : W_Expr_Id) return W_Expr_Id
    is (New_Record_Access
          (Name  => Name,
-          Field => E_Symb (Fun, WNE_Valid_Wrapper_Flag),
-          Typ   => Get_Validity_Tree_Type (Etype (Fun))));
+          Field => E_Symb (Ty, WNE_Valid_Wrapper_Flag),
+          Typ   => Get_Validity_Tree_Type (Ty)));
 
    -------------------------------------
    -- New_Function_Valid_Value_Access --
@@ -5183,12 +5182,12 @@ package body Why.Gen.Expr is
 
    function New_Function_Valid_Value_Access
      (Ada_Node : Node_Id := Empty;
-      Fun      : E_Function_Id;
+      Ty       : Type_Kind_Id;
       Name     : W_Expr_Id;
       Do_Check : Boolean := False) return W_Expr_Id
    is
       Value_Id : constant W_Identifier_Id :=
-        E_Symb (Fun, WNE_Valid_Wrapper_Result);
+        E_Symb (Ty, WNE_Valid_Wrapper_Result);
    begin
       if Do_Check then
          return
@@ -5210,21 +5209,21 @@ package body Why.Gen.Expr is
    -----------------------------------------
 
    function New_Function_Validity_Wrapper_Value
-     (Fun : E_Function_Id; Valid_Flag : W_Expr_Id; Value : W_Expr_Id)
+     (Ty : Type_Kind_Id; Valid_Flag : W_Expr_Id; Value : W_Expr_Id)
       return W_Expr_Id
    is (New_Record_Aggregate
          (Associations =>
             (1 =>
                New_Field_Association
                  (Domain => EW_Term,
-                  Field  => E_Symb (Fun, WNE_Valid_Wrapper_Result),
+                  Field  => E_Symb (Ty, WNE_Valid_Wrapper_Result),
                   Value  => Value),
              2 =>
                New_Field_Association
                  (Domain => EW_Term,
-                  Field  => E_Symb (Fun, WNE_Valid_Wrapper_Flag),
+                  Field  => E_Symb (Ty, WNE_Valid_Wrapper_Flag),
                   Value  => Valid_Flag)),
-          Typ          => Validity_Wrapper_Type (Fun)));
+          Typ          => Validity_Wrapper_Type (Ty)));
 
    -----------------------
    -- New_Operator_Call --
@@ -5837,8 +5836,13 @@ package body Why.Gen.Expr is
    -- Validity_Wrapper_Type --
    ---------------------------
 
-   function Validity_Wrapper_Type (Fun : E_Function_Id) return W_Type_Id
-   is (New_Named_Type (Get_Name (E_Symb (Fun, WNE_Valid_Wrapper))));
+   function Validity_Wrapper_Type (Ty : Type_Kind_Id) return W_Type_Id
+   is (New_Named_Type
+         (New_Name
+            (Symb   => NID (To_String (WNE_Valid_Wrapper)),
+             Module => E_Module (Retysp (Ty), Validity_Wrapper))));
+   --  Don't use E_Symb directly here as this is used to create Items when they
+   --  are registered, so prior to the generation of the type modules.
 
    -----------------------
    -- Why_Default_Value --

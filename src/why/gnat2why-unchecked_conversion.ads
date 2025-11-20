@@ -25,6 +25,7 @@
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with SPARK_Util;            use SPARK_Util;
+with SPARK_Atree;           use SPARK_Atree;
 with SPARK_Atree.Entities;  use SPARK_Atree.Entities;
 with Types;                 use Types;
 with Why.Ids;               use Why.Ids;
@@ -121,32 +122,34 @@ package Gnat2Why.Unchecked_Conversion is
        else raise Program_Error);
 
    function Precise_Integer_UC
-     (Arg           : W_Term_Id;
-      Size          : Uint;
-      Source_Type   : W_Type_Id;
-      Target_Type   : W_Type_Id;
-      Source_Status : Scalar_Status;
-      Target_Status : Scalar_Status;
-      Ada_Function  : Opt_E_Function_Id := Empty) return W_Term_Id;
+     (Arg                 : W_Term_Id;
+      Size                : Uint;
+      Source_Type         : W_Type_Id;
+      Target_Type         : W_Type_Id;
+      Source_Status       : Scalar_Status;
+      Target_Status       : Scalar_Status;
+      Potentially_Invalid : Boolean := False;
+      Ada_Target          : Type_Kind_Id := Empty) return W_Term_Id
+   with Pre => (if Potentially_Invalid then Present (Ada_Target));
    --  Return Arg of Source_Type converted to Target_Type, when both are of
    --  scalar types. Size is the shared size of both types, when arguments of
    --  the UC are integer types, which is used for conversion from an
    --  Unsigned type to a Signed one. Otherwise it is No_Uint.
-   --  If Ada_Function is provided and its result is potentially invalid, wrap
-   --  the result in a validity wrapper. The validity flag is set to True iff
-   --  the return value is in the bounds of the return type of Ada_Function.
+   --  If Potentially_Invalid is True, wrap the result in a validity wrapper.
+   --  The validity flag is set to True iff the return value is in the bounds
+   --  of the return type of Ada_Target.
 
    function Precise_Composite_UC
-     (Arg          : W_Term_Id;
-      Source_Type  : Type_Kind_Id;
-      Target_Type  : Type_Kind_Id;
-      Ada_Function : E_Function_Id) return W_Term_Id;
+     (Arg                 : W_Term_Id;
+      Source_Type         : Type_Kind_Id;
+      Target_Type         : Type_Kind_Id;
+      Potentially_Invalid : Boolean) return W_Term_Id;
    --  Return Arg of Source_Type converted to Target_Type, when at least one
    --  is a composite type made up of integers. Convert Arg to a large-enough
    --  modular type, and convert that value to Target. If all types involved
    --  are modular, then this benefits from bitvector support in provers.
-   --  If the result of Ada_Function is potentially invalid, wrap it in a
-   --  validity wrapper. The validity flag is set to True iff all scalar
-   --  subcomponents of the return value are in the bounds of their subtype.
+   --  If Potentially_Invalid is True, wrap it in a validity wrapper. The
+   --  validity flag is set to True iff all scalar subcomponents of the return
+   --  value are in the bounds of their subtype.
 
 end Gnat2Why.Unchecked_Conversion;

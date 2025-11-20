@@ -825,7 +825,7 @@ package body Why.Gen.Binders is
               (if Ekind (E) /= E_Function
                then Why_Empty
                elsif Is_Potentially_Invalid (E)
-               then Validity_Wrapper_Type (E)
+               then Validity_Wrapper_Type (Etype (E))
                else Type_Of_Node (E));
             For_Prog       : W_Identifier_Id;
             For_Logic      : Opt_Id;

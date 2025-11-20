@@ -814,8 +814,8 @@ package Why.Atree.Modules is
       Refined_Post_Axiom,        --  Refined post axiom
       Lemma_Axiom,               --  Post axiom of a lemma procedure annotated
       --  with Automatic_Instantiation.
-      Validity_Wrapper,          --  Defining a wrapper for functions returning
-      --  potentially invalid results.
+      Validity_Wrapper,          --  Defining a wrapper for return types of
+      --  functions with potentially invalid results.
       Type_Completion,           --  Type completion
       Type_Representative,       --  Representative module for a type
       Record_Rep_Completion,     --  Completion of representative module for a
