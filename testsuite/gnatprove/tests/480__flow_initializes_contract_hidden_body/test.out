@@ -1,6 +1,7 @@
 external.ads:3:19: high: "External.State" is not initialized in "External" [reason for check: variable is mentioned in the Initializes contract of the package declaration] [possible fix: initialize "External.State" at declaration]
 external.ads:4:03: info: flow dependencies proved
 external2.ads:4:03: info: flow dependencies proved
+external3.ads:3:20: high: "External3.State" is not initialized in "External3" [reason for check: variable is mentioned in the Initializes contract of the package declaration] [possible fix: initialize "External3.State" at declaration]
 external3.ads:4:03: info: flow dependencies proved
 test.ads:5:22: info: initialization of "Test.State" proved
 test.ads:6:04: info: flow dependencies proved

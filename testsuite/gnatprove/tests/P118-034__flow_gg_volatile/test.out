@@ -21,15 +21,16 @@ Generated contracts for A.Test_02
          Actuator
 Generated contracts for A
    Initializes =>
-      A.Ext_State
       A.State
 a.adb:9:04: warning: address specification on "Sensor" is imprecisely supported: assuming no concurrent accesses to non-atomic object and correct volatile properties [imprecise-address-specification] [E0012]
 a.adb:9:04: warning: launch "gnatprove --explain=E0012" for more information
+a.adb:9:04: high: "Sensor" constituent of "Ext_State" is not initialized in "A" [reason for check: variable is mentioned in the generated Initializes contract] [possible fix: initialize "Sensor" constituent of "Ext_State" at declaration or in the package body statements]
 a.adb:9:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 a.adb:14:04: warning: address specification on "Actuator" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, no writes to a potential alias, and valid reads [imprecise-address-specification] [E0012]
 a.adb:14:04: warning: make sure that all overlapping objects have Async_Writers set to True
 a.adb:14:04: warning: launch "gnatprove --explain=E0012" for more information
 a.adb:14:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
+a.adb:37:33: high: "Sensor" constituent of "Ext_State" is not initialized
 Generated contracts for B.Priv.P_Read_State
    Global =>
       Input =>
@@ -45,8 +46,7 @@ Generated contracts for B.Priv.P_Read_Atomic_State
       In_Out =>
          Flag_4
 Generated contracts for B.Priv
-   Initializes =>
-      Priv.Atomic_State
+b-priv.adb:7:04: high: "Flag_4" constituent of "Atomic_State" is not written in "Priv" [reason for check: variable is mentioned in the generated Initializes contract] [possible fix: initialize "Flag_4" constituent of "Atomic_State" at declaration or in the package body statements]
 b-priv.ads:2:24: warning: no subprogram exists that can initialize abstract state "Priv.State" constituent of "B.State"
 b-priv.ads:6:28: info: initialization of "X" proved
 b-priv.ads:7:35: info: initialization of "X" proved
@@ -68,8 +68,7 @@ Generated contracts for B.Read_Atomic_State
       In_Out =>
          Priv.Atomic_State
 Generated contracts for B
-   Initializes =>
-      B.Atomic_State
+b.adb:9:04: high: "Flag_2" constituent of "Atomic_State" is not initialized in "B" [reason for check: variable is mentioned in the generated Initializes contract] [possible fix: initialize "Flag_2" constituent of "Atomic_State" at declaration or in the package body statements]
 b.ads:2:23: warning: no subprogram exists that can initialize abstract state "B.State"
 b.ads:6:26: info: initialization of "X" proved
 b.ads:7:33: info: initialization of "X" proved

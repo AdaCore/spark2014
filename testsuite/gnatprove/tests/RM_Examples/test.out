@@ -16,6 +16,8 @@ externals.adb:27:04: info: address in address clause is compatible with object a
 externals.adb:27:04: warning: address specification on "Out_Reg" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [imprecise-address-specification] [E0012]
 externals.adb:27:04: warning: launch "gnatprove --explain=E0012" for more information
 externals.adb:27:04: warning: make sure that all overlapping objects have Async_Writers set to True
+externals.adb:33:04: high: "In_Reg" constituent of "Complex_Device" is not initialized in "Externals" [reason for check: encapsulating state is mentioned in the Initializes contract of the package declaration] [possible fix: initialize "In_Reg" constituent of "Complex_Device" at declaration or in the package body statements]
+externals.adb:33:04: high: initialization of "Externals.Complex_Device" is specified at externals.ads:8
 externals.adb:33:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 externals.adb:33:04: warning: address specification on "In_Reg" is imprecisely supported: assuming no concurrent accesses to non-atomic object and correct volatile properties [imprecise-address-specification] [E0012]
 externals.adb:33:04: warning: launch "gnatprove --explain=E0012" for more information
@@ -58,6 +60,7 @@ global_and_generics.ads:7:09: info: data dependencies proved, in instantiation a
 global_and_generics.ads:8:09: info: flow dependencies proved, in instantiation at global_and_generics.adb:10
 global_and_generics.ads:12:06: info: data dependencies proved
 global_and_generics.ads:13:06: info: flow dependencies proved
+hal.adb:13:04: high: "Read_FIFO" constituent of "Serial_In" is not initialized in "HAL" [reason for check: variable is mentioned in the generated Initializes contract] [possible fix: initialize "Read_FIFO" constituent of "Serial_In" at declaration or in the package body statements]
 hal.adb:13:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 hal.adb:13:04: warning: address specification on "Read_FIFO" is imprecisely supported: assuming no concurrent accesses to non-atomic object and correct volatile properties [imprecise-address-specification] [E0012]
 hal.adb:13:04: warning: launch "gnatprove --explain=E0012" for more information
@@ -65,6 +68,7 @@ hal.adb:21:04: info: address in address clause is compatible with object alignme
 hal.adb:21:04: warning: address specification on "Write_FIFO" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [imprecise-address-specification] [E0012]
 hal.adb:21:04: warning: launch "gnatprove --explain=E0012" for more information
 hal.adb:21:04: warning: make sure that all overlapping objects have Async_Writers set to True
+hal.adb:30:04: high: "Status" constituent of "FIFO_Status" is not initialized in "HAL" [reason for check: variable is mentioned in the generated Initializes contract] [possible fix: initialize "Status" constituent of "FIFO_Status" at declaration or in the package body statements]
 hal.adb:30:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 hal.adb:30:04: warning: address specification on "Status" is imprecisely supported: assuming no concurrent accesses to non-atomic object and correct volatile properties [imprecise-address-specification] [E0012]
 hal.adb:30:04: warning: launch "gnatprove --explain=E0012" for more information
@@ -72,6 +76,7 @@ hal.adb:38:04: info: address in address clause is compatible with object alignme
 hal.adb:38:04: warning: address specification on "Control" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [imprecise-address-specification] [E0012]
 hal.adb:38:04: warning: launch "gnatprove --explain=E0012" for more information
 hal.adb:38:04: warning: make sure that all overlapping objects have Async_Writers set to True
+hal.adb:46:04: high: "Wdog_Shared_Memory" constituent of "Wdog_State" is not written in "HAL" [reason for check: variable is mentioned in the generated Initializes contract] [possible fix: initialize "Wdog_Shared_Memory" constituent of "Wdog_State" at declaration or in the package body statements]
 hal.adb:46:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 hal.adb:46:04: warning: address specification on "Wdog_Shared_Memory" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, no writes to a potential alias, and valid reads [imprecise-address-specification] [E0012]
 hal.adb:46:04: warning: launch "gnatprove --explain=E0012" for more information

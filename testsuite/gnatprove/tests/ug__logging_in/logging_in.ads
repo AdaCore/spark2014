@@ -1,7 +1,7 @@
 package Logging_In with
   SPARK_Mode
 is
-   Log_In : Integer with Volatile, Async_Writers, Effective_Reads;
+   Log_In : Integer with Volatile, Async_Writers, Effective_Reads, Import;
 
    type Integer_Array is array (Positive range 1 .. 100) of Integer;
    Log      : Integer_Array;

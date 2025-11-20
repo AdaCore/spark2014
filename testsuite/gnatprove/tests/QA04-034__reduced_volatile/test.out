@@ -1,7 +1,12 @@
+vol.adb:6:36: high: "G" is not written
+vol.adb:8:17: high: "G" is not written
+vol.adb:9:17: high: "G" is not written
 vol.adb:10:19: medium: assertion might fail [provers reached step limit before completing the proof]
 vol.ads:9:04: info: initialization of "H1" proved
 vol.ads:9:08: info: initialization of "H2" proved
 vol.ads:10:13: info: implicit aspect Always_Terminates on "Ident" has been proved, subprogram will terminate
+vol2.adb:7:11: high: "G" is not written
+vol2.adb:8:11: high: "G" is not written
 vol2.adb:9:19: medium: assertion might fail [possible fix: call at line 8 should mention Result (for argument H2) in a postcondition] [provers reached step limit before completing the proof]
 vol2.ads:9:04: info: initialization of "H1" proved
 vol2.ads:9:08: info: initialization of "H2" proved

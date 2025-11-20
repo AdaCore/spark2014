@@ -8,6 +8,7 @@ node_a.adb:27:24: warning: assuming "Suspend_Forever" has no effect on global it
 node_a.adb:27:24: warning: no Always_Terminates aspect available for "Suspend_Forever" [assumed-always-terminates]
 node_a.adb:27:24: warning: no Global contract available for "Suspend_Forever" [assumed-global-null]
 polyorb_hi-epoch.adb:46:16: info: implicit aspect Always_Terminates on "System_Startup_Time" has been proved, subprogram will terminate
+polyorb_hi-epoch.adb:54:04: info: initialization of "Epoch_Data" constituent of "Elaborated_Variables" proved
 polyorb_hi-epoch.adb:88:16: medium: range check might fail [reason for check: input value must fit in parameter type] [provers gave up before completing the proof]
 polyorb_hi-epoch.adb:88:31: info: range check proved (CVC5: 1 VC)
 polyorb_hi-epoch.ads:40:08: info: flow dependencies proved

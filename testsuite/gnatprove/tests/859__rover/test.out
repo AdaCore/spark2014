@@ -3,4 +3,5 @@ rover-tasks.ads:7:14: warning: subprogram "Demo" has no effect
 rover-tasks.ads:10:15: medium: in inlined expression function body at rover.ads:13
 rover-tasks.ads:10:15: medium: postcondition might fail, cannot prove Rover_HAL.Get_Power (Rover_HAL.Left) <= 0 [provers gave up before completing the proof]
 rover-tasks.ads:10:20: info: precondition proved (CVC5: 1 VC)
+rover_hal.ads:5:32: info: initialization of "Rover_HAL.HW_State" proved
 rover_hal.ads:6:03: info: flow dependencies proved

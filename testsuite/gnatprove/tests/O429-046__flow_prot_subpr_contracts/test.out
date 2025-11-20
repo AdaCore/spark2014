@@ -10,4 +10,5 @@ prot.ads:17:09: medium: the task might terminate, which is not allowed in SPARK 
 prot.ads:18:11: info: data dependencies proved
 prot.ads:21:14: medium: the task might terminate, which is not allowed in SPARK [provers gave up before completing the proof]
 prot.ads:22:11: info: data dependencies proved
+prot.ads:24:04: info: initialization of "PO" proved
 prot.ads:24:16: info: range check proved (CVC5: 2 VC)

@@ -10,4 +10,6 @@ p.ads:8:17: info: aspect Always_Terminates on "PP1" has been proved, subprogram 
 p.ads:9:12: info: data dependencies proved
 p.ads:11:17: info: aspect Always_Terminates on "PP2" has been proved, subprogram will terminate
 p.ads:12:12: info: data dependencies proved
+p.ads:15:04: info: initialization of "PO1" proved
+p.ads:16:04: info: initialization of "PO2" proved
 proxy.ads:3:14: warning: subprogram "Proc" has no effect
