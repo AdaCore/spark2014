@@ -101,13 +101,13 @@ spark-containers-functional-maps.ads:105:06: info: Container_Aggregates annotati
 spark-containers-functional-maps.ads:105:06: info: Container_Aggregates annotation proved (CVC5: 3 VC), in instantiation at check_ho_pre.adb:10
 spark-containers-functional-maps.ads:105:06: info: Container_Aggregates annotation proved (CVC5: 3 VC), in instantiation at use_map_ho.adb:9
 spark-containers-functional-maps.ads:105:06: info: Container_Aggregates annotation proved (Z3: 1 VC), in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:105:06: info: after a call to Aggr_Include at spark-containers-functional-maps.ads:609, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:105:06: info: after a call to Aggr_Include at spark-containers-functional-maps.ads:609, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:105:06: info: after a call to Aggr_Include at spark-containers-functional-maps.ads:609, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:105:06: info: after a call to Aggr_Include at spark-containers-functional-maps.ads:609, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:105:06: info: after a call to Aggr_Include at spark-containers-functional-maps.ads:609, in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:105:06: info: after a call to Aggr_Include at spark-containers-functional-maps.ads:609, in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:105:06: info: after a call to Aggr_Include at spark-containers-functional-maps.ads:609, in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:105:06: info: after a call to Aggr_Include at spark-containers-functional-maps.ads:610, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:105:06: info: after a call to Aggr_Include at spark-containers-functional-maps.ads:610, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:105:06: info: after a call to Aggr_Include at spark-containers-functional-maps.ads:610, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:105:06: info: after a call to Aggr_Include at spark-containers-functional-maps.ads:610, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:105:06: info: after a call to Aggr_Include at spark-containers-functional-maps.ads:610, in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:105:06: info: after a call to Aggr_Include at spark-containers-functional-maps.ads:610, in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:105:06: info: after a call to Aggr_Include at spark-containers-functional-maps.ads:610, in instantiation at use_map_ho.adb:9
 spark-containers-functional-maps.ads:105:06: info: after a call to Empty_Map at spark-containers-functional-maps.ads:297, in instantiation at check_ho_pre.adb:10
 spark-containers-functional-maps.ads:105:06: info: after a call to Empty_Map at spark-containers-functional-maps.ads:297, in instantiation at check_ho_pre.adb:10
 spark-containers-functional-maps.ads:105:06: info: after a call to Empty_Map at spark-containers-functional-maps.ads:297, in instantiation at use_map_ho.adb:9
@@ -167,10 +167,10 @@ spark-containers-functional-maps.ads:602:13: info: implicit aspect Always_Termin
 spark-containers-functional-maps.ads:602:13: info: implicit aspect Always_Terminates on "Aggr_Eq_Keys" has been proved, subprogram will terminate, in instantiation at use_map_ho.adb:9
 spark-containers-functional-maps.ads:605:06: info: data dependencies proved, in instantiation at check_ho_pre.adb:10
 spark-containers-functional-maps.ads:605:06: info: data dependencies proved, in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:613:39: info: during checks for container aggregates at spark-containers-functional-maps.ads:105, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:613:39: info: during checks for container aggregates at spark-containers-functional-maps.ads:105, in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:613:39: info: precondition proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:613:39: info: precondition proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:614:39: info: during checks for container aggregates at spark-containers-functional-maps.ads:105, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:614:39: info: during checks for container aggregates at spark-containers-functional-maps.ads:105, in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:614:39: info: precondition proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:614:39: info: precondition proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:9
 spark-containers-parameter_checks.adb:33:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:542, in instantiation at check_ho_pre.adb:10
 spark-containers-parameter_checks.adb:33:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:542, in instantiation at use_map_ho.adb:9
 spark-containers-parameter_checks.adb:33:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-maps.ads:551, in instantiation at check_ho_pre.adb:10
