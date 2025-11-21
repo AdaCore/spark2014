@@ -63,6 +63,7 @@ stages:
   services:
      - image:pe-base
      - cpu:16
+     - disk:60
   stage: test
   interruptible: true
   script:
@@ -135,6 +136,7 @@ build:
   services:
      - image:pe-base
      - cpu:8
+     - disk:60
   stage: build
   interruptible: true
   rules:
