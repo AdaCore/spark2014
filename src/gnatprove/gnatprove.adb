@@ -204,6 +204,14 @@ procedure Gnatprove with SPARK_Mode is
    begin
       Args.Append ("--restricted-to-languages=ada");
 
+      --  We explicitly set the target (which has been already figured out by
+      --  the GPR machinery). This way gprbuild will only call gprconfig once:
+      --  to generate a configuration for that specific target. Otherwise
+      --  gprbuild would make an extra call to gprconfig, just to find the
+      --  target.
+
+      Args.Append ("--target=" & String (Tree.Target));
+
       if Call_Gnat2Why then
          Args.Append ("--gnatprove");  --  Call gnat2why instead of gcc
 
