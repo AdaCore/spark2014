@@ -620,36 +620,44 @@ package body Gnat2Why.Unchecked_Conversion is
                Comp : Node_Id := First_Component (Typ);
             begin
                while Present (Comp) loop
-                  Get_Source_Elements
-                    (Typ      => Retysp (Etype (Comp)),
-                     Offset   => Offset + Component_Bit_Offset (Comp),
-                     Size     => Esize (Comp),
-                     Expr     =>
-                       New_Ada_Record_Access
-                         (Ada_Node => Types.Empty,
-                          Name     => +Expr,
-                          Ty       => Typ,
-                          Field    => Comp),
-                     Elements => Elements);
-                  Next_Component (Comp);
+                  declare
+                     Size          : Uint;
+                     Size_Str, Exp : Unbounded_String;
+                  begin
+                     Record_Component_Size (Typ, Comp, Size, Exp, Size_Str);
+                     Get_Source_Elements
+                       (Typ      => Retysp (Etype (Comp)),
+                        Offset   => Offset + Component_Bit_Offset (Comp),
+                        Size     => Size,
+                        Expr     =>
+                          New_Ada_Record_Access
+                            (Ada_Node => Types.Empty,
+                             Name     => +Expr,
+                             Ty       => Typ,
+                             Field    => Comp),
+                        Elements => Elements);
+                     Next_Component (Comp);
+                  end;
                end loop;
             end;
 
          elsif Is_Array_Type (Typ) then
             declare
-               Index : constant Node_Id := First_Index (Typ);
-               Rng   : constant Node_Id := Get_Range (Index);
-               Low   : constant Uint := Expr_Value (Low_Bound (Rng));
-               High  : constant Uint := Expr_Value (High_Bound (Rng));
-               Cur   : Uint;
+               Index     : constant Node_Id := First_Index (Typ);
+               Rng       : constant Node_Id := Get_Range (Index);
+               Low       : constant Uint := Expr_Value (Low_Bound (Rng));
+               High      : constant Uint := Expr_Value (High_Bound (Rng));
+               Cur       : Uint;
+               Comp_Size : constant Uint :=
+                 Get_Attribute_Value (Typ, Attribute_Component_Size);
             begin
                if Low <= High then
                   Cur := Low;
                   while Cur <= High loop
                      Get_Source_Elements
                        (Typ      => Retysp (Component_Type (Typ)),
-                        Offset   => (Cur - Low) * Component_Size (Typ),
-                        Size     => Component_Size (Typ),
+                        Offset   => (Cur - Low) * Comp_Size,
+                        Size     => Comp_Size,
                         Expr     =>
                           New_Array_Access
                             (Ar    => Expr,
@@ -770,13 +778,14 @@ package body Gnat2Why.Unchecked_Conversion is
                   Cur := Low;
                   while Cur <= High loop
                      declare
-                        C_Value : constant Target_Value :=
+                        Comp_Size : constant Uint :=
+                          Get_Attribute_Value (Typ, Attribute_Component_Size);
+                        C_Value   : constant Target_Value :=
                           Reconstruct_Value
                             (Base   => Base,
                              Bits   => Bits,
-                             Offset =>
-                               Offset + (Cur - Low) * Component_Size (Typ),
-                             Size   => Component_Size (Typ),
+                             Offset => Offset + (Cur - Low) * Comp_Size,
+                             Size   => Comp_Size,
                              Typ    => Retysp (Component_Type (Typ)));
                      begin
                         Ar :=
