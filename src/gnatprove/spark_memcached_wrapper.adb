@@ -69,6 +69,14 @@ procedure SPARK_Memcached_Wrapper with No_Return is
    --  @param Fn the file to be hashed
    --  Compute a hash of the file in argument
 
+   procedure Hash_Session_File
+     (C : in out GNAT.SHA1.Context; Proof_Dir : String; Why3_File : String);
+   --  @param C the hash context to be updated
+   --  @param Proof_Dir name of directory with proof session files
+   --  @param Why3_File name of Why3 file to prove
+   --  Compute a hash of the session file from Proof_Dir that corresponds to
+   --  given Why3_File.
+
    function Compute_Key return GNAT.SHA1.Message_Digest;
    --  @return the key to be used for this invocation of the wrapper in the
    --    memcached table
@@ -143,6 +151,14 @@ procedure SPARK_Memcached_Wrapper with No_Return is
             elsif Arg = "--why3-conf" then
                Hash_File (C, Ada.Command_Line.Argument (I + 1));
                I := I + 2;
+            elsif Arg = "--proof-dir" then
+               Hash_Session_File
+                 (C,
+                  Proof_Dir => Ada.Command_Line.Argument (I + 1),
+                  Why3_File =>
+                    Ada.Command_Line.Argument
+                      (Ada.Command_Line.Argument_Count));
+               I := I + 2;
             else
                GNAT.SHA1.Update (C, Arg);
                I := I + 1;
@@ -178,6 +194,31 @@ procedure SPARK_Memcached_Wrapper with No_Return is
 
       Close (File);
    end Hash_File;
+
+   -----------------------
+   -- Hash_Session_File --
+   -----------------------
+
+   procedure Hash_Session_File
+     (C : in out GNAT.SHA1.Context; Proof_Dir : String; Why3_File : String)
+   is
+      use Ada.Directories;
+
+      Sessions_Dir     : constant String := Compose (Proof_Dir, "sessions");
+      Unit_Session_Dir : constant String :=
+        Compose (Sessions_Dir, Base_Name (Why3_File));
+      Session_File     : constant String :=
+        Compose (Unit_Session_Dir, "why3session.xml");
+
+   begin
+      --  Session file for a given program unit might not exists yet, e.g.
+      --  because the unit has been just created or because it is the first
+      --  run of the tool after enabling session files.
+
+      if Exists (Session_File) then
+         Hash_File (C, Session_File);
+      end if;
+   end Hash_Session_File;
 
    -----------------
    -- Init_Client --
