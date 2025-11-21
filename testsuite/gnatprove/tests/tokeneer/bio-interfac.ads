@@ -20,7 +20,7 @@ with CommonTypes,
 
 private package Bio.Interfac
   with Abstract_State => (Input with External => Async_Writers,
-                                     Part_Of  => Bio.Input)
+                                     Part_Of  => Bio.Input), Initializes => Input
 is
 
    ------------------------------------------------------------------

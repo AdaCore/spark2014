@@ -19,7 +19,7 @@ with Clock;
 
 private package Clock.Interfac
   with Abstract_State => (Now with External => Async_Writers,
-                                   Part_Of => Clock.Now)
+                                   Part_Of => Clock.Now), Initializes => Now
 is
 
    ------------------------------------------------------------------

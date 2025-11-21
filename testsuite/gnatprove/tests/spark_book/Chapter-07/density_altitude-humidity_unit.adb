@@ -6,7 +6,7 @@ is
    Humid_Sensor : Percent
      with Volatile        => True,
           Async_Writers   => True,
-          Address         => System.Storage_Elements.To_Address (16#A1CAF0#);
+          Address         => System.Storage_Elements.To_Address (16#A1CAF0#), Import;
 
    procedure Read (Value : out Percent)
       with Refined_Global  => (Input => Humid_Sensor),
