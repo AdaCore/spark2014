@@ -3106,7 +3106,7 @@ package body Flow_Error_Messages is
                         return
                           Create
                             ("add precondition ("
-                             & Pre
+                             & Escape (Pre)
                              & ") to subprogram "
                              & Line_Num,
                              Secondary_Loc => Secondary_Loc);
