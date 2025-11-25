@@ -141,6 +141,6 @@ for shape_file in glob.glob("proof/sessions/*/why3shapes*"):
     os.remove(shape_file)
     count += 1
 print(f'  shapefiles: {"deleted" if count > 0 else "not found"}')
-delete("gnatprove", isdir=True)
 delete("sparklib.gpr")
-delete("sparklib_obj", isdir=True)
+for leftover in ["gnatprove", "sparklib_obj", "obj", "lib", "include"]:
+    delete(leftover, isdir=True)
