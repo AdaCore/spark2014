@@ -1547,4 +1547,52 @@ package body Gnat2Why.Unchecked_Conversion is
         (Typ, Size, "Size", True, Result, Explanation, Check_Validity);
    end Suitable_For_UC_Target_UC_Wrap;
 
+   procedure Types_Compatible_Alignment
+     (Src_Ty      : Type_Kind_Id;
+      Tar_Ty      : Type_Kind_Id;
+      Valid       : out Boolean;
+      Explanation : out Unbounded_String)
+   is
+      SA : constant Uint := Get_Attribute_Value (Src_Ty, Attribute_Alignment);
+      TA : constant Uint := Get_Attribute_Value (Tar_Ty, Attribute_Alignment);
+   begin
+      if No (SA) then
+         Valid := False;
+         Explanation :=
+           To_Unbounded_String
+             (Source_Name (Src_Ty)
+              & " doesn't have an "
+              & "Alignment representation clause or aspect");
+         return;
+      end if;
+      if No (TA) then
+         Valid := False;
+         Explanation :=
+           To_Unbounded_String
+             (Source_Name (Tar_Ty)
+              & " doesn't have an "
+              & "Alignment representation clause or aspect");
+         return;
+      end if;
+      if SA mod TA /= Uint_0 then
+         Valid := False;
+         Explanation :=
+           To_Unbounded_String
+             ("alignment of "
+              & Source_Name (Src_Ty)
+              & " (which is "
+              & UI_Image (SA)
+              & ")"
+              & " must be a multiple of the "
+              & "alignment of "
+              & Source_Name (Tar_Ty)
+              & " (which is "
+              & UI_Image (TA)
+              & ")");
+         return;
+      end if;
+      Valid := True;
+      Explanation := Null_Unbounded_String;
+   end Types_Compatible_Alignment;
+
 end Gnat2Why.Unchecked_Conversion;

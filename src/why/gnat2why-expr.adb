@@ -2917,6 +2917,7 @@ package body Gnat2Why.Expr is
             Check_Info.Continuation.Append
               (Continuation_Type'
                  (Default_Init_Expr,
+
                   To_Unbounded_String
                     ("for inherited default initial condition")));
          else
@@ -22037,7 +22038,7 @@ package body Gnat2Why.Expr is
                            end if;
                            Emit_Static_Proof_Result
                              (Decl,
-                              VC_UC_Alignment,
+                              VC_UC_Align_Overlay,
                               Valid,
                               Current_Subp,
                               Explanation => To_String (Explanation));
@@ -22081,7 +22082,7 @@ package body Gnat2Why.Expr is
                              New_Located_Assert
                                (Ada_Node => Decl,
                                 Pred     => Pred,
-                                Reason   => VC_UC_Alignment,
+                                Reason   => VC_UC_Align_Overlay,
                                 Kind     => EW_Assert);
                            Address_Why :=
                              Binding_For_Temp
@@ -22161,12 +22162,11 @@ package body Gnat2Why.Expr is
                            --  deeply nested expression
                            --!format off
                            Check_Idx  : constant Boolean :=
-                             No (Base) or else
-                                (not Is_Constrained (Base)
-                                 and then
-                                    (Is_Constrained (Ent)
-                                     or else Is_Fixed_Lower_Bound_Array_Subtype
-                                               (Ent)));
+                             No (Base)
+                             or else (not Is_Constrained (Base)
+                                      and then (Is_Constrained (Ent)
+                                                or else Is_Fixed_Lower_Bound_Array_Subtype
+                                                             (Ent)));
                            --!format on
                            --  We only need to check the index types of Ent if
                            --  either there is no Base or Base is unconstrained

@@ -1314,7 +1314,8 @@ procedure SPARK_Report is
             | VC_UC_Source
             | VC_UC_Target
             | VC_UC_Same_Size
-            | VC_UC_Alignment
+            | VC_UC_Align_Overlay
+            | VC_UC_Align_UC
             | VC_Unchecked_Union_Restriction
             | VC_UC_Volatile
             | VC_Validity_Check                                              =>
