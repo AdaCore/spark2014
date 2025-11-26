@@ -13,6 +13,7 @@ from time import sleep
 from pathlib import Path
 from shutil import copy, copytree, rmtree, which
 import subprocess
+import tempfile
 from test_util import sort_key_for_errors
 
 
@@ -820,31 +821,43 @@ def preprocess_sparklib_source_file(filepath):
         re.IGNORECASE,
     )
 
+    fd, temp_path = tempfile.mkstemp()
+
     try:
-        # fileinput.input with inplace=True handles the in-place replacement.
-        # It redirects stdout to the file, so print() writes to the file.
-        for line in fileinput.input(files=[filepath], inplace=True):
-            # Test for the first pattern and replace using re.subn.
-            # re.subn returns a tuple: (new_string, number_of_subs_made).
-            # This handles cases where the pattern is not at the start of the line.
-            new_line, count = pattern_to_enable.subn(r"\1On\2", line)
-            if count > 0:
-                # If a substitution was made, write the modified line.
-                # new_line already contains the original newline character.
-                sys.stdout.write(new_line)
-                continue
+        with os.fdopen(fd, 'w', newline='') as newfile:
+            with open(filepath, 'r', newline='') as oldfile:
+                for line in oldfile:
+                    # Test for the first pattern and replace using re.subn.
+                    # re.subn returns a tuple: (new_string, number_of_subs_made).
+                    # This handles cases where the pattern is not at the start of the line.
+                    new_line, count = pattern_to_enable.subn(r"\1On\2", line)
+                    if count > 0:
+                        # If a substitution was made, write the modified line.
+                        # new_line already contains the original newline character.
+                        newfile.write(new_line)
+                        continue
 
-            # Test for the second pattern (this logic remains the same).
-            # This pattern is expected to match the entire line.
-            match_remove = pattern_to_remove.match(line)
-            if match_remove:
-                # Replace the line with an empty line to preserve line numbering.
-                sys.stdout.write("\n")
-                continue
+                    # Test for the second pattern.
+                    # This pattern is expected to match the entire line.
+                    match_remove = pattern_to_remove.match(line)
+                    if match_remove:
+                        if line.endswith('\r\n'):
+                            # Preserve Windows-style line endings.
+                            newfile.write("\r\n")
+                        elif line.endswith('\n'):
+                            # Preserve Unix-style line endings.
+                            newfile.write("\n")
+                        else:
+                            # EOF case
+                            pass
+                        continue
 
-            # If no pattern is matched, write the original line back to the file.
-            # 'line' already contains a newline character.
-            sys.stdout.write(line)
+                    # If no pattern is matched, write the original line back to the file.
+                    # 'line' already contains a newline character.
+                    newfile.write(line)
+        
+        # Replace the original file with the modified temporary file.
+        os.replace(temp_path, filepath)
 
     except FileNotFoundError:
         print(f"Error: The file {filepath!r} was not found.", file=sys.stderr)
@@ -852,7 +865,6 @@ def preprocess_sparklib_source_file(filepath):
     except Exception as e:
         print(f"An unexpected error occurred: {e}", file=sys.stderr)
         sys.exit(1)
-
 
 def update_projectpath_for_sparklib(newpath):
     """check the paths in GPR_PROJECT_PATH; replace the one that contains
