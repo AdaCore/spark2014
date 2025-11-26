@@ -704,9 +704,12 @@ package SPARK_Atree.Entities is
    --  through a component clause or through appropriate offset and component
    --  size.
 
+   function Overlaid_Entity (Obj : Entity_Id) return Opt_Object_Kind_Id
+   renames Sem_Util.Overlaid_Entity;
+
    function Ultimate_Overlaid_Entity
-     (Obj : Entity_Id) return Opt_Object_Kind_Id;
-   --  Renames Sem_Util.Ultimate_Overlaid_Entity for now
+     (Obj : Entity_Id) return Opt_Object_Kind_Id
+   renames Sem_Util.Ultimate_Overlaid_Entity;
 
    ----------------------
    --  For Subprograms --

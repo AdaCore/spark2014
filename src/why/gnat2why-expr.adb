@@ -22261,7 +22261,7 @@ package body Gnat2Why.Expr is
                      Address_Why     : W_Prog_Id :=
                        +Transform_Expr (Address, EW_Prog, Params);
                      Aliased_Object  : constant Entity_Id :=
-                       Supported_Alias (Address);
+                       Overlaid_Entity (Obj);
                      Supported_Alias : constant Boolean :=
                        Present (Aliased_Object);
 
@@ -22271,23 +22271,6 @@ package body Gnat2Why.Expr is
                        Retysp (Etype (Obj));
 
                   begin
-                     --  Sanity checking: for proof, we use
-                     --  Ultimate_Overlaid_Entity to translate mutable objects
-                     --  with supported aliases. Check that it is consistent.
-
-                     if not Is_Mutable_In_Why (Obj) then
-                        null;
-
-                     elsif Supported_Alias
-                       /= Present (Ultimate_Overlaid_Entity (Obj))
-                       or else (Supported_Alias
-                                and then not Entity_In_SPARK
-                                               (Ultimate_Overlaid_Entity
-                                                  (Obj)))
-                     then
-                        raise Program_Error;
-                     end if;
-
                      --  The check is needed only for overlays between two
                      --  SPARK objects.
 

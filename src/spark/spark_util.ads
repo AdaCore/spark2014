@@ -1129,10 +1129,6 @@ package SPARK_Util is
    --  object. We do not return True if Expr is rooted inside an IN parameter,
    --  as the actual might be a variable object.
 
-   function Supported_Alias (Expr : Node_Id) return Entity_Id;
-   --  If Expr is of the form "X'Address", return the root object of X.
-   --  Otherwise, return Empty. This function accepts empty expressions.
-
    function Terminal_Alternatives
      (Expr : N_Subexpr_Id) return Node_Vectors.Vector;
    --  From a nest of conditional/case expressions (possibly empty), return the
