@@ -82,10 +82,10 @@ main.adb:241:22: info: assertion proved (CVC5: 1 VC)
 main.adb:241:22: info: predicate check proved (Trivial: 1 VC)
 main.adb:241:43: info: predicate check proved (Trivial: 1 VC)
 main.adb:242:22: info: assertion proved (CVC5: 1 VC)
-main.adb:243:07: medium: assertion might fail
+main.adb:243:07: medium: assertion might fail [provers reached step limit before completing the proof]
 main.adb:247:06: info: data dependencies proved
 main.adb:251:16: medium: elements shall be distinct and shall fit in "Natural" for set aggregates at main.adb:66
-main.adb:251:16: medium: precondition might fail
+main.adb:251:16: medium: precondition might fail [provers gave up before completing the proof]
 main.adb:256:14: high: all paths in "Test_Partial_Maps" raise exceptions or do not terminate normally
 main.adb:257:06: info: data dependencies proved
 main.adb:262:16: info: keys shall be distinct for maps aggregates at main.adb:115
@@ -103,11 +103,11 @@ main.adb:270:22: info: assertion proved (CVC5: 1 VC)
 main.adb:270:22: info: predicate check proved (Trivial: 1 VC)
 main.adb:270:43: info: predicate check proved (Trivial: 1 VC)
 main.adb:271:22: info: assertion proved (CVC5: 1 VC)
-main.adb:272:07: medium: assertion might fail
+main.adb:272:07: medium: assertion might fail [provers reached step limit before completing the proof]
 main.adb:276:06: info: data dependencies proved
-main.adb:280:07: medium: resource or memory leak might occur at end of scope
+main.adb:280:07: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 main.adb:280:16: medium: keys shall be distinct for maps aggregates at main.adb:115
-main.adb:280:16: medium: precondition might fail
+main.adb:280:16: medium: precondition might fail [provers gave up before completing the proof]
 main.adb:285:14: high: all paths in "Test_Total_Maps" raise exceptions or do not terminate normally
 main.adb:286:06: info: data dependencies proved
 main.adb:291:16: info: keys shall be distinct for maps aggregates at main.adb:198
@@ -118,11 +118,11 @@ main.adb:294:38: info: unrolling loop [info-unrolling-inlining]
 main.adb:295:25: info: assertion proved (CVC5: 5 VC)
 main.adb:297:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:298:22: info: assertion proved (CVC5: 1 VC)
-main.adb:299:07: medium: assertion might fail
+main.adb:299:07: medium: assertion might fail [provers reached step limit before completing the proof]
 main.adb:303:06: info: data dependencies proved
 main.adb:307:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 main.adb:307:16: medium: keys shall be distinct for maps aggregates at main.adb:115
-main.adb:307:16: medium: precondition might fail
+main.adb:307:16: medium: precondition might fail [provers gave up before completing the proof]
 main.adb:312:14: high: all paths in "Test_Seqs" raise exceptions or do not terminate normally
 main.adb:313:06: info: data dependencies proved
 main.adb:318:16: info: all elements shall fit in index type for sequence aggregates at main.adb:23
@@ -134,7 +134,7 @@ main.adb:322:40: info: unrolling loop [info-unrolling-inlining]
 main.adb:323:25: info: assertion proved (CVC5: 5 VC)
 main.adb:323:25: info: precondition proved (CVC5: 10 VC)
 main.adb:325:22: info: assertion proved (CVC5: 1 VC)
-main.adb:326:07: medium: assertion might fail
+main.adb:326:07: medium: assertion might fail [provers reached step limit before completing the proof]
 main.adb:330:06: info: data dependencies proved
 main.adb:334:16: medium: all elements shall fit in index type for sequence aggregates at main.adb:23
-main.adb:334:16: medium: precondition might fail
+main.adb:334:16: medium: precondition might fail [provers reached step limit before completing the proof]

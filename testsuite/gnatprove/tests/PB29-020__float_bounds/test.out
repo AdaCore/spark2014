@@ -29,7 +29,7 @@ floats.adb:48:14: info: float overflow check proved (altergo: 1 VC)
 floats.adb:49:14: info: float overflow check proved (altergo: 1 VC)
 floats.adb:50:14: info: float overflow check proved (altergo: 1 VC)
 floats.adb:51:14: info: float overflow check proved (altergo: 1 VC)
-floats.adb:53:16: medium: assertion might fail
-floats.adb:54:16: medium: assertion might fail
-floats.adb:55:16: medium: assertion might fail
-floats.adb:56:16: medium: assertion might fail
+floats.adb:53:16: medium: assertion might fail [provers reached step limit before completing the proof]
+floats.adb:54:16: medium: assertion might fail [provers reached step limit before completing the proof]
+floats.adb:55:16: medium: assertion might fail [provers reached step limit before completing the proof]
+floats.adb:56:16: medium: assertion might fail [provers reached step limit before completing the proof]

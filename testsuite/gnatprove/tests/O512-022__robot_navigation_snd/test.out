@@ -6,15 +6,15 @@ algorithm.adb:96:22: warning: this statement is never reached
 algorithm.adb:97:22: warning: this statement is never reached
 algorithm.adb:98:22: warning: this statement is never reached
 algorithm.adb:108:22: info: initialization of "d" proved
-algorithm.adb:110:44: medium: precondition might fail
+algorithm.adb:110:44: medium: precondition might fail [provers reached step limit before completing the proof]
 algorithm.adb:110:64: info: division check proved (CVC5: 1 VC)
 algorithm.adb:110:64: info: float overflow check proved (Trivial)
-algorithm.adb:111:49: medium: divide by zero might fail [possible fix: subprogram at algorithm.ads:68 should mention forwardLength and scans and testBearing in a precondition]
-algorithm.adb:111:49: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at algorithm.ads:68 should mention forwardLength and scans and testBearing in a precondition]
+algorithm.adb:111:49: medium: divide by zero might fail [possible fix: subprogram at algorithm.ads:68 should mention forwardLength and scans and testBearing in a precondition] [provers reached step limit before completing the proof]
+algorithm.adb:111:49: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at algorithm.ads:68 should mention forwardLength and scans and testBearing in a precondition] [provers reached step limit before completing the proof]
 algorithm.adb:113:42: info: division check proved (CVC5: 1 VC)
 algorithm.adb:113:42: info: float overflow check proved (Trivial)
-algorithm.adb:113:49: medium: divide by zero might fail [possible fix: subprogram at algorithm.ads:68 should mention scans and testBearing and width in a precondition]
-algorithm.adb:113:49: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at algorithm.ads:68 should mention scans and testBearing and width in a precondition]
+algorithm.adb:113:49: medium: divide by zero might fail [possible fix: subprogram at algorithm.ads:68 should mention scans and testBearing and width in a precondition] [provers reached step limit before completing the proof]
+algorithm.adb:113:49: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at algorithm.ads:68 should mention scans and testBearing and width in a precondition] [provers reached step limit before completing the proof]
 algorithm.adb:117:25: warning: statement has no effect
 algorithm.adb:118:28: warning: this statement is never reached
 algorithm.adb:119:28: warning: this statement is never reached
@@ -31,12 +31,12 @@ algorithm.adb:162:28: warning: this statement is never reached
 algorithm.adb:184:07: info: initialization of "rayR" proved
 algorithm.adb:184:13: info: initialization of "rayL" proved
 algorithm.adb:186:22: info: assertion proved (CVC5: 1 VC)
-algorithm.adb:197:47: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
-algorithm.adb:197:61: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded]
-algorithm.adb:197:75: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
-algorithm.adb:197:89: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: you should consider adding a postcondition to function ccwDiff or turning it into an expression function in its unit spec]
-algorithm.adb:197:95: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
-algorithm.adb:197:108: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
+algorithm.adb:197:47: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [provers reached step limit before completing the proof]
+algorithm.adb:197:61: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [provers reached step limit before completing the proof]
+algorithm.adb:197:75: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [provers reached step limit before completing the proof]
+algorithm.adb:197:89: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: you should consider adding a postcondition to function ccwDiff or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
+algorithm.adb:197:95: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [provers reached step limit before completing the proof]
+algorithm.adb:197:108: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [provers reached step limit before completing the proof]
 algorithm.adb:197:121: info: float overflow check proved (CVC5: 1 VC)
 algorithm.adb:200:13: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:204:31: info: assertion proved (CVC5: 2 VC)
@@ -45,12 +45,12 @@ algorithm.adb:209:33: info: loop invariant preservation proved (CVC5: 2 VC)
 algorithm.adb:215:49: info: float overflow check proved (CVC5: 1 VC)
 algorithm.adb:219:16: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:221:16: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:233:47: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop invariant at line 209 should mention rayR]
-algorithm.adb:233:61: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: loop invariant at line 209 should mention rayL and rayR]
-algorithm.adb:233:75: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop invariant at line 209 should mention rayL]
-algorithm.adb:233:89: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: loop invariant at line 209 should mention rayL and rayR]
-algorithm.adb:233:95: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop invariant at line 209 should mention rayR]
-algorithm.adb:233:108: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop invariant at line 209 should mention rayL and rayR]
+algorithm.adb:233:47: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop invariant at line 209 should mention rayR] [provers reached step limit before completing the proof]
+algorithm.adb:233:61: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: loop invariant at line 209 should mention rayL and rayR] [provers reached step limit before completing the proof]
+algorithm.adb:233:75: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop invariant at line 209 should mention rayL] [provers reached step limit before completing the proof]
+algorithm.adb:233:89: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: loop invariant at line 209 should mention rayL and rayR] [provers reached step limit before completing the proof]
+algorithm.adb:233:95: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop invariant at line 209 should mention rayR] [provers reached step limit before completing the proof]
+algorithm.adb:233:108: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop invariant at line 209 should mention rayL and rayR] [provers reached step limit before completing the proof]
 algorithm.adb:233:121: info: float overflow check proved (CVC5: 1 VC)
 algorithm.adb:237:13: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:248:17: info: postcondition proved (CVC5: 1 VC)
@@ -63,7 +63,7 @@ algorithm.adb:263:35: info: loop invariant preservation proved (CVC5: 4 VC)
 algorithm.adb:265:43: info: precondition proved (CVC5: 2 VC)
 algorithm.adb:269:25: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:269:63: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:269:107: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
+algorithm.adb:269:107: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [provers reached step limit before completing the proof]
 algorithm.adb:270:15: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:270:62: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:272:16: warning: statement has no effect
@@ -93,7 +93,7 @@ algorithm.adb:326:35: info: loop invariant preservation proved (CVC5: 4 VC)
 algorithm.adb:328:44: info: precondition proved (CVC5: 2 VC)
 algorithm.adb:332:25: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:332:64: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:332:109: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
+algorithm.adb:332:109: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [provers reached step limit before completing the proof]
 algorithm.adb:333:15: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:333:64: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:335:16: warning: statement has no effect
@@ -115,7 +115,7 @@ algorithm.adb:358:36: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:358:58: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:363:27: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:383:15: info: range check proved (CVC5: 2 VC)
-algorithm.adb:383:71: medium: range check might fail, cannot prove lower bound for Length (This.gapVec) [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (Length (This.gapVec) >= Count_Type(Gap_ID'First)) to subprogram at algorithm.ads:91]
+algorithm.adb:383:71: medium: range check might fail, cannot prove lower bound for Length (This.gapVec) [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (Length (This.gapVec) >= Count_Type(Gap_ID'First)) to subprogram at algorithm.ads:91] [provers reached step limit before completing the proof]
 algorithm.adb:397:22: info: assertion proved (CVC5: 1 VC)
 algorithm.adb:399:43: medium: implicit aspect Always_Terminates on "findBestValley" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 algorithm.adb:400:33: info: loop invariant initialization proved (CVC5: 2 VC)
@@ -171,7 +171,7 @@ algorithm.adb:475:114: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:479:35: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:479:77: info: discriminant check proved (CVC5: 1 VC)
 algorithm.adb:479:96: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:480:36: medium: precondition might fail [possible fix: loop invariant at line 400 should mention Best_Valley_IDS]
+algorithm.adb:480:36: medium: precondition might fail [possible fix: loop invariant at line 400 should mention Best_Valley_IDS] [provers reached step limit before completing the proof]
 algorithm.adb:480:73: info: discriminant check proved (CVC5: 1 VC)
 algorithm.adb:480:92: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:482:22: warning: statement has no effect
@@ -186,21 +186,21 @@ algorithm.adb:511:13: warning: this statement is never reached
 algorithm.adb:512:13: warning: this statement is never reached
 algorithm.adb:512:30: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:512:67: info: discriminant check proved (CVC5: 1 VC)
-algorithm.adb:516:20: medium: precondition might fail [possible fix: loop invariant at line 400 should mention Best_Valley_IDS]
+algorithm.adb:516:20: medium: precondition might fail [possible fix: loop invariant at line 400 should mention Best_Valley_IDS] [provers reached step limit before completing the proof]
 algorithm.adb:516:57: info: discriminant check proved (CVC5: 1 VC)
-algorithm.adb:517:20: medium: precondition might fail [possible fix: loop invariant at line 400 should mention Best_Valley_IDS]
+algorithm.adb:517:20: medium: precondition might fail [possible fix: loop invariant at line 400 should mention Best_Valley_IDS] [provers reached step limit before completing the proof]
 algorithm.adb:517:57: info: discriminant check proved (CVC5: 1 VC)
 algorithm.adb:532:07: info: initialization of "deltaMag" proved
 algorithm.adb:533:07: info: initialization of "deltaAngle" proved
 algorithm.adb:539:33: info: loop invariant initialization proved (CVC5: 1 VC)
 algorithm.adb:539:33: info: loop invariant preservation proved (CVC5: 1 VC)
-algorithm.adb:540:52: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: precondition of subprogram at algorithm.ads:98 should mention This]
+algorithm.adb:540:52: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: precondition of subprogram at algorithm.ads:98 should mention This] [provers reached step limit before completing the proof]
 algorithm.adb:541:25: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:541:25: info: range check proved (CVC5: 1 VC)
 algorithm.adb:541:44: info: float overflow check proved (CVC5: 1 VC)
 algorithm.adb:541:70: info: float overflow check proved (CVC5: 1 VC)
 algorithm.adb:541:98: info: division check proved (CVC5: 1 VC)
-algorithm.adb:541:98: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: precondition of subprogram at algorithm.ads:98 should mention This]
+algorithm.adb:541:98: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: precondition of subprogram at algorithm.ads:98 should mention This] [provers reached step limit before completing the proof]
 algorithm.adb:544:42: info: float overflow check proved (CVC5: 1 VC)
 algorithm.adb:544:42: info: range check proved (Trivial)
 algorithm.adb:544:53: info: float overflow check proved (Trivial)
@@ -209,7 +209,7 @@ algorithm.adb:546:65: info: float overflow check proved (Trivial)
 algorithm.adb:546:76: info: float overflow check proved (Trivial)
 algorithm.adb:546:87: info: float overflow check proved (colibri: 1 VC)
 algorithm.adb:551:54: info: division check proved (altergo: 1 VC)
-algorithm.adb:551:54: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: loop invariant at line 539 should mention deltaAreaSum and obstacleAvoidDelta]
+algorithm.adb:551:54: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: loop invariant at line 539 should mention deltaAreaSum and obstacleAvoidDelta] [provers reached step limit before completing the proof]
 algorithm.adb:560:07: info: initialization of "driveSpeed" proved
 algorithm.adb:561:07: info: initialization of "driveTurnRate" proved
 algorithm.adb:562:07: info: initialization of "relGoal" proved
@@ -233,7 +233,7 @@ algorithm.adb:588:10: warning: this statement is never reached
 algorithm.adb:591:31: info: assertion proved (Trivial: 1 VC)
 algorithm.adb:603:31: info: assertion proved (Trivial: 1 VC)
 algorithm.adb:605:37: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
-algorithm.adb:607:67: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop at line 605 should mention This in a loop invariant]
+algorithm.adb:607:67: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop at line 605 should mention This in a loop invariant] [provers reached step limit before completing the proof]
 algorithm.adb:607:101: info: range check proved (Trivial)
 algorithm.adb:607:111: info: division check proved (CVC5: 1 VC)
 algorithm.adb:610:31: info: assertion proved (Trivial: 1 VC)
@@ -254,7 +254,7 @@ algorithm.adb:638:114: info: division check proved (CVC5: 1 VC)
 algorithm.adb:638:114: info: float overflow check proved (Trivial)
 algorithm.adb:647:51: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:649:22: info: assertion proved (CVC5: 1 VC)
-algorithm.adb:650:22: medium: assertion might fail [possible fix: loop at line 605 should mention This in a loop invariant]
+algorithm.adb:650:22: medium: assertion might fail [possible fix: loop at line 605 should mention This in a loop invariant] [provers reached step limit before completing the proof]
 algorithm.adb:652:07: warning: statement has no effect
 algorithm.adb:653:10: warning: this statement is never reached
 algorithm.adb:654:10: warning: this statement is never reached
@@ -265,15 +265,15 @@ algorithm.adb:663:33: info: loop invariant preservation proved (CVC5: 2 VC)
 algorithm.adb:666:13: warning: statement has no effect
 algorithm.adb:667:16: warning: this statement is never reached
 algorithm.adb:673:25: info: assertion proved (CVC5: 1 VC)
-algorithm.adb:675:72: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded]
+algorithm.adb:675:72: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [provers reached step limit before completing the proof]
 algorithm.adb:676:43: info: range check proved (CVC5: 1 VC)
 algorithm.adb:681:31: info: assertion proved (CVC5: 2 VC)
-algorithm.adb:682:22: medium: assertion might fail
+algorithm.adb:682:22: medium: assertion might fail [provers reached step limit before completing the proof]
 algorithm.adb:682:46: info: division check proved (CVC5: 1 VC)
 algorithm.adb:682:46: info: float overflow check proved (Trivial)
 algorithm.adb:683:21: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:683:21: info: range check proved (CVC5: 1 VC)
-algorithm.adb:683:32: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
+algorithm.adb:683:32: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [provers reached step limit before completing the proof]
 algorithm.adb:683:57: info: float overflow check proved (CVC5: 1 VC)
 algorithm.adb:683:109: info: division check proved (CVC5: 1 VC)
 algorithm.adb:683:109: info: float overflow check proved (Trivial)
@@ -298,8 +298,8 @@ algorithm.adb:734:10: warning: statement has no effect
 algorithm.adb:735:13: warning: this statement is never reached
 algorithm.adb:739:52: info: division check proved (CVC5: 1 VC)
 algorithm.adb:739:52: info: float overflow check proved (Trivial)
-algorithm.adb:746:58: medium: precondition might fail
-algorithm.adb:747:88: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded]
+algorithm.adb:746:58: medium: precondition might fail [provers reached step limit before completing the proof]
+algorithm.adb:747:88: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [provers reached step limit before completing the proof]
 algorithm.adb:748:104: info: discriminant check proved (CVC5: 1 VC)
 algorithm.adb:757:13: warning: statement has no effect
 algorithm.adb:758:16: warning: this statement is never reached
@@ -321,7 +321,7 @@ algorithm.adb:776:37: info: assertion proved (CVC5: 2 VC)
 algorithm.adb:779:60: info: discriminant check proved (CVC5: 1 VC)
 algorithm.adb:780:57: info: discriminant check proved (CVC5: 1 VC)
 algorithm.adb:797:31: info: assertion proved (CVC5: 1 VC)
-algorithm.adb:800:29: medium: precondition might fail
+algorithm.adb:800:29: medium: precondition might fail [provers reached step limit before completing the proof]
 algorithm.adb:802:07: warning: statement has no effect
 algorithm.adb:803:10: warning: this statement is never reached
 algorithm.adb:804:10: warning: this statement is never reached
@@ -361,25 +361,25 @@ algorithm.adb:862:40: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:862:47: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:863:22: info: assertion proved (colibri: 1 VC)
 algorithm.adb:863:44: info: float overflow check proved (altergo: 1 VC)
-algorithm.adb:864:22: medium: assertion might fail
+algorithm.adb:864:22: medium: assertion might fail [provers reached step limit before completing the proof]
 algorithm.adb:864:76: info: assertion proved (CVC5: 2 VC)
 algorithm.adb:864:99: info: float overflow check proved (altergo: 1 VC)
-algorithm.adb:865:22: medium: assertion might fail
+algorithm.adb:865:22: medium: assertion might fail [provers reached step limit before completing the proof]
 algorithm.adb:865:45: info: float overflow check proved (altergo: 1 VC)
 algorithm.adb:865:72: info: division check proved (altergo: 1 VC)
-algorithm.adb:865:72: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded]
+algorithm.adb:865:72: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [provers reached step limit before completing the proof]
 algorithm.adb:866:22: info: assertion proved (Z3: 1 VC)
 algorithm.adb:866:45: info: float overflow check proved (altergo: 1 VC)
 algorithm.adb:866:72: info: division check proved (altergo: 1 VC)
-algorithm.adb:866:72: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded]
+algorithm.adb:866:72: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [provers reached step limit before completing the proof]
 algorithm.adb:867:38: info: float overflow check proved (altergo: 1 VC)
 algorithm.adb:867:40: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:867:47: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:867:76: info: float overflow check proved (altergo: 1 VC)
 algorithm.adb:867:103: info: division check proved (altergo: 1 VC)
-algorithm.adb:867:103: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded]
+algorithm.adb:867:103: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [provers reached step limit before completing the proof]
 algorithm.adb:869:16: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:872:32: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
+algorithm.adb:872:32: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [provers reached step limit before completing the proof]
 algorithm.adb:872:34: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:872:41: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:873:32: info: float overflow check proved (colibri: 1 VC)

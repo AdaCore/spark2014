@@ -19,7 +19,7 @@ lsc-bignum.adb:84:22: info: index check proved (Z3: 4 VC)
 lsc-bignum.adb:84:38: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:84:42: info: index check proved (Z3: 4 VC)
 lsc-bignum.adb:84:42: info: overflow check proved (Z3: 4 VC)
-lsc-bignum.adb:85:48: medium: overflow check might fail, cannot prove upper bound for B_First + I [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+lsc-bignum.adb:85:48: medium: overflow check might fail, cannot prove upper bound for B_First + I [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
 lsc-bignum.adb:85:52: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:85:62: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:86:22: info: index check proved (Z3: 4 VC)
@@ -38,20 +38,20 @@ lsc-bignum.adb:93:22: info: index check proved (Z3: 2 VC)
 lsc-bignum.adb:93:38: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:93:42: info: index check proved (Z3: 2 VC)
 lsc-bignum.adb:93:42: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.adb:94:48: medium: overflow check might fail, cannot prove upper bound for B_First + (I + 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+lsc-bignum.adb:94:48: medium: overflow check might fail, cannot prove upper bound for B_First + (I + 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
 lsc-bignum.adb:94:53: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:94:58: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:94:68: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:95:22: info: index check proved (Z3: 2 VC)
 lsc-bignum.adb:95:41: info: index check proved (Z3: 2 VC)
 lsc-bignum.adb:101:13: info: implicit aspect Always_Terminates on "Word_Of_Boolean" has been proved, subprogram will terminate
-lsc-bignum.adb:103:08: medium: postcondition might fail
+lsc-bignum.adb:103:08: medium: postcondition might fail [provers gave up before completing the proof]
 lsc-bignum.adb:105:07: info: initialization of "Result" proved
 lsc-bignum.adb:126:07: info: initialization of "J" proved
 lsc-bignum.adb:127:07: info: initialization of "New_Carry" proved
 lsc-bignum.adb:131:11: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:134:13: info: loop invariant preservation proved (Z3: 2 VC)
-lsc-bignum.adb:134:13: medium: loop invariant might fail in first iteration, cannot prove Num_Of_Big_Int (A'Loop_Entry, A_First, I - A_First) - Num_Of_Big_Int (B, B_First, I - A_First) = Num_Of_Big_Int (A, A_First, I - A_First) - Base ** (I - A_First) * Num_Of_Boolean (Carry) [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and function Num_Of_Boolean and operator "-" and operator "*" and operator "**" and operator "=" or turning them into expression functions in their unit spec]
+lsc-bignum.adb:134:13: medium: loop invariant might fail in first iteration, cannot prove Num_Of_Big_Int (A'Loop_Entry, A_First, I - A_First) - Num_Of_Big_Int (B, B_First, I - A_First) = Num_Of_Big_Int (A, A_First, I - A_First) - Base ** (I - A_First) * Num_Of_Boolean (Carry) [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and function Num_Of_Boolean and operator "-" and operator "*" and operator "**" and operator "=" or turning them into expression functions in their unit spec] [provers reached step limit before completing the proof]
 lsc-bignum.adb:134:54: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:134:54: info: range check proved (Z3: 4 VC)
 lsc-bignum.adb:135:43: info: overflow check proved (Z3: 4 VC)
@@ -73,7 +73,7 @@ lsc-bignum.adb:142:57: info: index check proved (Z3: 2 VC)
 lsc-bignum.adb:143:13: info: index check proved (Z3: 2 VC)
 lsc-bignum.adb:143:23: info: index check proved (Z3: 2 VC)
 lsc-bignum.adb:143:31: info: index check proved (Z3: 2 VC)
-lsc-bignum.adb:147:13: medium: assertion might fail, cannot prove Num_Of_Big_Int (A'Loop_Entry, A_First, (I + 1) - A_First) - Num_Of_Big_Int (B, B_First, (I + 1) - A_First) = Num_Of_Big_Int (A, A_First, (I + 1) - A_First) - Base ** ((I + 1) - A_First) * Num_Of_Boolean (Carry) [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and function Num_Of_Boolean and operator "-" and operator "*" and operator "**" and operator "=" or turning them into expression functions in their unit spec]
+lsc-bignum.adb:147:13: medium: assertion might fail, cannot prove Num_Of_Big_Int (A'Loop_Entry, A_First, (I + 1) - A_First) - Num_Of_Big_Int (B, B_First, (I + 1) - A_First) = Num_Of_Big_Int (A, A_First, (I + 1) - A_First) - Base ** ((I + 1) - A_First) * Num_Of_Boolean (Carry) [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and function Num_Of_Boolean and operator "-" and operator "*" and operator "**" and operator "=" or turning them into expression functions in their unit spec] [provers reached step limit before completing the proof]
 lsc-bignum.adb:147:55: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:147:60: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:147:60: info: range check proved (Z3: 2 VC)
@@ -93,8 +93,8 @@ lsc-bignum.adb:152:39: info: index check proved (Z3: 2 VC)
 lsc-bignum.adb:166:07: info: initialization of "J" proved
 lsc-bignum.adb:167:07: info: initialization of "Result" proved
 lsc-bignum.adb:171:11: info: range check proved (Z3: 2 VC)
-lsc-bignum.adb:174:13: medium: loop invariant might fail in first iteration, cannot prove Num_Of_Big_Int (A, I + 1, A_Last - I) = Num_Of_Big_Int (B, B_First + (I - A_First) + 1, A_Last - I) [possible fix: precondition of subprogram at lsc-bignum.ads:120 should mention A and B]
-lsc-bignum.adb:174:13: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Num_Of_Big_Int (A, I + 1, A_Last - I) = Num_Of_Big_Int (B, B_First + (I - A_First) + 1, A_Last - I) [possible fix: precondition of subprogram at lsc-bignum.ads:120 should mention A and B]
+lsc-bignum.adb:174:13: medium: loop invariant might fail in first iteration, cannot prove Num_Of_Big_Int (A, I + 1, A_Last - I) = Num_Of_Big_Int (B, B_First + (I - A_First) + 1, A_Last - I) [possible fix: precondition of subprogram at lsc-bignum.ads:120 should mention A and B] [provers reached step limit before completing the proof]
+lsc-bignum.adb:174:13: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Num_Of_Big_Int (A, I + 1, A_Last - I) = Num_Of_Big_Int (B, B_First + (I - A_First) + 1, A_Last - I) [possible fix: precondition of subprogram at lsc-bignum.ads:120 should mention A and B] [provers reached step limit before completing the proof]
 lsc-bignum.adb:174:34: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:174:34: info: range check proved (Z3: 4 VC)
 lsc-bignum.adb:174:46: info: overflow check proved (Z3: 4 VC)
@@ -113,7 +113,7 @@ lsc-bignum.adb:180:24: info: index check proved (Z3: 2 VC)
 lsc-bignum.adb:185:23: info: index check proved (Z3: 2 VC)
 lsc-bignum.adb:185:31: info: index check proved (Z3: 2 VC)
 lsc-bignum.adb:202:08: info: flow dependencies proved
-lsc-bignum.adb:206:10: medium: postcondition might fail [possible fix: you should consider adding a postcondition to operator "+" and operator "*" and operator "=" and function From_Word32 or turning them into expression functions in their unit spec]
+lsc-bignum.adb:206:10: medium: postcondition might fail [possible fix: you should consider adding a postcondition to operator "+" and operator "*" and operator "=" and function From_Word32 or turning them into expression functions in their unit spec] [provers reached step limit before completing the proof]
 lsc-bignum.adb:215:07: info: initialization of "Mult1" proved
 lsc-bignum.adb:215:14: info: initialization of "Mult2" proved
 lsc-bignum.adb:215:21: info: initialization of "Temp" proved
@@ -121,10 +121,10 @@ lsc-bignum.adb:224:31: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:230:36: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:231:41: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:249:08: info: flow dependencies proved
-lsc-bignum.adb:254:17: medium: overflow check might fail, cannot prove upper bound for A_Last + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
-lsc-bignum.adb:257:18: medium: overflow check might fail, cannot prove upper bound for B_First + (A_Last - A_First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
+lsc-bignum.adb:254:17: medium: overflow check might fail, cannot prove upper bound for A_Last + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
+lsc-bignum.adb:257:18: medium: overflow check might fail, cannot prove upper bound for B_First + (A_Last - A_First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition] [provers gave up before completing the proof]
 lsc-bignum.adb:257:28: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.adb:259:18: medium: overflow check might fail, cannot prove upper bound for C_First + (A_Last - A_First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
+lsc-bignum.adb:259:18: medium: overflow check might fail, cannot prove upper bound for C_First + (A_Last - A_First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition] [provers gave up before completing the proof]
 lsc-bignum.adb:259:28: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:261:10: info: postcondition proved (Z3: 1 VC)
 lsc-bignum.adb:261:41: info: overflow check proved (Z3: 2 VC)
@@ -146,7 +146,7 @@ lsc-bignum.adb:269:36: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:272:07: info: initialization of "Temp" proved
 lsc-bignum.adb:274:11: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:277:13: info: loop invariant preservation proved (Z3: 2 VC)
-lsc-bignum.adb:277:13: medium: loop invariant might fail in first iteration, cannot prove Num_Of_Big_Int (A'Loop_Entry, A_First + 1, I - A_First) + Num_Of_Big_Int (B, B_First, I - A_First) * Math_Int.From_Word32 (X) + Num_Of_Big_Int (C, C_First, I - A_First) * Math_Int.From_Word32 (Y) + Math_Int.From_Word32 (Carry1'Loop_Entry) + Base * Math_Int... [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "+" and operator "*" and operator "**" and operator "=" and function From_Word32 or turning them into expression functions in their unit spec]
+lsc-bignum.adb:277:13: medium: loop invariant might fail in first iteration, cannot prove Num_Of_Big_Int (A'Loop_Entry, A_First + 1, I - A_First) + Num_Of_Big_Int (B, B_First, I - A_First) * Math_Int.From_Word32 (X) + Num_Of_Big_Int (C, C_First, I - A_First) * Math_Int.From_Word32 (Y) + Math_Int.From_Word32 (Carry1'Loop_Entry) + Base * Math_Int... [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "+" and operator "*" and operator "**" and operator "=" and function From_Word32 or turning them into expression functions in their unit spec] [provers reached step limit before completing the proof]
 lsc-bignum.adb:277:51: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:277:58: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:277:58: info: range check proved (Z3: 4 VC)
@@ -171,7 +171,7 @@ lsc-bignum.adb:294:24: info: index check proved (Z3: 2 VC)
 lsc-bignum.adb:294:24: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:294:29: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:296:13: info: index check proved (Z3: 2 VC)
-lsc-bignum.adb:299:13: medium: assertion might fail, cannot prove Num_Of_Big_Int (A'Loop_Entry, A_First + 1, (I + 1) - A_First) + Num_Of_Big_Int (B, B_First, (I + 1) - A_First) * Math_Int.From_Word32 (X) + Num_Of_Big_Int (C, C_First, (I + 1) - A_First) * Math_Int.From_Word32 (Y) + Math_Int.From_Word32 (Carry1'Loop_Entry)... [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "+" and operator "*" and operator "**" and operator "=" and function From_Word32 or turning them into expression functions in their unit spec]
+lsc-bignum.adb:299:13: medium: assertion might fail, cannot prove Num_Of_Big_Int (A'Loop_Entry, A_First + 1, (I + 1) - A_First) + Num_Of_Big_Int (B, B_First, (I + 1) - A_First) * Math_Int.From_Word32 (X) + Num_Of_Big_Int (C, C_First, (I + 1) - A_First) * Math_Int.From_Word32 (Y) + Math_Int.From_Word32 (Carry1'Loop_Entry)... [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "+" and operator "*" and operator "**" and operator "=" and function From_Word32 or turning them into expression functions in their unit spec] [provers reached step limit before completing the proof]
 lsc-bignum.adb:299:51: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:299:59: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:299:64: info: overflow check proved (Z3: 2 VC)
@@ -201,7 +201,7 @@ lsc-bignum.adb:329:34: info: initialization of "U" proved
 lsc-bignum.adb:331:07: info: precondition proved (Z3: 5 VC)
 lsc-bignum.adb:334:11: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:337:13: info: loop invariant preservation proved (Z3: 2 VC)
-lsc-bignum.adb:337:13: medium: loop invariant might fail in first iteration, cannot prove (Num_Of_Big_Int (A, A_First, A_Last - A_First + 1) + Base ** (A_Last - A_First + 1) * Math_Int.From_Word32 (A_MSW)) mod Num_Of_Big_Int (M, M_First, A_Last - A_First + 1) = (Num_Of_Big_Int (B, B_First, I - A_First) * Num_Of_Big_Int (C, C_First, A_Last - A_F... [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and function Inverse and operator "+" and operator "*" and operator "mod" and operator "**" and operator "=" and function From_Word32 or turning them into expression functions in their unit spec]
+lsc-bignum.adb:337:13: medium: loop invariant might fail in first iteration, cannot prove (Num_Of_Big_Int (A, A_First, A_Last - A_First + 1) + Base ** (A_Last - A_First + 1) * Math_Int.From_Word32 (A_MSW)) mod Num_Of_Big_Int (M, M_First, A_Last - A_First + 1) = (Num_Of_Big_Int (B, B_First, I - A_First) * Num_Of_Big_Int (C, C_First, A_Last - A_F... [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and function Inverse and operator "+" and operator "*" and operator "mod" and operator "**" and operator "=" and function From_Word32 or turning them into expression functions in their unit spec] [provers reached step limit before completing the proof]
 lsc-bignum.adb:337:49: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:337:59: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:337:59: info: range check proved (Z3: 4 VC)
@@ -247,7 +247,7 @@ lsc-bignum.adb:359:24: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:359:40: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:361:13: info: index check proved (Z3: 2 VC)
 lsc-bignum.adb:362:48: info: index check proved (Z3: 2 VC)
-lsc-bignum.adb:365:13: medium: assertion might fail, cannot prove (Num_Of_Big_Int (A, A_First, A_Last - A_First + 1) + Base ** (A_Last - A_First + 1) * Math_Int.From_Word32 (A_MSW)) mod Num_Of_Big_Int (M, M_First, A_Last - A_First + 1) = (Num_Of_Big_Int (B, B_First, (I + 1) - A_First) * Num_Of_Big_Int (C, C_First, A_Last... [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and function Inverse and operator "+" and operator "*" and operator "mod" and operator "**" and operator "=" and function From_Word32 or turning them into expression functions in their unit spec]
+lsc-bignum.adb:365:13: medium: assertion might fail, cannot prove (Num_Of_Big_Int (A, A_First, A_Last - A_First + 1) + Base ** (A_Last - A_First + 1) * Math_Int.From_Word32 (A_MSW)) mod Num_Of_Big_Int (M, M_First, A_Last - A_First + 1) = (Num_Of_Big_Int (B, B_First, (I + 1) - A_First) * Num_Of_Big_Int (C, C_First, A_Last... [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and function Inverse and operator "+" and operator "*" and operator "mod" and operator "**" and operator "=" and function From_Word32 or turning them into expression functions in their unit spec] [provers reached step limit before completing the proof]
 lsc-bignum.adb:365:49: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:365:59: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:365:59: info: range check proved (Z3: 2 VC)
@@ -295,10 +295,10 @@ lsc-bignum.adb:402:36: info: division check proved (Z3: 1 VC)
 lsc-bignum.adb:402:36: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:403:29: info: division check proved (Z3: 1 VC)
 lsc-bignum.adb:403:29: info: range check proved (Z3: 2 VC)
-lsc-bignum.adb:407:21: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: add precondition (A_First <= Big_Int_Range'Last - Natural (I / 32)) to subprogram at line 391]
-lsc-bignum.adb:407:21: medium: overflow check might fail, cannot prove upper bound for A_First + Natural (I / 32) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (A_First <= Integer'Last - Natural (I / 32)) to subprogram at line 391]
+lsc-bignum.adb:407:21: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: add precondition (A_First <= Big_Int_Range'Last - Natural (I / 32)) to subprogram at line 391] [provers gave up before completing the proof]
+lsc-bignum.adb:407:21: medium: overflow check might fail, cannot prove upper bound for A_First + Natural (I / 32) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (A_First <= Integer'Last - Natural (I / 32)) to subprogram at line 391] [provers gave up before completing the proof]
 lsc-bignum.adb:407:34: info: division check proved (Z3: 1 VC)
-lsc-bignum.adb:407:34: medium: range check might fail, cannot prove upper bound for I / 32 [reason for check: result of division must be convertible to the target type of the conversion] [possible fix: add precondition (I / 32 <= Unsigned_64(Natural'Last)) to subprogram at line 391]
+lsc-bignum.adb:407:34: medium: range check might fail, cannot prove upper bound for I / 32 [reason for check: result of division must be convertible to the target type of the conversion] [possible fix: add precondition (I / 32 <= Unsigned_64(Natural'Last)) to subprogram at line 391] [provers gave up before completing the proof]
 lsc-bignum.adb:408:27: info: division check proved (Z3: 1 VC)
 lsc-bignum.adb:408:27: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:437:07: info: initialization of "J" proved
@@ -311,14 +311,14 @@ lsc-bignum.adb:441:19: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:443:07: info: precondition proved (Z3: 5 VC)
 lsc-bignum.adb:443:48: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:444:13: info: index check proved (Z3: 2 VC)
-lsc-bignum.adb:446:07: medium: precondition might fail, cannot prove Num_Of_Big_Int (C, C_First, A_Last - A_First + 1) < Num_Of_Big_Int (M, M_First, A_Last - A_First + 1)
+lsc-bignum.adb:446:07: medium: precondition might fail, cannot prove Num_Of_Big_Int (C, C_First, A_Last - A_First + 1) < Num_Of_Big_Int (M, M_First, A_Last - A_First + 1) [provers gave up before completing the proof]
 lsc-bignum.adb:447:39: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.adb:451:07: medium: precondition might fail, cannot prove A_Last in A'Range
-lsc-bignum.adb:452:39: medium: overflow check might fail, cannot prove upper bound for Aux4_First + L [reason for check: result of addition must fit in a 32-bits machine integer]
-lsc-bignum.adb:456:07: medium: precondition might fail, cannot prove B_First + (A_Last - A_First) in B'Range
+lsc-bignum.adb:451:07: medium: precondition might fail, cannot prove A_Last in A'Range [provers gave up before completing the proof]
+lsc-bignum.adb:452:39: medium: overflow check might fail, cannot prove upper bound for Aux4_First + L [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
+lsc-bignum.adb:456:07: medium: precondition might fail, cannot prove B_First + (A_Last - A_First) in B'Range [provers gave up before completing the proof]
 lsc-bignum.adb:457:39: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:462:21: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.adb:463:10: medium: assertion might fail, cannot prove Num_Of_Big_Int (Aux1, Aux1_First, L + 1) = Math_Int.From_Word32 (1) [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "=" and function From_Word32 or turning them into expression functions in their unit spec]
+lsc-bignum.adb:463:10: medium: assertion might fail, cannot prove Num_Of_Big_Int (Aux1, Aux1_First, L + 1) = Math_Int.From_Word32 (1) [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "=" and function From_Word32 or turning them into expression functions in their unit spec] [provers gave up before completing the proof]
 lsc-bignum.adb:463:46: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:465:46: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:466:40: info: overflow check proved (Z3: 2 VC)
@@ -332,8 +332,8 @@ lsc-bignum.adb:473:46: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:474:40: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:475:21: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:476:40: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.adb:478:11: medium: range check might fail
-lsc-bignum.adb:478:37: medium: overflow check might fail, cannot prove upper bound for 2 ** K [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition (2 ** K <= Integer'Last) to subprogram at lsc-bignum.ads:176]
+lsc-bignum.adb:478:11: medium: range check might fail [provers gave up before completing the proof]
+lsc-bignum.adb:478:37: medium: overflow check might fail, cannot prove upper bound for 2 ** K [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition (2 ** K <= Integer'Last) to subprogram at lsc-bignum.ads:176] [provers gave up before completing the proof]
 lsc-bignum.adb:478:42: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:481:13: info: loop invariant preservation proved (Z3: 5 VC)
 lsc-bignum.adb:481:24: info: overflow check proved (Z3: 4 VC)
@@ -347,23 +347,23 @@ lsc-bignum.adb:489:49: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:490:24: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:491:43: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:492:22: info: range check proved (Z3: 4 VC)
-lsc-bignum.adb:493:16: medium: loop invariant might fail in first iteration, cannot prove  (Num_Of_Big_Int (Aux4, Aux4_First + N * (L + 1), L + 1) = Num_Of_Big_Int (X, X_First, L + 1) ** (2 * N + 1) * Base ** (L + 1) mod Num_Of_Big_Int (M, M_First, L + 1)) [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "*" and operator "mod" and operator "**" and operator "=" or turning them into expression functions in their unit spec]
-lsc-bignum.adb:493:50: medium: overflow check might fail, cannot prove upper bound for Aux4_First + N * (L + 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
-lsc-bignum.adb:493:54: medium: overflow check might fail, cannot prove lower bound for N * (L + 1) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+lsc-bignum.adb:493:16: medium: loop invariant might fail in first iteration, cannot prove  (Num_Of_Big_Int (Aux4, Aux4_First + N * (L + 1), L + 1) = Num_Of_Big_Int (X, X_First, L + 1) ** (2 * N + 1) * Base ** (L + 1) mod Num_Of_Big_Int (M, M_First, L + 1)) [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "*" and operator "mod" and operator "**" and operator "=" or turning them into expression functions in their unit spec] [provers gave up before completing the proof]
+lsc-bignum.adb:493:50: medium: overflow check might fail, cannot prove upper bound for Aux4_First + N * (L + 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
+lsc-bignum.adb:493:54: medium: overflow check might fail, cannot prove lower bound for N * (L + 1) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
 lsc-bignum.adb:493:59: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:493:67: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:494:47: info: overflow check proved (Z3: 4 VC)
-lsc-bignum.adb:494:58: medium: overflow check might fail, cannot prove upper bound for 2 * N [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+lsc-bignum.adb:494:58: medium: overflow check might fail, cannot prove upper bound for 2 * N [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
 lsc-bignum.adb:494:62: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:495:28: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:496:47: info: overflow check proved (Z3: 4 VC)
-lsc-bignum.adb:498:10: medium: precondition might fail, cannot prove B_First in B'Range
-lsc-bignum.adb:500:30: medium: overflow check might fail, cannot prove upper bound for Aux4_First + (H - 1) * (L + 1) [reason for check: result of addition must fit in a 32-bits machine integer]
-lsc-bignum.adb:500:40: medium: overflow check might fail, cannot prove lower bound for (H - 1) * (L + 1) [reason for check: result of multiplication must fit in a 32-bits machine integer]
+lsc-bignum.adb:498:10: medium: precondition might fail, cannot prove B_First in B'Range [provers gave up before completing the proof]
+lsc-bignum.adb:500:30: medium: overflow check might fail, cannot prove upper bound for Aux4_First + (H - 1) * (L + 1) [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
+lsc-bignum.adb:500:40: medium: overflow check might fail, cannot prove lower bound for (H - 1) * (L + 1) [reason for check: result of multiplication must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
 lsc-bignum.adb:500:45: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.adb:503:10: medium: precondition might fail, cannot prove B_First in B'Range
-lsc-bignum.adb:503:53: medium: overflow check might fail, cannot prove upper bound for Aux4_First + H * (L + 1) [reason for check: result of addition must fit in a 32-bits machine integer]
-lsc-bignum.adb:503:57: medium: overflow check might fail, cannot prove upper bound for H * (L + 1) [reason for check: result of multiplication must fit in a 32-bits machine integer]
+lsc-bignum.adb:503:10: medium: precondition might fail, cannot prove B_First in B'Range [provers gave up before completing the proof]
+lsc-bignum.adb:503:53: medium: overflow check might fail, cannot prove upper bound for Aux4_First + H * (L + 1) [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
+lsc-bignum.adb:503:57: medium: overflow check might fail, cannot prove upper bound for H * (L + 1) [reason for check: result of multiplication must fit in a 32-bits machine integer] [provers gave up before completing the proof]
 lsc-bignum.adb:503:62: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:506:24: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:507:49: info: overflow check proved (Z3: 2 VC)
@@ -376,13 +376,13 @@ lsc-bignum.adb:514:49: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:515:24: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:516:43: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:517:22: info: range check proved (Z3: 2 VC)
-lsc-bignum.adb:518:16: medium: assertion might fail, cannot prove  (Num_Of_Big_Int (Aux4, Aux4_First + N * (L + 1), L + 1) = Num_Of_Big_Int (X, X_First, L + 1) ** (2 * N + 1) * Base ** (L + 1) mod Num_Of_Big_Int (M, M_First, L + 1)) [possible fix: precondition of subprogram at lsc-bignum.ads:176 should mention X]
-lsc-bignum.adb:518:50: medium: overflow check might fail, cannot prove upper bound for Aux4_First + N * (L + 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
-lsc-bignum.adb:518:54: medium: overflow check might fail, cannot prove lower bound for N * (L + 1) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+lsc-bignum.adb:518:16: medium: assertion might fail, cannot prove  (Num_Of_Big_Int (Aux4, Aux4_First + N * (L + 1), L + 1) = Num_Of_Big_Int (X, X_First, L + 1) ** (2 * N + 1) * Base ** (L + 1) mod Num_Of_Big_Int (M, M_First, L + 1)) [possible fix: precondition of subprogram at lsc-bignum.ads:176 should mention X] [provers gave up before completing the proof]
+lsc-bignum.adb:518:50: medium: overflow check might fail, cannot prove upper bound for Aux4_First + N * (L + 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
+lsc-bignum.adb:518:54: medium: overflow check might fail, cannot prove lower bound for N * (L + 1) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers reached step limit before completing the proof]
 lsc-bignum.adb:518:59: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:518:67: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:519:47: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.adb:519:58: medium: overflow check might fail, cannot prove upper bound for 2 * N [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+lsc-bignum.adb:519:58: medium: overflow check might fail, cannot prove upper bound for 2 * N [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
 lsc-bignum.adb:519:62: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:520:28: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:521:47: info: overflow check proved (Z3: 2 VC)
@@ -395,8 +395,8 @@ lsc-bignum.adb:532:43: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:533:43: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:534:24: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:535:43: info: overflow check proved (Z3: 4 VC)
-lsc-bignum.adb:536:13: medium: loop invariant might fail in first iteration, cannot prove Num_Of_Big_Int (Aux3, Aux3_First, L + 1) = Num_Of_Big_Int (X, X_First, L + 1) ** (Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) + Math_Int.From_Word32 (1))) * Base ** (L + 1) mod Num_Of_Big_Int (M... [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "+" and operator "*" and operator "/" and operator "mod" and operator "**" and operator "**" and operator "=" and function From_Word32 and function From_Word64 or turning them into expression functions in their unit spec]
-lsc-bignum.adb:536:13: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Num_Of_Big_Int (Aux3, Aux3_First, L + 1) = Num_Of_Big_Int (X, X_First, L + 1) ** (Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) + Math_Int.From_Word32 (1))) * Base ** (L + 1) mod Num_Of_Big_Int (M... [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "+" and operator "*" and operator "/" and operator "mod" and operator "**" and operator "**" and operator "=" and function From_Word32 and function From_Word64 or turning them into expression functions in their unit spec]
+lsc-bignum.adb:536:13: medium: loop invariant might fail in first iteration, cannot prove Num_Of_Big_Int (Aux3, Aux3_First, L + 1) = Num_Of_Big_Int (X, X_First, L + 1) ** (Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) + Math_Int.From_Word32 (1))) * Base ** (L + 1) mod Num_Of_Big_Int (M... [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "+" and operator "*" and operator "/" and operator "mod" and operator "**" and operator "**" and operator "=" and function From_Word32 and function From_Word64 or turning them into expression functions in their unit spec] [provers gave up before completing the proof]
+lsc-bignum.adb:536:13: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Num_Of_Big_Int (Aux3, Aux3_First, L + 1) = Num_Of_Big_Int (X, X_First, L + 1) ** (Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) + Math_Int.From_Word32 (1))) * Base ** (L + 1) mod Num_Of_Big_Int (M... [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "+" and operator "*" and operator "/" and operator "mod" and operator "**" and operator "**" and operator "=" and function From_Word32 and function From_Word64 or turning them into expression functions in their unit spec] [provers gave up before completing the proof]
 lsc-bignum.adb:536:49: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:537:43: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:538:49: info: overflow check proved (Z3: 4 VC)
@@ -407,18 +407,18 @@ lsc-bignum.adb:542:43: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:543:22: info: range check proved (Z3: 4 VC)
 lsc-bignum.adb:543:48: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:543:53: info: overflow check proved (Z3: 4 VC)
-lsc-bignum.adb:544:50: medium: overflow check might fail, cannot prove upper bound for Aux4_First + N * (L + 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
-lsc-bignum.adb:544:54: medium: overflow check might fail, cannot prove lower bound for N * (L + 1) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+lsc-bignum.adb:544:50: medium: overflow check might fail, cannot prove upper bound for Aux4_First + N * (L + 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
+lsc-bignum.adb:544:54: medium: overflow check might fail, cannot prove lower bound for N * (L + 1) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers reached step limit before completing the proof]
 lsc-bignum.adb:544:59: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:544:67: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:545:47: info: overflow check proved (Z3: 4 VC)
-lsc-bignum.adb:545:58: medium: overflow check might fail, cannot prove upper bound for 2 * N [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+lsc-bignum.adb:545:58: medium: overflow check might fail, cannot prove upper bound for 2 * N [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
 lsc-bignum.adb:545:62: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:546:28: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:547:47: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:548:39: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:548:39: info: range check proved (Z3: 2 VC)
-lsc-bignum.adb:550:13: medium: precondition might fail, cannot prove I / 32 <= Types.Word64 (A'Last - A_First)
+lsc-bignum.adb:550:13: medium: precondition might fail, cannot prove I / 32 <= Types.Word64 (A'Last - A_First) [provers gave up before completing the proof]
 lsc-bignum.adb:557:30: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:558:55: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:560:55: info: overflow check proved (Z3: 4 VC)
@@ -436,17 +436,17 @@ lsc-bignum.adb:571:49: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:572:28: info: range check proved (Z3: 4 VC)
 lsc-bignum.adb:572:54: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:572:59: info: overflow check proved (Z3: 4 VC)
-lsc-bignum.adb:573:56: medium: overflow check might fail, cannot prove upper bound for Aux4_First + N * (L + 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
-lsc-bignum.adb:573:60: medium: overflow check might fail, cannot prove lower bound for N * (L + 1) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+lsc-bignum.adb:573:56: medium: overflow check might fail, cannot prove upper bound for Aux4_First + N * (L + 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
+lsc-bignum.adb:573:60: medium: overflow check might fail, cannot prove lower bound for N * (L + 1) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers reached step limit before completing the proof]
 lsc-bignum.adb:573:65: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:573:73: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:574:53: info: overflow check proved (Z3: 4 VC)
-lsc-bignum.adb:574:64: medium: overflow check might fail, cannot prove upper bound for 2 * N [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+lsc-bignum.adb:574:64: medium: overflow check might fail, cannot prove upper bound for 2 * N [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
 lsc-bignum.adb:574:68: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:575:34: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:576:53: info: overflow check proved (Z3: 4 VC)
-lsc-bignum.adb:577:19: medium: loop invariant might fail in first iteration, cannot prove Math_Int.From_Word32 (W) * Math_Int.From_Word32 (2) ** (J - S - 1) = Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) - (Math_Int.From_Integer (J) - Math_Int.From_Word32 (1))) mod Math_Int.From_Word3... [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "-" and operator "*" and operator "/" and operator "mod" and operator "**" and operator "**" and operator "=" and function From_Integer and function From_Word32 and function From_Word64 or turning them into expression functions in their unit spec]
-lsc-bignum.adb:577:19: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Math_Int.From_Word32 (W) * Math_Int.From_Word32 (2) ** (J - S - 1) = Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) - (Math_Int.From_Integer (J) - Math_Int.From_Word32 (1))) mod Math_Int.From_Word3... [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "-" and operator "*" and operator "/" and operator "mod" and operator "**" and operator "**" and operator "=" and function From_Integer and function From_Word32 and function From_Word64 or turning them into expression functions in their unit spec]
+lsc-bignum.adb:577:19: medium: loop invariant might fail in first iteration, cannot prove Math_Int.From_Word32 (W) * Math_Int.From_Word32 (2) ** (J - S - 1) = Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) - (Math_Int.From_Integer (J) - Math_Int.From_Word32 (1))) mod Math_Int.From_Word3... [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "-" and operator "*" and operator "/" and operator "mod" and operator "**" and operator "**" and operator "=" and function From_Integer and function From_Word32 and function From_Word64 or turning them into expression functions in their unit spec] [provers gave up before completing the proof]
+lsc-bignum.adb:577:19: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Math_Int.From_Word32 (W) * Math_Int.From_Word32 (2) ** (J - S - 1) = Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) - (Math_Int.From_Integer (J) - Math_Int.From_Word32 (1))) mod Math_Int.From_Word3... [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "-" and operator "*" and operator "/" and operator "mod" and operator "**" and operator "**" and operator "=" and function From_Integer and function From_Word32 and function From_Word64 or turning them into expression functions in their unit spec] [provers gave up before completing the proof]
 lsc-bignum.adb:577:77: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:577:81: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:577:81: info: range check proved (Z3: 4 VC)
@@ -457,7 +457,7 @@ lsc-bignum.adb:582:21: info: division check proved (Z3: 2 VC)
 lsc-bignum.adb:582:63: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:585:45: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:585:45: info: range check proved (Z3: 2 VC)
-lsc-bignum.adb:590:19: medium: precondition might fail, cannot prove I / 32 <= Types.Word64 (A'Last - A_First)
+lsc-bignum.adb:590:19: medium: precondition might fail, cannot prove I / 32 <= Types.Word64 (A'Last - A_First) [provers gave up before completing the proof]
 lsc-bignum.adb:591:52: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:591:52: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:595:23: info: overflow check proved (Z3: 2 VC)
@@ -471,7 +471,7 @@ lsc-bignum.adb:607:49: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:608:49: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:609:30: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:610:49: info: overflow check proved (Z3: 4 VC)
-lsc-bignum.adb:611:19: medium: loop invariant might fail in first iteration, cannot prove Num_Of_Big_Int (Aux3, Aux3_First, L + 1) = Num_Of_Big_Int (X, X_First, L + 1) ** (Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) + Math_Int.From_Word32 (1)) * Math_Int.From_Word32 (2) ** (H - 1)) *... [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "+" and operator "*" and operator "/" and operator "mod" and operator "**" and operator "**" and operator "=" and function From_Word32 and function From_Word64 or turning them into expression functions in their unit spec]
+lsc-bignum.adb:611:19: medium: loop invariant might fail in first iteration, cannot prove Num_Of_Big_Int (Aux3, Aux3_First, L + 1) = Num_Of_Big_Int (X, X_First, L + 1) ** (Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) + Math_Int.From_Word32 (1)) * Math_Int.From_Word32 (2) ** (H - 1)) *... [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "+" and operator "*" and operator "/" and operator "mod" and operator "**" and operator "**" and operator "=" and function From_Word32 and function From_Word64 or turning them into expression functions in their unit spec] [provers gave up before completing the proof]
 lsc-bignum.adb:611:55: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:612:49: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:613:55: info: overflow check proved (Z3: 4 VC)
@@ -482,12 +482,12 @@ lsc-bignum.adb:618:49: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:619:28: info: range check proved (Z3: 4 VC)
 lsc-bignum.adb:619:54: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:619:59: info: overflow check proved (Z3: 4 VC)
-lsc-bignum.adb:620:56: medium: overflow check might fail, cannot prove upper bound for Aux4_First + N * (L + 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
-lsc-bignum.adb:620:60: medium: overflow check might fail, cannot prove lower bound for N * (L + 1) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+lsc-bignum.adb:620:56: medium: overflow check might fail, cannot prove upper bound for Aux4_First + N * (L + 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
+lsc-bignum.adb:620:60: medium: overflow check might fail, cannot prove lower bound for N * (L + 1) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers reached step limit before completing the proof]
 lsc-bignum.adb:620:65: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:620:73: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:621:53: info: overflow check proved (Z3: 4 VC)
-lsc-bignum.adb:621:64: medium: overflow check might fail, cannot prove upper bound for 2 * N [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+lsc-bignum.adb:621:64: medium: overflow check might fail, cannot prove upper bound for 2 * N [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
 lsc-bignum.adb:621:68: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:622:34: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:623:53: info: overflow check proved (Z3: 4 VC)
@@ -498,7 +498,7 @@ lsc-bignum.adb:629:21: info: division check proved (Z3: 2 VC)
 lsc-bignum.adb:629:53: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:632:45: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:632:45: info: range check proved (Z3: 2 VC)
-lsc-bignum.adb:634:16: medium: precondition might fail, cannot prove Num_Of_Big_Int (C, C_First, A_Last - A_First + 1) < Num_Of_Big_Int (M, M_First, A_Last - A_First + 1)
+lsc-bignum.adb:634:16: medium: precondition might fail, cannot prove Num_Of_Big_Int (C, C_First, A_Last - A_First + 1) < Num_Of_Big_Int (M, M_First, A_Last - A_First + 1) [provers gave up before completing the proof]
 lsc-bignum.adb:639:16: info: precondition proved (Z3: 9 VC)
 lsc-bignum.adb:642:30: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:643:55: info: overflow check proved (Z3: 2 VC)
@@ -507,7 +507,7 @@ lsc-bignum.adb:646:49: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:647:49: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:648:30: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:649:49: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.adb:650:19: medium: assertion might fail, cannot prove Num_Of_Big_Int (Aux3, Aux3_First, L + 1) = Num_Of_Big_Int (X, X_First, L + 1) ** (Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) + Math_Int.From_Word32 (1)) * Math_Int.From_Word32 (2) ** H) * Base ... [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "+" and operator "*" and operator "/" and operator "mod" and operator "**" and operator "**" and operator "=" and function From_Word32 and function From_Word64 or turning them into expression functions in their unit spec]
+lsc-bignum.adb:650:19: medium: assertion might fail, cannot prove Num_Of_Big_Int (Aux3, Aux3_First, L + 1) = Num_Of_Big_Int (X, X_First, L + 1) ** (Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) + Math_Int.From_Word32 (1)) * Math_Int.From_Word32 (2) ** H) * Base ... [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "+" and operator "*" and operator "/" and operator "mod" and operator "**" and operator "**" and operator "=" and function From_Word32 and function From_Word64 or turning them into expression functions in their unit spec] [provers gave up before completing the proof]
 lsc-bignum.adb:650:55: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:651:49: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:652:55: info: overflow check proved (Z3: 2 VC)
@@ -518,12 +518,12 @@ lsc-bignum.adb:657:49: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:658:28: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:658:54: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:658:59: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.adb:659:56: medium: overflow check might fail, cannot prove upper bound for Aux4_First + N * (L + 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
-lsc-bignum.adb:659:60: medium: overflow check might fail, cannot prove lower bound for N * (L + 1) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+lsc-bignum.adb:659:56: medium: overflow check might fail, cannot prove upper bound for Aux4_First + N * (L + 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
+lsc-bignum.adb:659:60: medium: overflow check might fail, cannot prove lower bound for N * (L + 1) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers reached step limit before completing the proof]
 lsc-bignum.adb:659:65: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:659:73: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:660:53: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.adb:660:64: medium: overflow check might fail, cannot prove upper bound for 2 * N [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+lsc-bignum.adb:660:64: medium: overflow check might fail, cannot prove upper bound for 2 * N [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
 lsc-bignum.adb:660:68: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:661:34: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:662:53: info: overflow check proved (Z3: 2 VC)
@@ -534,13 +534,13 @@ lsc-bignum.adb:668:21: info: division check proved (Z3: 1 VC)
 lsc-bignum.adb:668:53: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:671:45: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:671:45: info: range check proved (Z3: 1 VC)
-lsc-bignum.adb:674:13: medium: precondition might fail, cannot prove C_First in C'Range
-lsc-bignum.adb:677:33: medium: overflow check might fail, cannot prove upper bound for Aux4_First + Natural (Interfaces.Shift_Right (W, 1)) * (L + 1) [reason for check: result of addition must fit in a 32-bits machine integer]
-lsc-bignum.adb:677:54: medium: range check might fail, cannot prove lower bound for Interfaces.Shift_Right (W, 1) [reason for check: value must be convertible to the target type of the conversion]
-lsc-bignum.adb:677:75: medium: overflow check might fail, cannot prove lower bound for Natural (Interfaces.Shift_Right (W, 1)) * (L + 1) [reason for check: result of multiplication must fit in a 32-bits machine integer]
+lsc-bignum.adb:674:13: medium: precondition might fail, cannot prove C_First in C'Range [provers gave up before completing the proof]
+lsc-bignum.adb:677:33: medium: overflow check might fail, cannot prove upper bound for Aux4_First + Natural (Interfaces.Shift_Right (W, 1)) * (L + 1) [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
+lsc-bignum.adb:677:54: medium: range check might fail, cannot prove lower bound for Interfaces.Shift_Right (W, 1) [reason for check: value must be convertible to the target type of the conversion] [provers reached step limit before completing the proof]
+lsc-bignum.adb:677:75: medium: overflow check might fail, cannot prove lower bound for Natural (Interfaces.Shift_Right (W, 1)) * (L + 1) [reason for check: result of multiplication must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
 lsc-bignum.adb:677:80: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:680:13: info: precondition proved (Z3: 9 VC)
-lsc-bignum.adb:684:13: medium: precondition might fail, cannot prove Num_Of_Big_Int (C, C_First, A_Last - A_First + 1) < Num_Of_Big_Int (M, M_First, A_Last - A_First + 1)
+lsc-bignum.adb:684:13: medium: precondition might fail, cannot prove Num_Of_Big_Int (C, C_First, A_Last - A_First + 1) < Num_Of_Big_Int (M, M_First, A_Last - A_First + 1) [provers gave up before completing the proof]
 lsc-bignum.adb:689:13: info: precondition proved (Z3: 9 VC)
 lsc-bignum.adb:693:24: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:694:49: info: overflow check proved (Z3: 2 VC)
@@ -549,7 +549,7 @@ lsc-bignum.adb:697:43: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:698:43: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:699:24: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:700:43: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.adb:701:13: medium: assertion might fail, cannot prove Num_Of_Big_Int (Aux3, Aux3_First, L + 1) = Num_Of_Big_Int (X, X_First, L + 1) ** (Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) - Math_Int.From_Integer (S) + Math_Int.From_Word32 (1))) * Base ** (... [possible fix: loop invariant at line 527 should mention S]
+lsc-bignum.adb:701:13: medium: assertion might fail, cannot prove Num_Of_Big_Int (Aux3, Aux3_First, L + 1) = Num_Of_Big_Int (X, X_First, L + 1) ** (Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) - Math_Int.From_Integer (S) + Math_Int.From_Word32 (1))) * Base ** (... [possible fix: loop invariant at line 527 should mention S] [provers gave up before completing the proof]
 lsc-bignum.adb:701:49: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:702:43: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:703:49: info: overflow check proved (Z3: 2 VC)
@@ -560,18 +560,18 @@ lsc-bignum.adb:707:43: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:708:22: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:708:48: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:708:53: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.adb:709:50: medium: overflow check might fail, cannot prove upper bound for Aux4_First + N * (L + 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
-lsc-bignum.adb:709:54: medium: overflow check might fail, cannot prove lower bound for N * (L + 1) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+lsc-bignum.adb:709:50: medium: overflow check might fail, cannot prove upper bound for Aux4_First + N * (L + 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
+lsc-bignum.adb:709:54: medium: overflow check might fail, cannot prove lower bound for N * (L + 1) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers reached step limit before completing the proof]
 lsc-bignum.adb:709:59: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:709:67: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:710:47: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.adb:710:58: medium: overflow check might fail, cannot prove upper bound for 2 * N [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+lsc-bignum.adb:710:58: medium: overflow check might fail, cannot prove upper bound for 2 * N [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
 lsc-bignum.adb:710:62: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:711:28: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:712:47: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:715:39: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:715:39: info: range check proved (Z3: 1 VC)
-lsc-bignum.adb:722:07: medium: precondition might fail, cannot prove Num_Of_Big_Int (C, C_First, A_Last - A_First + 1) < Num_Of_Big_Int (M, M_First, A_Last - A_First + 1)
+lsc-bignum.adb:722:07: medium: precondition might fail, cannot prove Num_Of_Big_Int (C, C_First, A_Last - A_First + 1) < Num_Of_Big_Int (M, M_First, A_Last - A_First + 1) [provers gave up before completing the proof]
 lsc-bignum.ads:45:13: info: implicit aspect Always_Terminates on "Base" has been proved, subprogram will terminate
 lsc-bignum.ads:63:07: info: justified that "A" might not be initialized in "Initialize"
 lsc-bignum.ads:67:08: info: flow dependencies proved
@@ -580,7 +580,7 @@ lsc-bignum.ads:74:19: info: range check proved (Z3: 2 VC)
 lsc-bignum.ads:74:60: info: justified that "A" might not be initialized
 lsc-bignum.ads:74:63: info: index check proved (Z3: 2 VC)
 lsc-bignum.ads:83:08: info: flow dependencies proved
-lsc-bignum.ads:90:18: medium: overflow check might fail, cannot prove upper bound for B_First + (A_Last - A_First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
+lsc-bignum.ads:90:18: medium: overflow check might fail, cannot prove upper bound for B_First + (A_Last - A_First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition] [provers gave up before completing the proof]
 lsc-bignum.ads:90:28: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.ads:92:10: info: postcondition proved (Trivial: 2 VC; Z3: 2 VC)
 lsc-bignum.ads:92:19: info: range check proved (Z3: 2 VC)
@@ -590,13 +590,13 @@ lsc-bignum.ads:94:20: info: index check proved (Z3: 2 VC)
 lsc-bignum.ads:94:36: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.ads:94:40: info: index check proved (Z3: 2 VC)
 lsc-bignum.ads:94:40: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.ads:95:46: medium: overflow check might fail, cannot prove upper bound for B_First + A_Last [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+lsc-bignum.ads:95:46: medium: overflow check might fail, cannot prove upper bound for B_First + A_Last [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
 lsc-bignum.ads:95:55: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.ads:96:20: info: index check proved (Z3: 2 VC)
 lsc-bignum.ads:96:32: info: index check proved (Z3: 2 VC)
 lsc-bignum.ads:104:07: info: initialization of "Carry" proved
 lsc-bignum.ads:106:08: info: flow dependencies proved
-lsc-bignum.ads:112:18: medium: overflow check might fail, cannot prove upper bound for B_First + (A_Last - A_First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
+lsc-bignum.ads:112:18: medium: overflow check might fail, cannot prove upper bound for B_First + (A_Last - A_First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition] [provers gave up before completing the proof]
 lsc-bignum.ads:112:28: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.ads:115:10: info: postcondition proved (Z3: 1 VC)
 lsc-bignum.ads:115:49: info: overflow check proved (Z3: 2 VC)
@@ -612,9 +612,9 @@ lsc-bignum.ads:118:26: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.ads:118:36: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.ads:118:36: info: range check proved (Z3: 2 VC)
 lsc-bignum.ads:120:13: info: implicit aspect Always_Terminates on "Less" has been proved, subprogram will terminate
-lsc-bignum.ads:132:18: medium: overflow check might fail, cannot prove upper bound for B_First + (A_Last - A_First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
+lsc-bignum.ads:132:18: medium: overflow check might fail, cannot prove upper bound for B_First + (A_Last - A_First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition] [provers gave up before completing the proof]
 lsc-bignum.ads:132:28: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.ads:135:10: medium: postcondition might fail
+lsc-bignum.ads:135:10: medium: postcondition might fail [provers reached step limit before completing the proof]
 lsc-bignum.ads:136:46: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.ads:136:56: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.ads:136:56: info: range check proved (Z3: 2 VC)
@@ -623,11 +623,11 @@ lsc-bignum.ads:137:56: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.ads:137:56: info: range check proved (Z3: 2 VC)
 lsc-bignum.ads:140:07: info: initialization of "A" proved
 lsc-bignum.ads:151:08: info: flow dependencies proved
-lsc-bignum.ads:158:18: medium: overflow check might fail, cannot prove upper bound for B_First + (A_Last - A_First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+lsc-bignum.ads:158:18: medium: overflow check might fail, cannot prove upper bound for B_First + (A_Last - A_First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
 lsc-bignum.ads:158:28: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.ads:160:18: medium: overflow check might fail, cannot prove upper bound for C_First + (A_Last - A_First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+lsc-bignum.ads:160:18: medium: overflow check might fail, cannot prove upper bound for C_First + (A_Last - A_First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
 lsc-bignum.ads:160:28: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.ads:162:18: medium: overflow check might fail, cannot prove upper bound for M_First + (A_Last - A_First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+lsc-bignum.ads:162:18: medium: overflow check might fail, cannot prove upper bound for M_First + (A_Last - A_First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
 lsc-bignum.ads:162:28: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.ads:163:45: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.ads:163:55: info: overflow check proved (Z3: 2 VC)
@@ -639,7 +639,7 @@ lsc-bignum.ads:166:45: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.ads:166:55: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.ads:166:55: info: range check proved (Z3: 2 VC)
 lsc-bignum.ads:167:25: info: index check proved (Z3: 2 VC)
-lsc-bignum.ads:169:10: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and function Inverse and operator "*" and operator "mod" and operator "**" and operator "=" or turning them into expression functions in their unit spec]
+lsc-bignum.ads:169:10: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and function Inverse and operator "*" and operator "mod" and operator "**" and operator "=" or turning them into expression functions in their unit spec] [provers reached step limit before completing the proof]
 lsc-bignum.ads:169:45: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.ads:169:55: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.ads:169:55: info: range check proved (Z3: 2 VC)
@@ -664,23 +664,23 @@ lsc-bignum.ads:190:07: info: initialization of "Aux2" proved
 lsc-bignum.ads:192:07: info: initialization of "Aux3" proved
 lsc-bignum.ads:194:07: info: initialization of "Aux4" proved
 lsc-bignum.ads:200:08: info: flow dependencies proved
-lsc-bignum.ads:224:18: medium: overflow check might fail, cannot prove upper bound for X_First + (A_Last - A_First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+lsc-bignum.ads:224:18: medium: overflow check might fail, cannot prove upper bound for X_First + (A_Last - A_First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
 lsc-bignum.ads:224:28: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.ads:229:18: medium: overflow check might fail, cannot prove upper bound for M_First + (A_Last - A_First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+lsc-bignum.ads:229:18: medium: overflow check might fail, cannot prove upper bound for M_First + (A_Last - A_First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
 lsc-bignum.ads:229:28: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.ads:231:21: medium: overflow check might fail, cannot prove upper bound for Aux1_First + (A_Last - A_First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+lsc-bignum.ads:231:21: medium: overflow check might fail, cannot prove upper bound for Aux1_First + (A_Last - A_First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
 lsc-bignum.ads:231:31: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.ads:233:21: medium: overflow check might fail, cannot prove upper bound for Aux2_First + (A_Last - A_First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+lsc-bignum.ads:233:21: medium: overflow check might fail, cannot prove upper bound for Aux2_First + (A_Last - A_First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
 lsc-bignum.ads:233:31: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.ads:235:21: medium: overflow check might fail, cannot prove upper bound for Aux3_First + (A_Last - A_First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+lsc-bignum.ads:235:21: medium: overflow check might fail, cannot prove upper bound for Aux3_First + (A_Last - A_First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
 lsc-bignum.ads:235:31: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.ads:237:21: medium: overflow check might fail, cannot prove upper bound for Aux4_First + (2 ** K * (A_Last - A_First + 1) - 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
-lsc-bignum.ads:237:26: medium: overflow check might fail, cannot prove upper bound for 2 ** K [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
-lsc-bignum.ads:237:31: medium: overflow check might fail, cannot prove lower bound for 2 ** K * (A_Last - A_First + 1) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+lsc-bignum.ads:237:21: medium: overflow check might fail, cannot prove upper bound for Aux4_First + (2 ** K * (A_Last - A_First + 1) - 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
+lsc-bignum.ads:237:26: medium: overflow check might fail, cannot prove upper bound for 2 ** K [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
+lsc-bignum.ads:237:31: medium: overflow check might fail, cannot prove lower bound for 2 ** K * (A_Last - A_First + 1) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers reached step limit before completing the proof]
 lsc-bignum.ads:237:41: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.ads:237:51: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.ads:237:56: medium: overflow check might fail, cannot prove lower bound for (2 ** K * (A_Last - A_First + 1) - 1) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
-lsc-bignum.ads:240:18: medium: overflow check might fail, cannot prove upper bound for R_First + (A_Last - A_First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+lsc-bignum.ads:237:56: medium: overflow check might fail, cannot prove lower bound for (2 ** K * (A_Last - A_First + 1) - 1) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers reached step limit before completing the proof]
+lsc-bignum.ads:240:18: medium: overflow check might fail, cannot prove upper bound for R_First + (A_Last - A_First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
 lsc-bignum.ads:240:28: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.ads:241:45: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.ads:241:55: info: overflow check proved (Z3: 2 VC)
@@ -694,7 +694,7 @@ lsc-bignum.ads:246:45: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.ads:246:55: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.ads:246:55: info: range check proved (Z3: 2 VC)
 lsc-bignum.ads:247:25: info: index check proved (Z3: 2 VC)
-lsc-bignum.ads:249:10: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "mod" and operator "**" and operator "=" or turning them into expression functions in their unit spec]
+lsc-bignum.ads:249:10: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function Num_Of_Big_Int and operator "mod" and operator "**" and operator "=" or turning them into expression functions in their unit spec] [provers reached step limit before completing the proof]
 lsc-bignum.ads:249:45: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.ads:249:55: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.ads:249:55: info: range check proved (Z3: 2 VC)

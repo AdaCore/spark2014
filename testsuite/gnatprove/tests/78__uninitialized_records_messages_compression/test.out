@@ -6,39 +6,39 @@ ext_part_classwide.adb:42:07: warning: analyzing unreferenced procedure "Initial
 ext_part_classwide.adb:42:29: info: initialization of "R" proved
 ext_part_classwide.adb:59:07: warning: analyzing unreferenced procedure "Initialize" [unreferenced-procedure]
 ext_part_classwide.adb:61:10: high: "R" is not initialized
-ext_part_classwide.adb:61:25: medium: assertion might fail
+ext_part_classwide.adb:61:25: medium: assertion might fail [provers reached step limit before completing the proof]
 ext_part_classwide.adb:80:13: info: only expected exception raised (CVC5: 1 VC)
 ext_part_classwide.adb:80:31: medium: "R.A" might not be initialized
 ext_part_classwide.adb:80:31: warning: "R.A" is set by "Raise_Exception" but not used after the call
 ext_part_classwide.adb:82:13: info: no contextual analysis of "Initialize" (exception handler)
 ext_part_classwide.adb:83:16: medium: "R.A" might not be initialized [possible explanation: value of "R.A" is unknown following exceptional exit]
-ext_part_classwide.adb:83:31: medium: assertion might fail
+ext_part_classwide.adb:83:31: medium: assertion might fail [provers gave up before completing the proof]
 ext_part_classwide.adb:83:31: medium: extension of "R" might not be initialized
 ext_part_classwide.adb:102:13: info: only expected exception raised (CVC5: 1 VC)
 ext_part_classwide.adb:102:31: warning: "R.A" is set by "Raise_Exception" but not used after the call
 ext_part_classwide.adb:104:13: info: no contextual analysis of "Initialize" (exception handler)
 ext_part_classwide.adb:105:16: medium: "R.A" might not be initialized [possible explanation: value of "R.A" is unknown following exceptional exit]
-ext_part_classwide.adb:105:31: medium: assertion might fail [possible fix: call at line 99 should mention R (for argument R) in a postcondition]
+ext_part_classwide.adb:105:31: medium: assertion might fail [possible fix: call at line 99 should mention R (for argument R) in a postcondition] [provers gave up before completing the proof]
 ext_part_classwide.adb:119:07: warning: analyzing unreferenced procedure "Initialize" [unreferenced-procedure]
-ext_part_classwide.adb:125:25: medium: assertion might fail
+ext_part_classwide.adb:125:25: medium: assertion might fail [provers reached step limit before completing the proof]
 ext_part_classwide.adb:125:29: high: extension of "R" is not initialized
 ext_part_classwide.adb:125:29: medium: "R.A" might not be initialized
 ext_part_classwide.adb:137:07: warning: analyzing unreferenced procedure "Initialize" [unreferenced-procedure]
 ext_part_classwide.adb:143:10: medium: "R" might not be initialized
-ext_part_classwide.adb:143:25: medium: assertion might fail
+ext_part_classwide.adb:143:25: medium: assertion might fail [provers reached step limit before completing the proof]
 ext_part_classwide.adb:160:13: info: only expected exception raised (CVC5: 1 VC)
 ext_part_classwide.adb:162:13: info: no contextual analysis of "Initialize" (exception handler)
 ext_part_classwide.adb:170:10: medium: "R.A" might not be initialized [possible explanation: value of "R.A" is unknown following exceptional exit]
-ext_part_classwide.adb:170:25: medium: assertion might fail [possible fix: call at line 157 should mention R (for argument R) in a postcondition]
+ext_part_classwide.adb:170:25: medium: assertion might fail [possible fix: call at line 157 should mention R (for argument R) in a postcondition] [provers gave up before completing the proof]
 ext_part_classwide.adb:182:07: warning: analyzing unreferenced procedure "Initialize" [unreferenced-procedure]
-ext_part_classwide.adb:185:25: medium: assertion might fail [possible fix: call at line 184 should mention R (for argument R) in a postcondition]
+ext_part_classwide.adb:185:25: medium: assertion might fail [possible fix: call at line 184 should mention R (for argument R) in a postcondition] [provers reached step limit before completing the proof]
 ext_part_classwide.adb:185:29: high: extension of "R" is not initialized
 ext_part_classwide.adb:197:07: warning: analyzing unreferenced procedure "Initialize" [unreferenced-procedure]
-ext_part_classwide.adb:204:25: medium: assertion might fail [possible fix: call at line 203 should mention R (for argument R) in a postcondition]
+ext_part_classwide.adb:204:25: medium: assertion might fail [possible fix: call at line 203 should mention R (for argument R) in a postcondition] [provers reached step limit before completing the proof]
 ext_part_classwide.adb:204:29: medium: extension of "R" might not be initialized
 ext_part_classwide.adb:216:07: warning: analyzing unreferenced procedure "Initialize" [unreferenced-procedure]
 ext_part_classwide.adb:216:29: info: initialization of "R" proved
-ext_part_classwide.adb:219:25: medium: assertion might fail [possible fix: call at line 218 should mention R (for argument R) in a postcondition]
+ext_part_classwide.adb:219:25: medium: assertion might fail [possible fix: call at line 218 should mention R (for argument R) in a postcondition] [provers reached step limit before completing the proof]
 ext_part_extensions_visible.adb:15:29: high: "R" is not initialized in "Initialize" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "R" on all paths, make "R" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 ext_part_extensions_visible.adb:27:29: medium: "R" might not be initialized in "Initialize" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "R" on all paths, make "R" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 ext_part_extensions_visible.adb:42:29: info: initialization of "R" proved
@@ -61,14 +61,14 @@ ext_part_extensions_visible.adb:167:29: high: extension of "R" is not initialize
 ext_part_extensions_visible.adb:180:29: medium: extension of "R" might not be initialized in "Initialize" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize extension of "R" on all paths or make "R" an IN OUT parameter]
 ext_part_extensions_visible.adb:197:29: info: initialization of "R" proved
 normal_components.adb:15:07: high: "S" is not initialized
-normal_components.adb:15:22: medium: assertion might fail, cannot prove S.D.A = S.D.B (e.g. when S = (C => 0, D => (A => 0, B => 1)))
+normal_components.adb:15:22: medium: assertion might fail, cannot prove S.D.A = S.D.B (e.g. when S = (C => 0, D => (A => 0, B => 1))) [provers reached step limit before completing the proof]
 normal_components.adb:17:07: high: "S.D" is not initialized
 normal_components.adb:17:22: info: assertion proved (CVC5: 1 VC)
 normal_components.adb:19:22: high: "S.D.A" is not initialized
 normal_components.adb:19:22: info: assertion proved (CVC5: 1 VC)
 normal_components.adb:19:30: high: "S.C" is not initialized
 normal_components.adb:21:22: high: "S.D.A" is not initialized
-normal_components.adb:21:22: medium: assertion might fail (e.g. when S = (C => 1, D => (A => 1, B => 1)))
+normal_components.adb:21:22: medium: assertion might fail (e.g. when S = (C => 1, D => (A => 1, B => 1))) [provers reached step limit before completing the proof]
 normal_components.adb:22:22: high: "S.D.B" is not initialized
 normal_components.adb:22:22: info: assertion proved (CVC5: 1 VC)
 normal_components.adb:23:22: high: "S.C" is not initialized
@@ -115,7 +115,7 @@ normal_components.adb:74:22: info: assertion proved (CVC5: 1 VC)
 normal_components.adb:74:22: medium: "S.D.B" might not be initialized
 normal_components.adb:75:22: high: "S.C" is not initialized
 normal_components.adb:75:22: info: assertion proved (CVC5: 1 VC)
-normal_components.adb:83:22: medium: assertion might fail, cannot prove T.D.A = T.D.B (e.g. when T = (C => 1, D => (A => 0, B => 1)))
+normal_components.adb:83:22: medium: assertion might fail, cannot prove T.D.A = T.D.B (e.g. when T = (C => 1, D => (A => 0, B => 1))) [provers reached step limit before completing the proof]
 normal_components.adb:83:30: high: "T.D.B" is not initialized
 normal_components.adb:83:48: high: "T.C" is not initialized
 normal_components.adb:85:22: info: assertion proved (CVC5: 1 VC)
@@ -128,7 +128,7 @@ normal_components.adb:90:22: info: assertion proved (CVC5: 1 VC)
 normal_components.adb:91:22: high: "T.C" is not initialized
 normal_components.adb:91:22: info: assertion proved (CVC5: 1 VC)
 normal_components.adb:106:07: high: "S.D" is not initialized
-normal_components.adb:106:22: medium: assertion might fail, cannot prove S.D.A = S.D.B (e.g. when S = (C => 0, D => (A => 0, B => 1)))
+normal_components.adb:106:22: medium: assertion might fail, cannot prove S.D.A = S.D.B (e.g. when S = (C => 0, D => (A => 0, B => 1))) [provers reached step limit before completing the proof]
 normal_components.adb:106:48: medium: "S.C" might not be initialized
 normal_components.adb:108:07: high: "S.D" is not initialized
 normal_components.adb:108:22: info: assertion proved (CVC5: 1 VC)
@@ -136,7 +136,7 @@ normal_components.adb:110:22: high: "S.D.A" is not initialized
 normal_components.adb:110:22: info: assertion proved (CVC5: 1 VC)
 normal_components.adb:110:30: medium: "S.C" might not be initialized
 normal_components.adb:112:22: high: "S.D.A" is not initialized
-normal_components.adb:112:22: medium: assertion might fail (e.g. when S = (C => 1, D => (A => 1, B => 1)))
+normal_components.adb:112:22: medium: assertion might fail (e.g. when S = (C => 1, D => (A => 1, B => 1))) [provers reached step limit before completing the proof]
 normal_components.adb:113:22: high: "S.D.B" is not initialized
 normal_components.adb:113:22: info: assertion proved (CVC5: 1 VC)
 normal_components.adb:114:22: info: assertion proved (CVC5: 1 VC)
@@ -182,7 +182,7 @@ normal_components.adb:165:22: info: assertion proved (CVC5: 1 VC)
 normal_components.adb:165:22: medium: "S.D.B" might not be initialized
 normal_components.adb:166:22: info: assertion proved (CVC5: 1 VC)
 normal_components.adb:166:22: medium: "S.C" might not be initialized
-normal_components.adb:174:23: medium: assertion might fail, cannot prove T.D.A = T.D.B (e.g. when T = (C => 0, D => (A => 0, B => 1)))
+normal_components.adb:174:23: medium: assertion might fail, cannot prove T.D.A = T.D.B (e.g. when T = (C => 0, D => (A => 0, B => 1))) [provers reached step limit before completing the proof]
 normal_components.adb:174:31: high: "T.D.B" is not initialized
 normal_components.adb:174:49: medium: "T.C" might not be initialized
 normal_components.adb:176:22: info: assertion proved (CVC5: 1 VC)
@@ -195,7 +195,7 @@ normal_components.adb:181:22: info: assertion proved (CVC5: 1 VC)
 normal_components.adb:182:22: info: assertion proved (CVC5: 1 VC)
 normal_components.adb:182:22: medium: "T.C" might not be initialized
 normal_components.adb:195:07: high: "S.D" is not initialized
-normal_components.adb:195:22: medium: assertion might fail, cannot prove S.D.A = S.D.B (e.g. when S = (C => 0, D => (A => 0, B => 1)))
+normal_components.adb:195:22: medium: assertion might fail, cannot prove S.D.A = S.D.B (e.g. when S = (C => 0, D => (A => 0, B => 1))) [provers reached step limit before completing the proof]
 normal_components.adb:197:07: high: "S.D" is not initialized
 normal_components.adb:197:22: info: assertion proved (CVC5: 1 VC)
 normal_components.adb:199:22: high: "S.D.A" is not initialized
@@ -238,7 +238,7 @@ normal_components.adb:253:22: info: assertion proved (CVC5: 1 VC)
 normal_components.adb:254:22: info: assertion proved (CVC5: 1 VC)
 normal_components.adb:254:22: medium: "S.D.B" might not be initialized
 normal_components.adb:255:22: info: assertion proved (CVC5: 1 VC)
-normal_components.adb:263:23: medium: assertion might fail, cannot prove T.D.A = T.D.B (e.g. when T = (C => 0, D => (A => 0, B => 1)))
+normal_components.adb:263:23: medium: assertion might fail, cannot prove T.D.A = T.D.B (e.g. when T = (C => 0, D => (A => 0, B => 1))) [provers reached step limit before completing the proof]
 normal_components.adb:263:31: high: "T.D.B" is not initialized
 normal_components.adb:265:22: info: assertion proved (CVC5: 1 VC)
 normal_components.adb:265:30: high: "T.D.B" is not initialized
@@ -249,14 +249,14 @@ normal_components.adb:270:22: info: assertion proved (CVC5: 1 VC)
 normal_components.adb:271:22: info: assertion proved (CVC5: 1 VC)
 normal_components.adb:282:10: info: only expected exception raised (CVC5: 1 VC)
 normal_components.adb:285:13: high: "S" is not initialized [possible explanation: value of "S" is unknown following exceptional exit]
-normal_components.adb:285:28: medium: assertion might fail, cannot prove S.D.A = S.D.B
+normal_components.adb:285:28: medium: assertion might fail, cannot prove S.D.A = S.D.B [provers reached step limit before completing the proof]
 normal_components.adb:287:13: high: "S.D" is not initialized [possible explanation: value of "S.D" is unknown following exceptional exit]
 normal_components.adb:287:28: info: assertion proved (CVC5: 1 VC)
 normal_components.adb:289:28: high: "S.D.A" is not initialized [possible explanation: value of "S.D.A" is unknown following exceptional exit]
 normal_components.adb:289:28: info: assertion proved (CVC5: 1 VC)
 normal_components.adb:289:36: high: "S.C" is not initialized [possible explanation: value of "S.C" is unknown following exceptional exit]
 normal_components.adb:291:28: high: "S.D.A" is not initialized [possible explanation: value of "S.D.A" is unknown following exceptional exit]
-normal_components.adb:291:28: medium: assertion might fail
+normal_components.adb:291:28: medium: assertion might fail [provers reached step limit before completing the proof]
 normal_components.adb:292:28: high: "S.D.B" is not initialized [possible explanation: value of "S.D.B" is unknown following exceptional exit]
 normal_components.adb:292:28: info: assertion proved (CVC5: 1 VC)
 normal_components.adb:293:28: high: "S.C" is not initialized [possible explanation: value of "S.C" is unknown following exceptional exit]
@@ -306,20 +306,20 @@ private_part.adb:157:22: info: assertion proved (CVC5: 1 VC)
 private_part.adb:157:26: medium: private part of "R" might not be initialized
 private_part.adb:165:22: info: assertion proved (CVC5: 1 VC)
 relax_init.adb:18:22: high: "R.A" is not initialized
-relax_init.adb:18:22: medium: assertion might fail, cannot prove R.A = 0 (e.g. when R = (A => 1, B => 0) and R.B'Initialized = True) [possible fix: add or complete related loop invariants or postconditions]
-relax_init.adb:18:35: medium: initialization check might fail
+relax_init.adb:18:22: medium: assertion might fail, cannot prove R.A = 0 (e.g. when R = (A => 1, B => 0) and R.B'Initialized = True) [possible fix: add or complete related loop invariants or postconditions] [provers reached step limit before completing the proof]
+relax_init.adb:18:35: medium: initialization check might fail [provers reached step limit before completing the proof]
 relax_init.adb:32:22: high: "R.A" is not initialized
-relax_init.adb:32:22: medium: assertion might fail, cannot prove R.A = 0 (e.g. when R = (A => 1, B => 0) and R.B'Initialized = True) [possible fix: add or complete related loop invariants or postconditions]
+relax_init.adb:32:22: medium: assertion might fail, cannot prove R.A = 0 (e.g. when R = (A => 1, B => 0) and R.B'Initialized = True) [possible fix: add or complete related loop invariants or postconditions] [provers reached step limit before completing the proof]
 relax_init.adb:32:35: info: initialization check proved (CVC5: 1 VC)
 relax_init.adb:46:22: medium: "R.A" might not be initialized
-relax_init.adb:46:34: medium: assertion might fail, cannot prove R.B = 0 (e.g. when R = (A => 0, B => 1) and R.B'Initialized = True) [possible fix: add or complete related loop invariants or postconditions]
-relax_init.adb:46:35: medium: initialization check might fail
+relax_init.adb:46:34: medium: assertion might fail, cannot prove R.B = 0 (e.g. when R = (A => 0, B => 1) and R.B'Initialized = True) [possible fix: add or complete related loop invariants or postconditions] [provers gave up before completing the proof]
+relax_init.adb:46:35: medium: initialization check might fail [provers reached step limit before completing the proof]
 relax_init.adb:60:22: info: assertion proved (CVC5: 2 VC)
 relax_init.adb:60:22: medium: "R.A" might not be initialized
 relax_init.adb:60:35: info: initialization check proved (CVC5: 1 VC)
 relax_init.adb:68:07: info: initialization of parts of "R" without Relaxed_Initialization proved
-relax_init.adb:72:34: medium: assertion might fail, cannot prove R.B = 0 (e.g. when R = (A => 0, B => 1) and R.B'Initialized = True) [possible fix: add or complete related loop invariants or postconditions]
-relax_init.adb:72:35: medium: initialization check might fail
+relax_init.adb:72:34: medium: assertion might fail, cannot prove R.B = 0 (e.g. when R = (A => 0, B => 1) and R.B'Initialized = True) [possible fix: add or complete related loop invariants or postconditions] [provers gave up before completing the proof]
+relax_init.adb:72:35: medium: initialization check might fail [provers reached step limit before completing the proof]
 relax_init.adb:80:07: info: initialization of parts of "R" without Relaxed_Initialization proved
 relax_init.adb:88:22: info: assertion proved (CVC5: 2 VC)
 relax_init.adb:88:35: info: initialization check proved (CVC5: 1 VC)

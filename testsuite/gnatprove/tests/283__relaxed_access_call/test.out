@@ -2,11 +2,11 @@ test_relaxed_access_call.adb:9:18: info: for parameter X at the end of the subpr
 test_relaxed_access_call.adb:9:18: info: initialization check proved (CVC5: 1 VC)
 test_relaxed_access_call.adb:13:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test_relaxed_access_call.adb:16:18: medium: for parameter X at the end of the subprogram at test_relaxed_access_call.adb:16
-test_relaxed_access_call.adb:16:18: medium: initialization check might fail
+test_relaxed_access_call.adb:16:18: medium: initialization check might fail [provers reached step limit before completing the proof]
 test_relaxed_access_call.adb:21:12: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test_relaxed_access_call.adb:27:23: info: initialization of "Y" proved
 test_relaxed_access_call.adb:27:45: info: data dependencies proved
-test_relaxed_access_call.adb:30:07: medium: resource or memory leak might occur at end of scope
+test_relaxed_access_call.adb:30:07: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 test_relaxed_access_call.adb:32:11: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test_relaxed_access_call.adb:33:12: info: initialization check proved (CVC5: 1 VC)
 test_relaxed_access_call.adb:48:14: info: absence of resource or memory leak proved (CVC5: 1 VC)
@@ -17,10 +17,10 @@ test_relaxed_access_call.adb:60:12: info: absence of resource or memory leak pro
 test_relaxed_access_call.adb:68:45: info: exceptional case proved (CVC5: 1 VC; Trivial: 1 VC)
 test_relaxed_access_call.adb:73:12: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test_relaxed_access_call.adb:78:23: medium: for parameter X at the end of the subprogram at test_relaxed_access_call.adb:78
-test_relaxed_access_call.adb:78:23: medium: initialization check might fail
+test_relaxed_access_call.adb:78:23: medium: initialization check might fail [provers reached step limit before completing the proof]
 test_relaxed_access_call.adb:82:07: info: only expected exception raised (CVC5: 1 VC)
 test_relaxed_access_call.adb:82:11: info: absence of resource or memory leak proved (CVC5: 1 VC)
-test_relaxed_access_call.adb:89:04: medium: resource or memory leak might occur at end of scope
+test_relaxed_access_call.adb:89:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 test_relaxed_access_call.adb:91:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 test_relaxed_access_call.adb:94:06: info: data dependencies proved
 test_relaxed_access_call.adb:99:12: info: absence of resource or memory leak proved (CVC5: 1 VC)
@@ -30,15 +30,15 @@ test_relaxed_access_call.adb:105:06: info: flow dependencies proved
 test_relaxed_access_call.adb:111:12: info: pointer dereference check proved (CVC5: 1 VC)
 test_relaxed_access_call.adb:118:06: info: data dependencies proved
 test_relaxed_access_call.adb:122:07: info: absence of resource or memory leak proved (CVC5: 1 VC)
-test_relaxed_access_call.adb:123:12: medium: initialization check might fail [possible fix: call at line 122 should mention V'Initialized in a postcondition]
+test_relaxed_access_call.adb:123:12: medium: initialization check might fail [possible fix: call at line 122 should mention V'Initialized in a postcondition] [provers reached step limit before completing the proof]
 test_relaxed_access_call.adb:129:30: info: initialization of "Y" proved
 test_relaxed_access_call.adb:130:06: info: flow dependencies proved
 test_relaxed_access_call.adb:136:13: info: for pointer allocation at test_relaxed_access_call.adb:3
 test_relaxed_access_call.adb:136:13: info: initialization check proved (CVC5: 1 VC)
 test_relaxed_access_call.adb:137:11: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test_relaxed_access_call.adb:140:28: info: data dependencies proved
-test_relaxed_access_call.adb:143:07: medium: resource or memory leak might occur at end of scope
-test_relaxed_access_call.adb:146:07: medium: precondition might fail (e.g. when B = False and X = (F => null))
+test_relaxed_access_call.adb:143:07: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
+test_relaxed_access_call.adb:146:07: medium: precondition might fail (e.g. when B = False and X = (F => null)) [provers reached step limit before completing the proof]
 test_relaxed_access_call.adb:146:12: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test_relaxed_access_call.adb:151:21: info: initialization of "Y" proved
 test_relaxed_access_call.adb:152:06: info: data dependencies proved
@@ -48,8 +48,8 @@ test_relaxed_access_call.adb:159:09: info: absence of resource or memory leak pr
 test_relaxed_access_call.adb:162:30: info: data dependencies proved
 test_relaxed_access_call.adb:167:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test_relaxed_access_call.adb:167:09: warning: unused assignment
-test_relaxed_access_call.adb:168:07: medium: precondition might fail (e.g. when B = False)
-test_relaxed_access_call.adb:168:07: medium: resource or memory leak might occur
+test_relaxed_access_call.adb:168:07: medium: precondition might fail (e.g. when B = False) [provers reached step limit before completing the proof]
+test_relaxed_access_call.adb:168:07: medium: resource or memory leak might occur [provers reached step limit before completing the proof]
 test_relaxed_access_call.adb:171:21: info: initialization of "Y" proved
 test_relaxed_access_call.adb:172:06: info: data dependencies proved
 test_relaxed_access_call.adb:173:06: info: flow dependencies proved
@@ -60,12 +60,12 @@ test_relaxed_access_call.adb:182:30: info: data dependencies proved
 test_relaxed_access_call.adb:187:09: info: pointer dereference check proved (CVC5: 1 VC)
 test_relaxed_access_call.adb:187:13: warning: unused assignment
 test_relaxed_access_call.adb:188:07: info: absence of resource or memory leak proved (CVC5: 1 VC)
-test_relaxed_access_call.adb:188:07: medium: precondition might fail (e.g. when B = False)
+test_relaxed_access_call.adb:188:07: medium: precondition might fail (e.g. when B = False) [provers reached step limit before completing the proof]
 test_relaxed_access_params.adb:18:18: info: for parameter X at the end of the subprogram at test_relaxed_access_params.adb:18
 test_relaxed_access_params.adb:18:18: info: initialization check proved (CVC5: 1 VC)
 test_relaxed_access_params.adb:18:37: info: initialization of "Y" proved
 test_relaxed_access_params.adb:19:06: info: flow dependencies proved
-test_relaxed_access_params.adb:23:12: medium: initialization check might fail
+test_relaxed_access_params.adb:23:12: medium: initialization check might fail [provers reached step limit before completing the proof]
 test_relaxed_access_params.adb:24:23: info: initialization check proved (CVC5: 1 VC)
 test_relaxed_access_params.adb:25:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test_relaxed_access_params.adb:25:09: info: discriminant check proved (Trivial: 1 VC)
@@ -73,7 +73,7 @@ test_relaxed_access_params.adb:31:18: info: for parameter X at the end of the su
 test_relaxed_access_params.adb:31:18: info: initialization check proved (CVC5: 1 VC)
 test_relaxed_access_params.adb:31:46: info: initialization of "Y" proved
 test_relaxed_access_params.adb:32:06: info: flow dependencies proved
-test_relaxed_access_params.adb:37:23: medium: initialization check might fail
+test_relaxed_access_params.adb:37:23: medium: initialization check might fail [provers reached step limit before completing the proof]
 test_relaxed_access_params.adb:38:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test_relaxed_access_params.adb:38:09: info: discriminant check proved (Trivial: 1 VC)
 test_relaxed_access_params.adb:38:12: info: null exclusion check proved (CVC5: 1 VC)
@@ -81,67 +81,67 @@ test_relaxed_access_params.adb:44:40: info: initialization of "Y" proved
 test_relaxed_access_params.adb:45:22: medium: missing dependency "Y => X"
 test_relaxed_access_params.adb:45:42: medium: incorrect dependency "null => X"
 test_relaxed_access_params.adb:51:09: info: discriminant check proved (Trivial: 1 VC)
-test_relaxed_access_params.adb:51:09: medium: resource or memory leak might occur [possible fix: subprogram at line 44 should mention X in a precondition]
+test_relaxed_access_params.adb:51:09: medium: resource or memory leak might occur [possible fix: subprogram at line 44 should mention X in a precondition] [provers reached step limit before completing the proof]
 test_relaxed_access_params.adb:54:49: info: initialization of "Y" proved
 test_relaxed_access_params.adb:55:22: medium: missing dependency "Y => X"
 test_relaxed_access_params.adb:55:42: medium: incorrect dependency "null => X"
 test_relaxed_access_params.adb:60:09: info: discriminant check proved (Trivial: 1 VC)
-test_relaxed_access_params.adb:60:09: medium: resource or memory leak might occur [possible fix: subprogram at line 54 should mention X in a precondition]
+test_relaxed_access_params.adb:60:09: medium: resource or memory leak might occur [possible fix: subprogram at line 54 should mention X in a precondition] [provers reached step limit before completing the proof]
 test_relaxed_access_params.adb:60:12: info: null exclusion check proved (CVC5: 1 VC)
 test_relaxed_access_params.adb:65:49: info: initialization of "Y" proved
 test_relaxed_access_params.adb:66:06: warning: "Globals" is not a valid aspect identifier [enabled by default]
 test_relaxed_access_params.adb:66:06: warning: possible misspelling of "Global" [enabled by default]
-test_relaxed_access_params.adb:70:13: medium: initialization check might fail [possible fix: subprogram at line 65 should mention X'Initialized in a precondition]
+test_relaxed_access_params.adb:70:13: medium: initialization check might fail [possible fix: subprogram at line 65 should mention X'Initialized in a precondition] [provers reached step limit before completing the proof]
 test_relaxed_access_params.adb:71:09: info: discriminant check proved (Trivial: 1 VC)
-test_relaxed_access_params.adb:71:09: medium: resource or memory leak might occur [possible fix: subprogram at line 65 should mention X in a precondition]
+test_relaxed_access_params.adb:71:09: medium: resource or memory leak might occur [possible fix: subprogram at line 65 should mention X in a precondition] [provers reached step limit before completing the proof]
 test_relaxed_access_params.adb:71:12: info: null exclusion check proved (CVC5: 1 VC)
 test_relaxed_access_params.adb:86:16: medium: for pointer allocation at test_relaxed_access_params.adb:9
-test_relaxed_access_params.adb:86:16: medium: initialization check might fail (e.g. when X = (A => null))
+test_relaxed_access_params.adb:86:16: medium: initialization check might fail (e.g. when X = (A => null)) [provers reached step limit before completing the proof]
 test_relaxed_access_params.adb:88:16: medium: for pointer allocation at test_relaxed_access_params.adb:9
-test_relaxed_access_params.adb:88:16: medium: initialization check might fail (e.g. when X = (A => null))
+test_relaxed_access_params.adb:88:16: medium: initialization check might fail (e.g. when X = (A => null)) [provers reached step limit before completing the proof]
 test_relaxed_access_params.adb:90:11: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test_relaxed_access_params.adb:90:11: info: discriminant check proved (Trivial: 1 VC)
 test_relaxed_access_params.adb:99:16: medium: for pointer allocation at test_relaxed_access_params.adb:9
-test_relaxed_access_params.adb:99:16: medium: initialization check might fail (e.g. when X = (A => null)) [possible fix: subprogram at line 93 should mention X'Initialized in a precondition]
+test_relaxed_access_params.adb:99:16: medium: initialization check might fail (e.g. when X = (A => null)) [possible fix: subprogram at line 93 should mention X'Initialized in a precondition] [provers reached step limit before completing the proof]
 test_relaxed_access_params.adb:101:16: medium: for pointer allocation at test_relaxed_access_params.adb:9
-test_relaxed_access_params.adb:101:16: medium: initialization check might fail (e.g. when X = (A => null)) [possible fix: subprogram at line 93 should mention X'Initialized in a precondition]
+test_relaxed_access_params.adb:101:16: medium: initialization check might fail (e.g. when X = (A => null)) [possible fix: subprogram at line 93 should mention X'Initialized in a precondition] [provers reached step limit before completing the proof]
 test_relaxed_access_params.adb:103:11: info: discriminant check proved (Trivial: 1 VC)
-test_relaxed_access_params.adb:103:11: medium: resource or memory leak might occur [possible fix: subprogram at line 93 should mention X in a precondition]
+test_relaxed_access_params.adb:103:11: medium: resource or memory leak might occur [possible fix: subprogram at line 93 should mention X in a precondition] [provers reached step limit before completing the proof]
 test_relaxed_access_params.adb:112:16: medium: for pointer allocation at test_relaxed_access_params.adb:9
-test_relaxed_access_params.adb:112:16: medium: initialization check might fail (e.g. when X = (A => null)) [possible fix: subprogram at line 106 should mention X'Initialized in a precondition]
+test_relaxed_access_params.adb:112:16: medium: initialization check might fail (e.g. when X = (A => null)) [possible fix: subprogram at line 106 should mention X'Initialized in a precondition] [provers reached step limit before completing the proof]
 test_relaxed_access_params.adb:114:16: medium: for pointer allocation at test_relaxed_access_params.adb:9
-test_relaxed_access_params.adb:114:16: medium: initialization check might fail (e.g. when X = (A => null)) [possible fix: subprogram at line 106 should mention X'Initialized in a precondition]
+test_relaxed_access_params.adb:114:16: medium: initialization check might fail (e.g. when X = (A => null)) [possible fix: subprogram at line 106 should mention X'Initialized in a precondition] [provers reached step limit before completing the proof]
 test_relaxed_access_params.adb:122:29: info: initialization of "Y" proved
 test_relaxed_access_params.adb:124:06: info: flow dependencies proved
 test_relaxed_access_params.adb:128:31: medium: for pointer allocation at test_relaxed_access_params.adb:9
-test_relaxed_access_params.adb:128:31: medium: initialization check might fail
+test_relaxed_access_params.adb:128:31: medium: initialization check might fail [provers reached step limit before completing the proof]
 test_relaxed_access_params.adb:129:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test_relaxed_access_params.adb:129:09: info: length check proved (CVC5: 3 VC)
 test_relaxed_access_params.adb:136:06: info: flow dependencies proved
 test_relaxed_access_params.adb:140:24: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 test_relaxed_access_params.adb:141:10: medium: for pointer allocation at test_relaxed_access_params.adb:132
-test_relaxed_access_params.adb:141:10: medium: initialization check might fail [possible fix: loop at line 140 should mention X'Initialized in a loop invariant]
+test_relaxed_access_params.adb:141:10: medium: initialization check might fail [possible fix: loop at line 140 should mention X'Initialized in a loop invariant] [provers reached step limit before completing the proof]
 test_relaxed_access_params.adb:141:16: info: range check proved (CVC5: 2 VC)
-test_relaxed_access_params.adb:141:20: medium: discriminant check might fail [possible fix: subprogram at line 134 should mention X'Length or X'First or X'Last in a precondition]
-test_relaxed_access_params.adb:141:23: medium: discriminant check might fail
+test_relaxed_access_params.adb:141:20: medium: discriminant check might fail [possible fix: subprogram at line 134 should mention X'Length or X'First or X'Last in a precondition] [provers reached step limit before completing the proof]
+test_relaxed_access_params.adb:141:23: medium: discriminant check might fail [provers reached step limit before completing the proof]
 test_relaxed_access_params.adb:152:31: info: initialization of "Y" proved
 test_relaxed_access_params.adb:156:12: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test_relaxed_access_params.adb:159:34: info: initialization of "Y" proved
 test_relaxed_access_params.adb:163:12: medium: for pointer allocation at test_relaxed_access_params.adb:12
-test_relaxed_access_params.adb:163:12: medium: initialization check might fail (e.g. when X = (A => null)) [possible fix: subprogram at line 159 should mention X'Initialized in a precondition]
-test_relaxed_access_params.adb:168:04: medium: resource or memory leak might occur at end of scope
-test_relaxed_access_params.adb:169:04: medium: resource or memory leak might occur at end of scope
+test_relaxed_access_params.adb:163:12: medium: initialization check might fail (e.g. when X = (A => null)) [possible fix: subprogram at line 159 should mention X'Initialized in a precondition] [provers reached step limit before completing the proof]
+test_relaxed_access_params.adb:168:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
+test_relaxed_access_params.adb:169:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 test_relaxed_access_params.adb:172:06: info: data dependencies proved
 test_relaxed_access_params.adb:173:06: info: flow dependencies proved
 test_relaxed_access_params.adb:177:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test_relaxed_access_params.adb:177:09: info: discriminant check proved (Trivial: 1 VC)
 test_relaxed_access_params.adb:181:06: info: data dependencies proved
 test_relaxed_access_params.adb:182:06: info: flow dependencies proved
-test_relaxed_access_params.adb:186:07: medium: initialization check might fail
+test_relaxed_access_params.adb:186:07: medium: initialization check might fail [provers reached step limit before completing the proof]
 test_relaxed_access_params.adb:186:09: info: range check proved (CVC5: 2 VC)
-test_relaxed_access_params.adb:186:09: medium: pointer dereference check might fail (e.g. when V = null)
-test_relaxed_access_params.adb:186:13: medium: discriminant check might fail
-test_relaxed_access_params.adb:186:16: medium: discriminant check might fail
+test_relaxed_access_params.adb:186:09: medium: pointer dereference check might fail (e.g. when V = null) [provers reached step limit before completing the proof]
+test_relaxed_access_params.adb:186:13: medium: discriminant check might fail [provers reached step limit before completing the proof]
+test_relaxed_access_params.adb:186:16: medium: discriminant check might fail [provers reached step limit before completing the proof]
 test_relaxed_access_params.adb:190:06: info: data dependencies proved
 test_relaxed_access_params.adb:191:14: info: pointer dereference check proved (CVC5: 1 VC)
 test_relaxed_access_params.adb:192:06: info: flow dependencies proved
@@ -152,21 +152,21 @@ test_relaxed_access_params.adb:196:16: info: discriminant check proved (CVC5: 1 
 test_relaxed_access_params.adb:200:06: info: data dependencies proved
 test_relaxed_access_params.adb:200:27: warning: unused initial value of "V"
 test_relaxed_access_params.adb:204:09: info: discriminant check proved (Trivial: 1 VC)
-test_relaxed_access_params.adb:204:09: medium: resource or memory leak might occur [possible fix: subprogram at line 199 should mention V in a precondition]
+test_relaxed_access_params.adb:204:09: medium: resource or memory leak might occur [possible fix: subprogram at line 199 should mention V in a precondition] [provers reached step limit before completing the proof]
 test_relaxed_access_params.adb:208:06: info: data dependencies proved
-test_relaxed_access_params.adb:213:10: medium: initialization check might fail [possible fix: subprogram at line 207 should mention V'Initialized in a precondition]
+test_relaxed_access_params.adb:213:10: medium: initialization check might fail [possible fix: subprogram at line 207 should mention V'Initialized in a precondition] [provers reached step limit before completing the proof]
 test_relaxed_access_params.adb:213:12: info: range check proved (CVC5: 2 VC)
-test_relaxed_access_params.adb:213:12: medium: pointer dereference check might fail (e.g. when V = null) [possible fix: subprogram at line 207 should mention V in a precondition]
-test_relaxed_access_params.adb:213:16: medium: discriminant check might fail [possible fix: subprogram at line 207 should mention V in a precondition]
-test_relaxed_access_params.adb:213:19: medium: discriminant check might fail
-test_relaxed_access_params.adb:215:15: medium: initialization check might fail [possible fix: subprogram at line 207 should mention V'Initialized in a precondition]
+test_relaxed_access_params.adb:213:12: medium: pointer dereference check might fail (e.g. when V = null) [possible fix: subprogram at line 207 should mention V in a precondition] [provers reached step limit before completing the proof]
+test_relaxed_access_params.adb:213:16: medium: discriminant check might fail [possible fix: subprogram at line 207 should mention V in a precondition] [provers reached step limit before completing the proof]
+test_relaxed_access_params.adb:213:19: medium: discriminant check might fail [provers reached step limit before completing the proof]
+test_relaxed_access_params.adb:215:15: medium: initialization check might fail [possible fix: subprogram at line 207 should mention V'Initialized in a precondition] [provers reached step limit before completing the proof]
 test_relaxed_access_params.adb:220:06: info: data dependencies proved
-test_relaxed_access_params.adb:221:13: medium: initialization check might fail
+test_relaxed_access_params.adb:221:13: medium: initialization check might fail [provers reached step limit before completing the proof]
 test_relaxed_access_params.adb:221:32: info: initialization check proved (CVC5: 1 VC)
 test_relaxed_access_params.adb:221:33: info: pointer dereference check proved (CVC5: 1 VC)
-test_relaxed_access_params.adb:228:10: medium: initialization check might fail
+test_relaxed_access_params.adb:228:10: medium: initialization check might fail [provers reached step limit before completing the proof]
 test_relaxed_access_params.adb:228:12: info: pointer dereference check proved (CVC5: 1 VC)
 test_relaxed_access_params.adb:228:12: info: range check proved (CVC5: 2 VC)
 test_relaxed_access_params.adb:228:16: info: discriminant check proved (CVC5: 1 VC)
 test_relaxed_access_params.adb:228:19: info: discriminant check proved (CVC5: 1 VC)
-test_relaxed_access_params.adb:230:15: medium: initialization check might fail
+test_relaxed_access_params.adb:230:15: medium: initialization check might fail [provers reached step limit before completing the proof]

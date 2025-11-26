@@ -1,4 +1,4 @@
-decadriver.adb:73:21: medium: range check might fail, cannot prove upper bound for Frame'Length
+decadriver.adb:73:21: medium: range check might fail, cannot prove upper bound for Frame'Length [provers gave up before completing the proof]
 decadriver.adb:74:16: info: range check proved (CVC5: 4 VC)
 decadriver.adb:74:28: info: index check proved (CVC5: 2 VC)
 decadriver.adb:74:50: info: index check proved (CVC5: 2 VC)
@@ -9,7 +9,7 @@ decadriver.adb:75:45: info: range check proved (CVC5: 4 VC)
 decadriver.adb:78:22: info: length check proved (CVC5: 3 VC)
 decadriver.adb:78:49: info: range check proved (CVC5: 4 VC)
 decadriver.adb:78:67: info: range check proved (CVC5: 2 VC)
-decadriver.adb:84:34: medium: range check might fail, cannot prove lower bound for Rx_Count - 1 [reason for check: result of subtraction must fit in the target type of the assignment]
+decadriver.adb:84:34: medium: range check might fail, cannot prove lower bound for Rx_Count - 1 [reason for check: result of subtraction must fit in the target type of the assignment] [provers reached step limit before completing the proof]
 decadriver.adb:99:23: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Enable_Rx"
 decadriver.adb:105:10: info: initialization of "RX_FINFO_Reg" proved
 decadriver.adb:107:10: info: initialization of "Frame_Length" proved
@@ -24,7 +24,7 @@ decadriver.adb:131:43: info: in value of subprogram parameter after the call at 
 decadriver.adb:131:43: info: predicate check proved (Z3: 2 VC)
 decadriver.adb:131:43: info: range check proved (CVC5: 4 VC)
 decadriver.adb:133:38: medium: in inlined predicate at decadriver.ads:67
-decadriver.adb:133:38: medium: predicate check might fail, cannot prove Rx_Frame_Type.Size = 0
+decadriver.adb:133:38: medium: predicate check might fail, cannot prove Rx_Frame_Type.Size = 0 [provers gave up before completing the proof]
 decadriver.adb:133:50: info: range check proved (CVC5: 2 VC)
 decadriver.adb:134:38: info: predicate check proved (CVC5: 2 VC)
 decadriver.adb:135:38: info: predicate check proved (CVC5: 2 VC)
@@ -32,13 +32,13 @@ decadriver.adb:145:10: info: initialization of "Next_Idx" proved
 decadriver.adb:152:60: info: range check proved (CVC5: 2 VC)
 decadriver.adb:154:34: info: overflow check proved (CVC5: 2 VC)
 decadriver.adb:156:35: medium: in inlined predicate at decadriver.ads:66
-decadriver.adb:156:35: medium: predicate check might fail, cannot prove Rx_Frame_Type.Size > 0
+decadriver.adb:156:35: medium: predicate check might fail, cannot prove Rx_Frame_Type.Size > 0 [provers reached step limit before completing the proof]
 decadriver.adb:157:35: info: predicate check proved (CVC5: 2 VC)
 decadriver.adb:158:35: info: predicate check proved (CVC5: 2 VC)
 decadriver.adb:189:23: high: call to potentially blocking subprogram "dw1000.bsp.write_transaction" in protected operation "Set_Tx_Data"
 decadriver.adb:189:23: info: precondition proved (CVC5: 4 VC)
 decadriver.adb:197:23: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Set_Tx_Frame_Length"
-decadriver.adb:197:23: high: precondition might fail (e.g. when Length = 1024 and Offset = 0)
+decadriver.adb:197:23: high: precondition might fail (e.g. when Length = 1024 and Offset = 0) [provers gave up before completing the proof]
 decadriver.adb:206:23: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Start_Tx"
 decadriver.adb:232:10: info: initialization of "Word" proved
 decadriver.adb:234:10: info: initialization of "PMSC_CTRL1_Reg" proved
@@ -96,7 +96,7 @@ decadriver.ads:82:19: info: initialization of "Error" proved
 decadriver.ads:83:12: info: flow dependencies proved
 decadriver.ads:88:17: info: postcondition proved (CVC5: 3 VC)
 decadriver.ads:110:16: info: implicit aspect Always_Terminates on "Pending_Frames_Count" has been proved, subprogram will terminate
-decadriver.ads:111:22: medium: postcondition might fail
+decadriver.ads:111:22: medium: postcondition might fail [provers reached step limit before completing the proof]
 decadriver.ads:115:28: info: initialization of "Result" proved
 decadriver.ads:116:14: info: data dependencies proved
 decadriver.ads:117:09: info: flow dependencies proved
@@ -107,7 +107,7 @@ decadriver.ads:129:09: info: flow dependencies proved
 decadriver.ads:131:07: warning: no check message justified by this pragma [no-check-message-justified]
 decadriver.ads:144:14: info: flow dependencies proved
 decadriver.ads:150:34: medium: in inlined predicate at decadriver.ads:66
-decadriver.ads:150:34: medium: predicate check might fail, cannot prove Rx_Frame_Type.Size > 0
+decadriver.ads:150:34: medium: predicate check might fail, cannot prove Rx_Frame_Type.Size > 0 [provers reached step limit before completing the proof]
 decadriver.ads:173:16: info: implicit aspect Always_Terminates on "Is_Tx_Complete" has been proved, subprogram will terminate
 decadriver.ads:180:14: info: data dependencies proved
 decadriver.ads:181:09: info: flow dependencies proved
@@ -129,7 +129,7 @@ decadriver.ads:252:49: medium: incorrect dependency "BSP.Device_State => Driver_
 decadriver.ads:281:07: warning: no check message justified by this pragma [no-check-message-justified]
 decadriver.ads:287:14: info: data dependencies proved
 decadriver.ads:288:09: info: flow dependencies proved
-decadriver.ads:292:17: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function PHR_Mode or turning it into an expression function]
+decadriver.ads:292:17: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function PHR_Mode or turning it into an expression function] [provers reached step limit before completing the proof]
 decadriver.ads:294:07: warning: no check message justified by this pragma [no-check-message-justified]
 decadriver.ads:305:14: info: data dependencies proved
 decadriver.ads:306:09: info: flow dependencies proved
@@ -140,7 +140,7 @@ decadriver.ads:326:16: info: implicit aspect Always_Terminates on "PHR_Mode" has
 decadriver.ads:327:14: info: flow dependencies proved
 decadriver.ads:331:17: info: ceiling priority protocol is respected for "Decadriver.Receiver" (CVC5: 1 VC)
 decadriver.ads:331:17: info: ceiling priority protocol is respected for "Decadriver.Transmitter" (CVC5: 1 VC)
-decadriver.ads:332:49: medium: this interrupt might be reserved
+decadriver.ads:332:49: medium: this interrupt might be reserved [provers reached step limit before completing the proof]
 decadriver.ads:333:09: info: data dependencies proved
 decadriver.ads:342:49: medium: incorrect dependency "Transmitter => Driver_Type"
 decadriver.ads:346:07: warning: no check message justified by this pragma [no-check-message-justified]

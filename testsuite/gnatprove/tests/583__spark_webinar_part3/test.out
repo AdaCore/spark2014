@@ -95,8 +95,8 @@ memory_with_model.ads:55:16: info: pointer dereference check proved (CVC5: 1 VC)
 memory_with_model.ads:55:16: info: range check proved (CVC5: 1 VC)
 memory_with_model.ads:55:16: info: range check proved (CVC5: 4 VC)
 use_memory.adb:6:04: info: absence of resource or memory leak at end of scope proved (Z3: 1 VC)
-use_memory.adb:8:19: medium: assertion might fail
-use_memory.adb:8:19: medium: precondition might fail, cannot prove Is_Initialized(C, From, To)
+use_memory.adb:8:19: medium: assertion might fail [provers reached step limit before completing the proof]
+use_memory.adb:8:19: medium: precondition might fail, cannot prove Is_Initialized(C, From, To) [provers gave up before completing the proof]
 use_memory.adb:10:04: info: precondition proved (CVC5: 4 VC)
 use_memory.adb:11:19: info: assertion proved (Z3: 1 VC)
 use_memory.adb:11:19: info: precondition proved (CVC5: 4 VC)
@@ -110,10 +110,10 @@ use_memory_with_model.adb:9:19: info: assertion proved (Z3: 1 VC)
 use_memory_with_model.adb:9:19: info: precondition proved (CVC5: 3 VC)
 use_memory_with_model.adb:11:04: info: precondition proved (CVC5: 4 VC)
 use_memory_with_model.adb:12:19: info: precondition proved (CVC5: 3 VC)
-use_memory_with_model.adb:12:19: medium: assertion might fail
+use_memory_with_model.adb:12:19: medium: assertion might fail [provers reached step limit before completing the proof]
 use_simple_memory.adb:8:19: info: assertion proved (CVC5: 1 VC)
-use_simple_memory.adb:9:19: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Read or turning it into an expression function in its unit spec]
-use_simple_memory.adb:9:19: medium: precondition might fail
+use_simple_memory.adb:9:19: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Read or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
+use_simple_memory.adb:9:19: medium: precondition might fail [provers reached step limit before completing the proof]
 use_simple_memory.adb:11:04: info: precondition proved (CVC5: 1 VC)
 use_simple_memory.adb:12:19: info: assertion proved (CVC5: 1 VC)
 use_simple_memory.adb:13:19: info: assertion proved (CVC5: 1 VC)
@@ -122,8 +122,8 @@ use_simple_memory.adb:15:04: info: precondition proved (CVC5: 1 VC)
 use_simple_memory.adb:16:19: info: assertion proved (CVC5: 1 VC)
 use_simple_memory.adb:16:19: info: precondition proved (CVC5: 1 VC)
 use_simple_memory.adb:19:19: info: assertion proved (CVC5: 1 VC)
-use_simple_memory.adb:21:04: medium: precondition might fail
-use_simple_owned_memory.adb:6:04: medium: resource or memory leak might occur at end of scope
+use_simple_memory.adb:21:04: medium: precondition might fail [provers reached step limit before completing the proof]
+use_simple_owned_memory.adb:6:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 use_simple_owned_memory.adb:8:04: info: precondition proved (CVC5: 1 VC)
 use_simple_owned_memory.adb:9:19: info: assertion proved (CVC5: 1 VC)
 use_simple_owned_memory.adb:9:19: info: precondition proved (CVC5: 1 VC)

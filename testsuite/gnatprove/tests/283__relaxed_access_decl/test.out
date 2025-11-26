@@ -1,19 +1,19 @@
 test_relaxed_access.adb:38:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 test_relaxed_access.adb:39:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 test_relaxed_access.adb:40:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
-test_relaxed_access.adb:41:04: medium: resource or memory leak might occur at end of scope
-test_relaxed_access.adb:42:04: medium: resource or memory leak might occur at end of scope
-test_relaxed_access.adb:43:04: medium: resource or memory leak might occur at end of scope
-test_relaxed_access.adb:44:04: medium: resource or memory leak might occur at end of scope
-test_relaxed_access.adb:45:04: medium: resource or memory leak might occur at end of scope
-test_relaxed_access.adb:46:04: medium: resource or memory leak might occur at end of scope
+test_relaxed_access.adb:41:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
+test_relaxed_access.adb:42:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
+test_relaxed_access.adb:43:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
+test_relaxed_access.adb:44:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
+test_relaxed_access.adb:45:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
+test_relaxed_access.adb:46:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 test_relaxed_access.adb:48:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 test_relaxed_access.adb:49:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
-test_relaxed_access.adb:50:04: medium: resource or memory leak might occur at end of scope
+test_relaxed_access.adb:50:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 test_relaxed_access.adb:52:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 test_relaxed_access.adb:53:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 test_relaxed_access.adb:53:17: info: range check proved (CVC5: 2 VC)
-test_relaxed_access.adb:54:04: medium: resource or memory leak might occur at end of scope
+test_relaxed_access.adb:54:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 test_relaxed_access.adb:58:22: info: assertion proved (CVC5: 1 VC)
 test_relaxed_access.adb:60:22: info: assertion proved (CVC5: 1 VC)
 test_relaxed_access.adb:60:24: info: for pointer allocation at test_relaxed_access.adb:16
@@ -23,12 +23,12 @@ test_relaxed_access.adb:63:22: info: assertion proved (CVC5: 1 VC)
 test_relaxed_access.adb:65:22: info: assertion proved (CVC5: 1 VC)
 test_relaxed_access.adb:67:22: info: assertion proved (CVC5: 1 VC)
 test_relaxed_access.adb:69:22: info: assertion proved (CVC5: 1 VC)
-test_relaxed_access.adb:71:22: medium: assertion might fail
-test_relaxed_access.adb:73:22: medium: assertion might fail
-test_relaxed_access.adb:75:22: medium: assertion might fail
+test_relaxed_access.adb:71:22: medium: assertion might fail [provers reached step limit before completing the proof]
+test_relaxed_access.adb:73:22: medium: assertion might fail [provers reached step limit before completing the proof]
+test_relaxed_access.adb:75:22: medium: assertion might fail [provers reached step limit before completing the proof]
 test_relaxed_access.adb:77:22: info: assertion proved (CVC5: 1 VC)
 test_relaxed_access.adb:79:22: info: assertion proved (CVC5: 1 VC)
-test_relaxed_access.adb:81:22: medium: assertion might fail
+test_relaxed_access.adb:81:22: medium: assertion might fail [provers reached step limit before completing the proof]
 test_relaxed_access.adb:83:22: info: assertion proved (CVC5: 1 VC)
 test_relaxed_access.adb:85:22: info: assertion proved (CVC5: 1 VC)
-test_relaxed_access.adb:87:22: medium: assertion might fail
+test_relaxed_access.adb:87:22: medium: assertion might fail [provers reached step limit before completing the proof]

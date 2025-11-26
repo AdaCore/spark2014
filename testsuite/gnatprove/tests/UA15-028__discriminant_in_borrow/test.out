@@ -26,15 +26,15 @@ test.adb:32:13: info: implicit aspect Always_Terminates on "At_End" has been pro
 test.adb:32:79: info: dynamic accessibility check proved (Trivial)
 test.adb:34:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 test.adb:36:14: info: dynamic accessibility check proved (Trivial)
-test.adb:39:04: medium: resource or memory leak might occur at end of scope
-test.adb:40:04: medium: resource or memory leak might occur at end of scope
-test.adb:41:04: medium: resource or memory leak might occur at end of scope
-test.adb:42:04: medium: resource or memory leak might occur at end of scope
+test.adb:39:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
+test.adb:40:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
+test.adb:41:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
+test.adb:42:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 test.adb:42:41: info: index check proved (CVC5: 2 VC)
 test.adb:42:42: info: range check proved (CVC5: 2 VC)
 test.adb:50:22: info: assertion proved (CVC5: 1 VC)
 test.adb:50:36: info: pointer dereference check proved (CVC5: 1 VC)
-test.adb:51:22: medium: assertion might fail
+test.adb:51:22: medium: assertion might fail [provers reached step limit before completing the proof]
 test.adb:51:37: info: pointer dereference check proved (CVC5: 1 VC)
 test.adb:52:22: info: assertion proved (CVC5: 1 VC)
 test.adb:52:22: info: pointer dereference check proved (CVC5: 1 VC)
@@ -49,7 +49,7 @@ test.adb:60:33: info: null exclusion check proved (CVC5: 1 VC)
 test.adb:61:35: info: null exclusion check proved (CVC5: 1 VC)
 test.adb:63:22: info: assertion proved (CVC5: 1 VC)
 test.adb:63:36: info: pointer dereference check proved (CVC5: 1 VC)
-test.adb:64:22: medium: assertion might fail
+test.adb:64:22: medium: assertion might fail [provers reached step limit before completing the proof]
 test.adb:64:37: info: pointer dereference check proved (CVC5: 1 VC)
 test.adb:65:22: info: assertion proved (CVC5: 1 VC)
 test.adb:65:22: info: pointer dereference check proved (CVC5: 1 VC)
@@ -61,7 +61,7 @@ test.adb:68:22: info: assertion proved (Trivial)
 test.adb:69:22: info: assertion proved (Z3: 2 VC)
 test.adb:69:36: info: pointer dereference check proved (Z3: 1 VC)
 test.adb:69:46: info: pointer dereference check proved (CVC5: 1 VC)
-test.adb:70:22: medium: assertion might fail
+test.adb:70:22: medium: assertion might fail [provers reached step limit before completing the proof]
 test.adb:70:37: info: pointer dereference check proved (Z3: 1 VC)
 test.adb:70:48: info: pointer dereference check proved (CVC5: 1 VC)
 test.adb:71:22: info: assertion proved (Z3: 1 VC)
@@ -73,14 +73,14 @@ test.adb:72:44: info: pointer dereference check proved (CVC5: 1 VC)
 test.adb:73:22: info: assertion proved (Z3: 1 VC)
 test.adb:73:22: info: pointer dereference check proved (Z3: 1 VC)
 test.adb:74:22: info: assertion proved (Trivial)
-test.adb:82:22: medium: assertion might fail
+test.adb:82:22: medium: assertion might fail [provers reached step limit before completing the proof]
 test.adb:82:36: info: pointer dereference check proved (CVC5: 1 VC)
-test.adb:83:22: medium: assertion might fail
+test.adb:83:22: medium: assertion might fail [provers reached step limit before completing the proof]
 test.adb:83:37: info: pointer dereference check proved (CVC5: 1 VC)
 test.adb:84:22: info: pointer dereference check proved (CVC5: 1 VC)
-test.adb:84:22: medium: assertion might fail
+test.adb:84:22: medium: assertion might fail [provers reached step limit before completing the proof]
 test.adb:85:22: info: pointer dereference check proved (CVC5: 1 VC)
-test.adb:85:22: medium: assertion might fail
+test.adb:85:22: medium: assertion might fail [provers reached step limit before completing the proof]
 test.adb:86:22: info: assertion proved (CVC5: 1 VC)
 test.adb:86:22: info: pointer dereference check proved (CVC5: 1 VC)
 test.adb:87:22: info: assertion proved (Trivial)

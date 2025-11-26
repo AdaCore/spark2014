@@ -8,7 +8,7 @@ node_a.adb:27:24: warning: assuming "Suspend_Forever" has no effect on global it
 node_a.adb:27:24: warning: no Always_Terminates aspect available for "Suspend_Forever" [assumed-always-terminates]
 node_a.adb:27:24: warning: no Global contract available for "Suspend_Forever" [assumed-global-null]
 polyorb_hi-epoch.adb:46:16: info: implicit aspect Always_Terminates on "System_Startup_Time" has been proved, subprogram will terminate
-polyorb_hi-epoch.adb:88:16: medium: range check might fail [reason for check: input value must fit in parameter type]
+polyorb_hi-epoch.adb:88:16: medium: range check might fail [reason for check: input value must fit in parameter type] [provers reached step limit before completing the proof]
 polyorb_hi-epoch.adb:88:31: info: range check proved (CVC5: 1 VC)
 polyorb_hi-epoch.ads:40:08: info: flow dependencies proved
 polyorb_hi-epoch.ads:43:35: info: initialization of "SST" proved
@@ -22,11 +22,11 @@ polyorb_hi-periodic_task.adb:53:07: info: initialization of "Error" proved, in i
 polyorb_hi-periodic_task.adb:54:07: info: initialization of "T0" proved, in instantiation at polyorb_hi_generated-activity.ads:22
 polyorb_hi-periodic_task.adb:54:07: info: initialization of "T0" proved, in instantiation at polyorb_hi_generated-activity.ads:37
 polyorb_hi-periodic_task.adb:72:24: info: range check proved (CVC5: 1 VC), in instantiation at polyorb_hi_generated-activity.ads:22
-polyorb_hi-periodic_task.adb:72:24: medium: range check might fail, in instantiation at polyorb_hi_generated-activity.ads:37 [reason for check: value must fit in the target type of the assignment] [possible fix: call at line 71 should mention SST (for argument T0) in a postcondition]
-polyorb_hi-periodic_task.adb:78:39: medium: range check might fail, in instantiation at polyorb_hi_generated-activity.ads:22 [reason for check: value must fit in the target type of the assignment]
-polyorb_hi-periodic_task.adb:78:39: medium: range check might fail, in instantiation at polyorb_hi_generated-activity.ads:37 [reason for check: value must fit in the target type of the assignment]
-polyorb_hi-periodic_task.adb:110:42: medium: range check might fail, in instantiation at polyorb_hi_generated-activity.ads:22 [reason for check: value must fit in the target type of the assignment] [possible fix: loop at line 82 should mention Next_Start in a loop invariant]
-polyorb_hi-periodic_task.adb:110:42: medium: range check might fail, in instantiation at polyorb_hi_generated-activity.ads:37 [reason for check: value must fit in the target type of the assignment] [possible fix: loop at line 82 should mention Next_Start in a loop invariant]
+polyorb_hi-periodic_task.adb:72:24: medium: range check might fail, in instantiation at polyorb_hi_generated-activity.ads:37 [reason for check: value must fit in the target type of the assignment] [possible fix: call at line 71 should mention SST (for argument T0) in a postcondition] [provers reached step limit before completing the proof]
+polyorb_hi-periodic_task.adb:78:39: medium: range check might fail, in instantiation at polyorb_hi_generated-activity.ads:22 [reason for check: value must fit in the target type of the assignment] [provers reached step limit before completing the proof]
+polyorb_hi-periodic_task.adb:78:39: medium: range check might fail, in instantiation at polyorb_hi_generated-activity.ads:37 [reason for check: value must fit in the target type of the assignment] [provers reached step limit before completing the proof]
+polyorb_hi-periodic_task.adb:110:42: medium: range check might fail, in instantiation at polyorb_hi_generated-activity.ads:22 [reason for check: value must fit in the target type of the assignment] [possible fix: loop at line 82 should mention Next_Start in a loop invariant] [provers reached step limit before completing the proof]
+polyorb_hi-periodic_task.adb:110:42: medium: range check might fail, in instantiation at polyorb_hi_generated-activity.ads:37 [reason for check: value must fit in the target type of the assignment] [possible fix: loop at line 82 should mention Next_Start in a loop invariant] [provers reached step limit before completing the proof]
 polyorb_hi-periodic_task.ads:43:22: info: range check proved (CVC5: 1 VC), in instantiation at polyorb_hi_generated-activity.ads:22
 polyorb_hi-periodic_task.ads:71:09: info: ceiling priority protocol is respected for "Polyorb_Hi.Epoch.Epoch_Data" (CVC5: 1 VC), in instantiation at polyorb_hi_generated-activity.ads:22
 polyorb_hi-periodic_task.ads:71:09: info: ceiling priority protocol is respected for "Polyorb_Hi.Epoch.Epoch_Data" (CVC5: 1 VC), in instantiation at polyorb_hi_generated-activity.ads:37
