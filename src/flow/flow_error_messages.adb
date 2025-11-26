@@ -718,8 +718,7 @@ package body Flow_Error_Messages is
          --  severity.
 
          elsif Tag = VC_UC_Alignment
-           and then Present
-                      (Supported_Alias (SPARK_Atree.Get_Address_Expr (N)))
+           and then Present (Overlaid_Entity (Defining_Entity (N)))
          then
             Result := High_Check_Kind;
 

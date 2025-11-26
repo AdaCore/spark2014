@@ -2675,9 +2675,7 @@ package body SPARK_Definition is
                case Nkind (N) is
                   when N_Object_Declaration                         =>
                      if Is_Scalar_Type (Etype (Defining_Entity (N)))
-                       and then No
-                                  (Ultimate_Overlaid_Entity
-                                     (Defining_Entity (N)))
+                       and then No (Overlaid_Entity (Defining_Entity (N)))
                      then
                         --  Store scalar entities defined in loops before the
                         --  invariant in Loop_Entity_Set.
@@ -4738,8 +4736,7 @@ package body SPARK_Definition is
       end if;
 
       declare
-         Aliased_Object  : constant Entity_Id :=
-           Supported_Alias (Address_Expr);
+         Aliased_Object  : constant Entity_Id := Overlaid_Entity (E);
          Supported_Alias : constant Boolean := Present (Aliased_Object);
          E_Is_Constant   : constant Boolean := Is_Constant_In_SPARK (E);
 

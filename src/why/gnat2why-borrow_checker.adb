@@ -1508,7 +1508,7 @@ package body Gnat2Why.Borrow_Checker is
             --  Check that the root of the initial expression is not an overlay
 
             if Ekind (Expr_Root) in E_Constant | E_Variable
-              and then Present (Ultimate_Overlaid_Entity (Expr_Root))
+              and then Present (Overlaid_Entity (Expr_Root))
               and then not Is_Constant_In_SPARK (Expr_Root)
             then
                declare
@@ -1903,7 +1903,7 @@ package body Gnat2Why.Borrow_Checker is
             --  If the Target is an overlay, the declaration reads/writes the
             --  overlaid object even without an expression.
 
-            if Present (Ultimate_Overlaid_Entity (Target)) then
+            if Present (Overlaid_Entity (Target)) then
                Process_Path
                  ((Is_Ent => True, Ent => Target, Loc => Target),
                   (if Is_Imported (Target) then Read else Assign));
@@ -6127,7 +6127,7 @@ package body Gnat2Why.Borrow_Checker is
 
       --  If the root is an overlay, consider the overlaid object instead
 
-      if Ekind (Root) in E_Constant | E_Variable
+      if Ekind (Root) = E_Variable
         and then Present (Ultimate_Overlaid_Entity (Root))
       then
          --  Moving an overlay is not supported
