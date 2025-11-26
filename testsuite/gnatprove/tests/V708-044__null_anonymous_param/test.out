@@ -40,6 +40,6 @@ main.adb:66:20: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:67:13: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:67:23: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:68:13: info: pointer dereference check proved (CVC5: 1 VC)
-main.adb:74:04: medium: resource or memory leak might occur at end of scope
+main.adb:74:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 main.adb:82:11: high: formal parameters "V1" and "V2" are aliased (SPARK RM 6.4.2)
 main.adb:87:11: high: formal parameters "V1" and "V2" are aliased (SPARK RM 6.4.2)

@@ -1,6 +1,6 @@
 traffic_lights.adb:47:16: info: range check proved (CVC5: 1 VC)
 traffic_lights.adb:49:16: info: range check proved (CVC5: 1 VC)
-traffic_lights.adb:52:17: medium: range check might fail
+traffic_lights.adb:52:17: medium: range check might fail [provers reached step limit before completing the proof]
 traffic_lights.ads:16:16: info: implicit aspect Always_Terminates on "Valid_Combination" has been proved, subprogram will terminate
 traffic_lights.ads:33:09: info: ceiling priority protocol is respected for "Traffic_Lights.Traffic_Light" (CVC5: 1 VC)
 traffic_lights.ads:33:09: info: nontermination of task proved (CVC5: 1 VC)

@@ -5,4 +5,4 @@ chained_contract_calls.adb:6:54: info: postcondition proved (CVC5: 1 VC)
 chained_contract_calls.adb:6:54: info: postcondition proved (CVC5: 1 VC), in inherited contract at chained_contract_calls.adb:13
 chained_contract_calls.adb:11:27: info: implicit aspect Always_Terminates on "Label" has been proved, subprogram will terminate
 chained_contract_calls.adb:12:27: info: implicit aspect Always_Terminates on "Copy" has been proved, subprogram will terminate
-chained_contract_calls.adb:19:04: medium: assertion might fail
+chained_contract_calls.adb:19:04: medium: assertion might fail [provers reached step limit before completing the proof]

@@ -37,6 +37,7 @@
       + in inlined invariant at invariants.ads:36
       + for The_Stack at the end of Push_Internal at invariants.adb:27
       + e.g. when E = 1
+      + provers reached step limit before completing the proof
 
  info: range check proved
 --> invariants.adb:37:40
@@ -90,6 +91,7 @@
       + in inlined invariant at invariants.ads:36
       + for The_Stack at the end of Push at invariants.adb:27
       + e.g. when E = 1
+      + provers reached step limit before completing the proof
 
  info: invariant check proved
 --> invariants.ads:22:13

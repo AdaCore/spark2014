@@ -16,7 +16,7 @@ main.adb:29:13: info: no contextual analysis of "Rand" (body not seen yet)
 main.adb:29:13: warning: assuming "Rand" has no effect on global items
 main.adb:29:13: warning: no Global contract available for "Rand" [assumed-global-null]
 main.adb:31:13: info: assertion premise proved (CVC5: 1 VC)
-main.adb:32:19: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function F or turning it into an expression function in its unit spec]
+main.adb:32:19: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function F or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
 main.adb:32:19: warning: assuming "F" has no effect on global items
 main.adb:32:19: warning: no Global contract available for "F" [assumed-global-null]
 main.adb:33:19: warning: assuming "Axiom_F_Pos" has no effect on global items
@@ -31,7 +31,7 @@ main.adb:37:19: warning: no Global contract available for "F" [assumed-global-nu
 main.adb:38:23: warning: assuming "Find_F_Is_3" has no effect on global items
 main.adb:38:23: warning: no Global contract available for "Find_F_Is_3" [assumed-global-null]
 main.adb:41:13: info: assertion premise proved (CVC5: 1 VC)
-main.adb:42:19: medium: assertion step might fail
+main.adb:42:19: medium: assertion step might fail [provers gave up before completing the proof]
 main.adb:49:26: info: data dependencies proved
 main.adb:61:13: warning: assuming "Find_First_0" has no effect on global items
 main.adb:61:13: warning: no Global contract available for "Find_First_0" [assumed-global-null]
@@ -124,7 +124,7 @@ main.adb:118:85: info: overflow check proved (CVC5: 2 VC)
 main.adb:121:28: info: precondition proved (CVC5: 2 VC)
 main.adb:121:28: warning: assuming "Find_First_0" has no effect on global items
 main.adb:121:28: warning: no Global contract available for "Find_First_0" [assumed-global-null]
-main.adb:121:72: medium: assertion might fail, cannot prove A (Find_First_0 (A_Old, A_Old'First)) = 1
+main.adb:121:72: medium: assertion might fail, cannot prove A (Find_First_0 (A_Old, A_Old'First)) = 1 [provers gave up before completing the proof]
 main.adb:121:75: info: index check proved (CVC5: 2 VC)
 main.adb:121:75: info: precondition proved (CVC5: 2 VC)
 main.adb:121:75: warning: assuming "Find_First_0" has no effect on global items
@@ -142,14 +142,14 @@ main.adb:137:13: warning: assuming "Rand" has no effect on global items
 main.adb:137:13: warning: no Global contract available for "Rand" [assumed-global-null]
 main.adb:142:33: info: assertion step proved (CVC5: 1 VC)
 main.adb:143:33: info: assertion step proved (CVC5: 1 VC)
-main.adb:144:33: medium: assertion premise might fail, cannot prove A2 [possible fix: subprogram at line 129 should mention A2 in a precondition]
+main.adb:144:33: medium: assertion premise might fail, cannot prove A2 [possible fix: subprogram at line 129 should mention A2 in a precondition] [provers gave up before completing the proof]
 main.adb:145:33: info: assertion step proved (CVC5: 1 VC)
 main.adb:146:13: info: no contextual analysis of "Rand" (body not seen yet)
 main.adb:146:13: warning: assuming "Rand" has no effect on global items
 main.adb:146:13: warning: no Global contract available for "Rand" [assumed-global-null]
 main.adb:150:25: info: assertion premise proved (CVC5: 3 VC)
 main.adb:150:33: info: assertion step proved (CVC5: 1 VC)
-main.adb:151:33: medium: assertion step might fail [possible fix: subprogram at line 129 should mention B2 in a precondition]
+main.adb:151:33: medium: assertion step might fail [possible fix: subprogram at line 129 should mention B2 in a precondition] [provers gave up before completing the proof]
 main.adb:153:33: info: assertion step proved (CVC5: 1 VC)
 main.adb:157:67: info: data dependencies proved
 main.adb:159:10: info: no contextual analysis of "Rand" (body not seen yet)
@@ -162,7 +162,7 @@ main.adb:164:59: info: assertion step proved (CVC5: 1 VC)
 main.adb:165:13: info: no contextual analysis of "Rand" (body not seen yet)
 main.adb:165:13: warning: assuming "Rand" has no effect on global items
 main.adb:165:13: warning: no Global contract available for "Rand" [assumed-global-null]
-main.adb:169:25: medium: assertion premise might fail [possible fix: subprogram at line 157 should mention A1 and A2 and A3 and B1 and B2 and B3 in a precondition]
+main.adb:169:25: medium: assertion premise might fail [possible fix: subprogram at line 157 should mention A1 and A2 and A3 and B1 and B2 and B3 in a precondition] [provers gave up before completing the proof]
 main.adb:169:33: info: assertion step proved (CVC5: 1 VC)
 main.adb:170:36: info: assertion step proved (CVC5: 1 VC)
 main.adb:171:32: info: assertion step proved (CVC5: 1 VC)
@@ -170,7 +170,7 @@ main.adb:172:13: info: no contextual analysis of "Rand" (body not seen yet)
 main.adb:172:13: warning: assuming "Rand" has no effect on global items
 main.adb:172:13: warning: no Global contract available for "Rand" [assumed-global-null]
 main.adb:177:29: info: assertion step proved (CVC5: 1 VC)
-main.adb:178:29: medium: assertion premise might fail, cannot prove (So (A1, B1)  or So (A2, B2)) [possible fix: subprogram at line 157 should mention A1 and A2 and B1 and B2 in a precondition]
+main.adb:178:29: medium: assertion premise might fail, cannot prove (So (A1, B1)  or So (A2, B2)) [possible fix: subprogram at line 157 should mention A1 and A2 and B1 and B2 in a precondition] [provers gave up before completing the proof]
 main.adb:178:38: info: assertion step proved (CVC5: 1 VC)
 main.adb:179:38: info: assertion step proved (CVC5: 1 VC)
 main.adb:180:13: info: no contextual analysis of "Rand" (body not seen yet)
@@ -178,7 +178,7 @@ main.adb:180:13: warning: assuming "Rand" has no effect on global items
 main.adb:180:13: warning: no Global contract available for "Rand" [assumed-global-null]
 main.adb:184:25: info: assertion premise proved (CVC5: 1 VC)
 main.adb:184:33: info: assertion step proved (CVC5: 1 VC)
-main.adb:186:32: medium: assertion step might fail [possible fix: subprogram at line 157 should mention B2 in a precondition]
+main.adb:186:32: medium: assertion step might fail [possible fix: subprogram at line 157 should mention B2 in a precondition] [provers gave up before completing the proof]
 main.adb:187:32: info: assertion step proved (CVC5: 1 VC)
 main.adb:193:30: info: data dependencies proved
 main.adb:196:16: warning: assuming "A1" has no effect on global items
@@ -196,18 +196,18 @@ main.adb:200:40: warning: no Global contract available for "B1" [assumed-global-
 main.adb:202:10: info: no contextual analysis of "Rand" (body not seen yet)
 main.adb:202:10: warning: assuming "Rand" has no effect on global items
 main.adb:202:10: warning: no Global contract available for "Rand" [assumed-global-null]
-main.adb:203:29: medium: assertion premise might fail, cannot prove A1 [possible fix: you should consider adding a postcondition to function A1 or turning it into an expression function in its unit spec]
+main.adb:203:29: medium: assertion premise might fail, cannot prove A1 [possible fix: you should consider adding a postcondition to function A1 or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 main.adb:203:29: warning: assuming "A1" has no effect on global items
 main.adb:203:29: warning: no Global contract available for "A1" [assumed-global-null]
 main.adb:204:29: info: precondition proved (CVC5: 1 VC)
-main.adb:204:29: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B1 or turning it into an expression function in its unit spec]
+main.adb:204:29: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B1 or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 main.adb:204:29: warning: assuming "B1" has no effect on global items
 main.adb:204:29: warning: no Global contract available for "B1" [assumed-global-null]
-main.adb:205:33: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B2 or turning it into an expression function in its unit spec]
-main.adb:205:33: medium: precondition might fail, cannot prove A1
+main.adb:205:33: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B2 or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
+main.adb:205:33: medium: precondition might fail, cannot prove A1 [provers gave up before completing the proof]
 main.adb:205:33: warning: assuming "B2" has no effect on global items
 main.adb:205:33: warning: no Global contract available for "B2" [assumed-global-null]
-main.adb:206:33: medium: precondition might fail
+main.adb:206:33: medium: precondition might fail [provers gave up before completing the proof]
 main.adb:206:33: warning: assuming "A2" has no effect on global items
 main.adb:206:33: warning: no Global contract available for "A2" [assumed-global-null]
 main.adb:207:13: info: no contextual analysis of "Rand" (body not seen yet)
@@ -216,29 +216,29 @@ main.adb:207:13: warning: no Global contract available for "Rand" [assumed-globa
 main.adb:208:29: warning: assuming "A1" has no effect on global items
 main.adb:208:29: warning: no Global contract available for "A1" [assumed-global-null]
 main.adb:209:29: info: precondition proved (CVC5: 1 VC)
-main.adb:209:29: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B1 or turning it into an expression function in its unit spec]
+main.adb:209:29: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B1 or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 main.adb:209:29: warning: assuming "B1" has no effect on global items
 main.adb:209:29: warning: no Global contract available for "B1" [assumed-global-null]
 main.adb:210:38: info: precondition proved (CVC5: 3 VC)
-main.adb:210:38: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B2 or turning it into an expression function in its unit spec]
+main.adb:210:38: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B2 or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 main.adb:210:38: warning: assuming "B2" has no effect on global items
 main.adb:210:38: warning: no Global contract available for "B2" [assumed-global-null]
 main.adb:211:38: info: precondition proved (CVC5: 1 VC)
-main.adb:211:38: medium: assertion premise might fail, cannot prove A2 [possible fix: you should consider adding a postcondition to function A2 or turning it into an expression function in its unit spec]
+main.adb:211:38: medium: assertion premise might fail, cannot prove A2 [possible fix: you should consider adding a postcondition to function A2 or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 main.adb:211:38: warning: assuming "A2" has no effect on global items
 main.adb:211:38: warning: no Global contract available for "A2" [assumed-global-null]
 main.adb:213:29: info: precondition proved (CVC5: 1 VC)
-main.adb:213:29: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B1 or turning it into an expression function in its unit spec]
+main.adb:213:29: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B1 or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 main.adb:213:29: warning: assuming "B1" has no effect on global items
 main.adb:213:29: warning: no Global contract available for "B1" [assumed-global-null]
-main.adb:214:29: medium: assertion premise might fail, cannot prove A1 [possible fix: you should consider adding a postcondition to function A1 or turning it into an expression function in its unit spec]
+main.adb:214:29: medium: assertion premise might fail, cannot prove A1 [possible fix: you should consider adding a postcondition to function A1 or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 main.adb:214:29: warning: assuming "A1" has no effect on global items
 main.adb:214:29: warning: no Global contract available for "A1" [assumed-global-null]
-main.adb:215:38: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B2 or turning it into an expression function in its unit spec]
-main.adb:215:38: medium: precondition might fail, cannot prove A1
+main.adb:215:38: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B2 or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
+main.adb:215:38: medium: precondition might fail, cannot prove A1 [provers gave up before completing the proof]
 main.adb:215:38: warning: assuming "B2" has no effect on global items
 main.adb:215:38: warning: no Global contract available for "B2" [assumed-global-null]
-main.adb:216:38: medium: precondition might fail
+main.adb:216:38: medium: precondition might fail [provers gave up before completing the proof]
 main.adb:216:38: warning: assuming "A2" has no effect on global items
 main.adb:216:38: warning: no Global contract available for "A2" [assumed-global-null]
 main.adb:220:30: info: data dependencies proved
@@ -260,46 +260,46 @@ main.adb:227:48: warning: no Global contract available for "A2" [assumed-global-
 main.adb:229:10: info: no contextual analysis of "Rand" (body not seen yet)
 main.adb:229:10: warning: assuming "Rand" has no effect on global items
 main.adb:229:10: warning: no Global contract available for "Rand" [assumed-global-null]
-main.adb:230:25: medium: assertion premise might fail [possible fix: you should consider adding a postcondition to function A1 and function B1 and function A2 and function B2 or turning them into expression functions in their unit spec]
+main.adb:230:25: medium: assertion premise might fail [possible fix: you should consider adding a postcondition to function A1 and function B1 and function A2 and function B2 or turning them into expression functions in their unit spec] [provers gave up before completing the proof]
 main.adb:230:29: info: precondition proved (CVC5: 1 VC)
-main.adb:230:29: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B1 or turning it into an expression function in its unit spec]
+main.adb:230:29: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B1 or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 main.adb:230:29: warning: assuming "B1" has no effect on global items
 main.adb:230:29: warning: no Global contract available for "B1" [assumed-global-null]
 main.adb:231:29: warning: assuming "A1" has no effect on global items
 main.adb:231:29: warning: no Global contract available for "A1" [assumed-global-null]
-main.adb:232:32: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B2 or turning it into an expression function in its unit spec]
-main.adb:232:32: medium: precondition might fail
+main.adb:232:32: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B2 or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
+main.adb:232:32: medium: precondition might fail [provers gave up before completing the proof]
 main.adb:232:32: warning: assuming "B2" has no effect on global items
 main.adb:232:32: warning: no Global contract available for "B2" [assumed-global-null]
-main.adb:233:32: medium: precondition might fail
+main.adb:233:32: medium: precondition might fail [provers gave up before completing the proof]
 main.adb:233:32: warning: assuming "A2" has no effect on global items
 main.adb:233:32: warning: no Global contract available for "A2" [assumed-global-null]
 main.adb:234:13: info: no contextual analysis of "Rand" (body not seen yet)
 main.adb:234:13: warning: assuming "Rand" has no effect on global items
 main.adb:234:13: warning: no Global contract available for "Rand" [assumed-global-null]
-main.adb:235:25: medium: assertion premise might fail [possible fix: you should consider adding a postcondition to function A1 and function B1 and function A2 and function B2 or turning them into expression functions in their unit spec]
+main.adb:235:25: medium: assertion premise might fail [possible fix: you should consider adding a postcondition to function A1 and function B1 and function A2 and function B2 or turning them into expression functions in their unit spec] [provers gave up before completing the proof]
 main.adb:235:29: info: precondition proved (CVC5: 1 VC)
-main.adb:235:29: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B1 or turning it into an expression function in its unit spec]
+main.adb:235:29: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B1 or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 main.adb:235:29: warning: assuming "B1" has no effect on global items
 main.adb:235:29: warning: no Global contract available for "B1" [assumed-global-null]
 main.adb:236:29: warning: assuming "A1" has no effect on global items
 main.adb:236:29: warning: no Global contract available for "A1" [assumed-global-null]
 main.adb:237:37: info: precondition proved (CVC5: 1 VC)
-main.adb:237:37: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B2 or turning it into an expression function in its unit spec]
+main.adb:237:37: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B2 or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 main.adb:237:37: warning: assuming "B2" has no effect on global items
 main.adb:237:37: warning: no Global contract available for "B2" [assumed-global-null]
 main.adb:238:37: info: precondition proved (CVC5: 1 VC)
 main.adb:238:37: warning: assuming "A2" has no effect on global items
 main.adb:238:37: warning: no Global contract available for "A2" [assumed-global-null]
-main.adb:240:25: medium: assertion premise might fail [possible fix: you should consider adding a postcondition to function A1 and function B1 and function A2 and function B2 or turning them into expression functions in their unit spec]
+main.adb:240:25: medium: assertion premise might fail [possible fix: you should consider adding a postcondition to function A1 and function B1 and function A2 and function B2 or turning them into expression functions in their unit spec] [provers gave up before completing the proof]
 main.adb:240:29: warning: assuming "A1" has no effect on global items
 main.adb:240:29: warning: no Global contract available for "A1" [assumed-global-null]
 main.adb:241:29: info: precondition proved (CVC5: 1 VC)
-main.adb:241:29: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B1 or turning it into an expression function in its unit spec]
+main.adb:241:29: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B1 or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 main.adb:241:29: warning: assuming "B1" has no effect on global items
 main.adb:241:29: warning: no Global contract available for "B1" [assumed-global-null]
 main.adb:242:37: info: precondition proved (CVC5: 1 VC)
-main.adb:242:37: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B2 or turning it into an expression function in its unit spec]
+main.adb:242:37: medium: assertion step might fail [possible fix: you should consider adding a postcondition to function B2 or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 main.adb:242:37: warning: assuming "B2" has no effect on global items
 main.adb:242:37: warning: no Global contract available for "B2" [assumed-global-null]
 main.adb:243:37: info: precondition proved (CVC5: 1 VC)

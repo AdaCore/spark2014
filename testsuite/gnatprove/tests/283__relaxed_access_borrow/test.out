@@ -8,7 +8,7 @@ test_relaxed_borrower.adb:48:23: info: initialization check proved (CVC5: 1 VC)
 test_relaxed_borrower.adb:56:35: info: null exclusion check proved (CVC5: 1 VC)
 test_relaxed_borrower.adb:59:16: info: null exclusion check proved (CVC5: 1 VC)
 test_relaxed_borrower.adb:62:41: medium: in reconstructed value at the end of the borrow at test_relaxed_borrower.adb:62
-test_relaxed_borrower.adb:62:41: medium: initialization check might fail
+test_relaxed_borrower.adb:62:41: medium: initialization check might fail [provers gave up before completing the proof]
 test_relaxed_borrower.adb:64:10: info: no contextual analysis of "Update_Uninit" (possible check on parameters)
 test_relaxed_borrower.adb:64:25: info: for pointer allocation at test_relaxed_borrower.adb:62
 test_relaxed_borrower.adb:64:25: info: initialization check proved (CVC5: 1 VC)
@@ -66,8 +66,8 @@ test_relaxed_reborrow.adb:94:11: info: pointer dereference check proved (CVC5: 1
 test_relaxed_reborrow.adb:95:10: info: absence of resource or memory leak proved (CVC5: 1 VC; Trivial: 1 VC)
 test_relaxed_reborrow.adb:99:38: info: null exclusion check proved (CVC5: 1 VC)
 test_relaxed_reborrow.adb:99:38: medium: in reconstructed value at the end of the borrow at test_relaxed_reborrow.adb:99
-test_relaxed_reborrow.adb:99:38: medium: initialization check might fail
-test_relaxed_reborrow.adb:101:25: medium: assertion might fail
+test_relaxed_reborrow.adb:99:38: medium: initialization check might fail [provers gave up before completing the proof]
+test_relaxed_reborrow.adb:101:25: medium: assertion might fail [provers reached step limit before completing the proof]
 test_relaxed_reborrow.adb:103:36: info: initialization check proved (CVC5: 2 VC)
 test_relaxed_reborrow.adb:103:36: info: loop invariant initialization proved (CVC5: 1 VC)
 test_relaxed_reborrow.adb:103:36: info: loop invariant preservation proved (CVC5: 1 VC)
@@ -86,7 +86,7 @@ test_relaxed_reborrow.adb:108:10: info: absence of resource or memory leak prove
 test_relaxed_reborrow.adb:108:16: info: initialization check proved (CVC5: 1 VC)
 test_relaxed_reborrow.adb:108:17: info: for pointer allocation at test_relaxed_reborrow.adb:12
 test_relaxed_reborrow.adb:108:17: info: initialization check proved (CVC5: 1 VC)
-test_relaxed_reborrow.adb:114:14: medium: postcondition might fail
+test_relaxed_reborrow.adb:114:14: medium: postcondition might fail [provers reached step limit before completing the proof]
 test_relaxed_reborrow.adb:118:11: info: for pointer allocation at test_relaxed_reborrow.adb:25
 test_relaxed_reborrow.adb:118:11: info: initialization check proved (CVC5: 1 VC)
 test_relaxed_reborrow.adb:118:11: info: pointer dereference check proved (CVC5: 1 VC)
@@ -106,7 +106,7 @@ test_relaxed_reborrow.adb:129:36: info: loop invariant preservation proved (CVC5
 test_relaxed_reborrow.adb:129:53: info: initialization check proved (CVC5: 2 VC)
 test_relaxed_reborrow.adb:131:16: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
 test_relaxed_reborrow.adb:131:36: info: initialization check proved (CVC5: 2 VC)
-test_relaxed_reborrow.adb:131:53: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove All_Initialized (At_End (L))
+test_relaxed_reborrow.adb:131:53: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove All_Initialized (At_End (L)) [provers gave up before completing the proof]
 test_relaxed_reborrow.adb:131:70: info: initialization check proved (CVC5: 2 VC)
 test_relaxed_reborrow.adb:133:18: info: initialization check proved (CVC5: 1 VC)
 test_relaxed_reborrow.adb:133:19: info: for pointer allocation at test_relaxed_reborrow.adb:25

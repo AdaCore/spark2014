@@ -1,21 +1,21 @@
-arr_equal.adb:7:22: high: assertion might fail (e.g. when A = (0 => 42)) [possible fix: subprogram at arr_equal.ads:5 should mention A in a precondition]
-arr_equal.adb:16:22: high: assertion might fail (e.g. when A = (0 => 0, others => -2) and A'First = -2 and A'Last = 0) [possible fix: precondition of subprogram at arr_equal.ads:7 should mention A]
-arr_equal.adb:25:22: high: assertion might fail (e.g. when A = (0 => 0, others => -2) and A'First = -2 and A'Last = 0) [possible fix: precondition of subprogram at arr_equal.ads:10 should mention A]
-arr_equal.adb:34:22: high: assertion might fail (e.g. when A = (0 => 2, others => 3) and A'First = -2 and A'Last = 0) [possible fix: precondition of subprogram at arr_equal.ads:13 should mention A]
-arr_equal.adb:43:22: high: assertion might fail (e.g. when A = (0 => 2, others => -2) and A'First = -2 and A'Last = 0) [possible fix: precondition of subprogram at arr_equal.ads:16 should mention A]
-arr_equal.adb:59:22: high: assertion might fail (e.g. when A = (-6 => 2, 2 => 3, 3 => 3, others => 1) and A'First = -7 and A'Last = 3) [possible fix: precondition of subprogram at arr_equal.ads:19 should mention A]
+arr_equal.adb:7:22: high: assertion might fail (e.g. when A = (0 => 42)) [possible fix: subprogram at arr_equal.ads:5 should mention A in a precondition] [provers reached step limit before completing the proof]
+arr_equal.adb:16:22: high: assertion might fail (e.g. when A = (0 => 0, others => -2) and A'First = -2 and A'Last = 0) [possible fix: precondition of subprogram at arr_equal.ads:7 should mention A] [provers reached step limit before completing the proof]
+arr_equal.adb:25:22: high: assertion might fail (e.g. when A = (0 => 0, others => -2) and A'First = -2 and A'Last = 0) [possible fix: precondition of subprogram at arr_equal.ads:10 should mention A] [provers reached step limit before completing the proof]
+arr_equal.adb:34:22: high: assertion might fail (e.g. when A = (0 => 2, others => 3) and A'First = -2 and A'Last = 0) [possible fix: precondition of subprogram at arr_equal.ads:13 should mention A] [provers reached step limit before completing the proof]
+arr_equal.adb:43:22: high: assertion might fail (e.g. when A = (0 => 2, others => -2) and A'First = -2 and A'Last = 0) [possible fix: precondition of subprogram at arr_equal.ads:16 should mention A] [provers reached step limit before completing the proof]
+arr_equal.adb:59:22: high: assertion might fail (e.g. when A = (-6 => 2, 2 => 3, 3 => 3, others => 1) and A'First = -7 and A'Last = 3) [possible fix: precondition of subprogram at arr_equal.ads:19 should mention A] [provers reached step limit before completing the proof]
 arr_equal.ads:5:13: info: implicit aspect Always_Terminates on "Empty" has been proved, subprogram will terminate
 arr_equal.ads:7:13: info: implicit aspect Always_Terminates on "All_Same_Values" has been proved, subprogram will terminate
 arr_equal.ads:10:13: info: implicit aspect Always_Terminates on "All_Same_Others" has been proved, subprogram will terminate
 arr_equal.ads:13:13: info: implicit aspect Always_Terminates on "All_Diff_Values" has been proved, subprogram will terminate
 arr_equal.ads:16:13: info: implicit aspect Always_Terminates on "All_Diff_Others" has been proved, subprogram will terminate
 arr_equal.ads:19:13: info: implicit aspect Always_Terminates on "Mix" has been proved, subprogram will terminate
-arr_not_equal.adb:7:22: high: assertion might fail (e.g. when A'First = 1 and A'Last = 0) [possible fix: subprogram at arr_not_equal.ads:5 should mention A in a precondition]
-arr_not_equal.adb:16:22: high: assertion might fail (e.g. when A = (-2 => 1, -1 => 1, 0 => 1)) [possible fix: precondition of subprogram at arr_not_equal.ads:7 should mention A]
-arr_not_equal.adb:25:22: high: assertion might fail (e.g. when A = (others => 1) and A'First = -2 and A'Last = 0) [possible fix: precondition of subprogram at arr_not_equal.ads:10 should mention A]
-arr_not_equal.adb:34:22: high: assertion might fail (e.g. when A = (-2 => 1, -1 => 2, 0 => 3)) [possible fix: precondition of subprogram at arr_not_equal.ads:13 should mention A]
-arr_not_equal.adb:43:22: high: assertion might fail (e.g. when A = (-2 => 1, -1 => 2, 0 => 3)) [possible fix: precondition of subprogram at arr_not_equal.ads:16 should mention A]
-arr_not_equal.adb:59:22: high: assertion might fail (e.g. when A = (-9 => 3, -8 => 3, -6 => 4, -4 => 5, -2 => 2, -1 => 3, others => 1) and A'First = -10 and A'Last = 0) [possible fix: precondition of subprogram at arr_not_equal.ads:19 should mention A]
+arr_not_equal.adb:7:22: high: assertion might fail (e.g. when A'First = 1 and A'Last = 0) [possible fix: subprogram at arr_not_equal.ads:5 should mention A in a precondition] [provers reached step limit before completing the proof]
+arr_not_equal.adb:16:22: high: assertion might fail (e.g. when A = (-2 => 1, -1 => 1, 0 => 1)) [possible fix: precondition of subprogram at arr_not_equal.ads:7 should mention A] [provers reached step limit before completing the proof]
+arr_not_equal.adb:25:22: high: assertion might fail (e.g. when A = (others => 1) and A'First = -2 and A'Last = 0) [possible fix: precondition of subprogram at arr_not_equal.ads:10 should mention A] [provers reached step limit before completing the proof]
+arr_not_equal.adb:34:22: high: assertion might fail (e.g. when A = (-2 => 1, -1 => 2, 0 => 3)) [possible fix: precondition of subprogram at arr_not_equal.ads:13 should mention A] [provers reached step limit before completing the proof]
+arr_not_equal.adb:43:22: high: assertion might fail (e.g. when A = (-2 => 1, -1 => 2, 0 => 3)) [possible fix: precondition of subprogram at arr_not_equal.ads:16 should mention A] [provers reached step limit before completing the proof]
+arr_not_equal.adb:59:22: high: assertion might fail (e.g. when A = (-9 => 3, -8 => 3, -6 => 4, -4 => 5, -2 => 2, -1 => 3, others => 1) and A'First = -10 and A'Last = 0) [possible fix: precondition of subprogram at arr_not_equal.ads:19 should mention A] [provers reached step limit before completing the proof]
 arr_not_equal.ads:5:13: info: implicit aspect Always_Terminates on "Empty" has been proved, subprogram will terminate
 arr_not_equal.ads:7:13: info: implicit aspect Always_Terminates on "All_Same_Values" has been proved, subprogram will terminate
 arr_not_equal.ads:10:13: info: implicit aspect Always_Terminates on "All_Same_Others" has been proved, subprogram will terminate
@@ -29,10 +29,10 @@ palindrom.adb:9:49: info: division check proved (CVC5: 1 VC)
 palindrom.adb:11:29: info: index check proved (CVC5: 4 VC)
 palindrom.adb:11:38: info: index check proved (CVC5: 4 VC)
 palindrom.adb:11:41: medium: implicit aspect Always_Terminates on "Palindrom" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
-palindrom.adb:12:15: high: overflow check might fail, cannot prove upper bound for I + 1 (e.g. when I = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
+palindrom.adb:12:15: high: overflow check might fail, cannot prove upper bound for I + 1 (e.g. when I = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
 palindrom.adb:13:15: info: overflow check proved (CVC5: 4 VC)
-palindrom.adb:14:31: high: loop invariant might fail in first iteration (e.g. when I = 2 and I'Loop_Entry = 1 and Stop = 1)
-palindrom.adb:14:31: medium: loop invariant might not be preserved by an arbitrary iteration
+palindrom.adb:14:31: high: loop invariant might fail in first iteration (e.g. when I = 2 and I'Loop_Entry = 1 and Stop = 1) [provers gave up before completing the proof]
+palindrom.adb:14:31: medium: loop invariant might not be preserved by an arbitrary iteration [provers gave up before completing the proof]
 palindrom.adb:15:31: info: loop invariant initialization proved (CVC5: 2 VC)
 palindrom.adb:15:31: info: loop invariant preservation proved (CVC5: 2 VC)
 palindrom.adb:16:31: info: loop invariant initialization proved (CVC5: 1 VC)

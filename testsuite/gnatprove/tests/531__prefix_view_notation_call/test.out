@@ -9,8 +9,8 @@ rfc_vectors_example.adb:13:25: warning: unused variable "V", in instantiation at
 rfc_vectors_example.adb:17:17: info: implicit aspect Always_Terminates on "Capacity" has been proved, subprogram will terminate, in instantiation at rfc_vectors_example.adb:52
 rfc_vectors_example.adb:17:27: warning: unused variable "V", in instantiation at rfc_vectors_example.adb:52
 rfc_vectors_example.adb:57:04: high: "V" is not initialized
-rfc_vectors_example.adb:59:19: medium: assertion might fail [possible fix: call at line 58 should mention V (for argument V) in a postcondition]
-rfc_vectors_example.adb:60:19: medium: assertion might fail [possible fix: call at line 58 should mention V (for argument V) in a postcondition]
+rfc_vectors_example.adb:59:19: medium: assertion might fail [possible fix: call at line 58 should mention V (for argument V) in a postcondition] [provers reached step limit before completing the proof]
+rfc_vectors_example.adb:60:19: medium: assertion might fail [possible fix: call at line 58 should mention V (for argument V) in a postcondition] [provers reached step limit before completing the proof]
 rfc_vectors_example.adb:60:20: high: "E" is not initialized
 untagged_prefixed_calls.adb:10:17: warning: subprogram "Op_1" has no effect
 untagged_prefixed_calls.adb:11:23: warning: "Obj" is not modified, parameter type could be rewritten as 'access constant Rec'
@@ -36,7 +36,7 @@ untagged_prefixed_calls.adb:52:17: warning: subprogram "Prim_Op_2" has no effect
 untagged_prefixed_calls.adb:53:17: warning: subprogram "Prim_Op_3" has no effect
 untagged_prefixed_calls.adb:56:17: warning: subprogram "Prim_Op_2" has no effect
 untagged_prefixed_calls.adb:62:17: warning: subprogram "Prim_Op_3" has no effect
-untagged_prefixed_calls.adb:105:36: high: range check might fail, cannot prove upper bound for Integer (L) + Integer (R) (e.g. when L = Int_1'Last and R = 1) [reason for check: result of addition must be convertible to the target type of the conversion] [possible fix: add precondition (if Integer (R) >= 0 then Integer (L) <= Int_1'Last - Integer (R) else Integer (L) >= Int_1'First - Integer (R)) to subprogram at line 28]
+untagged_prefixed_calls.adb:105:36: high: range check might fail, cannot prove upper bound for Integer (L) + Integer (R) (e.g. when L = Int_1'Last and R = 1) [reason for check: result of addition must be convertible to the target type of the conversion] [possible fix: add precondition (if Integer (R) >= 0 then Integer (L) <= Int_1'Last - Integer (R) else Integer (L) >= Int_1'First - Integer (R)) to subprogram at line 28] [provers gave up before completing the proof]
 untagged_prefixed_calls.adb:148:07: info: initialization of "Rec_Object" proved
 untagged_prefixed_calls.adb:148:37: info: range check proved (CVC5: 2 VC)
 untagged_prefixed_calls.adb:149:39: medium: resource or memory leak might occur [possible explanation: allocator for a general access-to-variable type leaks memory]
@@ -80,5 +80,5 @@ untagged_prefixed_calls.adb:305:04: high: "Int_3_Object" is not initialized
 untagged_prefixed_calls.adb:306:04: high: "Sub_Int_1_A_Object" is not initialized
 untagged_prefixed_calls.adb:307:04: high: "Sub_Int_1_B_Object" is not initialized
 untagged_prefixed_calls.adb:309:04: info: pointer dereference check proved (CVC5: 1 VC)
-untagged_prefixed_calls.adb:312:04: medium: pointer dereference check might fail
+untagged_prefixed_calls.adb:312:04: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 untagged_prefixed_calls.adb:312:04: warning: "New_Acc_Rec_Object" may be null [enabled by default]

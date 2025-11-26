@@ -1,22 +1,22 @@
 arrays.adb:5:24: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
-arrays.adb:6:17: medium: overflow check might fail, cannot prove upper bound for S + X (J) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 5 should mention S in a loop invariant]
+arrays.adb:6:17: medium: overflow check might fail, cannot prove upper bound for S + X (J) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 5 should mention S in a loop invariant] [provers gave up before completing the proof]
 arrays.adb:14:24: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 arrays.adb:15:19: info: division check proved (CVC5: 1 VC)
-arrays.adb:16:20: medium: overflow check might fail, cannot prove upper bound for C + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 14 should mention C in a loop invariant]
+arrays.adb:16:20: medium: overflow check might fail, cannot prove upper bound for C + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 14 should mention C in a loop invariant] [provers gave up before completing the proof]
 arrays.adb:23:09: info: range check proved (CVC5: 2 VC)
 arrays.adb:23:17: info: overflow check proved (CVC5: 2 VC)
 arrays.adb:23:17: info: range check proved (CVC5: 2 VC)
 arrays.ads:4:13: info: implicit aspect Always_Terminates on "Sum" has been proved, subprogram will terminate
-arrays.ads:5:14: medium: postcondition might fail
+arrays.ads:5:14: medium: postcondition might fail [provers reached step limit before completing the proof]
 arrays.ads:5:29: info: range check proved (CVC5: 2 VC)
-arrays.ads:6:06: medium: contract cases might not be complete
-arrays.ads:6:06: medium: contract or exit cases might not be disjoint
+arrays.ads:6:06: medium: contract cases might not be complete [provers reached step limit before completing the proof]
+arrays.ads:6:06: medium: contract or exit cases might not be disjoint [provers reached step limit before completing the proof]
 arrays.ads:6:25: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 arrays.ads:7:24: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 arrays.ads:7:52: info: index check proved (CVC5: 2 VC)
 arrays.ads:19:13: info: implicit aspect Always_Terminates on "Count_Even" has been proved, subprogram will terminate
-arrays.ads:20:14: medium: postcondition might fail
+arrays.ads:20:14: medium: postcondition might fail [provers reached step limit before completing the proof]
 arrays.ads:20:36: info: range check proved (CVC5: 2 VC)
-arrays.ads:21:06: medium: contract cases might not be complete
+arrays.ads:21:06: medium: contract cases might not be complete [provers reached step limit before completing the proof]
 arrays.ads:21:25: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 arrays.ads:31:13: info: implicit aspect Always_Terminates on "Count_Odd" has been proved, subprogram will terminate

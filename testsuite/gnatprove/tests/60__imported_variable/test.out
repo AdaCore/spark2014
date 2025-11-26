@@ -3,9 +3,9 @@ main.adb:7:49: info: division check proved (CVC5: 1 VC)
 main.adb:8:15: warning: subprogram "Nat_2" has no effect
 main.adb:11:05: warning: analyzing unreferenced procedure "Nat_2" [unreferenced-procedure]
 main.adb:12:08: info: initialization of "Y" proved
-main.adb:12:08: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause]
+main.adb:12:08: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause] [provers reached step limit before completing the proof]
 main.adb:12:08: warning: address specification on "Y" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to or through a potential alias, and valid reads [imprecise-address-specification] [E0012]
 main.adb:12:08: warning: launch "gnatprove --explain=E0012" for more information
 main.adb:12:08: warning: make sure that all overlapping objects have Async_Writers set to True
 main.adb:14:08: info: precondition proved (CVC5: 1 VC)
-main.adb:15:08: medium: precondition might fail (e.g. when X = 1) [possible fix: subprogram at line 8 should mention X in a precondition]
+main.adb:15:08: medium: precondition might fail (e.g. when X = 1) [possible fix: subprogram at line 8 should mention X in a precondition] [provers reached step limit before completing the proof]

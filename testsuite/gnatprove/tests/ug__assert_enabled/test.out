@@ -3,6 +3,7 @@
     6 |      Post => X > 2   --  ignored at run time
       |              ^~~~~
       + e.g. when X = 0
+      + provers gave up before completing the proof
 
  info: assertion proved
 --> assert_enabled.adb:9:19

@@ -7,3 +7,4 @@
       + possible fix: subprogram at line 1 should mention X in a precondition
     1 |    procedure Increment (X : in out Integer) with
       |    ^
+      + provers gave up before completing the proof

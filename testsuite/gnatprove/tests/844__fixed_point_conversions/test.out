@@ -1,8 +1,8 @@
 fixed_point_conversions.ads:7:13: info: implicit aspect Always_Terminates on "Fixed_To_Fixed" has been proved, subprogram will terminate
-fixed_point_conversions.ads:8:12: high: range check might fail, cannot prove lower bound for X (e.g. when X = -2592/128) [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at line 7 should mention X in a precondition]
+fixed_point_conversions.ads:8:12: high: range check might fail, cannot prove lower bound for X (e.g. when X = -2592/128) [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at line 7 should mention X in a precondition] [provers reached step limit before completing the proof]
 fixed_point_conversions.ads:10:13: info: implicit aspect Always_Terminates on "Fixed_To_Int" has been proved, subprogram will terminate
 fixed_point_conversions.ads:11:16: info: range check proved (CVC5: 2 VC)
-fixed_point_conversions.ads:12:17: high: postcondition might fail (e.g. when Fixed_To_Int'Result = 0 and X = 127/128)
+fixed_point_conversions.ads:12:17: high: postcondition might fail (e.g. when Fixed_To_Int'Result = 0 and X = 127/128) [provers reached step limit before completing the proof]
 fixed_point_conversions.ads:12:34: info: range check proved (CVC5: 2 VC)
 fixed_point_conversions.ads:16:13: info: implicit aspect Always_Terminates on "Int_To_Fixed" has been proved, subprogram will terminate
-fixed_point_conversions.ads:17:12: medium: range check might fail, cannot prove lower bound for X (e.g. when X = -101) [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (X >= Foo'First) to subprogram at line 16]
+fixed_point_conversions.ads:17:12: medium: range check might fail, cannot prove lower bound for X (e.g. when X = -101) [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (X >= Foo'First) to subprogram at line 16] [provers reached step limit before completing the proof]

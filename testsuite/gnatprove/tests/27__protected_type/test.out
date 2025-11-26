@@ -2,7 +2,7 @@ p-child.adb:4:16: info: implicit aspect Always_Terminates on "Get_Body" has been
 p-child.ads:7:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 p-child.ads:7:16: medium: for the result of Get at p-child.ads:7
 p-child.ads:7:16: medium: in inlined invariant at p.ads:9
-p-child.ads:7:16: medium: invariant check might fail, cannot prove T >= 0 (e.g. when Get'Result = -1)
+p-child.ads:7:16: medium: invariant check might fail, cannot prove T >= 0 (e.g. when Get'Result = -1) [provers gave up before completing the proof]
 p-child.ads:9:16: info: implicit aspect Always_Terminates on "Get_Priv" has been proved, subprogram will terminate
 p.ads:9:09: info: invariant check proved on default value (CVC5: 1 VC)
 p.ads:9:74: info: in default value of private type at p.ads:6

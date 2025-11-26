@@ -1,7 +1,7 @@
 test.adb:7:17: info: initialization of "X" proved
 test.adb:7:28: info: initialization of "B" proved
 test.adb:8:06: info: flow dependencies proved
-test.adb:13:09: medium: discriminant check might fail [possible fix: subprogram at line 7 should mention X'Constrained or X.D in a precondition]
+test.adb:13:09: medium: discriminant check might fail [possible fix: subprogram at line 7 should mention X'Constrained or X.D in a precondition] [provers gave up before completing the proof]
 test.adb:20:31: info: initialization of "B" proved
 test.adb:21:06: info: flow dependencies proved
 test.adb:25:10: medium: "X.F.D" is not set

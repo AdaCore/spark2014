@@ -10,3 +10,4 @@
       + e.g. when A = (1 => Natural'Last)
       and I = 1
       + reason for check: result of addition must fit in a 32-bits machine integer
+      + provers gave up before completing the proof

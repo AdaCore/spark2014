@@ -2,6 +2,7 @@
 --> main.adb:4:04
     4 |       L : constant List := [1, 2, 3, 4, 5, 6];
       |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      + provers reached step limit before completing the proof
 
  info: precondition proved
 --> main.adb:4:25

@@ -1,5 +1,5 @@
 semaphores1.adb:8:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
-semaphores1.adb:17:31: medium: overflow check might fail, cannot prove upper bound for The_Data + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
+semaphores1.adb:17:31: medium: overflow check might fail, cannot prove upper bound for The_Data + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
 semaphores1.adb:26:14: info: add a contract to analyze it separately from calling contexts
 semaphores1.adb:26:14: info: local subprogram "Initialize_Shared_Data" only analyzed in the context of calls [info-unrolling-inlining]
 semaphores1.adb:33:07: info: analyzing call to "Initialize_Shared_Data" in context
@@ -8,6 +8,6 @@ semaphores1.adb:34:07: warning: no Always_Terminates aspect available for "Set_T
 semaphores1.adb:42:07: warning: assuming "Suspend_Until_True" always terminates
 semaphores1.adb:42:07: warning: no Always_Terminates aspect available for "Suspend_Until_True" [assumed-always-terminates]
 semaphores1.ads:6:09: info: nontermination of task proved (CVC5: 1 VC)
-semaphores1.ads:6:09: medium: ceiling priority protocol might not be respected for "Semaphores1.Protected_Natural" [reason for check: ceiling priority of the protected object "Semaphores1.Protected_Natural" must be >= the priority of the caller "Semaphores1.T1" in the call chain "Semaphores1.T1" -> "Semaphores1.Initialize_Shared_Data" -> "Semaphores1.Protected_Natural.Incr"]
+semaphores1.ads:6:09: medium: ceiling priority protocol might not be respected for "Semaphores1.Protected_Natural" [reason for check: ceiling priority of the protected object "Semaphores1.Protected_Natural" must be >= the priority of the caller "Semaphores1.T1" in the call chain "Semaphores1.T1" -> "Semaphores1.Initialize_Shared_Data" -> "Semaphores1.Protected_Natural.Incr"] [provers gave up before completing the proof]
 semaphores1.ads:7:09: info: nontermination of task proved (CVC5: 1 VC)
-semaphores1.ads:7:09: medium: ceiling priority protocol might not be respected for "Semaphores1.Protected_Natural" [reason for check: ceiling priority of the protected object "Semaphores1.Protected_Natural" must be >= the priority of the caller "Semaphores1.T2" in the call "Semaphores1.T2" -> "Semaphores1.Protected_Natural.Get"]
+semaphores1.ads:7:09: medium: ceiling priority protocol might not be respected for "Semaphores1.Protected_Natural" [reason for check: ceiling priority of the protected object "Semaphores1.Protected_Natural" must be >= the priority of the caller "Semaphores1.T2" in the call "Semaphores1.T2" -> "Semaphores1.Protected_Natural.Get"] [provers reached step limit before completing the proof]

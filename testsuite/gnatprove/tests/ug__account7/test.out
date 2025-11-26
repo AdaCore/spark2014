@@ -3,6 +3,7 @@
     7 |             The_Data := The_Data + 1;
       |                         ~~~~~~~~~^~~
       + reason for check: result of addition must fit in a 32-bits machine integer
+      + provers gave up before completing the proof
 
  high: call to potentially blocking subprogram "Incr_Num_Accounts" in protected operation "Bad_E"
 --> account7.adb:30:10

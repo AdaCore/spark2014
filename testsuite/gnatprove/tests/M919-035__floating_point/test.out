@@ -14,7 +14,7 @@ zero_and_min.adb:9:55: info: type is suitable as source for unchecked conversion
 zero_and_min.adb:9:55: info: type is suitable as source for unchecked conversion (Trivial), in call inlined at zero_and_min.adb:26
 zero_and_min.adb:9:62: info: type is suitable for unchecked conversion (Trivial)
 zero_and_min.adb:9:62: info: type is suitable for unchecked conversion (Trivial), in call inlined at zero_and_min.adb:26
-zero_and_min.adb:14:25: medium: assertion might fail, in call inlined at zero_and_min.adb:26
+zero_and_min.adb:14:25: medium: assertion might fail, in call inlined at zero_and_min.adb:26 [provers reached step limit before completing the proof]
 zero_and_min.adb:19:13: info: types in unchecked conversion have the same size (Trivial)
 zero_and_min.adb:19:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
 zero_and_min.adb:19:54: info: type is suitable as source for unchecked conversion (Trivial)
@@ -30,7 +30,7 @@ zero_and_unchecked.adb:9:55: info: type is suitable as source for unchecked conv
 zero_and_unchecked.adb:9:55: info: type is suitable as source for unchecked conversion (Trivial), in call inlined at zero_and_unchecked.adb:27
 zero_and_unchecked.adb:9:62: info: type is suitable for unchecked conversion (Trivial)
 zero_and_unchecked.adb:9:62: info: type is suitable for unchecked conversion (Trivial), in call inlined at zero_and_unchecked.adb:27
-zero_and_unchecked.adb:14:22: medium: divide by zero might fail, in call inlined at zero_and_unchecked.adb:27
+zero_and_unchecked.adb:14:22: medium: divide by zero might fail, in call inlined at zero_and_unchecked.adb:27 [provers reached step limit before completing the proof]
 zero_and_unchecked.adb:20:13: info: types in unchecked conversion have the same size (Trivial)
 zero_and_unchecked.adb:20:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
 zero_and_unchecked.adb:20:54: info: type is suitable as source for unchecked conversion (Trivial)

@@ -1,4 +1,4 @@
 p.adb:2:29: info: initialization of "X" proved
-p.adb:3:14: high: postcondition might fail (e.g. when X = -10)
+p.adb:3:14: high: postcondition might fail (e.g. when X = -10) [provers gave up before completing the proof]
 p.adb:10:29: info: initialization of "X" proved
-p.adb:12:26: medium: postcondition might fail, cannot prove X <= 100 (e.g. when X = 200)
+p.adb:12:26: medium: postcondition might fail, cannot prove X <= 100 (e.g. when X = 200) [provers gave up before completing the proof]

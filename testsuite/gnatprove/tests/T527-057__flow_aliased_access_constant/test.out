@@ -1,7 +1,7 @@
 global_access_in.adb:5:04: info: initialization of "My_Int_Ptr" proved
-global_access_in.adb:5:04: medium: resource or memory leak might occur at end of scope
-global_access_in.adb:8:04: medium: resource or memory leak might occur at end of scope
-global_access_in.adb:11:04: medium: resource or memory leak might occur at end of scope
+global_access_in.adb:5:04: medium: resource or memory leak might occur at end of scope [provers gave up before completing the proof]
+global_access_in.adb:8:04: medium: resource or memory leak might occur at end of scope [provers gave up before completing the proof]
+global_access_in.adb:11:04: medium: resource or memory leak might occur at end of scope [provers gave up before completing the proof]
 global_access_in.adb:19:11: info: data dependencies proved
 global_access_in.adb:22:17: info: pointer dereference check proved (CVC5: 1 VC)
 global_access_in.adb:26:11: info: data dependencies proved

@@ -64,13 +64,13 @@ area_math.adb:274:33: info: loop invariant preservation proved (CVC5: 1 VC)
 area_math.adb:278:56: info: index check proved (CVC5: 4 VC)
 area_math.adb:278:75: info: index check proved (CVC5: 4 VC)
 area_math.adb:278:75: info: overflow check proved (CVC5: 4 VC)
-area_math.adb:278:88: medium: loop invariant might fail in first iteration, cannot prove Result.To (Result.Size) < E.To (I + 1) + 1
-area_math.adb:278:88: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Result.To (Result.Size) < E.To (I + 1) + 1
+area_math.adb:278:88: medium: loop invariant might fail in first iteration, cannot prove Result.To (Result.Size) < E.To (I + 1) + 1 [provers gave up before completing the proof]
+area_math.adb:278:88: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Result.To (Result.Size) < E.To (I + 1) + 1 [provers gave up before completing the proof]
 area_math.adb:278:105: info: index check proved (CVC5: 4 VC)
 area_math.adb:278:122: info: index check proved (CVC5: 4 VC)
 area_math.adb:278:122: info: overflow check proved (CVC5: 4 VC)
 area_math.adb:285:33: info: loop invariant initialization proved (CVC5: 1 VC)
-area_math.adb:285:33: medium: loop invariant might not be preserved by an arbitrary iteration
+area_math.adb:285:33: medium: loop invariant might not be preserved by an arbitrary iteration [provers reached step limit before completing the proof]
 area_math.ads:15:07: info: range check proved (CVC5: 2 VC)
 area_math.ads:16:07: info: range check proved (CVC5: 2 VC)
 area_math.ads:20:13: info: implicit aspect Always_Terminates on "Is_Consistent" has been proved, subprogram will terminate
@@ -89,6 +89,6 @@ area_math.ads:33:50: info: index check proved (CVC5: 2 VC)
 area_math.ads:33:62: info: index check proved (CVC5: 2 VC)
 area_math.ads:46:13: info: implicit aspect Always_Terminates on overriding operator "not" has been proved, subprogram will terminate
 area_math.ads:48:22: info: overflow check proved (CVC5: 2 VC)
-area_math.ads:52:38: medium: postcondition might fail, cannot prove (B < "not"'Result) = (not B < E)
+area_math.ads:52:38: medium: postcondition might fail, cannot prove (B < "not"'Result) = (not B < E) [provers gave up before completing the proof]
 area_math.ads:53:36: info: overflow check proved (CVC5: 2 VC)
 area_math.ads:54:35: info: overflow check proved (CVC5: 2 VC)

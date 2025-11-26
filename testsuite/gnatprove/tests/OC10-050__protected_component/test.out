@@ -1,1 +1,1 @@
-p.ads:5:37: medium: this interrupt might be reserved
+p.ads:5:37: medium: this interrupt might be reserved [provers gave up before completing the proof]

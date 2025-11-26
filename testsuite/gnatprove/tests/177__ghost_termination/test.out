@@ -7,10 +7,10 @@ ghost_termination.adb:60:10: info: conditional call termination proved (Trivial:
 ghost_termination.adb:62:10: info: assertion proved (CVC5: 1 VC)
 ghost_termination.adb:63:10: warning: this statement is never reached
 ghost_termination.adb:67:40: info: data dependencies proved
-ghost_termination.adb:72:10: medium: call might not terminate [reason for check: ghost calls occurring inside non-ghost code should always terminate]
+ghost_termination.adb:72:10: medium: call might not terminate [reason for check: ghost calls occurring inside non-ghost code should always terminate] [provers gave up before completing the proof]
 ghost_termination.adb:74:10: medium: call to ghost subprogram "Non_Term" is nonterminating
 ghost_termination.adb:78:42: info: data dependencies proved
-ghost_termination.adb:84:10: medium: call might not terminate [reason for check: ghost calls occurring inside non-ghost code should always terminate]
+ghost_termination.adb:84:10: medium: call might not terminate [reason for check: ghost calls occurring inside non-ghost code should always terminate] [provers gave up before completing the proof]
 ghost_termination.adb:86:10: medium: call to ghost subprogram "Non_Term" is nonterminating
 ghost_termination.adb:93:17: info: null exclusion check proved (Trivial: 1 VC)
 ghost_termination.adb:95:44: info: data dependencies proved

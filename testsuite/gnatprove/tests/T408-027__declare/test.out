@@ -1,12 +1,12 @@
 test_declare.adb:2:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 test_declare.adb:4:25: info: data dependencies proved
 test_declare.adb:8:55: info: overflow check proved (CVC5: 2 VC)
-test_declare.adb:9:39: medium: overflow check might fail, cannot prove upper bound for Y + 4 [reason for check: result of addition must fit in a 32-bits machine integer]
+test_declare.adb:9:39: medium: overflow check might fail, cannot prove upper bound for Y + 4 [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
 test_declare.adb:10:21: info: overflow check proved (CVC5: 2 VC)
 test_declare.adb:13:25: info: data dependencies proved
 test_declare.adb:17:55: info: overflow check proved (CVC5: 2 VC)
 test_declare.adb:18:39: info: overflow check proved (CVC5: 2 VC)
-test_declare.adb:19:21: medium: overflow check might fail, cannot prove upper bound for Z + Y [reason for check: result of addition must fit in a 32-bits machine integer]
+test_declare.adb:19:21: medium: overflow check might fail, cannot prove upper bound for Z + Y [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
 test_declare.adb:26:18: info: overflow check proved (CVC5: 2 VC)
 test_declare.adb:29:18: info: overflow check proved (CVC5: 2 VC)
 test_declare.adb:30:19: info: assertion proved (CVC5: 1 VC)
@@ -14,13 +14,13 @@ test_declare.adb:32:09: info: assertion proved (CVC5: 1 VC)
 test_declare.adb:34:38: info: overflow check proved (CVC5: 2 VC)
 test_declare.adb:35:18: info: overflow check proved (CVC5: 2 VC)
 test_declare_deep.adb:7:14: warning: subprogram "OK1" has no effect
-test_declare_deep.adb:9:07: medium: resource or memory leak might occur at end of scope
+test_declare_deep.adb:9:07: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 test_declare_deep.adb:9:31: warning: assuming "Create" has no effect on global items
 test_declare_deep.adb:9:31: warning: no Global contract available for "Create" [assumed-global-null]
 test_declare_deep.adb:11:14: info: pointer dereference check proved (CVC5: 1 VC)
 test_declare_deep.adb:11:18: info: overflow check proved (CVC5: 2 VC)
 test_declare_deep.adb:14:14: warning: subprogram "OK2" has no effect
-test_declare_deep.adb:18:10: medium: resource or memory leak might occur at end of scope
+test_declare_deep.adb:18:10: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 test_declare_deep.adb:18:34: warning: assuming "Create" has no effect on global items
 test_declare_deep.adb:18:34: warning: no Global contract available for "Create" [assumed-global-null]
 test_declare_deep.adb:20:17: info: pointer dereference check proved (CVC5: 1 VC)

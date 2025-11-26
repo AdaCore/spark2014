@@ -2,4 +2,4 @@ foo.adb:1:11: warning: subprogram "Foo" has no effect
 foo.adb:7:16: info: implicit aspect Always_Terminates on "Glob_Ok" has been proved, subprogram will terminate
 foo.adb:9:16: info: implicit aspect Always_Terminates on "Wrong_Glob_Ok" has been proved, subprogram will terminate
 foo.adb:24:04: info: initialization of "G1" proved
-foo.adb:26:19: medium: assertion might fail
+foo.adb:26:19: medium: assertion might fail [provers gave up before completing the proof]

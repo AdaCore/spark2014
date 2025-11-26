@@ -9,13 +9,13 @@ refined_post_illegal.adb:52:11: error: aspect "Refined_Post" cannot apply to a s
 refined_post_illegal.adb:52:11: error: incorrect placement of aspect "Refined_Post"
 refined_post_illegal.ads:11:11: error: incorrect placement of aspect "Refined_Post"
 refined_post_illegal_2.adb:5:27: info: refined post proved (CVC5: 1 VC)
-refined_post_illegal_2.adb:20:22: high: assertion might fail (e.g. when Temp = True)
+refined_post_illegal_2.adb:20:22: high: assertion might fail (e.g. when Temp = True) [provers gave up before completing the proof]
 refined_post_illegal_2.adb:26:27: info: refined post proved (CVC5: 1 VC)
-refined_post_illegal_2.adb:33:23: high: overflow check might fail, cannot prove upper bound for Par1 * Par2 (e.g. when Par1 = 11 and Par2 = 195225787) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (Par1 * Par2 <= Integer'Last) to subprogram at refined_post_illegal_2.ads:19]
-refined_post_illegal_2.adb:35:23: high: overflow check might fail, cannot prove upper bound for Par1 * Par1 (e.g. when Par1 = Integer'Last) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (Par1 * Par1 <= Integer'Last) to subprogram at refined_post_illegal_2.ads:19]
+refined_post_illegal_2.adb:33:23: high: overflow check might fail, cannot prove upper bound for Par1 * Par2 (e.g. when Par1 = 11 and Par2 = 195225787) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (Par1 * Par2 <= Integer'Last) to subprogram at refined_post_illegal_2.ads:19] [provers gave up before completing the proof]
+refined_post_illegal_2.adb:35:23: high: overflow check might fail, cannot prove upper bound for Par1 * Par1 (e.g. when Par1 = Integer'Last) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (Par1 * Par1 <= Integer'Last) to subprogram at refined_post_illegal_2.ads:19] [provers gave up before completing the proof]
 refined_post_illegal_2.ads:4:18: info: initialization of "Par" proved
-refined_post_illegal_2.ads:13:19: medium: postcondition might fail (e.g. when Par = 1) [possible explanation: validity of the postcondition of P1 should be implied by its refined postcondition] [possible fix: add or complete related loop invariants or postconditions]
+refined_post_illegal_2.ads:13:19: medium: postcondition might fail (e.g. when Par = 1) [possible explanation: validity of the postcondition of P1 should be implied by its refined postcondition] [possible fix: add or complete related loop invariants or postconditions] [provers gave up before completing the proof]
 refined_post_illegal_2.ads:15:13: info: implicit aspect Always_Terminates on "F1" has been proved, subprogram will terminate
 refined_post_illegal_2.ads:17:14: warning: subprogram "Calls_F1" has no effect
 refined_post_illegal_2.ads:19:41: info: initialization of "Par3" proved
-refined_post_illegal_2.ads:47:19: medium: postcondition might fail (e.g. when Par3 = 1) [possible explanation: validity of the postcondition of P2 should be implied by its refined postcondition] [possible fix: add or complete related loop invariants or postconditions]
+refined_post_illegal_2.ads:47:19: medium: postcondition might fail (e.g. when Par3 = 1) [possible explanation: validity of the postcondition of P2 should be implied by its refined postcondition] [possible fix: add or complete related loop invariants or postconditions] [provers gave up before completing the proof]

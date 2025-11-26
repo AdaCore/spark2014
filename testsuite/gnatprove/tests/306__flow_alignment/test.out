@@ -8,8 +8,8 @@ full.adb:3:25: info: initialization of "Y6" proved
 full.adb:3:29: info: initialization of "Y7" proved
 full.adb:3:33: info: initialization of "Y8" proved
 full.adb:5:08: info: flow dependencies proved
-full.adb:16:07: medium: range check might fail
-full.adb:17:07: medium: range check might fail
+full.adb:16:07: medium: range check might fail [provers gave up before completing the proof]
+full.adb:17:07: medium: range check might fail [provers gave up before completing the proof]
 full.adb:19:11: info: range check proved (CVC5: 2 VC)
 full.adb:19:14: info: range check proved (CVC5: 2 VC)
 full.adb:20:20: info: range check proved (CVC5: 2 VC)

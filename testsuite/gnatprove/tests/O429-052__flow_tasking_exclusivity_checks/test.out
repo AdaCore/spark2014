@@ -6,10 +6,10 @@ entry_call_from_elaboration.adb:23:04: high: task "entry_call_from_elaboration.t
 entry_call_from_elaboration.adb:23:04: high: task "entry_call_from_elaboration.t2" accesses "entry_call_from_elaboration.x"
 nested_po.adb:4:24: warning: statement has no effect
 nested_po.ads:21:14: info: ceiling priority protocol is respected for "Nested_Po.Outer_Rec.Inner_Rec.Po" (CVC5: 1 VC)
-nested_po.ads:21:14: medium: the task might terminate, which is not allowed in SPARK
+nested_po.ads:21:14: medium: the task might terminate, which is not allowed in SPARK [provers gave up before completing the proof]
 pack.ads:3:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
-pack.ads:5:14: medium: the task might terminate, which is not allowed in SPARK
-pack.ads:6:14: medium: the task might terminate, which is not allowed in SPARK
+pack.ads:5:14: medium: the task might terminate, which is not allowed in SPARK [provers gave up before completing the proof]
+pack.ads:6:14: medium: the task might terminate, which is not allowed in SPARK [provers gave up before completing the proof]
 pack.ads:14:04: high: possible data race when accessing variable "ada.text_io.file_system"
 pack.ads:14:04: high: task "pack.r" accesses "ada.text_io.file_system"
 pack.ads:14:04: high: task "pack.r" accesses "ada.text_io.file_system"
@@ -22,12 +22,12 @@ pack.ads:25:04: high: task "pack.r" accesses "ada.text_io.file_system"
 pack.ads:25:04: high: task "pack.ta" accesses "ada.text_io.file_system"
 task_and_po_arrays.adb:9:24: warning: statement has no effect
 task_and_po_arrays.ads:5:14: info: ceiling priority protocol is respected for "Task_And_Po_Arrays.Pos" (CVC5: 1 VC)
-task_and_po_arrays.ads:5:14: medium: the task might terminate, which is not allowed in SPARK
+task_and_po_arrays.ads:5:14: medium: the task might terminate, which is not allowed in SPARK [provers gave up before completing the proof]
 task_and_po_arrays.ads:12:04: high: more tasks than allowed might queue on protected entry "task_and_po_arrays.pos.dummy" (restriction No_Entry_Queue active) (SPARK RM 9(11))
 task_and_po_arrays.ads:12:04: high: task "task_and_po_arrays.ts" is queueing
 task_and_so_arrays.adb:11:35: warning: assuming "Suspend_Until_True" always terminates
 task_and_so_arrays.adb:11:35: warning: no Always_Terminates aspect available for "Suspend_Until_True" [assumed-always-terminates]
-task_and_so_arrays.ads:7:14: medium: the task might terminate, which is not allowed in SPARK
+task_and_so_arrays.ads:7:14: medium: the task might terminate, which is not allowed in SPARK [provers gave up before completing the proof]
 task_and_so_arrays.ads:10:04: high: multiple tasks might suspend on suspension object "task_and_so_arrays.sos" (SPARK RM 9(11))
 task_and_so_arrays.ads:10:04: high: with task "task_and_so_arrays.ts"
 task_in_empty_arrays.ads:16:16: error: launch "gnatprove --explain=E0007" for more information
@@ -37,21 +37,21 @@ task_type_array_single_so.adb:7:07: warning: assuming "Suspend_Until_True" alway
 task_type_array_single_so.adb:7:07: warning: no Always_Terminates aspect available for "Suspend_Until_True" [assumed-always-terminates]
 task_type_array_single_so.adb:11:04: high: multiple tasks might suspend on suspension object "task_type_array_single_so.so" (SPARK RM 9(11))
 task_type_array_single_so.adb:11:04: high: with task "task_type_array_single_so.task_array"
-task_type_array_single_so.ads:7:14: medium: the task might terminate, which is not allowed in SPARK
+task_type_array_single_so.ads:7:14: medium: the task might terminate, which is not allowed in SPARK [provers gave up before completing the proof]
 two_task_type_objects_single_so.adb:7:07: warning: assuming "Suspend_Until_True" always terminates
 two_task_type_objects_single_so.adb:7:07: warning: no Always_Terminates aspect available for "Suspend_Until_True" [assumed-always-terminates]
 two_task_type_objects_single_so.adb:10:04: high: multiple tasks might suspend on suspension object "two_task_type_objects_single_so.so" (SPARK RM 9(11))
 two_task_type_objects_single_so.adb:10:04: high: with task "two_task_type_objects_single_so.t1"
 two_task_type_objects_single_so.adb:10:04: high: with task "two_task_type_objects_single_so.t2"
-two_task_type_objects_single_so.ads:7:14: medium: the task might terminate, which is not allowed in SPARK
+two_task_type_objects_single_so.ads:7:14: medium: the task might terminate, which is not allowed in SPARK [provers gave up before completing the proof]
 two_tasks_single_po.adb:4:20: warning: statement has no effect
 two_tasks_single_po.adb:10:09: high: more tasks than allowed might queue on protected entry "two_tasks_single_po.po.e" (restriction No_Entry_Queue active) (SPARK RM 9(11))
 two_tasks_single_po.adb:10:09: high: task "two_tasks_single_po.t1" is queueing
 two_tasks_single_po.adb:10:09: high: task "two_tasks_single_po.t2" is queueing
 two_tasks_single_po.adb:10:09: info: ceiling priority protocol is respected for "Two_Tasks_Single_Po.Po" (CVC5: 1 VC)
-two_tasks_single_po.adb:10:09: medium: the task might terminate, which is not allowed in SPARK
+two_tasks_single_po.adb:10:09: medium: the task might terminate, which is not allowed in SPARK [provers gave up before completing the proof]
 two_tasks_single_po.adb:11:09: info: ceiling priority protocol is respected for "Two_Tasks_Single_Po.Po" (CVC5: 1 VC)
-two_tasks_single_po.adb:11:09: medium: the task might terminate, which is not allowed in SPARK
+two_tasks_single_po.adb:11:09: medium: the task might terminate, which is not allowed in SPARK [provers gave up before completing the proof]
 two_tasks_single_so.adb:7:07: warning: assuming "Suspend_Until_True" always terminates
 two_tasks_single_so.adb:7:07: warning: no Always_Terminates aspect available for "Suspend_Until_True" [assumed-always-terminates]
 two_tasks_single_so.adb:12:07: warning: assuming "Suspend_Until_True" always terminates
@@ -59,6 +59,6 @@ two_tasks_single_so.adb:12:07: warning: no Always_Terminates aspect available fo
 two_tasks_single_so.ads:7:09: high: multiple tasks might suspend on suspension object "two_tasks_single_so.so" (SPARK RM 9(11))
 two_tasks_single_so.ads:7:09: high: with task "two_tasks_single_so.t1"
 two_tasks_single_so.ads:7:09: high: with task "two_tasks_single_so.t2"
-two_tasks_single_so.ads:7:09: medium: the task might terminate, which is not allowed in SPARK
-two_tasks_single_so.ads:9:09: medium: the task might terminate, which is not allowed in SPARK
+two_tasks_single_so.ads:7:09: medium: the task might terminate, which is not allowed in SPARK [provers gave up before completing the proof]
+two_tasks_single_so.ads:9:09: medium: the task might terminate, which is not allowed in SPARK [provers gave up before completing the proof]
 gnatprove: error during flow analysis and proof

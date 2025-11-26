@@ -5,4 +5,4 @@ main.adb:16:06: warning: Terminating, Always_Return, and Might_Not_Return annota
 main.adb:16:06: warning: terminating annotation is implicit on functions
 main.adb:20:13: info: implicit aspect Always_Terminates on "Get_Info" has been proved, subprogram will terminate
 main.adb:23:18: info: length check proved (CVC5: 3 VC)
-main.adb:33:10: medium: assertion might fail
+main.adb:33:10: medium: assertion might fail [provers reached step limit before completing the proof]

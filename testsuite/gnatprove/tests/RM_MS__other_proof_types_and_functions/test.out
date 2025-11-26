@@ -36,30 +36,30 @@ stack.ads:71:21: info: precondition proved (CVC5: 2 VC)
 stack.ads:71:40: info: range check proved (CVC5: 2 VC)
 stack.ads:71:47: info: precondition proved (CVC5: 2 VC)
 stack_external_prover.adb:18:04: info: initialization of "My_Stack" constituent of "State" proved
-stack_external_prover.adb:24:44: medium: range check might fail, cannot prove upper bound for My_Stack.Pointer + 1 [reason for check: result of addition must fit in the target type of the assignment]
+stack_external_prover.adb:24:44: medium: range check might fail, cannot prove upper bound for My_Stack.Pointer + 1 [reason for check: result of addition must fit in the target type of the assignment] [provers gave up before completing the proof]
 stack_external_prover.adb:25:26: info: index check proved (CVC5: 2 VC)
-stack_external_prover.adb:32:32: medium: array index check might fail [reason for check: value must be a valid index into the array]
+stack_external_prover.adb:32:32: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
 stack_external_prover.adb:33:44: info: range check proved (CVC5: 2 VC)
 stack_external_prover.adb:39:07: info: initialization of "Temp" proved
-stack_external_prover.adb:41:35: medium: array index check might fail [reason for check: value must be a valid index into the array]
+stack_external_prover.adb:41:35: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
 stack_external_prover.adb:42:27: info: index check proved (CVC5: 2 VC)
-stack_external_prover.adb:42:69: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array]
+stack_external_prover.adb:42:69: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [provers reached step limit before completing the proof]
 stack_external_prover.adb:43:36: info: index check proved (CVC5: 2 VC)
 stack_external_prover.ads:4:08: info: flow dependencies proved
-stack_external_prover.ads:5:29: medium: initial condition might fail [possible fix: you should consider adding a postcondition to function Is_Empty or turning it into an expression function in its unit spec]
+stack_external_prover.ads:5:29: medium: initial condition might fail [possible fix: you should consider adding a postcondition to function Is_Empty or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
 stack_external_prover.ads:39:14: info: aspect Always_Terminates on "Push" has been proved, subprogram will terminate
 stack_external_prover.ads:40:11: info: data dependencies proved
-stack_external_prover.ads:43:23: medium: postcondition might fail, cannot prove Count = Count'Old + 1 [possible fix: you should consider adding a postcondition to function Count or turning it into an expression function in its unit spec]
-stack_external_prover.ads:43:41: medium: overflow check might fail, cannot prove upper bound for Count'Old + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+stack_external_prover.ads:43:23: medium: postcondition might fail, cannot prove Count = Count'Old + 1 [possible fix: you should consider adding a postcondition to function Count or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
+stack_external_prover.ads:43:41: medium: overflow check might fail, cannot prove upper bound for Count'Old + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
 stack_external_prover.ads:46:14: info: aspect Always_Terminates on "Pop" has been proved, subprogram will terminate
 stack_external_prover.ads:46:19: info: initialization of "X" proved
 stack_external_prover.ads:47:11: info: data dependencies proved
-stack_external_prover.ads:50:23: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function Count or turning it into an expression function in its unit spec]
+stack_external_prover.ads:50:23: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function Count or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
 stack_external_prover.ads:52:14: info: aspect Always_Terminates on "Swap2" has been proved, subprogram will terminate
 stack_external_prover.ads:53:11: info: data dependencies proved
-stack_external_prover.ads:56:23: medium: postcondition might fail, cannot prove Count = Count'Old [possible fix: you should consider adding a postcondition to function Count or turning it into an expression function in its unit spec]
+stack_external_prover.ads:56:23: medium: postcondition might fail, cannot prove Count = Count'Old [possible fix: you should consider adding a postcondition to function Count or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
 stack_external_prover.ads:57:62: info: range check proved (CVC5: 2 VC)
-stack_external_prover.ads:58:40: medium: range check might fail, cannot prove lower bound for Count - 1 [reason for check: input value must fit in parameter type] [possible fix: you should consider adding a postcondition to function Count or turning it into an expression function in its unit spec]
+stack_external_prover.ads:58:40: medium: range check might fail, cannot prove lower bound for Count - 1 [reason for check: input value must fit in parameter type] [possible fix: you should consider adding a postcondition to function Count or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
 stack_functional_spec.adb:20:04: info: initialization of "My_Stack" constituent of "State" proved
 stack_functional_spec.adb:32:25: info: range check proved (CVC5: 2 VC)
 stack_functional_spec.adb:38:44: info: range check proved (CVC5: 2 VC)

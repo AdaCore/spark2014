@@ -5,16 +5,16 @@ p.adb:12:26: info: pointer dereference check proved (CVC5: 1 VC)
 p.adb:17:28: info: initialization of "MyOut" proved
 p.adb:21:18: info: pointer dereference check proved (CVC5: 1 VC)
 p.adb:21:26: info: pointer dereference check proved (CVC5: 1 VC)
-p.adb:24:04: medium: resource or memory leak might occur at end of scope
+p.adb:24:04: medium: resource or memory leak might occur at end of scope [provers gave up before completing the proof]
 p.adb:28:28: info: initialization of "MyOut" proved
 p.adb:29:11: info: data dependencies proved
-p.adb:32:09: medium: pointer dereference check might fail [possible fix: subprogram at line 27 should mention X in a precondition]
-p.adb:33:18: medium: pointer dereference check might fail [possible fix: subprogram at line 27 should mention X in a precondition]
-p.adb:33:26: medium: pointer dereference check might fail [possible fix: subprogram at line 27 should mention A in a precondition]
+p.adb:32:09: medium: pointer dereference check might fail [possible fix: subprogram at line 27 should mention X in a precondition] [provers gave up before completing the proof]
+p.adb:33:18: medium: pointer dereference check might fail [possible fix: subprogram at line 27 should mention X in a precondition] [provers gave up before completing the proof]
+p.adb:33:26: medium: pointer dereference check might fail [possible fix: subprogram at line 27 should mention A in a precondition] [provers gave up before completing the proof]
 p.adb:38:29: info: initialization of "MyOut" proved
 p.adb:39:11: info: data dependencies proved
-p.adb:42:18: medium: pointer dereference check might fail [possible fix: subprogram at line 37 should mention X in a precondition]
-p.adb:42:26: medium: pointer dereference check might fail [possible fix: subprogram at line 37 should mention A in a precondition]
+p.adb:42:18: medium: pointer dereference check might fail [possible fix: subprogram at line 37 should mention X in a precondition] [provers gave up before completing the proof]
+p.adb:42:26: medium: pointer dereference check might fail [possible fix: subprogram at line 37 should mention A in a precondition] [provers gave up before completing the proof]
 p.adb:46:04: info: precondition proved (CVC5: 2 VC)
 p.adb:46:17: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2)
 p.adb:47:18: high: formal parameter "X" and global "A" are aliased (SPARK RM 6.4.2)

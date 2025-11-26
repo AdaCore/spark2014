@@ -6,15 +6,15 @@ string_utilities.adb:17:24: info: index check proved (CVC5: 2 VC)
 string_utilities.adb:17:28: info: index check proved (CVC5: 2 VC)
 string_utilities.adb:18:15: info: range check proved (CVC5: 2 VC)
 string_utilities.adb:20:16: info: implicit aspect Always_Terminates on "Get_Length2" has been proved, subprogram will terminate
-string_utilities.adb:25:31: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (X1 in Integer) to subprogram at line 20]
-string_utilities.adb:25:35: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (X2 in Natural) to subprogram at line 20]
+string_utilities.adb:25:31: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (X1 in Integer) to subprogram at line 20] [provers reached step limit before completing the proof]
+string_utilities.adb:25:35: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (X2 in Natural) to subprogram at line 20] [provers reached step limit before completing the proof]
 string_utilities.adb:27:22: info: range check proved (CVC5: 2 VC)
 string_utilities.adb:29:17: info: range check proved (CVC5: 2 VC)
 string_utilities.adb:32:26: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 string_utilities.adb:33:29: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 string_utilities.adb:38:19: warning: initialization of a multi-dimensional array in nested FOR loops is handled imprecisely [multidimensional-array-init]
-string_utilities.adb:38:39: medium: overflow check might fail, cannot prove upper bound for 1 + Get_Length (X1 - 1, X2 - 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 33 should mention Lengths in a loop invariant]
-string_utilities.adb:38:39: medium: range check might fail, cannot prove upper bound for 1 + Get_Length (X1 - 1, X2 - 1) [reason for check: result of addition must fit in the target type of the assignment] [possible fix: loop at line 33 should mention Lengths in a loop invariant]
+string_utilities.adb:38:39: medium: overflow check might fail, cannot prove upper bound for 1 + Get_Length (X1 - 1, X2 - 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 33 should mention Lengths in a loop invariant] [provers gave up before completing the proof]
+string_utilities.adb:38:39: medium: range check might fail, cannot prove upper bound for 1 + Get_Length (X1 - 1, X2 - 1) [reason for check: result of addition must fit in the target type of the assignment] [possible fix: loop at line 33 should mention Lengths in a loop invariant] [provers gave up before completing the proof]
 string_utilities.adb:38:41: medium: "Lengths" might not be initialized
 string_utilities.adb:38:56: info: overflow check proved (CVC5: 2 VC)
 string_utilities.adb:38:64: info: overflow check proved (CVC5: 2 VC)
@@ -27,7 +27,7 @@ string_utilities.adb:41:53: medium: "Lengths" might not be initialized
 string_utilities.adb:41:72: info: overflow check proved (CVC5: 2 VC)
 string_utilities.adb:41:72: info: range check proved (CVC5: 2 VC)
 string_utilities.adb:47:10: medium: "Lengths" might not be initialized
-string_utilities.adb:47:33: medium: range check might fail, cannot prove lower bound for S2'Last [reason for check: input value must fit in parameter type]
+string_utilities.adb:47:33: medium: range check might fail, cannot prove lower bound for S2'Last [reason for check: input value must fit in parameter type] [provers reached step limit before completing the proof]
 string_utilities.adb:52:48: medium: "Lengths" might not be initialized
 string_utilities.adb:52:71: info: range check proved (CVC5: 2 VC)
 string_utilities.adb:53:10: info: range check proved (CVC5: 2 VC)
@@ -39,9 +39,9 @@ string_utilities.adb:58:10: medium: implicit aspect Always_Terminates on "Longes
 string_utilities.adb:62:26: medium: "Result" might not be initialized
 string_utilities.adb:64:25: info: range check proved (CVC5: 2 VC)
 string_utilities.adb:65:25: info: overflow check proved (CVC5: 2 VC)
-string_utilities.adb:65:25: medium: range check might fail, cannot prove lower bound for X1 - 1 [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 58 should mention X1 in a loop invariant]
+string_utilities.adb:65:25: medium: range check might fail, cannot prove lower bound for X1 - 1 [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 58 should mention X1 in a loop invariant] [provers reached step limit before completing the proof]
 string_utilities.adb:66:25: info: overflow check proved (CVC5: 2 VC)
-string_utilities.adb:66:25: medium: range check might fail, cannot prove lower bound for X2 - 1 [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 58 should mention X2 in a loop invariant]
+string_utilities.adb:66:25: medium: range check might fail, cannot prove lower bound for X2 - 1 [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 58 should mention X2 in a loop invariant] [provers reached step limit before completing the proof]
 string_utilities.adb:67:19: medium: "Lengths" might not be initialized
 string_utilities.adb:67:38: info: overflow check proved (CVC5: 2 VC)
 string_utilities.adb:67:38: info: range check proved (CVC5: 2 VC)
@@ -50,15 +50,15 @@ string_utilities.adb:67:65: info: range check proved (CVC5: 2 VC)
 string_utilities.adb:68:25: info: overflow check proved (CVC5: 2 VC)
 string_utilities.adb:68:25: info: range check proved (CVC5: 2 VC)
 string_utilities.adb:70:25: info: overflow check proved (CVC5: 2 VC)
-string_utilities.adb:70:25: medium: range check might fail, cannot prove lower bound for X2 - 1 [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 58 should mention X2 in a loop invariant]
+string_utilities.adb:70:25: medium: range check might fail, cannot prove lower bound for X2 - 1 [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 58 should mention X2 in a loop invariant] [provers reached step limit before completing the proof]
 string_utilities.ads:3:12: info: implicit aspect Always_Terminates on "Head" has been proved, subprogram will terminate
-string_utilities.ads:3:55: high: array index check might fail (e.g. when S'First = 1 and S'Last = 0) [reason for check: value must be a valid index into the array]
+string_utilities.ads:3:55: high: array index check might fail (e.g. when S'First = 1 and S'Last = 0) [reason for check: value must be a valid index into the array] [provers gave up before completing the proof]
 string_utilities.ads:4:12: info: implicit aspect Always_Terminates on "Tail" has been proved, subprogram will terminate
 string_utilities.ads:4:48: info: range check proved (CVC5: 4 VC)
-string_utilities.ads:4:59: medium: overflow check might fail, cannot prove upper bound for S'First +1 [reason for check: result of addition must fit in a 32-bits machine integer]
+string_utilities.ads:4:59: medium: overflow check might fail, cannot prove upper bound for S'First +1 [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
 string_utilities.ads:7:06: medium: implicit aspect Always_Terminates on "Is_Subsequence" could be incorrect, subprogram is recursive [possible fix: annotate "Is_Subsequence" with a Subprogram_Variant aspect]
 string_utilities.ads:13:12: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
 string_utilities.ads:15:06: medium: implicit aspect Always_Terminates on "Slow_LCS_Length" could be incorrect, subprogram is recursive [possible fix: annotate "Slow_LCS_Length" with a Subprogram_Variant aspect]
-string_utilities.ads:17:15: medium: overflow check might fail, cannot prove upper bound for 1 + Slow_LCS_Length (Tail (S1), Tail (S2)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (1 <= Integer'Last - Slow_LCS_Length (Tail (S1), Tail (S2))) to subprogram at line 13]
-string_utilities.ads:24:06: medium: postcondition might fail, cannot prove Is_Subsequence (Longest_Common_Subsequence'Result, S1)
+string_utilities.ads:17:15: medium: overflow check might fail, cannot prove upper bound for 1 + Slow_LCS_Length (Tail (S1), Tail (S2)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (1 <= Integer'Last - Slow_LCS_Length (Tail (S1), Tail (S2))) to subprogram at line 13] [provers gave up before completing the proof]
+string_utilities.ads:24:06: medium: postcondition might fail, cannot prove Is_Subsequence (Longest_Common_Subsequence'Result, S1) [provers reached step limit before completing the proof]
 string_utilities.ads:26:39: info: range check proved (CVC5: 1 VC; Z3: 1 VC)

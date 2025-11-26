@@ -1,6 +1,6 @@
 nonbinary.adb:5:13: info: implicit aspect Always_Terminates on "One" has been proved, subprogram will terminate
 nonbinary.adb:10:19: info: assertion proved (CVC5: 1 VC)
-nonbinary.adb:11:19: medium: assertion might fail (e.g. when X = 2)
+nonbinary.adb:11:19: medium: assertion might fail (e.g. when X = 2) [provers reached step limit before completing the proof]
 test.adb:7:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 test.adb:10:35: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
-test.ads:7:19: medium: postcondition might fail
+test.ads:7:19: medium: postcondition might fail [provers reached step limit before completing the proof]

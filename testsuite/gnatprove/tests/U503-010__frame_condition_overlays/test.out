@@ -8,12 +8,12 @@ test_alias.adb:10:07: info: no contextual analysis of "Rand" (body not seen yet)
 test_alias.adb:10:07: warning: assuming "Rand" has no effect on global items
 test_alias.adb:10:07: warning: no Global contract available for "Rand" [assumed-global-null]
 test_alias.adb:11:25: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
-test_alias.adb:12:25: medium: assertion might fail [possible fix: loop at line 11 should mention X in a loop invariant]
+test_alias.adb:12:25: medium: assertion might fail [possible fix: loop at line 11 should mention X in a loop invariant] [provers reached step limit before completing the proof]
 test_alias.adb:15:10: info: no contextual analysis of "Rand" (body not seen yet)
 test_alias.adb:15:10: warning: assuming "Rand" has no effect on global items
 test_alias.adb:15:10: warning: no Global contract available for "Rand" [assumed-global-null]
 test_alias.adb:16:25: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
-test_alias.adb:17:25: medium: assertion might fail [possible fix: loop at line 16 should mention X in a loop invariant]
+test_alias.adb:17:25: medium: assertion might fail [possible fix: loop at line 16 should mention X in a loop invariant] [provers reached step limit before completing the proof]
 test_alias.adb:18:10: info: no contextual analysis of "Set" (body not seen yet)
 test_alias.adb:18:10: warning: assuming "Set" always terminates
 test_alias.adb:18:10: warning: assuming "Set" has no effect on global items
@@ -23,14 +23,14 @@ test_alias.adb:20:10: info: no contextual analysis of "Rand" (body not seen yet)
 test_alias.adb:20:10: warning: assuming "Rand" has no effect on global items
 test_alias.adb:20:10: warning: no Global contract available for "Rand" [assumed-global-null]
 test_alias.adb:21:25: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
-test_alias.adb:22:25: medium: assertion might fail [possible fix: loop at line 21 should mention X in a loop invariant]
+test_alias.adb:22:25: medium: assertion might fail [possible fix: loop at line 21 should mention X in a loop invariant] [provers reached step limit before completing the proof]
 test_alias.adb:23:10: warning: assuming "Set_X" always terminates
 test_alias.adb:23:10: warning: no Always_Terminates aspect available for "Set_X" [assumed-always-terminates]
 test_alias.adb:25:10: info: no contextual analysis of "Rand" (body not seen yet)
 test_alias.adb:25:10: warning: assuming "Rand" has no effect on global items
 test_alias.adb:25:10: warning: no Global contract available for "Rand" [assumed-global-null]
 test_alias.adb:26:25: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
-test_alias.adb:27:25: medium: assertion might fail [possible fix: loop at line 26 should mention X in a loop invariant]
+test_alias.adb:27:25: medium: assertion might fail [possible fix: loop at line 26 should mention X in a loop invariant] [provers reached step limit before completing the proof]
 test_alias.adb:29:13: info: address in address clause is compatible with object alignment (Trivial)
 test_alias.adb:29:13: info: object is suitable for aliasing via address clause (Trivial)
 test_alias.adb:29:13: info: type is suitable as source for unchecked conversion (Trivial)
@@ -41,7 +41,7 @@ test_alias.adb:34:10: info: no contextual analysis of "Rand" (body not seen yet)
 test_alias.adb:34:10: warning: assuming "Rand" has no effect on global items
 test_alias.adb:34:10: warning: no Global contract available for "Rand" [assumed-global-null]
 test_alias.adb:35:25: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
-test_alias.adb:36:25: medium: assertion might fail [possible fix: loop at line 35 should mention X in a loop invariant]
+test_alias.adb:36:25: medium: assertion might fail [possible fix: loop at line 35 should mention X in a loop invariant] [provers reached step limit before completing the proof]
 test_alias.adb:38:13: info: address in address clause is compatible with object alignment (Trivial)
 test_alias.adb:38:13: info: object is suitable for aliasing via address clause (Trivial)
 test_alias.adb:38:13: info: type is suitable as source for unchecked conversion (Trivial)
@@ -80,25 +80,25 @@ test_loops.adb:13:42: info: types of aliased objects have the same size (Trivial
 test_loops.adb:29:33: info: loop invariant initialization proved (Trivial: 1 VC)
 test_loops.adb:29:33: info: loop invariant preservation proved (Trivial: 1 VC)
 test_loops.adb:31:22: info: assertion proved (CVC5: 1 VC)
-test_loops.adb:32:39: medium: assertion might fail, cannot prove Y.G = CY.G [possible fix: loop invariant at line 29 should mention X]
+test_loops.adb:32:39: medium: assertion might fail, cannot prove Y.G = CY.G [possible fix: loop invariant at line 29 should mention X] [provers gave up before completing the proof]
 test_loops.adb:42:33: info: loop invariant initialization proved (Trivial: 1 VC)
 test_loops.adb:42:33: info: loop invariant preservation proved (Trivial: 1 VC)
 test_loops.adb:44:22: info: assertion proved (CVC5: 1 VC)
-test_loops.adb:45:39: medium: assertion might fail, cannot prove X.G = CX.G [possible fix: loop invariant at line 42 should mention X]
-test_loops.adb:46:39: medium: assertion might fail, cannot prove Z.F = CZ.F [possible fix: loop invariant at line 42 should mention X]
+test_loops.adb:45:39: medium: assertion might fail, cannot prove X.G = CX.G [possible fix: loop invariant at line 42 should mention X] [provers gave up before completing the proof]
+test_loops.adb:46:39: medium: assertion might fail, cannot prove Z.F = CZ.F [possible fix: loop invariant at line 42 should mention X] [provers gave up before completing the proof]
 test_loops.adb:57:33: info: loop invariant initialization proved (Trivial: 1 VC)
 test_loops.adb:57:33: info: loop invariant preservation proved (Trivial: 1 VC)
-test_loops.adb:59:39: medium: assertion might fail, cannot prove Y.G = CY.G [possible fix: loop invariant at line 57 should mention X]
-test_loops.adb:60:39: medium: assertion might fail, cannot prove X.F = CX.F [possible fix: loop invariant at line 57 should mention X]
-test_loops.adb:61:39: medium: assertion might fail, cannot prove Z.F = CZ.F [possible fix: loop invariant at line 57 should mention X]
+test_loops.adb:59:39: medium: assertion might fail, cannot prove Y.G = CY.G [possible fix: loop invariant at line 57 should mention X] [provers gave up before completing the proof]
+test_loops.adb:60:39: medium: assertion might fail, cannot prove X.F = CX.F [possible fix: loop invariant at line 57 should mention X] [provers gave up before completing the proof]
+test_loops.adb:61:39: medium: assertion might fail, cannot prove Z.F = CZ.F [possible fix: loop invariant at line 57 should mention X] [provers gave up before completing the proof]
 test_loops.adb:72:33: info: loop invariant initialization proved (Trivial: 1 VC)
 test_loops.adb:72:33: info: loop invariant preservation proved (Trivial: 1 VC)
-test_loops.adb:74:39: medium: assertion might fail, cannot prove Y.G = CY.G [possible fix: loop invariant at line 72 should mention X]
-test_loops.adb:75:39: medium: assertion might fail, cannot prove Z.F = CZ.F [possible fix: loop invariant at line 72 should mention X]
-test_loops.adb:76:39: medium: assertion might fail, cannot prove X.F = CX.F [possible fix: loop invariant at line 72 should mention X]
+test_loops.adb:74:39: medium: assertion might fail, cannot prove Y.G = CY.G [possible fix: loop invariant at line 72 should mention X] [provers gave up before completing the proof]
+test_loops.adb:75:39: medium: assertion might fail, cannot prove Z.F = CZ.F [possible fix: loop invariant at line 72 should mention X] [provers gave up before completing the proof]
+test_loops.adb:76:39: medium: assertion might fail, cannot prove X.F = CX.F [possible fix: loop invariant at line 72 should mention X] [provers gave up before completing the proof]
 test_loops.adb:89:33: info: loop invariant initialization proved (Trivial: 1 VC)
 test_loops.adb:89:33: info: loop invariant preservation proved (Trivial: 1 VC)
-test_loops.adb:91:40: medium: assertion might fail, cannot prove Y.G = CY.G [possible fix: loop invariant at line 89 should mention X]
-test_loops.adb:92:40: medium: assertion might fail, cannot prove Z.F = CZ.F [possible fix: loop invariant at line 89 should mention X]
-test_loops.adb:93:40: medium: assertion might fail, cannot prove V.F = CV.F [possible fix: loop invariant at line 89 should mention X]
-test_loops.adb:94:40: medium: assertion might fail, cannot prove X.F = CX.F [possible fix: loop invariant at line 89 should mention X]
+test_loops.adb:91:40: medium: assertion might fail, cannot prove Y.G = CY.G [possible fix: loop invariant at line 89 should mention X] [provers gave up before completing the proof]
+test_loops.adb:92:40: medium: assertion might fail, cannot prove Z.F = CZ.F [possible fix: loop invariant at line 89 should mention X] [provers gave up before completing the proof]
+test_loops.adb:93:40: medium: assertion might fail, cannot prove V.F = CV.F [possible fix: loop invariant at line 89 should mention X] [provers gave up before completing the proof]
+test_loops.adb:94:40: medium: assertion might fail, cannot prove X.F = CX.F [possible fix: loop invariant at line 89 should mention X] [provers gave up before completing the proof]

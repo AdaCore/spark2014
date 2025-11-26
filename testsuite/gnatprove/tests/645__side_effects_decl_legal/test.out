@@ -1,7 +1,7 @@
 test_leaks.adb:5:11: warning: subprogram "Test_Leaks" has no effect
 test_leaks.adb:13:14: info: postcondition proved (CVC5: 1 VC)
 test_leaks.adb:14:45: info: exceptional case proved (CVC5: 1 VC)
-test_leaks.adb:25:04: medium: resource or memory leak might occur at end of scope
+test_leaks.adb:25:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 test_leaks.adb:27:19: info: only expected exception raised (CVC5: 1 VC)
 test_proof.adb:8:19: info: postcondition proved (CVC5: 2 VC)
 test_proof.adb:8:29: info: overflow check proved (CVC5: 2 VC)
@@ -10,7 +10,7 @@ test_proof.adb:13:16: info: overflow check proved (CVC5: 2 VC)
 test_proof.adb:18:28: info: precondition proved (CVC5: 1 VC)
 test_proof.adb:20:19: info: assertion proved (CVC5: 1 VC)
 test_proof.adb:26:16: info: implicit aspect Always_Terminates on "G" has been proved, subprogram will terminate
-test_proof.adb:27:17: high: postcondition might fail (e.g. when G'Result = -1)
+test_proof.adb:27:17: high: postcondition might fail (e.g. when G'Result = -1) [provers gave up before completing the proof]
 test_proof.adb:28:16: info: implicit aspect Always_Terminates on "H" has been proved, subprogram will terminate
 test_proof.adb:30:17: info: postcondition proved (CVC5: 1 VC)
 test_proof.adb:32:33: info: overflow check proved (CVC5: 2 VC)

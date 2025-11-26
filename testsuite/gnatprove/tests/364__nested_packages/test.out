@@ -6,5 +6,5 @@ bar.ads:10:25: info: assertion proved (CVC5: 1 VC)
 bar.ads:14:22: info: assertion proved (CVC5: 1 VC)
 bar.ads:18:16: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 bar.ads:19:15: info: range check proved (CVC5: 2 VC)
-bar.ads:20:30: high: range check might fail, cannot prove upper bound for Id (10) [reason for check: default component value must fit in the type]
+bar.ads:20:30: high: range check might fail, cannot prove upper bound for Id (10) [reason for check: default component value must fit in the type] [provers gave up before completing the proof]
 bar.ads:24:33: info: range check proved (CVC5: 2 VC)

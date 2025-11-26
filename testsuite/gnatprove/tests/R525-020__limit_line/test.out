@@ -1,1 +1,1 @@
-proveline.adb:3:11: high: postcondition might fail (e.g. when X = 10 and Y = 0)
+proveline.adb:3:11: high: postcondition might fail (e.g. when X = 10 and Y = 0) [provers gave up before completing the proof]

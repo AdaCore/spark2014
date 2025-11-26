@@ -3,16 +3,16 @@ test.adb:8:14: info: postcondition proved (CVC5: 2 VC)
 test.adb:8:35: info: pointer dereference check proved (CVC5: 1 VC)
 test.adb:12:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test.adb:16:26: info: data dependencies proved
-test.adb:17:07: medium: resource or memory leak might occur at end of scope
-test.adb:18:07: medium: resource or memory leak might occur at end of scope
+test.adb:17:07: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
+test.adb:18:07: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 test.adb:19:07: info: initialization of "I" proved
 test.adb:21:17: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test.adb:22:22: info: assertion proved (CVC5: 1 VC)
 test.adb:22:24: info: pointer dereference check proved (CVC5: 1 VC)
 test.adb:25:26: info: data dependencies proved
-test.adb:26:07: medium: resource or memory leak might occur at end of scope
+test.adb:26:07: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 test.adb:27:07: info: initialization of "I" proved
-test.adb:29:17: medium: resource or memory leak might occur
+test.adb:29:17: medium: resource or memory leak might occur [provers reached step limit before completing the proof]
 test.adb:30:22: info: assertion proved (CVC5: 1 VC)
 test.adb:30:24: info: pointer dereference check proved (CVC5: 1 VC)
 test.adb:35:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
@@ -30,6 +30,6 @@ test.adb:52:24: info: pointer dereference check proved (CVC5: 1 VC)
 test.adb:55:26: info: data dependencies proved
 test.adb:55:47: warning: unused initial value of "X"
 test.adb:56:07: info: initialization of "I" proved
-test.adb:58:12: medium: resource or memory leak might occur
+test.adb:58:12: medium: resource or memory leak might occur [provers reached step limit before completing the proof]
 test.adb:59:22: info: assertion proved (CVC5: 1 VC)
 test.adb:59:24: info: pointer dereference check proved (CVC5: 1 VC)

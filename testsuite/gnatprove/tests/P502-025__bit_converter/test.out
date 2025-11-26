@@ -1,7 +1,7 @@
-bit_converter.adb:20:55: medium: range check might fail, cannot prove lower bound for Array_of_Bits'First [reason for check: default component value must fit in the type]
-bit_converter.adb:21:55: medium: range check might fail, cannot prove lower bound for Array_of_Bits'Last [reason for check: default component value must fit in the type]
+bit_converter.adb:20:55: medium: range check might fail, cannot prove lower bound for Array_of_Bits'First [reason for check: default component value must fit in the type] [provers reached step limit before completing the proof]
+bit_converter.adb:21:55: medium: range check might fail, cannot prove lower bound for Array_of_Bits'Last [reason for check: default component value must fit in the type] [provers reached step limit before completing the proof]
 bit_converter.adb:23:05: info: initialization of "Bit" proved
-bit_converter.adb:26:37: medium: array index check might fail [reason for check: value must be a valid index into the array]
+bit_converter.adb:26:37: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers gave up before completing the proof]
 bit_converter.adb:29:44: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 bit_converter.adb:31:39: info: index check proved (CVC5: 2 VC)
 bit_converter.ads:12:12: info: implicit aspect Always_Terminates on "To_Number" has been proved, subprogram will terminate

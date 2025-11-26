@@ -4,7 +4,7 @@ test_list.adb:11:11: info: dynamic accessibility check proved (Trivial)
 test_list.adb:11:11: info: pointer dereference check proved (CVC5: 1 VC)
 test_list.adb:12:38: info: pointer dereference check proved (CVC5: 1 VC)
 test_list.adb:14:04: info: initialization of "X" proved
-test_list.adb:14:04: medium: resource or memory leak might occur at end of scope
+test_list.adb:14:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 test_list.adb:16:06: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test_list.adb:17:05: info: pointer dereference check proved (CVC5: 1 VC)
 test_list.adb:17:11: info: absence of resource or memory leak proved (CVC5: 1 VC)

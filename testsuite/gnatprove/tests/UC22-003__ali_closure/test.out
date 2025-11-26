@@ -5,4 +5,4 @@ c.adb:6:20: medium: "a.a" might not be initialized after elaboration of main pro
 c.adb:4:05: medium: "a.a" might not be initialized after elaboration of main program "C"
 c.adb:4:05: medium: "b.x" might not be initialized after elaboration of main program "C"
 c.adb:5:05: medium: "a.a" might not be initialized after elaboration of main program "C"
-c.adb:6:19: medium: assertion might fail [possible fix: call at line 5 should mention A.A in a postcondition]
+c.adb:6:19: medium: assertion might fail [possible fix: call at line 5 should mention A.A in a postcondition] [provers reached step limit before completing the proof]

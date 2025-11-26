@@ -1,1 +1,1 @@
-test_codepeer_init.adb:8:14: medium: postcondition might fail (e.g. when X = (X => ?) and X.X'Initialized = False)
+test_codepeer_init.adb:8:14: medium: postcondition might fail (e.g. when X = (X => ?) and X.X'Initialized = False) [provers reached step limit before completing the proof]

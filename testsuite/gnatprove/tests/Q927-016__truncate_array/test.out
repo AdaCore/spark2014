@@ -1,1 +1,1 @@
-array_cntx.ads:10:19: medium: assertion might fail
+array_cntx.ads:10:19: medium: assertion might fail [provers reached step limit before completing the proof]

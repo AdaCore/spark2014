@@ -5,6 +5,7 @@
       + possible fix: subprogram at line 3 should mention X in a precondition
     3 |    procedure Use_Geometry (X, Y : Rectangle) with
       |    ^
+      + provers gave up before completing the proof
 
  medium: assertion might fail, cannot prove X = Y
 --> use_geometry.adb:11:12
@@ -13,3 +14,4 @@
       + possible fix: subprogram at line 3 should mention X and Y in a precondition
     3 |    procedure Use_Geometry (X, Y : Rectangle) with
       |    ^
+      + provers gave up before completing the proof

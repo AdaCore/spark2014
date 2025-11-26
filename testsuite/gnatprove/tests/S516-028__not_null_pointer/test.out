@@ -1,7 +1,7 @@
 a.adb:7:27: warning: unused initial value of "X"
 a.adb:7:52: info: data dependencies proved
-a.adb:9:09: medium: resource or memory leak might occur [possible fix: subprogram at line 7 should mention X in a precondition]
-a.adb:12:04: medium: resource or memory leak might occur at end of scope
+a.adb:9:09: medium: resource or memory leak might occur [possible fix: subprogram at line 7 should mention X in a precondition] [provers reached step limit before completing the proof]
+a.adb:12:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 a.adb:12:28: info: null exclusion check proved (CVC5: 1 VC)
 a.adb:15:17: medium: in value of subprogram parameter after the call at a.adb:15
-a.adb:15:17: medium: null exclusion check might fail
+a.adb:15:17: medium: null exclusion check might fail [provers gave up before completing the proof]

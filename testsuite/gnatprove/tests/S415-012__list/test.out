@@ -27,6 +27,6 @@ list_borrow.adb:31:19: info: assertion proved (CVC5: 1 VC)
 list_borrow.adb:31:20: info: pointer dereference check proved (CVC5: 1 VC)
 list_borrow.adb:31:25: info: pointer dereference check proved (CVC5: 1 VC)
 list_borrow.adb:34:31: medium: in reconstructed value at the end of the borrow at list_borrow.adb:34
-list_borrow.adb:34:31: medium: predicate check might fail
+list_borrow.adb:34:31: medium: predicate check might fail [provers reached step limit before completing the proof]
 list_borrow.adb:36:13: info: pointer dereference check proved (CVC5: 1 VC)
 list_borrow.adb:37:08: info: pointer dereference check proved (CVC5: 1 VC)

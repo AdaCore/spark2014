@@ -1,17 +1,17 @@
 contract_cases.adb:8:12: info: disjoint contract or exit cases proved (CVC5: 1 VC)
 contract_cases.adb:8:31: high: "Num_Out" is not initialized
-contract_cases.adb:8:31: medium: contract case might fail
+contract_cases.adb:8:31: medium: contract case might fail [provers gave up before completing the proof]
 contract_cases.adb:9:31: high: "Num_Out" is not initialized
-contract_cases.adb:9:31: medium: contract case might fail
-contract_cases.adb:10:31: medium: contract case might fail
-contract_cases.adb:13:25: medium: overflow check might fail, cannot prove upper bound for Num_In * Num_In [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (Num_In * Num_In <= Integer'Last) to subprogram at line 6]
+contract_cases.adb:9:31: medium: contract case might fail [provers gave up before completing the proof]
+contract_cases.adb:10:31: medium: contract case might fail [provers gave up before completing the proof]
+contract_cases.adb:13:25: medium: overflow check might fail, cannot prove upper bound for Num_In * Num_In [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (Num_In * Num_In <= Integer'Last) to subprogram at line 6] [provers gave up before completing the proof]
 contract_cases.adb:17:07: info: data dependencies proved
 contract_cases.adb:19:07: info: disjoint contract or exit cases proved (CVC5: 1 VC)
 contract_cases.adb:19:31: high: "Y" is not an input in the Global contract of subprogram "Double" at line 16
 contract_cases.adb:19:31: high: either make "Y" an input in the Global contract or initialize it before use
-contract_cases.adb:19:31: medium: contract case might fail
+contract_cases.adb:19:31: medium: contract case might fail [provers gave up before completing the proof]
 contract_cases.adb:20:31: high: "Y" is not an input in the Global contract of subprogram "Double" at line 16
 contract_cases.adb:20:31: high: either make "Y" an input in the Global contract or initialize it before use
-contract_cases.adb:20:31: medium: contract case might fail
-contract_cases.adb:21:31: medium: contract case might fail
-contract_cases.adb:23:14: medium: overflow check might fail, cannot prove upper bound for 2 * X [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at line 16 should mention X in a precondition]
+contract_cases.adb:20:31: medium: contract case might fail [provers gave up before completing the proof]
+contract_cases.adb:21:31: medium: contract case might fail [provers gave up before completing the proof]
+contract_cases.adb:23:14: medium: overflow check might fail, cannot prove upper bound for 2 * X [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at line 16 should mention X in a precondition] [provers gave up before completing the proof]

@@ -1,6 +1,6 @@
 bad_input.adb:17:08: medium: for X before the call at bad_input.ads:22
 bad_input.adb:17:08: medium: in inlined invariant at bad_input.ads:18
-bad_input.adb:17:08: medium: invariant check might fail, cannot prove E >= 0
+bad_input.adb:17:08: medium: invariant check might fail, cannot prove E >= 0 [provers gave up before completing the proof]
 bad_input.ads:9:25: info: postcondition proved (CVC5: 1 VC), in inherited contract at bad_input.ads:22
 bad_input.ads:13:28: warning: unused variable "R"
 bad_input.ads:13:51: info: initialization of "Target" proved
@@ -14,7 +14,7 @@ bad_output.adb:11:22: info: assertion proved (CVC5: 1 VC)
 bad_output.ads:6:14: warning: subprogram "Fail_At_Runtime" has no effect
 bad_output.ads:9:14: medium: for Y at the end of P at bad_output.ads:9
 bad_output.ads:9:14: medium: in inlined invariant at bad_output.ads:10
-bad_output.ads:9:14: medium: invariant check might fail, cannot prove E >= 0
+bad_output.ads:9:14: medium: invariant check might fail, cannot prove E >= 0 [provers gave up before completing the proof]
 bad_output.ads:9:28: info: initialization of "Y" proved
 bad_output.ads:10:09: info: invariant check proved on default value (CVC5: 1 VC)
 bad_output.ads:10:74: info: in default value of private type at bad_output.ads:3
@@ -27,11 +27,11 @@ test.adb:11:77: info: in default value of private type at test.adb:4
 test.adb:11:77: info: range check proved (CVC5: 2 VC)
 test.adb:17:17: medium: for Y at the end of Bad at test.adb:17
 test.adb:17:17: medium: in inlined invariant at test.adb:11
-test.adb:17:17: medium: invariant check might fail, cannot prove E >= 0 [possible fix: add or complete related loop invariants or postconditions]
+test.adb:17:17: medium: invariant check might fail, cannot prove E >= 0 [possible fix: add or complete related loop invariants or postconditions] [provers gave up before completing the proof]
 test.adb:17:33: info: initialization of "Y" proved
 test.adb:25:20: medium: for Y at the end of Bad at test.adb:25
 test.adb:25:20: medium: in inlined invariant at test.adb:11
-test.adb:25:20: medium: invariant check might fail, cannot prove E >= 0 [possible fix: add or complete related loop invariants or postconditions]
+test.adb:25:20: medium: invariant check might fail, cannot prove E >= 0 [possible fix: add or complete related loop invariants or postconditions] [provers gave up before completing the proof]
 test.adb:25:25: warning: unused variable "X"
 test.adb:25:38: info: initialization of "Y" proved
 test.adb:25:61: info: precondition is always True (Trivial: 1 VC)

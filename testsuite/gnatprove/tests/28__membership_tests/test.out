@@ -3,10 +3,10 @@ test.adb:18:12: info: initialization check proved (CVC5: 1 VC)
 test.adb:21:36: info: initialization of "B" proved
 test.adb:28:12: info: initialization check proved (CVC5: 1 VC)
 test.adb:31:33: info: initialization of "B" proved
-test.adb:37:12: medium: initialization check might fail (e.g. when X = (F => 0, G => ?, H => 0) and X.F'Initialized = True and X.G'Initialized = False and X.H'Initialized = True)
+test.adb:37:12: medium: initialization check might fail (e.g. when X = (F => 0, G => ?, H => 0) and X.F'Initialized = True and X.G'Initialized = False and X.H'Initialized = True) [provers reached step limit before completing the proof]
 test.adb:40:37: info: initialization of "B" proved
 test.adb:47:12: info: initialization check proved (CVC5: 1 VC)
-test.adb:47:12: medium: initialization check might fail (e.g. when X = (F => 0, G => 0, H => ?) and X.F'Initialized = True and X.G'Initialized = True and X.H'Initialized = False)
+test.adb:47:12: medium: initialization check might fail (e.g. when X = (F => 0, G => 0, H => ?) and X.F'Initialized = True and X.G'Initialized = True and X.H'Initialized = False) [provers reached step limit before completing the proof]
 test.adb:57:33: info: initialization of "B" proved
 test.adb:60:04: warning: analyzing unreferenced procedure "Pred_OK_2" [unreferenced-procedure]
 test.adb:65:37: info: initialization of "B" proved
@@ -15,7 +15,7 @@ test.adb:72:17: info: initialization check proved (CVC5: 1 VC)
 test.adb:72:21: info: initialization check proved (CVC5: 1 VC)
 test.adb:75:38: info: initialization of "B" proved
 test.adb:82:12: info: initialization check proved (CVC5: 1 VC)
-test.adb:82:12: medium: initialization check might fail (e.g. when X = (F => 0, G => 0, H => ?) and X.F'Initialized = True and X.G'Initialized = True and X.H'Initialized = False)
+test.adb:82:12: medium: initialization check might fail (e.g. when X = (F => 0, G => 0, H => ?) and X.F'Initialized = True and X.G'Initialized = True and X.H'Initialized = False) [provers reached step limit before completing the proof]
 test.adb:82:17: info: initialization check proved (CVC5: 1 VC)
 test.adb:82:21: info: initialization check proved (CVC5: 1 VC)
 test.adb:87:13: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
@@ -24,9 +24,9 @@ test.adb:98:12: info: initialization check proved (CVC5: 1 VC)
 test.adb:101:37: info: initialization of "B" proved
 test.adb:107:12: info: initialization check proved (CVC5: 1 VC)
 test.adb:110:34: info: initialization of "B" proved
-test.adb:116:12: medium: initialization check might fail (e.g. when X = (F => 0, G => ?, H => 0) and X.F'Initialized = True and X.G'Initialized = False and X.H'Initialized = True)
+test.adb:116:12: medium: initialization check might fail (e.g. when X = (F => 0, G => ?, H => 0) and X.F'Initialized = True and X.G'Initialized = False and X.H'Initialized = True) [provers reached step limit before completing the proof]
 test.adb:119:38: info: initialization of "B" proved
-test.adb:125:12: medium: initialization check might fail (e.g. when X = (F => 0, G => ?, H => 0) and X.F'Initialized = True and X.G'Initialized = False and X.H'Initialized = True)
+test.adb:125:12: medium: initialization check might fail (e.g. when X = (F => 0, G => ?, H => 0) and X.F'Initialized = True and X.G'Initialized = False and X.H'Initialized = True) [provers reached step limit before completing the proof]
 test.adb:131:13: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
 test.adb:131:18: warning: unused variable "X"
 test.adb:131:21: warning: unused variable "Y"
@@ -34,6 +34,6 @@ test.adb:138:33: info: initialization of "B" proved
 test.adb:144:12: info: initialization check proved (CVC5: 1 VC)
 test.adb:147:37: info: initialization of "B" proved
 test.adb:150:04: warning: analyzing unreferenced procedure "Eq_OK_4" [unreferenced-procedure]
-test.adb:152:12: medium: initialization check might fail (e.g. when X = (F => 0, G => ?, H => 0) and X.F'Initialized = True and X.G'Initialized = False and X.H'Initialized = True) [possible fix: subprogram at line 147 should mention X'Initialized in a precondition]
+test.adb:152:12: medium: initialization check might fail (e.g. when X = (F => 0, G => ?, H => 0) and X.F'Initialized = True and X.G'Initialized = False and X.H'Initialized = True) [possible fix: subprogram at line 147 should mention X'Initialized in a precondition] [provers reached step limit before completing the proof]
 test.adb:159:34: info: initialization of "B" proved
-test.adb:165:12: medium: initialization check might fail (e.g. when X = (F => 0, G => ?, H => 0) and X.F'Initialized = True and X.G'Initialized = False and X.H'Initialized = True)
+test.adb:165:12: medium: initialization check might fail (e.g. when X = (F => 0, G => ?, H => 0) and X.F'Initialized = True and X.G'Initialized = False and X.H'Initialized = True) [provers reached step limit before completing the proof]

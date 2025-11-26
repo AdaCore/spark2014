@@ -1,5 +1,5 @@
 test.adb:3:04: warning: analyzing unreferenced procedure "Basic_Loop" [unreferenced-procedure]
-test.adb:7:17: medium: overflow check might fail, cannot prove upper bound for X + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 6 should mention X in a loop invariant]
+test.adb:7:17: medium: overflow check might fail, cannot prove upper bound for X + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 6 should mention X in a loop invariant] [provers gave up before completing the proof]
 test.adb:8:17: info: division check proved (CVC5: 1 VC)
 test.adb:12:04: warning: analyzing unreferenced procedure "Is_Prime" [unreferenced-procedure]
 test.adb:13:24: info: initialization of "P" proved
@@ -18,7 +18,7 @@ test.adb:33:13: warning: statement has no effect
 test.adb:35:12: warning: unused assignment
 test.adb:40:04: warning: analyzing unreferenced procedure "While_Loop" [unreferenced-procedure]
 test.adb:41:26: info: initialization of "Y" proved
-test.adb:46:17: medium: overflow check might fail, cannot prove upper bound for Y + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
+test.adb:46:17: medium: overflow check might fail, cannot prove upper bound for Y + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
 test.adb:50:04: warning: analyzing unreferenced function "Bergeretti_Fig9_Correct" [unreferenced-function]
 test.adb:52:07: info: initialization of "C" proved
 test.adb:52:10: info: initialization of "D" proved
@@ -28,12 +28,12 @@ test.adb:52:19: info: initialization of "W" proved
 test.adb:52:22: info: initialization of "X" proved
 test.adb:52:25: info: initialization of "Y" proved
 test.adb:56:20: medium: implicit aspect Always_Terminates on "Bergeretti_Fig9_Correct" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
-test.adb:57:17: medium: divide by zero might fail [possible fix: loop at line 56 should mention C in a loop invariant]
-test.adb:57:17: medium: overflow check might fail, cannot prove lower bound for C / D [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: loop at line 56 should mention C in a loop invariant]
-test.adb:57:29: medium: divide by zero might fail [possible fix: loop at line 56 should mention C in a loop invariant]
-test.adb:58:17: medium: overflow check might fail, cannot prove lower bound for X - Q * Y [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: loop at line 56 should mention Q and X and Y in a loop invariant]
-test.adb:58:21: medium: overflow check might fail, cannot prove lower bound for Q * Y [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 56 should mention Q and Y in a loop invariant]
-test.adb:63:17: medium: overflow check might fail, cannot prove lower bound for Y + P [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 56 should mention Y in a loop invariant]
+test.adb:57:17: medium: divide by zero might fail [possible fix: loop at line 56 should mention C in a loop invariant] [provers gave up before completing the proof]
+test.adb:57:17: medium: overflow check might fail, cannot prove lower bound for C / D [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: loop at line 56 should mention C in a loop invariant] [provers gave up before completing the proof]
+test.adb:57:29: medium: divide by zero might fail [possible fix: loop at line 56 should mention C in a loop invariant] [provers gave up before completing the proof]
+test.adb:58:17: medium: overflow check might fail, cannot prove lower bound for X - Q * Y [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: loop at line 56 should mention Q and X and Y in a loop invariant] [provers gave up before completing the proof]
+test.adb:58:21: medium: overflow check might fail, cannot prove lower bound for Q * Y [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 56 should mention Q and Y in a loop invariant] [provers gave up before completing the proof]
+test.adb:63:17: medium: overflow check might fail, cannot prove lower bound for Y + P [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 56 should mention Y in a loop invariant] [provers gave up before completing the proof]
 test.adb:68:04: warning: analyzing unreferenced function "Bergeretti_Fig9_Incorrect" [unreferenced-function]
 test.adb:70:07: info: initialization of "C" proved
 test.adb:70:10: info: initialization of "D" proved
@@ -42,12 +42,12 @@ test.adb:70:19: info: initialization of "W" proved
 test.adb:70:22: info: initialization of "X" proved
 test.adb:70:25: info: initialization of "Y" proved
 test.adb:74:20: medium: implicit aspect Always_Terminates on "Bergeretti_Fig9_Incorrect" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
-test.adb:75:17: medium: divide by zero might fail [possible fix: loop at line 74 should mention C in a loop invariant]
-test.adb:75:17: medium: overflow check might fail, cannot prove lower bound for C / D [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: loop at line 74 should mention C in a loop invariant]
-test.adb:76:17: medium: overflow check might fail, cannot prove lower bound for X - Q * Y [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: loop at line 74 should mention Q and X and Y in a loop invariant]
-test.adb:76:21: medium: overflow check might fail, cannot prove lower bound for Q * Y [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 74 should mention Q and Y in a loop invariant]
+test.adb:75:17: medium: divide by zero might fail [possible fix: loop at line 74 should mention C in a loop invariant] [provers gave up before completing the proof]
+test.adb:75:17: medium: overflow check might fail, cannot prove lower bound for C / D [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: loop at line 74 should mention C in a loop invariant] [provers gave up before completing the proof]
+test.adb:76:17: medium: overflow check might fail, cannot prove lower bound for X - Q * Y [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: loop at line 74 should mention Q and X and Y in a loop invariant] [provers gave up before completing the proof]
+test.adb:76:21: medium: overflow check might fail, cannot prove lower bound for Q * Y [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 74 should mention Q and Y in a loop invariant] [provers gave up before completing the proof]
 test.adb:77:23: high: "R" is not initialized
-test.adb:81:17: medium: overflow check might fail, cannot prove lower bound for Y + P [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 74 should mention Y in a loop invariant]
+test.adb:81:17: medium: overflow check might fail, cannot prove lower bound for Y + P [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 74 should mention Y in a loop invariant] [provers gave up before completing the proof]
 test.adb:86:04: warning: analyzing unreferenced procedure "Stable_Test_01" [unreferenced-procedure]
 test.adb:86:30: info: initialization of "X" proved
 test.adb:89:39: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
@@ -68,8 +68,8 @@ test.adb:117:04: warning: analyzing unreferenced procedure "For_Test_02" [unrefe
 test.adb:117:27: info: initialization of "X" proved
 test.adb:120:38: info: unrolling loop [info-unrolling-inlining]
 test.adb:126:04: warning: analyzing unreferenced procedure "Basic_With_Exit" [unreferenced-procedure]
-test.adb:130:17: medium: overflow check might fail, cannot prove upper bound for X * 2 [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 129 should mention X in a loop invariant]
-test.adb:134:17: medium: range check might fail, cannot prove lower bound for X - 1 [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 129 should mention X in a loop invariant]
+test.adb:130:17: medium: overflow check might fail, cannot prove upper bound for X * 2 [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 129 should mention X in a loop invariant] [provers gave up before completing the proof]
+test.adb:134:17: medium: range check might fail, cannot prove lower bound for X - 1 [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 129 should mention X in a loop invariant] [provers gave up before completing the proof]
 test.adb:138:04: warning: analyzing unreferenced function "Loop_Stability" [unreferenced-function]
 test.adb:140:16: info: implicit aspect Always_Terminates on "Return_5" has been proved, subprogram will terminate
 test.adb:141:07: info: initialization of "A" proved

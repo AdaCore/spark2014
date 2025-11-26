@@ -4,9 +4,9 @@ repr.adb:13:16: info: implicit aspect Always_Terminates on overriding operator "
 repr.adb:29:07: info: no contextual analysis of "Rand" (body not seen yet)
 repr.adb:29:07: warning: assuming "Rand" has no effect on global items
 repr.adb:29:07: warning: no Global contract available for "Rand" [assumed-global-null]
-repr.adb:30:22: medium: assertion might fail
+repr.adb:30:22: medium: assertion might fail [provers reached step limit before completing the proof]
 repr.adb:31:10: info: no contextual analysis of "Rand" (body not seen yet)
 repr.adb:31:10: warning: assuming "Rand" has no effect on global items
 repr.adb:31:10: warning: no Global contract available for "Rand" [assumed-global-null]
-repr.adb:32:22: medium: assertion might fail
-repr.adb:34:22: medium: assertion might fail
+repr.adb:32:22: medium: assertion might fail [provers reached step limit before completing the proof]
+repr.adb:34:22: medium: assertion might fail [provers reached step limit before completing the proof]

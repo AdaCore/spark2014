@@ -1,9 +1,9 @@
 init_wrapper_simple.adb:1:11: warning: subprogram "Init_Wrapper_Simple" has no effect
 init_wrapper_simple.adb:19:18: info: range check proved (CVC5: 2 VC)
 init_wrapper_simple.adb:25:15: info: range check proved (CVC5: 2 VC)
-init_wrapper_simple.adb:29:22: medium: assertion might fail
-init_wrapper_simple.adb:30:22: medium: assertion might fail
-init_wrapper_simple.adb:31:22: medium: assertion might fail
+init_wrapper_simple.adb:29:22: medium: assertion might fail [provers reached step limit before completing the proof]
+init_wrapper_simple.adb:30:22: medium: assertion might fail [provers reached step limit before completing the proof]
+init_wrapper_simple.adb:31:22: medium: assertion might fail [provers reached step limit before completing the proof]
 init_wrapper_simple.adb:33:07: warning: assuming "Init" always terminates
 init_wrapper_simple.adb:33:07: warning: assuming "Init" has no effect on global items
 init_wrapper_simple.adb:33:07: warning: no Always_Terminates aspect available for "Init" [assumed-always-terminates]

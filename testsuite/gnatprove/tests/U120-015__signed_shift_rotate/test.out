@@ -60,41 +60,41 @@ signed.adb:48:19: info: assertion proved (colibri: 1 VC)
 signed.adb:52:09: info: no contextual analysis of "Rotate_Left" (body not seen yet)
 signed.adb:52:09: warning: assuming "Rotate_Left" has no effect on global items
 signed.adb:52:09: warning: no Global contract available for "Rotate_Left" [assumed-global-null]
-signed.adb:53:19: medium: assertion might fail
+signed.adb:53:19: medium: assertion might fail [provers reached step limit before completing the proof]
 signed.adb:53:25: info: overflow check proved (CVC5: 2 VC)
 signed.adb:55:09: info: no contextual analysis of "Rotate_Left" (body not seen yet)
 signed.adb:55:09: warning: assuming "Rotate_Left" has no effect on global items
 signed.adb:55:09: warning: no Global contract available for "Rotate_Left" [assumed-global-null]
 signed.adb:55:22: info: overflow check proved (CVC5: 2 VC)
-signed.adb:56:19: medium: assertion might fail
+signed.adb:56:19: medium: assertion might fail [provers reached step limit before completing the proof]
 signed.adb:56:24: info: overflow check proved (CVC5: 2 VC)
 signed.adb:56:28: info: overflow check proved (CVC5: 2 VC)
 signed.adb:56:35: info: overflow check proved (CVC5: 2 VC)
 signed.adb:58:09: info: no contextual analysis of "Rotate_Left" (body not seen yet)
 signed.adb:58:09: warning: assuming "Rotate_Left" has no effect on global items
 signed.adb:58:09: warning: no Global contract available for "Rotate_Left" [assumed-global-null]
-signed.adb:59:19: medium: assertion might fail
+signed.adb:59:19: medium: assertion might fail [provers reached step limit before completing the proof]
 signed.adb:59:30: info: overflow check proved (CVC5: 2 VC)
 signed.adb:59:34: info: division check proved (CVC5: 1 VC)
 signed.adb:61:09: info: no contextual analysis of "Rotate_Left" (body not seen yet)
 signed.adb:61:09: warning: assuming "Rotate_Left" has no effect on global items
 signed.adb:61:09: warning: no Global contract available for "Rotate_Left" [assumed-global-null]
-signed.adb:62:19: medium: assertion might fail
+signed.adb:62:19: medium: assertion might fail [provers reached step limit before completing the proof]
 signed.adb:66:09: info: no contextual analysis of "Rotate_Right" (body not seen yet)
 signed.adb:66:09: warning: assuming "Rotate_Right" has no effect on global items
 signed.adb:66:09: warning: no Global contract available for "Rotate_Right" [assumed-global-null]
-signed.adb:67:19: medium: assertion might fail
+signed.adb:67:19: medium: assertion might fail [provers reached step limit before completing the proof]
 signed.adb:69:09: info: no contextual analysis of "Rotate_Right" (body not seen yet)
 signed.adb:69:09: warning: assuming "Rotate_Right" has no effect on global items
 signed.adb:69:09: warning: no Global contract available for "Rotate_Right" [assumed-global-null]
 signed.adb:69:23: info: overflow check proved (CVC5: 2 VC)
-signed.adb:70:19: medium: assertion might fail
+signed.adb:70:19: medium: assertion might fail [provers reached step limit before completing the proof]
 signed.adb:72:09: info: no contextual analysis of "Rotate_Right" (body not seen yet)
 signed.adb:72:09: warning: assuming "Rotate_Right" has no effect on global items
 signed.adb:72:09: warning: no Global contract available for "Rotate_Right" [assumed-global-null]
-signed.adb:73:19: medium: assertion might fail
+signed.adb:73:19: medium: assertion might fail [provers reached step limit before completing the proof]
 signed.adb:75:09: info: no contextual analysis of "Rotate_Right" (body not seen yet)
 signed.adb:75:09: warning: assuming "Rotate_Right" has no effect on global items
 signed.adb:75:09: warning: no Global contract available for "Rotate_Right" [assumed-global-null]
-signed.adb:76:19: medium: assertion might fail
-signed.adb:78:04: medium: assertion might fail
+signed.adb:76:19: medium: assertion might fail [provers reached step limit before completing the proof]
+signed.adb:78:04: medium: assertion might fail [provers reached step limit before completing the proof]

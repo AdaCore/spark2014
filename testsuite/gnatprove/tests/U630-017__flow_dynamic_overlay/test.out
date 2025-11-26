@@ -1,5 +1,5 @@
 early_init.ads:6:09: info: flow dependencies proved
-early_init.ads:7:30: medium: initial condition might fail
+early_init.ads:7:30: medium: initial condition might fail [provers gave up before completing the proof]
 early_init.ads:9:07: info: initialization of "V1" proved
 early_init.ads:10:07: high: object is unsuitable for aliasing via address clause [possible explanation: type Positive has 16#7FFF_FFFF# values but type Positive has Object_Size 32, which allows 16#1000_0000_0# possible values; aliased object could have invalid values [SPARK RM 13.7]]
 early_init.ads:10:07: info: address in address clause is compatible with object alignment (Trivial)

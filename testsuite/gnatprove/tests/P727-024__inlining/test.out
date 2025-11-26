@@ -6,4 +6,4 @@ p.adb:10:35: info: data dependencies proved
 p.adb:15:04: info: range check proved (CVC5: 2 VC)
 p.adb:15:25: info: length check proved (CVC5: 3 VC)
 p.adb:17:04: info: analyzing call to "Nothing" in context
-p.adb:17:13: medium: length check might fail [reason for check: array must be of the appropriate length]
+p.adb:17:13: medium: length check might fail [reason for check: array must be of the appropriate length] [provers gave up before completing the proof]

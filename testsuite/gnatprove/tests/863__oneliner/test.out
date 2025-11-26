@@ -1,2 +1,2 @@
 oneliner.ads:5:13: info: implicit aspect Always_Terminates on "Foo" has been proved, subprogram will terminate
-oneliner.ads:5:40: high: range check might fail, cannot prove upper bound for X * X (e.g. when X = 4) [reason for check: returned value must fit in the result type of the function] [possible fix: add precondition (X * X <= T'Last) to subprogram at line 5]
+oneliner.ads:5:40: high: range check might fail, cannot prove upper bound for X * X (e.g. when X = 4) [reason for check: returned value must fit in the result type of the function] [possible fix: add precondition (X * X <= T'Last) to subprogram at line 5] [provers gave up before completing the proof]

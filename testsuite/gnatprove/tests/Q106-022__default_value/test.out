@@ -2,10 +2,10 @@ check_component_default_value.ads:2:13: info: implicit aspect Always_Terminates 
 check_component_default_value.ads:7:33: info: range check proved (CVC5: 2 VC)
 check_component_default_value.ads:8:15: info: range check proved (CVC5: 2 VC)
 check_component_default_value.ads:10:36: medium: in default value at check_component_default_value.ads:12
-check_component_default_value.ads:10:36: medium: range check might fail, cannot prove lower bound for 0 [reason for check: default component value must fit in the component type]
+check_component_default_value.ads:10:36: medium: range check might fail, cannot prove lower bound for 0 [reason for check: default component value must fit in the component type] [provers reached step limit before completing the proof]
 check_default_value.ads:2:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 check_default_value.ads:6:16: info: implicit aspect Always_Terminates on "Is_OK" has been proved, subprogram will terminate
 check_default_value.ads:8:33: info: range check proved (CVC5: 2 VC)
 check_default_value.ads:9:15: info: range check proved (CVC5: 2 VC)
 check_default_value.ads:11:55: medium: in default value of private type at check_default_value.ads:5
-check_default_value.ads:11:55: medium: range check might fail, cannot prove lower bound for 0 [reason for check: default value must fit in the type]
+check_default_value.ads:11:55: medium: range check might fail, cannot prove lower bound for 0 [reason for check: default value must fit in the type] [provers reached step limit before completing the proof]

@@ -14,24 +14,24 @@ streamable_types.adb:20:74: info: range check proved (CVC5: 1 VC; Z3: 1 VC)
 streamable_types.adb:34:07: info: initialization of "Buffer" proved
 streamable_types.adb:35:07: info: initialization of "Last" proved
 streamable_types.adb:50:30: info: initialization of "Len" proved
-streamable_types.adb:53:13: medium: unexpected exception might be raised [reason for check: Read_Length allows propagating no exceptions] [possible explanation: Parsing_Error might be unexpectedly raised]
-streamable_types.adb:58:24: medium: overflow check might fail, cannot prove lower bound for Len * 10 (e.g. when Len = -214748365) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 57 should mention Len in a loop invariant]
-streamable_types.adb:58:29: medium: overflow check might fail, cannot prove upper bound for Len * 10 + Integer (Buffer (1) - Zero) (e.g. when Buffer = (1 => 47) and Len = 214748340) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 57 should mention Buffer and Len in a loop invariant]
+streamable_types.adb:53:13: medium: unexpected exception might be raised [reason for check: Read_Length allows propagating no exceptions] [possible explanation: Parsing_Error might be unexpectedly raised] [provers reached step limit before completing the proof]
+streamable_types.adb:58:24: medium: overflow check might fail, cannot prove lower bound for Len * 10 (e.g. when Len = -214748365) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 57 should mention Len in a loop invariant] [provers reached step limit before completing the proof]
+streamable_types.adb:58:29: medium: overflow check might fail, cannot prove upper bound for Len * 10 + Integer (Buffer (1) - Zero) (e.g. when Buffer = (1 => 47) and Len = 214748340) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 57 should mention Buffer and Len in a loop invariant] [provers gave up before completing the proof]
 streamable_types.adb:65:29: info: initialization of "Item" proved
 streamable_types.adb:69:28: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
-streamable_types.adb:73:16: medium: unexpected exception might be raised [reason for check: Read_Value allows propagating no exceptions] [possible explanation: Parsing_Error might be unexpectedly raised]
-streamable_types.adb:76:24: medium: overflow check might fail, cannot prove lower bound for 10 * Item (e.g. when Item = -214748365) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 69 should mention Item in a loop invariant]
-streamable_types.adb:76:31: medium: overflow check might fail, cannot prove upper bound for 10 * Item + Int (Buffer (1) - Zero) (e.g. when Buffer = (1 => 57) and Item = 214748364) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: call at line 70 should mention Item (for argument Buffer) in a postcondition]
+streamable_types.adb:73:16: medium: unexpected exception might be raised [reason for check: Read_Value allows propagating no exceptions] [possible explanation: Parsing_Error might be unexpectedly raised] [provers reached step limit before completing the proof]
+streamable_types.adb:76:24: medium: overflow check might fail, cannot prove lower bound for 10 * Item (e.g. when Item = -214748365) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 69 should mention Item in a loop invariant] [provers reached step limit before completing the proof]
+streamable_types.adb:76:31: medium: overflow check might fail, cannot prove upper bound for 10 * Item + Int (Buffer (1) - Zero) (e.g. when Buffer = (1 => 57) and Item = 214748364) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: call at line 70 should mention Item (for argument Buffer) in a postcondition] [provers gave up before completing the proof]
 streamable_types.adb:80:07: warning: initialization of "Len" has no effect
 streamable_types.adb:82:07: info: precondition proved (Trivial: 1 VC)
 streamable_types.adb:82:07: warning: "Last" is set by "Skip_Spaces" but not used after the call
 streamable_types.adb:84:07: info: precondition proved (Trivial: 1 VC)
-streamable_types.adb:87:10: medium: unexpected exception might be raised [reason for check: Parse allows propagating no exceptions] [possible explanation: Parsing_Error might be unexpectedly raised]
+streamable_types.adb:87:10: medium: unexpected exception might be raised [reason for check: Parse allows propagating no exceptions] [possible explanation: Parsing_Error might be unexpectedly raised] [provers reached step limit before completing the proof]
 streamable_types.adb:90:07: info: precondition proved (Trivial: 1 VC)
 streamable_types.adb:90:07: warning: "Buffer" is set by "Read_Value" but not used after the call
 streamable_types.adb:90:07: warning: "Last" is set by "Read_Value" but not used after the call
 streamable_types.ads:12:21: info: initialization of "Item" proved
 streamable_types.ads:14:04: info: initialization of "V" proved
-streamable_types.ads:14:04: medium: null exclusion check might fail
-streamable_types.ads:15:04: medium: null exclusion check might fail
+streamable_types.ads:14:04: medium: null exclusion check might fail [provers reached step limit before completing the proof]
+streamable_types.ads:15:04: medium: null exclusion check might fail [provers reached step limit before completing the proof]
 gnatprove: error during flow analysis and proof

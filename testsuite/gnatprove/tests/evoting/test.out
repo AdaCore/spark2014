@@ -35,8 +35,8 @@ evoting.adb:124:07: warning: assuming "Assert" always terminates
 evoting.adb:124:07: warning: no Always_Terminates aspect available for "Assert" [assumed-always-terminates]
 evoting.adb:131:35: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 evoting.adb:134:13: info: only expected exception raised (CVC5: 1 VC)
-evoting.adb:135:41: low: precondition might fail [possible explanation: the check might be unprovable due to proof limitations; use --info for more information]
-evoting.adb:135:41: medium: range check might fail, cannot prove lower bound for Candidate_Number_t'Value(buf(1..last)) [reason for check: value must fit in the target type of the assignment]
+evoting.adb:135:41: low: precondition might fail [possible explanation: the check might be unprovable due to proof limitations; use --info for more information] [provers reached step limit before completing the proof]
+evoting.adb:135:41: medium: range check might fail, cannot prove lower bound for Candidate_Number_t'Value(buf(1..last)) [reason for check: value must fit in the target type of the assignment] [provers reached step limit before completing the proof]
 evoting.adb:135:41: warning: references to the "Value" attribute are handled in an imprecise way, so the precondition is impossible to prove and nothing will be known about the evaluation of the attribute reference [imprecise-value]
 evoting.adb:135:48: info: initialization check proved (CVC5: 1 VC; Trivial: 1 VC)
 evoting.adb:135:48: info: range check proved (CVC5: 1 VC)

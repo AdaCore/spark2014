@@ -12,6 +12,7 @@
       + possible fix: subprogram at line 1 should mention X in a precondition
     1 |    procedure P (X : Integer) with SPARK_Mode is
       |    ^
+      + provers gave up before completing the proof
 
  high: assertion might fail
 --> p.adb:4:27
@@ -22,6 +23,7 @@
       + possible fix: subprogram at line 1 should mention X in a precondition
     1 |    procedure P (X : Integer) with SPARK_Mode is
       |    ^
+      + provers gave up before completing the proof
 
  high: loop invariant might fail in first iteration
 --> p.adb:6:30
@@ -32,6 +34,7 @@
       + possible fix: subprogram at line 1 should mention X in a precondition
     1 |    procedure P (X : Integer) with SPARK_Mode is
       |    ^
+      + provers gave up before completing the proof
 
  info: loop invariant preservation proved (CVC5: 1 VC)
 --> p.adb:6:30
@@ -45,6 +48,7 @@
       + possible fix: subprogram at line 1 should mention X in a precondition
     1 |    procedure P (X : Integer) with SPARK_Mode is
       |    ^
+      + provers gave up before completing the proof
 
  info: loop invariant preservation proved (CVC5: 1 VC)
 --> p.adb:7:30

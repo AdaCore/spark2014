@@ -295,7 +295,7 @@ x86.ads:445:13: info: implicit aspect Always_Terminates on "ReadMem64" has been 
 x86.ads:446:06: info: data dependencies proved
 x86.ads:447:14: info: postcondition proved (CVC5: 2 VC)
 x86.ads:454:06: info: data dependencies proved
-x86.ads:468:27: medium: postcondition might fail, cannot prove (Memory(i) = Memory'Old(i))
+x86.ads:468:27: medium: postcondition might fail, cannot prove (Memory(i) = Memory'Old(i)) [provers gave up before completing the proof]
 x86.ads:474:13: info: implicit aspect Always_Terminates on "SignedLT_32" has been proved, subprogram will terminate
 x86.ads:475:14: info: postcondition proved (CVC5: 2 VC)
 x86.ads:478:13: info: implicit aspect Always_Terminates on "SignedLTE_32" has been proved, subprogram will terminate

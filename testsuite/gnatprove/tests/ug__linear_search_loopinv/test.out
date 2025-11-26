@@ -3,6 +3,7 @@
    22 |             Pos := Pos + 1;
       |                    ~~~~^~~
       + reason for check: result of addition must fit in the target type of the assignment
+      + provers gave up before completing the proof
 
  medium: contract case might fail
 --> linear_search.ads:35:09
@@ -10,3 +11,4 @@
       |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
    36 |              Search'Result.Found,
       |              ~~~~~~~~~~~~~~~~~~~
+      + provers gave up before completing the proof

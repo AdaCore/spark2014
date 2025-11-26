@@ -5,6 +5,6 @@ proc.adb:4:37: info: object is suitable for aliasing via address clause (Trivial
 proc.adb:4:37: info: type is suitable as source for unchecked conversion (Trivial)
 proc.adb:4:37: info: types of aliased objects have the same size (Trivial)
 proc.adb:9:14: info: overflow check proved (CVC5: 2 VC)
-proc.adb:13:19: medium: assertion might fail
+proc.adb:13:19: medium: assertion might fail [provers reached step limit before completing the proof]
 proc.adb:14:04: info: precondition proved (CVC5: 1 VC)
-proc.adb:15:19: medium: assertion might fail
+proc.adb:15:19: medium: assertion might fail [provers reached step limit before completing the proof]

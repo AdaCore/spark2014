@@ -1,13 +1,13 @@
 ====== expect single line ================
-p.adb:10:12: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at p.ads:4 should mention X in a precondition]
+p.adb:10:12: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at p.ads:4 should mention X in a precondition] [provers gave up before completing the proof]
 ====== expect single line ================
-p.adb:10:12: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at p.ads:4 should mention X in a precondition]
+p.adb:10:12: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at p.ads:4 should mention X in a precondition] [provers gave up before completing the proof]
 ====== expect two lines ================
-p.adb:5:12: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at p.ads:3 should mention X in a precondition]
-q.adb:5:12: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at q.ads:3 should mention X in a precondition]
+p.adb:5:12: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at p.ads:3 should mention X in a precondition] [provers gave up before completing the proof]
+q.adb:5:12: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at q.ads:3 should mention X in a precondition] [provers gave up before completing the proof]
 ====== expect two lines ================
-overload.adb:5:12: high: range check might fail, cannot prove upper bound for X + 1 (e.g. when X = T'Last) [reason for check: result of addition must fit in the target type of the assignment] [possible fix: subprogram at overload.ads:6 should mention X in a precondition]
-overload.adb:10:12: high: range check might fail, cannot prove upper bound for X + 1 (e.g. when X = U'Last) [reason for check: result of addition must fit in the target type of the assignment] [possible fix: subprogram at overload.ads:7 should mention X in a precondition]
+overload.adb:5:12: high: range check might fail, cannot prove upper bound for X + 1 (e.g. when X = T'Last) [reason for check: result of addition must fit in the target type of the assignment] [possible fix: subprogram at overload.ads:6 should mention X in a precondition] [provers gave up before completing the proof]
+overload.adb:10:12: high: range check might fail, cannot prove upper bound for X + 1 (e.g. when X = U'Last) [reason for check: result of addition must fit in the target type of the assignment] [possible fix: subprogram at overload.ads:7 should mention X in a precondition] [provers gave up before completing the proof]
 ====== expect no output, plus error ================
 Phase 1 of 3: generation of data representation information ...
 Phase 2 of 3: generation of Global contracts ...

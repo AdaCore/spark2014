@@ -1,1 +1,1 @@
-main.adb:9:42: high: assertion might fail, cannot prove 2 ** K in U64'Range (e.g. when K = 65)
+main.adb:9:42: high: assertion might fail, cannot prove 2 ** K in U64'Range (e.g. when K = 65) [provers gave up before completing the proof]

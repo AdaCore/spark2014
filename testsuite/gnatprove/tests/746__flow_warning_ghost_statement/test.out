@@ -1,13 +1,13 @@
 test.adb:5:06: info: data dependencies proved
 test.adb:6:14: info: postcondition proved (Trivial: 1 VC)
-test.adb:10:22: medium: assertion might fail [possible fix: subprogram at line 4 should mention G in a precondition]
+test.adb:10:22: medium: assertion might fail [possible fix: subprogram at line 4 should mention G in a precondition] [provers gave up before completing the proof]
 test.adb:22:07: info: only expected exception raised (CVC5: 1 VC)
 test_assert.adb:5:06: info: data dependencies proved
 test_assert.adb:6:14: info: postcondition proved (Trivial: 1 VC)
-test_assert.adb:10:22: medium: assertion might fail [possible fix: subprogram at line 4 should mention G in a precondition]
+test_assert.adb:10:22: medium: assertion might fail [possible fix: subprogram at line 4 should mention G in a precondition] [provers gave up before completing the proof]
 test_assert.adb:13:85: info: exceptional case proved (Trivial: 1 VC)
 test_assert.adb:22:07: info: assertion proved (CVC5: 1 VC)
 test_expected.adb:5:06: info: data dependencies proved
 test_expected.adb:6:14: info: postcondition proved (Trivial: 1 VC)
-test_expected.adb:10:22: medium: assertion might fail [possible fix: subprogram at line 4 should mention G in a precondition]
+test_expected.adb:10:22: medium: assertion might fail [possible fix: subprogram at line 4 should mention G in a precondition] [provers gave up before completing the proof]
 test_expected.adb:13:85: info: exceptional case proved (Trivial: 1 VC)

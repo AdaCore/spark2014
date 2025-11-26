@@ -1,2 +1,2 @@
-main.adb:7:41: medium: precondition might fail
-main.adb:8:41: medium: precondition might fail
+main.adb:7:41: medium: precondition might fail [provers gave up before completing the proof]
+main.adb:8:41: medium: precondition might fail [provers gave up before completing the proof]

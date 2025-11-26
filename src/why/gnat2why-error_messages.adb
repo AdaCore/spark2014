@@ -337,23 +337,25 @@ package body Gnat2Why.Error_Messages is
    -----------------------
 
    procedure Emit_Proof_Result
-     (Node        : Node_Id;
-      Id          : VC_Id;
-      Kind        : VC_Kind;
-      Proved      : Boolean;
-      E           : Entity_Id;
-      How_Proved  : Prover_Category;
-      Check_Info  : Check_Info_Type;
-      Extra_Msg   : String := "";
-      Explanation : String := "";
-      Cntexmp     : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
-      Verdict     : Cntexmp_Verdict := (others => <>);
-      Check_Tree  : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
-      VC_File     : String := "";
-      VC_Loc      : Node_Id := Empty;
-      Stats       : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
-      Editor_Cmd  : String := "";
-      CE_From_RAC : Boolean := False) is
+     (Node          : Node_Id;
+      Id            : VC_Id;
+      Kind          : VC_Kind;
+      Proved        : Boolean;
+      E             : Entity_Id;
+      How_Proved    : Prover_Category;
+      Check_Info    : Check_Info_Type;
+      Extra_Msg     : String := "";
+      Explanation   : String := "";
+      Cntexmp       : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
+      Verdict       : Cntexmp_Verdict := (others => <>);
+      Check_Tree    : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
+      VC_File       : String := "";
+      VC_Loc        : Node_Id := Empty;
+      Stats         : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
+      Unproved_Stat : Errout_Wrapper.Failed_Prover_Answer :=
+        Errout_Wrapper.FPA_Unknown_Rec;
+      Editor_Cmd    : String := "";
+      CE_From_RAC   : Boolean := False) is
    begin
       if Kind in VC_Warning_Kind then
          --  VCs that correspond to warnings are only relevant when the prover
@@ -371,18 +373,19 @@ package body Gnat2Why.Error_Messages is
          Extra_Msg,
          Proved,
          Kind,
-         Cntexmp     => Cntexmp,
-         Verdict     => Verdict,
-         Check_Tree  => Check_Tree,
-         VC_File     => VC_File,
-         VC_Loc      => (if VC_Loc /= Empty then VC_Loc else Node),
-         Editor_Cmd  => Editor_Cmd,
-         Explanation => Explanation,
-         Stats       => Stats,
-         How_Proved  => How_Proved,
-         E           => E,
-         Check_Info  => Check_Info,
-         CE_From_RAC => CE_From_RAC);
+         Cntexmp       => Cntexmp,
+         Verdict       => Verdict,
+         Check_Tree    => Check_Tree,
+         VC_File       => VC_File,
+         VC_Loc        => (if VC_Loc /= Empty then VC_Loc else Node),
+         Editor_Cmd    => Editor_Cmd,
+         Explanation   => Explanation,
+         Stats         => Stats,
+         Unproved_Stat => Unproved_Stat,
+         How_Proved    => How_Proved,
+         E             => E,
+         Check_Info    => Check_Info,
+         CE_From_RAC   => CE_From_RAC);
    end Emit_Proof_Result;
 
    ------------------------------
@@ -554,15 +557,16 @@ package body Gnat2Why.Error_Messages is
         Ada.Containers.Doubly_Linked_Lists (Element_Type => Cntexample_Info);
 
       type Why3_Prove_Result is record
-         Id         : VC_Id;
-         Kind       : VC_Kind;
-         Result     : Boolean;
-         EI         : Extra_Info;
-         VC_File    : Unbounded_String;
-         Editor_Cmd : Unbounded_String;
-         Stats      : Prover_Stat_Maps.Map;
-         Cntexmps   : JSON_Value;
-         Check_Tree : JSON_Value;
+         Id            : VC_Id;
+         Kind          : VC_Kind;
+         Result        : Boolean;
+         EI            : Extra_Info;
+         VC_File       : Unbounded_String;
+         Editor_Cmd    : Unbounded_String;
+         Stats         : Prover_Stat_Maps.Map;
+         Cntexmps      : JSON_Value;
+         Check_Tree    : JSON_Value;
+         Unproved_Stat : Failed_Prover_Answer;
       end record;
 
       function Parse_Why3_Prove_Result
@@ -1107,22 +1111,23 @@ package body Gnat2Why.Error_Messages is
                else Get (Get (Cex_Ar, Length (Cex_Ar)), "cntexmp"));
          begin
             Emit_Proof_Result
-              (Node        => Node,
-               Id          => Rec.Id,
-               Kind        => Rec.Kind,
-               Proved      => Rec.Result,
-               E           => Subp,
-               How_Proved  => PC_Prover,
-               Cntexmp     => Last_Cex,
-               Verdict     => Verdict,
-               Check_Tree  => Rec.Check_Tree,
-               VC_File     => To_String (Rec.VC_File),
-               VC_Loc      => VC_Sloc,
-               Editor_Cmd  => To_String (Rec.Editor_Cmd),
-               Stats       => Rec.Stats,
-               Extra_Msg   => CP_Msg,
-               Check_Info  => Check_Info,
-               CE_From_RAC => Use_RAC_Cntexmp);
+              (Node          => Node,
+               Id            => Rec.Id,
+               Kind          => Rec.Kind,
+               Proved        => Rec.Result,
+               E             => Subp,
+               How_Proved    => PC_Prover,
+               Cntexmp       => Last_Cex,
+               Verdict       => Verdict,
+               Check_Tree    => Rec.Check_Tree,
+               VC_File       => To_String (Rec.VC_File),
+               VC_Loc        => VC_Sloc,
+               Editor_Cmd    => To_String (Rec.Editor_Cmd),
+               Stats         => Rec.Stats,
+               Unproved_Stat => Rec.Unproved_Stat,
+               Extra_Msg     => CP_Msg,
+               Check_Info    => Check_Info,
+               CE_From_RAC   => Use_RAC_Cntexmp);
          end;
 
          Free (Fuel);
@@ -1232,27 +1237,31 @@ package body Gnat2Why.Error_Messages is
          end if;
          return
            Why3_Prove_Result'
-             (Id         => VC_Id (Integer'(Get (Get (V, "id")))),
-              Kind       => VC_Kind'Value (Get (Get (V, "check_kind"))),
-              Result     => Get (Get (V, "result")),
-              EI         => E,
-              VC_File    =>
+             (Id            => VC_Id (Integer'(Get (Get (V, "id")))),
+              Kind          => VC_Kind'Value (Get (Get (V, "check_kind"))),
+              Result        => Get (Get (V, "result")),
+              EI            => E,
+              VC_File       =>
                 (if Has_Field (V, "vc_file")
                  then Get (Get (V, "vc_file"))
                  else Null_Unbounded_String),
-              Editor_Cmd =>
+              Editor_Cmd    =>
                 (if Has_Field (V, "editor_cmd")
                  then Get (Get (V, "editor_cmd"))
                  else Null_Unbounded_String),
-              Stats      =>
+              Stats         =>
                 (if Has_Field (V, "stats")
                  then From_JSON (Get (V, "stats"))
                  else Prover_Stat_Maps.Empty_Map),
-              Cntexmps   => Get (V, "cntexmps"),
-              Check_Tree =>
+              Cntexmps      => Get (V, "cntexmps"),
+              Check_Tree    =>
                 (if Has_Field (V, "check_tree")
                  then Get (V, "check_tree")
-                 else Create_Object));
+                 else Create_Object),
+              Unproved_Stat =>
+                (if Has_Field (V, "unproved_status")
+                 then From_JSON (Get (V, "unproved_status"))
+                 else FPA_Unknown_Rec));
       end Parse_Why3_Prove_Result;
 
       --  Start of processing for Parse_Why3_Results

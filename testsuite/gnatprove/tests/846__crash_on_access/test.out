@@ -1,11 +1,11 @@
 crash.adb:10:07: warning: initialization of "Y" has no effect
-crash.adb:10:20: medium: pointer dereference check might fail (e.g. when X = null) [possible fix: subprogram at line 8 should mention X in a precondition]
-crash.adb:10:25: medium: pointer dereference check might fail [possible fix: subprogram at line 8 should mention X in a precondition]
-crash.adb:12:08: medium: pointer dereference check might fail [possible fix: subprogram at line 8 should mention X in a precondition]
-crash.adb:12:13: medium: pointer dereference check might fail [possible fix: subprogram at line 8 should mention X in a precondition]
+crash.adb:10:20: medium: pointer dereference check might fail (e.g. when X = null) [possible fix: subprogram at line 8 should mention X in a precondition] [provers reached step limit before completing the proof]
+crash.adb:10:25: medium: pointer dereference check might fail [possible fix: subprogram at line 8 should mention X in a precondition] [provers reached step limit before completing the proof]
+crash.adb:12:08: medium: pointer dereference check might fail [possible fix: subprogram at line 8 should mention X in a precondition] [provers reached step limit before completing the proof]
+crash.adb:12:13: medium: pointer dereference check might fail [possible fix: subprogram at line 8 should mention X in a precondition] [provers reached step limit before completing the proof]
 crash.adb:14:10: warning: initialization of "Z" has no effect
-crash.adb:14:39: medium: pointer dereference check might fail [possible fix: subprogram at line 8 should mention X in a precondition]
-crash.adb:14:45: medium: pointer dereference check might fail [possible fix: subprogram at line 8 should mention X in a precondition]
+crash.adb:14:39: medium: pointer dereference check might fail [possible fix: subprogram at line 8 should mention X in a precondition] [provers reached step limit before completing the proof]
+crash.adb:14:45: medium: pointer dereference check might fail [possible fix: subprogram at line 8 should mention X in a precondition] [provers reached step limit before completing the proof]
 crash.adb:19:14: warning: subprogram "Test2" has no effect
 crash.adb:20:04: warning: analyzing unreferenced procedure "Test2" [unreferenced-procedure]
 crash.adb:21:19: medium: resource or memory leak might occur [possible explanation: allocator for a general access-to-variable type leaks memory]

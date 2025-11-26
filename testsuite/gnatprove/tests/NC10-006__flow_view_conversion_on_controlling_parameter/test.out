@@ -3,7 +3,7 @@ foo.adb:11:21: warning: assuming "Init_Log" has no effect on global items
 foo.adb:11:21: warning: no Always_Terminates aspect available for "Init_Log" [assumed-always-terminates]
 foo.adb:11:21: warning: no Global contract available for "Init_Log" [assumed-global-null]
 foo.adb:12:07: high: extension of "Log" is not initialized
-foo.adb:12:10: medium: precondition might fail
+foo.adb:12:10: medium: precondition might fail [provers gave up before completing the proof]
 foo.adb:12:10: warning: assuming "Append_To_Log" always terminates
 foo.adb:12:10: warning: assuming "Append_To_Log" has no effect on global items
 foo.adb:12:10: warning: no Always_Terminates aspect available for "Append_To_Log" [assumed-always-terminates]
@@ -13,7 +13,7 @@ foo.adb:18:28: warning: assuming "Init_Log" has no effect on global items
 foo.adb:18:28: warning: no Always_Terminates aspect available for "Init_Log" [assumed-always-terminates]
 foo.adb:18:28: warning: no Global contract available for "Init_Log" [assumed-global-null]
 foo.adb:19:07: high: extension of "Log" is not initialized
-foo.adb:19:10: medium: precondition might fail
+foo.adb:19:10: medium: precondition might fail [provers gave up before completing the proof]
 foo.adb:19:10: warning: assuming "Append_To_Log" always terminates
 foo.adb:19:10: warning: assuming "Append_To_Log" has no effect on global items
 foo.adb:19:10: warning: no Always_Terminates aspect available for "Append_To_Log" [assumed-always-terminates]

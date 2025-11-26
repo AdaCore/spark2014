@@ -4,16 +4,16 @@ main.adb:3:13: warning: function contract might not be available on implicit rec
 main.adb:4:14: info: postcondition proved (CVC5: 1 VC)
 main.adb:6:23: info: null exclusion check proved (Trivial: 1 VC)
 main.adb:11:08: high: call via access-to-function in the predicate of "G" might not terminate (SPARK RM 3.2.4(4))
-main.adb:14:16: medium: predicate check might fail
+main.adb:14:16: medium: predicate check might fail [provers gave up before completing the proof]
 main.adb:16:18: info: overflow check proved (CVC5: 2 VC)
 main.adb:21:19: info: assertion proved (CVC5: 1 VC)
 p.ads:4:04: info: function contract feasibility proved (Trivial: 1 VC)
 p.ads:4:09: medium: in inlined invariant at p.ads:4
-p.ads:4:09: medium: invariant check might fail on default value, cannot prove T.all
+p.ads:4:09: medium: invariant check might fail on default value, cannot prove T.all [provers gave up before completing the proof]
 p.ads:4:70: high: call via access-to-subprogram in the invariant of "T" might not terminate (SPARK RM 7.3.2(11))
-p.ads:4:70: medium: pointer dereference check might fail
+p.ads:4:70: medium: pointer dereference check might fail [provers gave up before completing the proof]
 q.ads:2:09: medium: in default value of private type at q.ads:2
-q.ads:2:09: medium: predicate check might fail on default value
+q.ads:2:09: medium: predicate check might fail on default value [provers gave up before completing the proof]
 q.ads:4:04: info: function contract feasibility proved (Trivial: 1 VC)
 q.ads:4:65: high: call via access-to-function in the predicate of "T" might not terminate (SPARK RM 3.2.4(4))
-q.ads:4:65: medium: pointer dereference check might fail
+q.ads:4:65: medium: pointer dereference check might fail [provers gave up before completing the proof]

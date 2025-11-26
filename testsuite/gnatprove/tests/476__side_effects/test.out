@@ -1,14 +1,14 @@
-eff.adb:8:35: medium: pointer dereference check might fail (e.g. when X = null) [possible fix: precondition of subprogram at line 5 should mention X]
-eff.adb:10:09: medium: pointer dereference check might fail [possible fix: precondition of subprogram at line 5 should mention X]
-eff.adb:10:18: medium: pointer dereference check might fail (e.g. when Y = null) [possible fix: precondition of subprogram at line 5 should mention Y]
-eff.adb:11:09: medium: pointer dereference check might fail [possible fix: precondition of subprogram at line 5 should mention Y]
-eff.adb:11:18: medium: pointer dereference check might fail [possible fix: precondition of subprogram at line 5 should mention X]
-eff.adb:17:35: medium: pointer dereference check might fail (e.g. when X = null) [possible fix: precondition of subprogram at line 14 should mention X]
-eff.adb:19:09: medium: pointer dereference check might fail [possible fix: precondition of subprogram at line 14 should mention X]
-eff.adb:19:18: medium: pointer dereference check might fail (e.g. when Y = null) [possible fix: precondition of subprogram at line 14 should mention Y]
-eff.adb:20:09: medium: pointer dereference check might fail [possible fix: precondition of subprogram at line 14 should mention Y]
-eff.adb:20:18: medium: pointer dereference check might fail [possible fix: precondition of subprogram at line 14 should mention X]
-eff.adb:24:04: medium: resource or memory leak might occur at end of scope
-eff.adb:25:04: medium: resource or memory leak might occur at end of scope
+eff.adb:8:35: medium: pointer dereference check might fail (e.g. when X = null) [possible fix: precondition of subprogram at line 5 should mention X] [provers reached step limit before completing the proof]
+eff.adb:10:09: medium: pointer dereference check might fail [possible fix: precondition of subprogram at line 5 should mention X] [provers reached step limit before completing the proof]
+eff.adb:10:18: medium: pointer dereference check might fail (e.g. when Y = null) [possible fix: precondition of subprogram at line 5 should mention Y] [provers reached step limit before completing the proof]
+eff.adb:11:09: medium: pointer dereference check might fail [possible fix: precondition of subprogram at line 5 should mention Y] [provers reached step limit before completing the proof]
+eff.adb:11:18: medium: pointer dereference check might fail [possible fix: precondition of subprogram at line 5 should mention X] [provers reached step limit before completing the proof]
+eff.adb:17:35: medium: pointer dereference check might fail (e.g. when X = null) [possible fix: precondition of subprogram at line 14 should mention X] [provers reached step limit before completing the proof]
+eff.adb:19:09: medium: pointer dereference check might fail [possible fix: precondition of subprogram at line 14 should mention X] [provers reached step limit before completing the proof]
+eff.adb:19:18: medium: pointer dereference check might fail (e.g. when Y = null) [possible fix: precondition of subprogram at line 14 should mention Y] [provers reached step limit before completing the proof]
+eff.adb:20:09: medium: pointer dereference check might fail [possible fix: precondition of subprogram at line 14 should mention Y] [provers reached step limit before completing the proof]
+eff.adb:20:18: medium: pointer dereference check might fail [possible fix: precondition of subprogram at line 14 should mention X] [provers reached step limit before completing the proof]
+eff.adb:24:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
+eff.adb:25:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 eff.adb:28:04: info: precondition proved (Trivial: 1 VC)
 eff.adb:29:09: info: precondition proved (Trivial: 1 VC)

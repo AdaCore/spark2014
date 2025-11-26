@@ -1,8 +1,8 @@
-lib.adb:9:19: medium: assertion might fail
+lib.adb:9:19: medium: assertion might fail [provers reached step limit before completing the proof]
 lib.ads:23:13: info: implicit aspect Always_Terminates on "Make_Array" has been proved, subprogram will terminate
 lib.ads:24:13: info: implicit aspect Always_Terminates on "Same" has been proved, subprogram will terminate
 main.adb:25:16: info: implicit aspect Always_Terminates on "Make_Array" has been proved, subprogram will terminate
 main.adb:28:19: info: implicit aspect Always_Terminates on "Get_Sixteenth" has been proved, subprogram will terminate
 main.adb:36:10: info: initialization of "A" proved
 main.adb:38:23: info: cannot unroll loop (local non-scalar declaration at line 40) [info-unrolling-inlining]
-main.adb:59:19: high: assertion might fail, cannot prove My_Package.Nested.Get_Sixteenth (A) = 1 (e.g. when A = (One => (F => 42), Two => (F => 42), Four => (F => 42), Eight => (F => 42), Sixteen => (F => 42), Thirty_Two => (F => 42)))
+main.adb:59:19: high: assertion might fail, cannot prove My_Package.Nested.Get_Sixteenth (A) = 1 (e.g. when A = (One => (F => 42), Two => (F => 42), Four => (F => 42), Eight => (F => 42), Sixteen => (F => 42), Thirty_Two => (F => 42))) [provers reached step limit before completing the proof]

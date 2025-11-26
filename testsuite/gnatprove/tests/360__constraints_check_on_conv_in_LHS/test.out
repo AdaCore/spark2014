@@ -5,13 +5,13 @@ main.adb:16:25: info: initialization of "V_R" proved
 main.adb:21:20: info: discriminant check proved (CVC5: 1 VC)
 main.adb:21:23: info: discriminant check proved (CVC5: 1 VC)
 main.adb:24:28: info: initialization of "V_R" proved
-main.adb:29:20: medium: discriminant check might fail
+main.adb:29:20: medium: discriminant check might fail [provers reached step limit before completing the proof]
 main.adb:29:23: info: discriminant check proved (CVC5: 1 VC)
 main.adb:32:28: info: initialization of "V_R" proved
 main.adb:37:20: info: discriminant check proved (CVC5: 1 VC)
-main.adb:37:23: medium: discriminant check might fail
+main.adb:37:23: medium: discriminant check might fail [provers reached step limit before completing the proof]
 main.adb:40:28: info: initialization of "V_R" proved
-main.adb:45:10: medium: discriminant check might fail
+main.adb:45:10: medium: discriminant check might fail [provers reached step limit before completing the proof]
 main.adb:49:07: info: precondition proved (CVC5: 1 VC)
 main.adb:52:30: info: data dependencies proved
 main.adb:55:07: info: range check proved (CVC5: 2 VC)
@@ -27,7 +27,7 @@ main.adb:71:28: info: initialization of "V_A" proved
 main.adb:75:20: info: add a contract to analyze it separately from calling contexts
 main.adb:75:20: info: local subprogram "Assign" only analyzed in the context of calls [info-unrolling-inlining]
 main.adb:75:28: info: initialization of "X" proved
-main.adb:77:13: medium: length check might fail, in call inlined at main.adb:80 [reason for check: array must be of the appropriate length]
+main.adb:77:13: medium: length check might fail, in call inlined at main.adb:80 [reason for check: array must be of the appropriate length] [provers gave up before completing the proof]
 main.adb:77:15: info: length check proved (CVC5: 3 VC), in call inlined at main.adb:80
 main.adb:77:18: info: length check proved (CVC5: 3 VC), in call inlined at main.adb:80
 main.adb:80:10: info: analyzing call to "Assign" in context
@@ -37,17 +37,17 @@ main.adb:87:20: info: local subprogram "Assign" only analyzed in the context of 
 main.adb:87:28: info: initialization of "X" proved
 main.adb:89:13: info: length check proved (CVC5: 3 VC), in call inlined at main.adb:92
 main.adb:89:15: info: length check proved (CVC5: 3 VC), in call inlined at main.adb:92
-main.adb:89:18: medium: length check might fail, in call inlined at main.adb:92 [reason for check: array must be of the appropriate length]
+main.adb:89:18: medium: length check might fail, in call inlined at main.adb:92 [reason for check: array must be of the appropriate length] [provers gave up before completing the proof]
 main.adb:92:10: info: analyzing call to "Assign" in context
 main.adb:99:20: info: add a contract to analyze it separately from calling contexts
 main.adb:99:20: info: local subprogram "Assign" only analyzed in the context of calls [info-unrolling-inlining]
 main.adb:101:13: info: length check proved (CVC5: 3 VC), in call inlined at main.adb:104
 main.adb:101:16: info: index check proved (CVC5: 2 VC), in call inlined at main.adb:104
 main.adb:104:10: info: analyzing call to "Assign" in context
-main.adb:104:18: medium: length check might fail [reason for check: array must be of the appropriate length] [possible fix: precondition of subprogram at line 95 should mention V_A]
+main.adb:104:18: medium: length check might fail [reason for check: array must be of the appropriate length] [possible fix: precondition of subprogram at line 95 should mention V_A] [provers gave up before completing the proof]
 main.adb:108:07: info: precondition proved (CVC5: 2 VC)
 main.adb:111:38: info: data dependencies proved
-main.adb:119:07: medium: resource or memory leak might occur at end of scope
+main.adb:119:07: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 main.adb:122:40: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:126:10: info: discriminant check proved (CVC5: 1 VC)
 main.adb:126:20: info: pointer dereference check proved (CVC5: 1 VC)
@@ -56,19 +56,19 @@ main.adb:126:27: info: discriminant check proved (CVC5: 1 VC)
 main.adb:130:40: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:134:10: info: discriminant check proved (CVC5: 1 VC)
 main.adb:134:20: info: pointer dereference check proved (CVC5: 1 VC)
-main.adb:134:24: medium: discriminant check might fail (e.g. when V_R.all = (D => 1, F => 12))
+main.adb:134:24: medium: discriminant check might fail (e.g. when V_R.all = (D => 1, F => 12)) [provers reached step limit before completing the proof]
 main.adb:134:27: info: discriminant check proved (CVC5: 1 VC)
 main.adb:138:40: info: pointer dereference check proved (CVC5: 1 VC)
-main.adb:142:10: medium: discriminant check might fail (e.g. when V_R.all = (D => 1, F => 4))
+main.adb:142:10: medium: discriminant check might fail (e.g. when V_R.all = (D => 1, F => 4)) [provers reached step limit before completing the proof]
 main.adb:142:20: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:142:24: info: discriminant check proved (CVC5: 1 VC)
-main.adb:142:27: medium: discriminant check might fail
+main.adb:142:27: medium: discriminant check might fail [provers reached step limit before completing the proof]
 main.adb:146:40: info: pointer dereference check proved (CVC5: 1 VC)
-main.adb:150:10: medium: discriminant check might fail
+main.adb:150:10: medium: discriminant check might fail [provers reached step limit before completing the proof]
 main.adb:150:19: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:153:07: info: precondition proved (CVC5: 2 VC)
 main.adb:156:40: info: data dependencies proved
-main.adb:164:07: medium: resource or memory leak might occur at end of scope
+main.adb:164:07: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 main.adb:167:40: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:171:10: info: discriminant check proved (CVC5: 1 VC)
 main.adb:171:20: info: pointer dereference check proved (CVC5: 1 VC)
@@ -77,19 +77,19 @@ main.adb:171:27: info: discriminant check proved (CVC5: 1 VC)
 main.adb:175:40: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:179:10: info: discriminant check proved (CVC5: 1 VC)
 main.adb:179:20: info: pointer dereference check proved (CVC5: 1 VC)
-main.adb:179:24: medium: discriminant check might fail (e.g. when V_R.all = (D => 1, F => 12))
+main.adb:179:24: medium: discriminant check might fail (e.g. when V_R.all = (D => 1, F => 12)) [provers gave up before completing the proof]
 main.adb:179:27: info: discriminant check proved (CVC5: 1 VC)
 main.adb:183:40: info: pointer dereference check proved (CVC5: 1 VC)
-main.adb:187:10: medium: discriminant check might fail (e.g. when V_R.all = (D => 1, F => 4))
+main.adb:187:10: medium: discriminant check might fail (e.g. when V_R.all = (D => 1, F => 4)) [provers reached step limit before completing the proof]
 main.adb:187:20: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:187:24: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
-main.adb:187:27: medium: discriminant check might fail
+main.adb:187:27: medium: discriminant check might fail [provers reached step limit before completing the proof]
 main.adb:191:40: info: pointer dereference check proved (CVC5: 1 VC)
-main.adb:195:10: medium: discriminant check might fail
+main.adb:195:10: medium: discriminant check might fail [provers reached step limit before completing the proof]
 main.adb:195:19: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:198:07: info: precondition proved (CVC5: 2 VC)
 main.adb:201:37: info: data dependencies proved
-main.adb:208:07: medium: resource or memory leak might occur at end of scope
+main.adb:208:07: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 main.adb:211:37: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:211:60: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:215:10: info: range check proved (CVC5: 1 VC)
@@ -100,9 +100,9 @@ main.adb:215:27: info: length check proved (CVC5: 3 VC)
 main.adb:219:37: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:219:60: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:223:10: info: range check proved (CVC5: 1 VC)
-main.adb:223:15: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]
+main.adb:223:15: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [provers reached step limit before completing the proof]
 main.adb:223:20: info: pointer dereference check proved (CVC5: 1 VC)
-main.adb:223:24: medium: length check might fail [reason for check: source and destination arrays for the assignment must have the same length]
+main.adb:223:24: medium: length check might fail [reason for check: source and destination arrays for the assignment must have the same length] [provers gave up before completing the proof]
 main.adb:223:27: info: length check proved (CVC5: 3 VC)
 main.adb:227:37: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:227:60: info: pointer dereference check proved (CVC5: 1 VC)
@@ -110,10 +110,10 @@ main.adb:231:10: info: range check proved (CVC5: 1 VC)
 main.adb:231:15: info: range check proved (CVC5: 1 VC)
 main.adb:231:20: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:231:24: info: length check proved (CVC5: 3 VC)
-main.adb:231:27: medium: length check might fail [reason for check: array must be of the appropriate length]
+main.adb:231:27: medium: length check might fail [reason for check: array must be of the appropriate length] [provers gave up before completing the proof]
 main.adb:235:37: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:235:60: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:239:10: info: pointer dereference check proved (CVC5: 1 VC)
-main.adb:239:10: medium: range check might fail
+main.adb:239:10: medium: range check might fail [provers reached step limit before completing the proof]
 main.adb:239:21: info: index check proved (CVC5: 2 VC)
 main.adb:242:07: info: precondition proved (CVC5: 3 VC)

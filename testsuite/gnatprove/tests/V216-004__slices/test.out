@@ -10,13 +10,13 @@ main.adb:15:07: info: no contextual analysis of "Rand" (body not seen yet)
 main.adb:15:07: warning: assuming "Rand" has no effect on global items
 main.adb:15:07: warning: no Global contract available for "Rand" [assumed-global-null]
 main.adb:16:10: info: index check proved (CVC5: 2 VC)
-main.adb:16:15: medium: array index check might fail [reason for check: value must be a valid index into the array]
+main.adb:16:15: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers gave up before completing the proof]
 main.adb:20:10: info: no contextual analysis of "Rand" (body not seen yet)
 main.adb:20:10: warning: assuming "Rand" has no effect on global items
 main.adb:20:10: warning: no Global contract available for "Rand" [assumed-global-null]
 main.adb:21:10: info: index check proved (CVC5: 2 VC)
 main.adb:21:15: info: no contextual analysis of "Rand" (body not seen yet)
-main.adb:21:15: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: you should consider adding a postcondition to function Rand or turning it into an expression function in its unit spec]
+main.adb:21:15: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: you should consider adding a postcondition to function Rand or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 main.adb:21:15: warning: assuming "Rand" has no effect on global items
 main.adb:21:15: warning: no Global contract available for "Rand" [assumed-global-null]
 main.adb:21:26: info: index check proved (CVC5: 2 VC)
@@ -25,7 +25,7 @@ main.adb:25:10: warning: assuming "Rand" has no effect on global items
 main.adb:25:10: warning: no Global contract available for "Rand" [assumed-global-null]
 main.adb:26:10: info: index check proved (CVC5: 2 VC)
 main.adb:26:15: info: index check proved (CVC5: 2 VC)
-main.adb:26:15: medium: precondition might fail
+main.adb:26:15: medium: precondition might fail [provers reached step limit before completing the proof]
 main.adb:26:23: info: no contextual analysis of "Rand" (body not seen yet)
 main.adb:26:23: warning: assuming "Rand" has no effect on global items
 main.adb:26:23: warning: no Global contract available for "Rand" [assumed-global-null]
@@ -34,7 +34,7 @@ main.adb:27:10: info: no contextual analysis of "Rand" (body not seen yet)
 main.adb:27:10: warning: assuming "Rand" has no effect on global items
 main.adb:27:10: warning: no Global contract available for "Rand" [assumed-global-null]
 main.adb:28:10: info: index check proved (CVC5: 2 VC)
-main.adb:28:10: medium: precondition might fail
+main.adb:28:10: medium: precondition might fail [provers reached step limit before completing the proof]
 main.adb:28:18: info: no contextual analysis of "Rand" (body not seen yet)
 main.adb:28:18: warning: assuming "Rand" has no effect on global items
 main.adb:28:18: warning: no Global contract available for "Rand" [assumed-global-null]
@@ -51,7 +51,7 @@ main.adb:33:30: warning: assuming "Rand" has no effect on global items
 main.adb:33:30: warning: no Global contract available for "Rand" [assumed-global-null]
 main.adb:33:41: info: index check proved (CVC5: 2 VC)
 main.adb:34:25: info: index check proved (CVC5: 2 VC)
-main.adb:34:27: medium: range check might fail [possible fix: you should consider adding a postcondition to function Rand or turning it into an expression function in its unit spec]
+main.adb:34:27: medium: range check might fail [possible fix: you should consider adding a postcondition to function Rand or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 main.adb:34:30: info: index check proved (CVC5: 2 VC)
 main.adb:34:30: info: no contextual analysis of "Rand" (body not seen yet)
 main.adb:34:30: warning: assuming "Rand" has no effect on global items

@@ -1,5 +1,5 @@
-test_record_cnt_ex.ads:30:19: medium: assertion might fail
-test_record_cnt_ex.ads:51:19: medium: assertion might fail
+test_record_cnt_ex.ads:30:19: medium: assertion might fail [provers reached step limit before completing the proof]
+test_record_cnt_ex.ads:51:19: medium: assertion might fail [provers reached step limit before completing the proof]
 test_record_cnt_ex.ads:55:50: info: flow dependencies proved
 test_record_cnt_ex.ads:71:33: info: range check proved (CVC5: 1 VC)
 test_record_cnt_ex.ads:72:38: info: range check proved (CVC5: 1 VC)
@@ -11,5 +11,5 @@ test_record_cnt_ex.ads:85:25: info: discriminant check proved (CVC5: 1 VC)
 test_record_cnt_ex.ads:86:25: info: discriminant check proved (CVC5: 1 VC)
 test_record_cnt_ex.ads:87:30: info: discriminant check proved (CVC5: 1 VC)
 test_record_cnt_ex.ads:88:30: info: discriminant check proved (CVC5: 1 VC)
-test_record_cnt_ex.ads:90:19: medium: assertion might fail
-test_record_cnt_ex.ads:94:19: medium: assertion might fail
+test_record_cnt_ex.ads:90:19: medium: assertion might fail [provers reached step limit before completing the proof]
+test_record_cnt_ex.ads:94:19: medium: assertion might fail [provers reached step limit before completing the proof]

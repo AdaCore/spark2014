@@ -49,6 +49,7 @@
       + possible fix: add precondition (abs (X) <= Integer'Last) to subprogram at line 42
    42 |       function Get_GCD (X, Y : Integer) return Natural is
       |                ^
+      + provers gave up before completing the proof
 
  high: overflow check might fail, cannot prove upper bound for abs (Y)
 --> predicates.ads:44:32
@@ -59,6 +60,7 @@
       + possible fix: add precondition (abs (Y) <= Integer'Last) to subprogram at line 42
    42 |       function Get_GCD (X, Y : Integer) return Natural is
       |                ^
+      + provers gave up before completing the proof
 
  info: precondition proved
 --> predicates.ads:45:13

@@ -6,5 +6,5 @@ invalid_read_in_elab.adb:20:25: error: launch "gnatprove --explain=E0010" for mo
 invalid_read_in_elab.adb:20:25: error: object was moved at line 11 [E0010]
 invalid_read_in_elab.adb:35:25: error: object was borrowed at line 30
 invalid_read_in_elab.adb:39:25: error: object was borrowed at line 30
-invalid_read_in_elab_2.ads:8:24: medium: pointer dereference check might fail (e.g. when X = null)
+invalid_read_in_elab_2.ads:8:24: medium: pointer dereference check might fail (e.g. when X = null) [provers reached step limit before completing the proof]
 gnatprove: error during flow analysis and proof

@@ -11,7 +11,7 @@ nonterminating.adb:4:14: info: add a contract to analyze it separately from call
 nonterminating.adb:4:14: info: local subprogram "Infinite_Loop" only analyzed in the context of calls [info-unrolling-inlining]
 nonterminating.adb:4:14: warning: subprogram "Infinite_Loop" has no effect
 nonterminating.adb:7:20: medium: aspect Always_Terminates on "Nonterminating" could be incorrect, loop might be nonterminating, in call inlined at nonterminating.adb:21 [possible fix: add loop variant in the loop body]
-nonterminating.adb:8:15: medium: overflow check might fail, cannot prove upper bound for -X, in call inlined at nonterminating.adb:21 (e.g. when X = Integer'First) [reason for check: result of negation must fit in a 32-bits machine integer]
+nonterminating.adb:8:15: medium: overflow check might fail, cannot prove upper bound for -X, in call inlined at nonterminating.adb:21 (e.g. when X = Integer'First) [reason for check: result of negation must fit in a 32-bits machine integer] [provers gave up before completing the proof]
 nonterminating.adb:12:33: warning: unused variable "I"
 nonterminating.adb:14:07: medium: implicit aspect Always_Terminates on "Infinite_Recursion" could be incorrect, subprogram is recursive [possible fix: annotate "Infinite_Recursion" with a Subprogram_Variant aspect]
 nonterminating.adb:14:14: info: analyzing call to "Infinite_Recursion" in context

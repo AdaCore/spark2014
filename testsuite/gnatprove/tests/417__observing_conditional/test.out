@@ -14,12 +14,12 @@ main.adb:23:23: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:29:17: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:30:27: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:30:32: info: pointer dereference check proved (CVC5: 1 VC)
-main.adb:30:43: medium: pointer dereference check might fail [possible fix: subprogram at line 15 should mention T in a precondition]
+main.adb:30:43: medium: pointer dereference check might fail [possible fix: subprogram at line 15 should mention T in a precondition] [provers reached step limit before completing the proof]
 main.adb:31:19: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:31:24: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:33:11: info: pointer dereference check proved (CVC5: 1 VC)
-main.adb:33:17: medium: pointer dereference check might fail [possible fix: subprogram at line 15 should mention T in a precondition]
-main.adb:33:41: medium: pointer dereference check might fail
+main.adb:33:17: medium: pointer dereference check might fail [possible fix: subprogram at line 15 should mention T in a precondition] [provers reached step limit before completing the proof]
+main.adb:33:41: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 main.adb:40:18: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:41:18: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:41:24: info: pointer dereference check proved (CVC5: 1 VC)
@@ -33,7 +33,7 @@ main.adb:43:35: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:49:19: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:50:35: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:50:41: info: pointer dereference check proved (CVC5: 1 VC)
-main.adb:50:52: medium: pointer dereference check might fail [possible fix: subprogram at line 16 should mention T in a precondition]
+main.adb:50:52: medium: pointer dereference check might fail [possible fix: subprogram at line 16 should mention T in a precondition] [provers reached step limit before completing the proof]
 main.adb:51:27: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:51:33: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:51:39: info: pointer dereference check proved (CVC5: 1 VC)
@@ -43,8 +43,8 @@ main.adb:52:44: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:52:49: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:54:11: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:54:17: info: pointer dereference check proved (CVC5: 1 VC)
-main.adb:54:22: medium: pointer dereference check might fail [possible fix: subprogram at line 16 should mention T in a precondition]
-main.adb:54:46: medium: pointer dereference check might fail
+main.adb:54:22: medium: pointer dereference check might fail [possible fix: subprogram at line 16 should mention T in a precondition] [provers reached step limit before completing the proof]
+main.adb:54:46: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 main.adb:55:11: info: pointer dereference check proved (CVC5: 1 VC)
-main.adb:55:16: medium: pointer dereference check might fail [possible fix: subprogram at line 16 should mention T in a precondition]
-main.adb:55:40: medium: pointer dereference check might fail
+main.adb:55:16: medium: pointer dereference check might fail [possible fix: subprogram at line 16 should mention T in a precondition] [provers reached step limit before completing the proof]
+main.adb:55:40: medium: pointer dereference check might fail [provers reached step limit before completing the proof]

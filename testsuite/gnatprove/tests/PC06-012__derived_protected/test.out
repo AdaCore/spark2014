@@ -1,8 +1,8 @@
 my_types.adb:11:07: info: initialization of "X" proved
-my_types.adb:14:20: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
+my_types.adb:14:20: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
 my_types.adb:18:07: info: initialization of "X" proved
-my_types.adb:21:20: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
+my_types.adb:21:20: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
 my_types.adb:25:07: info: initialization of "X" proved
-my_types.adb:28:20: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
+my_types.adb:28:20: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
 my_types.ads:6:16: info: implicit aspect Always_Terminates on "Get_F" has been proved, subprogram will terminate
 my_types.ads:8:17: info: postcondition proved (CVC5: 1 VC)

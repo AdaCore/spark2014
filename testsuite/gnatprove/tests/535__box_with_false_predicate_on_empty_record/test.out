@@ -1,13 +1,13 @@
 main.adb:39:49: medium: in default value of box association at main.adb:39
-main.adb:39:49: medium: predicate check might fail on default value
+main.adb:39:49: medium: predicate check might fail on default value [provers reached step limit before completing the proof]
 main.adb:45:45: medium: in default value of box association at main.adb:45
-main.adb:45:45: medium: predicate check might fail on default value
+main.adb:45:45: medium: predicate check might fail on default value [provers reached step limit before completing the proof]
 main.adb:52:15: info: length check proved (CVC5: 3 VC)
 main.adb:52:23: medium: in default value of box association at main.adb:52
-main.adb:52:23: medium: predicate check might fail on default value
+main.adb:52:23: medium: predicate check might fail on default value [provers reached step limit before completing the proof]
 main.adb:58:24: medium: in default value of box association at main.adb:58
-main.adb:58:24: medium: predicate check might fail on default value
+main.adb:58:24: medium: predicate check might fail on default value [provers reached step limit before completing the proof]
 main.adb:64:24: medium: in default value of box association at main.adb:64
-main.adb:64:24: medium: predicate check might fail on default value
+main.adb:64:24: medium: predicate check might fail on default value [provers reached step limit before completing the proof]
 main.adb:70:24: medium: in default value of box association at main.adb:70
-main.adb:70:24: medium: predicate check might fail on default value
+main.adb:70:24: medium: predicate check might fail on default value [provers reached step limit before completing the proof]

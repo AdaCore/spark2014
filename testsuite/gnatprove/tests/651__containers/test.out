@@ -1,5 +1,5 @@
 p1.adb:4:07: info: initialization of "V" proved
-p1.adb:7:12: medium: precondition might fail
+p1.adb:7:12: medium: precondition might fail [provers gave up before completing the proof]
 p1.ads:6:13: info: implicit aspect Always_Terminates on "All_In" has been proved, subprogram will terminate
 p1.ads:9:06: info: data dependencies proved
 p1.ads:11:14: info: postcondition proved (Z3: 1 VC)
@@ -14,7 +14,7 @@ p3-child.adb:4:07: info: initialization of "V" proved
 p3-child.adb:7:12: info: precondition proved (CVC5: 1 VC)
 p3-child.adb:7:12: medium: for Item before the call at spark-containers-functional-sets.ads:264, in instantiation at p3-child.ads:4
 p3-child.adb:7:12: medium: in inlined invariant at p3.ads:5
-p3-child.adb:7:12: medium: invariant check might fail, cannot prove E >= 0
+p3-child.adb:7:12: medium: invariant check might fail, cannot prove E >= 0 [provers gave up before completing the proof]
 p3-child.ads:7:13: info: implicit aspect Always_Terminates on "All_In" has been proved, subprogram will terminate
 p3-child.ads:9:06: info: data dependencies proved
 p3-child.ads:11:14: info: postcondition proved (CVC5: 1 VC)
@@ -23,4 +23,4 @@ p3.ads:5:74: info: in default value of private type at p3.ads:3
 p3.ads:5:74: info: range check proved (CVC5: 2 VC)
 spark-containers-functional-sets.ads:462:13: medium: during checks for quantification at spark-containers-functional-sets.ads:64, in instantiation at p1.ads:14
 spark-containers-functional-sets.ads:462:13: medium: in inlined invariant at p1.ads:13
-spark-containers-functional-sets.ads:462:13: medium: invariant check might fail, cannot prove E >= 0, in instantiation at p1.ads:14
+spark-containers-functional-sets.ads:462:13: medium: invariant check might fail, cannot prove E >= 0, in instantiation at p1.ads:14 [provers gave up before completing the proof]

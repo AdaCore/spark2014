@@ -18,6 +18,7 @@
       --> logging_in_abstract.ads:5:04
     5 |       procedure Get with
       |       ^
+      + provers gave up before completing the proof
 
  high: array index check might fail
 --> logging_in_abstract.adb:17:12
@@ -29,6 +30,7 @@
       --> logging_in_abstract.ads:5:04
     5 |       procedure Get with
       |       ^
+      + provers gave up before completing the proof
 
  info: data dependencies proved
 --> logging_in_abstract.ads:6:06

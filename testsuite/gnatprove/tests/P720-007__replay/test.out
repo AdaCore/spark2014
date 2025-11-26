@@ -29,12 +29,12 @@ harness.adb:7:04: info: initialization of "H" proved
 harness.adb:10:04: info: precondition proved (CVC5: 1 VC)
 harness.adb:11:04: info: precondition proved (CVC5: 1 VC)
 harness.adb:12:04: info: precondition proved (CVC5: 1 VC)
-harness.adb:13:19: medium: assertion might fail [possible fix: subprogram at line 3 should mention X in a precondition]
+harness.adb:13:19: medium: assertion might fail [possible fix: subprogram at line 3 should mention X in a precondition] [provers reached step limit before completing the proof]
 harness.adb:14:04: info: precondition proved (CVC5: 1 VC)
 harness.adb:15:04: info: precondition proved (CVC5: 1 VC)
-harness.adb:16:19: medium: assertion might fail [possible fix: subprogram at line 3 should mention Y in a precondition]
+harness.adb:16:19: medium: assertion might fail [possible fix: subprogram at line 3 should mention Y in a precondition] [provers reached step limit before completing the proof]
 harness.adb:17:04: info: precondition proved (CVC5: 1 VC)
-harness.adb:18:19: medium: assertion might fail [possible fix: subprogram at line 3 should mention Z in a precondition]
+harness.adb:18:19: medium: assertion might fail [possible fix: subprogram at line 3 should mention Z in a precondition] [provers reached step limit before completing the proof]
 ring_buf.adb:15:36: info: division check proved (CVC5: 1 VC)
 ring_buf.adb:16:28: info: range check proved (CVC5: 2 VC)
 ring_buf.adb:23:32: info: division check proved (CVC5: 1 VC)
@@ -54,12 +54,12 @@ harness.adb:7:04: info: initialization of "H" proved
 harness.adb:10:04: info: precondition proved
 harness.adb:11:04: info: precondition proved
 harness.adb:12:04: info: precondition proved
-harness.adb:13:19: medium: assertion might fail [possible fix: subprogram at line 3 should mention X in a precondition]
+harness.adb:13:19: medium: assertion might fail [possible fix: subprogram at line 3 should mention X in a precondition] [provers reached step limit before completing the proof]
 harness.adb:14:04: info: precondition proved
 harness.adb:15:04: info: precondition proved
-harness.adb:16:19: medium: assertion might fail [possible fix: subprogram at line 3 should mention Y in a precondition]
+harness.adb:16:19: medium: assertion might fail [possible fix: subprogram at line 3 should mention Y in a precondition] [provers reached step limit before completing the proof]
 harness.adb:17:04: info: precondition proved
-harness.adb:18:19: medium: assertion might fail [possible fix: subprogram at line 3 should mention Z in a precondition]
+harness.adb:18:19: medium: assertion might fail [possible fix: subprogram at line 3 should mention Z in a precondition] [provers reached step limit before completing the proof]
 ring_buf.adb:15:36: info: division check proved
 ring_buf.adb:16:28: info: range check proved
 ring_buf.adb:23:32: info: division check proved

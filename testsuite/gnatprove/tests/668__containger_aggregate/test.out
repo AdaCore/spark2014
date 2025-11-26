@@ -1,9 +1,9 @@
 main.adb:4:22: info: all elements shall fit in index type for sequence aggregates at p.ads:11
 main.adb:4:22: info: precondition proved (Trivial: 1 VC)
-p.adb:9:14: high: overflow check might fail, cannot prove lower bound for S + Set_Type (N) (e.g. when N = Integer'First and S = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at p.ads:18 should mention N and S in a precondition]
-p.ads:11:11: medium: Container_Aggregates annotation might be incorrect
-p.ads:11:11: medium: Container_Aggregates annotation might be incorrect
-p.ads:11:11: medium: Container_Aggregates annotation might be incorrect
+p.adb:9:14: high: overflow check might fail, cannot prove lower bound for S + Set_Type (N) (e.g. when N = Integer'First and S = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at p.ads:18 should mention N and S in a precondition] [provers gave up before completing the proof]
+p.ads:11:11: medium: Container_Aggregates annotation might be incorrect [provers gave up before completing the proof]
+p.ads:11:11: medium: Container_Aggregates annotation might be incorrect [provers gave up before completing the proof]
+p.ads:11:11: medium: Container_Aggregates annotation might be incorrect [provers gave up before completing the proof]
 p.ads:11:11: medium: after a call to Empty_Set at p.ads:13
 p.ads:11:11: medium: after a call to Include at p.ads:18
 p.ads:11:11: medium: after a call to Include at p.ads:18

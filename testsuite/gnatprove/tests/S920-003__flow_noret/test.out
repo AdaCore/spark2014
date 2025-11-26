@@ -1,4 +1,4 @@
 noret.adb:1:34: info: initialization of "Y" proved
 noret.adb:2:20: info: data dependencies proved
 noret.adb:4:36: info: data dependencies proved
-noret.adb:6:07: medium: unexpected exception might be raised [reason for check: Error allows propagating no exceptions] [possible explanation: Program_Error might be unexpectedly raised]
+noret.adb:6:07: medium: unexpected exception might be raised [reason for check: Error allows propagating no exceptions] [possible explanation: Program_Error might be unexpectedly raised] [provers gave up before completing the proof]

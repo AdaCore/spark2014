@@ -5,17 +5,17 @@ kmp.adb:11:23: info: overflow check proved (CVC5: 2 VC)
 kmp.adb:12:39: info: overflow check proved (CVC5: 4 VC)
 kmp.adb:12:43: medium: implicit aspect Always_Terminates on "Init_Next" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 kmp.adb:14:17: info: loop invariant initialization proved (CVC5: 3 VC)
-kmp.adb:14:17: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove J in P'Range
-kmp.adb:16:17: high: loop invariant might fail in first iteration (e.g. when I = -1 and J = 0 and P = (others => -1) and P'First = -1 and P'Last = 0)
-kmp.adb:16:17: high: loop invariant might not be preserved by an arbitrary iteration (e.g. when I = Integer'First and J = 0 and P = (Integer'First => 0, Integer'First+1 => 2, 1 => 0, others => Integer'First) and P'First = Integer'First and P'Last = 2)
-kmp.adb:16:17: high: range check might fail (e.g. when I = 0 and J = 1 and P = (others => 0) and P'First = 0 and P'Last = 1) [reason for check: slice bounds must fit in the underlying array]
-kmp.adb:16:22: medium: overflow check might fail, cannot prove lower bound for I - J [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
-kmp.adb:16:34: medium: range check might fail [reason for check: slice bounds must fit in the underlying array]
-kmp.adb:16:44: medium: overflow check might fail, cannot prove lower bound for J - 1 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+kmp.adb:14:17: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove J in P'Range [provers reached step limit before completing the proof]
+kmp.adb:16:17: high: loop invariant might fail in first iteration (e.g. when I = -1 and J = 0 and P = (others => -1) and P'First = -1 and P'Last = 0) [provers reached step limit before completing the proof]
+kmp.adb:16:17: high: loop invariant might not be preserved by an arbitrary iteration (e.g. when I = Integer'First and J = 0 and P = (Integer'First => 0, Integer'First+1 => 2, 1 => 0, others => Integer'First) and P'First = Integer'First and P'Last = 2) [provers reached step limit before completing the proof]
+kmp.adb:16:17: high: range check might fail (e.g. when I = 0 and J = 1 and P = (others => 0) and P'First = 0 and P'Last = 1) [reason for check: slice bounds must fit in the underlying array] [provers reached step limit before completing the proof]
+kmp.adb:16:22: medium: overflow check might fail, cannot prove lower bound for I - J [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
+kmp.adb:16:34: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [provers reached step limit before completing the proof]
+kmp.adb:16:44: medium: overflow check might fail, cannot prove lower bound for J - 1 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
 kmp.adb:17:19: info: index check proved (CVC5: 2 VC)
 kmp.adb:17:27: info: index check proved (CVC5: 2 VC)
 kmp.adb:18:23: info: overflow check proved (CVC5: 2 VC)
-kmp.adb:19:23: medium: overflow check might fail, cannot prove upper bound for J + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
+kmp.adb:19:23: medium: overflow check might fail, cannot prove upper bound for J + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
 kmp.adb:20:22: info: index check proved (CVC5: 2 VC)
 kmp.adb:22:16: warning: unreachable code (CVC5: 1 VC)
 kmp.adb:22:23: info: overflow check proved (CVC5: 2 VC)

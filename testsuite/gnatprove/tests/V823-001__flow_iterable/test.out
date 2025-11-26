@@ -1,4 +1,4 @@
-proves_false.adb:16:11: medium: postcondition might fail, cannot prove (for some k in M => k = Length'Result - 1), in instantiation at proves_false.adb:42
+proves_false.adb:16:11: medium: postcondition might fail, cannot prove (for some k in M => k = Length'Result - 1), in instantiation at proves_false.adb:42 [provers gave up before completing the proof]
 proves_false.adb:16:30: info: predicate check proved (Trivial: 1 VC), in instantiation at proves_false.adb:42
 proves_false.adb:16:40: info: predicate check proved (Trivial: 1 VC), in instantiation at proves_false.adb:42
 proves_false.adb:16:50: info: predicate check proved (Trivial: 1 VC), in instantiation at proves_false.adb:42

@@ -1,2 +1,2 @@
 bad.ads:3:13: info: implicit aspect Always_Terminates on "Too_Small" has been proved, subprogram will terminate
-bad.ads:4:12: high: range check might fail, cannot prove lower bound for Too_Small
+bad.ads:4:12: high: range check might fail, cannot prove lower bound for Too_Small [provers reached step limit before completing the proof]

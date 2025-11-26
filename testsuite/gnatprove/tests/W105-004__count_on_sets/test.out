@@ -48,7 +48,7 @@ ho_sets.ads:27:49: info: null exclusion check proved (CVC5: 1 VC)
 ho_sets.ads:29:14: info: implicit aspect Always_Terminates on "Lemma_Count_Remove" has been proved, subprogram will terminate
 ho_sets.ads:32:28: info: function contract feasibility proved (Trivial: 1 VC)
 ho_sets.ads:37:42: info: predicate check proved (Trivial: 1 VC)
-ho_sets.ads:37:61: medium: range check might fail [reason for check: expression of type Big_Integer must be non-negative]
+ho_sets.ads:37:61: medium: range check might fail [reason for check: expression of type Big_Integer must be non-negative] [provers gave up before completing the proof]
 ho_sets.ads:37:63: info: predicate check proved (Trivial: 1 VC)
 ho_sets.ads:39:14: info: postcondition proved (CVC5: 1 VC)
 ho_sets.ads:39:14: info: predicate check proved (Trivial: 1 VC)

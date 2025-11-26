@@ -1,2 +1,2 @@
-foo.adb:28:22: medium: assertion might fail [possible fix: call at line 27 should mention Red in a postcondition]
-foo.adb:32:22: medium: assertion might fail [possible fix: call at line 31 should mention Black in a postcondition]
+foo.adb:28:22: medium: assertion might fail [possible fix: call at line 27 should mention Red in a postcondition] [provers reached step limit before completing the proof]
+foo.adb:32:22: medium: assertion might fail [possible fix: call at line 31 should mention Black in a postcondition] [provers reached step limit before completing the proof]

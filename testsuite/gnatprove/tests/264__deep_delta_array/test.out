@@ -11,7 +11,7 @@ test.adb:39:10: info: index check proved (CVC5: 2 VC)
 test.adb:40:10: info: index check proved (CVC5: 2 VC)
 test.adb:41:10: info: index check proved (CVC5: 2 VC)
 test.adb:42:10: info: index check proved (CVC5: 2 VC)
-test.adb:44:10: medium: assertion might fail [possible fix: precondition of subprogram at line 30 should mention X]
+test.adb:44:10: medium: assertion might fail [possible fix: precondition of subprogram at line 30 should mention X] [provers reached step limit before completing the proof]
 test.adb:45:15: info: index check proved (CVC5: 2 VC)
 test.adb:46:15: info: index check proved (CVC5: 2 VC)
 test.adb:47:15: info: index check proved (CVC5: 2 VC)

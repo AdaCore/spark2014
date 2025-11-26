@@ -6,6 +6,7 @@
    17 |             The_Data := The_Data + 1;
       |                         ~~~~~~~~~^~~
       + reason for check: result of addition must fit in a 32-bits machine integer
+      + provers gave up before completing the proof
 
  warning: no Always_Terminates aspect available for "Set_True" [assumed-always-terminates]
 --> semaphores1.adb:34:07
@@ -27,6 +28,7 @@
         "Semaphores1.T1"
         -> "Semaphores1.Initialize_Shared_Data"
         -> "Semaphores1.Protected_Natural.Incr"
+      + provers gave up before completing the proof
 
  info: nontermination of task proved
 --> semaphores1.ads:6:09
@@ -36,6 +38,7 @@
     7 |       task T2;
       |            ^~
       + reason for check: ceiling priority of the protected object "Semaphores1.Protected_Natural" must be >= the priority of the caller "Semaphores1.T2" in the call "Semaphores1.T2" -> "Semaphores1.Protected_Natural.Get"
+      + provers reached step limit before completing the proof
 
  info: nontermination of task proved
 --> semaphores1.ads:7:09

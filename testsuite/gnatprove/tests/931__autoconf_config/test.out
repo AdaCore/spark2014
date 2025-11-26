@@ -2,11 +2,11 @@
 conf.cgpr: error: project file "conf.cgpr" not found
 ===== --autoconf should work regardless of existence of file =======
 main.adb:3:12: info: implicit aspect Always_Terminates on "Has_Check" has been proved, subprogram will terminate
-main.adb:3:57: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= Integer'Last - 1) to subprogram at line 3]
+main.adb:3:57: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= Integer'Last - 1) to subprogram at line 3] [provers gave up before completing the proof]
 creating configuration project conf.cgpr
 ===== --autoconf second invocation =======
 main.adb:3:12: info: implicit aspect Always_Terminates on "Has_Check" has been proved, subprogram will terminate
-main.adb:3:57: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= Integer'Last - 1) to subprogram at line 3]
+main.adb:3:57: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= Integer'Last - 1) to subprogram at line 3] [provers gave up before completing the proof]
 ===== --config should work now =======
 main.adb:3:12: info: implicit aspect Always_Terminates on "Has_Check" has been proved, subprogram will terminate
-main.adb:3:57: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= Integer'Last - 1) to subprogram at line 3]
+main.adb:3:57: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= Integer'Last - 1) to subprogram at line 3] [provers gave up before completing the proof]

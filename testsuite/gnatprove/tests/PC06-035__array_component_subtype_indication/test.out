@@ -1,2 +1,2 @@
 array_component.ads:2:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
-array_component.ads:4:04: medium: range check might fail
+array_component.ads:4:04: medium: range check might fail [provers gave up before completing the proof]

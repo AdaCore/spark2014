@@ -8,5 +8,5 @@ neutrino.adb:102:04: info: initialization of "Status" proved
 neutrino.adb:104:25: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 neutrino.adb:107:10: info: initialization of "Pulse" proved
 neutrino.adb:110:23: medium: in value of subprogram parameter after the call at neutrino.adb:110
-neutrino.adb:110:23: medium: initialization check might fail [possible fix: postcondition of call at line 109 should mention Pulse'Initialized (for argument Pulse)]
-neutrino.adb:129:19: medium: assertion might fail [possible fix: loop at line 104 should mention Status in a loop invariant]
+neutrino.adb:110:23: medium: initialization check might fail [possible fix: postcondition of call at line 109 should mention Pulse'Initialized (for argument Pulse)] [provers reached step limit before completing the proof]
+neutrino.adb:129:19: medium: assertion might fail [possible fix: loop at line 104 should mention Status in a loop invariant] [provers reached step limit before completing the proof]
