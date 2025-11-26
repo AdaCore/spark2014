@@ -14,4 +14,4 @@ constant_access.adb:48:22: info: assertion proved (CVC5: 2 VC)
 constant_access.adb:48:23: medium: resource or memory leak might occur [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
 constant_access.adb:49:22: info: assertion proved (CVC5: 2 VC)
 constant_access.adb:49:37: medium: resource or memory leak might occur [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
-constant_access.adb:50:14: medium: resource or memory leak might occur [possible explanation: conversion to access-to-constant type leaks memory] [possible fix: subprogram at line 31 should mention X in a precondition]
+constant_access.adb:50:14: medium: resource or memory leak might occur [possible explanation: conversion to access-to-constant type leaks memory] [possible fix: subprogram at line 31 should mention X in a precondition] [provers reached step limit before completing the proof]

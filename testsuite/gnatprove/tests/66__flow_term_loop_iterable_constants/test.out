@@ -1,7 +1,7 @@
-cont.adb:4:07: medium: precondition might fail [possible fix: subprogram at cont.ads:9 should mention I and S in a precondition]
+cont.adb:4:07: medium: precondition might fail [possible fix: subprogram at cont.ads:9 should mention I and S in a precondition] [provers gave up before completing the proof]
 cont.ads:7:04: info: initialization of "S" proved
 neverending_loop.adb:6:08: info: precondition proved (Trivial: 1 VC)
-neverending_loop.adb:6:08: medium: precondition might fail
+neverending_loop.adb:6:08: medium: precondition might fail [provers gave up before completing the proof]
 p.adb:13:07: info: initialization of "M" proved
 p.adb:15:07: info: precondition proved (CVC5: 2 VC)
 p.adb:19:14: info: precondition proved (CVC5: 1 VC)
@@ -26,18 +26,18 @@ soundness_tests.adb:30:07: info: precondition proved (CVC5: 1 VC)
 soundness_tests.adb:32:11: info: precondition proved (CVC5: 1 VC)
 soundness_tests.adb:32:11: info: precondition proved (Trivial: 1 VC)
 soundness_tests.adb:32:11: medium: aspect Always_Terminates on "Selected_Component" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
-soundness_tests.adb:33:10: medium: precondition might fail [possible fix: loop at line 32 should mention Rec in a loop invariant]
+soundness_tests.adb:33:10: medium: precondition might fail [possible fix: loop at line 32 should mention Rec in a loop invariant] [provers gave up before completing the proof]
 soundness_tests.adb:36:11: info: precondition proved (Trivial: 1 VC)
 soundness_tests.adb:36:11: medium: aspect Always_Terminates on "Selected_Component" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
-soundness_tests.adb:36:11: medium: precondition might fail
+soundness_tests.adb:36:11: medium: precondition might fail [provers gave up before completing the proof]
 soundness_tests.adb:40:13: info: precondition proved (CVC5: 1 VC)
 soundness_tests.adb:49:07: info: precondition proved (CVC5: 1 VC)
 soundness_tests.adb:51:11: info: precondition proved (CVC5: 1 VC)
 soundness_tests.adb:51:11: info: precondition proved (Trivial: 1 VC)
 soundness_tests.adb:51:16: medium: aspect Always_Terminates on "Identifier_Expanded_Name" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
-soundness_tests.adb:52:10: medium: precondition might fail [possible fix: loop at line 51 should mention V in a loop invariant]
+soundness_tests.adb:52:10: medium: precondition might fail [possible fix: loop at line 51 should mention V in a loop invariant] [provers gave up before completing the proof]
 soundness_tests.adb:57:07: info: initialization of "Acc" proved
-soundness_tests.adb:57:07: medium: resource or memory leak might occur at end of scope
+soundness_tests.adb:57:07: medium: resource or memory leak might occur at end of scope [provers gave up before completing the proof]
 soundness_tests.adb:58:07: info: initialization of "V" proved
 soundness_tests.adb:60:11: info: absence of resource or memory leak proved (CVC5: 1 VC)
 soundness_tests.adb:62:11: info: pointer dereference check proved (CVC5: 1 VC)
@@ -51,35 +51,35 @@ soundness_tests.adb:71:07: info: precondition proved (CVC5: 1 VC)
 soundness_tests.adb:73:11: info: precondition proved (CVC5: 1 VC)
 soundness_tests.adb:73:11: info: precondition proved (Trivial: 1 VC)
 soundness_tests.adb:73:11: medium: aspect Always_Terminates on "Indexed_Component" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
-soundness_tests.adb:74:10: medium: precondition might fail [possible fix: loop at line 73 should mention A in a loop invariant]
+soundness_tests.adb:74:10: medium: precondition might fail [possible fix: loop at line 73 should mention A in a loop invariant] [provers gave up before completing the proof]
 soundness_tests.adb:81:07: info: precondition proved (CVC5: 1 VC)
 soundness_tests.adb:83:11: info: precondition proved (CVC5: 1 VC)
 soundness_tests.adb:83:11: info: precondition proved (Trivial: 1 VC)
 soundness_tests.adb:83:11: info: range check proved (CVC5: 20 VC)
 soundness_tests.adb:83:11: info: range check proved (CVC5: 4 VC)
 soundness_tests.adb:83:11: medium: aspect Always_Terminates on "Slice" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
-soundness_tests.adb:84:10: medium: precondition might fail [possible fix: loop at line 83 should mention A in a loop invariant]
+soundness_tests.adb:84:10: medium: precondition might fail [possible fix: loop at line 83 should mention A in a loop invariant] [provers gave up before completing the proof]
 soundness_tests.adb:89:07: info: initialization of "V" proved
 soundness_tests.adb:91:07: info: precondition proved (CVC5: 1 VC)
 soundness_tests.adb:93:11: info: precondition proved (CVC5: 1 VC)
 soundness_tests.adb:93:11: info: precondition proved (Trivial: 1 VC)
 soundness_tests.adb:93:11: medium: aspect Always_Terminates on "Type_Conversion" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
-soundness_tests.adb:94:10: medium: precondition might fail [possible fix: loop at line 93 should mention V in a loop invariant]
+soundness_tests.adb:94:10: medium: precondition might fail [possible fix: loop at line 93 should mention V in a loop invariant] [provers gave up before completing the proof]
 soundness_tests.adb:99:07: info: initialization of "V" proved
 soundness_tests.adb:101:07: info: precondition proved (CVC5: 1 VC)
 soundness_tests.adb:103:11: info: precondition proved (CVC5: 1 VC)
 soundness_tests.adb:103:11: info: precondition proved (Trivial: 1 VC)
 soundness_tests.adb:103:11: medium: aspect Always_Terminates on "Qualified_Expression" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
-soundness_tests.adb:104:10: medium: precondition might fail [possible fix: loop at line 103 should mention V in a loop invariant]
+soundness_tests.adb:104:10: medium: precondition might fail [possible fix: loop at line 103 should mention V in a loop invariant] [provers gave up before completing the proof]
 soundness_tests.adb:109:07: info: initialization of "A" proved
 soundness_tests.adb:111:07: info: precondition proved (CVC5: 1 VC)
 soundness_tests.adb:113:11: info: precondition proved (CVC5: 1 VC)
 soundness_tests.adb:113:11: info: precondition proved (Trivial: 1 VC)
 soundness_tests.adb:113:11: info: range check proved (CVC5: 4 VC)
 soundness_tests.adb:113:11: medium: aspect Always_Terminates on "Mix" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
-soundness_tests.adb:114:10: medium: precondition might fail [possible fix: loop at line 113 should mention A in a loop invariant]
+soundness_tests.adb:114:10: medium: precondition might fail [possible fix: loop at line 113 should mention A in a loop invariant] [provers gave up before completing the proof]
 soundness_tests.adb:121:11: info: precondition proved (Trivial: 1 VC)
-soundness_tests.adb:121:11: medium: precondition might fail
+soundness_tests.adb:121:11: medium: precondition might fail [provers gave up before completing the proof]
 soundness_tests.adb:121:20: medium: aspect Always_Terminates on "Withed_Object" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 soundness_tests.adb:128:06: medium: aspect Always_Terminates on "Callee" could be incorrect, call to "Neverending_Loop" might be nonterminating [possible fix: annotate "Neverending_Loop" with aspect Always_Terminates]
 soundness_tests.ads:3:14: warning: subprogram "Selected_Component" has no effect

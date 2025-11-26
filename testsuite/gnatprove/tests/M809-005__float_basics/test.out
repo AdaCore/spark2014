@@ -575,15 +575,15 @@ homothetical.adb:50:29: info: assertion proved
 homothetical.adb:54:35: info: unrolling loop [info-unrolling-inlining]
 homothetical.adb:57:38: info: unrolling loop [info-unrolling-inlining]
 homothetical.adb:59:16: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
-homothetical.adb:59:58: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
-homothetical.adb:59:69: medium: divide by zero might fail
-homothetical.adb:59:69: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded]
-homothetical.adb:59:77: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
+homothetical.adb:59:58: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [provers gave up before completing the proof]
+homothetical.adb:59:69: medium: divide by zero might fail [provers gave up before completing the proof]
+homothetical.adb:59:69: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [provers gave up before completing the proof]
+homothetical.adb:59:77: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [provers gave up before completing the proof]
 homothetical.adb:60:16: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
-homothetical.adb:60:59: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
-homothetical.adb:60:70: medium: divide by zero might fail
-homothetical.adb:60:70: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded]
-homothetical.adb:60:78: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
+homothetical.adb:60:59: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [provers gave up before completing the proof]
+homothetical.adb:60:70: medium: divide by zero might fail [provers gave up before completing the proof]
+homothetical.adb:60:70: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [provers gave up before completing the proof]
+homothetical.adb:60:78: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [provers gave up before completing the proof]
 homothetical.adb:64:33: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
 homothetical.adb:65:33: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
 homothetical.ads:17:17: info: initialization of "kvmax" proved

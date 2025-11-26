@@ -1,16 +1,16 @@
-dhcp_client.adb:10:04: medium: resource or memory leak might occur at end of scope
+dhcp_client.adb:10:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 dhcp_client.adb:12:36: high: "Ctx.Socket" is not initialized
 rflx-dhcp-message.adb:15:19: info: absence of resource or memory leak proved (CVC5: 1 VC)
-rflx-dhcp-message.adb:15:63: medium: pointer dereference check might fail [possible fix: subprogram at rflx-dhcp-message.ads:30 should mention Buffer in a precondition]
-rflx-dhcp-message.adb:15:69: medium: range check might fail, cannot prove lower bound for Buffer'First [reason for check: input value must fit in parameter type] [possible fix: subprogram at rflx-dhcp-message.ads:30 should mention Buffer in a precondition]
-rflx-dhcp-message.adb:15:108: medium: pointer dereference check might fail [possible fix: subprogram at rflx-dhcp-message.ads:30 should mention Buffer in a precondition]
-rflx-dhcp-message.adb:15:114: medium: range check might fail, cannot prove lower bound for Buffer'Last [reason for check: input value must fit in parameter type] [possible fix: subprogram at rflx-dhcp-message.ads:30 should mention Buffer in a precondition]
-rflx-dhcp-message.adb:19:51: medium: pointer dereference check might fail [possible fix: subprogram at rflx-dhcp-message.ads:32 should mention Buffer in a precondition]
-rflx-dhcp-message.adb:19:57: medium: range check might fail, cannot prove lower bound for Buffer'First [reason for check: default component value must fit in the type] [possible fix: subprogram at rflx-dhcp-message.ads:32 should mention Buffer in a precondition]
-rflx-dhcp-message.adb:20:50: medium: pointer dereference check might fail [possible fix: subprogram at rflx-dhcp-message.ads:32 should mention Buffer in a precondition]
-rflx-dhcp-message.adb:20:56: medium: range check might fail, cannot prove lower bound for Buffer'Last [reason for check: default component value must fit in the type] [possible fix: subprogram at rflx-dhcp-message.ads:32 should mention Buffer in a precondition]
+rflx-dhcp-message.adb:15:63: medium: pointer dereference check might fail [possible fix: subprogram at rflx-dhcp-message.ads:30 should mention Buffer in a precondition] [provers reached step limit before completing the proof]
+rflx-dhcp-message.adb:15:69: medium: range check might fail, cannot prove lower bound for Buffer'First [reason for check: input value must fit in parameter type] [possible fix: subprogram at rflx-dhcp-message.ads:30 should mention Buffer in a precondition] [provers reached step limit before completing the proof]
+rflx-dhcp-message.adb:15:108: medium: pointer dereference check might fail [possible fix: subprogram at rflx-dhcp-message.ads:30 should mention Buffer in a precondition] [provers reached step limit before completing the proof]
+rflx-dhcp-message.adb:15:114: medium: range check might fail, cannot prove lower bound for Buffer'Last [reason for check: input value must fit in parameter type] [possible fix: subprogram at rflx-dhcp-message.ads:30 should mention Buffer in a precondition] [provers reached step limit before completing the proof]
+rflx-dhcp-message.adb:19:51: medium: pointer dereference check might fail [possible fix: subprogram at rflx-dhcp-message.ads:32 should mention Buffer in a precondition] [provers reached step limit before completing the proof]
+rflx-dhcp-message.adb:19:57: medium: range check might fail, cannot prove lower bound for Buffer'First [reason for check: default component value must fit in the type] [possible fix: subprogram at rflx-dhcp-message.ads:32 should mention Buffer in a precondition] [provers reached step limit before completing the proof]
+rflx-dhcp-message.adb:20:50: medium: pointer dereference check might fail [possible fix: subprogram at rflx-dhcp-message.ads:32 should mention Buffer in a precondition] [provers reached step limit before completing the proof]
+rflx-dhcp-message.adb:20:56: medium: range check might fail, cannot prove lower bound for Buffer'Last [reason for check: default component value must fit in the type] [possible fix: subprogram at rflx-dhcp-message.ads:32 should mention Buffer in a precondition] [provers reached step limit before completing the proof]
 rflx-dhcp-message.adb:22:11: info: absence of resource or memory leak proved (CVC5: 1 VC)
-rflx-dhcp-message.adb:22:11: medium: discriminant check might fail [possible fix: subprogram at rflx-dhcp-message.ads:32 should mention Ctx'Constrained or Ctx.Buffer_First or Ctx.Buffer_Last or Ctx.First or Ctx.Last in a precondition]
+rflx-dhcp-message.adb:22:11: medium: discriminant check might fail [possible fix: subprogram at rflx-dhcp-message.ads:32 should mention Ctx'Constrained or Ctx.Buffer_First or Ctx.Buffer_Last or Ctx.First or Ctx.Last in a precondition] [provers gave up before completing the proof]
 rflx-dhcp-message.adb:23:14: info: absence of resource or memory leak proved (CVC5: 1 VC)
 rflx-dhcp-message.ads:24:09: info: default initial condition proved (CVC5: 1 VC)
 rflx-dhcp-message.ads:24:09: info: in default initialization of array component at rflx-dhcp-message.ads:20
@@ -100,30 +100,30 @@ rflx-dhcp.ads:565:13: info: implicit aspect Always_Terminates on "To_Base_Intege
 rflx-dhcp.ads:568:13: info: implicit aspect Always_Terminates on "To_Actual" has been proved, subprogram will terminate
 rflx-dhcp.ads:569:31: info: range check proved (CVC5: 2 VC)
 rflx-dhcp_client-session.adb:17:07: info: initialization of "Discover_Buffer" proved
-rflx-dhcp_client-session.adb:17:07: medium: resource or memory leak might occur at end of scope
+rflx-dhcp_client-session.adb:17:07: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 rflx-dhcp_client-session.adb:18:07: info: initialization of "Offer_Buffer" proved
-rflx-dhcp_client-session.adb:18:07: medium: resource or memory leak might occur at end of scope
+rflx-dhcp_client-session.adb:18:07: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 rflx-dhcp_client-session.adb:19:07: info: initialization of "Request_Buffer" proved
-rflx-dhcp_client-session.adb:19:07: medium: resource or memory leak might occur at end of scope
+rflx-dhcp_client-session.adb:19:07: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 rflx-dhcp_client-session.adb:20:07: info: initialization of "Ack_Buffer" proved
-rflx-dhcp_client-session.adb:20:07: medium: resource or memory leak might occur at end of scope
+rflx-dhcp_client-session.adb:20:07: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 rflx-dhcp_client-session.adb:22:54: info: non-aliasing of formal parameters "S" and "M" proved
-rflx-dhcp_client-session.adb:22:54: medium: resource or memory leak might occur [possible fix: subprogram at rflx-dhcp_client-session.ads:30 should mention Ctx in a precondition]
+rflx-dhcp_client-session.adb:22:54: medium: resource or memory leak might occur [possible fix: subprogram at rflx-dhcp_client-session.ads:30 should mention Ctx in a precondition] [provers reached step limit before completing the proof]
 rflx-dhcp_client-session.adb:23:23: info: absence of resource or memory leak proved (CVC5: 1 VC)
 rflx-dhcp_client-session.adb:25:30: info: absence of resource or memory leak proved (CVC5: 1 VC)
-rflx-dhcp_client-session.adb:27:37: medium: resource or memory leak might occur
+rflx-dhcp_client-session.adb:27:37: medium: resource or memory leak might occur [provers reached step limit before completing the proof]
 rflx-dhcp_client-session.adb:27:52: warning: "Discover_Buffer" is set by "Initialize" but not used after the call
 rflx-dhcp_client-session.adb:28:20: info: absence of resource or memory leak proved (CVC5: 1 VC)
 rflx-dhcp_client-session.adb:30:30: info: absence of resource or memory leak proved (CVC5: 1 VC)
-rflx-dhcp_client-session.adb:32:37: medium: resource or memory leak might occur [possible fix: call at line 27 should mention Ctx (for argument Ctx) in a postcondition]
+rflx-dhcp_client-session.adb:32:37: medium: resource or memory leak might occur [possible fix: call at line 27 should mention Ctx (for argument Ctx) in a postcondition] [provers reached step limit before completing the proof]
 rflx-dhcp_client-session.adb:32:49: warning: "Offer_Buffer" is set by "Initialize" but not used after the call
 rflx-dhcp_client-session.adb:33:22: info: absence of resource or memory leak proved (CVC5: 1 VC)
 rflx-dhcp_client-session.adb:35:30: info: absence of resource or memory leak proved (CVC5: 1 VC)
-rflx-dhcp_client-session.adb:37:37: medium: resource or memory leak might occur [possible fix: call at line 32 should mention Ctx (for argument Ctx) in a postcondition]
+rflx-dhcp_client-session.adb:37:37: medium: resource or memory leak might occur [possible fix: call at line 32 should mention Ctx (for argument Ctx) in a postcondition] [provers reached step limit before completing the proof]
 rflx-dhcp_client-session.adb:37:51: warning: "Request_Buffer" is set by "Initialize" but not used after the call
 rflx-dhcp_client-session.adb:38:18: info: absence of resource or memory leak proved (CVC5: 1 VC)
 rflx-dhcp_client-session.adb:40:30: info: absence of resource or memory leak proved (CVC5: 1 VC)
-rflx-dhcp_client-session.adb:42:37: medium: resource or memory leak might occur [possible fix: call at line 37 should mention Ctx (for argument Ctx) in a postcondition]
+rflx-dhcp_client-session.adb:42:37: medium: resource or memory leak might occur [possible fix: call at line 37 should mention Ctx (for argument Ctx) in a postcondition] [provers reached step limit before completing the proof]
 rflx-dhcp_client-session.adb:42:47: warning: "Ack_Buffer" is set by "Initialize" but not used after the call
 rflx-dhcp_client-session_allocator.ads:34:17: info: pointer dereference check proved (CVC5: 1 VC)
 rflx-dhcp_client-session_allocator.ads:35:26: info: pointer dereference check proved (CVC5: 1 VC)

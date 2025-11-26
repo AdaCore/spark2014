@@ -36,7 +36,7 @@ polynomial.adb:39:11: info: data dependencies proved
 polynomial.adb:40:14: info: postcondition proved (CVC5: 1 VC)
 polynomial.adb:42:13: info: implicit aspect Always_Terminates on "Evaluate_Polynomial_Ineffective" has been proved, subprogram will terminate
 polynomial.adb:43:11: info: data dependencies proved
-polynomial.adb:44:14: medium: postcondition might fail
+polynomial.adb:44:14: medium: postcondition might fail [provers reached step limit before completing the proof]
 polynomial.adb:46:14: info: aspect Always_Terminates on "Add_Assoc" has been proved, subprogram will terminate
 polynomial.adb:48:06: info: data dependencies proved
 polynomial.adb:50:14: info: postcondition proved (CVC5: 1 VC)
@@ -98,7 +98,7 @@ polynomial.adb:146:34: info: precondition proved (CVC5: 2 VC)
 polynomial.adb:146:61: info: overflow check proved (CVC5: 2 VC)
 polynomial.adb:146:71: info: overflow check proved (CVC5: 2 VC)
 polynomial.adb:159:33: info: loop invariant initialization proved (CVC5: 1 VC)
-polynomial.adb:159:33: medium: loop invariant might not be preserved by an arbitrary iteration
+polynomial.adb:159:33: medium: loop invariant might not be preserved by an arbitrary iteration [provers reached step limit before completing the proof]
 polynomial.adb:159:61: info: precondition proved (CVC5: 4 VC)
 polynomial.adb:159:97: info: overflow check proved (CVC5: 4 VC)
 polynomial.adb:166:19: info: loop invariant initialization proved (CVC5: 1 VC)

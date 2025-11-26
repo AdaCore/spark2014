@@ -1,4 +1,4 @@
-foo.adb:5:05: medium: resource or memory leak might occur at end of scope
+foo.adb:5:05: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 foo.adb:7:43: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
 foo.adb:7:48: info: precondition proved (CVC5: 2 VC)
 foo.adb:7:60: info: range check proved (CVC5: 1 VC; altergo: 1 VC)

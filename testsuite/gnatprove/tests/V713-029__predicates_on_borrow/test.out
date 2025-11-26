@@ -10,7 +10,7 @@ main.adb:39:41: info: predicate check proved (CVC5: 1 VC)
 main.adb:39:43: info: in reconstructed value at the end of the borrow at main.adb:39
 main.adb:39:43: info: predicate check proved (CVC5: 1 VC)
 main.adb:39:43: medium: in reconstructed value at the end of the borrow at main.adb:39
-main.adb:39:43: medium: predicate check might fail (e.g. when X.all = (F => new R2'((F => new R1'((F => new Integer'(-1), G => null)), G => null)), G => null)) [possible fix: subprogram at line 33 should mention X in a precondition]
+main.adb:39:43: medium: predicate check might fail (e.g. when X.all = (F => new R2'((F => new R1'((F => new Integer'(-1), G => null)), G => null)), G => null)) [possible fix: subprogram at line 33 should mention X in a precondition] [provers reached step limit before completing the proof]
 main.adb:41:18: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:45:39: info: in reconstructed value at the end of the borrow at main.adb:45
 main.adb:45:39: info: predicate check proved (CVC5: 1 VC)
@@ -19,17 +19,17 @@ main.adb:45:41: info: predicate check proved (CVC5: 1 VC)
 main.adb:45:43: info: in reconstructed value at the end of the borrow at main.adb:45
 main.adb:45:43: info: predicate check proved (CVC5: 1 VC)
 main.adb:45:43: medium: in reconstructed value at the end of the borrow at main.adb:45
-main.adb:45:43: medium: predicate check might fail (e.g. when X.all = (F => new R2'((F => new R1'((F => new Integer'(-1), G => null)), G => null)), G => null)) [possible fix: subprogram at line 33 should mention X in a precondition]
+main.adb:45:43: medium: predicate check might fail (e.g. when X.all = (F => new R2'((F => new R1'((F => new Integer'(-1), G => null)), G => null)), G => null)) [possible fix: subprogram at line 33 should mention X in a precondition] [provers reached step limit before completing the proof]
 main.adb:47:18: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:51:39: info: in reconstructed value at the end of the borrow at main.adb:51
 main.adb:51:39: info: predicate check proved (CVC5: 1 VC)
 main.adb:51:41: medium: in reconstructed value at the end of the borrow at main.adb:51
-main.adb:51:41: medium: predicate check might fail (e.g. when X.all = (F => new R2'((F => new R1'((F => new Integer'(-1), G => null)), G => null)), G => null)) [possible fix: subprogram at line 33 should mention X in a precondition]
+main.adb:51:41: medium: predicate check might fail (e.g. when X.all = (F => new R2'((F => new R1'((F => new Integer'(-1), G => null)), G => null)), G => null)) [possible fix: subprogram at line 33 should mention X in a precondition] [provers reached step limit before completing the proof]
 main.adb:51:43: info: in reconstructed value at the end of the borrow at main.adb:51
 main.adb:51:43: info: predicate check proved (CVC5: 1 VC)
 main.adb:53:18: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:57:39: medium: in reconstructed value at the end of the borrow at main.adb:57
-main.adb:57:39: medium: predicate check might fail (e.g. when X.all = (F => new R2'((F => new R1'((F => new Integer'(-1), G => null)), G => null)), G => null)) [possible fix: subprogram at line 33 should mention X in a precondition]
+main.adb:57:39: medium: predicate check might fail (e.g. when X.all = (F => new R2'((F => new R1'((F => new Integer'(-1), G => null)), G => null)), G => null)) [possible fix: subprogram at line 33 should mention X in a precondition] [provers reached step limit before completing the proof]
 main.adb:57:41: info: in reconstructed value at the end of the borrow at main.adb:57
 main.adb:57:41: info: predicate check proved (CVC5: 1 VC)
 main.adb:57:43: info: in reconstructed value at the end of the borrow at main.adb:57
@@ -50,16 +50,16 @@ main.adb:94:11: info: dynamic accessibility check proved (Trivial)
 main.adb:95:16: info: implicit aspect Always_Terminates on "Bad_F" has been proved, subprogram will terminate
 main.adb:96:11: info: dynamic accessibility check proved (Trivial)
 main.adb:96:11: medium: in possible reconstructed values at the end of the borrow at main.adb:95
-main.adb:96:11: medium: predicate check might fail [possible fix: subprogram at line 95 should mention X in a precondition]
+main.adb:96:11: medium: predicate check might fail [possible fix: subprogram at line 95 should mention X in a precondition] [provers reached step limit before completing the proof]
 main.adb:97:16: info: implicit aspect Always_Terminates on "Bad_F" has been proved, subprogram will terminate
 main.adb:98:11: info: dynamic accessibility check proved (Trivial)
 main.adb:98:11: medium: in possible reconstructed values at the end of the borrow at main.adb:97
-main.adb:98:11: medium: predicate check might fail [possible fix: subprogram at line 97 should mention X in a precondition]
+main.adb:98:11: medium: predicate check might fail [possible fix: subprogram at line 97 should mention X in a precondition] [provers reached step limit before completing the proof]
 main.adb:107:58: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:116:16: info: implicit aspect Always_Terminates on "Bad_F" has been proved, subprogram will terminate
 main.adb:117:11: info: dynamic accessibility check proved (Trivial)
 main.adb:117:11: medium: in possible reconstructed values at the end of the borrow at main.adb:116
-main.adb:117:11: medium: predicate check might fail [possible fix: subprogram at line 116 should mention X in a precondition]
+main.adb:117:11: medium: predicate check might fail [possible fix: subprogram at line 116 should mention X in a precondition] [provers reached step limit before completing the proof]
 main.adb:118:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 main.adb:119:11: info: dynamic accessibility check proved (Trivial)
 main.adb:120:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
@@ -68,16 +68,16 @@ main.adb:122:16: info: implicit aspect Always_Terminates on "F" has been proved,
 main.adb:123:11: info: dynamic accessibility check proved (Trivial)
 main.adb:124:16: info: implicit aspect Always_Terminates on "Bad_F" has been proved, subprogram will terminate
 main.adb:125:11: medium: in possible reconstructed values at the end of the borrow at main.adb:124
-main.adb:125:11: medium: predicate check might fail [possible fix: subprogram at line 124 should mention X in a precondition]
+main.adb:125:11: medium: predicate check might fail [possible fix: subprogram at line 124 should mention X in a precondition] [provers reached step limit before completing the proof]
 main.adb:125:13: info: dynamic accessibility check proved (Trivial)
 main.adb:126:16: info: implicit aspect Always_Terminates on "Bad_F" has been proved, subprogram will terminate
 main.adb:127:13: info: dynamic accessibility check proved (Trivial)
 main.adb:127:13: medium: in possible reconstructed values at the end of the borrow at main.adb:126
-main.adb:127:13: medium: predicate check might fail [possible fix: subprogram at line 126 should mention X in a precondition]
+main.adb:127:13: medium: predicate check might fail [possible fix: subprogram at line 126 should mention X in a precondition] [provers reached step limit before completing the proof]
 main.adb:128:16: info: implicit aspect Always_Terminates on "Bad_F" has been proved, subprogram will terminate
 main.adb:129:13: info: dynamic accessibility check proved (Trivial)
 main.adb:129:13: medium: in possible reconstructed values at the end of the borrow at main.adb:128
-main.adb:129:13: medium: predicate check might fail [possible fix: subprogram at line 128 should mention X in a precondition]
+main.adb:129:13: medium: predicate check might fail [possible fix: subprogram at line 128 should mention X in a precondition] [provers reached step limit before completing the proof]
 main.adb:130:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 main.adb:131:13: info: dynamic accessibility check proved (Trivial)
 main.adb:141:62: info: pointer dereference check proved (CVC5: 1 VC)
@@ -86,7 +86,7 @@ main.adb:155:11: info: dynamic accessibility check proved (Trivial)
 main.adb:156:16: info: implicit aspect Always_Terminates on "Bad_F" has been proved, subprogram will terminate
 main.adb:157:11: info: dynamic accessibility check proved (Trivial)
 main.adb:157:11: medium: in possible reconstructed values at the end of the borrow at main.adb:156
-main.adb:157:11: medium: predicate check might fail [possible fix: subprogram at line 156 should mention X in a precondition]
+main.adb:157:11: medium: predicate check might fail [possible fix: subprogram at line 156 should mention X in a precondition] [provers reached step limit before completing the proof]
 main.adb:158:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 main.adb:159:11: info: dynamic accessibility check proved (Trivial)
 main.adb:160:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
@@ -97,7 +97,7 @@ main.adb:164:16: info: implicit aspect Always_Terminates on "F" has been proved,
 main.adb:165:13: info: dynamic accessibility check proved (Trivial)
 main.adb:166:16: info: implicit aspect Always_Terminates on "Bad_F" has been proved, subprogram will terminate
 main.adb:167:11: medium: in possible reconstructed values at the end of the borrow at main.adb:166
-main.adb:167:11: medium: predicate check might fail [possible fix: subprogram at line 166 should mention X in a precondition]
+main.adb:167:11: medium: predicate check might fail [possible fix: subprogram at line 166 should mention X in a precondition] [provers reached step limit before completing the proof]
 main.adb:167:13: info: dynamic accessibility check proved (Trivial)
 main.adb:168:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 main.adb:169:13: info: dynamic accessibility check proved (Trivial)
@@ -106,24 +106,24 @@ main.adb:171:13: info: dynamic accessibility check proved (Trivial)
 main.adb:172:16: info: implicit aspect Always_Terminates on "Bad_F" has been proved, subprogram will terminate
 main.adb:173:13: info: dynamic accessibility check proved (Trivial)
 main.adb:173:13: medium: in possible reconstructed values at the end of the borrow at main.adb:172
-main.adb:173:13: medium: predicate check might fail [possible fix: subprogram at line 172 should mention X in a precondition]
+main.adb:173:13: medium: predicate check might fail [possible fix: subprogram at line 172 should mention X in a precondition] [provers reached step limit before completing the proof]
 main.adb:174:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 main.adb:175:15: info: dynamic accessibility check proved (Trivial)
 main.adb:176:16: info: implicit aspect Always_Terminates on "Bad_F" has been proved, subprogram will terminate
 main.adb:177:11: medium: in possible reconstructed values at the end of the borrow at main.adb:176
-main.adb:177:11: medium: predicate check might fail [possible fix: subprogram at line 176 should mention X in a precondition]
+main.adb:177:11: medium: predicate check might fail [possible fix: subprogram at line 176 should mention X in a precondition] [provers reached step limit before completing the proof]
 main.adb:177:15: info: dynamic accessibility check proved (Trivial)
 main.adb:178:16: info: implicit aspect Always_Terminates on "Bad_F" has been proved, subprogram will terminate
 main.adb:179:15: info: dynamic accessibility check proved (Trivial)
 main.adb:179:15: medium: in possible reconstructed values at the end of the borrow at main.adb:178
-main.adb:179:15: medium: predicate check might fail [possible fix: subprogram at line 178 should mention X in a precondition]
+main.adb:179:15: medium: predicate check might fail [possible fix: subprogram at line 178 should mention X in a precondition] [provers reached step limit before completing the proof]
 main.adb:180:16: info: implicit aspect Always_Terminates on "Bad_F" has been proved, subprogram will terminate
 main.adb:181:15: info: dynamic accessibility check proved (Trivial)
 main.adb:181:15: medium: in possible reconstructed values at the end of the borrow at main.adb:180
-main.adb:181:15: medium: predicate check might fail [possible fix: subprogram at line 180 should mention X in a precondition]
+main.adb:181:15: medium: predicate check might fail [possible fix: subprogram at line 180 should mention X in a precondition] [provers reached step limit before completing the proof]
 main.adb:182:16: info: implicit aspect Always_Terminates on "Bad_F" has been proved, subprogram will terminate
 main.adb:183:13: medium: in possible reconstructed values at the end of the borrow at main.adb:182
-main.adb:183:13: medium: predicate check might fail [possible fix: subprogram at line 182 should mention X in a precondition]
+main.adb:183:13: medium: predicate check might fail [possible fix: subprogram at line 182 should mention X in a precondition] [provers reached step limit before completing the proof]
 main.adb:183:15: info: dynamic accessibility check proved (Trivial)
 main.adb:184:16: info: implicit aspect Always_Terminates on "F2" has been proved, subprogram will terminate
 main.adb:188:33: info: pointer dereference check proved (CVC5: 1 VC)
@@ -134,22 +134,22 @@ main.adb:197:36: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:199:22: info: dynamic accessibility check proved (Trivial)
 main.adb:199:22: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:199:22: medium: in possible reconstructed values at the end of the borrow at main.adb:193
-main.adb:199:22: medium: predicate check might fail
+main.adb:199:22: medium: predicate check might fail [provers reached step limit before completing the proof]
 main.adb:202:16: info: implicit aspect Always_Terminates on "Bad_F2" has been proved, subprogram will terminate
 main.adb:206:36: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:208:22: info: dynamic accessibility check proved (Trivial)
 main.adb:208:22: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:208:22: medium: in possible reconstructed values at the end of the borrow at main.adb:202
-main.adb:208:22: medium: predicate check might fail
+main.adb:208:22: medium: predicate check might fail [provers reached step limit before completing the proof]
 main.adb:211:16: info: implicit aspect Always_Terminates on "Bad_F2" has been proved, subprogram will terminate
 main.adb:215:33: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:215:33: medium: in possible reconstructed values at the end of the borrow at main.adb:215
-main.adb:215:33: medium: predicate check might fail
+main.adb:215:33: medium: predicate check might fail [provers reached step limit before completing the proof]
 main.adb:217:22: info: dynamic accessibility check proved (Trivial)
 main.adb:217:22: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:220:16: info: implicit aspect Always_Terminates on "Bad_F2" has been proved, subprogram will terminate
 main.adb:221:29: medium: in possible reconstructed values at the end of the borrow at main.adb:221
-main.adb:221:29: medium: predicate check might fail [possible fix: subprogram at line 220 should mention X in a precondition]
+main.adb:221:29: medium: predicate check might fail [possible fix: subprogram at line 220 should mention X in a precondition] [provers reached step limit before completing the proof]
 main.adb:224:33: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:226:22: info: dynamic accessibility check proved (Trivial)
 main.adb:226:22: info: pointer dereference check proved (CVC5: 1 VC)
@@ -188,63 +188,63 @@ main.adb:373:43: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:375:18: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:388:18: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:399:43: medium: in reconstructed value at the end of the borrow at main.adb:399
-main.adb:399:43: medium: predicate check might fail (e.g. when X.all = (F => new R2_P1'((F => new R1_P1'((F => new Integer'(0), G => null)), G => null)), G => null)) [possible fix: subprogram at line 393 should mention X in a precondition]
+main.adb:399:43: medium: predicate check might fail (e.g. when X.all = (F => new R2_P1'((F => new R1_P1'((F => new Integer'(0), G => null)), G => null)), G => null)) [possible fix: subprogram at line 393 should mention X in a precondition] [provers reached step limit before completing the proof]
 main.adb:401:18: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:405:43: info: in reconstructed value at the end of the borrow at main.adb:405
 main.adb:405:43: info: predicate check proved (CVC5: 1 VC)
 main.adb:407:18: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:418:43: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:418:45: medium: in possible reconstructed values at the end of the borrow at main.adb:418
-main.adb:418:45: medium: predicate check might fail (e.g. when X.all = (F => new R2_P1'((F => new R1_P1'((F => new Integer'(0), G => null)), G => null)), G => new Integer'(0))) [possible fix: subprogram at line 412 should mention X in a precondition]
+main.adb:418:45: medium: predicate check might fail (e.g. when X.all = (F => new R2_P1'((F => new R1_P1'((F => new Integer'(0), G => null)), G => null)), G => new Integer'(0))) [possible fix: subprogram at line 412 should mention X in a precondition] [provers reached step limit before completing the proof]
 main.adb:420:18: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:424:43: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:424:45: medium: in possible reconstructed values at the end of the borrow at main.adb:424
-main.adb:424:45: medium: predicate check might fail (e.g. when X.all = (F => new R2_P1'((F => new R1_P1'((F => new Integer'(0), G => null)), G => null)), G => new Integer'(0))) [possible fix: subprogram at line 412 should mention X in a precondition]
+main.adb:424:45: medium: predicate check might fail (e.g. when X.all = (F => new R2_P1'((F => new R1_P1'((F => new Integer'(0), G => null)), G => null)), G => new Integer'(0))) [possible fix: subprogram at line 412 should mention X in a precondition] [provers reached step limit before completing the proof]
 main.adb:426:18: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:437:45: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:437:45: medium: in possible reconstructed values at the end of the borrow at main.adb:437
-main.adb:437:45: medium: predicate check might fail (e.g. when X.all = (F => new R2_P1'((F => new R1_P1'((F => new Integer'(0), G => null)), G => null)), G => new Integer'(0))) [possible fix: subprogram at line 431 should mention X in a precondition]
+main.adb:437:45: medium: predicate check might fail (e.g. when X.all = (F => new R2_P1'((F => new R1_P1'((F => new Integer'(0), G => null)), G => null)), G => new Integer'(0))) [possible fix: subprogram at line 431 should mention X in a precondition] [provers reached step limit before completing the proof]
 main.adb:439:18: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:443:45: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:443:45: medium: in possible reconstructed values at the end of the borrow at main.adb:443
-main.adb:443:45: medium: predicate check might fail (e.g. when X.all = (F => new R2_P1'((F => new R1_P1'((F => new Integer'(0), G => null)), G => null)), G => new Integer'(0))) [possible fix: subprogram at line 431 should mention X in a precondition]
+main.adb:443:45: medium: predicate check might fail (e.g. when X.all = (F => new R2_P1'((F => new R1_P1'((F => new Integer'(0), G => null)), G => null)), G => new Integer'(0))) [possible fix: subprogram at line 431 should mention X in a precondition] [provers reached step limit before completing the proof]
 main.adb:445:18: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:456:43: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:456:43: medium: in possible reconstructed values at the end of the borrow at main.adb:456
-main.adb:456:43: medium: predicate check might fail (e.g. when X.all = (F => new R2_P1'((F => new R1_P1'((F => new Integer'(0), G => null)), G => null)), G => new Integer'(0))) [possible fix: subprogram at line 450 should mention X in a precondition]
+main.adb:456:43: medium: predicate check might fail (e.g. when X.all = (F => new R2_P1'((F => new R1_P1'((F => new Integer'(0), G => null)), G => null)), G => new Integer'(0))) [possible fix: subprogram at line 450 should mention X in a precondition] [provers reached step limit before completing the proof]
 main.adb:458:18: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:462:43: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:462:43: medium: in possible reconstructed values at the end of the borrow at main.adb:462
-main.adb:462:43: medium: predicate check might fail (e.g. when X.all = (F => new R2_P1'((F => new R1_P1'((F => new Integer'(0), G => null)), G => null)), G => new Integer'(0))) [possible fix: subprogram at line 450 should mention X in a precondition]
+main.adb:462:43: medium: predicate check might fail (e.g. when X.all = (F => new R2_P1'((F => new R1_P1'((F => new Integer'(0), G => null)), G => null)), G => new Integer'(0))) [possible fix: subprogram at line 450 should mention X in a precondition] [provers reached step limit before completing the proof]
 main.adb:464:18: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:475:41: medium: in reconstructed value at the end of the borrow at main.adb:475
-main.adb:475:41: medium: predicate check might fail (e.g. when X.all = (F => new R2_P2'((F => new R1'((F => new Integer'(0), G => null)), G => null)), G => null)) [possible fix: subprogram at line 469 should mention X in a precondition]
+main.adb:475:41: medium: predicate check might fail (e.g. when X.all = (F => new R2_P2'((F => new R1'((F => new Integer'(0), G => null)), G => null)), G => null)) [possible fix: subprogram at line 469 should mention X in a precondition] [provers reached step limit before completing the proof]
 main.adb:477:18: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:481:41: info: in reconstructed value at the end of the borrow at main.adb:481
 main.adb:481:41: info: predicate check proved (CVC5: 1 VC)
 main.adb:483:18: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:494:43: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:494:43: medium: in possible reconstructed values at the end of the borrow at main.adb:494
-main.adb:494:43: medium: predicate check might fail (e.g. when X.all = (F => new R2_P2'((F => new R1'((F => new Integer'(0), G => null)), G => null)), G => new Integer'(0))) [possible fix: subprogram at line 488 should mention X in a precondition]
+main.adb:494:43: medium: predicate check might fail (e.g. when X.all = (F => new R2_P2'((F => new R1'((F => new Integer'(0), G => null)), G => null)), G => new Integer'(0))) [possible fix: subprogram at line 488 should mention X in a precondition] [provers reached step limit before completing the proof]
 main.adb:496:18: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:500:43: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:500:43: medium: in possible reconstructed values at the end of the borrow at main.adb:500
-main.adb:500:43: medium: predicate check might fail (e.g. when X.all = (F => new R2_P2'((F => new R1'((F => new Integer'(0), G => null)), G => null)), G => new Integer'(0))) [possible fix: subprogram at line 488 should mention X in a precondition]
+main.adb:500:43: medium: predicate check might fail (e.g. when X.all = (F => new R2_P2'((F => new R1'((F => new Integer'(0), G => null)), G => null)), G => new Integer'(0))) [possible fix: subprogram at line 488 should mention X in a precondition] [provers reached step limit before completing the proof]
 main.adb:502:18: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:513:44: medium: in reconstructed value at the end of the borrow at main.adb:513
-main.adb:513:44: medium: predicate check might fail (e.g. when X.all = (F => new R2_P2'((F => new R1'((F => new Integer'(0), G => null)), G => null)), G => null)) [possible fix: subprogram at line 507 should mention X in a precondition]
+main.adb:513:44: medium: predicate check might fail (e.g. when X.all = (F => new R2_P2'((F => new R1'((F => new Integer'(0), G => null)), G => null)), G => null)) [possible fix: subprogram at line 507 should mention X in a precondition] [provers reached step limit before completing the proof]
 main.adb:515:18: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:519:44: info: in reconstructed value at the end of the borrow at main.adb:519
 main.adb:519:44: info: predicate check proved (CVC5: 1 VC)
 main.adb:521:18: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:532:39: medium: in reconstructed value at the end of the borrow at main.adb:532
-main.adb:532:39: medium: predicate check might fail (e.g. when X.all = (F => new R2'((F => new R1'((F => new Integer'(0), G => null)), G => null)), G => null)) [possible fix: subprogram at line 526 should mention X in a precondition]
+main.adb:532:39: medium: predicate check might fail (e.g. when X.all = (F => new R2'((F => new R1'((F => new Integer'(0), G => null)), G => null)), G => null)) [possible fix: subprogram at line 526 should mention X in a precondition] [provers reached step limit before completing the proof]
 main.adb:534:18: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:538:39: info: in reconstructed value at the end of the borrow at main.adb:538
 main.adb:538:39: info: predicate check proved (CVC5: 1 VC)
 main.adb:540:18: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:551:42: medium: in reconstructed value at the end of the borrow at main.adb:551
-main.adb:551:42: medium: predicate check might fail (e.g. when X.all = (F => new R2'((F => new R1'((F => new Integer'(0), G => null)), G => null)), G => null)) [possible fix: subprogram at line 545 should mention X in a precondition]
+main.adb:551:42: medium: predicate check might fail (e.g. when X.all = (F => new R2'((F => new R1'((F => new Integer'(0), G => null)), G => null)), G => null)) [possible fix: subprogram at line 545 should mention X in a precondition] [provers reached step limit before completing the proof]
 main.adb:553:18: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:557:42: info: in reconstructed value at the end of the borrow at main.adb:557
 main.adb:557:42: info: predicate check proved (CVC5: 1 VC)
@@ -266,7 +266,7 @@ main.adb:604:19: info: in possible reconstructed values at the end of the borrow
 main.adb:604:19: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:604:19: info: predicate check proved (CVC5: 1 VC)
 main.adb:612:14: info: pointer dereference check proved (CVC5: 1 VC)
-main.adb:612:14: medium: predicate check might fail
+main.adb:612:14: medium: predicate check might fail [provers reached step limit before completing the proof]
 main.adb:613:19: info: in possible reconstructed values at the end of the borrow at main.adb:609
 main.adb:613:19: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:613:19: info: predicate check proved (CVC5: 1 VC)
@@ -275,7 +275,7 @@ main.adb:622:39: info: in reconstructed value at the end of the borrow at main.a
 main.adb:622:39: info: null exclusion check proved (CVC5: 1 VC)
 main.adb:622:39: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:622:39: medium: in reconstructed value at the end of the borrow at main.adb:622
-main.adb:622:39: medium: predicate check might fail
+main.adb:622:39: medium: predicate check might fail [provers reached step limit before completing the proof]
 main.adb:624:18: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:626:19: info: in possible reconstructed values at the end of the borrow at main.adb:618
 main.adb:626:19: info: pointer dereference check proved (CVC5: 1 VC)
@@ -306,7 +306,7 @@ main.adb:692:14: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:692:14: info: predicate check proved (CVC5: 1 VC)
 main.adb:693:19: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:693:19: medium: in possible reconstructed values at the end of the borrow at main.adb:689
-main.adb:693:19: medium: predicate check might fail
+main.adb:693:19: medium: predicate check might fail [provers reached step limit before completing the proof]
 main.adb:701:06: info: data dependencies proved
 main.adb:710:40: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:711:21: info: pointer dereference check proved (CVC5: 1 VC)
@@ -316,4 +316,4 @@ main.adb:718:14: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:718:14: info: predicate check proved (CVC5: 1 VC)
 main.adb:719:19: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:719:19: medium: in possible reconstructed values at the end of the borrow at main.adb:715
-main.adb:719:19: medium: predicate check might fail
+main.adb:719:19: medium: predicate check might fail [provers reached step limit before completing the proof]

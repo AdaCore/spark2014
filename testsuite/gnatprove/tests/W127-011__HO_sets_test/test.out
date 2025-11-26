@@ -1,12 +1,12 @@
 check_ho_pre.adb:17:13: info: implicit aspect Always_Terminates on "Test_Bad" has been proved, subprogram will terminate
 check_ho_pre.adb:22:32: info: data dependencies proved
-check_ho_pre.adb:24:32: medium: assertion might fail [possible fix: subprogram at line 22 should mention M in a precondition]
+check_ho_pre.adb:24:32: medium: assertion might fail [possible fix: subprogram at line 22 should mention M in a precondition] [provers reached step limit before completing the proof]
 check_ho_pre.adb:27:13: info: implicit aspect Always_Terminates on "Test_OK" has been proved, subprogram will terminate
 check_ho_pre.adb:32:32: info: data dependencies proved
 check_ho_pre.adb:34:32: info: assertion proved (CVC5: 1 VC)
 check_ho_pre.adb:37:13: info: implicit aspect Always_Terminates on "Value_Bad" has been proved, subprogram will terminate
 check_ho_pre.adb:42:32: info: data dependencies proved
-check_ho_pre.adb:44:32: medium: assertion might fail [possible fix: subprogram at line 42 should mention M in a precondition]
+check_ho_pre.adb:44:32: medium: assertion might fail [possible fix: subprogram at line 42 should mention M in a precondition] [provers reached step limit before completing the proof]
 check_ho_pre.adb:47:13: info: implicit aspect Always_Terminates on "Value_OK" has been proved, subprogram will terminate
 check_ho_pre.adb:48:24: info: range check proved (CVC5: 2 VC)
 check_ho_pre.adb:52:32: info: data dependencies proved
@@ -258,7 +258,7 @@ use_set_ho.adb:90:23: info: predicate check proved (Trivial: 1 VC)
 use_set_ho.adb:90:65: info: range check proved (CVC5: 2 VC)
 use_set_ho.adb:90:77: info: predicate check proved (Trivial: 2 VC)
 use_set_ho.adb:94:17: info: precondition proved (CVC5: 1 VC)
-use_set_ho.adb:94:17: medium: postcondition might fail
+use_set_ho.adb:94:17: medium: postcondition might fail [provers reached step limit before completing the proof]
 use_set_ho.adb:94:34: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 use_set_ho.adb:94:66: info: precondition proved (CVC5: 1 VC)
 use_set_ho.adb:94:71: info: precondition proved (CVC5: 1 VC)

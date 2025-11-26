@@ -8,7 +8,7 @@ pupils.adb:35:26: info: index check proved (CVC5: 2 VC)
 pupils.adb:36:26: info: index check proved (CVC5: 2 VC)
 pupils.ads:99:44: info: initialization of "Success" proved
 pupils.ads:102:25: info: range check proved (CVC5: 1 VC; Z3: 1 VC)
-pupils.ads:103:19: medium: postcondition might fail, cannot prove P.PupilEntries (I) = P'Old.PupilEntries (I)
+pupils.ads:103:19: medium: postcondition might fail, cannot prove P.PupilEntries (I) = P'Old.PupilEntries (I) [provers gave up before completing the proof]
 pupils.ads:103:35: info: index check proved (CVC5: 2 VC)
 pupils.ads:103:60: info: index check proved (CVC5: 1 VC; Z3: 1 VC)
 pupils.ads:115:38: warning: consider extracting conjunct from quantified expression [-gnatw.t]

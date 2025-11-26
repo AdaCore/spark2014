@@ -6,8 +6,8 @@ my_test.adb:13:26: info: precondition proved (CVC5: 1 VC)
 my_test.adb:17:10: info: discriminant check proved (CVC5: 1 VC)
 my_test.adb:17:10: info: precondition proved (CVC5: 1 VC)
 my_test.adb:18:19: info: assertion proved (Z3: 1 VC)
-my_test.adb:20:10: medium: discriminant check might fail
-my_test.adb:22:19: medium: assertion might fail
+my_test.adb:20:10: medium: discriminant check might fail [provers reached step limit before completing the proof]
+my_test.adb:22:19: medium: assertion might fail [provers reached step limit before completing the proof]
 simple_unc_arrays.adb:10:07: medium: "C.V" might not be initialized
 simple_unc_arrays.adb:10:26: info: range check proved (CVC5: 2 VC)
 simple_unc_arrays.adb:13:16: info: loop invariant initialization proved (CVC5: 1 VC)
@@ -20,16 +20,16 @@ simple_unc_arrays.adb:13:67: info: index check proved (CVC5: 4 VC)
 simple_unc_arrays.adb:14:14: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 simple_unc_arrays.adb:14:18: info: index check proved (CVC5: 2 VC)
 simple_unc_arrays.adb:14:29: info: index check proved (CVC5: 2 VC)
-simple_unc_arrays.adb:14:32: medium: overflow check might fail, cannot prove lower bound for A.V (I) + B.V (I) [reason for check: result of addition must fit in a 32-bits machine integer]
+simple_unc_arrays.adb:14:32: medium: overflow check might fail, cannot prove lower bound for A.V (I) + B.V (I) [reason for check: result of addition must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
 simple_unc_arrays.adb:14:39: info: index check proved (CVC5: 2 VC)
 simple_unc_arrays.adb:30:13: info: loop invariant initialization proved (CVC5: 2 VC)
-simple_unc_arrays.adb:30:44: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove (A.V (J) = A.V'Loop_Entry (A.Last - J + 1))
+simple_unc_arrays.adb:30:44: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove (A.V (J) = A.V'Loop_Entry (A.Last - J + 1)) [provers reached step limit before completing the proof]
 simple_unc_arrays.adb:30:50: info: index check proved (CVC5: 4 VC)
 simple_unc_arrays.adb:30:82: info: overflow check proved (CVC5: 4 VC)
-simple_unc_arrays.adb:30:82: medium: array index check might fail [reason for check: result of addition must be a valid index into the array]
+simple_unc_arrays.adb:30:82: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [provers gave up before completing the proof]
 simple_unc_arrays.adb:32:54: info: index check proved (CVC5: 4 VC)
-simple_unc_arrays.adb:32:75: medium: array index check might fail [reason for check: value must be a valid index into the array]
-simple_unc_arrays.adb:34:10: medium: precondition might fail, cannot prove I in A'Range
+simple_unc_arrays.adb:32:75: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
+simple_unc_arrays.adb:34:10: medium: precondition might fail, cannot prove I in A'Range [provers gave up before completing the proof]
 simple_unc_arrays.adb:34:32: info: range check proved (CVC5: 2 VC)
 simple_unc_arrays.adb:35:22: info: overflow check proved (CVC5: 2 VC)
 simple_unc_arrays.adb:36:23: info: range check proved (CVC5: 2 VC)
@@ -46,7 +46,7 @@ simple_unc_arrays.adb:66:73: info: index check proved (CVC5: 4 VC)
 simple_unc_arrays.adb:68:24: info: index check proved (CVC5: 2 VC)
 simple_unc_arrays.adb:69:25: info: index check proved (CVC5: 2 VC)
 simple_unc_arrays.adb:83:28: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
-simple_unc_arrays.adb:84:20: medium: overflow check might fail, cannot prove lower bound for Sum + A.V (I) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 83 should mention Sum in a loop invariant]
+simple_unc_arrays.adb:84:20: medium: overflow check might fail, cannot prove lower bound for Sum + A.V (I) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 83 should mention Sum in a loop invariant] [provers reached step limit before completing the proof]
 simple_unc_arrays.adb:84:27: info: index check proved (CVC5: 2 VC)
 simple_unc_arrays.adb:87:18: info: division check proved (CVC5: 1 VC)
 simple_unc_arrays.adb:98:33: info: loop invariant initialization proved (CVC5: 1 VC)
@@ -64,13 +64,13 @@ simple_unc_arrays.adb:139:10: info: initialization of "Pivot_Index" proved
 simple_unc_arrays.adb:139:23: info: initialization of "Right" proved
 simple_unc_arrays.adb:139:30: info: initialization of "Left" proved
 simple_unc_arrays.adb:140:10: info: initialization of "Pivot_Value" proved
-simple_unc_arrays.adb:143:35: medium: overflow check might fail, cannot prove upper bound for First + Last [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (First <= Integer'Last - Last) to subprogram at line 135]
-simple_unc_arrays.adb:143:42: medium: overflow check might fail, cannot prove upper bound for (First + Last + 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (First + Last <= Integer'Last - 1) to subprogram at line 135]
+simple_unc_arrays.adb:143:35: medium: overflow check might fail, cannot prove upper bound for First + Last [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (First <= Integer'Last - Last) to subprogram at line 135] [provers gave up before completing the proof]
+simple_unc_arrays.adb:143:42: medium: overflow check might fail, cannot prove upper bound for (First + Last + 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (First + Last <= Integer'Last - 1) to subprogram at line 135] [provers gave up before completing the proof]
 simple_unc_arrays.adb:143:47: info: division check proved (CVC5: 1 VC)
-simple_unc_arrays.adb:144:33: medium: array index check might fail [reason for check: value must be a valid index into the array]
-simple_unc_arrays.adb:153:48: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: loop at line 147 should mention Left in a loop invariant]
+simple_unc_arrays.adb:144:33: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers gave up before completing the proof]
+simple_unc_arrays.adb:153:48: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: loop at line 147 should mention Left in a loop invariant] [provers reached step limit before completing the proof]
 simple_unc_arrays.adb:154:32: info: overflow check proved (CVC5: 2 VC)
-simple_unc_arrays.adb:157:50: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: loop at line 147 should mention Right in a loop invariant]
+simple_unc_arrays.adb:157:50: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: loop at line 147 should mention Right in a loop invariant] [provers gave up before completing the proof]
 simple_unc_arrays.adb:158:34: info: range check proved (CVC5: 2 VC)
 simple_unc_arrays.adb:163:16: info: precondition proved (CVC5: 4 VC)
 simple_unc_arrays.adb:163:33: info: range check proved (CVC5: 2 VC)
@@ -94,33 +94,33 @@ simple_unc_arrays.ads:22:40: info: index check proved (CVC5: 2 VC)
 simple_unc_arrays.ads:22:50: info: index check proved (CVC5: 2 VC)
 simple_unc_arrays.ads:22:53: info: overflow check proved (CVC5: 2 VC)
 simple_unc_arrays.ads:22:60: info: index check proved (CVC5: 2 VC)
-simple_unc_arrays.ads:30:20: medium: postcondition might fail, cannot prove (A.V (J) = A.V'Old (A.Last - J + 1))
+simple_unc_arrays.ads:30:20: medium: postcondition might fail, cannot prove (A.V (J) = A.V'Old (A.Last - J + 1)) [provers reached step limit before completing the proof]
 simple_unc_arrays.ads:30:26: info: index check proved (CVC5: 2 VC)
 simple_unc_arrays.ads:30:51: info: index check proved (CVC5: 2 VC)
 simple_unc_arrays.ads:30:51: info: overflow check proved (CVC5: 2 VC)
 simple_unc_arrays.ads:37:13: info: implicit aspect Always_Terminates on "Min" has been proved, subprogram will terminate
 simple_unc_arrays.ads:40:64: info: index check proved (CVC5: 2 VC)
-simple_unc_arrays.ads:42:15: medium: postcondition might fail, cannot prove (for some J in 1 .. A.Last => (Min'Result = A.V (J)))
+simple_unc_arrays.ads:42:15: medium: postcondition might fail, cannot prove (for some J in 1 .. A.Last => (Min'Result = A.V (J))) [provers gave up before completing the proof]
 simple_unc_arrays.ads:42:65: info: index check proved (CVC5: 2 VC)
 simple_unc_arrays.ads:49:13: info: implicit aspect Always_Terminates on "Max" has been proved, subprogram will terminate
 simple_unc_arrays.ads:52:64: info: index check proved (CVC5: 2 VC)
-simple_unc_arrays.ads:54:18: medium: postcondition might fail, cannot prove (for some J in 1 .. A.Last => (Max'Result = A.V (J)))
+simple_unc_arrays.ads:54:18: medium: postcondition might fail, cannot prove (for some J in 1 .. A.Last => (Max'Result = A.V (J))) [provers gave up before completing the proof]
 simple_unc_arrays.ads:54:68: info: index check proved (CVC5: 2 VC)
 simple_unc_arrays.ads:61:13: info: implicit aspect Always_Terminates on "Average" has been proved, subprogram will terminate
 simple_unc_arrays.ads:64:14: info: precondition proved (CVC5: 1 VC)
-simple_unc_arrays.ads:64:14: medium: postcondition might fail, cannot prove Min (A) <= Average'Result
+simple_unc_arrays.ads:64:14: medium: postcondition might fail, cannot prove Min (A) <= Average'Result [provers reached step limit before completing the proof]
 simple_unc_arrays.ads:65:15: info: precondition proved (CVC5: 1 VC)
 simple_unc_arrays.ads:73:13: info: implicit aspect Always_Terminates on "Search" has been proved, subprogram will terminate
 simple_unc_arrays.ads:74:17: info: postcondition proved (CVC5: 1 VC)
 simple_unc_arrays.ads:75:26: info: index check proved (CVC5: 2 VC)
 simple_unc_arrays.ads:76:54: info: range check proved (CVC5: 2 VC)
-simple_unc_arrays.ads:85:16: medium: postcondition might fail, cannot prove Bubble_Sort'Result.V (J) <= Bubble_Sort'Result.V (J+1)
+simple_unc_arrays.ads:85:16: medium: postcondition might fail, cannot prove Bubble_Sort'Result.V (J) <= Bubble_Sort'Result.V (J+1) [provers reached step limit before completing the proof]
 simple_unc_arrays.ads:85:38: info: index check proved (CVC5: 2 VC)
 simple_unc_arrays.ads:85:67: info: index check proved (CVC5: 2 VC)
 simple_unc_arrays.ads:85:67: info: overflow check proved (CVC5: 2 VC)
 simple_unc_arrays.ads:88:26: info: index check proved (CVC5: 2 VC)
 simple_unc_arrays.ads:88:53: info: index check proved (CVC5: 2 VC)
-simple_unc_arrays.ads:96:51: medium: postcondition might fail, cannot prove A.V (J) <= A.V (J+1) [possible fix: call at simple_unc_arrays.adb:184 should mention A in a postcondition]
+simple_unc_arrays.ads:96:51: medium: postcondition might fail, cannot prove A.V (J) <= A.V (J+1) [possible fix: call at simple_unc_arrays.adb:184 should mention A in a postcondition] [provers reached step limit before completing the proof]
 simple_unc_arrays.ads:96:56: info: index check proved (CVC5: 2 VC)
 simple_unc_arrays.ads:96:68: info: index check proved (CVC5: 2 VC)
 simple_unc_arrays.ads:96:68: info: overflow check proved (CVC5: 2 VC)
@@ -131,7 +131,7 @@ simple_unc_arrays.ads:106:13: info: implicit aspect Always_Terminates on "Same_R
 simple_unc_arrays.ads:107:13: info: implicit aspect Always_Terminates on "Not_In" has been proved, subprogram will terminate
 simple_unc_arrays.ads:112:61: info: index check proved (CVC5: 2 VC)
 simple_unc_arrays.ads:116:17: info: postcondition proved (CVC5: 2 VC)
-simple_unc_arrays.ads:121:20: high: postcondition might fail (e.g. when A = (others => 0) and A'First = 1 and A'Last = 2 and A'Old = (1 => 0, 2 => -1) and I = 2 and J = 1)
+simple_unc_arrays.ads:121:20: high: postcondition might fail (e.g. when A = (others => 0) and A'First = 1 and A'Last = 2 and A'Old = (1 => 0, 2 => -1) and I = 2 and J = 1) [provers gave up before completing the proof]
 simple_unc_arrays.ads:121:24: info: index check proved (CVC5: 2 VC)
 simple_unc_arrays.ads:121:36: info: index check proved (CVC5: 2 VC)
 simple_unc_arrays.ads:121:46: info: index check proved (CVC5: 2 VC)

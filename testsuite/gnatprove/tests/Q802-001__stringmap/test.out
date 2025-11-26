@@ -104,6 +104,6 @@ a-strbou.ads:2565:61: info: range check proved (CVC5: 2 VC), in instantiation at
 a-strbou.ads:2572:25: info: range check proved (CVC5: 2 VC), in instantiation at test.ads:6
 a-strbou.ads:2579:31: info: discriminant check proved (CVC5: 1 VC), in instantiation at test.ads:6
 a-strbou.ads:2579:31: info: predicate check proved (CVC5: 2 VC; Trivial: 1 VC), in instantiation at test.ads:6
-spark-containers-parameter_checks.ads:274:50: medium: postcondition might fail, in instantiation at spark-containers-formal-hashed_maps.ads:165, in instantiation at test.ads:12 [possible fix: you should consider adding a postcondition to function SBHash or turning it into an expression function]
+spark-containers-parameter_checks.ads:274:50: medium: postcondition might fail, in instantiation at spark-containers-formal-hashed_maps.ads:165, in instantiation at test.ads:12 [possible fix: you should consider adding a postcondition to function SBHash or turning it into an expression function] [provers reached step limit before completing the proof]
 test.ads:6:04: warning: in instantiation at a-strbou.ads
 test.ads:6:04: warning: pragma "Stream_Convert" ignored (not yet supported) [ignored-pragma]

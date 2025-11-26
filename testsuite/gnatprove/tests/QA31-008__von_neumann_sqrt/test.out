@@ -25,26 +25,26 @@ p.adb:87:36: info: loop invariant initialization proved (CVC5: 1 VC)
 p.adb:87:36: info: loop invariant preservation proved (Z3: 1 VC)
 p.adb:87:56: info: range check proved (CVC5: 4 VC)
 p.adb:88:36: info: loop invariant initialization proved (CVC5: 1 VC)
-p.adb:88:36: medium: loop invariant might not be preserved by an arbitrary iteration
+p.adb:88:36: medium: loop invariant might not be preserved by an arbitrary iteration [provers reached step limit before completing the proof]
 p.adb:88:38: info: division check proved (CVC5: 2 VC)
 p.adb:89:36: info: loop invariant initialization proved (CVC5: 1 VC)
-p.adb:89:36: medium: loop invariant might not be preserved by an arbitrary iteration
+p.adb:89:36: medium: loop invariant might not be preserved by an arbitrary iteration [provers reached step limit before completing the proof]
 p.adb:89:58: info: range check proved (CVC5: 3 VC; Z3: 1 VC)
 p.adb:90:36: info: loop invariant initialization proved (CVC5: 1 VC)
-p.adb:90:36: medium: loop invariant might not be preserved by an arbitrary iteration
+p.adb:90:36: medium: loop invariant might not be preserved by an arbitrary iteration [provers reached step limit before completing the proof]
 p.adb:90:39: info: division check proved (CVC5: 2 VC)
 p.adb:90:55: info: division check proved (CVC5: 2 VC)
 p.adb:91:36: info: loop invariant initialization proved (Z3: 1 VC)
-p.adb:91:36: medium: loop invariant might not be preserved by an arbitrary iteration
+p.adb:91:36: medium: loop invariant might not be preserved by an arbitrary iteration [provers reached step limit before completing the proof]
 p.adb:92:36: info: loop invariant initialization proved (Z3: 1 VC)
-p.adb:92:36: medium: loop invariant might not be preserved by an arbitrary iteration
+p.adb:92:36: medium: loop invariant might not be preserved by an arbitrary iteration [provers reached step limit before completing the proof]
 p.adb:93:36: info: loop invariant initialization proved (Z3: 1 VC)
-p.adb:93:36: medium: loop invariant might not be preserved by an arbitrary iteration
+p.adb:93:36: medium: loop invariant might not be preserved by an arbitrary iteration [provers reached step limit before completing the proof]
 p.adb:95:17: info: division check proved (CVC5: 1 VC)
-p.adb:98:26: medium: range check might fail, cannot prove upper bound for Y [reason for check: value must be convertible to the target type of the conversion]
+p.adb:98:26: medium: range check might fail, cannot prove upper bound for Y [reason for check: value must be convertible to the target type of the conversion] [provers gave up before completing the proof]
 p.ads:9:13: info: implicit aspect Always_Terminates on "Sqrt_Binary" has been proved, subprogram will terminate
 p.ads:10:19: info: postcondition proved (CVC5: 2 VC)
-p.ads:15:19: medium: postcondition might fail, cannot prove Sqrt_Von_Neumann'Result * Sqrt_Von_Neumann'Result <= X
+p.ads:15:19: medium: postcondition might fail, cannot prove Sqrt_Von_Neumann'Result * Sqrt_Von_Neumann'Result <= X [provers reached step limit before completing the proof]
 test_sqrt.adb:7:25: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 test_sqrt.adb:7:25: warning: statement has no effect
 test_sqrt.adb:8:09: warning: unused assignment

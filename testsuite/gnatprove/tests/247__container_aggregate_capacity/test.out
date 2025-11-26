@@ -17,7 +17,7 @@ test_capacity.adb:21:09: info: when establishing invariant on Contains at test_c
 test_capacity.adb:21:09: info: when establishing invariant on Length at test_capacity.adb:35
 test_capacity.adb:21:09: info: when reestablishing invariant on Capacity at test_capacity.adb:39
 test_capacity.adb:21:09: info: when reestablishing invariant on Length at test_capacity.adb:35
-test_capacity.adb:21:09: medium: Container_Aggregates annotation might be incorrect
+test_capacity.adb:21:09: medium: Container_Aggregates annotation might be incorrect [provers gave up before completing the proof]
 test_capacity.adb:21:09: medium: after a call to Append at test_capacity.adb:25
 test_capacity.adb:21:09: medium: when reestablishing invariant on Contains at test_capacity.adb:42
 test_capacity.adb:23:16: info: implicit aspect Always_Terminates on "Empty" has been proved, subprogram will terminate
@@ -333,42 +333,42 @@ test_capacity.adb:482:16: info: precondition proved (CVC5: 25 VC)
 test_capacity.adb:484:22: info: assertion proved (CVC5: 1 VC)
 test_capacity.adb:487:56: info: data dependencies proved
 test_capacity.adb:491:16: medium: elements shall be distinct and shall fit in "Small_Nat" for set aggregates at test_capacity.adb:21
-test_capacity.adb:491:16: medium: precondition might fail
+test_capacity.adb:491:16: medium: precondition might fail [provers gave up before completing the proof]
 test_capacity.adb:496:50: info: data dependencies proved
 test_capacity.adb:500:16: info: elements shall be distinct and shall be smaller than "Capacity" for set aggregates at test_capacity.adb:85
 test_capacity.adb:500:16: info: precondition proved (CVC5: 25 VC)
 test_capacity.adb:505:54: info: data dependencies proved
 test_capacity.adb:509:16: medium: elements shall be distinct and shall be smaller than "Capacity" for set aggregates at test_capacity.adb:85
-test_capacity.adb:509:16: medium: precondition might fail
+test_capacity.adb:509:16: medium: precondition might fail [provers gave up before completing the proof]
 test_capacity.adb:514:52: info: data dependencies proved
 test_capacity.adb:518:16: info: keys shall be distinct and all elements shall fit in "Small_Nat" for maps aggregates at test_capacity.adb:149
 test_capacity.adb:518:16: info: precondition proved (CVC5: 25 VC)
 test_capacity.adb:520:22: info: assertion proved (CVC5: 1 VC)
 test_capacity.adb:523:56: info: data dependencies proved
 test_capacity.adb:527:16: medium: keys shall be distinct and all elements shall fit in "Small_Nat" for maps aggregates at test_capacity.adb:149
-test_capacity.adb:527:16: medium: precondition might fail
+test_capacity.adb:527:16: medium: precondition might fail [provers gave up before completing the proof]
 test_capacity.adb:532:50: info: data dependencies proved
 test_capacity.adb:536:16: info: keys shall be distinct and all elements shall be smaller than "Capacity" for maps aggregates at test_capacity.adb:253
 test_capacity.adb:536:16: info: precondition proved (CVC5: 25 VC)
 test_capacity.adb:541:54: info: data dependencies proved
 test_capacity.adb:545:16: medium: keys shall be distinct and all elements shall be smaller than "Capacity" for maps aggregates at test_capacity.adb:253
-test_capacity.adb:545:16: medium: precondition might fail
+test_capacity.adb:545:16: medium: precondition might fail [provers gave up before completing the proof]
 test_capacity.adb:551:06: info: data dependencies proved
 test_capacity.adb:556:16: info: all elements shall fit in index type and fit in "Small_Nat" for sequence aggregates at test_capacity.adb:356
 test_capacity.adb:556:16: info: precondition proved (CVC5: 2 VC)
 test_capacity.adb:558:22: info: assertion proved (CVC5: 1 VC)
 test_capacity.adb:562:06: info: data dependencies proved
 test_capacity.adb:567:16: medium: all elements shall fit in index type and fit in "Small_Nat" for sequence aggregates at test_capacity.adb:356
-test_capacity.adb:567:16: medium: precondition might fail
+test_capacity.adb:567:16: medium: precondition might fail [provers gave up before completing the proof]
 test_capacity.adb:573:06: info: data dependencies proved
 test_capacity.adb:578:16: medium: all elements shall fit in index type and fit in "Small_Nat" for sequence aggregates at test_capacity.adb:356
-test_capacity.adb:578:16: medium: precondition might fail
+test_capacity.adb:578:16: medium: precondition might fail [provers reached step limit before completing the proof]
 test_capacity.adb:584:06: info: data dependencies proved
 test_capacity.adb:589:16: info: all elements shall fit in index type and be smaller than "Capacity" for sequence aggregates at test_capacity.adb:421
 test_capacity.adb:589:16: info: precondition proved (CVC5: 2 VC)
 test_capacity.adb:595:06: info: data dependencies proved
 test_capacity.adb:600:16: medium: all elements shall fit in index type and be smaller than "Capacity" for sequence aggregates at test_capacity.adb:421
-test_capacity.adb:600:16: medium: precondition might fail
+test_capacity.adb:600:16: medium: precondition might fail [provers gave up before completing the proof]
 test_capacity.adb:606:06: info: data dependencies proved
 test_capacity.adb:611:16: medium: all elements shall fit in index type and be smaller than "Capacity" for sequence aggregates at test_capacity.adb:421
-test_capacity.adb:611:16: medium: precondition might fail
+test_capacity.adb:611:16: medium: precondition might fail [provers reached step limit before completing the proof]

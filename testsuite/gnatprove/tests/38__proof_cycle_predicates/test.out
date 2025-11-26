@@ -1,61 +1,61 @@
 assertion.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 assertion.adb:4:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
-assertion.adb:4:64: medium: postcondition might fail
+assertion.adb:4:64: medium: postcondition might fail [provers reached step limit before completing the proof]
 assertion.adb:6:37: info: precondition proved (Trivial: 1 VC)
-assertion.adb:11:22: medium: assertion might fail [possible fix: precondition of subprogram at line 4 should mention V]
-assertion.adb:11:25: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention V]
+assertion.adb:11:22: medium: assertion might fail [possible fix: precondition of subprogram at line 4 should mention V] [provers reached step limit before completing the proof]
+assertion.adb:11:25: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention V] [provers reached step limit before completing the proof]
 assignment_statement.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 assignment_statement.adb:4:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
 assignment_statement.adb:4:16: warning: unused initial value of "V"
-assignment_statement.adb:4:64: medium: postcondition might fail
+assignment_statement.adb:4:64: medium: postcondition might fail [provers reached step limit before completing the proof]
 assignment_statement.adb:6:37: info: precondition proved (Trivial: 1 VC)
 assignment_statement.adb:10:06: warning: initialization of "V1" has no effect
-assignment_statement.adb:10:19: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention V]
+assignment_statement.adb:10:19: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention V] [provers reached step limit before completing the proof]
 case_statement.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 case_statement.adb:4:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
-case_statement.adb:4:64: medium: postcondition might fail
+case_statement.adb:4:64: medium: postcondition might fail [provers reached step limit before completing the proof]
 case_statement.adb:6:37: info: precondition proved (Trivial: 1 VC)
-case_statement.adb:11:15: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention V]
+case_statement.adb:11:15: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention V] [provers reached step limit before completing the proof]
 conversion.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 conversion.adb:4:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
-conversion.adb:4:65: medium: postcondition might fail
+conversion.adb:4:65: medium: postcondition might fail [provers reached step limit before completing the proof]
 conversion.adb:6:37: info: precondition proved (Trivial: 1 VC)
-conversion.adb:9:11: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention V]
+conversion.adb:9:11: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention V] [provers reached step limit before completing the proof]
 exit_statement.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 exit_statement.adb:4:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
 exit_statement.adb:4:16: warning: unused initial value of "V"
-exit_statement.adb:4:64: medium: postcondition might fail
+exit_statement.adb:4:64: medium: postcondition might fail [provers reached step limit before completing the proof]
 exit_statement.adb:6:37: info: precondition proved (Trivial: 1 VC)
 exit_statement.adb:11:24: info: unrolling loop [info-unrolling-inlining]
 exit_statement.adb:11:24: warning: statement has no effect
 exit_statement.adb:12:10: warning: loop exit condition is stable
 exit_statement.adb:12:10: warning: statement has no effect
-exit_statement.adb:12:23: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention V]
+exit_statement.adb:12:23: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention V] [provers reached step limit before completing the proof]
 extended_return.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 extended_return.adb:4:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
-extended_return.adb:4:64: medium: postcondition might fail
+extended_return.adb:4:64: medium: postcondition might fail [provers reached step limit before completing the proof]
 extended_return.adb:6:37: info: precondition proved (Trivial: 1 VC)
 extended_return.adb:11:14: info: initialization of "X" proved
-extended_return.adb:12:19: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention V]
+extended_return.adb:12:19: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention V] [provers reached step limit before completing the proof]
 for_loop.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 for_loop.adb:4:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
 for_loop.adb:4:16: warning: unused initial value of "V"
-for_loop.adb:4:64: medium: postcondition might fail
+for_loop.adb:4:64: medium: postcondition might fail [provers reached step limit before completing the proof]
 for_loop.adb:6:37: info: precondition proved (Trivial: 1 VC)
-for_loop.adb:11:24: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention V]
+for_loop.adb:11:24: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention V] [provers reached step limit before completing the proof]
 for_loop.adb:11:29: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 for_loop.adb:11:29: warning: statement has no effect
 func_actual.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 func_actual.adb:4:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
 func_actual.adb:4:16: warning: unused variable "X"
-func_actual.adb:4:64: medium: postcondition might fail
+func_actual.adb:4:64: medium: postcondition might fail [provers gave up before completing the proof]
 func_actual.adb:6:37: info: precondition proved (Trivial: 1 VC)
 func_actual.adb:8:22: info: predicate check proved (CVC5: 1 VC)
 func_actual.adb:10:13: info: implicit aspect Always_Terminates on "G" has been proved, subprogram will terminate
 func_actual.adb:13:10: info: predicate check proved (CVC5: 1 VC)
 func_contract_case_lhs.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 func_contract_case_lhs.adb:4:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
-func_contract_case_lhs.adb:4:64: medium: postcondition might fail
+func_contract_case_lhs.adb:4:64: medium: postcondition might fail [provers gave up before completing the proof]
 func_contract_case_lhs.adb:6:37: info: precondition proved (Trivial: 1 VC)
 func_contract_case_lhs.adb:10:13: info: implicit aspect Always_Terminates on "G" has been proved, subprogram will terminate
 func_contract_case_lhs.adb:10:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
@@ -63,33 +63,33 @@ func_contract_case_lhs.adb:11:09: warning: contract cases do not mention functio
 func_contract_case_lhs.adb:11:28: info: contract case proved (Trivial: 2 VC)
 func_contract_case_lhs.adb:11:28: warning: assuming "Foo" has no effect on global items
 func_contract_case_lhs.adb:11:28: warning: no Global contract available for "Foo" [assumed-global-null]
-func_contract_case_lhs.adb:11:33: medium: predicate check might fail [possible fix: subprogram at line 10 should mention X in a precondition]
+func_contract_case_lhs.adb:11:33: medium: predicate check might fail [possible fix: subprogram at line 10 should mention X in a precondition] [provers gave up before completing the proof]
 func_contract_case_lhs.adb:12:28: info: contract case proved (Trivial: 2 VC)
 func_contract_case_lhs_imp.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 func_contract_case_lhs_imp.adb:4:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
-func_contract_case_lhs_imp.adb:4:64: medium: postcondition might fail
+func_contract_case_lhs_imp.adb:4:64: medium: postcondition might fail [provers gave up before completing the proof]
 func_contract_case_lhs_imp.adb:6:37: info: precondition proved (Trivial: 1 VC)
 func_contract_case_lhs_imp.adb:10:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
 func_contract_case_lhs_imp.adb:11:17: warning: contract cases do not mention function result [-gnatw.t]
 func_contract_case_lhs_imp.adb:11:36: warning: assuming "Foo" has no effect on global items
 func_contract_case_lhs_imp.adb:11:36: warning: no Global contract available for "Foo" [assumed-global-null]
-func_contract_case_lhs_imp.adb:11:41: medium: predicate check might fail [possible fix: subprogram at line 10 should mention X in a precondition]
+func_contract_case_lhs_imp.adb:11:41: medium: predicate check might fail [possible fix: subprogram at line 10 should mention X in a precondition] [provers gave up before completing the proof]
 func_contract_case_lhs_imp.adb:15:07: warning: assuming "G" has no effect on global items
 func_contract_case_lhs_imp.adb:15:07: warning: no Global contract available for "G" [assumed-global-null]
 func_contract_case_rhs.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 func_contract_case_rhs.adb:4:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
-func_contract_case_rhs.adb:4:64: medium: postcondition might fail
+func_contract_case_rhs.adb:4:64: medium: postcondition might fail [provers gave up before completing the proof]
 func_contract_case_rhs.adb:6:37: info: precondition proved (Trivial: 1 VC)
 func_contract_case_rhs.adb:10:13: info: implicit aspect Always_Terminates on "G" has been proved, subprogram will terminate
 func_contract_case_rhs.adb:10:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
 func_contract_case_rhs.adb:11:09: warning: contract cases do not mention function result [-gnatw.t]
-func_contract_case_rhs.adb:11:28: medium: contract case might fail
+func_contract_case_rhs.adb:11:28: medium: contract case might fail [provers gave up before completing the proof]
 func_contract_case_rhs.adb:11:38: warning: assuming "Foo" has no effect on global items
 func_contract_case_rhs.adb:11:38: warning: no Global contract available for "Foo" [assumed-global-null]
-func_contract_case_rhs.adb:11:43: medium: predicate check might fail [possible fix: subprogram at line 10 should mention X in a precondition]
+func_contract_case_rhs.adb:11:43: medium: predicate check might fail [possible fix: subprogram at line 10 should mention X in a precondition] [provers gave up before completing the proof]
 func_contract_case_rhs_imp.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 func_contract_case_rhs_imp.adb:4:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
-func_contract_case_rhs_imp.adb:4:64: medium: postcondition might fail
+func_contract_case_rhs_imp.adb:4:64: medium: postcondition might fail [provers gave up before completing the proof]
 func_contract_case_rhs_imp.adb:6:37: info: precondition proved (Trivial: 1 VC)
 func_contract_case_rhs_imp.adb:10:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
 func_contract_case_rhs_imp.adb:11:17: warning: contract cases do not mention function result [-gnatw.t]
@@ -99,24 +99,24 @@ func_contract_case_rhs_imp.adb:14:07: warning: assuming "G" has no effect on glo
 func_contract_case_rhs_imp.adb:14:07: warning: no Global contract available for "G" [assumed-global-null]
 func_formal.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 func_formal.adb:4:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
-func_formal.adb:4:64: medium: postcondition might fail
+func_formal.adb:4:64: medium: postcondition might fail [provers gave up before completing the proof]
 func_formal.adb:6:37: info: precondition proved (Trivial: 1 VC)
 func_formal.adb:8:13: info: implicit aspect Always_Terminates on "G" has been proved, subprogram will terminate
-func_formal.adb:11:10: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention X]
+func_formal.adb:11:10: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention X] [provers gave up before completing the proof]
 func_post.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 func_post.adb:4:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
-func_post.adb:4:64: medium: postcondition might fail
+func_post.adb:4:64: medium: postcondition might fail [provers gave up before completing the proof]
 func_post.adb:6:37: info: precondition proved (Trivial: 1 VC)
 func_post.adb:10:13: info: implicit aspect Always_Terminates on "G" has been proved, subprogram will terminate
 func_post.adb:10:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
 func_post.adb:10:54: warning: postcondition does not mention function result [-gnatw.t]
-func_post.adb:10:62: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function Foo or turning it into an expression function in its unit spec]
+func_post.adb:10:62: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function Foo or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 func_post.adb:10:62: warning: assuming "Foo" has no effect on global items
 func_post.adb:10:62: warning: no Global contract available for "Foo" [assumed-global-null]
-func_post.adb:10:67: medium: predicate check might fail [possible fix: subprogram at line 10 should mention X in a precondition]
+func_post.adb:10:67: medium: predicate check might fail [possible fix: subprogram at line 10 should mention X in a precondition] [provers gave up before completing the proof]
 func_post_imp.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 func_post_imp.adb:4:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
-func_post_imp.adb:4:64: medium: postcondition might fail
+func_post_imp.adb:4:64: medium: postcondition might fail [provers gave up before completing the proof]
 func_post_imp.adb:6:37: info: precondition proved (Trivial: 1 VC)
 func_post_imp.adb:10:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
 func_post_imp.adb:10:51: warning: postcondition does not mention function result [-gnatw.t]
@@ -126,26 +126,26 @@ func_post_imp.adb:13:07: warning: assuming "G" has no effect on global items
 func_post_imp.adb:13:07: warning: no Global contract available for "G" [assumed-global-null]
 func_pre.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 func_pre.adb:4:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
-func_pre.adb:4:64: medium: postcondition might fail
+func_pre.adb:4:64: medium: postcondition might fail [provers gave up before completing the proof]
 func_pre.adb:6:37: info: precondition proved (Trivial: 1 VC)
 func_pre.adb:10:13: info: implicit aspect Always_Terminates on "G" has been proved, subprogram will terminate
 func_pre.adb:10:61: warning: assuming "Foo" has no effect on global items
 func_pre.adb:10:61: warning: no Global contract available for "Foo" [assumed-global-null]
-func_pre.adb:10:66: medium: predicate check might fail
-func_pre.adb:13:07: medium: precondition might fail [possible fix: precondition of subprogram at line 4 should mention X]
+func_pre.adb:10:66: medium: predicate check might fail [provers gave up before completing the proof]
+func_pre.adb:13:07: medium: precondition might fail [possible fix: precondition of subprogram at line 4 should mention X] [provers gave up before completing the proof]
 func_pre_imp.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 func_pre_imp.adb:4:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
-func_pre_imp.adb:4:64: medium: postcondition might fail
+func_pre_imp.adb:4:64: medium: postcondition might fail [provers gave up before completing the proof]
 func_pre_imp.adb:6:37: info: precondition proved (Trivial: 1 VC)
 func_pre_imp.adb:10:58: warning: assuming "Foo" has no effect on global items
 func_pre_imp.adb:10:58: warning: no Global contract available for "Foo" [assumed-global-null]
-func_pre_imp.adb:10:63: medium: predicate check might fail
-func_pre_imp.adb:13:07: medium: precondition might fail [possible fix: precondition of subprogram at line 4 should mention X]
+func_pre_imp.adb:10:63: medium: predicate check might fail [provers gave up before completing the proof]
+func_pre_imp.adb:13:07: medium: precondition might fail [possible fix: precondition of subprogram at line 4 should mention X] [provers gave up before completing the proof]
 func_pre_imp.adb:13:07: warning: assuming "G" has no effect on global items
 func_pre_imp.adb:13:07: warning: no Global contract available for "G" [assumed-global-null]
 func_return.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 func_return.adb:4:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
-func_return.adb:4:64: medium: postcondition might fail
+func_return.adb:4:64: medium: postcondition might fail [provers gave up before completing the proof]
 func_return.adb:6:37: info: precondition proved (Trivial: 1 VC)
 func_return.adb:8:13: info: implicit aspect Always_Terminates on "G" has been proved, subprogram will terminate
 func_return.adb:8:13: warning: implicit function contract might not be available on implicit recursive calls [contracts-recursive]
@@ -153,124 +153,124 @@ func_return.adb:8:16: warning: unused variable "X"
 func_return.adb:8:36: info: predicate check proved (CVC5: 1 VC)
 handled_seq_statements.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 handled_seq_statements.adb:4:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
-handled_seq_statements.adb:4:64: medium: postcondition might fail
+handled_seq_statements.adb:4:64: medium: postcondition might fail [provers reached step limit before completing the proof]
 handled_seq_statements.adb:6:37: info: precondition proved (Trivial: 1 VC)
-handled_seq_statements.adb:14:46: medium: assertion might fail [possible fix: precondition of subprogram at line 4 should mention V]
-handled_seq_statements.adb:14:49: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention V]
+handled_seq_statements.adb:14:46: medium: assertion might fail [possible fix: precondition of subprogram at line 4 should mention V] [provers reached step limit before completing the proof]
+handled_seq_statements.adb:14:49: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention V] [provers reached step limit before completing the proof]
 if_statement.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 if_statement.adb:4:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
 if_statement.adb:4:16: warning: unused initial value of "V"
-if_statement.adb:4:64: medium: postcondition might fail
+if_statement.adb:4:64: medium: postcondition might fail [provers reached step limit before completing the proof]
 if_statement.adb:6:37: info: precondition proved (Trivial: 1 VC)
 if_statement.adb:11:07: warning: statement has no effect
-if_statement.adb:11:13: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention V]
+if_statement.adb:11:13: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention V] [provers reached step limit before completing the proof]
 imported.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 imported.adb:4:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
-imported.adb:4:65: medium: postcondition might fail
+imported.adb:4:65: medium: postcondition might fail [provers reached step limit before completing the proof]
 imported.adb:6:37: info: precondition proved (Trivial: 1 VC)
 imported.adb:11:08: warning: assuming "Imp" has no effect on global items
 imported.adb:11:08: warning: no Global contract available for "Imp" [assumed-global-null]
-imported.adb:11:13: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention V]
+imported.adb:11:13: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention V] [provers reached step limit before completing the proof]
 imported_2.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 imported_2.adb:4:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
-imported_2.adb:4:65: medium: postcondition might fail
+imported_2.adb:4:65: medium: postcondition might fail [provers reached step limit before completing the proof]
 imported_2.adb:6:37: info: precondition proved (Trivial: 1 VC)
 imported_2.adb:13:07: info: no contextual analysis of "Imp" (body not seen yet)
 imported_2.adb:13:07: warning: assuming "Imp" always terminates
 imported_2.adb:13:07: warning: assuming "Imp" has no effect on global items
 imported_2.adb:13:07: warning: no Always_Terminates aspect available for "Imp" [assumed-always-terminates]
 imported_2.adb:13:07: warning: no Global contract available for "Imp" [assumed-global-null]
-imported_2.adb:13:15: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention V]
+imported_2.adb:13:15: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention V] [provers reached step limit before completing the proof]
 imported_ret.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 imported_ret.adb:4:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
-imported_ret.adb:4:65: medium: postcondition might fail
+imported_ret.adb:4:65: medium: postcondition might fail [provers reached step limit before completing the proof]
 imported_ret.adb:6:37: info: precondition proved (Trivial: 1 VC)
 imported_ret.adb:8:13: warning: implicit function contract might not be available on implicit recursive calls [contracts-recursive]
 imported_ret.adb:11:08: warning: assuming "Imp" has no effect on global items
 imported_ret.adb:11:08: warning: no Global contract available for "Imp" [assumed-global-null]
 loop_statement.adb:4:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
 loop_statement.adb:4:16: warning: unused initial value of "V"
-loop_statement.adb:4:64: medium: postcondition might fail
+loop_statement.adb:4:64: medium: postcondition might fail [provers reached step limit before completing the proof]
 loop_statement.adb:6:37: info: precondition proved (Trivial: 1 VC)
-loop_statement.adb:11:16: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention V]
+loop_statement.adb:11:16: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention V] [provers reached step limit before completing the proof]
 loop_statement.adb:11:25: medium: implicit aspect Always_Terminates on "F" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 loop_statement.adb:11:25: warning: loop condition is stable
 loop_statement.adb:11:25: warning: statement has no effect
 membership_test.adb:4:13: warning: function contract might not be available on recursive calls [contracts-recursive]
-membership_test.adb:4:66: medium: postcondition might fail
+membership_test.adb:4:66: medium: postcondition might fail [provers reached step limit before completing the proof]
 membership_test.adb:6:13: info: implicit aspect Always_Terminates on "Bar" has been proved, subprogram will terminate
 membership_test.adb:6:18: warning: unused variable "V"
 membership_test.adb:8:37: info: precondition proved (Trivial: 1 VC)
 membership_test.adb:12:46: medium: implicit aspect Always_Terminates on "Foo" could be incorrect, subprogram is recursive [possible fix: annotate "Foo" with a Subprogram_Variant aspect]
 membership_test_2.adb:4:13: warning: function contract might not be available on recursive calls [contracts-recursive]
-membership_test_2.adb:4:66: medium: postcondition might fail
+membership_test_2.adb:4:66: medium: postcondition might fail [provers reached step limit before completing the proof]
 membership_test_2.adb:6:13: info: implicit aspect Always_Terminates on "Bar" has been proved, subprogram will terminate
 membership_test_2.adb:6:18: warning: unused variable "V"
 membership_test_2.adb:8:37: info: precondition proved (Trivial: 1 VC)
 membership_test_2.adb:14:46: medium: implicit aspect Always_Terminates on "Foo" could be incorrect, subprogram is recursive [possible fix: annotate "Foo" with a Subprogram_Variant aspect]
 normal_return.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 normal_return.adb:4:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
-normal_return.adb:4:64: medium: postcondition might fail
+normal_return.adb:4:64: medium: postcondition might fail [provers reached step limit before completing the proof]
 normal_return.adb:6:37: info: precondition proved (Trivial: 1 VC)
-normal_return.adb:11:18: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention V]
+normal_return.adb:11:18: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention V] [provers reached step limit before completing the proof]
 object_decl.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 object_decl.adb:4:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
 object_decl.adb:4:16: warning: unused variable "V"
-object_decl.adb:4:64: medium: postcondition might fail
+object_decl.adb:4:64: medium: postcondition might fail [provers reached step limit before completing the proof]
 object_decl.adb:6:37: info: precondition proved (Trivial: 1 VC)
 object_decl.adb:10:06: warning: unused variable "V1"
 pkg_body.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 pkg_body.adb:4:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
 pkg_body.adb:4:16: warning: unused initial value of "V"
-pkg_body.adb:4:64: medium: postcondition might fail
+pkg_body.adb:4:64: medium: postcondition might fail [provers reached step limit before completing the proof]
 pkg_body.adb:6:37: info: precondition proved (Trivial: 1 VC)
-pkg_body.adb:16:19: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention V]
+pkg_body.adb:16:19: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention V] [provers reached step limit before completing the proof]
 pkg_decl.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 pkg_decl.adb:4:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
 pkg_decl.adb:4:16: warning: unused variable "V"
-pkg_decl.adb:4:64: medium: postcondition might fail
+pkg_decl.adb:4:64: medium: postcondition might fail [provers reached step limit before completing the proof]
 pkg_decl.adb:6:37: info: precondition proved (Trivial: 1 VC)
 pkg_decl.adb:11:10: warning: unused variable "V1"
 proc_formal.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 proc_formal.adb:4:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
-proc_formal.adb:4:64: medium: postcondition might fail
+proc_formal.adb:4:64: medium: postcondition might fail [provers gave up before completing the proof]
 proc_formal.adb:6:37: info: precondition proved (Trivial: 1 VC)
 proc_formal.adb:8:14: warning: subprogram "G" has no effect
 proc_formal.adb:14:07: info: precondition proved (Trivial: 1 VC)
-proc_formal.adb:14:10: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention X]
+proc_formal.adb:14:10: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention X] [provers gave up before completing the proof]
 qualified_expression.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 qualified_expression.adb:4:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
-qualified_expression.adb:4:65: medium: postcondition might fail
+qualified_expression.adb:4:65: medium: postcondition might fail [provers reached step limit before completing the proof]
 qualified_expression.adb:6:37: info: precondition proved (Trivial: 1 VC)
-qualified_expression.adb:9:11: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention V]
+qualified_expression.adb:9:11: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention V] [provers reached step limit before completing the proof]
 raise_stmt.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 raise_stmt.adb:4:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
 raise_stmt.adb:4:16: warning: unused initial value of "V"
-raise_stmt.adb:4:64: medium: postcondition might fail
+raise_stmt.adb:4:64: medium: postcondition might fail [provers reached step limit before completing the proof]
 raise_stmt.adb:6:37: info: precondition proved (Trivial: 1 VC)
-raise_stmt.adb:12:38: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention V]
+raise_stmt.adb:12:38: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention V] [provers reached step limit before completing the proof]
 raise_stmt.adb:12:42: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 recursive_predicates.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 recursive_predicates.adb:4:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
-recursive_predicates.adb:4:51: medium: postcondition might fail
+recursive_predicates.adb:4:51: medium: postcondition might fail [provers reached step limit before completing the proof]
 recursive_predicates.adb:6:42: info: predicate check proved (CVC5: 1 VC)
 recursive_predicates.adb:7:45: info: predicate check proved (CVC5: 1 VC)
-recursive_predicates.adb:11:18: medium: predicate check might fail [possible fix: subprogram at line 4 should mention V in a precondition]
+recursive_predicates.adb:11:18: medium: predicate check might fail [possible fix: subprogram at line 4 should mention V in a precondition] [provers reached step limit before completing the proof]
 subcomponent_parent.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 subcomponent_parent.adb:4:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
 subcomponent_parent.adb:4:16: warning: unused variable "V"
-subcomponent_parent.adb:4:64: medium: postcondition might fail
+subcomponent_parent.adb:4:64: medium: postcondition might fail [provers reached step limit before completing the proof]
 subcomponent_parent.adb:6:37: info: precondition proved (Trivial: 1 VC)
 subcomponent_parent.adb:16:06: warning: unused variable "R"
 traverse_access.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 traverse_access.adb:4:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
 traverse_access.adb:4:16: warning: unused variable "V"
-traverse_access.adb:4:64: medium: postcondition might fail
+traverse_access.adb:4:64: medium: postcondition might fail [provers reached step limit before completing the proof]
 traverse_access.adb:6:37: info: precondition proved (Trivial: 1 VC)
 traverse_access.adb:16:06: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 unch_conversion.adb:6:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 unch_conversion.adb:6:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
-unch_conversion.adb:6:65: medium: postcondition might fail
+unch_conversion.adb:6:65: medium: postcondition might fail [provers reached step limit before completing the proof]
 unch_conversion.adb:8:37: info: precondition proved (Trivial: 1 VC)
 unch_conversion.adb:10:13: info: types in unchecked conversion have the same size (Trivial)
 unch_conversion.adb:10:13: warning: implicit function contract might not be available on implicit recursive calls [contracts-recursive]

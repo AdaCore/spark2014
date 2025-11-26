@@ -11,16 +11,16 @@ dealloc.adb:43:22: info: pointer dereference check proved (CVC5: 1 VC)
 dealloc.adb:44:07: info: absence of resource or memory leak proved (CVC5: 1 VC; Trivial: 1 VC)
 dealloc.adb:44:18: info: pointer dereference check proved (CVC5: 1 VC)
 dealloc.adb:45:07: info: absence of resource or memory leak proved (CVC5: 1 VC; Trivial: 1 VC)
-dealloc.adb:51:07: medium: resource or memory leak might occur at end of scope
+dealloc.adb:51:07: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 dealloc.adb:52:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 dealloc.adb:53:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 dealloc.adb:55:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
 dealloc.adb:56:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
 dealloc.adb:57:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
-dealloc.adb:59:07: medium: resource or memory leak might occur
+dealloc.adb:59:07: medium: resource or memory leak might occur [provers gave up before completing the proof]
 dealloc.adb:60:18: info: pointer dereference check proved (CVC5: 1 VC)
 dealloc.adb:60:22: info: pointer dereference check proved (CVC5: 1 VC)
-dealloc.adb:61:07: medium: resource or memory leak might occur
+dealloc.adb:61:07: medium: resource or memory leak might occur [provers gave up before completing the proof]
 dealloc.adb:67:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 dealloc.adb:68:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 dealloc.adb:69:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
@@ -109,24 +109,24 @@ dealloc.adb:117:07: info: absence of resource or memory leak proved (CVC5: 1 VC;
 dealloc.adb:117:18: info: pointer dereference check proved (CVC5: 1 VC)
 dealloc.adb:117:22: info: pointer dereference check proved (CVC5: 1 VC)
 dealloc.adb:117:25: info: pointer dereference check proved (CVC5: 1 VC)
-dealloc.adb:118:07: medium: resource or memory leak might occur
+dealloc.adb:118:07: medium: resource or memory leak might occur [provers gave up before completing the proof]
 dealloc.adb:118:18: info: pointer dereference check proved (CVC5: 1 VC)
 dealloc.adb:118:22: info: pointer dereference check proved (CVC5: 1 VC)
-dealloc.adb:119:07: medium: resource or memory leak might occur
+dealloc.adb:119:07: medium: resource or memory leak might occur [provers gave up before completing the proof]
 glob.adb:5:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
-glob.adb:6:09: medium: resource or memory leak might occur [possible fix: subprogram at glob.ads:9 should mention Z in a precondition]
-glob.adb:12:07: medium: resource or memory leak might occur
-glob.adb:17:07: medium: resource or memory leak might occur
+glob.adb:6:09: medium: resource or memory leak might occur [possible fix: subprogram at glob.ads:9 should mention Z in a precondition] [provers reached step limit before completing the proof]
+glob.adb:12:07: medium: resource or memory leak might occur [provers reached step limit before completing the proof]
+glob.adb:17:07: medium: resource or memory leak might occur [provers reached step limit before completing the proof]
 glob.adb:22:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
-glob.adb:23:12: medium: pointer dereference check might fail (e.g. when X = null) [possible fix: subprogram at glob.ads:14 should mention X in a precondition]
-glob.adb:24:12: medium: resource or memory leak might occur [possible fix: subprogram at glob.ads:14 should mention Z in a precondition]
+glob.adb:23:12: medium: pointer dereference check might fail (e.g. when X = null) [possible fix: subprogram at glob.ads:14 should mention X in a precondition] [provers reached step limit before completing the proof]
+glob.adb:24:12: medium: resource or memory leak might occur [possible fix: subprogram at glob.ads:14 should mention Z in a precondition] [provers reached step limit before completing the proof]
 glob.adb:30:30: info: initial condition proved (CVC5: 3 VC)
 glob.adb:32:10: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 glob.adb:32:10: info: initialization of "X" proved
 glob.adb:33:10: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 glob.adb:33:10: info: initialization of "Y" proved
 glob.adb:34:10: info: initialization of "Z" proved
-glob.adb:34:10: medium: resource or memory leak might occur at end of scope
+glob.adb:34:10: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 glob.adb:37:13: info: absence of resource or memory leak proved (CVC5: 1 VC)
 glob.adb:38:13: info: absence of resource or memory leak proved (CVC5: 1 VC)
 glob.adb:39:13: info: absence of resource or memory leak proved (CVC5: 1 VC)
@@ -139,59 +139,59 @@ glob.ads:17:28: warning: "X" is not modified, could be INPUT
 glob.ads:17:31: warning: unused initial value of "Y"
 glob.ads:19:14: warning: subprogram "Local" has no effect
 notnull.adb:5:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
-notnull.adb:6:04: medium: resource or memory leak might occur at end of scope
-notnull.adb:8:06: medium: resource or memory leak might occur
+notnull.adb:6:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
+notnull.adb:8:06: medium: resource or memory leak might occur [provers reached step limit before completing the proof]
 notnull.adb:10:21: info: unrolling loop [info-unrolling-inlining]
-notnull.adb:11:09: medium: resource or memory leak might occur
+notnull.adb:11:09: medium: resource or memory leak might occur [provers reached step limit before completing the proof]
 pointers.adb:10:22: info: initialization of "X" proved
 pointers.adb:11:19: info: postcondition proved (CVC5: 2 VC)
 pointers.adb:11:35: info: pointer dereference check proved (CVC5: 1 VC)
 pointers.adb:14:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
-pointers.adb:16:18: medium: resource or memory leak might occur
+pointers.adb:16:18: medium: resource or memory leak might occur [provers reached step limit before completing the proof]
 pointers.adb:20:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 pointers.adb:20:04: info: initialization of "X" proved
 pointers.adb:21:04: info: initialization of "Y" proved
-pointers.adb:21:04: medium: resource or memory leak might occur at end of scope
+pointers.adb:21:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 pointers.adb:22:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 pointers.adb:22:04: info: initialization of "Z" proved
 pointers.adb:26:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 pointers.adb:26:04: info: initialization of "XX" proved
-pointers.adb:27:04: medium: resource or memory leak might occur at end of scope
-pointers.adb:28:04: medium: resource or memory leak might occur at end of scope
+pointers.adb:27:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
+pointers.adb:28:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 pointers.adb:32:22: warning: unused initial value of "X"
 pointers.adb:33:19: info: postcondition proved (Trivial: 1 VC)
 pointers.adb:35:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 pointers.adb:35:07: info: initialization of "Loc" proved
 pointers.adb:35:07: info: range check proved (CVC5: 2 VC)
 pointers.adb:37:09: info: length check proved (CVC5: 3 VC)
-pointers.adb:37:09: medium: resource or memory leak might occur [possible fix: subprogram at line 32 should mention X in a precondition]
+pointers.adb:37:09: medium: resource or memory leak might occur [possible fix: subprogram at line 32 should mention X in a precondition] [provers reached step limit before completing the proof]
 pointers.adb:41:06: info: absence of resource or memory leak proved (CVC5: 1 VC)
 pointers.adb:43:06: info: absence of resource or memory leak proved (CVC5: 1 VC)
 pointers.adb:45:06: info: absence of resource or memory leak proved (CVC5: 1 VC)
 pointers.adb:46:06: info: absence of resource or memory leak proved (CVC5: 1 VC)
-pointers.adb:48:06: medium: resource or memory leak might occur
+pointers.adb:48:06: medium: resource or memory leak might occur [provers reached step limit before completing the proof]
 pointers.adb:49:06: info: absence of resource or memory leak proved (CVC5: 1 VC)
 pointers.adb:51:10: info: absence of resource or memory leak proved (CVC5: 1 VC)
 pointers.adb:52:07: info: absence of resource or memory leak proved (CVC5: 1 VC)
 pointers.adb:53:10: info: absence of resource or memory leak proved (CVC5: 1 VC)
 pointers.adb:56:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 pointers.adb:56:07: info: initialization of "X" proved
-pointers.adb:57:07: medium: resource or memory leak might occur at end of scope
+pointers.adb:57:07: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 pointers.adb:58:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 pointers.adb:58:07: info: initialization of "Z" proved
 pointers.adb:61:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
 pointers.adb:63:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
 pointers.adb:65:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
-pointers.adb:66:15: medium: resource or memory leak might occur
+pointers.adb:66:15: medium: resource or memory leak might occur [provers reached step limit before completing the proof]
 pointers.adb:68:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
-pointers.adb:69:09: medium: resource or memory leak might occur
+pointers.adb:69:09: medium: resource or memory leak might occur [provers reached step limit before completing the proof]
 pointers.adb:92:27: info: range check proved (CVC5: 2 VC)
 pointers.adb:100:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 pointers.adb:100:07: info: initialization of "U" proved
 pointers.adb:101:07: info: initialization of "V" proved
-pointers.adb:101:07: medium: resource or memory leak might occur at end of scope
+pointers.adb:101:07: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 pointers.adb:102:07: info: initialization of "W" proved
-pointers.adb:102:07: medium: resource or memory leak might occur at end of scope
+pointers.adb:102:07: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 pointers.adb:104:07: info: absence of resource or memory leak at end of scope proved (Z3: 1 VC)
 pointers.adb:105:07: info: absence of resource or memory leak at end of scope proved (Z3: 1 VC)
 pointers.adb:107:07: info: absence of resource or memory leak at end of scope proved (Z3: 1 VC)
@@ -201,7 +201,7 @@ pointers.adb:110:07: info: initialization of "H" proved
 pointers.adb:111:07: info: absence of resource or memory leak at end of scope proved (Z3: 1 VC)
 pointers.adb:113:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 pointers.adb:113:07: info: initialization of "R" proved
-pointers.adb:114:07: medium: resource or memory leak might occur at end of scope
+pointers.adb:114:07: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 pointers.adb:116:25: info: initialization of "U" proved
 pointers.adb:117:22: info: postcondition proved (Trivial: 1 VC)
 pointers.adb:120:14: info: absence of resource or memory leak proved (CVC5: 1 VC)
@@ -212,13 +212,13 @@ pointers.adb:132:11: info: absence of resource or memory leak proved (CVC5: 1 VC
 pointers.adb:133:11: info: absence of resource or memory leak proved (CVC5: 1 VC)
 pointers.adb:134:11: info: absence of resource or memory leak proved (CVC5: 1 VC)
 pointers.adb:135:11: info: absence of resource or memory leak proved (CVC5: 1 VC)
-pointers.adb:136:11: medium: resource or memory leak might occur
+pointers.adb:136:11: medium: resource or memory leak might occur [provers reached step limit before completing the proof]
 pointers.adb:138:11: info: absence of resource or memory leak proved (CVC5: 1 VC)
 pointers.adb:139:11: info: absence of resource or memory leak proved (CVC5: 1 VC)
-pointers.adb:140:15: medium: resource or memory leak might occur
+pointers.adb:140:15: medium: resource or memory leak might occur [provers reached step limit before completing the proof]
 pointers.adb:142:16: info: absence of resource or memory leak proved (CVC5: 1 VC)
 pointers.adb:143:16: info: absence of resource or memory leak proved (CVC5: 1 VC)
-pointers.adb:145:09: medium: resource or memory leak might occur
+pointers.adb:145:09: medium: resource or memory leak might occur [provers reached step limit before completing the proof]
 pointers.adb:146:22: info: assertion proved (CVC5: 1 VC)
 pointers.adb:147:22: info: assertion proved (CVC5: 1 VC)
 pointers.adb:148:15: info: absence of resource or memory leak proved (Z3: 1 VC)
@@ -238,5 +238,5 @@ pointers.adb:161:14: info: absence of resource or memory leak proved (Z3: 1 VC)
 pointers.adb:162:11: info: absence of resource or memory leak proved (Z3: 1 VC)
 pointertest3.adb:8:03: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 pointertest3.adb:9:03: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
-pointertest3.adb:10:03: medium: resource or memory leak might occur at end of scope
+pointertest3.adb:10:03: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 pointertest3.adb:10:03: warning: initialization of "My_Dictionary" has no effect

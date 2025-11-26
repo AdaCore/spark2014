@@ -6,8 +6,8 @@ do_loops.adb:20:63: info: pointer dereference check proved (CVC5: 1 VC)
 do_loops.adb:23:20: info: pointer dereference check proved (CVC5: 1 VC)
 do_loops.adb:24:10: info: pointer dereference check proved (CVC5: 1 VC)
 do_loops.adb:24:13: info: index check proved (CVC5: 2 VC)
-do_loops.adb:29:04: medium: resource or memory leak might occur at end of scope
-do_loops.adb:30:04: medium: resource or memory leak might occur at end of scope
+do_loops.adb:29:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
+do_loops.adb:30:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 do_loops.adb:31:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 do_loops.adb:32:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 do_loops.adb:34:04: info: precondition proved (CVC5: 1 VC)
@@ -42,7 +42,7 @@ do_loops.adb:48:28: info: index check proved (CVC5: 2 VC)
 do_loops.adb:48:37: info: pointer dereference check proved (CVC5: 1 VC)
 do_loops.adb:48:41: info: pointer dereference check proved (CVC5: 1 VC)
 do_loops.adb:48:57: info: index check proved (CVC5: 2 VC)
-do_loops.adb:49:22: medium: assertion might fail [possible fix: loop at line 45 should mention D in a loop invariant]
+do_loops.adb:49:22: medium: assertion might fail [possible fix: loop at line 45 should mention D in a loop invariant] [provers reached step limit before completing the proof]
 do_loops.adb:49:23: info: pointer dereference check proved (CVC5: 1 VC)
 do_loops.adb:49:27: info: pointer dereference check proved (CVC5: 1 VC)
 do_loops.adb:49:34: info: pointer dereference check proved (CVC5: 1 VC)
@@ -54,23 +54,23 @@ do_loops.adb:58:17: info: pointer dereference check proved (CVC5: 1 VC)
 do_loops.adb:58:21: info: absence of resource or memory leak proved (CVC5: 1 VC)
 do_loops.adb:59:17: info: pointer dereference check proved (CVC5: 1 VC)
 do_loops.adb:59:21: info: absence of resource or memory leak proved (CVC5: 1 VC)
-do_loops.adb:60:25: medium: assertion might fail [possible fix: loop at line 52 should mention D in a loop invariant]
-do_loops.adb:61:25: medium: assertion might fail [possible fix: loop at line 52 should mention D in a loop invariant]
+do_loops.adb:60:25: medium: assertion might fail [possible fix: loop at line 52 should mention D in a loop invariant] [provers reached step limit before completing the proof]
+do_loops.adb:61:25: medium: assertion might fail [possible fix: loop at line 52 should mention D in a loop invariant] [provers reached step limit before completing the proof]
 do_loops.adb:61:26: info: pointer dereference check proved (CVC5: 1 VC)
-do_loops.adb:62:25: medium: assertion might fail, cannot prove D.F3'First = 1 [possible fix: loop at line 52 should mention D in a loop invariant]
+do_loops.adb:62:25: medium: assertion might fail, cannot prove D.F3'First = 1 [possible fix: loop at line 52 should mention D in a loop invariant] [provers reached step limit before completing the proof]
 do_loops.adb:62:26: info: pointer dereference check proved (CVC5: 1 VC)
 do_loops.adb:62:45: info: pointer dereference check proved (CVC5: 1 VC)
-do_loops.adb:63:25: medium: assertion might fail [possible fix: loop at line 52 should mention D in a loop invariant]
+do_loops.adb:63:25: medium: assertion might fail [possible fix: loop at line 52 should mention D in a loop invariant] [provers reached step limit before completing the proof]
 do_loops.adb:63:26: info: pointer dereference check proved (CVC5: 1 VC)
-do_loops.adb:64:25: medium: assertion might fail, cannot prove D.F4'First = 1 [possible fix: loop at line 52 should mention D in a loop invariant]
+do_loops.adb:64:25: medium: assertion might fail, cannot prove D.F4'First = 1 [possible fix: loop at line 52 should mention D in a loop invariant] [provers reached step limit before completing the proof]
 do_loops.adb:64:26: info: pointer dereference check proved (CVC5: 1 VC)
 do_loops.adb:64:45: info: pointer dereference check proved (CVC5: 1 VC)
 do_loops.adb:65:11: info: pointer dereference check proved (CVC5: 1 VC)
 do_loops.adb:65:16: info: index check proved (CVC5: 2 VC)
 do_loops.adb:66:11: info: pointer dereference check proved (CVC5: 1 VC)
 do_loops.adb:66:16: info: index check proved (CVC5: 2 VC)
-do_loops.adb:67:12: medium: resource or memory leak might occur [possible fix: loop at line 52 should mention D in a loop invariant]
-do_loops.adb:68:25: medium: assertion might fail [possible fix: loop at line 52 should mention D in a loop invariant]
+do_loops.adb:67:12: medium: resource or memory leak might occur [possible fix: loop at line 52 should mention D in a loop invariant] [provers reached step limit before completing the proof]
+do_loops.adb:68:25: medium: assertion might fail [possible fix: loop at line 52 should mention D in a loop invariant] [provers reached step limit before completing the proof]
 do_loops.adb:68:26: info: pointer dereference check proved (CVC5: 1 VC)
 do_loops.adb:68:31: info: index check proved (CVC5: 2 VC)
 do_loops.adb:68:40: info: pointer dereference check proved (CVC5: 1 VC)
@@ -95,7 +95,7 @@ do_loops.adb:82:31: info: index check proved (CVC5: 2 VC)
 do_loops.adb:82:40: info: pointer dereference check proved (CVC5: 1 VC)
 do_loops.adb:82:44: info: pointer dereference check proved (CVC5: 1 VC)
 do_loops.adb:82:60: info: index check proved (CVC5: 2 VC)
-do_loops.adb:83:25: medium: assertion might fail [possible fix: loop at line 73 should mention D in a loop invariant]
+do_loops.adb:83:25: medium: assertion might fail [possible fix: loop at line 73 should mention D in a loop invariant] [provers reached step limit before completing the proof]
 do_loops.adb:83:26: info: pointer dereference check proved (CVC5: 1 VC)
 do_loops.adb:83:31: info: index check proved (CVC5: 2 VC)
 do_loops.adb:83:40: info: pointer dereference check proved (CVC5: 1 VC)
@@ -114,12 +114,12 @@ do_loops.adb:94:23: info: pointer dereference check proved (CVC5: 1 VC)
 do_loops.adb:94:27: info: pointer dereference check proved (CVC5: 1 VC)
 do_loops.adb:94:34: info: pointer dereference check proved (CVC5: 1 VC)
 do_loops.adb:94:38: info: pointer dereference check proved (CVC5: 1 VC)
-do_loops.adb:99:10: medium: resource or memory leak might occur at end of scope
+do_loops.adb:99:10: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 do_loops.adb:100:10: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 do_loops.adb:101:10: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 do_loops.adb:103:21: info: absence of resource or memory leak proved (CVC5: 1 VC)
 do_loops.adb:104:21: info: absence of resource or memory leak proved (CVC5: 1 VC)
-do_loops.adb:107:16: medium: resource or memory leak might occur at end of scope
+do_loops.adb:107:16: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 do_loops.adb:108:16: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 do_loops.adb:109:16: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 do_loops.adb:111:27: info: absence of resource or memory leak proved (CVC5: 1 VC)
@@ -130,7 +130,7 @@ do_loops.adb:115:26: info: pointer dereference check proved (CVC5: 1 VC)
 do_loops.adb:115:31: info: index check proved (CVC5: 2 VC)
 do_loops.adb:116:26: info: pointer dereference check proved (CVC5: 1 VC)
 do_loops.adb:116:31: info: index check proved (CVC5: 2 VC)
-do_loops.adb:121:22: medium: assertion might fail [possible fix: loop at line 97 should mention D in a loop invariant]
+do_loops.adb:121:22: medium: assertion might fail [possible fix: loop at line 97 should mention D in a loop invariant] [provers reached step limit before completing the proof]
 do_loops.adb:121:23: info: pointer dereference check proved (CVC5: 1 VC)
 do_loops.adb:121:28: info: index check proved (CVC5: 2 VC)
 do_loops.adb:121:37: info: pointer dereference check proved (CVC5: 1 VC)
@@ -151,13 +151,13 @@ do_loops.adb:132:14: info: pointer dereference check proved (CVC5: 1 VC)
 do_loops.adb:132:21: info: index check proved (CVC5: 2 VC)
 do_loops.adb:133:25: info: pointer dereference check proved (CVC5: 1 VC)
 do_loops.adb:133:30: info: index check proved (CVC5: 2 VC)
-do_loops.adb:136:22: medium: assertion might fail [possible fix: loop at line 125 should mention D in a loop invariant]
+do_loops.adb:136:22: medium: assertion might fail [possible fix: loop at line 125 should mention D in a loop invariant] [provers reached step limit before completing the proof]
 do_loops.adb:136:23: info: pointer dereference check proved (CVC5: 1 VC)
 do_loops.adb:136:28: info: index check proved (Z3: 2 VC)
 do_loops.adb:136:37: info: pointer dereference check proved (CVC5: 1 VC)
 do_loops.adb:136:41: info: pointer dereference check proved (CVC5: 1 VC)
 do_loops.adb:136:57: info: index check proved (CVC5: 2 VC)
-do_loops.adb:137:22: medium: assertion might fail [possible fix: loop at line 125 should mention D in a loop invariant]
+do_loops.adb:137:22: medium: assertion might fail [possible fix: loop at line 125 should mention D in a loop invariant] [provers reached step limit before completing the proof]
 do_loops.adb:137:23: info: pointer dereference check proved (CVC5: 1 VC)
 do_loops.adb:137:23: info: pointer dereference check proved (Z3: 1 VC)
 do_loops.adb:137:28: info: index check proved (Z3: 2 VC)
