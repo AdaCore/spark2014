@@ -1,9 +1,9 @@
-norm-reals-errors.adb:11:14: medium: postcondition might fail
+norm-reals-errors.adb:11:14: medium: postcondition might fail [provers reached step limit before completing the proof]
 norm-reals-errors.adb:11:34: info: float overflow check proved (CVC5: 1 VC)
 norm-reals-errors.adb:12:63: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:13:22: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:14:22: info: predicate check proved (Trivial: 1 VC)
-norm-reals-errors.adb:17:14: medium: postcondition might fail
+norm-reals-errors.adb:17:14: medium: postcondition might fail [provers reached step limit before completing the proof]
 norm-reals-errors.adb:17:34: info: float overflow check proved (Trivial)
 norm-reals-errors.adb:18:63: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:19:22: info: predicate check proved (Trivial: 1 VC)
@@ -31,7 +31,7 @@ norm-reals-errors.adb:52:91: info: float overflow check proved (colibri: 1 VC)
 norm-reals-errors.adb:53:14: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:53:25: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:53:43: info: predicate check proved (Trivial: 1 VC)
-norm-reals-errors.adb:61:13: medium: assertion might fail
+norm-reals-errors.adb:61:13: medium: assertion might fail [provers reached step limit before completing the proof]
 norm-reals-errors.adb:61:37: info: float overflow check proved (colibri: 1 VC)
 norm-reals-errors.adb:61:41: info: float overflow check proved (CVC5: 1 VC)
 norm-reals-errors.adb:61:87: info: float overflow check proved (CVC5: 1 VC)
@@ -52,7 +52,7 @@ norm-reals-errors.adb:79:43: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:80:33: info: float overflow check proved (CVC5: 1 VC)
 norm-reals-errors.adb:81:14: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:81:24: info: predicate check proved (Trivial: 1 VC)
-norm-reals-errors.adb:82:17: medium: postcondition might fail
+norm-reals-errors.adb:82:17: medium: postcondition might fail [provers reached step limit before completing the proof]
 norm-reals-errors.adb:82:41: info: float overflow check proved (colibri: 1 VC)
 norm-reals-errors.adb:82:45: info: float overflow check proved (colibri: 1 VC)
 norm-reals-errors.adb:83:14: info: predicate check proved (Trivial: 1 VC)
@@ -64,7 +64,7 @@ norm-reals-errors.adb:99:39: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:100:35: info: float overflow check proved (CVC5: 1 VC)
 norm-reals-errors.adb:101:14: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:101:24: info: predicate check proved (Trivial: 1 VC)
-norm-reals-errors.adb:102:17: medium: postcondition might fail
+norm-reals-errors.adb:102:17: medium: postcondition might fail [provers reached step limit before completing the proof]
 norm-reals-errors.adb:103:14: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:103:39: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:103:48: info: predicate check proved (Trivial: 1 VC)
@@ -86,14 +86,14 @@ norm-reals-errors.adb:141:10: info: precondition proved (CVC5: 2 VC)
 norm-reals-errors.adb:143:10: info: subprogram variant proved (CVC5: 1 VC)
 norm-reals-errors.adb:143:39: info: range check proved (CVC5: 2 VC)
 norm-reals-errors.adb:146:13: info: range check proved (CVC5: 1 VC)
-norm-reals-errors.adb:146:60: medium: float overflow check might fail [reason for check: result of floating-point exponentiation must be bounded] [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
-norm-reals-errors.adb:146:60: medium: range check might fail [reason for check: input value must fit in parameter type] [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
-norm-reals-errors.adb:149:10: medium: precondition might fail, cannot prove abs (To_Big_Real (Sum_F + V ** 2) - (To_Big_Real (Sum_F) + To_Big_Real (V ** 2))) <= 1.2E-45 + 1.0E-7 * (To_Big_Real (Sum_F) + To_Big_Real (V ** 2)) [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
+norm-reals-errors.adb:146:60: medium: float overflow check might fail [reason for check: result of floating-point exponentiation must be bounded] [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition] [provers reached step limit before completing the proof]
+norm-reals-errors.adb:146:60: medium: range check might fail [reason for check: input value must fit in parameter type] [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition] [provers reached step limit before completing the proof]
+norm-reals-errors.adb:149:10: medium: precondition might fail, cannot prove abs (To_Big_Real (Sum_F + V ** 2) - (To_Big_Real (Sum_F) + To_Big_Real (V ** 2))) <= 1.2E-45 + 1.0E-7 * (To_Big_Real (Sum_F) + To_Big_Real (V ** 2)) [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition] [provers gave up before completing the proof]
 norm-reals-errors.adb:150:22: info: range check proved (CVC5: 1 VC)
 norm-reals-errors.adb:154:10: info: precondition proved (CVC5: 4 VC; altergo: 1 VC)
 norm-reals-errors.adb:155:22: info: range check proved (CVC5: 1 VC)
 norm-reals-errors.adb:159:10: info: precondition proved (CVC5: 3 VC)
-norm-reals-errors.adb:160:22: medium: range check might fail [reason for check: input value must fit in parameter type] [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
+norm-reals-errors.adb:160:22: medium: range check might fail [reason for check: input value must fit in parameter type] [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition] [provers reached step limit before completing the proof]
 norm-reals-errors.adb:161:22: info: range check proved (CVC5: 1 VC)
 norm-reals-errors.adb:184:22: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:184:35: info: predicate check proved (Trivial: 1 VC)
@@ -101,7 +101,7 @@ norm-reals-errors.adb:185:18: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:185:31: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:186:18: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:186:31: info: predicate check proved (Trivial: 1 VC)
-norm-reals-errors.adb:188:17: medium: postcondition might fail
+norm-reals-errors.adb:188:17: medium: postcondition might fail [provers reached time and step limit before completing the proof]
 norm-reals-errors.adb:188:22: info: precondition proved (CVC5: 1 VC)
 norm-reals-errors.adb:188:22: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:188:22: warning: assuming "Sqrt" has no effect on global items
@@ -145,7 +145,7 @@ norm-reals-errors.adb:212:07: warning: assuming "Bound_Error_Sqrt" always termin
 norm-reals-errors.adb:212:07: warning: assuming "Bound_Error_Sqrt" has no effect on global items
 norm-reals-errors.adb:212:07: warning: no Always_Terminates aspect available for "Bound_Error_Sqrt" [assumed-always-terminates]
 norm-reals-errors.adb:212:07: warning: no Global contract available for "Bound_Error_Sqrt" [assumed-global-null]
-norm-reals-errors.adb:213:07: medium: precondition might fail, cannot prove Norm_F >= 0.0
+norm-reals-errors.adb:213:07: medium: precondition might fail, cannot prove Norm_F >= 0.0 [provers reached step limit before completing the proof]
 norm-reals-errors.adb:214:33: info: precondition proved (CVC5: 1 VC)
 norm-reals-errors.adb:214:33: warning: call to "Sqrt" is not handled precisely [imprecise-call]
 norm-reals-errors.adb:215:20: info: precondition proved (colibri: 1 VC)
@@ -163,10 +163,6 @@ norm-reals-errors.ads:10:48: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.ads:16:08: info: postcondition proved (Z3: 1 VC)
 norm-reals-errors.ads:17:14: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.ads:17:24: info: predicate check proved (Trivial: 1 VC)
-norm-reals.ads:5:04: info: analyzing call to "Log2_Estimate" in context
-norm-reals.ads:5:04: info: analyzing call to "Minus_Log2_Estimate" in context
-norm-reals.ads:5:04: info: in instantiation at a-nbnbre.adb:256
-norm-reals.ads:5:04: info: in instantiation at a-nbnbre.adb:264
 norm-reals.ads:12:13: info: implicit aspect Always_Terminates on "Sum_Of_Squares_Rec" has been proved, subprogram will terminate
 norm-reals.ads:12:13: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
 norm-reals.ads:12:13: warning: function contract might not be available on recursive calls [contracts-recursive]
@@ -246,7 +242,7 @@ norm.adb:74:16: warning: assuming "Sqrt_Exact_Integer" always terminates
 norm.adb:74:16: warning: assuming "Sqrt_Exact_Integer" has no effect on global items
 norm.adb:74:16: warning: no Always_Terminates aspect available for "Sqrt_Exact_Integer" [assumed-always-terminates]
 norm.adb:74:16: warning: no Global contract available for "Sqrt_Exact_Integer" [assumed-global-null]
-norm.adb:75:14: medium: range check might fail [reason for check: returned value must fit in the result type of the function]
+norm.adb:75:14: medium: range check might fail [reason for check: returned value must fit in the result type of the function] [provers reached step limit before completing the proof]
 norm.ads:17:07: info: assertion proved (Trivial)
 norm.ads:19:07: info: assertion proved (Trivial)
 norm.ads:27:13: info: implicit aspect Always_Terminates on "Sum_Of_Squares_Rec" has been proved, subprogram will terminate
@@ -264,10 +260,6 @@ norm.ads:44:13: info: implicit aspect Always_Terminates on "Norm" has been prove
 norm.ads:45:14: info: postcondition proved (CVC5: 1 VC)
 norm.ads:45:28: info: precondition proved (CVC5: 1 VC)
 norm.ads:45:28: warning: call to "Sqrt" is not handled precisely [imprecise-call]
-sqrt_spec.ads:7:04: info: analyzing call to "Log2_Estimate" in context
-sqrt_spec.ads:7:04: info: analyzing call to "Minus_Log2_Estimate" in context
-sqrt_spec.ads:7:04: info: in instantiation at a-nbnbre.adb:256
-sqrt_spec.ads:7:04: info: in instantiation at a-nbnbre.adb:264
 sqrt_spec.ads:13:19: info: assertion proved (Trivial)
 sqrt_spec.ads:16:19: info: assertion proved (Trivial)
 sqrt_spec.ads:19:19: info: assertion proved (Trivial)

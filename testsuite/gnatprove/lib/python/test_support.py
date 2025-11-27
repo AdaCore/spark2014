@@ -2,7 +2,6 @@
 This module contains support functions for all test.py
 """
 
-import fileinput
 import glob
 import json
 import os
@@ -11,7 +10,7 @@ import sys
 from fnmatch import fnmatch
 from time import sleep
 from pathlib import Path
-from shutil import copy, copytree, rmtree, which
+from shutil import copy, copytree, move, rmtree, which
 import subprocess
 import tempfile
 from test_util import sort_key_for_errors
@@ -824,16 +823,18 @@ def preprocess_sparklib_source_file(filepath):
     fd, temp_path = tempfile.mkstemp()
 
     try:
-        with os.fdopen(fd, 'w', newline='') as newfile:
-            with open(filepath, 'r', newline='') as oldfile:
+        with os.fdopen(fd, "w", newline="") as newfile:
+            with open(filepath, "r", newline="") as oldfile:
                 for line in oldfile:
                     # Test for the first pattern and replace using re.subn.
                     # re.subn returns a tuple: (new_string, number_of_subs_made).
-                    # This handles cases where the pattern is not at the start of the line.
+                    # This handles cases where the pattern is not at the start
+                    # of the line.
                     new_line, count = pattern_to_enable.subn(r"\1On\2", line)
                     if count > 0:
                         # If a substitution was made, write the modified line.
-                        # new_line already contains the original newline character.
+                        # new_line already contains the original newline
+                        # character.
                         newfile.write(new_line)
                         continue
 
@@ -841,10 +842,10 @@ def preprocess_sparklib_source_file(filepath):
                     # This pattern is expected to match the entire line.
                     match_remove = pattern_to_remove.match(line)
                     if match_remove:
-                        if line.endswith('\r\n'):
+                        if line.endswith("\r\n"):
                             # Preserve Windows-style line endings.
                             newfile.write("\r\n")
-                        elif line.endswith('\n'):
+                        elif line.endswith("\n"):
                             # Preserve Unix-style line endings.
                             newfile.write("\n")
                         else:
@@ -852,12 +853,12 @@ def preprocess_sparklib_source_file(filepath):
                             pass
                         continue
 
-                    # If no pattern is matched, write the original line back to the file.
-                    # 'line' already contains a newline character.
+                    # If no pattern is matched, write the original line back to
+                    # the file.  'line' already contains a newline character.
                     newfile.write(line)
-        
+
         # Replace the original file with the modified temporary file.
-        os.replace(temp_path, filepath)
+        move(temp_path, filepath)
 
     except FileNotFoundError:
         print(f"Error: The file {filepath!r} was not found.", file=sys.stderr)
@@ -865,6 +866,7 @@ def preprocess_sparklib_source_file(filepath):
     except Exception as e:
         print(f"An unexpected error occurred: {e}", file=sys.stderr)
         sys.exit(1)
+
 
 def update_projectpath_for_sparklib(newpath):
     """check the paths in GPR_PROJECT_PATH; replace the one that contains

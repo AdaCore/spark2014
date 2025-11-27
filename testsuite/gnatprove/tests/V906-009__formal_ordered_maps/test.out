@@ -66,7 +66,7 @@ test_map.adb:90:07: info: precondition proved
 test_map.adb:92:22: info: assertion proved
 test_map.adb:93:07: info: precondition proved
 test_map.adb:94:22: info: assertion proved
-test_map.adb:97:22: medium: assertion might fail
+test_map.adb:97:22: info: assertion proved
 test_map.adb:99:22: info: assertion proved
 test_map.adb:100:07: medium: assertion might fail
 test_map.adb:103:14: warning: subprogram "Test_Map_Rec_2" has no effect
@@ -137,14 +137,14 @@ test_map.adb:204:44: info: precondition proved
 test_map.adb:208:07: info: precondition proved
 test_map.adb:209:22: info: assertion proved
 test_map.adb:209:36: info: precondition proved
+test_map.adb:210:22: info: assertion proved
 test_map.adb:210:22: info: precondition proved
-test_map.adb:210:22: medium: assertion might fail
 test_map.adb:214:22: info: assertion proved
 test_map.adb:214:22: info: precondition proved
 test_map.adb:218:22: info: assertion proved
-test_map.adb:218:22: medium: precondition might fail
+test_map.adb:218:22: info: precondition proved
+test_map.adb:222:22: info: assertion proved
 test_map.adb:222:22: info: precondition proved
-test_map.adb:222:22: medium: assertion might fail
 test_map.adb:223:22: info: assertion proved
 test_map.adb:223:22: info: precondition proved
 test_map.adb:224:22: info: assertion proved
