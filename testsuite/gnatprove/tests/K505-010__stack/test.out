@@ -1,14 +1,14 @@
 error.ads:5:13: info: implicit aspect Always_Terminates on "Get_Current" has been proved, subprogram will terminate
-stacks.adb:10:22: medium: overflow check might fail, cannot prove upper bound for S.Top + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
-stacks.adb:11:16: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers gave up before completing the proof]
+stacks.adb:10:22: medium: overflow check might fail, cannot prove upper bound for S.Top + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
+stacks.adb:11:16: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
 stacks.adb:21:22: info: range check proved (CVC5: 2 VC)
 stacks.ads:13:13: info: implicit aspect Always_Terminates on "Is_Empty" has been proved, subprogram will terminate
 stacks.ads:15:13: info: implicit aspect Always_Terminates on "Is_Full" has been proved, subprogram will terminate
 stacks.ads:17:13: info: implicit aspect Always_Terminates on "Size" has been proved, subprogram will terminate
 stacks.ads:21:20: info: postcondition proved (CVC5: 1 VC)
-stacks.ads:21:40: medium: overflow check might fail, cannot prove upper bound for S.Size'Old + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
+stacks.ads:21:40: medium: overflow check might fail, cannot prove upper bound for S.Size'Old + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers reached step limit before completing the proof]
 stacks.ads:27:13: info: implicit aspect Always_Terminates on "Peer" has been proved, subprogram will terminate
 stacks.ads:34:07: info: range check proved (CVC5: 2 VC)
 stacks.ads:34:37: info: in default value of private type at stacks.ads:11
 stacks.ads:34:37: info: length check proved (CVC5: 3 VC)
-stacks.ads:43:58: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (S.Top in 1 .. Max) to subprogram at line 27] [provers gave up before completing the proof]
+stacks.ads:43:58: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (S.Top in 1 .. Max) to subprogram at line 27] [provers reached step limit before completing the proof]

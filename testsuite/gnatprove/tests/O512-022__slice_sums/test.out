@@ -87,7 +87,7 @@ slice_sums.ads:14:23: info: precondition proved (CVC5: 1 VC)
 slice_sums.ads:16:14: info: implicit aspect Always_Terminates on "Maximal_Sum_Slice_Bounds_2" has been proved, subprogram will terminate
 slice_sums.ads:21:31: info: range check proved (CVC5: 2 VC)
 slice_sums.ads:22:34: info: range check proved (CVC5: 2 VC)
-slice_sums.ads:23:30: medium: postcondition might fail, cannot prove (Sum (X, Maximal_Sum_Slice_Bounds_2'Result) >= Sum (X, Slice_Bounds'(Lo, Hi))) [provers gave up before completing the proof]
+slice_sums.ads:23:30: medium: postcondition might fail, cannot prove (Sum (X, Maximal_Sum_Slice_Bounds_2'Result) >= Sum (X, Slice_Bounds'(Lo, Hi))) [provers reached step limit before completing the proof]
 slice_sums.ads:23:31: info: precondition proved (CVC5: 1 VC)
 slice_sums.ads:24:37: info: precondition proved (CVC5: 1 VC)
 slice_sums.ads:24:59: info: range check proved (CVC5: 2 VC)

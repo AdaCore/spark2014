@@ -26,7 +26,7 @@ sideeffects.adb:62:16: high: overflow check might fail, cannot prove lower bound
 sideeffects.adb:65:14: info: add a contract to analyze it separately from calling contexts
 sideeffects.adb:65:14: info: local subprogram "Incr" only analyzed in the context of calls [info-unrolling-inlining]
 sideeffects.adb:67:14: medium: overflow check might fail, cannot prove lower bound for X + 1, in call inlined at sideeffects.adb:77 [reason for check: result of addition must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
-sideeffects.adb:68:14: medium: overflow check might fail, cannot prove upper bound for H + 1, in call inlined at sideeffects.adb:77 [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
+sideeffects.adb:68:14: medium: overflow check might fail, cannot prove upper bound for H + 1, in call inlined at sideeffects.adb:77 [reason for check: result of addition must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
 sideeffects.adb:71:04: info: initialization of "V1" proved
 sideeffects.adb:75:15: medium: overflow check might fail, cannot prove lower bound for Call + Call [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Call or turning it into an expression function] [provers reached step limit before completing the proof]
 sideeffects.adb:76:10: high: "H" is not initialized

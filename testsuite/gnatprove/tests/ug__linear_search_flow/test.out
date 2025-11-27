@@ -9,7 +9,7 @@
       |            ^~~~~~~~~~~~~
    30 |              Search'Result.At_Index = 1,
       |              ~~~~~~~~~~~~~~~~~~~~~~~~~~
-      + provers gave up before completing the proof
+      + provers reached step limit before completing the proof
 
  medium: contract case might fail
 --> linear_search.ads:31:09
@@ -17,4 +17,4 @@
       |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
    32 |              Search'Result.Found,
       |              ~~~~~~~~~~~~~~~~~~~
-      + provers gave up before completing the proof
+      + provers reached step limit before completing the proof

@@ -25,7 +25,7 @@ multiset.ads:25:13: info: implicit aspect Always_Terminates on "Is_Empty" has be
 multiset.ads:29:06: info: data dependencies proved
 multiset.ads:30:35: info: invariant check proved (CVC5: 1 VC)
 multiset.ads:30:43: warning: unused variable "Element" [-gnatw.t]
-multiset.ads:31:27: medium: postcondition might fail, cannot prove Is_Empty'Result = (Cardinality (Container) = 2) [provers gave up before completing the proof]
+multiset.ads:31:27: medium: postcondition might fail, cannot prove Is_Empty'Result = (Cardinality (Container) = 2) [provers reached step limit before completing the proof]
 multiset.ads:31:46: info: for Container before the call at multiset.ads:33
 multiset.ads:31:46: info: invariant check proved (CVC5: 1 VC)
 multiset.ads:31:46: info: predicate check proved (Trivial: 1 VC)

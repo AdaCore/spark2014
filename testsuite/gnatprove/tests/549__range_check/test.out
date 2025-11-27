@@ -1,4 +1,4 @@
 main.adb:8:15: info: range check proved (CVC5: 2 VC)
 main.adb:11:41: medium: in default initialization of component "F" at main.adb:14
 main.adb:11:41: medium: in default value at main.adb:17
-main.adb:11:41: medium: range check might fail, cannot prove upper bound for 5 [reason for check: default component value must fit in the component type] [provers gave up before completing the proof]
+main.adb:11:41: medium: range check might fail, cannot prove upper bound for 5 [reason for check: default component value must fit in the component type] [provers reached step limit before completing the proof]

@@ -15,13 +15,13 @@ fb20a00.adb:35:15: info: length check proved (CVC5: 3 VC)
 fb20a00.adb:35:18: medium: length check might fail [reason for check: array must be of the appropriate length] [possible fix: subprogram at fb20a00.ads:43 should mention Sub in a precondition] [provers reached step limit before completing the proof]
 fb20a00.adb:37:34: high: overflow check might fail, cannot prove lower bound for New_Str'Last-New_Sub'Length (e.g. when New_Str'First = 0 and New_Str'Last = Integer'First and New_Sub = "a" and New_Sub'First = 1) [reason for check: result of subtraction must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
 fb20a00.adb:37:42: info: range check proved (CVC5: 4 VC)
-fb20a00.adb:37:49: high: overflow check might fail, cannot prove upper bound for New_Str'Last-New_Sub'Length+1 (e.g. when New_Str = "a" and New_Str'First = Integer'Last and New_Sub'First = 1 and New_Sub'Last = 0) [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
-fb20a00.adb:39:11: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [provers gave up before completing the proof]
-fb20a00.adb:39:31: high: overflow check might fail, cannot prove upper bound for Pos+New_Sub'Length (e.g. when New_Sub = "a" and New_Sub'First = 1 and Pos = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
+fb20a00.adb:37:49: high: overflow check might fail, cannot prove upper bound for New_Str'Last-New_Sub'Length+1 (e.g. when New_Str = "a" and New_Str'First = Integer'Last and New_Sub'First = 1 and New_Sub'Last = 0) [reason for check: result of addition must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
+fb20a00.adb:39:11: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [provers reached step limit before completing the proof]
+fb20a00.adb:39:31: high: overflow check might fail, cannot prove upper bound for Pos+New_Sub'Length (e.g. when New_Sub = "a" and New_Sub'First = 1 and Pos = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
 fb20a00.adb:39:39: info: range check proved (CVC5: 4 VC)
 fb20a00.adb:39:46: info: overflow check proved (CVC5: 4 VC)
 fb20a00.adb:41:07: medium: implicit aspect Always_Terminates on "Find" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
-fb20a00.adb:42:21: medium: overflow check might fail, cannot prove upper bound for Pos + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
+fb20a00.adb:42:21: medium: overflow check might fail, cannot prove upper bound for Pos + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
 fb20a00.adb:45:30: info: overflow check proved (CVC5: 2 VC)
 fb20a00.adb:45:38: info: range check proved (CVC5: 2 VC)
 fb20a00.adb:45:45: info: overflow check proved (CVC5: 2 VC)

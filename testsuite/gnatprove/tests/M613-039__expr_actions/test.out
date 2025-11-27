@@ -20,7 +20,7 @@ list.adb:34:21: medium: range check might fail [reason for check: slice bounds m
 list.adb:34:44: info: overflow check proved (CVC5: 4 VC)
 list.adb:35:24: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: you should consider adding a postcondition to function To or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 list.adb:35:58: info: overflow check proved (CVC5: 4 VC)
-list.adb:37:15: medium: precondition might fail [provers gave up before completing the proof]
+list.adb:37:15: medium: precondition might fail [provers reached step limit before completing the proof]
 list.adb:37:29: info: range check proved (CVC5: 4 VC)
 list.adb:37:34: info: precondition proved (CVC5: 4 VC)
 list.adb:37:61: info: overflow check proved (CVC5: 4 VC)

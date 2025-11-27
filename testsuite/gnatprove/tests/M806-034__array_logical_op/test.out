@@ -35,8 +35,8 @@ array_logical_ops.adb:60:22: info: assertion proved (CVC5: 1 VC)
 array_logical_ops.adb:60:55: info: index check proved (CVC5: 2 VC)
 array_logical_ops.adb:65:36: medium: length check might fail [reason for check: both array operands must have the same length] [possible fix: subprogram at array_logical_ops.ads:22 should mention Z in a precondition] [provers reached step limit before completing the proof]
 array_logical_ops.adb:73:37: info: length check proved (CVC5: 3 VC)
-array_logical_ops.adb:73:37: medium: range check might fail [reason for check: default component value must fit in the type] [provers gave up before completing the proof]
-array_logical_ops.adb:74:35: medium: range check might fail [reason for check: default component value must fit in the type] [provers gave up before completing the proof]
+array_logical_ops.adb:73:37: medium: range check might fail [reason for check: default component value must fit in the type] [provers reached step limit before completing the proof]
+array_logical_ops.adb:74:35: medium: range check might fail [reason for check: default component value must fit in the type] [provers reached step limit before completing the proof]
 array_logical_ops.ads:12:14: warning: subprogram "Test_Ok1" has no effect
 array_logical_ops.ads:14:14: warning: subprogram "Test_Ok2" has no effect
 array_logical_ops.ads:16:14: warning: subprogram "Test_Ok3" has no effect

@@ -124,7 +124,7 @@ main.adb:118:85: info: overflow check proved (CVC5: 2 VC)
 main.adb:121:28: info: precondition proved (CVC5: 2 VC)
 main.adb:121:28: warning: assuming "Find_First_0" has no effect on global items
 main.adb:121:28: warning: no Global contract available for "Find_First_0" [assumed-global-null]
-main.adb:121:72: medium: assertion might fail, cannot prove A (Find_First_0 (A_Old, A_Old'First)) = 1 [provers gave up before completing the proof]
+main.adb:121:72: medium: assertion might fail, cannot prove A (Find_First_0 (A_Old, A_Old'First)) = 1 [provers reached step limit before completing the proof]
 main.adb:121:75: info: index check proved (CVC5: 2 VC)
 main.adb:121:75: info: precondition proved (CVC5: 2 VC)
 main.adb:121:75: warning: assuming "Find_First_0" has no effect on global items

@@ -15,5 +15,5 @@ example.adb:62:17: medium: postcondition might fail, cannot prove B.I = 1
 example.adb:62:30: medium: discriminant check might fail
 example.adb:64:18: medium: discriminant check might fail
 example.adb:64:25: medium: discriminant check might fail
-example.adb:67:09: medium: discriminant check might fail [provers gave up before completing the proof]
-example.adb:68:09: medium: discriminant check might fail [provers gave up before completing the proof]
+example.adb:67:09: medium: discriminant check might fail
+example.adb:68:09: medium: discriminant check might fail

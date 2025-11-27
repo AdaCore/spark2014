@@ -8,4 +8,4 @@ pack.ads:7:48: high: postcondition might fail (e.g. when X = False) [provers gav
 pack.ads:9:14: warning: subprogram "P4" has no effect
 pack.ads:9:48: high: postcondition might fail (e.g. when X = False) [provers gave up before completing the proof]
 pack.ads:10:14: warning: subprogram "P5" has no effect
-pack.ads:10:48: high: postcondition might fail (e.g. when X = False) [provers gave up before completing the proof]
+pack.ads:10:48: high: postcondition might fail (e.g. when X = False) [provers reached step limit before completing the proof]

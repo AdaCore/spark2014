@@ -25,7 +25,7 @@ records.adb:68:60: info: range check proved (CVC5: 2 VC)
 records.adb:70:07: info: initialization of "R" proved
 records.adb:75:15: info: precondition proved (CVC5: 4 VC)
 records.adb:83:13: info: implicit aspect Always_Terminates on "Safe_Add_Pair_B" has been proved, subprogram will terminate
-records.adb:86:25: high: postcondition might fail, cannot prove Safe_Add_Pair_B'Result = Pair'(A.A + B.A,  A.B + B.B) (e.g. when A = (A => Unsigned_Byte'Last, B => 0) and B = (A => 0, B => 0) and Safe_Add_Pair_B'Result = (A => 0, B => 0)) [provers gave up before completing the proof]
+records.adb:86:25: high: postcondition might fail, cannot prove Safe_Add_Pair_B'Result = Pair'(A.A + B.A,  A.B + B.B) (e.g. when A = (A => Unsigned_Byte'Last, B => 0) and B = (A => 0, B => 0) and Safe_Add_Pair_B'Result = (A => 0, B => 0)) [provers reached step limit before completing the proof]
 records.adb:86:60: info: range check proved (CVC5: 2 VC)
 records.adb:87:60: info: range check proved (CVC5: 2 VC)
 records.adb:89:07: info: initialization of "R" proved
@@ -35,7 +35,7 @@ records.adb:103:19: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC)
 records.adb:110:13: info: implicit aspect Always_Terminates on "Is_Valid_B" has been proved, subprogram will terminate
 records.adb:111:19: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC)
 records.adb:118:13: info: implicit aspect Always_Terminates on "Is_Valid_C" has been proved, subprogram will terminate
-records.adb:119:19: high: postcondition might fail (e.g. when A = (Exists => False, The_Pair => (A => 1, B => 0)) and Is_Valid_C'Result = True) [provers gave up before completing the proof]
+records.adb:119:19: high: postcondition might fail (e.g. when A = (Exists => False, The_Pair => (A => 1, B => 0)) and Is_Valid_C'Result = True) [provers reached step limit before completing the proof]
 records.adb:129:25: info: initialization of "Dst" proved
 records.adb:130:11: info: flow dependencies proved
 records.adb:132:22: info: postcondition proved (CVC5: 2 VC)
@@ -56,10 +56,10 @@ records.adb:177:11: info: flow dependencies proved
 records.adb:178:22: info: postcondition proved (CVC5: 4 VC; Trivial: 1 VC)
 records.adb:183:07: info: initialization of "Tmp" proved
 records.adb:191:11: info: flow dependencies proved
-records.adb:195:43: medium: postcondition might fail, cannot prove X.The_Pair.B = X'Old.The_Pair.A (e.g. when X'Old = (Exists => True, The_Pair => (A => 1, B => 1))) [possible fix: add or complete related loop invariants or postconditions] [provers gave up before completing the proof]
+records.adb:195:43: medium: postcondition might fail, cannot prove X.The_Pair.B = X'Old.The_Pair.A (e.g. when X'Old = (Exists => True, The_Pair => (A => 1, B => 1))) [possible fix: add or complete related loop invariants or postconditions] [provers reached step limit before completing the proof]
 records.adb:197:07: info: initialization of "Tmp" proved
 records.adb:205:11: info: flow dependencies proved
-records.adb:209:44: medium: postcondition might fail, cannot prove X.The_Pair.B = X'Old.The_Pair.A (e.g. when X'Old = (Exists => True, The_Pair => (A => 1, B => 1))) [possible fix: add or complete related loop invariants or postconditions] [provers gave up before completing the proof]
+records.adb:209:44: medium: postcondition might fail, cannot prove X.The_Pair.B = X'Old.The_Pair.A (e.g. when X'Old = (Exists => True, The_Pair => (A => 1, B => 1))) [possible fix: add or complete related loop invariants or postconditions] [provers reached step limit before completing the proof]
 records.adb:211:07: info: initialization of "Tmp" proved
 records.adb:215:30: info: assertion proved (CVC5: 2 VC)
 records.adb:219:10: info: assertion proved (CVC5: 2 VC)
@@ -78,7 +78,7 @@ records.adb:275:07: info: initialization of "Tmp" proved
 records.adb:285:11: info: flow dependencies proved
 records.adb:286:22: info: postcondition proved (CVC5: 4 VC; Trivial: 1 VC)
 records.adb:296:11: info: flow dependencies proved
-records.adb:300:49: high: postcondition might fail, cannot prove X.The_Pair.B = X'Old.The_Pair.A (e.g. when X = (Exists => True, The_Pair => (A => 0, B => 5)) and X'Old = (Exists => True, The_Pair => (A => 0, B => 0))) [provers gave up before completing the proof]
+records.adb:300:49: high: postcondition might fail, cannot prove X.The_Pair.B = X'Old.The_Pair.A (e.g. when X = (Exists => True, The_Pair => (A => 0, B => 5)) and X'Old = (Exists => True, The_Pair => (A => 0, B => 0))) [provers reached step limit before completing the proof]
 records.adb:306:13: info: implicit aspect Always_Terminates on "Update_A" has been proved, subprogram will terminate
 records.adb:309:19: info: postcondition proved (CVC5: 1 VC)
 records.adb:312:07: info: initialization of "Tmp" proved
@@ -118,7 +118,7 @@ records.adb:439:13: info: local subprogram "Swap_Fields" only analyzed in the co
 records.adb:446:04: warning: analyzing unreferenced function "Apply_Command" [unreferenced-function]
 records.adb:446:13: info: implicit aspect Always_Terminates on "Apply_Command" has been proved, subprogram will terminate
 records.adb:448:07: info: initialization of "R" proved
-records.adb:453:24: high: range check might fail, cannot prove upper bound for R.A + 1 (e.g. when R = (A => Unsigned_Byte'Last, B => 0)) [reason for check: result of addition must fit in the target type of the assignment] [provers gave up before completing the proof]
+records.adb:453:24: high: range check might fail, cannot prove upper bound for R.A + 1 (e.g. when R = (A => Unsigned_Byte'Last, B => 0)) [reason for check: result of addition must fit in the target type of the assignment] [provers reached step limit before completing the proof]
 records.adb:458:18: info: analyzing call to "Swap_Fields" in context
 records.adb:465:11: info: flow dependencies proved
 records.adb:466:22: info: postcondition proved (CVC5: 1 VC)

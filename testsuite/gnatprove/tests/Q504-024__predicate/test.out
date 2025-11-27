@@ -11,4 +11,4 @@ foo.ads:36:23: info: index check proved (CVC5: 2 VC)
 foo.ads:38:13: info: implicit aspect Always_Terminates on "Get_Elem_1" has been proved, subprogram will terminate
 foo.ads:38:62: medium: predicate check might fail [provers reached step limit before completing the proof]
 foo.ads:44:13: info: implicit aspect Always_Terminates on "Get_Elem_2" has been proved, subprogram will terminate
-foo.ads:44:58: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers gave up before completing the proof]
+foo.ads:44:58: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]

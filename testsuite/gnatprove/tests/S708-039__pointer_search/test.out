@@ -1,6 +1,6 @@
 binary_search_trees.adb:15:34: info: pointer dereference check proved (CVC5: 1 VC)
 binary_search_trees.adb:16:34: info: pointer dereference check proved (CVC5: 1 VC)
-binary_search_trees.adb:17:13: medium: resource or memory leak might occur [provers gave up before completing the proof]
+binary_search_trees.adb:17:13: medium: resource or memory leak might occur [provers reached step limit before completing the proof]
 binary_search_trees.adb:41:33: info: absence of resource or memory leak proved (CVC5: 1 VC)
 binary_search_trees.adb:42:29: info: overflow check proved (CVC5: 2 VC)
 binary_search_trees.adb:44:16: info: precondition proved (CVC5: 1 VC)

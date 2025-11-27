@@ -114,33 +114,33 @@ ethernet_dissector.adb:21:09: medium: implicit aspect Always_Terminates on "Matc
 ethernet_dissector.adb:21:20: info: range check proved (CVC5: 4 VC)
 ethernet_dissector.adb:21:57: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:23:09: medium: implicit aspect Always_Terminates on "Match" could be incorrect, call to "Bytes_Put" might be nonterminating [possible fix: annotate "Bytes_Put" with aspect Always_Terminates]
-ethernet_dissector.adb:23:20: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at ethernet_dissector.ads:12 should mention Buffer in a precondition] [provers gave up before completing the proof]
+ethernet_dissector.adb:23:20: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at ethernet_dissector.ads:12 should mention Buffer in a precondition] [provers reached step limit before completing the proof]
 ethernet_dissector.adb:23:41: info: overflow check proved (CVC5: 2 VC)
-ethernet_dissector.adb:23:61: medium: overflow check might fail, cannot prove upper bound for Buffer'First + 11 [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
+ethernet_dissector.adb:23:61: medium: overflow check might fail, cannot prove upper bound for Buffer'First + 11 [reason for check: result of addition must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
 ethernet_dissector.adb:25:31: info: length check proved (CVC5: 3 VC)
-ethernet_dissector.adb:25:31: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at ethernet_dissector.ads:12 should mention Buffer in a precondition] [provers gave up before completing the proof]
+ethernet_dissector.adb:25:31: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at ethernet_dissector.ads:12 should mention Buffer in a precondition] [provers reached step limit before completing the proof]
 ethernet_dissector.adb:25:52: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:25:73: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:26:14: info: precondition proved (CVC5: 1 VC)
 ethernet_dissector.adb:28:17: medium: implicit aspect Always_Terminates on "Match" could be incorrect, call to "Bytes_Put" might be nonterminating [possible fix: annotate "Bytes_Put" with aspect Always_Terminates]
 ethernet_dissector.adb:28:28: info: range check proved (CVC5: 4 VC)
 ethernet_dissector.adb:28:49: info: overflow check proved (CVC5: 2 VC)
-ethernet_dissector.adb:28:70: medium: overflow check might fail, cannot prove upper bound for Buffer'First + 15 [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
+ethernet_dissector.adb:28:70: medium: overflow check might fail, cannot prove upper bound for Buffer'First + 15 [reason for check: result of addition must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
 ethernet_dissector.adb:29:34: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:31:17: medium: implicit aspect Always_Terminates on "Match" could be incorrect, call to "Bytes_Put" might be nonterminating [possible fix: annotate "Bytes_Put" with aspect Always_Terminates]
 ethernet_dissector.adb:31:28: info: range check proved (CVC5: 4 VC)
 ethernet_dissector.adb:31:49: info: overflow check proved (CVC5: 2 VC)
-ethernet_dissector.adb:31:70: medium: overflow check might fail, cannot prove upper bound for Buffer'First + 15 [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
+ethernet_dissector.adb:31:70: medium: overflow check might fail, cannot prove upper bound for Buffer'First + 15 [reason for check: result of addition must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
 ethernet_dissector.adb:32:34: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:33:39: info: length check proved (CVC5: 3 VC)
 ethernet_dissector.adb:33:39: info: range check proved (CVC5: 4 VC)
 ethernet_dissector.adb:33:60: info: overflow check proved (CVC5: 2 VC)
-ethernet_dissector.adb:33:81: medium: overflow check might fail, cannot prove upper bound for Buffer'First + 17 [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
+ethernet_dissector.adb:33:81: medium: overflow check might fail, cannot prove upper bound for Buffer'First + 17 [reason for check: result of addition must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
 ethernet_dissector.adb:34:22: info: precondition proved (CVC5: 1 VC)
 ethernet_dissector.adb:36:25: medium: implicit aspect Always_Terminates on "Match" could be incorrect, call to "Bytes_Put" might be nonterminating [possible fix: annotate "Bytes_Put" with aspect Always_Terminates]
-ethernet_dissector.adb:36:36: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at ethernet_dissector.ads:12 should mention Buffer in a precondition] [provers gave up before completing the proof]
+ethernet_dissector.adb:36:36: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at ethernet_dissector.ads:12 should mention Buffer in a precondition] [provers reached step limit before completing the proof]
 ethernet_dissector.adb:36:57: info: overflow check proved (CVC5: 2 VC)
-ethernet_dissector.adb:36:78: medium: overflow check might fail, cannot prove upper bound for Buffer'First + 19 [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
+ethernet_dissector.adb:36:78: medium: overflow check might fail, cannot prove upper bound for Buffer'First + 19 [reason for check: result of addition must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
 ethernet_dissector.adb:37:42: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:45:31: info: length check proved (CVC5: 3 VC)
 ethernet_dissector.adb:45:31: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at ethernet_dissector.ads:12 should mention Buffer in a precondition] [provers reached step limit before completing the proof]
@@ -161,8 +161,8 @@ ethernet_dissector.adb:50:32: medium: overflow check might fail, cannot prove lo
 ethernet_dissector.adb:50:43: info: precondition proved (CVC5: 1 VC)
 ethernet_dissector.adb:50:88: info: range check proved (CVC5: 2 VC)
 ethernet_dissector.adb:53:17: medium: implicit aspect Always_Terminates on "Match" could be incorrect, call to "Bytes_Put" might be nonterminating [possible fix: annotate "Bytes_Put" with aspect Always_Terminates]
-ethernet_dissector.adb:53:28: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at ethernet_dissector.ads:12 should mention Buffer in a precondition] [provers gave up before completing the proof]
-ethernet_dissector.adb:53:65: medium: overflow check might fail, cannot prove upper bound for Buffer'First + Natural (Convert_To_Two_Octets (Length)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Convert_To_Two_Octets or turning it into an expression function] [provers gave up before completing the proof]
+ethernet_dissector.adb:53:28: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at ethernet_dissector.ads:12 should mention Buffer in a precondition] [provers reached step limit before completing the proof]
+ethernet_dissector.adb:53:65: medium: overflow check might fail, cannot prove upper bound for Buffer'First + Natural (Convert_To_Two_Octets (Length)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Convert_To_Two_Octets or turning it into an expression function] [provers reached step limit before completing the proof]
 ethernet_dissector.adb:53:76: medium: precondition might fail, cannot prove Buffer'Length = UXX'Size / 8 [provers reached step limit before completing the proof]
 ethernet_dissector.adb:53:108: medium: overflow check might fail, cannot prove lower bound for Buffer'First + Natural (Convert_To_Two_Octets (Length)) - 1 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Convert_To_Two_Octets or turning it into an expression function] [provers reached step limit before completing the proof]
 ethernet_dissector.adb:57:17: medium: implicit aspect Always_Terminates on "Match" could be incorrect, call to "Bytes_Put" might be nonterminating [possible fix: annotate "Bytes_Put" with aspect Always_Terminates]
@@ -173,7 +173,7 @@ ethernet_dissector.adb:57:79: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:57:84: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:58:17: medium: implicit aspect Always_Terminates on "Match" could be incorrect, call to "Bytes_Put" might be nonterminating [possible fix: annotate "Bytes_Put" with aspect Always_Terminates]
 ethernet_dissector.adb:58:28: info: range check proved (CVC5: 4 VC)
-ethernet_dissector.adb:58:65: medium: overflow check might fail, cannot prove upper bound for Buffer'First + Buffer'Length [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
+ethernet_dissector.adb:58:65: medium: overflow check might fail, cannot prove upper bound for Buffer'First + Buffer'Length [reason for check: result of addition must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
 ethernet_dissector.adb:58:73: info: range check proved (CVC5: 2 VC)
 ethernet_dissector.adb:58:81: info: overflow check proved (CVC5: 2 VC)
 ethernet_dissector.adb:58:86: info: overflow check proved (CVC5: 2 VC)

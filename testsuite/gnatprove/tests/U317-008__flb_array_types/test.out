@@ -78,7 +78,7 @@ test_first_bound.adb:81:28: info: range check proved (CVC5: 2 VC)
 test_first_bound.adb:81:34: info: index check proved (CVC5: 2 VC)
 test_first_bound.adb:84:26: info: data dependencies proved
 test_first_bound.adb:88:21: info: range check proved (CVC5: 2 VC)
-test_first_bound.adb:88:21: medium: range check might fail, cannot prove upper bound for X [reason for check: default component value must fit in the type] [provers gave up before completing the proof]
+test_first_bound.adb:88:21: medium: range check might fail, cannot prove upper bound for X [reason for check: default component value must fit in the type] [provers reached step limit before completing the proof]
 test_first_bound.adb:93:26: info: data dependencies proved
 test_first_bound.adb:95:16: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 test_first_bound.adb:96:07: medium: range check might fail [provers gave up before completing the proof]
@@ -154,7 +154,7 @@ test_first_bound.adb:169:27: info: data dependencies proved
 test_first_bound.adb:171:16: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 test_first_bound.adb:173:07: info: range check proved (CVC5: 2 VC)
 test_first_bound.adb:174:21: info: range check proved (CVC5: 1 VC)
-test_first_bound.adb:175:21: medium: length check might fail [reason for check: array must be of the appropriate length] [provers gave up before completing the proof]
+test_first_bound.adb:175:21: medium: length check might fail [reason for check: array must be of the appropriate length] [provers reached step limit before completing the proof]
 test_first_bound.adb:180:27: info: data dependencies proved
 test_first_bound.adb:181:16: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 test_first_bound.adb:185:07: info: range check proved (CVC5: 2 VC)

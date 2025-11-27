@@ -17,9 +17,9 @@ p.adb:41:19: medium: in inlined invariant at p.adb:13
 p.adb:41:19: medium: invariant check might fail, cannot prove D /= 0 [possible fix: subprogram at line 38 should mention B in a precondition] [provers reached step limit before completing the proof]
 p.adb:45:09: info: data dependencies proved
 p.adb:50:15: medium: in inlined invariant at p.adb:13
-p.adb:50:15: medium: invariant check might fail, cannot prove D /= 0 [provers gave up before completing the proof]
+p.adb:50:15: medium: invariant check might fail, cannot prove D /= 0 [provers reached step limit before completing the proof]
 p.adb:50:19: medium: in inlined invariant at p.adb:13
-p.adb:50:19: medium: invariant check might fail, cannot prove D /= 0 [provers gave up before completing the proof]
+p.adb:50:19: medium: invariant check might fail, cannot prove D /= 0 [provers reached step limit before completing the proof]
 p.adb:54:09: info: data dependencies proved
 p.adb:59:15: medium: in inlined invariant at p.adb:13
 p.adb:59:15: medium: invariant check might fail, cannot prove D /= 0 [provers reached step limit before completing the proof]
@@ -31,16 +31,16 @@ p.adb:68:19: info: invariant check proved (CVC5: 2 VC)
 p.adb:71:12: info: invariant check proved on default value (CVC5: 1 VC; Trivial: 1 VC)
 p.adb:73:58: info: data dependencies proved
 p.adb:78:15: medium: in inlined invariant at p.adb:13
-p.adb:78:15: medium: invariant check might fail, cannot prove D /= 0 [possible fix: subprogram at line 73 should mention A in a precondition] [provers gave up before completing the proof]
+p.adb:78:15: medium: invariant check might fail, cannot prove D /= 0 [possible fix: subprogram at line 73 should mention A in a precondition] [provers reached step limit before completing the proof]
 p.adb:78:19: medium: in inlined invariant at p.adb:13
-p.adb:78:19: medium: invariant check might fail, cannot prove D /= 0 [possible fix: subprogram at line 73 should mention B in a precondition] [provers gave up before completing the proof]
+p.adb:78:19: medium: invariant check might fail, cannot prove D /= 0 [possible fix: subprogram at line 73 should mention B in a precondition] [provers reached step limit before completing the proof]
 p.adb:82:09: info: data dependencies proved
 p.adb:83:63: info: index check proved (CVC5: 2 VC)
 p.adb:83:85: info: index check proved (CVC5: 2 VC)
 p.adb:87:15: medium: in inlined invariant at p.adb:13
-p.adb:87:15: medium: invariant check might fail, cannot prove D /= 0 [provers gave up before completing the proof]
+p.adb:87:15: medium: invariant check might fail, cannot prove D /= 0 [provers reached step limit before completing the proof]
 p.adb:87:19: medium: in inlined invariant at p.adb:13
-p.adb:87:19: medium: invariant check might fail, cannot prove D /= 0 [provers gave up before completing the proof]
+p.adb:87:19: medium: invariant check might fail, cannot prove D /= 0 [provers reached step limit before completing the proof]
 p.adb:91:09: info: data dependencies proved
 p.adb:96:15: info: invariant check proved (CVC5: 1 VC; Trivial: 1 VC)
 p.adb:96:19: info: invariant check proved (CVC5: 1 VC; Trivial: 1 VC)
@@ -48,19 +48,19 @@ p.adb:99:12: info: invariant check proved on default value (CVC5: 2 VC; Trivial:
 p.adb:100:10: info: range check proved (CVC5: 2 VC)
 p.adb:108:60: info: data dependencies proved
 p.adb:111:15: medium: in inlined invariant at p.adb:13
-p.adb:111:15: medium: invariant check might fail, cannot prove D /= 0 [possible fix: subprogram at line 108 should mention A in a precondition] [provers gave up before completing the proof]
+p.adb:111:15: medium: invariant check might fail, cannot prove D /= 0 [possible fix: subprogram at line 108 should mention A in a precondition] [provers reached step limit before completing the proof]
 p.adb:111:19: medium: in inlined invariant at p.adb:13
-p.adb:111:19: medium: invariant check might fail, cannot prove D /= 0 [possible fix: subprogram at line 108 should mention B in a precondition] [provers gave up before completing the proof]
+p.adb:111:19: medium: invariant check might fail, cannot prove D /= 0 [possible fix: subprogram at line 108 should mention B in a precondition] [provers reached step limit before completing the proof]
 p.adb:115:09: info: data dependencies proved
 p.adb:120:15: medium: in inlined invariant at p.adb:13
-p.adb:120:15: medium: invariant check might fail, cannot prove D /= 0 [provers gave up before completing the proof]
+p.adb:120:15: medium: invariant check might fail, cannot prove D /= 0 [provers reached step limit before completing the proof]
 p.adb:120:19: medium: in inlined invariant at p.adb:13
-p.adb:120:19: medium: invariant check might fail, cannot prove D /= 0 [provers gave up before completing the proof]
+p.adb:120:19: medium: invariant check might fail, cannot prove D /= 0 [provers reached step limit before completing the proof]
 p.adb:124:09: info: data dependencies proved
 p.adb:129:15: medium: in inlined invariant at p.adb:13
-p.adb:129:15: medium: invariant check might fail, cannot prove D /= 0 [provers gave up before completing the proof]
+p.adb:129:15: medium: invariant check might fail, cannot prove D /= 0 [provers reached step limit before completing the proof]
 p.adb:129:19: medium: in inlined invariant at p.adb:13
-p.adb:129:19: medium: invariant check might fail, cannot prove D /= 0 [provers gave up before completing the proof]
+p.adb:129:19: medium: invariant check might fail, cannot prove D /= 0 [provers reached step limit before completing the proof]
 p.adb:133:09: info: data dependencies proved
 p.adb:138:15: info: invariant check proved (CVC5: 2 VC; Trivial: 2 VC)
 p.adb:138:19: info: invariant check proved (CVC5: 2 VC; Trivial: 2 VC)

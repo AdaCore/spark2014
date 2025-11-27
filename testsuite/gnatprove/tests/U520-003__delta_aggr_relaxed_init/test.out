@@ -5,7 +5,7 @@ main.adb:25:25: info: data dependencies proved
 main.adb:26:19: medium: initialization check might fail [possible fix: subprogram at line 25 should mention A and X'Initialized in a precondition] [provers reached step limit before completing the proof]
 main.adb:26:28: info: index check proved (CVC5: 2 VC)
 main.adb:31:25: info: data dependencies proved
-main.adb:32:18: medium: initialization check might fail [possible fix: subprogram at line 31 should mention X'Initialized in a precondition] [provers gave up before completing the proof]
+main.adb:32:18: medium: initialization check might fail [possible fix: subprogram at line 31 should mention X'Initialized in a precondition] [provers reached step limit before completing the proof]
 main.adb:39:25: info: data dependencies proved
 main.adb:40:18: medium: initialization check might fail [possible fix: subprogram at line 39 should mention I'Initialized and Y in a precondition] [provers reached step limit before completing the proof]
 main.adb:40:32: info: index check proved (CVC5: 2 VC)

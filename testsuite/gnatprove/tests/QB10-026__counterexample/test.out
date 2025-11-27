@@ -5,7 +5,7 @@ cartesian.adb:13:64: info: range check proved (CVC5: 2 VC)
 cartesian.adb:15:07: info: range check proved (CVC5: 2 VC)
 cartesian.adb:16:09: info: length check proved (CVC5: 3 VC)
 cartesian.adb:22:42: info: overflow check proved (CVC5: 8 VC)
-cartesian.adb:24:20: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers gave up before completing the proof]
+cartesian.adb:24:20: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
 cartesian.adb:27:35: info: loop invariant initialization proved (CVC5: 2 VC)
 cartesian.adb:27:35: info: loop invariant preservation proved (CVC5: 2 VC)
 cartesian.adb:27:58: info: overflow check proved (CVC5: 8 VC)

@@ -4,7 +4,7 @@
       |            ^~~~~~~~~~~~~
    34 |              Search'Result.At_Index = 1,
       |              ~~~~~~~~~~~~~~~~~~~~~~~~~~
-      + provers gave up before completing the proof
+      + provers reached step limit before completing the proof
 
  medium: discriminant check might fail
 --> linear_search.ads:34:24
@@ -18,4 +18,4 @@
       |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
    36 |              Search'Result.Found,
       |              ~~~~~~~~~~~~~~~~~~~
-      + provers gave up before completing the proof
+      + provers reached step limit before completing the proof

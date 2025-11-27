@@ -1,2 +1,2 @@
 a.ads:5:27: medium: in default value at a.ads:12
-a.ads:5:27: medium: predicate check might fail [provers gave up before completing the proof]
+a.ads:5:27: medium: predicate check might fail [provers reached step limit before completing the proof]

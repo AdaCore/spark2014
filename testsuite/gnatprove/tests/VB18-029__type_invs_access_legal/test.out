@@ -2,7 +2,7 @@ pred.ads:4:13: info: implicit aspect Always_Terminates on "Get" has been proved,
 pred.ads:7:13: info: implicit aspect Always_Terminates on "Bad_New_T" has been proved, subprogram will terminate
 pred.ads:7:13: medium: for the result of Bad_New_T at pred.ads:7
 pred.ads:7:13: medium: in inlined invariant at pred.ads:10
-pred.ads:7:13: medium: invariant check might fail, cannot prove T >= 0 (e.g. when Bad_New_T'Result.all = (Content => -1)) [provers gave up before completing the proof]
+pred.ads:7:13: medium: invariant check might fail, cannot prove T >= 0 (e.g. when Bad_New_T'Result.all = (Content => -1)) [provers reached step limit before completing the proof]
 pred.ads:8:13: info: for the result of Ok_New_T at pred.ads:8
 pred.ads:8:13: info: implicit aspect Always_Terminates on "Ok_New_T" has been proved, subprogram will terminate
 pred.ads:8:13: info: invariant check proved (CVC5: 1 VC; Trivial: 1 VC)

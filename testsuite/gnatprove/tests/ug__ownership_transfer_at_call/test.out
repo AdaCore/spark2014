@@ -33,7 +33,7 @@
       + possible fix: subprogram at line 7 should mention Y in a precondition
     7 |       procedure Proc (Y : in out Int_Ptr)
       |       ^
-      + provers gave up before completing the proof
+      + provers reached step limit before completing the proof
 
  medium: pointer dereference check might fail
 --> ownership_transfer_at_call.adb:12:09
@@ -64,7 +64,7 @@
       + possible fix: subprogram at line 7 should mention X in a precondition
     7 |       procedure Proc (Y : in out Int_Ptr)
       |       ^
-      + provers gave up before completing the proof
+      + provers reached step limit before completing the proof
 
  high: formal parameter "Y" and global "X" are aliased (SPARK RM 6.4.2)
 --> ownership_transfer_at_call.adb:18:10

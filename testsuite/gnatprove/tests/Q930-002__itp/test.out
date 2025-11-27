@@ -36,7 +36,7 @@ bounded_dynamic_arrays.adb:76:49: info: range check proved (CVC5: 2 VC), in inst
 bounded_dynamic_arrays.adb:77:35: info: range check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.adb:86:14: info: precondition proved (CVC5: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.adb:87:26: info: range check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
-bounded_dynamic_arrays.adb:88:27: low: range check might fail, cannot prove upper bound for Left & Value (Right), in instantiation at bounded_dynamic_strings.ads:5 (e.g. when Left = (others => 'SOH') and Left'First = 2 and Left'Last = Positive'Last) [reason for check: input value must fit in parameter type] [possible fix: precondition of subprogram at bounded_dynamic_arrays.ads:95 should mention Left] [provers gave up before completing the proof]
+bounded_dynamic_arrays.adb:88:27: low: range check might fail, cannot prove upper bound for Left & Value (Right), in instantiation at bounded_dynamic_strings.ads:5 (e.g. when Left = (others => 'SOH') and Left'First = 2 and Left'Last = Positive'Last) [reason for check: input value must fit in parameter type] [possible fix: precondition of subprogram at bounded_dynamic_arrays.ads:95 should mention Left] [provers reached step limit before completing the proof]
 bounded_dynamic_arrays.adb:97:14: info: precondition proved (CVC5: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.adb:99:35: info: range check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.adb:108:14: info: precondition proved (CVC5: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
@@ -182,7 +182,7 @@ bounded_dynamic_arrays.ads:170:14: info: postcondition proved (CVC5: 2 VC), in i
 bounded_dynamic_arrays.ads:170:28: info: index check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:175:13: info: implicit aspect Always_Terminates on "Location" has been proved, subprogram will terminate, in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:182:13: info: implicit aspect Always_Terminates on "Location" has been proved, subprogram will terminate, in instantiation at bounded_dynamic_strings.ads:5
-bounded_dynamic_arrays.ads:185:17: medium: postcondition might fail, cannot prove Location'Result = 0, in instantiation at bounded_dynamic_strings.ads:5 [provers gave up before completing the proof]
+bounded_dynamic_arrays.ads:185:17: medium: postcondition might fail, cannot prove Location'Result = 0, in instantiation at bounded_dynamic_strings.ads:5 [provers reached step limit before completing the proof]
 bounded_dynamic_arrays.ads:193:13: info: implicit aspect Always_Terminates on "Location" has been proved, subprogram will terminate, in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:194:14: info: postcondition proved (CVC5: 4 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:199:13: info: implicit aspect Always_Terminates on "Contains" has been proved, subprogram will terminate, in instantiation at bounded_dynamic_strings.ads:5

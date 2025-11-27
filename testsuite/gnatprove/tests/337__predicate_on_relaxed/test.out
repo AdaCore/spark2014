@@ -3,5 +3,5 @@ test.adb:19:16: info: predicate check proved (CVC5: 1 VC)
 test.adb:20:12: info: initialization check proved (CVC5: 2 VC)
 test.adb:20:12: info: predicate check proved (CVC5: 1 VC)
 test.adb:20:16: info: predicate check proved (CVC5: 1 VC)
-test.adb:20:16: medium: initialization check might fail (e.g. when X = (F => 1, G => ?) and X.F'Initialized = True and X.G'Initialized = False) [provers gave up before completing the proof]
+test.adb:20:16: medium: initialization check might fail (e.g. when X = (F => 1, G => ?) and X.F'Initialized = True and X.G'Initialized = False) [provers reached step limit before completing the proof]
 test.adb:22:16: medium: predicate check might fail (e.g. when X.F'Initialized = False and X.G'Initialized = False) [provers reached step limit before completing the proof]

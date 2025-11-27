@@ -4,7 +4,7 @@ q1.adb:15:10: medium: in inlined invariant at q1.ads:19
 q1.adb:15:10: medium: invariant check might fail, cannot prove T1 >= 0 (e.g. when X = (F1 => -1, F2 => 0, F3 => 0, F4 => 0, F5 => 0)) [provers reached step limit before completing the proof]
 q1.adb:21:10: medium: for X before the call at q1.ads:35
 q1.adb:21:10: medium: in inlined invariant at q1.ads:41
-q1.adb:21:10: medium: invariant check might fail, cannot prove T4 >= 0 (e.g. when X = (F1 => 0, F2 => 0, F3 => 0, F4 => -1, F5 => 0)) [provers gave up before completing the proof]
+q1.adb:21:10: medium: invariant check might fail, cannot prove T4 >= 0 (e.g. when X = (F1 => 0, F2 => 0, F3 => 0, F4 => -1, F5 => 0)) [provers reached step limit before completing the proof]
 q1.adb:27:10: medium: for X before the call at q1.ads:35
 q1.adb:27:10: medium: in inlined invariant at q1.ads:19
 q1.adb:27:10: medium: invariant check might fail, cannot prove T1 >= 0 (e.g. when X = (F1 => -1, F2 => 0, F3 => 0, F4 => 0, F5 => 0)) [provers reached step limit before completing the proof]
@@ -27,7 +27,7 @@ q1.adb:64:10: info: for X before the call at q1.adb:3
 q1.adb:64:10: info: invariant check proved (CVC5: 1 VC)
 q1.ads:10:17: medium: for G at the end of Q at q1.adb:60
 q1.ads:10:17: medium: in inlined invariant at q1.ads:41
-q1.ads:10:17: medium: invariant check might fail, cannot prove T4 >= 0 [provers gave up before completing the proof]
+q1.ads:10:17: medium: invariant check might fail, cannot prove T4 >= 0 [provers reached step limit before completing the proof]
 q1.ads:15:15: info: invariant check proved on default value (CVC5: 1 VC)
 q1.ads:15:82: info: in default value of private type at q1.ads:13
 q1.ads:15:82: info: range check proved (CVC5: 2 VC)

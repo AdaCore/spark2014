@@ -6,7 +6,7 @@
    17 |             The_Data := The_Data + 1;
       |                         ~~~~~~~~~^~~
       + reason for check: result of addition must fit in a 32-bits machine integer
-      + provers gave up before completing the proof
+      + provers reached step limit before completing the proof
 
  warning: no Always_Terminates aspect available for "Set_True" [assumed-always-terminates]
 --> semaphores1.adb:34:07

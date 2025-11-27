@@ -5,5 +5,5 @@ p.adb:33:39: info: range check proved (CVC5: 2 VC)
 p.adb:35:25: high: discriminant check might fail (e.g. when V2_T1 = (D1 => True, D2 => True, F => 2222)) [provers reached step limit before completing the proof]
 p.adb:35:39: info: range check proved (CVC5: 2 VC)
 p.adb:37:25: info: discriminant check proved (CVC5: 1 VC)
-p.adb:37:39: high: range check might fail, cannot prove upper bound for V2_Int (e.g. when V2_Int = 15) [reason for check: value must fit in component type] [provers gave up before completing the proof]
+p.adb:37:39: high: range check might fail, cannot prove upper bound for V2_Int (e.g. when V2_Int = 15) [reason for check: value must fit in component type] [provers reached step limit before completing the proof]
 p.ads:7:14: warning: subprogram "Proc" has no effect
