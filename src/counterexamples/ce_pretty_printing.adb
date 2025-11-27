@@ -26,7 +26,9 @@
 with Ada.Float_Text_IO;
 with Ada.Long_Float_Text_IO;
 with Ada.Long_Long_Float_Text_IO;
+with Common_Containers;                     use Common_Containers;
 with Ada.Containers.Doubly_Linked_Lists;
+with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Ordered_Maps;
 with Ada.Numerics.Big_Numbers.Big_Integers;
 use Ada.Numerics.Big_Numbers.Big_Integers;
@@ -75,6 +77,32 @@ package body CE_Pretty_Printing is
    -- Types and Generic Instances --
    ---------------------------------
 
+   type CNT_Attribute is record
+      Attribute : Supported_Attribute;
+      Name      : Unbounded_String;
+      Value     : CNT_Unbounded_String;
+   end record;
+   --  Attributes are printed as a binding from a (possibly prefixed) name to a
+   --  value. The Attribute field is used to keep the relation to the semantic
+   --  attribute.
+
+   package CNT_Attribute_Lists is new
+     Ada.Containers.Doubly_Linked_Lists
+       (Element_Type => CNT_Attribute,
+        "="          => "=");
+
+   subtype CNT_Attribute_List is CNT_Attribute_Lists.List;
+
+   type Value_And_Attributes is record
+      Value      : CNT_Unbounded_String;
+      Attributes : CNT_Attribute_List;
+   end record;
+   --  Return type of the internal printing functions. It contains a string for
+   --  the value parsed and a list of bindings for its attributes. The
+   --  attribute bindings are relatively ordered according to the criteria in
+   --  Ordered_Sloc_Maps and Ordered_Sloc_Attribute_Maps, i.e., first by
+   --  components and then by attributes.
+
    type Component_Loc_Info is record
       Type_Ent : Entity_Id;
       Sloc     : Source_Ptr;
@@ -90,47 +118,86 @@ package body CE_Pretty_Printing is
    --  Construct the location information of a record component or
    --  discriminant.
 
+   No_Loc_Info : constant Component_Loc_Info :=
+     (Type_Ent => Empty, Sloc => No_Location);
+   --  Component_Loc_Info value for the contexts where an actual source code
+   --  location is not needed.
+
    function "<" (X, Y : Component_Loc_Info) return Boolean
    is ((X.Type_Ent /= Y.Type_Ent and then Is_Ancestor (X.Type_Ent, Y.Type_Ent))
-       or else (X.Type_Ent = Y.Type_Ent and then X.Sloc <= Y.Sloc));
+       or else (X.Type_Ent = Y.Type_Ent and then X.Sloc < Y.Sloc));
    --  Order on location information. A component F1 is declared first than
    --  another F2 if F1 is declared in an ancestor of the type in which F2 is
    --  declared, or if they are declared in the same type and F1 occurs before
    --  in the source code.
 
-   package Ordered_Sloc_Map is new
+   package Ordered_Sloc_Maps is new
      Ada.Containers.Ordered_Maps
        (Key_Type     => Component_Loc_Info,
-        Element_Type => CNT_Unbounded_String,
+        Element_Type => Value_And_Attributes,
         "<"          => "<");
    --  Map from sloc to strings, used to output component of record values in
    --  correct order.
 
-   type Pair_Name_Value is record
-      Name  : Unbounded_String;
-      Value : CNT_Unbounded_String;
+   type Sloc_Attribute is record
+      Sloc      : Component_Loc_Info;
+      Attribute : Supported_Attribute;
    end record;
-   --  Attributes are printed as a list of a name and a value
 
-   package Name_Value_Lists is new
-     Ada.Containers.Doubly_Linked_Lists
-       (Element_Type => Pair_Name_Value,
-        "="          => "=");
+   function "<" (Left, Right : Sloc_Attribute) return Boolean
+   is (if Left.Sloc /= Right.Sloc
+       then Left.Sloc < Right.Sloc
+       else Left.Attribute < Right.Attribute);
 
-   type Value_And_Attributes is record
-      Value      : CNT_Unbounded_String;
-      Attributes : Name_Value_Lists.List;
-   end record;
-   --  Return type of the internal printing functions. It contains a string for
-   --  the value parsed and a list of associations for its attributes.
+   package Ordered_Sloc_Attribute_Maps is new
+     Ada.Containers.Ordered_Maps
+       (Key_Type     => Sloc_Attribute,
+        Element_Type => CNT_Attribute,
+        "<"          => "<");
+   --  Map for ordering pretty-printed names-value pairs of attributes
+   --  according to the sloc of the respective entity, component index
+   --  and attribute.
+
+   subtype Ordered_Sloc_Attribute_Map is Ordered_Sloc_Attribute_Maps.Map;
+
+   function To_List
+     (Map : Ordered_Sloc_Attribute_Maps.Map) return CNT_Attribute_List;
+   --  Returns all the elements of the map as a list. The list is sorted by the
+   --  keys of the map.
+
+   procedure Attributes_To_List
+     (Res : in out CNT_Attribute_List; Map : in out Ordered_Sloc_Maps.Map);
+   --  Appends the attribute values of all the elements in Map to the given
+   --  list Res. The attributes are sorted by the keys of the map and the
+   --  relative ordering of the attributes for each element is preserved.
+   --  All attributes are removed from Map by the end of this procedure.
 
    -----------------------
    -- Local_Subprograms --
    -----------------------
 
+   function Make_CNT_Attribute
+     (Attribute   : Supported_Attribute;
+      Value       : CNT_Unbounded_String;
+      Name_Suffix : String := "") return CNT_Attribute;
+   --  Create a CNT_Attribute, i.e., an attribute for pretty printing from the
+   --  given Attribute, pretty-printed Value and an optional Name_Suffix.
+
+   procedure Add_Attribute
+     (Attributes : in out Ordered_Sloc_Attribute_Map;
+      Attribute  : Supported_Attribute;
+      Value      : CNT_Unbounded_String;
+      Sloc       : Component_Loc_Info := No_Loc_Info);
+   --  Add a new attribute to the Attributes map
+
+   procedure Add_Attribute
+     (Attributes       : in out Ordered_Sloc_Attribute_Map;
+      Pretty_Attribute : CNT_Attribute;
+      Sloc             : Component_Loc_Info := No_Loc_Info);
+   --  Add a new attribute to the Attributes map
+
    function Prefix_Names
-     (Elems : Name_Value_Lists.List; Pref : String)
-      return Name_Value_Lists.List;
+     (Elems : CNT_Attribute_List; Pref : String) return CNT_Attribute_List;
    --  Prefix all the names in Elems by Pref
 
    function Print_Access_Value (Value : Value_Type) return Value_And_Attributes
@@ -183,6 +250,34 @@ package body CE_Pretty_Printing is
    function Print_Value (Value : Value_Type) return Value_And_Attributes;
    --  Print a counterexample value
 
+   -------------
+   -- To_List --
+   -------------
+
+   function To_List
+     (Map : Ordered_Sloc_Attribute_Maps.Map) return CNT_Attribute_List
+   is
+      Res : CNT_Attribute_List;
+   begin
+      for Elem of Map loop
+         Res.Append (Elem);
+      end loop;
+      return Res;
+   end To_List;
+
+   ------------------------
+   -- Attributes_To_List --
+   ------------------------
+
+   procedure Attributes_To_List
+     (Res : in out CNT_Attribute_List; Map : in out Ordered_Sloc_Maps.Map) is
+   begin
+      for Position in Map.Iterate loop
+         Res.Splice
+           (CNT_Attribute_Lists.No_Element, Map (Position).Attributes);
+      end loop;
+   end Attributes_To_List;
+
    -------------------------------
    -- Make_CNT_Unbounded_String --
    -------------------------------
@@ -210,15 +305,52 @@ package body CE_Pretty_Printing is
       return (Str => Str, Count => Cnt, Elems => Elems);
    end Make_CNT_Unbounded_String;
 
+   ------------------------
+   -- Make_CNT_Attribute --
+   ------------------------
+
+   function Make_CNT_Attribute
+     (Attribute   : Supported_Attribute;
+      Value       : CNT_Unbounded_String;
+      Name_Suffix : String := "") return CNT_Attribute is
+   begin
+      return
+        (Attribute,
+         To_Unbounded_String (''' & To_String (Attribute) & Name_Suffix),
+         Value);
+   end Make_CNT_Attribute;
+
+   -------------------
+   -- Add_Attribute --
+   -------------------
+
+   procedure Add_Attribute
+     (Attributes : in out Ordered_Sloc_Attribute_Map;
+      Attribute  : Supported_Attribute;
+      Value      : CNT_Unbounded_String;
+      Sloc       : Component_Loc_Info := No_Loc_Info) is
+   begin
+      Add_Attribute (Attributes, Make_CNT_Attribute (Attribute, Value), Sloc);
+   end Add_Attribute;
+
+   procedure Add_Attribute
+     (Attributes       : in out Ordered_Sloc_Attribute_Map;
+      Pretty_Attribute : CNT_Attribute;
+      Sloc             : Component_Loc_Info := No_Loc_Info)
+   is
+      Key : constant Sloc_Attribute := (Sloc, Pretty_Attribute.Attribute);
+   begin
+      Attributes.Insert (Key, Pretty_Attribute);
+   end Add_Attribute;
+
    ------------------
    -- Prefix_Names --
    ------------------
 
    function Prefix_Names
-     (Elems : Name_Value_Lists.List; Pref : String)
-      return Name_Value_Lists.List
+     (Elems : CNT_Attribute_List; Pref : String) return CNT_Attribute_List
    is
-      Res : Name_Value_Lists.List := Elems;
+      Res : CNT_Attribute_List := Elems;
    begin
       for E of Res loop
          E.Name := Pref & E.Name;
@@ -296,16 +428,28 @@ package body CE_Pretty_Printing is
            "<"          => "<");
 
       procedure Add_Index
-        (S_Array    : in out Sorted_Array.Map;
-         Attributes : in out Name_Value_Lists.List;
-         String_Lit : in out Boolean;
-         Index      : Big_Integer;
-         Index_Type : Entity_Id;
-         Truncated  : Boolean;
-         Element    : Value_And_Attributes);
-      --  Add a mapping for Index => Element in S_Array if Index corresponds
-      --  to a valid value of type Index_Type and both Index and Element
-      --  can be printed.
+        (S_Array       : in out Sorted_Array.Map;
+         String_Lit    : in out Boolean;
+         Index         : Big_Integer;
+         Index_Type    : Entity_Id;
+         Truncated     : Boolean;
+         Element_Value : Value_And_Attributes);
+      --  Add a mapping for Index => Element_Value in S_Array if Index
+      --  corresponds to a valid value of type Index_Type and both Index and
+      --  Element_Value can be printed.
+      --
+      --  Note that attributes of the values of array elements are discarded
+      --  since they are currently not expected to contain practically useful
+      --  information.
+      --
+      --  @param S_Array Sorted collection of pretty-printed array elements.
+      --  @param String_Lit Flag to indicate whether the array can be
+      --    represented as a string literal or not.
+      --  @param Index The currently selected index of the array.
+      --  @param Truncated Flag to indicate whether Index is already beyond the
+      --    truncation limit or not.
+      --  @param Element_Value Holds the pretty-printed value of the array
+      --    element at Index.
 
       function Is_Normal_Char (S : Unbounded_String) return Boolean
       is (Length (S) = 3)
@@ -329,42 +473,42 @@ package body CE_Pretty_Printing is
          String_Lit : out Boolean;
          Truncated  : out Boolean;
          Others_Val : out CNT_Unbounded_String;
-         Attributes : out Name_Value_Lists.List);
+         Attributes : out CNT_Attribute_List);
       --  Check and export all parts of Value in an appropriate format.
       --  Individual elements are stored in S_Array, Complete is set to True
       --  iff all the elements of the array have a mapping in S_Array, and the
       --  default value for the array is stored in Others_Val if Complete is
-      --  False. String_Lit is set to True iff all the elements of S_Array are
-      --  normal characters. The Truncated flag indicates whether all the
-      --  elements can be printed or not. Attributes contains the set of
-      --  attributes of Value.
+      --  False. String_Lit is set to True iff all the elements of S_Array
+      --  are normal characters. The Truncated flag indicates whether all
+      --  the elements can be printed or not. Attributes contains the list of
+      --  attributes of Value. The attributes only concern the array value as
+      --  a whole. Attributes of array elements are not printed.
 
       ---------------
       -- Add_Index --
       ---------------
 
       procedure Add_Index
-        (S_Array    : in out Sorted_Array.Map;
-         Attributes : in out Name_Value_Lists.List;
-         String_Lit : in out Boolean;
-         Index      : Big_Integer;
-         Index_Type : Entity_Id;
-         Truncated  : Boolean;
-         Element    : Value_And_Attributes)
+        (S_Array       : in out Sorted_Array.Map;
+         String_Lit    : in out Boolean;
+         Index         : Big_Integer;
+         Index_Type    : Entity_Id;
+         Truncated     : Boolean;
+         Element_Value : Value_And_Attributes)
       is
          Ind_Printed : constant CNT_Unbounded_String :=
            Parse_And_Print_Index (Index, Index_Type);
 
       begin
          if Ind_Printed /= Dont_Display then
-            if Element.Value /= Dont_Display then
+            if Element_Value.Value /= Dont_Display then
                S_Array.Include
                  (Key      => Index,
                   New_Item =>
                     (Ind_Printed  => Ind_Printed,
-                     Elem_Printed => Element.Value));
+                     Elem_Printed => Element_Value.Value));
                String_Lit :=
-                 String_Lit and then Is_Normal_Char (Element.Value.Str);
+                 String_Lit and then Is_Normal_Char (Element_Value.Value.Str);
 
                --  If the output is going to be truncated, then we must keep
                --  the current size. Remove the last element (according to the
@@ -375,24 +519,6 @@ package body CE_Pretty_Printing is
                end if;
             end if;
 
-            --  Store the attributes with their values
-
-            declare
-               Elmt_Attr : Name_Value_Lists.List :=
-                 Prefix_Names
-                   (Element.Attributes,
-                    ' ' & '(' & To_String (Ind_Printed.Str) & ')');
-            begin
-
-               --  ??? TODO Truncation is currently not applied to attributes
-               --  because it is not easy to know which attributes belong to
-               --  which elements. The handling of attributes will be revised
-               --  in eng/spark/spark2014#1068. After that the logic here
-               --  should be refined to only print attributes for actually
-               --  printed elements.
-
-               Attributes.Splice (Name_Value_Lists.No_Element, Elmt_Attr);
-            end;
          end if;
       end Add_Index;
 
@@ -429,7 +555,7 @@ package body CE_Pretty_Printing is
          String_Lit : out Boolean;
          Truncated  : out Boolean;
          Others_Val : out CNT_Unbounded_String;
-         Attributes : out Name_Value_Lists.List)
+         Attributes : out CNT_Attribute_List)
       is
          Fst_Index  : Node_Id := First_Index (Value.AST_Ty);
          Index_Type : Entity_Id;
@@ -441,8 +567,8 @@ package body CE_Pretty_Printing is
          Attr_Last  : Opt_Big_Integer := Value.Last_Attr;
          U_Fst      : Uint;
          U_Lst      : Uint;
-         First      : Big_Integer;
-         Last       : Big_Integer;
+         BI_Fst     : Big_Integer;
+         BI_Last    : Big_Integer;
 
       begin
          Truncated := False;
@@ -460,20 +586,20 @@ package body CE_Pretty_Printing is
          --  Use static array type bounds or index type bounds as default
 
          Find_First_Static_Range (Fst_Index, U_Fst, U_Lst);
-         First := From_String (UI_Image (U_Fst, Decimal));
-         Last := From_String (UI_Image (U_Lst, Decimal));
+         BI_Fst := From_String (UI_Image (U_Fst, Decimal));
+         BI_Last := From_String (UI_Image (U_Lst, Decimal));
 
          --  Update bounds from the attribute values if any. We ignore out of
          --  bound values.
 
-         if Attr_First.Present and then Attr_First.Content >= First then
-            First := Attr_First.Content;
+         if Attr_First.Present and then Attr_First.Content >= BI_Fst then
+            BI_Fst := Attr_First.Content;
          else
             Attr_First := (Present => False);
          end if;
 
-         if Attr_Last.Present and then Attr_Last.Content <= Last then
-            Last := Attr_Last.Content;
+         if Attr_Last.Present and then Attr_Last.Content <= BI_Last then
+            BI_Last := Attr_Last.Content;
          else
             Attr_Last := (Present => False);
          end if;
@@ -507,13 +633,13 @@ package body CE_Pretty_Printing is
                --  We collapse indexes with the others choice if they are the
                --  same.
 
-               if First <= Index
-                 and then Index <= Last
-                 and then (First = Last or else Elem_Printed /= Others_Elem)
+               if BI_Fst <= Index
+                 and then Index <= BI_Last
+                 and then (BI_Fst = BI_Last
+                           or else Elem_Printed /= Others_Elem)
                then
                   Add_Index
                     (S_Array,
-                     Attributes,
                      String_Lit,
                      Index,
                      Index_Type,
@@ -542,7 +668,8 @@ package body CE_Pretty_Printing is
          --  No need for "others" if the array is empty or indexes already
          --  cover the full range.
 
-         if To_Big_Integer (Integer (S_Array.Length)) >= Last - First + 1 then
+         if To_Big_Integer (Integer (S_Array.Length)) >= BI_Last - BI_Fst + 1
+         then
             Complete := True;
 
          --  Replace "others" by the actual indexes if we have a string or we
@@ -552,26 +679,26 @@ package body CE_Pretty_Printing is
          elsif Others_Elem.Value /= Dont_Display
            and then (String_Lit
                      or else To_Big_Integer (Integer (S_Array.Length))
-                             >= Last
-                                - First
+                             >= BI_Last
+                                - BI_Fst
                                 + 1
                                 - CE_Max_Exp_Others_In_Aggregate)
            and then ((Attr_First.Present and then Attr_Last.Present)
                      or else Is_Static_Array_Type (Value.AST_Ty))
          then
             declare
-               Index : Big_Integer := First;
+               Index : Big_Integer := BI_Fst;
                Limit : constant Big_Integer :=
                  (if String_Lit
                   then CE_Max_Print_Chars_String
                   else CE_Max_Print_Elems_Array);
-               Upper : constant Big_Integer := Min (Last, First + Limit - 1);
+               Upper : constant Big_Integer :=
+                 Min (BI_Last, BI_Fst + Limit - 1);
             begin
                while Index <= Upper loop
                   if not S_Array.Contains (Index) then
                      Add_Index
                        (S_Array,
-                        Attributes,
                         String_Lit,
                         Index,
                         Index_Type,
@@ -583,7 +710,7 @@ package body CE_Pretty_Printing is
                pragma
                  Assert
                    (To_Big_Integer (Integer (S_Array.Length))
-                      = Upper - First + 1);
+                      = Upper - BI_Fst + 1);
                Complete := not Truncated;
             end;
 
@@ -610,15 +737,16 @@ package body CE_Pretty_Printing is
 
          end if;
 
-         --  Add the first and last attributes if any. Do not add the attribute
+         --  Add the First and Last attributes if any. Do not add the attribute
          --  if the array type is static or if they are implied by the
          --  aggregate value. For string literals, the first bound is not
-         --  implied even if the aggregate is complete.
+         --  implied even if the aggregate is complete. No attributes are
+         --  currently printed for the array elements.
 
          Attributes.Clear;
 
          if not Is_Static_Array_Type (Value.AST_Ty)
-           and then (String_Lit or else not Complete or else Last < First)
+           and then (String_Lit or else not Complete or else BI_Last < BI_Fst)
          then
             if Attr_First.Present then
                declare
@@ -626,20 +754,19 @@ package body CE_Pretty_Printing is
                     Parse_And_Print_Index (Attr_First.Content, Index_Type);
                begin
                   if First_Str /= Dont_Display then
-                     Attributes.Append
-                       ((To_Unbounded_String ("'First"), First_Str));
+                     Attributes.Append (Make_CNT_Attribute (First, First_Str));
                   end if;
                end;
             end if;
-            if (not Complete or else Last < First) and then Attr_Last.Present
+            if (not Complete or else BI_Last < BI_Fst)
+              and then Attr_Last.Present
             then
                declare
                   Last_Str : constant CNT_Unbounded_String :=
                     Parse_And_Print_Index (Attr_Last.Content, Index_Type);
                begin
                   if Last_Str /= Dont_Display then
-                     Attributes.Append
-                       ((To_Unbounded_String ("'Last"), Last_Str));
+                     Attributes.Append (Make_CNT_Attribute (Last, Last_Str));
                   end if;
                end;
             end if;
@@ -978,38 +1105,80 @@ package body CE_Pretty_Printing is
 
    function Print_Record_Value (Value : Value_Type) return Value_And_Attributes
    is
+      package Component_To_Value_Maps is new
+        Ada.Containers.Hashed_Maps
+          (Key_Type        => Entity_Id,
+           Element_Type    => Value_And_Attributes,
+           Hash            => Node_Hash,
+           Equivalent_Keys => "=");
+
       Ada_Type                 : constant Entity_Id := Value.AST_Ty;
       Visibility_Map           : Component_Visibility_Maps.Map :=
         Get_Component_Visibility_Map (Ada_Type);
       Fields_Discrs_With_Value : Natural := 0;
-      Attributes               : Name_Value_Lists.List;
-      Ordered_Values           : Ordered_Sloc_Map.Map;
+      Ordered_Values           : Ordered_Sloc_Maps.Map;
       --  Ordered map containing the values for the components of
       --  the record. They are ordered in as in the source file,
       --  inherited components coming first.
+      Ordered_Attributes       : Ordered_Sloc_Attribute_Map;
+      --  Ordered map containing the *direct* attributes of the components
+      --  of the record, e.g., whether the component is initialized or not.
+      --  The ordering is the same as in Ordered_Values plus ordering by the
+      --  attribute. Conversely, nested attributes of the values of components
+      --  are stored together with the values of the respective components in
+      --  the Ordered_Values map.
+      Not_Printed_Values       : Component_To_Value_Maps.Map;
+      --  Map from components to values + attributes that is used for
+      --  temporarily storing values for components that should be present,
+      --  but whose value is not printable, e.g., due to being uninitialized or
+      --  invalid. In this case we can choose to output "?" for the value, but
+      --  still print the attributes. The choice is made after processing all
+      --  components. Hence the need to temporarily store them.
 
-      procedure Get_Value_Of_Component
-        (Comp       : Node_Id;
-         Val        : Value_And_Attributes;
-         Visibility : Component_Visibility);
-      --  Insert value of record component or dicriminant in
-      --  Ordered_Values and its attributes in Attributes.
+      procedure Store_Value_Of_Component
+        (Comp       : Entity_Id;
+         Comp_Val   : Value_And_Attributes;
+         Sloc       : Component_Loc_Info;
+         Visibility : Component_Visibility;
+         Add_Prefix : Boolean := True);
+      --  Build the pretty value for the value and attributes of the component
+      --  and depending on whether the value can be fully printed insert
+      --  it either to the Ordered_Values or Not_Printed_Values collection in
+      --  the parent scope.
+      --
+      --  @param Comp The entity of the component to print
+      --  @param Comp_Val The pretty-printed value of the current value in the
+      --     component.
+      --  @param Sloc Source location of the component instance
+      --  @param Visibility Visibility of the component in the current context
+      --  @param Add_Prefix Control flag to avoid duplicate prefix for elements
+      --    that cannot be normally printed, but will be printed either as "?"
+      --    or only their attributes will be printed.
 
       procedure Process_Component
-        (Comp : Entity_Id; Comp_Val : Value_And_Attributes);
+        (Comp     : Entity_Id;
+         Comp_Val : Value_And_Attributes;
+         Sloc     : Component_Loc_Info);
       --  Go over counterexample values for record fields to fill
       --  the Ordered_Values map. Along the way, remove seen
       --  components from the Visibility_Map so that we can later
       --  check for unseen components.
+      --
+      --  @param Comp The entity of the component to print
+      --  @param Comp_Val The pretty-printed value of the current value in the
+      --     component.
+      --  @param Sloc Source location of the component instance
 
-      ----------------------------
-      -- Get_Value_Of_Component --
-      ----------------------------
+      ------------------------------
+      -- Store_Value_Of_Component --
+      ------------------------------
 
-      procedure Get_Value_Of_Component
-        (Comp       : Node_Id;
-         Val        : Value_And_Attributes;
-         Visibility : Component_Visibility)
+      procedure Store_Value_Of_Component
+        (Comp       : Entity_Id;
+         Comp_Val   : Value_And_Attributes;
+         Sloc       : Component_Loc_Info;
+         Visibility : Component_Visibility;
+         Add_Prefix : Boolean := True)
       is
          Comp_Name : constant String := Source_Name (Comp);
          Orig_Decl : constant Entity_Id := Original_Declaration (Comp);
@@ -1021,42 +1190,69 @@ package body CE_Pretty_Printing is
          --  components where it points to the declaration of the
          --  component.
 
-      begin
-         --  Add the value of the component to Ordered_Values
+         To_Display : Boolean := True;
 
-         if Val.Value /= Dont_Display
-           and then not Component_Is_Removed_In_Type
-                          (Ty   => Value.AST_Ty,
-                           Comp => Comp,
-                           Vals => Value.Record_Fields)
+      begin
+
+         if not Component_Is_Removed_In_Type
+                  (Ty   => Value.AST_Ty,
+                   Comp => Comp,
+                   Vals => Value.Record_Fields)
          then
-            Ordered_Values.Insert
-              (Get_Loc_Info (Comp),
-               Make_CNT_Unbounded_String
-                 (Str => Prefix & Comp_Name & " => " & Val.Value.Str,
-                  Cnt => Val.Value.Count,
-                  Els =>
-                    Prefix_Elements
-                      (Val.Value.Elems, '.' & Prefix & Comp_Name)));
-            Fields_Discrs_With_Value := Fields_Discrs_With_Value + 1;
+
+            --  Check if the component has a printable value
+
+            if Comp_Val.Value = Dont_Display then
+               To_Display := False;
+            end if;
+
+            --  Build the pretty value of the component and attributes
+
+            declare
+               Pretty_Val : constant CNT_Unbounded_String :=
+                 (if To_Display
+                  then
+                    Make_CNT_Unbounded_String
+                      (Str => Prefix & Comp_Name & " => " & Comp_Val.Value.Str,
+                       Cnt => Comp_Val.Value.Count,
+                       Els =>
+                         Prefix_Elements
+                           (Comp_Val.Value.Elems, '.' & Prefix & Comp_Name))
+                  else
+                    Make_CNT_Unbounded_String
+                      (Str => To_Unbounded_String ("?")));
+
+               Pretty_Val_And_Attrs : constant Value_And_Attributes :=
+                 (Value      => Pretty_Val,
+                  Attributes =>
+                    (if Add_Prefix
+                     then
+                       Prefix_Names
+                         (Elems => Comp_Val.Attributes,
+                          Pref  => '.' & Prefix & Comp_Name)
+                     else Comp_Val.Attributes));
+            begin
+
+               if To_Display then
+                  Ordered_Values.Insert (Sloc, Pretty_Val_And_Attrs);
+
+                  Fields_Discrs_With_Value := Fields_Discrs_With_Value + 1;
+               else
+                  Not_Printed_Values.Insert (Comp, Pretty_Val_And_Attrs);
+               end if;
+            end;
          end if;
 
-         --  Add the attributes of the component to Attributes
-
-         declare
-            Comp_Attrs : Name_Value_Lists.List :=
-              Prefix_Names (Val.Attributes, '.' & Prefix & Comp_Name);
-         begin
-            Attributes.Splice (Name_Value_Lists.No_Element, Comp_Attrs);
-         end;
-      end Get_Value_Of_Component;
+      end Store_Value_Of_Component;
 
       -----------------------
       -- Process_Component --
       -----------------------
 
       procedure Process_Component
-        (Comp : Entity_Id; Comp_Val : Value_And_Attributes)
+        (Comp     : Entity_Id;
+         Comp_Val : Value_And_Attributes;
+         Sloc     : Component_Loc_Info)
       is
          Visibility : Component_Visibility;
       begin
@@ -1088,7 +1284,7 @@ package body CE_Pretty_Printing is
 
          if Visibility /= Removed then
             pragma Assert (Comp_Val.Value.Str /= "?");
-            Get_Value_Of_Component (Comp, Comp_Val, Visibility);
+            Store_Value_Of_Component (Comp, Comp_Val, Sloc, Visibility);
          end if;
       end Process_Component;
 
@@ -1107,9 +1303,10 @@ package body CE_Pretty_Printing is
                       then "True"
                       else "False"));
          begin
-            Attributes.Append
-              ((Name  => To_Unbounded_String ("'Constrained"),
-                Value => Constr_Val));
+            Add_Attribute
+              (Ordered_Attributes,
+               Attribute => Constrained,
+               Value     => Constr_Val);
          end;
       end if;
 
@@ -1130,21 +1327,13 @@ package body CE_Pretty_Printing is
       for C in Value.Record_Fields.Iterate loop
          declare
             use Entity_To_Value_Maps;
-            Comp : Entity_Id renames Key (C);
+            Comp      : Entity_Id renames Key (C);
+            Sloc_Comp : constant Component_Loc_Info := Get_Loc_Info (Comp);
          begin
-            Process_Component (Comp, Print_Value (Element (C).all));
+
+            Process_Component (Comp, Print_Value (Element (C).all), Sloc_Comp);
          end;
       end loop;
-
-      --  If there are no fields and discriminants of the processed
-      --  value with values that can be displayed, do not display
-      --  the value (this can happen if there were collected
-      --  fields or discriminants, but their values should not
-      --  be displayed).
-
-      if Fields_Discrs_With_Value = 0 then
-         return (Value => Dont_Display, Attributes => Attributes);
-      end if;
 
       --  Go over the visibility map to see if there are missing
       --  components.
@@ -1191,23 +1380,81 @@ package body CE_Pretty_Printing is
          --  of introducing a others case.
 
          if not Need_Others and then Present (First_Unseen) then
-            Get_Value_Of_Component
-              (First_Unseen,
-               (Value      =>
-                  Make_CNT_Unbounded_String (Str => To_Unbounded_String ("?")),
-                Attributes => Name_Value_Lists.Empty_List),
-               Visibility_Map.Element (First_Unseen));
+            declare
+               Position : constant Component_To_Value_Maps.Cursor :=
+                 Not_Printed_Values.Find (First_Unseen);
+            begin
+               if Component_To_Value_Maps.Has_Element (Position) then
+
+                  --  Value and attributes were seen, but discarded initially.
+                  --  Print the value now as ? and make sure to avoid double
+                  --  prefixing.
+
+                  Store_Value_Of_Component
+                    (First_Unseen,
+                     Not_Printed_Values (Position),
+                     Get_Loc_Info (First_Unseen),
+                     Visibility_Map.Element (First_Unseen),
+                     Add_Prefix => False);
+
+               elsif Fields_Discrs_With_Value > 0 then
+
+                  --  Value for this component was not seen, but there exists
+                  --  at least one other printed component. So, output ? for
+                  --  this missing one. Otherwise, if there wouldn't be any
+                  --  components with a known value, there is nothing known
+                  --  about the whole record and it wouldn't be useful to
+                  --  output anything.
+
+                  Store_Value_Of_Component
+                    (First_Unseen,
+                     (Value      =>
+                        Make_CNT_Unbounded_String
+                          (Str => To_Unbounded_String ("?")),
+                      Attributes => CNT_Attribute_Lists.Empty_List),
+                     Get_Loc_Info (First_Unseen),
+                     Visibility_Map.Element (First_Unseen));
+               end if;
+            end;
+         end if;
+
+         --  If there are no fields and discriminants of the processed
+         --  value with values that can be displayed, do not display
+         --  the value (this can happen if there were collected
+         --  fields or discriminants, but their values should not
+         --  be displayed).
+
+         if Fields_Discrs_With_Value = 0 then
+
+            --  Collect any attributes from non-printed fields. Especially the
+            --  'Initialized and 'Valid attributes are likely to be useful in
+            --  this case as one of them is likely to be False.
+
+            for Position in Not_Printed_Values.Iterate loop
+               for Pretty_Attribute of Not_Printed_Values (Position).Attributes
+               loop
+                  Add_Attribute
+                    (Ordered_Attributes,
+                     Pretty_Attribute => Pretty_Attribute,
+                     Sloc             =>
+                       Get_Loc_Info (Component_To_Value_Maps.Key (Position)));
+               end loop;
+            end loop;
+
+            return
+              (Value      => Dont_Display,
+               Attributes => To_List (Ordered_Attributes));
          end if;
 
          --  Construct the counterexample value by appending the
          --  components in the right order.
 
          for V of Ordered_Values loop
-            Append (Str_Val, (if Is_Before then ", " else "") & V.Str);
+            Append (Str_Val, (if Is_Before then ", " else "") & V.Value.Str);
             Is_Before := True;
-            Count := Count + V.Count;
+            Count := Count + V.Value.Count;
             Elems.Splice
-              (Before => S_String_List.No_Element, Source => V.Elems);
+              (Before => S_String_List.No_Element, Source => V.Value.Elems);
          end loop;
 
          --  If there are more than one fields that are not
@@ -1220,11 +1467,22 @@ package body CE_Pretty_Printing is
          end if;
          Append (Str_Val, ')');
 
-         return
-           (Value      =>
+         return Res : Value_And_Attributes do
+
+            --  Values of the record components
+
+            Res.Value :=
               Make_CNT_Unbounded_String
-                (Str => Str_Val, Cnt => Count, Els => Elems),
-            Attributes => Attributes);
+                (Str => Str_Val, Cnt => Count, Els => Elems);
+
+            --  Attributes of the record as a whole
+
+            Res.Attributes := To_List (Ordered_Attributes);
+
+            --  Attributes of the record components
+
+            Attributes_To_List (Res.Attributes, Ordered_Values);
+         end return;
       end;
    end Print_Record_Value;
 
@@ -1368,7 +1626,7 @@ package body CE_Pretty_Printing is
             --  Don't display uninitialized or invalid values
 
             declare
-               Attributes : Name_Value_Lists.List;
+               Attributes : CNT_Attribute_List;
             begin
                if Value.Initialized_Attr.Present then
                   declare
@@ -1381,8 +1639,7 @@ package body CE_Pretty_Printing is
                                else "False"));
                   begin
                      Attributes.Append
-                       ((Name  => To_Unbounded_String ("'Initialized"),
-                         Value => Init_Val));
+                       (Make_CNT_Attribute (Initialized, Init_Val));
                   end;
                end if;
 
@@ -1396,9 +1653,7 @@ package body CE_Pretty_Printing is
                                then "True"
                                else "False"));
                   begin
-                     Attributes.Append
-                       ((Name  => To_Unbounded_String ("'Valid"),
-                         Value => Valid_Val));
+                     Attributes.Append (Make_CNT_Attribute (Valid, Valid_Val));
                   end;
                end if;
 
@@ -1428,7 +1683,7 @@ package body CE_Pretty_Printing is
             --  Add the bounds to Attributes
 
             declare
-               Attributes : Name_Value_Lists.List;
+               Attributes : CNT_Attribute_List;
             begin
                for I in Value.Bounds.Content'Range loop
                   if Value.Bounds.Content (I).First.Present then
@@ -1445,10 +1700,10 @@ package body CE_Pretty_Printing is
                                      Left)));
                      begin
                         Attributes.Append
-                          ((Name  =>
-                              To_Unbounded_String
-                                ("'First (" & Trim (I'Image, Left) & ')'),
-                            Value => Bound_Val));
+                          (Make_CNT_Attribute
+                             (First,
+                              Bound_Val,
+                              " (" & Trim (I'Image, Left) & ')'));
                      end;
                   end if;
                   if Value.Bounds.Content (I).Last.Present then
@@ -1463,10 +1718,10 @@ package body CE_Pretty_Printing is
                                      Left)));
                      begin
                         Attributes.Append
-                          ((Name  =>
-                              To_Unbounded_String
-                                ("'Last (" & Trim (I'Image, Left) & ')'),
-                            Value => Bound_Val));
+                          (Make_CNT_Attribute
+                             (Last,
+                              Bound_Val,
+                              " (" & Trim (I'Image, Left) & ')'));
                      end;
                   end if;
                end loop;
@@ -1486,14 +1741,13 @@ package body CE_Pretty_Printing is
 
    function Print_Value (Value : Value_Type) return CNT_Unbounded_String is
       Val_And_Attrs : constant Value_And_Attributes := Print_Value (Value);
-
    begin
       return Val_And_Attrs.Value;
    end Print_Value;
 
-   ----------------------
-   -- Print_Attributes --
-   ----------------------
+   --------------------------------
+   -- Print_Value_And_Attributes --
+   --------------------------------
 
    procedure Print_Value_And_Attributes
      (Name           : Unbounded_String;
@@ -1531,10 +1785,10 @@ package body CE_Pretty_Printing is
             --  Add the attributes
 
             declare
-               Val_Attr : constant Name_Value_Lists.List :=
+               Val_Attrs : constant CNT_Attribute_List :=
                  Prefix_Names (Val_And_Attrs.Attributes, To_String (Name));
             begin
-               for Name_And_Value of Val_Attr loop
+               for Name_And_Value of Val_Attrs loop
                   Pretty_Line.Append
                     (Cntexample_Elt'
                        (K       => Pretty_Printed,

@@ -29,12 +29,12 @@
   <proof prover="0"><result status="valid" steps="12"/></proof>
   <proof prover="1"><result status="valid" steps="5209"/></proof>
   <proof prover="2"><result status="valid" steps="14971"/></proof>
-  <proof prover="4"><result status="unknown" steps="190"/></proof>
+  <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.5" proved="true">
   <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1"><result status="valid" steps="8210"/></proof>
-  <proof prover="2"><result status="highfailure"/></proof>
+  <proof prover="2"><result status="valid" steps="16773"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
  </transf>

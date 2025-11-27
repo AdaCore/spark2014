@@ -4,5 +4,5 @@ p.adb:34:15: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 p.adb:38:52: info: data dependencies proved
 p.adb:42:07: info: precondition proved (Trivial: 1 VC)
 p.adb:42:25: medium: for mutable discriminants at p.adb:4
-p.adb:42:25: medium: initialization check might fail (e.g. when T = (A => 1, B => (E => One, C => 0, F => 0)) and T.A'Initialized = True and T.B.C'Initialized = True and T.B.F'Initialized = True and T.B.G'Initialized = True) [reason for check: mutable discriminants of actual parameters of mode OUT need to be initialized prior to the call]
+p.adb:42:25: medium: initialization check might fail (e.g. when T = (A => 1, B => (E => One, C => 0, F => 0)) and T.A'Initialized = True and T.B.C'Initialized = True and T.B.F'Initialized = True) [reason for check: mutable discriminants of actual parameters of mode OUT need to be initialized prior to the call]
 p.adb:42:25: warning: mutable discriminants of a standalone object or parameter with relaxed initialization are enforced to always be initialized [relaxed-mutable-discriminants]

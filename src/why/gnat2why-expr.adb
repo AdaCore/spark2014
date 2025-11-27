@@ -20924,11 +20924,46 @@ package body Gnat2Why.Expr is
 
       Result := Insert_Ref_Context (Call, Result, Context, Store);
 
-      --  Handle specially calls to instances of Ada.Unchecked_Deallocation to
-      --  assume that the argument is set to null on return, in the absence of
-      --  a postcondition in the standard.
+      --  Handle specially calls to instances of Ada.Unchecked_Deallocation. We
+      --  introduce a predicate check on the output value of the parameter if
+      --  the pointer type has a predicate and we assume that the argument is
+      --  set to null on return, in the absence of a postcondition in the
+      --  standard.
 
       if Is_Unchecked_Deallocation_Instance (Subp) then
+
+         --  Generate a check that the predicate holds on the null value
+
+         declare
+            Actual    : constant Node_Id := First_Actual (Call);
+            Formal_Ty : constant Entity_Id :=
+              Type_Of_Node (First_Formal (Subp));
+         begin
+            if Has_Predicates (Formal_Ty) then
+
+               --  Add a continuation locating the potential checks on the
+               --  output value of the actual.
+
+               Continuation_Stack.Append
+                 (Continuation_Type'
+                    (Ada_Node => Actual,
+                     Message  =>
+                       To_Unbounded_String
+                         ("in value of subprogram parameter after the call")));
+               Prepend
+                 (New_Ignore
+                    (Prog =>
+                       New_Predicate_Check
+                         (Ada_Node => Actual,
+                          Ty       => Formal_Ty,
+                          W_Expr   => +E_Symb (Formal_Ty, WNE_Null_Pointer))),
+                  Result);
+               Continuation_Stack.Delete_Last;
+            end if;
+         end;
+
+         --  Assume that the value of the parameter is null after the call
+
          declare
             Actual : constant Node_Id := First_Actual (Call);
             Typ    : constant Entity_Id := Retysp (Etype (Actual));

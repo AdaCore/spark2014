@@ -1,11 +1,11 @@
 spark-containers-formal-unbounded_doubly_linked_lists.ads:19:18: medium: implicit aspect Always_Terminates on "Oeqr" could be incorrect, indirect dispatching call to record equality might be nonterminating, in instantiation at test_tagged.adb:45 [possible explanation: call could hide recursive calls]
 spark-containers-formal-unbounded_ordered_maps.ads:27:18: medium: implicit aspect Always_Terminates on "Oeqr" could be incorrect, indirect dispatching call to record equality might be nonterminating, in instantiation at test_tagged.adb:84 [possible explanation: call could hide recursive calls]
-spark-containers-parameter_checks.ads:39:19: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:75, in instantiation at test_tagged.adb:45
-spark-containers-parameter_checks.ads:39:19: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:101, in instantiation at test_tagged.adb:84
-spark-containers-parameter_checks.ads:44:19: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:75, in instantiation at test_tagged.adb:45
-spark-containers-parameter_checks.ads:44:19: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:101, in instantiation at test_tagged.adb:84
-spark-containers-parameter_checks.ads:49:19: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:75, in instantiation at test_tagged.adb:45
-spark-containers-parameter_checks.ads:49:19: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:101, in instantiation at test_tagged.adb:84
+spark-containers-parameter_checks.ads:46:36: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:88, in instantiation at test_tagged.adb:45
+spark-containers-parameter_checks.ads:46:36: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:119, in instantiation at test_tagged.adb:84
+spark-containers-parameter_checks.ads:49:54: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:88, in instantiation at test_tagged.adb:45
+spark-containers-parameter_checks.ads:49:54: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:119, in instantiation at test_tagged.adb:84
+spark-containers-parameter_checks.ads:52:68: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:88, in instantiation at test_tagged.adb:45
+spark-containers-parameter_checks.ads:52:68: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:119, in instantiation at test_tagged.adb:84
 test_tagged.adb:18:30: info: data dependencies proved
 test_tagged.adb:23:07: info: initialization of "X" proved
 test_tagged.adb:24:35: warning: "C" is not modified, could be IN
@@ -13,18 +13,18 @@ test_tagged.adb:25:17: info: postcondition proved (CVC5: 2 VC)
 test_tagged.adb:25:17: info: precondition proved (CVC5: 1 VC)
 test_tagged.adb:26:18: info: precondition proved (CVC5: 1 VC)
 test_tagged.adb:26:30: info: precondition proved (CVC5: 1 VC)
-test_tagged.adb:29:15: info: all elements shall fit in index type and be smaller than "Aggr_Capacity" for sequence aggregates at spark-containers-formal-unbounded_doubly_linked_lists.ads:49, in instantiation at test_tagged.adb:19
+test_tagged.adb:29:15: info: all elements shall fit in index type and be smaller than "Aggr_Capacity" for sequence aggregates at spark-containers-formal-unbounded_doubly_linked_lists.ads:56, in instantiation at test_tagged.adb:19
 test_tagged.adb:29:15: info: precondition proved (CVC5: 2 VC)
 test_tagged.adb:31:39: warning: "C" is not modified, could be IN
 test_tagged.adb:33:17: info: precondition proved (CVC5: 1 VC)
 test_tagged.adb:34:18: medium: postcondition might fail, cannot prove Root'Class (Element (X, Next (X, First (X)))) = Root'Class (C)
 test_tagged.adb:34:30: info: precondition proved (CVC5: 1 VC)
 test_tagged.adb:34:42: info: precondition proved (CVC5: 1 VC)
-test_tagged.adb:37:15: info: all elements shall fit in index type and be smaller than "Aggr_Capacity" for sequence aggregates at spark-containers-formal-unbounded_doubly_linked_lists.ads:49, in instantiation at test_tagged.adb:19
+test_tagged.adb:37:15: info: all elements shall fit in index type and be smaller than "Aggr_Capacity" for sequence aggregates at spark-containers-formal-unbounded_doubly_linked_lists.ads:56, in instantiation at test_tagged.adb:19
 test_tagged.adb:37:15: info: precondition proved (CVC5: 2 VC)
 test_tagged.adb:44:14: high: all paths in "Test_Lists_Classwide" raise exceptions or do not terminate normally
 test_tagged.adb:44:40: info: data dependencies proved
-test_tagged.adb:49:28: info: all elements shall fit in index type and be smaller than "Aggr_Capacity" for sequence aggregates at spark-containers-formal-unbounded_doubly_linked_lists.ads:49, in instantiation at test_tagged.adb:45
+test_tagged.adb:49:28: info: all elements shall fit in index type and be smaller than "Aggr_Capacity" for sequence aggregates at spark-containers-formal-unbounded_doubly_linked_lists.ads:56, in instantiation at test_tagged.adb:45
 test_tagged.adb:49:28: info: precondition proved (CVC5: 2 VC)
 test_tagged.adb:51:22: info: assertion proved (CVC5: 1 VC)
 test_tagged.adb:52:22: info: assertion proved (CVC5: 1 VC)
@@ -40,18 +40,18 @@ test_tagged.adb:64:17: info: postcondition proved (CVC5: 2 VC)
 test_tagged.adb:64:17: info: precondition proved (CVC5: 1 VC)
 test_tagged.adb:65:18: info: precondition proved (CVC5: 1 VC)
 test_tagged.adb:65:30: info: precondition proved (CVC5: 1 VC)
-test_tagged.adb:68:15: info: keys shall be distinct and all elements shall be smaller than "Aggr_Capacity" for maps aggregates at spark-containers-formal-unbounded_ordered_maps.ads:76, in instantiation at test_tagged.adb:58
+test_tagged.adb:68:15: info: keys shall be distinct and all elements shall be smaller than "Aggr_Capacity" for maps aggregates at spark-containers-formal-unbounded_ordered_maps.ads:89, in instantiation at test_tagged.adb:58
 test_tagged.adb:68:15: info: precondition proved (CVC5: 2 VC)
 test_tagged.adb:70:39: warning: "C" is not modified, could be IN
 test_tagged.adb:72:17: info: precondition proved (CVC5: 1 VC)
 test_tagged.adb:73:18: medium: postcondition might fail, cannot prove Root'Class (Element (X, Next (X, First (X)))) = Root'Class (C)
 test_tagged.adb:73:30: info: precondition proved (CVC5: 1 VC)
 test_tagged.adb:73:42: info: precondition proved (CVC5: 1 VC)
-test_tagged.adb:76:15: info: keys shall be distinct and all elements shall be smaller than "Aggr_Capacity" for maps aggregates at spark-containers-formal-unbounded_ordered_maps.ads:76, in instantiation at test_tagged.adb:58
+test_tagged.adb:76:15: info: keys shall be distinct and all elements shall be smaller than "Aggr_Capacity" for maps aggregates at spark-containers-formal-unbounded_ordered_maps.ads:89, in instantiation at test_tagged.adb:58
 test_tagged.adb:76:15: info: precondition proved (CVC5: 2 VC)
 test_tagged.adb:83:14: high: all paths in "Test_Maps_Classwide" raise exceptions or do not terminate normally
 test_tagged.adb:83:39: info: data dependencies proved
-test_tagged.adb:88:26: info: keys shall be distinct and all elements shall be smaller than "Aggr_Capacity" for maps aggregates at spark-containers-formal-unbounded_ordered_maps.ads:76, in instantiation at test_tagged.adb:84
+test_tagged.adb:88:26: info: keys shall be distinct and all elements shall be smaller than "Aggr_Capacity" for maps aggregates at spark-containers-formal-unbounded_ordered_maps.ads:89, in instantiation at test_tagged.adb:84
 test_tagged.adb:88:26: info: precondition proved (CVC5: 2 VC)
 test_tagged.adb:90:22: info: assertion proved (CVC5: 1 VC)
 test_tagged.adb:91:22: info: assertion proved (CVC5: 1 VC)
