@@ -166,8 +166,8 @@ procedure SPARK_Memcached_Wrapper with No_Return is
       Read (File, Region);
 
       declare
-         S : String (1 .. Integer (Length (File)));
-         for S'Address use Data (Region).all'Address;
+         S : constant String (1 .. Integer (Length (File)))
+         with Import, Address => Data (Region).all'Address;
          --  A fake string directly mapped onto the file contents
 
       begin
