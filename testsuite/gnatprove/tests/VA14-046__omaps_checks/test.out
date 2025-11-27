@@ -39,14 +39,14 @@ spark-containers-formal-ordered_maps.ads:91:06: info: after a call to Insert at 
 spark-containers-formal-ordered_maps.ads:91:06: info: after a call to Insert at spark-containers-formal-ordered_maps.ads:675, in instantiation at test_omaps.ads:8
 spark-containers-formal-ordered_maps.ads:91:06: info: during checks for container aggregates at spark-containers-formal-ordered_maps.ads:91, in instantiation at test_omaps.ads:11
 spark-containers-formal-ordered_maps.ads:91:06: info: during checks for container aggregates at spark-containers-formal-ordered_maps.ads:91, in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:91:06: info: when establishing invariant on Aggr_Capacity at spark-containers-formal-ordered_maps.ads:1279, in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:91:06: info: when establishing invariant on Aggr_Capacity at spark-containers-formal-ordered_maps.ads:1279, in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:91:06: info: when establishing invariant on Aggr_Capacity at spark-containers-formal-ordered_maps.ads:1282, in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:91:06: info: when establishing invariant on Aggr_Capacity at spark-containers-formal-ordered_maps.ads:1282, in instantiation at test_omaps.ads:8
 spark-containers-formal-ordered_maps.ads:91:06: info: when establishing invariant on Has_Key at spark-containers-functional-maps.ads:131, in instantiation at spark-containers-formal-ordered_maps.ads:166, in instantiation at test_omaps.ads:11
 spark-containers-formal-ordered_maps.ads:91:06: info: when establishing invariant on Has_Key at spark-containers-functional-maps.ads:131, in instantiation at spark-containers-formal-ordered_maps.ads:166, in instantiation at test_omaps.ads:8
 spark-containers-formal-ordered_maps.ads:91:06: info: when establishing invariant on Length at spark-containers-functional-maps.ads:178, in instantiation at spark-containers-formal-ordered_maps.ads:166, in instantiation at test_omaps.ads:11
 spark-containers-formal-ordered_maps.ads:91:06: info: when establishing invariant on Length at spark-containers-functional-maps.ads:178, in instantiation at spark-containers-formal-ordered_maps.ads:166, in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:91:06: info: when reestablishing invariant on Aggr_Capacity at spark-containers-formal-ordered_maps.ads:1279, in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:91:06: info: when reestablishing invariant on Aggr_Capacity at spark-containers-formal-ordered_maps.ads:1279, in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:91:06: info: when reestablishing invariant on Aggr_Capacity at spark-containers-formal-ordered_maps.ads:1282, in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:91:06: info: when reestablishing invariant on Aggr_Capacity at spark-containers-formal-ordered_maps.ads:1282, in instantiation at test_omaps.ads:8
 spark-containers-formal-ordered_maps.ads:91:06: info: when reestablishing invariant on Get at spark-containers-functional-maps.ads:148, in instantiation at spark-containers-formal-ordered_maps.ads:166, in instantiation at test_omaps.ads:11
 spark-containers-formal-ordered_maps.ads:91:06: info: when reestablishing invariant on Get at spark-containers-functional-maps.ads:148, in instantiation at spark-containers-formal-ordered_maps.ads:166, in instantiation at test_omaps.ads:8
 spark-containers-formal-ordered_maps.ads:91:06: info: when reestablishing invariant on Has_Key at spark-containers-functional-maps.ads:131, in instantiation at spark-containers-formal-ordered_maps.ads:166, in instantiation at test_omaps.ads:11
@@ -79,46 +79,46 @@ spark-containers-formal-ordered_maps.ads:1032:43: info: precondition proved (Z3:
 spark-containers-formal-ordered_maps.ads:1032:43: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
 spark-containers-formal-ordered_maps.ads:1040:21: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
 spark-containers-formal-ordered_maps.ads:1040:21: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:1054:13: info: during checks for quantification at spark-containers-formal-ordered_maps.ads:82, in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:1054:13: info: during checks for quantification at spark-containers-formal-ordered_maps.ads:82, in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:1054:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:1054:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:1121:13: info: during checks for quantification at spark-containers-formal-ordered_maps.ads:82, in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:1121:13: info: during checks for quantification at spark-containers-formal-ordered_maps.ads:82, in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:1121:13: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:1121:13: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:1130:21: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:1130:21: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:1148:21: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:1148:21: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:1166:21: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:1166:21: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:1183:21: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:1183:21: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:1228:49: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:1228:49: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:1247:43: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:1247:43: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:1267:13: info: during checks for quantification at spark-containers-formal-ordered_maps.ads:82, in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:1267:13: info: during checks for quantification at spark-containers-formal-ordered_maps.ads:82, in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:1267:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:1267:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:1279:13: info: implicit aspect Always_Terminates on "Aggr_Capacity" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:1279:13: info: implicit aspect Always_Terminates on "Aggr_Capacity" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:1283:06: info: data dependencies proved, in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:1283:06: info: data dependencies proved, in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:1287:13: info: implicit aspect Always_Terminates on "Aggr_Model" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:1287:13: info: implicit aspect Always_Terminates on "Aggr_Model" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:1291:06: info: data dependencies proved, in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:1291:06: info: data dependencies proved, in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:1295:13: info: during checks for quantification at spark-containers-formal-ordered_maps.ads:82, in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:1295:13: info: during checks for quantification at spark-containers-formal-ordered_maps.ads:82, in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:1295:13: info: implicit aspect Always_Terminates on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:1295:13: info: implicit aspect Always_Terminates on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:1295:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:1295:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:1299:06: info: data dependencies proved, in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:1299:06: info: data dependencies proved, in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:1057:13: info: during checks for quantification at spark-containers-formal-ordered_maps.ads:82, in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:1057:13: info: during checks for quantification at spark-containers-formal-ordered_maps.ads:82, in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:1057:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:1057:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:1124:13: info: during checks for quantification at spark-containers-formal-ordered_maps.ads:82, in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:1124:13: info: during checks for quantification at spark-containers-formal-ordered_maps.ads:82, in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:1124:13: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:1124:13: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:1133:21: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:1133:21: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:1151:21: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:1151:21: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:1169:21: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:1169:21: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:1186:21: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:1186:21: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:1231:49: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:1231:49: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:1250:43: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:1250:43: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:1270:13: info: during checks for quantification at spark-containers-formal-ordered_maps.ads:82, in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:1270:13: info: during checks for quantification at spark-containers-formal-ordered_maps.ads:82, in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:1270:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:1270:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:1282:13: info: implicit aspect Always_Terminates on "Aggr_Capacity" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:1282:13: info: implicit aspect Always_Terminates on "Aggr_Capacity" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:1286:06: info: data dependencies proved, in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:1286:06: info: data dependencies proved, in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:1290:13: info: implicit aspect Always_Terminates on "Aggr_Model" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:1290:13: info: implicit aspect Always_Terminates on "Aggr_Model" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:1294:06: info: data dependencies proved, in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:1294:06: info: data dependencies proved, in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:1298:13: info: during checks for quantification at spark-containers-formal-ordered_maps.ads:82, in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:1298:13: info: during checks for quantification at spark-containers-formal-ordered_maps.ads:82, in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:1298:13: info: implicit aspect Always_Terminates on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:1298:13: info: implicit aspect Always_Terminates on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:1298:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:1298:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:1302:06: info: data dependencies proved, in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:1302:06: info: data dependencies proved, in instantiation at test_omaps.ads:8
 spark-containers-formal-unbounded_ordered_maps.ads:32:16: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:21
 spark-containers-formal-unbounded_ordered_maps.ads:35:16: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:21
 spark-containers-formal-unbounded_ordered_maps.ads:38:16: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:21
@@ -182,46 +182,46 @@ spark-containers-formal-unbounded_ordered_maps.ads:1016:43: info: precondition p
 spark-containers-formal-unbounded_ordered_maps.ads:1016:43: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
 spark-containers-formal-unbounded_ordered_maps.ads:1024:21: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
 spark-containers-formal-unbounded_ordered_maps.ads:1024:21: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
-spark-containers-formal-unbounded_ordered_maps.ads:1038:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_maps.ads:80, in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:1038:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_maps.ads:80, in instantiation at test_omaps.ads:24
-spark-containers-formal-unbounded_ordered_maps.ads:1038:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:1038:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_omaps.ads:24
-spark-containers-formal-unbounded_ordered_maps.ads:1105:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_maps.ads:80, in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:1105:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_maps.ads:80, in instantiation at test_omaps.ads:24
-spark-containers-formal-unbounded_ordered_maps.ads:1105:13: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:1105:13: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
-spark-containers-formal-unbounded_ordered_maps.ads:1114:21: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:1114:21: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
-spark-containers-formal-unbounded_ordered_maps.ads:1132:21: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:1132:21: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
-spark-containers-formal-unbounded_ordered_maps.ads:1150:21: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:1150:21: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
-spark-containers-formal-unbounded_ordered_maps.ads:1167:21: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:1167:21: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
-spark-containers-formal-unbounded_ordered_maps.ads:1213:49: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:1213:49: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
-spark-containers-formal-unbounded_ordered_maps.ads:1232:43: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:1232:43: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
-spark-containers-formal-unbounded_ordered_maps.ads:1252:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_maps.ads:80, in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:1252:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_maps.ads:80, in instantiation at test_omaps.ads:24
-spark-containers-formal-unbounded_ordered_maps.ads:1252:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:1252:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_omaps.ads:24
-spark-containers-formal-unbounded_ordered_maps.ads:1264:13: info: implicit aspect Always_Terminates on "Aggr_Capacity" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:1264:13: info: implicit aspect Always_Terminates on "Aggr_Capacity" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:24
-spark-containers-formal-unbounded_ordered_maps.ads:1268:06: info: data dependencies proved, in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:1268:06: info: data dependencies proved, in instantiation at test_omaps.ads:24
-spark-containers-formal-unbounded_ordered_maps.ads:1272:13: info: implicit aspect Always_Terminates on "Aggr_Model" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:1272:13: info: implicit aspect Always_Terminates on "Aggr_Model" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:24
-spark-containers-formal-unbounded_ordered_maps.ads:1276:06: info: data dependencies proved, in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:1276:06: info: data dependencies proved, in instantiation at test_omaps.ads:24
-spark-containers-formal-unbounded_ordered_maps.ads:1280:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_maps.ads:80, in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:1280:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_maps.ads:80, in instantiation at test_omaps.ads:24
-spark-containers-formal-unbounded_ordered_maps.ads:1280:13: info: implicit aspect Always_Terminates on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:1280:13: info: implicit aspect Always_Terminates on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:24
-spark-containers-formal-unbounded_ordered_maps.ads:1280:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:1280:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_omaps.ads:24
-spark-containers-formal-unbounded_ordered_maps.ads:1284:06: info: data dependencies proved, in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:1284:06: info: data dependencies proved, in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:1041:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_maps.ads:80, in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:1041:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_maps.ads:80, in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:1041:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:1041:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:1108:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_maps.ads:80, in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:1108:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_maps.ads:80, in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:1108:13: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:1108:13: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:1117:21: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:1117:21: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:1135:21: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:1135:21: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:1153:21: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:1153:21: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:1170:21: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:1170:21: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:1216:49: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:1216:49: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:1235:43: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:1235:43: info: precondition proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:1255:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_maps.ads:80, in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:1255:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_maps.ads:80, in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:1255:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:1255:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:1267:13: info: implicit aspect Always_Terminates on "Aggr_Capacity" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:1267:13: info: implicit aspect Always_Terminates on "Aggr_Capacity" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:1271:06: info: data dependencies proved, in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:1271:06: info: data dependencies proved, in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:1275:13: info: implicit aspect Always_Terminates on "Aggr_Model" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:1275:13: info: implicit aspect Always_Terminates on "Aggr_Model" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:1279:06: info: data dependencies proved, in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:1279:06: info: data dependencies proved, in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:1283:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_maps.ads:80, in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:1283:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_maps.ads:80, in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:1283:13: info: implicit aspect Always_Terminates on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:1283:13: info: implicit aspect Always_Terminates on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:1283:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:1283:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_omaps.ads:24
+spark-containers-formal-unbounded_ordered_maps.ads:1287:06: info: data dependencies proved, in instantiation at test_omaps.ads:21
+spark-containers-formal-unbounded_ordered_maps.ads:1287:06: info: data dependencies proved, in instantiation at test_omaps.ads:24
 spark-containers-functional-maps.ads:36:16: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:275, in instantiation at test_omaps.ads:11
 spark-containers-functional-maps.ads:36:16: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:275, in instantiation at test_omaps.ads:8
 spark-containers-functional-maps.ads:36:16: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:267, in instantiation at test_omaps.ads:21
@@ -1026,8 +1026,8 @@ spark-containers-parameter_checks.ads:46:36: info: postcondition proved (Z3: 1 V
 spark-containers-parameter_checks.ads:46:36: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-ordered_maps.ads:191, in instantiation at test_omaps.ads:8
 spark-containers-parameter_checks.ads:46:36: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:183, in instantiation at test_omaps.ads:21
 spark-containers-parameter_checks.ads:46:36: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:183, in instantiation at test_omaps.ads:24
-spark-containers-parameter_checks.ads:46:36: medium: postcondition might fail, in instantiation at spark-containers-formal-ordered_maps.ads:127, in instantiation at test_omaps.ads:8 [possible fix: you should consider adding a postcondition to operator "=" or turning it into an expression function in its unit spec]
-spark-containers-parameter_checks.ads:46:36: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:119, in instantiation at test_omaps.ads:21 [possible fix: you should consider adding a postcondition to operator "=" or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:46:36: medium: postcondition might fail, in instantiation at spark-containers-formal-ordered_maps.ads:127, in instantiation at test_omaps.ads:8 [possible fix: you should consider adding a postcondition to operator "=" or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
+spark-containers-parameter_checks.ads:46:36: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:119, in instantiation at test_omaps.ads:21 [possible fix: you should consider adding a postcondition to operator "=" or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 spark-containers-parameter_checks.ads:48:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:127, in instantiation at test_omaps.ads:11
 spark-containers-parameter_checks.ads:48:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:127, in instantiation at test_omaps.ads:8
 spark-containers-parameter_checks.ads:48:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:119, in instantiation at test_omaps.ads:21
@@ -1098,8 +1098,8 @@ spark-containers-parameter_checks.ads:49:54: info: postcondition proved (Z3: 1 V
 spark-containers-parameter_checks.ads:49:54: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-ordered_maps.ads:191, in instantiation at test_omaps.ads:8
 spark-containers-parameter_checks.ads:49:54: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:183, in instantiation at test_omaps.ads:21
 spark-containers-parameter_checks.ads:49:54: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:183, in instantiation at test_omaps.ads:24
-spark-containers-parameter_checks.ads:49:54: medium: postcondition might fail, in instantiation at spark-containers-formal-ordered_maps.ads:127, in instantiation at test_omaps.ads:8 [possible fix: you should consider adding a postcondition to operator "=" or turning it into an expression function in its unit spec]
-spark-containers-parameter_checks.ads:49:54: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:119, in instantiation at test_omaps.ads:21 [possible fix: you should consider adding a postcondition to operator "=" or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:49:54: medium: postcondition might fail, in instantiation at spark-containers-formal-ordered_maps.ads:127, in instantiation at test_omaps.ads:8 [possible fix: you should consider adding a postcondition to operator "=" or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
+spark-containers-parameter_checks.ads:49:54: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:119, in instantiation at test_omaps.ads:21 [possible fix: you should consider adding a postcondition to operator "=" or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 spark-containers-parameter_checks.ads:51:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:127, in instantiation at test_omaps.ads:11
 spark-containers-parameter_checks.ads:51:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:127, in instantiation at test_omaps.ads:8
 spark-containers-parameter_checks.ads:51:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:119, in instantiation at test_omaps.ads:21
@@ -1170,8 +1170,8 @@ spark-containers-parameter_checks.ads:52:68: info: postcondition proved (Z3: 1 V
 spark-containers-parameter_checks.ads:52:68: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-ordered_maps.ads:191, in instantiation at test_omaps.ads:8
 spark-containers-parameter_checks.ads:52:68: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:183, in instantiation at test_omaps.ads:21
 spark-containers-parameter_checks.ads:52:68: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:183, in instantiation at test_omaps.ads:24
-spark-containers-parameter_checks.ads:52:68: medium: postcondition might fail, in instantiation at spark-containers-formal-ordered_maps.ads:127, in instantiation at test_omaps.ads:8 [possible fix: you should consider adding a postcondition to operator "=" or turning it into an expression function in its unit spec]
-spark-containers-parameter_checks.ads:52:68: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:119, in instantiation at test_omaps.ads:21 [possible fix: you should consider adding a postcondition to operator "=" or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:52:68: medium: postcondition might fail, in instantiation at spark-containers-formal-ordered_maps.ads:127, in instantiation at test_omaps.ads:8 [possible fix: you should consider adding a postcondition to operator "=" or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
+spark-containers-parameter_checks.ads:52:68: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:119, in instantiation at test_omaps.ads:21 [possible fix: you should consider adding a postcondition to operator "=" or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 spark-containers-parameter_checks.ads:57:17: info: aspect Always_Terminates on "Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:127, in instantiation at test_omaps.ads:11
 spark-containers-parameter_checks.ads:57:17: info: aspect Always_Terminates on "Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:127, in instantiation at test_omaps.ads:8
 spark-containers-parameter_checks.ads:57:17: info: aspect Always_Terminates on "Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:119, in instantiation at test_omaps.ads:21
@@ -1430,8 +1430,8 @@ spark-containers-parameter_checks.ads:162:12: info: data dependencies proved, in
 spark-containers-parameter_checks.ads:162:12: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:135, in instantiation at test_omaps.ads:24
 spark-containers-parameter_checks.ads:162:36: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:143, in instantiation at test_omaps.ads:11
 spark-containers-parameter_checks.ads:162:36: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:135, in instantiation at test_omaps.ads:24
-spark-containers-parameter_checks.ads:162:36: medium: postcondition might fail, in instantiation at spark-containers-formal-ordered_maps.ads:143, in instantiation at test_omaps.ads:8 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec]
-spark-containers-parameter_checks.ads:162:36: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:135, in instantiation at test_omaps.ads:21 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:162:36: medium: postcondition might fail, in instantiation at spark-containers-formal-ordered_maps.ads:143, in instantiation at test_omaps.ads:8 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
+spark-containers-parameter_checks.ads:162:36: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:135, in instantiation at test_omaps.ads:21 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 spark-containers-parameter_checks.ads:164:17: info: aspect Always_Terminates on "Lt_Asymmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:143, in instantiation at test_omaps.ads:11
 spark-containers-parameter_checks.ads:164:17: info: aspect Always_Terminates on "Lt_Asymmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:143, in instantiation at test_omaps.ads:8
 spark-containers-parameter_checks.ads:164:17: info: aspect Always_Terminates on "Lt_Asymmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:135, in instantiation at test_omaps.ads:21
@@ -1442,8 +1442,8 @@ spark-containers-parameter_checks.ads:165:12: info: data dependencies proved, in
 spark-containers-parameter_checks.ads:165:12: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:135, in instantiation at test_omaps.ads:24
 spark-containers-parameter_checks.ads:165:50: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:143, in instantiation at test_omaps.ads:11
 spark-containers-parameter_checks.ads:165:50: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:135, in instantiation at test_omaps.ads:24
-spark-containers-parameter_checks.ads:165:50: medium: postcondition might fail, in instantiation at spark-containers-formal-ordered_maps.ads:143, in instantiation at test_omaps.ads:8 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec]
-spark-containers-parameter_checks.ads:165:50: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:135, in instantiation at test_omaps.ads:21 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:165:50: medium: postcondition might fail, in instantiation at spark-containers-formal-ordered_maps.ads:143, in instantiation at test_omaps.ads:8 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
+spark-containers-parameter_checks.ads:165:50: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:135, in instantiation at test_omaps.ads:21 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 spark-containers-parameter_checks.ads:167:17: info: aspect Always_Terminates on "Lt_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:143, in instantiation at test_omaps.ads:11
 spark-containers-parameter_checks.ads:167:17: info: aspect Always_Terminates on "Lt_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:143, in instantiation at test_omaps.ads:8
 spark-containers-parameter_checks.ads:167:17: info: aspect Always_Terminates on "Lt_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:135, in instantiation at test_omaps.ads:21
@@ -1454,8 +1454,8 @@ spark-containers-parameter_checks.ads:168:12: info: data dependencies proved, in
 spark-containers-parameter_checks.ads:168:12: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:135, in instantiation at test_omaps.ads:24
 spark-containers-parameter_checks.ads:168:60: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:143, in instantiation at test_omaps.ads:11
 spark-containers-parameter_checks.ads:168:60: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:135, in instantiation at test_omaps.ads:24
-spark-containers-parameter_checks.ads:168:60: medium: postcondition might fail, in instantiation at spark-containers-formal-ordered_maps.ads:143, in instantiation at test_omaps.ads:8 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec]
-spark-containers-parameter_checks.ads:168:60: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:135, in instantiation at test_omaps.ads:21 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:168:60: medium: postcondition might fail, in instantiation at spark-containers-formal-ordered_maps.ads:143, in instantiation at test_omaps.ads:8 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
+spark-containers-parameter_checks.ads:168:60: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:135, in instantiation at test_omaps.ads:21 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 spark-containers-parameter_checks.ads:170:17: info: aspect Always_Terminates on "Lt_Order" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:143, in instantiation at test_omaps.ads:11
 spark-containers-parameter_checks.ads:170:17: info: aspect Always_Terminates on "Lt_Order" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:143, in instantiation at test_omaps.ads:8
 spark-containers-parameter_checks.ads:170:17: info: aspect Always_Terminates on "Lt_Order" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:135, in instantiation at test_omaps.ads:21
@@ -1466,8 +1466,8 @@ spark-containers-parameter_checks.ads:171:12: info: data dependencies proved, in
 spark-containers-parameter_checks.ads:171:12: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:135, in instantiation at test_omaps.ads:24
 spark-containers-parameter_checks.ads:171:50: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-ordered_maps.ads:143, in instantiation at test_omaps.ads:11
 spark-containers-parameter_checks.ads:171:50: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:135, in instantiation at test_omaps.ads:24
-spark-containers-parameter_checks.ads:171:50: medium: postcondition might fail, in instantiation at spark-containers-formal-ordered_maps.ads:143, in instantiation at test_omaps.ads:8 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec]
-spark-containers-parameter_checks.ads:171:50: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:135, in instantiation at test_omaps.ads:21 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:171:50: medium: postcondition might fail, in instantiation at spark-containers-formal-ordered_maps.ads:143, in instantiation at test_omaps.ads:8 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
+spark-containers-parameter_checks.ads:171:50: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:135, in instantiation at test_omaps.ads:21 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 spark-containers-parameter_checks.ads:177:16: info: implicit aspect Always_Terminates on "Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:143, in instantiation at test_omaps.ads:11
 spark-containers-parameter_checks.ads:177:16: info: implicit aspect Always_Terminates on "Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_maps.ads:143, in instantiation at test_omaps.ads:8
 spark-containers-parameter_checks.ads:177:16: info: implicit aspect Always_Terminates on "Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:135, in instantiation at test_omaps.ads:21
