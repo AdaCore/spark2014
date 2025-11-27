@@ -1,0 +1,12 @@
+test.adb:8:13: info: types in unchecked conversion have the same size (Trivial)
+test.adb:8:13: warning: imprecise handling of Unchecked_Conversion (type with No_Bitwise_Operations annotation) [imprecise-unchecked-conversion]
+test.adb:8:57: info: type is suitable as source for unchecked conversion (Trivial)
+test.adb:8:64: info: type is suitable for unchecked conversion (Trivial)
+test.adb:10:13: info: types in unchecked conversion have the same size (Trivial)
+test.adb:10:13: warning: imprecise handling of Unchecked_Conversion (type with No_Bitwise_Operations annotation) [imprecise-unchecked-conversion]
+test.adb:10:57: info: type is suitable as source for unchecked conversion (Trivial)
+test.adb:10:64: info: type is suitable for unchecked conversion (Trivial)
+test.adb:12:04: warning: analyzing unreferenced procedure "Test" [unreferenced-procedure]
+test.adb:12:14: warning: subprogram "Test" has no effect
+test.adb:14:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
+test.adb:15:22: info: assertion proved (CVC5: 1 VC)

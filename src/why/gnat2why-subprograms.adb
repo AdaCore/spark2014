@@ -37,7 +37,6 @@ with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Flow_Refinement;                use Flow_Refinement;
 with Flow_Utility;                   use Flow_Utility;
 with GNAT.Source_Info;
-with Gnat2Why.Data_Decomposition;    use Gnat2Why.Data_Decomposition;
 with Gnat2Why.Error_Messages;        use Gnat2Why.Error_Messages;
 with Gnat2Why.Expr;                  use Gnat2Why.Expr;
 with Gnat2Why_Opts;                  use Gnat2Why_Opts;
@@ -3357,21 +3356,24 @@ package body Gnat2Why.Subprograms is
    begin
       if Is_Unchecked_Conversion_Instance (E) then
          declare
-            Precise_UC               : constant True_Or_Explain :=
-              Is_UC_With_Precise_Definition (E);
+            Precise_UC               : True_Or_Explain;
             Source, Target           : Node_Id;
             Source_Type, Target_Type : Entity_Id;
-            Arg                      : constant W_Identifier_Id :=
-              Logic_Why_Binders (1).B_Name;
          begin
             Get_Unchecked_Conversion_Args (E, Source, Target);
             Source_Type := Retysp (Entity (Source));
             Target_Type := Retysp (Entity (Target));
 
+            Create_Module_For_UC_If_Needed
+              (Source_Type, Target_Type, Is_Potentially_Invalid (E));
+
+            Precise_UC :=
+              Is_UC_With_Precise_Definition
+                (Source_Type, Target_Type, Is_Potentially_Invalid (E));
+
+            --  Output information on reason for imprecise handling of UC.
+
             if not Precise_UC.Ok then
-
-               --  Output information on reason for imprecise handling of UC.
-
                Warning_Msg_N
                  (Warn_Imprecise_UC,
                   E,
@@ -3379,37 +3381,15 @@ package body Gnat2Why.Subprograms is
                     Create_N
                       (Warn_Imprecise_UC,
                        Names => [To_String (Precise_UC.Explanation)]));
-
-               Def := Why_Empty;
-
-            elsif Is_Scalar_Type (Source_Type)
-              and then Is_Scalar_Type (Target_Type)
-            then
-               Def :=
-                 Precise_Integer_UC
-                   (Arg                 => +Arg,
-                    Size                =>
-                      Get_Attribute_Value (Source_Type, Attribute_Size),
-                    Source_Type         => Type_Of_Node (Source_Type),
-                    Target_Type         => Type_Of_Node (Target_Type),
-                    Source_Status       => Get_Scalar_Status (Source_Type),
-                    Target_Status       => Get_Scalar_Status (Target_Type),
-                    Potentially_Invalid => Is_Potentially_Invalid (E),
-                    Ada_Target          => Target_Type);
-
-            --  At least one of Source or Target is a composite type made up
-            --  of integers. Convert Source to a large-enough modular type,
-            --  and convert that value to Target. If all types involved are
-            --  modular, then this benefits from bitvector support in provers.
-
-            else
-               Def :=
-                 Precise_Composite_UC
-                   (Arg                 => +Arg,
-                    Source_Type         => Source_Type,
-                    Target_Type         => Target_Type,
-                    Potentially_Invalid => Is_Potentially_Invalid (E));
             end if;
+
+            Def :=
+              New_Call
+                (Name    =>
+                   Get_UC_Function
+                     (Source_Type, Target_Type, Is_Potentially_Invalid (E)),
+                 Binders => Logic_Why_Binders,
+                 Typ     => Why_Type);
          end;
 
       else

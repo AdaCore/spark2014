@@ -24,23 +24,33 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Doubly_Linked_Lists;
+with Common_Containers;           use Common_Containers;
+with GNAT.Source_Info;
+with Gnat2Why.Expr;               use Gnat2Why.Expr;
+with GNATCOLL.Symbols;            use GNATCOLL.Symbols;
 with Gnat2Why.Data_Decomposition; use Gnat2Why.Data_Decomposition;
 with Gnat2Why.Tables;             use Gnat2Why.Tables;
 with Gnat2Why.Util;               use Gnat2Why.Util;
+with Namet;                       use Namet;
+with Sinput;                      use Sinput;
 with Snames;                      use Snames;
 with SPARK_Definition;            use SPARK_Definition;
 with SPARK_Definition.Annotate;   use SPARK_Definition.Annotate;
-with SPARK_Util.Subprograms;      use SPARK_Util.Subprograms;
 with SPARK_Util.Types;            use SPARK_Util.Types;
+with String_Utils;                use String_Utils;
 with Ttypes;
+with Why.Atree.Accessors;         use Why.Atree.Accessors;
 with Why.Atree.Builders;          use Why.Atree.Builders;
 with Why.Atree.Modules;           use Why.Atree.Modules;
 with Why.Conversions;             use Why.Conversions;
 with Why.Gen.Arrays;              use Why.Gen.Arrays;
+with Why.Gen.Binders;             use Why.Gen.Binders;
+with Why.Gen.Decl;                use Why.Gen.Decl;
 with Why.Gen.Expr;                use Why.Gen.Expr;
 with Why.Gen.Names;               use Why.Gen.Names;
 with Why.Gen.Records;             use Why.Gen.Records;
 with Why.Gen.Terms;               use Why.Gen.Terms;
+with Why.Images;                  use Why.Images;
 with Why.Inter;                   use Why.Inter;
 with Why.Sinfo;                   use Why.Sinfo;
 with Why.Types;                   use Why.Types;
@@ -87,6 +97,97 @@ package body Gnat2Why.Unchecked_Conversion is
             Typ  => EW_Bool_Type));
    --  Return a term checking whether Value is in Range_Ty
 
+   function Get_UC_Theory_Name
+     (Source_Type, Target_Type : Type_Kind_Id; Potentially_Invalid : Boolean)
+      return Symbol;
+   --  Return a name of the form
+   --  "Uc___Source_Type___Target_Type(___potentially_invalid)?"
+   --  for the theory for unchecked conversions from Source_Type to
+   --  Target_Type.
+
+   type Scalar_Status is
+     (Signed,    --  Signed integer type
+      Unsigned,  --  Unsigned integer type = signed with no negative value,
+      --  also used for enumerations with default representation
+      --  clauses.
+      Modular);  --  Modular integer type
+
+   function Get_Scalar_Status (Typ : Type_Kind_Id) return Scalar_Status
+   is (if Is_Modular_Integer_Type (Typ)
+       then Modular
+       elsif Is_Enumeration_Type (Typ)
+       then Unsigned
+       elsif Is_Unsigned_Type (Typ)
+       then Unsigned
+       elsif Is_Signed_Integer_Type (Typ)
+       then Signed
+       else raise Program_Error);
+
+   function Precise_Integer_UC
+     (Arg                 : W_Term_Id;
+      Size                : Uint;
+      Source_Type         : W_Type_Id;
+      Target_Type         : W_Type_Id;
+      Source_Status       : Scalar_Status;
+      Target_Status       : Scalar_Status;
+      Potentially_Invalid : Boolean := False;
+      Ada_Target          : Type_Kind_Id := Empty) return W_Term_Id
+   with Pre => (if Potentially_Invalid then Present (Ada_Target));
+   --  Return Arg of Source_Type converted to Target_Type, when both are of
+   --  scalar types. Size is the shared size of both types, when arguments of
+   --  the UC are integer types, which is used for conversion from an
+   --  Unsigned type to a Signed one. Otherwise it is No_Uint.
+   --  If Potentially_Invalid is True, wrap the result in a validity wrapper.
+   --  The validity flag is set to True iff the return value is in the bounds
+   --  of the return type of Ada_Target.
+
+   function Precise_Composite_UC
+     (Arg                 : W_Term_Id;
+      Source_Type         : Type_Kind_Id;
+      Target_Type         : Type_Kind_Id;
+      Potentially_Invalid : Boolean) return W_Term_Id;
+   --  Return Arg of Source_Type converted to Target_Type, when at least one
+   --  is a composite type made up of integers. Convert Arg to a large-enough
+   --  modular type, and convert that value to Target. If all types involved
+   --  are modular, then this benefits from bitvector support in provers.
+   --  If Potentially_Invalid is True, wrap it in a validity wrapper. The
+   --  validity flag is set to True iff all scalar subcomponents of the return
+   --  value are in the bounds of their subtype.
+
+   ------------------------
+   -- Get_UC_Theory_Name --
+   ------------------------
+
+   function Get_UC_Function
+     (Source_Type, Target_Type : Type_Kind_Id; Potentially_Invalid : Boolean)
+      return W_Identifier_Id
+   is (M_UCs
+         (Get_UC_Theory_Name (Source_Type, Target_Type, Potentially_Invalid))
+         .UC_Id);
+
+   ------------------------
+   -- Get_UC_Theory_Name --
+   ------------------------
+
+   function Get_UC_Theory_Name
+     (Source_Type, Target_Type : Type_Kind_Id; Potentially_Invalid : Boolean)
+      return Symbol
+   is
+      Name : Unbounded_String :=
+        To_Unbounded_String (To_String (WNE_UC_Prefix));
+   begin
+      Name :=
+        Name & "___" & Capitalize_First (Full_Name (Retysp (Source_Type)));
+      Name :=
+        Name & "___" & Capitalize_First (Full_Name (Retysp (Target_Type)));
+
+      if Potentially_Invalid then
+         Name := Name & To_String (WNE_Potentially_Invalid_Suffix);
+      end if;
+
+      return NID (To_String (Name));
+   end Get_UC_Theory_Name;
+
    -----------------------------
    -- Have_Same_Known_RM_Size --
    -----------------------------
@@ -128,19 +229,14 @@ package body Gnat2Why.Unchecked_Conversion is
    -----------------------------------
 
    function Is_UC_With_Precise_Definition
-     (E : Entity_Id) return True_Or_Explain
+     (Source_Type, Target_Type : Type_Kind_Id; Potentially_Invalid : Boolean)
+      return True_Or_Explain
    is
-      Source, Target                         : Node_Id;
-      Source_Type, Target_Type               : Entity_Id;
       Valid_Source, Valid_Target, Valid_Size : Boolean;
       Explanation                            : Unbounded_String;
       Check                                  : True_Or_Explain;
 
    begin
-      Get_Unchecked_Conversion_Args (E, Source, Target);
-      Source_Type := Retysp (Entity (Source));
-      Target_Type := Retysp (Entity (Target));
-
       --  Check that types are suitable for UC.
 
       Suitable_For_UC_Source (Source_Type, Valid_Source, Explanation);
@@ -155,7 +251,7 @@ package body Gnat2Why.Unchecked_Conversion is
         (Target_Type,
          Valid_Target,
          Explanation,
-         Check_Validity => not Is_Potentially_Invalid (E));
+         Check_Validity => not Potentially_Invalid);
 
       if not Valid_Target then
          --  Override explanation to avoid special characters
@@ -1278,6 +1374,292 @@ package body Gnat2Why.Unchecked_Conversion is
       Result := True;
       Explanation := Null_Unbounded_String;
    end Compute_Size_Of_Components;
+
+   ------------------------------------
+   -- Create_Module_For_UC_If_Needed --
+   ------------------------------------
+
+   procedure Create_Module_For_UC_If_Needed
+     (Source_Type, Target_Type : Type_Kind_Id; Potentially_Invalid : Boolean)
+   is
+
+      procedure Generate_Inversion_Axiom
+        (Source_Type, Target_Type : Type_Kind_Id;
+         Module                   : M_UC_Type;
+         Inv_Fun                  : W_Identifier_Id);
+      --  Create a module for the inversion axiom of the unchecked conversion
+      --  function in Module.
+
+      function Inversion_Axiom_OK
+        (Source_Type, Target_Type : Type_Kind_Id) return Boolean;
+      --  Return True if it is safe to generate the inversion axiom for the
+      --  conversion. It is only the case if both directions are valid UCs.
+
+      ------------------------------
+      -- Generate_Inversion_Axiom --
+      ------------------------------
+
+      procedure Generate_Inversion_Axiom
+        (Source_Type, Target_Type : Type_Kind_Id;
+         Module                   : M_UC_Type;
+         Inv_Fun                  : W_Identifier_Id)
+      is
+         Axiom_Module : constant W_Module_Id :=
+           New_Module
+             (File => No_Symbol,
+              Name =>
+                NID
+                  (Img (Get_Name (Module.Module))
+                   & To_String (WNE_Axiom_Suffix)));
+         Th           : Theory_UC :=
+           Open_Theory
+             (WF_Context,
+              Axiom_Module,
+              Comment =>
+                "Module for the inversion axiom of Unchecked_Conversion "
+                & "function from """
+                & Get_Name_String (Chars (Source_Type))
+                & """"
+                & (if Sloc (Source_Type) > 0
+                   then
+                     " defined at "
+                     & Build_Location_String (Sloc (Source_Type))
+                   else "")
+                & "to """
+                & Get_Name_String (Chars (Target_Type))
+                & """"
+                & (if Sloc (Target_Type) > 0
+                   then
+                     " defined at "
+                     & Build_Location_String (Sloc (Target_Type))
+                   else "")
+                & ", created in "
+                & GNAT.Source_Info.Enclosing_Entity);
+         Source_Id    : constant W_Identifier_Id :=
+           New_Temp_Identifier
+             (Base_Name => "source", Typ => Type_Of_Node (Source_Type));
+         UC_Call      : constant W_Term_Id :=
+           New_Call
+             (Name => Module.UC_Id,
+              Args => (1 => +Source_Id),
+              Typ  => Get_Typ (Module.UC_Id));
+
+      begin
+         --  Generate:
+         --
+         --    forall source : source_type [uc_id source].
+         --      dynamic_invariant source ->
+         --        inv_fun (uc_id source) = source
+
+         Emit
+           (Th,
+            New_Guarded_Axiom
+              (Name     => NID ("inversion_axiom"),
+               Binders  =>
+                 Binder_Array'(1 => (B_Name => Source_Id, others => <>)),
+               Triggers =>
+                 New_Triggers
+                   (Triggers => (1 => New_Trigger (Terms => (1 => +UC_Call)))),
+               Pre      =>
+                 Compute_Dynamic_Invariant
+                   (Expr   => +Source_Id,
+                    Ty     => Source_Type,
+                    Params => Logic_Params),
+               Def      =>
+                 New_Comparison
+                   (Symbol => Why_Eq,
+                    Left   =>
+                      New_Call
+                        (Name => Inv_Fun,
+                         Args => (1 => +UC_Call),
+                         Typ  => Get_Typ (Inv_Fun)),
+                    Right  => +Source_Id),
+               Dep      =>
+                 New_Axiom_Dep (Name => Module.UC_Id, Kind => EW_Axdep_Func)));
+
+         Close_Theory (Th, Kind => Definition_Theory);
+         Record_Extra_Dependency
+           (Defining_Module => Module.Module, Axiom_Module => Th.Module);
+      end Generate_Inversion_Axiom;
+
+      ------------------------
+      -- Inversion_Axiom_OK --
+      ------------------------
+
+      function Inversion_Axiom_OK
+        (Source_Type, Target_Type : Type_Kind_Id) return Boolean
+      is
+         Valid       : Boolean;
+         Explanation : Unbounded_String;
+
+      begin
+         Suitable_For_UC_Source (Source_Type, Valid, Explanation);
+         if not Valid then
+            return False;
+         end if;
+
+         Suitable_For_UC_Target_UC_Wrap (Source_Type, Valid, Explanation);
+
+         if not Valid then
+            return False;
+         end if;
+
+         Suitable_For_UC_Source (Target_Type, Valid, Explanation);
+         if not Valid then
+            return False;
+         end if;
+
+         Suitable_For_UC_Target_UC_Wrap (Target_Type, Valid, Explanation);
+
+         if not Valid then
+            return False;
+         end if;
+
+         Have_Same_Known_RM_Size
+           (Source_Type, Target_Type, Valid, Explanation);
+         return Valid;
+      end Inversion_Axiom_OK;
+
+      Precise_UC  : constant True_Or_Explain :=
+        Is_UC_With_Precise_Definition
+          (Source_Type, Target_Type, Potentially_Invalid);
+      Module_Name : constant Symbol :=
+        Get_UC_Theory_Name (Source_Type, Target_Type, Potentially_Invalid);
+
+   begin
+      if M_UCs.Contains (Module_Name) then
+         return;
+      end if;
+
+      declare
+         UC_Module : constant W_Module_Id :=
+           New_Module (File => No_Symbol, Name => Module_Name);
+         UC_Id     : constant W_Identifier_Id :=
+           New_Identifier
+             (Symb   => NID (To_String (WNE_UC_Function)),
+              Module => UC_Module,
+              Domain => EW_Term,
+              Typ    => Type_Of_Node (Target_Type));
+         Source_Id : constant W_Identifier_Id :=
+           New_Temp_Identifier
+             (Base_Name => "source", Typ => Type_Of_Node (Source_Type));
+         Th        : Theory_UC;
+         Def       : W_Term_Id;
+
+      begin
+         M_UCs.Insert (Module_Name, (UC_Module, UC_Id));
+
+         Th :=
+           Open_Theory
+             (WF_Context,
+              UC_Module,
+              Comment =>
+                "Module for instance of Unchecked_Conversion function from "
+                & """"
+                & Get_Name_String (Chars (Source_Type))
+                & """"
+                & (if Sloc (Source_Type) > 0
+                   then
+                     " defined at "
+                     & Build_Location_String (Sloc (Source_Type))
+                   else "")
+                & "to """
+                & Get_Name_String (Chars (Target_Type))
+                & """"
+                & (if Sloc (Target_Type) > 0
+                   then
+                     " defined at "
+                     & Build_Location_String (Sloc (Target_Type))
+                   else "")
+                & ", created in "
+                & GNAT.Source_Info.Enclosing_Entity);
+
+         if not Precise_UC.Ok then
+
+            Def := Why_Empty;
+
+         elsif Is_Scalar_Type (Source_Type)
+           and then Is_Scalar_Type (Target_Type)
+         then
+            Def :=
+              Precise_Integer_UC
+                (Arg                 => +Source_Id,
+                 Size                =>
+                   Get_Attribute_Value (Source_Type, Attribute_Size),
+                 Source_Type         => Type_Of_Node (Source_Type),
+                 Target_Type         => Type_Of_Node (Target_Type),
+                 Source_Status       => Get_Scalar_Status (Source_Type),
+                 Target_Status       => Get_Scalar_Status (Target_Type),
+                 Potentially_Invalid => Potentially_Invalid,
+                 Ada_Target          => Target_Type);
+
+         --  At least one of Source or Target is a composite type made up
+         --  of integers. Convert Source to a large-enough modular type,
+         --  and convert that value to Target. If all types involved are
+         --  modular, then this benefits from bitvector support in provers.
+
+         else
+            Def :=
+              Precise_Composite_UC
+                (Arg                 => +Source_Id,
+                 Source_Type         => Source_Type,
+                 Target_Type         => Target_Type,
+                 Potentially_Invalid => Potentially_Invalid);
+         end if;
+
+         --  Generate a logic function for the unchecked conversion
+
+         Emit
+           (Th,
+            New_Function_Decl
+              (Domain      => EW_Pterm,
+               Name        => To_Local (UC_Id),
+               Binders     =>
+                 Binder_Array'(1 => (B_Name => Source_Id, others => <>)),
+               Location    => No_Location,
+               Labels      => Symbol_Sets.Empty_Set,
+               Def         => +Def,
+               Return_Type =>
+                 (if Potentially_Invalid
+                  then Validity_Wrapper_Type (Target_Type)
+                  else Type_Of_Node (Target_Type))));
+
+         Close_Theory (Th, Definition_Theory);
+      end;
+
+      --  Generate axiom modules if the inverse of the UC function already
+      --  exists.
+
+      if not Potentially_Invalid then
+         declare
+            Inv_Module : constant Symbol :=
+              Get_UC_Theory_Name
+                (Source_Type         => Target_Type,
+                 Target_Type         => Source_Type,
+                 Potentially_Invalid => False);
+            Position   : constant Name_Id_UC_Map.Cursor :=
+              M_UCs.Find (Inv_Module);
+         begin
+            if Name_Id_UC_Map.Has_Element (Position)
+              and then Inversion_Axiom_OK (Source_Type, Target_Type)
+            then
+               Generate_Inversion_Axiom
+                 (Source_Type => Source_Type,
+                  Target_Type => Target_Type,
+                  Module      => M_UCs (Module_Name),
+                  Inv_Fun     => M_UCs (Position).UC_Id);
+
+               if Source_Type /= Target_Type then
+                  Generate_Inversion_Axiom
+                    (Source_Type => Target_Type,
+                     Target_Type => Source_Type,
+                     Module      => M_UCs (Position),
+                     Inv_Fun     => M_UCs (Module_Name).UC_Id);
+               end if;
+            end if;
+         end;
+      end if;
+   end Create_Module_For_UC_If_Needed;
 
    ---------------------
    -- Suitable_For_UC --

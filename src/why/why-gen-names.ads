@@ -434,6 +434,10 @@ package Why.Gen.Names is
       WNE_To_Float32,             --  for fixed-point
       WNE_To_Float64,             --  for fixed-point
 
+      WNE_Potentially_Invalid_Suffix, --  "___potentially_invalid"
+      WNE_UC_Prefix,                  --  "Uc"
+      WNE_UC_Function,                --  "_uc"
+
       WNE_Empty,                   --  dummy value for Why_Name_Enum
 
       --  Names related to the pointer type

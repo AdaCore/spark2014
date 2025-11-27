@@ -34,9 +34,10 @@ with Uintp;                 use Uintp;
 package Gnat2Why.Unchecked_Conversion is
 
    function Is_UC_With_Precise_Definition
-     (E : Entity_Id) return True_Or_Explain
-   with Pre => Is_Unchecked_Conversion_Instance (E);
-   --  Return whether E is an UC for which a precise definition is given
+     (Source_Type, Target_Type : Type_Kind_Id; Potentially_Invalid : Boolean)
+      return True_Or_Explain;
+   --  Return whether an unchecked conversion from Source_Type to Target_Type
+   --  is an UC for which we can give a precise definition.
 
    procedure Suitable_For_UC
      (Typ         : Type_Kind_Id;
@@ -103,53 +104,16 @@ package Gnat2Why.Unchecked_Conversion is
       Explanation : out Unbounded_String);
    --  Same as Have_Same_Known_Esize, but checks the RM_Size.
 
-   type Scalar_Status is
-     (Signed,    --  Signed integer type
-      Unsigned,  --  Unsigned integer type = signed with no negative value,
-      --  also used for enumerations with default representation
-      --  clauses.
-      Modular);  --  Modular integer type
+   procedure Create_Module_For_UC_If_Needed
+     (Source_Type, Target_Type : Type_Kind_Id; Potentially_Invalid : Boolean);
+   --  Generate a module for unchecked conversion from Source_Type to
+   --  Target_Type if there isn't one already. If Potentially_Invalid is True,
+   --  the target is potentially invalid.
 
-   function Get_Scalar_Status (Typ : Type_Kind_Id) return Scalar_Status
-   is (if Is_Modular_Integer_Type (Typ)
-       then Modular
-       elsif Is_Enumeration_Type (Typ)
-       then Unsigned
-       elsif Is_Unsigned_Type (Typ)
-       then Unsigned
-       elsif Is_Signed_Integer_Type (Typ)
-       then Signed
-       else raise Program_Error);
-
-   function Precise_Integer_UC
-     (Arg                 : W_Term_Id;
-      Size                : Uint;
-      Source_Type         : W_Type_Id;
-      Target_Type         : W_Type_Id;
-      Source_Status       : Scalar_Status;
-      Target_Status       : Scalar_Status;
-      Potentially_Invalid : Boolean := False;
-      Ada_Target          : Type_Kind_Id := Empty) return W_Term_Id
-   with Pre => (if Potentially_Invalid then Present (Ada_Target));
-   --  Return Arg of Source_Type converted to Target_Type, when both are of
-   --  scalar types. Size is the shared size of both types, when arguments of
-   --  the UC are integer types, which is used for conversion from an
-   --  Unsigned type to a Signed one. Otherwise it is No_Uint.
-   --  If Potentially_Invalid is True, wrap the result in a validity wrapper.
-   --  The validity flag is set to True iff the return value is in the bounds
-   --  of the return type of Ada_Target.
-
-   function Precise_Composite_UC
-     (Arg                 : W_Term_Id;
-      Source_Type         : Type_Kind_Id;
-      Target_Type         : Type_Kind_Id;
-      Potentially_Invalid : Boolean) return W_Term_Id;
-   --  Return Arg of Source_Type converted to Target_Type, when at least one
-   --  is a composite type made up of integers. Convert Arg to a large-enough
-   --  modular type, and convert that value to Target. If all types involved
-   --  are modular, then this benefits from bitvector support in provers.
-   --  If Potentially_Invalid is True, wrap it in a validity wrapper. The
-   --  validity flag is set to True iff all scalar subcomponents of the return
-   --  value are in the bounds of their subtype.
+   function Get_UC_Function
+     (Source_Type, Target_Type : Type_Kind_Id; Potentially_Invalid : Boolean)
+      return W_Identifier_Id;
+   --  Return the function that should be used to convert from Source_Type to
+   --  Target_Type.
 
 end Gnat2Why.Unchecked_Conversion;
