@@ -37,6 +37,18 @@ def is_sublist(main_list, sublist):
     return True
 
 
+def cache_mode():
+    return "cache" in os.environ and os.environ["cache"] == "true"
+
+
+def cache_option():
+    if "GNATPROVE_CACHE" in os.environ:
+        cache = os.environ["GNATPROVE_CACHE"]
+    else:
+        cache = "localhost:11211"
+    return f"--memcached-server={cache}"
+
+
 class SPARKControlCreator(AdaCoreLegacyTestControlCreator):
     """Class that decides the status (XFAIL, SKIP, etc) of a test. This is the
     same as the standard "test.opt" mechanism, except that we also look into
@@ -194,6 +206,7 @@ end Test;
             "--debug-exec-rac",
             "--no-inlining",
             "--warnings=off",
+            *([cache_option()] if cache_mode() else []),
             "-cargs",
             "-gnat2022",
         ]
@@ -367,6 +380,7 @@ class UGTestDriver(SPARKDiffTestDriver):
             "--timeout=30",
             "-A",
             "info-unrolling-inlining",
+            *([cache_option()] if cache_mode() else []),
         ]
 
         # Generate sparklib.gpr in case the project depends on SPARKlib

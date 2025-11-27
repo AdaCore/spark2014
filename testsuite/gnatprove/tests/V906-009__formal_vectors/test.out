@@ -201,8 +201,8 @@ test_vectors.ads:8:14: warning: subprogram "Run" has no effect
 test_vectors.ads:10:14: warning: subprogram "Large_Run" has no effect
 test_vectors.ads:12:14: warning: subprogram "Index_Negative" has no effect
 test_vectors.adb:342:07: warning: check will fail at run time [-gnatw.a]
-test_vectors.adb:342:07: warning: in instantiation at spark-containers-formal-vectors.ads:128 [-gnatw.a]
-test_vectors.adb:342:07: warning: in instantiation at spark-containers-functional-vectors.ads:164 [-gnatw.a]
+test_vectors.adb:342:07: warning: in instantiation at spark-containers-formal-vectors.ads:143 [-gnatw.a]
+test_vectors.adb:342:07: warning: in instantiation at spark-containers-functional-vectors.ads:175 [-gnatw.a]
 test_vectors.ads:4:04: warning: check will fail at run time [-gnatw.a]
-test_vectors.ads:4:04: warning: in instantiation at spark-containers-formal-vectors.ads:128 [-gnatw.a]
-test_vectors.ads:4:04: warning: in instantiation at spark-containers-functional-vectors.ads:164 [-gnatw.a]
+test_vectors.ads:4:04: warning: in instantiation at spark-containers-formal-vectors.ads:143 [-gnatw.a]
+test_vectors.ads:4:04: warning: in instantiation at spark-containers-functional-vectors.ads:175 [-gnatw.a]

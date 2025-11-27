@@ -2381,8 +2381,16 @@ package body SPARK_Util.Types is
       --  code, because the designated types are not exactly the same (they are
       --  similar subtypes of the same base type). And our translation to Why3
       --  depends on being able to unify all such access types.
+      --
+      --  Actual subtypes for unchecked conversions do not have the flag set.
+      --  Recognize them specifically by looking at the enclosing scope. This
+      --  is important to skip this wrappers so the translation can be shared
+      --  between similar instances.
 
-      if Entity_In_SPARK (Typ) and then Is_Generic_Actual_Type (Typ) then
+      if Entity_In_SPARK (Typ)
+        and then (Is_Generic_Actual_Type (Typ)
+                  or else Is_Wrapper_Package (Scope (Typ)))
+      then
          declare
             P_Typ   : constant Entity_Id :=
               (if Is_Full_View (Typ) then Partial_View (Typ) else Typ);
