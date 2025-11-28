@@ -396,7 +396,7 @@ package body Flow.Analysis.Antialiasing is
 
          --  Detect overlay with an Address representation clause
 
-         if Ekind (E) in E_Constant | E_Variable
+         if Ekind (E) = E_Variable
            and then Present (Ultimate_Overlaid_Entity (E))
          then
             return Ultimate_Overlaid_Entity (E);

@@ -4864,7 +4864,10 @@ package body Flow.Control_Flow_Graph is
 
       --  Local variables
 
-      Alias : constant Entity_Id := Ultimate_Overlaid_Entity (E);
+      Alias : constant Entity_Id :=
+        (if Ekind (E) = E_Variable
+         then Ultimate_Overlaid_Entity (E)
+         else Types.Empty);
 
       --  Start of processing for Do_Object_Declaration
 
@@ -4912,10 +4915,9 @@ package body Flow.Control_Flow_Graph is
 
       case Ekind (E) is
          when E_Constant =>
-            if Present (Alias) then
-               pragma Assert (Is_Imported (E) and then No (Expr));
+            pragma Assert (No (Alias));
 
-            elsif Present (Expr) then
+            if Present (Expr) then
                --  Completion of a deferred constant
 
                if Is_Full_View (E) then
@@ -5134,15 +5136,19 @@ package body Flow.Control_Flow_Graph is
          declare
             Addr_Expr : constant N_Subexpr_Id :=
               Expression (Address_Clause (E));
-            Addr_Deps : constant Flow_Id_Sets.Set :=
+            Addr_Deps : Flow_Id_Sets.Set :=
               Get_Variables
                 (Addr_Expr,
                  Scope                => FA.B_Scope,
                  Target_Name          => Null_Flow_Id,
                  Fold_Functions       => Inputs,
                  Use_Computed_Globals => not FA.Generating_Globals);
-            Funcalls  : Call_Sets.Set;
-            Indcalls  : Node_Sets.Set;
+            --  For precisely supported overlays like "X.Y (Z)'Address" this
+            --  will only add a dependency on array and slice expressions like
+            --  "Z".
+
+            Funcalls : Call_Sets.Set;
+            Indcalls : Node_Sets.Set;
 
          begin
             Pick_Generated_Info
@@ -5153,6 +5159,19 @@ package body Flow.Control_Flow_Graph is
                Proof_Dependencies => FA.Proof_Dependencies,
                Locks              => FA.Locks,
                Generating_Globals => FA.Generating_Globals);
+
+            --  We want overlaying constants to behave like ordinary ones,
+            --  i.e. like the overlaying constant would be initialized with
+            --  the overlaid one (and with anything referenced in the index and
+            --  slice expressions). We must pull this dependency explicitly,
+            --  because 'Address expression of a supported overlay is not
+            --  considered to be a read of the overlaid object.
+
+            if Ekind (E) = E_Constant and then Present (Overlaid_Entity (E))
+            then
+               Addr_Deps.Union
+                 (Flatten_Variable (Overlaid_Entity (E), FA.B_Scope));
+            end if;
 
             Add_Vertex
               (FA,
@@ -7610,7 +7629,7 @@ package body Flow.Control_Flow_Graph is
       --  If LHS denotes an overlaid entity, there is no point in splitting the
       --  RHS into components.
 
-      if Ekind (LHS_Root) in E_Constant | E_Variable
+      if Ekind (LHS_Root) = E_Variable
         and then Present (Ultimate_Overlaid_Entity (LHS_Root))
       then
          return False;

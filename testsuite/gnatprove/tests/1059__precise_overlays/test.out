@@ -15,7 +15,7 @@ test_global_constants.adb:38:50: info: type is suitable as source for unchecked 
 test_global_constants.adb:38:50: info: types of aliased objects have the same size (Trivial)
 test_global_constants.adb:39:07: warning: analyzing unreferenced procedure "Test" [unreferenced-procedure]
 test_global_constants.adb:39:17: warning: subprogram "Test" has no effect
-test_global_constants.adb:41:25: medium: assertion might fail [provers reached step limit before completing the proof]
+test_global_constants.adb:41:25: high: assertion might fail (e.g. when Y = Mod_8'Last) [provers reached step limit before completing the proof]
 test_global_constants.adb:47:14: warning: subprogram "Test_Array_OK" has no effect
 test_global_constants.adb:49:07: info: address in address clause is compatible with object alignment (Trivial)
 test_global_constants.adb:49:07: info: object is suitable for aliasing via address clause (Trivial)
@@ -33,7 +33,7 @@ test_global_constants.adb:60:52: info: type is suitable as source for unchecked 
 test_global_constants.adb:60:52: info: types of aliased objects have the same size (Trivial)
 test_global_constants.adb:61:07: warning: analyzing unreferenced procedure "Test" [unreferenced-procedure]
 test_global_constants.adb:61:17: warning: subprogram "Test" has no effect
-test_global_constants.adb:63:25: medium: assertion might fail [provers reached step limit before completing the proof]
+test_global_constants.adb:63:25: high: assertion might fail (e.g. when Y = (others => Mod_8'Last)) [provers reached step limit before completing the proof]
 test_global_constants.adb:69:14: warning: subprogram "Test_Record_OK" has no effect
 test_global_constants.adb:72:07: info: address in address clause is compatible with object alignment (Trivial)
 test_global_constants.adb:72:07: info: object is suitable for aliasing via address clause (Trivial)
@@ -179,7 +179,7 @@ test_potentially_invalid_global.adb:38:50: info: type is suitable as source for 
 test_potentially_invalid_global.adb:38:50: info: types of aliased objects have the same size (Trivial)
 test_potentially_invalid_global.adb:39:07: warning: analyzing unreferenced procedure "Test" [unreferenced-procedure]
 test_potentially_invalid_global.adb:39:17: warning: subprogram "Test" has no effect
-test_potentially_invalid_global.adb:41:25: medium: assertion might fail [provers reached step limit before completing the proof]
+test_potentially_invalid_global.adb:41:25: medium: assertion might fail (e.g. when Y'Valid = False) [provers reached step limit before completing the proof]
 test_potentially_invalid_global.adb:47:14: warning: subprogram "Test_Int_KO" has no effect
 test_potentially_invalid_global.adb:49:07: info: address in address clause is compatible with object alignment (Trivial)
 test_potentially_invalid_global.adb:49:07: info: object is suitable for aliasing via address clause (Trivial)
@@ -188,8 +188,8 @@ test_potentially_invalid_global.adb:49:50: info: type is suitable as source for 
 test_potentially_invalid_global.adb:49:50: info: types of aliased objects have the same size (Trivial)
 test_potentially_invalid_global.adb:50:07: warning: analyzing unreferenced procedure "Test" [unreferenced-procedure]
 test_potentially_invalid_global.adb:50:17: warning: subprogram "Test" has no effect
+test_potentially_invalid_global.adb:52:25: high: assertion might fail (e.g. when Y = 1 and Y'Valid = True) [provers reached step limit before completing the proof]
 test_potentially_invalid_global.adb:52:25: info: validity check proved (CVC5: 1 VC)
-test_potentially_invalid_global.adb:52:25: medium: assertion might fail [provers reached step limit before completing the proof]
 test_potentially_invalid_global.adb:58:14: warning: subprogram "Test_Array_OK" has no effect
 test_potentially_invalid_global.adb:60:07: info: address in address clause is compatible with object alignment (Trivial)
 test_potentially_invalid_global.adb:60:07: info: object is suitable for aliasing via address clause (Trivial)
@@ -199,7 +199,7 @@ test_potentially_invalid_global.adb:60:52: info: types of aliased objects have t
 test_potentially_invalid_global.adb:61:07: warning: analyzing unreferenced procedure "Test" [unreferenced-procedure]
 test_potentially_invalid_global.adb:61:17: warning: subprogram "Test" has no effect
 test_potentially_invalid_global.adb:63:25: info: assertion proved (Z3: 1 VC)
-test_potentially_invalid_global.adb:63:25: info: validity check proved (CVC5: 1 VC)
+test_potentially_invalid_global.adb:63:25: info: validity check proved (Z3: 1 VC)
 test_potentially_invalid_global.adb:69:14: warning: subprogram "Test_Array_Invalid" has no effect
 test_potentially_invalid_global.adb:71:07: info: address in address clause is compatible with object alignment (Trivial)
 test_potentially_invalid_global.adb:71:07: info: object is suitable for aliasing via address clause (Trivial)
@@ -217,8 +217,8 @@ test_potentially_invalid_global.adb:82:52: info: type is suitable as source for 
 test_potentially_invalid_global.adb:82:52: info: types of aliased objects have the same size (Trivial)
 test_potentially_invalid_global.adb:83:07: warning: analyzing unreferenced procedure "Test" [unreferenced-procedure]
 test_potentially_invalid_global.adb:83:17: warning: subprogram "Test" has no effect
-test_potentially_invalid_global.adb:85:25: info: validity check proved (CVC5: 1 VC)
-test_potentially_invalid_global.adb:85:25: medium: assertion might fail [provers reached step limit before completing the proof]
+test_potentially_invalid_global.adb:85:25: high: assertion might fail (e.g. when Y = (others => 1)) [provers reached step limit before completing the proof]
+test_potentially_invalid_global.adb:85:25: info: validity check proved (Z3: 1 VC)
 test_potentially_invalid_global.adb:91:14: warning: subprogram "Test_Record_OK" has no effect
 test_potentially_invalid_global.adb:94:07: info: address in address clause is compatible with object alignment (Trivial)
 test_potentially_invalid_global.adb:94:07: info: object is suitable for aliasing via address clause (Trivial)

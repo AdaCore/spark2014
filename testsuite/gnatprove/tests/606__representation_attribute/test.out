@@ -4,27 +4,30 @@ bar.adb:9:07: warning: imprecise handling of overlay (type size larger than 128 
 bar.adb:9:56: info: object is suitable for aliasing via address clause (Trivial)
 bar.adb:9:56: info: type is suitable as source for unchecked conversion (Trivial)
 bar.adb:9:56: info: types of aliased objects have the same size (Trivial)
+bar.adb:9:60: warning: statement has no effect
 bar.adb:11:22: info: assertion proved (Trivial: 1 VC)
 bar.adb:12:22: info: assertion proved (Trivial)
 bar.ads:5:13: info: implicit aspect Always_Terminates on "Baz" has been proved, subprogram will terminate
-bar.ads:5:18: warning: unused variable "Data"
+bar.ads:5:18: warning: unused initial value of "Data"
 foo.adb:7:13: info: implicit aspect Always_Terminates on "Bar" has been proved, subprogram will terminate
-foo.adb:7:18: warning: unused variable "Data"
+foo.adb:7:18: warning: unused initial value of "Data"
 foo.adb:15:07: info: address in address clause is compatible with object alignment (Trivial)
 foo.adb:15:07: info: object is suitable for aliasing via address clause (Trivial)
 foo.adb:15:07: warning: imprecise handling of overlay (type size larger than 128 bits) [imprecise-overlay]
 foo.adb:15:56: info: object is suitable for aliasing via address clause (Trivial)
 foo.adb:15:56: info: type is suitable as source for unchecked conversion (Trivial)
 foo.adb:15:56: info: types of aliased objects have the same size (Trivial)
+foo.adb:15:60: warning: statement has no effect
 foo.adb:17:22: info: assertion proved (Trivial: 1 VC)
 foo.adb:18:22: info: assertion proved (Trivial)
 foo.adb:23:15: info: implicit aspect Always_Terminates on "P" has been proved, subprogram will terminate
-foo.adb:23:18: warning: unused variable "Data"
+foo.adb:23:18: warning: unused initial value of "Data"
 foo.adb:33:10: info: address in address clause is compatible with object alignment (Trivial)
 foo.adb:33:10: info: object is suitable for aliasing via address clause (Trivial)
 foo.adb:33:10: warning: imprecise handling of overlay (type size larger than 128 bits) [imprecise-overlay]
 foo.adb:33:59: info: object is suitable for aliasing via address clause (Trivial)
 foo.adb:33:59: info: type is suitable as source for unchecked conversion (Trivial)
 foo.adb:33:59: info: types of aliased objects have the same size (Trivial)
+foo.adb:33:63: warning: statement has no effect
 foo.adb:35:25: info: assertion proved (Trivial: 1 VC)
 foo.adb:36:25: info: assertion proved (Trivial)

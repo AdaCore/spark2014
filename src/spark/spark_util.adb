@@ -8029,7 +8029,9 @@ package body SPARK_Util is
       procedure Register_Object (Obj : Entity_Id) is
       begin
          if Comes_From_Source (Obj)
-           and then No (Ultimate_Overlaid_Entity (Obj))
+           and then
+             (Ekind (Obj) = E_Constant
+              or else No (Ultimate_Overlaid_Entity (Obj)))
          then
             Results.Insert (Obj);
          end if;

@@ -1,3 +1,7 @@
-main.adb:6:34: high: constant with variable input "C1" must be listed in the Global aspect of "F" (SPARK RM 6.1.4(15))
-main.adb:6:43: error: constant with variable input "C1" is referenced in expression function but missing from the Global
-gnatprove: error during flow analysis and proof
+main.adb:4:04: info: address in address clause is compatible with object alignment (Trivial)
+main.adb:4:04: info: object is suitable for aliasing via address clause (Trivial)
+main.adb:4:50: info: object is suitable for aliasing via address clause (Trivial)
+main.adb:4:50: info: type is suitable as source for unchecked conversion (Trivial)
+main.adb:4:50: info: types of aliased objects have the same size (Trivial)
+main.adb:6:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+main.adb:6:43: info: data dependencies proved
