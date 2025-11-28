@@ -3391,9 +3391,7 @@ package body Flow_Utility is
 
          --  Handle overlays before filtering constants without variable inputs
 
-         if Ekind (E) in E_Constant | E_Variable
-           and then Present (Ultimate_Overlaid_Entity (E))
-         then
+         if Present (Ultimate_Overlaid_Entity (E)) then
             return Do_Entity (Ultimate_Overlaid_Entity (E));
          end if;
 

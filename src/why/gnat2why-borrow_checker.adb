@@ -1507,8 +1507,7 @@ package body Gnat2Why.Borrow_Checker is
 
             --  Check that the root of the initial expression is not an overlay
 
-            if Ekind (Expr_Root) in E_Constant | E_Variable
-              and then Present (Overlaid_Entity (Expr_Root))
+            if Present (Overlaid_Entity (Expr_Root))
               and then not Is_Constant_In_SPARK (Expr_Root)
             then
                declare
