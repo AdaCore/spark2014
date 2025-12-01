@@ -1,3 +1,4 @@
+po.adb:8:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 po.adb:8:13: info: types in unchecked conversion have the same size (Trivial)
 po.adb:8:52: info: type is suitable as source for unchecked conversion (Trivial)
 po.adb:8:64: info: type is suitable for unchecked conversion (Trivial)

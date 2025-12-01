@@ -2,6 +2,7 @@ test_pack.adb:7:32: high: float overflow check might fail (e.g. when Measured = 
 test_pack.ads:10:06: info: flow dependencies proved
 test_pack.ads:12:43: info: float overflow check proved (CVC5: 1 VC)
 test_pack.ads:14:42: info: float overflow check proved (CVC5: 1 VC)
+wibble.adb:6:12: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 wibble.adb:6:12: info: types in unchecked conversion have the same size (Trivial)
 wibble.adb:6:12: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
 wibble.adb:6:61: info: type is suitable as source for unchecked conversion (Trivial)

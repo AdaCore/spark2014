@@ -21,10 +21,12 @@ cover.adb:15:30: info: type is suitable as source for unchecked conversion (Triv
 cover.adb:15:30: info: types of aliased objects have the same size (Trivial)
 cover.adb:15:35: warning: alignment of object is not precisely known [imprecise-align]
 cover.adb:18:19: info: assertion proved (Trivial)
+test.adb:9:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 test.adb:9:13: info: types in unchecked conversion have the same size (Trivial)
 test.adb:9:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
 test.adb:9:51: info: type is suitable as source for unchecked conversion (Trivial)
 test.adb:9:60: high: type is unsuitable as a target for unchecked conversion [possible explanation: type Natural has 16#8000_0000# values but type Natural has Object_Size 32, which allows 16#1000_0000_0# possible values; invalid values could result from the unchecked conversion [SPARK RM 13.9]]
+test.adb:26:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 test.adb:26:13: info: types in unchecked conversion have the same size (Trivial)
 test.adb:26:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
 test.adb:26:51: info: type is suitable as source for unchecked conversion (Trivial)

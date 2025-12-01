@@ -1,6 +1,8 @@
+conv.adb:9:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 conv.adb:9:13: info: types in unchecked conversion have the same size (Trivial)
 conv.adb:9:53: info: type is suitable as source for unchecked conversion (Trivial)
 conv.adb:9:60: info: type is suitable for unchecked conversion (Trivial)
+conv.adb:10:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 conv.adb:10:13: info: types in unchecked conversion have the same size (Trivial)
 conv.adb:10:53: info: type is suitable as source for unchecked conversion (Trivial)
 conv.adb:10:60: info: type is suitable for unchecked conversion (Trivial)

@@ -1,3 +1,4 @@
+p.adb:10:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 p.adb:10:13: info: types in unchecked conversion have the same size (Trivial)
 p.adb:10:61: info: type is suitable as source for unchecked conversion (Trivial)
 p.adb:10:70: info: type is suitable for unchecked conversion (Trivial)

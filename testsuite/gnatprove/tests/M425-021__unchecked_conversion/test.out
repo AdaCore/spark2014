@@ -1,3 +1,4 @@
+test.adb:16:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 test.adb:16:13: info: types in unchecked conversion have the same size (Trivial)
 test.adb:16:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
 test.adb:16:62: info: type is suitable as source for unchecked conversion (Trivial)
