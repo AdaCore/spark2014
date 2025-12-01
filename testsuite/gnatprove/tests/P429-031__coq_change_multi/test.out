@@ -1,6 +1,6 @@
 =======================================
 lemmas.ads:15:06: warning: postcondition does not check the outcome of calling "Lemma_Div_Is_Monotonic1" [-gnatw.t]
-lemmas.ads:15:14: medium: postcondition might fail, vc file: gnatprove/../proof/sessions/lemmas__lemma_div_is_monotonic1/../../Coq/Lemmas__lemma_div_is_monotonic1__pragargs__cmp.v
+lemmas.ads:15:14: medium: postcondition might fail, vc file: gnatprove/../proof/sessions/lemmas__lemma_div_is_monotonic1/../../Coq/Lemmas__lemma_div_is_monotonic1__pragargs__cmp.v [provers gave up before completing the proof]
 lemmas.ads:24:06: warning: postcondition does not check the outcome of calling "Lemma_Div_Is_Monotonic2" [-gnatw.t]
 =======================================
 lemmas.ads:15:06: warning: postcondition does not check the outcome of calling "Lemma_Div_Is_Monotonic1" [-gnatw.t]
@@ -9,7 +9,7 @@ lemmas.ads:24:06: warning: postcondition does not check the outcome of calling "
 =======================================
 lemmas.ads:15:06: warning: postcondition does not check the outcome of calling "Lemma_Div_Is_Monotonic1" [-gnatw.t]
 lemmas.ads:24:06: warning: postcondition does not check the outcome of calling "Lemma_Div_Is_Monotonic2" [-gnatw.t]
-lemmas.ads:24:14: medium: postcondition might fail, vc file: gnatprove/../proof/sessions/lemmas__lemma_div_is_monotonic2/../../Coq/Lemmas__lemma_div_is_monotonic2__pragargs__cmp.v
+lemmas.ads:24:14: medium: postcondition might fail, vc file: gnatprove/../proof/sessions/lemmas__lemma_div_is_monotonic2/../../Coq/Lemmas__lemma_div_is_monotonic2__pragargs__cmp.v [provers gave up before completing the proof]
 =======================================
 lemmas.ads:15:06: warning: postcondition does not check the outcome of calling "Lemma_Div_Is_Monotonic1" [-gnatw.t]
 lemmas.ads:24:06: warning: postcondition does not check the outcome of calling "Lemma_Div_Is_Monotonic2" [-gnatw.t]

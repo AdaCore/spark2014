@@ -1,6 +1,6 @@
 =======================================
 lemmas.ads:15:06: warning: postcondition does not check the outcome of calling "Lemma_Div_Is_Monotonic" [-gnatw.t]
-lemmas.ads:15:14: medium: postcondition might fail, vc file: gnatprove/../proof/sessions/lemmas__lemma_div_is_monotonic/../../Coq/Lemmas__lemma_div_is_monotonic__pragargs__cmp.v
+lemmas.ads:15:14: medium: postcondition might fail, vc file: gnatprove/../proof/sessions/lemmas__lemma_div_is_monotonic/../../Coq/Lemmas__lemma_div_is_monotonic__pragargs__cmp.v [provers gave up before completing the proof]
 =======================================
 lemmas.ads:15:06: warning: postcondition does not check the outcome of calling "Lemma_Div_Is_Monotonic" [-gnatw.t]
 lemmas.ads:15:14: info: postcondition proved (Coq: 1 VC)
