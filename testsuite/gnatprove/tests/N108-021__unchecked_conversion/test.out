@@ -1,3 +1,4 @@
+port.adb:5:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 port.adb:5:13: info: types in unchecked conversion have the same size (Trivial)
 port.adb:5:48: info: type is suitable as source for unchecked conversion (Trivial)
 port.adb:5:53: info: type is suitable for unchecked conversion (Trivial)

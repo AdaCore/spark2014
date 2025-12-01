@@ -1,3 +1,4 @@
+conv.adb:7:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 conv.adb:7:13: info: types in unchecked conversion have the same size (Trivial)
 conv.adb:7:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as source for unchecked conversion) [imprecise-unchecked-conversion]
 conv.adb:7:49: high: type is unsuitable as a source for unchecked conversion [possible explanation: too large value of Size for type R1]
@@ -8,6 +9,7 @@ conv.adb:10:04: info: initialization of "V21" proved
 conv.adb:10:09: info: initialization of "V22" proved
 conv.adb:14:19: info: assertion proved (CVC5: 1 VC)
 conv.adb:17:19: info: assertion proved (CVC5: 1 VC)
+convf.adb:7:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 convf.adb:7:13: info: types in unchecked conversion have the same size (Trivial)
 convf.adb:7:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as source for unchecked conversion) [imprecise-unchecked-conversion]
 convf.adb:7:49: high: type is unsuitable as a source for unchecked conversion [possible explanation: too large value of Size for type R1]
