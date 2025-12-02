@@ -56,6 +56,7 @@ tests_async_readers.adb:133:37: info: initialization of "Z" proved
 tests_async_readers.adb:134:11: info: data dependencies proved
 tests_async_readers.adb:135:11: info: flow dependencies proved
 tests_async_readers.ads:2:27: warning: no subprogram exists that can initialize abstract state "Tests_Async_Readers.State_With_Async_Readers"
+tests_async_writers.adb:22:04: high: "Vol3" constituent of "State_With_Async_Writers" is not initialized in "Tests_Async_Writers" [reason for check: variable is mentioned in the generated Initializes contract] [possible fix: initialize "Vol3" constituent of "State_With_Async_Writers" at declaration or in the package body statements]
 tests_async_writers.adb:29:17: info: initialization of "X" proved
 tests_async_writers.adb:29:20: info: initialization of "Y" proved
 tests_async_writers.adb:30:11: info: data dependencies proved
@@ -77,6 +78,13 @@ tests_async_writers.adb:85:12: info: flow dependencies proved
 tests_async_writers.adb:95:23: info: initialization of "X" proved
 tests_async_writers.adb:96:12: info: data dependencies proved
 tests_async_writers.adb:97:12: info: flow dependencies proved
+tests_async_writers.adb:111:12: high: "Vol" constituent of "State_With_Async_Writers" is not initialized
+tests_external_state.adb:9:04: high: "Vol" constituent of "State" is not written in "Tests_External_State" [reason for check: encapsulating state is mentioned in the Initializes contract of the package declaration] [possible fix: initialize "Vol" constituent of "State" at declaration or in the package body statements]
+tests_external_state.adb:9:04: high: initialization of "Tests_External_State.State" is specified at tests_external_state.ads:10
+tests_external_state.adb:21:04: high: "Vol_AW" constituent of "State_AW" is not initialized in "Tests_External_State" [reason for check: encapsulating state is mentioned in the Initializes contract of the package declaration] [possible fix: initialize "Vol_AW" constituent of "State_AW" at declaration or in the package body statements]
+tests_external_state.adb:21:04: high: initialization of "Tests_External_State.State_AW" is specified at tests_external_state.ads:10
+tests_external_state.adb:25:04: high: "Vol_AW_ER" constituent of "State_AW_ER" is not initialized in "Tests_External_State" [reason for check: encapsulating state is mentioned in the Initializes contract of the package declaration] [possible fix: initialize "Vol_AW_ER" constituent of "State_AW_ER" at declaration or in the package body statements]
+tests_external_state.adb:25:04: high: initialization of "Tests_External_State.State_AW_ER" is specified at tests_external_state.ads:10
 tests_external_state.adb:33:41: info: initialization of "Vol" constituent of "State" proved
 tests_external_state.adb:51:41: info: initialization of "Vol_AR" constituent of "State_AR" proved
 tests_external_state.adb:69:41: info: initialization of "Vol_AR_EW" constituent of "State_AR_EW" proved
@@ -108,6 +116,10 @@ tests_external_state.ads:62:11: info: flow dependencies proved
 tests_external_state.ads:64:25: info: initialization of "X" proved
 tests_external_state.ads:65:11: info: data dependencies proved
 tests_external_state.ads:66:11: info: flow dependencies proved
+types.adb:12:04: high: "A" constituent of "State" is not written in "Types" [reason for check: variable is mentioned in the generated Initializes contract] [possible fix: initialize "A" constituent of "State" at declaration or in the package body statements]
+types.adb:25:04: high: "C" constituent of "State" is not initialized in "Types" [reason for check: variable is mentioned in the generated Initializes contract] [possible fix: initialize "C" constituent of "State" at declaration or in the package body statements]
+types.adb:27:04: high: "D" constituent of "State" is not written in "Types" [reason for check: variable is mentioned in the generated Initializes contract] [possible fix: initialize "D" constituent of "State" at declaration or in the package body statements]
+types.adb:29:04: high: "E" constituent of "State" is not written in "Types" [reason for check: variable is mentioned in the generated Initializes contract] [possible fix: initialize "E" constituent of "State" at declaration or in the package body statements]
 types.adb:34:04: warning: analyzing unreferenced procedure "Test_01" [unreferenced-procedure]
 types.adb:34:14: warning: subprogram "Test_01" has no effect
 types.adb:40:04: warning: analyzing unreferenced procedure "Test_02" [unreferenced-procedure]

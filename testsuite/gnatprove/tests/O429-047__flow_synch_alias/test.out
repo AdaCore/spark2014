@@ -1,2 +1,4 @@
+p.adb:3:04: info: initialization of "S" proved
 p.adb:18:34: warning: assuming "Suspend_Until_True" always terminates
 p.adb:18:34: warning: no Always_Terminates aspect available for "Suspend_Until_True" [assumed-always-terminates]
+p.ads:5:04: info: initialization of "SO" proved

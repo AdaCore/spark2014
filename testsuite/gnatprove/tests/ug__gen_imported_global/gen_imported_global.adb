@@ -13,7 +13,7 @@ is
      Async_Readers => False,
      Effective_Reads => False,
      Effective_Writes => False,
-     Address => System.Storage_Elements.To_Address (16#8000_0000#);
+     Address => System.Storage_Elements.To_Address (16#8000_0000#), Import;
    pragma Warnings (GNATprove, On, "assuming correct volatile properties");
    pragma Warnings (GNATprove, On, "assuming no concurrent accesses");
 

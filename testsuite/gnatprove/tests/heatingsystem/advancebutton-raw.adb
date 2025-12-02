@@ -8,7 +8,7 @@ is
    Input_Ext : Boolean
      with Volatile,
           Async_Writers,
-          Address => System.Storage_Elements.To_Address (16#FFFF_FFFF#);
+          Address => System.Storage_Elements.To_Address (16#FFFF_FFFF#), Import;
 
    procedure Read (Pressed : out Boolean)
      with Refined_Global  => Input_Ext,

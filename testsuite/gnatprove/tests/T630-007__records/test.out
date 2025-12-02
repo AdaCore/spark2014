@@ -5,6 +5,7 @@ mutable_discrs.adb:14:04: info: range check proved (CVC5: 2 VC)
 mutable_discrs.adb:21:04: warning: initialization of "Y" has no effect
 mutable_discrs.adb:21:13: info: discriminant check proved (CVC5: 1 VC)
 mutable_discrs.adb:22:04: warning: initialization of "A" has no effect
+mutable_discrs.adb:23:33: medium: "Vol" might not be written after elaboration of main program "Mutable_Discrs"
 mutable_discrs.adb:26:04: info: no contextual analysis of "Do_Something" (body not seen yet)
 mutable_discrs.adb:26:04: warning: assuming "Do_Something" always terminates
 mutable_discrs.adb:26:04: warning: assuming "Do_Something" has no effect on global items

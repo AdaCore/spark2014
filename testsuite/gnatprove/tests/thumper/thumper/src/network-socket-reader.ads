@@ -14,7 +14,7 @@ with Network.Addresses;
 
 package Network.Socket.Reader
   with Abstract_State =>
-    (Input_Message_Stream with External => (Async_Writers, Effective_Reads => False))
+    (Input_Message_Stream with External => (Async_Writers, Effective_Reads => False)), Initializes => Input_Message_Stream
 is
    type Status_Type is (Success, Failure);
 

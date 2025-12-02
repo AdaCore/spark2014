@@ -4,7 +4,7 @@ package body Nuclear_Reactors with
 is
    type Reactor_State is (Stopped, Working) with Atomic;
 
-   Cur_State : Reactor_State
+   Cur_State : Reactor_State := Stopped
      with Async_Readers, Async_Writers, Atomic;
 
    procedure Shut_Down is

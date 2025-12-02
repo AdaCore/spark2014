@@ -1,3 +1,4 @@
+spin-tunnel.adb:9:04: info: initialization of "External_Var" constituent of "Tunnel_External" proved
 spin-tunnel.adb:39:21: info: division check proved (CVC5: 1 VC)
 spin-tunnel.ads:5:04: info: flow dependencies proved
 spin-tunnel.ads:6:25: info: initial condition proved (CVC5: 1 VC)

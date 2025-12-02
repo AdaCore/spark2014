@@ -2,6 +2,7 @@ main.adb:3:11: medium: ceiling priority protocol might not be respected for "P.I
 p.adb:11:17: info: add a contract to analyze it separately from calling contexts
 p.adb:11:17: info: local subprogram "P1" only analyzed in the context of calls [info-unrolling-inlining]
 p.adb:19:07: info: analyzing call to "P1" in context
+p.ads:4:17: info: initialization of "PO" proved
 p.ads:7:20: info: aspect Always_Terminates on "PP1" has been proved, subprogram will terminate
 p.ads:8:15: info: data dependencies proved
 proxy.ads:3:14: warning: subprogram "Proc" has no effect

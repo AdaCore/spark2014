@@ -2,6 +2,7 @@
 test_01.adb:9:09: info: ceiling priority protocol is respected for "Test_01.Database" (CVC5: 1 VC)
 test_01.adb:9:09: info: initialization of "Updater" constituent of "State" proved
 test_01.adb:9:09: info: nontermination of task proved (CVC5: 1 VC)
+test_01.adb:11:14: info: initialization of "Database" constituent of "State" proved
 test_01.adb:13:16: info: implicit aspect Always_Terminates on "Get_Cache" has been proved, subprogram will terminate
 test_01.adb:18:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause] [provers gave up before completing the proof]
 test_01.adb:18:04: warning: address specification on "Sensor" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [imprecise-address-specification] [E0012]
@@ -16,6 +17,7 @@ test_01.ads:10:09: info: data dependencies proved
 test_02.adb:9:09: info: ceiling priority protocol is respected for "Test_02.Database" (CVC5: 1 VC)
 test_02.adb:9:09: info: initialization of "Updater" constituent of "State" proved
 test_02.adb:9:09: info: nontermination of task proved (CVC5: 1 VC)
+test_02.adb:11:14: info: initialization of "Database" constituent of "State" proved
 test_02.adb:13:16: info: implicit aspect Always_Terminates on "Get_Cache" has been proved, subprogram will terminate
 test_02.adb:18:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause] [provers gave up before completing the proof]
 test_02.adb:18:04: warning: address specification on "Sensor" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [imprecise-address-specification] [E0012]
