@@ -2,3 +2,7 @@ bad_uc.ads:10:13: high: alignment of source type of unchecked conversion might n
 bad_uc.ads:10:13: high: types used for unchecked conversion do not have the same size [possible explanation: type Prot doesn't have a Size representation clause or aspect]
 bad_uc.ads:10:58: high: type is unsuitable as a source for unchecked conversion [possible explanation: type Prot is a concurrent type]
 bad_uc.ads:10:64: info: type is suitable for unchecked conversion (Trivial)
+bad_uc.ads:12:13: high: alignment of source type of unchecked conversion might not be an integral multiple of alignment of target type [possible explanation: Prot doesn't have an Alignment representation clause or aspect] [possible fix: target type of unchecked conversion should have an Alignment representation clause]
+bad_uc.ads:12:13: high: types used for unchecked conversion do not have the same size [possible explanation: type Prot doesn't have a Size representation clause or aspect]
+bad_uc.ads:12:58: info: type is suitable as source for unchecked conversion (Trivial)
+bad_uc.ads:12:67: high: type is unsuitable as a target for unchecked conversion [possible explanation: type Prot is a concurrent type]
