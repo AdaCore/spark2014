@@ -4008,7 +4008,9 @@ package body Flow_Error_Messages is
                   then " [possible fix: " & To_String (Obj.Fix.Msg) & "]"
                   else "");
                Unproved_Msg_Raw : constant String :=
-                 To_User_Msg (Obj.Unproved_Stat);
+                 (if not Is_Suppressed
+                  then To_User_Msg (Obj.Unproved_Stat)
+                  else "");
                Unproved_Msg     : constant String :=
                  (if Unproved_Msg_Raw /= ""
                   then " [" & Unproved_Msg_Raw & "]"
@@ -4082,18 +4084,20 @@ package body Flow_Error_Messages is
                      & To_String (Obj.Fix.Msg),
                      Secondary_Loc => Obj.Fix.Secondary_Loc));
             end if;
-            declare
-               Unproved_Msg_Raw : constant String :=
-                 To_User_Msg (Obj.Unproved_Stat);
-            begin
-               if Unproved_Msg_Raw /= "" then
-                  My_Conts.Append
-                    (Create
-                       (Erroutc.SGR_Note
-                        & Unproved_Msg_Raw
-                        & Erroutc.SGR_Reset));
-               end if;
-            end;
+            if not Is_Suppressed then
+               declare
+                  Unproved_Msg_Raw : constant String :=
+                    To_User_Msg (Obj.Unproved_Stat);
+               begin
+                  if Unproved_Msg_Raw /= "" then
+                     My_Conts.Append
+                       (Create
+                          (Erroutc.SGR_Note
+                           & Unproved_Msg_Raw
+                           & Erroutc.SGR_Reset));
+                  end if;
+               end;
+            end if;
             Wrap_Error_Msg (Obj.Msg);
       end case;
 
