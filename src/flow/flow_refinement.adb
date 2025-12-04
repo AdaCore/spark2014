@@ -1488,8 +1488,8 @@ package body Flow_Refinement is
 
         or else
 
-          --  3) Depends refers to state abstraction with visible refinement but
-          --     no Refined_Depends is present.
+          --  3) Depends refers to state abstraction with visible refinement
+          --     but no Refined_Depends is present.
           (Present (Depends_N)
            and then No (Refined_Depends_N)
            and then No (Refined_Global_N)

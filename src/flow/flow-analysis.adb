@@ -1,4 +1,4 @@
-   ------------------------------------------------------------------------------
+------------------------------------------------------------------------------
 --                                                                          --
 --                           GNAT2WHY COMPONENTS                            --
 --                                                                          --
@@ -1889,7 +1889,8 @@ package body Flow.Analysis is
                  and then
 
                    --  Suppression for vertices that can lead to abnormal
-                   --  termination and have had some of their out edges removed.
+                   --  termination and have had some of their out edges
+                   --  removed.
                    not Atr.Is_Exceptional_Branch
                  and then
 
@@ -1898,9 +1899,9 @@ package body Flow.Analysis is
                    not Atr.Is_Exceptional_Path
                  and then
 
-                   --  Suppression for vertices that correspond to an assignment
-                   --  to a record field, that comes from a record split, while
-                   --  some of the other fields is effective.
+                   --  Suppression for vertices that correspond to an
+                   --  assignment to a record field, that comes from a record
+                   --  split, while some of the other fields is effective.
                    not Other_Field_Is_Effective (V)
                  and then
 
@@ -1913,8 +1914,8 @@ package body Flow.Analysis is
                    not Is_Package_Elaboration (V)
                  and then
 
-                   --  Suppression for ineffective statements caused by dead code
-                   --  coming from constants with Warnings => Off
+                   --  Suppression for ineffective statements caused by dead
+                   --  code coming from constants with Warnings => Off
                    not Atr.Warnings_Off
                  and then
 
