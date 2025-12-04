@@ -4413,6 +4413,7 @@ package body Flow.Analysis is
    ------------------------------
 
    procedure Check_Ghost_Calls_Policy (FA : in out Flow_Analysis_Graphs) is
+      Subp    : constant Flow_Id := Direct_Mapping_Id (FA.Spec_Entity);
       Globals : Global_Flow_Ids;
    begin
       for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
@@ -4423,6 +4424,9 @@ package body Flow.Analysis is
 
             if not Atr.In_Nested_Package then
                for SC of Atr.Subprogram_Calls loop
+
+                  --  Check first part of SPARK RM 6.9(27), i.e. ghost policies
+
                   if Is_Ignored_Ghost_Node (SC.N)
                     and then
                       (Ekind (SC.E) = E_Procedure
@@ -4447,6 +4451,42 @@ package body Flow.Analysis is
                               Severity => Medium_Check_Kind,
                               N        => Atr.Error_Location,
                               Tag      => Ghost_Wrong,  --  ???
+                              Vertex   => V);
+                        end if;
+                     end loop;
+                  end if;
+
+                  --  Check second part of the same rule, i.e.
+                  --  assertion-level-dependency.
+
+                  if Is_Ghost_Entity (FA.Spec_Entity)
+                    and then
+                      (Ekind (SC.E) = E_Procedure
+                       or else Is_Function_With_Side_Effects (SC.E))
+                  then
+                     Get_Globals
+                       (Subprogram => SC.E,
+                        Scope      => FA.B_Scope,
+                        Classwide  => False,
+                        Globals    => Globals);
+
+                     for Output of To_Ordered_Flow_Id_Set (Globals.Outputs)
+                     loop
+                        if Is_Ghost_Entity (Output)
+                          and then
+                            not Is_Assertion_Level_Dependent (Output, Subp)
+                        then
+                           Error_Msg_Flow
+                             (FA       => FA,
+                              Msg      =>
+                                "global output & of a call to & "
+                                & "should be assertion-level-dependent on &",
+                              F1       => Output,
+                              F2       => Direct_Mapping_Id (SC.E),
+                              F3       => Subp,
+                              Severity => Medium_Check_Kind,
+                              N        => Atr.Error_Location,
+                              Tag      => Ghost_Wrong,
                               Vertex   => V);
                         end if;
                      end loop;
