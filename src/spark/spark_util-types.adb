@@ -34,6 +34,7 @@ with Sinfo.Utils;                 use Sinfo.Utils;
 with SPARK_Definition;            use SPARK_Definition;
 with SPARK_Definition.Annotate;   use SPARK_Definition.Annotate;
 with SPARK_Util.Subprograms;      use SPARK_Util.Subprograms;
+with Ttypes;                      use Ttypes;
 
 package body SPARK_Util.Types is
 
@@ -68,12 +69,14 @@ package body SPARK_Util.Types is
         and then not From_Limited_With (Ty)
         and then Present (Full_View (Ty)))
        or else Is_Partial_View (Ty)
-       or else (Is_Class_Wide_Type (Ty)
-                and then not From_Limited_With (Ty)
-                and then Nkind (Atree.Parent (Ty))
-                         in N_Incomplete_Type_Declaration
-                          | N_Private_Type_Declaration
-                          | N_Private_Extension_Declaration));
+       or else
+         (Is_Class_Wide_Type (Ty)
+          and then not From_Limited_With (Ty)
+          and then
+            Nkind (Atree.Parent (Ty))
+            in N_Incomplete_Type_Declaration
+             | N_Private_Type_Declaration
+             | N_Private_Extension_Declaration));
 
    ---------------------------------------
    -- Ancestor_Declares_Iterable_Aspect --
@@ -95,6 +98,47 @@ package body SPARK_Util.Types is
         and then Underlying_Type (Etype (Cursor)) /= Cursor
         and then Find_Aspect (Etype (Cursor), Aspect_Iterable) = Aspect;
    end Ancestor_Declares_Iterable_Aspect;
+
+   --------------------------
+   -- Array_Component_Size --
+   --------------------------
+
+   procedure Array_Component_Size (Typ : Type_Kind_Id; Comp_Size : out Uint) is
+      Comp_Ty     : constant Type_Kind_Id := Retysp (Component_Type (Typ));
+      Explanation : Unbounded_String;
+   begin
+      Comp_Size := Get_Attribute_Value (Typ, Attribute_Component_Size);
+
+      if No (Comp_Size) then
+         if Is_Packed (Typ) then
+            Check_Known_RM_Size (Comp_Ty, Comp_Size, Explanation);
+         else
+            Check_Known_Esize (Comp_Ty, Comp_Size, Explanation);
+         end if;
+      end if;
+   end Array_Component_Size;
+
+   -------------------------------------
+   -- Array_Size_Is_Sum_Of_Components --
+   -------------------------------------
+
+   function Array_Size_Is_Sum_Of_Components (E : Type_Kind_Id) return Boolean
+   is
+      Comp_Size : Uint;
+
+   begin
+      Array_Component_Size (E, Comp_Size);
+
+      --  There should not be gaps if the component size is a multiple of
+      --  the Storage_Unit. If the array is not packed and the component
+      --  size is not specified, the Object_Size of the component type is
+      --  used. It is always a multiple of the Storage_Unit.
+
+      return
+        (if No (Comp_Size)
+         then not Is_Packed (E)
+         else Comp_Size mod System_Storage_Unit = Uint_0);
+   end Array_Size_Is_Sum_Of_Components;
 
    -----------------
    -- Base_Retysp --
@@ -470,10 +514,11 @@ package body SPARK_Util.Types is
           --  if it has an ownership annotation and it needs reclamation.
 
           elsif (Is_Access_Object_Type (Typ)
-                 and then (not Is_Access_Constant (Typ)
-                           or else Is_Anonymous_Access_Type (Typ)))
-            or else (Has_Ownership_Annotation (Typ)
-                     and then Needs_Reclamation (Typ))
+                 and then
+                   (not Is_Access_Constant (Typ)
+                    or else Is_Anonymous_Access_Type (Typ)))
+            or else
+              (Has_Ownership_Annotation (Typ) and then Needs_Reclamation (Typ))
           then Pass
           else Fail);
 
@@ -610,8 +655,9 @@ package body SPARK_Util.Types is
 
    function Copy_Requires_Init (Typ : Type_Kind_Id) return Boolean
    is (Has_Scalar_Full_View (Typ)
-       or else (Has_Predicates (Typ)
-                and then Predicate_Requires_Initialization (Typ)));
+       or else
+         (Has_Predicates (Typ)
+          and then Predicate_Requires_Initialization (Typ)));
 
    ---------------------------------------
    -- Count_Non_Inherited_Discriminants --
@@ -684,13 +730,12 @@ package body SPARK_Util.Types is
                if From_Aspect_Specification (Rep_Item) then
                   null;
                elsif Get_Pragma_Id (Pragma_Name (Rep_Item)) = Pragma_Predicate
-                 and then Unique_Entity
-                            (Entity
-                               (Expression
-                                  (First
-                                     (Pragma_Argument_Associations
-                                        (Rep_Item)))))
-                          = Unique_Entity (Ty)
+                 and then
+                   Unique_Entity
+                     (Entity
+                        (Expression
+                           (First (Pragma_Argument_Associations (Rep_Item)))))
+                   = Unique_Entity (Ty)
                then
                   return;
                end if;
@@ -701,8 +746,8 @@ package body SPARK_Util.Types is
                    | Aspect_Dynamic_Predicate
                    | Aspect_Static_Predicate
                    | Aspect_Ghost_Predicate
-                 and then Unique_Entity (Entity (Rep_Item))
-                          = Unique_Entity (Ty)
+                 and then
+                   Unique_Entity (Entity (Rep_Item)) = Unique_Entity (Ty)
                then
                   return;
                end if;
@@ -997,13 +1042,14 @@ package body SPARK_Util.Types is
                begin
                   while Present (Comp) loop
                      if not Is_Tagged_Type (F_Typ)
-                       or else Unchecked_Full_Type
-                                 (Scope (Original_Record_Component (Comp)))
-                               = F_Typ
+                       or else
+                         Unchecked_Full_Type
+                           (Scope (Original_Record_Component (Comp)))
+                         = F_Typ
                      then
                         if Present (Expression (Enclosing_Declaration (Comp)))
-                          or else Has_Default_Initialized_Component
-                                    (Etype (Comp))
+                          or else
+                            Has_Default_Initialized_Component (Etype (Comp))
                         then
                            return True;
                         end if;
@@ -1334,12 +1380,13 @@ package body SPARK_Util.Types is
          begin
             while Present (Comp) loop
                if Component_Is_Visible_In_SPARK (Comp)
-                 and then ((Is_Unchecked_Union (Retysp (Etype (Comp)))
-                            and then (not Unconstrained_Only
-                                      or else not Is_Constrained
-                                                    (Retysp (Etype (Comp)))))
-                           or else Has_UU_Component
-                                     (Etype (Comp), Unconstrained_Only))
+                 and then
+                   ((Is_Unchecked_Union (Retysp (Etype (Comp)))
+                     and then
+                       (not Unconstrained_Only
+                        or else not Is_Constrained (Retysp (Etype (Comp)))))
+                    or else
+                      Has_UU_Component (Etype (Comp), Unconstrained_Only))
                then
                   return True;
                end if;
@@ -1350,11 +1397,11 @@ package body SPARK_Util.Types is
       elsif Is_Array_Type (Rep_Ty) then
          return
            (Is_Unchecked_Union (Retysp (Component_Type (Rep_Ty)))
-            and then (not Unconstrained_Only
-                      or else not Is_Constrained
-                                    (Retysp (Component_Type (Rep_Ty)))))
-           or else Has_UU_Component
-                     (Component_Type (Rep_Ty), Unconstrained_Only);
+            and then
+              (not Unconstrained_Only
+               or else not Is_Constrained (Retysp (Component_Type (Rep_Ty)))))
+           or else
+             Has_UU_Component (Component_Type (Rep_Ty), Unconstrained_Only);
       else
          return False;
       end if;
@@ -1418,11 +1465,11 @@ package body SPARK_Util.Types is
       loop
          if Has_Invariants_In_SPARK (Current)
            and then not Invariant_Assumed_In_Main (Current)
-           and then (No (Scop)
-                     or else not Invariant_Assumed_In_Scope (Current, Scop))
-           and then (No (Subp)
-                     or else not Invariant_Relaxed_For_Subprogram
-                                   (Current, Subp))
+           and then
+             (No (Scop) or else not Invariant_Assumed_In_Scope (Current, Scop))
+           and then
+             (No (Subp)
+              or else not Invariant_Relaxed_For_Subprogram (Current, Subp))
          then
             return True;
          end if;
@@ -1465,8 +1512,9 @@ package body SPARK_Util.Types is
             while Present (Comp) loop
                if Ekind (Comp) = E_Component
                  and then Entity_In_SPARK (Etype (Comp))
-                 and then Invariant_Check_Needed
-                            (Etype (Comp), Subp => Subp, Scop => Scop)
+                 and then
+                   Invariant_Check_Needed
+                     (Etype (Comp), Subp => Subp, Scop => Scop)
                then
                   return True;
                end if;
@@ -1491,8 +1539,8 @@ package body SPARK_Util.Types is
          begin
             return
               not Acts_As_Incomplete_Type (Des_Ty)
-              and then Invariant_Check_Needed
-                         (Des_Ty, Subp => Subp, Scop => Scop);
+              and then
+                Invariant_Check_Needed (Des_Ty, Subp => Subp, Scop => Scop);
          end;
       end if;
       return False;
@@ -1543,17 +1591,18 @@ package body SPARK_Util.Types is
             begin
                Priv :=
                  Priv
-                 or else (not Is_List_Member (Decl)
-                          or else Nkind (Par) /= N_Protected_Definition
-                          or else List_Containing (Decl)
-                                  /= Visible_Declarations (Par));
+                 or else
+                   (not Is_List_Member (Decl)
+                    or else Nkind (Par) /= N_Protected_Definition
+                    or else
+                      List_Containing (Decl) /= Visible_Declarations (Par));
             end;
 
          elsif Ekind (Scop) = E_Package then
             Priv :=
               Priv
-              or else not In_Visible_Declarations
-                            (Enclosing_Declaration (Prev));
+              or else
+                not In_Visible_Declarations (Enclosing_Declaration (Prev));
 
          else
             Priv := True;
@@ -1576,8 +1625,9 @@ package body SPARK_Util.Types is
    function Is_Deep (Typ : Type_Kind_Id) return Boolean is
       function Test_Access_Type (Typ : Type_Kind_Id) return Test_Result
       is (if Is_Access_Object_Type (Typ)
-            and then (not Is_Access_Constant (Typ)
-                      or else Is_Anonymous_Access_Type (Typ))
+            and then
+              (not Is_Access_Constant (Typ)
+               or else Is_Anonymous_Access_Type (Typ))
           then Pass
           elsif Has_Ownership_Annotation (Typ)
           then Pass
@@ -1641,8 +1691,8 @@ package body SPARK_Util.Types is
    function Is_Null_Range (T : Type_Kind_Id) return Boolean
    is (Is_Discrete_Type (T)
        and then Has_OK_Static_Scalar_Subtype (T)
-       and then Expr_Value (Type_Low_Bound (T))
-                > Expr_Value (Type_High_Bound (T)));
+       and then
+         Expr_Value (Type_Low_Bound (T)) > Expr_Value (Type_High_Bound (T)));
 
    ------------------------------
    -- Is_Standard_Boolean_Type --
@@ -1650,10 +1700,11 @@ package body SPARK_Util.Types is
 
    function Is_Standard_Boolean_Type (E : Type_Kind_Id) return Boolean
    is (E = Standard_Boolean
-       or else (Ekind (E) = E_Enumeration_Subtype
-                and then Etype (E) = Standard_Boolean
-                and then Scalar_Range (E) = Scalar_Range (Standard_Boolean)
-                and then not Has_Predicates (E)));
+       or else
+         (Ekind (E) = E_Enumeration_Subtype
+          and then Etype (E) = Standard_Boolean
+          and then Scalar_Range (E) = Scalar_Range (Standard_Boolean)
+          and then not Has_Predicates (E)));
 
    ----------------------
    -- Is_Standard_Type --
@@ -1896,12 +1947,13 @@ package body SPARK_Util.Types is
      (E : Type_Kind_Id) return Boolean
    is (Is_Base_Type (E)
        and then Has_Aggregate_Annotation (E)
-       and then (declare
-                   Annot : constant Aggregate_Annotation :=
-                     Get_Aggregate_Annotation (E);
-                 begin
-                   Entity_In_SPARK (Annot.Add_Procedure)
-                   and then Entity_In_SPARK (Annot.Empty_Function)));
+       and then
+         (declare
+            Annot : constant Aggregate_Annotation :=
+              Get_Aggregate_Annotation (E);
+          begin
+            Entity_In_SPARK (Annot.Add_Procedure)
+            and then Entity_In_SPARK (Annot.Empty_Function)));
 
    ------------------------------------
    -- Needs_Default_Predicate_Checks --
@@ -1909,10 +1961,11 @@ package body SPARK_Util.Types is
 
    function Needs_Default_Predicate_Checks (E : Type_Kind_Id) return Boolean
    is (Has_Predicates (E)
-       and then (Has_Default_Initialized_Component (E)
-                 or else Default_Initialization (E)
-                         in Full_Default_Initialization
-                          | No_Possible_Initialization));
+       and then
+         (Has_Default_Initialized_Component (E)
+          or else
+            Default_Initialization (E)
+            in Full_Default_Initialization | No_Possible_Initialization));
    --  Check the predicate if it is mandated by Ada (E has default initialized
    --  components) or flow analysis considers the object to be fully
    --  initialized (in this case, the object can be read as is so we need to
@@ -2195,9 +2248,9 @@ package body SPARK_Util.Types is
          return
            Nkind (Decl)
            in N_Subprogram_Declaration | N_Abstract_Subprogram_Declaration
-           and then Present
-                      (Get_Pragma
-                         (Defining_Entity (Decl), Pragma_Attach_Handler));
+           and then
+             Present
+               (Get_Pragma (Defining_Entity (Decl), Pragma_Attach_Handler));
       end Decl_Has_Attach_Handler;
 
       Decls : List_Id := Visible_Declarations_Of_Prot_Type (E);
@@ -2436,6 +2489,27 @@ package body SPARK_Util.Types is
       end if;
    end Record_Component_Size;
 
+   procedure Record_Component_Size
+     (Typ : Type_Kind_Id; Comp : Entity_Id; Comp_Size : out Uint)
+   is
+      Comp_Ty     : constant Type_Kind_Id := Retysp (Etype (Comp));
+      Explanation : Unbounded_String;
+   begin
+      if Present (Component_Clause (Comp)) then
+         Comp_Size :=
+           Expr_Value (Last_Bit (Component_Clause (Comp)))
+           - Expr_Value (First_Bit (Component_Clause (Comp)))
+           + Uint_1;
+
+      --  ARM K.2 225
+
+      elsif Is_Packed (Typ) then
+         Check_Known_RM_Size (Comp_Ty, Comp_Size, Explanation);
+      else
+         Check_Known_Esize (Comp_Ty, Comp_Size, Explanation);
+      end if;
+   end Record_Component_Size;
+
    -------------------------
    -- Static_Array_Length --
    -------------------------
@@ -2600,12 +2674,12 @@ package body SPARK_Util.Types is
                   begin
                      while Present (Comp) loop
                         if Component_Is_Visible_In_SPARK (Comp)
-                          and then (not Is_Tagged_Type (Rep_Ty)
-                                    or else Base_Retysp
-                                              (Scope
-                                                 (Original_Record_Component
-                                                    (Comp)))
-                                            = Base_Ty)
+                          and then
+                            (not Is_Tagged_Type (Rep_Ty)
+                             or else
+                               Base_Retysp
+                                 (Scope (Original_Record_Component (Comp)))
+                               = Base_Ty)
                           and then Traverse_Type (Etype (Comp))
                         then
                            return True;
@@ -2631,11 +2705,12 @@ package body SPARK_Util.Types is
 
                return
                  Inserted
-                 and then Traverse_Type
-                            (if Is_Incomplete_Type (Des_Ty)
-                               and then Present (Full_View (Des_Ty))
-                             then Full_View (Des_Ty)
-                             else Des_Ty);
+                 and then
+                   Traverse_Type
+                     (if Is_Incomplete_Type (Des_Ty)
+                        and then Present (Full_View (Des_Ty))
+                      then Full_View (Des_Ty)
+                      else Des_Ty);
             end;
          else
             pragma
@@ -2824,7 +2899,7 @@ package body SPARK_Util.Types is
                High       : constant Uint := Expr_Value (High_Bound (R));
                Num_Values : constant Uint := High - Low + 1;
             begin
-               if 2**Size = Num_Values then
+               if 2 ** Size = Num_Values then
                   return (Ok => True);
                else
                   --  We need to escape the string returned by UI_Image
@@ -2842,7 +2917,7 @@ package body SPARK_Util.Types is
                           & " "
                           & Escape (UI_Image (Size))
                           & ", which allows "
-                          & Escape (UI_Image (2**Size))
+                          & Escape (UI_Image (2 ** Size))
                           & " possible values"));
                end if;
             end;

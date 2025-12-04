@@ -131,13 +131,12 @@ package SPARK_Util.Types is
 
    function Can_Be_Default_Initialized (Typ : Type_Kind_Id) return Boolean
    is ((not Has_Array_Type (Typ) or else Is_Constrained (Typ))
-       and then (Retysp_Kind (Typ)
-                 not in Record_Kind
-                      | Incomplete_Or_Private_Kind
-                      | Concurrent_Kind
-                 or else not Has_Discriminants (Typ)
-                 or else Is_Constrained (Typ)
-                 or else Has_Defaulted_Discriminants (Typ))
+       and then
+         (Retysp_Kind (Typ)
+          not in Record_Kind | Incomplete_Or_Private_Kind | Concurrent_Kind
+          or else not Has_Discriminants (Typ)
+          or else Is_Constrained (Typ)
+          or else Has_Defaulted_Discriminants (Typ))
        and then not Is_Class_Wide_Type (Typ));
    --  Determine whether there can be default initialized variables of a type.
    --  @param Typ any type
@@ -381,6 +380,21 @@ package SPARK_Util.Types is
    --  Compute the expected size for a record component of scalar type. [Typ]
    --  is the containing record type. The Size_Str contains a string that
    --  explains the origin of the computed size.
+
+   procedure Array_Component_Size (Typ : Type_Kind_Id; Comp_Size : out Uint);
+   --  Compute the expected size for components of an array type [Typ]
+
+   procedure Record_Component_Size
+     (Typ : Type_Kind_Id; Comp : Entity_Id; Comp_Size : out Uint);
+   --  Compute the expected size for a record component. [Typ] is the
+   --  containing record type.
+
+   function Array_Size_Is_Sum_Of_Components (E : Type_Kind_Id) return Boolean
+   with Pre => Is_Array_Type (E);
+   --  Return True if we can determine that there is no gaps between the
+   --  components of arrays of type E nor padding at the end. The size of such
+   --  an array can be computed by multiplying the number of components of the
+   --  array by the size of a component.
 
    function Type_Has_Only_Valid_Values
      (ArgTyp : Type_Kind_Id; Size : Uint; Size_Str : String)
