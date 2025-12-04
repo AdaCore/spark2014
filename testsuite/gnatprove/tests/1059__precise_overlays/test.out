@@ -1,0 +1,301 @@
+test_global_constants.adb:25:14: warning: subprogram "Test_Int_OK" has no effect
+test_global_constants.adb:27:07: info: address in address clause is compatible with object alignment (Trivial)
+test_global_constants.adb:27:07: info: object is suitable for aliasing via address clause (Trivial)
+test_global_constants.adb:27:50: info: object is suitable for aliasing via address clause (Trivial)
+test_global_constants.adb:27:50: info: type is suitable as source for unchecked conversion (Trivial)
+test_global_constants.adb:27:50: info: types of aliased objects have the same size (Trivial)
+test_global_constants.adb:28:07: warning: analyzing unreferenced procedure "Test" [unreferenced-procedure]
+test_global_constants.adb:28:17: warning: subprogram "Test" has no effect
+test_global_constants.adb:30:25: info: assertion proved (CVC5: 1 VC)
+test_global_constants.adb:36:14: warning: subprogram "Test_Int_KO" has no effect
+test_global_constants.adb:38:07: info: address in address clause is compatible with object alignment (Trivial)
+test_global_constants.adb:38:07: info: object is suitable for aliasing via address clause (Trivial)
+test_global_constants.adb:38:50: info: object is suitable for aliasing via address clause (Trivial)
+test_global_constants.adb:38:50: info: type is suitable as source for unchecked conversion (Trivial)
+test_global_constants.adb:38:50: info: types of aliased objects have the same size (Trivial)
+test_global_constants.adb:39:07: warning: analyzing unreferenced procedure "Test" [unreferenced-procedure]
+test_global_constants.adb:39:17: warning: subprogram "Test" has no effect
+test_global_constants.adb:41:25: medium: assertion might fail [provers reached step limit before completing the proof]
+test_global_constants.adb:47:14: warning: subprogram "Test_Array_OK" has no effect
+test_global_constants.adb:49:07: info: address in address clause is compatible with object alignment (Trivial)
+test_global_constants.adb:49:07: info: object is suitable for aliasing via address clause (Trivial)
+test_global_constants.adb:49:52: info: object is suitable for aliasing via address clause (Trivial)
+test_global_constants.adb:49:52: info: type is suitable as source for unchecked conversion (Trivial)
+test_global_constants.adb:49:52: info: types of aliased objects have the same size (Trivial)
+test_global_constants.adb:50:07: warning: analyzing unreferenced procedure "Test" [unreferenced-procedure]
+test_global_constants.adb:50:17: warning: subprogram "Test" has no effect
+test_global_constants.adb:52:25: info: assertion proved (Z3: 1 VC)
+test_global_constants.adb:58:14: warning: subprogram "Test_Array_KO" has no effect
+test_global_constants.adb:60:07: info: address in address clause is compatible with object alignment (Trivial)
+test_global_constants.adb:60:07: info: object is suitable for aliasing via address clause (Trivial)
+test_global_constants.adb:60:52: info: object is suitable for aliasing via address clause (Trivial)
+test_global_constants.adb:60:52: info: type is suitable as source for unchecked conversion (Trivial)
+test_global_constants.adb:60:52: info: types of aliased objects have the same size (Trivial)
+test_global_constants.adb:61:07: warning: analyzing unreferenced procedure "Test" [unreferenced-procedure]
+test_global_constants.adb:61:17: warning: subprogram "Test" has no effect
+test_global_constants.adb:63:25: medium: assertion might fail [provers reached step limit before completing the proof]
+test_global_constants.adb:69:14: warning: subprogram "Test_Record_OK" has no effect
+test_global_constants.adb:72:07: info: address in address clause is compatible with object alignment (Trivial)
+test_global_constants.adb:72:07: info: object is suitable for aliasing via address clause (Trivial)
+test_global_constants.adb:72:52: info: object is suitable for aliasing via address clause (Trivial)
+test_global_constants.adb:72:52: info: type is suitable as source for unchecked conversion (Trivial)
+test_global_constants.adb:72:52: info: types of aliased objects have the same size (Trivial)
+test_global_constants.adb:73:17: warning: subprogram "Test" has no effect
+test_global_constants.adb:75:25: info: assertion proved (CVC5: 1 VC)
+test_global_constants.adb:81:14: warning: subprogram "Test_Record_KO" has no effect
+test_global_constants.adb:84:07: info: address in address clause is compatible with object alignment (Trivial)
+test_global_constants.adb:84:07: info: object is suitable for aliasing via address clause (Trivial)
+test_global_constants.adb:84:52: info: object is suitable for aliasing via address clause (Trivial)
+test_global_constants.adb:84:52: info: type is suitable as source for unchecked conversion (Trivial)
+test_global_constants.adb:84:52: info: types of aliased objects have the same size (Trivial)
+test_global_constants.adb:85:17: warning: subprogram "Test" has no effect
+test_global_constants.adb:87:25: high: assertion might fail (e.g. when Y = (F => Mod_8'Last, G => Mod_8'Last)) [provers reached step limit before completing the proof]
+test_local_constants.adb:25:14: warning: subprogram "Test_Int_OK" has no effect
+test_local_constants.adb:27:07: info: address in address clause is compatible with object alignment (Trivial)
+test_local_constants.adb:27:07: info: object is suitable for aliasing via address clause (Trivial)
+test_local_constants.adb:27:50: info: object is suitable for aliasing via address clause (Trivial)
+test_local_constants.adb:27:50: info: type is suitable as source for unchecked conversion (Trivial)
+test_local_constants.adb:27:50: info: types of aliased objects have the same size (Trivial)
+test_local_constants.adb:29:22: info: assertion proved (CVC5: 1 VC)
+test_local_constants.adb:32:14: warning: subprogram "Test_Int_KO" has no effect
+test_local_constants.adb:34:07: info: address in address clause is compatible with object alignment (Trivial)
+test_local_constants.adb:34:07: info: object is suitable for aliasing via address clause (Trivial)
+test_local_constants.adb:34:50: info: object is suitable for aliasing via address clause (Trivial)
+test_local_constants.adb:34:50: info: type is suitable as source for unchecked conversion (Trivial)
+test_local_constants.adb:34:50: info: types of aliased objects have the same size (Trivial)
+test_local_constants.adb:36:22: medium: assertion might fail (e.g. when Y = Mod_8'Last) [possible fix: add or complete related loop invariants or postconditions] [provers reached step limit before completing the proof]
+test_local_constants.adb:39:14: warning: subprogram "Test_Array_OK" has no effect
+test_local_constants.adb:41:07: info: address in address clause is compatible with object alignment (Trivial)
+test_local_constants.adb:41:07: info: object is suitable for aliasing via address clause (Trivial)
+test_local_constants.adb:41:52: info: object is suitable for aliasing via address clause (Trivial)
+test_local_constants.adb:41:52: info: type is suitable as source for unchecked conversion (Trivial)
+test_local_constants.adb:41:52: info: types of aliased objects have the same size (Trivial)
+test_local_constants.adb:43:22: info: assertion proved (Z3: 1 VC)
+test_local_constants.adb:46:14: warning: subprogram "Test_Array_KO" has no effect
+test_local_constants.adb:48:07: info: address in address clause is compatible with object alignment (Trivial)
+test_local_constants.adb:48:07: info: object is suitable for aliasing via address clause (Trivial)
+test_local_constants.adb:48:52: info: object is suitable for aliasing via address clause (Trivial)
+test_local_constants.adb:48:52: info: type is suitable as source for unchecked conversion (Trivial)
+test_local_constants.adb:48:52: info: types of aliased objects have the same size (Trivial)
+test_local_constants.adb:50:22: medium: assertion might fail [provers reached step limit before completing the proof]
+test_local_constants.adb:53:14: warning: subprogram "Test_Record_OK" has no effect
+test_local_constants.adb:56:07: info: address in address clause is compatible with object alignment (Trivial)
+test_local_constants.adb:56:07: info: object is suitable for aliasing via address clause (Trivial)
+test_local_constants.adb:56:52: info: object is suitable for aliasing via address clause (Trivial)
+test_local_constants.adb:56:52: info: type is suitable as source for unchecked conversion (Trivial)
+test_local_constants.adb:56:52: info: types of aliased objects have the same size (Trivial)
+test_local_constants.adb:58:22: info: assertion proved (CVC5: 1 VC)
+test_local_constants.adb:61:14: warning: subprogram "Test_Record_KO" has no effect
+test_local_constants.adb:64:07: info: address in address clause is compatible with object alignment (Trivial)
+test_local_constants.adb:64:07: info: object is suitable for aliasing via address clause (Trivial)
+test_local_constants.adb:64:52: info: object is suitable for aliasing via address clause (Trivial)
+test_local_constants.adb:64:52: info: type is suitable as source for unchecked conversion (Trivial)
+test_local_constants.adb:64:52: info: types of aliased objects have the same size (Trivial)
+test_local_constants.adb:66:22: medium: assertion might fail (e.g. when Y = (F => Mod_8'Last, G => Mod_8'Last)) [possible fix: add or complete related loop invariants or postconditions] [provers reached step limit before completing the proof]
+test_potentially_invalid.adb:25:14: warning: subprogram "Test_Int_OK" has no effect
+test_potentially_invalid.adb:27:07: info: address in address clause is compatible with object alignment (Trivial)
+test_potentially_invalid.adb:27:07: info: object is suitable for aliasing via address clause (Trivial)
+test_potentially_invalid.adb:27:50: info: object is suitable for aliasing via address clause (Trivial)
+test_potentially_invalid.adb:27:50: info: type is suitable as source for unchecked conversion (Trivial)
+test_potentially_invalid.adb:27:50: info: types of aliased objects have the same size (Trivial)
+test_potentially_invalid.adb:29:22: info: assertion proved (CVC5: 1 VC)
+test_potentially_invalid.adb:29:22: info: validity check proved (CVC5: 1 VC)
+test_potentially_invalid.adb:32:14: warning: subprogram "Test_Int_Invalid" has no effect
+test_potentially_invalid.adb:34:07: info: address in address clause is compatible with object alignment (Trivial)
+test_potentially_invalid.adb:34:07: info: object is suitable for aliasing via address clause (Trivial)
+test_potentially_invalid.adb:34:50: info: object is suitable for aliasing via address clause (Trivial)
+test_potentially_invalid.adb:34:50: info: type is suitable as source for unchecked conversion (Trivial)
+test_potentially_invalid.adb:34:50: info: types of aliased objects have the same size (Trivial)
+test_potentially_invalid.adb:36:22: medium: assertion might fail (e.g. when Y'Valid = False) [provers reached step limit before completing the proof]
+test_potentially_invalid.adb:39:14: warning: subprogram "Test_Int_KO" has no effect
+test_potentially_invalid.adb:41:07: info: address in address clause is compatible with object alignment (Trivial)
+test_potentially_invalid.adb:41:07: info: object is suitable for aliasing via address clause (Trivial)
+test_potentially_invalid.adb:41:50: info: object is suitable for aliasing via address clause (Trivial)
+test_potentially_invalid.adb:41:50: info: type is suitable as source for unchecked conversion (Trivial)
+test_potentially_invalid.adb:41:50: info: types of aliased objects have the same size (Trivial)
+test_potentially_invalid.adb:43:22: info: validity check proved (CVC5: 1 VC)
+test_potentially_invalid.adb:43:22: medium: assertion might fail (e.g. when Y = 1 and Y'Valid = True) [possible fix: add or complete related loop invariants or postconditions] [provers reached step limit before completing the proof]
+test_potentially_invalid.adb:46:14: warning: subprogram "Test_Array_OK" has no effect
+test_potentially_invalid.adb:48:07: info: address in address clause is compatible with object alignment (Trivial)
+test_potentially_invalid.adb:48:07: info: object is suitable for aliasing via address clause (Trivial)
+test_potentially_invalid.adb:48:52: info: object is suitable for aliasing via address clause (Trivial)
+test_potentially_invalid.adb:48:52: info: type is suitable as source for unchecked conversion (Trivial)
+test_potentially_invalid.adb:48:52: info: types of aliased objects have the same size (Trivial)
+test_potentially_invalid.adb:50:22: info: assertion proved (Z3: 1 VC)
+test_potentially_invalid.adb:50:22: info: validity check proved (Z3: 1 VC)
+test_potentially_invalid.adb:53:14: warning: subprogram "Test_Array_Invalid" has no effect
+test_potentially_invalid.adb:55:07: info: address in address clause is compatible with object alignment (Trivial)
+test_potentially_invalid.adb:55:07: info: object is suitable for aliasing via address clause (Trivial)
+test_potentially_invalid.adb:55:52: info: object is suitable for aliasing via address clause (Trivial)
+test_potentially_invalid.adb:55:52: info: type is suitable as source for unchecked conversion (Trivial)
+test_potentially_invalid.adb:55:52: info: types of aliased objects have the same size (Trivial)
+test_potentially_invalid.adb:57:22: medium: assertion might fail [provers reached step limit before completing the proof]
+test_potentially_invalid.adb:60:14: warning: subprogram "Test_Array_KO" has no effect
+test_potentially_invalid.adb:62:07: info: address in address clause is compatible with object alignment (Trivial)
+test_potentially_invalid.adb:62:07: info: object is suitable for aliasing via address clause (Trivial)
+test_potentially_invalid.adb:62:52: info: object is suitable for aliasing via address clause (Trivial)
+test_potentially_invalid.adb:62:52: info: type is suitable as source for unchecked conversion (Trivial)
+test_potentially_invalid.adb:62:52: info: types of aliased objects have the same size (Trivial)
+test_potentially_invalid.adb:64:22: info: validity check proved (Z3: 1 VC)
+test_potentially_invalid.adb:64:22: medium: assertion might fail [provers reached step limit before completing the proof]
+test_potentially_invalid.adb:67:14: warning: subprogram "Test_Record_OK" has no effect
+test_potentially_invalid.adb:70:07: info: address in address clause is compatible with object alignment (Trivial)
+test_potentially_invalid.adb:70:07: info: object is suitable for aliasing via address clause (Trivial)
+test_potentially_invalid.adb:70:52: info: object is suitable for aliasing via address clause (Trivial)
+test_potentially_invalid.adb:70:52: info: type is suitable as source for unchecked conversion (Trivial)
+test_potentially_invalid.adb:70:52: info: types of aliased objects have the same size (Trivial)
+test_potentially_invalid.adb:72:22: info: assertion proved (CVC5: 1 VC)
+test_potentially_invalid.adb:72:23: info: validity check proved (CVC5: 1 VC)
+test_potentially_invalid.adb:75:14: warning: subprogram "Test_Record_Invalid" has no effect
+test_potentially_invalid.adb:78:07: info: address in address clause is compatible with object alignment (Trivial)
+test_potentially_invalid.adb:78:07: info: object is suitable for aliasing via address clause (Trivial)
+test_potentially_invalid.adb:78:52: info: object is suitable for aliasing via address clause (Trivial)
+test_potentially_invalid.adb:78:52: info: type is suitable as source for unchecked conversion (Trivial)
+test_potentially_invalid.adb:78:52: info: types of aliased objects have the same size (Trivial)
+test_potentially_invalid.adb:80:22: medium: assertion might fail (e.g. when Y.F'Valid = False and Y.G'Valid = False) [provers reached step limit before completing the proof]
+test_potentially_invalid.adb:83:14: warning: subprogram "Test_Record_KO" has no effect
+test_potentially_invalid.adb:86:07: info: address in address clause is compatible with object alignment (Trivial)
+test_potentially_invalid.adb:86:07: info: object is suitable for aliasing via address clause (Trivial)
+test_potentially_invalid.adb:86:52: info: object is suitable for aliasing via address clause (Trivial)
+test_potentially_invalid.adb:86:52: info: type is suitable as source for unchecked conversion (Trivial)
+test_potentially_invalid.adb:86:52: info: types of aliased objects have the same size (Trivial)
+test_potentially_invalid.adb:88:22: medium: assertion might fail (e.g. when Y = (F => 1, G => 1) and Y.F'Valid = True and Y.G'Valid = True) [possible fix: add or complete related loop invariants or postconditions] [provers reached step limit before completing the proof]
+test_potentially_invalid.adb:88:23: info: validity check proved (CVC5: 1 VC)
+test_potentially_invalid_global.adb:25:14: warning: subprogram "Test_Int_OK" has no effect
+test_potentially_invalid_global.adb:27:07: info: address in address clause is compatible with object alignment (Trivial)
+test_potentially_invalid_global.adb:27:07: info: object is suitable for aliasing via address clause (Trivial)
+test_potentially_invalid_global.adb:27:50: info: object is suitable for aliasing via address clause (Trivial)
+test_potentially_invalid_global.adb:27:50: info: type is suitable as source for unchecked conversion (Trivial)
+test_potentially_invalid_global.adb:27:50: info: types of aliased objects have the same size (Trivial)
+test_potentially_invalid_global.adb:28:07: warning: analyzing unreferenced procedure "Test" [unreferenced-procedure]
+test_potentially_invalid_global.adb:28:17: warning: subprogram "Test" has no effect
+test_potentially_invalid_global.adb:30:25: info: assertion proved (CVC5: 1 VC)
+test_potentially_invalid_global.adb:30:25: info: validity check proved (CVC5: 1 VC)
+test_potentially_invalid_global.adb:36:14: warning: subprogram "Test_Int_Invalid" has no effect
+test_potentially_invalid_global.adb:38:07: info: address in address clause is compatible with object alignment (Trivial)
+test_potentially_invalid_global.adb:38:07: info: object is suitable for aliasing via address clause (Trivial)
+test_potentially_invalid_global.adb:38:50: info: object is suitable for aliasing via address clause (Trivial)
+test_potentially_invalid_global.adb:38:50: info: type is suitable as source for unchecked conversion (Trivial)
+test_potentially_invalid_global.adb:38:50: info: types of aliased objects have the same size (Trivial)
+test_potentially_invalid_global.adb:39:07: warning: analyzing unreferenced procedure "Test" [unreferenced-procedure]
+test_potentially_invalid_global.adb:39:17: warning: subprogram "Test" has no effect
+test_potentially_invalid_global.adb:41:25: medium: assertion might fail [provers reached step limit before completing the proof]
+test_potentially_invalid_global.adb:47:14: warning: subprogram "Test_Int_KO" has no effect
+test_potentially_invalid_global.adb:49:07: info: address in address clause is compatible with object alignment (Trivial)
+test_potentially_invalid_global.adb:49:07: info: object is suitable for aliasing via address clause (Trivial)
+test_potentially_invalid_global.adb:49:50: info: object is suitable for aliasing via address clause (Trivial)
+test_potentially_invalid_global.adb:49:50: info: type is suitable as source for unchecked conversion (Trivial)
+test_potentially_invalid_global.adb:49:50: info: types of aliased objects have the same size (Trivial)
+test_potentially_invalid_global.adb:50:07: warning: analyzing unreferenced procedure "Test" [unreferenced-procedure]
+test_potentially_invalid_global.adb:50:17: warning: subprogram "Test" has no effect
+test_potentially_invalid_global.adb:52:25: info: validity check proved (CVC5: 1 VC)
+test_potentially_invalid_global.adb:52:25: medium: assertion might fail [provers reached step limit before completing the proof]
+test_potentially_invalid_global.adb:58:14: warning: subprogram "Test_Array_OK" has no effect
+test_potentially_invalid_global.adb:60:07: info: address in address clause is compatible with object alignment (Trivial)
+test_potentially_invalid_global.adb:60:07: info: object is suitable for aliasing via address clause (Trivial)
+test_potentially_invalid_global.adb:60:52: info: object is suitable for aliasing via address clause (Trivial)
+test_potentially_invalid_global.adb:60:52: info: type is suitable as source for unchecked conversion (Trivial)
+test_potentially_invalid_global.adb:60:52: info: types of aliased objects have the same size (Trivial)
+test_potentially_invalid_global.adb:61:07: warning: analyzing unreferenced procedure "Test" [unreferenced-procedure]
+test_potentially_invalid_global.adb:61:17: warning: subprogram "Test" has no effect
+test_potentially_invalid_global.adb:63:25: info: assertion proved (Z3: 1 VC)
+test_potentially_invalid_global.adb:63:25: info: validity check proved (CVC5: 1 VC)
+test_potentially_invalid_global.adb:69:14: warning: subprogram "Test_Array_Invalid" has no effect
+test_potentially_invalid_global.adb:71:07: info: address in address clause is compatible with object alignment (Trivial)
+test_potentially_invalid_global.adb:71:07: info: object is suitable for aliasing via address clause (Trivial)
+test_potentially_invalid_global.adb:71:52: info: object is suitable for aliasing via address clause (Trivial)
+test_potentially_invalid_global.adb:71:52: info: type is suitable as source for unchecked conversion (Trivial)
+test_potentially_invalid_global.adb:71:52: info: types of aliased objects have the same size (Trivial)
+test_potentially_invalid_global.adb:72:07: warning: analyzing unreferenced procedure "Test" [unreferenced-procedure]
+test_potentially_invalid_global.adb:72:17: warning: subprogram "Test" has no effect
+test_potentially_invalid_global.adb:74:25: medium: assertion might fail [provers reached step limit before completing the proof]
+test_potentially_invalid_global.adb:80:14: warning: subprogram "Test_Array_KO" has no effect
+test_potentially_invalid_global.adb:82:07: info: address in address clause is compatible with object alignment (Trivial)
+test_potentially_invalid_global.adb:82:07: info: object is suitable for aliasing via address clause (Trivial)
+test_potentially_invalid_global.adb:82:52: info: object is suitable for aliasing via address clause (Trivial)
+test_potentially_invalid_global.adb:82:52: info: type is suitable as source for unchecked conversion (Trivial)
+test_potentially_invalid_global.adb:82:52: info: types of aliased objects have the same size (Trivial)
+test_potentially_invalid_global.adb:83:07: warning: analyzing unreferenced procedure "Test" [unreferenced-procedure]
+test_potentially_invalid_global.adb:83:17: warning: subprogram "Test" has no effect
+test_potentially_invalid_global.adb:85:25: info: validity check proved (CVC5: 1 VC)
+test_potentially_invalid_global.adb:85:25: medium: assertion might fail [provers reached step limit before completing the proof]
+test_potentially_invalid_global.adb:91:14: warning: subprogram "Test_Record_OK" has no effect
+test_potentially_invalid_global.adb:94:07: info: address in address clause is compatible with object alignment (Trivial)
+test_potentially_invalid_global.adb:94:07: info: object is suitable for aliasing via address clause (Trivial)
+test_potentially_invalid_global.adb:94:52: info: object is suitable for aliasing via address clause (Trivial)
+test_potentially_invalid_global.adb:94:52: info: type is suitable as source for unchecked conversion (Trivial)
+test_potentially_invalid_global.adb:94:52: info: types of aliased objects have the same size (Trivial)
+test_potentially_invalid_global.adb:95:17: warning: subprogram "Test" has no effect
+test_potentially_invalid_global.adb:97:25: info: assertion proved (CVC5: 1 VC)
+test_potentially_invalid_global.adb:97:26: info: validity check proved (CVC5: 1 VC)
+test_potentially_invalid_global.adb:103:14: warning: subprogram "Test_Record_Invalid" has no effect
+test_potentially_invalid_global.adb:106:07: info: address in address clause is compatible with object alignment (Trivial)
+test_potentially_invalid_global.adb:106:07: info: object is suitable for aliasing via address clause (Trivial)
+test_potentially_invalid_global.adb:106:52: info: object is suitable for aliasing via address clause (Trivial)
+test_potentially_invalid_global.adb:106:52: info: type is suitable as source for unchecked conversion (Trivial)
+test_potentially_invalid_global.adb:106:52: info: types of aliased objects have the same size (Trivial)
+test_potentially_invalid_global.adb:107:17: warning: subprogram "Test" has no effect
+test_potentially_invalid_global.adb:109:25: medium: assertion might fail (e.g. when Y = (F => ?, G => 0) and Y.F'Valid = False and Y.G'Valid = True) [provers reached step limit before completing the proof]
+test_potentially_invalid_global.adb:115:14: warning: subprogram "Test_Record_KO" has no effect
+test_potentially_invalid_global.adb:118:07: info: address in address clause is compatible with object alignment (Trivial)
+test_potentially_invalid_global.adb:118:07: info: object is suitable for aliasing via address clause (Trivial)
+test_potentially_invalid_global.adb:118:52: info: object is suitable for aliasing via address clause (Trivial)
+test_potentially_invalid_global.adb:118:52: info: type is suitable as source for unchecked conversion (Trivial)
+test_potentially_invalid_global.adb:118:52: info: types of aliased objects have the same size (Trivial)
+test_potentially_invalid_global.adb:119:17: warning: subprogram "Test" has no effect
+test_potentially_invalid_global.adb:121:25: high: assertion might fail (e.g. when Y = (F => 1, G => 1) and Y.F'Valid = True and Y.G'Valid = True) [provers reached step limit before completing the proof]
+test_potentially_invalid_global.adb:121:26: info: validity check proved (CVC5: 1 VC)
+test_variables.adb:25:04: warning: analyzing unreferenced procedure "Test_Int_OK" [unreferenced-procedure]
+test_variables.adb:25:14: warning: subprogram "Test_Int_OK" has no effect
+test_variables.adb:27:07: info: address in address clause is compatible with object alignment (Trivial)
+test_variables.adb:27:07: info: object is suitable for aliasing via address clause (Trivial)
+test_variables.adb:27:07: info: type is suitable as source for unchecked conversion (Trivial)
+test_variables.adb:27:41: info: object is suitable for aliasing via address clause (Trivial)
+test_variables.adb:27:41: info: type is suitable as source for unchecked conversion (Trivial)
+test_variables.adb:27:41: info: types of aliased objects have the same size (Trivial)
+test_variables.adb:29:22: info: assertion proved (CVC5: 1 VC)
+test_variables.adb:32:04: warning: analyzing unreferenced procedure "Test_Int_KO" [unreferenced-procedure]
+test_variables.adb:32:14: warning: subprogram "Test_Int_KO" has no effect
+test_variables.adb:34:07: info: address in address clause is compatible with object alignment (Trivial)
+test_variables.adb:34:07: info: object is suitable for aliasing via address clause (Trivial)
+test_variables.adb:34:07: info: type is suitable as source for unchecked conversion (Trivial)
+test_variables.adb:34:41: info: object is suitable for aliasing via address clause (Trivial)
+test_variables.adb:34:41: info: type is suitable as source for unchecked conversion (Trivial)
+test_variables.adb:34:41: info: types of aliased objects have the same size (Trivial)
+test_variables.adb:36:22: medium: assertion might fail [possible fix: add or complete related loop invariants or postconditions] [provers reached step limit before completing the proof]
+test_variables.adb:39:04: warning: analyzing unreferenced procedure "Test_Array_OK" [unreferenced-procedure]
+test_variables.adb:39:14: warning: subprogram "Test_Array_OK" has no effect
+test_variables.adb:41:07: info: address in address clause is compatible with object alignment (Trivial)
+test_variables.adb:41:07: info: object is suitable for aliasing via address clause (Trivial)
+test_variables.adb:41:07: info: type is suitable as source for unchecked conversion (Trivial)
+test_variables.adb:41:43: info: object is suitable for aliasing via address clause (Trivial)
+test_variables.adb:41:43: info: type is suitable as source for unchecked conversion (Trivial)
+test_variables.adb:41:43: info: types of aliased objects have the same size (Trivial)
+test_variables.adb:43:22: info: assertion proved (Z3: 1 VC)
+test_variables.adb:46:04: warning: analyzing unreferenced procedure "Test_Array_KO" [unreferenced-procedure]
+test_variables.adb:46:14: warning: subprogram "Test_Array_KO" has no effect
+test_variables.adb:48:07: info: address in address clause is compatible with object alignment (Trivial)
+test_variables.adb:48:07: info: object is suitable for aliasing via address clause (Trivial)
+test_variables.adb:48:07: info: type is suitable as source for unchecked conversion (Trivial)
+test_variables.adb:48:43: info: object is suitable for aliasing via address clause (Trivial)
+test_variables.adb:48:43: info: type is suitable as source for unchecked conversion (Trivial)
+test_variables.adb:48:43: info: types of aliased objects have the same size (Trivial)
+test_variables.adb:50:22: medium: assertion might fail [provers reached step limit before completing the proof]
+test_variables.adb:53:04: warning: analyzing unreferenced procedure "Test_Record_OK" [unreferenced-procedure]
+test_variables.adb:53:14: warning: subprogram "Test_Record_OK" has no effect
+test_variables.adb:55:07: info: address in address clause is compatible with object alignment (Trivial)
+test_variables.adb:55:07: info: object is suitable for aliasing via address clause (Trivial)
+test_variables.adb:55:07: info: type is suitable as source for unchecked conversion (Trivial)
+test_variables.adb:55:43: info: object is suitable for aliasing via address clause (Trivial)
+test_variables.adb:55:43: info: type is suitable as source for unchecked conversion (Trivial)
+test_variables.adb:55:43: info: types of aliased objects have the same size (Trivial)
+test_variables.adb:57:22: info: assertion proved (CVC5: 1 VC)
+test_variables.adb:60:04: warning: analyzing unreferenced procedure "Test_Record_KO" [unreferenced-procedure]
+test_variables.adb:60:14: warning: subprogram "Test_Record_KO" has no effect
+test_variables.adb:62:07: info: address in address clause is compatible with object alignment (Trivial)
+test_variables.adb:62:07: info: object is suitable for aliasing via address clause (Trivial)
+test_variables.adb:62:07: info: type is suitable as source for unchecked conversion (Trivial)
+test_variables.adb:62:43: info: object is suitable for aliasing via address clause (Trivial)
+test_variables.adb:62:43: info: type is suitable as source for unchecked conversion (Trivial)
+test_variables.adb:62:43: info: types of aliased objects have the same size (Trivial)
+test_variables.adb:64:22: medium: assertion might fail [possible fix: add or complete related loop invariants or postconditions] [provers reached step limit before completing the proof]

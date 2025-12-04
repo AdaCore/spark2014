@@ -156,6 +156,7 @@ imprecise-call - imprecise-call - The behavior of a call might not be known by S
 imprecise-component-size - imprecise-component-size - the value of attribute Component_Size might not be known for proof if it is not supplied through an attribute definition clause - EASY
 imprecise-record-component-attribute - imprecise-record-component-attribute - the value of attributes First_Bit, Last_Bit, and Position on record components are handled in an imprecise way if the record does not have a record representation clause - EASY
 imprecise-size - imprecise-size - The attributes Size, Object_Size or Value_Size might not be handled precisely, nothing will be known about their evaluation - EASY
+imprecise-overlay - imprecise-overlay - Overlay might not be handled precisely by SPARK, the value of other overlaid objects will be unknown after an object is updated - EASY
 imprecise-unchecked-conversion - imprecise-unchecked-conversion - Unchecked conversion might not be handled precisely by SPARK, nothing will be known about their result - EASY
 imprecise-value - imprecise-value - References to the attribute Value are handled in an imprecise way; its precondition is impossible to prove and nothing will be known about the evaluation of the attribute reference - EASY
 imprecise-image - imprecise-image - References to the attributes Image and Img are handled in an imprecise way; nothing will be known about the evaluation of the attribute reference apart from a bound on its length - EASY

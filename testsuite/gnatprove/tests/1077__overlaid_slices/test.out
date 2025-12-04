@@ -14,6 +14,7 @@ main.adb:23:14: warning: subprogram "P2" has no effect
 main.adb:25:74: info: overflow check proved (CVC5: 2 VC)
 main.adb:28:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: alignment of overlaid object (which is 1) must be a multiple of the alignment of Y (which is 8)] [possible fix: overlaid object should have an Alignment representation clause]
 main.adb:28:07: info: object is suitable for aliasing via address clause (Trivial)
+main.adb:28:07: warning: imprecise handling of overlay (types in unchecked conversion do not have the same size) [imprecise-overlay]
 main.adb:29:31: info: object is suitable for aliasing via address clause (Trivial)
 main.adb:29:31: info: range check proved (CVC5: 4 VC)
 main.adb:29:31: info: type is suitable as source for unchecked conversion (Trivial)
@@ -24,6 +25,7 @@ main.adb:31:07: info: analyzing call to "Parse_T1" in context
 main.adb:34:14: warning: subprogram "P3" has no effect
 main.adb:38:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: alignment of overlaid object (which is 1) must be a multiple of the alignment of Y (which is 8)] [possible fix: overlaid object should have an Alignment representation clause]
 main.adb:38:07: info: object is suitable for aliasing via address clause (Trivial)
+main.adb:38:07: warning: imprecise handling of overlay (types in unchecked conversion do not have the same size) [imprecise-overlay]
 main.adb:39:31: high: types of aliased objects do not have the same size [possible explanation: sizes of overlaid objects differ: type T1_Byte_Array has Object_Size 128, while size of slice is 120]
 main.adb:39:31: info: object is suitable for aliasing via address clause (Trivial)
 main.adb:39:31: info: range check proved (CVC5: 4 VC)
@@ -34,6 +36,7 @@ main.adb:44:14: warning: subprogram "P4" has no effect
 main.adb:46:74: info: overflow check proved (CVC5: 2 VC)
 main.adb:49:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: alignment of overlaid object (which is 1) must be a multiple of the alignment of Y (which is 8)] [possible fix: overlaid object should have an Alignment representation clause]
 main.adb:49:07: info: object is suitable for aliasing via address clause (Trivial)
+main.adb:49:07: warning: imprecise handling of overlay (types in unchecked conversion do not have the same size) [imprecise-overlay]
 main.adb:52:22: high: types of aliased objects do not have the same size [provers reached step limit before completing the proof]
 main.adb:52:22: info: object is suitable for aliasing via address clause (Trivial)
 main.adb:52:22: info: range check proved (CVC5: 4 VC)

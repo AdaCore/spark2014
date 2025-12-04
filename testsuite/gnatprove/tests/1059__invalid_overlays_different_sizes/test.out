@@ -10,7 +10,8 @@ test.adb:10:22: warning: attribute "Valid" is assumed to return True [attribute-
 test.adb:13:14: warning: subprogram "Test_KO" has no effect
 test.adb:15:07: info: address in address clause is compatible with object alignment (Trivial)
 test.adb:15:07: info: object is suitable for aliasing via address clause (Trivial)
+test.adb:15:07: warning: imprecise handling of overlay (types in unchecked conversion do not have the same size) [imprecise-overlay]
 test.adb:16:20: info: object is suitable for aliasing via address clause (Trivial)
 test.adb:16:20: info: type is suitable as source for unchecked conversion (Trivial)
 test.adb:16:20: info: types of aliased objects have the same size (Trivial)
-test.adb:20:22: medium: assertion might fail (e.g. when Y'Valid = False) [provers reached step limit before completing the proof]
+test.adb:20:22: medium: assertion might fail [provers reached step limit before completing the proof]

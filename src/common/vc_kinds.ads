@@ -457,6 +457,7 @@ package VC_Kinds is
       Warn_Component_Size,
       Warn_Record_Component_Attr,
       Warn_Imprecise_Size,
+      Warn_Imprecise_Overlay,
       Warn_Imprecise_UC,
       Warn_Imprecise_Value,
       Warn_Imprecise_Image,
@@ -794,6 +795,8 @@ package VC_Kinds is
            "the value of attribute & is handled in an imprecise way",
          when Warn_Imprecise_Size                  =>
            "the value of attribute & is handled in an imprecise way",
+         when Warn_Imprecise_Overlay               =>
+           "imprecise handling of overlay (&)",
          when Warn_Imprecise_UC                    =>
            "imprecise handling of Unchecked_Conversion (&)",
          when Warn_Imprecise_Value                 =>
