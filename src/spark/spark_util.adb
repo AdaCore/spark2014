@@ -6489,6 +6489,9 @@ package body SPARK_Util is
          return;
       end if;
 
+      --  Frontend rewrites alignment 0 to 1, so no need to check for
+      --  division by zero
+
       if AY mod AX /= Uint_0 then
          Result := False;
          Explanation :=
