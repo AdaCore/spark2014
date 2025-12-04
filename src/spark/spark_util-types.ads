@@ -385,6 +385,21 @@ package SPARK_Util.Types is
       Explanation : out Unbounded_String);
    --  Same as Have_Same_Known_Esize, but checks the RM_Size.
 
+   procedure Array_Component_Size (Typ : Type_Kind_Id; Comp_Size : out Uint);
+   --  Compute the expected size for components of an array type [Typ]
+
+   procedure Record_Component_Size
+     (Typ : Type_Kind_Id; Comp : Entity_Id; Comp_Size : out Uint);
+   --  Compute the expected size for a record component. [Typ] is the
+   --  containing record type.
+
+   function Array_Size_Is_Sum_Of_Components (E : Type_Kind_Id) return Boolean
+   with Pre => Is_Array_Type (E);
+   --  Return True if we can determine that there is no gaps between the
+   --  components of arrays of type E nor padding at the end. The size of such
+   --  an array can be computed by multiplying the number of components of the
+   --  array by the size of a component.
+
    function Contains_Access_Subcomponents (Typ : Type_Kind_Id) return Boolean;
    --  Returns True if Typ has access subcomponents
 

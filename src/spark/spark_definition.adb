@@ -4892,6 +4892,24 @@ package body SPARK_Definition is
                      Mark_Unsupported (Lim_Unknown_Alignment, N);
                      return;
                   end if;
+
+                  if Attr_Id = Attribute_Size and then not Has_Type_Prefix then
+                     if Nkind (P)
+                        not in N_Indexed_Component
+                             | N_Selected_Component
+                             | N_Explicit_Dereference
+                             | N_Identifier
+                             | N_Expanded_Name
+                       and then
+                         (Nkind (P) /= N_Slice
+                          or else
+                            not Array_Size_Is_Sum_Of_Components
+                                  (Retysp (Etype (Prefix (P)))))
+                     then
+                        Mark_Unsupported (Lim_Unknown_Size, N);
+                        return;
+                     end if;
+                  end if;
                end;
             end if;
 

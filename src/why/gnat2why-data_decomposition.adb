@@ -133,19 +133,13 @@ package body Gnat2Why.Data_Decomposition is
             end case;
          end if;
 
-      --  Only attribute Size applies to an object. It is either the specified
-      --  value of Size for the object, or the same as Typ'Object_Size for the
-      --  type of the object.
+      --  Only attribute Size applies to an object
 
       else
          pragma Assert (Is_Object (E));
          pragma Assert (Attr_Id = Attribute_Size);
 
-         if Present (Data_Entry.Size) then
-            return Data_Entry.Size;
-         else
-            return Get_Attribute_Value (Etype (E), Attribute_Object_Size);
-         end if;
+         return Data_Entry.Size;
       end if;
    end Get_Attribute_Value;
 

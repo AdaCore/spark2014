@@ -1658,6 +1658,8 @@ module Unconstr_Array
 
   val constant alignment : int
 
+  val constant size__of__object (f1 l1 : index_rep_type) : int
+
   axiom value__size_axiom :
     value__size >= 0
   meta "remove_unused:dependency" axiom value__size_axiom, function value__size
@@ -1802,6 +1804,8 @@ module Unconstr_Array_2
   val constant component__size : int
 
   val constant alignment : int
+
+  val constant size__of__object (f1 l1 : index_rep_type) (f2 l2 : index_rep_type_2) : int
 
   axiom value__size_axiom :
     value__size >= 0
@@ -1991,6 +1995,8 @@ module Unconstr_Array_3
   val constant component__size : int
 
   val constant alignment : int
+
+  val constant size__of__object (f1 l1 : index_rep_type) (f2 l2 : index_rep_type_2) (f3 l3 : index_rep_type_3) : int
 
   axiom value__size_axiom :
     value__size >= 0
@@ -2225,6 +2231,8 @@ module Unconstr_Array_4
   val constant component__size : int
 
   val constant alignment : int
+
+  val constant size__of__object (f1 l1 : index_rep_type) (f2 l2 : index_rep_type_2) (f3 l3 : index_rep_type_3) (f4 l4 : index_rep_type_4) : int
 
   axiom value__size_axiom :
     value__size >= 0

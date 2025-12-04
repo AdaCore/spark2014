@@ -1494,6 +1494,31 @@ package body Why.Gen.Records is
                Location    => No_Location,
                Return_Type => EW_Int_Type));
 
+      --  If E has discriminants and is unconstrained, the size of objects of
+      --  type E depends on the discriminants. It is defined as a logic
+      --  function.
+
+      if Has_Discriminants (E) and then not Is_Constrained (E) then
+         Emit
+           (Th,
+            New_Function_Decl
+              (Domain      => EW_Pterm,
+               Name        => To_Local (E_Symb (E, WNE_Attr_Size_Of_Object)),
+               Binders     =>
+                 W_Binder_Array'
+                   (1 =>
+                      New_Binder
+                        (Domain   => EW_Pterm,
+                         Arg_Type =>
+                           (if E = Root_Retysp (E)
+                            then
+                              New_Named_Type (To_Name (WNE_Rec_Split_Discrs))
+                            else Field_Type_For_Discriminants (E)))),
+               Labels      => Symbol_Sets.Empty_Set,
+               Location    => No_Location,
+               Return_Type => EW_Int_Type));
+      end if;
+
       declare
          Zero : constant W_Expr_Id :=
            New_Integer_Constant (Value => Uint_0);

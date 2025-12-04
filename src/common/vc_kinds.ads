@@ -514,8 +514,8 @@ package VC_Kinds is
       Lim_Type_Inv_Volatile,
       Lim_Uninit_Alloc_In_Expr_Fun,
       Lim_Unknown_Alignment,
-      Lim_UU_Tagged_Comp
-      );
+      Lim_Unknown_Size,
+      Lim_UU_Tagged_Comp);
 
    subtype Default_Warning_Kind is Misc_Warning_Kind range
      Warn_Address_To_Access .. Warn_Variant_Not_Recursive;
@@ -729,6 +729,8 @@ package VC_Kinds is
            "GNAT extension for interpolated string literal",
          when Lim_Unknown_Alignment =>
            "unknown value of object alignment",
+         when Lim_Unknown_Size =>
+           "unknown value of object size",
          when Lim_Op_Fixed_Float =>
            "operation between fixed-point and floating-point types",
          when Lim_Op_Incompatible_Fixed =>
