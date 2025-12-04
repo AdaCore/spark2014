@@ -2018,6 +2018,9 @@ package body Gnat2Why.Unchecked_Conversion is
               & "Alignment representation clause or aspect");
          return;
       end if;
+
+      --  Frontend rewrites alignment 0 to 1, so no need to check for
+      --  division by zero
       if SA mod TA /= Uint_0 then
          Valid := False;
          Explanation :=
