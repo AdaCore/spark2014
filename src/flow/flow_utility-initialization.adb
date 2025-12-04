@@ -425,9 +425,9 @@ package body Flow_Utility.Initialization is
             --  the private part.
 
             if Present (SPARK_Pragma (Full_View (Typ)))
-              and then Get_SPARK_Mode_From_Annotation
-                         (SPARK_Pragma (Full_View (Typ)))
-                       = Opt.Off
+              and then
+                Get_SPARK_Mode_From_Annotation (SPARK_Pragma (Full_View (Typ)))
+                = Opt.Off
             then
                declare
                   S_Indication          : constant Node_Id :=
@@ -766,8 +766,8 @@ package body Flow_Utility.Initialization is
                  (for some Comp of reverse F.Component =>
                     (Has_Full_Default_Initialization (Comp)
                      or else Present (Expression (Parent (Comp)))))
-                 or else Has_Full_Default_Initialization
-                           (Get_Direct_Mapping_Id (F));
+                 or else
+                   Has_Full_Default_Initialization (Get_Direct_Mapping_Id (F));
             end if;
 
          when Magic_String | Null_Value | Synthetic_Null_Export =>

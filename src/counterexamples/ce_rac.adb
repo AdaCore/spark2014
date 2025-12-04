@@ -466,7 +466,7 @@ package body CE_RAC is
    procedure Check_List (L : Node_Lists.List; Msg : String; K : VC_Kind);
    --  Check the validity of formulas L
 
-   type Ulargest is mod 2**128;
+   type Ulargest is mod 2 ** 128;
    --  The largest modular type to execute modulo operators
 
    procedure Iterate_Scheme_Spec
@@ -991,8 +991,9 @@ package body CE_RAC is
 
                      Over_Array : constant Boolean :=
                        Present (Iterator_Specification (Expr))
-                       and then Is_Iterator_Over_Array
-                                  (Iterator_Specification (Expr));
+                       and then
+                         Is_Iterator_Over_Array
+                           (Iterator_Specification (Expr));
 
                   begin
                      if Over_Range or Over_Array then
@@ -3107,8 +3108,8 @@ package body CE_RAC is
                Check_Fuel_Decrease (Ctx.Fuel);
 
                if Nkind (Choice) in N_Range | N_Subtype_Indication
-                 or else (Is_Entity_Name (Choice)
-                          and then Is_Type (Entity (Choice)))
+                 or else
+                   (Is_Entity_Name (Choice) and then Is_Type (Entity (Choice)))
                then
                   declare
                      Choice_Range : constant Node_Id := Get_Range (Choice);
@@ -3349,8 +3350,9 @@ package body CE_RAC is
                              else RAC_Expr (Expression (Assoc)));
 
                         if Nkind (Choice) in N_Range | N_Subtype_Indication
-                          or else (Is_Entity_Name (Choice)
-                                   and then Is_Type (Entity (Choice)))
+                          or else
+                            (Is_Entity_Name (Choice)
+                             and then Is_Type (Entity (Choice)))
                         then
                            declare
                               Choice_Range : constant Node_Id :=
@@ -3837,7 +3839,7 @@ package body CE_RAC is
                      --  ourselves to 2**256 as GNAT currently supports up to
                      --  128-bits integers (even if modular types would support
                      --  larger values).
-                     if Real_Left**Int_Right >= 2.0**256 then
+                     if Real_Left ** Int_Right >= 2.0 ** 256 then
                         RAC_Unsupported
                           ("RAC_Binary_Op too large exponentiation", N);
 
@@ -3848,7 +3850,7 @@ package body CE_RAC is
 
                      return
                        Integer_Value
-                         (Val_Left**Natural (To_Integer (Val_Right)), N);
+                         (Val_Left ** Natural (To_Integer (Val_Right)), N);
                   end;
                else
                   RAC_Unsupported ("RAC_Binary_Op float exponentiation", N);
@@ -4895,8 +4897,9 @@ package body CE_RAC is
                --  Introduce range check for the slice if it is not empty
 
                if Low <= High
-                 and then (Low < Base_Array.First_Attr.Content
-                           or else High > Base_Array.Last_Attr.Content)
+                 and then
+                   (Low < Base_Array.First_Attr.Content
+                    or else High > Base_Array.Last_Attr.Content)
                then
                   RAC_Failure (N, VC_Range_Check);
                end if;
@@ -5575,8 +5578,9 @@ package body CE_RAC is
 
                      Over_Array : constant Boolean :=
                        Present (Iterator_Specification (Scheme))
-                       and then Is_Iterator_Over_Array
-                                  (Iterator_Specification (Scheme));
+                       and then
+                         Is_Iterator_Over_Array
+                           (Iterator_Specification (Scheme));
                   begin
                      if Over_Range or Over_Array then
                         Iterate_Scheme_Spec

@@ -503,7 +503,7 @@ package body Gnat2Why.Unchecked_Conversion is
                          Typ    => Base),
                     2 =>
                       New_Modular_Constant
-                        (Value => Uint_2**Size - Uint_1, Typ => Base)));
+                        (Value => Uint_2 ** Size - Uint_1, Typ => Base)));
          end if;
 
          --  Multiply this value by 2**Offset to get its
@@ -515,7 +515,8 @@ package body Gnat2Why.Unchecked_Conversion is
               Typ    => Base,
               Args   =>
                 (1 =>
-                   New_Modular_Constant (Value => Uint_2**Offset, Typ => Base),
+                   New_Modular_Constant
+                     (Value => Uint_2 ** Offset, Typ => Base),
                  2 => Value));
       end Contribute_Value;
 
@@ -548,9 +549,9 @@ package body Gnat2Why.Unchecked_Conversion is
       is
          Mask    : constant W_Expr_Id :=
            New_Modular_Constant
-             (Value => Uint_2**(Offset + Size) - Uint_1, Typ => Base);
+             (Value => Uint_2 ** (Offset + Size) - Uint_1, Typ => Base);
          Divisor : constant W_Expr_Id :=
-           New_Modular_Constant (Value => Uint_2**Offset, Typ => Base);
+           New_Modular_Constant (Value => Uint_2 ** Offset, Typ => Base);
          --  Value is (Bits and (2**(Offset+Size)-1)) / 2**(Offset)
          Value   : constant W_Expr_Id :=
            New_Call
@@ -637,7 +638,7 @@ package body Gnat2Why.Unchecked_Conversion is
             declare
                Top_Bit        : constant W_Expr_Id :=
                  New_Modular_Constant
-                   (Value => Uint_2**(Size - Uint_1), Typ => Base);
+                   (Value => Uint_2 ** (Size - Uint_1), Typ => Base);
                Negative_Value : constant W_Expr_Id :=
                  New_Call
                    (Domain => EW_Term,
@@ -649,7 +650,7 @@ package body Gnat2Why.Unchecked_Conversion is
                            (Domain => EW_Term,
                             Expr   => Value,
                             To     => EW_Int_Type),
-                       2 => New_Integer_Constant (Value => 2**Size)));
+                       2 => New_Integer_Constant (Value => 2 ** Size)));
                B_Value        : constant W_Expr_Id :=
                  New_Conditional
                    (Domain    => EW_Term,
@@ -1078,13 +1079,14 @@ package body Gnat2Why.Unchecked_Conversion is
          --  if Conv >= 2**(Size-1) then Conv-2**Size else Conv
          declare
             Top_Bit        : constant W_Term_Id :=
-              New_Integer_Constant (Value => Uint_2**(Size - Uint_1));
+              New_Integer_Constant (Value => Uint_2 ** (Size - Uint_1));
             Negative_Value : constant W_Term_Id :=
               New_Call
                 (Name => Int_Infix_Subtr,
                  Typ  => EW_Int_Type,
                  Args =>
-                   (1 => +Conv, 2 => New_Integer_Constant (Value => 2**Size)));
+                   (1 => +Conv,
+                    2 => New_Integer_Constant (Value => 2 ** Size)));
          begin
             Conv :=
               New_Conditional
@@ -1108,7 +1110,8 @@ package body Gnat2Why.Unchecked_Conversion is
                 (Name => Int_Infix_Add,
                  Typ  => EW_Int_Type,
                  Args =>
-                   (1 => +Conv, 2 => New_Integer_Constant (Value => 2**Size)));
+                   (1 => +Conv,
+                    2 => New_Integer_Constant (Value => 2 ** Size)));
          begin
             Conv :=
               New_Conditional
@@ -1721,16 +1724,18 @@ package body Gnat2Why.Unchecked_Conversion is
          --  other scalar types) on the target.
 
          elsif Is_Floating_Point_Type (Typ)
-           and then Get_Attribute_Value (Typ, Attribute_Size)
-                    > Ttypes.Standard_Long_Long_Float_Size
+           and then
+             Get_Attribute_Value (Typ, Attribute_Size)
+             > Ttypes.Standard_Long_Long_Float_Size
          then
             Explanation :=
               To_Unbounded_String ("too large value of Size for " & Typ_Name);
             return Pass;
 
          elsif Is_Scalar_Type (Typ)
-           and then Get_Attribute_Value (Typ, Attribute_Size)
-                    > Ttypes.Standard_Long_Long_Long_Integer_Size
+           and then
+             Get_Attribute_Value (Typ, Attribute_Size)
+             > Ttypes.Standard_Long_Long_Long_Integer_Size
          then
             Explanation :=
               To_Unbounded_String ("too large value of Size for " & Typ_Name);

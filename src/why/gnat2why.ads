@@ -391,8 +391,8 @@ package Gnat2Why is
      Transformation_Phase
        range Generate_VCs_For_Contract
              ..
-             --  Generate_VCs_For_Assert
-             Generate_VCs_For_Body;
+               --  Generate_VCs_For_Assert
+               Generate_VCs_For_Body;
    --  Transformation phases for the generation of VCs
 
    subtype Generate_VCs_For_Assertion is

@@ -719,10 +719,10 @@ package body Flow.Analysis.Sanity is
 
                            for Input of Inputs loop
                               if Input.Kind = Direct_Mapping
-                                and then Has_Subcomponents_Of_Type
-                                           (Etype
-                                              (Get_Direct_Mapping_Id (Input)),
-                                            Typ)
+                                and then
+                                  Has_Subcomponents_Of_Type
+                                    (Etype (Get_Direct_Mapping_Id (Input)),
+                                     Typ)
                               then
                                  Error_Msg_Flow
                                    (FA       => FA,
@@ -850,10 +850,11 @@ package body Flow.Analysis.Sanity is
                      function Is_Record_Discriminant
                        (F : Flow_Id) return Boolean
                      is (F.Kind = Record_Field
-                         and then Ekind (Get_Direct_Mapping_Id (F))
-                                  in Record_Kind | Private_Kind
-                         and then Ekind (F.Component.First_Element)
-                                  = E_Discriminant)
+                         and then
+                           Ekind (Get_Direct_Mapping_Id (F))
+                           in Record_Kind | Private_Kind
+                         and then
+                           Ekind (F.Component.First_Element) = E_Discriminant)
                      with
                        Post =>
                          (if Is_Record_Discriminant'Result
@@ -869,8 +870,9 @@ package body Flow.Analysis.Sanity is
                          (if Is_Internal (Var)
                             then
                               (Is_Type (Var) and then Is_Discriminant (F))
-                              or else (Ekind (Var) = E_Constant
-                                       and then Has_Completion (Var)));
+                              or else
+                                (Ekind (Var) = E_Constant
+                                 and then Has_Completion (Var)));
 
                      --  We emit an error if F is considered a variable, in
                      --  particular, when it is not:
@@ -1518,8 +1520,9 @@ package body Flow.Analysis.Sanity is
       with
         Pre =>
           FA.Kind in Kind_Subprogram | Kind_Task
-          and then (Present (FA.Refined_Global_N)
-                    or else Present (FA.Refined_Depends_N));
+          and then
+            (Present (FA.Refined_Global_N)
+             or else Present (FA.Refined_Depends_N));
       --  Returns True if G can be found in the Global or Depends contract
 
       --------------------------
@@ -1746,8 +1749,9 @@ package body Flow.Analysis.Sanity is
                      --  needs to be listed in the abstract contract as well.
 
                      if FA.Kind in Kind_Subprogram | Kind_Task
-                       and then (Present (FA.Refined_Global_N)
-                                 or else Present (FA.Refined_Depends_N))
+                       and then
+                         (Present (FA.Refined_Global_N)
+                          or else Present (FA.Refined_Depends_N))
                        and then not In_Abstract_Contract (FA, Var)
                      then
                         declare
@@ -1807,9 +1811,10 @@ package body Flow.Analysis.Sanity is
                      --  the error message.
 
                      if Var.Kind in Direct_Mapping | Record_Field
-                       and then Scope_Within
-                                  (Inner => Get_Direct_Mapping_Id (Var),
-                                   Outer => FA.Spec_Entity)
+                       and then
+                         Scope_Within
+                           (Inner => Get_Direct_Mapping_Id (Var),
+                            Outer => FA.Spec_Entity)
                      then
                         raise Program_Error
                           with

@@ -132,8 +132,9 @@ private package SPARK_Definition.Violations is
      Global => (Output => Violation_Detected, Input => Current_SPARK_Pragma),
      Pre    =>
        SRM_Reference = ""
-       or else (SRM_Reference'Length > 9
-                and then Head (SRM_Reference, 9) = "SPARK RM ");
+       or else
+         (SRM_Reference'Length > 9
+          and then Head (SRM_Reference, 9) = "SPARK RM ");
    --  Mark node N as a violation of SPARK. An error message pointing to the
    --  current SPARK_Mode pragma/aspect is issued if current SPARK_Mode is On.
    --  If Explain_Code is set to a positive number, this is taken as an explain

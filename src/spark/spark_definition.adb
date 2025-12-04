@@ -393,8 +393,9 @@ package body SPARK_Definition is
    with
      Pre =>
        No (Ent)
-       or else (Ekind (Ent) in Object_Kind | E_Function
-                and then Is_Potentially_Invalid (Ent));
+       or else
+         (Ekind (Ent) in Object_Kind | E_Function
+          and then Is_Potentially_Invalid (Ent));
    --  Read is a read of a potentially invalid object Ent, the result attribute
    --  of a potentially invalid function E, or a call to such a function (in
    --  which case Ent is Empty). If Read occurs in a postcondition, check that
@@ -923,8 +924,9 @@ package body SPARK_Definition is
 
             begin
                if Nkind (G_Par) = N_Pragma_Argument_Association
-                 and then Get_Pragma_Id (Pragma_Name (Parent (G_Par)))
-                          = Pragma_Contract_Cases
+                 and then
+                   Get_Pragma_Id (Pragma_Name (Parent (G_Par)))
+                   = Pragma_Contract_Cases
                  and then N = Expression (Par)
                then
                   CC := Par;
@@ -945,9 +947,9 @@ package body SPARK_Definition is
          Body_E : constant Entity_Id := Get_Body_Entity (Subp);
       begin
          if Present (Body_E)
-           and then Get_SPARK_Mode_From_Annotation
-                      (SPARK_Pragma_Of_Entity (Body_E))
-                    = Opt.On
+           and then
+             Get_SPARK_Mode_From_Annotation (SPARK_Pragma_Of_Entity (Body_E))
+             = Opt.On
          then
             return;
          end if;
@@ -1000,17 +1002,19 @@ package body SPARK_Definition is
       --  validity check.
 
       if (Nkind (Par) = N_Attribute_Reference
-          and then Attribute_Name (Par)
-                   in Name_Valid
-                    | Name_Valid_Scalars
-                    | Name_Length
-                    | Name_First
-                    | Name_Last)
-        or else (Nkind (Par) = N_Selected_Component
-                 and then Ekind (Entity (Selector_Name (Par)))
-                          = E_Discriminant)
-        or else (Nkind (Par) = N_Function_Call
-                 and then Is_Potentially_Invalid (Get_Formal_From_Actual (N)))
+          and then
+            Attribute_Name (Par)
+            in Name_Valid
+             | Name_Valid_Scalars
+             | Name_Length
+             | Name_First
+             | Name_Last)
+        or else
+          (Nkind (Par) = N_Selected_Component
+           and then Ekind (Entity (Selector_Name (Par))) = E_Discriminant)
+        or else
+          (Nkind (Par) = N_Function_Call
+           and then Is_Potentially_Invalid (Get_Formal_From_Actual (N)))
       then
          return;
       end if;
@@ -1213,9 +1217,10 @@ package body SPARK_Definition is
                      end loop;
 
                      if Present (Contract)
-                       and then Parse_Global_Contract (Proc, Contract)
-                                  .Outputs
-                                  .Is_Empty
+                       and then
+                         Parse_Global_Contract (Proc, Contract)
+                           .Outputs
+                           .Is_Empty
                      then
                         return;
                      end if;
@@ -1273,8 +1278,9 @@ package body SPARK_Definition is
                      end if;
 
                      if Nkind (N) /= N_Attribute_Reference
-                       or else Get_Attribute_Id (Attribute_Name (N))
-                               /= Attribute_Access
+                       or else
+                         Get_Attribute_Id (Attribute_Name (N))
+                         /= Attribute_Access
                      then
                         goto Bad_Prophecy_Save;
                      end if;
@@ -1323,8 +1329,8 @@ package body SPARK_Definition is
          & " assertion",
          Proph);
 
-   --  Lemma calls/prophecy saves declaration are omitted for default
-   --  error message to keep it reasonably short.
+      --  Lemma calls/prophecy saves declaration are omitted for default
+      --  error message to keep it reasonably short.
 
    end Check_Context_Of_Prophecy;
 
@@ -2081,10 +2087,11 @@ package body SPARK_Definition is
 
       elsif not In_Observe
         and then Is_Constant_In_SPARK (Root)
-        and then not (Ekind (Root) in Formal_Kind
-                      and then Ekind (Scope (Root)) = E_Function
-                      and then Is_Borrowing_Traversal_Function (Scope (Root))
-                      and then Root = First_Formal (Scope (Root)))
+        and then
+          not (Ekind (Root) in Formal_Kind
+               and then Ekind (Scope (Root)) = E_Function
+               and then Is_Borrowing_Traversal_Function (Scope (Root))
+               and then Root = First_Formal (Scope (Root)))
       then
          Mark_Violation ("borrow of a constant object", Expr);
 
@@ -2352,15 +2359,16 @@ package body SPARK_Definition is
            and then Entity_In_SPARK (E)
            and then E = Retysp (E)
            and then Analysis_Requested (E, With_Inlined => True)
-           and then (Needs_Default_Checks_At_Decl (E)
-                     or else (Is_Access_Subprogram_Type (E)
-                              and then No (Parent_Retysp (E)))
-                     or else Declares_Iterable_Aspect (E)
-                     or else (Is_Base_Type (E)
-                              and then not Use_Predefined_Equality_For_Type
-                                             (E))
-                     or else Needs_Check_For_Aggregate_Annotation (E)
-                     or else Needs_Ownership_Check (E))
+           and then
+             (Needs_Default_Checks_At_Decl (E)
+              or else
+                (Is_Access_Subprogram_Type (E) and then No (Parent_Retysp (E)))
+              or else Declares_Iterable_Aspect (E)
+              or else
+                (Is_Base_Type (E)
+                 and then not Use_Predefined_Equality_For_Type (E))
+              or else Needs_Check_For_Aggregate_Annotation (E)
+              or else Needs_Ownership_Check (E))
          then
 
             declare
@@ -2472,8 +2480,8 @@ package body SPARK_Definition is
                return
                  Present (Expression (Context))
                  and then Expression (Context) = Subcontext
-                 and then Nkind (Parent (Context))
-                          /= N_Expression_With_Actions;
+                 and then
+                   Nkind (Parent (Context)) /= N_Expression_With_Actions;
 
             --  The allocating expression is the expression of a type
             --  conversion or a qualified expression occurring in a
@@ -3097,8 +3105,9 @@ package body SPARK_Definition is
 
             elsif Nkind (Expression (N)) /= N_Qualified_Expression
               and then Nkind (Enclosing_Declaration (N)) = N_Subprogram_Body
-              and then Is_Expression_Function_Or_Completion
-                         (Unique_Defining_Entity (Enclosing_Declaration (N)))
+              and then
+                Is_Expression_Function_Or_Completion
+                  (Unique_Defining_Entity (Enclosing_Declaration (N)))
             then
                Mark_Unsupported (Lim_Uninit_Alloc_In_Expr_Fun, N);
 
@@ -3266,9 +3275,9 @@ package body SPARK_Definition is
 
                   if Is_Path_Expression (Expr)
                     and then Present (Get_Root_Object (Expr))
-                    and then Get_Root_Object
-                               (Get_Observed_Or_Borrowed_Expr (Expr))
-                             /= Root
+                    and then
+                      Get_Root_Object (Get_Observed_Or_Borrowed_Expr (Expr))
+                      /= Root
                   then
                      Mark_Violation
                        ((if Is_Access_Constant (Etype (Var))
@@ -3503,9 +3512,10 @@ package body SPARK_Definition is
                --  expressions.
 
                if Present (Iterator_Specification (Iteration_Scheme (N)))
-                 and then Present
-                            (Iterator_Filter
-                               (Iterator_Specification (Iteration_Scheme (N))))
+                 and then
+                   Present
+                     (Iterator_Filter
+                        (Iterator_Specification (Iteration_Scheme (N))))
                then
                   Mark_Unsupported (Lim_Loop_With_Iterator_Filter, N);
                end if;
@@ -3528,10 +3538,11 @@ package body SPARK_Definition is
                Exp          : Unbounded_String;
                Eq_On_Access : constant Boolean :=
                  not Is_Concurrent_Type (Retysp (Etype (Left_Opnd (N))))
-                 and then Predefined_Eq_Uses_Pointer_Eq
-                            (Etype (Left_Opnd (N)), Exp)
-                 and then not Is_Null_Or_Reclaimed_Expr
-                                (Left_Opnd (N), Null_Value => True);
+                 and then
+                   Predefined_Eq_Uses_Pointer_Eq (Etype (Left_Opnd (N)), Exp)
+                 and then
+                   not Is_Null_Or_Reclaimed_Expr
+                         (Left_Opnd (N), Null_Value => True);
                --  Disallow membership tests if they involved the use of the
                --  predefined equality on access types (except if one of the
                --  operands is statically null).
@@ -3574,8 +3585,9 @@ package body SPARK_Definition is
                   Touch_Record_Fields_For_Eq (Etype (Left_Opnd (N)));
 
                   if Eq_On_Access
-                    and then not Is_Null_Or_Reclaimed_Expr
-                                   (Right_Opnd (N), Null_Value => True)
+                    and then
+                      not Is_Null_Or_Reclaimed_Expr
+                            (Right_Opnd (N), Null_Value => True)
                   then
                      Mark_Violation ("equality on " & To_String (Exp), N);
                   end if;
@@ -3710,10 +3722,11 @@ package body SPARK_Definition is
                   while Present (Prag) loop
                      exit when
                        Nkind (Prag) = N_Pragma_Argument_Association
-                       and then Get_Pragma_Id (Pragma_Name (Parent (Prag)))
-                                in Pragma_Precondition
-                                 | Pragma_Pre
-                                 | Pragma_Pre_Class;
+                       and then
+                         Get_Pragma_Id (Pragma_Name (Parent (Prag)))
+                         in Pragma_Precondition
+                          | Pragma_Pre
+                          | Pragma_Pre_Class;
                      Prag := Parent (Prag);
                   end loop;
 
@@ -3891,8 +3904,9 @@ package body SPARK_Definition is
                   end if;
 
                   if Ekind (E) = E_Function
-                    and then (Is_Predicate_Function (E)
-                              or else Was_Expression_Function (N))
+                    and then
+                      (Is_Predicate_Function (E)
+                       or else Was_Expression_Function (N))
                   then
                      Mark_Entity (E);
                   else
@@ -3938,9 +3952,9 @@ package body SPARK_Definition is
                      Prag : constant Node_Id := SPARK_Pragma_Of_Entity (View);
                   begin
                      if Is_In_Hidden_Private (View)
-                       or else (Present (Prag)
-                                and then Get_SPARK_Mode_From_Annotation (Prag)
-                                         = Off)
+                       or else
+                         (Present (Prag)
+                          and then Get_SPARK_Mode_From_Annotation (Prag) = Off)
                      then
                         Do_Mark := False;
                      end if;
@@ -4064,8 +4078,7 @@ package body SPARK_Definition is
                end if;
 
             else
-               Scalar_Conversion :
-               declare
+               Scalar_Conversion : declare
                   From_Type : constant Type_Kind_Id := Etype (Expression (N));
                   To_Type   : constant Type_Kind_Id := Etype (N);
 
@@ -4078,9 +4091,9 @@ package body SPARK_Definition is
                     or else Has_Modular_Integer_Type (From_Type);
                   From_Modular_128 : constant Boolean :=
                     Has_Modular_Integer_Type (From_Type)
-                    and then SPARK_Atree.Entities.Modular_Size
-                               (Retysp (From_Type))
-                             = Uintp.UI_From_Int (128);
+                    and then
+                      SPARK_Atree.Entities.Modular_Size (Retysp (From_Type))
+                      = Uintp.UI_From_Int (128);
 
                   To_Float       : constant Boolean :=
                     Has_Floating_Point_Type (To_Type);
@@ -4091,9 +4104,9 @@ package body SPARK_Definition is
                     or else Has_Modular_Integer_Type (To_Type);
                   To_Modular_128 : constant Boolean :=
                     Has_Modular_Integer_Type (To_Type)
-                    and then SPARK_Atree.Entities.Modular_Size
-                               (Retysp (To_Type))
-                             = Uintp.UI_From_Int (128);
+                    and then
+                      SPARK_Atree.Entities.Modular_Size (Retysp (To_Type))
+                      = Uintp.UI_From_Int (128);
 
                begin
                   if (From_Float and To_Fixed) or (From_Fixed and To_Float)
@@ -4199,9 +4212,10 @@ package body SPARK_Definition is
                         begin
                            while Present (Comp) loop
                               if Component_Is_Visible_In_SPARK (Comp)
-                                and then No
-                                           (Search_Component_By_Name
-                                              (Etype (E), Comp))
+                                and then
+                                  No
+                                    (Search_Component_By_Name
+                                       (Etype (E), Comp))
                               then
                                  Touch_Record_Fields_For_Default_Init
                                    (Etype (Comp));
@@ -4499,8 +4513,8 @@ package body SPARK_Definition is
                Expr : constant N_Subexpr_Id := Expression (Stat);
             begin
                if Nkind (Expr) = N_Function_Call
-                 and then Is_Function_With_Side_Effects
-                            (Get_Called_Entity (Expr))
+                 and then
+                   Is_Function_With_Side_Effects (Get_Called_Entity (Expr))
                then
                   Mark_Violation
                     ("use of ""@"" inside a call to a function"
@@ -4681,8 +4695,9 @@ package body SPARK_Definition is
                   --  only pragma allowed are pragma checks in declare
                   --  expressions.
                   if not Is_Ignored_Pragma_Check (N)
-                    and then not (In_Declare_Expr
-                                  and then Is_Pragma (N, Pragma_Check))
+                    and then
+                      not (In_Declare_Expr
+                           and then Is_Pragma (N, Pragma_Check))
                   then
                      return False;
                   end if;
@@ -5055,10 +5070,10 @@ package body SPARK_Definition is
 
             if Has_Relaxed_Initialization (E)
               or else Contains_Relaxed_Init_Parts (Etype (E))
-              or else ((Ekind (Aliased_Object) /= E_Loop_Parameter
-                        and then Has_Relaxed_Initialization (Aliased_Object))
-                       or else Contains_Relaxed_Init_Parts
-                                 (Etype (Aliased_Object)))
+              or else
+                ((Ekind (Aliased_Object) /= E_Loop_Parameter
+                  and then Has_Relaxed_Initialization (Aliased_Object))
+                 or else Contains_Relaxed_Init_Parts (Etype (Aliased_Object)))
             then
                Mark_Unsupported (Lim_Relaxed_Init_Aliasing, E);
             end if;
@@ -5122,8 +5137,9 @@ package body SPARK_Definition is
                     and then Present (Expression (Decl));
                begin
                   if not Is_Init
-                    and then Default_Initialization (Etype (E))
-                             /= Full_Default_Initialization
+                    and then
+                      Default_Initialization (Etype (E))
+                      /= Full_Default_Initialization
                   then
                      Mark_Violation
                        ("object with an address clause which is not"
@@ -5171,8 +5187,8 @@ package body SPARK_Definition is
 
          Branch : constant Boolean :=
            Branching
-           or else Nlists.List_Length (Exprs) + Nlists.List_Length (Assocs)
-                   >= 2;
+           or else
+             Nlists.List_Length (Exprs) + Nlists.List_Length (Assocs) >= 2;
 
       begin
          if Branch and then No (Expr) and then No (Assoc) then
@@ -5531,10 +5547,12 @@ package body SPARK_Definition is
                end if;
             elsif not Expr_Has_Relaxed_Init (P, No_Eval => True)
               and then not Has_Relaxed_Init (Etype (P))
-              and then not (Nkind (P) in N_Identifier | N_Expanded_Name
-                            and then Ekind (Entity (P))
-                                     in Formal_Kind | Constant_Or_Variable_Kind
-                            and then Has_Relaxed_Initialization (Entity (P)))
+              and then
+                not (Nkind (P) in N_Identifier | N_Expanded_Name
+                     and then
+                       Ekind (Entity (P))
+                       in Formal_Kind | Constant_Or_Variable_Kind
+                     and then Has_Relaxed_Initialization (Entity (P)))
             then
                Mark_Violation
                  ("prefix of attribute """
@@ -5612,8 +5630,8 @@ package body SPARK_Definition is
                   if Attr_Id = Attribute_Old
                     and then Present (Par)
                     and then Nkind (Par) = N_Function_Call
-                    and then Has_At_End_Borrow_Annotation
-                               (Get_Called_Entity (Par))
+                    and then
+                      Has_At_End_Borrow_Annotation (Get_Called_Entity (Par))
                   then
                      null;
                   elsif Nkind (P) /= N_Function_Call then
@@ -5886,10 +5904,10 @@ package body SPARK_Definition is
       if Nkind (N) in N_Op_Eq | N_Op_Ne
         and then Retysp_In_SPARK (Etype (Left_Opnd (N)))
         and then Predefined_Eq_Uses_Pointer_Eq (Etype (Left_Opnd (N)), Exp)
-        and then not Is_Null_Or_Reclaimed_Expr
-                       (Left_Opnd (N), Null_Value => True)
-        and then not Is_Null_Or_Reclaimed_Expr
-                       (Right_Opnd (N), Null_Value => True)
+        and then
+          not Is_Null_Or_Reclaimed_Expr (Left_Opnd (N), Null_Value => True)
+        and then
+          not Is_Null_Or_Reclaimed_Expr (Right_Opnd (N), Null_Value => True)
       then
          Mark_Violation ("equality on " & To_String (Exp), N);
 
@@ -6098,11 +6116,12 @@ package body SPARK_Definition is
       begin
          --  Special checks for effectively volatile calls and objects
          if Comes_From_Source (Actual)
-           and then (Is_Effectively_Volatile_Object_For_Reading (Actual)
-                     or else (Nkind (Actual) = N_Function_Call
-                              and then Nkind (Name (Actual))
-                                       /= N_Explicit_Dereference
-                              and then Is_Volatile_Call (Actual)))
+           and then
+             (Is_Effectively_Volatile_Object_For_Reading (Actual)
+              or else
+                (Nkind (Actual) = N_Function_Call
+                 and then Nkind (Name (Actual)) /= N_Explicit_Dereference
+                 and then Is_Volatile_Call (Actual)))
          then
             --  An effectively volatile object may act as an actual when the
             --  corresponding formal is of a non-scalar effectively volatile
@@ -6149,9 +6168,9 @@ package body SPARK_Definition is
             --  type as they are not subject to ownership.
 
             if not Is_Null_Owning_Access (Actual)
-              and then not (Is_Named_Access_Type (Retysp (Etype (Actual)))
-                            and then Is_Access_Constant
-                                       (Retysp (Etype (Actual))))
+              and then
+                not (Is_Named_Access_Type (Retysp (Etype (Actual)))
+                     and then Is_Access_Constant (Retysp (Etype (Actual))))
             then
                Check_Source_Of_Borrow_Or_Observe
                  (Actual, Is_Access_Constant (Etype (Formal)));
@@ -6162,8 +6181,9 @@ package body SPARK_Definition is
 
          elsif Is_Access_Type (Etype (Formal))
            and then Ekind (Formal) in E_In_Out_Parameter | E_Out_Parameter
-           and then Ekind (Directly_Designated_Type (Etype (Formal)))
-                    /= E_Subprogram_Type
+           and then
+             Ekind (Directly_Designated_Type (Etype (Formal)))
+             /= E_Subprogram_Type
          then
             Check_Source_Of_Move (Actual);
          end if;
@@ -6278,8 +6298,8 @@ package body SPARK_Definition is
          begin
             if Predefined_Eq_Uses_Pointer_Eq (Etype (Left), Exp)
               and then not Is_Null_Or_Reclaimed_Expr (Left, Null_Value => True)
-              and then not Is_Null_Or_Reclaimed_Expr
-                             (Right, Null_Value => True)
+              and then
+                not Is_Null_Or_Reclaimed_Expr (Right, Null_Value => True)
             then
                Mark_Violation ("equality on " & To_String (Exp), N);
             end if;
@@ -6396,11 +6416,13 @@ package body SPARK_Definition is
 
       if Ekind (E) = E_Function
         and then Is_Function_With_Side_Effects (E)
-        and then (Nkind (Parent (N))
-                  not in N_Assignment_Statement | N_Object_Declaration
-                  or else (Nkind (Parent (N)) = N_Object_Declaration
-                           and then Is_Internal (Defining_Entity (Parent (N))))
-                  or else not Is_Declared_In_Statements (Parent (N)))
+        and then
+          (Nkind (Parent (N))
+           not in N_Assignment_Statement | N_Object_Declaration
+           or else
+             (Nkind (Parent (N)) = N_Object_Declaration
+              and then Is_Internal (Defining_Entity (Parent (N))))
+           or else not Is_Declared_In_Statements (Parent (N)))
       then
          declare
             Msg : constant String :=
@@ -6419,11 +6441,10 @@ package body SPARK_Definition is
 
       if Ekind (E) = E_Function
         and then Is_Volatile_Call (N)
-        and then (not Is_OK_Volatile_Context
-                        (Context       => Parent (N),
-                         Obj_Ref       => N,
-                         Check_Actuals => True)
-                  or else In_Loop_Entry_Or_Old_Attribute (N))
+        and then
+          (not Is_OK_Volatile_Context
+                 (Context => Parent (N), Obj_Ref => N, Check_Actuals => True)
+           or else In_Loop_Entry_Or_Old_Attribute (N))
       then
          Mark_Violation
            ("call to a volatile function in interfering context", N);
@@ -6492,8 +6513,9 @@ package body SPARK_Definition is
          declare
             Might_Have_Flow_Assumptions : constant Boolean :=
               (Has_No_Body (E)
-               or else (Is_Ignored_Internal (E)
-                        and then not Is_Ignored_Internal (N)))
+               or else
+                 (Is_Ignored_Internal (E)
+                  and then not Is_Ignored_Internal (N)))
               and then not Is_Unchecked_Conversion_Instance (E)
               and then not Is_Unchecked_Deallocation_Instance (E)
               and then not Is_Predicate_Function (E)
@@ -6540,8 +6562,9 @@ package body SPARK_Definition is
          --  operation.
 
          if Is_System_Address_To_Access_Conversion (E)
-           or else (Is_Unchecked_Conversion_Instance (E)
-                    and then Has_Access_Type (Etype (E)))
+           or else
+             (Is_Unchecked_Conversion_Instance (E)
+              and then Has_Access_Type (Etype (E)))
          then
             declare
                Cont : constant String :=
@@ -6688,24 +6711,25 @@ package body SPARK_Definition is
             Is_Result_Of_Traversal : constant Boolean :=
               Nkind (Fst_Actual) = N_Attribute_Reference
               and then Attribute_Name (Fst_Actual) = Name_Result
-              and then Is_Borrowing_Traversal_Function
-                         (Entity (Prefix (Fst_Actual)));
+              and then
+                Is_Borrowing_Traversal_Function (Entity (Prefix (Fst_Actual)));
             --  Fst_Actual is the result of a traversal function
 
             Is_Path_To_Object : constant Boolean :=
               Is_Path_Expression (Fst_Actual)
-              and then Present
-                         (Get_Root_Object
-                            (Fst_Actual, Through_Traversal => False));
+              and then
+                Present
+                  (Get_Root_Object (Fst_Actual, Through_Traversal => False));
             --  Fst_Actual is a path rooted at an object, with no calls
 
             Is_Borrowed_Parameter : constant Boolean :=
               Nkind (Fst_Actual) in N_Identifier | N_Expanded_Name
               and then Ekind (Entity (Fst_Actual)) in Formal_Kind
-              and then Is_Borrowing_Traversal_Function
-                         (Scope (Entity (Fst_Actual)))
-              and then Entity (Fst_Actual)
-                       = First_Formal (Scope (Entity (Fst_Actual)));
+              and then
+                Is_Borrowing_Traversal_Function (Scope (Entity (Fst_Actual)))
+              and then
+                Entity (Fst_Actual)
+                = First_Formal (Scope (Entity (Fst_Actual)));
             --  Fst_Actual is the borrowed parameter of a traversal function
 
          begin
@@ -6741,8 +6765,9 @@ package body SPARK_Definition is
                then
                   Set_At_End_Borrow_Call (N, Entity (Fst_Actual));
                elsif Is_Attribute_Old (Fst_Actual)
-                 and then Nkind (Prefix (Fst_Actual))
-                          in N_Identifier | N_Expanded_Name
+                 and then
+                   Nkind (Prefix (Fst_Actual))
+                   in N_Identifier | N_Expanded_Name
                  and then Is_Local_Borrower (Entity (Prefix (Fst_Actual)))
                then
                   Set_At_End_Borrow_Call (N, Entity (Prefix (Fst_Actual)));
@@ -6804,8 +6829,8 @@ package body SPARK_Definition is
                      when N_Pragma_Argument_Association =>
                         return
                           Is_Pragma_Check (Parent (P), Name_Assert)
-                          or else Is_Pragma_Check
-                                    (Parent (P), Name_Assert_And_Cut);
+                          or else
+                            Is_Pragma_Check (Parent (P), Name_Assert_And_Cut);
 
                      when N_Op_And
                         | N_Op_Or
@@ -6829,8 +6854,9 @@ package body SPARK_Definition is
 
                      when N_Function_Call               =>
                         if No (Get_Called_Entity (P))
-                          or else not Is_From_Hardcoded_Unit
-                                        (Get_Called_Entity (P), Cut_Operations)
+                          or else
+                            not Is_From_Hardcoded_Unit
+                                  (Get_Called_Entity (P), Cut_Operations)
                         then
                            return False;
                         end if;
@@ -7053,8 +7079,9 @@ package body SPARK_Definition is
                         --  enclosing package body is broken.
 
                         if Has_Completion_In_Body (Des_Ty)
-                          and then Main_Unit_Entity
-                                   /= Unique_Entity (Enclosing_Unit (Des_Ty))
+                          and then
+                            Main_Unit_Entity
+                            /= Unique_Entity (Enclosing_Unit (Des_Ty))
                         then
                            Warning_Msg_N
                              (Warn_Full_View_Visible,
@@ -7207,9 +7234,10 @@ package body SPARK_Definition is
                      --  is expanded by the frontend.
 
                      if not Component_Inherits_Relaxed_Initialization (N)
-                       and then Default_Initialization (Choice_Typ)
-                                not in Full_Default_Initialization
-                                     | No_Possible_Initialization
+                       and then
+                         Default_Initialization (Choice_Typ)
+                         not in Full_Default_Initialization
+                              | No_Possible_Initialization
                        and then not Has_Relaxed_Init (Choice_Typ)
                      then
                         Mark_Violation
@@ -7235,9 +7263,10 @@ package body SPARK_Definition is
 
                when Array_Kind  =>
                   if not Component_Inherits_Relaxed_Initialization (N)
-                    and then Default_Initialization (Typ)
-                             not in Full_Default_Initialization
-                                  | No_Possible_Initialization
+                    and then
+                      Default_Initialization (Typ)
+                      not in Full_Default_Initialization
+                           | No_Possible_Initialization
                     and then not Has_Relaxed_Init (Typ)
                   then
                      Mark_Violation
@@ -7392,9 +7421,9 @@ package body SPARK_Definition is
          if Present (Encap_Id)
            and then Is_Single_Concurrent_Object (Encap_Id)
            and then In_SPARK (Etype (E))
-           and then Default_Initialization (Etype (E))
-                    not in Full_Default_Initialization
-                         | No_Possible_Initialization
+           and then
+             Default_Initialization (Etype (E))
+             not in Full_Default_Initialization | No_Possible_Initialization
            and then not Has_Initial_Value (E)
            and then not Is_Imported (E)
          then
@@ -7499,8 +7528,9 @@ package body SPARK_Definition is
          --  of the type enclosing unit.
 
          if Has_Volatile (E)
-           and then (Has_Volatile_Property (E, Pragma_Async_Readers)
-                     or else Has_Volatile_Property (E, Pragma_Async_Writers))
+           and then
+             (Has_Volatile_Property (E, Pragma_Async_Readers)
+              or else Has_Volatile_Property (E, Pragma_Async_Writers))
            and then Invariant_Check_Needed (Etype (E))
          then
             Mark_Unsupported (Lim_Type_Inv_Volatile, N);
@@ -7771,8 +7801,9 @@ package body SPARK_Definition is
             --  type.
 
             if Is_Anonymous_Access_Object_Type (Etype (Id))
-              and then (No (First_Formal (Id))
-                        or else Retysp_In_SPARK (Etype (First_Formal (Id))))
+              and then
+                (No (First_Formal (Id))
+                 or else Retysp_In_SPARK (Etype (First_Formal (Id))))
               and then not Is_Traversal_Function (Id)
             then
                Mark_Violation
@@ -7893,8 +7924,9 @@ package body SPARK_Definition is
                --  expression itself for a better error message.
 
                if not Is_Volatile_Func
-                 and then not (Ekind (Id) = E_Function
-                               and then Is_Predicate_Function (Id))
+                 and then
+                   not (Ekind (Id) = E_Function
+                        and then Is_Predicate_Function (Id))
                  and then Is_Effectively_Volatile_For_Reading (Etype (Formal))
                then
                   Mark_Violation
@@ -8453,11 +8485,10 @@ package body SPARK_Definition is
                         --  is a formal parameter of the subprogram.
 
                         if Chars (First (Choices (Variant))) = Name_Structural
-                          and then not (Nkind (Expr)
-                                        in N_Identifier | N_Expanded_Name
-                                        and then Ekind (Entity (Expr))
-                                                 in Formal_Kind
-                                        and then Scope (Entity (Expr)) = E)
+                          and then
+                            not (Nkind (Expr) in N_Identifier | N_Expanded_Name
+                                 and then Ekind (Entity (Expr)) in Formal_Kind
+                                 and then Scope (Entity (Expr)) = E)
                         then
                            Mark_Violation
                              ("structural subprogram variant which is not a"
@@ -8830,8 +8861,7 @@ package body SPARK_Definition is
                         Position : Node_Sets.Cursor;
                         Inserted : Boolean;
                      begin
-                        Inner :
-                        while not Processed.Contains (Cursor) loop
+                        Inner : while not Processed.Contains (Cursor) loop
                            Above := Parent (Cursor);
 
                            --  Skip intermediate nodes in case expressions and
@@ -9436,9 +9466,9 @@ package body SPARK_Definition is
                      & " access subcomponents",
                      E);
                elsif Is_Access_Type (To)
-                 and then (not Is_Integer_Type (From)
-                           and then not Is_System_Address_Type
-                                          (Base_Retysp (From)))
+                 and then
+                   (not Is_Integer_Type (From)
+                    and then not Is_System_Address_Type (Base_Retysp (From)))
                then
                   Mark_Violation
                     ("unchecked conversion instance to an access-to-object"
@@ -9503,12 +9533,14 @@ package body SPARK_Definition is
                My_Body : constant Node_Id := Subprogram_Body (E);
             begin
                if Present (My_Body)
-                 and then ((Was_Expression_Function (My_Body)
-                            and then (not Has_Separate_Declaration (E)
-                                      or else not Is_In_Hidden_Private
-                                                    (Subprogram_Body_Entity
-                                                       (E))))
-                           or else Is_Predicate_Function (E))
+                 and then
+                   ((Was_Expression_Function (My_Body)
+                     and then
+                       (not Has_Separate_Declaration (E)
+                        or else
+                          not Is_In_Hidden_Private
+                                (Subprogram_Body_Entity (E))))
+                    or else Is_Predicate_Function (E))
                then
                   Mark_Subprogram_Body (My_Body);
                end if;
@@ -9609,11 +9641,10 @@ package body SPARK_Definition is
 
                   if Is_Hidden_Dispatching_Operation (E) then
                      if Find_Contracts (E, Pragma_Precondition).Is_Empty
-                       and then not Find_Contracts
-                                      (E,
-                                       Pragma_Precondition,
-                                       Inherited => True)
-                                      .Is_Empty
+                       and then
+                         not Find_Contracts
+                               (E, Pragma_Precondition, Inherited => True)
+                               .Is_Empty
                      then
                         Mark_Unsupported
                           (Lim_Privacy,
@@ -9632,9 +9663,10 @@ package body SPARK_Definition is
                   elsif Find_Contracts
                           (E, Pragma_Precondition, Classwide => True)
                           .Is_Empty
-                    and then not Find_Contracts
-                                   (E, Pragma_Precondition, Inherited => True)
-                                   .Is_Empty
+                    and then
+                      not Find_Contracts
+                            (E, Pragma_Precondition, Inherited => True)
+                            .Is_Empty
                     and then not Is_In_Potentially_Hidden_Private (E)
                   then
                      declare
@@ -9655,10 +9687,11 @@ package body SPARK_Definition is
                         --  private parent.
 
                         if Present (Partial_View)
-                          and then Is_In_Potentially_Hidden_Private
-                                     (Full_View (Partial_View))
-                          and then In_Visible_Declarations
-                                     (Subprogram_Spec (E))
+                          and then
+                            Is_In_Potentially_Hidden_Private
+                              (Full_View (Partial_View))
+                          and then
+                            In_Visible_Declarations (Subprogram_Spec (E))
                         then
                            --  If there is no public ancestor, the source is
                            --  necessarily hidden from view.
@@ -9812,8 +9845,9 @@ package body SPARK_Definition is
             --  hence new or explicitly overriden.
 
             if Parent /= E
-              and then (Is_In_Potentially_Hidden_Private (Full)
-                        or else Is_Private_Entity_Mode_Off (Full))
+              and then
+                (Is_In_Potentially_Hidden_Private (Full)
+                 or else Is_Private_Entity_Mode_Off (Full))
             then
 
                --  Register all primitives of public ancestors, in order
@@ -10079,11 +10113,13 @@ package body SPARK_Definition is
 
             return
               (Present (SPARK_Aux_Pragma (Defining_Entity (Pack_Decl)))
-               and then Get_SPARK_Mode_From_Annotation
-                          (SPARK_Aux_Pragma (Defining_Entity (Pack_Decl)))
-                        = Off)
-              or else (Has_Hidden_Private_Part (Defining_Entity (Pack_Decl))
-                       and then Hide_For_Current_Analysis (Decl));
+               and then
+                 Get_SPARK_Mode_From_Annotation
+                   (SPARK_Aux_Pragma (Defining_Entity (Pack_Decl)))
+                 = Off)
+              or else
+                (Has_Hidden_Private_Part (Defining_Entity (Pack_Decl))
+                 and then Hide_For_Current_Analysis (Decl));
          end Is_Private_Entity_Mode_Off;
 
          --  Start of processing for Mark_Type_Entity
@@ -10110,10 +10146,11 @@ package body SPARK_Definition is
 
          if Is_Interface (E)
            and then not Is_Class_Wide_Type (E)
-           and then (Parent_Type (E) /= E
-                     or else (Present (Interfaces (E))
-                              and then not Is_Empty_Elmt_List
-                                             (Interfaces (E))))
+           and then
+             (Parent_Type (E) /= E
+              or else
+                (Present (Interfaces (E))
+                 and then not Is_Empty_Elmt_List (Interfaces (E))))
          then
             Mark_Unsupported (Lim_Derived_Interface, E);
          end if;
@@ -10233,10 +10270,10 @@ package body SPARK_Definition is
            and then not Is_Class_Wide_Type (E)
            and then Unique_Entity (Etype (E)) /= Unique_Entity (E)
            and then Present (Discriminant_Specifications (Parent (E)))
-           and then Comes_From_Source
-                      (First
-                         (Discriminant_Specifications
-                            (Original_Node (Parent (E)))))
+           and then
+             Comes_From_Source
+               (First
+                  (Discriminant_Specifications (Original_Node (Parent (E)))))
            and then Entity_Comes_From_Source (E)
          then
             Mark_Violation
@@ -10431,8 +10468,9 @@ package body SPARK_Definition is
                begin
                   if Present (E_Partial_View)
                     and then Present (Parent (E_Partial_View))
-                    and then Nkind (Parent (E_Partial_View))
-                             = N_Private_Extension_Declaration
+                    and then
+                      Nkind (Parent (E_Partial_View))
+                      = N_Private_Extension_Declaration
                   then
                      Mark_Violation
                        ("type invariant on completion of "
@@ -10505,9 +10543,9 @@ package body SPARK_Definition is
             Full : constant Node_Id := Full_View (E);
          begin
             if Present (Decl)
-              and then Nkind (Decl)
-                       in N_Private_Type_Declaration
-                        | N_Private_Extension_Declaration
+              and then
+                Nkind (Decl)
+                in N_Private_Type_Declaration | N_Private_Extension_Declaration
               and then not Is_Class_Wide_Type (E)
               and then Present (Full)
               and then Entity_In_SPARK (Full)
@@ -10541,8 +10579,8 @@ package body SPARK_Definition is
          --  tagged cannot be derived (SPARK RM 3.4(1)).
 
          if Nkind (Parent (E)) = N_Full_Type_Declaration
-           and then Nkind (Type_Definition (Parent (E)))
-                    = N_Derived_Type_Definition
+           and then
+             Nkind (Type_Definition (Parent (E))) = N_Derived_Type_Definition
            and then Is_Tagged_Type (E)
          then
             declare
@@ -10607,8 +10645,9 @@ package body SPARK_Definition is
          --  type shall be a library-level declaration (SPARK RM 7.1.3(3)).
          if Is_Effectively_Volatile (E)
            and then not Is_Library_Level_Entity (E)
-           and then Nkind (Parent (E))
-                    in N_Full_Type_Declaration | N_Subtype_Declaration
+           and then
+             Nkind (Parent (E))
+             in N_Full_Type_Declaration | N_Subtype_Declaration
            and then Comes_From_Source (Parent (E))
          then
             Mark_Violation
@@ -10905,8 +10944,9 @@ package body SPARK_Definition is
 
                   if (Present (Prag)
                       and then Aux_Prag /= Prag
-                      and then Get_SPARK_Mode_From_Annotation (Prag)
-                               /= Get_SPARK_Mode_From_Annotation (Aux_Prag))
+                      and then
+                        Get_SPARK_Mode_From_Annotation (Prag)
+                        /= Get_SPARK_Mode_From_Annotation (Aux_Prag))
                     or else Has_Hidden_Private_Part (Scop)
                   then
 
@@ -11021,8 +11061,9 @@ package body SPARK_Definition is
                begin
                   while Present (Comp) loop
                      if Comes_From_Source (Comp)
-                       and then (Is_Effectively_Volatile (Etype (Comp))
-                                 or else Has_Aspect (Comp, Aspect_Volatile))
+                       and then
+                         (Is_Effectively_Volatile (Etype (Comp))
+                          or else Has_Aspect (Comp, Aspect_Volatile))
                      then
                         Mark_Violation
                           ("volatile component & of non-volatile type &",
@@ -11101,8 +11142,9 @@ package body SPARK_Definition is
                     and then Is_Tagged_Type (E);
                   Needs_No_UU_Check : constant Boolean :=
                     Is_Tagged_Ext
-                    and then not Has_UU_Component
-                                   (Etype (E), Unconstrained_Only => True);
+                    and then
+                      not Has_UU_Component
+                            (Etype (E), Unconstrained_Only => True);
                   --  True if we need to make sure that the type contains no
                   --  component with an unconstrained unchecked union type.
                   --  We reject them for tagged types whose root type does not
@@ -11129,10 +11171,10 @@ package body SPARK_Definition is
                            --  in SPARK nor components with relaxed init.
 
                            if Is_Tagged_Ext
-                             and then Underlying_Type
-                                        (Scope
-                                           (Original_Record_Component (Comp)))
-                                      = Underlying_Type (E)
+                             and then
+                               Underlying_Type
+                                 (Scope (Original_Record_Component (Comp)))
+                               = Underlying_Type (E)
                            then
                               if Is_Deep (Comp_Type) then
                                  Mark_Violation
@@ -11192,13 +11234,13 @@ package body SPARK_Definition is
                            --  union type in a tagged extension.
 
                            if Needs_No_UU_Check
-                             and then ((Is_Unchecked_Union
-                                          (Base_Retysp (Comp_Type))
-                                        and then not Is_Constrained
-                                                       (Retysp (Comp_Type)))
-                                       or else Has_UU_Component
-                                                 (Comp_Type,
-                                                  Unconstrained_Only => True))
+                             and then
+                               ((Is_Unchecked_Union (Base_Retysp (Comp_Type))
+                                 and then
+                                   not Is_Constrained (Retysp (Comp_Type)))
+                                or else
+                                  Has_UU_Component
+                                    (Comp_Type, Unconstrained_Only => True))
                            then
                               Mark_Unsupported (Lim_UU_Tagged_Comp, Comp);
                            end if;
@@ -11219,8 +11261,9 @@ package body SPARK_Definition is
             --  rule for their own ancestors.
 
             if Nkind (Parent (E)) = N_Full_Type_Declaration
-              and then Nkind (Type_Definition (Parent (E)))
-                       = N_Derived_Type_Definition
+              and then
+                Nkind (Type_Definition (Parent (E)))
+                = N_Derived_Type_Definition
             then
                declare
                   Scop : constant Entity_Id := Enclosing_Dynamic_Scope (E);
@@ -11284,8 +11327,8 @@ package body SPARK_Definition is
                      --  support storing them into an access for now.
 
                      elsif Is_Function_Type (Profile)
-                       and then Is_Anonymous_Access_Object_Type
-                                  (Etype (Profile))
+                       and then
+                         Is_Anonymous_Access_Object_Type (Etype (Profile))
                        and then not Is_Access_Constant (Etype (Profile))
                      then
                         Mark_Unsupported (Lim_Access_Sub_Traversal, E);
@@ -11300,17 +11343,18 @@ package body SPARK_Definition is
                --  Storage_Pool is not in SPARK
 
                elsif Is_Access_Type (Underlying_Type (Root_Type (E)))
-                 and then Present
-                            (Associated_Storage_Pool
-                               (Underlying_Type (Root_Type (E))))
+                 and then
+                   Present
+                     (Associated_Storage_Pool
+                        (Underlying_Type (Root_Type (E))))
                then
                   Mark_Violation ("access type with Storage_Pool", E);
 
                --  Storage_Size is not in SPARK
 
                elsif Is_Access_Type (Underlying_Type (Root_Type (E)))
-                 and then Has_Storage_Size_Clause
-                            (Underlying_Type (Root_Type (E)))
+                 and then
+                   Has_Storage_Size_Clause (Underlying_Type (Root_Type (E)))
                then
                   Mark_Violation ("access type with Storage_Size", E);
 
@@ -11351,8 +11395,9 @@ package body SPARK_Definition is
                   Mark_Violation (E, From => Base_Retysp (E));
 
                elsif Ekind (E) in E_Access_Subtype
-                 and then Acts_As_Incomplete_Type
-                            (Directly_Designated_Type (Base_Retysp (E)))
+                 and then
+                   Acts_As_Incomplete_Type
+                     (Directly_Designated_Type (Base_Retysp (E)))
                then
                   Access_To_Incomplete_Types.Append (E);
 
@@ -11451,9 +11496,10 @@ package body SPARK_Definition is
                               --  initialization, so we check their components.
 
                               if No (Expression (Parent (Comp)))
-                                and then Default_Initialization (Etype (Comp))
-                                         not in Full_Default_Initialization
-                                              | No_Possible_Initialization
+                                and then
+                                  Default_Initialization (Etype (Comp))
+                                  not in Full_Default_Initialization
+                                       | No_Possible_Initialization
                               then
                                  Mark_Violation
                                    ("protected component "
@@ -11492,8 +11538,9 @@ package body SPARK_Definition is
 
                               if Is_Object (Part)
                                 and then Retysp_In_SPARK (Etype (Part))
-                                and then Is_Anonymous_Access_Object_Type
-                                           (Retysp (Etype (Part)))
+                                and then
+                                  Is_Anonymous_Access_Object_Type
+                                    (Retysp (Etype (Part)))
                               then
                                  Mark_Violation
                                    ("anonymous access variable marked Part_Of"
@@ -11579,9 +11626,11 @@ package body SPARK_Definition is
                pragma
                  Assert
                    (Ekind (E) in E_Protected_Subtype | E_Task_Subtype
-                      or else (Nkind (Parent (E)) = N_Full_Type_Declaration
-                               and then Nkind (Type_Definition (Parent (E)))
-                                        = N_Derived_Type_Definition));
+                      or else
+                        (Nkind (Parent (E)) = N_Full_Type_Declaration
+                         and then
+                           Nkind (Type_Definition (Parent (E)))
+                           = N_Derived_Type_Definition));
 
                if Full_View_Not_In_SPARK (Etype (E)) then
                   Full_Views_Not_In_SPARK.Insert (E);
@@ -12074,10 +12123,11 @@ package body SPARK_Definition is
                     "consider annotating it with a pragma Annotate "
                     & "(GNATprove, Predefined_Equality, "
                     & (if Has_Access_Type (E)
-                         or else (Has_Predefined_Eq_Annotation (Full_View (E))
-                                  and then Get_Predefined_Eq_Kind
-                                             (Full_View (E))
-                                           = Only_Null)
+                         or else
+                           (Has_Predefined_Eq_Annotation (Full_View (E))
+                            and then
+                              Get_Predefined_Eq_Kind (Full_View (E))
+                              = Only_Null)
                        then "Only_Null"
                        else "No_Equality")
                     & ", ...)");
@@ -12143,8 +12193,8 @@ package body SPARK_Definition is
                   --  leaks (for deep types) is done precisely.
 
                   if not Has_Empty_Variants (E)
-                    and then (not Is_Deep (E)
-                              or else not Has_Shallow_Variants (E))
+                    and then
+                      (not Is_Deep (E) or else not Has_Shallow_Variants (E))
                   then
                      Unused_Records.Insert (E);
                   end if;
@@ -12386,12 +12436,13 @@ package body SPARK_Definition is
                --  An effectively volatile object for reading must appear in
                --  non-interfering context (SPARK RM 7.1.3(9)).
                elsif Is_Effectively_Volatile_For_Reading (E)
-                 and then (not Is_OK_Volatile_Context
-                                 (Context       => Parent (N),
-                                  Obj_Ref       => N,
-                                  Check_Actuals => True)
+                 and then
+                   (not Is_OK_Volatile_Context
+                          (Context       => Parent (N),
+                           Obj_Ref       => N,
+                           Check_Actuals => True)
 
-                           or else In_Loop_Entry_Or_Old_Attribute (N))
+                    or else In_Loop_Entry_Or_Old_Attribute (N))
                then
                   Mark_Violation
                     ("volatile object in interfering context",
@@ -12450,9 +12501,9 @@ package body SPARK_Definition is
                           Assert
                             (In_SPARK (Orig_Ty)
                                and then Ekind (Orig_Ty) = E_Record_Type
-                               and then (Is_Tagged_Type (Orig_Ty)
-                                         or else Retysp (Etype (Orig_Ty))
-                                                 = Orig_Ty));
+                               and then
+                                 (Is_Tagged_Type (Orig_Ty)
+                                  or else Retysp (Etype (Orig_Ty)) = Orig_Ty));
                         Unused_Records.Exclude (Orig_Ty);
                      end;
                   end if;
@@ -12715,9 +12766,9 @@ package body SPARK_Definition is
           begin
             (Present (Prag)
              and then Get_SPARK_Mode_From_Annotation (Prag) = Off)
-            or else (Present (Aux_Prag)
-                     and then Get_SPARK_Mode_From_Annotation (Aux_Prag)
-                              = Off));
+            or else
+              (Present (Aux_Prag)
+               and then Get_SPARK_Mode_From_Annotation (Aux_Prag) = Off));
 
       --  Local variables
 
@@ -12819,8 +12870,8 @@ package body SPARK_Definition is
 
       if Is_Child_Unit (Id)
         and then not Is_Private_Descendant (Id)
-        and then not Is_Empty_List
-                       (Private_Declarations (Package_Specification (Id)))
+        and then
+          not Is_Empty_List (Private_Declarations (Package_Specification (Id)))
         and then not Has_Hidden_Private_Part (Id)
       then
          declare
@@ -13093,13 +13144,15 @@ package body SPARK_Definition is
                --  lists are sequence_of_statements in the AST,
                --  but those are not in SPARK.
                if Is_Pragma_Assert_And_Cut (N)
-                 and then (No (Parent (N))
-                           or else Nkind (Parent (N))
-                                   not in N_Handled_Sequence_Of_Statements
-                                        | N_If_Statement
-                                        | N_Case_Statement_Alternative
-                                        | N_Loop_Statement
-                                        | N_Exception_Handler)
+                 and then
+                   (No (Parent (N))
+                    or else
+                      Nkind (Parent (N))
+                      not in N_Handled_Sequence_Of_Statements
+                           | N_If_Statement
+                           | N_Case_Statement_Alternative
+                           | N_Loop_Statement
+                           | N_Exception_Handler)
                then
                   Mark_Violation
                     ("pragma Assert_And_Cut outside a sequence of statements",
@@ -13130,12 +13183,11 @@ package body SPARK_Definition is
                      --  a variable of an anonymous access-to-object type.
 
                      if Chars (Variant) = Name_Structural
-                       and then not (Nkind (Expr)
-                                     in N_Identifier | N_Expanded_Name
-                                     and then Ekind (Entity (Expr))
-                                              = E_Variable
-                                     and then Is_Anonymous_Access_Object_Type
-                                                (Etype (Expr)))
+                       and then
+                         not (Nkind (Expr) in N_Identifier | N_Expanded_Name
+                              and then Ekind (Entity (Expr)) = E_Variable
+                              and then
+                                Is_Anonymous_Access_Object_Type (Etype (Expr)))
                      then
                         Mark_Violation
                           ("structural loop variant which is not a variable of"
@@ -13716,8 +13768,9 @@ package body SPARK_Definition is
          S_Long_Long_Float        =>
            Is_Double_Precision_Floating_Point_Type
              (Standard_Entity (S_Long_Long_Float))
-           or else Is_Extended_Precision_Floating_Point_Type
-                     (Standard_Entity (S_Long_Long_Float)),
+           or else
+             Is_Extended_Precision_Floating_Point_Type
+               (Standard_Entity (S_Long_Long_Float)),
 
          S_Character              => True,
          S_Wide_Character         => True,
@@ -13837,14 +13890,15 @@ package body SPARK_Definition is
         --  We still mark expression functions declared in the specification
         --  of internal units, so that GNATprove can use their definition.
 
-        and then not (Ekind (E) = E_Function
-                      and then Nkind
-                                 (Original_Node
-                                    (Parent (Subprogram_Specification (E))))
-                               = N_Expression_Function
-                      and then Ekind (Scope (E)) = E_Package
-                      and then In_Visible_Declarations
-                                 (Parent (Subprogram_Specification (E))))
+        and then
+          not (Ekind (E) = E_Function
+               and then
+                 Nkind (Original_Node (Parent (Subprogram_Specification (E))))
+                 = N_Expression_Function
+               and then Ekind (Scope (E)) = E_Package
+               and then
+                 In_Visible_Declarations
+                   (Parent (Subprogram_Specification (E))))
 
         --  We still mark predicate functions declared in the specification
         --  of internal units.
@@ -13894,10 +13948,12 @@ package body SPARK_Definition is
          --  SPARK_Mode => Off.
 
          if SPARK_Pragma_Is_On
-           or else (Is_Expression_Function_Or_Completion (E)
-                    and then not SPARK_Pragma_Is (Opt.Off)
-                    and then not Is_Declared_Directly_In_Unit
-                                   (E, Scope => Lib.Main_Unit_Entity))
+           or else
+             (Is_Expression_Function_Or_Completion (E)
+              and then not SPARK_Pragma_Is (Opt.Off)
+              and then
+                not Is_Declared_Directly_In_Unit
+                      (E, Scope => Lib.Main_Unit_Entity))
          then
             declare
                Save_Violation_Detected : constant Boolean :=
@@ -14339,8 +14395,9 @@ package body SPARK_Definition is
 
    function Most_Underlying_Type_In_SPARK (Id : Type_Kind_Id) return Boolean
    is (Retysp_In_SPARK (Id)
-       and then (Retysp_Kind (Id) not in Incomplete_Or_Private_Kind
-                 or else Retysp_Kind (Id) in Record_Kind));
+       and then
+         (Retysp_Kind (Id) not in Incomplete_Or_Private_Kind
+          or else Retysp_Kind (Id) in Record_Kind));
 
    -----------------------
    -- Queue_For_Marking --
@@ -14428,8 +14485,9 @@ package body SPARK_Definition is
 
          while Nkind (Scop)
                not in N_Declaration | N_Later_Decl_Item | N_Number_Declaration
-           or else Ekind (Defining_Entity (Scop))
-                   not in SPARK_Pragma_Scope_With_Type_Decl
+           or else
+             Ekind (Defining_Entity (Scop))
+             not in SPARK_Pragma_Scope_With_Type_Decl
          loop
             pragma Assert (Present (Scop));
             Scop := Parent (Scop);
@@ -14668,8 +14726,9 @@ package body SPARK_Definition is
          function Is_Access_Or_Ownership
            (Typ : Type_Kind_Id) return Test_Result
          is (if Is_Access_Type (Typ)
-               or else (Has_Ownership_Annotation (Typ)
-                        and then Needs_Reclamation (Typ))
+               or else
+                 (Has_Ownership_Annotation (Typ)
+                  and then Needs_Reclamation (Typ))
              then Pass
              else Fail);
 
@@ -14701,8 +14760,8 @@ package body SPARK_Definition is
          begin
             if (not Compile_Time_Known_Value (Default_Init_Expr)
                 or else not Is_True (Expr_Value (Default_Init_Expr)))
-              and then not Check_DIC_At_Declaration
-                             (Etype (Default_Init_Param))
+              and then
+                not Check_DIC_At_Declaration (Etype (Default_Init_Param))
             then
                DIC_Found := True;
             end if;
@@ -14791,12 +14850,12 @@ package body SPARK_Definition is
                   begin
                      while Present (Comp) loop
                         if Component_Is_Visible_In_SPARK (Comp)
-                          and then (not Is_Tagged_Type (Rep_Ty)
-                                    or else Base_Retysp
-                                              (Scope
-                                                 (Original_Record_Component
-                                                    (Comp)))
-                                            = Rep_Ty)
+                          and then
+                            (not Is_Tagged_Type (Rep_Ty)
+                             or else
+                               Base_Retysp
+                                 (Scope (Original_Record_Component (Comp)))
+                               = Rep_Ty)
                         then
                            if Present
                                 (Expression (Enclosing_Declaration (Comp)))
@@ -14835,9 +14894,10 @@ package body SPARK_Definition is
 
          if (Has_Predicates (Ty)
              and then Needs_Default_Predicate_Checks (Rep_Ty))
-           or else (Has_Discriminants (Rep_Ty)
-                    and then Has_Defaulted_Discriminants (Rep_Ty)
-                    and then not Is_Constrained (Rep_Ty))
+           or else
+             (Has_Discriminants (Rep_Ty)
+              and then Has_Defaulted_Discriminants (Rep_Ty)
+              and then not Is_Constrained (Rep_Ty))
          then
             return True;
          else

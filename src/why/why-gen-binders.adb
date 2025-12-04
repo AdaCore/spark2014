@@ -487,10 +487,10 @@ package body Why.Gen.Binders is
                  Directly_Designated_Type (B.P_Typ);
                Relaxed_Init : constant Boolean :=
                  B.Init.Present
-                 or else (Has_Init_Wrapper (B.P_Typ)
-                          and then not Has_Relaxed_Init (Des_Ty)
-                          and then Get_Relaxed_Init
-                                     (Get_Typ (B.Value.B_Name)));
+                 or else
+                   (Has_Init_Wrapper (B.P_Typ)
+                    and then not Has_Relaxed_Init (Des_Ty)
+                    and then Get_Relaxed_Init (Get_Typ (B.Value.B_Name)));
             begin
                return EW_Abstract (B.P_Typ, Relaxed_Init => Relaxed_Init);
             end;
@@ -559,15 +559,15 @@ package body Why.Gen.Binders is
                when DRecord                   =>
 
                   if B.Discrs.Present
-                    and then (Keep_Local (B.Local)
-                              or else B.Discrs.Binder.Mutable)
+                    and then
+                      (Keep_Local (B.Local) or else B.Discrs.Binder.Mutable)
                   then
                      Count := Count + 1;
                   end if;
 
                   if B.Fields.Present
-                    and then (Keep_Local (B.Local)
-                              or else B.Fields.Binder.Mutable)
+                    and then
+                      (Keep_Local (B.Local) or else B.Fields.Binder.Mutable)
                   then
                      Count := Count + 1;
                   end if;
@@ -707,16 +707,16 @@ package body Why.Gen.Binders is
 
                when DRecord         =>
                   if B.Discrs.Present
-                    and then (B.Discrs.Binder.Mutable
-                              or else not Only_Variables)
+                    and then
+                      (B.Discrs.Binder.Mutable or else not Only_Variables)
                   then
                      B.Discrs.Binder.B_Name :=
                        Local_Name (B.Discrs.Binder.B_Name);
                   end if;
 
                   if B.Fields.Present
-                    and then (B.Fields.Binder.Mutable
-                              or else not Only_Variables)
+                    and then
+                      (B.Fields.Binder.Mutable or else not Only_Variables)
                   then
                      B.Fields.Binder.B_Name :=
                        Local_Name (B.Fields.Binder.B_Name);
@@ -751,8 +751,8 @@ package body Why.Gen.Binders is
       Use_Ty : constant Entity_Id :=
         (if not In_Fun_Decl
            --  test when it is safe to call Actual_Subtype
-           and then (Ekind (E) in E_Constant | E_Variable
-                     or else Is_Formal (E))
+           and then
+             (Ekind (E) in E_Constant | E_Variable or else Is_Formal (E))
            and then Is_Mutable_In_Why (E)
            and then Present (Actual_Subtype (E))
            and then Entity_In_SPARK (Actual_Subtype (E))
@@ -788,10 +788,13 @@ package body Why.Gen.Binders is
             or else Ekind (E) not in E_Constant | E_Variable | Formal_Kind
             or else not Is_Mutable_In_Why (E)
             or else not Contains_Allocated_Parts (Ty)
-            or else (Is_Anonymous_Access_Type (Ty)
-                     and then (Is_Access_Constant (Ty)
-                               or else not Contains_Allocated_Parts
-                                             (Directly_Designated_Type (Ty))))
+            or else
+              (Is_Anonymous_Access_Type (Ty)
+               and then
+                 (Is_Access_Constant (Ty)
+                  or else
+                    not Contains_Allocated_Parts
+                          (Directly_Designated_Type (Ty))))
           then (Present => False)
           elsif Is_Anonymous_Access_Type (Ty)
           then
@@ -1586,15 +1589,17 @@ package body Why.Gen.Binders is
 
                when DRecord                   =>
                   if Cur.Fields.Present
-                    and then (Keep_Local (Cur.Local)
-                              or else Cur.Fields.Binder.Mutable)
+                    and then
+                      (Keep_Local (Cur.Local)
+                       or else Cur.Fields.Binder.Mutable)
                   then
                      Result (Count) := Cur.Fields.Binder;
                      Count := Count + 1;
                   end if;
                   if Cur.Discrs.Present
-                    and then (Keep_Local (Cur.Local)
-                              or else Cur.Discrs.Binder.Mutable)
+                    and then
+                      (Keep_Local (Cur.Local)
+                       or else Cur.Discrs.Binder.Mutable)
                   then
                      Result (Count) := Cur.Discrs.Binder;
                      Count := Count + 1;

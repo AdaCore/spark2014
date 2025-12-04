@@ -585,8 +585,8 @@ procedure Gnatprove with SPARK_Mode is
             --  the target of the compiler used to generate the data
             --  representation in this phase.
             if Has_gnateT_Switch (Tree.Root_Project)
-              or else Configuration.Mode
-                      in GPM_Check | GPM_Check_All | GPM_Flow
+              or else
+                Configuration.Mode in GPM_Check | GPM_Check_All | GPM_Flow
             then
                Status := 0;
             else
@@ -1311,8 +1311,7 @@ begin
       end;
    end loop;
 
-   Analysis :
-   declare
+   Analysis : declare
       Plan : constant Plan_Type :=
         [GS_Data_Representation, GS_ALI, GS_Gnat2Why];
    begin

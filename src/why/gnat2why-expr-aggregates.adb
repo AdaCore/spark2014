@@ -1565,8 +1565,9 @@ package body Gnat2Why.Expr.Aggregates is
                --    (* otherwise, for signed types only *)
 
                if Present (Model_Annot.Sets_Length)
-                 and then (Has_Scalar_Type (Etype (Model_Annot.Sets_Length))
-                           or else Present (Capacity_Fun))
+                 and then
+                   (Has_Scalar_Type (Etype (Model_Annot.Sets_Length))
+                    or else Present (Capacity_Fun))
                then
                   declare
                      Length_Call     : W_Term_Id :=
@@ -1731,8 +1732,8 @@ package body Gnat2Why.Expr.Aggregates is
                        Args => (Model_Term, +Index_Id));
                   Elt_Expr           : constant W_Term_Id :=
                     (if Is_Tagged_Type (Retysp (Model_Annot.Element_Type))
-                       and then not Is_Class_Wide_Type
-                                      (Model_Annot.Element_Type)
+                       and then
+                         not Is_Class_Wide_Type (Model_Annot.Element_Type)
                      then
                        New_Tag_And_Ext_Update
                          (Name => +Elt_Id, Ty => Model_Annot.Element_Type)
@@ -2022,8 +2023,8 @@ package body Gnat2Why.Expr.Aggregates is
                        Args => (New_Model_Term, +Key_Id));
                   Elt_Expr           : constant W_Term_Id :=
                     (if Is_Tagged_Type (Retysp (Model_Annot.Element_Type))
-                       and then not Is_Class_Wide_Type
-                                      (Model_Annot.Element_Type)
+                       and then
+                         not Is_Class_Wide_Type (Model_Annot.Element_Type)
                      then
                        New_Tag_And_Ext_Update
                          (Name => +Elt_Id, Ty => Model_Annot.Element_Type)
@@ -2282,8 +2283,9 @@ package body Gnat2Why.Expr.Aggregates is
                --    (* otherwise, for signed types only *)
 
                if Present (Model_Annot.Maps_Length)
-                 and then (Has_Scalar_Type (Etype (Model_Annot.Maps_Length))
-                           or else Present (Capacity_Fun))
+                 and then
+                   (Has_Scalar_Type (Etype (Model_Annot.Maps_Length))
+                    or else Present (Capacity_Fun))
                then
                   declare
                      Length_Call     : W_Term_Id :=
@@ -2721,11 +2723,11 @@ package body Gnat2Why.Expr.Aggregates is
                            To_Unbounded_String
                              ("elements shall be distinct"
                               & (if Present (Capacity_Fun)
-                                   or else (Present (Model_Annot.Sets_Length)
-                                            and then Has_Scalar_Type
-                                                       (Etype
-                                                          (Model_Annot
-                                                             .Sets_Length)))
+                                   or else
+                                     (Present (Model_Annot.Sets_Length)
+                                      and then
+                                        Has_Scalar_Type
+                                          (Etype (Model_Annot.Sets_Length)))
                                  then
                                    " and shall "
                                    & Length_Check_Msg (Model_Annot.Sets_Length)
@@ -2750,11 +2752,11 @@ package body Gnat2Why.Expr.Aggregates is
                            To_Unbounded_String
                              ("keys shall be distinct"
                               & (if Present (Capacity_Fun)
-                                   or else (Present (Model_Annot.Maps_Length)
-                                            and then Has_Scalar_Type
-                                                       (Etype
-                                                          (Model_Annot
-                                                             .Maps_Length)))
+                                   or else
+                                     (Present (Model_Annot.Maps_Length)
+                                      and then
+                                        Has_Scalar_Type
+                                          (Etype (Model_Annot.Maps_Length)))
                                  then
                                    " and all elements shall "
                                    & Length_Check_Msg (Model_Annot.Maps_Length)
@@ -3119,8 +3121,8 @@ package body Gnat2Why.Expr.Aggregates is
                      end if;
 
                      if No (Capacity_Fun)
-                       and then Has_Scalar_Type
-                                  (Etype (Model_Annot.Sets_Length))
+                       and then
+                         Has_Scalar_Type (Etype (Model_Annot.Sets_Length))
                      then
                         Pre :=
                           New_And_Pred
@@ -3275,8 +3277,9 @@ package body Gnat2Why.Expr.Aggregates is
                            begin
                               if Is_Tagged_Type
                                    (Retysp (Model_Annot.Element_Type))
-                                and then not Is_Class_Wide_Type
-                                               (Model_Annot.Element_Type)
+                                and then
+                                  not Is_Class_Wide_Type
+                                        (Model_Annot.Element_Type)
                               then
                                  Elt_Id :=
                                    New_Tag_And_Ext_Update
@@ -3455,8 +3458,8 @@ package body Gnat2Why.Expr.Aggregates is
                                       (Value => UI_From_Int (Length))));
 
                         if No (Capacity_Fun)
-                          and then Has_Scalar_Type
-                                     (Etype (Model_Annot.Maps_Length))
+                          and then
+                            Has_Scalar_Type (Etype (Model_Annot.Maps_Length))
                         then
                            Pre :=
                              New_And_Pred
@@ -3577,8 +3580,9 @@ package body Gnat2Why.Expr.Aggregates is
                            begin
                               if Is_Tagged_Type
                                    (Retysp (Model_Annot.Element_Type))
-                                and then not Is_Class_Wide_Type
-                                               (Model_Annot.Element_Type)
+                                and then
+                                  not Is_Class_Wide_Type
+                                        (Model_Annot.Element_Type)
                               then
                                  Elt_Id :=
                                    New_Tag_And_Ext_Update
@@ -5213,8 +5217,8 @@ package body Gnat2Why.Expr.Aggregates is
             Result        : W_Pred_Id;
             Needs_Default : constant Boolean :=
               Writes.Values.First_Element.Size > 0
-              and then not Is_Written_For_All_Choices
-                             (Root_Values, Writes.Values);
+              and then
+                not Is_Written_For_All_Choices (Root_Values, Writes.Values);
             --  If there is no arrays access in the prefix (choices have size
             --  0) or if the object is written on all choices that can reach
             --  the current value from the root of the subtree, then it is not
@@ -5610,8 +5614,9 @@ package body Gnat2Why.Expr.Aggregates is
                   --  entirely written, only consider its updated components.
 
                   if Comp_Writes.Kind = Record_Components
-                    and then not Has_Additional_Writes
-                                   (Writes.Values, Comp_Writes.Values)
+                    and then
+                      not Has_Additional_Writes
+                            (Writes.Values, Comp_Writes.Values)
                   then
                      Conjuncts (Top) :=
                        Generate_Values_For_Record_Updates

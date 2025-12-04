@@ -53,8 +53,8 @@ package Flow_Utility is
      Pre  => Present (N),
      Post =>
        Function_Calls'Old.Is_Subset (Of_Set => Function_Calls)
-       and then Proof_Dependencies'Old.Is_Subset
-                  (Of_Set => Proof_Dependencies);
+       and then
+         Proof_Dependencies'Old.Is_Subset (Of_Set => Proof_Dependencies);
    --  For an expression N collect its called functions, proof dependencies and
    --  update the set of protected objects that are read-locked when evaluating
    --  these functions.
@@ -156,19 +156,22 @@ package Flow_Utility is
      Pre  =>
        Ekind (Subprogram) in E_Entry | E_Function | E_Procedure | E_Task_Type
        and then not Is_Derived_Type (Subprogram)
-       and then (if Ekind (Subprogram) = E_Procedure
-                 then
-                   not Is_DIC_Procedure (Subprogram)
-                   and then not Is_Invariant_Procedure (Subprogram)
-                 elsif Ekind (Subprogram) = E_Function
-                 then not Is_Predicate_Function (Subprogram)),
+       and then
+         (if Ekind (Subprogram) = E_Procedure
+          then
+            not Is_DIC_Procedure (Subprogram)
+            and then not Is_Invariant_Procedure (Subprogram)
+          elsif Ekind (Subprogram) = E_Function
+          then not Is_Predicate_Function (Subprogram)),
      Post =>
        (for all G of Globals.Proof_Ins =>
           Is_Entire_Variable (G) and then G.Variant = In_View)
-       and then (for all G of Globals.Inputs =>
-                   Is_Entire_Variable (G) and then G.Variant = In_View)
-       and then (for all G of Globals.Outputs =>
-                   Is_Entire_Variable (G) and then G.Variant = Out_View);
+       and then
+         (for all G of Globals.Inputs =>
+            Is_Entire_Variable (G) and then G.Variant = In_View)
+       and then
+         (for all G of Globals.Outputs =>
+            Is_Entire_Variable (G) and then G.Variant = Out_View);
    --  Given a subprogram, work out globals from the appropriate global aspect
    --  (relative to Scope), or the depends aspect (if no global aspect is
    --  given). If the Global and Depends aspects are not present then use
@@ -200,8 +203,9 @@ package Flow_Utility is
      Post =>
        (for all G of Reads =>
           Is_Entire_Variable (G) and then G.Variant = Normal_Use)
-       and then (for all G of Writes =>
-                   Is_Entire_Variable (G) and then G.Variant = Normal_Use);
+       and then
+         (for all G of Writes =>
+            Is_Entire_Variable (G) and then G.Variant = Normal_Use);
    --  Same as above but Reads consists of both the Reads and Proof_Ins,
    --  discriminants receive no special handling and globals are proof globals,
    --  and we always return the most refined view possible. If Keep_Constants
@@ -636,22 +640,25 @@ package Flow_Utility is
    with
      Pre  =>
        Ekind (Unit) in E_Function | E_Procedure | E_Entry | E_Task_Type
-       and then (No (Output)
-                 or else Ekind (Output)
-                         in Assignable_Kind
-                          | E_Abstract_State
-                          | E_Constant
-                          | E_In_Parameter
-                          | E_Function
-                          | E_Protected_Type
-                          | E_Task_Type)
-       and then (if Present (Input)
-                 then
-                   Ekind (Input)
-                   in E_Abstract_State
-                    | E_Task_Type
-                    | E_Protected_Type
-                    | Object_Kind),
+       and then
+         (No (Output)
+          or else
+            Ekind (Output)
+            in Assignable_Kind
+             | E_Abstract_State
+             | E_Constant
+             | E_In_Parameter
+             | E_Function
+             | E_Protected_Type
+             | E_Task_Type)
+       and then
+         (if Present (Input)
+          then
+            Ekind (Input)
+            in E_Abstract_State
+             | E_Task_Type
+             | E_Protected_Type
+             | Object_Kind),
      Post => Present (Search_Depends_Contract'Result);
    --  Search the Contract of Unit for the given "Output => Input" dependency.
    --
@@ -665,10 +672,9 @@ package Flow_Utility is
      Pre  =>
        Ekind (Unit) = E_Package
        and then Ekind (Output) in E_Variable | E_Abstract_State | E_Constant
-       and then (if Present (Input)
-                 then
-                   Ekind (Input)
-                   in E_Abstract_State | E_Task_Type | Object_Kind),
+       and then
+         (if Present (Input)
+          then Ekind (Input) in E_Abstract_State | E_Task_Type | Object_Kind),
      Post => Present (Search_Initializes_Contract'Result);
    --  Same as Search_Depends_Contract, but for the Initializes contract
 
@@ -767,8 +773,8 @@ package Flow_Utility is
      Pre =>
        Ekind (Subprogram) in E_Function | E_Procedure | E_Entry | E_Task_Type
        and then Nkind (Global_Node) = N_Pragma
-       and then Get_Pragma_Id (Global_Node)
-                in Pragma_Global | Pragma_Refined_Global;
+       and then
+         Get_Pragma_Id (Global_Node) in Pragma_Global | Pragma_Refined_Global;
    --  Returns Global/Refined_Global, as they appear in the source code; in
    --  particular, without down-projections or trimming done by Get_Globals,
    --  which returns the global contract adapted for the use in flow graphs.
@@ -779,8 +785,9 @@ package Flow_Utility is
      Pre =>
        Ekind (Subprogram) in E_Function | E_Procedure | E_Entry | E_Task_Type
        and then Nkind (Depends_Node) = N_Pragma
-       and then Get_Pragma_Id (Depends_Node)
-                in Pragma_Depends | Pragma_Refined_Depends;
+       and then
+         Get_Pragma_Id (Depends_Node)
+         in Pragma_Depends | Pragma_Refined_Depends;
    --  Returns Depends/Refined_Depends, as they appear in the source code; in
    --  particular, without down-projections or trimming done by Get_Depends,
    --  which returns the depends contract adapted for the use in flow graphs.

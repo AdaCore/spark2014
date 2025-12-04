@@ -148,10 +148,11 @@ package body Why.Gen.Init is
       --  initialization.
 
       if not Get_Relaxed_Init (Get_Type (+Name))
-        and then (Has_Scalar_Type (Rep_Ty)
-                  or else Is_Simple_Private_Type (Rep_Ty)
-                  or else Exclude_Components = Relaxed
-                  or else not Contains_Relaxed_Init_Parts (Rep_Ty))
+        and then
+          (Has_Scalar_Type (Rep_Ty)
+           or else Is_Simple_Private_Type (Rep_Ty)
+           or else Exclude_Components = Relaxed
+           or else not Contains_Relaxed_Init_Parts (Rep_Ty))
       then
          return Bool_True (Domain);
 
@@ -229,8 +230,9 @@ package body Why.Gen.Init is
                --  value.
 
                if Exclude_Components /= For_Eq
-                 and then not (Has_Relaxed_Init (Des_Ty)
-                               and then Exclude_Components = Relaxed)
+                 and then
+                   not (Has_Relaxed_Init (Des_Ty)
+                        and then Exclude_Components = Relaxed)
                then
                   P :=
                     New_And_Pred
@@ -514,10 +516,11 @@ package body Why.Gen.Init is
       --  these subcomponents (Exclude_Components is not Relaxed).
 
       if Domain = EW_Prog
-        and then (Is_Init_Wrapper_Type (Get_Type (Name))
-                  or else (Exclude_Components /= Relaxed
-                           and then Contains_Relaxed_Init_Parts
-                                      (E, Ignore_Top => True)))
+        and then
+          (Is_Init_Wrapper_Type (Get_Type (Name))
+           or else
+             (Exclude_Components /= Relaxed
+              and then Contains_Relaxed_Init_Parts (E, Ignore_Top => True)))
       then
          T :=
            +Sequence

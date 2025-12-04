@@ -457,9 +457,9 @@ package body Gnat2Why.Subprograms is
                else Empty);
 
             if Nkind (Withed_Unit) = N_Package_Declaration
-              and then (Is_Subprogram (Main)
-                        or else Known_To_Precede
-                                  (Withed => Withed, Main => Main))
+              and then
+                (Is_Subprogram (Main)
+                 or else Known_To_Precede (Withed => Withed, Main => Main))
             then
                declare
                   Init_Conds : constant Node_Lists.List :=
@@ -479,8 +479,9 @@ package body Gnat2Why.Subprograms is
 
             elsif Nkind (Withed_Unit) = N_Package_Declaration
               and then Has_Contracts (Withed, Pragma_Initial_Condition)
-              and then (Ekind (Main) /= E_Package_Body
-                        or else Withed /= Unique_Entity (Main))
+              and then
+                (Ekind (Main) /= E_Package_Body
+                 or else Withed /= Unique_Entity (Main))
             then
                Warning_Msg_N
                  (Warn_Init_Cond_Ignored,
@@ -666,8 +667,9 @@ package body Gnat2Why.Subprograms is
          --  closure.)
 
          if Trace.Length >= 2
-           and then Top_Level_Packages.Contains
-                      (Trace (Name_Lists.Next (Trace.First)))
+           and then
+             Top_Level_Packages.Contains
+               (Trace (Name_Lists.Next (Trace.First)))
          then
             In_Elaboration := True;
          end if;
@@ -1801,10 +1803,11 @@ package body Gnat2Why.Subprograms is
                   pragma
                     Assert
                       (K = Regular
-                         and then Ty
-                                  in M_Main.Type_Of_Heap
-                                   | EW_Private_Type
-                                   | EW_Unit_Type);
+                         and then
+                           Ty
+                           in M_Main.Type_Of_Heap
+                            | EW_Private_Type
+                            | EW_Unit_Type);
                end;
             end if;
 
@@ -2331,8 +2334,9 @@ package body Gnat2Why.Subprograms is
       --  are at least two guards, and none is an OTHER guard.
 
       if List_Length (Component_Associations (Aggr)) >= 2
-        and then (if List_Length (Component_Associations (Aggr)) = 2
-                  then not Has_Others)
+        and then
+          (if List_Length (Component_Associations (Aggr)) = 2
+           then not Has_Others)
       then
          Append
            (Result,
@@ -2485,12 +2489,14 @@ package body Gnat2Why.Subprograms is
             else
                Do_Warn :=
                  Params.Warn_On_Dead
-                 and then not Exp_Util.Is_Statically_Disabled
-                                (Case_Guard, False, Include_Valid => True);
+                 and then
+                   not Exp_Util.Is_Statically_Disabled
+                         (Case_Guard, False, Include_Valid => True);
                Warn_Others :=
                  Warn_Others
-                 and then not Exp_Util.Is_Statically_Disabled
-                                (Case_Guard, True, Include_Valid => True);
+                 and then
+                   not Exp_Util.Is_Statically_Disabled
+                         (Case_Guard, True, Include_Valid => True);
             end if;
 
             WP_Consequence :=
@@ -3229,9 +3235,10 @@ package body Gnat2Why.Subprograms is
       --  in proof, its postcondition cannot be used to inline it.
 
       elsif Proof_Module_Cyclic (Function_Entity)
-        and then not Find_Contracts
-                       (Function_Entity, Pragma_Postcondition, False, False)
-                       .Is_Empty
+        and then
+          not Find_Contracts
+                (Function_Entity, Pragma_Postcondition, False, False)
+                .Is_Empty
       then
          Error_Msg_N
            ("function cannot be inlined for proof",
@@ -3710,8 +3717,9 @@ package body Gnat2Why.Subprograms is
       --  the current operation.
 
       if not (Post_List.Is_Empty and then CC_List.Is_Empty)
-        and then not (Classwide_Post_List.Is_Empty
-                      and then Inherited_Post_List.Is_Empty)
+        and then
+          not (Classwide_Post_List.Is_Empty
+               and then Inherited_Post_List.Is_Empty)
       then
          Pre_Assume :=
            New_Assume_Statement
@@ -5024,8 +5032,9 @@ package body Gnat2Why.Subprograms is
       function Check_Inline_Annotation return W_Prog_Id is
          Need_Check : constant Boolean :=
            (Present (Retrieve_Inline_Annotation (E))
-            and then (not Is_Expression_Function_Or_Completion (E)
-                      or else not Entity_Body_Compatible_With_SPARK (E)))
+            and then
+              (not Is_Expression_Function_Or_Completion (E)
+               or else not Entity_Body_Compatible_With_SPARK (E)))
            or else Has_Logical_Eq_Annotation (E);
          Params     : constant Transformation_Params := Contract_VC_Params;
       begin
@@ -5658,8 +5667,9 @@ package body Gnat2Why.Subprograms is
             --  disabled.
 
             if Original_Node (Expr) /= Expr
-              and then not Exp_Util.Is_Statically_Disabled
-                             (Expr, False, Include_Valid => True)
+              and then
+                not Exp_Util.Is_Statically_Disabled
+                      (Expr, False, Include_Valid => True)
             then
                Warning_Msg_N (Warn_Precondition_Statically_False, Expr);
             end if;
@@ -6175,8 +6185,8 @@ package body Gnat2Why.Subprograms is
             --  feasibility check.
 
             if Is_Function_Type (E)
-              or else (Ekind (E) = E_Function
-                       and then Is_Abstract_Subprogram (E))
+              or else
+                (Ekind (E) = E_Function and then Is_Abstract_Subprogram (E))
             then
                Why_Body := Check_Feasibility;
             else
@@ -7275,8 +7285,9 @@ package body Gnat2Why.Subprograms is
 
                         if not Has_Contracts
                                  (Descendant_E, Pragma_Postcondition)
-                          and then not Has_Contracts
-                                         (Descendant_E, Pragma_Contract_Cases)
+                          and then
+                            not Has_Contracts
+                                  (Descendant_E, Pragma_Contract_Cases)
                         then
                            Desc_Post :=
                              Get_LSP_Contract
@@ -8994,8 +9005,9 @@ package body Gnat2Why.Subprograms is
       if Ekind (E) = E_Function
         and then Is_Recursive (E)
         and then Has_Subprogram_Variant (E)
-        and then not Is_Structural_Subprogram_Variant
-                       (Get_Pragma (E, Pragma_Subprogram_Variant))
+        and then
+          not Is_Structural_Subprogram_Variant
+                (Get_Pragma (E, Pragma_Subprogram_Variant))
       then
 
          --  Raise a warning about missing definition on recursive calls
@@ -9004,8 +9016,9 @@ package body Gnat2Why.Subprograms is
             Scope            : constant Entity_Id := Enclosing_Unit (E);
             String_For_Scope : constant String :=
               (if Present (Scope)
-                 and then Ekind (Scope)
-                          in E_Package | E_Function | E_Procedure | E_Entry
+                 and then
+                   Ekind (Scope)
+                   in E_Package | E_Function | E_Procedure | E_Entry
                  and then Proof_Module_Cyclic (E, Scope)
                then " and on calls from enclosing unit"
                else "");

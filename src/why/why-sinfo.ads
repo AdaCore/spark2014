@@ -812,9 +812,9 @@ package Why.Sinfo is
      EW_ODomain
        range EW_Term
              ..
-             --  EW_Pterm,
-             --  EW_Pred
-             EW_Prog;
+               --  EW_Pterm,
+               --  EW_Pred
+               EW_Prog;
 
    subtype EW_Terms is EW_ODomain range EW_Term .. EW_Pterm;
 

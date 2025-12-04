@@ -427,8 +427,9 @@ package Gnat2Why.Util is
 
    function Is_Record_Type_In_Why (E : Entity_Id) return Boolean
    is (Is_Type (E)
-       and then Retysp_Kind (E)
-                in Record_Kind | Incomplete_Or_Private_Kind | Concurrent_Kind);
+       and then
+         Retysp_Kind (E)
+         in Record_Kind | Incomplete_Or_Private_Kind | Concurrent_Kind);
 
    function Count_Why_Regular_Fields (E : Type_Kind_Id) return Natural
    with Pre => Is_Record_Type_In_Why (E);
@@ -669,9 +670,9 @@ package Gnat2Why.Util is
      Post =>
        Why_Node_Sets.Is_Subset
          (Subset => From, Of_Set => Get_Graph_Closure'Result)
-       and then Why_Node_Sets.Is_Empty
-                  (Why_Node_Sets.Intersection
-                     (Get_Graph_Closure'Result, Filter));
+       and then
+         Why_Node_Sets.Is_Empty
+           (Why_Node_Sets.Intersection (Get_Graph_Closure'Result, Filter));
    --  @param Map the graph
    --  @param From the set of nodes to start from
    --  @param Filter nodes to be filtered from the closure

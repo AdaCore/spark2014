@@ -194,8 +194,8 @@ package body Gnat2Why.Decls is
         and then not Contains_Volatile_Function_Call (Expr)
         and then not Is_Function_Call_With_Side_Effects (Expr)
         and then not Contains_Allocator (Expr)
-        and then (not Within_Protected_Type (E)
-                  or else Is_Static_Expression (Expr))
+        and then
+          (not Within_Protected_Type (E) or else Is_Static_Expression (Expr))
       then
          declare
             B      : constant Item_Type :=

@@ -825,8 +825,9 @@ package body Flow.Control_Flow_Graph is
        in N_Null_Statement
         | N_Exception_Declaration
         | N_Exception_Renaming_Declaration
-       or else (Nkind (N) = N_Block_Statement
-                and then Nkind (Original_Node (N)) in N_Subprogram_Call);
+       or else
+         (Nkind (N) = N_Block_Statement
+          and then Nkind (Original_Node (N)) in N_Subprogram_Call);
    --  Deals with null statements. We create a new vertex that has control flow
    --  in from the top and leave from the bottom (nothing happens in between).
    --  Exception declarations are treated like null statements and subprogram
@@ -1518,9 +1519,9 @@ package body Flow.Control_Flow_Graph is
            when E_In_Parameter
            =>
              (if Is_Access_Variable (Etype (E))
-                and then (Ekind (FA.Spec_Entity) in E_Procedure | E_Entry
-                          or else Is_Function_With_Side_Effects
-                                    (FA.Spec_Entity))
+                and then
+                  (Ekind (FA.Spec_Entity) in E_Procedure | E_Entry
+                   or else Is_Function_With_Side_Effects (FA.Spec_Entity))
               then Mode_In_Out
               else Mode_In),
 
@@ -1694,10 +1695,11 @@ package body Flow.Control_Flow_Graph is
       end if;
 
       if F.Kind = Direct_Mapping
-        and then Ekind (Get_Direct_Mapping_Id (F))
-                 in E_In_Out_Parameter | E_Out_Parameter
-        and then Has_Discriminants
-                   (Get_Type (Get_Direct_Mapping_Id (F), FA.B_Scope))
+        and then
+          Ekind (Get_Direct_Mapping_Id (F))
+          in E_In_Out_Parameter | E_Out_Parameter
+        and then
+          Has_Discriminants (Get_Type (Get_Direct_Mapping_Id (F), FA.B_Scope))
       then
          Process ((F with delta Facet => The_Bounds));
       end if;
@@ -1748,8 +1750,8 @@ package body Flow.Control_Flow_Graph is
       --  of mode OUT and the LHS acts like the corresponding actual parameter.
 
       if Nkind (Expression (N)) = N_Function_Call
-        and then Is_Function_With_Side_Effects
-                   (Get_Called_Entity (Expression (N)))
+        and then
+          Is_Function_With_Side_Effects (Get_Called_Entity (Expression (N)))
       then
          Do_Call_Statement (Expression (N), FA, CM, Ctx);
          Move_Connections
@@ -2725,8 +2727,9 @@ package body Flow.Control_Flow_Graph is
       function Is_Statically_Disabled (N : Node_Id) return Boolean
       is (Exp_Util.Is_Statically_Disabled
             (N => N, Value => True, Include_Valid => False)
-          or else Exp_Util.Is_Statically_Disabled
-                    (N => N, Value => False, Include_Valid => False));
+          or else
+            Exp_Util.Is_Statically_Disabled
+              (N => N, Value => False, Include_Valid => False));
 
       V, V_Prev           : Flow_Graphs.Vertex_Id;
       If_Part             : constant List_Id := Then_Statements (N);
@@ -2785,8 +2788,9 @@ package body Flow.Control_Flow_Graph is
       --  condition is statically disabled.
       Ctx.Vertex_Ctx.Warnings_Off :=
         Save_Warn_Off
-        or else Exp_Util.Is_Statically_Disabled
-                  (N => Condition (N), Value => False, Include_Valid => False);
+        or else
+          Exp_Util.Is_Statically_Disabled
+            (N => Condition (N), Value => False, Include_Valid => False);
 
       --  We hang the if part off that
       Process_Statement_List (If_Part, FA, CM, Ctx);
@@ -2849,10 +2853,11 @@ package body Flow.Control_Flow_Graph is
               Compile_Time_Known_Value (Condition (Elsif_Statement));
             Seen_True_Warn_Off :=
               Seen_True_Warn_Off
-              or else Exp_Util.Is_Statically_Disabled
-                        (N             => Condition (Elsif_Statement),
-                         Value         => True,
-                         Include_Valid => False);
+              or else
+                Exp_Util.Is_Statically_Disabled
+                  (N             => Condition (Elsif_Statement),
+                   Value         => True,
+                   Include_Valid => False);
 
             declare
                Elsif_Body  : constant List_Id :=
@@ -2860,10 +2865,10 @@ package body Flow.Control_Flow_Graph is
                Funcalls    : Call_Sets.Set;
                Dead_Branch : constant Boolean :=
                  Seen_True_Condition
-                 or else (Known_Condition
-                          and then Is_False
-                                     (Expr_Value
-                                        (Condition (Elsif_Statement))));
+                 or else
+                   (Known_Condition
+                    and then
+                      Is_False (Expr_Value (Condition (Elsif_Statement))));
             begin
 
                --  We have a vertex V for each elsif statement
@@ -2911,10 +2916,11 @@ package body Flow.Control_Flow_Graph is
                --  emission about unreachable code.
                Ctx.Vertex_Ctx.Warnings_Off :=
                  Ctx.Vertex_Ctx.Warnings_Off
-                 or else Exp_Util.Is_Statically_Disabled
-                           (N             => Condition (Elsif_Statement),
-                            Value         => False,
-                            Include_Valid => False);
+                 or else
+                   Exp_Util.Is_Statically_Disabled
+                     (N             => Condition (Elsif_Statement),
+                      Value         => False,
+                      Include_Valid => False);
 
                --  Process statements of elsif
                Process_Statement_List (Elsif_Body, FA, CM, Ctx);
@@ -3015,8 +3021,8 @@ package body Flow.Control_Flow_Graph is
       function Is_For_Loop (N : Node_Id) return Boolean
       is (Nkind (N) = N_Loop_Statement
           and then Present (Iteration_Scheme (N))
-          and then Present
-                     (Loop_Parameter_Specification (Iteration_Scheme (N))));
+          and then
+            Present (Loop_Parameter_Specification (Iteration_Scheme (N))));
       --  Check if the given loop is a simple for loop
 
       function Get_Filter_Variables (Expr : Node_Id) return Flow_Id_Sets.Set
@@ -3406,12 +3412,13 @@ package body Flow.Control_Flow_Graph is
               Target_Name          => Null_Flow_Id,
               Fold_Functions       => Inputs,
               Use_Computed_Globals => not FA.Generating_Globals)
-           or Get_Variables
-                (N                    => HB,
-                 Scope                => FA.B_Scope,
-                 Target_Name          => Null_Flow_Id,
-                 Fold_Functions       => Inputs,
-                 Use_Computed_Globals => not FA.Generating_Globals)
+           or
+             Get_Variables
+               (N                    => HB,
+                Scope                => FA.B_Scope,
+                Target_Name          => Null_Flow_Id,
+                Fold_Functions       => Inputs,
+                Use_Computed_Globals => not FA.Generating_Globals)
            or Get_Filter_Variables (Filter);
 
          V        : Flow_Graphs.Vertex_Id;
@@ -3611,8 +3618,9 @@ package body Flow.Control_Flow_Graph is
                 Get_Array_Index'Result.Var.Kind
                 in Direct_Mapping | Record_Field
                 and then not Get_Array_Index'Result.D.Is_Empty
-                and then (for all E of Get_Array_Index'Result.D =>
-                            Ekind (E) = E_Loop_Parameter));
+                and then
+                  (for all E of Get_Array_Index'Result.D =>
+                     Ekind (E) = E_Loop_Parameter));
          --  Convert the target of an assignment to an array into a flow id
          --  and a list of loop parameters.
 
@@ -3643,10 +3651,10 @@ package body Flow.Control_Flow_Graph is
               Get_Direct_Mapping_Id (Entire_Variable (F));
          begin
             if not Is_Default_Initialized (F)
-              and then not (Present (Obj)
-                            and then Ekind (Obj) = E_In_Out_Parameter)
-              and then not Has_Relaxed_Initialization
-                             (Get_Direct_Mapping_Id (F))
+              and then
+                not (Present (Obj) and then Ekind (Obj) = E_In_Out_Parameter)
+              and then
+                not Has_Relaxed_Initialization (Get_Direct_Mapping_Id (F))
               and then not FA.Generating_Globals
             then
                if T.D.Length = 1 then
@@ -3787,15 +3795,16 @@ package body Flow.Control_Flow_Graph is
                   return
                     Nkind (Bound) = N_Attribute_Reference
                     and then Get_Attribute_Id (Attribute_Name (Bound)) = Attr
-                    and then (if Nkind (Prefix (Bound))
-                                 in N_Identifier | N_Expanded_Name
-                              then Direct_Mapping_Id (Entity (Prefix (Bound)))
-                              else Record_Field_Id (Prefix (Bound)))
-                             = F
-                    and then (if Multi_Dim
-                              then
-                                Intval (First (Expressions (Bound)))
-                                = Current_Dim);
+                    and then
+                      (if Nkind (Prefix (Bound))
+                          in N_Identifier | N_Expanded_Name
+                       then Direct_Mapping_Id (Entity (Prefix (Bound)))
+                       else Record_Field_Id (Prefix (Bound)))
+                      = F
+                    and then
+                      (if Multi_Dim
+                       then
+                         Intval (First (Expressions (Bound))) = Current_Dim);
                end Matches_Object_Bound;
 
             begin
@@ -3830,17 +3839,18 @@ package body Flow.Control_Flow_Graph is
                                Low_Bound (Index_Range),
                                Assume_Valid => True)
                             = EQ
-                            or else Matches_Object_Bound
-                                      (Low_Bound (Param_Range),
-                                       Attribute_First))
-                          and then (Compile_Time_Compare
-                                      (High_Bound (Param_Range),
-                                       High_Bound (Index_Range),
-                                       Assume_Valid => True)
-                                    = EQ
-                                    or else Matches_Object_Bound
-                                              (High_Bound (Param_Range),
-                                               Attribute_Last))
+                            or else
+                              Matches_Object_Bound
+                                (Low_Bound (Param_Range), Attribute_First))
+                          and then
+                            (Compile_Time_Compare
+                               (High_Bound (Param_Range),
+                                High_Bound (Index_Range),
+                                Assume_Valid => True)
+                             = EQ
+                             or else
+                               Matches_Object_Bound
+                                 (High_Bound (Param_Range), Attribute_Last))
                         then
                            null;
 
@@ -4235,8 +4245,8 @@ package body Flow.Control_Flow_Graph is
 
       Ctx.Termination_Proved :=
         Ctx.Termination_Proved
-        or else Termination_Proved
-                  (I_Scheme, Loop_Writes, FA.Generating_Globals);
+        or else
+          Termination_Proved (I_Scheme, Loop_Writes, FA.Generating_Globals);
 
       if No (I_Scheme) then
          --  We have a general (possibly infinite) loop
@@ -5306,8 +5316,8 @@ package body Flow.Control_Flow_Graph is
                   begin
                      Final_Atr.Is_Export :=
                        Final_Atr.Is_Export
-                       or else Is_Initialized_At_Elaboration
-                                 (State, FA.B_Scope);
+                       or else
+                         Is_Initialized_At_Elaboration (State, FA.B_Scope);
                   end;
                end if;
             end;
@@ -5605,8 +5615,9 @@ package body Flow.Control_Flow_Graph is
                begin
                   return
                     Present (Arg2)
-                    and then Nkind (Expression (Arg2))
-                             in N_Expanded_Name | N_Identifier
+                    and then
+                      Nkind (Expression (Arg2))
+                      in N_Expanded_Name | N_Identifier
                     and then Entity (Expression (Arg2)) = Standard_False;
                end Is_Statically_False;
 
@@ -6136,9 +6147,9 @@ package body Flow.Control_Flow_Graph is
       --    * it has already been refined
       if Ekind (Called_Thing) /= E_Subprogram_Type
         and then Has_Depends (Called_Thing)
-        and then (not FA.Generating_Globals
-                  or else not Rely_On_Generated_Global
-                                (Called_Thing, FA.B_Scope))
+        and then
+          (not FA.Generating_Globals
+           or else not Rely_On_Generated_Global (Called_Thing, FA.B_Scope))
       then
          --  Check if there exists a usable Depends => (null => ...)
          declare
@@ -6693,11 +6704,12 @@ package body Flow.Control_Flow_Graph is
                  Scope                => FA.B_Scope,
                  Target_Name          => Null_Flow_Id,
                  Use_Computed_Globals => not FA.Generating_Globals)
-              or Get_All_Variables
-                   (N                    => High_Bound (R),
-                    Scope                => FA.B_Scope,
-                    Target_Name          => Null_Flow_Id,
-                    Use_Computed_Globals => not FA.Generating_Globals);
+              or
+                Get_All_Variables
+                  (N                    => High_Bound (R),
+                   Scope                => FA.B_Scope,
+                   Target_Name          => Null_Flow_Id,
+                   Use_Computed_Globals => not FA.Generating_Globals);
 
             V : Flow_Graphs.Vertex_Id;
          begin
@@ -6752,8 +6764,9 @@ package body Flow.Control_Flow_Graph is
 
          begin
             if DIC_Promised
-              and then not Is_Default_Initialized
-                             (Direct_Mapping_Id (Typ), Ignore_DIC => True)
+              and then
+                not Is_Default_Initialized
+                      (Direct_Mapping_Id (Typ), Ignore_DIC => True)
             then
                --  ??? For composite types we should pinpoint the exact
                --  component that renders the type not initialized by default.
@@ -7027,8 +7040,9 @@ package body Flow.Control_Flow_Graph is
 
             if Is_Aliased (Formal)
               or else Is_By_Reference_Type (Etype (Formal))
-              or else (Ekind (Formal) = E_In_Parameter
-                       and then Is_Writable_Parameter (Formal))
+              or else
+                (Ekind (Formal) = E_In_Parameter
+                 and then Is_Writable_Parameter (Formal))
             then
                Outs_By_Reference.Append (V);
             elsif Is_By_Copy_Type (Etype (Formal)) then
@@ -8608,8 +8622,9 @@ package body Flow.Control_Flow_Graph is
 
       if FA.Kind = Kind_Package
         and then Has_Non_Null_Abstract_State (FA.Spec_Entity)
-        and then (not Private_Spec_In_SPARK (FA.Spec_Entity)
-                  or else not Entity_Body_In_SPARK (FA.Spec_Entity))
+        and then
+          (not Private_Spec_In_SPARK (FA.Spec_Entity)
+           or else not Entity_Body_In_SPARK (FA.Spec_Entity))
       then
          for State of Iter (Abstract_States (FA.Spec_Entity)) loop
             Create_Initial_And_Final_Vertices (E => State, FA => FA);
@@ -8643,9 +8658,10 @@ package body Flow.Control_Flow_Graph is
       if FA.Kind = Kind_Package
         and then Present (Get_Pragma (FA.Spec_Entity, Pragma_Initializes))
         and then Present (Body_Entity (FA.Spec_Entity))
-        and then (not Private_Spec_In_SPARK (FA.Spec_Entity)
-                  or else not Entity_Body_In_SPARK (FA.Spec_Entity)
-                  or else not Body_Statements_In_SPARK (FA.Spec_Entity))
+        and then
+          (not Private_Spec_In_SPARK (FA.Spec_Entity)
+           or else not Entity_Body_In_SPARK (FA.Spec_Entity)
+           or else not Body_Statements_In_SPARK (FA.Spec_Entity))
       then
          declare
             DM : constant Dependency_Maps.Map :=
@@ -8678,11 +8694,13 @@ package body Flow.Control_Flow_Graph is
                   --  that would be otherwise uninitialized.
 
                   if Present (Out_Id)
-                    and then (Ekind (Out_Id) = E_Constant
-                              or else (Ekind (Out_Id) = E_Variable
-                                       and then (Has_Initial_Value (Out_Id)
-                                                 or else Is_Default_Initialized
-                                                           (The_Out))))
+                    and then
+                      (Ekind (Out_Id) = E_Constant
+                       or else
+                         (Ekind (Out_Id) = E_Variable
+                          and then
+                            (Has_Initial_Value (Out_Id)
+                             or else Is_Default_Initialized (The_Out))))
                   then
                      goto Next_Clause;
                   end if;
@@ -9066,12 +9084,14 @@ package body Flow.Control_Flow_Graph is
                   if FA.Has_Only_Nonblocking_Statements then
                      for SC of Atr.Subprogram_Calls loop
                         if Is_Entry (SC.E)
-                          or else (Ekind (SC.E) in E_Function | E_Procedure
-                                   and then Is_Predefined_Potentially_Blocking
-                                              (SC.E))
-                          or else (Nkind (SC.N) in N_Subprogram_Call
-                                   and then Flow_Classwide.Is_Dispatching_Call
-                                              (SC.N))
+                          or else
+                            (Ekind (SC.E) in E_Function | E_Procedure
+                             and then
+                               Is_Predefined_Potentially_Blocking (SC.E))
+                          or else
+                            (Nkind (SC.N) in N_Subprogram_Call
+                             and then
+                               Flow_Classwide.Is_Dispatching_Call (SC.N))
                         then
                            FA.Has_Only_Nonblocking_Statements := False;
                            exit;
@@ -9090,9 +9110,10 @@ package body Flow.Control_Flow_Graph is
                         if (Nkind (SC.N) in N_Subprogram_Call
                             and then Flow_Classwide.Is_Dispatching_Call (SC.N))
                           or else Is_Procedure_Type (SC.E)
-                          or else (Is_Ignored_Internal (SC.E)
-                                   and then Is_Subprogram (SC.E)
-                                   and then No_Return (SC.E))
+                          or else
+                            (Is_Ignored_Internal (SC.E)
+                             and then Is_Subprogram (SC.E)
+                             and then No_Return (SC.E))
                         then
                            FA.Has_Only_Terminating_Constructs := False;
                            exit;
@@ -9105,8 +9126,9 @@ package body Flow.Control_Flow_Graph is
 
                   FA.Calls_Via_Access :=
                     FA.Calls_Via_Access
-                    or else (for some SC of Atr.Subprogram_Calls =>
-                               Ekind (SC.E) = E_Subprogram_Type);
+                    or else
+                      (for some SC of Atr.Subprogram_Calls =>
+                         Ekind (SC.E) = E_Subprogram_Type);
 
                   --  Indirect calls to equality can make the subprogram
                   --  nonterminating. We flag calls to dispatching equalities
@@ -9199,8 +9221,9 @@ package body Flow.Control_Flow_Graph is
          for E of Unresolved_Calls loop
             if (Ekind (E) in E_Procedure | E_Entry
                 or else Is_Function_With_Side_Effects (E))
-              and then (not Has_User_Supplied_Globals (E)
-                        or else Rely_On_Generated_Global (E, FA.B_Scope))
+              and then
+                (not Has_User_Supplied_Globals (E)
+                 or else Rely_On_Generated_Global (E, FA.B_Scope))
             then
                declare
                   F_Initial : constant Flow_Id :=

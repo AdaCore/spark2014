@@ -495,15 +495,15 @@ package body Why.Gen.Expr is
 
             function Rep_Modulus return Uint
             is (if Rep_Type = EW_BitVector_8_Type
-                then Uint_2**8
+                then Uint_2 ** 8
                 elsif Rep_Type = EW_BitVector_16_Type
-                then Uint_2**16
+                then Uint_2 ** 16
                 elsif Rep_Type = EW_BitVector_32_Type
-                then Uint_2**32
+                then Uint_2 ** 32
                 elsif Rep_Type = EW_BitVector_64_Type
-                then Uint_2**64
+                then Uint_2 ** 64
                 elsif Rep_Type = EW_BitVector_128_Type
-                then Uint_2**128
+                then Uint_2 ** 128
                 else raise Program_Error);
 
             Value_Expr : constant W_Term_Id := New_Temp_For_Expr (Left_Opnd);
@@ -693,9 +693,10 @@ package body Why.Gen.Expr is
       --  in that case. See also [New_Pretty_Label].
 
       if not Left_Most
-        or else (Comes_From_Source (N)
-                 and then Is_Rewrite_Substitution (N)
-                 and then Nkind (Original_Node (N)) = N_And_Then)
+        or else
+          (Comes_From_Source (N)
+           and then Is_Rewrite_Substitution (N)
+           and then Nkind (Original_Node (N)) = N_And_Then)
       then
          Slc := Sloc (N);
       else
@@ -841,8 +842,8 @@ package body Why.Gen.Expr is
       begin
          for Expon in R'Range loop
             declare
-               Pow  : constant Uint := R (Expon)**Int (Expon);
-               Next : constant Uint := (R (Expon) + 1)**Int (Expon);
+               Pow  : constant Uint := R (Expon) ** Int (Expon);
+               Next : constant Uint := (R (Expon) + 1) ** Int (Expon);
             begin
                pragma Assert (Pow < Modulus and Modulus <= Next);
             end;
@@ -861,7 +862,7 @@ package body Why.Gen.Expr is
       Roots_8_Bits :=
         (2 => UI (15), 3 => UI (6), 4 | 5 => UI (3), 6 | 7 => UI (2));
 
-      Check_Roots (Uint_2**8, Roots_8_Bits);
+      Check_Roots (Uint_2 ** 8, Roots_8_Bits);
 
       Roots_16_Bits :=
         (2        => UI (255),
@@ -873,7 +874,7 @@ package body Why.Gen.Expr is
          8 .. 10  => UI (3),
          11 .. 15 => UI (2));
 
-      Check_Roots (Uint_2**16, Roots_16_Bits);
+      Check_Roots (Uint_2 ** 16, Roots_16_Bits);
 
       Roots_32_Bits :=
         (2        => UI (65_535),
@@ -892,10 +893,10 @@ package body Why.Gen.Expr is
          16 .. 20 => UI (3),
          21 .. 31 => UI (2));
 
-      Check_Roots (Uint_2**32, Roots_32_Bits);
+      Check_Roots (Uint_2 ** 32, Roots_32_Bits);
 
       Roots_64_Bits :=
-        (2        => UI (2**32 - 1),
+        (2        => UI (2 ** 32 - 1),
          3        => UI (2_642_245),
          4        => UI (65_535),
          5        => UI (7131),
@@ -922,12 +923,12 @@ package body Why.Gen.Expr is
          32 .. 40 => UI (3),
          41 .. 63 => UI (2));
 
-      Check_Roots (Uint_2**64, Roots_64_Bits);
+      Check_Roots (Uint_2 ** 64, Roots_64_Bits);
 
       Roots_128_Bits :=
-        (2         => UI (2**63 - 1) * 2 + 1,
+        (2         => UI (2 ** 63 - 1) * 2 + 1,
          3         => UI (6_981_463_658_331),
-         4         => UI (2**32 - 1),
+         4         => UI (2 ** 32 - 1),
          5         => UI (50_859_008),
          6         => UI (2_642_245),
          7         => UI (319_557),
@@ -970,7 +971,7 @@ package body Why.Gen.Expr is
          64 .. 80  => UI (3),
          81 .. 127 => UI (2));
 
-      Check_Roots (Uint_2**128, Roots_128_Bits);
+      Check_Roots (Uint_2 ** 128, Roots_128_Bits);
 
    end Initialize_Tables_Nth_Roots;
 
@@ -1045,8 +1046,8 @@ package body Why.Gen.Expr is
             --  lower bound, add constraint on the first bound.
 
             if Constrained
-              or else Is_Fixed_Lower_Bound_Index_Subtype
-                        (Nth_Index_Type (To_Ent, I))
+              or else
+                Is_Fixed_Lower_Bound_Index_Subtype (Nth_Index_Type (To_Ent, I))
             then
                Count := Count + 1;
                Eqs (Count) :=
@@ -1245,8 +1246,9 @@ package body Why.Gen.Expr is
                   --  bounds from the expected type.
 
                   if Is_Constrained (To_Ent)
-                    or else Is_Fixed_Lower_Bound_Index_Subtype
-                              (Nth_Index_Type (To_Ent, I))
+                    or else
+                      Is_Fixed_Lower_Bound_Index_Subtype
+                        (Nth_Index_Type (To_Ent, I))
                   then
 
                      --  The first bound can be queried directly
@@ -1540,15 +1542,17 @@ package body Why.Gen.Expr is
       Check_Needed :=
         (if Get_Type_Kind (From) in EW_Abstract | EW_Split
            and then Get_Type_Kind (To) in EW_Abstract | EW_Split
-           and then not (Nkind (Ada_Node) = N_String_Literal
-                         and then Has_Predicates (Get_Ada_Node (+To)))
+           and then
+             not (Nkind (Ada_Node) = N_String_Literal
+                  and then Has_Predicates (Get_Ada_Node (+To)))
          then
            Check_Needed_On_Conversion
              (From => Get_Ada_Node (+From), To => Get_Ada_Node (+To))
            or else Is_Choice_Of_Unconstrained_Array_Update (Ada_Node)
-           or else (Is_Init_Wrapper_Type (From)
-                    and then not Is_Init_Wrapper_Type (To)
-                    and then not No_Init)
+           or else
+             (Is_Init_Wrapper_Type (From)
+              and then not Is_Init_Wrapper_Type (To)
+              and then not No_Init)
          else True);
 
       if Is_Private_Conversion (From, To)
@@ -1678,8 +1682,9 @@ package body Why.Gen.Expr is
         Need_Check
         and then not No_Init
         and then Has_Predicates (R)
-        and then (Ada_Node not in Opt_N_Subexpr_Id
-                  or else not Is_Call_Arg_To_Predicate_Function (Ada_Node));
+        and then
+          (Ada_Node not in Opt_N_Subexpr_Id
+           or else not Is_Call_Arg_To_Predicate_Function (Ada_Node));
       Check_Entity    : constant Entity_Id := Get_Ada_Node (+To);
 
       Base : constant W_Type_Id :=
@@ -1833,9 +1838,10 @@ package body Why.Gen.Expr is
       Need_Pred_Check : constant Boolean :=
         not No_Init
         and then Has_Predicates (R)
-        and then (No (Ada_Node)
-                  or else Ada_Node not in N_Subexpr_Id
-                  or else not Is_Call_Arg_To_Predicate_Function (Ada_Node));
+        and then
+          (No (Ada_Node)
+           or else Ada_Node not in N_Subexpr_Id
+           or else not Is_Call_Arg_To_Predicate_Function (Ada_Node));
 
    begin
       --  If From has relaxed initialization and not To, introduce a
@@ -2522,8 +2528,8 @@ package body Why.Gen.Expr is
 
       if Present (Range_Type)
         and then Is_Floating_Point_Type (Range_Type)
-        and then not (Is_Converted_Actual_Output_Parameter (Ada_Node)
-                      or else Lvalue)
+        and then
+          not (Is_Converted_Actual_Output_Parameter (Ada_Node) or else Lvalue)
       then
          declare
             Tlo : constant Node_Id := Type_Low_Bound (Range_Type);
@@ -2730,9 +2736,10 @@ package body Why.Gen.Expr is
            --  direct conversion from bitvector to int, float or another
            --  bitvector types.
 
-           or else (Why_Type_Is_BitVector (Base_Why_Type (From))
-                    and then not Why_Type_Is_BitVector (Base_Why_Type (To))
-                    and then not Why_Type_Is_Float (Base_Why_Type (To)))
+           or else
+             (Why_Type_Is_BitVector (Base_Why_Type (From))
+              and then not Why_Type_Is_BitVector (Base_Why_Type (To))
+              and then not Why_Type_Is_Float (Base_Why_Type (To)))
          then
             Result :=
               Insert_Single_Conversion
@@ -2753,10 +2760,11 @@ package body Why.Gen.Expr is
       if Present (Range_Type)
         and then not Range_Check_Applied
         and then From /= EW_Bool_Type
-        and then (Base_Why_Type (Range_Type) = Cur
-                  or else (Has_Modular_Integer_Type (Range_Type)
-                           and then not Has_No_Bitwise_Operations_Annotation
-                                          (Range_Type)))
+        and then
+          (Base_Why_Type (Range_Type) = Cur
+           or else
+             (Has_Modular_Integer_Type (Range_Type)
+              and then not Has_No_Bitwise_Operations_Annotation (Range_Type)))
       then
          Range_Check_Applied := True;
          Result :=
@@ -2777,10 +2785,10 @@ package body Why.Gen.Expr is
          --  Avoid converting Booleans to integers when there is no check
 
          if To_Ty = EW_Bool_Type
-           and then (Cur /= EW_Bool_Type
-                     or else (Present (Range_Type)
-                              and then not Range_Check_Applied)
-                     or else (Domain = EW_Prog and then Do_Predicate_Check))
+           and then
+             (Cur /= EW_Bool_Type
+              or else (Present (Range_Type) and then not Range_Check_Applied)
+              or else (Domain = EW_Prog and then Do_Predicate_Check))
          then
             To_Ty := EW_Int_Type;
          end if;
@@ -2804,9 +2812,11 @@ package body Why.Gen.Expr is
            Assert
              (Base_Why_Type (Range_Type) = Cur
                 or else Base_Why_Type (Range_Type) = EW_Bool_Type
-                or else (Get_Type_Kind (Cur) = EW_Split
-                         and then Base_Why_Type (Get_Ada_Node (+Cur))
-                                  = Base_Why_Type (Range_Type)));
+                or else
+                  (Get_Type_Kind (Cur) = EW_Split
+                   and then
+                     Base_Why_Type (Get_Ada_Node (+Cur))
+                     = Base_Why_Type (Range_Type)));
          Result :=
            +Do_Range_Check
               (Ada_Node   => Ada_Node,
@@ -3140,9 +3150,9 @@ package body Why.Gen.Expr is
    begin
       return
         W = +Void
-        or else (Get_Kind (+W) = W_Statement_Sequence
-                 and then Is_Void_List
-                            (Statement_Sequence_Get_Statements (+W)));
+        or else
+          (Get_Kind (+W) = W_Statement_Sequence
+           and then Is_Void_List (Statement_Sequence_Get_Statements (+W)));
    end Is_Void;
 
    ------------------
@@ -3162,13 +3172,17 @@ package body Why.Gen.Expr is
    begin
       return
         W = +Void
-        or else (Get_Kind (+W) = W_Label
-                 and then Is_Essentially_Void (+Label_Get_Def (+W)))
-        or else (Get_Kind (+W) = W_Loc_Label
-                 and then Is_Essentially_Void (+Loc_Label_Get_Def (+W)))
-        or else (Get_Kind (+W) = W_Statement_Sequence
-                 and then Is_Essentially_Void_List
-                            (Statement_Sequence_Get_Statements (+W)));
+        or else
+          (Get_Kind (+W) = W_Label
+           and then Is_Essentially_Void (+Label_Get_Def (+W)))
+        or else
+          (Get_Kind (+W) = W_Loc_Label
+           and then Is_Essentially_Void (+Loc_Label_Get_Def (+W)))
+        or else
+          (Get_Kind (+W) = W_Statement_Sequence
+           and then
+             Is_Essentially_Void_List
+               (Statement_Sequence_Get_Statements (+W)));
    end Is_Essentially_Void;
 
    ------------------------------
@@ -3262,8 +3276,9 @@ package body Why.Gen.Expr is
 
       if From_Constrained
         and then To_Constrained
-        and then First_Constrained_Parent (From_Rep)
-                 = First_Constrained_Parent (To_Rep)
+        and then
+          First_Constrained_Parent (From_Rep)
+          = First_Constrained_Parent (To_Rep)
       then
          return False;
       end if;
@@ -3806,8 +3821,8 @@ package body Why.Gen.Expr is
                     To       => Base);
 
                if Has_Modular_Integer_Type (Return_Type)
-                 and then not Has_No_Bitwise_Operations_Annotation
-                                (Return_Type)
+                 and then
+                   not Has_No_Bitwise_Operations_Annotation (Return_Type)
                  and then Non_Binary_Modulus (Return_Type)
                then
                   T :=
@@ -3934,8 +3949,8 @@ package body Why.Gen.Expr is
                   end;
 
                elsif Has_Modular_Integer_Type (Return_Type)
-                 and then not Has_No_Bitwise_Operations_Annotation
-                                (Return_Type)
+                 and then
+                   not Has_No_Bitwise_Operations_Annotation (Return_Type)
                  and then Non_Binary_Modulus (Return_Type)
                then
                   T :=
@@ -4145,8 +4160,8 @@ package body Why.Gen.Expr is
                Base := Typ;
 
                if Has_Modular_Integer_Type (Return_Type)
-                 and then not Has_No_Bitwise_Operations_Annotation
-                                (Return_Type)
+                 and then
+                   not Has_No_Bitwise_Operations_Annotation (Return_Type)
                  and then Non_Binary_Modulus (Return_Type)
                then
                   T :=
@@ -4332,8 +4347,8 @@ package body Why.Gen.Expr is
       --  types and record or private types with discriminants.
 
       if Is_Scalar_Type (Ty)
-        and then (Type_Is_Modeled_As_Base (Ty)
-                  or else Use_Split_Form_For_Type (Ty))
+        and then
+          (Type_Is_Modeled_As_Base (Ty) or else Use_Split_Form_For_Type (Ty))
       then
 
          pragma Assert (not Depends_On_Discriminant (Get_Range (Ty)));

@@ -98,8 +98,8 @@ package body Flow.Control_Flow_Graph.Utility is
             pragma
               Assert
                 (Im_Var.Component.Length = 1
-                   and then Ekind (Im_Var.Component.Last_Element)
-                            = E_Discriminant
+                   and then
+                     Ekind (Im_Var.Component.Last_Element) = E_Discriminant
                    and then Var_Defined.Kind = Record_Field
                    and then Var_Defined.Component.Length >= 1);
             --  There are two cases to consider:
@@ -386,9 +386,10 @@ package body Flow.Control_Flow_Graph.Utility is
       Ext_Relevant_To_Formal : constant Boolean :=
         Has_Extensions_Visible (Subprogram)
         or else Is_Class_Wide_Type (Get_Type (Formal, Scope))
-        or else (Flow_Classwide.Is_Dispatching_Call (Call)
-                 and then Is_Formal (Formal)
-                 and then Is_Controlling_Formal (Formal));
+        or else
+          (Flow_Classwide.Is_Dispatching_Call (Call)
+           and then Is_Formal (Formal)
+           and then Is_Controlling_Formal (Formal));
 
       A : V_Attributes := Null_Attributes;
 
@@ -689,8 +690,8 @@ package body Flow.Control_Flow_Graph.Utility is
          when In_View  =>
             if Mode = Mode_Out then
                if G.Kind = Direct_Mapping
-                 and then Is_Unconstrained_Or_Tagged_Item
-                            (Get_Direct_Mapping_Id (G))
+                 and then
+                   Is_Unconstrained_Or_Tagged_Item (Get_Direct_Mapping_Id (G))
                then
                   for C of Get_Components (G, Scope) loop
                      if Is_Discriminant (C) then
@@ -922,8 +923,9 @@ package body Flow.Control_Flow_Graph.Utility is
             A.Is_Initialized :=
               A.Mode in Mode_In | Mode_In_Out
               or else Ekind (Entire_Var) in E_Loop_Parameter | E_Constant
-              or else (not Is_In_Analyzed_Files (Entire_Var)
-                       and then Is_Initialized_At_Elaboration (Entire_Var, S));
+              or else
+                (not Is_In_Analyzed_Files (Entire_Var)
+                 and then Is_Initialized_At_Elaboration (Entire_Var, S));
 
             --  Is_Import is True for:
             --    * formal "in" and "in out" parameters
@@ -990,11 +992,13 @@ package body Flow.Control_Flow_Graph.Utility is
       case F.Variant is
          when Initial_Value =>
             if Mode in Initialized_Global_Modes
-              or else ((Is_Input_Discriminant (F)
-                        or else Is_Bound (F)
-                        or else Is_Record_Tag (F))
-                       and then not (Is_Constituent (F)
-                                     or else Is_Implicit_Constituent (F)))
+              or else
+                ((Is_Input_Discriminant (F)
+                  or else Is_Bound (F)
+                  or else Is_Record_Tag (F))
+                 and then
+                   not (Is_Constituent (F)
+                        or else Is_Implicit_Constituent (F)))
             then
                --  Discriminants, array bounds and tags initialized imports,
                --  except when they belong to a constituent of an abstract

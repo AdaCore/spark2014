@@ -317,8 +317,9 @@ package body SPARK_Atree.Entities is
    is ((Ekind (Subp) = E_Function
         and then Sem_Util.Is_Unchecked_Conversion_Instance (Subp)
         and then Sem_Util.Has_Effectively_Volatile_Profile (Subp))
-       or else Sem_Prag.Is_Enabled_Pragma
-                 (Get_Pragma (Subp, Pragma_Volatile_Function)));
+       or else
+         Sem_Prag.Is_Enabled_Pragma
+           (Get_Pragma (Subp, Pragma_Volatile_Function)));
 
    --------------------
    -- Has_Predicates --
@@ -347,9 +348,9 @@ package body SPARK_Atree.Entities is
 
    function Is_Access_Subprogram_Type (E : Type_Kind_Id) return Boolean
    is (Einfo.Utils.Is_Access_Type (E)
-       and then Einfo.Entities.Ekind
-                  (Einfo.Entities.Directly_Designated_Type (E))
-                = Einfo.Entities.E_Subprogram_Type);
+       and then
+         Einfo.Entities.Ekind (Einfo.Entities.Directly_Designated_Type (E))
+         = Einfo.Entities.E_Subprogram_Type);
 
    ----------------
    -- Is_Aliased --
@@ -487,8 +488,9 @@ package body SPARK_Atree.Entities is
    is ((Present (Component_Clause (Obj))
         and then Opt.Ada_Version >= Opt.Ada_2005
         and then Einfo.Entities.Reverse_Bit_Order (Sinfo.Nodes.Scope (Obj)))
-       or else (Einfo.Utils.Known_Static_Component_Bit_Offset (Obj)
-                and then Einfo.Utils.Known_Static_Component_Size (Obj)));
+       or else
+         (Einfo.Utils.Known_Static_Component_Bit_Offset (Obj)
+          and then Einfo.Utils.Known_Static_Component_Size (Obj)));
 
    function Known_Component_Size (Ent : Entity_Id) return Boolean
    renames Einfo.Utils.Known_Component_Size;
@@ -592,7 +594,7 @@ package body SPARK_Atree.Entities is
       use type Interfaces.Unsigned_64;
 
       function Max_Size_Of_Integer (Size : Int) return Int
-      is (Interfaces.Unsigned_64'Image (2**Natural (Size))'Length + 1);
+      is (Interfaces.Unsigned_64'Image (2 ** Natural (Size))'Length + 1);
       --  Maximal size of integer values (positive values are prefixed by a
       --  space).
 

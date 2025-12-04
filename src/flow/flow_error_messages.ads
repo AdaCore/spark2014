@@ -80,12 +80,12 @@ package Flow_Error_Messages is
        and then (if Present (F3) then Present (F2))
        and then (if Present (FF2) then Present (FF1))
        and then (if Severity in Check_Kind then Tag in Valid_Flow_Tag_Kind)
-       and then (case Tag is
-                   when Empty_Tag         => True,
-                   when Flow_Error_Kind   => Severity = Error_Kind,
-                   when Flow_Check_Kind   =>
-                     Severity in Check_Kind | Info_Kind,
-                   when Flow_Warning_Kind => Severity = Warning_Kind)
+       and then
+         (case Tag is
+            when Empty_Tag         => True,
+            when Flow_Error_Kind   => Severity = Error_Kind,
+            when Flow_Check_Kind   => Severity in Check_Kind | Info_Kind,
+            when Flow_Warning_Kind => Severity = Warning_Kind)
        and then Present (N);
    --  Output a message attached to the given node with a substitution
    --  using F1, F2 and F3. If not empty, the details, explanation and possible
@@ -133,12 +133,12 @@ package Flow_Error_Messages is
        and then (if Present (F3) then Present (F2))
        and then (if Present (FF2) then Present (FF1))
        and then (if Severity in Check_Kind then Tag in Valid_Flow_Tag_Kind)
-       and then (case Tag is
-                   when Empty_Tag         => True,
-                   when Flow_Error_Kind   => Severity = Error_Kind,
-                   when Flow_Check_Kind   =>
-                     Severity in Check_Kind | Info_Kind,
-                   when Flow_Warning_Kind => Severity = Warning_Kind);
+       and then
+         (case Tag is
+            when Empty_Tag         => True,
+            when Flow_Error_Kind   => Severity = Error_Kind,
+            when Flow_Check_Kind   => Severity in Check_Kind | Info_Kind,
+            when Flow_Warning_Kind => Severity = Warning_Kind);
    --  As above but it also writes the tracefile.
    --
    --  Also:

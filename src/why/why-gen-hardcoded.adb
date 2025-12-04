@@ -357,12 +357,9 @@ package body Why.Gen.Hardcoded is
    function Is_Hardcoded_Comparison (Subp : Entity_Id) return Boolean
    is (Is_Subprogram (Subp)
        and then Is_Hardcoded_Entity (Subp)
-       and then Chars (Subp)
-                in Name_Op_Eq
-                 | Name_Op_Lt
-                 | Name_Op_Le
-                 | Name_Op_Gt
-                 | Name_Op_Ge);
+       and then
+         Chars (Subp)
+         in Name_Op_Eq | Name_Op_Lt | Name_Op_Le | Name_Op_Gt | Name_Op_Ge);
 
    ----------------------------
    -- Is_Hardcoded_Operation --
@@ -466,11 +463,12 @@ package body Why.Gen.Hardcoded is
       --  the Big_Integers package and its generic subpackages.
 
       elsif (Is_From_Hardcoded_Generic_Unit (Subp, Big_Integers)
-             and then Name_String
-                      in BIN.Generic_To_Big_Integer
-                       | BIN.Generic_From_Big_Integer)
-        or else (Is_From_Hardcoded_Unit (Subp, Big_Integers)
-                 and then Name_String in BIN.To_Big_Integer | BIN.To_Integer)
+             and then
+               Name_String
+               in BIN.Generic_To_Big_Integer | BIN.Generic_From_Big_Integer)
+        or else
+          (Is_From_Hardcoded_Unit (Subp, Big_Integers)
+           and then Name_String in BIN.To_Big_Integer | BIN.To_Integer)
       then
 
          --  Conversion from an integer type to type Big_Integer, no check
@@ -648,9 +646,10 @@ package body Why.Gen.Hardcoded is
                declare
                   Check : constant Boolean :=
                     Domain = EW_Prog
-                    and then (Chars (Subp)
-                              in Name_Op_Divide | Name_Op_Mod | Name_Op_Rem
-                              or else Name_String = BIN.Gcd);
+                    and then
+                      (Chars (Subp)
+                       in Name_Op_Divide | Name_Op_Mod | Name_Op_Rem
+                       or else Name_String = BIN.Gcd);
                   pragma Assert (if Check then Present (Ada_Node));
 
                   Check_Info : Check_Info_Type := New_Check_Info;
@@ -1309,8 +1308,9 @@ package body Why.Gen.Hardcoded is
             Op      : W_Identifier_Id;
             Is_Time : constant Boolean :=
               Is_From_Hardcoded_Unit (Etype (Subp), Real_Time)
-              and then Get_Name_String (Chars (Etype (Subp)))
-                       in RTN.Time | RTN.Time_Span;
+              and then
+                Get_Name_String (Chars (Etype (Subp)))
+                in RTN.Time | RTN.Time_Span;
             Res_Ty  : constant W_Type_Id :=
               (if Is_Time
                then Real_Time_Module.T
@@ -1764,7 +1764,7 @@ package body Why.Gen.Hardcoded is
                --  generate
                --     ((Int * 10 ** Pow +/- Frac) / 10 ** Pow) * 10 ** Exp
 
-               Den := Uint_10**Pow;
+               Den := Uint_10 ** Pow;
                Num := Uint_From_String (Arg (Arg'First .. Index)) * Den;
                Frac := Uint_From_String (Arg (Index + 2 .. Last));
 
@@ -1775,9 +1775,9 @@ package body Why.Gen.Hardcoded is
                end if;
 
                if Exp > Uint_0 then
-                  Num := Num * Uint_10**Exp;
+                  Num := Num * Uint_10 ** Exp;
                elsif Exp < Uint_0 then
-                  Den := Den * Uint_10**(-Exp);
+                  Den := Den * Uint_10 ** (-Exp);
                end if;
 
                --  Return the appropriate real constant. There is no possible

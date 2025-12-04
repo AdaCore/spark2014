@@ -77,11 +77,12 @@ package body Flow_Types is
       pragma
         Assert_And_Cut
           (Left.Kind = Right.Kind
-             and then Left.Kind
-                      in Direct_Mapping
-                       | Record_Field
-                       | Synthetic_Null_Export
-                       | Magic_String
+             and then
+               Left.Kind
+               in Direct_Mapping
+                | Record_Field
+                | Synthetic_Null_Export
+                | Magic_String
              and then Left.Variant = Right.Variant);
 
       case Left.Kind is
@@ -386,8 +387,8 @@ package body Flow_Types is
    function Belongs_To_Concurrent_Type (F : Flow_Id) return Boolean is
    begin
       if F.Kind = Record_Field
-        and then Ekind (Get_Direct_Mapping_Id (F))
-                 in E_Protected_Type | E_Task_Type
+        and then
+          Ekind (Get_Direct_Mapping_Id (F)) in E_Protected_Type | E_Task_Type
       then
          declare
             Comp : constant Entity_Id := F.Component.First_Element
@@ -464,9 +465,10 @@ package body Flow_Types is
                return
                  (Ekind (E) in E_Abstract_State | Object_Kind
                   and then Has_Volatile (E))
-                 or else (Ekind (E) in E_Task_Type | E_Protected_Type
-                          and then F.Kind = Record_Field
-                          and then Has_Volatile (F.Component.First_Element));
+                 or else
+                   (Ekind (E) in E_Task_Type | E_Protected_Type
+                    and then F.Kind = Record_Field
+                    and then Has_Volatile (F.Component.First_Element));
             end;
 
          when Synthetic_Null_Export         =>
@@ -497,12 +499,13 @@ package body Flow_Types is
                  (Ekind (E) in E_Abstract_State | Object_Kind
                   and then Has_Volatile (E)
                   and then Has_Volatile_Property (E, Pragma_Async_Readers))
-                 or else (Ekind (E) in E_Task_Type | E_Protected_Type
-                          and then F.Kind = Record_Field
-                          and then Has_Volatile (F.Component.First_Element)
-                          and then Has_Volatile_Property
-                                     (F.Component.First_Element,
-                                      Pragma_Async_Readers));
+                 or else
+                   (Ekind (E) in E_Task_Type | E_Protected_Type
+                    and then F.Kind = Record_Field
+                    and then Has_Volatile (F.Component.First_Element)
+                    and then
+                      Has_Volatile_Property
+                        (F.Component.First_Element, Pragma_Async_Readers));
             end;
       end case;
    end Has_Async_Readers;
@@ -529,12 +532,13 @@ package body Flow_Types is
                  (Ekind (E) in E_Abstract_State | Object_Kind
                   and then Has_Volatile (E)
                   and then Has_Volatile_Property (E, Pragma_Async_Writers))
-                 or else (Ekind (E) in E_Task_Type | E_Protected_Type
-                          and then F.Kind = Record_Field
-                          and then Has_Volatile (F.Component.First_Element)
-                          and then Has_Volatile_Property
-                                     (F.Component.First_Element,
-                                      Pragma_Async_Writers));
+                 or else
+                   (Ekind (E) in E_Task_Type | E_Protected_Type
+                    and then F.Kind = Record_Field
+                    and then Has_Volatile (F.Component.First_Element)
+                    and then
+                      Has_Volatile_Property
+                        (F.Component.First_Element, Pragma_Async_Writers));
             end;
       end case;
    end Has_Async_Writers;
@@ -561,12 +565,13 @@ package body Flow_Types is
                  (Ekind (E) in E_Abstract_State | Object_Kind
                   and then Has_Volatile (E)
                   and then Has_Volatile_Property (E, Pragma_Effective_Reads))
-                 or else (Ekind (E) in E_Task_Type | E_Protected_Type
-                          and then F.Kind = Record_Field
-                          and then Has_Volatile (F.Component.First_Element)
-                          and then Has_Volatile_Property
-                                     (F.Component.First_Element,
-                                      Pragma_Effective_Reads));
+                 or else
+                   (Ekind (E) in E_Task_Type | E_Protected_Type
+                    and then F.Kind = Record_Field
+                    and then Has_Volatile (F.Component.First_Element)
+                    and then
+                      Has_Volatile_Property
+                        (F.Component.First_Element, Pragma_Effective_Reads));
 
             end;
       end case;
@@ -595,12 +600,13 @@ package body Flow_Types is
                  (Ekind (E) in E_Abstract_State | Object_Kind
                   and then Has_Volatile (E)
                   and then Has_Volatile_Property (E, Pragma_Effective_Writes))
-                 or else (Ekind (E) in E_Task_Type | E_Protected_Type
-                          and then F.Kind = Record_Field
-                          and then Has_Volatile (F.Component.First_Element)
-                          and then Has_Volatile_Property
-                                     (F.Component.First_Element,
-                                      Pragma_Effective_Writes));
+                 or else
+                   (Ekind (E) in E_Task_Type | E_Protected_Type
+                    and then F.Kind = Record_Field
+                    and then Has_Volatile (F.Component.First_Element)
+                    and then
+                      Has_Volatile_Property
+                        (F.Component.First_Element, Pragma_Effective_Writes));
             end;
       end case;
    end Has_Effective_Writes;
@@ -629,10 +635,11 @@ package body Flow_Types is
 
    function Is_Abstract_State (F : Flow_Id) return Boolean
    is (Present (F)
-       and then (case F.Kind is
-                   when Direct_Mapping => Is_Abstract_State (F.Node),
-                   when Magic_String   => GG_Is_Abstract_State (F.Name),
-                   when others         => False));
+       and then
+         (case F.Kind is
+            when Direct_Mapping => Is_Abstract_State (F.Node),
+            when Magic_String   => GG_Is_Abstract_State (F.Name),
+            when others         => False));
 
    --------------------
    -- Is_Constituent --
@@ -1001,10 +1008,11 @@ package body Flow_Types is
       --  flow id as well.)
 
       if F.Kind in Direct_Mapping | Record_Field
-        and then (Is_Abstract_State (F.Node)
-                  or else (Is_Constituent (F.Node)
-                           and then Scope (F.Node)
-                                    /= Scope (Encapsulating_State (F.Node))))
+        and then
+          (Is_Abstract_State (F.Node)
+           or else
+             (Is_Constituent (F.Node)
+              and then Scope (F.Node) /= Scope (Encapsulating_State (F.Node))))
       then
          Append (R, Get_Unmangled_Name (Scope (F.Node)));
          Append (R, '.');
@@ -1174,7 +1182,7 @@ package body Flow_Types is
            Assert
              (Ekind (E) = E_Constant  --  Avoid calling Has_Variable_Input
                 or else               --  by Is_Global_Entity during marking.
-                Is_Global_Entity (E)
+                  Is_Global_Entity (E)
                 or else Is_Subprogram_Or_Entry (E)
                 or else Ekind (E) = E_Package);
          --  Here we only process globals (including constants without

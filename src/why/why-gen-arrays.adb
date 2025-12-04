@@ -2771,8 +2771,8 @@ package body Why.Gen.Arrays is
                  Image     =>
                    Get_Name
                      (if Has_Modular_Integer_Type (Ind_Ty)
-                        and then not Has_No_Bitwise_Operations_Annotation
-                                       (Ind_Ty)
+                        and then
+                          not Has_No_Bitwise_Operations_Annotation (Ind_Ty)
                       then MF_BVs (R_Ty).Ule
                       else Int_Infix_Le));
             Cursor := Cursor + 1;
@@ -3477,8 +3477,9 @@ package body Why.Gen.Arrays is
          --  Do not issue checks for statically matching lengths
 
          if not Is_Static
-           or else Static_Array_Length (Retysp (L_Ty), I)
-                   /= Static_Array_Length (Retysp (R_Ty), I)
+           or else
+             Static_Array_Length (Retysp (L_Ty), I)
+             /= Static_Array_Length (Retysp (R_Ty), I)
          then
             declare
                Base_Ty : constant W_Type_Id :=
@@ -3543,8 +3544,9 @@ package body Why.Gen.Arrays is
          --  Do not issue checks for statically matching lengths
 
          if not Is_Static
-           or else Static_Array_Length (Retysp (L_Ty), I)
-                   /= Static_Array_Length (Retysp (Right), I)
+           or else
+             Static_Array_Length (Retysp (L_Ty), I)
+             /= Static_Array_Length (Retysp (Right), I)
          then
             declare
                Base_Ty : constant W_Type_Id :=
@@ -3789,8 +3791,8 @@ package body Why.Gen.Arrays is
       for I in 1 .. Dim loop
          Add_Attr_Arg (Domain, Firsts, Expr, Attribute_First, I, Arg_Ind);
          if Is_Constrained (To_Ty)
-           or else Is_Fixed_Lower_Bound_Index_Subtype
-                     (Nth_Index_Type (To_Ty, I))
+           or else
+             Is_Fixed_Lower_Bound_Index_Subtype (Nth_Index_Type (To_Ty, I))
          then
             Add_Attr_Arg
               (Domain, Firsts, To_Ty, Attribute_First, I, Arg_Ind, Params);

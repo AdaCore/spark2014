@@ -698,12 +698,9 @@ package Why.Gen.Expr is
    with
      Pre =>
        Present (Ada_Node)
-       and then Op
-                in N_Op_Minus
-                 | N_Op_Add
-                 | N_Op_Subtract
-                 | N_Op_Multiply
-                 | N_Op_Expon;
+       and then
+         Op
+         in N_Op_Minus | N_Op_Add | N_Op_Subtract | N_Op_Multiply | N_Op_Expon;
    --  For modular type Ada_Type with annotation No_Wrap_Around, a check must
    --  be emitted on unary operation - and binary operations - + * **
    --

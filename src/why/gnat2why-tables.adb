@@ -162,8 +162,9 @@ package body Gnat2Why.Tables is
    begin
       return
         Comp_Info (Ty).Visibility (Comp) = Regular
-        and then (Ekind (Comp) /= E_Component
-                  or else Present (Search_Component_By_Name (Rec, Comp)));
+        and then
+          (Ekind (Comp) /= E_Component
+           or else Present (Search_Component_By_Name (Rec, Comp)));
    end Component_Is_Visible_In_Type;
 
    -------------------
@@ -787,8 +788,9 @@ package body Gnat2Why.Tables is
 
       if Is_Type (E)
         and then Retysp (E) = E
-        and then Ekind (E)
-                 in Incomplete_Or_Private_Kind | Record_Kind | Concurrent_Kind
+        and then
+          Ekind (E)
+          in Incomplete_Or_Private_Kind | Record_Kind | Concurrent_Kind
         and then not Is_Class_Wide_Type (E)
       then
          if Is_Concurrent_Type (E) then

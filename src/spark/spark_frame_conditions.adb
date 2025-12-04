@@ -223,8 +223,9 @@ package body SPARK_Frame_Conditions is
       begin
          return
            Scope_Within (E, Context)
-           or else (Ekind (E) in E_Loop_Parameter | E_Variable
-                    and then Is_Quantified_Loop_Param (E));
+           or else
+             (Ekind (E) in E_Loop_Parameter | E_Variable
+              and then Is_Quantified_Loop_Param (E));
       end Ignore_Object_Reference;
 
       ---------------------
