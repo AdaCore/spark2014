@@ -61,8 +61,9 @@ package Why.Gen.Init is
    with
      Pre =>
        Ty = EW_Bool_Type
-       or else (Get_Type_Kind (Ty) in EW_Abstract | EW_Split
-                and then Has_Init_Wrapper (Get_Ada_Node (+Ty)));
+       or else
+         (Get_Type_Kind (Ty) in EW_Abstract | EW_Split
+          and then Has_Init_Wrapper (Get_Ada_Node (+Ty)));
    --  Return the init wrapper type with the same Ada node and kind as Ty
 
    type Exclude_Components_Kind is (For_Eq, Relaxed, None);

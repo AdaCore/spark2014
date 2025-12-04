@@ -816,8 +816,8 @@ package body Errout_Wrapper is
 
          function Is_Entity_And_Has_Warnings_Off (F : Flow_Id) return Boolean
          is (F.Kind in Direct_Mapping | Record_Field
-             and then Is_Entity_And_Has_Warnings_Off
-                        (Get_Direct_Mapping_Id (F)));
+             and then
+               Is_Entity_And_Has_Warnings_Off (Get_Direct_Mapping_Id (F)));
 
       begin
          --  ??? if Fn is not present, then there is no point to check F(n+1)
@@ -898,8 +898,8 @@ package body Errout_Wrapper is
          --  Warnings (Off), check for the second way here.
          Was_Suppressed : constant Boolean :=
            Suppressed
-           or else Warning_Is_Suppressed (N, To_String (My_Msg.Msg))
-                   /= No_String;
+           or else
+             Warning_Is_Suppressed (N, To_String (My_Msg.Msg)) /= No_String;
          Result         : constant JSON_Result_Type :=
            JSON_Result_Type'
              (Msg           => My_Msg,

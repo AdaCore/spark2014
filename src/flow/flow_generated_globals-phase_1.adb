@@ -176,8 +176,9 @@ package body Flow_Generated_Globals.Phase_1 is
                      when E_Procedure =>
                        Null_Present (Subprogram_Specification (Call))
                        or else Has_Aspects (Subprogram_Spec (Call))
-                       or else Nkind (Original_Node (Subprogram_Spec (Call)))
-                               = N_Subprogram_Renaming_Declaration,
+                       or else
+                         Nkind (Original_Node (Subprogram_Spec (Call)))
+                         = N_Subprogram_Renaming_Declaration,
                      when E_Function  => True,
                      when others      => raise Program_Error));
       end loop;
@@ -450,8 +451,9 @@ package body Flow_Generated_Globals.Phase_1 is
          pragma
            Assert
              (Is_Library_Level_Entity (E)
-                or else (Is_Concurrent_Type (Scope (E))
-                         and then Is_Library_Level_Entity (Scope (E))));
+                or else
+                  (Is_Concurrent_Type (Scope (E))
+                   and then Is_Library_Level_Entity (Scope (E))));
 
          --  Collect volatile variables and state abstractions; these sets are
          --  disjoint, so it is more efficient to process them separately

@@ -279,8 +279,7 @@ package body Gnat2Why.Expr.Loops is
          end if;
 
          return Found : Boolean := False do
-            Main :
-            loop
+            Main : loop
                while No (Cur_Stmt) loop
                   --  Loop to handle potential case of neither declarations
                   --  nor statements.
@@ -360,8 +359,9 @@ package body Gnat2Why.Expr.Loops is
                pragma
                  Assert
                    (not Is_Local_Borrower (Defining_Identifier (Cur_Stmt))
-                      and then not Contains_Allocated_Parts
-                                     (Etype (Defining_Identifier (Cur_Stmt))));
+                      and then
+                        not Contains_Allocated_Parts
+                              (Etype (Defining_Identifier (Cur_Stmt))));
                Flat_Stmts.Append (Cur_Stmt);
 
             when others               =>
@@ -899,8 +899,7 @@ package body Gnat2Why.Expr.Loops is
          --  Case of a WHILE loop
 
          elsif Present (Condition (Scheme)) then
-            While_Loop :
-            declare
+            While_Loop : declare
                Cond_Prog : constant W_Prog_Id :=
                  +Transform_Expr_With_Actions
                     (Condition (Scheme),
@@ -970,8 +969,7 @@ package body Gnat2Why.Expr.Loops is
          else
             pragma Assert (Present (Loop_Index));
 
-            For_Loop :
-            declare
+            For_Loop : declare
                Over_Range : constant Boolean :=
                  Present (Loop_Parameter_Specification (Scheme));
                --  For loops my iterate either on a range or on an iterator.
@@ -2078,8 +2076,9 @@ package body Gnat2Why.Expr.Loops is
          Stmt_List :
            W_Prog_Array
              (1
-              .. 2
-                 * (Integer (UI_To_Int (High_Val) - UI_To_Int (Low_Val) + 1)));
+              ..
+                2
+                * (Integer (UI_To_Int (High_Val) - UI_To_Int (Low_Val) + 1)));
          Cur_Idx   : Positive;
 
       begin

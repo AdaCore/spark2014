@@ -310,8 +310,9 @@ package Flow_Types is
    with
      Pre  =>
        F.Kind in Direct_Mapping | Record_Field
-       and then (Is_Part_Of_Concurrent_Object (Comp)
-                 or else Is_Unique_Component (Comp))
+       and then
+         (Is_Part_Of_Concurrent_Object (Comp)
+          or else Is_Unique_Component (Comp))
        and then F.Facet = Normal_Part,
      Post => Add_Component'Result.Kind = Record_Field;
    --  Returns the same Flow_Id, but accessed with the given component
@@ -428,11 +429,9 @@ package Flow_Types is
      Pre  =>
        (F.Kind = Record_Field
         or else (F.Kind = Direct_Mapping and then F.Facet /= Normal_Part))
-       and then F.Variant
-                in Initial_Grouping
-                 | Initial_Value
-                 | Final_Grouping
-                 | Final_Value,
+       and then
+         F.Variant
+         in Initial_Grouping | Initial_Value | Final_Grouping | Final_Value,
      Post =>
        Parent_Record'Result.Kind in Direct_Mapping | Record_Field
        and then Parent_Record'Result.Facet = Normal_Part
@@ -524,9 +523,9 @@ package Flow_Types is
        (for all Proof_In in Proof_Ins.Iterate =>
           not Inputs.Contains
                 (Flow_Id_Sets.Constant_Reference (Proof_Ins, Proof_In))
-          and then not Outputs.Contains
-                         (Flow_Id_Sets.Constant_Reference
-                            (Proof_Ins, Proof_In)));
+          and then
+            not Outputs.Contains
+                  (Flow_Id_Sets.Constant_Reference (Proof_Ins, Proof_In)));
    --  ??? Iteration with cursors and not elements works around some GNAT bug.
    --  The explicit call to Constant_Reference works around another bug, where
    --  GNAT can't recognize the predicated record component as an implicit call

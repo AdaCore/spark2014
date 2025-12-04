@@ -67,15 +67,16 @@ package body SPARK_Util.Hardcoded is
              | Name_Op_Eq
              | Name_Op_Lt .. Name_Op_Subtract
              | Name_Op_Multiply .. Name_Op_Expon
-           or else Get_Name_String (Chars (E))
-                   in BIN.Big_Integer
-                    | BIN.Min
-                    | BIN.Max
-                    | BIN.To_Big_Integer
-                    | BIN.Is_Valid
-                    | BIN.To_Integer
-                    | BIN.Gcd
-                    | BIN.From_String
+           or else
+             Get_Name_String (Chars (E))
+             in BIN.Big_Integer
+              | BIN.Min
+              | BIN.Max
+              | BIN.To_Big_Integer
+              | BIN.Is_Valid
+              | BIN.To_Integer
+              | BIN.Gcd
+              | BIN.From_String
          then
             return Big_Integers;
          end if;
@@ -86,14 +87,15 @@ package body SPARK_Util.Hardcoded is
              | Name_Op_Eq
              | Name_Op_Lt .. Name_Op_Subtract
              | Name_Op_Multiply .. Name_Op_Expon
-           or else Get_Name_String (Chars (E))
-                   in BRN.Big_Real
-                    | BRN.Min
-                    | BRN.Max
-                    | BRN.Is_Valid
-                    | BRN.From_String
-                    | BRN.From_Universal_Image
-                    | BRN.From_Quotient_String
+           or else
+             Get_Name_String (Chars (E))
+             in BRN.Big_Real
+              | BRN.Min
+              | BRN.Max
+              | BRN.Is_Valid
+              | BRN.From_String
+              | BRN.From_Universal_Image
+              | BRN.From_Quotient_String
          then
             return Big_Reals;
          end if;
@@ -136,24 +138,25 @@ package body SPARK_Util.Hardcoded is
              | Name_Op_Multiply
              | Name_Op_Divide
              | Name_Op_Lt .. Name_Op_Ge
-           or else Get_Name_String (Chars (E))
-                   in RTN.Time
-                    | RTN.Time_Span
-                    | RTN.Time_First
-                    | RTN.Time_Last
-                    | RTN.Time_Span_First
-                    | RTN.Time_Span_Last
-                    | RTN.Time_Span_Zero
-                    | RTN.Time_Span_Unit
-                    | RTN.Nanoseconds
-                    | RTN.Microseconds
-                    | RTN.Milliseconds
-                    | RTN.Seconds
-                    | RTN.Minutes
-                    | RTN.To_Duration
-                    | RTN.To_Time_Span
-                    | RTN.Time_Of
-                    | RTN.Split
+           or else
+             Get_Name_String (Chars (E))
+             in RTN.Time
+              | RTN.Time_Span
+              | RTN.Time_First
+              | RTN.Time_Last
+              | RTN.Time_Span_First
+              | RTN.Time_Span_Last
+              | RTN.Time_Span_Zero
+              | RTN.Time_Span_Unit
+              | RTN.Nanoseconds
+              | RTN.Microseconds
+              | RTN.Milliseconds
+              | RTN.Seconds
+              | RTN.Minutes
+              | RTN.To_Duration
+              | RTN.To_Time_Span
+              | RTN.Time_Of
+              | RTN.Split
          then
             return Real_Time;
          end if;
@@ -173,8 +176,9 @@ package body SPARK_Util.Hardcoded is
    begin
       while Present (Decl) loop
          if Nkind (Decl) = N_Number_Declaration
-           and then Get_Name_String (Chars (Defining_Identifier (Decl)))
-                    = Real_Time_Names.Time_Unit
+           and then
+             Get_Name_String (Chars (Defining_Identifier (Decl)))
+             = Real_Time_Names.Time_Unit
          then
             return Realval (Expression (Decl));
          end if;
@@ -249,10 +253,11 @@ package body SPARK_Util.Hardcoded is
       if Nkind (Par) not in N_Package_Specification
         or else No (Generic_Parent (Par))
         or else Nkind (Generic_Parent (Par)) not in N_Has_Chars
-        or else (not Is_Hardcoded_Unit
-                       (E => Generic_Parent (Par), Unit => Unit)
-                 and then not Is_From_Hardcoded_Unit
-                                (E => Generic_Parent (Par), Unit => Unit))
+        or else
+          (not Is_Hardcoded_Unit (E => Generic_Parent (Par), Unit => Unit)
+           and then
+             not Is_From_Hardcoded_Unit
+                   (E => Generic_Parent (Par), Unit => Unit))
       then
          return False;
       end if;

@@ -170,8 +170,8 @@ package body Flow_Utility is
    function Component_Visible_In_Type
      (C : Entity_Id; T : Type_Kind_Id; S : Flow_Scope) return Boolean
    is (Is_Visible (C, S)
-       and then (not Is_Tagged_Type (T)
-                 or else Is_Ancestor (Scope (C), T, S)));
+       and then
+         (not Is_Tagged_Type (T) or else Is_Ancestor (Scope (C), T, S)));
    --  C is visible in T if it is visible, and T is visibly derived from C's
    --  scope in S.
 
@@ -795,9 +795,10 @@ package body Flow_Utility is
             --  Scop plus local invariant if Include_Invariant is set.
 
             if Has_Invariants_In_SPARK (Current)
-              and then (Invariant_Assumed_In_Main (Current)
-                        or else Invariant_Assumed_In_Scope (Current, Scop.Ent)
-                        or else Include_Invariant)
+              and then
+                (Invariant_Assumed_In_Main (Current)
+                 or else Invariant_Assumed_In_Scope (Current, Scop.Ent)
+                 or else Include_Invariant)
             then
                for Expr of
                  Get_Exprs_From_Check_Only_Proc (Invariant_Procedure (Current))
@@ -1515,9 +1516,8 @@ package body Flow_Utility is
          pragma
            Assert
              (Present (Find_Contract (Subprogram, Pragma_Depends))
-                and then No
-                           (Find_Contract
-                              (Subprogram, Pragma_Refined_Depends)));
+                and then
+                  No (Find_Contract (Subprogram, Pragma_Refined_Depends)));
 
          --  Collect all global Proof_Ins, Outputs and Inputs
 
@@ -2091,8 +2091,8 @@ package body Flow_Utility is
               and then Present (Depends_Node)
               and then Pragma_Name (Global_Node) = Name_Global
               and then Pragma_Name (Depends_Node) = Name_Refined_Depends
-              and then Mentions_State_With_Ambiguous_Refinement
-                         (Global_Node, Scope)
+              and then
+                Mentions_State_With_Ambiguous_Refinement (Global_Node, Scope)
             then
                declare
                   D_Map          : Dependency_Maps.Map;
@@ -2184,9 +2184,11 @@ package body Flow_Utility is
                      --  from a generated Refined_Global.
 
                      if Input.Kind = Magic_String
-                       or else (Input.Kind = Direct_Mapping
-                                and then not Params.Contains
-                                               (Get_Direct_Mapping_Id (Input)))
+                       or else
+                         (Input.Kind = Direct_Mapping
+                          and then
+                            not Params.Contains
+                                  (Get_Direct_Mapping_Id (Input)))
                      then
                         Globals.Inputs.Include
                           (Change_Variant (Input, In_View));
@@ -3101,8 +3103,9 @@ package body Flow_Utility is
             function May_Use_Extensions return Boolean
             is (Has_Extensions_Visible (Subprogram)
                 or else Is_Class_Wide_Type (Get_Type (Formal, Ctx.Scope))
-                or else (Flow_Classwide.Is_Dispatching_Call (Callsite)
-                         and then Is_Controlling_Formal (Formal)));
+                or else
+                  (Flow_Classwide.Is_Dispatching_Call (Callsite)
+                   and then Is_Controlling_Formal (Formal)));
             --  True if we have the aspect set (so we know the subprogram might
             --  convert to a classwide type), we're dealing with a classwide
             --  type directly (since that may or may not have extensions), or
@@ -3701,8 +3704,8 @@ package body Flow_Utility is
                               pragma
                                 Assert
                                   (No (Component_Associations (Choice))
-                                     and then not Null_Record_Present
-                                                    (Choice));
+                                     and then
+                                       not Null_Record_Present (Choice));
 
                               Index := First (Expressions (Choice));
                               loop
@@ -3786,10 +3789,12 @@ package body Flow_Utility is
 
                if Ctx.Fold_Functions = Inputs
                  and then Is_Entity_Name (Prefix (N))
-                 and then Ekind (Entity (Prefix (N)))
-                          in E_In_Out_Parameter | E_Out_Parameter
-                 and then Has_Discriminants
-                            (Get_Type (Entity (Prefix (N)), Ctx.Scope))
+                 and then
+                   Ekind (Entity (Prefix (N)))
+                   in E_In_Out_Parameter | E_Out_Parameter
+                 and then
+                   Has_Discriminants
+                     (Get_Type (Entity (Prefix (N)), Ctx.Scope))
                then
                   return
                     Flow_Id_Sets.To_Set
@@ -3927,8 +3932,9 @@ package body Flow_Utility is
 
                   if Is_Constrained (T)
                     and then Is_Itype (T)
-                    and then Nkind (Associated_Node_For_Itype (T))
-                             = N_Component_Declaration
+                    and then
+                      Nkind (Associated_Node_For_Itype (T))
+                      = N_Component_Declaration
                   then
                      pragma
                        Assert
@@ -4281,13 +4287,15 @@ package body Flow_Utility is
          --  in which they access or update fields (bar, the_update, z).
 
          while Nkind (Root_Node) = N_Selected_Component
-           or else ((Is_Attribute_Update (Root_Node)
-                     or else Nkind (Root_Node)
-                             in N_Delta_Aggregate
-                              | N_Type_Conversion
-                              | N_Qualified_Expression)
-                    and then Is_Record_Type
-                               (Unchecked_Full_Type (Etype (Root_Node))))
+           or else
+             ((Is_Attribute_Update (Root_Node)
+               or else
+                 Nkind (Root_Node)
+                 in N_Delta_Aggregate
+                  | N_Type_Conversion
+                  | N_Qualified_Expression)
+              and then
+                Is_Record_Type (Unchecked_Full_Type (Etype (Root_Node))))
            or else Is_Ignored_Attribute (Root_Node)
          loop
             if Nkind (Root_Node) = N_Selected_Component then
@@ -4340,11 +4348,11 @@ package body Flow_Utility is
 
          if not (Nkind (Root_Node)
                  in N_Identifier | N_Expanded_Name | N_Target_Name
-                 and then (if Nkind (Root_Node) = N_Identifier
-                           then
-                             not Comes_From_Declare_Expr (Entity (Root_Node)))
-                 and then Is_Record_Type
-                            (Unchecked_Full_Type (Etype (Root_Node))))
+                 and then
+                   (if Nkind (Root_Node) = N_Identifier
+                    then not Comes_From_Declare_Expr (Entity (Root_Node)))
+                 and then
+                   Is_Record_Type (Unchecked_Full_Type (Etype (Root_Node))))
          then
             return Vars : Flow_Id_Sets.Set do
 
@@ -4440,10 +4448,11 @@ package body Flow_Utility is
                      | E_Variable
                      | E_Loop_Parameter -- for cursors
                      | Formal_Kind
-                      or else (Ekind (Root_Entity)
-                               in E_Discriminant | E_Component
-                               and then Is_Concurrent_Type
-                                          (Sinfo.Nodes.Scope (Root_Entity))));
+                      or else
+                        (Ekind (Root_Entity) in E_Discriminant | E_Component
+                         and then
+                           Is_Concurrent_Type
+                             (Sinfo.Nodes.Scope (Root_Entity))));
 
             begin
                if Is_Protected_Component (Root_Entity) then
@@ -5121,8 +5130,9 @@ package body Flow_Utility is
                      --  of a component or of a discriminant, "(C => ...)".
 
                      if Nkind (Choice) in N_Identifier | N_Expanded_Name
-                       and then Ekind (Entity (Choice))
-                                in E_Component | E_Discriminant
+                       and then
+                         Ekind (Entity (Choice))
+                         in E_Component | E_Discriminant
                      then
                         null;
 
@@ -5409,8 +5419,9 @@ package body Flow_Utility is
                      --  "(A_Subtype => ...)"
                      if Nkind (Choice) = N_Range
                        or else Nkind (Choice) = N_Subtype_Indication
-                       or else (Is_Entity_Name (Choice)
-                                and then Is_Type (Entity (Choice)))
+                       or else
+                         (Is_Entity_Name (Choice)
+                          and then Is_Type (Entity (Choice)))
                      then
                         declare
                            R : constant Node_Id := Get_Range (Choice);
@@ -6851,10 +6862,11 @@ package body Flow_Utility is
               --  loop writes), we check that the root object is not
               --  modified during the loop. Get_Root_Object will always
               --  return entire variables.
-              or else (not Generating_Globals
-                       and then not Loop_Writes.Contains
-                                      (Direct_Mapping_Id
-                                         (Get_Root_Object (I_Name))))
+              or else
+                (not Generating_Globals
+                 and then
+                   not Loop_Writes.Contains
+                         (Direct_Mapping_Id (Get_Root_Object (I_Name))))
             then
                return True;
             end if;
@@ -7492,8 +7504,9 @@ package body Flow_Utility is
 
                   Is_Pure_Constant : constant Boolean :=
                     Fold_Functions /= Inputs
-                    or else (Ekind (E) = E_Constant
-                             and then not Has_Variable_Input (E));
+                    or else
+                      (Ekind (E) = E_Constant
+                       and then not Has_Variable_Input (E));
                   --  If we are assigning a pure constant, we don't really
                   --  want to see it (just like if we assign integer/string/...
                   --  literals then we don't want to see them in flow).
@@ -7896,9 +7909,9 @@ package body Flow_Utility is
                   Vars_Defined := Flow_Id_Sets.Empty_Set;
                   for F of Old_Vars loop
                      if F.Kind = Record_Field
-                       and then New_Comps.Contains
-                                  (Add_Component
-                                     (New_Typ_Id, F.Component (Idx)))
+                       and then
+                         New_Comps.Contains
+                           (Add_Component (New_Typ_Id, F.Component (Idx)))
                      then
                         Vars_Defined.Insert (F);
                      elsif F.Kind = Direct_Mapping then
@@ -8011,11 +8024,13 @@ package body Flow_Utility is
                   begin
                      return
                        Is_Entity_Name (Subtype_Indication (Def))
-                       and then Is_Empty_Record_Type
-                                  (Entity (Subtype_Indication (Def)))
-                       and then (No (Ext)
-                                 or else Null_Present (Ext)
-                                 or else No (Component_List (Ext)));
+                       and then
+                         Is_Empty_Record_Type
+                           (Entity (Subtype_Indication (Def)))
+                       and then
+                         (No (Ext)
+                          or else Null_Present (Ext)
+                          or else No (Component_List (Ext)));
                   end;
 
                when others                    =>
@@ -8027,8 +8042,8 @@ package body Flow_Utility is
             --  deriving it from is null.
             return
               Is_Entity_Name (Subtype_Indication (Decl))
-              and then Is_Empty_Record_Type
-                         (Entity (Subtype_Indication (Decl)));
+              and then
+                Is_Empty_Record_Type (Entity (Subtype_Indication (Decl)));
 
          when others                  =>
             null;
@@ -8228,8 +8243,8 @@ package body Flow_Utility is
 
    function Strip_Child_Prefixes (EN : String) return String
    is (if EN'Length > Child_Prefix'Length
-         and then EN (EN'First .. EN'First + Child_Prefix'Length - 1)
-                  = Child_Prefix
+         and then
+           EN (EN'First .. EN'First + Child_Prefix'Length - 1) = Child_Prefix
        then
          Strip_Child_Prefixes (EN (EN'First + Child_Prefix'Length .. EN'Last))
        else EN);
@@ -8392,8 +8407,9 @@ package body Flow_Utility is
 
          elsif Nkind (A_Prefix) = N_Selected_Component
            and then Nkind (B_Prefix) = N_Selected_Component
-           and then Chars (Selector_Name (A_Prefix))
-                    = Chars (Selector_Name (B_Prefix))
+           and then
+             Chars (Selector_Name (A_Prefix))
+             = Chars (Selector_Name (B_Prefix))
          then
             A_Prefix := Prefix (A_Prefix);
             B_Prefix := Prefix (B_Prefix);
@@ -8408,18 +8424,16 @@ package body Flow_Utility is
             pragma
               Assert
                 (Is_Entity_Name (A_Prefix)
-                   or else Nkind (A_Prefix)
-                           in N_Indexed_Component
-                            | N_Selected_Component
-                            | N_Slice);
+                   or else
+                     Nkind (A_Prefix)
+                     in N_Indexed_Component | N_Selected_Component | N_Slice);
 
             pragma
               Assert
                 (Is_Entity_Name (B_Prefix)
-                   or else Nkind (B_Prefix)
-                           in N_Indexed_Component
-                            | N_Selected_Component
-                            | N_Slice);
+                   or else
+                     Nkind (B_Prefix)
+                     in N_Indexed_Component | N_Selected_Component | N_Slice);
 
             return False;
 

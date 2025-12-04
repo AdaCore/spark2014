@@ -984,11 +984,13 @@ package body Gnat2Why.Util is
    begin
       for N of Include loop
          if Nkind (N) in N_Entity
-           and then (Ekind (N) in E_Variable | E_Loop_Parameter
-                     or else (Ekind (N) = E_Constant
-                              and then (Is_Access_Variable (Etype (N))
-                                        or else Flow_Utility.Has_Variable_Input
-                                                  (N))))
+           and then
+             (Ekind (N) in E_Variable | E_Loop_Parameter
+              or else
+                (Ekind (N) = E_Constant
+                 and then
+                   (Is_Access_Variable (Etype (N))
+                    or else Flow_Utility.Has_Variable_Input (N))))
            and then not Is_Declared_In_Unit (N, Scope)
          then
             Variables.Insert (N);
@@ -1224,8 +1226,9 @@ package body Gnat2Why.Util is
    function Is_Private_Intrinsic_Op (N : N_Op_Id) return Boolean
    is (Ekind (Entity (N)) = E_Function
        and then Full_View_Not_In_SPARK (Etype (Right_Opnd (N)))
-       and then (if Nkind (N) in N_Binary_Op
-                 then Full_View_Not_In_SPARK (Etype (Left_Opnd (N)))));
+       and then
+         (if Nkind (N) in N_Binary_Op
+          then Full_View_Not_In_SPARK (Etype (Left_Opnd (N)))));
 
    ----------------------------
    -- Is_Simple_Private_Type --
@@ -1249,8 +1252,9 @@ package body Gnat2Why.Util is
    begin
       return
         (Is_Signed_Integer_Type (Ty)
-         or else (Is_Modular_Integer_Type (Ty)
-                  and then Has_No_Bitwise_Operations_Annotation (Ty)))
+         or else
+           (Is_Modular_Integer_Type (Ty)
+            and then Has_No_Bitwise_Operations_Annotation (Ty)))
         and then not Type_Is_Modeled_As_Base (Ty);
    end Is_Range_Type_In_Why;
 
@@ -1527,10 +1531,12 @@ package body Gnat2Why.Util is
         --  private declaration. In that case, the completion must not be in
         --  SPARK.
 
-        and then (not Is_Incomplete_Or_Private_Type (E)
-                  or else Nkind (Enclosing_Declaration (E))
-                          not in N_Private_Type_Declaration
-                               | N_Private_Extension_Declaration)
+        and then
+          (not Is_Incomplete_Or_Private_Type (E)
+           or else
+             Nkind (Enclosing_Declaration (E))
+             not in N_Private_Type_Declaration
+                  | N_Private_Extension_Declaration)
         and then Check_DIC_At_Declaration (E);
    end Needs_DIC_Check_At_Decl;
 
@@ -1604,8 +1610,8 @@ package body Gnat2Why.Util is
    begin
       return
         Is_Scalar_Type (T)
-        and then (not Has_OK_Static_Scalar_Subtype (T)
-                  or else Is_Null_Range (T));
+        and then
+          (not Has_OK_Static_Scalar_Subtype (T) or else Is_Null_Range (T));
    end Type_Is_Modeled_As_Base;
 
    ----------------------------------
@@ -1701,8 +1707,9 @@ package body Gnat2Why.Util is
            --  invariant. For constrained types, also assume discriminant
            --  constraints.
 
-           or else (Has_Discriminants (Ty_Ext)
-                    and then (Include_Static or else Is_Constrained (Ty_Ext)))
+           or else
+             (Has_Discriminants (Ty_Ext)
+              and then (Include_Static or else Is_Constrained (Ty_Ext)))
 
            --  Tagged types have an invariant providing the value of the
            --  extension when the tag is the tag of Ty_Ext.
@@ -1730,9 +1737,10 @@ package body Gnat2Why.Util is
 
            --  Some hardcoded types have dynamic properties
 
-           or else (Is_Hardcoded_Entity (Root_Retysp (Ty_Ext))
-                    and then Hardcoded_Type_Needs_Dynamic_Property
-                               (Root_Retysp (Ty_Ext)))
+           or else
+             (Is_Hardcoded_Entity (Root_Retysp (Ty_Ext))
+              and then
+                Hardcoded_Type_Needs_Dynamic_Property (Root_Retysp (Ty_Ext)))
 
          then
             return True;
@@ -1760,9 +1768,9 @@ package body Gnat2Why.Util is
 
             for Comp of Get_Component_Set (Ty_Ext) loop
                if not Is_Type (Comp)
-                 and then (Type_Needs_Dynamic_Invariant_Ann
-                             (Etype (Comp), False)
-                           or else Is_Tagged_Type (Retysp (Etype (Comp))))
+                 and then
+                   (Type_Needs_Dynamic_Invariant_Ann (Etype (Comp), False)
+                    or else Is_Tagged_Type (Retysp (Etype (Comp))))
                then
                   return True;
                end if;
@@ -1784,10 +1792,12 @@ package body Gnat2Why.Util is
 
             if Designates_Incomplete_Type (Ty_Ext) then
                if Incompl_Access_Seen.Contains (Ty_Ext)
-                 or else (Include_Static
-                          and then not Type_Needs_Dynamic_Invariant
-                                         (Directly_Designated_Type (Ty_Ext),
-                                          Include_Static => False))
+                 or else
+                   (Include_Static
+                    and then
+                      not Type_Needs_Dynamic_Invariant
+                            (Directly_Designated_Type (Ty_Ext),
+                             Include_Static => False))
                then
                   return False;
                else
@@ -1858,9 +1868,10 @@ package body Gnat2Why.Util is
 
         --  E has an explicit or implicit postcondition
 
-        and then (Type_Needs_Dynamic_Invariant (Etype (E))
-                  or else Has_Contracts (E, Pragma_Postcondition)
-                  or else Has_Contracts (E, Pragma_Contract_Cases));
+        and then
+          (Type_Needs_Dynamic_Invariant (Etype (E))
+           or else Has_Contracts (E, Pragma_Postcondition)
+           or else Has_Contracts (E, Pragma_Contract_Cases));
    end Use_Guard_For_Function;
 
    -----------------------------

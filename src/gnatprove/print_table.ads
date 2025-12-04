@@ -81,9 +81,10 @@ is
        and then C in T'Range (2)
        and then To_String (R (L, C).Content) = S
        and then R (L, C).Align = A
-       and then (for all I in T'Range (1) =>
-                   (for all J in T'Range (2) =>
-                      (if I /= L and J /= C then R (I, J) = T (I, J)))))
+       and then
+         (for all I in T'Range (1) =>
+            (for all J in T'Range (2) =>
+               (if I /= L and J /= C then R (I, J) = T (I, J)))))
    with Ghost;
    --  Return True if R is S updated at position (L, C) with Cell (S, A)
 

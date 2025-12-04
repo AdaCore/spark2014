@@ -191,9 +191,10 @@ package body Why.Atree.Modules is
             pragma
               Assert
                 (Nkind (E) in N_Aggregate | N_Delta_Aggregate
-                   or else (Is_Function_Or_Function_Type (E)
-                            and then not Has_Pragma_Volatile_Function (E)
-                            and then not Is_Function_With_Side_Effects (E)));
+                   or else
+                     (Is_Function_Or_Function_Type (E)
+                      and then not Has_Pragma_Volatile_Function (E)
+                      and then not Is_Function_With_Side_Effects (E)));
 
          when Program_Function_Decl
          =>
@@ -3206,8 +3207,8 @@ package body Why.Atree.Modules is
          --  operands to be initialized.
 
          if not Relaxed_Init
-           or else (Has_Access_Type (E)
-                    and then not Is_Access_Subprogram_Type (E))
+           or else
+             (Has_Access_Type (E) and then not Is_Access_Subprogram_Type (E))
          then
             Insert_Symbol
               (E,
@@ -3638,8 +3639,9 @@ package body Why.Atree.Modules is
                --  also have a specific flag.
 
                elsif Has_Mutable_Discriminants (E)
-                 or else (Is_Access_Type (E)
-                          and then not Is_Access_Subprogram_Type (E))
+                 or else
+                   (Is_Access_Type (E)
+                    and then not Is_Access_Subprogram_Type (E))
                then
                   Insert_Symbol
                     (E,
@@ -4646,8 +4648,9 @@ package body Why.Atree.Modules is
                  and then No (Retrieve_Inline_Annotation (F))
                  and then Is_Recursive (F)
                  and then Has_Subprogram_Variant (F)
-                 and then not Is_Structural_Subprogram_Variant
-                                (Get_Pragma (F, Pragma_Subprogram_Variant))
+                 and then
+                   not Is_Structural_Subprogram_Variant
+                         (Get_Pragma (F, Pragma_Subprogram_Variant))
                then
                   S.Insert (+Entity_Modules (F) (Expr_Fun_Axiom));
                end if;

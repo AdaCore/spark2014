@@ -149,8 +149,8 @@ begin
    Scope_Map.Insert
      (Key      => Standard_Standard,
       New_Item => (Units => <>, Parent => Null_Entity_Name));
---  ??? Having this code in package elaboration means it is needlessly
---  executed in phase 1. Ideally it should be done just before resolving
---  globals in phase 2 and the container should be cleared afterwards, to
---  free as much memory for provers as possible.
+   --  ??? Having this code in package elaboration means it is needlessly
+   --  executed in phase 1. Ideally it should be done just before resolving
+   --  globals in phase 2 and the container should be cleared afterwards, to
+   --  free as much memory for provers as possible.
 end Flow_Generated_Globals.Phase_2.Traversal;

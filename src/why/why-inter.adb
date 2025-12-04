@@ -97,8 +97,9 @@ package body Why.Inter is
      Post =>
        (for all N of Compute_Ada_Node_Set'Result =>
           Nkind (N) in N_Entity | N_Aggregate | N_Delta_Aggregate
-          or else (Nkind (N) = N_Attribute_Reference
-                   and then Attribute_Name (N) = Name_Access));
+          or else
+            (Nkind (N) = N_Attribute_Reference
+             and then Attribute_Name (N) = Name_Access));
    --  Transform a module set into a node set by taking the Ada_Node of each
    --  element.
 
@@ -784,8 +785,9 @@ package body Why.Inter is
              ((No (Get_Ada_Node (+Left))
                and then No (Get_Ada_Node (+Right))
                and then Get_Name (+Left) = Get_Name (+Right))
-                or else (Present (Get_Ada_Node (+Left))
-                         and then Present (Get_Ada_Node (+Right))));
+                or else
+                  (Present (Get_Ada_Node (+Left))
+                   and then Present (Get_Ada_Node (+Right))));
 
          return Get_Ada_Node (+Left) = Get_Ada_Node (+Right);
       else
@@ -814,9 +816,10 @@ package body Why.Inter is
             M2 : constant W_Module_Id := Get_Module (N2);
          begin
             if M1 = M2
-              or else (M1 /= Why_Empty
-                       and then M2 /= Why_Empty
-                       and then Get_Name (M1) = Get_Name (M2))
+              or else
+                (M1 /= Why_Empty
+                 and then M2 /= Why_Empty
+                 and then Get_Name (M1) = Get_Name (M2))
             then
                return Get_Symb (N1) = Get_Symb (N2);
             else

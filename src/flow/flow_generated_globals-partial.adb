@@ -374,9 +374,10 @@ package body Flow_Generated_Globals.Partial is
      Pre  => Ekind (E) = E_Constant,
      Post =>
        (Resolved_Inputs'Result = Variable
-        or else (for all E of Resolved_Inputs'Result =>
-                   Ekind (E) in E_Function | E_Procedure
-                   and then not Is_In_Analyzed_Files (E)));
+        or else
+          (for all E of Resolved_Inputs'Result =>
+             Ekind (E) in E_Function | E_Procedure
+             and then not Is_In_Analyzed_Files (E)));
    --  Returns either a singleton list representing a variable input or a
    --  list with subprograms from other compilation unit called (directly
    --  or indirectly) in the initialization of E.
@@ -523,10 +524,11 @@ package body Flow_Generated_Globals.Partial is
       if Ekind (E) = E_Package
         and then Has_Non_Null_Abstract_State (E)
         and then Present (Body_Entity (E))
-        and then (No (SPARK_Pragma (Body_Entity (E)))
-                  or else Get_SPARK_Mode_From_Annotation
-                            (SPARK_Pragma (Body_Entity (E)))
-                          = Opt.On)
+        and then
+          (No (SPARK_Pragma (Body_Entity (E)))
+           or else
+             Get_SPARK_Mode_From_Annotation (SPARK_Pragma (Body_Entity (E)))
+             = Opt.On)
       then
          GG_Register_State_Refinement (E);
       end if;
@@ -540,8 +542,9 @@ package body Flow_Generated_Globals.Partial is
       --  library-level packages, which cannot be called from the outside.
       Contr.Nonreturning :=
         (FA.Kind = Kind_Subprogram
-         or else (FA.Kind = Kind_Package
-                  and then Entity_Body_In_SPARK (FA.Spec_Entity)))
+         or else
+           (FA.Kind = Kind_Package
+            and then Entity_Body_In_SPARK (FA.Spec_Entity)))
         and then not FA.Has_Only_Terminating_Constructs;
 
       Contr.Calls_Via_Access := FA.Calls_Via_Access;
@@ -801,10 +804,11 @@ package body Flow_Generated_Globals.Partial is
 
          Contr.Nonreturning :=
            not (Is_Ignored_Internal (E)
-                or else ((Is_Imported (E)
-                          or else Is_Intrinsic (E)
-                          or else Has_No_Body_Yet (E))
-                         and then not No_Return (E)));
+                or else
+                  ((Is_Imported (E)
+                    or else Is_Intrinsic (E)
+                    or else Has_No_Body_Yet (E))
+                   and then not No_Return (E)));
 
          --  For library-level packages and protected-types the non-blocking
          --  status is meaningless. Otherwise, it is either a user instance of
@@ -971,8 +975,7 @@ package body Flow_Generated_Globals.Partial is
       --  conditional and proof calls they are split into subsets for handling
       --  different inductive cases.
 
-      Find_Definite_Calls :
-      declare
+      Find_Definite_Calls : declare
          Todo : Node_Sets.Set := Original.Definite_Calls;
          Done : Node_Sets.Set;
 
@@ -1010,8 +1013,7 @@ package body Flow_Generated_Globals.Partial is
       --  subprograms: those called definitively and those called
       --  conditionally.
 
-      Find_Conditional_Calls :
-      declare
+      Find_Conditional_Calls : declare
          type Calls is record
             Conditional, Definite : Node_Sets.Set;
          end record;
@@ -1090,8 +1092,7 @@ package body Flow_Generated_Globals.Partial is
       --  Proof calls turns out to be not really harder than conditional calls;
       --  their implementation follows the very same pattern.
 
-      Find_Proof_Calls :
-      declare
+      Find_Proof_Calls : declare
          type Calls is record
             Proof, Other : Node_Sets.Set;
          end record;
@@ -1562,10 +1563,10 @@ package body Flow_Generated_Globals.Partial is
          --  generated Initializes).
 
          if Is_Heap_Variable (N)
-           or else not (Is_In_Analyzed_Files (N)
-                        and then Scope_Within_Or_Same (N, E)
-                        and then (if In_Generic_Actual (N)
-                                  then Scope (N) /= E))
+           or else
+             not (Is_In_Analyzed_Files (N)
+                  and then Scope_Within_Or_Same (N, E)
+                  and then (if In_Generic_Actual (N) then Scope (N) /= E))
          then
             Remote.Insert (N);
          end if;
@@ -2099,8 +2100,9 @@ package body Flow_Generated_Globals.Partial is
          --  enclosing subprogram, for termination analysis purposes.
          Contr.Has_Subp_Variant :=
            (if Is_Callable (E)
-              or else (Ekind (E) = E_Package
-                       and then Present (Subprograms.Enclosing_Subprogram (E)))
+              or else
+                (Ekind (E) = E_Package
+                 and then Present (Subprograms.Enclosing_Subprogram (E)))
             then Has_Subprogram_Variant (Subprograms.Enclosing_Subprogram (E))
             else Meaningless);
 
@@ -2249,9 +2251,10 @@ package body Flow_Generated_Globals.Partial is
       function Represent_Variable_Inputs
         (Inputs : Node_Lists.List) return Boolean
       is (Inputs = Variable
-          or else (for all E of Inputs =>
-                     Ekind (E)
-                     in E_Constant | Entry_Kind | E_Function | E_Procedure))
+          or else
+            (for all E of Inputs =>
+               Ekind (E)
+               in E_Constant | Entry_Kind | E_Function | E_Procedure))
       with Ghost;
       --  A sanity-checking utility for routines that grow the constant graph
 
@@ -2273,8 +2276,8 @@ package body Flow_Generated_Globals.Partial is
       with
         Post =>
           Pick_Constants'Result.Length <= From.Length
-          and then (for all E of Pick_Constants'Result =>
-                      Ekind (E) = E_Constant);
+          and then
+            (for all E of Pick_Constants'Result => Ekind (E) = E_Constant);
       --  Selects constants from the given set
 
       procedure Seed (E : Entity_Id)
@@ -2637,8 +2640,8 @@ package body Flow_Generated_Globals.Partial is
       Strip (From.Refined);
       Strip (From.Initializes.Proper);
       Strip (From.Initializes.Refined);
-   --  ??? stripping the refined Initializes is excessive, because currently
-   --  they are not written to the ALI file but that needs to be revisited
+      --  ??? stripping the refined Initializes is excessive, because currently
+      --  they are not written to the ALI file but that needs to be revisited
    end Strip_Constants;
 
    ----------------------------

@@ -216,8 +216,8 @@ package body SPARK_Register is
          --  ??? this is a yet another reason for replacing front-end xrefs
          --  with something more precise and easier to control.
          if Nkind (N) in Rewriten_Call
-           and then Nkind (Original_Node (N))
-                    in N_Subprogram_Call | N_Pragma | N_Op
+           and then
+             Nkind (Original_Node (N)) in N_Subprogram_Call | N_Pragma | N_Op
          then
             Process_Tree (Original_Node (N));
          end if;

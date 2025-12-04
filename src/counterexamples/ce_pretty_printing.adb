@@ -635,8 +635,8 @@ package body CE_Pretty_Printing is
 
                if BI_Fst <= Index
                  and then Index <= BI_Last
-                 and then (BI_Fst = BI_Last
-                           or else Elem_Printed /= Others_Elem)
+                 and then
+                   (BI_Fst = BI_Last or else Elem_Printed /= Others_Elem)
                then
                   Add_Index
                     (S_Array,
@@ -652,8 +652,9 @@ package body CE_Pretty_Printing is
                --  Check for the maximum printed length
 
                if (String_Lit and then Elem_Count >= CE_Max_Print_Chars_String)
-                 or else (not String_Lit
-                          and then Elem_Count >= CE_Max_Print_Elems_Array)
+                 or else
+                   (not String_Lit
+                    and then Elem_Count >= CE_Max_Print_Elems_Array)
                then
                   Truncated := True;
                   exit;
@@ -677,14 +678,14 @@ package body CE_Pretty_Printing is
          --  bounds are known, and Others_Val is supplied.
 
          elsif Others_Elem.Value /= Dont_Display
-           and then (String_Lit
-                     or else To_Big_Integer (Integer (S_Array.Length))
-                             >= BI_Last
-                                - BI_Fst
-                                + 1
-                                - CE_Max_Exp_Others_In_Aggregate)
-           and then ((Attr_First.Present and then Attr_Last.Present)
-                     or else Is_Static_Array_Type (Value.AST_Ty))
+           and then
+             (String_Lit
+              or else
+                To_Big_Integer (Integer (S_Array.Length))
+                >= BI_Last - BI_Fst + 1 - CE_Max_Exp_Others_In_Aggregate)
+           and then
+             ((Attr_First.Present and then Attr_Last.Present)
+              or else Is_Static_Array_Type (Value.AST_Ty))
          then
             declare
                Index : Big_Integer := BI_Fst;
@@ -719,11 +720,12 @@ package body CE_Pretty_Printing is
             --  Check if adding the 'others' element would exceed the printed
             --  length (irrelevant if it was exceeded already).
             if Others_Elem.Value /= Dont_Display
-              and then ((String_Lit
-                         and then Elem_Count >= CE_Max_Print_Chars_String - 1)
-                        or else (not String_Lit
-                                 and then Elem_Count
-                                          >= CE_Max_Print_Elems_Array - 1))
+              and then
+                ((String_Lit
+                  and then Elem_Count >= CE_Max_Print_Chars_String - 1)
+                 or else
+                   (not String_Lit
+                    and then Elem_Count >= CE_Max_Print_Elems_Array - 1))
             then
                Truncated := True;
                Others_Val := Dont_Display;
@@ -978,8 +980,9 @@ package body CE_Pretty_Printing is
          --  indices: we don't want to print Tdata_tD1'First.
 
          if Type_Range <= Bound_Type
-           or else (not Comes_From_Source (Nb_Type)
-                    and then not Is_Standard_Type (Nb_Type))
+           or else
+             (not Comes_From_Source (Nb_Type)
+              and then not Is_Standard_Type (Nb_Type))
          then
             return To_String (Nb);
          end if;
@@ -1360,10 +1363,11 @@ package body CE_Pretty_Printing is
                  Component_Visibility_Maps.Key (C);
             begin
                if Visibility /= Removed
-                 and then not Component_Is_Removed_In_Type
-                                (Ty   => Value.AST_Ty,
-                                 Comp => Comp,
-                                 Vals => Value.Record_Fields)
+                 and then
+                   not Component_Is_Removed_In_Type
+                         (Ty   => Value.AST_Ty,
+                          Comp => Comp,
+                          Vals => Value.Record_Fields)
                then
                   if Is_Type (Comp) or else Present (First_Unseen) then
                      Need_Others := True;
@@ -1661,10 +1665,12 @@ package body CE_Pretty_Printing is
                --  False.
 
                if Value.Scalar_Content = null
-                 or else (Value.Initialized_Attr.Present
-                          and then not Value.Initialized_Attr.Content)
-                 or else (Value.Valid_Attr.Present
-                          and then not Value.Valid_Attr.Content)
+                 or else
+                   (Value.Initialized_Attr.Present
+                    and then not Value.Initialized_Attr.Content)
+                 or else
+                   (Value.Valid_Attr.Present
+                    and then not Value.Valid_Attr.Content)
                then
                   return (Value => Dont_Display, Attributes => Attributes);
                else

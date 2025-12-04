@@ -774,13 +774,14 @@ package body Gnat2Why.Borrow_Checker is
    with
      Pre =>
        (Expr.Is_Ent
-        or else Nkind (Expr.Expr)
-                in N_Index_Or_Discriminant_Constraint
-                 | N_Range_Constraint
-                 | N_Subtype_Indication
-                 | N_Digits_Constraint
-                 | N_Delta_Constraint
-                 | N_Subexpr);
+        or else
+          Nkind (Expr.Expr)
+          in N_Index_Or_Discriminant_Constraint
+           | N_Range_Constraint
+           | N_Subtype_Indication
+           | N_Digits_Constraint
+           | N_Delta_Constraint
+           | N_Subexpr);
 
    procedure Check_Globals (Subp : Entity_Id; Loc : Node_Id);
    --  This procedure takes a subprogram called and checks the permission of
@@ -1406,9 +1407,10 @@ package body Gnat2Why.Borrow_Checker is
          elsif not Is_Same_Or_Depends_On_Level
                      (Ghost_Assertion_Level (Target_Root),
                       Ghost_Assertion_Level (Expr_Root))
-           or else not Is_Same_Or_Depends_On_Level
-                         (Ghost_Assertion_Level (Expr_Root),
-                          Ghost_Assertion_Level (Target_Root))
+           or else
+             not Is_Same_Or_Depends_On_Level
+                   (Ghost_Assertion_Level (Expr_Root),
+                    Ghost_Assertion_Level (Target_Root))
          then
             BC_Error
               (Create
@@ -3795,9 +3797,10 @@ package body Gnat2Why.Borrow_Checker is
          Var := Key.K;
          for Borrowed of Get (Current_Borrowers, Var) loop
             if Is_Prefix_Or_Almost (Pref => Borrowed, Expr => Expr)
-              or else (if Expr.Is_Ent
-                       then Get_Root_Object (Borrowed) = Expr.Ent
-                       else Is_Prefix_Or_Almost (Current, +Borrowed))
+              or else
+                (if Expr.Is_Ent
+                 then Get_Root_Object (Borrowed) = Expr.Ent
+                 else Is_Prefix_Or_Almost (Current, +Borrowed))
             then
                return Borrowed;
             end if;
@@ -3831,9 +3834,10 @@ package body Gnat2Why.Borrow_Checker is
 
          for Observed of Get (Current_Observers, Var) loop
             if Is_Prefix_Or_Almost (Pref => Observed, Expr => Expr)
-              or else (if Expr.Is_Ent
-                       then Get_Root_Object (Observed) = Expr.Ent
-                       else Is_Prefix_Or_Almost (Current, +Observed))
+              or else
+                (if Expr.Is_Ent
+                 then Get_Root_Object (Observed) = Expr.Ent
+                 else Is_Prefix_Or_Almost (Current, +Observed))
             then
                return Observed;
             end if;
@@ -4059,9 +4063,10 @@ package body Gnat2Why.Borrow_Checker is
             elsif not Is_Same_Or_Depends_On_Level
                         (Ghost_Assertion_Level (Subp),
                          Ghost_Assertion_Level (Root))
-              or else not Is_Same_Or_Depends_On_Level
-                            (Ghost_Assertion_Level (Root),
-                             Ghost_Assertion_Level (Subp))
+              or else
+                not Is_Same_Or_Depends_On_Level
+                      (Ghost_Assertion_Level (Root),
+                       Ghost_Assertion_Level (Subp))
             then
                BC_Error
                  (Create
@@ -4734,8 +4739,9 @@ package body Gnat2Why.Borrow_Checker is
                      --  Check out parameters and globals at exit
 
                      if Ekind (Subp) in E_Procedure | E_Entry
-                       or else (Ekind (Subp) = E_Function
-                                and then Is_Function_With_Side_Effects (Subp))
+                       or else
+                         (Ekind (Subp) = E_Function
+                          and then Is_Function_With_Side_Effects (Subp))
                      then
                         Return_Parameters
                           (Subp, Exceptional => not Exc_Set.Is_Empty);
@@ -4748,8 +4754,8 @@ package body Gnat2Why.Borrow_Checker is
                      --  return.
 
                      if Ekind (Scope (Subp)) = E_Protected_Type
-                       and then (Is_Entry (Subp)
-                                 or else Ekind (Subp) = E_Procedure)
+                       and then
+                         (Is_Entry (Subp) or else Ekind (Subp) = E_Procedure)
                      then
                         Return_Protected_Components (Subp);
                      end if;
@@ -4927,8 +4933,8 @@ package body Gnat2Why.Borrow_Checker is
       --  The expression is directly rooted in an object
 
       elsif N.Is_Ent
-        or else Present
-                  (Get_Root_Object (Main_Path, Through_Traversal => False))
+        or else
+          Present (Get_Root_Object (Main_Path, Through_Traversal => False))
       then
          declare
             Tree_Or_Perm : constant Perm_Or_Tree :=
@@ -5146,8 +5152,8 @@ package body Gnat2Why.Borrow_Checker is
                              Assert
                                (Nkind (N.Expr) = N_Indexed_Component
                                   or else Nkind (N.Expr) = N_Slice
-                                  or else Nkind (N.Expr)
-                                          = N_Attribute_Reference);
+                                  or else
+                                    Nkind (N.Expr) = N_Attribute_Reference);
 
                            if Nkind (N.Expr) = N_Attribute_Reference then
                               pragma
@@ -6219,8 +6225,8 @@ package body Gnat2Why.Borrow_Checker is
                --  is ill-formed.
 
                elsif Nkind (Call) = N_Function_Call
-                 and then Has_At_End_Borrow_Annotation
-                            (Get_Called_Entity (Call))
+                 and then
+                   Has_At_End_Borrow_Annotation (Get_Called_Entity (Call))
                then
                   Brower := Borrower_For_At_End_Borrow_Call (Call);
                   if Present (Brower) then
@@ -6314,9 +6320,10 @@ package body Gnat2Why.Borrow_Checker is
            Query_Read_Only_Tree (Current_Perm_Env, Root) = null;
          Missing_Var  : constant Boolean :=
            Missing_Name
-           and then (Ekind (Root) /= E_Constant
-                     or else Is_Access_Variable (Etype (Root))
-                     or else Has_Variable_Input (Root));
+           and then
+             (Ekind (Root) /= E_Constant
+              or else Is_Access_Variable (Etype (Root))
+              or else Has_Variable_Input (Root));
       begin
          if Missing_Var and then Inside_Elaboration then
             Setup_Environment_For_Object
@@ -6536,8 +6543,8 @@ package body Gnat2Why.Borrow_Checker is
             --  then the permissions do not get modified by the assignment.
 
             if No (Root)
-              or else (not Expr.Is_Ent
-                       and then Has_Array_Component (Expr.Expr))
+              or else
+                (not Expr.Is_Ent and then Has_Array_Component (Expr.Expr))
             then
                return;
             end if;
@@ -7114,9 +7121,10 @@ package body Gnat2Why.Borrow_Checker is
 
                      while Present (Comp) loop
                         if Perm /= None
-                          and then Original_Record_Component (Comp)
-                                   = Original_Record_Component
-                                       (Entity (Selector_Name (N.Expr)))
+                          and then
+                            Original_Record_Component (Comp)
+                            = Original_Record_Component
+                                (Entity (Selector_Name (N.Expr)))
                         then
                            P := Perm;
                         else

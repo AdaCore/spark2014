@@ -254,10 +254,10 @@ package body Why.Gen.Records is
            (Etype (Field),
             Relaxed_Init =>
               Ekind (Field) = E_Component
-              and then (if Relaxed_Init
-                        then Has_Init_Wrapper (Etype (Field))
-                        else
-                          SPARK_Definition.Has_Relaxed_Init (Etype (Field)))));
+              and then
+                (if Relaxed_Init
+                 then Has_Init_Wrapper (Etype (Field))
+                 else SPARK_Definition.Has_Relaxed_Init (Etype (Field)))));
    --  Compute the expected Why type of a record component. If the component is
    --  a type, it stands for the invisible fields of the type and is translated
    --  as the appropriate private type. Otherwise, return the abstract type of
@@ -4617,8 +4617,8 @@ package body Why.Gen.Records is
                         (Comp, Rec => Ty, Relaxed_Init => Relaxed_Init),
                     Value  =>
                       (if Relaxed_Init
-                         or else SPARK_Definition.Has_Relaxed_Init
-                                   (Etype (Comp))
+                         or else
+                           SPARK_Definition.Has_Relaxed_Init (Etype (Comp))
                        then
                          Insert_Simple_Conversion
                            (Ada_Node       => Empty,
@@ -4986,8 +4986,8 @@ package body Why.Gen.Records is
    is
       Has_Tag : constant Boolean :=
         (Is_Tagged_Type (Retysp (Ty))
-         and then (From_Expr /= Why_Empty
-                   or else not Is_Class_Wide_Type (Ty)));
+         and then
+           (From_Expr /= Why_Empty or else not Is_Class_Wide_Type (Ty)));
       --  If Ty is tagged, its 'Tag attribute should be preserved except for
       --  defaults of classwide types.
 
@@ -5126,8 +5126,9 @@ package body Why.Gen.Records is
       if Has_Discriminants (Current) then
          for Field of Get_Component_Set (Current) loop
             if Ekind (Field) = E_Component
-              and then Retysp (Etype (Representative_Component (Field)))
-                       /= Retysp (Etype (Field))
+              and then
+                Retysp (Etype (Representative_Component (Field)))
+                /= Retysp (Etype (Field))
             then
                return Current;
             end if;
@@ -5292,8 +5293,9 @@ package body Why.Gen.Records is
       Relaxed_Init : constant Boolean :=
         I.Fields.Present
         and then Has_Init_Wrapper (I.Typ)
-        and then Get_Module (Get_Name (Get_Typ (I.Fields.Binder.B_Name)))
-                 = E_Module (I.Typ, Init_Wrapper);
+        and then
+          Get_Module (Get_Name (Get_Typ (I.Fields.Binder.B_Name)))
+          = E_Module (I.Typ, Init_Wrapper);
       Ty           : constant Entity_Id := I.Typ;
       Values       :
         W_Expr_Array (1 .. Count_Why_Top_Level_Fields (Ty, Relaxed_Init));

@@ -626,8 +626,8 @@ package body Gnat2Why.Types is
          Declares_Dispatching_Eq : constant Boolean :=
            Is_Tagged_Type (E)
            and then Root_Retysp (E) = E
-           and then (if Present (Eq)
-                     then not Is_Hidden_Dispatching_Operation (Eq));
+           and then
+             (if Present (Eq) then not Is_Hidden_Dispatching_Operation (Eq));
          Var_A                   : constant W_Identifier_Id :=
            New_Identifier (Ada_Node => E, Name => "a", Typ => Ty);
          Var_B                   : constant W_Identifier_Id :=
@@ -1047,8 +1047,9 @@ package body Gnat2Why.Types is
          --      ensures { is_moved_or_reclaimed result obj }
 
          if not Is_Anonymous_Access_Type (E)
-           and then (not Is_Record_Type_In_Why (E)
-                     or else not Record_Type_Is_Clone (E))
+           and then
+             (not Is_Record_Type_In_Why (E)
+              or else not Record_Type_Is_Clone (E))
          then
             declare
                Typ           : constant W_Type_Id :=
@@ -1547,16 +1548,19 @@ package body Gnat2Why.Types is
          if (not (Has_Record_Type (E)
                   or else Has_Incomplete_Or_Private_Type (E))
              or else not Record_Type_Is_Clone (Retysp (E))
-             or else Short_Name (Retysp (E))
-                     /= Short_Name (Record_Type_Cloned_Subtype (Retysp (E))))
+             or else
+               Short_Name (Retysp (E))
+               /= Short_Name (Record_Type_Cloned_Subtype (Retysp (E))))
            and then not Is_Class_Wide_Type (Retysp (E))
-           and then (not Has_Array_Type (E)
-                     or else not Is_Static_Array_Type (Retysp (E)))
-           and then (not Has_Array_Type (E)
-                     or else not Array_Type_Is_Clone (Retysp (E))
-                     or else Short_Name (Retysp (E))
-                             /= Short_Name
-                                  (Array_Type_Cloned_Subtype (Retysp (E))))
+           and then
+             (not Has_Array_Type (E)
+              or else not Is_Static_Array_Type (Retysp (E)))
+           and then
+             (not Has_Array_Type (E)
+              or else not Array_Type_Is_Clone (Retysp (E))
+              or else
+                Short_Name (Retysp (E))
+                /= Short_Name (Array_Type_Cloned_Subtype (Retysp (E))))
          then
             Emit_Ref_Type_Definition
               (Th,

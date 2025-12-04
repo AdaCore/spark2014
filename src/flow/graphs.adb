@@ -897,7 +897,7 @@ package body Graphs is
                           (Dominator_Tree_Visitor'
                              (Parent => Current.Child, Child => W));
                      end if;
-                  --  In_Neighbours is our version of Pred
+                     --  In_Neighbours is our version of Pred
                   end;
                end loop;
             end if;

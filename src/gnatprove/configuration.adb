@@ -461,8 +461,9 @@ package body Configuration is
          return "";
       end if;
       if Ada.Environment_Variables.Exists (TMPDIR_Envvar)
-        and then Exists_And_Is_Writable
-                   (Ada.Environment_Variables.Value (TMPDIR_Envvar))
+        and then
+          Exists_And_Is_Writable
+            (Ada.Environment_Variables.Value (TMPDIR_Envvar))
       then
          return Ada.Environment_Variables.Value (TMPDIR_Envvar);
       elsif Exists_And_Is_Writable (TMP_Dir) then
@@ -1418,7 +1419,7 @@ package body Configuration is
             & " - EASY");
       end loop;
 
-   --  ??? TODO GNAT front-end categories
+      --  ??? TODO GNAT front-end categories
    end Produce_List_Categories_Output;
 
    ----------------------------
@@ -1945,9 +1946,10 @@ package body Configuration is
                Has_Coq_Prover := Case_Insensitive_Contains (FS.Provers, "coq");
                Has_Manual_Prover :=
                  FS.Provers.Length = 1
-                 and then (Case_Insensitive_Contains (FS.Provers, "coq")
-                           or else Case_Insensitive_Contains
-                                     (FS.Provers, "isabelle"));
+                 and then
+                   (Case_Insensitive_Contains (FS.Provers, "coq")
+                    or else
+                      Case_Insensitive_Contains (FS.Provers, "isabelle"));
 
                for Attr of View.Attributes ((+"Prove", +"Proof_Switches")) loop
                   if Attr.Index.Text not in "Ada" | "ada" then
@@ -2266,9 +2268,9 @@ package body Configuration is
          if Switch_Count > 1 then
             if Switch_Count = 2
               and then not Null_Or_Empty_String (CL_Switches.Limit_Subp)
-              and then (not Null_Or_Empty_String (CL_Switches.Limit_Region)
-                        or else not Null_Or_Empty_String
-                                      (CL_Switches.Limit_Line))
+              and then
+                (not Null_Or_Empty_String (CL_Switches.Limit_Region)
+                 or else not Null_Or_Empty_String (CL_Switches.Limit_Line))
             then
                null;
             else
@@ -2743,8 +2745,9 @@ package body Configuration is
             for Prover of FS.Provers loop
                if (Prover = "cvc5" and then not SPARK_Install.CVC5_Present)
                  or else (Prover = "z3" and then not SPARK_Install.Z3_Present)
-                 or else (Prover = "colibri"
-                          and then not SPARK_Install.Colibri_Present)
+                 or else
+                   (Prover = "colibri"
+                    and then not SPARK_Install.Colibri_Present)
                then
                   Abort_Msg
                     ("error: prover "

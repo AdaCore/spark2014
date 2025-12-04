@@ -589,8 +589,8 @@ package body CE_Parsing is
       begin
          return
            I_Sign
-           * 2**(Bound - 1)
-           + I_Exp * 2**Size_Significand
+           * 2 ** (Bound - 1)
+           + I_Exp * 2 ** Size_Significand
            + I_Significand;
       end StringBits_To_Floatrepr;
 
@@ -910,9 +910,8 @@ package body CE_Parsing is
 
                   else
                      if Current_Val.K /= Record_K
-                       or else No
-                                 (Search_Component_In_Type
-                                    (Current_Ty, Comp_E))
+                       or else
+                         No (Search_Component_In_Type (Current_Ty, Comp_E))
                      then
                         raise Parse_Error;
                      elsif not Current_Val.Record_Fields.Contains (Comp_E) then

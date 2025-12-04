@@ -64,8 +64,8 @@ package body Flow_Refinement is
       return
         Flow_Visibility.Is_Visible
           (Looking_From => Looking_From, Looking_At => Target_Scope);
-   --  ??? this routine only flips the order or parameters between what is
-   --  more readable in flow and what the underlying Edge_Exists expects.
+      --  ??? this routine only flips the order or parameters between what is
+      --  more readable in flow and what the underlying Edge_Exists expects.
    end Is_Visible;
 
    function Is_Visible (N : Node_Id; S : Flow_Scope) return Boolean is
@@ -132,8 +132,8 @@ package body Flow_Refinement is
                then Private_Part
                else S.Part))
          else Get_Flow_Scope (Unit_Declaration_Node (S.Ent)));
-   --  Call to Get_Flow_Scope on a declaration node returns the scope where
-   --  S.Ent is declared, not the scope of the S.Ent itself.
+      --  Call to Get_Flow_Scope on a declaration node returns the scope where
+      --  S.Ent is declared, not the scope of the S.Ent itself.
    end Get_Enclosing_Flow_Scope;
 
    --------------------
@@ -193,8 +193,9 @@ package body Flow_Refinement is
                begin
                   if Present (Prev_Context) then
                      if Ekind (E) = E_Procedure
-                       and then (Is_DIC_Procedure (E)
-                                 or else Is_Invariant_Procedure (E))
+                       and then
+                         (Is_DIC_Procedure (E)
+                          or else Is_Invariant_Procedure (E))
                      then
                         --  ??? redirect to where the type is declared
                         Context := Declaration_Node (Etype (First_Formal (E)));
@@ -210,8 +211,9 @@ package body Flow_Refinement is
                      end if;
                   else
                      if Ekind (E) = E_Procedure
-                       and then (Is_DIC_Procedure (E)
-                                 or else Is_Invariant_Procedure (E))
+                       and then
+                         (Is_DIC_Procedure (E)
+                          or else Is_Invariant_Procedure (E))
                      then
                         --  ??? redirect to where the type is declared
                         Context := Declaration_Node (Etype (First_Formal (E)));
@@ -265,8 +267,9 @@ package body Flow_Refinement is
                   --  a dedicated check for the private part.
 
                   elsif Is_List_Member (Prev_Context)
-                    and then List_Containing (Prev_Context)
-                             = Private_Declarations (Context)
+                    and then
+                      List_Containing (Prev_Context)
+                      = Private_Declarations (Context)
                   then
                      Part := Private_Part;
                   else
@@ -588,8 +591,8 @@ package body Flow_Refinement is
             --  this state is not fully written, then it must be added to
             --  projected inputs.
             if Item /= Projected_Item
-              and then not Is_Fully_Contained
-                             (Projected_Item, Vars.Outputs, Scope)
+              and then
+                not Is_Fully_Contained (Projected_Item, Vars.Outputs, Scope)
             then
                Projected_Vars.Inputs.Include (Projected_Item);
             end if;
@@ -723,8 +726,9 @@ package body Flow_Refinement is
             --  this state is not fully written, then it must be added to
             --  projected inputs.
             if Item /= Projected_Item
-              and then not Is_Fully_Contained
-                             (Projected_Item, Original.Outputs, Scope)
+              and then
+                not Is_Fully_Contained
+                      (Projected_Item, Original.Outputs, Scope)
             then
                Projected_Vars.Inputs.Include (Projected_Item);
             end if;
@@ -831,10 +835,10 @@ package body Flow_Refinement is
 
          return
            Is_Abstract_State (F)
-           and then Is_Visible
-                      (Target_Scope =>
-                         (Sinfo.Nodes.Scope (F.Node), Private_Part),
-                       Looking_From => Body_Scope (Scope))
+           and then
+             Is_Visible
+               (Target_Scope => (Sinfo.Nodes.Scope (F.Node), Private_Part),
+                Looking_From => Body_Scope (Scope))
            and then Down_Project (F, Body_Scope (Scope)).Contains (F);
       end Is_Hidden_Constituent;
 
@@ -1446,8 +1450,9 @@ package body Flow_Refinement is
 
       return
         (for some Input of Globals.Inputs => Has_Ambiguous_Refinement (Input))
-        or else (for some Proof_In of Globals.Proof_Ins =>
-                   Has_Ambiguous_Refinement (Proof_In));
+        or else
+          (for some Proof_In of Globals.Proof_Ins =>
+             Has_Ambiguous_Refinement (Proof_In));
 
    end Mentions_State_With_Ambiguous_Refinement;
 
@@ -1473,23 +1478,23 @@ package body Flow_Refinement is
 
         or else
 
-        --  2) Global refers to state abstraction with visible refinement but
-        --     no Refined_Global is present.
-        (Present (Global_N)
-         and then No (Refined_Global_N)
-         and then No (Refined_Depends_N)
-         and then  -- ???
-         Mentions_State_With_Ambiguous_Refinement (Global_N, B_Scope))
+          --  2) Global refers to state abstraction with visible refinement but
+          --     no Refined_Global is present.
+          (Present (Global_N)
+           and then No (Refined_Global_N)
+           and then No (Refined_Depends_N)
+           and then  -- ???
+             Mentions_State_With_Ambiguous_Refinement (Global_N, B_Scope))
 
         or else
 
-        --  3) Depends refers to state abstraction with visible refinement but
-        --     no Refined_Depends is present.
-        (Present (Depends_N)
-         and then No (Refined_Depends_N)
-         and then No (Refined_Global_N)
-         and then  -- ???
-         Mentions_State_With_Ambiguous_Refinement (Depends_N, B_Scope));
+          --  3) Depends refers to state abstraction with visible refinement
+          --     but no Refined_Depends is present.
+          (Present (Depends_N)
+           and then No (Refined_Depends_N)
+           and then No (Refined_Global_N)
+           and then  -- ???
+             Mentions_State_With_Ambiguous_Refinement (Depends_N, B_Scope));
    end Refinement_Needed;
 
    -----------------------------------

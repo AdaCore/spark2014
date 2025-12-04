@@ -749,8 +749,7 @@ package body Flow_Generated_Globals.Phase_2 is
          --  tasks and main-like subprograms. Vertices correspond to
          --  callable entities (i.e. entries, functions and procedures).
 
-         Add_Tasking_Edges :
-         declare
+         Add_Tasking_Edges : declare
             Stack : Name_Sets.Set;
             --  Subprograms from which we still need to add edges
 
@@ -813,8 +812,7 @@ package body Flow_Generated_Globals.Phase_2 is
          --  we create a call graph with vertices corresponding to callable
          --  entities (i.e. entries, functions and procedures).
 
-         Add_Protected_Operation_Edges :
-         declare
+         Add_Protected_Operation_Edges : declare
             Stack : Name_Sets.Set;
             --  We collect protected operations in SPARK and use them as seeds
             --  to grow the call graph.
@@ -828,8 +826,9 @@ package body Flow_Generated_Globals.Phase_2 is
             --  current compilation unit.
             for E of Entities_To_Translate loop
                if (Ekind (E) = E_Entry
-                   or else (Ekind (E) in E_Function | E_Procedure
-                            and then Ekind (Scope (E)) = E_Protected_Type))
+                   or else
+                     (Ekind (E) in E_Function | E_Procedure
+                      and then Ekind (Scope (E)) = E_Protected_Type))
                  and then Analysis_Requested (E, With_Inlined => True)
                  and then Entity_Body_In_SPARK (E)
                then
@@ -884,8 +883,7 @@ package body Flow_Generated_Globals.Phase_2 is
          --  where vertices correspond to subprograms and edges to subprogram
          --  calls.
 
-         Add_Subprogram_Edges :
-         declare
+         Add_Subprogram_Edges : declare
             Stack : Name_Sets.Set;
             --  We collect called subprograms and use them as seeds to grow the
             --  graph.
@@ -948,8 +946,7 @@ package body Flow_Generated_Globals.Phase_2 is
          --  graph where vertices correspond to subprograms and packages and
          --  edges to subprogram calls.
 
-         Add_Proof_Dependencies :
-         declare
+         Add_Proof_Dependencies : declare
             Remaining : Name_Sets.Set;
             --  We collect called subprograms and use them as seeds to grow the
             --  graph.
@@ -1019,8 +1016,7 @@ package body Flow_Generated_Globals.Phase_2 is
          --  closure. We ensure in marking that, when a lemma entity is marked,
          --  the associated function is marked too.
 
-         Add_Lemma_Subprogram_Edges :
-         begin
+         Add_Lemma_Subprogram_Edges : begin
             Lemma_Module_Dependency_Graph := Proof_Module_Dependency_Graph;
 
             --  Add vertex for phantom calls to lemma procedure from their
@@ -1049,8 +1045,7 @@ package body Flow_Generated_Globals.Phase_2 is
             Lemma_Module_Dependency_Graph.Close;
          end Add_Lemma_Subprogram_Edges;
 
-         Add_Ceiling_Priority_Edges :
-         declare
+         Add_Ceiling_Priority_Edges : declare
             Stack : Name_Sets.Set;
             --  We collect protected operations in SPARK and use them as seeds
             --  to grow the call graph.
@@ -1067,11 +1062,13 @@ package body Flow_Generated_Globals.Phase_2 is
             for E of Entities_To_Translate loop
                if Ekind (E) in E_Entry | E_Task_Type | E_Function | E_Procedure
                  and then Analysis_Requested (E, With_Inlined => True)
-                 and then (Is_Entry (E)
-                           or else Is_Task_Type (E)
-                           or else Is_Protected_Operation (E)
-                           or else (Ekind (E) in E_Function | E_Procedure
-                                    and then Might_Be_Main (E)))
+                 and then
+                   (Is_Entry (E)
+                    or else Is_Task_Type (E)
+                    or else Is_Protected_Operation (E)
+                    or else
+                      (Ekind (E) in E_Function | E_Procedure
+                       and then Might_Be_Main (E)))
                  and then Entity_Body_In_SPARK (E)
                then
                   declare
@@ -1239,8 +1236,8 @@ package body Flow_Generated_Globals.Phase_2 is
                  (Type_Name => Main_Entity_Name,
                   Object    =>
                     (Name => Main_Entity_Name, Instances => 1, Node => S));
-            --  Register the main-like subprogram as a task, but use the
-            --  same entity name for type and object name.
+               --  Register the main-like subprogram as a task, but use the
+               --  same entity name for type and object name.
             end;
          end if;
       end Detect_Main_Subprogram;
@@ -1801,8 +1798,9 @@ package body Flow_Generated_Globals.Phase_2 is
                      pragma
                        Assert
                          (Inserted
-                            or else Protected_Objects_To_Priorities (Position)
-                                    = Prio,
+                            or else
+                              Protected_Objects_To_Priorities (Position)
+                              = Prio,
                           "Conflicting priority values registered");
                   end;
 
@@ -1876,8 +1874,8 @@ package body Flow_Generated_Globals.Phase_2 is
                      pragma
                        Assert
                          (Inserted
-                            or else Max_Queue_Lengths (Position)
-                                    = Max_Queue_Length,
+                            or else
+                              Max_Queue_Lengths (Position) = Max_Queue_Length,
                           "conflicting max queue lengths");
                   end;
 
@@ -2077,8 +2075,7 @@ package body Flow_Generated_Globals.Phase_2 is
 
       Note_Time ("gg_read - edges added");
 
-      Resolve_Globals :
-      declare
+      Resolve_Globals : declare
 
          use type Ada.Containers.Count_Type;
 
@@ -2372,8 +2369,8 @@ package body Flow_Generated_Globals.Phase_2 is
 
             begin
                if Entity_Contract_Maps.Has_Element (C)
-                 and then Scope_Within_Or_Same
-                            (Inner => Callee, Outer => Analyzed)
+                 and then
+                   Scope_Within_Or_Same (Inner => Callee, Outer => Analyzed)
                then
                   return Down_Project (Contracts (C).Proper, Caller);
                else
@@ -2432,10 +2429,10 @@ package body Flow_Generated_Globals.Phase_2 is
                      pragma
                        Assert
                          (Contracts.Contains (Child)
-                            or else Match
-                                      (Wrapper_Package,
-                                       Strip_Child_Prefixes
-                                         (To_String (Child)))
+                            or else
+                              Match
+                                (Wrapper_Package,
+                                 Strip_Child_Prefixes (To_String (Child)))
                             or else True);  --  ??? generic package
 
                      for Patch of Patches loop
@@ -2761,8 +2758,9 @@ package body Flow_Generated_Globals.Phase_2 is
             with
               Post =>
                 Pick_Constants'Result.Is_Subset (Of_Set => From)
-                and then (for all E of Pick_Constants'Result =>
-                            Constant_Calls.Contains (E));
+                and then
+                  (for all E of Pick_Constants'Result =>
+                     Constant_Calls.Contains (E));
             --  Returns constants contained in the given set
 
             procedure Seed (Constants : Name_Sets.Set);
@@ -3449,8 +3447,9 @@ package body Flow_Generated_Globals.Phase_2 is
         Self = To_Entity_Name (Standard_Level_Default)
         or else Other = To_Entity_Name (Standard_Level_Default)
         or else Is_Same_Or_Depends_On_Level (Self, Other)
-        or else Is_Same_Or_Depends_On_Level
-                  (Self, To_Entity_Name (Standard_Level_Static));
+        or else
+          Is_Same_Or_Depends_On_Level
+            (Self, To_Entity_Name (Standard_Level_Static));
    end GG_Is_Assertion_Level_Dependent;
 
    function GG_Is_Assertion_Level_Dependent
@@ -3617,8 +3616,9 @@ package body Flow_Generated_Globals.Phase_2 is
             --  blocking.
 
             if not Is_Predefined (Callee)
-              and then (not Phase_1_Info_Maps.Has_Element (C)
-                        or else not Phase_1_Info (C).Nonblocking)
+              and then
+                (not Phase_1_Info_Maps.Has_Element (C)
+                 or else not Phase_1_Info (C).Nonblocking)
             then
                if First_Callee = Null_Entity_Name then
                   First_Callee := Callee;
@@ -3783,15 +3783,16 @@ package body Flow_Generated_Globals.Phase_2 is
                --  Always_Terminates aspect, do not analyze it.
 
                if not Is_Predefined (Callee)
-                 and then (Phase_1_Info.Contains (Callee)
-                           and then not Phase_1_Info (Callee)
-                                          .Always_Terminates)
+                 and then
+                   (Phase_1_Info.Contains (Callee)
+                    and then not Phase_1_Info (Callee).Always_Terminates)
                then
 
                   --  Two first cases of Is_Potentially_Nonreturning_Internal
                   if Is_Directly_Nonreturning (Callee)
-                    or else (Is_Recursive (Callee)
-                             and then not Has_Subprogram_Variant (Callee))
+                    or else
+                      (Is_Recursive (Callee)
+                       and then not Has_Subprogram_Variant (Callee))
                   then
                      return True;
                   end if;
@@ -3908,8 +3909,8 @@ package body Flow_Generated_Globals.Phase_2 is
       --  from their enclosing subprograms.
       return
         Is_Directly_Nonreturning (EN)
-        or else (Is_Recursive (EN)
-                 and then not Phase_1_Info (EN).Has_Subp_Variant)
+        or else
+          (Is_Recursive (EN) and then not Phase_1_Info (EN).Has_Subp_Variant)
         or else Calls_Potentially_Nonreturning_Subprogram (EN);
    end Is_Potentially_Nonreturning_Internal;
 
@@ -3972,8 +3973,9 @@ package body Flow_Generated_Globals.Phase_2 is
 
    function Calls_Current_Task (E : Entity_Id) return Boolean
    is (Protected_Operation_Call_Graph.Contains (Current_Task)
-       and then Protected_Operation_Call_Graph.Edge_Exists
-                  (To_Entity_Name (E), Current_Task));
+       and then
+         Protected_Operation_Call_Graph.Edge_Exists
+           (To_Entity_Name (E), Current_Task));
 
    -----------------------
    -- Refinement_Exists --
@@ -4125,8 +4127,7 @@ package body Flow_Generated_Globals.Phase_2 is
       O_Proof, O_Conditional, O_Definite : Name_Sets.Set;
 
    begin
-      Find_Definitive_Calls :
-      declare
+      Find_Definitive_Calls : declare
          Todo : Name_Sets.Set := Original.Definite_Calls;
          Done : Name_Sets.Set;
 
@@ -4158,8 +4159,7 @@ package body Flow_Generated_Globals.Phase_2 is
          Name_Sets.Move (Target => O_Definite, Source => Done);
       end Find_Definitive_Calls;
 
-      Find_Conditional_Calls :
-      declare
+      Find_Conditional_Calls : declare
          type Calls is record
             Conditional, Definite : Name_Sets.Set;
          end record;
@@ -4233,8 +4233,7 @@ package body Flow_Generated_Globals.Phase_2 is
          Name_Sets.Move (Target => O_Conditional, Source => Done.Conditional);
       end Find_Conditional_Calls;
 
-      Find_Proof_Calls :
-      declare
+      Find_Proof_Calls : declare
          type Calls is record
             Proof, Other : Name_Sets.Set;
          end record;
@@ -4610,8 +4609,9 @@ package body Flow_Generated_Globals.Phase_2 is
 
          begin
             if State_Refinement_Is_Visible (State, Scope)
-              or else (GG_Is_Part_Of_Constituent (Var)
-                       and then Part_Of_Is_Visible (State, Scope))
+              or else
+                (GG_Is_Part_Of_Constituent (Var)
+                 and then Part_Of_Is_Visible (State, Scope))
             then
                return Var;
             else
@@ -4646,8 +4646,9 @@ package body Flow_Generated_Globals.Phase_2 is
 
             begin
                if State_Refinement_Is_Visible (State, Scope)
-                 or else (GG_Is_Part_Of_Constituent (Var)
-                          and then Part_Of_Is_Visible (State, Scope))
+                 or else
+                   (GG_Is_Part_Of_Constituent (Var)
+                    and then Part_Of_Is_Visible (State, Scope))
                then
                   Projected.Include (Var);
                else
@@ -4760,8 +4761,8 @@ package body Flow_Generated_Globals.Phase_2 is
             --  this state is not fully written, then it must be added to
             --  projected inputs.
             if Item /= Projected_Item
-              and then not Is_Fully_Contained
-                             (Projected_Item, Vars.Outputs, Scope)
+              and then
+                not Is_Fully_Contained (Projected_Item, Vars.Outputs, Scope)
             then
                Projected_Vars.Inputs.Include (Projected_Item);
             end if;
