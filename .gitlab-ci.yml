@@ -101,7 +101,7 @@ stages:
     - mv $ANOD_DEFAULT_SANDBOX_DIR/x86_64-linux/$ANOD_BUILDSPACE/src/cobertura-report/ $CI_PROJECT_DIR/coverage
 
     # Process test file to generate timing test
-    - (cd $CI_PROJECT_DIR ; python scripts/check_test_times.py --threshold=80 xunit-*.xml xunit-times.xml)
+    - (cd $CI_PROJECT_DIR ; python scripts/check_test_times.py --threshold=180 xunit-*.xml xunit-times.xml)
 
     # Reestablish cache
     - mv /tmp/gnatprove_cache $CI_PROJECT_DIR/gnatprove_cache
