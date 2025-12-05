@@ -115,6 +115,13 @@ package Gnat2Why.Unchecked_Conversion is
    --  Target_Type if there isn't one already. If Potentially_Invalid is True,
    --  the target is potentially invalid.
 
+   procedure Types_Compatible_Alignment
+     (Src_Ty      : Type_Kind_Id;
+      Tar_Ty      : Type_Kind_Id;
+      Valid       : out Boolean;
+      Explanation : out Unbounded_String);
+   --  Check that Src_Ty and Tar_Ty have compatible alignment
+
    function Get_UC_Function
      (Source_Type, Target_Type : Type_Kind_Id; Potentially_Invalid : Boolean)
       return W_Identifier_Id;

@@ -1,3 +1,4 @@
+ex_zero_byte_parsing_possible.adb:18:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 ex_zero_byte_parsing_possible.adb:18:16: info: types in unchecked conversion have the same size (Trivial)
 ex_zero_byte_parsing_possible.adb:19:10: info: type is suitable as source for unchecked conversion (Trivial)
 ex_zero_byte_parsing_possible.adb:19:24: info: type is suitable for unchecked conversion (Trivial)

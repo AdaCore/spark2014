@@ -89,6 +89,7 @@ modular.adb:474:26: medium: overflow check might fail, cannot prove upper bound 
 modular.adb:474:29: info: range check proved (CVC5: 2 VC)
 modular.adb:476:26: medium: overflow check might fail, cannot prove upper bound for 2 ** Exp (e.g. when Exp = 35) [reason for check: result of exponentiation must fit in a 32-bits machine integer] [provers gave up before completing the proof]
 modular.adb:476:29: info: range check proved (CVC5: 2 VC)
+uc.ads:7:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 uc.ads:7:13: info: types in unchecked conversion have the same size (Trivial)
 uc.ads:7:13: warning: imprecise handling of Unchecked_Conversion (type with No_Bitwise_Operations annotation) [imprecise-unchecked-conversion]
 uc.ads:7:54: info: type is suitable as source for unchecked conversion (Trivial)

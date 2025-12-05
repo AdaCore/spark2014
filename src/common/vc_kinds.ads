@@ -149,8 +149,11 @@ package VC_Kinds is
       --  Check that the two types of an Unchecked_Conversion are of the same
       --  size.
 
-      VC_UC_Alignment,
+      VC_UC_Align_Overlay,
       --  Check that the address in an address clause respect object alignment
+
+      VC_UC_Align_UC,
+      --  Check alignment constring for Unchecked_Conversion
 
       VC_UC_Volatile,
       --  Check that we specify the address of an object only if it is

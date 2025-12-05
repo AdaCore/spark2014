@@ -1,5 +1,6 @@
 typconv.adb:4:33: info: initialization of "Y" proved
 typconv.adb:5:13: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type Integer and type Short_Integer differ]
+typconv.adb:5:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 typconv.adb:5:13: warning: imprecise handling of Unchecked_Conversion (types in unchecked conversion do not have the same size) [imprecise-unchecked-conversion]
 typconv.adb:5:51: info: type is suitable as source for unchecked conversion (Trivial)
 typconv.adb:5:60: info: type is suitable for unchecked conversion (Trivial)

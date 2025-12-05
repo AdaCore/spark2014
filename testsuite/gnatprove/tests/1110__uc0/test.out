@@ -1,0 +1,4 @@
+uc_align.ads:10:12: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
+uc_align.ads:10:12: info: types in unchecked conversion have the same size (Trivial)
+uc_align.ads:10:51: info: type is suitable as source for unchecked conversion (Trivial)
+uc_align.ads:10:55: info: type is suitable for unchecked conversion (Trivial)

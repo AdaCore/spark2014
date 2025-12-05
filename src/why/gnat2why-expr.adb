@@ -22459,7 +22459,7 @@ package body Gnat2Why.Expr is
                              (Obj, Pref, Valid, Explanation);
                            Emit_Static_Proof_Result
                              (Decl,
-                              VC_UC_Alignment,
+                              VC_UC_Align_Overlay,
                               Valid,
                               Current_Subp,
                               Explanation => To_String (Explanation));
@@ -22503,7 +22503,7 @@ package body Gnat2Why.Expr is
                              New_Located_Assert
                                (Ada_Node => Decl,
                                 Pred     => Pred,
-                                Reason   => VC_UC_Alignment,
+                                Reason   => VC_UC_Align_Overlay,
                                 Kind     => EW_Assert);
                            Address_Why :=
                              Binding_For_Temp

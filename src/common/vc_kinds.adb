@@ -157,7 +157,8 @@ package body VC_Kinds is
               | VC_Weaker_Pre_Access
               | VC_Stronger_Post_Access
               | VC_Null_Exclusion
-              | VC_UC_Alignment
+              | VC_UC_Align_Overlay
+              | VC_UC_Align_UC
               | VC_Unchecked_Union_Restriction
               | VC_UC_Volatile
               | VC_Validity_Check                                   => "");
@@ -511,10 +512,15 @@ package body VC_Kinds is
               "Check that the two types in an unchecked conversion "
               & "instance are of the same size.";
 
-         when VC_UC_Alignment                     =>
+         when VC_UC_Align_Overlay                 =>
             return
               "Check that the address within address clause is "
               & "a multiple of the object's alignment.";
+
+         when VC_UC_Align_UC                      =>
+            return
+              "Check that the alignment of the source of the unchecked "
+              & "conversion is a multiple of the alignment of the target.";
 
          when VC_UC_Volatile                      =>
             return
@@ -1708,7 +1714,10 @@ package body VC_Kinds is
              "unchecked conversion target check",
            when VC_UC_Same_Size                     =>
              "unchecked conversion size check",
-           when VC_UC_Alignment                     => "alignment check",
+           when VC_UC_Align_Overlay                 =>
+             "address alignment check",
+           when VC_UC_Align_UC                      =>
+             "unchecked conversion alignment check",
            when VC_UC_Volatile                      =>
              "volatile overlay check",
            when VC_Validity_Check                   => "validity check",
