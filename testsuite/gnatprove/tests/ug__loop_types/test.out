@@ -72,8 +72,8 @@
 
  info: Container_Aggregates annotation proved, in instantiation at loop_types.ads:17
 --> spark-containers-formal-doubly_linked_lists.ads:54:06
-      + when reestablishing invariant on Aggr_Capacity at spark-containers-formal-doubly_linked_lists.ads:1844, in instantiation at loop_types.ads:17
-      + after a call to Append at spark-containers-formal-doubly_linked_lists.ads:865, in instantiation at loop_types.ads:17
+      + when reestablishing invariant on Aggr_Capacity at spark-containers-formal-doubly_linked_lists.ads:1937, in instantiation at loop_types.ads:17
+      + after a call to Append at spark-containers-formal-doubly_linked_lists.ads:902, in instantiation at loop_types.ads:17
 
  info: Container_Aggregates annotation proved, in instantiation at loop_types.ads:17
 --> spark-containers-formal-doubly_linked_lists.ads:54:06
@@ -83,151 +83,151 @@
  info: Container_Aggregates annotation proved, in instantiation at loop_types.ads:17
 --> spark-containers-formal-doubly_linked_lists.ads:54:06
       + when reestablishing invariant on Get at spark-containers-functional-vectors.ads:122, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
-      + after a call to Append at spark-containers-formal-doubly_linked_lists.ads:865, in instantiation at loop_types.ads:17
+      + after a call to Append at spark-containers-formal-doubly_linked_lists.ads:902, in instantiation at loop_types.ads:17
 
  info: Container_Aggregates annotation proved, in instantiation at loop_types.ads:17
 --> spark-containers-formal-doubly_linked_lists.ads:54:06
       + when reestablishing invariant on Last at spark-containers-functional-vectors.ads:118, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
-      + after a call to Append at spark-containers-formal-doubly_linked_lists.ads:865, in instantiation at loop_types.ads:17
+      + after a call to Append at spark-containers-formal-doubly_linked_lists.ads:902, in instantiation at loop_types.ads:17
 
  info: Container_Aggregates annotation proved, in instantiation at loop_types.ads:17
 --> spark-containers-formal-doubly_linked_lists.ads:54:06
-      + when establishing invariant on Aggr_Capacity at spark-containers-formal-doubly_linked_lists.ads:1844, in instantiation at loop_types.ads:17
+      + when establishing invariant on Aggr_Capacity at spark-containers-formal-doubly_linked_lists.ads:1937, in instantiation at loop_types.ads:17
       + after a call to Empty_List at spark-containers-formal-doubly_linked_lists.ads:68, in instantiation at loop_types.ads:17
       + during checks for container aggregates at spark-containers-formal-doubly_linked_lists.ads:54, in instantiation at loop_types.ads:17
 
  info: precondition proved, in instantiation at loop_types.ads:17
---> spark-containers-formal-doubly_linked_lists.ads:406:13
+--> spark-containers-formal-doubly_linked_lists.ads:416:13
       + during checks for quantification at spark-containers-formal-doubly_linked_lists.ads:45, in instantiation at loop_types.ads:17
 
  info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at loop_types.ads:17
---> spark-containers-formal-doubly_linked_lists.ads:447:13
+--> spark-containers-formal-doubly_linked_lists.ads:458:13
 
  info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at loop_types.ads:17
---> spark-containers-formal-doubly_linked_lists.ads:451:13
+--> spark-containers-formal-doubly_linked_lists.ads:462:13
 
  info: dynamic accessibility check proved, in instantiation at loop_types.ads:17
---> spark-containers-formal-doubly_linked_lists.ads:453:08
+--> spark-containers-formal-doubly_linked_lists.ads:464:08
 
  info: overflow check proved, in instantiation at loop_types.ads:17
---> spark-containers-formal-doubly_linked_lists.ads:594:52
+--> spark-containers-formal-doubly_linked_lists.ads:612:52
 
  info: overflow check proved, in instantiation at loop_types.ads:17
---> spark-containers-formal-doubly_linked_lists.ads:739:52
+--> spark-containers-formal-doubly_linked_lists.ads:765:52
 
  info: overflow check proved, in instantiation at loop_types.ads:17
---> spark-containers-formal-doubly_linked_lists.ads:835:52
+--> spark-containers-formal-doubly_linked_lists.ads:869:52
 
  info: precondition proved, in instantiation at loop_types.ads:17
---> spark-containers-formal-doubly_linked_lists.ads:868:58
+--> spark-containers-formal-doubly_linked_lists.ads:905:58
       + during checks for container aggregates at spark-containers-formal-doubly_linked_lists.ads:54, in instantiation at loop_types.ads:17
 
  info: overflow check proved, in instantiation at loop_types.ads:17
---> spark-containers-formal-doubly_linked_lists.ads:906:52
+--> spark-containers-formal-doubly_linked_lists.ads:946:52
 
  info: overflow check proved, in instantiation at loop_types.ads:17
---> spark-containers-formal-doubly_linked_lists.ads:1002:31
+--> spark-containers-formal-doubly_linked_lists.ads:1047:31
 
  info: precondition proved, in instantiation at loop_types.ads:17
---> spark-containers-formal-doubly_linked_lists.ads:1002:42
+--> spark-containers-formal-doubly_linked_lists.ads:1047:42
 
  info: overflow check proved, in instantiation at loop_types.ads:17
---> spark-containers-formal-doubly_linked_lists.ads:1188:46
+--> spark-containers-formal-doubly_linked_lists.ads:1243:46
 
  info: disjoint contract or exit cases proved, in instantiation at loop_types.ads:17
---> spark-containers-formal-doubly_linked_lists.ads:1377:06
+--> spark-containers-formal-doubly_linked_lists.ads:1446:06
 
  info: precondition proved, in instantiation at loop_types.ads:17
---> spark-containers-formal-doubly_linked_lists.ads:1482:13
+--> spark-containers-formal-doubly_linked_lists.ads:1559:13
       + during checks for quantification at spark-containers-formal-doubly_linked_lists.ads:45, in instantiation at loop_types.ads:17
 
  info: precondition proved, in instantiation at loop_types.ads:17
---> spark-containers-formal-doubly_linked_lists.ads:1524:13
+--> spark-containers-formal-doubly_linked_lists.ads:1602:13
       + during checks for quantification at spark-containers-formal-doubly_linked_lists.ads:45, in instantiation at loop_types.ads:17
 
  info: precondition proved, in instantiation at loop_types.ads:17
---> spark-containers-formal-doubly_linked_lists.ads:1533:21
+--> spark-containers-formal-doubly_linked_lists.ads:1611:21
 
  info: precondition proved, in instantiation at loop_types.ads:17
---> spark-containers-formal-doubly_linked_lists.ads:1551:21
+--> spark-containers-formal-doubly_linked_lists.ads:1630:21
 
  info: precondition proved, in instantiation at loop_types.ads:17
---> spark-containers-formal-doubly_linked_lists.ads:1569:21
+--> spark-containers-formal-doubly_linked_lists.ads:1649:21
 
  info: precondition proved, in instantiation at loop_types.ads:17
---> spark-containers-formal-doubly_linked_lists.ads:1586:21
+--> spark-containers-formal-doubly_linked_lists.ads:1667:21
 
  info: precondition proved, in instantiation at loop_types.ads:17
---> spark-containers-formal-doubly_linked_lists.ads:1608:17
+--> spark-containers-formal-doubly_linked_lists.ads:1690:17
 
  info: precondition proved, in instantiation at loop_types.ads:17
---> spark-containers-formal-doubly_linked_lists.ads:1613:28
+--> spark-containers-formal-doubly_linked_lists.ads:1695:28
 
  info: precondition proved, in instantiation at loop_types.ads:17
---> spark-containers-formal-doubly_linked_lists.ads:1662:17
+--> spark-containers-formal-doubly_linked_lists.ads:1747:17
 
  info: precondition proved, in instantiation at loop_types.ads:17
---> spark-containers-formal-doubly_linked_lists.ads:1668:28
+--> spark-containers-formal-doubly_linked_lists.ads:1753:28
 
  info: precondition proved, in instantiation at loop_types.ads:17
---> spark-containers-formal-doubly_linked_lists.ads:1715:13
+--> spark-containers-formal-doubly_linked_lists.ads:1802:13
       + during checks for quantification at spark-containers-formal-doubly_linked_lists.ads:45, in instantiation at loop_types.ads:17
 
  info: implicit aspect Always_Terminates on "Aggr_Capacity" has been proved, subprogram will terminate, in instantiation at loop_types.ads:17
---> spark-containers-formal-doubly_linked_lists.ads:1844:13
+--> spark-containers-formal-doubly_linked_lists.ads:1937:13
 
  info: data dependencies proved, in instantiation at loop_types.ads:17
---> spark-containers-formal-doubly_linked_lists.ads:1848:06
+--> spark-containers-formal-doubly_linked_lists.ads:1941:06
 
  info: implicit aspect Always_Terminates on "Aggr_And_Iter_Model" has been proved, subprogram will terminate, in instantiation at loop_types.ads:17
---> spark-containers-formal-doubly_linked_lists.ads:1852:13
+--> spark-containers-formal-doubly_linked_lists.ads:1945:13
 
  info: precondition proved, in instantiation at loop_types.ads:17
---> spark-containers-formal-doubly_linked_lists.ads:1852:13
+--> spark-containers-formal-doubly_linked_lists.ads:1945:13
       + during checks for quantification at spark-containers-formal-doubly_linked_lists.ads:45, in instantiation at loop_types.ads:17
 
  info: data dependencies proved, in instantiation at loop_types.ads:17
---> spark-containers-formal-doubly_linked_lists.ads:1856:06
+--> spark-containers-formal-doubly_linked_lists.ads:1949:06
 
- info: aspect Always_Terminates on "Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: aspect Always_Terminates on "Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-functional-vectors.ads:35:16
 
  info: aspect Always_Terminates on "Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-functional-vectors.ads:35:16
 
- info: Container_Aggregates annotation proved, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: Container_Aggregates annotation proved, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-functional-vectors.ads:99:06
-      + when establishing invariant on Last at spark-containers-functional-vectors.ads:118, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
-      + after a call to Empty_Sequence at spark-containers-functional-vectors.ads:261, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+      + when establishing invariant on Last at spark-containers-functional-vectors.ads:118, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
+      + after a call to Empty_Sequence at spark-containers-functional-vectors.ads:264, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 
- info: Container_Aggregates annotation proved, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: Container_Aggregates annotation proved, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-functional-vectors.ads:99:06
-      + when reestablishing invariant on Get at spark-containers-functional-vectors.ads:122, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
-      + after a call to Aggr_Append at spark-containers-functional-vectors.ads:562, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+      + when reestablishing invariant on Get at spark-containers-functional-vectors.ads:122, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
+      + after a call to Aggr_Append at spark-containers-functional-vectors.ads:569, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 
- info: Container_Aggregates annotation proved, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: Container_Aggregates annotation proved, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-functional-vectors.ads:99:06
-      + when reestablishing invariant on Last at spark-containers-functional-vectors.ads:118, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
-      + after a call to Aggr_Append at spark-containers-functional-vectors.ads:562, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+      + when reestablishing invariant on Last at spark-containers-functional-vectors.ads:118, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
+      + after a call to Aggr_Append at spark-containers-functional-vectors.ads:569, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 
  info: Container_Aggregates annotation proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-functional-vectors.ads:99:06
       + when establishing invariant on Last at spark-containers-functional-vectors.ads:118, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
-      + after a call to Empty_Sequence at spark-containers-functional-vectors.ads:261, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+      + after a call to Empty_Sequence at spark-containers-functional-vectors.ads:264, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 
  info: Container_Aggregates annotation proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-functional-vectors.ads:99:06
       + when reestablishing invariant on Get at spark-containers-functional-vectors.ads:122, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
-      + after a call to Aggr_Append at spark-containers-functional-vectors.ads:562, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+      + after a call to Aggr_Append at spark-containers-functional-vectors.ads:569, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 
  info: Container_Aggregates annotation proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-functional-vectors.ads:99:06
       + when reestablishing invariant on Last at spark-containers-functional-vectors.ads:118, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
-      + after a call to Aggr_Append at spark-containers-functional-vectors.ads:562, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+      + after a call to Aggr_Append at spark-containers-functional-vectors.ads:569, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 
- info: precondition proved, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: precondition proved, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-functional-vectors.ads:122:13
-      + during checks for quantification at spark-containers-functional-vectors.ads:89, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+      + during checks for quantification at spark-containers-functional-vectors.ads:89, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 
  info: precondition proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-functional-vectors.ads:122:13
@@ -236,540 +236,540 @@
  info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-functional-vectors.ads:142:13
 
- info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-functional-vectors.ads:142:13
 
  info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-functional-vectors.ads:144:09
 
- info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-functional-vectors.ads:144:09
 
- info: precondition proved, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
---> spark-containers-functional-vectors.ads:247:40
+ info: precondition proved, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
+--> spark-containers-functional-vectors.ads:250:40
 
  info: precondition proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
---> spark-containers-functional-vectors.ads:247:40
+--> spark-containers-functional-vectors.ads:250:40
 
- info: overflow check proved, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
---> spark-containers-functional-vectors.ads:309:53
+ info: overflow check proved, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
+--> spark-containers-functional-vectors.ads:312:53
 
  info: overflow check proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
---> spark-containers-functional-vectors.ads:309:53
+--> spark-containers-functional-vectors.ads:312:53
 
- info: implicit aspect Always_Terminates on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
---> spark-containers-functional-vectors.ads:357:13
+ info: implicit aspect Always_Terminates on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
+--> spark-containers-functional-vectors.ads:365:13
 
  info: implicit aspect Always_Terminates on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
---> spark-containers-functional-vectors.ads:357:13
+--> spark-containers-functional-vectors.ads:365:13
 
- info: precondition proved, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
---> spark-containers-functional-vectors.ads:399:13
-      + during checks for quantification at spark-containers-functional-vectors.ads:89, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
-
- info: precondition proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
---> spark-containers-functional-vectors.ads:399:13
-      + during checks for quantification at spark-containers-functional-vectors.ads:89, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
-
- info: precondition proved, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
---> spark-containers-functional-vectors.ads:402:13
-      + during checks for quantification at spark-containers-functional-vectors.ads:89, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: precondition proved, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
+--> spark-containers-functional-vectors.ads:407:13
+      + during checks for quantification at spark-containers-functional-vectors.ads:89, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 
  info: precondition proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
---> spark-containers-functional-vectors.ads:402:13
+--> spark-containers-functional-vectors.ads:407:13
       + during checks for quantification at spark-containers-functional-vectors.ads:89, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 
- info: precondition proved, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
---> spark-containers-functional-vectors.ads:412:13
-      + during checks for quantification at spark-containers-functional-vectors.ads:89, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: precondition proved, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
+--> spark-containers-functional-vectors.ads:410:13
+      + during checks for quantification at spark-containers-functional-vectors.ads:89, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 
  info: precondition proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
---> spark-containers-functional-vectors.ads:412:13
+--> spark-containers-functional-vectors.ads:410:13
       + during checks for quantification at spark-containers-functional-vectors.ads:89, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 
- info: predicate check proved, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
---> spark-containers-functional-vectors.ads:539:55
+ info: precondition proved, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
+--> spark-containers-functional-vectors.ads:420:13
+      + during checks for quantification at spark-containers-functional-vectors.ads:89, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
+
+ info: precondition proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+--> spark-containers-functional-vectors.ads:420:13
+      + during checks for quantification at spark-containers-functional-vectors.ads:89, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+
+ info: predicate check proved, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
+--> spark-containers-functional-vectors.ads:547:55
 
  info: predicate check proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
---> spark-containers-functional-vectors.ads:539:55
+--> spark-containers-functional-vectors.ads:547:55
 
- info: predicate check proved, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
---> spark-containers-functional-vectors.ads:540:29
+ info: predicate check proved, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
+--> spark-containers-functional-vectors.ads:548:29
 
  info: predicate check proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
---> spark-containers-functional-vectors.ads:540:29
+--> spark-containers-functional-vectors.ads:548:29
 
- info: precondition proved, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
---> spark-containers-functional-vectors.ads:565:56
-      + during checks for container aggregates at spark-containers-functional-vectors.ads:99, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: precondition proved, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
+--> spark-containers-functional-vectors.ads:572:56
+      + during checks for container aggregates at spark-containers-functional-vectors.ads:99, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 
  info: precondition proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
---> spark-containers-functional-vectors.ads:565:56
+--> spark-containers-functional-vectors.ads:572:56
       + during checks for container aggregates at spark-containers-functional-vectors.ads:99, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 
  info: aspect Always_Terminates on "Param_Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:90, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:39:19
 
- info: aspect Always_Terminates on "Param_Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-vectors.ads:123, in instantiation at loop_types.ads:14
+ info: aspect Always_Terminates on "Param_Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-vectors.ads:124, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.ads:39:19
 
- info: aspect Always_Terminates on "Param_Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: aspect Always_Terminates on "Param_Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:544, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:39:19
 
- info: aspect Always_Terminates on "Param_Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: aspect Always_Terminates on "Param_Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:553, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:39:19
 
- info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:553, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:45:17
 
  info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:90, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:45:17
 
- info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+ info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:45:17
 
- info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-vectors.ads:123, in instantiation at loop_types.ads:14
+ info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-vectors.ads:124, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.ads:45:17
 
- info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:544, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:45:17
 
- info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.ads:45:17
 
- info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:553, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:46:12
 
  info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:90, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:46:12
 
- info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+ info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:46:12
 
- info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:123, in instantiation at loop_types.ads:14
+ info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:124, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.ads:46:12
 
- info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:544, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:46:12
 
- info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.ads:46:12
 
- info: postcondition proved, in instantiation at spark-containers-formal-vectors.ads:123, in instantiation at loop_types.ads:14
+ info: postcondition proved, in instantiation at spark-containers-formal-vectors.ads:124, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.ads:46:36
 
- info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.ads:46:36
 
  info: postcondition proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:90, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:46:36
 
- info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+ info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:46:36
 
- info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:544, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:46:36
 
- info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:553, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:46:36
 
- info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.ads:48:17
 
- info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:553, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:48:17
 
  info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:90, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:48:17
 
- info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+ info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:48:17
 
- info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-vectors.ads:123, in instantiation at loop_types.ads:14
+ info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-vectors.ads:124, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.ads:48:17
 
- info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:544, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:48:17
 
- info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.ads:49:12
 
- info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:553, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:49:12
 
  info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:90, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:49:12
 
- info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+ info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:49:12
 
- info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:123, in instantiation at loop_types.ads:14
+ info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:124, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.ads:49:12
 
- info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:544, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:49:12
 
- info: postcondition proved, in instantiation at spark-containers-formal-vectors.ads:123, in instantiation at loop_types.ads:14
+ info: postcondition proved, in instantiation at spark-containers-formal-vectors.ads:124, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.ads:49:54
 
- info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.ads:49:54
 
  info: postcondition proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:90, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:49:54
 
- info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+ info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:49:54
 
- info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:544, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:49:54
 
- info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:553, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:49:54
 
- info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:544, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:51:17
 
- info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.ads:51:17
 
- info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:553, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:51:17
 
  info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:90, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:51:17
 
- info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+ info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:51:17
 
- info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-vectors.ads:123, in instantiation at loop_types.ads:14
+ info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-vectors.ads:124, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.ads:51:17
 
- info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:544, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:52:12
 
- info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.ads:52:12
 
- info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:553, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:52:12
 
  info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:90, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:52:12
 
- info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+ info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:52:12
 
- info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:123, in instantiation at loop_types.ads:14
+ info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:124, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.ads:52:12
 
- info: postcondition proved, in instantiation at spark-containers-formal-vectors.ads:123, in instantiation at loop_types.ads:14
+ info: postcondition proved, in instantiation at spark-containers-formal-vectors.ads:124, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.ads:52:68
 
- info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.ads:52:68
 
  info: postcondition proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:90, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:52:68
 
- info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+ info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:52:68
 
- info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:544, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:52:68
 
- info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:553, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:52:68
 
- info: aspect Always_Terminates on "Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+ info: aspect Always_Terminates on "Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:57:17
 
- info: aspect Always_Terminates on "Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-vectors.ads:123, in instantiation at loop_types.ads:14
+ info: aspect Always_Terminates on "Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-vectors.ads:124, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.ads:57:17
 
- info: aspect Always_Terminates on "Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: aspect Always_Terminates on "Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:544, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:57:17
 
- info: aspect Always_Terminates on "Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: aspect Always_Terminates on "Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.ads:57:17
 
- info: aspect Always_Terminates on "Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: aspect Always_Terminates on "Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:553, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:57:17
 
  info: aspect Always_Terminates on "Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:90, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:57:17
 
- info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+ info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:59:09
 
- info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:123, in instantiation at loop_types.ads:14
+ info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:124, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.ads:59:09
 
- info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:544, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:59:09
 
- info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.ads:59:09
 
- info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:553, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:59:09
 
  info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:90, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:59:09
 
- info: postcondition proved, in instantiation at spark-containers-formal-vectors.ads:123, in instantiation at loop_types.ads:14
+ info: postcondition proved, in instantiation at spark-containers-formal-vectors.ads:124, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.ads:61:19
 
- info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.ads:61:19
 
  info: postcondition proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:90, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:61:19
 
- info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+ info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:61:19
 
- info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:544, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:61:19
 
- info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:553, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:61:19
 
- info: aspect Always_Terminates on "Param_Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: aspect Always_Terminates on "Param_Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:563, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:92:19
 
- info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:381, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.ads:98:17
 
- info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:563, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:98:17
 
- info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:381, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+ info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:98:17
 
- info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:381, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.ads:99:12
 
- info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:563, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:99:12
 
- info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:381, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+ info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:99:12
 
- info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:381, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.ads:99:50
 
- info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:381, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+ info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:99:50
 
- info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:563, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:99:50
 
- info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:381, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+ info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:104:17
 
- info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:381, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.ads:104:17
 
- info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:563, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:104:17
 
- info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:381, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+ info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:105:12
 
- info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:381, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.ads:105:12
 
- info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:563, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:105:12
 
- info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:381, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.ads:105:36
 
- info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:381, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+ info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:105:36
 
- info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:563, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:105:36
 
- info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:381, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+ info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:107:17
 
- info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:381, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.ads:107:17
 
- info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:563, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:107:17
 
- info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:381, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+ info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:108:12
 
- info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:381, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.ads:108:12
 
- info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:563, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:108:12
 
- info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:381, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.ads:108:54
 
- info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:381, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+ info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:108:54
 
- info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:563, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:108:54
 
- info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:381, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+ info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:110:17
 
- info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:381, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.ads:110:17
 
- info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:563, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:110:17
 
- info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:381, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+ info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:111:12
 
- info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:381, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.ads:111:12
 
- info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:563, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:111:12
 
- info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:381, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.ads:111:68
 
- info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:381, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+ info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:111:68
 
- info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:563, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:111:68
 
  info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:99, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:131:17
 
- info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-vectors.ads:132, in instantiation at loop_types.ads:14
+ info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-vectors.ads:133, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.ads:131:17
 
  info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:99, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:132:12
 
- info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:132, in instantiation at loop_types.ads:14
+ info: data dependencies proved, in instantiation at spark-containers-formal-vectors.ads:133, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.ads:132:12
 
- info: postcondition proved, in instantiation at spark-containers-formal-vectors.ads:132, in instantiation at loop_types.ads:14
+ info: postcondition proved, in instantiation at spark-containers-formal-vectors.ads:133, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.ads:132:50
 
  info: postcondition proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:99, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.ads:132:50
 
- info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-functional-maps.ads:36:16
 
- info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-functional-maps.ads:39:16
 
- info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-functional-maps.ads:42:16
 
- info: aspect Always_Terminates on "Equivalent_Keys_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: aspect Always_Terminates on "Equivalent_Keys_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-functional-maps.ads:49:16
 
- info: aspect Always_Terminates on "Equivalent_Keys_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: aspect Always_Terminates on "Equivalent_Keys_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-functional-maps.ads:52:16
 
- info: aspect Always_Terminates on "Equivalent_Keys_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: aspect Always_Terminates on "Equivalent_Keys_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-functional-maps.ads:55:16
 
- info: aspect Always_Terminates on "Equivalent_Elements_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: aspect Always_Terminates on "Equivalent_Elements_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-functional-maps.ads:62:16
 
- info: aspect Always_Terminates on "Equivalent_Elements_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: aspect Always_Terminates on "Equivalent_Elements_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-functional-maps.ads:65:16
 
- info: aspect Always_Terminates on "Equivalent_Elements_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: aspect Always_Terminates on "Equivalent_Elements_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-functional-maps.ads:68:16
 
- info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-functional-maps.ads:79:16
 
- info: Container_Aggregates annotation proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: Container_Aggregates annotation proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-functional-maps.ads:105:06
-      + when establishing invariant on Has_Key at spark-containers-functional-maps.ads:131, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
-      + after a call to Empty_Map at spark-containers-functional-maps.ads:297, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+      + when establishing invariant on Has_Key at spark-containers-functional-maps.ads:131, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
+      + after a call to Empty_Map at spark-containers-functional-maps.ads:297, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 
- info: Container_Aggregates annotation proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: Container_Aggregates annotation proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-functional-maps.ads:105:06
-      + when reestablishing invariant on Get at spark-containers-functional-maps.ads:148, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
-      + after a call to Aggr_Include at spark-containers-functional-maps.ads:610, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+      + when reestablishing invariant on Get at spark-containers-functional-maps.ads:148, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
+      + after a call to Aggr_Include at spark-containers-functional-maps.ads:612, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 
- info: Container_Aggregates annotation proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: Container_Aggregates annotation proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-functional-maps.ads:105:06
-      + when reestablishing invariant on Has_Key at spark-containers-functional-maps.ads:131, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
-      + after a call to Aggr_Include at spark-containers-functional-maps.ads:610, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+      + when reestablishing invariant on Has_Key at spark-containers-functional-maps.ads:131, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
+      + after a call to Aggr_Include at spark-containers-functional-maps.ads:612, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 
- info: Container_Aggregates annotation proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: Container_Aggregates annotation proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-functional-maps.ads:105:06
-      + when establishing invariant on Length at spark-containers-functional-maps.ads:178, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
-      + after a call to Empty_Map at spark-containers-functional-maps.ads:297, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+      + when establishing invariant on Length at spark-containers-functional-maps.ads:178, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
+      + after a call to Empty_Map at spark-containers-functional-maps.ads:297, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 
- info: Container_Aggregates annotation proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: Container_Aggregates annotation proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-functional-maps.ads:105:06
-      + when reestablishing invariant on Length at spark-containers-functional-maps.ads:178, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
-      + after a call to Aggr_Include at spark-containers-functional-maps.ads:610, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+      + when reestablishing invariant on Length at spark-containers-functional-maps.ads:178, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
+      + after a call to Aggr_Include at spark-containers-functional-maps.ads:612, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 
- info: precondition proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: precondition proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-functional-maps.ads:131:13
-      + during checks for quantification at spark-containers-functional-maps.ads:95, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+      + during checks for quantification at spark-containers-functional-maps.ads:95, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 
- info: precondition proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
---> spark-containers-functional-maps.ads:407:13
-      + during checks for quantification at spark-containers-functional-maps.ads:368, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: precondition proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
+--> spark-containers-functional-maps.ads:409:13
+      + during checks for quantification at spark-containers-functional-maps.ads:370, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 
- info: precondition proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
---> spark-containers-functional-maps.ads:417:13
-      + during checks for quantification at spark-containers-functional-maps.ads:368, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: precondition proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
+--> spark-containers-functional-maps.ads:419:13
+      + during checks for quantification at spark-containers-functional-maps.ads:370, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 
- info: precondition proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
---> spark-containers-functional-maps.ads:426:13
-      + during checks for quantification at spark-containers-functional-maps.ads:368, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: precondition proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
+--> spark-containers-functional-maps.ads:428:13
+      + during checks for quantification at spark-containers-functional-maps.ads:370, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 
- info: precondition proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
---> spark-containers-functional-maps.ads:440:13
-      + during checks for quantification at spark-containers-functional-maps.ads:368, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: precondition proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
+--> spark-containers-functional-maps.ads:442:13
+      + during checks for quantification at spark-containers-functional-maps.ads:370, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 
- info: implicit aspect Always_Terminates on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
---> spark-containers-functional-maps.ads:527:13
-
- info: implicit aspect Always_Terminates on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: implicit aspect Always_Terminates on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-functional-maps.ads:529:13
 
- info: precondition proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
---> spark-containers-functional-maps.ads:579:13
-      + during checks for quantification at spark-containers-functional-maps.ads:95, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: implicit aspect Always_Terminates on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
+--> spark-containers-functional-maps.ads:531:13
 
- info: precondition proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
---> spark-containers-functional-maps.ads:582:13
-      + during checks for quantification at spark-containers-functional-maps.ads:95, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: precondition proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
+--> spark-containers-functional-maps.ads:581:13
+      + during checks for quantification at spark-containers-functional-maps.ads:95, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 
- info: precondition proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
---> spark-containers-functional-maps.ads:586:13
-      + during checks for quantification at spark-containers-functional-maps.ads:95, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: precondition proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
+--> spark-containers-functional-maps.ads:584:13
+      + during checks for quantification at spark-containers-functional-maps.ads:95, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 
- info: precondition proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
---> spark-containers-functional-maps.ads:592:13
-      + during checks for quantification at spark-containers-functional-maps.ads:95, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: precondition proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
+--> spark-containers-functional-maps.ads:588:13
+      + during checks for quantification at spark-containers-functional-maps.ads:95, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 
- info: implicit aspect Always_Terminates on "Aggr_Eq_Keys" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
---> spark-containers-functional-maps.ads:602:13
+ info: precondition proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
+--> spark-containers-functional-maps.ads:594:13
+      + during checks for quantification at spark-containers-functional-maps.ads:95, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 
- info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
---> spark-containers-functional-maps.ads:605:06
+ info: implicit aspect Always_Terminates on "Aggr_Eq_Keys" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
+--> spark-containers-functional-maps.ads:604:13
 
- info: precondition proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
---> spark-containers-functional-maps.ads:614:39
-      + during checks for container aggregates at spark-containers-functional-maps.ads:105, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
+--> spark-containers-functional-maps.ads:607:06
+
+ info: precondition proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
+--> spark-containers-functional-maps.ads:616:39
+      + during checks for container aggregates at spark-containers-functional-maps.ads:105, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 
  info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at loop_types.ads:14
 --> spark-containers-formal-vectors.ads:28:16
@@ -781,262 +781,262 @@
 --> spark-containers-formal-vectors.ads:34:16
 
  info: Container_Aggregates annotation proved, in instantiation at loop_types.ads:14
---> spark-containers-formal-vectors.ads:81:06
-      + when reestablishing invariant on Aggr_Capacity at spark-containers-formal-vectors.ads:1125, in instantiation at loop_types.ads:14
-      + after a call to Append at spark-containers-formal-vectors.ads:663, in instantiation at loop_types.ads:14
+--> spark-containers-formal-vectors.ads:82:06
+      + when reestablishing invariant on Aggr_Capacity at spark-containers-formal-vectors.ads:1171, in instantiation at loop_types.ads:14
+      + after a call to Append at spark-containers-formal-vectors.ads:692, in instantiation at loop_types.ads:14
 
  info: Container_Aggregates annotation proved, in instantiation at loop_types.ads:14
---> spark-containers-formal-vectors.ads:81:06
-      + when establishing invariant on Last at spark-containers-functional-vectors.ads:118, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
-      + after a call to Empty_Vector at spark-containers-formal-vectors.ads:274, in instantiation at loop_types.ads:14
+--> spark-containers-formal-vectors.ads:82:06
+      + when establishing invariant on Last at spark-containers-functional-vectors.ads:118, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
+      + after a call to Empty_Vector at spark-containers-formal-vectors.ads:278, in instantiation at loop_types.ads:14
 
  info: Container_Aggregates annotation proved, in instantiation at loop_types.ads:14
---> spark-containers-formal-vectors.ads:81:06
-      + when reestablishing invariant on Get at spark-containers-functional-vectors.ads:122, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
-      + after a call to Append at spark-containers-formal-vectors.ads:663, in instantiation at loop_types.ads:14
+--> spark-containers-formal-vectors.ads:82:06
+      + when reestablishing invariant on Get at spark-containers-functional-vectors.ads:122, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
+      + after a call to Append at spark-containers-formal-vectors.ads:692, in instantiation at loop_types.ads:14
 
  info: Container_Aggregates annotation proved, in instantiation at loop_types.ads:14
---> spark-containers-formal-vectors.ads:81:06
-      + when reestablishing invariant on Last at spark-containers-functional-vectors.ads:118, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
-      + after a call to Append at spark-containers-formal-vectors.ads:663, in instantiation at loop_types.ads:14
+--> spark-containers-formal-vectors.ads:82:06
+      + when reestablishing invariant on Last at spark-containers-functional-vectors.ads:118, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
+      + after a call to Append at spark-containers-formal-vectors.ads:692, in instantiation at loop_types.ads:14
 
  info: Container_Aggregates annotation proved, in instantiation at loop_types.ads:14
---> spark-containers-formal-vectors.ads:81:06
-      + when establishing invariant on Aggr_Capacity at spark-containers-formal-vectors.ads:1125, in instantiation at loop_types.ads:14
-      + after a call to Empty_Vector at spark-containers-formal-vectors.ads:274, in instantiation at loop_types.ads:14
-      + during checks for container aggregates at spark-containers-formal-vectors.ads:81, in instantiation at loop_types.ads:14
+--> spark-containers-formal-vectors.ads:82:06
+      + when establishing invariant on Aggr_Capacity at spark-containers-formal-vectors.ads:1171, in instantiation at loop_types.ads:14
+      + after a call to Empty_Vector at spark-containers-formal-vectors.ads:278, in instantiation at loop_types.ads:14
+      + during checks for container aggregates at spark-containers-formal-vectors.ads:82, in instantiation at loop_types.ads:14
 
  info: precondition proved, in instantiation at loop_types.ads:14
---> spark-containers-formal-vectors.ads:277:48
-      + during checks for container aggregates at spark-containers-formal-vectors.ads:81, in instantiation at loop_types.ads:14
+--> spark-containers-formal-vectors.ads:281:48
+      + during checks for container aggregates at spark-containers-formal-vectors.ads:82, in instantiation at loop_types.ads:14
 
  info: precondition proved, in instantiation at loop_types.ads:14
---> spark-containers-formal-vectors.ads:353:13
-      + during checks for quantification at spark-containers-formal-vectors.ads:71, in instantiation at loop_types.ads:14
+--> spark-containers-formal-vectors.ads:359:13
+      + during checks for quantification at spark-containers-formal-vectors.ads:72, in instantiation at loop_types.ads:14
 
  info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at loop_types.ads:14
---> spark-containers-formal-vectors.ads:388:13
+--> spark-containers-formal-vectors.ads:396:13
 
  info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at loop_types.ads:14
---> spark-containers-formal-vectors.ads:392:13
+--> spark-containers-formal-vectors.ads:400:13
 
  info: dynamic accessibility check proved, in instantiation at loop_types.ads:14
---> spark-containers-formal-vectors.ads:394:08
+--> spark-containers-formal-vectors.ads:402:08
 
  info: precondition proved, in instantiation at loop_types.ads:14
---> spark-containers-formal-vectors.ads:667:50
-      + during checks for container aggregates at spark-containers-formal-vectors.ads:81, in instantiation at loop_types.ads:14
+--> spark-containers-formal-vectors.ads:696:50
+      + during checks for container aggregates at spark-containers-formal-vectors.ads:82, in instantiation at loop_types.ads:14
 
  info: range check proved, in instantiation at loop_types.ads:14
---> spark-containers-formal-vectors.ads:760:60
+--> spark-containers-formal-vectors.ads:794:60
 
  info: precondition proved, in instantiation at loop_types.ads:14
---> spark-containers-formal-vectors.ads:895:25
+--> spark-containers-formal-vectors.ads:933:19
 
  info: precondition proved, in instantiation at loop_types.ads:14
---> spark-containers-formal-vectors.ads:930:17
+--> spark-containers-formal-vectors.ads:969:17
 
  info: precondition proved, in instantiation at loop_types.ads:14
---> spark-containers-formal-vectors.ads:1102:13
-      + during checks for quantification at spark-containers-formal-vectors.ads:71, in instantiation at loop_types.ads:14
+--> spark-containers-formal-vectors.ads:1148:13
+      + during checks for quantification at spark-containers-formal-vectors.ads:72, in instantiation at loop_types.ads:14
 
  info: precondition proved, in instantiation at loop_types.ads:14
---> spark-containers-formal-vectors.ads:1105:13
-      + during checks for quantification at spark-containers-formal-vectors.ads:71, in instantiation at loop_types.ads:14
+--> spark-containers-formal-vectors.ads:1151:13
+      + during checks for quantification at spark-containers-formal-vectors.ads:72, in instantiation at loop_types.ads:14
 
  info: precondition proved, in instantiation at loop_types.ads:14
---> spark-containers-formal-vectors.ads:1115:13
-      + during checks for quantification at spark-containers-formal-vectors.ads:71, in instantiation at loop_types.ads:14
+--> spark-containers-formal-vectors.ads:1161:13
+      + during checks for quantification at spark-containers-formal-vectors.ads:72, in instantiation at loop_types.ads:14
 
  info: implicit aspect Always_Terminates on "Aggr_Capacity" has been proved, subprogram will terminate, in instantiation at loop_types.ads:14
---> spark-containers-formal-vectors.ads:1125:13
+--> spark-containers-formal-vectors.ads:1171:13
 
  info: data dependencies proved, in instantiation at loop_types.ads:14
---> spark-containers-formal-vectors.ads:1129:06
+--> spark-containers-formal-vectors.ads:1175:06
 
  info: implicit aspect Always_Terminates on "Aggr_And_Iter_Model" has been proved, subprogram will terminate, in instantiation at loop_types.ads:14
---> spark-containers-formal-vectors.ads:1133:13
+--> spark-containers-formal-vectors.ads:1179:13
 
  info: precondition proved, in instantiation at loop_types.ads:14
---> spark-containers-formal-vectors.ads:1133:13
-      + during checks for quantification at spark-containers-formal-vectors.ads:71, in instantiation at loop_types.ads:14
+--> spark-containers-formal-vectors.ads:1179:13
+      + during checks for quantification at spark-containers-formal-vectors.ads:72, in instantiation at loop_types.ads:14
 
  info: data dependencies proved, in instantiation at loop_types.ads:14
---> spark-containers-formal-vectors.ads:1137:06
+--> spark-containers-formal-vectors.ads:1183:06
 
- info: precondition proved, in instantiation at spark-containers-formal-vectors.ads:123, in instantiation at loop_types.ads:14
+ info: precondition proved, in instantiation at spark-containers-formal-vectors.ads:124, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.adb:33:13
 
- info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.adb:33:13
 
  info: precondition proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:90, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.adb:33:13
 
- info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+ info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.adb:33:13
 
- info: precondition proved, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: precondition proved, in instantiation at spark-containers-functional-maps.ads:544, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.adb:33:13
 
- info: precondition proved, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: precondition proved, in instantiation at spark-containers-functional-maps.ads:553, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.adb:33:13
 
- info: precondition proved, in instantiation at spark-containers-formal-vectors.ads:123, in instantiation at loop_types.ads:14
+ info: precondition proved, in instantiation at spark-containers-formal-vectors.ads:124, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.adb:46:13
 
- info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.adb:46:13
 
  info: precondition proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:90, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.adb:46:13
 
- info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+ info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.adb:46:13
 
- info: precondition proved, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: precondition proved, in instantiation at spark-containers-functional-maps.ads:544, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.adb:46:13
 
- info: precondition proved, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: precondition proved, in instantiation at spark-containers-functional-maps.ads:553, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.adb:46:13
 
- info: precondition proved, in instantiation at spark-containers-formal-vectors.ads:123, in instantiation at loop_types.ads:14
+ info: precondition proved, in instantiation at spark-containers-formal-vectors.ads:124, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.adb:49:13
 
- info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.adb:49:13
 
  info: precondition proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:90, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.adb:49:13
 
- info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+ info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.adb:49:13
 
- info: precondition proved, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: precondition proved, in instantiation at spark-containers-functional-maps.ads:544, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.adb:49:13
 
- info: precondition proved, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: precondition proved, in instantiation at spark-containers-functional-maps.ads:553, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.adb:49:13
 
- info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.adb:53:13
 
- info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+ info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.adb:53:13
 
- info: precondition proved, in instantiation at spark-containers-formal-vectors.ads:123, in instantiation at loop_types.ads:14
+ info: precondition proved, in instantiation at spark-containers-formal-vectors.ads:124, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.adb:64:13
 
- info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.adb:64:13
 
  info: precondition proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:90, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.adb:64:13
 
- info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+ info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.adb:64:13
 
- info: precondition proved, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: precondition proved, in instantiation at spark-containers-functional-maps.ads:544, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.adb:64:13
 
- info: precondition proved, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: precondition proved, in instantiation at spark-containers-functional-maps.ads:553, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.adb:64:13
 
- info: precondition proved, in instantiation at spark-containers-formal-vectors.ads:123, in instantiation at loop_types.ads:14
+ info: precondition proved, in instantiation at spark-containers-formal-vectors.ads:124, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.adb:65:13
 
- info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.adb:65:13
 
  info: precondition proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:90, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.adb:65:13
 
- info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+ info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.adb:65:13
 
- info: precondition proved, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: precondition proved, in instantiation at spark-containers-functional-maps.ads:544, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.adb:65:13
 
- info: precondition proved, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: precondition proved, in instantiation at spark-containers-functional-maps.ads:553, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.adb:65:13
 
- info: precondition proved, in instantiation at spark-containers-formal-vectors.ads:123, in instantiation at loop_types.ads:14
+ info: precondition proved, in instantiation at spark-containers-formal-vectors.ads:124, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.adb:66:13
 
- info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.adb:66:13
 
  info: precondition proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:90, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.adb:66:13
 
- info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+ info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.adb:66:13
 
- info: precondition proved, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: precondition proved, in instantiation at spark-containers-functional-maps.ads:544, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.adb:66:13
 
- info: precondition proved, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: precondition proved, in instantiation at spark-containers-functional-maps.ads:553, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.adb:66:13
 
- info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.adb:68:13
 
- info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:370, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+ info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.adb:68:13
 
- info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:381, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.adb:97:10
 
- info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:381, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+ info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.adb:97:10
 
- info: precondition proved, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at spark-containers-formal-doubly_linked_lists.ads:217, in instantiation at loop_types.ads:17
+ info: precondition proved, in instantiation at spark-containers-functional-maps.ads:563, in instantiation at spark-containers-formal-doubly_linked_lists.ads:220, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.adb:97:10
 
- info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:381, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.adb:102:10
 
- info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:381, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+ info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.adb:102:10
 
- info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:381, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.adb:112:13
 
- info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:381, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+ info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.adb:112:13
 
- info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:381, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.adb:115:13
 
- info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:381, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+ info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.adb:115:13
 
- info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:381, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.adb:119:10
 
- info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:381, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+ info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.adb:119:10
 
- info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:381, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.adb:129:13
 
- info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:381, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+ info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.adb:129:13
 
- info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:381, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.adb:130:13
 
- info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:381, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+ info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.adb:130:13
 
- info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:381, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.adb:131:13
 
- info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:381, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+ info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.adb:131:13
 
- info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:381, in instantiation at spark-containers-formal-vectors.ads:143, in instantiation at loop_types.ads:14
+ info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-vectors.ads:144, in instantiation at loop_types.ads:14
 --> spark-containers-parameter_checks.adb:133:10
 
- info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:381, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
+ info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-doubly_linked_lists.ads:112, in instantiation at loop_types.ads:17
 --> spark-containers-parameter_checks.adb:133:10

@@ -113,13 +113,13 @@ red_black_trees.ads:14:04: warning: function contract might not be available on 
 red_black_trees.ads:14:04: warning: function contract might not be available on recursive calls [contracts-recursive]
 red_black_trees.ads:14:04: warning: function contract might not be available on recursive calls [contracts-recursive]
 red_black_trees.ads:14:04: warning: function contract might not be available on recursive calls [contracts-recursive]
-red_black_trees.ads:14:04: warning: in instantiation at spark-containers-functional-trees.ads:103
-red_black_trees.ads:14:04: warning: in instantiation at spark-containers-functional-trees.ads:111
-red_black_trees.ads:14:04: warning: in instantiation at spark-containers-functional-trees.ads:123
-red_black_trees.ads:14:04: warning: in instantiation at spark-containers-functional-trees.ads:137
-red_black_trees.ads:14:04: warning: in instantiation at spark-containers-functional-trees.ads:230
+red_black_trees.ads:14:04: warning: in instantiation at spark-containers-functional-trees.ads:105
+red_black_trees.ads:14:04: warning: in instantiation at spark-containers-functional-trees.ads:113
+red_black_trees.ads:14:04: warning: in instantiation at spark-containers-functional-trees.ads:125
+red_black_trees.ads:14:04: warning: in instantiation at spark-containers-functional-trees.ads:140
+red_black_trees.ads:14:04: warning: in instantiation at spark-containers-functional-trees.ads:233
 red_black_trees.ads:14:04: warning: in instantiation at spark-containers-functional-trees.ads:78
-red_black_trees.ads:14:04: warning: in instantiation at spark-containers-functional-trees.ads:95
+red_black_trees.ads:14:04: warning: in instantiation at spark-containers-functional-trees.ads:97
 red_black_trees.ads:14:04: warning: precondition is statically False [precondition-statically-false]
 red_black_trees.ads:14:04: warning: precondition is statically False [precondition-statically-false]
 red_black_trees.ads:14:04: warning: precondition is statically False [precondition-statically-false]
