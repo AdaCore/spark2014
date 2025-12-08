@@ -169,7 +169,8 @@ package Flow.Analysis is
 
    procedure Check_Ghost_Calls_Policy (FA : in out Flow_Analysis_Graphs);
    --  Check for ignored ghost calls to subprograms with checked ghost global
-   --  outputs; SPARK RM 6.9(27).
+   --  outputs; also, handle similar rule for a assertion-level-dependency; see
+   --  SPARK RM 6.9(27) for both rules.
 
    procedure Check_Ghost_Subprogram_Outputs (FA : in out Flow_Analysis_Graphs)
    with Pre => FA.Kind = Kind_Subprogram;
