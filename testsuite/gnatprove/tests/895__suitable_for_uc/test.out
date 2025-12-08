@@ -10,15 +10,15 @@ test.adb:11:07: info: object is suitable for aliasing via address clause (Trivia
 test.adb:11:07: info: type is suitable as source for unchecked conversion (Trivial)
 test.adb:11:07: warning: imprecise handling of overlay (type is unsuitable as source for unchecked conversion) [imprecise-overlay]
 test.adb:11:44: high: type is unsuitable as a source for unchecked conversion [possible explanation: type Nat_Array doesn't have a Size representation clause or aspect; type Nat_Array might have unused bits that are not modelled in SPARK]
-test.adb:11:44: high: types of aliased objects do not have the same size [possible explanation: type Nat_Array doesn't have aliased components]
 test.adb:11:44: info: object is suitable for aliasing via address clause (Trivial)
+test.adb:11:44: info: types of aliased objects have the same size (CVC5: 1 VC)
 test.adb:12:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: Y must be aliased for its alignment to be known] [possible fix: overlaying object should have an Alignment representation clause]
 test.adb:12:07: high: type is unsuitable as a source for unchecked conversion [possible explanation: type Nat_Array doesn't have a Size representation clause or aspect; type Nat_Array might have unused bits that are not modelled in SPARK]
 test.adb:12:07: info: object is suitable for aliasing via address clause (Trivial)
 test.adb:12:07: warning: imprecise handling of overlay (types in unchecked conversion do not have the same size) [imprecise-overlay]
-test.adb:12:46: high: types of aliased objects do not have the same size [possible explanation: type Nat_Array doesn't have aliased components]
 test.adb:12:46: info: object is suitable for aliasing via address clause (Trivial)
 test.adb:12:46: info: type is suitable as source for unchecked conversion (Trivial)
+test.adb:12:46: info: types of aliased objects have the same size (CVC5: 1 VC)
 test.adb:19:13: high: types used for unchecked conversion do not have the same size [possible explanation: type Nat_Array doesn't have a Size representation clause or aspect]
 test.adb:19:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 test.adb:19:13: warning: imprecise handling of Unchecked_Conversion (types in unchecked conversion do not have the same size) [imprecise-unchecked-conversion]

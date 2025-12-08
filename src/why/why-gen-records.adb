@@ -1820,6 +1820,49 @@ package body Why.Gen.Records is
                    (Name => To_Local (E_Symb (E, WNE_Attr_Alignment)),
                     Kind => EW_Axdep_Func)));
 
+         --  Size of objects is non-negative
+
+         if Has_Discriminants (E) and then not Is_Constrained (E) then
+            declare
+               Discr_Id : constant W_Identifier_Id :=
+                 New_Identifier
+                   (Domain => EW_Term,
+                    Symb   => NID ("discr"),
+                    Typ    =>
+                      (if E = Root_Retysp (E)
+                       then New_Named_Type (To_Name (WNE_Rec_Split_Discrs))
+                       else Field_Type_For_Discriminants (E)));
+
+               Size_Of_Object_Fun : constant W_Expr_Id :=
+                 New_Call
+                   (Name   => To_Local (E_Symb (E, WNE_Attr_Size_Of_Object)),
+                    Domain => EW_Term,
+                    Args   => (1 => +Discr_Id),
+                    Typ    => EW_Int_Type);
+
+               Size_Of_Object_Axiom : constant W_Pred_Id :=
+                 +New_Comparison
+                    (Symbol => Int_Infix_Ge,
+                     Left   => Size_Of_Object_Fun,
+                     Right  => Zero,
+                     Domain => EW_Term);
+            begin
+               Emit
+                 (Th,
+                  New_Guarded_Axiom
+                    (Ada_Node => E,
+                     Name     => NID ("size__of__object_axiom"),
+                     Binders  =>
+                       Binder_Array'(1 => (B_Name => Discr_Id, others => <>)),
+                     Def      => Size_Of_Object_Axiom,
+                     Dep      =>
+                       New_Axiom_Dep
+                         (Name =>
+                            To_Local (E_Symb (E, WNE_Attr_Size_Of_Object)),
+                          Kind => EW_Axdep_Func)));
+            end;
+         end if;
+
       end;
    end Declare_Attributes;
 

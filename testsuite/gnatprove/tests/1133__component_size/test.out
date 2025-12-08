@@ -1,0 +1,32 @@
+test.adb:3:14: warning: subprogram "Test_Array_Comp" has no effect
+test.adb:10:17: warning: subprogram "P" has no effect
+test.adb:12:07: info: no contextual analysis of "Test_Array_Comp" (nested subprogram)
+test.adb:14:25: info: assertion proved (Trivial: 1 VC)
+test.adb:18:07: info: precondition proved (CVC5: 2 VC)
+test.adb:21:14: warning: subprogram "Test_Array_Comp_2" has no effect
+test.adb:28:17: warning: subprogram "P" has no effect
+test.adb:30:07: info: no contextual analysis of "Test_Array_Comp_2" (nested subprogram)
+test.adb:32:25: info: assertion proved (Trivial: 1 VC)
+test.adb:36:07: info: precondition proved (CVC5: 2 VC)
+test.adb:39:14: warning: subprogram "Test_Array_Comp_3" has no effect
+test.adb:40:16: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
+test.adb:42:07: info: range check proved (CVC5: 2 VC)
+test.adb:44:33: info: length check proved (CVC5: 3 VC)
+test.adb:46:17: warning: subprogram "P" has no effect
+test.adb:48:07: info: no contextual analysis of "Test_Array_Comp_3" (nested subprogram)
+test.adb:50:25: info: assertion proved (Trivial: 1 VC)
+test.adb:50:26: warning: the value of attribute Component_Size is handled in an imprecise way [imprecise-component-size]
+test.adb:50:54: warning: Size of type Bool_Array is missing
+test.adb:50:54: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
+test.adb:54:07: info: precondition proved (CVC5: 2 VC)
+test.adb:57:14: warning: subprogram "Test_Array_Comp_4" has no effect
+test.adb:58:16: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
+test.adb:60:07: info: range check proved (CVC5: 2 VC)
+test.adb:62:33: info: length check proved (CVC5: 3 VC)
+test.adb:64:17: warning: subprogram "P" has no effect
+test.adb:66:07: info: no contextual analysis of "Test_Array_Comp_4" (nested subprogram)
+test.adb:68:25: info: assertion proved (Trivial: 1 VC)
+test.adb:68:26: warning: the value of attribute Component_Size is handled in an imprecise way [imprecise-component-size]
+test.adb:68:54: warning: Object_Size of type Bool_Array is missing
+test.adb:68:54: warning: the value of attribute "Object_Size" is handled in an imprecise way [imprecise-size]
+test.adb:72:07: info: precondition proved (CVC5: 2 VC)

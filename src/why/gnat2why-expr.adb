@@ -336,6 +336,58 @@ package body Gnat2Why.Expr is
    --  Same as above but for parameters whose type is neither "by copy" nor
    --  "by reference", the actual is simply havoc'ed.
 
+   procedure Compute_Size_Of_Object
+     (Expr         : Node_Or_Entity_Id;
+      Domain       : EW_Domain;
+      Params       : Transformation_Params;
+      Dynamic_Size : out W_Expr_Id;
+      Precise      : out Boolean;
+      Explanation  : out Unbounded_String)
+   with
+     Pre =>
+       Nkind (Expr) in N_Subexpr | N_Defining_Identifier
+       and then not Is_Class_Wide_Type (Retysp (Etype (Expr)))
+       and then
+         (if Has_Mutable_Discriminants (Retysp (Etype (Expr)))
+          then Nkind (Expr) in N_Subexpr);
+   --  Compute the size of an object Expr. Set Precise to False if the
+   --  translation uses an abstract object.
+   --  Size dispatches on tagged types, do not support it.
+   --  If Expr has mutable discriminants, the computation of Size uses the
+   --  constrained attribute. Do not support entities in that case as the
+   --  frontend routines used to compute the value of static attributes expects
+   --  an expression.
+
+   procedure Compute_Array_Component_Size
+     (Typ          : Type_Kind_Id;
+      Domain       : EW_Domain;
+      Dynamic_Size : out W_Expr_Id;
+      Precise      : out Boolean;
+      Explanation  : out Unbounded_String)
+   with Pre => Is_Array_Type (Typ);
+   --  Compute the Component_Size of Typ. It is either the Component_Size
+   --  aspect if supplied, or the Component_Type's Size (if the array is
+   --  packed) or Object_Size (if it is not packed).
+
+   procedure Compute_Record_Component_Size
+     (Comp         : Entity_Id;
+      Typ          : Type_Kind_Id;
+      Domain       : EW_Domain;
+      Dynamic_Size : out W_Expr_Id;
+      Precise      : out Boolean;
+      Explanation  : out Unbounded_String)
+   with Pre => Is_Record_Type_In_Why (Typ);
+   --  Same as above but with a record component Comp
+
+   procedure Compute_Size_Of_Type
+     (Typ          : Type_Kind_Id;
+      Object_Size  : Boolean;
+      Domain       : EW_Domain;
+      Dynamic_Size : out W_Expr_Id;
+      Precise      : out Boolean;
+      Explanation  : out Unbounded_String);
+   --  Compute the Size or Object_Size (if Object_Size is set) or a type
+
    function Compute_Tag_Check
      (Call : Node_Id; Params : Transformation_Params) return W_Prog_Id
    with Pre => Nkind (Call) in N_Subprogram_Call;
@@ -4132,6 +4184,38 @@ package body Gnat2Why.Expr is
       end loop;
    end Collect_Index_Expressions;
 
+   -----------------------------------
+   -- Compute_Array_Component_Size --
+   -----------------------------------
+
+   procedure Compute_Array_Component_Size
+     (Typ          : Type_Kind_Id;
+      Domain       : EW_Domain;
+      Dynamic_Size : out W_Expr_Id;
+      Precise      : out Boolean;
+      Explanation  : out Unbounded_String)
+   is
+      Size_Str  : Unbounded_String;
+      Comp_Size : Uint;
+
+   begin
+      Precise := True;
+
+      Array_Component_Size (Typ, Comp_Size, Size_Str, Explanation);
+
+      if Present (Comp_Size) then
+         Dynamic_Size := New_Integer_Constant (Value => Comp_Size);
+      else
+         Compute_Size_Of_Type
+           (Typ          => Retysp (Component_Type (Typ)),
+            Object_Size  => not Is_Packed (Typ),
+            Domain       => Domain,
+            Dynamic_Size => Dynamic_Size,
+            Precise      => Precise,
+            Explanation  => Explanation);
+      end if;
+   end Compute_Array_Component_Size;
+
    ---------------------------------
    -- Compute_Borrow_At_End_Value --
    ---------------------------------
@@ -7809,6 +7893,399 @@ package body Gnat2Why.Expr is
       end if;
    end Compute_Is_Reclaimed_For_Ownership;
 
+   -----------------------------------
+   -- Compute_Record_Component_Size --
+   -----------------------------------
+
+   procedure Compute_Record_Component_Size
+     (Comp         : Entity_Id;
+      Typ          : Type_Kind_Id;
+      Domain       : EW_Domain;
+      Dynamic_Size : out W_Expr_Id;
+      Precise      : out Boolean;
+      Explanation  : out Unbounded_String)
+   is
+      Size_Str  : Unbounded_String;
+      Comp_Size : Uint;
+
+   begin
+      Precise := True;
+
+      Record_Component_Size (Typ, Comp, Comp_Size, Size_Str, Explanation);
+
+      if Present (Comp_Size) then
+         Dynamic_Size := New_Integer_Constant (Value => Comp_Size);
+      else
+         Compute_Size_Of_Type
+           (Typ          => Retysp (Etype (Comp)),
+            Object_Size  => not Is_Packed (Typ),
+            Domain       => Domain,
+            Dynamic_Size => Dynamic_Size,
+            Precise      => Precise,
+            Explanation  => Explanation);
+      end if;
+   end Compute_Record_Component_Size;
+
+   ----------------------------
+   -- Compute_Size_Of_Object --
+   ----------------------------
+
+   procedure Compute_Size_Of_Object
+     (Expr         : Node_Or_Entity_Id;
+      Domain       : EW_Domain;
+      Params       : Transformation_Params;
+      Dynamic_Size : out W_Expr_Id;
+      Precise      : out Boolean;
+      Explanation  : out Unbounded_String)
+   is
+
+      procedure Compute_Size_From_Type (Typ : Type_Kind_Id);
+      --  Compute the size of a standalone object or dereference
+      --  Expr of type Typ.
+      --  Set Precise to False if the translation uses an abstract object. In
+      --  this case also set Explanation.
+
+      ----------------------------
+      -- Compute_Size_From_Type --
+      ----------------------------
+
+      procedure Compute_Size_From_Type (Typ : Type_Kind_Id) is
+      begin
+         --  If Typ is constrained, use its Object_Size
+
+         if not Is_Composite_Type (Typ) or else Is_Constrained (Typ) then
+            Compute_Size_Of_Type
+              (Typ          => Typ,
+               Object_Size  => True,
+               Domain       => Domain,
+               Dynamic_Size => Dynamic_Size,
+               Precise      => Precise,
+               Explanation  => Explanation);
+
+         --  For unconstrained arrays, compute the size from the number of
+         --  elements if possible.
+
+         elsif Is_Array_Type (Typ)
+           and then Array_Size_Is_Sum_Of_Components (Typ)
+         then
+            declare
+               Arr_Expr : constant W_Expr_Id :=
+                 New_Temp_For_Expr
+                   (Transform_Expr_Or_Identifier
+                      (Expr, Term_Domain (Domain), Params));
+
+            begin
+               Compute_Array_Component_Size
+                 (Typ, Domain, Dynamic_Size, Precise, Explanation);
+
+               for I in 1 .. Natural (Number_Dimensions (Typ)) loop
+                  Dynamic_Size :=
+                    New_Call
+                      (Domain => Domain,
+                       Name   => Int_Infix_Mult,
+                       Args   =>
+                         (1 => Dynamic_Size,
+                          2 =>
+                            Build_Length_Expr
+                              (Domain => Domain, Expr => Arr_Expr, Dim => I)),
+                       Typ    => EW_Int_Type);
+               end loop;
+
+               Dynamic_Size :=
+                 Binding_For_Temp
+                   (Domain  => Domain,
+                    Tmp     => Arr_Expr,
+                    Context => Dynamic_Size);
+            end;
+
+         --  Otherwise, use Attr_Size_Of_Object
+
+         elsif Is_Array_Type (Typ) then
+            declare
+               Arr_Expr : constant W_Expr_Id :=
+                 New_Temp_For_Expr
+                   (Transform_Expr_Or_Identifier
+                      (Expr, Term_Domain (Domain), Params));
+               Bounds   :
+                 W_Expr_Array (1 .. Positive (Number_Dimensions (Typ)) * 2);
+               Pos      : Positive := 1;
+            begin
+               for I in 1 .. Natural (Number_Dimensions (Typ)) loop
+                  Add_Attr_Arg
+                    (Domain, Bounds, Arr_Expr, Attribute_First, I, Pos);
+                  Add_Attr_Arg
+                    (Domain, Bounds, Arr_Expr, Attribute_Last, I, Pos);
+               end loop;
+
+               Dynamic_Size :=
+                 Binding_For_Temp
+                   (Domain  => Domain,
+                    Tmp     => Arr_Expr,
+                    Context =>
+                      New_Call
+                        (Domain => Domain,
+                         Name   => E_Symb (Typ, WNE_Attr_Size_Of_Object),
+                         Args   => Bounds,
+                         Typ    => EW_Int_Type));
+               Precise := False;
+               Explanation :=
+                 To_Unbounded_String
+                   (Type_Name_For_Explanation (Typ) & " is unconstrained");
+            end;
+         else
+            pragma Assert (Has_Discriminants (Typ));
+            Dynamic_Size :=
+              New_Call
+                (Domain => Domain,
+                 Name   => E_Symb (Typ, WNE_Attr_Size_Of_Object),
+                 Args   =>
+                   (1 =>
+                      New_Discriminants_Access
+                        (Name =>
+                           Transform_Expr_Or_Identifier
+                             (Expr, Term_Domain (Domain), Params),
+                         Ty   => Typ)),
+                 Typ    => EW_Int_Type);
+            Precise := False;
+            Explanation :=
+              To_Unbounded_String
+                (Type_Name_For_Explanation (Typ) & " is unconstrained");
+         end if;
+      end Compute_Size_From_Type;
+
+      Typ         : constant Entity_Id := Retysp (Etype (Expr));
+      Static_Size : Uint;
+
+   begin
+      Precise := True;
+
+      case Nkind (Expr) is
+         when N_Identifier | N_Expanded_Name | N_Defining_Identifier =>
+            declare
+               Obj : constant Entity_Id :=
+                 (if Nkind (Expr) = N_Defining_Identifier
+                  then Expr
+                  else Entity (Expr));
+            begin
+               pragma
+                 Assert (Ekind (Obj) in Formal_Kind | E_Constant | E_Variable);
+
+               --  Use the Size aspect of Var if it is supplied
+
+               Static_Size := Get_Attribute_Value (Obj, Attribute_Size);
+
+               if Present (Static_Size) then
+                  Dynamic_Size := New_Integer_Constant (Value => Static_Size);
+
+               --  For objects with mutable discriminants, use the object size
+               --  of the type if they are unconstrained.
+
+               elsif Has_Mutable_Discriminants (Retysp (Etype (Expr))) then
+
+                  pragma Assert (Nkind (Expr) in N_Subexpr);
+
+                  if Attr_Constrained_Statically_Known (Expr) then
+                     if Attribute_Constrained_Static_Value (Expr) then
+                        Compute_Size_From_Type (Typ);
+                     else
+                        Compute_Size_Of_Type
+                          (Typ,
+                           True,
+                           Domain,
+                           Dynamic_Size,
+                           Precise,
+                           Explanation);
+                     end if;
+                  else
+                     Compute_Size_From_Type (Typ);
+
+                     declare
+                        Typ_Size    : W_Expr_Id;
+                        Typ_Expl    : Unbounded_String;
+                        Typ_Precise : Boolean;
+                     begin
+                        Compute_Size_Of_Type
+                          (Typ, True, Domain, Typ_Size, Typ_Precise, Typ_Expl);
+                        Dynamic_Size :=
+                          New_Conditional
+                            (Domain    => Domain,
+                             Condition =>
+                               New_Constrained_Attribute_Expr (Expr, Domain),
+                             Then_Part => Dynamic_Size,
+                             Else_Part => Typ_Size,
+                             Typ       => EW_Int_Type);
+
+                        if not Typ_Precise then
+                           Explanation :=
+                             (if Precise
+                              then ""
+                              else To_String (Explanation) & " and ")
+                             & Typ_Expl;
+                           Precise := False;
+                        end if;
+                     end;
+                  end if;
+
+               --  Otherwise compute the size from the subtype of the object
+
+               else
+                  Compute_Size_From_Type (Typ);
+               end if;
+
+               if not Precise and then Ekind (Obj) in E_Constant | E_Variable
+               then
+                  Explanation :=
+                    "object does not have a Size aspect and " & Explanation;
+               end if;
+            end;
+
+         when N_Explicit_Dereference                                 =>
+            Compute_Size_From_Type (Typ);
+
+         when N_Selected_Component                                   =>
+            declare
+               R_Typ : constant Type_Kind_Id := Retysp (Etype (Prefix (Expr)));
+               Comp  : constant Entity_Id := Entity (Selector_Name (Expr));
+            begin
+               Compute_Record_Component_Size
+                 (Comp, R_Typ, Domain, Dynamic_Size, Precise, Explanation);
+            end;
+
+         when N_Indexed_Component                                    =>
+            declare
+               A_Typ : constant Type_Kind_Id := Retysp (Etype (Prefix (Expr)));
+
+            begin
+               Compute_Array_Component_Size
+                 (A_Typ, Domain, Dynamic_Size, Precise, Explanation);
+            end;
+
+         when N_Slice                                                =>
+            declare
+               Typ : constant Type_Kind_Id := Retysp (Etype (Prefix (Expr)));
+
+            begin
+               pragma Assert (Array_Size_Is_Sum_Of_Components (Typ));
+
+               --  The size of a slice is always computed
+               --  dynamically for now.
+
+               Compute_Array_Component_Size
+                 (Typ, Domain, Dynamic_Size, Precise, Explanation);
+
+               Dynamic_Size :=
+                 New_Call
+                   (Domain => Domain,
+                    Name   => Int_Infix_Mult,
+                    Args   =>
+                      (1 => Dynamic_Size,
+                       2 =>
+                         Build_Length_Expr
+                           (Domain => Domain,
+                            First  =>
+                              +Transform_Term
+                                 (Expr          =>
+                                    Low_Bound (Discrete_Range (Expr)),
+                                  Expected_Type => EW_Int_Type,
+                                  Params        => Params),
+                            Last   =>
+                              +Transform_Term
+                                 (Expr          =>
+                                    High_Bound (Discrete_Range (Expr)),
+                                  Expected_Type => EW_Int_Type,
+                                  Params        => Params))),
+                    Typ    => EW_Int_Type);
+            end;
+
+         --  'Result is handled as a constant standalone object.
+         --  It is always constrained and cannot have a Size annotation.
+
+         when N_Attribute_Reference                                  =>
+            pragma
+              Assert
+                (Get_Attribute_Id (Attribute_Name (Expr)) = Attribute_Result);
+            Compute_Size_From_Type (Typ);
+
+         --  Only parts of objects are supported for now
+
+         when others                                                 =>
+            raise Program_Error;
+      end case;
+   end Compute_Size_Of_Object;
+
+   --------------------------
+   -- Compute_Size_Of_Type --
+   --------------------------
+
+   procedure Compute_Size_Of_Type
+     (Typ          : Type_Kind_Id;
+      Object_Size  : Boolean;
+      Domain       : EW_Domain;
+      Dynamic_Size : out W_Expr_Id;
+      Precise      : out Boolean;
+      Explanation  : out Unbounded_String)
+   is
+      Static_Size : Uint;
+
+   begin
+      Precise := True;
+
+      --  If Typ has a static Size or Object_Size, use it
+
+      Static_Size :=
+        Get_Attribute_Value
+          (Typ,
+           (if Object_Size then Attribute_Object_Size else Attribute_Size));
+
+      if Present (Static_Size) then
+         Dynamic_Size := New_Integer_Constant (Value => Static_Size);
+
+      --  For arrays, try to reconstruct the size from the component size
+      --  if possible.
+
+      elsif Is_Constrained (Typ)
+        and then Is_Array_Type (Typ)
+        and then Array_Size_Is_Sum_Of_Components (Typ)
+      then
+         Compute_Array_Component_Size
+           (Typ, Domain, Dynamic_Size, Precise, Explanation);
+
+         for I in 1 .. Natural (Number_Dimensions (Typ)) loop
+            Dynamic_Size :=
+              New_Call
+                (Domain => Domain,
+                 Name   => Int_Infix_Mult,
+                 Args   =>
+                   (1 => Dynamic_Size,
+                    2 =>
+                      Build_Length_Expr
+                        (Domain => Domain, Ty => Typ, Dim => I)),
+                 Typ    => EW_Int_Type);
+         end loop;
+
+      --  Use the constants declared in the type's module
+
+      elsif Object_Size then
+         Dynamic_Size :=
+           New_Call
+             (Domain => Domain,
+              Name   => E_Symb (Typ, WNE_Attr_Object_Size),
+              Typ    => EW_Int_Type);
+         Precise := False;
+         Explanation :=
+           To_Unbounded_String
+             ("Object_Size of "
+              & Type_Name_For_Explanation (Typ)
+              & " is missing");
+      else
+         Dynamic_Size := New_Attribute_Expr (Typ, Domain, Attribute_Size);
+         Precise := False;
+         Explanation :=
+           To_Unbounded_String
+             ("Size of " & Type_Name_For_Explanation (Typ) & " is missing");
+      end if;
+   end Compute_Size_Of_Type;
+
    -------------------
    -- Compute_Store --
    -------------------
@@ -11015,153 +11492,18 @@ package body Gnat2Why.Expr is
       Params          : Transformation_Params)
    is
 
-      --  In this function, we try to emit a static check if possible, a
-      --  dynamic check otherwise.
-      --  Statically_Invalid is set to True when an unsupported construct is
-      --  encountered so the check cannot be performed, even dynamically. When
-      --  it is set, a statically failing check is emitted. In this case,
-      --  Explanation is set to relevant information.
-      --  Dynamic_Check is set to True whenever at least part of the
-      --  information cannot be computed statically.
-
-      Statically_Invalid : Boolean := False;
-      Explanation        : Unbounded_String;
-      Dynamic_Check      : Boolean := False;
-
-      function Compute_Dynamic_Size
-        (Typ : Type_Kind_Id; Rng : Node_Id := Empty) return W_Term_Id
-
-      with
-        Pre =>
-          Is_Array_Type (Typ)
-          and then (Present (Rng) or else Is_Constrained (Typ))
-          and then Has_Aliased_Components (Etype (Typ));
-      --  Compute the size of a dynamically constrained array by counting its
-      --  components. The Rng optional parameter supplies the bounds of a
-      --  slice. If it is empty, the whole array is considerd. This is only
-      --  valid if the array does not contain gaps between components (gaps in
-      --  components are fine). Arrays with aliased components never have gaps
-      --  between components (but packed arrays might have gaps at the end).
-
-      procedure Compute_Dynamic_Size_If_Possible
-        (Typ          : Type_Kind_Id;
-         Dynamic_Size : out W_Term_Id;
-         Rng          : Node_Id := Empty);
-      --  If Typ is a dynamic array type with aliased components, compute the
-      --  size dynamically and store it in Dynamic_Size. Update
-      --  Statically_Invalid, Explanation, and Dynamic_Check accordingly.
-      --  This procedure should only be called for objects which do not have
-      --  a specific Size indication.
-
-      --------------------------
-      -- Compute_Dynamic_Size --
-      --------------------------
-
-      function Compute_Dynamic_Size
-        (Typ : Type_Kind_Id; Rng : Node_Id := Empty) return W_Term_Id
-      is
-         Comp_Size : constant Uint :=
-           Get_Attribute_Value (Typ, Attribute_Component_Size);
-      begin
-         pragma Assert (not No (Comp_Size));
-         if Present (Rng) then
-            declare
-               Low  : constant Node_Id := Low_Bound (Rng);
-               High : constant Node_Id := High_Bound (Rng);
-            begin
-               return
-                 New_Call
-                   (Name => Int_Infix_Mult,
-                    Args =>
-                      (Build_Length_Expr
-                         (Domain => EW_Term,
-                          First  =>
-                            +Transform_Term
-                               (Expr          => Low,
-                                Expected_Type => EW_Int_Type,
-                                Params        => Params),
-                          Last   =>
-                            +Transform_Term
-                               (Expr          => High,
-                                Expected_Type => EW_Int_Type,
-                                Params        => Params)),
-                       New_Integer_Constant (Value => Comp_Size)));
-            end;
-         else
-            declare
-               Res : W_Term_Id := New_Integer_Constant (Value => Comp_Size);
-            begin
-               for I in 1 .. Natural (Number_Dimensions (Typ)) loop
-                  Res :=
-                    New_Call
-                      (Name => Int_Infix_Mult,
-                       Args =>
-                         (Build_Length_Expr
-                            (Domain => EW_Term, Ty => Typ, Dim => I),
-                          +Res));
-               end loop;
-               return Res;
-            end;
-         end if;
-      end Compute_Dynamic_Size;
-
-      --------------------------------------
-      -- Compute_Dynamic_Size_If_Possible --
-      --------------------------------------
-
-      procedure Compute_Dynamic_Size_If_Possible
-        (Typ          : Type_Kind_Id;
-         Dynamic_Size : out W_Term_Id;
-         Rng          : Node_Id := Empty) is
-      begin
-         --  Check if we are in a case where the size of an object of type Typ
-         --  can safely be computed dynamically.
-
-         if Present (Rng)
-           or else (Is_Array_Type (Typ) and then Is_Constrained (Typ))
-         then
-
-            --  For arrays, provide a more precise explanation if the size
-            --  cannot be computed.
-
-            if not Has_Aliased_Components (Etype (Typ)) then
-               Explanation :=
-                 To_Unbounded_String
-                   (Type_Name_For_Explanation (Typ)
-                    & " doesn't have aliased components");
-
-            elsif No (Get_Attribute_Value (Typ, Attribute_Component_Size)) then
-               Explanation :=
-                 To_Unbounded_String
-                   (Type_Name_For_Explanation (Typ)
-                    & " doesn't have a Component_Size representation clause"
-                    & " or aspect");
-
-            else
-               Dynamic_Check := True;
-               Dynamic_Size := Compute_Dynamic_Size (Typ, Rng);
-               return;
-            end if;
-         end if;
-
-         --  Dynamic computation has failed, the check is statically invalid
-
-         Statically_Invalid := True;
-         Dynamic_Size := Why_Empty;
-      end Compute_Dynamic_Size_If_Possible;
-
       --  Objects introduced for the sizes of Obj and its Overlaid_Object.
       --  If the size can be computed statically, Static_*_Size and *_Size_Str
       --  are set and Dynamic_*_Size is Why_Empty. If the size can only be
       --  computed dynamically, Dynamic_*_Size is set.
 
-      Obj_Typ               : constant Type_Kind_Id := Retysp (Etype (Obj));
       Static_Obj_Size       : Uint;
       Obj_Size_Str          : Unbounded_String := Null_Unbounded_String;
-      Dynamic_Obj_Size      : W_Term_Id := Why_Empty;
+      Dynamic_Obj_Size      : W_Expr_Id := Why_Empty;
       Overlaid_Size_Str     : Unbounded_String;
       Static_Overlaid_Size  : Uint;
-      Dynamic_Overlaid_Size : W_Term_Id := Why_Empty;
+      Dynamic_Overlaid_Size : W_Expr_Id := Why_Empty;
+      Explanation           : Unbounded_String;
    begin
       Check_Known_Size_For_Object
         (Obj, Static_Obj_Size, Explanation, Obj_Size_Str);
@@ -11170,7 +11512,31 @@ package body Gnat2Why.Expr is
       --  failed.
 
       if No (Static_Obj_Size) then
-         Compute_Dynamic_Size_If_Possible (Obj_Typ, Dynamic_Obj_Size);
+
+         --  Address cannot be supplied for a classwide type
+
+         pragma Assert (not Is_Class_Wide_Type (Retysp (Etype (Obj))));
+
+         --  Dynamic size computation is not supported on entities with
+         --  mutable discriminants, reject it here.
+
+         if Has_Mutable_Discriminants (Retysp (Etype (Obj))) then
+            Emit_Static_Proof_Result
+              (Ada_Node,
+               VC_UC_Same_Size,
+               False,
+               Current_Subp,
+               Explanation => "overlaid object has mutable discriminants");
+            return;
+         end if;
+
+         declare
+            Precise     : Boolean;
+            Explanation : Unbounded_String;
+         begin
+            Compute_Size_Of_Object
+              (Obj, EW_Term, Params, Dynamic_Obj_Size, Precise, Explanation);
+         end;
       end if;
 
       Check_Known_Size_For_Object
@@ -11181,35 +11547,36 @@ package body Gnat2Why.Expr is
 
       if No (Static_Overlaid_Size) then
 
-         --  Try to compute the size of dynamic array objects
+         --  Dynamic size computation is not supported on classwide
+         --  expressions, reject it here.
 
-         if Nkind (Overlaid_Object) = N_Slice then
-            declare
-               Overlaid_Typ : constant Type_Kind_Id :=
-                 Retysp (Etype (Prefix (Overlaid_Object)));
-
-            begin
-               Compute_Dynamic_Size_If_Possible
-                 (Overlaid_Typ,
-                  Dynamic_Overlaid_Size,
-                  Discrete_Range (Overlaid_Object));
-            end;
-
-         else
-            declare
-               Overlaid_Typ : constant Type_Kind_Id :=
-                 Retysp (Etype (Overlaid_Object));
-
-            begin
-               Compute_Dynamic_Size_If_Possible
-                 (Overlaid_Typ, Dynamic_Overlaid_Size);
-            end;
+         if Is_Class_Wide_Type (Retysp (Etype (Overlaid_Object))) then
+            Emit_Static_Proof_Result
+              (Ada_Node,
+               VC_UC_Same_Size,
+               False,
+               Current_Subp,
+               Explanation => "overlaid object has a classwide type");
+            return;
          end if;
+
+         declare
+            Precise     : Boolean;
+            Explanation : Unbounded_String;
+         begin
+            Compute_Size_Of_Object
+              (Overlaid_Object,
+               EW_Term,
+               Params,
+               Dynamic_Overlaid_Size,
+               Precise,
+               Explanation);
+         end;
       end if;
 
       --  If one of the sizes is dynamic, add a dynamic check to P
 
-      if not Statically_Invalid and then Dynamic_Check then
+      if No (Static_Obj_Size) or No (Static_Overlaid_Size) then
          if No (Dynamic_Obj_Size) then
             pragma Assert (Present (Static_Obj_Size));
             Dynamic_Obj_Size :=
@@ -11229,8 +11596,8 @@ package body Gnat2Why.Expr is
                        Pred     =>
                          New_Comparison
                            (Symbol => Why_Eq,
-                            Left   => Dynamic_Obj_Size,
-                            Right  => Dynamic_Overlaid_Size),
+                            Left   => +Dynamic_Obj_Size,
+                            Right  => +Dynamic_Overlaid_Size),
                        Reason   => VC_UC_Same_Size,
                        Kind     => EW_Assert)),
                P);
@@ -11239,26 +11606,21 @@ package body Gnat2Why.Expr is
       --  proof result.
 
       else
-         if Statically_Invalid then
-            null;
-         elsif Static_Obj_Size /= Static_Overlaid_Size then
-            Statically_Invalid := True;
-            Explanation :=
-              To_Unbounded_String
-                ("sizes of overlaid objects differ: "
-                 & To_String (Obj_Size_Str)
-                 & " "
-                 & Escape (UI_Image (Static_Obj_Size))
-                 & ", while "
-                 & To_String (Overlaid_Size_Str)
-                 & " "
-                 & Escape (UI_Image (Static_Overlaid_Size)));
-         end if;
+         Explanation :=
+           To_Unbounded_String
+             ("sizes of overlaid objects differ: "
+              & To_String (Obj_Size_Str)
+              & " "
+              & Escape (UI_Image (Static_Obj_Size))
+              & ", while "
+              & To_String (Overlaid_Size_Str)
+              & " "
+              & Escape (UI_Image (Static_Overlaid_Size)));
 
          Emit_Static_Proof_Result
            (Ada_Node,
             VC_UC_Same_Size,
-            not Statically_Invalid,
+            Static_Obj_Size = Static_Overlaid_Size,
             Current_Subp,
             Explanation => To_String (Explanation));
       end if;
@@ -19932,6 +20294,7 @@ package body Gnat2Why.Expr is
             end;
 
          when Attribute_Size | Attribute_Value_Size | Attribute_Object_Size =>
+
             --  For arrays and records we do not know the exact value of
             --  attribute size, which is decided by the back-end when
             --  generating executable code. Instead, we generate call to an
@@ -19950,350 +20313,35 @@ package body Gnat2Why.Expr is
             --  ** Esize field in GNAT AST
 
             Size_Attributes : declare
-
-               procedure Compute_Size_Of_Object
-                 (Expr         : Node_Id;
-                  Dynamic_Size : out W_Expr_Id;
-                  Precise      : out Boolean);
-               --  Compute the size of an object Expr.
-               --  Set Precise to False if the translation uses an abstract
-               --  object.
-
-               ----------------------------
-               -- Compute_Size_Of_Object --
-               ----------------------------
-
-               procedure Compute_Size_Of_Object
-                 (Expr         : Node_Id;
-                  Dynamic_Size : out W_Expr_Id;
-                  Precise      : out Boolean)
-               is
-
-                  procedure Compute_Size_From_Type (Typ : Type_Kind_Id);
-                  --  Compute the size of a standalone object or dereference
-                  --  Expr of type Typ.
-                  --  Set Precise to False if the translation uses an abstract
-                  --  object.
-
-                  ----------------------------
-                  -- Compute_Size_From_Type --
-                  ----------------------------
-
-                  procedure Compute_Size_From_Type (Typ : Type_Kind_Id) is
-                     Static_Size : Uint;
-                  begin
-                     --  If Typ has a static Object_Size, use it
-
-                     if not Is_Composite_Type (Typ)
-                       or else Is_Constrained (Typ)
-                     then
-                        Static_Size :=
-                          Get_Attribute_Value (Typ, Attribute_Object_Size);
-                     else
-                        Static_Size := No_Uint;
-                     end if;
-
-                     if Present (Static_Size) then
-                        Dynamic_Size :=
-                          New_Integer_Constant (Value => Static_Size);
-
-                     --  If Typ is constrained, use its Object_Size
-
-                     elsif not Is_Composite_Type (Typ)
-                       or else Is_Constrained (Typ)
-                     then
-                        Dynamic_Size :=
-                          New_Call
-                            (Domain => Domain,
-                             Name   => E_Symb (Typ, WNE_Attr_Object_Size),
-                             Typ    => EW_Int_Type);
-                        Precise := False;
-
-                     --  For unconstrained types, use Attr_Size_Of_Object
-
-                     elsif Is_Array_Type (Typ) then
-                        declare
-                           Arr_Expr : constant W_Expr_Id :=
-                             New_Temp_For_Expr
-                               (Transform_Expr
-                                  (Expr, Term_Domain (Domain), Params));
-                           Bounds   :
-                             W_Expr_Array
-                               (1 .. Positive (Number_Dimensions (Typ)) * 2);
-                           Pos      : Positive := 1;
-                        begin
-                           for I in 1 .. Natural (Number_Dimensions (Typ)) loop
-                              Add_Attr_Arg
-                                (Domain,
-                                 Bounds,
-                                 Arr_Expr,
-                                 Attribute_First,
-                                 I,
-                                 Pos);
-                              Add_Attr_Arg
-                                (Domain,
-                                 Bounds,
-                                 Arr_Expr,
-                                 Attribute_Last,
-                                 I,
-                                 Pos);
-                           end loop;
-
-                           Dynamic_Size :=
-                             Binding_For_Temp
-                               (Domain  => Domain,
-                                Tmp     => Arr_Expr,
-                                Context =>
-                                  New_Call
-                                    (Domain => Domain,
-                                     Name   =>
-                                       E_Symb (Typ, WNE_Attr_Size_Of_Object),
-                                     Args   => Bounds,
-                                     Typ    => EW_Int_Type));
-                           Precise := False;
-                        end;
-                     else
-                        pragma Assert (Has_Discriminants (Typ));
-                        Dynamic_Size :=
-                          New_Call
-                            (Domain => Domain,
-                             Name   => E_Symb (Typ, WNE_Attr_Size_Of_Object),
-                             Args   =>
-                               (1 =>
-                                  New_Discriminants_Access
-                                    (Name =>
-                                       Transform_Expr
-                                         (Expr, Term_Domain (Domain), Params),
-                                     Ty   => Typ)),
-                             Typ    => EW_Int_Type);
-                        Precise := False;
-                     end if;
-                  end Compute_Size_From_Type;
-
-                  Typ         : constant Entity_Id := Retysp (Etype (Expr));
-                  Static_Size : Uint;
-
-               begin
-                  Precise := True;
-
-                  case Nkind (Expr) is
-                     when N_Identifier | N_Expanded_Name =>
-                        pragma
-                          Assert
-                            (Ekind (Entity (Expr))
-                             in Formal_Kind | E_Constant | E_Variable);
-                        pragma
-                          Assert
-                            (if Has_Mutable_Discriminants
-                                  (Retysp (Etype (Expr)))
-                             then Attr_Constrained_Statically_Known (Expr));
-
-                        --  Use the Size aspect of Var if it is supplied
-
-                        Static_Size :=
-                          Get_Attribute_Value (Entity (Expr), Attr_Id);
-
-                        if Present (Static_Size) then
-                           Dynamic_Size :=
-                             New_Integer_Constant (Value => Static_Size);
-
-                        --  For unconstrained objects with mutable
-                        --  discriminants, use the object size of the type.
-
-                        elsif Has_Mutable_Discriminants (Retysp (Etype (Expr)))
-                          and then
-                            not Attribute_Constrained_Static_Value (Expr)
-                        then
-                           Dynamic_Size :=
-                             New_Call
-                               (Domain => Domain,
-                                Name   => E_Symb (Typ, WNE_Attr_Object_Size),
-                                Typ    => EW_Int_Type);
-                           Precise := False;
-
-                        else
-                           Compute_Size_From_Type (Typ);
-                        end if;
-
-                     when N_Explicit_Dereference         =>
-                        Compute_Size_From_Type (Typ);
-
-                     when N_Selected_Component           =>
-                        declare
-                           Comp : constant Entity_Id :=
-                             Entity (Selector_Name (Expr));
-                        begin
-                           Record_Component_Size
-                             (Typ       => Retysp (Etype (Prefix (Expr))),
-                              Comp      => Comp,
-                              Comp_Size => Static_Size);
-
-                           if Present (Static_Size) then
-                              Dynamic_Size :=
-                                New_Integer_Constant (Value => Static_Size);
-                           else
-                              Precise := False;
-                              Dynamic_Size :=
-                                New_Call
-                                  (Domain => Domain,
-                                   Name   => Int_Infix_Add,
-                                   Args   =>
-                                     (1 =>
-                                        New_Call
-                                          (Domain => Domain,
-                                           Name   => Int_Infix_Subtr,
-                                           Args   =>
-                                             (1 =>
-                                                New_Call
-                                                  (Domain => Domain,
-                                                   Name   =>
-                                                     E_Symb
-                                                       (Comp,
-                                                        WNE_Attr_Last_Bit),
-                                                   Typ    => EW_Int_Type),
-                                              2 =>
-                                                New_Call
-                                                  (Domain => Domain,
-                                                   Name   =>
-                                                     E_Symb
-                                                       (Comp,
-                                                        WNE_Attr_First_Bit),
-                                                   Typ    => EW_Int_Type)),
-                                           Typ    => EW_Int_Type),
-                                      2 =>
-                                        New_Integer_Constant
-                                          (Value => Uint_1)),
-                                   Typ    => EW_Int_Type);
-                           end if;
-                        end;
-
-                     when N_Indexed_Component            =>
-                        declare
-                           Typ : constant Type_Kind_Id :=
-                             Retysp (Etype (Prefix (Expr)));
-
-                        begin
-                           Array_Component_Size (Typ, Static_Size);
-
-                           if Present (Static_Size) then
-                              Dynamic_Size :=
-                                New_Integer_Constant (Value => Static_Size);
-                           else
-                              Dynamic_Size :=
-                                New_Attribute_Expr
-                                  (Typ, Domain, Attribute_Component_Size);
-                              Precise := False;
-                           end if;
-                        end;
-
-                     when N_Slice                        =>
-                        declare
-                           Typ       : constant Type_Kind_Id :=
-                             Retysp (Etype (Prefix (Expr)));
-                           Comp_Size : Uint;
-
-                        begin
-                           pragma
-                             Assert (Array_Size_Is_Sum_Of_Components (Typ));
-
-                           --  The size of a slice is always computed
-                           --  dynamically for now.
-
-                           Array_Component_Size (Typ, Comp_Size);
-
-                           if Present (Comp_Size) then
-                              Dynamic_Size :=
-                                New_Integer_Constant (Value => Comp_Size);
-                           else
-                              Dynamic_Size :=
-                                New_Attribute_Expr
-                                  (Typ, Domain, Attribute_Component_Size);
-                              Precise := False;
-                           end if;
-
-                           Dynamic_Size :=
-                             New_Call
-                               (Domain => Domain,
-                                Name   => Int_Infix_Mult,
-                                Args   =>
-                                  (1 => Dynamic_Size,
-                                   2 =>
-                                     Build_Length_Expr
-                                       (Domain => Domain,
-                                        First  =>
-                                          +Transform_Term
-                                             (Expr          =>
-                                                Low_Bound
-                                                  (Discrete_Range (Expr)),
-                                              Expected_Type => EW_Int_Type,
-                                              Params        => Params),
-                                        Last   =>
-                                          +Transform_Term
-                                             (Expr          =>
-                                                High_Bound
-                                                  (Discrete_Range (Expr)),
-                                              Expected_Type => EW_Int_Type,
-                                              Params        => Params))),
-                                Typ    => EW_Int_Type);
-                        end;
-
-                     when N_Attribute_Reference          =>
-                        pragma
-                          Assert
-                            (Get_Attribute_Id (Attribute_Name (Expr))
-                               = Attribute_Result);
-                        Compute_Size_From_Type (Typ);
-
-                     --  'Result is handled as a constant standalone object.
-                     --  It is always constrained and cannot have a Size
-                     --  annotation.
-
-                     --  Only parts of objects are supported for now
-
-                     when others                         =>
-                        raise Program_Error;
-                  end case;
-               end Compute_Size_Of_Object;
-
                Has_Type_Prefix : constant Boolean :=
                  Nkind (Var) in N_Identifier | N_Expanded_Name
                  and then Is_Type (Entity (Var));
                Var_Type        : constant Entity_Id :=
                  (if Has_Type_Prefix then Entity (Var) else Etype (Var));
 
-               --  Start of processing for Size_Attributes
-
             begin
                if Has_Type_Prefix then
                   declare
-                     Attr_Value : constant Uint :=
-                       Get_Attribute_Value (Var_Type, Attr_Id);
+                     Precise     : Boolean;
+                     Explanation : Unbounded_String;
                   begin
-                     if Present (Attr_Value) then
-                        T := New_Integer_Constant (Value => Attr_Value);
-                     else
-                        if Attr_Id /= Attribute_Object_Size then
-                           T := New_Attribute_Expr (Var_Type, Domain, Attr_Id);
-                        else
-                           T :=
-                             New_Call
-                               (Ada_Node => Expr,
-                                Domain   => Domain,
-                                Name     =>
-                                  E_Symb (Var_Type, WNE_Attr_Object_Size),
-                                Typ      => EW_Int_Type);
-                        end if;
+                     Compute_Size_Of_Type
+                       (Typ          => Var_Type,
+                        Object_Size  => Attr_Id = Attribute_Object_Size,
+                        Domain       => Domain,
+                        Dynamic_Size => T,
+                        Precise      => Precise,
+                        Explanation  => Explanation);
 
-                        --  If --info is given, notify the user that the
-                        --  attribute is handled in an imprecise way.
+                     --  If --info is given, notify the user that the attribute
+                     --  is handled in an imprecise way.
 
+                     if not Precise then
                         declare
                            Conts : Message_Lists.List;
                         begin
-                           Conts.Append
-                             (Create
-                                ("it is not specified for type &",
-                                 Names => [Entity (Var)]));
+                           Conts.Append (Create (To_String (Explanation)));
+
                            Warning_Msg_N
                              (Warn_Imprecise_Size,
                               Expr,
@@ -20304,19 +20352,16 @@ package body Gnat2Why.Expr is
                         end;
                      end if;
                   end;
+
                else
                   pragma Assert (Attr_Id = Attribute_Size);
 
                   declare
-                     Has_Complete_Object_Prefix  : constant Boolean :=
-                       Nkind (Var) in N_Identifier | N_Expanded_Name
-                       and then
-                         Ekind (Entity (Var)) in E_Variable | E_Constant;
-                     Type_Could_Have_Object_Size : constant Boolean :=
-                       not Is_Standard_Type (Var_Type);
-                     Precise                     : Boolean;
+                     Precise     : Boolean;
+                     Explanation : Unbounded_String;
                   begin
-                     Compute_Size_Of_Object (Var, T, Precise);
+                     Compute_Size_Of_Object
+                       (Var, Domain, Params, T, Precise, Explanation);
 
                      --  If --info is given, notify the user that the attribute
                      --  is handled in an imprecise way.
@@ -20325,29 +20370,7 @@ package body Gnat2Why.Expr is
                         declare
                            Conts : Message_Lists.List;
                         begin
-                           if not Has_Complete_Object_Prefix
-                             and then Type_Could_Have_Object_Size
-                           then
-                              Conts.Append
-                                (Create
-                                   ("""Object_Size"" is not specified for "
-                                    & "type &",
-                                    Names => [Var_Type]));
-
-                           --  If this is a complete object, the attribute
-                           --  could be set on the object, or possibly
-                           --  Object_Size could be set on its type, if not a
-                           --  standard one.
-
-                           elsif Has_Complete_Object_Prefix then
-                              Conts.Append
-                                (Create
-                                   ("it is not specified for object & and "
-                                    & """Object_Size"" is not specified for "
-                                    & "type &",
-                                    Names => [Entity (Var), Var_Type]));
-
-                           end if;
+                           Conts.Append (Create (To_String (Explanation)));
 
                            Warning_Msg_N
                              (Warn_Imprecise_Size,
@@ -20679,8 +20702,11 @@ package body Gnat2Why.Expr is
                  and then Is_Type (Entity (Var));
                Typ             : constant Entity_Id :=
                  (if Has_Type_Prefix then Entity (Var) else Etype (Var));
+               Precise         : Boolean;
+               Explanation     : Unbounded_String;
             begin
-               T := New_Attribute_Expr (Typ, Domain, Attr_Id);
+               Compute_Array_Component_Size
+                 (Typ, Domain, T, Precise, Explanation);
 
                --  In the program domain, translate the object itself to
                --  generate any necessary checks. Note that Component_Size may
@@ -20697,9 +20723,11 @@ package body Gnat2Why.Expr is
                        Context => +T,
                        Typ     => Get_Type (+T));
                end if;
-            end;
 
-            Warning_Msg_N (Warn_Component_Size, Expr);
+               if not Precise then
+                  Warning_Msg_N (Warn_Component_Size, Expr);
+               end if;
+            end;
 
          --  Alignment may be specified explicitly on the type or object. When
          --  specified on the type, the frontend replaces T'Alignment by its

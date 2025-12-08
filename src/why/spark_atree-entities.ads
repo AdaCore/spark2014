@@ -429,6 +429,9 @@ package SPARK_Atree.Entities is
 
    function Is_Inherently_Limited_Type (Typ : Type_Kind_Id) return Boolean;
 
+   function Is_Packed (Typ : Type_Kind_Id) return Boolean
+   renames Einfo.Entities.Is_Packed;
+
    function Is_Tagged_Type (Typ : Type_Kind_Id) return Boolean;
 
    function Known_Object_Size (Typ : Type_Kind_Id) return Boolean;

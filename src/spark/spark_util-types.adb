@@ -103,18 +103,43 @@ package body SPARK_Util.Types is
    -- Array_Component_Size --
    --------------------------
 
-   procedure Array_Component_Size (Typ : Type_Kind_Id; Comp_Size : out Uint) is
-      Comp_Ty     : constant Type_Kind_Id := Retysp (Component_Type (Typ));
-      Explanation : Unbounded_String;
+   procedure Array_Component_Size
+     (Typ         : Type_Kind_Id;
+      Comp_Size   : out Uint;
+      Size_Str    : out Unbounded_String;
+      Explanation : out Unbounded_String)
+   is
+      Comp_Ty : constant Type_Kind_Id := Retysp (Component_Type (Typ));
    begin
       Comp_Size := Get_Attribute_Value (Typ, Attribute_Component_Size);
 
-      if No (Comp_Size) then
-         if Is_Packed (Typ) then
-            Check_Known_RM_Size (Comp_Ty, Comp_Size, Explanation);
-         else
-            Check_Known_Esize (Comp_Ty, Comp_Size, Explanation);
+      if Present (Comp_Size) then
+         Size_Str :=
+           To_Unbounded_String
+             (Type_Name_For_Explanation (Typ) & " has Component_Size");
+
+      elsif Is_Packed (Typ) then
+         Check_Known_RM_Size (Comp_Ty, Comp_Size, Explanation);
+         if Present (Comp_Size) then
+            Size_Str :=
+              To_Unbounded_String
+                (Type_Name_For_Explanation (Comp_Ty) & " has Size");
          end if;
+      else
+         Check_Known_Esize (Comp_Ty, Comp_Size, Explanation);
+         if Present (Comp_Size) then
+            Size_Str :=
+              To_Unbounded_String
+                (Type_Name_For_Explanation (Comp_Ty) & " has Object_Size");
+         end if;
+      end if;
+
+      if No (Comp_Size) then
+         Explanation :=
+           To_Unbounded_String
+             ("Component_Size of "
+              & Type_Name_For_Explanation (Typ)
+              & " is missing");
       end if;
    end Array_Component_Size;
 
@@ -124,10 +149,12 @@ package body SPARK_Util.Types is
 
    function Array_Size_Is_Sum_Of_Components (E : Type_Kind_Id) return Boolean
    is
-      Comp_Size : Uint;
+      Size_Str    : Unbounded_String;
+      Explanation : Unbounded_String;
+      Comp_Size   : Uint;
 
    begin
-      Array_Component_Size (E, Comp_Size);
+      Array_Component_Size (E, Comp_Size, Size_Str, Explanation);
 
       --  There should not be gaps if the component size is a multiple of
       --  the Storage_Unit. If the array is not packed and the component
@@ -136,7 +163,7 @@ package body SPARK_Util.Types is
 
       return
         (if No (Comp_Size)
-         then not Is_Packed (E)
+         then Has_Aliased_Components (E) or else not Is_Packed (E)
          else Comp_Size mod System_Storage_Unit = Uint_0);
    end Array_Size_Is_Sum_Of_Components;
 
@@ -270,10 +297,10 @@ package body SPARK_Util.Types is
            and then not Is_First_Subtype (Typ)
          then
 
-            --  Arrays with aliased components cannot have gaps, try to compute
-            --  the size if the array type has static bounds.
+            --  If the array type cannot have gaps, try to compute the size if
+            --  the array type has static bounds.
 
-            if Has_Aliased_Components (Etype (Typ))
+            if Array_Size_Is_Sum_Of_Components (Typ)
               and then Is_Static_Array_Type (Typ)
             then
                declare
@@ -353,11 +380,12 @@ package body SPARK_Util.Types is
             begin
                Comp_Size :=
                  Get_Attribute_Value (Typ, Attribute_Component_Size);
-               pragma Assert (Has_Aliased_Components (Etype (Typ)));
 
                --  Here, components of slices are always aliased. Compute the
                --  size if the slice has static bounds. Otherwise, return
                --  No_Uint.
+
+               pragma Assert (Array_Size_Is_Sum_Of_Components (Etype (Typ)));
 
                if No (Comp_Size) then
                   Explanation :=
@@ -387,20 +415,7 @@ package body SPARK_Util.Types is
             declare
                Typ : constant Type_Kind_Id := Retysp (Etype (Prefix (Obj)));
             begin
-               Size := Get_Attribute_Value (Typ, Attribute_Component_Size);
-               if No (Size) then
-                  Explanation :=
-                    To_Unbounded_String
-                      ("Component_Size of "
-                       & Type_Name_For_Explanation (Typ)
-                       & " is missing");
-               else
-                  Size_Str :=
-                    To_Unbounded_String
-                      ("Component_Size of "
-                       & Type_Name_For_Explanation (Typ)
-                       & " is");
-               end if;
+               Array_Component_Size (Typ, Size, Size_Str, Explanation);
             end;
 
          when N_Selected_Component                                   =>
@@ -417,6 +432,7 @@ package body SPARK_Util.Types is
                  (if Nkind (Obj) = N_Defining_Identifier
                   then Obj
                   else Entity (Obj));
+               Typ : constant Type_Kind_Id := Retysp (Etype (Ent));
             begin
                --  If the object has its own size annotation, use it.
 
@@ -426,18 +442,22 @@ package body SPARK_Util.Types is
                     To_Unbounded_String
                       ("object " & Source_Name (Ent) & " has size");
 
-               --  If the size is not specified, for stand-alone objects (which
-               --  is the case here) GNAT always uses the Object_Size of the
-               --  type.
+               --  If the size is not specified, for constrained objects GNAT
+               --  always uses the Object_Size of the type.
                --  Note that the RM only mandates the Object_Size for aliased
                --  objects (ARM K.2 164 2/5).
 
-               else
-                  Check_Known_Esize (Etype (Ent), Size, Explanation);
+               elsif not Is_Composite_Type (Typ) or else Is_Constrained (Typ)
+               then
+                  Check_Known_Esize (Typ, Size, Explanation);
                   Size_Str :=
                     To_Unbounded_String
-                      (Type_Name_For_Explanation (Etype (Ent))
-                       & " has Object_Size");
+                      (Type_Name_For_Explanation (Typ) & " has Object_Size");
+               else
+                  Explanation :=
+                    To_Unbounded_String
+                      (Type_Name_For_Explanation (Typ) & " is unconstrained");
+                  Size := No_Uint;
                end if;
             end;
 
@@ -445,10 +465,17 @@ package body SPARK_Util.Types is
             declare
                Typ : constant Type_Kind_Id := Retysp (Etype (Obj));
             begin
-               Check_Known_Esize (Typ, Size, Explanation);
-               Size_Str :=
-                 To_Unbounded_String
-                   (Type_Name_For_Explanation (Typ) & "has Object_Size");
+               if not Is_Composite_Type (Typ) or else Is_Constrained (Typ) then
+                  Check_Known_Esize (Typ, Size, Explanation);
+                  Size_Str :=
+                    To_Unbounded_String
+                      (Type_Name_For_Explanation (Typ) & " has Object_Size");
+               else
+                  Explanation :=
+                    To_Unbounded_String
+                      (Type_Name_For_Explanation (Typ) & " is unconstrained");
+                  Size := No_Uint;
+               end if;
             end;
 
          when others                                                 =>
@@ -2496,9 +2523,9 @@ package body SPARK_Util.Types is
       return Result;
    end Root_Retysp;
 
-   ----------------------------------
-   -- Scalar_Record_Component_Size --
-   ----------------------------------
+   ---------------------------
+   -- Record_Component_Size --
+   ---------------------------
 
    procedure Record_Component_Size
      (Typ         : Type_Kind_Id;
@@ -2535,26 +2562,13 @@ package body SPARK_Util.Types is
                 (Type_Name_For_Explanation (Comp_Ty) & " has Object_Size");
          end if;
       end if;
-   end Record_Component_Size;
 
-   procedure Record_Component_Size
-     (Typ : Type_Kind_Id; Comp : Entity_Id; Comp_Size : out Uint)
-   is
-      Comp_Ty     : constant Type_Kind_Id := Retysp (Etype (Comp));
-      Explanation : Unbounded_String;
-   begin
-      if Present (Component_Clause (Comp)) then
-         Comp_Size :=
-           Expr_Value (Last_Bit (Component_Clause (Comp)))
-           - Expr_Value (First_Bit (Component_Clause (Comp)))
-           + Uint_1;
-
-      --  ARM K.2 225
-
-      elsif Is_Packed (Typ) then
-         Check_Known_RM_Size (Comp_Ty, Comp_Size, Explanation);
-      else
-         Check_Known_Esize (Comp_Ty, Comp_Size, Explanation);
+      if No (Size) then
+         Explanation :=
+           To_Unbounded_String
+             ("representation clause of "
+              & Type_Name_For_Explanation (Typ)
+              & " is missing");
       end if;
    end Record_Component_Size;
 

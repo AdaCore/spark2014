@@ -2,8 +2,8 @@ test.adb:3:14: warning: subprogram "Test_Unconstrained_Record" has no effect
 test.adb:11:17: warning: subprogram "P" has no effect
 test.adb:13:07: info: no contextual analysis of "Test_Unconstrained_Record" (nested subprogram)
 test.adb:15:25: medium: assertion might fail [provers reached step limit before completing the proof]
-test.adb:15:26: warning: "Object_Size" is not specified for type "Rec"
 test.adb:15:26: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
+test.adb:15:26: warning: type Rec is unconstrained
 test.adb:18:16: info: range check proved (CVC5: 1 VC)
 test.adb:18:25: info: discriminant check proved (CVC5: 1 VC)
 test.adb:19:16: info: range check proved (CVC5: 1 VC)
@@ -24,9 +24,9 @@ test.adb:47:17: warning: subprogram "P" has no effect
 test.adb:49:07: info: no contextual analysis of "Test_Slice_2" (nested subprogram)
 test.adb:51:25: info: range check proved (CVC5: 4 VC)
 test.adb:51:25: medium: assertion might fail [provers reached step limit before completing the proof]
-test.adb:51:35: warning: "Object_Size" is not specified for subtype of "A_Array"
+test.adb:51:35: warning: Object_Size of type Bool_Array is missing
 test.adb:51:35: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
-test.adb:51:50: warning: it is not specified for type "A_Array"
+test.adb:51:50: warning: Object_Size of type A_Array is missing
 test.adb:51:50: warning: the value of attribute "Object_Size" is handled in an imprecise way [imprecise-size]
 test.adb:55:07: info: precondition proved (CVC5: 2 VC; Trivial: 1 VC)
 test.adb:58:14: warning: subprogram "Test_Deref" has no effect
@@ -40,9 +40,7 @@ test.adb:82:20: warning: "X" is not modified, parameter type could be rewritten 
 test.adb:82:20: warning: unused variable "X"
 test.adb:84:07: info: no contextual analysis of "Test_Deref_Array" (nested subprogram)
 test.adb:86:25: medium: assertion might fail [provers reached step limit before completing the proof]
-test.adb:86:30: warning: "Object_Size" is not specified for type "Bool_Array"
-test.adb:86:30: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
-test.adb:86:48: warning: it is not specified for type "Bool_Array"
+test.adb:86:48: warning: Object_Size of type Bool_Array is missing
 test.adb:86:48: warning: the value of attribute "Object_Size" is handled in an imprecise way [imprecise-size]
 test.adb:91:07: info: precondition proved (Trivial: 1 VC)
 test.adb:94:14: warning: subprogram "Test_Deref_Array_2" has no effect
@@ -50,9 +48,9 @@ test.adb:99:20: warning: "X" is not modified, parameter type could be rewritten 
 test.adb:99:20: warning: unused variable "X"
 test.adb:101:07: info: no contextual analysis of "Test_Deref_Array_2" (nested subprogram)
 test.adb:103:25: medium: assertion might fail [provers reached step limit before completing the proof]
-test.adb:103:30: warning: "Object_Size" is not specified for type "Bool_Array"
 test.adb:103:30: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
-test.adb:103:48: warning: it is not specified for type "Bool_Array"
+test.adb:103:30: warning: type Bool_Array is unconstrained
+test.adb:103:48: warning: Object_Size of type Bool_Array is missing
 test.adb:103:48: warning: the value of attribute "Object_Size" is handled in an imprecise way [imprecise-size]
 test.adb:108:07: info: precondition proved (Trivial: 1 VC)
 test.adb:111:14: warning: subprogram "Test_Array_Comp" has no effect
@@ -74,9 +72,9 @@ test.adb:156:17: warning: subprogram "P" has no effect
 test.adb:158:07: info: no contextual analysis of "Test_Array_Comp_2" (nested subprogram)
 test.adb:160:25: medium: assertion might fail [provers reached step limit before completing the proof]
 test.adb:160:28: info: index check proved (CVC5: 2 VC)
-test.adb:160:30: warning: "Object_Size" is not specified for type "Bool_Array"
+test.adb:160:30: warning: Size of type Bool_Array is missing
 test.adb:160:30: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
-test.adb:160:48: warning: it is not specified for type "Bool_Array"
+test.adb:160:48: warning: Object_Size of type Bool_Array is missing
 test.adb:160:48: warning: the value of attribute "Object_Size" is handled in an imprecise way [imprecise-size]
 test.adb:164:07: info: precondition proved (CVC5: 2 VC)
 test.adb:167:14: warning: subprogram "Test_Record_Comp_2" has no effect
@@ -86,8 +84,8 @@ test.adb:174:27: info: length check proved (CVC5: 3 VC)
 test.adb:176:17: warning: subprogram "P" has no effect
 test.adb:178:07: info: no contextual analysis of "Test_Record_Comp_2" (nested subprogram)
 test.adb:180:25: medium: assertion might fail [provers reached step limit before completing the proof]
-test.adb:180:28: warning: "Object_Size" is not specified for type "Bool_Array"
+test.adb:180:28: warning: Size of type Bool_Array is missing
 test.adb:180:28: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
-test.adb:180:46: warning: it is not specified for type "Bool_Array"
+test.adb:180:46: warning: Object_Size of type Bool_Array is missing
 test.adb:180:46: warning: the value of attribute "Object_Size" is handled in an imprecise way [imprecise-size]
 test.adb:184:07: info: precondition proved (Trivial: 1 VC)
