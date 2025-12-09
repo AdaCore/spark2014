@@ -381,6 +381,21 @@ package SPARK_Util.Types is
    --  is the containing record type. The Size_Str contains a string that
    --  explains the origin of the computed size.
 
+   procedure Array_Component_Size (Typ : Type_Kind_Id; Comp_Size : out Uint);
+   --  Compute the expected size for components of an array type [Typ]
+
+   procedure Record_Component_Size
+     (Typ : Type_Kind_Id; Comp : Entity_Id; Comp_Size : out Uint);
+   --  Compute the expected size for a record component. [Typ] is the
+   --  containing record type.
+
+   function Array_Size_Is_Sum_Of_Components (E : Type_Kind_Id) return Boolean
+   with Pre => Is_Array_Type (E);
+   --  Return True if we can determine that there is no gaps between the
+   --  components of arrays of type E nor padding at the end. The size of such
+   --  an array can be computed by multiplying the number of components of the
+   --  array by the size of a component.
+
    function Type_Has_Only_Valid_Values
      (ArgTyp : Type_Kind_Id; Size : Uint; Size_Str : String)
       return True_Or_Explain

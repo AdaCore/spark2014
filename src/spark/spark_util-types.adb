@@ -34,6 +34,7 @@ with Sinfo.Utils;                 use Sinfo.Utils;
 with SPARK_Definition;            use SPARK_Definition;
 with SPARK_Definition.Annotate;   use SPARK_Definition.Annotate;
 with SPARK_Util.Subprograms;      use SPARK_Util.Subprograms;
+with Ttypes;                      use Ttypes;
 
 package body SPARK_Util.Types is
 
@@ -97,6 +98,47 @@ package body SPARK_Util.Types is
         and then Underlying_Type (Etype (Cursor)) /= Cursor
         and then Find_Aspect (Etype (Cursor), Aspect_Iterable) = Aspect;
    end Ancestor_Declares_Iterable_Aspect;
+
+   --------------------------
+   -- Array_Component_Size --
+   --------------------------
+
+   procedure Array_Component_Size (Typ : Type_Kind_Id; Comp_Size : out Uint) is
+      Comp_Ty     : constant Type_Kind_Id := Retysp (Component_Type (Typ));
+      Explanation : Unbounded_String;
+   begin
+      Comp_Size := Get_Attribute_Value (Typ, Attribute_Component_Size);
+
+      if No (Comp_Size) then
+         if Is_Packed (Typ) then
+            Check_Known_RM_Size (Comp_Ty, Comp_Size, Explanation);
+         else
+            Check_Known_Esize (Comp_Ty, Comp_Size, Explanation);
+         end if;
+      end if;
+   end Array_Component_Size;
+
+   -------------------------------------
+   -- Array_Size_Is_Sum_Of_Components --
+   -------------------------------------
+
+   function Array_Size_Is_Sum_Of_Components (E : Type_Kind_Id) return Boolean
+   is
+      Comp_Size : Uint;
+
+   begin
+      Array_Component_Size (E, Comp_Size);
+
+      --  There should not be gaps if the component size is a multiple of
+      --  the Storage_Unit. If the array is not packed and the component
+      --  size is not specified, the Object_Size of the component type is
+      --  used. It is always a multiple of the Storage_Unit.
+
+      return
+        (if No (Comp_Size)
+         then not Is_Packed (E)
+         else Comp_Size mod System_Storage_Unit = Uint_0);
+   end Array_Size_Is_Sum_Of_Components;
 
    -----------------
    -- Base_Retysp --
@@ -2492,6 +2534,27 @@ package body SPARK_Util.Types is
               To_Unbounded_String
                 (Type_Name_For_Explanation (Comp_Ty) & " has Object_Size");
          end if;
+      end if;
+   end Record_Component_Size;
+
+   procedure Record_Component_Size
+     (Typ : Type_Kind_Id; Comp : Entity_Id; Comp_Size : out Uint)
+   is
+      Comp_Ty     : constant Type_Kind_Id := Retysp (Etype (Comp));
+      Explanation : Unbounded_String;
+   begin
+      if Present (Component_Clause (Comp)) then
+         Comp_Size :=
+           Expr_Value (Last_Bit (Component_Clause (Comp)))
+           - Expr_Value (First_Bit (Component_Clause (Comp)))
+           + Uint_1;
+
+      --  ARM K.2 225
+
+      elsif Is_Packed (Typ) then
+         Check_Known_RM_Size (Comp_Ty, Comp_Size, Explanation);
+      else
+         Check_Known_Esize (Comp_Ty, Comp_Size, Explanation);
       end if;
    end Record_Component_Size;
 

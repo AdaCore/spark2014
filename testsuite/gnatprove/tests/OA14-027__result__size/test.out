@@ -1,6 +1,2 @@
-res_size.ads:5:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
-res_size.ads:6:20: info: postcondition proved (Trivial: 1 VC)
-res_size.ads:6:28: warning: "Object_Size" is not specified for type "Arr"
-res_size.ads:6:28: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
-res_size.ads:6:37: warning: "Object_Size" is not specified for type "Arr"
-res_size.ads:6:37: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
+res_size.ads:6:28: error: unknown value of object size is not yet supported
+gnatprove: error during flow analysis and proof
