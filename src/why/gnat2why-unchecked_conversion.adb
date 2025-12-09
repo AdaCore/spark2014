@@ -1617,7 +1617,19 @@ package body Gnat2Why.Unchecked_Conversion is
                 & ", created in "
                 & GNAT.Source_Info.Enclosing_Entity);
 
-         if not Precise_UC.Ok then
+         if Source_Type = Target_Type then
+
+            Def := +Source_Id;
+
+            if Potentially_Invalid then
+               Def :=
+                 +New_Function_Validity_Wrapper_Value
+                    (Ty         => Target_Type,
+                     Valid_Flag => +New_Valid_Value_For_Type (Target_Type),
+                     Value      => +Def);
+            end if;
+
+         elsif not Precise_UC.Ok then
 
             Def := Why_Empty;
 
@@ -1673,7 +1685,7 @@ package body Gnat2Why.Unchecked_Conversion is
       --  Generate axiom modules if the inverse of the UC function already
       --  exists.
 
-      if not Potentially_Invalid then
+      if not Potentially_Invalid and then Source_Type /= Target_Type then
          declare
             Inv_Module : constant Symbol :=
               Get_UC_Theory_Name
@@ -1692,13 +1704,11 @@ package body Gnat2Why.Unchecked_Conversion is
                   Module      => M_UCs (Module_Name),
                   Inv_Fun     => M_UCs (Position).UC_Id);
 
-               if Source_Type /= Target_Type then
-                  Generate_Inversion_Axiom
-                    (Source_Type => Target_Type,
-                     Target_Type => Source_Type,
-                     Module      => M_UCs (Position),
-                     Inv_Fun     => M_UCs (Module_Name).UC_Id);
-               end if;
+               Generate_Inversion_Axiom
+                 (Source_Type => Target_Type,
+                  Target_Type => Source_Type,
+                  Module      => M_UCs (Position),
+                  Inv_Fun     => M_UCs (Module_Name).UC_Id);
             end if;
          end;
       end if;
