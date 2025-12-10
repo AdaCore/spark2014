@@ -20084,6 +20084,11 @@ package body Gnat2Why.Expr is
                           Assert
                             (Ekind (Entity (Expr))
                              in Formal_Kind | E_Constant | E_Variable);
+                        pragma
+                          Assert
+                            (if Has_Mutable_Discriminants
+                                  (Retysp (Etype (Expr)))
+                               then Attr_Constrained_Statically_Known (Expr));
 
                         --  Use the Size aspect of Var if it is supplied
 
@@ -20093,6 +20098,21 @@ package body Gnat2Why.Expr is
                         if Present (Static_Size) then
                            Dynamic_Size :=
                              New_Integer_Constant (Value => Static_Size);
+
+                        --  For unconstrained objects with mutable
+                        --  discriminants, use the object size of the type.
+
+                        elsif Has_Mutable_Discriminants (Retysp (Etype (Expr)))
+                          and then
+                            not Attribute_Constrained_Static_Value (Expr)
+                        then
+                           Dynamic_Size :=
+                             New_Call
+                               (Domain => Domain,
+                                Name   => E_Symb (Typ, WNE_Attr_Object_Size),
+                                Typ    => EW_Int_Type);
+                           Precise := False;
+
                         else
                            Compute_Size_From_Type (Typ);
                         end if;
