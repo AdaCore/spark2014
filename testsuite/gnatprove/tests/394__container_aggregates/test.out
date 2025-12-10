@@ -21,7 +21,7 @@ test_formal.adb:35:27: medium: elements shall be distinct and shall fit in "Coun
 test_formal.adb:35:27: medium: precondition might fail [provers gave up before completing the proof]
 test_formal.adb:35:34: medium: range check might fail, cannot prove lower bound for Get_Value [possible fix: you should consider adding a postcondition to function Get_Value or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 test_formal.adb:40:32: info: data dependencies proved
-test_formal.adb:42:32: info: all elements shall fit in index type and fit in "Count_Type" for sequence aggregates at spark-containers-formal-vectors.ads:81, in instantiation at test_formal_instances.ads:35
+test_formal.adb:42:32: info: all elements shall fit in index type and fit in "Count_Type" for sequence aggregates at spark-containers-formal-vectors.ads:82, in instantiation at test_formal_instances.ads:35
 test_formal.adb:42:32: info: precondition proved (CVC5: 2 VC)
 test_formal.adb:42:36: medium: range check might fail, cannot prove lower bound for Get_Value [possible fix: you should consider adding a postcondition to function Get_Value or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 test_formal_predicate.adb:5:30: info: data dependencies proved
@@ -57,7 +57,7 @@ test_formal_predicate.adb:35:28: info: predicate check proved (CVC5: 1 VC)
 test_formal_predicate.adb:35:34: info: predicate check proved (CVC5: 1 VC)
 test_formal_predicate.adb:35:40: medium: predicate check might fail [possible fix: you should consider adding a postcondition to function Get_Value or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 test_formal_predicate.adb:40:32: info: data dependencies proved
-test_formal_predicate.adb:42:32: info: all elements shall fit in index type and fit in "Count_Type" for sequence aggregates at spark-containers-formal-vectors.ads:81, in instantiation at test_formal_predicate_instances.ads:43
+test_formal_predicate.adb:42:32: info: all elements shall fit in index type and fit in "Count_Type" for sequence aggregates at spark-containers-formal-vectors.ads:82, in instantiation at test_formal_predicate_instances.ads:43
 test_formal_predicate.adb:42:32: info: precondition proved (CVC5: 2 VC)
 test_formal_predicate.adb:42:33: info: predicate check proved (CVC5: 1 VC)
 test_formal_predicate.adb:42:39: medium: predicate check might fail [possible fix: you should consider adding a postcondition to function Get_Value or turning it into an expression function in its unit spec] [provers gave up before completing the proof]

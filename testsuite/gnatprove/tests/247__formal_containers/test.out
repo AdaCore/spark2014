@@ -61,7 +61,7 @@ main.adb:69:22: info: precondition proved (CVC5: 1 VC)
 main.adb:69:34: info: precondition proved (CVC5: 1 VC)
 main.adb:69:43: info: precondition proved (CVC5: 1 VC)
 main.adb:72:32: info: data dependencies proved
-main.adb:75:32: info: all elements shall fit in index type and fit in "Count_Type" for sequence aggregates at spark-containers-formal-vectors.ads:81, in instantiation at main.adb:73
+main.adb:75:32: info: all elements shall fit in index type and fit in "Count_Type" for sequence aggregates at spark-containers-formal-vectors.ads:82, in instantiation at main.adb:73
 main.adb:75:32: info: precondition proved (CVC5: 2 VC)
 main.adb:77:22: info: assertion proved (CVC5: 1 VC)
 main.adb:78:22: info: assertion proved (CVC5: 1 VC)
