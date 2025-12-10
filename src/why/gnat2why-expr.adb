@@ -18135,6 +18135,13 @@ package body Gnat2Why.Expr is
                           Assert
                             (Ekind (Entity (Expr))
                              in Formal_Kind | E_Constant | E_Variable);
+                        pragma
+                          Assert
+                            (if Has_Mutable_Discriminants
+                                  (Retysp (Etype (Expr)))
+                             then Attr_Constrained_Statically_Known (Expr)
+                             and then Attribute_Constrained_Static_Value
+                               (Expr));
 
                         --  Use the Size aspect of Var if it is supplied
 

@@ -4893,20 +4893,47 @@ package body SPARK_Definition is
                      return;
                   end if;
 
+                  --  Reject Size on objects if the prefix is a complex
+                  --  expression (not a standalone object or parameter, nor a
+                  --  component or dereference). Only accept slices if their
+                  --  size can be computed from the length of the slice.
+                  --  Reject mutable formal parameters of a type with mutable
+                  --  discriminants for now as it is unclear that GNAT is doing
+                  --  the right thing for them.
+
                   if Attr_Id = Attribute_Size and then not Has_Type_Prefix then
                      if Nkind (P)
                         not in N_Indexed_Component
                              | N_Selected_Component
                              | N_Explicit_Dereference
-                             | N_Identifier
-                             | N_Expanded_Name
+                       and then
+                         (Nkind (P) not in N_Identifier | N_Expanded_Name
+                          or else
+                            (Ekind (Entity (P)) in E_Variable
+                                                 | E_Out_Parameter
+                                                 | E_In_Out_Parameter
+                             and then
+                               Has_Mutable_Discriminants (Retysp (Etype (P)))))
                        and then
                          (Nkind (P) /= N_Slice
                           or else
                             not Array_Size_Is_Sum_Of_Components
                                   (Retysp (Etype (Prefix (P)))))
                      then
-                        Mark_Unsupported (Lim_Unknown_Size, N);
+                        Mark_Unsupported
+                          (Lim_Unknown_Size,
+                           N,
+                           Cont_Msg =>
+                             (case Nkind (P) is
+                                when N_Identifier | N_Expanded_Name =>
+                                  Create
+                                    ("object might be constrained"
+                                     & " or unconstrained"),
+                                when N_Slice                        =>
+                                  Create ("type of slice might have gaps"),
+                                when others                         =>
+                                  No_Message));
+
                         return;
                      end if;
                   end if;
