@@ -1,3 +1,4 @@
+repro.adb:11:13: high: alignment of source type of unchecked conversion might not be an integral multiple of alignment of target type [possible explanation: alignment of Subarr (which is 1) must be a multiple of the alignment of Integer (which is 4)] [possible fix: source type of unchecked conversion should have an Alignment representation clause]
 repro.adb:11:13: info: types in unchecked conversion have the same size (Trivial)
 repro.adb:11:13: warning: imprecise handling of Unchecked_Conversion (component offset not known) [imprecise-unchecked-conversion]
 repro.adb:11:53: info: type is suitable as source for unchecked conversion (Trivial)

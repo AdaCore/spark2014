@@ -156,4 +156,11 @@ package Gnat2Why.Unchecked_Conversion is
    --  validity wrapper. The validity flag is set to True iff all scalar
    --  subcomponents of the return value are in the bounds of their subtype.
 
+   procedure Types_Compatible_Alignment
+     (Src_Ty      : Type_Kind_Id;
+      Tar_Ty      : Type_Kind_Id;
+      Valid       : out Boolean;
+      Explanation : out Unbounded_String);
+   --  Check that Src_Ty and Tar_Ty have compatible alignment
+
 end Gnat2Why.Unchecked_Conversion;

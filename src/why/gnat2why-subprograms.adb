@@ -6343,6 +6343,14 @@ package body Gnat2Why.Subprograms is
                   Valid,
                   E,
                   Explanation => To_String (Explanation));
+
+               Types_Compatible_Alignment (Src_Ty, Tar_Ty, Valid, Explanation);
+               Emit_Static_Proof_Result
+                 (E,
+                  VC_UC_Align_UC,
+                  Valid,
+                  E,
+                  Explanation => To_String (Explanation));
             end;
          end;
       end if;

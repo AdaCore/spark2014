@@ -272,6 +272,7 @@ unch_conversion.adb:6:13: info: implicit aspect Always_Terminates on "F" has bee
 unch_conversion.adb:6:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
 unch_conversion.adb:6:65: medium: postcondition might fail
 unch_conversion.adb:8:37: info: precondition proved (Trivial: 1 VC)
+unch_conversion.adb:10:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 unch_conversion.adb:10:13: info: types in unchecked conversion have the same size (Trivial)
 unch_conversion.adb:10:13: warning: implicit function contract might not be available on implicit recursive calls [contracts-recursive]
 unch_conversion.adb:10:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]

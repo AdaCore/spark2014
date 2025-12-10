@@ -18,21 +18,26 @@ test.adb:12:46: high: types of aliased objects do not have the same size [possib
 test.adb:12:46: info: object is suitable for aliasing via address clause (Trivial)
 test.adb:12:46: info: type is suitable as source for unchecked conversion (Trivial)
 test.adb:19:13: high: types used for unchecked conversion do not have the same size [possible explanation: type Nat_Array doesn't have a Size representation clause or aspect]
+test.adb:19:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 test.adb:19:13: warning: imprecise handling of Unchecked_Conversion (types in unchecked conversion do not have the same size) [imprecise-unchecked-conversion]
 test.adb:19:59: info: type is suitable as source for unchecked conversion (Trivial)
 test.adb:19:68: info: type is suitable for unchecked conversion (Trivial)
 test.adb:20:13: high: types used for unchecked conversion do not have the same size [possible explanation: type Nat_Array doesn't have a Size representation clause or aspect]
+test.adb:20:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 test.adb:20:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as source for unchecked conversion) [imprecise-unchecked-conversion]
 test.adb:20:61: high: type is unsuitable as a source for unchecked conversion [possible explanation: type Nat_Array doesn't have a Size representation clause or aspect; type Nat_Array might have unused bits that are not modelled in SPARK]
 test.adb:20:72: info: type is suitable for unchecked conversion (Trivial)
+test.adb:32:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 test.adb:32:13: info: types in unchecked conversion have the same size (Trivial)
 test.adb:32:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as source for unchecked conversion) [imprecise-unchecked-conversion]
 test.adb:32:53: high: type is unsuitable as a source for unchecked conversion [possible explanation: type R has discriminants; type R might have unused bits that are not modelled in SPARK]
 test.adb:32:56: info: type is suitable for unchecked conversion (Trivial)
+test.adb:39:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 test.adb:39:13: info: types in unchecked conversion have the same size (Trivial)
 test.adb:39:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as source for unchecked conversion) [imprecise-unchecked-conversion]
 test.adb:39:53: high: type is unsuitable as a source for unchecked conversion [possible explanation: type R has discriminants; type A might have unused bits that are not modelled in SPARK]
 test.adb:39:56: high: type is unsuitable as a target for unchecked conversion [possible explanation: type R has discriminants; invalid values could result from the unchecked conversion [SPARK RM 13.9]]
+test.adb:40:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 test.adb:40:13: info: types in unchecked conversion have the same size (Trivial)
 test.adb:40:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as source for unchecked conversion) [imprecise-unchecked-conversion]
 test.adb:40:53: high: type is unsuitable as a source for unchecked conversion [possible explanation: type R has discriminants; type H might have unused bits that are not modelled in SPARK]

@@ -1,3 +1,4 @@
+p.ads:36:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 p.ads:36:13: info: types in unchecked conversion have the same size (Trivial)
 p.ads:38:19: info: type is suitable as source for unchecked conversion (Trivial)
 p.ads:39:19: info: type is suitable for unchecked conversion (Trivial)

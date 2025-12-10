@@ -4,6 +4,9 @@
       |                ^~~~~~~~
       + possible explanation: Size of type Boolean and type Character differ
 
+ info: alignment of source type of unchecked conversion is compatible with alignment of target type
+--> test_unchecked_conversion.adb:5:13
+
  info: type is suitable as source for unchecked conversion
 --> test_unchecked_conversion.adb:5:55
 
@@ -11,6 +14,9 @@
 --> test_unchecked_conversion.adb:5:64
 
  info: types in unchecked conversion have the same size
+--> test_unchecked_conversion.adb:14:13
+
+ info: alignment of source type of unchecked conversion is compatible with alignment of target type
 --> test_unchecked_conversion.adb:14:13
 
  high: type is unsuitable as a source for unchecked conversion

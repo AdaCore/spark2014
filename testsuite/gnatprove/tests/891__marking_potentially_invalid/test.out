@@ -103,6 +103,7 @@ ext.ads:528:22: warning: invalid data might be read; read data is assumed to be 
 ext.ads:533:118: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
 ext.ads:533:128: warning: contract case does not check the outcome of calling "P_Read_Old_KO7" [-gnatw.t]
 ext.ads:538:41: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
+test.adb:9:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 test.adb:9:13: info: types in unchecked conversion have the same size (Trivial)
 test.adb:9:13: warning: imprecise handling of Unchecked_Conversion (component offset not known) [imprecise-unchecked-conversion]
 test.adb:9:51: info: type is suitable as source for unchecked conversion (Trivial)

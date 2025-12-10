@@ -950,6 +950,7 @@ zone_file_parser.adb:696:07: info: initialization of "BlockNumberOfFirstRecordTy
 zone_file_parser.adb:698:07: info: initialization of "BlockIndex" proved
 zone_file_parser.adb:699:07: info: initialization of "ByteNumber" proved
 zone_file_parser.adb:700:07: info: initialization of "BitNumber" proved
+zone_file_parser.adb:702:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 zone_file_parser.adb:702:16: info: types in unchecked conversion have the same size (Trivial)
 zone_file_parser.adb:702:16: warning: imprecise handling of Unchecked_Conversion (enumeration with non-default representation) [imprecise-unchecked-conversion]
 zone_file_parser.adb:703:10: info: type is suitable as source for unchecked conversion (Trivial)
