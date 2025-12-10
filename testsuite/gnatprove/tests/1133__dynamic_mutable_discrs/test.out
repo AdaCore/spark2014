@@ -1,0 +1,5 @@
+test.adb:16:23: error: formal parameter might be constrained or unconstrained
+test.adb:16:23: error: unknown value of object size is not yet supported
+test.adb:19:26: error: formal parameter might be constrained or unconstrained
+test.adb:19:26: error: unknown value of object size is not yet supported
+gnatprove: error during flow analysis and proof
