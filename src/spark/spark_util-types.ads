@@ -131,12 +131,13 @@ package SPARK_Util.Types is
 
    function Can_Be_Default_Initialized (Typ : Type_Kind_Id) return Boolean
    is ((not Has_Array_Type (Typ) or else Is_Constrained (Typ))
-       and then
-         (Retysp_Kind (Typ)
-          not in Record_Kind | Incomplete_Or_Private_Kind | Concurrent_Kind
-          or else not Has_Discriminants (Typ)
-          or else Is_Constrained (Typ)
-          or else Has_Defaulted_Discriminants (Typ))
+       and then (Retysp_Kind (Typ)
+                 not in Record_Kind
+                      | Incomplete_Or_Private_Kind
+                      | Concurrent_Kind
+                 or else not Has_Discriminants (Typ)
+                 or else Is_Constrained (Typ)
+                 or else Has_Defaulted_Discriminants (Typ))
        and then not Is_Class_Wide_Type (Typ));
    --  Determine whether there can be default initialized variables of a type.
    --  @param Typ any type
