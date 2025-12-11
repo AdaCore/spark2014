@@ -1,4 +1,4 @@
-simple.adb:4:54: high: overflow check might fail, cannot prove upper bound for Init_Val + 1 (e.g. when Init_Val = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Init_Val <= Integer'Last - 1) to subprogram at simple.ads:7] [provers gave up before completing the proof]
+simple.adb:4:54: high: overflow check might fail, cannot prove upper bound for Init_Val + 1 (e.g. when Init_Val = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Init_Val <= Integer'Last - 1) to subprogram at simple.ads:7] [provers reached step limit before completing the proof]
 simple.ads:7:13: info: implicit aspect Always_Terminates on "Foo" has been proved, subprogram will terminate
 simple.ads:8:17: info: postcondition proved (CVC5: 1 VC)
 simple.ads:8:69: info: overflow check proved (CVC5: 2 VC)

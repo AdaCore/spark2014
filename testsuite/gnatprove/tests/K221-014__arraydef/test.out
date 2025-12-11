@@ -1,2 +1,2 @@
 arraydef.adb:5:24: info: unrolling loop [info-unrolling-inlining]
-arraydef.adb:6:24: high: overflow check might fail, cannot prove upper bound for X(I) + 1 (e.g. when I = 1 and X = (others => Integer'Last)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at arraydef.ads:5 should mention X in a precondition] [provers gave up before completing the proof]
+arraydef.adb:6:24: high: overflow check might fail, cannot prove upper bound for X(I) + 1 (e.g. when I = 1 and X = (others => Integer'Last)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at arraydef.ads:5 should mention X in a precondition] [provers reached step limit before completing the proof]

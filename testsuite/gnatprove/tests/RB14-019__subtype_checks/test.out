@@ -4,7 +4,7 @@ subtype_check.adb:20:14: warning: subprogram "Wrong" has no effect
 subtype_check.adb:21:07: info: range check proved (CVC5: 2 VC)
 subtype_check.adb:22:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 subtype_check.adb:22:37: info: length check proved (CVC5: 3 VC)
-subtype_check.adb:22:37: medium: range check might fail [reason for check: value must fit in the designated type of the allocator] [provers gave up before completing the proof]
+subtype_check.adb:22:37: medium: range check might fail [reason for check: value must fit in the designated type of the allocator] [provers reached step limit before completing the proof]
 subtype_check.adb:27:14: warning: subprogram "Wrong_2" has no effect
 subtype_check.adb:29:44: info: division check proved (CVC5: 1 VC)
 subtype_check.adb:31:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)

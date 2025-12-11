@@ -1,10 +1,10 @@
 test_1.adb:14:17: warning: subprogram "Test" has no effect
 test_1.adb:35:15: info: range check proved (CVC5: 1 VC)
-test_1.adb:35:19: medium: discriminant check might fail (e.g. when X.all = (Present => True, The_Value => 0)) [possible fix: subprogram at line 33 should mention X in a precondition] [provers gave up before completing the proof]
+test_1.adb:35:19: medium: discriminant check might fail (e.g. when X.all = (Present => True, The_Value => 0)) [possible fix: subprogram at line 33 should mention X in a precondition] [provers reached step limit before completing the proof]
 test_1.adb:35:22: medium: discriminant check might fail [provers reached step limit before completing the proof]
 test_1.adb:42:13: info: null exclusion check proved (CVC5: 1 VC)
 test_3.adb:8:17: warning: subprogram "Test" has no effect
 test_3.adb:30:15: info: range check proved (CVC5: 1 VC)
-test_3.adb:30:19: medium: discriminant check might fail (e.g. when X.all = (Present => True, The_Value => 0)) [possible fix: subprogram at line 28 should mention X in a precondition] [provers gave up before completing the proof]
+test_3.adb:30:19: medium: discriminant check might fail (e.g. when X.all = (Present => True, The_Value => 0)) [possible fix: subprogram at line 28 should mention X in a precondition] [provers reached step limit before completing the proof]
 test_3.adb:30:22: medium: discriminant check might fail [provers reached step limit before completing the proof]
 test_3.adb:37:13: info: null exclusion check proved (CVC5: 1 VC)

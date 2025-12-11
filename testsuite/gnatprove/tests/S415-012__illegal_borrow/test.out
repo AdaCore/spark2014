@@ -13,6 +13,6 @@ incorrect_borrows.adb:28:13: info: predicate check proved (CVC5: 1 VC; Trivial: 
 incorrect_borrows.adb:28:15: info: pointer dereference check proved (CVC5: 1 VC)
 incorrect_borrows.adb:28:15: medium: in inlined predicate at incorrect_borrows.adb:8
 incorrect_borrows.adb:28:15: medium: in possible reconstructed values at the end of the borrow at incorrect_borrows.adb:24
-incorrect_borrows.adb:28:15: medium: predicate check might fail, cannot prove T1.B /= T1.N.B [provers gave up before completing the proof]
+incorrect_borrows.adb:28:15: medium: predicate check might fail, cannot prove T1.B /= T1.N.B [provers reached step limit before completing the proof]
 incorrect_borrows.adb:29:08: info: pointer dereference check proved (CVC5: 1 VC)
 incorrect_borrows.adb:29:08: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)

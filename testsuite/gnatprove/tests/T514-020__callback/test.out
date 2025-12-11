@@ -69,4 +69,4 @@ test_callback.adb:116:54: info: postcondition of source is strong enough to impl
 test_callback.adb:116:54: info: precondition of target is strong enough to imply precondition of source (CVC5: 1 VC)
 test_callback.adb:116:63: info: null exclusion check proved (Trivial: 1 VC)
 test_callback.adb:117:19: info: assertion proved (CVC5: 2 VC)
-test_callback.adb:118:19: medium: assertion might fail [provers gave up before completing the proof]
+test_callback.adb:118:19: medium: assertion might fail [provers reached step limit before completing the proof]

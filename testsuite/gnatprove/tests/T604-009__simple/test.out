@@ -1,4 +1,4 @@
 repr.adb:4:14: warning: subprogram "Insert" has no effect
-repr.adb:7:48: medium: range check might fail, cannot prove upper bound for U64'Pos (Val) (e.g. when Val = U64'Last-3) [possible fix: add precondition (U64'Pos (Val) <= Short_Integer'Last) to subprogram at line 4] [provers gave up before completing the proof]
+repr.adb:7:48: medium: range check might fail, cannot prove upper bound for U64'Pos (Val) (e.g. when Val = U64'Last-3) [possible fix: add precondition (U64'Pos (Val) <= Short_Integer'Last) to subprogram at line 4] [provers reached step limit before completing the proof]
 repr.adb:7:59: info: division check proved (CVC5: 1 VC)
 repr.adb:13:04: info: precondition proved (CVC5: 1 VC)

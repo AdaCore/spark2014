@@ -4,7 +4,7 @@ conv.adb:3:13: info: local subprogram "Has_Neg_Sign" only analyzed in the contex
 conv.adb:8:13: info: implicit aspect Always_Terminates on "Zero" has been proved, subprogram will terminate
 conv.adb:13:34: info: analyzing call to "Has_Neg_Sign" in context
 conv.adb:14:34: info: analyzing call to "Has_Neg_Sign" in context
-conv.adb:16:19: high: assertion might fail (e.g. when Z1_Sign = False and Z2_Sign = True) [provers gave up before completing the proof]
+conv.adb:16:19: high: assertion might fail (e.g. when Z1_Sign = False and Z2_Sign = True) [provers reached step limit before completing the proof]
 conv2.adb:11:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 conv2.adb:11:13: info: types in unchecked conversion have the same size (Trivial)
 conv2.adb:11:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]

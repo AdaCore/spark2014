@@ -7,11 +7,11 @@ fail.adb:17:11: info: range check proved (CVC5: 1 VC)
 fail.adb:19:14: info: range check proved (CVC5: 1 VC)
 fail.adb:27:21: info: index check proved (CVC5: 2 VC)
 fail.adb:27:35: info: index check proved (CVC5: 2 VC)
-fail.adb:35:11: high: range check might fail, cannot prove upper bound for C'Length (e.g. when C = (others => False) and C'First = 0 and C'Last = My_Index'Last) [provers gave up before completing the proof]
+fail.adb:35:11: high: range check might fail, cannot prove upper bound for C'Length (e.g. when C = (others => False) and C'First = 0 and C'Last = My_Index'Last) [provers reached step limit before completing the proof]
 fail.adb:37:14: info: range check proved (CVC5: 2 VC)
 fail.adb:42:14: warning: subprogram "P4" has no effect
 fail.adb:45:22: info: assertion proved (CVC5: 1 VC)
-fail.adb:45:23: high: range check might fail, cannot prove upper bound for C'Length (e.g. when C = (others => False) and C'First = 0 and C'Last = My_Index'Last) [provers gave up before completing the proof]
+fail.adb:45:23: high: range check might fail, cannot prove upper bound for C'Length (e.g. when C = (others => False) and C'First = 0 and C'Last = My_Index'Last) [provers reached step limit before completing the proof]
 fail.adb:48:04: info: precondition proved (CVC5: 2 VC)
 fail.adb:49:04: info: precondition proved (CVC5: 2 VC)
 fail.adb:50:04: info: precondition proved (CVC5: 2 VC)

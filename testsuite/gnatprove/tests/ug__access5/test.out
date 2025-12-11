@@ -14,4 +14,4 @@
 --> test.adb:15:04
    15 |       Free (Z);    -- memory leak on deallocation
       |       ^~~~~~~
-      + provers gave up before completing the proof
+      + provers reached step limit before completing the proof

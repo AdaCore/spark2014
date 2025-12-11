@@ -17,7 +17,7 @@ red_black_trees.adb:12:29: info: precondition proved (CVC5: 1 VC)
 red_black_trees.adb:12:36: info: precondition proved (CVC5: 1 VC)
 red_black_trees.adb:15:15: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:15:31: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:16:15: medium: postcondition might fail, cannot prove Is_Search_Tree (T) [provers gave up before completing the proof]
+red_black_trees.adb:16:15: medium: postcondition might fail, cannot prove Is_Search_Tree (T) [provers reached step limit before completing the proof]
 red_black_trees.adb:22:15: info: precondition proved (CVC5: 1 VC)
 red_black_trees.adb:23:28: info: precondition proved (CVC5: 1 VC)
 red_black_trees.adb:24:15: info: predicate check proved (Trivial: 1 VC)
@@ -37,7 +37,7 @@ red_black_trees.adb:29:29: info: precondition proved (CVC5: 1 VC)
 red_black_trees.adb:29:36: info: precondition proved (CVC5: 1 VC)
 red_black_trees.adb:32:15: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:32:31: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:33:15: medium: postcondition might fail, cannot prove Is_Search_Tree (T) [provers gave up before completing the proof]
+red_black_trees.adb:33:15: medium: postcondition might fail, cannot prove Is_Search_Tree (T) [provers reached step limit before completing the proof]
 red_black_trees.adb:38:42: info: range check proved (CVC5: 1 VC)
 red_black_trees.adb:42:15: medium: postcondition might fail, cannot prove Contains (Model (T), V) [provers reached step limit before completing the proof]
 red_black_trees.adb:45:15: info: predicate check proved (Trivial: 1 VC)

@@ -2,7 +2,7 @@ test_tagged_records_loop.adb:15:69: info: tag check proved (CVC5: 1 VC)
 test_tagged_records_loop.adb:18:24: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 test_tagged_records_loop.adb:21:18: info: tag check proved (CVC5: 1 VC)
 test_tagged_records_loop.adb:25:10: info: assertion proved (CVC5: 1 VC)
-test_tagged_records_loop.adb:29:46: medium: assertion might fail, cannot prove Child'Class (A (K).all).J = 2 [possible fix: loop at line 18 should mention A in a loop invariant] [provers gave up before completing the proof]
+test_tagged_records_loop.adb:29:46: medium: assertion might fail, cannot prove Child'Class (A (K).all).J = 2 [possible fix: loop at line 18 should mention A in a loop invariant] [provers reached step limit before completing the proof]
 test_tagged_records_loop.adb:29:65: info: tag check proved (CVC5: 1 VC)
 test_tagged_records_loop.adb:35:69: info: tag check proved (CVC5: 1 VC)
 test_tagged_records_loop.adb:37:08: info: postcondition proved (CVC5: 2 VC)

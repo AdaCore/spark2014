@@ -83,25 +83,25 @@ test_loops.adb:17:43: info: types of aliased objects have the same size (Trivial
 test_loops.adb:33:33: info: loop invariant initialization proved (Trivial: 1 VC)
 test_loops.adb:33:33: info: loop invariant preservation proved (Trivial: 1 VC)
 test_loops.adb:35:22: info: assertion proved (CVC5: 1 VC)
-test_loops.adb:36:39: medium: assertion might fail, cannot prove Y.G = CY.G [possible fix: loop invariant at line 33 should mention X] [provers gave up before completing the proof]
+test_loops.adb:36:39: medium: assertion might fail, cannot prove Y.G = CY.G [possible fix: loop invariant at line 33 should mention X] [provers reached step limit before completing the proof]
 test_loops.adb:47:33: info: loop invariant initialization proved (Trivial: 1 VC)
 test_loops.adb:47:33: info: loop invariant preservation proved (Trivial: 1 VC)
 test_loops.adb:49:22: info: assertion proved (CVC5: 1 VC)
-test_loops.adb:50:39: medium: assertion might fail, cannot prove X.G = CX.G [possible fix: loop invariant at line 47 should mention X] [provers gave up before completing the proof]
-test_loops.adb:51:39: medium: assertion might fail, cannot prove Z.F = CZ.F [possible fix: loop invariant at line 47 should mention X] [provers gave up before completing the proof]
+test_loops.adb:50:39: medium: assertion might fail, cannot prove X.G = CX.G [possible fix: loop invariant at line 47 should mention X] [provers reached step limit before completing the proof]
+test_loops.adb:51:39: medium: assertion might fail, cannot prove Z.F = CZ.F [possible fix: loop invariant at line 47 should mention X] [provers reached step limit before completing the proof]
 test_loops.adb:63:33: info: loop invariant initialization proved (Trivial: 1 VC)
 test_loops.adb:63:33: info: loop invariant preservation proved (Trivial: 1 VC)
-test_loops.adb:65:39: medium: assertion might fail, cannot prove Y.G = CY.G [possible fix: loop invariant at line 63 should mention X] [provers gave up before completing the proof]
-test_loops.adb:66:39: medium: assertion might fail, cannot prove X.F = CX.F [possible fix: loop invariant at line 63 should mention X] [provers gave up before completing the proof]
-test_loops.adb:67:39: medium: assertion might fail, cannot prove Z.F = CZ.F [possible fix: loop invariant at line 63 should mention X] [provers gave up before completing the proof]
+test_loops.adb:65:39: medium: assertion might fail, cannot prove Y.G = CY.G [possible fix: loop invariant at line 63 should mention X] [provers reached step limit before completing the proof]
+test_loops.adb:66:39: medium: assertion might fail, cannot prove X.F = CX.F [possible fix: loop invariant at line 63 should mention X] [provers reached step limit before completing the proof]
+test_loops.adb:67:39: medium: assertion might fail, cannot prove Z.F = CZ.F [possible fix: loop invariant at line 63 should mention X] [provers reached step limit before completing the proof]
 test_loops.adb:79:33: info: loop invariant initialization proved (Trivial: 1 VC)
 test_loops.adb:79:33: info: loop invariant preservation proved (Trivial: 1 VC)
-test_loops.adb:81:39: medium: assertion might fail, cannot prove Y.G = CY.G [possible fix: loop invariant at line 79 should mention X] [provers gave up before completing the proof]
-test_loops.adb:82:39: medium: assertion might fail, cannot prove Z.F = CZ.F [possible fix: loop invariant at line 79 should mention X] [provers gave up before completing the proof]
-test_loops.adb:83:39: medium: assertion might fail, cannot prove X.F = CX.F [possible fix: loop invariant at line 79 should mention X] [provers gave up before completing the proof]
+test_loops.adb:81:39: medium: assertion might fail, cannot prove Y.G = CY.G [possible fix: loop invariant at line 79 should mention X] [provers reached step limit before completing the proof]
+test_loops.adb:82:39: medium: assertion might fail, cannot prove Z.F = CZ.F [possible fix: loop invariant at line 79 should mention X] [provers reached step limit before completing the proof]
+test_loops.adb:83:39: medium: assertion might fail, cannot prove X.F = CX.F [possible fix: loop invariant at line 79 should mention X] [provers reached step limit before completing the proof]
 test_loops.adb:97:33: info: loop invariant initialization proved (Trivial: 1 VC)
 test_loops.adb:97:33: info: loop invariant preservation proved (Trivial: 1 VC)
-test_loops.adb:99:40: medium: assertion might fail, cannot prove Y.G = CY.G [possible fix: loop invariant at line 97 should mention X] [provers gave up before completing the proof]
-test_loops.adb:100:40: medium: assertion might fail, cannot prove Z.F = CZ.F [possible fix: loop invariant at line 97 should mention X] [provers gave up before completing the proof]
-test_loops.adb:101:40: medium: assertion might fail, cannot prove V.F = CV.F [possible fix: loop invariant at line 97 should mention X] [provers gave up before completing the proof]
-test_loops.adb:102:40: medium: assertion might fail, cannot prove X.F = CX.F [possible fix: loop invariant at line 97 should mention X] [provers gave up before completing the proof]
+test_loops.adb:99:40: medium: assertion might fail, cannot prove Y.G = CY.G [possible fix: loop invariant at line 97 should mention X] [provers reached step limit before completing the proof]
+test_loops.adb:100:40: medium: assertion might fail, cannot prove Z.F = CZ.F [possible fix: loop invariant at line 97 should mention X] [provers reached step limit before completing the proof]
+test_loops.adb:101:40: medium: assertion might fail, cannot prove V.F = CV.F [possible fix: loop invariant at line 97 should mention X] [provers reached step limit before completing the proof]
+test_loops.adb:102:40: medium: assertion might fail, cannot prove X.F = CX.F [possible fix: loop invariant at line 97 should mention X] [provers reached step limit before completing the proof]

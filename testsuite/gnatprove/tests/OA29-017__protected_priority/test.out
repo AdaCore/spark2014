@@ -1,4 +1,4 @@
 bad.ads:5:13: info: implicit aspect Always_Terminates on "Too_Big" has been proved, subprogram will terminate
-bad.ads:6:32: medium: range check might fail, cannot prove upper bound for Too_Big [provers gave up before completing the proof]
+bad.ads:6:32: medium: range check might fail, cannot prove upper bound for Too_Big [provers reached step limit before completing the proof]
 interrupt_priority.adb:6:20: info: overflow check proved (CVC5: 2 VC)
 interrupt_priority.ads:7:24: info: range check proved (CVC5: 2 VC)

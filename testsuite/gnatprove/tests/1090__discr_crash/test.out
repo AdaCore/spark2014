@@ -18,4 +18,4 @@ main.adb:41:37: medium: array index check might fail [reason for check: value mu
 main.adb:41:55: info: range check proved (CVC5: 20 VC)
 main.adb:41:73: info: overflow check proved (CVC5: 20 VC)
 main.adb:41:90: info: overflow check proved (CVC5: 14 VC; Z3: 6 VC)
-main.adb:41:90: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: subprogram at line 36 should mention State_Before in a precondition] [provers gave up before completing the proof]
+main.adb:41:90: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: subprogram at line 36 should mention State_Before in a precondition] [provers reached step limit before completing the proof]

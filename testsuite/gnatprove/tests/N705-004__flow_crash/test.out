@@ -247,7 +247,7 @@ very_longs.adb:480:26: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:480:30: info: index check proved (CVC5: 2 VC)
 very_longs.adb:480:75: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:480:79: info: index check proved (CVC5: 2 VC)
-very_longs.adb:480:112: medium: range check might fail [reason for check: result of operation must be convertible to the target type of the conversion] [possible fix: loop at line 459 should mention Current_Borrow and Carry and U in a loop invariant] [provers gave up before completing the proof]
+very_longs.adb:480:112: medium: range check might fail [reason for check: result of operation must be convertible to the target type of the conversion] [possible fix: loop at line 459 should mention Current_Borrow and Carry and U in a loop invariant] [provers reached step limit before completing the proof]
 very_longs.adb:486:11: info: data dependencies proved
 very_longs.adb:487:11: info: flow dependencies proved
 very_longs.adb:489:10: info: initialization of "Carry" proved
@@ -273,8 +273,8 @@ very_longs.adb:508:32: info: length check proved (CVC5: 3 VC)
 very_longs.adb:509:29: info: length check proved (CVC5: 3 VC)
 very_longs.adb:509:32: info: length check proved (CVC5: 3 VC)
 very_longs.adb:512:12: info: precondition proved (CVC5: 1 VC)
-very_longs.adb:512:29: medium: overflow check might fail, cannot prove upper bound for Get_MSD(Divisor) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Get_MSD(Divisor) <= 2147483647 - 1) to subprogram at very_longs.ads:64] [provers gave up before completing the proof]
-very_longs.adb:512:29: medium: range check might fail, cannot prove upper bound for Get_MSD(Divisor) + 1 [reason for check: result of addition must fit in the target type of the assignment] [possible fix: add precondition (Get_MSD(Divisor) <= Divisor_Digits_Count_Type'Last - 1) to subprogram at very_longs.ads:64] [provers gave up before completing the proof]
+very_longs.adb:512:29: medium: overflow check might fail, cannot prove upper bound for Get_MSD(Divisor) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Get_MSD(Divisor) <= 2147483647 - 1) to subprogram at very_longs.ads:64] [provers reached step limit before completing the proof]
+very_longs.adb:512:29: medium: range check might fail, cannot prove upper bound for Get_MSD(Divisor) + 1 [reason for check: result of addition must fit in the target type of the assignment] [possible fix: add precondition (Get_MSD(Divisor) <= Divisor_Digits_Count_Type'Last - 1) to subprogram at very_longs.ads:64] [provers reached step limit before completing the proof]
 very_longs.adb:513:15: medium: range check might fail, cannot prove lower bound for 48 - N [reason for check: result of subtraction must fit in the target type of the assignment] [provers reached step limit before completing the proof]
 very_longs.adb:516:25: info: precondition proved (CVC5: 1 VC)
 very_longs.adb:516:66: info: index check proved (CVC5: 2 VC)

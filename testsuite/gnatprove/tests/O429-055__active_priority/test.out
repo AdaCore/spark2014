@@ -1,6 +1,6 @@
-active_prio.adb:15:17: medium: overflow check might fail, cannot prove upper bound for A + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
-active_prio.adb:27:17: medium: overflow check might fail, cannot prove upper bound for A + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
-active_prio.adb:32:17: medium: overflow check might fail, cannot prove upper bound for A + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
+active_prio.adb:15:17: medium: overflow check might fail, cannot prove upper bound for A + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
+active_prio.adb:27:17: medium: overflow check might fail, cannot prove upper bound for A + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
+active_prio.adb:32:17: medium: overflow check might fail, cannot prove upper bound for A + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
 active_prio.adb:37:17: medium: overflow check might fail, cannot prove lower bound for A - 1 [reason for check: result of subtraction must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
 active_prio.ads:3:14: info: ceiling priority protocol is respected for "Active_Prio.P" (CVC5: 1 VC)
 active_prio.ads:3:14: info: ceiling priority protocol is respected for "Active_Prio.Q" (CVC5: 1 VC)

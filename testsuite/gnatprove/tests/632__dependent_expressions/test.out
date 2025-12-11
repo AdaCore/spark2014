@@ -1,7 +1,7 @@
 main.adb:33:27: info: implicit aspect Always_Terminates on "Translate" has been proved, subprogram will terminate
 main.adb:33:49: warning: unused variable "Control"
 main.adb:35:51: info: overflow check proved (CVC5: 2 VC)
-main.adb:37:36: medium: overflow check might fail, cannot prove upper bound for X.Field + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X.Field <= Integer'Last - 1) to subprogram at line 33] [provers gave up before completing the proof]
+main.adb:37:36: medium: overflow check might fail, cannot prove upper bound for X.Field + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X.Field <= Integer'Last - 1) to subprogram at line 33] [provers reached step limit before completing the proof]
 main.adb:38:27: info: implicit aspect Always_Terminates on "Label" has been proved, subprogram will terminate
 main.adb:38:34: warning: unused variable "X"
 main.adb:47:04: info: initialization of "Out_B" proved

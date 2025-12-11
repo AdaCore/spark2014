@@ -12,6 +12,6 @@ test_dic.adb:18:04: info: default initial condition proved (CVC5: 1 VC; Trivial:
 test_dic.adb:18:04: info: in default value at test_dic.adb:18
 test_dic.adb:18:04: info: initialization of "Y" proved
 test_dic.adb:19:04: info: initialization of "Z" proved
-test_dic.adb:19:04: medium: default initial condition might fail [provers gave up before completing the proof]
+test_dic.adb:19:04: medium: default initial condition might fail [provers reached step limit before completing the proof]
 test_dic.adb:19:04: medium: in default value at test_dic.adb:19
 test_dic.adb:19:11: info: range check proved (CVC5: 1 VC)

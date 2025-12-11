@@ -1,5 +1,5 @@
 foo.adb:9:07: info: initialization of "A" proved
-foo.adb:13:15: medium: range check might fail, cannot prove upper bound for A [reason for check: value must be convertible to the target type of the conversion] [provers gave up before completing the proof]
+foo.adb:13:15: medium: range check might fail, cannot prove upper bound for A [reason for check: value must be convertible to the target type of the conversion] [provers reached step limit before completing the proof]
 foo.adb:19:07: info: initialization of "A" proved
 foo.adb:23:15: info: range check proved (CVC5: 2 VC)
 foo.ads:3:14: warning: subprogram "Test_Err" has no effect

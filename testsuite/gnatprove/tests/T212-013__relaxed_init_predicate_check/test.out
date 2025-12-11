@@ -16,7 +16,7 @@ test_pred.adb:49:56: info: initialization check proved (CVC5: 1 VC)
 test_pred.adb:53:26: info: data dependencies proved
 test_pred.adb:58:22: info: assertion proved (CVC5: 1 VC)
 test_pred.adb:58:31: medium: in inlined predicate at test_pred.adb:49
-test_pred.adb:58:31: medium: predicate check might fail, cannot prove C.X > 0 [provers gave up before completing the proof]
+test_pred.adb:58:31: medium: predicate check might fail, cannot prove C.X > 0 [provers reached step limit before completing the proof]
 test_pred.adb:58:37: info: initialization check proved (CVC5: 1 VC)
 test_pred.adb:65:40: info: data dependencies proved
 test_pred.adb:71:25: info: assertion proved (CVC5: 1 VC)
@@ -32,7 +32,7 @@ test_pred.adb:89:26: info: data dependencies proved
 test_pred.adb:94:22: info: assertion proved (CVC5: 1 VC)
 test_pred.adb:94:34: info: initialization check proved (CVC5: 1 VC)
 test_pred.adb:94:34: medium: in inlined predicate at test_pred.adb:87
-test_pred.adb:94:34: medium: predicate check might fail, cannot prove My_Rec_D_3.X > 0 [provers gave up before completing the proof]
+test_pred.adb:94:34: medium: predicate check might fail, cannot prove My_Rec_D_3.X > 0 [provers reached step limit before completing the proof]
 test_pred.adb:94:36: info: initialization check proved (CVC5: 1 VC)
 test_pred.adb:101:40: info: data dependencies proved
 test_pred.adb:107:25: info: assertion proved (CVC5: 1 VC)

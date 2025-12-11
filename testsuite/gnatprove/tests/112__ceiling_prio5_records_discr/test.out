@@ -5,7 +5,7 @@ main.adb:3:11: medium: ceiling priority protocol might not be respected for "Pro
 main.adb:3:11: medium: ceiling priority protocol might not be respected for "Prots.Po1" [reason for check: ceiling priority of the protected object "Prots.Po1" must be >= the priority of the caller "Main" in the call chain "Main" (elaboration) -> "Prots" (elaboration) -> "Prots.Pt.Pp1"] [provers gave up before completing the proof]
 main.adb:3:11: medium: ceiling priority protocol might not be respected for "Prots.Po2" [reason for check: ceiling priority of the protected object "Prots.Po2" must be >= the priority of the caller "Main" in the call chain "Main" (elaboration) -> "Prots" (elaboration) -> "Prots.Pt.Pp1"] [provers gave up before completing the proof]
 main.adb:4:21: info: range check proved (CVC5: 2 VC)
-prots.ads:4:24: medium: range check might fail [provers gave up before completing the proof]
+prots.ads:4:24: medium: range check might fail [provers reached step limit before completing the proof]
 prots.ads:6:17: info: aspect Always_Terminates on "PP1" has been proved, subprogram will terminate
 prots.ads:7:12: info: data dependencies proved
 prots.ads:10:23: info: range check proved (CVC5: 2 VC)

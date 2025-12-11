@@ -11,10 +11,10 @@ contract_cases_illegal.ads:32:61: warning: contract case does not check the outc
 contract_cases_illegal_2.ads:28:55: info: initialization of "C" proved
 contract_cases_illegal_2.ads:29:11: medium: contract cases might not be complete [provers gave up before completing the proof]
 contract_cases_illegal_2.ads:29:11: medium: contract or exit cases might not be disjoint (e.g. when A = 1 and B = 0) [provers gave up before completing the proof]
-contract_cases_illegal_2.ads:29:30: medium: contract case might fail (e.g. when A = 1 and C = 0) [provers gave up before completing the proof]
+contract_cases_illegal_2.ads:29:30: medium: contract case might fail (e.g. when A = 1 and C = 0) [provers reached step limit before completing the proof]
 contract_cases_illegal_2.ads:30:30: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 contract_cases_illegal_2.ads:32:51: info: initialization of "C" proved
 contract_cases_illegal_2.ads:33:11: info: disjoint contract or exit cases proved (CVC5: 1 VC)
 contract_cases_illegal_2.ads:33:11: medium: contract cases might not be complete [provers gave up before completing the proof]
-contract_cases_illegal_2.ads:33:30: medium: contract case might fail (e.g. when B = 0 and C = -1) [provers gave up before completing the proof]
-contract_cases_illegal_2.ads:34:30: medium: contract case might fail (e.g. when A = 1 and C = 0) [provers gave up before completing the proof]
+contract_cases_illegal_2.ads:33:30: medium: contract case might fail (e.g. when B = 0 and C = -1) [provers reached step limit before completing the proof]
+contract_cases_illegal_2.ads:34:30: medium: contract case might fail (e.g. when A = 1 and C = 0) [provers reached step limit before completing the proof]

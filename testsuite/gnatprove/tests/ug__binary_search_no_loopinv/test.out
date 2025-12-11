@@ -12,4 +12,4 @@
 --> binary_search.ads:21:49
    21 |                  else (for all Index in A'Range => A (Index) /= I));
       |                                                    ^~~~~~~~~~~~~~
-      + provers gave up before completing the proof
+      + provers reached step limit before completing the proof

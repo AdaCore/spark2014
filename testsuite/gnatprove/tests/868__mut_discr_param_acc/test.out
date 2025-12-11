@@ -1,10 +1,10 @@
 p_int_acc.adb:6:25: medium: assertion might fail (e.g. when Rec.all = (K => 0)) [possible fix: subprogram at p_int_acc.ads:9 should mention Rec in a precondition] [provers reached step limit before completing the proof]
 p_int_acc.adb:9:14: info: range check proved (CVC5: 2 VC)
-p_int_acc.adb:9:18: medium: discriminant check might fail (e.g. when Rec.all = (K => 0)) [possible fix: subprogram at p_int_acc.ads:9 should mention Rec in a precondition] [provers gave up before completing the proof]
+p_int_acc.adb:9:18: medium: discriminant check might fail (e.g. when Rec.all = (K => 0)) [possible fix: subprogram at p_int_acc.ads:9 should mention Rec in a precondition] [provers reached step limit before completing the proof]
 p_int_acc.adb:9:22: medium: discriminant check might fail [provers reached step limit before completing the proof]
 p_int_acc.adb:16:25: medium: assertion might fail (e.g. when Rec.all = (K => 0)) [possible fix: subprogram at p_int_acc.ads:11 should mention Rec in a precondition] [provers reached step limit before completing the proof]
 p_int_acc.adb:27:25: medium: assertion might fail (e.g. when Rec.all = (K => 0)) [possible fix: subprogram at p_int_acc.ads:13 should mention Rec in a precondition] [provers reached step limit before completing the proof]
 p_int_acc.adb:30:14: info: range check proved (CVC5: 2 VC)
-p_int_acc.adb:30:18: medium: discriminant check might fail (e.g. when Rec.all = (K => 0)) [possible fix: subprogram at p_int_acc.ads:13 should mention Rec in a precondition] [provers gave up before completing the proof]
+p_int_acc.adb:30:18: medium: discriminant check might fail (e.g. when Rec.all = (K => 0)) [possible fix: subprogram at p_int_acc.ads:13 should mention Rec in a precondition] [provers reached step limit before completing the proof]
 p_int_acc.adb:30:22: medium: discriminant check might fail [provers reached step limit before completing the proof]
 p_int_acc.ads:11:14: warning: subprogram "Proc2" has no effect

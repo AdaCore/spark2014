@@ -2,11 +2,11 @@ bounded_stacks.adb:30:12: info: discriminant check proved (CVC5: 1 VC), in insta
 bounded_stacks.adb:30:15: info: length check proved (CVC5: 3 VC), in instantiation at integer_stacks.ads:4
 bounded_stacks.adb:40:28: info: overflow check proved (CVC5: 2 VC), in instantiation at integer_stacks.ads:4
 bounded_stacks.adb:41:24: info: index check proved (CVC5: 2 VC), in instantiation at integer_stacks.ads:4
-bounded_stacks.adb:50:32: medium: array index check might fail, in instantiation at integer_stacks.ads:4 [reason for check: value must be a valid index into the array] [provers gave up before completing the proof]
+bounded_stacks.adb:50:32: medium: array index check might fail, in instantiation at integer_stacks.ads:4 [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
 bounded_stacks.adb:51:28: info: range check proved (CVC5: 2 VC), in instantiation at integer_stacks.ads:4
 bounded_stacks.adb:59:24: info: index check proved (CVC5: 2 VC), in instantiation at integer_stacks.ads:4
-bounded_stacks.adb:71:29: medium: array index check might fail, in instantiation at integer_stacks.ads:4 [reason for check: value must be a valid index into the array] [provers gave up before completing the proof]
-bounded_stacks.adb:71:49: medium: array index check might fail, in instantiation at integer_stacks.ads:4 [reason for check: value must be a valid index into the array] [provers gave up before completing the proof]
+bounded_stacks.adb:71:29: medium: array index check might fail, in instantiation at integer_stacks.ads:4 [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
+bounded_stacks.adb:71:49: medium: array index check might fail, in instantiation at integer_stacks.ads:4 [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
 bounded_stacks.ads:7:41: info: default initial condition proved (CVC5: 1 VC), in instantiation at integer_stacks.ads:4
 bounded_stacks.ads:9:13: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate, in instantiation at integer_stacks.ads:4
 bounded_stacks.ads:11:13: info: implicit aspect Always_Terminates on "Extent" has been proved, subprogram will terminate, in instantiation at integer_stacks.ads:4
@@ -17,7 +17,7 @@ bounded_stacks.ads:18:20: info: postcondition proved (CVC5: 2 VC), in instantiat
 bounded_stacks.ads:20:06: info: data dependencies proved, in instantiation at integer_stacks.ads:4
 bounded_stacks.ads:21:06: info: flow dependencies proved, in instantiation at integer_stacks.ads:4
 bounded_stacks.ads:26:20: info: postcondition proved (CVC5: 2 VC), in instantiation at integer_stacks.ads:4
-bounded_stacks.ads:27:54: medium: overflow check might fail, cannot prove upper bound for Extent (This'Old) + 1, in instantiation at integer_stacks.ads:4 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
+bounded_stacks.ads:27:54: medium: overflow check might fail, cannot prove upper bound for Extent (This'Old) + 1, in instantiation at integer_stacks.ads:4 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers reached step limit before completing the proof]
 bounded_stacks.ads:28:06: info: data dependencies proved, in instantiation at integer_stacks.ads:4
 bounded_stacks.ads:29:06: info: flow dependencies proved, in instantiation at integer_stacks.ads:4
 bounded_stacks.ads:31:41: info: initialization of "Item" proved, in instantiation at integer_stacks.ads:4

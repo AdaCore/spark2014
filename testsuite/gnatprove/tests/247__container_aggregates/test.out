@@ -116,7 +116,7 @@ test.adb:246:39: info: subprogram variant proved (Trivial)
 test.adb:246:45: info: pointer dereference check proved (CVC5: 1 VC)
 test.adb:249:34: info: subprogram variant proved (Trivial)
 test.adb:249:43: info: pointer dereference check proved (CVC5: 1 VC)
-test.adb:249:47: medium: range check might fail, cannot prove upper bound for Length (X.N) + 1 [reason for check: result of addition must fit in the type of the qualification] [possible fix: add precondition (Length (X.N) <= Length_Type'Last - 1) to subprogram at line 223] [provers gave up before completing the proof]
+test.adb:249:47: medium: range check might fail, cannot prove upper bound for Length (X.N) + 1 [reason for check: result of addition must fit in the type of the qualification] [possible fix: add precondition (Length (X.N) <= Length_Type'Last - 1) to subprogram at line 223] [provers reached step limit before completing the proof]
 test.adb:255:12: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test.adb:266:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
 test.adb:266:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
@@ -168,7 +168,7 @@ test.adb:364:07: medium: assertion might fail [provers reached step limit before
 test.adb:368:06: info: data dependencies proved
 test.adb:372:07: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 test.adb:372:16: medium: keys shall be distinct and all elements shall fit in the return type of "Length" for maps aggregates at test.adb:182
-test.adb:372:16: medium: precondition might fail [provers gave up before completing the proof]
+test.adb:372:16: medium: precondition might fail [provers reached step limit before completing the proof]
 test.adb:378:06: info: data dependencies proved
 test.adb:382:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 test.adb:382:16: medium: keys shall be distinct and all elements shall fit in the return type of "Length" for maps aggregates at test.adb:182
@@ -187,7 +187,7 @@ test.adb:400:07: medium: assertion might fail [provers reached step limit before
 test.adb:404:06: info: data dependencies proved
 test.adb:408:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 test.adb:408:16: medium: keys shall be distinct and all elements shall fit in the return type of "Length" for maps aggregates at test.adb:182
-test.adb:408:16: medium: precondition might fail [provers gave up before completing the proof]
+test.adb:408:16: medium: precondition might fail [provers reached step limit before completing the proof]
 test.adb:413:14: high: all paths in "Test_Seqs" raise exceptions or do not terminate normally
 test.adb:414:06: info: data dependencies proved
 test.adb:418:16: info: all elements shall fit in index type for sequence aggregates at test.adb:13

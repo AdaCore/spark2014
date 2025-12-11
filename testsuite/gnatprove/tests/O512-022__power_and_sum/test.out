@@ -19,7 +19,7 @@ power_and_sum.adb:10:27: medium: overflow check might fail, cannot prove lower b
 power_and_sum.adb:11:17: info: overflow check proved (CVC5: 2 VC)
 power_and_sum.adb:20:33: info: loop invariant initialization proved (CVC5: 1 VC)
 power_and_sum.adb:20:33: info: loop invariant preservation proved (CVC5: 1 VC)
-power_and_sum.adb:22:31: medium: overflow check might fail, cannot prove upper bound for TotalSum + I [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
+power_and_sum.adb:22:31: medium: overflow check might fail, cannot prove upper bound for TotalSum + I [reason for check: result of addition must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
 power_and_sum.adb:23:17: info: overflow check proved (CVC5: 2 VC)
 power_and_sum.adb:25:22: info: assertion proved (altergo: 1 VC)
 power_and_sum.adb:26:17: info: range check proved (CVC5: 2 VC)
@@ -29,11 +29,11 @@ power_and_sum.adb:36:33: info: loop invariant initialization proved (CVC5: 1 VC)
 power_and_sum.adb:36:33: info: loop invariant preservation proved (CVC5: 1 VC)
 power_and_sum.adb:41:36: info: loop invariant initialization proved (CVC5: 1 VC)
 power_and_sum.adb:41:36: info: loop invariant preservation proved (CVC5: 1 VC)
-power_and_sum.adb:43:34: medium: overflow check might fail, cannot prove upper bound for InnerSum + J [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
+power_and_sum.adb:43:34: medium: overflow check might fail, cannot prove upper bound for InnerSum + J [reason for check: result of addition must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
 power_and_sum.adb:44:20: info: overflow check proved (CVC5: 2 VC)
 power_and_sum.adb:46:25: info: assertion proved (CVC5: 1 VC)
 power_and_sum.adb:47:25: info: assertion proved (CVC5: 1 VC)
-power_and_sum.adb:48:31: medium: overflow check might fail, cannot prove upper bound for TotalSum + InnerSum [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
+power_and_sum.adb:48:31: medium: overflow check might fail, cannot prove upper bound for TotalSum + InnerSum [reason for check: result of addition must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
 power_and_sum.adb:49:17: info: overflow check proved (CVC5: 2 VC)
 power_and_sum.adb:51:22: info: assertion proved (CVC5: 1 VC)
 power_and_sum.adb:52:17: info: range check proved (CVC5: 2 VC)

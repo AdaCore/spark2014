@@ -24,7 +24,7 @@ main.adb:38:38: info: length check proved (CVC5: 3 VC)
 main.adb:38:42: info: range check proved (CVC5: 2 VC)
 main.adb:39:07: info: range check proved (CVC5: 2 VC)
 main.adb:39:34: info: length check proved (CVC5: 3 VC)
-main.adb:39:38: medium: range check might fail [provers gave up before completing the proof]
+main.adb:39:38: medium: range check might fail [provers reached step limit before completing the proof]
 main.adb:47:04: warning: analyzing unreferenced procedure "Excessive_Elements_Before_Others_3" [unreferenced-procedure]
 main.adb:47:14: warning: subprogram "Excessive_Elements_Before_Others_3" has no effect
 main.adb:50:16: info: implicit aspect Always_Terminates on "Dice_Roll" has been proved, subprogram will terminate

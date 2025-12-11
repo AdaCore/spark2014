@@ -97,10 +97,10 @@ test_basic.adb:297:13: info: implicit aspect Always_Terminates on "Read_V_Inv" h
 test_basic.adb:299:06: info: data dependencies proved
 test_basic.adb:316:22: info: assertion proved (CVC5: 2 VC)
 test_basic.adb:318:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
-test_basic.adb:319:47: medium: assertion might fail, cannot prove X2_Old'Valid_Scalars (e.g. when X2_Old = (C1 => (I => ?), C2 => (I => 1)) and X2_Old.C1.I'Valid = False and X2_Old.C2.I'Valid = True) [provers gave up before completing the proof]
+test_basic.adb:319:47: medium: assertion might fail, cannot prove X2_Old'Valid_Scalars (e.g. when X2_Old = (C1 => (I => ?), C2 => (I => 1)) and X2_Old.C1.I'Valid = False and X2_Old.C2.I'Valid = True) [provers reached step limit before completing the proof]
 test_basic.adb:321:22: info: assertion proved (CVC5: 2 VC)
 test_basic.adb:323:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
-test_basic.adb:324:47: medium: assertion might fail, cannot prove X4_Old'Valid_Scalars (e.g. when X4_Old = (C1 => (I => ?), C2 => (I => 1)) and X4_Old.C1.I'Valid = False and X4_Old.C2.I'Valid = True) [provers gave up before completing the proof]
+test_basic.adb:324:47: medium: assertion might fail, cannot prove X4_Old'Valid_Scalars (e.g. when X4_Old = (C1 => (I => ?), C2 => (I => 1)) and X4_Old.C1.I'Valid = False and X4_Old.C2.I'Valid = True) [provers reached step limit before completing the proof]
 test_basic.adb:331:23: warning: unused initial value of "X"
 test_basic.adb:332:33: info: exceptional case proved (Trivial: 1 VC)
 test_basic.adb:341:25: medium: "X" might not be initialized in "Exp_Store" [reason for check: OUT parameter should be fully initialized on return] [possible explanation: value of "X" is unknown following exceptional exit] [possible fix: initialize "X" on all paths or annotate it with aspect Relaxed_Initialization]

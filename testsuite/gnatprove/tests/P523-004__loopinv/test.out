@@ -15,7 +15,7 @@ math.adb:24:25: info: assertion proved (CVC5: 1 VC)
 math.adb:25:10: medium: predicate check might fail [possible fix: loop at line 23 should mention V in a loop invariant] [provers reached step limit before completing the proof]
 math.adb:25:23: info: division check proved (CVC5: 1 VC)
 math.adb:32:25: info: assertion proved (CVC5: 2 VC)
-math.adb:33:10: medium: predicate check might fail [possible fix: loop invariant at line 34 should mention V] [provers gave up before completing the proof]
+math.adb:33:10: medium: predicate check might fail [possible fix: loop invariant at line 34 should mention V] [provers reached step limit before completing the proof]
 math.adb:33:23: info: division check proved (CVC5: 2 VC)
 math.adb:34:33: info: loop invariant initialization proved (Trivial: 1 VC)
 math.adb:34:33: info: loop invariant preservation proved (Trivial: 1 VC)

@@ -3,16 +3,16 @@ escape.adb:8:24: info: cannot unroll loop (too many loop iterations) [info-unrol
 escape.adb:8:24: warning: statement has no effect
 escape.adb:9:10: warning: statement has no effect
 escape.adb:10:22: warning: unused assignment
-escape.adb:10:34: medium: overflow check might fail, cannot prove upper bound for Count_Bs + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 8 should mention Count_Bs in a loop invariant] [provers gave up before completing the proof]
+escape.adb:10:34: medium: overflow check might fail, cannot prove upper bound for Count_Bs + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 8 should mention Count_Bs in a loop invariant] [provers reached step limit before completing the proof]
 escape.adb:14:40: info: range check proved (CVC5: 2 VC)
 escape.adb:14:48: info: range check proved (CVC5: 2 VC)
-escape.adb:14:48: medium: overflow check might fail, cannot prove upper bound for S'Length + Count_Bs [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 8 should mention Count_Bs in a loop invariant] [provers gave up before completing the proof]
+escape.adb:14:48: medium: overflow check might fail, cannot prove upper bound for S'Length + Count_Bs [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 8 should mention Count_Bs in a loop invariant] [provers reached step limit before completing the proof]
 escape.adb:15:10: info: range check proved (CVC5: 2 VC)
 escape.adb:18:27: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
-escape.adb:19:21: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: loop at line 18 should mention TI in a loop invariant] [provers gave up before completing the proof]
-escape.adb:20:22: medium: overflow check might fail, cannot prove upper bound for TI + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 18 should mention TI in a loop invariant] [provers gave up before completing the proof]
-escape.adb:22:24: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: loop at line 18 should mention TI in a loop invariant] [provers gave up before completing the proof]
-escape.adb:23:25: medium: overflow check might fail, cannot prove upper bound for TI + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 18 should mention TI in a loop invariant] [provers gave up before completing the proof]
+escape.adb:19:21: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: loop at line 18 should mention TI in a loop invariant] [provers reached step limit before completing the proof]
+escape.adb:20:22: medium: overflow check might fail, cannot prove upper bound for TI + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 18 should mention TI in a loop invariant] [provers reached step limit before completing the proof]
+escape.adb:22:24: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: loop at line 18 should mention TI in a loop invariant] [provers reached step limit before completing the proof]
+escape.adb:23:25: medium: overflow check might fail, cannot prove upper bound for TI + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 18 should mention TI in a loop invariant] [provers reached step limit before completing the proof]
 escape.adb:26:17: medium: "Result" might not be initialized
 escape.ads:5:13: info: implicit aspect Always_Terminates on "Backslash_Escape" has been proved, subprogram will terminate
 escape.ads:6:20: info: postcondition proved (CVC5: 1 VC)

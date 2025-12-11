@@ -23,8 +23,8 @@ aggregates.adb:10:07: info: initialization of "Approx" proved, in call inlined a
 aggregates.adb:11:46: info: float overflow check proved (Trivial), in call inlined at aggregates.adb:29
 aggregates.adb:13:19: info: division check proved (CVC5: 1 VC), in call inlined at aggregates.adb:29
 aggregates.adb:13:19: info: float overflow check proved (Trivial), in call inlined at aggregates.adb:29
-aggregates.adb:14:20: medium: float overflow check might fail, in call inlined at aggregates.adb:29 [reason for check: result of floating-point subtraction must be bounded] [provers gave up before completing the proof]
-aggregates.adb:14:29: medium: float overflow check might fail, in call inlined at aggregates.adb:29 [reason for check: result of floating-point exponentiation must be bounded] [provers gave up before completing the proof]
+aggregates.adb:14:20: medium: float overflow check might fail, in call inlined at aggregates.adb:29 [reason for check: result of floating-point subtraction must be bounded] [provers reached step limit before completing the proof]
+aggregates.adb:14:29: medium: float overflow check might fail, in call inlined at aggregates.adb:29 [reason for check: result of floating-point exponentiation must be bounded] [provers reached step limit before completing the proof]
 aggregates.adb:14:47: medium: implicit aspect Always_Terminates on "Sqrt" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 aggregates.adb:15:24: info: float overflow check proved (Trivial), in call inlined at aggregates.adb:29
 aggregates.adb:15:34: medium: float overflow check might fail, in call inlined at aggregates.adb:29 [reason for check: result of floating-point addition must be bounded] [provers reached step limit before completing the proof]
@@ -89,13 +89,13 @@ bingo_basket.ads:4:13: info: implicit aspect Always_Terminates on "Empty" has be
 bingo_basket.ads:8:18: info: postcondition proved (CVC5: 1 VC)
 bingo_basket.ads:10:20: info: initialization of "Letter" proved
 bingo_basket.ads:11:20: info: initialization of "Number" proved
-bounded_queue.adb:20:32: medium: array index check might fail, in instantiation at bounded_queue_example.adb:7 [reason for check: value must be a valid index into the array] [possible fix: add precondition (Queue.Front in 1 .. Max_Size) to subprogram at bounded_queue.ads:15] [provers gave up before completing the proof]
-bounded_queue.adb:25:32: medium: array index check might fail, in instantiation at bounded_queue_example.adb:7 [reason for check: value must be a valid index into the array] [possible fix: add precondition (Queue.Rear in 1 .. Max_Size) to subprogram at bounded_queue.ads:19] [provers gave up before completing the proof]
+bounded_queue.adb:20:32: medium: array index check might fail, in instantiation at bounded_queue_example.adb:7 [reason for check: value must be a valid index into the array] [possible fix: add precondition (Queue.Front in 1 .. Max_Size) to subprogram at bounded_queue.ads:15] [provers reached step limit before completing the proof]
+bounded_queue.adb:25:32: medium: array index check might fail, in instantiation at bounded_queue_example.adb:7 [reason for check: value must be a valid index into the array] [possible fix: add precondition (Queue.Rear in 1 .. Max_Size) to subprogram at bounded_queue.ads:19] [provers reached step limit before completing the proof]
 bounded_queue.adb:38:32: info: division check proved (CVC5: 1 VC), in instantiation at bounded_queue_example.adb:7
 bounded_queue.adb:38:51: info: overflow check proved (CVC5: 2 VC), in instantiation at bounded_queue_example.adb:7
 bounded_queue.adb:39:25: info: index check proved (CVC5: 2 VC), in instantiation at bounded_queue_example.adb:7
-bounded_queue.adb:40:34: medium: overflow check might fail, cannot prove upper bound for Queue.Count + 1, in instantiation at bounded_queue_example.adb:7 [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
-bounded_queue.adb:47:33: medium: array index check might fail, in instantiation at bounded_queue_example.adb:7 [reason for check: value must be a valid index into the array] [provers gave up before completing the proof]
+bounded_queue.adb:40:34: medium: overflow check might fail, cannot prove upper bound for Queue.Count + 1, in instantiation at bounded_queue_example.adb:7 [reason for check: result of addition must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
+bounded_queue.adb:47:33: medium: array index check might fail, in instantiation at bounded_queue_example.adb:7 [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
 bounded_queue.adb:48:34: info: division check proved (CVC5: 1 VC), in instantiation at bounded_queue_example.adb:7
 bounded_queue.adb:48:53: info: overflow check proved (CVC5: 2 VC), in instantiation at bounded_queue_example.adb:7
 bounded_queue.adb:49:34: medium: range check might fail, cannot prove lower bound for Queue.Count - 1, in instantiation at bounded_queue_example.adb:7 [reason for check: result of subtraction must fit in the target type of the assignment] [provers reached step limit before completing the proof]
@@ -106,7 +106,7 @@ bounded_queue.ads:15:13: info: implicit aspect Always_Terminates on "First_Eleme
 bounded_queue.ads:19:13: info: implicit aspect Always_Terminates on "Last_Element" has been proved, subprogram will terminate, in instantiation at bounded_queue_example.adb:7
 bounded_queue.ads:25:18: medium: postcondition might fail, cannot prove Empty (Queue), in instantiation at bounded_queue_example.adb:7 [possible fix: you should consider adding a postcondition to function Empty or turning it into an expression function] [provers reached step limit before completing the proof]
 bounded_queue.ads:31:18: medium: postcondition might fail, cannot prove not Empty (Queue), in instantiation at bounded_queue_example.adb:7 [possible fix: you should consider adding a postcondition to function Empty or turning it into an expression function] [provers reached step limit before completing the proof]
-bounded_queue.ads:32:50: medium: overflow check might fail, cannot prove upper bound for Size (Queue'Old) + 1, in instantiation at bounded_queue_example.adb:7 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
+bounded_queue.ads:32:50: medium: overflow check might fail, cannot prove upper bound for Size (Queue'Old) + 1, in instantiation at bounded_queue_example.adb:7 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers reached step limit before completing the proof]
 bounded_queue.ads:33:18: info: precondition proved (CVC5: 1 VC), in instantiation at bounded_queue_example.adb:7
 bounded_queue.ads:36:23: info: initialization of "Item" proved, in instantiation at bounded_queue_example.adb:7
 bounded_queue.ads:39:17: medium: postcondition might fail, cannot prove Item = First_Element (Queue'Old), in instantiation at bounded_queue_example.adb:7 [possible fix: you should consider adding a postcondition to function First_Element or turning it into an expression function] [provers reached step limit before completing the proof]
@@ -120,7 +120,7 @@ bounded_queue_example.adb:15:43: info: unrolling loop [info-unrolling-inlining]
 bounded_queue_example.adb:16:07: medium: precondition might fail [provers reached step limit before completing the proof]
 bounded_queue_example.adb:18:38: info: unrolling loop [info-unrolling-inlining]
 bounded_queue_example.adb:19:07: medium: precondition might fail [provers reached step limit before completing the proof]
-bounded_queue_example.adb:24:42: low: range check might fail, cannot prove upper bound for "Size of cleared queue is " & Integer'Image (Size (My_Queue)) [reason for check: input value must fit in parameter type] [possible fix: you should consider adding a postcondition to function Size or turning it into an expression function] [provers gave up before completing the proof]
+bounded_queue_example.adb:24:42: low: range check might fail, cannot prove upper bound for "Size of cleared queue is " & Integer'Image (Size (My_Queue)) [reason for check: input value must fit in parameter type] [possible fix: you should consider adding a postcondition to function Size or turning it into an expression function] [provers reached step limit before completing the proof]
 bounded_queue_example.adb:24:51: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 bounded_queue_example_v1.adb:6:56: info: range check proved (CVC5: 2 VC)
 bounded_queue_example_v1.adb:7:04: info: initialization of "Value" proved
@@ -131,7 +131,7 @@ bounded_queue_example_v1.adb:10:11: high: "My_Queue.Rear" is not initialized
 bounded_queue_example_v1.adb:11:40: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 bounded_queue_example_v1.adb:12:07: medium: precondition might fail [possible fix: loop at line 11 should mention My_Queue in a loop invariant] [provers reached step limit before completing the proof]
 bounded_queue_example_v1.adb:14:38: info: unrolling loop [info-unrolling-inlining]
-bounded_queue_example_v1.adb:15:07: medium: precondition might fail [possible fix: loop at line 11 should mention My_Queue in a loop invariant] [provers gave up before completing the proof]
+bounded_queue_example_v1.adb:15:07: medium: precondition might fail [possible fix: loop at line 11 should mention My_Queue in a loop invariant] [provers reached step limit before completing the proof]
 bounded_queue_example_v1.adb:16:24: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 bounded_queue_example_v1.adb:20:42: info: range check proved (CVC5: 2 VC)
 bounded_queue_example_v1.adb:20:51: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
@@ -141,17 +141,17 @@ bounded_queue_example_v2.adb:7:04: info: initialization of "Value" proved
 bounded_queue_example_v2.adb:11:40: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 bounded_queue_example_v2.adb:12:07: medium: precondition might fail [possible fix: loop at line 11 should mention My_Queue in a loop invariant] [provers gave up before completing the proof]
 bounded_queue_example_v2.adb:14:38: info: unrolling loop [info-unrolling-inlining]
-bounded_queue_example_v2.adb:15:07: medium: precondition might fail [possible fix: loop at line 11 should mention My_Queue in a loop invariant] [provers gave up before completing the proof]
+bounded_queue_example_v2.adb:15:07: medium: precondition might fail [possible fix: loop at line 11 should mention My_Queue in a loop invariant] [provers reached step limit before completing the proof]
 bounded_queue_example_v2.adb:16:24: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 bounded_queue_example_v2.adb:20:42: info: range check proved (CVC5: 2 VC)
 bounded_queue_example_v2.adb:20:51: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
-bounded_queue_v1.adb:20:32: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (Queue.Front in 1 .. Max_Size) to subprogram at bounded_queue_v1.ads:21] [provers gave up before completing the proof]
-bounded_queue_v1.adb:25:32: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (Queue.Rear in 1 .. Max_Size) to subprogram at bounded_queue_v1.ads:25] [provers gave up before completing the proof]
+bounded_queue_v1.adb:20:32: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (Queue.Front in 1 .. Max_Size) to subprogram at bounded_queue_v1.ads:21] [provers reached step limit before completing the proof]
+bounded_queue_v1.adb:25:32: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (Queue.Rear in 1 .. Max_Size) to subprogram at bounded_queue_v1.ads:25] [provers reached step limit before completing the proof]
 bounded_queue_v1.adb:38:32: info: division check proved (CVC5: 1 VC)
 bounded_queue_v1.adb:38:51: info: overflow check proved (CVC5: 2 VC)
 bounded_queue_v1.adb:39:25: info: index check proved (CVC5: 2 VC)
-bounded_queue_v1.adb:40:34: medium: overflow check might fail, cannot prove upper bound for Queue.Count + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
-bounded_queue_v1.adb:47:33: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers gave up before completing the proof]
+bounded_queue_v1.adb:40:34: medium: overflow check might fail, cannot prove upper bound for Queue.Count + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
+bounded_queue_v1.adb:47:33: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
 bounded_queue_v1.adb:48:34: info: division check proved (CVC5: 1 VC)
 bounded_queue_v1.adb:48:53: info: overflow check proved (CVC5: 2 VC)
 bounded_queue_v1.adb:49:34: medium: range check might fail, cannot prove lower bound for Queue.Count - 1 [reason for check: result of subtraction must fit in the target type of the assignment] [provers reached step limit before completing the proof]
@@ -163,18 +163,18 @@ bounded_queue_v1.ads:21:13: info: implicit aspect Always_Terminates on "First_El
 bounded_queue_v1.ads:25:13: info: implicit aspect Always_Terminates on "Last_Element" has been proved, subprogram will terminate
 bounded_queue_v1.ads:31:18: medium: postcondition might fail, cannot prove Empty (Queue) [possible fix: you should consider adding a postcondition to function Empty or turning it into an expression function] [provers reached step limit before completing the proof]
 bounded_queue_v1.ads:37:18: medium: postcondition might fail, cannot prove not Empty (Queue) [possible fix: you should consider adding a postcondition to function Empty or turning it into an expression function] [provers reached step limit before completing the proof]
-bounded_queue_v1.ads:38:50: medium: overflow check might fail, cannot prove upper bound for Size (Queue'Old) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
+bounded_queue_v1.ads:38:50: medium: overflow check might fail, cannot prove upper bound for Size (Queue'Old) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers reached step limit before completing the proof]
 bounded_queue_v1.ads:39:18: info: precondition proved (CVC5: 1 VC)
 bounded_queue_v1.ads:42:23: info: initialization of "Item" proved
 bounded_queue_v1.ads:45:18: medium: postcondition might fail, cannot prove Item = First_Element (Queue'Old) [possible fix: you should consider adding a postcondition to function First_Element or turning it into an expression function] [provers reached step limit before completing the proof]
 bounded_queue_v1.ads:45:25: info: precondition proved (CVC5: 1 VC)
-bounded_queue_v2.adb:20:32: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (Queue.Front in 1 .. Max_Size) to subprogram at bounded_queue_v2.ads:15] [provers gave up before completing the proof]
-bounded_queue_v2.adb:25:32: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (Queue.Rear in 1 .. Max_Size) to subprogram at bounded_queue_v2.ads:19] [provers gave up before completing the proof]
+bounded_queue_v2.adb:20:32: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (Queue.Front in 1 .. Max_Size) to subprogram at bounded_queue_v2.ads:15] [provers reached step limit before completing the proof]
+bounded_queue_v2.adb:25:32: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (Queue.Rear in 1 .. Max_Size) to subprogram at bounded_queue_v2.ads:19] [provers reached step limit before completing the proof]
 bounded_queue_v2.adb:38:32: info: division check proved (CVC5: 1 VC)
 bounded_queue_v2.adb:38:51: info: overflow check proved (CVC5: 2 VC)
 bounded_queue_v2.adb:39:25: info: index check proved (CVC5: 2 VC)
-bounded_queue_v2.adb:40:34: medium: overflow check might fail, cannot prove upper bound for Queue.Count + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
-bounded_queue_v2.adb:47:33: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers gave up before completing the proof]
+bounded_queue_v2.adb:40:34: medium: overflow check might fail, cannot prove upper bound for Queue.Count + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
+bounded_queue_v2.adb:47:33: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
 bounded_queue_v2.adb:48:34: info: division check proved (CVC5: 1 VC)
 bounded_queue_v2.adb:48:53: info: overflow check proved (CVC5: 2 VC)
 bounded_queue_v2.adb:49:34: medium: range check might fail, cannot prove lower bound for Queue.Count - 1 [reason for check: result of subtraction must fit in the target type of the assignment] [provers reached step limit before completing the proof]
@@ -185,7 +185,7 @@ bounded_queue_v2.ads:15:13: info: implicit aspect Always_Terminates on "First_El
 bounded_queue_v2.ads:19:13: info: implicit aspect Always_Terminates on "Last_Element" has been proved, subprogram will terminate
 bounded_queue_v2.ads:25:18: medium: postcondition might fail, cannot prove Empty (Queue) [possible fix: you should consider adding a postcondition to function Empty or turning it into an expression function] [provers reached step limit before completing the proof]
 bounded_queue_v2.ads:31:18: medium: postcondition might fail, cannot prove not Empty (Queue) [possible fix: you should consider adding a postcondition to function Empty or turning it into an expression function] [provers reached step limit before completing the proof]
-bounded_queue_v2.ads:32:50: medium: overflow check might fail, cannot prove upper bound for Size (Queue'Old) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
+bounded_queue_v2.ads:32:50: medium: overflow check might fail, cannot prove upper bound for Size (Queue'Old) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers reached step limit before completing the proof]
 bounded_queue_v2.ads:33:18: info: precondition proved (CVC5: 1 VC)
 bounded_queue_v2.ads:36:23: info: initialization of "Item" proved
 bounded_queue_v2.ads:39:17: medium: postcondition might fail, cannot prove Item = First_Element (Queue'Old) [possible fix: you should consider adding a postcondition to function First_Element or turning it into an expression function] [provers reached step limit before completing the proof]
@@ -304,9 +304,9 @@ control_structures.adb:25:14: info: local subprogram "Calculate_Valve" only anal
 control_structures.adb:26:31: info: initialization of "New_Setting" proved
 control_structures.adb:28:24: medium: overflow check might fail, cannot prove lower bound for 2 * Current_Temp, in call inlined at control_structures.adb:186 [reason for check: result of multiplication must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
 control_structures.adb:31:13: info: implicit aspect Always_Terminates on "Double" has been proved, subprogram will terminate
-control_structures.adb:33:08: high: overflow check might fail, cannot prove upper bound for abs Second (e.g. when Second = Integer'First) [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible fix: add precondition (abs Second <= Integer'Last) to subprogram at line 31] [provers gave up before completing the proof]
-control_structures.adb:33:23: high: overflow check might fail, cannot prove upper bound for 2 * abs First (e.g. when First = 1073741824) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (2 * abs First <= Integer'Last) to subprogram at line 31] [provers gave up before completing the proof]
-control_structures.adb:33:25: high: overflow check might fail, cannot prove upper bound for abs First (e.g. when First = Integer'First) [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible fix: add precondition (abs First <= Integer'Last) to subprogram at line 31] [provers gave up before completing the proof]
+control_structures.adb:33:08: high: overflow check might fail, cannot prove upper bound for abs Second (e.g. when Second = Integer'First) [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible fix: add precondition (abs Second <= Integer'Last) to subprogram at line 31] [provers reached step limit before completing the proof]
+control_structures.adb:33:23: high: overflow check might fail, cannot prove upper bound for 2 * abs First (e.g. when First = 1073741824) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (2 * abs First <= Integer'Last) to subprogram at line 31] [provers reached step limit before completing the proof]
+control_structures.adb:33:25: high: overflow check might fail, cannot prove upper bound for abs First (e.g. when First = Integer'First) [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible fix: add precondition (abs First <= Integer'Last) to subprogram at line 31] [provers reached step limit before completing the proof]
 control_structures.adb:37:06: warning: unused assignment
 control_structures.adb:38:06: warning: unused assignment
 control_structures.adb:39:06: warning: unused assignment
@@ -385,12 +385,12 @@ control_structures.adb:139:10: warning: unused assignment
 control_structures.adb:152:08: warning: unused assignment
 control_structures.adb:154:26: info: only expected exception raised (CVC5: 1 VC)
 control_structures.adb:156:11: warning: unused assignment
-control_structures.adb:156:18: medium: overflow check might fail, cannot prove upper bound for Sum + Value [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: postcondition of call at line 154 should mention Item (for argument Value)] [provers gave up before completing the proof]
+control_structures.adb:156:18: medium: overflow check might fail, cannot prove upper bound for Sum + Value [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: postcondition of call at line 154 should mention Item (for argument Value)] [provers reached step limit before completing the proof]
 control_structures.adb:160:11: warning: unused assignment
 control_structures.adb:160:16: info: division check proved (CVC5: 1 VC)
 control_structures.adb:160:16: info: float overflow check proved (Trivial)
-control_structures.adb:161:17: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [provers gave up before completing the proof]
-control_structures.adb:161:26: medium: float overflow check might fail [reason for check: result of floating-point exponentiation must be bounded] [provers gave up before completing the proof]
+control_structures.adb:161:17: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [provers reached step limit before completing the proof]
+control_structures.adb:161:26: medium: float overflow check might fail [reason for check: result of floating-point exponentiation must be bounded] [provers reached step limit before completing the proof]
 control_structures.adb:161:44: warning: statement has no effect
 control_structures.adb:162:14: warning: unused assignment
 control_structures.adb:162:21: info: float overflow check proved (Trivial)
@@ -412,7 +412,7 @@ datebook.adb:40:40: info: initialization of "Event_Array" constituent of "State"
 datebook.adb:63:07: info: initialization of "Found" proved
 datebook.adb:72:40: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 datebook.adb:86:69: info: length check proved (CVC5: 3 VC)
-datebook.adb:86:69: low: range check might fail, cannot prove upper bound for Description & (1 .. Maximum_Description_Length - Description'Length => ' ') [reason for check: result of concatenation must fit in the target type of the assignment] [possible fix: subprogram at datebook.ads:33 should mention Description in a precondition] [provers gave up before completing the proof]
+datebook.adb:86:69: low: range check might fail, cannot prove upper bound for Description & (1 .. Maximum_Description_Length - Description'Length => ' ') [reason for check: result of concatenation must fit in the target type of the assignment] [possible fix: subprogram at datebook.ads:33 should mention Description in a precondition] [provers reached step limit before completing the proof]
 datebook.adb:87:18: info: range check proved (CVC5: 2 VC)
 datebook.adb:87:21: info: range check proved (CVC5: 2 VC)
 datebook.adb:87:64: info: range check proved (CVC5: 2 VC)
@@ -700,8 +700,8 @@ generic_searchers.ads:12:29: info: initialization of "Result" proved, in instant
 generic_searchers.ads:12:29: info: initialization of "Result" proved, in instantiation at search_demo.adb:12
 generic_searchers.ads:15:74: info: index check proved (CVC5: 2 VC), in instantiation at prime_search.adb:15
 generic_searchers.ads:15:74: info: index check proved (CVC5: 2 VC), in instantiation at search_demo.adb:12
-generic_searchers.ads:19:49: medium: postcondition might fail, cannot prove Items (J) /= Search_Item, in instantiation at prime_search.adb:15 [provers gave up before completing the proof]
-generic_searchers.ads:19:49: medium: postcondition might fail, cannot prove Items (J) /= Search_Item, in instantiation at search_demo.adb:12 [provers gave up before completing the proof]
+generic_searchers.ads:19:49: medium: postcondition might fail, cannot prove Items (J) /= Search_Item, in instantiation at prime_search.adb:15 [provers reached step limit before completing the proof]
+generic_searchers.ads:19:49: medium: postcondition might fail, cannot prove Items (J) /= Search_Item, in instantiation at search_demo.adb:12 [provers reached step limit before completing the proof]
 good_types.adb:3:35: info: exceptional case proved (Trivial: 1 VC)
 good_types.adb:13:13: info: add a contract to analyze it separately from calling contexts
 good_types.adb:13:13: info: implicit aspect Always_Terminates on "To_Feet" has been proved, subprogram will terminate
@@ -767,7 +767,7 @@ initializer_demo.adb:22:28: info: unrolling loop [info-unrolling-inlining]
 initializer_demo.adb:23:21: high: overflow check might fail, cannot prove upper bound for Sum + Accumulator (A (Index)) (e.g. when A = (others => Integer'Last) and Index = 1 and Sum = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at initializer_demo.ads:14 should mention A in a precondition] [provers gave up before completing the proof]
 initializer_demo.adb:30:07: info: initialization of "Offset" proved
 initializer_demo.adb:35:19: info: overflow check proved (CVC5: 2 VC)
-initializer_demo.adb:35:35: high: overflow check might fail, cannot prove upper bound for P.Y + Offset.Y (e.g. when Offset = (X => 0, Y => 1) and P = (X => Integer'Last, Y => Integer'Last)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at initializer_demo.ads:22 should mention P in a precondition] [provers gave up before completing the proof]
+initializer_demo.adb:35:35: high: overflow check might fail, cannot prove upper bound for P.Y + Offset.Y (e.g. when Offset = (X => 0, Y => 1) and P = (X => Integer'Last, Y => Integer'Last)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at initializer_demo.ads:22 should mention P in a precondition] [provers reached step limit before completing the proof]
 initializer_demo.ads:8:13: info: implicit aspect Always_Terminates on "Add_Elements" has been proved, subprogram will terminate
 initializer_demo.ads:12:28: info: in default value at initializer_demo.adb:17
 initializer_demo.ads:12:28: info: range check proved (CVC5: 2 VC)
@@ -862,7 +862,7 @@ palindrome.adb:11:26: info: range check proved (CVC5: 2 VC), in call inlined at 
 palindrome.adb:13:31: info: loop variant proved (CVC5: 1 VC), in call inlined at palindrome.adb:36
 palindrome.adb:15:20: info: initialization check proved (CVC5: 1 VC), in call inlined at palindrome.adb:36
 palindrome.adb:15:20: info: range check proved (CVC5: 4 VC), in call inlined at palindrome.adb:36
-palindrome.adb:15:26: medium: array index check might fail, in call inlined at palindrome.adb:36 [reason for check: value must be a valid index into the array] [provers gave up before completing the proof]
+palindrome.adb:15:26: medium: array index check might fail, in call inlined at palindrome.adb:36 [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
 palindrome.adb:15:42: info: initialization check proved (CVC5: 1 VC), in call inlined at palindrome.adb:36
 palindrome.adb:15:42: info: range check proved (CVC5: 4 VC), in call inlined at palindrome.adb:36
 palindrome.adb:15:48: medium: array index check might fail, in call inlined at palindrome.adb:36 [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
@@ -877,7 +877,7 @@ palindrome.adb:36:07: info: length check proved (CVC5: 3 VC)
 palindrome.adb:36:07: info: range check proved (CVC5: 4 VC)
 parent-private1.ads:6:13: info: implicit aspect Always_Terminates on "Convert" has been proved, subprogram will terminate
 parent-public1.adb:7:07: info: initialization of "Temp" proved
-parent.adb:6:22: medium: overflow check might fail, cannot prove upper bound for Value ** 2 [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: subprogram at parent.ads:3 should mention Value in a precondition] [provers gave up before completing the proof]
+parent.adb:6:22: medium: overflow check might fail, cannot prove upper bound for Value ** 2 [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: subprogram at parent.ads:3 should mention Value in a precondition] [provers reached step limit before completing the proof]
 populate_tree.adb:7:05: info: data dependencies proved
 populate_tree.adb:8:05: info: flow dependencies proved
 populate_tree.adb:10:24: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
@@ -961,7 +961,7 @@ searchers2.adb:33:13: info: loop invariant preservation proved (CVC5: 2 VC)
 searchers2.ads:9:29: info: initialization of "Found" proved
 searchers2.ads:10:29: info: initialization of "Result" proved
 searchers2.ads:14:68: info: index check proved (CVC5: 2 VC)
-searchers2.ads:17:54: medium: postcondition might fail, cannot prove Search_Item /= Items(J) [provers gave up before completing the proof]
+searchers2.ads:17:54: medium: postcondition might fail, cannot prove Search_Item /= Items(J) [provers reached step limit before completing the proof]
 searchers3.adb:9:07: info: initialization of "Mid_Index" proved
 searchers3.adb:21:48: info: division check proved (CVC5: 2 VC)
 searchers3.adb:30:33: info: loop invariant initialization proved (CVC5: 1 VC)
@@ -978,7 +978,7 @@ searchers3.adb:40:36: info: range check proved (CVC5: 2 VC)
 searchers3.ads:9:29: info: initialization of "Found" proved
 searchers3.ads:10:29: info: initialization of "Result" proved
 searchers3.ads:14:71: info: index check proved (CVC5: 2 VC)
-searchers3.ads:17:56: medium: postcondition might fail, cannot prove Search_Item /= Items(J) [provers gave up before completing the proof]
+searchers3.ads:17:56: medium: postcondition might fail, cannot prove Search_Item /= Items(J) [provers reached step limit before completing the proof]
 searches.adb:9:23: info: range check proved (CVC5: 2 VC)
 searches.adb:11:26: info: index check proved (CVC5: 4 VC)
 searches.adb:12:31: info: overflow check proved (CVC5: 4 VC)
@@ -1131,8 +1131,8 @@ sqrt.adb:6:35: medium: divide by zero might fail [provers reached step limit bef
 sqrt.adb:6:35: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [provers reached step limit before completing the proof]
 stacks-more.adb:4:32: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (Stack.Top in 1 .. Max_Size) to subprogram at stacks-more.ads:2] [provers reached step limit before completing the proof]
 stacks-more.ads:2:13: info: implicit aspect Always_Terminates on "Peek" has been proved, subprogram will terminate
-stacks.adb:14:30: medium: overflow check might fail, cannot prove upper bound for Stack.Top + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at stacks.ads:8 should mention Stack in a precondition] [provers gave up before completing the proof]
-stacks.adb:15:25: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at stacks.ads:8 should mention Stack in a precondition] [provers gave up before completing the proof]
+stacks.adb:14:30: medium: overflow check might fail, cannot prove upper bound for Stack.Top + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at stacks.ads:8 should mention Stack in a precondition] [provers reached step limit before completing the proof]
+stacks.adb:15:25: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at stacks.ads:8 should mention Stack in a precondition] [provers reached step limit before completing the proof]
 stacks.adb:21:33: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at stacks.ads:10 should mention Stack in a precondition] [provers reached step limit before completing the proof]
 stacks.adb:22:30: info: range check proved (CVC5: 2 VC)
 stacks.ads:6:21: medium: "Stack.Items" is not set in "Clear" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "Stack.Items" on all paths, make "Stack" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
@@ -1170,7 +1170,7 @@ strings.adb:44:23: medium: range check might fail [reason for check: slice bound
 strings.adb:45:32: low: precondition might fail [possible explanation: the check might be unprovable due to proof limitations; use --info for more information] [provers reached step limit before completing the proof]
 strings.adb:45:32: warning: references to the "Value" attribute are handled in an imprecise way, so the precondition is impossible to prove and nothing will be known about the evaluation of the attribute reference [imprecise-value]
 strings.adb:45:40: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: call at line 37 should mention Position (for argument Equals_Position) in a postcondition] [provers reached step limit before completing the proof]
-strings.adb:45:62: medium: overflow check might fail, cannot prove upper bound for Equals_Position + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: call at line 37 should mention Position (for argument Equals_Position) in a postcondition] [provers gave up before completing the proof]
+strings.adb:45:62: medium: overflow check might fail, cannot prove upper bound for Equals_Position + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: call at line 37 should mention Position (for argument Equals_Position) in a postcondition] [provers reached step limit before completing the proof]
 strings.ads:8:22: info: initialization of "Found" proved
 strings.ads:9:22: info: initialization of "Position" proved
 strings.ads:11:10: info: data dependencies proved
@@ -1337,7 +1337,7 @@ very_longs-divide.adb:26:04: info: initialization of "N" proved
 very_longs-divide.adb:27:04: info: initialization of "M" proved
 very_longs-divide.adb:28:04: info: initialization of "Shift_Distance" proved
 very_longs-divide.adb:29:04: info: initialization of "U" proved
-very_longs-divide.adb:29:48: medium: range check might fail, cannot prove upper bound for Dividend.Length + 1 [possible fix: add precondition (Dividend.Length <= Digit_Index_Type'Last - 1) to subprogram at very_longs.ads:65] [provers gave up before completing the proof]
+very_longs-divide.adb:29:48: medium: range check might fail, cannot prove upper bound for Dividend.Length + 1 [possible fix: add precondition (Dividend.Length <= Digit_Index_Type'Last - 1) to subprogram at very_longs.ads:65] [provers reached step limit before completing the proof]
 very_longs-divide.adb:30:04: info: initialization of "V" proved
 very_longs-divide.adb:30:39: info: range check proved (CVC5: 2 VC)
 very_longs-divide.adb:31:04: info: initialization of "Q_Hat" proved
@@ -1409,7 +1409,7 @@ very_longs-divide.adb:157:11: info: range check proved (CVC5: 2 VC)
 very_longs-divide.adb:157:58: info: cannot unroll loop (dynamic loop bounds) [info-unrolling-inlining]
 very_longs-divide.adb:158:56: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:162:43: info: overflow check proved (CVC5: 2 VC)
-very_longs-divide.adb:162:59: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 145 should mention J in a precondition] [provers gave up before completing the proof]
+very_longs-divide.adb:162:59: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 145 should mention J in a precondition] [provers reached step limit before completing the proof]
 very_longs-divide.adb:169:11: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 very_longs-divide.adb:169:26: info: overflow check proved (CVC5: 2 VC)
 very_longs-divide.adb:169:42: info: index check proved (CVC5: 2 VC)
@@ -1417,7 +1417,7 @@ very_longs-divide.adb:170:49: info: overflow check proved (CVC5: 2 VC)
 very_longs-divide.adb:170:65: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:170:108: info: range check proved (CVC5: 2 VC)
 very_longs-divide.adb:175:39: info: overflow check proved (CVC5: 2 VC)
-very_longs-divide.adb:175:39: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: subprogram at line 145 should mention J and N in a precondition] [provers gave up before completing the proof]
+very_longs-divide.adb:175:39: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: subprogram at line 145 should mention J and N in a precondition] [provers reached step limit before completing the proof]
 very_longs-divide.adb:180:23: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:180:23: info: overflow check proved (CVC5: 2 VC)
 very_longs-divide.adb:181:46: info: index check proved (CVC5: 2 VC)
@@ -1427,14 +1427,14 @@ very_longs-divide.adb:187:08: info: data dependencies proved
 very_longs-divide.adb:188:08: info: flow dependencies proved
 very_longs-divide.adb:191:07: info: initialization of "Carry" proved
 very_longs-divide.adb:192:07: info: initialization of "Sum" proved
-very_longs-divide.adb:194:28: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (J in 1 .. Length) to subprogram at line 185] [provers gave up before completing the proof]
-very_longs-divide.adb:194:40: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at line 185 should mention Q_Hat in a precondition] [provers gave up before completing the proof]
+very_longs-divide.adb:194:28: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (J in 1 .. Length) to subprogram at line 185] [provers reached step limit before completing the proof]
+very_longs-divide.adb:194:40: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at line 185 should mention Q_Hat in a precondition] [provers reached step limit before completing the proof]
 very_longs-divide.adb:198:31: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:198:58: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:200:14: info: range check proved (CVC5: 2 VC)
 very_longs-divide.adb:200:61: info: cannot unroll loop (dynamic loop bounds) [info-unrolling-inlining]
 very_longs-divide.adb:201:49: info: overflow check proved (CVC5: 2 VC)
-very_longs-divide.adb:201:65: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 185 should mention J in a precondition] [provers gave up before completing the proof]
+very_longs-divide.adb:201:65: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 185 should mention J in a precondition] [provers reached step limit before completing the proof]
 very_longs-divide.adb:202:47: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:203:14: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 very_longs-divide.adb:203:29: info: overflow check proved (CVC5: 2 VC)
@@ -1442,7 +1442,7 @@ very_longs-divide.adb:203:45: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:206:26: info: index check proved (CVC5: 2 VC)
 very_longs-divide.adb:206:26: info: overflow check proved (CVC5: 2 VC)
 very_longs-divide.adb:206:50: info: overflow check proved (CVC5: 2 VC)
-very_longs-divide.adb:206:50: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: subprogram at line 185 should mention J and N in a precondition] [provers gave up before completing the proof]
+very_longs-divide.adb:206:50: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: subprogram at line 185 should mention J and N in a precondition] [provers reached step limit before completing the proof]
 very_longs-divide.adb:211:26: info: length check proved (CVC5: 3 VC)
 very_longs-divide.adb:211:29: info: length check proved (CVC5: 3 VC)
 very_longs-divide.adb:212:26: info: length check proved (CVC5: 3 VC)
@@ -1595,7 +1595,7 @@ very_longs.adb:302:22: warning: initialization of an array in FOR loop is handle
 very_longs.adb:302:37: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:302:41: info: index check proved (CVC5: 2 VC)
 very_longs.adb:312:07: info: initialization of "Result" proved
-very_longs.adb:312:36: medium: range check might fail, cannot prove upper bound for L.Length + R.Length [possible fix: add precondition (L.Length <= Digit_Index_Type'Last - R.Length) to subprogram at very_longs.ads:61] [provers gave up before completing the proof]
+very_longs.adb:312:36: medium: range check might fail, cannot prove upper bound for L.Length + R.Length [possible fix: add precondition (L.Length <= Digit_Index_Type'Last - R.Length) to subprogram at very_longs.ads:61] [provers reached step limit before completing the proof]
 very_longs.adb:313:07: info: initialization of "L_Digit" proved
 very_longs.adb:314:07: info: initialization of "R_Digit" proved
 very_longs.adb:315:07: info: initialization of "T_Digit" proved
@@ -1647,7 +1647,7 @@ workspaces.adb:7:30: info: cannot unroll loop (too many loop iterations) [info-u
 workspaces.adb:8:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 workspaces.adb:8:21: info: index check proved (CVC5: 2 VC)
 workspaces.adb:9:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
-workspaces.adb:9:27: high: overflow check might fail, cannot prove upper bound for (Size + 1) (e.g. when Size = Positive'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Size <= Integer'Last - 1) to subprogram at workspaces.ads:4] [provers gave up before completing the proof]
+workspaces.adb:9:27: high: overflow check might fail, cannot prove upper bound for (Size + 1) (e.g. when Size = Positive'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Size <= Integer'Last - 1) to subprogram at workspaces.ads:4] [provers reached step limit before completing the proof]
 workspaces.adb:9:32: info: index check proved (CVC5: 2 VC)
 workspaces.ads:4:13: info: implicit aspect Always_Terminates on "Generate_Workspace" has been proved, subprogram will terminate
 test.gpr: warning: there are no sources of language "Ada" in this project
