@@ -2061,17 +2061,14 @@ package body Flow_Generated_Globals.Partial is
          case Ekind (E) is
             when Entry_Kind | E_Function | E_Procedure | E_Task_Type =>
                Contr :=
-                 --  disable formatting for deeply nested condition
-                 --!format off
                  (if Entity_In_SPARK (E)
                     and then
-                     (Entity_Body_In_SPARK (E)
-                      or else
-                        (Is_Expression_Function_Or_Completion (E)
-                         and then Entity_Body_Compatible_With_SPARK (E)))
+                      (Entity_Body_In_SPARK (E)
+                       or else
+                         (Is_Expression_Function_Or_Completion (E)
+                          and then Entity_Body_Compatible_With_SPARK (E)))
                   then Preanalyze_Body (E)
                   else Preanalyze_Spec (E));
-               --!format on
 
             when E_Package                                           =>
                Contr :=

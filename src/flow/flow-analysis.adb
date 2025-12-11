@@ -6603,17 +6603,16 @@ package body Flow.Analysis is
                         --  a message is emitted. In this case, the
                         --  Always_Terminates aspect is trusted.
 
-                        --  disable formatting for deeply nested condition
-                        --!format off
                         elsif Get_Termination_Condition (SC.E)
-                              = (Static, False)
+                          = (Static, False)
                           or else
-                          (Get_Termination_Condition (SC.E).Kind = Unspecified
-                           and then (Calls_Potentially_Nonreturning_Subprogram
-                                       (SC.E)
-                                     or else Is_Directly_Nonreturning (SC.E)))
+                            (Get_Termination_Condition (SC.E).Kind
+                             = Unspecified
+                             and then
+                               (Calls_Potentially_Nonreturning_Subprogram
+                                  (SC.E)
+                                or else Is_Directly_Nonreturning (SC.E)))
                         then
-                        --!format on
                            Proved := False;
                            Error_Msg_Flow
                              (FA       => FA,

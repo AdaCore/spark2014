@@ -3592,10 +3592,7 @@ package body SPARK_Definition.Annotate is
       --  thing is that several entries may match, or entries may include
       --  other entries.
 
-      --  Exempt from formatting due to eng/ide/gnatformat#194
-      --!format off
       for E : Annotated_Range of Annotations loop
-      --!format on
 
          --  If the current Annotation_Range starts already after the one we
          --  look for, then we can stop.

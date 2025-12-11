@@ -3947,15 +3947,14 @@ package body Gnat2Why.Borrow_Checker is
             --  only. Protected functions are never allowed to modify protected
             --  components.
 
-            --  nested expression exceeds line length
-            --!format off
-            if Ekind (Subp) = E_Function and then
-              (not Is_Function_With_Side_Effects (Subp)
-               or else (Within_Protected_Type (Subp)
-                        and then Expr.Is_Ent
-                        and then Is_Protected_Component_Or_Discr_Or_Part_Of
-                                   (Expr.Ent)))
-            --!format on
+            if Ekind (Subp) = E_Function
+              and then
+                (not Is_Function_With_Side_Effects (Subp)
+                 or else
+                   (Within_Protected_Type (Subp)
+                    and then Expr.Is_Ent
+                    and then
+                      Is_Protected_Component_Or_Discr_Or_Part_Of (Expr.Ent)))
             then
                Mode := Read;
 

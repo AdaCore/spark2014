@@ -7174,25 +7174,27 @@ package body SPARK_Definition is
                            Access_To_Incomplete_Views.Insert
                              (Retysp (Des_Ty), E, Pos, Ins);
 
-                           --!format off
-                           pragma Assert
-                             (Is_Access_Type (Node_Maps.Element (Pos))
-                              and then
-                                Ekind (Directly_Designated_Type
-                                  (Node_Maps.Element (Pos))) /=
-                                E_Subprogram_Type
-                              and then
-                                (Acts_As_Incomplete_Type
-                                   (Directly_Designated_Type
-                                       (Node_Maps.Element (Pos)))
-                                 or else
-                                   (Ekind (Node_Maps.Element (Pos)) =
-                                        E_Access_Subtype
-                                    and then Acts_As_Incomplete_Type
-                                        (Directly_Designated_Type
-                                            (Base_Retysp
-                                                (Node_Maps.Element (Pos)))))));
-                           --!format on
+                           pragma
+                             Assert
+                               (Is_Access_Type (Node_Maps.Element (Pos))
+                                  and then
+                                    Ekind
+                                      (Directly_Designated_Type
+                                         (Node_Maps.Element (Pos)))
+                                    /= E_Subprogram_Type
+                                  and then
+                                    (Acts_As_Incomplete_Type
+                                       (Directly_Designated_Type
+                                          (Node_Maps.Element (Pos)))
+                                     or else
+                                       (Ekind (Node_Maps.Element (Pos))
+                                        = E_Access_Subtype
+                                        and then
+                                          Acts_As_Incomplete_Type
+                                            (Directly_Designated_Type
+                                               (Base_Retysp
+                                                  (Node_Maps.Element
+                                                     (Pos)))))));
                         end;
                      end if;
 
@@ -10066,18 +10068,17 @@ package body SPARK_Definition is
                            --  Referenced entity
 
                         begin
-                           --!format off
                            if Present (Ref)
-                             and then (Canonical_Entity (Ref, E)
-                                       = Current_Type_Instance
-                                       or else
-                                       (Ekind (Ref) = E_Function
-                                        and then Scope (Ref)
-                                                 = Current_Type_Instance))
+                             and then
+                               (Canonical_Entity (Ref, E)
+                                = Current_Type_Instance
+                                or else
+                                  (Ekind (Ref) = E_Function
+                                   and then
+                                     Scope (Ref) = Current_Type_Instance))
                            then
                               return Abandon;
                            end if;
-                           --!format on
                         end;
 
                      when others                         =>
