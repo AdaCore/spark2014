@@ -19787,6 +19787,17 @@ package body Gnat2Why.Expr is
                                 Typ    => EW_Int_Type);
                         end;
 
+                     when N_Attribute_Reference          =>
+                        pragma
+                          Assert
+                            (Get_Attribute_Id (Attribute_Name (Expr))
+                               = Attribute_Result);
+                        Compute_Size_From_Type (Typ);
+
+                     --  'Result is handled as a constant standalone object.
+                     --  It is always constrained and cannot have a Size
+                     --  annotation.
+
                      --  Only parts of objects are supported for now
 
                      when others                         =>
