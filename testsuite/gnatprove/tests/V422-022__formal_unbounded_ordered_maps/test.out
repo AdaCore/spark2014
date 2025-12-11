@@ -30,12 +30,12 @@ test_map.adb:40:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:41:07: info: precondition proved (Z3: 1 VC)
 test_map.adb:42:07: info: precondition proved (Z3: 2 VC)
 test_map.adb:43:22: info: assertion proved (Z3: 1 VC)
-test_map.adb:48:07: info: precondition proved (Z3: 1 VC)
-test_map.adb:50:07: medium: precondition might fail
+test_map.adb:48:07: medium: precondition might fail [possible fix: call at line 47 should mention Container (for argument L) in a postcondition] [provers reached step limit before completing the proof]
+test_map.adb:50:07: info: precondition proved (Z3: 1 VC)
 test_map.adb:51:22: info: assertion proved (Z3: 1 VC)
-test_map.adb:54:22: medium: assertion might fail
+test_map.adb:54:22: medium: assertion might fail [provers reached step limit before completing the proof]
 test_map.adb:56:22: info: assertion proved (Z3: 1 VC)
-test_map.adb:59:07: medium: assertion might fail
+test_map.adb:59:07: medium: assertion might fail [provers reached step limit before completing the proof]
 test_map.adb:62:14: warning: subprogram "Test_Map_Rec" has no effect
 test_map.adb:64:07: info: initialization of "L" proved
 test_map.adb:64:10: info: initialization of "K" proved
@@ -62,7 +62,7 @@ test_map.adb:94:07: info: precondition proved (CVC5: 1 VC)
 test_map.adb:95:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:98:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:100:22: info: assertion proved (Z3: 1 VC)
-test_map.adb:101:07: medium: assertion might fail
+test_map.adb:101:07: medium: assertion might fail [provers reached step limit before completing the proof]
 test_map.adb:104:14: warning: subprogram "Test_Map_Rec_2" has no effect
 test_map.adb:106:07: info: initialization of "L" proved
 test_map.adb:106:10: info: initialization of "K" proved
@@ -83,15 +83,15 @@ test_map.adb:122:07: info: precondition proved (CVC5: 1 VC)
 test_map.adb:123:07: info: precondition proved (CVC5: 1 VC)
 test_map.adb:129:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:130:07: info: precondition proved (Z3: 1 VC)
-test_map.adb:131:22: medium: assertion might fail
+test_map.adb:131:22: medium: assertion might fail [provers reached step limit before completing the proof]
 test_map.adb:132:07: info: precondition proved (Z3: 1 VC)
 test_map.adb:134:07: info: precondition proved (Z3: 1 VC)
-test_map.adb:136:22: medium: assertion might fail
+test_map.adb:136:22: medium: assertion might fail [provers reached step limit before completing the proof]
 test_map.adb:137:07: info: precondition proved (CVC5: 1 VC)
 test_map.adb:138:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:141:22: info: assertion proved (Z3: 1 VC)
-test_map.adb:143:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Length or turning it into an expression function]
-test_map.adb:144:07: medium: assertion might fail
+test_map.adb:143:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Length or turning it into an expression function] [provers reached step limit before completing the proof]
+test_map.adb:144:07: medium: assertion might fail [provers reached step limit before completing the proof]
 test_map.adb:149:07: info: precondition proved (Trivial: 1 VC)
 test_map.adb:150:07: info: precondition proved (Trivial: 1 VC)
 test_map.adb:151:07: info: precondition proved (Trivial: 1 VC)
@@ -140,7 +140,7 @@ test_map.adb:231:22: info: precondition proved (Z3: 1 VC)
 test_map.adb:235:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:235:22: info: precondition proved (Z3: 1 VC)
 test_map.adb:236:22: info: precondition proved (Z3: 1 VC)
-test_map.adb:236:22: medium: assertion might fail
+test_map.adb:236:22: medium: assertion might fail [provers reached step limit before completing the proof]
 test_map.adb:237:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:237:36: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_map.adb:238:22: info: assertion proved (CVC5: 1 VC)
@@ -190,7 +190,7 @@ test_map.adb:302:32: info: pointer dereference check proved (CVC5: 1 VC)
 test_map.adb:304:17: info: pointer dereference check proved (CVC5: 1 VC)
 test_map.adb:307:25: info: assertion proved (CVC5: 1 VC)
 test_map.adb:307:25: info: precondition proved (Z3: 1 VC)
-test_map.adb:309:07: medium: assertion might fail
+test_map.adb:309:07: medium: assertion might fail [provers reached step limit before completing the proof]
 test_map.ads:16:13: info: implicit aspect Always_Terminates on "My_Lt" has been proved, subprogram will terminate
 test_map.ads:17:12: info: postcondition proved (CVC5: 2 VC)
 test_map.ads:25:14: warning: subprogram "Test_Ordered_Map" has no effect
