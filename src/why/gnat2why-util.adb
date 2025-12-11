@@ -1689,8 +1689,6 @@ package body Gnat2Why.Util is
            --  the bounds and, for non static array types, potentially bound
            --  constraints.
 
-           --  Nested expression gets indented too much
-           --!format off
            or else
              (Is_Array_Type (Ty_Ext)
               and then
@@ -1700,7 +1698,6 @@ package body Gnat2Why.Util is
                     and then
                       (Is_Constrained (Ty_Ext)
                        or else Is_Fixed_Lower_Bound_Array_Subtype (Ty_Ext)))))
-           --!format on
 
            --  Types with discriminants might have variant parts. Components
            --  which are not present in an object are fixed by the dynamic

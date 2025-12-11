@@ -22849,16 +22849,15 @@ package body Gnat2Why.Expr is
                            Index_Base : Entity_Id;
                            Typ        : constant Node_Id :=
                              Component_Subtype_Indication (Decl);
-                           --  deeply nested expression
-                           --!format off
                            Check_Idx  : constant Boolean :=
-                             No (Base) or else
-                                (not Is_Constrained (Base)
-                                 and then
-                                    (Is_Constrained (Ent)
-                                     or else Is_Fixed_Lower_Bound_Array_Subtype
-                                               (Ent)));
-                           --!format on
+                             No (Base)
+                             or else
+                               (not Is_Constrained (Base)
+                                and then
+                                  (Is_Constrained (Ent)
+                                   or else
+                                     Is_Fixed_Lower_Bound_Array_Subtype
+                                       (Ent)));
                            --  We only need to check the index types of Ent if
                            --  either there is no Base or Base is unconstrained
                            --  and Ent has some constraints.

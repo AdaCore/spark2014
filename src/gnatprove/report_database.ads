@@ -55,20 +55,27 @@ package Report_Database is
       Max_Time  : Float;
    end record;
 
-   --!format off
-   function "<" (X, Y : Proved_Check) return Boolean is
-     (X.Max_Time < Y.Max_Time
-      or else (X.Max_Time = Y.Max_Time
-        and then (X.Max_Steps < Y.Max_Steps
-          or else (X.Max_Steps = Y.Max_Steps
-            and then (X.File < Y.File
-              or else (X.File = Y.File
-                and then (X.Line < Y.Line
-                  or else (X.Line = Y.Line
-                    and then (X.Column < Y.Column
-                      or else (X.Column = Y.Column
-                          and then X.Kind < Y.Kind))))))))));
-   --!format on
+   function "<" (X, Y : Proved_Check) return Boolean
+   is (X.Max_Time < Y.Max_Time
+       or else
+         (X.Max_Time = Y.Max_Time
+          and then
+            (X.Max_Steps < Y.Max_Steps
+             or else
+               (X.Max_Steps = Y.Max_Steps
+                and then
+                  (X.File < Y.File
+                   or else
+                     (X.File = Y.File
+                      and then
+                        (X.Line < Y.Line
+                         or else
+                           (X.Line = Y.Line
+                            and then
+                              (X.Column < Y.Column
+                               or else
+                                 (X.Column = Y.Column
+                                  and then X.Kind < Y.Kind))))))))));
 
    type Pragma_Assume is record
       File   : Unbounded_String;

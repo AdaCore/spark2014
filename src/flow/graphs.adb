@@ -532,9 +532,7 @@ package body Graphs is
 
       for U in Component_Id range 1 .. Component_Id (Current_Component) loop
          --  Exempt from formatting due to eng/ide/gnatformat#194
-         --!format off
          for V : Component_Id of CG (U) loop
-         --!format on
             Succ (U).Union (Succ (V));
             Succ (U).Include (V);
          end loop;
