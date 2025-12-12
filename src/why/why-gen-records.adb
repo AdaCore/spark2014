@@ -275,7 +275,7 @@ package body Why.Gen.Records is
       pragma
         Assert
           (Is_Init_Wrapper_Type (Get_Type (+Expr1))
-             = Is_Init_Wrapper_Type (Get_Type (+Expr2)));
+           = Is_Init_Wrapper_Type (Get_Type (+Expr2)));
 
       C_Ty    : constant Entity_Id :=
         (if Is_Class_Wide_Type (Ty)
@@ -5325,13 +5325,14 @@ package body Why.Gen.Records is
       Values       :
         W_Expr_Array (1 .. Count_Why_Top_Level_Fields (Ty, Relaxed_Init));
       Index        : Positive := 1;
+      Tmp_Alias    : constant W_Expr_Id :=
+        (if Present (Alias)
+         then
+           New_Temp_For_Expr
+             (Alias, I.Discrs.Present and then I.Discrs.Binder.Mutable)
+         else Why_Empty);
 
    begin
-      --  No need to introduce a temporary for Alias, overlays cannot have
-      --  discriminants, so it will be referenced only once.
-
-      pragma Assert (if Present (Alias) then not I.Discrs.Present);
-
       --  Store association for the top-level field for fields
 
       if I.Fields.Present then
@@ -5341,7 +5342,7 @@ package body Why.Gen.Records is
               I.Fields.Binder.Mutable,
               Domain,
               Ref_Allowed,
-              Alias);
+              Tmp_Alias);
          Index := Index + 1;
       end if;
 
@@ -5353,7 +5354,8 @@ package body Why.Gen.Records is
              (I.Discrs.Binder.B_Name,
               I.Discrs.Binder.Mutable,
               Domain,
-              Ref_Allowed);
+              Ref_Allowed,
+              Tmp_Alias);
          Index := Index + 1;
       end if;
 
@@ -5374,7 +5376,16 @@ package body Why.Gen.Records is
 
       pragma Assert (Index = Values'Last + 1);
 
-      return +Record_From_Split_Form (E, Values, Ty, Relaxed_Init);
+      return
+         Res : W_Expr_Id :=
+           +Record_From_Split_Form (E, Values, Ty, Relaxed_Init)
+      do
+         if Present (Alias) then
+            Res :=
+              Binding_For_Temp
+                (Domain => Domain, Tmp => Tmp_Alias, Context => Res);
+         end if;
+      end return;
    end Record_From_Split_Form;
 
    --------------------------------
