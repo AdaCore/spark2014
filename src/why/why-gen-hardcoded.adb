@@ -1138,7 +1138,7 @@ package body Why.Gen.Hardcoded is
          pragma
            Assert
              (Name_String = SSEN.To_Integer
-                or else Name_String = SSEN.To_Address);
+              or else Name_String = SSEN.To_Address);
          T :=
            Insert_Simple_Conversion
              (Ada_Node => Ada_Node,
@@ -1650,7 +1650,7 @@ package body Why.Gen.Hardcoded is
             pragma
               Assert
                 (Present (String_Literal)
-                   and then No (Next_Actual (String_Literal)));
+                 and then No (Next_Actual (String_Literal)));
             Str_Value      : constant String_Id := Strval (String_Literal);
             Len            : constant Nat := String_Length (Str_Value);
             Value_String   : String (1 .. Natural (Len));
@@ -1697,7 +1697,7 @@ package body Why.Gen.Hardcoded is
                pragma
                  Assert
                    (Present (String_Literal)
-                      and then No (Next_Actual (String_Literal)));
+                    and then No (Next_Actual (String_Literal)));
                Str_Value      : constant String_Id := Strval (String_Literal);
                Len            : constant Nat := String_Length (Str_Value);
                Arg            : String (1 .. Natural (Len));
@@ -1753,8 +1753,8 @@ package body Why.Gen.Hardcoded is
                pragma
                  Assert
                    (if Last /= Arg'Last
-                      then Exp = Uint_From_String (Arg (Last + 2 .. Arg'Last))
-                      else Exp = Uint_0);
+                    then Exp = Uint_From_String (Arg (Last + 2 .. Arg'Last))
+                    else Exp = Uint_0);
 
                if Index = 0 then
                   raise Constraint_Error with "invalid real value";
@@ -1839,7 +1839,7 @@ package body Why.Gen.Hardcoded is
                pragma
                  Assert
                    (Present (Den_Literal)
-                      and then No (Next_Actual (Den_Literal)));
+                    and then No (Next_Actual (Den_Literal)));
                Num_Str_Id  : constant String_Id := Strval (Num_Literal);
                Den_Str_Id  : constant String_Id := Strval (Den_Literal);
                Num_Len     : constant Natural :=
@@ -1865,7 +1865,7 @@ package body Why.Gen.Hardcoded is
                pragma
                  Assert
                    (Present (Quot_Literal)
-                      and then No (Next_Actual (Quot_Literal)));
+                    and then No (Next_Actual (Quot_Literal)));
                Quot_Str_Id  : constant String_Id := Strval (Quot_Literal);
                Quot_Len     : constant Natural :=
                  Natural (String_Length (Quot_Str_Id));

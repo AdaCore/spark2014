@@ -77,13 +77,13 @@ package body Flow_Types is
       pragma
         Assert_And_Cut
           (Left.Kind = Right.Kind
-             and then
-               Left.Kind
-               in Direct_Mapping
-                | Record_Field
-                | Synthetic_Null_Export
-                | Magic_String
-             and then Left.Variant = Right.Variant);
+           and then
+             Left.Kind
+             in Direct_Mapping
+              | Record_Field
+              | Synthetic_Null_Export
+              | Magic_String
+           and then Left.Variant = Right.Variant);
 
       case Left.Kind is
          when Null_Value                    =>
@@ -274,7 +274,7 @@ package body Flow_Types is
                | N_Block_Statement
                | N_Package_Declaration
                | N_Subprogram_Call
-                or else Is_Specialized_Actual (SC.N));
+              or else Is_Specialized_Actual (SC.N));
          return Node_Hash (SC.N);
 
       --  Otherwise, this is an indirect call to a user-defined equality
@@ -397,7 +397,7 @@ package body Flow_Types is
             pragma
               Assert
                 (Is_Part_Of_Concurrent_Object (Comp)
-                   or else Is_Concurrent_Component_Or_Discr (Comp));
+                 or else Is_Concurrent_Component_Or_Discr (Comp));
             return True;
          end;
       else
@@ -926,8 +926,8 @@ package body Flow_Types is
                pragma
                  Assert
                    (J = Original'Last
-                      or else Original (J .. J + 1) = "TK"
-                      or else Original (J + 1 .. J + 2) = "__");
+                    or else Original (J .. J + 1) = "TK"
+                    or else Original (J + 1 .. J + 2) = "__");
 
                Last := Last - 1;
 
@@ -935,7 +935,7 @@ package body Flow_Types is
                pragma
                  Assert
                    (J = Original'Last
-                      or else Original (J + 1 .. J + 2) = "__");
+                    or else Original (J + 1 .. J + 2) = "__");
 
                Last := Last - 1;
 
@@ -1181,10 +1181,10 @@ package body Flow_Types is
          pragma
            Assert
              (Ekind (E) = E_Constant  --  Avoid calling Has_Variable_Input
-                or else               --  by Is_Global_Entity during marking.
-                  Is_Global_Entity (E)
-                or else Is_Subprogram_Or_Entry (E)
-                or else Ekind (E) = E_Package);
+              or else               --  by Is_Global_Entity during marking.
+                Is_Global_Entity (E)
+              or else Is_Subprogram_Or_Entry (E)
+              or else Ekind (E) = E_Package);
          --  Here we only process globals (including constants without
          --  variable inputs that wrongly appear in user-written contracts) or
          --  subprograms for which we decide conditional-vs-definitive calls

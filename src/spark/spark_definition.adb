@@ -6385,8 +6385,8 @@ package body SPARK_Definition is
          pragma
            Assert
              (if Is_Overloadable (E)
-                then E = Ultimate_Alias (E)
-                else Ekind (E) = E_Entry_Family);
+              then E = Ultimate_Alias (E)
+              else Ekind (E) = E_Entry_Family);
       end if;
 
       --  There should not be calls to default initial condition and invariant
@@ -7182,24 +7182,23 @@ package body SPARK_Definition is
                            pragma
                              Assert
                                (Is_Access_Type (Node_Maps.Element (Pos))
-                                  and then
-                                    Ekind
-                                      (Directly_Designated_Type
-                                         (Node_Maps.Element (Pos)))
-                                    /= E_Subprogram_Type
-                                  and then
-                                    (Acts_As_Incomplete_Type
-                                       (Directly_Designated_Type
-                                          (Node_Maps.Element (Pos)))
-                                     or else
-                                       (Ekind (Node_Maps.Element (Pos))
-                                        = E_Access_Subtype
-                                        and then
-                                          Acts_As_Incomplete_Type
-                                            (Directly_Designated_Type
-                                               (Base_Retysp
-                                                  (Node_Maps.Element
-                                                     (Pos)))))));
+                                and then
+                                  Ekind
+                                    (Directly_Designated_Type
+                                       (Node_Maps.Element (Pos)))
+                                  /= E_Subprogram_Type
+                                and then
+                                  (Acts_As_Incomplete_Type
+                                     (Directly_Designated_Type
+                                        (Node_Maps.Element (Pos)))
+                                   or else
+                                     (Ekind (Node_Maps.Element (Pos))
+                                      = E_Access_Subtype
+                                      and then
+                                        Acts_As_Incomplete_Type
+                                          (Directly_Designated_Type
+                                             (Base_Retysp
+                                                (Node_Maps.Element (Pos)))))));
                         end;
                      end if;
 
@@ -8244,7 +8243,7 @@ package body SPARK_Definition is
                pragma
                  Assert
                    (Ekind (E) /= E_Function
-                      or else Is_Function_With_Side_Effects (E));
+                    or else Is_Function_With_Side_Effects (E));
 
                --  The frontend does not allow Exceptional_Cases on entries
 
@@ -8299,7 +8298,7 @@ package body SPARK_Definition is
                pragma
                  Assert
                    (Ekind (E) /= E_Function
-                      or else Is_Function_With_Side_Effects (E));
+                    or else Is_Function_With_Side_Effects (E));
 
                --  The frontend does not allow Program_Exit on entries
 
@@ -8393,7 +8392,7 @@ package body SPARK_Definition is
                pragma
                  Assert
                    (Ekind (E) /= E_Function
-                      or else Is_Function_With_Side_Effects (E));
+                    or else Is_Function_With_Side_Effects (E));
 
                --  The frontend does not allow Exit_Cases on entries
 
@@ -8561,7 +8560,7 @@ package body SPARK_Definition is
                pragma
                  Assert
                    (Ekind (E) /= E_Function
-                      or else Is_Function_With_Side_Effects (E));
+                    or else Is_Function_With_Side_Effects (E));
 
                declare
                   Assoc : constant List_Id :=
@@ -9060,7 +9059,7 @@ package body SPARK_Definition is
                                  pragma
                                    Assert
                                      (Left_Opnd (Above) = Cursor
-                                        or else Right_Opnd (Above) = Cursor);
+                                      or else Right_Opnd (Above) = Cursor);
                                  if Is_Access_Object_Type (Etype (Cursor)) then
                                     goto End_Propagation;
                                  else
@@ -10214,7 +10213,7 @@ package body SPARK_Definition is
             pragma
               Assert
                 (Present (Full_View (E))
-                   and then not Entity_Marked (Full_View (E)));
+                 and then not Entity_Marked (Full_View (E)));
             Entity_Set.Insert (Full_View (E));
          end if;
 
@@ -10539,7 +10538,7 @@ package body SPARK_Definition is
                          (Xcov,
                           Exempt_On,
                           "Rejected by the frontend because of volatile IN "
-                            & "parameter in the invariant function");
+                          & "parameter in the invariant function");
                      Mark_Unsupported (Lim_Type_Inv_Protected_Type, E);
                      pragma Annotate (Xcov, Exempt_Off);
 
@@ -10828,7 +10827,7 @@ package body SPARK_Definition is
                   pragma
                     Assert
                       (Machine_Mantissa_Value (Standard_Long_Long_Float)
-                         = Uint_64);
+                       = Uint_64);
 
                else
                   raise Program_Error;
@@ -10848,9 +10847,9 @@ package body SPARK_Definition is
                   pragma
                     Assert
                       (In_SPARK (Etype (Low))
-                         and then In_SPARK (Etype (High))
-                         and then not Has_Fixed_Point_Type (Etype (Low))
-                         and then not Has_Fixed_Point_Type (Etype (High)));
+                       and then In_SPARK (Etype (High))
+                       and then not Has_Fixed_Point_Type (Etype (Low))
+                       and then not Has_Fixed_Point_Type (Etype (High)));
                end;
             end if;
 
@@ -11676,11 +11675,11 @@ package body SPARK_Definition is
                pragma
                  Assert
                    (Ekind (E) in E_Protected_Subtype | E_Task_Subtype
-                      or else
-                        (Nkind (Parent (E)) = N_Full_Type_Declaration
-                         and then
-                           Nkind (Type_Definition (Parent (E)))
-                           = N_Derived_Type_Definition));
+                    or else
+                      (Nkind (Parent (E)) = N_Full_Type_Declaration
+                       and then
+                         Nkind (Type_Definition (Parent (E)))
+                         = N_Derived_Type_Definition));
 
                if Full_View_Not_In_SPARK (Etype (E)) then
                   Full_Views_Not_In_SPARK.Insert (E);
@@ -12550,10 +12549,10 @@ package body SPARK_Definition is
                         pragma
                           Assert
                             (In_SPARK (Orig_Ty)
-                               and then Ekind (Orig_Ty) = E_Record_Type
-                               and then
-                                 (Is_Tagged_Type (Orig_Ty)
-                                  or else Retysp (Etype (Orig_Ty)) = Orig_Ty));
+                             and then Ekind (Orig_Ty) = E_Record_Type
+                             and then
+                               (Is_Tagged_Type (Orig_Ty)
+                                or else Retysp (Etype (Orig_Ty)) = Orig_Ty));
                         Unused_Records.Exclude (Orig_Ty);
                      end;
                   end if;
@@ -14421,7 +14420,7 @@ package body SPARK_Definition is
       pragma
         Assert
           (Is_Intrinsic_Subprogram (E)
-             and then Ekind (E) in E_Function | E_Operator);
+           and then Ekind (E) in E_Function | E_Operator);
 
       if Nkind (N) = N_Op_Not
         and then Has_Modular_Integer_Type (Etype (N))
@@ -14560,8 +14559,7 @@ package body SPARK_Definition is
                   pragma
                     Assert
                       (List_Containing (Decl)
-                         = Visible_Declarations
-                             (Package_Specification (Scop)));
+                       = Visible_Declarations (Package_Specification (Scop)));
                end if;
 
             --  For package bodies, the entity is declared either

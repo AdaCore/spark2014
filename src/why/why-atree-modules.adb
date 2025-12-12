@@ -179,8 +179,8 @@ package body Why.Atree.Modules is
             pragma
               Assert
                 (E in Callable_Kind_Id
-                   and then Is_Expression_Function_Or_Completion (E)
-                   and then Entity_Body_Compatible_With_SPARK (E));
+                 and then Is_Expression_Function_Or_Completion (E)
+                 and then Entity_Body_Compatible_With_SPARK (E));
 
          when Fun_Post_Axiom
          =>
@@ -191,33 +191,33 @@ package body Why.Atree.Modules is
             pragma
               Assert
                 (Nkind (E) in N_Aggregate | N_Delta_Aggregate
-                   or else
-                     (Is_Function_Or_Function_Type (E)
-                      and then not Has_Pragma_Volatile_Function (E)
-                      and then not Is_Function_With_Side_Effects (E)));
+                 or else
+                   (Is_Function_Or_Function_Type (E)
+                    and then not Has_Pragma_Volatile_Function (E)
+                    and then not Is_Function_With_Side_Effects (E)));
 
          when Program_Function_Decl
          =>
             pragma
               Assert
                 (Nkind (E) in N_Aggregate | N_Delta_Aggregate
-                   or else E in Callable_Kind_Id);
+                 or else E in Callable_Kind_Id);
 
          when Dispatch | Dispatch_Axiom | Dispatch_Post_Axiom
          =>
             pragma
               Assert
                 (E in Callable_Kind_Id
-                   and then Is_Dispatching_Operation (E)
-                   and then not Is_Hidden_Dispatching_Operation (E));
+                 and then Is_Dispatching_Operation (E)
+                 and then not Is_Hidden_Dispatching_Operation (E));
 
          when Refined_Post_Axiom
          =>
             pragma
               Assert
                 (E in Callable_Kind_Id
-                   and then Entity_Body_In_SPARK (E)
-                   and then Has_Contracts (E, Pragma_Refined_Post));
+                 and then Entity_Body_In_SPARK (E)
+                 and then Has_Contracts (E, Pragma_Refined_Post));
 
          when Lemma_Axiom
          =>
@@ -253,8 +253,8 @@ package body Why.Atree.Modules is
             pragma
               Assert
                 (E in Type_Kind_Id
-                   and then not Is_Itype (E)
-                   and then Can_Be_Default_Initialized (E));
+                 and then not Is_Itype (E)
+                 and then Can_Be_Default_Initialized (E));
 
          when Invariant
          =>
@@ -266,7 +266,7 @@ package body Why.Atree.Modules is
             pragma
               Assert
                 (E in Type_Kind_Id
-                   and then not Use_Predefined_Equality_For_Type (E));
+                 and then not Use_Predefined_Equality_For_Type (E));
 
          when Dispatch_Equality | Dispatch_Equality_Axiom
          =>
@@ -282,9 +282,9 @@ package body Why.Atree.Modules is
             pragma
               Assert
                 (E in Type_Kind_Id
-                   and then not Is_Scalar_Type (E)
-                   and then Type_Might_Be_Invalid (E)
-                   and then E = Base_Retysp (E));
+                 and then not Is_Scalar_Type (E)
+                 and then Type_Might_Be_Invalid (E)
+                 and then E = Base_Retysp (E));
       end case;
 
       return Hashconsed_Entity_Module (E, K, Name, Entity_Modules);

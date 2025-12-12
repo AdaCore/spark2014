@@ -277,11 +277,11 @@ package body Why.Gen.Names is
                      pragma
                        Assert
                          (Base_Why_Type (To) = From
-                            and then
-                              (From = EW_Int_Type
-                               or else Why_Type_Is_BitVector (From)
-                               or else Why_Type_Is_Float (From)
-                               or else Why_Type_Is_Fixed (From)));
+                          and then
+                            (From = EW_Int_Type
+                             or else Why_Type_Is_BitVector (From)
+                             or else Why_Type_Is_Float (From)
+                             or else Why_Type_Is_Fixed (From)));
 
                      return E_Symb (A, WNE_Of_Rep);
                   end;
@@ -299,11 +299,11 @@ package body Why.Gen.Names is
                      pragma
                        Assert
                          (Base_Why_Type (From) = To
-                            and then
-                              (To = EW_Int_Type
-                               or else Why_Type_Is_BitVector (To)
-                               or else Why_Type_Is_Float (To)
-                               or else Why_Type_Is_Fixed (To)));
+                          and then
+                            (To = EW_Int_Type
+                             or else Why_Type_Is_BitVector (To)
+                             or else Why_Type_Is_Float (To)
+                             or else Why_Type_Is_Fixed (To)));
 
                      return E_Symb (A, WNE_To_Rep);
                   end;
@@ -343,7 +343,7 @@ package body Why.Gen.Names is
                         pragma
                           Assert
                             (Has_Array_Type (From_Node)
-                               and Has_Array_Type (To_Node));
+                             and Has_Array_Type (To_Node));
                         return Get_Array_Conversion_Name (From_Node, To_Node);
                      end if;
                   end;

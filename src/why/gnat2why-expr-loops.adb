@@ -359,9 +359,9 @@ package body Gnat2Why.Expr.Loops is
                pragma
                  Assert
                    (not Is_Local_Borrower (Defining_Identifier (Cur_Stmt))
-                      and then
-                        not Contains_Allocated_Parts
-                              (Etype (Defining_Identifier (Cur_Stmt))));
+                    and then
+                      not Contains_Allocated_Parts
+                            (Etype (Defining_Identifier (Cur_Stmt))));
                Flat_Stmts.Append (Cur_Stmt);
 
             when others               =>

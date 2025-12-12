@@ -660,7 +660,7 @@ package body Gnat2Why.Tables is
             pragma
               Assert
                 (Nkind (Type_Def) = N_Derived_Type_Definition
-                   and then Present (Record_Extension_Part (Type_Def)));
+                 and then Present (Record_Extension_Part (Type_Def)));
             Rec_Ext        : constant Node_Id :=
               Record_Extension_Part (Type_Def);
             Comp_Decl      : Node_Id :=

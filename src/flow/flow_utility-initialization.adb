@@ -70,7 +70,7 @@ package body Flow_Utility.Initialization is
          pragma
            Assert
              (Comes_From_Source (ORC)
-                or else Comes_From_Inlined_Body (Sloc (ORC)));
+              or else Comes_From_Inlined_Body (Sloc (ORC)));
 
          --  When the component has a default expression, then it is default
          --  initialized no matter of its type.
@@ -253,7 +253,7 @@ package body Flow_Utility.Initialization is
                         pragma
                           Assert
                             (Present (Component_List (Record_Extension))
-                               xor Null_Present (Record_Extension));
+                             xor Null_Present (Record_Extension));
 
                         if Null_Present (Record_Extension) then
                            null;

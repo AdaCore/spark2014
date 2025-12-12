@@ -1094,7 +1094,7 @@ package body Why.Gen.Binders is
             pragma
               Assert
                 (if Is_Scalar_Type (Ty) and then Obj_Has_Relaxed_Init (E)
-                   then Needs_Init_Flag);
+                 then Needs_Init_Flag);
             --  Scalar types are translated as split types. If they have
             --  relaxed initialization, they should have a separate init
             --  flag.

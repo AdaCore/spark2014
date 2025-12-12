@@ -225,7 +225,7 @@ package body CE_Utils is
                   pragma
                     Assert
                       (Compile_Time_Known_Value (Low)
-                         and then Compile_Time_Known_Value (High));
+                       and then Compile_Time_Known_Value (High));
                   Fst := From_String (UI_Image (Expr_Value (Low)));
                   Lst := From_String (UI_Image (Expr_Value (High)));
 

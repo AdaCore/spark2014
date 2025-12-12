@@ -4281,7 +4281,7 @@ package body Gnat2Why.Expr is
       pragma
         Assert
           (if Call_Through_Access
-             then Nkind (Name (Call)) = N_Explicit_Dereference);
+           then Nkind (Name (Call)) = N_Explicit_Dereference);
       --  Get_Called_Entity returns the profile on calls through access to
       --  subprograms.
 
@@ -10697,10 +10697,9 @@ package body Gnat2Why.Expr is
                   pragma
                     Assert
                       (Var.Kind = Regular
-                         and then Var.Main.Mutable
-                         and then
-                           Is_Static_Array_Type
-                             (Get_Ada_Type_From_Item (Var)));
+                       and then Var.Main.Mutable
+                       and then
+                         Is_Static_Array_Type (Get_Ada_Type_From_Item (Var)));
 
                   Args (Count) := +Var.Main.B_Name;
                   Count := Count + 1;
@@ -12070,11 +12069,11 @@ package body Gnat2Why.Expr is
                      pragma
                        Assert
                          (No (Last_Access)
-                            or else
-                              (Nkind (Last_Access) = N_Selected_Component
-                               and then
-                                 Ekind (Entity (Selector_Name (Last_Access)))
-                                 /= E_Discriminant));
+                          or else
+                            (Nkind (Last_Access) = N_Selected_Component
+                             and then
+                               Ekind (Entity (Selector_Name (Last_Access)))
+                               /= E_Discriminant));
 
                      if Binder.Fields.Present then
                         Append
@@ -12140,8 +12139,8 @@ package body Gnat2Why.Expr is
                      pragma
                        Assert
                          (No (Last_Access)
-                            or else
-                              Nkind (Last_Access) = N_Explicit_Dereference);
+                          or else
+                            Nkind (Last_Access) = N_Explicit_Dereference);
 
                      Append
                        (Result,
@@ -13113,7 +13112,7 @@ package body Gnat2Why.Expr is
       pragma
         Assert
           (if Ekind (Brower) = E_Function
-             then not Fun_Has_Relaxed_Init (Brower));
+           then not Fun_Has_Relaxed_Init (Brower));
       --  Traversal functions with relaxed initialization are rejected by the
       --  frontend for now.
 
@@ -13819,8 +13818,7 @@ package body Gnat2Why.Expr is
             pragma
               Assert
                 (if Nkind (N) in N_Identifier | N_Expanded_Name
-                   then
-                     Is_Protected_Component_Or_Discr_Or_Part_Of (Entity (N)));
+                 then Is_Protected_Component_Or_Discr_Or_Part_Of (Entity (N)));
 
             --  It can happen that the prefix does not have the expected type
             --  but some Itype with the same constraints. To avoid a type
@@ -16035,8 +16033,8 @@ package body Gnat2Why.Expr is
                         pragma
                           Assert
                             (Nb_Dim /= 1
-                               and then Dim = 1
-                               and then No (Component_Associations (Choice)));
+                             and then Dim = 1
+                             and then No (Component_Associations (Choice)));
                         declare
                            Multi_Expr : Node_Id :=
                              Nlists.First (Expressions (Choice));
@@ -16144,7 +16142,7 @@ package body Gnat2Why.Expr is
                   pragma
                     Assert
                       (Dim = Nb_Dim
-                         or else (In_Delta_Aggregate and then Dim = 1));
+                       or else (In_Delta_Aggregate and then Dim = 1));
 
                   if not In_Iterated_Assoc then
                      Add_Element
@@ -17305,10 +17303,10 @@ package body Gnat2Why.Expr is
                   pragma
                     Assert
                       (Get_Ada_Node (+Get_Type (+Prefix_Read))
-                         = Get_Ada_Node (+Get_Type (+Read))
-                         and then
-                           (if Get_Relaxed_Init (Get_Type (+Prefix_Read))
-                            then Get_Relaxed_Init (Get_Type (+Read))));
+                       = Get_Ada_Node (+Get_Type (+Read))
+                       and then
+                         (if Get_Relaxed_Init (Get_Type (+Prefix_Read))
+                          then Get_Relaxed_Init (Get_Type (+Read))));
 
                   return
                     New_Comparison
@@ -17898,7 +17896,7 @@ package body Gnat2Why.Expr is
                   pragma
                     Assert
                       (No (Association)
-                         or else (Assocs_Len = 1 and then Has_Others));
+                       or else (Assocs_Len = 1 and then Has_Others));
 
                   declare
                      Then_Part   : constant W_Pred_Id :=
@@ -19073,9 +19071,9 @@ package body Gnat2Why.Expr is
          pragma
            Assert
              (if Nkind (Expr) = N_Attribute_Reference
-                then
-                  Attribute_Name (Expr) = Name_Old
-                  and then Brower = Get_Root_Object (Prefix (Expr)));
+              then
+                Attribute_Name (Expr) = Name_Old
+                and then Brower = Get_Root_Object (Prefix (Expr)));
 
          Ada_Ent_To_Why.Push_Scope (Symbol_Table);
          Insert_Tmp_Item_For_Entity
@@ -19529,7 +19527,7 @@ package body Gnat2Why.Expr is
                       (Xcov,
                        Exempt_On,
                        "T'Enum_Val is expanded into T'Val if T has no"
-                         & " representation clause");
+                       & " representation clause");
                   T :=
                     Transform_Expr
                       (Arg, Type_Of_Node (Val_Type), Domain, Params);
@@ -19598,9 +19596,9 @@ package body Gnat2Why.Expr is
                         pragma
                           Assert
                             (if Why_Type_Is_BitVector (Typ)
-                               then
-                                 Modulus (Index_Rng)
-                                 <= UI_Expon (2, BitVector_Type_Size (Typ)));
+                             then
+                               Modulus (Index_Rng)
+                               <= UI_Expon (2, BitVector_Type_Size (Typ)));
 
                         function Prepend_Modular_Range_Check
                           (Src   : W_Prog_Id;
@@ -20088,7 +20086,7 @@ package body Gnat2Why.Expr is
                           Assert
                             (if Has_Mutable_Discriminants
                                   (Retysp (Etype (Expr)))
-                               then Attr_Constrained_Statically_Known (Expr));
+                             then Attr_Constrained_Statically_Known (Expr));
 
                         --  Use the Size aspect of Var if it is supplied
 
@@ -21560,7 +21558,7 @@ package body Gnat2Why.Expr is
                               pragma
                                 Assert
                                   (List_Length (Expressions (Choice))
-                                     = Nat (Dim));
+                                   = Nat (Dim));
 
                               Guard :=
                                 New_Literal
@@ -22573,10 +22571,9 @@ package body Gnat2Why.Expr is
                pragma
                  Assert
                    (not Is_In_Loop_Initial_Statements
-                      or else
-                        (Is_Scalar_Type (Obj_Type)
-                         and then Is_Loop_Entity (Obj))
-                      or else Is_Actions_Entity (Obj));
+                    or else
+                      (Is_Scalar_Type (Obj_Type) and then Is_Loop_Entity (Obj))
+                    or else Is_Actions_Entity (Obj));
 
                R := Assignment_Of_Obj_Decl (Decl);
 
@@ -23764,7 +23761,7 @@ package body Gnat2Why.Expr is
                   pragma
                     Assert
                       (Is_Array_Type (Expr_Type)
-                         or else Is_String_Type (Expr_Type));
+                       or else Is_String_Type (Expr_Type));
 
                   T :=
                     Transform_Array_Aggregate
@@ -25280,10 +25277,10 @@ package body Gnat2Why.Expr is
                         pragma
                           Assert
                             (if Is_Composite_Type (Constr_Ty)
-                               then
-                                 Is_Constrained (Constr_Ty)
-                                 or else
-                                   Has_Defaulted_Discriminants (Constr_Ty));
+                             then
+                               Is_Constrained (Constr_Ty)
+                               or else
+                                 Has_Defaulted_Discriminants (Constr_Ty));
 
                         --  Allocators do not slide the allocated value. If the
                         --  designated type is constrained, introduce a check
@@ -25424,7 +25421,7 @@ package body Gnat2Why.Expr is
                pragma
                  Assert
                    (if Nkind (Expr) in N_Raise_xxx_Error
-                      then No (Condition (Expr)));
+                    then No (Condition (Expr)));
 
                --  Using raise expressions inside preconditions to change the
                --  reported error is a common pattern used in the standard
@@ -26656,7 +26653,7 @@ package body Gnat2Why.Expr is
       pragma
         Assert
           (if Ekind (Subp) = E_Function and then Has_Controlling_Result (Subp)
-             then Base_Retysp (Etype (Subp)) = Base_Retysp (Etype (Expr)));
+           then Base_Retysp (Etype (Subp)) = Base_Retysp (Etype (Expr)));
       return T;
    end Transform_Function_Call;
 
@@ -28933,8 +28930,8 @@ package body Gnat2Why.Expr is
       pragma
         Assert
           (if In_Delta_Aggregate or In_Extension
-             then Field_Index <= Components_Count (Assocs) + 1
-             else Discr_Index = Discr_Assoc'Last + 1);
+           then Field_Index <= Components_Count (Assocs) + 1
+           else Discr_Index = Discr_Assoc'Last + 1);
       return
         Discr_Assoc (1 .. Discr_Index - 1)
         & Field_Assoc (1 .. Field_Index - 1);
@@ -30533,7 +30530,7 @@ package body Gnat2Why.Expr is
                   pragma
                     Assert
                       (Expr_Value (Low)
-                         /= Expr_Value (Type_Low_Bound (Base_Type (Idx_Ty))));
+                       /= Expr_Value (Type_Low_Bound (Base_Type (Idx_Ty))));
                else
                   Checks :=
                     New_Comparison
@@ -30580,7 +30577,7 @@ package body Gnat2Why.Expr is
                      pragma
                        Assert
                          (Expr_Value (Low) + UI_From_Int (Length - 1)
-                            <= Expr_Value (Type_High_Bound (Idx_Ty)));
+                          <= Expr_Value (Type_High_Bound (Idx_Ty)));
                   else
                      Checks :=
                        New_Comparison
@@ -30604,7 +30601,7 @@ package body Gnat2Why.Expr is
                         pragma
                           Assert
                             (Expr_Value (Low) + UI_From_Int (Length - 1)
-                               <= Expr_Value (Type_High_Bound (Idx_Ty)));
+                             <= Expr_Value (Type_High_Bound (Idx_Ty)));
                      else
                         Checks :=
                           New_And_Pred

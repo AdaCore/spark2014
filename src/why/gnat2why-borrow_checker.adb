@@ -1259,7 +1259,7 @@ package body Gnat2Why.Borrow_Checker is
                    (Xcov,
                     Exempt_On,
                     "Impossible case with P1"
-                      & " and P2 permissions around a loop");
+                    & " and P2 permissions around a loop");
                return P1 in Read_Perm;
                pragma Annotate (Xcov, Exempt_Off);
 
@@ -1566,8 +1566,8 @@ package body Gnat2Why.Borrow_Checker is
             pragma
               Assert
                 (if not Is_Decl and then not Is_Access_Constant (Target_Typ)
-                   then
-                     Is_Entity_Name (Target) and then Target_Root = Expr_Root);
+                 then
+                   Is_Entity_Name (Target) and then Target_Root = Expr_Root);
 
             Check_Expression (Expr, Observe);
             Handle_Observe (Target_Root, Expr);
@@ -1584,8 +1584,8 @@ package body Gnat2Why.Borrow_Checker is
             pragma
               Assert
                 (if not Is_Decl
-                   then
-                     Is_Entity_Name (Target) and then Target_Root = Expr_Root);
+                 then
+                   Is_Entity_Name (Target) and then Target_Root = Expr_Root);
 
             Check_Expression (Expr, Borrow);
             Check_Assignment_To_Ghost (Target_Root, Expr_Root, Borrow);
@@ -2631,7 +2631,7 @@ package body Gnat2Why.Borrow_Checker is
       pragma
         Assert
           (if Mode = Observe
-             then Nkind (Expr) in N_If_Expression | N_Case_Expression);
+           then Nkind (Expr) in N_If_Expression | N_Case_Expression);
 
       --  Special handling for nodes that may contain evaluated expressions in
       --  the form of constraints.
@@ -5078,9 +5078,9 @@ package body Gnat2Why.Borrow_Checker is
             pragma
               Assert
                 (if Nkind (N.Expr) = N_Attribute_Reference
-                   then
-                     Get_Attribute_Id (Attribute_Name (N.Expr))
-                     in Attribute_First | Attribute_Last | Attribute_Length);
+                 then
+                   Get_Attribute_Id (Attribute_Name (N.Expr))
+                   in Attribute_First | Attribute_Last | Attribute_Length);
 
             declare
                Pref : constant Node_Id :=
@@ -5150,9 +5150,9 @@ package body Gnat2Why.Borrow_Checker is
                            pragma
                              Assert
                                (Nkind (N.Expr) = N_Indexed_Component
-                                  or else Nkind (N.Expr) = N_Slice
-                                  or else
-                                    Nkind (N.Expr) = N_Attribute_Reference);
+                                or else Nkind (N.Expr) = N_Slice
+                                or else
+                                  Nkind (N.Expr) = N_Attribute_Reference);
 
                            if Nkind (N.Expr) = N_Attribute_Reference then
                               pragma
@@ -6516,7 +6516,7 @@ package body Gnat2Why.Borrow_Checker is
                   pragma
                     Assert
                       (if Is_Access
-                         then Attribute_Name (Expr.Expr) = Name_Access);
+                       then Attribute_Name (Expr.Expr) = Name_Access);
                   Tree      : constant Perm_Tree_Access :=
                     (if Is_Access
                      then
@@ -7074,7 +7074,7 @@ package body Gnat2Why.Borrow_Checker is
                pragma
                  Assert
                    (Kind (C) = Entire_Object
-                      or else Kind (C) = Record_Component);
+                    or else Kind (C) = Record_Component);
             begin
                --  The tree is already unfolded. Replace the permission of the
                --  component.
@@ -7196,7 +7196,7 @@ package body Gnat2Why.Borrow_Checker is
                pragma
                  Assert
                    (Kind (C) = Entire_Object
-                      or else Kind (C) = Array_Component);
+                    or else Kind (C) = Array_Component);
             begin
                --  The tree is already unfolded. Replace the permission of the
                --  component.

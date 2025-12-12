@@ -2286,7 +2286,7 @@ package body SPARK_Util is
                pragma
                  Assert
                    (Ekind (Obj) = E_Variable
-                      and then Has_Protected (Etype (Obj)));
+                    and then Has_Protected (Etype (Obj)));
 
             begin
                return Unique_Name (Obj);
@@ -3390,8 +3390,8 @@ package body SPARK_Util is
             pragma
               Assert
                 (not Is_Subprogram_Or_Entry (Scope (E))
-                   or else Subprogram_Is_Ignored_For_Proof (Scope (E))
-                   or else Entity_Marked (Scope (E)));
+                 or else Subprogram_Is_Ignored_For_Proof (Scope (E))
+                 or else Entity_Marked (Scope (E)));
 
             return
               (Is_Function_Or_Function_Type (Scope (E))
@@ -6805,9 +6805,9 @@ package body SPARK_Util is
       pragma
         Assert
           (Is_Concurrent_Type (Specific_Rec)
-             or else Is_Incomplete_Or_Private_Type (Specific_Rec)
-             or else Is_Record_Type (Specific_Rec)
-             or else Has_Discriminants (Specific_Rec));
+           or else Is_Incomplete_Or_Private_Type (Specific_Rec)
+           or else Is_Record_Type (Specific_Rec)
+           or else Has_Discriminants (Specific_Rec));
 
       Cur_Comp : Entity_Id := First_Component_Or_Discriminant (Specific_Rec);
    begin
@@ -7491,7 +7491,7 @@ package body SPARK_Util is
                pragma
                  Assert
                    (not Is_Expression_Function_Or_Completion (Caller)
-                      and then Entity_Body_In_SPARK (Caller));
+                    and then Entity_Body_In_SPARK (Caller));
 
                --  Only take into account writes on paths that can lead to
                --  body exit. The filtering is not really important in that

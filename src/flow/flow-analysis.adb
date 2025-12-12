@@ -437,13 +437,13 @@ package body Flow.Analysis is
             pragma
               Assert
                 (declare
-                     E : constant Entity_Id := Entity (N);
-                   begin
-                     Ekind (E) in E_Component | E_Discriminant
-                     or else
-                       (Is_Subprogram_Or_Entry (E)
-                        and then
-                          Ekind (Sinfo.Nodes.Scope (E)) = E_Protected_Type));
+                   E : constant Entity_Id := Entity (N);
+                 begin
+                   Ekind (E) in E_Component | E_Discriminant
+                   or else
+                     (Is_Subprogram_Or_Entry (E)
+                      and then
+                        Ekind (Sinfo.Nodes.Scope (E)) = E_Protected_Type));
             return OK;
 
          elsif Nkind (N)
@@ -1181,9 +1181,9 @@ package body Flow.Analysis is
          pragma
            Assert_And_Cut
              (Considered_Imports.Is_Empty
-                and then Considered_Objects.Is_Empty
-                and then Used.Is_Empty
-                and then Effective.Is_Empty);
+              and then Considered_Objects.Is_Empty
+              and then Used.Is_Empty
+              and then Effective.Is_Empty);
 
          for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
             declare
@@ -1857,7 +1857,7 @@ package body Flow.Analysis is
                --  *any* final use vertex that is also an export.
 
                if
-               --  Basic check here
+                 --  Basic check here
                  not FA.PDG.Non_Trivial_Path_Exists
                        (V, Is_Final_Use_Any_Export'Access)
                  and then
@@ -1950,7 +1950,7 @@ package body Flow.Analysis is
                               pragma
                                 Assert
                                   (if Present (Target)
-                                     then Is_Easily_Printable (Target));
+                                   then Is_Easily_Printable (Target));
 
                               Called_Entity : constant Entity_Id :=
                                 FA.Atr (Atr.Call_Vertex).Callee;
@@ -3006,10 +3006,9 @@ package body Flow.Analysis is
                   pragma
                     Assert
                       (Def_Atr.Is_Param_Havoc
-                         or else
-                           not Is_Initialized
-                                 (Change_Variant (Var, Initial_Value),
-                                  Def_Atr));
+                       or else
+                         not Is_Initialized
+                               (Change_Variant (Var, Initial_Value), Def_Atr));
                   Is_Uninitialized := True;
 
                elsif V_Def = V_Use then
@@ -4994,9 +4993,9 @@ package body Flow.Analysis is
                pragma
                  Assert
                    (Contract_Out.Kind = Direct_Mapping
-                      and then
-                        Ekind (Get_Direct_Mapping_Id (Contract_Out))
-                        in E_Abstract_State | E_Constant | E_Variable);
+                    and then
+                      Ekind (Get_Direct_Mapping_Id (Contract_Out))
+                      in E_Abstract_State | E_Constant | E_Variable);
 
                --  If the currently analyzed user LHS is variable, then collect
                --  its actual dependencies; otherwise, reject it as a constant
@@ -5900,7 +5899,7 @@ package body Flow.Analysis is
          pragma
            Assert
              (if not Is_Function_With_Side_Effects (FA.Spec_Entity)
-                then Globals.Outputs.Is_Empty);
+              then Globals.Outputs.Is_Empty);
       end;
 
       --  Emit messages about nonvolatile functions with volatile effects

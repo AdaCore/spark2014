@@ -584,7 +584,7 @@ package body Gnat2Why.Expr.Loops.Inv is
                               pragma
                                 Assert
                                   (Low_Id /= Why_Empty
-                                     and High_Id /= Why_Empty);
+                                   and High_Id /= Why_Empty);
                               if Is_Rev then
                                  Constraint :=
                                    +New_Or_Else_Expr
@@ -1163,8 +1163,8 @@ package body Gnat2Why.Expr.Loops.Inv is
                pragma
                  Assert
                    (Nkind (N) in N_Entity
-                      and then Is_Object (N)
-                      and then Is_Mutable_In_Why (N));
+                    and then Is_Object (N)
+                    and then Is_Mutable_In_Why (N));
 
                declare
                   Expr        : constant W_Term_Id :=
@@ -2467,11 +2467,11 @@ package body Gnat2Why.Expr.Loops.Inv is
                              Assert
                                (if Updated_Status.Component_Status.Contains
                                      (Discarded_Component)
-                                  then
-                                    Updated_Status.Component_Status.Element
-                                      (Discarded_Component)
-                                      .Kind
-                                    = Discard);
+                                then
+                                  Updated_Status.Component_Status.Element
+                                    (Discarded_Component)
+                                    .Kind
+                                  = Discard);
 
                            One_Level_Update
                              (New_Write      => Discarded_Component,
@@ -2563,7 +2563,7 @@ package body Gnat2Why.Expr.Loops.Inv is
                         pragma
                           Assert
                             (Updated_Status.Content_Status.Kind
-                               = Expected_Kind);
+                             = Expected_Kind);
                      end if;
 
                      --  Store the new write in

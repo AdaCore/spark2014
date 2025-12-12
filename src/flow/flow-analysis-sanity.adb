@@ -275,7 +275,7 @@ package body Flow.Analysis.Sanity is
          pragma
            Assert
              (Present (Subtype_Indication (N))
-                xor Present (Access_Definition (N)));
+              xor Present (Access_Definition (N)));
 
          if Present (Subtype_Indication (N)) then
             Check_Subtype_Indication (Subtype_Indication (N));
@@ -472,8 +472,8 @@ package body Flow.Analysis.Sanity is
                pragma
                  Assert
                    (if Present (Subtype_Mark (N))
-                      then Is_Type (Entity (Subtype_Mark (N)))
-                      else Present (Access_To_Subprogram_Definition (N)));
+                    then Is_Type (Entity (Subtype_Mark (N)))
+                    else Present (Access_To_Subprogram_Definition (N)));
 
             when N_Attribute_Reference            =>
                pragma Assert (Is_Type_Attribute_Name (Attribute_Name (N)));
@@ -868,11 +868,11 @@ package body Flow.Analysis.Sanity is
                      pragma
                        Assert
                          (if Is_Internal (Var)
-                            then
-                              (Is_Type (Var) and then Is_Discriminant (F))
-                              or else
-                                (Ekind (Var) = E_Constant
-                                 and then Has_Completion (Var)));
+                          then
+                            (Is_Type (Var) and then Is_Discriminant (F))
+                            or else
+                              (Ekind (Var) = E_Constant
+                               and then Has_Completion (Var)));
 
                      --  We emit an error if F is considered a variable, in
                      --  particular, when it is not:
@@ -1826,10 +1826,10 @@ package body Flow.Analysis.Sanity is
                           Assert
                             (False,
                              Full_Source_Name (FA.Spec_Entity)
-                               & " @"
-                               & V'Img
-                               & " : "
-                               & Flow_Id_To_String (Var));
+                             & " @"
+                             & V'Img
+                             & " : "
+                             & Flow_Id_To_String (Var));
                      end if;
                   end if;
                end if;
@@ -1972,7 +1972,7 @@ package body Flow.Analysis.Sanity is
          pragma
            Assert
              (Is_Pure (FA.Spec_Entity)
-                or else Is_Null_Procedure (FA.Spec_Entity));
+              or else Is_Null_Procedure (FA.Spec_Entity));
       end if;
 
       --  Convert user-globals from Entity_Ids to Flow_Ids
