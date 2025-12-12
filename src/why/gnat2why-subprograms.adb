@@ -2808,7 +2808,7 @@ package body Gnat2Why.Subprograms is
            (Continuation_Type'
               (E,
                To_Unbounded_String
-                 ("on exceptional exit from " & Source_Name (E))));
+                 ("on exceptional exit from " & Raw_Source_Name (E))));
 
          while Present (Exit_Case) loop
             declare
@@ -3032,7 +3032,7 @@ package body Gnat2Why.Subprograms is
       begin
          Check_Info.Continuation.Append
            (Continuation_Type'
-              (E, To_Unbounded_String (Loc & " from " & Source_Name (E))));
+              (E, To_Unbounded_String (Loc & " from " & Raw_Source_Name (E))));
 
          while Present (Exit_Case) loop
             declare
@@ -4972,7 +4972,7 @@ package body Gnat2Why.Subprograms is
                        (E,
                         To_Unbounded_String
                           ("for parameter "
-                           & Source_Name (Param)
+                           & Raw_Source_Name (Param)
                            & " at the end of the subprogram")));
 
                   if B.Init.Present then
@@ -5651,9 +5651,8 @@ package body Gnat2Why.Subprograms is
                   Message  =>
                     To_Unbounded_String
                       ("in implicit overriding of primitive function with"
-                       & " dispatching result """
-                       & Source_Name (E)
-                       & '"')));
+                       & " dispatching result "
+                       & Pretty_Source_Name (E))));
          end;
       end if;
 
@@ -6047,7 +6046,9 @@ package body Gnat2Why.Subprograms is
                                    (Ada_Node => Obj,
                                     Message  =>
                                       To_Unbounded_String
-                                        ("for " & Source_Name (Obj) & Loc)));
+                                        ("for "
+                                         & Raw_Source_Name (Obj)
+                                         & Loc)));
 
                               Handler :=
                                 Sequence

@@ -926,17 +926,20 @@ package body CE_Utils is
                Comp          : Value_Access;
             begin
                for Comp_Id of Component_Set loop
-                  if Has_Field (Components, Source_Name (Comp_Id)) then
+                  if Has_Field (Components, Raw_Source_Name (Comp_Id)) then
                      --  "regular" field
                      Comp :=
                        To_Value_Access
-                         (Comp_Id, Get (Components, Source_Name (Comp_Id)));
+                         (Comp_Id,
+                          Get (Components, Raw_Source_Name (Comp_Id)));
                      Record_Fields.Include (Comp_Id, Comp);
-                  elsif Has_Field (Discriminants, Source_Name (Comp_Id)) then
+                  elsif Has_Field (Discriminants, Raw_Source_Name (Comp_Id))
+                  then
                      --  discriminant field
                      Comp :=
                        To_Value_Access
-                         (Comp_Id, Get (Discriminants, Source_Name (Comp_Id)));
+                         (Comp_Id,
+                          Get (Discriminants, Raw_Source_Name (Comp_Id)));
                      Record_Fields.Include (Comp_Id, Comp);
                   end if;
                   exit when Comp_Id = Einfo.Entities.Last_Entity (Res_Type);

@@ -729,7 +729,7 @@ package body Gnat2Why.Expr.Aggregates is
             Spaces : constant String := (1 .. Padding => ' ');
          begin
             Ada.Text_IO.Put_Line
-              (Spaces & "Ty      => " & Source_Name (Writes.Ty));
+              (Spaces & "Ty      => " & Raw_Source_Name (Writes.Ty));
             Ada.Text_IO.Put (Spaces & "Values  =>");
             for I in 1 .. Writes.Values.Last_Index loop
                Ada.Text_IO.Put (" (");
@@ -744,7 +744,7 @@ package body Gnat2Why.Expr.Aggregates is
                            in N_Expanded_Name | N_Identifier
                      then
                         Ada.Text_IO.Put
-                          (Source_Name
+                          (Raw_Source_Name
                              (Entity (Writes.Values.Element (I).Choices (K))));
                      else
                         Ada.Text_IO.Put
@@ -771,7 +771,7 @@ package body Gnat2Why.Expr.Aggregates is
                      Ada.Text_IO.Put_Line
                        (Spaces
                         & "   "
-                        & Source_Name (Write_Status_Maps.Key (Position))
+                        & Raw_Source_Name (Write_Status_Maps.Key (Position))
                         & " =>");
                      Print_Writes
                        (Write_Status_Maps.Element (Position).all, Padding + 6);
@@ -1023,13 +1023,14 @@ package body Gnat2Why.Expr.Aggregates is
            (Continuation_Type'
               (Annot.Empty_Function,
                To_Unbounded_String
-                 ("after a call to " & Source_Name (Annot.Empty_Function))));
+                 ("after a call to "
+                  & Raw_Source_Name (Annot.Empty_Function))));
          Init_Check_Info.Continuation.Append
            (Continuation_Type'
               (Associated_Fun,
                To_Unbounded_String
                  ("when establishing invariant on "
-                  & Source_Name (Associated_Fun))));
+                  & Raw_Source_Name (Associated_Fun))));
          Init_Checks :=
            Sequence
              (New_Located_Assert
@@ -1054,13 +1055,14 @@ package body Gnat2Why.Expr.Aggregates is
            (Continuation_Type'
               (Annot.Add_Procedure,
                To_Unbounded_String
-                 ("after a call to " & Source_Name (Annot.Add_Procedure))));
+                 ("after a call to "
+                  & Raw_Source_Name (Annot.Add_Procedure))));
          Preserv_Check_Info.Continuation.Append
            (Continuation_Type'
               (Associated_Fun,
                To_Unbounded_String
                  ("when reestablishing invariant on "
-                  & Source_Name (Associated_Fun))));
+                  & Raw_Source_Name (Associated_Fun))));
          Preserv_Checks :=
            Sequence
              (New_Located_Assert
@@ -2648,10 +2650,10 @@ package body Gnat2Why.Expr.Aggregates is
            (Length_Fun : Entity_Id := Empty) return String
          is (if No (Capacity_Fun)
              then
-               "fit in the return type of """ & Source_Name (Length_Fun) & '"'
+               "fit in the return type of " & Pretty_Source_Name (Length_Fun)
              elsif Present (Annot.Spec_Capacity)
-             then "fit in """ & Source_Name (Annot.Spec_Capacity) & '"'
-             else "be smaller than """ & Source_Name (Capacity_Fun) & '"');
+             then "fit in " & Pretty_Source_Name (Annot.Spec_Capacity)
+             else "be smaller than " & Pretty_Source_Name (Capacity_Fun));
          --  Continuation for checks on the length of the aggregate
 
          Num_Params : constant Natural :=

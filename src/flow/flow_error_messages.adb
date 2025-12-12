@@ -1107,9 +1107,9 @@ package body Flow_Error_Messages is
             elsif Present (Get_Pragma (E, Pragma_Always_Terminates)) then
                return
                  (if Ekind (E) = E_Entry then "entry" else "procedure")
-                 & " """
-                 & Source_Name (E)
-                 & """ has an Always_Terminates aspect";
+                 & " "
+                 & Pretty_Source_Name (E)
+                 & " has an Always_Terminates aspect";
 
             --  Search for an enclosing package with an Always_Terminates
             --  aspect.
@@ -1125,12 +1125,11 @@ package body Flow_Error_Messages is
                           (if Ekind (E) = E_Entry
                            then "entry"
                            else "procedure")
-                          & " """
-                          & Source_Name (E)
-                          & """ has an implicit "
-                          & "Always_Terminates aspect inherited from """
-                          & Source_Name (Scop)
-                          & '"';
+                          & " "
+                          & Pretty_Source_Name (E)
+                          & " has an implicit "
+                          & "Always_Terminates aspect inherited from "
+                          & Pretty_Source_Name (Scop);
                      end if;
                      Scop := Scope (Scop);
                   end loop;
@@ -1177,14 +1176,14 @@ package body Flow_Error_Messages is
                              Get_Exceptions_For_Subp (Caller).Print;
                         begin
                            return
-                             Source_Name (Caller)
+                             Raw_Source_Name (Caller)
                              & " allows propagating "
                              & Expected_Exc;
                         end;
                      elsif Is_Inlined_Call (Scop) then
                         return
                           "ghost inlined call to "
-                          & Source_Name
+                          & Raw_Source_Name
                               (Called_Entity_From_Inlined_Call (Scop))
                           & " shall not propagate exceptions";
                      else
@@ -1577,7 +1576,7 @@ package body Flow_Error_Messages is
               "validity of the "
               & Contract
               & " of "
-              & Source_Name (E)
+              & Raw_Source_Name (E)
               & " should be implied by its refined postcondition";
          end;
 
@@ -1761,12 +1760,12 @@ package body Flow_Error_Messages is
 
          function Callee_Name (Subp : Entity_Id) return String
          is (if Nkind (Subp) = N_Defining_Operator_Symbol
-             then "operator " & Source_Name (Subp)
+             then "operator " & Raw_Source_Name (Subp)
              elsif Ekind (Subp) = E_Function
-             then "function " & Source_Name (Subp)
+             then "function " & Raw_Source_Name (Subp)
              else
                "type "
-               & Source_Name
+               & Raw_Source_Name
                    (Defining_Entity (Associated_Node_For_Itype (Subp))))
          with Pre => Ekind (Subp) in E_Function | E_Subprogram_Type;
 
@@ -3043,13 +3042,13 @@ package body Flow_Error_Messages is
                           or else Is_Standard_Type (Typ);
                         Lo_Image   : constant String :=
                           (if Use_Typ
-                           then Source_Name (Typ) & "'First"
+                           then Raw_Source_Name (Typ) & "'First"
                            elsif Present (Lo_Value)
                            then UI_Image (Lo_Value, Decimal)
                            else String_Of_Node (Lo));
                         Hi_Image   : constant String :=
                           (if Use_Typ
-                           then Source_Name (Typ) & "'Last"
+                           then Raw_Source_Name (Typ) & "'Last"
                            elsif Present (Hi_Value)
                            then UI_Image (Hi_Value, Decimal)
                            else String_Of_Node (Hi));
@@ -3059,7 +3058,7 @@ package body Flow_Error_Messages is
                              " >= "
                              & (if Larger_Typ.Kind = Larger_Source
                                 then
-                                  Source_Name (Larger_Typ.Typ)
+                                  Raw_Source_Name (Larger_Typ.Typ)
                                   & "("
                                   & Lo_Image
                                   & ")"
@@ -3069,13 +3068,13 @@ package body Flow_Error_Messages is
                              " <= "
                              & (if Larger_Typ.Kind = Larger_Source
                                 then
-                                  Source_Name (Larger_Typ.Typ)
+                                  Raw_Source_Name (Larger_Typ.Typ)
                                   & "("
                                   & Hi_Image
                                   & ")"
                                 else Hi_Image)
                            elsif Use_Typ
-                           then " in " & Source_Name (Typ)
+                           then " in " & Raw_Source_Name (Typ)
                            else " in " & Lo_Image & " .. " & Hi_Image);
 
                         --  When possible, put the suggested precondition in
@@ -3179,7 +3178,7 @@ package body Flow_Error_Messages is
 
                            elsif Larger_Typ.Kind = Larger_Target
                            then
-                             Source_Name (Larger_Typ.Typ)
+                             Raw_Source_Name (Larger_Typ.Typ)
                              & "("
                              & String_Of_Node (N)
                              & ")"
@@ -3210,7 +3209,7 @@ package body Flow_Error_Messages is
                            declare
                               Name     : constant String :=
                                 (if Nkind (Opnd) in N_Defining_Identifier
-                                 then Source_Name (Opnd)
+                                 then Raw_Source_Name (Opnd)
                                  else String_Of_Node (Opnd));
                               Line_Num : constant String :=
                                 Get_Line_Number (N, Sloc (Enclosing_Subp));

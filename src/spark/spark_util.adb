@@ -224,12 +224,12 @@ package body SPARK_Util is
 
          elsif S.Exc_Set.Length = 1 then
             Exc_Str :=
-              To_Unbounded_String (Source_Name (S.Exc_Set.First_Element));
+              To_Unbounded_String (Raw_Source_Name (S.Exc_Set.First_Element));
          elsif S.Exc_Set.Length = 2 then
             Exc_Str :=
-              To_Unbounded_String (Source_Name (S.Exc_Set.First_Element))
+              To_Unbounded_String (Raw_Source_Name (S.Exc_Set.First_Element))
               & " and "
-              & Source_Name (S.Exc_Set.Last_Element);
+              & Raw_Source_Name (S.Exc_Set.Last_Element);
          else
             Exc_Str := To_Unbounded_String ("");
             for E of reverse S.Exc_Set loop
@@ -241,7 +241,7 @@ package body SPARK_Util is
                else
                   Exc_Str := ", " & Exc_Str;
                end if;
-               Exc_Str := Source_Name (E) & Exc_Str;
+               Exc_Str := Raw_Source_Name (E) & Exc_Str;
             end loop;
          end if;
 
@@ -2349,7 +2349,7 @@ package body SPARK_Util is
    ----------------------
 
    function Full_Source_Name (E : Entity_Id) return String is
-      Name : constant String := Source_Name (E);
+      Name : constant String := Raw_Source_Name (E);
 
    begin
       if E = Standard_Standard
@@ -6111,11 +6111,10 @@ package body SPARK_Util is
       --  are possible, use Is_Borrower cache to memoize results.
 
       function Call_Explanation (Call : Node_Id) return Unbounded_String
-      is (To_Unbounded_String ("the call to """)
-          & Source_Name (Get_Called_Entity (Call))
-          & """ might update the value designated by """
-          & Source_Name (Variable)
-          & '"');
+      is (To_Unbounded_String ("the call to ")
+          & Pretty_Source_Name (Get_Called_Entity (Call))
+          & " might update the value designated by "
+          & Pretty_Source_Name (Variable));
       --  Explanation for calls.
 
       -----------------------
@@ -6251,14 +6250,13 @@ package body SPARK_Util is
                           (if Get_Root_Object (Lvalue) = Variable
                            then ""
                            else
-                             " through local borrower """
-                             & Source_Name (Root)
-                             & '"');
+                             " through local borrower "
+                             & Pretty_Source_Name (Root));
                      begin
                         Explanation :=
-                          To_Unbounded_String ("the value designated by """)
-                          & Source_Name (Variable)
-                          & """ might be updated"
+                          To_Unbounded_String ("the value designated by ")
+                          & Pretty_Source_Name (Variable)
+                          & " might be updated"
                           & Through_Borrow;
                         return False;
                      end;
@@ -6465,7 +6463,7 @@ package body SPARK_Util is
 
          when N_Has_Entity                  =>
             Y := Entity (Y);
-            Y_Name := To_Unbounded_String (Source_Name (Y));
+            Y_Name := To_Unbounded_String (Pretty_Source_Name (Y));
             AY := Get_Attribute_Value (Y, Attribute_Alignment);
 
          when others                        =>
@@ -6481,7 +6479,7 @@ package body SPARK_Util is
          Result := False;
          Explanation :=
            To_Unbounded_String
-             (Source_Name (X)
+             (Pretty_Source_Name (X)
               & " doesn't have an "
               & "Alignment representation clause or aspect");
          return;
@@ -6534,7 +6532,7 @@ package body SPARK_Util is
               & ")"
               & " must be a multiple of the "
               & "alignment of "
-              & Source_Name (X)
+              & Pretty_Source_Name (X)
               & " (which is "
               & UI_Image (AX)
               & ")");
@@ -6668,6 +6666,147 @@ package body SPARK_Util is
       end case;
    end Path_Contains_Witness;
 
+   ------------------------
+   -- Pretty_Source_Name --
+   ------------------------
+
+   function Pretty_Source_Name (N : Node_Id) return String is
+      Classwide : Boolean := False;
+      Is_Base   : Boolean := False;
+      R         : Unbounded_String;
+      Ent       : Node_Id := N;
+   begin
+      if Nkind (N) in N_Entity and then Is_Single_Concurrent_Type (N) then
+         return Pretty_Source_Name (Anonymous_Object (N));
+
+      --  Special case of anonymous arrays
+
+      elsif Is_Internal_Name (Chars (N))
+        and then Nkind (N) in N_Entity
+        and then Is_Array_Type (N)
+        and then Present (Related_Array_Object (N))
+        and then Nkind (Related_Array_Object (N)) in N_Has_Chars
+      then
+         return "type of " & Pretty_Source_Name (Related_Array_Object (N));
+
+      --  Types introduced for object declarations are generally right after
+      --  the object entity.
+
+      elsif Is_Internal_Name (Chars (N))
+        and then Nkind (N) in N_Entity
+        and then Is_Type (N)
+        and then Present (Prev_Entity (N))
+        and then Etype (Prev_Entity (N)) = N
+        and then Nkind (Prev_Entity (N)) in N_Entity
+        and then Is_Object (Prev_Entity (N))
+        and then not Is_Internal_Name (Chars (Prev_Entity (N)))
+      then
+         return "type of " & Pretty_Source_Name (Prev_Entity (N));
+
+      --  Try to get a proper name for internal types
+
+      elsif Is_Internal_Name (Chars (N))
+        and then Nkind (N) in N_Entity
+        and then Is_Type (N)
+      then
+         if Is_Access_Type (N) then
+
+            --  Access to subprogram types
+
+            if Ekind (N)
+               in E_Access_Subprogram_Type | E_Anonymous_Access_Subprogram_Type
+              or else Is_Access_Protected_Subprogram_Type (N)
+            then
+               return "access-to-subprogram type";
+
+            --  Type is access to object, named or anonymous
+
+            else
+               return
+                 "access to "
+                 & Pretty_Source_Name (Directly_Designated_Type (N));
+            end if;
+
+         --  Classwide type
+
+         elsif Is_Class_Wide_Type (N) then
+            Classwide := True;
+            Ent := Get_Specific_Type_From_Classwide (N);
+            Append (R, "type ");
+
+         --  Use base type if this is a subtype / parent type if it is derived
+
+         else
+            --  Exit when we have found either a non internal subtype or a
+            --  base type introduced by the frontend for a first subtype
+            --  that is not internal.
+
+            while Is_Internal_Name (Chars (Ent))
+              and then
+                (Ent /= Base_Type (Ent)
+                 or else Is_Internal_Name (Chars (First_Subtype (Ent))))
+            loop
+               Ent := Parent_Type (Ent);
+            end loop;
+
+            if Ent = N then
+               Append (R, "type ");
+            elsif Base_Type (Ent) = Base_Type (N) then
+               Append (R, "subtype of ");
+            else
+               Append (R, "type derived from ");
+            end if;
+
+            --  If we have the internal base type of a non-internal subtype,
+            --  use the first subtype. For scalars, 'Base can be used to
+            --  refer to the anonymous base type.
+
+            if Is_Internal_Name (Chars (Ent)) then
+               if Is_Scalar_Type (Ent)
+                 and then Ent = Base_Type (First_Subtype (Ent))
+               then
+                  Is_Base := True;
+               end if;
+
+               Ent := First_Subtype (Ent);
+            end if;
+         end if;
+
+      elsif Nkind (N) in N_Entity and then Is_Type (N) then
+         Append (R, "type ");
+      end if;
+
+      pragma Assert (not Is_Internal_Name (Chars (Ent)));
+
+      declare
+         Buf        : Bounded_String;
+         Use_Quotes : constant Boolean := not Is_Operator_Name (Chars (Ent));
+         --  Operators do not need additional quotes
+
+      begin
+         if Use_Quotes then
+            Append (R, '"');
+         end if;
+
+         Append_Unqualified_Decoded (Buf, Chars (Ent));
+         Errout.Adjust_Name_Case (Buf, Sloc (Ent));
+
+         Append (R, To_String (Buf));
+
+         if Classwide then
+            Append (R, "'Class");
+         elsif Is_Base then
+            Append (R, "'Base");
+         end if;
+
+         if Use_Quotes then
+            Append (R, '"');
+         end if;
+      end;
+
+      return To_String (R);
+   end Pretty_Source_Name;
+
    ------------------------------
    -- Propagates_Validity_Flag --
    ------------------------------
@@ -6708,6 +6847,27 @@ package body SPARK_Util is
             end;
       end case;
    end Propagates_Validity_Flag;
+
+   ---------------------
+   -- Raw_Source_Name --
+   ---------------------
+
+   function Raw_Source_Name (N : Node_Id) return String is
+
+   begin
+      if Nkind (N) in N_Entity and then Is_Single_Concurrent_Type (N) then
+         return Raw_Source_Name (Anonymous_Object (N));
+      end if;
+
+      declare
+         Buf : Bounded_String;
+      begin
+         Append_Unqualified_Decoded (Buf, Chars (N));
+         Errout.Adjust_Name_Case (Buf, Sloc (N));
+
+         return To_String (Buf);
+      end;
+   end Raw_Source_Name;
 
    ------------------------
    -- Reachable_Handlers --
@@ -7171,24 +7331,6 @@ package body SPARK_Util is
       return To_String (Buf);
    end Shape_Of_Node;
 
-   -----------------
-   -- Source_Name --
-   -----------------
-
-   function Source_Name (N : Node_Id) return String is
-      Buf : Bounded_String;
-
-   begin
-      if Nkind (N) in N_Entity and then Is_Single_Concurrent_Type (N) then
-         return Source_Name (Anonymous_Object (N));
-      else
-         Append_Unqualified_Decoded (Buf, Chars (N));
-         Errout.Adjust_Name_Case (Buf, Sloc (N));
-
-         return To_String (Buf);
-      end if;
-   end Source_Name;
-
    -------------------------------
    -- Statement_Enclosing_Label --
    -------------------------------
@@ -7247,11 +7389,11 @@ package body SPARK_Util is
          end if;
 
          if Nkind (Expr) = N_Defining_Identifier then
-            return Source_Name (Expr);
+            return Raw_Source_Name (Expr);
          elsif Present (Entity (Expr)) then
-            return Source_Name (Entity (Expr));
+            return Raw_Source_Name (Entity (Expr));
          else
-            return Source_Name (Expr);
+            return Raw_Source_Name (Expr);
          end if;
       end Ident_Image;
 
@@ -7376,11 +7518,10 @@ package body SPARK_Util is
       if not Result then
          Explanation :=
            To_Unbounded_String
-             ("structural variant of """
-              & Source_Name (Subp)
-              & """ might not be a part of """
-              & Source_Name (Param)
-              & '"');
+             ("structural variant of "
+              & Pretty_Source_Name (Subp)
+              & " might not be a part of "
+              & Pretty_Source_Name (Param));
          return;
       end if;
 
@@ -7393,11 +7534,10 @@ package body SPARK_Util is
          if not Decreases then
             Explanation :=
               To_Unbounded_String
-                ("structural variant of """
-                 & Source_Name (Subp)
-                 & """ might not be a strict subcomponent of """
-                 & Source_Name (Param)
-                 & '"');
+                ("structural variant of "
+                 & Pretty_Source_Name (Subp)
+                 & " might not be a strict subcomponent of "
+                 & Pretty_Source_Name (Param));
             Result := False;
          end if;
          return;
@@ -7474,11 +7614,10 @@ package body SPARK_Util is
             if not Decreases then
                Explanation :=
                  To_Unbounded_String
-                   ("structural variant of """
-                    & Source_Name (Subp)
-                    & """ might not be a strict subcomponent of """
-                    & Source_Name (Param)
-                    & '"');
+                   ("structural variant of "
+                    & Pretty_Source_Name (Subp)
+                    & " might not be a strict subcomponent of "
+                    & Pretty_Source_Name (Param));
                Result := False;
 
             --  We check that the parameter is not updated in a deep way by
@@ -7577,11 +7716,10 @@ package body SPARK_Util is
                      if Borrower = Param then
                         Explanation :=
                           To_Unbounded_String
-                            ("structural variant of """
-                             & Source_Name (Subp)
-                             & """ might not be a strict subcomponent of """
-                             & Source_Name (Param)
-                             & '"');
+                            ("structural variant of "
+                             & Pretty_Source_Name (Subp)
+                             & " might not be a strict subcomponent of "
+                             & Pretty_Source_Name (Param));
                         Result := False;
                         return;
                      end if;
@@ -7667,9 +7805,8 @@ package body SPARK_Util is
       if Vertices.Contains (Loop_Vertex) then
          Explanation :=
            To_Unbounded_String
-             ('"'
-              & Source_Name (Brower)
-              & """ might not be updated on all paths");
+             (Pretty_Source_Name (Brower)
+              & " might not be updated on all paths");
          Result := False;
          return;
       end if;

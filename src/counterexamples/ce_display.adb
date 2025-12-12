@@ -78,8 +78,8 @@ package body CE_Display is
    --  given position is uninitialized.
 
    function Compare_Name (X, Y : Entity_Id) return Boolean
-   is (Source_Name (X) < Source_Name (Y)
-       or else (Source_Name (X) = Source_Name (Y) and then X < Y));
+   is (Raw_Source_Name (X) < Raw_Source_Name (Y)
+       or else (Raw_Source_Name (X) = Raw_Source_Name (Y) and then X < Y));
    --  Variables are stored in alphabetical order. Compare the entity id in
    --  case there are homonyms.
 
@@ -175,7 +175,7 @@ package body CE_Display is
       for Var of Ordered_Variables loop
          declare
             Values   : Extended_Value_Access renames Variables (Var);
-            Var_Name : constant String := Source_Name (Var);
+            Var_Name : constant String := Raw_Source_Name (Var);
             Value    : Value_Type;
             Name     : Unbounded_String;
          begin
@@ -1348,7 +1348,7 @@ package body CE_Display is
               Refine_Container_Iterator_Value
                 (R_Value,
                  Etype (Iterable_Info.Entity),
-                 Source_Name (Iterable_Info.Entity)
+                 Raw_Source_Name (Iterable_Info.Entity)
                  & " ("
                  & Container_Name
                  & ")");
@@ -1357,7 +1357,7 @@ package body CE_Display is
             --  We have found the ultimate model type
 
             return
-              Source_Name
+              Raw_Source_Name
                 (Get_Iterable_Type_Primitive (Cont_Typ, Name_Element))
               & " ("
               & Container_Name
@@ -1383,7 +1383,7 @@ package body CE_Display is
       --  E = A (<value>)
 
       if Is_Array_Type (Container_Typ) then
-         return Source_Name (Container) & " (" & Value & ")";
+         return Raw_Source_Name (Container) & " (" & Value & ")";
 
       --  E = Element (C, <value>)
 
@@ -1392,7 +1392,7 @@ package body CE_Display is
            Refine_Container_Iterator_Value
              (Value,
               Container_Typ,
-              To_Unbounded_String (Source_Name (Container)));
+              To_Unbounded_String (Raw_Source_Name (Container)));
       end if;
    end Reconstruct_Index_Value;
 

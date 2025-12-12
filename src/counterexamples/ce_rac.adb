@@ -840,7 +840,7 @@ package body CE_RAC is
                      if not V.Record_Fields.Contains (Discr) then
                         RAC_Stuck
                           ("missing value for discriminant "
-                           & Source_Name (Discr)
+                           & Pretty_Source_Name (Discr)
                            & " in "
                            & Full_Name (Ty));
                      end if;
@@ -1117,7 +1117,7 @@ package body CE_RAC is
                         else
                            RAC_Stuck
                              ("missing value for discriminant "
-                              & Source_Name (Discr)
+                              & Pretty_Source_Name (Discr)
                               & " in "
                               & Full_Name (Ty));
                         end if;
@@ -1145,7 +1145,8 @@ package body CE_RAC is
                     ("invisible component from type " & Full_Name (Comp), N);
                elsif Has_Discriminant_Dependent_Constraint (Comp) then
                   RAC_Unsupported
-                    ("discriminant dependant component " & Source_Name (Comp),
+                    ("discriminant dependant component "
+                     & Pretty_Source_Name (Comp),
                      N);
                else
                   declare
@@ -1155,9 +1156,9 @@ package body CE_RAC is
                      if not Present (Comp_In_Value) then
                         RAC_Stuck
                           ("missing value for field "
-                           & Source_Name (Comp)
-                           & " of type "
-                           & Source_Name (Original_Declaration (Comp)));
+                           & Pretty_Source_Name (Comp)
+                           & " of "
+                           & Pretty_Source_Name (Original_Declaration (Comp)));
                      else
                         declare
                            Comp_Ty  : constant Entity_Id :=

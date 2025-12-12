@@ -399,7 +399,11 @@ package body CE_Pretty_Printing is
                Res.Value :=
                  Make_CNT_Unbounded_String
                    (Str =>
-                      "new " & Source_Name (Des_Ty) & "'(" & V.Value.Str & ')',
+                      "new "
+                      & Raw_Source_Name (Des_Ty)
+                      & "'("
+                      & V.Value.Str
+                      & ')',
                     Cnt => V.Value.Count,
                     Els => Elems);
 
@@ -896,7 +900,7 @@ package body CE_Pretty_Printing is
 
       function Beautiful_Source_Name (Ty : Entity_Id) return String
       with Pre => Is_Discrete_Type (Ty);
-      --  Does the same as Source_Name except for types defined in Standard
+      --  Does the same as Raw_Source_Name except for types defined in Standard
       --  which we print with Upper case letter after each '_'.
 
       ---------------------------
@@ -915,7 +919,7 @@ package body CE_Pretty_Printing is
             --  Return the converted name
             return Name_Buffer (1 .. Name_Len);
          else
-            return Source_Name (Ty);
+            return Raw_Source_Name (Ty);
          end if;
       end Beautiful_Source_Name;
 
@@ -1183,11 +1187,11 @@ package body CE_Pretty_Printing is
          Visibility : Component_Visibility;
          Add_Prefix : Boolean := True)
       is
-         Comp_Name : constant String := Source_Name (Comp);
+         Comp_Name : constant String := Raw_Source_Name (Comp);
          Orig_Decl : constant Entity_Id := Original_Declaration (Comp);
          Prefix    : constant String :=
            (if Ekind (Comp) /= E_Discriminant and then Visibility = Duplicated
-            then Source_Name (Orig_Decl) & '.'
+            then Raw_Source_Name (Orig_Decl) & '.'
             else "");
          --  Explanation. It is empty except for duplicated
          --  components where it points to the declaration of the
@@ -1565,10 +1569,10 @@ package body CE_Pretty_Printing is
 
                else
                   --  Call Get_Enum_Lit_From_Pos to get a corresponding
-                  --  enumeration entity, then Source_Name to get a
+                  --  enumeration entity, then Raw_Source_Name to get a
                   --  correctly capitalized enumeration value.
 
-                  return Source_Name (Value.Enum_Entity);
+                  return Raw_Source_Name (Value.Enum_Entity);
                end if;
 
             when Fixed_K   =>
@@ -1935,7 +1939,7 @@ package body CE_Pretty_Printing is
                for Elt in Value.Record_Fields.Iterate loop
                   declare
                      use Entity_To_Value_Maps;
-                     Name : constant String := Source_Name (Key (Elt));
+                     Name : constant String := Raw_Source_Name (Key (Elt));
                   begin
                      case Ekind (Key (Elt)) is
                         when E_Discriminant =>

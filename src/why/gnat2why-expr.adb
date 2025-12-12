@@ -5330,9 +5330,8 @@ package body Gnat2Why.Expr is
                                  Message  =>
                                    To_Unbounded_String
                                      ("in default initialization of "
-                                      & "component """
-                                      & Source_Name (Field)
-                                      & """")));
+                                      & "component "
+                                      & Pretty_Source_Name (Field))));
                            T_Comp :=
                              Compute_Default_Check_Rec
                                (Ada_Node => Field, Ty => Etype (Field));
@@ -8030,7 +8029,7 @@ package body Gnat2Why.Expr is
                Precise := False;
                Explanation :=
                  To_Unbounded_String
-                   (Type_Name_For_Explanation (Typ) & " is unconstrained");
+                   (Pretty_Source_Name (Typ) & " is unconstrained");
             end;
          else
             pragma Assert (Has_Discriminants (Typ));
@@ -8049,7 +8048,7 @@ package body Gnat2Why.Expr is
             Precise := False;
             Explanation :=
               To_Unbounded_String
-                (Type_Name_For_Explanation (Typ) & " is unconstrained");
+                (Pretty_Source_Name (Typ) & " is unconstrained");
          end if;
       end Compute_Size_From_Type;
 
@@ -8274,15 +8273,13 @@ package body Gnat2Why.Expr is
          Precise := False;
          Explanation :=
            To_Unbounded_String
-             ("Object_Size of "
-              & Type_Name_For_Explanation (Typ)
-              & " is missing");
+             ("Object_Size of " & Pretty_Source_Name (Typ) & " is missing");
       else
          Dynamic_Size := New_Attribute_Expr (Typ, Domain, Attribute_Size);
          Precise := False;
          Explanation :=
            To_Unbounded_String
-             ("Size of " & Type_Name_For_Explanation (Typ) & " is missing");
+             ("Size of " & Pretty_Source_Name (Typ) & " is missing");
       end if;
    end Compute_Size_Of_Type;
 
@@ -14627,10 +14624,6 @@ package body Gnat2Why.Expr is
       ----------------
 
       procedure Add_To_Res (Obj : Node_Id; Inv : W_Pred_Id) is
-         Loc        : constant String :=
-           (if For_Input
-            then " before the call"
-            else " at the end of " & Source_Name (E));
          Check_Info : Check_Info_Type := New_Check_Info;
       begin
          if not Is_True_Boolean (+Inv) then
@@ -14640,7 +14633,7 @@ package body Gnat2Why.Expr is
                     (Ada_Node => E,
                      Message  =>
                        To_Unbounded_String
-                         ("for the result of " & Source_Name (E))));
+                         ("for the result of " & Raw_Source_Name (E))));
             elsif Is_Concurrent_Type (Obj) then
 
                --  Type invariant are not supported on protected objects
@@ -14652,7 +14645,11 @@ package body Gnat2Why.Expr is
                     (Ada_Node => Obj,
                      Message  =>
                        To_Unbounded_String
-                         ("for " & Source_Name (Obj) & Loc)));
+                         ("for "
+                          & Raw_Source_Name (Obj)
+                          & (if For_Input
+                             then " before the call"
+                             else " at the end of " & Raw_Source_Name (E)))));
             end if;
 
             Res :=
