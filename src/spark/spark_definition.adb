@@ -5531,6 +5531,11 @@ package body SPARK_Definition is
                           or else
                             not Array_Size_Is_Sum_Of_Components
                                   (Retysp (Etype (Prefix (P)))))
+                       and then
+                         (Nkind (P) /= N_Attribute_Reference
+                          or else
+                            Get_Attribute_Id (Attribute_Name (P))
+                            /= Attribute_Result)
                      then
                         Mark_Unsupported
                           (Lim_Unknown_Size,
