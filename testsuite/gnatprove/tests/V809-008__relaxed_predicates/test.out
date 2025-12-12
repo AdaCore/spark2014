@@ -94,7 +94,7 @@ test_predicates.adb:142:22: warning: unused variable "X"
 test_predicates.adb:152:14: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:153:14: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:154:18: info: initialization check proved (CVC5: 1 VC)
-test_predicates.adb:158:10: medium: initialization check might fail (e.g. when X = (H => (F => (C => 1), G => (C => ?)), I => (F => (C => 1), G => (C => 1))) and X.H.F.C'Initialized = True and X.H.G.C'Initialized = False and X.I.F.C'Initialized = True and X.I.G.C'Initialized = True) [provers gave up before completing the proof]
+test_predicates.adb:158:10: medium: initialization check might fail (e.g. when X = (H => (F => (C => 1), G => (C => ?)), I => (F => (C => 1), G => (C => 1))) and X.H.F.C'Initialized = True and X.H.G.C'Initialized = False and X.I.F.C'Initialized = True and X.I.G.C'Initialized = True) [provers reached step limit before completing the proof]
 test_predicates.adb:158:10: medium: predicate check might fail (e.g. when X = (H => (F => (C => 0), G => (C => 0)), I => (F => (C => 0), G => (C => 0))) and X.H.F.C'Initialized = True and X.H.G.C'Initialized = True and X.I.F.C'Initialized = True and X.I.G.C'Initialized = True) [provers reached step limit before completing the proof]
 test_predicates.adb:162:14: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:163:18: medium: initialization check might fail (e.g. when X = (H => (F => (C => 0), G => (C => 0)), I => (F => (C => 2), G => (C => 3))) and X.H.F.C'Initialized = True and X.H.G.C'Initialized = True and X.I.F.C'Initialized = True and X.I.G.C'Initialized = True) [provers reached step limit before completing the proof]
@@ -361,6 +361,6 @@ test_two_preds.adb:71:15: info: initialization check proved (CVC5: 1 VC)
 test_two_preds.adb:74:14: warning: subprogram "T" has no effect
 test_two_preds.adb:81:13: info: for inherited predicate at test_two_preds.adb:10
 test_two_preds.adb:81:13: info: predicate check proved (CVC5: 1 VC)
-test_two_preds.adb:81:13: medium: initialization check might fail (e.g. when X = (B => True, H => (F => 0, G => ?)) and X.B'Initialized = True and X.H.F'Initialized = True and X.H.G'Initialized = False) [provers gave up before completing the proof]
+test_two_preds.adb:81:13: medium: initialization check might fail (e.g. when X = (B => True, H => (F => 0, G => ?)) and X.B'Initialized = True and X.H.F'Initialized = True and X.H.G'Initialized = False) [provers reached step limit before completing the proof]
 test_two_preds.adb:81:13: medium: predicate check might fail (e.g. when X = (B => True, H => (F => 0, G => 0)) and X.B'Initialized = True and X.H.F'Initialized = True and X.H.G'Initialized = True) [provers reached step limit before completing the proof]
 test_two_preds.adb:81:15: info: initialization check proved (CVC5: 1 VC)

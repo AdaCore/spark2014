@@ -5,7 +5,7 @@ avi_arrays.adb:27:14: info: implicit aspect Always_Terminates on "Prepend" has b
 avi_arrays.adb:28:09: info: range check proved (CVC5: 1 VC)
 avi_arrays.adb:28:09: info: range check proved (CVC5: 2 VC)
 avi_arrays.adb:28:09: medium: in inlined predicate at avi_arrays.adb:25
-avi_arrays.adb:28:09: medium: predicate check might fail, cannot prove Array_Type'Last < Positive_Index_Type'Last [possible fix: subprogram at line 27 should mention A and V in a precondition] [provers gave up before completing the proof]
+avi_arrays.adb:28:09: medium: predicate check might fail, cannot prove Array_Type'Last < Positive_Index_Type'Last [possible fix: subprogram at line 27 should mention A and V in a precondition] [provers reached step limit before completing the proof]
 avi_arrays.adb:29:14: info: implicit aspect Always_Terminates on "Last" has been proved, subprogram will terminate
 avi_arrays.adb:29:66: info: range check proved (CVC5: 2 VC)
 avi_arrays.adb:30:14: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate

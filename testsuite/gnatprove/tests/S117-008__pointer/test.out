@@ -4,7 +4,7 @@ formal_vectors.adb:16:20: info: overflow check proved (CVC5: 2 VC), in instantia
 formal_vectors.adb:19:13: info: implicit aspect Always_Terminates on "Size" has been proved, subprogram will terminate, in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:21:22: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:21:25: info: range check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
-formal_vectors.adb:34:38: medium: postcondition might fail, cannot prove Size (V) > V.Top, in instantiation at use_formal_vectors.ads:11 [provers gave up before completing the proof]
+formal_vectors.adb:34:38: medium: postcondition might fail, cannot prove Size (V) > V.Top, in instantiation at use_formal_vectors.ads:11 [provers reached step limit before completing the proof]
 formal_vectors.adb:40:21: info: overflow check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:44:11: info: predicate check proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:44:20: info: absence of resource or memory leak proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
@@ -29,7 +29,7 @@ formal_vectors.adb:54:23: info: absence of resource or memory leak proved (CVC5:
 formal_vectors.adb:63:14: info: postcondition proved (CVC5: 3 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:63:43: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:63:61: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
-formal_vectors.adb:66:07: medium: resource or memory leak might occur, in instantiation at use_formal_vectors.ads:11 [provers gave up before completing the proof]
+formal_vectors.adb:66:07: medium: resource or memory leak might occur, in instantiation at use_formal_vectors.ads:11 [provers reached step limit before completing the proof]
 formal_vectors.adb:67:10: info: absence of resource or memory leak proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:68:12: info: absence of resource or memory leak proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:73:14: info: postcondition proved (CVC5: 4 VC), in instantiation at use_formal_vectors.ads:11
@@ -84,7 +84,7 @@ formal_vectors.adb:113:13: info: loop invariant preservation proved (CVC5: 2 VC)
 formal_vectors.adb:113:32: info: overflow check proved (CVC5: 4 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:113:45: info: overflow check proved (CVC5: 4 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:113:57: info: pointer dereference check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
-formal_vectors.adb:113:67: medium: array index check might fail, in instantiation at use_formal_vectors.ads:11 [reason for check: value must be a valid index into the array] [provers gave up before completing the proof]
+formal_vectors.adb:113:67: medium: array index check might fail, in instantiation at use_formal_vectors.ads:11 [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
 formal_vectors.adb:115:23: info: pointer dereference check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:115:33: info: index check proved (CVC5: 4 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:115:36: info: pointer dereference check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
@@ -125,7 +125,7 @@ formal_vectors.adb:134:33: info: loop invariant preservation proved (CVC5: 1 VC)
 formal_vectors.adb:136:13: info: loop invariant initialization proved (CVC5: 3 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:136:13: info: loop invariant preservation proved (CVC5: 3 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:136:35: info: pointer dereference check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
-formal_vectors.adb:136:45: medium: array index check might fail, in instantiation at use_formal_vectors.ads:11 [reason for check: value must be a valid index into the array] [possible fix: add precondition (I in Positive) to subprogram at formal_vectors.ads:38] [provers gave up before completing the proof]
+formal_vectors.adb:136:45: medium: array index check might fail, in instantiation at use_formal_vectors.ads:11 [reason for check: value must be a valid index into the array] [possible fix: add precondition (I in Positive) to subprogram at formal_vectors.ads:38] [provers reached step limit before completing the proof]
 formal_vectors.adb:136:48: info: pointer dereference check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:136:83: info: pointer dereference check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:136:90: info: precondition proved (CVC5: 4 VC), in instantiation at use_formal_vectors.ads:11
@@ -191,7 +191,7 @@ formal_vectors.adb:177:16: info: loop invariant initialization proved (CVC5: 1 V
 formal_vectors.adb:177:16: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:177:36: info: overflow check proved (CVC5: 4 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:178:26: info: pointer dereference check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
-formal_vectors.adb:178:36: medium: array index check might fail, in instantiation at use_formal_vectors.ads:11 [reason for check: value must be a valid index into the array] [provers gave up before completing the proof]
+formal_vectors.adb:178:36: medium: array index check might fail, in instantiation at use_formal_vectors.ads:11 [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
 formal_vectors.adb:178:39: info: pointer dereference check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:178:46: info: precondition proved (CVC5: 4 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:178:60: info: overflow check proved (CVC5: 4 VC), in instantiation at use_formal_vectors.ads:11
@@ -216,7 +216,7 @@ formal_vectors.adb:182:35: info: pointer dereference check proved (CVC5: 1 VC), 
 formal_vectors.adb:182:35: info: predicate check proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:182:47: info: index check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:182:47: info: overflow check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
-formal_vectors.adb:184:10: medium: resource or memory leak might occur, in instantiation at use_formal_vectors.ads:11 [provers gave up before completing the proof]
+formal_vectors.adb:184:10: medium: resource or memory leak might occur, in instantiation at use_formal_vectors.ads:11 [provers reached step limit before completing the proof]
 formal_vectors.adb:184:17: info: in value of subprogram parameter after the call at formal_vectors.adb:184, in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:184:17: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:184:17: info: predicate check proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
@@ -237,7 +237,7 @@ formal_vectors.adb:203:13: info: loop invariant initialization proved (CVC5: 1 V
 formal_vectors.adb:203:13: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:203:40: info: precondition proved (CVC5: 4 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:203:61: info: pointer dereference check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
-formal_vectors.adb:203:71: medium: array index check might fail, in instantiation at use_formal_vectors.ads:11 [reason for check: value must be a valid index into the array] [provers gave up before completing the proof]
+formal_vectors.adb:203:71: medium: array index check might fail, in instantiation at use_formal_vectors.ads:11 [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
 formal_vectors.adb:203:74: info: pointer dereference check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:204:15: info: precondition proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:204:31: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11

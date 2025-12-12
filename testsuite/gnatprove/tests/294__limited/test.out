@@ -10,7 +10,7 @@ rflx-dhcp-message.adb:19:57: medium: range check might fail, cannot prove lower 
 rflx-dhcp-message.adb:20:50: medium: pointer dereference check might fail [possible fix: subprogram at rflx-dhcp-message.ads:32 should mention Buffer in a precondition] [provers reached step limit before completing the proof]
 rflx-dhcp-message.adb:20:56: medium: range check might fail, cannot prove lower bound for Buffer'Last [reason for check: default component value must fit in the type] [possible fix: subprogram at rflx-dhcp-message.ads:32 should mention Buffer in a precondition] [provers reached step limit before completing the proof]
 rflx-dhcp-message.adb:22:11: info: absence of resource or memory leak proved (CVC5: 1 VC)
-rflx-dhcp-message.adb:22:11: medium: discriminant check might fail [possible fix: subprogram at rflx-dhcp-message.ads:32 should mention Ctx'Constrained or Ctx.Buffer_First or Ctx.Buffer_Last or Ctx.First or Ctx.Last in a precondition] [provers gave up before completing the proof]
+rflx-dhcp-message.adb:22:11: medium: discriminant check might fail [possible fix: subprogram at rflx-dhcp-message.ads:32 should mention Ctx'Constrained or Ctx.Buffer_First or Ctx.Buffer_Last or Ctx.First or Ctx.Last in a precondition] [provers reached step limit before completing the proof]
 rflx-dhcp-message.adb:23:14: info: absence of resource or memory leak proved (CVC5: 1 VC)
 rflx-dhcp-message.ads:24:09: info: default initial condition proved (CVC5: 1 VC)
 rflx-dhcp-message.ads:24:09: info: in default initialization of array component at rflx-dhcp-message.ads:20

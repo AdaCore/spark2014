@@ -12,13 +12,13 @@ ext_part_classwide.adb:80:31: medium: "R.A" might not be initialized
 ext_part_classwide.adb:80:31: warning: "R.A" is set by "Raise_Exception" but not used after the call
 ext_part_classwide.adb:82:13: info: no contextual analysis of "Initialize" (exception handler)
 ext_part_classwide.adb:83:16: medium: "R.A" might not be initialized [possible explanation: value of "R.A" is unknown following exceptional exit]
-ext_part_classwide.adb:83:31: medium: assertion might fail [provers gave up before completing the proof]
+ext_part_classwide.adb:83:31: medium: assertion might fail [provers reached step limit before completing the proof]
 ext_part_classwide.adb:83:31: medium: extension of "R" might not be initialized
 ext_part_classwide.adb:102:13: info: only expected exception raised (CVC5: 1 VC)
 ext_part_classwide.adb:102:31: warning: "R.A" is set by "Raise_Exception" but not used after the call
 ext_part_classwide.adb:104:13: info: no contextual analysis of "Initialize" (exception handler)
 ext_part_classwide.adb:105:16: medium: "R.A" might not be initialized [possible explanation: value of "R.A" is unknown following exceptional exit]
-ext_part_classwide.adb:105:31: medium: assertion might fail [possible fix: call at line 99 should mention R (for argument R) in a postcondition] [provers gave up before completing the proof]
+ext_part_classwide.adb:105:31: medium: assertion might fail [possible fix: call at line 99 should mention R (for argument R) in a postcondition] [provers reached step limit before completing the proof]
 ext_part_classwide.adb:119:07: warning: analyzing unreferenced procedure "Initialize" [unreferenced-procedure]
 ext_part_classwide.adb:125:25: medium: assertion might fail [provers reached step limit before completing the proof]
 ext_part_classwide.adb:125:29: high: extension of "R" is not initialized
@@ -29,7 +29,7 @@ ext_part_classwide.adb:143:25: medium: assertion might fail [provers reached ste
 ext_part_classwide.adb:160:13: info: only expected exception raised (CVC5: 1 VC)
 ext_part_classwide.adb:162:13: info: no contextual analysis of "Initialize" (exception handler)
 ext_part_classwide.adb:170:10: medium: "R.A" might not be initialized [possible explanation: value of "R.A" is unknown following exceptional exit]
-ext_part_classwide.adb:170:25: medium: assertion might fail [possible fix: call at line 157 should mention R (for argument R) in a postcondition] [provers gave up before completing the proof]
+ext_part_classwide.adb:170:25: medium: assertion might fail [possible fix: call at line 157 should mention R (for argument R) in a postcondition] [provers reached step limit before completing the proof]
 ext_part_classwide.adb:182:07: warning: analyzing unreferenced procedure "Initialize" [unreferenced-procedure]
 ext_part_classwide.adb:185:25: medium: assertion might fail [possible fix: call at line 184 should mention R (for argument R) in a postcondition] [provers reached step limit before completing the proof]
 ext_part_classwide.adb:185:29: high: extension of "R" is not initialized
@@ -312,13 +312,13 @@ relax_init.adb:32:22: high: "R.A" is not initialized
 relax_init.adb:32:22: medium: assertion might fail, cannot prove R.A = 0 (e.g. when R = (A => 1, B => 0) and R.B'Initialized = True) [possible fix: add or complete related loop invariants or postconditions] [provers reached step limit before completing the proof]
 relax_init.adb:32:35: info: initialization check proved (CVC5: 1 VC)
 relax_init.adb:46:22: medium: "R.A" might not be initialized
-relax_init.adb:46:34: medium: assertion might fail, cannot prove R.B = 0 (e.g. when R = (A => 0, B => 1) and R.B'Initialized = True) [possible fix: add or complete related loop invariants or postconditions] [provers gave up before completing the proof]
+relax_init.adb:46:34: medium: assertion might fail, cannot prove R.B = 0 (e.g. when R = (A => 0, B => 1) and R.B'Initialized = True) [possible fix: add or complete related loop invariants or postconditions] [provers reached step limit before completing the proof]
 relax_init.adb:46:35: medium: initialization check might fail [provers reached step limit before completing the proof]
 relax_init.adb:60:22: info: assertion proved (CVC5: 2 VC)
 relax_init.adb:60:22: medium: "R.A" might not be initialized
 relax_init.adb:60:35: info: initialization check proved (CVC5: 1 VC)
 relax_init.adb:68:07: info: initialization of parts of "R" without Relaxed_Initialization proved
-relax_init.adb:72:34: medium: assertion might fail, cannot prove R.B = 0 (e.g. when R = (A => 0, B => 1) and R.B'Initialized = True) [possible fix: add or complete related loop invariants or postconditions] [provers gave up before completing the proof]
+relax_init.adb:72:34: medium: assertion might fail, cannot prove R.B = 0 (e.g. when R = (A => 0, B => 1) and R.B'Initialized = True) [possible fix: add or complete related loop invariants or postconditions] [provers reached step limit before completing the proof]
 relax_init.adb:72:35: medium: initialization check might fail [provers reached step limit before completing the proof]
 relax_init.adb:80:07: info: initialization of parts of "R" without Relaxed_Initialization proved
 relax_init.adb:88:22: info: assertion proved (CVC5: 2 VC)

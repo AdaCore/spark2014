@@ -141,12 +141,12 @@ test_init_by_proof_out_params.adb:194:07: info: precondition proved (CVC5: 1 VC)
 test_init_by_proof_out_params.adb:196:07: info: no contextual analysis of "Branch" (body not seen yet)
 test_init_by_proof_out_params.adb:196:07: warning: assuming "Branch" has no effect on global items
 test_init_by_proof_out_params.adb:196:07: warning: no Global contract available for "Branch" [assumed-global-null]
-test_init_by_proof_out_params.adb:197:07: medium: precondition might fail, cannot prove X (X'First)'Initialized [provers gave up before completing the proof]
+test_init_by_proof_out_params.adb:197:07: medium: precondition might fail, cannot prove X (X'First)'Initialized [provers reached step limit before completing the proof]
 test_init_by_proof_out_params.adb:199:07: info: precondition proved (CVC5: 2 VC)
 test_init_by_proof_out_params.adb:201:07: info: no contextual analysis of "Branch" (body not seen yet)
 test_init_by_proof_out_params.adb:201:07: warning: assuming "Branch" has no effect on global items
 test_init_by_proof_out_params.adb:201:07: warning: no Global contract available for "Branch" [assumed-global-null]
-test_init_by_proof_out_params.adb:202:07: medium: precondition might fail, cannot prove X (X'First)'Initialized [provers gave up before completing the proof]
+test_init_by_proof_out_params.adb:202:07: medium: precondition might fail, cannot prove X (X'First)'Initialized [provers reached step limit before completing the proof]
 test_init_by_proof_out_params.adb:204:07: info: precondition proved (CVC5: 2 VC)
 test_init_by_proof_out_params.adb:206:07: info: no contextual analysis of "Branch" (body not seen yet)
 test_init_by_proof_out_params.adb:206:07: warning: assuming "Branch" has no effect on global items
@@ -161,17 +161,17 @@ test_init_by_proof_out_params.adb:214:07: info: precondition proved (CVC5: 1 VC)
 test_init_by_proof_out_params.adb:216:07: info: no contextual analysis of "Branch" (body not seen yet)
 test_init_by_proof_out_params.adb:216:07: warning: assuming "Branch" has no effect on global items
 test_init_by_proof_out_params.adb:216:07: warning: no Global contract available for "Branch" [assumed-global-null]
-test_init_by_proof_out_params.adb:217:07: medium: precondition might fail, cannot prove X (X'First).Y'Initialized [provers gave up before completing the proof]
+test_init_by_proof_out_params.adb:217:07: medium: precondition might fail, cannot prove X (X'First).Y'Initialized [provers reached step limit before completing the proof]
 test_init_by_proof_out_params.adb:219:07: info: precondition proved (CVC5: 2 VC)
 test_init_by_proof_out_params.adb:221:07: info: no contextual analysis of "Branch" (body not seen yet)
 test_init_by_proof_out_params.adb:221:07: warning: assuming "Branch" has no effect on global items
 test_init_by_proof_out_params.adb:221:07: warning: no Global contract available for "Branch" [assumed-global-null]
-test_init_by_proof_out_params.adb:222:07: medium: precondition might fail, cannot prove X (X'First).Y'Initialized [provers gave up before completing the proof]
+test_init_by_proof_out_params.adb:222:07: medium: precondition might fail, cannot prove X (X'First).Y'Initialized [provers reached step limit before completing the proof]
 test_init_by_proof_out_params.adb:224:07: info: precondition proved (CVC5: 2 VC)
 test_init_by_proof_out_params.adb:226:07: info: no contextual analysis of "Branch" (body not seen yet)
 test_init_by_proof_out_params.adb:226:07: warning: assuming "Branch" has no effect on global items
 test_init_by_proof_out_params.adb:226:07: warning: no Global contract available for "Branch" [assumed-global-null]
-test_init_by_proof_out_params.adb:227:07: medium: precondition might fail, cannot prove X.C (1).Y'Initialized [provers gave up before completing the proof]
+test_init_by_proof_out_params.adb:227:07: medium: precondition might fail, cannot prove X.C (1).Y'Initialized [provers reached step limit before completing the proof]
 test_init_by_proof_out_params.adb:229:07: info: precondition proved (CVC5: 2 VC)
 test_init_by_proof_out_params.adb:231:07: info: no contextual analysis of "Branch" (body not seen yet)
 test_init_by_proof_out_params.adb:231:07: warning: assuming "Branch" has no effect on global items

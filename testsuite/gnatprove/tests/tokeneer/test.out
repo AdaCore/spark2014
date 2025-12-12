@@ -379,14 +379,12 @@ auditlog.ads:281:09: info: invariant check proved on default value
 auditlog.ads:295:13: info: implicit aspect Always_Terminates on "Valid_NumberLogEntries" has been proved, subprogram will terminate
 audittypes.ads:77:13: info: implicit aspect Always_Terminates on "ElementT_Image" has been proved, subprogram will terminate
 audittypes.ads:78:16: info: predicate check justified
-audittypes.ads:78:16: info: predicate check justified [provers gave up before completing the proof]
 audittypes.ads:78:16: info: range check proved
 audittypes.ads:78:16: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 bio-interfac.ads:22:27: info: initialization of "Interfac.Input" constituent of "Bio.Input" proved
 bio-interfac.ads:23:62: info: flow dependencies proved
 bio.adb:83:13: info: implicit aspect Always_Terminates on "ReturnT_Image" has been proved, subprogram will terminate
 bio.adb:84:15: info: predicate check justified
-bio.adb:84:15: info: predicate check justified [provers gave up before completing the proof]
 bio.adb:84:15: info: range check proved
 bio.adb:84:15: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 bio.adb:123:13: info: add a contract to analyze it separately from calling contexts
@@ -623,7 +621,6 @@ certprocessing.ads:242:11: info: flow dependencies proved
 certtypes.ads:62:13: info: implicit aspect Always_Terminates on "SerialNumberT_Image" has been proved, subprogram will terminate
 certtypes.ads:63:21: info: for inherited predicate at commontypes.ads:66
 certtypes.ads:63:21: info: predicate check justified
-certtypes.ads:63:21: info: predicate check justified [provers gave up before completing the proof]
 certtypes.ads:63:21: info: predicate check proved
 certtypes.ads:63:21: info: range check proved
 certtypes.ads:63:21: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
@@ -939,13 +936,11 @@ configdata.ads:30:08: info: flow dependencies proved
 configdata.ads:39:13: info: implicit aspect Always_Terminates on "DurationT_Image" has been proved, subprogram will terminate
 configdata.ads:40:17: info: for inherited predicate at commontypes.ads:66
 configdata.ads:40:17: info: predicate check justified
-configdata.ads:40:17: info: predicate check justified [provers gave up before completing the proof]
 configdata.ads:40:17: info: predicate check proved
 configdata.ads:40:17: info: range check proved
 configdata.ads:40:17: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 configdata.ads:48:13: info: implicit aspect Always_Terminates on "AccessPolicyT_Image" has been proved, subprogram will terminate
 configdata.ads:49:21: info: predicate check justified
-configdata.ads:49:21: info: predicate check justified [provers gave up before completing the proof]
 configdata.ads:49:21: info: range check proved
 configdata.ads:49:21: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 configdata.ads:66:11: info: data dependencies proved
@@ -1476,7 +1471,7 @@ enrolment.adb:238:33: info: loop invariant initialization proved
 enrolment.adb:238:33: info: loop invariant preservation proved
 enrolment.adb:239:33: info: loop invariant initialization proved
 enrolment.adb:239:33: info: loop invariant preservation proved
-enrolment.adb:242:30: info: overflow check justified [provers gave up before completing the proof]
+enrolment.adb:242:30: info: overflow check justified
 enrolment.adb:258:41: info: for inherited predicate at commontypes.ads:60
 enrolment.adb:258:41: info: predicate check proved
 enrolment.adb:258:41: info: range check proved
@@ -1489,7 +1484,7 @@ floppy.ads:24:28: info: initialization of "Floppy.Input" proved
 floppy.ads:25:28: info: initialization of "Floppy.Output" proved
 floppy.ads:26:08: info: flow dependencies proved
 iandatypes.ads:35:13: info: implicit aspect Always_Terminates on "FarT_Image" has been proved, subprogram will terminate
-iandatypes.ads:36:12: info: predicate check justified [provers gave up before completing the proof]
+iandatypes.ads:36:12: info: predicate check justified
 iandatypes.ads:36:12: info: predicate check proved
 iandatypes.ads:36:12: info: range check proved
 iandatypes.ads:36:12: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
@@ -1511,7 +1506,6 @@ keystore-interfac.ads:23:27: info: initialization of "Interfac.Store" constituen
 keystore-interfac.ads:24:08: info: flow dependencies proved
 keystore-interfac.ads:95:13: info: implicit aspect Always_Terminates on "ReturnValueT_Image" has been proved, subprogram will terminate
 keystore-interfac.ads:96:20: info: predicate check justified
-keystore-interfac.ads:96:20: info: predicate check justified [provers gave up before completing the proof]
 keystore-interfac.ads:96:20: info: range check proved
 keystore-interfac.ads:96:20: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 keystore.adb:90:13: info: implicit aspect Always_Terminates on "ConvertRetValToText" has been proved, subprogram will terminate
@@ -1703,7 +1697,6 @@ poll.ads:67:11: info: flow dependencies proved
 poll.ads:113:13: info: postcondition proved
 privtypes.ads:43:13: info: implicit aspect Always_Terminates on "ClassT_Image" has been proved, subprogram will terminate
 privtypes.ads:44:14: info: predicate check justified
-privtypes.ads:44:14: info: predicate check justified [provers gave up before completing the proof]
 privtypes.ads:44:14: info: range check proved
 privtypes.ads:44:14: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 screen.adb:156:28: info: initialization of "OK" proved
@@ -1878,7 +1871,7 @@ stats.adb:64:51: info: overflow check proved
 stats.adb:79:53: info: overflow check proved
 stats.adb:94:47: info: overflow check proved
 stats.ads:29:13: info: implicit aspect Always_Terminates on "StatsCount_Image" has been proved, subprogram will terminate
-stats.ads:30:18: info: predicate check justified [provers gave up before completing the proof]
+stats.ads:30:18: info: predicate check justified
 stats.ads:30:18: info: predicate check proved
 stats.ads:30:18: info: range check proved
 stats.ads:30:18: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
@@ -1996,7 +1989,6 @@ tokenreader-interfac.ads:28:28: info: initialization of "Interfac.ReaderStatus" 
 tokenreader-interfac.ads:31:80: info: flow dependencies proved
 tokenreader-interfac.ads:83:13: info: implicit aspect Always_Terminates on "ResponseCodeT_Image" has been proved, subprogram will terminate
 tokenreader-interfac.ads:84:21: info: predicate check justified
-tokenreader-interfac.ads:84:21: info: predicate check justified [provers gave up before completing the proof]
 tokenreader-interfac.ads:84:21: info: range check proved
 tokenreader-interfac.ads:84:21: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 tokenreader.adb:91:13: info: implicit aspect Always_Terminates on "GetResponseCode" has been proved, subprogram will terminate

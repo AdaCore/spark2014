@@ -17,10 +17,10 @@ dealloc.adb:53:07: info: absence of resource or memory leak at end of scope prov
 dealloc.adb:55:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
 dealloc.adb:56:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
 dealloc.adb:57:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
-dealloc.adb:59:07: medium: resource or memory leak might occur [provers gave up before completing the proof]
+dealloc.adb:59:07: medium: resource or memory leak might occur [provers reached step limit before completing the proof]
 dealloc.adb:60:18: info: pointer dereference check proved (CVC5: 1 VC)
 dealloc.adb:60:22: info: pointer dereference check proved (CVC5: 1 VC)
-dealloc.adb:61:07: medium: resource or memory leak might occur [provers gave up before completing the proof]
+dealloc.adb:61:07: medium: resource or memory leak might occur [provers reached step limit before completing the proof]
 dealloc.adb:67:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 dealloc.adb:68:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 dealloc.adb:69:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
@@ -109,10 +109,10 @@ dealloc.adb:117:07: info: absence of resource or memory leak proved (CVC5: 1 VC;
 dealloc.adb:117:18: info: pointer dereference check proved (CVC5: 1 VC)
 dealloc.adb:117:22: info: pointer dereference check proved (CVC5: 1 VC)
 dealloc.adb:117:25: info: pointer dereference check proved (CVC5: 1 VC)
-dealloc.adb:118:07: medium: resource or memory leak might occur [provers gave up before completing the proof]
+dealloc.adb:118:07: medium: resource or memory leak might occur [provers reached step limit before completing the proof]
 dealloc.adb:118:18: info: pointer dereference check proved (CVC5: 1 VC)
 dealloc.adb:118:22: info: pointer dereference check proved (CVC5: 1 VC)
-dealloc.adb:119:07: medium: resource or memory leak might occur [provers gave up before completing the proof]
+dealloc.adb:119:07: medium: resource or memory leak might occur [provers reached step limit before completing the proof]
 glob.adb:5:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
 glob.adb:6:09: medium: resource or memory leak might occur [possible fix: subprogram at glob.ads:9 should mention Z in a precondition] [provers reached step limit before completing the proof]
 glob.adb:12:07: medium: resource or memory leak might occur [provers reached step limit before completing the proof]
