@@ -22757,7 +22757,12 @@ package body Gnat2Why.Expr is
                                            then M_Int_Div.Mod_Id
                                            else MF_BVs (W_Typ).Urem),
                                         Args =>
-                                          (1 => +Tmp,
+                                          (1 =>
+                                             Insert_Simple_Conversion
+                                               (Ada_Node => Decl,
+                                                Domain   => EW_Term,
+                                                Expr     => +Tmp,
+                                                To       => W_Typ),
                                            2 =>
                                              New_Discrete_Constant
                                                (Value => Align, Typ => W_Typ)),
