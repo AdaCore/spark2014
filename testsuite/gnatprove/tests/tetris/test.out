@@ -14,7 +14,7 @@ tetris_flow.adb:59:63: medium: array index check might fail [reason for check: r
 tetris_flow.adb:81:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 tetris_flow.adb:95:16: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 tetris_flow.adb:96:35: medium: range check might fail, cannot prove lower bound for To_Line - 1 [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 92 should mention To_Line in a loop invariant] [provers reached step limit before completing the proof]
-tetris_flow.adb:97:43: medium: overflow check might fail, cannot prove upper bound for Num_Deleted + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 92 should mention Num_Deleted in a loop invariant] [provers gave up before completing the proof]
+tetris_flow.adb:97:43: medium: overflow check might fail, cannot prove upper bound for Num_Deleted + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 92 should mention Num_Deleted in a loop invariant] [provers reached step limit before completing the proof]
 tetris_flow.adb:108:07: info: initialization of "Candidate" proved
 tetris_flow.ads:92:08: info: index check proved (CVC5: 2 VC)
 tetris_flow.ads:92:38: info: index check proved (CVC5: 2 VC)
@@ -111,7 +111,7 @@ tetris_flow.ads:169:77: info: range check proved (CVC5: 1 VC)
 tetris_flow.ads:171:13: info: implicit aspect Always_Terminates on "Move" has been proved, subprogram will terminate
 tetris_flow.ads:173:49: medium: range check might fail, cannot prove lower bound for P.X - 1 [reason for check: result of subtraction must fit in component type] [possible fix: add precondition (P.X >= PX_Coord'First + 1) to subprogram at line 171] [provers reached step limit before completing the proof]
 tetris_flow.ads:174:49: medium: range check might fail, cannot prove upper bound for P.X + 1 [reason for check: result of addition must fit in component type] [possible fix: add precondition (P.X <= PX_Coord'Last - 1) to subprogram at line 171] [provers gave up before completing the proof]
-tetris_flow.ads:175:49: medium: range check might fail, cannot prove upper bound for P.Y + 1 [reason for check: result of addition must fit in component type] [possible fix: add precondition (P.Y <= PY_Coord'Last - 1) to subprogram at line 171] [provers gave up before completing the proof]
+tetris_flow.ads:175:49: medium: range check might fail, cannot prove upper bound for P.Y + 1 [reason for check: result of addition must fit in component type] [possible fix: add precondition (P.Y <= PY_Coord'Last - 1) to subprogram at line 171] [provers reached step limit before completing the proof]
 tetris_flow.ads:176:66: info: range check proved (CVC5: 2 VC)
 tetris_flow.ads:178:37: info: initialization of "Success" proved
 tetris_flow.ads:179:06: info: data dependencies proved
@@ -276,7 +276,7 @@ tetris_initial.adb:59:63: medium: array index check might fail [reason for check
 tetris_initial.adb:81:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 tetris_initial.adb:95:16: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 tetris_initial.adb:96:35: medium: range check might fail, cannot prove lower bound for To_Line - 1 [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 92 should mention To_Line in a loop invariant] [provers reached step limit before completing the proof]
-tetris_initial.adb:97:43: medium: overflow check might fail, cannot prove upper bound for Num_Deleted + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 92 should mention Num_Deleted in a loop invariant] [provers gave up before completing the proof]
+tetris_initial.adb:97:43: medium: overflow check might fail, cannot prove upper bound for Num_Deleted + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 92 should mention Num_Deleted in a loop invariant] [provers reached step limit before completing the proof]
 tetris_initial.adb:108:07: info: initialization of "Candidate" proved
 tetris_initial.ads:92:08: info: index check proved (CVC5: 2 VC)
 tetris_initial.ads:92:38: info: index check proved (CVC5: 2 VC)

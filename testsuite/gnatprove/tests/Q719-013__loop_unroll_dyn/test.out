@@ -15,11 +15,11 @@ loops_static.adb:26:60: info: index check proved (CVC5: 2 VC)
 loops_static.adb:30:07: medium: assertion might fail [provers reached step limit before completing the proof]
 loops_static.adb:35:23: info: unrolling loop [info-unrolling-inlining]
 loops_static.adb:36:13: high: array index check might fail (e.g. when A'First = 2 and A'Last = 0 and I = 1) [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
-loops_static.adb:38:46: high: overflow check might fail, cannot prove upper bound for I - A'First (e.g. when A = (others => 0) and A'First = Integer'First+1 and A'Last = 1 and I = 1) [reason for check: result of subtraction must fit in a 32-bits machine integer] [provers gave up before completing the proof]
-loops_static.adb:38:56: high: overflow check might fail, cannot prove upper bound for I - A'First + 1 (e.g. when A = (others => 0) and A'First = Integer'First+2 and A'Last = 1 and I = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
+loops_static.adb:38:46: high: overflow check might fail, cannot prove upper bound for I - A'First (e.g. when A = (others => 0) and A'First = Integer'First+1 and A'Last = 1 and I = 1) [reason for check: result of subtraction must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
+loops_static.adb:38:56: high: overflow check might fail, cannot prove upper bound for I - A'First + 1 (e.g. when A = (others => 0) and A'First = Integer'First+2 and A'Last = 1 and I = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
 loops_static.adb:38:56: info: range check proved (CVC5: 4 VC)
 loops_static.adb:41:46: high: assertion might fail, cannot prove A (A'First + I) = 0 (e.g. when A = (1 => 0, others => 1) and A'First = -1 and A'Last = 1 and A_Length = 3 and I = 1) [possible fix: subprogram at loops_static.ads:6 should mention A in a precondition] [provers reached step limit before completing the proof]
-loops_static.adb:41:57: high: array index check might fail (e.g. when A = (1 => 0) and A_Length = 1 and I = 1) [reason for check: result of addition must be a valid index into the array] [provers gave up before completing the proof]
+loops_static.adb:41:57: high: array index check might fail (e.g. when A = (1 => 0) and A_Length = 1 and I = 1) [reason for check: result of addition must be a valid index into the array] [provers reached step limit before completing the proof]
 loops_static.adb:41:57: info: overflow check proved (CVC5: 4 VC)
 loops_static.adb:44:07: medium: assertion might fail [provers reached step limit before completing the proof]
 loops_static.adb:50:23: info: unrolling loop [info-unrolling-inlining]

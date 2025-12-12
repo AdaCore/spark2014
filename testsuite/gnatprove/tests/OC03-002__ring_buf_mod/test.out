@@ -25,7 +25,7 @@ ring_buf.ads:47:58: info: index check proved (CVC5: 2 VC)
 ring_buf.ads:50:13: info: implicit aspect Always_Terminates on "Func_Push" has been proved, subprogram will terminate
 ring_buf.ads:50:67: medium: range check might fail [reason for check: returned value must fit in the result type of the function] [possible fix: subprogram at line 50 should mention M and X in a precondition] [provers gave up before completing the proof]
 ring_buf.ads:51:13: info: implicit aspect Always_Terminates on "Func_Pop" has been proved, subprogram will terminate
-ring_buf.ads:51:51: high: range check might fail (e.g. when M = (0 => 0)) [reason for check: slice bounds must fit in the underlying array] [possible fix: precondition of subprogram at line 51 should mention M] [provers gave up before completing the proof]
+ring_buf.ads:51:51: high: range check might fail (e.g. when M = (0 => 0)) [reason for check: slice bounds must fit in the underlying array] [possible fix: precondition of subprogram at line 51 should mention M] [provers reached step limit before completing the proof]
 ring_buf.ads:54:13: info: implicit aspect Always_Terminates on "Is_Full" has been proved, subprogram will terminate
 ring_buf.ads:56:13: info: implicit aspect Always_Terminates on "Is_Empty" has been proved, subprogram will terminate
 ring_buf.ads:58:21: info: initialization of "R" proved

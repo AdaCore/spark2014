@@ -69,8 +69,8 @@ very_longs.adb:171:46: info: index check proved (CVC5: 2 VC)
 very_longs.adb:183:17: info: precondition proved (CVC5: 1 VC)
 very_longs.adb:189:21: info: precondition proved (CVC5: 1 VC)
 very_longs.adb:195:21: info: precondition proved (CVC5: 1 VC)
-very_longs.adb:203:13: medium: refined postcondition might fail, cannot prove Number.Long_Digits(Number_Of_Digits'Result) /= 0 [provers gave up before completing the proof]
-very_longs.adb:203:48: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers gave up before completing the proof]
+very_longs.adb:203:13: medium: refined postcondition might fail, cannot prove Number.Long_Digits(Number_Of_Digits'Result) /= 0 [provers reached step limit before completing the proof]
+very_longs.adb:203:48: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
 very_longs.adb:205:32: info: index check proved (CVC5: 2 VC)
 very_longs.adb:211:36: info: index check proved (CVC5: 4 VC)
 very_longs.adb:212:31: info: range check proved (CVC5: 4 VC)
@@ -123,7 +123,7 @@ very_longs.adb:296:22: warning: initialization of an array in FOR loop is handle
 very_longs.adb:296:37: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:296:41: info: index check proved (CVC5: 2 VC)
 very_longs.adb:306:07: info: initialization of "Result" proved
-very_longs.adb:306:36: medium: range check might fail, cannot prove upper bound for L.Length + R.Length [possible fix: add precondition (L.Length <= Digit_Index_Type'Last - R.Length) to subprogram at very_longs.ads:61] [provers gave up before completing the proof]
+very_longs.adb:306:36: medium: range check might fail, cannot prove upper bound for L.Length + R.Length [possible fix: add precondition (L.Length <= Digit_Index_Type'Last - R.Length) to subprogram at very_longs.ads:61] [provers reached step limit before completing the proof]
 very_longs.adb:307:07: info: initialization of "L_Digit" proved
 very_longs.adb:308:07: info: initialization of "R_Digit" proved
 very_longs.adb:309:07: info: initialization of "T_Digit" proved
@@ -149,7 +149,7 @@ very_longs.adb:357:07: info: initialization of "N" proved
 very_longs.adb:358:07: info: initialization of "M" proved
 very_longs.adb:359:07: info: initialization of "Shift_Distance" proved
 very_longs.adb:360:07: info: initialization of "U" proved
-very_longs.adb:360:51: medium: range check might fail, cannot prove upper bound for Dividend.Length + 1 [possible fix: add precondition (Dividend.Length <= Digit_Index_Type'Last - 1) to subprogram at very_longs.ads:65] [provers gave up before completing the proof]
+very_longs.adb:360:51: medium: range check might fail, cannot prove upper bound for Dividend.Length + 1 [possible fix: add precondition (Dividend.Length <= Digit_Index_Type'Last - 1) to subprogram at very_longs.ads:65] [provers reached step limit before completing the proof]
 very_longs.adb:361:07: info: initialization of "V" proved
 very_longs.adb:361:42: info: range check proved (CVC5: 2 VC)
 very_longs.adb:362:07: info: initialization of "Q_Hat" proved
@@ -221,7 +221,7 @@ very_longs.adb:488:14: info: range check proved (CVC5: 2 VC)
 very_longs.adb:488:61: info: cannot unroll loop (dynamic loop bounds) [info-unrolling-inlining]
 very_longs.adb:489:59: info: index check proved (CVC5: 2 VC)
 very_longs.adb:493:46: info: overflow check proved (CVC5: 2 VC)
-very_longs.adb:493:62: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 476 should mention J in a precondition] [provers gave up before completing the proof]
+very_longs.adb:493:62: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 476 should mention J in a precondition] [provers reached step limit before completing the proof]
 very_longs.adb:500:14: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 very_longs.adb:500:29: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:500:45: info: index check proved (CVC5: 2 VC)
@@ -229,7 +229,7 @@ very_longs.adb:502:48: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:502:64: info: index check proved (CVC5: 2 VC)
 very_longs.adb:502:107: info: range check proved (CVC5: 2 VC)
 very_longs.adb:507:42: info: overflow check proved (CVC5: 2 VC)
-very_longs.adb:507:42: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: subprogram at line 476 should mention J and N in a precondition] [provers gave up before completing the proof]
+very_longs.adb:507:42: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: subprogram at line 476 should mention J and N in a precondition] [provers reached step limit before completing the proof]
 very_longs.adb:512:26: info: index check proved (CVC5: 2 VC)
 very_longs.adb:512:26: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:514:45: info: index check proved (CVC5: 2 VC)
@@ -239,14 +239,14 @@ very_longs.adb:520:11: info: data dependencies proved
 very_longs.adb:521:11: info: flow dependencies proved
 very_longs.adb:524:10: info: initialization of "Carry" proved
 very_longs.adb:525:10: info: initialization of "Sum" proved
-very_longs.adb:527:31: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (J in 1 .. Length) to subprogram at line 518] [provers gave up before completing the proof]
-very_longs.adb:527:43: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at line 518 should mention Q_Hat in a precondition] [provers gave up before completing the proof]
+very_longs.adb:527:31: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (J in 1 .. Length) to subprogram at line 518] [provers reached step limit before completing the proof]
+very_longs.adb:527:43: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at line 518 should mention Q_Hat in a precondition] [provers reached step limit before completing the proof]
 very_longs.adb:531:34: info: index check proved (CVC5: 2 VC)
 very_longs.adb:531:61: info: index check proved (CVC5: 2 VC)
 very_longs.adb:533:17: info: range check proved (CVC5: 2 VC)
 very_longs.adb:533:64: info: cannot unroll loop (dynamic loop bounds) [info-unrolling-inlining]
 very_longs.adb:534:52: info: overflow check proved (CVC5: 2 VC)
-very_longs.adb:534:68: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 518 should mention J in a precondition] [provers gave up before completing the proof]
+very_longs.adb:534:68: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 518 should mention J in a precondition] [provers reached step limit before completing the proof]
 very_longs.adb:535:50: info: index check proved (CVC5: 2 VC)
 very_longs.adb:536:17: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 very_longs.adb:536:32: info: overflow check proved (CVC5: 2 VC)
@@ -254,12 +254,12 @@ very_longs.adb:536:48: info: index check proved (CVC5: 2 VC)
 very_longs.adb:539:29: info: index check proved (CVC5: 2 VC)
 very_longs.adb:539:29: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:539:53: info: overflow check proved (CVC5: 2 VC)
-very_longs.adb:539:53: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: subprogram at line 518 should mention J and N in a precondition] [provers gave up before completing the proof]
+very_longs.adb:539:53: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: subprogram at line 518 should mention J and N in a precondition] [provers reached step limit before completing the proof]
 very_longs.adb:544:29: info: length check proved (CVC5: 3 VC)
 very_longs.adb:544:32: info: length check proved (CVC5: 3 VC)
 very_longs.adb:545:29: info: length check proved (CVC5: 3 VC)
 very_longs.adb:545:32: info: length check proved (CVC5: 3 VC)
-very_longs.adb:548:12: medium: range check might fail, cannot prove upper bound for Number_Of_Digits(Divisor) [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (Number_Of_Digits(Divisor) <= Divisor_Digits_Count_Type'Last) to subprogram at very_longs.ads:65] [provers gave up before completing the proof]
+very_longs.adb:548:12: medium: range check might fail, cannot prove upper bound for Number_Of_Digits(Divisor) [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (Number_Of_Digits(Divisor) <= Divisor_Digits_Count_Type'Last) to subprogram at very_longs.ads:65] [provers reached step limit before completing the proof]
 very_longs.adb:549:28: info: range check proved (CVC5: 2 VC)
 very_longs.adb:552:25: info: precondition proved (CVC5: 1 VC)
 very_longs.adb:552:64: info: index check proved (CVC5: 2 VC)

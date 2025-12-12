@@ -32,7 +32,7 @@ do_checks.adb:136:25: medium: range check might fail [provers reached step limit
 do_checks.adb:149:25: info: range check proved (CVC5: 2 VC)
 do_checks.adb:149:57: medium: overflow check might fail, cannot prove lower bound for Zero - 1 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Zero >= Integer'First + 1) to subprogram at line 5] [provers reached step limit before completing the proof]
 do_checks.adb:161:39: high: range check might fail (e.g. when Zero = 0) [provers reached step limit before completing the proof]
-do_checks.adb:161:39: medium: length check might fail [reason for check: array must be of the appropriate length] [possible fix: precondition of subprogram at line 5 should mention Zero] [provers gave up before completing the proof]
+do_checks.adb:161:39: medium: length check might fail [reason for check: array must be of the appropriate length] [possible fix: precondition of subprogram at line 5 should mention Zero] [provers reached step limit before completing the proof]
 do_checks.adb:161:40: info: range check proved (CVC5: 2 VC)
 do_checks.adb:161:60: medium: range check might fail [possible fix: add precondition (Zero .. 1 in Positive) to subprogram at line 5] [provers reached step limit before completing the proof]
 do_checks.adb:167:38: info: length check proved (CVC5: 3 VC)
@@ -50,7 +50,7 @@ do_checks.adb:223:21: info: length check proved (CVC5: 3 VC)
 do_checks.adb:223:26: medium: length check might fail [reason for check: both array operands must have the same length] [possible fix: precondition of subprogram at line 221 should mention X and Y] [provers reached step limit before completing the proof]
 do_checks.adb:228:16: info: precondition proved (Trivial: 1 VC)
 do_checks.adb:234:37: info: initialization of "Y" proved
-do_checks.adb:236:24: medium: length check might fail [reason for check: array must be of the appropriate length] [possible fix: precondition of subprogram at line 234 should mention X] [provers gave up before completing the proof]
+do_checks.adb:236:24: medium: length check might fail [reason for check: array must be of the appropriate length] [possible fix: precondition of subprogram at line 234 should mention X] [provers reached step limit before completing the proof]
 do_checks.adb:241:16: info: precondition proved (Trivial: 1 VC)
 do_checks.adb:245:37: info: initialization of "Y" proved
 do_checks.adb:249:24: info: length check proved (CVC5: 3 VC)
@@ -58,7 +58,7 @@ do_checks.adb:254:16: info: precondition proved (CVC5: 2 VC)
 do_checks.adb:260:30: warning: "X" is not modified, could be IN
 do_checks.adb:260:30: warning: unused variable "X"
 do_checks.adb:266:19: info: precondition proved (Trivial: 1 VC)
-do_checks.adb:266:22: medium: length check might fail [reason for check: argument array must have the same length as the parameter array type] [possible fix: precondition of subprogram at line 264 should mention X] [provers gave up before completing the proof]
+do_checks.adb:266:22: medium: length check might fail [reason for check: argument array must have the same length as the parameter array type] [possible fix: precondition of subprogram at line 264 should mention X] [provers reached step limit before completing the proof]
 do_checks.adb:270:16: info: precondition proved (Trivial: 1 VC)
 do_checks.adb:274:30: warning: "X" is not modified, could be IN
 do_checks.adb:274:30: warning: unused variable "X"

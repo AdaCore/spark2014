@@ -8,7 +8,7 @@ camera_motion.adb:22:07: info: initialization of "s_new" proved, in call inlined
 camera_motion.adb:22:07: info: initialization of "s_new" proved, in call inlined at camera_motion.adb:151, in call inlined at camera_motion.adb:240
 camera_motion.adb:22:07: info: initialization of "s_new" proved, in call inlined at camera_motion.adb:287
 camera_motion.adb:22:07: info: initialization of "s_new" proved, in call inlined at camera_motion.adb:288
-camera_motion.adb:25:26: medium: overflow check might fail, cannot prove lower bound for (s_old + (v / s_old)), in call inlined at camera_motion.adb:151, in call inlined at camera_motion.adb:240 [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
+camera_motion.adb:25:26: medium: overflow check might fail, cannot prove lower bound for (s_old + (v / s_old)), in call inlined at camera_motion.adb:151, in call inlined at camera_motion.adb:240 [reason for check: result of addition must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
 camera_motion.adb:25:26: medium: overflow check might fail, cannot prove lower bound for (s_old + (v / s_old)), in call inlined at camera_motion.adb:287 [reason for check: result of addition must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
 camera_motion.adb:25:26: medium: overflow check might fail, cannot prove lower bound for (s_old + (v / s_old)), in call inlined at camera_motion.adb:288 [reason for check: result of addition must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
 camera_motion.adb:25:31: info: division check proved (CVC5: 20 VC), in call inlined at camera_motion.adb:151, in call inlined at camera_motion.adb:240
@@ -73,7 +73,7 @@ camera_motion.adb:130:20: warning: unused assignment, in call inlined at camera_
 camera_motion.adb:132:24: medium: overflow check might fail, cannot prove upper bound for Sum + Natural (v), in call inlined at camera_motion.adb:240 [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
 camera_motion.adb:133:28: medium: overflow check might fail, cannot prove upper bound for Count + 1, in call inlined at camera_motion.adb:240 [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
 camera_motion.adb:137:19: medium: divide by zero might fail, in call inlined at camera_motion.adb:240 [provers gave up before completing the proof]
-camera_motion.adb:143:32: medium: overflow check might fail, cannot prove upper bound for Var_Sum + (Integer (v) - Mean) ** 2, in call inlined at camera_motion.adb:240 [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
+camera_motion.adb:143:32: medium: overflow check might fail, cannot prove upper bound for Var_Sum + (Integer (v) - Mean) ** 2, in call inlined at camera_motion.adb:240 [reason for check: result of addition must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
 camera_motion.adb:143:32: medium: range check might fail, cannot prove lower bound for Var_Sum + (Integer (v) - Mean) ** 2, in call inlined at camera_motion.adb:240 [reason for check: result of addition must fit in the target type of the assignment] [provers reached step limit before completing the proof]
 camera_motion.adb:143:55: medium: overflow check might fail, cannot prove lower bound for (Integer (v) - Mean) ** 2, in call inlined at camera_motion.adb:240 [reason for check: result of exponentiation must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
 camera_motion.adb:147:14: info: initialization of "Result" proved
@@ -81,7 +81,7 @@ camera_motion.adb:148:21: warning: unused assignment, in call inlined at camera_
 camera_motion.adb:149:21: warning: unused assignment, in call inlined at camera_motion.adb:240
 camera_motion.adb:150:35: medium: range check might fail, cannot prove lower bound for Mean, in call inlined at camera_motion.adb:240 [reason for check: value must be convertible to the target type of the conversion] [provers reached step limit before completing the proof]
 camera_motion.adb:151:37: info: analyzing call to "Sqrt" in context
-camera_motion.adb:151:37: medium: range check might fail, cannot prove upper bound for Sqrt (Var_Sum / Count), in call inlined at camera_motion.adb:240 [reason for check: value must be convertible to the target type of the conversion] [provers gave up before completing the proof]
+camera_motion.adb:151:37: medium: range check might fail, cannot prove upper bound for Sqrt (Var_Sum / Count), in call inlined at camera_motion.adb:240 [reason for check: value must be convertible to the target type of the conversion] [provers reached step limit before completing the proof]
 camera_motion.adb:151:51: medium: divide by zero might fail, in call inlined at camera_motion.adb:240 [provers reached step limit before completing the proof]
 camera_motion.adb:156:04: info: no contextual analysis of "Clip_Image" (unconstrained return type)
 camera_motion.adb:156:13: info: implicit aspect Always_Terminates on "Clip_Image" has been proved, subprogram will terminate
@@ -203,6 +203,6 @@ camera_motion.adb:288:43: medium: range check might fail, cannot prove lower bou
 camera_motion.adb:291:14: info: initialization of "Motion" proved
 camera_motion.adb:293:31: medium: range check might fail, cannot prove lower bound for Weighted_Mean_X [reason for check: value must fit in the target type of the assignment] [provers reached step limit before completing the proof]
 camera_motion.adb:294:31: medium: range check might fail, cannot prove lower bound for Weighted_Mean_Y [reason for check: value must fit in the target type of the assignment] [provers reached step limit before completing the proof]
-camera_motion.adb:295:31: medium: range check might fail, cannot prove upper bound for Weighted_Stddev_X [reason for check: value must fit in the target type of the assignment] [provers gave up before completing the proof]
-camera_motion.adb:296:31: medium: range check might fail, cannot prove upper bound for Weighted_Stddev_Y [reason for check: value must fit in the target type of the assignment] [provers gave up before completing the proof]
+camera_motion.adb:295:31: medium: range check might fail, cannot prove upper bound for Weighted_Stddev_X [reason for check: value must fit in the target type of the assignment] [provers reached step limit before completing the proof]
+camera_motion.adb:296:31: medium: range check might fail, cannot prove upper bound for Weighted_Stddev_Y [reason for check: value must fit in the target type of the assignment] [provers reached step limit before completing the proof]
 camera_motion.ads:15:13: info: implicit aspect Always_Terminates on "Measure_Motion" has been proved, subprogram will terminate

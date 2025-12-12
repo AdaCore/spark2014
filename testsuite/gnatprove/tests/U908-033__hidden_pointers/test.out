@@ -246,7 +246,7 @@ example_recursive.adb:352:13: info: no contextual analysis of "Rand" (body not s
 example_recursive.adb:352:13: warning: assuming "Rand" has no effect on global items
 example_recursive.adb:352:13: warning: no Global contract available for "Rand" [assumed-global-null]
 example_recursive.adb:353:10: medium: in inlined expression function body at example_recursive.adb:197
-example_recursive.adb:353:10: medium: precondition might fail, cannot prove not Reachable (Address (L2.Values), L2.Length, A, Memory) [provers gave up before completing the proof]
+example_recursive.adb:353:10: medium: precondition might fail, cannot prove not Reachable (Address (L2.Values), L2.Length, A, Memory)
 example_recursive.adb:353:18: warning: "L1" is set by "Append" but not used after the call
 example_tagged_obj.adb:11:16: info: implicit aspect Always_Terminates on "Witness" has been proved, subprogram will terminate
 example_tagged_obj.adb:12:16: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate

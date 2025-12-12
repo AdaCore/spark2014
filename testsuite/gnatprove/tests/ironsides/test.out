@@ -18,10 +18,10 @@ dns_table_pkg.adb:37:14: info: range check proved (CVC5: 2 VC)
 dns_table_pkg.adb:38:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 dns_table_pkg.adb:44:16: info: implicit aspect Always_Terminates on "Same" has been proved, subprogram will terminate
 dns_table_pkg.adb:45:62: info: index check proved (CVC5: 2 VC)
-dns_table_pkg.adb:45:70: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers gave up before completing the proof]
+dns_table_pkg.adb:45:70: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
 dns_table_pkg.adb:47:16: info: implicit aspect Always_Terminates on "Hash" has been proved, subprogram will terminate
 dns_table_pkg.adb:57:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Val <= (I - 1)*Character'Pos (Character'Last) [provers reached step limit before completing the proof]
-dns_table_pkg.adb:59:19: medium: loop invariant might fail in first iteration, cannot prove Character'Pos (DomainName (Q)) <= 255 [possible fix: subprogram at line 47 should mention DomainName in a precondition] [provers gave up before completing the proof]
+dns_table_pkg.adb:59:19: medium: loop invariant might fail in first iteration, cannot prove Character'Pos (DomainName (Q)) <= 255 [possible fix: subprogram at line 47 should mention DomainName in a precondition] [provers reached step limit before completing the proof]
 dns_table_pkg.adb:61:24: medium: overflow check might fail, cannot prove lower bound for Val + Character'Pos (DomainName (I)) [reason for check: result of addition must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
 dns_table_pkg.adb:63:22: info: division check proved (CVC5: 1 VC)
 dns_table_pkg.adb:72:10: info: initialization of "Bucket" proved
@@ -235,36 +235,36 @@ driver.adb:98:36: warning: references to the "Image" attribute are handled in an
 driver.adb:98:53: low: range check might fail, cannot prove lower bound for Integer'Image(NumFound) & " A records returned" [reason for check: input value must fit in parameter type] [provers reached step limit before completing the proof]
 driver.adb:99:11: info: range check proved (CVC5: 2 VC)
 driver.adb:101:52: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
-driver.adb:102:48: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers gave up before completing the proof]
+driver.adb:102:48: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
 driver.adb:107:17: medium: precondition might fail [provers reached step limit before completing the proof]
 driver.adb:110:36: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 driver.adb:110:54: low: range check might fail, cannot prove lower bound for Integer'Image (NumFound) & " AAAA records returned" [reason for check: input value must fit in parameter type] [provers reached step limit before completing the proof]
 driver.adb:112:11: info: range check proved (CVC5: 2 VC)
 driver.adb:114:52: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
-driver.adb:115:51: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers gave up before completing the proof]
+driver.adb:115:51: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
 driver.adb:120:17: medium: precondition might fail [provers reached step limit before completing the proof]
 driver.adb:123:36: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 driver.adb:123:54: low: range check might fail, cannot prove lower bound for Integer'Image (NumFound) & " CNAME records returned" [reason for check: input value must fit in parameter type] [provers reached step limit before completing the proof]
 driver.adb:125:11: info: range check proved (CVC5: 2 VC)
-driver.adb:127:49: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers gave up before completing the proof]
+driver.adb:127:49: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
 driver.adb:132:17: medium: precondition might fail [provers reached step limit before completing the proof]
 driver.adb:135:36: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 driver.adb:135:54: low: range check might fail, cannot prove lower bound for Integer'Image (NumFound) & " DNSKEY records returned" [reason for check: input value must fit in parameter type] [provers reached step limit before completing the proof]
 driver.adb:137:11: info: range check proved (CVC5: 2 VC)
-driver.adb:139:50: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers gave up before completing the proof]
+driver.adb:139:50: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
 driver.adb:144:17: medium: precondition might fail [provers reached step limit before completing the proof]
 driver.adb:147:36: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 driver.adb:147:54: low: range check might fail, cannot prove lower bound for Integer'Image (NumFound) & " MX records returned" [reason for check: input value must fit in parameter type] [provers reached step limit before completing the proof]
 driver.adb:149:11: info: range check proved (CVC5: 2 VC)
 driver.adb:151:52: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
-driver.adb:152:49: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers gave up before completing the proof]
+driver.adb:152:49: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
 driver.adb:154:46: info: index check proved (CVC5: 2 VC)
 driver.adb:159:17: medium: precondition might fail [provers reached step limit before completing the proof]
 driver.adb:162:36: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 driver.adb:162:53: low: range check might fail, cannot prove lower bound for Integer'Image(NumFound) & " SRV records returned" [reason for check: input value must fit in parameter type] [provers reached step limit before completing the proof]
 driver.adb:164:11: info: range check proved (CVC5: 2 VC)
 driver.adb:167:38: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
-driver.adb:167:66: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers gave up before completing the proof]
+driver.adb:167:66: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
 driver.adb:169:52: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 driver.adb:170:50: info: index check proved (CVC5: 2 VC)
 driver.adb:173:38: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
@@ -274,27 +274,27 @@ driver.adb:180:17: medium: precondition might fail [provers reached step limit b
 driver.adb:183:36: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 driver.adb:183:54: low: range check might fail, cannot prove lower bound for Integer'Image (NumFound) & " NSEC records returned" [reason for check: input value must fit in parameter type] [provers reached step limit before completing the proof]
 driver.adb:185:11: info: range check proved (CVC5: 2 VC)
-driver.adb:187:48: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers gave up before completing the proof]
+driver.adb:187:48: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
 driver.adb:192:17: medium: precondition might fail [provers reached step limit before completing the proof]
 driver.adb:195:36: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 driver.adb:195:54: low: range check might fail, cannot prove lower bound for Integer'Image (NumFound) & " NS records returned" [reason for check: input value must fit in parameter type] [provers reached step limit before completing the proof]
 driver.adb:196:11: info: range check proved (CVC5: 2 VC)
-driver.adb:198:46: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers gave up before completing the proof]
+driver.adb:198:46: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
 driver.adb:203:17: medium: precondition might fail [provers reached step limit before completing the proof]
 driver.adb:210:36: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 driver.adb:210:54: low: range check might fail, cannot prove lower bound for Integer'Image (NumFound) & " PTR records returned" [reason for check: input value must fit in parameter type] [provers reached step limit before completing the proof]
 driver.adb:212:11: info: range check proved (CVC5: 2 VC)
-driver.adb:214:47: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers gave up before completing the proof]
+driver.adb:214:47: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
 driver.adb:219:17: medium: precondition might fail [provers reached step limit before completing the proof]
 driver.adb:222:36: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 driver.adb:222:54: low: range check might fail, cannot prove lower bound for Integer'Image (NumFound) & " RRSIG records returned" [reason for check: input value must fit in parameter type] [provers reached step limit before completing the proof]
 driver.adb:224:11: info: range check proved (CVC5: 2 VC)
-driver.adb:226:49: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers gave up before completing the proof]
+driver.adb:226:49: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
 driver.adb:231:17: medium: precondition might fail [provers reached step limit before completing the proof]
 driver.adb:234:36: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 driver.adb:234:54: low: range check might fail, cannot prove lower bound for Integer'Image (NumFound) & " SOA records returned" [reason for check: input value must fit in parameter type] [provers reached step limit before completing the proof]
 driver.adb:236:11: info: range check proved (CVC5: 2 VC)
-driver.adb:238:47: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers gave up before completing the proof]
+driver.adb:238:47: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
 parser_utilities.adb:50:13: info: implicit aspect Always_Terminates on "IsClass" has been proved, subprogram will terminate
 parser_utilities.adb:56:07: info: initialization of "Retval" proved
 parser_utilities.adb:78:13: info: implicit aspect Always_Terminates on "IsRecord" has been proved, subprogram will terminate
@@ -835,13 +835,13 @@ zone_file_parser.adb:290:27: medium: range check might fail, cannot prove lower 
 zone_file_parser.adb:291:26: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:305:29: medium: precondition might fail, cannot prove ZoneFileLine (I) >= '0' [possible fix: call at line 255 should mention EndIdx (for argument EndIdx) in a postcondition] [provers reached step limit before completing the proof]
 zone_file_parser.adb:313:19: info: loop invariant preservation proved (CVC5: 5 VC)
-zone_file_parser.adb:316:19: medium: loop invariant might fail in first iteration, cannot prove EndIdx <= ZLength [possible fix: call at line 255 should mention EndIdx (for argument EndIdx) in a postcondition] [provers gave up before completing the proof]
+zone_file_parser.adb:316:19: medium: loop invariant might fail in first iteration, cannot prove EndIdx <= ZLength [possible fix: call at line 255 should mention EndIdx (for argument EndIdx) in a postcondition] [provers reached step limit before completing the proof]
 zone_file_parser.adb:320:59: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible fix: loop at line 245 should mention BegIdx in a loop invariant] [provers reached step limit before completing the proof]
 zone_file_parser.adb:326:19: info: loop invariant initialization proved (CVC5: 2 VC)
-zone_file_parser.adb:326:27: medium: range check might fail [provers gave up before completing the proof]
+zone_file_parser.adb:326:27: medium: range check might fail [provers reached step limit before completing the proof]
 zone_file_parser.adb:327:21: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove TimeString (J) >= '0' [possible fix: loop invariant at line 312 should mention TimeString] [provers reached step limit before completing the proof]
 zone_file_parser.adb:327:33: info: index check proved (CVC5: 4 VC)
-zone_file_parser.adb:327:59: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers gave up before completing the proof]
+zone_file_parser.adb:327:59: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
 zone_file_parser.adb:334:32: medium: precondition might fail, cannot prove TimeString (I) >= '0' [possible fix: loop invariant at line 312 should mention TimeString] [provers reached step limit before completing the proof]
 zone_file_parser.adb:344:27: medium: range check might fail, cannot prove lower bound for EndIdx + 1 [reason for check: result of addition must fit in the target type of the assignment] [possible fix: call at line 255 should mention EndIdx (for argument EndIdx) in a postcondition] [provers reached step limit before completing the proof]
 zone_file_parser.adb:345:26: info: precondition proved (CVC5: 1 VC)
@@ -970,7 +970,7 @@ zone_file_parser.adb:737:80: info: division check proved (CVC5: 1 VC)
 zone_file_parser.adb:737:86: info: division check proved (CVC5: 1 VC)
 zone_file_parser.adb:737:90: info: division check proved (CVC5: 1 VC)
 zone_file_parser.adb:748:16: info: loop invariant initialization proved (CVC5: 7 VC)
-zone_file_parser.adb:755:19: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove BlockLengthMap(J) >= Rr_Type.Nsec_Record_Type.blockLengthValue'first [provers gave up before completing the proof]
+zone_file_parser.adb:755:19: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove BlockLengthMap(J) >= Rr_Type.Nsec_Record_Type.blockLengthValue'first [provers reached step limit before completing the proof]
 zone_file_parser.adb:760:29: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:766:46: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:769:59: info: range check proved (CVC5: 2 VC)
@@ -981,13 +981,13 @@ zone_file_parser.adb:773:68: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:782:86: info: division check proved (CVC5: 1 VC)
 zone_file_parser.adb:782:92: info: division check proved (CVC5: 1 VC)
 zone_file_parser.adb:782:96: info: division check proved (CVC5: 1 VC)
-zone_file_parser.adb:802:16: medium: assertion might fail, cannot prove BlockLengthMap (J) >= RR_Type.Nsec_Record_Type.blockLengthValue'First [provers gave up before completing the proof]
+zone_file_parser.adb:802:16: medium: assertion might fail, cannot prove BlockLengthMap (J) >= RR_Type.Nsec_Record_Type.blockLengthValue'First [provers reached step limit before completing the proof]
 zone_file_parser.adb:812:16: info: loop invariant initialization proved (CVC5: 6 VC)
 zone_file_parser.adb:812:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove NumberOfBlocks >= 1 [provers reached step limit before completing the proof]
 zone_file_parser.adb:824:49: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:825:30: info: index check proved (CVC5: 2 VC)
 zone_file_parser.adb:826:30: info: index check proved (CVC5: 2 VC)
-zone_file_parser.adb:843:13: medium: assertion might fail, cannot prove NumberOfBlocks >= 1 [provers gave up before completing the proof]
+zone_file_parser.adb:843:13: medium: assertion might fail, cannot prove NumberOfBlocks >= 1 [provers reached step limit before completing the proof]
 zone_file_parser.adb:851:14: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:855:16: info: loop invariant initialization proved (CVC5: 4 VC)
 zone_file_parser.adb:855:16: info: loop invariant preservation proved (CVC5: 4 VC)
@@ -996,7 +996,7 @@ zone_file_parser.adb:866:19: info: loop invariant initialization proved (CVC5: 6
 zone_file_parser.adb:866:19: info: loop invariant preservation proved (CVC5: 6 VC)
 zone_file_parser.adb:877:68: info: division check proved (CVC5: 1 VC)
 zone_file_parser.adb:877:74: info: division check proved (CVC5: 1 VC)
-zone_file_parser.adb:877:74: medium: range check might fail [reason for check: result of operation must be convertible to the target type of the conversion] [possible fix: loop invariant at line 747 should mention RecordTypes] [provers gave up before completing the proof]
+zone_file_parser.adb:877:74: medium: range check might fail [reason for check: result of operation must be convertible to the target type of the conversion] [possible fix: loop invariant at line 747 should mention RecordTypes] [provers reached step limit before completing the proof]
 zone_file_parser.adb:884:81: info: division check proved (CVC5: 1 VC)
 zone_file_parser.adb:884:87: info: division check proved (CVC5: 1 VC)
 zone_file_parser.adb:884:91: info: division check proved (CVC5: 1 VC)
@@ -1036,7 +1036,7 @@ zone_file_parser.adb:1037:07: info: initialization of "TmpVal" proved
 zone_file_parser.adb:1042:23: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:1053:14: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:1055:16: info: loop invariant initialization proved (CVC5: 3 VC)
-zone_file_parser.adb:1056:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove TmpVal >= 0 [provers gave up before completing the proof]
+zone_file_parser.adb:1056:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove TmpVal >= 0 [provers reached step limit before completing the proof]
 zone_file_parser.adb:1059:26: info: overflow check proved (CVC5: 2 VC)
 zone_file_parser.adb:1059:35: medium: overflow check might fail, cannot prove lower bound for 10 * TmpVal + Long_Long_Integer (DigitVal) [reason for check: result of addition must fit in a 64-bits machine integer] [possible fix: loop invariant at line 1054 should mention DigitVal] [provers reached step limit before completing the proof]
 zone_file_parser.adb:1067:59: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [provers reached step limit before completing the proof]

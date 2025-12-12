@@ -36,7 +36,7 @@ test_components.adb:65:24: info: index check proved (CVC5: 2 VC)
 test_components.adb:65:26: info: validity check proved (CVC5: 1 VC)
 test_components.adb:67:25: medium: assertion might fail [provers reached step limit before completing the proof]
 test_components.adb:67:26: info: range check proved (CVC5: 2 VC)
-test_components.adb:68:42: medium: assertion might fail, cannot prove X.G2 (2)'Valid_Scalars [provers gave up before completing the proof]
+test_components.adb:68:42: medium: assertion might fail, cannot prove X.G2 (2)'Valid_Scalars [provers reached step limit before completing the proof]
 test_components.adb:68:48: info: index check proved (CVC5: 2 VC)
 test_components.adb:74:14: warning: subprogram "Test_Access_Bad" has no effect
 test_components.adb:75:25: warning: "X" is not modified, could be IN

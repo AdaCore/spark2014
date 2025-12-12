@@ -15,17 +15,17 @@ names.adb:89:66: info: overflow check proved (CVC5: 2 VC)
 names.adb:89:66: medium: range check might fail, cannot prove lower bound for Last_Index (Char_Table) - (S'Length - 1) [reason for check: result of subtraction must fit in component type] [possible fix: loop at line 80 should mention Char_Table in a loop invariant] [provers reached step limit before completing the proof]
 names.adb:89:70: info: range check proved (CVC5: 2 VC)
 names.adb:90:43: info: range check proved (CVC5: 2 VC)
-names.adb:95:10: medium: precondition might fail [provers gave up before completing the proof]
+names.adb:95:10: medium: precondition might fail [provers reached step limit before completing the proof]
 names.adb:96:27: info: range check proved (CVC5: 2 VC)
-names.adb:97:27: medium: precondition might fail [provers gave up before completing the proof]
-names.adb:116:37: medium: precondition might fail [possible fix: precondition of subprogram at names.ads:15 should mention Entry_Table and N] [provers gave up before completing the proof]
+names.adb:97:27: medium: precondition might fail [provers reached step limit before completing the proof]
+names.adb:116:37: medium: precondition might fail [possible fix: precondition of subprogram at names.ads:15 should mention Entry_Table and N] [provers reached step limit before completing the proof]
 names.adb:119:17: info: initialization of "S" proved
 names.adb:119:17: info: range check proved (CVC5: 2 VC)
 names.adb:120:17: info: range check proved (CVC5: 2 VC)
 names.adb:120:44: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
-names.adb:121:25: medium: precondition might fail [possible fix: precondition of subprogram at names.ads:15 should mention Char_Table] [provers gave up before completing the proof]
-names.adb:122:48: medium: overflow check might fail, cannot prove upper bound for E.Table_Index + Char_Table_Index (I - 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: precondition of subprogram at names.ads:15 should mention Entry_Table and N] [provers gave up before completing the proof]
-names.adb:122:48: medium: range check might fail, cannot prove upper bound for E.Table_Index + Char_Table_Index (I - 1) [reason for check: input value must fit in parameter type] [possible fix: precondition of subprogram at names.ads:15 should mention Entry_Table and N] [provers gave up before completing the proof]
+names.adb:121:25: medium: precondition might fail [possible fix: precondition of subprogram at names.ads:15 should mention Char_Table] [provers reached step limit before completing the proof]
+names.adb:122:48: medium: overflow check might fail, cannot prove upper bound for E.Table_Index + Char_Table_Index (I - 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: precondition of subprogram at names.ads:15 should mention Entry_Table and N] [provers reached step limit before completing the proof]
+names.adb:122:48: medium: range check might fail, cannot prove upper bound for E.Table_Index + Char_Table_Index (I - 1) [reason for check: input value must fit in parameter type] [possible fix: precondition of subprogram at names.ads:15 should mention Entry_Table and N] [provers reached step limit before completing the proof]
 names.ads:10:22: info: initialization of "N" proved
 names.ads:13:19: info: postcondition proved (CVC5: 1 VC)
 names.ads:15:13: info: implicit aspect Always_Terminates on "To_String" has been proved, subprogram will terminate
