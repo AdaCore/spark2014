@@ -4217,6 +4217,14 @@ package body Why.Atree.Modules is
                      Module => M,
                      Domain => EW_Term,
                      Typ    => EW_Int_Type));
+               Insert_Symbol
+                 (E,
+                  WNE_Attr_Size_Of_Object,
+                  New_Identifier
+                    (Symb   => NID ("size__of__object"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => EW_Int_Type));
 
                if Root = E
                  and then Has_Discriminants (E)
@@ -4418,6 +4426,14 @@ package body Why.Atree.Modules is
                   WNE_Attr_Component_Size,
                   New_Identifier
                     (Symb   => NID ("component__size"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => EW_Int_Type));
+               Insert_Symbol
+                 (E,
+                  WNE_Attr_Size_Of_Object,
+                  New_Identifier
+                    (Symb   => NID ("size__of__object"),
                      Module => M,
                      Domain => EW_Term,
                      Typ    => EW_Int_Type));

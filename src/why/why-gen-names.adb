@@ -1026,6 +1026,7 @@ package body Why.Gen.Names is
             | WNE_Attr_Modulus
             | WNE_Attr_Object_Size
             | WNE_Attr_Position
+            | WNE_Attr_Size_Of_Object
             | WNE_Attr_Value
             | WNE_Attr_Value_Size
             | WNE_Bool_Eq

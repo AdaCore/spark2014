@@ -1181,6 +1181,10 @@ package body VC_Kinds is
          when Lim_Unknown_Alignment                                       =>
            "a reference to the ""Alignment"" attribute on a prefix which is "
            & "not a type with an alignment clause",
+         when Lim_Unknown_Size                                            =>
+           "a reference to the ""Size"" attribute on a prefix which is "
+           & "not a standalone object, a formal parameter, a component, or "
+           & "a slice with no padding",
          when Lim_UU_Tagged_Comp                                          =>
            "a component of an unconstrained unchecked union type in a tagged "
            & "extension");
