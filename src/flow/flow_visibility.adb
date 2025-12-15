@@ -579,9 +579,9 @@ package body Flow_Visibility is
                pragma
                  Assert
                    (Ekind (E) = E_Package
-                      or else
-                        (Ekind (E) in E_Function | E_Procedure
-                         and then Is_Wrapper_Package (Child_Inst)));
+                    or else
+                      (Ekind (E) in E_Function | E_Procedure
+                       and then Is_Wrapper_Package (Child_Inst)));
 
                Inst_Node : constant Node_Id :=
                  Get_Unit_Instantiation_Node (Child_Inst);

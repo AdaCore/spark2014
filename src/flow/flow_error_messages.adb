@@ -2390,7 +2390,7 @@ package body Flow_Error_Messages is
             pragma
               Assert
                 (Nkind (N) in N_Subexpr
-                   and then Nkind (N) /= N_Procedure_Call_Statement);
+                 and then Nkind (N) /= N_Procedure_Call_Statement);
 
             Vars := Get_Filtered_Variables_For_Proof (N, N);
          end if;
@@ -3203,7 +3203,7 @@ package body Flow_Error_Messages is
                         pragma
                           Assert
                             (if Nkind (N) = N_Attribute_Reference
-                               then Attribute_Name (N) = Name_Remainder);
+                             then Attribute_Name (N) = Name_Remainder);
                         Opnd : constant Opt_N_Extended_Subexpr_Id :=
                           Info.Divisor;
                      begin

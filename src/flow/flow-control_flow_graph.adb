@@ -3934,7 +3934,7 @@ package body Flow.Control_Flow_Graph is
                      pragma
                        Assert
                          (Nkind (Var) = N_Assignment_Statement
-                            or else Is_Actual_Parameter (Var));
+                          or else Is_Actual_Parameter (Var));
                      --  The written object is either assigned directly or via
                      --  an output of a subprogram call.
 
@@ -4785,7 +4785,7 @@ package body Flow.Control_Flow_Graph is
       pragma
         Assert
           (if FA.Generating_Globals and then Has_Task (Etype (E))
-             then Is_Library_Level_Entity (E));
+           then Is_Library_Level_Entity (E));
 
       --  Ignore generic actuals of the currently analysed instance.
       --
@@ -5963,7 +5963,7 @@ package body Flow.Control_Flow_Graph is
            Assert
              ((Is_Dispatching_Operation (Called_Thing)
                and then Is_Hidden (Called_Thing))
-                or else Is_Visible (Called_Scop, FA.B_Scope));
+              or else Is_Visible (Called_Scop, FA.B_Scope));
       begin
          null;
       end Check_Visibility;
@@ -6754,10 +6754,10 @@ package body Flow.Control_Flow_Graph is
             pragma
               Assert
                 (if Has_Own_DIC (Typ)
-                     and then Has_Fully_Default_Initializing_DIC_Pragma (Typ)
-                   then
-                     Is_Default_Initialized
-                       (Direct_Mapping_Id (Typ), Ignore_DIC => False));
+                   and then Has_Fully_Default_Initializing_DIC_Pragma (Typ)
+                 then
+                   Is_Default_Initialized
+                     (Direct_Mapping_Id (Typ), Ignore_DIC => False));
             --  Sanity check: the type whose DIC we will examine should be
             --  recognized as default initialized from the outside (at least
             --  because of the DIC itself).

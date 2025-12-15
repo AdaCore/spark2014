@@ -5405,7 +5405,7 @@ package body Gnat2Why.Expr.Aggregates is
                      pragma
                        Assert
                          (if Writes.Values.First_Element.Size = 0
-                            then Top <= 1);
+                          then Top <= 1);
 
                      --  Generate predicates for the preservation of each
                      --  preserved field if any.

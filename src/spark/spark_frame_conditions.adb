@@ -289,9 +289,9 @@ package body SPARK_Frame_Conditions is
       pragma
         Assert
           (if Is_Subprogram (E)
-             then E = Ultimate_Alias (E)
-             elsif Ekind (E) = E_Entry
-             then No (Alias (E)));
+           then E = Ultimate_Alias (E)
+           elsif Ekind (E) = E_Entry
+           then No (Alias (E)));
       --  We should only deal with ultimate subprogram aliases here; for
       --  entries alias is always empty, while for entry families and tasks it
       --  is meaningless.

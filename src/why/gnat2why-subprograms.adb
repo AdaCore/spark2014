@@ -1803,11 +1803,11 @@ package body Gnat2Why.Subprograms is
                   pragma
                     Assert
                       (K = Regular
-                         and then
-                           Ty
-                           in M_Main.Type_Of_Heap
-                            | EW_Private_Type
-                            | EW_Unit_Type);
+                       and then
+                         Ty
+                         in M_Main.Type_Of_Heap
+                          | EW_Private_Type
+                          | EW_Unit_Type);
                end;
             end if;
 
@@ -5336,10 +5336,10 @@ package body Gnat2Why.Subprograms is
                pragma
                  Assert
                    (if No (Post_N)
-                      then
-                        Is_True_Boolean
-                          (+Get_Static_Call_Contract
-                              (Mark_Params, E, Pragma_Postcondition)));
+                    then
+                      Is_True_Boolean
+                        (+Get_Static_Call_Contract
+                            (Mark_Params, E, Pragma_Postcondition)));
                return Why_Empty;
             else
                return
@@ -7134,7 +7134,7 @@ package body Gnat2Why.Subprograms is
                      pragma
                        Assert
                          (Anc_Binders'First = Desc_Binders'First
-                            and Anc_Binders'Last = Desc_Binders'Last);
+                          and Anc_Binders'Last = Desc_Binders'Last);
 
                      --  Conversions are needed for controlling parameters
 
@@ -7163,9 +7163,9 @@ package body Gnat2Why.Subprograms is
                      pragma
                        Assert
                          (if Has_Controlling_Result (Descendant_E)
-                            then
-                              Base_Retysp (Descendant)
-                              = Base_Retysp (Etype (Descendant_E)));
+                          then
+                            Base_Retysp (Descendant)
+                            = Base_Retysp (Etype (Descendant_E)));
 
                      Emit
                        (Th,

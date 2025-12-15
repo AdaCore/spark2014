@@ -711,7 +711,7 @@ package body CE_Pretty_Printing is
                pragma
                  Assert
                    (To_Big_Integer (Integer (S_Array.Length))
-                      = Upper - BI_Fst + 1);
+                    = Upper - BI_Fst + 1);
                Complete := not Truncated;
             end;
 
@@ -1551,7 +1551,7 @@ package body CE_Pretty_Printing is
                pragma
                  Assert
                    (Is_Enumeration_Type (AST_Type)
-                      and then not Is_Character_Type (AST_Type));
+                    and then not Is_Character_Type (AST_Type));
 
                --  Necessary for some types that makes boolean be translated to
                --  integers like: "subype only_true := True .. True".

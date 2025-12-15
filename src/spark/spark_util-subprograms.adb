@@ -419,9 +419,9 @@ package body SPARK_Util.Subprograms is
                pragma
                  Assert
                    (Entity_Body_In_SPARK (E)
-                      or else
-                        (Is_Expression_Function_Or_Completion (E)
-                         and then Entity_Body_Compatible_With_SPARK (E)));
+                    or else
+                      (Is_Expression_Function_Or_Completion (E)
+                       and then Entity_Body_Compatible_With_SPARK (E)));
 
                declare
                   Body_E : constant Entity_Id := Get_Body_Entity (E);
@@ -700,12 +700,11 @@ package body SPARK_Util.Subprograms is
       pragma
         Assert
           (if Result.Is_Empty
-             then
-               Is_Invariant_Procedure (E)
-               and then Nkind (Last (Stmts)) = N_Procedure_Call_Statement
-               and then
-                 Is_Partial_Invariant_Procedure
-                   (Entity (Name (Last (Stmts)))));
+           then
+             Is_Invariant_Procedure (E)
+             and then Nkind (Last (Stmts)) = N_Procedure_Call_Statement
+             and then
+               Is_Partial_Invariant_Procedure (Entity (Name (Last (Stmts)))));
 
       return Result;
    end Get_Exprs_From_Check_Only_Proc;

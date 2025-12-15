@@ -56,14 +56,14 @@ is
         Assume
           (Length (To_Unbounded_String (S)) = S'Length,
            String'
-               ("To_Unbounded_String (S) returns an"
-                & " Unbounded_String that represents S."));
+             ("To_Unbounded_String (S) returns an"
+              & " Unbounded_String that represents S."));
       pragma
         Assume
           (To_String (To_Unbounded_String (S)) = S,
            String'
-               ("If S is a String, then "
-                & "To_String(To_Unbounded_String(S)) = S."));
+             ("If S is a String, then "
+              & "To_String(To_Unbounded_String(S)) = S."));
 
       T.Content (T.Cur_Line, T.Cur_Col) :=
         Cell'(Content => To_Unbounded_String (S), Align => Align);

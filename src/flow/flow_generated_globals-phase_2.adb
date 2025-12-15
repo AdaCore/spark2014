@@ -1614,7 +1614,7 @@ package body Flow_Generated_Globals.Phase_2 is
                         pragma
                           Assert
                             (Inserted
-                               or else Part_State_Map (Part_Pos) = State);
+                             or else Part_State_Map (Part_Pos) = State);
                      end loop;
 
                      State_Abstractions.Include (State);
@@ -1649,7 +1649,7 @@ package body Flow_Generated_Globals.Phase_2 is
                      pragma
                        Assert
                          (Inserted
-                            or else Ghost_Assertion_Levels (Object) = Level);
+                          or else Ghost_Assertion_Levels (Object) = Level);
                   end;
 
                when EK_Parent_Assertion_Levels =>
@@ -1673,7 +1673,7 @@ package body Flow_Generated_Globals.Phase_2 is
                         pragma
                           Assert
                             (Parent_Levels
-                               = Parent_Assertion_Levels (Position));
+                             = Parent_Assertion_Levels (Position));
                      end if;
                   end;
 
@@ -1798,9 +1798,8 @@ package body Flow_Generated_Globals.Phase_2 is
                      pragma
                        Assert
                          (Inserted
-                            or else
-                              Protected_Objects_To_Priorities (Position)
-                              = Prio,
+                          or else
+                            Protected_Objects_To_Priorities (Position) = Prio,
                           "Conflicting priority values registered");
                   end;
 
@@ -1874,8 +1873,8 @@ package body Flow_Generated_Globals.Phase_2 is
                      pragma
                        Assert
                          (Inserted
-                            or else
-                              Max_Queue_Lengths (Position) = Max_Queue_Length,
+                          or else
+                            Max_Queue_Lengths (Position) = Max_Queue_Length,
                           "conflicting max queue lengths");
                   end;
 
@@ -2429,11 +2428,11 @@ package body Flow_Generated_Globals.Phase_2 is
                      pragma
                        Assert
                          (Contracts.Contains (Child)
-                            or else
-                              Match
-                                (Wrapper_Package,
-                                 Strip_Child_Prefixes (To_String (Child)))
-                            or else True);  --  ??? generic package
+                          or else
+                            Match
+                              (Wrapper_Package,
+                               Strip_Child_Prefixes (To_String (Child)))
+                          or else True);  --  ??? generic package
 
                      for Patch of Patches loop
                         if Patch.Entity = Child then

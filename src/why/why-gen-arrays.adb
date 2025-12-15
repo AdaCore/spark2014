@@ -2576,7 +2576,7 @@ package body Why.Gen.Arrays is
          pragma
            Assert
              (Has_Array_Type (Etype (Und_Ent))
-                and then Ekind (Etype (Und_Ent)) /= E_String_Literal_Subtype);
+              and then Ekind (Etype (Und_Ent)) /= E_String_Literal_Subtype);
          declare
             Low  : constant Uint :=
               Expr_Value (String_Literal_Low_Bound (Und_Ent));

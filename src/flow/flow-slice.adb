@@ -485,7 +485,7 @@ package body Flow.Slice is
                pragma
                  Assert
                    (if Ekind (SC.E) = E_Function
-                      then not Is_Predicate_Function (SC.E));
+                    then not Is_Predicate_Function (SC.E));
 
                if Ekind (SC.E) = E_Package then
 

@@ -390,7 +390,7 @@ package body Gnat2Why.Unchecked_Conversion is
          pragma
            Assert
              (Is_Array_Type (Typ)
-                and then Has_Aliased_Components (Etype (Typ)));
+              and then Has_Aliased_Components (Etype (Typ)));
          return;
       end if;
 
@@ -1757,7 +1757,7 @@ package body Gnat2Why.Unchecked_Conversion is
                 (Xcov,
                  Exempt_On,
                  "The frontend crashes on UC on tasks and "
-                   & "rejectes UC on protected types");
+                 & "rejectes UC on protected types");
             Explanation :=
               To_Unbounded_String (Typ_Name & " is a concurrent type");
             return Pass;

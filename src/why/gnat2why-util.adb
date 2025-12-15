@@ -334,7 +334,7 @@ package body Gnat2Why.Util is
       pragma
         Assert
           (if Call_Through_Access
-             then Nkind (Name (N)) = N_Explicit_Dereference);
+           then Nkind (Name (N)) = N_Explicit_Dereference);
       Position            : Node_Maps.Cursor;
       use type Node_Maps.Cursor;
 

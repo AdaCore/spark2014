@@ -502,8 +502,8 @@ package body Flow_Utility is
                      pragma
                        Assert
                          (Of_Present (N)
-                            and then Has_Array_Type (Etype (Name (N)))
-                            and then Number_Dimensions (Etype (Name (N))) = 1);
+                          and then Has_Array_Type (Etype (Name (N)))
+                          and then Number_Dimensions (Etype (Name (N))) = 1);
                   end if;
                end;
 
@@ -1516,8 +1516,8 @@ package body Flow_Utility is
          pragma
            Assert
              (Present (Find_Contract (Subprogram, Pragma_Depends))
-                and then
-                  No (Find_Contract (Subprogram, Pragma_Refined_Depends)));
+              and then
+                No (Find_Contract (Subprogram, Pragma_Refined_Depends)));
 
          --  Collect all global Proof_Ins, Outputs and Inputs
 
@@ -2604,8 +2604,8 @@ package body Flow_Utility is
          pragma
            Assert
              (Ekind (E) = E_Task_Type
-                and then not Is_Derived_Type (E)
-                and then Entity_In_SPARK (E));
+              and then not Is_Derived_Type (E)
+              and then Entity_In_SPARK (E));
       else
          E := Subprogram;
       end if;
@@ -2718,7 +2718,7 @@ package body Flow_Utility is
          pragma
            Assert
              (Nkind (N) = N_Defining_Identifier
-                and then Ekind (N) = E_Abstract_State);
+              and then Ekind (N) = E_Abstract_State);
 
          return T;
       end if;
@@ -2752,8 +2752,8 @@ package body Flow_Utility is
                   pragma
                     Assert
                       (Is_Array_Type (T)
-                         or else Is_Anonymous_Access_Type (T)
-                         or else Is_Fixed_Point_Type (T));
+                       or else Is_Anonymous_Access_Type (T)
+                       or else Is_Fixed_Point_Type (T));
 
                   return T;
                else
@@ -3626,9 +3626,9 @@ package body Flow_Utility is
                   pragma
                     Assert
                       (No (Next (Expr))
-                         and then Nkind (Expr) = N_Aggregate
-                         and then No (Expressions (Expr))
-                         and then not Null_Record_Present (Expr));
+                       and then Nkind (Expr) = N_Aggregate
+                       and then No (Expressions (Expr))
+                       and then not Null_Record_Present (Expr));
 
                   Assoc  : Node_Id;
                   Choice : Node_Id;
@@ -3704,8 +3704,7 @@ package body Flow_Utility is
                               pragma
                                 Assert
                                   (No (Component_Associations (Choice))
-                                     and then
-                                       not Null_Record_Present (Choice));
+                                   and then not Null_Record_Present (Choice));
 
                               Index := First (Expressions (Choice));
                               loop
@@ -4448,11 +4447,11 @@ package body Flow_Utility is
                      | E_Variable
                      | E_Loop_Parameter -- for cursors
                      | Formal_Kind
-                      or else
-                        (Ekind (Root_Entity) in E_Discriminant | E_Component
-                         and then
-                           Is_Concurrent_Type
-                             (Sinfo.Nodes.Scope (Root_Entity))));
+                    or else
+                      (Ekind (Root_Entity) in E_Discriminant | E_Component
+                       and then
+                         Is_Concurrent_Type
+                           (Sinfo.Nodes.Scope (Root_Entity))));
 
             begin
                if Is_Protected_Component (Root_Entity) then
@@ -4581,9 +4580,9 @@ package body Flow_Utility is
             pragma
               Loop_Invariant
                 (Comp_Id
-                   = (if Current_Field.Kind = Direct_Mapping
-                      then 1
-                      else Positive (Current_Field.Component.Length) + 1));
+                 = (if Current_Field.Kind = Direct_Mapping
+                    then 1
+                    else Positive (Current_Field.Component.Length) + 1));
 
             pragma Annotate (Xcov, Exempt_On, "Debugging code");
             if Debug_Trace_Untangle_Fields then
@@ -4813,7 +4812,7 @@ package body Flow_Utility is
                pragma
                  Assert
                    (not Ctx.Assume_In_Expression
-                      or else Nkind (N) = N_Function_Call);
+                    or else Nkind (N) = N_Function_Call);
 
                Variables.Union (Do_Subprogram_Call (N));
                return Skip;
@@ -4862,7 +4861,7 @@ package body Flow_Utility is
                      pragma
                        Assert
                          (Comes_From_Declare_Expr (Entity (N))
-                            or else not Comes_From_Source (Entity (N)));
+                          or else not Comes_From_Source (Entity (N)));
                      Variables.Union
                        (Recurse (Expression (Parent (Entity (N)))));
 
@@ -4886,7 +4885,7 @@ package body Flow_Utility is
                      pragma
                        Assert
                          (if Is_Type (Entity (N))
-                            then not Ctx.Assume_In_Expression);
+                          then not Ctx.Assume_In_Expression);
 
                      Variables.Union (Do_Entity (Entity (N)));
                   end if;
@@ -4920,7 +4919,7 @@ package body Flow_Utility is
                pragma
                  Assert
                    (not Ctx.Assume_In_Expression
-                      or else Is_Actions_Entity (Defining_Identifier (N)));
+                    or else Is_Actions_Entity (Defining_Identifier (N)));
 
                if Is_Actions_Entity (Defining_Identifier (N)) then
                   return Skip;
@@ -4956,7 +4955,7 @@ package body Flow_Utility is
                      pragma
                        Assert
                          (Box_Present (Assoc)
-                            xor Present (Expression (Assoc)));
+                          xor Present (Expression (Assoc)));
 
                      if Box_Present (Assoc) then
                         Any_Boxes := True;
@@ -5037,7 +5036,7 @@ package body Flow_Utility is
                                        pragma
                                          Assert
                                            (Nkind (Pref)
-                                              = N_Selected_Component);
+                                            = N_Selected_Component);
                                     end if;
                                     Pref := Prefix (Pref);
                                  end loop;
@@ -5339,7 +5338,7 @@ package body Flow_Utility is
                   pragma
                     Assert
                       (Present (Iterator_Specification (N))
-                         xor Present (Loop_Parameter_Specification (N)));
+                       xor Present (Loop_Parameter_Specification (N)));
 
                   E : constant Entity_Id :=
                     Defining_Identifier
@@ -5407,7 +5406,7 @@ package body Flow_Utility is
                pragma
                  Assert
                    (Present (Defining_Identifier (N))
-                      and then No (Iterator_Specification (N)));
+                    and then No (Iterator_Specification (N)));
 
                declare
                   Choice : Node_Id := First (Discrete_Choices (N));
@@ -7956,8 +7955,8 @@ package body Flow_Utility is
                pragma
                  Assert
                    (Is_Class_Wide_Type (Assigned_Ty)
-                      or else Force_Extension
-                      or else Is_Ancestor (Base_Ty, Assigned_Ty, Scope));
+                    or else Force_Extension
+                    or else Is_Ancestor (Base_Ty, Assigned_Ty, Scope));
 
                declare
                   The_Ext : constant Flow_Id :=
@@ -8424,16 +8423,16 @@ package body Flow_Utility is
             pragma
               Assert
                 (Is_Entity_Name (A_Prefix)
-                   or else
-                     Nkind (A_Prefix)
-                     in N_Indexed_Component | N_Selected_Component | N_Slice);
+                 or else
+                   Nkind (A_Prefix)
+                   in N_Indexed_Component | N_Selected_Component | N_Slice);
 
             pragma
               Assert
                 (Is_Entity_Name (B_Prefix)
-                   or else
-                     Nkind (B_Prefix)
-                     in N_Indexed_Component | N_Selected_Component | N_Slice);
+                 or else
+                   Nkind (B_Prefix)
+                   in N_Indexed_Component | N_Selected_Component | N_Slice);
 
             return False;
 

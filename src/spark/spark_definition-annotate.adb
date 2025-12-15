@@ -818,8 +818,7 @@ package body SPARK_Definition.Annotate is
                   pragma
                     Assert
                       (Number_Formals (Annot.Empty_Function) = 1
-                         and then
-                           Is_Signed_Integer_Type (Annot.Spec_Capacity));
+                       and then Is_Signed_Integer_Type (Annot.Spec_Capacity));
                end if;
 
                case Annot.Kind is
@@ -6233,7 +6232,7 @@ package body SPARK_Definition.Annotate is
       pragma
         Assert
           (if Has_Element (Position)
-             then Element (Position) = Unhide_Package_Body);
+           then Element (Position) = Unhide_Package_Body);
       return Has_Element (Position);
    end Has_Visible_Package_Body;
 

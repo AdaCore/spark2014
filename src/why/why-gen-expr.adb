@@ -2694,9 +2694,9 @@ package body Why.Gen.Expr is
                pragma
                  Assert
                    (Present (From_Type)
-                      and then Has_Fixed_Point_Type (From_Type)
-                      and then Present (To_Type)
-                      and then Has_Fixed_Point_Type (To_Type));
+                    and then Has_Fixed_Point_Type (From_Type)
+                    and then Present (To_Type)
+                    and then Has_Fixed_Point_Type (To_Type));
 
                --  If From and To have the same small, they should have the
                --  same base type.
@@ -2811,12 +2811,12 @@ package body Why.Gen.Expr is
          pragma
            Assert
              (Base_Why_Type (Range_Type) = Cur
-                or else Base_Why_Type (Range_Type) = EW_Bool_Type
-                or else
-                  (Get_Type_Kind (Cur) = EW_Split
-                   and then
-                     Base_Why_Type (Get_Ada_Node (+Cur))
-                     = Base_Why_Type (Range_Type)));
+              or else Base_Why_Type (Range_Type) = EW_Bool_Type
+              or else
+                (Get_Type_Kind (Cur) = EW_Split
+                 and then
+                   Base_Why_Type (Get_Ada_Node (+Cur))
+                   = Base_Why_Type (Range_Type)));
          Result :=
            +Do_Range_Check
               (Ada_Node   => Ada_Node,
@@ -4039,8 +4039,8 @@ package body Why.Gen.Expr is
                pragma
                  Assert
                    (if Has_Fixed_Point_Type (Return_Type)
-                        or else Has_Fixed_Point_Type (Left_Type)
-                      then Oper /= WNE_Empty);
+                      or else Has_Fixed_Point_Type (Left_Type)
+                    then Oper /= WNE_Empty);
 
                --  Construct the operation
 

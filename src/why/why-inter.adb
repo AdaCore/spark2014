@@ -785,9 +785,9 @@ package body Why.Inter is
              ((No (Get_Ada_Node (+Left))
                and then No (Get_Ada_Node (+Right))
                and then Get_Name (+Left) = Get_Name (+Right))
-                or else
-                  (Present (Get_Ada_Node (+Left))
-                   and then Present (Get_Ada_Node (+Right))));
+              or else
+                (Present (Get_Ada_Node (+Left))
+                 and then Present (Get_Ada_Node (+Right))));
 
          return Get_Ada_Node (+Left) = Get_Ada_Node (+Right);
       else

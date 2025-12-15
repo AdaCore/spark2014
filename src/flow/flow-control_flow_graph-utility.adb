@@ -98,10 +98,10 @@ package body Flow.Control_Flow_Graph.Utility is
             pragma
               Assert
                 (Im_Var.Component.Length = 1
-                   and then
-                     Ekind (Im_Var.Component.Last_Element) = E_Discriminant
-                   and then Var_Defined.Kind = Record_Field
-                   and then Var_Defined.Component.Length >= 1);
+                 and then
+                   Ekind (Im_Var.Component.Last_Element) = E_Discriminant
+                 and then Var_Defined.Kind = Record_Field
+                 and then Var_Defined.Component.Length >= 1);
             --  There are two cases to consider:
             --  1) Var_Defined is a discriminant; in this case an inner
             --  discriminant (e.g. A.B.C.Y) references an outer one (e.g.
@@ -141,7 +141,7 @@ package body Flow.Control_Flow_Graph.Utility is
                pragma
                  Assert
                    (Scope (Var_Defined_Copy.Component.Last_Element)
-                      = Im_Var_Type);
+                    = Im_Var_Type);
 
                Var_Defined_Copy.Component.Delete_Last; --  Final Chop
                Var_Defined_Copy.Component.Append
@@ -423,7 +423,7 @@ package body Flow.Control_Flow_Graph.Utility is
                pragma
                  Assert
                    (Is_Tagged_Type (Etype (Formal))
-                      = Is_Tagged_Type (Formal_Type));
+                    = Is_Tagged_Type (Formal_Type));
 
                --  ??? Extract top-level tag
 
@@ -457,7 +457,7 @@ package body Flow.Control_Flow_Graph.Utility is
                      pragma
                        Assert
                          (Nkind (Actual_Object)
-                            /= N_Unchecked_Type_Conversion);
+                          /= N_Unchecked_Type_Conversion);
 
                      --  If the actual parameter is constrained, then the
                      --  bounds can be picked like for the 'First/'Last.

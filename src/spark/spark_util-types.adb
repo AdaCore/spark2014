@@ -639,7 +639,7 @@ package body SPARK_Util.Types is
             pragma
               Assert
                 (Is_Incomplete_Or_Private_Type (C_Typ)
-                   or else Is_Scalar_Type (C_Typ));
+                 or else Is_Scalar_Type (C_Typ));
             return Pass;
          end if;
       end Contains_Non_Relaxed;
@@ -2764,7 +2764,7 @@ package body SPARK_Util.Types is
             pragma
               Assert
                 (Is_Scalar_Type (Rep_Ty)
-                   or else Is_Access_Subprogram_Type (Rep_Ty));
+                 or else Is_Access_Subprogram_Type (Rep_Ty));
             return False;
          end if;
       end Traverse_Subcomponents_Only;
@@ -2850,7 +2850,7 @@ package body SPARK_Util.Types is
              (Xcov,
               Exempt_On,
               "The frontend crashes on UC on tasks and "
-                & "rejectes UC on protected types");
+              & "rejectes UC on protected types");
          return
            (Ok          => False,
             Explanation =>

@@ -5891,8 +5891,8 @@ package body CE_RAC is
       pragma
         Assert
           (if Ekind (E) = E_Constant
-               and then not Is_Access_Variable (Etype (E))
-             then not Has_Variable_Input (E));
+             and then not Is_Access_Variable (Etype (E))
+           then not Has_Variable_Input (E));
 
       Env (Env.Last).Bindings.Insert (E, V);
    end Update_Value;

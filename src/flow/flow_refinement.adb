@@ -54,12 +54,12 @@ package body Flow_Refinement is
       pragma
         Assert
           (if Present (Target_Scope)
-             then not Is_Generic_Unit (Target_Scope.Ent));
+           then not Is_Generic_Unit (Target_Scope.Ent));
 
       pragma
         Assert
           (if Present (Looking_From)
-             then not Is_Generic_Unit (Looking_From.Ent));
+           then not Is_Generic_Unit (Looking_From.Ent));
 
       return
         Flow_Visibility.Is_Visible
@@ -249,7 +249,7 @@ package body Flow_Refinement is
                   pragma
                     Assert
                       (Present (Prev_Context)
-                         and then Context = Parent (Prev_Context));
+                       and then Context = Parent (Prev_Context));
 
                   --  For an expression function we want to get the same
                   --  Flow_Scope we would get if it was a function with a body.
