@@ -34,7 +34,7 @@ with Sinfo.Utils;                 use Sinfo.Utils;
 with SPARK_Definition;            use SPARK_Definition;
 with SPARK_Definition.Annotate;   use SPARK_Definition.Annotate;
 with SPARK_Util.Subprograms;      use SPARK_Util.Subprograms;
-with Ttypes;
+with Ttypes;                      use Ttypes;
 
 package body SPARK_Util.Types is
 
@@ -151,6 +151,61 @@ package body SPARK_Util.Types is
         and then Underlying_Type (Etype (Cursor)) /= Cursor
         and then Find_Aspect (Etype (Cursor), Aspect_Iterable) = Aspect;
    end Ancestor_Declares_Iterable_Aspect;
+
+   --------------------------
+   -- Array_Component_Size --
+   --------------------------
+
+   procedure Array_Component_Size (Typ : Type_Kind_Id; Comp_Size : out Uint) is
+      Comp_Ty     : constant Type_Kind_Id := Retysp (Component_Type (Typ));
+      Explanation : Unbounded_String;
+   begin
+      if Known_Component_Size (Typ) then
+         Comp_Size := Component_Size (Typ);
+      else
+         Comp_Size := No_Uint;
+      end if;
+
+      if No (Comp_Size) then
+         if Is_Packed (Typ) then
+            Check_Known_RM_Size (Comp_Ty, Comp_Size, Explanation);
+         else
+            Check_Known_Esize (Comp_Ty, Comp_Size, Explanation);
+         end if;
+      end if;
+   end Array_Component_Size;
+
+   -------------------------------------
+   -- Array_Size_Is_Sum_Of_Components --
+   -------------------------------------
+
+   function Array_Size_Is_Sum_Of_Components (E : Type_Kind_Id) return Boolean
+   is
+   begin
+      --  If the components are aliased, then the component size is the object
+      --  size of the component type and there are no gaps.
+
+      if Has_Aliased_Components (E) then
+         return True;
+      else
+         declare
+            Comp_Size : Uint;
+
+         begin
+            Array_Component_Size (E, Comp_Size);
+
+            --  There should not be gaps if the component size is a multiple of
+            --  the Storage_Unit. If the array is not packed and the component
+            --  size is not specified, the Object_Size of the component type is
+            --  used. It is always a multiple of the Storage_Unit.
+
+            return
+              (if No (Comp_Size)
+               then not Is_Packed (E)
+               else Comp_Size mod System_Storage_Unit = Uint_0);
+         end;
+      end if;
+   end Array_Size_Is_Sum_Of_Components;
 
    -----------------
    -- Base_Retysp --
@@ -2342,6 +2397,31 @@ package body SPARK_Util.Types is
 
       return Result;
    end Root_Retysp;
+
+   ---------------------------
+   -- Record_Component_Size --
+   ---------------------------
+
+   procedure Record_Component_Size
+     (Typ : Type_Kind_Id; Comp : Entity_Id; Comp_Size : out Uint)
+   is
+      Comp_Ty     : constant Type_Kind_Id := Retysp (Etype (Comp));
+      Explanation : Unbounded_String;
+   begin
+      if Present (Component_Clause (Comp)) then
+         Comp_Size :=
+           Expr_Value (Last_Bit (Component_Clause (Comp)))
+           - Expr_Value (First_Bit (Component_Clause (Comp)))
+           + Uint_1;
+
+      --  ARM K.2 225
+
+      elsif Is_Packed (Typ) then
+         Check_Known_RM_Size (Comp_Ty, Comp_Size, Explanation);
+      else
+         Check_Known_Esize (Comp_Ty, Comp_Size, Explanation);
+      end if;
+   end Record_Component_Size;
 
    -------------------------
    -- Static_Array_Length --
