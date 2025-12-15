@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Ordered_Sets;
-with Ada.Strings;                 use Ada.Strings;
 with Ada.Strings.Unbounded;       use Ada.Strings.Unbounded;
 with Atree;
 with CE_Interval_Sets;
@@ -46,7 +45,6 @@ with Sinput;                      use Sinput;
 with Snames;                      use Snames;
 with SPARK_Atree;                 use SPARK_Atree;
 with SPARK_Atree.Entities;        use SPARK_Atree.Entities;
-with SPARK_Definition;            use SPARK_Definition;
 with SPARK_Definition.Annotate;   use SPARK_Definition.Annotate;
 with SPARK_Util;                  use SPARK_Util;
 with SPARK_Util.Types;            use SPARK_Util.Types;

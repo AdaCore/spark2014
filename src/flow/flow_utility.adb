@@ -51,7 +51,6 @@ with Why;
 
 with Flow_Classwide;
 with Flow_Debug;                      use Flow_Debug;
-with Flow_Generated_Globals;          use Flow_Generated_Globals;
 with Flow_Generated_Globals.Phase_2;  use Flow_Generated_Globals.Phase_2;
 with Flow_Refinement;                 use Flow_Refinement;
 with Flow_Utility.Initialization;     use Flow_Utility.Initialization;

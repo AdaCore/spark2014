@@ -40,7 +40,6 @@ with Flow_Sanity;
 with Flow.Slice;                       use Flow.Slice;
 with Flow_Classwide;                   use Flow_Classwide;
 with Flow_Debug;                       use Flow_Debug;
-with Flow_Generated_Globals;           use Flow_Generated_Globals;
 with Flow_Generated_Globals.Partial;
 with Flow_Generated_Globals.Traversal; use Flow_Generated_Globals.Traversal;
 with Flow_Generated_Globals.Phase_2;   use Flow_Generated_Globals.Phase_2;

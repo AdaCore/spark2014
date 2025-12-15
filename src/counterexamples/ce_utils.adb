@@ -40,7 +40,6 @@ with Gnat2Why.Util;                         use Gnat2Why.Util;
 with Namet;
 with Nlists;                                use Nlists;
 with Sinput;                                use Sinput;
-with SPARK_Definition;                      use SPARK_Definition;
 with SPARK_Definition.Annotate;             use SPARK_Definition.Annotate;
 with SPARK_Util;                            use SPARK_Util;
 
