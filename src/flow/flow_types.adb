@@ -24,7 +24,6 @@
 with Ada.Characters.Handling;
 with Ada.Containers;                 use Ada.Containers;
 with Ada.Strings.Unbounded;          use Ada.Strings.Unbounded;
-with Ada.Strings;                    use Ada.Strings;
 with Einfo.Utils;                    use Einfo.Utils;
 with Errout;                         use Errout;
 with Errout_Wrapper;                 use Errout_Wrapper;

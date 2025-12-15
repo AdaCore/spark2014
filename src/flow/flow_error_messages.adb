@@ -31,7 +31,6 @@ with Aspects;                   use Aspects;
 with CE_Display;                use CE_Display;
 with Checked_Types;             use Checked_Types;
 with Common_Containers;         use Common_Containers;
-with Einfo;                     use Einfo;
 with Einfo.Entities;            use Einfo.Entities;
 with Einfo.Utils;               use Einfo.Utils;
 with Errout;
