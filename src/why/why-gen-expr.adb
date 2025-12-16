@@ -3732,9 +3732,6 @@ package body Why.Gen.Expr is
             when Attribute_Size | Attribute_Value_Size =>
                return +E_Symb (Ty, WNE_Attr_Value_Size);
 
-            when Attribute_Component_Size              =>
-               return +E_Symb (Ty, WNE_Attr_Component_Size);
-
             when Attribute_Tag                         =>
                return +E_Symb (Ty, WNE_Attr_Tag);
 

@@ -63,7 +63,7 @@ main.adb:116:07: high: address in address clause might not be an integral multip
 main.adb:116:07: info: object is suitable for aliasing via address clause (Trivial)
 main.adb:116:07: warning: imprecise handling of overlay (type is unsuitable as source for unchecked conversion) [imprecise-overlay]
 main.adb:117:31: high: type is unsuitable as a source for unchecked conversion [possible explanation: size of type BC cannot be computed statically; type BC might have unused bits that are not modelled in SPARK]
-main.adb:117:31: high: types of aliased objects do not have the same size [possible explanation: type BC doesn't have aliased components]
+main.adb:117:31: high: types of aliased objects do not have the same size [provers reached step limit before completing the proof]
 main.adb:117:31: info: object is suitable for aliasing via address clause (Trivial)
 main.adb:127:19: warning: "X" is not modified, could be IN
 main.adb:127:19: warning: unused variable "X"
@@ -72,7 +72,7 @@ main.adb:131:07: info: object is suitable for aliasing via address clause (Trivi
 main.adb:131:07: info: type is suitable as source for unchecked conversion (Trivial)
 main.adb:131:07: warning: imprecise handling of overlay (type is unsuitable as source for unchecked conversion) [imprecise-overlay]
 main.adb:134:22: high: type is unsuitable as a source for unchecked conversion [possible explanation: type SAA doesn't have a Component_Size representation clause or aspect]
-main.adb:134:22: high: types of aliased objects do not have the same size [possible explanation: type SAA doesn't have a Component_Size representation clause or aspect]
+main.adb:134:22: high: types of aliased objects do not have the same size [provers reached step limit before completing the proof]
 main.adb:134:22: info: object is suitable for aliasing via address clause (Trivial)
 main.adb:140:19: warning: "X" is not modified, could be IN
 main.adb:140:19: warning: unused variable "X"
@@ -81,7 +81,7 @@ main.adb:144:07: info: object is suitable for aliasing via address clause (Trivi
 main.adb:144:07: info: type is suitable as source for unchecked conversion (Trivial)
 main.adb:144:07: warning: imprecise handling of overlay (mutable overlay of a subcomponent of an object) [imprecise-overlay]
 main.adb:147:22: high: type is unsuitable as a source for unchecked conversion [possible explanation: anonymous type doesn't have a Component_Size representation clause or aspect]
-main.adb:147:22: high: types of aliased objects do not have the same size [possible explanation: type AA doesn't have a Component_Size representation clause or aspect]
+main.adb:147:22: high: types of aliased objects do not have the same size [provers reached step limit before completing the proof]
 main.adb:147:22: info: object is suitable for aliasing via address clause (Trivial)
 main.adb:147:22: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: precondition of subprogram at line 140 should mention X] [provers reached step limit before completing the proof]
 main.adb:147:32: warning: alignment of object is not precisely known [imprecise-align]

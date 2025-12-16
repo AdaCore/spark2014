@@ -21,6 +21,6 @@ filler.ads:16:20: info: assertion proved (CVC5: 1 VC), in instantiation at data_
 filler.ads:16:31: info: overflow check proved (CVC5: 2 VC), in instantiation at data_buffer-context.ads:54, in instantiation at instance.ads:7
 filler.ads:16:47: info: division check proved (CVC5: 1 VC), in instantiation at data_buffer-context.ads:54, in instantiation at instance.ads:7
 filler.ads:20:09: info: range check proved (CVC5: 2 VC), in instantiation at data_buffer-context.ads:54, in instantiation at instance.ads:7
+instance.ads:7:04: warning: Size of type Writer_Context_Type is missing
 instance.ads:7:04: warning: in instantiation at data_buffer-context.adb:5
-instance.ads:7:04: warning: it is not specified for type "Writer_Context_Type"
 instance.ads:7:04: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]

@@ -376,18 +376,19 @@ package SPARK_Util.Types is
       Size        : out Uint;
       Size_Str    : out Unbounded_String;
       Explanation : out Unbounded_String)
-   with Pre => (Ekind (Comp) = E_Component);
+   with Pre => Ekind (Comp) in E_Component | E_Discriminant;
    --  Compute the expected size for a record component of scalar type. [Typ]
    --  is the containing record type. The Size_Str contains a string that
    --  explains the origin of the computed size.
 
-   procedure Array_Component_Size (Typ : Type_Kind_Id; Comp_Size : out Uint);
-   --  Compute the expected size for components of an array type [Typ]
-
-   procedure Record_Component_Size
-     (Typ : Type_Kind_Id; Comp : Entity_Id; Comp_Size : out Uint);
-   --  Compute the expected size for a record component. [Typ] is the
-   --  containing record type.
+   procedure Array_Component_Size
+     (Typ         : Type_Kind_Id;
+      Comp_Size   : out Uint;
+      Size_Str    : out Unbounded_String;
+      Explanation : out Unbounded_String);
+   --  Compute the expected size for components of an array type [Typ].
+   --  Size_Str contains a string that explains the origin of the computed
+   --  size.
 
    function Array_Size_Is_Sum_Of_Components (E : Type_Kind_Id) return Boolean
    with Pre => Is_Array_Type (E);

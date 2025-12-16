@@ -254,7 +254,6 @@ package Why.Gen.Names is
 
       WNE_Attr_Access,
       WNE_Attr_Alignment,
-      WNE_Attr_Component_Size,
       WNE_Attr_Constrained,
       WNE_Attr_First,
       WNE_Attr_First_2,
