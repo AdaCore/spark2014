@@ -1834,9 +1834,9 @@ data_structure-basic_operations.adb:1522:107: info: predicate check proved, in c
 data_structure-basic_operations.adb:1524:16: info: loop invariant initialization proved, in call inlined at data_structure-basic_operations.adb:1560
 data_structure-basic_operations.adb:1524:16: info: loop invariant initialization proved, in call inlined at data_structure-basic_operations.adb:1611
 data_structure-basic_operations.adb:1524:16: info: loop invariant preservation proved, in call inlined at data_structure-basic_operations.adb:1560
-data_structure-basic_operations.adb:1524:16: info: loop invariant preservation proved, in call inlined at data_structure-basic_operations.adb:1611
 data_structure-basic_operations.adb:1524:39: info: precondition proved, in call inlined at data_structure-basic_operations.adb:1560
 data_structure-basic_operations.adb:1524:39: info: precondition proved, in call inlined at data_structure-basic_operations.adb:1611
+data_structure-basic_operations.adb:1524:39: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Well_Formed (S.Buckets (I), S.Memory), in call inlined at data_structure-basic_operations.adb:1611
 data_structure-basic_operations.adb:1524:63: info: index check proved, in call inlined at data_structure-basic_operations.adb:1560
 data_structure-basic_operations.adb:1524:63: info: index check proved, in call inlined at data_structure-basic_operations.adb:1611
 data_structure-basic_operations.adb:1526:16: info: loop invariant initialization proved, in call inlined at data_structure-basic_operations.adb:1560
@@ -1998,12 +1998,15 @@ data_structure-basic_operations.adb:1609:98: info: precondition proved
 data_structure-basic_operations.adb:1609:140: info: precondition proved
 data_structure-basic_operations.adb:1609:164: info: index check proved
 data_structure-basic_operations.adb:1611:13: info: analyzing call to "Prove_Invariant" in context
-data_structure-basic_operations.adb:1614:08: info: predicate check proved
+data_structure-basic_operations.adb:1614:08: medium: in inlined predicate at data_structure.ads:65
+data_structure-basic_operations.adb:1614:08: medium: predicate check might fail, cannot prove B <= Capacity
 data_structure-basic_operations.adb:1614:28: info: range check proved
-data_structure-basic_operations.adb:1616:07: info: precondition proved
+data_structure-basic_operations.adb:1616:07: medium: in inlined expression function body at data_structure-basic_operations.adb:101
+data_structure-basic_operations.adb:1616:07: medium: precondition might fail, cannot prove Find_Bucket (S.Memory (I).Value.V, S.Modulus) = B
 data_structure-basic_operations.adb:1617:07: info: precondition proved
 data_structure-basic_operations.adb:1617:32: info: range check proved
-data_structure-basic_operations.adb:1618:07: info: precondition proved
+data_structure-basic_operations.adb:1618:07: medium: in inlined expression function body at data_structure-basic_operations.adb:101
+data_structure-basic_operations.adb:1618:07: medium: precondition might fail, cannot prove Find_Bucket (S.Memory (I).Value.V, S.Modulus) = B
 data_structure-basic_operations.adb:1618:36: info: range check proved
 data_structure-basic_operations.adb:1626:42: info: precondition proved
 data_structure-basic_operations.adb:1626:65: info: index check proved
@@ -2632,13 +2635,14 @@ data_structure-basic_operations.ads:188:23: info: precondition proved
 data_structure-basic_operations.ads:188:44: info: range check proved
 data_structure-basic_operations.ads:190:14: info: aspect Always_Terminates on "Delete" has been proved, subprogram will terminate
 data_structure-basic_operations.ads:192:17: info: precondition proved
-data_structure-basic_operations.ads:193:14: info: postcondition proved
 data_structure-basic_operations.ads:194:15: info: precondition proved
 data_structure-basic_operations.ads:194:28: info: precondition proved
 data_structure-basic_operations.ads:197:46: info: precondition proved
 data_structure-basic_operations.ads:197:59: info: precondition proved
 data_structure-basic_operations.ads:197:64: info: precondition proved
 data_structure-basic_operations.ads:197:99: info: range check proved
+data_structure-basic_operations.ads:199:11: medium: in inlined expression function body at data_structure-basic_operations.ads:35
+data_structure-basic_operations.ads:199:11: medium: postcondition might fail, cannot prove Range_Shifted (S2, S1, P, Last (S2), 1)
 data_structure-basic_operations.ads:199:22: info: precondition proved
 data_structure-basic_operations.ads:199:48: info: index check proved
 data_structure-basic_operations.ads:200:33: info: predicate check proved

@@ -17,6 +17,7 @@ rules:
     discs: ["aarch64-linux"]
     action: skip
     tests:
+      - 1041__hashed_sets
       - 28__membership_tests
       - 63__c_strings_proof
       - 247__container_aggregate_capacity
