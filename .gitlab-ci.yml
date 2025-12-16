@@ -26,6 +26,7 @@ variables:
    PACKAGE_BASE_NAME: spark2014.tar.gz
    PACKAGE_ABSOLUTE_NAME: $CI_PROJECT_DIR/$PACKAGE_BASE_NAME
    PACKAGE_EXPORT: /tmp/spark2014-export
+   GNATFORMAT_DATE: 20251215
 
 stages:
   - build
@@ -308,10 +309,15 @@ pre-commit:
     - anod install libgpr2 --latest
     - anod install vss-text -Qedge --latest
     - anod install vss-extra -Qedge --latest
-    - eval $(anod printenv gnat)
-    - eval $(anod printenv libgpr2)
-    - eval $(anod printenv vss-text -Qedge)
-    - eval $(anod printenv vss-extra -Qedge)
+    - anod install gnatformat -Qdate=$GNATFORMAT_DATE
+    - anod printenv gnat > /tmp/precommit_env.sh
+    - anod printenv libgpr2 >> /tmp/precommit_env.sh
+    - anod printenv vss-text -Qedge >> /tmp/precommit_env.sh
+    - anod printenv vss-extra -Qedge >> /tmp/precommit_env.sh
+    - anod printenv gnatformat -Qdate=$GNATFORMAT_DATE >> /tmp/precommit_env.sh
+    - cat /tmp/precommit_env.sh
+    - . /tmp/precommit_env.sh
+    - gnatformat --version
     - mkdir /tmp/sarif-ada
     - e3-cathod source sarif-ada-src --setup $ANOD_SETUP --latest --install /tmp/sarif-ada
     - export GPR_PROJECT_PATH=/tmp/sarif-ada:$GPR_PROJECT_PATH
