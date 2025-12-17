@@ -17,16 +17,16 @@ full.adb:22:12: info: range check proved (CVC5: 2 VC)
 full.adb:24:13: medium: range check might fail, cannot prove upper bound for X.A'Size [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (X.A'Size <= Integer'Last) to subprogram at line 1] [provers gave up before completing the proof]
 full.adb:25:13: medium: range check might fail, cannot prove upper bound for X.C'Size [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (X.C'Size <= Integer'Last) to subprogram at line 1] [provers gave up before completing the proof]
 full.adb:26:11: medium: range check might fail, cannot prove upper bound for X'Size [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (X'Size <= Integer'Last) to subprogram at line 1] [provers gave up before completing the proof]
-full.adb:26:11: warning: object does not have a Size aspect and Object_Size of type Txs is missing
+full.adb:26:11: warning: object does not have a Size aspect and Object_Size of type of "X" is missing
 full.adb:26:11: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
 full.adb:27:11: medium: range check might fail, cannot prove upper bound for S'Size [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (S'Size <= Integer'Last) to subprogram at line 1] [provers gave up before completing the proof]
-full.adb:27:11: warning: Size of type S is missing
+full.adb:27:11: warning: Size of type "S" is missing
 full.adb:27:11: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
-full.adb:33:11: warning: Size of type T is missing
+full.adb:33:11: warning: Size of type "T" is missing
 full.adb:33:11: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
-full.adb:34:16: warning: Size of type String is missing
+full.adb:34:16: warning: Size of type "String" is missing
 full.adb:34:16: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
-full.adb:35:13: warning: Size of type A2D is missing
+full.adb:35:13: warning: Size of type "A2D" is missing
 full.adb:35:13: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
 init.adb:9:19: info: assertion proved (Trivial: 1 VC)
 main.adb:5:14: info: add a contract to analyze it separately from calling contexts

@@ -1,6 +1,6 @@
 dyn.adb:1:11: warning: subprogram "Dyn" has no effect
 dyn.adb:3:12: info: range check proved (CVC5: 2 VC)
-dyn.adb:6:04: high: object is unsuitable for aliasing via address clause [possible explanation: upper bound for type T is not known at compile time; aliased object could have invalid values [SPARK RM 13.7]]
+dyn.adb:6:04: high: object is unsuitable for aliasing via address clause [possible explanation: upper bound for type "T" is not known at compile time; aliased object could have invalid values [SPARK RM 13.7]]
 dyn.adb:6:04: info: address in address clause is compatible with object alignment (Trivial)
 dyn.adb:6:04: info: type is suitable as source for unchecked conversion (Trivial)
 dyn.adb:6:04: warning: imprecise handling of overlay (type is unsuitable as target for unchecked conversion) [imprecise-overlay]

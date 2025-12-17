@@ -16,7 +16,7 @@ test.adb:46:17: warning: subprogram "P" has no effect
 test.adb:48:07: info: no contextual analysis of "Test_Array_Comp_3" (nested subprogram)
 test.adb:50:25: info: assertion proved (Trivial: 1 VC)
 test.adb:50:26: warning: the value of attribute Component_Size is handled in an imprecise way [imprecise-component-size]
-test.adb:50:54: warning: Size of type Bool_Array is missing
+test.adb:50:54: warning: Size of type "Bool_Array" is missing
 test.adb:50:54: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
 test.adb:54:07: info: precondition proved (CVC5: 2 VC)
 test.adb:57:14: warning: subprogram "Test_Array_Comp_4" has no effect
@@ -27,6 +27,6 @@ test.adb:64:17: warning: subprogram "P" has no effect
 test.adb:66:07: info: no contextual analysis of "Test_Array_Comp_4" (nested subprogram)
 test.adb:68:25: info: assertion proved (Trivial: 1 VC)
 test.adb:68:26: warning: the value of attribute Component_Size is handled in an imprecise way [imprecise-component-size]
-test.adb:68:54: warning: Object_Size of type Bool_Array is missing
+test.adb:68:54: warning: Object_Size of type "Bool_Array" is missing
 test.adb:68:54: warning: the value of attribute "Object_Size" is handled in an imprecise way [imprecise-size]
 test.adb:72:07: info: precondition proved (CVC5: 2 VC)

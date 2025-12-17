@@ -1,31 +1,31 @@
 main.adb:21:18: warning: "X" is not modified, could be IN
 main.adb:21:18: warning: unused variable "X"
-main.adb:22:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: X must be aliased for its alignment to be known] [possible fix: overlaying object should have an Alignment representation clause]
-main.adb:22:07: high: object is unsuitable for aliasing via address clause [possible explanation: type Small is a tagged type]
-main.adb:22:07: high: type is unsuitable as a source for unchecked conversion [possible explanation: type Small is a tagged type]
+main.adb:22:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: "X" must be aliased for its alignment to be known] [possible fix: overlaying object should have an Alignment representation clause]
+main.adb:22:07: high: object is unsuitable for aliasing via address clause [possible explanation: type "Small" is a tagged type]
+main.adb:22:07: high: type is unsuitable as a source for unchecked conversion [possible explanation: type "Small" is a tagged type]
 main.adb:22:07: warning: imprecise handling of overlay (type is unsuitable as source for unchecked conversion) [imprecise-overlay]
-main.adb:22:41: high: object is unsuitable for aliasing via address clause [possible explanation: type R is a tagged type]
-main.adb:22:41: high: type is unsuitable as a source for unchecked conversion [possible explanation: type R is a tagged type]
+main.adb:22:41: high: object is unsuitable for aliasing via address clause [possible explanation: type "R" is a tagged type]
+main.adb:22:41: high: type is unsuitable as a source for unchecked conversion [possible explanation: type "R" is a tagged type]
 main.adb:22:41: info: types of aliased objects have the same size (Trivial)
 main.adb:24:22: info: assertion proved (Trivial: 1 VC)
 main.adb:27:18: warning: "X" is not modified, could be IN
 main.adb:27:18: warning: unused variable "X"
-main.adb:28:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: X must be aliased for its alignment to be known] [possible fix: overlaying object should have an Alignment representation clause]
-main.adb:28:07: high: object is unsuitable for aliasing via address clause [possible explanation: type Big is a tagged type]
-main.adb:28:07: high: type is unsuitable as a source for unchecked conversion [possible explanation: type Big is a tagged type]
+main.adb:28:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: "X" must be aliased for its alignment to be known] [possible fix: overlaying object should have an Alignment representation clause]
+main.adb:28:07: high: object is unsuitable for aliasing via address clause [possible explanation: type "Big" is a tagged type]
+main.adb:28:07: high: type is unsuitable as a source for unchecked conversion [possible explanation: type "Big" is a tagged type]
 main.adb:28:07: warning: imprecise handling of overlay (type is unsuitable as source for unchecked conversion) [imprecise-overlay]
-main.adb:28:39: high: object is unsuitable for aliasing via address clause [possible explanation: type C is a tagged type]
-main.adb:28:39: high: type is unsuitable as a source for unchecked conversion [possible explanation: type C is a tagged type]
-main.adb:28:39: high: types of aliased objects do not have the same size [possible explanation: sizes of overlaid objects differ: type Big has Object_Size 128, while type C has Object_Size 192]
+main.adb:28:39: high: object is unsuitable for aliasing via address clause [possible explanation: type "C" is a tagged type]
+main.adb:28:39: high: type is unsuitable as a source for unchecked conversion [possible explanation: type "C" is a tagged type]
+main.adb:28:39: high: types of aliased objects do not have the same size [possible explanation: sizes of overlaid objects differ: type "Big" has Object_Size 128, while type "C" has Object_Size 192]
 main.adb:30:22: medium: assertion might fail (e.g. when X = (F => 0, G => 0)) [provers reached step limit before completing the proof]
 main.adb:33:19: warning: "X" is not modified, could be IN
 main.adb:33:19: warning: unused variable "X"
-main.adb:34:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: X must be aliased for its alignment to be known] [possible fix: overlaying object should have an Alignment representation clause]
-main.adb:34:07: high: object is unsuitable for aliasing via address clause [possible explanation: type Small is a tagged type]
-main.adb:34:07: high: type is unsuitable as a source for unchecked conversion [possible explanation: type Small is a tagged type]
+main.adb:34:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: "X" must be aliased for its alignment to be known] [possible fix: overlaying object should have an Alignment representation clause]
+main.adb:34:07: high: object is unsuitable for aliasing via address clause [possible explanation: type "Small" is a tagged type]
+main.adb:34:07: high: type is unsuitable as a source for unchecked conversion [possible explanation: type "Small" is a tagged type]
 main.adb:34:07: warning: imprecise handling of overlay (type is unsuitable as source for unchecked conversion) [imprecise-overlay]
-main.adb:34:41: high: object is unsuitable for aliasing via address clause [possible explanation: type Trc is a tagged type]
-main.adb:34:41: high: type is unsuitable as a source for unchecked conversion [possible explanation: type Trc is a tagged type]
+main.adb:34:41: high: object is unsuitable for aliasing via address clause [possible explanation: type "R'Class" is a tagged type]
+main.adb:34:41: high: type is unsuitable as a source for unchecked conversion [possible explanation: type "R'Class" is a tagged type]
 main.adb:34:41: high: types of aliased objects do not have the same size [possible explanation: overlaid object has a classwide type]
 main.adb:42:04: info: precondition proved (Trivial: 1 VC)
 main.adb:43:04: info: precondition proved (Trivial: 1 VC)

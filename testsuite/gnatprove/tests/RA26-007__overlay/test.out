@@ -3,10 +3,10 @@ arrays.ads:15:04: info: object is suitable for aliasing via address clause (Triv
 arrays.ads:15:04: info: type is suitable as source for unchecked conversion (Trivial)
 arrays.ads:15:04: warning: imprecise handling of overlay (types in unchecked conversion do not have the same size) [imprecise-overlay]
 arrays.ads:16:04: warning: aliased objects must have the same volatility and atomic status [alias-volatile-atomic-mismatch]
-arrays.ads:16:26: high: types of aliased objects do not have the same size [possible explanation: sizes of overlaid objects differ: type Tarr_2s has Object_Size 2080, while type Tarr_1s has Object_Size 2048]
+arrays.ads:16:26: high: types of aliased objects do not have the same size [possible explanation: sizes of overlaid objects differ: type of "Arr_2" has Object_Size 2080, while type of "Arr_1" has Object_Size 2048]
 arrays.ads:16:26: info: object is suitable for aliasing via address clause (Trivial)
 arrays.ads:16:26: info: type is suitable as source for unchecked conversion (Trivial)
-arrays.ads:20:04: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: alignment of overlaid object (which is 1) must be a multiple of the alignment of Arr_3 (which is 4)] [possible fix: overlaid object should have an Alignment representation clause]
+arrays.ads:20:04: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: alignment of overlaid object (which is 1) must be a multiple of the alignment of "Arr_3" (which is 4)] [possible fix: overlaid object should have an Alignment representation clause]
 arrays.ads:20:04: info: object is suitable for aliasing via address clause (Trivial)
 arrays.ads:20:04: info: type is suitable as source for unchecked conversion (Trivial)
 arrays.ads:20:04: warning: imprecise handling of overlay (mutable overlay of a subcomponent of an object) [imprecise-overlay]

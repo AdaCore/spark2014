@@ -13,7 +13,7 @@ firstbyte.adb:31:03: info: analyzing call to "temp_function2" in context
 firstbyte.adb:31:03: warning: in inlined body at line 22
 firstbyte.adb:31:03: warning: references to the "Img" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 firstbyte_err.adb:13:17: info: initialization of "output" proved
-firstbyte_err.adb:15:08: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: input must be aliased for its alignment to be known] [possible fix: overlaid object should have an Alignment representation clause]
+firstbyte_err.adb:15:08: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: "input" must be aliased for its alignment to be known] [possible fix: overlaid object should have an Alignment representation clause]
 firstbyte_err.adb:15:08: info: object is suitable for aliasing via address clause (Trivial)
 firstbyte_err.adb:15:08: warning: imprecise handling of overlay (type size larger than 128 bits) [imprecise-overlay]
 firstbyte_err.adb:15:64: info: object is suitable for aliasing via address clause (Trivial)

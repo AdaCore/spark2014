@@ -22,23 +22,23 @@ illegal_annot.adb:178:07: error: a single null value shall be supplied for a giv
 illegal_annot.adb:190:12: error: type shall not have multiple Predefined_Equality annotations
 illegal_annot.adb:203:07: error: constant shall not have multiple Predefined_Equality annotations
 test_usage.adb:31:07: info: no contextual analysis of "Use_No_Eq" (subtype declaration with predicate)
-test_usage.adb:33:24: error: equality on T is not allowed in SPARK
+test_usage.adb:33:24: error: equality on type "T" is not allowed in SPARK
 test_usage.adb:33:24: error: violation of aspect SPARK_Mode at line 1
-test_usage.adb:34:29: error: equality on T is not allowed in SPARK
+test_usage.adb:34:29: error: equality on type "T" is not allowed in SPARK
 test_usage.adb:34:29: error: violation of aspect SPARK_Mode at line 1
 test_usage.adb:42:07: info: no contextual analysis of "Use_Only_Null" (subtype declaration with predicate)
-test_usage.adb:44:24: error: equality on T is not allowed in SPARK
+test_usage.adb:44:24: error: equality on type "T" is not allowed in SPARK
 test_usage.adb:44:24: error: violation of aspect SPARK_Mode at line 1
-test_usage.adb:45:29: error: equality on T is not allowed in SPARK
+test_usage.adb:45:29: error: equality on type "T" is not allowed in SPARK
 test_usage.adb:45:29: error: violation of aspect SPARK_Mode at line 1
-test_usage.adb:65:24: error: equality on T is not allowed in SPARK
+test_usage.adb:65:24: error: equality on type "T" is not allowed in SPARK
 test_usage.adb:65:24: error: violation of aspect SPARK_Mode at line 1
-test_usage.adb:66:29: error: equality on T is not allowed in SPARK
+test_usage.adb:66:29: error: equality on type "T" is not allowed in SPARK
 test_usage.adb:66:29: error: violation of aspect SPARK_Mode at line 1
 test_usage.adb:97:07: info: no contextual analysis of "Use_No_Eq_Tagged_1" (subtype declaration with predicate)
-test_usage.adb:99:24: error: equality on T is not allowed in SPARK
+test_usage.adb:99:24: error: equality on type "T" is not allowed in SPARK
 test_usage.adb:99:24: error: violation of aspect SPARK_Mode at line 1
-test_usage.adb:100:29: error: equality on T is not allowed in SPARK
+test_usage.adb:100:29: error: equality on type "T" is not allowed in SPARK
 test_usage.adb:100:29: error: violation of aspect SPARK_Mode at line 1
 test_usage.adb:129:04: warning: analyzing unreferenced procedure "Use_No_Eq_Tagged_2" [unreferenced-procedure]
 gnatprove: error during flow analysis and proof

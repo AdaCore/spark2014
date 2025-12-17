@@ -6,13 +6,13 @@ test.adb:16:29: info: discriminant check proved (CVC5: 1 VC)
 test.adb:16:53: info: length check proved (CVC5: 3 VC)
 test.adb:18:14: warning: subprogram "P" has no effect
 test.adb:20:22: medium: assertion might fail [provers reached step limit before completing the proof]
-test.adb:20:23: warning: object does not have a Size aspect and Object_Size of type R is missing
+test.adb:20:23: warning: object does not have a Size aspect and Object_Size of type "R" is missing
 test.adb:20:23: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
 test.adb:20:32: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
-test.adb:20:32: warning: type R is unconstrained
+test.adb:20:32: warning: type "R" is unconstrained
 test.adb:24:19: info: assertion proved (Trivial: 1 VC)
-test.adb:24:20: warning: object does not have a Size aspect and Object_Size of type R is missing
+test.adb:24:20: warning: object does not have a Size aspect and Object_Size of type "R" is missing
 test.adb:24:20: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
-test.adb:24:29: warning: Object_Size of type R is missing
+test.adb:24:29: warning: Object_Size of type "R" is missing
 test.adb:24:29: warning: the value of attribute "Object_Size" is handled in an imprecise way [imprecise-size]
 test.adb:25:04: info: precondition proved (CVC5: 1 VC)

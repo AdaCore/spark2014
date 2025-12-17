@@ -7,7 +7,7 @@ test_array_uc.adb:11:13: info: alignment of source type of unchecked conversion 
 test_array_uc.adb:11:13: info: types in unchecked conversion have the same size (Trivial)
 test_array_uc.adb:11:68: info: type is suitable as source for unchecked conversion (Trivial)
 test_array_uc.adb:11:78: info: type is suitable for unchecked conversion (Trivial)
-test_array_uc.adb:12:13: high: alignment of source type of unchecked conversion might not be an integral multiple of alignment of target type [possible explanation: alignment of Arr_Nat_8 (which is 1) must be a multiple of the alignment of T_1_1000 (which is 4)]
+test_array_uc.adb:12:13: high: alignment of source type of unchecked conversion might not be an integral multiple of alignment of target type [possible explanation: alignment of type "Arr_Nat_8" (which is 1) must be a multiple of the alignment of type "T_1_1000" (which is 4)]
 test_array_uc.adb:12:13: info: types in unchecked conversion have the same size (Trivial)
 test_array_uc.adb:12:68: info: type is suitable as source for unchecked conversion (Trivial)
 test_array_uc.adb:12:79: info: type is suitable for unchecked conversion (Trivial)

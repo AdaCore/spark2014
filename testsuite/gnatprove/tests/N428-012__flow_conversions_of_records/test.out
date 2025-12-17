@@ -2,7 +2,7 @@ conversions_of_records.adb:20:13: info: alignment of source type of unchecked co
 conversions_of_records.adb:20:13: info: types in unchecked conversion have the same size (Trivial)
 conversions_of_records.adb:20:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
 conversions_of_records.adb:20:65: info: type is suitable as source for unchecked conversion (Trivial)
-conversions_of_records.adb:21:65: high: type is unsuitable as a target for unchecked conversion [possible explanation: type Boolean has 2 values but type Boolean has Object_Size 8, which allows 256 possible values; invalid values could result from the unchecked conversion [SPARK RM 13.9]]
+conversions_of_records.adb:21:65: high: type is unsuitable as a target for unchecked conversion [possible explanation: type "Boolean" has 2 values but type "Boolean" has Object_Size 8, which allows 256 possible values; invalid values could result from the unchecked conversion [SPARK RM 13.9]]
 conversions_of_records.adb:25:26: info: initialization of "Y1" proved
 conversions_of_records.adb:26:26: info: initialization of "Y2" proved
 conversions_of_records.adb:27:09: info: flow dependencies proved

@@ -1,10 +1,10 @@
 early_init.ads:6:09: info: flow dependencies proved
 early_init.ads:7:30: info: initial condition proved (CVC5: 1 VC)
 early_init.ads:9:07: info: initialization of "V1" proved
-early_init.ads:10:07: high: object is unsuitable for aliasing via address clause [possible explanation: type Positive has 16#7FFF_FFFF# values but type Positive has Object_Size 32, which allows 16#1000_0000_0# possible values; aliased object could have invalid values [SPARK RM 13.7]]
+early_init.ads:10:07: high: object is unsuitable for aliasing via address clause [possible explanation: type "Positive" has 16#7FFF_FFFF# values but type "Positive" has Object_Size 32, which allows 16#1000_0000_0# possible values; aliased object could have invalid values [SPARK RM 13.7]]
 early_init.ads:10:07: info: address in address clause is compatible with object alignment (Trivial)
 early_init.ads:10:07: info: type is suitable as source for unchecked conversion (Trivial)
 early_init.ads:10:07: warning: imprecise handling of overlay (type is unsuitable as target for unchecked conversion) [imprecise-overlay]
-early_init.ads:10:42: high: object is unsuitable for aliasing via address clause [possible explanation: type Positive has 16#7FFF_FFFF# values but type Positive has Object_Size 32, which allows 16#1000_0000_0# possible values; aliased object could have invalid values [SPARK RM 13.7]]
+early_init.ads:10:42: high: object is unsuitable for aliasing via address clause [possible explanation: type "Positive" has 16#7FFF_FFFF# values but type "Positive" has Object_Size 32, which allows 16#1000_0000_0# possible values; aliased object could have invalid values [SPARK RM 13.7]]
 early_init.ads:10:42: info: type is suitable as source for unchecked conversion (Trivial)
 early_init.ads:10:42: info: types of aliased objects have the same size (Trivial)
