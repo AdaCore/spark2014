@@ -14633,7 +14633,7 @@ package body Gnat2Why.Expr is
                     (Ada_Node => E,
                      Message  =>
                        To_Unbounded_String
-                         ("for the result of " & Raw_Source_Name (E))));
+                         ("for the result of " & Pretty_Source_Name (E))));
             elsif Is_Concurrent_Type (Obj) then
 
                --  Type invariant are not supported on protected objects
@@ -14646,10 +14646,11 @@ package body Gnat2Why.Expr is
                      Message  =>
                        To_Unbounded_String
                          ("for "
-                          & Raw_Source_Name (Obj)
+                          & Pretty_Source_Name (Obj)
                           & (if For_Input
                              then " before the call"
-                             else " at the end of " & Raw_Source_Name (E)))));
+                             else
+                               " at the end of " & Pretty_Source_Name (E)))));
             end if;
 
             Res :=

@@ -1024,13 +1024,13 @@ package body Gnat2Why.Expr.Aggregates is
               (Annot.Empty_Function,
                To_Unbounded_String
                  ("after a call to "
-                  & Raw_Source_Name (Annot.Empty_Function))));
+                  & Pretty_Source_Name (Annot.Empty_Function))));
          Init_Check_Info.Continuation.Append
            (Continuation_Type'
               (Associated_Fun,
                To_Unbounded_String
                  ("when establishing invariant on "
-                  & Raw_Source_Name (Associated_Fun))));
+                  & Pretty_Source_Name (Associated_Fun))));
          Init_Checks :=
            Sequence
              (New_Located_Assert
@@ -1056,13 +1056,13 @@ package body Gnat2Why.Expr.Aggregates is
               (Annot.Add_Procedure,
                To_Unbounded_String
                  ("after a call to "
-                  & Raw_Source_Name (Annot.Add_Procedure))));
+                  & Pretty_Source_Name (Annot.Add_Procedure))));
          Preserv_Check_Info.Continuation.Append
            (Continuation_Type'
               (Associated_Fun,
                To_Unbounded_String
                  ("when reestablishing invariant on "
-                  & Raw_Source_Name (Associated_Fun))));
+                  & Pretty_Source_Name (Associated_Fun))));
          Preserv_Checks :=
            Sequence
              (New_Located_Assert

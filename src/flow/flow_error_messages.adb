@@ -1176,14 +1176,14 @@ package body Flow_Error_Messages is
                              Get_Exceptions_For_Subp (Caller).Print;
                         begin
                            return
-                             Raw_Source_Name (Caller)
+                             Pretty_Source_Name (Caller)
                              & " allows propagating "
                              & Expected_Exc;
                         end;
                      elsif Is_Inlined_Call (Scop) then
                         return
                           "ghost inlined call to "
-                          & Raw_Source_Name
+                          & Pretty_Source_Name
                               (Called_Entity_From_Inlined_Call (Scop))
                           & " shall not propagate exceptions";
                      else
@@ -1576,7 +1576,7 @@ package body Flow_Error_Messages is
               "validity of the "
               & Contract
               & " of "
-              & Raw_Source_Name (E)
+              & Pretty_Source_Name (E)
               & " should be implied by its refined postcondition";
          end;
 
@@ -1760,13 +1760,12 @@ package body Flow_Error_Messages is
 
          function Callee_Name (Subp : Entity_Id) return String
          is (if Nkind (Subp) = N_Defining_Operator_Symbol
-             then "operator " & Raw_Source_Name (Subp)
+             then "operator " & Pretty_Source_Name (Subp)
              elsif Ekind (Subp) = E_Function
-             then "function " & Raw_Source_Name (Subp)
+             then "function " & Pretty_Source_Name (Subp)
              else
-               "type "
-               & Raw_Source_Name
-                   (Defining_Entity (Associated_Node_For_Itype (Subp))))
+               Pretty_Source_Name
+                 (Defining_Entity (Associated_Node_For_Itype (Subp))))
          with Pre => Ekind (Subp) in E_Function | E_Subprogram_Type;
 
          function Callee_Names (Callees : Entity_Sets.Set) return String;

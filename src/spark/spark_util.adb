@@ -224,12 +224,14 @@ package body SPARK_Util is
 
          elsif S.Exc_Set.Length = 1 then
             Exc_Str :=
-              To_Unbounded_String (Raw_Source_Name (S.Exc_Set.First_Element));
+              To_Unbounded_String
+                (Pretty_Source_Name (S.Exc_Set.First_Element));
          elsif S.Exc_Set.Length = 2 then
             Exc_Str :=
-              To_Unbounded_String (Raw_Source_Name (S.Exc_Set.First_Element))
+              To_Unbounded_String
+                (Pretty_Source_Name (S.Exc_Set.First_Element))
               & " and "
-              & Raw_Source_Name (S.Exc_Set.Last_Element);
+              & Pretty_Source_Name (S.Exc_Set.Last_Element);
          else
             Exc_Str := To_Unbounded_String ("");
             for E of reverse S.Exc_Set loop
@@ -241,7 +243,7 @@ package body SPARK_Util is
                else
                   Exc_Str := ", " & Exc_Str;
                end if;
-               Exc_Str := Raw_Source_Name (E) & Exc_Str;
+               Exc_Str := Pretty_Source_Name (E) & Exc_Str;
             end loop;
          end if;
 

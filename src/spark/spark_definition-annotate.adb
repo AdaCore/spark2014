@@ -784,7 +784,7 @@ package body SPARK_Definition.Annotate is
                   Placed_At_Private_View,
                   Prag,
                   "Container_Aggregate",
-                  "initial declaration of type " & Raw_Source_Name (Ent),
+                  "initial declaration of " & Pretty_Source_Name (Ent),
                   Ok);
 
                if not Ok then
@@ -913,8 +913,8 @@ package body SPARK_Definition.Annotate is
                        ("a single "
                         & Aspect_Or_Pragma
                         & " Annotate "
-                        & "Container_Aggregates shall be specified for type "
-                        & Raw_Source_Name (Ent),
+                        & "Container_Aggregates shall be specified for "
+                        & Pretty_Source_Name (Ent),
                         Prag);
                   else
                      Delayed_Checks_For_Aggregates.Insert (Base_Retysp (Ent));
@@ -954,7 +954,7 @@ package body SPARK_Definition.Annotate is
                Placed_At_Specification,
                Prag,
                "Container_Aggregate",
-               "specification of function " & Raw_Source_Name (Ent),
+               "specification of function " & Pretty_Source_Name (Ent),
                Ok);
 
             if not Ok then
@@ -1039,7 +1039,7 @@ package body SPARK_Definition.Annotate is
                      Error_Msg_N_If
                        ("duplicated ""Default_Item"" function "
                         & "returning "
-                        & Raw_Source_Name (Etype (Ent))
+                        & Pretty_Source_Name (Etype (Ent))
                         & " in the same scope",
                         Ent);
                   end if;
@@ -1078,7 +1078,7 @@ package body SPARK_Definition.Annotate is
                      Error_Msg_N_If
                        ("duplicated ""First"" function "
                         & "returning "
-                        & Raw_Source_Name (Etype (Ent))
+                        & Pretty_Source_Name (Etype (Ent))
                         & " in the same scope",
                         Ent);
                   end if;
@@ -1126,7 +1126,7 @@ package body SPARK_Definition.Annotate is
                         Error_Msg_N_If
                           ("duplicated ""Equivalent_Elements"" function "
                            & "for "
-                           & Raw_Source_Name (Etype (Ent))
+                           & Pretty_Source_Name (Etype (Ent))
                            & " in the same scope",
                            Ent);
                      end if;
@@ -1148,7 +1148,7 @@ package body SPARK_Definition.Annotate is
                         Error_Msg_N_If
                           ("duplicated ""Equivalent_Keys"" function "
                            & "for "
-                           & Raw_Source_Name (Etype (Ent))
+                           & Pretty_Source_Name (Etype (Ent))
                            & " in the same scope",
                            Ent);
                      end if;
@@ -1339,8 +1339,8 @@ package body SPARK_Definition.Annotate is
                            then
                               Error_Msg_N_If
                                 ("second parameter of ""Contains"" function"
-                                 & " shall be of type "
-                                 & Raw_Source_Name (Annot.Element_Type),
+                                 & " shall be of "
+                                 & Pretty_Source_Name (Annot.Element_Type),
                                  Ent);
                               return;
                            end if;
@@ -1419,8 +1419,8 @@ package body SPARK_Definition.Annotate is
                            then
                               Error_Msg_N_If
                                 ("second parameter of ""Has_Key"" function"
-                                 & " shall be of type "
-                                 & Raw_Source_Name (Annot.Key_Type),
+                                 & " shall be of "
+                                 & Pretty_Source_Name (Annot.Key_Type),
                                  Ent);
                               return;
                            end if;
@@ -1448,8 +1448,8 @@ package body SPARK_Definition.Annotate is
                            elsif Etype (Ent) /= Annot.Element_Type then
                               Error_Msg_N_If
                                 ("""Get"" function shall return a "
-                                 & "value of type "
-                                 & Raw_Source_Name (Annot.Element_Type),
+                                 & "value of "
+                                 & Pretty_Source_Name (Annot.Element_Type),
                                  Ent);
                               return;
 
@@ -1458,8 +1458,8 @@ package body SPARK_Definition.Annotate is
                            then
                               Error_Msg_N_If
                                 ("second parameter of ""Get"" function"
-                                 & " shall be of type "
-                                 & Raw_Source_Name (Annot.Key_Type),
+                                 & " shall be of "
+                                 & Pretty_Source_Name (Annot.Key_Type),
                                  Ent);
                               return;
                            end if;
@@ -1535,8 +1535,8 @@ package body SPARK_Definition.Annotate is
                            elsif Etype (Ent) /= Annot.Element_Type then
                               Error_Msg_N_If
                                 ("""Get"" function shall return a "
-                                 & "value of type "
-                                 & Raw_Source_Name (Annot.Element_Type),
+                                 & "value of "
+                                 & Pretty_Source_Name (Annot.Element_Type),
                                  Ent);
                               return;
 
@@ -1549,7 +1549,7 @@ package body SPARK_Definition.Annotate is
                               Error_Msg_N_If
                                 ("second parameter of ""Get"" function"
                                  & " shall have the same base type as "
-                                 & Raw_Source_Name (Annot.Index_Type),
+                                 & Pretty_Source_Name (Annot.Index_Type),
                                  Ent);
                               return;
 
@@ -1596,7 +1596,7 @@ package body SPARK_Definition.Annotate is
                               Error_Msg_N_If
                                 ("the return type of ""Last"" function shall "
                                  & "have the same base type as "
-                                 & Raw_Source_Name (Annot.Index_Type),
+                                 & Pretty_Source_Name (Annot.Index_Type),
                                  Ent);
 
                            elsif No (Annot.Index_Type)
@@ -1880,7 +1880,7 @@ package body SPARK_Definition.Annotate is
                Placed_At_Specification,
                Prag,
                Prag_Name,
-               "specification of subprogram " & Raw_Source_Name (E),
+               "specification of subprogram " & Pretty_Source_Name (E),
                Ok);
 
          when Entry_Kind                                =>
@@ -1889,7 +1889,7 @@ package body SPARK_Definition.Annotate is
                Placed_At_Specification,
                Prag,
                Prag_Name,
-               "declaration of entry " & Raw_Source_Name (E),
+               "declaration of entry " & Pretty_Source_Name (E),
                Ok);
 
          when E_Package                                 =>
@@ -1899,7 +1899,7 @@ package body SPARK_Definition.Annotate is
                Prag,
                Prag_Name,
                "beginning or end of package specification "
-               & Raw_Source_Name (E),
+               & Pretty_Source_Name (E),
                Ok);
 
          when E_Generic_Package                         =>
@@ -1908,7 +1908,7 @@ package body SPARK_Definition.Annotate is
                Placed_At_Specification,
                Prag,
                Prag_Name,
-               "beginning of package specification " & Raw_Source_Name (E),
+               "beginning of package specification " & Pretty_Source_Name (E),
                Ok);
 
          when E_Task_Type                               =>
@@ -1917,7 +1917,7 @@ package body SPARK_Definition.Annotate is
                Placed_At_Task_Specification,
                Prag,
                Prag_Name,
-               "declaration of task " & Raw_Source_Name (E),
+               "declaration of task " & Pretty_Source_Name (E),
                Ok);
 
          when E_Constant                                =>
@@ -1926,7 +1926,7 @@ package body SPARK_Definition.Annotate is
                Placed_At_Declaration,
                Prag,
                Prag_Name,
-               "declaration of constant " & Raw_Source_Name (E),
+               "declaration of constant " & Pretty_Source_Name (E),
                Ok);
 
          when others                                    =>
@@ -2543,7 +2543,7 @@ package body SPARK_Definition.Annotate is
          Placed_At_Full_View,
          Prag,
          "Handler",
-         "full type declaration of " & Raw_Source_Name (E),
+         "full type declaration of " & Pretty_Source_Name (E),
          Ok);
       if not Ok then
          return;
@@ -2986,9 +2986,9 @@ package body SPARK_Definition.Annotate is
                   Error_Msg_N_If
                     ("there shall be at most one Hide_Info or Unhide_Info"
                      & " annotation for "
-                     & Raw_Source_Name (Ent)
+                     & Pretty_Source_Name (Ent)
                      & " in "
-                     & Raw_Source_Name (Scope),
+                     & Pretty_Source_Name (Scope),
                      Prag);
                end if;
             end;
@@ -3996,7 +3996,7 @@ package body SPARK_Definition.Annotate is
          Placed_At_Specification,
          Prag,
          "Iterable_For_Proof",
-         "specification of function " & Raw_Source_Name (New_Prim),
+         "specification of function " & Pretty_Source_Name (New_Prim),
          Ok);
       if not Ok then
          return;
@@ -4260,9 +4260,9 @@ package body SPARK_Definition.Annotate is
 
          if not Found then
             Error_Msg_N_If
-              (Raw_Source_Name (Scope)
-               & " does not have any ""in"" parameter of type "
-               & Raw_Source_Name (Ent),
+              (Pretty_Source_Name (Scope)
+               & " does not have any ""in"" parameter of "
+               & Pretty_Source_Name (Ent),
                Prag);
             return;
          end if;
@@ -4339,7 +4339,7 @@ package body SPARK_Definition.Annotate is
          Placed_At_Full_View,
          Prag,
          "No_Bitwise_Operations",
-         "full type declaration of " & Raw_Source_Name (E),
+         "full type declaration of " & Pretty_Source_Name (E),
          Ok);
       if not Ok then
          return;
@@ -4406,7 +4406,7 @@ package body SPARK_Definition.Annotate is
          Placed_At_Full_View,
          Prag,
          "No_Wrap_Around",
-         "full type declaration of " & Raw_Source_Name (E),
+         "full type declaration of " & Pretty_Source_Name (E),
          Ok);
       if not Ok then
          return;
@@ -4506,7 +4506,7 @@ package body SPARK_Definition.Annotate is
                   Placed_At_Private_View,
                   Prag,
                   "Ownership",
-                  " private declaration of type " & Raw_Source_Name (Ent),
+                  " private declaration of " & Pretty_Source_Name (Ent),
                   Ok);
                if not Ok then
                   return;
@@ -4960,7 +4960,7 @@ package body SPARK_Definition.Annotate is
                   Placed_At_Private_View,
                   Prag,
                   "Predefined_Equality",
-                  " private declaration of type " & Raw_Source_Name (Ent),
+                  " private declaration of " & Pretty_Source_Name (Ent),
                   Ok);
 
                if not Ok then
@@ -5666,14 +5666,14 @@ package body SPARK_Definition.Annotate is
                   when Hide_Expr_Fun       =>
                      Error_Msg_N_If
                        ("Hide_Info annotation is redundant, "
-                        & Raw_Source_Name (E)
+                        & Pretty_Source_Name (E)
                         & " is hidden by default",
                         Prag);
 
                   when Unhide_Expr_Fun     =>
                      Error_Msg_N_If
                        ("Unhide_Info annotation is redundant, "
-                        & Raw_Source_Name (E)
+                        & Pretty_Source_Name (E)
                         & " is visible by default",
                         Prag);
 
@@ -5688,7 +5688,7 @@ package body SPARK_Definition.Annotate is
             then
                Error_Msg_N_If
                  ("the body of "
-                  & Raw_Source_Name (E)
+                  & Pretty_Source_Name (E)
                   & " is not visible at the current location",
                   Prag);
                return;
@@ -5711,7 +5711,7 @@ package body SPARK_Definition.Annotate is
             then
                Error_Msg_N_If
                  ("the value of "
-                  & Raw_Source_Name (Ent)
+                  & Pretty_Source_Name (Ent)
                   & " shall be a null value",
                   Decl);
                return;
