@@ -1,11 +1,11 @@
 exprfun.ads:3:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 exprfun.ads:5:17: info: initialization of "X" proved
-exprfun.ads:6:14: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function F or turning it into an expression function] [provers gave up before completing the proof]
+exprfun.ads:6:14: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function "F" or turning it into an expression function] [provers gave up before completing the proof]
 exprfun.ads:8:04: info: function contract feasibility proved (Trivial: 1 VC)
 exprfun.ads:12:30: info: initialization of "X" proved
 exprfun.ads:13:14: medium: pointer dereference check might fail [provers gave up before completing the proof]
-exprfun.ads:13:14: medium: postcondition might fail [possible fix: you should consider adding a postcondition to type Ptr] [provers gave up before completing the proof]
+exprfun.ads:13:14: medium: postcondition might fail [possible fix: you should consider adding a postcondition to type "Ptr"] [provers gave up before completing the proof]
 exprfun.ads:15:18: warning: unused variable "Func"
 exprfun.ads:15:30: info: initialization of "X" proved
 exprfun.ads:16:14: medium: pointer dereference check might fail [provers gave up before completing the proof]
-exprfun.ads:16:14: medium: postcondition might fail [possible fix: you should consider adding a postcondition to type Ptr] [provers gave up before completing the proof]
+exprfun.ads:16:14: medium: postcondition might fail [possible fix: you should consider adding a postcondition to type "Ptr"] [provers gave up before completing the proof]

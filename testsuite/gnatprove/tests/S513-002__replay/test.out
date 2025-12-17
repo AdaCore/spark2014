@@ -19,7 +19,7 @@ binary_trees.adb:80:41: info: index check proved (CVC5: 2 VC)
 binary_trees.adb:87:36: info: index check proved (CVC5: 2 VC)
 binary_trees.adb:90:36: info: index check proved (CVC5: 2 VC)
 binary_trees.ads:14:61: info: default initial condition proved (CVC5: 1 VC)
-binary_trees.ads:14:61: info: for F before the call at binary_trees.ads:17
+binary_trees.ads:14:61: info: for "F" before the call at binary_trees.ads:17
 binary_trees.ads:14:61: info: invariant check proved (CVC5: 1 VC)
 binary_trees.ads:17:13: info: implicit aspect Always_Terminates on "Size" has been proved, subprogram will terminate
 binary_trees.ads:28:09: info: invariant check proved on default value (CVC5: 1 VC)
@@ -49,7 +49,7 @@ binary_trees.adb:80:41: info: index check proved
 binary_trees.adb:87:36: info: index check proved
 binary_trees.adb:90:36: info: index check proved
 binary_trees.ads:14:61: info: default initial condition proved
-binary_trees.ads:14:61: info: for F before the call at binary_trees.ads:17
+binary_trees.ads:14:61: info: for "F" before the call at binary_trees.ads:17
 binary_trees.ads:14:61: info: invariant check proved
 binary_trees.ads:17:13: info: implicit aspect Always_Terminates on "Size" has been proved, subprogram will terminate
 binary_trees.ads:28:09: info: invariant check proved on default value

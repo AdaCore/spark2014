@@ -1,20 +1,20 @@
 main.adb:7:04: info: initialization of "Max" proved
-main.adb:10:04: medium: unexpected exception might be raised [reason for check: Main allows propagating no exceptions] [possible explanation: End_Error and Data_Error might be unexpectedly raised] [provers reached step limit before completing the proof]
+main.adb:10:04: medium: unexpected exception might be raised [reason for check: "Main" allows propagating no exceptions] [possible explanation: "End_Error" and "Data_Error" might be unexpectedly raised] [provers reached step limit before completing the proof]
 main.adb:10:09: medium: in value of subprogram parameter after the call at main.adb:10
 main.adb:10:09: medium: range check might fail, cannot prove lower bound for Max [reason for check: output value must fit in argument type] [possible fix: postcondition of call at line 10 should mention Item (for argument Max)] [provers reached step limit before completing the proof]
-main.adb:11:04: medium: unexpected exception might be raised [reason for check: Main allows propagating no exceptions] [possible explanation: End_Error might be unexpectedly raised] [provers reached step limit before completing the proof]
+main.adb:11:04: medium: unexpected exception might be raised [reason for check: "Main" allows propagating no exceptions] [possible explanation: "End_Error" might be unexpectedly raised] [provers reached step limit before completing the proof]
 main.adb:15:18: info: range check proved (CVC5: 2 VC)
 main.adb:22:13: info: initialization of "Cmd" proved
 main.adb:23:13: info: initialization of "Last" proved
 main.adb:24:13: info: initialization of "V" proved
-main.adb:27:13: medium: unexpected exception might be raised [reason for check: Main allows propagating no exceptions] [possible explanation: End_Error might be unexpectedly raised] [provers reached step limit before completing the proof]
+main.adb:27:13: medium: unexpected exception might be raised [reason for check: "Main" allows propagating no exceptions] [possible explanation: "End_Error" might be unexpectedly raised] [provers reached step limit before completing the proof]
 main.adb:27:22: medium: in value of subprogram parameter after the call at main.adb:27
 main.adb:27:22: medium: initialization check might fail [provers reached step limit before completing the proof]
 main.adb:28:34: info: range check proved (CVC5: 4 VC)
 main.adb:29:16: medium: private part of "S" might not be initialized
 main.adb:29:17: medium: precondition might fail [possible fix: loop at line 18 should mention S in a loop invariant] [provers reached step limit before completing the proof]
 main.adb:34:38: info: range check proved (CVC5: 4 VC)
-main.adb:35:16: medium: unexpected exception might be raised [reason for check: Main allows propagating no exceptions] [possible explanation: Data_Error might be unexpectedly raised] [provers reached step limit before completing the proof]
+main.adb:35:16: medium: unexpected exception might be raised [reason for check: "Main" allows propagating no exceptions] [possible explanation: "Data_Error" might be unexpectedly raised] [provers reached step limit before completing the proof]
 main.adb:35:21: info: range check proved (CVC5: 4 VC)
 main.adb:35:41: warning: "Pos" is set by "Get" but not used after the call
 main.adb:36:16: medium: private part of "S" might not be initialized

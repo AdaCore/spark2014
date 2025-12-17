@@ -13,8 +13,8 @@ counter_example_loop_index.adb:41:04: warning: analyzing unreferenced procedure 
 counter_example_loop_index.adb:41:14: warning: subprogram "P2" has no effect
 counter_example_loop_index.adb:46:33: info: loop invariant initialization proved (Trivial: 1 VC)
 counter_example_loop_index.adb:46:33: info: loop invariant preservation proved (Trivial: 1 VC)
-counter_example_loop_index.adb:47:33: high: loop invariant might fail in first iteration (e.g. when J = 50) [possible fix: you should consider adding a postcondition to function F or turning it into an expression function] [provers gave up before completing the proof]
-counter_example_loop_index.adb:47:33: high: loop invariant might not be preserved by an arbitrary iteration (e.g. when J = 50) [possible fix: you should consider adding a postcondition to function F or turning it into an expression function] [provers gave up before completing the proof]
+counter_example_loop_index.adb:47:33: high: loop invariant might fail in first iteration (e.g. when J = 50) [possible fix: you should consider adding a postcondition to function "F" or turning it into an expression function] [provers gave up before completing the proof]
+counter_example_loop_index.adb:47:33: high: loop invariant might not be preserved by an arbitrary iteration (e.g. when J = 50) [possible fix: you should consider adding a postcondition to function "F" or turning it into an expression function] [provers gave up before completing the proof]
 counter_example_loop_index.adb:47:33: high: precondition might fail (e.g. when J = 50) [provers gave up before completing the proof]
 counter_example_loop_index.adb:48:33: info: loop invariant initialization proved (Trivial: 1 VC)
 counter_example_loop_index.adb:48:33: info: loop invariant preservation proved (Trivial: 1 VC)

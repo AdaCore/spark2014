@@ -11,19 +11,19 @@ bad_spec_prag.ads:18:04: warning: Terminating, Always_Return, and Might_Not_Retu
 bad_spec_prag.ads:18:04: warning: replace "pragma Annotate (GNATprove, might_not_return, ...)" by "with Always_Terminates => False" or use an exceptional contract or program exit postcondition on the corresponding entity
 bad_spec_prag.ads:22:04: warning: Terminating, Always_Return, and Might_Not_Return annotations are deprecated, ignored [deprecated-terminating]
 bad_spec_prag.ads:22:04: warning: replace "pragma Annotate (GNATprove, might_not_return, ...)" by "with Always_Terminates => False" or use an exceptional contract or program exit postcondition on the corresponding entity
-bad.adb:5:07: medium: unexpected exception might be raised [reason for check: Jump allows propagating no exceptions] [possible explanation: Program_Error might be unexpectedly raised] [provers gave up before completing the proof]
+bad.adb:5:07: medium: unexpected exception might be raised [reason for check: "Jump" allows propagating no exceptions] [possible explanation: "Program_Error" might be unexpectedly raised] [provers gave up before completing the proof]
 bad.adb:11:07: warning: this statement is never reached
-bad.adb:19:07: medium: unexpected exception might be raised [reason for check: Call_Jump allows propagating no exceptions] [possible explanation: Constraint_Error might be unexpectedly raised] [provers gave up before completing the proof]
+bad.adb:19:07: medium: unexpected exception might be raised [reason for check: "Call_Jump" allows propagating no exceptions] [possible explanation: "Constraint_Error" might be unexpectedly raised] [provers gave up before completing the proof]
 bad.adb:24:07: medium: implicit aspect Always_Terminates on "Silent_Call_Jump" could be incorrect, call to "Call_Jump" might be nonterminating
 bad.ads:5:13: high: all paths in "Call_Jump" raise exceptions or do not terminate normally
 bad.ads:7:14: high: all paths in "Call_Jump" raise exceptions or do not terminate normally
 bad.ads:9:06: info: data dependencies proved
 bad.ads:17:06: info: data dependencies proved
-weird.adb:18:07: medium: unexpected exception might be raised [reason for check: R allows propagating no exceptions] [possible explanation: Program_Error might be unexpectedly raised] [provers gave up before completing the proof]
+weird.adb:18:07: medium: unexpected exception might be raised [reason for check: "R" allows propagating no exceptions] [possible explanation: "Program_Error" might be unexpectedly raised] [provers gave up before completing the proof]
 weird.ads:9:14: info: aspect Always_Terminates on "R" has been proved, subprogram will terminate
 weird.ads:9:14: warning: launch "gnatprove --explain=E0013" for more information
 weird.ads:9:14: warning: procedure which does not return normally nor raises an exception cannot always terminate [no-possible-termination] [E0013]
-pack.adb:5:07: medium: unexpected exception might be raised [reason for check: Jump allows propagating no exceptions] [possible explanation: Program_Error might be unexpectedly raised] [provers gave up before completing the proof]
+pack.adb:5:07: medium: unexpected exception might be raised [reason for check: "Jump" allows propagating no exceptions] [possible explanation: "Program_Error" might be unexpectedly raised] [provers gave up before completing the proof]
 pack.adb:11:10: high: precondition might fail [provers gave up before completing the proof]
 pack.adb:20:22: info: assertion proved (CVC5: 1 VC)
 pack.adb:29:10: high: precondition might fail [provers gave up before completing the proof]

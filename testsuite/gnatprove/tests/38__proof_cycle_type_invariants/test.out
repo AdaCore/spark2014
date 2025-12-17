@@ -1,5 +1,5 @@
 external.adb:4:42: info: precondition proved (Trivial: 1 VC)
-external.adb:4:42: medium: for X before the call at external_util.ads:3
+external.adb:4:42: medium: for "X" before the call at external_util.ads:3
 external.adb:4:42: medium: in inlined invariant at external.ads:10
 external.adb:4:42: medium: invariant check might fail, cannot prove F (T) [possible fix: subprogram at external.ads:5 should mention X in a precondition] [provers gave up before completing the proof]
 external.ads:5:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
@@ -23,7 +23,7 @@ imported_return_util.ads:3:10: warning: implicit function contract might not be 
 local_global.adb:4:17: warning: subprogram "P" has no effect
 local_global.adb:6:25: medium: assertion might fail [possible fix: precondition of subprogram at line 4 should mention G] [provers gave up before completing the proof]
 local_global.adb:9:07: info: precondition proved (Trivial: 1 VC)
-local_global.adb:9:07: medium: for G before the call at local_global.adb:3
+local_global.adb:9:07: medium: for "G" before the call at local_global.adb:3
 local_global.adb:9:07: medium: in inlined invariant at local_global.ads:11
 local_global.adb:9:07: medium: invariant check might fail, cannot prove F (T) [provers gave up before completing the proof]
 local_global.ads:6:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate

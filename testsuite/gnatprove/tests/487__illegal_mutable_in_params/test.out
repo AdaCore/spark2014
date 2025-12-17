@@ -12,5 +12,5 @@ illegal_mutable_in_parameters.adb:106:04: error: pragma Annotate "Mutable_In_Par
 illegal_mutable_in_parameters.adb:120:07: error: pragma Annotate "Mutable_In_Parameters" cannot appear after a dispatching operation
 illegal_mutable_in_parameters.adb:131:04: error: pragma Annotate "Mutable_In_Parameters" cannot appear after an automatically instantiated lemma
 illegal_mutable_in_parameters.adb:133:14: error: procedure annotated with the pragma Automatic_Instantiation shall not have mutable "in" parameters
-illegal_mutable_in_parameters.adb:143:04: error: Bad_Update_13 does not have any "in" parameter of type T
+illegal_mutable_in_parameters.adb:143:04: error: "Bad_Update_13" does not have any "in" parameter of type "T"
 gnatprove: error during flow analysis and proof

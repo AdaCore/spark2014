@@ -12,5 +12,5 @@ problem_4.adb:35:13: info: index check proved (CVC5: 2 VC)
 problem_4.adb:35:25: info: index check proved (CVC5: 2 VC)
 problem_4.adb:36:13: info: index check proved (CVC5: 2 VC)
 problem_4.ads:5:13: info: implicit aspect Always_Terminates on "Same_Elements" has been proved, subprogram will terminate
-problem_4.ads:13:16: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function Same_Elements or turning it into an expression function] [provers reached step limit before completing the proof]
+problem_4.ads:13:16: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function "Same_Elements" or turning it into an expression function] [provers reached step limit before completing the proof]
 problem_4.ads:13:17: info: precondition proved (CVC5: 2 VC)

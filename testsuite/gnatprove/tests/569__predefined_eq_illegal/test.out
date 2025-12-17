@@ -6,8 +6,8 @@ illegal_annot.adb:39:54: error: third argument of aspect Annotate Predefined_Equ
 illegal_annot.adb:51:54: error: third argument of aspect Annotate Predefined_Equality on a constant must be "Null_Value"
 illegal_annot.adb:61:12: error: the private part of the scope of a type annotated with Predefined_Equality must have either a pragma SPARK_Mode (Off) or a Hide_Info annotation
 illegal_annot.adb:70:12: error: a tagged type cannot be annotated with "Only_Null"
-illegal_annot.adb:88:07: error: pragma Annotate Predefined_Equality must immediately follow the  private declaration of type T
-illegal_annot.adb:101:07: error: pragma Annotate Predefined_Equality must immediately follow the declaration of constant C
+illegal_annot.adb:88:07: error: pragma Annotate Predefined_Equality must immediately follow the  private declaration of type "T"
+illegal_annot.adb:101:07: error: pragma Annotate Predefined_Equality must immediately follow the declaration of constant "C"
 illegal_annot.adb:112:15: warning: consider annotating a constant with a pragma Annotate (GNATprove, Predefined_Equality, "Null_Value", ...)
 illegal_annot.adb:112:15: warning: no null value found for type with predefined equality "T" [predefined-equality-null]
 illegal_annot.adb:120:07: error: constant annotated with Predefined_Equality shall be declared in same declaration list as its type

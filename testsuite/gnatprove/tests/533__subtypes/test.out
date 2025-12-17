@@ -7,5 +7,5 @@ main.adb:17:26: info: range check proved (CVC5: 2 VC)
 main.adb:17:26: medium: in default value at main.adb:21
 main.adb:17:26: medium: range check might fail, cannot prove upper bound for 4 [reason for check: default value must fit in the type] [provers gave up before completing the proof]
 main.adb:34:29: medium: in default value of private type at main.adb:25
-main.adb:34:29: medium: range check might fail, cannot prove lower bound for Rand (1) [reason for check: default component value must fit in the type] [possible fix: you should consider adding a postcondition to function Rand or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
+main.adb:34:29: medium: range check might fail, cannot prove lower bound for Rand (1) [reason for check: default component value must fit in the type] [possible fix: you should consider adding a postcondition to function "Rand" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
 main.adb:40:23: info: range check proved (CVC5: 1 VC)

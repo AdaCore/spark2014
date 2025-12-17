@@ -2,7 +2,7 @@ illegal.adb:4:06: error: Entity parameter of annotation No_Bitwise_Operations mu
 illegal.adb:7:06: error: Entity parameter of annotation No_Bitwise_Operations must be a modular type
 illegal.adb:11:06: error: Annotation No_Bitwise_Operations must apply to a type declaration
 illegal.adb:17:55: error: third argument of pragma Annotate No_Bitwise_Operations must be an entity
-illegal.adb:22:04: error: pragma Annotate No_Bitwise_Operations must immediately follow the full type declaration of T
+illegal.adb:22:04: error: pragma Annotate No_Bitwise_Operations must immediately follow the full type declaration of type "T"
 illegal.adb:26:09: error: bitwise operation on type with No_Bitwise_Operations annotation is not allowed in SPARK
 illegal.adb:26:09: error: violation of pragma SPARK_Mode at test.adc:1
 illegal.adb:27:09: error: bitwise operation on type with No_Bitwise_Operations annotation is not allowed in SPARK

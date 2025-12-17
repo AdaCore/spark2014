@@ -168,33 +168,33 @@
 
  info: Container_Aggregates annotation proved, in instantiation at my_integer_sets.ads:31
 --> spark-containers-formal-hashed_sets.ads:94:06
-      + when reestablishing invariant on Aggr_Capacity at spark-containers-formal-hashed_sets.ads:1762, in instantiation at my_integer_sets.ads:31
-      + after a call to Insert at spark-containers-formal-hashed_sets.ads:756, in instantiation at my_integer_sets.ads:31
+      + when reestablishing invariant on "Aggr_Capacity" at spark-containers-formal-hashed_sets.ads:1762, in instantiation at my_integer_sets.ads:31
+      + after a call to "Insert" at spark-containers-formal-hashed_sets.ads:756, in instantiation at my_integer_sets.ads:31
 
  info: Container_Aggregates annotation proved, in instantiation at my_integer_sets.ads:31
 --> spark-containers-formal-hashed_sets.ads:94:06
-      + when establishing invariant on Contains at spark-containers-functional-sets.ads:99, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
-      + after a call to Empty_Set at spark-containers-formal-hashed_sets.ads:102, in instantiation at my_integer_sets.ads:31
+      + when establishing invariant on "Contains" at spark-containers-functional-sets.ads:99, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
+      + after a call to "Empty_Set" at spark-containers-formal-hashed_sets.ads:102, in instantiation at my_integer_sets.ads:31
 
  info: Container_Aggregates annotation proved, in instantiation at my_integer_sets.ads:31
 --> spark-containers-formal-hashed_sets.ads:94:06
-      + when reestablishing invariant on Contains at spark-containers-functional-sets.ads:99, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
-      + after a call to Insert at spark-containers-formal-hashed_sets.ads:756, in instantiation at my_integer_sets.ads:31
+      + when reestablishing invariant on "Contains" at spark-containers-functional-sets.ads:99, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
+      + after a call to "Insert" at spark-containers-formal-hashed_sets.ads:756, in instantiation at my_integer_sets.ads:31
 
  info: Container_Aggregates annotation proved, in instantiation at my_integer_sets.ads:31
 --> spark-containers-formal-hashed_sets.ads:94:06
-      + when establishing invariant on Length at spark-containers-functional-sets.ads:124, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
-      + after a call to Empty_Set at spark-containers-formal-hashed_sets.ads:102, in instantiation at my_integer_sets.ads:31
+      + when establishing invariant on "Length" at spark-containers-functional-sets.ads:124, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
+      + after a call to "Empty_Set" at spark-containers-formal-hashed_sets.ads:102, in instantiation at my_integer_sets.ads:31
 
  info: Container_Aggregates annotation proved, in instantiation at my_integer_sets.ads:31
 --> spark-containers-formal-hashed_sets.ads:94:06
-      + when reestablishing invariant on Length at spark-containers-functional-sets.ads:124, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
-      + after a call to Insert at spark-containers-formal-hashed_sets.ads:756, in instantiation at my_integer_sets.ads:31
+      + when reestablishing invariant on "Length" at spark-containers-functional-sets.ads:124, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
+      + after a call to "Insert" at spark-containers-formal-hashed_sets.ads:756, in instantiation at my_integer_sets.ads:31
 
  info: Container_Aggregates annotation proved, in instantiation at my_integer_sets.ads:31
 --> spark-containers-formal-hashed_sets.ads:94:06
-      + when establishing invariant on Aggr_Capacity at spark-containers-formal-hashed_sets.ads:1762, in instantiation at my_integer_sets.ads:31
-      + after a call to Empty_Set at spark-containers-formal-hashed_sets.ads:102, in instantiation at my_integer_sets.ads:31
+      + when establishing invariant on "Aggr_Capacity" at spark-containers-formal-hashed_sets.ads:1762, in instantiation at my_integer_sets.ads:31
+      + after a call to "Empty_Set" at spark-containers-formal-hashed_sets.ads:102, in instantiation at my_integer_sets.ads:31
       + during checks for container aggregates at spark-containers-formal-hashed_sets.ads:94, in instantiation at my_integer_sets.ads:31
 
  info: precondition proved, in instantiation at my_integer_sets.ads:31
@@ -307,28 +307,28 @@
 
  info: Container_Aggregates annotation proved, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-functional-maps.ads:105:06
-      + when establishing invariant on Has_Key at spark-containers-functional-maps.ads:131, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
-      + after a call to Empty_Map at spark-containers-functional-maps.ads:297, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+      + when establishing invariant on "Has_Key" at spark-containers-functional-maps.ads:131, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+      + after a call to "Empty_Map" at spark-containers-functional-maps.ads:297, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 
  info: Container_Aggregates annotation proved, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-functional-maps.ads:105:06
-      + when reestablishing invariant on Get at spark-containers-functional-maps.ads:148, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
-      + after a call to Aggr_Include at spark-containers-functional-maps.ads:612, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+      + when reestablishing invariant on "Get" at spark-containers-functional-maps.ads:148, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+      + after a call to "Aggr_Include" at spark-containers-functional-maps.ads:612, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 
  info: Container_Aggregates annotation proved, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-functional-maps.ads:105:06
-      + when reestablishing invariant on Has_Key at spark-containers-functional-maps.ads:131, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
-      + after a call to Aggr_Include at spark-containers-functional-maps.ads:612, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+      + when reestablishing invariant on "Has_Key" at spark-containers-functional-maps.ads:131, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+      + after a call to "Aggr_Include" at spark-containers-functional-maps.ads:612, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 
  info: Container_Aggregates annotation proved, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-functional-maps.ads:105:06
-      + when establishing invariant on Length at spark-containers-functional-maps.ads:178, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
-      + after a call to Empty_Map at spark-containers-functional-maps.ads:297, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+      + when establishing invariant on "Length" at spark-containers-functional-maps.ads:178, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+      + after a call to "Empty_Map" at spark-containers-functional-maps.ads:297, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 
  info: Container_Aggregates annotation proved, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-functional-maps.ads:105:06
-      + when reestablishing invariant on Length at spark-containers-functional-maps.ads:178, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
-      + after a call to Aggr_Include at spark-containers-functional-maps.ads:612, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+      + when reestablishing invariant on "Length" at spark-containers-functional-maps.ads:178, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+      + after a call to "Aggr_Include" at spark-containers-functional-maps.ads:612, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 
  info: precondition proved, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-functional-maps.ads:131:13
@@ -762,43 +762,43 @@
 
  info: Container_Aggregates annotation proved, in instantiation at my_integer_sets.ads:9
 --> spark-containers-functional-sets.ads:74:06
-      + when establishing invariant on Contains at spark-containers-functional-sets.ads:99, in instantiation at my_integer_sets.ads:9
-      + after a call to Empty_Set at spark-containers-functional-sets.ads:260, in instantiation at my_integer_sets.ads:9
+      + when establishing invariant on "Contains" at spark-containers-functional-sets.ads:99, in instantiation at my_integer_sets.ads:9
+      + after a call to "Empty_Set" at spark-containers-functional-sets.ads:260, in instantiation at my_integer_sets.ads:9
 
  info: Container_Aggregates annotation proved, in instantiation at my_integer_sets.ads:9
 --> spark-containers-functional-sets.ads:74:06
-      + when reestablishing invariant on Contains at spark-containers-functional-sets.ads:99, in instantiation at my_integer_sets.ads:9
-      + after a call to Aggr_Include at spark-containers-functional-sets.ads:484, in instantiation at my_integer_sets.ads:9
+      + when reestablishing invariant on "Contains" at spark-containers-functional-sets.ads:99, in instantiation at my_integer_sets.ads:9
+      + after a call to "Aggr_Include" at spark-containers-functional-sets.ads:484, in instantiation at my_integer_sets.ads:9
 
  info: Container_Aggregates annotation proved, in instantiation at my_integer_sets.ads:9
 --> spark-containers-functional-sets.ads:74:06
-      + when establishing invariant on Length at spark-containers-functional-sets.ads:124, in instantiation at my_integer_sets.ads:9
-      + after a call to Empty_Set at spark-containers-functional-sets.ads:260, in instantiation at my_integer_sets.ads:9
+      + when establishing invariant on "Length" at spark-containers-functional-sets.ads:124, in instantiation at my_integer_sets.ads:9
+      + after a call to "Empty_Set" at spark-containers-functional-sets.ads:260, in instantiation at my_integer_sets.ads:9
 
  info: Container_Aggregates annotation proved, in instantiation at my_integer_sets.ads:9
 --> spark-containers-functional-sets.ads:74:06
-      + when reestablishing invariant on Length at spark-containers-functional-sets.ads:124, in instantiation at my_integer_sets.ads:9
-      + after a call to Aggr_Include at spark-containers-functional-sets.ads:484, in instantiation at my_integer_sets.ads:9
+      + when reestablishing invariant on "Length" at spark-containers-functional-sets.ads:124, in instantiation at my_integer_sets.ads:9
+      + after a call to "Aggr_Include" at spark-containers-functional-sets.ads:484, in instantiation at my_integer_sets.ads:9
 
  info: Container_Aggregates annotation proved, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
 --> spark-containers-functional-sets.ads:74:06
-      + when establishing invariant on Contains at spark-containers-functional-sets.ads:99, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
-      + after a call to Empty_Set at spark-containers-functional-sets.ads:260, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
+      + when establishing invariant on "Contains" at spark-containers-functional-sets.ads:99, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
+      + after a call to "Empty_Set" at spark-containers-functional-sets.ads:260, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
 
  info: Container_Aggregates annotation proved, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
 --> spark-containers-functional-sets.ads:74:06
-      + when reestablishing invariant on Contains at spark-containers-functional-sets.ads:99, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
-      + after a call to Aggr_Include at spark-containers-functional-sets.ads:484, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
+      + when reestablishing invariant on "Contains" at spark-containers-functional-sets.ads:99, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
+      + after a call to "Aggr_Include" at spark-containers-functional-sets.ads:484, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
 
  info: Container_Aggregates annotation proved, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
 --> spark-containers-functional-sets.ads:74:06
-      + when establishing invariant on Length at spark-containers-functional-sets.ads:124, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
-      + after a call to Empty_Set at spark-containers-functional-sets.ads:260, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
+      + when establishing invariant on "Length" at spark-containers-functional-sets.ads:124, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
+      + after a call to "Empty_Set" at spark-containers-functional-sets.ads:260, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
 
  info: Container_Aggregates annotation proved, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
 --> spark-containers-functional-sets.ads:74:06
-      + when reestablishing invariant on Length at spark-containers-functional-sets.ads:124, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
-      + after a call to Aggr_Include at spark-containers-functional-sets.ads:484, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
+      + when reestablishing invariant on "Length" at spark-containers-functional-sets.ads:124, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
+      + after a call to "Aggr_Include" at spark-containers-functional-sets.ads:484, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
 
  info: precondition proved, in instantiation at my_integer_sets.ads:9
 --> spark-containers-functional-sets.ads:99:13
@@ -903,18 +903,18 @@
 
  info: Container_Aggregates annotation proved, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
 --> spark-containers-functional-vectors.ads:99:06
-      + when establishing invariant on Last at spark-containers-functional-vectors.ads:118, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
-      + after a call to Empty_Sequence at spark-containers-functional-vectors.ads:264, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
+      + when establishing invariant on "Last" at spark-containers-functional-vectors.ads:118, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
+      + after a call to "Empty_Sequence" at spark-containers-functional-vectors.ads:264, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
 
  info: Container_Aggregates annotation proved, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
 --> spark-containers-functional-vectors.ads:99:06
-      + when reestablishing invariant on Get at spark-containers-functional-vectors.ads:122, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
-      + after a call to Aggr_Append at spark-containers-functional-vectors.ads:569, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
+      + when reestablishing invariant on "Get" at spark-containers-functional-vectors.ads:122, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
+      + after a call to "Aggr_Append" at spark-containers-functional-vectors.ads:569, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
 
  info: Container_Aggregates annotation proved, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
 --> spark-containers-functional-vectors.ads:99:06
-      + when reestablishing invariant on Last at spark-containers-functional-vectors.ads:118, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
-      + after a call to Aggr_Append at spark-containers-functional-vectors.ads:569, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
+      + when reestablishing invariant on "Last" at spark-containers-functional-vectors.ads:118, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
+      + after a call to "Aggr_Append" at spark-containers-functional-vectors.ads:569, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
 
  info: precondition proved, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
 --> spark-containers-functional-vectors.ads:122:13

@@ -1,35 +1,20 @@
- medium: resource or memory leak might occur at end of scope
---> main.adb:4:04
-    4 |       L : constant List := [1, 2, 3, 4, 5, 6];
-      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      + provers reached step limit before completing the proof
-
- info: precondition proved
---> main.adb:4:25
-      + all elements shall fit in index type for sequence aggregates at through_model.ads:9
-
- info: assertion proved
---> main.adb:6:19
-
- info: precondition proved
---> main.adb:6:26
  info: absence of resource or memory leak proved
 --> through_model.adb:5:09
 
  info: Container_Aggregates annotation proved
 --> through_model.ads:9:06
-      + when establishing invariant on Length at spark-containers-functional-infinite_sequences.ads:103, in instantiation at through_model.ads:4
-      + after a call to Empty_List at through_model.ads:11
+      + when establishing invariant on "Length" at spark-containers-functional-infinite_sequences.ads:103, in instantiation at through_model.ads:4
+      + after a call to "Empty_List" at through_model.ads:11
 
  info: Container_Aggregates annotation proved
 --> through_model.ads:9:06
-      + when reestablishing invariant on Get at spark-containers-functional-infinite_sequences.ads:110, in instantiation at through_model.ads:4
-      + after a call to Add at through_model.ads:17
+      + when reestablishing invariant on "Get" at spark-containers-functional-infinite_sequences.ads:110, in instantiation at through_model.ads:4
+      + after a call to "Add" at through_model.ads:17
 
  info: Container_Aggregates annotation proved
 --> through_model.ads:9:06
-      + when reestablishing invariant on Length at spark-containers-functional-infinite_sequences.ads:103, in instantiation at through_model.ads:4
-      + after a call to Add at through_model.ads:17
+      + when reestablishing invariant on "Length" at spark-containers-functional-infinite_sequences.ads:103, in instantiation at through_model.ads:4
+      + after a call to "Add" at through_model.ads:17
 
  info: implicit aspect Always_Terminates on "Empty_List" has been proved, subprogram will terminate
 --> through_model.ads:11:13
@@ -75,18 +60,18 @@
 
  info: Container_Aggregates annotation proved, in instantiation at through_model.ads:4
 --> spark-containers-functional-infinite_sequences.ads:84:06
-      + when establishing invariant on Length at spark-containers-functional-infinite_sequences.ads:103, in instantiation at through_model.ads:4
-      + after a call to Empty_Sequence at spark-containers-functional-infinite_sequences.ads:245, in instantiation at through_model.ads:4
+      + when establishing invariant on "Length" at spark-containers-functional-infinite_sequences.ads:103, in instantiation at through_model.ads:4
+      + after a call to "Empty_Sequence" at spark-containers-functional-infinite_sequences.ads:245, in instantiation at through_model.ads:4
 
  info: Container_Aggregates annotation proved, in instantiation at through_model.ads:4
 --> spark-containers-functional-infinite_sequences.ads:84:06
-      + when reestablishing invariant on Get at spark-containers-functional-infinite_sequences.ads:110, in instantiation at through_model.ads:4
-      + after a call to Aggr_Append at spark-containers-functional-infinite_sequences.ads:534, in instantiation at through_model.ads:4
+      + when reestablishing invariant on "Get" at spark-containers-functional-infinite_sequences.ads:110, in instantiation at through_model.ads:4
+      + after a call to "Aggr_Append" at spark-containers-functional-infinite_sequences.ads:534, in instantiation at through_model.ads:4
 
  info: Container_Aggregates annotation proved, in instantiation at through_model.ads:4
 --> spark-containers-functional-infinite_sequences.ads:84:06
-      + when reestablishing invariant on Length at spark-containers-functional-infinite_sequences.ads:103, in instantiation at through_model.ads:4
-      + after a call to Aggr_Append at spark-containers-functional-infinite_sequences.ads:534, in instantiation at through_model.ads:4
+      + when reestablishing invariant on "Length" at spark-containers-functional-infinite_sequences.ads:103, in instantiation at through_model.ads:4
+      + after a call to "Aggr_Append" at spark-containers-functional-infinite_sequences.ads:534, in instantiation at through_model.ads:4
 
  info: precondition proved, in instantiation at through_model.ads:4
 --> spark-containers-functional-infinite_sequences.ads:110:13
@@ -319,3 +304,18 @@
 
  info: precondition proved, in instantiation at spark-containers-functional-infinite_sequences.ads:365, in instantiation at through_model.ads:4
 --> spark-containers-parameter_checks.adb:131:13
+ medium: resource or memory leak might occur at end of scope
+--> main.adb:4:04
+    4 |       L : constant List := [1, 2, 3, 4, 5, 6];
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      + provers reached step limit before completing the proof
+
+ info: precondition proved
+--> main.adb:4:25
+      + all elements shall fit in index type for sequence aggregates at through_model.ads:9
+
+ info: assertion proved
+--> main.adb:6:19
+
+ info: precondition proved
+--> main.adb:6:26

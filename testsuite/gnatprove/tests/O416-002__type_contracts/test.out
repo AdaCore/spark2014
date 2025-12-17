@@ -7,10 +7,10 @@ communications.adb:11:30: medium: range check might fail, cannot prove upper bou
 communications.adb:13:17: info: length check proved (CVC5: 3 VC)
 communications.adb:13:20: info: length check proved (CVC5: 3 VC)
 communications.ads:10:13: info: implicit aspect Always_Terminates on "Create" has been proved, subprogram will terminate
-communications.ads:10:13: medium: for the result of Create at communications.ads:10
+communications.ads:10:13: medium: for the result of "Create" at communications.ads:10
 communications.ads:10:13: medium: in inlined invariant at communications.ads:21
 communications.ads:10:13: medium: invariant check might fail, cannot prove Communication.Msgs(Idx).Received <= Communication.Msgs(Idx+1).Received [provers reached step limit before completing the proof]
-communications.ads:12:14: info: for Com at the end of Mark_Duplicates at communications.ads:12
+communications.ads:12:14: info: for "Com" at the end of "Mark_Duplicates" at communications.ads:12
 communications.ads:12:14: info: invariant check proved (CVC5: 1 VC)
 communications.ads:12:31: warning: unused initial value of "Com"
 communications.ads:16:09: medium: in inlined invariant at communications.ads:21

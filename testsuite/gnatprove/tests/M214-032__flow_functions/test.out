@@ -14,4 +14,4 @@ test.adb:30:14: info: initialization of "R" proved
 test.adb:31:17: medium: overflow check might fail, cannot prove upper bound for N + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (N <= Integer'Last - 1) to subprogram at line 28] [provers gave up before completing the proof]
 test.adb:35:04: warning: analyzing unreferenced function "No_Return" [unreferenced-function]
 test.adb:35:13: info: implicit aspect Always_Terminates on "No_Return" has been proved, subprogram will terminate
-test.adb:44:07: medium: unexpected exception might be raised [reason for check: No_Return allows propagating no exceptions] [possible explanation: Program_Error might be unexpectedly raised] [provers gave up before completing the proof]
+test.adb:44:07: medium: unexpected exception might be raised [reason for check: "No_Return" allows propagating no exceptions] [possible explanation: "Program_Error" might be unexpectedly raised] [provers gave up before completing the proof]

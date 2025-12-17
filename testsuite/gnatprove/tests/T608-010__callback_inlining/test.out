@@ -1,5 +1,5 @@
 callback.adb:8:10: info: only expected exception raised (CVC5: 1 VC), in call inlined at callback.adb:18
-callback.adb:8:10: medium: unexpected exception might be raised [reason for check: Set allows propagating no exceptions] [possible explanation: Program_Error might be unexpectedly raised] [provers gave up before completing the proof]
+callback.adb:8:10: medium: unexpected exception might be raised [reason for check: "Set" allows propagating no exceptions] [possible explanation: "Program_Error" might be unexpectedly raised] [provers gave up before completing the proof]
 callback.adb:18:04: info: analyzing call to "Set" in context
 callback.adb:19:19: info: assertion proved (CVC5: 1 VC)
 callback.adb:21:04: info: pointer dereference check proved (CVC5: 1 VC)
