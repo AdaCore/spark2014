@@ -1,7 +1,7 @@
 finally_exceptions.adb:6:19: info: no contextual analysis of "Random" (body not seen yet)
 finally_exceptions.adb:6:19: warning: assuming "Random" has no effect on global items
 finally_exceptions.adb:6:19: warning: no Global contract available for "Random" [assumed-global-null]
-finally_exceptions.adb:14:10: medium: unexpected exception might be raised [reason for check: Finally_Exceptions allows propagating no exceptions] [possible explanation: E might be unexpectedly raised] [provers gave up before completing the proof]
+finally_exceptions.adb:14:10: medium: unexpected exception might be raised [reason for check: "Finally_Exceptions" allows propagating no exceptions] [possible explanation: "E" might be unexpectedly raised] [provers gave up before completing the proof]
 finally_exceptions.adb:14:10: medium: when an exception is raised at finally_exceptions.adb:10
 finally_exceptions.adb:19:22: info: assertion proved (CVC5: 1 VC)
 finally_frame_condition.adb:4:14: warning: subprogram "Write_Detection" has no effect
@@ -23,10 +23,10 @@ finally_range.adb:11:14: info: postcondition proved (CVC5: 36 VC; Trivial: 1 VC)
 finally_range.adb:38:39: info: exceptional case proved (Z3: 2 VC)
 finally_range.adb:39:30: info: exit case proved (CVC5: 1 VC)
 finally_range.adb:39:30: info: exit case proved (CVC5: 1 VC; Trivial: 1 VC)
-finally_range.adb:39:30: info: on exceptional exit from Test at finally_range.adb:8
-finally_range.adb:39:30: info: on normal return from Test at finally_range.adb:8
+finally_range.adb:39:30: info: on exceptional exit from "Test" at finally_range.adb:8
+finally_range.adb:39:30: info: on normal return from "Test" at finally_range.adb:8
 finally_range.adb:40:31: info: exit case proved (Z3: 1 VC)
-finally_range.adb:40:31: info: on exceptional exit from Test at finally_range.adb:8
+finally_range.adb:40:31: info: on exceptional exit from "Test" at finally_range.adb:8
 finally_range.adb:45:17: info: add a contract to analyze it separately from calling contexts
 finally_range.adb:45:17: info: local subprogram "Enter" only analyzed in the context of calls [info-unrolling-inlining]
 finally_range.adb:48:25: info: overflow check proved (CVC5: 2 VC), in call inlined at finally_range.adb:104

@@ -8,7 +8,7 @@ global_stack.ads:4:12: error: launch "gnatprove --explain=E0005" for more inform
 global_stack.ads:4:12: error: violation of aspect SPARK_Mode at line 1
 search_array.adb:7:24: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 search_array.adb:9:20: info: range check proved (CVC5: 2 VC)
-search_array.adb:12:07: medium: unexpected exception might be raised [reason for check: Search_Zero_P allows propagating no exceptions] [possible explanation: Not_Found might be unexpectedly raised] [provers reached step limit before completing the proof]
+search_array.adb:12:07: medium: unexpected exception might be raised [reason for check: "Search_Zero_P" allows propagating no exceptions] [possible explanation: "Not_Found" might be unexpectedly raised] [provers reached step limit before completing the proof]
 search_array.ads:5:13: info: implicit aspect Always_Terminates on "Search_Zero_P" has been proved, subprogram will terminate
 use_access.adb:3:41: medium: range check might fail, cannot prove lower bound for W (W'First) [reason for check: default component value must fit in the type] [possible fix: subprogram at use_access.ads:4 should mention W in a precondition] [provers reached step limit before completing the proof]
 use_access.adb:3:45: high: array index check might fail (e.g. when W'First = 1 and W'Last = 0) [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
@@ -203,7 +203,7 @@ use_stack.adb:7:09: info: precondition proved (CVC5: 1 VC)
 use_stack.adb:7:09: medium: "Stack.The_Stack" might not be initialized after elaboration of main program "Use_Stack"
 use_stack.adb:8:04: medium: "Stack.The_Stack" might not be initialized after elaboration of main program "Use_Stack"
 use_stack.adb:9:19: info: precondition proved (CVC5: 1 VC)
-use_stack.adb:9:19: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Peek or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
+use_stack.adb:9:19: medium: assertion might fail [possible fix: you should consider adding a postcondition to function "Peek" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
 use_stack.adb:9:31: info: precondition proved (CVC5: 1 VC)
 use_stack.adb:10:09: info: precondition proved (CVC5: 1 VC)
 use_stack.adb:10:09: medium: "Stack.P_Stack" might not be initialized after elaboration of main program "Use_Stack"
@@ -491,7 +491,7 @@ distributed_file_system.ads:14:20: info: class-wide precondition is weaker than 
 distributed_file_system.ads:15:20: info: class-wide postcondition is stronger than overridden one (CVC5: 1 VC)
 distributed_file_system.ads:20:20: info: class-wide precondition is weaker than overridden one (CVC5: 1 VC)
 distributed_file_system.ads:21:20: info: class-wide postcondition is stronger than overridden one (CVC5: 2 VC)
-distributed_file_system.ads:26:20: medium: class-wide precondition might be stronger than overridden one, cannot prove F.Is_Synchronized [possible fix: you should consider adding a postcondition to function Is_Open and function Is_Synchronized or turning them into expression functions in their unit spec] [provers reached step limit before completing the proof]
+distributed_file_system.ads:26:20: medium: class-wide precondition might be stronger than overridden one, cannot prove F.Is_Synchronized [possible fix: you should consider adding a postcondition to function "Is_Open" and function "Is_Synchronized" or turning them into expression functions in their unit spec] [provers reached step limit before completing the proof]
 distributed_file_system.ads:27:20: info: class-wide postcondition is stronger than overridden one (CVC5: 1 VC)
 ints.adb:12:30: info: overflow check proved (CVC5: 2 VC)
 ints.adb:29:10: info: precondition proved (CVC5: 1 VC)

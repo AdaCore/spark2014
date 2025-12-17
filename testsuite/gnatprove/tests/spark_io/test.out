@@ -80,13 +80,13 @@ copy.adb:281:13: info: precondition proved (CVC5: 2 VC; Z3: 1 VC)
 copy.adb:281:32: info: discriminant check proved (CVC5: 1 VC)
 copy.adb:284:34: info: overflow check proved (CVC5: 1 VC; Z3: 1 VC)
 copy.adb:291:16: info: precondition proved (CVC5: 1 VC)
-copy.adb:292:73: low: range check might fail, cannot prove upper bound for "Oh dear, a file error has occured while writing to " & Name (Destination) [reason for check: input value must fit in parameter type] [possible fix: you should consider adding a postcondition to function Name or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
+copy.adb:292:73: low: range check might fail, cannot prove upper bound for "Oh dear, a file error has occured while writing to " & Name (Destination) [reason for check: input value must fit in parameter type] [possible fix: you should consider adding a postcondition to function "Name" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
 copy.adb:293:19: info: precondition proved (CVC5: 1 VC)
 copy.adb:296:16: info: precondition proved (CVC5: 1 VC; altergo: 2 VC)
 copy.adb:298:16: info: precondition proved (Z3: 2 VC)
 copy.adb:299:16: info: precondition proved (CVC5: 2 VC)
 copy.adb:305:13: info: precondition proved (CVC5: 1 VC)
-copy.adb:305:55: low: range check might fail, cannot prove upper bound for "An error has occured reading " & Name (Source) [reason for check: input value must fit in parameter type] [possible fix: you should consider adding a postcondition to function Name or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
+copy.adb:305:55: low: range check might fail, cannot prove upper bound for "An error has occured reading " & Name (Source) [reason for check: input value must fit in parameter type] [possible fix: you should consider adding a postcondition to function "Name" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
 copy.adb:306:23: info: precondition proved (Z3: 1 VC)
 copy.adb:309:13: info: precondition proved (CVC5: 1 VC; altergo: 2 VC)
 copy.adb:311:13: info: precondition proved (Z3: 2 VC)

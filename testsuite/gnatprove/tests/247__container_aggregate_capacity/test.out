@@ -6,20 +6,20 @@ test_capacity.adb:21:09: info: Container_Aggregates annotation proved (CVC5: 1 V
 test_capacity.adb:21:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
 test_capacity.adb:21:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
 test_capacity.adb:21:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
-test_capacity.adb:21:09: info: after a call to Append at test_capacity.adb:25
-test_capacity.adb:21:09: info: after a call to Append at test_capacity.adb:25
-test_capacity.adb:21:09: info: after a call to Empty at test_capacity.adb:23
-test_capacity.adb:21:09: info: after a call to Empty at test_capacity.adb:23
-test_capacity.adb:21:09: info: after a call to Empty at test_capacity.adb:23
+test_capacity.adb:21:09: info: after a call to "Append" at test_capacity.adb:25
+test_capacity.adb:21:09: info: after a call to "Append" at test_capacity.adb:25
+test_capacity.adb:21:09: info: after a call to "Empty" at test_capacity.adb:23
+test_capacity.adb:21:09: info: after a call to "Empty" at test_capacity.adb:23
+test_capacity.adb:21:09: info: after a call to "Empty" at test_capacity.adb:23
 test_capacity.adb:21:09: info: during checks for container aggregates at test_capacity.adb:21
-test_capacity.adb:21:09: info: when establishing invariant on Capacity at test_capacity.adb:39
-test_capacity.adb:21:09: info: when establishing invariant on Contains at test_capacity.adb:42
-test_capacity.adb:21:09: info: when establishing invariant on Length at test_capacity.adb:35
-test_capacity.adb:21:09: info: when reestablishing invariant on Capacity at test_capacity.adb:39
-test_capacity.adb:21:09: info: when reestablishing invariant on Length at test_capacity.adb:35
+test_capacity.adb:21:09: info: when establishing invariant on "Capacity" at test_capacity.adb:39
+test_capacity.adb:21:09: info: when establishing invariant on "Contains" at test_capacity.adb:42
+test_capacity.adb:21:09: info: when establishing invariant on "Length" at test_capacity.adb:35
+test_capacity.adb:21:09: info: when reestablishing invariant on "Capacity" at test_capacity.adb:39
+test_capacity.adb:21:09: info: when reestablishing invariant on "Length" at test_capacity.adb:35
 test_capacity.adb:21:09: medium: Container_Aggregates annotation might be incorrect [provers reached step limit before completing the proof]
-test_capacity.adb:21:09: medium: after a call to Append at test_capacity.adb:25
-test_capacity.adb:21:09: medium: when reestablishing invariant on Contains at test_capacity.adb:42
+test_capacity.adb:21:09: medium: after a call to "Append" at test_capacity.adb:25
+test_capacity.adb:21:09: medium: when reestablishing invariant on "Contains" at test_capacity.adb:42
 test_capacity.adb:23:16: info: implicit aspect Always_Terminates on "Empty" has been proved, subprogram will terminate
 test_capacity.adb:24:09: info: data dependencies proved
 test_capacity.adb:25:17: info: aspect Always_Terminates on "Append" has been proved, subprogram will terminate
@@ -50,14 +50,14 @@ test_capacity.adb:85:09: info: Container_Aggregates annotation proved (CVC5: 1 V
 test_capacity.adb:85:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
 test_capacity.adb:85:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
 test_capacity.adb:85:09: info: Container_Aggregates annotation proved (CVC5: 1 VC; altergo: 2 VC)
-test_capacity.adb:85:09: info: after a call to Append at test_capacity.adb:88
-test_capacity.adb:85:09: info: after a call to Append at test_capacity.adb:88
-test_capacity.adb:85:09: info: after a call to Empty at test_capacity.adb:87
-test_capacity.adb:85:09: info: after a call to Empty at test_capacity.adb:87
-test_capacity.adb:85:09: info: when establishing invariant on Contains at test_capacity.adb:105
-test_capacity.adb:85:09: info: when establishing invariant on Length at test_capacity.adb:98
-test_capacity.adb:85:09: info: when reestablishing invariant on Contains at test_capacity.adb:105
-test_capacity.adb:85:09: info: when reestablishing invariant on Length at test_capacity.adb:98
+test_capacity.adb:85:09: info: after a call to "Append" at test_capacity.adb:88
+test_capacity.adb:85:09: info: after a call to "Append" at test_capacity.adb:88
+test_capacity.adb:85:09: info: after a call to "Empty" at test_capacity.adb:87
+test_capacity.adb:85:09: info: after a call to "Empty" at test_capacity.adb:87
+test_capacity.adb:85:09: info: when establishing invariant on "Contains" at test_capacity.adb:105
+test_capacity.adb:85:09: info: when establishing invariant on "Length" at test_capacity.adb:98
+test_capacity.adb:85:09: info: when reestablishing invariant on "Contains" at test_capacity.adb:105
+test_capacity.adb:85:09: info: when reestablishing invariant on "Length" at test_capacity.adb:98
 test_capacity.adb:87:16: info: implicit aspect Always_Terminates on "Empty" has been proved, subprogram will terminate
 test_capacity.adb:88:17: info: aspect Always_Terminates on "Append" has been proved, subprogram will terminate
 test_capacity.adb:89:09: info: data dependencies proved
@@ -90,21 +90,21 @@ test_capacity.adb:149:09: info: Container_Aggregates annotation proved (CVC5: 1 
 test_capacity.adb:149:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
 test_capacity.adb:149:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
 test_capacity.adb:149:09: info: Container_Aggregates annotation proved (CVC5: 1 VC; altergo: 2 VC)
-test_capacity.adb:149:09: info: after a call to Append at test_capacity.adb:153
-test_capacity.adb:149:09: info: after a call to Append at test_capacity.adb:153
-test_capacity.adb:149:09: info: after a call to Append at test_capacity.adb:153
-test_capacity.adb:149:09: info: after a call to Append at test_capacity.adb:153
-test_capacity.adb:149:09: info: after a call to Empty at test_capacity.adb:151
-test_capacity.adb:149:09: info: after a call to Empty at test_capacity.adb:151
-test_capacity.adb:149:09: info: after a call to Empty at test_capacity.adb:151
+test_capacity.adb:149:09: info: after a call to "Append" at test_capacity.adb:153
+test_capacity.adb:149:09: info: after a call to "Append" at test_capacity.adb:153
+test_capacity.adb:149:09: info: after a call to "Append" at test_capacity.adb:153
+test_capacity.adb:149:09: info: after a call to "Append" at test_capacity.adb:153
+test_capacity.adb:149:09: info: after a call to "Empty" at test_capacity.adb:151
+test_capacity.adb:149:09: info: after a call to "Empty" at test_capacity.adb:151
+test_capacity.adb:149:09: info: after a call to "Empty" at test_capacity.adb:151
 test_capacity.adb:149:09: info: during checks for container aggregates at test_capacity.adb:149
-test_capacity.adb:149:09: info: when establishing invariant on Capacity at test_capacity.adb:169
-test_capacity.adb:149:09: info: when establishing invariant on Has_Key at test_capacity.adb:172
-test_capacity.adb:149:09: info: when establishing invariant on Length at test_capacity.adb:165
-test_capacity.adb:149:09: info: when reestablishing invariant on Capacity at test_capacity.adb:169
-test_capacity.adb:149:09: info: when reestablishing invariant on Get at test_capacity.adb:175
-test_capacity.adb:149:09: info: when reestablishing invariant on Has_Key at test_capacity.adb:172
-test_capacity.adb:149:09: info: when reestablishing invariant on Length at test_capacity.adb:165
+test_capacity.adb:149:09: info: when establishing invariant on "Capacity" at test_capacity.adb:169
+test_capacity.adb:149:09: info: when establishing invariant on "Has_Key" at test_capacity.adb:172
+test_capacity.adb:149:09: info: when establishing invariant on "Length" at test_capacity.adb:165
+test_capacity.adb:149:09: info: when reestablishing invariant on "Capacity" at test_capacity.adb:169
+test_capacity.adb:149:09: info: when reestablishing invariant on "Get" at test_capacity.adb:175
+test_capacity.adb:149:09: info: when reestablishing invariant on "Has_Key" at test_capacity.adb:172
+test_capacity.adb:149:09: info: when reestablishing invariant on "Length" at test_capacity.adb:165
 test_capacity.adb:151:16: info: implicit aspect Always_Terminates on "Empty" has been proved, subprogram will terminate
 test_capacity.adb:152:09: info: data dependencies proved
 test_capacity.adb:153:17: info: aspect Always_Terminates on "Append" has been proved, subprogram will terminate
@@ -168,16 +168,16 @@ test_capacity.adb:253:09: info: Container_Aggregates annotation proved (CVC5: 1 
 test_capacity.adb:253:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
 test_capacity.adb:253:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
 test_capacity.adb:253:09: info: Container_Aggregates annotation proved (CVC5: 1 VC; altergo: 2 VC)
-test_capacity.adb:253:09: info: after a call to Append at test_capacity.adb:256
-test_capacity.adb:253:09: info: after a call to Append at test_capacity.adb:256
-test_capacity.adb:253:09: info: after a call to Append at test_capacity.adb:256
-test_capacity.adb:253:09: info: after a call to Empty at test_capacity.adb:255
-test_capacity.adb:253:09: info: after a call to Empty at test_capacity.adb:255
-test_capacity.adb:253:09: info: when establishing invariant on Has_Key at test_capacity.adb:275
-test_capacity.adb:253:09: info: when establishing invariant on Length at test_capacity.adb:268
-test_capacity.adb:253:09: info: when reestablishing invariant on Get at test_capacity.adb:278
-test_capacity.adb:253:09: info: when reestablishing invariant on Has_Key at test_capacity.adb:275
-test_capacity.adb:253:09: info: when reestablishing invariant on Length at test_capacity.adb:268
+test_capacity.adb:253:09: info: after a call to "Append" at test_capacity.adb:256
+test_capacity.adb:253:09: info: after a call to "Append" at test_capacity.adb:256
+test_capacity.adb:253:09: info: after a call to "Append" at test_capacity.adb:256
+test_capacity.adb:253:09: info: after a call to "Empty" at test_capacity.adb:255
+test_capacity.adb:253:09: info: after a call to "Empty" at test_capacity.adb:255
+test_capacity.adb:253:09: info: when establishing invariant on "Has_Key" at test_capacity.adb:275
+test_capacity.adb:253:09: info: when establishing invariant on "Length" at test_capacity.adb:268
+test_capacity.adb:253:09: info: when reestablishing invariant on "Get" at test_capacity.adb:278
+test_capacity.adb:253:09: info: when reestablishing invariant on "Has_Key" at test_capacity.adb:275
+test_capacity.adb:253:09: info: when reestablishing invariant on "Length" at test_capacity.adb:268
 test_capacity.adb:255:16: info: implicit aspect Always_Terminates on "Empty" has been proved, subprogram will terminate
 test_capacity.adb:256:17: info: aspect Always_Terminates on "Append" has been proved, subprogram will terminate
 test_capacity.adb:257:09: info: data dependencies proved
@@ -242,17 +242,17 @@ test_capacity.adb:356:09: info: Container_Aggregates annotation proved (CVC5: 1 
 test_capacity.adb:356:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
 test_capacity.adb:356:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
 test_capacity.adb:356:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
-test_capacity.adb:356:09: info: after a call to Append at test_capacity.adb:360
-test_capacity.adb:356:09: info: after a call to Append at test_capacity.adb:360
-test_capacity.adb:356:09: info: after a call to Append at test_capacity.adb:360
-test_capacity.adb:356:09: info: after a call to Empty at test_capacity.adb:358
-test_capacity.adb:356:09: info: after a call to Empty at test_capacity.adb:358
+test_capacity.adb:356:09: info: after a call to "Append" at test_capacity.adb:360
+test_capacity.adb:356:09: info: after a call to "Append" at test_capacity.adb:360
+test_capacity.adb:356:09: info: after a call to "Append" at test_capacity.adb:360
+test_capacity.adb:356:09: info: after a call to "Empty" at test_capacity.adb:358
+test_capacity.adb:356:09: info: after a call to "Empty" at test_capacity.adb:358
 test_capacity.adb:356:09: info: during checks for container aggregates at test_capacity.adb:356
-test_capacity.adb:356:09: info: when establishing invariant on Capacity at test_capacity.adb:369
-test_capacity.adb:356:09: info: when establishing invariant on Last at test_capacity.adb:375
-test_capacity.adb:356:09: info: when reestablishing invariant on Capacity at test_capacity.adb:369
-test_capacity.adb:356:09: info: when reestablishing invariant on Get at test_capacity.adb:378
-test_capacity.adb:356:09: info: when reestablishing invariant on Last at test_capacity.adb:375
+test_capacity.adb:356:09: info: when establishing invariant on "Capacity" at test_capacity.adb:369
+test_capacity.adb:356:09: info: when establishing invariant on "Last" at test_capacity.adb:375
+test_capacity.adb:356:09: info: when reestablishing invariant on "Capacity" at test_capacity.adb:369
+test_capacity.adb:356:09: info: when reestablishing invariant on "Get" at test_capacity.adb:378
+test_capacity.adb:356:09: info: when reestablishing invariant on "Last" at test_capacity.adb:375
 test_capacity.adb:358:16: info: implicit aspect Always_Terminates on "Empty" has been proved, subprogram will terminate
 test_capacity.adb:359:09: info: data dependencies proved
 test_capacity.adb:360:17: info: aspect Always_Terminates on "Append" has been proved, subprogram will terminate
@@ -290,12 +290,12 @@ test_capacity.adb:415:15: info: range check proved (CVC5: 2 VC)
 test_capacity.adb:421:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
 test_capacity.adb:421:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
 test_capacity.adb:421:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
-test_capacity.adb:421:09: info: after a call to Append at test_capacity.adb:424
-test_capacity.adb:421:09: info: after a call to Append at test_capacity.adb:424
-test_capacity.adb:421:09: info: after a call to Empty at test_capacity.adb:423
-test_capacity.adb:421:09: info: when establishing invariant on Last at test_capacity.adb:439
-test_capacity.adb:421:09: info: when reestablishing invariant on Get at test_capacity.adb:442
-test_capacity.adb:421:09: info: when reestablishing invariant on Last at test_capacity.adb:439
+test_capacity.adb:421:09: info: after a call to "Append" at test_capacity.adb:424
+test_capacity.adb:421:09: info: after a call to "Append" at test_capacity.adb:424
+test_capacity.adb:421:09: info: after a call to "Empty" at test_capacity.adb:423
+test_capacity.adb:421:09: info: when establishing invariant on "Last" at test_capacity.adb:439
+test_capacity.adb:421:09: info: when reestablishing invariant on "Get" at test_capacity.adb:442
+test_capacity.adb:421:09: info: when reestablishing invariant on "Last" at test_capacity.adb:439
 test_capacity.adb:423:16: info: implicit aspect Always_Terminates on "Empty" has been proved, subprogram will terminate
 test_capacity.adb:424:17: info: aspect Always_Terminates on "Append" has been proved, subprogram will terminate
 test_capacity.adb:425:09: info: data dependencies proved
@@ -328,11 +328,11 @@ test_capacity.adb:473:27: info: overflow check proved (CVC5: 2 VC)
 test_capacity.adb:474:11: info: predicate check proved (CVC5: 3 VC)
 test_capacity.adb:474:25: info: overflow check proved (CVC5: 2 VC)
 test_capacity.adb:478:52: info: data dependencies proved
-test_capacity.adb:482:16: info: elements shall be distinct and shall fit in "Small_Nat" for set aggregates at test_capacity.adb:21
+test_capacity.adb:482:16: info: elements shall be distinct and shall fit in type "Small_Nat" for set aggregates at test_capacity.adb:21
 test_capacity.adb:482:16: info: precondition proved (CVC5: 25 VC)
 test_capacity.adb:484:22: info: assertion proved (CVC5: 1 VC)
 test_capacity.adb:487:56: info: data dependencies proved
-test_capacity.adb:491:16: medium: elements shall be distinct and shall fit in "Small_Nat" for set aggregates at test_capacity.adb:21
+test_capacity.adb:491:16: medium: elements shall be distinct and shall fit in type "Small_Nat" for set aggregates at test_capacity.adb:21
 test_capacity.adb:491:16: medium: precondition might fail [provers reached step limit before completing the proof]
 test_capacity.adb:496:50: info: data dependencies proved
 test_capacity.adb:500:16: info: elements shall be distinct and shall be smaller than "Capacity" for set aggregates at test_capacity.adb:85
@@ -341,11 +341,11 @@ test_capacity.adb:505:54: info: data dependencies proved
 test_capacity.adb:509:16: medium: elements shall be distinct and shall be smaller than "Capacity" for set aggregates at test_capacity.adb:85
 test_capacity.adb:509:16: medium: precondition might fail [provers reached step limit before completing the proof]
 test_capacity.adb:514:52: info: data dependencies proved
-test_capacity.adb:518:16: info: keys shall be distinct and all elements shall fit in "Small_Nat" for maps aggregates at test_capacity.adb:149
+test_capacity.adb:518:16: info: keys shall be distinct and all elements shall fit in type "Small_Nat" for maps aggregates at test_capacity.adb:149
 test_capacity.adb:518:16: info: precondition proved (CVC5: 25 VC)
 test_capacity.adb:520:22: info: assertion proved (CVC5: 1 VC)
 test_capacity.adb:523:56: info: data dependencies proved
-test_capacity.adb:527:16: medium: keys shall be distinct and all elements shall fit in "Small_Nat" for maps aggregates at test_capacity.adb:149
+test_capacity.adb:527:16: medium: keys shall be distinct and all elements shall fit in type "Small_Nat" for maps aggregates at test_capacity.adb:149
 test_capacity.adb:527:16: medium: precondition might fail [provers reached step limit before completing the proof]
 test_capacity.adb:532:50: info: data dependencies proved
 test_capacity.adb:536:16: info: keys shall be distinct and all elements shall be smaller than "Capacity" for maps aggregates at test_capacity.adb:253
@@ -354,14 +354,14 @@ test_capacity.adb:541:54: info: data dependencies proved
 test_capacity.adb:545:16: medium: keys shall be distinct and all elements shall be smaller than "Capacity" for maps aggregates at test_capacity.adb:253
 test_capacity.adb:545:16: medium: precondition might fail [provers reached step limit before completing the proof]
 test_capacity.adb:551:06: info: data dependencies proved
-test_capacity.adb:556:16: info: all elements shall fit in index type and fit in "Small_Nat" for sequence aggregates at test_capacity.adb:356
+test_capacity.adb:556:16: info: all elements shall fit in index type and fit in type "Small_Nat" for sequence aggregates at test_capacity.adb:356
 test_capacity.adb:556:16: info: precondition proved (CVC5: 2 VC)
 test_capacity.adb:558:22: info: assertion proved (CVC5: 1 VC)
 test_capacity.adb:562:06: info: data dependencies proved
-test_capacity.adb:567:16: medium: all elements shall fit in index type and fit in "Small_Nat" for sequence aggregates at test_capacity.adb:356
+test_capacity.adb:567:16: medium: all elements shall fit in index type and fit in type "Small_Nat" for sequence aggregates at test_capacity.adb:356
 test_capacity.adb:567:16: medium: precondition might fail [provers reached step limit before completing the proof]
 test_capacity.adb:573:06: info: data dependencies proved
-test_capacity.adb:578:16: medium: all elements shall fit in index type and fit in "Small_Nat" for sequence aggregates at test_capacity.adb:356
+test_capacity.adb:578:16: medium: all elements shall fit in index type and fit in type "Small_Nat" for sequence aggregates at test_capacity.adb:356
 test_capacity.adb:578:16: medium: precondition might fail [provers reached step limit before completing the proof]
 test_capacity.adb:584:06: info: data dependencies proved
 test_capacity.adb:589:16: info: all elements shall fit in index type and be smaller than "Capacity" for sequence aggregates at test_capacity.adb:421

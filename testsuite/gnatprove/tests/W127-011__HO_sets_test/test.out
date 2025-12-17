@@ -91,22 +91,22 @@ spark-containers-functional-sets.ads:74:06: info: Container_Aggregates annotatio
 spark-containers-functional-sets.ads:74:06: info: Container_Aggregates annotation proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:9
 spark-containers-functional-sets.ads:74:06: info: Container_Aggregates annotation proved (CVC5: 3 VC), in instantiation at check_ho_pre.adb:10
 spark-containers-functional-sets.ads:74:06: info: Container_Aggregates annotation proved (CVC5: 3 VC), in instantiation at use_set_ho.adb:9
-spark-containers-functional-sets.ads:74:06: info: after a call to Aggr_Include at spark-containers-functional-sets.ads:484, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-sets.ads:74:06: info: after a call to Aggr_Include at spark-containers-functional-sets.ads:484, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-sets.ads:74:06: info: after a call to Aggr_Include at spark-containers-functional-sets.ads:484, in instantiation at use_set_ho.adb:9
-spark-containers-functional-sets.ads:74:06: info: after a call to Aggr_Include at spark-containers-functional-sets.ads:484, in instantiation at use_set_ho.adb:9
-spark-containers-functional-sets.ads:74:06: info: after a call to Empty_Set at spark-containers-functional-sets.ads:260, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-sets.ads:74:06: info: after a call to Empty_Set at spark-containers-functional-sets.ads:260, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-sets.ads:74:06: info: after a call to Empty_Set at spark-containers-functional-sets.ads:260, in instantiation at use_set_ho.adb:9
-spark-containers-functional-sets.ads:74:06: info: after a call to Empty_Set at spark-containers-functional-sets.ads:260, in instantiation at use_set_ho.adb:9
-spark-containers-functional-sets.ads:74:06: info: when establishing invariant on Contains at spark-containers-functional-sets.ads:99, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-sets.ads:74:06: info: when establishing invariant on Contains at spark-containers-functional-sets.ads:99, in instantiation at use_set_ho.adb:9
-spark-containers-functional-sets.ads:74:06: info: when establishing invariant on Length at spark-containers-functional-sets.ads:124, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-sets.ads:74:06: info: when establishing invariant on Length at spark-containers-functional-sets.ads:124, in instantiation at use_set_ho.adb:9
-spark-containers-functional-sets.ads:74:06: info: when reestablishing invariant on Contains at spark-containers-functional-sets.ads:99, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-sets.ads:74:06: info: when reestablishing invariant on Contains at spark-containers-functional-sets.ads:99, in instantiation at use_set_ho.adb:9
-spark-containers-functional-sets.ads:74:06: info: when reestablishing invariant on Length at spark-containers-functional-sets.ads:124, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-sets.ads:74:06: info: when reestablishing invariant on Length at spark-containers-functional-sets.ads:124, in instantiation at use_set_ho.adb:9
+spark-containers-functional-sets.ads:74:06: info: after a call to "Aggr_Include" at spark-containers-functional-sets.ads:484, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-sets.ads:74:06: info: after a call to "Aggr_Include" at spark-containers-functional-sets.ads:484, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-sets.ads:74:06: info: after a call to "Aggr_Include" at spark-containers-functional-sets.ads:484, in instantiation at use_set_ho.adb:9
+spark-containers-functional-sets.ads:74:06: info: after a call to "Aggr_Include" at spark-containers-functional-sets.ads:484, in instantiation at use_set_ho.adb:9
+spark-containers-functional-sets.ads:74:06: info: after a call to "Empty_Set" at spark-containers-functional-sets.ads:260, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-sets.ads:74:06: info: after a call to "Empty_Set" at spark-containers-functional-sets.ads:260, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-sets.ads:74:06: info: after a call to "Empty_Set" at spark-containers-functional-sets.ads:260, in instantiation at use_set_ho.adb:9
+spark-containers-functional-sets.ads:74:06: info: after a call to "Empty_Set" at spark-containers-functional-sets.ads:260, in instantiation at use_set_ho.adb:9
+spark-containers-functional-sets.ads:74:06: info: when establishing invariant on "Contains" at spark-containers-functional-sets.ads:99, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-sets.ads:74:06: info: when establishing invariant on "Contains" at spark-containers-functional-sets.ads:99, in instantiation at use_set_ho.adb:9
+spark-containers-functional-sets.ads:74:06: info: when establishing invariant on "Length" at spark-containers-functional-sets.ads:124, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-sets.ads:74:06: info: when establishing invariant on "Length" at spark-containers-functional-sets.ads:124, in instantiation at use_set_ho.adb:9
+spark-containers-functional-sets.ads:74:06: info: when reestablishing invariant on "Contains" at spark-containers-functional-sets.ads:99, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-sets.ads:74:06: info: when reestablishing invariant on "Contains" at spark-containers-functional-sets.ads:99, in instantiation at use_set_ho.adb:9
+spark-containers-functional-sets.ads:74:06: info: when reestablishing invariant on "Length" at spark-containers-functional-sets.ads:124, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-sets.ads:74:06: info: when reestablishing invariant on "Length" at spark-containers-functional-sets.ads:124, in instantiation at use_set_ho.adb:9
 spark-containers-functional-sets.ads:99:13: info: during checks for quantification at spark-containers-functional-sets.ads:64, in instantiation at check_ho_pre.adb:10
 spark-containers-functional-sets.ads:99:13: info: during checks for quantification at spark-containers-functional-sets.ads:64, in instantiation at use_set_ho.adb:9
 spark-containers-functional-sets.ads:99:13: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:10

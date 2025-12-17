@@ -134,7 +134,7 @@ records.adb:514:22: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 records.adb:520:13: info: implicit aspect Always_Terminates on "Test_Record_Subtype" has been proved, subprogram will terminate
 records.adb:523:19: info: postcondition proved (CVC5: 2 VC)
 records.adb:530:11: info: flow dependencies proved
-records.adb:534:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function F_Of_Pair or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
+records.adb:534:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function "F_Of_Pair" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
 counterexample expected for check at records.adb:86
   trace at records.adb:83 --> A = (A => Unsigned_Byte'Last, B => 0) and B = (A => 0, B => 0)
   trace at records.adb:86 --> A = (A => Unsigned_Byte'Last, B => 0) and B = (A => 0, B => 0) and Safe_Add_Pair_B'Result = (A => 0, B => 0)

@@ -14,16 +14,16 @@ ext.ads:54:31: medium: in default initialization of component "F" at ext.ads:59
 ext.ads:54:31: medium: in default value at main.adb:9
 ext.ads:54:31: medium: range check might fail, cannot prove upper bound for 4 [reason for check: default value must fit in the type] [provers reached step limit before completing the proof]
 ext.ads:67:26: medium: in default value at main.adb:10
-ext.ads:67:26: medium: range check might fail, cannot prove lower bound for Rand (5) [reason for check: default component value must fit in the type] [possible fix: you should consider adding a postcondition to function Rand or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
+ext.ads:67:26: medium: range check might fail, cannot prove lower bound for Rand (5) [reason for check: default component value must fit in the type] [possible fix: you should consider adding a postcondition to function "Rand" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
 ext.ads:79:26: medium: in default value at main.adb:11
-ext.ads:79:26: medium: range check might fail, cannot prove lower bound for Rand (6) [reason for check: default component value must fit in the type] [possible fix: you should consider adding a postcondition to function Rand or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
+ext.ads:79:26: medium: range check might fail, cannot prove lower bound for Rand (6) [reason for check: default component value must fit in the type] [possible fix: you should consider adding a postcondition to function "Rand" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
 ext.ads:92:12: info: range check proved (CVC5: 2 VC)
 ext.ads:93:31: medium: in default initialization of component "X" at ext.ads:95
 ext.ads:93:31: medium: in default value at main.adb:12
 ext.ads:93:31: medium: range check might fail, cannot prove upper bound for 7 [reason for check: default value must fit in the type] [provers reached step limit before completing the proof]
 ext.ads:103:26: medium: in default initialization of component "X" at ext.ads:107
 ext.ads:103:26: medium: in default value at main.adb:13
-ext.ads:103:26: medium: range check might fail, cannot prove lower bound for Rand (8) [reason for check: default component value must fit in the type] [possible fix: you should consider adding a postcondition to function Rand or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
+ext.ads:103:26: medium: range check might fail, cannot prove lower bound for Rand (8) [reason for check: default component value must fit in the type] [possible fix: you should consider adding a postcondition to function "Rand" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
 ext.ads:169:10: medium: in default initialization of component "X" at ext.ads:169
 ext.ads:169:10: medium: in default value at main.adb:16
 ext.ads:169:10: medium: predicate check might fail on default value [provers reached step limit before completing the proof]

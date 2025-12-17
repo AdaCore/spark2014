@@ -45,9 +45,9 @@ input.ads:34:13: info: implicit aspect Always_Terminates on "Column_Number" has 
 input.ads:37:13: info: implicit aspect Always_Terminates on "Line_Number" has been proved, subprogram will terminate
 instructions.adb:19:28: info: unrolling loop [info-unrolling-inlining]
 instructions.adb:24:24: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
-instructions.adb:31:07: medium: unexpected exception might be raised [reason for check: Read allows propagating no exceptions] [possible explanation: User_Error might be unexpectedly raised] [provers reached step limit before completing the proof]
+instructions.adb:31:07: medium: unexpected exception might be raised [reason for check: "Read" allows propagating no exceptions] [possible explanation: "User_Error" might be unexpectedly raised] [provers reached step limit before completing the proof]
 instructions.adb:50:58: info: precondition proved (CVC5: 1 VC)
-instructions.adb:54:13: medium: unexpected exception might be raised [reason for check: Process allows propagating no exceptions] [possible explanation: Exit_SDC might be unexpectedly raised] [provers reached step limit before completing the proof]
+instructions.adb:54:13: medium: unexpected exception might be raised [reason for check: "Process" allows propagating no exceptions] [possible explanation: "Exit_SDC" might be unexpectedly raised] [provers reached step limit before completing the proof]
 instructions.ads:10:13: info: implicit aspect Always_Terminates on "Read" has been proved, subprogram will terminate
 screen_output.adb:42:07: warning: this statement is never reached
 screen_output.adb:43:07: warning: this statement is never reached
@@ -58,14 +58,14 @@ screen_output.adb:77:29: info: cannot unroll loop (too many loop iterations) [in
 screen_output.adb:83:19: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 screen_output.adb:83:46: info: range check proved (CVC5: 2 VC)
 screen_output.adb:83:53: low: range check might fail, cannot prove upper bound for Natural'Image (Input.Line_Number) & ": " & S [reason for check: input value must fit in parameter type] [possible fix: subprogram at screen_output.ads:18 should mention S and Input.Line_Num in a precondition] [provers reached step limit before completing the proof]
-screen_output.adb:94:07: medium: unexpected exception might be raised [reason for check: Pause allows propagating no exceptions] [possible explanation: End_Error might be unexpectedly raised] [provers reached step limit before completing the proof]
+screen_output.adb:94:07: medium: unexpected exception might be raised [reason for check: "Pause" allows propagating no exceptions] [possible explanation: "End_Error" might be unexpectedly raised] [provers reached step limit before completing the proof]
 screen_output.ads:11:14: warning: subprogram "Debug_Msg" has no effect
 sdc.adb:11:04: info: initialization of "File" proved
 sdc.adb:12:04: info: initialization of "T" proved
 sdc.adb:16:07: warning: assuming "Argument_Count" has no effect on global items
 sdc.adb:16:07: warning: no Global contract available for "Argument_Count" [assumed-global-null]
 sdc.adb:17:07: info: precondition proved (CVC5: 1 VC)
-sdc.adb:17:07: medium: unexpected exception might be raised [reason for check: Sdc allows propagating no exceptions] [possible explanation: Name_Error and Use_Error might be unexpectedly raised] [provers reached step limit before completing the proof]
+sdc.adb:17:07: medium: unexpected exception might be raised [reason for check: "Sdc" allows propagating no exceptions] [possible explanation: "Name_Error" and "Use_Error" might be unexpectedly raised] [provers reached step limit before completing the proof]
 sdc.adb:17:28: info: precondition proved (CVC5: 1 VC)
 sdc.adb:17:28: warning: assuming "Argument" has no effect on global items
 sdc.adb:17:28: warning: no Global contract available for "Argument" [assumed-global-null]
@@ -79,7 +79,7 @@ stack.adb:37:12: info: index check proved (CVC5: 2 VC)
 stack.adb:47:10: info: only expected exception raised (CVC5: 1 VC)
 stack.adb:50:17: info: index check proved (CVC5: 2 VC)
 stack.adb:51:20: info: range check proved (CVC5: 2 VC)
-stack.adb:53:46: low: range check might fail, cannot prove upper bound for "Popping <- " & Values.To_String (V) [reason for check: input value must fit in parameter type] [possible fix: you should consider adding a postcondition to function To_String or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
+stack.adb:53:46: low: range check might fail, cannot prove upper bound for "Popping <- " & Values.To_String (V) [reason for check: input value must fit in parameter type] [possible fix: you should consider adding a postcondition to function "To_String" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
 stack.adb:63:10: info: only expected exception raised (CVC5: 1 VC)
 stack.adb:66:19: info: index check proved (CVC5: 2 VC)
 stack.adb:75:34: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
@@ -102,7 +102,7 @@ tokens.adb:39:21: medium: discriminant check might fail [possible fix: loop at l
 tokens.adb:44:24: medium: discriminant check might fail [possible fix: loop at line 17 should mention V in a loop invariant] [provers reached step limit before completing the proof]
 tokens.adb:47:24: medium: discriminant check might fail [possible fix: loop at line 17 should mention V in a loop invariant] [provers reached step limit before completing the proof]
 tokens.adb:54:21: medium: discriminant check might fail [possible fix: loop at line 17 should mention V in a loop invariant] [provers reached step limit before completing the proof]
-tokens.adb:59:19: medium: unexpected exception might be raised [reason for check: Next allows propagating no exceptions] [possible explanation: User_Error might be unexpectedly raised] [provers reached step limit before completing the proof]
+tokens.adb:59:19: medium: unexpected exception might be raised [reason for check: "Next" allows propagating no exceptions] [possible explanation: "User_Error" might be unexpectedly raised] [provers reached step limit before completing the proof]
 tokens.adb:74:19: info: precondition proved (CVC5: 1 VC)
 tokens.adb:74:30: info: discriminant check proved (CVC5: 1 VC)
 tokens.adb:77:30: medium: precondition might fail [provers reached step limit before completing the proof]
@@ -110,7 +110,7 @@ tokens.adb:77:41: info: discriminant check proved (CVC5: 1 VC)
 tokens.adb:80:36: info: discriminant check proved (CVC5: 1 VC)
 tokens.ads:19:20: info: initialization of "V" proved
 tokens.ads:25:36: warning: unreachable branch (CVC5: 1 VC)
-values-operations.adb:28:10: medium: unexpected exception might be raised [reason for check: Read allows propagating no exceptions] [possible explanation: User_Error might be unexpectedly raised] [provers reached step limit before completing the proof]
+values-operations.adb:28:10: medium: unexpected exception might be raised [reason for check: "Read" allows propagating no exceptions] [possible explanation: "User_Error" might be unexpectedly raised] [provers reached step limit before completing the proof]
 values-operations.adb:37:07: info: initialization of "V2" proved
 values-operations.adb:38:07: info: initialization of "V1" proved
 values-operations.adb:40:07: info: initialization of "Result" proved
@@ -128,6 +128,6 @@ values.adb:22:07: info: initialization of "Int_Val" proved
 values.adb:24:07: info: initialization of "Kind" proved
 values.adb:27:12: medium: implicit aspect Always_Terminates on "Read" could be incorrect, call to "Read_Number" might be nonterminating [possible fix: annotate "Read_Number" with aspect Always_Terminates]
 values.adb:27:41: warning: "Real_Val" is set by "Read_Number" but not used after the call
-values.adb:30:10: medium: unexpected exception might be raised [reason for check: Read allows propagating no exceptions] [possible explanation: User_Error might be unexpectedly raised] [provers reached step limit before completing the proof]
+values.adb:30:10: medium: unexpected exception might be raised [reason for check: "Read" allows propagating no exceptions] [possible explanation: "User_Error" might be unexpectedly raised] [provers reached step limit before completing the proof]
 values.adb:45:21: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 values.ads:11:13: info: implicit aspect Always_Terminates on "To_String" has been proved, subprogram will terminate

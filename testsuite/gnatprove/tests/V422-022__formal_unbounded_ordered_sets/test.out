@@ -108,7 +108,7 @@ test_set.adb:184:07: info: precondition proved (CVC5: 1 VC)
 test_set.adb:186:07: medium: precondition might fail [provers reached step limit before completing the proof]
 test_set.adb:187:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:190:22: medium: assertion might fail [provers reached step limit before completing the proof]
-test_set.adb:192:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Length or turning it into an expression function] [provers reached step limit before completing the proof]
+test_set.adb:192:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function "Length" or turning it into an expression function] [provers reached step limit before completing the proof]
 test_set.adb:193:07: medium: assertion might fail [provers reached step limit before completing the proof]
 test_set.adb:199:07: info: precondition proved (Trivial: 1 VC)
 test_set.adb:200:07: info: precondition proved (Trivial: 1 VC)
