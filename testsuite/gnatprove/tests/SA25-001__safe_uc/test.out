@@ -36,7 +36,7 @@ safe.adb:43:13: info: types in unchecked conversion have the same size (Trivial)
 safe.adb:43:13: warning: imprecise handling of Unchecked_Conversion (component offset not known) [imprecise-unchecked-conversion]
 safe.adb:43:60: info: type is suitable as source for unchecked conversion (Trivial)
 safe.adb:43:67: info: type is suitable for unchecked conversion (Trivial)
-safe.adb:50:13: high: alignment of source type of unchecked conversion might not be an integral multiple of alignment of target type [possible explanation: alignment of type "HRec3" (which is 4) must be a multiple of the alignment of type "U64" (which is 8)] [possible fix: source type of unchecked conversion should have an Alignment representation clause]
+safe.adb:50:13: high: alignment of source type of unchecked conversion might not be an integral multiple of alignment of target type [possible explanation: alignment of type "HRec3" (which is 4) must be a multiple of the alignment of type "U64" (which is 8)]
 safe.adb:50:13: info: types in unchecked conversion have the same size (Trivial)
 safe.adb:50:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as source for unchecked conversion) [imprecise-unchecked-conversion]
 safe.adb:50:60: high: type is unsuitable as a source for unchecked conversion [possible explanation: type "HRec3" has minimal size 40, but Size was declared as 64; type "HRec3" might have unused bits that are not modelled in SPARK]

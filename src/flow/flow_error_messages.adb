@@ -25,43 +25,44 @@
 with Ada.Containers;
 with Ada.Float_Text_IO;
 with Ada.Strings.Fixed;
-with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
-with Ada.Text_IO;               use Ada.Text_IO;
-with Aspects;                   use Aspects;
-with CE_Display;                use CE_Display;
-with Checked_Types;             use Checked_Types;
-with Common_Containers;         use Common_Containers;
-with Einfo.Entities;            use Einfo.Entities;
-with Einfo.Utils;               use Einfo.Utils;
+with Ada.Strings.Unbounded;       use Ada.Strings.Unbounded;
+with Ada.Text_IO;                 use Ada.Text_IO;
+with Aspects;                     use Aspects;
+with CE_Display;                  use CE_Display;
+with Checked_Types;               use Checked_Types;
+with Common_Containers;           use Common_Containers;
+with Einfo.Entities;              use Einfo.Entities;
+with Einfo.Utils;                 use Einfo.Utils;
 with Errout;
 with Erroutc;
 with Flow_Generated_Globals.Phase_2;
-with Flow_Refinement;           use Flow_Refinement;
-with Flow_Utility;              use Flow_Utility;
+with Flow_Refinement;             use Flow_Refinement;
+with Flow_Utility;                use Flow_Utility;
+with Gnat2Why.Data_Decomposition; use Gnat2Why.Data_Decomposition;
 with Gnat2Why.Expr.Loops;
-with Gnat2Why.Util;             use Gnat2Why.Util;
-with Gnat2Why_Args;             use Gnat2Why_Args;
-with Gnat2Why_Opts;             use Gnat2Why_Opts;
-with GNATCOLL.Utils;            use GNATCOLL.Utils;
+with Gnat2Why.Util;               use Gnat2Why.Util;
+with Gnat2Why_Args;               use Gnat2Why_Args;
+with Gnat2Why_Opts;               use Gnat2Why_Opts;
+with GNATCOLL.Utils;              use GNATCOLL.Utils;
 with Lib.Xref;
-with Namet;                     use Namet;
-with Nlists;                    use Nlists;
-with Sem_Aggr;                  use Sem_Aggr;
-with Sem_Aux;                   use Sem_Aux;
-with Sem_Util;                  use Sem_Util;
-with Sinfo.Nodes;               use Sinfo.Nodes;
-with Sinfo.Utils;               use Sinfo.Utils;
-with Sinput;                    use Sinput;
-with Snames;                    use Snames;
+with Namet;                       use Namet;
+with Nlists;                      use Nlists;
+with Sem_Aggr;                    use Sem_Aggr;
+with Sem_Aux;                     use Sem_Aux;
+with Sem_Util;                    use Sem_Util;
+with Sinfo.Nodes;                 use Sinfo.Nodes;
+with Sinfo.Utils;                 use Sinfo.Utils;
+with Sinput;                      use Sinput;
+with Snames;                      use Snames;
 with SPARK_Atree;
-with SPARK_Definition.Annotate; use SPARK_Definition.Annotate;
-with SPARK_Util.Hardcoded;      use SPARK_Util.Hardcoded;
-with SPARK_Util.Subprograms;    use SPARK_Util.Subprograms;
-with SPARK_Util.Types;          use SPARK_Util.Types;
-with SPARK_Xrefs;               use SPARK_Xrefs;
-with Stringt;                   use Stringt;
-with String_Utils;              use String_Utils;
-with Uintp;                     use Uintp;
+with SPARK_Definition.Annotate;   use SPARK_Definition.Annotate;
+with SPARK_Util.Hardcoded;        use SPARK_Util.Hardcoded;
+with SPARK_Util.Subprograms;      use SPARK_Util.Subprograms;
+with SPARK_Util.Types;            use SPARK_Util.Types;
+with SPARK_Xrefs;                 use SPARK_Xrefs;
+with Stringt;                     use Stringt;
+with String_Utils;                use String_Utils;
+with Uintp;                       use Uintp;
 
 -------------------------
 -- Flow_Error_Messages --
@@ -2506,34 +2507,47 @@ package body Flow_Error_Messages is
          begin
             --  Alignment VC is only issued when there is an address clause
             pragma Assert (Present (Expr));
-            if not Known_Alignment (Obj) then
+            if No (Get_Attribute_Value (Obj, Attribute_Alignment)) then
                return Create ("overlaying object " & Common);
             elsif Nkind (Expr) = N_Attribute_Reference
               and then
                 Get_Attribute_Id (Attribute_Name (Expr)) = Attribute_Address
-              and then
-                (Nkind (Prefix (Expr)) not in N_Has_Entity
-                 or else not Known_Alignment (Entity (Prefix (Expr))))
             then
-               return Create ("overlaid object " & Common);
+               if Nkind (Prefix (Expr)) not in N_Has_Entity then
+                  return Create ("overlaid object " & Common);
+               else
+                  if No
+                       (Get_Attribute_Value
+                          (Entity (Prefix (Expr)), Attribute_Alignment))
+                  then
+                     return Create ("overlaid object " & Common);
+                  end if;
+               end if;
             end if;
             return No_Message;
          end;
 
       elsif Tag = VC_UC_Align_UC then
          declare
-            Source, Target : Node_Id;
-            Src_Ty, Tar_Ty : Entity_Id;
+            Source, Target       : Node_Id;
+            Src_Ty, Tar_Ty       : Entity_Id;
+            Src_Align, Tar_Align : Uint;
          begin
             Get_Unchecked_Conversion_Args (N, Source, Target);
             Src_Ty := Retysp (Entity (Source));
             Tar_Ty := Retysp (Entity (Target));
-            if not Known_Alignment (Src_Ty) then
+            Src_Align :=
+              Gnat2Why.Data_Decomposition.Get_Attribute_Value
+                (Src_Ty, Attribute_Alignment);
+            Tar_Align :=
+              Gnat2Why.Data_Decomposition.Get_Attribute_Value
+                (Tar_Ty, Attribute_Alignment);
+            if No (Src_Align) then
                return
                  Create
                    ("source type of unchecked conversion should have an "
                     & "Alignment representation clause");
-            elsif not Known_Alignment (Tar_Ty) then
+            elsif No (Tar_Align) then
                return
                  Create
                    ("target type of unchecked conversion should have an "
