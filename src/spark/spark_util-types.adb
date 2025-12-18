@@ -265,8 +265,7 @@ package body SPARK_Util.Types is
          Explanation :=
            To_Unbounded_String
              (Pretty_Source_Name (Typ)
-              & " doesn't "
-              & "have an Object_Size representation "
+              & " doesn't have an Object_Size representation "
               & "clause or aspect");
       end if;
    end Check_Known_Esize;
@@ -344,6 +343,13 @@ package body SPARK_Util.Types is
                     & Pretty_Source_Name (Typ)
                     & " cannot be computed statically");
             end if;
+
+         --  Size cannot be specified on unconstrained array types
+
+         elsif Is_Array_Type (Typ) and then not Is_Constrained (Typ) then
+            Explanation :=
+              To_Unbounded_String
+                (Pretty_Source_Name (Typ) & " is unconstrained");
          else
             Explanation :=
               To_Unbounded_String
