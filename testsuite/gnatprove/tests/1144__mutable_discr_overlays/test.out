@@ -3,7 +3,7 @@ main.adb:13:22: info: range check proved (CVC5: 1 VC)
 main.adb:13:32: info: discriminant check proved (CVC5: 1 VC)
 main.adb:15:07: info: no contextual analysis of "Test_Static" (nested subprogram)
 main.adb:15:20: warning: unused variable "X"
-main.adb:19:16: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: "X" must be aliased for its alignment to be known] [possible fix: overlaying object should have an Alignment representation clause]
+main.adb:19:16: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: "X" must be aliased for its alignment to be known] [possible fix: overlaid object should have an Alignment representation clause]
 main.adb:19:16: high: object is unsuitable for aliasing via address clause [possible explanation: type of "Y" has discriminants; aliased object could have invalid values [SPARK RM 13.7]]
 main.adb:19:16: high: type is unsuitable as a source for unchecked conversion [possible explanation: type of "Y" has discriminants; type of "Y" might have unused bits that are not modelled in SPARK]
 main.adb:19:16: warning: imprecise handling of overlay (type is unsuitable as source for unchecked conversion) [imprecise-overlay]
@@ -11,7 +11,7 @@ main.adb:19:23: info: range check proved (CVC5: 1 VC)
 main.adb:19:54: high: object is unsuitable for aliasing via address clause [possible explanation: type "R" has discriminants; aliased object could have invalid values [SPARK RM 13.7]]
 main.adb:19:54: high: type is unsuitable as a source for unchecked conversion [possible explanation: type "R" doesn't have a Size representation clause or aspect; type "R" might have unused bits that are not modelled in SPARK]
 main.adb:19:54: high: types of aliased objects do not have the same size [provers reached step limit before completing the proof]
-main.adb:25:16: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: "X" must be aliased for its alignment to be known] [possible fix: overlaying object should have an Alignment representation clause]
+main.adb:25:16: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: "X" must be aliased for its alignment to be known] [possible fix: overlaid object should have an Alignment representation clause]
 main.adb:25:16: high: object is unsuitable for aliasing via address clause [possible explanation: type "R" has discriminants; aliased object could have invalid values [SPARK RM 13.7]]
 main.adb:25:16: high: type is unsuitable as a source for unchecked conversion [possible explanation: type "R" doesn't have a Size representation clause or aspect; type "R" might have unused bits that are not modelled in SPARK]
 main.adb:25:16: warning: imprecise handling of overlay (type is unsuitable as source for unchecked conversion) [imprecise-overlay]
@@ -19,14 +19,14 @@ main.adb:25:46: high: object is unsuitable for aliasing via address clause [poss
 main.adb:25:46: high: type is unsuitable as a source for unchecked conversion [possible explanation: type "R" doesn't have a Size representation clause or aspect; type "R" might have unused bits that are not modelled in SPARK]
 main.adb:25:46: high: types of aliased objects do not have the same size [possible explanation: overlaid object has mutable discriminants]
 main.adb:32:24: warning: unused variable "X"
-main.adb:36:16: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: "X" must be aliased for its alignment to be known] [possible fix: overlaying object should have an Alignment representation clause]
+main.adb:36:16: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: "X" must be aliased for its alignment to be known] [possible fix: overlaid object should have an Alignment representation clause]
 main.adb:36:16: high: object is unsuitable for aliasing via address clause [possible explanation: type "R" has discriminants; aliased object could have invalid values [SPARK RM 13.7]]
 main.adb:36:16: high: type is unsuitable as a source for unchecked conversion [possible explanation: type "R" doesn't have a Size representation clause or aspect; type "R" might have unused bits that are not modelled in SPARK]
 main.adb:36:16: warning: imprecise handling of overlay (type is unsuitable as source for unchecked conversion) [imprecise-overlay]
 main.adb:36:46: high: object is unsuitable for aliasing via address clause [possible explanation: type "R" has discriminants; aliased object could have invalid values [SPARK RM 13.7]]
 main.adb:36:46: high: type is unsuitable as a source for unchecked conversion [possible explanation: type "R" doesn't have a Size representation clause or aspect; type "R" might have unused bits that are not modelled in SPARK]
 main.adb:36:46: high: types of aliased objects do not have the same size [possible explanation: overlaid object has mutable discriminants]
-main.adb:42:16: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: "X" must be aliased for its alignment to be known] [possible fix: overlaying object should have an Alignment representation clause]
+main.adb:42:16: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: "X" must be aliased for its alignment to be known] [possible fix: overlaid object should have an Alignment representation clause]
 main.adb:42:16: high: object is unsuitable for aliasing via address clause [possible explanation: type of "Y" has discriminants; aliased object could have invalid values [SPARK RM 13.7]]
 main.adb:42:16: high: type is unsuitable as a source for unchecked conversion [possible explanation: type of "Y" has discriminants; type of "Y" might have unused bits that are not modelled in SPARK]
 main.adb:42:16: warning: imprecise handling of overlay (type is unsuitable as source for unchecked conversion) [imprecise-overlay]
@@ -60,7 +60,7 @@ main.adb:78:32: info: discriminant check proved (CVC5: 1 VC)
 main.adb:78:56: info: length check proved (CVC5: 3 VC)
 main.adb:80:07: info: no contextual analysis of "Test_Dynamic" (nested subprogram)
 main.adb:80:20: warning: unused variable "X"
-main.adb:84:16: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: "X" must be aliased for its alignment to be known] [possible fix: overlaying object should have an Alignment representation clause]
+main.adb:84:16: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: "X" must be aliased for its alignment to be known] [possible fix: overlaid object should have an Alignment representation clause]
 main.adb:84:16: high: object is unsuitable for aliasing via address clause [possible explanation: type of "Y" has discriminants; aliased object could have invalid values [SPARK RM 13.7]]
 main.adb:84:16: high: type is unsuitable as a source for unchecked conversion [possible explanation: type of "Y" doesn't have a Size representation clause or aspect; type of "Y" might have unused bits that are not modelled in SPARK]
 main.adb:84:16: warning: imprecise handling of overlay (type is unsuitable as source for unchecked conversion) [imprecise-overlay]
@@ -68,7 +68,7 @@ main.adb:84:23: info: range check proved (CVC5: 1 VC)
 main.adb:84:54: high: object is unsuitable for aliasing via address clause [possible explanation: type "R" has discriminants; aliased object could have invalid values [SPARK RM 13.7]]
 main.adb:84:54: high: type is unsuitable as a source for unchecked conversion [possible explanation: type "R" doesn't have a Size representation clause or aspect; type "R" might have unused bits that are not modelled in SPARK]
 main.adb:84:54: high: types of aliased objects do not have the same size [provers reached step limit before completing the proof]
-main.adb:90:16: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: "X" must be aliased for its alignment to be known] [possible fix: overlaying object should have an Alignment representation clause]
+main.adb:90:16: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: "X" must be aliased for its alignment to be known] [possible fix: overlaid object should have an Alignment representation clause]
 main.adb:90:16: high: object is unsuitable for aliasing via address clause [possible explanation: type "R" has discriminants; aliased object could have invalid values [SPARK RM 13.7]]
 main.adb:90:16: high: type is unsuitable as a source for unchecked conversion [possible explanation: type "R" doesn't have a Size representation clause or aspect; type "R" might have unused bits that are not modelled in SPARK]
 main.adb:90:16: warning: imprecise handling of overlay (type is unsuitable as source for unchecked conversion) [imprecise-overlay]
@@ -76,14 +76,14 @@ main.adb:90:46: high: object is unsuitable for aliasing via address clause [poss
 main.adb:90:46: high: type is unsuitable as a source for unchecked conversion [possible explanation: type "R" doesn't have a Size representation clause or aspect; type "R" might have unused bits that are not modelled in SPARK]
 main.adb:90:46: high: types of aliased objects do not have the same size [possible explanation: overlaid object has mutable discriminants]
 main.adb:97:24: warning: unused variable "X"
-main.adb:101:16: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: "X" must be aliased for its alignment to be known] [possible fix: overlaying object should have an Alignment representation clause]
+main.adb:101:16: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: "X" must be aliased for its alignment to be known] [possible fix: overlaid object should have an Alignment representation clause]
 main.adb:101:16: high: object is unsuitable for aliasing via address clause [possible explanation: type "R" has discriminants; aliased object could have invalid values [SPARK RM 13.7]]
 main.adb:101:16: high: type is unsuitable as a source for unchecked conversion [possible explanation: type "R" doesn't have a Size representation clause or aspect; type "R" might have unused bits that are not modelled in SPARK]
 main.adb:101:16: warning: imprecise handling of overlay (type is unsuitable as source for unchecked conversion) [imprecise-overlay]
 main.adb:101:46: high: object is unsuitable for aliasing via address clause [possible explanation: type "R" has discriminants; aliased object could have invalid values [SPARK RM 13.7]]
 main.adb:101:46: high: type is unsuitable as a source for unchecked conversion [possible explanation: type "R" doesn't have a Size representation clause or aspect; type "R" might have unused bits that are not modelled in SPARK]
 main.adb:101:46: high: types of aliased objects do not have the same size [possible explanation: overlaid object has mutable discriminants]
-main.adb:107:16: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: "X" must be aliased for its alignment to be known] [possible fix: overlaying object should have an Alignment representation clause]
+main.adb:107:16: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: "X" must be aliased for its alignment to be known] [possible fix: overlaid object should have an Alignment representation clause]
 main.adb:107:16: high: object is unsuitable for aliasing via address clause [possible explanation: type of "Y" has discriminants; aliased object could have invalid values [SPARK RM 13.7]]
 main.adb:107:16: high: type is unsuitable as a source for unchecked conversion [possible explanation: type of "Y" doesn't have a Size representation clause or aspect; type of "Y" might have unused bits that are not modelled in SPARK]
 main.adb:107:16: warning: imprecise handling of overlay (type is unsuitable as source for unchecked conversion) [imprecise-overlay]

@@ -1,7 +1,7 @@
 p.adb:2:11: warning: subprogram "P" has no effect
-p.adb:5:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause] [provers reached step limit before completing the proof]
+p.adb:5:04: medium: address in address clause might not be an integral multiple of alignment of object [provers reached step limit before completing the proof]
 q.adb:3:11: warning: subprogram "Q" has no effect
-q.adb:4:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause] [provers reached step limit before completing the proof]
+q.adb:4:04: medium: address in address clause might not be an integral multiple of alignment of object [provers reached step limit before completing the proof]
 q.adb:4:04: warning: address specification on "Y" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to or through a potential alias [imprecise-address-specification] [E0012]
 q.adb:4:04: warning: launch "gnatprove --explain=E0012" for more information
 q.adb:4:04: warning: make sure that all overlapping objects have Async_Writers set to True

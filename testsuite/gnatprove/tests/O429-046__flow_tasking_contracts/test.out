@@ -8,11 +8,11 @@ alarm.ads:8:10: info: data dependencies proved
 alarm.ads:11:10: info: data dependencies proved
 main.adb:5:11: info: ceiling priority protocol is respected for "Alarm.Blinken_Po" (CVC5: 1 VC)
 sensor.adb:7:04: high: "Sensor_1" constituent of "Power_Level" is not initialized in "Sensor" [reason for check: variable is mentioned in the generated Initializes contract] [possible fix: initialize "Sensor_1" constituent of "Power_Level" at declaration or in the package body statements]
-sensor.adb:7:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause] [provers gave up before completing the proof]
+sensor.adb:7:04: medium: address in address clause might not be an integral multiple of alignment of object [provers gave up before completing the proof]
 sensor.adb:7:04: warning: address specification on "Sensor_1" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and valid reads [imprecise-address-specification] [E0012]
 sensor.adb:7:04: warning: launch "gnatprove --explain=E0012" for more information
 sensor.adb:12:04: high: "Sensor_2" constituent of "Power_Level" is not initialized in "Sensor" [reason for check: variable is mentioned in the generated Initializes contract] [possible fix: initialize "Sensor_2" constituent of "Power_Level" at declaration or in the package body statements]
-sensor.adb:12:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause] [provers gave up before completing the proof]
+sensor.adb:12:04: medium: address in address clause might not be an integral multiple of alignment of object [provers gave up before completing the proof]
 sensor.adb:12:04: warning: address specification on "Sensor_2" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and valid reads [imprecise-address-specification] [E0012]
 sensor.adb:12:04: warning: launch "gnatprove --explain=E0012" for more information
 sensor.ads:5:20: info: initialization of "T" proved
