@@ -170,7 +170,7 @@ rec_init_by_proof.adb:64:04: info: precondition proved (CVC5: 1 VC)
 rec_init_by_proof.adb:65:04: info: precondition proved (CVC5: 1 VC)
 rec_init_by_proof.adb:67:04: medium: precondition might fail [provers reached step limit before completing the proof]
 rec_init_by_proof.adb:68:10: medium: initialization check might fail [provers reached step limit before completing the proof]
-var_init_by_proof.adb:6:18: medium: for parameter X at the end of the subprogram at var_init_by_proof.adb:6
+var_init_by_proof.adb:6:18: medium: for parameter "X" at the end of the subprogram at var_init_by_proof.adb:6
 var_init_by_proof.adb:6:18: medium: initialization check might fail [provers gave up before completing the proof]
 var_init_by_proof.adb:6:18: warning: unused variable "X"
 var_init_by_proof.adb:8:14: warning: subprogram "P1" has no effect
@@ -180,7 +180,7 @@ var_init_by_proof.adb:17:22: info: assertion proved (Trivial: 1 VC)
 var_init_by_proof.adb:18:07: warning: statement has no effect
 var_init_by_proof.adb:18:11: warning: "X" is set by "P3" but not used after the call
 var_init_by_proof.adb:19:12: medium: initialization check might fail [provers gave up before completing the proof]
-var_init_by_proof.adb:29:18: info: for parameter X at the end of the subprogram at var_init_by_proof.adb:29
+var_init_by_proof.adb:29:18: info: for parameter "X" at the end of the subprogram at var_init_by_proof.adb:29
 var_init_by_proof.adb:29:18: info: initialization check proved (CVC5: 1 VC)
 var_init_by_proof.adb:33:12: medium: initialization check might fail [possible fix: precondition of subprogram at line 29 should mention G'Initialized] [provers gave up before completing the proof]
 var_init_by_proof.adb:42:09: info: initialization check proved (CVC5: 1 VC)

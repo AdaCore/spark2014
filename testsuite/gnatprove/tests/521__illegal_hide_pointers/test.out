@@ -43,7 +43,7 @@ illegal_hidden_predefined_eq.ads:33:12: error: consider annotating it with a pra
 illegal_hidden_predefined_eq.ads:33:12: error: hidden type whose predefined equality is restricted is not allowed in SPARK
 illegal_hidden_predefined_eq.ads:33:12: error: violation of aspect SPARK_Mode at line 1
 illegal_hidden_predefined_eq.ads:68:12: error: full view of type annotated with a Predefined_Equality "Only_Null" annotation shall be an access type
-illegal_hidden_predefined_eq.ads:70:07: error: the value of C_Float shall be a null value
+illegal_hidden_predefined_eq.ads:70:07: error: the value of "C_Float" shall be a null value
 illegal_hidden_predefined_eq.ads:72:12: error: full view of type annotated with a Predefined_Equality "No_Equality" annotation shall be a composite type whose components have a restricted equality
 illegal_hidden_predefined_eq.ads:84:12: warning: consider annotating a constant with a pragma Annotate (GNATprove, Predefined_Equality, "Null_Value", ...)
 illegal_hidden_predefined_eq.ads:84:12: warning: no null value found for type with predefined equality "T_Cst_Acc_Holder" [predefined-equality-null]

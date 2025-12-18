@@ -7,7 +7,7 @@ pragmarc-b_strings.adb:36:27: info: index check proved (CVC5: 2 VC)
 pragmarc-b_strings.adb:36:33: info: length check proved (CVC5: 3 VC)
 pragmarc-b_strings.adb:36:40: info: length check proved (CVC5: 3 VC)
 pragmarc-b_strings.adb:36:40: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [provers reached step limit before completing the proof]
-pragmarc-b_strings.adb:44:10: medium: unexpected exception might be raised [reason for check: Assign allows propagating no exceptions] [possible explanation: Too_Long might be unexpectedly raised] [provers reached step limit before completing the proof]
+pragmarc-b_strings.adb:44:10: medium: unexpected exception might be raised [reason for check: "Assign" allows propagating no exceptions] [possible explanation: "Too_Long" might be unexpectedly raised] [provers reached step limit before completing the proof]
 pragmarc-b_strings.adb:50:19: info: length check proved (CVC5: 3 VC)
 pragmarc-b_strings.adb:50:26: info: length check proved (CVC5: 3 VC)
 pragmarc-b_strings.adb:50:26: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [provers reached step limit before completing the proof]

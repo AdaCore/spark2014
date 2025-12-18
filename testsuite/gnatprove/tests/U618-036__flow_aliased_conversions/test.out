@@ -8,8 +8,8 @@ test.adb:29:17: info: overflow check proved (CVC5: 2 VC), in call inlined at tes
 test.adb:40:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 test.adb:40:13: info: types in unchecked conversion have the same size (Trivial)
 test.adb:40:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as source for unchecked conversion) [imprecise-unchecked-conversion]
-test.adb:40:52: high: type is unsuitable as a source for unchecked conversion [possible explanation: type Root_T is a tagged type]
-test.adb:40:61: high: type is unsuitable as a target for unchecked conversion [possible explanation: type Root_T is a tagged type]
+test.adb:40:52: high: type is unsuitable as a source for unchecked conversion [possible explanation: type "Root_T" is a tagged type]
+test.adb:40:61: high: type is unsuitable as a target for unchecked conversion [possible explanation: type "Root_T" is a tagged type]
 test.adb:42:14: info: add a contract to analyze it separately from calling contexts
 test.adb:42:14: info: local subprogram "Stuff3" only analyzed in the context of calls [info-unrolling-inlining]
 test.adb:43:22: info: initialization of "B" proved

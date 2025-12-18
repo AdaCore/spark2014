@@ -7,8 +7,8 @@ test_ghost.adb:19:04: info: initialization of "Y" proved
 test_ghost.adb:19:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 test_ghost.adb:23:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test_ghost.adb:24:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
-test_ghost.adb:25:12: medium: unexpected exception might be raised [reason for check: ghost subprogram call shall not propagate exceptions] [possible explanation: Program_Error might be unexpectedly raised] [provers reached step limit before completing the proof]
-test_ghost.adb:26:07: medium: unexpected exception might be raised [reason for check: ghost subprogram call shall not propagate exceptions] [possible explanation: Program_Error might be unexpectedly raised] [provers reached step limit before completing the proof]
+test_ghost.adb:25:12: medium: unexpected exception might be raised [reason for check: ghost subprogram call shall not propagate exceptions] [possible explanation: "Program_Error" might be unexpectedly raised] [provers reached step limit before completing the proof]
+test_ghost.adb:26:07: medium: unexpected exception might be raised [reason for check: ghost subprogram call shall not propagate exceptions] [possible explanation: "Program_Error" might be unexpectedly raised] [provers reached step limit before completing the proof]
 test_ghost.adb:31:06: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test_loop.adb:13:10: info: initialization of "Local" proved
 test_loop.adb:15:17: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 11 should mention X in a loop invariant] [provers gave up before completing the proof]

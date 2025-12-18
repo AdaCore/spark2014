@@ -5,20 +5,20 @@ deep_vectors.ads:10:06: info: Container_Aggregates annotation proved (CVC5: 1 VC
 deep_vectors.ads:10:06: info: Container_Aggregates annotation proved (CVC5: 1 VC)
 deep_vectors.ads:10:06: info: Container_Aggregates annotation proved (CVC5: 1 VC)
 deep_vectors.ads:10:06: info: Container_Aggregates annotation proved (CVC5: 1 VC)
-deep_vectors.ads:10:06: info: after a call to Add at deep_vectors.ads:13
-deep_vectors.ads:10:06: info: after a call to Add at deep_vectors.ads:13
-deep_vectors.ads:10:06: info: after a call to Add at deep_vectors.ads:13
-deep_vectors.ads:10:06: info: after a call to Empty at deep_vectors.ads:12
-deep_vectors.ads:10:06: info: after a call to Empty at deep_vectors.ads:12
+deep_vectors.ads:10:06: info: after a call to "Add" at deep_vectors.ads:13
+deep_vectors.ads:10:06: info: after a call to "Add" at deep_vectors.ads:13
+deep_vectors.ads:10:06: info: after a call to "Add" at deep_vectors.ads:13
+deep_vectors.ads:10:06: info: after a call to "Empty" at deep_vectors.ads:12
+deep_vectors.ads:10:06: info: after a call to "Empty" at deep_vectors.ads:12
 deep_vectors.ads:10:06: info: during checks for container aggregates at deep_vectors.ads:10
-deep_vectors.ads:10:06: info: when establishing invariant on Capacity at deep_vectors.ads:30
-deep_vectors.ads:10:06: info: when establishing invariant on Length at deep_vectors.ads:23
-deep_vectors.ads:10:06: info: when reestablishing invariant on Capacity at deep_vectors.ads:30
-deep_vectors.ads:10:06: info: when reestablishing invariant on Get at deep_vectors.ads:25
-deep_vectors.ads:10:06: info: when reestablishing invariant on Length at deep_vectors.ads:23
+deep_vectors.ads:10:06: info: when establishing invariant on "Capacity" at deep_vectors.ads:30
+deep_vectors.ads:10:06: info: when establishing invariant on "Length" at deep_vectors.ads:23
+deep_vectors.ads:10:06: info: when reestablishing invariant on "Capacity" at deep_vectors.ads:30
+deep_vectors.ads:10:06: info: when reestablishing invariant on "Get" at deep_vectors.ads:25
+deep_vectors.ads:10:06: info: when reestablishing invariant on "Length" at deep_vectors.ads:23
 deep_vectors.ads:10:06: medium: Container_Aggregates annotation might be incorrect [provers reached step limit before completing the proof]
-deep_vectors.ads:10:06: medium: after a call to Add at deep_vectors.ads:13
-deep_vectors.ads:10:06: medium: when reestablishing invariant on Get at deep_vectors.ads:25
+deep_vectors.ads:10:06: medium: after a call to "Add" at deep_vectors.ads:13
+deep_vectors.ads:10:06: medium: when reestablishing invariant on "Get" at deep_vectors.ads:25
 deep_vectors.ads:12:13: info: implicit aspect Always_Terminates on "Empty" has been proved, subprogram will terminate
 deep_vectors.ads:17:25: info: during checks for container aggregates at deep_vectors.ads:10
 deep_vectors.ads:17:25: info: precondition proved (CVC5: 1 VC)

@@ -471,10 +471,16 @@ package SPARK_Util is
    --  subunits), Sem_Ch12.Is_In_Main_Unit, Inline.In_Main_Unit_Or_Subunit
    --  (which do yet something else).
 
-   function Source_Name (N : Node_Id) return String
+   function Raw_Source_Name (N : Node_Id) return String
    with Pre => Present (N) and then Nkind (N) in N_Has_Chars;
    --  @param N any node with Chars field
    --  @return The unqualified name of N as it appears in the source code
+
+   function Pretty_Source_Name (N : Node_Id) return String
+   with Pre => Present (N) and then Nkind (N) in N_Has_Chars;
+   --  @param N any node with Chars field
+   --  @return Same as above but use pretty printing and try to avoid internal
+   --     names. It should only be used in messages.
 
    function Is_Local_Context (Scop : Entity_Id) return Boolean;
    --  Return if a given scope defines a local context where it is legal to

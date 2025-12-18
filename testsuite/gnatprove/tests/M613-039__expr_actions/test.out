@@ -3,8 +3,8 @@ list.adb:20:14: info: initialization of "Res" proved
 list.adb:23:10: medium: precondition might fail [provers gave up before completing the proof]
 list.adb:23:19: info: precondition proved (CVC5: 4 VC)
 list.adb:23:31: info: range check proved (CVC5: 4 VC)
-list.adb:25:13: medium: loop invariant might fail in first iteration, cannot prove Model.To (S)'Last = I - First + 1 [possible fix: you should consider adding a postcondition to function To or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
-list.adb:25:13: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Model.To (S)'Last = I - First + 1 [possible fix: you should consider adding a postcondition to function To or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
+list.adb:25:13: medium: loop invariant might fail in first iteration, cannot prove Model.To (S)'Last = I - First + 1 [possible fix: you should consider adding a postcondition to function "To" or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
+list.adb:25:13: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Model.To (S)'Last = I - First + 1 [possible fix: you should consider adding a postcondition to function "To" or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 list.adb:25:35: info: overflow check proved (CVC5: 4 VC)
 list.adb:25:43: info: overflow check proved (CVC5: 4 VC)
 list.adb:26:54: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers gave up before completing the proof]
@@ -13,12 +13,12 @@ list.adb:26:71: info: range check proved (CVC5: 4 VC)
 list.adb:30:10: medium: precondition might fail [provers gave up before completing the proof]
 list.adb:30:23: medium: precondition might fail [provers gave up before completing the proof]
 list.adb:31:10: medium: precondition might fail [provers gave up before completing the proof]
-list.adb:33:13: medium: loop invariant might fail in first iteration, cannot prove Model.To (S)'Last = Last - I [possible fix: you should consider adding a postcondition to function To or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
-list.adb:33:13: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Model.To (S)'Last = Last - I [possible fix: you should consider adding a postcondition to function To or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
+list.adb:33:13: medium: loop invariant might fail in first iteration, cannot prove Model.To (S)'Last = Last - I [possible fix: you should consider adding a postcondition to function "To" or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
+list.adb:33:13: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Model.To (S)'Last = Last - I [possible fix: you should consider adding a postcondition to function "To" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
 list.adb:33:38: info: overflow check proved (CVC5: 4 VC)
-list.adb:34:21: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: you should consider adding a postcondition to function To or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
+list.adb:34:21: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: you should consider adding a postcondition to function "To" or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 list.adb:34:44: info: overflow check proved (CVC5: 4 VC)
-list.adb:35:24: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: you should consider adding a postcondition to function To or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
+list.adb:35:24: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: you should consider adding a postcondition to function "To" or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 list.adb:35:58: info: overflow check proved (CVC5: 4 VC)
 list.adb:37:15: medium: precondition might fail [provers reached step limit before completing the proof]
 list.adb:37:29: info: range check proved (CVC5: 4 VC)

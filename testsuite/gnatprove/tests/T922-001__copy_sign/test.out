@@ -9,6 +9,6 @@ conv2.adb:11:13: info: alignment of source type of unchecked conversion is compa
 conv2.adb:11:13: info: types in unchecked conversion have the same size (Trivial)
 conv2.adb:11:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
 conv2.adb:11:51: info: type is suitable as source for unchecked conversion (Trivial)
-conv2.adb:11:58: high: type is unsuitable as a target for unchecked conversion [possible explanation: type Bytes has 255 values but Component_Size of type Float_Bytes is 8, which allows 256 possible values; invalid values could result from the unchecked conversion [SPARK RM 13.9]]
+conv2.adb:11:58: high: type is unsuitable as a target for unchecked conversion [possible explanation: type "Bytes" has 255 values but Component_Size of type "Float_Bytes" is 8, which allows 256 possible values; invalid values could result from the unchecked conversion [SPARK RM 13.9]]
 conv2.adb:13:13: info: implicit aspect Always_Terminates on "Zero" has been proved, subprogram will terminate
 conv2.adb:21:19: medium: assertion might fail [provers reached step limit before completing the proof]

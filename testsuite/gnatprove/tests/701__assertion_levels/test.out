@@ -47,10 +47,10 @@ main.adb:146:28: warning: unused initial value of "Y"
 main.adb:147:17: info: postcondition proved (CVC5: 2 VC)
 main.adb:160:14: warning: subprogram "Test_Invariant" has no effect
 main.adb:162:07: info: no contextual analysis of "Test_Invariant" (nested package declaration)
-main.adb:165:20: info: for Y at the end of P1 at main.adb:165
+main.adb:165:20: info: for "Y" at the end of "P1" at main.adb:165
 main.adb:165:20: info: invariant check proved (CVC5: 2 VC)
 main.adb:165:37: info: initialization of "Y" proved
-main.adb:168:20: info: for Y at the end of P2 at main.adb:168
+main.adb:168:20: info: for "Y" at the end of "P2" at main.adb:168
 main.adb:168:20: info: invariant check proved (CVC5: 2 VC)
 main.adb:168:37: info: initialization of "Y" proved
 main.adb:171:31: warning: unused initial value of "Y"

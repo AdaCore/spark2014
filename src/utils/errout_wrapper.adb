@@ -50,7 +50,7 @@ package body Errout_Wrapper is
 
    function Node_To_Name (N : Node_Id) return String;
    --  Convert the node to a String. This is mostly a wrapper around
-   --  Source_Name.
+   --  Raw_Source_Name.
 
    function Add_Default_Name (Msg : Message; N : Node_Id) return Message;
    --  If the message doesn't contain any names, add the node N as a single
@@ -611,10 +611,10 @@ package body Errout_Wrapper is
    begin
       case Nkind (N) is
          when N_Pragma =>
-            return Source_Name (Pragma_Identifier (N));
+            return Raw_Source_Name (Pragma_Identifier (N));
 
          when others   =>
-            return Source_Name (N);
+            return Raw_Source_Name (N);
       end case;
    end Node_To_Name;
 

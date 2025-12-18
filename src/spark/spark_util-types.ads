@@ -342,10 +342,6 @@ package SPARK_Util.Types is
    with Pre => Has_Predicates (Ty) and then not Is_Full_View (Ty);
    --  Return the view of Ty on which its predicate is defined
 
-   function Type_Name_For_Explanation (Typ : Type_Kind_Id) return String;
-   --  This function computes a user-visible string to represent the type in
-   --  argument.
-
    procedure Check_Known_RM_Size
      (Typ         : Type_Kind_Id;
       RM_Size     : out Uint;

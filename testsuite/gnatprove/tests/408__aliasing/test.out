@@ -16,7 +16,7 @@ sideeffects.adb:24:10: info: initialization of "Y" proved
 sideeffects.adb:38:07: info: initialization of "Y" proved
 sideeffects.adb:41:22: medium: assertion might fail (e.g. when X = -1 and Y = 0) [possible fix: add or complete related loop invariants or postconditions] [provers gave up before completing the proof]
 sideeffects.adb:42:12: medium: implicit aspect Always_Terminates on "Call" could be incorrect, call to "Increment_G_And_Return" might be nonterminating
-sideeffects.adb:42:12: medium: unexpected exception might be raised [reason for check: Call allows propagating no exceptions] [possible explanation: any exception might be unexpectedly raised] [provers gave up before completing the proof]
+sideeffects.adb:42:12: medium: unexpected exception might be raised [reason for check: "Call" allows propagating no exceptions] [possible explanation: any exception might be unexpectedly raised] [provers gave up before completing the proof]
 sideeffects.adb:43:22: medium: assertion might fail (e.g. when G = -1 and Y = 0) [possible fix: add or complete related loop invariants or postconditions] [provers gave up before completing the proof]
 sideeffects.adb:47:10: warning: "Z" is set by "Increment_And_Return" but not used after the call
 sideeffects.adb:59:14: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 54 should mention X in a precondition] [provers gave up before completing the proof]
@@ -28,7 +28,7 @@ sideeffects.adb:65:14: info: local subprogram "Incr" only analyzed in the contex
 sideeffects.adb:67:14: medium: overflow check might fail, cannot prove lower bound for X + 1, in call inlined at sideeffects.adb:77 [reason for check: result of addition must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
 sideeffects.adb:68:14: medium: overflow check might fail, cannot prove upper bound for H + 1, in call inlined at sideeffects.adb:77 [reason for check: result of addition must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
 sideeffects.adb:71:04: info: initialization of "V1" proved
-sideeffects.adb:75:15: medium: overflow check might fail, cannot prove lower bound for Call + Call [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Call or turning it into an expression function] [provers reached step limit before completing the proof]
+sideeffects.adb:75:15: medium: overflow check might fail, cannot prove lower bound for Call + Call [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function "Call" or turning it into an expression function] [provers reached step limit before completing the proof]
 sideeffects.adb:76:10: high: "H" is not initialized
 sideeffects.adb:76:32: high: "V2" is not initialized
 sideeffects.adb:76:36: high: "V3" is not initialized

@@ -5,7 +5,7 @@ test.adb:16:14: medium: "Y" might not be initialized
 test.adb:16:16: medium: overflow check might fail, cannot prove lower bound for Y - X [reason for check: result of subtraction must fit in a 32-bits machine integer] [provers gave up before completing the proof]
 test.adb:23:04: warning: analyzing unreferenced function "Uninitialized_2" [unreferenced-function]
 test.adb:23:13: info: implicit aspect Always_Terminates on "Uninitialized_2" has been proved, subprogram will terminate
-test.adb:31:07: medium: unexpected exception might be raised [reason for check: Uninitialized_2 allows propagating no exceptions] [possible explanation: Program_Error might be unexpectedly raised] [provers gave up before completing the proof]
+test.adb:31:07: medium: unexpected exception might be raised [reason for check: "Uninitialized_2" allows propagating no exceptions] [possible explanation: "Program_Error" might be unexpectedly raised] [provers gave up before completing the proof]
 test.adb:38:04: warning: analyzing unreferenced procedure "Uninitialized_3" [unreferenced-procedure]
 test.adb:38:51: medium: "C" might not be initialized in "Uninitialized_3" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize "C" on all paths or make "C" an IN OUT parameter]
 test.adb:40:23: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]

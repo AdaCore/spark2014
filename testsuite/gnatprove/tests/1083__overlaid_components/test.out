@@ -6,7 +6,7 @@ p.adb:10:07: info: address in address clause is compatible with object alignment
 p.adb:10:07: info: object is suitable for aliasing via address clause (Trivial)
 p.adb:10:07: info: type is suitable as source for unchecked conversion (Trivial)
 p.adb:10:07: warning: imprecise handling of overlay (type is unsuitable as source for unchecked conversion) [imprecise-overlay]
-p.adb:11:31: high: type is unsuitable as a source for unchecked conversion [possible explanation: type Dyn_Arr doesn't have a Size representation clause or aspect; type Dyn_Arr might have unused bits that are not modelled in SPARK]
+p.adb:11:31: high: type is unsuitable as a source for unchecked conversion [possible explanation: type "Dyn_Arr" doesn't have a Size representation clause or aspect; type "Dyn_Arr" might have unused bits that are not modelled in SPARK]
 p.adb:11:31: high: types of aliased objects do not have the same size [provers reached step limit before completing the proof]
 p.adb:11:31: info: object is suitable for aliasing via address clause (Trivial)
 p.adb:16:04: warning: analyzing unreferenced procedure "P2" [unreferenced-procedure]
@@ -16,7 +16,7 @@ p.adb:18:07: high: address in address clause might not be an integral multiple o
 p.adb:18:07: info: object is suitable for aliasing via address clause (Trivial)
 p.adb:18:07: info: type is suitable as source for unchecked conversion (Trivial)
 p.adb:18:07: warning: imprecise handling of overlay (mutable overlay of a subcomponent of an object) [imprecise-overlay]
-p.adb:19:31: high: type is unsuitable as a source for unchecked conversion [possible explanation: type Dyn_Arr doesn't have a Size representation clause or aspect; type Dyn_Arr might have unused bits that are not modelled in SPARK]
+p.adb:19:31: high: type is unsuitable as a source for unchecked conversion [possible explanation: type "Dyn_Arr" doesn't have a Size representation clause or aspect; type "Dyn_Arr" might have unused bits that are not modelled in SPARK]
 p.adb:19:31: high: types of aliased objects do not have the same size [provers reached step limit before completing the proof]
 p.adb:19:31: info: object is suitable for aliasing via address clause (Trivial)
 p.adb:19:34: warning: alignment of object is not precisely known [imprecise-align]
@@ -27,7 +27,7 @@ p.adb:26:07: info: address in address clause is compatible with object alignment
 p.adb:26:07: info: object is suitable for aliasing via address clause (Trivial)
 p.adb:26:07: info: type is suitable as source for unchecked conversion (Trivial)
 p.adb:26:07: warning: imprecise handling of overlay (mutable overlay of a subcomponent of an object) [imprecise-overlay]
-p.adb:27:31: high: type is unsuitable as a source for unchecked conversion [possible explanation: type Record_Holder doesn't have a Size representation clause or aspect; type Record_Holder might have unused bits that are not modelled in SPARK]
+p.adb:27:31: high: type is unsuitable as a source for unchecked conversion [possible explanation: type "Record_Holder" doesn't have a Size representation clause or aspect; type "Record_Holder" might have unused bits that are not modelled in SPARK]
 p.adb:27:31: high: types of aliased objects do not have the same size [provers reached step limit before completing the proof]
 p.adb:27:31: info: object is suitable for aliasing via address clause (Trivial)
 p.adb:27:36: warning: alignment of object is not precisely known [imprecise-align]
@@ -38,7 +38,7 @@ p.adb:34:07: info: address in address clause is compatible with object alignment
 p.adb:34:07: info: object is suitable for aliasing via address clause (Trivial)
 p.adb:34:07: info: type is suitable as source for unchecked conversion (Trivial)
 p.adb:34:07: warning: imprecise handling of overlay (mutable overlay of a subcomponent of an object) [imprecise-overlay]
-p.adb:35:31: high: type is unsuitable as a source for unchecked conversion [possible explanation: anonymous type doesn't have a Component_Size representation clause or aspect]
+p.adb:35:31: high: type is unsuitable as a source for unchecked conversion [possible explanation: subtype of "Array_Holder" doesn't have a Component_Size representation clause or aspect]
 p.adb:35:31: high: types of aliased objects do not have the same size [provers reached step limit before completing the proof]
 p.adb:35:31: info: object is suitable for aliasing via address clause (Trivial)
 p.adb:35:31: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at line 32 should mention D in a precondition] [provers reached step limit before completing the proof]

@@ -3,39 +3,39 @@
 
  info: exit case proved
 --> exit_cases_non_terminating.ads:7:19
-      + on exceptional exit from Might_Return_Abnormally at exit_cases_non_terminating.ads:5
+      + on exceptional exit from "Might_Return_Abnormally" at exit_cases_non_terminating.ads:5
 
  info: exit case proved
 --> exit_cases_non_terminating.ads:7:19
-      + on program exit from Might_Return_Abnormally at exit_cases_non_terminating.ads:5
+      + on program exit from "Might_Return_Abnormally" at exit_cases_non_terminating.ads:5
 
  info: exit case proved
 --> exit_cases_non_terminating.ads:8:19
-      + on normal return from Might_Return_Abnormally at exit_cases_non_terminating.ads:5
+      + on normal return from "Might_Return_Abnormally" at exit_cases_non_terminating.ads:5
 
  info: exit case proved
 --> exit_cases_non_terminating.ads:8:19
-      + on exceptional exit from Might_Return_Abnormally at exit_cases_non_terminating.ads:5
+      + on exceptional exit from "Might_Return_Abnormally" at exit_cases_non_terminating.ads:5
 
  info: exit case proved
 --> exit_cases_non_terminating.ads:8:19
-      + on program exit from Might_Return_Abnormally at exit_cases_non_terminating.ads:5
+      + on program exit from "Might_Return_Abnormally" at exit_cases_non_terminating.ads:5
 
  info: exit case proved
 --> exit_cases_non_terminating.ads:9:19
-      + on normal return from Might_Return_Abnormally at exit_cases_non_terminating.ads:5
+      + on normal return from "Might_Return_Abnormally" at exit_cases_non_terminating.ads:5
 
  info: exit case proved
 --> exit_cases_non_terminating.ads:9:19
-      + on program exit from Might_Return_Abnormally at exit_cases_non_terminating.ads:5
+      + on program exit from "Might_Return_Abnormally" at exit_cases_non_terminating.ads:5
 
  info: exit case proved
 --> exit_cases_non_terminating.ads:10:19
-      + on normal return from Might_Return_Abnormally at exit_cases_non_terminating.ads:5
+      + on normal return from "Might_Return_Abnormally" at exit_cases_non_terminating.ads:5
 
  info: exit case proved
 --> exit_cases_non_terminating.ads:10:19
-      + on exceptional exit from Might_Return_Abnormally at exit_cases_non_terminating.ads:5
+      + on exceptional exit from "Might_Return_Abnormally" at exit_cases_non_terminating.ads:5
 
  info: exceptional case proved
 --> exit_cases_non_terminating.ads:11:39

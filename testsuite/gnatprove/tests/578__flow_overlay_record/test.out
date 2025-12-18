@@ -2,7 +2,7 @@ main1.adb:15:04: info: address in address clause is compatible with object align
 main1.adb:15:04: info: object is suitable for aliasing via address clause (Trivial)
 main1.adb:15:04: info: type is suitable as source for unchecked conversion (Trivial)
 main1.adb:15:04: warning: imprecise handling of overlay (types in unchecked conversion do not have the same size) [imprecise-overlay]
-main1.adb:15:38: high: types of aliased objects do not have the same size [possible explanation: sizes of overlaid objects differ: type Large has Object_Size 224, while type Small has Object_Size 32]
+main1.adb:15:38: high: types of aliased objects do not have the same size [possible explanation: sizes of overlaid objects differ: type "Large" has Object_Size 224, while type "Small" has Object_Size 32]
 main1.adb:15:38: info: object is suitable for aliasing via address clause (Trivial)
 main1.adb:15:38: info: type is suitable as source for unchecked conversion (Trivial)
 main1.adb:18:08: high: "X" is not initialized
@@ -10,13 +10,13 @@ main2.adb:15:04: info: address in address clause is compatible with object align
 main2.adb:15:04: info: object is suitable for aliasing via address clause (Trivial)
 main2.adb:15:04: info: type is suitable as source for unchecked conversion (Trivial)
 main2.adb:15:04: warning: imprecise handling of overlay (types in unchecked conversion do not have the same size) [imprecise-overlay]
-main2.adb:15:38: high: types of aliased objects do not have the same size [possible explanation: sizes of overlaid objects differ: type Large has Object_Size 224, while type Small has Object_Size 32]
+main2.adb:15:38: high: types of aliased objects do not have the same size [possible explanation: sizes of overlaid objects differ: type "Large" has Object_Size 224, while type "Small" has Object_Size 32]
 main2.adb:15:38: info: object is suitable for aliasing via address clause (Trivial)
 main2.adb:15:38: info: type is suitable as source for unchecked conversion (Trivial)
 main3.adb:15:04: info: address in address clause is compatible with object alignment (Trivial)
 main3.adb:15:04: info: object is suitable for aliasing via address clause (Trivial)
 main3.adb:15:04: info: type is suitable as source for unchecked conversion (Trivial)
 main3.adb:15:04: warning: imprecise handling of overlay (types in unchecked conversion do not have the same size) [imprecise-overlay]
-main3.adb:15:38: high: types of aliased objects do not have the same size [possible explanation: sizes of overlaid objects differ: type Large has Object_Size 224, while type Small has Object_Size 32]
+main3.adb:15:38: high: types of aliased objects do not have the same size [possible explanation: sizes of overlaid objects differ: type "Large" has Object_Size 224, while type "Small" has Object_Size 32]
 main3.adb:15:38: info: object is suitable for aliasing via address clause (Trivial)
 main3.adb:15:38: info: type is suitable as source for unchecked conversion (Trivial)

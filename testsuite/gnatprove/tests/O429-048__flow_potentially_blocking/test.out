@@ -16,7 +16,7 @@ external.adb:3:11: info: ceiling priority protocol is respected for "Pack.Po_Fun
 external.adb:3:11: info: ceiling priority protocol is respected for "Pack.Po_Proc" (CVC5: 1 VC)
 external.adb:3:11: info: ceiling priority protocol is respected for "Pack.Po_Safe" (CVC5: 1 VC)
 external_separate_calls.ads:4:13: info: ceiling priority protocol is respected for "External_Separate_Calls.Po2" (CVC5: 1 VC)
-floatio.adb:7:21: medium: unexpected exception might be raised [reason for check: Floatio allows propagating no exceptions] [possible explanation: Layout_Error might be unexpectedly raised] [provers gave up before completing the proof]
+floatio.adb:7:21: medium: unexpected exception might be raised [reason for check: "Floatio" allows propagating no exceptions] [possible explanation: "Layout_Error" might be unexpectedly raised] [provers gave up before completing the proof]
 internal_protected_call.adb:7:33: high: call to potentially blocking subprogram "P" in protected operation "E"
 internal_protected_call.adb:8:10: high: call to potentially blocking subprogram "P" in protected operation "E"
 internal_protected_call.adb:13:33: high: potentially blocking entry call in protected operation "P"
@@ -70,12 +70,12 @@ p.adb:209:10: high: call to potentially blocking predefined subprogram "Is_Open"
 p.adb:209:10: info: initialization of "F" proved
 p.adb:211:21: high: call to potentially blocking predefined subprogram "Open" in protected operation "File_Proc"
 p.adb:211:21: info: precondition proved (CVC5: 1 VC)
-p.adb:211:21: medium: unexpected exception might be raised [reason for check: File_Proc allows propagating no exceptions] [possible explanation: Name_Error and Use_Error might be unexpectedly raised] [provers gave up before completing the proof]
+p.adb:211:21: medium: unexpected exception might be raised [reason for check: "File_Proc" allows propagating no exceptions] [possible explanation: "Name_Error" and "Use_Error" might be unexpectedly raised] [provers gave up before completing the proof]
 p.adb:211:28: warning: "F" is set by "Open" but not used after the call
 p.adb:218:10: high: call to potentially blocking subprogram "Text_Proc" in protected operation "Text_Entry"
 p.adb:223:21: high: call to potentially blocking predefined subprogram "Put_Line" in protected operation "Text_Proc"
 p.adb:233:26: high: call to potentially blocking predefined subprogram "Put" in protected operation "My_Text_Entry"
-p.adb:233:26: medium: unexpected exception might be raised [reason for check: My_Text_Entry allows propagating no exceptions] [possible explanation: Layout_Error might be unexpectedly raised] [provers gave up before completing the proof]
+p.adb:233:26: medium: unexpected exception might be raised [reason for check: "My_Text_Entry" allows propagating no exceptions] [possible explanation: "Layout_Error" might be unexpectedly raised] [provers gave up before completing the proof]
 p.adb:249:10: high: call to potentially blocking subprogram "Floatio" in protected operation "Floatio_Print_Entry"
 p.adb:262:10: high: call to potentially blocking subprogram "Library_Level_Procedure" in protected operation "Entry_Call_To_Library_Level_Procedure"
 p.adb:268:10: high: call to potentially blocking subprogram "Library_Level_Procedure" in protected operation "Proc_Call_To_Library_Level_Procedure"

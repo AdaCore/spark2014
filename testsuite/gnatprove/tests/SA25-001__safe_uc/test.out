@@ -3,7 +3,7 @@ safe.adb:5:13: info: types in unchecked conversion have the same size (Trivial)
 safe.adb:5:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
 safe.adb:5:57: info: type is suitable as source for unchecked conversion (Trivial)
 safe.adb:5:66: high: type is unsuitable as a target for unchecked conversion [possible explanation: floating-point types have invalid bit patterns for SPARK; invalid values could result from the unchecked conversion [SPARK RM 13.9]]
-safe.adb:7:13: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type Float and type Natural differ]
+safe.adb:7:13: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type "Float" and type "Natural" differ]
 safe.adb:7:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 safe.adb:7:13: warning: imprecise handling of Unchecked_Conversion (types in unchecked conversion do not have the same size) [imprecise-unchecked-conversion]
 safe.adb:7:56: info: type is suitable as source for unchecked conversion (Trivial)
@@ -21,7 +21,7 @@ safe.adb:19:13: info: alignment of source type of unchecked conversion is compat
 safe.adb:19:13: info: types in unchecked conversion have the same size (Trivial)
 safe.adb:19:55: info: type is suitable as source for unchecked conversion (Trivial)
 safe.adb:19:59: info: type is suitable for unchecked conversion (Trivial)
-safe.adb:20:13: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type U8 and type SS_Nat differ]
+safe.adb:20:13: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type "U8" and type "SS_Nat" differ]
 safe.adb:20:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 safe.adb:20:13: warning: imprecise handling of Unchecked_Conversion (types in unchecked conversion do not have the same size) [imprecise-unchecked-conversion]
 safe.adb:20:59: info: type is suitable as source for unchecked conversion (Trivial)
@@ -29,17 +29,17 @@ safe.adb:20:63: info: type is suitable for unchecked conversion (Trivial)
 safe.adb:41:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 safe.adb:41:13: info: types in unchecked conversion have the same size (Trivial)
 safe.adb:41:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as source for unchecked conversion) [imprecise-unchecked-conversion]
-safe.adb:41:59: high: type is unsuitable as a source for unchecked conversion [possible explanation: type HRec has minimal size 40, but Size was declared as 64; type HRec might have unused bits that are not modelled in SPARK]
+safe.adb:41:59: high: type is unsuitable as a source for unchecked conversion [possible explanation: type "HRec" has minimal size 40, but Size was declared as 64; type "HRec" might have unused bits that are not modelled in SPARK]
 safe.adb:41:65: info: type is suitable for unchecked conversion (Trivial)
 safe.adb:43:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 safe.adb:43:13: info: types in unchecked conversion have the same size (Trivial)
 safe.adb:43:13: warning: imprecise handling of Unchecked_Conversion (component offset not known) [imprecise-unchecked-conversion]
 safe.adb:43:60: info: type is suitable as source for unchecked conversion (Trivial)
 safe.adb:43:67: info: type is suitable for unchecked conversion (Trivial)
-safe.adb:50:13: high: alignment of source type of unchecked conversion might not be an integral multiple of alignment of target type [possible explanation: alignment of HRec3 (which is 4) must be a multiple of the alignment of U64 (which is 8)] [possible fix: source type of unchecked conversion should have an Alignment representation clause]
+safe.adb:50:13: high: alignment of source type of unchecked conversion might not be an integral multiple of alignment of target type [possible explanation: alignment of type "HRec3" (which is 4) must be a multiple of the alignment of type "U64" (which is 8)] [possible fix: source type of unchecked conversion should have an Alignment representation clause]
 safe.adb:50:13: info: types in unchecked conversion have the same size (Trivial)
 safe.adb:50:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as source for unchecked conversion) [imprecise-unchecked-conversion]
-safe.adb:50:60: high: type is unsuitable as a source for unchecked conversion [possible explanation: type HRec3 has minimal size 40, but Size was declared as 64; type HRec3 might have unused bits that are not modelled in SPARK]
+safe.adb:50:60: high: type is unsuitable as a source for unchecked conversion [possible explanation: type "HRec3" has minimal size 40, but Size was declared as 64; type "HRec3" might have unused bits that are not modelled in SPARK]
 safe.adb:50:67: info: type is suitable for unchecked conversion (Trivial)
 safe.adb:58:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 safe.adb:58:13: info: types in unchecked conversion have the same size (Trivial)
@@ -57,13 +57,13 @@ safe.adb:107:13: info: alignment of source type of unchecked conversion is compa
 safe.adb:107:13: info: types in unchecked conversion have the same size (Trivial)
 safe.adb:107:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
 safe.adb:107:54: info: type is suitable as source for unchecked conversion (Trivial)
-safe.adb:107:64: high: type is unsuitable as a target for unchecked conversion [possible explanation: type My_Enum_Sub has 239 values but Size 8, which allows 256 possible values; invalid values could result from the unchecked conversion [SPARK RM 13.9]]
-safe.adb:121:13: high: types used for unchecked conversion do not have the same size [possible explanation: type My_Rec doesn't have a Size representation clause or aspect]
+safe.adb:107:64: high: type is unsuitable as a target for unchecked conversion [possible explanation: type "My_Enum_Sub" has 239 values but Size 8, which allows 256 possible values; invalid values could result from the unchecked conversion [SPARK RM 13.9]]
+safe.adb:121:13: high: types used for unchecked conversion do not have the same size [possible explanation: type "My_Rec" doesn't have a Size representation clause or aspect]
 safe.adb:121:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 safe.adb:121:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as source for unchecked conversion) [imprecise-unchecked-conversion]
-safe.adb:121:55: high: type is unsuitable as a source for unchecked conversion [possible explanation: type My_Rec doesn't have a Size representation clause or aspect; type My_Rec might have unused bits that are not modelled in SPARK]
+safe.adb:121:55: high: type is unsuitable as a source for unchecked conversion [possible explanation: type "My_Rec" doesn't have a Size representation clause or aspect; type "My_Rec" might have unused bits that are not modelled in SPARK]
 safe.adb:121:63: info: type is suitable for unchecked conversion (Trivial)
-safe.adb:123:13: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type Integer and type U8 differ]
+safe.adb:123:13: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type "Integer" and type "U8" differ]
 safe.adb:123:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 safe.adb:123:13: warning: imprecise handling of Unchecked_Conversion (types in unchecked conversion do not have the same size) [imprecise-unchecked-conversion]
 safe.adb:123:54: info: type is suitable as source for unchecked conversion (Trivial)
@@ -81,5 +81,5 @@ safe.adb:140:56: info: type is suitable for unchecked conversion (Trivial)
 safe.adb:141:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 safe.adb:141:13: info: types in unchecked conversion have the same size (Trivial)
 safe.adb:141:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as source for unchecked conversion) [imprecise-unchecked-conversion]
-safe.adb:141:52: high: type is unsuitable as a source for unchecked conversion [possible explanation: type R2 has minimal size 2, but Size was declared as 8; type R2 might have unused bits that are not modelled in SPARK]
+safe.adb:141:52: high: type is unsuitable as a source for unchecked conversion [possible explanation: type "R2" has minimal size 2, but Size was declared as 8; type "R2" might have unused bits that are not modelled in SPARK]
 safe.adb:141:56: info: type is suitable for unchecked conversion (Trivial)

@@ -1,0 +1,25 @@
+main.adb:4:14: info: function contract feasibility proved (Trivial: 1 VC)
+main.adb:7:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: component of record is not aliased] [possible fix: overlaying object should have an Alignment representation clause]
+main.adb:7:07: info: object is suitable for aliasing via address clause (Trivial)
+main.adb:7:07: info: type is suitable as source for unchecked conversion (Trivial)
+main.adb:7:07: warning: imprecise handling of overlay (mutable overlay of a subcomponent of an object) [imprecise-overlay]
+main.adb:7:35: high: object is unsuitable for aliasing via address clause [possible explanation: access-to-subprogram type is an access type]
+main.adb:7:35: high: type is unsuitable as a source for unchecked conversion [possible explanation: access-to-subprogram type is an access type]
+main.adb:7:35: high: types of aliased objects do not have the same size [possible explanation: sizes of overlaid objects differ: type "Integer" has Object_Size 32, while access-to-subprogram type has Object_Size 64]
+main.adb:7:38: warning: alignment of object is not precisely known [imprecise-align]
+main.adb:16:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: component of record is not aliased] [possible fix: overlaying object should have an Alignment representation clause]
+main.adb:16:07: info: object is suitable for aliasing via address clause (Trivial)
+main.adb:16:07: info: type is suitable as source for unchecked conversion (Trivial)
+main.adb:16:07: warning: imprecise handling of overlay (mutable overlay of a subcomponent of an object) [imprecise-overlay]
+main.adb:16:35: high: types of aliased objects do not have the same size [possible explanation: sizes of overlaid objects differ: type "Integer" has Object_Size 32, while type "I'Base" has Object_Size 8]
+main.adb:16:35: info: object is suitable for aliasing via address clause (Trivial)
+main.adb:16:35: info: type is suitable as source for unchecked conversion (Trivial)
+main.adb:16:38: warning: alignment of object is not precisely known [imprecise-align]
+main.adb:24:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: unknown alignment for object] [possible fix: overlaying object should have an Alignment representation clause]
+main.adb:24:07: info: object is suitable for aliasing via address clause (Trivial)
+main.adb:24:07: warning: imprecise handling of overlay (types in unchecked conversion do not have the same size) [imprecise-overlay]
+main.adb:24:44: high: object is unsuitable for aliasing via address clause [possible explanation: subtype of "I'Base" has 3 values but subtype of "I'Base" has Object_Size 8, which allows 256 possible values; aliased object could have invalid values [SPARK RM 13.7]]
+main.adb:24:44: high: types of aliased objects do not have the same size [possible explanation: sizes of overlaid objects differ: type "Integer" has Object_Size 32, while subtype of "I'Base" has Object_Size 8]
+main.adb:24:44: info: type is suitable as source for unchecked conversion (Trivial)
+main.adb:24:46: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+main.adb:24:49: warning: alignment of object is not precisely known [imprecise-align]

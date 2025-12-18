@@ -11,10 +11,10 @@ types_with_invariants.adb:26:22: info: precondition proved (CVC5: 1 VC)
 types_with_invariants.adb:27:22: info: assertion proved (CVC5: 1 VC)
 types_with_invariants.adb:27:46: info: precondition proved (CVC5: 1 VC)
 types_with_invariants.adb:28:07: info: precondition proved (Trivial: 1 VC)
-types_with_invariants.ads:6:13: info: for the result of Get at types_with_invariants.ads:6
+types_with_invariants.ads:6:13: info: for the result of "Get" at types_with_invariants.ads:6
 types_with_invariants.ads:6:13: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 types_with_invariants.ads:6:13: info: invariant check proved (CVC5: 1 VC; Trivial: 1 VC)
-types_with_invariants.ads:9:14: info: for C at the end of Set at types_with_invariants.ads:9
+types_with_invariants.ads:9:14: info: for "C" at the end of "Set" at types_with_invariants.ads:9
 types_with_invariants.ads:9:14: info: invariant check proved (CVC5: 1 VC; Trivial: 2 VC)
 types_with_invariants.ads:23:09: info: invariant check proved on default value (CVC5: 1 VC; Trivial: 1 VC)
 types_with_invariants.ads:29:13: info: implicit aspect Always_Terminates on "To_Integer" has been proved, subprogram will terminate

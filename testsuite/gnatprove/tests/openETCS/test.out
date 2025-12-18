@@ -66,7 +66,7 @@ deceleration_curve.ads:85:14: warning: subprogram "Print_Curve" has no effect
 deceleration_curve_test.adb:6:31: info: precondition proved (CVC5: 2 VC)
 deceleration_curve_test.adb:11:04: info: initialization of "braking_curve" proved
 deceleration_curve_test.adb:15:19: info: precondition proved (CVC5: 6 VC)
-deceleration_curve_test.adb:15:19: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Distance_To_Speed or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
+deceleration_curve_test.adb:15:19: medium: assertion might fail [possible fix: you should consider adding a postcondition to function "Distance_To_Speed" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
 deceleration_curve_test.adb:17:04: info: precondition proved (CVC5: 1 VC)
 example.adb:4:13: info: overflow check proved (CVC5: 2 VC)
 example.adb:5:20: info: overflow check proved (CVC5: 2 VC)

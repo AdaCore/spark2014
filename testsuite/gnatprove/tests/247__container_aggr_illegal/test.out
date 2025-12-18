@@ -36,8 +36,8 @@ test_illegal_capacity.adb:232:16: error: "Capacity" shall return a signed intege
 test_illegal_capacity.adb:289:16: error: a single "Capacity" function shall be specified for a type with a Container_Aggregates annotation
 test_illegal_capacity.adb:345:16: error: duplicated "Capacity" function in the same scope
 test_illegal_capacity.adb:398:19: error: "Capacity" shall be declared in the same list of declarations as the partial view of "T"
-test_illegal_capacity.adb:516:07: error: pragma Annotate Container_Aggregate must immediately follow the specification of function Capacity
-test_illegal_capacity.adb:568:07: error: pragma Annotate Container_Aggregate must immediately follow the specification of function Capacity
+test_illegal_capacity.adb:516:07: error: pragma Annotate Container_Aggregate must immediately follow the specification of function "Capacity"
+test_illegal_capacity.adb:568:07: error: pragma Annotate Container_Aggregate must immediately follow the specification of function "Capacity"
 test_illegal_capacity.adb:611:16: error: a function annotated with Container_Aggregates must not have side effects
 test_illegal_capacity.adb:665:16: error: a function annotated with Container_Aggregates must not be volatile
 test_illegal_capacity.adb:718:16: error: "Capacity" function shall be in SPARK
@@ -50,14 +50,14 @@ test_illegal_contains.adb:58:16: error: type of first parameter shall be annotat
 test_illegal_contains.adb:75:12: error: no "Contains" function found for type with predefined set aggregates "T"
 test_illegal_contains.adb:98:16: error: "Contains" function shall have two parameters
 test_illegal_contains.adb:115:12: error: no "Contains" function found for type with predefined set aggregates "T"
-test_illegal_contains.adb:138:16: error: second parameter of "Contains" function shall be of type Element_Type
+test_illegal_contains.adb:138:16: error: second parameter of "Contains" function shall be of type "Element_Type"
 test_illegal_contains.adb:155:12: error: no "Contains" function found for type with predefined set aggregates "T"
 test_illegal_contains.adb:178:16: error: "Contains" function shall return a boolean
 test_illegal_contains.adb:195:12: error: no "Contains" function found for type with predefined set aggregates "T"
 test_illegal_contains.adb:223:16: error: a single "Contains" function shall be specified for a type with a Container_Aggregates annotation
 test_illegal_contains.adb:264:19: error: a function annotated with Container_Aggregates shall be declared in the same list of declarations as the partial view of "T"
 test_illegal_contains.adb:282:12: error: no "Contains" function found for type with predefined set aggregates "T"
-test_illegal_contains.adb:315:07: error: pragma Annotate Container_Aggregate must immediately follow the specification of function Contains
+test_illegal_contains.adb:315:07: error: pragma Annotate Container_Aggregate must immediately follow the specification of function "Contains"
 test_illegal_contains.adb:322:12: error: no "Contains" function found for type with predefined set aggregates "T"
 test_illegal_contains.adb:345:16: error: a function annotated with Container_Aggregates must not have side effects
 test_illegal_contains.adb:363:12: error: no "Contains" function found for type with predefined set aggregates "T"
@@ -69,9 +69,9 @@ test_illegal_contains.adb:470:16: error: a function annotated with Container_Agg
 test_illegal_contains.adb:487:12: error: no "Contains" function found for type with predefined set aggregates "T"
 test_illegal_default_item.adb:21:16: error: "Default_Item" function shall have no parameters
 test_illegal_default_item.adb:38:12: error: no "Has_Key" nor "Default_Item" function found for type with predefined map aggregates "T"
-test_illegal_default_item.adb:72:16: error: duplicated "Default_Item" function returning Element_Type in the same scope
+test_illegal_default_item.adb:72:16: error: duplicated "Default_Item" function returning type "Element_Type" in the same scope
 test_illegal_default_item.adb:141:12: error: no "Has_Key" nor "Default_Item" function found for type with predefined map aggregates "T"
-test_illegal_default_item.adb:180:07: error: pragma Annotate Container_Aggregate must immediately follow the specification of function Default_Value
+test_illegal_default_item.adb:180:07: error: pragma Annotate Container_Aggregate must immediately follow the specification of function "Default_Value"
 test_illegal_default_item.adb:188:12: error: no "Has_Key" nor "Default_Item" function found for type with predefined map aggregates "T"
 test_illegal_default_item.adb:217:16: error: a function annotated with Container_Aggregates must not have side effects
 test_illegal_default_item.adb:235:12: error: no "Has_Key" nor "Default_Item" function found for type with predefined map aggregates "T"
@@ -95,9 +95,9 @@ test_illegal_eq_elements.adb:72:16: error: parameters of equivalence relations s
 test_illegal_eq_elements.adb:79:12: error: no "Equivalent_Elements" function found for type with predefined set aggregates "T"
 test_illegal_eq_elements.adb:114:16: error: equivalence relations shall return a boolean
 test_illegal_eq_elements.adb:121:12: error: no "Equivalent_Elements" function found for type with predefined set aggregates "T"
-test_illegal_eq_elements.adb:161:16: error: duplicated "Equivalent_Elements" function for Boolean in the same scope
+test_illegal_eq_elements.adb:161:16: error: duplicated "Equivalent_Elements" function for type "Boolean" in the same scope
 test_illegal_eq_elements.adb:215:12: error: no "Equivalent_Elements" function found for type with predefined set aggregates "T"
-test_illegal_eq_elements.adb:254:07: error: pragma Annotate Container_Aggregate must immediately follow the specification of function Eq_Elem
+test_illegal_eq_elements.adb:254:07: error: pragma Annotate Container_Aggregate must immediately follow the specification of function "Eq_Elem"
 test_illegal_eq_elements.adb:258:12: error: no "Equivalent_Elements" function found for type with predefined set aggregates "T"
 test_illegal_eq_elements.adb:293:16: error: a function annotated with Container_Aggregates must not have side effects
 test_illegal_eq_elements.adb:301:12: error: no "Equivalent_Elements" function found for type with predefined set aggregates "T"
@@ -112,9 +112,9 @@ test_illegal_eq_keys.adb:73:16: error: parameters of equivalence relations shall
 test_illegal_eq_keys.adb:84:12: error: no "Equivalent_Keys" function found for type with predefined map aggregates "T"
 test_illegal_eq_keys.adb:119:16: error: equivalence relations shall return a boolean
 test_illegal_eq_keys.adb:130:12: error: no "Equivalent_Keys" function found for type with predefined map aggregates "T"
-test_illegal_eq_keys.adb:170:16: error: duplicated "Equivalent_Keys" function for Boolean in the same scope
+test_illegal_eq_keys.adb:170:16: error: duplicated "Equivalent_Keys" function for type "Boolean" in the same scope
 test_illegal_eq_keys.adb:232:12: error: no "Equivalent_Keys" function found for type with predefined map aggregates "T"
-test_illegal_eq_keys.adb:271:07: error: pragma Annotate Container_Aggregate must immediately follow the specification of function Eq_Key
+test_illegal_eq_keys.adb:271:07: error: pragma Annotate Container_Aggregate must immediately follow the specification of function "Eq_Key"
 test_illegal_eq_keys.adb:279:12: error: no "Equivalent_Keys" function found for type with predefined map aggregates "T"
 test_illegal_eq_keys.adb:314:16: error: a function annotated with Container_Aggregates must not have side effects
 test_illegal_eq_keys.adb:326:12: error: no "Equivalent_Keys" function found for type with predefined map aggregates "T"
@@ -128,9 +128,9 @@ test_illegal_first.adb:39:12: error: no "First" function found for type with pre
 test_illegal_first.adb:80:16: error: "First" shall return a signed integer type or a subtype of Big_Integer
 test_illegal_first.adb:88:12: error: no "First" function found for type with predefined set aggregates "T"
 test_illegal_first.adb:140:12: error: no "First" function found for type with predefined set aggregates "T"
-test_illegal_first.adb:186:16: error: duplicated "First" function returning Index_Type in the same scope
+test_illegal_first.adb:186:16: error: duplicated "First" function returning type "Index_Type" in the same scope
 test_illegal_first.adb:248:12: error: no "First" function found for type with predefined set aggregates "T"
-test_illegal_first.adb:293:07: error: pragma Annotate Container_Aggregate must immediately follow the specification of function First
+test_illegal_first.adb:293:07: error: pragma Annotate Container_Aggregate must immediately follow the specification of function "First"
 test_illegal_first.adb:298:12: error: no "First" function found for type with predefined set aggregates "T"
 test_illegal_first.adb:339:16: error: a function annotated with Container_Aggregates must not have side effects
 test_illegal_first.adb:348:12: error: no "First" function found for type with predefined set aggregates "T"
@@ -157,7 +157,7 @@ test_illegal_has_key.adb:73:16: error: type of first parameter shall be annotate
 test_illegal_has_key.adb:94:12: error: no "Has_Key" nor "Default_Item" function found for type with predefined map aggregates "T"
 test_illegal_has_key.adb:125:16: error: "Has_Key" function shall have two parameters
 test_illegal_has_key.adb:146:12: error: no "Has_Key" nor "Default_Item" function found for type with predefined map aggregates "T"
-test_illegal_has_key.adb:177:16: error: second parameter of "Has_Key" function shall be of type Key_Type
+test_illegal_has_key.adb:177:16: error: second parameter of "Has_Key" function shall be of type "Key_Type"
 test_illegal_has_key.adb:198:12: error: no "Has_Key" nor "Default_Item" function found for type with predefined map aggregates "T"
 test_illegal_has_key.adb:229:16: error: "Has_Key" function shall return a boolean
 test_illegal_has_key.adb:250:12: error: no "Has_Key" nor "Default_Item" function found for type with predefined map aggregates "T"
@@ -166,7 +166,7 @@ test_illegal_has_key.adb:309:12: warning: no "Length" function found for type wi
 test_illegal_has_key.adb:309:12: warning: the cardinality of aggregates will be unknown
 test_illegal_has_key.adb:342:19: error: a function annotated with Container_Aggregates shall be declared in the same list of declarations as the partial view of "T"
 test_illegal_has_key.adb:366:12: error: no "Has_Key" nor "Default_Item" function found for type with predefined map aggregates "T"
-test_illegal_has_key.adb:409:07: error: pragma Annotate Container_Aggregate must immediately follow the specification of function Has_Key
+test_illegal_has_key.adb:409:07: error: pragma Annotate Container_Aggregate must immediately follow the specification of function "Has_Key"
 test_illegal_has_key.adb:421:12: error: no "Has_Key" nor "Default_Item" function found for type with predefined map aggregates "T"
 test_illegal_has_key.adb:452:16: error: a function annotated with Container_Aggregates must not have side effects
 test_illegal_has_key.adb:474:12: error: no "Has_Key" nor "Default_Item" function found for type with predefined map aggregates "T"
@@ -184,11 +184,11 @@ test_illegal_last.adb:116:16: error: "Last" function shall have one parameter
 test_illegal_last.adb:130:12: error: no "Last" function found for type with predefined sequence aggregates "T"
 test_illegal_last.adb:162:16: error: "Last" shall return a signed integer type or a subtype of Big_Integer
 test_illegal_last.adb:176:12: error: no "Last" function found for type with predefined sequence aggregates "T"
-test_illegal_last.adb:214:16: error: the return type of "Last" function shall have the same base type as Tindex_Typeb
+test_illegal_last.adb:214:16: error: the return type of "Last" function shall have the same base type as type "Index_Type'Base"
 test_illegal_last.adb:259:16: error: a single "Last" function shall be specified for a type with a Container_Aggregates annotation
 test_illegal_last.adb:306:19: error: a function annotated with Container_Aggregates shall be declared in the same list of declarations as the partial view of "T"
 test_illegal_last.adb:321:12: error: no "Last" function found for type with predefined sequence aggregates "T"
-test_illegal_last.adb:363:06: error: pragma Annotate Container_Aggregate must immediately follow the specification of function Last
+test_illegal_last.adb:363:06: error: pragma Annotate Container_Aggregate must immediately follow the specification of function "Last"
 test_illegal_last.adb:368:12: error: no "Last" function found for type with predefined sequence aggregates "T"
 test_illegal_last.adb:400:16: error: a function annotated with Container_Aggregates must not have side effects
 test_illegal_last.adb:415:12: error: no "Last" function found for type with predefined sequence aggregates "T"
@@ -215,16 +215,16 @@ test_illegal_maps_get.adb:76:16: error: type of first parameter shall be annotat
 test_illegal_maps_get.adb:94:12: error: no "Get" function found for type with predefined map aggregates "T"
 test_illegal_maps_get.adb:128:16: error: "Get" function shall have two parameters
 test_illegal_maps_get.adb:146:12: error: no "Get" function found for type with predefined map aggregates "T"
-test_illegal_maps_get.adb:180:16: error: second parameter of "Get" function shall be of type Key_Type
+test_illegal_maps_get.adb:180:16: error: second parameter of "Get" function shall be of type "Key_Type"
 test_illegal_maps_get.adb:198:12: error: no "Get" function found for type with predefined map aggregates "T"
-test_illegal_maps_get.adb:232:16: error: "Get" function shall return a value of type Element_Type
+test_illegal_maps_get.adb:232:16: error: "Get" function shall return a value of type "Element_Type"
 test_illegal_maps_get.adb:250:12: error: no "Get" function found for type with predefined map aggregates "T"
 test_illegal_maps_get.adb:289:16: error: a single "Get" function shall be specified for a type with a Container_Aggregates annotation
 test_illegal_maps_get.adb:307:12: warning: no "Length" function found for type with predefined map aggregates "T" [map-length-aggregates]
 test_illegal_maps_get.adb:307:12: warning: the cardinality of aggregates will be unknown
 test_illegal_maps_get.adb:342:19: error: a function annotated with Container_Aggregates shall be declared in the same list of declarations as the partial view of "T"
 test_illegal_maps_get.adb:361:12: error: no "Get" function found for type with predefined map aggregates "T"
-test_illegal_maps_get.adb:402:07: error: pragma Annotate Container_Aggregate must immediately follow the specification of function Get
+test_illegal_maps_get.adb:402:07: error: pragma Annotate Container_Aggregate must immediately follow the specification of function "Get"
 test_illegal_maps_get.adb:414:12: error: no "Get" function found for type with predefined map aggregates "T"
 test_illegal_maps_get.adb:448:16: error: a function annotated with Container_Aggregates must not have side effects
 test_illegal_maps_get.adb:467:12: error: no "Get" function found for type with predefined map aggregates "T"
@@ -250,7 +250,7 @@ test_illegal_maps_length.adb:285:16: error: a single "Length" function shall be 
 test_illegal_maps_length.adb:348:19: error: a function annotated with Container_Aggregates shall be declared in the same list of declarations as the partial view of "T"
 test_illegal_maps_length.adb:364:12: warning: no "Length" function found for type with predefined map aggregates "T" [map-length-aggregates]
 test_illegal_maps_length.adb:364:12: warning: the cardinality of aggregates will be unknown
-test_illegal_maps_length.adb:415:07: error: pragma Annotate Container_Aggregate must immediately follow the specification of function Length
+test_illegal_maps_length.adb:415:07: error: pragma Annotate Container_Aggregate must immediately follow the specification of function "Length"
 test_illegal_maps_length.adb:427:12: warning: no "Length" function found for type with predefined map aggregates "T" [map-length-aggregates]
 test_illegal_maps_length.adb:427:12: warning: the cardinality of aggregates will be unknown
 test_illegal_maps_length.adb:474:16: error: a function annotated with Container_Aggregates must not have side effects
@@ -291,14 +291,14 @@ test_illegal_seqs_get.adb:114:16: error: "Get" function shall have two parameter
 test_illegal_seqs_get.adb:128:12: error: no "Get" function found for type with predefined sequence aggregates "T"
 test_illegal_seqs_get.adb:159:16: error: second parameter of "Get" function shall be of a signed integer type or of a subtype of Big_Integer
 test_illegal_seqs_get.adb:173:12: error: no "Get" function found for type with predefined sequence aggregates "T"
-test_illegal_seqs_get.adb:207:16: error: second parameter of "Get" function shall have the same base type as Tindex_Typeb
+test_illegal_seqs_get.adb:207:16: error: second parameter of "Get" function shall have the same base type as type "Index_Type'Base"
 test_illegal_seqs_get.adb:218:12: error: no "Get" function found for type with predefined sequence aggregates "T"
-test_illegal_seqs_get.adb:249:16: error: "Get" function shall return a value of type Element_Type
+test_illegal_seqs_get.adb:249:16: error: "Get" function shall return a value of type "Element_Type"
 test_illegal_seqs_get.adb:263:12: error: no "Get" function found for type with predefined sequence aggregates "T"
 test_illegal_seqs_get.adb:299:16: error: a single "Get" function shall be specified for a type with a Container_Aggregates annotation
 test_illegal_seqs_get.adb:345:19: error: a function annotated with Container_Aggregates shall be declared in the same list of declarations as the partial view of "T"
 test_illegal_seqs_get.adb:360:12: error: no "Get" function found for type with predefined sequence aggregates "T"
-test_illegal_seqs_get.adb:401:07: error: pragma Annotate Container_Aggregate must immediately follow the specification of function Get
+test_illegal_seqs_get.adb:401:07: error: pragma Annotate Container_Aggregate must immediately follow the specification of function "Get"
 test_illegal_seqs_get.adb:406:12: error: no "Get" function found for type with predefined sequence aggregates "T"
 test_illegal_seqs_get.adb:437:16: error: a function annotated with Container_Aggregates must not have side effects
 test_illegal_seqs_get.adb:452:12: error: no "Get" function found for type with predefined sequence aggregates "T"
@@ -330,7 +330,7 @@ test_illegal_sets_length.adb:188:16: error: a single "Length" function shall be 
 test_illegal_sets_length.adb:229:19: error: a function annotated with Container_Aggregates shall be declared in the same list of declarations as the partial view of "T"
 test_illegal_sets_length.adb:240:12: warning: no "Length" function found for type with predefined set aggregates "T" [set-length-aggregates]
 test_illegal_sets_length.adb:240:12: warning: the cardinality of aggregates will be unknown
-test_illegal_sets_length.adb:277:07: error: pragma Annotate Container_Aggregate must immediately follow the specification of function Length
+test_illegal_sets_length.adb:277:07: error: pragma Annotate Container_Aggregate must immediately follow the specification of function "Length"
 test_illegal_sets_length.adb:281:12: warning: no "Length" function found for type with predefined set aggregates "T" [set-length-aggregates]
 test_illegal_sets_length.adb:281:12: warning: the cardinality of aggregates will be unknown
 test_illegal_sets_length.adb:311:16: error: a function annotated with Container_Aggregates must not have side effects

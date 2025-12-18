@@ -133,30 +133,30 @@ test_call_basic.adb:12:34: info: exceptional case proved (CVC5: 2 VC)
 test_call_basic.adb:12:49: info: exceptional case proved (CVC5: 1 VC)
 test_call_basic.adb:12:62: info: exceptional case proved (CVC5: 1 VC)
 test_call_basic.adb:27:34: info: exceptional case proved (Trivial: 1 VC)
-test_call_basic.adb:31:07: medium: unexpected exception might be raised [reason for check: Raise_E1_Only_Bad_1 allows propagating E1] [possible explanation: E2 and E3 might be unexpectedly raised] [provers gave up before completing the proof]
+test_call_basic.adb:31:07: medium: unexpected exception might be raised [reason for check: "Raise_E1_Only_Bad_1" allows propagating "E1"] [possible explanation: "E2" and "E3" might be unexpectedly raised] [provers gave up before completing the proof]
 test_call_basic.adb:37:34: info: exceptional case proved (Trivial: 1 VC)
 test_call_basic.adb:41:07: info: only expected exception raised (CVC5: 1 VC)
 test_call_basic.adb:46:34: info: exceptional case proved (Trivial: 1 VC)
-test_call_basic.adb:53:10: medium: unexpected exception might be raised [reason for check: Raise_E1_Only_Bad_2 allows propagating E1] [possible explanation: E2 might be unexpectedly raised] [provers gave up before completing the proof]
+test_call_basic.adb:53:10: medium: unexpected exception might be raised [reason for check: "Raise_E1_Only_Bad_2" allows propagating "E1"] [possible explanation: "E2" might be unexpectedly raised] [provers gave up before completing the proof]
 test_call_basic.adb:59:34: info: exceptional case proved (Trivial: 1 VC)
 test_call_basic.adb:64:10: info: only expected exception raised (CVC5: 1 VC)
 test_call_basic.adb:72:39: info: exceptional case proved (Trivial: 1 VC)
-test_call_basic.adb:76:07: medium: unexpected exception might be raised [reason for check: Raise_E1_Or_E2_Bad_1 allows propagating E1 and E2] [possible explanation: E3 might be unexpectedly raised] [provers gave up before completing the proof]
+test_call_basic.adb:76:07: medium: unexpected exception might be raised [reason for check: "Raise_E1_Or_E2_Bad_1" allows propagating "E1" and "E2"] [possible explanation: "E3" might be unexpectedly raised] [provers gave up before completing the proof]
 test_call_basic.adb:82:39: info: exceptional case proved (Trivial: 1 VC)
 test_call_basic.adb:86:07: info: only expected exception raised (CVC5: 1 VC)
 test_call_basic.adb:91:39: info: exceptional case proved (Trivial: 1 VC)
-test_call_basic.adb:98:10: medium: unexpected exception might be raised [reason for check: Raise_E1_Or_E2_Bad_2 allows propagating E1 and E2] [possible explanation: E3 might be unexpectedly raised] [provers gave up before completing the proof]
+test_call_basic.adb:98:10: medium: unexpected exception might be raised [reason for check: "Raise_E1_Or_E2_Bad_2" allows propagating "E1" and "E2"] [possible explanation: "E3" might be unexpectedly raised] [provers gave up before completing the proof]
 test_call_basic.adb:106:39: info: exceptional case proved (Trivial: 1 VC)
 test_call_basic.adb:111:10: info: only expected exception raised (CVC5: 1 VC)
 test_call_others.adb:12:34: info: exceptional case proved (CVC5: 1 VC)
 test_call_others.adb:12:51: info: exceptional case proved (Trivial: 1 VC)
-test_call_others.adb:17:10: medium: unexpected exception might be raised [reason for check: No_E1_Bad allows propagating any exception but E1] [possible explanation: E1 might be unexpectedly raised] [provers gave up before completing the proof]
+test_call_others.adb:17:10: medium: unexpected exception might be raised [reason for check: "No_E1_Bad" allows propagating any exception but "E1"] [possible explanation: "E1" might be unexpectedly raised] [provers gave up before completing the proof]
 test_call_others.adb:25:34: info: exceptional case proved (CVC5: 1 VC)
 test_call_others.adb:25:51: info: exceptional case proved (Trivial: 1 VC)
 test_call_others.adb:38:34: info: exceptional case proved (CVC5: 1 VC)
 test_call_others.adb:38:47: info: exceptional case proved (CVC5: 1 VC)
 test_call_others.adb:38:64: info: exceptional case proved (Trivial: 1 VC)
-test_call_others.adb:43:10: medium: unexpected exception might be raised [reason for check: No_E1_Bad_2 allows propagating any exception but E1] [possible explanation: E1 might be unexpectedly raised] [provers gave up before completing the proof]
+test_call_others.adb:43:10: medium: unexpected exception might be raised [reason for check: "No_E1_Bad_2" allows propagating any exception but "E1"] [possible explanation: "E1" might be unexpectedly raised] [provers gave up before completing the proof]
 test_call_others.adb:51:34: info: exceptional case proved (CVC5: 1 VC)
 test_call_others.adb:51:47: info: exceptional case proved (CVC5: 1 VC)
 test_call_others.adb:51:64: info: exceptional case proved (Trivial: 1 VC)
@@ -171,12 +171,12 @@ test_invariants.adb:5:18: info: overflow check proved (CVC5: 2 VC)
 test_invariants.adb:9:18: info: overflow check proved (CVC5: 2 VC)
 test_invariants.adb:14:18: info: overflow check proved (CVC5: 2 VC)
 test_invariants.adb:18:18: info: overflow check proved (CVC5: 2 VC)
-test_invariants.ads:9:14: info: for X at the end of P at test_invariants.ads:9
+test_invariants.ads:9:14: info: for "X" at the end of "P" at test_invariants.ads:9
 test_invariants.ads:9:14: info: invariant check proved (CVC5: 1 VC)
 test_invariants.ads:10:33: info: exceptional case proved (Trivial: 1 VC)
-test_invariants.ads:14:14: info: for X at the end of Q at test_invariants.ads:14
+test_invariants.ads:14:14: info: for "X" at the end of "Q" at test_invariants.ads:14
 test_invariants.ads:14:14: info: invariant check proved (CVC5: 1 VC)
-test_invariants.ads:14:14: medium: for X at the end of Q at test_invariants.ads:14
+test_invariants.ads:14:14: medium: for "X" at the end of "Q" at test_invariants.ads:14
 test_invariants.ads:14:14: medium: in inlined invariant at test_invariants.ads:23
 test_invariants.ads:14:14: medium: invariant check might fail, cannot prove F < G (e.g. when B = True and X = (F => 0, G => 1)) [provers reached step limit before completing the proof]
 test_invariants.ads:14:14: medium: on exceptional exit at test_invariants.adb:12

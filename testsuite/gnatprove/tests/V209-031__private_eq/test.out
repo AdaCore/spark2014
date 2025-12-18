@@ -5,7 +5,7 @@ main.adb:86:22: warning: no Global contract available for "F" [assumed-global-nu
 main.adb:86:30: warning: assuming "F" has no effect on global items
 main.adb:86:30: warning: no Global contract available for "F" [assumed-global-null]
 main.adb:90:06: info: data dependencies proved
-main.adb:95:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function F or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
+main.adb:95:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function "F" or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 main.adb:95:22: warning: assuming "F" has no effect on global items
 main.adb:95:22: warning: no Global contract available for "F" [assumed-global-null]
 main.adb:95:30: warning: assuming "F" has no effect on global items
@@ -17,13 +17,13 @@ main.adb:105:22: warning: no Global contract available for "F" [assumed-global-n
 main.adb:105:30: warning: assuming "F" has no effect on global items
 main.adb:105:30: warning: no Global contract available for "F" [assumed-global-null]
 main.adb:109:06: info: data dependencies proved
-main.adb:114:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function F or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
+main.adb:114:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function "F" or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 main.adb:114:22: warning: assuming "F" has no effect on global items
 main.adb:114:22: warning: no Global contract available for "F" [assumed-global-null]
 main.adb:114:30: warning: assuming "F" has no effect on global items
 main.adb:114:30: warning: no Global contract available for "F" [assumed-global-null]
 main.adb:119:06: info: data dependencies proved
-main.adb:124:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function F or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
+main.adb:124:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function "F" or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 main.adb:124:22: warning: assuming "F" has no effect on global items
 main.adb:124:22: warning: no Global contract available for "F" [assumed-global-null]
 main.adb:124:30: warning: assuming "F" has no effect on global items
@@ -35,7 +35,7 @@ main.adb:134:22: warning: no Global contract available for "F" [assumed-global-n
 main.adb:134:30: warning: assuming "F" has no effect on global items
 main.adb:134:30: warning: no Global contract available for "F" [assumed-global-null]
 main.adb:138:06: info: data dependencies proved
-main.adb:143:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function F or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
+main.adb:143:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function "F" or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 main.adb:143:22: warning: assuming "F" has no effect on global items
 main.adb:143:22: warning: no Global contract available for "F" [assumed-global-null]
 main.adb:143:30: warning: assuming "F" has no effect on global items
@@ -47,7 +47,7 @@ main.adb:153:22: warning: no Global contract available for "F" [assumed-global-n
 main.adb:153:30: warning: assuming "F" has no effect on global items
 main.adb:153:30: warning: no Global contract available for "F" [assumed-global-null]
 main.adb:157:06: info: data dependencies proved
-main.adb:162:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function F or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
+main.adb:162:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function "F" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
 main.adb:162:22: warning: assuming "F" has no effect on global items
 main.adb:162:22: warning: no Global contract available for "F" [assumed-global-null]
 main.adb:162:30: warning: assuming "F" has no effect on global items
@@ -59,13 +59,13 @@ main.adb:172:22: warning: no Global contract available for "F" [assumed-global-n
 main.adb:172:30: warning: assuming "F" has no effect on global items
 main.adb:172:30: warning: no Global contract available for "F" [assumed-global-null]
 main.adb:177:06: info: data dependencies proved
-main.adb:182:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function F or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
+main.adb:182:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function "F" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
 main.adb:182:22: warning: assuming "F" has no effect on global items
 main.adb:182:22: warning: no Global contract available for "F" [assumed-global-null]
 main.adb:182:30: warning: assuming "F" has no effect on global items
 main.adb:182:30: warning: no Global contract available for "F" [assumed-global-null]
 main.adb:187:06: info: data dependencies proved
-main.adb:192:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function F or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
+main.adb:192:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function "F" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
 main.adb:192:22: warning: assuming "F" has no effect on global items
 main.adb:192:22: warning: no Global contract available for "F" [assumed-global-null]
 main.adb:192:30: warning: assuming "F" has no effect on global items
@@ -77,19 +77,19 @@ main.adb:202:22: warning: no Global contract available for "F" [assumed-global-n
 main.adb:202:30: warning: assuming "F" has no effect on global items
 main.adb:202:30: warning: no Global contract available for "F" [assumed-global-null]
 main.adb:206:06: info: data dependencies proved
-main.adb:211:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function F or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
+main.adb:211:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function "F" or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 main.adb:211:22: warning: assuming "F" has no effect on global items
 main.adb:211:22: warning: no Global contract available for "F" [assumed-global-null]
 main.adb:211:30: warning: assuming "F" has no effect on global items
 main.adb:211:30: warning: no Global contract available for "F" [assumed-global-null]
 main.adb:216:06: info: data dependencies proved
-main.adb:221:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function F or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
+main.adb:221:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function "F" or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 main.adb:221:22: warning: assuming "F" has no effect on global items
 main.adb:221:22: warning: no Global contract available for "F" [assumed-global-null]
 main.adb:221:30: warning: assuming "F" has no effect on global items
 main.adb:221:30: warning: no Global contract available for "F" [assumed-global-null]
 main.adb:226:06: info: data dependencies proved
-main.adb:231:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function F or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
+main.adb:231:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function "F" or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 main.adb:231:22: warning: assuming "F" has no effect on global items
 main.adb:231:22: warning: no Global contract available for "F" [assumed-global-null]
 main.adb:231:30: warning: assuming "F" has no effect on global items

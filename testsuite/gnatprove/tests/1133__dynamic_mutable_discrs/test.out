@@ -5,18 +5,18 @@ test.adb:15:07: info: no contextual analysis of "Test_Static" (nested subprogram
 test.adb:15:20: warning: "X" is not modified, could be IN
 test.adb:19:28: info: assertion proved (CVC5: 1 VC)
 test.adb:19:29: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
-test.adb:19:29: warning: type R is unconstrained
-test.adb:19:38: warning: object does not have a Size aspect and type R is unconstrained
+test.adb:19:29: warning: type "R" is unconstrained
+test.adb:19:38: warning: object does not have a Size aspect and type "R" is unconstrained
 test.adb:19:38: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
 test.adb:21:28: info: assertion proved (CVC5: 1 VC)
 test.adb:21:29: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
-test.adb:21:29: warning: type R is unconstrained
+test.adb:21:29: warning: type "R" is unconstrained
 test.adb:25:07: warning: analyzing unreferenced procedure "P_Bad" [unreferenced-procedure]
 test.adb:25:24: warning: "X" is not modified, could be IN
 test.adb:28:25: medium: assertion might fail [provers reached step limit before completing the proof]
 test.adb:28:26: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
-test.adb:28:26: warning: type R is unconstrained
-test.adb:28:35: warning: object does not have a Size aspect and type R is unconstrained
+test.adb:28:26: warning: type "R" is unconstrained
+test.adb:28:35: warning: object does not have a Size aspect and type "R" is unconstrained
 test.adb:28:35: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
 test.adb:32:22: info: assertion proved (Trivial: 1 VC)
 test.adb:33:07: info: precondition proved (Trivial: 1 VC)
@@ -32,25 +32,25 @@ test.adb:54:07: info: no contextual analysis of "Test_Dynamic" (nested subprogra
 test.adb:54:20: warning: "X" is not modified, could be IN
 test.adb:58:28: info: assertion proved (CVC5: 1 VC)
 test.adb:58:29: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
-test.adb:58:29: warning: type R is unconstrained and Object_Size of type R is missing
-test.adb:58:38: warning: object does not have a Size aspect and type R is unconstrained
+test.adb:58:29: warning: type "R" is unconstrained and Object_Size of type "R" is missing
+test.adb:58:38: warning: object does not have a Size aspect and type "R" is unconstrained
 test.adb:58:38: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
 test.adb:60:28: info: assertion proved (CVC5: 1 VC)
 test.adb:60:29: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
-test.adb:60:29: warning: type R is unconstrained and Object_Size of type R is missing
-test.adb:60:38: warning: Object_Size of type R is missing
+test.adb:60:29: warning: type "R" is unconstrained and Object_Size of type "R" is missing
+test.adb:60:38: warning: Object_Size of type "R" is missing
 test.adb:60:38: warning: the value of attribute "Object_Size" is handled in an imprecise way [imprecise-size]
 test.adb:64:07: warning: analyzing unreferenced procedure "P_Bad" [unreferenced-procedure]
 test.adb:64:24: warning: "X" is not modified, could be IN
 test.adb:67:25: medium: assertion might fail [provers reached step limit before completing the proof]
 test.adb:67:26: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
-test.adb:67:26: warning: type R is unconstrained and Object_Size of type R is missing
-test.adb:67:35: warning: object does not have a Size aspect and type R is unconstrained
+test.adb:67:26: warning: type "R" is unconstrained and Object_Size of type "R" is missing
+test.adb:67:35: warning: object does not have a Size aspect and type "R" is unconstrained
 test.adb:67:35: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
 test.adb:71:22: info: assertion proved (Trivial: 1 VC)
-test.adb:71:23: warning: object does not have a Size aspect and Object_Size of type R is missing
+test.adb:71:23: warning: object does not have a Size aspect and Object_Size of type "R" is missing
 test.adb:71:23: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
-test.adb:71:32: warning: Object_Size of type R is missing
+test.adb:71:32: warning: Object_Size of type "R" is missing
 test.adb:71:32: warning: the value of attribute "Object_Size" is handled in an imprecise way [imprecise-size]
 test.adb:72:07: info: precondition proved (Trivial: 1 VC)
 test.adb:73:07: info: precondition proved (Trivial: 1 VC)

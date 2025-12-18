@@ -52,8 +52,8 @@ foo.ads:15:04: warning: in instantiation at generic_float_tests.adb:346
 foo.ads:15:04: warning: in instantiation at generic_float_tests.adb:352
 generic_float_tests.adb:15:14: warning: subprogram "Equality_Matters" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:15:14: warning: subprogram "Equality_Matters" has no effect, in instantiation at foo.ads:15
-generic_float_tests.adb:23:22: medium: assertion might fail, in instantiation at foo.ads:10 [possible fix: you should consider adding a postcondition to function Magic or turning it into an expression function in its unit spec]
-generic_float_tests.adb:23:22: medium: assertion might fail, in instantiation at foo.ads:15 [possible fix: you should consider adding a postcondition to function Magic or turning it into an expression function in its unit spec]
+generic_float_tests.adb:23:22: medium: assertion might fail, in instantiation at foo.ads:10 [possible fix: you should consider adding a postcondition to function "Magic" or turning it into an expression function in its unit spec]
+generic_float_tests.adb:23:22: medium: assertion might fail, in instantiation at foo.ads:15 [possible fix: you should consider adding a postcondition to function "Magic" or turning it into an expression function in its unit spec]
 generic_float_tests.adb:26:14: warning: subprogram "A_Minimum_Of_Care_Is_Needed" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:26:14: warning: subprogram "A_Minimum_Of_Care_Is_Needed" has no effect, in instantiation at foo.ads:15
 generic_float_tests.adb:36:22: medium: assertion might fail, in instantiation at foo.ads:10 [possible fix: subprogram at line 26 should mention A and B in a precondition]

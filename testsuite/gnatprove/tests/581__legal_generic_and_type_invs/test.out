@@ -1,14 +1,14 @@
-gen-child.ads:3:14: medium: for X at the end of P at gen-child.ads:3, in instantiation at inst-child_i.ads:7
+gen-child.ads:3:14: medium: for "X" at the end of "P" at gen-child.ads:3, in instantiation at inst-child_i.ads:7
 gen-child.ads:3:14: medium: in inlined invariant at gen.ads:14, in instantiation at inst.ads:3
 gen-child.ads:3:14: medium: invariant check might fail, cannot prove T /= 0, in instantiation at inst-child_i.ads:7 (e.g. when X = -1) [provers gave up before completing the proof]
 gen-child.ads:3:17: warning: unused initial value of "X", in instantiation at inst-child_i.ads:7
-gen-child.ads:6:14: medium: for X at the end of Vis_PP at gen.ads:6, in instantiation at gen-child.ads:6, in instantiation at inst-child_i.ads:7
+gen-child.ads:6:14: medium: for "X" at the end of "Vis_PP" at gen.ads:6, in instantiation at gen-child.ads:6, in instantiation at inst-child_i.ads:7
 gen-child.ads:6:14: medium: in inlined invariant at gen.ads:14, in instantiation at inst.ads:3
 gen-child.ads:6:14: medium: invariant check might fail, cannot prove T /= 0, in instantiation at inst-child_i.ads:7 (e.g. when X = 0) [provers gave up before completing the proof]
 gen-p_child.ads:2:24: warning: unused initial value of "X", in instantiation at inst-p_child_i.ads:7
 gen.ads:6:18: warning: unused initial value of "X", in instantiation at gen-child.ads:6, in instantiation at inst-child_i.ads:7
 gen.ads:6:18: warning: unused initial value of "X", in instantiation at gen.adb:15, in instantiation at inst.ads:3
-gen.ads:10:17: medium: for X at the end of PPP at gen.ads:10, in instantiation at gen-child.ads:7, in instantiation at inst-child_i.ads:7
+gen.ads:10:17: medium: for "X" at the end of "PPP" at gen.ads:10, in instantiation at gen-child.ads:7, in instantiation at inst-child_i.ads:7
 gen.ads:10:17: medium: in inlined invariant at gen.ads:14, in instantiation at inst.ads:3
 gen.ads:10:17: medium: invariant check might fail, cannot prove T /= 0, in instantiation at gen-child.ads:7, in instantiation at inst-child_i.ads:7 (e.g. when X = -1) [provers gave up before completing the proof]
 gen.ads:10:22: warning: unused initial value of "X", in instantiation at gen-child.ads:7, in instantiation at inst-child_i.ads:7
@@ -16,6 +16,6 @@ gen.ads:10:22: warning: unused initial value of "X", in instantiation at gen.adb
 gen.ads:14:09: info: invariant check proved on default value (CVC5: 1 VC), in instantiation at inst.ads:3
 gen.ads:14:74: info: in default value of private type at gen.ads:3, in instantiation at inst.ads:3
 gen.ads:14:74: info: range check proved (CVC5: 2 VC), in instantiation at inst.ads:3
-inst-p_child_i.ads:7:16: medium: for X at the end of P_Child_I at gen-p_child.ads:2, in instantiation at inst-p_child_i.ads:7
+inst-p_child_i.ads:7:16: medium: for "X" at the end of "P_Child_I" at gen-p_child.ads:2, in instantiation at inst-p_child_i.ads:7
 inst-p_child_i.ads:7:16: medium: in inlined invariant at gen.ads:14, in instantiation at inst.ads:3
 inst-p_child_i.ads:7:16: medium: invariant check might fail, cannot prove T /= 0 (e.g. when X = 0) [provers gave up before completing the proof]

@@ -104,12 +104,12 @@ bounded_queue.ads:11:13: info: implicit aspect Always_Terminates on "Empty" has 
 bounded_queue.ads:13:13: info: implicit aspect Always_Terminates on "Size" has been proved, subprogram will terminate, in instantiation at bounded_queue_example.adb:7
 bounded_queue.ads:15:13: info: implicit aspect Always_Terminates on "First_Element" has been proved, subprogram will terminate, in instantiation at bounded_queue_example.adb:7
 bounded_queue.ads:19:13: info: implicit aspect Always_Terminates on "Last_Element" has been proved, subprogram will terminate, in instantiation at bounded_queue_example.adb:7
-bounded_queue.ads:25:18: medium: postcondition might fail, cannot prove Empty (Queue), in instantiation at bounded_queue_example.adb:7 [possible fix: you should consider adding a postcondition to function Empty or turning it into an expression function] [provers reached step limit before completing the proof]
-bounded_queue.ads:31:18: medium: postcondition might fail, cannot prove not Empty (Queue), in instantiation at bounded_queue_example.adb:7 [possible fix: you should consider adding a postcondition to function Empty or turning it into an expression function] [provers reached step limit before completing the proof]
+bounded_queue.ads:25:18: medium: postcondition might fail, cannot prove Empty (Queue), in instantiation at bounded_queue_example.adb:7 [possible fix: you should consider adding a postcondition to function "Empty" or turning it into an expression function] [provers reached step limit before completing the proof]
+bounded_queue.ads:31:18: medium: postcondition might fail, cannot prove not Empty (Queue), in instantiation at bounded_queue_example.adb:7 [possible fix: you should consider adding a postcondition to function "Empty" or turning it into an expression function] [provers reached step limit before completing the proof]
 bounded_queue.ads:32:50: medium: overflow check might fail, cannot prove upper bound for Size (Queue'Old) + 1, in instantiation at bounded_queue_example.adb:7 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers reached step limit before completing the proof]
 bounded_queue.ads:33:18: info: precondition proved (CVC5: 1 VC), in instantiation at bounded_queue_example.adb:7
 bounded_queue.ads:36:23: info: initialization of "Item" proved, in instantiation at bounded_queue_example.adb:7
-bounded_queue.ads:39:17: medium: postcondition might fail, cannot prove Item = First_Element (Queue'Old), in instantiation at bounded_queue_example.adb:7 [possible fix: you should consider adding a postcondition to function First_Element or turning it into an expression function] [provers reached step limit before completing the proof]
+bounded_queue.ads:39:17: medium: postcondition might fail, cannot prove Item = First_Element (Queue'Old), in instantiation at bounded_queue_example.adb:7 [possible fix: you should consider adding a postcondition to function "First_Element" or turning it into an expression function] [provers reached step limit before completing the proof]
 bounded_queue.ads:39:24: info: precondition proved (CVC5: 1 VC), in instantiation at bounded_queue_example.adb:7
 bounded_queue.ads:45:04: medium: type "Queue_Type" is not fully initialized, in instantiation at bounded_queue_example.adb:7
 bounded_queue.ads:50:10: info: range check proved (CVC5: 2 VC), in instantiation at bounded_queue_example.adb:7
@@ -120,7 +120,7 @@ bounded_queue_example.adb:15:43: info: unrolling loop [info-unrolling-inlining]
 bounded_queue_example.adb:16:07: medium: precondition might fail [provers reached step limit before completing the proof]
 bounded_queue_example.adb:18:38: info: unrolling loop [info-unrolling-inlining]
 bounded_queue_example.adb:19:07: medium: precondition might fail [provers reached step limit before completing the proof]
-bounded_queue_example.adb:24:42: low: range check might fail, cannot prove upper bound for "Size of cleared queue is " & Integer'Image (Size (My_Queue)) [reason for check: input value must fit in parameter type] [possible fix: you should consider adding a postcondition to function Size or turning it into an expression function] [provers reached step limit before completing the proof]
+bounded_queue_example.adb:24:42: low: range check might fail, cannot prove upper bound for "Size of cleared queue is " & Integer'Image (Size (My_Queue)) [reason for check: input value must fit in parameter type] [possible fix: you should consider adding a postcondition to function "Size" or turning it into an expression function] [provers reached step limit before completing the proof]
 bounded_queue_example.adb:24:51: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 bounded_queue_example_v1.adb:6:56: info: range check proved (CVC5: 2 VC)
 bounded_queue_example_v1.adb:7:04: info: initialization of "Value" proved
@@ -161,12 +161,12 @@ bounded_queue_v1.ads:17:13: info: implicit aspect Always_Terminates on "Empty" h
 bounded_queue_v1.ads:19:13: info: implicit aspect Always_Terminates on "Size" has been proved, subprogram will terminate
 bounded_queue_v1.ads:21:13: info: implicit aspect Always_Terminates on "First_Element" has been proved, subprogram will terminate
 bounded_queue_v1.ads:25:13: info: implicit aspect Always_Terminates on "Last_Element" has been proved, subprogram will terminate
-bounded_queue_v1.ads:31:18: medium: postcondition might fail, cannot prove Empty (Queue) [possible fix: you should consider adding a postcondition to function Empty or turning it into an expression function] [provers reached step limit before completing the proof]
-bounded_queue_v1.ads:37:18: medium: postcondition might fail, cannot prove not Empty (Queue) [possible fix: you should consider adding a postcondition to function Empty or turning it into an expression function] [provers reached step limit before completing the proof]
+bounded_queue_v1.ads:31:18: medium: postcondition might fail, cannot prove Empty (Queue) [possible fix: you should consider adding a postcondition to function "Empty" or turning it into an expression function] [provers reached step limit before completing the proof]
+bounded_queue_v1.ads:37:18: medium: postcondition might fail, cannot prove not Empty (Queue) [possible fix: you should consider adding a postcondition to function "Empty" or turning it into an expression function] [provers reached step limit before completing the proof]
 bounded_queue_v1.ads:38:50: medium: overflow check might fail, cannot prove upper bound for Size (Queue'Old) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers reached step limit before completing the proof]
 bounded_queue_v1.ads:39:18: info: precondition proved (CVC5: 1 VC)
 bounded_queue_v1.ads:42:23: info: initialization of "Item" proved
-bounded_queue_v1.ads:45:18: medium: postcondition might fail, cannot prove Item = First_Element (Queue'Old) [possible fix: you should consider adding a postcondition to function First_Element or turning it into an expression function] [provers reached step limit before completing the proof]
+bounded_queue_v1.ads:45:18: medium: postcondition might fail, cannot prove Item = First_Element (Queue'Old) [possible fix: you should consider adding a postcondition to function "First_Element" or turning it into an expression function] [provers reached step limit before completing the proof]
 bounded_queue_v1.ads:45:25: info: precondition proved (CVC5: 1 VC)
 bounded_queue_v2.adb:20:32: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (Queue.Front in 1 .. Max_Size) to subprogram at bounded_queue_v2.ads:15] [provers reached step limit before completing the proof]
 bounded_queue_v2.adb:25:32: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (Queue.Rear in 1 .. Max_Size) to subprogram at bounded_queue_v2.ads:19] [provers reached step limit before completing the proof]
@@ -183,12 +183,12 @@ bounded_queue_v2.ads:11:13: info: implicit aspect Always_Terminates on "Empty" h
 bounded_queue_v2.ads:13:13: info: implicit aspect Always_Terminates on "Size" has been proved, subprogram will terminate
 bounded_queue_v2.ads:15:13: info: implicit aspect Always_Terminates on "First_Element" has been proved, subprogram will terminate
 bounded_queue_v2.ads:19:13: info: implicit aspect Always_Terminates on "Last_Element" has been proved, subprogram will terminate
-bounded_queue_v2.ads:25:18: medium: postcondition might fail, cannot prove Empty (Queue) [possible fix: you should consider adding a postcondition to function Empty or turning it into an expression function] [provers reached step limit before completing the proof]
-bounded_queue_v2.ads:31:18: medium: postcondition might fail, cannot prove not Empty (Queue) [possible fix: you should consider adding a postcondition to function Empty or turning it into an expression function] [provers reached step limit before completing the proof]
+bounded_queue_v2.ads:25:18: medium: postcondition might fail, cannot prove Empty (Queue) [possible fix: you should consider adding a postcondition to function "Empty" or turning it into an expression function] [provers reached step limit before completing the proof]
+bounded_queue_v2.ads:31:18: medium: postcondition might fail, cannot prove not Empty (Queue) [possible fix: you should consider adding a postcondition to function "Empty" or turning it into an expression function] [provers reached step limit before completing the proof]
 bounded_queue_v2.ads:32:50: medium: overflow check might fail, cannot prove upper bound for Size (Queue'Old) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers reached step limit before completing the proof]
 bounded_queue_v2.ads:33:18: info: precondition proved (CVC5: 1 VC)
 bounded_queue_v2.ads:36:23: info: initialization of "Item" proved
-bounded_queue_v2.ads:39:17: medium: postcondition might fail, cannot prove Item = First_Element (Queue'Old) [possible fix: you should consider adding a postcondition to function First_Element or turning it into an expression function] [provers reached step limit before completing the proof]
+bounded_queue_v2.ads:39:17: medium: postcondition might fail, cannot prove Item = First_Element (Queue'Old) [possible fix: you should consider adding a postcondition to function "First_Element" or turning it into an expression function] [provers reached step limit before completing the proof]
 bounded_queue_v2.ads:39:24: info: precondition proved (CVC5: 1 VC)
 bounded_queue_v2.ads:45:04: medium: type "Queue_Type" is not fully initialized
 bounded_queue_v2.ads:50:10: info: range check proved (CVC5: 2 VC)
@@ -774,7 +774,7 @@ initializer_demo.ads:12:28: info: range check proved (CVC5: 2 VC)
 initializer_demo.ads:14:13: info: implicit aspect Always_Terminates on "Add_Elements2" has been proved, subprogram will terminate
 initializer_demo.ads:22:13: info: implicit aspect Always_Terminates on "Adjust_Pair" has been proved, subprogram will terminate
 interval.ads:6:13: info: implicit aspect Always_Terminates on "Make" has been proved, subprogram will terminate
-interval.ads:6:13: medium: for the result of Make at interval.ads:6
+interval.ads:6:13: medium: for the result of "Make" at interval.ads:6
 interval.ads:6:13: medium: in inlined invariant at interval.ads:15
 interval.ads:6:13: medium: invariant check might fail, cannot prove Has_Valid_Order(Interval) [provers reached step limit before completing the proof]
 interval.ads:9:09: info: invariant check proved on default value (CVC5: 1 VC)
@@ -1036,7 +1036,7 @@ shapes4.adb:12:72: info: range check proved (CVC5: 2 VC)
 shapes4.adb:13:53: info: range check proved (CVC5: 2 VC)
 shapes4.adb:22:07: info: initialization of "Delta_X" proved
 shapes4.adb:23:07: info: initialization of "Delta_Y" proved
-shapes4.ads:8:13: info: for the result of Make_Circle at shapes4.ads:8
+shapes4.ads:8:13: info: for the result of "Make_Circle" at shapes4.ads:8
 shapes4.ads:8:13: info: implicit aspect Always_Terminates on "Make_Circle" has been proved, subprogram will terminate
 shapes4.ads:8:13: info: invariant check proved (CVC5: 1 VC)
 shapes4.ads:12:13: info: implicit aspect Always_Terminates on "Inside_Circle" has been proved, subprogram will terminate
@@ -1051,7 +1051,7 @@ shapes5.adb:39:07: info: initialization of "Delta_X" proved
 shapes5.adb:40:07: info: initialization of "Delta_Y" proved
 shapes5.ads:4:08: info: flow dependencies proved
 shapes5.ads:11:13: info: implicit aspect Always_Terminates on "Make_Circle" has been proved, subprogram will terminate
-shapes5.ads:14:18: high: postcondition might fail (e.g. when Make_Circle'Result = (Center_X => 0, Center_Y => 0, Radius => 0) and Wild_Man = 0) [possible explanation: validity of the postcondition of Make_Circle should be implied by its refined postcondition] [provers gave up before completing the proof]
+shapes5.ads:14:18: high: postcondition might fail (e.g. when Make_Circle'Result = (Center_X => 0, Center_Y => 0, Radius => 0) and Wild_Man = 0) [possible explanation: validity of the postcondition of "Make_Circle" should be implied by its refined postcondition] [provers gave up before completing the proof]
 shapes5.ads:17:13: info: implicit aspect Always_Terminates on "Inside_Circle" has been proved, subprogram will terminate
 shapes5.ads:24:13: info: implicit aspect Always_Terminates on "In_Bounds" has been proved, subprogram will terminate
 shapes5.ads:25:11: info: data dependencies proved

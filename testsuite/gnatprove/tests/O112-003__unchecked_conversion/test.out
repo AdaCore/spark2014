@@ -1,4 +1,4 @@
-unchecked.adb:8:13: high: alignment of source type of unchecked conversion might not be an integral multiple of alignment of target type [possible explanation: alignment of Type_B (which is 1) must be a multiple of the alignment of Type_A (which is 4)]
+unchecked.adb:8:13: high: alignment of source type of unchecked conversion might not be an integral multiple of alignment of target type [possible explanation: alignment of type "Type_B" (which is 1) must be a multiple of the alignment of type "Type_A" (which is 4)]
 unchecked.adb:8:13: info: types in unchecked conversion have the same size (Trivial)
 unchecked.adb:8:13: warning: imprecise handling of Unchecked_Conversion (component offset not known) [imprecise-unchecked-conversion]
 unchecked.adb:8:53: info: type is suitable as source for unchecked conversion (Trivial)

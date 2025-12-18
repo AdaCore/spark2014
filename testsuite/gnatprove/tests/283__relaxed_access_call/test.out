@@ -1,7 +1,7 @@
-test_relaxed_access_call.adb:9:18: info: for parameter X at the end of the subprogram at test_relaxed_access_call.adb:9
+test_relaxed_access_call.adb:9:18: info: for parameter "X" at the end of the subprogram at test_relaxed_access_call.adb:9
 test_relaxed_access_call.adb:9:18: info: initialization check proved (CVC5: 1 VC)
 test_relaxed_access_call.adb:13:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
-test_relaxed_access_call.adb:16:18: medium: for parameter X at the end of the subprogram at test_relaxed_access_call.adb:16
+test_relaxed_access_call.adb:16:18: medium: for parameter "X" at the end of the subprogram at test_relaxed_access_call.adb:16
 test_relaxed_access_call.adb:16:18: medium: initialization check might fail [provers reached step limit before completing the proof]
 test_relaxed_access_call.adb:21:12: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test_relaxed_access_call.adb:27:23: info: initialization of "Y" proved
@@ -10,13 +10,13 @@ test_relaxed_access_call.adb:30:07: medium: resource or memory leak might occur 
 test_relaxed_access_call.adb:32:11: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test_relaxed_access_call.adb:33:12: info: initialization check proved (CVC5: 1 VC)
 test_relaxed_access_call.adb:48:14: info: absence of resource or memory leak proved (CVC5: 1 VC)
-test_relaxed_access_call.adb:54:18: info: for parameter X at the end of the subprogram at test_relaxed_access_call.adb:54
+test_relaxed_access_call.adb:54:18: info: for parameter "X" at the end of the subprogram at test_relaxed_access_call.adb:54
 test_relaxed_access_call.adb:54:18: info: initialization check proved (CVC5: 1 VC)
 test_relaxed_access_call.adb:55:45: info: exceptional case proved (Trivial: 1 VC)
 test_relaxed_access_call.adb:60:12: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test_relaxed_access_call.adb:68:45: info: exceptional case proved (CVC5: 1 VC; Trivial: 1 VC)
 test_relaxed_access_call.adb:73:12: info: absence of resource or memory leak proved (CVC5: 1 VC)
-test_relaxed_access_call.adb:78:23: medium: for parameter X at the end of the subprogram at test_relaxed_access_call.adb:78
+test_relaxed_access_call.adb:78:23: medium: for parameter "X" at the end of the subprogram at test_relaxed_access_call.adb:78
 test_relaxed_access_call.adb:78:23: medium: initialization check might fail [provers reached step limit before completing the proof]
 test_relaxed_access_call.adb:82:07: info: only expected exception raised (CVC5: 1 VC)
 test_relaxed_access_call.adb:82:11: info: absence of resource or memory leak proved (CVC5: 1 VC)
@@ -61,7 +61,7 @@ test_relaxed_access_call.adb:187:09: info: pointer dereference check proved (CVC
 test_relaxed_access_call.adb:187:13: warning: unused assignment
 test_relaxed_access_call.adb:188:07: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test_relaxed_access_call.adb:188:07: medium: precondition might fail (e.g. when B = False) [provers reached step limit before completing the proof]
-test_relaxed_access_params.adb:18:18: info: for parameter X at the end of the subprogram at test_relaxed_access_params.adb:18
+test_relaxed_access_params.adb:18:18: info: for parameter "X" at the end of the subprogram at test_relaxed_access_params.adb:18
 test_relaxed_access_params.adb:18:18: info: initialization check proved (CVC5: 1 VC)
 test_relaxed_access_params.adb:18:37: info: initialization of "Y" proved
 test_relaxed_access_params.adb:19:06: info: flow dependencies proved
@@ -69,7 +69,7 @@ test_relaxed_access_params.adb:23:12: medium: initialization check might fail [p
 test_relaxed_access_params.adb:24:23: info: initialization check proved (CVC5: 1 VC)
 test_relaxed_access_params.adb:25:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test_relaxed_access_params.adb:25:09: info: discriminant check proved (Trivial: 1 VC)
-test_relaxed_access_params.adb:31:18: info: for parameter X at the end of the subprogram at test_relaxed_access_params.adb:31
+test_relaxed_access_params.adb:31:18: info: for parameter "X" at the end of the subprogram at test_relaxed_access_params.adb:31
 test_relaxed_access_params.adb:31:18: info: initialization check proved (CVC5: 1 VC)
 test_relaxed_access_params.adb:31:46: info: initialization of "Y" proved
 test_relaxed_access_params.adb:32:06: info: flow dependencies proved

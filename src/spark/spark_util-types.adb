@@ -116,21 +116,21 @@ package body SPARK_Util.Types is
       if Present (Comp_Size) then
          Size_Str :=
            To_Unbounded_String
-             (Type_Name_For_Explanation (Typ) & " has Component_Size");
+             (Pretty_Source_Name (Typ) & " has Component_Size");
 
       elsif Is_Packed (Typ) then
          Check_Known_RM_Size (Comp_Ty, Comp_Size, Explanation);
          if Present (Comp_Size) then
             Size_Str :=
               To_Unbounded_String
-                (Type_Name_For_Explanation (Comp_Ty) & " has Size");
+                (Pretty_Source_Name (Comp_Ty) & " has Size");
          end if;
       else
          Check_Known_Esize (Comp_Ty, Comp_Size, Explanation);
          if Present (Comp_Size) then
             Size_Str :=
               To_Unbounded_String
-                (Type_Name_For_Explanation (Comp_Ty) & " has Object_Size");
+                (Pretty_Source_Name (Comp_Ty) & " has Object_Size");
          end if;
       end if;
 
@@ -138,7 +138,7 @@ package body SPARK_Util.Types is
          Explanation :=
            To_Unbounded_String
              ("Component_Size of "
-              & Type_Name_For_Explanation (Typ)
+              & Pretty_Source_Name (Typ)
               & " is missing");
       end if;
    end Array_Component_Size;
@@ -267,7 +267,7 @@ package body SPARK_Util.Types is
       if No (Esize) then
          Explanation :=
            To_Unbounded_String
-             (Type_Name_For_Explanation (Typ)
+             (Pretty_Source_Name (Typ)
               & " doesn't "
               & "have an Object_Size representation "
               & "clause or aspect");
@@ -311,7 +311,7 @@ package body SPARK_Util.Types is
                   if No (Comp_Size) then
                      Explanation :=
                        To_Unbounded_String
-                         (Type_Name_For_Explanation (Typ)
+                         (Pretty_Source_Name (Typ)
                           & " doesn't have a Component_Size representation "
                           & "clause or aspect");
                   else
@@ -338,19 +338,19 @@ package body SPARK_Util.Types is
             elsif not Has_Pragma_Pack (Etype (Typ)) then
                Explanation :=
                  To_Unbounded_String
-                   (Type_Name_For_Explanation (Etype (Typ))
+                   (Pretty_Source_Name (Etype (Typ))
                     & " doesn't have a Pack pragma or aspect");
             else
                Explanation :=
                  To_Unbounded_String
                    ("size of "
-                    & Type_Name_For_Explanation (Typ)
+                    & Pretty_Source_Name (Typ)
                     & " cannot be computed statically");
             end if;
          else
             Explanation :=
               To_Unbounded_String
-                (Type_Name_For_Explanation (Typ)
+                (Pretty_Source_Name (Typ)
                  & " doesn't have a Size representation clause or aspect");
          end if;
       end if;
@@ -391,7 +391,7 @@ package body SPARK_Util.Types is
                   Explanation :=
                     To_Unbounded_String
                       ("Component_Size of "
-                       & Type_Name_For_Explanation (Typ)
+                       & Pretty_Source_Name (Typ)
                        & " is missing");
                   Size := No_Uint;
 
@@ -440,7 +440,7 @@ package body SPARK_Util.Types is
                   Size := Esize (Ent);
                   Size_Str :=
                     To_Unbounded_String
-                      ("object " & Source_Name (Ent) & " has size");
+                      ("object " & Pretty_Source_Name (Ent) & " has size");
 
                --  If the size is not specified, for constrained objects GNAT
                --  always uses the Object_Size of the type.
@@ -452,11 +452,11 @@ package body SPARK_Util.Types is
                   Check_Known_Esize (Typ, Size, Explanation);
                   Size_Str :=
                     To_Unbounded_String
-                      (Type_Name_For_Explanation (Typ) & " has Object_Size");
+                      (Pretty_Source_Name (Typ) & " has Object_Size");
                else
                   Explanation :=
                     To_Unbounded_String
-                      (Type_Name_For_Explanation (Typ) & " is unconstrained");
+                      (Pretty_Source_Name (Typ) & " is unconstrained");
                   Size := No_Uint;
                end if;
             end;
@@ -469,11 +469,11 @@ package body SPARK_Util.Types is
                   Check_Known_Esize (Typ, Size, Explanation);
                   Size_Str :=
                     To_Unbounded_String
-                      (Type_Name_For_Explanation (Typ) & " has Object_Size");
+                      (Pretty_Source_Name (Typ) & " has Object_Size");
                else
                   Explanation :=
                     To_Unbounded_String
-                      (Type_Name_For_Explanation (Typ) & " is unconstrained");
+                      (Pretty_Source_Name (Typ) & " is unconstrained");
                   Size := No_Uint;
                end if;
             end;
@@ -2186,7 +2186,7 @@ package body SPARK_Util.Types is
          then
             Exp :=
               To_Unbounded_String
-                (Source_Name
+                (Pretty_Source_Name
                    (if Is_Tagged_Type (Comp_Ty)
                     then Base_Type (Comp_Ty)
                     else Root_Retysp (Comp_Ty)));
@@ -2543,7 +2543,7 @@ package body SPARK_Util.Types is
            + Uint_1;
          Size_Str :=
            To_Unbounded_String
-             ("size of component " & Source_Name (Comp) & " is");
+             ("size of component " & Pretty_Source_Name (Comp) & " is");
 
       --  ARM K.2 225
 
@@ -2551,15 +2551,14 @@ package body SPARK_Util.Types is
          Check_Known_RM_Size (Comp_Ty, Size, Explanation);
          if Present (Size) then
             Size_Str :=
-              To_Unbounded_String
-                (Type_Name_For_Explanation (Comp_Ty) & " has Size");
+              To_Unbounded_String (Pretty_Source_Name (Comp_Ty) & " has Size");
          end if;
       else
          Check_Known_Esize (Comp_Ty, Size, Explanation);
          if Present (Size) then
             Size_Str :=
               To_Unbounded_String
-                (Type_Name_For_Explanation (Comp_Ty) & " has Object_Size");
+                (Pretty_Source_Name (Comp_Ty) & " has Object_Size");
          end if;
       end if;
 
@@ -2567,7 +2566,7 @@ package body SPARK_Util.Types is
          Explanation :=
            To_Unbounded_String
              ("representation clause of "
-              & Type_Name_For_Explanation (Typ)
+              & Pretty_Source_Name (Typ)
               & " is missing");
       end if;
    end Record_Component_Size;
@@ -2840,7 +2839,7 @@ package body SPARK_Util.Types is
       --------------
 
       function Typ_Name return String
-      is (Type_Name_For_Explanation (Typ));
+      is (Pretty_Source_Name (Typ));
 
    begin
 
@@ -3018,15 +3017,6 @@ package body SPARK_Util.Types is
       end if;
       return (Ok => True);
    end Type_Has_Only_Valid_Values;
-
-   ----------------------------------
-   -- Type_Is_Name_For_Explanation --
-   ----------------------------------
-
-   function Type_Name_For_Explanation (Typ : Type_Kind_Id) return String
-   is (if Is_Itype (Typ)
-       then "anonymous type"
-       else "type " & Source_Name (Typ));
 
    -------------------------
    -- Unchecked_Full_Type --

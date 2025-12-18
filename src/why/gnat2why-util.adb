@@ -951,7 +951,7 @@ package body Gnat2Why.Util is
                                                                  then "@result"
                                                                  else "")))));
    begin
-      S.Include (NID ("name:" & Source_Name (E)));
+      S.Include (NID ("name:" & Raw_Source_Name (E)));
       return S;
    end Get_Model_Trace_Label;
 

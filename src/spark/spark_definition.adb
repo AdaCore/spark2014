@@ -5676,9 +5676,9 @@ package body SPARK_Definition is
                         P,
                         SRM_Reference => "SPARK RM 3.10(13)",
                         Cont_Msg      =>
-                          "call a deep copy function for type """
-                          & Source_Name (Etype (P))
-                          & """ as prefix of """
+                          "call a deep copy function for "
+                          & Pretty_Source_Name (Etype (P))
+                          & " as prefix of """
                           & Astring
                           & """ to avoid aliasing");
 
@@ -6695,7 +6695,8 @@ package body SPARK_Definition is
                         pragma Assert (Present (Root));
                         if Scop_Outputs.Contains (Direct_Mapping_Id (Root))
                         then
-                           Do_Violation (Actual, Source_Name (Root), False);
+                           Do_Violation
+                             (Actual, Pretty_Source_Name (Root), False);
                         end if;
                      end if;
                   end Check_Param;
@@ -6719,7 +6720,7 @@ package body SPARK_Definition is
                      Do_Violation
                        (N,
                         (case G.Kind is
-                           when Direct_Mapping => Source_Name (G.Node),
+                           when Direct_Mapping => Pretty_Source_Name (G.Node),
                            when Magic_String   => To_String (G.Name),
                            when others         => raise Program_Error),
                         Add_Cont => True);
@@ -12921,7 +12922,7 @@ package body SPARK_Definition is
                      N,
                      Cont_Msg =>
                        "annotate the private part of "
-                       & Source_Name (Id)
+                       & Pretty_Source_Name (Id)
                        & " with Hide_Info");
                   exit;
                end if;

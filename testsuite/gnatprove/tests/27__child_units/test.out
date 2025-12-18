@@ -1,9 +1,9 @@
 p-child.ads:1:12: info: implicit aspect Always_Terminates on "Child" has been proved, subprogram will terminate
-p-child.ads:1:12: medium: for the result of Child at p-child.ads:1
+p-child.ads:1:12: medium: for the result of "Child" at p-child.ads:1
 p-child.ads:1:12: medium: in inlined invariant at p.ads:6
 p-child.ads:1:12: medium: invariant check might fail, cannot prove T >= 0 (e.g. when Child'Result = -1) [possible fix: add or complete related loop invariants or postconditions] [provers gave up before completing the proof]
 p-gen_child_inst.ads:4:12: info: implicit aspect Always_Terminates on "Gen_Child_Inst" has been proved, subprogram will terminate
-p-gen_child_inst.ads:4:12: medium: for the result of Gen_Child_Inst at p-gen_child_inst.ads:4
+p-gen_child_inst.ads:4:12: medium: for the result of "Gen_Child_Inst" at p-gen_child_inst.ads:4
 p-gen_child_inst.ads:4:12: medium: in inlined invariant at p.ads:6
 p-gen_child_inst.ads:4:12: medium: invariant check might fail, cannot prove T >= 0 (e.g. when Gen_Child_Inst'Result = -1) [provers gave up before completing the proof]
 p-gen_child_inst_priv.ads:4:20: info: implicit aspect Always_Terminates on "Gen_Child_Inst_Priv" has been proved, subprogram will terminate

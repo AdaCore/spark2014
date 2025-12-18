@@ -57,14 +57,6 @@ with Why.Types;                   use Why.Types;
 
 package body Gnat2Why.Unchecked_Conversion is
 
-   function Type_Name_For_Explanation (Typ : Type_Kind_Id) return String
-   is (if Is_Itype (Typ)
-       then "anonymous type"
-       else "type " & Source_Name (Typ))
-   with Pre => Is_Type (Typ);
-   --  This function computes a user-visible string to represent the type in
-   --  argument.
-
    procedure Compute_Size_Of_Components
      (Typ         : Type_Kind_Id;
       Result      : out Boolean;
@@ -214,9 +206,9 @@ package body Gnat2Why.Unchecked_Conversion is
          Explanation :=
            To_Unbounded_String
              ("Size of "
-              & Type_Name_For_Explanation (A)
+              & Pretty_Source_Name (A)
               & " and "
-              & Type_Name_For_Explanation (B)
+              & Pretty_Source_Name (B)
               & " differ");
          return;
       end if;
@@ -344,7 +336,7 @@ package body Gnat2Why.Unchecked_Conversion is
         "; "
         & (if Nkind (Obj)
               in N_Defining_Identifier | N_Identifier | N_Expanded_Name
-           then Source_Name (Obj)
+           then Pretty_Source_Name (Obj)
            else "object")
         & " might have unused bits that are not modelled in SPARK";
       Typ        : constant Type_Kind_Id := Retysp (Etype (Obj));
@@ -404,7 +396,7 @@ package body Gnat2Why.Unchecked_Conversion is
            & " "
            & UI_Image (Obj_Size)
            & ", but "
-           & Type_Name_For_Explanation (Typ)
+           & Pretty_Source_Name (Typ)
            & " has Size "
            & UI_Image (RM_Size)
            & Common_Exp;
@@ -1320,7 +1312,7 @@ package body Gnat2Why.Unchecked_Conversion is
       Size        : out Uint;
       Explanation : out Unbounded_String)
    is
-      Typ_Name : constant String := Type_Name_For_Explanation (Typ);
+      Typ_Name : constant String := Pretty_Source_Name (Typ);
 
    begin
       --  Default initialization for GNAT SAS
@@ -1734,7 +1726,7 @@ package body Gnat2Why.Unchecked_Conversion is
 
       function Type_Unsuitable_For_UC (Typ : Type_Kind_Id) return Test_Result
       is
-         Typ_Name : constant String := Type_Name_For_Explanation (Typ);
+         Typ_Name : constant String := Pretty_Source_Name (Typ);
 
       begin
          --  We exclude types with tags, private types, access types, and
@@ -1812,7 +1804,7 @@ package body Gnat2Why.Unchecked_Conversion is
       Result      : out Boolean;
       Explanation : out Unbounded_String)
    is
-      Typ_Name   : constant String := Type_Name_For_Explanation (Typ);
+      Typ_Name   : constant String := Pretty_Source_Name (Typ);
       Common_Exp : constant String :=
         "; "
         & Typ_Name
@@ -1843,7 +1835,7 @@ package body Gnat2Why.Unchecked_Conversion is
             Result := False;
             Explanation :=
               To_Unbounded_String
-                (Type_Name_For_Explanation (Typ)
+                (Pretty_Source_Name (Typ)
                  & " has minimal size "
                  & UI_Image (Sum_Comp)
                  & ", but "
@@ -2014,7 +2006,7 @@ package body Gnat2Why.Unchecked_Conversion is
          Valid := False;
          Explanation :=
            To_Unbounded_String
-             (Source_Name (Src_Ty)
+             (Pretty_Source_Name (Src_Ty)
               & " doesn't have an "
               & "Alignment representation clause or aspect");
          return;
@@ -2023,7 +2015,7 @@ package body Gnat2Why.Unchecked_Conversion is
          Valid := False;
          Explanation :=
            To_Unbounded_String
-             (Source_Name (Tar_Ty)
+             (Pretty_Source_Name (Tar_Ty)
               & " doesn't have an "
               & "Alignment representation clause or aspect");
          return;
@@ -2036,13 +2028,13 @@ package body Gnat2Why.Unchecked_Conversion is
          Explanation :=
            To_Unbounded_String
              ("alignment of "
-              & Source_Name (Src_Ty)
+              & Pretty_Source_Name (Src_Ty)
               & " (which is "
               & UI_Image (SA)
               & ")"
               & " must be a multiple of the "
               & "alignment of "
-              & Source_Name (Tar_Ty)
+              & Pretty_Source_Name (Tar_Ty)
               & " (which is "
               & UI_Image (TA)
               & ")");
