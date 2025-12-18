@@ -51,6 +51,12 @@ stages:
     # Go to the sandbox dir
     - cd $ANOD_DEFAULT_SANDBOX_DIR
 
+    # We must parse testsuite results with the same version of e3-testsuite
+    # that produced them. So we install e3-testsuite using the same sandbox as
+    # testing.
+    - anod install e3-for-testing
+    - eval $(anod printenv e3-for-testing)
+
 .deploy_package_and_touch_fingerprints: &deploy_package
     # Deploying the package is a two-step process. First we unpack the tarball,
     # by restoring its location at packing time in $PACKAGE_EXPORT.
