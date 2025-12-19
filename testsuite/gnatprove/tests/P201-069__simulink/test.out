@@ -7,7 +7,7 @@ abs_controller_oem_with_property.adb:56:26: info: float overflow check proved (c
 abs_controller_oem_with_property.adb:56:43: info: division check proved (colibri: 1 VC)
 abs_controller_oem_with_property.adb:56:43: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [provers reached step limit before completing the proof]
 abs_controller_oem_with_property.adb:64:32: info: float overflow check proved (colibri: 1 VC)
-abs_controller_oem_with_property.adb:74:71: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: you should consider adding a postcondition to function Boolean_To_Long_Float or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
+abs_controller_oem_with_property.adb:74:71: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: you should consider adding a postcondition to function "Boolean_To_Long_Float" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
 abs_controller_oem_with_property.adb:88:22: medium: assertion might fail [user message: Violation of assertion at block ABS_Controller_oem_with_property/Applies Brake/nWhen At Rest/nConsequent] [possible fix: precondition of subprogram at abs_controller_oem_with_property.ads:17 should mention Vehicle_Speed] [provers reached step limit before completing the proof]
 abs_controller_oem_with_property.ads:20:08: info: initialization of "Apply_Brakes" proved
 abs_controller_supplier_with_property.adb:27:07: info: initialization of "Sum_out1" proved
@@ -17,7 +17,7 @@ abs_controller_supplier_with_property.adb:30:07: info: initialization of "Sum_1_
 abs_controller_supplier_with_property.adb:49:40: medium: range check might fail, cannot prove upper bound for (10) * (Wheel_Speed) [reason for check: result of multiplication must be convertible to the target type of the conversion] [possible fix: add precondition ((10) * (Wheel_Speed) <= Unsigned_32(Integer_32'Last)) to subprogram at abs_controller_supplier_with_property.ads:19] [provers gave up before completing the proof]
 abs_controller_supplier_with_property.adb:49:58: info: overflow check proved (colibri: 2 VC)
 abs_controller_supplier_with_property.adb:49:77: medium: range check might fail, cannot prove upper bound for (8) * (Vehicle_Speed) [reason for check: result of multiplication must be convertible to the target type of the conversion] [possible fix: add precondition ((8) * (Vehicle_Speed) <= Unsigned_32(Integer_32'Last)) to subprogram at abs_controller_supplier_with_property.ads:19] [provers gave up before completing the proof]
-abs_controller_supplier_with_property.adb:53:82: medium: overflow check might fail, cannot prove lower bound for (Boolean_To_Integer_8 ((Sum_out1) > (0))) - (Boolean_To_Integer_8 ((Sum_out1) < (0))) [reason for check: result of subtraction must fit in a 8-bits machine integer] [possible fix: you should consider adding a postcondition to function Boolean_To_Integer_8 or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
+abs_controller_supplier_with_property.adb:53:82: medium: overflow check might fail, cannot prove lower bound for (Boolean_To_Integer_8 ((Sum_out1) > (0))) - (Boolean_To_Integer_8 ((Sum_out1) < (0))) [reason for check: result of subtraction must fit in a 8-bits machine integer] [possible fix: you should consider adding a postcondition to function "Boolean_To_Integer_8" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
 abs_controller_supplier_with_property.adb:62:41: info: range check proved (CVC5: 2 VC)
 abs_controller_supplier_with_property.adb:93:22: info: assertion proved (CVC5: 1 VC)
 abs_controller_supplier_with_property.ads:22:08: info: initialization of "Apply_Brakes" proved
@@ -76,22 +76,22 @@ simulink_functions.adb:45:13: info: alignment of source type of unchecked conver
 simulink_functions.adb:45:13: info: types in unchecked conversion have the same size (Trivial)
 simulink_functions.adb:45:67: info: type is suitable as source for unchecked conversion (Trivial)
 simulink_functions.adb:46:67: info: type is suitable for unchecked conversion (Trivial)
-simulink_functions.adb:48:13: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type Unsigned_32 and type Unsigned_16 differ]
+simulink_functions.adb:48:13: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type "Unsigned_32" and type "Unsigned_16" differ]
 simulink_functions.adb:48:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 simulink_functions.adb:48:13: warning: imprecise handling of Unchecked_Conversion (types in unchecked conversion do not have the same size) [imprecise-unchecked-conversion]
 simulink_functions.adb:48:65: info: type is suitable as source for unchecked conversion (Trivial)
 simulink_functions.adb:49:67: info: type is suitable for unchecked conversion (Trivial)
-simulink_functions.adb:50:13: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type Unsigned_32 and type Unsigned_8 differ]
+simulink_functions.adb:50:13: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type "Unsigned_32" and type "Unsigned_8" differ]
 simulink_functions.adb:50:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 simulink_functions.adb:50:13: warning: imprecise handling of Unchecked_Conversion (types in unchecked conversion do not have the same size) [imprecise-unchecked-conversion]
 simulink_functions.adb:50:64: info: type is suitable as source for unchecked conversion (Trivial)
 simulink_functions.adb:51:67: info: type is suitable for unchecked conversion (Trivial)
-simulink_functions.adb:52:13: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type Unsigned_32 and type Integer_16 differ]
+simulink_functions.adb:52:13: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type "Unsigned_32" and type "Integer_16" differ]
 simulink_functions.adb:52:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 simulink_functions.adb:52:13: warning: imprecise handling of Unchecked_Conversion (types in unchecked conversion do not have the same size) [imprecise-unchecked-conversion]
 simulink_functions.adb:52:67: info: type is suitable as source for unchecked conversion (Trivial)
 simulink_functions.adb:53:67: info: type is suitable for unchecked conversion (Trivial)
-simulink_functions.adb:54:13: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type Unsigned_32 and type Integer_8 differ]
+simulink_functions.adb:54:13: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type "Unsigned_32" and type "Integer_8" differ]
 simulink_functions.adb:54:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 simulink_functions.adb:54:13: warning: imprecise handling of Unchecked_Conversion (types in unchecked conversion do not have the same size) [imprecise-unchecked-conversion]
 simulink_functions.adb:54:66: info: type is suitable as source for unchecked conversion (Trivial)
