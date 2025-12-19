@@ -13,7 +13,7 @@ cover.adb:7:03: info: type is suitable as source for unchecked conversion (Trivi
 cover.adb:7:27: info: object is suitable for aliasing via address clause (Trivial)
 cover.adb:7:27: info: type is suitable as source for unchecked conversion (Trivial)
 cover.adb:7:27: info: types of aliased objects have the same size (Trivial)
-cover.adb:15:03: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: component of record is not aliased] [possible fix: overlaying object should have an Alignment representation clause]
+cover.adb:15:03: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: component of record is not aliased] [possible fix: overlaid object should have an Alignment representation clause]
 cover.adb:15:03: info: object is suitable for aliasing via address clause (Trivial)
 cover.adb:15:03: info: type is suitable as source for unchecked conversion (Trivial)
 cover.adb:15:03: warning: imprecise handling of overlay (mutable overlay of a subcomponent of an object) [imprecise-overlay]

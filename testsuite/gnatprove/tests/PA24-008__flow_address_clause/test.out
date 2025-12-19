@@ -1,5 +1,5 @@
 utils.adb:12:07: info: initialization of "Reg" proved
-utils.adb:12:07: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause] [provers gave up before completing the proof]
+utils.adb:12:07: medium: address in address clause might not be an integral multiple of alignment of object [provers gave up before completing the proof]
 utils.adb:12:07: warning: address specification on "Reg" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to or through a potential alias [imprecise-address-specification] [E0012]
 utils.adb:12:07: warning: launch "gnatprove --explain=E0012" for more information
 utils.adb:12:07: warning: make sure that all overlapping objects have Async_Writers set to True
