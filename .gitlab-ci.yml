@@ -26,7 +26,6 @@ variables:
    PACKAGE_BASE_NAME: spark2014.tar.gz
    PACKAGE_ABSOLUTE_NAME: $CI_PROJECT_DIR/$PACKAGE_BASE_NAME
    PACKAGE_EXPORT: /tmp/spark2014-export
-   GNATFORMAT_DATE: 20251215
 
 stages:
   - build
@@ -305,6 +304,10 @@ pre-commit:
     - cat /tmp/ci_env.sh
     - . /tmp/ci_env.sh
     - cd $ANOD_DEFAULT_SANDBOX_DIR
+    - SPECPATH=$(anod tune 2>&1 | awk '/Path:/ {p=$NF} /Specs:/ {if ($NF == "anod)") print p "/vcs/anod-auto"; else print $NF}')
+    - echo $SPECPATH
+    - GNATFORMAT_DATE=`sed -n 's/.*gnatformat_version = "\(.*\)".*/\1/p' $SPECPATH/sparkdev.anod`
+    - echo $GNATFORMAT_DATE
     - anod install gnat --latest
     - anod install libgpr2 --latest
     - anod install vss-text -Qedge --latest
