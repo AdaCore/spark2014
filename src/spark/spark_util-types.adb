@@ -122,8 +122,7 @@ package body SPARK_Util.Types is
          Check_Known_RM_Size (Comp_Ty, Comp_Size, Explanation);
          if Present (Comp_Size) then
             Size_Str :=
-              To_Unbounded_String
-                (Pretty_Source_Name (Comp_Ty) & " has Size");
+              To_Unbounded_String (Pretty_Source_Name (Comp_Ty) & " has Size");
          end if;
       else
          Check_Known_Esize (Comp_Ty, Comp_Size, Explanation);
@@ -137,9 +136,7 @@ package body SPARK_Util.Types is
       if No (Comp_Size) then
          Explanation :=
            To_Unbounded_String
-             ("Component_Size of "
-              & Pretty_Source_Name (Typ)
-              & " is missing");
+             ("Component_Size of " & Pretty_Source_Name (Typ) & " is missing");
       end if;
    end Array_Component_Size;
 
