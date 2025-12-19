@@ -192,7 +192,7 @@ red_black_trees.adb:158:06: info: data dependencies proved
 red_black_trees.adb:160:18: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:160:31: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:160:47: info: precondition proved (CVC5: 2 VC)
-red_black_trees.adb:160:47: medium: postcondition might fail, cannot prove Get (X1, Last (X1)) < X2 [possible fix: you should consider adding a postcondition to function Get or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
+red_black_trees.adb:160:47: medium: postcondition might fail, cannot prove Get (X1, Last (X1)) < X2 [possible fix: you should consider adding a postcondition to function "Get" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
 red_black_trees.adb:160:56: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:162:14: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:162:27: info: predicate check proved (Trivial: 1 VC)
@@ -205,7 +205,7 @@ red_black_trees.adb:172:27: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:172:46: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:172:55: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:173:17: info: precondition proved (CVC5: 2 VC)
-red_black_trees.adb:173:17: medium: postcondition might fail, cannot prove Get (T2, Last (T2)) = V [possible fix: you should consider adding a postcondition to function Get or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
+red_black_trees.adb:173:17: medium: postcondition might fail, cannot prove Get (T2, Last (T2)) = V [possible fix: you should consider adding a postcondition to function "Get" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
 red_black_trees.adb:173:26: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:174:17: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:174:26: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
@@ -220,7 +220,7 @@ red_black_trees.adb:178:40: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:186:14: info: aspect Always_Terminates on "Prove_Model_Eq" has been proved, subprogram will terminate
 red_black_trees.adb:188:06: info: data dependencies proved
 red_black_trees.adb:190:08: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:190:08: medium: postcondition might fail, cannot prove Last (Model (T, Pos1)) - First (Model (T, Pos1)) = Last (Model (T, Pos2)) - First (Model (T, Pos2)) [possible fix: you should consider adding a postcondition to function First or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
+red_black_trees.adb:190:08: medium: postcondition might fail, cannot prove Last (Model (T, Pos1)) - First (Model (T, Pos1)) = Last (Model (T, Pos2)) - First (Model (T, Pos2)) [possible fix: you should consider adding a postcondition to function "First" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
 red_black_trees.adb:190:33: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:190:59: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:190:84: info: predicate check proved (Trivial: 1 VC)
@@ -354,13 +354,13 @@ red_black_trees.adb:231:70: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:231:75: medium: in inlined predicate at a-nbnbin.ads:55
 red_black_trees.adb:231:75: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: subprogram at line 186 should mention Pos1 and Pos2 in a precondition] [provers reached step limit before completing the proof]
 red_black_trees.adb:231:77: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:272:24: medium: assertion might fail, cannot prove Get (X3, I - First (Y3) + First (X3)) = Get (Y3, I) [possible fix: you should consider adding a postcondition to function First and function Get or turning them into expression functions in their unit spec] [provers reached step limit before completing the proof]
+red_black_trees.adb:272:24: medium: assertion might fail, cannot prove Get (X3, I - First (Y3) + First (X3)) = Get (Y3, I) [possible fix: you should consider adding a postcondition to function "First" and function "Get" or turning them into expression functions in their unit spec] [provers reached step limit before completing the proof]
 red_black_trees.adb:272:24: medium: in inlined expression function body at a-nbnbin.ads:66
 red_black_trees.adb:272:24: medium: precondition might fail, cannot prove Low <= Arg [provers reached step limit before completing the proof]
 red_black_trees.adb:272:33: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:272:37: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:272:48: medium: in inlined predicate at a-nbnbin.ads:55
-red_black_trees.adb:272:48: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: you should consider adding a postcondition to function First or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
+red_black_trees.adb:272:48: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: you should consider adding a postcondition to function "First" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
 red_black_trees.adb:272:50: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:272:64: medium: in inlined expression function body at a-nbnbin.ads:66
 red_black_trees.adb:272:64: medium: precondition might fail, cannot prove Low <= Arg [provers reached step limit before completing the proof]
@@ -417,7 +417,7 @@ red_black_trees.adb:334:70: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:334:77: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:334:86: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:334:93: info: pointer dereference check proved (CVC5: 1 VC)
-red_black_trees.adb:335:18: medium: assertion might fail, cannot prove Get (Model (C.Right, Pos + Size (C.Left) + 1), I) > C.Value [possible fix: you should consider adding a postcondition to function Get or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
+red_black_trees.adb:335:18: medium: assertion might fail, cannot prove Get (Model (C.Right, Pos + Size (C.Left) + 1), I) > C.Value [possible fix: you should consider adding a postcondition to function "Get" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
 red_black_trees.adb:335:18: medium: in inlined expression function body at a-nbnbin.ads:66
 red_black_trees.adb:335:18: medium: precondition might fail, cannot prove Low <= Arg [provers reached step limit before completing the proof]
 red_black_trees.adb:335:31: info: pointer dereference check proved (CVC5: 1 VC)
