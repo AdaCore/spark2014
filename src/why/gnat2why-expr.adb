@@ -8116,7 +8116,7 @@ package body Gnat2Why.Expr is
 
                         if not Typ_Precise then
                            Explanation :=
-                             (if Precise
+                             (if Precise or else Typ_Expl = Explanation
                               then ""
                               else To_String (Explanation) & " and ")
                              & Typ_Expl;
@@ -8273,13 +8273,18 @@ package body Gnat2Why.Expr is
          Precise := False;
          Explanation :=
            To_Unbounded_String
-             ("Object_Size of " & Pretty_Source_Name (Typ) & " is missing");
+             (if Is_Array_Type (Typ) and then not Is_Constrained (Typ)
+              then Pretty_Source_Name (Typ) & " is unconstrained"
+              else
+                "Object_Size of " & Pretty_Source_Name (Typ) & " is missing");
       else
          Dynamic_Size := New_Attribute_Expr (Typ, Domain, Attribute_Size);
          Precise := False;
          Explanation :=
            To_Unbounded_String
-             ("Size of " & Pretty_Source_Name (Typ) & " is missing");
+             (if Is_Array_Type (Typ) and then not Is_Constrained (Typ)
+              then Pretty_Source_Name (Typ) & " is unconstrained"
+              else "Size of " & Pretty_Source_Name (Typ) & " is missing");
       end if;
    end Compute_Size_Of_Type;
 

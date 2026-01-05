@@ -2,21 +2,21 @@ test.adb:4:13: info: implicit aspect Always_Terminates on "G" has been proved, s
 test.adb:7:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: "X" must be aliased for its alignment to be known] [possible fix: overlaid object should have an Alignment representation clause]
 test.adb:7:07: info: object is suitable for aliasing via address clause (Trivial)
 test.adb:7:07: warning: imprecise handling of overlay (type is unsuitable as source for unchecked conversion) [imprecise-overlay]
-test.adb:7:52: high: type is unsuitable as a source for unchecked conversion [possible explanation: type "Int_Array" doesn't have a Size representation clause or aspect; type "Int_Array" might have unused bits that are not modelled in SPARK]
+test.adb:7:52: high: type is unsuitable as a source for unchecked conversion [possible explanation: type "Int_Array" is unconstrained; type "Int_Array" might have unused bits that are not modelled in SPARK]
 test.adb:7:52: info: object is suitable for aliasing via address clause (Trivial)
 test.adb:7:52: info: types of aliased objects have the same size (CVC5: 1 VC)
 test.adb:12:13: info: implicit aspect Always_Terminates on "G_2" has been proved, subprogram will terminate
 test.adb:13:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: "X" must be aliased for its alignment to be known] [possible fix: overlaid object should have an Alignment representation clause]
 test.adb:13:07: info: object is suitable for aliasing via address clause (Trivial)
 test.adb:13:07: warning: imprecise handling of overlay (type is unsuitable as source for unchecked conversion) [imprecise-overlay]
-test.adb:13:52: high: type is unsuitable as a source for unchecked conversion [possible explanation: type "Int_Array" doesn't have a Size representation clause or aspect; type "Int_Array" might have unused bits that are not modelled in SPARK]
+test.adb:13:52: high: type is unsuitable as a source for unchecked conversion [possible explanation: type "Int_Array" is unconstrained; type "Int_Array" might have unused bits that are not modelled in SPARK]
 test.adb:13:52: high: types of aliased objects do not have the same size [provers reached step limit before completing the proof]
 test.adb:13:52: info: object is suitable for aliasing via address clause (Trivial)
 test.adb:20:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 test.adb:23:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: unknown alignment for object] [possible fix: overlaid object should have an Alignment representation clause]
 test.adb:23:07: info: object is suitable for aliasing via address clause (Trivial)
 test.adb:23:07: warning: imprecise handling of overlay (type is unsuitable as source for unchecked conversion) [imprecise-overlay]
-test.adb:23:52: high: type is unsuitable as a source for unchecked conversion [possible explanation: type "Int_Array" doesn't have a Size representation clause or aspect; type "Int_Array" might have unused bits that are not modelled in SPARK]
+test.adb:23:52: high: type is unsuitable as a source for unchecked conversion [possible explanation: type "Int_Array" is unconstrained; type "Int_Array" might have unused bits that are not modelled in SPARK]
 test.adb:23:52: info: object is suitable for aliasing via address clause (Trivial)
 test.adb:23:52: info: types of aliased objects have the same size (CVC5: 1 VC)
 test.adb:23:57: warning: alignment of object is not precisely known [imprecise-align]
@@ -25,7 +25,7 @@ test.adb:28:18: warning: unused initial value of "X"
 test.adb:29:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: unknown alignment for object] [possible fix: overlaid object should have an Alignment representation clause]
 test.adb:29:07: info: object is suitable for aliasing via address clause (Trivial)
 test.adb:29:07: warning: imprecise handling of overlay (type is unsuitable as source for unchecked conversion) [imprecise-overlay]
-test.adb:29:52: high: type is unsuitable as a source for unchecked conversion [possible explanation: type "Int_Array" doesn't have a Size representation clause or aspect; type "Int_Array" might have unused bits that are not modelled in SPARK]
+test.adb:29:52: high: type is unsuitable as a source for unchecked conversion [possible explanation: type "Int_Array" is unconstrained; type "Int_Array" might have unused bits that are not modelled in SPARK]
 test.adb:29:52: high: types of aliased objects do not have the same size [provers reached step limit before completing the proof]
 test.adb:29:52: info: object is suitable for aliasing via address clause (Trivial)
 test.adb:29:57: warning: alignment of object is not precisely known [imprecise-align]
