@@ -629,7 +629,7 @@ shall follow the grammar of ``abstract_state_list`` given below.
   option_list              ::= option { , option }
   option                   ::= simple_option
                              | name_value_option
-  simple_option            ::= Ghost | Synchronous
+  simple_option            ::= Ghost [=> expression] | Synchronous
   name_value_option        ::= Part_Of => abstract_state
                              | External [=> external_property_list]
   external_property_list   ::= external_property
@@ -725,9 +725,9 @@ shall follow the grammar of ``abstract_state_list`` given below.
    :ref:`Tasks and Synchronization`).]
 
 
-9. A state abstraction for which the ``simple_option`` Ghost is
-   specified is said to be a ghost state abstraction. A state
-   abstraction for which the ``simple_option`` Synchronous is
+9. A state abstraction for which the ``simple_option`` Ghost is specified either
+   as True or as an assertion level is said to be a ghost state abstraction.
+   A state abstraction for which the ``simple_option`` Synchronous is
    specified is said to be a synchronized state abstraction.
    [The option name "Synchronous" is used instead of "Synchronized"
    to avoid unnecessary complications associated with the use of an
