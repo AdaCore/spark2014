@@ -1,0 +1,5 @@
+bug_iterator.adb:13:04: info: initialization of "V" proved
+bug_iterator.adb:15:04: info: precondition proved (CVC5: 1 VC)
+bug_iterator.adb:16:08: info: precondition proved (CVC5: 1 VC)
+bug_iterator.adb:16:08: info: precondition proved (CVC5: 2 VC)
+bug_iterator.adb:16:08: info: precondition proved (Trivial: 1 VC)
