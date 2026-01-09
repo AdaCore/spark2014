@@ -105,14 +105,14 @@ package body Gnat2Why.Unchecked_Conversion is
       Modular);  --  Modular integer type
 
    function Get_Scalar_Status (Typ : Type_Kind_Id) return Scalar_Status
-   is (if Is_Modular_Integer_Type (Typ)
+   is (if Has_Modular_Operations (Typ)
        then Modular
        elsif Is_Enumeration_Type (Typ)
        then Unsigned
        elsif Is_Unsigned_Type (Typ)
        then Unsigned
-       elsif Is_Signed_Integer_Type (Typ)
-       then Signed
+       elsif Has_Overflow_Operations (Typ)
+       then (if Has_Unsigned_Base_Range_Aspect (Typ) then Unsigned else Signed)
        else raise Program_Error);
 
    function Precise_Integer_UC
@@ -559,7 +559,7 @@ package body Gnat2Why.Unchecked_Conversion is
       function Expr_Index (Typ : Type_Kind_Id; Idx : Uint) return W_Expr_Id is
          Index_Typ : constant Type_Kind_Id := Etype (First_Index (Typ));
       begin
-         if Is_Modular_Integer_Type (Index_Typ) then
+         if Is_Bitvector_Type_In_Why (Index_Typ) then
             return
               New_Modular_Constant
                 (Value => Idx, Typ => Base_Why_Type_No_Bool (Index_Typ));
@@ -1217,7 +1217,7 @@ package body Gnat2Why.Unchecked_Conversion is
             if Has_Biased_Representation (Typ) then
                return False_With_Explain ("type with biased representation");
 
-            elsif Has_Modular_Integer_Type (Typ)
+            elsif Has_Modular_Operations (Typ)
               and then Has_No_Bitwise_Operations_Annotation (Typ)
             then
                return

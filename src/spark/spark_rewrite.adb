@@ -470,6 +470,27 @@ package body SPARK_Rewrite is
 
             when N_Full_Type_Declaration                                   =>
 
+               --  Loop the type of bounds for root unsigned_base_range type
+               --  to themselves. They are set to standard modular types by the
+               --  front-end. This is apparently necessary for some back-ends,
+               --  but cause translation issues for GNATprove.
+
+               if Nkind (Type_Definition (N))
+                 = N_Signed_Integer_Type_Definition
+               then
+                  declare
+                     E   : constant Entity_Id :=
+                       Base_Type (Defining_Identifier (N));
+                     Rng : Node_Id;
+                  begin
+                     if Has_Unsigned_Base_Range_Aspect (E) then
+                        Rng := Scalar_Range (E);
+                        Set_Etype (Low_Bound (Rng), E);
+                        Set_Etype (High_Bound (Rng), E);
+                     end if;
+                  end;
+               end if;
+
                --  Frontend rewrites declarations of derived types, so only
                --  their original node comes from source.
 

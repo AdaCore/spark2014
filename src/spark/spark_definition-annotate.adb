@@ -4316,7 +4316,7 @@ package body SPARK_Definition.Annotate is
 
       --  This entity must be a modular type
 
-      elsif not Is_Modular_Integer_Type (E) then
+      elsif not Has_Modular_Operations (E) then
          Error_Msg_N_If
            ("Entity parameter of annotation No_Bitwise_Operations must"
             & " be a modular type",
@@ -4383,7 +4383,7 @@ package body SPARK_Definition.Annotate is
 
       --  This entity must be a modular type
 
-      elsif not Is_Modular_Integer_Type (E) then
+      elsif not Has_Modular_Operations (E) then
          Error_Msg_N_If
            ("Entity parameter of annotation No_Wrap_Around must be a modular "
             & "type",

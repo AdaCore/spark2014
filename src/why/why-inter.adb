@@ -978,9 +978,7 @@ package body Why.Inter is
                return EW_Bool_Type;
             elsif Ty = Universal_Fixed then
                return EW_Real_Type;
-            elsif Is_Modular_Integer_Type (Ty)
-              and then not Has_No_Bitwise_Operations_Annotation (Ty)
-            then
+            elsif Is_Bitvector_Type_In_Why (Ty) then
                declare
                   Size : Uintp.Uint;
                begin

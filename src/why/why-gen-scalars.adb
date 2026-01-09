@@ -23,29 +23,28 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Common_Containers;         use Common_Containers;
+with Common_Containers;   use Common_Containers;
 with GNAT.Source_Info;
-with SPARK_Definition.Annotate; use SPARK_Definition.Annotate;
-with SPARK_Util;                use SPARK_Util;
-with SPARK_Util.Types;          use SPARK_Util.Types;
-with Sinput;                    use Sinput;
-with Stand;                     use Stand;
-with Uintp;                     use Uintp;
-with Urealp;                    use Urealp;
-with VC_Kinds;                  use VC_Kinds;
-with Why.Atree.Accessors;       use Why.Atree.Accessors;
-with Why.Atree.Builders;        use Why.Atree.Builders;
-with Why.Conversions;           use Why.Conversions;
-with Why.Gen.Binders;           use Why.Gen.Binders;
-with Why.Gen.Decl;              use Why.Gen.Decl;
-with Why.Gen.Expr;              use Why.Gen.Expr;
-with Why.Gen.Names;             use Why.Gen.Names;
-with Why.Gen.Terms;             use Why.Gen.Terms;
-with Why.Ids;                   use Why.Ids;
-with Why.Images;                use Why.Images;
-with Why.Inter;                 use Why.Inter;
-with Why.Sinfo;                 use Why.Sinfo;
-with Why.Types;                 use Why.Types;
+with SPARK_Util;          use SPARK_Util;
+with SPARK_Util.Types;    use SPARK_Util.Types;
+with Sinput;              use Sinput;
+with Stand;               use Stand;
+with Uintp;               use Uintp;
+with Urealp;              use Urealp;
+with VC_Kinds;            use VC_Kinds;
+with Why.Atree.Accessors; use Why.Atree.Accessors;
+with Why.Atree.Builders;  use Why.Atree.Builders;
+with Why.Conversions;     use Why.Conversions;
+with Why.Gen.Binders;     use Why.Gen.Binders;
+with Why.Gen.Decl;        use Why.Gen.Decl;
+with Why.Gen.Expr;        use Why.Gen.Expr;
+with Why.Gen.Names;       use Why.Gen.Names;
+with Why.Gen.Terms;       use Why.Gen.Terms;
+with Why.Ids;             use Why.Ids;
+with Why.Images;          use Why.Images;
+with Why.Inter;           use Why.Inter;
+with Why.Sinfo;           use Why.Sinfo;
+with Why.Types;           use Why.Types;
 
 package body Why.Gen.Scalars is
 
@@ -403,6 +402,49 @@ package body Why.Gen.Scalars is
       M_Fixed_Point_Mult_Div.Insert (Module_Name, M_Module);
    end Create_Fixed_Point_Mult_Div_Theory_If_Needed;
 
+   ------------------------------------------------------
+   -- Declare_Additional_Symbols_For_Unsigned_Overflow --
+   ------------------------------------------------------
+
+   procedure Declare_Additional_Symbols_For_Unsigned_Overflow (Th : Theory_UC)
+   is
+      High : constant Uint :=
+        Expr_Value (High_Bound (Get_Range (Standard_Long_Long_Unsigned)));
+      Last : constant W_Identifier_Id :=
+        New_Identifier
+          (Domain => EW_Term,
+           Module => Unsigned_Base_Range_Overflow_Module,
+           Symb   => NID ("last"));
+   begin
+      Add_With_Clause (Th, Int_Module, EW_Clone_Default);
+      Emit
+        (Th,
+         Why.Gen.Binders.New_Function_Decl
+           (Domain      => EW_Term,
+            Name        => To_Local (Last),
+            Location    => No_Location,
+            Labels      => Symbol_Sets.Empty_Set,
+            Binders     => (2 .. 1 => <>),
+            Return_Type => EW_Int_Type,
+            Def         => New_Integer_Constant (Value => High)));
+      Emit
+        (Th,
+         New_Clone_Declaration
+           (Theory_Kind   => EW_Module,
+            Clone_Kind    => EW_Export,
+            As_Name       => No_Symbol,
+            Origin        =>
+              New_Module
+                (File => Gnatprove_Standard_File,
+                 Name => "Unsigned_Base_Range_Minimized_Overflow_Check"),
+            Substitutions =>
+              (1 =>
+                 New_Clone_Substitution
+                   (Kind      => EW_Function,
+                    Orig_Name => New_Name (Symb => NID ("last")),
+                    Image     => To_Local (Last)))));
+   end Declare_Additional_Symbols_For_Unsigned_Overflow;
+
    -------------------------
    -- Declare_Scalar_Type --
    -------------------------
@@ -492,8 +534,7 @@ package body Why.Gen.Scalars is
             else (1 .. 0 => <>));
          Mod_Clone_Subst             : constant W_Clone_Substitution_Array :=
            (if Is_Static
-              and then Has_Modular_Integer_Type (E)
-              and then not Has_No_Bitwise_Operations_Annotation (E)
+              and then Is_Bitvector_Type_In_Why (E)
               and then Modulus (E) /= UI_Expon (Uint_2, Modular_Size (E))
             then
               (1 =>
@@ -503,8 +544,7 @@ package body Why.Gen.Scalars is
                     Image     => To_Local (E_Symb (E, WNE_Attr_Modulus))))
             else (1 .. 0 => <>));
          Range_Int_Clone_Subst       : constant W_Clone_Substitution_Array :=
-           (if Has_Modular_Integer_Type (E)
-              and then not Has_No_Bitwise_Operations_Annotation (E)
+           (if Is_Bitvector_Type_In_Why (E)
             then
               (if Is_Static
                then
@@ -552,22 +592,17 @@ package body Why.Gen.Scalars is
          --  the dynamic case, we don't care about the name, because we bind
          --  it directly above, so we pick "first_int/last_int" too.
 
-         Fst : constant W_Identifier_Id :=
-           (if not Is_Static
-              or else
-                (Has_Modular_Integer_Type (E)
-                 and then not Has_No_Bitwise_Operations_Annotation (E)
-                 and then Ty = EW_Int_Type)
+         Need_Int_Suffix : constant Boolean :=
+           not Is_Static
+           or else (Is_Bitvector_Type_In_Why (E) and then Ty = EW_Int_Type);
+         Fst             : constant W_Identifier_Id :=
+           (if Need_Int_Suffix
             then
               New_Identifier
                 (Symb => NID ("first_int"), Domain => EW_Term, Typ => Ty)
             else To_Local (E_Symb (E, WNE_Attr_First)));
-         Lst : constant W_Identifier_Id :=
-           (if not Is_Static
-              or else
-                (Has_Modular_Integer_Type (E)
-                 and then not Has_No_Bitwise_Operations_Annotation (E)
-                 and then Ty = EW_Int_Type)
+         Lst             : constant W_Identifier_Id :=
+           (if Need_Int_Suffix
             then
               New_Identifier
                 (Symb => NID ("last_int"), Domain => EW_Term, Typ => Ty)
@@ -577,8 +612,7 @@ package body Why.Gen.Scalars is
          --  Optimisation:
          --  check if E is (equivalent to) Unsigned_8/16/..
          if Is_Static
-           and then Has_Modular_Integer_Type (E)
-           and then not Has_No_Bitwise_Operations_Annotation (E)
+           and then Is_Bitvector_Type_In_Why (E)
            and then
              (if Ty = EW_BitVector_8_Type
               then Modulus (E) = UI_Expon (Uint_2, Uint_8)
@@ -758,9 +792,7 @@ package body Why.Gen.Scalars is
          Typ : constant W_Type_Id := Base_Why_Type (E);
       begin
          if Is_Static then
-            if Has_Modular_Integer_Type (E)
-              and then not Has_No_Bitwise_Operations_Annotation (E)
-            then
+            if Is_Bitvector_Type_In_Why (E) then
                declare
                   Modulus_Val : constant Uint := Modulus (E);
                begin
@@ -808,9 +840,7 @@ package body Why.Gen.Scalars is
                   else raise Program_Error);
             end if;
          else
-            if Has_Modular_Integer_Type (E)
-              and then not Has_No_Bitwise_Operations_Annotation (E)
-            then
+            if Is_Bitvector_Type_In_Why (E) then
                return Dynamic_Modular;
             elsif Has_Discrete_Type (E) then
                return Dynamic_Discrete;
@@ -871,10 +901,7 @@ package body Why.Gen.Scalars is
 
       --  define first_int and last_int for static modular types
 
-      if Is_Static
-        and then Is_Modular_Integer_Type (E)
-        and then not Has_No_Bitwise_Operations_Annotation (E)
-      then
+      if Is_Static and then Is_Bitvector_Type_In_Why (E) then
          Emit
            (Th,
             Why.Atree.Builders.New_Function_Decl
@@ -1134,7 +1161,7 @@ package body Why.Gen.Scalars is
    begin
       --  Compute and declare the modulus attribute of modular integer types
 
-      if Has_Modular_Integer_Type (E) then
+      if Has_Modular_Operations (E) then
          declare
             Modulus_Val : constant Uint := Modulus (E);
             Typ         : constant W_Type_Id := Base_Why_Type (E);
@@ -1345,8 +1372,7 @@ package body Why.Gen.Scalars is
               Image     => To_Why_Type (E)));
 
       In_Range_Substs : constant W_Clone_Substitution_Array :=
-        (if Is_Modular_Integer_Type (E)
-           and then not Has_No_Bitwise_Operations_Annotation (E)
+        (if Is_Bitvector_Type_In_Why (E)
          then
            (1 =>
               New_Clone_Substitution
@@ -1366,8 +1392,7 @@ package body Why.Gen.Scalars is
                  Image     => Get_Name (E_Symb (E, WNE_Range_Pred)))));
 
       Mod_Clone_Subst : constant W_Clone_Substitution_Array :=
-        (if Has_Modular_Integer_Type (E)
-           and then not Has_No_Bitwise_Operations_Annotation (E)
+        (if Is_Bitvector_Type_In_Why (E)
            and then Modulus (E) /= UI_Expon (2, Modular_Size (E))
          then
            (1 =>
@@ -1398,11 +1423,8 @@ package body Why.Gen.Scalars is
    begin
       Add_With_Clause (Th, E_Module (E), EW_Clone_Default);
 
-      if Is_Modular_Integer_Type (E)
-        and then not Has_No_Bitwise_Operations_Annotation (E)
-      then
+      if Is_Bitvector_Type_In_Why (E) then
          Add_With_Clause (Th, MF_BVs (Rep_Type).Module, EW_Clone_Default);
-
       elsif Is_Floating_Point_Type (E) then
          Add_With_Clause (Th, MF_Floats (Rep_Type).Module, EW_Clone_Default);
       end if;
@@ -1493,7 +1515,7 @@ package body Why.Gen.Scalars is
       R_Small   : constant Ureal :=
         (if Has_Fixed_Point_Type (Typ_Right)
          then Small_Value (Retysp (Typ_Right))
-         elsif Has_Signed_Integer_Type (Typ_Right)
+         elsif Has_Overflow_Operations (Typ_Right)
          then Ureal_1
          else raise Program_Error);
       Res_Small : constant Ureal :=
@@ -1545,9 +1567,7 @@ package body Why.Gen.Scalars is
 
    function Num_Constant (Ty : Entity_Id; N : Node_Id) return W_Term_Id is
    begin
-      if Is_Modular_Integer_Type (Ty)
-        and then not Has_No_Bitwise_Operations_Annotation (Ty)
-      then
+      if Is_Bitvector_Type_In_Why (Ty) then
          return
            New_Modular_Constant
              (Value => Expr_Value (N), Typ => Base_Why_Type (Ty));

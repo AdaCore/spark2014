@@ -691,6 +691,12 @@ package Why.Atree.Modules is
    To_String_Id        : W_Identifier_Id;
    Of_String_Id        : W_Identifier_Id;
 
+   --  For overflow checking of Unsigned_Base_Range integers in minimized range
+   --  (-gnato2)
+
+   Unsigned_Base_Range_Overflow_Module : W_Module_Id;
+   Unsigned_Base_Range_Overflow_Check  : W_Identifier_Id;
+
    --  Other identifiers
 
    Old_Tag  : Symbol;

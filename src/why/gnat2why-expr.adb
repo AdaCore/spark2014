@@ -19737,7 +19737,7 @@ package body Gnat2Why.Expr is
             --  adding 1 to the representation value, and 'Pred is modelled
             --  as subtracting 1 to the representation value.
 
-            elsif Has_Modular_Integer_Type (Etype (Var)) then
+            elsif Has_Modular_Operations (Etype (Var)) then
                declare
                   Opnd   : constant Node_Id := First (Expressions (Expr));
                   W_Type : constant W_Type_Id := Base_Why_Type (Etype (Var));
@@ -20524,9 +20524,7 @@ package body Gnat2Why.Expr is
                  (if Is_Discrete_Type (Ada_Ty)
                     or else Is_Fixed_Point_Type (Ada_Ty)
                   then
-                    (if Is_Modular_Integer_Type (Ada_Ty)
-                       and then
-                         not Has_No_Bitwise_Operations_Annotation (Ada_Ty)
+                    (if Is_Bitvector_Type_In_Why (Ada_Ty)
                      then
                        (if Attr_Id = Attribute_Min
                         then MF_BVs (Base).BV_Min
@@ -24037,15 +24035,24 @@ package body Gnat2Why.Expr is
                   Right_Rep : constant W_Expr_Id :=
                     Transform_Expr (Right, Typ, Domain, Local_Params);
 
+                  --  Detect types with No_Wrap_Around annotation. We do not
+                  --  need modulus for these types, and must additionally check
+                  --  for overflow in program domain. The machinery for these
+                  --  additional SPARK-mandated checks is significantly
+                  --  different from Ada-mandated checks. We cannot delay them
+                  --  like Ada-mandated overflow checks because we may
+                  --  translate to bitvector types, which wraps around. This
+                  --  means checking the result will typically be too late to
+                  --  detect overflow.
+
+                  No_Wrap_Around       : constant Boolean :=
+                    Has_No_Wrap_Around_Annotation (Expr_Type);
                   Check_No_Wrap_Around : constant Boolean :=
-                    Domain = EW_Prog
-                    and then Has_No_Wrap_Around_Annotation (Expr_Type);
+                    Domain = EW_Prog and then No_Wrap_Around;
 
                begin
-                  if Has_Modular_Integer_Type (Expr_Type)
+                  if Is_Bitvector_Type_In_Why (Expr_Type)
                     and then Non_Binary_Modulus (Expr_Type)
-                    and then
-                      not Has_No_Bitwise_Operations_Annotation (Expr_Type)
                   then
                      T :=
                        Transform_Non_Binary_Modular_Operation
@@ -24065,7 +24072,7 @@ package body Gnat2Why.Expr is
                           Args     => (1 => Right_Rep),
                           Typ      => Typ);
 
-                     if not Check_No_Wrap_Around then
+                     if not No_Wrap_Around then
                         T := Apply_Modulus (N_Op_Minus, Expr_Type, T, Domain);
                      end if;
                   end if;
@@ -24275,20 +24282,17 @@ package body Gnat2Why.Expr is
                   Left_Type : constant Type_Kind_Id := Etype (Left);
 
                   One : constant W_Expr_Id :=
-                    (if Has_Modular_Integer_Type (Left_Type)
+                    (if Is_Integer_Type (Left_Type)
                      then
-                       (if Has_No_Bitwise_Operations_Annotation (Left_Type)
+                       (if Is_Bitvector_Type_In_Why (Left_Type)
                         then
-                          New_Integer_Constant
-                            (Ada_Node => Expr, Value => Uint_1)
-                        else
                           New_Modular_Constant
                             (Ada_Node => Expr,
                              Value    => Uint_1,
-                             Typ      => Base_Type))
-                     elsif Has_Signed_Integer_Type (Left_Type)
-                     then
-                       New_Integer_Constant (Ada_Node => Expr, Value => Uint_1)
+                             Typ      => Base_Type)
+                        else
+                          New_Integer_Constant
+                            (Ada_Node => Expr, Value => Uint_1))
                      elsif Has_Floating_Point_Type (Left_Type)
                      then +MF_Floats (Base_Type).One
                      else raise Program_Error);
@@ -24364,9 +24368,20 @@ package body Gnat2Why.Expr is
                           Context  => E);
                   end Inv;
 
+                  --  Detect types with No_Wrap_Around annotation. We do not
+                  --  need modulus for these types, and must additionally check
+                  --  for overflow in program domain. The machinery for these
+                  --  additional SPARK-mandated checks is significantly
+                  --  different from Ada-mandated checks. We cannot delay them
+                  --  like Ada-mandated overflow checks because we may
+                  --  translate to bitvector types, which wraps around. This
+                  --  means checking the result will typically be too late to
+                  --  detect overflow.
+
+                  No_Wrap_Around       : constant Boolean :=
+                    Has_No_Wrap_Around_Annotation (Expr_Type);
                   Check_No_Wrap_Around : constant Boolean :=
-                    Domain = EW_Prog
-                    and then Has_No_Wrap_Around_Annotation (Expr_Type);
+                    Domain = EW_Prog and then No_Wrap_Around;
 
                   --  Start of processing for N_Op_Expon_Case
 
@@ -24376,9 +24391,7 @@ package body Gnat2Why.Expr is
                   --  power computation must not wrap-around on the rep
                   --  bitvector type.
 
-                  if Has_Modular_Integer_Type (Left_Type)
-                    and then
-                      not Has_No_Bitwise_Operations_Annotation (Left_Type)
+                  if Is_Bitvector_Type_In_Why (Left_Type)
                     and then not Non_Binary_Modulus (Left_Type)
                     and then Compile_Time_Known_Value (Left)
                     and then Expr_Value (Left) = Uint_2
@@ -24428,8 +24441,12 @@ package body Gnat2Why.Expr is
                         --  Apply the modulus if it is smaller than the modulus
                         --  of the rep bitvector type.
 
-                        T :=
-                          Apply_Modulus (Nkind (Expr), Left_Type, T, Domain);
+                        if not No_Wrap_Around then
+                           T :=
+                             Apply_Modulus
+                               (Nkind (Expr), Left_Type, T, Domain);
+                        end if;
+
                         T :=
                           Binding_For_Temp
                             (Domain => Domain, Tmp => Expo, Context => T);
@@ -24525,7 +24542,7 @@ package body Gnat2Why.Expr is
                           Do_Check   => Domain = EW_Prog);
                   end;
 
-               elsif Is_Modular_Integer_Type (Expr_Type) then
+               elsif Has_Modular_Operations (Expr_Type) then
                   declare
                      Base : constant W_Type_Id := Base_Why_Type (Expr_Type);
                   begin
@@ -24625,7 +24642,7 @@ package body Gnat2Why.Expr is
                         --  modulus or and xor might overflow : we need to take
                         --  the modulo of the result.
 
-                        if Has_Modular_Integer_Type (Expr_Type)
+                        if Has_Modular_Operations (Expr_Type)
                           and then Non_Binary_Modulus (Expr_Type)
                         then
                            T :=
@@ -25537,18 +25554,20 @@ package body Gnat2Why.Expr is
       then
          --  Depending on the current mode for integer overflow checks, the
          --  operation is either done in the base type (Strict mode), or in
-         --  Long_Long_Integer (Minimized mode) if needed, or in arbitrary
-         --  precision if needed (Eliminated mode). A check may only be
-         --  generated in the Strict and Minimized modes, and the type
+         --  Long_Long_{Integer|Unsigned} (Minimized mode) if needed, or in
+         --  arbitrary precision if needed (Eliminated mode). A check may only
+         --  be generated in the Strict and Minimized modes, and the type
          --  used for the bounds is the base type in the first case, and
          --  Long_Long_Integer in the second case (which is its own base type).
+         --  In minimized mode, Long_Long_Integer is used for standard signed
+         --  types, and Long_Long_Unsigned for types with Unsigned_Base_Range.
 
          --  Use Sem.Scope_Suppress which takes into account the default from
          --  switches and configuration pragma files as defined in
          --  Opt.Suppress_Options, as well as possible configuration pragmas
          --  in the main unit, as done in SPARK_Definition.Mark_Pragma.
 
-         if Is_Signed_Integer_Type (Expr_Type) then
+         if Has_Overflow_Operations (Expr_Type) then
             declare
                Mode : Overflow_Mode_Type;
             begin
@@ -25570,9 +25589,32 @@ package body Gnat2Why.Expr is
                           (Expr, T, Expr_Type, Is_Float => False);
 
                   when Minimized  =>
-                     T :=
-                       +Insert_Overflow_Check
-                          (Expr, T, Standard_Integer_64, Is_Float => False);
+                     if Has_Unsigned_Base_Range_Aspect (Expr_Type) then
+
+                        --  While the type over which overflow range checking
+                        --  should be Long_Long_Unsigned, we cannot reuse
+                        --  Insert_Overflow_Check directly, because
+                        --  Long_Long_Unsigned is a plain modular type. We
+                        --  call a range checking function specifically made
+                        --  for that case instead.
+
+                        T :=
+                          +New_VC_Call
+                             (Ada_Node => Expr,
+                              Name     => Unsigned_Base_Range_Overflow_Check,
+                              Progs    => (1 => T),
+                              Reason   => VC_Overflow_Check,
+                              Typ      => Get_Type (T));
+                     else
+
+                        T :=
+                          +Insert_Overflow_Check
+                             (Expr,
+                              T,
+                              Standard_Long_Long_Integer,
+                              Is_Float => False);
+
+                     end if;
 
                   when Eliminated =>
                      null;
@@ -29121,7 +29163,7 @@ package body Gnat2Why.Expr is
       --  ??? it is assumed that rotate calls are only valid on actual
       --  unsigned_8/16/32/64/128 types with the corresponding 'Size
 
-      if Has_Modular_Integer_Type (Etype (Expr)) then
+      if Has_Modular_Operations (Etype (Expr)) then
          declare
             Modulus_Val : constant Uint := Modulus (Etype (Subp));
             Nb_Of_Bits  : constant Pos :=
@@ -30430,7 +30472,7 @@ package body Gnat2Why.Expr is
                         --  do not assume the bounds value to avoid generating
                         --  an incorrect axiom.
 
-                        if Is_Modular_Integer_Type (Idx_Ty) then
+                        if Is_Bitvector_Type_In_Why (Idx_Ty) then
                            if Length = 0 then
                               Bounds_Value :=
                                 New_Conditional

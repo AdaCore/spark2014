@@ -1737,6 +1737,22 @@ package body Gnat2Why.Types is
 
             Close_Theory (Th, Kind => Standalone_Theory);
          end if;
+
+         if E = Standard_Long_Long_Unsigned then
+            Th :=
+              Open_Theory
+                (WF_Context,
+                 Unsigned_Base_Range_Overflow_Module,
+                 Comment =>
+                   "Module defining overflow check program for integers with"
+                   & " Unsigned_Base_Range in minimized mode, created in"
+                   & GNAT.Source_Info.Enclosing_Entity);
+
+            Declare_Additional_Symbols_For_Unsigned_Overflow (Th);
+
+            Close_Theory (Th, Kind => Standalone_Theory);
+         end if;
+
       end if;
 
       --  If the type may be used for expressions with relaxed initialization,

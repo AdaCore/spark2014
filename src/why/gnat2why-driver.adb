@@ -1681,6 +1681,16 @@ package body Gnat2Why.Driver is
       Translate_Standard_Entity (Standard_Integer_64);
       Translate_Standard_Entity (Universal_Integer);
 
+      --  The following are referenced by front-end implementation of
+      --  Unsigned_Base_Range.
+
+      Translate_Standard_Entity (Standard_Short_Short_Unsigned);
+      Translate_Standard_Entity (Standard_Short_Unsigned);
+      Translate_Standard_Entity (Standard_Unsigned);
+      Translate_Standard_Entity (Standard_Long_Unsigned);
+      Translate_Standard_Entity (Standard_Long_Long_Unsigned);
+      Translate_Standard_Entity (Standard_Long_Long_Long_Unsigned);
+
    end Translate_Standard_Package;
 
 end Gnat2Why.Driver;
