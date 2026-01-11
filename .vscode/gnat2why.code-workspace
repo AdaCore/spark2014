@@ -10,5 +10,15 @@
     "[ada]": {
       "editor.formatOnType": false,
     },
+    "[python]": {
+      "editor.formatOnSave": true,
+      "editor.defaultFormatter": "ms-python.black-formatter",
+      "editor.rulers": [
+        88 // The black default
+      ]
+    },
+    "python.analysis.extraPaths": [
+      "testsuite/gnatprove/lib/python"
+    ]
   }
 }
