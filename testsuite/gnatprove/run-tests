@@ -526,7 +526,7 @@ class SPARKTestFinder(TestFinder):
 
         # If the test contains a test.py, we use the AdaCoreLegacyTestDriver,
         # otherwise we use the proof/flow driver
-        if "test.py" in filenames or "test.cmd" in filenames:
+        if "test.py" in filenames:
             if "prove_all" in test_env or "do_flow" in test_env:
                 logger.warning(
                     '{}: "test.py" file is present, so "prove_all" '
