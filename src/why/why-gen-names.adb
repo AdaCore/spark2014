@@ -277,10 +277,11 @@ package body Why.Gen.Names is
                      pragma
                        Assert
                          (Base_Why_Type (To) = From
-                            and then (From = EW_Int_Type
-                                      or else Why_Type_Is_BitVector (From)
-                                      or else Why_Type_Is_Float (From)
-                                      or else Why_Type_Is_Fixed (From)));
+                          and then
+                            (From = EW_Int_Type
+                             or else Why_Type_Is_BitVector (From)
+                             or else Why_Type_Is_Float (From)
+                             or else Why_Type_Is_Fixed (From)));
 
                      return E_Symb (A, WNE_Of_Rep);
                   end;
@@ -298,10 +299,11 @@ package body Why.Gen.Names is
                      pragma
                        Assert
                          (Base_Why_Type (From) = To
-                            and then (To = EW_Int_Type
-                                      or else Why_Type_Is_BitVector (To)
-                                      or else Why_Type_Is_Float (To)
-                                      or else Why_Type_Is_Fixed (To)));
+                          and then
+                            (To = EW_Int_Type
+                             or else Why_Type_Is_BitVector (To)
+                             or else Why_Type_Is_Float (To)
+                             or else Why_Type_Is_Fixed (To)));
 
                      return E_Symb (A, WNE_To_Rep);
                   end;
@@ -341,7 +343,7 @@ package body Why.Gen.Names is
                         pragma
                           Assert
                             (Has_Array_Type (From_Node)
-                               and Has_Array_Type (To_Node));
+                             and Has_Array_Type (To_Node));
                         return Get_Array_Conversion_Name (From_Node, To_Node);
                      end if;
                   end;
@@ -967,6 +969,9 @@ package body Why.Gen.Names is
          when WNE_Refine_Module               => "Refine",
          when WNE_Hidden_Module               => "Hide",
          when WNE_Ref                         => "__ref",
+         when WNE_Potentially_Invalid_Suffix  => "___potentially_invalid",
+         when WNE_UC_Function                 => "_uc",
+         when WNE_UC_Prefix                   => "Uc",
 
          --  these are used both by E_Symb function and by To_String
 
@@ -997,6 +1002,7 @@ package body Why.Gen.Names is
          when WNE_Validity_Tree_Get           => "__get",
          when WNE_Validity_Tree_Set           => "__set",
          when WNE_Validity_Tree_Slide         => "__slide",
+         when WNE_Valid_Wrapper               => "__valid_wrapper",
 
          --  please use these only in conjunction with E_Symb function
 
@@ -1009,7 +1015,6 @@ package body Why.Gen.Names is
             | WNE_Array_Well_Formed
             | WNE_Assign_Null_Check
             | WNE_Attr_Alignment
-            | WNE_Attr_Component_Size
             | WNE_Attr_First_2
             | WNE_Attr_First_3
             | WNE_Attr_First_4
@@ -1026,6 +1031,7 @@ package body Why.Gen.Names is
             | WNE_Attr_Modulus
             | WNE_Attr_Object_Size
             | WNE_Attr_Position
+            | WNE_Attr_Size_Of_Object
             | WNE_Attr_Value
             | WNE_Attr_Value_Size
             | WNE_Bool_Eq
@@ -1096,7 +1102,6 @@ package body Why.Gen.Names is
             | WNE_Type_Invariant
             | WNE_User_Eq
             | WNE_Empty
-            | WNE_Valid_Wrapper
             | WNE_Valid_Wrapper_Flag
             | WNE_Valid_Wrapper_Result        => raise Program_Error);
 

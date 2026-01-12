@@ -1,1 +1,1 @@
-calendar_clock.adb:9:19: medium: assertion might fail
+calendar_clock.adb:9:19: medium: assertion might fail [provers gave up before completing the proof]

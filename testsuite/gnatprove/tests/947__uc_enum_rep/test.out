@@ -1,5 +1,6 @@
+main.adb:15:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 main.adb:15:13: info: types in unchecked conversion have the same size (Trivial)
 main.adb:15:13: warning: imprecise handling of Unchecked_Conversion (enumeration with non-default representation) [imprecise-unchecked-conversion]
 main.adb:15:51: info: type is suitable as source for unchecked conversion (Trivial)
 main.adb:15:60: info: type is suitable for unchecked conversion (Trivial)
-main.adb:20:19: medium: assertion might fail (e.g. when V = 7)
+main.adb:20:19: medium: assertion might fail (e.g. when V = 7) [provers reached step limit before completing the proof]

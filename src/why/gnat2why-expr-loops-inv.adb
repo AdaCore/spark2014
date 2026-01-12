@@ -584,7 +584,7 @@ package body Gnat2Why.Expr.Loops.Inv is
                               pragma
                                 Assert
                                   (Low_Id /= Why_Empty
-                                     and High_Id /= Why_Empty);
+                                   and High_Id /= Why_Empty);
                               if Is_Rev then
                                  Constraint :=
                                    +New_Or_Else_Expr
@@ -795,8 +795,9 @@ package body Gnat2Why.Expr.Loops.Inv is
             --  Assume it if Only_Vars is False.
 
             if not Only_Vars
-              and then (not Has_Discriminants (Expr_Ty)
-                        or else not Has_Defaulted_Discriminants (Expr_Ty))
+              and then
+                (not Has_Discriminants (Expr_Ty)
+                 or else not Has_Defaulted_Discriminants (Expr_Ty))
             then
                Preserved_Components := Preserve_Bounds_Or_Discriminants;
             else
@@ -841,10 +842,11 @@ package body Gnat2Why.Expr.Loops.Inv is
 
                   if not Is_Type (Component)
                     and then Component_Is_Present_In_Type (Expr_Ty, Component)
-                    and then (not For_Valid
-                              or else not Comp_Has_Only_Valid_Values
-                                            (Component, Expr_Ty)
-                                            .Ok)
+                    and then
+                      (not For_Valid
+                       or else
+                         not Comp_Has_Only_Valid_Values (Component, Expr_Ty)
+                               .Ok)
                   then
                      Handle_Record_Component (Component);
                   end if;
@@ -869,8 +871,9 @@ package body Gnat2Why.Expr.Loops.Inv is
                --  the equality if Only_Vars is False.
 
                if Has_Discriminants (Expr_Ty)
-                 and then (not Only_Vars
-                           or else Has_Defaulted_Discriminants (Expr_Ty))
+                 and then
+                   (not Only_Vars
+                    or else Has_Defaulted_Discriminants (Expr_Ty))
                then
                   Preserved_Components :=
                     +New_And_Expr
@@ -1130,8 +1133,9 @@ package body Gnat2Why.Expr.Loops.Inv is
                  and then Is_Object (E)
                  and then Is_Mutable_In_Why (E)
                  and then not Has_Async_Writers (F)
-                 and then (not Is_Task_Type (Etype (E))
-                           or else Has_Discriminants (Etype (E)))
+                 and then
+                   (not Is_Task_Type (Etype (E))
+                    or else Has_Discriminants (Etype (E)))
                then
                   Ada.Text_IO.Put_Line
                     ("error in computation of loop frame condition for "
@@ -1159,8 +1163,8 @@ package body Gnat2Why.Expr.Loops.Inv is
                pragma
                  Assert
                    (Nkind (N) in N_Entity
-                      and then Is_Object (N)
-                      and then Is_Mutable_In_Why (N));
+                    and then Is_Object (N)
+                    and then Is_Mutable_In_Why (N));
 
                declare
                   Expr        : constant W_Term_Id :=
@@ -1318,8 +1322,9 @@ package body Gnat2Why.Expr.Loops.Inv is
                                   Right =>
                                     (if Status.Kind
                                         not in Not_Written | Discard
-                                       and then not Invalid_Objects.Contains
-                                                      (Unique_Entity (N))
+                                       and then
+                                         not Invalid_Objects.Contains
+                                               (Unique_Entity (N))
                                      then
                                        New_Conditional
                                          (Condition =>
@@ -1483,8 +1488,9 @@ package body Gnat2Why.Expr.Loops.Inv is
             --  Update After_Inv if the invariant is crossed.
 
             if After_Inv
-              and then (Is_Pragma_Check (N, Name_Loop_Invariant)
-                        or else Is_Pragma (N, Pragma_Loop_Variant))
+              and then
+                (Is_Pragma_Check (N, Name_Loop_Invariant)
+                 or else Is_Pragma (N, Pragma_Loop_Variant))
             then
                After_Inv := False;
             end if;
@@ -1591,8 +1597,9 @@ package body Gnat2Why.Expr.Loops.Inv is
       is
       begin
          if not Is_Constant_In_SPARK (Formal)
-           and then (Ekind (Formal) /= E_In_Parameter
-                     or else Nkind (Actual) /= N_Null)
+           and then
+             (Ekind (Formal) /= E_In_Parameter
+              or else Nkind (Actual) /= N_Null)
          then
             --  If Formal is an IN parameter of an access-to-variable type, the
             --  designated value only can be updated by the call, not the
@@ -2144,14 +2151,13 @@ package body Gnat2Why.Expr.Loops.Inv is
           Updated_Status /= null
           and then Writes.Contains (New_Write)
           and then Updated_Status = Writes.Element (New_Write)
-          and then (if Expected_Kind = Discard
-                    then Writes.Element (New_Write).Kind = Discard
-                    elsif Expected_Kind = Entire_Object
-                    then
-                      Writes.Element (New_Write).Kind
-                      in Discard | Entire_Object
-                    elsif Expected_Kind /= Not_Written
-                    then Writes.Element (New_Write).Kind /= Not_Written),
+          and then
+            (if Expected_Kind = Discard
+             then Writes.Element (New_Write).Kind = Discard
+             elsif Expected_Kind = Entire_Object
+             then Writes.Element (New_Write).Kind in Discard | Entire_Object
+             elsif Expected_Kind /= Not_Written
+             then Writes.Element (New_Write).Kind /= Not_Written),
         Contract_Cases =>
           --  When marked as discarded, a variable or record field stays
           --  discarded, as its write status does not matter.
@@ -2309,8 +2315,8 @@ package body Gnat2Why.Expr.Loops.Inv is
 
          elsif Expected_Kind = Not_Written
            or else Element (C).Kind = Discard
-           or else (Expected_Kind /= Discard
-                    and Element (C).Kind = Entire_Object)
+           or else
+             (Expected_Kind /= Discard and Element (C).Kind = Entire_Object)
            or else Expected_Kind = Element (C).Kind
          then
             null;
@@ -2461,11 +2467,11 @@ package body Gnat2Why.Expr.Loops.Inv is
                              Assert
                                (if Updated_Status.Component_Status.Contains
                                      (Discarded_Component)
-                                  then
-                                    Updated_Status.Component_Status.Element
-                                      (Discarded_Component)
-                                      .Kind
-                                    = Discard);
+                                then
+                                  Updated_Status.Component_Status.Element
+                                    (Discarded_Component)
+                                    .Kind
+                                  = Discard);
 
                            One_Level_Update
                              (New_Write      => Discarded_Component,
@@ -2531,8 +2537,9 @@ package body Gnat2Why.Expr.Loops.Inv is
                      --  status to Entire_Object if needed.
 
                      elsif Expected_Kind = Entire_Object
-                       and then not (Updated_Status.Content_Status.Kind
-                                     in Entire_Object | Discard)
+                       and then
+                         not (Updated_Status.Content_Status.Kind
+                              in Entire_Object | Discard)
                      then
                         declare
                            Old_Status : Write_Status_Access renames
@@ -2549,13 +2556,14 @@ package body Gnat2Why.Expr.Loops.Inv is
                      --  Access_Value.
 
                      elsif Expected_Kind /= Entire_Object
-                       and then not (Updated_Status.Content_Status.Kind
-                                     in Entire_Object | Discard)
+                       and then
+                         not (Updated_Status.Content_Status.Kind
+                              in Entire_Object | Discard)
                      then
                         pragma
                           Assert
                             (Updated_Status.Content_Status.Kind
-                               = Expected_Kind);
+                             = Expected_Kind);
                      end if;
 
                      --  Store the new write in
@@ -2612,8 +2620,9 @@ package body Gnat2Why.Expr.Loops.Inv is
                   --  status to Entire_Object if needed.
 
                   elsif Expected_Kind = Entire_Object
-                    and then Updated_Status.Value_Status.Kind
-                             not in Entire_Object | Discard
+                    and then
+                      Updated_Status.Value_Status.Kind
+                      not in Entire_Object | Discard
                   then
                      declare
                         Old_Status : Write_Status_Access renames
@@ -2630,8 +2639,9 @@ package body Gnat2Why.Expr.Loops.Inv is
                   --  Access_Value.
 
                   elsif Expected_Kind /= Entire_Object
-                    and then not (Updated_Status.Value_Status.Kind
-                                  in Entire_Object | Discard)
+                    and then
+                      not (Updated_Status.Value_Status.Kind
+                           in Entire_Object | Discard)
                   then
                      pragma
                        Assert

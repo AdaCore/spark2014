@@ -1,3 +1,4 @@
+library_level_unchecked_conversion.ads:3:10: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 library_level_unchecked_conversion.ads:3:10: info: types in unchecked conversion have the same size (Trivial)
 library_level_unchecked_conversion.ads:3:74: info: type is suitable as source for unchecked conversion (Trivial)
 library_level_unchecked_conversion.ads:3:83: info: type is suitable for unchecked conversion (Trivial)

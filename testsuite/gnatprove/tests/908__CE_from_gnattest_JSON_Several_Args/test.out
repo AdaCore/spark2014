@@ -1,2 +1,2 @@
-simple.adb:7:22: high: assertion might fail (e.g. when D = -181) [possible fix: subprogram at simple.ads:5 should mention D in a precondition]
+simple.adb:7:22: high: assertion might fail (e.g. when D = -181) [possible fix: subprogram at simple.ads:5 should mention D in a precondition] [provers reached time limit before completing the proof]
 simple.ads:5:14: warning: subprogram "Several_Args" has no effect

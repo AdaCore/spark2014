@@ -502,11 +502,10 @@ package SPARK_Definition.Annotate is
    with
      Pre =>
        Is_Type (E)
-       and then (if For_Check
-                 then Needs_Ownership_Check (E)
-                 else
-                   Has_Ownership_Annotation (E)
-                   and then Needs_Reclamation (E));
+       and then
+         (if For_Check
+          then Needs_Ownership_Check (E)
+          else Has_Ownership_Annotation (E) and then Needs_Reclamation (E));
    --  Retrieve the check function or constant for a type which needs
    --  reclamation if any. If For_Check is True, return the confirming
    --  annotation. Otherwise confirming annotations are ignored.
@@ -578,8 +577,9 @@ package SPARK_Definition.Annotate is
      Pre =>
        Ekind (E) = E_Procedure
        and then Has_Automatic_Instantiation_Annotation (E)
-       and then Has_Higher_Order_Specialization_Annotation
-                  (Retrieve_Automatic_Instantiation_Annotation (E));
+       and then
+         Has_Higher_Order_Specialization_Annotation
+           (Retrieve_Automatic_Instantiation_Annotation (E));
    --  Return a mapping from the formal parameters of the function associated
    --  to a lemma procedure E to the formals of E. It should be used to
    --  construct a specialization of E from a specialization of the function.

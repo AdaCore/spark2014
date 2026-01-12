@@ -1,21 +1,24 @@
+port.adb:5:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 port.adb:5:13: info: types in unchecked conversion have the same size (Trivial)
 port.adb:5:48: info: type is suitable as source for unchecked conversion (Trivial)
 port.adb:5:53: info: type is suitable for unchecked conversion (Trivial)
-port.adb:7:13: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type U8 and type Boolean differ]
+port.adb:7:13: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type "U8" and type "Boolean" differ]
+port.adb:7:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 port.adb:7:13: warning: imprecise handling of Unchecked_Conversion (types in unchecked conversion do not have the same size) [imprecise-unchecked-conversion]
 port.adb:7:49: info: type is suitable as source for unchecked conversion (Trivial)
 port.adb:7:53: info: type is suitable for unchecked conversion (Trivial)
-port.adb:9:13: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type U8 and type E differ]
+port.adb:9:13: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type "U8" and type "E" differ]
+port.adb:9:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 port.adb:9:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
 port.adb:9:49: info: type is suitable as source for unchecked conversion (Trivial)
-port.adb:9:53: high: type is unsuitable as a target for unchecked conversion [possible explanation: type E has 3 values but Size 4, which allows 16 possible values; invalid values could result from the unchecked conversion [SPARK RM 13.9]]
+port.adb:9:53: high: type is unsuitable as a target for unchecked conversion [possible explanation: type "E" has 3 values but Size 4, which allows 16 possible values; invalid values could result from the unchecked conversion [SPARK RM 13.9]]
 port.adb:22:07: info: initialization of "Tmp" proved
-port.adb:29:16: medium: range check might fail, cannot prove lower bound for C (Tmp) [reason for check: value must be convertible to the target type of the conversion]
+port.adb:29:16: medium: range check might fail, cannot prove lower bound for C (Tmp) [reason for check: value must be convertible to the target type of the conversion] [provers reached step limit before completing the proof]
 port.adb:35:07: info: initialization of "T" proved
 port.adb:39:10: warning: attribute "Valid" is assumed to return True [attribute-valid-always-true]
 port.adb:48:07: info: initialization of "T" proved
 port.adb:49:07: info: initialization of "Tmp" proved
-port.adb:54:16: medium: range check might fail, cannot prove lower bound for C (Tmp) [reason for check: value must be convertible to the target type of the conversion]
+port.adb:54:16: medium: range check might fail, cannot prove lower bound for C (Tmp) [reason for check: value must be convertible to the target type of the conversion] [provers reached step limit before completing the proof]
 port.adb:55:10: warning: attribute "Valid" is assumed to return True [attribute-valid-always-true]
 port.adb:74:07: info: initialization of "Tmp" proved
 port.adb:95:07: info: initialization of "Tmp" proved
@@ -26,7 +29,7 @@ port.adb:119:07: info: initialization of "Tmp" proved
 port.adb:124:10: warning: attribute "Valid" is assumed to return True [attribute-valid-always-true]
 port.adb:135:07: info: initialization of "T1" proved
 port.adb:136:07: info: initialization of "T2" proved
-port.adb:143:22: medium: assertion might fail (e.g. when T1 = 0 and T2 = 1) [possible fix: add or complete related loop invariants or postconditions]
+port.adb:143:22: medium: assertion might fail (e.g. when T1 = 0 and T2 = 1) [possible fix: add or complete related loop invariants or postconditions] [provers gave up before completing the proof]
 port.adb:153:07: info: initialization of "T1" proved
 port.adb:154:07: info: initialization of "T2" proved
 port.adb:160:22: info: assertion proved (CVC5: 1 VC)

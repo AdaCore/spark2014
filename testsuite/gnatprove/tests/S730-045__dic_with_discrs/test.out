@@ -1,12 +1,12 @@
 test_2.ads:3:09: info: in default value of private type at test_2.ads:3
 test_2.ads:3:09: info: predicate check proved on default value (CVC5: 3 VC)
-test_dic.adb:8:38: medium: default initial condition might fail
+test_dic.adb:8:38: medium: default initial condition might fail [provers reached step limit before completing the proof]
 test_dic.adb:8:42: info: predicate check proved (CVC5: 1 VC)
 test_dic.adb:9:16: info: implicit aspect Always_Terminates on "F3" has been proved, subprogram will terminate
-test_dic.adb:13:38: medium: default initial condition might fail
+test_dic.adb:13:38: medium: default initial condition might fail [provers reached step limit before completing the proof]
 test_dic.adb:13:42: info: predicate check proved (CVC5: 1 VC)
 test_dic.adb:14:16: info: implicit aspect Always_Terminates on "F4" has been proved, subprogram will terminate
-test_dic.adb:18:38: medium: default initial condition might fail
+test_dic.adb:18:38: medium: default initial condition might fail [provers reached step limit before completing the proof]
 test_dic.adb:19:16: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 test_dic.adb:43:04: info: default initial condition proved (CVC5: 1 VC)
 test_dic.adb:43:04: info: in default value at test_dic.adb:43
@@ -26,7 +26,7 @@ use_test.adb:3:04: info: default initial condition proved (CVC5: 1 VC)
 use_test.adb:3:04: info: in default value at use_test.adb:3
 use_test.adb:3:04: info: initialization of "X" proved
 use_test.adb:4:04: info: initialization of "Y" proved
-use_test.adb:4:04: medium: default initial condition might fail
+use_test.adb:4:04: medium: default initial condition might fail [provers reached step limit before completing the proof]
 use_test.adb:4:04: medium: in default value at use_test.adb:4
 use_test.adb:4:22: info: range check proved (CVC5: 2 VC)
 use_test.adb:4:25: info: range check proved (CVC5: 2 VC)

@@ -487,10 +487,6 @@ libst-reals-errors.ads:87:25: info: precondition proved
 libst-reals-errors.ads:87:25: info: predicate check proved
 libst-reals-errors.ads:95:16: info: postcondition proved
 libst-reals-errors.ads:95:23: info: precondition proved
-libst-reals.ads:7:04: info: analyzing call to "Log2_Estimate" in context
-libst-reals.ads:7:04: info: analyzing call to "Minus_Log2_Estimate" in context
-libst-reals.ads:7:04: info: in instantiation at a-nbnbre.adb:256
-libst-reals.ads:7:04: info: in instantiation at a-nbnbre.adb:264
 libst-reals.ads:15:13: info: implicit aspect Always_Terminates on "Sum_Weight_Rec" has been proved, subprogram will terminate
 libst-reals.ads:15:13: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
 libst-reals.ads:15:13: warning: function contract might not be available on recursive calls [contracts-recursive]

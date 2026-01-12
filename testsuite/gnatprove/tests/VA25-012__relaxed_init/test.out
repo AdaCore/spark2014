@@ -1,2 +1,2 @@
-repro.adb:7:15: medium: initialization check might fail
+repro.adb:7:15: medium: initialization check might fail [provers reached step limit before completing the proof]
 repro.ads:12:22: info: initialization of "Item" proved

@@ -158,9 +158,10 @@ package Why.Gen.Arrays is
      Pre =>
        (Attr in Attribute_First | Attribute_Last | Attribute_Length
         and then Is_Constrained (Ty))
-       or else (Attr = Attribute_First
-                and then Is_Fixed_Lower_Bound_Index_Subtype
-                           (Nth_Index_Type (Ty, Dim)));
+       or else
+         (Attr = Attribute_First
+          and then
+            Is_Fixed_Lower_Bound_Index_Subtype (Nth_Index_Type (Ty, Dim)));
    --  This variant of Add_Attr_Arg will only work when the attribute of the
    --  type is constrained.
 

@@ -1,3 +1,5 @@
+ info: implicit aspect Always_Terminates on "Log_Size" has been proved, subprogram will terminate
+--> logging.ads:12:13
  high: extension of "Log" is not initialized
 --> use_logging_classwide.adb:8:04
     8 |       Log.Append_To_Log (2);
@@ -7,5 +9,4 @@
 --> use_logging_classwide.adb:8:07
     8 |       Log.Append_To_Log (2);
       |       ~~~^~~~~~~~~~~~~~~~~
- info: implicit aspect Always_Terminates on "Log_Size" has been proved, subprogram will terminate
---> logging.ads:12:13
+      + provers reached step limit before completing the proof

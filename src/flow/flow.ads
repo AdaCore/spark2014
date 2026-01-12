@@ -171,8 +171,8 @@ package Flow is
      Tasking_Info_Kind
        range Entry_Calls
              ..
-             -- Suspends_On
-             Unsynch_Accesses;
+               --  Suspends_On
+               Unsynch_Accesses;
    --  Tasking-related information used for ownership checks
    --
    --  Note: it is intentionally defined with range and not with
@@ -377,12 +377,11 @@ package Flow is
         | E_Protected_Type
         | E_Entry
         | E_Package
-       and then (if Ekind (E) = E_Procedure
-                 then
-                   not Is_DIC_Procedure (E)
-                   and then not Is_Invariant_Procedure (E)
-                 elsif Ekind (E) = E_Function
-                 then not Is_Predicate_Function (E));
+       and then
+         (if Ekind (E) = E_Procedure
+          then not Is_DIC_Procedure (E) and then not Is_Invariant_Procedure (E)
+          elsif Ekind (E) = E_Function
+          then not Is_Predicate_Function (E));
    --  Flow analyse entity E. Do nothing for entities with no body or not in
    --  SPARK 2014.
 

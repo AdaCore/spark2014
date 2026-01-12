@@ -1,2 +1,2 @@
-simple.adb:7:22: medium: assertion might fail, cannot prove S.Kind = Triangle [possible fix: subprogram at simple.ads:23 should mention S in a precondition]
+simple.adb:7:22: medium: assertion might fail, cannot prove S.Kind = Triangle [possible fix: subprogram at simple.ads:23 should mention S in a precondition] [provers reached time limit before completing the proof]
 simple.ads:23:14: warning: subprogram "Test_Shape" has no effect

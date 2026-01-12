@@ -1,6 +1,6 @@
-foo-repro.adb:3:19: medium: assertion might fail [possible fix: subprogram at line 1 should mention Index in a precondition]
+foo-repro.adb:3:19: medium: assertion might fail [possible fix: subprogram at line 1 should mention Index in a precondition] [provers gave up before completing the proof]
 foo.ads:4:04: info: flow dependencies proved
-foo.ads:5:25: medium: initial condition might fail [possible fix: you should consider adding a postcondition to function Is_Valid or turning it into an expression function in its unit spec]
+foo.ads:5:25: medium: initial condition might fail [possible fix: you should consider adding a postcondition to function "Is_Valid" or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 foo.ads:5:25: warning: assuming "Is_Valid" has no effect on global items
 foo.ads:5:25: warning: no Global contract available for "Is_Valid" [assumed-global-null]
 foo.ads:8:13: info: implicit aspect Always_Terminates on "Get_Index" has been proved, subprogram will terminate

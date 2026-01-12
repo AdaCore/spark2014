@@ -64,11 +64,11 @@ bad_relaxed_init.ads:38:09: error: tagged type or object with relaxed initializa
 bad_relaxed_init.ads:38:09: error: violation of aspect SPARK_Mode at line 3
 bad_relaxed_init.ads:43:07: error: part of effectively volatile type with relaxed initialization is not allowed in SPARK
 bad_relaxed_init.ads:43:07: error: violation of aspect SPARK_Mode at line 3
-case_prefix.adb:5:04: medium: resource or memory leak might occur at end of scope
+case_prefix.adb:5:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 case_prefix.adb:5:29: info: null exclusion check proved (CVC5: 1 VC)
-case_prefix.adb:6:04: medium: resource or memory leak might occur at end of scope
+case_prefix.adb:6:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 case_prefix.adb:6:29: info: null exclusion check proved (CVC5: 1 VC)
-case_prefix.adb:7:04: medium: resource or memory leak might occur at end of scope
+case_prefix.adb:7:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 case_prefix.adb:7:29: info: null exclusion check proved (CVC5: 1 VC)
 case_prefix.adb:9:13: info: implicit aspect Always_Terminates on "Get_X" has been proved, subprogram will terminate
 case_prefix.adb:13:28: info: pointer dereference check proved (CVC5: 1 VC)

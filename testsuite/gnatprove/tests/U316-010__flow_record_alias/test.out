@@ -1,8 +1,9 @@
-main.adb:14:04: high: object is unsuitable for aliasing via address clause [possible explanation: type Node_Variant_Type has discriminants; aliased object could have invalid values [SPARK RM 13.7]]
-main.adb:14:04: high: type is unsuitable as a source for unchecked conversion [possible explanation: type Node_Variant_Type has discriminants; type Node_Type might have unused bits that are not modelled in SPARK]
+main.adb:14:04: high: object is unsuitable for aliasing via address clause [possible explanation: type "Node_Variant_Type" has discriminants; aliased object could have invalid values [SPARK RM 13.7]]
+main.adb:14:04: high: type is unsuitable as a source for unchecked conversion [possible explanation: type "Node_Variant_Type" has discriminants; type "Node_Type" might have unused bits that are not modelled in SPARK]
 main.adb:14:04: info: address in address clause is compatible with object alignment (Trivial)
-main.adb:14:38: high: object is unsuitable for aliasing via address clause [possible explanation: type Node_Variant_Type has discriminants; aliased object could have invalid values [SPARK RM 13.7]]
-main.adb:14:38: high: type is unsuitable as a source for unchecked conversion [possible explanation: type Node_Variant_Type has discriminants; type Node_Type might have unused bits that are not modelled in SPARK]
+main.adb:14:04: warning: imprecise handling of overlay (type is unsuitable as source for unchecked conversion) [imprecise-overlay]
+main.adb:14:38: high: object is unsuitable for aliasing via address clause [possible explanation: type "Node_Variant_Type" has discriminants; aliased object could have invalid values [SPARK RM 13.7]]
+main.adb:14:38: high: type is unsuitable as a source for unchecked conversion [possible explanation: type "Node_Variant_Type" has discriminants; type "Node_Type" might have unused bits that are not modelled in SPARK]
 main.adb:14:38: info: types of aliased objects have the same size (Trivial)
 main.adb:22:07: info: initialization of "Branch" proved
 main.adb:24:06: info: data dependencies proved

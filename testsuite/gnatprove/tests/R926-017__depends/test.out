@@ -1,5 +1,5 @@
 main.adb:5:22: medium: "Tank1.Tank_State" might not be initialized after elaboration of main program "Main"
-main.adb:5:22: medium: assertion might fail [possible fix: subprogram at line 2 should mention Tank1.The_Tank in a precondition]
+main.adb:5:22: medium: assertion might fail [possible fix: subprogram at line 2 should mention Tank1.The_Tank in a precondition] [provers gave up before completing the proof]
 tank1.ads:4:23: warning: no subprogram exists that can initialize abstract state "Tank1.Tank_State"
 tank1.ads:8:13: info: implicit aspect Always_Terminates on "Valid_Sensors" has been proved, subprogram will terminate
 tank1.ads:10:08: info: data dependencies proved

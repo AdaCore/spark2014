@@ -157,7 +157,8 @@ package body VC_Kinds is
               | VC_Weaker_Pre_Access
               | VC_Stronger_Post_Access
               | VC_Null_Exclusion
-              | VC_UC_Alignment
+              | VC_UC_Align_Overlay
+              | VC_UC_Align_UC
               | VC_Unchecked_Union_Restriction
               | VC_UC_Volatile
               | VC_Validity_Check                                   => "");
@@ -511,10 +512,15 @@ package body VC_Kinds is
               "Check that the two types in an unchecked conversion "
               & "instance are of the same size.";
 
-         when VC_UC_Alignment                     =>
+         when VC_UC_Align_Overlay                 =>
             return
               "Check that the address within address clause is "
               & "a multiple of the object's alignment.";
+
+         when VC_UC_Align_UC                      =>
+            return
+              "Check that the alignment of the source of the unchecked "
+              & "conversion is a multiple of the alignment of the target.";
 
          when VC_UC_Volatile                      =>
             return
@@ -825,6 +831,10 @@ package body VC_Kinds is
          when Warn_Imprecise_UC                    =>
            "Unchecked conversion might not be handled precisely by SPARK, "
            & "nothing will be known about their result",
+         when Warn_Imprecise_Overlay               =>
+           "Overlay might not be handled precisely by SPARK, the value of "
+           & "other overlaid objects will be unknown after an object is "
+           & "updated",
          when Warn_Imprecise_Value                 =>
            "References to the attribute Value are handled in an imprecise "
            & "way; its precondition is impossible to prove and nothing will "
@@ -1176,6 +1186,10 @@ package body VC_Kinds is
          when Lim_Unknown_Alignment                                       =>
            "a reference to the ""Alignment"" attribute on a prefix which is "
            & "not a type with an alignment clause",
+         when Lim_Unknown_Size                                            =>
+           "a reference to the ""Size"" attribute on a prefix which is "
+           & "not a standalone object, a formal parameter, a component, or "
+           & "a slice with no padding",
          when Lim_UU_Tagged_Comp                                          =>
            "a component of an unconstrained unchecked union type in a tagged "
            & "extension");
@@ -1704,7 +1718,10 @@ package body VC_Kinds is
              "unchecked conversion target check",
            when VC_UC_Same_Size                     =>
              "unchecked conversion size check",
-           when VC_UC_Alignment                     => "alignment check",
+           when VC_UC_Align_Overlay                 =>
+             "address alignment check",
+           when VC_UC_Align_UC                      =>
+             "unchecked conversion alignment check",
            when VC_UC_Volatile                      =>
              "volatile overlay check",
            when VC_Validity_Check                   => "validity check",
@@ -1891,6 +1908,7 @@ package body VC_Kinds is
          when Warn_Record_Component_Attr           =>
            "imprecise-record-component-attribute",
          when Warn_Imprecise_Size                  => "imprecise-size",
+         when Warn_Imprecise_Overlay               => "imprecise-overlay",
          when Warn_Imprecise_UC                    =>
            "imprecise-unchecked-conversion",
          when Warn_Imprecise_Value                 => "imprecise-value",

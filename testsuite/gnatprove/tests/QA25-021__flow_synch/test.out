@@ -1,1 +1,2 @@
 p.ads:3:16: info: flow dependencies proved
+p.ads:13:04: info: initialization of "Obj" proved

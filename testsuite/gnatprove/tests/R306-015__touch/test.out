@@ -1,2 +1,2 @@
-bitwise_swap.adb:4:11: high: postcondition might fail (e.g. when X = Unsigned_32'Last and X'Old = 1 and Y = 1 and Y'Old = Unsigned_32'Last-1)
-bitwise_swap.adb:4:11: high: postcondition might fail (e.g. when X = Unsigned_32'Last and X'Old = 1 and Y = 1 and Y'Old = Unsigned_32'Last-1)
+bitwise_swap.adb:4:11: high: postcondition might fail (e.g. when X = Unsigned_32'Last and X'Old = 1 and Y = 1 and Y'Old = Unsigned_32'Last-1) [provers reached step limit before completing the proof]
+bitwise_swap.adb:4:11: high: postcondition might fail (e.g. when X = Unsigned_32'Last and X'Old = 1 and Y = 1 and Y'Old = Unsigned_32'Last-1) [provers reached step limit before completing the proof]

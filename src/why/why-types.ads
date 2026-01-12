@@ -32,7 +32,7 @@ package Why.Types is
 
    --  This package hierarchy provides basic types for Why syntax trees
 
-   type Why_Int is range -2**31 .. +2**31 - 1;
+   type Why_Int is range -2 ** 31 .. +2 ** 31 - 1;
 
    type Why_Node_Set is new Why_Int range 0 .. Why_Int'Last;
 

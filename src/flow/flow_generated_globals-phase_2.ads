@@ -165,12 +165,9 @@ package Flow_Generated_Globals.Phase_2 is
    with
      Pre  =>
        GG_Mode = GG_Read_Mode
-       and then Ekind (E)
-                in E_Entry
-                 | E_Function
-                 | E_Package
-                 | E_Procedure
-                 | E_Task_Type,
+       and then
+         Ekind (E)
+         in E_Entry | E_Function | E_Package | E_Procedure | E_Task_Type,
      Post => GG_Mode = GG_Read_Mode;
    --  Determines the set of all globals
 
@@ -300,12 +297,9 @@ package Flow_Generated_Globals.Phase_2 is
      Pre  =>
        GG_Has_Been_Generated
        and then Analysis_Requested (E, With_Inlined => True)
-       and then Ekind (E)
-                in Entry_Kind
-                 | E_Function
-                 | E_Package
-                 | E_Procedure
-                 | E_Task_Type,
+       and then
+         Ekind (E)
+         in Entry_Kind | E_Function | E_Package | E_Procedure | E_Task_Type,
      Post =>
        (for all Callee of Generated_Calls'Result =>
           Ekind (Callee) in Entry_Kind | E_Function | E_Package | E_Procedure);
@@ -399,9 +393,9 @@ package Flow_Generated_Globals.Phase_2 is
      Pre =>
        GG_Has_Been_Generated
        and then Analysis_Requested (E, With_Inlined => True)
-       and then (Ekind (E) = E_Entry
-                 or else (Ekind (E) = E_Procedure
-                          and then Is_Interrupt_Handler (E)));
+       and then
+         (Ekind (E) = E_Entry
+          or else (Ekind (E) = E_Procedure and then Is_Interrupt_Handler (E)));
    --  Returns True iff subprogram E calls (directly or indirectly) function
    --  Ada.Task_Identification.Current_Task.
 
@@ -411,8 +405,9 @@ package Flow_Generated_Globals.Phase_2 is
      Pre =>
        GG_Has_Been_Generated
        and then Entity_In_SPARK (E)
-       and then (Ekind (E) in E_Entry | E_Procedure
-                 or else Is_Function_With_Side_Effects (E));
+       and then
+         (Ekind (E) in E_Entry | E_Procedure
+          or else Is_Function_With_Side_Effects (E));
    --  Returns True iff the E calls potentially nonreturning subprograms,
    --  trusting their Always_Terminates aspects.
 
@@ -429,8 +424,9 @@ package Flow_Generated_Globals.Phase_2 is
      Pre =>
        GG_Has_Been_Generated
        and then Entity_In_SPARK (E)
-       and then (Ekind (E) in E_Entry | E_Procedure
-                 or else Is_Function_With_Side_Effects (E));
+       and then
+         (Ekind (E) in E_Entry | E_Procedure
+          or else Is_Function_With_Side_Effects (E));
    --  Returns True iff E does not return directly because of a
    --  non-returning statement.
    --
@@ -442,8 +438,9 @@ package Flow_Generated_Globals.Phase_2 is
      Pre =>
        GG_Has_Been_Generated
        and then Entity_In_SPARK (E)
-       and then (Ekind (E) in E_Entry | E_Procedure
-                 or else Is_Function_With_Side_Effects (E));
+       and then
+         (Ekind (E) in E_Entry | E_Procedure
+          or else Is_Function_With_Side_Effects (E));
    --  Returns True iff subprogram E is potentially nonreturning, i.e.
    --  * is a procedure annotated with pragma No_Return
    --  * contains possibly nonterminating loops

@@ -6,10 +6,10 @@ foo.adb:41:18: info: range check proved (CVC5: 2 VC)
 foo.adb:43:14: info: ceiling priority protocol is respected for "Foo.Po_1" (CVC5: 1 VC)
 foo.adb:43:14: info: nontermination of task proved (CVC5: 1 VC)
 foo.adb:47:27: warning: "B" is set by "P_Proc" but not used after the call
-foo.adb:50:14: medium: precondition might fail, cannot prove B
+foo.adb:50:14: medium: precondition might fail, cannot prove B [provers gave up before completing the proof]
 foo.adb:55:14: warning: subprogram "Test_Delay_01" has no effect
 foo.adb:57:07: info: no contextual analysis of "Test_Delay_01" (non-allowed statement)
-foo.adb:57:23: medium: range check might fail
+foo.adb:57:23: medium: range check might fail [provers gave up before completing the proof]
 foo.adb:57:25: info: range check proved (CVC5: 1 VC)
 p.ads:3:16: info: implicit aspect Always_Terminates on "Get_Content" has been proved, subprogram will terminate
 p.ads:7:17: info: ceiling priority protocol is respected for "Q.Po2" (CVC5: 1 VC)
@@ -23,28 +23,28 @@ p2.ads:16:25: info: initialization of "X" proved
 p2.ads:24:30: info: initialization of "X" proved
 p2.ads:26:27: info: initialization of "Y" proved
 prot.adb:5:04: info: initialization of "Hidden2" constituent of "State" proved
-prot.adb:19:35: medium: overflow check might fail, cannot prove lower bound for The_Protected_Int + Visible [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at prot.ads:10 should mention Visible in a precondition]
-prot.adb:19:45: medium: overflow check might fail, cannot prove lower bound for The_Protected_Int + Visible + X [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at prot.ads:10 should mention X and Visible in a precondition]
-prot.adb:25:33: medium: overflow check might fail, cannot prove lower bound for X + D [reason for check: result of addition must fit in a 32-bits machine integer]
-prot.adb:25:37: medium: overflow check might fail, cannot prove lower bound for X + D - Hidden [reason for check: result of subtraction must fit in a 32-bits machine integer]
+prot.adb:19:35: medium: overflow check might fail, cannot prove lower bound for The_Protected_Int + Visible [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at prot.ads:10 should mention Visible in a precondition] [provers gave up before completing the proof]
+prot.adb:19:45: medium: overflow check might fail, cannot prove lower bound for The_Protected_Int + Visible + X [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at prot.ads:10 should mention X and Visible in a precondition] [provers gave up before completing the proof]
+prot.adb:25:33: medium: overflow check might fail, cannot prove lower bound for X + D [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
+prot.adb:25:37: medium: overflow check might fail, cannot prove lower bound for X + D - Hidden [reason for check: result of subtraction must fit in a 32-bits machine integer] [provers gave up before completing the proof]
 prot.ads:3:08: info: flow dependencies proved
 prot.ads:8:22: info: initialization of "X" proved
 prot.ads:10:16: info: implicit aspect Always_Terminates on "Weird_Get" has been proved, subprogram will terminate
 q.ads:3:16: info: implicit aspect Always_Terminates on "Get_Content" has been proved, subprogram will terminate
 q.ads:7:17: info: ceiling priority protocol is respected for "P.Po1" (CVC5: 1 VC)
-support.adb:5:29: medium: overflow check might fail, cannot prove upper bound for Summary + X [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Summary <= Integer'Last - X) to subprogram at support.ads:4]
+support.adb:5:29: medium: overflow check might fail, cannot prove upper bound for Summary + X [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Summary <= Integer'Last - X) to subprogram at support.ads:4] [provers gave up before completing the proof]
 support.ads:6:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 support.ads:11:14: info: ceiling priority protocol is respected for "Support.Prot" (CVC5: 1 VC)
-support.ads:11:14: medium: the task might terminate, which is not allowed in SPARK
+support.ads:11:14: medium: the task might terminate, which is not allowed in SPARK [provers gave up before completing the proof]
 tasks.adb:5:04: info: initialization of "Hidden2" constituent of "State" proved
-tasks.adb:10:29: medium: overflow check might fail, cannot prove lower bound for Visible + Hidden [reason for check: result of addition must fit in a 32-bits machine integer]
-tasks.adb:17:27: medium: overflow check might fail, cannot prove upper bound for Hidden + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
+tasks.adb:10:29: medium: overflow check might fail, cannot prove lower bound for Visible + Hidden [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
+tasks.adb:17:27: medium: overflow check might fail, cannot prove upper bound for Hidden + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
 tasks.ads:7:09: low: initialization of "Singleton_Task" must be mentioned in the Initializes contract of "Tasks" (SPARK RM 7.1.5(9))
-tasks.ads:7:09: medium: the task might terminate, which is not allowed in SPARK
-tasks.ads:9:14: medium: the task might terminate, which is not allowed in SPARK
-tasks.ads:11:14: medium: the task might terminate, which is not allowed in SPARK
+tasks.ads:7:09: medium: the task might terminate, which is not allowed in SPARK [provers gave up before completing the proof]
+tasks.ads:9:14: medium: the task might terminate, which is not allowed in SPARK [provers gave up before completing the proof]
+tasks.ads:11:14: medium: the task might terminate, which is not allowed in SPARK [provers gave up before completing the proof]
 test.adb:6:11: info: ceiling priority protocol is respected for "Support.Prot" (CVC5: 1 VC)
 test.adb:8:33: info: range check proved (Trivial)
 test.adb:8:36: info: division check proved (CVC5: 1 VC)
 test.adb:8:36: info: float overflow check proved (Trivial)
-test.adb:12:21: medium: unexpected exception might be raised [reason for check: Test allows propagating no exceptions] [possible explanation: Layout_Error might be unexpectedly raised]
+test.adb:12:21: medium: unexpected exception might be raised [reason for check: "Test" allows propagating no exceptions] [possible explanation: "Layout_Error" might be unexpectedly raised] [provers reached step limit before completing the proof]

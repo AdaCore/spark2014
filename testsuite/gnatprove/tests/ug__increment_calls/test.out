@@ -12,6 +12,7 @@
       + possible fix: call at line 15 should mention X (for argument X) in a postcondition
    15 |       Increment_Guarded (X);
       |       ^
+      + provers gave up before completing the proof
 
  info: precondition proved
 --> increment_calls.adb:19:04

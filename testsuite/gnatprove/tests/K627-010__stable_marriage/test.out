@@ -96,7 +96,7 @@ stable_marriage.adb:291:10: info: initialization of "G2" proved
 stable_marriage.adb:292:10: info: initialization of "Accepted" proved
 stable_marriage.adb:294:10: info: initialization of "Already_Asked" proved
 stable_marriage.adb:297:10: info: analyzing call to "Select_And_Remove_An_Unmatched_G1" in context
-stable_marriage.adb:298:25: medium: assertion might fail
+stable_marriage.adb:298:25: medium: assertion might fail [provers reached step limit before completing the proof]
 stable_marriage.adb:302:30: info: range check proved (CVC5: 2 VC)
 stable_marriage.adb:302:45: info: range check proved (CVC5: 2 VC)
 stable_marriage.adb:304:16: info: assertion proved (altergo: 1 VC)
@@ -150,19 +150,19 @@ stable_marriage.ads:20:13: info: implicit aspect Always_Terminates on "Is_Permut
 stable_marriage.ads:21:14: info: postcondition proved (altergo: 2 VC)
 stable_marriage.ads:26:06: info: flow dependencies proved
 stable_marriage.ads:28:06: warning: postcondition does not check the outcome of calling "Invert_Permutation_1" [-gnatw.t]
-stable_marriage.ads:30:49: medium: postcondition might fail, cannot prove R1 (Rank1) /= R1 (Rank2)
+stable_marriage.ads:30:49: medium: postcondition might fail, cannot prove R1 (Rank1) /= R1 (Rank2) [provers reached step limit before completing the proof]
 stable_marriage.ads:32:13: info: implicit aspect Always_Terminates on "Is_Permutation_2" has been proved, subprogram will terminate
 stable_marriage.ads:33:14: info: postcondition proved (altergo: 2 VC)
 stable_marriage.ads:38:06: info: flow dependencies proved
 stable_marriage.ads:40:06: warning: postcondition does not check the outcome of calling "Invert_Permutation_2" [-gnatw.t]
-stable_marriage.ads:42:49: medium: postcondition might fail, cannot prove R2 (Rank1) /= R2 (Rank2)
+stable_marriage.ads:42:49: medium: postcondition might fail, cannot prove R2 (Rank1) /= R2 (Rank2) [provers reached step limit before completing the proof]
 stable_marriage.ads:47:13: info: implicit aspect Always_Terminates on "Invert_1" has been proved, subprogram will terminate
 stable_marriage.ads:50:14: info: postcondition proved (altergo: 2 VC)
 stable_marriage.ads:53:13: info: implicit aspect Always_Terminates on "Invert_2" has been proved, subprogram will terminate
 stable_marriage.ads:56:14: info: postcondition proved (altergo: 2 VC)
 stable_marriage.ads:60:06: info: flow dependencies proved
 stable_marriage.ads:63:06: warning: postcondition does not check the outcome of calling "Invert_Ranking_Of_Group_1" [-gnatw.t]
-stable_marriage.ads:65:45: medium: postcondition might fail, cannot prove G2_To_G1 (G21) /= G2_To_G1 (G22)
+stable_marriage.ads:65:45: medium: postcondition might fail, cannot prove G2_To_G1 (G21) /= G2_To_G1 (G22) [provers reached step limit before completing the proof]
 stable_marriage.ads:67:13: info: implicit aspect Always_Terminates on "Invert_Map" has been proved, subprogram will terminate
 stable_marriage.ads:71:07: info: postcondition proved (altergo: 2 VC)
 stable_marriage.ads:74:13: info: implicit aspect Always_Terminates on "Is_Preferred_1" has been proved, subprogram will terminate
@@ -173,7 +173,7 @@ stable_marriage.ads:80:13: info: implicit aspect Always_Terminates on "Is_Prefer
 stable_marriage.ads:83:14: info: postcondition proved (CVC5: 2 VC)
 stable_marriage.ads:84:09: info: precondition proved (CVC5: 1 VC)
 stable_marriage.ads:84:33: info: precondition proved (CVC5: 1 VC)
-stable_marriage.ads:96:11: medium: postcondition might fail, cannot prove (for some G2 in Group2_Id => (Matching'Result (G2) = G1))
+stable_marriage.ads:96:11: medium: postcondition might fail, cannot prove (for some G2 in Group2_Id => (Matching'Result (G2) = G1)) [provers reached step limit before completing the proof]
 stable_marriage.ads:99:16: info: precondition proved (CVC5: 1 VC)
 stable_marriage.ads:100:17: info: precondition proved (CVC5: 1 VC)
 stable_marriage.ads:101:18: info: precondition proved (CVC5: 1 VC)

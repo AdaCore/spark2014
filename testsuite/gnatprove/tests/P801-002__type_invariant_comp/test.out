@@ -5,16 +5,16 @@ types_with_invariants.adb:17:25: info: precondition proved (CVC5: 1 VC)
 types_with_invariants.adb:18:22: info: assertion proved (CVC5: 1 VC)
 types_with_invariants.adb:18:46: info: precondition proved (CVC5: 1 VC)
 types_with_invariants.adb:21:22: info: precondition proved (CVC5: 1 VC)
-types_with_invariants.adb:21:22: medium: assertion might fail (e.g. when E = (Sign => False, Val => 0)) [possible fix: precondition of subprogram at line 8 should mention E]
+types_with_invariants.adb:21:22: medium: assertion might fail (e.g. when E = (Sign => False, Val => 0)) [possible fix: precondition of subprogram at line 8 should mention E] [provers reached step limit before completing the proof]
 types_with_invariants.adb:26:22: info: assertion proved (CVC5: 1 VC)
 types_with_invariants.adb:26:22: info: precondition proved (CVC5: 1 VC)
 types_with_invariants.adb:27:22: info: assertion proved (CVC5: 1 VC)
 types_with_invariants.adb:27:46: info: precondition proved (CVC5: 1 VC)
 types_with_invariants.adb:28:07: info: precondition proved (Trivial: 1 VC)
-types_with_invariants.ads:6:13: info: for the result of Get at types_with_invariants.ads:6
+types_with_invariants.ads:6:13: info: for the result of "Get" at types_with_invariants.ads:6
 types_with_invariants.ads:6:13: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 types_with_invariants.ads:6:13: info: invariant check proved (CVC5: 1 VC; Trivial: 1 VC)
-types_with_invariants.ads:9:14: info: for C at the end of Set at types_with_invariants.ads:9
+types_with_invariants.ads:9:14: info: for "C" at the end of "Set" at types_with_invariants.ads:9
 types_with_invariants.ads:9:14: info: invariant check proved (CVC5: 1 VC; Trivial: 2 VC)
 types_with_invariants.ads:23:09: info: invariant check proved on default value (CVC5: 1 VC; Trivial: 1 VC)
 types_with_invariants.ads:29:13: info: implicit aspect Always_Terminates on "To_Integer" has been proved, subprogram will terminate
@@ -28,21 +28,21 @@ types_with_invariants.ads:46:09: info: invariant check proved on default value (
 types_with_invariants.ads:46:74: info: in default value of private type at types_with_invariants.ads:14
 types_with_invariants.ads:46:74: info: range check proved (CVC5: 2 VC)
 types_with_invariants.ads:48:09: medium: in inlined invariant at types_with_invariants.ads:46
-types_with_invariants.ads:48:09: medium: invariant check might fail on default value, cannot prove T /= 0
+types_with_invariants.ads:48:09: medium: invariant check might fail on default value, cannot prove T /= 0 [provers reached step limit before completing the proof]
 types_with_invariants.ads:50:24: info: range check proved (CVC5: 2 VC)
 types_with_invariants.ads:52:09: medium: in inlined invariant at types_with_invariants.ads:46
-types_with_invariants.ads:52:09: medium: invariant check might fail on default value, cannot prove T /= 0
+types_with_invariants.ads:52:09: medium: invariant check might fail on default value, cannot prove T /= 0 [provers reached step limit before completing the proof]
 types_with_invariants.ads:52:42: info: in default value of private type at types_with_invariants.ads:16
 types_with_invariants.ads:52:42: info: range check proved (CVC5: 2 VC)
 types_with_invariants.ads:54:09: info: invariant check proved on default value (CVC5: 2 VC)
 types_with_invariants.ads:58:09: medium: in inlined invariant at types_with_invariants.ads:59
-types_with_invariants.ads:58:09: medium: invariant check might fail on default value, cannot prove U (U'First) /= 1
-types_with_invariants.ads:59:37: medium: array index check might fail [reason for check: value must be a valid index into the array]
+types_with_invariants.ads:58:09: medium: invariant check might fail on default value, cannot prove U (U'First) /= 1 [provers reached step limit before completing the proof]
+types_with_invariants.ads:59:37: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
 types_with_invariants.ads:59:87: info: index check proved (CVC5: 2 VC)
 use_types_with_invariants_no_spark.adb:5:18: info: index check proved (CVC5: 2 VC)
-use_types_with_invariants_no_spark.adb:11:22: medium: assertion might fail [possible fix: subprogram at use_types_with_invariants_no_spark.ads:13 should mention E in a precondition]
-use_types_with_invariants_no_spark.adb:11:22: medium: precondition might fail
-use_types_with_invariants_no_spark.adb:12:22: medium: assertion might fail [possible fix: subprogram at use_types_with_invariants_no_spark.ads:13 should mention I in a precondition]
+use_types_with_invariants_no_spark.adb:11:22: medium: assertion might fail [possible fix: subprogram at use_types_with_invariants_no_spark.ads:13 should mention E in a precondition] [provers gave up before completing the proof]
+use_types_with_invariants_no_spark.adb:11:22: medium: precondition might fail [provers gave up before completing the proof]
+use_types_with_invariants_no_spark.adb:12:22: medium: assertion might fail [possible fix: subprogram at use_types_with_invariants_no_spark.ads:13 should mention I in a precondition] [provers gave up before completing the proof]
 use_types_with_invariants_no_spark.adb:12:46: info: precondition proved (CVC5: 1 VC)
 use_types_with_invariants_no_spark.ads:7:13: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 use_types_with_invariants_no_spark.ads:21:07: info: range check proved (CVC5: 2 VC)

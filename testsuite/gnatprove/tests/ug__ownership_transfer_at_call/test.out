@@ -2,6 +2,7 @@
 --> ownership_transfer_at_call.adb:5:04
     5 |       X : Int_Ptr;
       |       ^~~~~~~~~~~
+      + provers reached step limit before completing the proof
 
  medium: pointer dereference check might fail
 --> ownership_transfer_at_call.adb:11:09
@@ -11,6 +12,7 @@
       + possible fix: subprogram at line 7 should mention Y in a precondition
     7 |       procedure Proc (Y : in out Int_Ptr)
       |       ^
+      + provers reached step limit before completing the proof
 
  medium: pointer dereference check might fail
 --> ownership_transfer_at_call.adb:11:18
@@ -20,6 +22,7 @@
       + possible fix: subprogram at line 7 should mention Y in a precondition
     7 |       procedure Proc (Y : in out Int_Ptr)
       |       ^
+      + provers reached step limit before completing the proof
 
  medium: overflow check might fail, cannot prove upper bound for Y.all + 1
 --> ownership_transfer_at_call.adb:11:22
@@ -30,6 +33,7 @@
       + possible fix: subprogram at line 7 should mention Y in a precondition
     7 |       procedure Proc (Y : in out Int_Ptr)
       |       ^
+      + provers reached step limit before completing the proof
 
  medium: pointer dereference check might fail
 --> ownership_transfer_at_call.adb:12:09
@@ -39,6 +43,7 @@
       + possible fix: subprogram at line 7 should mention X in a precondition
     7 |       procedure Proc (Y : in out Int_Ptr)
       |       ^
+      + provers reached step limit before completing the proof
 
  medium: pointer dereference check might fail
 --> ownership_transfer_at_call.adb:12:18
@@ -48,6 +53,7 @@
       + possible fix: subprogram at line 7 should mention X in a precondition
     7 |       procedure Proc (Y : in out Int_Ptr)
       |       ^
+      + provers reached step limit before completing the proof
 
  medium: overflow check might fail, cannot prove upper bound for X.all + 1
 --> ownership_transfer_at_call.adb:12:22
@@ -58,6 +64,7 @@
       + possible fix: subprogram at line 7 should mention X in a precondition
     7 |       procedure Proc (Y : in out Int_Ptr)
       |       ^
+      + provers reached step limit before completing the proof
 
  high: formal parameter "Y" and global "X" are aliased (SPARK RM 6.4.2)
 --> ownership_transfer_at_call.adb:18:10

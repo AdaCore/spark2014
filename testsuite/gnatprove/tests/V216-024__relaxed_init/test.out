@@ -1,2 +1,2 @@
-main.adb:9:19: high: assertion might fail (e.g. when X = (B => False))
-main.adb:9:20: medium: initialization check might fail
+main.adb:9:19: high: assertion might fail (e.g. when X = (B => False)) [provers gave up before completing the proof]
+main.adb:9:20: medium: initialization check might fail [provers gave up before completing the proof]

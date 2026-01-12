@@ -24,37 +24,38 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Doubly_Linked_Lists;
+with Common_Containers;           use Common_Containers;
+with GNAT.Source_Info;
+with Gnat2Why.Expr;               use Gnat2Why.Expr;
+with GNATCOLL.Symbols;            use GNATCOLL.Symbols;
 with Gnat2Why.Data_Decomposition; use Gnat2Why.Data_Decomposition;
 with Gnat2Why.Tables;             use Gnat2Why.Tables;
 with Gnat2Why.Util;               use Gnat2Why.Util;
+with Namet;                       use Namet;
+with Sinput;                      use Sinput;
 with Snames;                      use Snames;
-with SPARK_Atree;                 use SPARK_Atree;
 with SPARK_Definition;            use SPARK_Definition;
 with SPARK_Definition.Annotate;   use SPARK_Definition.Annotate;
-with SPARK_Util.Subprograms;      use SPARK_Util.Subprograms;
 with SPARK_Util.Types;            use SPARK_Util.Types;
+with String_Utils;                use String_Utils;
 with Ttypes;
+with Why.Atree.Accessors;         use Why.Atree.Accessors;
 with Why.Atree.Builders;          use Why.Atree.Builders;
 with Why.Atree.Modules;           use Why.Atree.Modules;
 with Why.Conversions;             use Why.Conversions;
 with Why.Gen.Arrays;              use Why.Gen.Arrays;
+with Why.Gen.Binders;             use Why.Gen.Binders;
+with Why.Gen.Decl;                use Why.Gen.Decl;
 with Why.Gen.Expr;                use Why.Gen.Expr;
 with Why.Gen.Names;               use Why.Gen.Names;
 with Why.Gen.Records;             use Why.Gen.Records;
 with Why.Gen.Terms;               use Why.Gen.Terms;
+with Why.Images;                  use Why.Images;
 with Why.Inter;                   use Why.Inter;
 with Why.Sinfo;                   use Why.Sinfo;
 with Why.Types;                   use Why.Types;
 
 package body Gnat2Why.Unchecked_Conversion is
-
-   function Type_Name_For_Explanation (Typ : Type_Kind_Id) return String
-   is (if Is_Itype (Typ)
-       then "anonymous type"
-       else "type " & Source_Name (Typ))
-   with Pre => Is_Type (Typ);
-   --  This function computes a user-visible string to represent the type in
-   --  argument.
 
    procedure Compute_Size_Of_Components
      (Typ         : Type_Kind_Id;
@@ -88,6 +89,97 @@ package body Gnat2Why.Unchecked_Conversion is
             Typ  => EW_Bool_Type));
    --  Return a term checking whether Value is in Range_Ty
 
+   function Get_UC_Theory_Name
+     (Source_Type, Target_Type : Type_Kind_Id; Potentially_Invalid : Boolean)
+      return Symbol;
+   --  Return a name of the form
+   --  "Uc___Source_Type___Target_Type(___potentially_invalid)?"
+   --  for the theory for unchecked conversions from Source_Type to
+   --  Target_Type.
+
+   type Scalar_Status is
+     (Signed,    --  Signed integer type
+      Unsigned,  --  Unsigned integer type = signed with no negative value,
+      --  also used for enumerations with default representation
+      --  clauses.
+      Modular);  --  Modular integer type
+
+   function Get_Scalar_Status (Typ : Type_Kind_Id) return Scalar_Status
+   is (if Is_Modular_Integer_Type (Typ)
+       then Modular
+       elsif Is_Enumeration_Type (Typ)
+       then Unsigned
+       elsif Is_Unsigned_Type (Typ)
+       then Unsigned
+       elsif Is_Signed_Integer_Type (Typ)
+       then Signed
+       else raise Program_Error);
+
+   function Precise_Integer_UC
+     (Arg                 : W_Term_Id;
+      Size                : Uint;
+      Source_Type         : W_Type_Id;
+      Target_Type         : W_Type_Id;
+      Source_Status       : Scalar_Status;
+      Target_Status       : Scalar_Status;
+      Potentially_Invalid : Boolean := False;
+      Ada_Target          : Type_Kind_Id := Empty) return W_Term_Id
+   with Pre => (if Potentially_Invalid then Present (Ada_Target));
+   --  Return Arg of Source_Type converted to Target_Type, when both are of
+   --  scalar types. Size is the shared size of both types, when arguments of
+   --  the UC are integer types, which is used for conversion from an
+   --  Unsigned type to a Signed one. Otherwise it is No_Uint.
+   --  If Potentially_Invalid is True, wrap the result in a validity wrapper.
+   --  The validity flag is set to True iff the return value is in the bounds
+   --  of the return type of Ada_Target.
+
+   function Precise_Composite_UC
+     (Arg                 : W_Term_Id;
+      Source_Type         : Type_Kind_Id;
+      Target_Type         : Type_Kind_Id;
+      Potentially_Invalid : Boolean) return W_Term_Id;
+   --  Return Arg of Source_Type converted to Target_Type, when at least one
+   --  is a composite type made up of integers. Convert Arg to a large-enough
+   --  modular type, and convert that value to Target. If all types involved
+   --  are modular, then this benefits from bitvector support in provers.
+   --  If Potentially_Invalid is True, wrap it in a validity wrapper. The
+   --  validity flag is set to True iff all scalar subcomponents of the return
+   --  value are in the bounds of their subtype.
+
+   ------------------------
+   -- Get_UC_Theory_Name --
+   ------------------------
+
+   function Get_UC_Function
+     (Source_Type, Target_Type : Type_Kind_Id; Potentially_Invalid : Boolean)
+      return W_Identifier_Id
+   is (M_UCs
+         (Get_UC_Theory_Name (Source_Type, Target_Type, Potentially_Invalid))
+         .UC_Id);
+
+   ------------------------
+   -- Get_UC_Theory_Name --
+   ------------------------
+
+   function Get_UC_Theory_Name
+     (Source_Type, Target_Type : Type_Kind_Id; Potentially_Invalid : Boolean)
+      return Symbol
+   is
+      Name : Unbounded_String :=
+        To_Unbounded_String (To_String (WNE_UC_Prefix));
+   begin
+      Name :=
+        Name & "___" & Capitalize_First (Full_Name (Retysp (Source_Type)));
+      Name :=
+        Name & "___" & Capitalize_First (Full_Name (Retysp (Target_Type)));
+
+      if Potentially_Invalid then
+         Name := Name & To_String (WNE_Potentially_Invalid_Suffix);
+      end if;
+
+      return NID (To_String (Name));
+   end Get_UC_Theory_Name;
+
    -----------------------------
    -- Have_Same_Known_RM_Size --
    -----------------------------
@@ -114,9 +206,9 @@ package body Gnat2Why.Unchecked_Conversion is
          Explanation :=
            To_Unbounded_String
              ("Size of "
-              & Type_Name_For_Explanation (A)
+              & Pretty_Source_Name (A)
               & " and "
-              & Type_Name_For_Explanation (B)
+              & Pretty_Source_Name (B)
               & " differ");
          return;
       end if;
@@ -124,24 +216,59 @@ package body Gnat2Why.Unchecked_Conversion is
       Explanation := Null_Unbounded_String;
    end Have_Same_Known_RM_Size;
 
+   ------------------------------
+   -- Is_Overlay_Handled_As_UC --
+   ------------------------------
+
+   function Is_Overlay_Handled_As_UC
+     (Obj : Object_Kind_Id) return True_Or_Explain is
+
+   begin
+      --  Constant objects are always translated using UC
+
+      if Is_Constant_In_SPARK (Obj) then
+         return (Ok => True);
+      end if;
+
+      --  Variable objects are only translated using UC if they overlay the
+      --  whole object for now.
+
+      declare
+         Current : Object_Kind_Id := Obj;
+      begin
+         while Present (Overlaid_Entity (Current)) loop
+            declare
+               Decl    : constant Node_Id := Enclosing_Declaration (Current);
+               Address : constant Node_Id := Get_Address_Expr (Decl);
+            begin
+               if Nkind (Prefix (Address)) in N_Identifier | N_Expanded_Name
+               then
+                  Current := Entity (Prefix (Address));
+               else
+                  return
+                    False_With_Explain
+                      ("mutable overlay of a subcomponent of an object");
+               end if;
+            end;
+         end loop;
+      end;
+
+      return (Ok => True);
+   end Is_Overlay_Handled_As_UC;
+
    -----------------------------------
    -- Is_UC_With_Precise_Definition --
    -----------------------------------
 
    function Is_UC_With_Precise_Definition
-     (E : Entity_Id) return True_Or_Explain
+     (Source_Type, Target_Type : Type_Kind_Id; Potentially_Invalid : Boolean)
+      return True_Or_Explain
    is
-      Source, Target                         : Node_Id;
-      Source_Type, Target_Type               : Entity_Id;
       Valid_Source, Valid_Target, Valid_Size : Boolean;
       Explanation                            : Unbounded_String;
       Check                                  : True_Or_Explain;
 
    begin
-      Get_Unchecked_Conversion_Args (E, Source, Target);
-      Source_Type := Retysp (Entity (Source));
-      Target_Type := Retysp (Entity (Target));
-
       --  Check that types are suitable for UC.
 
       Suitable_For_UC_Source (Source_Type, Valid_Source, Explanation);
@@ -156,7 +283,7 @@ package body Gnat2Why.Unchecked_Conversion is
         (Target_Type,
          Valid_Target,
          Explanation,
-         Check_Validity => not Is_Potentially_Invalid (E));
+         Check_Validity => not Potentially_Invalid);
 
       if not Valid_Target then
          --  Override explanation to avoid special characters
@@ -209,7 +336,7 @@ package body Gnat2Why.Unchecked_Conversion is
         "; "
         & (if Nkind (Obj)
               in N_Defining_Identifier | N_Identifier | N_Expanded_Name
-           then Source_Name (Obj)
+           then Pretty_Source_Name (Obj)
            else "object")
         & " might have unused bits that are not modelled in SPARK";
       Typ        : constant Type_Kind_Id := Retysp (Etype (Obj));
@@ -255,7 +382,7 @@ package body Gnat2Why.Unchecked_Conversion is
          pragma
            Assert
              (Is_Array_Type (Typ)
-                and then Has_Aliased_Components (Etype (Typ)));
+              and then Has_Aliased_Components (Etype (Typ)));
          return;
       end if;
 
@@ -269,7 +396,7 @@ package body Gnat2Why.Unchecked_Conversion is
            & " "
            & UI_Image (Obj_Size)
            & ", but "
-           & Type_Name_For_Explanation (Typ)
+           & Pretty_Source_Name (Typ)
            & " has Size "
            & UI_Image (RM_Size)
            & Common_Exp;
@@ -281,12 +408,11 @@ package body Gnat2Why.Unchecked_Conversion is
    --------------------------
 
    function Precise_Composite_UC
-     (Arg          : W_Term_Id;
-      Source_Type  : Type_Kind_Id;
-      Target_Type  : Type_Kind_Id;
-      Ada_Function : E_Function_Id) return W_Term_Id
+     (Arg                 : W_Term_Id;
+      Source_Type         : Type_Kind_Id;
+      Target_Type         : Type_Kind_Id;
+      Potentially_Invalid : Boolean) return W_Term_Id
    is
-      Do_Validity : constant Boolean := Is_Potentially_Invalid (Ada_Function);
 
       --  Representation of a subcomponent of Source
       type Source_Element is record
@@ -304,7 +430,7 @@ package body Gnat2Why.Unchecked_Conversion is
          Value      : W_Term_Id;
          Valid_Flag : W_Term_Id;
       end record
-      with Predicate => (Valid_Flag /= Why_Empty) = Do_Validity;
+      with Predicate => (Valid_Flag /= Why_Empty) = Potentially_Invalid;
 
       --  Local subprograms
 
@@ -409,7 +535,7 @@ package body Gnat2Why.Unchecked_Conversion is
                          Typ    => Base),
                     2 =>
                       New_Modular_Constant
-                        (Value => Uint_2**Size - Uint_1, Typ => Base)));
+                        (Value => Uint_2 ** Size - Uint_1, Typ => Base)));
          end if;
 
          --  Multiply this value by 2**Offset to get its
@@ -421,7 +547,8 @@ package body Gnat2Why.Unchecked_Conversion is
               Typ    => Base,
               Args   =>
                 (1 =>
-                   New_Modular_Constant (Value => Uint_2**Offset, Typ => Base),
+                   New_Modular_Constant
+                     (Value => Uint_2 ** Offset, Typ => Base),
                  2 => Value));
       end Contribute_Value;
 
@@ -454,9 +581,9 @@ package body Gnat2Why.Unchecked_Conversion is
       is
          Mask    : constant W_Expr_Id :=
            New_Modular_Constant
-             (Value => Uint_2**(Offset + Size) - Uint_1, Typ => Base);
+             (Value => Uint_2 ** (Offset + Size) - Uint_1, Typ => Base);
          Divisor : constant W_Expr_Id :=
-           New_Modular_Constant (Value => Uint_2**Offset, Typ => Base);
+           New_Modular_Constant (Value => Uint_2 ** Offset, Typ => Base);
          --  Value is (Bits and (2**(Offset+Size)-1)) / 2**(Offset)
          Value   : constant W_Expr_Id :=
            New_Call
@@ -490,7 +617,7 @@ package body Gnat2Why.Unchecked_Conversion is
                     Else_Part => +False_Term,
                     Typ       => EW_Bool_Type),
                Valid_Flag =>
-                 (if Do_Validity
+                 (if Potentially_Invalid
                   then
                     New_Or_Term
                       (Left  =>
@@ -524,7 +651,7 @@ package body Gnat2Why.Unchecked_Conversion is
                      Expr   => Value,
                      To     => EW_Abstract (Typ)),
                Valid_Flag =>
-                 (if Do_Validity
+                 (if Potentially_Invalid
                   then
                     Is_Valid_Scalar
                       (Typ,
@@ -543,7 +670,7 @@ package body Gnat2Why.Unchecked_Conversion is
             declare
                Top_Bit        : constant W_Expr_Id :=
                  New_Modular_Constant
-                   (Value => Uint_2**(Size - Uint_1), Typ => Base);
+                   (Value => Uint_2 ** (Size - Uint_1), Typ => Base);
                Negative_Value : constant W_Expr_Id :=
                  New_Call
                    (Domain => EW_Term,
@@ -555,7 +682,7 @@ package body Gnat2Why.Unchecked_Conversion is
                            (Domain => EW_Term,
                             Expr   => Value,
                             To     => EW_Int_Type),
-                       2 => New_Integer_Constant (Value => 2**Size)));
+                       2 => New_Integer_Constant (Value => 2 ** Size)));
                B_Value        : constant W_Expr_Id :=
                  New_Conditional
                    (Domain    => EW_Term,
@@ -578,16 +705,16 @@ package body Gnat2Why.Unchecked_Conversion is
                         Expr   => B_Value,
                         To     => EW_Abstract (Typ)),
                   Valid_Flag =>
-                    (if Do_Validity
+                    (if Potentially_Invalid
                      then Is_Valid_Scalar (Typ, +B_Value)
                      else Why_Empty));
             end;
          end if;
 
-         --  If Do_Validity is set, avoid assuming invalid values that could
-         --  be incompatible with the dynamic invariant of the object.
+         --  If Potentially_Invalid is set, avoid assuming invalid values that
+         --  could be incompatible with the dynamic invariant of the object.
 
-         if Do_Validity then
+         if Potentially_Invalid then
             Res.Value :=
               New_Conditional
                 (Condition => Res.Valid_Flag,
@@ -722,7 +849,7 @@ package body Gnat2Why.Unchecked_Conversion is
                           Value  => +F_Value.Value);
                      Index := Index + 1;
 
-                     if Do_Validity
+                     if Potentially_Invalid
                        and then not Comp_Has_Only_Valid_Values (Comp, Typ).Ok
                      then
                         Flags (F_Index) :=
@@ -753,7 +880,7 @@ package body Gnat2Why.Unchecked_Conversion is
                                    (Associations => Assocs))),
                        Typ          => EW_Abstract (Typ)),
                   Valid_Flag =>
-                    (if Do_Validity
+                    (if Potentially_Invalid
                      then
                        New_Record_Aggregate
                          (Associations => Flags (1 .. F_Index - 1),
@@ -770,7 +897,7 @@ package body Gnat2Why.Unchecked_Conversion is
                Cur   : Uint;
                Ar    : W_Expr_Id := +E_Symb (Typ, WNE_Dummy);
                Flags : W_Term_Id :=
-                 (if Do_Validity
+                 (if Potentially_Invalid
                   then New_Valid_Value_For_Type (Typ)
                   else Why_Empty);
             begin
@@ -796,7 +923,7 @@ package body Gnat2Why.Unchecked_Conversion is
                              Value    => +C_Value.Value,
                              Domain   => EW_Term);
 
-                        if Do_Validity then
+                        if Potentially_Invalid then
                            Flags :=
                              +New_Validity_Tree_Array_Update
                                 (Name   => +Flags,
@@ -849,7 +976,7 @@ package body Gnat2Why.Unchecked_Conversion is
            Precise_Integer_UC
              (Arg           => +Arg,
               Size          => No_Uint,
-              Source_Type   => EW_Abstract (Source_Type),
+              Source_Type   => Type_Of_Node (Source_Type),
               Target_Type   => Base,
               Source_Status => Get_Scalar_Status (Source_Type),
               Target_Status => Modular);
@@ -888,13 +1015,14 @@ package body Gnat2Why.Unchecked_Conversion is
       if Is_Scalar_Type (Target_Type) then
          Def :=
            Precise_Integer_UC
-             (Arg           => Conv,
-              Size          => No_Uint,
-              Source_Type   => Base,
-              Target_Type   => Base_Why_Type_No_Bool (Target_Type),
-              Source_Status => Modular,
-              Target_Status => Get_Scalar_Status (Target_Type),
-              Ada_Function  => Ada_Function);
+             (Arg                 => Conv,
+              Size                => No_Uint,
+              Source_Type         => Base,
+              Target_Type         => Type_Of_Node (Target_Type),
+              Source_Status       => Modular,
+              Target_Status       => Get_Scalar_Status (Target_Type),
+              Potentially_Invalid => Potentially_Invalid,
+              Ada_Target          => Target_Type);
 
       --  2.b Otherwise recursively reconstruct all scalar
       --  subcomponents from the value of type Base.
@@ -911,13 +1039,12 @@ package body Gnat2Why.Unchecked_Conversion is
          begin
             Def := Val.Value;
 
-            --  If the result of Ada_Function is potentially invalid,
-            --  reconstruct the wrapper.
+            --  If Potentially_Invalid is set, reconstruct the wrapper
 
-            if Do_Validity then
+            if Potentially_Invalid then
                Def :=
                  +New_Function_Validity_Wrapper_Value
-                    (Fun        => Ada_Function,
+                    (Ty         => Target_Type,
                      Valid_Flag => +Val.Valid_Flag,
                      Value      => +Val.Value);
             end if;
@@ -931,13 +1058,14 @@ package body Gnat2Why.Unchecked_Conversion is
    ------------------------
 
    function Precise_Integer_UC
-     (Arg           : W_Term_Id;
-      Size          : Uint;
-      Source_Type   : W_Type_Id;
-      Target_Type   : W_Type_Id;
-      Source_Status : Scalar_Status;
-      Target_Status : Scalar_Status;
-      Ada_Function  : Opt_E_Function_Id := Empty) return W_Term_Id
+     (Arg                 : W_Term_Id;
+      Size                : Uint;
+      Source_Type         : W_Type_Id;
+      Target_Type         : W_Type_Id;
+      Source_Status       : Scalar_Status;
+      Target_Status       : Scalar_Status;
+      Potentially_Invalid : Boolean := False;
+      Ada_Target          : Type_Kind_Id := Empty) return W_Term_Id
    is
       Source_Base_Type : constant W_Type_Id :=
         Base_Why_Type_No_Bool (Source_Type);
@@ -983,13 +1111,14 @@ package body Gnat2Why.Unchecked_Conversion is
          --  if Conv >= 2**(Size-1) then Conv-2**Size else Conv
          declare
             Top_Bit        : constant W_Term_Id :=
-              New_Integer_Constant (Value => Uint_2**(Size - Uint_1));
+              New_Integer_Constant (Value => Uint_2 ** (Size - Uint_1));
             Negative_Value : constant W_Term_Id :=
               New_Call
                 (Name => Int_Infix_Subtr,
                  Typ  => EW_Int_Type,
                  Args =>
-                   (1 => +Conv, 2 => New_Integer_Constant (Value => 2**Size)));
+                   (1 => +Conv,
+                    2 => New_Integer_Constant (Value => 2 ** Size)));
          begin
             Conv :=
               New_Conditional
@@ -1013,7 +1142,8 @@ package body Gnat2Why.Unchecked_Conversion is
                 (Name => Int_Infix_Add,
                  Typ  => EW_Int_Type,
                  Args =>
-                   (1 => +Conv, 2 => New_Integer_Constant (Value => 2**Size)));
+                   (1 => +Conv,
+                    2 => New_Integer_Constant (Value => 2 ** Size)));
          begin
             Conv :=
               New_Conditional
@@ -1028,16 +1158,14 @@ package body Gnat2Why.Unchecked_Conversion is
          end;
       end if;
 
-      --  If Ada_Function is set and its result is potentially invalid, it is
-      --  necessary to reconstruct the wrapper. Only assume the value of the
-      --  result if it is valid to avoid inconsistent assumptions with the
-      --  dynamic invariant of the result. Otherwise use a dummy of the type.
+      --  If Potentially_Invalid is True, it is necessary to reconstruct the
+      --  wrapper. Only assume the value of the result if it is valid to avoid
+      --  inconsistent assumptions with the dynamic invariant of the result.
+      --  Otherwise use a dummy of the type.
 
-      if Present (Ada_Function) and then Is_Potentially_Invalid (Ada_Function)
-      then
+      if Potentially_Invalid then
          declare
-            Range_Ty     : constant Type_Kind_Id :=
-              Retysp (Etype (Ada_Function));
+            Range_Ty     : constant Type_Kind_Id := Retysp (Ada_Target);
             Conv_To_Base : constant W_Term_Id :=
               New_Temp_For_Expr
                 (Insert_Simple_Conversion
@@ -1054,7 +1182,7 @@ package body Gnat2Why.Unchecked_Conversion is
                      (Tmp     => Valid_Flag,
                       Context =>
                         +New_Function_Validity_Wrapper_Value
-                           (Fun        => Ada_Function,
+                           (Ty         => Range_Ty,
                             Valid_Flag => +Valid_Flag,
                             Value      =>
                               +New_Conditional
@@ -1184,7 +1312,7 @@ package body Gnat2Why.Unchecked_Conversion is
       Size        : out Uint;
       Explanation : out Unbounded_String)
    is
-      Typ_Name : constant String := Type_Name_For_Explanation (Typ);
+      Typ_Name : constant String := Pretty_Source_Name (Typ);
 
    begin
       --  Default initialization for GNAT SAS
@@ -1282,6 +1410,302 @@ package body Gnat2Why.Unchecked_Conversion is
       Explanation := Null_Unbounded_String;
    end Compute_Size_Of_Components;
 
+   ------------------------------------
+   -- Create_Module_For_UC_If_Needed --
+   ------------------------------------
+
+   procedure Create_Module_For_UC_If_Needed
+     (Source_Type, Target_Type : Type_Kind_Id; Potentially_Invalid : Boolean)
+   is
+
+      procedure Generate_Inversion_Axiom
+        (Source_Type, Target_Type : Type_Kind_Id;
+         Module                   : M_UC_Type;
+         Inv_Fun                  : W_Identifier_Id);
+      --  Create a module for the inversion axiom of the unchecked conversion
+      --  function in Module.
+
+      function Inversion_Axiom_OK
+        (Source_Type, Target_Type : Type_Kind_Id) return Boolean;
+      --  Return True if it is safe to generate the inversion axiom for the
+      --  conversion. It is only the case if both directions are valid UCs.
+
+      ------------------------------
+      -- Generate_Inversion_Axiom --
+      ------------------------------
+
+      procedure Generate_Inversion_Axiom
+        (Source_Type, Target_Type : Type_Kind_Id;
+         Module                   : M_UC_Type;
+         Inv_Fun                  : W_Identifier_Id)
+      is
+         Axiom_Module : constant W_Module_Id :=
+           New_Module
+             (File => No_Symbol,
+              Name =>
+                NID
+                  (Img (Get_Name (Module.Module))
+                   & To_String (WNE_Axiom_Suffix)));
+         Th           : Theory_UC :=
+           Open_Theory
+             (WF_Context,
+              Axiom_Module,
+              Comment =>
+                "Module for the inversion axiom of Unchecked_Conversion "
+                & "function from """
+                & Get_Name_String (Chars (Source_Type))
+                & """"
+                & (if Sloc (Source_Type) > 0
+                   then
+                     " defined at "
+                     & Build_Location_String (Sloc (Source_Type))
+                   else "")
+                & "to """
+                & Get_Name_String (Chars (Target_Type))
+                & """"
+                & (if Sloc (Target_Type) > 0
+                   then
+                     " defined at "
+                     & Build_Location_String (Sloc (Target_Type))
+                   else "")
+                & ", created in "
+                & GNAT.Source_Info.Enclosing_Entity);
+         Source_Id    : constant W_Identifier_Id :=
+           New_Temp_Identifier
+             (Base_Name => "source", Typ => Type_Of_Node (Source_Type));
+         UC_Call      : constant W_Term_Id :=
+           New_Call
+             (Name => Module.UC_Id,
+              Args => (1 => +Source_Id),
+              Typ  => Get_Typ (Module.UC_Id));
+
+      begin
+         --  Generate:
+         --
+         --    forall source : source_type [uc_id source].
+         --      dynamic_invariant source ->
+         --        inv_fun (uc_id source) = source
+
+         Emit
+           (Th,
+            New_Guarded_Axiom
+              (Name     => NID ("inversion_axiom"),
+               Binders  =>
+                 Binder_Array'(1 => (B_Name => Source_Id, others => <>)),
+               Triggers =>
+                 New_Triggers
+                   (Triggers => (1 => New_Trigger (Terms => (1 => +UC_Call)))),
+               Pre      =>
+                 Compute_Dynamic_Invariant
+                   (Expr   => +Source_Id,
+                    Ty     => Source_Type,
+                    Params => Logic_Params),
+               Def      =>
+                 New_Comparison
+                   (Symbol => Why_Eq,
+                    Left   =>
+                      New_Call
+                        (Name => Inv_Fun,
+                         Args => (1 => +UC_Call),
+                         Typ  => Get_Typ (Inv_Fun)),
+                    Right  => +Source_Id),
+               Dep      =>
+                 New_Axiom_Dep (Name => Module.UC_Id, Kind => EW_Axdep_Func)));
+
+         Close_Theory (Th, Kind => Definition_Theory);
+         Record_Extra_Dependency
+           (Defining_Module => Module.Module, Axiom_Module => Th.Module);
+      end Generate_Inversion_Axiom;
+
+      ------------------------
+      -- Inversion_Axiom_OK --
+      ------------------------
+
+      function Inversion_Axiom_OK
+        (Source_Type, Target_Type : Type_Kind_Id) return Boolean
+      is
+         Valid       : Boolean;
+         Explanation : Unbounded_String;
+
+      begin
+         Suitable_For_UC_Source (Source_Type, Valid, Explanation);
+         if not Valid then
+            return False;
+         end if;
+
+         Suitable_For_UC_Target_UC_Wrap (Source_Type, Valid, Explanation);
+
+         if not Valid then
+            return False;
+         end if;
+
+         Suitable_For_UC_Source (Target_Type, Valid, Explanation);
+         if not Valid then
+            return False;
+         end if;
+
+         Suitable_For_UC_Target_UC_Wrap (Target_Type, Valid, Explanation);
+
+         if not Valid then
+            return False;
+         end if;
+
+         Have_Same_Known_RM_Size
+           (Source_Type, Target_Type, Valid, Explanation);
+         return Valid;
+      end Inversion_Axiom_OK;
+
+      Precise_UC  : constant True_Or_Explain :=
+        Is_UC_With_Precise_Definition
+          (Source_Type, Target_Type, Potentially_Invalid);
+      Module_Name : constant Symbol :=
+        Get_UC_Theory_Name (Source_Type, Target_Type, Potentially_Invalid);
+
+   begin
+      if M_UCs.Contains (Module_Name) then
+         return;
+      end if;
+
+      declare
+         UC_Module : constant W_Module_Id :=
+           New_Module (File => No_Symbol, Name => Module_Name);
+         UC_Id     : constant W_Identifier_Id :=
+           New_Identifier
+             (Symb   => NID (To_String (WNE_UC_Function)),
+              Module => UC_Module,
+              Domain => EW_Term,
+              Typ    => Type_Of_Node (Target_Type));
+         Source_Id : constant W_Identifier_Id :=
+           New_Temp_Identifier
+             (Base_Name => "source", Typ => Type_Of_Node (Source_Type));
+         Th        : Theory_UC;
+         Def       : W_Term_Id;
+
+      begin
+         M_UCs.Insert (Module_Name, (UC_Module, UC_Id));
+
+         Th :=
+           Open_Theory
+             (WF_Context,
+              UC_Module,
+              Comment =>
+                "Module for instance of Unchecked_Conversion function from "
+                & """"
+                & Get_Name_String (Chars (Source_Type))
+                & """"
+                & (if Sloc (Source_Type) > 0
+                   then
+                     " defined at "
+                     & Build_Location_String (Sloc (Source_Type))
+                   else "")
+                & "to """
+                & Get_Name_String (Chars (Target_Type))
+                & """"
+                & (if Sloc (Target_Type) > 0
+                   then
+                     " defined at "
+                     & Build_Location_String (Sloc (Target_Type))
+                   else "")
+                & ", created in "
+                & GNAT.Source_Info.Enclosing_Entity);
+
+         if Source_Type = Target_Type then
+
+            Def := +Source_Id;
+
+            if Potentially_Invalid then
+               Def :=
+                 +New_Function_Validity_Wrapper_Value
+                    (Ty         => Target_Type,
+                     Valid_Flag => +New_Valid_Value_For_Type (Target_Type),
+                     Value      => +Def);
+            end if;
+
+         elsif not Precise_UC.Ok then
+
+            Def := Why_Empty;
+
+         elsif Is_Scalar_Type (Source_Type)
+           and then Is_Scalar_Type (Target_Type)
+         then
+            Def :=
+              Precise_Integer_UC
+                (Arg                 => +Source_Id,
+                 Size                =>
+                   Get_Attribute_Value (Source_Type, Attribute_Size),
+                 Source_Type         => Type_Of_Node (Source_Type),
+                 Target_Type         => Type_Of_Node (Target_Type),
+                 Source_Status       => Get_Scalar_Status (Source_Type),
+                 Target_Status       => Get_Scalar_Status (Target_Type),
+                 Potentially_Invalid => Potentially_Invalid,
+                 Ada_Target          => Target_Type);
+
+         --  At least one of Source or Target is a composite type made up
+         --  of integers. Convert Source to a large-enough modular type,
+         --  and convert that value to Target. If all types involved are
+         --  modular, then this benefits from bitvector support in provers.
+
+         else
+            Def :=
+              Precise_Composite_UC
+                (Arg                 => +Source_Id,
+                 Source_Type         => Source_Type,
+                 Target_Type         => Target_Type,
+                 Potentially_Invalid => Potentially_Invalid);
+         end if;
+
+         --  Generate a logic function for the unchecked conversion
+
+         Emit
+           (Th,
+            New_Function_Decl
+              (Domain      => EW_Pterm,
+               Name        => To_Local (UC_Id),
+               Binders     =>
+                 Binder_Array'(1 => (B_Name => Source_Id, others => <>)),
+               Location    => No_Location,
+               Labels      => Symbol_Sets.Empty_Set,
+               Def         => +Def,
+               Return_Type =>
+                 (if Potentially_Invalid
+                  then Validity_Wrapper_Type (Target_Type)
+                  else Type_Of_Node (Target_Type))));
+
+         Close_Theory (Th, Definition_Theory);
+      end;
+
+      --  Generate axiom modules if the inverse of the UC function already
+      --  exists.
+
+      if not Potentially_Invalid and then Source_Type /= Target_Type then
+         declare
+            Inv_Module : constant Symbol :=
+              Get_UC_Theory_Name
+                (Source_Type         => Target_Type,
+                 Target_Type         => Source_Type,
+                 Potentially_Invalid => False);
+            Position   : constant Name_Id_UC_Map.Cursor :=
+              M_UCs.Find (Inv_Module);
+         begin
+            if Name_Id_UC_Map.Has_Element (Position)
+              and then Inversion_Axiom_OK (Source_Type, Target_Type)
+            then
+               Generate_Inversion_Axiom
+                 (Source_Type => Source_Type,
+                  Target_Type => Target_Type,
+                  Module      => M_UCs (Module_Name),
+                  Inv_Fun     => M_UCs (Position).UC_Id);
+
+               Generate_Inversion_Axiom
+                 (Source_Type => Target_Type,
+                  Target_Type => Source_Type,
+                  Module      => M_UCs (Position),
+                  Inv_Fun     => M_UCs (Module_Name).UC_Id);
+            end if;
+         end;
+      end if;
+   end Create_Module_For_UC_If_Needed;
+
    ---------------------
    -- Suitable_For_UC --
    ---------------------
@@ -1302,7 +1726,7 @@ package body Gnat2Why.Unchecked_Conversion is
 
       function Type_Unsuitable_For_UC (Typ : Type_Kind_Id) return Test_Result
       is
-         Typ_Name : constant String := Type_Name_For_Explanation (Typ);
+         Typ_Name : constant String := Pretty_Source_Name (Typ);
 
       begin
          --  We exclude types with tags, private types, access types, and
@@ -1325,7 +1749,7 @@ package body Gnat2Why.Unchecked_Conversion is
                 (Xcov,
                  Exempt_On,
                  "The frontend crashes on UC on tasks and "
-                   & "rejectes UC on protected types");
+                 & "rejectes UC on protected types");
             Explanation :=
               To_Unbounded_String (Typ_Name & " is a concurrent type");
             return Pass;
@@ -1342,16 +1766,18 @@ package body Gnat2Why.Unchecked_Conversion is
          --  other scalar types) on the target.
 
          elsif Is_Floating_Point_Type (Typ)
-           and then Get_Attribute_Value (Typ, Attribute_Size)
-                    > Ttypes.Standard_Long_Long_Float_Size
+           and then
+             Get_Attribute_Value (Typ, Attribute_Size)
+             > Ttypes.Standard_Long_Long_Float_Size
          then
             Explanation :=
               To_Unbounded_String ("too large value of Size for " & Typ_Name);
             return Pass;
 
          elsif Is_Scalar_Type (Typ)
-           and then Get_Attribute_Value (Typ, Attribute_Size)
-                    > Ttypes.Standard_Long_Long_Long_Integer_Size
+           and then
+             Get_Attribute_Value (Typ, Attribute_Size)
+             > Ttypes.Standard_Long_Long_Long_Integer_Size
          then
             Explanation :=
               To_Unbounded_String ("too large value of Size for " & Typ_Name);
@@ -1378,7 +1804,7 @@ package body Gnat2Why.Unchecked_Conversion is
       Result      : out Boolean;
       Explanation : out Unbounded_String)
    is
-      Typ_Name   : constant String := Type_Name_For_Explanation (Typ);
+      Typ_Name   : constant String := Pretty_Source_Name (Typ);
       Common_Exp : constant String :=
         "; "
         & Typ_Name
@@ -1409,7 +1835,7 @@ package body Gnat2Why.Unchecked_Conversion is
             Result := False;
             Explanation :=
               To_Unbounded_String
-                (Type_Name_For_Explanation (Typ)
+                (Pretty_Source_Name (Typ)
                  & " has minimal size "
                  & UI_Image (Sum_Comp)
                  & ", but "
@@ -1566,5 +1992,56 @@ package body Gnat2Why.Unchecked_Conversion is
       Suitable_For_UC_Target
         (Typ, Size, "Size", True, Result, Explanation, Check_Validity);
    end Suitable_For_UC_Target_UC_Wrap;
+
+   procedure Types_Compatible_Alignment
+     (Src_Ty      : Type_Kind_Id;
+      Tar_Ty      : Type_Kind_Id;
+      Valid       : out Boolean;
+      Explanation : out Unbounded_String)
+   is
+      SA : constant Uint := Get_Attribute_Value (Src_Ty, Attribute_Alignment);
+      TA : constant Uint := Get_Attribute_Value (Tar_Ty, Attribute_Alignment);
+   begin
+      if No (SA) then
+         Valid := False;
+         Explanation :=
+           To_Unbounded_String
+             (Pretty_Source_Name (Src_Ty)
+              & " doesn't have an "
+              & "Alignment representation clause or aspect");
+         return;
+      end if;
+      if No (TA) then
+         Valid := False;
+         Explanation :=
+           To_Unbounded_String
+             (Pretty_Source_Name (Tar_Ty)
+              & " doesn't have an "
+              & "Alignment representation clause or aspect");
+         return;
+      end if;
+
+      --  Frontend rewrites alignment 0 to 1, so no need to check for
+      --  division by zero
+      if SA mod TA /= Uint_0 then
+         Valid := False;
+         Explanation :=
+           To_Unbounded_String
+             ("alignment of "
+              & Pretty_Source_Name (Src_Ty)
+              & " (which is "
+              & UI_Image (SA)
+              & ")"
+              & " must be a multiple of the "
+              & "alignment of "
+              & Pretty_Source_Name (Tar_Ty)
+              & " (which is "
+              & UI_Image (TA)
+              & ")");
+         return;
+      end if;
+      Valid := True;
+      Explanation := Null_Unbounded_String;
+   end Types_Compatible_Alignment;
 
 end Gnat2Why.Unchecked_Conversion;

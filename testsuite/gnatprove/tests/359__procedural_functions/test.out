@@ -47,16 +47,16 @@ dispatch.ads:13:17: warning: "X" is not modified, could be IN
 dispatch.ads:13:32: info: initialization of "B" proved
 dispatch.ads:14:13: info: implicit aspect Always_Terminates on "FF" has been proved, subprogram will terminate
 dispatch.ads:15:16: warning: "X" is not modified, could be IN
-ok_call.adb:12:19: medium: assertion might fail (e.g. when Y0 = 0)
-ok_call.adb:16:19: medium: assertion might fail (e.g. when Y0 = 0)
-ok_call.adb:20:19: medium: assertion might fail (e.g. when G = 0)
-ok_call.adb:24:19: medium: assertion might fail (e.g. when G = 0)
-ok_call.adb:26:10: medium: unexpected exception might be raised [reason for check: OK_Call allows propagating no exceptions] [possible explanation: any exception might be unexpectedly raised]
+ok_call.adb:12:19: medium: assertion might fail (e.g. when Y0 = 0) [provers gave up before completing the proof]
+ok_call.adb:16:19: medium: assertion might fail (e.g. when Y0 = 0) [provers gave up before completing the proof]
+ok_call.adb:20:19: medium: assertion might fail (e.g. when G = 0) [provers gave up before completing the proof]
+ok_call.adb:24:19: medium: assertion might fail (e.g. when G = 0) [provers gave up before completing the proof]
+ok_call.adb:26:10: medium: unexpected exception might be raised [reason for check: "OK_Call" allows propagating no exceptions] [possible explanation: any exception might be unexpectedly raised] [provers gave up before completing the proof]
 ok_call.adb:29:10: medium: aspect Always_Terminates on "OK_Call" could be incorrect, call to "F7" might be nonterminating
 ok_call.adb:31:10: info: conditional call termination proved (CVC5: 1 VC)
-ok_call.adb:32:10: medium: call might not terminate [reason for check: procedure "OK_Call" has an Always_Terminates aspect]
-ok_call.adb:36:19: medium: assertion might fail
-ok_call.adb:40:19: medium: assertion might fail
+ok_call.adb:32:10: medium: call might not terminate [reason for check: procedure "OK_Call" has an Always_Terminates aspect] [provers gave up before completing the proof]
+ok_call.adb:36:19: medium: assertion might fail [provers gave up before completing the proof]
+ok_call.adb:40:19: medium: assertion might fail [provers gave up before completing the proof]
 ok_call_with_post.adb:15:19: info: assertion proved (CVC5: 1 VC)
 ok_call_with_post.adb:16:19: info: assertion proved (CVC5: 1 VC)
 ok_call_with_post.adb:20:19: info: assertion proved (CVC5: 1 VC)
@@ -75,7 +75,7 @@ ok_call_with_post.adb:45:19: info: assertion proved (CVC5: 1 VC)
 ok_call_with_post.adb:47:10: info: conditional call termination proved (CVC5: 1 VC)
 ok_call_with_post.adb:48:19: info: assertion proved (CVC5: 1 VC)
 ok_call_with_post.adb:50:07: info: no contextual analysis of "Rand" (body not seen yet)
-ok_call_with_post.adb:51:13: medium: call might not terminate [reason for check: procedure "OK_Call_With_Post" has an Always_Terminates aspect]
+ok_call_with_post.adb:51:13: medium: call might not terminate [reason for check: procedure "OK_Call_With_Post" has an Always_Terminates aspect] [provers reached step limit before completing the proof]
 ok_call_with_post.adb:52:07: info: assertion proved (CVC5: 1 VC)
 ok_call_with_post.adb:57:19: info: assertion proved (CVC5: 1 VC)
 ok_call_with_post.adb:58:19: info: assertion proved (CVC5: 1 VC)

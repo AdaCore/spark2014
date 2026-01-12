@@ -80,8 +80,8 @@ package CE_Utils is
      Pre =>
        Retysp_Kind (Rec)
        in Incomplete_Or_Private_Kind | Record_Kind | Concurrent_Kind
-       and Ekind (Comp)
-           in E_Discriminant | E_Component | Type_Kind | E_Variable;
+       and
+         Ekind (Comp) in E_Discriminant | E_Component | Type_Kind | E_Variable;
    --  True if Comp is a component of an ancestor of Rec which is visible in
    --  Rec.
 

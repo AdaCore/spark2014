@@ -19,7 +19,7 @@
 private package Door.Interfac
   with SPARK_Mode,
        Abstract_State => (Input with External => Async_Writers,
-                                     Part_Of  => Door.Input)
+                                     Part_Of  => Door.Input), Initializes => Input
 is
 
    ------------------------------------------------------------------

@@ -4,10 +4,10 @@ main.adb:6:28: info: data dependencies proved
 main.adb:9:19: info: flow dependencies proved
 main.adb:10:28: info: data dependencies proved
 main.adb:19:10: high: "C" must be mentioned as an input of the Initializes aspect of "P" (SPARK RM 7.1.5(11))
-main.adb:20:25: medium: assertion might fail [possible fix: subprogram at line 1 should mention X in a precondition]
+main.adb:20:25: medium: assertion might fail [possible fix: subprogram at line 1 should mention X in a precondition] [provers gave up before completing the proof]
 main.adb:22:12: high: cannot write "X" during elaboration of "P" [E0008]
 main.adb:22:12: high: launch "gnatprove --explain=E0008" for more information
 main.adb:29:14: high: "C" must be mentioned as an input of the Initializes aspect of "Q" (SPARK RM 7.1.5(11))
 main.adb:30:12: high: cannot write "X" during elaboration of "Q" [E0008]
 main.adb:30:12: high: launch "gnatprove --explain=E0008" for more information
-main.adb:32:25: medium: assertion might fail [possible fix: subprogram at line 1 should mention X in a precondition]
+main.adb:32:25: medium: assertion might fail [possible fix: subprogram at line 1 should mention X in a precondition] [provers gave up before completing the proof]

@@ -545,8 +545,8 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
             Shape  => Edge_Normal,
             Colour => Null_Unbounded_String,
             Label  => Null_Unbounded_String);
-      --  ??? Label should reflect the Colour argument, but the current
-      --  names of the rules are too long and produce unreadable graphs.
+         --  ??? Label should reflect the Colour argument, but the current
+         --  names of the rules are too long and produce unreadable graphs.
       end EDI;
 
       Filename : constant String :=
@@ -723,10 +723,11 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
 
       return
         From = Looking_At
-        or else Scope_Graph.Edge_Exists
-                  (Components,
-                   Scope_Graph.Get_Vertex (From),
-                   Scope_Graph.Get_Vertex (Looking_At));
+        or else
+          Scope_Graph.Edge_Exists
+            (Components,
+             Scope_Graph.Get_Vertex (From),
+             Scope_Graph.Get_Vertex (Looking_At));
    end State_Refinement_Is_Visible;
 
    ------------------------
@@ -744,10 +745,11 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
 
       return
         From = Looking_At
-        or else Scope_Graph.Edge_Exists
-                  (Components,
-                   Scope_Graph.Get_Vertex (From),
-                   Scope_Graph.Get_Vertex (Looking_At));
+        or else
+          Scope_Graph.Edge_Exists
+            (Components,
+             Scope_Graph.Get_Vertex (From),
+             Scope_Graph.Get_Vertex (Looking_At));
    end Part_Of_Is_Visible;
 
    -----------

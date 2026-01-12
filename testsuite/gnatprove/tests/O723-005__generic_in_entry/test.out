@@ -3,4 +3,4 @@ a-tiflio.ads:81:51: info: precondition proved (CVC5: 1 VC), in instantiation at 
 a-tiflio.ads:83:08: info: precondition proved (CVC5: 2 VC), in instantiation at p.adb:9
 a-tiflio.ads:84:12: info: precondition proved (CVC5: 2 VC), in instantiation at p.adb:9
 p.adb:11:26: high: call to potentially blocking predefined subprogram "Put" in protected operation "My_Text_Entry"
-p.adb:11:26: medium: unexpected exception might be raised [reason for check: My_Text_Entry allows propagating no exceptions] [possible explanation: Layout_Error might be unexpectedly raised]
+p.adb:11:26: medium: unexpected exception might be raised [reason for check: "My_Text_Entry" allows propagating no exceptions] [possible explanation: "Layout_Error" might be unexpectedly raised] [provers reached step limit before completing the proof]

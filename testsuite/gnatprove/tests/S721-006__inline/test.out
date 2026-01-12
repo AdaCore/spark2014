@@ -1,4 +1,4 @@
 bindo.adb:7:13: info: implicit aspect Always_Terminates on "Kind" has been proved, subprogram will terminate
-bindo.adb:27:08: medium: pointer dereference check might fail [possible fix: subprogram at line 20 should mention G in a precondition]
-bindo.adb:27:27: medium: pointer dereference check might fail [possible fix: subprogram at line 20 should mention G in a precondition]
-bindo.adb:27:42: medium: range check might fail, cannot prove lower bound for G.Counts (Kind) - 1 [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: subprogram at line 20 should mention G and Kind in a precondition]
+bindo.adb:27:08: medium: pointer dereference check might fail [possible fix: subprogram at line 20 should mention G in a precondition] [provers reached step limit before completing the proof]
+bindo.adb:27:27: medium: pointer dereference check might fail [possible fix: subprogram at line 20 should mention G in a precondition] [provers reached step limit before completing the proof]
+bindo.adb:27:42: medium: range check might fail, cannot prove lower bound for G.Counts (Kind) - 1 [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: subprogram at line 20 should mention G and Kind in a precondition] [provers reached step limit before completing the proof]

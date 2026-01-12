@@ -1160,7 +1160,7 @@ package body Gnat2Why.Subprograms.Pointers is
 
       Close_Theory (Th, Kind => Axiom_Theory, Defined_Entity => Expr);
 
-   --  No soundness dependency, this axiom in itself is never unsound.
+      --  No soundness dependency, this axiom in itself is never unsound.
    end Declare_Theory_For_Access_If_Needed;
 
    ---------------------------------------------
@@ -1337,8 +1337,8 @@ package body Gnat2Why.Subprograms.Pointers is
             Writes          => Writes,
             Erase_Constants => False);
          pragma Assert (Writes.Is_Empty and Reads.Is_Empty);
-      --  If we stop here, it means that Subp has some global state,
-      --  which is not supported in SPARK.
+         --  If we stop here, it means that Subp has some global state,
+         --  which is not supported in SPARK.
       end Check_No_Globals;
 
       --  Start of processing for Transform_Access_Attribute_Of_Subprogram

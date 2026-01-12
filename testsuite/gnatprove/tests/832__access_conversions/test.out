@@ -1,28 +1,28 @@
 access_conv.adb:24:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
-access_conv.adb:26:21: medium: resource or memory leak might occur [possible explanation: conversion to general access type leaks memory]
+access_conv.adb:26:21: medium: resource or memory leak might occur [possible explanation: conversion to general access type leaks memory] [provers reached step limit before completing the proof]
 access_conv.adb:28:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 access_conv.adb:29:23: medium: resource or memory leak might occur [possible explanation: allocator for a general access-to-variable type leaks memory]
-access_conv.adb:30:26: medium: resource or memory leak might occur [possible explanation: conversion to general access type leaks memory]
+access_conv.adb:30:26: medium: resource or memory leak might occur [possible explanation: conversion to general access type leaks memory] [provers reached step limit before completing the proof]
 access_conv.adb:32:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
-access_conv.adb:33:23: medium: resource or memory leak might occur [possible explanation: conversion to general access type leaks memory]
-access_conv.adb:34:26: medium: resource or memory leak might occur [possible explanation: conversion to general access type leaks memory]
-access_conv.adb:50:04: medium: resource or memory leak might occur at end of scope
+access_conv.adb:33:23: medium: resource or memory leak might occur [possible explanation: conversion to general access type leaks memory] [provers reached step limit before completing the proof]
+access_conv.adb:34:26: medium: resource or memory leak might occur [possible explanation: conversion to general access type leaks memory] [provers reached step limit before completing the proof]
+access_conv.adb:50:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 access_conv.adb:51:19: info: assertion proved (CVC5: 1 VC)
-access_conv.adb:52:22: medium: resource or memory leak might occur [possible explanation: conversion to general access type leaks memory] [possible fix: you should consider adding a postcondition to function C or turning it into an expression function in its unit spec]
+access_conv.adb:52:22: medium: resource or memory leak might occur [possible explanation: conversion to general access type leaks memory] [possible fix: you should consider adding a postcondition to function "C" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
 access_conv.adb:54:24: medium: resource or memory leak might occur [possible explanation: allocator for a general access-to-variable type leaks memory]
-access_conv.adb:55:27: medium: resource or memory leak might occur [possible explanation: conversion to general access type leaks memory] [possible fix: you should consider adding a postcondition to function C or turning it into an expression function in its unit spec]
-access_conv.adb:57:24: medium: resource or memory leak might occur [possible explanation: conversion to general access type leaks memory] [possible fix: you should consider adding a postcondition to function C or turning it into an expression function in its unit spec]
-access_conv.adb:58:27: medium: resource or memory leak might occur [possible explanation: conversion to general access type leaks memory] [possible fix: you should consider adding a postcondition to function C or turning it into an expression function in its unit spec]
+access_conv.adb:55:27: medium: resource or memory leak might occur [possible explanation: conversion to general access type leaks memory] [possible fix: you should consider adding a postcondition to function "C" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
+access_conv.adb:57:24: medium: resource or memory leak might occur [possible explanation: conversion to general access type leaks memory] [possible fix: you should consider adding a postcondition to function "C" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
+access_conv.adb:58:27: medium: resource or memory leak might occur [possible explanation: conversion to general access type leaks memory] [possible fix: you should consider adding a postcondition to function "C" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
 access_conv_null.adb:24:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 access_conv_null.adb:26:21: info: absence of resource or memory leak proved (CVC5: 1 VC)
 access_conv_null.adb:28:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 access_conv_null.adb:29:23: medium: resource or memory leak might occur [possible explanation: allocator for a general access-to-variable type leaks memory]
 access_conv_null.adb:30:26: info: absence of resource or memory leak proved (CVC5: 1 VC)
 access_conv_null.adb:32:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
-access_conv_null.adb:33:23: medium: resource or memory leak might occur [possible explanation: conversion to general access type leaks memory]
+access_conv_null.adb:33:23: medium: resource or memory leak might occur [possible explanation: conversion to general access type leaks memory] [provers reached step limit before completing the proof]
 access_conv_null.adb:34:26: info: absence of resource or memory leak proved (CVC5: 1 VC)
 access_conv_null.adb:51:22: info: absence of resource or memory leak proved (CVC5: 1 VC)
 access_conv_null.adb:53:24: medium: resource or memory leak might occur [possible explanation: allocator for a general access-to-variable type leaks memory]
 access_conv_null.adb:54:27: info: absence of resource or memory leak proved (CVC5: 1 VC)
-access_conv_null.adb:56:24: medium: resource or memory leak might occur [possible explanation: conversion to general access type leaks memory]
+access_conv_null.adb:56:24: medium: resource or memory leak might occur [possible explanation: conversion to general access type leaks memory] [provers reached step limit before completing the proof]
 access_conv_null.adb:57:27: info: absence of resource or memory leak proved (CVC5: 1 VC)

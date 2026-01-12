@@ -5,8 +5,8 @@ deep_delta_relaxed.adb:27:25: info: assertion proved (CVC5: 1 VC)
 deep_delta_relaxed.adb:28:15: info: initialization check proved (CVC5: 1 VC)
 deep_delta_relaxed.adb:29:25: info: assertion proved (CVC5: 1 VC)
 deep_delta_relaxed.adb:29:29: info: initialization check proved (CVC5: 1 VC)
-deep_delta_relaxed.adb:30:25: medium: assertion might fail
-deep_delta_relaxed.adb:30:29: medium: initialization check might fail
+deep_delta_relaxed.adb:30:25: medium: assertion might fail [provers reached step limit before completing the proof]
+deep_delta_relaxed.adb:30:29: medium: initialization check might fail [provers reached step limit before completing the proof]
 deep_delta_relaxed.adb:35:35: info: data dependencies proved
 deep_delta_relaxed.adb:44:25: info: assertion proved (CVC5: 1 VC)
 deep_delta_relaxed.adb:44:26: info: initialization check proved (CVC5: 1 VC)
@@ -14,9 +14,9 @@ deep_delta_relaxed.adb:44:33: info: initialization check proved (CVC5: 1 VC)
 deep_delta_relaxed.adb:45:25: info: assertion proved (CVC5: 1 VC)
 deep_delta_relaxed.adb:45:26: info: initialization check proved (CVC5: 1 VC)
 deep_delta_relaxed.adb:45:33: info: initialization check proved (CVC5: 1 VC)
-deep_delta_relaxed.adb:46:25: medium: assertion might fail
+deep_delta_relaxed.adb:46:25: medium: assertion might fail [provers reached step limit before completing the proof]
 deep_delta_relaxed.adb:51:26: info: data dependencies proved
-deep_delta_relaxed.adb:57:15: medium: initialization check might fail
+deep_delta_relaxed.adb:57:15: medium: initialization check might fail [provers reached step limit before completing the proof]
 deep_delta_relaxed.adb:67:06: info: data dependencies proved
 deep_delta_relaxed.adb:77:07: info: range check proved (CVC5: 2 VC)
 deep_delta_relaxed.adb:84:09: info: data dependencies proved
@@ -36,8 +36,8 @@ deep_delta_relaxed.adb:103:60: info: initialization check proved (Z3: 1 VC)
 deep_delta_relaxed.adb:103:65: info: index check proved (CVC5: 2 VC)
 deep_delta_relaxed.adb:104:25: info: assertion proved (Z3: 1 VC)
 deep_delta_relaxed.adb:104:29: info: initialization check proved (Z3: 1 VC)
-deep_delta_relaxed.adb:105:25: medium: assertion might fail
-deep_delta_relaxed.adb:105:29: medium: initialization check might fail
+deep_delta_relaxed.adb:105:25: medium: assertion might fail [provers reached step limit before completing the proof]
+deep_delta_relaxed.adb:105:29: medium: initialization check might fail [provers reached step limit before completing the proof]
 deep_delta_relaxed.adb:109:09: info: data dependencies proved
 deep_delta_relaxed.adb:112:27: info: length check proved (CVC5: 3 VC)
 deep_delta_relaxed.adb:115:27: info: index check proved (CVC5: 2 VC)
@@ -49,15 +49,15 @@ deep_delta_relaxed.adb:124:41: info: initialization check proved (Z3: 1 VC)
 deep_delta_relaxed.adb:124:46: info: index check proved (CVC5: 2 VC)
 deep_delta_relaxed.adb:124:52: info: initialization check proved (Z3: 1 VC)
 deep_delta_relaxed.adb:124:57: info: index check proved (CVC5: 2 VC)
-deep_delta_relaxed.adb:125:25: medium: assertion might fail
+deep_delta_relaxed.adb:125:25: medium: assertion might fail [provers reached step limit before completing the proof]
 deep_delta_relaxed.adb:125:31: info: index check proved (CVC5: 2 VC)
 deep_delta_relaxed.adb:129:09: info: data dependencies proved
 deep_delta_relaxed.adb:136:15: info: length check proved (CVC5: 3 VC)
 deep_delta_relaxed.adb:136:18: info: length check proved (CVC5: 3 VC)
 deep_delta_relaxed.adb:137:16: info: index check proved (CVC5: 2 VC)
 deep_delta_relaxed.adb:138:16: info: index check proved (CVC5: 2 VC)
-deep_delta_relaxed.adb:140:28: medium: assertion might fail
+deep_delta_relaxed.adb:140:28: medium: assertion might fail [provers reached step limit before completing the proof]
 deep_delta_relaxed.adb:140:34: info: index check proved (CVC5: 2 VC)
-deep_delta_relaxed.adb:142:18: medium: initialization check might fail
+deep_delta_relaxed.adb:142:18: medium: initialization check might fail [provers reached step limit before completing the proof]
 deep_delta_relaxed.adb:143:25: info: index check proved (CVC5: 2 VC)
 deep_delta_relaxed.adb:144:25: info: index check proved (CVC5: 2 VC)

@@ -1,16 +1,16 @@
-spark-containers-parameter_checks.ads:274:50: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:151, in instantiation at test.adb:5
+spark-containers-parameter_checks.ads:274:50: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:151, in instantiation at test.adb:5 [provers reached step limit before completing the proof]
 test.adb:9:04: info: initialization of "M" proved
 test.adb:16:04: info: precondition proved (CVC5: 2 VC)
 test.adb:17:04: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test.adb:18:04: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test.adb:20:19: info: precondition proved (Z3: 1 VC)
-test.adb:20:19: medium: assertion might fail
+test.adb:20:19: medium: assertion might fail [provers reached step limit before completing the proof]
 test.adb:5:04: warning: check will fail at run time [-gnatw.a]
 test.adb:5:04: warning: check will fail at run time [-gnatw.a]
 test.adb:5:04: warning: check will fail at run time [-gnatw.a]
 test.adb:5:04: warning: in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:191 [-gnatw.a]
-test.adb:5:04: warning: in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:241 [-gnatw.a]
-test.adb:5:04: warning: in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:241 [-gnatw.a]
+test.adb:5:04: warning: in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:242 [-gnatw.a]
+test.adb:5:04: warning: in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:242 [-gnatw.a]
 test.adb:5:04: warning: in instantiation at spark-containers-functional-maps.ads:144 [-gnatw.a]
 test.adb:5:04: warning: in instantiation at spark-containers-functional-maps.ads:162 [-gnatw.a]
-test.adb:5:04: warning: in instantiation at spark-containers-functional-vectors.ads:175 [-gnatw.a]
+test.adb:5:04: warning: in instantiation at spark-containers-functional-vectors.ads:176 [-gnatw.a]

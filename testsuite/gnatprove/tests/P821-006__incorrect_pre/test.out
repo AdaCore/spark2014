@@ -1,3 +1,4 @@
+foo.ads:12:13: high: alignment of source type of unchecked conversion might not be an integral multiple of alignment of target type [possible explanation: alignment of type "Byte_Array_4" (which is 1) must be a multiple of the alignment of type "Integer_32" (which is 4)]
 foo.ads:12:13: info: types in unchecked conversion have the same size (Trivial)
 foo.ads:13:42: info: type is suitable as source for unchecked conversion (Trivial)
 foo.ads:14:42: info: type is suitable for unchecked conversion (Trivial)
@@ -7,5 +8,5 @@ main.adb:8:14: info: add a contract to analyze it separately from calling contex
 main.adb:8:14: info: local subprogram "bar" only analyzed in the context of calls [info-unrolling-inlining]
 main.adb:8:19: info: initialization of "d" proved
 main.adb:17:04: info: analyzing call to "bar" in context
-main.adb:18:14: high: precondition might fail (e.g. when arr = (others => 0))
+main.adb:18:14: high: precondition might fail (e.g. when arr = (others => 0)) [provers reached step limit before completing the proof]
 main.adb:18:29: info: range check proved (CVC5: 4 VC)

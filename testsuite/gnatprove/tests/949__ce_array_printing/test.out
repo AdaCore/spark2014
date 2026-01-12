@@ -1,11 +1,11 @@
-array_comparison_nat.adb:23:31: high: assertion might fail (e.g. when X = (1 => 1, 2 => 2, 3 => 2, 4 => 3))
-array_comparison_nat.adb:31:31: high: assertion might fail (e.g. when X = (4 => 3, others => 2))
-array_comparison_nat.adb:49:31: high: assertion might fail (e.g. when X = (1 => 1, 2 => 2, 3 => 2, 4 => 2, 5 => 2, 6 => 2, 7 => 2, 8 => 2, 9 => 2, 10 => 2, ...))
-array_comparison_nat.adb:63:31: high: assertion might fail (e.g. when X = (1 => 1, 19 => 3, 20 => 4, 21 => 5, 22 => 5, 23 => 5, 24 => 5, 25 => 5, 26 => 5, 27 => 5, ...))
+array_comparison_nat.adb:23:31: high: assertion might fail (e.g. when X = (1 => 1, 2 => 2, 3 => 2, 4 => 3)) [provers gave up before completing the proof]
+array_comparison_nat.adb:31:31: high: assertion might fail (e.g. when X = (4 => 3, others => 2)) [provers gave up before completing the proof]
+array_comparison_nat.adb:49:31: high: assertion might fail (e.g. when X = (1 => 1, 2 => 2, 3 => 2, 4 => 2, 5 => 2, 6 => 2, 7 => 2, 8 => 2, 9 => 2, 10 => 2, ...)) [provers gave up before completing the proof]
+array_comparison_nat.adb:63:31: high: assertion might fail (e.g. when X = (1 => 1, 19 => 3, 20 => 4, 21 => 5, 22 => 5, 23 => 5, 24 => 5, 25 => 5, 26 => 5, 27 => 5, ...)) [provers gave up before completing the proof]
 array_comparison_nat2.adb:25:24: info: index check proved (CVC5: 2 VC)
 array_comparison_nat2.adb:26:24: info: index check proved (CVC5: 2 VC)
-array_comparison_nat2.adb:28:31: medium: assertion might fail
-array_comparison_nat2.adb:38:31: medium: assertion might fail
+array_comparison_nat2.adb:28:31: medium: assertion might fail [provers gave up before completing the proof]
+array_comparison_nat2.adb:38:31: medium: assertion might fail [provers gave up before completing the proof]
 array_comparison_nat2.adb:49:25: info: index check proved (CVC5: 2 VC)
 array_comparison_nat2.adb:50:25: info: index check proved (CVC5: 2 VC)
 array_comparison_nat2.adb:51:25: info: index check proved (CVC5: 2 VC)
@@ -16,26 +16,26 @@ array_comparison_nat2.adb:55:25: info: index check proved (CVC5: 2 VC)
 array_comparison_nat2.adb:56:25: info: index check proved (CVC5: 2 VC)
 array_comparison_nat2.adb:57:25: info: index check proved (CVC5: 2 VC)
 array_comparison_nat2.adb:58:25: info: index check proved (CVC5: 2 VC)
-array_comparison_nat2.adb:60:31: medium: assertion might fail
+array_comparison_nat2.adb:60:31: medium: assertion might fail [provers gave up before completing the proof]
 array_comparison_nat2.adb:67:29: info: index check proved (CVC5: 2 VC)
 array_comparison_nat2.adb:68:29: info: index check proved (CVC5: 2 VC)
-array_comparison_nat2.adb:71:31: medium: assertion might fail
-array_comparison_str.adb:23:22: high: assertion might fail (e.g. when X = "abacadaea")
-array_comparison_str.adb:30:22: high: assertion might fail (e.g. when X = "XbXcXdXeX")
-array_comparison_str.adb:39:22: high: assertion might fail (e.g. when X = "XbXcXdXeX")
-array_comparison_str.adb:50:22: high: assertion might fail (e.g. when X = "baaaaaaaaaaaaaaaaac")
-array_comparison_str.adb:57:22: high: assertion might fail (e.g. when X = "baaaaaaaaaaaaaaaaac" and X'First = 1)
-array_comparison_str.adb:64:22: high: assertion might fail (e.g. when X = "baaaaaaaaaaaaaaaaac")
-array_comparison_str.adb:76:22: high: assertion might fail (e.g. when X = "baaaaaaaaaaaaaaaaacdeff")
-array_comparison_str.adb:89:22: high: assertion might fail (e.g. when X = "baaaaaaaaaaaaaaaaacdeff" and X'First = 1)
-array_comparison_str.adb:102:22: high: assertion might fail (e.g. when X = "baaaaaaaaaaaaaaaaacdeff")
-array_comparison_str.adb:121:22: high: assertion might fail (e.g. when X = "Lorem ipsum dolor sit amet, co ...")
-array_comparison_str.adb:136:22: high: assertion might fail (e.g. when X = "L$rem ipsum dolor sit $met, co ...")
-array_comparison_str.adb:149:22: high: assertion might fail (e.g. when X = "baaaaaaaaaaaaaaaaacdeeeeeeeeee ...")
-array_comparison_str.adb:162:22: high: assertion might fail (e.g. when X = "baaaaaaaaaaaaaaaaacdeeeeeeeeee ...")
-array_comparison_str.adb:173:22: high: assertion might fail (e.g. when X = (1 => 'b', 6 => 'SOH', 19 => 'c', 20 => 'd', 21 => 'e', 22 => 'f', 23 => 'f', others => 'a'))
-array_comparison_str.adb:187:22: high: assertion might fail (e.g. when X = (1 => 'b', 2 => 'a', 3 => 'a', 4 => 'a', 5 => 'a', 6 => 'SOH', 7 => 'a', 8 => 'a', 9 => 'a', 10 => 'a', ...) and X'First = 1 and X'Last = 23)
-array_comparison_str.adb:198:22: high: assertion might fail (e.g. when X = "abbbbbbbbbbbbbbbbbbbbbbbbbbbbb ...")
-array_comparison_str.adb:207:22: high: assertion might fail (e.g. when X = (1 => 'a', 2 => 'SOH', 3 => 'b', 4 => 'b', 5 => 'b', 6 => 'b', 7 => 'b', 8 => 'b', 9 => 'b', 10 => 'b', ...))
-array_comparison_str.adb:216:22: high: assertion might fail (e.g. when X = (1 => 'a', 2 => 'b', 3 => 'b', 4 => 'b', 5 => 'b', 6 => 'b', 7 => 'b', 8 => 'b', 9 => 'b', 10 => 'b', 11 => 'b', 12 => 'b', 13 => 'b', 14 => 'b', 15 => 'b', 16 => 'b', 17 => 'b', 18 => 'b', 19 => 'b', 20 => 'b', 21 => 'b', 22 => 'b', 23 => 'b', 24 => 'b', 25 => 'b', 26 => 'b', 27 => 'b', 28 => 'b', 29 => 'b', 30 => 'b', ...))
-array_comparison_str.adb:225:22: high: assertion might fail (e.g. when X = (1 => 'a', 2 => 'SOH', others => 'b'))
+array_comparison_nat2.adb:71:31: medium: assertion might fail [provers gave up before completing the proof]
+array_comparison_str.adb:23:22: high: assertion might fail (e.g. when X = "abacadaea") [provers gave up before completing the proof]
+array_comparison_str.adb:30:22: high: assertion might fail (e.g. when X = "XbXcXdXeX") [provers gave up before completing the proof]
+array_comparison_str.adb:39:22: high: assertion might fail (e.g. when X = "XbXcXdXeX") [provers gave up before completing the proof]
+array_comparison_str.adb:50:22: high: assertion might fail (e.g. when X = "baaaaaaaaaaaaaaaaac") [provers gave up before completing the proof]
+array_comparison_str.adb:57:22: high: assertion might fail (e.g. when X = "baaaaaaaaaaaaaaaaac" and X'First = 1) [provers gave up before completing the proof]
+array_comparison_str.adb:64:22: high: assertion might fail (e.g. when X = "baaaaaaaaaaaaaaaaac") [provers gave up before completing the proof]
+array_comparison_str.adb:76:22: high: assertion might fail (e.g. when X = "baaaaaaaaaaaaaaaaacdeff") [provers gave up before completing the proof]
+array_comparison_str.adb:89:22: high: assertion might fail (e.g. when X = "baaaaaaaaaaaaaaaaacdeff" and X'First = 1) [provers gave up before completing the proof]
+array_comparison_str.adb:102:22: high: assertion might fail (e.g. when X = "baaaaaaaaaaaaaaaaacdeff") [provers gave up before completing the proof]
+array_comparison_str.adb:121:22: high: assertion might fail (e.g. when X = "Lorem ipsum dolor sit amet, co ...") [provers reached step limit before completing the proof]
+array_comparison_str.adb:136:22: high: assertion might fail (e.g. when X = "L$rem ipsum dolor sit $met, co ...") [provers reached step limit before completing the proof]
+array_comparison_str.adb:149:22: high: assertion might fail (e.g. when X = "baaaaaaaaaaaaaaaaacdeeeeeeeeee ...") [provers gave up before completing the proof]
+array_comparison_str.adb:162:22: high: assertion might fail (e.g. when X = "baaaaaaaaaaaaaaaaacdeeeeeeeeee ...") [provers gave up before completing the proof]
+array_comparison_str.adb:173:22: high: assertion might fail (e.g. when X = (1 => 'b', 6 => 'SOH', 19 => 'c', 20 => 'd', 21 => 'e', 22 => 'f', 23 => 'f', others => 'a')) [provers gave up before completing the proof]
+array_comparison_str.adb:187:22: high: assertion might fail (e.g. when X = (1 => 'b', 2 => 'a', 3 => 'a', 4 => 'a', 5 => 'a', 6 => 'SOH', 7 => 'a', 8 => 'a', 9 => 'a', 10 => 'a', ...) and X'First = 1 and X'Last = 23) [provers gave up before completing the proof]
+array_comparison_str.adb:198:22: high: assertion might fail (e.g. when X = "abbbbbbbbbbbbbbbbbbbbbbbbbbbbb ...") [provers gave up before completing the proof]
+array_comparison_str.adb:207:22: high: assertion might fail (e.g. when X = (1 => 'a', 2 => 'SOH', 3 => 'b', 4 => 'b', 5 => 'b', 6 => 'b', 7 => 'b', 8 => 'b', 9 => 'b', 10 => 'b', ...)) [provers gave up before completing the proof]
+array_comparison_str.adb:216:22: high: assertion might fail (e.g. when X = (1 => 'a', 2 => 'b', 3 => 'b', 4 => 'b', 5 => 'b', 6 => 'b', 7 => 'b', 8 => 'b', 9 => 'b', 10 => 'b', 11 => 'b', 12 => 'b', 13 => 'b', 14 => 'b', 15 => 'b', 16 => 'b', 17 => 'b', 18 => 'b', 19 => 'b', 20 => 'b', 21 => 'b', 22 => 'b', 23 => 'b', 24 => 'b', 25 => 'b', 26 => 'b', 27 => 'b', 28 => 'b', 29 => 'b', 30 => 'b', ...)) [provers gave up before completing the proof]
+array_comparison_str.adb:225:22: high: assertion might fail (e.g. when X = (1 => 'a', 2 => 'SOH', others => 'b')) [provers gave up before completing the proof]

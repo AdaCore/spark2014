@@ -1,7 +1,7 @@
 bad_hidden_ownership.ads:3:09: warning: consider annotating a constant with a pragma Annotate (GNATprove, Predefined_Equality, "Null_Value", ...)
 bad_hidden_ownership.ads:3:09: warning: no null value found for type with predefined equality "T_Acc" [predefined-equality-null]
-bad_hidden_ownership.ads:7:04: medium: reclamation entity might not be consistent with reclamation on the full view
+bad_hidden_ownership.ads:7:04: medium: reclamation entity might not be consistent with reclamation on the full view [provers reached step limit before completing the proof]
 bad_hidden_ownership.ads:14:13: info: implicit aspect Always_Terminates on "T_Acc_Holder_Is_Reclaimed" has been proved, subprogram will terminate
-bad_hidden_ownership.ads:14:13: medium: reclamation entity might not be consistent with reclamation on the full view
+bad_hidden_ownership.ads:14:13: medium: reclamation entity might not be consistent with reclamation on the full view [provers reached step limit before completing the proof]
 bad_hidden_ownership.ads:20:13: info: implicit aspect Always_Terminates on "T_Priv_Needs_Reclamation" has been proved, subprogram will terminate
-bad_hidden_ownership.ads:20:13: medium: reclamation entity might not be consistent with reclamation on the full view
+bad_hidden_ownership.ads:20:13: medium: reclamation entity might not be consistent with reclamation on the full view [provers reached step limit before completing the proof]

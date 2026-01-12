@@ -1,56 +1,56 @@
 do_checks.adb:5:14: warning: subprogram "Do_Range_Check" has no effect
 do_checks.adb:6:14: warning: subprogram "Do_Length_Check" has no effect
 do_checks.adb:7:14: warning: subprogram "Do_Discriminant_Check" has no effect
-do_checks.adb:17:24: medium: range check might fail
+do_checks.adb:17:24: medium: range check might fail [provers reached step limit before completing the proof]
 do_checks.adb:23:24: info: range check proved (CVC5: 2 VC)
-do_checks.adb:23:57: high: overflow check might fail, cannot prove lower bound for Zero - 1 (e.g. when Zero = Integer'First) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Zero >= Integer'First + 1) to subprogram at line 5]
-do_checks.adb:31:16: medium: range check might fail
+do_checks.adb:23:57: high: overflow check might fail, cannot prove lower bound for Zero - 1 (e.g. when Zero = Integer'First) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Zero >= Integer'First + 1) to subprogram at line 5] [provers reached step limit before completing the proof]
+do_checks.adb:31:16: medium: range check might fail [provers reached step limit before completing the proof]
 do_checks.adb:38:16: info: range check proved (CVC5: 2 VC)
-do_checks.adb:38:48: high: overflow check might fail, cannot prove lower bound for Zero - 1 (e.g. when Zero = Integer'First) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Zero >= Integer'First + 1) to subprogram at line 5]
-do_checks.adb:47:21: medium: range check might fail
+do_checks.adb:38:48: high: overflow check might fail, cannot prove lower bound for Zero - 1 (e.g. when Zero = Integer'First) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Zero >= Integer'First + 1) to subprogram at line 5] [provers reached step limit before completing the proof]
+do_checks.adb:47:21: medium: range check might fail [provers reached step limit before completing the proof]
 do_checks.adb:53:21: info: range check proved (CVC5: 2 VC)
-do_checks.adb:61:16: medium: range check might fail
+do_checks.adb:61:16: medium: range check might fail [provers reached step limit before completing the proof]
 do_checks.adb:67:16: info: range check proved (CVC5: 2 VC)
-do_checks.adb:67:61: medium: overflow check might fail, cannot prove lower bound for Zero - 1 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Zero >= Integer'First + 1) to subprogram at line 5]
-do_checks.adb:74:17: medium: range check might fail
+do_checks.adb:67:61: medium: overflow check might fail, cannot prove lower bound for Zero - 1 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Zero >= Integer'First + 1) to subprogram at line 5] [provers reached step limit before completing the proof]
+do_checks.adb:74:17: medium: range check might fail [provers reached step limit before completing the proof]
 do_checks.adb:74:47: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 do_checks.adb:78:17: info: range check proved (CVC5: 2 VC)
-do_checks.adb:78:50: high: overflow check might fail, cannot prove lower bound for Zero - 1 (e.g. when Zero = Integer'First) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Zero >= Integer'First + 1) to subprogram at line 5]
+do_checks.adb:78:50: high: overflow check might fail, cannot prove lower bound for Zero - 1 (e.g. when Zero = Integer'First) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Zero >= Integer'First + 1) to subprogram at line 5] [provers reached step limit before completing the proof]
 do_checks.adb:78:54: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
-do_checks.adb:86:19: medium: range check might fail
+do_checks.adb:86:19: medium: range check might fail [provers reached step limit before completing the proof]
 do_checks.adb:94:19: info: range check proved (CVC5: 2 VC)
-do_checks.adb:94:51: medium: overflow check might fail, cannot prove lower bound for Zero - 1 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Zero >= Integer'First + 1) to subprogram at line 5]
-do_checks.adb:103:16: medium: range check might fail
+do_checks.adb:94:51: medium: overflow check might fail, cannot prove lower bound for Zero - 1 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Zero >= Integer'First + 1) to subprogram at line 5] [provers reached step limit before completing the proof]
+do_checks.adb:103:16: medium: range check might fail [provers reached step limit before completing the proof]
 do_checks.adb:109:16: info: range check proved (CVC5: 2 VC)
-do_checks.adb:109:65: medium: overflow check might fail, cannot prove lower bound for Zero - 1 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Zero >= Integer'First + 1) to subprogram at line 5]
-do_checks.adb:118:30: high: range check might fail (e.g. when A = "hello world" and Zero = 0) [reason for check: slice bounds must fit in the underlying array] [possible fix: precondition of subprogram at line 5 should mention Zero]
-do_checks.adb:118:52: medium: range check might fail [possible fix: add precondition (Zero .. 1 in Positive) to subprogram at line 5]
+do_checks.adb:109:65: medium: overflow check might fail, cannot prove lower bound for Zero - 1 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Zero >= Integer'First + 1) to subprogram at line 5] [provers reached step limit before completing the proof]
+do_checks.adb:118:30: high: range check might fail (e.g. when A = "hello world" and Zero = 0) [reason for check: slice bounds must fit in the underlying array] [possible fix: precondition of subprogram at line 5 should mention Zero] [provers reached step limit before completing the proof]
+do_checks.adb:118:52: medium: range check might fail [possible fix: add precondition (Zero .. 1 in Positive) to subprogram at line 5] [provers reached step limit before completing the proof]
 do_checks.adb:125:30: info: range check proved (CVC5: 4 VC)
 do_checks.adb:125:52: info: range check proved (CVC5: 2 VC)
-do_checks.adb:125:60: high: overflow check might fail, cannot prove lower bound for Zero - 1 (e.g. when Zero = Integer'First) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Zero >= Integer'First + 1) to subprogram at line 5]
-do_checks.adb:136:25: medium: range check might fail
+do_checks.adb:125:60: high: overflow check might fail, cannot prove lower bound for Zero - 1 (e.g. when Zero = Integer'First) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Zero >= Integer'First + 1) to subprogram at line 5] [provers reached step limit before completing the proof]
+do_checks.adb:136:25: medium: range check might fail [provers reached step limit before completing the proof]
 do_checks.adb:149:25: info: range check proved (CVC5: 2 VC)
-do_checks.adb:149:57: medium: overflow check might fail, cannot prove lower bound for Zero - 1 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Zero >= Integer'First + 1) to subprogram at line 5]
-do_checks.adb:161:39: high: range check might fail (e.g. when Zero = 0)
-do_checks.adb:161:39: medium: length check might fail [reason for check: array must be of the appropriate length] [possible fix: precondition of subprogram at line 5 should mention Zero]
+do_checks.adb:149:57: medium: overflow check might fail, cannot prove lower bound for Zero - 1 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Zero >= Integer'First + 1) to subprogram at line 5] [provers reached step limit before completing the proof]
+do_checks.adb:161:39: high: range check might fail (e.g. when Zero = 0) [provers reached step limit before completing the proof]
+do_checks.adb:161:39: medium: length check might fail [reason for check: array must be of the appropriate length] [possible fix: precondition of subprogram at line 5 should mention Zero] [provers reached step limit before completing the proof]
 do_checks.adb:161:40: info: range check proved (CVC5: 2 VC)
-do_checks.adb:161:60: medium: range check might fail [possible fix: add precondition (Zero .. 1 in Positive) to subprogram at line 5]
+do_checks.adb:161:60: medium: range check might fail [possible fix: add precondition (Zero .. 1 in Positive) to subprogram at line 5] [provers reached step limit before completing the proof]
 do_checks.adb:167:38: info: length check proved (CVC5: 3 VC)
 do_checks.adb:167:38: info: range check proved (CVC5: 2 VC)
 do_checks.adb:167:39: info: range check proved (CVC5: 2 VC)
 do_checks.adb:167:59: info: range check proved (CVC5: 2 VC)
-do_checks.adb:167:67: high: overflow check might fail, cannot prove lower bound for Zero - 1 (e.g. when Zero = Integer'First) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Zero >= Integer'First + 1) to subprogram at line 5]
-do_checks.adb:167:67: medium: overflow check might fail, cannot prove lower bound for Zero - 1 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Zero >= Integer'First + 1) to subprogram at line 5]
+do_checks.adb:167:67: high: overflow check might fail, cannot prove lower bound for Zero - 1 (e.g. when Zero = Integer'First) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Zero >= Integer'First + 1) to subprogram at line 5] [provers reached step limit before completing the proof]
+do_checks.adb:167:67: medium: overflow check might fail, cannot prove lower bound for Zero - 1 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Zero >= Integer'First + 1) to subprogram at line 5] [provers reached step limit before completing the proof]
 do_checks.adb:210:32: warning: "Y" is not modified, could be IN
 do_checks.adb:212:21: info: length check proved (CVC5: 3 VC)
-do_checks.adb:212:26: medium: length check might fail [reason for check: both array operands must have the same length] [possible fix: precondition of subprogram at line 210 should mention X and Y]
+do_checks.adb:212:26: medium: length check might fail [reason for check: both array operands must have the same length] [possible fix: precondition of subprogram at line 210 should mention X and Y] [provers reached step limit before completing the proof]
 do_checks.adb:217:16: info: precondition proved (Trivial: 1 VC)
 do_checks.adb:221:32: warning: "Y" is not modified, could be IN
 do_checks.adb:223:21: info: length check proved (CVC5: 3 VC)
-do_checks.adb:223:26: medium: length check might fail [reason for check: both array operands must have the same length] [possible fix: precondition of subprogram at line 221 should mention X and Y]
+do_checks.adb:223:26: medium: length check might fail [reason for check: both array operands must have the same length] [possible fix: precondition of subprogram at line 221 should mention X and Y] [provers reached step limit before completing the proof]
 do_checks.adb:228:16: info: precondition proved (Trivial: 1 VC)
 do_checks.adb:234:37: info: initialization of "Y" proved
-do_checks.adb:236:24: medium: length check might fail [reason for check: array must be of the appropriate length] [possible fix: precondition of subprogram at line 234 should mention X]
+do_checks.adb:236:24: medium: length check might fail [reason for check: array must be of the appropriate length] [possible fix: precondition of subprogram at line 234 should mention X] [provers reached step limit before completing the proof]
 do_checks.adb:241:16: info: precondition proved (Trivial: 1 VC)
 do_checks.adb:245:37: info: initialization of "Y" proved
 do_checks.adb:249:24: info: length check proved (CVC5: 3 VC)
@@ -58,7 +58,7 @@ do_checks.adb:254:16: info: precondition proved (CVC5: 2 VC)
 do_checks.adb:260:30: warning: "X" is not modified, could be IN
 do_checks.adb:260:30: warning: unused variable "X"
 do_checks.adb:266:19: info: precondition proved (Trivial: 1 VC)
-do_checks.adb:266:22: medium: length check might fail [reason for check: argument array must have the same length as the parameter array type] [possible fix: precondition of subprogram at line 264 should mention X]
+do_checks.adb:266:22: medium: length check might fail [reason for check: argument array must have the same length as the parameter array type] [possible fix: precondition of subprogram at line 264 should mention X] [provers reached step limit before completing the proof]
 do_checks.adb:270:16: info: precondition proved (Trivial: 1 VC)
 do_checks.adb:274:30: warning: "X" is not modified, could be IN
 do_checks.adb:274:30: warning: unused variable "X"
@@ -69,10 +69,10 @@ do_checks.adb:300:16: info: range check proved (CVC5: 2 VC)
 do_checks.adb:305:24: info: range check proved (CVC5: 2 VC)
 do_checks.adb:306:25: info: range check proved (CVC5: 2 VC)
 do_checks.adb:312:32: warning: "Y" is not modified, could be IN
-do_checks.adb:314:20: medium: discriminant check might fail [possible fix: precondition of subprogram at line 312 should mention X]
-do_checks.adb:314:25: medium: array index check might fail [reason for check: value must be a valid index into the array]
-do_checks.adb:314:32: medium: discriminant check might fail [possible fix: precondition of subprogram at line 312 should mention Y]
-do_checks.adb:314:37: medium: array index check might fail [reason for check: value must be a valid index into the array]
+do_checks.adb:314:20: medium: discriminant check might fail [possible fix: precondition of subprogram at line 312 should mention X] [provers reached step limit before completing the proof]
+do_checks.adb:314:25: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
+do_checks.adb:314:32: medium: discriminant check might fail [possible fix: precondition of subprogram at line 312 should mention Y] [provers reached step limit before completing the proof]
+do_checks.adb:314:37: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
 do_checks.adb:316:23: info: range check proved (CVC5: 2 VC)
 do_checks.adb:316:30: info: discriminant check proved (CVC5: 1 VC)
 do_checks.adb:317:23: info: range check proved (CVC5: 2 VC)
@@ -87,7 +87,7 @@ do_checks.adb:329:26: info: discriminant check proved (CVC5: 1 VC)
 do_checks.adb:330:26: info: discriminant check proved (CVC5: 1 VC)
 do_checks.adb:332:16: info: precondition proved (CVC5: 2 VC)
 do_checks.adb:343:40: info: initialization of "Y" proved
-do_checks.adb:345:27: medium: discriminant check might fail [possible fix: precondition of subprogram at line 343 should mention X]
+do_checks.adb:345:27: medium: discriminant check might fail [possible fix: precondition of subprogram at line 343 should mention X] [provers reached step limit before completing the proof]
 do_checks.adb:347:23: info: range check proved (CVC5: 2 VC)
 do_checks.adb:347:29: info: discriminant check proved (CVC5: 1 VC)
 do_checks.adb:348:29: info: discriminant check proved (CVC5: 1 VC)
@@ -99,7 +99,7 @@ do_checks.adb:360:30: info: discriminant check proved (CVC5: 1 VC)
 do_checks.adb:361:30: info: discriminant check proved (CVC5: 1 VC)
 do_checks.adb:363:16: info: precondition proved (CVC5: 1 VC)
 do_checks.adb:369:40: info: initialization of "Y" proved
-do_checks.adb:371:24: medium: discriminant check might fail [possible fix: precondition of subprogram at line 369 should mention X]
+do_checks.adb:371:24: medium: discriminant check might fail [possible fix: precondition of subprogram at line 369 should mention X] [provers reached step limit before completing the proof]
 do_checks.adb:373:23: info: range check proved (CVC5: 2 VC)
 do_checks.adb:373:29: info: discriminant check proved (CVC5: 1 VC)
 do_checks.adb:374:29: info: discriminant check proved (CVC5: 1 VC)
@@ -115,7 +115,7 @@ do_checks.adb:396:29: warning: "X" is not modified, could be IN
 do_checks.adb:396:44: info: initialization of "Y" proved
 do_checks.adb:401:26: info: discriminant check proved (CVC5: 1 VC)
 do_checks.adb:403:16: info: precondition proved (Trivial: 1 VC)
-do_checks.adb:403:22: medium: discriminant check might fail
+do_checks.adb:403:22: medium: discriminant check might fail [provers reached step limit before completing the proof]
 do_checks.adb:407:29: warning: "X" is not modified, could be IN
 do_checks.adb:407:44: info: initialization of "Y" proved
 do_checks.adb:411:23: info: range check proved (CVC5: 2 VC)
@@ -127,7 +127,7 @@ do_checks.adb:420:30: warning: "X" is not modified, could be IN
 do_checks.adb:420:45: info: initialization of "Y" proved
 do_checks.adb:424:45: info: initialization of "Y" proved
 do_checks.adb:426:19: info: precondition proved (Trivial: 1 VC)
-do_checks.adb:426:23: medium: discriminant check might fail [possible fix: precondition of subprogram at line 424 should mention X]
+do_checks.adb:426:23: medium: discriminant check might fail [possible fix: precondition of subprogram at line 424 should mention X] [provers reached step limit before completing the proof]
 do_checks.adb:429:23: info: range check proved (CVC5: 2 VC)
 do_checks.adb:429:29: info: discriminant check proved (CVC5: 1 VC)
 do_checks.adb:430:29: info: discriminant check proved (CVC5: 1 VC)
@@ -142,7 +142,7 @@ do_checks.adb:443:19: info: discriminant check proved (CVC5: 1 VC)
 do_checks.adb:449:29: warning: "X" is not modified, could be IN
 do_checks.adb:449:44: warning: "Y" is not modified, could be IN
 do_checks.adb:451:19: warning: statement has no effect
-do_checks.adb:451:26: medium: discriminant check might fail [possible fix: precondition of subprogram at line 449 should mention X]
+do_checks.adb:451:26: medium: discriminant check might fail [possible fix: precondition of subprogram at line 449 should mention X] [provers reached step limit before completing the proof]
 do_checks.adb:455:23: info: range check proved (CVC5: 2 VC)
 do_checks.adb:455:29: info: discriminant check proved (CVC5: 1 VC)
 do_checks.adb:456:29: info: discriminant check proved (CVC5: 1 VC)

@@ -7,7 +7,7 @@ assert_assume_in_declare.adb:15:39: info: overflow check proved (CVC5: 2 VC)
 assert_assume_in_declare.adb:16:28: info: assertion proved (CVC5: 1 VC)
 assert_assume_in_declare.adb:18:13: info: precondition proved (CVC5: 1 VC)
 assert_assume_in_declare.adb:21:22: info: assertion proved (CVC5: 1 VC)
-assert_assume_in_declare.adb:26:28: medium: assertion might fail (e.g. when X = 0) [possible fix: subprogram at line 9 should mention X in a precondition]
+assert_assume_in_declare.adb:26:28: medium: assertion might fail (e.g. when X = 0) [possible fix: subprogram at line 9 should mention X in a precondition] [provers gave up before completing the proof]
 assert_assume_in_declare.adb:27:39: info: overflow check proved (CVC5: 2 VC)
 assert_assume_in_declare.adb:29:13: info: precondition proved (CVC5: 1 VC)
 assert_assume_in_declare.adb:32:22: info: assertion proved (CVC5: 1 VC)

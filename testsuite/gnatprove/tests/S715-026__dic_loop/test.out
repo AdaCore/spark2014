@@ -19,7 +19,7 @@ ordering_buffers.adb:43:22: info: assertion proved (CVC5: 1 VC)
 ordering_buffers.adb:44:22: info: assertion proved (CVC5: 1 VC)
 ordering_buffers.adb:45:22: info: assertion proved (CVC5: 1 VC)
 ordering_buffers.adb:46:22: info: assertion proved (CVC5: 2 VC)
-ordering_buffers.adb:46:22: medium: precondition might fail, cannot prove First (Buffer) <= Index
+ordering_buffers.adb:46:22: medium: precondition might fail, cannot prove First (Buffer) <= Index [provers reached step limit before completing the proof]
 ordering_buffers.adb:46:57: info: precondition proved (CVC5: 2 VC)
 ordering_buffers.adb:59:07: info: precondition proved (CVC5: 2 VC)
 ordering_buffers.adb:74:22: info: assertion proved (CVC5: 2 VC)

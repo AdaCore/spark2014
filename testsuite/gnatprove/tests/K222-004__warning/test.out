@@ -1,5 +1,5 @@
 pack.adb:6:07: info: initialization of "B" proved
 pack.adb:14:07: info: initialization of "B" proved
 pack.ads:2:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
-pack.ads:3:19: high: postcondition might fail (e.g. when F'Result = True)
+pack.ads:3:19: high: postcondition might fail (e.g. when F'Result = True) [provers gave up before completing the proof]
 pack.ads:4:14: warning: subprogram "P" has no effect

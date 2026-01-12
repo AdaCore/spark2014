@@ -14,3 +14,4 @@
 --> forgetful_assert.adb:12:19
    12 |       pragma Assert (X = 1);
       |                      ^~~~~
+      + provers gave up before completing the proof

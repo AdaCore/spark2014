@@ -1,7 +1,7 @@
 alias.adb:4:24: info: division check proved (CVC5: 1 VC)
 alias.adb:4:24: info: range check proved (CVC5: 2 VC)
-alias.adb:9:14: high: precondition might fail (e.g. when R = (Content => 0, Modulus => 0)) [possible fix: subprogram at alias.ads:13 should mention R in a precondition]
+alias.adb:9:14: high: precondition might fail (e.g. when R = (Content => 0, Modulus => 0)) [possible fix: subprogram at alias.ads:13 should mention R in a precondition] [provers reached step limit before completing the proof]
 alias.ads:8:13: info: implicit aspect Always_Terminates on "Get_Content" has been proved, subprogram will terminate
 alias.ads:13:13: info: implicit aspect Always_Terminates on "Add" has been proved, subprogram will terminate
 alias.ads:14:14: info: postcondition proved (CVC5: 1 VC)
-alias.ads:14:27: medium: precondition might fail
+alias.ads:14:27: medium: precondition might fail [provers reached step limit before completing the proof]

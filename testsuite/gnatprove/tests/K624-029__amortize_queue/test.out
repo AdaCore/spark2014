@@ -161,13 +161,13 @@ amortized_queue.ads:67:14: info: precondition proved (CVC5: 1 VC)
 amortized_queue.ads:67:28: info: precondition proved (CVC5: 3 VC)
 amortized_queue.ads:69:13: info: implicit aspect Always_Terminates on "Tail" has been proved, subprogram will terminate
 amortized_queue.ads:72:06: info: precondition proved (CVC5: 3 VC)
-amortized_queue.ads:72:06: medium: postcondition might fail, cannot prove Model (Q) = Model (Tail'Result) & Last_Element (Model (Q))
+amortized_queue.ads:72:06: medium: postcondition might fail, cannot prove Model (Q) = Model (Tail'Result) & Last_Element (Model (Q)) [provers reached step limit before completing the proof]
 amortized_queue.ads:72:18: info: precondition proved (CVC5: 3 VC)
 amortized_queue.ads:72:38: info: precondition proved (Z3: 1 VC)
 amortized_queue.ads:72:40: info: precondition proved (CVC5: 1 VC)
 amortized_queue.ads:72:54: info: precondition proved (CVC5: 3 VC)
 amortized_queue.ads:74:13: info: implicit aspect Always_Terminates on "Enqueue" has been proved, subprogram will terminate
-amortized_queue.ads:78:06: medium: postcondition might fail, cannot prove V & Model (Q) = Model (Enqueue'Result)
+amortized_queue.ads:78:06: medium: postcondition might fail, cannot prove V & Model (Q) = Model (Enqueue'Result) [provers reached step limit before completing the proof]
 amortized_queue.ads:78:08: info: precondition proved (CVC5: 1 VC)
 amortized_queue.ads:78:10: info: precondition proved (CVC5: 3 VC)
 amortized_queue.ads:78:22: info: precondition proved (CVC5: 3 VC)

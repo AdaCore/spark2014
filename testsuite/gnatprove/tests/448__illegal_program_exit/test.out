@@ -1,9 +1,9 @@
 test.adb:36:14: error: aspect "Program_Exit" on ghost operations is not allowed in SPARK
 test.adb:36:14: error: violation of aspect SPARK_Mode at line 1
 test.adb:47:09: error: aspect "Program_Exit" on dispatching operation is not yet supported
-test.adb:57:11: error: call which might exit the program and leave G mentioned in the postcondition of "Bad_Call" in an inconsistent state is not yet supported
-test.adb:64:07: error: call which might exit the program and leave G mentioned in the postcondition of "Bad_Call_2" in an inconsistent state is not yet supported
-test.adb:64:07: error: consider mentioning G in the exit postcondition of "P2"
+test.adb:57:11: error: call which might exit the program and leave "G" mentioned in the postcondition of "Bad_Call" in an inconsistent state is not yet supported
+test.adb:64:07: error: call which might exit the program and leave "G" mentioned in the postcondition of "Bad_Call_2" in an inconsistent state is not yet supported
+test.adb:64:07: error: consider mentioning "G" in the exit postcondition of "P2"
 test.adb:91:04: warning: analyzing unreferenced procedure "Bad_Access" [unreferenced-procedure]
 test.adb:93:17: error: access to procedure which might exit the program is not yet supported
 test.adb:101:04: warning: analyzing unreferenced procedure "Scope" [unreferenced-procedure]

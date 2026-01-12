@@ -1,10 +1,11 @@
-function_contracts.adb:28:24: medium: loop might not terminate [reason for check: procedure "May_Halt" has an Always_Terminates aspect]
+function_contracts.adb:28:24: medium: loop might not terminate [reason for check: procedure "May_Halt" has an Always_Terminates aspect] [provers gave up before completing the proof]
 function_contracts.ads:6:14: info: implicit aspect Always_Terminates on "Maximum" has been proved, subprogram will terminate
-function_contracts.ads:9:32: high: postcondition might fail, cannot prove Maximum'Result = Y (e.g. when Maximum'Result = -1 and Y = 0)
+function_contracts.ads:9:32: high: postcondition might fail, cannot prove Maximum'Result = Y (e.g. when Maximum'Result = -1 and Y = 0) [provers reached step limit before completing the proof]
 function_contracts.ads:11:24: warning: unused initial value of "Y"
 function_contracts.ads:13:09: info: data dependencies proved
-function_contracts.ads:14:17: high: postcondition might fail (e.g. when X = 1 and X'Old = 1 and Y = 1 and Y'Old = 0)
-function_contracts.ads:20:51: medium: exceptional case might fail (e.g. when Arg = -1) [possible fix: subprogram at line 18 should mention Arg in a precondition]
+function_contracts.ads:14:17: high: postcondition might fail (e.g. when X = 1 and X'Old = 1 and Y = 1 and Y'Old = 0) [provers gave up before completing the proof]
+function_contracts.ads:20:51: medium: exceptional case might fail (e.g. when Arg = -1) [possible fix: subprogram at line 18 should mention Arg in a precondition] [provers gave up before completing the proof]
+low_level.adb:22:14: high: alignment of source type of unchecked conversion might not be an integral multiple of alignment of target type [possible explanation: alignment of type "Buffer" (which is 1) must be a multiple of the alignment of type "C_Struct" (which is 4)]
 low_level.adb:22:14: info: types in unchecked conversion have the same size (Trivial)
 low_level.adb:22:14: warning: imprecise handling of Unchecked_Conversion (component offset not known) [imprecise-unchecked-conversion]
 low_level.adb:22:65: info: type is suitable as source for unchecked conversion (Trivial)
@@ -12,6 +13,7 @@ low_level.adb:22:83: info: type is suitable for unchecked conversion (Trivial)
 low_level.adb:25:09: info: address in address clause is compatible with object alignment (Trivial)
 low_level.adb:25:09: info: object is suitable for aliasing via address clause (Trivial)
 low_level.adb:25:09: info: type is suitable as source for unchecked conversion (Trivial)
+low_level.adb:25:09: warning: imprecise handling of overlay (component offset not known) [imprecise-overlay]
 low_level.adb:26:33: info: object is suitable for aliasing via address clause (Trivial)
 low_level.adb:26:33: info: type is suitable as source for unchecked conversion (Trivial)
 low_level.adb:26:33: info: types of aliased objects have the same size (Trivial)

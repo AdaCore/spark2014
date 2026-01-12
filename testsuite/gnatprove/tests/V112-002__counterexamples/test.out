@@ -1,42 +1,42 @@
 main.adb:6:06: info: data dependencies proved
-main.adb:9:22: medium: assertion might fail [possible fix: subprogram at line 5 should mention S in a precondition]
+main.adb:9:22: medium: assertion might fail [possible fix: subprogram at line 5 should mention S in a precondition] [provers reached step limit before completing the proof]
 main.adb:13:06: info: data dependencies proved
-main.adb:17:22: medium: assertion might fail [possible fix: precondition of subprogram at line 12 should mention S]
+main.adb:17:22: medium: assertion might fail [possible fix: precondition of subprogram at line 12 should mention S] [provers reached step limit before completing the proof]
 main.adb:17:44: info: index check proved (CVC5: 2 VC)
 main.adb:25:06: info: data dependencies proved
 main.adb:26:38: info: pointer dereference check proved (CVC5: 1 VC)
-main.adb:29:22: medium: assertion might fail
+main.adb:29:22: medium: assertion might fail [provers reached step limit before completing the proof]
 main.adb:29:26: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:35:06: info: data dependencies proved
-main.adb:39:40: medium: assertion might fail, cannot prove E'Initialized (e.g. when E = A (2))
+main.adb:39:40: medium: assertion might fail, cannot prove E'Initialized (e.g. when E = A (2)) [provers reached step limit before completing the proof]
 main.adb:44:06: info: data dependencies proved
-main.adb:48:40: medium: assertion might fail, cannot prove E /= 1 (e.g. when E = A (1))
+main.adb:48:40: medium: assertion might fail, cannot prove E /= 1 (e.g. when E = A (1)) [provers reached step limit before completing the proof]
 main.adb:57:06: info: data dependencies proved
 main.adb:58:52: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:58:56: info: index check proved (CVC5: 2 VC)
-main.adb:61:22: medium: assertion might fail
+main.adb:61:22: medium: assertion might fail [provers reached step limit before completing the proof]
 main.adb:61:23: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:61:27: info: index check proved (CVC5: 2 VC)
 main.adb:83:06: info: data dependencies proved
 main.adb:85:07: info: initialization of "X" proved
-main.adb:87:22: medium: assertion might fail
+main.adb:87:22: medium: assertion might fail [provers reached step limit before completing the proof]
 main.adb:112:06: info: data dependencies proved
 main.adb:115:21: info: discriminant check proved (CVC5: 1 VC)
 main.adb:115:33: info: discriminant check proved (CVC5: 1 VC)
 main.adb:116:21: info: discriminant check proved (CVC5: 1 VC)
 main.adb:117:21: info: discriminant check proved (CVC5: 1 VC)
 main.adb:118:25: info: discriminant check proved (CVC5: 1 VC)
-main.adb:123:28: medium: assertion might fail
+main.adb:123:28: medium: assertion might fail [provers reached step limit before completing the proof]
 main.adb:123:29: info: discriminant check proved (CVC5: 1 VC)
-main.adb:125:28: medium: assertion might fail
+main.adb:125:28: medium: assertion might fail [provers reached step limit before completing the proof]
 main.adb:125:29: info: discriminant check proved (CVC5: 1 VC)
-main.adb:127:28: medium: assertion might fail
+main.adb:127:28: medium: assertion might fail [provers reached step limit before completing the proof]
 main.adb:127:33: info: discriminant check proved (CVC5: 1 VC)
-main.adb:129:28: medium: assertion might fail
+main.adb:129:28: medium: assertion might fail [provers reached step limit before completing the proof]
 main.adb:129:29: info: discriminant check proved (CVC5: 1 VC)
 main.adb:136:06: info: data dependencies proved
 main.adb:138:69: info: index check proved (CVC5: 2 VC)
 main.adb:138:72: info: index check proved (CVC5: 2 VC)
-main.adb:141:22: medium: assertion might fail
+main.adb:141:22: medium: assertion might fail [provers reached step limit before completing the proof]
 main.adb:141:25: info: index check proved (CVC5: 2 VC)
 main.adb:141:28: info: index check proved (CVC5: 2 VC)

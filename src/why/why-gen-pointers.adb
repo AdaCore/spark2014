@@ -2186,12 +2186,12 @@ package body Why.Gen.Pointers is
       Des_Ty       : constant Entity_Id := Directly_Designated_Type (I.P_Typ);
       Relaxed_Init : constant Boolean :=
         I.Init.Present
-        or else (if Has_Init_Wrapper (I.P_Typ)
-                   and then not Has_Relaxed_Init (Des_Ty)
-                 then
-                   Get_Module (Get_Name (Get_Typ (I.Value.B_Name)))
-                   = E_Module (Des_Ty, Init_Wrapper)
-                 else False);
+        or else
+          (if Has_Init_Wrapper (I.P_Typ) and then not Has_Relaxed_Init (Des_Ty)
+           then
+             Get_Module (Get_Name (Get_Typ (I.Value.B_Name)))
+             = E_Module (Des_Ty, Init_Wrapper)
+           else False);
       E            : constant Entity_Id := I.Value.Ada_Node;
       Ty           : constant Entity_Id := I.P_Typ;
       Value        : W_Expr_Id;

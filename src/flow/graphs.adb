@@ -532,9 +532,7 @@ package body Graphs is
 
       for U in Component_Id range 1 .. Component_Id (Current_Component) loop
          --  Exempt from formatting due to eng/ide/gnatformat#194
-         --!format off
          for V : Component_Id of CG (U) loop
-         --!format on
             Succ (U).Union (Succ (V));
             Succ (U).Include (V);
          end loop;
@@ -897,7 +895,7 @@ package body Graphs is
                           (Dominator_Tree_Visitor'
                              (Parent => Current.Child, Child => W));
                      end if;
-                  --  In_Neighbours is our version of Pred
+                     --  In_Neighbours is our version of Pred
                   end;
                end loop;
             end if;

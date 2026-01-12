@@ -1,10 +1,10 @@
 err.adb:1:16: info: initialization of "Y" proved
 err.adb:10:08: high: "A" is not initialized
 err.adb:10:08: high: "B" is not initialized
-err.adb:10:28: medium: array index check might fail [reason for check: value must be a valid index into the array]
-err.adb:10:32: medium: array index check might fail [reason for check: value must be a valid index into the array]
+err.adb:10:28: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers gave up before completing the proof]
+err.adb:10:32: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers gave up before completing the proof]
 err.adb:10:49: high: "C" is not initialized
 mix.adb:1:35: info: initialization of "Y" proved
 mix.adb:2:21: info: flow dependencies proved
-mix.adb:9:28: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition ((A) in 1 .. 3) to subprogram at line 1]
-mix.adb:9:32: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition ((B) in 1 .. 3) to subprogram at line 1]
+mix.adb:9:28: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition ((A) in 1 .. 3) to subprogram at line 1] [provers gave up before completing the proof]
+mix.adb:9:32: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition ((B) in 1 .. 3) to subprogram at line 1] [provers gave up before completing the proof]

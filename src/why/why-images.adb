@@ -266,7 +266,7 @@ package body Why.Images is
 
       procedure Print_Decimal_Notation (Num, Den : Uint) is
          Max          : constant Nat := Max_Number_Of_Decimals (Den);
-         Scale_Factor : constant Uint := UI_From_Int (10)**Max;
+         Scale_Factor : constant Uint := UI_From_Int (10) ** Max;
          Scale_Num    : constant Uint := Num * Scale_Factor;
          Scale_Result : constant Uint := Scale_Num / Den;
 

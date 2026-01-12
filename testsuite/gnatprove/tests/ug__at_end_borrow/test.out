@@ -115,10 +115,10 @@
  info: predicate check proved
 --> list_borrows.adb:52:33
 
- info: loop invariant preservation proved
+ info: loop invariant initialization proved
 --> list_borrows.adb:52:33
 
- info: loop invariant initialization proved
+ info: loop invariant preservation proved
 --> list_borrows.adb:52:33
 
  info: predicate check proved
@@ -130,10 +130,10 @@
  info: predicate check proved
 --> list_borrows.adb:55:13
 
- info: loop invariant preservation proved
+ info: loop invariant initialization proved
 --> list_borrows.adb:55:13
 
- info: loop invariant initialization proved
+ info: loop invariant preservation proved
 --> list_borrows.adb:55:13
 
  info: predicate check proved
@@ -193,6 +193,7 @@
       |       ^~~~~~~~~~~~~~~
    72 |         new List'(1, new List'(2, new List'(3, new List'(4, new List'(5, null)))));
       |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      + provers reached time and step limit before completing the proof
 
  info: pointer dereference check proved
 --> list_borrows.adb:75:33

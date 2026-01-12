@@ -8,4 +8,6 @@ package Bad_UC with SPARK_Mode is
       X : Integer := 0;
    end Prot;
    function Prot_To_Int is new Ada.Unchecked_Conversion (Prot, Integer);
+
+   function Int_To_Prot is new Ada.Unchecked_Conversion (Integer, Prot);
 end Bad_UC;

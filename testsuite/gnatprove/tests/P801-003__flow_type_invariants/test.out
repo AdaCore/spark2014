@@ -28,11 +28,11 @@ gnatprove: error during flow analysis and proof
 === test_06.adb ===
 test_06.ads:5:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 test_06.ads:9:09: medium: in inlined invariant at test_06.ads:13
-test_06.ads:9:09: medium: invariant check might fail on default value, cannot prove F (T)
+test_06.ads:9:09: medium: invariant check might fail on default value, cannot prove F (T) [provers gave up before completing the proof]
 test_06.ads:13:27: high: cannot call boundary subprogram "F" for type "T" in its own invariant (SPARK RM 7.3.2(5))
-test_06.ads:13:27: medium: for X before the call at test_06.ads:5
+test_06.ads:13:27: medium: for "X" before the call at test_06.ads:5
 test_06.ads:13:27: medium: in inlined invariant at test_06.ads:13
-test_06.ads:13:27: medium: invariant check might fail
+test_06.ads:13:27: medium: invariant check might fail [provers gave up before completing the proof]
 
 === test_07.ads ===
 test_07.ads:9:09: info: invariant check proved on default value (CVC5: 1 VC)

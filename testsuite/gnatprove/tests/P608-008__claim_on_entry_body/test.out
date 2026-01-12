@@ -1,1 +1,1 @@
-logger.adb:7:25: medium: assertion might fail
+logger.adb:7:25: medium: assertion might fail [provers reached step limit before completing the proof]

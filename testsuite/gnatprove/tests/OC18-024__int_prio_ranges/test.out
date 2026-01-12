@@ -1,14 +1,14 @@
 common.ads:5:13: info: implicit aspect Always_Terminates on "Bad_Priority" has been proved, subprogram will terminate
 common.ads:6:13: info: implicit aspect Always_Terminates on "Bad_Interrupt_Priority" has been proved, subprogram will terminate
 p.ads:6:30: info: range check proved (CVC5: 2 VC)
-p.ads:10:40: medium: range check might fail
+p.ads:10:40: medium: range check might fail [provers gave up before completing the proof]
 t.adb:6:07: info: initialization of "Wakeup" proved
-t.adb:10:27: medium: range check might fail [reason for check: value must fit in the target type of the assignment] [possible fix: loop at line 8 should mention Wakeup in a loop invariant]
+t.adb:10:27: medium: range check might fail [reason for check: value must fit in the target type of the assignment] [possible fix: loop at line 8 should mention Wakeup in a loop invariant] [provers reached step limit before completing the proof]
 t.adb:10:29: info: range check proved (CVC5: 1 VC)
 t.adb:16:07: info: initialization of "Wakeup" proved
-t.adb:20:27: medium: range check might fail [reason for check: value must fit in the target type of the assignment] [possible fix: loop at line 18 should mention Wakeup in a loop invariant]
+t.adb:20:27: medium: range check might fail [reason for check: value must fit in the target type of the assignment] [possible fix: loop at line 18 should mention Wakeup in a loop invariant] [provers reached step limit before completing the proof]
 t.adb:20:29: info: range check proved (CVC5: 1 VC)
 t.ads:5:14: info: nontermination of task proved (CVC5: 1 VC)
-t.ads:6:30: medium: range check might fail
+t.ads:6:30: medium: range check might fail [provers gave up before completing the proof]
 t.ads:9:14: info: nontermination of task proved (CVC5: 1 VC)
-t.ads:10:40: medium: range check might fail
+t.ads:10:40: medium: range check might fail [provers gave up before completing the proof]

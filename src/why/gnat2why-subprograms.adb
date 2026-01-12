@@ -37,7 +37,6 @@ with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Flow_Refinement;                use Flow_Refinement;
 with Flow_Utility;                   use Flow_Utility;
 with GNAT.Source_Info;
-with Gnat2Why.Data_Decomposition;    use Gnat2Why.Data_Decomposition;
 with Gnat2Why.Error_Messages;        use Gnat2Why.Error_Messages;
 with Gnat2Why.Expr;                  use Gnat2Why.Expr;
 with Gnat2Why_Opts;                  use Gnat2Why_Opts;
@@ -458,9 +457,9 @@ package body Gnat2Why.Subprograms is
                else Empty);
 
             if Nkind (Withed_Unit) = N_Package_Declaration
-              and then (Is_Subprogram (Main)
-                        or else Known_To_Precede
-                                  (Withed => Withed, Main => Main))
+              and then
+                (Is_Subprogram (Main)
+                 or else Known_To_Precede (Withed => Withed, Main => Main))
             then
                declare
                   Init_Conds : constant Node_Lists.List :=
@@ -480,8 +479,9 @@ package body Gnat2Why.Subprograms is
 
             elsif Nkind (Withed_Unit) = N_Package_Declaration
               and then Has_Contracts (Withed, Pragma_Initial_Condition)
-              and then (Ekind (Main) /= E_Package_Body
-                        or else Withed /= Unique_Entity (Main))
+              and then
+                (Ekind (Main) /= E_Package_Body
+                 or else Withed /= Unique_Entity (Main))
             then
                Warning_Msg_N
                  (Warn_Init_Cond_Ignored,
@@ -667,8 +667,9 @@ package body Gnat2Why.Subprograms is
          --  closure.)
 
          if Trace.Length >= 2
-           and then Top_Level_Packages.Contains
-                      (Trace (Name_Lists.Next (Trace.First)))
+           and then
+             Top_Level_Packages.Contains
+               (Trace (Name_Lists.Next (Trace.First)))
          then
             In_Elaboration := True;
          end if;
@@ -1802,10 +1803,11 @@ package body Gnat2Why.Subprograms is
                   pragma
                     Assert
                       (K = Regular
-                         and then Ty
-                                  in M_Main.Type_Of_Heap
-                                   | EW_Private_Type
-                                   | EW_Unit_Type);
+                       and then
+                         Ty
+                         in M_Main.Type_Of_Heap
+                          | EW_Private_Type
+                          | EW_Unit_Type);
                end;
             end if;
 
@@ -2332,8 +2334,9 @@ package body Gnat2Why.Subprograms is
       --  are at least two guards, and none is an OTHER guard.
 
       if List_Length (Component_Associations (Aggr)) >= 2
-        and then (if List_Length (Component_Associations (Aggr)) = 2
-                  then not Has_Others)
+        and then
+          (if List_Length (Component_Associations (Aggr)) = 2
+           then not Has_Others)
       then
          Append
            (Result,
@@ -2486,12 +2489,14 @@ package body Gnat2Why.Subprograms is
             else
                Do_Warn :=
                  Params.Warn_On_Dead
-                 and then not Exp_Util.Is_Statically_Disabled
-                                (Case_Guard, False, Include_Valid => True);
+                 and then
+                   not Exp_Util.Is_Statically_Disabled
+                         (Case_Guard, False, Include_Valid => True);
                Warn_Others :=
                  Warn_Others
-                 and then not Exp_Util.Is_Statically_Disabled
-                                (Case_Guard, True, Include_Valid => True);
+                 and then
+                   not Exp_Util.Is_Statically_Disabled
+                         (Case_Guard, True, Include_Valid => True);
             end if;
 
             WP_Consequence :=
@@ -2803,7 +2808,7 @@ package body Gnat2Why.Subprograms is
            (Continuation_Type'
               (E,
                To_Unbounded_String
-                 ("on exceptional exit from " & Source_Name (E))));
+                 ("on exceptional exit from " & Pretty_Source_Name (E))));
 
          while Present (Exit_Case) loop
             declare
@@ -3027,7 +3032,8 @@ package body Gnat2Why.Subprograms is
       begin
          Check_Info.Continuation.Append
            (Continuation_Type'
-              (E, To_Unbounded_String (Loc & " from " & Source_Name (E))));
+              (E,
+               To_Unbounded_String (Loc & " from " & Pretty_Source_Name (E))));
 
          while Present (Exit_Case) loop
             declare
@@ -3230,9 +3236,10 @@ package body Gnat2Why.Subprograms is
       --  in proof, its postcondition cannot be used to inline it.
 
       elsif Proof_Module_Cyclic (Function_Entity)
-        and then not Find_Contracts
-                       (Function_Entity, Pragma_Postcondition, False, False)
-                       .Is_Empty
+        and then
+          not Find_Contracts
+                (Function_Entity, Pragma_Postcondition, False, False)
+                .Is_Empty
       then
          Error_Msg_N
            ("function cannot be inlined for proof",
@@ -3261,7 +3268,7 @@ package body Gnat2Why.Subprograms is
 
             W_Def :=
               +New_Function_Validity_Wrapper_Value
-                 (Fun        => Function_Entity,
+                 (Ty         => Etype (Function_Entity),
                   Valid_Flag => Valid_Flag,
                   Value      => +W_Def);
 
@@ -3316,7 +3323,7 @@ package body Gnat2Why.Subprograms is
    is
       Why_Type           : constant W_Type_Id :=
         (if Is_Potentially_Invalid (E)
-         then Validity_Wrapper_Type (E)
+         then Validity_Wrapper_Type (Etype (E))
          else Type_Of_Node (E));
       Logic_Func_Binders : constant Item_Array :=
         Compute_Binders (E, EW_Term, More_Reads);
@@ -3357,21 +3364,24 @@ package body Gnat2Why.Subprograms is
    begin
       if Is_Unchecked_Conversion_Instance (E) then
          declare
-            Precise_UC               : constant True_Or_Explain :=
-              Is_UC_With_Precise_Definition (E);
+            Precise_UC               : True_Or_Explain;
             Source, Target           : Node_Id;
             Source_Type, Target_Type : Entity_Id;
-            Arg                      : constant W_Identifier_Id :=
-              Logic_Why_Binders (1).B_Name;
          begin
             Get_Unchecked_Conversion_Args (E, Source, Target);
             Source_Type := Retysp (Entity (Source));
             Target_Type := Retysp (Entity (Target));
 
+            Create_Module_For_UC_If_Needed
+              (Source_Type, Target_Type, Is_Potentially_Invalid (E));
+
+            Precise_UC :=
+              Is_UC_With_Precise_Definition
+                (Source_Type, Target_Type, Is_Potentially_Invalid (E));
+
+            --  Output information on reason for imprecise handling of UC.
+
             if not Precise_UC.Ok then
-
-               --  Output information on reason for imprecise handling of UC.
-
                Warning_Msg_N
                  (Warn_Imprecise_UC,
                   E,
@@ -3379,36 +3389,15 @@ package body Gnat2Why.Subprograms is
                     Create_N
                       (Warn_Imprecise_UC,
                        Names => [To_String (Precise_UC.Explanation)]));
-
-               Def := Why_Empty;
-
-            elsif Is_Scalar_Type (Source_Type)
-              and then Is_Scalar_Type (Target_Type)
-            then
-               Def :=
-                 Precise_Integer_UC
-                   (Arg           => +Arg,
-                    Size          =>
-                      Get_Attribute_Value (Source_Type, Attribute_Size),
-                    Source_Type   => EW_Abstract (Source_Type),
-                    Target_Type   => Base_Why_Type_No_Bool (Target_Type),
-                    Source_Status => Get_Scalar_Status (Source_Type),
-                    Target_Status => Get_Scalar_Status (Target_Type),
-                    Ada_Function  => E);
-
-            --  At least one of Source or Target is a composite type made up
-            --  of integers. Convert Source to a large-enough modular type,
-            --  and convert that value to Target. If all types involved are
-            --  modular, then this benefits from bitvector support in provers.
-
-            else
-               Def :=
-                 Precise_Composite_UC
-                   (Arg          => +Arg,
-                    Source_Type  => Source_Type,
-                    Target_Type  => Target_Type,
-                    Ada_Function => E);
             end if;
+
+            Def :=
+              New_Call
+                (Name    =>
+                   Get_UC_Function
+                     (Source_Type, Target_Type, Is_Potentially_Invalid (E)),
+                 Binders => Logic_Why_Binders,
+                 Typ     => Why_Type);
          end;
 
       else
@@ -3729,8 +3718,9 @@ package body Gnat2Why.Subprograms is
       --  the current operation.
 
       if not (Post_List.Is_Empty and then CC_List.Is_Empty)
-        and then not (Classwide_Post_List.Is_Empty
-                      and then Inherited_Post_List.Is_Empty)
+        and then
+          not (Classwide_Post_List.Is_Empty
+               and then Inherited_Post_List.Is_Empty)
       then
          Pre_Assume :=
            New_Assume_Statement
@@ -4983,7 +4973,7 @@ package body Gnat2Why.Subprograms is
                        (E,
                         To_Unbounded_String
                           ("for parameter "
-                           & Source_Name (Param)
+                           & Pretty_Source_Name (Param)
                            & " at the end of the subprogram")));
 
                   if B.Init.Present then
@@ -5043,8 +5033,9 @@ package body Gnat2Why.Subprograms is
       function Check_Inline_Annotation return W_Prog_Id is
          Need_Check : constant Boolean :=
            (Present (Retrieve_Inline_Annotation (E))
-            and then (not Is_Expression_Function_Or_Completion (E)
-                      or else not Entity_Body_Compatible_With_SPARK (E)))
+            and then
+              (not Is_Expression_Function_Or_Completion (E)
+               or else not Entity_Body_Compatible_With_SPARK (E)))
            or else Has_Logical_Eq_Annotation (E);
          Params     : constant Transformation_Params := Contract_VC_Params;
       begin
@@ -5346,10 +5337,10 @@ package body Gnat2Why.Subprograms is
                pragma
                  Assert
                    (if No (Post_N)
-                      then
-                        Is_True_Boolean
-                          (+Get_Static_Call_Contract
-                              (Mark_Params, E, Pragma_Postcondition)));
+                    then
+                      Is_True_Boolean
+                        (+Get_Static_Call_Contract
+                            (Mark_Params, E, Pragma_Postcondition)));
                return Why_Empty;
             else
                return
@@ -5661,9 +5652,8 @@ package body Gnat2Why.Subprograms is
                   Message  =>
                     To_Unbounded_String
                       ("in implicit overriding of primitive function with"
-                       & " dispatching result """
-                       & Source_Name (E)
-                       & '"')));
+                       & " dispatching result "
+                       & Pretty_Source_Name (E))));
          end;
       end if;
 
@@ -5677,8 +5667,9 @@ package body Gnat2Why.Subprograms is
             --  disabled.
 
             if Original_Node (Expr) /= Expr
-              and then not Exp_Util.Is_Statically_Disabled
-                             (Expr, False, Include_Valid => True)
+              and then
+                not Exp_Util.Is_Statically_Disabled
+                      (Expr, False, Include_Valid => True)
             then
                Warning_Msg_N (Warn_Precondition_Statically_False, Expr);
             end if;
@@ -6056,7 +6047,9 @@ package body Gnat2Why.Subprograms is
                                    (Ada_Node => Obj,
                                     Message  =>
                                       To_Unbounded_String
-                                        ("for " & Source_Name (Obj) & Loc)));
+                                        ("for "
+                                         & Pretty_Source_Name (Obj)
+                                         & Loc)));
 
                               Handler :=
                                 Sequence
@@ -6194,8 +6187,8 @@ package body Gnat2Why.Subprograms is
             --  feasibility check.
 
             if Is_Function_Type (E)
-              or else (Ekind (E) = E_Function
-                       and then Is_Abstract_Subprogram (E))
+              or else
+                (Ekind (E) = E_Function and then Is_Abstract_Subprogram (E))
             then
                Why_Body := Check_Feasibility;
             else
@@ -6330,6 +6323,14 @@ package body Gnat2Why.Subprograms is
                Emit_Static_Proof_Result
                  (E,
                   VC_UC_Same_Size,
+                  Valid,
+                  E,
+                  Explanation => To_String (Explanation));
+
+               Types_Compatible_Alignment (Src_Ty, Tar_Ty, Valid, Explanation);
+               Emit_Static_Proof_Result
+                 (E,
+                  VC_UC_Align_UC,
                   Valid,
                   E,
                   Explanation => To_String (Explanation));
@@ -6666,7 +6667,7 @@ package body Gnat2Why.Subprograms is
 
       if Is_Function_Or_Function_Type (E) then
          if Needs_Validity_Wrapper then
-            Why_Type := Validity_Wrapper_Type (E);
+            Why_Type := Validity_Wrapper_Type (Etype (E));
          else
             Why_Type := Type_Of_Node (E);
          end if;
@@ -6783,11 +6784,14 @@ package body Gnat2Why.Subprograms is
          Result_Value      : constant W_Term_Id :=
            (if Needs_Validity_Wrapper
             then
-              +New_Function_Valid_Value_Access (Fun => E, Name => +Result_Id)
+              +New_Function_Valid_Value_Access
+                 (Ty => Etype (E), Name => +Result_Id)
             else +Result_Id);
          Result_Valid_Flag : constant W_Term_Id :=
            (if Needs_Validity_Wrapper
-            then +New_Function_Valid_Flag_Access (Fun => E, Name => +Result_Id)
+            then
+              +New_Function_Valid_Flag_Access
+                 (Ty => Etype (E), Name => +Result_Id)
             else Why_Empty);
          Logic_Why_Binders : constant Binder_Array :=
            To_Binder_Array (Logic_Func_Binders);
@@ -7132,7 +7136,7 @@ package body Gnat2Why.Subprograms is
                      pragma
                        Assert
                          (Anc_Binders'First = Desc_Binders'First
-                            and Anc_Binders'Last = Desc_Binders'Last);
+                          and Anc_Binders'Last = Desc_Binders'Last);
 
                      --  Conversions are needed for controlling parameters
 
@@ -7161,9 +7165,9 @@ package body Gnat2Why.Subprograms is
                      pragma
                        Assert
                          (if Has_Controlling_Result (Descendant_E)
-                            then
-                              Base_Retysp (Descendant)
-                              = Base_Retysp (Etype (Descendant_E)));
+                          then
+                            Base_Retysp (Descendant)
+                            = Base_Retysp (Etype (Descendant_E)));
 
                      Emit
                        (Th,
@@ -7291,8 +7295,9 @@ package body Gnat2Why.Subprograms is
 
                         if not Has_Contracts
                                  (Descendant_E, Pragma_Postcondition)
-                          and then not Has_Contracts
-                                         (Descendant_E, Pragma_Contract_Cases)
+                          and then
+                            not Has_Contracts
+                                  (Descendant_E, Pragma_Contract_Cases)
                         then
                            Desc_Post :=
                              Get_LSP_Contract
@@ -7766,7 +7771,7 @@ package body Gnat2Why.Subprograms is
 
          Why_Type :=
            (if Needs_Validity_Wrapper
-            then Validity_Wrapper_Type (E)
+            then Validity_Wrapper_Type (Etype (E))
             else Type_Of_Node (E));
 
          declare
@@ -7779,12 +7784,13 @@ package body Gnat2Why.Subprograms is
               (if Needs_Validity_Wrapper
                then
                  +New_Function_Valid_Value_Access
-                    (Fun => E, Name => +Result_Id)
+                    (Ty => Etype (E), Name => +Result_Id)
                else +Result_Id);
             Result_Valid_Flag   : constant W_Term_Id :=
               (if Needs_Validity_Wrapper
                then
-                 +New_Function_Valid_Flag_Access (Fun => E, Name => +Result_Id)
+                 +New_Function_Valid_Flag_Access
+                    (Ty => Etype (E), Name => +Result_Id)
                else Why_Empty);
             Dynamic_Prop_Result : constant W_Pred_Id :=
               +New_And_Then_Expr
@@ -8027,7 +8033,7 @@ package body Gnat2Why.Subprograms is
 
                      Expr_Body :=
                        New_Function_Validity_Wrapper_Value
-                         (Fun        => E,
+                         (Ty         => Etype (E),
                           Valid_Flag => Valid_Flag,
                           Value      => Expr_Body);
 
@@ -9009,8 +9015,9 @@ package body Gnat2Why.Subprograms is
       if Ekind (E) = E_Function
         and then Is_Recursive (E)
         and then Has_Subprogram_Variant (E)
-        and then not Is_Structural_Subprogram_Variant
-                       (Get_Pragma (E, Pragma_Subprogram_Variant))
+        and then
+          not Is_Structural_Subprogram_Variant
+                (Get_Pragma (E, Pragma_Subprogram_Variant))
       then
 
          --  Raise a warning about missing definition on recursive calls
@@ -9019,8 +9026,9 @@ package body Gnat2Why.Subprograms is
             Scope            : constant Entity_Id := Enclosing_Unit (E);
             String_For_Scope : constant String :=
               (if Present (Scope)
-                 and then Ekind (Scope)
-                          in E_Package | E_Function | E_Procedure | E_Entry
+                 and then
+                   Ekind (Scope)
+                   in E_Package | E_Function | E_Procedure | E_Entry
                  and then Proof_Module_Cyclic (E, Scope)
                then " and on calls from enclosing unit"
                else "");
@@ -9079,110 +9087,6 @@ package body Gnat2Why.Subprograms is
                    else "")
                 & ", created in "
                 & GNAT.Source_Info.Enclosing_Entity);
-      end if;
-
-      --  If E is potentially invalid, create a record wrapper for its
-      --  result and its valid flag.
-
-      if Is_Potentially_Invalid (E) then
-         declare
-            Validity_Module : constant W_Module_Id :=
-              E_Module (E, Validity_Wrapper);
-            Validity_Th     : Theory_UC :=
-              Open_Theory
-                (WF_Context,
-                 Validity_Module,
-                 Comment =>
-                   "Module for the wrapper type for the potentially invalid"
-                   & " result of "
-                   & """"
-                   & Get_Name_String (Chars (E))
-                   & """"
-                   & (if Sloc (E) > 0
-                      then " defined at " & Build_Location_String (Sloc (E))
-                      else "")
-                   & ", created in "
-                   & GNAT.Source_Info.Enclosing_Entity);
-            E_Ty            : constant W_Type_Id := Type_Of_Node (E);
-            Tree_Ty         : constant W_Type_Id :=
-              Get_Validity_Tree_Type (Etype (E));
-
-         begin
-            Emit_Record_Declaration
-              (Th      => Validity_Th,
-               Name    => To_Local (E_Symb (E, WNE_Valid_Wrapper)),
-               Binders =>
-                 (1 =>
-                    (B_Name =>
-                       New_Identifier
-                         (Domain => EW_Term,
-                          Name   =>
-                            To_Local (E_Symb (E, WNE_Valid_Wrapper_Result)),
-                          Typ    => E_Ty),
-                     others => <>),
-                  2 =>
-                    (B_Name =>
-                       New_Identifier
-                         (Domain => EW_Term,
-                          Name   =>
-                            To_Local (E_Symb (E, WNE_Valid_Wrapper_Flag)),
-                          Typ    => Tree_Ty),
-                     others => <>)));
-
-            declare
-               Wrapper_Id : constant W_Identifier_Id :=
-                 New_Identifier
-                   (Name => "x",
-                    Typ  =>
-                      New_Named_Type
-                        (Name => To_Local (E_Symb (E, WNE_Valid_Wrapper))));
-            begin
-               Emit
-                 (Validity_Th,
-                  New_Function_Decl
-                    (Domain      => EW_Prog,
-                     Name        =>
-                       To_Program_Space
-                         (To_Local (E_Symb (E, WNE_Valid_Wrapper_Result))),
-                     Binders     =>
-                       Binder_Array'
-                         (1 => (B_Name => Wrapper_Id, others => <>)),
-                     Return_Type => E_Ty,
-                     Location    => No_Location,
-                     Labels      => Symbol_Sets.Empty_Set,
-                     Pre         =>
-                       +New_Is_Valid_Call_For_Expr
-                          (Tree   =>
-                             New_Record_Access
-                               (Name  => +Wrapper_Id,
-                                Field =>
-                                  To_Local
-                                    (E_Symb (E, WNE_Valid_Wrapper_Flag)),
-                                Typ   => EW_Bool_Type),
-                           Ty     => Etype (E),
-                           Expr   =>
-                             New_Record_Access
-                               (Name  => +Wrapper_Id,
-                                Field =>
-                                  To_Local
-                                    (E_Symb (E, WNE_Valid_Wrapper_Result)),
-                                Typ   => E_Ty),
-                           Domain => EW_Pred),
-                     Post        =>
-                       New_Comparison
-                         (Symbol => Why_Eq,
-                          Left   => +New_Result_Ident (Typ => E_Ty),
-                          Right  =>
-                            New_Record_Access
-                              (Name  => +Wrapper_Id,
-                               Field =>
-                                 To_Local
-                                   (E_Symb (E, WNE_Valid_Wrapper_Result)),
-                               Typ   => E_Ty))));
-            end;
-
-            Close_Theory (Validity_Th, Kind => Definition_Theory);
-         end;
       end if;
 
       --  No logic function is created for volatile functions and functions
@@ -9310,8 +9214,9 @@ package body Gnat2Why.Subprograms is
    function Wrap_Post_Of_Potentially_Invalid
      (E : Entity_Id; Post : W_Pred_Id) return W_Pred_Id
    is
+      Ty        : constant Type_Kind_Id := Etype (E);
       Result_Id : constant W_Term_Id :=
-        +New_Result_Ident (Validity_Wrapper_Type (E));
+        +New_Result_Ident (Validity_Wrapper_Type (Ty));
    begin
       --  Generate:
       --
@@ -9327,13 +9232,13 @@ package body Gnat2Why.Subprograms is
              (Name    => Result_Name,
               Def     =>
                 +New_Function_Valid_Value_Access
-                   (Fun => E, Name => +Result_Id),
+                   (Ty => Ty, Name => +Result_Id),
               Context =>
                 New_Typed_Binding
-                  (Name    => Get_Valid_Flag_For_Id (Result_Name, Etype (E)),
+                  (Name    => Get_Valid_Flag_For_Id (Result_Name, Ty),
                    Def     =>
                      +New_Function_Valid_Flag_Access
-                        (Fun => E, Name => +Result_Id),
+                        (Ty => Ty, Name => +Result_Id),
                    Context => Post));
       end if;
    end Wrap_Post_Of_Potentially_Invalid;

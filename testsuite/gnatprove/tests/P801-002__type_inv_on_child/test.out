@@ -1,20 +1,20 @@
 my_pack-child.ads:4:13: info: implicit aspect Always_Terminates on "Incr" has been proved, subprogram will terminate
-my_pack-child.ads:4:13: medium: for the result of Incr at my_pack-child.ads:4
+my_pack-child.ads:4:13: medium: for the result of "Incr" at my_pack-child.ads:4
 my_pack-child.ads:4:13: medium: in inlined invariant at my_pack.ads:4
-my_pack-child.ads:4:13: medium: invariant check might fail, cannot prove T /= 0 (e.g. when Incr'Result = 0 and X = -1)
+my_pack-child.ads:4:13: medium: invariant check might fail, cannot prove T /= 0 (e.g. when Incr'Result = 0 and X = -1) [provers gave up before completing the proof]
 my_pack-child.ads:6:09: medium: in inlined invariant at my_pack.ads:4
-my_pack-child.ads:6:09: medium: invariant check might fail on default value, cannot prove T /= 0
-my_pack-child.ads:8:41: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = T'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= 2147483647 - 1) to subprogram at line 4]
+my_pack-child.ads:6:09: medium: invariant check might fail on default value, cannot prove T /= 0 [provers gave up before completing the proof]
+my_pack-child.ads:8:41: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = T'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= 2147483647 - 1) to subprogram at line 4] [provers gave up before completing the proof]
 my_pack-child.ads:10:13: info: implicit aspect Always_Terminates on "Incr_Priv" has been proved, subprogram will terminate
-my_pack-child.ads:10:46: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = T'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= 2147483647 - 1) to subprogram at line 10]
+my_pack-child.ads:10:46: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = T'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= 2147483647 - 1) to subprogram at line 10] [provers gave up before completing the proof]
 my_pack-child_bad.ads:3:13: info: implicit aspect Always_Terminates on "Incr_Priv" has been proved, subprogram will terminate
-my_pack-child_bad.ads:3:46: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = T'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= 2147483647 - 1) to subprogram at line 3]
+my_pack-child_bad.ads:3:46: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = T'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= 2147483647 - 1) to subprogram at line 3] [provers gave up before completing the proof]
 my_pack-child_bad.ads:7:13: info: implicit aspect Always_Terminates on "Incr" has been proved, subprogram will terminate
-my_pack-child_bad.ads:7:13: medium: for the result of Incr at my_pack-child_bad.ads:7
+my_pack-child_bad.ads:7:13: medium: for the result of "Incr" at my_pack-child_bad.ads:7
 my_pack-child_bad.ads:7:13: medium: in inlined invariant at my_pack-child_bad.ads:10
-my_pack-child_bad.ads:7:13: medium: invariant check might fail, cannot prove T1 /= 0 (e.g. when Incr'Result = 0 and X = -1)
+my_pack-child_bad.ads:7:13: medium: invariant check might fail, cannot prove T1 /= 0 (e.g. when Incr'Result = 0 and X = -1) [provers gave up before completing the proof]
 my_pack-child_bad.ads:10:09: medium: in inlined invariant at my_pack-child_bad.ads:10
-my_pack-child_bad.ads:10:09: medium: invariant check might fail on default value, cannot prove T1 /= 0
-my_pack-child_bad.ads:12:43: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = T1'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= 2147483647 - 1) to subprogram at line 7]
+my_pack-child_bad.ads:10:09: medium: invariant check might fail on default value, cannot prove T1 /= 0 [provers gave up before completing the proof]
+my_pack-child_bad.ads:12:43: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = T1'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= 2147483647 - 1) to subprogram at line 7] [provers gave up before completing the proof]
 my_pack.ads:4:09: medium: in inlined invariant at my_pack.ads:4
-my_pack.ads:4:09: medium: invariant check might fail on default value, cannot prove T /= 0
+my_pack.ads:4:09: medium: invariant check might fail on default value, cannot prove T /= 0 [provers gave up before completing the proof]

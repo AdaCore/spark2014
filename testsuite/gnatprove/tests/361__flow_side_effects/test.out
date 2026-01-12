@@ -10,7 +10,7 @@ deps.adb:21:30: info: initialization of "B" proved
 deps.adb:22:26: info: flow dependencies proved
 deps.adb:29:30: info: initialization of "B" proved
 deps.adb:30:26: info: flow dependencies proved
-deps.adb:33:22: medium: assertion might fail [possible fix: subprogram at line 29 should mention A in a precondition]
+deps.adb:33:22: medium: assertion might fail [possible fix: subprogram at line 29 should mention A in a precondition] [provers gave up before completing the proof]
 deps.adb:40:34: info: initialization of "Y" proved
 deps.adb:40:37: info: initialization of "Z" proved
 deps.adb:41:12: info: flow dependencies proved

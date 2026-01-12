@@ -1,22 +1,22 @@
 large_control_flow_frame_condition.adb:56:27: medium: implicit aspect Always_Terminates on "Nested" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
-large_control_flow_frame_condition.adb:59:21: medium: overflow check might fail, cannot prove upper bound for MD9 + 1 (e.g. when MD9 = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop invariant at line 72 should mention MD9]
+large_control_flow_frame_condition.adb:59:21: medium: overflow check might fail, cannot prove upper bound for MD9 + 1 (e.g. when MD9 = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop invariant at line 72 should mention MD9] [provers reached step limit before completing the proof]
 large_control_flow_frame_condition.adb:61:23: medium: implicit aspect Always_Terminates on "Nested" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 large_control_flow_frame_condition.adb:63:26: info: overflow check proved (CVC5: 4 VC)
 large_control_flow_frame_condition.adb:65:13: warning: this statement is never reached
 large_control_flow_frame_condition.adb:65:13: warning: unreachable code [enabled by default]
-large_control_flow_frame_condition.adb:69:23: medium: overflow check might fail, cannot prove upper bound for MD10 + 1 (e.g. when MD10 = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop invariant at line 72 should mention MD10]
+large_control_flow_frame_condition.adb:69:23: medium: overflow check might fail, cannot prove upper bound for MD10 + 1 (e.g. when MD10 = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop invariant at line 72 should mention MD10] [provers reached step limit before completing the proof]
 large_control_flow_frame_condition.adb:72:36: info: loop invariant initialization proved (Trivial: 1 VC)
 large_control_flow_frame_condition.adb:72:36: info: loop invariant preservation proved (Trivial: 1 VC)
 large_control_flow_frame_condition.adb:75:31: medium: implicit aspect Always_Terminates on "Nested" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 large_control_flow_frame_condition.adb:77:37: medium: implicit aspect Always_Terminates on "Nested" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
-large_control_flow_frame_condition.adb:79:30: medium: overflow check might fail, cannot prove upper bound for MD6 + 1 (e.g. when MD6 = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 77 should mention MD6 in a loop invariant]
-large_control_flow_frame_condition.adb:82:33: medium: overflow check might fail, cannot prove upper bound for MD5 + 1 (e.g. when MD5 = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 77 should mention MD5 in a loop invariant]
+large_control_flow_frame_condition.adb:79:30: medium: overflow check might fail, cannot prove upper bound for MD6 + 1 (e.g. when MD6 = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 77 should mention MD6 in a loop invariant] [provers reached step limit before completing the proof]
+large_control_flow_frame_condition.adb:82:33: medium: overflow check might fail, cannot prove upper bound for MD5 + 1 (e.g. when MD5 = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 77 should mention MD5 in a loop invariant] [provers reached step limit before completing the proof]
 large_control_flow_frame_condition.adb:84:22: warning: this statement is never reached
 large_control_flow_frame_condition.adb:84:22: warning: unreachable code [enabled by default]
-large_control_flow_frame_condition.adb:89:35: medium: overflow check might fail, cannot prove upper bound for MD11 + 1 (e.g. when MD11 = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 77 should mention MD11 in a loop invariant]
+large_control_flow_frame_condition.adb:89:35: medium: overflow check might fail, cannot prove upper bound for MD11 + 1 (e.g. when MD11 = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 77 should mention MD11 in a loop invariant] [provers reached step limit before completing the proof]
 large_control_flow_frame_condition.adb:91:22: warning: "Seed" is set by "Twist" but not used after the call
 large_control_flow_frame_condition.adb:91:22: warning: statement has no effect
-large_control_flow_frame_condition.adb:97:35: medium: overflow check might fail, cannot prove upper bound for MD12 + 1 (e.g. when MD12 = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 77 should mention MD12 in a loop invariant]
+large_control_flow_frame_condition.adb:97:35: medium: overflow check might fail, cannot prove upper bound for MD12 + 1 (e.g. when MD12 = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 77 should mention MD12 in a loop invariant] [provers reached step limit before completing the proof]
 large_control_flow_frame_condition.adb:106:22: warning: this statement is never reached
 large_control_flow_frame_condition.adb:106:22: warning: unreachable code [enabled by default]
 large_control_flow_frame_condition.adb:116:28: warning: this statement is never reached
@@ -25,7 +25,7 @@ large_control_flow_frame_condition.adb:120:28: warning: this statement is never 
 large_control_flow_frame_condition.adb:120:28: warning: unreachable code [enabled by default]
 large_control_flow_frame_condition.adb:124:28: warning: this statement is never reached
 large_control_flow_frame_condition.adb:124:28: warning: unreachable code [enabled by default]
-large_control_flow_frame_condition.adb:130:41: medium: overflow check might fail, cannot prove upper bound for MD17 + 1 (e.g. when MD17 = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 77 should mention MD17 in a loop invariant]
+large_control_flow_frame_condition.adb:130:41: medium: overflow check might fail, cannot prove upper bound for MD17 + 1 (e.g. when MD17 = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 77 should mention MD17 in a loop invariant] [provers reached step limit before completing the proof]
 large_control_flow_frame_condition.adb:131:28: info: only expected exception raised (CVC5: 1 VC)
 large_control_flow_frame_condition.adb:132:28: warning: this statement is never reached
 large_control_flow_frame_condition.adb:132:28: warning: unreachable code [enabled by default]
@@ -33,7 +33,7 @@ large_control_flow_frame_condition.adb:134:41: info: overflow check proved (CVC5
 large_control_flow_frame_condition.adb:135:28: info: only expected exception raised (CVC5: 1 VC)
 large_control_flow_frame_condition.adb:136:28: warning: this statement is never reached
 large_control_flow_frame_condition.adb:136:28: warning: unreachable code [enabled by default]
-large_control_flow_frame_condition.adb:145:41: medium: overflow check might fail, cannot prove upper bound for MD13 + 1 (e.g. when MD13 = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 77 should mention MD13 in a loop invariant]
+large_control_flow_frame_condition.adb:145:41: medium: overflow check might fail, cannot prove upper bound for MD13 + 1 (e.g. when MD13 = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 77 should mention MD13 in a loop invariant] [provers reached step limit before completing the proof]
 large_control_flow_frame_condition.adb:147:28: warning: this statement is never reached
 large_control_flow_frame_condition.adb:147:28: warning: unreachable code [enabled by default]
 large_control_flow_frame_condition.adb:150:41: info: overflow check proved (CVC5: 2 VC)
@@ -44,19 +44,19 @@ large_control_flow_frame_condition.adb:161:34: warning: unreachable code [enable
 large_control_flow_frame_condition.adb:163:41: info: overflow check proved (CVC5: 2 VC)
 large_control_flow_frame_condition.adb:165:28: warning: this statement is never reached
 large_control_flow_frame_condition.adb:165:28: warning: unreachable code [enabled by default]
-large_control_flow_frame_condition.adb:168:41: medium: overflow check might fail, cannot prove upper bound for MD14 + 1 (e.g. when MD14 = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 77 should mention MD14 in a loop invariant]
+large_control_flow_frame_condition.adb:168:41: medium: overflow check might fail, cannot prove upper bound for MD14 + 1 (e.g. when MD14 = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 77 should mention MD14 in a loop invariant] [provers reached step limit before completing the proof]
 large_control_flow_frame_condition.adb:170:28: warning: this statement is never reached
 large_control_flow_frame_condition.adb:170:28: warning: unreachable code [enabled by default]
-large_control_flow_frame_condition.adb:179:44: medium: overflow check might fail, cannot prove upper bound for MD19 + 1 (e.g. when MD19 = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 77 should mention MD19 in a loop invariant]
+large_control_flow_frame_condition.adb:179:44: medium: overflow check might fail, cannot prove upper bound for MD19 + 1 (e.g. when MD19 = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 77 should mention MD19 in a loop invariant] [provers reached step limit before completing the proof]
 large_control_flow_frame_condition.adb:181:31: warning: this statement is never reached
 large_control_flow_frame_condition.adb:181:31: warning: unreachable code [enabled by default]
-large_control_flow_frame_condition.adb:184:44: medium: overflow check might fail, cannot prove upper bound for MD15 + 1 (e.g. when MD15 = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 77 should mention MD15 in a loop invariant]
+large_control_flow_frame_condition.adb:184:44: medium: overflow check might fail, cannot prove upper bound for MD15 + 1 (e.g. when MD15 = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 77 should mention MD15 in a loop invariant] [provers reached step limit before completing the proof]
 large_control_flow_frame_condition.adb:187:31: warning: this statement is never reached
 large_control_flow_frame_condition.adb:187:31: warning: unreachable code [enabled by default]
 large_control_flow_frame_condition.adb:190:44: info: overflow check proved (CVC5: 2 VC)
 large_control_flow_frame_condition.adb:192:31: warning: this statement is never reached
 large_control_flow_frame_condition.adb:192:31: warning: unreachable code [enabled by default]
-large_control_flow_frame_condition.adb:198:41: medium: overflow check might fail, cannot prove upper bound for MD18 + 1 (e.g. when MD18 = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 77 should mention MD18 in a loop invariant]
+large_control_flow_frame_condition.adb:198:41: medium: overflow check might fail, cannot prove upper bound for MD18 + 1 (e.g. when MD18 = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 77 should mention MD18 in a loop invariant] [provers reached step limit before completing the proof]
 large_control_flow_frame_condition.adb:199:28: info: only expected exception raised (CVC5: 1 VC)
 large_control_flow_frame_condition.adb:200:28: warning: this statement is never reached
 large_control_flow_frame_condition.adb:200:28: warning: unreachable code [enabled by default]
@@ -69,7 +69,7 @@ large_control_flow_frame_condition.adb:220:28: warning: this statement is never 
 large_control_flow_frame_condition.adb:220:28: warning: unreachable code [enabled by default]
 large_control_flow_frame_condition.adb:226:28: warning: this statement is never reached
 large_control_flow_frame_condition.adb:226:28: warning: unreachable code [enabled by default]
-large_control_flow_frame_condition.adb:231:38: medium: overflow check might fail, cannot prove upper bound for MD16 + 1 (e.g. when MD16 = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 77 should mention MD16 in a loop invariant]
+large_control_flow_frame_condition.adb:231:38: medium: overflow check might fail, cannot prove upper bound for MD16 + 1 (e.g. when MD16 = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 77 should mention MD16 in a loop invariant] [provers reached step limit before completing the proof]
 large_control_flow_frame_condition.adb:233:25: warning: this statement is never reached
 large_control_flow_frame_condition.adb:233:25: warning: unreachable code [enabled by default]
 large_control_flow_frame_condition.adb:235:38: info: overflow check proved (CVC5: 2 VC)
@@ -93,7 +93,7 @@ large_control_flow_frame_condition.adb:261:26: warning: unused assignment
 large_control_flow_frame_condition.adb:261:33: info: overflow check proved (CVC5: 2 VC)
 large_control_flow_frame_condition.adb:263:22: warning: this statement is never reached
 large_control_flow_frame_condition.adb:263:22: warning: unreachable code [enabled by default]
-large_control_flow_frame_condition.adb:266:30: medium: overflow check might fail, cannot prove upper bound for MD4 + 1 (e.g. when MD4 = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 77 should mention MD4 in a loop invariant]
+large_control_flow_frame_condition.adb:266:30: medium: overflow check might fail, cannot prove upper bound for MD4 + 1 (e.g. when MD4 = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 77 should mention MD4 in a loop invariant] [provers reached step limit before completing the proof]
 large_control_flow_frame_condition.adb:269:21: warning: unused assignment
 large_control_flow_frame_condition.adb:269:29: info: overflow check proved (CVC5: 2 VC)
 large_control_flow_frame_condition.adb:273:22: warning: "Seed" is set by "Twist" but not used after the call
@@ -106,8 +106,8 @@ large_control_flow_frame_condition.adb:278:19: warning: "Seed" is set by "Twist"
 large_control_flow_frame_condition.adb:278:19: warning: statement has no effect
 large_control_flow_frame_condition.adb:280:16: warning: this statement is never reached
 large_control_flow_frame_condition.adb:280:16: warning: unreachable code [enabled by default]
-large_control_flow_frame_condition.adb:283:24: medium: overflow check might fail, cannot prove upper bound for MD8 + 1 (e.g. when MD8 = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop invariant at line 72 should mention MD8]
-large_control_flow_frame_condition.adb:286:27: medium: overflow check might fail, cannot prove upper bound for MD3 + 1 (e.g. when MD3 = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop invariant at line 72 should mention MD3]
+large_control_flow_frame_condition.adb:283:24: medium: overflow check might fail, cannot prove upper bound for MD8 + 1 (e.g. when MD8 = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop invariant at line 72 should mention MD8] [provers reached step limit before completing the proof]
+large_control_flow_frame_condition.adb:286:27: medium: overflow check might fail, cannot prove upper bound for MD3 + 1 (e.g. when MD3 = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop invariant at line 72 should mention MD3] [provers reached step limit before completing the proof]
 large_control_flow_frame_condition.adb:288:16: warning: this statement is never reached
 large_control_flow_frame_condition.adb:288:16: warning: unreachable code [enabled by default]
 large_control_flow_frame_condition.adb:290:16: warning: "Seed" is set by "Twist" but not used after the call
@@ -116,14 +116,14 @@ large_control_flow_frame_condition.adb:291:20: warning: unused assignment
 large_control_flow_frame_condition.adb:291:27: info: overflow check proved (CVC5: 2 VC)
 large_control_flow_frame_condition.adb:293:16: warning: this statement is never reached
 large_control_flow_frame_condition.adb:293:16: warning: unreachable code [enabled by default]
-large_control_flow_frame_condition.adb:296:27: medium: overflow check might fail, cannot prove upper bound for MD7 + 1 (e.g. when MD7 = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop invariant at line 72 should mention MD7]
+large_control_flow_frame_condition.adb:296:27: medium: overflow check might fail, cannot prove upper bound for MD7 + 1 (e.g. when MD7 = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop invariant at line 72 should mention MD7] [provers reached step limit before completing the proof]
 large_control_flow_frame_condition.adb:297:16: warning: this statement is never reached
 large_control_flow_frame_condition.adb:297:23: warning: initialization of "B" has no effect
 large_control_flow_frame_condition.adb:299:19: warning: this statement is never reached
 large_control_flow_frame_condition.adb:299:19: warning: unreachable code [enabled by default]
 large_control_flow_frame_condition.adb:301:16: warning: this statement is never reached
 large_control_flow_frame_condition.adb:301:16: warning: unreachable code [enabled by default]
-large_control_flow_frame_condition.adb:304:34: medium: overflow check might fail, cannot prove upper bound for MD2 + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop invariant at line 72 should mention MD2]
+large_control_flow_frame_condition.adb:304:34: medium: overflow check might fail, cannot prove upper bound for MD2 + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop invariant at line 72 should mention MD2] [provers reached step limit before completing the proof]
 large_control_flow_frame_condition.adb:306:27: info: overflow check proved (CVC5: 2 VC)
 large_control_flow_frame_condition.adb:308:16: warning: this statement is never reached
 large_control_flow_frame_condition.adb:308:16: warning: unreachable code [enabled by default]
@@ -135,7 +135,7 @@ large_control_flow_frame_condition.adb:311:23: warning: unreachable code [enable
 large_control_flow_frame_condition.adb:315:24: info: overflow check proved (CVC5: 2 VC)
 large_control_flow_frame_condition.adb:317:13: warning: this statement is never reached
 large_control_flow_frame_condition.adb:317:13: warning: unreachable code [enabled by default]
-large_control_flow_frame_condition.adb:320:24: medium: overflow check might fail, cannot prove upper bound for MD1 + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop invariant at line 72 should mention MD1]
+large_control_flow_frame_condition.adb:320:24: medium: overflow check might fail, cannot prove upper bound for MD1 + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop invariant at line 72 should mention MD1] [provers reached step limit before completing the proof]
 large_control_flow_frame_condition.adb:322:13: warning: this statement is never reached
 large_control_flow_frame_condition.adb:322:13: warning: unreachable code [enabled by default]
 large_control_flow_frame_condition.adb:324:10: warning: "Seed" is set by "Twist" but not used after the call
@@ -144,20 +144,20 @@ large_control_flow_frame_condition.adb:325:14: warning: unused assignment
 large_control_flow_frame_condition.adb:325:21: info: overflow check proved (CVC5: 2 VC)
 large_control_flow_frame_condition.adb:327:10: warning: this statement is never reached
 large_control_flow_frame_condition.adb:327:10: warning: unreachable code [enabled by default]
-large_control_flow_frame_condition.adb:329:21: medium: overflow check might fail, cannot prove upper bound for MD0 + 1 (e.g. when MD0 = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop invariant at line 72 should mention MD0]
+large_control_flow_frame_condition.adb:329:21: medium: overflow check might fail, cannot prove upper bound for MD0 + 1 (e.g. when MD0 = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop invariant at line 72 should mention MD0] [provers reached step limit before completing the proof]
 large_control_flow_frame_condition.adb:376:07: info: no contextual analysis of "Nested" (exception handler)
 nested_loops_frame_condition.adb:14:30: info: loop invariant initialization proved (Trivial: 1 VC)
 nested_loops_frame_condition.adb:14:30: info: loop invariant preservation proved (Trivial: 1 VC)
 nested_loops_frame_condition.adb:17:33: info: loop invariant initialization proved (Trivial: 1 VC)
 nested_loops_frame_condition.adb:17:33: info: loop invariant preservation proved (Trivial: 1 VC)
-nested_loops_frame_condition.adb:18:17: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop invariant at line 17 should mention X]
+nested_loops_frame_condition.adb:18:17: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop invariant at line 17 should mention X] [provers gave up before completing the proof]
 nested_loops_frame_condition.adb:22:13: warning: this statement is never reached
 nested_loops_frame_condition.adb:22:13: warning: unreachable code [enabled by default]
 nested_loops_frame_condition.adb:33:30: info: loop invariant initialization proved (Trivial: 1 VC)
 nested_loops_frame_condition.adb:33:30: info: loop invariant preservation proved (Trivial: 1 VC)
 nested_loops_frame_condition.adb:38:36: info: loop invariant initialization proved (Trivial: 1 VC)
 nested_loops_frame_condition.adb:38:36: info: loop invariant preservation proved (Trivial: 1 VC)
-nested_loops_frame_condition.adb:39:20: medium: overflow check might fail, cannot prove upper bound for Y + 1 (e.g. when Y = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop invariant at line 38 should mention Y]
+nested_loops_frame_condition.adb:39:20: medium: overflow check might fail, cannot prove upper bound for Y + 1 (e.g. when Y = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop invariant at line 38 should mention Y] [provers gave up before completing the proof]
 nested_loops_frame_condition.adb:43:10: warning: this statement is never reached
 nested_loops_frame_condition.adb:43:10: warning: unreachable code [enabled by default]
 nested_loops_frame_condition.adb:46:22: info: assertion proved (CVC5: 1 VC)
@@ -167,7 +167,7 @@ struct_decrease_transfer_of_control.adb:22:10: medium: loop variant might fail [
 struct_decrease_transfer_of_control.adb:24:19: info: pointer dereference check proved (CVC5: 1 VC)
 struct_decrease_transfer_of_control.adb:25:13: info: only expected exception raised (CVC5: 1 VC)
 struct_decrease_transfer_of_control.adb:29:20: info: pointer dereference check proved (CVC5: 1 VC)
-struct_decrease_transfer_of_control.adb:29:26: medium: resource or memory leak might occur
+struct_decrease_transfer_of_control.adb:29:26: medium: resource or memory leak might occur [provers reached step limit before completing the proof]
 struct_decrease_transfer_of_control.adb:38:10: info: loop variant proved (Trivial)
 struct_decrease_transfer_of_control.adb:42:29: info: pointer dereference check proved (CVC5: 1 VC)
 struct_decrease_transfer_of_control.adb:46:13: info: implicit aspect Always_Terminates on "Test_Extended_Return" has been proved, subprogram will terminate

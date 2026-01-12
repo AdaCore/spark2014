@@ -6,7 +6,7 @@ is
    Press_Sensor : PSI
      with Volatile        => True,
           Async_Writers   => True,
-          Address         => System.Storage_Elements.To_Address (16#A1CAF8#);
+          Address         => System.Storage_Elements.To_Address (16#A1CAF8#), Import;
 
    procedure Read (Value : out PSI)
       with Refined_Global  => (Input => Press_Sensor),

@@ -1,7 +1,7 @@
 main.adb:33:27: info: implicit aspect Always_Terminates on "Translate" has been proved, subprogram will terminate
 main.adb:33:49: warning: unused variable "Control"
 main.adb:35:51: info: overflow check proved (CVC5: 2 VC)
-main.adb:37:36: medium: overflow check might fail, cannot prove upper bound for X.Field + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X.Field <= Integer'Last - 1) to subprogram at line 33]
+main.adb:37:36: medium: overflow check might fail, cannot prove upper bound for X.Field + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X.Field <= Integer'Last - 1) to subprogram at line 33] [provers reached step limit before completing the proof]
 main.adb:38:27: info: implicit aspect Always_Terminates on "Label" has been proved, subprogram will terminate
 main.adb:38:34: warning: unused variable "X"
 main.adb:47:04: info: initialization of "Out_B" proved
@@ -16,7 +16,7 @@ main.adb:61:10: warning: no Always_Terminates aspect available for "Test_If" [as
 main.adb:62:25: info: assertion proved (CVC5: 1 VC)
 main.adb:64:10: warning: assuming "Test_If" always terminates
 main.adb:64:10: warning: no Always_Terminates aspect available for "Test_If" [assumed-always-terminates]
-main.adb:65:25: medium: assertion might fail
+main.adb:65:25: medium: assertion might fail [provers reached step limit before completing the proof]
 main.adb:68:13: info: initialization of "Field" proved
 main.adb:71:13: warning: assuming "Test_Case" always terminates
 main.adb:71:13: warning: no Always_Terminates aspect available for "Test_Case" [assumed-always-terminates]
@@ -26,7 +26,7 @@ main.adb:75:10: warning: no Always_Terminates aspect available for "Test_Case" [
 main.adb:76:25: info: assertion proved (CVC5: 1 VC)
 main.adb:77:10: warning: assuming "Test_Case" always terminates
 main.adb:77:10: warning: no Always_Terminates aspect available for "Test_Case" [assumed-always-terminates]
-main.adb:78:25: medium: assertion might fail
+main.adb:78:25: medium: assertion might fail [provers reached step limit before completing the proof]
 main.adb:80:10: warning: assuming "Test_Case" always terminates
 main.adb:80:10: warning: no Always_Terminates aspect available for "Test_Case" [assumed-always-terminates]
 main.adb:81:25: info: assertion proved (CVC5: 1 VC)
@@ -38,16 +38,16 @@ main.adb:84:10: warning: no Always_Terminates aspect available for "Test_Case" [
 main.adb:85:25: info: assertion proved (Z3: 1 VC)
 main.adb:86:10: warning: assuming "Test_Case" always terminates
 main.adb:86:10: warning: no Always_Terminates aspect available for "Test_Case" [assumed-always-terminates]
-main.adb:87:25: medium: assertion might fail
+main.adb:87:25: medium: assertion might fail [provers reached step limit before completing the proof]
 main.adb:89:10: warning: assuming "Test_Case" always terminates
 main.adb:89:10: warning: no Always_Terminates aspect available for "Test_Case" [assumed-always-terminates]
 main.adb:90:25: info: assertion proved (CVC5: 1 VC)
 main.adb:91:10: warning: assuming "Test_Case" always terminates
 main.adb:91:10: warning: no Always_Terminates aspect available for "Test_Case" [assumed-always-terminates]
-main.adb:92:25: medium: assertion might fail
+main.adb:92:25: medium: assertion might fail [provers reached step limit before completing the proof]
 main.adb:94:10: warning: assuming "Test_Declare" always terminates
 main.adb:94:10: warning: no Always_Terminates aspect available for "Test_Declare" [assumed-always-terminates]
 main.adb:95:25: info: assertion proved (CVC5: 1 VC)
 main.adb:96:10: warning: assuming "Test_Declare" always terminates
 main.adb:96:10: warning: no Always_Terminates aspect available for "Test_Declare" [assumed-always-terminates]
-main.adb:97:25: medium: assertion might fail
+main.adb:97:25: medium: assertion might fail [provers reached step limit before completing the proof]

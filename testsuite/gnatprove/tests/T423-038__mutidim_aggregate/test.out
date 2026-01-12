@@ -1,7 +1,7 @@
 test_aggr.adb:7:24: info: data dependencies proved
 test_aggr.adb:9:15: info: range check proved (CVC5: 2 VC)
 test_aggr.adb:11:15: info: range check proved (CVC5: 2 VC)
-test_aggr.adb:12:46: medium: range check might fail
+test_aggr.adb:12:46: medium: range check might fail [provers reached step limit before completing the proof]
 test_aggr.adb:13:41: info: index check proved (CVC5: 2 VC)
 test_aggr.adb:13:56: info: index check proved (CVC5: 2 VC)
-test_aggr.adb:13:68: medium: range check might fail
+test_aggr.adb:13:68: medium: range check might fail [provers reached step limit before completing the proof]

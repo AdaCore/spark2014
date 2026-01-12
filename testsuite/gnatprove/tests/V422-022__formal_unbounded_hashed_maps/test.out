@@ -22,7 +22,7 @@ test_map.adb:40:07: info: precondition proved (Z3: 1 VC)
 test_map.adb:41:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:44:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:46:22: info: assertion proved (Z3: 1 VC)
-test_map.adb:47:07: medium: assertion might fail
+test_map.adb:47:07: medium: assertion might fail [provers reached step limit before completing the proof]
 test_map.adb:50:14: warning: subprogram "Test_Map_Rec" has no effect
 test_map.adb:52:07: info: initialization of "L" proved
 test_map.adb:52:10: info: initialization of "K" proved
@@ -50,7 +50,7 @@ test_map.adb:82:07: info: precondition proved (Z3: 1 VC)
 test_map.adb:83:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:86:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:88:22: info: assertion proved (Z3: 1 VC)
-test_map.adb:89:07: medium: assertion might fail
+test_map.adb:89:07: medium: assertion might fail [provers reached step limit before completing the proof]
 test_map.adb:92:14: warning: subprogram "Test_Map_Rec_2" has no effect
 test_map.adb:94:07: info: initialization of "L" proved
 test_map.adb:94:10: info: initialization of "K" proved
@@ -69,14 +69,14 @@ test_map.adb:109:07: info: precondition proved (CVC5: 1 VC)
 test_map.adb:110:07: info: precondition proved (CVC5: 1 VC)
 test_map.adb:116:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:117:07: info: precondition proved (CVC5: 1 VC)
-test_map.adb:118:22: medium: assertion might fail
+test_map.adb:118:22: medium: assertion might fail [provers reached step limit before completing the proof]
 test_map.adb:119:07: info: precondition proved (Z3: 1 VC)
 test_map.adb:121:07: info: precondition proved (Z3: 1 VC)
-test_map.adb:123:07: medium: precondition might fail
+test_map.adb:123:07: medium: precondition might fail [provers reached step limit before completing the proof]
 test_map.adb:124:22: info: assertion proved (Z3: 1 VC)
-test_map.adb:127:22: medium: assertion might fail
-test_map.adb:129:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Length or turning it into an expression function]
-test_map.adb:130:07: medium: assertion might fail
+test_map.adb:127:22: medium: assertion might fail [provers reached step limit before completing the proof]
+test_map.adb:129:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function "Length" or turning it into an expression function] [provers reached step limit before completing the proof]
+test_map.adb:130:07: medium: assertion might fail [provers reached step limit before completing the proof]
 test_map.adb:135:07: info: precondition proved (Trivial: 1 VC)
 test_map.adb:136:07: info: precondition proved (Trivial: 1 VC)
 test_map.adb:137:07: info: precondition proved (Trivial: 1 VC)
@@ -142,7 +142,7 @@ test_map.adb:263:33: info: loop invariant initialization proved (Z3: 1 VC)
 test_map.adb:263:33: info: loop invariant preservation proved (Z3: 1 VC)
 test_map.adb:264:52: info: range check proved (CVC5: 4 VC)
 test_map.adb:267:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-test_map.adb:268:07: medium: assertion might fail
+test_map.adb:268:07: medium: assertion might fail [provers reached step limit before completing the proof]
 test_map.adb:273:07: info: initialization of "X" proved
 test_map.adb:276:10: info: precondition proved (CVC5: 2 VC)
 test_map.adb:277:33: info: loop invariant initialization proved (CVC5: 1 VC)

@@ -24,7 +24,7 @@ fixed_lower_bound_types_and_objects.adb:39:29: info: range check proved (CVC5: 2
 fixed_lower_bound_types_and_objects.adb:39:31: high: "A_0_7" is not initialized, in call inlined at fixed_lower_bound_types_and_objects.adb:78
 fixed_lower_bound_types_and_objects.adb:39:31: info: range check proved (CVC5: 4 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:79
 fixed_lower_bound_types_and_objects.adb:41:09: info: index check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:78
-fixed_lower_bound_types_and_objects.adb:41:09: medium: array index check might fail, in call inlined at fixed_lower_bound_types_and_objects.adb:79 [reason for check: value must be a valid index into the array]
+fixed_lower_bound_types_and_objects.adb:41:09: medium: array index check might fail, in call inlined at fixed_lower_bound_types_and_objects.adb:79 [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
 fixed_lower_bound_types_and_objects.adb:41:12: warning: unused assignment, in call inlined at fixed_lower_bound_types_and_objects.adb:79
 fixed_lower_bound_types_and_objects.adb:41:15: info: range check proved (CVC5: 4 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:79
 fixed_lower_bound_types_and_objects.adb:41:17: high: "A_0_7" is not initialized, in call inlined at fixed_lower_bound_types_and_objects.adb:78
@@ -50,7 +50,7 @@ fixed_lower_bound_types_and_objects.adb:49:29: info: range check proved (CVC5: 2
 fixed_lower_bound_types_and_objects.adb:49:31: info: range check proved (CVC5: 4 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:83
 fixed_lower_bound_types_and_objects.adb:52:04: info: no contextual analysis of "Func_FLB_1" (unconstrained return type)
 fixed_lower_bound_types_and_objects.adb:52:13: info: implicit aspect Always_Terminates on "Func_FLB_1" has been proved, subprogram will terminate
-fixed_lower_bound_types_and_objects.adb:54:14: high: range check might fail (e.g. when A'First = 1 and A'Last = 0) [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at line 52 should mention A in a precondition]
+fixed_lower_bound_types_and_objects.adb:54:14: high: range check might fail (e.g. when A'First = 1 and A'Last = 0) [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at line 52 should mention A in a precondition] [provers reached step limit before completing the proof]
 fixed_lower_bound_types_and_objects.adb:57:14: info: add a contract to analyze it separately from calling contexts
 fixed_lower_bound_types_and_objects.adb:57:14: info: local subprogram "Proc_Colors" only analyzed in the context of calls [info-unrolling-inlining]
 fixed_lower_bound_types_and_objects.adb:59:22: high: "A_Red_Blue" is not initialized, in call inlined at fixed_lower_bound_types_and_objects.adb:91
@@ -263,7 +263,7 @@ flb_multidimensional_subtypes.adb:20:12: info: range check proved (CVC5: 2 VC), 
 flb_multidimensional_subtypes.adb:20:12: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:47
 flb_multidimensional_subtypes.adb:20:13: info: index check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:45
 flb_multidimensional_subtypes.adb:20:13: info: index check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:47
-flb_multidimensional_subtypes.adb:20:13: medium: array index check might fail, in call inlined at flb_multidimensional_subtypes.adb:46 [reason for check: value must be a valid index into the array]
+flb_multidimensional_subtypes.adb:20:13: medium: array index check might fail, in call inlined at flb_multidimensional_subtypes.adb:46 [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
 flb_multidimensional_subtypes.adb:20:23: warning: unused assignment, in call inlined at flb_multidimensional_subtypes.adb:45
 flb_multidimensional_subtypes.adb:20:23: warning: unused assignment, in call inlined at flb_multidimensional_subtypes.adb:47
 flb_multidimensional_subtypes.adb:20:26: info: range check proved (CVC5: 1 VC), in call inlined at flb_multidimensional_subtypes.adb:45

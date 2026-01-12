@@ -51,6 +51,8 @@ project GNATprove is
             null;
       end case;
 
+      for Switches ("Ada") use ("-m");
+
       case Tool is
          when "gnatsas" =>
             --  Use -gnateb to ensure that pragma configuration files checksums are

@@ -8,7 +8,7 @@ null_concat.adb:13:22: info: assertion proved (CVC5: 1 VC)
 null_concat.adb:13:28: info: index check proved (CVC5: 2 VC)
 null_concat.adb:19:37: info: range check proved (CVC5: 2 VC)
 null_concat.adb:21:22: info: assertion proved (CVC5: 1 VC)
-null_concat.adb:22:22: high: assertion might fail (e.g. when A3 = (1 => 1, 2 => 1, 3 => 1, 4 => 1, 5 => 1, 6 => 2, 7 => 2, 8 => 2, 9 => 2, 10 => 2, ...))
+null_concat.adb:22:22: high: assertion might fail (e.g. when A3 = (1 => 1, 2 => 1, 3 => 1, 4 => 1, 5 => 1, 6 => 2, 7 => 2, 8 => 2, 9 => 2, 10 => 2, ...)) [provers reached step limit before completing the proof]
 null_concat.adb:22:26: info: index check proved (CVC5: 2 VC)
 null_concat.ads:6:14: warning: subprogram "P_Good" has no effect
 null_concat.ads:8:14: warning: subprogram "P_Bad" has no effect

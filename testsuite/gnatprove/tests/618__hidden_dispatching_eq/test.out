@@ -2,4 +2,4 @@ main.adb:4:16: info: implicit aspect Always_Terminates on overriding operator "=
 main.adb:4:21: warning: unused variable "X"
 main.adb:4:28: warning: unused variable "Y"
 main.adb:5:16: info: implicit aspect Always_Terminates on "Make" has been proved, subprogram will terminate
-main.adb:16:19: medium: assertion might fail
+main.adb:16:19: medium: assertion might fail [provers reached step limit before completing the proof]

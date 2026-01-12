@@ -1,2 +1,2 @@
 test.adb:15:33: info: exceptional case proved (Trivial: 1 VC)
-test.adb:19:22: medium: unexpected exception might be raised [reason for check: ghost subprogram call shall not propagate exceptions] [possible explanation: E might be unexpectedly raised]
+test.adb:19:22: medium: unexpected exception might be raised [reason for check: ghost subprogram call shall not propagate exceptions] [possible explanation: "E" might be unexpectedly raised] [provers gave up before completing the proof]

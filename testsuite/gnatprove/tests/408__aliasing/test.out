@@ -1,34 +1,34 @@
 bad.adb:5:25: info: data dependencies proved
-bad.adb:9:14: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 4 should mention X in a precondition]
-bad.adb:10:14: high: overflow check might fail, cannot prove upper bound for Y + 1 (e.g. when Y = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 4 should mention Y in a precondition]
-bad.adb:11:14: high: overflow check might fail, cannot prove upper bound for H + 1 (e.g. when H = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 4 should mention H in a precondition]
+bad.adb:9:14: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 4 should mention X in a precondition] [provers gave up before completing the proof]
+bad.adb:10:14: high: overflow check might fail, cannot prove upper bound for Y + 1 (e.g. when Y = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 4 should mention Y in a precondition] [provers gave up before completing the proof]
+bad.adb:11:14: high: overflow check might fail, cannot prove upper bound for H + 1 (e.g. when H = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 4 should mention H in a precondition] [provers gave up before completing the proof]
 bad.adb:17:04: high: result of "Increment_And_Return" and formal parameter "X" are aliased (SPARK RM 6.4.2)
 bad.adb:17:31: high: "V" is not initialized
 bad.adb:17:34: high: "H" is not initialized
 bad.adb:17:34: high: formal parameter "Y" and global "H" are aliased (SPARK RM 6.4.2)
-bad.adb:18:19: high: assertion might fail (e.g. when H = 1 and V = 0)
+bad.adb:18:19: high: assertion might fail (e.g. when H = 1 and V = 0) [provers gave up before completing the proof]
 sideeffects.adb:8:07: info: no contextual analysis of "Call" (nested subprogram)
-sideeffects.adb:10:17: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 5 should mention X in a precondition]
+sideeffects.adb:10:17: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 5 should mention X in a precondition] [provers gave up before completing the proof]
 sideeffects.adb:18:09: info: data dependencies proved
 sideeffects.adb:19:09: info: flow dependencies proved
 sideeffects.adb:20:41: info: exceptional case proved (Trivial: 1 VC)
 sideeffects.adb:24:10: info: initialization of "Y" proved
 sideeffects.adb:38:07: info: initialization of "Y" proved
-sideeffects.adb:41:22: medium: assertion might fail (e.g. when X = -1 and Y = 0) [possible fix: add or complete related loop invariants or postconditions]
+sideeffects.adb:41:22: medium: assertion might fail (e.g. when X = -1 and Y = 0) [possible fix: add or complete related loop invariants or postconditions] [provers gave up before completing the proof]
 sideeffects.adb:42:12: medium: implicit aspect Always_Terminates on "Call" could be incorrect, call to "Increment_G_And_Return" might be nonterminating
-sideeffects.adb:42:12: medium: unexpected exception might be raised [reason for check: Call allows propagating no exceptions] [possible explanation: any exception might be unexpectedly raised]
-sideeffects.adb:43:22: medium: assertion might fail (e.g. when G = -1 and Y = 0) [possible fix: add or complete related loop invariants or postconditions]
+sideeffects.adb:42:12: medium: unexpected exception might be raised [reason for check: "Call" allows propagating no exceptions] [possible explanation: any exception might be unexpectedly raised] [provers gave up before completing the proof]
+sideeffects.adb:43:22: medium: assertion might fail (e.g. when G = -1 and Y = 0) [possible fix: add or complete related loop invariants or postconditions] [provers gave up before completing the proof]
 sideeffects.adb:47:10: warning: "Z" is set by "Increment_And_Return" but not used after the call
-sideeffects.adb:59:14: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 54 should mention X in a precondition]
-sideeffects.adb:60:14: high: overflow check might fail, cannot prove upper bound for Y + 1 (e.g. when Y = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 54 should mention Y in a precondition]
-sideeffects.adb:61:14: high: overflow check might fail, cannot prove upper bound for H + 1 (e.g. when H = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 54 should mention H in a precondition]
-sideeffects.adb:62:16: high: overflow check might fail, cannot prove lower bound for X + H (e.g. when H = Integer'First+1 and X = -2) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 54 should mention H and X in a precondition]
+sideeffects.adb:59:14: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 54 should mention X in a precondition] [provers gave up before completing the proof]
+sideeffects.adb:60:14: high: overflow check might fail, cannot prove upper bound for Y + 1 (e.g. when Y = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 54 should mention Y in a precondition] [provers gave up before completing the proof]
+sideeffects.adb:61:14: high: overflow check might fail, cannot prove upper bound for H + 1 (e.g. when H = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 54 should mention H in a precondition] [provers gave up before completing the proof]
+sideeffects.adb:62:16: high: overflow check might fail, cannot prove lower bound for X + H (e.g. when H = Integer'First+1 and X = -2) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 54 should mention H and X in a precondition] [provers gave up before completing the proof]
 sideeffects.adb:65:14: info: add a contract to analyze it separately from calling contexts
 sideeffects.adb:65:14: info: local subprogram "Incr" only analyzed in the context of calls [info-unrolling-inlining]
-sideeffects.adb:67:14: medium: overflow check might fail, cannot prove lower bound for X + 1, in call inlined at sideeffects.adb:77 [reason for check: result of addition must fit in a 32-bits machine integer]
-sideeffects.adb:68:14: medium: overflow check might fail, cannot prove upper bound for H + 1, in call inlined at sideeffects.adb:77 [reason for check: result of addition must fit in a 32-bits machine integer]
+sideeffects.adb:67:14: medium: overflow check might fail, cannot prove lower bound for X + 1, in call inlined at sideeffects.adb:77 [reason for check: result of addition must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
+sideeffects.adb:68:14: medium: overflow check might fail, cannot prove upper bound for H + 1, in call inlined at sideeffects.adb:77 [reason for check: result of addition must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
 sideeffects.adb:71:04: info: initialization of "V1" proved
-sideeffects.adb:75:15: medium: overflow check might fail, cannot prove lower bound for Call + Call [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Call or turning it into an expression function]
+sideeffects.adb:75:15: medium: overflow check might fail, cannot prove lower bound for Call + Call [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function "Call" or turning it into an expression function] [provers reached step limit before completing the proof]
 sideeffects.adb:76:10: high: "H" is not initialized
 sideeffects.adb:76:32: high: "V2" is not initialized
 sideeffects.adb:76:36: high: "V3" is not initialized
@@ -37,7 +37,7 @@ sideeffects.adb:77:10: high: formal parameter "X" and global "H" are aliased (SP
 sideeffects.adb:78:32: high: formal parameter "X" and global "H" are aliased (SPARK RM 6.4.2)
 sideeffects.adb:79:04: high: result of "Increment_And_Return" and formal parameter "X" are aliased (SPARK RM 6.4.2)
 sideeffects.adb:80:04: high: result of "Increment_And_Return" and formal parameter "X" are aliased (SPARK RM 6.4.2)
-sideeffects.adb:80:06: high: array index check might fail (e.g. when V1 = 15) [reason for check: value must be a valid index into the array]
+sideeffects.adb:80:06: high: array index check might fail (e.g. when V1 = 15) [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
 sideeffects.adb:81:04: high: result of "Increment_And_Return" and formal parameter "X" are aliased (SPARK RM 6.4.2)
 sideeffects.adb:81:04: high: result of "Increment_And_Return" and formal parameter "Y" are aliased (SPARK RM 6.4.2)
 sideeffects.adb:81:06: info: index check proved (CVC5: 2 VC)
@@ -46,5 +46,5 @@ sideeffects.adb:81:35: medium: formal parameters "X" and "Y" might be aliased (S
 sideeffects.adb:81:35: warning: aliasing check on components of an array is handled imprecisely [alias-array]
 sideeffects.adb:81:37: info: index check proved (CVC5: 2 VC)
 sideeffects.adb:81:42: medium: "T" might not be initialized
-sideeffects.adb:81:44: medium: array index check might fail [reason for check: value must be a valid index into the array]
-sideeffects.adb:82:19: medium: assertion might fail
+sideeffects.adb:81:44: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
+sideeffects.adb:82:19: medium: assertion might fail [provers reached step limit before completing the proof]

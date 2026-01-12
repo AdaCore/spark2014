@@ -126,12 +126,12 @@ package body SPARK_Util.Subprograms is
                return
                  Flow_Generated_Globals.Phase_2.Mutually_Recursive
                    (Enclosing_Subp, Called)
-                 and then (Present
-                             (Get_Pragma
-                                (Enclosing_Subp, Pragma_Subprogram_Variant))
-                           or else Present
-                                     (Get_Pragma
-                                        (Called, Pragma_Subprogram_Variant)));
+                 and then
+                   (Present
+                      (Get_Pragma (Enclosing_Subp, Pragma_Subprogram_Variant))
+                    or else
+                      Present
+                        (Get_Pragma (Called, Pragma_Subprogram_Variant)));
 
             --  Concurrent types should be declared at library level
 
@@ -177,15 +177,15 @@ package body SPARK_Util.Subprograms is
          begin
             while Present (Variant1) loop
                if No (Variant2)
-                 or else Chars (First (Choices (Variant1)))
-                         /= Chars (First (Choices (Variant2)))
-                 or else (Chars (First (Choices (Variant1))) /= Name_Structural
-                          and then Unique_Entity
-                                     (Base_Type
-                                        (Etype (Expression (Variant1))))
-                                   /= Unique_Entity
-                                        (Base_Type
-                                           (Etype (Expression (Variant2)))))
+                 or else
+                   Chars (First (Choices (Variant1)))
+                   /= Chars (First (Choices (Variant2)))
+                 or else
+                   (Chars (First (Choices (Variant1))) /= Name_Structural
+                    and then
+                      Unique_Entity (Base_Type (Etype (Expression (Variant1))))
+                      /= Unique_Entity
+                           (Base_Type (Etype (Expression (Variant2)))))
                then
                   return False;
                end if;
@@ -206,10 +206,10 @@ package body SPARK_Util.Subprograms is
    is ((Ekind (Scope (E)) = E_Package
         and then Present (Subprogram_Body (E))
         and then Nkind (Parent (Subprogram_Body (E))) = N_Package_Body)
-       or else (Ekind (Scope (E)) = E_Protected_Type
-                and then Present (Subprogram_Body (E))
-                and then Nkind (Parent (Subprogram_Body (E)))
-                         = N_Protected_Body));
+       or else
+         (Ekind (Scope (E)) = E_Protected_Type
+          and then Present (Subprogram_Body (E))
+          and then Nkind (Parent (Subprogram_Body (E))) = N_Protected_Body));
 
    -------------------------------
    -- Containing_Protected_Type --
@@ -419,9 +419,9 @@ package body SPARK_Util.Subprograms is
                pragma
                  Assert
                    (Entity_Body_In_SPARK (E)
-                      or else (Is_Expression_Function_Or_Completion (E)
-                               and then Entity_Body_Compatible_With_SPARK
-                                          (E)));
+                    or else
+                      (Is_Expression_Function_Or_Completion (E)
+                       and then Entity_Body_Compatible_With_SPARK (E)));
 
                declare
                   Body_E : constant Entity_Id := Get_Body_Entity (E);
@@ -700,11 +700,11 @@ package body SPARK_Util.Subprograms is
       pragma
         Assert
           (if Result.Is_Empty
-             then
-               Is_Invariant_Procedure (E)
-               and then Nkind (Last (Stmts)) = N_Procedure_Call_Statement
-               and then Is_Partial_Invariant_Procedure
-                          (Entity (Name (Last (Stmts)))));
+           then
+             Is_Invariant_Procedure (E)
+             and then Nkind (Last (Stmts)) = N_Procedure_Call_Statement
+             and then
+               Is_Partial_Invariant_Procedure (Entity (Name (Last (Stmts)))));
 
       return Result;
    end Get_Exprs_From_Check_Only_Proc;
@@ -991,8 +991,9 @@ package body SPARK_Util.Subprograms is
    function Has_Refinement (E : Callable_Kind_Id) return Boolean
    is ((Entity_Body_In_SPARK (E)
         and then Has_Contracts (E, Pragma_Refined_Post))
-       or else (Is_Expression_Function_Or_Completion (E)
-                and then Completion_Deferred_To_Body (E)));
+       or else
+         (Is_Expression_Function_Or_Completion (E)
+          and then Completion_Deferred_To_Body (E)));
 
    ----------------------------
    -- Has_Subprogram_Variant --
@@ -1067,9 +1068,10 @@ package body SPARK_Util.Subprograms is
 
          while Present (Curr_From) loop
             if Curr_From = Curr_Scop
-              or else (Is_Generic_Instance (Curr_From)
-                       and then Has_Visibility
-                                  (Get_Generic_Unit (Curr_From), Curr_Scop))
+              or else
+                (Is_Generic_Instance (Curr_From)
+                 and then
+                   Has_Visibility (Get_Generic_Unit (Curr_From), Curr_Scop))
             then
                return True;
             end if;
@@ -1116,8 +1118,9 @@ package body SPARK_Util.Subprograms is
 
    function Is_Possibly_Nonreturning_Procedure (E : Entity_Id) return Boolean
    is ((Is_Subprogram (E) and then No_Return (E))
-       or else Get_Termination_Condition (E)
-               not in (Kind => Unspecified) | (Static, True));
+       or else
+         Get_Termination_Condition (E)
+         not in (Kind => Unspecified) | (Static, True));
 
    ----------------------------------------
    -- Is_Predefined_Potentially_Blocking --
@@ -1296,9 +1299,10 @@ package body SPARK_Util.Subprograms is
          when Name_Synchronous_Task_Control                             =>
             return
               Scope_Name (3) = Name_Suspend_Until_True
-              or else (Scope_Name (3) = Name_EDF
-                       and then Scope_Name (4)
-                                = Name_Suspend_Until_True_And_Set_Deadline);
+              or else
+                (Scope_Name (3) = Name_EDF
+                 and then
+                   Scope_Name (4) = Name_Suspend_Until_True_And_Set_Deadline);
 
          --  Detect Ada.Task_Identification.Abort_Task
 
@@ -1495,9 +1499,11 @@ package body SPARK_Util.Subprograms is
    begin
       return
         Is_Entry (E)
-        or else (Is_Subprogram (E)
-                 and then Nkind (Parent (Sem_Aux.Unit_Declaration_Node (E)))
-                          = N_Protected_Definition);
+        or else
+          (Is_Subprogram (E)
+           and then
+             Nkind (Parent (Sem_Aux.Unit_Declaration_Node (E)))
+             = N_Protected_Definition);
    end Is_Protected_Operation;
 
    -------------------------------------
@@ -1534,9 +1540,9 @@ package body SPARK_Util.Subprograms is
             return
               (Contains_Sloc
                  (SPARK_Util.Subprograms.Subp_Location (E), Limit_Str)
-               or else Contains_Sloc
-                         (SPARK_Util.Subprograms.Subp_Body_Location (E),
-                          Limit_Str));
+               or else
+                 Contains_Sloc
+                   (SPARK_Util.Subprograms.Subp_Body_Location (E), Limit_Str));
          else
             return False;
          end if;
@@ -1637,9 +1643,9 @@ package body SPARK_Util.Subprograms is
         (Get_Name_String (Chars (E)) = "to_pointer"
          and then Nkind (Par) in N_Package_Specification
          and then Present (Generic_Parent (Par))
-         and then Is_RTU
-                    (Generic_Parent (Par),
-                     System_Address_To_Access_Conversions));
+         and then
+           Is_RTU
+             (Generic_Parent (Par), System_Address_To_Access_Conversions));
    end Is_System_Address_To_Access_Conversion;
 
    -----------------------------
@@ -1654,8 +1660,9 @@ package body SPARK_Util.Subprograms is
         and then Is_Internal (Alias)
         and then Chars (Alias) = Name_Op_Eq
         and then Number_Formals (Alias) = 2
-        and then Etype (First_Formal (Alias))
-                 = Etype (Next_Formal (First_Formal (Alias)))
+        and then
+          Etype (First_Formal (Alias))
+          = Etype (Next_Formal (First_Formal (Alias)))
         and then Etype (Alias) = Standard_Boolean
       then
          pragma Assert (Is_Dispatching_Operation (Alias));
@@ -1730,11 +1737,12 @@ package body SPARK_Util.Subprograms is
       return
         Is_Intrinsic (E)
         and then Present (Parent (E))
-        and then Parent (E)
-                 in N_Subprogram_Specification_Id | N_Package_Specification_Id
+        and then
+          Parent (E)
+          in N_Subprogram_Specification_Id | N_Package_Specification_Id
         and then Present (Generic_Parent (Parent (E)))
-        and then Chars (Generic_Parent (Parent (E)))
-                 = Name_Unchecked_Deallocation;
+        and then
+          Chars (Generic_Parent (Parent (E))) = Name_Unchecked_Deallocation;
    end Is_Unchecked_Deallocation_Instance;
 
    -----------------------------
@@ -1774,8 +1782,9 @@ package body SPARK_Util.Subprograms is
       end loop;
 
       if Present (Prag)
-        and then Get_Pragma_Id (Pragma_Name (Prag))
-                 in Pragma_Precondition | Pragma_Pre | Pragma_Pre_Class
+        and then
+          Get_Pragma_Id (Pragma_Name (Prag))
+          in Pragma_Precondition | Pragma_Pre | Pragma_Pre_Class
       then
          Result := False;
          Explanation :=
@@ -1784,8 +1793,8 @@ package body SPARK_Util.Subprograms is
               & "recursive call should not appear in a "
               & "precondition");
       elsif Present (Prag)
-        and then Get_Pragma_Id (Pragma_Name (Prag))
-                 in Pragma_Subprogram_Variant
+        and then
+          Get_Pragma_Id (Pragma_Name (Prag)) in Pragma_Subprogram_Variant
       then
          Result := False;
          Explanation :=
@@ -2046,8 +2055,9 @@ package body SPARK_Util.Subprograms is
       begin
          while Present (Formal) loop
             if Ekind (Formal) /= E_Out_Parameter
-              and then Invariant_Check_Needed
-                         (Etype (Formal), Subp => E, Scop => Scop)
+              and then
+                Invariant_Check_Needed
+                  (Etype (Formal), Subp => E, Scop => Scop)
             then
                return True;
             end if;

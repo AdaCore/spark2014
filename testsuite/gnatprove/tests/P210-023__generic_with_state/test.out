@@ -1,3 +1,4 @@
 base-a-b.ads:3:08: warning: no subprogram exists that can initialize abstract state "B.State" constituent of "A.State"
 base-a.ads:2:23: warning: no subprogram exists that can initialize abstract state "A.State"
+gp.adb:7:04: high: "GG2" constituent of "Atomic_State" is not written in "C", in instantiation at base-a-b.adb:14 [reason for check: variable is mentioned in the generated Initializes contract] [possible fix: initialize "GG2" constituent of "Atomic_State" at declaration or in the package body statements]
 gp.ads:4:23: warning: no subprogram exists that can initialize abstract state "C.State" constituent of "B.State", in instantiation at base-a-b.adb:14

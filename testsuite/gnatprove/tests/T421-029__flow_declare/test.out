@@ -7,7 +7,7 @@ flow.adb:24:34: info: initialization of "Y" proved
 flow.adb:25:11: info: flow dependencies proved
 flow.adb:25:54: info: postcondition proved (CVC5: 1 VC)
 flow.adb:35:11: info: data dependencies proved
-flow.adb:40:10: medium: array index check might fail [reason for check: value must be a valid index into the array]
+flow.adb:40:10: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers gave up before completing the proof]
 flow.adb:40:13: high: "X" is not initialized
 flow.adb:41:15: high: "X" is not initialized
 flow.adb:41:15: info: index check proved (CVC5: 2 VC)

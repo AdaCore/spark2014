@@ -1,28 +1,30 @@
-p.adb:31:28: high: overflow check might fail, cannot prove lower bound for Full_S.A + X (e.g. when Full_S = (A => -1, B => 0.0) and X = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at p.ads:30 should mention Full_S and X in a precondition]
-p.adb:32:28: high: float overflow check might fail (e.g. when Full_S = (A => 0, B => -3.4028105E+38) and Y = -1.3082154E+33) [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at p.ads:30 should mention Full_S and Y in a precondition]
+p.adb:31:28: high: overflow check might fail, cannot prove lower bound for Full_S.A + X (e.g. when Full_S = (A => -1, B => 0.0) and X = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at p.ads:30 should mention Full_S and X in a precondition] [provers reached step limit before completing the proof]
+p.adb:32:28: high: float overflow check might fail (e.g. when Full_S = (A => 0, B => -3.4028105E+38) and Y = -1.3082154E+33) [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at p.ads:30 should mention Full_S and Y in a precondition] [provers reached step limit before completing the proof]
 p.ads:21:04: info: address in address clause is compatible with object alignment (Trivial)
 p.ads:21:04: info: object is suitable for aliasing via address clause (Trivial)
 p.ads:21:04: info: type is suitable as source for unchecked conversion (Trivial)
+p.ads:21:04: warning: imprecise handling of overlay (component offset not known) [imprecise-overlay]
 p.ads:22:26: high: object is unsuitable for aliasing via address clause [possible explanation: floating-point types have invalid bit patterns for SPARK; aliased object could have invalid values [SPARK RM 13.7]]
 p.ads:22:26: info: type is suitable as source for unchecked conversion (Trivial)
 p.ads:22:26: info: types of aliased objects have the same size (Trivial)
 p.ads:25:11: info: data dependencies proved
 p.ads:25:33: info: initialization of "Full_S" proved
 p.ads:26:11: info: flow dependencies proved
-p.ads:28:22: medium: postcondition might fail, cannot prove Raw_S = Null_Raw_R
+p.ads:28:22: medium: postcondition might fail, cannot prove Raw_S = Null_Raw_R [provers reached step limit before completing the proof]
 p.ads:32:11: info: data dependencies proved
 p.ads:33:11: info: flow dependencies proved
-p2.adb:39:28: high: overflow check might fail, cannot prove lower bound for Full_S.A + X (e.g. when Full_S = (A => -1, B => 0.0) and X = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at p2.ads:30 should mention Full_S and X in a precondition]
-p2.adb:40:28: high: float overflow check might fail (e.g. when Full_S = (A => 0, B => -3.4028105E+38) and Y = -1.3082154E+33) [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at p2.ads:30 should mention Full_S and Y in a precondition]
+p2.adb:39:28: high: overflow check might fail, cannot prove lower bound for Full_S.A + X (e.g. when Full_S = (A => -1, B => 0.0) and X = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at p2.ads:30 should mention Full_S and X in a precondition] [provers reached step limit before completing the proof]
+p2.adb:40:28: high: float overflow check might fail (e.g. when Full_S = (A => 0, B => -3.4028105E+38) and Y = -1.3082154E+33) [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at p2.ads:30 should mention Full_S and Y in a precondition] [provers reached step limit before completing the proof]
 p2.ads:21:04: info: address in address clause is compatible with object alignment (Trivial)
 p2.ads:21:04: info: object is suitable for aliasing via address clause (Trivial)
 p2.ads:21:04: info: type is suitable as source for unchecked conversion (Trivial)
+p2.ads:21:04: warning: imprecise handling of overlay (component offset not known) [imprecise-overlay]
 p2.ads:22:26: high: object is unsuitable for aliasing via address clause [possible explanation: floating-point types have invalid bit patterns for SPARK; aliased object could have invalid values [SPARK RM 13.7]]
 p2.ads:22:26: info: type is suitable as source for unchecked conversion (Trivial)
 p2.ads:22:26: info: types of aliased objects have the same size (Trivial)
 p2.ads:25:11: info: data dependencies proved
 p2.ads:25:33: info: initialization of "Full_S" proved
 p2.ads:26:11: info: flow dependencies proved
-p2.ads:28:22: medium: postcondition might fail, cannot prove Raw_S = Null_Raw_R
+p2.ads:28:22: medium: postcondition might fail, cannot prove Raw_S = Null_Raw_R [provers reached step limit before completing the proof]
 p2.ads:32:11: info: data dependencies proved
 p2.ads:34:11: info: flow dependencies proved

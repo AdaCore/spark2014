@@ -123,7 +123,7 @@ Ada_2020           	      Yes
 Annotate		      Yes
 Check	 		      Yes
 Check_Policy 		      Yes                    No effect on provability (see section "Assertion Pragmas" in the SPARK User's Guide)
-Compile_Time_Error	      Yes		     Ignored (replaced by null statement)
+Compile_Time_Error	      Yes		     Translated as pragma Assume of the negated condition
 Compile_Time_Warning	      Yes		     Ignored (replaced by null statement)
 Debug			      Yes		     Ignored (replaced by null statement)
 Default_Scalar_Storage_Order  Yes

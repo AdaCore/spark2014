@@ -7,30 +7,26 @@ full.adb:4:05: info: initialization of "Z1" proved
 full.adb:4:09: info: initialization of "Z2" proved
 full.adb:4:13: info: initialization of "Z3" proved
 full.adb:6:08: info: flow dependencies proved
-full.adb:17:07: medium: range check might fail
-full.adb:18:07: medium: range check might fail
+full.adb:17:07: medium: range check might fail [provers gave up before completing the proof]
+full.adb:18:07: medium: range check might fail [provers gave up before completing the proof]
 full.adb:20:11: info: range check proved (CVC5: 2 VC)
 full.adb:20:14: info: range check proved (CVC5: 2 VC)
 full.adb:21:20: info: range check proved (CVC5: 2 VC)
 full.adb:21:23: info: range check proved (CVC5: 2 VC)
 full.adb:22:12: info: range check proved (CVC5: 2 VC)
-full.adb:24:13: medium: range check might fail, cannot prove upper bound for X.A'Size [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (X.A'Size <= Integer'Last) to subprogram at line 1]
-full.adb:24:13: warning: "Object_Size" is not specified for subtype of "String"
-full.adb:24:13: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
-full.adb:25:13: medium: range check might fail, cannot prove upper bound for X.C'Size [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (X.C'Size <= Integer'Last) to subprogram at line 1]
-full.adb:25:13: warning: "Object_Size" is not specified for subtype of "A2d"
-full.adb:25:13: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
-full.adb:26:11: medium: range check might fail, cannot prove upper bound for X'Size [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (X'Size <= Integer'Last) to subprogram at line 1]
-full.adb:26:11: warning: it is not specified for object "X" and "Object_Size" is not specified for subtype of "T"
+full.adb:24:13: medium: range check might fail, cannot prove upper bound for X.A'Size [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (X.A'Size <= Integer'Last) to subprogram at line 1] [provers gave up before completing the proof]
+full.adb:25:13: medium: range check might fail, cannot prove upper bound for X.C'Size [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (X.C'Size <= Integer'Last) to subprogram at line 1] [provers gave up before completing the proof]
+full.adb:26:11: medium: range check might fail, cannot prove upper bound for X'Size [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (X'Size <= Integer'Last) to subprogram at line 1] [provers gave up before completing the proof]
+full.adb:26:11: warning: object does not have a Size aspect and Object_Size of type of "X" is missing
 full.adb:26:11: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
-full.adb:27:11: medium: range check might fail, cannot prove upper bound for S'Size [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (S'Size <= Integer'Last) to subprogram at line 1]
-full.adb:27:11: warning: it is not specified for type "S"
+full.adb:27:11: medium: range check might fail, cannot prove upper bound for S'Size [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (S'Size <= Integer'Last) to subprogram at line 1] [provers gave up before completing the proof]
+full.adb:27:11: warning: Size of type "S" is missing
 full.adb:27:11: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
-full.adb:33:11: warning: it is not specified for type "T"
+full.adb:33:11: warning: Size of type "T" is missing
 full.adb:33:11: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
-full.adb:34:16: warning: it is not specified for type "String"
+full.adb:34:16: warning: Size of type "String" is missing
 full.adb:34:16: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
-full.adb:35:13: warning: it is not specified for type "A2D"
+full.adb:35:13: warning: Size of type "A2D" is missing
 full.adb:35:13: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
 init.adb:9:19: info: assertion proved (Trivial: 1 VC)
 main.adb:5:14: info: add a contract to analyze it separately from calling contexts

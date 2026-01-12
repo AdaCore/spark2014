@@ -1,21 +1,21 @@
 inherited_proc.adb:4:04: info: initialization of "X" proved
 types_with_inv.ads:4:27: info: initialization of "X" proved
-types_with_inv.ads:8:14: medium: for X at the end of Test at types_with_inv.ads:8
+types_with_inv.ads:8:14: medium: for "X" at the end of "Test" at types_with_inv.ads:8
 types_with_inv.ads:8:14: medium: in inlined invariant at types_with_inv.ads:26
-types_with_inv.ads:8:14: medium: invariant check might fail, cannot prove T2 /= 0 (e.g. when X = -1)
+types_with_inv.ads:8:14: medium: invariant check might fail, cannot prove T2 /= 0 (e.g. when X = -1) [provers reached step limit before completing the proof]
 types_with_inv.ads:8:20: warning: unused initial value of "X"
-types_with_inv.ads:10:14: medium: for X at the end of Test2 at types_with_inv.ads:10
+types_with_inv.ads:10:14: medium: for "X" at the end of "Test2" at types_with_inv.ads:10
 types_with_inv.ads:10:14: medium: in inlined invariant at types_with_inv.ads:26
-types_with_inv.ads:10:14: medium: invariant check might fail, cannot prove T2 /= 0 (e.g. when X = -1)
+types_with_inv.ads:10:14: medium: invariant check might fail, cannot prove T2 /= 0 (e.g. when X = -1) [provers gave up before completing the proof]
 types_with_inv.ads:10:21: warning: unused initial value of "X"
 types_with_inv.ads:16:27: info: initialization of "X" proved
-types_with_inv.ads:20:14: medium: for X at the end of Test at types_with_inv.ads:20
+types_with_inv.ads:20:14: medium: for "X" at the end of "Test" at types_with_inv.ads:20
 types_with_inv.ads:20:14: medium: in inlined invariant at types_with_inv.ads:29
-types_with_inv.ads:20:14: medium: invariant check might fail, cannot prove R2.F /= 0 (e.g. when X = (F => -1))
+types_with_inv.ads:20:14: medium: invariant check might fail, cannot prove R2.F /= 0 (e.g. when X = (F => -1)) [provers reached step limit before completing the proof]
 types_with_inv.ads:20:20: warning: unused initial value of "X"
-types_with_inv.ads:22:14: medium: for X at the end of Test2 at types_with_inv.ads:22
+types_with_inv.ads:22:14: medium: for "X" at the end of "Test2" at types_with_inv.ads:22
 types_with_inv.ads:22:14: medium: in inlined invariant at types_with_inv.ads:29
-types_with_inv.ads:22:14: medium: invariant check might fail, cannot prove R2.F /= 0 (e.g. when X = (F => -1))
+types_with_inv.ads:22:14: medium: invariant check might fail, cannot prove R2.F /= 0 (e.g. when X = (F => -1)) [provers reached step limit before completing the proof]
 types_with_inv.ads:22:21: warning: unused initial value of "X"
 types_with_inv.ads:24:09: info: invariant check proved on default value (CVC5: 1 VC)
 types_with_inv.ads:25:24: info: in default value of private type at types_with_inv.ads:6

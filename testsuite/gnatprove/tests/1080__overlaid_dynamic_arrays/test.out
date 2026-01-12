@@ -1,78 +1,87 @@
 main.adb:1:11: warning: subprogram "Main" has no effect
 main.adb:4:04: info: range check proved (CVC5: 2 VC)
 main.adb:7:14: warning: subprogram "P1" has no effect
-main.adb:11:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: X must be aliased for its alignment to be known] [possible fix: overlaid object should have an Alignment representation clause]
+main.adb:11:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: "X" must be aliased for its alignment to be known] [possible fix: overlaid object should have an Alignment representation clause]
 main.adb:11:07: info: object is suitable for aliasing via address clause (Trivial)
+main.adb:11:07: warning: imprecise handling of overlay (types in unchecked conversion do not have the same size) [imprecise-overlay]
 main.adb:14:22: info: object is suitable for aliasing via address clause (Trivial)
 main.adb:14:22: info: type is suitable as source for unchecked conversion (Trivial)
 main.adb:14:22: info: types of aliased objects have the same size (CVC5: 1 VC)
 main.adb:20:14: warning: subprogram "P2" has no effect
-main.adb:24:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: X must be aliased for its alignment to be known] [possible fix: overlaid object should have an Alignment representation clause]
+main.adb:24:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: "X" must be aliased for its alignment to be known] [possible fix: overlaid object should have an Alignment representation clause]
 main.adb:24:07: info: object is suitable for aliasing via address clause (Trivial)
+main.adb:24:07: warning: imprecise handling of overlay (types in unchecked conversion do not have the same size) [imprecise-overlay]
 main.adb:27:22: info: object is suitable for aliasing via address clause (Trivial)
 main.adb:27:22: info: type is suitable as source for unchecked conversion (Trivial)
 main.adb:27:22: info: types of aliased objects have the same size (CVC5: 1 VC)
 main.adb:33:14: warning: subprogram "P3" has no effect
-main.adb:36:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: X must be aliased for its alignment to be known] [possible fix: overlaid object should have an Alignment representation clause]
+main.adb:36:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: "X" must be aliased for its alignment to be known] [possible fix: overlaid object should have an Alignment representation clause]
 main.adb:36:07: info: object is suitable for aliasing via address clause (Trivial)
-main.adb:39:22: high: types of aliased objects do not have the same size
+main.adb:36:07: warning: imprecise handling of overlay (types in unchecked conversion do not have the same size) [imprecise-overlay]
+main.adb:39:22: high: types of aliased objects do not have the same size [provers reached step limit before completing the proof]
 main.adb:39:22: info: object is suitable for aliasing via address clause (Trivial)
 main.adb:39:22: info: type is suitable as source for unchecked conversion (Trivial)
 main.adb:45:14: warning: subprogram "P4" has no effect
-main.adb:48:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: X must be aliased for its alignment to be known] [possible fix: overlaid object should have an Alignment representation clause]
+main.adb:48:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: "X" must be aliased for its alignment to be known] [possible fix: overlaid object should have an Alignment representation clause]
 main.adb:48:07: info: object is suitable for aliasing via address clause (Trivial)
-main.adb:49:31: high: types of aliased objects do not have the same size
+main.adb:48:07: warning: imprecise handling of overlay (types in unchecked conversion do not have the same size) [imprecise-overlay]
+main.adb:49:31: high: types of aliased objects do not have the same size [provers reached step limit before completing the proof]
 main.adb:49:31: info: object is suitable for aliasing via address clause (Trivial)
 main.adb:49:31: info: type is suitable as source for unchecked conversion (Trivial)
 main.adb:55:04: info: range check proved (CVC5: 2 VC)
 main.adb:58:14: warning: subprogram "P5" has no effect
-main.adb:62:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: X must be aliased for its alignment to be known] [possible fix: overlaid object should have an Alignment representation clause]
+main.adb:62:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: "X" must be aliased for its alignment to be known] [possible fix: overlaid object should have an Alignment representation clause]
 main.adb:62:07: info: object is suitable for aliasing via address clause (Trivial)
+main.adb:62:07: warning: imprecise handling of overlay (types in unchecked conversion do not have the same size) [imprecise-overlay]
 main.adb:65:22: info: object is suitable for aliasing via address clause (Trivial)
 main.adb:65:22: info: type is suitable as source for unchecked conversion (Trivial)
 main.adb:65:22: info: types of aliased objects have the same size (CVC5: 1 VC)
 main.adb:71:14: warning: subprogram "P6" has no effect
-main.adb:75:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: X must be aliased for its alignment to be known] [possible fix: overlaid object should have an Alignment representation clause]
+main.adb:75:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: "X" must be aliased for its alignment to be known] [possible fix: overlaid object should have an Alignment representation clause]
 main.adb:75:07: info: object is suitable for aliasing via address clause (Trivial)
+main.adb:75:07: warning: imprecise handling of overlay (types in unchecked conversion do not have the same size) [imprecise-overlay]
 main.adb:78:22: info: object is suitable for aliasing via address clause (Trivial)
 main.adb:78:22: info: type is suitable as source for unchecked conversion (Trivial)
 main.adb:78:22: info: types of aliased objects have the same size (CVC5: 1 VC)
 main.adb:84:14: warning: subprogram "P7" has no effect
-main.adb:87:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: X must be aliased for its alignment to be known] [possible fix: overlaid object should have an Alignment representation clause]
+main.adb:87:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: "X" must be aliased for its alignment to be known] [possible fix: overlaid object should have an Alignment representation clause]
 main.adb:87:07: info: object is suitable for aliasing via address clause (Trivial)
-main.adb:90:22: high: types of aliased objects do not have the same size
+main.adb:87:07: warning: imprecise handling of overlay (types in unchecked conversion do not have the same size) [imprecise-overlay]
+main.adb:90:22: high: types of aliased objects do not have the same size [provers reached step limit before completing the proof]
 main.adb:90:22: info: object is suitable for aliasing via address clause (Trivial)
 main.adb:90:22: info: type is suitable as source for unchecked conversion (Trivial)
 main.adb:96:14: warning: subprogram "P8" has no effect
-main.adb:99:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: X must be aliased for its alignment to be known] [possible fix: overlaid object should have an Alignment representation clause]
+main.adb:99:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: "X" must be aliased for its alignment to be known] [possible fix: overlaid object should have an Alignment representation clause]
 main.adb:99:07: info: object is suitable for aliasing via address clause (Trivial)
-main.adb:100:31: high: types of aliased objects do not have the same size
+main.adb:99:07: warning: imprecise handling of overlay (types in unchecked conversion do not have the same size) [imprecise-overlay]
+main.adb:100:31: high: types of aliased objects do not have the same size [provers reached step limit before completing the proof]
 main.adb:100:31: info: object is suitable for aliasing via address clause (Trivial)
 main.adb:100:31: info: type is suitable as source for unchecked conversion (Trivial)
 main.adb:109:04: info: range check proved (CVC5: 2 VC)
 main.adb:112:14: warning: subprogram "P9" has no effect
-main.adb:116:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: X must be aliased for its alignment to be known] [possible fix: overlaid object should have an Alignment representation clause]
+main.adb:116:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: "X" must be aliased for its alignment to be known] [possible fix: overlaid object should have an Alignment representation clause]
 main.adb:116:07: info: object is suitable for aliasing via address clause (Trivial)
-main.adb:117:31: high: type is unsuitable as a source for unchecked conversion [possible explanation: size of type BC cannot be computed statically; type BC might have unused bits that are not modelled in SPARK]
-main.adb:117:31: high: types of aliased objects do not have the same size [possible explanation: type BC doesn't have aliased components]
+main.adb:116:07: warning: imprecise handling of overlay (type is unsuitable as source for unchecked conversion) [imprecise-overlay]
+main.adb:117:31: high: type is unsuitable as a source for unchecked conversion [possible explanation: size of type "BC" cannot be computed statically; type "BC" might have unused bits that are not modelled in SPARK]
+main.adb:117:31: high: types of aliased objects do not have the same size [provers reached step limit before completing the proof]
 main.adb:117:31: info: object is suitable for aliasing via address clause (Trivial)
 main.adb:127:19: warning: "X" is not modified, could be IN
 main.adb:127:19: warning: unused variable "X"
-main.adb:131:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: X must be aliased for its alignment to be known] [possible fix: overlaid object should have an Alignment representation clause]
+main.adb:131:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: "X" must be aliased for its alignment to be known] [possible fix: overlaid object should have an Alignment representation clause]
 main.adb:131:07: info: object is suitable for aliasing via address clause (Trivial)
 main.adb:131:07: info: type is suitable as source for unchecked conversion (Trivial)
-main.adb:134:22: high: type is unsuitable as a source for unchecked conversion [possible explanation: type SAA doesn't have a Component_Size representation clause or aspect]
-main.adb:134:22: high: types of aliased objects do not have the same size [possible explanation: type SAA doesn't have a Component_Size representation clause or aspect]
+main.adb:131:07: warning: imprecise handling of overlay (type is unsuitable as source for unchecked conversion) [imprecise-overlay]
+main.adb:134:22: high: type is unsuitable as a source for unchecked conversion [possible explanation: type "SAA" doesn't have a Component_Size representation clause or aspect]
+main.adb:134:22: high: types of aliased objects do not have the same size [provers reached step limit before completing the proof]
 main.adb:134:22: info: object is suitable for aliasing via address clause (Trivial)
 main.adb:140:19: warning: "X" is not modified, could be IN
 main.adb:140:19: warning: unused variable "X"
-main.adb:144:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: alignment of overlaid object (which is 1) must be a multiple of the alignment of Y (which is 8)] [possible fix: overlaid object should have an Alignment representation clause]
-main.adb:144:07: high: object with non-trivial address clause or prefix of the 'Address reference does not have asynchronous writers
+main.adb:144:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: alignment of overlaid object (which is 1) must be a multiple of the alignment of "Y" (which is 8)] [possible fix: overlaid object should have an Alignment representation clause]
 main.adb:144:07: info: object is suitable for aliasing via address clause (Trivial)
 main.adb:144:07: info: type is suitable as source for unchecked conversion (Trivial)
-main.adb:147:22: high: type is unsuitable as a source for unchecked conversion [possible explanation: anonymous type doesn't have a Component_Size representation clause or aspect]
-main.adb:147:22: high: types of aliased objects do not have the same size [possible explanation: type AA doesn't have a Component_Size representation clause or aspect]
+main.adb:144:07: warning: imprecise handling of overlay (mutable overlay of a subcomponent of an object) [imprecise-overlay]
+main.adb:147:22: high: type is unsuitable as a source for unchecked conversion [possible explanation: subtype of "AA" doesn't have a Component_Size representation clause or aspect]
+main.adb:147:22: high: types of aliased objects do not have the same size [provers reached step limit before completing the proof]
 main.adb:147:22: info: object is suitable for aliasing via address clause (Trivial)
-main.adb:147:22: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: precondition of subprogram at line 140 should mention X]
+main.adb:147:22: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: precondition of subprogram at line 140 should mention X] [provers reached step limit before completing the proof]
 main.adb:147:32: warning: alignment of object is not precisely known [imprecise-align]
-main.adb:147:32: warning: statement has no effect

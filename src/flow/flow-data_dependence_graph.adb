@@ -70,8 +70,9 @@ package body Flow.Data_Dependence_Graph is
             for E of Calls loop
                if (Ekind (E) in E_Procedure | E_Entry
                    or else Is_Function_With_Side_Effects (E))
-                 and then (not Has_User_Supplied_Globals (E)
-                           or else Rely_On_Generated_Global (E, FA.B_Scope))
+                 and then
+                   (not Has_User_Supplied_Globals (E)
+                    or else Rely_On_Generated_Global (E, FA.B_Scope))
                then
                   Check.Insert (Direct_Mapping_Id (E));
                end if;
@@ -95,8 +96,9 @@ package body Flow.Data_Dependence_Graph is
          Combined_Defined : constant Flow_Id_Sets.Set :=
            Atr_Def.Variables_Defined
            or Atr_Def.Volatiles_Read
-           or Potential_Definite_Calls
-                (To_Subprograms (Atr_Def.Subprogram_Calls));
+           or
+             Potential_Definite_Calls
+               (To_Subprograms (Atr_Def.Subprogram_Calls));
 
          use type Flow_Graphs.Vertex_Id;
 
@@ -141,9 +143,10 @@ package body Flow.Data_Dependence_Graph is
                      if (Atr_Def.Is_Parameter
                          or else Atr_Def.Is_Global_Parameter
                          or else Atr_Def.Is_Implicit_Parameter)
-                       and then (Atr.Is_Parameter
-                                 or else Atr.Is_Global_Parameter
-                                 or else Atr.Is_Implicit_Parameter)
+                       and then
+                         (Atr.Is_Parameter
+                          or else Atr.Is_Global_Parameter
+                          or else Atr.Is_Implicit_Parameter)
                        and then Atr_Def.Call_Vertex = Atr.Call_Vertex
                      then
                         --  We have a definite order in which we assign out
@@ -169,16 +172,17 @@ package body Flow.Data_Dependence_Graph is
                   elsif FA.Generating_Globals
                     and then FA.Is_Generative
                     and then Var.Kind = Direct_Mapping
-                    and then (declare
-                                E : constant Entity_Id :=
-                                  Get_Direct_Mapping_Id (Var);
-                              begin
-                                Ekind (E) in E_Procedure | E_Entry
-                                or else (Ekind (E) = E_Function
-                                         and then Is_Function_With_Side_Effects
-                                                    (E)))
-                    and then (for some SC of Atr.Subprogram_Calls =>
-                                SC.E = Get_Direct_Mapping_Id (Var))
+                    and then
+                      (declare
+                         E : constant Entity_Id := Get_Direct_Mapping_Id (Var);
+                       begin
+                         Ekind (E) in E_Procedure | E_Entry
+                         or else
+                           (Ekind (E) = E_Function
+                            and then Is_Function_With_Side_Effects (E)))
+                    and then
+                      (for some SC of Atr.Subprogram_Calls =>
+                         SC.E = Get_Direct_Mapping_Id (Var))
                   then
                      TV_U := Flow_Graphs.Skip_Children;
 

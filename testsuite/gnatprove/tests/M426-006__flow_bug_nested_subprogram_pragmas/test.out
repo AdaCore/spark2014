@@ -17,7 +17,7 @@ t3q5.adb:59:66: info: index check proved (CVC5: 4 VC)
 t3q5.adb:59:81: info: index check proved (CVC5: 4 VC)
 t3q5.adb:59:81: info: overflow check proved (CVC5: 4 VC)
 t3q5.adb:60:94: info: index check proved (CVC5: 4 VC)
-t3q5.adb:61:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Perm (Table, Table'Loop_Entry)
+t3q5.adb:61:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Perm (Table, Table'Loop_Entry) [provers gave up before completing the proof]
 t3q5.ads:11:13: info: implicit aspect Always_Terminates on "Ordered" has been proved, subprogram will terminate
 t3q5.ads:12:16: info: range check proved (CVC5: 2 VC)
 t3q5.ads:12:51: info: index check proved (CVC5: 2 VC)

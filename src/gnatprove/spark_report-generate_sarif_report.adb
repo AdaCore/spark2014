@@ -8,10 +8,7 @@ with VSS.Strings.Conversions; use VSS.Strings.Conversions;
 with VSS.Text_Streams.File_Output;
 
 separate (SPARK_Report)
---!format off
-procedure Generate_SARIF_Report (Filename : String; Info : JSON_Value)
---!format on
-is
+procedure Generate_SARIF_Report (Filename : String; Info : JSON_Value) is
    Root       : SARIF.Types.Root;
    My_Run     : run;
    My_Results : SARIF.Types.result_Vector;

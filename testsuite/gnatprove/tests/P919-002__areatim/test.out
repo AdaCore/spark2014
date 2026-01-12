@@ -1,1 +1,1 @@
-a-reatim.ads:7:04: medium: assertion might fail
+a-reatim.ads:7:04: medium: assertion might fail [provers gave up before completing the proof]

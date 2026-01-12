@@ -1,16 +1,16 @@
 p.adb:1:18: info: data dependencies proved
 p.adb:6:13: info: implicit aspect Always_Terminates on "Func1" has been proved, subprogram will terminate
-p.adb:8:41: medium: unexpected exception might be raised [reason for check: expressions shall not raise exceptions] [possible fix: subprogram at line 6 should mention S1 in a precondition]
+p.adb:8:41: medium: unexpected exception might be raised [reason for check: expressions shall not raise exceptions] [possible fix: subprogram at line 6 should mention S1 in a precondition] [provers gave up before completing the proof]
 p.adb:11:13: info: implicit aspect Always_Terminates on "Func2" has been proved, subprogram will terminate
-p.adb:16:25: medium: assertion might fail [possible fix: subprogram at line 11 should mention C in a precondition]
-p.adb:17:10: medium: unexpected exception might be raised [reason for check: Func2 allows propagating no exceptions] [possible explanation: Program_Error might be unexpectedly raised]
+p.adb:16:25: medium: assertion might fail [possible fix: subprogram at line 11 should mention C in a precondition] [provers gave up before completing the proof]
+p.adb:17:10: medium: unexpected exception might be raised [reason for check: "Func2" allows propagating no exceptions] [possible explanation: "Program_Error" might be unexpectedly raised] [provers gave up before completing the proof]
 p.adb:22:19: high: "B" is not initialized
 p.adb:22:19: high: "C" is not initialized
 p.adb:22:19: high: "S1" is not initialized
 p.adb:22:19: info: no contextual analysis of "Func1" (in assertion expression)
-p.adb:22:19: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Func1 or turning it into an expression function]
+p.adb:22:19: medium: assertion might fail [possible fix: you should consider adding a postcondition to function "Func1" or turning it into an expression function] [provers gave up before completing the proof]
 p.adb:23:19: high: "B" is not initialized
 p.adb:23:19: high: "C" is not initialized
 p.adb:23:19: high: "S2" is not initialized
 p.adb:23:19: info: no contextual analysis of "Func2" (in assertion expression)
-p.adb:23:19: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Func2 or turning it into an expression function]
+p.adb:23:19: medium: assertion might fail [possible fix: you should consider adding a postcondition to function "Func2" or turning it into an expression function] [provers gave up before completing the proof]

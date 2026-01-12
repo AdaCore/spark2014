@@ -1,5 +1,5 @@
 predicates.ads:4:29: info: division check proved (CVC5: 1 VC)
 predicates.ads:13:07: info: range check proved (CVC5: 2 VC)
-string_copy.adb:6:10: medium: unexpected exception might be raised [reason for check: Copy allows propagating no exceptions] [possible explanation: Constraint_Error might be unexpectedly raised]
+string_copy.adb:6:10: medium: unexpected exception might be raised [reason for check: "Copy" allows propagating no exceptions] [possible explanation: "Constraint_Error" might be unexpectedly raised] [provers reached step limit before completing the proof]
 string_copy.ads:3:20: high: "Dest" is not initialized in "Copy" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "Dest" on all paths, make "Dest" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 string_copy.ads:7:21: info: initialization of "Dest" proved

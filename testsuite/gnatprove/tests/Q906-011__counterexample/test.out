@@ -1,2 +1,2 @@
-copy_values.adb:6:22: high: assertion might fail (e.g. when X = 5) [possible fix: subprogram at copy_values.ads:6 should mention X in a precondition]
+copy_values.adb:6:22: high: assertion might fail (e.g. when X = 5) [possible fix: subprogram at copy_values.ads:6 should mention X in a precondition] [provers gave up before completing the proof]
 copy_values.ads:6:14: warning: subprogram "Adjust" has no effect

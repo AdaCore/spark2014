@@ -1165,6 +1165,23 @@ hw-gfx.ads:195:13: info: implicit aspect Always_Terminates on "FB_Size" has been
 hw-gfx.ads:198:13: info: implicit aspect Always_Terminates on "Requires_Scaling" has been proved, subprogram will terminate
 hw-gfx.ads:204:13: info: implicit aspect Always_Terminates on "Scaling_Type" has been proved, subprogram will terminate
 hw-gfx.ads:213:13: info: implicit aspect Always_Terminates on "Scaling_Type" has been proved, subprogram will terminate
+hw-mmio_range.adb:22:04: high: "MMIO" constituent of "State" is not written in "FB", in instantiation at hw-gfx-framebuffer_filler.adb:25 [reason for check: encapsulating state is mentioned in the Initializes contract of the package declaration] [possible fix: initialize "MMIO" constituent of "State" at declaration or in the package body statements]
+hw-mmio_range.adb:22:04: high: "MMIO" constituent of "State" is not written in "GTT", in instantiation at hw-gfx-gma-registers.adb:54 [reason for check: encapsulating state is mentioned in the Initializes contract of the package declaration] [possible fix: initialize "MMIO" constituent of "State" at declaration or in the package body statements]
+hw-mmio_range.adb:22:04: high: "MMIO" constituent of "State" is not written in "MM16", in instantiation at hw-pci-mmconf.adb:38, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68 [reason for check: encapsulating state is mentioned in the Initializes contract of the package declaration] [possible fix: initialize "MMIO" constituent of "State" at declaration or in the package body statements]
+hw-mmio_range.adb:22:04: high: "MMIO" constituent of "State" is not written in "MM32", in instantiation at hw-pci-mmconf.adb:40, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68 [reason for check: encapsulating state is mentioned in the Initializes contract of the package declaration] [possible fix: initialize "MMIO" constituent of "State" at declaration or in the package body statements]
+hw-mmio_range.adb:22:04: high: "MMIO" constituent of "State" is not written in "MM8", in instantiation at hw-pci-mmconf.adb:36, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68 [reason for check: encapsulating state is mentioned in the Initializes contract of the package declaration] [possible fix: initialize "MMIO" constituent of "State" at declaration or in the package body statements]
+hw-mmio_range.adb:22:04: high: "MMIO" constituent of "State" is not written in "Regs", in instantiation at hw-gfx-gma-registers.adb:41 [reason for check: encapsulating state is mentioned in the Initializes contract of the package declaration] [possible fix: initialize "MMIO" constituent of "State" at declaration or in the package body statements]
+hw-mmio_range.adb:22:04: high: initialization of "FB.State" is specified at hw-mmio_range.ads:27, instance at hw-gfx-framebuffer_filler.adb:25
+hw-mmio_range.adb:22:04: high: initialization of "GTT.State" constituent of "Registers.GTT_State" is specified at hw-mmio_range.ads:27, instance at hw-gfx-gma-registers.adb:54
+hw-mmio_range.adb:22:04: high: initialization of "MM16.State" constituent of "MM.PCI_State" is specified at hw-mmio_range.ads:27, instance at hw-pci-mmconf.adb:38, instance at hw-pci-dev.adb:28, instance at hw-gfx-gma.adb:68
+hw-mmio_range.adb:22:04: high: initialization of "MM32.State" constituent of "MM.PCI_State" is specified at hw-mmio_range.ads:27, instance at hw-pci-mmconf.adb:40, instance at hw-pci-dev.adb:28, instance at hw-gfx-gma.adb:68
+hw-mmio_range.adb:22:04: high: initialization of "MM8.State" constituent of "MM.PCI_State" is specified at hw-mmio_range.ads:27, instance at hw-pci-mmconf.adb:36, instance at hw-pci-dev.adb:28, instance at hw-gfx-gma.adb:68
+hw-mmio_range.adb:22:04: high: initialization of "Regs.State" constituent of "Registers.Register_State" is specified at hw-mmio_range.ads:27, instance at hw-gfx-gma-registers.adb:41
+hw-mmio_range.ads:25:08: info: initialization of "GTT.State" constituent of "Registers.GTT_State" proved, in instantiation at hw-gfx-gma-registers.adb:54
+hw-mmio_range.ads:25:08: info: initialization of "MM16.State" constituent of "MM.PCI_State" proved, in instantiation at hw-pci-mmconf.adb:38, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
+hw-mmio_range.ads:25:08: info: initialization of "MM32.State" constituent of "MM.PCI_State" proved, in instantiation at hw-pci-mmconf.adb:40, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
+hw-mmio_range.ads:25:08: info: initialization of "MM8.State" constituent of "MM.PCI_State" proved, in instantiation at hw-pci-mmconf.adb:36, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
+hw-mmio_range.ads:25:08: info: initialization of "Regs.State" constituent of "Registers.Register_State" proved, in instantiation at hw-gfx-gma-registers.adb:41
 hw-mmio_range.ads:26:07: info: initialization of "GTT.Base_Address" constituent of "Registers.Address_State" proved, in instantiation at hw-gfx-gma-registers.adb:54
 hw-mmio_range.ads:26:07: info: initialization of "MM16.Base_Address" constituent of "MM.Address_State" proved, in instantiation at hw-pci-mmconf.adb:38, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
 hw-mmio_range.ads:26:07: info: initialization of "MM32.Base_Address" constituent of "MM.Address_State" proved, in instantiation at hw-pci-mmconf.adb:40, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
@@ -1187,6 +1204,7 @@ hw-pci-dev.adb:49:07: info: initialization of "Reg32" proved, in instantiation a
 hw-pci-dev.adb:84:07: info: initialization of "Cmd" proved, in instantiation at hw-gfx-gma.adb:68
 hw-pci-dev.adb:85:07: info: initialization of "Base" proved, in instantiation at hw-gfx-gma.adb:68
 hw-pci-dev.adb:85:13: info: initialization of "Backup" proved, in instantiation at hw-gfx-gma.adb:68
+hw-pci-dev.ads:19:39: info: initialization of "Dev.PCI_State" constituent of "GMA.Device_State" proved, in instantiation at hw-gfx-gma.adb:68
 hw-pci-dev.ads:20:04: info: flow dependencies proved, in instantiation at hw-gfx-gma.adb:68
 hw-pci-dev.ads:23:21: info: initialization of "Value" proved, in instantiation at hw-gfx-gma.adb:68
 hw-pci-dev.ads:24:22: info: initialization of "Value" proved, in instantiation at hw-gfx-gma.adb:68
@@ -1195,12 +1213,14 @@ hw-pci-dev.ads:42:07: info: initialization of "Addr" proved, in instantiation at
 hw-pci-dev.ads:49:29: info: initialization of "Length" proved, in instantiation at hw-gfx-gma.adb:68
 hw-pci-dev.ads:53:26: info: initialization of "Success" proved, in instantiation at hw-gfx-gma.adb:68
 hw-pci-mmconf.ads:24:23: info: initialization of "MM.Address_State" constituent of "Dev.Address_State" proved, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
+hw-pci-mmconf.ads:24:39: info: initialization of "MM.PCI_State" constituent of "Dev.PCI_State" proved, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
 hw-pci-mmconf.ads:25:04: info: flow dependencies proved, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
 hw-pci-mmconf.ads:28:21: info: initialization of "Value" proved, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
 hw-pci-mmconf.ads:29:22: info: initialization of "Value" proved, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
 hw-pci-mmconf.ads:32:22: info: initialization of "Value" proved, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
 hw-pci-mmconf.ads:44:14: warning: subprogram "Set_Base_Address" has no effect, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
 hw-pci.ads:54:13: info: implicit aspect Always_Terminates on "Calc_Base_Address" has been proved, subprogram will terminate
+hw-port_io.ads:17:23: high: "Port_IO.State" is not written in "Port_IO" [reason for check: variable is mentioned in the generated Initializes contract] [possible fix: initialize "Port_IO.State" at declaration]
 hw-time-timer.ads:21:07: info: flow dependencies proved
 hw.ads:57:13: info: implicit aspect Always_Terminates on "Div_Round_Up" has been proved, subprogram will terminate
 hw.ads:60:13: info: implicit aspect Always_Terminates on "Div_Round_Closest" has been proved, subprogram will terminate

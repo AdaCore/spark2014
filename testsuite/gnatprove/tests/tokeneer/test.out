@@ -42,6 +42,7 @@ admin.ads:219:13: info: implicit aspect Always_Terminates on "SecurityOfficerIsP
 admin.ads:220:11: info: data dependencies proved
 admin.ads:274:27: info: index check proved
 admintoken-interfac.ads:25:28: info: initialization of "Interfac.Status" constituent of "AdminToken.Status" proved
+admintoken-interfac.ads:26:28: info: initialization of "Interfac.Input" constituent of "AdminToken.Input" proved
 admintoken-interfac.ads:28:08: info: flow dependencies proved
 admintoken.adb:48:42: info: initialization of "AuthCert" constituent of "State" proved
 admintoken.adb:49:42: info: initialization of "IDCert" constituent of "State" proved
@@ -326,10 +327,10 @@ auditlog.adb:1289:16: info: loop invariant initialization proved
 auditlog.adb:1289:16: info: loop invariant preservation proved
 auditlog.adb:1290:66: info: range check proved
 auditlog.adb:1320:52: info: range check proved
-auditlog.adb:1328:10: info: for LogFileState before the call at auditlog.ads:306
+auditlog.adb:1328:10: info: for "LogFileState" before the call at auditlog.ads:306
 auditlog.adb:1328:10: info: invariant check proved
 auditlog.adb:1328:10: info: precondition proved
-auditlog.adb:1338:07: info: for LogFileState before the call at auditlog.ads:306
+auditlog.adb:1338:07: info: for "LogFileState" before the call at auditlog.ads:306
 auditlog.adb:1338:07: info: invariant check proved
 auditlog.adb:1338:07: info: precondition proved
 auditlog.adb:1381:30: info: refined post proved
@@ -340,29 +341,29 @@ auditlog.adb:1400:13: info: loop invariant preservation proved
 auditlog.adb:1404:63: info: range check proved
 auditlog.adb:1412:79: info: range check proved
 auditlog.adb:1415:73: info: range check proved
-auditlog.adb:1428:10: info: for LogFileState before the call at auditlog.ads:306
+auditlog.adb:1428:10: info: for "LogFileState" before the call at auditlog.ads:306
 auditlog.adb:1428:10: info: invariant check proved
 auditlog.adb:1428:10: info: precondition proved
-auditlog.adb:1436:07: info: for LogFileState before the call at auditlog.ads:306
+auditlog.adb:1436:07: info: for "LogFileState" before the call at auditlog.ads:306
 auditlog.adb:1436:07: info: invariant check proved
 auditlog.adb:1436:07: info: precondition proved
 auditlog.adb:1459:30: info: unrolling loop [info-unrolling-inlining]
 auditlog.adb:1461:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 auditlog.ads:27:08: info: flow dependencies proved
-auditlog.ads:47:14: info: for LogFileState at the end of Init at auditlog.ads:306
+auditlog.ads:47:14: info: for "LogFileState" at the end of "Init" at auditlog.ads:306
 auditlog.ads:47:14: info: invariant check proved
 auditlog.ads:48:11: info: data dependencies proved
 auditlog.ads:51:11: info: flow dependencies proved
-auditlog.ads:67:14: info: for LogFileState at the end of AddElementToLog at auditlog.ads:306
+auditlog.ads:67:14: info: for "LogFileState" at the end of "AddElementToLog" at auditlog.ads:306
 auditlog.ads:67:14: info: invariant check proved
 auditlog.ads:71:11: info: data dependencies proved
 auditlog.ads:75:11: info: flow dependencies proved
-auditlog.ads:96:14: info: for LogFileState at the end of ArchiveLog at auditlog.ads:306
+auditlog.ads:96:14: info: for "LogFileState" at the end of "ArchiveLog" at auditlog.ads:306
 auditlog.ads:96:14: info: invariant check proved
 auditlog.ads:97:26: info: initialization of "Archive" proved
 auditlog.ads:98:11: info: data dependencies proved
 auditlog.ads:102:11: info: flow dependencies proved
-auditlog.ads:121:14: info: for LogFileState at the end of ClearLogEntries at auditlog.ads:306
+auditlog.ads:121:14: info: for "LogFileState" at the end of "ClearLogEntries" at auditlog.ads:306
 auditlog.ads:121:14: info: invariant check proved
 auditlog.ads:122:11: info: data dependencies proved
 auditlog.ads:126:11: info: flow dependencies proved
@@ -380,6 +381,8 @@ audittypes.ads:77:13: info: implicit aspect Always_Terminates on "ElementT_Image
 audittypes.ads:78:16: info: predicate check justified
 audittypes.ads:78:16: info: range check proved
 audittypes.ads:78:16: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+bio-interfac.ads:22:27: info: initialization of "Interfac.Input" constituent of "Bio.Input" proved
+bio-interfac.ads:23:62: info: flow dependencies proved
 bio.adb:83:13: info: implicit aspect Always_Terminates on "ReturnT_Image" has been proved, subprogram will terminate
 bio.adb:84:15: info: predicate check justified
 bio.adb:84:15: info: range check proved
@@ -621,6 +624,8 @@ certtypes.ads:63:21: info: predicate check justified
 certtypes.ads:63:21: info: predicate check proved
 certtypes.ads:63:21: info: range check proved
 certtypes.ads:63:21: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+clock-interfac.ads:21:27: info: initialization of "Interfac.Now" constituent of "Clock.Now" proved
+clock-interfac.ads:22:59: info: flow dependencies proved
 clock.adb:49:11: info: flow dependencies proved
 clock.adb:54:07: info: initialization of "V" proved
 clock.adb:59:11: info: range check proved
@@ -1132,6 +1137,8 @@ display.ads:173:11: info: data dependencies proved
 display.ads:174:11: info: flow dependencies proved
 displayapi.ads:24:21: info: initialization of "DisplayAPI.State" proved
 displayapi.ads:25:03: info: flow dependencies proved
+door-interfac.ads:21:27: info: initialization of "Interfac.Input" constituent of "Door.Input" proved
+door-interfac.ads:22:63: info: flow dependencies proved
 door.adb:59:11: info: data dependencies proved
 door.adb:68:11: info: flow dependencies proved
 door.adb:88:22: info: postcondition proved
@@ -1473,6 +1480,7 @@ enrolment.ads:56:24: info: initialization of "Description" proved
 enrolment.ads:57:11: info: data dependencies proved
 enrolment.ads:63:11: info: flow dependencies proved
 enrolment.ads:78:22: info: postcondition proved
+floppy.ads:24:28: info: initialization of "Floppy.Input" proved
 floppy.ads:25:28: info: initialization of "Floppy.Output" proved
 floppy.ads:26:08: info: flow dependencies proved
 iandatypes.ads:35:13: info: implicit aspect Always_Terminates on "FarT_Image" has been proved, subprogram will terminate
@@ -1480,6 +1488,8 @@ iandatypes.ads:36:12: info: predicate check justified
 iandatypes.ads:36:12: info: predicate check proved
 iandatypes.ads:36:12: info: range check proved
 iandatypes.ads:36:12: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+keyboard-interfac.ads:22:27: info: initialization of "Interfac.Inputs" constituent of "Keyboard.Inputs" proved
+keyboard-interfac.ads:23:69: info: flow dependencies proved
 keyboard.adb:67:07: info: initialization of "LocalData" proved
 keyboard.adb:68:07: info: initialization of "LocalLength" proved
 keyboard.ads:48:11: info: data dependencies proved
@@ -1974,6 +1984,9 @@ tismain.adb:1546:10: info: assertion proved
 tismain.adb:1585:22: info: precondition proved
 tismain.adb:1591:23: info: precondition proved
 tismain.adb:1598:22: info: precondition proved
+tokenreader-interfac.ads:26:28: info: initialization of "Interfac.ReaderInput" constituent of "TokenReader.Input" proved
+tokenreader-interfac.ads:28:28: info: initialization of "Interfac.ReaderStatus" constituent of "TokenReader.Status" proved
+tokenreader-interfac.ads:31:80: info: flow dependencies proved
 tokenreader-interfac.ads:83:13: info: implicit aspect Always_Terminates on "ResponseCodeT_Image" has been proved, subprogram will terminate
 tokenreader-interfac.ads:84:21: info: predicate check justified
 tokenreader-interfac.ads:84:21: info: range check proved
@@ -2180,6 +2193,7 @@ userentry.ads:264:13: info: postcondition proved
 userentry.ads:288:11: info: data dependencies proved
 userentry.ads:294:11: info: flow dependencies proved
 usertoken-interfac.ads:28:28: info: initialization of "Interfac.Status" constituent of "UserToken.Status" proved
+usertoken-interfac.ads:29:28: info: initialization of "Interfac.Input" constituent of "UserToken.Input" proved
 usertoken-interfac.ads:31:28: info: initialization of "Interfac.Output" constituent of "UserToken.Output" proved
 usertoken-interfac.ads:33:08: info: flow dependencies proved
 usertoken.adb:118:11: info: data dependencies proved

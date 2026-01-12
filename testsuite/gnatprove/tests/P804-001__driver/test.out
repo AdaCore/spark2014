@@ -5,5 +5,5 @@ segway.adb:38:33: info: loop invariant preservation proved (CVC5_no_prenex: 1 VC
 segway.adb:40:13: info: precondition proved (CVC5_no_prenex: 1 VC)
 segway.adb:42:13: info: precondition proved (CVC5_no_prenex: 1 VC)
 segway.ads:16:13: info: implicit aspect Always_Terminates on "Speed_Is_Valid" has been proved, subprogram will terminate
-segway.ads:24:17: high: postcondition might fail (e.g. when Speed = -1 and State = Still)
+segway.ads:24:17: high: postcondition might fail (e.g. when Speed = -1 and State = Still) [provers gave up before completing the proof]
 segway.ads:28:17: info: postcondition proved (CVC5_no_prenex: 2 VC)

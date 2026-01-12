@@ -40,14 +40,14 @@ test_base.adb:110:06: info: flow dependencies proved
 test_base.adb:113:07: warning: initialization of "X" has no effect
 test_base.adb:116:22: info: tag check proved (CVC5: 1 VC)
 test_base.adb:122:04: warning: analyzing unreferenced procedure "Test_Soundness" [unreferenced-procedure]
-test_base.adb:125:07: medium: tag check might fail
+test_base.adb:125:07: medium: tag check might fail [provers gave up before completing the proof]
 test_base.adb:125:17: high: extension of "X" is not initialized
-test_base.adb:134:07: medium: tag check might fail
+test_base.adb:134:07: medium: tag check might fail [provers gave up before completing the proof]
 test_base.adb:134:30: high: extension of "X" is not initialized
 test_base.adb:142:04: warning: analyzing unreferenced procedure "Test_Soundness_3" [unreferenced-procedure]
-test_base.adb:144:07: medium: tag check might fail
+test_base.adb:144:07: medium: tag check might fail [provers gave up before completing the proof]
 test_base.adb:144:17: high: extension of "X" is not initialized
-test_base.adb:152:07: medium: tag check might fail
+test_base.adb:152:07: medium: tag check might fail [provers gave up before completing the proof]
 test_base.adb:152:30: high: extension of "X" is not initialized
 test_call.adb:27:38: info: initialization of "C" proved
 test_call.adb:28:06: info: flow dependencies proved
@@ -78,11 +78,11 @@ test_call.adb:114:04: warning: analyzing unreferenced procedure "Test_Soundness"
 test_call.adb:116:12: info: in value of subprogram parameter after the call at test_call.adb:116
 test_call.adb:116:12: info: tag check proved (CVC5: 1 VC)
 test_call.adb:116:19: high: extension of "X" is not initialized
-test_call.adb:116:19: medium: tag check might fail
+test_call.adb:116:19: medium: tag check might fail [provers gave up before completing the proof]
 test_call.adb:124:12: high: extension of "X" is not initialized
 test_call.adb:124:12: info: in value of subprogram parameter after the call at test_call.adb:124
 test_call.adb:124:12: info: tag check proved (CVC5: 1 VC)
-test_call.adb:124:23: medium: tag check might fail
+test_call.adb:124:23: medium: tag check might fail [provers gave up before completing the proof]
 test_private.adb:7:16: info: implicit aspect Always_Terminates on "Create" has been proved, subprogram will terminate
 test_private.adb:8:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 test_private.adb:26:16: info: implicit aspect Always_Terminates on "Create" has been proved, subprogram will terminate

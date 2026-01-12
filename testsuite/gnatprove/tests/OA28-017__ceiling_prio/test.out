@@ -1,10 +1,10 @@
-account8.adb:7:31: medium: overflow check might fail, cannot prove upper bound for The_Data + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
+account8.adb:7:31: medium: overflow check might fail, cannot prove upper bound for The_Data + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
 account8.adb:16:14: info: add a contract to analyze it separately from calling contexts
 account8.adb:16:14: info: local subprogram "Get_Next_Account_Created" only analyzed in the context of calls [info-unrolling-inlining]
 account8.adb:16:14: warning: subprogram "Get_Next_Account_Created" has no effect
 account8.adb:25:10: info: analyzing call to "Get_Next_Account_Created" in context
 account8.ads:6:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 account8.ads:15:14: info: nontermination of task proved (CVC5: 1 VC)
-account8.ads:15:14: medium: ceiling priority protocol might not be respected for "Account8.Num_Accounts" [reason for check: ceiling priority of the protected object "Account8.Num_Accounts" must be >= the priority of the caller "Account8.Account_Management" in the call "Account8.Account_Management" -> "Account8.Protected_Natural.Incr"]
+account8.ads:15:14: medium: ceiling priority protocol might not be respected for "Account8.Num_Accounts" [reason for check: ceiling priority of the protected object "Account8.Num_Accounts" must be >= the priority of the caller "Account8.Account_Management" in the call "Account8.Account_Management" -> "Account8.Protected_Natural.Incr"] [provers gave up before completing the proof]
 account8.ads:17:06: info: data dependencies proved
 account8.ads:18:06: info: flow dependencies proved

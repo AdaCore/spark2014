@@ -23,4 +23,4 @@ test_main.adb:17:19: info: assertion proved (CVC5: 1 VC)
 test_main.adb:18:19: info: assertion proved (CVC5: 1 VC)
 test_main.adb:19:19: info: assertion proved (CVC5: 1 VC)
 test_main.adb:20:19: info: assertion proved (CVC5: 1 VC)
-test_main.adb:22:19: medium: assertion might fail
+test_main.adb:22:19: medium: assertion might fail [provers reached step limit before completing the proof]

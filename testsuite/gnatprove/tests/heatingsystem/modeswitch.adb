@@ -6,7 +6,7 @@ is
    Input_Ext : Modes
      with Volatile,
           Async_Writers,
-          Address => System.Storage_Elements.To_Address (16#FFFF_FFFF#);
+          Address => System.Storage_Elements.To_Address (16#FFFF_FFFF#), Import;
 
    procedure Read (Value : out Modes)
      with Refined_Global  => Input_Ext,

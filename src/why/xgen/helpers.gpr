@@ -14,4 +14,8 @@ project Helpers is
       for Default_Switches ("ada") use ("-g", "-O0", "-gnata", "-gnatg");
    end Compiler;
 
+   package Builder is
+      for Switches ("Ada") use ("-m");
+   end Builder;
+
 end Helpers;

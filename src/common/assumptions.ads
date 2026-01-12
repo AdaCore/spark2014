@@ -51,8 +51,8 @@ package Assumptions is
 
    function "<" (Left, Right : Token) return Boolean
    is (Left.Predicate < Right.Predicate
-       or else (Left.Predicate = Right.Predicate
-                and then Left.Arg < Right.Arg));
+       or else
+         (Left.Predicate = Right.Predicate and then Left.Arg < Right.Arg));
 
    package Token_Sets is new
      Ada.Containers.Ordered_Sets

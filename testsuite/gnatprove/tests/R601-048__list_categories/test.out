@@ -91,7 +91,8 @@ VC_TERMINATION_CHECK(assertion) - termination check - Check the termination of s
 VC_UC_SOURCE(assertion) - unchecked conversion source check - Check that a source type in an unchecked conversion can safely be used for such conversions. This means that the memory occupied by objects of this type is fully used by the object. - MEDIUM
 VC_UC_TARGET(assertion) - unchecked conversion target check - Check that a target type in an unchecked conversion can safely be used for such conversions. This means that the memory occupied by objects of this type is fully used by the object, and no invalid bitpatterns occur. - MEDIUM
 VC_UC_SAME_SIZE(assertion) - unchecked conversion size check - Check that the two types in an unchecked conversion instance are of the same size. - MEDIUM
-VC_UC_ALIGNMENT(assertion) - alignment check - Check that the address within address clause is a multiple of the object's alignment. - MEDIUM
+VC_UC_ALIGN_OVERLAY(assertion) - address alignment check - Check that the address within address clause is a multiple of the object's alignment. - MEDIUM
+VC_UC_ALIGN_UC(assertion) - unchecked conversion alignment check - Check that the alignment of the source of the unchecked conversion is a multiple of the alignment of the target. - MEDIUM
 VC_UC_VOLATILE(assertion) - volatile overlay check - Check that, if an object has an address clause that is not simply the address of another object, it is volatile - MEDIUM
 VC_WEAKER_PRE(liskov-substitution-principle) - precondition weaker than class-wide precondition - Check that the precondition aspect of the subprogram is weaker than its class-wide precondition. - MEDIUM
 VC_TRIVIAL_WEAKER_PRE(liskov-substitution-principle) - precondition not True while class-wide precondition is True - Check that the precondition aspect of the subprogram is True if its class-wide precondition is True. - MEDIUM
@@ -156,6 +157,7 @@ imprecise-call - imprecise-call - The behavior of a call might not be known by S
 imprecise-component-size - imprecise-component-size - the value of attribute Component_Size might not be known for proof if it is not supplied through an attribute definition clause - EASY
 imprecise-record-component-attribute - imprecise-record-component-attribute - the value of attributes First_Bit, Last_Bit, and Position on record components are handled in an imprecise way if the record does not have a record representation clause - EASY
 imprecise-size - imprecise-size - The attributes Size, Object_Size or Value_Size might not be handled precisely, nothing will be known about their evaluation - EASY
+imprecise-overlay - imprecise-overlay - Overlay might not be handled precisely by SPARK, the value of other overlaid objects will be unknown after an object is updated - EASY
 imprecise-unchecked-conversion - imprecise-unchecked-conversion - Unchecked conversion might not be handled precisely by SPARK, nothing will be known about their result - EASY
 imprecise-value - imprecise-value - References to the attribute Value are handled in an imprecise way; its precondition is impossible to prove and nothing will be known about the evaluation of the attribute reference - EASY
 imprecise-image - imprecise-image - References to the attributes Image and Img are handled in an imprecise way; nothing will be known about the evaluation of the attribute reference apart from a bound on its length - EASY

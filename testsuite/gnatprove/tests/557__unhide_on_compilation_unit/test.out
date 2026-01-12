@@ -8,5 +8,5 @@ main.adb:7:26: info: index check proved (CVC5: 2 VC), in call inlined at gen.adb
 main.adb:9:03: info: analyzing call to "My_Read" in context
 main.adb:9:03: info: in instantiation at gen.adb:10
 main.adb:9:12: info: implicit aspect Always_Terminates on "U" has been proved, subprogram will terminate
-main.adb:10:18: medium: precondition might fail
+main.adb:10:18: medium: precondition might fail [provers reached step limit before completing the proof]
 gnatprove: error during flow analysis and proof

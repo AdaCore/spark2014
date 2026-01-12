@@ -1,4 +1,4 @@
-uninitialized.adb:6:22: medium: assertion might fail
+uninitialized.adb:6:22: medium: assertion might fail [provers gave up before completing the proof]
 uninitialized.adb:6:26: high: "B" is not initialized
 uninitialized.ads:5:12: info: data dependencies proved
 uninitialized.ads:5:33: info: initialization of "A" proved
@@ -10,5 +10,5 @@ vehicle.adb:39:33: info: loop invariant preservation proved (CVC5: 1 VC)
 vehicle.adb:41:13: info: precondition proved (CVC5: 1 VC)
 vehicle.adb:43:13: info: precondition proved (CVC5: 1 VC)
 vehicle.ads:16:13: info: implicit aspect Always_Terminates on "Speed_Is_Valid" has been proved, subprogram will terminate
-vehicle.ads:24:20: medium: postcondition might fail
+vehicle.ads:24:20: medium: postcondition might fail [provers gave up before completing the proof]
 vehicle.ads:25:12: info: data dependencies proved

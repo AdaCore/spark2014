@@ -1,3 +1,9 @@
+ high: possible data race when accessing variable "account1.num_accounts"
+--> bank1.ads:5:04
+    5 |       Special_Accounts : Account_Management;
+      |       ^~~~~~~~~~~~~~~~
+      + task "bank1.special_accounts" accesses "account1.num_accounts"
+      + task "bank1.all_accounts" accesses "account1.num_accounts"
  medium: overflow check might fail, cannot prove upper bound for Num_Accounts + 1
 --> account1.adb:15:39
    15 |             Num_Accounts := Num_Accounts + 1;
@@ -6,9 +12,4 @@
       + possible fix: loop at line 13 should mention Num_Accounts in a loop invariant
    13 |          loop
       |          ^
- high: possible data race when accessing variable "account1.num_accounts"
---> bank1.ads:5:04
-    5 |       Special_Accounts : Account_Management;
-      |       ^~~~~~~~~~~~~~~~
-      + task "bank1.special_accounts" accesses "account1.num_accounts"
-      + task "bank1.all_accounts" accesses "account1.num_accounts"
+      + provers gave up before completing the proof

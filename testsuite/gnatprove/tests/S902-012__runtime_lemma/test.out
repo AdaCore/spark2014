@@ -1,2 +1,2 @@
-s-incr.adb:3:14: high: postcondition might fail (e.g. when X = Integer'Last)
+s-incr.adb:3:14: high: postcondition might fail (e.g. when X = Integer'Last) [provers gave up before completing the proof]
 s-incr.adb:10:11: info: overflow check proved (CVC5: 2 VC)

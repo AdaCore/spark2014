@@ -2,7 +2,7 @@ dispatching.adb:10:19: warning: unused variable "X"
 dispatching.adb:10:22: warning: unused variable "Y"
 dispatching.adb:14:16: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
 dispatching.adb:14:16: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
-dispatching.adb:15:34: medium: postcondition might fail
+dispatching.adb:15:34: medium: postcondition might fail [provers gave up before completing the proof]
 dispatching.adb:25:39: warning: assuming "N" has no effect on global items
 dispatching.adb:25:39: warning: no Global contract available for "N" [assumed-global-null]
 dispatching.adb:27:10: medium: implicit aspect Always_Terminates on "F" could be incorrect, indirect dispatching call to record equality might be nonterminating [possible explanation: call could hide recursive calls]
@@ -10,7 +10,7 @@ dispatching_contract.adb:10:19: warning: unused variable "X"
 dispatching_contract.adb:10:22: warning: unused variable "Y"
 dispatching_contract.adb:14:16: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
 dispatching_contract.adb:14:16: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
-dispatching_contract.adb:15:30: medium: postcondition might fail
+dispatching_contract.adb:15:30: medium: postcondition might fail [provers gave up before completing the proof]
 dispatching_contract.adb:25:39: warning: assuming "N" has no effect on global items
 dispatching_contract.adb:25:39: warning: no Global contract available for "N" [assumed-global-null]
 dispatching_contract.adb:27:10: medium: implicit aspect Always_Terminates on "F" could be incorrect, indirect dispatching call to record equality might be nonterminating [possible explanation: call could hide recursive calls]
@@ -22,7 +22,7 @@ dispatching_contract_import.adb:26:39: warning: no Global contract available for
 dispatching_contract_import.adb:28:10: medium: implicit aspect Always_Terminates on "F" could be incorrect, indirect dispatching call to record equality might be nonterminating [possible explanation: call could hide recursive calls]
 gen.ads:3:18: medium: implicit aspect Always_Terminates on "Oeqr" could be incorrect, indirect dispatching call to record equality might be nonterminating, in instantiation at types.adb:8 [possible explanation: call could hide recursive calls]
 gen.ads:5:14: warning: subprogram "Test" has no effect, in instantiation at types.adb:8
-gen.ads:5:55: medium: postcondition might fail, in instantiation at types.adb:8
+gen.ads:5:55: medium: postcondition might fail, in instantiation at types.adb:8 [provers gave up before completing the proof]
 main.adb:4:11: info: aspect Always_Terminates on "Main" has been proved, subprogram will terminate
 membership.adb:14:07: medium: implicit aspect Always_Terminates on "F" could be incorrect, "F" and record equality on type "R2" are mutually recursive
 membership.adb:17:47: info: no contextual analysis of "F" (inside expression function)

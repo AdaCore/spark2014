@@ -5,7 +5,7 @@ cartesian.adb:13:64: info: range check proved (CVC5: 2 VC)
 cartesian.adb:15:07: info: range check proved (CVC5: 2 VC)
 cartesian.adb:16:09: info: length check proved (CVC5: 3 VC)
 cartesian.adb:22:42: info: overflow check proved (CVC5: 8 VC)
-cartesian.adb:24:20: medium: array index check might fail [reason for check: value must be a valid index into the array]
+cartesian.adb:24:20: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
 cartesian.adb:27:35: info: loop invariant initialization proved (CVC5: 2 VC)
 cartesian.adb:27:35: info: loop invariant preservation proved (CVC5: 2 VC)
 cartesian.adb:27:58: info: overflow check proved (CVC5: 8 VC)
@@ -15,7 +15,7 @@ cartesian.adb:27:90: info: overflow check proved (CVC5: 8 VC)
 cartesian.adb:27:100: info: overflow check proved (CVC5: 8 VC)
 cartesian.adb:27:116: info: overflow check proved (CVC5: 8 VC)
 cartesian.adb:31:35: info: loop invariant initialization proved (CVC5: 2 VC)
-cartesian.adb:32:38: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove result((index1 - array1'First)*array2'Length + (j - array2'First) + 1)(1) = array1(index1)
+cartesian.adb:32:38: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove result((index1 - array1'First)*array2'Length + (j - array2'First) + 1)(1) = array1(index1) [provers reached step limit before completing the proof]
 cartesian.adb:32:53: info: overflow check proved (CVC5: 8 VC)
 cartesian.adb:32:68: info: overflow check proved (CVC5: 8 VC)
 cartesian.adb:32:75: info: range check proved (CVC5: 8 VC)
@@ -40,8 +40,8 @@ cartesian.adb:38:55: info: overflow check proved (CVC5: 4 VC)
 cartesian.adb:38:70: info: overflow check proved (CVC5: 4 VC)
 cartesian.adb:38:75: info: overflow check proved (CVC5: 4 VC)
 cartesian.adb:38:83: info: range check proved (CVC5: 4 VC)
-cartesian.adb:60:38: medium: loop invariant might fail in first iteration, cannot prove result((i - array1'First)*array2'Length + (j - array2'First) + 1)(1) = array1(i)
-cartesian.adb:60:38: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove result((i - array1'First)*array2'Length + (j - array2'First) + 1)(1) = array1(i)
+cartesian.adb:60:38: medium: loop invariant might fail in first iteration, cannot prove result((i - array1'First)*array2'Length + (j - array2'First) + 1)(1) = array1(i) [provers reached step limit before completing the proof]
+cartesian.adb:60:38: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove result((i - array1'First)*array2'Length + (j - array2'First) + 1)(1) = array1(i) [provers reached step limit before completing the proof]
 cartesian.adb:60:48: info: overflow check proved (CVC5: 4 VC)
 cartesian.adb:60:63: info: overflow check proved (CVC5: 4 VC)
 cartesian.adb:60:70: info: range check proved (CVC5: 4 VC)
@@ -51,7 +51,7 @@ cartesian.adb:60:99: info: index check proved (CVC5: 4 VC)
 cartesian.adb:60:99: info: overflow check proved (CVC5: 4 VC)
 cartesian.adb:60:116: info: index check proved (CVC5: 4 VC)
 cartesian.adb:61:32: info: loop invariant initialization proved (CVC5: 1 VC)
-cartesian.adb:63:38: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove result((i - array1'First)*array2'Length + (j - array2'First) + 1)(2) = array2(j)
+cartesian.adb:63:38: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove result((i - array1'First)*array2'Length + (j - array2'First) + 1)(2) = array2(j) [provers reached step limit before completing the proof]
 cartesian.adb:63:48: info: overflow check proved (CVC5: 4 VC)
 cartesian.adb:63:63: info: overflow check proved (CVC5: 4 VC)
 cartesian.adb:63:70: info: range check proved (CVC5: 4 VC)
@@ -84,6 +84,6 @@ cartesian.ads:28:13: info: implicit aspect Always_Terminates on "in_array" has b
 cartesian.ads:32:15: info: index check proved (CVC5: 2 VC)
 cartesian.ads:35:13: info: implicit aspect Always_Terminates on "in_array" has been proved, subprogram will terminate
 cartesian.ads:43:13: info: implicit aspect Always_Terminates on "cartesian_product" has been proved, subprogram will terminate
-cartesian.ads:53:21: medium: postcondition might fail, cannot prove in_array(pair_type'(array1(i), array2(j)), cartesian_product'Result)
+cartesian.ads:53:21: medium: postcondition might fail, cannot prove in_array(pair_type'(array1(i), array2(j)), cartesian_product'Result) [provers reached step limit before completing the proof]
 cartesian.ads:53:48: info: index check proved (CVC5: 2 VC)
 cartesian.ads:53:59: info: index check proved (CVC5: 2 VC)

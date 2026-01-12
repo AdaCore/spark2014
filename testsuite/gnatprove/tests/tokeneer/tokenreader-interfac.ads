@@ -28,7 +28,7 @@ private package TokenReader.Interfac
                           (ReaderStatus with External => Async_Writers,
                                              Part_Of  => TokenReader.Status),
                           (ReaderOutput with External => Async_Readers,
-                                             Part_Of  => TokenReader.Output))
+                                             Part_Of  => TokenReader.Output)), Initializes => (ReaderInput, ReaderStatus)
 is
 
    ------------------------------------------------------------------

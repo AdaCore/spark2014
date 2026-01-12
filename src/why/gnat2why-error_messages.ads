@@ -25,6 +25,7 @@
 
 with Ada.Containers;
 with Debug.Timing; use Debug.Timing;
+with Errout_Wrapper;
 with GNATCOLL.JSON;
 with SPARK_Atree;  use SPARK_Atree;
 with SPARK_Util;   use SPARK_Util;
@@ -66,23 +67,25 @@ package Gnat2Why.Error_Messages is
    procedure Parse_Why3_Results (Fn : String; Timing : in out Time_Token);
 
    procedure Emit_Proof_Result
-     (Node        : Node_Id;
-      Id          : VC_Id;
-      Kind        : VC_Kind;
-      Proved      : Boolean;
-      E           : Entity_Id;
-      How_Proved  : Prover_Category;
-      Check_Info  : Check_Info_Type;
-      Extra_Msg   : String := "";
-      Explanation : String := "";
-      Cntexmp     : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
-      Verdict     : Cntexmp_Verdict := (others => <>);
-      Check_Tree  : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
-      VC_File     : String := "";
-      VC_Loc      : Node_Id := Empty;
-      Stats       : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
-      Editor_Cmd  : String := "";
-      CE_From_RAC : Boolean := False);
+     (Node          : Node_Id;
+      Id            : VC_Id;
+      Kind          : VC_Kind;
+      Proved        : Boolean;
+      E             : Entity_Id;
+      How_Proved    : Prover_Category;
+      Check_Info    : Check_Info_Type;
+      Extra_Msg     : String := "";
+      Explanation   : String := "";
+      Cntexmp       : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
+      Verdict       : Cntexmp_Verdict := (others => <>);
+      Check_Tree    : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
+      VC_File       : String := "";
+      VC_Loc        : Node_Id := Empty;
+      Stats         : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
+      Unproved_Stat : Errout_Wrapper.Failed_Prover_Answer :=
+        Errout_Wrapper.FPA_Unknown_Rec;
+      Editor_Cmd    : String := "";
+      CE_From_RAC   : Boolean := False);
    --  Register the VC identified by node and kind as proved. This will emit
    --  a message if needed and register the result in JSON output.
    --  @parameter How_Proved identifies the prover type (possible values

@@ -1,6 +1,6 @@
 circle_demo.adb:10:04: info: initialization of "My_Circle" proved
-circle_demo.adb:14:14: medium: precondition might fail
-shapes5.adb:8:09: medium: refined postcondition might fail, cannot prove Make_Circle'Result.Center_X + Make_Circle'Result.Radius in Coordinate_Type
+circle_demo.adb:14:14: medium: precondition might fail [provers reached step limit before completing the proof]
+shapes5.adb:8:09: medium: refined postcondition might fail, cannot prove Make_Circle'Result.Center_X + Make_Circle'Result.Radius in Coordinate_Type [provers reached step limit before completing the proof]
 shapes5.adb:8:37: info: float overflow check proved (Trivial)
 shapes5.adb:10:37: info: float overflow check proved (Trivial)
 shapes5.adb:12:37: info: float overflow check proved (Trivial)
@@ -33,7 +33,7 @@ shapes5.adb:55:29: info: float overflow check proved (Trivial)
 shapes5.adb:56:29: info: float overflow check proved (Trivial)
 shapes5.adb:57:29: info: float overflow check proved (Trivial)
 shapes5.ads:10:13: info: implicit aspect Always_Terminates on "Make_Circle" has been proved, subprogram will terminate
-shapes5.ads:13:18: medium: postcondition might fail [possible explanation: validity of the postcondition of Make_Circle should be implied by its refined postcondition]
+shapes5.ads:13:18: medium: postcondition might fail [possible explanation: validity of the postcondition of "Make_Circle" should be implied by its refined postcondition] [provers reached step limit before completing the proof]
 shapes5.ads:16:13: info: implicit aspect Always_Terminates on "Inside_Circle" has been proved, subprogram will terminate
 shapes5.ads:23:13: info: implicit aspect Always_Terminates on "In_Bounds" has been proved, subprogram will terminate
 shapes5.ads:24:11: info: data dependencies proved

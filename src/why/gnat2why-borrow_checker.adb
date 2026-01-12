@@ -774,13 +774,14 @@ package body Gnat2Why.Borrow_Checker is
    with
      Pre =>
        (Expr.Is_Ent
-        or else Nkind (Expr.Expr)
-                in N_Index_Or_Discriminant_Constraint
-                 | N_Range_Constraint
-                 | N_Subtype_Indication
-                 | N_Digits_Constraint
-                 | N_Delta_Constraint
-                 | N_Subexpr);
+        or else
+          Nkind (Expr.Expr)
+          in N_Index_Or_Discriminant_Constraint
+           | N_Range_Constraint
+           | N_Subtype_Indication
+           | N_Digits_Constraint
+           | N_Delta_Constraint
+           | N_Subexpr);
 
    procedure Check_Globals (Subp : Entity_Id; Loc : Node_Id);
    --  This procedure takes a subprogram called and checks the permission of
@@ -1258,7 +1259,7 @@ package body Gnat2Why.Borrow_Checker is
                    (Xcov,
                     Exempt_On,
                     "Impossible case with P1"
-                      & " and P2 permissions around a loop");
+                    & " and P2 permissions around a loop");
                return P1 in Read_Perm;
                pragma Annotate (Xcov, Exempt_Off);
 
@@ -1406,9 +1407,10 @@ package body Gnat2Why.Borrow_Checker is
          elsif not Is_Same_Or_Depends_On_Level
                      (Ghost_Assertion_Level (Target_Root),
                       Ghost_Assertion_Level (Expr_Root))
-           or else not Is_Same_Or_Depends_On_Level
-                         (Ghost_Assertion_Level (Expr_Root),
-                          Ghost_Assertion_Level (Target_Root))
+           or else
+             not Is_Same_Or_Depends_On_Level
+                   (Ghost_Assertion_Level (Expr_Root),
+                    Ghost_Assertion_Level (Target_Root))
          then
             BC_Error
               (Create
@@ -1507,8 +1509,7 @@ package body Gnat2Why.Borrow_Checker is
 
             --  Check that the root of the initial expression is not an overlay
 
-            if Ekind (Expr_Root) in E_Constant | E_Variable
-              and then Present (Ultimate_Overlaid_Entity (Expr_Root))
+            if Present (Overlaid_Entity (Expr_Root))
               and then not Is_Constant_In_SPARK (Expr_Root)
             then
                declare
@@ -1565,8 +1566,8 @@ package body Gnat2Why.Borrow_Checker is
             pragma
               Assert
                 (if not Is_Decl and then not Is_Access_Constant (Target_Typ)
-                   then
-                     Is_Entity_Name (Target) and then Target_Root = Expr_Root);
+                 then
+                   Is_Entity_Name (Target) and then Target_Root = Expr_Root);
 
             Check_Expression (Expr, Observe);
             Handle_Observe (Target_Root, Expr);
@@ -1583,8 +1584,8 @@ package body Gnat2Why.Borrow_Checker is
             pragma
               Assert
                 (if not Is_Decl
-                   then
-                     Is_Entity_Name (Target) and then Target_Root = Expr_Root);
+                 then
+                   Is_Entity_Name (Target) and then Target_Root = Expr_Root);
 
             Check_Expression (Expr, Borrow);
             Check_Assignment_To_Ghost (Target_Root, Expr_Root, Borrow);
@@ -1903,7 +1904,7 @@ package body Gnat2Why.Borrow_Checker is
             --  If the Target is an overlay, the declaration reads/writes the
             --  overlaid object even without an expression.
 
-            if Present (Ultimate_Overlaid_Entity (Target)) then
+            if Present (Overlaid_Entity (Target)) then
                Process_Path
                  ((Is_Ent => True, Ent => Target, Loc => Target),
                   (if Is_Imported (Target) then Read else Assign));
@@ -2630,7 +2631,7 @@ package body Gnat2Why.Borrow_Checker is
       pragma
         Assert
           (if Mode = Observe
-             then Nkind (Expr) in N_If_Expression | N_Case_Expression);
+           then Nkind (Expr) in N_If_Expression | N_Case_Expression);
 
       --  Special handling for nodes that may contain evaluated expressions in
       --  the form of constraints.
@@ -3796,9 +3797,10 @@ package body Gnat2Why.Borrow_Checker is
          Var := Key.K;
          for Borrowed of Get (Current_Borrowers, Var) loop
             if Is_Prefix_Or_Almost (Pref => Borrowed, Expr => Expr)
-              or else (if Expr.Is_Ent
-                       then Get_Root_Object (Borrowed) = Expr.Ent
-                       else Is_Prefix_Or_Almost (Current, +Borrowed))
+              or else
+                (if Expr.Is_Ent
+                 then Get_Root_Object (Borrowed) = Expr.Ent
+                 else Is_Prefix_Or_Almost (Current, +Borrowed))
             then
                return Borrowed;
             end if;
@@ -3832,9 +3834,10 @@ package body Gnat2Why.Borrow_Checker is
 
          for Observed of Get (Current_Observers, Var) loop
             if Is_Prefix_Or_Almost (Pref => Observed, Expr => Expr)
-              or else (if Expr.Is_Ent
-                       then Get_Root_Object (Observed) = Expr.Ent
-                       else Is_Prefix_Or_Almost (Current, +Observed))
+              or else
+                (if Expr.Is_Ent
+                 then Get_Root_Object (Observed) = Expr.Ent
+                 else Is_Prefix_Or_Almost (Current, +Observed))
             then
                return Observed;
             end if;
@@ -3944,15 +3947,14 @@ package body Gnat2Why.Borrow_Checker is
             --  only. Protected functions are never allowed to modify protected
             --  components.
 
-            --  nested expression exceeds line length
-            --!format off
-            if Ekind (Subp) = E_Function and then
-              (not Is_Function_With_Side_Effects (Subp)
-               or else (Within_Protected_Type (Subp)
-                        and then Expr.Is_Ent
-                        and then Is_Protected_Component_Or_Discr_Or_Part_Of
-                                   (Expr.Ent)))
-            --!format on
+            if Ekind (Subp) = E_Function
+              and then
+                (not Is_Function_With_Side_Effects (Subp)
+                 or else
+                   (Within_Protected_Type (Subp)
+                    and then Expr.Is_Ent
+                    and then
+                      Is_Protected_Component_Or_Discr_Or_Part_Of (Expr.Ent)))
             then
                Mode := Read;
 
@@ -4060,9 +4062,10 @@ package body Gnat2Why.Borrow_Checker is
             elsif not Is_Same_Or_Depends_On_Level
                         (Ghost_Assertion_Level (Subp),
                          Ghost_Assertion_Level (Root))
-              or else not Is_Same_Or_Depends_On_Level
-                            (Ghost_Assertion_Level (Root),
-                             Ghost_Assertion_Level (Subp))
+              or else
+                not Is_Same_Or_Depends_On_Level
+                      (Ghost_Assertion_Level (Root),
+                       Ghost_Assertion_Level (Subp))
             then
                BC_Error
                  (Create
@@ -4735,8 +4738,9 @@ package body Gnat2Why.Borrow_Checker is
                      --  Check out parameters and globals at exit
 
                      if Ekind (Subp) in E_Procedure | E_Entry
-                       or else (Ekind (Subp) = E_Function
-                                and then Is_Function_With_Side_Effects (Subp))
+                       or else
+                         (Ekind (Subp) = E_Function
+                          and then Is_Function_With_Side_Effects (Subp))
                      then
                         Return_Parameters
                           (Subp, Exceptional => not Exc_Set.Is_Empty);
@@ -4749,8 +4753,8 @@ package body Gnat2Why.Borrow_Checker is
                      --  return.
 
                      if Ekind (Scope (Subp)) = E_Protected_Type
-                       and then (Is_Entry (Subp)
-                                 or else Ekind (Subp) = E_Procedure)
+                       and then
+                         (Is_Entry (Subp) or else Ekind (Subp) = E_Procedure)
                      then
                         Return_Protected_Components (Subp);
                      end if;
@@ -4928,8 +4932,8 @@ package body Gnat2Why.Borrow_Checker is
       --  The expression is directly rooted in an object
 
       elsif N.Is_Ent
-        or else Present
-                  (Get_Root_Object (Main_Path, Through_Traversal => False))
+        or else
+          Present (Get_Root_Object (Main_Path, Through_Traversal => False))
       then
          declare
             Tree_Or_Perm : constant Perm_Or_Tree :=
@@ -5074,9 +5078,9 @@ package body Gnat2Why.Borrow_Checker is
             pragma
               Assert
                 (if Nkind (N.Expr) = N_Attribute_Reference
-                   then
-                     Get_Attribute_Id (Attribute_Name (N.Expr))
-                     in Attribute_First | Attribute_Last | Attribute_Length);
+                 then
+                   Get_Attribute_Id (Attribute_Name (N.Expr))
+                   in Attribute_First | Attribute_Last | Attribute_Length);
 
             declare
                Pref : constant Node_Id :=
@@ -5146,9 +5150,9 @@ package body Gnat2Why.Borrow_Checker is
                            pragma
                              Assert
                                (Nkind (N.Expr) = N_Indexed_Component
-                                  or else Nkind (N.Expr) = N_Slice
-                                  or else Nkind (N.Expr)
-                                          = N_Attribute_Reference);
+                                or else Nkind (N.Expr) = N_Slice
+                                or else
+                                  Nkind (N.Expr) = N_Attribute_Reference);
 
                            if Nkind (N.Expr) = N_Attribute_Reference then
                               pragma
@@ -6127,7 +6131,7 @@ package body Gnat2Why.Borrow_Checker is
 
       --  If the root is an overlay, consider the overlaid object instead
 
-      if Ekind (Root) in E_Constant | E_Variable
+      if Ekind (Root) = E_Variable
         and then Present (Ultimate_Overlaid_Entity (Root))
       then
          --  Moving an overlay is not supported
@@ -6220,8 +6224,8 @@ package body Gnat2Why.Borrow_Checker is
                --  is ill-formed.
 
                elsif Nkind (Call) = N_Function_Call
-                 and then Has_At_End_Borrow_Annotation
-                            (Get_Called_Entity (Call))
+                 and then
+                   Has_At_End_Borrow_Annotation (Get_Called_Entity (Call))
                then
                   Brower := Borrower_For_At_End_Borrow_Call (Call);
                   if Present (Brower) then
@@ -6315,9 +6319,10 @@ package body Gnat2Why.Borrow_Checker is
            Query_Read_Only_Tree (Current_Perm_Env, Root) = null;
          Missing_Var  : constant Boolean :=
            Missing_Name
-           and then (Ekind (Root) /= E_Constant
-                     or else Is_Access_Variable (Etype (Root))
-                     or else Has_Variable_Input (Root));
+           and then
+             (Ekind (Root) /= E_Constant
+              or else Is_Access_Variable (Etype (Root))
+              or else Has_Variable_Input (Root));
       begin
          if Missing_Var and then Inside_Elaboration then
             Setup_Environment_For_Object
@@ -6511,7 +6516,7 @@ package body Gnat2Why.Borrow_Checker is
                   pragma
                     Assert
                       (if Is_Access
-                         then Attribute_Name (Expr.Expr) = Name_Access);
+                       then Attribute_Name (Expr.Expr) = Name_Access);
                   Tree      : constant Perm_Tree_Access :=
                     (if Is_Access
                      then
@@ -6537,8 +6542,8 @@ package body Gnat2Why.Borrow_Checker is
             --  then the permissions do not get modified by the assignment.
 
             if No (Root)
-              or else (not Expr.Is_Ent
-                       and then Has_Array_Component (Expr.Expr))
+              or else
+                (not Expr.Is_Ent and then Has_Array_Component (Expr.Expr))
             then
                return;
             end if;
@@ -7069,7 +7074,7 @@ package body Gnat2Why.Borrow_Checker is
                pragma
                  Assert
                    (Kind (C) = Entire_Object
-                      or else Kind (C) = Record_Component);
+                    or else Kind (C) = Record_Component);
             begin
                --  The tree is already unfolded. Replace the permission of the
                --  component.
@@ -7115,9 +7120,10 @@ package body Gnat2Why.Borrow_Checker is
 
                      while Present (Comp) loop
                         if Perm /= None
-                          and then Original_Record_Component (Comp)
-                                   = Original_Record_Component
-                                       (Entity (Selector_Name (N.Expr)))
+                          and then
+                            Original_Record_Component (Comp)
+                            = Original_Record_Component
+                                (Entity (Selector_Name (N.Expr)))
                         then
                            P := Perm;
                         else
@@ -7190,7 +7196,7 @@ package body Gnat2Why.Borrow_Checker is
                pragma
                  Assert
                    (Kind (C) = Entire_Object
-                      or else Kind (C) = Array_Component);
+                    or else Kind (C) = Array_Component);
             begin
                --  The tree is already unfolded. Replace the permission of the
                --  component.

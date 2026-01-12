@@ -25,6 +25,7 @@
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with SPARK_Util;            use SPARK_Util;
+with SPARK_Atree;           use SPARK_Atree;
 with SPARK_Atree.Entities;  use SPARK_Atree.Entities;
 with Types;                 use Types;
 with Why.Ids;               use Why.Ids;
@@ -33,9 +34,15 @@ with Uintp;                 use Uintp;
 package Gnat2Why.Unchecked_Conversion is
 
    function Is_UC_With_Precise_Definition
-     (E : Entity_Id) return True_Or_Explain
-   with Pre => Is_Unchecked_Conversion_Instance (E);
-   --  Return whether E is an UC for which a precise definition is given
+     (Source_Type, Target_Type : Type_Kind_Id; Potentially_Invalid : Boolean)
+      return True_Or_Explain;
+   --  Return whether an unchecked conversion from Source_Type to Target_Type
+   --  is an UC for which we can give a precise definition.
+
+   function Is_Overlay_Handled_As_UC
+     (Obj : Object_Kind_Id) return True_Or_Explain;
+   --  Return whether an overlay object is translated using an unchecked
+   --  conversion module.
 
    procedure Suitable_For_UC
      (Typ         : Type_Kind_Id;
@@ -102,51 +109,23 @@ package Gnat2Why.Unchecked_Conversion is
       Explanation : out Unbounded_String);
    --  Same as Have_Same_Known_Esize, but checks the RM_Size.
 
-   type Scalar_Status is
-     (Signed,    --  Signed integer type
-      Unsigned,  --  Unsigned integer type = signed with no negative value,
-      --  also used for enumerations with default representation
-      --  clauses.
-      Modular);  --  Modular integer type
+   procedure Create_Module_For_UC_If_Needed
+     (Source_Type, Target_Type : Type_Kind_Id; Potentially_Invalid : Boolean);
+   --  Generate a module for unchecked conversion from Source_Type to
+   --  Target_Type if there isn't one already. If Potentially_Invalid is True,
+   --  the target is potentially invalid.
 
-   function Get_Scalar_Status (Typ : Type_Kind_Id) return Scalar_Status
-   is (if Is_Modular_Integer_Type (Typ)
-       then Modular
-       elsif Is_Enumeration_Type (Typ)
-       then Unsigned
-       elsif Is_Unsigned_Type (Typ)
-       then Unsigned
-       elsif Is_Signed_Integer_Type (Typ)
-       then Signed
-       else raise Program_Error);
+   procedure Types_Compatible_Alignment
+     (Src_Ty      : Type_Kind_Id;
+      Tar_Ty      : Type_Kind_Id;
+      Valid       : out Boolean;
+      Explanation : out Unbounded_String);
+   --  Check that Src_Ty and Tar_Ty have compatible alignment
 
-   function Precise_Integer_UC
-     (Arg           : W_Term_Id;
-      Size          : Uint;
-      Source_Type   : W_Type_Id;
-      Target_Type   : W_Type_Id;
-      Source_Status : Scalar_Status;
-      Target_Status : Scalar_Status;
-      Ada_Function  : Opt_E_Function_Id := Empty) return W_Term_Id;
-   --  Return Arg of Source_Type converted to Target_Type, when both are of
-   --  scalar types. Size is the shared size of both types, when arguments of
-   --  the UC are integer types, which is used for conversion from an
-   --  Unsigned type to a Signed one. Otherwise it is No_Uint.
-   --  If Ada_Function is provided and its result is potentially invalid, wrap
-   --  the result in a validity wrapper. The validity flag is set to True iff
-   --  the return value is in the bounds of the return type of Ada_Function.
-
-   function Precise_Composite_UC
-     (Arg          : W_Term_Id;
-      Source_Type  : Type_Kind_Id;
-      Target_Type  : Type_Kind_Id;
-      Ada_Function : E_Function_Id) return W_Term_Id;
-   --  Return Arg of Source_Type converted to Target_Type, when at least one
-   --  is a composite type made up of integers. Convert Arg to a large-enough
-   --  modular type, and convert that value to Target. If all types involved
-   --  are modular, then this benefits from bitvector support in provers.
-   --  If the result of Ada_Function is potentially invalid, wrap it in a
-   --  validity wrapper. The validity flag is set to True iff all scalar
-   --  subcomponents of the return value are in the bounds of their subtype.
+   function Get_UC_Function
+     (Source_Type, Target_Type : Type_Kind_Id; Potentially_Invalid : Boolean)
+      return W_Identifier_Id;
+   --  Return the function that should be used to convert from Source_Type to
+   --  Target_Type.
 
 end Gnat2Why.Unchecked_Conversion;

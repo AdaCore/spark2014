@@ -1,6 +1,6 @@
 pred_comp.adb:6:07: medium: in default initialization of component "C" at pred_comp.adb:6
 pred_comp.adb:6:07: medium: in default value at pred_comp.adb:9
-pred_comp.adb:6:07: medium: predicate check might fail on default value
+pred_comp.adb:6:07: medium: predicate check might fail on default value [provers gave up before completing the proof]
 pred_comp.adb:11:14: info: add a contract to analyze it separately from calling contexts
 pred_comp.adb:11:14: info: local subprogram "Inner" only analyzed in the context of calls [info-unrolling-inlining]
 pred_comp.adb:11:14: warning: subprogram "Inner" has no effect

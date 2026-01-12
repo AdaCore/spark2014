@@ -1,25 +1,25 @@
-excep.adb:8:14: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at excep.ads:7 should mention X in a precondition]
+excep.adb:8:14: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at excep.ads:7 should mention X in a precondition] [provers gave up before completing the proof]
 excep.adb:17:12: warning: "raise" statement may result in abnormal return (RM 6.4.1(17)) [enabled by default]
 excep.adb:17:12: warning: assignment to pass-by-copy formal may have no effect [enabled by default]
 excep.adb:17:17: info: overflow check proved (CVC5: 2 VC)
-excep.adb:18:10: medium: unexpected exception might be raised [reason for check: Bad2 allows propagating no exceptions] [possible explanation: Constraint_Error might be unexpectedly raised]
+excep.adb:18:10: medium: unexpected exception might be raised [reason for check: "Bad2" allows propagating no exceptions] [possible explanation: "Constraint_Error" might be unexpectedly raised] [provers gave up before completing the proof]
 excep.adb:20:14: info: overflow check proved (CVC5: 2 VC)
 excep.adb:25:09: warning: "raise" statement may result in abnormal return (RM 6.4.1(17)) [enabled by default]
 excep.adb:25:09: warning: assignment to pass-by-copy formal may have no effect [enabled by default]
-excep.adb:25:14: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at excep.ads:11 should mention X in a precondition]
-excep.adb:26:07: medium: unexpected exception might be raised [reason for check: Bad3 allows propagating no exceptions] [possible explanation: Constraint_Error might be unexpectedly raised]
+excep.adb:25:14: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at excep.ads:11 should mention X in a precondition] [provers gave up before completing the proof]
+excep.adb:26:07: medium: unexpected exception might be raised [reason for check: "Bad3" allows propagating no exceptions] [possible explanation: "Constraint_Error" might be unexpectedly raised] [provers gave up before completing the proof]
 excep.adb:27:09: warning: this statement is never reached
 excep.adb:27:09: warning: unreachable code [enabled by default]
 excep.adb:32:09: warning: "raise" statement may result in abnormal return (RM 6.4.1(17)) [enabled by default]
 excep.adb:32:09: warning: assignment to pass-by-copy formal may have no effect [enabled by default]
-excep.adb:32:14: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at excep.ads:13 should mention X in a precondition]
-excep.adb:33:07: medium: unexpected exception might be raised [reason for check: Bad4 allows propagating no exceptions] [possible explanation: Constraint_Error might be unexpectedly raised]
-excep.adb:39:10: medium: unexpected exception might be raised [reason for check: OK1 allows propagating no exceptions] [possible explanation: Constraint_Error might be unexpectedly raised]
+excep.adb:32:14: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at excep.ads:13 should mention X in a precondition] [provers reached step limit before completing the proof]
+excep.adb:33:07: medium: unexpected exception might be raised [reason for check: "Bad4" allows propagating no exceptions] [possible explanation: "Constraint_Error" might be unexpectedly raised] [provers reached step limit before completing the proof]
+excep.adb:39:10: medium: unexpected exception might be raised [reason for check: "OK1" allows propagating no exceptions] [possible explanation: "Constraint_Error" might be unexpectedly raised] [provers gave up before completing the proof]
 excep.adb:41:14: info: overflow check proved (CVC5: 2 VC)
 excep.adb:46:09: warning: "raise" statement may result in abnormal return (RM 6.4.1(17)) [enabled by default]
 excep.adb:46:09: warning: assignment to pass-by-copy formal may have no effect [enabled by default]
-excep.adb:46:14: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at excep.ads:17 should mention X in a precondition]
-excep.adb:47:07: medium: unexpected exception might be raised [reason for check: OK2 allows propagating no exceptions] [possible explanation: Constraint_Error might be unexpectedly raised]
+excep.adb:46:14: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at excep.ads:17 should mention X in a precondition] [provers gave up before completing the proof]
+excep.adb:47:07: medium: unexpected exception might be raised [reason for check: "OK2" allows propagating no exceptions] [possible explanation: "Constraint_Error" might be unexpectedly raised] [provers gave up before completing the proof]
 excep.ads:11:14: high: all paths in "Bad3" raise exceptions or do not terminate normally
 excep.ads:13:14: high: all paths in "Bad4" raise exceptions or do not terminate normally
 excep.ads:17:14: high: all paths in "OK2" raise exceptions or do not terminate normally

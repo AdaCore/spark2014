@@ -1,6 +1,6 @@
 main.adb:6:35: info: division check proved (CVC5: 1 VC)
 main.adb:6:35: info: range check proved (CVC5: 2 VC)
-main.adb:6:35: medium: precondition might fail (e.g. when Addr = 2147483648)
+main.adb:6:35: medium: precondition might fail (e.g. when Addr = 2147483648) [provers reached step limit before completing the proof]
 main2.adb:7:28: info: division check proved (CVC5: 1 VC)
 main2.adb:7:28: info: range check proved (CVC5: 2 VC)
-main2.adb:7:28: medium: precondition might fail (e.g. when Addr = 2147483648)
+main2.adb:7:28: medium: precondition might fail (e.g. when Addr = 2147483648) [provers reached step limit before completing the proof]

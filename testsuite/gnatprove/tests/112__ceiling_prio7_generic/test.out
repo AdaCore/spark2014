@@ -1,6 +1,6 @@
 main.adb:3:11: info: ceiling priority protocol is respected for "Prots.Po3.Po" (CVC5: 1 VC)
-main.adb:3:11: medium: ceiling priority protocol might not be respected for "Prots.Po1.Po" [reason for check: ceiling priority of the protected object "Prots.Po1.Po" must be >= the priority of the caller "Main" in the call chain "Main" -> "Proxy.Proc1" -> "Prots.P1" -> "Prots.Po1.Po.Pp1"]
-main.adb:3:11: medium: ceiling priority protocol might not be respected for "Prots.Po2.Po" [reason for check: ceiling priority of the protected object "Prots.Po2.Po" must be >= the priority of the caller "Main" in the call chain "Main" -> "Proxy.Proc2" -> "Prots.P2" -> "Prots.Po2.Po.Pp1"]
+main.adb:3:11: medium: ceiling priority protocol might not be respected for "Prots.Po1.Po" [reason for check: ceiling priority of the protected object "Prots.Po1.Po" must be >= the priority of the caller "Main" in the call chain "Main" -> "Proxy.Proc1" -> "Prots.P1" -> "Prots.Po1.Po.Pp1"] [provers gave up before completing the proof]
+main.adb:3:11: medium: ceiling priority protocol might not be respected for "Prots.Po2.Po" [reason for check: ceiling priority of the protected object "Prots.Po2.Po" must be >= the priority of the caller "Main" in the call chain "Main" -> "Proxy.Proc2" -> "Prots.P2" -> "Prots.Po2.Po.Pp1"] [provers gave up before completing the proof]
 main.adb:4:21: info: range check proved (CVC5: 2 VC)
 prots.ads:22:20: info: aspect Always_Terminates on "PP1" has been proved, subprogram will terminate, in instantiation at prots.adb:13
 prots.ads:22:20: info: aspect Always_Terminates on "PP1" has been proved, subprogram will terminate, in instantiation at prots.adb:14

@@ -53,7 +53,7 @@ test_fold.adb:46:54: warning: no Global contract available for "P" [assumed-glob
 test_fold.adb:46:60: info: index check proved (CVC5: 10 VC)
 test_fold.adb:46:70: info: unrolling loop [info-unrolling-inlining]
 test_fold.adb:47:13: info: index check proved (CVC5: 10 VC)
-test_fold.adb:53:31: medium: divide by zero might fail
+test_fold.adb:53:31: medium: divide by zero might fail [provers reached step limit before completing the proof]
 test_fold.adb:53:46: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 test_fold.adb:54:33: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 test_fold.adb:61:33: info: loop invariant initialization proved (CVC5: 1 VC)

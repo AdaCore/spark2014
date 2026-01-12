@@ -9,16 +9,16 @@ test_pred_on_array.adb:8:60: info: index check proved (CVC5: 2 VC)
 test_pred_on_array.adb:11:18: warning: unused variable "A"
 test_pred_on_array.adb:11:37: info: data dependencies proved
 test_pred_on_array.adb:12:07: info: range check proved (CVC5: 2 VC)
-test_pred_on_array.adb:14:13: medium: predicate check might fail
-test_pred_on_array.adb:17:18: medium: for parameter X at the end of the subprogram at test_pred_on_array.adb:17
-test_pred_on_array.adb:17:18: medium: predicate check might fail
+test_pred_on_array.adb:14:13: medium: predicate check might fail [provers reached step limit before completing the proof]
+test_pred_on_array.adb:17:18: medium: for parameter "X" at the end of the subprogram at test_pred_on_array.adb:17
+test_pred_on_array.adb:17:18: medium: predicate check might fail [provers reached step limit before completing the proof]
 test_pred_on_array.adb:17:18: warning: unused variable "X"
 test_pred_on_array.adb:17:38: info: data dependencies proved
 test_pred_on_array.adb:22:13: info: implicit aspect Always_Terminates on "F1" has been proved, subprogram will terminate
 test_pred_on_array.adb:22:17: warning: unused variable "A"
 test_pred_on_array.adb:22:49: info: data dependencies proved
 test_pred_on_array.adb:23:07: info: range check proved (CVC5: 2 VC)
-test_pred_on_array.adb:25:14: medium: predicate check might fail
+test_pred_on_array.adb:25:14: medium: predicate check might fail [provers reached step limit before completing the proof]
 test_pred_on_array.adb:28:18: warning: unused variable "A"
 test_pred_on_array.adb:28:37: info: data dependencies proved
 test_pred_on_array.adb:29:07: info: range check proved (CVC5: 2 VC)
@@ -32,11 +32,11 @@ test_pred_on_array.adb:36:07: info: range check proved (CVC5: 2 VC)
 test_pred_on_array.adb:38:07: info: predicate check proved (CVC5: 1 VC)
 test_pred_on_array.adb:38:10: info: index check proved (CVC5: 2 VC)
 test_pred_on_array.adb:39:14: info: predicate check proved (CVC5: 1 VC)
-test_pred_on_array.adb:42:18: info: for parameter X at the end of the subprogram at test_pred_on_array.adb:42
+test_pred_on_array.adb:42:18: info: for parameter "X" at the end of the subprogram at test_pred_on_array.adb:42
 test_pred_on_array.adb:42:18: info: predicate check proved (CVC5: 1 VC)
 test_pred_on_array.adb:43:06: info: data dependencies proved
 test_pred_on_array.adb:44:18: info: predicate check proved (CVC5: 1 VC)
-test_pred_on_array.adb:44:18: medium: predicate check might fail [possible fix: precondition of subprogram at line 42 should mention X'Length or X'First or X'Last]
+test_pred_on_array.adb:44:18: medium: predicate check might fail [possible fix: precondition of subprogram at line 42 should mention X'Length or X'First or X'Last] [provers reached step limit before completing the proof]
 test_pred_on_array.adb:47:07: info: predicate check proved (CVC5: 1 VC)
 test_pred_on_array.adb:47:10: info: index check proved (CVC5: 2 VC)
 test_pred_on_array.adb:50:09: warning: "E_Rec" is handled as if it was annotated with Relaxed_Initialization as all its components are annotated that way [component-relaxed-init]
@@ -44,18 +44,18 @@ test_pred_on_array.adb:50:09: warning: consider annotating "E_Rec" with Relaxed_
 test_pred_on_array.adb:55:36: info: data dependencies proved
 test_pred_on_array.adb:57:22: info: assertion proved (CVC5: 1 VC)
 test_pred_on_array.adb:60:22: info: data dependencies proved
-test_pred_on_array.adb:63:13: medium: predicate check might fail (e.g. when X.X'Initialized = False and X.Y'Initialized = False and X.Z'Initialized = False)
-test_pred_on_array.adb:66:18: medium: for parameter X at the end of the subprogram at test_pred_on_array.adb:66
-test_pred_on_array.adb:66:18: medium: predicate check might fail
+test_pred_on_array.adb:63:13: medium: predicate check might fail (e.g. when X.X'Initialized = False and X.Y'Initialized = False and X.Z'Initialized = False) [provers reached step limit before completing the proof]
+test_pred_on_array.adb:66:18: medium: for parameter "X" at the end of the subprogram at test_pred_on_array.adb:66
+test_pred_on_array.adb:66:18: medium: predicate check might fail [provers reached step limit before completing the proof]
 test_pred_on_array.adb:66:18: warning: unused variable "X"
 test_pred_on_array.adb:66:38: info: data dependencies proved
 test_pred_on_array.adb:71:13: info: implicit aspect Always_Terminates on "F3" has been proved, subprogram will terminate
 test_pred_on_array.adb:71:34: info: data dependencies proved
-test_pred_on_array.adb:74:14: medium: predicate check might fail (e.g. when X.X'Initialized = False and X.Y'Initialized = False and X.Z'Initialized = False)
+test_pred_on_array.adb:74:14: medium: predicate check might fail (e.g. when X.X'Initialized = False and X.Y'Initialized = False and X.Z'Initialized = False) [provers reached step limit before completing the proof]
 test_pred_on_array.adb:77:22: info: data dependencies proved
 test_pred_on_array.adb:80:08: info: predicate check proved (CVC5: 1 VC)
 test_pred_on_array.adb:81:13: info: predicate check proved (CVC5: 1 VC)
-test_pred_on_array.adb:84:18: info: for parameter X at the end of the subprogram at test_pred_on_array.adb:84
+test_pred_on_array.adb:84:18: info: for parameter "X" at the end of the subprogram at test_pred_on_array.adb:84
 test_pred_on_array.adb:84:18: info: predicate check proved (CVC5: 1 VC)
 test_pred_on_array.adb:84:38: info: data dependencies proved
 test_pred_on_array.adb:86:08: info: predicate check proved (CVC5: 1 VC)
@@ -66,18 +66,18 @@ test_pred_on_array.adb:93:14: info: predicate check proved (CVC5: 1 VC)
 test_pred_on_array.adb:100:37: info: data dependencies proved
 test_pred_on_array.adb:102:22: info: assertion proved (Trivial: 1 VC)
 test_pred_on_array.adb:105:22: info: data dependencies proved
-test_pred_on_array.adb:108:13: medium: initialization check might fail (e.g. when X'Initialized = False)
-test_pred_on_array.adb:111:18: medium: for parameter X at the end of the subprogram at test_pred_on_array.adb:111
-test_pred_on_array.adb:111:18: medium: initialization check might fail
+test_pred_on_array.adb:108:13: medium: initialization check might fail (e.g. when X'Initialized = False) [provers gave up before completing the proof]
+test_pred_on_array.adb:111:18: medium: for parameter "X" at the end of the subprogram at test_pred_on_array.adb:111
+test_pred_on_array.adb:111:18: medium: initialization check might fail [provers gave up before completing the proof]
 test_pred_on_array.adb:111:18: warning: unused variable "X"
 test_pred_on_array.adb:111:39: info: data dependencies proved
 test_pred_on_array.adb:116:13: info: implicit aspect Always_Terminates on "F5" has been proved, subprogram will terminate
 test_pred_on_array.adb:116:35: info: data dependencies proved
-test_pred_on_array.adb:119:14: medium: initialization check might fail (e.g. when X'Initialized = False)
+test_pred_on_array.adb:119:14: medium: initialization check might fail (e.g. when X'Initialized = False) [provers gave up before completing the proof]
 test_pred_on_array.adb:122:22: info: data dependencies proved
 test_pred_on_array.adb:125:12: info: predicate check proved (Trivial: 1 VC)
 test_pred_on_array.adb:126:13: info: initialization check proved (CVC5: 1 VC)
-test_pred_on_array.adb:129:18: info: for parameter X at the end of the subprogram at test_pred_on_array.adb:129
+test_pred_on_array.adb:129:18: info: for parameter "X" at the end of the subprogram at test_pred_on_array.adb:129
 test_pred_on_array.adb:129:18: info: initialization check proved (CVC5: 1 VC)
 test_pred_on_array.adb:129:39: info: data dependencies proved
 test_pred_on_array.adb:131:12: info: predicate check proved (Trivial: 1 VC)

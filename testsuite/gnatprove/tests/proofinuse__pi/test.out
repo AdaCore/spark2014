@@ -60,7 +60,7 @@ pi_compute.adb:77:07: info: initialization of "Res" proved
 pi_compute.adb:79:18: info: division check proved (CVC5: 1 VC)
 pi_compute.adb:79:18: info: overflow check proved (CVC5: 2 VC)
 pi_compute.adb:79:18: info: range check proved (CVC5: 2 VC)
-pi_compute.adb:80:22: medium: assertion might fail
+pi_compute.adb:80:22: medium: assertion might fail [provers reached step limit before completing the proof]
 pi_compute.adb:84:13: info: implicit aspect Always_Terminates on "Shanks_Float" has been proved, subprogram will terminate
 pi_compute.adb:85:19: info: postcondition proved (CVC5: 1 VC)
 pi_compute.adb:99:25: info: float overflow check proved (CVC5: 1 VC)

@@ -1,16 +1,16 @@
 bad_pack.ads:5:07: warning: postcondition does not check the outcome of calling "Foo" [-gnatw.t]
-bad_pack.ads:5:15: medium: postcondition might fail (e.g. when Y = False)
-blip.adb:8:13: medium: overflow check might fail, cannot prove upper bound for X * X [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (X * X <= Integer'Last) to subprogram at blip.ads:4]
+bad_pack.ads:5:15: medium: postcondition might fail (e.g. when Y = False) [provers gave up before completing the proof]
+blip.adb:8:13: medium: overflow check might fail, cannot prove upper bound for X * X [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (X * X <= Integer'Last) to subprogram at blip.ads:4] [provers reached step limit before completing the proof]
 blip.ads:4:10: info: implicit aspect Always_Terminates on "Square" has been proved, subprogram will terminate
 blip.ads:6:03: info: data dependencies proved
 blip.ads:8:11: info: postcondition proved (altergo: 1 VC)
 blip.ads:9:03: info: flow dependencies proved
 good_pack.adb:3:14: info: implicit aspect Always_Terminates on "Bad_Identity" has been proved, subprogram will terminate
-good_pack.adb:4:22: medium: postcondition might fail (e.g. when arg = 0)
+good_pack.adb:4:22: medium: postcondition might fail (e.g. when arg = 0) [provers gave up before completing the proof]
 good_pack.adb:15:19: info: overflow check proved (CVC5: 2 VC)
 good_pack.adb:15:19: info: range check proved (CVC5: 2 VC)
 good_pack.ads:3:14: info: implicit aspect Always_Terminates on "Square" has been proved, subprogram will terminate
-good_pack.ads:5:17: medium: postcondition might fail (e.g. when arg = 3)
+good_pack.ads:5:17: medium: postcondition might fail (e.g. when arg = 3) [provers gave up before completing the proof]
 good_pack.ads:5:38: info: overflow check proved (CVC5: 2 VC)
 main.adb:12:27: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 main.adb:12:38: info: precondition proved (CVC5: 1 VC)

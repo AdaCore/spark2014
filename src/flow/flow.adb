@@ -40,7 +40,6 @@ with Flow_Sanity;
 with Flow.Slice;                       use Flow.Slice;
 with Flow_Classwide;                   use Flow_Classwide;
 with Flow_Debug;                       use Flow_Debug;
-with Flow_Generated_Globals;           use Flow_Generated_Globals;
 with Flow_Generated_Globals.Partial;
 with Flow_Generated_Globals.Traversal; use Flow_Generated_Globals.Traversal;
 with Flow_Generated_Globals.Phase_2;   use Flow_Generated_Globals.Phase_2;
@@ -559,12 +558,13 @@ package body Flow is
             when E_Task_Type                        => Kind_Task,
             when E_Package                          => Kind_Package,
             when others                             => raise Program_Error)
-       and then (if not X.Generating_Globals
-                 then
-                   X.GG.Globals.Is_Empty
-                   and then X.GG.Local_Variables.Is_Empty
-                   and then X.Entries.Is_Empty
-                   and then (for all Info of X.Tasking => Info.Is_Empty)));
+       and then
+         (if not X.Generating_Globals
+          then
+            X.GG.Globals.Is_Empty
+            and then X.GG.Local_Variables.Is_Empty
+            and then X.Entries.Is_Empty
+            and then (for all Info of X.Tasking => Info.Is_Empty)));
 
    -----------------
    -- Print_Graph --
@@ -1666,8 +1666,9 @@ package body Flow is
          end loop;
 
          if Ekind (E) in Entry_Kind | E_Function | E_Procedure | E_Task_Type
-           and then SPARK_Util.Subprograms.Analysis_Requested
-                      (E, With_Inlined => True)
+           and then
+             SPARK_Util.Subprograms.Analysis_Requested
+               (E, With_Inlined => True)
            and then Entity_Spec_In_SPARK (E)
          then
             --  We emit similar check messages if we analyse a body, so to

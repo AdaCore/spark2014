@@ -472,8 +472,9 @@ package body Flow_Visibility is
 
       return
         Looking_From = Looking_At
-        or else Scope_Graph.Edge_Exists
-                  (Components, Sanitize (Looking_From), Sanitize (Looking_At));
+        or else
+          Scope_Graph.Edge_Exists
+            (Components, Sanitize (Looking_From), Sanitize (Looking_At));
    end Is_Visible;
 
    ---------------
@@ -538,8 +539,8 @@ package body Flow_Visibility is
          Is_Package := False;
          Is_Private :=
            Is_Compilation_Unit (E)
-           and then (Is_Generic_Subprogram (E)
-                     or else not Is_Generic_Instance (E))
+           and then
+             (Is_Generic_Subprogram (E) or else not Is_Generic_Instance (E))
            and then Private_Present (Enclosing_Comp_Unit_Node (E));
 
          if Is_Compilation_Unit (E) then
@@ -578,8 +579,9 @@ package body Flow_Visibility is
                pragma
                  Assert
                    (Ekind (E) = E_Package
-                      or else (Ekind (E) in E_Function | E_Procedure
-                               and then Is_Wrapper_Package (Child_Inst)));
+                    or else
+                      (Ekind (E) in E_Function | E_Procedure
+                       and then Is_Wrapper_Package (Child_Inst)));
 
                Inst_Node : constant Node_Id :=
                  Get_Unit_Instantiation_Node (Child_Inst);
@@ -759,8 +761,8 @@ package body Flow_Visibility is
             Shape  => Edge_Normal,
             Colour => Null_Unbounded_String,
             Label  => Null_Unbounded_String);
-      --  ??? Label should reflect the Colour argument, but the current
-      --  names of the rules are too long and produce unreadable graphs.
+         --  ??? Label should reflect the Colour argument, but the current
+         --  names of the rules are too long and produce unreadable graphs.
       end EDI;
 
       Filename : constant String :=
@@ -864,10 +866,12 @@ package body Flow_Visibility is
            | N_Task_Type_Declaration
            | N_Abstract_Subprogram_Declaration
           or else (Nkind (N) = N_Subprogram_Body and then Acts_As_Spec (N))
-          or else (Nkind (N) = N_Private_Type_Declaration
-                   and then Has_Own_DIC (Defining_Entity (N)))
-          or else (Nkind (N) = N_Full_Type_Declaration
-                   and then Has_Own_Invariants (Defining_Entity (N)));
+          or else
+            (Nkind (N) = N_Private_Type_Declaration
+             and then Has_Own_DIC (Defining_Entity (N)))
+          or else
+            (Nkind (N) = N_Full_Type_Declaration
+             and then Has_Own_Invariants (Defining_Entity (N)));
 
       -------------------------------
       -- Process_Scope_Declaration --

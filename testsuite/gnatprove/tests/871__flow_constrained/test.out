@@ -3,15 +3,15 @@ e.adb:12:09: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 e.adb:13:09: info: length check proved (CVC5: 3 VC)
 main.adb:15:19: high: "R.N" is not initialized in "Foo" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "R.N" on all paths, make "R" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 q.adb:20:22: medium: "X" is not set
-q.adb:20:22: medium: range check might fail [reason for check: slice bounds must fit in the underlying array]
+q.adb:20:22: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [provers gave up before completing the proof]
 q.adb:20:42: info: range check proved (CVC5: 2 VC)
-q.adb:20:49: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (L in J .. K) to subprogram at line 19]
+q.adb:20:49: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (L in J .. K) to subprogram at line 19] [provers gave up before completing the proof]
 q.adb:29:22: medium: "X" is not set
-q.adb:29:22: medium: range check might fail [reason for check: slice bounds must fit in the underlying array]
+q.adb:29:22: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [provers gave up before completing the proof]
 q.adb:29:40: high: "J" is not initialized
 q.adb:29:42: info: range check proved (CVC5: 2 VC)
 q.adb:29:45: high: "K" is not initialized
 q.adb:29:49: high: "L" is not initialized
-q.adb:29:49: medium: array index check might fail [reason for check: value must be a valid index into the array]
+q.adb:29:49: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers gave up before completing the proof]
 q.adb:42:04: info: precondition proved (Trivial: 1 VC)
 q.adb:43:04: info: precondition proved (Trivial: 1 VC)

@@ -626,8 +626,8 @@ package body Gnat2Why.Types is
          Declares_Dispatching_Eq : constant Boolean :=
            Is_Tagged_Type (E)
            and then Root_Retysp (E) = E
-           and then (if Present (Eq)
-                     then not Is_Hidden_Dispatching_Operation (Eq));
+           and then
+             (if Present (Eq) then not Is_Hidden_Dispatching_Operation (Eq));
          Var_A                   : constant W_Identifier_Id :=
            New_Identifier (Ada_Node => E, Name => "a", Typ => Ty);
          Var_B                   : constant W_Identifier_Id :=
@@ -1047,8 +1047,9 @@ package body Gnat2Why.Types is
          --      ensures { is_moved_or_reclaimed result obj }
 
          if not Is_Anonymous_Access_Type (E)
-           and then (not Is_Record_Type_In_Why (E)
-                     or else not Record_Type_Is_Clone (E))
+           and then
+             (not Is_Record_Type_In_Why (E)
+              or else not Record_Type_Is_Clone (E))
          then
             declare
                Typ           : constant W_Type_Id :=
@@ -1547,16 +1548,19 @@ package body Gnat2Why.Types is
          if (not (Has_Record_Type (E)
                   or else Has_Incomplete_Or_Private_Type (E))
              or else not Record_Type_Is_Clone (Retysp (E))
-             or else Short_Name (Retysp (E))
-                     /= Short_Name (Record_Type_Cloned_Subtype (Retysp (E))))
+             or else
+               Short_Name (Retysp (E))
+               /= Short_Name (Record_Type_Cloned_Subtype (Retysp (E))))
            and then not Is_Class_Wide_Type (Retysp (E))
-           and then (not Has_Array_Type (E)
-                     or else not Is_Static_Array_Type (Retysp (E)))
-           and then (not Has_Array_Type (E)
-                     or else not Array_Type_Is_Clone (Retysp (E))
-                     or else Short_Name (Retysp (E))
-                             /= Short_Name
-                                  (Array_Type_Cloned_Subtype (Retysp (E))))
+           and then
+             (not Has_Array_Type (E)
+              or else not Is_Static_Array_Type (Retysp (E)))
+           and then
+             (not Has_Array_Type (E)
+              or else not Array_Type_Is_Clone (Retysp (E))
+              or else
+                Short_Name (Retysp (E))
+                /= Short_Name (Array_Type_Cloned_Subtype (Retysp (E))))
          then
             Emit_Ref_Type_Definition
               (Th,
@@ -1811,32 +1815,133 @@ package body Gnat2Why.Types is
       --  Create a theory for validity trees of composite objects of type E if
       --  necessary.
 
-      if Type_Might_Be_Invalid (E)
-        and then not Has_Scalar_Type (E)
-        and then E = Base_Retysp (E)
-      then
-         Th :=
-           Open_Theory
-             (WF_Context,
-              E_Module (E, Validity_Tree),
-              Comment =>
-                "Module for validity trees for objects of type "
-                & """"
-                & Get_Name_String (Chars (E))
-                & """"
-                & (if Sloc (E) > 0
-                   then " defined at " & Build_Location_String (Sloc (E))
-                   else "")
-                & ", created in "
-                & GNAT.Source_Info.Enclosing_Entity);
+      if Type_Might_Be_Invalid (E) then
 
-         if Has_Array_Type (E) then
-            Create_Validity_Tree_Theory_For_Array (Th, E);
-         else
-            Create_Validity_Tree_Theory_For_Record (Th, E);
+         if not Has_Scalar_Type (E) and then E = Base_Retysp (E) then
+            Th :=
+              Open_Theory
+                (WF_Context,
+                 E_Module (E, Validity_Tree),
+                 Comment =>
+                   "Module for validity trees for objects of type "
+                   & """"
+                   & Get_Name_String (Chars (E))
+                   & """"
+                   & (if Sloc (E) > 0
+                      then " defined at " & Build_Location_String (Sloc (E))
+                      else "")
+                   & ", created in "
+                   & GNAT.Source_Info.Enclosing_Entity);
+
+            if Has_Array_Type (E) then
+               Create_Validity_Tree_Theory_For_Array (Th, E);
+            else
+               Create_Validity_Tree_Theory_For_Record (Th, E);
+            end if;
+
+            Close_Theory (Th, Kind => Definition_Theory);
          end if;
 
-         Close_Theory (Th, Kind => Definition_Theory);
+         --  Create a wrapper type for functions with a potentially invalid
+         --  result of type E.
+
+         declare
+            Validity_Module : constant W_Module_Id :=
+              E_Module (E, Validity_Wrapper);
+            Validity_Th     : Theory_UC :=
+              Open_Theory
+                (WF_Context,
+                 Validity_Module,
+                 Comment =>
+                   "Module for the wrapper type for the potentially invalid"
+                   & " result of functions returning "
+                   & """"
+                   & Get_Name_String (Chars (E))
+                   & """"
+                   & (if Sloc (E) > 0
+                      then " defined at " & Build_Location_String (Sloc (E))
+                      else "")
+                   & ", created in "
+                   & GNAT.Source_Info.Enclosing_Entity);
+            W_Ty            : constant W_Type_Id := Type_Of_Node (E);
+            Tree_Ty         : constant W_Type_Id := Get_Validity_Tree_Type (E);
+
+         begin
+            Emit_Record_Declaration
+              (Th      => Validity_Th,
+               Name    => To_Local (E_Symb (E, WNE_Valid_Wrapper)),
+               Binders =>
+                 (1 =>
+                    (B_Name =>
+                       New_Identifier
+                         (Domain => EW_Term,
+                          Name   =>
+                            To_Local (E_Symb (E, WNE_Valid_Wrapper_Result)),
+                          Typ    => W_Ty),
+                     others => <>),
+                  2 =>
+                    (B_Name =>
+                       New_Identifier
+                         (Domain => EW_Term,
+                          Name   =>
+                            To_Local (E_Symb (E, WNE_Valid_Wrapper_Flag)),
+                          Typ    => Tree_Ty),
+                     others => <>)));
+
+            declare
+               Wrapper_Id : constant W_Identifier_Id :=
+                 New_Identifier
+                   (Name => "x",
+                    Typ  =>
+                      New_Named_Type
+                        (Name => To_Local (E_Symb (E, WNE_Valid_Wrapper))));
+            begin
+               Emit
+                 (Validity_Th,
+                  New_Function_Decl
+                    (Domain      => EW_Prog,
+                     Name        =>
+                       To_Program_Space
+                         (To_Local (E_Symb (E, WNE_Valid_Wrapper_Result))),
+                     Binders     =>
+                       Binder_Array'
+                         (1 => (B_Name => Wrapper_Id, others => <>)),
+                     Return_Type => W_Ty,
+                     Location    => No_Location,
+                     Labels      => Symbol_Sets.Empty_Set,
+                     Pre         =>
+                       +New_Is_Valid_Call_For_Expr
+                          (Tree   =>
+                             New_Record_Access
+                               (Name  => +Wrapper_Id,
+                                Field =>
+                                  To_Local
+                                    (E_Symb (E, WNE_Valid_Wrapper_Flag)),
+                                Typ   => EW_Bool_Type),
+                           Ty     => E,
+                           Expr   =>
+                             New_Record_Access
+                               (Name  => +Wrapper_Id,
+                                Field =>
+                                  To_Local
+                                    (E_Symb (E, WNE_Valid_Wrapper_Result)),
+                                Typ   => W_Ty),
+                           Domain => EW_Pred),
+                     Post        =>
+                       New_Comparison
+                         (Symbol => Why_Eq,
+                          Left   => +New_Result_Ident (Typ => W_Ty),
+                          Right  =>
+                            New_Record_Access
+                              (Name  => +Wrapper_Id,
+                               Field =>
+                                 To_Local
+                                   (E_Symb (E, WNE_Valid_Wrapper_Result)),
+                               Typ   => W_Ty))));
+            end;
+
+            Close_Theory (Validity_Th, Kind => Definition_Theory);
+         end;
       end if;
    end Translate_Type;
 

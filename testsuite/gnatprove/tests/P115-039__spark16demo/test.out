@@ -1,7 +1,7 @@
 client_unit.adb:6:07: info: initialization of "Item1_Done" proved
 client_unit.adb:9:07: info: precondition proved (CVC5: 1 VC)
 client_unit.adb:11:10: info: precondition proved (CVC5: 1 VC)
-client_unit.adb:16:10: medium: precondition might fail (e.g. when Item2_Done = False and State = Init_Done)
+client_unit.adb:16:10: medium: precondition might fail (e.g. when Item2_Done = False and State = Init_Done) [provers gave up before completing the proof]
 client_unit.adb:23:07: info: initialization of "Item_Done" proved
 client_unit.adb:26:07: info: precondition proved (CVC5: 1 VC)
 client_unit.adb:28:10: info: precondition proved (CVC5: 1 VC)
@@ -14,11 +14,11 @@ client_unit.adb:59:07: info: initialization of "Item_Done" proved
 client_unit.adb:62:07: info: precondition proved (CVC5: 1 VC)
 client_unit.adb:64:10: info: precondition proved (CVC5: 1 VC)
 client_unit.adb:69:10: info: precondition proved (CVC5: 1 VC)
-concurrency_example.adb:17:31: medium: range check might fail [reason for check: value must fit in the target type of the assignment] [possible fix: loop at line 10 should mention Deadline in a loop invariant]
+concurrency_example.adb:17:31: medium: range check might fail [reason for check: value must fit in the target type of the assignment] [possible fix: loop at line 10 should mention Deadline in a loop invariant] [provers reached step limit before completing the proof]
 concurrency_example.adb:17:33: info: range check proved (CVC5: 1 VC)
 concurrency_example.adb:23:07: info: initialization of "Value" proved
-concurrency_example.adb:32:25: medium: assertion might fail [possible fix: loop at line 26 should mention Value in a loop invariant]
-concurrency_example.adb:33:31: medium: range check might fail [reason for check: value must fit in the target type of the assignment] [possible fix: loop at line 26 should mention Deadline in a loop invariant]
+concurrency_example.adb:32:25: medium: assertion might fail [possible fix: loop at line 26 should mention Value in a loop invariant] [provers reached step limit before completing the proof]
+concurrency_example.adb:33:31: medium: range check might fail [reason for check: value must fit in the target type of the assignment] [possible fix: loop at line 26 should mention Deadline in a loop invariant] [provers reached step limit before completing the proof]
 concurrency_example.adb:33:33: info: range check proved (CVC5: 1 VC)
 concurrency_example.ads:8:09: high: possible data race when accessing variable "concurrency_example.data"
 concurrency_example.ads:8:09: high: task "concurrency_example.reader" accesses "concurrency_example.data"
@@ -28,11 +28,11 @@ concurrency_example.ads:9:09: high: possible data race when accessing variable "
 concurrency_example.ads:9:09: high: task "concurrency_example.reader" accesses "concurrency_example.data"
 concurrency_example.ads:9:09: high: task "concurrency_example.writer" accesses "concurrency_example.data"
 concurrency_example.ads:9:09: info: nontermination of task proved (CVC5: 1 VC)
-concurrency_example_fixed.adb:26:31: medium: range check might fail [reason for check: value must fit in the target type of the assignment] [possible fix: loop at line 19 should mention Deadline in a loop invariant]
+concurrency_example_fixed.adb:26:31: medium: range check might fail [reason for check: value must fit in the target type of the assignment] [possible fix: loop at line 19 should mention Deadline in a loop invariant] [provers reached step limit before completing the proof]
 concurrency_example_fixed.adb:26:33: info: range check proved (CVC5: 1 VC)
 concurrency_example_fixed.adb:32:07: info: initialization of "Value" proved
-concurrency_example_fixed.adb:41:25: medium: assertion might fail [possible fix: loop at line 35 should mention Value in a loop invariant]
-concurrency_example_fixed.adb:42:31: medium: range check might fail [reason for check: value must fit in the target type of the assignment] [possible fix: loop at line 35 should mention Deadline in a loop invariant]
+concurrency_example_fixed.adb:41:25: medium: assertion might fail [possible fix: loop at line 35 should mention Value in a loop invariant] [provers reached step limit before completing the proof]
+concurrency_example_fixed.adb:42:31: medium: range check might fail [reason for check: value must fit in the target type of the assignment] [possible fix: loop at line 35 should mention Deadline in a loop invariant] [provers reached step limit before completing the proof]
 concurrency_example_fixed.adb:42:33: info: range check proved (CVC5: 1 VC)
 concurrency_example_fixed.ads:8:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 concurrency_example_fixed.ads:14:09: info: ceiling priority protocol is respected for "Concurrency_Example_Fixed.Data" (CVC5: 1 VC)
@@ -43,7 +43,7 @@ counter_example.adb:3:13: info: implicit aspect Always_Terminates on "Pick_Last"
 counter_example.adb:3:82: info: index check proved (CVC5: 2 VC)
 counter_example.adb:13:10: warning: unreachable code (CVC5: 1 VC)
 counter_example.adb:13:22: info: predicate check proved (CVC5: 1 VC)
-counter_example.adb:15:22: medium: predicate check might fail [possible fix: subprogram at counter_example.ads:14 should mention Cat1 in a precondition]
+counter_example.adb:15:22: medium: predicate check might fail [possible fix: subprogram at counter_example.ads:14 should mention Cat1 in a precondition] [provers reached step limit before completing the proof]
 counter_example.ads:12:72: info: index check proved (CVC5: 2 VC)
 counter_example.ads:14:13: info: implicit aspect Always_Terminates on "Get_Best_Item" has been proved, subprogram will terminate
 ghost_example.adb:11:10: warning: unreachable code (CVC5: 1 VC)

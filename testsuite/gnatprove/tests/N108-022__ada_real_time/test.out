@@ -1,4 +1,4 @@
 rt.adb:4:07: info: initialization of "T1" proved
 rt.adb:4:11: info: initialization of "T2" proved
-rt.adb:10:22: medium: assertion might fail
+rt.adb:10:22: medium: assertion might fail [provers gave up before completing the proof]
 rt.ads:8:18: info: initialization of "X" proved

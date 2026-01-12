@@ -1,5 +1,5 @@
 test.adb:15:22: info: predicate check proved (Trivial: 1 VC)
-test.adb:15:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Ident or turning it into an expression function]
+test.adb:15:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function "Ident" or turning it into an expression function] [provers reached step limit before completing the proof]
 test.adb:15:32: info: division check proved (CVC5: 1 VC)
 test.adb:15:36: info: predicate check proved (Trivial: 1 VC)
 test.adb:15:41: info: predicate check proved (Trivial: 1 VC)
@@ -8,4 +8,4 @@ test.adb:15:47: info: predicate check proved (Trivial: 1 VC)
 test.ads:20:13: info: implicit aspect Always_Terminates on "Ident" has been proved, subprogram will terminate
 test.ads:25:13: info: predicate check proved (Trivial: 1 VC)
 test.ads:25:19: info: predicate check proved (Trivial: 1 VC)
-test.ads:26:14: medium: postcondition might fail
+test.ads:26:14: medium: postcondition might fail [provers reached step limit before completing the proof]

@@ -6,7 +6,7 @@ q.adb:14:08: warning: unreachable code [enabled by default]
 q.adb:21:14: info: implicit aspect Always_Terminates on "Bad" has been proved, subprogram will terminate
 q.adb:24:05: info: initialization of "X" proved
 q.adb:24:08: info: initialization of "Y" proved
-q.adb:26:20: medium: assertion might fail
+q.adb:26:20: medium: assertion might fail [provers gave up before completing the proof]
 test_eq.adb:2:29: warning: unused variable "I"
 test_eq.adb:2:32: warning: unused variable "J"
 test_eq.adb:6:19: medium: implicit aspect Always_Terminates on "Non_Returning" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
@@ -16,4 +16,4 @@ test_eq.adb:17:08: info: precondition proved (Trivial: 1 VC)
 test_eq.adb:23:14: info: implicit aspect Always_Terminates on "Bad" has been proved, subprogram will terminate
 test_eq.adb:26:05: info: initialization of "X" proved
 test_eq.adb:26:08: info: initialization of "Y" proved
-test_eq.adb:28:20: medium: assertion might fail
+test_eq.adb:28:20: medium: assertion might fail [provers gave up before completing the proof]

@@ -8,3 +8,4 @@
       + possible fix: add precondition (X >= Natural'First + Y) to subprogram at line 1
     1 |    procedure Diff (X, Y : in Natural; Z : out Natural) with
       |              ^
+      + provers gave up before completing the proof

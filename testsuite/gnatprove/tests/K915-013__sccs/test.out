@@ -54,6 +54,6 @@ sccs.adb:17:40: info: in inlined body at line 15
 sccs.adb:17:40: info: in inlined body at line 16
 sccs.adb:17:40: info: in inlined body at line 16
 sccs.adb:17:40: info: no contextual analysis of call to recursive subprogram
-sccs.adb:21:19: high: assertion might fail (e.g. when B = False) [possible fix: subprogram at line 1 should mention B in a precondition]
-sccs.adb:23:19: medium: assertion might fail (e.g. when B = False) [possible fix: call at line 22 should mention B in a postcondition]
-sccs.adb:25:19: medium: assertion might fail (e.g. when B = False) [possible fix: call at line 24 should mention B in a postcondition]
+sccs.adb:21:19: high: assertion might fail (e.g. when B = False) [possible fix: subprogram at line 1 should mention B in a precondition] [provers gave up before completing the proof]
+sccs.adb:23:19: medium: assertion might fail (e.g. when B = False) [possible fix: call at line 22 should mention B in a postcondition] [provers gave up before completing the proof]
+sccs.adb:25:19: medium: assertion might fail (e.g. when B = False) [possible fix: call at line 24 should mention B in a postcondition] [provers gave up before completing the proof]

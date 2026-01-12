@@ -1,21 +1,21 @@
 finally_exceptions.adb:6:19: info: no contextual analysis of "Random" (body not seen yet)
 finally_exceptions.adb:6:19: warning: assuming "Random" has no effect on global items
 finally_exceptions.adb:6:19: warning: no Global contract available for "Random" [assumed-global-null]
-finally_exceptions.adb:14:10: medium: unexpected exception might be raised [reason for check: Finally_Exceptions allows propagating no exceptions] [possible explanation: E might be unexpectedly raised]
+finally_exceptions.adb:14:10: medium: unexpected exception might be raised [reason for check: "Finally_Exceptions" allows propagating no exceptions] [possible explanation: "E" might be unexpectedly raised] [provers gave up before completing the proof]
 finally_exceptions.adb:14:10: medium: when an exception is raised at finally_exceptions.adb:10
 finally_exceptions.adb:19:22: info: assertion proved (CVC5: 1 VC)
 finally_frame_condition.adb:4:14: warning: subprogram "Write_Detection" has no effect
 finally_frame_condition.adb:5:04: warning: analyzing unreferenced procedure "Write_Detection" [unreferenced-procedure]
 finally_frame_condition.adb:11:28: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
-finally_frame_condition.adb:15:20: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 11 should mention X in a loop invariant]
-finally_frame_condition.adb:19:22: medium: assertion might fail [possible fix: loop at line 11 should mention X in a loop invariant]
+finally_frame_condition.adb:15:20: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 11 should mention X in a loop invariant] [provers gave up before completing the proof]
+finally_frame_condition.adb:19:22: medium: assertion might fail [possible fix: loop at line 11 should mention X in a loop invariant] [provers gave up before completing the proof]
 finally_frame_condition.adb:22:14: warning: subprogram "Loop_Needing_Accurate_Analysis" has no effect
 finally_frame_condition.adb:23:04: warning: analyzing unreferenced procedure "Loop_Needing_Accurate_Analysis" [unreferenced-procedure]
-finally_frame_condition.adb:29:20: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 27 should mention X in a loop invariant]
-finally_frame_condition.adb:31:23: medium: overflow check might fail, cannot prove upper bound for Y + 1 (e.g. when Y = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 27 should mention Y in a loop invariant]
+finally_frame_condition.adb:29:20: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 27 should mention X in a loop invariant] [provers gave up before completing the proof]
+finally_frame_condition.adb:31:23: medium: overflow check might fail, cannot prove upper bound for Y + 1 (e.g. when Y = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 27 should mention Y in a loop invariant] [provers gave up before completing the proof]
 finally_frame_condition.adb:35:22: info: overflow check proved (CVC5: 2 VC)
-finally_frame_condition.adb:35:22: medium: overflow check might fail, cannot prove upper bound for 2 * X (e.g. when X = 1073741824) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 27 should mention X in a loop invariant]
-finally_frame_condition.adb:42:22: medium: assertion might fail (e.g. when Y = 2) [possible fix: loop at line 27 should mention Y in a loop invariant]
+finally_frame_condition.adb:35:22: medium: overflow check might fail, cannot prove upper bound for 2 * X (e.g. when X = 1073741824) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 27 should mention X in a loop invariant] [provers gave up before completing the proof]
+finally_frame_condition.adb:42:22: medium: assertion might fail (e.g. when Y = 2) [possible fix: loop at line 27 should mention Y in a loop invariant] [provers gave up before completing the proof]
 finally_range.adb:10:06: info: data dependencies proved
 finally_range.adb:10:28: info: initialization of "Low" proved
 finally_range.adb:10:33: info: initialization of "High" proved
@@ -23,10 +23,10 @@ finally_range.adb:11:14: info: postcondition proved (CVC5: 36 VC; Trivial: 1 VC)
 finally_range.adb:38:39: info: exceptional case proved (Z3: 2 VC)
 finally_range.adb:39:30: info: exit case proved (CVC5: 1 VC)
 finally_range.adb:39:30: info: exit case proved (CVC5: 1 VC; Trivial: 1 VC)
-finally_range.adb:39:30: info: on exceptional exit from Test at finally_range.adb:8
-finally_range.adb:39:30: info: on normal return from Test at finally_range.adb:8
+finally_range.adb:39:30: info: on exceptional exit from "Test" at finally_range.adb:8
+finally_range.adb:39:30: info: on normal return from "Test" at finally_range.adb:8
 finally_range.adb:40:31: info: exit case proved (Z3: 1 VC)
-finally_range.adb:40:31: info: on exceptional exit from Test at finally_range.adb:8
+finally_range.adb:40:31: info: on exceptional exit from "Test" at finally_range.adb:8
 finally_range.adb:45:17: info: add a contract to analyze it separately from calling contexts
 finally_range.adb:45:17: info: local subprogram "Enter" only analyzed in the context of calls [info-unrolling-inlining]
 finally_range.adb:48:25: info: overflow check proved (CVC5: 2 VC), in call inlined at finally_range.adb:104

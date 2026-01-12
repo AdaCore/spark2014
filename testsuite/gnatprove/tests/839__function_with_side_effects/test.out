@@ -2,7 +2,7 @@ main.adb:10:04: warning: analyzing unreferenced procedure "Test" [unreferenced-p
 main.adb:10:14: warning: subprogram "Test" has no effect
 main.adb:13:25: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 main.adb:14:25: medium: "Y" might not be initialized
-main.adb:14:25: medium: assertion might fail (e.g. when Y = 0 and Y'Loop_Entry = -1) [possible fix: loop at line 13 should mention Y in a loop invariant]
+main.adb:14:25: medium: assertion might fail (e.g. when Y = 0 and Y'Loop_Entry = -1) [possible fix: loop at line 13 should mention Y in a loop invariant] [provers gave up before completing the proof]
 main.adb:14:29: high: "Y" is not initialized
 main.adb:15:25: warning: assuming "F" always terminates
 main.adb:15:25: warning: no Always_Terminates aspect available for "F" [assumed-always-terminates]

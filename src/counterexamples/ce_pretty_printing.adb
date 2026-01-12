@@ -399,7 +399,11 @@ package body CE_Pretty_Printing is
                Res.Value :=
                  Make_CNT_Unbounded_String
                    (Str =>
-                      "new " & Source_Name (Des_Ty) & "'(" & V.Value.Str & ')',
+                      "new "
+                      & Raw_Source_Name (Des_Ty)
+                      & "'("
+                      & V.Value.Str
+                      & ')',
                     Cnt => V.Value.Count,
                     Els => Elems);
 
@@ -635,8 +639,8 @@ package body CE_Pretty_Printing is
 
                if BI_Fst <= Index
                  and then Index <= BI_Last
-                 and then (BI_Fst = BI_Last
-                           or else Elem_Printed /= Others_Elem)
+                 and then
+                   (BI_Fst = BI_Last or else Elem_Printed /= Others_Elem)
                then
                   Add_Index
                     (S_Array,
@@ -652,8 +656,9 @@ package body CE_Pretty_Printing is
                --  Check for the maximum printed length
 
                if (String_Lit and then Elem_Count >= CE_Max_Print_Chars_String)
-                 or else (not String_Lit
-                          and then Elem_Count >= CE_Max_Print_Elems_Array)
+                 or else
+                   (not String_Lit
+                    and then Elem_Count >= CE_Max_Print_Elems_Array)
                then
                   Truncated := True;
                   exit;
@@ -677,14 +682,14 @@ package body CE_Pretty_Printing is
          --  bounds are known, and Others_Val is supplied.
 
          elsif Others_Elem.Value /= Dont_Display
-           and then (String_Lit
-                     or else To_Big_Integer (Integer (S_Array.Length))
-                             >= BI_Last
-                                - BI_Fst
-                                + 1
-                                - CE_Max_Exp_Others_In_Aggregate)
-           and then ((Attr_First.Present and then Attr_Last.Present)
-                     or else Is_Static_Array_Type (Value.AST_Ty))
+           and then
+             (String_Lit
+              or else
+                To_Big_Integer (Integer (S_Array.Length))
+                >= BI_Last - BI_Fst + 1 - CE_Max_Exp_Others_In_Aggregate)
+           and then
+             ((Attr_First.Present and then Attr_Last.Present)
+              or else Is_Static_Array_Type (Value.AST_Ty))
          then
             declare
                Index : Big_Integer := BI_Fst;
@@ -710,7 +715,7 @@ package body CE_Pretty_Printing is
                pragma
                  Assert
                    (To_Big_Integer (Integer (S_Array.Length))
-                      = Upper - BI_Fst + 1);
+                    = Upper - BI_Fst + 1);
                Complete := not Truncated;
             end;
 
@@ -719,11 +724,12 @@ package body CE_Pretty_Printing is
             --  Check if adding the 'others' element would exceed the printed
             --  length (irrelevant if it was exceeded already).
             if Others_Elem.Value /= Dont_Display
-              and then ((String_Lit
-                         and then Elem_Count >= CE_Max_Print_Chars_String - 1)
-                        or else (not String_Lit
-                                 and then Elem_Count
-                                          >= CE_Max_Print_Elems_Array - 1))
+              and then
+                ((String_Lit
+                  and then Elem_Count >= CE_Max_Print_Chars_String - 1)
+                 or else
+                   (not String_Lit
+                    and then Elem_Count >= CE_Max_Print_Elems_Array - 1))
             then
                Truncated := True;
                Others_Val := Dont_Display;
@@ -894,7 +900,7 @@ package body CE_Pretty_Printing is
 
       function Beautiful_Source_Name (Ty : Entity_Id) return String
       with Pre => Is_Discrete_Type (Ty);
-      --  Does the same as Source_Name except for types defined in Standard
+      --  Does the same as Raw_Source_Name except for types defined in Standard
       --  which we print with Upper case letter after each '_'.
 
       ---------------------------
@@ -913,7 +919,7 @@ package body CE_Pretty_Printing is
             --  Return the converted name
             return Name_Buffer (1 .. Name_Len);
          else
-            return Source_Name (Ty);
+            return Raw_Source_Name (Ty);
          end if;
       end Beautiful_Source_Name;
 
@@ -978,8 +984,9 @@ package body CE_Pretty_Printing is
          --  indices: we don't want to print Tdata_tD1'First.
 
          if Type_Range <= Bound_Type
-           or else (not Comes_From_Source (Nb_Type)
-                    and then not Is_Standard_Type (Nb_Type))
+           or else
+             (not Comes_From_Source (Nb_Type)
+              and then not Is_Standard_Type (Nb_Type))
          then
             return To_String (Nb);
          end if;
@@ -1180,11 +1187,11 @@ package body CE_Pretty_Printing is
          Visibility : Component_Visibility;
          Add_Prefix : Boolean := True)
       is
-         Comp_Name : constant String := Source_Name (Comp);
+         Comp_Name : constant String := Raw_Source_Name (Comp);
          Orig_Decl : constant Entity_Id := Original_Declaration (Comp);
          Prefix    : constant String :=
            (if Ekind (Comp) /= E_Discriminant and then Visibility = Duplicated
-            then Source_Name (Orig_Decl) & '.'
+            then Raw_Source_Name (Orig_Decl) & '.'
             else "");
          --  Explanation. It is empty except for duplicated
          --  components where it points to the declaration of the
@@ -1360,10 +1367,11 @@ package body CE_Pretty_Printing is
                  Component_Visibility_Maps.Key (C);
             begin
                if Visibility /= Removed
-                 and then not Component_Is_Removed_In_Type
-                                (Ty   => Value.AST_Ty,
-                                 Comp => Comp,
-                                 Vals => Value.Record_Fields)
+                 and then
+                   not Component_Is_Removed_In_Type
+                         (Ty   => Value.AST_Ty,
+                          Comp => Comp,
+                          Vals => Value.Record_Fields)
                then
                   if Is_Type (Comp) or else Present (First_Unseen) then
                      Need_Others := True;
@@ -1547,7 +1555,7 @@ package body CE_Pretty_Printing is
                pragma
                  Assert
                    (Is_Enumeration_Type (AST_Type)
-                      and then not Is_Character_Type (AST_Type));
+                    and then not Is_Character_Type (AST_Type));
 
                --  Necessary for some types that makes boolean be translated to
                --  integers like: "subype only_true := True .. True".
@@ -1561,10 +1569,10 @@ package body CE_Pretty_Printing is
 
                else
                   --  Call Get_Enum_Lit_From_Pos to get a corresponding
-                  --  enumeration entity, then Source_Name to get a
+                  --  enumeration entity, then Raw_Source_Name to get a
                   --  correctly capitalized enumeration value.
 
-                  return Source_Name (Value.Enum_Entity);
+                  return Raw_Source_Name (Value.Enum_Entity);
                end if;
 
             when Fixed_K   =>
@@ -1661,10 +1669,12 @@ package body CE_Pretty_Printing is
                --  False.
 
                if Value.Scalar_Content = null
-                 or else (Value.Initialized_Attr.Present
-                          and then not Value.Initialized_Attr.Content)
-                 or else (Value.Valid_Attr.Present
-                          and then not Value.Valid_Attr.Content)
+                 or else
+                   (Value.Initialized_Attr.Present
+                    and then not Value.Initialized_Attr.Content)
+                 or else
+                   (Value.Valid_Attr.Present
+                    and then not Value.Valid_Attr.Content)
                then
                   return (Value => Dont_Display, Attributes => Attributes);
                else
@@ -1929,7 +1939,7 @@ package body CE_Pretty_Printing is
                for Elt in Value.Record_Fields.Iterate loop
                   declare
                      use Entity_To_Value_Maps;
-                     Name : constant String := Source_Name (Key (Elt));
+                     Name : constant String := Raw_Source_Name (Key (Elt));
                   begin
                      case Ekind (Key (Elt)) is
                         when E_Discriminant =>

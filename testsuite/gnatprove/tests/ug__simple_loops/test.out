@@ -1,14 +1,15 @@
  info: initialization of "Prop" proved
 --> simple_loops.adb:4:04
 
- info: loop invariant preservation proved
---> simple_loops.adb:8:30
-
  high: loop invariant might fail in first iteration
 --> simple_loops.adb:8:30
     8 |          pragma Loop_Invariant (Prop);
       |                                 ^~~~
       + e.g. when Prop = False
+      + provers gave up before completing the proof
+
+ info: loop invariant preservation proved
+--> simple_loops.adb:8:30
 
  info: loop invariant initialization proved
 --> simple_loops.adb:14:30
@@ -17,6 +18,7 @@
 --> simple_loops.adb:14:30
    14 |          pragma Loop_Invariant (Prop);
       |                                 ^~~~
+      + provers gave up before completing the proof
 
  info: loop invariant initialization proved
 --> simple_loops.adb:20:30
@@ -31,3 +33,4 @@
 --> simple_loops.adb:26:44
    26 |          pragma Loop_Invariant (if J > 1 then Prop);
       |                                               ^~~~
+      + provers gave up before completing the proof

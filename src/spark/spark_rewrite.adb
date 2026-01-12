@@ -359,12 +359,13 @@ package body SPARK_Rewrite is
          --  node which is ignored by gnat2why.
 
          if Gnat2Why_Args.Exclude_Line /= Null_Unbounded_String
-           and then Nkind (N)
-                    in N_Declaration
-                     | N_Later_Decl_Item
-                     | N_Statement_Other_Than_Procedure_Call
-                     | N_Procedure_Call_Statement
-                     | N_Pragma
+           and then
+             Nkind (N)
+             in N_Declaration
+              | N_Later_Decl_Item
+              | N_Statement_Other_Than_Procedure_Call
+              | N_Procedure_Call_Statement
+              | N_Pragma
            and then Flow_Error_Messages.Is_Excluded_Line (Sloc (N))
          then
             Rewrite (N, Nmake.Make_Call_Marker (Sloc (N)));
@@ -373,8 +374,8 @@ package body SPARK_Rewrite is
          --  Explicitly traverse rewritten subprogram calls and pragmas (e.g.
          --  pragma Debug).
          if Nkind (N) in Rewriten_Call
-           and then Nkind (Original_Node (N))
-                    in N_Subprogram_Call | N_Pragma | N_Op
+           and then
+             Nkind (Original_Node (N)) in N_Subprogram_Call | N_Pragma | N_Op
          then
             Rewrite_Nodes (Original_Node (N));
          end if;

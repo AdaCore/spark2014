@@ -1,17 +1,17 @@
 aliasing.adb:21:14: info: non-aliasing of formal parameters "X" and "Y" proved
 aliasing.adb:26:13: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
 aliasing.adb:26:13: warning: aliasing check on components of an array is handled imprecisely [alias-array]
-aliasing.adb:26:16: high: array index check might fail (e.g. when A'First = 1 and A'Last = 0 and I = 0) [reason for check: value must be a valid index into the array] [possible fix: add precondition (I in A'First .. A'Last) to subprogram at aliasing.ads:17]
-aliasing.adb:26:23: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (J in A'First .. A'Last) to subprogram at aliasing.ads:17]
+aliasing.adb:26:16: high: array index check might fail (e.g. when A'First = 1 and A'Last = 0 and I = 0) [reason for check: value must be a valid index into the array] [possible fix: add precondition (I in A'First .. A'Last) to subprogram at aliasing.ads:17] [provers reached step limit before completing the proof]
+aliasing.adb:26:23: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (J in A'First .. A'Last) to subprogram at aliasing.ads:17] [provers reached step limit before completing the proof]
 global_stack.ads:4:12: error: function "Pop" with output global "Top" is not allowed in SPARK [E0005]
 global_stack.ads:4:12: error: launch "gnatprove --explain=E0005" for more information
 global_stack.ads:4:12: error: violation of aspect SPARK_Mode at line 1
 search_array.adb:7:24: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 search_array.adb:9:20: info: range check proved (CVC5: 2 VC)
-search_array.adb:12:07: medium: unexpected exception might be raised [reason for check: Search_Zero_P allows propagating no exceptions] [possible explanation: Not_Found might be unexpectedly raised]
+search_array.adb:12:07: medium: unexpected exception might be raised [reason for check: "Search_Zero_P" allows propagating no exceptions] [possible explanation: "Not_Found" might be unexpectedly raised] [provers reached step limit before completing the proof]
 search_array.ads:5:13: info: implicit aspect Always_Terminates on "Search_Zero_P" has been proved, subprogram will terminate
-use_access.adb:3:41: medium: range check might fail, cannot prove lower bound for W (W'First) [reason for check: default component value must fit in the type] [possible fix: subprogram at use_access.ads:4 should mention W in a precondition]
-use_access.adb:3:45: high: array index check might fail (e.g. when W'First = 1 and W'Last = 0) [reason for check: value must be a valid index into the array]
+use_access.adb:3:41: medium: range check might fail, cannot prove lower bound for W (W'First) [reason for check: default component value must fit in the type] [possible fix: subprogram at use_access.ads:4 should mention W in a precondition] [provers reached step limit before completing the proof]
+use_access.adb:3:45: high: array index check might fail (e.g. when W'First = 1 and W'Last = 0) [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
 gnatprove: error during flow analysis and proof
 p.adb:8:09: info: data dependencies proved
 p.adb:13:41: info: index check proved (CVC5: 2 VC)
@@ -32,16 +32,16 @@ p.adb:63:24: info: cannot unroll loop (too many loop iterations) [info-unrolling
 p.adb:65:20: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 p.adb:70:14: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 p.adb:76:07: info: initialization of "End_Of_Seq" proved
-p.adb:78:38: high: overflow check might fail, cannot prove lower bound for A'First - 1 (e.g. when A'First = Integer'First and A'Last = 0) [reason for check: result of subtraction must fit in a 32-bits machine integer]
+p.adb:78:38: high: overflow check might fail, cannot prove lower bound for A'First - 1 (e.g. when A'First = Integer'First and A'Last = 0) [reason for check: result of subtraction must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
 p.adb:81:09: info: data dependencies proved
 p.adb:82:31: info: initialization of "End_Of_Seq" proved
 p.adb:84:09: info: flow dependencies proved
-p.adb:88:30: high: overflow check might fail, cannot prove upper bound for Beginning + 1 (e.g. when Beginning = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+p.adb:88:30: high: overflow check might fail, cannot prove upper bound for Beginning + 1 (e.g. when Beginning = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers reached step limit before completing the proof]
 p.adb:89:20: info: postcondition proved (CVC5: 2 VC)
-p.adb:89:41: high: overflow check might fail, cannot prove lower bound for A'First - 1 (e.g. when A = (others => 1) and A'First = Integer'First and A'Last = 0) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+p.adb:89:41: high: overflow check might fail, cannot prove lower bound for A'First - 1 (e.g. when A = (others => 1) and A'First = Integer'First and A'Last = 0) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers reached step limit before completing the proof]
 p.adb:93:16: info: index check proved (CVC5: 2 VC)
 p.adb:94:23: info: index check proved (CVC5: 2 VC)
-p.adb:99:42: high: overflow check might fail, cannot prove upper bound for Current_Index - Beginning (e.g. when Beginning = -1 and Current_Index = Integer'Last) [reason for check: result of subtraction must fit in a 32-bits machine integer]
+p.adb:99:42: high: overflow check might fail, cannot prove upper bound for Current_Index - Beginning (e.g. when Beginning = -1 and Current_Index = Integer'Last) [reason for check: result of subtraction must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
 p.adb:99:42: info: range check proved (CVC5: 2 VC)
 p.adb:107:33: info: loop invariant initialization proved (CVC5: 2 VC)
 p.adb:107:33: info: loop invariant preservation proved (CVC5: 2 VC)
@@ -95,7 +95,7 @@ p.adb:32:17: info: overflow check proved (CVC5: 2 VC)
 p.adb:34:17: info: overflow check proved (CVC5: 2 VC)
 p.adb:36:17: info: overflow check proved (CVC5: 2 VC)
 p.ads:17:06: info: disjoint contract or exit cases proved (CVC5: 1 VC)
-p.ads:17:06: medium: contract cases might not be complete
+p.ads:17:06: medium: contract cases might not be complete [provers gave up before completing the proof]
 p.ads:17:25: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 p.ads:18:25: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 p.ads:19:25: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
@@ -108,18 +108,18 @@ stacks.ads:10:13: info: implicit aspect Always_Terminates on "Peek" has been pro
 stacks.ads:12:13: info: implicit aspect Always_Terminates on "Is_Full" has been proved, subprogram will terminate
 stacks.ads:27:52: info: index check proved (CVC5: 2 VC)
 abstraction_ext.ads:2:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
-communication.adb:5:15: medium: length check might fail [reason for check: array must be of the appropriate length] [possible fix: subprogram at communication.ads:9 should mention Address in a precondition]
-communication.adb:19:25: high: array index check might fail (e.g. when B = (Content => ?, First => 1, Length => 0) and B.Content'First = 1 and B.Content'Last = 0) [reason for check: value must be a valid index into the array] [possible fix: subprogram at communication.ads:17 should mention B in a precondition]
-communication.adb:20:32: high: overflow check might fail, cannot prove upper bound for B.First + 1 (e.g. when B = (Content => (others => 0), First => Positive'Last, Length => Natural'Last) and B.Content'First = 1 and B.Content'Last = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at communication.ads:17 should mention B in a precondition]
-communication.adb:21:24: high: overflow check might fail, cannot prove upper bound for B.First + B.Length (e.g. when B = (Content => (others => Data'Last), First => Positive'Last, Length => 1) and B.Content'First = 1 and B.Content'Last = 2) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at communication.ads:17 should mention B in a precondition]
+communication.adb:5:15: medium: length check might fail [reason for check: array must be of the appropriate length] [possible fix: subprogram at communication.ads:9 should mention Address in a precondition] [provers reached step limit before completing the proof]
+communication.adb:19:25: high: array index check might fail (e.g. when B = (Content => ?, First => 1, Length => 0) and B.Content'First = 1 and B.Content'Last = 0) [reason for check: value must be a valid index into the array] [possible fix: subprogram at communication.ads:17 should mention B in a precondition] [provers reached step limit before completing the proof]
+communication.adb:20:32: high: overflow check might fail, cannot prove upper bound for B.First + 1 (e.g. when B = (Content => (others => 0), First => Positive'Last, Length => Natural'Last) and B.Content'First = 1 and B.Content'Last = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at communication.ads:17 should mention B in a precondition] [provers reached step limit before completing the proof]
+communication.adb:21:24: high: overflow check might fail, cannot prove upper bound for B.First + B.Length (e.g. when B = (Content => (others => Data'Last), First => Positive'Last, Length => 1) and B.Content'First = 1 and B.Content'Last = 2) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at communication.ads:17 should mention B in a precondition] [provers reached step limit before completing the proof]
 communication.adb:22:32: info: overflow check proved (CVC5: 2 VC)
-communication.adb:22:43: high: array index check might fail (e.g. when B = (Content => (1 => 0), First => 1, Length => 0) and Max = 1) [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at communication.ads:17 should mention B in a precondition]
+communication.adb:22:43: high: array index check might fail (e.g. when B = (Content => (1 => 0), First => 1, Length => 0) and Max = 1) [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at communication.ads:17 should mention B in a precondition] [provers reached step limit before completing the proof]
 communication.adb:22:43: info: overflow check proved (CVC5: 2 VC)
 communication.adb:23:34: info: overflow check proved (CVC5: 2 VC)
 communication.adb:25:32: info: index check proved (CVC5: 2 VC)
 communication.adb:25:32: info: overflow check proved (CVC5: 2 VC)
 communication.adb:26:34: info: overflow check proved (CVC5: 2 VC)
-communication.adb:35:30: high: array index check might fail (e.g. when B = (Content => ?, First => 1, Length => 1) and B.Content'First = 1 and B.Content'Last = 0) [reason for check: value must be a valid index into the array] [possible fix: subprogram at communication.ads:18 should mention B in a precondition]
+communication.adb:35:30: high: array index check might fail (e.g. when B = (Content => ?, First => 1, Length => 1) and B.Content'First = 1 and B.Content'Last = 0) [reason for check: value must be a valid index into the array] [possible fix: subprogram at communication.ads:18 should mention B in a precondition] [provers reached step limit before completing the proof]
 communication.adb:36:34: info: range check proved (CVC5: 2 VC)
 communication.adb:39:30: info: index check proved (CVC5: 2 VC)
 communication.adb:40:34: info: range check proved (CVC5: 2 VC)
@@ -129,7 +129,7 @@ communication.ads:9:14: info: implicit aspect Always_Terminates on "Create" has 
 communication.ads:11:23: info: initialization of "Message" proved
 communication.ads:14:11: info: flow dependencies proved
 communication.ads:18:26: info: initialization of "E" proved
-communication.ads:19:33: medium: range check might fail, cannot prove lower bound for V_Ext (e.g. when V_Ext = -1) [reason for check: default component value must fit in the type]
+communication.ads:19:33: medium: range check might fail, cannot prove lower bound for V_Ext (e.g. when V_Ext = -1) [reason for check: default component value must fit in the type] [provers gave up before completing the proof]
 communication.ads:21:07: info: range check proved (CVC5: 2 VC)
 communication.ads:22:07: medium: type "Buffer" is not fully initialized
 counting.adb:7:35: info: initialization of "Black_Counter" constituent of "State" proved
@@ -157,13 +157,13 @@ data_package.ads:7:04: info: initialization of "Data_2" proved
 data_package.ads:8:04: info: initialization of "Data_3" proved
 external_interface.ads:2:36: info: initialization of "External_Interface.File_System" proved
 external_interface.ads:2:49: info: flow dependencies proved
-stack.adb:9:21: high: array index check might fail (e.g. when Top = 0) [reason for check: value must be a valid index into the array] [possible fix: subprogram at stack.ads:12 should mention Top in a precondition]
+stack.adb:9:21: high: array index check might fail (e.g. when Top = 0) [reason for check: value must be a valid index into the array] [possible fix: subprogram at stack.ads:12 should mention Top in a precondition] [provers reached step limit before completing the proof]
 stack.adb:10:18: info: range check proved (CVC5: 2 VC)
-stack.adb:14:18: high: range check might fail, cannot prove upper bound for Top + 1 (e.g. when Top = Length_Type'Last) [reason for check: result of addition must fit in the target type of the assignment] [possible fix: subprogram at stack.ads:17 should mention Top in a precondition]
+stack.adb:14:18: high: range check might fail, cannot prove upper bound for Top + 1 (e.g. when Top = Length_Type'Last) [reason for check: result of addition must fit in the target type of the assignment] [possible fix: subprogram at stack.ads:17 should mention Top in a precondition] [provers reached step limit before completing the proof]
 stack.adb:15:16: info: index check proved (CVC5: 2 VC)
-stack.adb:24:23: high: array index check might fail (e.g. when B_Top = 0) [reason for check: value must be a valid index into the array] [possible fix: subprogram at stack.ads:22 should mention B_Top in a precondition]
+stack.adb:24:23: high: array index check might fail (e.g. when B_Top = 0) [reason for check: value must be a valid index into the array] [possible fix: subprogram at stack.ads:22 should mention B_Top in a precondition] [provers reached step limit before completing the proof]
 stack.adb:25:22: info: range check proved (CVC5: 2 VC)
-stack.adb:32:22: high: range check might fail, cannot prove upper bound for B_Top + 1 (e.g. when B_Top = Length_Type'Last) [reason for check: result of addition must fit in the target type of the assignment] [possible fix: subprogram at stack.ads:25 should mention B_Top in a precondition]
+stack.adb:32:22: high: range check might fail, cannot prove upper bound for B_Top + 1 (e.g. when B_Top = Length_Type'Last) [reason for check: result of addition must fit in the target type of the assignment] [possible fix: subprogram at stack.ads:25 should mention B_Top in a precondition] [provers reached step limit before completing the proof]
 stack.adb:33:18: info: index check proved (CVC5: 2 VC)
 stack.adb:41:22: info: range check proved (CVC5: 2 VC)
 stack.adb:42:18: info: index check proved (CVC5: 2 VC)
@@ -195,7 +195,7 @@ stack.ads:42:13: info: implicit aspect Always_Terminates on "Peek2" has been pro
 stack.ads:44:13: info: implicit aspect Always_Terminates on "Is_Full2" has been proved, subprogram will terminate
 stack.ads:45:13: info: implicit aspect Always_Terminates on "Is_Empty2" has been proved, subprogram will terminate
 stack.ads:57:49: info: index check proved (CVC5: 2 VC)
-use_stack.adb:3:10: medium: precondition of main program might fail, cannot prove not Is_Empty
+use_stack.adb:3:10: medium: precondition of main program might fail, cannot prove not Is_Empty [provers reached step limit before completing the proof]
 use_stack.adb:3:14: medium: "Stack.The_Stack" might not be initialized after elaboration of main program "Use_Stack"
 use_stack.adb:3:31: medium: "Stack.P_Stack" might not be initialized after elaboration of main program "Use_Stack"
 use_stack.adb:5:04: info: initialization of "F" proved
@@ -203,7 +203,7 @@ use_stack.adb:7:09: info: precondition proved (CVC5: 1 VC)
 use_stack.adb:7:09: medium: "Stack.The_Stack" might not be initialized after elaboration of main program "Use_Stack"
 use_stack.adb:8:04: medium: "Stack.The_Stack" might not be initialized after elaboration of main program "Use_Stack"
 use_stack.adb:9:19: info: precondition proved (CVC5: 1 VC)
-use_stack.adb:9:19: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Peek or turning it into an expression function in its unit spec]
+use_stack.adb:9:19: medium: assertion might fail [possible fix: you should consider adding a postcondition to function "Peek" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
 use_stack.adb:9:31: info: precondition proved (CVC5: 1 VC)
 use_stack.adb:10:09: info: precondition proved (CVC5: 1 VC)
 use_stack.adb:10:09: medium: "Stack.P_Stack" might not be initialized after elaboration of main program "Use_Stack"
@@ -399,45 +399,45 @@ bundling_abstract_state.adb:5:04: high: "X" constituent of "State" is not writte
 bundling_abstract_state.adb:5:04: high: initialization of "Bundling_Abstract_State.State" is specified at bundling_abstract_state.ads:4
 bundling_abstract_state.ads:4:08: info: flow dependencies proved
 copy_values.adb:8:25: info: float overflow check proved (Z3: 1 VC)
-copy_values.adb:17:22: medium: float overflow check might fail (e.g. when Data1 = -2.5521175E+38 and Data2 = -2.5521173E+38) [reason for check: result of floating-point addition must be bounded] [possible fix: add or complete related loop invariants or postconditions]
+copy_values.adb:17:22: medium: float overflow check might fail (e.g. when Data1 = -2.5521175E+38 and Data2 = -2.5521173E+38) [reason for check: result of floating-point addition must be bounded] [possible fix: add or complete related loop invariants or postconditions] [provers reached step limit before completing the proof]
 copy_values.adb:17:31: info: division check proved (CVC5: 1 VC)
 copy_values.adb:17:31: info: float overflow check proved (Trivial)
 copy_values.ads:8:06: info: flow dependencies proved
 copy_values.ads:13:14: info: initialization of "Data" proved
 copy_values.ads:14:06: info: flow dependencies proved
 diff_pair.ads:11:13: info: implicit aspect Always_Terminates on "Max" has been proved, subprogram will terminate
-diff_pair.ads:13:14: medium: postcondition might fail (e.g. when Max'Result = 0)
+diff_pair.ads:13:14: medium: postcondition might fail (e.g. when Max'Result = 0) [provers reached step limit before completing the proof]
 diff_pair.ads:15:13: info: implicit aspect Always_Terminates on "Max2" has been proved, subprogram will terminate
 diff_pair.ads:17:14: info: postcondition proved (CVC5: 1 VC)
 external_abstract_state.adb:9:04: high: "AR" constituent of "AR_State" is not written in "External_Abstract_State" [reason for check: variable is mentioned in the generated Initializes contract] [possible fix: initialize "AR" constituent of "AR_State" at declaration or in the package body statements]
 external_abstract_state.adb:11:04: high: "EW" constituent of "AR_State" is not written in "External_Abstract_State" [reason for check: variable is mentioned in the generated Initializes contract] [possible fix: initialize "EW" constituent of "AR_State" at declaration or in the package body statements]
-trivial.ads:10:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause]
+trivial.ads:10:04: medium: address in address clause might not be an integral multiple of alignment of object [provers reached step limit before completing the proof]
 trivial.ads:10:04: warning: address specification on "X" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to a potential alias [imprecise-address-specification] [E0012]
 trivial.ads:10:04: warning: launch "gnatprove --explain=E0012" for more information
 trivial.ads:10:04: warning: make sure that all overlapping objects have Async_Writers set to True
 trivial.ads:12:19: info: initialization of "Val" proved
 trivial.ads:13:06: info: data dependencies proved
 trivial.ads:14:06: info: flow dependencies proved
-trivial_async_properties.adb:7:22: medium: assertion might fail
-trivial_async_properties.ads:10:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause]
+trivial_async_properties.adb:7:22: medium: assertion might fail [provers gave up before completing the proof]
+trivial_async_properties.ads:10:04: medium: address in address clause might not be an integral multiple of alignment of object [provers reached step limit before completing the proof]
 trivial_async_properties.ads:10:04: warning: address specification on "X" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [imprecise-address-specification] [E0012]
 trivial_async_properties.ads:10:04: warning: launch "gnatprove --explain=E0012" for more information
 trivial_async_properties.ads:10:04: warning: make sure that all overlapping objects have Async_Writers set to True
-trivial_async_properties.ads:11:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause]
+trivial_async_properties.ads:11:04: medium: address in address clause might not be an integral multiple of alignment of object [provers reached step limit before completing the proof]
 trivial_async_properties.ads:11:04: warning: address specification on "Y" is imprecisely supported: assuming no concurrent accesses to non-atomic object and correct volatile properties [imprecise-address-specification] [E0012]
 trivial_async_properties.ads:11:04: warning: launch "gnatprove --explain=E0012" for more information
 trivial_async_properties.ads:13:14: info: initialization of "X" proved
 trivial_async_properties.ads:14:06: info: flow dependencies proved
-trivial_effective_properties.ads:10:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause]
+trivial_effective_properties.ads:10:04: medium: address in address clause might not be an integral multiple of alignment of object [provers reached step limit before completing the proof]
 trivial_effective_properties.ads:10:04: warning: address specification on "X" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [imprecise-address-specification] [E0012]
 trivial_effective_properties.ads:10:04: warning: launch "gnatprove --explain=E0012" for more information
 trivial_effective_properties.ads:10:04: warning: make sure that all overlapping objects have Async_Writers set to True
-trivial_effective_properties.ads:12:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause]
+trivial_effective_properties.ads:12:04: medium: address in address clause might not be an integral multiple of alignment of object [provers reached step limit before completing the proof]
 trivial_effective_properties.ads:12:04: warning: address specification on "Y" is imprecisely supported: assuming no concurrent accesses to non-atomic object and correct volatile properties [imprecise-address-specification] [E0012]
 trivial_effective_properties.ads:12:04: warning: launch "gnatprove --explain=E0012" for more information
 trivial_effective_properties.ads:15:14: info: initialization of "X" proved
 trivial_effective_properties.ads:16:06: info: flow dependencies proved
-trivial_no_output.ads:10:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause]
+trivial_no_output.ads:10:04: medium: address in address clause might not be an integral multiple of alignment of object [provers reached step limit before completing the proof]
 trivial_no_output.ads:10:04: warning: address specification on "X" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [imprecise-address-specification] [E0012]
 trivial_no_output.ads:10:04: warning: launch "gnatprove --explain=E0012" for more information
 trivial_no_output.ads:10:04: warning: make sure that all overlapping objects have Async_Writers set to True
@@ -472,11 +472,11 @@ rendezvous.adb:4:07: error: violation of restriction "Max_Task_Entries = 0"
 gnatprove: error during generation of Global contracts
 abstract_ints.adb:12:30: info: overflow check proved (CVC5: 2 VC)
 abstract_ints.adb:29:10: info: precondition proved (CVC5: 1 VC)
-abstract_ints.adb:33:08: medium: overflow check might fail, cannot prove upper bound for abs (Arg1.Value - Arg2.Value) [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible fix: add precondition (abs (Arg1.Value - Arg2.Value) <= Integer'Last) to subprogram at abstract_ints.ads:21]
-abstract_ints.adb:33:24: medium: overflow check might fail, cannot prove lower bound for (Arg1.Value - Arg2.Value) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (if Arg2.Value >= 0 then Arg1.Value >= Integer'First + Arg2.Value else Arg1.Value <= Integer'Last + Arg2.Value) to subprogram at abstract_ints.ads:21]
-abstract_ints.adb:33:56: medium: overflow check might fail, cannot prove upper bound for Arg1.Precision + Arg2.Precision [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Arg1.Precision <= Integer'Last - Arg2.Precision) to subprogram at abstract_ints.ads:21]
+abstract_ints.adb:33:08: medium: overflow check might fail, cannot prove upper bound for abs (Arg1.Value - Arg2.Value) [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible fix: add precondition (abs (Arg1.Value - Arg2.Value) <= Integer'Last) to subprogram at abstract_ints.ads:21] [provers reached step limit before completing the proof]
+abstract_ints.adb:33:24: medium: overflow check might fail, cannot prove lower bound for (Arg1.Value - Arg2.Value) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (if Arg2.Value >= 0 then Arg1.Value >= Integer'First + Arg2.Value else Arg1.Value <= Integer'Last + Arg2.Value) to subprogram at abstract_ints.ads:21] [provers reached step limit before completing the proof]
+abstract_ints.adb:33:56: medium: overflow check might fail, cannot prove upper bound for Arg1.Precision + Arg2.Precision [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Arg1.Precision <= Integer'Last - Arg2.Precision) to subprogram at abstract_ints.ads:21] [provers reached step limit before completing the proof]
 abstract_ints.adb:37:30: info: overflow check proved (CVC5: 2 VC)
-abstract_ints.adb:55:38: medium: overflow check might fail, cannot prove upper bound for Arg.Precision + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at abstract_ints.ads:28 should mention Arg in a precondition]
+abstract_ints.adb:55:38: medium: overflow check might fail, cannot prove upper bound for Arg.Precision + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at abstract_ints.ads:28 should mention Arg in a precondition] [provers reached step limit before completing the proof]
 abstract_ints.ads:7:13: info: implicit aspect Always_Terminates on "Equal" has been proved, subprogram will terminate
 abstract_ints.ads:8:13: info: implicit aspect Always_Terminates on "Get_Value" has been proved, subprogram will terminate
 abstract_ints.ads:9:13: info: implicit aspect Always_Terminates on "Small" has been proved, subprogram will terminate
@@ -485,51 +485,51 @@ abstract_ints.ads:12:20: info: postcondition proved (CVC5: 1 VC), in inherited c
 abstract_ints.ads:17:14: info: postcondition proved (CVC5: 1 VC)
 abstract_ints.ads:21:24: info: implicit aspect Always_Terminates on "Equal" has been proved, subprogram will terminate
 abstract_ints.ads:22:24: info: implicit aspect Always_Terminates on "Small" has been proved, subprogram will terminate
-abstract_ints.ads:40:70: medium: overflow check might fail, cannot prove lower bound for Arg.Max - 10 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Arg.Max >= Integer'First + 10) to subprogram at line 9]
+abstract_ints.ads:40:70: medium: overflow check might fail, cannot prove lower bound for Arg.Max - 10 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Arg.Max >= Integer'First + 10) to subprogram at line 9] [provers reached step limit before completing the proof]
 distributed_file_system.ads:9:20: info: class-wide postcondition is stronger than overridden one (CVC5: 1 VC)
 distributed_file_system.ads:14:20: info: class-wide precondition is weaker than overridden one (CVC5: 1 VC)
 distributed_file_system.ads:15:20: info: class-wide postcondition is stronger than overridden one (CVC5: 1 VC)
 distributed_file_system.ads:20:20: info: class-wide precondition is weaker than overridden one (CVC5: 1 VC)
 distributed_file_system.ads:21:20: info: class-wide postcondition is stronger than overridden one (CVC5: 2 VC)
-distributed_file_system.ads:26:20: medium: class-wide precondition might be stronger than overridden one, cannot prove F.Is_Synchronized [possible fix: you should consider adding a postcondition to function Is_Open and function Is_Synchronized or turning them into expression functions in their unit spec]
+distributed_file_system.ads:26:20: medium: class-wide precondition might be stronger than overridden one, cannot prove F.Is_Synchronized [possible fix: you should consider adding a postcondition to function "Is_Open" and function "Is_Synchronized" or turning them into expression functions in their unit spec] [provers reached step limit before completing the proof]
 distributed_file_system.ads:27:20: info: class-wide postcondition is stronger than overridden one (CVC5: 1 VC)
 ints.adb:12:30: info: overflow check proved (CVC5: 2 VC)
 ints.adb:29:10: info: precondition proved (CVC5: 1 VC)
-ints.adb:34:34: medium: overflow check might fail, cannot prove lower bound for Arg.Max - 10 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+ints.adb:34:34: medium: overflow check might fail, cannot prove lower bound for Arg.Max - 10 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers reached step limit before completing the proof]
 ints.adb:35:14: info: postcondition proved (CVC5: 1 VC)
 ints.adb:38:21: info: precondition proved (CVC5: 1 VC)
-ints.adb:42:08: medium: overflow check might fail, cannot prove upper bound for abs (Arg1.Value - Arg2.Value) [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible fix: add precondition (abs (Arg1.Value - Arg2.Value) <= Integer'Last) to subprogram at ints.ads:23]
-ints.adb:42:24: medium: overflow check might fail, cannot prove lower bound for (Arg1.Value - Arg2.Value) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (if Arg2.Value >= 0 then Arg1.Value >= Integer'First + Arg2.Value else Arg1.Value <= Integer'Last + Arg2.Value) to subprogram at ints.ads:23]
-ints.adb:42:56: medium: overflow check might fail, cannot prove upper bound for Arg1.Precision + Arg2.Precision [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Arg1.Precision <= Integer'Last - Arg2.Precision) to subprogram at ints.ads:23]
+ints.adb:42:08: medium: overflow check might fail, cannot prove upper bound for abs (Arg1.Value - Arg2.Value) [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible fix: add precondition (abs (Arg1.Value - Arg2.Value) <= Integer'Last) to subprogram at ints.ads:23] [provers reached step limit before completing the proof]
+ints.adb:42:24: medium: overflow check might fail, cannot prove lower bound for (Arg1.Value - Arg2.Value) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (if Arg2.Value >= 0 then Arg1.Value >= Integer'First + Arg2.Value else Arg1.Value <= Integer'Last + Arg2.Value) to subprogram at ints.ads:23] [provers reached step limit before completing the proof]
+ints.adb:42:56: medium: overflow check might fail, cannot prove upper bound for Arg1.Precision + Arg2.Precision [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Arg1.Precision <= Integer'Last - Arg2.Precision) to subprogram at ints.ads:23] [provers reached step limit before completing the proof]
 ints.adb:46:30: info: overflow check proved (CVC5: 2 VC)
-ints.adb:64:38: medium: overflow check might fail, cannot prove upper bound for Arg.Precision + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at ints.ads:29 should mention Arg in a precondition]
+ints.adb:64:38: medium: overflow check might fail, cannot prove upper bound for Arg.Precision + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at ints.ads:29 should mention Arg in a precondition] [provers reached step limit before completing the proof]
 ints.ads:9:13: info: implicit aspect Always_Terminates on "Equal" has been proved, subprogram will terminate
-ints.ads:11:40: medium: overflow check might fail, cannot prove lower bound for Arg.Max - 10 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+ints.ads:11:40: medium: overflow check might fail, cannot prove lower bound for Arg.Max - 10 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers reached step limit before completing the proof]
 ints.ads:12:20: info: postcondition proved (CVC5: 1 VC)
 ints.ads:12:20: info: postcondition proved (CVC5: 1 VC), in inherited contract at ints.ads:24
-ints.ads:16:34: medium: overflow check might fail, cannot prove lower bound for Arg.Max - 10 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+ints.ads:16:34: medium: overflow check might fail, cannot prove lower bound for Arg.Max - 10 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers reached step limit before completing the proof]
 ints.ads:17:14: info: postcondition proved (CVC5: 1 VC)
 ints.ads:23:24: info: implicit aspect Always_Terminates on "Equal" has been proved, subprogram will terminate
 predicate_ints.adb:12:30: info: overflow check proved (CVC5: 2 VC)
-predicate_ints.adb:31:39: medium: overflow check might fail, cannot prove lower bound for Arg1.Value + Arg2.Value [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Arg2.Value >= 0 then Arg1.Value <= Integer'Last - Arg2.Value else Arg1.Value >= Integer'First - Arg2.Value) to subprogram at predicate_ints.ads:15]
+predicate_ints.adb:31:39: medium: overflow check might fail, cannot prove lower bound for Arg1.Value + Arg2.Value [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Arg2.Value >= 0 then Arg1.Value <= Integer'Last - Arg2.Value else Arg1.Value >= Integer'First - Arg2.Value) to subprogram at predicate_ints.ads:15] [provers reached step limit before completing the proof]
 predicate_ints.adb:43:10: info: precondition proved (CVC5: 1 VC)
-predicate_ints.adb:48:34: medium: overflow check might fail, cannot prove lower bound for Arg.Max - 10 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+predicate_ints.adb:48:34: medium: overflow check might fail, cannot prove lower bound for Arg.Max - 10 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers reached step limit before completing the proof]
 predicate_ints.adb:49:14: info: postcondition proved (CVC5: 1 VC)
 predicate_ints.adb:52:21: info: precondition proved (CVC5: 1 VC)
-predicate_ints.adb:56:08: medium: overflow check might fail, cannot prove upper bound for abs (Arg1.Value - Arg2.Value) [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible fix: add precondition (abs (Arg1.Value - Arg2.Value) <= Integer'Last) to subprogram at predicate_ints.ads:28]
-predicate_ints.adb:56:24: medium: overflow check might fail, cannot prove lower bound for (Arg1.Value - Arg2.Value) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (if Arg2.Value >= 0 then Arg1.Value >= Integer'First + Arg2.Value else Arg1.Value <= Integer'Last + Arg2.Value) to subprogram at predicate_ints.ads:28]
-predicate_ints.adb:56:56: medium: overflow check might fail, cannot prove upper bound for Arg1.Precision + Arg2.Precision [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Arg1.Precision <= Integer'Last - Arg2.Precision) to subprogram at predicate_ints.ads:28]
+predicate_ints.adb:56:08: medium: overflow check might fail, cannot prove upper bound for abs (Arg1.Value - Arg2.Value) [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible fix: add precondition (abs (Arg1.Value - Arg2.Value) <= Integer'Last) to subprogram at predicate_ints.ads:28] [provers reached step limit before completing the proof]
+predicate_ints.adb:56:24: medium: overflow check might fail, cannot prove lower bound for (Arg1.Value - Arg2.Value) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (if Arg2.Value >= 0 then Arg1.Value >= Integer'First + Arg2.Value else Arg1.Value <= Integer'Last + Arg2.Value) to subprogram at predicate_ints.ads:28] [provers reached step limit before completing the proof]
+predicate_ints.adb:56:56: medium: overflow check might fail, cannot prove upper bound for Arg1.Precision + Arg2.Precision [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Arg1.Precision <= Integer'Last - Arg2.Precision) to subprogram at predicate_ints.ads:28] [provers reached step limit before completing the proof]
 predicate_ints.adb:60:30: info: overflow check proved (CVC5: 2 VC)
 predicate_ints.adb:78:25: info: precondition proved (CVC5: 2 VC)
-predicate_ints.adb:86:38: medium: overflow check might fail, cannot prove upper bound for Arg.Precision + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at predicate_ints.ads:36 should mention Arg in a precondition]
+predicate_ints.adb:86:38: medium: overflow check might fail, cannot prove upper bound for Arg.Precision + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at predicate_ints.ads:36 should mention Arg in a precondition] [provers reached step limit before completing the proof]
 predicate_ints.ads:10:13: info: implicit aspect Always_Terminates on "Equal" has been proved, subprogram will terminate
-predicate_ints.ads:12:40: medium: overflow check might fail, cannot prove lower bound for Arg.Max - 10 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+predicate_ints.ads:12:40: medium: overflow check might fail, cannot prove lower bound for Arg.Max - 10 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers reached step limit before completing the proof]
 predicate_ints.ads:13:20: info: postcondition proved (CVC5: 1 VC)
 predicate_ints.ads:13:20: info: postcondition proved (CVC5: 1 VC), in inherited contract at predicate_ints.ads:29
 predicate_ints.ads:15:13: info: implicit aspect Always_Terminates on overriding operator "+" has been proved, subprogram will terminate
 predicate_ints.ads:17:21: info: initialization of "Arg" proved
 predicate_ints.ads:18:13: info: implicit aspect Always_Terminates on "Zero" has been proved, subprogram will terminate
-predicate_ints.ads:21:34: medium: overflow check might fail, cannot prove lower bound for Arg.Max - 10 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+predicate_ints.ads:21:34: medium: overflow check might fail, cannot prove lower bound for Arg.Max - 10 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers reached step limit before completing the proof]
 predicate_ints.ads:22:14: info: postcondition proved (CVC5: 1 VC)
 predicate_ints.ads:28:24: info: implicit aspect Always_Terminates on "Equal" has been proved, subprogram will terminate
 predicate_ints.ads:33:13: info: implicit aspect Always_Terminates on overriding operator "+" has been proved, subprogram will terminate
@@ -547,8 +547,8 @@ use_file_system.adb:9:05: info: precondition proved (CVC5: 1 VC)
 use_file_system.adb:11:05: info: precondition proved (CVC5: 1 VC)
 use_file_system.adb:12:05: info: precondition proved (CVC5: 1 VC)
 use_file_system.adb:14:05: info: precondition proved (CVC5: 1 VC)
-use_file_system.adb:15:05: medium: precondition might fail
-fixed_mem.adb:9:55: medium: range check might fail, cannot prove lower bound for Max - Free + 1 [reason for check: returned value must fit in the result type of the function] [possible fix: subprogram at fixed_mem.ads:8 should mention Free in a precondition]
+use_file_system.adb:15:05: medium: precondition might fail [provers reached step limit before completing the proof]
+fixed_mem.adb:9:55: medium: range check might fail, cannot prove lower bound for Max - Free + 1 [reason for check: returned value must fit in the result type of the function] [possible fix: subprogram at fixed_mem.ads:8 should mention Free in a precondition] [provers gave up before completing the proof]
 fixed_mem.adb:12:07: info: initialization of "Free_Init" proved
 fixed_mem.adb:14:17: info: add a contract to analyze it separately from calling contexts
 fixed_mem.adb:14:17: info: local subprogram "Check" only analyzed in the context of calls [info-unrolling-inlining]
@@ -557,7 +557,7 @@ fixed_mem.adb:24:20: info: overflow check proved (CVC5: 2 VC)
 fixed_mem.adb:25:07: info: analyzing call to "Check" in context
 fixed_mem.ads:6:14: info: postcondition proved (CVC5: 1 VC)
 fixed_mem.ads:8:13: info: implicit aspect Always_Terminates on "Free_Memory" has been proved, subprogram will terminate
-mem.adb:11:55: medium: range check might fail, cannot prove lower bound for Max - Free + 1 [reason for check: returned value must fit in the result type of the function] [possible fix: subprogram at mem.ads:9 should mention Free in a precondition]
+mem.adb:11:55: medium: range check might fail, cannot prove lower bound for Max - Free + 1 [reason for check: returned value must fit in the result type of the function] [possible fix: subprogram at mem.ads:9 should mention Free in a precondition] [provers gave up before completing the proof]
 mem.adb:13:14: info: add a contract to analyze it separately from calling contexts
 mem.adb:13:14: info: local subprogram "Assign" only analyzed in the context of calls [info-unrolling-inlining]
 mem.adb:13:41: info: initialization of "To" proved
