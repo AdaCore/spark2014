@@ -7,7 +7,13 @@ from e3.testsuite import logger, Testsuite
 from e3.testsuite.control import AdaCoreLegacyTestControlCreator, TestControl
 from e3.testsuite.driver import TestDriver
 from e3.testsuite.driver.adacore import AdaCoreLegacyTestDriver
-from e3.testsuite.driver.diff import DiffTestDriver, OutputRefiner, RefiningChain
+from e3.testsuite.driver.diff import (
+    DiffTestDriver,
+    LineByLine,
+    OutputRefiner,
+    RefiningChain,
+    Substitute,
+)
 from e3.testsuite.result import binary_repr, FailureReason, Log, truncated
 from e3.testsuite.testcase_finder import ParsedTest, ProbingError, TestFinder
 import e3.yaml
@@ -21,7 +27,11 @@ import sys
 import tempfile
 import time
 import yaml
-from typing import AnyStr, List, Optional
+from typing import AnyStr, List, Optional, Tuple, Union
+
+sys.path.append(os.path.join(os.path.dirname(__file__), "lib", "python"))
+
+from test_support import do_flow, no_crash, prove_all  # noqa: E402
 
 # name for the entry in the test_env dict for the subprogram to call
 call_entry = "call_name"
@@ -85,11 +95,13 @@ class SPARKControlCreator(AdaCoreLegacyTestControlCreator):
         self.condition_env = {} if env is None else env
 
 
-class ProofTestDriver(AdaCoreLegacyTestDriver):
-    """Driver for all SPARK tests. This test generates a test.py if not already
-    there. The generated test.py contains a call to the method in
-    self.test_env[call_entry], with the arguments in
-    self.test_env[args_entry]."""
+class SPARKLegacyTestDriver(AdaCoreLegacyTestDriver):
+    """Legacy driver for SPARK tests
+
+    This driver leverages from the flexibility in AdaCoreLegacyTestDriver. It
+    expects a "test.py" script in its directory and passes this script to the
+    AdaCoreLegacyTestDriver.
+    """
 
     copy_test_directory = True
 
@@ -100,14 +112,6 @@ class ProofTestDriver(AdaCoreLegacyTestDriver):
 
     def get_script_command_line(self):
         script_file = self.working_dir("src", "test.py")
-        if not os.path.isfile(script_file):
-            assert call_entry in self.test_env
-            assert args_entry in self.test_env
-            argdict = self.test_env[args_entry]
-            with open(script_file, "w") as fn:
-                fn.write("from test_support import *" + "\n")
-                fn.write("args = " + str(argdict) + "\n")
-                fn.write(self.test_env[call_entry] + "(**args)" + "\n")
         self.test_control.opt_results["CMD"] = script_file
         return super().get_script_command_line()
 
@@ -131,12 +135,102 @@ class SortLinesRefiner(OutputRefiner):
         return "\n".join(lines)
 
 
-class SPARKDiffTestDriver(DiffTestDriver):
-    """Base class used by RACTestDriver and UGTestDriver to factor common
-    code.
+class SPARKBasicTestDriver(DiffTestDriver):
+    """Driver for SPARK tests without a `test.py` script.
 
-    A requirement is that children define a variable self.test_process that
-    contains the process used for testing.
+    Calls a dedicated testing function directly in the same Python process. The
+    supported functions are defined in the `_function_mapping` below.
+    """
+
+    copy_test_directory = True
+    diff_ignore_white_chars = True
+
+    _function_mapping = {
+        "do_flow": do_flow,
+        "prove_all": prove_all,
+        "no_crash": no_crash,
+    }
+
+    _timeout_occurred = False
+    _has_empty_baseline = False
+
+    @property
+    def test_control_creator(self):
+        assert isinstance(self.env.discs, list)
+        return SPARKControlCreator(self.env.discs, self.test_env)
+
+    @property
+    def baseline(self) -> Tuple[Optional[str], Union[str, bytes], bool]:
+        if self._has_empty_baseline:
+            return (None, "", False)
+
+        return super().baseline
+
+    def set_up(self) -> None:
+        super().set_up()
+        assert self.test_control.opt_results is not None
+
+        # Unless we are in the baseline rewrite mode consider a missing
+        # baseline to indicate that the output should be empty.
+        if not self.rewrite_baseline:
+            baseline = self.test_control.opt_results["OUT"]
+            self._original_baseline_file = self.test_dir(baseline)
+            if not os.path.isfile(self._original_baseline_file):
+                self._has_empty_baseline = True
+
+    @property
+    def output_refiners(self) -> List[OutputRefiner[bytes]]:
+        return [
+            # Remove occurences of the working dir
+            LineByLine(Substitute(self.test_env["working_dir"] + os.sep, "")),
+        ]
+
+    def run(self):
+        assert call_entry in self.test_env
+        assert args_entry in self.test_env
+
+        function_name = self.test_env[call_entry]
+        args = self.test_env[args_entry]
+
+        args["cwd"] = self.test_env["working_dir"]
+        # The call below gets the timeout defined in test.yaml, if present,
+        # and the inherited default value otherwise.
+        args["timeout"] = self.default_process_timeout
+        args["logger"] = self.output
+
+        if function_name not in self._function_mapping:
+            supported_functions = ", ".join(sorted(self._function_mapping.keys()))
+            raise RuntimeError(
+                f"Unknown call entry: {function_name!r}. "
+                f"Supported entries: {supported_functions}"
+            )
+
+        try:
+            # Execute the function directly and capture its output
+            self._function_mapping[function_name](**args)
+        except subprocess.TimeoutExpired:
+            self._timeout_occurred = True
+
+    def compute_failures(self) -> List[str]:
+        # First, do compute the failures and let the baseline rewriting
+        # machinery do its magic on the baseline it is given (i.e. the copy in
+        # the working directory: see set_up).
+        result = super().compute_failures()
+
+        if self._timeout_occurred:
+            self.result.failure_reasons.add(FailureReason.TIMEOUT)
+            result.append("test timed out")
+
+        return result
+
+
+class ProcessDiffTestDriver(DiffTestDriver):
+    """A variant of DiffTestDriver for using with an external process
+
+    It is assumed that the child classes launch an external process via the
+    inherited shell(...) function. It is mandatory for the children to define a
+    variable self.test_process containing the respective ProcessResult
+    instance.
     """
 
     def compute_failures(self) -> List[str]:
@@ -154,7 +248,7 @@ class SPARKDiffTestDriver(DiffTestDriver):
         return result
 
 
-class RACTestDriver(SPARKDiffTestDriver):
+class RACTestDriver(ProcessDiffTestDriver):
 
     _baseline = None
 
@@ -215,7 +309,7 @@ end Test;
         self.test_process = self.shell(cmd, analyze_output=True, catch_error=False)
 
 
-class UGTestDriver(SPARKDiffTestDriver):
+class UGTestDriver(ProcessDiffTestDriver):
     """Simple test driver (in principle) that just runs a fixed gnatprove
     command on the UG tests. The output is sorted before comparison as we
     have observed diffs in the order of file processing (for the tests that
@@ -524,14 +618,15 @@ class SPARKTestFinder(TestFinder):
         if "__rac" in testname:
             return ParsedTest(testname, RACTestDriver, {}, dirpath)
 
-        # If the test contains a test.py, we use the AdaCoreLegacyTestDriver,
-        # otherwise we use the proof/flow driver
+        # If the test contains a test.py, we use the SPARKLegacyTestDriver
         if "test.py" in filenames:
             if "prove_all" in test_env or "do_flow" in test_env:
                 logger.warning(
                     '{}: "test.py" file is present, so "prove_all" '
                     'and "do_flow" ignored in "test.yaml"'.format(testname)
                 )
+            return ParsedTest(testname, SPARKLegacyTestDriver, test_env, dirpath)
+
         else:
             # if it's a flow test, we set the call to do_flow, and if no
             # do_flow entry is present, we define empty args.
@@ -563,11 +658,14 @@ class SPARKTestFinder(TestFinder):
                     if "no_crash" in test_env
                     else test_env["prove_all"] if "prove_all" in test_env else {}
                 )
-        # copy replay info into test_env[args_entry] if not already present:
+
+        # Copy replay info into test_env[args_entry] if not already present:
         if "replay" in test_env and "replay" not in test_env[args_entry]:
             test_env[args_entry]["replay"] = test_env["replay"]
-        # This is a valid test, return the ParsedTest object
-        return ParsedTest(testname, ProofTestDriver, test_env, dirpath)
+
+        # By default we'll use the ProofTestDriver to call the entry point
+        # directly
+        return ParsedTest(testname, SPARKBasicTestDriver, test_env, dirpath)
 
 
 class SPARKTestsuite(Testsuite):
