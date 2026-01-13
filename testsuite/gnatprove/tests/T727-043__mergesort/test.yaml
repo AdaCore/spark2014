@@ -2,6 +2,5 @@ large: True
 replay: True
 prove_all:
   sparklib: True
-  no_fail: True
 session_opt:
   level: 4

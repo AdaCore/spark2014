@@ -80,7 +80,6 @@ counterexample expected for check at test.adb:15
 counterexample expected for check at test.adb:27
   trace at test.adb:19 --> B = True and X = (1 => 'NUL', 4 => 'NUL', others => 'SOH') and X'First = 1 and X'Last = 4 and Y = (4 => 'SOH', others => 'NUL') and Y'First = 1 and Y'Last = 4
   trace at test.adb:27 --> X = (1 => 'NUL', 4 => 'NUL', others => 'SOH') and X'First = 1 and X'Last = 4 and Y = (4 => 'SOH', others => 'NUL') and Y'First = 1 and Y'Last = 4
-MISSING COUNTEREXAMPLE at test.adb:29
 counterexample expected for check at test.adb:33
   trace at test.adb:19 --> B = True and X = (2 => 'NUL', others => 'SOH') and X'First = 1 and X'Last = 4 and Y = (2 => 'SOH', others => 'NUL') and Y'First = 1 and Y'Last = 4
   trace at test.adb:33 --> X = (2 => 'NUL', others => 'SOH') and X'First = 1 and X'Last = 4 and Y = (2 => 'SOH', others => 'NUL') and Y'First = 1 and Y'Last = 4
@@ -156,7 +155,6 @@ counterexample expected for check at test.adb:138
   trace at test.adb:131 --> X = "o" and X'First = 1
   trace at test.adb:132 --> Y'First = 2 and Y'Last = 1
   trace at test.adb:138 --> X = "o" and X'First = 1 and Y'First = 2 and Y'Last = 1
-MISSING COUNTEREXAMPLE at test.adb:150
 counterexample expected for check at test.adb:152
   trace at test.adb:142 --> B = False and X = (1 => 'NUL', 4 => 'NUL', others => 'SOH') and X'First = 1 and X'Last = 4 and Y = (4 => 'SOH', others => 'NUL') and Y'First = 1 and Y'Last = 4
   trace at test.adb:152 --> X = (1 => 'NUL', 4 => 'NUL', others => 'SOH') and X'First = 1 and X'Last = 4 and Y = (4 => 'SOH', others => 'NUL') and Y'First = 1 and Y'Last = 4
