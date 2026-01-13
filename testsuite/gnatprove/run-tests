@@ -28,6 +28,8 @@ call_entry = "call_name"
 # name for the entry in the test_env dict for arguments to
 # prove_all/do_flow/no_crash calls
 args_entry = "call_args"
+# name for the entry in the test dict for the origin of the test
+test_origin = "origin"
 
 
 def is_sublist(main_list, sublist):
@@ -461,10 +463,11 @@ class SPARKTestFinder(TestFinder):
         """
         parent_name = os.path.dirname(dirpath)
         testname = os.path.basename(dirpath)
+        parent_dir = os.path.basename(parent_name)
         allowed_testdirs = ["tests", "internal", "sparklib"]
         # If the dir is not a direct subdir of <root_dir/tests>, skip it
         if (
-            os.path.basename(parent_name) not in allowed_testdirs
+            parent_dir not in allowed_testdirs
             or os.path.dirname(parent_name) != self.root_dir
         ):
             return None
@@ -499,6 +502,8 @@ class SPARKTestFinder(TestFinder):
                 ) from exc
         else:
             test_env = {}
+
+        test_env[test_origin] = "main" if parent_dir == "tests" else parent_dir
 
         # If this is not a large test, but only large was requested, skip
         # test. The "always_fail" test is exempted from this check to include
