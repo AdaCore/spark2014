@@ -1,13 +1,29 @@
 {
-	"folders": [
-		{
-			"path": "../testsuite/gnatprove/tests"
-		},
-		{
-			"path": "../testsuite/gnatprove/sparklib"
-		},
-		{
-			"path": "../testsuite/gnatprove/internal"
-		}
-	]
+  "folders": [
+    {
+      "path": "../testsuite/gnatprove/tests"
+    },
+    {
+      "path": "../testsuite/gnatprove/sparklib"
+    },
+    {
+      "path": "../testsuite/gnatprove/internal"
+    }
+  ],
+  "settings": {
+    "ada.onTypeFormatting.indentOnly": true,
+    "[ada]": {
+      "editor.formatOnType": false,
+    },
+    "[python]": {
+      "editor.formatOnSave": true,
+      "editor.defaultFormatter": "ms-python.black-formatter",
+      "editor.rulers": [
+        88 // The black default
+      ]
+    },
+    "python.analysis.extraPaths": [
+      "../../../testsuite/gnatprove/lib/python"
+    ]
+  }
 }
