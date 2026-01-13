@@ -1,0 +1,85 @@
+main.adb:6:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
+main.adb:7:13: info: implicit aspect Always_Terminates on "Pre_OK" has been proved, subprogram will terminate
+main.adb:7:70: info: overflow check proved (CVC5: 2 VC)
+main.adb:8:13: info: implicit aspect Always_Terminates on "Pre_KO" has been proved, subprogram will terminate
+main.adb:8:70: info: overflow check proved (CVC5: 2 VC)
+main.adb:8:74: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers reached step limit before completing the proof]
+main.adb:10:14: warning: subprogram "Test_Assert" has no effect
+main.adb:11:14: warning: subprogram "Test_Code" has no effect
+main.adb:12:04: warning: analyzing unreferenced procedure "Test_Assert" [unreferenced-procedure]
+main.adb:15:31: medium: precondition might fail [provers gave up before completing the proof]
+main.adb:16:31: medium: precondition might fail [provers gave up before completing the proof]
+main.adb:20:04: warning: analyzing unreferenced procedure "Test_Code" [unreferenced-procedure]
+main.adb:23:27: high: overflow check might fail, cannot prove upper bound for X + Y (e.g. when X = 2000000000 and Y = 3000000000) [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
+main.adb:23:31: info: overflow check proved (CVC5: 2 VC)
+main.adb:23:31: info: range check proved (CVC5: 2 VC)
+main.adb:28:13: info: implicit aspect Always_Terminates on "Logarithm" has been proved, subprogram will terminate
+main.adb:29:11: info: data dependencies proved
+main.adb:31:18: info: overflow check proved (CVC5: 2 VC)
+main.adb:31:22: info: overflow check proved (CVC5: 2 VC)
+main.adb:31:26: info: overflow check proved (CVC5: 2 VC)
+main.adb:31:34: info: overflow check proved (CVC5: 2 VC)
+main.adb:31:38: info: overflow check proved (CVC5: 2 VC)
+main.adb:32:27: info: overflow check proved (CVC5: 2 VC)
+main.adb:32:31: info: overflow check proved (CVC5: 2 VC)
+main.adb:32:36: info: overflow check proved (CVC5: 2 VC)
+main.adb:32:40: info: overflow check proved (CVC5: 2 VC)
+main.adb:32:48: info: overflow check proved (CVC5: 2 VC)
+main.adb:33:14: info: postcondition proved (CVC5: 1 VC)
+main.adb:44:33: info: loop invariant initialization proved (CVC5: 1 VC)
+main.adb:44:33: info: loop invariant preservation proved (CVC5: 1 VC)
+main.adb:46:13: info: loop invariant initialization proved (CVC5: 1 VC)
+main.adb:46:13: info: loop invariant preservation proved (CVC5: 1 VC)
+main.adb:46:17: info: overflow check proved (CVC5: 4 VC)
+main.adb:46:23: info: overflow check proved (CVC5: 3 VC; Z3: 1 VC)
+main.adb:46:29: info: overflow check proved (CVC5: 4 VC)
+main.adb:46:39: info: overflow check proved (CVC5: 4 VC)
+main.adb:46:45: info: overflow check proved (CVC5: 4 VC)
+main.adb:47:26: info: overflow check proved (CVC5: 4 VC)
+main.adb:47:32: info: overflow check proved (CVC5: 4 VC)
+main.adb:47:37: info: overflow check proved (CVC5: 3 VC; altergo: 1 VC)
+main.adb:47:43: info: overflow check proved (CVC5: 4 VC)
+main.adb:47:55: info: overflow check proved (CVC5: 4 VC)
+main.adb:48:33: info: loop invariant initialization proved (CVC5: 1 VC)
+main.adb:48:33: info: loop invariant preservation proved (CVC5: 1 VC)
+main.adb:48:36: info: overflow check proved (CVC5: 4 VC)
+main.adb:49:31: info: loop variant proved (CVC5: 1 VC)
+main.adb:54:21: info: overflow check proved (CVC5: 2 VC)
+main.adb:59:21: info: overflow check proved (CVC5: 2 VC)
+main.adb:59:25: info: overflow check proved (CVC5: 2 VC)
+main.adb:60:19: info: overflow check proved (CVC5: 2 VC)
+main.adb:64:22: info: precondition proved (CVC5: 2 VC)
+main.adb:66:13: info: implicit aspect Always_Terminates on "Logarithm_KO" has been proved, subprogram will terminate
+main.adb:67:11: info: data dependencies proved
+main.adb:69:18: info: overflow check proved (CVC5: 2 VC)
+main.adb:69:22: high: overflow check might fail, cannot prove lower bound for X * X - 2 * Y * Y (e.g. when X = 1 and Y = 1) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
+main.adb:69:26: info: overflow check proved (CVC5: 2 VC)
+main.adb:69:30: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers reached step limit before completing the proof]
+main.adb:70:27: info: overflow check proved (CVC5: 2 VC)
+main.adb:70:31: info: overflow check proved (CVC5: 2 VC)
+main.adb:70:36: medium: overflow check might fail [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
+main.adb:70:40: info: overflow check proved (CVC5: 2 VC)
+main.adb:70:44: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers reached step limit before completing the proof]
+main.adb:71:14: info: postcondition proved (CVC5: 1 VC)
+main.adb:80:33: info: loop invariant initialization proved (CVC5: 1 VC)
+main.adb:80:33: info: loop invariant preservation proved (CVC5: 1 VC)
+main.adb:82:13: info: loop invariant initialization proved (CVC5: 1 VC)
+main.adb:82:13: info: loop invariant preservation proved (CVC5: 1 VC)
+main.adb:82:17: info: overflow check proved (CVC5: 4 VC)
+main.adb:82:23: info: overflow check proved (CVC5: 3 VC; Z3: 1 VC)
+main.adb:82:29: info: overflow check proved (CVC5: 4 VC)
+main.adb:82:39: info: overflow check proved (CVC5: 4 VC)
+main.adb:82:45: info: overflow check proved (CVC5: 4 VC)
+main.adb:83:26: info: overflow check proved (CVC5: 4 VC)
+main.adb:83:32: info: overflow check proved (CVC5: 4 VC)
+main.adb:83:37: info: overflow check proved (CVC5: 3 VC; Z3: 1 VC)
+main.adb:83:43: info: overflow check proved (CVC5: 4 VC)
+main.adb:83:55: info: overflow check proved (CVC5: 4 VC)
+main.adb:84:33: info: loop invariant initialization proved (CVC5: 1 VC)
+main.adb:84:33: info: loop invariant preservation proved (CVC5: 1 VC)
+main.adb:84:36: info: overflow check proved (CVC5: 4 VC)
+main.adb:85:31: info: loop variant proved (CVC5: 1 VC)
+main.adb:87:19: medium: overflow check might fail, cannot prove upper bound for 2 * Y_i [reason for check: result of multiplication must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
+main.adb:87:25: info: overflow check proved (CVC5: 2 VC)
+main.adb:94:21: info: overflow check proved (CVC5: 2 VC)
+main.adb:96:19: info: overflow check proved (CVC5: 2 VC)

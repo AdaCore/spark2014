@@ -889,6 +889,22 @@ package body Why.Atree.Modules is
            Module   => String_Image_Module,
            Symb     => NID ("from_string"));
 
+      --  Module for overflow checks for Unsigned_Base_Range integers in
+      --  minimized mode
+
+      Unsigned_Base_Range_Overflow_Module :=
+        New_Module
+          (Ada_Node => Empty,
+           File     => No_Symbol,
+           Name     => "Standard_Long_Long_Unsigned__Unsigned_Base_Range");
+
+      Unsigned_Base_Range_Overflow_Check :=
+        New_Identifier
+          (Ada_Node => Standard_Long_Long_Unsigned,
+           Domain   => EW_Prog,
+           Module   => Unsigned_Base_Range_Overflow_Module,
+           Symb     => NID ("unsigned_base_range_minimized_overflow_check"));
+
       --  Other identifiers
 
       Old_Tag := NID ("old");
@@ -4083,7 +4099,7 @@ package body Why.Atree.Modules is
 
                --  Symbols for modular types
 
-               if Has_Modular_Integer_Type (E) then
+               if Has_Modular_Operations (E) then
                   declare
                      RM : constant W_Module_Id :=
                        E_Module (E, Type_Representative);
@@ -4136,8 +4152,7 @@ package body Why.Atree.Modules is
 
                --  Symbols for modular static types
 
-               if Has_Modular_Integer_Type (E)
-                 and then not Has_No_Bitwise_Operations_Annotation (E)
+               if Is_Bitvector_Type_In_Why (E)
                  and then not Type_Is_Modeled_As_Base (E)
                then
                   Insert_Symbol

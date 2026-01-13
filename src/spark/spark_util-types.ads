@@ -80,9 +80,6 @@ package SPARK_Util.Types is
    function Has_Integer_Type (T : Type_Kind_Id) return Boolean
    is (Retysp_Kind (T) in Integer_Kind);
 
-   function Has_Modular_Integer_Type (T : Type_Kind_Id) return Boolean
-   is (Retysp_Kind (T) in Modular_Integer_Kind);
-
    function Has_Record_Type (T : Type_Kind_Id) return Boolean
    is (Retysp_Kind (T) in Record_Kind);
 
@@ -91,9 +88,6 @@ package SPARK_Util.Types is
 
    function Has_Scalar_Type (T : Type_Kind_Id) return Boolean
    is (Retysp_Kind (T) in Scalar_Kind);
-
-   function Has_Signed_Integer_Type (T : Type_Kind_Id) return Boolean
-   is (Retysp_Kind (T) in Signed_Integer_Kind);
 
    function Has_Fixed_Point_Type (T : Type_Kind_Id) return Boolean
    is (Retysp_Kind (T) in Fixed_Point_Kind);

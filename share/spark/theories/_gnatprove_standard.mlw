@@ -375,6 +375,20 @@ module Int_Shift
 
 end
 
+module Unsigned_Base_Range_Minimized_Overflow_Check
+  (* Module defining the overflow checking procedure for Unsigned_Base_Range
+     integer types in minimized mode. *)
+
+  use int.Int
+
+  function last : int
+
+  val unsigned_base_range_minimized_overflow_check (u : int) : int
+    requires { 0 <= u < last }
+    ensures  { result = u }
+
+end
+
 module Real
   use        real.RealInfix
   use export "_gnatprove_standard_th".Real

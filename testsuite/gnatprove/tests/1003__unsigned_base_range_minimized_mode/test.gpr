@@ -1,0 +1,5 @@
+project Test is
+  package Compiler is
+    for Switches ("Ada") use ("-gnatd.u", "-gnato12", "-gnat2022");
+  end Compiler;
+end Test;

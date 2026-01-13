@@ -50,6 +50,7 @@ with Sinput;                 use Sinput;
 with Snames;                 use Snames;
 with SPARK_Atree;            use SPARK_Atree;
 with SPARK_Definition;
+with SPARK_Definition.Annotate;
 with SPARK_Util;             use SPARK_Util;
 with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 with SPARK_Util.Types;       use SPARK_Util.Types;
@@ -2020,7 +2021,10 @@ package body CE_RAC is
    is
       Res : Big_Integer := I;
    begin
-      if Is_Modular_Integer_Type (Ty) then
+      if Has_Modular_Operations (Ty)
+        and then
+          not SPARK_Definition.Annotate.Has_No_Wrap_Around_Annotation (Ty)
+      then
          if No (Modulus (Ty)) then
             --  ??? TODO Modulus 0 for System.Address in
             --      O226-018__address/src/worker_pack__worker_init
@@ -4023,7 +4027,7 @@ package body CE_RAC is
                           when others   => raise Program_Error),
                        Etype (N));
 
-               elsif Is_Modular_Integer_Type (Left_Type) then
+               elsif Has_Modular_Operations (Left_Type) then
                   declare
                      L : constant Ulargest :=
                        Ulargest'Value (To_String (Value_Integer (Left)));

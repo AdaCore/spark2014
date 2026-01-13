@@ -1251,11 +1251,9 @@ package body Gnat2Why.Util is
       Ty : constant Type_Kind_Id := Retysp (T);
    begin
       return
-        (Is_Signed_Integer_Type (Ty)
-         or else
-           (Is_Modular_Integer_Type (Ty)
-            and then Has_No_Bitwise_Operations_Annotation (Ty)))
-        and then not Type_Is_Modeled_As_Base (Ty);
+        (Is_Integer_Type (Ty)
+         and then not Is_Bitvector_Type_In_Why (T)
+         and then not Type_Is_Modeled_As_Base (Ty));
    end Is_Range_Type_In_Why;
 
    ----------------------------

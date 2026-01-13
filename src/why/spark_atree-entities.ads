@@ -311,9 +311,6 @@ package SPARK_Atree.Entities is
    function Is_Library_Level_Entity (E : Entity_Id) return Boolean
    renames Sem_Util.Is_Library_Level_Entity;
 
-   function Is_Modular_Integer_Type (E : Type_Kind_Id) return Boolean
-   renames Einfo.Utils.Is_Modular_Integer_Type;
-
    function Is_Named_Number (E : Object_Kind_Id) return Boolean
    renames Einfo.Utils.Is_Named_Number;
 
@@ -331,9 +328,6 @@ package SPARK_Atree.Entities is
 
    function Is_Scalar_Type (E : Type_Kind_Id) return Boolean
    renames Einfo.Utils.Is_Scalar_Type;
-
-   function Is_Signed_Integer_Type (E : Type_Kind_Id) return Boolean
-   renames Einfo.Utils.Is_Signed_Integer_Type;
 
    function Is_String_Type (E : Type_Kind_Id) return Boolean
    renames Einfo.Utils.Is_String_Type;
@@ -489,6 +483,12 @@ package SPARK_Atree.Entities is
 
    function Has_Biased_Representation (Typ : Scalar_Kind_Id) return Boolean
    is (Einfo.Entities.Has_Biased_Representation (Typ));
+
+   function Has_Modular_Operations (T : Type_Kind_Id) return Boolean;
+
+   function Has_Overflow_Operations (T : Type_Kind_Id) return Boolean;
+
+   function Has_Unsigned_Base_Range_Aspect (Typ : Type_Kind_Id) return Boolean;
 
    ----------------------------
    --  For Enumeration Types --

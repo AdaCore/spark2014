@@ -3986,6 +3986,9 @@ package body SPARK_Definition is
                --  generating conversion functions for each required pair of
                --  array types and index base types.
 
+               --  ??? We could suppose modular types with
+               --  No_Bitwise_Operations as well.
+
                declare
                   Target_Index : Node_Id := First_Index (Retysp (Etype (N)));
 
@@ -4014,8 +4017,8 @@ package body SPARK_Definition is
                      --  Reject conversions between array types with modular
                      --  index types of different sizes.
 
-                     if Has_Modular_Integer_Type (Target_Type)
-                       and then Has_Modular_Integer_Type (Source_Type)
+                     if Has_Modular_Operations (Target_Type)
+                       and then Has_Modular_Operations (Source_Type)
                      then
                         if Esize (Target_Type) /= Esize (Source_Type) then
                            Mark_Unsupported
@@ -4026,8 +4029,8 @@ package body SPARK_Definition is
                      --  Reject conversions between array types with modular
                      --  and non-modular index types.
 
-                     elsif Has_Modular_Integer_Type (Target_Type)
-                       or else Has_Modular_Integer_Type (Source_Type)
+                     elsif Has_Modular_Operations (Target_Type)
+                       or else Has_Modular_Operations (Source_Type)
                      then
                         Mark_Unsupported
                           (Lim_Array_Conv_Signed_Modular_Index, N);
@@ -4087,10 +4090,9 @@ package body SPARK_Definition is
                   From_Fixed       : constant Boolean :=
                     Has_Fixed_Point_Type (From_Type);
                   From_Int         : constant Boolean :=
-                    Has_Signed_Integer_Type (From_Type)
-                    or else Has_Modular_Integer_Type (From_Type);
+                    Has_Integer_Type (From_Type);
                   From_Modular_128 : constant Boolean :=
-                    Has_Modular_Integer_Type (From_Type)
+                    Has_Modular_Operations (From_Type)
                     and then
                       SPARK_Atree.Entities.Modular_Size (Retysp (From_Type))
                       = Uintp.UI_From_Int (128);
@@ -4100,10 +4102,9 @@ package body SPARK_Definition is
                   To_Fixed       : constant Boolean :=
                     Has_Fixed_Point_Type (To_Type);
                   To_Int         : constant Boolean :=
-                    Has_Signed_Integer_Type (To_Type)
-                    or else Has_Modular_Integer_Type (To_Type);
+                    Has_Integer_Type (To_Type);
                   To_Modular_128 : constant Boolean :=
-                    Has_Modular_Integer_Type (To_Type)
+                    Has_Modular_Operations (To_Type)
                     and then
                       SPARK_Atree.Entities.Modular_Size (Retysp (To_Type))
                       = Uintp.UI_From_Int (128);
@@ -4158,6 +4159,9 @@ package body SPARK_Definition is
                                    & "leads to imprecise conversion"));
                         end if;
                      end;
+
+                  --  ??? This currently rejects modular integers with no
+                  --  bitwise operations, which could be accepted.
 
                   elsif (From_Modular_128 and To_Float)
                     or (From_Float and To_Modular_128)
@@ -5948,7 +5952,7 @@ package body SPARK_Definition is
          Mark_Violation ("equality on " & To_String (Exp), N);
 
       elsif Nkind (N) in N_Op_And | N_Op_Or | N_Op_Xor
-        and then Has_Modular_Integer_Type (Etype (N))
+        and then Has_Modular_Operations (Etype (N))
         and then Has_No_Bitwise_Operations_Annotation (Etype (N))
       then
          Mark_Violation
@@ -6311,7 +6315,7 @@ package body SPARK_Definition is
       end if;
 
       if Is_Simple_Shift_Or_Rotate (E) in N_Op_Shift
-        and then Has_Modular_Integer_Type (Etype (N))
+        and then Has_Modular_Operations (Etype (N))
         and then Has_No_Bitwise_Operations_Annotation (Etype (N))
       then
          Mark_Violation
@@ -10780,7 +10784,7 @@ package body SPARK_Definition is
             --  work on smtlib floats. Extending support to Ada's
             --  long_long_float should not pose any fundamental problem.
 
-            if Is_Modular_Integer_Type (E)
+            if Has_Modular_Operations (E)
               and then Modulus (E) > UI_Expon (Uint_2, Uint_128)
             then
                pragma
@@ -10852,9 +10856,9 @@ package body SPARK_Definition is
             end;
 
             --  Inherit the annotation No_Wrap_Around when set on a parent
-            --  type.
+            --  type (for derived types) or base type (for a subtype).
 
-            if Ekind (E) = E_Modular_Integer_Type
+            if Has_Modular_Operations (E)
               and then Etype (E) /= E
               and then Has_No_Wrap_Around_Annotation (Etype (E))
             then
@@ -10864,9 +10868,11 @@ package body SPARK_Definition is
             --  Inherit the annotation No_Bitwise_Operations when set on a
             --  parent type (for a derived types) or base type (for a subtype).
 
-            if Is_Modular_Integer_Type (E)
-              and then Etype (E) /= E
-              and then Has_No_Bitwise_Operations_Annotation (Etype (E))
+            if Has_Modular_Operations (E)
+              and then
+                ((Etype (E) /= E
+                  and then Has_No_Bitwise_Operations_Annotation (Etype (E)))
+                 or else Has_Unsigned_Base_Range_Aspect (Base_Type (E)))
             then
                Set_Has_No_Bitwise_Operations_Annotation (E);
             end if;
@@ -13447,6 +13453,7 @@ package body SPARK_Definition is
             | Pragma_Type_Invariant_Class
             | Pragma_Unmodified
             | Pragma_Unreferenced
+            | Pragma_Unsigned_Base_Range
             | Pragma_Unused
             | Pragma_Validity_Checks
             | Pragma_Volatile_Full_Access
@@ -13839,6 +13846,16 @@ package body SPARK_Definition is
       Insert_All_And_SPARK (Standard_Integer_16);
       Insert_All_And_SPARK (Standard_Integer_32);
       Insert_All_And_SPARK (Standard_Integer_64);
+
+      --  The following are referenced by front-end implementation of
+      --  Unsigned_Base_Range.
+
+      Insert_All_And_SPARK (Standard_Short_Short_Unsigned);
+      Insert_All_And_SPARK (Standard_Short_Unsigned);
+      Insert_All_And_SPARK (Standard_Unsigned);
+      Insert_All_And_SPARK (Standard_Long_Unsigned);
+      Insert_All_And_SPARK (Standard_Long_Long_Unsigned);
+      Insert_All_And_SPARK (Standard_Long_Long_Long_Unsigned);
 
    end Mark_Standard_Package;
 
@@ -14411,7 +14428,7 @@ package body SPARK_Definition is
            and then Ekind (E) in E_Function | E_Operator);
 
       if Nkind (N) = N_Op_Not
-        and then Has_Modular_Integer_Type (Etype (N))
+        and then Has_Modular_Operations (Etype (N))
         and then Has_No_Bitwise_Operations_Annotation (Etype (N))
       then
          Mark_Violation

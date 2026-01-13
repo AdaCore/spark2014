@@ -432,8 +432,10 @@ package SPARK_Definition.Annotate is
 
    procedure Set_Has_No_Bitwise_Operations_Annotation (E : Entity_Id);
    --  Register entity E has having the No_Bitwise_Operations annotation,
-   --  either directly or inherited through a parent type (for derived
-   --  types) or base type (for subtypes).
+   --  either directly or inherited through a parent type (for derived types)
+   --  or base type (for subtypes). Integer types with Unsigned_Base_Range
+   --  must also be registered. They are modular types internally but should be
+   --  treated almost as signed integers.
 
    function Has_No_Wrap_Around_Annotation (E : Entity_Id) return Boolean
    with Pre => Is_Type (E);
@@ -441,7 +443,10 @@ package SPARK_Definition.Annotate is
 
    procedure Set_Has_No_Wrap_Around_Annotation (E : Entity_Id);
    --  Register entity E has having the No_Wrap_Around annotation, either
-   --  directly or inherited through a parent type.
+   --  directly or inherited through a parent type (for derived types) or base
+   --  type (for subtypes). Integer types with Unsigned_Base_Range
+   --  must not be registered. Despite the similitude with No_Wrap_Around,
+   --  they are affected by overflow mode, which force distinct handling.
 
    function To_String (Kind : Annotate_Kind) return String
    is (case Kind is
