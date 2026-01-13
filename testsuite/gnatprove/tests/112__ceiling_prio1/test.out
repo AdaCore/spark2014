@@ -1,5 +1,5 @@
-main.adb:3:11: medium: ceiling priority protocol might not be respected for "P.Po1" [reason for check: ceiling priority of the protected object "P.Po1" must be >= the priority of the caller "Main" in the call chain "Main" (elaboration) -> "P" (elaboration) -> "P.Po1.Pp11"]
-main.adb:3:11: medium: ceiling priority protocol might not be respected for "P.Po2" [reason for check: ceiling priority of the protected object "P.Po2" must be >= the priority of the caller "Main" in the call chain "Main" (elaboration) -> "P" (elaboration) -> "P.P2" -> "P.P2b" -> "P.Po2.Pp21"]
+main.adb:3:11: medium: ceiling priority protocol might not be respected for "P.Po1" [reason for check: ceiling priority of the protected object "P.Po1" must be >= the priority of the caller "Main" in the call chain "Main" (elaboration) -> "P" (elaboration) -> "P.Po1.Pp11"] [provers gave up before completing the proof]
+main.adb:3:11: medium: ceiling priority protocol might not be respected for "P.Po2" [reason for check: ceiling priority of the protected object "P.Po2" must be >= the priority of the caller "Main" in the call chain "Main" (elaboration) -> "P" (elaboration) -> "P.P2" -> "P.P2b" -> "P.Po2.Pp21"] [provers gave up before completing the proof]
 main.adb:4:21: info: range check proved (CVC5: 2 VC)
 p.adb:10:14: info: add a contract to analyze it separately from calling contexts
 p.adb:10:14: info: local subprogram "P2B" only analyzed in the context of calls [info-unrolling-inlining]
@@ -10,5 +10,9 @@ p.adb:34:07: info: analyzing call to "P3B" in context
 p.adb:43:14: info: add a contract to analyze it separately from calling contexts
 p.adb:43:14: info: local subprogram "P4B" only analyzed in the context of calls [info-unrolling-inlining]
 p.adb:50:07: info: analyzing call to "P4B" in context
-p.ads:14:17: medium: ceiling priority protocol might not be respected for "P.Po3" [reason for check: ceiling priority of the protected object "P.Po3" must be >= the priority of the caller "P.Po2.Pp21" in the call chain "P.Po2.Pp21" -> "P.P3" -> "P.P3b" -> "P.Po3.Pp31"]
-p.ads:22:17: medium: ceiling priority protocol might not be respected for "P.Po4" [reason for check: ceiling priority of the protected object "P.Po4" must be >= the priority of the caller "P.Po3.Pp31" in the call chain "P.Po3.Pp31" -> "P.P4" -> "P.P4b" -> "P.Po4.Pp41"]
+p.ads:3:14: info: initialization of "PO1" proved
+p.ads:11:14: info: initialization of "PO2" proved
+p.ads:14:17: medium: ceiling priority protocol might not be respected for "P.Po3" [reason for check: ceiling priority of the protected object "P.Po3" must be >= the priority of the caller "P.Po2.Pp21" in the call chain "P.Po2.Pp21" -> "P.P3" -> "P.P3b" -> "P.Po3.Pp31"] [provers gave up before completing the proof]
+p.ads:19:14: info: initialization of "PO3" proved
+p.ads:22:17: medium: ceiling priority protocol might not be respected for "P.Po4" [reason for check: ceiling priority of the protected object "P.Po4" must be >= the priority of the caller "P.Po3.Pp31" in the call chain "P.Po3.Pp31" -> "P.P4" -> "P.P4b" -> "P.Po4.Pp41"] [provers gave up before completing the proof]
+p.ads:26:14: info: initialization of "PO4" proved

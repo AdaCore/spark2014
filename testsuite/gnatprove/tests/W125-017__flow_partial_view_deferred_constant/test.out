@@ -1,4 +1,6 @@
 my_data_protected_by_lock.ads:9:06: info: initialization of "Int_Data.Lock_State" proved, in instantiation at use_data.ads:7
+my_data_protected_by_lock.ads:11:07: info: initialization of "Int_Data.Global_Data" proved, in instantiation at use_data.ads:7
+my_data_protected_by_lock.ads:13:07: info: initialization of "Int_Data.Global_Lock_State" proved, in instantiation at use_data.ads:7
 my_data_protected_by_lock.ads:15:03: info: flow dependencies proved, in instantiation at use_data.ads:7
 my_data_protected_by_lock.ads:46:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at use_data.ads:7
 my_data_protected_by_lock.ads:47:07: info: dynamic accessibility check proved (Trivial), in instantiation at use_data.ads:7
@@ -11,7 +13,7 @@ use_data.adb:8:10: info: precondition proved (CVC5: 1 VC)
 use_data.adb:12:41: info: precondition proved (CVC5: 1 VC)
 use_data.adb:14:21: info: pointer dereference check proved (CVC5: 1 VC)
 use_data.adb:16:07: info: precondition proved (CVC5: 1 VC)
-use_data.adb:20:38: medium: precondition might fail
+use_data.adb:20:38: medium: precondition might fail [provers gave up before completing the proof]
 use_data.adb:22:18: info: pointer dereference check proved (CVC5: 1 VC)
 use_data.ads:12:14: info: postcondition proved (CVC5: 1 VC)
 use_data.ads:17:14: info: postcondition proved (CVC5: 1 VC)

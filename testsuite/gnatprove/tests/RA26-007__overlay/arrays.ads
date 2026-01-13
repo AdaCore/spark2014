@@ -17,7 +17,7 @@ package Arrays with SPARK_Mode is
    for Arr_2'Alignment use 4;
 
 
-   Arr_3 : First(0.. 255) with Import; --@UNCHECKED_CONVERSION_VOLATILE:FAIL
+   Arr_3 : First(0.. 255) with Import;
    for Arr_3'Address use Arr_1(0..255)'Address;
    for Arr_3'Alignment use 4;
 

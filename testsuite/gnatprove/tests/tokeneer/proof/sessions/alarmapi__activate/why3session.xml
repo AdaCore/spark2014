@@ -54,13 +54,13 @@
   </goal>
   <goal name="def&#39;vc.9" proved="true">
   <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="highfailure"/></proof>
+  <proof prover="1"><result status="valid" steps="22213"/></proof>
   <proof prover="2"><result status="valid" steps="55672"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.10" proved="true">
   <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="highfailure"/></proof>
+  <proof prover="1"><result status="valid" steps="20937"/></proof>
   <proof prover="2"><result status="valid" steps="55967"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>

@@ -17,11 +17,11 @@ advancebutton.ads:23:13: info: implicit aspect Always_Terminates on "CurrentMode
 advancebutton.ads:29:27: info: initialization of "Result" proved
 advancebutton.ads:33:26: info: initialization of "Result" proved
 advancebutton.ads:37:26: info: initialization of "Result" proved
-clock.adb:6:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause]
+clock.adb:6:04: medium: address in address clause might not be an integral multiple of alignment of object [provers gave up before completing the proof]
 clock.adb:6:04: warning: address specification on "Tick_Ext" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and valid reads [imprecise-address-specification] [E0012]
 clock.adb:6:04: warning: launch "gnatprove --explain=E0012" for more information
 clock.ads:6:19: info: initialization of "Time" proved
-display.adb:6:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause]
+display.adb:6:04: medium: address in address clause might not be an integral multiple of alignment of object [provers gave up before completing the proof]
 display.adb:6:04: warning: address specification on "Output_Ext" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, no writes to a potential alias, and valid reads [imprecise-address-specification] [E0012]
 display.adb:6:04: warning: launch "gnatprove --explain=E0012" for more information
 display.adb:6:04: warning: make sure that all overlapping objects have Async_Writers set to True

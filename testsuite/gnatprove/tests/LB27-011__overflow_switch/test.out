@@ -1,4 +1,4 @@
 p.adb:1:34: info: implicit aspect Always_Terminates on "P" has been proved, subprogram will terminate
 p.adb:5:30: info: loop invariant initialization proved (CVC5: 1 VC)
 p.adb:5:30: info: loop invariant preservation proved (CVC5: 1 VC)
-p.adb:6:24: high: overflow check might fail, cannot prove upper bound for Result * N (e.g. when N = Integer'Last and Result = Integer'Last) [reason for check: result of multiplication must fit in a 32-bits machine integer]
+p.adb:6:24: high: overflow check might fail, cannot prove upper bound for Result * N (e.g. when N = Integer'Last and Result = Integer'Last) [reason for check: result of multiplication must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]

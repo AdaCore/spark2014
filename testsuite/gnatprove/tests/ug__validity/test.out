@@ -1,6 +1,9 @@
  info: types in unchecked conversion have the same size
 --> validity.adb:7:13
 
+ info: alignment of source type of unchecked conversion is compatible with alignment of target type
+--> validity.adb:7:13
+
  info: type is suitable as source for unchecked conversion
 --> validity.adb:7:59
 

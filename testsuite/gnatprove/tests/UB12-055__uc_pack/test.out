@@ -1,5 +1,6 @@
+repro.adb:11:13: high: alignment of source type of unchecked conversion might not be an integral multiple of alignment of target type [possible explanation: alignment of type "Subarr" (which is 1) must be a multiple of the alignment of type "Integer" (which is 4)]
 repro.adb:11:13: info: types in unchecked conversion have the same size (Trivial)
 repro.adb:11:13: warning: imprecise handling of Unchecked_Conversion (component offset not known) [imprecise-unchecked-conversion]
 repro.adb:11:53: info: type is suitable as source for unchecked conversion (Trivial)
 repro.adb:11:61: info: type is suitable for unchecked conversion (Trivial)
-repro.adb:16:19: medium: assertion might fail
+repro.adb:16:19: medium: assertion might fail [provers reached step limit before completing the proof]

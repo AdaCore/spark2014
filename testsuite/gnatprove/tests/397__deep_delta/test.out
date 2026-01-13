@@ -3,6 +3,6 @@ deep.adb:4:43: info: range check proved (CVC5: 2 VC)
 deep.adb:5:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 deep.adb:5:43: info: range check proved (CVC5: 2 VC)
 deep.adb:7:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
-deep.adb:7:20: medium: resource or memory leak might occur [possible fix: subprogram at deep.ads:13 should mention X in a precondition]
-deep.adb:8:20: medium: resource or memory leak might occur [possible fix: subprogram at deep.ads:13 should mention X in a precondition]
+deep.adb:7:20: medium: resource or memory leak might occur [possible fix: subprogram at deep.ads:13 should mention X in a precondition] [provers reached step limit before completing the proof]
+deep.adb:8:20: medium: resource or memory leak might occur [possible fix: subprogram at deep.ads:13 should mention X in a precondition] [provers reached step limit before completing the proof]
 deep.ads:14:14: info: postcondition proved (CVC5: 2 VC)

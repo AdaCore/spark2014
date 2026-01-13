@@ -11,7 +11,7 @@ main.adb:42:25: info: assertion proved (CVC5: 1 VC)
 main.adb:44:10: info: tag check proved (CVC5: 2 VC)
 main.adb:44:10: warning: assuming "Check_Is_Sentinel" always terminates
 main.adb:44:10: warning: no Always_Terminates aspect available for "Check_Is_Sentinel" [assumed-always-terminates]
-main.adb:45:25: medium: assertion might fail
+main.adb:45:25: medium: assertion might fail [provers reached step limit before completing the proof]
 main.adb:47:10: info: tag check proved (CVC5: 2 VC)
 main.adb:47:10: warning: assuming "Check_Is_Sentinel" always terminates
 main.adb:47:10: warning: no Always_Terminates aspect available for "Check_Is_Sentinel" [assumed-always-terminates]
@@ -26,4 +26,4 @@ main.adb:52:25: info: assertion proved (CVC5: 1 VC)
 main.adb:54:10: info: tag check proved (CVC5: 2 VC)
 main.adb:54:10: warning: assuming "Make_Sentinel" always terminates
 main.adb:54:10: warning: no Always_Terminates aspect available for "Make_Sentinel" [assumed-always-terminates]
-main.adb:55:25: medium: assertion might fail
+main.adb:55:25: medium: assertion might fail [provers reached step limit before completing the proof]

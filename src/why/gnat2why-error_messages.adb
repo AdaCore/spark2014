@@ -135,17 +135,18 @@ package body Gnat2Why.Error_Messages is
 
    function VC_Kinds_Match (Target_Kind, Found_Kind : VC_Kind) return Boolean
    is (Target_Kind = Found_Kind
-       or else (Target_Kind in VC_Range_Kind
-                and then Found_Kind in VC_Range_Kind)
-       or else (Found_Kind
-                in VC_Loop_Invariant_Init | VC_Loop_Invariant_Preserv
-                and then Target_Kind = VC_Loop_Invariant)
-       or else (Found_Kind
-                not in VC_Loop_Invariant_Init | VC_Loop_Invariant_Preserv
-                and then Target_Kind in VC_Assert_Kind
-                and then Found_Kind in VC_Assert_Kind)
-       or else (Target_Kind in VC_Inline_Check
-                and then Found_Kind in VC_Postcondition));
+       or else
+         (Target_Kind in VC_Range_Kind and then Found_Kind in VC_Range_Kind)
+       or else
+         (Found_Kind in VC_Loop_Invariant_Init | VC_Loop_Invariant_Preserv
+          and then Target_Kind = VC_Loop_Invariant)
+       or else
+         (Found_Kind not in VC_Loop_Invariant_Init | VC_Loop_Invariant_Preserv
+          and then Target_Kind in VC_Assert_Kind
+          and then Found_Kind in VC_Assert_Kind)
+       or else
+         (Target_Kind in VC_Inline_Check
+          and then Found_Kind in VC_Postcondition));
    --  When checking whether the VC kind by RAC matches the target VC kind,
    --  collapse all scalar checks for now, as RAC cannot distinguish with them
    --  when a node has the Do_Range_Check flag set to True. Indeed, RAC
@@ -337,23 +338,25 @@ package body Gnat2Why.Error_Messages is
    -----------------------
 
    procedure Emit_Proof_Result
-     (Node        : Node_Id;
-      Id          : VC_Id;
-      Kind        : VC_Kind;
-      Proved      : Boolean;
-      E           : Entity_Id;
-      How_Proved  : Prover_Category;
-      Check_Info  : Check_Info_Type;
-      Extra_Msg   : String := "";
-      Explanation : String := "";
-      Cntexmp     : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
-      Verdict     : Cntexmp_Verdict := (others => <>);
-      Check_Tree  : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
-      VC_File     : String := "";
-      VC_Loc      : Node_Id := Empty;
-      Stats       : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
-      Editor_Cmd  : String := "";
-      CE_From_RAC : Boolean := False) is
+     (Node          : Node_Id;
+      Id            : VC_Id;
+      Kind          : VC_Kind;
+      Proved        : Boolean;
+      E             : Entity_Id;
+      How_Proved    : Prover_Category;
+      Check_Info    : Check_Info_Type;
+      Extra_Msg     : String := "";
+      Explanation   : String := "";
+      Cntexmp       : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
+      Verdict       : Cntexmp_Verdict := (others => <>);
+      Check_Tree    : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
+      VC_File       : String := "";
+      VC_Loc        : Node_Id := Empty;
+      Stats         : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
+      Unproved_Stat : Errout_Wrapper.Failed_Prover_Answer :=
+        Errout_Wrapper.FPA_Unknown_Rec;
+      Editor_Cmd    : String := "";
+      CE_From_RAC   : Boolean := False) is
    begin
       if Kind in VC_Warning_Kind then
          --  VCs that correspond to warnings are only relevant when the prover
@@ -371,18 +374,19 @@ package body Gnat2Why.Error_Messages is
          Extra_Msg,
          Proved,
          Kind,
-         Cntexmp     => Cntexmp,
-         Verdict     => Verdict,
-         Check_Tree  => Check_Tree,
-         VC_File     => VC_File,
-         VC_Loc      => (if VC_Loc /= Empty then VC_Loc else Node),
-         Editor_Cmd  => Editor_Cmd,
-         Explanation => Explanation,
-         Stats       => Stats,
-         How_Proved  => How_Proved,
-         E           => E,
-         Check_Info  => Check_Info,
-         CE_From_RAC => CE_From_RAC);
+         Cntexmp       => Cntexmp,
+         Verdict       => Verdict,
+         Check_Tree    => Check_Tree,
+         VC_File       => VC_File,
+         VC_Loc        => (if VC_Loc /= Empty then VC_Loc else Node),
+         Editor_Cmd    => Editor_Cmd,
+         Explanation   => Explanation,
+         Stats         => Stats,
+         Unproved_Stat => Unproved_Stat,
+         How_Proved    => How_Proved,
+         E             => E,
+         Check_Info    => Check_Info,
+         CE_From_RAC   => CE_From_RAC);
    end Emit_Proof_Result;
 
    ------------------------------
@@ -554,15 +558,16 @@ package body Gnat2Why.Error_Messages is
         Ada.Containers.Doubly_Linked_Lists (Element_Type => Cntexample_Info);
 
       type Why3_Prove_Result is record
-         Id         : VC_Id;
-         Kind       : VC_Kind;
-         Result     : Boolean;
-         EI         : Extra_Info;
-         VC_File    : Unbounded_String;
-         Editor_Cmd : Unbounded_String;
-         Stats      : Prover_Stat_Maps.Map;
-         Cntexmps   : JSON_Value;
-         Check_Tree : JSON_Value;
+         Id            : VC_Id;
+         Kind          : VC_Kind;
+         Result        : Boolean;
+         EI            : Extra_Info;
+         VC_File       : Unbounded_String;
+         Editor_Cmd    : Unbounded_String;
+         Stats         : Prover_Stat_Maps.Map;
+         Cntexmps      : JSON_Value;
+         Check_Tree    : JSON_Value;
+         Unproved_Stat : Failed_Prover_Answer;
       end record;
 
       function Parse_Why3_Prove_Result
@@ -726,13 +731,14 @@ package body Gnat2Why.Error_Messages is
          exception
             when E : others =>
                if Debug_Flag_K
-                 and then Exception_Identity (E)
-                          /= RAC_Unexpected_Error'Identity
-                             --  We accept RAC_Unexpected_Error for now
-                             --  ??? In Find_VC it can just result in
-                             --  RES_INCOMPLETE, during CE value import this
-                             --  could be RAC_Unsupported for now, and should
-                             -- be fixed
+                 and then
+                   Exception_Identity (E)
+                   /= RAC_Unexpected_Error'Identity
+                      --  We accept RAC_Unexpected_Error for now
+                      --  ??? In Find_VC it can just result in
+                      --  RES_INCOMPLETE, during CE value import this
+                      --  could be RAC_Unsupported for now, and should
+                      -- be fixed
                then
                   raise;
                else
@@ -824,12 +830,12 @@ package body Gnat2Why.Error_Messages is
                  Fuel           => Fuel,
                  Stack_Height   => 100,
                  Use_Fuzzing    => Use_Fuzzing);
-         --  During execution CE_RAC counts the stacked calls in the
-         --  interpreted program and terminates as incomplete when the
-         --  stack height is exceeded. We cannot really know how many
-         --  calls are in the interpreter between each call in the
-         --  interpreted program to anticipate a GNAT stackoverflow, but the
-         --  above value seems to work.
+            --  During execution CE_RAC counts the stacked calls in the
+            --  interpreted program and terminates as incomplete when the
+            --  stack height is exceeded. We cannot really know how many
+            --  calls are in the interpreter between each call in the
+            --  interpreted program to anticipate a GNAT stackoverflow, but the
+            --  above value seems to work.
          end Small_Step_Rac;
 
          --  Local variables
@@ -904,8 +910,9 @@ package body Gnat2Why.Error_Messages is
             --  shouldn't be used.
 
             if VC.Kind not in VC_Warning_Kind
-              and then (Last_Cnt.Giant_Step_Result.Res_Kind not in Res_Failure
-                        or Gnat2Why_Opts.Reading.Gnattest_Values /= "")
+              and then
+                (Last_Cnt.Giant_Step_Result.Res_Kind not in Res_Failure
+                 or Gnat2Why_Opts.Reading.Gnattest_Values /= "")
               and then Ekind (Subp) in E_Function | E_Procedure
               and then To_Initialize_Present (Subp)
             then
@@ -939,13 +946,13 @@ package body Gnat2Why.Error_Messages is
                end if;
 
                while Fuel.all > 0
-                 and then ((Small_Step_Res_Tmp.Res_Kind in Res_Failure
-                            and then Verdict_Tmp.Verdict_Category
-                                     in Bad_Counterexample)
-                           or else Small_Step_Res_Tmp.Res_Kind
-                                   in Res_Not_Executed
-                                    | Res_Normal
-                                    | Res_Stuck)
+                 and then
+                   ((Small_Step_Res_Tmp.Res_Kind in Res_Failure
+                     and then
+                       Verdict_Tmp.Verdict_Category in Bad_Counterexample)
+                    or else
+                      Small_Step_Res_Tmp.Res_Kind
+                      in Res_Not_Executed | Res_Normal | Res_Stuck)
                loop
                   Check_Fuel_Decrease (Fuel, 100);
                   Fuzzing_Used := True;
@@ -1065,12 +1072,12 @@ package body Gnat2Why.Error_Messages is
                  Enclosing_Subprogram (Rec.EI.Node);
                In_Predicate : constant Boolean :=
                  Present (Subp_Body)
-                 and then Is_Predicate_Function
-                            (Unique_Defining_Entity (Subp_Body));
+                 and then
+                   Is_Predicate_Function (Unique_Defining_Entity (Subp_Body));
                In_Invariant : constant Boolean :=
                  Present (Subp_Body)
-                 and then Is_Invariant_Procedure
-                            (Unique_Defining_Entity (Subp_Body));
+                 and then
+                   Is_Invariant_Procedure (Unique_Defining_Entity (Subp_Body));
                --  To know whether we are inlining an expression function,
                --  a predicate, or a type invariant look for the encolsing
                --  subprogram body, and check if it is a predicate function or
@@ -1107,22 +1114,23 @@ package body Gnat2Why.Error_Messages is
                else Get (Get (Cex_Ar, Length (Cex_Ar)), "cntexmp"));
          begin
             Emit_Proof_Result
-              (Node        => Node,
-               Id          => Rec.Id,
-               Kind        => Rec.Kind,
-               Proved      => Rec.Result,
-               E           => Subp,
-               How_Proved  => PC_Prover,
-               Cntexmp     => Last_Cex,
-               Verdict     => Verdict,
-               Check_Tree  => Rec.Check_Tree,
-               VC_File     => To_String (Rec.VC_File),
-               VC_Loc      => VC_Sloc,
-               Editor_Cmd  => To_String (Rec.Editor_Cmd),
-               Stats       => Rec.Stats,
-               Extra_Msg   => CP_Msg,
-               Check_Info  => Check_Info,
-               CE_From_RAC => Use_RAC_Cntexmp);
+              (Node          => Node,
+               Id            => Rec.Id,
+               Kind          => Rec.Kind,
+               Proved        => Rec.Result,
+               E             => Subp,
+               How_Proved    => PC_Prover,
+               Cntexmp       => Last_Cex,
+               Verdict       => Verdict,
+               Check_Tree    => Rec.Check_Tree,
+               VC_File       => To_String (Rec.VC_File),
+               VC_Loc        => VC_Sloc,
+               Editor_Cmd    => To_String (Rec.Editor_Cmd),
+               Stats         => Rec.Stats,
+               Unproved_Stat => Rec.Unproved_Stat,
+               Extra_Msg     => CP_Msg,
+               Check_Info    => Check_Info,
+               CE_From_RAC   => Use_RAC_Cntexmp);
          end;
 
          Free (Fuel);
@@ -1232,27 +1240,31 @@ package body Gnat2Why.Error_Messages is
          end if;
          return
            Why3_Prove_Result'
-             (Id         => VC_Id (Integer'(Get (Get (V, "id")))),
-              Kind       => VC_Kind'Value (Get (Get (V, "check_kind"))),
-              Result     => Get (Get (V, "result")),
-              EI         => E,
-              VC_File    =>
+             (Id            => VC_Id (Integer'(Get (Get (V, "id")))),
+              Kind          => VC_Kind'Value (Get (Get (V, "check_kind"))),
+              Result        => Get (Get (V, "result")),
+              EI            => E,
+              VC_File       =>
                 (if Has_Field (V, "vc_file")
                  then Get (Get (V, "vc_file"))
                  else Null_Unbounded_String),
-              Editor_Cmd =>
+              Editor_Cmd    =>
                 (if Has_Field (V, "editor_cmd")
                  then Get (Get (V, "editor_cmd"))
                  else Null_Unbounded_String),
-              Stats      =>
+              Stats         =>
                 (if Has_Field (V, "stats")
                  then From_JSON (Get (V, "stats"))
                  else Prover_Stat_Maps.Empty_Map),
-              Cntexmps   => Get (V, "cntexmps"),
-              Check_Tree =>
+              Cntexmps      => Get (V, "cntexmps"),
+              Check_Tree    =>
                 (if Has_Field (V, "check_tree")
                  then Get (V, "check_tree")
-                 else Create_Object));
+                 else Create_Object),
+              Unproved_Stat =>
+                (if Has_Field (V, "unproved_status")
+                 then From_JSON (Get (V, "unproved_status"))
+                 else FPA_Unknown_Rec));
       end Parse_Why3_Prove_Result;
 
       --  Start of processing for Parse_Why3_Results

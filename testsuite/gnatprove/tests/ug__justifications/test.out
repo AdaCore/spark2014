@@ -9,6 +9,7 @@
       --> justifications.ads:4:04
     4 |       procedure Do_Something_1 (X, Y : in out Integer) with
       |       ^
+      + provers gave up before completing the proof
 
  high: overflow check might fail, cannot prove upper bound for Y + 1
 --> justifications.adb:7:14
@@ -20,6 +21,7 @@
       --> justifications.ads:4:04
     4 |       procedure Do_Something_1 (X, Y : in out Integer) with
       |       ^
+      + provers gave up before completing the proof
 
  high: overflow check might fail, cannot prove lower bound for X + Y
 --> justifications.adb:12:14
@@ -32,6 +34,7 @@
       --> justifications.ads:9:04
     9 |       procedure Do_Something_2 (X, Y : in out Integer) with
       |       ^
+      + provers gave up before completing the proof
 
  high: overflow check might fail, cannot prove upper bound for Y + 1
 --> justifications.adb:13:14
@@ -43,6 +46,7 @@
       --> justifications.ads:9:04
     9 |       procedure Do_Something_2 (X, Y : in out Integer) with
       |       ^
+      + provers gave up before completing the proof
 
  info: flow dependencies proved
 --> justifications.ads:5:06

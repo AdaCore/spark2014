@@ -127,9 +127,9 @@ package body SPARK_Atree is
 
    function Component_Subtype_Indication (N : Node_Id) return Node_Id
    is (if Nkind (N) = N_Full_Type_Declaration
-         and then Nkind (Type_Definition (N))
-                  in N_Constrained_Array_Definition
-                   | N_Unconstrained_Array_Definition
+         and then
+           Nkind (Type_Definition (N))
+           in N_Constrained_Array_Definition | N_Unconstrained_Array_Definition
        then
          Sinfo.Nodes.Subtype_Indication
            (Sinfo.Nodes.Component_Definition (Sinfo.Nodes.Type_Definition (N)))
@@ -213,46 +213,50 @@ package body SPARK_Atree is
    begin
       return
         Sinfo.Nodes.Do_Range_Check (N)
-        or else (Sinfo.Nodes.Nkind (Atree.Parent (N)) = N_Type_Conversion
-                 and then Sinfo.Nodes.Do_Overflow_Check (Atree.Parent (N)))
-        or else (Sinfo.Nodes.Nkind (N) = N_Type_Conversion
-                 and then Sinfo.Nodes.Do_Range_Check
-                            (Sinfo.Nodes.Expression (N))
-                 and then Sinfo.Nodes.Nkind (Atree.Parent (N))
-                          in N_Parameter_Association
-                           | N_Procedure_Call_Statement
-                           | N_Entry_Call_Statement
-                 and then Einfo.Entities.Ekind
-                            (SPARK_Util.Get_Formal_From_Actual (N))
-                          in Einfo.Entities.E_In_Out_Parameter
-                           | Einfo.Entities.E_Out_Parameter)
-        or else (Sinfo.Nodes.Nkind (Atree.Parent (N)) = N_Range
-                 and then Sinfo.Nodes.Do_Range_Check (Atree.Parent (N)))
+        or else
+          (Sinfo.Nodes.Nkind (Atree.Parent (N)) = N_Type_Conversion
+           and then Sinfo.Nodes.Do_Overflow_Check (Atree.Parent (N)))
+        or else
+          (Sinfo.Nodes.Nkind (N) = N_Type_Conversion
+           and then Sinfo.Nodes.Do_Range_Check (Sinfo.Nodes.Expression (N))
+           and then
+             Sinfo.Nodes.Nkind (Atree.Parent (N))
+             in N_Parameter_Association
+              | N_Procedure_Call_Statement
+              | N_Entry_Call_Statement
+           and then
+             Einfo.Entities.Ekind (SPARK_Util.Get_Formal_From_Actual (N))
+             in Einfo.Entities.E_In_Out_Parameter
+              | Einfo.Entities.E_Out_Parameter)
+        or else
+          (Sinfo.Nodes.Nkind (Atree.Parent (N)) = N_Range
+           and then Sinfo.Nodes.Do_Range_Check (Atree.Parent (N)))
 
         --  Do_Range_Check flag is not set on allocators. Do the check if the
         --  designated subtype and the provided subtype do not match.
         --  For uninitialized allocators, N is the allocator node itself.
 
-        or else (Sinfo.Nodes.Nkind (N) = N_Allocator
-                 and then Einfo.Entities.Directly_Designated_Type
-                            (if Present (Einfo.Entities.Full_View (Etype (N)))
-                             then Einfo.Entities.Full_View (Etype (N))
-                             else Etype (N))
-                          /= Entity (Expression (N)))
+        or else
+          (Sinfo.Nodes.Nkind (N) = N_Allocator
+           and then
+             Einfo.Entities.Directly_Designated_Type
+               (if Present (Einfo.Entities.Full_View (Etype (N)))
+                then Einfo.Entities.Full_View (Etype (N))
+                else Etype (N))
+             /= Entity (Expression (N)))
 
         --  On initialized allocators, it is the allocated expression, so the
         --  allocator is its parent.
 
-        or else (Sinfo.Nodes.Nkind (Atree.Parent (N)) = N_Allocator
-                 and then Einfo.Entities.Directly_Designated_Type
-                            (if Present
-                                  (Einfo.Entities.Full_View
-                                     (Etype (Atree.Parent (N))))
-                             then
-                               Einfo.Entities.Full_View
-                                 (Etype (Atree.Parent (N)))
-                             else Etype (Atree.Parent (N)))
-                          /= Etype (N));
+        or else
+          (Sinfo.Nodes.Nkind (Atree.Parent (N)) = N_Allocator
+           and then
+             Einfo.Entities.Directly_Designated_Type
+               (if Present
+                     (Einfo.Entities.Full_View (Etype (Atree.Parent (N))))
+                then Einfo.Entities.Full_View (Etype (Atree.Parent (N)))
+                else Etype (Atree.Parent (N)))
+             /= Etype (N));
    end Do_Check_On_Scalar_Conversion;
 
    -----------------------
@@ -615,8 +619,8 @@ package body SPARK_Atree is
       if Nkind (Atree.Parent (N)) = N_Component_Association then
          Possibly_Choice_Node := N;
       elsif Nkind (Atree.Parent (N)) = N_Range
-        and then Nkind (Atree.Parent (Atree.Parent (N)))
-                 = N_Component_Association
+        and then
+          Nkind (Atree.Parent (Atree.Parent (N))) = N_Component_Association
       then
          Possibly_Choice_Node := Atree.Parent (N);
       else
@@ -650,8 +654,9 @@ package body SPARK_Atree is
         and then not Einfo.Entities.Is_Constrained (Etype (Prefix_Node))
         and then Is_List_Member (Possibly_Choice_Node)
         and then Present (Choice_List (Atree.Parent (Possibly_Choice_Node)))
-        and then List_Containing (Possibly_Choice_Node)
-                 = Choice_List (Atree.Parent (Possibly_Choice_Node))
+        and then
+          List_Containing (Possibly_Choice_Node)
+          = Choice_List (Atree.Parent (Possibly_Choice_Node))
       then
          return True;
       else

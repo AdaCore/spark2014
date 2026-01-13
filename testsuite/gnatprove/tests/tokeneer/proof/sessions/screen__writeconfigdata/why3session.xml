@@ -218,13 +218,13 @@
   <proof prover="0"><result status="valid" steps="488"/></proof>
   <proof prover="1"><result status="valid" steps="16974"/></proof>
   <proof prover="2"><result status="valid" steps="39788"/></proof>
-  <proof prover="4"><result status="unknown" steps="11175"/></proof>
+  <proof prover="4"><result status="unknown" steps="10519"/></proof>
   </goal>
   <goal name="def&#39;vc.47" proved="true">
   <proof prover="0"><result status="valid" steps="488"/></proof>
   <proof prover="1"><result status="valid" steps="19232"/></proof>
   <proof prover="2"><result status="valid" steps="39784"/></proof>
-  <proof prover="4"><result status="unknown" steps="12326"/></proof>
+  <proof prover="4"><result status="unknown" steps="12318"/></proof>
   </goal>
   <goal name="def&#39;vc.48" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>

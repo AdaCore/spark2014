@@ -1,4 +1,4 @@
-gen.adb:5:14: high: overflow check might fail, cannot prove upper bound for X + 1, in instantiation at pack.adb:5 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: precondition of subprogram at gen.ads:5 should mention X]
+gen.adb:5:14: high: overflow check might fail, cannot prove upper bound for X + 1, in instantiation at pack.adb:5 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: precondition of subprogram at gen.ads:5 should mention X] [provers gave up before completing the proof]
 pack.ads:3:14: warning: subprogram "P" has no effect
 pack.ads:5:14: warning: subprogram "Annot" has no effect
 =========================

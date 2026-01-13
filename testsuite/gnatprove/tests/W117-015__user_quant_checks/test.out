@@ -6,7 +6,7 @@ iterable_invariant.ads:10:20: warning: unused variable "C"
 iterable_invariant.ads:11:13: info: during checks for quantification at iterable_invariant.ads:28
 iterable_invariant.ads:11:13: info: implicit aspect Always_Terminates on "Next" has been proved, subprogram will terminate
 iterable_invariant.ads:11:13: info: precondition proved (CVC5: 1 VC)
-iterable_invariant.ads:12:18: info: for C before the call at iterable_invariant.ads:13
+iterable_invariant.ads:12:18: info: for "C" before the call at iterable_invariant.ads:13
 iterable_invariant.ads:12:18: info: invariant check proved (CVC5: 1 VC)
 iterable_invariant.ads:13:13: info: during checks for quantification at iterable_invariant.ads:28
 iterable_invariant.ads:13:13: info: implicit aspect Always_Terminates on "Has_Element" has been proved, subprogram will terminate
@@ -16,28 +16,28 @@ iterable_invariant.ads:14:13: info: during checks for quantification at iterable
 iterable_invariant.ads:14:13: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
 iterable_invariant.ads:14:13: info: precondition proved (Trivial: 1 VC)
 iterable_invariant.ads:14:22: warning: unused variable "C"
-iterable_invariant.ads:18:08: info: for C before the call at iterable_invariant.ads:13
+iterable_invariant.ads:18:08: info: for "C" before the call at iterable_invariant.ads:13
 iterable_invariant.ads:18:08: info: invariant check proved (CVC5: 1 VC)
 iterable_invariant.ads:18:08: info: postcondition proved (CVC5: 5 VC)
-iterable_invariant.ads:18:24: info: for C before the call at iterable_invariant.ads:10
+iterable_invariant.ads:18:24: info: for "C" before the call at iterable_invariant.ads:10
 iterable_invariant.ads:18:24: info: invariant check proved (CVC5: 1 VC)
-iterable_invariant.ads:19:21: info: for C before the call at iterable_invariant.ads:14
+iterable_invariant.ads:19:21: info: for "C" before the call at iterable_invariant.ads:14
 iterable_invariant.ads:19:21: info: invariant check proved (CVC5: 1 VC)
-iterable_invariant.ads:19:33: info: for C before the call at iterable_invariant.ads:10
+iterable_invariant.ads:19:33: info: for "C" before the call at iterable_invariant.ads:10
 iterable_invariant.ads:19:33: info: invariant check proved (CVC5: 1 VC)
-iterable_invariant.ads:20:17: info: for C before the call at iterable_invariant.ads:13
+iterable_invariant.ads:20:17: info: for "C" before the call at iterable_invariant.ads:13
 iterable_invariant.ads:20:17: info: invariant check proved (CVC5: 1 VC)
-iterable_invariant.ads:20:33: info: for C before the call at iterable_invariant.ads:11
+iterable_invariant.ads:20:33: info: for "C" before the call at iterable_invariant.ads:11
 iterable_invariant.ads:20:33: info: invariant check proved (CVC5: 1 VC)
 iterable_invariant.ads:20:33: info: precondition proved (CVC5: 1 VC)
-iterable_invariant.ads:20:42: info: for C before the call at iterable_invariant.ads:10
+iterable_invariant.ads:20:42: info: for "C" before the call at iterable_invariant.ads:10
 iterable_invariant.ads:20:42: info: invariant check proved (CVC5: 1 VC)
-iterable_invariant.ads:21:17: info: for C before the call at iterable_invariant.ads:14
+iterable_invariant.ads:21:17: info: for "C" before the call at iterable_invariant.ads:14
 iterable_invariant.ads:21:17: info: invariant check proved (CVC5: 1 VC)
-iterable_invariant.ads:21:29: info: for C before the call at iterable_invariant.ads:11
+iterable_invariant.ads:21:29: info: for "C" before the call at iterable_invariant.ads:11
 iterable_invariant.ads:21:29: info: invariant check proved (CVC5: 1 VC)
 iterable_invariant.ads:21:29: info: precondition proved (CVC5: 1 VC)
-iterable_invariant.ads:21:38: info: for C before the call at iterable_invariant.ads:10
+iterable_invariant.ads:21:38: info: for "C" before the call at iterable_invariant.ads:10
 iterable_invariant.ads:21:38: info: invariant check proved (CVC5: 1 VC)
 iterable_invariant.ads:23:09: info: invariant check proved (CVC5: 1 VC)
 iterable_invariant.ads:23:09: warning: conjunct in postcondition does not check the outcome of calling "Allowed_Quantification" [-gnatw.t]
@@ -48,10 +48,10 @@ iterable_invariant.ads:28:09: info: invariant check proved on default value (CVC
 iterable_invariant.ads:30:25: info: in default value of private type at iterable_invariant.ads:3
 iterable_invariant.ads:30:25: info: range check proved (CVC5: 2 VC)
 iterable_invariant.ads:34:19: medium: in inlined invariant at iterable_invariant.ads:29
-iterable_invariant.ads:34:19: medium: invariant check might fail, cannot prove Container /= Invalid_Value
+iterable_invariant.ads:34:19: medium: invariant check might fail, cannot prove Container /= Invalid_Value [provers gave up before completing the proof]
 iterable_invariant.ads:34:27: warning: unused variable "X" [-gnatw.t]
 iterable_invariant.ads:35:06: warning: postcondition does not check the outcome of calling "Forbidden_Quantification" [-gnatw.t]
-iterable_invariant.ads:35:14: medium: postcondition might fail (e.g. when C = Correct_Value)
+iterable_invariant.ads:35:14: medium: postcondition might fail (e.g. when C = Correct_Value) [provers gave up before completing the proof]
 quant_checks.adb:10:16: info: during checks for quantification at quant_checks.adb:4
 quant_checks.adb:10:16: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
 quant_checks.adb:10:16: info: precondition proved (Trivial: 1 VC)
@@ -67,22 +67,22 @@ quant_checks.adb:15:16: info: implicit aspect Always_Terminates on "Element" has
 quant_checks.adb:15:16: info: precondition proved (CVC5: 1 VC)
 quant_checks.adb:28:16: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
 quant_checks.adb:28:16: medium: during checks for quantification at quant_checks.adb:21
-quant_checks.adb:28:16: medium: precondition might fail
+quant_checks.adb:28:16: medium: precondition might fail [provers gave up before completing the proof]
 quant_checks.adb:30:16: info: implicit aspect Always_Terminates on "Next" has been proved, subprogram will terminate
 quant_checks.adb:30:16: medium: during checks for quantification at quant_checks.adb:21
-quant_checks.adb:30:16: medium: precondition might fail
+quant_checks.adb:30:16: medium: precondition might fail [provers gave up before completing the proof]
 quant_checks.adb:30:37: warning: unused variable "Y"
 quant_checks.adb:32:16: info: implicit aspect Always_Terminates on "Has_Element" has been proved, subprogram will terminate
 quant_checks.adb:32:16: medium: during checks for quantification at quant_checks.adb:21
-quant_checks.adb:32:16: medium: precondition might fail
+quant_checks.adb:32:16: medium: precondition might fail [provers gave up before completing the proof]
 quant_checks.adb:32:44: warning: unused variable "Y"
 quant_checks.adb:34:16: info: implicit aspect Always_Terminates on "Contains" has been proved, subprogram will terminate
 quant_checks.adb:34:16: medium: during checks for quantification at quant_checks.adb:21
-quant_checks.adb:34:16: medium: precondition might fail
+quant_checks.adb:34:16: medium: precondition might fail [provers gave up before completing the proof]
 quant_checks.adb:34:41: warning: unused variable "Y"
 quant_checks.adb:37:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
 quant_checks.adb:37:16: medium: during checks for quantification at quant_checks.adb:21
-quant_checks.adb:37:16: medium: precondition might fail
+quant_checks.adb:37:16: medium: precondition might fail [provers gave up before completing the proof]
 quant_checks.adb:37:40: warning: unused variable "Y"
 quant_checks.adb:39:16: info: implicit aspect Always_Terminates on "Last" has been proved, subprogram will terminate
 quant_checks.adb:41:16: info: implicit aspect Always_Terminates on "Previous" has been proved, subprogram will terminate
@@ -102,21 +102,21 @@ quant_checks.adb:55:16: info: implicit aspect Always_Terminates on "Element" has
 quant_checks.adb:55:16: info: precondition proved (Trivial: 1 VC)
 quant_checks.adb:63:16: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
 quant_checks.adb:63:16: medium: during checks for quantification at quant_checks.adb:56
-quant_checks.adb:63:16: medium: precondition might fail
+quant_checks.adb:63:16: medium: precondition might fail [provers gave up before completing the proof]
 quant_checks.adb:65:16: info: implicit aspect Always_Terminates on "Next" has been proved, subprogram will terminate
 quant_checks.adb:65:16: medium: during checks for quantification at quant_checks.adb:56
-quant_checks.adb:65:16: medium: precondition might fail
+quant_checks.adb:65:16: medium: precondition might fail [provers gave up before completing the proof]
 quant_checks.adb:65:37: warning: unused variable "Y"
 quant_checks.adb:67:16: info: implicit aspect Always_Terminates on "Has_Element" has been proved, subprogram will terminate
 quant_checks.adb:67:16: medium: during checks for quantification at quant_checks.adb:56
-quant_checks.adb:67:16: medium: precondition might fail
+quant_checks.adb:67:16: medium: precondition might fail [provers gave up before completing the proof]
 quant_checks.adb:67:44: warning: unused variable "Y"
 quant_checks.adb:69:16: info: implicit aspect Always_Terminates on "Get_Model" has been proved, subprogram will terminate
 quant_checks.adb:69:16: medium: during checks for quantification at quant_checks.adb:56
-quant_checks.adb:69:16: medium: precondition might fail
+quant_checks.adb:69:16: medium: precondition might fail [provers gave up before completing the proof]
 quant_checks.adb:73:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
 quant_checks.adb:73:16: medium: during checks for quantification at quant_checks.adb:56
-quant_checks.adb:73:16: medium: precondition might fail
+quant_checks.adb:73:16: medium: precondition might fail [provers gave up before completing the proof]
 quant_checks.adb:73:40: warning: unused variable "Y"
 quant_checks.adb:75:16: info: implicit aspect Always_Terminates on "Last" has been proved, subprogram will terminate
 quant_checks.adb:77:16: info: implicit aspect Always_Terminates on "Previous" has been proved, subprogram will terminate
@@ -125,18 +125,18 @@ quant_checks.adb:89:16: info: during checks for quantification at quant_checks.a
 quant_checks.adb:89:16: info: precondition proved (Trivial: 1 VC)
 quant_checks.adb:91:16: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
 quant_checks.adb:91:16: medium: during checks for quantification at quant_checks.adb:81
-quant_checks.adb:91:16: medium: precondition might fail
+quant_checks.adb:91:16: medium: precondition might fail [provers gave up before completing the proof]
 quant_checks.adb:97:16: info: implicit aspect Always_Terminates on "Next" has been proved, subprogram will terminate
 quant_checks.adb:97:16: medium: during checks for quantification at quant_checks.adb:81
-quant_checks.adb:97:16: medium: precondition might fail, cannot prove Unknown (0)
-quant_checks.adb:97:68: medium: range check might fail, cannot prove upper bound for I+1 [reason for check: returned value must fit in the result type of the function] [possible fix: add precondition (I <= Cursor'Last - 1) to subprogram at line 97]
+quant_checks.adb:97:16: medium: precondition might fail, cannot prove Unknown (0) [provers gave up before completing the proof]
+quant_checks.adb:97:68: medium: range check might fail, cannot prove upper bound for I+1 [reason for check: returned value must fit in the result type of the function] [possible fix: add precondition (I <= Cursor'Last - 1) to subprogram at line 97] [provers gave up before completing the proof]
 quant_checks.adb:99:16: info: implicit aspect Always_Terminates on "Contains" has been proved, subprogram will terminate
 quant_checks.adb:99:16: medium: during checks for quantification at quant_checks.adb:81
-quant_checks.adb:99:16: medium: precondition might fail
+quant_checks.adb:99:16: medium: precondition might fail [provers gave up before completing the proof]
 quant_checks.adb:99:41: warning: unused variable "B"
 quant_checks.adb:106:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
 quant_checks.adb:106:16: medium: during checks for quantification at quant_checks.adb:81
-quant_checks.adb:106:16: medium: precondition might fail, cannot prove Unknown (0)
+quant_checks.adb:106:16: medium: precondition might fail, cannot prove Unknown (0) [provers gave up before completing the proof]
 quant_late_errors.adb:13:16: error: iteration primitive shall not be recursive, (including implicitly so)
 quant_late_errors.adb:13:16: info: during checks for quantification at quant_late_errors.adb:6
 quant_late_errors.adb:13:16: info: precondition proved (Trivial: 1 VC)

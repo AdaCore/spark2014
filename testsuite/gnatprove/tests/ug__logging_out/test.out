@@ -9,6 +9,7 @@
       --> logging_out.ads:7:04
     7 |       procedure Add_To_Total (Incr : in Integer) with
       |       ^
+      + provers gave up before completing the proof
 
  info: data dependencies proved
 --> logging_out.ads:8:06

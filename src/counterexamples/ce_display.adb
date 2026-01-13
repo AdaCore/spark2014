@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Ordered_Sets;
-with Ada.Strings;                 use Ada.Strings;
 with Ada.Strings.Unbounded;       use Ada.Strings.Unbounded;
 with Atree;
 with CE_Interval_Sets;
@@ -46,7 +45,6 @@ with Sinput;                      use Sinput;
 with Snames;                      use Snames;
 with SPARK_Atree;                 use SPARK_Atree;
 with SPARK_Atree.Entities;        use SPARK_Atree.Entities;
-with SPARK_Definition;            use SPARK_Definition;
 with SPARK_Definition.Annotate;   use SPARK_Definition.Annotate;
 with SPARK_Util;                  use SPARK_Util;
 with SPARK_Util.Types;            use SPARK_Util.Types;
@@ -80,8 +78,8 @@ package body CE_Display is
    --  given position is uninitialized.
 
    function Compare_Name (X, Y : Entity_Id) return Boolean
-   is (Source_Name (X) < Source_Name (Y)
-       or else (Source_Name (X) = Source_Name (Y) and then X < Y));
+   is (Raw_Source_Name (X) < Raw_Source_Name (Y)
+       or else (Raw_Source_Name (X) = Raw_Source_Name (Y) and then X < Y));
    --  Variables are stored in alphabetical order. Compare the entity id in
    --  case there are homonyms.
 
@@ -177,7 +175,7 @@ package body CE_Display is
       for Var of Ordered_Variables loop
          declare
             Values   : Extended_Value_Access renames Variables (Var);
-            Var_Name : constant String := Source_Name (Var);
+            Var_Name : constant String := Raw_Source_Name (Var);
             Value    : Value_Type;
             Name     : Unbounded_String;
          begin
@@ -245,8 +243,9 @@ package body CE_Display is
 
                      if Value.K = Access_K
                        and then Value.Designated_Value /= null
-                       and then (not Value.Is_Null.Present
-                                 or else not Value.Is_Null.Content)
+                       and then
+                         (not Value.Is_Null.Present
+                          or else not Value.Is_Null.Content)
                      then
                         Append (Name, ".all");
                         Value := Value.Designated_Value.all;
@@ -448,10 +447,12 @@ package body CE_Display is
             --  At this point, the information of VC_line is now in the
             --  Other_Lines field because Remap_VC_Info was applied.
             if Is_Ada_File_Name (File)
-              and then (not Cntexample_Line_Maps.Is_Empty
-                              (Pretty_File_Cntexmp.Other_Lines)
-                        or else not Previous_Line_Maps.Is_Empty
-                                      (Pretty_File_Cntexmp.Previous_Lines))
+              and then
+                (not Cntexample_Line_Maps.Is_Empty
+                       (Pretty_File_Cntexmp.Other_Lines)
+                 or else
+                   not Previous_Line_Maps.Is_Empty
+                         (Pretty_File_Cntexmp.Previous_Lines))
             then
                Pretty_Cntexmp.Include (File, Pretty_File_Cntexmp);
             end if;
@@ -543,8 +544,9 @@ package body CE_Display is
 
       function Is_Internal_Entity (E : Entity_Id) return Boolean
       is (Is_Internal (E)
-          or else (Nkind (E) in N_Has_Chars
-                   and then Namet.Is_Internal_Name (Chars (E))));
+          or else
+            (Nkind (E) in N_Has_Chars
+             and then Namet.Is_Internal_Name (Chars (E))));
 
       procedure Insert_Cntexmp_Line
         (File    : String;
@@ -846,8 +848,9 @@ package body CE_Display is
       --  analysis would issue an error in this case).
 
       if File_Name (Sloc (Element_Decl)) = Element_File
-        and then Natural (Get_Logical_Line_Number (Sloc (Element_Decl)))
-                 = Element_Line
+        and then
+          Natural (Get_Logical_Line_Number (Sloc (Element_Decl)))
+          = Element_Line
       then
 
          --  Cover cases of uninitialized procedure parameter and uninitialized
@@ -855,15 +858,16 @@ package body CE_Display is
 
          return
            Ekind (Element_Decl) = E_Out_Parameter
-           or else (Ekind (Element_Decl) = E_Variable
-                    and then not Is_Quantified_Loop_Param (Element_Decl)
-                    and then Nkind (Enclosing_Declaration (Element_Decl))
-                             = N_Object_Declaration
-                    and then No
-                               (Expression
-                                  (Enclosing_Declaration (Element_Decl)))
-                    and then Default_Initialization (Etype (Element_Decl))
-                             = No_Default_Initialization);
+           or else
+             (Ekind (Element_Decl) = E_Variable
+              and then not Is_Quantified_Loop_Param (Element_Decl)
+              and then
+                Nkind (Enclosing_Declaration (Element_Decl))
+                = N_Object_Declaration
+              and then No (Expression (Enclosing_Declaration (Element_Decl)))
+              and then
+                Default_Initialization (Etype (Element_Decl))
+                = No_Default_Initialization);
 
       end if;
 
@@ -1099,8 +1103,8 @@ package body CE_Display is
 
             if K = VC_Index_Check
               and then Nkind (Atree.Parent (N)) = N_Indexed_Component
-              and then not Is_Static_Array_Type
-                             (Etype (Prefix (Atree.Parent (N))))
+              and then
+                not Is_Static_Array_Type (Etype (Prefix (Atree.Parent (N))))
             then
                Process_All (N);
                Process_All (Prefix (Atree.Parent (N)));
@@ -1344,7 +1348,7 @@ package body CE_Display is
               Refine_Container_Iterator_Value
                 (R_Value,
                  Etype (Iterable_Info.Entity),
-                 Source_Name (Iterable_Info.Entity)
+                 Raw_Source_Name (Iterable_Info.Entity)
                  & " ("
                  & Container_Name
                  & ")");
@@ -1353,7 +1357,7 @@ package body CE_Display is
             --  We have found the ultimate model type
 
             return
-              Source_Name
+              Raw_Source_Name
                 (Get_Iterable_Type_Primitive (Cont_Typ, Name_Element))
               & " ("
               & Container_Name
@@ -1379,7 +1383,7 @@ package body CE_Display is
       --  E = A (<value>)
 
       if Is_Array_Type (Container_Typ) then
-         return Source_Name (Container) & " (" & Value & ")";
+         return Raw_Source_Name (Container) & " (" & Value & ")";
 
       --  E = Element (C, <value>)
 
@@ -1388,7 +1392,7 @@ package body CE_Display is
            Refine_Container_Iterator_Value
              (Value,
               Container_Typ,
-              To_Unbounded_String (Source_Name (Container)));
+              To_Unbounded_String (Raw_Source_Name (Container)));
       end if;
    end Reconstruct_Index_Value;
 

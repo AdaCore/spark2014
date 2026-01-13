@@ -31,12 +31,12 @@ spark-containers-functional-infinite_sequences-higher_order.ads:180:08: info: pr
 spark-containers-functional-infinite_sequences-higher_order.ads:180:16: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:181:17: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:181:25: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
-spark-containers-functional-infinite_sequences-higher_order.ads:183:41: info: precondition proved (CVC5: 1 VC), in instantiation at use_sequence_ho.adb:13
-spark-containers-functional-infinite_sequences-higher_order.ads:183:54: info: precondition proved (CVC5: 1 VC), in instantiation at use_sequence_ho.adb:13
-spark-containers-functional-infinite_sequences-higher_order.ads:194:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
-spark-containers-functional-infinite_sequences-higher_order.ads:203:24: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
-spark-containers-functional-infinite_sequences-higher_order.ads:203:32: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
-spark-containers-functional-infinite_sequences-higher_order.ads:207:15: info: precondition proved (CVC5: 1 VC), in instantiation at use_sequence_ho.adb:13
+spark-containers-functional-infinite_sequences-higher_order.ads:184:34: info: precondition proved (CVC5: 1 VC), in instantiation at use_sequence_ho.adb:13
+spark-containers-functional-infinite_sequences-higher_order.ads:184:47: info: precondition proved (CVC5: 1 VC), in instantiation at use_sequence_ho.adb:13
+spark-containers-functional-infinite_sequences-higher_order.ads:195:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
+spark-containers-functional-infinite_sequences-higher_order.ads:204:24: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
+spark-containers-functional-infinite_sequences-higher_order.ads:204:32: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
+spark-containers-functional-infinite_sequences-higher_order.ads:208:15: info: precondition proved (CVC5: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:222:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:232:08: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
 spark-containers-functional-infinite_sequences-higher_order.ads:232:16: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:13
@@ -65,12 +65,12 @@ spark-containers-functional-infinite_sequences.ads:58:16: info: aspect Always_Te
 spark-containers-functional-infinite_sequences.ads:84:06: info: Container_Aggregates annotation proved (CVC5: 1 VC), in instantiation at use_sequence_ho.adb:9
 spark-containers-functional-infinite_sequences.ads:84:06: info: Container_Aggregates annotation proved (CVC5: 1 VC), in instantiation at use_sequence_ho.adb:9
 spark-containers-functional-infinite_sequences.ads:84:06: info: Container_Aggregates annotation proved (CVC5: 1 VC), in instantiation at use_sequence_ho.adb:9
-spark-containers-functional-infinite_sequences.ads:84:06: info: after a call to Aggr_Append at spark-containers-functional-infinite_sequences.ads:528, in instantiation at use_sequence_ho.adb:9
-spark-containers-functional-infinite_sequences.ads:84:06: info: after a call to Aggr_Append at spark-containers-functional-infinite_sequences.ads:528, in instantiation at use_sequence_ho.adb:9
-spark-containers-functional-infinite_sequences.ads:84:06: info: after a call to Empty_Sequence at spark-containers-functional-infinite_sequences.ads:245, in instantiation at use_sequence_ho.adb:9
-spark-containers-functional-infinite_sequences.ads:84:06: info: when establishing invariant on Length at spark-containers-functional-infinite_sequences.ads:103, in instantiation at use_sequence_ho.adb:9
-spark-containers-functional-infinite_sequences.ads:84:06: info: when reestablishing invariant on Get at spark-containers-functional-infinite_sequences.ads:110, in instantiation at use_sequence_ho.adb:9
-spark-containers-functional-infinite_sequences.ads:84:06: info: when reestablishing invariant on Length at spark-containers-functional-infinite_sequences.ads:103, in instantiation at use_sequence_ho.adb:9
+spark-containers-functional-infinite_sequences.ads:84:06: info: after a call to "Aggr_Append" at spark-containers-functional-infinite_sequences.ads:534, in instantiation at use_sequence_ho.adb:9
+spark-containers-functional-infinite_sequences.ads:84:06: info: after a call to "Aggr_Append" at spark-containers-functional-infinite_sequences.ads:534, in instantiation at use_sequence_ho.adb:9
+spark-containers-functional-infinite_sequences.ads:84:06: info: after a call to "Empty_Sequence" at spark-containers-functional-infinite_sequences.ads:245, in instantiation at use_sequence_ho.adb:9
+spark-containers-functional-infinite_sequences.ads:84:06: info: when establishing invariant on "Length" at spark-containers-functional-infinite_sequences.ads:103, in instantiation at use_sequence_ho.adb:9
+spark-containers-functional-infinite_sequences.ads:84:06: info: when reestablishing invariant on "Get" at spark-containers-functional-infinite_sequences.ads:110, in instantiation at use_sequence_ho.adb:9
+spark-containers-functional-infinite_sequences.ads:84:06: info: when reestablishing invariant on "Length" at spark-containers-functional-infinite_sequences.ads:103, in instantiation at use_sequence_ho.adb:9
 spark-containers-functional-infinite_sequences.ads:110:13: info: during checks for quantification at spark-containers-functional-infinite_sequences.ads:74, in instantiation at use_sequence_ho.adb:9
 spark-containers-functional-infinite_sequences.ads:110:13: info: precondition proved (CVC5: 1 VC), in instantiation at use_sequence_ho.adb:9
 spark-containers-functional-infinite_sequences.ads:127:13: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate, in instantiation at use_sequence_ho.adb:9
@@ -84,73 +84,73 @@ spark-containers-functional-infinite_sequences.ads:260:51: info: predicate check
 spark-containers-functional-infinite_sequences.ads:290:39: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
 spark-containers-functional-infinite_sequences.ads:290:51: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
 spark-containers-functional-infinite_sequences.ads:290:70: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
-spark-containers-functional-infinite_sequences.ads:312:39: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
-spark-containers-functional-infinite_sequences.ads:312:51: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
-spark-containers-functional-infinite_sequences.ads:336:13: info: implicit aspect Always_Terminates on "Copy_Element" has been proved, subprogram will terminate, in instantiation at use_sequence_ho.adb:9
-spark-containers-functional-infinite_sequences.ads:378:13: info: during checks for quantification at spark-containers-functional-infinite_sequences.ads:74, in instantiation at use_sequence_ho.adb:9
-spark-containers-functional-infinite_sequences.ads:378:13: info: precondition proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
-spark-containers-functional-infinite_sequences.ads:381:13: info: during checks for quantification at spark-containers-functional-infinite_sequences.ads:74, in instantiation at use_sequence_ho.adb:9
-spark-containers-functional-infinite_sequences.ads:381:13: info: precondition proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
-spark-containers-functional-infinite_sequences.ads:391:13: info: during checks for quantification at spark-containers-functional-infinite_sequences.ads:74, in instantiation at use_sequence_ho.adb:9
-spark-containers-functional-infinite_sequences.ads:391:13: info: precondition proved (CVC5: 1 VC), in instantiation at use_sequence_ho.adb:9
-spark-containers-functional-infinite_sequences.ads:420:16: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
-spark-containers-functional-infinite_sequences.ads:420:23: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
-spark-containers-functional-infinite_sequences.ads:450:16: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
-spark-containers-functional-infinite_sequences.ads:450:28: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
-spark-containers-functional-infinite_sequences.ads:468:16: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
-spark-containers-functional-infinite_sequences.ads:468:21: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
-spark-containers-functional-infinite_sequences.ads:468:37: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
-spark-containers-functional-infinite_sequences.ads:468:42: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
-spark-containers-functional-infinite_sequences.ads:486:16: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
-spark-containers-functional-infinite_sequences.ads:486:23: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
-spark-containers-functional-infinite_sequences.ads:486:39: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
-spark-containers-functional-infinite_sequences.ads:486:46: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
-spark-containers-functional-infinite_sequences.ads:506:08: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
-spark-containers-functional-infinite_sequences.ads:506:15: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
-spark-containers-functional-infinite_sequences.ads:507:21: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
-spark-containers-functional-infinite_sequences.ads:507:28: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
-spark-containers-functional-infinite_sequences.ads:508:23: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
-spark-containers-functional-infinite_sequences.ads:508:32: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
-spark-containers-functional-infinite_sequences.ads:508:39: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
-spark-containers-functional-infinite_sequences.ads:508:45: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
-spark-containers-functional-infinite_sequences.ads:508:54: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
-spark-containers-functional-infinite_sequences.ads:508:61: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
-spark-containers-parameter_checks.adb:33:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:349, in instantiation at use_sequence_ho.adb:9
-spark-containers-parameter_checks.adb:46:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:349, in instantiation at use_sequence_ho.adb:9
-spark-containers-parameter_checks.adb:49:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:349, in instantiation at use_sequence_ho.adb:9
-spark-containers-parameter_checks.adb:64:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:349, in instantiation at use_sequence_ho.adb:9
-spark-containers-parameter_checks.adb:65:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:349, in instantiation at use_sequence_ho.adb:9
-spark-containers-parameter_checks.adb:66:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:349, in instantiation at use_sequence_ho.adb:9
-spark-containers-parameter_checks.adb:97:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:360, in instantiation at use_sequence_ho.adb:9
-spark-containers-parameter_checks.adb:112:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:360, in instantiation at use_sequence_ho.adb:9
-spark-containers-parameter_checks.adb:115:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:360, in instantiation at use_sequence_ho.adb:9
-spark-containers-parameter_checks.adb:129:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:360, in instantiation at use_sequence_ho.adb:9
-spark-containers-parameter_checks.adb:130:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:360, in instantiation at use_sequence_ho.adb:9
-spark-containers-parameter_checks.adb:131:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:360, in instantiation at use_sequence_ho.adb:9
-spark-containers-parameter_checks.ads:45:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-infinite_sequences.ads:349, in instantiation at use_sequence_ho.adb:9
-spark-containers-parameter_checks.ads:46:12: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:349, in instantiation at use_sequence_ho.adb:9
-spark-containers-parameter_checks.ads:46:36: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:349, in instantiation at use_sequence_ho.adb:9
-spark-containers-parameter_checks.ads:48:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-infinite_sequences.ads:349, in instantiation at use_sequence_ho.adb:9
-spark-containers-parameter_checks.ads:49:12: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:349, in instantiation at use_sequence_ho.adb:9
-spark-containers-parameter_checks.ads:49:54: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:349, in instantiation at use_sequence_ho.adb:9
-spark-containers-parameter_checks.ads:51:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-infinite_sequences.ads:349, in instantiation at use_sequence_ho.adb:9
-spark-containers-parameter_checks.ads:52:12: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:349, in instantiation at use_sequence_ho.adb:9
-spark-containers-parameter_checks.ads:52:68: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:349, in instantiation at use_sequence_ho.adb:9
-spark-containers-parameter_checks.ads:57:17: info: aspect Always_Terminates on "Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-infinite_sequences.ads:349, in instantiation at use_sequence_ho.adb:9
-spark-containers-parameter_checks.ads:59:09: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:349, in instantiation at use_sequence_ho.adb:9
-spark-containers-parameter_checks.ads:61:19: info: postcondition proved (CVC5: 2 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:349, in instantiation at use_sequence_ho.adb:9
-spark-containers-parameter_checks.ads:98:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-infinite_sequences.ads:360, in instantiation at use_sequence_ho.adb:9
-spark-containers-parameter_checks.ads:99:12: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:360, in instantiation at use_sequence_ho.adb:9
-spark-containers-parameter_checks.ads:99:50: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:360, in instantiation at use_sequence_ho.adb:9
-spark-containers-parameter_checks.ads:104:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-infinite_sequences.ads:360, in instantiation at use_sequence_ho.adb:9
-spark-containers-parameter_checks.ads:105:12: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:360, in instantiation at use_sequence_ho.adb:9
-spark-containers-parameter_checks.ads:105:36: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:360, in instantiation at use_sequence_ho.adb:9
-spark-containers-parameter_checks.ads:107:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-infinite_sequences.ads:360, in instantiation at use_sequence_ho.adb:9
-spark-containers-parameter_checks.ads:108:12: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:360, in instantiation at use_sequence_ho.adb:9
-spark-containers-parameter_checks.ads:108:54: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:360, in instantiation at use_sequence_ho.adb:9
-spark-containers-parameter_checks.ads:110:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-infinite_sequences.ads:360, in instantiation at use_sequence_ho.adb:9
-spark-containers-parameter_checks.ads:111:12: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:360, in instantiation at use_sequence_ho.adb:9
-spark-containers-parameter_checks.ads:111:68: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:360, in instantiation at use_sequence_ho.adb:9
+spark-containers-functional-infinite_sequences.ads:315:39: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
+spark-containers-functional-infinite_sequences.ads:315:51: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
+spark-containers-functional-infinite_sequences.ads:341:13: info: implicit aspect Always_Terminates on "Copy_Element" has been proved, subprogram will terminate, in instantiation at use_sequence_ho.adb:9
+spark-containers-functional-infinite_sequences.ads:383:13: info: during checks for quantification at spark-containers-functional-infinite_sequences.ads:74, in instantiation at use_sequence_ho.adb:9
+spark-containers-functional-infinite_sequences.ads:383:13: info: precondition proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
+spark-containers-functional-infinite_sequences.ads:386:13: info: during checks for quantification at spark-containers-functional-infinite_sequences.ads:74, in instantiation at use_sequence_ho.adb:9
+spark-containers-functional-infinite_sequences.ads:386:13: info: precondition proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
+spark-containers-functional-infinite_sequences.ads:396:13: info: during checks for quantification at spark-containers-functional-infinite_sequences.ads:74, in instantiation at use_sequence_ho.adb:9
+spark-containers-functional-infinite_sequences.ads:396:13: info: precondition proved (CVC5: 1 VC), in instantiation at use_sequence_ho.adb:9
+spark-containers-functional-infinite_sequences.ads:425:16: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
+spark-containers-functional-infinite_sequences.ads:425:23: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
+spark-containers-functional-infinite_sequences.ads:456:16: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
+spark-containers-functional-infinite_sequences.ads:456:28: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
+spark-containers-functional-infinite_sequences.ads:473:16: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
+spark-containers-functional-infinite_sequences.ads:473:21: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
+spark-containers-functional-infinite_sequences.ads:473:37: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
+spark-containers-functional-infinite_sequences.ads:473:42: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
+spark-containers-functional-infinite_sequences.ads:490:16: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
+spark-containers-functional-infinite_sequences.ads:490:23: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
+spark-containers-functional-infinite_sequences.ads:490:39: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
+spark-containers-functional-infinite_sequences.ads:490:46: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
+spark-containers-functional-infinite_sequences.ads:510:08: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
+spark-containers-functional-infinite_sequences.ads:510:15: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
+spark-containers-functional-infinite_sequences.ads:512:14: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
+spark-containers-functional-infinite_sequences.ads:512:21: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
+spark-containers-functional-infinite_sequences.ads:513:16: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
+spark-containers-functional-infinite_sequences.ads:513:25: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
+spark-containers-functional-infinite_sequences.ads:513:32: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
+spark-containers-functional-infinite_sequences.ads:513:38: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
+spark-containers-functional-infinite_sequences.ads:513:47: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
+spark-containers-functional-infinite_sequences.ads:513:54: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:9
+spark-containers-parameter_checks.adb:33:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:354, in instantiation at use_sequence_ho.adb:9
+spark-containers-parameter_checks.adb:46:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:354, in instantiation at use_sequence_ho.adb:9
+spark-containers-parameter_checks.adb:49:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:354, in instantiation at use_sequence_ho.adb:9
+spark-containers-parameter_checks.adb:64:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:354, in instantiation at use_sequence_ho.adb:9
+spark-containers-parameter_checks.adb:65:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:354, in instantiation at use_sequence_ho.adb:9
+spark-containers-parameter_checks.adb:66:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:354, in instantiation at use_sequence_ho.adb:9
+spark-containers-parameter_checks.adb:97:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:365, in instantiation at use_sequence_ho.adb:9
+spark-containers-parameter_checks.adb:112:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:365, in instantiation at use_sequence_ho.adb:9
+spark-containers-parameter_checks.adb:115:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:365, in instantiation at use_sequence_ho.adb:9
+spark-containers-parameter_checks.adb:129:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:365, in instantiation at use_sequence_ho.adb:9
+spark-containers-parameter_checks.adb:130:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:365, in instantiation at use_sequence_ho.adb:9
+spark-containers-parameter_checks.adb:131:13: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:365, in instantiation at use_sequence_ho.adb:9
+spark-containers-parameter_checks.ads:45:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-infinite_sequences.ads:354, in instantiation at use_sequence_ho.adb:9
+spark-containers-parameter_checks.ads:46:12: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:354, in instantiation at use_sequence_ho.adb:9
+spark-containers-parameter_checks.ads:46:36: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:354, in instantiation at use_sequence_ho.adb:9
+spark-containers-parameter_checks.ads:48:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-infinite_sequences.ads:354, in instantiation at use_sequence_ho.adb:9
+spark-containers-parameter_checks.ads:49:12: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:354, in instantiation at use_sequence_ho.adb:9
+spark-containers-parameter_checks.ads:49:54: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:354, in instantiation at use_sequence_ho.adb:9
+spark-containers-parameter_checks.ads:51:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-infinite_sequences.ads:354, in instantiation at use_sequence_ho.adb:9
+spark-containers-parameter_checks.ads:52:12: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:354, in instantiation at use_sequence_ho.adb:9
+spark-containers-parameter_checks.ads:52:68: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:354, in instantiation at use_sequence_ho.adb:9
+spark-containers-parameter_checks.ads:57:17: info: aspect Always_Terminates on "Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-infinite_sequences.ads:354, in instantiation at use_sequence_ho.adb:9
+spark-containers-parameter_checks.ads:59:09: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:354, in instantiation at use_sequence_ho.adb:9
+spark-containers-parameter_checks.ads:61:19: info: postcondition proved (CVC5: 2 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:354, in instantiation at use_sequence_ho.adb:9
+spark-containers-parameter_checks.ads:98:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-infinite_sequences.ads:365, in instantiation at use_sequence_ho.adb:9
+spark-containers-parameter_checks.ads:99:12: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:365, in instantiation at use_sequence_ho.adb:9
+spark-containers-parameter_checks.ads:99:50: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:365, in instantiation at use_sequence_ho.adb:9
+spark-containers-parameter_checks.ads:104:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-infinite_sequences.ads:365, in instantiation at use_sequence_ho.adb:9
+spark-containers-parameter_checks.ads:105:12: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:365, in instantiation at use_sequence_ho.adb:9
+spark-containers-parameter_checks.ads:105:36: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:365, in instantiation at use_sequence_ho.adb:9
+spark-containers-parameter_checks.ads:107:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-infinite_sequences.ads:365, in instantiation at use_sequence_ho.adb:9
+spark-containers-parameter_checks.ads:108:12: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:365, in instantiation at use_sequence_ho.adb:9
+spark-containers-parameter_checks.ads:108:54: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:365, in instantiation at use_sequence_ho.adb:9
+spark-containers-parameter_checks.ads:110:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-infinite_sequences.ads:365, in instantiation at use_sequence_ho.adb:9
+spark-containers-parameter_checks.ads:111:12: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:365, in instantiation at use_sequence_ho.adb:9
+spark-containers-parameter_checks.ads:111:68: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:365, in instantiation at use_sequence_ho.adb:9
 use_sequence_ho.adb:17:16: info: implicit aspect Always_Terminates on "Starts_With_Z" has been proved, subprogram will terminate
 use_sequence_ho.adb:18:36: info: index check proved (CVC5: 2 VC)
 use_sequence_ho.adb:20:16: info: implicit aspect Always_Terminates on "Add_Zero" has been proved, subprogram will terminate
@@ -165,10 +165,10 @@ use_sequence_ho.adb:30:13: info: predicate check proved (Trivial: 1 VC)
 use_sequence_ho.adb:34:16: info: implicit aspect Always_Terminates on "Starts_With_Z" has been proved, subprogram will terminate
 use_sequence_ho.adb:35:36: info: index check proved (CVC5: 2 VC)
 use_sequence_ho.adb:37:16: info: implicit aspect Always_Terminates on "Add_Zero" has been proved, subprogram will terminate
-use_sequence_ho.adb:38:19: medium: postcondition might fail
+use_sequence_ho.adb:38:19: medium: postcondition might fail [provers reached step limit before completing the proof]
 use_sequence_ho.adb:41:16: info: implicit aspect Always_Terminates on "Add_One" has been proved, subprogram will terminate
-use_sequence_ho.adb:44:19: medium: postcondition might fail
-use_sequence_ho.adb:53:25: medium: assertion might fail [possible fix: subprogram at line 37 should mention S in a precondition]
+use_sequence_ho.adb:44:19: medium: postcondition might fail [provers reached step limit before completing the proof]
+use_sequence_ho.adb:53:25: medium: assertion might fail [possible fix: subprogram at line 37 should mention S in a precondition] [provers reached step limit before completing the proof]
 use_sequence_ho.adb:53:60: info: precondition proved (CVC5: 1 VC)
 use_sequence_ho.adb:59:16: info: implicit aspect Always_Terminates on "Value" has been proved, subprogram will terminate
 use_sequence_ho.adb:60:36: info: range check proved (CVC5: 2 VC)

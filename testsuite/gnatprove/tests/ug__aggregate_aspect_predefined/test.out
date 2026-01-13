@@ -12,18 +12,18 @@
 
  info: Container_Aggregates annotation proved
 --> predefined.ads:8:06
-      + when establishing invariant on Length at predefined.ads:15
-      + after a call to Empty_List at predefined.ads:10
+      + when establishing invariant on "Length" at predefined.ads:15
+      + after a call to "Empty_List" at predefined.ads:10
 
  info: Container_Aggregates annotation proved
 --> predefined.ads:8:06
-      + when reestablishing invariant on Get at predefined.ads:19
-      + after a call to Add at predefined.ads:34
+      + when reestablishing invariant on "Get" at predefined.ads:19
+      + after a call to "Add" at predefined.ads:34
 
  info: Container_Aggregates annotation proved
 --> predefined.ads:8:06
-      + when reestablishing invariant on Length at predefined.ads:15
-      + after a call to Add at predefined.ads:34
+      + when reestablishing invariant on "Length" at predefined.ads:15
+      + after a call to "Add" at predefined.ads:34
 
  info: implicit aspect Always_Terminates on "Empty_List" has been proved, subprogram will terminate
 --> predefined.ads:10:13

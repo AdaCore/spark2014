@@ -1,3 +1,3 @@
 p.adb:3:42: info: data dependencies proved
-p.adb:5:10: medium: unexpected exception might be raised [reason for check: Aborting allows propagating no exceptions] [possible explanation: Program_Error might be unexpectedly raised]
+p.adb:5:10: medium: unexpected exception might be raised [reason for check: "Aborting" allows propagating no exceptions] [possible explanation: "Program_Error" might be unexpectedly raised] [provers gave up before completing the proof]
 p.adb:8:29: info: data dependencies proved

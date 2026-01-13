@@ -3,4 +3,4 @@ foo.adb:4:04: info: data dependencies proved
 foo.adb:5:04: info: flow dependencies proved
 foo.adb:8:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 foo.adb:9:07: info: data dependencies proved
-foo.adb:13:09: medium: precondition might fail [possible fix: subprogram at line 1 should mention B in a precondition]
+foo.adb:13:09: medium: precondition might fail [possible fix: subprogram at line 1 should mention B in a precondition] [provers gave up before completing the proof]

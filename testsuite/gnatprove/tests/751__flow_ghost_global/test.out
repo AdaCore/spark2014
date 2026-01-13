@@ -5,3 +5,4 @@ main.adb:25:14: medium: global output "X_Checked" should be assertion-level-depe
 main.adb:34:07: info: analyzing call to "Write_Checked" in context
 main2.adb:16:14: medium: global output "X_Checked" should be assertion-level-dependent on subprogram "Write_Ignored" (SPARK RM 6.9(24))
 main2.adb:18:07: info: precondition proved (Trivial: 1 VC)
+main2.adb:18:07: medium: global output "X_Checked" of a call to "Write_Checked" should be assertion-level-dependent on "Write_Ignored"

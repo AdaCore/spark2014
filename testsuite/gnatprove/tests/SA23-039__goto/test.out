@@ -14,7 +14,7 @@ test_goto.adb:12:16: info: no contextual analysis of "B" (body not seen yet)
 test_goto.adb:12:16: warning: assuming "B" has no effect on global items
 test_goto.adb:12:16: warning: no Global contract available for "B" [assumed-global-null]
 test_goto.adb:16:35: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
-test_goto.adb:17:29: medium: overflow check might fail, cannot prove upper bound for X + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 16 should mention X in a loop invariant]
+test_goto.adb:17:29: medium: overflow check might fail, cannot prove upper bound for X + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 16 should mention X in a loop invariant] [provers gave up before completing the proof]
 test_goto.adb:18:25: info: no contextual analysis of "B" (body not seen yet)
 test_goto.adb:18:25: warning: assuming "B" has no effect on global items
 test_goto.adb:18:25: warning: no Global contract available for "B" [assumed-global-null]
@@ -68,7 +68,7 @@ test_goto.adb:82:30: info: loop invariant preservation proved (Trivial: 1 VC)
 test_goto.adb:85:07: info: no contextual analysis of "B" (body not seen yet)
 test_goto.adb:85:07: warning: assuming "B" has no effect on global items
 test_goto.adb:85:07: warning: no Global contract available for "B" [assumed-global-null]
-test_goto.adb:90:19: medium: assertion might fail [possible fix: loop invariant at line 82 should mention X]
+test_goto.adb:90:19: medium: assertion might fail [possible fix: loop invariant at line 82 should mention X] [provers reached step limit before completing the proof]
 test_goto.adb:90:19: warning: assuming "B" has no effect on global items
 test_goto.adb:90:19: warning: no Global contract available for "B" [assumed-global-null]
 test_goto_borrow.adb:9:12: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate

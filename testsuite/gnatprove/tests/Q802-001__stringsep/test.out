@@ -106,7 +106,7 @@ a-strbou.ads:2579:31: info: discriminant check proved (CVC5: 1 VC), in instantia
 a-strbou.ads:2579:31: info: predicate check proved (CVC5: 2 VC; Trivial: 1 VC), in instantiation at sb.ads:2
 sb.ads:2:01: warning: in instantiation at a-strbou.ads
 sb.ads:2:01: warning: pragma "Stream_Convert" ignored (not yet supported) [ignored-pragma]
-spark-containers-parameter_checks.ads:274:50: medium: postcondition might fail, in instantiation at spark-containers-formal-hashed_maps.ads:165, in instantiation at test.ads:14 [possible fix: you should consider adding a postcondition to function SBHash or turning it into an expression function]
+spark-containers-parameter_checks.ads:274:50: medium: postcondition might fail, in instantiation at spark-containers-formal-hashed_maps.ads:165, in instantiation at test.ads:14 [possible fix: you should consider adding a postcondition to function "SBHash" or turning it into an expression function] [provers reached step limit before completing the proof]
 test.ads:9:09: warning: Initial_Condition of package "SB" is ignored [init-cond-ignored]
 test.ads:9:09: warning: the elaboration of "SB" is not known to precede the elaboration of the current unit
 test.ads:9:09: warning: use pragma Elaborate_Body in "SB" or pragma Elaborate in the current unit

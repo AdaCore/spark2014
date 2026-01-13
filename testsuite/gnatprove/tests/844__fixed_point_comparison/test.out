@@ -1,4 +1,4 @@
-fixed_point_comparison.adb:5:22: high: assertion might fail (e.g. when X = 0 and Y = 0) [possible fix: subprogram at fixed_point_comparison.ads:6 should mention X and Y in a precondition]
-fixed_point_comparison.adb:10:22: high: assertion might fail (e.g. when X = 0 and Y = 0) [possible fix: subprogram at fixed_point_comparison.ads:8 should mention X and Y in a precondition]
+fixed_point_comparison.adb:5:22: high: assertion might fail (e.g. when X = 0 and Y = 0) [possible fix: subprogram at fixed_point_comparison.ads:6 should mention X and Y in a precondition] [provers gave up before completing the proof]
+fixed_point_comparison.adb:10:22: high: assertion might fail (e.g. when X = 0 and Y = 0) [possible fix: subprogram at fixed_point_comparison.ads:8 should mention X and Y in a precondition] [provers gave up before completing the proof]
 fixed_point_comparison.ads:6:14: warning: subprogram "Mutually_Exclusive" has no effect
 fixed_point_comparison.ads:8:14: warning: subprogram "Mutually_Exclusive2" has no effect

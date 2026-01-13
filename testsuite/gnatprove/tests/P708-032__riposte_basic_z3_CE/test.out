@@ -1,10 +1,10 @@
 basic.adb:5:13: info: implicit aspect Always_Terminates on "Add_UB" has been proved, subprogram will terminate
 basic.adb:6:19: info: postcondition proved (CVC5: 1 VC)
-basic.adb:9:16: high: range check might fail, cannot prove upper bound for A + B (e.g. when A = 1 and B = Unsigned_Byte'Last) [reason for check: returned value must fit in the result type of the function] [possible fix: add precondition (A <= Unsigned_Byte'Last - B) to subprogram at line 5]
+basic.adb:9:16: high: range check might fail, cannot prove upper bound for A + B (e.g. when A = 1 and B = Unsigned_Byte'Last) [reason for check: returned value must fit in the result type of the function] [possible fix: add precondition (A <= Unsigned_Byte'Last - B) to subprogram at line 5] [provers gave up before completing the proof]
 basic.adb:12:13: info: implicit aspect Always_Terminates on "Add_I" has been proved, subprogram will terminate
 basic.adb:13:19: info: postcondition proved (CVC5: 1 VC)
 basic.adb:13:36: info: overflow check proved (CVC5: 2 VC)
-basic.adb:16:16: high: overflow check might fail, cannot prove lower bound for A + B (e.g. when A = -1 and B = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if B >= 0 then A <= Integer'Last - B else A >= Integer'First - B) to subprogram at line 12]
+basic.adb:16:16: high: overflow check might fail, cannot prove lower bound for A + B (e.g. when A = -1 and B = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if B >= 0 then A <= Integer'Last - B else A >= Integer'First - B) to subprogram at line 12] [provers gave up before completing the proof]
 basic.adb:19:13: info: implicit aspect Always_Terminates on "Min_UB" has been proved, subprogram will terminate
 basic.adb:20:19: info: postcondition proved (CVC5: 3 VC)
 basic.adb:24:07: info: initialization of "R" proved
@@ -26,7 +26,7 @@ basic.adb:58:41: info: overflow check proved (CVC5: 2 VC)
 basic.adb:58:60: info: overflow check proved (CVC5: 2 VC)
 basic.adb:59:14: info: overflow check proved (CVC5: 2 VC)
 basic.adb:63:11: info: flow dependencies proved
-basic.adb:65:22: high: postcondition might fail (e.g. when X = 7 and X'Old = 1)
+basic.adb:65:22: high: postcondition might fail (e.g. when X = 7 and X'Old = 1) [provers gave up before completing the proof]
 basic.adb:65:32: info: overflow check proved (CVC5: 2 VC)
 basic.adb:69:14: info: overflow check proved (CVC5: 2 VC)
 basic.adb:70:30: info: assertion proved (CVC5: 2 VC)
@@ -37,7 +37,7 @@ basic.adb:74:13: info: implicit aspect Always_Terminates on "Int_Min_A" has been
 basic.adb:75:19: info: postcondition proved (CVC5: 1 VC)
 basic.adb:77:07: info: initialization of "R" proved
 basic.adb:87:13: info: implicit aspect Always_Terminates on "Int_Min_B" has been proved, subprogram will terminate
-basic.adb:88:19: high: postcondition might fail (e.g. when A = 0 and B = 1 and Int_Min_B'Result = 1)
+basic.adb:88:19: high: postcondition might fail (e.g. when A = 0 and B = 1 and Int_Min_B'Result = 1) [provers reached step limit before completing the proof]
 basic.adb:90:07: info: initialization of "R" proved
 basic.adb:100:13: info: implicit aspect Always_Terminates on "Int_Max_A" has been proved, subprogram will terminate
 basic.adb:101:19: info: postcondition proved (CVC5: 1 VC)

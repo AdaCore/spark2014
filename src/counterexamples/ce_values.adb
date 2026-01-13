@@ -71,27 +71,30 @@ package body CE_Values is
 
    function "=" (V1, V2 : Float_Value) return Boolean
    is (V1.K = V2.K
-       and then (case V1.K is
-                   when Float_32_K => V1.Content_32 = V2.Content_32,
-                   when Float_64_K => V1.Content_64 = V2.Content_64,
-                   when Extended_K => V1.Ext_Content = V2.Ext_Content));
+       and then
+         (case V1.K is
+            when Float_32_K => V1.Content_32 = V2.Content_32,
+            when Float_64_K => V1.Content_64 = V2.Content_64,
+            when Extended_K => V1.Ext_Content = V2.Ext_Content));
 
    function "=" (V1, V2 : Scalar_Value_Type) return Boolean
    is (V1.K = V2.K
-       and then (case V1.K is
-                   when Char_K    =>
-                     Nkind (V1.Char_Node) = Nkind (V2.Char_Node)
-                     and then Char_Literal_Value (V1.Char_Node)
-                              = Char_Literal_Value (V2.Char_Node),
+       and then
+         (case V1.K is
+            when Char_K    =>
+              Nkind (V1.Char_Node) = Nkind (V2.Char_Node)
+              and then
+                Char_Literal_Value (V1.Char_Node)
+                = Char_Literal_Value (V2.Char_Node),
 
-                   when Enum_K    =>
-                     Ekind (V1.Enum_Entity) = Ekind (V2.Enum_Entity)
-                     and then V1.Enum_Entity = V2.Enum_Entity,
-                   when Integer_K => V1.Integer_Content = V2.Integer_Content,
-                   --  The 2 following cases are currently unused as the rac
-                   --  does not support real values.
-                   when Float_K   => V1.Float_Content = V2.Float_Content,
-                   when Fixed_K   => V1.Fixed_Content = V2.Fixed_Content));
+            when Enum_K    =>
+              Ekind (V1.Enum_Entity) = Ekind (V2.Enum_Entity)
+              and then V1.Enum_Entity = V2.Enum_Entity,
+            when Integer_K => V1.Integer_Content = V2.Integer_Content,
+            --  The 2 following cases are currently unused as the rac
+            --  does not support real values.
+            when Float_K   => V1.Float_Content = V2.Float_Content,
+            when Fixed_K   => V1.Fixed_Content = V2.Fixed_Content));
 
    function "=" (V1, V2 : Value_Type) return Boolean is
 
@@ -187,29 +190,31 @@ package body CE_Values is
                if Length_V1.Present and Length_V2.Present then
                   return
                     (Length_V1.Content = 0 and then Length_V2.Content = 0)
-                    or else (Length_V1.Content = Length_V2.Content
-                             and then Check_Array_Values
-                                        (V1.Array_Values,
-                                         V1.First_Attr.Content,
-                                         V2,
-                                         Checked_V1)
-                             and then Check_Array_Values
-                                        (V2.Array_Values,
-                                         V2.First_Attr.Content,
-                                         V1,
-                                         Checked_V2)
-                             and then
-                             --  If the length of the set containing all
-                             --  checked indices is smaller than the total
-                             --  number of indices to check (i.e. the values
-                             --  maps did not cover the whole arrays) then the
-                             --  "others" values need to be checked for
-                             --  equality.
-                             (To_Big_Integer
-                                (Integer
-                                   (Length (Union (Checked_V1, Checked_V2))))
-                              = Length_V1.Content
-                              or else V1.Array_Others = V2.Array_Others));
+                    or else
+                      (Length_V1.Content = Length_V2.Content
+                       and then
+                         Check_Array_Values
+                           (V1.Array_Values,
+                            V1.First_Attr.Content,
+                            V2,
+                            Checked_V1)
+                       and then
+                         Check_Array_Values
+                           (V2.Array_Values,
+                            V2.First_Attr.Content,
+                            V1,
+                            Checked_V2)
+                       and then
+                         --  If the length of the set containing all
+                         --  checked indices is smaller than the total
+                         --  number of indices to check (i.e. the values
+                         --  maps did not cover the whole arrays) then the
+                         --  "others" values need to be checked for
+                         --  equality.
+                         (To_Big_Integer
+                            (Integer (Length (Union (Checked_V1, Checked_V2))))
+                          = Length_V1.Content
+                          or else V1.Array_Others = V2.Array_Others));
                else
                   CE_RAC.RAC_Stuck
                     ("Missing index of array, cannot compute length");

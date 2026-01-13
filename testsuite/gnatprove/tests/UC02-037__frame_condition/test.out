@@ -18,7 +18,7 @@ test_frame_condition.adb:44:13: info: loop invariant preservation proved (CVC5: 
 test_frame_condition.adb:45:27: info: index check proved (CVC5: 4 VC)
 test_frame_condition.adb:45:38: info: index check proved (CVC5: 4 VC)
 test_frame_condition.adb:45:57: info: index check proved (CVC5: 4 VC)
-test_frame_condition.adb:53:14: medium: postcondition might fail
+test_frame_condition.adb:53:14: medium: postcondition might fail [provers reached step limit before completing the proof]
 test_frame_condition.adb:59:28: info: index check proved (CVC5: 4 VC)
 test_frame_condition.adb:60:16: info: only expected exception raised (CVC5: 2 VC)
 test_frame_condition.adb:64:24: info: index check proved (CVC5: 4 VC)

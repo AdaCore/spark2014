@@ -209,9 +209,10 @@ package body Flow.Slice is
             if FA.Atr (V_Final).Is_Export
               and then Is_Variable (F_Final)
               and then not Synthetic (F_Final)
-              and then not (FA.PDG.In_Neighbour_Count (V_Final) = 1
-                            and then FA.PDG.Parent (V_Final) = V_Initial
-                            and then not FA.Atr (V_Initial).Is_Initialized)
+              and then
+                not (FA.PDG.In_Neighbour_Count (V_Final) = 1
+                     and then FA.PDG.Parent (V_Final) = V_Initial
+                     and then not FA.Atr (V_Initial).Is_Initialized)
             then
                Out_Vertices.Insert (V_Final);
             end if;
@@ -484,7 +485,7 @@ package body Flow.Slice is
                pragma
                  Assert
                    (if Ekind (SC.E) = E_Function
-                      then not Is_Predicate_Function (SC.E));
+                    then not Is_Predicate_Function (SC.E));
 
                if Ekind (SC.E) = E_Package then
 
@@ -619,8 +620,9 @@ package body Flow.Slice is
 
                Is_Written :=
                  Is_Written
-                 or else not (FA.PDG.In_Neighbour_Count (V_Final) = 1
-                              and then FA.PDG.Parent (V_Final) = V_Initial);
+                 or else
+                   not (FA.PDG.In_Neighbour_Count (V_Final) = 1
+                        and then FA.PDG.Parent (V_Final) = V_Initial);
 
                --  If everything is already known then exit early
                if Is_Written and not Is_Ignored_Read then

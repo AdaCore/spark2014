@@ -2,10 +2,10 @@ main.adb:6:13: info: implicit aspect Always_Terminates on "Id" has been proved, 
 main.adb:8:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 main.adb:9:14: info: postcondition proved (CVC5: 3 VC)
 main.adb:11:12: info: range check proved (CVC5: 2 VC)
-main.adb:13:22: high: range check might fail, cannot prove upper bound for Id (3) [reason for check: default component value must fit in the type]
+main.adb:13:22: high: range check might fail, cannot prove upper bound for Id (3) [reason for check: default component value must fit in the type] [provers reached step limit before completing the proof]
 other.adb:6:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 other.adb:8:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
-other.adb:9:14: high: postcondition might fail (e.g. when F'Result = True)
+other.adb:9:14: high: postcondition might fail (e.g. when F'Result = True) [provers reached step limit before completing the proof]
 other.adb:9:57: info: range check proved (CVC5: 2 VC)
 other.adb:9:94: info: range check proved (CVC5: 2 VC)
 other.adb:15:12: info: range check proved (CVC5: 2 VC)
@@ -15,14 +15,14 @@ p_main.ads:7:12: info: range check proved (CVC5: 2 VC)
 p_main.ads:9:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 p_main.ads:10:06: warning: postcondition does not mention function result [-gnatw.t]
 p_main.ads:10:14: info: postcondition proved (CVC5: 2 VC)
-p_main.ads:12:22: high: range check might fail, cannot prove upper bound for Id (3) [reason for check: default component value must fit in the type]
+p_main.ads:12:22: high: range check might fail, cannot prove upper bound for Id (3) [reason for check: default component value must fit in the type] [provers reached step limit before completing the proof]
 pack.ads:6:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 pack.ads:8:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 pack.ads:9:14: info: postcondition proved (CVC5: 3 VC)
 pack.ads:11:12: info: range check proved (CVC5: 2 VC)
-pack.ads:13:22: high: range check might fail, cannot prove upper bound for Id (3) [reason for check: default component value must fit in the type]
+pack.ads:13:22: high: range check might fail, cannot prove upper bound for Id (3) [reason for check: default component value must fit in the type] [provers reached step limit before completing the proof]
 third.adb:6:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 third.adb:8:12: info: range check proved (CVC5: 2 VC)
-third.adb:10:22: high: range check might fail, cannot prove upper bound for Id (3) [reason for check: default component value must fit in the type]
+third.adb:10:22: high: range check might fail, cannot prove upper bound for Id (3) [reason for check: default component value must fit in the type] [provers reached step limit before completing the proof]
 third.adb:12:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 third.adb:13:14: info: postcondition proved (CVC5: 3 VC)

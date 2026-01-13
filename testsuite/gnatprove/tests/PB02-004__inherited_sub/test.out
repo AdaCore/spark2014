@@ -13,7 +13,7 @@ main.adb:29:14: high: "Z.Content" is not initialized
 main.adb:32:23: info: precondition proved (Trivial: 1 VC)
 main.adb:33:26: info: precondition proved (Trivial: 1 VC)
 main.adb:34:23: info: precondition proved (Trivial: 1 VC)
-rec.ads:17:22: medium: range check might fail, cannot prove upper bound for Z
+rec.ads:17:22: medium: range check might fail, cannot prove upper bound for Z [provers reached step limit before completing the proof]
 rec.ads:23:28: info: range check proved (CVC5: 2 VC)
-rec.ads:31:07: medium: range check might fail
+rec.ads:31:07: medium: range check might fail [provers reached step limit before completing the proof]
 rec.ads:35:07: info: range check proved (CVC5: 2 VC)

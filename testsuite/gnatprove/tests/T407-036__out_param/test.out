@@ -10,6 +10,6 @@ test_arr_out.adb:16:12: info: index check proved (CVC5: 2 VC)
 test_arr_out.adb:16:12: info: overflow check proved (CVC5: 2 VC)
 test_arr_out.adb:19:14: info: length check proved (CVC5: 3 VC)
 test_arr_out.adb:21:16: info: length check proved (CVC5: 3 VC)
-test_arr_out.adb:22:19: medium: assertion might fail
+test_arr_out.adb:22:19: medium: assertion might fail [provers reached step limit before completing the proof]
 test_arr_out.adb:22:24: info: index check proved (CVC5: 2 VC)
 test_arr_out.adb:22:24: info: overflow check proved (CVC5: 2 VC)

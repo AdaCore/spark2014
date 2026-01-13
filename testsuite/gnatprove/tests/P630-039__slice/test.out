@@ -9,7 +9,7 @@ bug.ads:16:13: info: implicit aspect Always_Terminates on "Has_Sub_Range" has be
 bug.ads:21:33: info: overflow check proved (CVC5: 2 VC)
 bug.ads:21:45: info: precondition proved (CVC5: 2 VC)
 bug.ads:21:54: info: range check proved (CVC5: 4 VC)
-bug.ads:21:64: medium: overflow check might fail, cannot prove upper bound for A'First + I [reason for check: result of addition must fit in a 32-bits machine integer]
+bug.ads:21:64: medium: overflow check might fail, cannot prove upper bound for A'First + I [reason for check: result of addition must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
 bug.ads:22:26: info: range check proved (CVC5: 2 VC)
 bug.ads:23:26: info: range check proved (CVC5: 2 VC)
 bug.ads:31:25: info: range check proved (CVC5: 2 VC)

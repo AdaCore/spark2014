@@ -1,2 +1,2 @@
 inst.adb:6:03: medium: in default value at inst.adb:6
-inst.adb:6:03: medium: predicate check might fail on default value
+inst.adb:6:03: medium: predicate check might fail on default value [provers gave up before completing the proof]

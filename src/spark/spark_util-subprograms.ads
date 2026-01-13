@@ -188,16 +188,18 @@ package SPARK_Util.Subprograms is
      Pre  =>
        Ekind (E)
        in E_Function | E_Package | E_Procedure | Entry_Kind | E_Subprogram_Type
-       and then Name
-                in Pragma_Precondition
-                 | Pragma_Postcondition
-                 | Pragma_Refined_Post
-                 | Pragma_Initial_Condition
-                 | Pragma_Contract_Cases
-                 | Pragma_Subprogram_Variant
-       and then (if Name in Pragma_Precondition | Pragma_Postcondition
-                 then not (Classwide and Inherited)
-                 else not Classwide and not Inherited),
+       and then
+         Name
+         in Pragma_Precondition
+          | Pragma_Postcondition
+          | Pragma_Refined_Post
+          | Pragma_Initial_Condition
+          | Pragma_Contract_Cases
+          | Pragma_Subprogram_Variant
+       and then
+         (if Name in Pragma_Precondition | Pragma_Postcondition
+          then not (Classwide and Inherited)
+          else not Classwide and not Inherited),
      Post =>
        (for all Expr of Find_Contracts'Result =>
           (if Name in Pragma_Contract_Cases | Pragma_Subprogram_Variant
@@ -252,20 +254,19 @@ package SPARK_Util.Subprograms is
      Pre  => Ekind (E) in Entry_Kind | E_Function | E_Procedure | E_Task_Type,
      Post =>
        No (Get_Body_Entity'Result)
-       or else (case Ekind (E) is
-                  when E_Entry        =>
-                    Ekind (Get_Body_Entity'Result) = E_Entry,
-                  when E_Entry_Family =>
-                    Ekind (Get_Body_Entity'Result) = E_Entry_Family,
-                  when E_Function     =>
-                    Ekind (Get_Body_Entity'Result)
-                    in E_Function | E_Subprogram_Body,
-                  when E_Procedure    =>
-                    Ekind (Get_Body_Entity'Result)
-                    in E_Procedure | E_Subprogram_Body,
-                  when E_Task_Type    =>
-                    Ekind (Get_Body_Entity'Result) = E_Task_Body,
-                  when others         => raise Program_Error);
+       or else
+         (case Ekind (E) is
+            when E_Entry        => Ekind (Get_Body_Entity'Result) = E_Entry,
+            when E_Entry_Family =>
+              Ekind (Get_Body_Entity'Result) = E_Entry_Family,
+            when E_Function     =>
+              Ekind (Get_Body_Entity'Result) in E_Function | E_Subprogram_Body,
+            when E_Procedure    =>
+              Ekind (Get_Body_Entity'Result)
+              in E_Procedure | E_Subprogram_Body,
+            when E_Task_Type    =>
+              Ekind (Get_Body_Entity'Result) = E_Task_Body,
+            when others         => raise Program_Error);
    --  @param E is an entry, subprogram or task
    --  @return the body entity for the given entry/subprogram/task.
    --    This is a wrapper around Entry_Body_Entity, Subprogram_Body_Entity
@@ -409,14 +410,16 @@ package SPARK_Util.Subprograms is
      Pre =>
        Ekind (E)
        in E_Function | E_Package | E_Procedure | Entry_Kind | E_Subprogram_Type
-       and then Name
-                in Pragma_Precondition
-                 | Pragma_Postcondition
-                 | Pragma_Refined_Post
-                 | Pragma_Initial_Condition
-                 | Pragma_Contract_Cases
-       and then (if Name not in Pragma_Precondition | Pragma_Postcondition
-                 then not Classwide and not Inherited);
+       and then
+         Name
+         in Pragma_Precondition
+          | Pragma_Postcondition
+          | Pragma_Refined_Post
+          | Pragma_Initial_Condition
+          | Pragma_Contract_Cases
+       and then
+         (if Name not in Pragma_Precondition | Pragma_Postcondition
+          then not Classwide and not Inherited);
    --  @param E subprogram or package
    --  @param Name contract name
    --  @param Classwide True when asking for the classwide version of contract
@@ -516,8 +519,9 @@ package SPARK_Util.Subprograms is
        (if Is_Possibly_Nonreturning_Procedure'Result
         then
           Ekind (E) = E_Procedure
-          or else (Ekind (E) = E_Function
-                   and then Is_Function_With_Side_Effects (E)));
+          or else
+            (Ekind (E) = E_Function
+             and then Is_Function_With_Side_Effects (E)));
    --  @param E either a procedure that might have a No_Return or
    --           Might_Not_Return contract, or a program unit that might call
    --           such a procedure

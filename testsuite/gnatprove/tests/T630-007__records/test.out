@@ -5,6 +5,7 @@ mutable_discrs.adb:14:04: info: range check proved (CVC5: 2 VC)
 mutable_discrs.adb:21:04: warning: initialization of "Y" has no effect
 mutable_discrs.adb:21:13: info: discriminant check proved (CVC5: 1 VC)
 mutable_discrs.adb:22:04: warning: initialization of "A" has no effect
+mutable_discrs.adb:23:33: medium: "Vol" might not be written after elaboration of main program "Mutable_Discrs"
 mutable_discrs.adb:26:04: info: no contextual analysis of "Do_Something" (body not seen yet)
 mutable_discrs.adb:26:04: warning: assuming "Do_Something" always terminates
 mutable_discrs.adb:26:04: warning: assuming "Do_Something" has no effect on global items
@@ -28,7 +29,7 @@ mutable_discrs.adb:30:04: warning: no Global contract available for "Do_Somethin
 mutable_discrs.adb:30:04: warning: statement has no effect
 mutable_discrs.adb:30:20: info: length check proved (CVC5: 3 VC)
 mutable_discrs.adb:30:20: warning: "A" is set by "Do_Something_3" but not used after the call
-mutable_discrs.adb:31:19: medium: assertion might fail
+mutable_discrs.adb:31:19: medium: assertion might fail [provers reached step limit before completing the proof]
 tagged_type.adb:7:16: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
 tagged_type.adb:13:16: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
 tagged_type.adb:20:19: info: assertion proved (CVC5: 1 VC)

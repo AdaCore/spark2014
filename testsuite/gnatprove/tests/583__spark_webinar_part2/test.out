@@ -30,11 +30,11 @@ stacks.ads:24:14: info: postcondition proved (CVC5: 1 VC)
 stacks.ads:35:17: info: range check proved (CVC5: 4 VC)
 stacks.ads:37:36: info: predicate check proved (CVC5: 3 VC; Trivial: 1 VC)
 types.adb:11:10: info: index check proved (CVC5: 2 VC)
-types_with_rte.adb:11:12: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: add precondition (if J >= 0 then I <= A'Last - J else I >= A'First - J) to subprogram at types_with_rte.ads:9]
-types_with_rte.adb:11:12: medium: overflow check might fail, cannot prove lower bound for I + J [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if J >= 0 then I <= Integer'Last - J else I >= Integer'First - J) to subprogram at types_with_rte.ads:9]
-types_with_rte.adb:13:22: high: divide by zero might fail (e.g. when Q = 0) [possible fix: add precondition (Q /= 0) to subprogram at types_with_rte.ads:9]
-types_with_rte.adb:13:22: medium: overflow check might fail, cannot prove lower bound for P / Q [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: add precondition (P / Q >= Integer'First) to subprogram at types_with_rte.ads:9]
-types_with_rte.adb:13:22: medium: range check might fail, cannot prove lower bound for P / Q [reason for check: result of division must fit in the target type of the assignment] [possible fix: add precondition (P / Q >= Element'First) to subprogram at types_with_rte.ads:9]
+types_with_rte.adb:11:12: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: add precondition (if J >= 0 then I <= A'Last - J else I >= A'First - J) to subprogram at types_with_rte.ads:9] [provers reached step limit before completing the proof]
+types_with_rte.adb:11:12: medium: overflow check might fail, cannot prove lower bound for I + J [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if J >= 0 then I <= Integer'Last - J else I >= Integer'First - J) to subprogram at types_with_rte.ads:9] [provers reached step limit before completing the proof]
+types_with_rte.adb:13:22: high: divide by zero might fail (e.g. when Q = 0) [possible fix: add precondition (Q /= 0) to subprogram at types_with_rte.ads:9] [provers reached step limit before completing the proof]
+types_with_rte.adb:13:22: medium: overflow check might fail, cannot prove lower bound for P / Q [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: add precondition (P / Q >= Integer'First) to subprogram at types_with_rte.ads:9] [provers reached step limit before completing the proof]
+types_with_rte.adb:13:22: medium: range check might fail, cannot prove lower bound for P / Q [reason for check: result of division must fit in the target type of the assignment] [possible fix: add precondition (P / Q >= Element'First) to subprogram at types_with_rte.ads:9] [provers reached step limit before completing the proof]
 types_without_rte.adb:11:12: info: index check proved (CVC5: 2 VC)
 types_without_rte.adb:11:12: info: overflow check proved (CVC5: 2 VC)
 types_without_rte.adb:13:22: info: division check proved (CVC5: 1 VC)

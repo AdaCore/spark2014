@@ -25,44 +25,44 @@
 with Ada.Containers;
 with Ada.Float_Text_IO;
 with Ada.Strings.Fixed;
-with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
-with Ada.Text_IO;               use Ada.Text_IO;
-with Aspects;                   use Aspects;
-with CE_Display;                use CE_Display;
-with Checked_Types;             use Checked_Types;
-with Common_Containers;         use Common_Containers;
-with Einfo;                     use Einfo;
-with Einfo.Entities;            use Einfo.Entities;
-with Einfo.Utils;               use Einfo.Utils;
+with Ada.Strings.Unbounded;       use Ada.Strings.Unbounded;
+with Ada.Text_IO;                 use Ada.Text_IO;
+with Aspects;                     use Aspects;
+with CE_Display;                  use CE_Display;
+with Checked_Types;               use Checked_Types;
+with Common_Containers;           use Common_Containers;
+with Einfo.Entities;              use Einfo.Entities;
+with Einfo.Utils;                 use Einfo.Utils;
 with Errout;
 with Erroutc;
 with Flow_Generated_Globals.Phase_2;
-with Flow_Refinement;           use Flow_Refinement;
-with Flow_Utility;              use Flow_Utility;
+with Flow_Refinement;             use Flow_Refinement;
+with Flow_Utility;                use Flow_Utility;
+with Gnat2Why.Data_Decomposition; use Gnat2Why.Data_Decomposition;
 with Gnat2Why.Expr.Loops;
-with Gnat2Why.Util;             use Gnat2Why.Util;
-with Gnat2Why_Args;             use Gnat2Why_Args;
-with Gnat2Why_Opts;             use Gnat2Why_Opts;
-with GNATCOLL.Utils;            use GNATCOLL.Utils;
+with Gnat2Why.Util;               use Gnat2Why.Util;
+with Gnat2Why_Args;               use Gnat2Why_Args;
+with Gnat2Why_Opts;               use Gnat2Why_Opts;
+with GNATCOLL.Utils;              use GNATCOLL.Utils;
 with Lib.Xref;
-with Namet;                     use Namet;
-with Nlists;                    use Nlists;
-with Sem_Aggr;                  use Sem_Aggr;
-with Sem_Aux;                   use Sem_Aux;
-with Sem_Util;                  use Sem_Util;
-with Sinfo.Nodes;               use Sinfo.Nodes;
-with Sinfo.Utils;               use Sinfo.Utils;
-with Sinput;                    use Sinput;
-with Snames;                    use Snames;
+with Namet;                       use Namet;
+with Nlists;                      use Nlists;
+with Sem_Aggr;                    use Sem_Aggr;
+with Sem_Aux;                     use Sem_Aux;
+with Sem_Util;                    use Sem_Util;
+with Sinfo.Nodes;                 use Sinfo.Nodes;
+with Sinfo.Utils;                 use Sinfo.Utils;
+with Sinput;                      use Sinput;
+with Snames;                      use Snames;
 with SPARK_Atree;
-with SPARK_Definition.Annotate; use SPARK_Definition.Annotate;
-with SPARK_Util.Hardcoded;      use SPARK_Util.Hardcoded;
-with SPARK_Util.Subprograms;    use SPARK_Util.Subprograms;
-with SPARK_Util.Types;          use SPARK_Util.Types;
-with SPARK_Xrefs;               use SPARK_Xrefs;
-with Stringt;                   use Stringt;
-with String_Utils;              use String_Utils;
-with Uintp;                     use Uintp;
+with SPARK_Definition.Annotate;   use SPARK_Definition.Annotate;
+with SPARK_Util.Hardcoded;        use SPARK_Util.Hardcoded;
+with SPARK_Util.Subprograms;      use SPARK_Util.Subprograms;
+with SPARK_Util.Types;            use SPARK_Util.Types;
+with SPARK_Xrefs;                 use SPARK_Xrefs;
+with Stringt;                     use Stringt;
+with String_Utils;                use String_Utils;
+with Uintp;                       use Uintp;
 
 -------------------------
 -- Flow_Error_Messages --
@@ -612,22 +612,23 @@ package body Flow_Error_Messages is
    ---------------------
 
    procedure Error_Msg_Proof
-     (N           : Node_Id;
-      Extra_Msg   : String;
-      Is_Proved   : Boolean;
-      Tag         : VC_Kind;
-      Cntexmp     : JSON_Value;
-      Verdict     : Cntexmp_Verdict;
-      Check_Tree  : JSON_Value;
-      VC_File     : String;
-      VC_Loc      : Node_Id;
-      Editor_Cmd  : String;
-      Explanation : String;
-      E           : Entity_Id;
-      How_Proved  : Prover_Category;
-      Stats       : Prover_Stat_Maps.Map;
-      Check_Info  : Check_Info_Type;
-      CE_From_RAC : Boolean := False)
+     (N             : Node_Id;
+      Extra_Msg     : String;
+      Is_Proved     : Boolean;
+      Tag           : VC_Kind;
+      Cntexmp       : JSON_Value;
+      Verdict       : Cntexmp_Verdict;
+      Check_Tree    : JSON_Value;
+      VC_File       : String;
+      VC_Loc        : Node_Id;
+      Editor_Cmd    : String;
+      Explanation   : String;
+      E             : Entity_Id;
+      How_Proved    : Prover_Category;
+      Stats         : Prover_Stat_Maps.Map;
+      Unproved_Stat : Failed_Prover_Answer;
+      Check_Info    : Check_Info_Type;
+      CE_From_RAC   : Boolean := False)
    is
       function Get_Fix_Or_Verdict
         (N          : Node_Id;
@@ -713,13 +714,14 @@ package body Flow_Error_Messages is
          elsif Tag in Proof_High_Severity_Kind then
             Result := High_Check_Kind;
 
-         --  Alignment check for overlays are static, so we make them of high
-         --  severity.
+         --  Alignment checks are static, so we make them of high severity.
 
-         elsif Tag = VC_UC_Alignment
-           and then Present
-                      (Supported_Alias (SPARK_Atree.Get_Address_Expr (N)))
+         elsif Tag = VC_UC_Align_Overlay
+           and then Present (Overlaid_Entity (Defining_Entity (N)))
          then
+            Result := High_Check_Kind;
+
+         elsif Tag = VC_UC_Align_UC then
             Result := High_Check_Kind;
 
          --  The raise expression/statement is generated by the compiler on a
@@ -779,8 +781,8 @@ package body Flow_Error_Messages is
          --  Check if VC is not proved or statistics are enabled
 
          if not Is_Proved
-           or else Gnat2Why_Args.Report_Mode
-                   not in GPR_Statistics | GPR_Provers
+           or else
+             Gnat2Why_Args.Report_Mode not in GPR_Statistics | GPR_Provers
          then
             return "";
          end if;
@@ -869,19 +871,20 @@ package body Flow_Error_Messages is
 
       Result : JSON_Result_Type :=
         JSON_Result_Type'
-          (Msg        => Create (Message),
-           Tag        => To_Unbounded_String (VC_Kind'Image (Tag)),
-           Severity   => Severity,
-           Span       => Span,
-           E          => E,
-           Cntexmp    => Pretty_Cntexmp,
-           Check_Tree => Check_Tree,
-           VC_File    => To_Unbounded_String (VC_File),
-           VC_Loc     => VC_Slc,
-           How_Proved => How_Proved,
-           Stats      => Stats,
-           Editor_Cmd => To_Unbounded_String (Editor_Cmd),
-           others     => <>);
+          (Msg           => Create (Message),
+           Tag           => To_Unbounded_String (VC_Kind'Image (Tag)),
+           Severity      => Severity,
+           Span          => Span,
+           E             => E,
+           Cntexmp       => Pretty_Cntexmp,
+           Check_Tree    => Check_Tree,
+           VC_File       => To_Unbounded_String (VC_File),
+           VC_Loc        => VC_Slc,
+           How_Proved    => How_Proved,
+           Stats         => Stats,
+           Editor_Cmd    => To_Unbounded_String (Editor_Cmd),
+           Unproved_Stat => Unproved_Stat,
+           others        => <>);
 
       --  Start of processing for Error_Msg_Proof
 
@@ -1105,9 +1108,9 @@ package body Flow_Error_Messages is
             elsif Present (Get_Pragma (E, Pragma_Always_Terminates)) then
                return
                  (if Ekind (E) = E_Entry then "entry" else "procedure")
-                 & " """
-                 & Source_Name (E)
-                 & """ has an Always_Terminates aspect";
+                 & " "
+                 & Pretty_Source_Name (E)
+                 & " has an Always_Terminates aspect";
 
             --  Search for an enclosing package with an Always_Terminates
             --  aspect.
@@ -1123,12 +1126,11 @@ package body Flow_Error_Messages is
                           (if Ekind (E) = E_Entry
                            then "entry"
                            else "procedure")
-                          & " """
-                          & Source_Name (E)
-                          & """ has an implicit "
-                          & "Always_Terminates aspect inherited from """
-                          & Source_Name (Scop)
-                          & '"';
+                          & " "
+                          & Pretty_Source_Name (E)
+                          & " has an implicit "
+                          & "Always_Terminates aspect inherited from "
+                          & Pretty_Source_Name (Scop);
                      end if;
                      Scop := Scope (Scop);
                   end loop;
@@ -1141,8 +1143,9 @@ package body Flow_Error_Messages is
             declare
                function Is_Body_Or_Ghost_Inlined (N : Node_Id) return Boolean
                is (Nkind (N) in N_Entity_Body
-                   or else (Is_Inlined_Call (N)
-                            and then Is_Ghost_With_Respect_To_Context (N)));
+                   or else
+                     (Is_Inlined_Call (N)
+                      and then Is_Ghost_With_Respect_To_Context (N)));
 
                function Enclosing_Body_Or_Ghost_Inlined is new
                  First_Parent_With_Property (Is_Body_Or_Ghost_Inlined);
@@ -1174,14 +1177,14 @@ package body Flow_Error_Messages is
                              Get_Exceptions_For_Subp (Caller).Print;
                         begin
                            return
-                             Source_Name (Caller)
+                             Pretty_Source_Name (Caller)
                              & " allows propagating "
                              & Expected_Exc;
                         end;
                      elsif Is_Inlined_Call (Scop) then
                         return
                           "ghost inlined call to "
-                          & Source_Name
+                          & Pretty_Source_Name
                               (Called_Entity_From_Inlined_Call (Scop))
                           & " shall not propagate exceptions";
                      else
@@ -1243,8 +1246,7 @@ package body Flow_Error_Messages is
             end case;
 
          when VC_FP_Overflow_Check | VC_Overflow_Check =>
-            Overflow_Case :
-            declare
+            Overflow_Case : declare
 
                --  Generate a suitable detailed message for a check on value
                --  Val having size Siz bits.
@@ -1345,8 +1347,7 @@ package body Flow_Error_Messages is
                   end;
 
                when N_Attribute_Reference                           =>
-                  Attribute :
-                  declare
+                  Attribute : declare
                      Aname   : constant Name_Id := Attribute_Name (Par);
                      Attr_Id : constant Attribute_Id :=
                        Get_Attribute_Id (Aname);
@@ -1381,8 +1382,9 @@ package body Flow_Error_Messages is
                      --  Construct enclosing the aggregate
                   begin
                      if Nkind (Ancestor) = N_Pragma_Argument_Association
-                       and then Pragma_Name (Parent (Ancestor))
-                                = Name_Subprogram_Variant
+                       and then
+                         Pragma_Name (Parent (Ancestor))
+                         = Name_Subprogram_Variant
                      then
                         pragma
                           Assert
@@ -1489,10 +1491,11 @@ package body Flow_Error_Messages is
            & " the first element of their index type";
 
       elsif Tag = VC_Termination_Check
-        and then Nkind (N)
-                 in N_Function_Call
-                  | N_Procedure_Call_Statement
-                  | N_Entry_Call_Statement
+        and then
+          Nkind (N)
+          in N_Function_Call
+           | N_Procedure_Call_Statement
+           | N_Entry_Call_Statement
       then
          declare
             Subp : constant Entity_Id := Get_Called_Entity (N);
@@ -1574,7 +1577,7 @@ package body Flow_Error_Messages is
               "validity of the "
               & Contract
               & " of "
-              & Source_Name (E)
+              & Pretty_Source_Name (E)
               & " should be implied by its refined postcondition";
          end;
 
@@ -1680,8 +1683,8 @@ package body Flow_Error_Messages is
         Post =>
           No (Get_Loop_Condition_Or_Variable'Result)
           or else Nkind (Get_Loop_Condition_Or_Variable'Result) in N_Subexpr
-          or else Ekind (Get_Loop_Condition_Or_Variable'Result)
-                  = E_Loop_Parameter;
+          or else
+            Ekind (Get_Loop_Condition_Or_Variable'Result) = E_Loop_Parameter;
       --  Get the loop condition for a WHILE loop or the loop variable for a
       --  FOR loop. Return Empty for a plain loop.
 
@@ -1758,13 +1761,12 @@ package body Flow_Error_Messages is
 
          function Callee_Name (Subp : Entity_Id) return String
          is (if Nkind (Subp) = N_Defining_Operator_Symbol
-             then "operator " & Source_Name (Subp)
+             then "operator " & Pretty_Source_Name (Subp)
              elsif Ekind (Subp) = E_Function
-             then "function " & Source_Name (Subp)
+             then "function " & Pretty_Source_Name (Subp)
              else
-               "type "
-               & Source_Name
-                   (Defining_Entity (Associated_Node_For_Itype (Subp))))
+               Pretty_Source_Name
+                 (Defining_Entity (Associated_Node_For_Itype (Subp))))
          with Pre => Ekind (Subp) in E_Function | E_Subprogram_Type;
 
          function Callee_Names (Callees : Entity_Sets.Set) return String;
@@ -1841,8 +1843,9 @@ package body Flow_Error_Messages is
                --  This is a dispatching call with Post'Class specified
 
                elsif Dispatch
-                 and then Has_Contracts
-                            (Subp, Pragma_Postcondition, Classwide => True)
+                 and then
+                   Has_Contracts
+                     (Subp, Pragma_Postcondition, Classwide => True)
                then
                   null;
 
@@ -1850,8 +1853,9 @@ package body Flow_Error_Messages is
                --  specified.
 
                elsif not Dispatch
-                 and then (Has_Contracts (Subp, Pragma_Postcondition)
-                           or else Has_Contracts (Subp, Pragma_Contract_Cases))
+                 and then
+                   (Has_Contracts (Subp, Pragma_Postcondition)
+                    or else Has_Contracts (Subp, Pragma_Contract_Cases))
                then
                   null;
 
@@ -2295,9 +2299,9 @@ package body Flow_Error_Messages is
               Nkind (Parent (Par)) = N_Component_Association
               and then Is_List_Member (Par)
               and then List_Containing (Par) = Choices (Parent (Par))
-              and then (not Is_Array_Type (Etype (Parent (Parent (Par))))
-                        or else Is_Deep_Choice
-                                  (Par, Etype (Parent (Parent (Par)))));
+              and then
+                (not Is_Array_Type (Etype (Parent (Parent (Par))))
+                 or else Is_Deep_Choice (Par, Etype (Parent (Parent (Par)))));
          end Is_Choice_Of_Aggr;
 
          Vars : Flow_Id_Sets.Set;
@@ -2307,8 +2311,7 @@ package body Flow_Error_Messages is
          --  back variables mentioned in the precondition into actuals.
 
          if Tag = VC_Precondition and then Nkind (N) in N_Subprogram_Call then
-            Handle_Precondition_Check :
-            declare
+            Handle_Precondition_Check : declare
                Subp : constant Entity_Id := SPARK_Atree.Get_Called_Entity (N);
                Pres : constant Node_Lists.List :=
                  Get_Pre_Post (Subp, Pragma_Precondition);
@@ -2385,7 +2388,7 @@ package body Flow_Error_Messages is
             pragma
               Assert
                 (Nkind (N) in N_Subexpr
-                   and then Nkind (N) /= N_Procedure_Call_Statement);
+                 and then Nkind (N) /= N_Procedure_Call_Statement);
 
             Vars := Get_Filtered_Variables_For_Proof (N, N);
          end if;
@@ -2451,8 +2454,9 @@ package body Flow_Error_Messages is
 
                  --  The reference may be modified through a dereference
 
-                 or else (Is_Access_Type (Etype (Ent))
-                          and then Nkind (Parent (N)) = N_Selected_Component)
+                 or else
+                   (Is_Access_Type (Etype (Ent))
+                    and then Nkind (Parent (N)) = N_Selected_Component)
                then
                   return Abandon;
                end if;
@@ -2493,7 +2497,7 @@ package body Flow_Error_Messages is
       if Is_Unprovable_Check (Tag, N) then
          return No_Message;
 
-      elsif Tag = VC_UC_Alignment then
+      elsif Tag = VC_UC_Align_Overlay then
          pragma Assert (Nkind (N) = N_Object_Declaration);
          declare
             Obj    : constant Entity_Id := Defining_Identifier (N);
@@ -2503,19 +2507,55 @@ package body Flow_Error_Messages is
          begin
             --  Alignment VC is only issued when there is an address clause
             pragma Assert (Present (Expr));
-            if not Known_Alignment (Obj) then
+            if No (Get_Attribute_Value (Obj, Attribute_Alignment)) then
                return Create ("overlaying object " & Common);
             elsif Nkind (Expr) = N_Attribute_Reference
-              and then Get_Attribute_Id (Attribute_Name (Expr))
-                       = Attribute_Address
-              and then (Nkind (Prefix (Expr)) not in N_Has_Entity
-                        or else not Known_Alignment (Entity (Prefix (Expr))))
+              and then
+                Get_Attribute_Id (Attribute_Name (Expr)) = Attribute_Address
             then
-               return Create ("overlaid object " & Common);
+               if Nkind (Prefix (Expr)) not in N_Has_Entity then
+                  return Create ("overlaid object " & Common);
+               else
+                  if No
+                       (Get_Attribute_Value
+                          (Entity (Prefix (Expr)), Attribute_Alignment))
+                  then
+                     return Create ("overlaid object " & Common);
+                  end if;
+               end if;
             end if;
             return No_Message;
          end;
 
+      elsif Tag = VC_UC_Align_UC then
+         declare
+            Source, Target       : Node_Id;
+            Src_Ty, Tar_Ty       : Entity_Id;
+            Src_Align, Tar_Align : Uint;
+         begin
+            Get_Unchecked_Conversion_Args (N, Source, Target);
+            Src_Ty := Retysp (Entity (Source));
+            Tar_Ty := Retysp (Entity (Target));
+            Src_Align :=
+              Gnat2Why.Data_Decomposition.Get_Attribute_Value
+                (Src_Ty, Attribute_Alignment);
+            Tar_Align :=
+              Gnat2Why.Data_Decomposition.Get_Attribute_Value
+                (Tar_Ty, Attribute_Alignment);
+            if No (Src_Align) then
+               return
+                 Create
+                   ("source type of unchecked conversion should have an "
+                    & "Alignment representation clause");
+            elsif No (Tar_Align) then
+               return
+                 Create
+                   ("target type of unchecked conversion should have an "
+                    & "Alignment representation clause");
+            else
+               return No_Message;
+            end if;
+         end;
       --  Do not try to generate a fix message for termination checks and exit
       --  cases. They are not properly handled and lead to erroneous messages.
 
@@ -2564,8 +2604,9 @@ package body Flow_Error_Messages is
       --  where the VC is a precondition check.
 
       if Nkind (N) not in N_Subexpr | N_Assignment_Statement
-        and then (if Nkind (N) = N_Procedure_Call_Statement
-                  then Tag = VC_Precondition)
+        and then
+          (if Nkind (N) = N_Procedure_Call_Statement
+           then Tag = VC_Precondition)
       then
          return No_Message;
 
@@ -2575,8 +2616,9 @@ package body Flow_Error_Messages is
 
       elsif Present (Enclosing_Subp)
         and then Is_Subprogram (Enclosing_Subp)
-        and then (Is_DIC_Procedure (Enclosing_Subp)
-                  or else Is_Invariant_Procedure (Enclosing_Subp))
+        and then
+          (Is_DIC_Procedure (Enclosing_Subp)
+           or else Is_Invariant_Procedure (Enclosing_Subp))
       then
          return No_Message;
 
@@ -2768,8 +2810,9 @@ package body Flow_Error_Messages is
                         --  bounds/discriminants are passed as inputs.
 
                         elsif not Is_Constrained (Etype (Formal))
-                          and then (Is_Array_Type (Etype (Formal))
-                                    or else Has_Discriminants (Etype (Formal)))
+                          and then
+                            (Is_Array_Type (Etype (Formal))
+                             or else Has_Discriminants (Etype (Formal)))
                         then
                            Out_Vars.Insert (Id);
                         end if;
@@ -2823,12 +2866,13 @@ package body Flow_Error_Messages is
 
             Check_Inside_Assertion : constant Boolean :=
               Nkind (Instr) = N_Pragma
-              and then Get_Pragma_Id (Pragma_Name (Instr))
-                       in Pragma_Precondition
-                        | Pragma_Postcondition
-                        | Pragma_Contract_Cases
-                        | Pragma_Check
-                        | Pragma_Loop_Variant;
+              and then
+                Get_Pragma_Id (Pragma_Name (Instr))
+                in Pragma_Precondition
+                 | Pragma_Postcondition
+                 | Pragma_Contract_Cases
+                 | Pragma_Check
+                 | Pragma_Loop_Variant;
             --  Check is inside an assertion
 
             Check_Vars : Flow_Id_Sets.Set := Get_Variables_From_Node (N, Tag);
@@ -3011,13 +3055,13 @@ package body Flow_Error_Messages is
                           or else Is_Standard_Type (Typ);
                         Lo_Image   : constant String :=
                           (if Use_Typ
-                           then Source_Name (Typ) & "'First"
+                           then Raw_Source_Name (Typ) & "'First"
                            elsif Present (Lo_Value)
                            then UI_Image (Lo_Value, Decimal)
                            else String_Of_Node (Lo));
                         Hi_Image   : constant String :=
                           (if Use_Typ
-                           then Source_Name (Typ) & "'Last"
+                           then Raw_Source_Name (Typ) & "'Last"
                            elsif Present (Hi_Value)
                            then UI_Image (Hi_Value, Decimal)
                            else String_Of_Node (Hi));
@@ -3027,7 +3071,7 @@ package body Flow_Error_Messages is
                              " >= "
                              & (if Larger_Typ.Kind = Larger_Source
                                 then
-                                  Source_Name (Larger_Typ.Typ)
+                                  Raw_Source_Name (Larger_Typ.Typ)
                                   & "("
                                   & Lo_Image
                                   & ")"
@@ -3037,13 +3081,13 @@ package body Flow_Error_Messages is
                              " <= "
                              & (if Larger_Typ.Kind = Larger_Source
                                 then
-                                  Source_Name (Larger_Typ.Typ)
+                                  Raw_Source_Name (Larger_Typ.Typ)
                                   & "("
                                   & Hi_Image
                                   & ")"
                                 else Hi_Image)
                            elsif Use_Typ
-                           then " in " & Source_Name (Typ)
+                           then " in " & Raw_Source_Name (Typ)
                            else " in " & Lo_Image & " .. " & Hi_Image);
 
                         --  When possible, put the suggested precondition in
@@ -3147,7 +3191,7 @@ package body Flow_Error_Messages is
 
                            elsif Larger_Typ.Kind = Larger_Target
                            then
-                             Source_Name (Larger_Typ.Typ)
+                             Raw_Source_Name (Larger_Typ.Typ)
                              & "("
                              & String_Of_Node (N)
                              & ")"
@@ -3170,7 +3214,7 @@ package body Flow_Error_Messages is
                         pragma
                           Assert
                             (if Nkind (N) = N_Attribute_Reference
-                               then Attribute_Name (N) = Name_Remainder);
+                             then Attribute_Name (N) = Name_Remainder);
                         Opnd : constant Opt_N_Extended_Subexpr_Id :=
                           Info.Divisor;
                      begin
@@ -3178,7 +3222,7 @@ package body Flow_Error_Messages is
                            declare
                               Name     : constant String :=
                                 (if Nkind (Opnd) in N_Defining_Identifier
-                                 then Source_Name (Opnd)
+                                 then Raw_Source_Name (Opnd)
                                  else String_Of_Node (Opnd));
                               Line_Num : constant String :=
                                 Get_Line_Number (N, Sloc (Enclosing_Subp));
@@ -3222,10 +3266,11 @@ package body Flow_Error_Messages is
                begin
                   if Present (Formal)
                     and then Ekind (Formal) = E_Out_Parameter
-                    and then Tag
-                             not in VC_Length_Check
-                                  | VC_Discriminant_Check
-                                  | VC_Resource_Leak
+                    and then
+                      Tag
+                      not in VC_Length_Check
+                           | VC_Discriminant_Check
+                           | VC_Resource_Leak
                   then
                      null;
                   else
@@ -3554,8 +3599,9 @@ package body Flow_Error_Messages is
 
                         if Nkind (Stmt) = N_Subprogram_Declaration then
                            if No (Prag_N)
-                             or else Get_Pragma (Proc, Get_Pragma_Id (Prag_N))
-                                     /= Prag_N
+                             or else
+                               Get_Pragma (Proc, Get_Pragma_Id (Prag_N))
+                               /= Prag_N
                            then
                               --  Retrieve the next explanation node to
                               --  continue the search.
@@ -3573,11 +3619,12 @@ package body Flow_Error_Messages is
 
                         if not Restarted_Search
                           and then Present (Prag_N)
-                          and then Get_Pragma_Id (Prag_N)
-                                   in Pragma_Post
-                                    | Pragma_Postcondition
-                                    | Pragma_Post_Class
-                                    | Pragma_Refined_Post
+                          and then
+                            Get_Pragma_Id (Prag_N)
+                            in Pragma_Post
+                             | Pragma_Postcondition
+                             | Pragma_Post_Class
+                             | Pragma_Refined_Post
                         then
                            declare
                               Body_N : constant Node_Id := Get_Body (Proc);
@@ -3633,11 +3680,12 @@ package body Flow_Error_Messages is
                         --  an explanation.
 
                         if Present (Prag_N)
-                          and then Get_Pragma_Id (Prag_N)
-                                   in Pragma_Post
-                                    | Pragma_Postcondition
-                                    | Pragma_Post_Class
-                                    | Pragma_Refined_Post
+                          and then
+                            Get_Pragma_Id (Prag_N)
+                            in Pragma_Post
+                             | Pragma_Postcondition
+                             | Pragma_Post_Class
+                             | Pragma_Refined_Post
                           and then Has_Post_State (N)
                         then
                            goto END_OF_SEARCH;
@@ -3826,17 +3874,19 @@ package body Flow_Error_Messages is
                     From    => Fst_Colon_Index + 1);
             begin
                if File = Slice (Limit_Region, 1, Fst_Colon_Index - 1)
-                 and then Positive (Line)
-                          in Integer'Value
-                               (Slice
-                                  (Limit_Region,
-                                   Fst_Colon_Index + 1,
-                                   Snd_Colon_Index - 1))
-                           .. Integer'Value
-                                (Slice
-                                   (Limit_Region,
-                                    Snd_Colon_Index + 1,
-                                    Length (Limit_Region)))
+                 and then
+                   Positive (Line)
+                   in Integer'Value
+                        (Slice
+                           (Limit_Region,
+                            Fst_Colon_Index + 1,
+                            Snd_Colon_Index - 1))
+                    ..
+                      Integer'Value
+                        (Slice
+                           (Limit_Region,
+                            Snd_Colon_Index + 1,
+                            Length (Limit_Region)))
                then
                   return True;
                end if;
@@ -3944,37 +3994,46 @@ package body Flow_Error_Messages is
 
          when GPO_Oneline =>
             declare
-               User_Msg        : constant String :=
+               User_Msg         : constant String :=
                  (if Obj.User_Message /= Null_Unbounded_String
                   then " [user message: " & To_String (Obj.User_Message) & "]"
                   else "");
-               CE_Msg          : constant String :=
+               CE_Msg           : constant String :=
                  (if Obj.CE /= Null_Unbounded_String
                   then " (e.g. when " & To_String (Obj.CE) & ")"
                   else "");
-               Details_Msg     : constant String :=
+               Details_Msg      : constant String :=
                  (if not Is_Suppressed
                     and then Obj.Details /= Null_Unbounded_String
                   then " [reason for check: " & To_String (Obj.Details) & "]"
                   else "");
-               Explanation_Msg : constant String :=
+               Explanation_Msg  : constant String :=
                  (if Obj.Explanation /= Null_Unbounded_String
                   then
                     " [possible explanation: "
                     & To_String (Obj.Explanation)
                     & "]"
                   else "");
-               Fix_Msg         : constant String :=
+               Fix_Msg          : constant String :=
                  (if Obj.Fix /= No_Message
                   then " [possible fix: " & To_String (Obj.Fix.Msg) & "]"
                   else "");
-               Msg4            : constant Message :=
+               Unproved_Msg_Raw : constant String :=
+                 (if not Is_Suppressed
+                  then To_User_Msg (Obj.Unproved_Stat)
+                  else "");
+               Unproved_Msg     : constant String :=
+                 (if Unproved_Msg_Raw /= ""
+                  then " [" & Unproved_Msg_Raw & "]"
+                  else "");
+               Msg4             : constant Message :=
                  Obj.Msg
                  & User_Msg
                  & CE_Msg
                  & Details_Msg
                  & Explanation_Msg
-                 & Fix_Msg;
+                 & Fix_Msg
+                 & Unproved_Msg;
             begin
                pragma Assert (Obj.Fix.Names.Is_Empty);
                pragma Assert (Obj.Msg.Secondary_Loc = No_Location);
@@ -4035,6 +4094,20 @@ package body Flow_Error_Messages is
                      & Erroutc.SGR_Reset
                      & To_String (Obj.Fix.Msg),
                      Secondary_Loc => Obj.Fix.Secondary_Loc));
+            end if;
+            if not Is_Suppressed then
+               declare
+                  Unproved_Msg_Raw : constant String :=
+                    To_User_Msg (Obj.Unproved_Stat);
+               begin
+                  if Unproved_Msg_Raw /= "" then
+                     My_Conts.Append
+                       (Create
+                          (Erroutc.SGR_Note
+                           & Unproved_Msg_Raw
+                           & Erroutc.SGR_Reset));
+                  end if;
+               end;
             end if;
             Wrap_Error_Msg (Obj.Msg);
       end case;
@@ -4286,10 +4359,15 @@ package body Flow_Error_Messages is
                return Prefix & " do not have the same size";
             end;
 
-         when VC_UC_Alignment                     =>
+         when VC_UC_Align_Overlay                 =>
             return
               "address in address clause might not be an integral "
               & "multiple of alignment of object";
+
+         when VC_UC_Align_UC                      =>
+            return
+              "alignment of source type of unchecked conversion might not be "
+              & "an integral multiple of alignment of target type";
 
          when VC_Initialization_Check             =>
             return "initialization check might fail";
@@ -4420,10 +4498,11 @@ package body Flow_Error_Messages is
                               Flow_Id_To_String
                                 ((F with delta Facet => Normal_Part)));
                         elsif Nkind (Get_Direct_Mapping_Id (F)) in N_Entity
-                          and then Ekind (Get_Direct_Mapping_Id (F))
-                                   = E_Constant
-                          and then not Is_Access_Variable
-                                         (Etype (Get_Direct_Mapping_Id (F)))
+                          and then
+                            Ekind (Get_Direct_Mapping_Id (F)) = E_Constant
+                          and then
+                            not Is_Access_Variable
+                                  (Etype (Get_Direct_Mapping_Id (F)))
                         then
                            declare
                               Var : constant Entity_Id :=
@@ -4540,8 +4619,8 @@ package body Flow_Error_Messages is
                                     case F_Name_String (Index) is
                                        when '_'    =>
                                           if Index < F_Name_String'Last
-                                            and then F_Name_String (Index + 1)
-                                                     = '_'
+                                            and then
+                                              F_Name_String (Index + 1) = '_'
                                           then
                                              Append (R, '.');
                                              Index := Index + 2;
@@ -4844,11 +4923,17 @@ package body Flow_Error_Messages is
                  Prefix & "types in unchecked conversion have the same size";
             end if;
 
-         when VC_UC_Alignment                     =>
+         when VC_UC_Align_Overlay                 =>
             return
               Prefix
               & "address in address clause is compatible with object "
               & "alignment";
+
+         when VC_UC_Align_UC                      =>
+            return
+              Prefix
+              & "alignment of source type of unchecked conversion is "
+              & "compatible with alignment of target type";
 
          when VC_UC_Volatile                      =>
             return

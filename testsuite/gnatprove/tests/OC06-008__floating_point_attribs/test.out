@@ -19,7 +19,7 @@ model_emin.ads:1:10: info: implicit aspect Always_Terminates on "Model_Emin" has
 model_epsilon.ads:1:10: info: implicit aspect Always_Terminates on "Model_Epsilon" has been proved, subprogram will terminate
 model_mantissa.ads:1:10: info: implicit aspect Always_Terminates on "Model_Mantissa" has been proved, subprogram will terminate
 model_small.ads:1:10: info: implicit aspect Always_Terminates on "Model_Small" has been proved, subprogram will terminate
-remainder.adb:3:16: medium: divide by zero might fail (e.g. when X = 0.0 and Y = 0.0) [possible fix: add precondition (Y /= 0) to subprogram at remainder.ads:1]
+remainder.adb:3:16: medium: divide by zero might fail (e.g. when X = 0.0 and Y = 0.0) [possible fix: add precondition (Y /= 0) to subprogram at remainder.ads:1] [provers reached step limit before completing the proof]
 remainder.ads:1:10: info: implicit aspect Always_Terminates on "Remainder" has been proved, subprogram will terminate
 rounding.ads:1:10: info: implicit aspect Always_Terminates on "Rounding" has been proved, subprogram will terminate
 safe_first.ads:1:10: info: implicit aspect Always_Terminates on "Safe_First" has been proved, subprogram will terminate

@@ -2,7 +2,7 @@ ext.ads:4:35: warning: Constraint_Error will be raised at run time [enabled by d
 ext.ads:4:35: warning: value not in range of type "My_Char" defined at line 2 [enabled by default]
 ext.ads:9:38: warning: Constraint_Error will be raised at run time [enabled by default]
 ext.ads:9:38: warning: value not in range of type "Small_Enum" defined at line 7 [enabled by default]
-test_access_conv.adb:11:04: medium: resource or memory leak might occur at end of scope
+test_access_conv.adb:11:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 test_access_conv.adb:13:04: warning: assuming "Incr" always terminates
 test_access_conv.adb:13:04: warning: assuming "Incr" has no effect on global items
 test_access_conv.adb:13:04: warning: no Always_Terminates aspect available for "Incr" [assumed-always-terminates]
@@ -51,12 +51,12 @@ test_new.adb:7:31: medium: resource or memory leak might occur [possible explana
 test_or_mod.adb:3:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 test_or_mod.adb:7:19: info: assertion proved (CVC5: 1 VC)
 test_or_mod.adb:8:19: info: assertion proved (CVC5: 1 VC)
-test_string.adb:4:19: medium: assertion might fail
-test_string.adb:4:26: low: precondition might fail [possible explanation: the check might be unprovable due to proof limitations; use --info for more information]
+test_string.adb:4:19: medium: assertion might fail [provers reached step limit before completing the proof]
+test_string.adb:4:26: low: precondition might fail [possible explanation: the check might be unprovable due to proof limitations; use --info for more information] [provers reached step limit before completing the proof]
 test_string.adb:4:26: warning: references to the "Value" attribute are handled in an imprecise way, so the precondition is impossible to prove and nothing will be known about the evaluation of the attribute reference [imprecise-value]
 test_tagged_records.adb:12:07: info: no contextual analysis of "Rand" (body not seen yet)
 test_tagged_records.adb:12:07: warning: assuming "Rand" has no effect on global items
 test_tagged_records.adb:12:07: warning: no Global contract available for "Rand" [assumed-global-null]
 test_tagged_records.adb:13:23: info: predicate check proved (CVC5: 1 VC)
-test_tagged_records.adb:15:17: medium: predicate check might fail
+test_tagged_records.adb:15:17: medium: predicate check might fail [provers reached step limit before completing the proof]
 test_tagged_records.adb:15:23: info: predicate check proved (CVC5: 1 VC)

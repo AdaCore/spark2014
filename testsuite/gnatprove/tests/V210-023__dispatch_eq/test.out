@@ -8,7 +8,7 @@ main.adb:20:28: info: index check proved (CVC5: 2 VC)
 main.adb:20:28: warning: assuming "Rand" has no effect on global items
 main.adb:20:28: warning: no Global contract available for "Rand" [assumed-global-null]
 main.adb:20:38: info: pointer dereference check proved (CVC5: 1 VC)
-main.adb:23:19: medium: assertion might fail
+main.adb:23:19: medium: assertion might fail [provers reached step limit before completing the proof]
 main.adb:23:22: info: index check proved (CVC5: 2 VC)
 main.adb:23:22: warning: assuming "Rand" has no effect on global items
 main.adb:23:22: warning: no Global contract available for "Rand" [assumed-global-null]

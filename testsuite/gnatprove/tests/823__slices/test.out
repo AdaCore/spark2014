@@ -31,8 +31,8 @@ test.adb:65:18: info: range check proved (CVC5: 4 VC)
 test.adb:65:48: info: range check proved (CVC5: 4 VC)
 test.adb:65:74: info: range check proved (CVC5: 4 VC)
 test.adb:66:17: info: range check proved (CVC5: 4 VC)
-test.adb:67:15: medium: postcondition might fail, cannot prove F (X (5 .. 104)) [possible fix: you should consider adding a postcondition to function F or turning it into an expression function in its unit spec]
+test.adb:67:15: medium: postcondition might fail, cannot prove F (X (5 .. 104)) [possible fix: you should consider adding a postcondition to function "F" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
 test.adb:67:18: info: range check proved (CVC5: 4 VC)
 test.adb:68:18: info: range check proved (CVC5: 4 VC)
-test.adb:72:07: medium: precondition might fail
+test.adb:72:07: medium: precondition might fail [provers reached step limit before completing the proof]
 test.adb:72:12: info: range check proved (CVC5: 4 VC)

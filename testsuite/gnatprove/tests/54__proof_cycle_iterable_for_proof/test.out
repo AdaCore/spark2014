@@ -78,7 +78,7 @@ element_through_model.ads:19:16: warning: implicit function contract might not b
 element_through_model.ads:21:16: info: implicit aspect Always_Terminates on "From_Array" has been proved, subprogram will terminate
 element_through_model.ads:27:10: info: range check proved (CVC5: 2 VC)
 element_through_model.ads:31:51: info: overflow check proved (CVC5: 2 VC)
-element_through_model.ads:35:21: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (Element_Through_Model_Id (Integer (Y)) in F .. L) to subprogram at line 19]
+element_through_model.ads:35:21: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (Element_Through_Model_Id (Integer (Y)) in F .. L) to subprogram at line 19] [provers reached step limit before completing the proof]
 element_through_model.ads:39:22: info: range check proved (CVC5: 2 VC)
 element_through_model.ads:39:36: info: range check proved (CVC5: 2 VC)
 element_through_model.ads:39:54: info: length check proved (CVC5: 2 VC; Trivial: 1 VC)
@@ -181,7 +181,7 @@ has_element_through_model.ads:19:16: warning: implicit function contract might n
 has_element_through_model.ads:21:16: info: implicit aspect Always_Terminates on "From_Array" has been proved, subprogram will terminate
 has_element_through_model.ads:27:10: info: range check proved (CVC5: 2 VC)
 has_element_through_model.ads:31:51: info: overflow check proved (CVC5: 2 VC)
-has_element_through_model.ads:35:21: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (Integer (Y) in F .. L) to subprogram at line 19]
+has_element_through_model.ads:35:21: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (Integer (Y) in F .. L) to subprogram at line 19] [provers reached step limit before completing the proof]
 has_element_through_model.ads:39:22: info: range check proved (CVC5: 2 VC)
 has_element_through_model.ads:39:36: info: range check proved (CVC5: 2 VC)
 has_element_through_model.ads:39:54: info: length check proved (CVC5: 2 VC; Trivial: 1 VC)
@@ -371,7 +371,7 @@ p.ads:19:16: warning: implicit function contract might not be available on impli
 p.ads:21:16: info: implicit aspect Always_Terminates on "From_Array" has been proved, subprogram will terminate
 p.ads:27:10: info: range check proved (CVC5: 2 VC)
 p.ads:31:51: info: overflow check proved (CVC5: 2 VC)
-p.ads:35:21: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (Integer (Y) in F .. L) to subprogram at line 19]
+p.ads:35:21: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (Integer (Y) in F .. L) to subprogram at line 19] [provers reached step limit before completing the proof]
 p.ads:39:22: info: range check proved (CVC5: 2 VC)
 p.ads:39:36: info: range check proved (CVC5: 2 VC)
 p.ads:39:54: info: length check proved (CVC5: 2 VC; Trivial: 1 VC)

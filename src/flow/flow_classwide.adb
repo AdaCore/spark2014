@@ -227,8 +227,9 @@ package body Flow_Classwide is
          begin
             if not (Anc_Globals.Inputs.Contains (F_In)
                     or else Anc_Globals.Proof_Ins.Contains (F_In))
-              and then (My_Globals.Inputs.Contains (F_In)
-                        or else My_Globals.Proof_Ins.Contains (F_In))
+              and then
+                (My_Globals.Inputs.Contains (F_In)
+                 or else My_Globals.Proof_Ins.Contains (F_In))
             then
                Error_Msg_Flow
                  (E          => E,

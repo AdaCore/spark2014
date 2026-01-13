@@ -9,3 +9,4 @@
       --> integrity.ads:6:04
     6 |       procedure Seen_One (X : Integer) with
       |       ^
+      + provers gave up before completing the proof

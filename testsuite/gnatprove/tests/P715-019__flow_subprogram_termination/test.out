@@ -1,4 +1,4 @@
-call_proc_no_body.adb:4:07: medium: precondition might fail
+call_proc_no_body.adb:4:07: medium: precondition might fail [provers gave up before completing the proof]
 call_proc_no_body.adb:4:07: warning: assuming "P_02" always terminates
 call_proc_no_body.adb:4:07: warning: assuming "P_02" has no effect on global items
 call_proc_no_body.adb:4:07: warning: no Always_Terminates aspect available for "P_02" [assumed-always-terminates]
@@ -19,7 +19,7 @@ container.adb:26:14: info: aspect Always_Terminates on "Test3" has been proved, 
 container.adb:26:14: info: local subprogram "Test3" only analyzed in the context of calls [info-unrolling-inlining]
 container.adb:30:11: info: precondition proved (CVC5: 1 VC), in call inlined at container.adb:45
 container.adb:30:11: info: precondition proved (Trivial: 1 VC), in call inlined at container.adb:45
-container.adb:33:20: medium: range check might fail, cannot prove upper bound for X + 1, in call inlined at container.adb:45 [reason for check: result of addition must fit in the target type of the assignment] [possible fix: loop at line 32 should mention Int in a loop invariant]
+container.adb:33:20: medium: range check might fail, cannot prove upper bound for X + 1, in call inlined at container.adb:45 [reason for check: result of addition must fit in the target type of the assignment] [possible fix: loop at line 32 should mention Int in a loop invariant] [provers gave up before completing the proof]
 container.adb:34:34: info: loop variant proved (CVC5: 1 VC), in call inlined at container.adb:45
 container.adb:45:07: info: analyzing call to "Test3" in context
 container.adb:48:04: warning: analyzing unreferenced procedure "Test5" [unreferenced-procedure]
@@ -38,7 +38,7 @@ container.adb:73:17: info: range check proved (CVC5: 4 VC)
 container.adb:74:33: info: loop invariant initialization proved (CVC5: 1 VC)
 container.adb:74:33: info: loop invariant preservation proved (CVC5: 1 VC)
 container.adb:75:31: info: loop variant proved (CVC5: 1 VC)
-container.adb:78:20: medium: range check might fail, cannot prove upper bound for X + 1 [reason for check: result of addition must fit in the target type of the assignment] [possible fix: loop at line 77 should mention X in a loop invariant]
+container.adb:78:20: medium: range check might fail, cannot prove upper bound for X + 1 [reason for check: result of addition must fit in the target type of the assignment] [possible fix: loop at line 77 should mention X in a loop invariant] [provers gave up before completing the proof]
 container.adb:79:34: info: loop variant proved (CVC5: 1 VC)
 container.adb:80:34: info: loop variant proved (CVC5: 1 VC)
 container.adb:88:16: medium: implicit aspect Always_Terminates on "Container" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
@@ -104,7 +104,7 @@ imported.adb:5:07: warning: assuming "P_01" always terminates
 imported.adb:5:07: warning: assuming "P_01" has no effect on global items
 imported.adb:5:07: warning: no Always_Terminates aspect available for "P_01" [assumed-always-terminates]
 imported.adb:5:07: warning: no Global contract available for "P_01" [assumed-global-null]
-imported.adb:10:07: medium: precondition might fail
+imported.adb:10:07: medium: precondition might fail [provers gave up before completing the proof]
 imported.adb:10:07: warning: assuming "P_02" always terminates
 imported.adb:10:07: warning: assuming "P_02" has no effect on global items
 imported.adb:10:07: warning: no Always_Terminates aspect available for "P_02" [assumed-always-terminates]
@@ -133,7 +133,7 @@ nested_loops.adb:8:17: info: overflow check proved (CVC5: 4 VC)
 nested_loops.adb:9:31: info: loop variant proved (CVC5: 1 VC)
 nested_loops.adb:11:34: info: loop variant proved (CVC5: 1 VC)
 nested_loops.adb:13:25: warning: loop condition is stable
-nested_loops.adb:14:37: medium: loop variant might fail
+nested_loops.adb:14:37: medium: loop variant might fail [provers gave up before completing the proof]
 nested_loops.adb:22:14: warning: subprogram "Proc2" has no effect
 nested_loops.adb:26:17: info: overflow check proved (CVC5: 4 VC)
 nested_loops.adb:27:31: info: loop variant proved (CVC5: 1 VC)
@@ -198,8 +198,8 @@ r.adb:58:04: warning: assuming "OS_Exit" has no effect on global items
 r.adb:58:04: warning: no Global contract available for "OS_Exit" [assumed-global-null]
 r.adb:59:04: warning: this statement is never reached
 r.adb:59:04: warning: unreachable code [enabled by default]
-spark-containers-parameter_checks.ads:46:36: medium: postcondition might fail, in instantiation at spark-containers-functional-sets.ads:433, in instantiation at formal_cont.ads:12 [possible fix: you should consider adding a postcondition to function My_Equal_01 or turning it into an expression function]
-spark-containers-parameter_checks.ads:49:54: medium: postcondition might fail, in instantiation at spark-containers-functional-sets.ads:433, in instantiation at formal_cont.ads:12 [possible fix: you should consider adding a postcondition to function My_Equal_01 or turning it into an expression function]
-spark-containers-parameter_checks.ads:52:68: medium: postcondition might fail, in instantiation at spark-containers-functional-sets.ads:433, in instantiation at formal_cont.ads:12 [possible fix: you should consider adding a postcondition to function My_Equal_01 or turning it into an expression function]
-spark-containers-parameter_checks.ads:60:19: warning: precondition is always False (Trivial: 1 VC), in instantiation at spark-containers-functional-sets.ads:433, in instantiation at formal_cont.ads:12
-spark-containers-parameter_checks.ads:60:19: warning: precondition is always False (Trivial: 1 VC), in instantiation at spark-containers-functional-sets.ads:433, in instantiation at formal_cont.ads:26
+spark-containers-parameter_checks.ads:46:36: medium: postcondition might fail, in instantiation at spark-containers-functional-sets.ads:436, in instantiation at formal_cont.ads:12 [possible fix: you should consider adding a postcondition to function "My_Equal_01" or turning it into an expression function] [provers gave up before completing the proof]
+spark-containers-parameter_checks.ads:49:54: medium: postcondition might fail, in instantiation at spark-containers-functional-sets.ads:436, in instantiation at formal_cont.ads:12 [possible fix: you should consider adding a postcondition to function "My_Equal_01" or turning it into an expression function] [provers gave up before completing the proof]
+spark-containers-parameter_checks.ads:52:68: medium: postcondition might fail, in instantiation at spark-containers-functional-sets.ads:436, in instantiation at formal_cont.ads:12 [possible fix: you should consider adding a postcondition to function "My_Equal_01" or turning it into an expression function] [provers gave up before completing the proof]
+spark-containers-parameter_checks.ads:60:19: warning: precondition is always False (Trivial: 1 VC), in instantiation at spark-containers-functional-sets.ads:436, in instantiation at formal_cont.ads:12
+spark-containers-parameter_checks.ads:60:19: warning: precondition is always False (Trivial: 1 VC), in instantiation at spark-containers-functional-sets.ads:436, in instantiation at formal_cont.ads:26

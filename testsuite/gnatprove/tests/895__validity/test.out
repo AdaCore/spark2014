@@ -4,15 +4,15 @@ ext.ads:20:26: info: range check proved (CVC5: 2 VC)
 ext.ads:31:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 ext.ads:32:12: info: range check proved (CVC5: 2 VC)
 ext.ads:33:12: info: range check proved (CVC5: 2 VC)
-ext.ads:37:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause]
+ext.ads:37:04: medium: address in address clause might not be an integral multiple of alignment of object [provers reached step limit before completing the proof]
 ext.ads:37:04: warning: address specification on "X_Acc" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to or through a potential alias, and valid reads [imprecise-address-specification] [E0012]
 ext.ads:37:04: warning: consider making "X_Acc" volatile and annotating it with Async_Writers and make sure that all overlapping objects have Async_Writers set to True
 ext.ads:37:04: warning: launch "gnatprove --explain=E0012" for more information
-ext.ads:38:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause]
+ext.ads:38:04: medium: address in address clause might not be an integral multiple of alignment of object [provers reached step limit before completing the proof]
 ext.ads:38:04: warning: address specification on "X_Priv" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to or through a potential alias, and valid reads [imprecise-address-specification] [E0012]
 ext.ads:38:04: warning: consider making "X_Priv" volatile and annotating it with Async_Writers and make sure that all overlapping objects have Async_Writers set to True
 ext.ads:38:04: warning: launch "gnatprove --explain=E0012" for more information
-ext.ads:39:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause]
+ext.ads:39:04: medium: address in address clause might not be an integral multiple of alignment of object [provers reached step limit before completing the proof]
 ext.ads:39:04: warning: address specification on "X_Inv" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to or through a potential alias, and valid reads [imprecise-address-specification] [E0012]
 ext.ads:39:04: warning: consider making "X_Inv" volatile and annotating it with Async_Writers and make sure that all overlapping objects have Async_Writers set to True
 ext.ads:39:04: warning: launch "gnatprove --explain=E0012" for more information
@@ -20,15 +20,15 @@ ext.ads:40:04: info: address in address clause is compatible with object alignme
 ext.ads:40:04: warning: address specification on "X_Inv_2" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to or through a potential alias, and valid reads [imprecise-address-specification] [E0012]
 ext.ads:40:04: warning: consider making "X_Inv_2" volatile and annotating it with Async_Writers and make sure that all overlapping objects have Async_Writers set to True
 ext.ads:40:04: warning: launch "gnatprove --explain=E0012" for more information
-ext.ads:41:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause]
+ext.ads:41:04: medium: address in address clause might not be an integral multiple of alignment of object [provers reached step limit before completing the proof]
 ext.ads:41:04: warning: address specification on "X_Tag" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to or through a potential alias, and valid reads [imprecise-address-specification] [E0012]
 ext.ads:41:04: warning: consider making "X_Tag" volatile and annotating it with Async_Writers and make sure that all overlapping objects have Async_Writers set to True
 ext.ads:41:04: warning: launch "gnatprove --explain=E0012" for more information
-ext.ads:42:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause]
+ext.ads:42:04: medium: address in address clause might not be an integral multiple of alignment of object [provers reached step limit before completing the proof]
 ext.ads:42:04: warning: address specification on "X_Low" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to or through a potential alias, and valid reads [imprecise-address-specification] [E0012]
 ext.ads:42:04: warning: consider making "X_Low" volatile and annotating it with Async_Writers and make sure that all overlapping objects have Async_Writers set to True
 ext.ads:42:04: warning: launch "gnatprove --explain=E0012" for more information
-ext.ads:43:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause]
+ext.ads:43:04: medium: address in address clause might not be an integral multiple of alignment of object [provers reached step limit before completing the proof]
 ext.ads:43:04: warning: address specification on "X_High" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to or through a potential alias, and valid reads [imprecise-address-specification] [E0012]
 ext.ads:43:04: warning: consider making "X_High" volatile and annotating it with Async_Writers and make sure that all overlapping objects have Async_Writers set to True
 ext.ads:43:04: warning: launch "gnatprove --explain=E0012" for more information

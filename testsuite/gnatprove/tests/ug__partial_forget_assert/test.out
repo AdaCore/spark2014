@@ -22,6 +22,7 @@
       |                         ^~~~~
       + e.g. when Z = 2
       + possible fix: add or complete related loop invariants or postconditions
+      + provers gave up before completing the proof
 
  medium: assertion might fail
 --> partial_knowledge.adb:21:22
@@ -31,3 +32,4 @@
       + possible fix: subprogram at line 1 should mention X in a precondition
     1 |    procedure Partial_Knowledge (X : Integer) is
       |    ^
+      + provers gave up before completing the proof

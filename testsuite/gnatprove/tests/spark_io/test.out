@@ -1,6 +1,6 @@
 copy.adb:33:08: info: data dependencies proved
 copy.adb:36:03: info: flow dependencies proved
-copy.adb:44:14: medium: precondition of main program might fail, cannot prove not Is_Open (Source)
+copy.adb:44:14: medium: precondition of main program might fail, cannot prove not Is_Open (Source) [provers reached step limit before completing the proof]
 copy.adb:47:04: info: initialization of "Count" proved
 copy.adb:48:04: info: initialization of "Count_Limit_Reached" proved
 copy.adb:50:04: info: initialization of "Response" proved
@@ -80,13 +80,13 @@ copy.adb:281:13: info: precondition proved (CVC5: 2 VC; Z3: 1 VC)
 copy.adb:281:32: info: discriminant check proved (CVC5: 1 VC)
 copy.adb:284:34: info: overflow check proved (CVC5: 1 VC; Z3: 1 VC)
 copy.adb:291:16: info: precondition proved (CVC5: 1 VC)
-copy.adb:292:73: low: range check might fail, cannot prove upper bound for "Oh dear, a file error has occured while writing to " & Name (Destination) [reason for check: input value must fit in parameter type] [possible fix: you should consider adding a postcondition to function Name or turning it into an expression function in its unit spec]
+copy.adb:292:73: low: range check might fail, cannot prove upper bound for "Oh dear, a file error has occured while writing to " & Name (Destination) [reason for check: input value must fit in parameter type] [possible fix: you should consider adding a postcondition to function "Name" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
 copy.adb:293:19: info: precondition proved (CVC5: 1 VC)
 copy.adb:296:16: info: precondition proved (CVC5: 1 VC; altergo: 2 VC)
 copy.adb:298:16: info: precondition proved (Z3: 2 VC)
 copy.adb:299:16: info: precondition proved (CVC5: 2 VC)
 copy.adb:305:13: info: precondition proved (CVC5: 1 VC)
-copy.adb:305:55: low: range check might fail, cannot prove upper bound for "An error has occured reading " & Name (Source) [reason for check: input value must fit in parameter type] [possible fix: you should consider adding a postcondition to function Name or turning it into an expression function in its unit spec]
+copy.adb:305:55: low: range check might fail, cannot prove upper bound for "An error has occured reading " & Name (Source) [reason for check: input value must fit in parameter type] [possible fix: you should consider adding a postcondition to function "Name" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
 copy.adb:306:23: info: precondition proved (Z3: 1 VC)
 copy.adb:309:13: info: precondition proved (CVC5: 1 VC; altergo: 2 VC)
 copy.adb:311:13: info: precondition proved (Z3: 2 VC)
@@ -139,26 +139,26 @@ spark-text_io-unbounded_io.ads:46:33: info: precondition proved (CVC5: 1 VC)
 spark-text_io-unbounded_io.ads:47:33: info: precondition proved (CVC5: 1 VC)
 spark-text_io-unbounded_io.ads:48:40: info: precondition proved (CVC5: 2 VC)
 spark-text_io-unbounded_io.ads:49:40: info: precondition proved (CVC5: 2 VC)
-spark-text_io-unbounded_io.ads:58:24: medium: precondition might fail
-spark-text_io-unbounded_io.ads:60:24: medium: precondition might fail
+spark-text_io-unbounded_io.ads:58:24: medium: precondition might fail [provers reached step limit before completing the proof]
+spark-text_io-unbounded_io.ads:60:24: medium: precondition might fail [provers reached step limit before completing the proof]
 spark-text_io-unbounded_io.ads:62:24: medium: in inlined expression function body at spark-text_io.ads:138
-spark-text_io-unbounded_io.ads:62:24: medium: precondition might fail, cannot prove Is_Open (File)
+spark-text_io-unbounded_io.ads:62:24: medium: precondition might fail, cannot prove Is_Open (File) [provers reached step limit before completing the proof]
 spark-text_io-unbounded_io.ads:64:24: medium: in inlined expression function body at spark-text_io.ads:138
-spark-text_io-unbounded_io.ads:64:24: medium: precondition might fail, cannot prove Is_Open (File)
+spark-text_io-unbounded_io.ads:64:24: medium: precondition might fail, cannot prove Is_Open (File) [provers reached step limit before completing the proof]
 spark-text_io-unbounded_io.ads:72:33: info: precondition proved (CVC5: 1 VC)
 spark-text_io-unbounded_io.ads:73:33: info: precondition proved (CVC5: 1 VC)
 spark-text_io-unbounded_io.ads:74:40: info: precondition proved (CVC5: 2 VC)
 spark-text_io-unbounded_io.ads:75:40: info: precondition proved (CVC5: 2 VC)
-spark-text_io-unbounded_io.ads:84:24: medium: precondition might fail
-spark-text_io-unbounded_io.ads:86:24: medium: precondition might fail
+spark-text_io-unbounded_io.ads:84:24: medium: precondition might fail [provers reached step limit before completing the proof]
+spark-text_io-unbounded_io.ads:86:24: medium: precondition might fail [provers reached step limit before completing the proof]
 spark-text_io-unbounded_io.ads:88:24: medium: in inlined expression function body at spark-text_io.ads:138
-spark-text_io-unbounded_io.ads:88:24: medium: precondition might fail, cannot prove Is_Open (File)
+spark-text_io-unbounded_io.ads:88:24: medium: precondition might fail, cannot prove Is_Open (File) [provers reached step limit before completing the proof]
 spark-text_io-unbounded_io.ads:90:24: medium: in inlined expression function body at spark-text_io.ads:138
-spark-text_io-unbounded_io.ads:90:24: medium: precondition might fail, cannot prove Is_Open (File)
+spark-text_io-unbounded_io.ads:90:24: medium: precondition might fail, cannot prove Is_Open (File) [provers reached step limit before completing the proof]
 spark-text_io-unbounded_io.ads:97:33: info: precondition proved (CVC5: 1 VC)
 spark-text_io-unbounded_io.ads:98:33: info: precondition proved (CVC5: 1 VC)
-spark-text_io-unbounded_io.ads:105:45: medium: precondition might fail
-spark-text_io-unbounded_io.ads:106:45: medium: precondition might fail
+spark-text_io-unbounded_io.ads:105:45: medium: precondition might fail [provers reached step limit before completing the proof]
+spark-text_io-unbounded_io.ads:106:45: medium: precondition might fail [provers reached step limit before completing the proof]
 spark-text_io.ads:28:08: info: flow dependencies proved
 spark-text_io.ads:80:04: info: initialization of "Standard_Input" proved
 spark-text_io.ads:81:04: info: initialization of "Standard_Output" proved
@@ -184,39 +184,39 @@ spark-text_io.ads:230:33: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:231:33: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:232:40: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:233:40: info: precondition proved (CVC5: 2 VC)
-spark-text_io.ads:241:24: medium: precondition might fail
-spark-text_io.ads:243:24: medium: precondition might fail
+spark-text_io.ads:241:24: medium: precondition might fail [provers reached step limit before completing the proof]
+spark-text_io.ads:243:24: medium: precondition might fail [provers reached step limit before completing the proof]
 spark-text_io.ads:245:24: medium: in inlined expression function body at spark-text_io.ads:138
-spark-text_io.ads:245:24: medium: precondition might fail, cannot prove Is_Open (File)
+spark-text_io.ads:245:24: medium: precondition might fail, cannot prove Is_Open (File) [provers reached step limit before completing the proof]
 spark-text_io.ads:247:24: medium: in inlined expression function body at spark-text_io.ads:138
-spark-text_io.ads:247:24: medium: precondition might fail, cannot prove Is_Open (File)
+spark-text_io.ads:247:24: medium: precondition might fail, cannot prove Is_Open (File) [provers reached step limit before completing the proof]
 spark-text_io.ads:257:34: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:258:34: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:259:34: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:260:41: info: precondition proved (CVC5: 2 VC)
-spark-text_io.ads:269:46: medium: precondition might fail
-spark-text_io.ads:270:46: medium: precondition might fail
+spark-text_io.ads:269:46: medium: precondition might fail [provers reached step limit before completing the proof]
+spark-text_io.ads:270:46: medium: precondition might fail [provers reached step limit before completing the proof]
 spark-text_io.ads:272:21: medium: in inlined expression function body at spark-text_io.ads:138
-spark-text_io.ads:272:21: medium: precondition might fail, cannot prove Is_Open (File)
+spark-text_io.ads:272:21: medium: precondition might fail, cannot prove Is_Open (File) [provers reached step limit before completing the proof]
 spark-text_io.ads:280:52: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:281:33: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:282:33: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:283:40: info: precondition proved (CVC5: 2 VC)
-spark-text_io.ads:292:46: medium: precondition might fail
-spark-text_io.ads:293:46: medium: precondition might fail
+spark-text_io.ads:292:46: medium: precondition might fail [provers reached step limit before completing the proof]
+spark-text_io.ads:293:46: medium: precondition might fail [provers reached step limit before completing the proof]
 spark-text_io.ads:295:24: medium: in inlined expression function body at spark-text_io.ads:138
-spark-text_io.ads:295:24: medium: precondition might fail, cannot prove Is_Open (File)
+spark-text_io.ads:295:24: medium: precondition might fail, cannot prove Is_Open (File) [provers reached step limit before completing the proof]
 spark-text_io.ads:318:52: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:319:33: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:320:33: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:321:40: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:322:40: info: precondition proved (CVC5: 2 VC)
-spark-text_io.ads:330:24: medium: precondition might fail
-spark-text_io.ads:332:24: medium: precondition might fail
+spark-text_io.ads:330:24: medium: precondition might fail [provers reached step limit before completing the proof]
+spark-text_io.ads:332:24: medium: precondition might fail [provers reached step limit before completing the proof]
 spark-text_io.ads:334:24: medium: in inlined expression function body at spark-text_io.ads:138
-spark-text_io.ads:334:24: medium: precondition might fail, cannot prove Is_Open (File)
+spark-text_io.ads:334:24: medium: precondition might fail, cannot prove Is_Open (File) [provers reached step limit before completing the proof]
 spark-text_io.ads:336:24: medium: in inlined expression function body at spark-text_io.ads:138
-spark-text_io.ads:336:24: medium: precondition might fail, cannot prove Is_Open (File)
+spark-text_io.ads:336:24: medium: precondition might fail, cannot prove Is_Open (File) [provers reached step limit before completing the proof]
 spark-text_io.ads:342:51: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:344:33: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:345:33: info: precondition proved (CVC5: 1 VC)
@@ -227,12 +227,12 @@ spark-text_io.ads:368:33: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:369:33: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:370:40: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:371:40: info: precondition proved (CVC5: 2 VC)
-spark-text_io.ads:379:24: medium: precondition might fail
-spark-text_io.ads:381:24: medium: precondition might fail
+spark-text_io.ads:379:24: medium: precondition might fail [provers reached step limit before completing the proof]
+spark-text_io.ads:381:24: medium: precondition might fail [provers reached step limit before completing the proof]
 spark-text_io.ads:383:24: medium: in inlined expression function body at spark-text_io.ads:138
-spark-text_io.ads:383:24: medium: precondition might fail, cannot prove Is_Open (File)
+spark-text_io.ads:383:24: medium: precondition might fail, cannot prove Is_Open (File) [provers reached step limit before completing the proof]
 spark-text_io.ads:385:24: medium: in inlined expression function body at spark-text_io.ads:138
-spark-text_io.ads:385:24: medium: precondition might fail, cannot prove Is_Open (File)
+spark-text_io.ads:385:24: medium: precondition might fail, cannot prove Is_Open (File) [provers reached step limit before completing the proof]
 spark-text_io.ads:390:51: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:392:33: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:393:33: info: precondition proved (CVC5: 1 VC)
@@ -241,13 +241,13 @@ spark-text_io.ads:402:45: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:422:51: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:423:30: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:424:54: info: precondition proved (CVC5: 2 VC)
-spark-text_io.ads:427:53: medium: precondition might fail
-spark-text_io.ads:429:34: medium: precondition might fail
-spark-text_io.ads:430:34: medium: precondition might fail
+spark-text_io.ads:427:53: medium: precondition might fail [provers reached step limit before completing the proof]
+spark-text_io.ads:429:34: medium: precondition might fail [provers reached step limit before completing the proof]
+spark-text_io.ads:430:34: medium: precondition might fail [provers reached step limit before completing the proof]
 spark-text_io.ads:431:41: medium: in inlined expression function body at spark-text_io.ads:138
-spark-text_io.ads:431:41: medium: precondition might fail, cannot prove Is_Open (File)
+spark-text_io.ads:431:41: medium: precondition might fail, cannot prove Is_Open (File) [provers reached step limit before completing the proof]
 spark-text_io.ads:432:41: medium: in inlined expression function body at spark-text_io.ads:138
-spark-text_io.ads:432:41: medium: precondition might fail, cannot prove Is_Open (File)
+spark-text_io.ads:432:41: medium: precondition might fail, cannot prove Is_Open (File) [provers reached step limit before completing the proof]
 spark-text_io.ads:438:25: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:439:31: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:442:47: info: precondition proved (CVC5: 1 VC)
@@ -271,23 +271,23 @@ spark-text_io.ads:509:51: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:511:33: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:512:33: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:519:31: info: precondition proved (CVC5: 2 VC)
-spark-text_io.ads:521:45: medium: precondition might fail
-spark-text_io.ads:522:45: medium: precondition might fail
+spark-text_io.ads:521:45: medium: precondition might fail [provers reached step limit before completing the proof]
+spark-text_io.ads:522:45: medium: precondition might fail [provers reached step limit before completing the proof]
 spark-text_io.ads:533:33: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:534:33: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:535:33: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:536:40: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:537:40: info: precondition proved (CVC5: 2 VC)
-spark-text_io.ads:546:23: medium: precondition might fail
-spark-text_io.ads:548:23: medium: precondition might fail
+spark-text_io.ads:546:23: medium: precondition might fail [provers reached step limit before completing the proof]
+spark-text_io.ads:548:23: medium: precondition might fail [provers reached step limit before completing the proof]
 spark-text_io.ads:550:24: medium: in inlined expression function body at spark-text_io.ads:138
-spark-text_io.ads:550:24: medium: precondition might fail, cannot prove Is_Open (File)
+spark-text_io.ads:550:24: medium: precondition might fail, cannot prove Is_Open (File) [provers reached step limit before completing the proof]
 spark-text_io.ads:552:24: medium: in inlined expression function body at spark-text_io.ads:138
-spark-text_io.ads:552:24: medium: precondition might fail, cannot prove Is_Open (File)
+spark-text_io.ads:552:24: medium: precondition might fail, cannot prove Is_Open (File) [provers reached step limit before completing the proof]
 spark-text_io.ads:561:33: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:562:33: info: precondition proved (CVC5: 1 VC)
-spark-text_io.ads:569:45: medium: precondition might fail
-spark-text_io.ads:570:45: medium: precondition might fail
+spark-text_io.ads:569:45: medium: precondition might fail [provers reached step limit before completing the proof]
+spark-text_io.ads:570:45: medium: precondition might fail [provers reached step limit before completing the proof]
 spark-text_io.ads:576:51: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:578:33: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:579:33: info: precondition proved (CVC5: 1 VC)
@@ -300,34 +300,34 @@ spark-text_io.ads:607:45: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:608:45: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:618:33: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:619:33: info: precondition proved (CVC5: 1 VC)
-spark-text_io.ads:628:45: medium: precondition might fail
-spark-text_io.ads:629:45: medium: precondition might fail
+spark-text_io.ads:628:45: medium: precondition might fail [provers reached step limit before completing the proof]
+spark-text_io.ads:629:45: medium: precondition might fail [provers reached step limit before completing the proof]
 spark-text_io.ads:639:33: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:640:33: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:641:33: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:642:40: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:643:40: info: precondition proved (CVC5: 2 VC)
-spark-text_io.ads:651:46: medium: precondition might fail
-spark-text_io.ads:652:46: medium: precondition might fail
+spark-text_io.ads:651:46: medium: precondition might fail [provers reached step limit before completing the proof]
+spark-text_io.ads:652:46: medium: precondition might fail [provers reached step limit before completing the proof]
 spark-text_io.ads:654:23: medium: in inlined expression function body at spark-text_io.ads:138
-spark-text_io.ads:654:23: medium: precondition might fail, cannot prove Is_Open (File)
+spark-text_io.ads:654:23: medium: precondition might fail, cannot prove Is_Open (File) [provers reached step limit before completing the proof]
 spark-text_io.ads:656:23: medium: in inlined expression function body at spark-text_io.ads:138
-spark-text_io.ads:656:23: medium: precondition might fail, cannot prove Is_Open (File)
+spark-text_io.ads:656:23: medium: precondition might fail, cannot prove Is_Open (File) [provers reached step limit before completing the proof]
 spark-text_io.ads:670:33: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:671:33: info: precondition proved (CVC5: 1 VC)
-spark-text_io.ads:682:45: medium: precondition might fail
-spark-text_io.ads:683:45: medium: precondition might fail
+spark-text_io.ads:682:45: medium: precondition might fail [provers reached step limit before completing the proof]
+spark-text_io.ads:683:45: medium: precondition might fail [provers reached step limit before completing the proof]
 spark-text_io.ads:695:33: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:696:33: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:697:33: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:698:40: info: precondition proved (CVC5: 2 VC)
 spark-text_io.ads:699:40: info: precondition proved (CVC5: 2 VC)
-spark-text_io.ads:709:24: medium: precondition might fail
-spark-text_io.ads:711:24: medium: precondition might fail
+spark-text_io.ads:709:24: medium: precondition might fail [provers reached step limit before completing the proof]
+spark-text_io.ads:711:24: medium: precondition might fail [provers reached step limit before completing the proof]
 spark-text_io.ads:713:24: medium: in inlined expression function body at spark-text_io.ads:138
-spark-text_io.ads:713:24: medium: precondition might fail, cannot prove Is_Open (File)
+spark-text_io.ads:713:24: medium: precondition might fail, cannot prove Is_Open (File) [provers reached step limit before completing the proof]
 spark-text_io.ads:715:24: medium: in inlined expression function body at spark-text_io.ads:138
-spark-text_io.ads:715:24: medium: precondition might fail, cannot prove Is_Open (File)
+spark-text_io.ads:715:24: medium: precondition might fail, cannot prove Is_Open (File) [provers reached step limit before completing the proof]
 use_enum_io.adb:31:08: info: data dependencies proved
 use_enum_io.adb:32:18: info: precondition of main program proved (CVC5: 3 VC)
 use_enum_io.adb:37:30: info: loop invariant initialization proved (CVC5: 3 VC)

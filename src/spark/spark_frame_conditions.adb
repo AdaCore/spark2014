@@ -223,8 +223,9 @@ package body SPARK_Frame_Conditions is
       begin
          return
            Scope_Within (E, Context)
-           or else (Ekind (E) in E_Loop_Parameter | E_Variable
-                    and then Is_Quantified_Loop_Param (E));
+           or else
+             (Ekind (E) in E_Loop_Parameter | E_Variable
+              and then Is_Quantified_Loop_Param (E));
       end Ignore_Object_Reference;
 
       ---------------------
@@ -288,9 +289,9 @@ package body SPARK_Frame_Conditions is
       pragma
         Assert
           (if Is_Subprogram (E)
-             then E = Ultimate_Alias (E)
-             elsif Ekind (E) = E_Entry
-             then No (Alias (E)));
+           then E = Ultimate_Alias (E)
+           elsif Ekind (E) = E_Entry
+           then No (Alias (E)));
       --  We should only deal with ultimate subprogram aliases here; for
       --  entries alias is always empty, while for entry families and tasks it
       --  is meaningless.

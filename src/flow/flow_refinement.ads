@@ -164,8 +164,8 @@ package Flow_Refinement is
      Post =>
        (for all Var of Projected_Vars.Proof_Ins => Var.Variant = In_View)
        and then (for all Var of Projected_Vars.Inputs => Var.Variant = In_View)
-       and then (for all Var of Projected_Vars.Outputs =>
-                   Var.Variant = Out_View);
+       and then
+         (for all Var of Projected_Vars.Outputs => Var.Variant = Out_View);
 
    procedure Up_Project
      (Deps           : Dependency_Maps.Map;
@@ -263,9 +263,11 @@ package Flow_Refinement is
    with
      Pre =>
        Ekind (E) in E_Entry | E_Function | E_Procedure | E_Task_Type
-       and then (Entity_Body_In_SPARK (E)
-                 or else (Is_Expression_Function_Or_Completion (E)
-                          and then Entity_Body_Compatible_With_SPARK (E)));
+       and then
+         (Entity_Body_In_SPARK (E)
+          or else
+            (Is_Expression_Function_Or_Completion (E)
+             and then Entity_Body_Compatible_With_SPARK (E)));
    --  Returns True if a refinement is needed for the given subprogram, entry
    --  or task E. Only meaningful when the entity body (or equivalently, the
    --  return expression of an expression function) is present and is in SPARK.

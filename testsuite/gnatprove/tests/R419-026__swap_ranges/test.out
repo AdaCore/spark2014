@@ -11,21 +11,21 @@ swap_ranges.adb:13:13: info: index check proved (CVC5: 4 VC)
 swap_ranges.adb:13:22: info: index check proved (CVC5: 4 VC)
 swap_ranges.adb:14:13: info: index check proved (CVC5: 4 VC)
 swap_ranges.adb:16:13: info: loop invariant initialization proved (CVC5: 1 VC)
-swap_ranges.adb:16:13: medium: loop invariant might not be preserved by an arbitrary iteration
+swap_ranges.adb:16:13: medium: loop invariant might not be preserved by an arbitrary iteration [provers reached step limit before completing the proof]
 swap_ranges.adb:16:14: info: range check proved (CVC5: 8 VC)
 swap_ranges.adb:16:43: info: range check proved (CVC5: 8 VC)
 swap_ranges.adb:18:13: info: loop invariant initialization proved (CVC5: 1 VC)
-swap_ranges.adb:18:13: medium: loop invariant might not be preserved by an arbitrary iteration
+swap_ranges.adb:18:13: medium: loop invariant might not be preserved by an arbitrary iteration [provers reached step limit before completing the proof]
 swap_ranges.adb:18:14: info: range check proved (CVC5: 8 VC)
 swap_ranges.adb:18:43: info: range check proved (CVC5: 8 VC)
 swap_ranges.adb:20:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
-swap_ranges.adb:23:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove B'Loop_Entry (L + 1 .. B'Last) = B (L + 1 .. B'Last)
+swap_ranges.adb:23:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove B'Loop_Entry (L + 1 .. B'Last) = B (L + 1 .. B'Last) [provers reached step limit before completing the proof]
 swap_ranges.adb:23:17: info: range check proved (CVC5: 8 VC)
 swap_ranges.adb:23:32: info: overflow check proved (CVC5: 4 VC)
 swap_ranges.adb:23:49: info: range check proved (CVC5: 8 VC)
 swap_ranges.adb:23:54: info: overflow check proved (CVC5: 4 VC)
 swap_ranges.adb:25:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
-swap_ranges.adb:28:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove A'Loop_Entry (K + 1 .. A'Last) = A (K + 1 .. A'Last)
+swap_ranges.adb:28:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove A'Loop_Entry (K + 1 .. A'Last) = A (K + 1 .. A'Last) [provers reached step limit before completing the proof]
 swap_ranges.adb:28:17: info: range check proved (CVC5: 8 VC)
 swap_ranges.adb:28:32: info: overflow check proved (CVC5: 4 VC)
 swap_ranges.adb:28:49: info: range check proved (CVC5: 8 VC)
@@ -70,5 +70,5 @@ swap_ranges.adb:57:41: info: overflow check proved (CVC5: 4 VC)
 swap_ranges.adb:58:15: info: range check proved (CVC5: 8 VC)
 swap_ranges.adb:58:26: info: overflow check proved (CVC5: 4 VC)
 swap_ranges.adb:58:30: info: overflow check proved (CVC5: 4 VC)
-swap_ranges.ads:8:15: medium: postcondition might fail, cannot prove A'Old = B
+swap_ranges.ads:8:15: medium: postcondition might fail, cannot prove A'Old = B [provers reached step limit before completing the proof]
 swap_ranges.ads:14:15: info: postcondition proved (CVC5: 2 VC)

@@ -145,8 +145,9 @@ package Flow.Control_Flow_Graph.Utility is
    with
      Pre  =>
        Nkind (Callsite) in N_Subprogram_Call | N_Entry_Call_Statement
-       and then (Is_Subprogram_Or_Entry (Callee)
-                 or else Ekind (Callee) = E_Subprogram_Type),
+       and then
+         (Is_Subprogram_Or_Entry (Callee)
+          or else Ekind (Callee) = E_Subprogram_Type),
      Post =>
        not Make_Call_Attributes'Result.Is_Null_Node
        and Make_Call_Attributes'Result.Is_Program_Node
@@ -170,8 +171,9 @@ package Flow.Control_Flow_Graph.Utility is
    with
      Pre  =>
        (Is_Formal (Formal) or else Is_Function_With_Side_Effects (Formal))
-       and then (if Ekind (Formal) = E_In_Parameter
-                 then In_Vertex or else Is_Writable_Parameter (Formal))
+       and then
+         (if Ekind (Formal) = E_In_Parameter
+          then In_Vertex or else Is_Writable_Parameter (Formal))
        and then Nkind (Actual) in N_Subexpr | N_Defining_Identifier
        and then Nkind (Call) in N_Subprogram_Call | N_Entry_Call_Statement,
      Post =>
@@ -216,9 +218,9 @@ package Flow.Control_Flow_Graph.Utility is
      Post =>
        not Make_Implicit_Parameter_Attributes'Result.Is_Null_Node
        and not Make_Implicit_Parameter_Attributes'Result.Is_Program_Node
-       and (Make_Implicit_Parameter_Attributes'Result.Is_Parameter
-            xor Make_Implicit_Parameter_Attributes'Result
-                  .Is_Implicit_Parameter);
+       and
+         (Make_Implicit_Parameter_Attributes'Result.Is_Parameter
+          xor Make_Implicit_Parameter_Attributes'Result.Is_Implicit_Parameter);
    --  Creates the attributes for the implicit formal parameters of
    --  protected operations. Note that variables defined and used are
    --  calculated automatically.
@@ -239,11 +241,11 @@ package Flow.Control_Flow_Graph.Utility is
        F_Ent.Kind in Direct_Mapping | Record_Field
        and F_Ent.Variant in Initial_Or_Final_Variant
        and Mode /= Mode_Proof
-       and (if Present (S)
-            then
-              F_Ent.Variant = Initial_Value
-              and then not Is_In_Analyzed_Files
-                             (Get_Direct_Mapping_Id (F_Ent))),
+       and
+         (if Present (S)
+          then
+            F_Ent.Variant = Initial_Value
+            and then not Is_In_Analyzed_Files (Get_Direct_Mapping_Id (F_Ent))),
      Post =>
        not Make_Variable_Attributes'Result.Is_Null_Node
        and not Make_Variable_Attributes'Result.Is_Program_Node

@@ -1,5 +1,5 @@
 p.ads:5:19: info: ceiling priority in Interrupt_Priority proved (CVC5: 2 VC)
-p.ads:8:37: medium: this interrupt might be reserved
+p.ads:8:37: medium: this interrupt might be reserved [provers reached step limit before completing the proof]
 p.ads:9:53: info: range check proved (CVC5: 2 VC)
 p.ads:12:18: info: range check proved (CVC5: 2 VC)
 p.ads:12:26: info: range check proved (CVC5: 2 VC)
@@ -8,12 +8,12 @@ q.ads:11:18: info: range check proved (CVC5: 2 VC)
 q.ads:11:26: info: range check proved (CVC5: 2 VC)
 q.ads:11:34: info: range check proved (CVC5: 2 VC)
 r.ads:5:19: info: ceiling priority in Interrupt_Priority proved (CVC5: 2 VC)
-r.ads:9:37: medium: this interrupt might be reserved
+r.ads:9:37: medium: this interrupt might be reserved [provers reached step limit before completing the proof]
 r.ads:13:18: info: range check proved (CVC5: 2 VC)
 r.ads:13:26: info: range check proved (CVC5: 2 VC)
 r.ads:13:34: info: range check proved (CVC5: 2 VC)
-s.ads:3:19: medium: ceiling priority might not be in Interrupt_Priority
-s.ads:7:37: medium: this interrupt might be reserved
+s.ads:3:19: medium: ceiling priority might not be in Interrupt_Priority [provers reached step limit before completing the proof]
+s.ads:7:37: medium: this interrupt might be reserved [provers reached step limit before completing the proof]
 s.ads:11:18: info: range check proved (CVC5: 2 VC)
 s.ads:11:26: info: range check proved (CVC5: 2 VC)
 s.ads:11:34: info: range check proved (CVC5: 2 VC)

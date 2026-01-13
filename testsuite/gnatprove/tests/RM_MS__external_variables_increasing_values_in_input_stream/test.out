@@ -1,3 +1,4 @@
+inc.adb:8:04: high: "S" constituent of "Sensor" is not initialized in "Inc" [reason for check: variable is mentioned in the generated Initializes contract] [possible fix: initialize "S" constituent of "Sensor" at declaration or in the package body statements]
 inc.adb:8:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 inc.adb:27:20: info: initialization of "V" proved
 inc.adb:28:20: info: initialization of "Valid" proved

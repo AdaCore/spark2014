@@ -923,9 +923,9 @@ private
      Pre  =>
        (if Pattern.Kind = DRecord and then Pattern.Constr.Present
         then Constr_Expr /= Why_Empty)
-       and Args'Length
-           >= Item_Array_Length
-                ((1 => Pattern), Ignore_Init_And_Valid => True),
+       and
+         Args'Length
+         >= Item_Array_Length ((1 => Pattern), Ignore_Init_And_Valid => True),
      Post => Need_Store or Context.Length = Context.Length'Old;
    --  Split a Why expression into parts that will be used to call a
    --  subprogram. The parts are stored in Args. Pattern is an item

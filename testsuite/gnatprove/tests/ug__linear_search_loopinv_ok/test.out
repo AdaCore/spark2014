@@ -4,3 +4,4 @@
       |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
    36 |              Search'Result.Found,
       |              ~~~~~~~~~~~~~~~~~~~
+      + provers reached step limit before completing the proof

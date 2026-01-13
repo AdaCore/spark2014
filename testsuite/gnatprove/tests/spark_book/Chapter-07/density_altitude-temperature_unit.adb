@@ -6,7 +6,7 @@ is
    Temp_Sensor : Degrees
      with Volatile        => True,
           Async_Writers   => True,
-          Address         => System.Storage_Elements.To_Address (16#A1CAF4#);
+          Address         => System.Storage_Elements.To_Address (16#A1CAF4#), Import;
 
 
    procedure Read (Value : out Degrees)

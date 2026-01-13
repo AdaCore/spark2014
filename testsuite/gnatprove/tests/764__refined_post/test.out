@@ -1,5 +1,5 @@
-test.adb:4:47: medium: postcondition might fail, cannot prove X > X'Old (e.g. when X'Old = 0) [possible explanation: validity of the postcondition of P1 should be implied by its refined postcondition] [possible fix: add or complete related loop invariants or postconditions]
-test.adb:7:12: medium: contract case might fail (e.g. when X = 0 and X'Old = 0) [possible explanation: validity of the contract case of P2 should be implied by its refined postcondition]
+test.adb:4:47: medium: postcondition might fail, cannot prove X > X'Old (e.g. when X'Old = 0) [possible explanation: validity of the postcondition of "P1" should be implied by its refined postcondition] [possible fix: add or complete related loop invariants or postconditions] [provers gave up before completing the proof]
+test.adb:7:12: medium: contract case might fail (e.g. when X = 0 and X'Old = 0) [possible explanation: validity of the contract case of "P2" should be implied by its refined postcondition] [provers gave up before completing the proof]
 test.adb:8:12: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 test.adb:13:25: info: refined post proved (CVC5: 1 VC)
 test.adb:17:20: info: overflow check proved (CVC5: 2 VC)

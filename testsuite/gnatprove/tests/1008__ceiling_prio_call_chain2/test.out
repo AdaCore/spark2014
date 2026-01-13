@@ -1,5 +1,5 @@
-main.adb:3:11: medium: ceiling priority protocol might not be respected for "P.Po1" [reason for check: ceiling priority of the protected object "P.Po1" must be >= the priority of the caller "Main" in the call chain "Main" (elaboration) -> "P" (elaboration) -> "P.F" -> "P.Pt.Pp1"]
-main.adb:3:11: medium: ceiling priority protocol might not be respected for "P.Po2" [reason for check: ceiling priority of the protected object "P.Po2" must be >= the priority of the caller "Main" in the call chain "Main" (elaboration) -> "P" (elaboration) -> "P.F" -> "P.Pt.Pp2"]
+main.adb:3:11: medium: ceiling priority protocol might not be respected for "P.Po1" [reason for check: ceiling priority of the protected object "P.Po1" must be >= the priority of the caller "Main" in the call chain "Main" (elaboration) -> "P" (elaboration) -> "P.F" -> "P.Pt.Pp1"] [provers gave up before completing the proof]
+main.adb:3:11: medium: ceiling priority protocol might not be respected for "P.Po2" [reason for check: ceiling priority of the protected object "P.Po2" must be >= the priority of the caller "Main" in the call chain "Main" (elaboration) -> "P" (elaboration) -> "P.F" -> "P.Pt.Pp2"] [provers gave up before completing the proof]
 p.adb:19:14: info: add a contract to analyze it separately from calling contexts
 p.adb:19:14: info: local subprogram "Q1" only analyzed in the context of calls [info-unrolling-inlining]
 p.adb:24:14: info: add a contract to analyze it separately from calling contexts
@@ -10,4 +10,6 @@ p.ads:8:17: info: aspect Always_Terminates on "PP1" has been proved, subprogram 
 p.ads:9:12: info: data dependencies proved
 p.ads:11:17: info: aspect Always_Terminates on "PP2" has been proved, subprogram will terminate
 p.ads:12:12: info: data dependencies proved
+p.ads:15:04: info: initialization of "PO1" proved
+p.ads:16:04: info: initialization of "PO2" proved
 proxy.ads:3:14: warning: subprogram "Proc" has no effect

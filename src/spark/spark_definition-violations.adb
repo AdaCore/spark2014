@@ -167,10 +167,12 @@ package body SPARK_Definition.Violations is
          begin
             for J in R'Range loop
                if R (J)
-                 and then (Restrictions.Set (J) = False
-                           or else Restriction_Warnings (J)
-                           or else (J in All_Parameter_Restrictions
-                                    and then Restrictions.Value (J) > V (J)))
+                 and then
+                   (Restrictions.Set (J) = False
+                    or else Restriction_Warnings (J)
+                    or else
+                      (J in All_Parameter_Restrictions
+                       and then Restrictions.Value (J) > V (J)))
                then
                   --  Any code that complies with the Simple_Barriers
                   --  restriction (which is required by the Ravenscar
@@ -448,8 +450,9 @@ package body SPARK_Definition.Violations is
 
    function SPARK_Pragma_Is (Mode : Opt.SPARK_Mode_Type) return Boolean
    is (if Present (Current_Incomplete_Type)
-         or else (Present (Current_Delayed_Aspect_Type)
-                  and then In_SPARK (Current_Delayed_Aspect_Type))
+         or else
+           (Present (Current_Delayed_Aspect_Type)
+            and then In_SPARK (Current_Delayed_Aspect_Type))
        then Mode = Opt.On
        --  Force SPARK_Mode => On for expressions of a delayed aspects, if the
        --  type bearing this aspect was marked in SPARK, as we have assumed

@@ -179,8 +179,8 @@ package body Why.Atree.Modules is
             pragma
               Assert
                 (E in Callable_Kind_Id
-                   and then Is_Expression_Function_Or_Completion (E)
-                   and then Entity_Body_Compatible_With_SPARK (E));
+                 and then Is_Expression_Function_Or_Completion (E)
+                 and then Entity_Body_Compatible_With_SPARK (E));
 
          when Fun_Post_Axiom
          =>
@@ -191,32 +191,33 @@ package body Why.Atree.Modules is
             pragma
               Assert
                 (Nkind (E) in N_Aggregate | N_Delta_Aggregate
-                   or else (Is_Function_Or_Function_Type (E)
-                            and then not Has_Pragma_Volatile_Function (E)
-                            and then not Is_Function_With_Side_Effects (E)));
+                 or else
+                   (Is_Function_Or_Function_Type (E)
+                    and then not Has_Pragma_Volatile_Function (E)
+                    and then not Is_Function_With_Side_Effects (E)));
 
          when Program_Function_Decl
          =>
             pragma
               Assert
                 (Nkind (E) in N_Aggregate | N_Delta_Aggregate
-                   or else E in Callable_Kind_Id);
+                 or else E in Callable_Kind_Id);
 
          when Dispatch | Dispatch_Axiom | Dispatch_Post_Axiom
          =>
             pragma
               Assert
                 (E in Callable_Kind_Id
-                   and then Is_Dispatching_Operation (E)
-                   and then not Is_Hidden_Dispatching_Operation (E));
+                 and then Is_Dispatching_Operation (E)
+                 and then not Is_Hidden_Dispatching_Operation (E));
 
          when Refined_Post_Axiom
          =>
             pragma
               Assert
                 (E in Callable_Kind_Id
-                   and then Entity_Body_In_SPARK (E)
-                   and then Has_Contracts (E, Pragma_Refined_Post));
+                 and then Entity_Body_In_SPARK (E)
+                 and then Has_Contracts (E, Pragma_Refined_Post));
 
          when Lemma_Axiom
          =>
@@ -225,8 +226,7 @@ package body Why.Atree.Modules is
          when Validity_Wrapper
          =>
             pragma
-              Assert
-                (Ekind (E) = E_Function and then Is_Potentially_Invalid (E));
+              Assert (E in Type_Kind_Id and then Type_Might_Be_Invalid (E));
 
          when Type_Completion | Type_Representative
          =>
@@ -253,8 +253,8 @@ package body Why.Atree.Modules is
             pragma
               Assert
                 (E in Type_Kind_Id
-                   and then not Is_Itype (E)
-                   and then Can_Be_Default_Initialized (E));
+                 and then not Is_Itype (E)
+                 and then Can_Be_Default_Initialized (E));
 
          when Invariant
          =>
@@ -266,7 +266,7 @@ package body Why.Atree.Modules is
             pragma
               Assert
                 (E in Type_Kind_Id
-                   and then not Use_Predefined_Equality_For_Type (E));
+                 and then not Use_Predefined_Equality_For_Type (E));
 
          when Dispatch_Equality | Dispatch_Equality_Axiom
          =>
@@ -282,9 +282,9 @@ package body Why.Atree.Modules is
             pragma
               Assert
                 (E in Type_Kind_Id
-                   and then not Is_Scalar_Type (E)
-                   and then Type_Might_Be_Invalid (E)
-                   and then E = Base_Retysp (E));
+                 and then not Is_Scalar_Type (E)
+                 and then Type_Might_Be_Invalid (E)
+                 and then E = Base_Retysp (E));
       end case;
 
       return Hashconsed_Entity_Module (E, K, Name, Entity_Modules);
@@ -3170,36 +3170,6 @@ package body Why.Atree.Modules is
                   Domain => EW_Prog,
                   Typ    => EW_Unit_Type));
          end if;
-
-         if Is_Potentially_Invalid (E) then
-            declare
-               VM : constant W_Module_Id := E_Module (E, Validity_Wrapper);
-            begin
-               Insert_Symbol
-                 (E,
-                  WNE_Valid_Wrapper,
-                  New_Identifier
-                    (Symb   => NID ("__valid_wrapper"),
-                     Module => VM,
-                     Domain => EW_Term));
-               Insert_Symbol
-                 (E,
-                  WNE_Valid_Wrapper_Flag,
-                  New_Identifier
-                    (Symb   => NID ("__valid_wrapper_flag"),
-                     Module => VM,
-                     Domain => EW_Term,
-                     Typ    => EW_Bool_Type));
-               Insert_Symbol
-                 (E,
-                  WNE_Valid_Wrapper_Result,
-                  New_Identifier
-                    (Symb   => NID ("__valid_wrapper_result"),
-                     Module => VM,
-                     Domain => EW_Term,
-                     Typ    => Type_Of_Node (E)));
-            end;
-         end if;
       end Insert_Subprogram_Symbols;
 
       --------------------------------
@@ -3237,8 +3207,8 @@ package body Why.Atree.Modules is
          --  operands to be initialized.
 
          if not Relaxed_Init
-           or else (Has_Access_Type (E)
-                    and then not Is_Access_Subprogram_Type (E))
+           or else
+             (Has_Access_Type (E) and then not Is_Access_Subprogram_Type (E))
          then
             Insert_Symbol
               (E,
@@ -3669,8 +3639,9 @@ package body Why.Atree.Modules is
                --  also have a specific flag.
 
                elsif Has_Mutable_Discriminants (E)
-                 or else (Is_Access_Type (E)
-                          and then not Is_Access_Subprogram_Type (E))
+                 or else
+                   (Is_Access_Type (E)
+                    and then not Is_Access_Subprogram_Type (E))
                then
                   Insert_Symbol
                     (E,
@@ -3893,56 +3864,94 @@ package body Why.Atree.Modules is
             end if;
          end if;
 
-         --  Symbols for validity trees if any
+         --  Symbols for validity trees and wrapper for function result
 
-         if Type_Might_Be_Invalid (E) and then not Has_Scalar_Type (E) then
+         if Type_Might_Be_Invalid (E) then
+
+            --  For non-scalar types, introduce symbols for validity trees.
+            --  They are shared in the module of the root retysp.
+
+            if not Has_Scalar_Type (E) then
+               declare
+                  V_M     : constant W_Module_Id :=
+                    E_Module (Base_Retysp (E), Validity_Tree);
+                  Tree_Ty : constant W_Type_Id := Get_Validity_Tree_Type (E);
+               begin
+                  Insert_Symbol
+                    (E,
+                     WNE_Is_Valid,
+                     New_Identifier
+                       (Symb   => NID (To_String (WNE_Is_Valid)),
+                        Module => V_M,
+                        Domain => EW_Pred));
+                  Insert_Symbol
+                    (E,
+                     WNE_Valid_Value,
+                     New_Identifier
+                       (Symb   => NID (To_String (WNE_Valid_Value)),
+                        Module => V_M,
+                        Domain => EW_Pterm,
+                        Typ    => Tree_Ty));
+
+                  if Is_Array_Type (E) then
+                     Insert_Symbol
+                       (E,
+                        WNE_Validity_Tree_Get,
+                        New_Identifier
+                          (Domain => EW_Term,
+                           Symb   => NID (To_String (WNE_Validity_Tree_Get)),
+                           Typ    =>
+                             Get_Validity_Tree_Type (Component_Type (E)),
+                           Module => V_M));
+                     Insert_Symbol
+                       (E,
+                        WNE_Validity_Tree_Set,
+                        New_Identifier
+                          (Domain => EW_Prog,
+                           Symb   => NID (To_String (WNE_Validity_Tree_Set)),
+                           Typ    => Tree_Ty,
+                           Module => V_M));
+                     Insert_Symbol
+                       (E,
+                        WNE_Validity_Tree_Slide,
+                        New_Identifier
+                          (Domain => EW_Prog,
+                           Symb   => NID (To_String (WNE_Validity_Tree_Slide)),
+                           Typ    => Tree_Ty,
+                           Module => V_M));
+                  end if;
+               end;
+            end if;
+
+            --  Generate the symbols for function results
+
             declare
-               V_M     : constant W_Module_Id :=
-                 E_Module (Base_Retysp (E), Validity_Tree);
-               Tree_Ty : constant W_Type_Id := Get_Validity_Tree_Type (E);
+               VM : constant W_Module_Id :=
+                 E_Module (Retysp (E), Validity_Wrapper);
             begin
                Insert_Symbol
                  (E,
-                  WNE_Is_Valid,
+                  WNE_Valid_Wrapper,
                   New_Identifier
-                    (Symb   => NID (To_String (WNE_Is_Valid)),
-                     Module => V_M,
-                     Domain => EW_Pred));
+                    (Symb   => NID (To_String (WNE_Valid_Wrapper)),
+                     Module => VM,
+                     Domain => EW_Term));
                Insert_Symbol
                  (E,
-                  WNE_Valid_Value,
+                  WNE_Valid_Wrapper_Flag,
                   New_Identifier
-                    (Symb   => NID (To_String (WNE_Valid_Value)),
-                     Module => V_M,
-                     Domain => EW_Pterm,
-                     Typ    => Tree_Ty));
-
-               if Is_Array_Type (E) then
-                  Insert_Symbol
-                    (E,
-                     WNE_Validity_Tree_Get,
-                     New_Identifier
-                       (Domain => EW_Term,
-                        Symb   => NID (To_String (WNE_Validity_Tree_Get)),
-                        Typ    => Get_Validity_Tree_Type (Component_Type (E)),
-                        Module => V_M));
-                  Insert_Symbol
-                    (E,
-                     WNE_Validity_Tree_Set,
-                     New_Identifier
-                       (Domain => EW_Prog,
-                        Symb   => NID (To_String (WNE_Validity_Tree_Set)),
-                        Typ    => Tree_Ty,
-                        Module => V_M));
-                  Insert_Symbol
-                    (E,
-                     WNE_Validity_Tree_Slide,
-                     New_Identifier
-                       (Domain => EW_Prog,
-                        Symb   => NID (To_String (WNE_Validity_Tree_Slide)),
-                        Typ    => Tree_Ty,
-                        Module => V_M));
-               end if;
+                    (Symb   => NID ("__valid_wrapper_flag"),
+                     Module => VM,
+                     Domain => EW_Term,
+                     Typ    => EW_Bool_Type));
+               Insert_Symbol
+                 (E,
+                  WNE_Valid_Wrapper_Result,
+                  New_Identifier
+                    (Symb   => NID ("__valid_wrapper_result"),
+                     Module => VM,
+                     Domain => EW_Term,
+                     Typ    => Type_Of_Node (E)));
             end;
          end if;
 
@@ -4217,6 +4226,14 @@ package body Why.Atree.Modules is
                      Module => M,
                      Domain => EW_Term,
                      Typ    => EW_Int_Type));
+               Insert_Symbol
+                 (E,
+                  WNE_Attr_Size_Of_Object,
+                  New_Identifier
+                    (Symb   => NID ("size__of__object"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => EW_Int_Type));
 
                if Root = E
                  and then Has_Discriminants (E)
@@ -4415,9 +4432,9 @@ package body Why.Atree.Modules is
                      Typ    => EW_Int_Type));
                Insert_Symbol
                  (E,
-                  WNE_Attr_Component_Size,
+                  WNE_Attr_Size_Of_Object,
                   New_Identifier
-                    (Symb   => NID ("component__size"),
+                    (Symb   => NID ("size__of__object"),
                      Module => M,
                      Domain => EW_Term,
                      Typ    => EW_Int_Type));
@@ -4639,8 +4656,9 @@ package body Why.Atree.Modules is
                  and then No (Retrieve_Inline_Annotation (F))
                  and then Is_Recursive (F)
                  and then Has_Subprogram_Variant (F)
-                 and then not Is_Structural_Subprogram_Variant
-                                (Get_Pragma (F, Pragma_Subprogram_Variant))
+                 and then
+                   not Is_Structural_Subprogram_Variant
+                         (Get_Pragma (F, Pragma_Subprogram_Variant))
                then
                   S.Insert (+Entity_Modules (F) (Expr_Fun_Axiom));
                end if;

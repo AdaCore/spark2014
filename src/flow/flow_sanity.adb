@@ -216,8 +216,9 @@ package body Flow_Sanity is
          end if;
 
          if Is_Expression_Function (E)
-           or else (Is_Expression_Function_Or_Completion (E)
-                    and then Entity_Body_Compatible_With_SPARK (E))
+           or else
+             (Is_Expression_Function_Or_Completion (E)
+              and then Entity_Body_Compatible_With_SPARK (E))
          then
             Check_Expr
               (Expr          => Expression (Get_Expression_Function (E)),
@@ -252,12 +253,13 @@ package body Flow_Sanity is
    begin
       for E of Entities_To_Translate loop
          if Ekind (E) in E_Entry | E_Function | E_Procedure
-           and then (Has_User_Supplied_Globals (E)
-                     or else (not Flow_Generated_Globals.Phase_2.GG_Has_Globals
-                                    (E)
-                              and then not Is_Ignored_Internal (E)))
-           and then (if Ekind (E) = E_Function
-                     then not Is_Predicate_Function (E))
+           and then
+             (Has_User_Supplied_Globals (E)
+              or else
+                (not Flow_Generated_Globals.Phase_2.GG_Has_Globals (E)
+                 and then not Is_Ignored_Internal (E)))
+           and then
+             (if Ekind (E) = E_Function then not Is_Predicate_Function (E))
          then
             Check_Incomplete_Global (E);
          end if;

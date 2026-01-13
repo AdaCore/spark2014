@@ -1,6 +1,9 @@
  info: types in unchecked conversion have the same size
 --> uc.ads:25:13
 
+ info: alignment of source type of unchecked conversion is compatible with alignment of target type
+--> uc.ads:25:13
+
  info: type is suitable as source for unchecked conversion
 --> uc.ads:25:62
 
@@ -8,6 +11,9 @@
 --> uc.ads:25:85
 
  info: types in unchecked conversion have the same size
+--> uc.ads:26:13
+
+ info: alignment of source type of unchecked conversion is compatible with alignment of target type
 --> uc.ads:26:13
 
  info: type is suitable as source for unchecked conversion

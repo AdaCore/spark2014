@@ -24,7 +24,7 @@
 
  info: invariant check proved
 --> invariants.adb:24:07
-      + for S before the call at invariants.ads:13
+      + for "S" before the call at invariants.ads:13
 
  info: invariant check proved
 --> invariants.adb:27:04
@@ -35,8 +35,9 @@
    33 |       procedure Push_Internal (E : Element) with
       |                 ^~~~~~~~~~~~~
       + in inlined invariant at invariants.ads:36
-      + for The_Stack at the end of Push_Internal at invariants.adb:27
+      + for "The_Stack" at the end of "Push_Internal" at invariants.adb:27
       + e.g. when E = 1
+      + provers reached step limit before completing the proof
 
  info: range check proved
 --> invariants.adb:37:40
@@ -49,14 +50,14 @@
 
  info: invariant check proved
 --> invariants.adb:43:07
-      + for The_Stack before the call at invariants.adb:27
+      + for "The_Stack" before the call at invariants.adb:27
 
  info: precondition proved
 --> invariants.adb:51:07
 
  info: invariant check proved
 --> invariants.adb:51:07
-      + for The_Stack before the call at invariants.adb:27
+      + for "The_Stack" before the call at invariants.adb:27
 
  info: implicit aspect Always_Terminates on "Max" has been proved, subprogram will terminate
 --> invariants.ads:9:13
@@ -66,19 +67,19 @@
 
  info: invariant check proved
 --> invariants.ads:13:14
-      + for S at the end of Push at invariants.ads:13
+      + for "S" at the end of "Push" at invariants.ads:13
 
  info: invariant check proved
 --> invariants.ads:14:13
-      + for S before the call at invariants.ads:11
+      + for "S" before the call at invariants.ads:11
 
  info: invariant check proved
 --> invariants.ads:16:14
-      + for S at the end of Push_Zero at invariants.ads:16
+      + for "S" at the end of "Push_Zero" at invariants.ads:16
 
  info: invariant check proved
 --> invariants.ads:17:13
-      + for S before the call at invariants.ads:11
+      + for "S" before the call at invariants.ads:11
 
  info: implicit aspect Always_Terminates on "Size" has been proved, subprogram will terminate
 --> invariants.ads:19:13
@@ -88,20 +89,21 @@
    21 |       procedure Push (E : Element) with
       |                 ^~~~
       + in inlined invariant at invariants.ads:36
-      + for The_Stack at the end of Push at invariants.adb:27
+      + for "The_Stack" at the end of "Push" at invariants.adb:27
       + e.g. when E = 1
+      + provers reached step limit before completing the proof
 
  info: invariant check proved
 --> invariants.ads:22:13
-      + for The_Stack before the call at invariants.adb:27
+      + for "The_Stack" before the call at invariants.adb:27
 
  info: invariant check proved
 --> invariants.ads:24:14
-      + for The_Stack at the end of Push_Zero at invariants.adb:27
+      + for "The_Stack" at the end of "Push_Zero" at invariants.adb:27
 
  info: invariant check proved
 --> invariants.ads:25:13
-      + for The_Stack before the call at invariants.adb:27
+      + for "The_Stack" before the call at invariants.adb:27
 
  info: invariant check proved on default value
 --> invariants.ads:31:09

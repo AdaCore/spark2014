@@ -1,2 +1,2 @@
 rename_aggregate.adb:12:15: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
-rename_aggregate.adb:13:22: high: assertion might fail
+rename_aggregate.adb:13:22: high: assertion might fail [provers reached step limit before completing the proof]

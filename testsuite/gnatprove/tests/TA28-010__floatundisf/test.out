@@ -1,3 +1,4 @@
+convert.adb:9:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 convert.adb:9:13: info: types in unchecked conversion have the same size (Trivial)
 convert.adb:9:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
 convert.adb:10:07: info: type is suitable as source for unchecked conversion (Trivial)
@@ -6,20 +7,20 @@ convert.adb:13:07: info: initialization of "Res_Hi" proved
 convert.adb:13:15: info: initialization of "Res_Mid" proved
 convert.adb:13:24: info: initialization of "Res_Lo" proved
 convert.adb:14:07: info: initialization of "Res" proved
-convert.adb:23:22: medium: assertion might fail
+convert.adb:23:22: medium: assertion might fail [provers gave up before completing the proof]
 convert.adb:26:42: info: range check proved (Z3: 2 VC)
-convert.adb:28:22: medium: assertion might fail [possible fix: subprogram at convert.ads:59 should mention V in a precondition]
+convert.adb:28:22: medium: assertion might fail [possible fix: subprogram at convert.ads:59 should mention V in a precondition] [provers gave up before completing the proof]
 convert.adb:28:53: info: float overflow check proved (Trivial)
 convert.adb:29:34: info: range check proved (Trivial)
 convert.adb:29:49: info: range check proved (Z3: 2 VC)
 convert.adb:33:62: info: range check proved (Z3: 2 VC)
-convert.adb:35:22: medium: assertion might fail [possible fix: subprogram at convert.ads:59 should mention V in a precondition]
+convert.adb:35:22: medium: assertion might fail [possible fix: subprogram at convert.ads:59 should mention V in a precondition] [provers reached step limit before completing the proof]
 convert.adb:35:54: info: float overflow check proved (Trivial)
 convert.adb:36:32: info: float overflow check proved (Trivial)
 convert.adb:36:44: info: range check proved (Trivial)
 convert.adb:37:47: info: range check proved (Z3: 2 VC)
 convert.adb:41:60: info: range check proved (Z3: 2 VC)
-convert.adb:43:22: medium: assertion might fail [possible fix: subprogram at convert.ads:59 should mention V in a precondition]
+convert.adb:43:22: medium: assertion might fail [possible fix: subprogram at convert.ads:59 should mention V in a precondition] [provers reached step limit before completing the proof]
 convert.adb:43:53: info: float overflow check proved (Trivial)
 convert.adb:44:32: info: float overflow check proved (Trivial)
 convert.adb:44:44: info: range check proved (Trivial)
@@ -30,8 +31,8 @@ convert.adb:49:18: info: float overflow check proved (colibri: 1 VC)
 convert.adb:49:42: info: float overflow check proved (Z3: 1 VC)
 convert.adb:50:18: info: float overflow check proved (colibri: 1 VC)
 convert.ads:37:13: info: implicit aspect Always_Terminates on "Correct_Rounding" has been proved, subprogram will terminate
-convert.ads:42:65: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]
-convert.ads:45:45: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]
+convert.ads:42:65: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [provers gave up before completing the proof]
+convert.ads:45:45: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [provers gave up before completing the proof]
 convert.ads:47:29: info: float overflow check proved (Z3: 1 VC)
 convert.ads:49:18: info: predicate check proved (Trivial: 1 VC)
 convert.ads:49:24: info: predicate check proved (Trivial: 1 VC)
@@ -46,13 +47,13 @@ convert.ads:52:40: info: predicate check proved (Trivial: 1 VC)
 convert.ads:52:48: info: predicate check proved (Trivial: 1 VC)
 convert.ads:52:54: info: predicate check proved (Trivial: 1 VC)
 convert.ads:59:13: info: implicit aspect Always_Terminates on "Floatundisf" has been proved, subprogram will terminate
-convert.ads:65:17: medium: postcondition might fail, cannot prove Unsigned_64 (Res) = V
+convert.ads:65:17: medium: postcondition might fail, cannot prove Unsigned_64 (Res) = V [provers reached step limit before completing the proof]
 convert.ads:65:30: info: range check proved (colibri: 2 VC)
 convert.ads:67:17: info: precondition proved (Z3: 2 VC)
 convert.ads:72:64: info: range check proved (colibri: 2 VC)
-convert.ads:75:23: medium: precondition might fail, cannot prove Low <= Last_Float_As_Uns64
+convert.ads:75:23: medium: precondition might fail, cannot prove Low <= Last_Float_As_Uns64 [provers reached step limit before completing the proof]
 convert.ads:76:63: info: float overflow check proved (Z3: 1 VC)
-convert.ads:79:23: medium: precondition might fail, cannot prove (Hi = 2.0**64 or else Hi <= Last_Float_As_Uns64)
+convert.ads:79:23: medium: precondition might fail, cannot prove (Hi = 2.0**64 or else Hi <= Last_Float_As_Uns64) [provers reached step limit before completing the proof]
 convert.ads:81:63: info: float overflow check proved (Z3: 1 VC)
 test_convert.adb:9:08: info: range check proved (Z3: 2 VC)
 test_convert.adb:9:44: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]

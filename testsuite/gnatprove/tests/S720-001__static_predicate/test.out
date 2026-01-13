@@ -1,5 +1,5 @@
-lexer.adb:16:16: high: assertion might fail
-lexer.adb:20:16: high: assertion might fail
+lexer.adb:16:16: high: assertion might fail [provers gave up before completing the proof]
+lexer.adb:20:16: high: assertion might fail [provers gave up before completing the proof]
 lexer.ads:4:14: warning: subprogram "Read_Token" has no effect
 predicates.ads:8:13: info: implicit aspect Always_Terminates on "Test1" has been proved, subprogram will terminate
 predicates.ads:10:19: info: assertion proved (CVC5: 1 VC)

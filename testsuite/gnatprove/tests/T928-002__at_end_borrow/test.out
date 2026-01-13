@@ -104,7 +104,7 @@ test_borrow.adb:100:04: info: absence of resource or memory leak at end of scope
 test_borrow.adb:102:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 test_borrow.adb:103:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 test_borrow.adb:105:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
-test_borrow.adb:106:04: medium: resource or memory leak might occur at end of scope
+test_borrow.adb:106:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 test_borrow.adb:110:28: info: in reconstructed value at the end of the borrow at test_borrow.adb:110
 test_borrow.adb:110:28: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:112:13: info: pointer dereference check proved (CVC5: 1 VC)

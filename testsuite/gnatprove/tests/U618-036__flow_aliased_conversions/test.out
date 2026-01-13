@@ -5,16 +5,18 @@ test.adb:23:14: info: local subprogram "Stuff2" only analyzed in the context of 
 test.adb:25:22: info: initialization of "C" proved
 test.adb:29:17: info: overflow check proved (CVC5: 2 VC), in call inlined at test.adb:78
 test.adb:29:17: info: overflow check proved (CVC5: 2 VC), in call inlined at test.adb:94
+test.adb:40:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 test.adb:40:13: info: types in unchecked conversion have the same size (Trivial)
 test.adb:40:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as source for unchecked conversion) [imprecise-unchecked-conversion]
-test.adb:40:52: high: type is unsuitable as a source for unchecked conversion [possible explanation: type Root_T is a tagged type]
-test.adb:40:61: high: type is unsuitable as a target for unchecked conversion [possible explanation: type Root_T is a tagged type]
+test.adb:40:52: high: type is unsuitable as a source for unchecked conversion [possible explanation: type "Root_T" is a tagged type]
+test.adb:40:61: high: type is unsuitable as a target for unchecked conversion [possible explanation: type "Root_T" is a tagged type]
 test.adb:42:14: info: add a contract to analyze it separately from calling contexts
 test.adb:42:14: info: local subprogram "Stuff3" only analyzed in the context of calls [info-unrolling-inlining]
 test.adb:43:22: info: initialization of "B" proved
 test.adb:46:26: info: overflow check proved (CVC5: 2 VC), in call inlined at test.adb:85
-test.adb:46:26: medium: overflow check might fail, cannot prove upper bound for A.Field + 1, in call inlined at test.adb:82 [reason for check: result of addition must fit in a 32-bits machine integer]
-test.adb:46:26: medium: overflow check might fail, cannot prove upper bound for A.Field + 1, in call inlined at test.adb:91 [reason for check: result of addition must fit in a 32-bits machine integer]
+test.adb:46:26: info: overflow check proved (CVC5: 2 VC), in call inlined at test.adb:91
+test.adb:46:26: medium: overflow check might fail, cannot prove upper bound for A.Field + 1, in call inlined at test.adb:82 [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
+test.adb:57:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 test.adb:57:13: info: types in unchecked conversion have the same size (Trivial)
 test.adb:57:13: warning: imprecise handling of Unchecked_Conversion (component offset not known) [imprecise-unchecked-conversion]
 test.adb:57:51: info: type is suitable as source for unchecked conversion (Trivial)
@@ -36,5 +38,5 @@ test.adb:91:25: high: formal parameters "A" and "B" are aliased (SPARK RM 6.4.2)
 test.adb:94:04: info: analyzing call to "Stuff2" in context
 types.ads:10:13: info: implicit aspect Always_Terminates on "Constructor" has been proved, subprogram will terminate
 types.ads:12:13: info: implicit aspect Always_Terminates on "Sub" has been proved, subprogram will terminate
-types.ads:14:19: medium: overflow check might fail, cannot prove lower bound for Left.Field - Right.Field [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (if Right.Field >= 0 then Left.Field >= Integer'First + Right.Field else Left.Field <= Integer'Last + Right.Field) to subprogram at line 12]
+types.ads:14:19: medium: overflow check might fail, cannot prove lower bound for Left.Field - Right.Field [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (if Right.Field >= 0 then Left.Field >= Integer'First + Right.Field else Left.Field <= Integer'Last + Right.Field) to subprogram at line 12] [provers gave up before completing the proof]
 types.ads:21:24: info: implicit aspect Always_Terminates on "Constructor" has been proved, subprogram will terminate

@@ -116,7 +116,7 @@ infinite_sequences.ads:41:14: info: predicate check proved (Trivial: 1 VC)
 infinite_sequences.ads:41:27: info: predicate check proved (Trivial: 1 VC)
 infinite_sequences.ads:41:39: info: predicate check proved (Trivial: 1 VC)
 infinite_sequences.ads:42:14: medium: in inlined expression function body at infinite_sequences.ads:35
-infinite_sequences.ads:42:14: medium: postcondition might fail, cannot prove S3 <= R
+infinite_sequences.ads:42:14: medium: postcondition might fail, cannot prove S3 <= R [provers reached step limit before completing the proof]
 infinite_sequences.ads:47:13: info: implicit aspect Always_Terminates on "Is_Valid" has been proved, subprogram will terminate
 infinite_sequences.ads:54:33: info: in default value of private type at infinite_sequences.ads:7
 infinite_sequences.ads:54:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
@@ -144,18 +144,18 @@ red_black_trees.adb:17:36: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:35:13: info: implicit aspect Always_Terminates on "Struct_Info" has been proved, subprogram will terminate
 red_black_trees.adb:56:06: info: data dependencies proved
 red_black_trees.adb:58:14: medium: in inlined expression function body at red_black_trees.adb:16
-red_black_trees.adb:58:14: medium: postcondition might fail, cannot prove X3 <= R
+red_black_trees.adb:58:14: medium: postcondition might fail, cannot prove X3 <= R [provers reached step limit before completing the proof]
 red_black_trees.adb:63:06: info: data dependencies proved
 red_black_trees.adb:65:14: medium: in inlined expression function body at red_black_trees.adb:14
-red_black_trees.adb:65:14: medium: postcondition might fail, cannot prove X1 <= R
+red_black_trees.adb:65:14: medium: postcondition might fail, cannot prove X1 <= R [provers reached step limit before completing the proof]
 red_black_trees.adb:70:06: info: data dependencies proved
-red_black_trees.adb:72:14: medium: postcondition might fail
+red_black_trees.adb:72:14: medium: postcondition might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:77:06: info: data dependencies proved
-red_black_trees.adb:79:14: medium: postcondition might fail
+red_black_trees.adb:79:14: medium: postcondition might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:84:06: info: data dependencies proved
-red_black_trees.adb:86:14: medium: postcondition might fail
+red_black_trees.adb:86:14: medium: postcondition might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:91:06: info: data dependencies proved
-red_black_trees.adb:93:14: medium: postcondition might fail
+red_black_trees.adb:93:14: medium: postcondition might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:102:06: info: data dependencies proved
 red_black_trees.adb:104:14: info: postcondition proved (CVC5: 3 VC)
 red_black_trees.adb:109:06: info: data dependencies proved
@@ -171,12 +171,12 @@ red_black_trees.adb:113:52: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:113:63: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:113:65: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:114:14: medium: in inlined expression function body at red_black_trees.ads:75
-red_black_trees.adb:114:14: medium: postcondition might fail, cannot prove Contains (R, V)
+red_black_trees.adb:114:14: medium: postcondition might fail, cannot prove Contains (R, V) [provers reached step limit before completing the proof]
 red_black_trees.adb:119:06: info: data dependencies proved
 red_black_trees.adb:121:14: medium: in inlined expression function body at red_black_trees.ads:75
-red_black_trees.adb:121:14: medium: postcondition might fail, cannot prove Contains (R, V)
+red_black_trees.adb:121:14: medium: postcondition might fail, cannot prove Contains (R, V) [provers reached step limit before completing the proof]
 red_black_trees.adb:130:06: info: data dependencies proved
-red_black_trees.adb:132:14: medium: postcondition might fail
+red_black_trees.adb:132:14: medium: postcondition might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:140:06: info: data dependencies proved
 red_black_trees.adb:142:14: info: postcondition proved (CVC5: 1 VC)
 red_black_trees.adb:147:06: info: data dependencies proved
@@ -187,12 +187,12 @@ red_black_trees.adb:149:52: info: predicate check proved (CVC5: 1 VC; Trivial: 1
 red_black_trees.adb:151:14: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:151:27: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:151:43: info: precondition proved (CVC5: 2 VC)
-red_black_trees.adb:153:14: medium: postcondition might fail
+red_black_trees.adb:153:14: medium: postcondition might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:158:06: info: data dependencies proved
 red_black_trees.adb:160:18: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:160:31: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:160:47: info: precondition proved (CVC5: 2 VC)
-red_black_trees.adb:160:47: medium: postcondition might fail, cannot prove Get (X1, Last (X1)) < X2 [possible fix: you should consider adding a postcondition to function Get or turning it into an expression function in its unit spec]
+red_black_trees.adb:160:47: medium: postcondition might fail, cannot prove Get (X1, Last (X1)) < X2 [possible fix: you should consider adding a postcondition to function "Get" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
 red_black_trees.adb:160:56: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:162:14: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:162:27: info: predicate check proved (Trivial: 1 VC)
@@ -205,7 +205,7 @@ red_black_trees.adb:172:27: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:172:46: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:172:55: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:173:17: info: precondition proved (CVC5: 2 VC)
-red_black_trees.adb:173:17: medium: postcondition might fail, cannot prove Get (T2, Last (T2)) = V [possible fix: you should consider adding a postcondition to function Get or turning it into an expression function in its unit spec]
+red_black_trees.adb:173:17: medium: postcondition might fail, cannot prove Get (T2, Last (T2)) = V [possible fix: you should consider adding a postcondition to function "Get" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
 red_black_trees.adb:173:26: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:174:17: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:174:26: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
@@ -220,31 +220,31 @@ red_black_trees.adb:178:40: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:186:14: info: aspect Always_Terminates on "Prove_Model_Eq" has been proved, subprogram will terminate
 red_black_trees.adb:188:06: info: data dependencies proved
 red_black_trees.adb:190:08: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:190:08: medium: postcondition might fail, cannot prove Last (Model (T, Pos1)) - First (Model (T, Pos1)) = Last (Model (T, Pos2)) - First (Model (T, Pos2)) [possible fix: you should consider adding a postcondition to function First or turning it into an expression function in its unit spec]
+red_black_trees.adb:190:08: medium: postcondition might fail, cannot prove Last (Model (T, Pos1)) - First (Model (T, Pos1)) = Last (Model (T, Pos2)) - First (Model (T, Pos2)) [possible fix: you should consider adding a postcondition to function "First" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
 red_black_trees.adb:190:33: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:190:59: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:190:84: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:192:20: medium: in inlined expression function body at a-nbnbin.ads:66
-red_black_trees.adb:192:20: medium: precondition might fail, cannot prove Low <= Arg
+red_black_trees.adb:192:20: medium: precondition might fail, cannot prove Low <= Arg [provers reached step limit before completing the proof]
 red_black_trees.adb:192:42: medium: in inlined predicate at a-nbnbin.ads:55
-red_black_trees.adb:192:42: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0)
+red_black_trees.adb:192:42: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [provers reached step limit before completing the proof]
 red_black_trees.adb:192:47: medium: in inlined expression function body at a-nbnbin.ads:66
-red_black_trees.adb:192:47: medium: precondition might fail, cannot prove Low <= Arg
+red_black_trees.adb:192:47: medium: precondition might fail, cannot prove Low <= Arg [provers reached step limit before completing the proof]
 red_black_trees.adb:192:69: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:192:73: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:192:78: medium: in inlined predicate at a-nbnbin.ads:55
-red_black_trees.adb:192:78: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0)
+red_black_trees.adb:192:78: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [provers reached step limit before completing the proof]
 red_black_trees.adb:192:80: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:194:20: medium: in inlined expression function body at a-nbnbin.ads:66
-red_black_trees.adb:194:20: medium: precondition might fail, cannot prove Low <= Arg
+red_black_trees.adb:194:20: medium: precondition might fail, cannot prove Low <= Arg [provers reached step limit before completing the proof]
 red_black_trees.adb:194:42: medium: in inlined predicate at a-nbnbin.ads:55
-red_black_trees.adb:194:42: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0)
+red_black_trees.adb:194:42: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [provers reached step limit before completing the proof]
 red_black_trees.adb:194:47: medium: in inlined expression function body at a-nbnbin.ads:66
-red_black_trees.adb:194:47: medium: precondition might fail, cannot prove Low <= Arg
+red_black_trees.adb:194:47: medium: precondition might fail, cannot prove Low <= Arg [provers reached step limit before completing the proof]
 red_black_trees.adb:194:69: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:194:73: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:194:78: medium: in inlined predicate at a-nbnbin.ads:55
-red_black_trees.adb:194:78: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0)
+red_black_trees.adb:194:78: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [provers reached step limit before completing the proof]
 red_black_trees.adb:194:80: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:203:17: info: predicate check proved (CVC5: 1 VC)
 red_black_trees.adb:205:17: info: precondition proved (CVC5: 1 VC)
@@ -274,27 +274,27 @@ red_black_trees.adb:216:75: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:216:82: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:216:84: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:218:56: info: pointer dereference check proved (CVC5: 1 VC)
-red_black_trees.adb:219:17: medium: assertion might fail, cannot prove Get (Model (T, Pos1), I) = Get (Model (T.Left, Pos1), I) [possible fix: subprogram at line 186 should mention Pos1 and T in a precondition]
+red_black_trees.adb:219:17: medium: assertion might fail, cannot prove Get (Model (T, Pos1), I) = Get (Model (T.Left, Pos1), I) [possible fix: subprogram at line 186 should mention Pos1 and T in a precondition] [provers reached step limit before completing the proof]
 red_black_trees.adb:219:17: medium: in inlined expression function body at a-nbnbin.ads:66
-red_black_trees.adb:219:17: medium: precondition might fail, cannot prove Low <= Arg
+red_black_trees.adb:219:17: medium: precondition might fail, cannot prove Low <= Arg [provers reached step limit before completing the proof]
 red_black_trees.adb:219:39: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:219:44: medium: in inlined expression function body at a-nbnbin.ads:66
-red_black_trees.adb:219:44: medium: precondition might fail, cannot prove Low <= Arg
+red_black_trees.adb:219:44: medium: precondition might fail, cannot prove Low <= Arg [provers reached step limit before completing the proof]
 red_black_trees.adb:219:57: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:219:71: medium: in inlined predicate at a-nbnbin.ads:55
-red_black_trees.adb:219:71: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0)
+red_black_trees.adb:219:71: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [provers reached step limit before completing the proof]
 red_black_trees.adb:221:56: info: pointer dereference check proved (CVC5: 1 VC)
-red_black_trees.adb:222:17: medium: assertion might fail, cannot prove Get (Model (T, Pos1), I) = Get (Model (T, Pos2), I - Pos1 + Pos2) [possible fix: subprogram at line 186 should mention Pos1 and Pos2 and T in a precondition]
+red_black_trees.adb:222:17: medium: assertion might fail, cannot prove Get (Model (T, Pos1), I) = Get (Model (T, Pos2), I - Pos1 + Pos2) [possible fix: subprogram at line 186 should mention Pos1 and Pos2 and T in a precondition] [provers reached step limit before completing the proof]
 red_black_trees.adb:222:17: medium: in inlined expression function body at a-nbnbin.ads:66
-red_black_trees.adb:222:17: medium: precondition might fail, cannot prove Low <= Arg
+red_black_trees.adb:222:17: medium: precondition might fail, cannot prove Low <= Arg [provers reached step limit before completing the proof]
 red_black_trees.adb:222:39: medium: in inlined predicate at a-nbnbin.ads:55
-red_black_trees.adb:222:39: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0)
+red_black_trees.adb:222:39: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [provers reached step limit before completing the proof]
 red_black_trees.adb:222:44: medium: in inlined expression function body at a-nbnbin.ads:66
-red_black_trees.adb:222:44: medium: precondition might fail, cannot prove Low <= Arg
+red_black_trees.adb:222:44: medium: precondition might fail, cannot prove Low <= Arg [provers reached step limit before completing the proof]
 red_black_trees.adb:222:66: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:222:70: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:222:75: medium: in inlined predicate at a-nbnbin.ads:55
-red_black_trees.adb:222:75: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: subprogram at line 186 should mention Pos1 and Pos2 in a precondition]
+red_black_trees.adb:222:75: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: subprogram at line 186 should mention Pos1 and Pos2 in a precondition] [provers reached step limit before completing the proof]
 red_black_trees.adb:222:77: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:224:36: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:224:43: info: predicate check proved (Trivial: 1 VC)
@@ -306,12 +306,12 @@ red_black_trees.adb:224:91: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:224:98: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:224:105: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:224:107: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:225:15: medium: assertion might fail, cannot prove Get (Model (T, Pos1), I) = Get (Model (T.Right, Pos1 + Size (T.Left) + 1), I) [possible fix: subprogram at line 186 should mention Pos1 and T in a precondition]
+red_black_trees.adb:225:15: medium: assertion might fail, cannot prove Get (Model (T, Pos1), I) = Get (Model (T.Right, Pos1 + Size (T.Left) + 1), I) [possible fix: subprogram at line 186 should mention Pos1 and T in a precondition] [provers reached step limit before completing the proof]
 red_black_trees.adb:225:15: medium: in inlined expression function body at a-nbnbin.ads:66
-red_black_trees.adb:225:15: medium: precondition might fail, cannot prove Low <= Arg
+red_black_trees.adb:225:15: medium: precondition might fail, cannot prove Low <= Arg [provers reached step limit before completing the proof]
 red_black_trees.adb:225:37: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:225:42: medium: in inlined expression function body at a-nbnbin.ads:66
-red_black_trees.adb:225:42: medium: precondition might fail, cannot prove Low <= Arg
+red_black_trees.adb:225:42: medium: precondition might fail, cannot prove Low <= Arg [provers reached step limit before completing the proof]
 red_black_trees.adb:225:55: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:225:63: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:225:70: info: predicate check proved (Trivial: 1 VC)
@@ -319,7 +319,7 @@ red_black_trees.adb:225:77: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:225:84: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:225:86: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:225:90: medium: in inlined predicate at a-nbnbin.ads:55
-red_black_trees.adb:225:90: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0)
+red_black_trees.adb:225:90: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [provers reached step limit before completing the proof]
 red_black_trees.adb:227:36: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:227:43: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:227:50: info: pointer dereference check proved (CVC5: 1 VC)
@@ -330,56 +330,56 @@ red_black_trees.adb:227:91: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:227:98: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:227:105: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:227:107: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:228:15: medium: assertion might fail, cannot prove Get (Model (T, Pos1), I) = Get (Model (T, Pos2), I - Pos1 + Pos2) [possible fix: subprogram at line 186 should mention Pos1 and Pos2 and T in a precondition]
+red_black_trees.adb:228:15: medium: assertion might fail, cannot prove Get (Model (T, Pos1), I) = Get (Model (T, Pos2), I - Pos1 + Pos2) [possible fix: subprogram at line 186 should mention Pos1 and Pos2 and T in a precondition] [provers reached step limit before completing the proof]
 red_black_trees.adb:228:15: medium: in inlined expression function body at a-nbnbin.ads:66
-red_black_trees.adb:228:15: medium: precondition might fail, cannot prove Low <= Arg
+red_black_trees.adb:228:15: medium: precondition might fail, cannot prove Low <= Arg [provers reached step limit before completing the proof]
 red_black_trees.adb:228:37: medium: in inlined predicate at a-nbnbin.ads:55
-red_black_trees.adb:228:37: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0)
+red_black_trees.adb:228:37: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [provers reached step limit before completing the proof]
 red_black_trees.adb:228:42: medium: in inlined expression function body at a-nbnbin.ads:66
-red_black_trees.adb:228:42: medium: precondition might fail, cannot prove Low <= Arg
+red_black_trees.adb:228:42: medium: precondition might fail, cannot prove Low <= Arg [provers reached step limit before completing the proof]
 red_black_trees.adb:228:64: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:228:68: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:228:73: medium: in inlined predicate at a-nbnbin.ads:55
-red_black_trees.adb:228:73: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: subprogram at line 186 should mention Pos1 and Pos2 in a precondition]
+red_black_trees.adb:228:73: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: subprogram at line 186 should mention Pos1 and Pos2 in a precondition] [provers reached step limit before completing the proof]
 red_black_trees.adb:228:75: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:231:17: medium: assertion might fail, cannot prove Get (Model (T, Pos1), I) = Get (Model (T, Pos2), I - Pos1 + Pos2) [possible fix: subprogram at line 186 should mention Pos1 and Pos2 and T in a precondition]
+red_black_trees.adb:231:17: medium: assertion might fail, cannot prove Get (Model (T, Pos1), I) = Get (Model (T, Pos2), I - Pos1 + Pos2) [possible fix: subprogram at line 186 should mention Pos1 and Pos2 and T in a precondition] [provers reached step limit before completing the proof]
 red_black_trees.adb:231:17: medium: in inlined expression function body at a-nbnbin.ads:66
-red_black_trees.adb:231:17: medium: precondition might fail, cannot prove Low <= Arg
+red_black_trees.adb:231:17: medium: precondition might fail, cannot prove Low <= Arg [provers reached step limit before completing the proof]
 red_black_trees.adb:231:39: medium: in inlined predicate at a-nbnbin.ads:55
-red_black_trees.adb:231:39: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0)
+red_black_trees.adb:231:39: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [provers reached step limit before completing the proof]
 red_black_trees.adb:231:44: medium: in inlined expression function body at a-nbnbin.ads:66
-red_black_trees.adb:231:44: medium: precondition might fail, cannot prove Low <= Arg
+red_black_trees.adb:231:44: medium: precondition might fail, cannot prove Low <= Arg [provers reached step limit before completing the proof]
 red_black_trees.adb:231:66: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:231:70: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:231:75: medium: in inlined predicate at a-nbnbin.ads:55
-red_black_trees.adb:231:75: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: subprogram at line 186 should mention Pos1 and Pos2 in a precondition]
+red_black_trees.adb:231:75: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: subprogram at line 186 should mention Pos1 and Pos2 in a precondition] [provers reached step limit before completing the proof]
 red_black_trees.adb:231:77: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:272:24: medium: assertion might fail, cannot prove Get (X3, I - First (Y3) + First (X3)) = Get (Y3, I) [possible fix: you should consider adding a postcondition to function First and function Get or turning them into expression functions in their unit spec]
+red_black_trees.adb:272:24: medium: assertion might fail, cannot prove Get (X3, I - First (Y3) + First (X3)) = Get (Y3, I) [possible fix: you should consider adding a postcondition to function "First" and function "Get" or turning them into expression functions in their unit spec] [provers reached step limit before completing the proof]
 red_black_trees.adb:272:24: medium: in inlined expression function body at a-nbnbin.ads:66
-red_black_trees.adb:272:24: medium: precondition might fail, cannot prove Low <= Arg
+red_black_trees.adb:272:24: medium: precondition might fail, cannot prove Low <= Arg [provers reached step limit before completing the proof]
 red_black_trees.adb:272:33: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:272:37: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:272:48: medium: in inlined predicate at a-nbnbin.ads:55
-red_black_trees.adb:272:48: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: you should consider adding a postcondition to function First or turning it into an expression function in its unit spec]
+red_black_trees.adb:272:48: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: you should consider adding a postcondition to function "First" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
 red_black_trees.adb:272:50: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:272:64: medium: in inlined expression function body at a-nbnbin.ads:66
-red_black_trees.adb:272:64: medium: precondition might fail, cannot prove Low <= Arg
+red_black_trees.adb:272:64: medium: precondition might fail, cannot prove Low <= Arg [provers reached step limit before completing the proof]
 red_black_trees.adb:272:73: medium: in inlined predicate at a-nbnbin.ads:55
-red_black_trees.adb:272:73: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0)
+red_black_trees.adb:272:73: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [provers reached step limit before completing the proof]
 red_black_trees.adb:298:29: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:303:23: medium: implicit aspect Always_Terminates on "Contains" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 red_black_trees.adb:304:33: info: loop invariant initialization proved (CVC5: 1 VC)
 red_black_trees.adb:304:33: info: predicate check proved (Trivial: 2 VC)
-red_black_trees.adb:304:33: medium: loop invariant might not be preserved by an arbitrary iteration
+red_black_trees.adb:304:33: medium: loop invariant might not be preserved by an arbitrary iteration [provers reached step limit before completing the proof]
 red_black_trees.adb:304:45: info: predicate check proved (Trivial: 2 VC)
 red_black_trees.adb:304:56: info: predicate check proved (Trivial: 2 VC)
 red_black_trees.adb:304:62: info: predicate check proved (Trivial: 2 VC)
-red_black_trees.adb:305:33: medium: loop invariant might fail in first iteration
-red_black_trees.adb:305:33: medium: loop invariant might not be preserved by an arbitrary iteration
+red_black_trees.adb:305:33: medium: loop invariant might fail in first iteration [provers reached step limit before completing the proof]
+red_black_trees.adb:305:33: medium: loop invariant might not be preserved by an arbitrary iteration [provers reached step limit before completing the proof]
 red_black_trees.adb:307:13: info: loop invariant initialization proved (CVC5: 2 VC)
-red_black_trees.adb:307:13: medium: loop invariant might not be preserved by an arbitrary iteration
+red_black_trees.adb:307:13: medium: loop invariant might not be preserved by an arbitrary iteration [provers reached step limit before completing the proof]
 red_black_trees.adb:311:10: medium: in inlined expression function body at infinite_sequences.ads:31
-red_black_trees.adb:311:10: medium: precondition might fail, cannot prove Last (R) = Last (S3)
+red_black_trees.adb:311:10: medium: precondition might fail, cannot prove Last (R) = Last (S3) [provers reached step limit before completing the proof]
 red_black_trees.adb:312:27: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:313:20: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:314:27: info: pointer dereference check proved (CVC5: 1 VC)
@@ -389,7 +389,7 @@ red_black_trees.adb:314:48: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:314:55: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:314:57: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:319:10: medium: in inlined expression function body at infinite_sequences.ads:31
-red_black_trees.adb:319:10: medium: precondition might fail, cannot prove Last (R) = Last (S3)
+red_black_trees.adb:319:10: medium: precondition might fail, cannot prove Last (R) = Last (S3) [provers reached step limit before completing the proof]
 red_black_trees.adb:320:27: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:321:20: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:322:27: info: pointer dereference check proved (CVC5: 1 VC)
@@ -400,7 +400,7 @@ red_black_trees.adb:322:55: info: predicate check proved (CVC5: 1 VC; Trivial: 1
 red_black_trees.adb:322:57: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:326:14: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:328:17: info: pointer dereference check proved (CVC5: 1 VC)
-red_black_trees.adb:329:28: medium: assertion might fail
+red_black_trees.adb:329:28: medium: assertion might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:329:50: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:330:20: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:330:26: info: predicate check proved (Trivial: 1 VC)
@@ -417,9 +417,9 @@ red_black_trees.adb:334:70: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:334:77: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:334:86: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:334:93: info: pointer dereference check proved (CVC5: 1 VC)
-red_black_trees.adb:335:18: medium: assertion might fail, cannot prove Get (Model (C.Right, Pos + Size (C.Left) + 1), I) > C.Value [possible fix: you should consider adding a postcondition to function Get or turning it into an expression function in its unit spec]
+red_black_trees.adb:335:18: medium: assertion might fail, cannot prove Get (Model (C.Right, Pos + Size (C.Left) + 1), I) > C.Value [possible fix: you should consider adding a postcondition to function "Get" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
 red_black_trees.adb:335:18: medium: in inlined expression function body at a-nbnbin.ads:66
-red_black_trees.adb:335:18: medium: precondition might fail, cannot prove Low <= Arg
+red_black_trees.adb:335:18: medium: precondition might fail, cannot prove Low <= Arg [provers reached step limit before completing the proof]
 red_black_trees.adb:335:31: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:335:39: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:335:45: info: predicate check proved (Trivial: 1 VC)
@@ -427,9 +427,9 @@ red_black_trees.adb:335:52: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:335:59: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:335:61: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:335:65: medium: in inlined predicate at a-nbnbin.ads:55
-red_black_trees.adb:335:65: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0)
+red_black_trees.adb:335:65: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [provers reached step limit before completing the proof]
 red_black_trees.adb:335:71: info: pointer dereference check proved (CVC5: 1 VC)
-red_black_trees.adb:336:28: medium: assertion might fail
+red_black_trees.adb:336:28: medium: assertion might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:336:50: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:336:58: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:336:64: info: predicate check proved (Trivial: 1 VC)
@@ -439,27 +439,27 @@ red_black_trees.adb:336:80: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:337:19: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:344:33: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:349:08: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:349:08: medium: postcondition might fail, cannot prove Size (T) = Size (T)'Old
+red_black_trees.adb:349:08: medium: postcondition might fail, cannot prove Size (T) = Size (T)'Old [provers reached step limit before completing the proof]
 red_black_trees.adb:349:27: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:355:11: medium: pointer dereference check might fail
+red_black_trees.adb:355:11: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:355:21: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:355:27: info: pointer dereference check proved (CVC5: 1 VC)
-red_black_trees.adb:356:24: medium: pointer dereference check might fail
+red_black_trees.adb:356:24: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:356:48: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:356:54: info: pointer dereference check proved (CVC5: 1 VC)
-red_black_trees.adb:357:11: medium: pointer dereference check might fail
-red_black_trees.adb:358:11: medium: pointer dereference check might fail
-red_black_trees.adb:358:16: medium: pointer dereference check might fail
+red_black_trees.adb:357:11: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:358:11: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:358:16: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:358:26: info: pointer dereference check proved (CVC5: 1 VC)
-red_black_trees.adb:359:24: medium: pointer dereference check might fail
-red_black_trees.adb:359:29: medium: pointer dereference check might fail
+red_black_trees.adb:359:24: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:359:29: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:359:52: info: pointer dereference check proved (CVC5: 1 VC)
-red_black_trees.adb:360:24: medium: pointer dereference check might fail
-red_black_trees.adb:360:29: medium: pointer dereference check might fail
+red_black_trees.adb:360:24: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:360:29: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:360:53: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:360:59: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:367:07: medium: in inlined expression function body at infinite_sequences.ads:32
-red_black_trees.adb:367:07: medium: precondition might fail, cannot prove First (S3) = Last (S1) + 2
+red_black_trees.adb:367:07: medium: precondition might fail, cannot prove First (S3) = Last (S1) + 2 [provers reached step limit before completing the proof]
 red_black_trees.adb:368:18: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:368:32: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:368:48: info: pointer dereference check proved (CVC5: 1 VC)
@@ -496,73 +496,73 @@ red_black_trees.adb:376:14: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:376:20: info: absence of resource or memory leak proved (CVC5: 1 VC)
 red_black_trees.adb:377:12: info: absence of resource or memory leak proved (CVC5: 1 VC)
 red_black_trees.adb:383:07: medium: in inlined expression function body at infinite_sequences.ads:31
-red_black_trees.adb:383:07: medium: precondition might fail, cannot prove First (R) = First (S1)
-red_black_trees.adb:384:18: medium: pointer dereference check might fail
-red_black_trees.adb:384:23: medium: pointer dereference check might fail
-red_black_trees.adb:384:38: medium: pointer dereference check might fail
-red_black_trees.adb:384:43: medium: pointer dereference check might fail
-red_black_trees.adb:384:59: medium: pointer dereference check might fail
-red_black_trees.adb:384:64: medium: pointer dereference check might fail
+red_black_trees.adb:383:07: medium: precondition might fail, cannot prove First (R) = First (S1) [provers reached step limit before completing the proof]
+red_black_trees.adb:384:18: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:384:23: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:384:38: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:384:43: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:384:59: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:384:64: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:384:72: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:384:79: medium: pointer dereference check might fail
-red_black_trees.adb:384:84: medium: pointer dereference check might fail
+red_black_trees.adb:384:79: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:384:84: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:384:93: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:384:97: medium: in inlined predicate at a-nbnbin.ads:55
-red_black_trees.adb:384:97: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: precondition of subprogram at line 343 should mention Pos]
+red_black_trees.adb:384:97: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: precondition of subprogram at line 343 should mention Pos] [provers reached step limit before completing the proof]
 red_black_trees.adb:384:99: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:385:18: medium: pointer dereference check might fail
-red_black_trees.adb:385:32: medium: pointer dereference check might fail
-red_black_trees.adb:385:48: medium: pointer dereference check might fail
+red_black_trees.adb:385:18: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:385:32: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:385:48: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:385:56: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:385:63: medium: pointer dereference check might fail
+red_black_trees.adb:385:63: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:385:72: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:385:76: medium: in inlined predicate at a-nbnbin.ads:55
-red_black_trees.adb:385:76: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: precondition of subprogram at line 343 should mention Pos]
+red_black_trees.adb:385:76: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: precondition of subprogram at line 343 should mention Pos] [provers reached step limit before completing the proof]
 red_black_trees.adb:385:78: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:391:07: medium: in inlined expression function body at red_black_trees.adb:11
-red_black_trees.adb:391:07: medium: precondition might fail, cannot prove First (X1) = First (R)
-red_black_trees.adb:392:18: medium: pointer dereference check might fail
-red_black_trees.adb:392:23: medium: pointer dereference check might fail
-red_black_trees.adb:392:38: medium: pointer dereference check might fail
-red_black_trees.adb:392:43: medium: pointer dereference check might fail
-red_black_trees.adb:392:59: medium: pointer dereference check might fail
-red_black_trees.adb:392:64: medium: pointer dereference check might fail
+red_black_trees.adb:391:07: medium: precondition might fail, cannot prove First (X1) = First (R) [provers reached step limit before completing the proof]
+red_black_trees.adb:392:18: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:392:23: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:392:38: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:392:43: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:392:59: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:392:64: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:392:72: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:392:79: medium: pointer dereference check might fail
-red_black_trees.adb:392:84: medium: pointer dereference check might fail
+red_black_trees.adb:392:79: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:392:84: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:392:93: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:392:97: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:392:99: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:393:11: medium: pointer dereference check might fail
-red_black_trees.adb:393:27: medium: pointer dereference check might fail
+red_black_trees.adb:393:11: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:393:27: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:393:35: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:393:42: medium: pointer dereference check might fail
+red_black_trees.adb:393:42: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:393:51: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:393:55: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:393:57: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:398:33: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:403:08: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:403:08: medium: postcondition might fail, cannot prove Size (T) = Size (T)'Old
+red_black_trees.adb:403:08: medium: postcondition might fail, cannot prove Size (T) = Size (T)'Old [provers reached step limit before completing the proof]
 red_black_trees.adb:403:27: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:409:11: medium: pointer dereference check might fail
+red_black_trees.adb:409:11: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:409:21: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:409:26: info: pointer dereference check proved (CVC5: 1 VC)
-red_black_trees.adb:410:24: medium: pointer dereference check might fail
+red_black_trees.adb:410:24: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:410:47: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:410:52: info: pointer dereference check proved (CVC5: 1 VC)
-red_black_trees.adb:411:11: medium: pointer dereference check might fail
-red_black_trees.adb:412:11: medium: pointer dereference check might fail
-red_black_trees.adb:412:17: medium: pointer dereference check might fail
+red_black_trees.adb:411:11: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:412:11: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:412:17: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:412:27: info: pointer dereference check proved (CVC5: 1 VC)
-red_black_trees.adb:413:24: medium: pointer dereference check might fail
-red_black_trees.adb:413:30: medium: pointer dereference check might fail
+red_black_trees.adb:413:24: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:413:30: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:413:53: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:413:58: info: pointer dereference check proved (CVC5: 1 VC)
-red_black_trees.adb:414:24: medium: pointer dereference check might fail
-red_black_trees.adb:414:30: medium: pointer dereference check might fail
+red_black_trees.adb:414:24: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:414:30: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:414:54: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:421:07: medium: in inlined expression function body at infinite_sequences.ads:32
-red_black_trees.adb:421:07: medium: precondition might fail, cannot prove First (S3) = Last (S1) + 2
+red_black_trees.adb:421:07: medium: precondition might fail, cannot prove First (S3) = Last (S1) + 2 [provers reached step limit before completing the proof]
 red_black_trees.adb:422:18: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:422:23: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:422:38: info: pointer dereference check proved (CVC5: 1 VC)
@@ -592,59 +592,59 @@ red_black_trees.adb:430:14: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:430:21: info: absence of resource or memory leak proved (CVC5: 1 VC)
 red_black_trees.adb:431:12: info: absence of resource or memory leak proved (CVC5: 1 VC)
 red_black_trees.adb:437:07: medium: in inlined expression function body at infinite_sequences.ads:31
-red_black_trees.adb:437:07: medium: precondition might fail, cannot prove First (R) = First (S1)
-red_black_trees.adb:438:18: medium: pointer dereference check might fail
-red_black_trees.adb:438:32: medium: pointer dereference check might fail
-red_black_trees.adb:438:48: medium: pointer dereference check might fail
+red_black_trees.adb:437:07: medium: precondition might fail, cannot prove First (R) = First (S1) [provers reached step limit before completing the proof]
+red_black_trees.adb:438:18: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:438:32: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:438:48: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:438:56: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:438:63: medium: pointer dereference check might fail
+red_black_trees.adb:438:63: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:438:72: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:438:76: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:438:78: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:439:18: medium: pointer dereference check might fail
-red_black_trees.adb:439:24: medium: pointer dereference check might fail
+red_black_trees.adb:439:18: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:439:24: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:439:31: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:439:38: medium: pointer dereference check might fail
+red_black_trees.adb:439:38: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:439:47: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:439:51: medium: in inlined predicate at a-nbnbin.ads:55
-red_black_trees.adb:439:51: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: precondition of subprogram at line 397 should mention Pos]
+red_black_trees.adb:439:51: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: precondition of subprogram at line 397 should mention Pos] [provers reached step limit before completing the proof]
 red_black_trees.adb:439:53: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:439:58: medium: pointer dereference check might fail
-red_black_trees.adb:439:64: medium: pointer dereference check might fail
-red_black_trees.adb:439:80: medium: pointer dereference check might fail
-red_black_trees.adb:439:86: medium: pointer dereference check might fail
+red_black_trees.adb:439:58: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:439:64: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:439:80: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:439:86: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:439:94: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:439:101: medium: pointer dereference check might fail
+red_black_trees.adb:439:101: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:439:110: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:439:116: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:439:118: medium: in inlined predicate at a-nbnbin.ads:55
-red_black_trees.adb:439:118: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: precondition of subprogram at line 397 should mention Pos]
+red_black_trees.adb:439:118: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: precondition of subprogram at line 397 should mention Pos] [provers reached step limit before completing the proof]
 red_black_trees.adb:439:120: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:439:127: medium: pointer dereference check might fail
-red_black_trees.adb:439:133: medium: pointer dereference check might fail
+red_black_trees.adb:439:127: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:439:133: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:445:07: medium: in inlined expression function body at red_black_trees.adb:11
-red_black_trees.adb:445:07: medium: precondition might fail, cannot prove First (X1) = First (R)
-red_black_trees.adb:446:18: medium: pointer dereference check might fail
-red_black_trees.adb:446:32: medium: pointer dereference check might fail
-red_black_trees.adb:447:18: medium: pointer dereference check might fail
-red_black_trees.adb:447:24: medium: pointer dereference check might fail
+red_black_trees.adb:445:07: medium: precondition might fail, cannot prove First (X1) = First (R) [provers reached step limit before completing the proof]
+red_black_trees.adb:446:18: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:446:32: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:447:18: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:447:24: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:447:31: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:447:38: medium: pointer dereference check might fail
+red_black_trees.adb:447:38: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:447:47: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:447:51: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:447:53: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:447:58: medium: pointer dereference check might fail
-red_black_trees.adb:447:64: medium: pointer dereference check might fail
-red_black_trees.adb:447:80: medium: pointer dereference check might fail
-red_black_trees.adb:447:86: medium: pointer dereference check might fail
+red_black_trees.adb:447:58: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:447:64: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:447:80: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:447:86: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:447:94: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:447:101: medium: pointer dereference check might fail
+red_black_trees.adb:447:101: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:447:110: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:447:116: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:447:118: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:447:120: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:447:127: medium: pointer dereference check might fail
-red_black_trees.adb:447:133: medium: pointer dereference check might fail
+red_black_trees.adb:447:127: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:447:133: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:465:13: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:465:44: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:465:68: info: pointer dereference check proved (CVC5: 1 VC)
@@ -661,12 +661,12 @@ red_black_trees.adb:476:46: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:477:41: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:477:46: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:482:08: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:482:08: medium: postcondition might fail, cannot prove Size (T) = Size (T)'Old
+red_black_trees.adb:482:08: medium: postcondition might fail, cannot prove Size (T) = Size (T)'Old [provers reached step limit before completing the proof]
 red_black_trees.adb:482:27: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:488:10: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:488:37: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:493:29: medium: pointer dereference check might fail
-red_black_trees.adb:493:53: medium: pointer dereference check might fail
+red_black_trees.adb:493:29: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:493:53: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:498:11: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:499:19: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:500:19: info: pointer dereference check proved (CVC5: 1 VC)
@@ -677,40 +677,40 @@ red_black_trees.adb:503:22: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:503:27: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:503:32: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:505:13: info: precondition proved (CVC5: 2 VC)
-red_black_trees.adb:508:56: medium: pointer dereference check might fail
-red_black_trees.adb:511:17: medium: pointer dereference check might fail
-red_black_trees.adb:511:22: medium: pointer dereference check might fail
+red_black_trees.adb:508:56: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:511:17: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:511:22: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:515:16: medium: in inlined expression function body at infinite_sequences.ads:31
-red_black_trees.adb:515:16: medium: precondition might fail, cannot prove First (R) = First (S1) [possible fix: precondition of subprogram at line 451 should mention Pos]
-red_black_trees.adb:515:41: medium: pointer dereference check might fail
-red_black_trees.adb:515:46: medium: pointer dereference check might fail
-red_black_trees.adb:515:60: medium: pointer dereference check might fail
-red_black_trees.adb:515:65: medium: pointer dereference check might fail
-red_black_trees.adb:515:81: medium: pointer dereference check might fail
-red_black_trees.adb:515:86: medium: pointer dereference check might fail
+red_black_trees.adb:515:16: medium: precondition might fail, cannot prove First (R) = First (S1) [possible fix: precondition of subprogram at line 451 should mention Pos] [provers reached step limit before completing the proof]
+red_black_trees.adb:515:41: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:515:46: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:515:60: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:515:65: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:515:81: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:515:86: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:515:94: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:515:100: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:515:102: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:515:104: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:515:111: medium: pointer dereference check might fail
-red_black_trees.adb:515:116: medium: pointer dereference check might fail
-red_black_trees.adb:515:141: medium: pointer dereference check might fail
+red_black_trees.adb:515:111: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:515:116: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:515:141: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:516:16: medium: in inlined expression function body at infinite_sequences.ads:31
-red_black_trees.adb:516:16: medium: precondition might fail, cannot prove First (R) = First (S1) [possible fix: precondition of subprogram at line 451 should mention Pos]
-red_black_trees.adb:516:51: medium: pointer dereference check might fail
-red_black_trees.adb:516:65: medium: pointer dereference check might fail
-red_black_trees.adb:516:81: medium: pointer dereference check might fail
+red_black_trees.adb:516:16: medium: precondition might fail, cannot prove First (R) = First (S1) [possible fix: precondition of subprogram at line 451 should mention Pos] [provers reached step limit before completing the proof]
+red_black_trees.adb:516:51: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:516:65: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:516:81: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:516:89: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:516:95: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:516:97: medium: in inlined predicate at a-nbnbin.ads:55
-red_black_trees.adb:516:97: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: precondition of subprogram at line 451 should mention Pos]
+red_black_trees.adb:516:97: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: precondition of subprogram at line 451 should mention Pos] [provers reached step limit before completing the proof]
 red_black_trees.adb:516:99: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:516:106: medium: pointer dereference check might fail
-red_black_trees.adb:521:28: medium: assertion might fail [possible fix: precondition of subprogram at line 451 should mention Pos]
-red_black_trees.adb:522:28: medium: assertion might fail
-red_black_trees.adb:523:28: medium: assertion might fail
+red_black_trees.adb:516:106: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:521:28: medium: assertion might fail [possible fix: precondition of subprogram at line 451 should mention Pos] [provers reached step limit before completing the proof]
+red_black_trees.adb:522:28: medium: assertion might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:523:28: medium: assertion might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:524:28: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:524:28: medium: assertion might fail
+red_black_trees.adb:524:28: medium: assertion might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:524:43: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:526:17: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:526:22: info: pointer dereference check proved (CVC5: 1 VC)
@@ -718,10 +718,10 @@ red_black_trees.adb:527:22: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:527:27: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:527:33: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:530:56: info: pointer dereference check proved (CVC5: 1 VC)
-red_black_trees.adb:532:16: medium: precondition might fail, cannot prove T.Right /= null
+red_black_trees.adb:532:16: medium: precondition might fail, cannot prove T.Right /= null [provers reached step limit before completing the proof]
 red_black_trees.adb:532:30: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:536:16: medium: in inlined expression function body at infinite_sequences.ads:31
-red_black_trees.adb:536:16: medium: precondition might fail, cannot prove Last (R) = Last (S3) [possible fix: precondition of subprogram at line 451 should mention Pos]
+red_black_trees.adb:536:16: medium: precondition might fail, cannot prove Last (R) = Last (S3) [possible fix: precondition of subprogram at line 451 should mention Pos] [provers reached step limit before completing the proof]
 red_black_trees.adb:536:51: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:536:65: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:536:81: info: pointer dereference check proved (CVC5: 1 VC)
@@ -730,216 +730,216 @@ red_black_trees.adb:536:95: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:536:97: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:536:99: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:536:106: info: pointer dereference check proved (CVC5: 1 VC)
-red_black_trees.adb:539:13: medium: precondition might fail, cannot prove T.Left /= null
-red_black_trees.adb:543:56: medium: pointer dereference check might fail
-red_black_trees.adb:545:17: medium: pointer dereference check might fail
-red_black_trees.adb:545:22: medium: pointer dereference check might fail
+red_black_trees.adb:539:13: medium: precondition might fail, cannot prove T.Left /= null [provers reached step limit before completing the proof]
+red_black_trees.adb:543:56: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:545:17: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:545:22: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:549:16: medium: in inlined expression function body at infinite_sequences.ads:31
-red_black_trees.adb:549:16: medium: precondition might fail, cannot prove First (R) = First (S1) [possible fix: precondition of subprogram at line 451 should mention Pos]
-red_black_trees.adb:549:41: medium: pointer dereference check might fail
-red_black_trees.adb:549:46: medium: pointer dereference check might fail
-red_black_trees.adb:549:60: medium: pointer dereference check might fail
-red_black_trees.adb:549:65: medium: pointer dereference check might fail
-red_black_trees.adb:549:81: medium: pointer dereference check might fail
-red_black_trees.adb:549:86: medium: pointer dereference check might fail
+red_black_trees.adb:549:16: medium: precondition might fail, cannot prove First (R) = First (S1) [possible fix: precondition of subprogram at line 451 should mention Pos] [provers reached step limit before completing the proof]
+red_black_trees.adb:549:41: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:549:46: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:549:60: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:549:65: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:549:81: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:549:86: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:549:94: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:549:100: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:549:102: medium: in inlined predicate at a-nbnbin.ads:55
-red_black_trees.adb:549:102: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: precondition of subprogram at line 451 should mention Pos]
+red_black_trees.adb:549:102: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: precondition of subprogram at line 451 should mention Pos] [provers reached step limit before completing the proof]
 red_black_trees.adb:549:104: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:549:111: medium: pointer dereference check might fail
-red_black_trees.adb:549:116: medium: pointer dereference check might fail
-red_black_trees.adb:549:141: medium: pointer dereference check might fail
+red_black_trees.adb:549:111: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:549:116: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:549:141: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:550:16: medium: in inlined expression function body at infinite_sequences.ads:31
-red_black_trees.adb:550:16: medium: precondition might fail, cannot prove First (R) = First (S1) [possible fix: precondition of subprogram at line 451 should mention Pos]
-red_black_trees.adb:550:51: medium: pointer dereference check might fail
-red_black_trees.adb:550:65: medium: pointer dereference check might fail
-red_black_trees.adb:550:81: medium: pointer dereference check might fail
+red_black_trees.adb:550:16: medium: precondition might fail, cannot prove First (R) = First (S1) [possible fix: precondition of subprogram at line 451 should mention Pos] [provers reached step limit before completing the proof]
+red_black_trees.adb:550:51: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:550:65: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:550:81: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:550:89: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:550:95: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:550:97: medium: in inlined predicate at a-nbnbin.ads:55
-red_black_trees.adb:550:97: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: precondition of subprogram at line 451 should mention Pos]
+red_black_trees.adb:550:97: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: precondition of subprogram at line 451 should mention Pos] [provers reached step limit before completing the proof]
 red_black_trees.adb:550:99: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:550:106: medium: pointer dereference check might fail
-red_black_trees.adb:555:28: medium: assertion might fail [possible fix: precondition of subprogram at line 451 should mention Pos]
-red_black_trees.adb:556:28: medium: assertion might fail
-red_black_trees.adb:557:28: medium: assertion might fail
+red_black_trees.adb:550:106: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:555:28: medium: assertion might fail [possible fix: precondition of subprogram at line 451 should mention Pos] [provers reached step limit before completing the proof]
+red_black_trees.adb:556:28: medium: assertion might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:557:28: medium: assertion might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:558:28: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:558:28: medium: assertion might fail
+red_black_trees.adb:558:28: medium: assertion might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:558:43: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:561:11: medium: pointer dereference check might fail
-red_black_trees.adb:562:19: medium: pointer dereference check might fail
-red_black_trees.adb:563:19: medium: pointer dereference check might fail
-red_black_trees.adb:563:25: medium: pointer dereference check might fail
-red_black_trees.adb:565:14: medium: pointer dereference check might fail
-red_black_trees.adb:565:20: medium: pointer dereference check might fail
-red_black_trees.adb:566:22: medium: pointer dereference check might fail
-red_black_trees.adb:566:28: medium: pointer dereference check might fail
-red_black_trees.adb:566:34: medium: pointer dereference check might fail
-red_black_trees.adb:568:13: medium: precondition might fail, cannot prove T /= null
-red_black_trees.adb:572:56: medium: pointer dereference check might fail
+red_black_trees.adb:561:11: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:562:19: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:563:19: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:563:25: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:565:14: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:565:20: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:566:22: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:566:28: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:566:34: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:568:13: medium: precondition might fail, cannot prove T /= null [provers reached step limit before completing the proof]
+red_black_trees.adb:572:56: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:572:64: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:572:70: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:572:77: medium: pointer dereference check might fail
+red_black_trees.adb:572:77: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:572:84: medium: in inlined predicate at a-nbnbin.ads:55
-red_black_trees.adb:572:84: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: precondition of subprogram at line 451 should mention Pos]
+red_black_trees.adb:572:84: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: precondition of subprogram at line 451 should mention Pos] [provers reached step limit before completing the proof]
 red_black_trees.adb:572:86: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:574:17: medium: pointer dereference check might fail
-red_black_trees.adb:574:23: medium: pointer dereference check might fail
+red_black_trees.adb:574:17: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:574:23: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:578:16: medium: in inlined expression function body at infinite_sequences.ads:31
-red_black_trees.adb:578:16: medium: precondition might fail, cannot prove First (R) = First (S1) [possible fix: precondition of subprogram at line 451 should mention Pos]
-red_black_trees.adb:578:41: medium: pointer dereference check might fail
-red_black_trees.adb:578:47: medium: pointer dereference check might fail
+red_black_trees.adb:578:16: medium: precondition might fail, cannot prove First (R) = First (S1) [possible fix: precondition of subprogram at line 451 should mention Pos] [provers reached step limit before completing the proof]
+red_black_trees.adb:578:41: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:578:47: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:578:54: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:578:60: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:578:67: medium: pointer dereference check might fail
+red_black_trees.adb:578:67: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:578:74: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:578:76: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:578:81: medium: pointer dereference check might fail
-red_black_trees.adb:578:87: medium: pointer dereference check might fail
-red_black_trees.adb:578:103: medium: pointer dereference check might fail
-red_black_trees.adb:578:109: medium: pointer dereference check might fail
+red_black_trees.adb:578:81: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:578:87: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:578:103: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:578:109: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:578:117: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:578:123: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:578:127: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:578:134: medium: pointer dereference check might fail
+red_black_trees.adb:578:134: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:578:141: medium: in inlined predicate at a-nbnbin.ads:55
-red_black_trees.adb:578:141: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: precondition of subprogram at line 451 should mention Pos]
+red_black_trees.adb:578:141: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: precondition of subprogram at line 451 should mention Pos] [provers reached step limit before completing the proof]
 red_black_trees.adb:578:143: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:578:150: medium: pointer dereference check might fail
-red_black_trees.adb:578:156: medium: pointer dereference check might fail
-red_black_trees.adb:578:181: medium: pointer dereference check might fail
+red_black_trees.adb:578:150: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:578:156: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:578:181: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:578:189: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:578:195: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:578:202: medium: pointer dereference check might fail
+red_black_trees.adb:578:202: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:578:209: medium: in inlined predicate at a-nbnbin.ads:55
-red_black_trees.adb:578:209: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: precondition of subprogram at line 451 should mention Pos]
+red_black_trees.adb:578:209: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: precondition of subprogram at line 451 should mention Pos] [provers reached step limit before completing the proof]
 red_black_trees.adb:578:211: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:579:16: medium: in inlined expression function body at infinite_sequences.ads:31
-red_black_trees.adb:579:16: medium: precondition might fail, cannot prove First (R) = First (S1) [possible fix: precondition of subprogram at line 451 should mention Pos]
-red_black_trees.adb:579:43: medium: pointer dereference check might fail
-red_black_trees.adb:579:57: medium: pointer dereference check might fail
-red_black_trees.adb:579:81: medium: pointer dereference check might fail
+red_black_trees.adb:579:16: medium: precondition might fail, cannot prove First (R) = First (S1) [possible fix: precondition of subprogram at line 451 should mention Pos] [provers reached step limit before completing the proof]
+red_black_trees.adb:579:43: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:579:57: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:579:81: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:579:89: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:579:95: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:579:97: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:579:99: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:579:106: medium: pointer dereference check might fail
-red_black_trees.adb:584:28: medium: assertion might fail [possible fix: precondition of subprogram at line 451 should mention Pos]
-red_black_trees.adb:585:28: medium: assertion might fail
-red_black_trees.adb:586:28: medium: assertion might fail
+red_black_trees.adb:579:106: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:584:28: medium: assertion might fail [possible fix: precondition of subprogram at line 451 should mention Pos] [provers reached step limit before completing the proof]
+red_black_trees.adb:585:28: medium: assertion might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:586:28: medium: assertion might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:587:28: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:587:28: medium: assertion might fail
+red_black_trees.adb:587:28: medium: assertion might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:587:43: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:589:17: medium: pointer dereference check might fail
-red_black_trees.adb:589:23: medium: pointer dereference check might fail
-red_black_trees.adb:590:22: medium: pointer dereference check might fail
-red_black_trees.adb:590:28: medium: pointer dereference check might fail
-red_black_trees.adb:590:33: medium: pointer dereference check might fail
-red_black_trees.adb:593:56: medium: pointer dereference check might fail
+red_black_trees.adb:589:17: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:589:23: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:590:22: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:590:28: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:590:33: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:593:56: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:593:64: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:593:70: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:593:77: medium: pointer dereference check might fail
+red_black_trees.adb:593:77: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:593:84: medium: in inlined predicate at a-nbnbin.ads:55
-red_black_trees.adb:593:84: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: precondition of subprogram at line 451 should mention Pos]
+red_black_trees.adb:593:84: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: precondition of subprogram at line 451 should mention Pos] [provers reached step limit before completing the proof]
 red_black_trees.adb:593:86: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:595:16: medium: precondition might fail, cannot prove T /= null
-red_black_trees.adb:595:31: medium: pointer dereference check might fail
+red_black_trees.adb:595:16: medium: precondition might fail, cannot prove T /= null [provers reached step limit before completing the proof]
+red_black_trees.adb:595:31: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:595:39: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:595:45: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:595:52: medium: pointer dereference check might fail
+red_black_trees.adb:595:52: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:595:59: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:595:61: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:599:16: medium: in inlined expression function body at infinite_sequences.ads:31
-red_black_trees.adb:599:16: medium: precondition might fail, cannot prove First (R) = First (S1) [possible fix: precondition of subprogram at line 451 should mention Pos]
-red_black_trees.adb:599:43: medium: pointer dereference check might fail
-red_black_trees.adb:599:57: medium: pointer dereference check might fail
-red_black_trees.adb:599:81: medium: pointer dereference check might fail
+red_black_trees.adb:599:16: medium: precondition might fail, cannot prove First (R) = First (S1) [possible fix: precondition of subprogram at line 451 should mention Pos] [provers reached step limit before completing the proof]
+red_black_trees.adb:599:43: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:599:57: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:599:81: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:599:89: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:599:95: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:599:97: medium: in inlined predicate at a-nbnbin.ads:55
-red_black_trees.adb:599:97: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: precondition of subprogram at line 451 should mention Pos]
+red_black_trees.adb:599:97: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: precondition of subprogram at line 451 should mention Pos] [provers reached step limit before completing the proof]
 red_black_trees.adb:599:99: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:599:106: medium: pointer dereference check might fail
-red_black_trees.adb:602:13: medium: precondition might fail, cannot prove T /= null
-red_black_trees.adb:606:56: medium: pointer dereference check might fail
+red_black_trees.adb:599:106: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:602:13: medium: precondition might fail, cannot prove T /= null [provers reached step limit before completing the proof]
+red_black_trees.adb:606:56: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:606:64: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:606:70: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:606:77: medium: pointer dereference check might fail
+red_black_trees.adb:606:77: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:606:84: medium: in inlined predicate at a-nbnbin.ads:55
-red_black_trees.adb:606:84: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: precondition of subprogram at line 451 should mention Pos]
+red_black_trees.adb:606:84: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: precondition of subprogram at line 451 should mention Pos] [provers reached step limit before completing the proof]
 red_black_trees.adb:606:86: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:608:17: medium: pointer dereference check might fail
-red_black_trees.adb:608:23: medium: pointer dereference check might fail
+red_black_trees.adb:608:17: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:608:23: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:612:16: medium: in inlined expression function body at infinite_sequences.ads:31
-red_black_trees.adb:612:16: medium: precondition might fail, cannot prove First (R) = First (S1) [possible fix: precondition of subprogram at line 451 should mention Pos]
-red_black_trees.adb:612:41: medium: pointer dereference check might fail
-red_black_trees.adb:612:47: medium: pointer dereference check might fail
+red_black_trees.adb:612:16: medium: precondition might fail, cannot prove First (R) = First (S1) [possible fix: precondition of subprogram at line 451 should mention Pos] [provers reached step limit before completing the proof]
+red_black_trees.adb:612:41: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:612:47: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:612:54: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:612:60: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:612:67: medium: pointer dereference check might fail
+red_black_trees.adb:612:67: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:612:74: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:612:76: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:612:81: medium: pointer dereference check might fail
-red_black_trees.adb:612:87: medium: pointer dereference check might fail
-red_black_trees.adb:612:103: medium: pointer dereference check might fail
-red_black_trees.adb:612:109: medium: pointer dereference check might fail
+red_black_trees.adb:612:81: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:612:87: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:612:103: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:612:109: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:612:117: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:612:123: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:612:127: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:612:134: medium: pointer dereference check might fail
+red_black_trees.adb:612:134: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:612:141: medium: in inlined predicate at a-nbnbin.ads:55
-red_black_trees.adb:612:141: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: precondition of subprogram at line 451 should mention Pos]
+red_black_trees.adb:612:141: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: precondition of subprogram at line 451 should mention Pos] [provers reached step limit before completing the proof]
 red_black_trees.adb:612:143: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:612:150: medium: pointer dereference check might fail
-red_black_trees.adb:612:156: medium: pointer dereference check might fail
-red_black_trees.adb:612:181: medium: pointer dereference check might fail
+red_black_trees.adb:612:150: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:612:156: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:612:181: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:612:189: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:612:195: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:612:202: medium: pointer dereference check might fail
+red_black_trees.adb:612:202: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:612:209: medium: in inlined predicate at a-nbnbin.ads:55
-red_black_trees.adb:612:209: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: precondition of subprogram at line 451 should mention Pos]
+red_black_trees.adb:612:209: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: precondition of subprogram at line 451 should mention Pos] [provers reached step limit before completing the proof]
 red_black_trees.adb:612:211: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:613:16: medium: in inlined expression function body at infinite_sequences.ads:31
-red_black_trees.adb:613:16: medium: precondition might fail, cannot prove First (R) = First (S1) [possible fix: precondition of subprogram at line 451 should mention Pos]
-red_black_trees.adb:613:43: medium: pointer dereference check might fail
-red_black_trees.adb:613:57: medium: pointer dereference check might fail
-red_black_trees.adb:613:81: medium: pointer dereference check might fail
+red_black_trees.adb:613:16: medium: precondition might fail, cannot prove First (R) = First (S1) [possible fix: precondition of subprogram at line 451 should mention Pos] [provers reached step limit before completing the proof]
+red_black_trees.adb:613:43: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:613:57: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:613:81: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:613:89: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:613:95: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:613:97: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:613:99: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:613:106: medium: pointer dereference check might fail
-red_black_trees.adb:618:28: medium: assertion might fail [possible fix: precondition of subprogram at line 451 should mention Pos]
-red_black_trees.adb:619:28: medium: assertion might fail
-red_black_trees.adb:620:28: medium: assertion might fail
+red_black_trees.adb:613:106: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:618:28: medium: assertion might fail [possible fix: precondition of subprogram at line 451 should mention Pos] [provers reached step limit before completing the proof]
+red_black_trees.adb:619:28: medium: assertion might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:620:28: medium: assertion might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:621:28: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:621:28: medium: assertion might fail
+red_black_trees.adb:621:28: medium: assertion might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:621:43: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:639:08: medium: postcondition might fail, cannot prove T /= null
+red_black_trees.adb:639:08: medium: postcondition might fail, cannot prove T /= null [provers reached step limit before completing the proof]
 red_black_trees.adb:639:32: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:639:64: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:639:71: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:650:10: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:650:37: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:656:29: medium: pointer dereference check might fail
-red_black_trees.adb:656:53: medium: pointer dereference check might fail
+red_black_trees.adb:656:29: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+red_black_trees.adb:656:53: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:661:12: info: absence of resource or memory leak proved (CVC5: 1 VC)
 red_black_trees.adb:665:14: info: pointer dereference check proved (CVC5: 1 VC)
-red_black_trees.adb:669:25: medium: assertion might fail, cannot prove Contains (R, V) [possible fix: precondition of subprogram at line 626 should mention V]
+red_black_trees.adb:669:25: medium: assertion might fail, cannot prove Contains (R, V) [possible fix: precondition of subprogram at line 626 should mention V] [provers reached step limit before completing the proof]
 red_black_trees.adb:669:25: medium: in inlined expression function body at red_black_trees.ads:75
 red_black_trees.adb:670:25: info: assertion proved (CVC5: 1 VC)
 red_black_trees.adb:673:14: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:675:53: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:680:13: medium: in inlined expression function body at infinite_sequences.ads:33
-red_black_trees.adb:680:13: medium: precondition might fail, cannot prove S1 <= R
+red_black_trees.adb:680:13: medium: precondition might fail, cannot prove S1 <= R [provers reached step limit before completing the proof]
 red_black_trees.adb:681:24: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:681:38: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:681:54: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:681:62: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:681:76: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:681:78: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:683:13: medium: precondition might fail, cannot prove Is_Sorted (Model (T, Pos))
+red_black_trees.adb:683:13: medium: precondition might fail, cannot prove Is_Sorted (Model (T, Pos)) [provers reached step limit before completing the proof]
 red_black_trees.adb:683:26: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:687:30: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:687:38: info: predicate check proved (Trivial: 1 VC)
@@ -950,10 +950,10 @@ red_black_trees.adb:687:63: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:687:70: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:687:77: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:687:79: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:691:13: medium: precondition might fail, cannot prove Is_Sorted (T1) [possible fix: precondition of subprogram at line 626 should mention V]
+red_black_trees.adb:691:13: medium: precondition might fail, cannot prove Is_Sorted (T1) [possible fix: precondition of subprogram at line 626 should mention V] [provers reached step limit before completing the proof]
 red_black_trees.adb:691:52: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:692:13: medium: in inlined expression function body at infinite_sequences.ads:31
-red_black_trees.adb:692:13: medium: precondition might fail, cannot prove First (R) = First (S1)
+red_black_trees.adb:692:13: medium: precondition might fail, cannot prove First (R) = First (S1) [provers reached step limit before completing the proof]
 red_black_trees.adb:692:45: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:692:59: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:692:75: info: pointer dereference check proved (CVC5: 1 VC)
@@ -963,7 +963,7 @@ red_black_trees.adb:692:96: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:692:103: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:692:105: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:696:13: medium: in inlined expression function body at infinite_sequences.ads:31
-red_black_trees.adb:696:13: medium: precondition might fail, cannot prove First (R) = First (S1) [possible fix: precondition of subprogram at line 626 should mention V]
+red_black_trees.adb:696:13: medium: precondition might fail, cannot prove First (R) = First (S1) [possible fix: precondition of subprogram at line 626 should mention V] [provers reached step limit before completing the proof]
 red_black_trees.adb:697:32: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:697:46: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:698:24: info: pointer dereference check proved (CVC5: 1 VC)
@@ -985,7 +985,7 @@ red_black_trees.adb:705:74: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:705:81: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:705:83: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:710:13: medium: in inlined expression function body at infinite_sequences.ads:33
-red_black_trees.adb:710:13: medium: precondition might fail, cannot prove S1 <= R
+red_black_trees.adb:710:13: medium: precondition might fail, cannot prove S1 <= R [provers reached step limit before completing the proof]
 red_black_trees.adb:710:49: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:710:63: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:710:79: info: pointer dereference check proved (CVC5: 1 VC)
@@ -994,14 +994,14 @@ red_black_trees.adb:710:93: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:710:100: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:710:107: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:710:109: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:712:13: medium: precondition might fail, cannot prove Is_Sorted (Model (T, Pos))
+red_black_trees.adb:712:13: medium: precondition might fail, cannot prove Is_Sorted (Model (T, Pos)) [provers reached step limit before completing the proof]
 red_black_trees.adb:712:26: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:712:37: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:712:43: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:712:50: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:712:57: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:712:59: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:716:13: medium: precondition might fail, cannot prove Is_Sorted (T2) [possible fix: precondition of subprogram at line 626 should mention V]
+red_black_trees.adb:716:13: medium: precondition might fail, cannot prove Is_Sorted (T2) [possible fix: precondition of subprogram at line 626 should mention V] [provers reached step limit before completing the proof]
 red_black_trees.adb:716:52: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:716:60: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:716:66: info: predicate check proved (Trivial: 1 VC)
@@ -1009,7 +1009,7 @@ red_black_trees.adb:716:73: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:716:80: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:716:82: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:717:13: medium: in inlined expression function body at infinite_sequences.ads:31
-red_black_trees.adb:717:13: medium: precondition might fail, cannot prove First (R) = First (S1)
+red_black_trees.adb:717:13: medium: precondition might fail, cannot prove First (R) = First (S1) [provers reached step limit before completing the proof]
 red_black_trees.adb:717:45: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:717:59: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:717:75: info: pointer dereference check proved (CVC5: 1 VC)
@@ -1019,7 +1019,7 @@ red_black_trees.adb:717:96: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:717:103: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:717:105: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:721:13: medium: in inlined expression function body at infinite_sequences.ads:31
-red_black_trees.adb:721:13: medium: precondition might fail, cannot prove First (R) = First (S1) [possible fix: precondition of subprogram at line 626 should mention V]
+red_black_trees.adb:721:13: medium: precondition might fail, cannot prove First (R) = First (S1) [possible fix: precondition of subprogram at line 626 should mention V] [provers reached step limit before completing the proof]
 red_black_trees.adb:722:24: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:722:38: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:723:32: info: pointer dereference check proved (CVC5: 1 VC)
@@ -1028,16 +1028,16 @@ red_black_trees.adb:723:46: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:723:53: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:723:60: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:723:62: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:727:22: medium: assertion might fail, cannot prove Contains (R, V) [possible fix: precondition of subprogram at line 626 should mention V]
+red_black_trees.adb:727:22: medium: assertion might fail, cannot prove Contains (R, V) [possible fix: precondition of subprogram at line 626 should mention V] [provers reached step limit before completing the proof]
 red_black_trees.adb:727:22: medium: in inlined expression function body at red_black_trees.ads:75
-red_black_trees.adb:732:10: medium: precondition might fail, cannot prove T /= null
-red_black_trees.adb:737:10: medium: precondition might fail, cannot prove R1 = R2 [possible fix: precondition of subprogram at line 626 should mention V]
-red_black_trees.adb:738:10: medium: precondition might fail, cannot prove X1 = X2
-red_black_trees.adb:745:07: medium: precondition might fail, cannot prove Scarce_Red (T)
+red_black_trees.adb:732:10: medium: precondition might fail, cannot prove T /= null [provers reached step limit before completing the proof]
+red_black_trees.adb:737:10: medium: precondition might fail, cannot prove R1 = R2 [possible fix: precondition of subprogram at line 626 should mention V] [provers reached step limit before completing the proof]
+red_black_trees.adb:738:10: medium: precondition might fail, cannot prove X1 = X2 [provers reached step limit before completing the proof]
+red_black_trees.adb:745:07: medium: precondition might fail, cannot prove Scarce_Red (T) [provers reached step limit before completing the proof]
 red_black_trees.adb:745:25: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:750:11: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:754:10: medium: in inlined expression function body at infinite_sequences.ads:31
-red_black_trees.adb:754:10: medium: precondition might fail, cannot prove Last (R) = Last (S3)
+red_black_trees.adb:754:10: medium: precondition might fail, cannot prove Last (R) = Last (S3) [provers reached step limit before completing the proof]
 red_black_trees.adb:754:35: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:754:44: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:754:60: info: pointer dereference check proved (CVC5: 1 VC)
@@ -1045,9 +1045,9 @@ red_black_trees.adb:754:68: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:754:70: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:754:72: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:754:79: info: pointer dereference check proved (CVC5: 1 VC)
-red_black_trees.adb:759:22: medium: assertion might fail, cannot prove Get_Color (T) = Black
+red_black_trees.adb:759:22: medium: assertion might fail, cannot prove Get_Color (T) = Black [provers reached step limit before completing the proof]
 red_black_trees.adb:759:22: medium: in inlined expression function body at red_black_trees.ads:121
-red_black_trees.adb:760:22: medium: assertion might fail
+red_black_trees.adb:760:22: medium: assertion might fail [provers reached step limit before completing the proof]
 red_black_trees.ads:26:13: info: implicit aspect Always_Terminates on "Size" has been proved, subprogram will terminate
 red_black_trees.ads:26:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
 red_black_trees.ads:27:24: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
@@ -1062,13 +1062,13 @@ red_black_trees.ads:28:45: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.ads:37:13: info: implicit aspect Always_Terminates on "Model" has been proved, subprogram will terminate
 red_black_trees.ads:37:13: warning: function contract might not be available on recursive calls [contracts-recursive]
 red_black_trees.ads:39:14: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.ads:39:14: medium: postcondition might fail, cannot prove First (Model'Result) = Fst
+red_black_trees.ads:39:14: medium: postcondition might fail, cannot prove First (Model'Result) = Fst [provers reached step limit before completing the proof]
 red_black_trees.ads:39:37: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.ads:39:50: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.ads:39:72: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.ads:39:78: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.ads:39:89: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.ads:42:22: medium: subprogram variant might fail
+red_black_trees.ads:42:22: medium: subprogram variant might fail [provers reached step limit before completing the proof]
 red_black_trees.ads:42:30: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.ads:43:23: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.ads:44:22: info: subprogram variant proved (CVC5: 1 VC)
@@ -1146,9 +1146,9 @@ red_black_trees.ads:115:27: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.ads:117:42: info: range check proved (CVC5: 1 VC)
 red_black_trees.ads:120:13: info: implicit aspect Always_Terminates on "Balanced" has been proved, subprogram will terminate
 red_black_trees.ads:134:13: info: implicit aspect Always_Terminates on "RBT_Invariant" has been proved, subprogram will terminate
-red_black_trees.ads:143:14: medium: postcondition might fail
+red_black_trees.ads:143:14: medium: postcondition might fail [provers reached step limit before completing the proof]
 red_black_trees.ads:148:10: medium: in inlined expression function body at a-nbnbin.ads:66
-red_black_trees.ads:148:10: medium: postcondition might fail, cannot prove Low <= Arg
+red_black_trees.ads:148:10: medium: postcondition might fail, cannot prove Low <= Arg [provers reached step limit before completing the proof]
 red_black_trees.ads:148:20: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.ads:148:52: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.ads:148:59: info: predicate check proved (Trivial: 1 VC)

@@ -19,9 +19,9 @@ j-c.ads:2:04: info: initialization of "G" proved
 main.adb:5:04: info: initialization of "Result1" proved
 main.adb:6:04: info: initialization of "Result2" proved
 main.adb:7:08: info: flow dependencies proved
-main.adb:12:19: medium: assertion might fail
-try_h.adb:4:04: medium: resource or memory leak might occur at end of scope
+main.adb:12:19: medium: assertion might fail [provers gave up before completing the proof]
+try_h.adb:4:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 try_h.adb:6:08: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2)
-try_j.adb:5:04: medium: precondition might fail [possible fix: subprogram at line 3 should mention G in a precondition]
+try_j.adb:5:04: medium: precondition might fail [possible fix: subprogram at line 3 should mention G in a precondition] [provers gave up before completing the proof]
 try_j.adb:5:07: high: formal parameter "X" and global "G" are aliased (SPARK RM 6.4.2)
 gnatprove: error during flow analysis and proof

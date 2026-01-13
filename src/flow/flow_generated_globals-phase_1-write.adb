@@ -48,8 +48,8 @@ package body Flow_Generated_Globals.Phase_1.Write is
       Write_Info_Char (' ');
       Write_Info_Str
         (if E = Standard_Standard then "__standard" else Unique_Name (E));
-   --  ??? the __standard is also special cased in phase 2; this should be
-   --  done in one place only.
+      --  ??? the __standard is also special cased in phase 2; this should be
+      --  done in one place only.
    end Serialize;
 
    procedure Serialize (N : Int) is

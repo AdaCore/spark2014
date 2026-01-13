@@ -7,7 +7,7 @@ test_constrained.adb:28:13: info: implicit aspect Always_Terminates on "F_H" has
 test_constrained.adb:33:19: info: assertion proved (Trivial: 1 VC)
 test_constrained.adb:33:19: info: no contextual analysis of "F" (in assertion expression)
 test_constrained.adb:34:19: info: assertion proved (Trivial: 1 VC)
-test_constrained.adb:34:27: medium: resource or memory leak might occur at end of scope
+test_constrained.adb:34:27: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 test_constrained.adb:34:50: medium: resource or memory leak might occur [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
 test_constrained.adb:34:68: info: pointer dereference check proved (CVC5: 1 VC)
 test_constrained.adb:35:19: info: assertion proved (Trivial: 1 VC)

@@ -9,6 +9,7 @@
    25 |          Conditionally_Loop (True);
       |          ^~~~~~~~~~~~~~~~~~~~~~~~
       + reason for check: procedure "Bad_Terminating" has an Always_Terminates aspect
+      + provers gave up before completing the proof
 
  info: aspect Always_Terminates on "OK_Terminating" has been proved, subprogram will terminate
 --> possibly_nonterminating.ads:13:14

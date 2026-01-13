@@ -1,19 +1,19 @@
-psu_monitoring.adb:69:41: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: precondition of subprogram at psu_monitoring.ads:90 should mention signal_value]
+psu_monitoring.adb:69:41: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: precondition of subprogram at psu_monitoring.ads:90 should mention signal_value] [provers reached step limit before completing the proof]
 psu_monitoring.adb:86:07: info: initialization of "expanded_lower_threshold" proved
 psu_monitoring.adb:87:07: info: initialization of "expanded_upper_threshold" proved
-psu_monitoring.adb:91:41: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: subprogram at psu_monitoring.ads:94 should mention monitor and signal_value in a precondition]
+psu_monitoring.adb:91:41: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: subprogram at psu_monitoring.ads:94 should mention monitor and signal_value in a precondition] [provers reached step limit before completing the proof]
 psu_monitoring.adb:91:94: info: float overflow check proved (Trivial)
 psu_monitoring.adb:98:75: info: division check proved (Z3: 1 VC)
 psu_monitoring.adb:98:75: info: float overflow check proved (Trivial)
 psu_monitoring.adb:98:75: info: range check proved (Trivial)
 psu_monitoring.adb:100:75: info: float overflow check proved (Trivial)
-psu_monitoring.adb:100:75: medium: range check might fail [reason for check: result of multiplication must fit in the target type of the assignment] [possible fix: subprogram at psu_monitoring.ads:94 should mention monitor in a precondition]
+psu_monitoring.adb:100:75: medium: range check might fail [reason for check: result of multiplication must fit in the target type of the assignment] [possible fix: subprogram at psu_monitoring.ads:94 should mention monitor in a precondition] [provers reached step limit before completing the proof]
 psu_monitoring.adb:104:75: info: float overflow check proved (Trivial)
-psu_monitoring.adb:104:75: medium: range check might fail [reason for check: result of multiplication must fit in the target type of the assignment] [possible fix: subprogram at psu_monitoring.ads:94 should mention monitor in a precondition]
+psu_monitoring.adb:104:75: medium: range check might fail [reason for check: result of multiplication must fit in the target type of the assignment] [possible fix: subprogram at psu_monitoring.ads:94 should mention monitor in a precondition] [provers reached step limit before completing the proof]
 psu_monitoring.adb:106:75: info: division check proved (Z3: 1 VC)
 psu_monitoring.adb:106:75: info: float overflow check proved (Trivial)
 psu_monitoring.adb:106:75: info: range check proved (Trivial)
-psu_monitoring.adb:122:22: medium: assertion might fail
+psu_monitoring.adb:122:22: medium: assertion might fail [provers reached step limit before completing the proof]
 psu_monitoring.adb:128:17: warning: assuming "Set_Safety_State" always terminates
 psu_monitoring.adb:128:17: warning: assuming "Set_Safety_State" has no effect on global items
 psu_monitoring.adb:128:17: warning: no Always_Terminates aspect available for "Set_Safety_State" [assumed-always-terminates]
@@ -23,24 +23,24 @@ psu_monitoring.adb:133:17: warning: assuming "Set_Safety_State" always terminate
 psu_monitoring.adb:133:17: warning: assuming "Set_Safety_State" has no effect on global items
 psu_monitoring.adb:133:17: warning: no Always_Terminates aspect available for "Set_Safety_State" [assumed-always-terminates]
 psu_monitoring.adb:133:17: warning: no Global contract available for "Set_Safety_State" [assumed-global-null]
-psu_monitoring.adb:135:16: medium: precondition might fail, cannot prove monitor.config.maximum_deviation /= 0.0 [possible fix: subprogram at psu_monitoring.ads:88 should mention monitor in a precondition]
+psu_monitoring.adb:135:16: medium: precondition might fail, cannot prove monitor.config.maximum_deviation /= 0.0 [possible fix: subprogram at psu_monitoring.ads:88 should mention monitor in a precondition] [provers reached step limit before completing the proof]
 psu_monitoring.adb:137:33: info: range check proved (Z3: 1 VC)
 psu_monitoring.adb:140:33: info: range check proved (Z3: 1 VC)
-psu_monitoring.adb:143:47: medium: range check might fail [reason for check: value must fit in the target type of the assignment] [possible fix: subprogram at psu_monitoring.ads:88 should mention monitor in a precondition]
+psu_monitoring.adb:143:47: medium: range check might fail [reason for check: value must fit in the target type of the assignment] [possible fix: subprogram at psu_monitoring.ads:88 should mention monitor in a precondition] [provers reached step limit before completing the proof]
 psu_monitoring.adb:149:33: info: range check proved (CVC5: 1 VC)
-psu_monitoring.adb:154:47: medium: range check might fail [reason for check: value must fit in the target type of the assignment] [possible fix: subprogram at psu_monitoring.ads:88 should mention monitor in a precondition]
-psu_monitoring.adb:158:16: medium: precondition might fail, cannot prove monitor.config.maximum_deviation /= 0.0 [possible fix: subprogram at psu_monitoring.ads:88 should mention monitor in a precondition]
+psu_monitoring.adb:154:47: medium: range check might fail [reason for check: value must fit in the target type of the assignment] [possible fix: subprogram at psu_monitoring.ads:88 should mention monitor in a precondition] [provers reached step limit before completing the proof]
+psu_monitoring.adb:158:16: medium: precondition might fail, cannot prove monitor.config.maximum_deviation /= 0.0 [possible fix: subprogram at psu_monitoring.ads:88 should mention monitor in a precondition] [provers reached step limit before completing the proof]
 psu_monitoring.adb:160:33: info: range check proved (Z3: 1 VC)
-psu_monitoring.adb:166:16: medium: precondition might fail, cannot prove monitor.config.maximum_deviation /= 0.0 [possible fix: subprogram at psu_monitoring.ads:88 should mention monitor in a precondition]
+psu_monitoring.adb:166:16: medium: precondition might fail, cannot prove monitor.config.maximum_deviation /= 0.0 [possible fix: subprogram at psu_monitoring.ads:88 should mention monitor in a precondition] [provers reached step limit before completing the proof]
 psu_monitoring.adb:168:33: info: range check proved (Z3: 1 VC)
 psu_monitoring.adb:171:33: info: range check proved (Z3: 1 VC)
-psu_monitoring.adb:174:47: medium: range check might fail [reason for check: value must fit in the target type of the assignment] [possible fix: subprogram at psu_monitoring.ads:88 should mention monitor in a precondition]
+psu_monitoring.adb:174:47: medium: range check might fail [reason for check: value must fit in the target type of the assignment] [possible fix: subprogram at psu_monitoring.ads:88 should mention monitor in a precondition] [provers reached step limit before completing the proof]
 psu_monitoring.adb:179:17: warning: assuming "Set_Safety_State" always terminates
 psu_monitoring.adb:179:17: warning: assuming "Set_Safety_State" has no effect on global items
 psu_monitoring.adb:179:17: warning: no Always_Terminates aspect available for "Set_Safety_State" [assumed-always-terminates]
 psu_monitoring.adb:179:17: warning: no Global contract available for "Set_Safety_State" [assumed-global-null]
 psu_monitoring.adb:183:33: info: range check proved (CVC5: 1 VC)
-psu_monitoring.adb:186:47: medium: range check might fail [reason for check: value must fit in the target type of the assignment] [possible fix: subprogram at psu_monitoring.ads:88 should mention monitor in a precondition]
+psu_monitoring.adb:186:47: medium: range check might fail [reason for check: value must fit in the target type of the assignment] [possible fix: subprogram at psu_monitoring.ads:88 should mention monitor in a precondition] [provers reached step limit before completing the proof]
 psu_monitoring.adb:192:35: warning: assuming "Get_U_C1" has no effect on global items
 psu_monitoring.adb:192:35: warning: no Global contract available for "Get_U_C1" [assumed-global-null]
 psu_monitoring.adb:193:35: warning: assuming "Get_I_L1" has no effect on global items
@@ -49,11 +49,11 @@ psu_monitoring.adb:194:35: warning: assuming "Get_U_C2" has no effect on global 
 psu_monitoring.adb:194:35: warning: no Global contract available for "Get_U_C2" [assumed-global-null]
 psu_monitoring.adb:195:35: warning: assuming "Get_I_L2" has no effect on global items
 psu_monitoring.adb:195:35: warning: no Global contract available for "Get_I_L2" [assumed-global-null]
-psu_monitoring.adb:197:22: medium: assertion might fail
-psu_monitoring.adb:198:22: medium: assertion might fail
-psu_monitoring.adb:199:22: medium: assertion might fail
-psu_monitoring.adb:200:22: medium: assertion might fail
-psu_monitoring.adb:235:33: medium: range check might fail [reason for check: value must fit in the target type of the assignment] [possible fix: loop at line 216 should mention next_time in a loop invariant]
+psu_monitoring.adb:197:22: medium: assertion might fail [provers reached step limit before completing the proof]
+psu_monitoring.adb:198:22: medium: assertion might fail [provers reached step limit before completing the proof]
+psu_monitoring.adb:199:22: medium: assertion might fail [provers reached step limit before completing the proof]
+psu_monitoring.adb:200:22: medium: assertion might fail [provers reached step limit before completing the proof]
+psu_monitoring.adb:235:33: medium: range check might fail [reason for check: value must fit in the target type of the assignment] [possible fix: loop at line 216 should mention next_time in a loop invariant] [provers reached step limit before completing the proof]
 psu_monitoring.ads:29:35: info: in default initialization of component "config" at psu_monitoring.ads:36
 psu_monitoring.ads:29:35: info: in default initialization of component "config" at psu_monitoring.ads:36
 psu_monitoring.ads:29:35: info: in default initialization of component "config" at psu_monitoring.ads:36
@@ -153,12 +153,12 @@ psu_monitoring.ads:74:09: info: ceiling priority protocol is respected for "Psu_
 psu_monitoring.ads:74:09: info: nontermination of task proved (CVC5: 1 VC)
 psu_monitoring.ads:75:39: info: range check proved (CVC5: 2 VC)
 psu_monitoring.ads:78:40: info: range check proved (Z3: 1 VC)
-psu_monitoring.ads:89:15: medium: postcondition might fail, cannot prove monitor.next_state /= reset
+psu_monitoring.ads:89:15: medium: postcondition might fail, cannot prove monitor.next_state /= reset [provers reached step limit before completing the proof]
 psu_monitoring.ads:89:63: info: range check proved (Z3: 1 VC)
 psu_monitoring.ads:90:13: info: implicit aspect Always_Terminates on "is_within_limits" has been proved, subprogram will terminate
 psu_monitoring.ads:92:07: info: complete contract cases proved (Z3: 1 VC)
 psu_monitoring.ads:92:07: info: disjoint contract or exit cases proved (CVC5: 1 VC)
 psu_monitoring.ads:92:26: info: contract case proved (CVC5: 1 VC; Trivial: 2 VC)
 psu_monitoring.ads:92:132: info: float overflow check proved (CVC5: 1 VC)
-psu_monitoring.ads:93:26: medium: contract case might fail
+psu_monitoring.ads:93:26: medium: contract case might fail [provers reached step limit before completing the proof]
 psu_monitoring.ads:94:13: info: implicit aspect Always_Terminates on "is_within_expanded_limits" has been proved, subprogram will terminate

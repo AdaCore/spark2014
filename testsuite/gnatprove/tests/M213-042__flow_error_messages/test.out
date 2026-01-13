@@ -3,7 +3,7 @@ test.adb:6:30: medium: "X" might not be initialized in "Output_Not_Set" [reason 
 test.adb:15:04: warning: analyzing unreferenced procedure "Use_Of_Uninitialised" [unreferenced-procedure]
 test.adb:16:36: info: initialization of "X" proved
 test.adb:26:12: medium: "N" might not be initialized
-test.adb:26:14: medium: overflow check might fail, cannot prove upper bound for N + M [reason for check: result of addition must fit in a 32-bits machine integer]
+test.adb:26:14: medium: overflow check might fail, cannot prove upper bound for N + M [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
 test.adb:30:25: info: initialization of "X" proved
 test.adb:30:28: info: initialization of "Y" proved
 test.adb:31:23: medium: missing dependency "X => C"

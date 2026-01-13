@@ -1,0 +1,1 @@
+bad_vector.adb:17:66: medium: precondition might fail, cannot prove upper bound for Bounded_SPARK_Vector.Empty_Vector (Capacity => 50) [provers gave up before completing the proof]

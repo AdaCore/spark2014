@@ -1,2 +1,2 @@
 init.adb:3:11: info: ceiling priority protocol is respected for "Logger.Queue" (CVC5: 1 VC)
-logger.adb:6:39: medium: this interrupt might be reserved
+logger.adb:6:39: medium: this interrupt might be reserved [provers gave up before completing the proof]

@@ -1,5 +1,5 @@
 math.adb:6:18: info: overflow check proved (CVC5: 4 VC)
-math.adb:6:23: medium: overflow check might fail, cannot prove upper bound for (Res + 1) * (Res + 1) [reason for check: result of multiplication must fit in a 32-bits machine integer]
+math.adb:6:23: medium: overflow check might fail, cannot prove upper bound for (Res + 1) * (Res + 1) [reason for check: result of multiplication must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
 math.adb:6:30: info: overflow check proved (CVC5: 4 VC)
 math.adb:6:40: medium: implicit aspect Always_Terminates on "Sqrt" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 math.adb:7:21: info: overflow check proved (CVC5: 2 VC)
@@ -13,5 +13,5 @@ math.ads:11:14: info: postcondition proved (CVC5: 1 VC)
 math.ads:12:06: info: complete contract cases proved (CVC5: 1 VC)
 math.ads:12:06: info: disjoint contract or exit cases proved (CVC5: 1 VC)
 math.ads:12:25: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
-math.ads:12:27: medium: overflow check might fail, cannot prove upper bound for X + X (e.g. when X = 1073741824) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
-math.ads:13:25: medium: contract case might fail (e.g. when Bad'Result = 0)
+math.ads:12:27: medium: overflow check might fail, cannot prove upper bound for X + X (e.g. when X = 1073741824) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
+math.ads:13:25: medium: contract case might fail (e.g. when Bad'Result = 0) [provers gave up before completing the proof]

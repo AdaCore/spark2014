@@ -7,10 +7,14 @@ is
       F, G : Integer;
    end record;
 
+   type R2 is record
+      F, G : Integer;
+   end record;
+
    X : aliased R := (12, 12);
-   Y : aliased R := (14, 14) with Address => X'Address;
-   Z : aliased R with Import, Address => X'Address;
-   V : aliased R with Import, Address => Y'Address;
+   Y : aliased R2 with Import, Address => X'Address;
+   Z : aliased R2 with Import, Address => X'Address;
+   V : aliased R2 with Import, Address => Y'Address;
 
 begin
    --  Test that overlays are handled soundly in the generation of frame
@@ -22,7 +26,7 @@ begin
 
    declare
       CX : constant R := X;
-      CY : constant R := Y;
+      CY : constant R2 := Y;
    begin
       for I in 1 .. 100 loop
          X.F := 0;
@@ -32,10 +36,11 @@ begin
       pragma Assert (if Rand (1) then Y.G = CY.G); -- @ASSERT:FAIL
    end;
 
+   X := (12, 12);
    declare
       CX : constant R := X;
-      CY : constant R := Y;
-      CZ : constant R := Z;
+      CY : constant R2 := Y;
+      CZ : constant R2 := Z;
    begin
       for I in 1 .. 100 loop
          Y.F := 0;
@@ -46,10 +51,11 @@ begin
       pragma Assert (if Rand (3) then Z.F = CZ.F); -- @ASSERT:FAIL
    end;
 
+   X := (12, 12);
    declare
       CX : constant R := X;
-      CY : constant R := Y;
-      CZ : constant R := Z;
+      CY : constant R2 := Y;
+      CZ : constant R2 := Z;
    begin
       for I in 1 .. 100 loop
          Y.F := 0;
@@ -61,10 +67,11 @@ begin
       pragma Assert (if Rand (6) then Z.F = CZ.F); -- @ASSERT:FAIL
    end;
 
+   X := (12, 12);
    declare
       CX : constant R := X;
-      CZ : constant R := Z;
-      CY : constant R := Y;
+      CZ : constant R2 := Z;
+      CY : constant R2 := Y;
    begin
       for I in 1 .. 100 loop
          Y.F := 0;
@@ -76,11 +83,12 @@ begin
       pragma Assert (if Rand (9) then X.F = CX.F); -- @ASSERT:FAIL
    end;
 
+   X := (12, 12);
    declare
       CX : constant R := X;
-      CZ : constant R := Z;
-      CY : constant R := Y;
-      CV : constant R := V;
+      CZ : constant R2 := Z;
+      CY : constant R2 := Y;
+      CV : constant R2 := V;
    begin
       for I in 1 .. 100 loop
          Y.F := 0;

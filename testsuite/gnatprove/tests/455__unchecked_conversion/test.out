@@ -1,15 +1,17 @@
+unsigned.adb:8:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 unsigned.adb:8:13: info: types in unchecked conversion have the same size (Trivial)
 unsigned.adb:8:63: info: type is suitable as source for unchecked conversion (Trivial)
 unsigned.adb:8:78: info: type is suitable for unchecked conversion (Trivial)
+unsigned.adb:10:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 unsigned.adb:10:13: info: types in unchecked conversion have the same size (Trivial)
 unsigned.adb:10:13: warning: imprecise handling of Unchecked_Conversion (type with biased representation) [imprecise-unchecked-conversion]
 unsigned.adb:10:63: info: type is suitable as source for unchecked conversion (Trivial)
 unsigned.adb:10:78: info: type is suitable for unchecked conversion (Trivial)
 unsigned.adb:12:14: warning: subprogram "Test_Unsigned" has no effect
 unsigned.adb:13:07: info: initialization of "U" proved
-unsigned.adb:16:22: medium: assertion might fail (e.g. when U = 2147483648)
+unsigned.adb:16:22: medium: assertion might fail (e.g. when U = 2147483648) [provers gave up before completing the proof]
 unsigned.adb:19:14: warning: subprogram "Test_Biased" has no effect
 unsigned.adb:20:07: info: initialization of "B" proved
-unsigned.adb:23:22: medium: assertion might fail (e.g. when B = B32'First+1)
+unsigned.adb:23:22: medium: assertion might fail (e.g. when B = B32'First+1) [provers gave up before completing the proof]
 unsigned.adb:26:04: info: precondition proved (Trivial: 1 VC)
 unsigned.adb:27:04: info: precondition proved (Trivial: 1 VC)

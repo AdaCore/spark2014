@@ -254,7 +254,6 @@ package Why.Gen.Names is
 
       WNE_Attr_Access,
       WNE_Attr_Alignment,
-      WNE_Attr_Component_Size,
       WNE_Attr_Constrained,
       WNE_Attr_First,
       WNE_Attr_First_2,
@@ -274,6 +273,7 @@ package Why.Gen.Names is
       WNE_Attr_Modulus,
       WNE_Attr_Object_Size,
       WNE_Attr_Position,
+      WNE_Attr_Size_Of_Object,
       WNE_Attr_Value_Size,
       WNE_Attr_Tag,
 
@@ -433,6 +433,10 @@ package Why.Gen.Names is
       WNE_To_Fixed,
       WNE_To_Float32,             --  for fixed-point
       WNE_To_Float64,             --  for fixed-point
+
+      WNE_Potentially_Invalid_Suffix, --  "___potentially_invalid"
+      WNE_UC_Prefix,                  --  "Uc"
+      WNE_UC_Function,                --  "_uc"
 
       WNE_Empty,                   --  dummy value for Why_Name_Enum
 

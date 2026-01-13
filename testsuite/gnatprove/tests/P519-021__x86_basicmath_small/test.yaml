@@ -5,3 +5,4 @@ prove_all:
   - --function-sandboxing=off
   prover:
   - cvc5
+large: true

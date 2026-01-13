@@ -6,9 +6,9 @@ package body External_Abstract_State
                          AW_State => (AW, ER))
 is
 
-   AR : Integer with Volatile, Async_Readers;
-   AW : Integer with Volatile, Async_Writers;
-   EW : Integer with Volatile, Effective_Writes, Async_Readers;
-   ER : Integer with Volatile, Effective_Reads, Async_Writers;
+   AR : Integer      with Volatile, Async_Readers;
+   AW : Integer := 0 with Volatile, Async_Writers;
+   EW : Integer      with Volatile, Effective_Writes, Async_Readers;
+   ER : Integer := 0 with Volatile, Effective_Reads, Async_Writers;
 
 end External_Abstract_State;

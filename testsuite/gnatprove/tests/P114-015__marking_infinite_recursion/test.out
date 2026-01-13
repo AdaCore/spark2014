@@ -1,6 +1,6 @@
 q.ads:3:44: warning: predicate check includes a call to "Foo" that requires a predicate check [enabled by default]
 q.ads:3:44: warning: this will result in infinite recursion [enabled by default]
 q.ads:3:44: warning: use an explicit subtype of "T" to carry the predicate [enabled by default]
-q.ads:3:49: high: infinite recursion might occur
+q.ads:3:49: high: infinite recursion might occur [provers gave up before completing the proof]
 q.ads:5:13: info: implicit aspect Always_Terminates on "Foo" has been proved, subprogram will terminate
 q.ads:5:18: warning: unused variable "X"

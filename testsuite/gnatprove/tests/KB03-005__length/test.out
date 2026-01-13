@@ -4,4 +4,4 @@ p.adb:10:13: info: implicit aspect Always_Terminates on "F" has been proved, sub
 p.adb:10:35: info: data dependencies proved
 p.adb:15:04: info: range check proved (CVC5: 2 VC)
 p.adb:15:25: info: length check proved (CVC5: 3 VC)
-p.adb:17:13: medium: length check might fail [reason for check: argument array must have the same length as the parameter array type]
+p.adb:17:13: medium: length check might fail [reason for check: argument array must have the same length as the parameter array type] [provers reached step limit before completing the proof]

@@ -1,5 +1,5 @@
 auto_hide_private.ads:8:04: error: a pragma Annotate Hide_Info for private part shall have 3 parameters
-illegal_hide_private-child.ads:1:01: error: annotate the private part of Child with Hide_Info
+illegal_hide_private-child.ads:1:01: error: annotate the private part of "Child" with Hide_Info
 illegal_hide_private-child.ads:1:01: error: child of a package whose private part is hidden with a visible private part is not allowed in SPARK
 illegal_hide_private-child.ads:1:01: error: violation of aspect SPARK_Mode at line 2
 illegal_hide_private-p_child-grand_child.ads:9:04: error: pragma Annotate Hide_Info for private parts shall be in a visible package

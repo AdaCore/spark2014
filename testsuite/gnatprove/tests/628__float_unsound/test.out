@@ -3,4 +3,4 @@ sqrt_constraint.adb:9:30: info: division check proved (altergo: 1 VC)
 sqrt_constraint.adb:9:30: info: float overflow check proved (Trivial)
 sqrt_constraint.adb:11:12: info: range check proved (altergo: 2 VC)
 sqrt_constraint.adb:13:52: info: float overflow check proved (altergo: 1 VC)
-sqrt_constraint.adb:23:27: medium: range check might fail [reason for check: value must fit in the target type of the assignment]
+sqrt_constraint.adb:23:27: medium: range check might fail [reason for check: value must fit in the target type of the assignment] [provers reached step limit before completing the proof]

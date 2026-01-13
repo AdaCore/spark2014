@@ -1,12 +1,12 @@
-discrete.adb:31:21: high: assertion might fail (e.g. when K = Primary)
-discrete.adb:48:22: high: assertion might fail (e.g. when K = Secondary)
-discrete.adb:65:22: high: assertion might fail (e.g. when K = Primary)
-discrete.adb:85:22: high: assertion might fail (e.g. when K = Primary)
-discrete.adb:102:22: high: assertion might fail (e.g. when K = Primary)
-discrete.adb:119:22: high: assertion might fail (e.g. when K = Secondary)
-discrete.adb:136:22: high: assertion might fail (e.g. when Work = False)
-discrete.adb:153:22: high: assertion might fail (e.g. when Sleep = False)
-discrete.adb:171:22: high: assertion might fail (e.g. when B = False)
+discrete.adb:31:21: high: assertion might fail (e.g. when K = Primary) [provers gave up before completing the proof]
+discrete.adb:48:22: high: assertion might fail (e.g. when K = Secondary) [provers gave up before completing the proof]
+discrete.adb:65:22: high: assertion might fail (e.g. when K = Primary) [provers gave up before completing the proof]
+discrete.adb:85:22: high: assertion might fail (e.g. when K = Primary) [provers gave up before completing the proof]
+discrete.adb:102:22: high: assertion might fail (e.g. when K = Primary) [provers gave up before completing the proof]
+discrete.adb:119:22: high: assertion might fail (e.g. when K = Secondary) [provers gave up before completing the proof]
+discrete.adb:136:22: high: assertion might fail (e.g. when Work = False) [provers gave up before completing the proof]
+discrete.adb:153:22: high: assertion might fail (e.g. when Sleep = False) [provers gave up before completing the proof]
+discrete.adb:171:22: high: assertion might fail (e.g. when B = False) [provers gave up before completing the proof]
 discrete.ads:11:13: info: implicit aspect Always_Terminates on "Get_Color_Of_Thing" has been proved, subprogram will terminate
 discrete.ads:25:13: info: implicit aspect Always_Terminates on "In_Choice_List" has been proved, subprogram will terminate
 discrete.ads:27:13: info: implicit aspect Always_Terminates on "Not_In_Choice_List" has been proved, subprogram will terminate
@@ -17,26 +17,26 @@ discrete.ads:37:13: info: implicit aspect Always_Terminates on "Not_In_Range" ha
 discrete.ads:41:13: info: implicit aspect Always_Terminates on "In_Subtype" has been proved, subprogram will terminate
 discrete.ads:43:13: info: implicit aspect Always_Terminates on "Not_In_Subtype" has been proved, subprogram will terminate
 discrete.ads:47:13: info: implicit aspect Always_Terminates on "Mix" has been proved, subprogram will terminate
-not_discrete.adb:15:22: high: assertion might fail (e.g. when Is_Sub = True)
-not_discrete.adb:32:22: high: assertion might fail (e.g. when Is_Sub = True)
-not_discrete.adb:49:22: high: assertion might fail (e.g. when Is_Rec = True)
-not_discrete.adb:66:22: high: assertion might fail (e.g. when Is_Small = True)
-not_discrete.adb:83:22: high: assertion might fail (e.g. when Is_Rec = True)
-not_discrete.adb:100:22: high: assertion might fail (e.g. when Is_Rec = True)
-not_discrete.adb:117:22: high: assertion might fail (e.g. when Is_Sub_42 = True)
-not_discrete.adb:145:22: medium: assertion might fail (e.g. when B = False) [possible fix: add or complete related loop invariants or postconditions]
-not_discrete.adb:161:22: medium: assertion might fail
-not_discrete.adb:178:22: medium: assertion might fail
-not_discrete.adb:195:22: medium: assertion might fail
-not_discrete.adb:212:22: medium: assertion might fail
-not_discrete.adb:229:22: high: assertion might fail (e.g. when Is_Same = True)
-not_discrete.adb:246:22: high: assertion might fail (e.g. when Is_Up = True)
-not_discrete.adb:263:22: high: assertion might fail (e.g. when Is_Down = True)
-not_discrete.adb:281:22: high: assertion might fail (e.g. when Is_Same = True)
-not_discrete.adb:299:22: high: assertion might fail (e.g. when Is_Up = True)
-not_discrete.adb:317:22: high: assertion might fail (e.g. when Is_Up = True)
-not_discrete.adb:335:22: high: assertion might fail (e.g. when Is_Diff = True)
-not_discrete.adb:352:22: high: assertion might fail (e.g. when B = False)
+not_discrete.adb:15:22: high: assertion might fail (e.g. when Is_Sub = True) [provers reached step limit before completing the proof]
+not_discrete.adb:32:22: high: assertion might fail (e.g. when Is_Sub = True) [provers reached step limit before completing the proof]
+not_discrete.adb:49:22: high: assertion might fail (e.g. when Is_Rec = True) [provers reached step limit before completing the proof]
+not_discrete.adb:66:22: high: assertion might fail (e.g. when Is_Small = True) [provers reached step limit before completing the proof]
+not_discrete.adb:83:22: high: assertion might fail (e.g. when Is_Rec = True) [provers reached step limit before completing the proof]
+not_discrete.adb:100:22: high: assertion might fail (e.g. when Is_Rec = True) [provers reached step limit before completing the proof]
+not_discrete.adb:117:22: high: assertion might fail (e.g. when Is_Sub_42 = True) [provers reached step limit before completing the proof]
+not_discrete.adb:145:22: medium: assertion might fail (e.g. when B = False) [possible fix: add or complete related loop invariants or postconditions] [provers reached step limit before completing the proof]
+not_discrete.adb:161:22: medium: assertion might fail [provers reached step limit before completing the proof]
+not_discrete.adb:178:22: medium: assertion might fail [provers reached step limit before completing the proof]
+not_discrete.adb:195:22: medium: assertion might fail [provers reached step limit before completing the proof]
+not_discrete.adb:212:22: medium: assertion might fail [provers reached step limit before completing the proof]
+not_discrete.adb:229:22: high: assertion might fail (e.g. when Is_Same = True) [provers reached step limit before completing the proof]
+not_discrete.adb:246:22: high: assertion might fail (e.g. when Is_Up = True) [provers reached step limit before completing the proof]
+not_discrete.adb:263:22: high: assertion might fail (e.g. when Is_Down = True) [provers reached step limit before completing the proof]
+not_discrete.adb:281:22: high: assertion might fail (e.g. when Is_Same = True) [provers reached step limit before completing the proof]
+not_discrete.adb:299:22: high: assertion might fail (e.g. when Is_Up = True) [provers reached step limit before completing the proof]
+not_discrete.adb:317:22: high: assertion might fail (e.g. when Is_Up = True) [provers reached step limit before completing the proof]
+not_discrete.adb:335:22: high: assertion might fail (e.g. when Is_Diff = True) [provers reached step limit before completing the proof]
+not_discrete.adb:352:22: high: assertion might fail (e.g. when B = False) [provers reached step limit before completing the proof]
 not_discrete.ads:13:13: info: implicit aspect Always_Terminates on "Record_Subtype" has been proved, subprogram will terminate
 not_discrete.ads:15:13: info: implicit aspect Always_Terminates on "Record_Subtypes" has been proved, subprogram will terminate
 not_discrete.ads:24:52: info: range check proved (CVC5: 2 VC)

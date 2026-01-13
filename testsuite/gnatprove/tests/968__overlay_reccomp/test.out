@@ -1,9 +1,10 @@
 test.adb:11:20: warning: "X" is not modified, could be IN
 test.adb:11:20: warning: unused variable "X"
 test.adb:13:04: warning: analyzing unreferenced procedure "Test" [unreferenced-procedure]
-test.adb:14:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: component of record is not aliased] [possible fix: overlaying object should have an Alignment representation clause]
+test.adb:14:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: component of record is not aliased] [possible fix: overlaid object should have an Alignment representation clause]
 test.adb:14:07: info: object is suitable for aliasing via address clause (Trivial)
 test.adb:14:07: info: type is suitable as source for unchecked conversion (Trivial)
+test.adb:14:07: warning: imprecise handling of overlay (mutable overlay of a subcomponent of an object) [imprecise-overlay]
 test.adb:14:43: info: object is suitable for aliasing via address clause (Trivial)
 test.adb:14:43: info: type is suitable as source for unchecked conversion (Trivial)
 test.adb:14:43: info: types of aliased objects have the same size (Trivial)

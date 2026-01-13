@@ -4,7 +4,7 @@ message_tests.adb:23:04: warning: analyzing unreferenced procedure "Not_All_Used
 message_tests.adb:24:33: info: initialization of "B" proved
 message_tests.adb:32:04: warning: analyzing unreferenced procedure "Not_All_Used_In_3" [unreferenced-procedure]
 message_tests.adb:33:33: info: initialization of "W" proved
-message_tests.adb:37:16: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at line 32 should mention C in a precondition]
+message_tests.adb:37:16: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at line 32 should mention C in a precondition] [provers reached step limit before completing the proof]
 message_tests.adb:40:04: warning: analyzing unreferenced procedure "Not_All_Used_In_4" [unreferenced-procedure]
 message_tests.adb:40:33: warning: unused variable "C"
 message_tests.adb:41:33: info: initialization of "W" proved
@@ -44,9 +44,9 @@ untangle_tests.adb:22:04: warning: analyzing unreferenced function "New_Coordina
 untangle_tests.adb:22:13: info: implicit aspect Always_Terminates on "New_Coordinate" has been proved, subprogram will terminate
 untangle_tests.adb:24:07: info: initialization of "R" proved
 untangle_tests.adb:34:04: warning: analyzing unreferenced procedure "Swap_Triangle" [unreferenced-procedure]
-untangle_tests.adb:37:28: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (A in 1 .. 100) to subprogram at line 34]
+untangle_tests.adb:37:28: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (A in 1 .. 100) to subprogram at line 34] [provers gave up before completing the proof]
 untangle_tests.adb:39:10: info: index check proved (CVC5: 2 VC)
-untangle_tests.adb:39:19: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (B in 1 .. 100) to subprogram at line 34]
+untangle_tests.adb:39:19: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (B in 1 .. 100) to subprogram at line 34] [provers gave up before completing the proof]
 untangle_tests.adb:40:10: info: index check proved (CVC5: 2 VC)
 untangle_tests.adb:44:04: warning: analyzing unreferenced procedure "Sieve" [unreferenced-procedure]
 untangle_tests.adb:44:21: info: initialization of "P" proved
@@ -57,7 +57,7 @@ untangle_tests.adb:56:23: info: overflow check proved (CVC5: 2 VC)
 untangle_tests.adb:63:04: warning: analyzing unreferenced procedure "Transform" [unreferenced-procedure]
 untangle_tests.adb:67:51: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 untangle_tests.adb:68:26: info: unrolling loop [info-unrolling-inlining]
-untangle_tests.adb:69:60: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: loop at line 67 should mention V and TL in a loop invariant]
-untangle_tests.adb:70:60: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: loop at line 67 should mention V and TL in a loop invariant]
-untangle_tests.adb:71:60: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: loop at line 67 should mention V and TL in a loop invariant]
+untangle_tests.adb:69:60: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: loop at line 67 should mention V and TL in a loop invariant] [provers reached step limit before completing the proof]
+untangle_tests.adb:70:60: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: loop at line 67 should mention V and TL in a loop invariant] [provers reached step limit before completing the proof]
+untangle_tests.adb:71:60: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: loop at line 67 should mention V and TL in a loop invariant] [provers reached step limit before completing the proof]
 untangle_tests.adb:77:04: warning: analyzing unreferenced procedure "Set_Normal" [unreferenced-procedure]

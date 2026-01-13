@@ -322,8 +322,9 @@ package SPARK_Util is
    with
      Pre =>
        Nkind (N) in N_Function_Call | N_Op_Eq | N_Membership_Test
-       and then (if Nkind (N) = N_Function_Call
-                 then Present (Controlling_Argument (N)));
+       and then
+         (if Nkind (N) = N_Function_Call
+          then Present (Controlling_Argument (N)));
    --  Register that a dispatching call is one produced by GNATprove to model
    --  contract dispatch.
    --
@@ -470,10 +471,16 @@ package SPARK_Util is
    --  subunits), Sem_Ch12.Is_In_Main_Unit, Inline.In_Main_Unit_Or_Subunit
    --  (which do yet something else).
 
-   function Source_Name (N : Node_Id) return String
+   function Raw_Source_Name (N : Node_Id) return String
    with Pre => Present (N) and then Nkind (N) in N_Has_Chars;
    --  @param N any node with Chars field
    --  @return The unqualified name of N as it appears in the source code
+
+   function Pretty_Source_Name (N : Node_Id) return String
+   with Pre => Present (N) and then Nkind (N) in N_Has_Chars;
+   --  @param N any node with Chars field
+   --  @return Same as above but use pretty printing and try to avoid internal
+   --     names. It should only be used in messages.
 
    function Is_Local_Context (Scop : Entity_Id) return Boolean;
    --  Return if a given scope defines a local context where it is legal to
@@ -623,10 +630,12 @@ package SPARK_Util is
    with
      Pre =>
        Ekind (E) = E_In_Parameter
-       and then Ekind (Scope (E))
-                in E_Procedure | E_Function | E_Entry | E_Subprogram_Type
-       and then (if Ekind (Scope (E)) = E_Function
-                 then Is_Function_With_Side_Effects (Scope (E)));
+       and then
+         Ekind (Scope (E))
+         in E_Procedure | E_Function | E_Entry | E_Subprogram_Type
+       and then
+         (if Ekind (Scope (E)) = E_Function
+          then Is_Function_With_Side_Effects (Scope (E)));
    --  @param E entity of a procedure or entry formal parameter of mode IN
    --  @return True if E can be written despite being of mode IN
 
@@ -1129,10 +1138,6 @@ package SPARK_Util is
    --  object. We do not return True if Expr is rooted inside an IN parameter,
    --  as the actual might be a variable object.
 
-   function Supported_Alias (Expr : Node_Id) return Entity_Id;
-   --  If Expr is of the form "X'Address", return the root object of X.
-   --  Otherwise, return Empty. This function accepts empty expressions.
-
    function Terminal_Alternatives
      (Expr : N_Subexpr_Id) return Node_Vectors.Vector;
    --  From a nest of conditional/case expressions (possibly empty), return the
@@ -1156,8 +1161,9 @@ package SPARK_Util is
 
    function Is_Null_Owning_Access (Expr : Node_Id) return Boolean
    is (Nkind (Expr) = N_Null
-       and then (Is_Anonymous_Access_Type (Etype (Expr))
-                 or else Is_Access_Variable (Etype (Expr))));
+       and then
+         (Is_Anonymous_Access_Type (Etype (Expr))
+          or else Is_Access_Variable (Etype (Expr))));
    --  Return True if Expr is exactly null and has an anomyous access type
    --  or an access-to-variable type.
    --  This is used to recognize actuals of calls which are not a part of a
@@ -1394,8 +1400,9 @@ package SPARK_Util is
    with
      Pre =>
        (Call in N_Call_Id or else Is_Inlined_Call (Call))
-       and then (if Nkind (Call) = N_Function_Call
-                 then Is_Function_Call_With_Side_Effects (Call));
+       and then
+         (if Nkind (Call) = N_Function_Call
+          then Is_Function_Call_With_Side_Effects (Call));
    --  Detect if a call with side effects is ghost respectively to the
    --  enclosing calling context (the assertion level associated to the call
    --  depends on the assertion level of the calling subprogram). In
@@ -1433,10 +1440,10 @@ package SPARK_Util is
         | N_Procedure_Call_Statement
         | N_Entry_Call_Statement
         | N_Raise_Statement
-       and then (if Nkind (Call_Or_Stmt) = N_Function_Call
-                 then
-                   Is_Function_With_Side_Effects
-                     (Get_Called_Entity (Call_Or_Stmt)));
+       and then
+         (if Nkind (Call_Or_Stmt) = N_Function_Call
+          then
+            Is_Function_With_Side_Effects (Get_Called_Entity (Call_Or_Stmt)));
    --  Retrieve all exceptions raised by Call_Or_Stmt. If Only_Handled is True,
    --  only consider exception which are handled above Call_Or_Stmt.
 
@@ -1566,9 +1573,9 @@ package SPARK_Util is
         | N_Continue_Statement
         | N_Simple_Return_Statement
         | N_Extended_Return_Statement
-       and then (if Nkind (Source) = N_Function_Call
-                 then
-                   Is_Function_With_Side_Effects (Get_Called_Entity (Source)));
+       and then
+         (if Nkind (Source) = N_Function_Call
+          then Is_Function_With_Side_Effects (Get_Called_Entity (Source)));
    --  Wrapper over Iter_Exited_Scopes_With_Specified_Transfer covering the
    --  most common cases. For Source a statement potentially causing indirect
    --  transfer of control, call Iter_Exited_Scopes_With_Specified_Transfer

@@ -1,4 +1,5 @@
       + possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers
+      + provers gave up before completing the proof
       + reason for check: result of addition must fit in a 32-bits machine integer
       |                                                ~~^~~
     3 |          Pragma Precondition (Integer'First <= X + Y and then X + Y <= Integer'Last);

@@ -2,7 +2,7 @@ package body Logging_In_Abstract with
   SPARK_Mode,
   Refined_State => (State => (Log_In, Log, Log_Size))
 is
-   Log_In : Integer with Volatile, Async_Writers, Effective_Reads;
+   Log_In : Integer with Volatile, Async_Writers, Effective_Reads, Import;
 
    type Integer_Array is array (Positive range 1 .. 100) of Integer;
    Log      : Integer_Array := (others => 0);

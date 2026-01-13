@@ -3,4 +3,4 @@ p.ads:7:19: warning: Program_Error will be raised at run time [enabled by defaul
 p.ads:7:19: warning: assuming "Id" has no effect on global items
 p.ads:7:19: warning: cannot call "Id" before body seen [enabled by default]
 p.ads:7:19: warning: no Global contract available for "Id" [assumed-global-null]
-p.ads:7:27: medium: pointer dereference check might fail
+p.ads:7:27: medium: pointer dereference check might fail [provers gave up before completing the proof]

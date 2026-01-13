@@ -1,3 +1,3 @@
 f.adb:1:10: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 f.adb:1:13: warning: unused variable "Arg"
-f.adb:3:11: medium: unexpected exception might be raised [reason for check: expressions shall not raise exceptions]
+f.adb:3:11: medium: unexpected exception might be raised [reason for check: expressions shall not raise exceptions] [provers reached step limit before completing the proof]

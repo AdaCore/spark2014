@@ -7,7 +7,7 @@ test_illegal.adb:13:07: error: violation of aspect SPARK_Mode at line 1
 test_illegal.adb:20:09: error: access-to-subprogram type annotated with the aspect Handler shall be declared at library level
 test_illegal.ads:6:06: error: wrong number of arguments in aspect Annotate (GNATprove, Handler, ...), expected 3
 test_illegal.ads:10:41: error: third argument of pragma Annotate Handler must be an entity
-test_illegal.ads:16:04: error: pragma Annotate Handler must immediately follow the full type declaration of T2
+test_illegal.ads:16:04: error: pragma Annotate Handler must immediately follow the full type declaration of type "T2"
 test_illegal.ads:21:06: error: entity annotated with the aspect Handler must be an access-to-subprogram type
 test_illegal.ads:23:06: error: entity annotated with the aspect Handler must be an access-to-subprogram type
 test_illegal.ads:28:15: error: access-to-subprogram type annotated with the aspect Handler shall not have a precondition

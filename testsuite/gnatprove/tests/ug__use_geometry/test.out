@@ -11,6 +11,7 @@
       + possible fix: call at line 13 should mention S (for argument S) in a postcondition
    13 |       S.Set_Default_No_Post;
       |        ^
+      + provers reached step limit before completing the proof
  info: implicit aspect Always_Terminates on "Valid" has been proved, subprogram will terminate
 --> geometry.ads:9:13
 

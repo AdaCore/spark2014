@@ -1,6 +1,6 @@
 pack.ads:9:14: info: implicit aspect Always_Terminates on "H" has been proved, subprogram will terminate
-pack.ads:9:51: high: overflow check might fail, cannot prove lower bound for X * 2 (e.g. when X = -1073741825) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (X * 2 >= Integer'First) to subprogram at line 9]
+pack.ads:9:51: high: overflow check might fail, cannot prove lower bound for X * 2 (e.g. when X = -1073741825) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (X * 2 >= Integer'First) to subprogram at line 9] [provers reached step limit before completing the proof]
 pack.ads:11:14: info: implicit aspect Always_Terminates on "G" has been proved, subprogram will terminate
-pack.ads:11:69: high: postcondition might fail (e.g. when X = 0)
+pack.ads:11:69: high: postcondition might fail (e.g. when X = 0) [provers reached step limit before completing the proof]
 pack.ads:17:09: info: range check proved (CVC5: 2 VC)
 pack.ads:20:74: info: index check proved (CVC5: 2 VC)

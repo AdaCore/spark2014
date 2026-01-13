@@ -1,9 +1,9 @@
 foo.adb:5:04: warning: analyzing unreferenced procedure "Test_01" [unreferenced-procedure]
 foo.adb:6:23: info: initialization of "C" proved
 foo.adb:9:17: info: division check proved (CVC5: 1 VC)
-foo.adb:9:17: medium: range check might fail [reason for check: value must fit in the target type of the assignment] [possible fix: subprogram at line 5 should mention A and B in a precondition]
+foo.adb:9:17: medium: range check might fail [reason for check: value must fit in the target type of the assignment] [possible fix: subprogram at line 5 should mention A and B in a precondition] [provers reached step limit before completing the proof]
 foo.adb:9:31: info: float overflow check proved (Trivial)
 foo.adb:12:04: warning: analyzing unreferenced procedure "Test_02" [unreferenced-procedure]
 foo.adb:13:23: info: initialization of "C" proved
-foo.adb:16:17: medium: divide by zero might fail (e.g. when A = 1.4062499E+0 and B = 0.0) [possible fix: add precondition (B /= 0) to subprogram at line 12]
-foo.adb:16:17: medium: range check might fail [reason for check: value must fit in the target type of the assignment] [possible fix: subprogram at line 12 should mention A and B in a precondition]
+foo.adb:16:17: medium: divide by zero might fail (e.g. when A = 1.4062499E+0 and B = 0.0) [possible fix: add precondition (B /= 0) to subprogram at line 12] [provers reached step limit before completing the proof]
+foo.adb:16:17: medium: range check might fail [reason for check: value must fit in the target type of the assignment] [possible fix: subprogram at line 12 should mention A and B in a precondition] [provers reached step limit before completing the proof]

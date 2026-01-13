@@ -254,10 +254,10 @@ package body Why.Gen.Records is
            (Etype (Field),
             Relaxed_Init =>
               Ekind (Field) = E_Component
-              and then (if Relaxed_Init
-                        then Has_Init_Wrapper (Etype (Field))
-                        else
-                          SPARK_Definition.Has_Relaxed_Init (Etype (Field)))));
+              and then
+                (if Relaxed_Init
+                 then Has_Init_Wrapper (Etype (Field))
+                 else SPARK_Definition.Has_Relaxed_Init (Etype (Field)))));
    --  Compute the expected Why type of a record component. If the component is
    --  a type, it stands for the invisible fields of the type and is translated
    --  as the appropriate private type. Otherwise, return the abstract type of
@@ -275,7 +275,7 @@ package body Why.Gen.Records is
       pragma
         Assert
           (Is_Init_Wrapper_Type (Get_Type (+Expr1))
-             = Is_Init_Wrapper_Type (Get_Type (+Expr2)));
+           = Is_Init_Wrapper_Type (Get_Type (+Expr2)));
 
       C_Ty    : constant Entity_Id :=
         (if Is_Class_Wide_Type (Ty)
@@ -1714,6 +1714,31 @@ package body Why.Gen.Records is
             Location    => No_Location,
             Return_Type => EW_Int_Type));
 
+      --  If E has discriminants and is unconstrained, the size of objects of
+      --  type E depends on the discriminants. It is defined as a logic
+      --  function.
+
+      if Has_Discriminants (E) and then not Is_Constrained (E) then
+         Emit
+           (Th,
+            New_Function_Decl
+              (Domain      => EW_Pterm,
+               Name        => To_Local (E_Symb (E, WNE_Attr_Size_Of_Object)),
+               Binders     =>
+                 W_Binder_Array'
+                   (1 =>
+                      New_Binder
+                        (Domain   => EW_Pterm,
+                         Arg_Type =>
+                           (if E = Root_Retysp (E)
+                            then
+                              New_Named_Type (To_Name (WNE_Rec_Split_Discrs))
+                            else Field_Type_For_Discriminants (E)))),
+               Labels      => Symbol_Sets.Empty_Set,
+               Location    => No_Location,
+               Return_Type => EW_Int_Type));
+      end if;
+
       declare
          Zero : constant W_Expr_Id := New_Integer_Constant (Value => Uint_0);
 
@@ -1794,6 +1819,49 @@ package body Why.Gen.Records is
                  New_Axiom_Dep
                    (Name => To_Local (E_Symb (E, WNE_Attr_Alignment)),
                     Kind => EW_Axdep_Func)));
+
+         --  Size of objects is non-negative
+
+         if Has_Discriminants (E) and then not Is_Constrained (E) then
+            declare
+               Discr_Id : constant W_Identifier_Id :=
+                 New_Identifier
+                   (Domain => EW_Term,
+                    Symb   => NID ("discr"),
+                    Typ    =>
+                      (if E = Root_Retysp (E)
+                       then New_Named_Type (To_Name (WNE_Rec_Split_Discrs))
+                       else Field_Type_For_Discriminants (E)));
+
+               Size_Of_Object_Fun : constant W_Expr_Id :=
+                 New_Call
+                   (Name   => To_Local (E_Symb (E, WNE_Attr_Size_Of_Object)),
+                    Domain => EW_Term,
+                    Args   => (1 => +Discr_Id),
+                    Typ    => EW_Int_Type);
+
+               Size_Of_Object_Axiom : constant W_Pred_Id :=
+                 +New_Comparison
+                    (Symbol => Int_Infix_Ge,
+                     Left   => Size_Of_Object_Fun,
+                     Right  => Zero,
+                     Domain => EW_Term);
+            begin
+               Emit
+                 (Th,
+                  New_Guarded_Axiom
+                    (Ada_Node => E,
+                     Name     => NID ("size__of__object_axiom"),
+                     Binders  =>
+                       Binder_Array'(1 => (B_Name => Discr_Id, others => <>)),
+                     Def      => Size_Of_Object_Axiom,
+                     Dep      =>
+                       New_Axiom_Dep
+                         (Name =>
+                            To_Local (E_Symb (E, WNE_Attr_Size_Of_Object)),
+                          Kind => EW_Axdep_Func)));
+            end;
+         end if;
 
       end;
    end Declare_Attributes;
@@ -4617,8 +4685,8 @@ package body Why.Gen.Records is
                         (Comp, Rec => Ty, Relaxed_Init => Relaxed_Init),
                     Value  =>
                       (if Relaxed_Init
-                         or else SPARK_Definition.Has_Relaxed_Init
-                                   (Etype (Comp))
+                         or else
+                           SPARK_Definition.Has_Relaxed_Init (Etype (Comp))
                        then
                          Insert_Simple_Conversion
                            (Ada_Node       => Empty,
@@ -4986,8 +5054,8 @@ package body Why.Gen.Records is
    is
       Has_Tag : constant Boolean :=
         (Is_Tagged_Type (Retysp (Ty))
-         and then (From_Expr /= Why_Empty
-                   or else not Is_Class_Wide_Type (Ty)));
+         and then
+           (From_Expr /= Why_Empty or else not Is_Class_Wide_Type (Ty)));
       --  If Ty is tagged, its 'Tag attribute should be preserved except for
       --  defaults of classwide types.
 
@@ -5126,8 +5194,9 @@ package body Why.Gen.Records is
       if Has_Discriminants (Current) then
          for Field of Get_Component_Set (Current) loop
             if Ekind (Field) = E_Component
-              and then Retysp (Etype (Representative_Component (Field)))
-                       /= Retysp (Etype (Field))
+              and then
+                Retysp (Etype (Representative_Component (Field)))
+                /= Retysp (Etype (Field))
             then
                return Current;
             end if;
@@ -5292,19 +5361,21 @@ package body Why.Gen.Records is
       Relaxed_Init : constant Boolean :=
         I.Fields.Present
         and then Has_Init_Wrapper (I.Typ)
-        and then Get_Module (Get_Name (Get_Typ (I.Fields.Binder.B_Name)))
-                 = E_Module (I.Typ, Init_Wrapper);
+        and then
+          Get_Module (Get_Name (Get_Typ (I.Fields.Binder.B_Name)))
+          = E_Module (I.Typ, Init_Wrapper);
       Ty           : constant Entity_Id := I.Typ;
       Values       :
         W_Expr_Array (1 .. Count_Why_Top_Level_Fields (Ty, Relaxed_Init));
       Index        : Positive := 1;
+      Tmp_Alias    : constant W_Expr_Id :=
+        (if Present (Alias)
+         then
+           New_Temp_For_Expr
+             (Alias, I.Discrs.Present and then I.Discrs.Binder.Mutable)
+         else Why_Empty);
 
    begin
-      --  No need to introduce a temporary for Alias, overlays cannot have
-      --  discriminants, so it will be referenced only once.
-
-      pragma Assert (if Present (Alias) then not I.Discrs.Present);
-
       --  Store association for the top-level field for fields
 
       if I.Fields.Present then
@@ -5314,7 +5385,7 @@ package body Why.Gen.Records is
               I.Fields.Binder.Mutable,
               Domain,
               Ref_Allowed,
-              Alias);
+              Tmp_Alias);
          Index := Index + 1;
       end if;
 
@@ -5326,7 +5397,8 @@ package body Why.Gen.Records is
              (I.Discrs.Binder.B_Name,
               I.Discrs.Binder.Mutable,
               Domain,
-              Ref_Allowed);
+              Ref_Allowed,
+              Tmp_Alias);
          Index := Index + 1;
       end if;
 
@@ -5347,7 +5419,16 @@ package body Why.Gen.Records is
 
       pragma Assert (Index = Values'Last + 1);
 
-      return +Record_From_Split_Form (E, Values, Ty, Relaxed_Init);
+      return
+         Res : W_Expr_Id :=
+           +Record_From_Split_Form (E, Values, Ty, Relaxed_Init)
+      do
+         if Present (Alias) then
+            Res :=
+              Binding_For_Temp
+                (Domain => Domain, Tmp => Tmp_Alias, Context => Res);
+         end if;
+      end return;
    end Record_From_Split_Form;
 
    --------------------------------

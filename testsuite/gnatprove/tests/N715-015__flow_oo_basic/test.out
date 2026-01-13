@@ -137,7 +137,7 @@ tests.adb:412:09: info: flow dependencies proved
 tests.adb:420:43: info: tag check proved (CVC5: 1 VC)
 tests.adb:422:13: warning: assuming "Hash" has no effect on global items
 tests.adb:422:13: warning: no Global contract available for "Hash" [assumed-global-null]
-tests.adb:423:13: medium: range check might fail, cannot prove lower bound for Z.X [reason for check: value must fit in the target type of the assignment]
+tests.adb:423:13: medium: range check might fail, cannot prove lower bound for Z.X [reason for check: value must fit in the target type of the assignment] [provers gave up before completing the proof]
 tests.adb:428:23: info: initialization of "N" proved
 tests.adb:429:09: info: data dependencies proved
 tests.adb:430:09: info: flow dependencies proved
@@ -146,7 +146,7 @@ tests.adb:440:09: info: data dependencies proved
 tests.adb:441:09: info: flow dependencies proved
 tests.adb:452:09: info: data dependencies proved
 tests.adb:465:09: info: data dependencies proved
-tests.adb:470:21: medium: tag check might fail
+tests.adb:470:21: medium: tag check might fail [provers gave up before completing the proof]
 tests.adb:478:23: info: initialization of "M" proved
 tests.adb:479:23: info: initialization of "N" proved
 tests.adb:480:09: info: data dependencies proved
@@ -188,10 +188,10 @@ tests.adb:595:23: info: initialization of "F" proved
 tests.adb:596:23: info: initialization of "G" proved
 tests.adb:597:23: info: initialization of "H" proved
 tests.adb:598:09: info: data dependencies proved
-tests.adb:606:26: medium: tag check might fail
-tests.adb:607:26: medium: tag check might fail
-tests.adb:608:26: medium: tag check might fail
-tests.adb:609:26: medium: tag check might fail
+tests.adb:606:26: medium: tag check might fail [provers gave up before completing the proof]
+tests.adb:607:26: medium: tag check might fail [provers gave up before completing the proof]
+tests.adb:608:26: medium: tag check might fail [provers gave up before completing the proof]
+tests.adb:609:26: medium: tag check might fail [provers gave up before completing the proof]
 tests.adb:613:23: info: initialization of "W2" proved
 tests.adb:614:23: info: initialization of "O1" proved
 tests.adb:615:09: info: data dependencies proved
@@ -201,10 +201,10 @@ tests.adb:624:19: warning: assuming "Hash" has no effect on global items
 tests.adb:624:19: warning: no Global contract available for "Hash" [assumed-global-null]
 tests.adb:628:12: info: data dependencies proved
 tests.adb:629:33: info: initialization of "W2" proved
-tests.adb:632:30: medium: tag check might fail
+tests.adb:632:30: medium: tag check might fail [provers gave up before completing the proof]
 untangle.adb:33:13: info: implicit aspect Always_Terminates on "Wibble" has been proved, subprogram will terminate
 untangle.adb:35:09: info: data dependencies proved
 untangle.adb:40:09: info: data dependencies proved
-untangle.adb:43:08: medium: discriminant check might fail [possible fix: subprogram at line 38 should mention X in a precondition]
-untangle.adb:43:14: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at line 38 should mention G and N in a precondition]
-untangle.adb:43:14: medium: precondition might fail [possible fix: subprogram at line 38 should mention G in a precondition]
+untangle.adb:43:08: medium: discriminant check might fail [possible fix: subprogram at line 38 should mention X in a precondition] [provers gave up before completing the proof]
+untangle.adb:43:14: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at line 38 should mention G and N in a precondition] [provers gave up before completing the proof]
+untangle.adb:43:14: medium: precondition might fail [possible fix: subprogram at line 38 should mention G in a precondition] [provers gave up before completing the proof]

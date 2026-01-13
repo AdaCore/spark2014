@@ -6,6 +6,7 @@ id_alias.adb:2:17: info: postcondition proved (CVC5: 1 VC)
 id_alias.adb:3:09: info: flow dependencies proved
 id_alias.adb:10:04: info: address in address clause is compatible with object alignment (Trivial)
 id_alias.adb:10:04: info: object is suitable for aliasing via address clause (Trivial)
+id_alias.adb:10:04: warning: imprecise handling of overlay (component offset not known) [imprecise-overlay]
 id_alias.adb:10:43: info: object is suitable for aliasing via address clause (Trivial)
 id_alias.adb:10:43: info: type is suitable as source for unchecked conversion (Trivial)
 id_alias.adb:10:43: info: types of aliased objects have the same size (Trivial)
@@ -17,4 +18,4 @@ p.adb:25:52: info: type is suitable as source for unchecked conversion (Trivial)
 p.adb:25:52: info: types of aliased objects have the same size (Trivial)
 p.adb:26:07: warning: analyzing unreferenced procedure "Test" [unreferenced-procedure]
 p.adb:26:17: warning: subprogram "Test" has no effect
-p.adb:28:25: medium: assertion might fail
+p.adb:28:25: medium: assertion might fail [provers gave up before completing the proof]

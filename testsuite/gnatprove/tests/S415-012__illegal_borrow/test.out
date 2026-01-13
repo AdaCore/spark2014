@@ -5,7 +5,7 @@ incorrect_borrows.adb:19:04: info: absence of resource or memory leak at end of 
 incorrect_borrows.adb:19:26: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 incorrect_borrows.adb:20:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 incorrect_borrows.adb:20:26: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
-incorrect_borrows.adb:21:04: medium: resource or memory leak might occur at end of scope
+incorrect_borrows.adb:21:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 incorrect_borrows.adb:21:26: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 incorrect_borrows.adb:28:13: info: in possible reconstructed values at the end of the borrow at incorrect_borrows.adb:24
 incorrect_borrows.adb:28:13: info: pointer dereference check proved (CVC5: 1 VC)
@@ -13,6 +13,6 @@ incorrect_borrows.adb:28:13: info: predicate check proved (CVC5: 1 VC; Trivial: 
 incorrect_borrows.adb:28:15: info: pointer dereference check proved (CVC5: 1 VC)
 incorrect_borrows.adb:28:15: medium: in inlined predicate at incorrect_borrows.adb:8
 incorrect_borrows.adb:28:15: medium: in possible reconstructed values at the end of the borrow at incorrect_borrows.adb:24
-incorrect_borrows.adb:28:15: medium: predicate check might fail, cannot prove T1.B /= T1.N.B
+incorrect_borrows.adb:28:15: medium: predicate check might fail, cannot prove T1.B /= T1.N.B [provers reached step limit before completing the proof]
 incorrect_borrows.adb:29:08: info: pointer dereference check proved (CVC5: 1 VC)
 incorrect_borrows.adb:29:08: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)

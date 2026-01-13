@@ -1,5 +1,5 @@
 p.adb:9:13: info: precondition proved (CVC5: 1 VC)
-p.adb:16:13: high: precondition might fail (e.g. when A = 0)
+p.adb:16:13: high: precondition might fail (e.g. when A = 0) [provers reached step limit before completing the proof]
 p.ads:10:19: info: postcondition proved (CVC5: 1 VC)
 p.ads:10:29: info: division check proved (CVC5: 1 VC)
 p.ads:13:19: info: postcondition proved (CVC5: 1 VC)

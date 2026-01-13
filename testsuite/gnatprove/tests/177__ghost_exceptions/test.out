@@ -9,4 +9,4 @@ ghost_exceptions.adb:31:57: info: data dependencies proved
 ghost_exceptions.adb:35:07: info: only expected exception raised (CVC5: 1 VC)
 ghost_exceptions.adb:39:36: info: initialization of "X" proved
 ghost_exceptions.adb:39:58: info: data dependencies proved
-ghost_exceptions.adb:43:07: medium: unexpected exception might be raised [reason for check: ghost subprogram call shall not propagate exceptions] [possible explanation: E might be unexpectedly raised]
+ghost_exceptions.adb:43:07: medium: unexpected exception might be raised [reason for check: ghost subprogram call shall not propagate exceptions] [possible explanation: "E" might be unexpectedly raised] [provers gave up before completing the proof]

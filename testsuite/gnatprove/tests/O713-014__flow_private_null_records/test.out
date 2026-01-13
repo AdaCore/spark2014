@@ -1,2 +1,2 @@
-use_private_type.adb:8:19: medium: assertion might fail
-use_private_type.adb:9:19: medium: assertion might fail
+use_private_type.adb:8:19: medium: assertion might fail [provers gave up before completing the proof]
+use_private_type.adb:9:19: medium: assertion might fail [provers gave up before completing the proof]

@@ -4,15 +4,15 @@ exprold.adb:17:20: info: range check proved (CVC5: 2 VC)
 exprold.adb:22:24: info: range check proved (CVC5: 2 VC)
 exprold.adb:27:14: info: overflow check proved (CVC5: 2 VC)
 exprold.ads:18:13: info: implicit aspect Always_Terminates on "Same" has been proved, subprogram will terminate
-exprold.ads:23:16: high: postcondition might fail (e.g. when I = 1 and I'Old = 0)
-exprold.ads:28:16: high: postcondition might fail (e.g. when R = (X => 2) and R'Old = (X => 1))
-exprold.ads:33:16: high: postcondition might fail (e.g. when A = (1 => 2, others => 1) and A'Old = (others => 1))
-exprold.ads:38:16: high: postcondition might fail (e.g. when A = (1 => (X => 2), others => (X => 1)) and A'Old = (others => (X => 1)))
-exprold.ads:44:11: high: postcondition might fail (e.g. when I = 0 and I'Old = -1)
+exprold.ads:23:16: high: postcondition might fail (e.g. when I = 1 and I'Old = 0) [provers gave up before completing the proof]
+exprold.ads:28:16: high: postcondition might fail (e.g. when R = (X => 2) and R'Old = (X => 1)) [provers reached step limit before completing the proof]
+exprold.ads:33:16: high: postcondition might fail (e.g. when A = (1 => 2, others => 1) and A'Old = (others => 1)) [provers reached step limit before completing the proof]
+exprold.ads:38:16: high: postcondition might fail (e.g. when A = (1 => (X => 2), others => (X => 1)) and A'Old = (others => (X => 1))) [provers reached step limit before completing the proof]
+exprold.ads:44:11: high: postcondition might fail (e.g. when I = 0 and I'Old = -1) [provers gave up before completing the proof]
 exprold.ads:44:22: info: overflow check proved (CVC5: 2 VC)
 exprold.ads:44:40: info: overflow check proved (CVC5: 2 VC)
 exprold.ads:44:49: info: overflow check proved (CVC5: 2 VC)
 exprold.ads:48:25: info: range check proved (CVC5: 2 VC)
-exprold.ads:49:19: high: postcondition might fail, cannot prove not (R.A(I) = R.A(I)) (e.g. when I = 1 and R = (A => (others => 1), L => 1) and R'Old = (A => (others => 1), L => 1))
+exprold.ads:49:19: high: postcondition might fail, cannot prove not (R.A(I) = R.A(I)) (e.g. when I = 1 and R = (A => (others => 1), L => 1) and R'Old = (A => (others => 1), L => 1)) [provers reached step limit before completing the proof]
 exprold.ads:49:28: info: index check proved (CVC5: 2 VC)
 exprold.ads:49:37: info: index check proved (CVC5: 2 VC)

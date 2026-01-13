@@ -21,7 +21,7 @@ m2.adb:5:24: info: overflow check proved (CVC5: 2 VC)
 m2.adb:8:22: info: overflow check proved (CVC5: 2 VC)
 m2.adb:8:22: info: range check proved (CVC5: 2 VC)
 m2.adb:8:22: medium: in default value at m2.adb:14
-m2.adb:8:22: medium: overflow check might fail, cannot prove upper bound for X + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= Integer'Last - 1) to subprogram at line 1]
+m2.adb:8:22: medium: overflow check might fail, cannot prove upper bound for X + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= Integer'Last - 1) to subprogram at line 1] [provers gave up before completing the proof]
 m2.adb:12:11: info: data dependencies proved
 m2.adb:14:16: medium: resource or memory leak might occur [possible explanation: allocator inside an assertion leaks memory]
 main.adb:3:17: info: initialization of "Y" proved
@@ -34,7 +34,7 @@ main.adb:13:24: info: in default value at main.adb:17
 main.adb:13:24: info: overflow check proved (CVC5: 2 VC)
 main.adb:13:24: info: overflow check proved (CVC5: 2 VC)
 main.adb:13:24: medium: in default value at main.adb:24
-main.adb:13:24: medium: overflow check might fail, cannot prove upper bound for D + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
+main.adb:13:24: medium: overflow check might fail, cannot prove upper bound for D + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
 main.adb:16:04: info: initialization of "A" proved
 main.adb:16:18: info: range check proved (CVC5: 2 VC)
 main.adb:17:04: info: initialization of "B" proved
@@ -75,7 +75,7 @@ n.adb:6:24: info: in default value at n.adb:13
 n.adb:6:24: info: in default value at n.adb:16
 n.adb:6:24: info: overflow check proved (CVC5: 2 VC)
 n.adb:6:24: info: overflow check proved (CVC5: 2 VC)
-n.adb:13:04: medium: resource or memory leak might occur at end of scope
+n.adb:13:04: medium: resource or memory leak might occur at end of scope [provers gave up before completing the proof]
 n.adb:13:22: info: in default value at n.adb:13
 n.adb:13:22: info: overflow check proved (CVC5: 2 VC)
 n.adb:13:22: info: range check proved (CVC5: 2 VC)

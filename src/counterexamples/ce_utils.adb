@@ -40,7 +40,6 @@ with Gnat2Why.Util;                         use Gnat2Why.Util;
 with Namet;
 with Nlists;                                use Nlists;
 with Sinput;                                use Sinput;
-with SPARK_Definition;                      use SPARK_Definition;
 with SPARK_Definition.Annotate;             use SPARK_Definition.Annotate;
 with SPARK_Util;                            use SPARK_Util;
 
@@ -198,8 +197,8 @@ package body CE_Utils is
             --  expression against the predicate values.
 
             if (Nkind (Choice) = N_Subtype_Indication
-                or else (Is_Entity_Name (Choice)
-                         and then Is_Type (Entity (Choice))))
+                or else
+                  (Is_Entity_Name (Choice) and then Is_Type (Entity (Choice))))
               and then Has_Predicates (Etype (Choice))
             then
                pragma Assert (Has_Static_Predicate (Etype (Choice)));
@@ -213,8 +212,8 @@ package body CE_Utils is
             --  static choices are allowed in variant parts.
 
             elsif Nkind (Choice) in N_Subtype_Indication | N_Range
-              or else (Is_Entity_Name (Choice)
-                       and then Is_Type (Entity (Choice)))
+              or else
+                (Is_Entity_Name (Choice) and then Is_Type (Entity (Choice)))
             then
                declare
                   Range_Node : constant Node_Id := Get_Range (Choice);
@@ -225,7 +224,7 @@ package body CE_Utils is
                   pragma
                     Assert
                       (Compile_Time_Known_Value (Low)
-                         and then Compile_Time_Known_Value (High));
+                       and then Compile_Time_Known_Value (High));
                   Fst := From_String (UI_Image (Expr_Value (Low)));
                   Lst := From_String (UI_Image (Expr_Value (High)));
 
@@ -387,8 +386,9 @@ package body CE_Utils is
       Match : constant String := "'@Loop";
    begin
       if Filename'Length >= Match'Length
-        and then Filename (Filename'First .. Filename'First + Match'Length - 1)
-                 = Match
+        and then
+          Filename (Filename'First .. Filename'First + Match'Length - 1)
+          = Match
       then
          declare
             Number_At_Tick : constant Natural :=
@@ -502,9 +502,11 @@ package body CE_Utils is
    function Is_Visible_In_Type
      (Rec : Entity_Id; Comp : Entity_Id) return Boolean
    is (Ekind (Comp) = E_Discriminant
-       or else (not Is_Type (Comp)
-                and then Component_Is_Present_In_Type
-                           (Rec, Search_Component_In_Type (Rec, Comp))));
+       or else
+         (not Is_Type (Comp)
+          and then
+            Component_Is_Present_In_Type
+              (Rec, Search_Component_In_Type (Rec, Comp))));
 
    ---------------------
    -- Prefix_Elements --
@@ -779,8 +781,8 @@ package body CE_Utils is
 
       elsif Is_Floating_Point_Type (Res_Type) then
          if Has_Field (JSON_Data, "quotient")
-           and then JSON_Data.Get ("value").Kind
-                    = GNATCOLL.JSON.JSON_String_Type
+           and then
+             JSON_Data.Get ("value").Kind = GNATCOLL.JSON.JSON_String_Type
          then
             declare
                Str_Value : constant String :=
@@ -924,17 +926,20 @@ package body CE_Utils is
                Comp          : Value_Access;
             begin
                for Comp_Id of Component_Set loop
-                  if Has_Field (Components, Source_Name (Comp_Id)) then
+                  if Has_Field (Components, Raw_Source_Name (Comp_Id)) then
                      --  "regular" field
                      Comp :=
                        To_Value_Access
-                         (Comp_Id, Get (Components, Source_Name (Comp_Id)));
+                         (Comp_Id,
+                          Get (Components, Raw_Source_Name (Comp_Id)));
                      Record_Fields.Include (Comp_Id, Comp);
-                  elsif Has_Field (Discriminants, Source_Name (Comp_Id)) then
+                  elsif Has_Field (Discriminants, Raw_Source_Name (Comp_Id))
+                  then
                      --  discriminant field
                      Comp :=
                        To_Value_Access
-                         (Comp_Id, Get (Discriminants, Source_Name (Comp_Id)));
+                         (Comp_Id,
+                          Get (Discriminants, Raw_Source_Name (Comp_Id)));
                      Record_Fields.Include (Comp_Id, Comp);
                   end if;
                   exit when Comp_Id = Einfo.Entities.Last_Entity (Res_Type);
@@ -986,7 +991,7 @@ package body CE_Utils is
          begin
             return
               UI_From_String (Left)
-              * Uint_10**Int (Right'Length)
+              * Uint_10 ** Int (Right'Length)
               + UI_From_String (Right);
          end;
    end UI_From_String;

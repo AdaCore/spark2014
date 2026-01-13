@@ -5,15 +5,15 @@ deceleration_curve.adb:33:07: info: initialization of "delta_speed" proved
 deceleration_curve.adb:36:65: medium: implicit aspect Always_Terminates on "Distance_To_Speed" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 deceleration_curve.adb:37:25: info: assertion proved (CVC5: 4 VC)
 deceleration_curve.adb:40:13: info: loop invariant initialization proved (CVC5: 2 VC)
-deceleration_curve.adb:40:45: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove speed <= Initial_Speed
+deceleration_curve.adb:40:45: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove speed <= Initial_Speed [provers reached step limit before completing the proof]
 deceleration_curve.adb:41:34: info: division check proved (Z3: 1 VC)
 deceleration_curve.adb:41:34: info: float overflow check proved (CVC5: 1 VC)
-deceleration_curve.adb:41:45: medium: assertion might fail, cannot prove 1.0/speed < 1.0 / Minimum_Valid_Speed
+deceleration_curve.adb:41:45: medium: assertion might fail, cannot prove 1.0/speed < 1.0 / Minimum_Valid_Speed [provers reached step limit before completing the proof]
 deceleration_curve.adb:41:48: info: division check proved (CVC5: 1 VC)
 deceleration_curve.adb:41:48: info: float overflow check proved (Z3: 1 VC)
-deceleration_curve.adb:43:14: medium: assertion might fail
+deceleration_curve.adb:43:14: medium: assertion might fail [provers reached step limit before completing the proof]
 deceleration_curve.adb:44:38: info: division check proved (Z3: 1 VC)
-deceleration_curve.adb:44:38: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded]
+deceleration_curve.adb:44:38: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [provers reached step limit before completing the proof]
 deceleration_curve.adb:46:14: info: assertion proved (Z3: 1 VC)
 deceleration_curve.adb:48:39: info: division check proved (Z3: 1 VC)
 deceleration_curve.adb:48:39: info: float overflow check proved (Z3: 1 VC)
@@ -21,23 +21,23 @@ deceleration_curve.adb:48:48: info: float overflow check proved (Z3: 1 VC)
 deceleration_curve.adb:50:48: info: division check proved (Z3: 1 VC)
 deceleration_curve.adb:50:48: info: float overflow check proved (Z3: 1 VC)
 deceleration_curve.adb:51:12: info: float overflow check proved (Z3: 1 VC)
-deceleration_curve.adb:57:15: medium: assertion might fail, cannot prove delta_speed < 0.0 [possible fix: loop invariant at line 39 should mention delta_speed]
-deceleration_curve.adb:59:25: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: loop invariant at line 39 should mention delta_speed]
-deceleration_curve.adb:61:31: medium: overflow check might fail, cannot prove upper bound for distance + Distance_Resolution [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop invariant at line 39 should mention distance]
+deceleration_curve.adb:57:15: medium: assertion might fail, cannot prove delta_speed < 0.0 [possible fix: loop invariant at line 39 should mention delta_speed] [provers reached step limit before completing the proof]
+deceleration_curve.adb:59:25: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: loop invariant at line 39 should mention delta_speed] [provers reached step limit before completing the proof]
+deceleration_curve.adb:61:31: medium: overflow check might fail, cannot prove upper bound for distance + Distance_Resolution [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop invariant at line 39 should mention distance] [provers reached step limit before completing the proof]
 deceleration_curve.adb:70:36: info: division check proved (CVC5: 1 VC)
 deceleration_curve.adb:70:36: info: range check proved (CVC5: 2 VC)
 deceleration_curve.adb:80:09: info: precondition proved (CVC5: 1 VC)
 deceleration_curve.adb:86:67: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
-deceleration_curve.adb:88:19: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: loop at line 86 should mention location and speed in a loop invariant]
+deceleration_curve.adb:88:19: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: loop at line 86 should mention location and speed in a loop invariant] [provers reached step limit before completing the proof]
 deceleration_curve.adb:88:21: info: precondition proved (Z3: 1 VC)
 deceleration_curve.adb:88:21: warning: call to "Sqrt" is not handled precisely [imprecise-call]
-deceleration_curve.adb:88:32: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop at line 86 should mention speed in a loop invariant]
-deceleration_curve.adb:89:13: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: loop at line 86 should mention location and speed in a loop invariant]
-deceleration_curve.adb:89:29: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop at line 86 should mention location and speed in a loop invariant]
-deceleration_curve.adb:90:13: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop at line 86 should mention location and speed in a loop invariant]
+deceleration_curve.adb:88:32: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop at line 86 should mention speed in a loop invariant] [provers reached step limit before completing the proof]
+deceleration_curve.adb:89:13: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: loop at line 86 should mention location and speed in a loop invariant] [provers reached step limit before completing the proof]
+deceleration_curve.adb:89:29: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop at line 86 should mention location and speed in a loop invariant] [provers reached step limit before completing the proof]
+deceleration_curve.adb:90:13: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop at line 86 should mention location and speed in a loop invariant] [provers reached step limit before completing the proof]
 deceleration_curve.adb:90:46: info: division check proved (CVC5: 1 VC)
 deceleration_curve.adb:90:46: info: float overflow check proved (Trivial)
-deceleration_curve.adb:105:09: high: precondition might fail (e.g. when Braking_Curve = (curve => (others => (location => 5001, speed => 0.0)), end_point => 5001)) [possible fix: subprogram at deceleration_curve.ads:85 should mention Braking_Curve in a precondition]
+deceleration_curve.adb:105:09: high: precondition might fail (e.g. when Braking_Curve = (curve => (others => (location => 5001, speed => 0.0)), end_point => 5001)) [possible fix: subprogram at deceleration_curve.ads:85 should mention Braking_Curve in a precondition] [provers reached step limit before completing the proof]
 deceleration_curve.adb:105:60: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 deceleration_curve.adb:106:10: warning: assuming "Put" always terminates
 deceleration_curve.adb:106:10: warning: assuming "Put" has no effect on global items
@@ -54,7 +54,7 @@ deceleration_curve.adb:108:10: warning: no Always_Terminates aspect available fo
 deceleration_curve.adb:108:10: warning: no Global contract available for "Put" [assumed-global-null]
 deceleration_curve.adb:108:30: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 deceleration_curve.adb:109:12: medium: in inlined expression function body at units.ads:42
-deceleration_curve.adb:109:12: medium: precondition might fail, cannot prove Speed >= 0.0 [possible fix: subprogram at deceleration_curve.ads:85 should mention Braking_Curve in a precondition]
+deceleration_curve.adb:109:12: medium: precondition might fail, cannot prove Speed >= 0.0 [possible fix: subprogram at deceleration_curve.ads:85 should mention Braking_Curve in a precondition] [provers reached step limit before completing the proof]
 deceleration_curve.adb:110:10: warning: assuming "New_Line" always terminates
 deceleration_curve.adb:110:10: warning: assuming "New_Line" has no effect on global items
 deceleration_curve.adb:110:10: warning: no Always_Terminates aspect available for "New_Line" [assumed-always-terminates]
@@ -66,16 +66,16 @@ deceleration_curve.ads:85:14: warning: subprogram "Print_Curve" has no effect
 deceleration_curve_test.adb:6:31: info: precondition proved (CVC5: 2 VC)
 deceleration_curve_test.adb:11:04: info: initialization of "braking_curve" proved
 deceleration_curve_test.adb:15:19: info: precondition proved (CVC5: 6 VC)
-deceleration_curve_test.adb:15:19: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Distance_To_Speed or turning it into an expression function in its unit spec]
+deceleration_curve_test.adb:15:19: medium: assertion might fail [possible fix: you should consider adding a postcondition to function "Distance_To_Speed" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
 deceleration_curve_test.adb:17:04: info: precondition proved (CVC5: 1 VC)
 example.adb:4:13: info: overflow check proved (CVC5: 2 VC)
 example.adb:5:20: info: overflow check proved (CVC5: 2 VC)
 example.ads:2:13: info: implicit aspect Always_Terminates on "Saturated_Sum" has been proved, subprogram will terminate
 example.ads:5:14: info: postcondition proved (CVC5: 2 VC)
 sec_3_13_2_monitoring_inputs.adb:31:27: info: precondition proved (CVC5: 2 VC)
-sec_3_13_2_monitoring_inputs.adb:32:61: medium: range check might fail, cannot prove lower bound for V [reason for check: value must be convertible to the target type of the conversion] [possible fix: precondition of subprogram at sec_3_13_2_monitoring_inputs.ads:180 should mention V]
+sec_3_13_2_monitoring_inputs.adb:32:61: medium: range check might fail, cannot prove lower bound for V [reason for check: value must be convertible to the target type of the conversion] [possible fix: precondition of subprogram at sec_3_13_2_monitoring_inputs.ads:180 should mention V] [provers reached step limit before completing the proof]
 sec_3_13_2_monitoring_inputs.adb:37:27: info: precondition proved (CVC5: 2 VC)
-sec_3_13_2_monitoring_inputs.adb:38:61: medium: range check might fail, cannot prove lower bound for V [reason for check: value must be convertible to the target type of the conversion] [possible fix: precondition of subprogram at sec_3_13_2_monitoring_inputs.ads:196 should mention V]
+sec_3_13_2_monitoring_inputs.adb:38:61: medium: range check might fail, cannot prove lower bound for V [reason for check: value must be convertible to the target type of the conversion] [possible fix: precondition of subprogram at sec_3_13_2_monitoring_inputs.ads:196 should mention V] [provers reached step limit before completing the proof]
 sec_3_13_2_monitoring_inputs.ads:56:13: info: implicit aspect Always_Terminates on "Is_Valid_Deceleration_Model" has been proved, subprogram will terminate
 sec_3_13_2_monitoring_inputs.ads:71:16: info: range check proved (CVC5: 1 VC)
 sec_3_13_2_monitoring_inputs.ads:165:16: info: range check proved (CVC5: 1 VC)
@@ -106,20 +106,20 @@ sec_3_13_6_deceleration.ads:40:37: info: range check proved (CVC5: 1 VC)
 sec_3_13_6_deceleration.ads:41:71: info: range check proved (CVC5: 2 VC)
 sec_3_13_6_deceleration.ads:44:13: info: implicit aspect Always_Terminates on "A_brake_safe" has been proved, subprogram will terminate
 sec_3_13_6_deceleration.ads:45:23: info: precondition proved (CVC5: 2 VC)
-sec_3_13_6_deceleration.ads:46:23: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 44 should mention V in a precondition]
+sec_3_13_6_deceleration.ads:46:23: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 44 should mention V in a precondition] [provers reached step limit before completing the proof]
 sec_3_13_6_deceleration.ads:46:26: info: precondition proved (CVC5: 2 VC)
 sec_3_13_6_deceleration.ads:46:38: info: float overflow check proved (CVC5: 1 VC)
 sec_3_13_6_deceleration.ads:46:50: info: float overflow check proved (Trivial)
 sec_3_13_6_deceleration.ads:46:57: info: float overflow check proved (CVC5: 1 VC)
 sec_3_13_6_deceleration.ads:46:59: info: precondition proved (CVC5: 2 VC)
-sec_3_13_6_deceleration.ads:47:22: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 44 should mention d and V in a precondition]
-sec_3_13_6_deceleration.ads:47:22: medium: range check might fail [reason for check: result of multiplication must be convertible to the target type of the conversion] [possible fix: subprogram at line 44 should mention d and V in a precondition]
+sec_3_13_6_deceleration.ads:47:22: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 44 should mention d and V in a precondition] [provers reached step limit before completing the proof]
+sec_3_13_6_deceleration.ads:47:22: medium: range check might fail [reason for check: result of multiplication must be convertible to the target type of the conversion] [possible fix: subprogram at line 44 should mention d and V in a precondition] [provers reached step limit before completing the proof]
 sec_3_13_6_deceleration.ads:47:30: medium: in inlined expression function body at units.ads:42
-sec_3_13_6_deceleration.ads:47:30: medium: precondition might fail, cannot prove Speed >= 0.0 [possible fix: subprogram at line 44 should mention V in a precondition]
+sec_3_13_6_deceleration.ads:47:30: medium: precondition might fail, cannot prove Speed >= 0.0 [possible fix: subprogram at line 44 should mention V in a precondition] [provers reached step limit before completing the proof]
 sec_3_13_6_deceleration.ads:51:13: info: implicit aspect Always_Terminates on "A_safe" has been proved, subprogram will terminate
 sec_3_13_6_deceleration.ads:52:26: info: float overflow check proved (Z3: 1 VC)
 sec_3_13_6_deceleration.ads:52:26: info: range check proved (Trivial)
-sec_3_13_8_targets_decel_curves.adb:24:07: medium: precondition might fail
+sec_3_13_8_targets_decel_curves.adb:24:07: medium: precondition might fail [provers reached step limit before completing the proof]
 sec_3_13_8_targets_decel_curves.ads:48:13: info: implicit aspect Always_Terminates on "Is_Valid_Target" has been proved, subprogram will terminate
 sec_3_13_8_targets_decel_curves.ads:70:32: info: initialization of "Braking_Curve" proved
 section_3_5_3.adb:41:54: info: overflow check proved (CVC5: 2 VC)
@@ -129,7 +129,7 @@ section_3_5_3.ads:51:53: info: range check proved (CVC5: 2 VC)
 section_3_5_3.ads:53:13: info: implicit aspect Always_Terminates on "Authorize_New_Communication_Session" has been proved, subprogram will terminate
 section_3_5_3.ads:68:14: warning: subprogram "Initiate_Communication_Session" has no effect
 section_3_5_3.ads:75:14: medium: in inlined expression function body at com_map.ads:38
-section_3_5_3.ads:75:14: medium: postcondition might fail, cannot prove Com_To_RBC_Map.Contains (Map, Id)
+section_3_5_3.ads:75:14: medium: postcondition might fail, cannot prove Com_To_RBC_Map.Contains (Map, Id) [provers reached step limit before completing the proof]
 section_3_5_3.ads:80:14: warning: subprogram "Contact_RBC" has no effect
 section_4_6.ads:56:13: info: implicit aspect Always_Terminates on "condition_1" has been proved, subprogram will terminate
 section_4_6.ads:59:13: info: implicit aspect Always_Terminates on "condition_5" has been proved, subprogram will terminate
@@ -142,8 +142,8 @@ section_4_6.ads:90:13: info: implicit aspect Always_Terminates on "condition_tra
 section_4_6.ads:94:13: info: implicit aspect Always_Terminates on "disjoint_condition_transitions" has been proved, subprogram will terminate
 section_4_6.ads:102:13: info: implicit aspect Always_Terminates on "transition" has been proved, subprogram will terminate
 section_4_6.ads:102:24: warning: unused variable "mode"
-section_4_6.ads:106:06: medium: contract cases might not be complete
-section_4_6.ads:106:06: medium: contract or exit cases might not be disjoint
+section_4_6.ads:106:06: medium: contract cases might not be complete [provers gave up before completing the proof]
+section_4_6.ads:106:06: medium: contract or exit cases might not be disjoint [provers gave up before completing the proof]
 section_4_6.ads:106:25: info: contract case proved (Trivial: 2 VC)
 section_4_6.ads:107:25: info: contract case proved (Trivial: 2 VC)
 section_4_6.ads:108:25: info: contract case proved (Trivial: 2 VC)
@@ -201,17 +201,17 @@ step_function.adb:116:15: medium: "Merge.Step" might not be initialized
 step_function.adb:116:27: info: index check proved (CVC5: 4 VC)
 step_function.adb:116:54: info: index check proved (CVC5: 4 VC)
 step_function.adb:120:13: info: loop invariant initialization proved (CVC5: 1 VC)
-step_function.adb:121:15: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove (for some j in 0..im-1 => SFun1.Step(i).Delimiter = Merge.Step(j).Delimiter)
+step_function.adb:121:15: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove (for some j in 0..im-1 => SFun1.Step(i).Delimiter = Merge.Step(j).Delimiter) [provers reached step limit before completing the proof]
 step_function.adb:122:30: info: index check proved (CVC5: 4 VC)
 step_function.adb:122:45: medium: "Merge.Step" might not be initialized
 step_function.adb:122:56: info: index check proved (CVC5: 4 VC)
 step_function.adb:124:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
-step_function.adb:126:20: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove (for some j in 0..im-1 => SFun1.Step(i).Delimiter = Merge.Step(j).Delimiter)
+step_function.adb:126:20: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove (for some j in 0..im-1 => SFun1.Step(i).Delimiter = Merge.Step(j).Delimiter) [provers reached step limit before completing the proof]
 step_function.adb:127:36: info: index check proved (CVC5: 4 VC)
 step_function.adb:127:51: medium: "Merge.Step" might not be initialized
 step_function.adb:127:62: info: index check proved (CVC5: 4 VC)
 step_function.adb:131:13: info: loop invariant initialization proved (CVC5: 1 VC)
-step_function.adb:132:15: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove (for some j in 0..im-1 => SFun2.Step(i).Delimiter = Merge.Step(j).Delimiter)
+step_function.adb:132:15: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove (for some j in 0..im-1 => SFun2.Step(i).Delimiter = Merge.Step(j).Delimiter) [provers reached step limit before completing the proof]
 step_function.adb:133:30: info: index check proved (CVC5: 4 VC)
 step_function.adb:133:45: medium: "Merge.Step" might not be initialized
 step_function.adb:133:56: info: index check proved (CVC5: 4 VC)
@@ -222,7 +222,7 @@ step_function.adb:138:51: medium: "Merge.Step" might not be initialized
 step_function.adb:138:62: info: index check proved (CVC5: 4 VC)
 step_function.adb:142:13: info: loop invariant initialization proved (CVC5: 1 VC)
 step_function.adb:143:15: medium: "Merge.Step" might not be initialized
-step_function.adb:143:15: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Merge.Step(i).Value = Min(Get_Value(SFun1, Merge.Step(i).Delimiter), Get_Value(SFun2, Merge.Step(i).Delimiter))
+step_function.adb:143:15: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Merge.Step(i).Value = Min(Get_Value(SFun1, Merge.Step(i).Delimiter), Get_Value(SFun2, Merge.Step(i).Delimiter)) [provers reached step limit before completing the proof]
 step_function.adb:143:26: info: index check proved (CVC5: 4 VC)
 step_function.adb:144:19: info: precondition proved (CVC5: 2 VC)
 step_function.adb:144:47: info: index check proved (CVC5: 4 VC)
@@ -265,7 +265,7 @@ step_function.ads:74:50: info: index check proved (CVC5: 2 VC)
 step_function.ads:78:26: info: index check proved (CVC5: 2 VC)
 step_function.ads:80:53: info: index check proved (CVC5: 2 VC)
 step_function.ads:86:06: info: postcondition proved (CVC5: 6 VC)
-step_function.ads:101:04: medium: postcondition might fail, cannot prove Is_Valid(Merge)
+step_function.ads:101:04: medium: postcondition might fail, cannot prove Is_Valid(Merge) [provers reached step limit before completing the proof]
 step_function.ads:106:30: info: index check proved (CVC5: 2 VC)
 step_function.ads:106:56: info: index check proved (CVC5: 2 VC)
 step_function.ads:111:30: info: index check proved (CVC5: 2 VC)
@@ -300,15 +300,15 @@ step_function_test.adb:54:19: info: assertion proved (CVC5: 1 VC; Z3: 1 VC)
 step_function_test.adb:56:04: info: precondition proved (CVC5: 3 VC; Z3: 2 VC)
 step_function_test.adb:58:38: info: unrolling loop [info-unrolling-inlining]
 step_function_test.adb:61:22: info: precondition proved (Z3: 26 VC)
-step_function_test.adb:61:22: medium: assertion might fail
+step_function_test.adb:61:22: medium: assertion might fail [provers reached step limit before completing the proof]
 step_function_test.adb:62:28: info: precondition proved (CVC5: 13 VC; Z3: 13 VC)
 step_function_test.adb:62:49: info: precondition proved (CVC5: 8 VC; Z3: 18 VC)
 step_function_test.adb:65:19: info: precondition proved (Z3: 2 VC)
-step_function_test.adb:65:19: medium: assertion might fail
+step_function_test.adb:65:19: medium: assertion might fail [provers reached step limit before completing the proof]
 step_function_test.adb:66:19: info: precondition proved (Z3: 2 VC)
-step_function_test.adb:66:19: medium: assertion might fail
+step_function_test.adb:66:19: medium: assertion might fail [provers reached step limit before completing the proof]
 step_function_test.adb:67:19: info: precondition proved (Z3: 2 VC)
-step_function_test.adb:67:19: medium: assertion might fail
+step_function_test.adb:67:19: medium: assertion might fail [provers reached step limit before completing the proof]
 units.adb:24:38: info: float overflow check proved (CVC5: 1 VC)
 units.adb:24:48: info: division check proved (CVC5: 1 VC)
 units.adb:24:48: info: float overflow check proved (Trivial)

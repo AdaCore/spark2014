@@ -149,8 +149,11 @@ package VC_Kinds is
       --  Check that the two types of an Unchecked_Conversion are of the same
       --  size.
 
-      VC_UC_Alignment,
+      VC_UC_Align_Overlay,
       --  Check that the address in an address clause respect object alignment
+
+      VC_UC_Align_UC,
+      --  Check alignment constring for Unchecked_Conversion
 
       VC_UC_Volatile,
       --  Check that we specify the address of an object only if it is
@@ -457,6 +460,7 @@ package VC_Kinds is
       Warn_Component_Size,
       Warn_Record_Component_Attr,
       Warn_Imprecise_Size,
+      Warn_Imprecise_Overlay,
       Warn_Imprecise_UC,
       Warn_Imprecise_Value,
       Warn_Imprecise_Image,
@@ -591,6 +595,7 @@ package VC_Kinds is
       Lim_Type_Inv_Volatile,
       Lim_Uninit_Alloc_In_Expr_Fun,
       Lim_Unknown_Alignment,
+      Lim_Unknown_Size,
       Lim_UU_Tagged_Comp);
 
    subtype Default_Warning_Kind is
@@ -794,6 +799,8 @@ package VC_Kinds is
            "the value of attribute & is handled in an imprecise way",
          when Warn_Imprecise_Size                  =>
            "the value of attribute & is handled in an imprecise way",
+         when Warn_Imprecise_Overlay               =>
+           "imprecise handling of overlay (&)",
          when Warn_Imprecise_UC                    =>
            "imprecise handling of Unchecked_Conversion (&)",
          when Warn_Imprecise_Value                 =>
@@ -981,6 +988,8 @@ package VC_Kinds is
            "GNAT extension for interpolated string literal",
          when Lim_Unknown_Alignment                                       =>
            "unknown value of object alignment",
+         when Lim_Unknown_Size                                            =>
+           "unknown value of object size",
          when Lim_Op_Fixed_Float                                          =>
            "operation between fixed-point and floating-point types",
          when Lim_Op_Incompatible_Fixed                                   =>

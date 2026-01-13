@@ -42,9 +42,10 @@ package Flow_Generated_Globals.Phase_1 is
      Pre  =>
        GG_Mode = GG_Write_Mode
        and then Ekind (E) = E_Constant
-       and then (for all C of Calls =>
-                   Ekind (C) in E_Function | E_Procedure
-                   and then not Is_In_Analyzed_Files (C)),
+       and then
+         (for all C of Calls =>
+            Ekind (C) in E_Function | E_Procedure
+            and then not Is_In_Analyzed_Files (C)),
      Post => GG_Mode = GG_Write_Mode;
 
    procedure GG_Register_Calls
@@ -52,15 +53,12 @@ package Flow_Generated_Globals.Phase_1 is
    with
      Pre  =>
        GG_Mode = GG_Write_Mode
-       and then Ekind (E)
-                in Entry_Kind
-                 | E_Function
-                 | E_Package
-                 | E_Procedure
-                 | E_Task_Type
-       and then (for all C of Calls =>
-                   Ekind (C)
-                   in Entry_Kind | E_Function | E_Package | E_Procedure)
+       and then
+         Ekind (E)
+         in Entry_Kind | E_Function | E_Package | E_Procedure | E_Task_Type
+       and then
+         (for all C of Calls =>
+            Ekind (C) in Entry_Kind | E_Function | E_Package | E_Procedure)
        and then Kind in EK_Direct_Calls | EK_Proof_Dependencies,
      Post => GG_Mode = GG_Write_Mode;
    --  Register Calls as direct calls or proof dependencies depending on Kind,
@@ -71,12 +69,9 @@ package Flow_Generated_Globals.Phase_1 is
    with
      Pre  =>
        GG_Mode = GG_Write_Mode
-       and then Ekind (E)
-                in Entry_Kind
-                 | E_Function
-                 | E_Package
-                 | E_Procedure
-                 | E_Task_Type,
+       and then
+         Ekind (E)
+         in Entry_Kind | E_Function | E_Package | E_Procedure | E_Task_Type,
      Post => GG_Mode = GG_Write_Mode;
    --  Register locking calls made from E
 

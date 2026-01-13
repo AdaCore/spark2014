@@ -3,5 +3,5 @@ array_comparison.adb:9:22: info: assertion proved (CVC5: 1 VC)
 array_comparison.adb:9:22: info: range check proved (CVC5: 4 VC)
 array_comparison.adb:9:35: info: range check proved (CVC5: 4 VC)
 array_comparison.adb:10:22: info: assertion proved (CVC5: 1 VC)
-array_comparison.adb:11:22: high: assertion might fail (e.g. when X = (1 => 1, 2 => 1, 3 => 1, 4 => 1, 5 => 1, 6 => 1, 7 => 1, 8 => 1, 9 => 1, 10 => 1, ...) and Z = (1 => 1, 2 => 1, 3 => 1, 4 => 1, 5 => 1, 6 => 0, 7 => 9, 8 => 9, 9 => 9, 10 => 9, ...) and Z'First = 1 and Z'Last = 20)
+array_comparison.adb:11:22: high: assertion might fail (e.g. when X = (1 => 1, 2 => 1, 3 => 1, 4 => 1, 5 => 1, 6 => 1, 7 => 1, 8 => 1, 9 => 1, 10 => 1, ...) and Z = (1 => 1, 2 => 1, 3 => 1, 4 => 1, 5 => 1, 6 => 0, 7 => 9, 8 => 9, 9 => 9, 10 => 9, ...) and Z'First = 1 and Z'Last = 20) [provers reached step limit before completing the proof]
 array_comparison.ads:5:14: warning: subprogram "P" has no effect

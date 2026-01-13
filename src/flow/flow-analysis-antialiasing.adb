@@ -193,8 +193,9 @@ package body Flow.Analysis.Antialiasing is
 
       elsif Full (AL, AH)
         and then Full (BL, BH)
-        and then ((GE (AH, BL) and then GE (BH, AL))
-                  or else (GE (BH, AL) and then GE (AH, BL)))
+        and then
+          ((GE (AH, BL) and then GE (BH, AL))
+           or else (GE (BH, AL) and then GE (AH, BL)))
       then
          --  We definitely have overlapping, non-empty ranges
          return Definite_Aliasing;
@@ -538,8 +539,9 @@ package body Flow.Analysis.Antialiasing is
          --  Determine if two actual parameters are both either immutable or
          --  anonymous access-to-constant "in" parameters.
          if (A_Is_Immutable or else A_Is_Anonymous_Access_Constant_In)
-           and then (B_Present_And_Immutable
-                     or else B_Present_And_Anonymous_Access_Constant_In)
+           and then
+             (B_Present_And_Immutable
+              or else B_Present_And_Anonymous_Access_Constant_In)
          then
             Trace_Line
               ("   -> formal parameters A and B are both either "
@@ -577,8 +579,9 @@ package body Flow.Analysis.Antialiasing is
          --  in and of an anonymous access-to-constant type.
 
          elsif Ekind (A_Formal) = E_Function
-           and then (B_Present_And_Immutable
-                     or else B_Present_And_Anonymous_Access_Constant_In)
+           and then
+             (B_Present_And_Immutable
+              or else B_Present_And_Anonymous_Access_Constant_In)
          then
             Trace_Line
               ("   -> function with side effect and formal which is either"
@@ -636,8 +639,9 @@ package body Flow.Analysis.Antialiasing is
       --  elaboration.
 
       if Is_Synchronized_Object (Root_A)
-        and then (Ekind (Root_A) /= E_Variable
-                  or else not Is_Constant_After_Elaboration (Root_A))
+        and then
+          (Ekind (Root_A) /= E_Variable
+           or else not Is_Constant_After_Elaboration (Root_A))
       then
          Trace_Line ("   -> non-interfering objects");
          return Impossible;
@@ -769,8 +773,9 @@ package body Flow.Analysis.Antialiasing is
 
          elsif (Nkind (Head_A) = N_Slice
                 and then Nkind (Head_B) = N_Indexed_Component)
-           or else (Nkind (Head_A) = N_Indexed_Component
-                    and then Nkind (Head_B) = N_Slice)
+           or else
+             (Nkind (Head_A) = N_Indexed_Component
+              and then Nkind (Head_B) = N_Slice)
          then
 
             --  We also need to check this. One possibility:
@@ -952,8 +957,8 @@ package body Flow.Analysis.Antialiasing is
         Post =>
           (for all E of Visible_Globals'Result =>
              Is_Global_Entity (E)
-             or else (Ekind (E) = E_Constant
-                      and then not Has_Variable_Input (E)));
+             or else
+               (Ekind (E) = E_Constant and then not Has_Variable_Input (E)));
       --  Returns the subset of FS that is represented by Entity_Ids, which are
       --  globals except when a constant without variable input wrongly appears
       --  in a user-written contract.
@@ -1027,8 +1032,9 @@ package body Flow.Analysis.Antialiasing is
          --  * immutable; or
          --  * of mode "in" and anonymous access-to-constant type.
          if Formal_Is_Immutable
-           or else (Ekind (Formal) = E_In_Parameter
-                    and then Is_Anonymous_Access_To_Constant (Etype (Formal)))
+           or else
+             (Ekind (Formal) = E_In_Parameter
+              and then Is_Anonymous_Access_To_Constant (Etype (Formal)))
          then
             if not Reads_Only.Is_Empty then
                Trace_Line
@@ -1185,8 +1191,8 @@ package body Flow.Analysis.Antialiasing is
 
       Aliasing_Status.Insert (N, Status);
 
-   --  ??? Need to check for aliasing between abstract state and computed
-   --  globals.
+      --  ??? Need to check for aliasing between abstract state and computed
+      --  globals.
 
    end Check_Procedure_Call;
 

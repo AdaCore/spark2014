@@ -1,10 +1,10 @@
-bad_alignment.adb:3:04: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: alignment of X (which is 2) must be a multiple of the alignment of Y (which is 4)]
+bad_alignment.adb:3:04: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: alignment of "X" (which is 2) must be a multiple of the alignment of "Y" (which is 4)]
 bad_alignment.adb:3:04: info: object is suitable for aliasing via address clause (Trivial)
 bad_alignment.adb:3:04: info: type is suitable as source for unchecked conversion (Trivial)
 bad_alignment.adb:3:56: info: object is suitable for aliasing via address clause (Trivial)
 bad_alignment.adb:3:56: info: type is suitable as source for unchecked conversion (Trivial)
 bad_alignment.adb:3:56: info: types of aliased objects have the same size (Trivial)
-bad_alignment.adb:4:04: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: alignment of X (which is 2) must be a multiple of the alignment of Z (which is 4)] [possible fix: overlaying object should have an Alignment representation clause]
+bad_alignment.adb:4:04: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: alignment of "X" (which is 2) must be a multiple of the alignment of "Z" (which is 4)]
 bad_alignment.adb:4:04: info: object is suitable for aliasing via address clause (Trivial)
 bad_alignment.adb:4:04: info: type is suitable as source for unchecked conversion (Trivial)
 bad_alignment.adb:4:40: info: object is suitable for aliasing via address clause (Trivial)
@@ -17,7 +17,7 @@ bad_alignment.adb:5:56: info: object is suitable for aliasing via address clause
 bad_alignment.adb:5:56: info: type is suitable as source for unchecked conversion (Trivial)
 bad_alignment.adb:5:56: info: types of aliased objects have the same size (Trivial)
 bad_alignment.adb:7:14: warning: subprogram "P" has no effect
-bad_alignment.adb:8:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: X must be aliased for its alignment to be known] [possible fix: overlaid object should have an Alignment representation clause]
+bad_alignment.adb:8:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: "X" must be aliased for its alignment to be known] [possible fix: overlaid object should have an Alignment representation clause]
 bad_alignment.adb:8:07: info: object is suitable for aliasing via address clause (Trivial)
 bad_alignment.adb:8:68: info: object is suitable for aliasing via address clause (Trivial)
 bad_alignment.adb:8:68: info: type is suitable as source for unchecked conversion (Trivial)

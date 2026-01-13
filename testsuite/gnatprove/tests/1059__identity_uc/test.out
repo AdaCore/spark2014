@@ -1,0 +1,17 @@
+p.adb:9:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
+p.adb:9:13: info: types in unchecked conversion have the same size (Trivial)
+p.adb:9:13: warning: imprecise handling of Unchecked_Conversion (component offset not known) [imprecise-unchecked-conversion]
+p.adb:9:53: info: type is suitable as source for unchecked conversion (Trivial)
+p.adb:9:58: info: type is suitable for unchecked conversion (Trivial)
+p.adb:15:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
+p.adb:15:13: info: types in unchecked conversion have the same size (Trivial)
+p.adb:15:13: warning: imprecise handling of Unchecked_Conversion (component offset not known) [imprecise-unchecked-conversion]
+p.adb:15:53: info: type is suitable as source for unchecked conversion (Trivial)
+p.adb:15:58: info: type is suitable for unchecked conversion (Trivial)
+p.adb:17:04: warning: analyzing unreferenced procedure "Test_1" [unreferenced-procedure]
+p.adb:17:14: warning: subprogram "Test_1" has no effect
+p.adb:19:22: info: assertion proved (CVC5: 1 VC)
+p.adb:22:04: warning: analyzing unreferenced procedure "Test_2" [unreferenced-procedure]
+p.adb:22:14: warning: subprogram "Test_2" has no effect
+p.adb:24:22: info: assertion proved (CVC5: 1 VC)
+p.adb:24:22: info: validity check proved (CVC5: 1 VC)

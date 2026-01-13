@@ -4,5 +4,5 @@ handlers.adb:19:40: medium: handler "P" with unsychchronized global "remote.u"
 handlers.adb:20:40: medium: handler "F" with unsychchronized global "remote.u"
 handlers.adb:21:43: medium: handler "Heap" with unsychchronized global "memory accessed through objects of access type"
 handlers.ads:6:04: info: function contract feasibility proved (Trivial: 1 VC)
-main.adb:8:19: medium: assertion might fail [possible fix: subprogram at line 4 should mention P_Local in a precondition]
+main.adb:8:19: medium: assertion might fail [possible fix: subprogram at line 4 should mention P_Local in a precondition] [provers gave up before completing the proof]
 pkg.ads:4:32: medium: handler "P" with unsychchronized global "V"

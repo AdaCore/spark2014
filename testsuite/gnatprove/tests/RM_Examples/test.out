@@ -3,9 +3,9 @@ anti_aliasing.adb:15:14: info: local subprogram "One_In_One_Out" only analyzed i
 anti_aliasing.adb:18:14: info: overflow check proved (CVC5: 2 VC), in call inlined at anti_aliasing.adb:40
 anti_aliasing.adb:21:54: info: data dependencies proved
 anti_aliasing.adb:23:07: info: initialization of "Temp" proved
-anti_aliasing.adb:26:14: high: overflow check might fail, cannot prove lower bound for X + Y (e.g. when X = -1 and Y = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 21 should mention X and Y in a precondition]
+anti_aliasing.adb:26:14: high: overflow check might fail, cannot prove lower bound for X + Y (e.g. when X = -1 and Y = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 21 should mention X and Y in a precondition] [provers gave up before completing the proof]
 anti_aliasing.adb:31:11: info: data dependencies proved
-anti_aliasing.adb:34:14: high: overflow check might fail, cannot prove lower bound for I + Local_1 (e.g. when I = -1 and Local_1 = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 30 should mention Local_1 and I in a precondition]
+anti_aliasing.adb:34:14: high: overflow check might fail, cannot prove lower bound for I + Local_1 (e.g. when I = -1 and Local_1 = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 30 should mention Local_1 and I in a precondition] [provers gave up before completing the proof]
 anti_aliasing.adb:40:04: info: analyzing call to "One_In_One_Out" in context
 anti_aliasing.adb:44:21: info: non-aliasing of formal parameters "X" and "Y" proved
 anti_aliasing.adb:48:16: info: non-aliasing of formal parameters "X" and "Y" proved
@@ -16,13 +16,15 @@ externals.adb:27:04: info: address in address clause is compatible with object a
 externals.adb:27:04: warning: address specification on "Out_Reg" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [imprecise-address-specification] [E0012]
 externals.adb:27:04: warning: launch "gnatprove --explain=E0012" for more information
 externals.adb:27:04: warning: make sure that all overlapping objects have Async_Writers set to True
+externals.adb:33:04: high: "In_Reg" constituent of "Complex_Device" is not initialized in "Externals" [reason for check: encapsulating state is mentioned in the Initializes contract of the package declaration] [possible fix: initialize "In_Reg" constituent of "Complex_Device" at declaration or in the package body statements]
+externals.adb:33:04: high: initialization of "Externals.Complex_Device" is specified at externals.ads:8
 externals.adb:33:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 externals.adb:33:04: warning: address specification on "In_Reg" is imprecisely supported: assuming no concurrent accesses to non-atomic object and correct volatile properties [imprecise-address-specification] [E0012]
 externals.adb:33:04: warning: launch "gnatprove --explain=E0012" for more information
 externals.adb:43:07: info: initialization of "Temp" proved
 externals.adb:44:07: info: initialization of "Press" proved
-externals.adb:49:31: medium: overflow check might fail, cannot prove lower bound for Press + Temp * K (e.g. when Press = Integer'First and Temp = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: call at line 48 should mention Press (for argument Press) in a postcondition]
-externals.adb:49:38: medium: overflow check might fail, cannot prove lower bound for Temp * K (e.g. when Temp = -1740263) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: call at line 47 should mention Temp (for argument Temp) in a postcondition]
+externals.adb:49:31: medium: overflow check might fail, cannot prove lower bound for Press + Temp * K (e.g. when Press = Integer'First and Temp = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: call at line 48 should mention Press (for argument Press) in a postcondition] [provers gave up before completing the proof]
+externals.adb:49:38: medium: overflow check might fail, cannot prove lower bound for Temp * K (e.g. when Temp = -1740263) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: call at line 47 should mention Temp (for argument Temp) in a postcondition] [provers gave up before completing the proof]
 externals.adb:53:54: info: initialization of "Main_Display.State" constituent of "Externals.Displays" proved
 externals.adb:54:59: info: initialization of "Secondary_Display.State" constituent of "Externals.Displays" proved
 externals.adb:74:41: medium: "Out_Reg" constituent of "Complex_Device" might not be written
@@ -58,6 +60,7 @@ global_and_generics.ads:7:09: info: data dependencies proved, in instantiation a
 global_and_generics.ads:8:09: info: flow dependencies proved, in instantiation at global_and_generics.adb:10
 global_and_generics.ads:12:06: info: data dependencies proved
 global_and_generics.ads:13:06: info: flow dependencies proved
+hal.adb:13:04: high: "Read_FIFO" constituent of "Serial_In" is not initialized in "HAL" [reason for check: variable is mentioned in the generated Initializes contract] [possible fix: initialize "Read_FIFO" constituent of "Serial_In" at declaration or in the package body statements]
 hal.adb:13:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 hal.adb:13:04: warning: address specification on "Read_FIFO" is imprecisely supported: assuming no concurrent accesses to non-atomic object and correct volatile properties [imprecise-address-specification] [E0012]
 hal.adb:13:04: warning: launch "gnatprove --explain=E0012" for more information
@@ -65,6 +68,7 @@ hal.adb:21:04: info: address in address clause is compatible with object alignme
 hal.adb:21:04: warning: address specification on "Write_FIFO" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [imprecise-address-specification] [E0012]
 hal.adb:21:04: warning: launch "gnatprove --explain=E0012" for more information
 hal.adb:21:04: warning: make sure that all overlapping objects have Async_Writers set to True
+hal.adb:30:04: high: "Status" constituent of "FIFO_Status" is not initialized in "HAL" [reason for check: variable is mentioned in the generated Initializes contract] [possible fix: initialize "Status" constituent of "FIFO_Status" at declaration or in the package body statements]
 hal.adb:30:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 hal.adb:30:04: warning: address specification on "Status" is imprecisely supported: assuming no concurrent accesses to non-atomic object and correct volatile properties [imprecise-address-specification] [E0012]
 hal.adb:30:04: warning: launch "gnatprove --explain=E0012" for more information
@@ -72,6 +76,7 @@ hal.adb:38:04: info: address in address clause is compatible with object alignme
 hal.adb:38:04: warning: address specification on "Control" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [imprecise-address-specification] [E0012]
 hal.adb:38:04: warning: launch "gnatprove --explain=E0012" for more information
 hal.adb:38:04: warning: make sure that all overlapping objects have Async_Writers set to True
+hal.adb:46:04: high: "Wdog_Shared_Memory" constituent of "Wdog_State" is not written in "HAL" [reason for check: variable is mentioned in the generated Initializes contract] [possible fix: initialize "Wdog_Shared_Memory" constituent of "Wdog_State" at declaration or in the package body statements]
 hal.adb:46:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 hal.adb:46:04: warning: address specification on "Wdog_Shared_Memory" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, no writes to a potential alias, and valid reads [imprecise-address-specification] [E0012]
 hal.adb:46:04: warning: launch "gnatprove --explain=E0012" for more information
@@ -104,9 +109,9 @@ initialization_and_elaboration-private_child.ads:1:48: warning: Initial_Conditio
 initialization_and_elaboration-private_child.ads:1:48: warning: the elaboration of "Initialization_And_Elaboration" is not known to precede the elaboration of the current unit
 initialization_and_elaboration-private_child.ads:1:48: warning: use pragma Elaborate_Body in "Initialization_And_Elaboration" or pragma Elaborate in the current unit
 initialization_and_elaboration-private_child.ads:4:08: info: flow dependencies proved
-initialization_and_elaboration-private_child.ads:5:29: medium: initial condition might fail [possible fix: you should consider adding a postcondition to function Get_Something or turning it into an expression function in its unit spec]
+initialization_and_elaboration-private_child.ads:5:29: medium: initial condition might fail [possible fix: you should consider adding a postcondition to function "Get_Something" or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 initialization_and_elaboration.ads:6:08: info: flow dependencies proved
-initialization_and_elaboration.ads:8:29: medium: initial condition might fail [possible fix: you should consider adding a postcondition to function Get_It or turning it into an expression function]
+initialization_and_elaboration.ads:8:29: medium: initial condition might fail [possible fix: you should consider adding a postcondition to function "Get_It" or turning it into an expression function] [provers gave up before completing the proof]
 initialization_and_elaboration.ads:13:11: info: data dependencies proved
 initialization_and_elaboration.ads:15:13: info: implicit aspect Always_Terminates on "Get_It" has been proved, subprogram will terminate
 initialization_and_elaboration.ads:16:11: info: data dependencies proved
@@ -115,10 +120,10 @@ input_port.ads:6:04: warning: address specification on "Sensor" is imprecisely s
 input_port.ads:6:04: warning: launch "gnatprove --explain=E0012" for more information
 inter_1.ads:2:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 inter_2.ads:2:13: info: implicit aspect Always_Terminates on "G" has been proved, subprogram will terminate
-inter_unit_elaboration_examples.adb:8:14: high: overflow check might fail, cannot prove lower bound for 2 * I (e.g. when I = -1073741825) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at inter_unit_elaboration_examples.ads:10 should mention I in a precondition]
-intra_unit_elaboration_order_examples.adb:3:50: high: overflow check might fail, cannot prove upper bound for I + 1 (e.g. when I = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (I <= Integer'Last - 1) to subprogram at intra_unit_elaboration_order_examples.ads:26]
+inter_unit_elaboration_examples.adb:8:14: high: overflow check might fail, cannot prove lower bound for 2 * I (e.g. when I = -1073741825) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at inter_unit_elaboration_examples.ads:10 should mention I in a precondition] [provers gave up before completing the proof]
+intra_unit_elaboration_order_examples.adb:3:50: high: overflow check might fail, cannot prove upper bound for I + 1 (e.g. when I = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (I <= Integer'Last - 1) to subprogram at intra_unit_elaboration_order_examples.ads:26] [provers gave up before completing the proof]
 intra_unit_elaboration_order_examples.adb:20:17: info: overflow check proved (CVC5: 2 VC)
-intra_unit_elaboration_order_examples.adb:35:14: high: overflow check might fail, cannot prove lower bound for A + Y (e.g. when A = -1 and Y = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at intra_unit_elaboration_order_examples.ads:23 should mention A and Y in a precondition]
+intra_unit_elaboration_order_examples.adb:35:14: high: overflow check might fail, cannot prove lower bound for A + Y (e.g. when A = -1 and Y = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at intra_unit_elaboration_order_examples.ads:23 should mention A and Y in a precondition] [provers gave up before completing the proof]
 intra_unit_elaboration_order_examples.adb:42:04: medium: implicit aspect Always_Terminates on "Intra_Unit_Elaboration_Order_Examples" could be incorrect, call to "P" might be nonterminating [possible fix: annotate "P" with aspect Always_Terminates]
 intra_unit_elaboration_order_examples.ads:4:08: info: flow dependencies proved
 intra_unit_elaboration_order_examples.ads:17:04: info: initialization of "Y" proved
@@ -126,7 +131,7 @@ intra_unit_elaboration_order_examples.ads:20:19: info: postcondition proved (CVC
 intra_unit_elaboration_order_examples.ads:24:11: info: data dependencies proved
 intra_unit_elaboration_order_examples.ads:26:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 intra_unit_elaboration_order_examples.ads:27:13: info: implicit aspect Always_Terminates on "G" has been proved, subprogram will terminate
-intra_unit_elaboration_order_examples.ads:27:50: high: overflow check might fail, cannot prove lower bound for 2 * F (J) (e.g. when J = -1073741826) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (2 * F (J) >= Integer'First) to subprogram at line 27]
+intra_unit_elaboration_order_examples.ads:27:50: high: overflow check might fail, cannot prove lower bound for 2 * F (J) (e.g. when J = -1073741826) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (2 * F (J) >= Integer'First) to subprogram at line 27] [provers gave up before completing the proof]
 loop_var_loop_invar.adb:8:30: info: loop invariant initialization proved (CVC5: 1 VC)
 loop_var_loop_invar.adb:8:30: info: loop invariant preservation proved (CVC5: 1 VC)
 loop_var_loop_invar.adb:9:28: info: loop variant proved (CVC5: 1 VC)
@@ -139,21 +144,21 @@ main_hal.adb:16:20: medium: missing dependency "HAL.Wdog_State => HAL.Serial_In"
 main_hal.adb:19:04: info: initialization of "Wdog_Timed_Out" proved
 main_hal.adb:20:04: info: initialization of "A_Byte" proved
 main_hal.adb:35:07: medium: "Found" might not be initialized
-multiple_ports.ads:18:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause]
+multiple_ports.ads:18:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause] [provers reached step limit before completing the proof]
 multiple_ports.ads:18:04: warning: address specification on "V_In_1" is imprecisely supported: assuming no concurrent accesses to non-atomic object and correct volatile properties [imprecise-address-specification] [E0012]
 multiple_ports.ads:18:04: warning: launch "gnatprove --explain=E0012" for more information
-multiple_ports.ads:27:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause]
+multiple_ports.ads:27:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause] [provers reached step limit before completing the proof]
 multiple_ports.ads:27:04: warning: address specification on "V_In_2" is imprecisely supported: assuming no concurrent accesses to non-atomic object and correct volatile properties [imprecise-address-specification] [E0012]
 multiple_ports.ads:27:04: warning: launch "gnatprove --explain=E0012" for more information
-multiple_ports.ads:36:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause]
+multiple_ports.ads:36:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause] [provers reached step limit before completing the proof]
 multiple_ports.ads:36:04: warning: address specification on "V_Out_1" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [imprecise-address-specification] [E0012]
 multiple_ports.ads:36:04: warning: launch "gnatprove --explain=E0012" for more information
 multiple_ports.ads:36:04: warning: make sure that all overlapping objects have Async_Writers set to True
-multiple_ports.ads:42:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause]
+multiple_ports.ads:42:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause] [provers reached step limit before completing the proof]
 multiple_ports.ads:42:04: warning: address specification on "V_Out_2" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [imprecise-address-specification] [E0012]
 multiple_ports.ads:42:04: warning: launch "gnatprove --explain=E0012" for more information
 multiple_ports.ads:42:04: warning: make sure that all overlapping objects have Async_Writers set to True
-multiple_ports.ads:55:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause]
+multiple_ports.ads:55:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause] [provers reached step limit before completing the proof]
 multiple_ports.ads:55:04: warning: address specification on "V_In_Out" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to a potential alias [imprecise-address-specification] [E0012]
 multiple_ports.ads:55:04: warning: launch "gnatprove --explain=E0012" for more information
 multiple_ports.ads:55:04: warning: make sure that all overlapping objects have Async_Writers set to True
@@ -235,7 +240,7 @@ stacks_1.adb:17:48: info: index check proved (CVC5: 2 VC)
 stacks_1.adb:17:48: info: range check proved (CVC5: 2 VC)
 stacks_1.adb:23:30: info: range check proved (CVC5: 2 VC)
 stacks_1.adb:24:18: info: index check proved (CVC5: 2 VC)
-stacks_1.adb:28:27: medium: refined postcondition might fail
+stacks_1.adb:28:27: medium: refined postcondition might fail [provers reached step limit before completing the proof]
 stacks_1.adb:34:33: info: range check proved (CVC5: 2 VC)
 stacks_1.adb:38:64: info: index check proved (CVC5: 2 VC)
 stacks_1.ads:6:13: info: implicit aspect Always_Terminates on "Is_Empty" has been proved, subprogram will terminate
@@ -250,7 +255,7 @@ stacks_2.adb:35:65: info: range check proved (CVC5: 2 VC)
 stacks_2.adb:40:30: info: range check proved (CVC5: 2 VC)
 stacks_2.adb:41:17: info: index check proved (CVC5: 2 VC)
 stacks_2.adb:46:29: info: refined post proved (CVC5: 1 VC)
-stacks_2.adb:51:30: medium: range check might fail, cannot prove lower bound for A_Pointer - 1 [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: subprogram at stacks_2.ads:19 should mention A_Pointer in a precondition]
+stacks_2.adb:51:30: medium: range check might fail, cannot prove lower bound for A_Pointer - 1 [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: subprogram at stacks_2.ads:19 should mention A_Pointer in a precondition] [provers gave up before completing the proof]
 stacks_2.adb:54:46: info: index check proved (CVC5: 2 VC)
 stacks_2.ads:4:08: info: flow dependencies proved
 stacks_2.ads:6:13: info: implicit aspect Always_Terminates on "Is_Empty" has been proved, subprogram will terminate
@@ -264,7 +269,7 @@ stacks_2.ads:21:16: info: postcondition proved (CVC5: 1 VC)
 stacks_2.ads:23:13: info: implicit aspect Always_Terminates on "Top" has been proved, subprogram will terminate
 stacks_2.ads:24:11: info: data dependencies proved
 times_2.adb:1:10: info: implicit aspect Always_Terminates on "Times_2" has been proved, subprogram will terminate
-times_2.adb:3:13: high: overflow check might fail, cannot prove lower bound for 2 * X (e.g. when X = -1073741825) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (2 * X >= Integer'First) to subprogram at line 1]
+times_2.adb:3:13: high: overflow check might fail, cannot prove lower bound for 2 * X (e.g. when X = -1073741825) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (2 * X >= Integer'First) to subprogram at line 1] [provers gave up before completing the proof]
 up_timer.adb:14:36: info: overflow check proved (CVC5: 2 VC)
 up_timer.ads:10:13: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 update_examples.ads:20:19: info: postcondition proved (CVC5: 1 VC)

@@ -80,12 +80,12 @@ package Flow_Error_Messages is
        and then (if Present (F3) then Present (F2))
        and then (if Present (FF2) then Present (FF1))
        and then (if Severity in Check_Kind then Tag in Valid_Flow_Tag_Kind)
-       and then (case Tag is
-                   when Empty_Tag         => True,
-                   when Flow_Error_Kind   => Severity = Error_Kind,
-                   when Flow_Check_Kind   =>
-                     Severity in Check_Kind | Info_Kind,
-                   when Flow_Warning_Kind => Severity = Warning_Kind)
+       and then
+         (case Tag is
+            when Empty_Tag         => True,
+            when Flow_Error_Kind   => Severity = Error_Kind,
+            when Flow_Check_Kind   => Severity in Check_Kind | Info_Kind,
+            when Flow_Warning_Kind => Severity = Warning_Kind)
        and then Present (N);
    --  Output a message attached to the given node with a substitution
    --  using F1, F2 and F3. If not empty, the details, explanation and possible
@@ -133,12 +133,12 @@ package Flow_Error_Messages is
        and then (if Present (F3) then Present (F2))
        and then (if Present (FF2) then Present (FF1))
        and then (if Severity in Check_Kind then Tag in Valid_Flow_Tag_Kind)
-       and then (case Tag is
-                   when Empty_Tag         => True,
-                   when Flow_Error_Kind   => Severity = Error_Kind,
-                   when Flow_Check_Kind   =>
-                     Severity in Check_Kind | Info_Kind,
-                   when Flow_Warning_Kind => Severity = Warning_Kind);
+       and then
+         (case Tag is
+            when Empty_Tag         => True,
+            when Flow_Error_Kind   => Severity = Error_Kind,
+            when Flow_Check_Kind   => Severity in Check_Kind | Info_Kind,
+            when Flow_Warning_Kind => Severity = Warning_Kind);
    --  As above but it also writes the tracefile.
    --
    --  Also:
@@ -165,22 +165,23 @@ package Flow_Error_Messages is
    --  Return the message string for an unproved VC
 
    procedure Error_Msg_Proof
-     (N           : Node_Id;
-      Extra_Msg   : String;
-      Is_Proved   : Boolean;
-      Tag         : VC_Kind;
-      Cntexmp     : JSON_Value;
-      Verdict     : Cntexmp_Verdict;
-      Check_Tree  : JSON_Value;
-      VC_File     : String;
-      VC_Loc      : Node_Id;
-      Editor_Cmd  : String;
-      Explanation : String;
-      E           : Entity_Id;
-      How_Proved  : Prover_Category;
-      Stats       : Prover_Stat_Maps.Map;
-      Check_Info  : Check_Info_Type;
-      CE_From_RAC : Boolean := False);
+     (N             : Node_Id;
+      Extra_Msg     : String;
+      Is_Proved     : Boolean;
+      Tag           : VC_Kind;
+      Cntexmp       : JSON_Value;
+      Verdict       : Cntexmp_Verdict;
+      Check_Tree    : JSON_Value;
+      VC_File       : String;
+      VC_Loc        : Node_Id;
+      Editor_Cmd    : String;
+      Explanation   : String;
+      E             : Entity_Id;
+      How_Proved    : Prover_Category;
+      Stats         : Prover_Stat_Maps.Map;
+      Unproved_Stat : Failed_Prover_Answer;
+      Check_Info    : Check_Info_Type;
+      CE_From_RAC   : Boolean := False);
    --  register a message for proof (i.e. which corresponds to a check that is
    --  usually taken care of by proof)
    --  @param N the node on which this VC is placed
@@ -217,6 +218,8 @@ package Flow_Error_Messages is
    --  @param How_Proved which prover or analysis discharged this VC
    --  @param Stats describes which provers and which timeout/steps where
    --    necessary
+   --  @param Unproved_Stat information on why the prover did not prove the
+   --    check
    --  @param Place_First signal if placement on the beginning of the
    --    expression should be used (instead of the middle)
    --  @param Check_Info extra information for the check

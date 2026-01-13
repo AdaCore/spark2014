@@ -22,5 +22,5 @@ binary_search.ads:12:66: info: index check proved (CVC5: 2 VC)
 binary_search.ads:12:76: info: index check proved (CVC5: 2 VC)
 binary_search.ads:14:13: info: implicit aspect Always_Terminates on "Search" has been proved, subprogram will terminate
 binary_search.ads:16:57: info: index check proved (CVC5: 2 VC)
-binary_search.ads:17:49: medium: postcondition might fail, cannot prove A (Index) /= I
+binary_search.ads:17:49: medium: postcondition might fail, cannot prove A (Index) /= I [provers reached step limit before completing the proof]
 binary_search.ads:17:52: info: index check proved (CVC5: 2 VC)

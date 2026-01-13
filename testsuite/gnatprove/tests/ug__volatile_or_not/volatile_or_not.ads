@@ -2,7 +2,7 @@ package Volatile_Or_Not with
   SPARK_Mode,
   Initializes => V
 is
-   V : Integer with Volatile;
+   V : Integer with Volatile, Import;
    N : Integer;
 
    procedure Swap_Then_Zero with

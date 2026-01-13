@@ -1,4 +1,5 @@
-main.adb:3:11: medium: ceiling priority protocol might not be respected for "P.Po2" [reason for check: ceiling priority of the protected object "P.Po2" must be >= the priority of the caller "Main" in the call chain "Main" (elaboration) -> "P" (elaboration) -> "P.P1" -> "P.Q1" -> "P.Q2" -> "P.Po2.Pp1"]
+main.adb:3:11: medium: ceiling priority protocol might not be respected for "P.Po2" [reason for check: ceiling priority of the protected object "P.Po2" must be >= the priority of the caller "Main" in the call chain "Main" (elaboration) -> "P" (elaboration) -> "P.P1" -> "P.Q1" -> "P.Q2" -> "P.Po2.Pp1"] [provers gave up before completing the proof]
+p.adb:3:14: info: initialization of "PO2" proved
 p.adb:6:17: info: aspect Always_Terminates on "PP1" has been proved, subprogram will terminate
 p.adb:7:12: info: data dependencies proved
 p.adb:22:14: info: add a contract to analyze it separately from calling contexts

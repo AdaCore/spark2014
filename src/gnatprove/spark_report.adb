@@ -1216,7 +1216,7 @@ procedure SPARK_Report is
    -----------------
 
    procedure Show_Header (Handle : Ada.Text_IO.File_Type; Info : JSON_Value) is
-      use Ada, Ada.Text_IO;
+      use Ada.Text_IO;
 
       function OS_String return String;
       --  Return a nice string for the OS GNATprove was compiled for
@@ -1314,7 +1314,8 @@ procedure SPARK_Report is
             | VC_UC_Source
             | VC_UC_Target
             | VC_UC_Same_Size
-            | VC_UC_Alignment
+            | VC_UC_Align_Overlay
+            | VC_UC_Align_UC
             | VC_Unchecked_Union_Restriction
             | VC_UC_Volatile
             | VC_Validity_Check                                              =>

@@ -1100,8 +1100,8 @@ package body Gnat2Why.Driver is
 
                if Analysis_Requested (E, With_Inlined => True)
                  and then Entity_Spec_In_SPARK (E)
-                 and then (if Ekind (E) /= E_Package
-                           then Entity_Body_In_SPARK (E))
+                 and then
+                   (if Ekind (E) /= E_Package then Entity_Body_In_SPARK (E))
                then
                   for C of Generated_Calls (E) loop
                      Register_Assumptions_For_Call (E, C);
@@ -1163,12 +1163,13 @@ package body Gnat2Why.Driver is
 
       return
         Is_Switch (Switch)
-        and then (Switch (First) in 'f' | 'g' | 'm' | 'O' | 'W' | 'w'
-                  or else Switch (First .. Last) = "nostdlib"
-                  or else Switch (First .. Last) = "pipe"
-                  or else (Switch'Length >= 11
-                           and then Switch (First .. First + 9)
-                                    = "save-temps"));
+        and then
+          (Switch (First) in 'f' | 'g' | 'm' | 'O' | 'W' | 'w'
+           or else Switch (First .. Last) = "nostdlib"
+           or else Switch (First .. Last) = "pipe"
+           or else
+             (Switch'Length >= 11
+              and then Switch (First .. First + 9) = "save-temps"));
    end Is_Back_End_Switch;
 
    ------------------------------
@@ -1235,8 +1236,9 @@ package body Gnat2Why.Driver is
       --  parallel, we wait for one process to finish first.
 
       if Output_File_Map.Length = Max_Subprocesses
-        or else (not Output_File_Map.Is_Empty
-                 and then not Gnat2Why_Args.Parallel_Why3)
+        or else
+          (not Output_File_Map.Is_Empty
+           and then not Gnat2Why_Args.Parallel_Why3)
       then
          Collect_One_Result;
       end if;
@@ -1392,9 +1394,10 @@ package body Gnat2Why.Driver is
 
                if Is_Discriminal (E)
                  or else Is_Protected_Component_Or_Discr_Or_Part_Of (E)
-                 or else (Ekind (E) = E_Constant
-                          and then Is_Partial_View (E)
-                          and then Entity_In_SPARK (Full_View (E)))
+                 or else
+                   (Ekind (E) = E_Constant
+                    and then Is_Partial_View (E)
+                    and then Entity_In_SPARK (Full_View (E)))
                then
                   return;
                end if;

@@ -7,13 +7,13 @@ number_theory.adb:19:38: info: loop invariant initialization proved (CVC5: 2 VC)
 number_theory.adb:19:38: info: loop invariant preservation proved (CVC5: 2 VC)
 number_theory.adb:19:50: info: range check proved (CVC5: 4 VC)
 number_theory.adb:19:74: info: range check proved (CVC5: 4 VC)
-number_theory.adb:23:30: medium: overflow check might fail, cannot prove upper bound for Old + Temp [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop invariant at line 19 should mention Temp]
+number_theory.adb:23:30: medium: overflow check might fail, cannot prove upper bound for Old + Temp [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop invariant at line 19 should mention Temp] [provers reached step limit before completing the proof]
 number_theory.ads:17:13: warning: function contract might not be available on recursive calls [contracts-recursive]
 number_theory.ads:18:08: medium: implicit aspect Always_Terminates on "Fib" could be incorrect, subprogram is recursive [possible fix: annotate "Fib" with a Subprogram_Variant aspect]
 number_theory.ads:20:32: info: range check proved (CVC5: 2 VC)
 number_theory.ads:20:37: info: overflow check proved (CVC5: 2 VC)
 number_theory.ads:20:45: info: range check proved (CVC5: 2 VC)
-number_theory.ads:23:16: medium: postcondition might fail
+number_theory.ads:23:16: medium: postcondition might fail [provers reached step limit before completing the proof]
 number_theory.ads:23:25: info: range check proved (Trivial)
 number_theory.ads:23:43: info: division check proved (CVC5: 1 VC; Trivial: 1 VC)
 number_theory.ads:23:43: info: float overflow check proved (CVC5: 1 VC)
@@ -23,4 +23,4 @@ number_theory.ads:23:55: info: float overflow check proved (Trivial)
 number_theory.ads:27:13: info: implicit aspect Always_Terminates on "Fibonacci" has been proved, subprogram will terminate
 number_theory.ads:28:19: info: postcondition proved (CVC5: 1 VC)
 number_theory.ads:31:13: info: implicit aspect Always_Terminates on "Fibonacci2" has been proved, subprogram will terminate
-number_theory.ads:32:19: medium: postcondition might fail
+number_theory.ads:32:19: medium: postcondition might fail [provers reached step limit before completing the proof]

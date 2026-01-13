@@ -6,3 +6,4 @@
       and Y = -1
       + reason for check: result of addition must fit in a 32-bits machine integer
       + possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers
+      + provers gave up before completing the proof

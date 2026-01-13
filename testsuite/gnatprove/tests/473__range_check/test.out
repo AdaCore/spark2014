@@ -1,17 +1,17 @@
 main.adb:3:11: warning: subprogram "Main" has no effect
 main.adb:8:52: info: data dependencies proved
-main.adb:18:34: high: range check might fail, cannot prove upper bound for Value128 (e.g. when Value128 = Unsigned_128'Last) [reason for check: value must be convertible to the target type of the conversion]
+main.adb:18:34: high: range check might fail, cannot prove upper bound for Value128 (e.g. when Value128 = Unsigned_128'Last) [reason for check: value must be convertible to the target type of the conversion] [provers reached step limit before completing the proof]
 main.adb:18:34: info: in value of subprogram parameter after the call at main.adb:18
 main.adb:18:34: info: range check proved (CVC5: 1 VC)
 main.adb:20:34: info: range check proved (CVC5: 1 VC)
 main.adb:20:34: medium: in value of subprogram parameter after the call at main.adb:20
-main.adb:20:34: medium: range check might fail (e.g. when Value32 = Unsigned_32'Last) [reason for check: value must be convertible to the target type of the conversion] [possible fix: add or complete related loop invariants or postconditions]
+main.adb:20:34: medium: range check might fail (e.g. when Value32 = Unsigned_32'Last) [reason for check: value must be convertible to the target type of the conversion] [possible fix: add or complete related loop invariants or postconditions] [provers reached step limit before completing the proof]
 main2.adb:3:11: warning: subprogram "Main2" has no effect
 main2.adb:8:51: info: data dependencies proved
-main2.adb:11:20: high: overflow check might fail, cannot prove upper bound for Data + 1 (e.g. when Data = Integer_64'Last) [reason for check: result of addition must fit in a 64-bits machine integer] [possible fix: subprogram at line 8 should mention Data in a precondition]
-main2.adb:18:33: high: range check might fail, cannot prove upper bound for Value128 (e.g. when Value128 = Integer_128'Last) [reason for check: value must be convertible to the target type of the conversion]
+main2.adb:11:20: high: overflow check might fail, cannot prove upper bound for Data + 1 (e.g. when Data = Integer_64'Last) [reason for check: result of addition must fit in a 64-bits machine integer] [possible fix: subprogram at line 8 should mention Data in a precondition] [provers gave up before completing the proof]
+main2.adb:18:33: high: range check might fail, cannot prove upper bound for Value128 (e.g. when Value128 = Integer_128'Last) [reason for check: value must be convertible to the target type of the conversion] [provers reached step limit before completing the proof]
 main2.adb:18:33: info: in value of subprogram parameter after the call at main2.adb:18
 main2.adb:18:33: info: range check proved (CVC5: 2 VC)
 main2.adb:20:33: info: range check proved (CVC5: 2 VC)
 main2.adb:20:33: medium: in value of subprogram parameter after the call at main2.adb:20
-main2.adb:20:33: medium: range check might fail, cannot prove lower bound for Value32 (e.g. when Value32 = Integer_32'Last) [reason for check: value must be convertible to the target type of the conversion] [possible fix: add or complete related loop invariants or postconditions]
+main2.adb:20:33: medium: range check might fail, cannot prove lower bound for Value32 (e.g. when Value32 = Integer_32'Last) [reason for check: value must be convertible to the target type of the conversion] [possible fix: add or complete related loop invariants or postconditions] [provers reached step limit before completing the proof]

@@ -1654,9 +1654,9 @@ module Unconstr_Array
 
   val constant object__size : int
 
-  val constant component__size : int
-
   val constant alignment : int
+
+  val constant size__of__object (f1 l1 : index_rep_type) : int
 
   axiom value__size_axiom :
     value__size >= 0
@@ -1666,13 +1666,14 @@ module Unconstr_Array
     object__size >= 0
   meta "remove_unused:dependency" axiom object__size_axiom, function object__size
 
-  axiom component__size_axiom :
-    component__size >= 0
-  meta "remove_unused:dependency" axiom component__size_axiom, function component__size
-
   axiom alignment_axiom :
     alignment >= 0
   meta "remove_unused:dependency" axiom alignment_axiom, function alignment
+
+  axiom size__of__object_axiom :
+    (forall f1 l1 : index_rep_type.
+      size__of__object f1 l1 >= 0)
+  meta "remove_unused:dependency" axiom size__of__object_axiom, function size__of__object
 
   function bool_eq (x : __t) (y : __t) : bool =
     array_bool_eq
@@ -1799,9 +1800,9 @@ module Unconstr_Array_2
 
   val constant object__size : int
 
-  val constant component__size : int
-
   val constant alignment : int
+
+  val constant size__of__object (f1 l1 : index_rep_type) (f2 l2 : index_rep_type_2) : int
 
   axiom value__size_axiom :
     value__size >= 0
@@ -1811,13 +1812,14 @@ module Unconstr_Array_2
     object__size >= 0
   meta "remove_unused:dependency" axiom object__size_axiom, function object__size
 
-  axiom component__size_axiom :
-    component__size >= 0
-  meta "remove_unused:dependency" axiom component__size_axiom, function component__size
-
   axiom alignment_axiom:
     alignment >= 0
   meta "remove_unused:dependency" axiom alignment_axiom, function alignment
+
+  axiom size__of__object_axiom :
+    (forall f1 l1 : index_rep_type, f2 l2 : index_rep_type_2.
+      size__of__object f1 l1 f2 l2 >= 0)
+  meta "remove_unused:dependency" axiom size__of__object_axiom, function size__of__object
 
   predicate well_formed (a : __t) =
     has_bounds a.elts (to_rep (I1.first a.rt)) (to_rep (I1.last a.rt))
@@ -1988,9 +1990,9 @@ module Unconstr_Array_3
 
   val constant object__size : int
 
-  val constant component__size : int
-
   val constant alignment : int
+
+  val constant size__of__object (f1 l1 : index_rep_type) (f2 l2 : index_rep_type_2) (f3 l3 : index_rep_type_3) : int
 
   axiom value__size_axiom :
     value__size >= 0
@@ -2000,13 +2002,14 @@ module Unconstr_Array_3
     object__size >= 0
   meta "remove_unused:dependency" axiom object__size_axiom, function object__size
 
-  axiom component__size_axiom :
-    component__size >= 0
-  meta "remove_unused:dependency" axiom component__size_axiom, function component__size
-
   axiom alignment_axiom :
     alignment >= 0
   meta "remove_unused:dependency" axiom alignment_axiom, function alignment
+
+  axiom size__of__object_axiom :
+    (forall f1 l1 : index_rep_type, f2 l2 : index_rep_type_2, f3 l3 : index_rep_type_3.
+      size__of__object f1 l1 f2 l2 f3 l3 >= 0)
+  meta "remove_unused:dependency" axiom size__of__object_axiom, function size__of__object
 
   predicate well_formed (a : __t) =
     has_bounds a.elts (to_rep (I1.first a.rt)) (to_rep (I1.last a.rt))
@@ -2222,9 +2225,9 @@ module Unconstr_Array_4
 
   val constant object__size : int
 
-  val constant component__size : int
-
   val constant alignment : int
+
+  val constant size__of__object (f1 l1 : index_rep_type) (f2 l2 : index_rep_type_2) (f3 l3 : index_rep_type_3) (f4 l4 : index_rep_type_4) : int
 
   axiom value__size_axiom :
     value__size >= 0
@@ -2234,13 +2237,14 @@ module Unconstr_Array_4
     object__size >= 0
   meta "remove_unused:dependency" axiom object__size_axiom, function object__size
 
-  axiom component__size_axiom :
-    component__size >= 0
-  meta "remove_unused:dependency" axiom component__size_axiom, function component__size
-
   axiom alignment_axiom :
     alignment >= 0
   meta "remove_unused:dependency" axiom alignment_axiom, function alignment
+
+  axiom size__of__object_axiom :
+    (forall f1 l1 : index_rep_type, f2 l2 : index_rep_type_2, f3 l3 : index_rep_type_3, f4 l4 : index_rep_type_4.
+      size__of__object f1 l1 f2 l2 f3 l3 f4 l4 >= 0)
+  meta "remove_unused:dependency" axiom size__of__object_axiom, function size__of__object
 
   predicate well_formed (a : __t) =
     has_bounds a.elts (to_rep (I1.first a.rt)) (to_rep (I1.last a.rt))

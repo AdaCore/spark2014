@@ -112,8 +112,9 @@ package body Flow.Interprocedural is
 
                if Parameter.Kind = Direct_Mapping
                  and then Parameter.Variant = F.Variant
-                 and then Get_Direct_Mapping_Id (Parameter)
-                          = Get_Direct_Mapping_Id (A.Parameter_Formal)
+                 and then
+                   Get_Direct_Mapping_Id (Parameter)
+                   = Get_Direct_Mapping_Id (A.Parameter_Formal)
                then
                   return V;
                end if;
@@ -126,8 +127,9 @@ package body Flow.Interprocedural is
                   when Direct_Mapping        =>
                      if Parameter.Kind = Direct_Mapping
                        and then A.Parameter_Formal.Variant = Parameter.Variant
-                       and then Get_Direct_Mapping_Id (Parameter)
-                                = Get_Direct_Mapping_Id (A.Parameter_Formal)
+                       and then
+                         Get_Direct_Mapping_Id (Parameter)
+                         = Get_Direct_Mapping_Id (A.Parameter_Formal)
                      then
                         return V;
                      end if;
@@ -211,9 +213,9 @@ package body Flow.Interprocedural is
    begin
       if Ekind (Called_Thing) /= E_Subprogram_Type
         and then Has_Depends (Called_Thing)
-        and then (not FA.Generating_Globals
-                  or else not Rely_On_Generated_Global
-                                (Called_Thing, FA.B_Scope))
+        and then
+          (not FA.Generating_Globals
+           or else not Rely_On_Generated_Global (Called_Thing, FA.B_Scope))
       then
          --  We have a dependency aspect, so we should use it if:
          --     a) we have already synthesized its refined version
@@ -395,17 +397,18 @@ package body Flow.Interprocedural is
 
                            Ghost_Policy_OK : constant Boolean :=
                              Is_Abstract_State (Output)
-                             or else (if Output_Is_Ignored_Ghost
-                                      then True
+                             or else
+                               (if Output_Is_Ignored_Ghost
+                                then True
 
-                                      elsif Output_Is_Checked_Ghost
-                                      then not Is_Ignored_Ghost_Entity (Input)
+                                elsif Output_Is_Checked_Ghost
+                                then not Is_Ignored_Ghost_Entity (Input)
 
-                                      elsif not Output_Is_Ghost
-                                      then
-                                        not Subprogram_Is_Ghost
-                                        and then not Input_Is_Ghost
-                                      else raise Program_Error);
+                                elsif not Output_Is_Ghost
+                                then
+                                  not Subprogram_Is_Ghost
+                                  and then not Input_Is_Ghost
+                                else raise Program_Error);
                            --  Data kinds have an order that governs what
                            --  assignments (dependencies) are allowed:
                            --  ignored ghost << checked ghost << ordinary,
