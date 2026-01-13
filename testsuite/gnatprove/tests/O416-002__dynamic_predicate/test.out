@@ -33,7 +33,7 @@ dynamic_preds.adb:87:22: info: predicate check proved (CVC5: 1 VC)
 dynamic_preds.adb:89:28: info: predicate check proved (CVC5: 1 VC)
 dynamic_preds.adb:89:28: medium: overflow check might fail, cannot prove upper bound for Above + 1 (e.g. when Above = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Above <= Integer'Last - 1) to subprogram at dynamic_preds.ads:39] [provers reached step limit before completing the proof]
 dynamic_preds.adb:92:28: info: predicate check proved (CVC5: 1 VC)
-dynamic_preds.adb:92:28: medium: overflow check might fail, cannot prove upper bound for Result.A + 2 (e.g. when Result = (A => Even'Last-1, B => 0)) [reason for check: result of addition must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
+dynamic_preds.adb:92:28: medium: overflow check might fail, cannot prove upper bound for Result.A + 2 (e.g. when Result = (A => Even'Last-1, B => Even'Last-1)) [reason for check: result of addition must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
 dynamic_preds.adb:94:14: info: predicate check proved (CVC5: 1 VC)
 dynamic_preds.adb:98:07: warning: initialization of "Result" has no effect
 dynamic_preds.adb:100:16: info: division check proved (CVC5: 1 VC)

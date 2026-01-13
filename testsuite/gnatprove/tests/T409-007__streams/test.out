@@ -10,7 +10,7 @@ streamable_types.adb:16:07: info: range check proved (CVC5: 2 VC)
 streamable_types.adb:19:29: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 streamable_types.adb:20:18: info: index check proved (CVC5: 2 VC)
 streamable_types.adb:20:65: info: index check proved (CVC5: 2 VC)
-streamable_types.adb:20:74: info: range check proved (CVC5: 1 VC; Z3: 1 VC)
+streamable_types.adb:20:74: info: range check proved (CVC5: 2 VC)
 streamable_types.adb:34:07: info: initialization of "Buffer" proved
 streamable_types.adb:35:07: info: initialization of "Last" proved
 streamable_types.adb:50:30: info: initialization of "Len" proved

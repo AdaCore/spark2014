@@ -15,13 +15,13 @@
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="def&#39;vc.0" proved="true">
   <proof prover="0"><result status="valid" steps="12"/></proof>
-  <proof prover="1"><result status="valid" steps="486"/></proof>
+  <proof prover="1"><result status="valid" steps="470"/></proof>
   <proof prover="2"><result status="valid" steps="472"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.1" proved="true">
   <proof prover="0"><result status="valid" steps="14"/></proof>
-  <proof prover="1"><result status="valid" steps="765"/></proof>
+  <proof prover="1"><result status="valid" steps="739"/></proof>
   <proof prover="2"><result status="valid" steps="755"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
@@ -39,13 +39,13 @@
   </goal>
   <goal name="def&#39;vc.6" proved="true">
   <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="valid" steps="5373"/></proof>
+  <proof prover="1"><result status="valid" steps="4762"/></proof>
   <proof prover="2"><result status="highfailure"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.7" proved="true">
   <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="valid" steps="5854"/></proof>
+  <proof prover="1"><result status="valid" steps="5187"/></proof>
   <proof prover="2"><result status="highfailure"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>

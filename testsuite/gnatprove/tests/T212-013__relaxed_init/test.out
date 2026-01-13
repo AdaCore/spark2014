@@ -7,7 +7,7 @@ test_init_by_proof.adb:30:22: info: initialization check proved (CVC5: 1 VC)
 test_init_by_proof.adb:30:25: info: overflow check proved (CVC5: 2 VC)
 test_init_by_proof.adb:35:14: warning: subprogram "Test_Discr_2" has no effect
 test_init_by_proof.adb:38:23: info: discriminant check proved (CVC5: 1 VC)
-test_init_by_proof.adb:38:23: medium: initialization check might fail (e.g. when X = (D => 0, Y => 0, X => ?) and X.Y'Initialized = True and X.X'Initialized = False) [provers reached step limit before completing the proof]
+test_init_by_proof.adb:38:23: medium: initialization check might fail (e.g. when X = (D => 0, others => ?)) [provers reached step limit before completing the proof]
 test_init_by_proof.adb:38:26: info: overflow check proved (CVC5: 2 VC)
 test_init_by_proof.adb:38:28: info: initialization check proved (CVC5: 1 VC)
 test_init_by_proof.adb:39:22: medium: initialization check might fail (e.g. when X = (D => 0, Y => ?, X => 0) and X.Y'Initialized = False and X.X'Initialized = True) [provers reached step limit before completing the proof]
@@ -58,7 +58,7 @@ test_init_by_proof.adb:136:13: info: initialization check proved (CVC5: 1 VC)
 test_init_by_proof.adb:138:04: warning: analyzing unreferenced procedure "Q" [unreferenced-procedure]
 test_init_by_proof.adb:138:14: warning: subprogram "Q" has no effect
 test_init_by_proof.adb:139:07: info: initialization of parts of "X" without Relaxed_Initialization proved
-test_init_by_proof.adb:143:14: medium: initialization check might fail (e.g. when X = (I => (X => 0, Y => 15, Z => True), F => (X => 0, Y => 15, Z => True), G => (X => ?, Y => 15, Z => True)) and X.I.Y'Initialized = True and X.F.Y'Initialized = True and X.G.X'Initialized = False and X.G.Y'Initialized = True and X.G.Z'Initialized = True) [provers reached step limit before completing the proof]
+test_init_by_proof.adb:143:14: medium: initialization check might fail (e.g. when X = (I => (X => 0, Y => ?, Z => True), F => (X => 0, Y => ?, Z => False), G => (X => ?, Y => 15, Z => True)) and X.I.Y'Initialized = False and X.F.Y'Initialized = False and X.G.X'Initialized = False and X.G.Y'Initialized = True and X.G.Z'Initialized = True) [provers reached step limit before completing the proof]
 test_init_by_proof.adb:145:04: warning: analyzing unreferenced procedure "Q1" [unreferenced-procedure]
 test_init_by_proof.adb:145:14: warning: subprogram "Q1" has no effect
 test_init_by_proof.adb:146:07: info: initialization of parts of "X" without Relaxed_Initialization proved

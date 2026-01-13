@@ -6,8 +6,8 @@ test.adb:18:04: info: precondition proved (CVC5: 2 VC)
 test.adb:19:04: info: precondition proved (CVC5: 2 VC)
 test.adb:20:04: info: precondition proved (CVC5: 2 VC)
 test.adb:24:22: info: assertion proved (CVC5: 1 VC)
+test.adb:25:22: info: assertion proved (Z3: 1 VC)
 test.adb:25:22: info: precondition proved (CVC5: 1 VC)
-test.adb:25:22: medium: assertion might fail [provers reached step limit before completing the proof]
 test.adb:4:04: warning: check will fail at run time [-gnatw.a]
 test.adb:4:04: warning: check will fail at run time [-gnatw.a]
 test.adb:4:04: warning: check will fail at run time [-gnatw.a]

@@ -21,25 +21,25 @@
   </goal>
   <goal name="def&#39;vc.2" proved="true">
   <proof prover="0"><result status="valid" steps="0"/></proof>
-  <proof prover="1"><result status="valid" steps="442"/></proof>
+  <proof prover="1"><result status="valid" steps="428"/></proof>
   <proof prover="2"><result status="valid" steps="333"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
   <proof prover="0"><result status="valid" steps="0"/></proof>
-  <proof prover="1"><result status="valid" steps="458"/></proof>
+  <proof prover="1"><result status="valid" steps="444"/></proof>
   <proof prover="2"><result status="valid" steps="372"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.4" proved="true">
   <proof prover="0"><result status="valid" steps="4"/></proof>
-  <proof prover="1"><result status="valid" steps="507"/></proof>
+  <proof prover="1"><result status="valid" steps="488"/></proof>
   <proof prover="2"><result status="valid" steps="359"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.5" proved="true">
   <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="valid" steps="519"/></proof>
+  <proof prover="1"><result status="valid" steps="500"/></proof>
   <proof prover="2"><result status="highfailure"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
@@ -50,8 +50,8 @@
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.8" proved="true">
-  <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="valid" steps="708"/></proof>
+  <proof prover="0"><result status="valid" steps="6"/></proof>
+  <proof prover="1"><result status="valid" steps="679"/></proof>
   <proof prover="2"><result status="valid" steps="920"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>

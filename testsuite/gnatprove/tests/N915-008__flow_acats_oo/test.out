@@ -21,7 +21,7 @@ c3900053.adb:109:19: warning: no Always_Terminates aspect available for "FAILED"
 c3900053.adb:115:19: medium: precondition might fail [provers gave up before completing the proof]
 c3900053.adb:115:19: warning: assuming "FAILED" always terminates
 c3900053.adb:115:19: warning: no Always_Terminates aspect available for "FAILED" [assumed-always-terminates]
-c3900053.adb:127:13: medium: precondition might fail [provers reached step limit before completing the proof]
+c3900053.adb:127:13: medium: precondition might fail [provers gave up before completing the proof]
 c3900053.adb:127:13: warning: assuming "FAILED" always terminates
 c3900053.adb:127:13: warning: no Always_Terminates aspect available for "FAILED" [assumed-always-terminates]
 c3900053.adb:134:10: info: initialization of "Low_Alarm" proved
@@ -66,7 +66,7 @@ c3900063.adb:110:10: info: initialization of "Medium_Alarm" proved
 c3900063.adb:114:19: medium: precondition might fail [provers gave up before completing the proof]
 c3900063.adb:114:19: warning: assuming "FAILED" always terminates
 c3900063.adb:114:19: warning: no Always_Terminates aspect available for "FAILED" [assumed-always-terminates]
-c3900063.adb:120:19: medium: precondition might fail [provers reached step limit before completing the proof]
+c3900063.adb:120:19: medium: precondition might fail [provers gave up before completing the proof]
 c3900063.adb:120:19: warning: assuming "FAILED" always terminates
 c3900063.adb:120:19: warning: no Always_Terminates aspect available for "FAILED" [assumed-always-terminates]
 c3900063.adb:132:13: medium: precondition might fail [provers reached step limit before completing the proof]
@@ -82,10 +82,10 @@ c392004.adb:12:13: warning: subprogram "TC_Assert" has no effect
 c392004.adb:15:13: info: precondition proved (CVC5: 1 VC), in call inlined at c392004.adb:26
 c392004.adb:15:13: info: precondition proved (CVC5: 1 VC), in call inlined at c392004.adb:33
 c392004.adb:15:13: info: precondition proved (CVC5: 1 VC), in call inlined at c392004.adb:40
+c392004.adb:15:13: info: precondition proved (CVC5: 1 VC), in call inlined at c392004.adb:47
 c392004.adb:15:13: medium: precondition might fail, in call inlined at c392004.adb:29 [provers gave up before completing the proof]
-c392004.adb:15:13: medium: precondition might fail, in call inlined at c392004.adb:36 [provers reached step limit before completing the proof]
+c392004.adb:15:13: medium: precondition might fail, in call inlined at c392004.adb:36 [provers gave up before completing the proof]
 c392004.adb:15:13: medium: precondition might fail, in call inlined at c392004.adb:43 [provers reached step limit before completing the proof]
-c392004.adb:15:13: medium: precondition might fail, in call inlined at c392004.adb:47 [provers reached step limit before completing the proof]
 c392004.adb:15:13: medium: precondition might fail, in call inlined at c392004.adb:50 [provers reached step limit before completing the proof]
 c392004.adb:15:13: medium: precondition might fail, in call inlined at c392004.adb:54 [provers reached step limit before completing the proof]
 c392004.adb:15:13: medium: precondition might fail, in call inlined at c392004.adb:57 [provers reached step limit before completing the proof]
@@ -126,7 +126,7 @@ c392008.adb:58:04: info: no contextual analysis of "New_Account" (possible check
 c392008.adb:58:17: high: "C_Acct" is not initialized
 c392008.adb:59:04: info: no contextual analysis of "New_Account" (possible check on parameters)
 c392008.adb:59:17: high: "IC_Acct" is not initialized
-c392008.adb:65:13: medium: precondition might fail [provers reached step limit before completing the proof]
+c392008.adb:65:13: medium: precondition might fail [provers gave up before completing the proof]
 c392008.adb:65:13: warning: assuming "FAILED" always terminates
 c392008.adb:65:13: warning: no Always_Terminates aspect available for "FAILED" [assumed-always-terminates]
 c392008.adb:69:04: info: no contextual analysis of "Annual_Interest" (possible check on parameters)

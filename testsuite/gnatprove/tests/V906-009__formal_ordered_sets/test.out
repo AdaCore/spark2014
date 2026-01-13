@@ -50,7 +50,7 @@ test_set.adb:76:10: medium: precondition might fail
 test_set.adb:77:25: info: assertion proved
 test_set.adb:81:23: info: precondition proved
 test_set.adb:83:10: info: precondition proved
-test_set.adb:84:25: medium: assertion might fail
+test_set.adb:84:25: info: assertion proved
 test_set.adb:84:28: info: precondition proved
 test_set.adb:84:40: info: precondition proved
 test_set.adb:85:10: info: precondition proved
@@ -84,13 +84,13 @@ test_set.adb:130:07: info: precondition proved
 test_set.adb:132:07: info: precondition proved
 test_set.adb:134:07: info: precondition proved
 test_set.adb:135:22: info: assertion proved
-test_set.adb:138:22: info: assertion proved
+test_set.adb:138:22: medium: assertion might fail [provers reached step limit before completing the proof]
 test_set.adb:140:22: info: assertion proved
 test_set.adb:142:07: info: precondition proved
 test_set.adb:143:07: info: precondition proved
 test_set.adb:145:22: info: assertion proved
 test_set.adb:146:07: info: precondition proved
-test_set.adb:147:22: info: assertion proved
+test_set.adb:147:22: medium: assertion might fail [provers reached step limit before completing the proof]
 test_set.adb:150:22: info: assertion proved
 test_set.adb:152:22: info: assertion proved
 test_set.adb:153:07: medium: assertion might fail
@@ -105,10 +105,10 @@ test_set.adb:164:12: info: precondition proved
 test_set.adb:166:07: info: precondition proved
 test_set.adb:167:07: info: precondition proved
 test_set.adb:168:07: info: precondition proved
-test_set.adb:169:22: info: assertion proved
+test_set.adb:169:22: medium: assertion might fail [provers reached step limit before completing the proof]
 test_set.adb:170:22: info: assertion proved
 test_set.adb:172:07: info: precondition proved
-test_set.adb:173:07: info: precondition proved
+test_set.adb:173:07: medium: precondition might fail [provers reached step limit before completing the proof]
 test_set.adb:176:07: info: precondition proved
 test_set.adb:177:07: info: precondition proved
 test_set.adb:179:22: info: assertion proved
@@ -234,7 +234,7 @@ test_set.adb:411:22: info: assertion proved
 test_set.adb:415:22: info: assertion proved
 test_set.adb:415:22: info: precondition proved
 test_set.adb:420:07: info: precondition proved
-test_set.adb:421:07: info: precondition proved
+test_set.adb:421:07: medium: precondition might fail, cannot prove not Contains (Container, New_Item) [provers reached step limit before completing the proof]
 test_set.adb:422:07: info: precondition proved
 test_set.adb:424:22: info: assertion proved
 test_set.adb:426:08: info: precondition proved

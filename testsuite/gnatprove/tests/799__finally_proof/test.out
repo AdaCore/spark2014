@@ -150,6 +150,7 @@ finally_range.adb:291:07: info: analyzing call to "Register" in context
 finally_range.adb:292:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 finally_range.adb:292:22: info: assertion proved (Trivial: 1 VC; Z3: 1 VC)
 finally_range.adb:292:22: info: when an exception is raised at finally_range.adb:72
+finally_range.adb:292:43: medium: assertion might fail, cannot prove High_Assigned [provers reached step limit before completing the proof]
 finally_range.adb:293:22: info: assertion proved (CVC5: 1 VC)
 finally_range.adb:293:22: info: when an exception is raised at finally_range.adb:72
 finally_range.adb:297:23: info: only expected exception raised (CVC5: 1 VC)

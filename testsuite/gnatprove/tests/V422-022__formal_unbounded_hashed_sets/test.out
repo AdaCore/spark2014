@@ -29,7 +29,7 @@ test_set.adb:41:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:42:22: info: assertion proved (CVC5: 1 VC)
 test_set.adb:43:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:49:25: medium: assertion might fail [provers reached step limit before completing the proof]
-test_set.adb:53:23: info: precondition proved (Z3: 1 VC)
+test_set.adb:53:23: info: precondition proved (CVC5: 1 VC)
 test_set.adb:56:25: medium: assertion might fail [provers reached step limit before completing the proof]
 test_set.adb:56:28: info: precondition proved (Z3: 1 VC)
 test_set.adb:56:39: info: precondition proved (Z3: 1 VC)
@@ -206,7 +206,7 @@ test_set.adb:376:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:379:10: info: initialization of "S" proved
 test_set.adb:381:10: info: precondition proved (Z3: 1 VC)
 test_set.adb:382:25: info: assertion proved (Z3: 1 VC)
-test_set.adb:383:25: medium: assertion might fail [possible fix: you should consider adding a postcondition to function "Length" or turning it into an expression function] [provers reached step limit before completing the proof]
+test_set.adb:383:25: info: assertion proved (Z3: 1 VC)
 test_set.adb:385:10: info: precondition proved (Z3: 1 VC)
 test_set.adb:386:25: info: assertion proved (Z3: 1 VC)
 test_set.adb:387:25: info: assertion proved (Z3: 1 VC)

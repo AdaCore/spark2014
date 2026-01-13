@@ -1,5 +1,5 @@
 flight_manager.adb:12:11: info: postcondition proved (Trivial: 1 VC; colibri: 1 VC)
-flight_manager.adb:13:24: info: float overflow check proved (Z3: 1 VC)
+flight_manager.adb:13:24: info: float overflow check proved (CVC5: 1 VC)
 flight_manager.adb:13:46: info: division check proved (CVC5: 1 VC)
 flight_manager.adb:13:46: info: float overflow check proved (Trivial)
 flight_manager.adb:19:21: high: float overflow check might fail (e.g. when Distance_To_Target = -2.7222588E+38 and F = 5.0781757E+9) [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 9 should mention Distance_To_Target and F in a precondition] [provers reached step limit before completing the proof]

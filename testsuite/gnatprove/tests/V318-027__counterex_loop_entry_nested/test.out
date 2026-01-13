@@ -3,19 +3,19 @@ loopentry.adb:10:23: info: range check proved (CVC5: 18 VC; Z3: 2 VC)
 loopentry.adb:11:43: info: unrolling loop [info-unrolling-inlining]
 loopentry.adb:12:26: info: range check proved (CVC5: 16 VC; Z3: 4 VC)
 loopentry.adb:13:28: info: assertion proved (CVC5: 8 VC; Z3: 2 VC)
-loopentry.adb:17:28: high: assertion might fail (e.g. when A = (1 => 3, others => 1) and A'Loop_Entry = (1 => 2, others => 1) and J = 1) [provers reached step limit before completing the proof]
+loopentry.adb:17:28: high: assertion might fail (e.g. when A = (others => 3) and A'Loop_Entry = (1 => 2, others => 3) and J = 1) [provers reached step limit before completing the proof]
 loopentry.adb:30:32: info: unrolling loop [info-unrolling-inlining]
 loopentry.adb:31:23: info: range check proved (CVC5: 18 VC; Z3: 2 VC)
 loopentry.adb:32:43: info: unrolling loop [info-unrolling-inlining]
 loopentry.adb:33:26: info: range check proved (CVC5: 16 VC; Z3: 4 VC)
 loopentry.adb:34:28: info: assertion proved (CVC5: 8 VC; Z3: 2 VC)
-loopentry.adb:35:28: high: assertion might fail (e.g. when A = (1 => 3, others => 1) and A'Loop_Entry = (1 => 2, others => 1) and J = 1) [provers reached step limit before completing the proof]
+loopentry.adb:35:28: high: assertion might fail (e.g. when A = (others => 3) and A'Loop_Entry = (1 => 2, others => 3) and J = 1) [provers reached step limit before completing the proof]
 loopentry.adb:48:32: info: unrolling loop [info-unrolling-inlining]
 loopentry.adb:49:23: info: range check proved (CVC5: 18 VC; Z3: 2 VC)
 loopentry.adb:50:43: info: unrolling loop [info-unrolling-inlining]
 loopentry.adb:51:26: info: range check proved (CVC5: 16 VC; Z3: 4 VC)
 loopentry.adb:52:28: info: assertion proved (CVC5: 8 VC; Z3: 2 VC)
-loopentry.adb:53:28: high: assertion might fail (e.g. when A = (1 => 3, others => 1) and A'Loop_Entry = (others => 1) and J = 1) [provers reached step limit before completing the proof]
+loopentry.adb:53:28: high: assertion might fail (e.g. when A = (others => 3) and A'Loop_Entry = (1 => 1, others => 3) and J = 1) [provers reached step limit before completing the proof]
 loopentry.adb:65:29: info: unrolling loop [info-unrolling-inlining]
 loopentry.adb:66:23: info: range check proved (CVC5: 10 VC; Z3: 10 VC)
 loopentry.adb:67:41: info: unrolling loop [info-unrolling-inlining]

@@ -52,7 +52,7 @@ test_vectors.adb:92:30: info: assertion proved (CVC5: 1 VC; Z3: 1 VC)
 test_vectors.adb:98:07: info: precondition proved (CVC5: 1 VC)
 test_vectors.adb:100:22: info: assertion proved (CVC5: 1 VC)
 test_vectors.adb:106:07: info: precondition proved (CVC5: 1 VC)
-test_vectors.adb:107:22: info: assertion proved (Z3: 1 VC)
+test_vectors.adb:107:22: medium: assertion might fail [provers reached step limit before completing the proof]
 test_vectors.adb:112:07: info: precondition proved (CVC5: 1 VC)
 test_vectors.adb:113:07: info: precondition proved (CVC5: 1 VC)
 test_vectors.adb:114:07: info: precondition proved (CVC5: 1 VC)

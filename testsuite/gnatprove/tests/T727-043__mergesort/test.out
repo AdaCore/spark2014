@@ -1,3 +1,4 @@
+FAILED CHECK UNEXPECTED at recursive_mergesort.adb:155
 recursive_mergesort.adb:14:14: info: postcondition proved
 recursive_mergesort.adb:14:24: info: precondition proved
 recursive_mergesort.adb:15:24: info: precondition proved
@@ -152,8 +153,8 @@ recursive_mergesort.adb:153:38: info: overflow check proved
 recursive_mergesort.adb:153:55: info: range check proved
 recursive_mergesort.adb:153:65: info: overflow check proved
 recursive_mergesort.adb:155:33: info: loop invariant initialization proved
-recursive_mergesort.adb:155:33: info: loop invariant preservation proved
 recursive_mergesort.adb:155:33: info: precondition proved
+recursive_mergesort.adb:155:33: medium: loop invariant might not be preserved by an arbitrary iteration
 recursive_mergesort.adb:155:52: info: overflow check proved
 recursive_mergesort.adb:156:33: info: loop invariant initialization proved
 recursive_mergesort.adb:156:33: info: loop invariant preservation proved

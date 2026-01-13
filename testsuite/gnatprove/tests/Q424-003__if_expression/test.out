@@ -55,7 +55,7 @@ string_utilities.ads:3:12: info: implicit aspect Always_Terminates on "Head" has
 string_utilities.ads:3:55: high: array index check might fail (e.g. when S'First = 1 and S'Last = 0) [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
 string_utilities.ads:4:12: info: implicit aspect Always_Terminates on "Tail" has been proved, subprogram will terminate
 string_utilities.ads:4:48: info: range check proved (CVC5: 4 VC)
-string_utilities.ads:4:59: medium: overflow check might fail, cannot prove upper bound for S'First +1 [reason for check: result of addition must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
+string_utilities.ads:4:59: high: overflow check might fail, cannot prove upper bound for S'First +1 (e.g. when S'First = Integer'Last and S'Last = 0) [reason for check: result of addition must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
 string_utilities.ads:7:06: medium: implicit aspect Always_Terminates on "Is_Subsequence" could be incorrect, subprogram is recursive [possible fix: annotate "Is_Subsequence" with a Subprogram_Variant aspect]
 string_utilities.ads:13:12: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
 string_utilities.ads:15:06: medium: implicit aspect Always_Terminates on "Slow_LCS_Length" could be incorrect, subprogram is recursive [possible fix: annotate "Slow_LCS_Length" with a Subprogram_Variant aspect]

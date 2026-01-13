@@ -56,6 +56,6 @@ test_fl_good.adb:52:31: warning: references to the "Image" attribute are handled
 test_fl_good.adb:57:24: info: range check proved (CVC5: 1 VC; Z3: 1 VC)
 test_fl_good.adb:57:31: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 test_fl_good.adb:61:20: warning: "G" is set by "Random" but not used after the call
-test_fl_good.adb:62:24: info: range check proved (CVC5: 1 VC; Z3: 1 VC)
+test_fl_good.adb:62:24: info: range check proved (Z3: 2 VC)
 test_fl_good.adb:62:31: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 gnatprove: error during flow analysis and proof
