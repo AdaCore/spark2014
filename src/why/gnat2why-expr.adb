@@ -19240,15 +19240,25 @@ package body Gnat2Why.Expr is
                                      (Symbol_Table, Entity (Var));
                                  T :=
                                    +Get_Array_Attr
-                                      (Item, Attr_Id, Dim, Typ => Typ);
+                                      (Item,
+                                       Attr_Id,
+                                       Dim,
+                                       Params.Ref_Allowed,
+                                       Typ => Typ);
                                  if Modular_Range_Check then
                                     T :=
                                       +Prepend_Modular_Range_Check
                                          (+T,
                                           +Get_Array_Attr
-                                             (Item, Attribute_First, Dim),
+                                             (Item,
+                                              Attribute_First,
+                                              Dim,
+                                              Params.Ref_Allowed),
                                           +Get_Array_Attr
-                                             (Item, Attribute_Last, Dim));
+                                             (Item,
+                                              Attribute_Last,
+                                              Dim,
+                                              Params.Ref_Allowed));
                                  end if;
                               else
                                  T :=
