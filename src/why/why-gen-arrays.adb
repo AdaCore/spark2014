@@ -2894,14 +2894,25 @@ package body Why.Gen.Arrays is
    end Get_Array_Attr;
 
    function Get_Array_Attr
-     (Item : Item_Type;
-      Attr : Attribute_Id;
-      Dim  : Positive;
-      Typ  : W_Type_Id := EW_Int_Type) return W_Term_Id is
+     (Item        : Item_Type;
+      Attr        : Attribute_Id;
+      Dim         : Positive;
+      Ref_Allowed : Boolean;
+      Typ         : W_Type_Id := EW_Int_Type) return W_Term_Id is
    begin
       case Item.Kind is
          when Regular =>
-            return Get_Array_Attr (+Item.Main.B_Name, Attr, Dim, Typ);
+            declare
+               Expr : constant W_Term_Id :=
+                 (if Ref_Allowed and then Item.Main.Mutable
+                  then
+                    New_Deref
+                      (Right => Item.Main.B_Name,
+                       Typ   => Get_Typ (Item.Main.B_Name))
+                  else +Item.Main.B_Name);
+            begin
+               return Get_Array_Attr (Expr, Attr, Dim, Typ);
+            end;
 
          when UCArray =>
             case Attr is

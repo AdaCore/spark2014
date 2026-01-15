@@ -460,15 +460,17 @@ package Why.Gen.Arrays is
    --  @return the translated array type attribute into Why3
 
    function Get_Array_Attr
-     (Item : Item_Type;
-      Attr : Attribute_Id;
-      Dim  : Positive;
-      Typ  : W_Type_Id := EW_Int_Type) return W_Term_Id;
+     (Item        : Item_Type;
+      Attr        : Attribute_Id;
+      Dim         : Positive;
+      Ref_Allowed : Boolean;
+      Typ         : W_Type_Id := EW_Int_Type) return W_Term_Id;
    --  Get the expression for the attribute (first/last/length) of an array
    --  item.
    --  @param Item the item for the array object
    --  @param Attr the querried array attribute
    --  @param Dim dimension of the attribute
+   --  @param Ref_Allowed True if references are allowed in the context.
    --  @param Typ expected type of the result. It is only relevant for
    --         length attribute.
    --  @return the translated array attribute into Why3
