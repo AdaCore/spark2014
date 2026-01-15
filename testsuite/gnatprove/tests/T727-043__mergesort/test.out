@@ -27,7 +27,8 @@ recursive_mergesort.adb:67:10: info: precondition proved
 recursive_mergesort.adb:67:10: info: subprogram variant proved
 recursive_mergesort.adb:67:35: info: range check proved
 recursive_mergesort.adb:67:47: info: range check proved
-recursive_mergesort.adb:68:10: info: precondition proved
+recursive_mergesort.adb:68:10: medium: in inlined expression function body at recursive_mergesort.ads:27
+recursive_mergesort.adb:68:10: medium: precondition might fail, cannot prove Elements_Equal_Except (Res, Occ, K) [provers reached step limit before completing the proof]
 recursive_mergesort.adb:68:24: info: precondition proved
 recursive_mergesort.adb:68:48: info: range check proved
 recursive_mergesort.adb:68:54: info: precondition proved

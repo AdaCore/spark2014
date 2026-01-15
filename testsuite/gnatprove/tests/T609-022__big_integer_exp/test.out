@@ -16,9 +16,9 @@ diff.adb:35:22: info: assertion proved (CVC5: 1 VC)
 diff.adb:39:13: info: implicit aspect Always_Terminates on "U_Exp_Const_Trans" has been proved, subprogram will terminate
 diff.adb:42:34: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 64-bits machine integer] [possible fix: add precondition (2**J in U63) to subprogram at line 39] [provers reached step limit before completing the proof]
 diff.adb:44:22: info: assertion proved (CVC5: 1 VC)
-diff.adb:44:32: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 64-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers reached step limit before completing the proof]
-diff.adb:45:22: info: assertion proved (Z3: 1 VC)
-diff.adb:45:23: info: overflow check proved (Z3: 1 VC; colibri: 1 VC)
+diff.adb:44:32: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 64-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers reached step and memory limit before completing the proof]
+diff.adb:45:22: info: assertion proved (CVC5: 1 VC)
+diff.adb:45:23: info: overflow check proved (CVC5: 1 VC; colibri: 1 VC)
 diff.adb:46:22: info: assertion proved (colibri: 1 VC)
 diff.adb:56:13: info: implicit aspect Always_Terminates on "S_Exp_BI_Trans" has been proved, subprogram will terminate
 diff.adb:59:34: info: overflow check proved (CVC5: 1 VC; colibri: 1 VC)
@@ -32,7 +32,7 @@ diff.adb:67:13: info: implicit aspect Always_Terminates on "U_Exp_BI_Trans" has 
 diff.adb:70:34: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 64-bits machine integer] [possible fix: add precondition (2**J in U63) to subprogram at line 67] [provers reached step limit before completing the proof]
 diff.adb:71:34: info: division check proved (CVC5: 1 VC)
 diff.adb:73:22: info: assertion proved (CVC5: 1 VC)
-diff.adb:73:28: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 64-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers reached step limit before completing the proof]
+diff.adb:73:28: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 64-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers reached step and memory limit before completing the proof]
 diff.adb:74:22: info: assertion proved (colibri: 1 VC)
 diff2.adb:8:13: info: implicit aspect Always_Terminates on "U_Exp_Gt0" has been proved, subprogram will terminate
 diff2.adb:11:28: info: overflow check proved (Z3: 1 VC)
@@ -53,7 +53,7 @@ diff2.adb:40:22: info: assertion proved (colibri: 1 VC)
 diff3.adb:8:13: info: implicit aspect Always_Terminates on "U_Exp_Gt0" has been proved, subprogram will terminate
 diff3.adb:11:29: info: overflow check proved (Z3: 1 VC)
 diff3.adb:12:22: info: assertion proved (Z3: 1 VC)
-diff3.adb:13:29: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 128-bits machine integer] [possible fix: add precondition (2**(J+1) in U128) to subprogram at line 8] [provers reached step limit before completing the proof]
+diff3.adb:13:29: high: overflow check might fail, cannot prove upper bound for 2**(J+1) (e.g. when J = 127) [reason for check: result of exponentiation must fit in a 128-bits machine integer] [possible fix: add precondition (2**(J+1) <= U128'Last) to subprogram at line 8] [provers reached step limit before completing the proof]
 diff3.adb:13:33: info: overflow check proved (CVC5: 4 VC)
 diff3.adb:18:13: info: implicit aspect Always_Terminates on "U_Exp_Const_Trans" has been proved, subprogram will terminate
 diff3.adb:21:35: info: overflow check proved (Z3: 1 VC)
