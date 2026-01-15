@@ -1,5 +1,5 @@
 from e3.os.process import Run
-from test_support import prove_all, gprbuild, print_sorted
+from test_support import prove_all, gprbuild, log_sorted
 
 contains_manual_proof = False
 
@@ -13,4 +13,4 @@ if __name__ == "__main__":
 
     gprbuild(["-q", "-P", "test.gpr"])
     process = Run(["./obj/test"])
-    print_sorted(str.splitlines(process.out))
+    log_sorted(None, str.splitlines(process.out))
