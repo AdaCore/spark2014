@@ -102,7 +102,7 @@ stages:
     - mv $CI_PROJECT_DIR/gnatprove_cache /tmp
     - export GNATPROVE_CACHE="file:/tmp/gnatprove_cache"
     # set location of sources for coverage
-    - ANOD_BUILDSPACE_SOURCES=`anod eval spark2014-core build_space_name --primitive build --qualifier=coverage,assertions`
+    - ANOD_BUILDSPACE_SOURCES=`anod eval spark2014 build_space_name --primitive build --qualifier=coverage,assertions`
     - export COVERAGE_ROOT_DIR=$ANOD_DEFAULT_SANDBOX_DIR/x86_64-linux/$ANOD_BUILDSPACE_SOURCES/src
     - export COVERAGE_SOURCE_DIR=$CI_PROJECT_DIR
     # Test using anod
