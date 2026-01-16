@@ -50,7 +50,7 @@ records.adb:153:25: info: justified that "Dst.The_Pair" might not be initialized
 records.adb:164:32: info: justified that "Dst.The_Pair.A" might not be initialized in "Optimised_Copy_B"
 records.adb:164:32: info: justified that "Dst.The_Pair.B" might not be initialized in "Optimised_Copy_B"
 records.adb:165:11: info: flow dependencies proved
-records.adb:166:22: high: postcondition might fail (e.g. when Dst = (Exists => False, The_Pair => (A => 1, B => 0)) and Src = (Exists => False, The_Pair => (A => 0, B => 0))) [provers reached step limit before completing the proof]
+records.adb:166:22: high: postcondition might fail (e.g. when Dst = (Exists => False, The_Pair => (A => 1, B => 1)) and Src = (Exists => False, The_Pair => (A => 0, B => 1))) [provers reached step limit before completing the proof]
 records.adb:166:26: info: justified that "Dst.The_Pair" might not be initialized
 records.adb:177:11: info: flow dependencies proved
 records.adb:178:22: info: postcondition proved (CVC5: 4 VC; Trivial: 1 VC)
@@ -104,7 +104,7 @@ records.adb:393:13: info: implicit aspect Always_Terminates on "Make_Optional_Pa
 records.adb:394:19: info: postcondition proved (CVC5: 1 VC)
 records.adb:398:07: info: initialization of "R" proved
 records.adb:406:11: info: flow dependencies proved
-records.adb:410:22: high: assertion might fail (e.g. when X = (Exists => True, The_Pair => (A => 1, B => 0))) [possible fix: subprogram at line 405 should mention X in a precondition] [provers reached step limit before completing the proof]
+records.adb:410:22: high: assertion might fail (e.g. when X = (Exists => True, The_Pair => (A => 1, B => 1))) [possible fix: subprogram at line 405 should mention X in a precondition] [provers reached step limit before completing the proof]
 records.adb:414:11: info: flow dependencies proved
 records.adb:418:22: high: assertion might fail (e.g. when X = (Exists => True, The_Pair => (A => 0, B => 1))) [possible fix: subprogram at line 413 should mention X in a precondition] [provers reached step limit before completing the proof]
 records.adb:422:11: info: flow dependencies proved
@@ -118,7 +118,7 @@ records.adb:439:13: info: local subprogram "Swap_Fields" only analyzed in the co
 records.adb:446:04: warning: analyzing unreferenced function "Apply_Command" [unreferenced-function]
 records.adb:446:13: info: implicit aspect Always_Terminates on "Apply_Command" has been proved, subprogram will terminate
 records.adb:448:07: info: initialization of "R" proved
-records.adb:453:24: high: range check might fail, cannot prove upper bound for R.A + 1 (e.g. when R = (A => Unsigned_Byte'Last, B => 0)) [reason for check: result of addition must fit in the target type of the assignment] [provers reached step limit before completing the proof]
+records.adb:453:24: high: range check might fail, cannot prove upper bound for R.A + 1 (e.g. when R = (A => Unsigned_Byte'Last, B => Unsigned_Byte'Last)) [reason for check: result of addition must fit in the target type of the assignment] [provers reached step limit before completing the proof]
 records.adb:458:18: info: analyzing call to "Swap_Fields" in context
 records.adb:465:11: info: flow dependencies proved
 records.adb:466:22: info: postcondition proved (CVC5: 1 VC)
@@ -148,9 +148,9 @@ counterexample expected for check at records.adb:142
   trace at records.adb:145 --> Dst = (Exists => True, The_Pair => (A => 1, B => 1))
   trace at records.adb:146 --> Dst = (Exists => False, The_Pair => (A => 1, B => 1))
 counterexample expected for check at records.adb:166
-  trace at records.adb:163 --> Dst = (Exists => True, The_Pair => (A => 1, B => 0)) and Src = (Exists => False, The_Pair => (A => 0, B => 0))
-  trace at records.adb:166 --> Dst = (Exists => False, The_Pair => (A => 1, B => 0)) and Src = (Exists => False, The_Pair => (A => 0, B => 0))
-  trace at records.adb:170 --> Dst = (Exists => False, The_Pair => (A => 1, B => 0))
+  trace at records.adb:163 --> Dst = (Exists => True, The_Pair => (A => 1, B => 1)) and Src = (Exists => False, The_Pair => (A => 0, B => 1))
+  trace at records.adb:166 --> Dst = (Exists => False, The_Pair => (A => 1, B => 1)) and Src = (Exists => False, The_Pair => (A => 0, B => 1))
+  trace at records.adb:170 --> Dst = (Exists => False, The_Pair => (A => 1, B => 1))
 counterexample expected for check at records.adb:195
   trace at records.adb:190 --> X = (Exists => True, The_Pair => (A => 0, B => 1))
   trace at records.adb:195 --> X'Old = (Exists => True, The_Pair => (A => 1, B => 1))
@@ -179,9 +179,9 @@ counterexample expected for check at records.adb:380
   trace at records.adb:386 --> R = (Exists => True, The_Pair => (A => 0, B => 0))
   trace at records.adb:389 --> R = (Exists => True, The_Pair => (A => 0, B => 0))
 counterexample expected for check at records.adb:410
-  trace at records.adb:405 --> X = (Exists => True, The_Pair => (A => 1, B => 0))
-  trace at records.adb:409 --> X = (Exists => True, The_Pair => (A => 1, B => 0))
-  trace at records.adb:410 --> X = (Exists => True, The_Pair => (A => 1, B => 0))
+  trace at records.adb:405 --> X = (Exists => True, The_Pair => (A => 1, B => 1))
+  trace at records.adb:409 --> X = (Exists => True, The_Pair => (A => 1, B => 1))
+  trace at records.adb:410 --> X = (Exists => True, The_Pair => (A => 1, B => 1))
 counterexample expected for check at records.adb:418
   trace at records.adb:413 --> X = (Exists => True, The_Pair => (A => 0, B => 1))
   trace at records.adb:417 --> X = (Exists => True, The_Pair => (A => 0, B => 1))
@@ -190,9 +190,9 @@ counterexample expected for check at records.adb:436
   trace at records.adb:433 --> X = (Exists => True, The_Pair => (A => 5, B => 10))
   trace at records.adb:436 --> X = (Exists => True, The_Pair => (A => 5, B => 10))
 counterexample expected for check at records.adb:453
-  trace at records.adb:446 --> P = (Data => (A => Unsigned_Byte'Last, B => 0), Command => Increment_A)
-  trace at records.adb:452 --> R = (A => Unsigned_Byte'Last, B => 0)
-  trace at records.adb:453 --> R = (A => Unsigned_Byte'Last, B => 0)
+  trace at records.adb:446 --> P = (Data => (A => Unsigned_Byte'Last, B => Unsigned_Byte'Last), Command => Increment_A)
+  trace at records.adb:452 --> R = (A => Unsigned_Byte'Last, B => Unsigned_Byte'Last)
+  trace at records.adb:453 --> R = (A => Unsigned_Byte'Last, B => Unsigned_Byte'Last)
 counterexample expected for check at records.adb:483
   trace at records.adb:480 --> R = (Exists => True, The_Pair => (A => 1, B => 0)) and X = 1
   trace at records.adb:483 --> R = (Exists => True, The_Pair => (A => 1, B => 0)) and R'Old = (Exists => True, The_Pair => (A => 1, B => 0)) and X = 1

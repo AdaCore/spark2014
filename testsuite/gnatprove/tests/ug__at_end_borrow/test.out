@@ -193,7 +193,7 @@
       |       ^~~~~~~~~~~~~~~
    72 |         new List'(1, new List'(2, new List'(3, new List'(4, new List'(5, null)))));
       |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      + provers reached time and step limit before completing the proof
+      + provers reached step limit before completing the proof
 
  info: pointer dereference check proved
 --> list_borrows.adb:75:33
@@ -229,8 +229,11 @@
  info: pointer dereference check proved
 --> list_borrows.adb:82:30
 
- info: assertion proved
+ medium: assertion might fail
 --> list_borrows.adb:83:19
+   83 |       pragma Assert (X.Next.Next.Next.Val = 4);
+      |                      ^~~~~~~~~~~~~~~~~~~~~~~~
+      + provers reached step limit before completing the proof
 
  info: pointer dereference check proved
 --> list_borrows.adb:83:20

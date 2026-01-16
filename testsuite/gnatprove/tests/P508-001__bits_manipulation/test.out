@@ -235,7 +235,7 @@ bits_manipulation-functions.adb:164:32: info: precondition proved (CVC5: 1 VC), 
 bits_manipulation-functions.adb:180:28: info: assertion proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
 bits_manipulation-functions.adb:180:28: info: assertion proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:180:28: info: assertion proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
-bits_manipulation-functions.adb:180:28: info: assertion proved (Z3: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:181:30: medium: assertion might fail, cannot prove Functions.Make_Mask (Size) < Modular (2) ** (Size), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45 [provers reached step limit before completing the proof]
 bits_manipulation-functions.adb:182:20: info: precondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
 bits_manipulation-functions.adb:182:20: info: precondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:182:20: info: precondition proved (CVC5: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44

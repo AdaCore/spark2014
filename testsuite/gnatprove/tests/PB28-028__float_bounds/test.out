@@ -7,5 +7,5 @@ floats.adb:11:31: info: float overflow check proved (Trivial)
 floats.adb:13:22: info: assertion proved (CVC5: 2 VC)
 floats.adb:14:22: info: assertion proved (CVC5: 2 VC)
 floats.adb:15:22: info: assertion proved (CVC5: 2 VC)
-floats.adb:16:22: info: assertion proved (CVC5: 2 VC)
-floats.adb:17:22: info: assertion proved (CVC5: 2 VC)
+floats.adb:16:22: medium: assertion might fail [possible fix: precondition of subprogram at floats.ads:5 should mention d] [provers reached step limit before completing the proof]
+floats.adb:17:22: info: assertion proved (altergo: 2 VC)

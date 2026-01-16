@@ -1,1 +1,2 @@
 NT SKIP too slow on windows
+ALL XFAIL eng/spark/spark2014#1161

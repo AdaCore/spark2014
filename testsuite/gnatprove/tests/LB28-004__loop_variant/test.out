@@ -68,7 +68,7 @@ p.adb:87:30: info: loop invariant preservation proved (CVC5: 1 VC)
 p.adb:87:50: info: overflow check proved (CVC5: 4 VC)
 p.adb:87:54: info: overflow check proved (CVC5: 4 VC)
 p.adb:87:61: medium: "Tab" might not be initialized
-p.adb:87:66: info: index check proved (CVC5: 4 VC)
+p.adb:87:66: info: index check proved (CVC5: 2 VC; Z3: 2 VC)
 p.adb:93:12: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
 p.adb:94:14: info: overflow check proved (CVC5: 2 VC; Z3: 2 VC)
 p.adb:95:14: info: overflow check proved (CVC5: 2 VC; Z3: 2 VC)
@@ -80,11 +80,11 @@ p.adb:98:30: info: loop invariant initialization proved (Z3: 1 VC)
 p.adb:98:30: info: loop invariant preservation proved (Z3: 1 VC)
 p.adb:98:50: info: overflow check proved (CVC5: 4 VC)
 p.adb:98:57: medium: "Tab" might not be initialized
-p.adb:98:62: info: index check proved (CVC5: 2 VC; Z3: 2 VC)
+p.adb:98:62: info: index check proved (Z3: 2 VC; altergo: 2 VC)
 p.adb:99:30: info: loop invariant initialization proved (CVC5: 1 VC)
 p.adb:99:30: info: loop invariant preservation proved (CVC5: 1 VC)
 p.adb:99:50: info: overflow check proved (CVC5: 4 VC)
 p.adb:99:54: info: overflow check proved (CVC5: 4 VC)
 p.adb:99:61: medium: "Tab" might not be initialized
-p.adb:99:66: info: index check proved (CVC5: 2 VC; Z3: 2 VC)
+p.adb:99:66: info: index check proved (Z3: 4 VC)
 p.adb:100:28: info: loop variant proved (CVC5: 1 VC)

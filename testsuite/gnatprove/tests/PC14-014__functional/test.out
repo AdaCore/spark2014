@@ -1,5 +1,3 @@
-spark-containers-formal-ordered_maps.ads:1086:43: medium: precondition might fail, in instantiation at use_ordered_maps.ads:9 [possible fix: subprogram at line 1075 should mention Container in a precondition]
-spark-containers-formal-ordered_maps.ads:1095:19: medium: precondition might fail, in instantiation at use_ordered_maps.ads:9 [possible fix: subprogram at line 1075 should mention Container in a precondition]
 spark-containers-formal-unbounded_vectors.ads:754:60: medium: overflow check might fail, cannot prove upper bound for Index - Index_Type'First, in instantiation at use_vectors.ads:23 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 use_lists.adb:8:33: medium: implicit aspect Always_Terminates on "My_Find" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 use_lists.adb:10:13: info: loop invariant initialization proved
@@ -361,7 +359,7 @@ use_maps.ads:42:55: info: precondition proved
 use_maps.ads:47:14: info: postcondition proved
 use_maps.ads:50:20: info: precondition proved
 use_maps.ads:50:41: info: precondition proved
-use_maps.ads:54:14: info: postcondition proved
+use_maps.ads:56:15: medium: postcondition might fail, cannot prove (for some L of S => Element (S, L) = F (Element (Model (S)'Old, K))) [possible fix: you should consider adding a postcondition to function "Get" or turning it into an expression function] [provers reached step limit before completing the proof]
 use_maps.ads:57:22: info: precondition proved
 use_maps.ads:57:42: info: precondition proved
 use_maps.ads:60:22: info: precondition proved

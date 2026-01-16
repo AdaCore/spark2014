@@ -126,10 +126,10 @@ p32.adb:148:29: info: range check proved (CVC5: 2 VC)
 p32.ads:15:13: info: implicit aspect Always_Terminates on "Sqr" has been proved, subprogram will terminate
 p32.ads:20:14: info: postcondition proved (CVC5: 1 VC)
 p32.ads:23:13: info: implicit aspect Always_Terminates on "Sqrt_Von_Neumann_Aux32" has been proved, subprogram will terminate
-p32.ads:24:19: info: postcondition proved (CVC5: 3 VC; Trivial: 1 VC)
+p32.ads:24:19: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC; Z3: 1 VC)
 p32.ads:36:13: info: implicit aspect Always_Terminates on "Sqrt_Von_Neumann32" has been proved, subprogram will terminate
 p32.ads:37:19: info: postcondition proved (Trivial: 1 VC; altergo: 2 VC)
-p32.ads:40:41: info: overflow check proved (altergo: 2 VC)
+p32.ads:40:41: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC)
 p64.adb:11:13: info: implicit aspect Always_Terminates on "Pow2" has been proved, subprogram will terminate
 p64.adb:13:31: info: range check proved (CVC5: 2 VC)
 p64.adb:21:22: info: assertion proved (Z3: 1 VC)
@@ -151,12 +151,12 @@ p64.adb:76:25: info: assertion proved (CVC5: 2 VC)
 p64.adb:76:40: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 p64.adb:77:25: info: assertion proved (CVC5: 2 VC)
 p64.adb:77:34: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-p64.adb:79:25: info: assertion proved (CVC5: 1 VC; Z3: 1 VC)
+p64.adb:79:25: medium: assertion might fail [possible fix: loop invariant at line 98 should mention B] [provers reached step limit before completing the proof]
 p64.adb:80:25: info: assertion proved (CVC5: 2 VC)
 p64.adb:80:54: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 p64.adb:82:25: info: assertion proved (CVC5: 1 VC; Z3: 1 VC)
 p64.adb:82:39: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-p64.adb:88:28: medium: assertion might fail [provers reached step limit before completing the proof]
+p64.adb:88:28: info: assertion proved (CVC5: 1 VC; Z3: 1 VC)
 p64.adb:88:53: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 p64.adb:92:23: info: division check proved (CVC5: 2 VC)
 p64.adb:96:31: info: loop variant proved (Z3: 1 VC)
@@ -214,4 +214,4 @@ p64.ads:23:13: info: implicit aspect Always_Terminates on "Sqrt_Von_Neumann_Aux6
 p64.ads:24:19: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC; Z3: 1 VC)
 p64.ads:36:13: info: implicit aspect Always_Terminates on "Sqrt_Von_Neumann64" has been proved, subprogram will terminate
 p64.ads:37:19: info: postcondition proved (Trivial: 1 VC; altergo: 2 VC)
-p64.ads:40:41: info: overflow check proved (altergo: 2 VC)
+p64.ads:40:41: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC)

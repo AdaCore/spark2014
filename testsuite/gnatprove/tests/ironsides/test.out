@@ -1106,8 +1106,8 @@ zone_file_parser.adb:1352:46: info: loop invariant initialization proved (CVC5: 
 zone_file_parser.adb:1352:46: info: loop invariant preservation proved (CVC5: 3 VC)
 zone_file_parser.adb:1356:43: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 zone_file_parser.adb:1356:61: info: overflow check proved (CVC5: 2 VC)
-zone_file_parser.adb:1356:66: info: index check proved (CVC5: 2 VC)
-zone_file_parser.adb:1356:66: info: overflow check proved (CVC5: 2 VC)
+zone_file_parser.adb:1356:66: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [provers reached step limit before completing the proof]
+zone_file_parser.adb:1356:66: medium: overflow check might fail, cannot prove lower bound for (I + 1) - BegIdx [reason for check: result of subtraction must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
 zone_file_parser.adb:1359:44: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:1363:66: info: loop invariant initialization proved (CVC5: 1 VC)
 zone_file_parser.adb:1363:66: info: loop invariant preservation proved (CVC5: 1 VC)

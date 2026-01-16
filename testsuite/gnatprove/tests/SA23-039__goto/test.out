@@ -87,7 +87,7 @@ test_goto_borrow.adb:19:13: info: implicit aspect Always_Terminates on "At_End_B
 test_goto_borrow.adb:20:07: info: dynamic accessibility check proved (Trivial)
 test_goto_borrow.adb:24:54: info: initialization of "Rest" proved
 test_goto_borrow.adb:24:84: info: initialization of "I" proved
-test_goto_borrow.adb:26:14: info: postcondition proved (Trivial: 1 VC; Z3: 2 VC)
+test_goto_borrow.adb:26:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC; Z3: 1 VC)
 test_goto_borrow.adb:27:48: info: precondition proved (CVC5: 1 VC)
 test_goto_borrow.adb:27:56: info: range check proved (CVC5: 2 VC)
 test_goto_borrow.adb:34:15: info: absence of resource or memory leak proved (CVC5: 1 VC)

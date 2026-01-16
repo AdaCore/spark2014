@@ -33,14 +33,14 @@
   </goal>
   <goal name="def&#39;vc.6" proved="true">
   <proof prover="0"><result status="valid" steps="31"/></proof>
-  <proof prover="1"><result status="valid" steps="2405"/></proof>
-  <proof prover="2"><result status="valid" steps="5304"/></proof>
+  <proof prover="1"><result status="valid" steps="1402"/></proof>
+  <proof prover="2"><result status="valid" steps="5562"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.7" proved="true">
-  <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="valid" steps="2412"/></proof>
-  <proof prover="2"><result status="highfailure"/></proof>
+  <proof prover="0"><result status="valid" steps="32"/></proof>
+  <proof prover="1"><result status="valid" steps="1409"/></proof>
+  <proof prover="2"><result status="valid" steps="5811"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.8" proved="true">
@@ -51,17 +51,17 @@
   </goal>
   <goal name="def&#39;vc.10" proved="true">
   <proof prover="0"><result status="valid" steps="14"/></proof>
-  <proof prover="1"><result status="valid" steps="1198"/></proof>
-  <proof prover="2"><result status="valid" steps="1855"/></proof>
+  <proof prover="1"><result status="valid" steps="1157"/></proof>
+  <proof prover="2"><result status="valid" steps="1872"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.11" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.12" proved="true">
-  <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="valid" steps="3350"/></proof>
-  <proof prover="2"><result status="highfailure"/></proof>
+  <proof prover="0"><result status="valid" steps="34"/></proof>
+  <proof prover="1"><result status="valid" steps="1849"/></proof>
+  <proof prover="2"><result status="valid" steps="7062"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
  </transf>

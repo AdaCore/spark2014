@@ -100,8 +100,6 @@ spark-containers-functional-maps.ads:105:06: info: Container_Aggregates annotati
 spark-containers-functional-maps.ads:105:06: info: Container_Aggregates annotation proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:9
 spark-containers-functional-maps.ads:105:06: info: Container_Aggregates annotation proved (CVC5: 3 VC), in instantiation at check_ho_pre.adb:10
 spark-containers-functional-maps.ads:105:06: info: Container_Aggregates annotation proved (CVC5: 3 VC), in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:105:06: info: Container_Aggregates annotation proved (Z3: 1 VC), in instantiation at check_ho_pre.adb:10
-spark-containers-functional-maps.ads:105:06: info: after a call to "Aggr_Include" at spark-containers-functional-maps.ads:612, in instantiation at check_ho_pre.adb:10
 spark-containers-functional-maps.ads:105:06: info: after a call to "Aggr_Include" at spark-containers-functional-maps.ads:612, in instantiation at check_ho_pre.adb:10
 spark-containers-functional-maps.ads:105:06: info: after a call to "Aggr_Include" at spark-containers-functional-maps.ads:612, in instantiation at check_ho_pre.adb:10
 spark-containers-functional-maps.ads:105:06: info: after a call to "Aggr_Include" at spark-containers-functional-maps.ads:612, in instantiation at check_ho_pre.adb:10
@@ -116,7 +114,6 @@ spark-containers-functional-maps.ads:105:06: info: when establishing invariant o
 spark-containers-functional-maps.ads:105:06: info: when establishing invariant on "Has_Key" at spark-containers-functional-maps.ads:131, in instantiation at use_map_ho.adb:9
 spark-containers-functional-maps.ads:105:06: info: when establishing invariant on "Length" at spark-containers-functional-maps.ads:178, in instantiation at check_ho_pre.adb:10
 spark-containers-functional-maps.ads:105:06: info: when establishing invariant on "Length" at spark-containers-functional-maps.ads:178, in instantiation at use_map_ho.adb:9
-spark-containers-functional-maps.ads:105:06: info: when reestablishing invariant on "Get" at spark-containers-functional-maps.ads:148, in instantiation at check_ho_pre.adb:10
 spark-containers-functional-maps.ads:105:06: info: when reestablishing invariant on "Get" at spark-containers-functional-maps.ads:148, in instantiation at check_ho_pre.adb:10
 spark-containers-functional-maps.ads:105:06: info: when reestablishing invariant on "Get" at spark-containers-functional-maps.ads:148, in instantiation at use_map_ho.adb:9
 spark-containers-functional-maps.ads:105:06: info: when reestablishing invariant on "Has_Key" at spark-containers-functional-maps.ads:131, in instantiation at check_ho_pre.adb:10
@@ -304,7 +301,7 @@ use_map_ho.adb:41:13: info: precondition proved (CVC5: 1 VC)
 use_map_ho.adb:41:18: info: precondition proved (CVC5: 1 VC)
 use_map_ho.adb:43:16: info: implicit aspect Always_Terminates on "Add_One" has been proved, subprogram will terminate
 use_map_ho.adb:44:10: info: precondition proved (CVC5: 1 VC)
-use_map_ho.adb:46:19: info: postcondition proved (Z3: 1 VC)
+use_map_ho.adb:46:19: info: postcondition proved (CVC5: 1 VC)
 use_map_ho.adb:46:19: info: precondition proved (CVC5: 1 VC)
 use_map_ho.adb:47:13: info: precondition proved (CVC5: 1 VC)
 use_map_ho.adb:51:16: info: implicit aspect Always_Terminates on "Value" has been proved, subprogram will terminate
@@ -333,7 +330,8 @@ use_map_ho.adb:77:17: info: range check proved (CVC5: 2 VC)
 use_map_ho.adb:77:19: info: range check proved (CVC5: 4 VC)
 use_map_ho.adb:79:16: info: implicit aspect Always_Terminates on "Add_Zero" has been proved, subprogram will terminate
 use_map_ho.adb:80:10: info: precondition proved (CVC5: 1 VC)
-use_map_ho.adb:82:19: info: postcondition proved (CVC5: 3 VC; Z3: 1 VC)
+use_map_ho.adb:82:19: medium: in inlined expression function body at use_map_ho.adb:68
+use_map_ho.adb:82:19: medium: postcondition might fail, cannot prove M1 <= M2 [provers reached step limit before completing the proof]
 use_map_ho.adb:82:27: info: precondition proved (CVC5: 2 VC)
 use_map_ho.adb:82:77: info: precondition proved (CVC5: 2 VC)
 use_map_ho.adb:86:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
@@ -348,8 +346,8 @@ use_map_ho.adb:97:65: info: range check proved (CVC5: 2 VC)
 use_map_ho.adb:97:77: info: predicate check proved (Trivial: 2 VC)
 use_map_ho.adb:98:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 use_map_ho.adb:98:19: warning: unused variable "I"
-use_map_ho.adb:103:17: medium: in inlined expression function body at use_map_ho.adb:70
-use_map_ho.adb:103:17: medium: postcondition might fail, cannot prove Has_Key (M2, K) [provers reached step limit before completing the proof]
+use_map_ho.adb:103:17: medium: in inlined expression function body at use_map_ho.adb:71
+use_map_ho.adb:103:17: medium: postcondition might fail, cannot prove Get (M2, K) = E [provers reached step limit before completing the proof]
 use_map_ho.adb:103:25: info: precondition proved (CVC5: 1 VC)
 use_map_ho.adb:103:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 use_map_ho.adb:103:90: info: precondition proved (CVC5: 1 VC)

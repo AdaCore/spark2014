@@ -20,7 +20,7 @@
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.2">
-  <proof prover="1"><result status="unknown" steps="2182"/></proof>
+  <proof prover="1"><result status="unknown" steps="2138"/></proof>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
@@ -29,7 +29,7 @@
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.5">
-  <proof prover="1"><result status="unknown" steps="2200"/></proof>
+  <proof prover="1"><result status="unknown" steps="2156"/></proof>
   </goal>
   <goal name="def&#39;vc.6" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
@@ -44,7 +44,7 @@
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.10">
-  <proof prover="1"><result status="unknown" steps="2650"/></proof>
+  <proof prover="1"><result status="unknown" steps="2507"/></proof>
   </goal>
   <goal name="def&#39;vc.11" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
@@ -54,7 +54,7 @@
   </goal>
   <goal name="def&#39;vc.13" proved="true">
   <proof prover="0"><result status="valid" steps="2"/></proof>
-  <proof prover="1" timelimit="20"><result status="valid" steps="1521"/></proof>
+  <proof prover="1" timelimit="20"><result status="valid" steps="1539"/></proof>
   <proof prover="2"><result status="valid" steps="1059"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
@@ -71,7 +71,7 @@
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.18">
-  <proof prover="1"><result status="unknown" steps="2644"/></proof>
+  <proof prover="1"><result status="unknown" steps="2501"/></proof>
   </goal>
   <goal name="def&#39;vc.19" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
@@ -81,7 +81,7 @@
   </goal>
   <goal name="def&#39;vc.21" proved="true">
   <proof prover="0"><result status="valid" steps="2"/></proof>
-  <proof prover="1" timelimit="20"><result status="valid" steps="1521"/></proof>
+  <proof prover="1" timelimit="20"><result status="valid" steps="1539"/></proof>
   <proof prover="2"><result status="highfailure"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>

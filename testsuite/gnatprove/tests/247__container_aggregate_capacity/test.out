@@ -6,6 +6,8 @@ test_capacity.adb:21:09: info: Container_Aggregates annotation proved (CVC5: 1 V
 test_capacity.adb:21:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
 test_capacity.adb:21:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
 test_capacity.adb:21:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_capacity.adb:21:09: info: Container_Aggregates annotation proved (CVC5: 1 VC; Z3: 1 VC; altergo: 1 VC)
+test_capacity.adb:21:09: info: after a call to "Append" at test_capacity.adb:25
 test_capacity.adb:21:09: info: after a call to "Append" at test_capacity.adb:25
 test_capacity.adb:21:09: info: after a call to "Append" at test_capacity.adb:25
 test_capacity.adb:21:09: info: after a call to "Empty" at test_capacity.adb:23
@@ -16,10 +18,8 @@ test_capacity.adb:21:09: info: when establishing invariant on "Capacity" at test
 test_capacity.adb:21:09: info: when establishing invariant on "Contains" at test_capacity.adb:42
 test_capacity.adb:21:09: info: when establishing invariant on "Length" at test_capacity.adb:35
 test_capacity.adb:21:09: info: when reestablishing invariant on "Capacity" at test_capacity.adb:39
+test_capacity.adb:21:09: info: when reestablishing invariant on "Contains" at test_capacity.adb:42
 test_capacity.adb:21:09: info: when reestablishing invariant on "Length" at test_capacity.adb:35
-test_capacity.adb:21:09: medium: Container_Aggregates annotation might be incorrect [provers reached step limit before completing the proof]
-test_capacity.adb:21:09: medium: after a call to "Append" at test_capacity.adb:25
-test_capacity.adb:21:09: medium: when reestablishing invariant on "Contains" at test_capacity.adb:42
 test_capacity.adb:23:16: info: implicit aspect Always_Terminates on "Empty" has been proved, subprogram will terminate
 test_capacity.adb:24:09: info: data dependencies proved
 test_capacity.adb:25:17: info: aspect Always_Terminates on "Append" has been proved, subprogram will terminate
@@ -111,9 +111,9 @@ test_capacity.adb:153:17: info: aspect Always_Terminates on "Append" has been pr
 test_capacity.adb:154:09: info: data dependencies proved
 test_capacity.adb:155:41: info: during checks for container aggregates at test_capacity.adb:149
 test_capacity.adb:155:41: info: precondition proved (CVC5: 2 VC)
-test_capacity.adb:156:17: info: postcondition proved (CVC5: 4 VC; Trivial: 1 VC; Z3: 2 VC)
+test_capacity.adb:156:17: info: postcondition proved (CVC5: 5 VC; Trivial: 1 VC; Z3: 1 VC)
 test_capacity.adb:157:18: info: precondition proved (CVC5: 1 VC)
-test_capacity.adb:161:49: info: precondition proved (altergo: 1 VC)
+test_capacity.adb:161:49: info: precondition proved (CVC5: 1 VC)
 test_capacity.adb:161:62: info: precondition proved (CVC5: 1 VC)
 test_capacity.adb:162:46: info: overflow check proved (CVC5: 2 VC)
 test_capacity.adb:165:16: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
@@ -183,9 +183,9 @@ test_capacity.adb:256:17: info: aspect Always_Terminates on "Append" has been pr
 test_capacity.adb:257:09: info: data dependencies proved
 test_capacity.adb:258:34: info: during checks for container aggregates at test_capacity.adb:253
 test_capacity.adb:258:34: info: precondition proved (CVC5: 2 VC)
-test_capacity.adb:259:17: info: postcondition proved (CVC5: 4 VC; Trivial: 1 VC; Z3: 2 VC)
+test_capacity.adb:259:17: info: postcondition proved (CVC5: 5 VC; Trivial: 1 VC; Z3: 1 VC)
 test_capacity.adb:260:18: info: precondition proved (CVC5: 1 VC)
-test_capacity.adb:264:49: info: precondition proved (altergo: 1 VC)
+test_capacity.adb:264:49: info: precondition proved (CVC5: 1 VC)
 test_capacity.adb:264:62: info: precondition proved (CVC5: 1 VC)
 test_capacity.adb:265:46: info: overflow check proved (CVC5: 2 VC)
 test_capacity.adb:268:16: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate

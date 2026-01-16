@@ -109,9 +109,9 @@ tetris_flow.ads:164:13: info: implicit aspect Always_Terminates on "Turn_Directi
 tetris_flow.ads:167:77: info: range check proved (CVC5: 1 VC)
 tetris_flow.ads:169:77: info: range check proved (CVC5: 1 VC)
 tetris_flow.ads:171:13: info: implicit aspect Always_Terminates on "Move" has been proved, subprogram will terminate
-tetris_flow.ads:173:49: medium: range check might fail, cannot prove lower bound for P.X - 1 [reason for check: result of subtraction must fit in component type] [possible fix: add precondition (P.X >= PX_Coord'First + 1) to subprogram at line 171] [provers reached step limit before completing the proof]
+tetris_flow.ads:173:49: medium: range check might fail, cannot prove lower bound for P.X - 1 [reason for check: result of subtraction must fit in component type] [possible fix: add precondition (P.X >= PX_Coord'First + 1) to subprogram at line 171] [provers gave up before completing the proof]
 tetris_flow.ads:174:49: medium: range check might fail, cannot prove upper bound for P.X + 1 [reason for check: result of addition must fit in component type] [possible fix: add precondition (P.X <= PX_Coord'Last - 1) to subprogram at line 171] [provers gave up before completing the proof]
-tetris_flow.ads:175:49: medium: range check might fail, cannot prove upper bound for P.Y + 1 [reason for check: result of addition must fit in component type] [possible fix: add precondition (P.Y <= PY_Coord'Last - 1) to subprogram at line 171] [provers reached step limit before completing the proof]
+tetris_flow.ads:175:49: medium: range check might fail, cannot prove upper bound for P.Y + 1 [reason for check: result of addition must fit in component type] [possible fix: add precondition (P.Y <= PY_Coord'Last - 1) to subprogram at line 171] [provers gave up before completing the proof]
 tetris_flow.ads:176:66: info: range check proved (CVC5: 2 VC)
 tetris_flow.ads:178:37: info: initialization of "Success" proved
 tetris_flow.ads:179:06: info: data dependencies proved
