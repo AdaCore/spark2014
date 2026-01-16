@@ -1,0 +1,6 @@
+test_no_raise.adb:4:14: high: all paths in "P1" raise exceptions or do not terminate normally
+test_no_raise.adb:4:14: warning: subprogram "P1" has no effect
+test_no_raise.adb:6:04: warning: analyzing unreferenced procedure "P1" [unreferenced-procedure]
+test_no_raise.adb:8:07: medium: unexpected exception might be raised [reason for check: "P1" allows propagating no exceptions] [possible explanation: "Constraint_Error" might be unexpectedly raised] [provers gave up before completing the proof]
+test_no_raise.adb:11:14: warning: subprogram "P2" has no effect
+test_no_raise.adb:17:07: info: no contextual analysis of "P2" (exception handler)

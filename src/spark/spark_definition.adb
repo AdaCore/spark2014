@@ -13355,6 +13355,7 @@ package body SPARK_Definition is
             | Pragma_Linker_Options
             | Pragma_List
             | Pragma_Locking_Policy
+            | Pragma_No_Raise
             | Pragma_No_Return
             | Pragma_Normalize_Scalars
             | Pragma_Optimize
