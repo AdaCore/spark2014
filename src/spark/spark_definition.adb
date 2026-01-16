@@ -13344,6 +13344,7 @@ package body SPARK_Definition is
             | Pragma_Elaborate_All
             | Pragma_Elaborate_Body
             | Pragma_Export
+            | Pragma_Extended_Access
             | Pragma_Import
             | Pragma_Independent
             | Pragma_Independent_Components

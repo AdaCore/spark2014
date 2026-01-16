@@ -1,0 +1,5 @@
+test_bad_extended_access.adb:7:13: error: launch "gnatprove --explain=E0010" for more information
+test_bad_extended_access.adb:7:13: error: object was moved at line 12 [E0010]
+test_bad_extended_access.adb:7:13: error: return from "Get" with moved value for "X"
+test_bad_extended_access.adb:7:13: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
+gnatprove: error during flow analysis and proof
