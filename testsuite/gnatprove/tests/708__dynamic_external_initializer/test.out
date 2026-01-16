@@ -1,0 +1,8 @@
+foo.adb:5:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
+foo.adb:7:04: info: range check proved (CVC5: 2 VC)
+foo.adb:7:39: info: length check proved (CVC5: 3 VC)
+foo.adb:7:39: info: range check proved (CVC5: 2 VC)
+foo.adb:7:39: warning: value of string literal is not handled precisely [imprecise-string-literal]
+foo.adb:8:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+foo.adb:10:19: info: assertion proved (CVC5: 1 VC)
+foo.adb:11:19: info: assertion proved (CVC5: 1 VC)

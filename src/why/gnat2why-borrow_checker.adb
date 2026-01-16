@@ -2884,6 +2884,7 @@ package body Gnat2Why.Borrow_Checker is
             Object_Scope.Pop_Scope;
 
          when N_Character_Literal
+            | N_External_Initializer
             | N_Numeric_Or_String_Literal
             | N_Operator_Symbol
             | N_Raise_Expression
@@ -2928,8 +2929,7 @@ package body Gnat2Why.Borrow_Checker is
             | N_Extension_Aggregate
             | N_Function_Call
             | N_Identifier
-            | N_Null
-            | N_External_Initializer                        =>
+            | N_Null                                        =>
             raise Program_Error;
 
          --  The following nodes are never generated in GNATprove mode

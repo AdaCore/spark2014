@@ -153,6 +153,8 @@ package SPARK_Atree is
      SN.N_Expression_With_Actions;
    N_Extended_Return_Statement       : Node_Kind renames
      SN.N_Extended_Return_Statement;
+   N_External_Initializer            : Node_Kind renames
+     SN.N_External_Initializer;
    N_Full_Type_Declaration           : Node_Kind renames
      SN.N_Full_Type_Declaration;
    N_Expanded_Name                   : Node_Kind renames SN.N_Expanded_Name;

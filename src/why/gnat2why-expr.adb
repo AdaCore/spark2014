@@ -1096,10 +1096,12 @@ package body Gnat2Why.Expr is
       return W_Expr_Id
    with
      Pre =>
-       Nkind (N) = N_String_Literal
+       Nkind (N) in N_String_Literal | N_External_Initializer
        or else
          (Nkind (N) = N_Unchecked_Type_Conversion
-          and then Nkind (Expression (N)) = N_String_Literal);
+          and then
+            Nkind (Expression (N))
+            in N_String_Literal | N_External_Initializer);
    --  Transform a string literal. It uses an uninterpreted logic function with
    --  no parameters that returns a string value corresponding to the string
    --  literal.
@@ -23720,7 +23722,7 @@ package body Gnat2Why.Expr is
 
       else
          case Nkind (Expr) is
-            when N_Aggregate                            =>
+            when N_Aggregate                               =>
                if Is_Container_Aggregate (Expr) then
                   T := Transform_Container_Aggregate (Expr, Params, Domain);
 
@@ -23798,7 +23800,7 @@ package body Gnat2Why.Expr is
                          Expr_Has_Relaxed_Init (Expr, No_Eval => False));
                end if;
 
-            when N_Extension_Aggregate                  =>
+            when N_Extension_Aggregate                     =>
                declare
                   Relaxed_Init : constant Boolean :=
                     Expr_Has_Relaxed_Init (Expr, No_Eval => False);
@@ -23876,7 +23878,7 @@ package body Gnat2Why.Expr is
                       (Domain => Domain, Tmp => Tmp, Context => T);
                end;
 
-            when N_Slice                                =>
+            when N_Slice                                   =>
 
                --  If Expr is potentially_Invalid, emit a validity check on the
                --  access so it is as precise as possible.
@@ -23932,7 +23934,7 @@ package body Gnat2Why.Expr is
                        Domain);
                end if;
 
-            when N_Real_Literal                         =>
+            when N_Real_Literal                            =>
 
                --  Literals of fixed-point type are directly translated into
                --  the integer that represents them in the corresponding
@@ -23972,7 +23974,7 @@ package body Gnat2Why.Expr is
                           else raise Program_Error));
                end if;
 
-            when N_Character_Literal                    =>
+            when N_Character_Literal                       =>
                T :=
                  New_Integer_Constant
                    (Ada_Node => Expr, Value => Char_Literal_Value (Expr));
@@ -23985,10 +23987,10 @@ package body Gnat2Why.Expr is
             --  * global mutable variables are references
             --  * loop parameters are always mutable, and of type int
 
-            when N_String_Literal                       =>
+            when N_String_Literal | N_External_Initializer =>
                T := Transform_String_Literal (Expr, Domain, Params);
 
-            when N_Identifier | N_Expanded_Name         =>
+            when N_Identifier | N_Expanded_Name            =>
                T :=
                  Transform_Identifier
                    (Local_Params,
@@ -23998,13 +24000,13 @@ package body Gnat2Why.Expr is
                     No_Init_Check     => No_Init_Check,
                     No_Validity_Check => No_Validity_Check);
 
-            when N_Op_Compare                           =>
+            when N_Op_Compare                              =>
 
                T :=
                  Transform_Comparison
                    (Expr => Expr, Domain => Domain, Params => Local_Params);
 
-            when N_Op_Minus                             =>
+            when N_Op_Minus                                =>
                --  unary minus
                declare
                   Right : constant N_Subexpr_Id := Right_Opnd (Expr);
@@ -24101,7 +24103,7 @@ package body Gnat2Why.Expr is
                   end if;
                end;
 
-            when N_Op_Plus                              =>
+            when N_Op_Plus                                 =>
                --  unary plus
                declare
                   Right : constant N_Subexpr_Id := Right_Opnd (Expr);
@@ -24111,7 +24113,7 @@ package body Gnat2Why.Expr is
                       (Right, Base_Why_Type (Right), Domain, Local_Params);
                end;
 
-            when N_Op_Abs                               =>
+            when N_Op_Abs                                  =>
                declare
                   Right : constant N_Subexpr_Id := Right_Opnd (Expr);
                   Typ   : constant W_Type_Id := Base_Why_Type (Right);
@@ -24128,7 +24130,7 @@ package body Gnat2Why.Expr is
                        Typ      => Typ);
                end;
 
-            when N_Op_Add | N_Op_Subtract               =>
+            when N_Op_Add | N_Op_Subtract                  =>
                declare
                   Left       : constant N_Subexpr_Id := Left_Opnd (Expr);
                   Right      : constant N_Subexpr_Id := Right_Opnd (Expr);
@@ -24151,7 +24153,7 @@ package body Gnat2Why.Expr is
                        Ada_Node    => Expr);
                end;
 
-            when N_Op_Multiply | N_Op_Divide            =>
+            when N_Op_Multiply | N_Op_Divide               =>
                declare
                   Left           : constant N_Subexpr_Id := Left_Opnd (Expr);
                   Right          : constant N_Subexpr_Id := Right_Opnd (Expr);
@@ -24204,7 +24206,7 @@ package body Gnat2Why.Expr is
                        Ada_Node    => Expr);
                end;
 
-            when N_Op_Rem | N_Op_Mod                    =>
+            when N_Op_Rem | N_Op_Mod                       =>
                declare
                   Left  : constant N_Subexpr_Id := Left_Opnd (Expr);
                   Right : constant N_Subexpr_Id := Right_Opnd (Expr);
@@ -24241,7 +24243,7 @@ package body Gnat2Why.Expr is
                   end if;
                end;
 
-            when N_Op_Expon                             =>
+            when N_Op_Expon                                =>
 
                --  Optimization: try to inline the exponentiation when
                --  possible. This optimization is primarly intended for
@@ -24512,7 +24514,7 @@ package body Gnat2Why.Expr is
                   end if;
                end N_Op_Expon_Case;
 
-            when N_Op_Not                               =>
+            when N_Op_Not                                  =>
                if Has_Array_Type (Etype (Right_Opnd (Expr))) then
                   declare
                      Subdomain : constant EW_Domain :=
@@ -24581,7 +24583,7 @@ package body Gnat2Why.Expr is
                   end;
                end if;
 
-            when N_Op_And | N_Op_Or | N_Op_Xor          =>
+            when N_Op_And | N_Op_Or | N_Op_Xor             =>
                if Has_Array_Type (Etype (Left_Opnd (Expr))) then
                   declare
                      Subdomain : constant EW_Domain :=
@@ -24643,7 +24645,7 @@ package body Gnat2Why.Expr is
                   end;
                end if;
 
-            when N_Short_Circuit                        =>
+            when N_Short_Circuit                           =>
                Short_Circuit : declare
 
                   function New_Short_Circuit_Expr
@@ -24725,7 +24727,7 @@ package body Gnat2Why.Expr is
                   Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
                end Short_Circuit;
 
-            when N_Op_Concat                            =>
+            when N_Op_Concat                               =>
                T :=
                  Transform_Concatenation
                    (Left               =>
@@ -24740,15 +24742,15 @@ package body Gnat2Why.Expr is
                     Domain             => Domain,
                     Ada_Node           => Expr);
 
-            when N_Membership_Test                      =>
+            when N_Membership_Test                         =>
                T :=
                  Transform_Membership_Expression (Local_Params, Domain, Expr);
 
-            when N_Quantified_Expression                =>
+            when N_Quantified_Expression                   =>
                T :=
                  Transform_Quantified_Expression (Expr, Domain, Local_Params);
 
-            when N_If_Expression                        =>
+            when N_If_Expression                           =>
                declare
                   Cond        : constant N_Subexpr_Id :=
                     First (Expressions (Expr));
@@ -24829,7 +24831,7 @@ package body Gnat2Why.Expr is
                        Typ       => Get_Type (Then_Expr));
                end;
 
-            when N_Type_Conversion                      =>
+            when N_Type_Conversion                         =>
                --  For array conversions, if target and source types have
                --  different component type, we may need to generate an
                --  appropriate conversion theory.
@@ -24892,7 +24894,7 @@ package body Gnat2Why.Expr is
                   T := +Insert_Invariant_Check (Expr, Expr_Type, +T);
                end if;
 
-            when N_Qualified_Expression                 =>
+            when N_Qualified_Expression                    =>
 
                --  Tansform the expression with the subtype mark as the
                --  expected type so that checks are introduced if necessary.
@@ -24962,7 +24964,7 @@ package body Gnat2Why.Expr is
                        To       => Type_Of_Node (Expr));
                end;
 
-            when N_Unchecked_Type_Conversion            =>
+            when N_Unchecked_Type_Conversion               =>
                pragma Assert (not Comes_From_Source (Expr));
 
                --  For string literals with a dynamic low bound, the frontend
@@ -24973,7 +24975,9 @@ package body Gnat2Why.Expr is
                --  such subtypes by using the target type of the unchecked
                --  conversion instead.
 
-               if Nkind (Original_Node (Expr)) = N_String_Literal then
+               if Nkind (Original_Node (Expr))
+                  in N_String_Literal | N_External_Initializer
+               then
                   T := Transform_String_Literal (Expr, Domain, Params);
 
                --  Other compiler-generated unchecked type conversions are
@@ -24989,7 +24993,7 @@ package body Gnat2Why.Expr is
                        No_Init_Check);
                end if;
 
-            when N_Function_Call                        =>
+            when N_Function_Call                           =>
                declare
                   Subp : constant Entity_Id :=
                     Get_Called_Entity_For_Proof (Expr);
@@ -25076,7 +25080,7 @@ package body Gnat2Why.Expr is
 
             when N_Indexed_Component
                | N_Selected_Component
-               | N_Explicit_Dereference                 =>
+               | N_Explicit_Dereference                    =>
 
                --  If Expr is potentially_Invalid, emit a validity check on the
                --  access so it is as precise as possible.
@@ -25138,10 +25142,10 @@ package body Gnat2Why.Expr is
             --  the lhs object. However, the lhs should be updated and the
             --  field is_null_pointer in the why representation is set to True
 
-            when N_Null                                 =>
+            when N_Null                                    =>
                T := +E_Symb (Etype (Expr), WNE_Null_Pointer);
 
-            when N_Attribute_Reference                  =>
+            when N_Attribute_Reference                     =>
                T :=
                  Transform_Attr
                    (Expr,
@@ -25150,7 +25154,7 @@ package body Gnat2Why.Expr is
                     Expected_Type,
                     No_Validity_Check => No_Validity_Check);
 
-            when N_Case_Expression                      =>
+            when N_Case_Expression                         =>
                declare
                   function Transform_Branch
                     (N      : Node_Id;
@@ -25201,7 +25205,7 @@ package body Gnat2Why.Expr is
             --  N_Expression_With_Actions is only generated for declare
             --  expressions in GNATprove mode.
 
-            when N_Expression_With_Actions              =>
+            when N_Expression_With_Actions                 =>
                T :=
                  Transform_Expr_With_Actions
                    (Expr          => Expression (Expr),
@@ -25210,7 +25214,7 @@ package body Gnat2Why.Expr is
                     Params        => Params,
                     Expected_Type => Expected_Type);
 
-            when N_Allocator                            =>
+            when N_Allocator                               =>
 
                --  For the evaluation of an initialized allocator, the
                --  evaluation of the qualified_expression is performed first.
@@ -25459,7 +25463,7 @@ package body Gnat2Why.Expr is
                   T := Call;
                end;
 
-            when N_Raise_Expression | N_Raise_xxx_Error =>
+            when N_Raise_Expression | N_Raise_xxx_Error    =>
                --  No condition should be present in SPARK code. Such code
                --  should be rejected after marking and not reach here.
 
@@ -25487,7 +25491,7 @@ package body Gnat2Why.Expr is
                   end if;
                end if;
 
-            when N_Delta_Aggregate                      =>
+            when N_Delta_Aggregate                         =>
                T :=
                  Transform_Delta_Aggregate
                    (Ada_Node => Expr,
@@ -25496,11 +25500,11 @@ package body Gnat2Why.Expr is
                     Domain   => Domain,
                     Params   => Params);
 
-            when N_Target_Name                          =>
+            when N_Target_Name                             =>
                pragma Assert (Target_Name /= Why_Empty);
                T := +Target_Name;
 
-            when others                                 =>
+            when others                                    =>
                Ada.Text_IO.Put_Line
                  ("[Transform_Expr] kind =" & Node_Kind'Image (Nkind (Expr)));
                raise Not_Implemented;
@@ -30261,17 +30265,17 @@ package body Gnat2Why.Expr is
      (N : Node_Id; Domain : EW_Domain; Params : Transformation_Params)
       return W_Expr_Id
    is
-      Is_Static : constant Boolean := Nkind (N) = N_String_Literal;
-      Expr      : constant N_String_Literal_Id :=
+      Is_Static : constant Boolean := Nkind (N) /= N_Unchecked_Type_Conversion;
+      Expr      : constant Node_Id :=
         (if Is_Static then N else Expression (N));
       Ty        : constant Entity_Id := Type_Of_Node (N);
       pragma Assert (Is_Constrained (Ty));
       pragma Assert (Is_Static = Is_Static_Array_Type (Ty));
 
-      Low       : constant Node_Id :=
+      Low      : constant Node_Id :=
         (if Is_Static then String_Literal_Low_Bound (Ty) else Empty);
-      Why_Type  : constant W_Type_Id := New_Abstract_Base_Type (Ty);
-      Args      : constant W_Expr_Array :=
+      Why_Type : constant W_Type_Id := New_Abstract_Base_Type (Ty);
+      Args     : constant W_Expr_Array :=
         (1 =>
            (if Is_Static
             then +Void
@@ -30285,11 +30289,11 @@ package body Gnat2Why.Expr is
       --  If the low bound is not static, give it as a parameter. Otherwise,
       --  use a function with a unit parameter instead of a constant so that
       --  the axiom is only instantiated when the literal is used.
-      Str_Value : constant String_Id := Strval (Expr);
-      Length    : constant Nat := String_Length (Str_Value);
-      Idx       : constant Entity_Id := First_Index (Retysp (Etype (Ty)));
-      Idx_Ty    : constant Entity_Id := Retysp (Etype (Idx));
-      B_Ty      : constant W_Type_Id := Base_Why_Type_No_Bool (Idx_Ty);
+      Length   : constant Nat :=
+        UI_To_Int (String_Literal_Length (Etype (Expr)));
+      Idx      : constant Entity_Id := First_Index (Retysp (Etype (Ty)));
+      Idx_Ty   : constant Entity_Id := Retysp (Etype (Idx));
+      B_Ty     : constant W_Type_Id := Base_Why_Type_No_Bool (Idx_Ty);
 
       M  : W_Module_Id := E_Module (Expr);
       Id : W_Identifier_Id;
@@ -30351,205 +30355,215 @@ package body Gnat2Why.Expr is
             --  when the literal contains only plain Character as expected by
             --  String_To_Name_Buffer.
 
-            if not (Has_Wide_Character (Expr)
-                    or else Has_Wide_Wide_Character (Expr))
-            then
-               declare
-                  Call       : constant W_Term_Id :=
-                    +New_Call
-                       (Domain  => EW_Term,
-                        Name    => Id,
-                        Binders => Binders,
-                        Typ     => Why_Type);
-                  Axiom_Name : constant String := Name & "__" & Def_Axiom;
-                  Expr_Ar    : W_Pred_Array (1 .. Natural (Length));
-                  Def        : W_Pred_Id;
+            declare
+               Call       : constant W_Term_Id :=
+                 +New_Call
+                    (Domain  => EW_Term,
+                     Name    => Id,
+                     Binders => Binders,
+                     Typ     => Why_Type);
+               Axiom_Name : constant String := Name & "__" & Def_Axiom;
+               Def        : W_Pred_Id;
 
-               begin
-                  --  For each index in the string, add an assumption
-                  --  specifying the value stored in Id at this index.
+            begin
+               if Nkind (Expr) = N_String_Literal
+                 and then
+                   not (Has_Wide_Character (Expr)
+                        or else Has_Wide_Wide_Character (Expr))
+               then
+                  declare
+                     Str_Value : constant String_Id := Strval (Expr);
+                     pragma Assert (String_Length (Str_Value) = Length);
+                     Expr_Ar   : W_Pred_Array (1 .. Natural (Length));
 
-                  for I in 1 .. Length loop
-                     declare
-                        Offset  : constant Uint := UI_From_Int (I - 1);
-                        Idx_Val : constant W_Term_Id :=
-                          (if Is_Static
-                           then
-                             New_Discrete_Constant
-                               (Value => Expr_Value (Low) + Offset,
-                                Typ   => B_Ty)
-                           else
-                             +New_Discrete_Add
-                                (Domain => EW_Term,
-                                 Left   => +Low_Id,
-                                 Right  =>
-                                   New_Discrete_Constant
-                                     (Value => Offset, Typ => B_Ty)));
-                        Arr_Val : constant W_Term_Id :=
-                          New_Array_Access
-                            (Ar => Call, Index => (1 => +Idx_Val));
-                        Char    : constant W_Term_Id :=
-                          New_Integer_Constant
-                            (Value =>
-                               UI_From_CC (Get_String_Char (Str_Value, I)));
-                     begin
-                        Expr_Ar (Positive (I)) :=
-                          New_Comparison
-                            (Symbol => Why_Eq,
-                             Left   =>
-                               Insert_Simple_Conversion
-                                 (Expr => Arr_Val, To => EW_Int_Type),
-                             Right  => Char);
-                     end;
-                  end loop;
+                  begin
+                     --  For each index in the string, add an assumption
+                     --  specifying the value stored in Id at this index.
 
-                  if Length > 0 then
+                     for I in 1 .. Length loop
+                        declare
+                           Offset  : constant Uint := UI_From_Int (I - 1);
+                           Idx_Val : constant W_Term_Id :=
+                             (if Is_Static
+                              then
+                                New_Discrete_Constant
+                                  (Value => Expr_Value (Low) + Offset,
+                                   Typ   => B_Ty)
+                              else
+                                +New_Discrete_Add
+                                   (Domain => EW_Term,
+                                    Left   => +Low_Id,
+                                    Right  =>
+                                      New_Discrete_Constant
+                                        (Value => Offset, Typ => B_Ty)));
+                           Arr_Val : constant W_Term_Id :=
+                             New_Array_Access
+                               (Ar => Call, Index => (1 => +Idx_Val));
+                           Char    : constant W_Term_Id :=
+                             New_Integer_Constant
+                               (Value =>
+                                  UI_From_CC (Get_String_Char (Str_Value, I)));
+                        begin
+                           Expr_Ar (Positive (I)) :=
+                             New_Comparison
+                               (Symbol => Why_Eq,
+                                Left   =>
+                                  Insert_Simple_Conversion
+                                    (Expr => Arr_Val, To => EW_Int_Type),
+                                Right  => Char);
+                        end;
+                     end loop;
+
                      Def := New_And_Pred (Expr_Ar);
-                  else
-                     Def := True_Pred;
-                  end if;
+                  end;
 
-                  --  Add the value of the bounds for string literals with a
-                  --  non-static low bound.
+               --  The aggregate is handled imprecisely, emit a warning
 
-                  if not Is_Static then
-                     declare
-                        High_Term    : constant W_Term_Id :=
-                          (if Length = 0
-                           then
-                             +New_Discrete_Substract
-                                (Domain => EW_Term,
-                                 Left   => +Low_Id,
-                                 Right  =>
-                                   New_Discrete_Constant
-                                     (Value => Uint_1, Typ => B_Ty),
-                                 Typ    => B_Ty)
-                           else
-                             +New_Discrete_Add
-                                (Domain => EW_Term,
-                                 Left   => +Low_Id,
-                                 Right  =>
-                                   New_Discrete_Constant
-                                     (Value => UI_From_Int (Length - 1),
-                                      Typ   => B_Ty),
-                                 Typ    => B_Ty));
-                        Bounds_Value : W_Pred_Id :=
-                          New_And_Pred
-                            (Left  =>
-                               New_Comparison
-                                 (Symbol => Why_Eq,
-                                  Left   =>
-                                    Get_Array_Attr
-                                      (Expr => Call,
-                                       Attr => Attribute_First,
-                                       Dim  => 1),
-                                  Right  => +Low_Id),
-                             Right =>
-                               New_Comparison
-                                 (Symbol => Why_Eq,
-                                  Left   =>
-                                    +Get_Array_Attr
-                                       (Expr => Call,
-                                        Attr => Attribute_Last,
-                                        Dim  => 1),
-                                  Right  => High_Term));
+               else
+                  Def := True_Pred;
 
-                     begin
-                        --  If the computation of the high bound wrap-arounds,
-                        --  do not assume the bounds value to avoid generating
-                        --  an incorrect axiom.
+                  Warning_Msg_N
+                    (Warn_Imprecise_String_Literal,
+                     Expr,
+                     Create_N (Warn_Imprecise_String_Literal));
+               end if;
 
-                        if Is_Bitvector_Type_In_Why (Idx_Ty) then
-                           if Length = 0 then
-                              Bounds_Value :=
-                                New_Conditional
-                                  (Condition =>
-                                     New_Comparison
-                                       (Symbol => MF_BVs (B_Ty).Ugt,
-                                        Left   => +Low_Id,
-                                        Right  => High_Term),
-                                   Then_Part => Bounds_Value);
-                           elsif Length >= 1 then
-                              Bounds_Value :=
-                                New_Conditional
-                                  (Condition =>
-                                     New_Comparison
-                                       (Symbol => MF_BVs (B_Ty).Ule,
-                                        Left   => +Low_Id,
-                                        Right  => High_Term),
-                                   Then_Part => Bounds_Value);
-                           end if;
+               --  Add the value of the bounds for string literals with a
+               --  non-static low bound.
+
+               if not Is_Static then
+                  declare
+                     High_Term    : constant W_Term_Id :=
+                       (if Length = 0
+                        then
+                          +New_Discrete_Substract
+                             (Domain => EW_Term,
+                              Left   => +Low_Id,
+                              Right  =>
+                                New_Discrete_Constant
+                                  (Value => Uint_1, Typ => B_Ty),
+                              Typ    => B_Ty)
+                        else
+                          +New_Discrete_Add
+                             (Domain => EW_Term,
+                              Left   => +Low_Id,
+                              Right  =>
+                                New_Discrete_Constant
+                                  (Value => UI_From_Int (Length - 1),
+                                   Typ   => B_Ty),
+                              Typ    => B_Ty));
+                     Bounds_Value : W_Pred_Id :=
+                       New_And_Pred
+                         (Left  =>
+                            New_Comparison
+                              (Symbol => Why_Eq,
+                               Left   =>
+                                 Get_Array_Attr
+                                   (Expr => Call,
+                                    Attr => Attribute_First,
+                                    Dim  => 1),
+                               Right  => +Low_Id),
+                          Right =>
+                            New_Comparison
+                              (Symbol => Why_Eq,
+                               Left   =>
+                                 +Get_Array_Attr
+                                    (Expr => Call,
+                                     Attr => Attribute_Last,
+                                     Dim  => 1),
+                               Right  => High_Term));
+
+                  begin
+                     --  If the computation of the high bound wrap-arounds,
+                     --  do not assume the bounds value to avoid generating
+                     --  an incorrect axiom.
+
+                     if Is_Bitvector_Type_In_Why (Idx_Ty) then
+                        if Length = 0 then
+                           Bounds_Value :=
+                             New_Conditional
+                               (Condition =>
+                                  New_Comparison
+                                    (Symbol => MF_BVs (B_Ty).Ugt,
+                                     Left   => +Low_Id,
+                                     Right  => High_Term),
+                                Then_Part => Bounds_Value);
+                        elsif Length >= 1 then
+                           Bounds_Value :=
+                             New_Conditional
+                               (Condition =>
+                                  New_Comparison
+                                    (Symbol => MF_BVs (B_Ty).Ule,
+                                     Left   => +Low_Id,
+                                     Right  => High_Term),
+                                Then_Part => Bounds_Value);
                         end if;
+                     end if;
 
-                        --  The low bound is taken as parameter, we should add
-                        --  a guard to the axiom for the dynamic property of
-                        --  the array to avoid generating an unsound axiom if
-                        --  the bounds are not in their type.
+                     --  The low bound is taken as parameter, we should add
+                     --  a guard to the axiom for the dynamic property of
+                     --  the array to avoid generating an unsound axiom if
+                     --  the bounds are not in their type.
 
-                        Bounds_Value :=
-                          New_Conditional
-                            (Condition =>
-                               +New_Dynamic_Property
-                                  (Domain => EW_Pred,
-                                   Ty     => Base_Type (Ty),
-                                   Args   => (+Low_Id, +High_Term),
-                                   Params => Params),
-                             Then_Part => Bounds_Value,
-                             Typ       => EW_Bool_Type);
+                     Bounds_Value :=
+                       New_Conditional
+                         (Condition =>
+                            +New_Dynamic_Property
+                               (Domain => EW_Pred,
+                                Ty     => Base_Type (Ty),
+                                Args   => (+Low_Id, +High_Term),
+                                Params => Params),
+                          Then_Part => Bounds_Value,
+                          Typ       => EW_Bool_Type);
 
-                        Def :=
-                          New_And_Pred (Left => Def, Right => Bounds_Value);
-                     end;
-                  end if;
+                     Def := New_And_Pred (Left => Def, Right => Bounds_Value);
+                  end;
+               end if;
 
-                  --  Emit an axiom containing all the assumptions
+               --  Emit an axiom containing all the assumptions
 
-                  Emit
-                    (Th,
-                     New_Axiom
-                       (Ada_Node => N,
-                        Name     => NID (Axiom_Name),
-                        Def      =>
-                          New_Universal_Quantif
-                            (Binders  => Binders,
-                             Triggers =>
-                               New_Triggers
-                                 (Triggers =>
-                                    (1 =>
-                                       New_Trigger (Terms => (1 => +Call)))),
-                             Pred     => Def),
-                        Dep      =>
-                          New_Axiom_Dep (Name => Id, Kind => EW_Axdep_Func)));
-
-                  if Is_Static then
-                     Def :=
-                       New_Well_Formed_Pred
-                         (New_Call
-                            (Name => Id,
-                             Args => (1 => +Void),
-                             Typ  => Why_Type));
-
-                  else
-                     Def :=
+               Emit
+                 (Th,
+                  New_Axiom
+                    (Ada_Node => N,
+                     Name     => NID (Axiom_Name),
+                     Def      =>
                        New_Universal_Quantif
                          (Binders  => Binders,
                           Triggers =>
                             New_Triggers
                               (Triggers =>
                                  (1 => New_Trigger (Terms => (1 => +Call)))),
-                          Pred     => New_Well_Formed_Pred (Call));
-                  end if;
+                          Pred     => Def),
+                     Dep      =>
+                       New_Axiom_Dep (Name => Id, Kind => EW_Axdep_Func)));
 
-                  Emit
-                    (Th,
-                     New_Axiom
-                       (Ada_Node => Expr,
-                        Name     => NID (Axiom_Name & "__well_formed"),
-                        Def      => Def,
-                        Dep      =>
-                          New_Axiom_Dep (Name => Id, Kind => EW_Axdep_Func)));
-               end;
-            end if;
+               if Is_Static then
+                  Def :=
+                    New_Well_Formed_Pred
+                      (New_Call
+                         (Name => Id, Args => (1 => +Void), Typ => Why_Type));
+
+               else
+                  Def :=
+                    New_Universal_Quantif
+                      (Binders  => Binders,
+                       Triggers =>
+                         New_Triggers
+                           (Triggers =>
+                              (1 => New_Trigger (Terms => (1 => +Call)))),
+                       Pred     => New_Well_Formed_Pred (Call));
+               end if;
+
+               Emit
+                 (Th,
+                  New_Axiom
+                    (Ada_Node => Expr,
+                     Name     => NID (Axiom_Name & "__well_formed"),
+                     Def      => Def,
+                     Dep      =>
+                       New_Axiom_Dep (Name => Id, Kind => EW_Axdep_Func)));
+            end;
 
             Close_Theory
               (Th, Kind => Definition_Theory, Defined_Entity => Expr);

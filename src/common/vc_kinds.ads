@@ -457,6 +457,7 @@ package VC_Kinds is
       Warn_Imprecise_Address,
       Warn_Imprecise_Align,
       Warn_Imprecise_Call,
+      Warn_Imprecise_String_Literal,
       Warn_Component_Size,
       Warn_Record_Component_Attr,
       Warn_Imprecise_Size,
@@ -793,6 +794,8 @@ package VC_Kinds is
            "alignment of object is not precisely known",
          when Warn_Imprecise_Call                  =>
            "call to & is not handled precisely",
+         when Warn_Imprecise_String_Literal        =>
+           "value of string literal is not handled precisely",
          when Warn_Component_Size                  =>
            "the value of attribute Component_Size is handled in an imprecise "
            & "way",
