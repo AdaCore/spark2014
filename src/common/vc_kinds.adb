@@ -978,6 +978,8 @@ package body VC_Kinds is
            & "of an ownership type",
          when Lim_Derived_Interface                                       =>
            "interface derived from other interfaces",
+         when Lim_Destructor                                              =>
+           "record type with a destructors",
          when Lim_Entry_Family                                            =>
            "entry families",
          when Lim_Exceptional_Cases_Dispatch                              =>
