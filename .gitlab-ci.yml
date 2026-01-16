@@ -64,8 +64,15 @@ stages:
     - tar zxf /tmp/$PACKAGE_BASE_NAME -C /
     - anod-copy-components $PACKAGE_EXPORT $ANOD_DEFAULT_SANDBOX_DIR
 
+.disk_monitor:
+  before_script:
+    - df -hT --exclude-type=tmpfs --exclude-type=devtmpfs
+  after_script:
+    - df -hT --exclude-type=tmpfs --exclude-type=devtmpfs
+
 
 .spark2014_test:
+  extends: .disk_monitor
   services:
      - image:pe-base
      - cpu:16
@@ -142,6 +149,7 @@ stages:
 #########
 
 build:
+  extends: .disk_monitor
   services:
      - image:pe-base
      - cpu:8
@@ -219,6 +227,7 @@ spark2014_nocache:
 ###############################
 
 .other_test:
+  extends: .disk_monitor
   services:
      - image:pe-base
      - cpu:16
@@ -262,6 +271,7 @@ sparklib:
 ################
 
 build_docs:
+  extends: .disk_monitor
   stage: build
   interruptible: true
   services:
