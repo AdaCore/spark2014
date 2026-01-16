@@ -10682,6 +10682,13 @@ package body SPARK_Definition is
             end;
          end if;
 
+         --  Reject types with destructors for now, as it implies implicit
+         --  dispatching calls.
+
+         if Present (Destructor (E)) then
+            Mark_Unsupported (Lim_Destructor, E);
+         end if;
+
          --  The declaration of an effectively volatile stand-alone object or
          --  type shall be a library-level declaration (SPARK RM 7.1.3(3)).
          if Is_Effectively_Volatile (E)
