@@ -1615,9 +1615,18 @@ package body Flow_Error_Messages is
          begin
             if Present (Par) and then Is_Potentially_Unevaluated (Par) then
                if Attribute_Name (Par) = Name_Old then
-                  return
-                    "enclosing 'Old attribute reference is "
-                    & "unconditionally evaluated on subprogram entry";
+                  declare
+                     use Old_Attr_Util.Conditional_Evaluation;
+                     Conditional : constant String :=
+                       (if Eligible_For_Conditional_Evaluation (Par)
+                        then "conditionally"
+                        else "unconditionally");
+                  begin
+                     return
+                       "enclosing 'Old attribute reference is "
+                       & Conditional
+                       & " evaluated on subprogram entry";
+                  end;
                else
                   return
                     "enclosing 'Loop_Entry attribute reference is "
@@ -3058,7 +3067,9 @@ package body Flow_Error_Messages is
             --  of T to decide if the constraint can be expressed as a
             --  precondition.
 
-            if Enclosing_Subp in Runnable_Kind_Id then
+            if Present (Enclosing_Subp)
+              and then Enclosing_Subp in Runnable_Kind_Id
+            then
 
                --  Retrieve the subprogram inputs
 

@@ -3865,11 +3865,12 @@ package body Gnat2Why.Subprograms is
 
          Dispatch_Post_RTE :=
            +Bind_From_Mapping_In_Expr
-              (Params => Params,
-               Map    => Map_For_Old,
-               Expr   => +Dispatch_Post_RTE,
-               Domain => EW_Prog,
-               Subset => Old_Parts);
+              (Params       => Params,
+               Map          => Map_For_Old,
+               Expr         => +Dispatch_Post_RTE,
+               Domain       => EW_Prog,
+               Subset       => Old_Parts,
+               Old_Prefixes => True);
       end if;
 
       Append (Why_Body, Dispatch_Post_RTE);
@@ -5194,11 +5195,12 @@ package body Gnat2Why.Subprograms is
 
          R :=
            +Bind_From_Mapping_In_Expr
-              (Params => Body_Params,
-               Map    => Map_For_Old,
-               Expr   => +P,
-               Domain => EW_Prog,
-               Subset => Post_Old);
+              (Params       => Body_Params,
+               Map          => Map_For_Old,
+               Expr         => +P,
+               Domain       => EW_Prog,
+               Subset       => Post_Old,
+               Old_Prefixes => True);
 
          --  Add mapping for Old variables coming from the contract case if
          --  any. Checks are generated separately as they should only be done

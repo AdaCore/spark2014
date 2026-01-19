@@ -866,13 +866,17 @@ package Gnat2Why.Expr is
    --  protected subprogram.
 
    function Bind_From_Mapping_In_Prog
-     (Params : Transformation_Params;
-      Map    : Ada_To_Why_Ident.Map;
-      Expr   : W_Prog_Id) return W_Prog_Id;
+     (Params       : Transformation_Params;
+      Map          : Ada_To_Why_Ident.Map;
+      Expr         : W_Prog_Id;
+      Old_Prefixes : Boolean := False) return W_Prog_Id;
    --  Bind names from Map to their corresponding values, obtained by
    --  transforming the expression node associated to the name in Map, in Expr.
    --  This is used to bind names for 'Old and 'Loop_Entry attribute reference
    --  to their value.
+   --  If Old_Prefix is set to True, the expression nodes are assumed to be
+   --  prefix of 'Old attributes. The definition of the bindings are guarded
+   --  by the evaluation condition for conditionally evaluated 'Old attributes.
 
    function Bind_From_Mapping_In_Prog
      (Params : Transformation_Params;
@@ -882,21 +886,27 @@ package Gnat2Why.Expr is
    --  attribute reference.
 
    function Bind_From_Mapping_In_Expr
-     (Params : Transformation_Params;
-      Map    : Ada_To_Why_Ident.Map;
-      Expr   : W_Expr_Id;
-      Domain : EW_Domain;
-      Subset : Node_Sets.Set) return W_Expr_Id;
+     (Params       : Transformation_Params;
+      Map          : Ada_To_Why_Ident.Map;
+      Expr         : W_Expr_Id;
+      Domain       : EW_Domain;
+      Subset       : Node_Sets.Set;
+      Old_Prefixes : Boolean := False) return W_Expr_Id
+   with Pre => Domain = EW_Prog or else not Old_Prefixes;
    --  Same as above but only bind the nodes from Subset.
 
    function Bind_From_Mapping_In_Expr
-     (Params : Transformation_Params;
-      Expr   : W_Expr_Id;
-      N      : Node_Id;
-      Name   : W_Identifier_Id;
-      Domain : EW_Domain) return W_Expr_Id;
+     (Params    : Transformation_Params;
+      Expr      : W_Expr_Id;
+      N         : Node_Id;
+      Name      : W_Identifier_Id;
+      Domain    : EW_Domain;
+      Condition : W_Prog_Id := Why_Empty) return W_Expr_Id
+   with Pre => Domain = EW_Prog or else No (Condition);
    --  Introduce a mapping from the name Name to the Ada expression or entity N
-   --  in Expr.
+   --  in Expr. If Condition is provided, the name is defined only under the
+   --  condition being true. This is only pertinent in program domain, to guard
+   --  RTE checks.
 
 private
    use type Ada.Containers.Count_Type;
