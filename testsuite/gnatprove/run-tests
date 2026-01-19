@@ -193,9 +193,9 @@ class SPARKBasicTestDriver(DiffTestDriver):
         args = self.test_env[args_entry]
 
         args["cwd"] = self.test_env["working_dir"]
-        # The call below gets the timeout defined in test.yaml, if present,
-        # and the inherited default value otherwise.
-        args["timeout"] = self.default_process_timeout
+        # The call below gets the timeout defined in test.yaml, if present.
+        # Otherwise, the default value specified here will be used.
+        args["timeout"] = self.test_env.get("timeout", 780)
         args["logger"] = self.output
 
         if function_name not in self._function_mapping:
