@@ -1,17 +1,10 @@
 p.adb:1:18: info: data dependencies proved
+p.adb:6:27: info: range check proved (CVC5: 2 VC)
+p.adb:9:17: warning: "X" is not modified, could be IN
 p.adb:10:16: info: implicit aspect Always_Terminates on "Proxy1" has been proved, subprogram will terminate
-p.adb:13:26: error: default initialization cannot depend on variable input "X" [E0007]
-p.adb:13:26: error: launch "gnatprove --explain=E0007" for more information
-p.adb:13:26: error: use instead a constant initialized to the expression with variable input
+p.adb:19:17: warning: "X" is not modified, could be IN
 p.adb:20:16: info: implicit aspect Always_Terminates on "Proxy2" has been proved, subprogram will terminate
-p.adb:23:26: error: default initialization cannot depend on variable input "X" [E0007]
-p.adb:23:26: error: launch "gnatprove --explain=E0007" for more information
-p.adb:23:26: error: use instead a constant initialized to the expression with variable input
 q.adb:1:18: info: data dependencies proved
-q.adb:13:27: error: default initialization cannot depend on variable input "X" [E0007]
-q.adb:13:27: error: launch "gnatprove --explain=E0007" for more information
-q.adb:13:27: error: use instead a constant initialized to the expression with variable input
-q.adb:23:37: error: default initialization cannot depend on variable input "X" [E0007]
-q.adb:23:37: error: launch "gnatprove --explain=E0007" for more information
-q.adb:23:37: error: use instead a constant initialized to the expression with variable input
-gnatprove: error during flow analysis and proof
+q.adb:6:27: info: range check proved (CVC5: 2 VC)
+q.adb:9:17: warning: "X" is not modified, could be IN
+q.adb:19:17: warning: "X" is not modified, could be IN

@@ -1,7 +1,10 @@
 test.adb:7:04: warning: analyzing unreferenced procedure "P_1" [unreferenced-procedure]
-test.adb:8:31: error: launch "gnatprove --explain=E0007" for more information
-test.adb:8:31: error: subtype constraint cannot depend on variable input "S" [E0007]
-test.adb:8:31: error: use instead a constant initialized to the expression with variable input
+test.adb:7:19: warning: "S" is not modified, could be IN
+test.adb:7:19: warning: unused variable "S"
+test.adb:8:07: info: range check proved (CVC5: 2 VC)
+test.adb:8:07: warning: initialization of "C" has no effect
+test.adb:8:44: info: range check proved (CVC5: 2 VC)
 test.adb:13:04: warning: analyzing unreferenced procedure "P_2" [unreferenced-procedure]
 test.adb:13:14: warning: subprogram "P_2" has no effect
-gnatprove: error during flow analysis and proof
+test.adb:14:07: info: range check proved (CVC5: 2 VC)
+test.adb:14:42: info: range check proved (CVC5: 2 VC)

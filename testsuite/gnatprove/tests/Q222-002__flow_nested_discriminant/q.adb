@@ -10,7 +10,7 @@ procedure Q with Global => null is
 
 
       type T2 is record
-         C1 : Integer := X.D;  --  NOK
+         C1 : Integer := X.D;  --  OK
       end record;
    begin
       null;
@@ -20,7 +20,7 @@ procedure Q with Global => null is
 
 
       type T2 is record
-         C1 : Integer := X.Component.D;  --  NOK
+         C1 : Integer := X.Component.D;  --  OK
       end record;
    begin
       null;

@@ -838,6 +838,19 @@ package body Flow.Analysis.Sanity is
                      use type Ada.Containers.Count_Type;
                      --  For equality of Length
 
+                     function Is_Immutable_Discriminant
+                       (F : Flow_Id) return Boolean
+                     is (Is_Discriminant (F)
+                         and then
+                           No
+                             (Discriminant_Default_Value
+                                (F.Component.Last_Element)));
+                     --  A simple, conservative test for immutable
+                     --  discriminants. Discriminants which have default value,
+                     --  but belong to constrained object, might be wrongly
+                     --  recognized as mutable, but it will cause more code
+                     --  to be reject, which is acceptable.
+
                      function Is_Protected_Discriminant
                        (F : Flow_Id) return Boolean
                      is (Ekind (F.Component.First_Element) = E_Discriminant)
@@ -861,6 +874,8 @@ package body Flow.Analysis.Sanity is
                        Post =>
                          (if Is_Record_Discriminant'Result
                           then F.Component.Length = 1);
+                     --  Returns True for references to discriminants within
+                     --  a type declaration itself.
 
                   begin
                      --  We call Get_Variables with Expand_Internal_Objects
@@ -916,6 +931,8 @@ package body Flow.Analysis.Sanity is
                        and then No (Loop_Iterator_Parameter (Var))
                      then
                         null; --  this is an ordinary loop parameter
+                     elsif Is_Immutable_Discriminant (F) then
+                        null;
                      elsif Is_Record_Discriminant (F) then
                         null;
                      elsif Ekind (Var) = E_Protected_Type
