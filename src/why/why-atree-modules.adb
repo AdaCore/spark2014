@@ -100,8 +100,7 @@ package body Why.Atree.Modules is
    end record;
 
    function Hash (Key : Why_Symb) return Ada.Containers.Hash_Type
-   is (3
-       * Ada.Containers.Hash_Type (Key.Entity)
+   is (3 * Ada.Containers.Hash_Type (Key.Entity)
        + 5 * Ada.Containers.Hash_Type (Why_Name_Enum'Pos (Key.Symb)));
 
    package Why_Symb_Maps is new
