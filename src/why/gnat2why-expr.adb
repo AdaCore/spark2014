@@ -2711,8 +2711,7 @@ package body Gnat2Why.Expr is
       Expr   : W_Expr_Id;
       N      : Node_Id;
       Name   : W_Identifier_Id;
-      Domain : EW_Domain;
-      As_Old : Boolean := False) return W_Expr_Id
+      Domain : EW_Domain) return W_Expr_Id
    is
       Res : W_Expr_Id := Expr;
    begin
@@ -2730,11 +2729,8 @@ package body Gnat2Why.Expr is
                 Insert_Simple_Conversion
                   (Domain => Prog_Or_Term_Domain (Domain),
                    Expr   =>
-                     (if As_Old
-                      then Transform_Attribute_Old (N, Domain, Params)
-                      else
-                        Transform_Identifier
-                          (Params, N, N, Prog_Or_Term_Domain (Domain))),
+                     Transform_Identifier
+                       (Params, N, N, Prog_Or_Term_Domain (Domain)),
                    To     => Get_Typ (Name)),
               Context => Res);
 
@@ -2759,8 +2755,7 @@ package body Gnat2Why.Expr is
                Params     => Params,
                Context    => Context,
                W_Expr     => Def,
-               Valid_Flag => Valid_Flag,
-               As_Old     => As_Old);
+               Valid_Flag => Valid_Flag);
 
             Res :=
               New_Typed_Binding
@@ -2793,11 +2788,8 @@ package body Gnat2Why.Expr is
                 Insert_Simple_Conversion
                   (Domain => Prog_Or_Term_Domain (Domain),
                    Expr   =>
-                     (if As_Old
-                      then Transform_Attribute_Old (N, Domain, Params)
-                      else
-                        Transform_Expr_Or_Identifier
-                          (N, Prog_Or_Term_Domain (Domain), Params)),
+                     (Transform_Expr_Or_Identifier
+                        (N, Prog_Or_Term_Domain (Domain), Params)),
                    To     => Get_Typ (Name)),
               Context => Res);
       end if;
@@ -2810,8 +2802,7 @@ package body Gnat2Why.Expr is
       Map    : Ada_To_Why_Ident.Map;
       Expr   : W_Expr_Id;
       Domain : EW_Domain;
-      Subset : Node_Sets.Set;
-      As_Old : Boolean := False) return W_Expr_Id
+      Subset : Node_Sets.Set) return W_Expr_Id
    is
       Result : W_Expr_Id := Expr;
       Cu     : Ada_To_Why_Ident.Cursor;
@@ -2827,8 +2818,7 @@ package body Gnat2Why.Expr is
                  Expr   => Result,
                  N      => N,
                  Name   => Ada_To_Why_Ident.Element (Cu),
-                 Domain => Domain,
-                 As_Old => As_Old);
+                 Domain => Domain);
          end if;
       end loop;
 
@@ -2854,8 +2844,7 @@ package body Gnat2Why.Expr is
                Expr   => +Result,
                N      => Ada_To_Why_Ident.Key (C),
                Name   => Ada_To_Why_Ident.Element (C),
-               Domain => EW_Prog,
-               As_Old => False);
+               Domain => EW_Prog);
       end loop;
 
       return Result;
@@ -2876,8 +2865,7 @@ package body Gnat2Why.Expr is
                Expr   => +Result,
                N      => Ada_To_Why_Ident.Key (C),
                Name   => Ada_To_Why_Ident.Element (C),
-               Domain => EW_Pterm,
-               As_Old => False);
+               Domain => EW_Pterm);
       end loop;
 
       for C in Map.Regular.Iterate loop
@@ -2887,8 +2875,7 @@ package body Gnat2Why.Expr is
                Expr   => +Result,
                N      => Ada_To_Why_Ident.Key (C),
                Name   => Ada_To_Why_Ident.Element (C),
-               Domain => EW_Prog,
-               As_Old => False);
+               Domain => EW_Prog);
       end loop;
 
       return Result;
