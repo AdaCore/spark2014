@@ -753,7 +753,7 @@ package body SPARK_Util.Subprograms is
    begin
       if Present (Priority_Node) then
          case Nkind (Priority_Node) is
-            when N_Pragma                      =>
+            when N_Pragma                                               =>
                declare
                   Arg : constant Node_Id :=
                     First (Pragma_Argument_Associations (Priority_Node));
@@ -767,10 +767,10 @@ package body SPARK_Util.Subprograms is
                      else Empty);
                end;
 
-            when N_Attribute_Definition_Clause =>
+            when N_Attribute_Definition_Clause | N_Aspect_Specification =>
                return Expression (Priority_Node);
 
-            when others                        =>
+            when others                                                 =>
                raise Program_Error;
          end case;
 
