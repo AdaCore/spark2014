@@ -84,13 +84,13 @@ test_set.adb:130:07: info: precondition proved
 test_set.adb:132:07: info: precondition proved
 test_set.adb:134:07: info: precondition proved
 test_set.adb:135:22: info: assertion proved
-test_set.adb:138:22: medium: assertion might fail [provers reached step limit before completing the proof]
+test_set.adb:138:22: info: assertion proved
 test_set.adb:140:22: info: assertion proved
 test_set.adb:142:07: info: precondition proved
 test_set.adb:143:07: info: precondition proved
-test_set.adb:145:22: info: assertion proved
+test_set.adb:145:22: medium: assertion might fail [provers reached step limit before completing the proof]
 test_set.adb:146:07: info: precondition proved
-test_set.adb:147:22: medium: assertion might fail [provers reached step limit before completing the proof]
+test_set.adb:147:22: info: assertion proved
 test_set.adb:150:22: info: assertion proved
 test_set.adb:152:22: info: assertion proved
 test_set.adb:153:07: medium: assertion might fail
@@ -105,7 +105,7 @@ test_set.adb:164:12: info: precondition proved
 test_set.adb:166:07: info: precondition proved
 test_set.adb:167:07: info: precondition proved
 test_set.adb:168:07: info: precondition proved
-test_set.adb:169:22: medium: assertion might fail [provers reached step limit before completing the proof]
+test_set.adb:169:22: info: assertion proved
 test_set.adb:170:22: info: assertion proved
 test_set.adb:172:07: info: precondition proved
 test_set.adb:173:07: medium: precondition might fail [provers reached step limit before completing the proof]
