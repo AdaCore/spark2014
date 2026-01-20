@@ -424,6 +424,46 @@ package body Flow.Control_Flow_Graph is
         Goto_Jumps             => Goto_Jump_Maps.Empty_Map,
         Extended_Return        => Types.Empty);
 
+   ----------------------
+   --  Record grouping --
+   ----------------------
+
+   --  For record objects we create not just 'Initial and 'Final vertices, but
+   --  also group them into a tree. For example, the initial vertices will be
+   --  grouped like this:
+   --
+   --                  R
+   --                 / \
+   --                /   \
+   --             R.A     R.B
+   --            /   \
+   --           /     \
+   --      R.A.X       R.A.Y
+   --
+   --   and final vertices will be grouped into a mirrored tree.
+
+   type Record_Grouping is record
+      Initial : Flow_Graphs.Vertex_Id;
+      Final   : Flow_Graphs.Vertex_Id;
+   end record;
+   --  Vertices with the initial and final groups where the currently processed
+   --  record component belongs.
+
+   Null_Grouping : constant Record_Grouping :=
+     (others => Flow_Graphs.Null_Vertex);
+   --  Null vertices, for use when a new record object is being added to the
+   --  graph.
+
+   function Top_Level_Grouping
+     (G : Flow_Graphs.Graph; F : Flow_Id) return Record_Grouping
+   with Pre => Is_Entire_Variable (F) and then F.Variant = Normal_Use;
+   --  Given graph G and an entire object F, it returns top-level vertices of
+   --  the initial and final groups for this object.
+   --
+   --  Note: when used for extension of a null record it will return null
+   --  vertices, but then we will not group the initial and final vertices
+   --  of such an extension.
+
    ------------------------------------------------------------
    --  Local declarations
    ------------------------------------------------------------
@@ -490,27 +530,6 @@ package body Flow.Control_Flow_Graph is
    --  Clear vertex V, its attributes and set Is_Null_Node to True. The values
    --  of Is_Original_Program_Node and Error_Location in the attributes are
    --  kept because they are read in a routine that detects dead code.
-
-   procedure Create_Record_Tree
-     (F              : Flow_Id;
-      Leaf_Atr       : V_Attributes;
-      FA             : in out Flow_Analysis_Graphs;
-      Current_Entity : Entity_To_Vertex_Maps.Cursor)
-   with Pre => F.Kind in Direct_Mapping | Record_Field | Magic_String;
-   --  Create part of the tree structure used to represent records. In
-   --  particular, we create the subtree which is formed by the leaf F up to
-   --  the entire variable represented by F. In the art below the vertices
-   --  marked with a * are created by this procedure if F is R.A.Y. If we
-   --  come to a vertex which already exists, we stop. This means calling this
-   --  procedure once for each leaf will eventually result in the entire tree.
-   --
-   --                  R*
-   --                 / \
-   --                /   \
-   --             R.A*    R.B
-   --            /   \
-   --           /     \
-   --      R.A.X       R.A.Y*
 
    procedure Create_Initial_And_Final_Vertices
      (E : Entity_Id; FA : in out Flow_Analysis_Graphs)
@@ -1396,109 +1415,16 @@ package body Flow.Control_Flow_Graph is
    end Join;
 
    ------------------------
-   -- Create_Record_Tree --
+   -- Top_Level_Grouping --
    ------------------------
 
-   procedure Create_Record_Tree
-     (F              : Flow_Id;
-      Leaf_Atr       : V_Attributes;
-      FA             : in out Flow_Analysis_Graphs;
-      Current_Entity : Entity_To_Vertex_Maps.Cursor)
-   is
-      V : Flow_Graphs.Vertex_Id;
+   function Top_Level_Grouping
+     (G : Flow_Graphs.Graph; F : Flow_Id) return Record_Grouping is
    begin
-      case F.Variant is
-         when Normal_Use | In_View | Out_View   =>
-            raise Program_Error;
-
-         when Initial_Value | Final_Value       =>
-            case F.Kind is
-               when Null_Value | Synthetic_Null_Export =>
-                  raise Program_Error;
-
-               when Magic_String                       =>
-                  null;
-
-               when Direct_Mapping | Record_Field      =>
-                  if F.Kind = Record_Field
-                    or else
-                      F.Facet in Private_Part | Extension_Part | The_Bounds
-                  then
-                     declare
-                        P : constant Flow_Id :=
-                          Change_Variant
-                            (Parent_Record (F),
-                             Corresponding_Grouping (F.Variant));
-
-                     begin
-                        Create_Record_Tree (P, Leaf_Atr, FA, Current_Entity);
-                        case F.Variant is
-                           when Initial_Value =>
-                              Linkup
-                                (FA,
-                                 FA.CFG.Get_Vertex (P),
-                                 FA.CFG.Get_Vertex (F));
-
-                           when Final_Value   =>
-                              Linkup
-                                (FA,
-                                 FA.CFG.Get_Vertex (F),
-                                 FA.CFG.Get_Vertex (P));
-
-                           when others        =>
-                              raise Program_Error;
-                        end case;
-                     end;
-                  end if;
-            end case;
-
-         when Initial_Grouping | Final_Grouping =>
-            case F.Kind is
-               --  Initial_Grouping and Final_Grouping only appear for
-               --  variables represented by Entity_Id.
-
-               when Null_Value | Synthetic_Null_Export | Magic_String =>
-                  raise Program_Error;
-
-               when Direct_Mapping | Record_Field                     =>
-                  --  Only proceed if we don't have this vertex yet
-                  if not FA.CFG.Contains (F) then
-                     --  Create vertex
-                     Add_Vertex
-                       (FA,
-                        F,
-                        Make_Record_Tree_Attributes (Leaf_Atr),
-                        V,
-                        Keyed => True);
-
-                     --  Register vertex, so that record tree will be removed
-                     --  if object declaration turns out to be dead code.
-
-                     if Entity_To_Vertex_Maps.Has_Element (Current_Entity) then
-                        FA.Initial_And_Final_Vertices (Current_Entity).Insert
-                          (V);
-                     end if;
-
-                     if F.Kind = Record_Field then
-                        Create_Record_Tree
-                          (Parent_Record (F), Leaf_Atr, FA, Current_Entity);
-                        case F.Variant is
-                           when Initial_Grouping =>
-                              Linkup
-                                (FA, FA.CFG.Get_Vertex (Parent_Record (F)), V);
-
-                           when Final_Grouping   =>
-                              Linkup
-                                (FA, V, FA.CFG.Get_Vertex (Parent_Record (F)));
-
-                           when others           =>
-                              raise Program_Error;
-                        end case;
-                     end if;
-                  end if;
-            end case;
-      end case;
-   end Create_Record_Tree;
+      return
+        (Initial => G.Get_Vertex (Change_Variant (F, Initial_Grouping)),
+         Final   => G.Get_Vertex (Change_Variant (F, Final_Grouping)));
+   end Top_Level_Grouping;
 
    ---------------------------------------
    -- Create_Initial_And_Final_Vertices --
@@ -1554,17 +1480,57 @@ package body Flow.Control_Flow_Graph is
       --  phase 1 the initialization status of such constituents doesn't
       --  matter.
 
-      procedure Process (F : Flow_Id)
+      procedure Process (F : Flow_Id; Group : Record_Grouping)
       with
         Pre =>
           F.Kind in Direct_Mapping | Record_Field
           and then F.Variant = Normal_Use;
 
+      procedure Make_Grouping (F : Flow_Id; Group : out Record_Grouping)
+      with
+        Post =>
+          Group.Initial /= Flow_Graphs.Null_Vertex
+          and then Group.Final /= Flow_Graphs.Null_Vertex;
+      --  Create vertices that will group components of F
+
+      procedure Traverse_Components (F : Flow_Id; Group : Record_Grouping);
+      --  Traverse a flattened view of F, where Group holds vertices for the
+      --  initial and final group where F belongs.
+
+      -------------------
+      -- Make_Grouping --
+      -------------------
+
+      procedure Make_Grouping (F : Flow_Id; Group : out Record_Grouping) is
+      begin
+         Add_Vertex
+           (FA,
+            Change_Variant (F, Initial_Grouping),
+            Make_Record_Tree_Attributes
+              (Make_Variable_Attributes
+                 (Change_Variant (F, Initial_Value), Mode => M, E_Loc => E)),
+            Group.Initial,
+            Keyed => True);
+
+         FA.Initial_And_Final_Vertices (Current_Entity).Insert (Group.Initial);
+
+         Add_Vertex
+           (FA,
+            Change_Variant (F, Final_Grouping),
+            Make_Record_Tree_Attributes
+              (Make_Variable_Attributes
+                 (Change_Variant (F, Final_Value), Mode => M, E_Loc => E)),
+            Group.Final,
+            Keyed => True);
+
+         FA.Initial_And_Final_Vertices (Current_Entity).Insert (Group.Final);
+      end Make_Grouping;
+
       -------------
       -- Process --
       -------------
 
-      procedure Process (F : Flow_Id) is
+      procedure Process (F : Flow_Id; Group : Record_Grouping) is
          Initial_V, Final_V : Flow_Graphs.Vertex_Id;
 
          F_Initial : constant Flow_Id := Change_Variant (F, Initial_Value);
@@ -1586,17 +1552,54 @@ package body Flow.Control_Flow_Graph is
          Linkup (FA, Initial_V, FA.Start_Vertex);
          FA.Initial_And_Final_Vertices (Current_Entity).Insert (Initial_V);
 
-         Create_Record_Tree (F_Initial, Initial_Atr, FA, Current_Entity);
-
          --  Setup the n'final vertex
          Add_Vertex (FA, F_Final, Final_Atr, Final_V, Keyed => True);
          Linkup (FA, FA.End_Vertex, Final_V);
          FA.Initial_And_Final_Vertices (Current_Entity).Insert (Final_V);
 
-         Create_Record_Tree (F_Final, Final_Atr, FA, Current_Entity);
+         --  We either have none of the groupings or both
+
+         if Group.Initial = Flow_Graphs.Null_Vertex then
+            pragma Assert (Group.Final = Flow_Graphs.Null_Vertex);
+         else
+            Linkup (FA, Group.Initial, Initial_V);
+            Linkup (FA, Final_V, Group.Final);
+         end if;
 
          FA.All_Vars.Insert (F);
       end Process;
+
+      -------------------------
+      -- Traverse_Components --
+      -------------------------
+
+      procedure Traverse_Components (F : Flow_Id; Group : Record_Grouping) is
+         Components : constant Flow_Id_Sets.Set :=
+           Get_Components (F, FA.B_Scope);
+
+         Self_Grouping : Record_Grouping;
+
+      begin
+         --  Recurse like we do in Flatten_Variable
+
+         if Components.Contains (F) then
+            for Component of Components loop
+               Process (Component, Group);
+            end loop;
+         else
+            --  Make sure to not create grouping vertices with no components
+
+            pragma Assert (not Components.Is_Empty);
+
+            Make_Grouping (F, Self_Grouping);
+
+            for Component of Components loop
+               Traverse_Components (Component, Self_Grouping);
+            end loop;
+         end if;
+      end Traverse_Components;
+
+      F : constant Flow_Id := Direct_Mapping_Id (E);
 
       --  Start of processing for Create_Initial_And_Final_Vertices
 
@@ -1620,35 +1623,84 @@ package body Flow.Control_Flow_Graph is
          return;
       end if;
 
-      for Comp of Flatten_Variable (E, FA.B_Scope) loop
-         Process (Comp);
-      end loop;
+      Traverse_Components (F, Null_Grouping);
 
       if Extensions_Visible (E, FA.B_Scope) then
-         Process (Direct_Mapping_Id (E, Facet => Extension_Part));
+         declare
+            Top_Group : Record_Grouping := Top_Level_Grouping (FA.CFG, F);
+         begin
+            --  For null tagged record we didn't create any vertices yet,
+            --  so when its extensions are visible, we need to create a group
+            --  that will contain those extensions.
+
+            if Top_Group.Initial = Flow_Graphs.Null_Vertex then
+               Make_Grouping (F, Top_Group);
+            end if;
+
+            Process ((F with delta Facet => Extension_Part), Top_Group);
+         end;
       end if;
 
       if Ekind (E) in E_In_Out_Parameter | E_Out_Parameter
         and then Has_Discriminants (Get_Type (E, FA.B_Scope))
       then
-         Process (Direct_Mapping_Id (E, Facet => The_Bounds));
+         Process
+           ((F with delta Facet => The_Bounds),
+            Top_Level_Grouping (FA.CFG, F));
       end if;
    end Create_Initial_And_Final_Vertices;
 
    procedure Create_Initial_And_Final_Vertices
      (F : Flow_Id; Mode : Param_Mode; FA : in out Flow_Analysis_Graphs)
    is
-      procedure Process (F : Flow_Id)
+
+      procedure Process (F : Flow_Id; Group : Record_Grouping)
       with
         Pre =>
           F.Kind in Direct_Mapping | Record_Field | Magic_String
           and then F.Variant = Normal_Use;
 
+      procedure Make_Grouping (F : Flow_Id; Group : out Record_Grouping)
+      with
+        Post =>
+          Group.Initial /= Flow_Graphs.Null_Vertex
+          and then Group.Final /= Flow_Graphs.Null_Vertex;
+      --  Create vertices that will group components of F
+
+      procedure Traverse_Components (F : Flow_Id; Group : Record_Grouping);
+      --  Traverse a flattened view of F, where Group holds vertices for the
+      --  initial and final group where F belongs.
+
+      -------------------
+      -- Make_Grouping --
+      -------------------
+
+      procedure Make_Grouping (F : Flow_Id; Group : out Record_Grouping) is
+      begin
+         Add_Vertex
+           (FA,
+            Change_Variant (F, Initial_Grouping),
+            Make_Record_Tree_Attributes
+              (Make_Global_Variable_Attributes
+                 (Change_Variant (F, Initial_Value), Mode)),
+            Group.Initial,
+            Keyed => True);
+
+         Add_Vertex
+           (FA,
+            Change_Variant (F, Final_Grouping),
+            Make_Record_Tree_Attributes
+              (Make_Global_Variable_Attributes
+                 (Change_Variant (F, Final_Value), Mode)),
+            Group.Final,
+            Keyed => True);
+      end Make_Grouping;
+
       -------------
       -- Process --
       -------------
 
-      procedure Process (F : Flow_Id) is
+      procedure Process (F : Flow_Id; Group : Record_Grouping) is
          F_Initial : constant Flow_Id := Change_Variant (F, Initial_Value);
          F_Final   : constant Flow_Id := Change_Variant (F, Final_Value);
 
@@ -1665,34 +1717,71 @@ package body Flow.Control_Flow_Graph is
          Add_Vertex (FA, F_Initial, Initial_Atr, Initial_V, Keyed => True);
          Linkup (FA, Initial_V, FA.Start_Vertex);
 
-         Create_Record_Tree
-           (F_Initial,
-            Initial_Atr,
-            FA,
-            Current_Entity => Entity_To_Vertex_Maps.No_Element);
-
          --  Setup the F'final vertex
          Add_Vertex (FA, F_Final, Final_Atr, Final_V, Keyed => True);
          Linkup (FA, FA.End_Vertex, Final_V);
 
-         Create_Record_Tree
-           (F_Final,
-            Final_Atr,
-            FA,
-            Current_Entity => Entity_To_Vertex_Maps.No_Element);
+         --  We either have none of the groupings or both
+
+         if Group.Initial = Flow_Graphs.Null_Vertex then
+            pragma Assert (Group.Final = Flow_Graphs.Null_Vertex);
+         else
+            Linkup (FA, Group.Initial, Initial_V);
+            Linkup (FA, Final_V, Group.Final);
+         end if;
 
          FA.All_Vars.Insert (F);
       end Process;
 
+      -------------------------
+      -- Traverse_Components --
+      -------------------------
+
+      procedure Traverse_Components (F : Flow_Id; Group : Record_Grouping) is
+         Components : constant Flow_Id_Sets.Set :=
+           Get_Components (F, FA.B_Scope);
+
+         Self_Grouping : Record_Grouping;
+
+      begin
+         --  Recurse like we do in Flatten_Variable
+
+         if Components.Contains (F) then
+            for Component of Components loop
+               Process (Component, Group);
+            end loop;
+         else
+            --  Make sure to not create grouping vertices with no components
+
+            pragma Assert (not Components.Is_Empty);
+
+            Make_Grouping (F, Self_Grouping);
+
+            for Component of Components loop
+               Traverse_Components (Component, Self_Grouping);
+            end loop;
+         end if;
+      end Traverse_Components;
+
       --  Start of processing for Create_Initial_And_Final_Vertices
 
    begin
-      for Comp of Flatten_Variable (F, FA.B_Scope) loop
-         Process (Comp);
-      end loop;
+      Traverse_Components (F, Null_Grouping);
 
       if Extensions_Visible (F, FA.B_Scope) then
-         Process ((F with delta Facet => Extension_Part));
+         declare
+            Top_Group : Record_Grouping := Top_Level_Grouping (FA.CFG, F);
+         begin
+            --  For null tagged record we didn't create any vertices yet,
+            --  so when its extensions are visible, we need to create a group
+            --  that will contain those extensions.
+
+            if Top_Group.Initial = Flow_Graphs.Null_Vertex then
+               Make_Grouping (F, Top_Group);
+            end if;
+
+            Process ((F with delta Facet => Extension_Part), Top_Group);
+         end;
       end if;
 
       if F.Kind = Direct_Mapping
@@ -1702,7 +1791,9 @@ package body Flow.Control_Flow_Graph is
         and then
           Has_Discriminants (Get_Type (Get_Direct_Mapping_Id (F), FA.B_Scope))
       then
-         Process ((F with delta Facet => The_Bounds));
+         Process
+           ((F with delta Facet => The_Bounds),
+            Top_Level_Grouping (FA.CFG, F));
       end if;
    end Create_Initial_And_Final_Vertices;
 
