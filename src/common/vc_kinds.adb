@@ -817,6 +817,10 @@ package body VC_Kinds is
            "The behavior of a call might not be known by SPARK and handled in "
            & "an imprecise way; its precondition might be impossible to prove "
            & "and nothing will be known about its result",
+         when Warn_Imprecise_String_Literal        =>
+           "The value of string literal containing wide characters or "
+           & "constructed through the External_Initialization aspect is not "
+           & "precisely known",
          when Warn_Component_Size                  =>
            "the value of attribute Component_Size might not be known for "
            & "proof if it is not supplied through an attribute definition "
@@ -1902,6 +1906,8 @@ package body VC_Kinds is
          when Warn_Imprecise_Call                  => "imprecise-call",
          when Warn_Imprecise_GG                    =>
            "imprecise-global-generation",
+         when Warn_Imprecise_String_Literal        =>
+           "imprecise-string-literal",
          when Warn_Init_Array                      => "array-initialization",
          when Warn_Init_Multidim_Array             =>
            "multidimensional-array-init",

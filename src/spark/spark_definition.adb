@@ -4531,7 +4531,7 @@ package body SPARK_Definition is
             Mark_Unsupported (Lim_Interpolated_String_Literal, N);
 
          when N_External_Initializer                                 =>
-            Mark_Unsupported (Lim_External_Initializer, N);
+            null; --  todo?
 
          when N_Continue_Statement                                   =>
             if Present (Condition (N)) then
