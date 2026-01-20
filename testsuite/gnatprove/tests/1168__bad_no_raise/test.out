@@ -1,0 +1,4 @@
+test_bad_no_raise.adb:6:06: error: aspect "Exceptional_Cases" cannot apply to No_Raise subprogram
+test_bad_no_raise.adb:13:29: error: exit kind cannot be Exception_Raised on No_Raise subprogram
+test_bad_no_raise.adb:20:29: error: exit kind cannot be Exception_Raised on No_Raise subprogram
+gnatprove: error during generation of Global contracts
