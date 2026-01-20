@@ -588,8 +588,7 @@ package body CE_Parsing is
            StringBits_To_Unsigned (Exp);
       begin
          return
-           I_Sign
-           * 2 ** (Bound - 1)
+           I_Sign * 2 ** (Bound - 1)
            + I_Exp * 2 ** Size_Significand
            + I_Significand;
       end StringBits_To_Floatrepr;

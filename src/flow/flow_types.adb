@@ -208,8 +208,7 @@ package body Flow_Types is
          when Direct_Mapping        =>
             return
               Generic_Integer_Hash
-                (Integer (N.Node)
-                 + 7919 * Variable_Facet_T'Pos (N.Facet)
+                (Integer (N.Node) + 7919 * Variable_Facet_T'Pos (N.Facet)
                  + 6079 * Flow_Id_Variant'Pos (N.Variant));
 
          when Record_Field          =>
