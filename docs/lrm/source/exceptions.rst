@@ -41,6 +41,12 @@ it fullfils the following properties:
   Ignore, then the assertion policy applicable to handled sequence of statements
   or subprogram body that covers it shall be Ignore too.
 
+
+|SPARK| forbids all transfer of control from escaping finally sections
+(GNAT extension), including exceptions. If a construct raising an exception
+appears within a finally section, then the enclosing entity and all exception
+handlers outside the section shall be ignored in the definition of *expected*.
+
 As described below, all raise expressions must be provably never executed.
 The same holds true for raise statements if they raise unexpected exceptions.
 
