@@ -1,12 +1,27 @@
-test.adb:20:04: warning: analyzing unreferenced procedure "OK1" [unreferenced-procedure]
-test.adb:20:14: warning: subprogram "OK1" has no effect
-test.adb:22:07: info: call cannot exit the program proved (CVC5: 1 VC)
-test.adb:23:07: info: call cannot exit the program proved (CVC5: 1 VC)
-test.adb:26:46: info: program exit postcondition proved (Trivial: 1 VC)
-test.adb:31:46: info: program exit postcondition proved (Trivial: 1 VC)
-test.adb:36:14: warning: subprogram "Bad1" has no effect
-test.adb:36:40: info: program exit postcondition proved (Trivial: 1 VC)
-test.adb:38:07: medium: call might exit the program [provers gave up before completing the proof]
-test.adb:41:14: warning: subprogram "Bad2" has no effect
-test.adb:41:40: info: program exit postcondition proved (Trivial: 1 VC)
-test.adb:43:07: medium: call might exit the program [provers gave up before completing the proof]
+test.adb:8:06: warning: postcondition does not check the outcome of calling "Non_Ghost_P" [-gnatw.t]
+test.adb:28:14: warning: subprogram "OK1" has no effect
+test.adb:29:07: info: no contextual analysis of "OK1" (nested subprogram)
+test.adb:29:17: info: add a contract to analyze it separately from calling contexts
+test.adb:29:17: info: local subprogram "P3" only analyzed in the context of calls [info-unrolling-inlining]
+test.adb:31:09: info: call cannot exit the program proved (CVC5: 1 VC), in call inlined at test.adb:36
+test.adb:34:07: info: call cannot exit the program proved (CVC5: 1 VC)
+test.adb:35:07: info: call cannot exit the program proved (CVC5: 1 VC)
+test.adb:36:07: info: analyzing call to "P3" in context
+test.adb:39:46: info: program exit postcondition proved (Trivial: 1 VC)
+test.adb:44:46: info: program exit postcondition proved (Trivial: 1 VC)
+test.adb:49:46: info: program exit postcondition proved (Trivial: 1 VC)
+test.adb:50:17: info: add a contract to analyze it separately from calling contexts
+test.adb:50:17: info: local subprogram "P3" only analyzed in the context of calls [info-unrolling-inlining]
+test.adb:55:07: info: analyzing call to "P3" in context
+test.adb:58:14: warning: subprogram "Bad1" has no effect
+test.adb:58:40: info: program exit postcondition proved (Trivial: 1 VC)
+test.adb:60:07: medium: call might exit the program [reason for check: ghost subprogram call shall not exit the program] [provers gave up before completing the proof]
+test.adb:63:14: warning: subprogram "Bad2" has no effect
+test.adb:63:40: info: program exit postcondition proved (Trivial: 1 VC)
+test.adb:65:07: medium: call might exit the program [reason for check: ghost subprogram call shall not exit the program] [provers gave up before completing the proof]
+test.adb:68:14: warning: subprogram "Bad3" has no effect
+test.adb:68:40: info: program exit postcondition proved (Trivial: 1 VC)
+test.adb:69:17: info: add a contract to analyze it separately from calling contexts
+test.adb:69:17: info: local subprogram "P3" only analyzed in the context of calls [info-unrolling-inlining]
+test.adb:71:09: medium: call might exit the program, in call inlined at test.adb:74 [reason for check: ghost inlined call to "P3" shall not exit the program] [provers gave up before completing the proof]
+test.adb:74:07: info: analyzing call to "P3" in context

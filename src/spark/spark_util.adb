@@ -6088,7 +6088,7 @@ package body SPARK_Util is
 
    function Might_Exit_Program (Call : Node_Id) return Boolean is
       function Is_Body (N : Node_Id) return Boolean
-      is (Nkind (N) in N_Entity_Body);
+      is (Nkind (N) in N_Entity_Body or else Is_Inlined_Call (N));
 
       function Enclosing_Body is new First_Parent_With_Property (Is_Body);
 
@@ -6108,8 +6108,18 @@ package body SPARK_Util is
          --  with Program_Exit.
 
          declare
-            Scop : constant Node_Id := Enclosing_Body (Call);
+            Scop : Node_Id := Enclosing_Body (Call);
          begin
+            while Nkind (Scop) not in N_Entity_Body loop
+
+               --  An inlined ghost procedure call shall never exit the program
+
+               if Is_Ghost_With_Respect_To_Context (Scop) then
+                  return False;
+               end if;
+               Scop := Enclosing_Body (Scop);
+            end loop;
+
             return
               Present (Scop)
               and then Has_Program_Exit (Unique_Defining_Entity (Scop));

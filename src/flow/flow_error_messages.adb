@@ -1212,6 +1212,50 @@ package body Flow_Error_Messages is
                end if;
             end;
 
+         when VC_Unexpected_Program_Exit               =>
+            declare
+               function Is_Body_Or_Ghost_Inlined (N : Node_Id) return Boolean
+               is (Nkind (N) in N_Entity_Body
+                   or else
+                     (Is_Inlined_Call (N)
+                      and then Is_Ghost_With_Respect_To_Context (N)));
+
+               function Enclosing_Body_Or_Ghost_Inlined is new
+                 First_Parent_With_Property (Is_Body_Or_Ghost_Inlined);
+            begin
+
+               if Nkind (N) in N_Subprogram_Call
+                 and then Is_Ghost_With_Respect_To_Context (N)
+               then
+                  return "ghost subprogram call shall not exit the program";
+
+               else
+                  declare
+                     Scop : constant Node_Id :=
+                       Enclosing_Body_Or_Ghost_Inlined (N);
+                  begin
+                     if Nkind (Scop) in N_Entity_Body then
+                        declare
+                           Caller : constant Entity_Id :=
+                             Unique_Defining_Entity (Scop);
+                        begin
+                           return
+                             Pretty_Source_Name (Caller)
+                             & " does not allow exiting the program";
+                        end;
+                     elsif Is_Inlined_Call (Scop) then
+                        return
+                          "ghost inlined call to "
+                          & Pretty_Source_Name
+                              (Called_Entity_From_Inlined_Call (Scop))
+                          & " shall not exit the program";
+                     else
+                        raise Program_Error;
+                     end if;
+                  end;
+               end if;
+            end;
+
          when VC_Index_Check                           =>
             return Value & " must be a valid index into the array";
 
@@ -3821,7 +3865,11 @@ package body Flow_Error_Messages is
             --  skipped, and in general we don't expect such an explanation to
             --  be relevant).
 
-            if Tag not in VC_Precondition | VC_Precondition_Main | VC_Raise
+            if Tag
+               not in VC_Precondition
+                    | VC_Precondition_Main
+                    | VC_Raise
+                    | VC_Unexpected_Program_Exit
             then
                return
                  Create (To_String (Explain_Calls (Get_Calls_From_Node (N))));

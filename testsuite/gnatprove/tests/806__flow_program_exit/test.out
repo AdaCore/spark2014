@@ -1,4 +1,4 @@
-test.adb:16:07: medium: call might exit the program [provers gave up before completing the proof]
+test.adb:16:07: medium: call might exit the program [reason for check: "P" does not allow exiting the program] [provers gave up before completing the proof]
 test.adb:20:06: info: data dependencies proved
 test.adb:21:22: medium: program exit postcondition might fail [possible fix: subprogram at line 19 should mention G in a precondition] [provers gave up before completing the proof]
 test.adb:29:06: info: data dependencies proved
