@@ -2309,10 +2309,12 @@ package body SPARK_Definition.Annotate is
             E);
          return;
       elsif Has_Program_Exit (E) then
-
-         --  Ghost subprograms cannot exit the whole program
-
-         raise Program_Error;
+         Error_Msg_N_If
+           ("procedure annotated with the "
+            & Aspect_Or_Pragma
+            & " Automatic_Instantiation shall not exit the program",
+            E);
+         return;
       elsif Mutable_In_Params_Annotations.Contains (E) then
          Error_Msg_N_If
            ("procedure annotated with the "
@@ -3124,10 +3126,12 @@ package body SPARK_Definition.Annotate is
                E);
             return;
          elsif Has_Program_Exit (E) then
-
-            --  Ghost subprograms cannot exit the whole program
-
-            raise Program_Error;
+            Error_Msg_N_If
+              ("procedure annotated with the "
+               & Aspect_Or_Pragma
+               & " Higher_Order_Specialization shall not exit the program",
+               E);
+            return;
          elsif Get_Termination_Condition (E)
                not in (Kind => Unspecified) | (Static, True)
          then
