@@ -1164,6 +1164,11 @@ package body Flow_Error_Messages is
                elsif Nkind (N) in N_Raise_xxx_Error then
                   return "";
 
+               elsif Is_Within_Finally_Section (N) then
+                  return
+                    "enclosing finally section shall not propagate "
+                    & "exceptions";
+
                else
                   declare
                      Scop : constant Node_Id :=

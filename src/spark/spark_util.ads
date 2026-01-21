@@ -742,6 +742,10 @@ package SPARK_Util is
    --  @return True if the node is in a branch that is statically dead. Only
    --      if-statements are detected for now.
 
+   function Is_Within_Finally_Section (N : Node_Id) return Boolean;
+   --  @param N any node
+   --  @return True if the node is in a finally section.
+
    function May_Issue_Warning_On_Node (N : Node_Id) return Boolean;
    --  We do not issue any warnings on nodes which stem from inlining or
    --  instantiation, or in subprograms or library packages whose analysis
