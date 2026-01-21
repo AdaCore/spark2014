@@ -1,0 +1,1 @@
+ALL XFAIL non-deterministic CE (eng/spark/spark2014#923)
