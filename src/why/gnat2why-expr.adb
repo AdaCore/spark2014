@@ -24271,7 +24271,7 @@ package body Gnat2Why.Expr is
                   Left_Type : constant Type_Kind_Id := Etype (Left);
 
                   One : constant W_Expr_Id :=
-                    (if Is_Integer_Type (Left_Type)
+                    (if Has_Integer_Type (Left_Type)
                      then
                        (if Is_Bitvector_Type_In_Why (Left_Type)
                         then
