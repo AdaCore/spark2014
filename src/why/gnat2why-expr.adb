@@ -24875,6 +24875,27 @@ package body Gnat2Why.Expr is
                   end;
                end if;
 
+               --  Check the specific rules for conversions from unchecked
+               --  union types.
+
+               if Domain = EW_Prog
+                 and then
+                   Is_Unchecked_Union (Retysp (Etype (Expression (Expr))))
+                 and then not Is_Unchecked_Union (Expr_Type)
+               then
+
+                  --  Generate a statically known proof result
+
+                  Emit_Static_Proof_Result
+                    (Expr,
+                     VC_Unchecked_Union_Restriction,
+                     Has_Inferable_Discriminants (Expression (Expr)),
+                     Current_Subp,
+                     Explanation =>
+                       "source of conversion should have inferrable "
+                       & "discriminants");
+               end if;
+
                T :=
                  Transform_Expr
                    (Expression (Expr),
