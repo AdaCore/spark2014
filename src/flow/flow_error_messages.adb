@@ -1141,14 +1141,17 @@ package body Flow_Error_Messages is
 
          when VC_Raise                                 =>
             declare
-               function Is_Body_Or_Ghost_Inlined (N : Node_Id) return Boolean
+               function Is_Body_Or_Inlined (N : Node_Id) return Boolean
                is (Nkind (N) in N_Entity_Body
                    or else
                      (Is_Inlined_Call (N)
-                      and then Is_Ghost_With_Respect_To_Context (N)));
+                      and then
+                        (Is_Ghost_With_Respect_To_Context (N)
+                         or else
+                           No_Raise (Called_Entity_From_Inlined_Call (N)))));
 
-               function Enclosing_Body_Or_Ghost_Inlined is new
-                 First_Parent_With_Property (Is_Body_Or_Ghost_Inlined);
+               function Enclosing_Body_Or_Inlined is new
+                 First_Parent_With_Property (Is_Body_Or_Inlined);
             begin
 
                if Nkind (N) = N_Raise_Expression then
@@ -1171,8 +1174,7 @@ package body Flow_Error_Messages is
 
                else
                   declare
-                     Scop : constant Node_Id :=
-                       Enclosing_Body_Or_Ghost_Inlined (N);
+                     Scop : constant Node_Id := Enclosing_Body_Or_Inlined (N);
                   begin
                      if Nkind (Scop) in N_Entity_Body then
                         declare
@@ -1187,11 +1189,22 @@ package body Flow_Error_Messages is
                              & Expected_Exc;
                         end;
                      elsif Is_Inlined_Call (Scop) then
-                        return
-                          "ghost inlined call to "
-                          & Pretty_Source_Name
-                              (Called_Entity_From_Inlined_Call (Scop))
-                          & " shall not propagate exceptions";
+                        declare
+                           Callee : constant Entity_Id :=
+                             Called_Entity_From_Inlined_Call (Scop);
+                        begin
+                           if No_Raise (Callee) then
+                              return
+                                "inlined call to "
+                                & Pretty_Source_Name (Callee)
+                                & " shall not propagate exceptions";
+                           else
+                              return
+                                "ghost inlined call to "
+                                & Pretty_Source_Name (Callee)
+                                & " shall not propagate exceptions";
+                           end if;
+                        end;
                      else
                         return "";
                      end if;

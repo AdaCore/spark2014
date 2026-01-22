@@ -5025,10 +5025,16 @@ package body SPARK_Util is
 
                --  Cut propagation of ghost inlined calls here
 
-               if Is_Inlined_Call (Scop)
-                 and then Is_Ghost_With_Respect_To_Context (Scop)
-               then
-                  exit;
+               if Is_Inlined_Call (Scop) then
+                  if Is_Ghost_With_Respect_To_Context (Scop) then
+                     exit;
+
+                  --  If the inlined subprogram has No_Raise then clear the
+                  --  Remaining_Exceptions set.
+
+                  elsif No_Raise (Called_Entity_From_Inlined_Call (Scop)) then
+                     Remaining_Exceptions := Exception_Sets.Empty_Set;
+                  end if;
                end if;
 
             --  Transfer from an exception handlers always exit their
