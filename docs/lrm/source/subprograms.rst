@@ -2386,6 +2386,9 @@ body (see Ada RM 7.2(4))].
     which specifies an aspect of an entity that is either non-ghost or not
     assertion-level-dependent on E except in the following cases:
 
+    * the aspect specification applies to a ghost entity which is
+      assertion-level-dependent on E;
+
     * the reference occurs within an assertion expression that is
       assertion-level-dependent on E and is not a predicate expression,
       unless the predicate is introduced by aspect Ghost_Predicate; or
