@@ -32,13 +32,19 @@ with Cache_Client;
 with Filecache_Client;
 with GNAT.Expect;      use GNAT.Expect;
 with GNAT.OS_Lib;      use GNAT.OS_Lib;
-with GNAT.SHA1;
 with GNAT.Sockets;     use GNAT.Sockets;
+with GNATCOLL.Hash.Blake3;
 with GNATCOLL.JSON;    use GNATCOLL.JSON;
 with GNATCOLL.Mmap;
 with Memcache_Client;
 
 procedure SPARK_Memcached_Wrapper with No_Return is
+
+   subtype Hash_Context is GNATCOLL.Hash.Blake3.Blake3_Context;
+   subtype Message_Digest is GNATCOLL.Hash.Blake3.Blake3_Digest;
+   --  The above subtypes make the subsequent code independent of the choosen
+   --  hash function. In the future we can easily switch to other functions,
+   --  as long as their APIs follow the current GNATCOLL.Hash conventions.
 
    --  This is a wrapper program, which caches identical invocations of
    --  gnatwhy3 and provers by hashing the input to the tool (commandline and
@@ -51,7 +57,7 @@ procedure SPARK_Memcached_Wrapper with No_Return is
    --  The salt is an arbitrary string that is hashed as well, but is not part
    --  of the command name or command line of the tool.
 
-   procedure Hash_Commandline (C : in out GNAT.SHA1.Context);
+   procedure Hash_Commandline (C : in out Hash_Context);
    --  @param C the hash context to be updated
    --  Compute a hash of the commandline provided to the wrapper. The procedure
    --  starts hashing at the second argument (the command name) and stops
@@ -60,24 +66,24 @@ procedure SPARK_Memcached_Wrapper with No_Return is
    --  arguments which can be ignored are skipped, for others, instead of
    --  the argument some other content is hashed.
 
-   procedure Hash_Binary (C : in out GNAT.SHA1.Context; Execname : String);
+   procedure Hash_Binary (C : in out Hash_Context; Execname : String);
    --  If the binary Fn is on the PATH and there is a file Fn.hash next to it,
    --  we read that file and add it to the context.
 
-   procedure Hash_File (C : in out GNAT.SHA1.Context; Fn : String);
+   procedure Hash_File (C : in out Hash_Context; Fn : String);
    --  @param C the hash context to be updated
    --  @param Fn the file to be hashed
    --  Compute a hash of the file in argument
 
    procedure Hash_Session_File
-     (C : in out GNAT.SHA1.Context; Proof_Dir : String; Why3_File : String);
+     (C : in out Hash_Context; Proof_Dir : String; Why3_File : String);
    --  @param C the hash context to be updated
    --  @param Proof_Dir name of directory with proof session files
    --  @param Why3_File name of Why3 file to prove
    --  Compute a hash of the session file from Proof_Dir that corresponds to
    --  given Why3_File.
 
-   function Compute_Key return GNAT.SHA1.Message_Digest;
+   function Compute_Key return Message_Digest;
    --  @return the key to be used for this invocation of the wrapper in the
    --    memcached table
 
@@ -94,7 +100,7 @@ procedure SPARK_Memcached_Wrapper with No_Return is
    -- Hash_Binary --
    -----------------
 
-   procedure Hash_Binary (C : in out GNAT.SHA1.Context; Execname : String) is
+   procedure Hash_Binary (C : in out Hash_Context; Execname : String) is
 
       function Compute_Hash_Filename (Exec : String) return String;
       --  Compute the hashfile name from the executable name by locating the
@@ -136,7 +142,7 @@ procedure SPARK_Memcached_Wrapper with No_Return is
    -- Hash_Commandline --
    ----------------------
 
-   procedure Hash_Commandline (C : in out GNAT.SHA1.Context) is
+   procedure Hash_Commandline (C : in out Hash_Context) is
       I : Positive := 3;
    begin
       while I < Ada.Command_Line.Argument_Count loop
@@ -160,7 +166,7 @@ procedure SPARK_Memcached_Wrapper with No_Return is
                       (Ada.Command_Line.Argument_Count));
                I := I + 2;
             else
-               GNAT.SHA1.Update (C, Arg);
+               C.Update_Hash_Context (Arg);
                I := I + 1;
             end if;
          end;
@@ -171,7 +177,7 @@ procedure SPARK_Memcached_Wrapper with No_Return is
    -- Hash_File --
    ---------------
 
-   procedure Hash_File (C : in out GNAT.SHA1.Context; Fn : String) is
+   procedure Hash_File (C : in out Hash_Context; Fn : String) is
       use GNATCOLL.Mmap;
       File   : Mapped_File;
       Region : Mapped_Region;
@@ -187,7 +193,7 @@ procedure SPARK_Memcached_Wrapper with No_Return is
          --  A fake string directly mapped onto the file contents
 
       begin
-         GNAT.SHA1.Update (C, S);
+         C.Update_Hash_Context (S);
       end;
 
       Free (Region);
@@ -200,7 +206,7 @@ procedure SPARK_Memcached_Wrapper with No_Return is
    -----------------------
 
    procedure Hash_Session_File
-     (C : in out GNAT.SHA1.Context; Proof_Dir : String; Why3_File : String)
+     (C : in out Hash_Context; Proof_Dir : String; Why3_File : String)
    is
       use Ada.Directories;
 
@@ -287,13 +293,14 @@ procedure SPARK_Memcached_Wrapper with No_Return is
    -- Compute_Key --
    -----------------
 
-   function Compute_Key return GNAT.SHA1.Message_Digest is
-      C : GNAT.SHA1.Context := GNAT.SHA1.Initial_Context;
+   function Compute_Key return Message_Digest is
+      C : Hash_Context;
    begin
+      C.Init_Hash_Context;
 
       --  We first hash the salt (first argument of the command line)
 
-      GNAT.SHA1.Update (C, Argument (1));
+      C.Update_Hash_Context (Argument (1));
 
       --  The file is hashed separately here, it always comes last on the
       --  command line.
@@ -309,7 +316,7 @@ procedure SPARK_Memcached_Wrapper with No_Return is
       if Argument_Count >= 3 then
          Hash_Binary (C, Argument (3));
       end if;
-      return GNAT.SHA1.Digest (C);
+      return C.Hash_Digest;
    end Compute_Key;
 
 begin
