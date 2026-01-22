@@ -24,13 +24,13 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Configuration;   use Configuration;
-with Ada.Directories; use Ada.Directories;
-with Ada.Text_IO;     use Ada.Text_IO;
-with GNATCOLL.JSON;   use GNATCOLL.JSON;
-with GNAT.SHA1;
-with String_Utils;    use String_Utils;
-with VC_Kinds;        use VC_Kinds;
+with Configuration;        use Configuration;
+with Ada.Directories;      use Ada.Directories;
+with Ada.Text_IO;          use Ada.Text_IO;
+with GNATCOLL.JSON;        use GNATCOLL.JSON;
+with GNATCOLL.Hash.Blake3; use GNATCOLL.Hash.Blake3;
+with String_Utils;         use String_Utils;
+with VC_Kinds;             use VC_Kinds;
 
 package body Gnat2Why_Opts.Writing is
 
@@ -55,12 +55,16 @@ package body Gnat2Why_Opts.Writing is
       -------------------
 
       function Write_To_File (V : JSON_Value) return String is
-         Write_Cont : constant String := Write (V);
-         File_Name  : constant String (1 .. 12) :=
-           GNAT.SHA1.Digest (Write_Cont) (1 .. 8) & ".tmp";
-         FT         : File_Type;
-         Cur_Dir    : constant String := Current_Directory;
+         Write_Cont   : constant String := Write (V);
+         Hash_Context : Blake3_Context;
+         File_Name    : String (1 .. 12);
+         FT           : File_Type;
+         Cur_Dir      : constant String := Current_Directory;
       begin
+         Init_Hash_Context (Hash_Context);
+         Update_Hash_Context (Hash_Context, Write_Cont);
+         File_Name := Hash_Digest (Hash_Context) (1 .. 8) & ".tmp";
+
          --  We need to switch to the given Obj_Dir so that the temp file is
          --  created there.
 
