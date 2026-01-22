@@ -1694,14 +1694,6 @@ package body Why.Gen.Expr is
              Is_Init_Wrapper_Type (From) and Is_Init_Wrapper_Type (To));
 
    begin
-      --  The case where we are converting from an unchecked union type
-      --  to a type without unchecked union should not occur as we do not
-      --  support discriminants on derived type currently. If we were to
-      --  support them, we would need to detect this case and emit a
-      --  check message.
-
-      pragma Assert (Is_Unchecked_Union (R) = Is_Unchecked_Union (L));
-
       --  If From has relaxed initialization and not Base, introduce a
       --  conversion and possibly a check.
 
