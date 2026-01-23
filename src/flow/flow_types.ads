@@ -769,7 +769,7 @@ package Flow_Types is
       First_Field : Flow_Graphs.Vertex_Id;
       --  For vertices coming from declarations and assignments of record
       --  objects, it points to the first vertex in the CFG that represents
-      --  the sequence of vertices with variable useds and variables defined
+      --  the sequence of vertices with variable used and variables defined
       --  for every record component.
 
       Record_RHS : Flow_Graphs.Vertex_Id;

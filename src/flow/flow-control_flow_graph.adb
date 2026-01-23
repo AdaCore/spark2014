@@ -5154,20 +5154,18 @@ package body Flow.Control_Flow_Graph is
                Locks              => FA.Locks,
                Generating_Globals => FA.Generating_Globals);
 
-            for F of Flatten_Variable (E, FA.B_Scope) loop
-               Add_Vertex
-                 (FA,
-                  Make_Basic_Attributes
-                    (Var_Def    => Flow_Id_Sets.To_Set (F),
-                     Var_Ex_Use => Addr_Deps,
-                     Subp_Calls => Funcalls,
-                     Indt_Calls => Indcalls,
-                     Vertex_Ctx => Ctx.Vertex_Ctx,
-                     Print_Hint => Pretty_Print_Record_Field,
-                     E_Loc      => Addr_Expr),
-                  V);
-               Inits.Append (V);
-            end loop;
+            Add_Vertex
+              (FA,
+               Make_Basic_Attributes
+                 (Var_Def    => Flatten_Variable (E, FA.B_Scope),
+                  Var_Ex_Use => Addr_Deps,
+                  Subp_Calls => Funcalls,
+                  Indt_Calls => Indcalls,
+                  Vertex_Ctx => Ctx.Vertex_Ctx,
+                  Print_Hint => Pretty_Print_Record_Field,
+                  E_Loc      => Addr_Expr),
+               V);
+            Inits.Append (V);
 
             Ctx.Folded_Function_Checks.Append (Addr_Expr);
          end;
