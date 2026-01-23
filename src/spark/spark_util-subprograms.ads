@@ -747,8 +747,8 @@ package SPARK_Util.Subprograms is
    --  function E. This is the most partial view which inherits some ancestor
    --  subprogram of E.
 
-   function Completion_Deferred_To_Body
-     (E : Subprogram_Kind_Id) return Boolean;
+   function Completion_Deferred_To_Body (E : Subprogram_Kind_Id) return Boolean
+   with Pre => Is_Expression_Function_Or_Completion (E);
    --  Return True if E is declared in the spec of a package or protected type
    --  and its body is in the package or protected body. This is used for
    --  expression functions to decide whether their body should be handled as a

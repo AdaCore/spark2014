@@ -203,13 +203,16 @@ package body SPARK_Util.Subprograms is
    ---------------------------------
 
    function Completion_Deferred_To_Body (E : Subprogram_Kind_Id) return Boolean
-   is ((Ekind (Scope (E)) = E_Package
-        and then Present (Subprogram_Body (E))
-        and then Nkind (Parent (Subprogram_Body (E))) = N_Package_Body)
-       or else
-         (Ekind (Scope (E)) = E_Protected_Type
-          and then Present (Subprogram_Body (E))
-          and then Nkind (Parent (Subprogram_Body (E))) = N_Protected_Body));
+   is (not Is_Expression_Function (Unique_Entity (E))
+       --  Use Is_Expression_Function on the spec entity to decide if E has a
+       --  completion.
+       and then
+         ((Ekind (Scope (E)) = E_Package
+           and then Nkind (Parent (Subprogram_Body (E))) = N_Package_Body)
+          or else
+            (Ekind (Scope (E)) = E_Protected_Type
+             and then
+               Nkind (Parent (Subprogram_Body (E))) = N_Protected_Body)));
 
    -------------------------------
    -- Containing_Protected_Type --
