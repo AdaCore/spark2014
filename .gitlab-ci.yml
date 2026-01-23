@@ -111,7 +111,6 @@ stages:
     - ANOD_BUILDSPACE=`anod eval spark2014 build_space_name --primitive test --qualifier=$ANOD_QUALIFIERS`
     - testsuite_reports || exit_code=$?
     - mv $ANOD_DEFAULT_SANDBOX_DIR/x86_64-linux/$ANOD_BUILDSPACE/results/new/ $CI_PROJECT_DIR/testsuite-results
-    - mv $ANOD_DEFAULT_SANDBOX_DIR/x86_64-linux/$ANOD_BUILDSPACE/src/cobertura-report/ $CI_PROJECT_DIR/coverage
 
     # Process test file to generate timing test
     - (cd $CI_PROJECT_DIR ; python scripts/check_test_times.py --threshold=180 xunit-*.xml xunit-times.xml)
@@ -119,13 +118,6 @@ stages:
     # Reestablish cache
     - mv /tmp/gnatprove_cache $CI_PROJECT_DIR/gnatprove_cache
 
-    # Coverage HTML report
-    - section_start "coverage_report" "Generate Coverage HTML report"
-    - export HTMLTARGETDIR=$CI_COMMIT_BRANCH
-    - if [[ $CI_PIPELINE_SOURCE == "merge_request_event" ]]; then export HTMLTARGETDIR=MRs/$CI_MERGE_REQUEST_IID ; fi
-    - if [[ $CI_PIPELINE_SOURCE == "schedule" ]]; then export HTMLTARGETDIR=weekly ; fi
-    - publish-pages $ANOD_DEFAULT_SANDBOX_DIR/x86_64-linux/$ANOD_BUILDSPACE/src/html-report --target-subdir $HTMLTARGETDIR --expires 30
-    - section_end "coverage_report"
     - exit $exit_code
 
   artifacts:
@@ -195,7 +187,7 @@ spark2014:
     - when: never
   variables:
     ANOD_ENTRY_POINT: test
-    ANOD_QUALIFIERS: assertions,coverage,cleanup-mode=none,cache
+    ANOD_QUALIFIERS: assertions,cleanup-mode=none,cache
 
 spark2014_large:
   extends: .spark2014_test
@@ -206,7 +198,7 @@ spark2014_large:
   allow_failure: true
   variables:
     ANOD_ENTRY_POINT: test_large
-    ANOD_QUALIFIERS: assertions,only_large,coverage,cleanup-mode=none,cache
+    ANOD_QUALIFIERS: assertions,only_large,cleanup-mode=none,cache
 
 spark2014_nocache:
   extends: .spark2014_test
@@ -220,7 +212,7 @@ spark2014_nocache:
   cache: []
   variables:
     ANOD_ENTRY_POINT: test_nocache
-    ANOD_QUALIFIERS: assertions,coverage,cleanup-mode=none
+    ANOD_QUALIFIERS: assertions,cleanup-mode=none
 
 ###############################
 # Tests of ACATS and SPARKlib #
