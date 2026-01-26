@@ -4015,9 +4015,54 @@ package body Flow_Utility is
                return Flow_Id_Sets.Empty_Set;
 
             when Attribute_Address     =>
-               --  The address of anything is totally separate from anything
-               --  flow analysis cares about, so we ignore it.
-               return Flow_Id_Sets.Empty_Set;
+
+               --  For supported overlays like "X'Address" the expression does
+               --  not read the overlying object (but reads array and slice
+               --  expressions in the prefix, if any). For other subexpressoins
+               --  in the prefix we conservatively assume them to be reads.
+
+               declare
+                  Pref : Node_Id := Prefix (N);
+               begin
+                  loop
+                     case Nkind (Pref) is
+                        when N_Identifier | N_Expanded_Name                =>
+                           exit;
+
+                        when N_Explicit_Dereference | N_Selected_Component =>
+                           Pref := Prefix (Pref);
+
+                        when N_Indexed_Component                           =>
+                           declare
+                              Index : Node_Id;
+                           begin
+                              Index := First (Expressions (Pref));
+                              while Present (Index) loop
+                                 Variables.Union (Recurse (Index));
+                                 Next (Index);
+                              end loop;
+                           end;
+
+                           Pref := Prefix (Pref);
+
+                        when N_Slice                                       =>
+                           declare
+                              R : constant Node_Id :=
+                                Get_Range (Discrete_Range (Pref));
+                           begin
+                              Variables.Union (Recurse (Low_Bound (R)));
+                              Variables.Union (Recurse (High_Bound (R)));
+                           end;
+
+                           Pref := Prefix (Pref);
+
+                        when others                                        =>
+                           return Variables.Union (Recurse (Pref));
+                     end case;
+                  end loop;
+               end;
+
+               return Variables;
 
             when Attribute_Old         =>
                --  If Skip_Old is True, ignore the attribute. Otherwise, we

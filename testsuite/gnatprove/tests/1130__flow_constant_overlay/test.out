@@ -1,3 +1,21 @@
+call_prefix.adb:1:10: info: implicit aspect Always_Terminates on "Call_Prefix" has been proved, subprogram will terminate
+call_prefix.adb:2:09: info: flow dependencies proved
+call_prefix.adb:5:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
+call_prefix.adb:5:04: warning: address specification on "Y" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes through a potential alias [imprecise-address-specification] [E0012]
+call_prefix.adb:5:04: warning: launch "gnatprove --explain=E0012" for more information
+call_prefix.adb:5:51: info: no contextual analysis of "Foo" (body not seen yet)
+call_prefix.adb:5:51: warning: assuming "Foo" has no effect on global items
+call_prefix.adb:5:51: warning: no Global contract available for "Foo" [assumed-global-null]
+call_prefix.adb:5:58: warning: alignment of object is not precisely known [imprecise-align]
+indexed_prefix.adb:1:10: info: implicit aspect Always_Terminates on "Indexed_Prefix" has been proved, subprogram will terminate
+indexed_prefix.adb:3:16: info: flow dependencies proved
+indexed_prefix.adb:7:04: info: address in address clause is compatible with object alignment (Trivial)
+indexed_prefix.adb:7:04: info: object is suitable for aliasing via address clause (Trivial)
+indexed_prefix.adb:7:51: info: object is suitable for aliasing via address clause (Trivial)
+indexed_prefix.adb:7:51: info: type is suitable as source for unchecked conversion (Trivial)
+indexed_prefix.adb:7:51: info: types of aliased objects have the same size (Trivial)
+indexed_prefix.adb:7:54: info: index check proved (CVC5: 2 VC)
+indexed_prefix.adb:7:56: warning: alignment of object is not precisely known [imprecise-align]
 main.adb:4:04: info: address in address clause is compatible with object alignment (Trivial)
 main.adb:4:04: info: object is suitable for aliasing via address clause (Trivial)
 main.adb:4:50: info: object is suitable for aliasing via address clause (Trivial)
@@ -5,3 +23,21 @@ main.adb:4:50: info: type is suitable as source for unchecked conversion (Trivia
 main.adb:4:50: info: types of aliased objects have the same size (Trivial)
 main.adb:6:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 main.adb:6:43: info: data dependencies proved
+sliced_prefix.adb:1:10: info: implicit aspect Always_Terminates on "Sliced_Prefix" has been proved, subprogram will terminate
+sliced_prefix.adb:3:09: info: flow dependencies proved
+sliced_prefix.adb:7:04: info: address in address clause is compatible with object alignment (Trivial)
+sliced_prefix.adb:7:04: info: object is suitable for aliasing via address clause (Trivial)
+sliced_prefix.adb:7:04: warning: imprecise handling of overlay (types in unchecked conversion do not have the same size) [imprecise-overlay]
+sliced_prefix.adb:7:65: info: object is suitable for aliasing via address clause (Trivial)
+sliced_prefix.adb:7:65: info: range check proved (CVC5: 4 VC)
+sliced_prefix.adb:7:65: info: type is suitable as source for unchecked conversion (Trivial)
+sliced_prefix.adb:7:65: info: types of aliased objects have the same size (CVC5: 1 VC)
+sliced_prefix.adb:7:75: warning: alignment of object is not precisely known [imprecise-align]
+sliced_prefix.adb:8:04: info: address in address clause is compatible with object alignment (Trivial)
+sliced_prefix.adb:8:04: info: object is suitable for aliasing via address clause (Trivial)
+sliced_prefix.adb:8:04: warning: imprecise handling of overlay (types in unchecked conversion do not have the same size) [imprecise-overlay]
+sliced_prefix.adb:8:65: info: object is suitable for aliasing via address clause (Trivial)
+sliced_prefix.adb:8:65: info: range check proved (CVC5: 4 VC)
+sliced_prefix.adb:8:65: info: type is suitable as source for unchecked conversion (Trivial)
+sliced_prefix.adb:8:65: info: types of aliased objects have the same size (CVC5: 1 VC)
+sliced_prefix.adb:8:75: warning: alignment of object is not precisely known [imprecise-align]
