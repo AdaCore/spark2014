@@ -31,9 +31,12 @@ package Gnat2Why_Opts.Writing is
    --  GNATprove.
 
    function Pass_Extra_Options_To_Gnat2why
-     (Translation_Phase : Boolean; Obj_Dir : String) return String;
+     (Translation_Phase : Boolean; Obj_Dir : String; Why3_Dir : String)
+      return String;
    --  Create a file with extra options for gnat2why and return its pathname.
    --  Translation_Phase is False for globals generation, and True for
    --  translation to Why.
+   --  Why3_Dir is the directory where gnatwhy3 is intended to run,
+   --  and find the why3.conf file.
 
 end Gnat2Why_Opts.Writing;

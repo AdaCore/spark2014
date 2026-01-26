@@ -2,4 +2,11 @@ p.adb:6:13: error: Constraint_Error would have been raised at run time
 p.adb:6:13: error: value not in range of type "T" defined at pack.ads:2
 p.adb:7:13: error: Constraint_Error would have been raised at run time
 p.adb:7:13: error: value not in range of type "T" defined at pack.ads:2
-gnatprove: error during generation of Global contracts
+pack.ads:4:21: warning: "A" is not modified, could be IN
+pack.ads:4:21: warning: unused variable "A"
+pack.ads:4:24: warning: "B" is not modified, could be IN
+pack.ads:4:24: warning: unused variable "B"
+pack.ads:4:27: warning: "C" is not modified, could be IN
+pack.ads:4:27: warning: unused variable "C"
+gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Global_Gen] p.adb (test.gpr) failed with status 5

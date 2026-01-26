@@ -39,7 +39,8 @@ package body Gnat2Why_Opts.Writing is
    ------------------------------------
 
    function Pass_Extra_Options_To_Gnat2why
-     (Translation_Phase : Boolean; Obj_Dir : String) return String
+     (Translation_Phase : Boolean; Obj_Dir : String; Why3_Dir : String)
+      return String
    is
       function Write_To_File (V : JSON_Value) return String;
       --  Write a textual representation of V to file
@@ -172,7 +173,9 @@ package body Gnat2Why_Opts.Writing is
          Set_Field (Obj, CWE_Name, CL_Switches.CWE);
          Set_Field (Obj, Max_Why3_Processes_Name, Max_Why3_Processes);
 
-         Set_Field (Obj, Why3_Dir_Name, Obj_Dir);
+         --  The call to Ada.Directories.Full_Name removes any trailing
+         --  slash, which could confuse gnat2why.
+         Set_Field (Obj, Why3_Dir_Name, Ada.Directories.Full_Name (Why3_Dir));
       end if;
 
       --  File-specific options
