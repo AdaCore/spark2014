@@ -150,12 +150,6 @@ package Flow_Types is
 
    subtype Parameter_Variant is Flow_Id_Variant range In_View .. Out_View;
 
-   type Corresponding_Grouping_Map is
-     array (Initial_Or_Final_Variant) of Flow_Id_Variant;
-
-   Corresponding_Grouping : constant Corresponding_Grouping_Map :=
-     (Initial_Value => Initial_Grouping, Final_Value => Final_Grouping);
-
    type Flow_Id (Kind : Flow_Id_Kind := Null_Value) is record
       Variant : Flow_Id_Variant;
       --  In theory this doesn't have to be part of a Null_Value id, but there
