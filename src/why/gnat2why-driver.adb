@@ -54,7 +54,7 @@ with Flow_Utility;                   use Flow_Utility;
 with Flow_Visibility;                use Flow_Visibility;
 with Gnat2Why_Opts.Reading;          use Gnat2Why_Opts.Reading;
 with GNAT.OS_Lib;                    use GNAT.OS_Lib;
-with GNAT.SHA1;
+with GNATCOLL.Hash.Blake3;           use GNATCOLL.Hash.Blake3;
 with GNAT.Source_Info;
 with GNATCOLL.JSON;                  use GNATCOLL.JSON;
 with GNATCOLL.Utils;                 use GNATCOLL.Utils;
@@ -318,17 +318,24 @@ package body Gnat2Why.Driver is
    is
       S             : constant String := Full_Name (E);
       Digest_Length : constant := 20;
-      --  Arbitrary number of digits that we take from the SHA1 digest to
+      --  Arbitrary number of digits that we take from the hash digest to
       --  achieve uniqueness.
+
+      Ctx : Blake3_Context;
+
    begin
       if S'Length > Max_Why3_Filename_Length - Extension'Length then
+
+         Ctx.Init_Hash_Context;
+         Ctx.Update_Hash_Context (S);
+
          --  the slice bound is computed as follows:
          --  take Max_Why3_Filename_Length - 1
          --  remove the file ending
          --  remove 1 for the dash
          --  remove Digest_Length for the digest
          return
-           GNAT.SHA1.Digest (S) (1 .. Digest_Length)
+           Ctx.Hash_Digest (1 .. Digest_Length)
            & "-"
            & S
                (S'Last
