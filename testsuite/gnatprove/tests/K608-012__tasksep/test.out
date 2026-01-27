@@ -1,3 +1,4 @@
 tasksep.ads:3:07: error: from profile "Ravenscar" at test.adc:2
 tasksep.ads:3:07: error: violation of restriction "Max_Task_Entries = 0"
-gnatprove: error during generation of Global contracts
+gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Global_Gen] tasksep.adb (test.gpr) failed with status 5

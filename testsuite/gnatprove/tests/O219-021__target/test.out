@@ -1,7 +1,5 @@
-cf_spark.gpr:1:09: no compiler for language "Ada", cannot compile "main.adb"
-gnatprove: error during generation of Global contracts
-gprbuild: *** compilation phase failed
-kb: info: can't find a toolchain for the following configuration: language 'Ada', target 'arm-eabi', default runtime
+cf_spark.gpr: error: no compiler for language "Ada", cannot compile "main.adb"
+gnatprove: error during flow analysis and proof
 kb: info: can't find a toolchain for the following configuration: language 'Ada', target 'arm-eabi', default runtime
 warning: attribute "Target" of your project file is only used to determine runtime library
 warning: to specify target properties, specify option "-gnateT" using "Builder.Global_Compilation_Switches"

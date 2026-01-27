@@ -1,3 +1,4 @@
 exc_cases_and_annotations.adb:13:14: error: "Lemma" might propagate exceptions
 exc_cases_and_annotations.adb:13:14: error: a subprogram with the "Automatic_Instantiation" annotation shall have no side-effects
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] exc_cases_and_annotations.adb (test.gpr) failed with status 5

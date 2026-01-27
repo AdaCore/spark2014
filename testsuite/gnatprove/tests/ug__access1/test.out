@@ -6,4 +6,5 @@
     6 |       Y := X;                     --  ownership of X is transferred to Y
       |            ^
       + launch "gnatprove --explain=E0010" for more information
+access1.gpr: error: [Ada Analysis] test.adb (access1.gpr) failed with status 5
 gnatprove: error during flow analysis and proof

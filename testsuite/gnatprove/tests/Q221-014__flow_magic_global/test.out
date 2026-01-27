@@ -4,3 +4,4 @@ q.ads:6:28: error: use instead a constant initialized to the expression with var
 remote.ads:3:13: info: implicit aspect Always_Terminates on "Read_Hidden_Global" has been proved, subprogram will terminate
 remote.ads:5:13: info: implicit aspect Always_Terminates on "Read_Hidden_Const" has been proved, subprogram will terminate
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] q.ads (test.gpr) failed with status 5

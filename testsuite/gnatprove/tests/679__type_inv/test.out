@@ -3,3 +3,4 @@ p1-child.ads:7:13: error: access to incomplete or private type which needs an in
 use_f.adb:4:19: info: assertion proved (CVC5: 1 VC)
 use_f.adb:5:19: medium: assertion might fail [provers reached step limit before completing the proof]
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] use_f.adb (test.gpr) failed with status 5

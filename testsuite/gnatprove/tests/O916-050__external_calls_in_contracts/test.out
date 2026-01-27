@@ -1,3 +1,4 @@
 p.ads:7:35: error: internal call cannot appear in precondition of protected operation
 p.ads:8:47: error: internal call cannot appear in case guard in a contract case
-gnatprove: error during generation of Global contracts
+gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Global_Gen] p.adb (test.gpr) failed with status 5

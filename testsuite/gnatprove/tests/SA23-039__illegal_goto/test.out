@@ -87,3 +87,4 @@ test_bad_goto.adb:82:07: warning: no Global contract available for "B" [assumed-
 test_bad_goto.adb:83:07: error: backward goto statement is not allowed in SPARK (SPARK RM 5.8(1))
 test_bad_goto.adb:83:07: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] test_bad_goto.adb (test.gpr) failed with status 5

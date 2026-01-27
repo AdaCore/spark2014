@@ -5,3 +5,4 @@ test_moved.adb:38:32: error: dereference from "K" is not readable
 test_moved.adb:38:32: error: launch "gnatprove --explain=E0010" for more information
 test_moved.adb:38:32: error: object was moved at line 33 [E0010]
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] test_moved.adb (test.gpr) failed with status 5

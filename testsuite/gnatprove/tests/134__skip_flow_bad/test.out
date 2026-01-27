@@ -5,3 +5,4 @@ bad.adb:8:25: warning: no Global contract available for "F" [assumed-global-null
 bad.adb:11:22: warning: assuming "F" has no effect on global items
 bad.adb:11:22: warning: no Global contract available for "F" [assumed-global-null]
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] bad.adb (test.gpr) failed with status 5

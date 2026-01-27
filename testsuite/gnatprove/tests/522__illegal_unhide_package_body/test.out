@@ -13,3 +13,5 @@ test.adb:49:09: error: incorrect placement for "pragma Annotate (GNATprove, Unhi
 test.adb:61:07: error: "Hide_Info" annotation cannot be applied to package bodies
 test.adb:61:07: error: unexpected third argument for "pragma Annotate (GNATprove, Hide_Info[, ...])"
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] bad_compil.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] test.adb (test.gpr) failed with status 5

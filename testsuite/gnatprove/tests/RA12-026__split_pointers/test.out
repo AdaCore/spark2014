@@ -9,3 +9,4 @@ split_pointers.adb:49:13: info: implicit aspect Always_Terminates on "Test_Fun" 
 split_pointers.adb:50:06: info: data dependencies proved
 split_pointers.adb:67:04: info: initialization of "H1" proved
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] split_pointers.adb (test.gpr) failed with status 5

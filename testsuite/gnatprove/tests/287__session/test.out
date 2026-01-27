@@ -1,2 +1,3 @@
 gnatprove: error during flow analysis and proof
 gnatprove: error loading session located in proof/sessions/test, please delete the session and try again
+test.gpr: error: [Ada Analysis] test.adb (test.gpr) failed with status 4

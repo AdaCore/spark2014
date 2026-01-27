@@ -62,3 +62,4 @@ two_tasks_single_so.ads:7:09: high: with task "two_tasks_single_so.t2"
 two_tasks_single_so.ads:7:09: medium: the task might terminate, which is not allowed in SPARK [provers gave up before completing the proof]
 two_tasks_single_so.ads:9:09: medium: the task might terminate, which is not allowed in SPARK [provers gave up before completing the proof]
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] task_in_empty_arrays.ads (test.gpr) failed with status 5

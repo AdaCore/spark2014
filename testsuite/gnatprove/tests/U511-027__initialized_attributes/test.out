@@ -2,3 +2,4 @@ bad_relaxed_init.adb:4:19: error: attribute "Initialized" on a prefix which does
 bad_relaxed_init.adb:4:19: error: violation of aspect SPARK_Mode at line 1
 relaxed_init.adb:4:19: info: assertion proved (CVC5: 1 VC)
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] bad_relaxed_init.adb (test.gpr) failed with status 5

@@ -11,3 +11,4 @@ main.adb:9:03: info: in instantiation at gen.adb:10
 main.adb:9:12: info: implicit aspect Always_Terminates on "U" has been proved, subprogram will terminate
 main.adb:10:18: medium: precondition might fail [provers reached step limit before completing the proof]
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] gen.adb (test.gpr) failed with status 5

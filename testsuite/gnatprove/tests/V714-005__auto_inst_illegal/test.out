@@ -20,3 +20,4 @@ test_illegal.adb:117:14: error: incorrect placement for entity with the "Automat
 test_illegal.adb:129:14: error: "Lemma_F11" shall be declared directly after a function
 test_illegal.adb:129:14: error: incorrect placement for entity with the "Automatic_Instantiation" annotation
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] test_illegal.adb (test.gpr) failed with status 5

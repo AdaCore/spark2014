@@ -29,3 +29,4 @@ bad_annotate.adb:80:04: error: wrong number of arguments in "pragma Annotate (GN
 system.ads:1:01: error: "My_Int" is not allowed in SPARK (due to incorrect use of "No_Wrap_Around" annotation)
 system.ads:1:01: error: violation of aspect SPARK_Mode at bad_annotate.adb:4
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] bad_annotate.adb (test.gpr) failed with status 5

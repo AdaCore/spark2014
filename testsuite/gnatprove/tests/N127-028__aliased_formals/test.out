@@ -2,4 +2,5 @@ ap.ads:21:16: error: function cannot have parameter of mode "out" or "in out" in
 ap.ads:21:16: error: launch "gnatprove --explain=E0015" for more information
 ap.ads:22:16: error: function cannot have parameter of mode "out" or "in out" in SPARK [E0015]
 ap.ads:22:16: error: launch "gnatprove --explain=E0015" for more information
-gnatprove: error during generation of Global contracts
+gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Global_Gen] ap.ads (test.gpr) failed with status 5

@@ -5,3 +5,4 @@ ownership.ads:5:16: error: incorrect placement for entity with the "Ownership" a
 ownership.ads:9:16: error: "Is_Reclaimed" shall be declared in same declaration list as "T"
 ownership.ads:9:16: error: incorrect placement for entity with the "Ownership" annotation
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] ownership.ads (test.gpr) failed with status 5

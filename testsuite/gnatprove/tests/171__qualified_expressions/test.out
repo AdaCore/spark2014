@@ -18,3 +18,4 @@ main.adb:36:15: error: a qualified expression provides a constant view of an obj
 main.adb:36:15: error: constant object as "in out" parameter is not allowed in SPARK (SPARK RM 3.10(3))
 main.adb:36:15: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] main.adb (test.gpr) failed with status 5

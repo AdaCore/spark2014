@@ -8,3 +8,5 @@ use_types_pred.adb:7:12: error: subtype with a discriminant constraint containin
 use_types_pred.adb:13:22: error: "PP_True" is not allowed in SPARK (due to subtype with a discriminant constraint containing only subcomponents whose type is annotated with Relaxed_Initialization)
 use_types_pred.adb:13:22: error: violation of aspect SPARK_Mode at line 3
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] types.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] use_types_pred.adb (test.gpr) failed with status 5

@@ -5,3 +5,4 @@ bar.adb:5:13: info: implicit aspect Always_Terminates on "Foo" has been proved, 
 bar.adb:11:13: warning: initialization of "Y" has no effect
 bar.adb:13:21: warning: unused assignment
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] bar.adb (test.gpr) failed with status 5

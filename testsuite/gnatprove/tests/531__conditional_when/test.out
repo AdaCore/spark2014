@@ -6,3 +6,6 @@ raisew.adb:5:07: error: GNAT extension for conditional raise is not yet supporte
 retw.adb:3:04: warning: analyzing unreferenced function "X" [unreferenced-function]
 retw.adb:5:07: error: GNAT extension for conditional return is not yet supported
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] gotow.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] raisew.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] retw.adb (test.gpr) failed with status 5

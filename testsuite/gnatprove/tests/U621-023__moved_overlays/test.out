@@ -9,3 +9,4 @@ main.adb:36:10: error: "X" was observed at line 31
 main.adb:41:22: info: data dependencies proved
 main.adb:47:10: error: "X" was observed at line 44
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] main.adb (test.gpr) failed with status 5

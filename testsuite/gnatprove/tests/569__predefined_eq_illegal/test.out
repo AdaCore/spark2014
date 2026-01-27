@@ -47,3 +47,5 @@ test_usage.adb:99:26: error: equality on "T" shall not be used in SPARK
 test_usage.adb:100:29: error: equality on "T" shall not be used in SPARK
 test_usage.adb:129:04: warning: analyzing unreferenced procedure "Use_No_Eq_Tagged_2" [unreferenced-procedure]
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] illegal_annot.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] test_usage.adb (test.gpr) failed with status 5

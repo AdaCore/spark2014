@@ -11,3 +11,4 @@ main.adb:39:07: info: no contextual analysis of "Test_Levels" (nested subprogram
 main.adb:44:20: error: "Z" and "Set_To_Zero" should have matching assertion levels
 main.adb:44:20: error: ghost object "Z" cannot be borrowed in a call to ghost subprogram "Set_To_Zero"
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] main.adb (test.gpr) failed with status 5

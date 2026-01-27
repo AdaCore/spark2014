@@ -1,2 +1,3 @@
 uc.adb:8:35: error: unknown value of object size is not yet supported
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] uc.adb (test.gpr) failed with status 5

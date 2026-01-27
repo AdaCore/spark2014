@@ -6,4 +6,14 @@ from subprocess import call
 # A dummy test.gpr config is provided explicitly by this test, as it will not
 # be created by the GNATPROVE routine.
 
-call(["gnatprove", "-P", "test.gpr", "--mode=check_all", "p.ads", "--output=brief"])
+call(
+    [
+        "gnatprove",
+        "-P",
+        "test.gpr",
+        "--mode=check_all",
+        "p.ads",
+        "--quiet",
+        "--output=brief",
+    ]
+)

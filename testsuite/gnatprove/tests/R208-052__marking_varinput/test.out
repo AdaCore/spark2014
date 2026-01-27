@@ -2,3 +2,4 @@ main.adb:8:16: error: default initialization cannot depend on variable input "no
 main.adb:8:16: error: launch "gnatprove --explain=E0007" for more information
 main.adb:8:16: error: use instead a constant initialized to the expression with variable input
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] main.adb (test.gpr) failed with status 5

@@ -155,3 +155,12 @@ test.adb:89:08: error: borrow or observe of a non-traversal function call is not
 test.adb:89:08: error: launch "gnatprove --explain=E0020" for more information
 test.adb:89:08: error: violation of aspect SPARK_Mode at line 7
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] n01.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] n011.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] n02.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] n04.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] observingcomposite.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] pointers.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] pointers2.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] simple.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] test.adb (test.gpr) failed with status 5

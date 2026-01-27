@@ -31,3 +31,4 @@ main.adb:221:32: error: loop iteration terminates with moved value for "Y"
 main.adb:221:32: error: object was moved at line 223 [E0010]
 main.adb:221:32: warning: loop condition is stable
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] main.adb (test.gpr) failed with status 5

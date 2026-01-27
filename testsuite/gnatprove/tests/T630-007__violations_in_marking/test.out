@@ -83,3 +83,13 @@ not_hardcoded.adb:7:19: info: implicit aspect Always_Terminates on "Id" has been
 not_hardcoded.adb:13:22: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 not_hardcoded.adb:21:25: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] bad_access.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] bad_array_conv.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] bad_at_end_borrow.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] bad_inheritance.ads (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] bad_inv_placement.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] bad_iterators.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] bad_membership.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] bad_raise.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] bad_relaxed_init.ads (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] ext.ads (test.gpr) failed with status 5

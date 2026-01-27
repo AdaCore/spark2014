@@ -7,3 +7,4 @@ test_access_comp.ads:17:04: error: object of anonymous access not declared immed
 test_access_comp.ads:17:04: error: violation of aspect SPARK_Mode at line 3
 test_access_comp.ads:17:04: error: violation of aspect SPARK_Mode at line 3
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] test_access_comp.ads (test.gpr) failed with status 5

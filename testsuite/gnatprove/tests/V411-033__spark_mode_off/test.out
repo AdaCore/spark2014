@@ -2,3 +2,4 @@ main.adb:10:40: error: "New_integer" is not allowed in SPARK (due to entity decl
 main.adb:10:40: error: separate subprogram declaration from subprogram body to allow calling it from SPARK code
 main.adb:10:40: error: violation of aspect SPARK_Mode at line 2
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] main.adb (test.gpr) failed with status 5

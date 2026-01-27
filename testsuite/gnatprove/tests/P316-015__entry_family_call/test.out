@@ -3,3 +3,5 @@ client.adb:5:04: error: violation of aspect SPARK_Mode at line 3
 family.ads:6:13: error: entry family is not yet supported
 family.ads:6:13: error: entry family is not yet supported
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] client.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] family.ads (test.gpr) failed with status 5

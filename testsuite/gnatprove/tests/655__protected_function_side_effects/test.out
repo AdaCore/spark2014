@@ -4,3 +4,4 @@ p.adb:29:16: error: "X" is not writable
 p.adb:29:16: error: object was declared as not writable at p.ads:18
 p.adb:35:10: info: initialization of "X" proved
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] p.adb (test.gpr) failed with status 5

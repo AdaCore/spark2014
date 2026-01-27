@@ -1,3 +1,4 @@
 p.ads:8:22: error: "Y" is not allowed in SPARK (due to volatile object or volatile function call in interfering context)
 p.ads:8:22: error: violation of aspect SPARK_Mode at line 7
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] p.ads (test.gpr) failed with status 5

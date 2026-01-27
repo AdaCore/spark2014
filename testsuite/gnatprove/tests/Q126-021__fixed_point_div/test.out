@@ -2,3 +2,4 @@ art.ads:6:22: error: conversion between fixed-point and floating-point types is 
 art.ads:6:39: warning: assuming "TPS" has no effect on global items
 art.ads:6:39: warning: no Global contract available for "TPS" [assumed-global-null]
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] art.ads (test.gpr) failed with status 5

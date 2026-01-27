@@ -7,3 +7,4 @@ dic_not_spark.ads:15:16: error: function "Add" with output global "Global" is no
 dic_not_spark.ads:15:16: error: launch "gnatprove --explain=E0005" for more information
 dic_not_spark.ads:15:16: error: violation of aspect SPARK_Mode at line 10
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] dic_not_spark.adb (test.gpr) failed with status 5

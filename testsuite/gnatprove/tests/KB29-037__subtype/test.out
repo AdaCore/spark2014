@@ -20,3 +20,4 @@ sub.ads:12:49: error: use instead a constant initialized to the expression with 
 sub.ads:18:13: info: implicit aspect Always_Terminates on "Incorrect" has been proved, subprogram will terminate
 sub.ads:20:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] sub.adb (test.gpr) failed with status 5

@@ -13,3 +13,8 @@ q.ads:1:34: warning: no subprogram exists that can initialize abstract state "Q.
 q.ads:5:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 q.ads:7:04: error: indicator Part_Of is required in this context: constant with variable input "B" is declared in the private part of package "Q" (SPARK RM 7.2.6(2))
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] communication.ads (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] p-priv_child.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] p.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] parent-privchild.ads (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] q.adb (test.gpr) failed with status 5

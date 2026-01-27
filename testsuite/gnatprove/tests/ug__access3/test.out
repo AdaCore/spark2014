@@ -6,4 +6,5 @@
     4 |       Tmp : Int_Ptr := X; --  ownership of X is moved to Tmp
       |                        ^
       + launch "gnatprove --explain=E0010" for more information
+access3.gpr: error: [Ada Analysis] test.adb (access3.gpr) failed with status 5
 gnatprove: error during flow analysis and proof

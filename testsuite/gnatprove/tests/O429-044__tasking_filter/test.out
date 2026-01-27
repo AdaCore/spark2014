@@ -18,3 +18,4 @@ tasks.ads:58:07: error: violation of pragma SPARK_Mode at test.adc:1
 tasks.ads:69:07: error: not fully initialized part of concurrent type is not allowed in SPARK (SPARK RM 9(4))
 tasks.ads:69:07: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] tasks.adb (test.gpr) failed with status 5

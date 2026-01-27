@@ -4,3 +4,4 @@ q.ads:12:14: error: "Y" is an Input of overriding subprogram, but it is not an I
 q.ads:12:14: medium: "Y" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(19))
 q.ads:12:30: info: flow dependencies proved
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] q.adb (test.gpr) failed with status 5

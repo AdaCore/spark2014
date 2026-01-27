@@ -2,6 +2,7 @@ violations.adb:14:04: error: object of anonymous access not declared immediately
 violations.adb:14:04: error: violation of pragma SPARK_Mode at test.adc:1
 violations.adb:20:07: error: "Data3" is not allowed in SPARK (due to uninitialized object of anonymous access type)
 violations.adb:20:07: error: violation of pragma SPARK_Mode at test.adc:1
+check_fast.gpr: error: [Ada Analysis] violations.adb (check_fast.gpr) failed with status 5
 gnatprove: error during fast partial checking of SPARK legality rules
 all_violations.adb:24:04: warning: analyzing unreferenced procedure "Call_Increment_And_Log" [unreferenced-procedure]
 all_violations.adb:27:12: error: "Increment_And_Log" is not allowed in SPARK (due to function with global outputs)
@@ -14,5 +15,6 @@ all_violations.ads:9:13: error: consider using the Side_Effects aspect
 all_violations.ads:9:13: error: function "Increment_And_Log" with output global "Last" is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]
 all_violations.ads:9:13: error: launch "gnatprove --explain=E0005" for more information
 all_violations.ads:9:13: error: violation of pragma SPARK_Mode at test.adc:1
+check_all.gpr: error: [Ada Analysis] all_violations.adb (check_all.gpr) failed with status 5
 gnatprove: error during analysis of data and information flow
 correct.adb:106:07: medium: implicit aspect Always_Terminates on "Increment_And_Log" could be incorrect, call to "Log" might be nonterminating [possible fix: annotate "Log" with aspect Always_Terminates]

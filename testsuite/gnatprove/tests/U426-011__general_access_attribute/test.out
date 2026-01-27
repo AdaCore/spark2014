@@ -99,3 +99,6 @@ bad_moves_of_shallow.adb:31:19: error: "X2" is not readable
 bad_moves_of_shallow.adb:31:19: error: launch "gnatprove --explain=E0010" for more information
 bad_moves_of_shallow.adb:31:19: error: object was moved at line 6 [E0010]
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] bad_access.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] bad_moves_of_deep.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] bad_moves_of_shallow.adb (test.gpr) failed with status 5

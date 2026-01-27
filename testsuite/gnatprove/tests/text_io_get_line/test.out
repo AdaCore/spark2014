@@ -78,3 +78,4 @@ textio.ads:113:06: error: constant with variable input "EOF_Ch" is referenced in
 textio.ads:120:13: info: implicit aspect Always_Terminates on "Fpeek" has been proved, subprogram will terminate
 textio.ads:127:13: info: implicit aspect Always_Terminates on "Current_File" has been proved, subprogram will terminate
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] textio.adb (test.gpr) failed with status 5

@@ -5,3 +5,4 @@ loop_param.adb:5:27: error: violation of pragma SPARK_Mode at test.adc:1
 loop_param.adb:7:10: error: "K" is not allowed in SPARK (due to mutable object and constant object overlaying each other)
 loop_param.adb:7:10: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] loop_param.adb (test.gpr) failed with status 5

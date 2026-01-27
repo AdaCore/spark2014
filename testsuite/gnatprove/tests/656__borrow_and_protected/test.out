@@ -75,3 +75,5 @@ p2.ads:9:17: error: launch "gnatprove --explain=E0010" for more information
 p2.ads:9:17: error: object was moved at p2.adb:18 [E0010]
 p2.ads:9:17: error: return from "P1" with moved value for "X"
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] p.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] p2.adb (test.gpr) failed with status 5

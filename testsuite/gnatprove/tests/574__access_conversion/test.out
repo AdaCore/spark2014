@@ -4,3 +4,4 @@ m.adb:8:59: error: violation of aspect SPARK_Mode at line 1
 m.adb:21:14: error: "X" is not allowed in SPARK
 m.adb:21:14: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] m.adb (test.gpr) failed with status 5

@@ -15,3 +15,4 @@ test_overlays.adb:31:04: warning: address specification on "V7" is imprecisely s
 test_overlays.adb:31:04: warning: launch "gnatprove --explain=E0012" for more information
 test_overlays.adb:31:04: warning: make sure that all overlapping objects have Async_Writers set to True
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] test_overlays.adb (test.gpr) failed with status 5

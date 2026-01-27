@@ -8,3 +8,5 @@ bad_return.adb:2:23: warning: "X" is not modified, could be IN
 bad_return.adb:5:04: warning: statement has no effect
 bad_return.adb:6:09: warning: unused assignment
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] bad_loop.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] bad_return.adb (test.gpr) failed with status 5

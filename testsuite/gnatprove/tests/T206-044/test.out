@@ -8,3 +8,4 @@ fp.adb:7:13: error: real literal argument to fixed-point multiplication or divis
 fp.adb:7:13: error: use qualification to give a fixed-point type to the real literal
 fp.adb:7:13: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] fp.adb (test.gpr) failed with status 5

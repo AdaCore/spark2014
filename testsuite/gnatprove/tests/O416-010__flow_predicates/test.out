@@ -14,3 +14,4 @@ foo.adb:57:09: info: data dependencies proved
 foo.adb:58:09: info: flow dependencies proved
 foo.adb:71:23: info: initialization of "O" proved
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] foo.adb (test.gpr) failed with status 5

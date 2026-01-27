@@ -1,3 +1,4 @@
 broken.adb:4:19: error: Storage_Error might have been raised at run time
 broken.adb:4:19: error: possible infinite recursion
-gnatprove: error during generation of Global contracts
+gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Global_Gen] broken.adb (test.gpr) failed with status 5

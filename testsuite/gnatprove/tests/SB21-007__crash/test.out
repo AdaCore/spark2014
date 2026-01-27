@@ -10,3 +10,4 @@ database.ads:23:04: error: "Item" is not writable
 database.ads:23:04: error: instantiation error at spark-containers-functional-sets.ads:428
 database.ads:23:04: error: object was declared as not writable at spark-containers-functional-sets.ads:427, instance at line 23
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] database.adb (test.gpr) failed with status 5

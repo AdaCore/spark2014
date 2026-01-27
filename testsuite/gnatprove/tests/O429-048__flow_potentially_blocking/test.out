@@ -102,3 +102,4 @@ remote.ads:4:04: warning: pragma "All_Calls_Remote" ignored (not yet supported) 
 remote.ads:7:14: warning: subprogram "Remote_Call" has no effect
 simple_package.ads:3:14: warning: subprogram "Dummy" has no effect
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] blocking_contract.adb (test.gpr) failed with status 5

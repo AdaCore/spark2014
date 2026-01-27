@@ -7,4 +7,5 @@
 --> ownership_observing.adb:14:09
    14 |          X.all := 1;          --  illegal
       |          ~~^~~
+ownership_observing.gpr: error: [Ada Analysis] ownership_observing.adb (ownership_observing.gpr) failed with status 5
 gnatprove: error during flow analysis and proof

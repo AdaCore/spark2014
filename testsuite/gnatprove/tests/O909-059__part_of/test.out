@@ -16,3 +16,4 @@ communication.ads:29:16: error: indicator Part_Of is required in this context: c
 communication.ads:29:16: high: cannot write constant with variable input "Max9" during elaboration of "Communication" [E0008]
 communication.ads:29:16: high: launch "gnatprove --explain=E0008" for more information
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] communication.adb (test.gpr) failed with status 5

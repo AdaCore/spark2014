@@ -2,4 +2,5 @@ p_no_return.adb:4:07: error: implied return after this statement would have rais
 p_no_return.adb:4:07: error: procedure "Returning" is marked as No_Return
 p_no_return.adb:12:26: error: implied return after this statement would have raised Program_Error
 p_no_return.adb:12:26: error: procedure "Difficult_Non_Returning" is marked as No_Return
-gnatprove: error during generation of Global contracts
+gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Global_Gen] p_no_return.adb (test.gpr) failed with status 5

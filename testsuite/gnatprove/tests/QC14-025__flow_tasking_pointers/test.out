@@ -5,3 +5,5 @@ s.adb:6:04: error: incompatible designated type and access type with respect to 
 s.adb:6:04: error: violation of pragma SPARK_Mode at test.adc:1
 s.adb:10:35: error: suspension on a dereference is not yet supported
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] r.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] s.adb (test.gpr) failed with status 5

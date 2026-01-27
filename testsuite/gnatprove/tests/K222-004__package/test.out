@@ -29,3 +29,5 @@ pacq.ads:2:13: error: function "F" with output global "memory accessed through o
 pacq.ads:2:13: error: launch "gnatprove --explain=E0005" for more information
 pacq.ads:2:13: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] pack.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] pacq.adb (test.gpr) failed with status 5

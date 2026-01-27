@@ -1,3 +1,4 @@
 p.ads:3:04: error: object of anonymous access not declared immediately within a subprogram, entry or block is not allowed in SPARK (SPARK RM 3.10(5))
 p.ads:3:04: error: violation of pragma SPARK_Mode at line 2
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] p.adb (test.gpr) failed with status 5

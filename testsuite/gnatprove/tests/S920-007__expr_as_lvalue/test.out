@@ -4,3 +4,4 @@ expr_as_lvalue.adb:11:04: info: no contextual analysis of "Test" (body not seen 
 expr_as_lvalue.adb:11:10: error: expression as "in out" parameter is not allowed in SPARK (SPARK RM 3.10(3))
 expr_as_lvalue.adb:11:10: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] expr_as_lvalue.adb (test.gpr) failed with status 5

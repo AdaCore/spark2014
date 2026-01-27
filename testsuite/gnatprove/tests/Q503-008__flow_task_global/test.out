@@ -1,3 +1,4 @@
 single_explicit.adb:6:30: error: global item "Mailbox" cannot have mode In_Out or Output
 single_explicit.adb:6:30: error: item already appears as input of task "Worker"
-gnatprove: error during generation of Global contracts
+gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Global_Gen] single_explicit.adb (test.gpr) failed with status 5

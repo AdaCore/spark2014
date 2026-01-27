@@ -13,3 +13,4 @@ b.adb:22:14: error: return from "R_ASSIGN" with moved value for "R_IN"
 b.adb:22:23: warning: "R_IN" is not modified, parameter type could be rewritten as 'access constant NEWINT'
 b.adb:23:23: warning: "R_INOUT" is not modified, could be IN
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] b.adb (test.gpr) failed with status 5

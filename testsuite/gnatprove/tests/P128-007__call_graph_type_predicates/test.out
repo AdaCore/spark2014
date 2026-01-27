@@ -11,3 +11,4 @@ p.adb:23:30: info: no contextual analysis of "Foo" (inside predicate)
 p.adb:31:10: error: "T" is not allowed in SPARK
 p.adb:31:10: error: violation of aspect SPARK_Mode at line 4
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] p.adb (test.gpr) failed with status 5

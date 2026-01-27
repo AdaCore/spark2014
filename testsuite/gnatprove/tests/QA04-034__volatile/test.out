@@ -56,3 +56,4 @@ hw-dbc-transfer_rings.adb:260:11: warning: no Global contract available for "Set
 hw-dbc-transfer_rings.adb:262:07: info: analyzing call to "Enqueue_TRB" in context
 hw-dbc-transfer_rings.adb:274:32: info: analyzing call to "Prev" in context
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] hw-dbc-transfer_rings.adb (test.gpr) failed with status 5

@@ -12,3 +12,4 @@ test.adb:95:14: error: object was moved at line 97 [E0010]
 test.adb:95:14: error: return from "Foo_5" with moved value for "X"
 test.adb:112:13: warning: unused assignment
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] test.adb (test.gpr) failed with status 5

@@ -7,3 +7,5 @@ state.ads:9:13: error: nonvolatile function "Get" with volatile input global "St
 state.ads:9:13: error: violation of pragma SPARK_Mode at test.adc:1
 state.ads:9:13: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] main.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] state.adb (test.gpr) failed with status 5

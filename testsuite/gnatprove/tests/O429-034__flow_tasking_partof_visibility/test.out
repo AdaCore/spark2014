@@ -1,3 +1,4 @@
 alarm.adb:26:07: error: "The_Light" is constituent of single protected type "Blinken_PO"
 alarm.adb:26:07: error: reference to variable "The_Light" cannot appear in this context
-gnatprove: error during generation of Global contracts
+gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Global_Gen] alarm.adb (test.gpr) failed with status 5

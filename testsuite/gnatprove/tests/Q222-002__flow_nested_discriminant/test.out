@@ -15,3 +15,5 @@ q.adb:23:37: error: default initialization cannot depend on variable input "X" [
 q.adb:23:37: error: launch "gnatprove --explain=E0007" for more information
 q.adb:23:37: error: use instead a constant initialized to the expression with variable input
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] p.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] q.adb (test.gpr) failed with status 5

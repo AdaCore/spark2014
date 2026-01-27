@@ -3,3 +3,4 @@ addr.adb:12:04: error: launch "gnatprove --explain=E0002" for more information
 addr.adb:12:04: error: violation of aspect SPARK_Mode at line 4
 addr.adb:12:04: info: analyzing call to "Do_Stuff" in context
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] addr.adb (test.gpr) failed with status 5

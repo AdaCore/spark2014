@@ -7,3 +7,4 @@ effects.adb:15:14: error: a subprogram with the "Higher_Order_Specialization" an
 effects.adb:19:14: error: "P4" might propagate exceptions
 effects.adb:19:14: error: a subprogram with the "Higher_Order_Specialization" annotation shall have no side-effects
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] effects.adb (test.gpr) failed with status 5

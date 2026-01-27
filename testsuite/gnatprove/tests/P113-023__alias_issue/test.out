@@ -20,3 +20,4 @@ aconv.adb:22:04: error: violation of aspect SPARK_Mode at line 3
 aconv.adb:22:04: error: violation of aspect SPARK_Mode at line 3
 aconv.adb:22:04: info: analyzing call to "Foo" in context
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] aconv.adb (test.gpr) failed with status 5

@@ -4,3 +4,4 @@ c83012d.adb:18:32: error: use instead a constant initialized to the expression w
 report.ads:3:13: info: implicit aspect Always_Terminates on "Ident_Int" has been proved, subprogram will terminate
 report.ads:3:64: info: data dependencies proved
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] c83012d.adb (test.gpr) failed with status 5

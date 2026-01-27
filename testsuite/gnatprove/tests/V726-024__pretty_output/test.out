@@ -24,4 +24,5 @@
       + violation of aspect SPARK_Mode at line 1
     1 |    procedure Main with SPARK_Mode is
       |                        ^
+test.gpr: error: [Ada Analysis] main.adb (test.gpr) failed with status 5
 gnatprove: error during flow analysis and proof

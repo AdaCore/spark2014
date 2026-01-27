@@ -5,3 +5,4 @@ main.adb:17:24: error: equality on "chars_ptr" shall only be used if one of the 
 main.adb:20:04: warning: analyzing unreferenced procedure "Test_To_Chars_Ptr" [unreferenced-procedure]
 main.adb:27:24: error: equality on "chars_ptr" shall only be used if one of the operands is reclaimed
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] main.adb (test.gpr) failed with status 5

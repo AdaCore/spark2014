@@ -2,3 +2,4 @@ traversal_funcs.adb:9:13: info: implicit aspect Always_Terminates on "F" has bee
 traversal_funcs.adb:9:16: warning: unused variable "X"
 traversal_funcs.adb:11:14: error: return value of a traversal function should be rooted at "X"
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] traversal_funcs.adb (test.gpr) failed with status 5

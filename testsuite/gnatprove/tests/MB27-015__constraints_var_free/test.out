@@ -57,3 +57,4 @@ p.ads:69:19: info: initialization of "L" proved
 p.ads:70:11: info: flow dependencies proved
 p.ads:72:13: info: implicit aspect Always_Terminates on "Same_Length" has been proved, subprogram will terminate
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] p.adb (test.gpr) failed with status 5

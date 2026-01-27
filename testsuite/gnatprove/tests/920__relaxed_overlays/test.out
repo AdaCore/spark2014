@@ -1,3 +1,4 @@
 test.adb:11:03: error: relaxed initialization on overlaid objects is not yet supported
 test.adb:13:03: error: relaxed initialization on overlaid objects is not yet supported
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] test.adb (test.gpr) failed with status 5

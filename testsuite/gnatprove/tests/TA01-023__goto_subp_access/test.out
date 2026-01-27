@@ -4,3 +4,4 @@ subptr.adb:15:13: error: violation of pragma SPARK_Mode at test.adc:1
 subptr.adb:17:13: error: access to subprogram with global effects is not allowed in SPARK (SPARK RM 4.1.4(7))
 subptr.adb:17:13: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] subptr.adb (test.gpr) failed with status 5

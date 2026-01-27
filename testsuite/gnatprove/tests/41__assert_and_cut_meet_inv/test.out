@@ -3,3 +3,4 @@ assert_and_cut_in_loop.adb:17:07: error: pragma Assert_And_Cut immediately withi
 assert_and_cut_in_loop.adb:21:07: error: pragma Assert_And_Cut immediately within a sequence of statements containing a loop invariant is not yet supported
 assert_and_cut_in_loop.adb:39:07: error: pragma Assert_And_Cut immediately within a sequence of statements containing a loop invariant is not yet supported
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] assert_and_cut_in_loop.adb (test.gpr) failed with status 5

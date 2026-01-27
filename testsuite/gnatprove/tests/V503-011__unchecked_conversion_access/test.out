@@ -31,3 +31,4 @@ main.adb:67:13: error: violation of aspect SPARK_Mode at line 4
 main.adb:69:13: error: unchecked conversion instance from a type with access subcomponents is not allowed in SPARK (SPARK RM 13.9(1))
 main.adb:69:13: error: violation of aspect SPARK_Mode at line 4
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] main.adb (test.gpr) failed with status 5

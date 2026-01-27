@@ -35,3 +35,6 @@ varinput.ads:47:31: error: actual for formal object with mode in cannot depend o
 varinput.ads:47:31: error: launch "gnatprove --explain=E0007" for more information
 varinput.ads:47:31: error: use instead a constant initialized to the expression with variable input
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] varinput-instance_child.ads (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] varinput-package_instance_child.ads (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] varinput.adb (test.gpr) failed with status 5

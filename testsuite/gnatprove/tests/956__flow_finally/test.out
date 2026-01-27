@@ -26,3 +26,4 @@ test9.adb:3:10: info: implicit aspect Always_Terminates on "Test9" has been prov
 test9.adb:5:04: warning: this statement is never reached
 test9.adb:5:11: warning: initialization of "X" has no effect
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] test2.adb (test.gpr) failed with status 5

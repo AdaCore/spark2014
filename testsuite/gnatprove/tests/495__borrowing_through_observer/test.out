@@ -2,3 +2,4 @@ foo.adb:13:23: error: borrow of a constant object is not allowed in SPARK (SPARK
 foo.adb:13:23: error: the borrowed path contains an observing traversal function call
 foo.adb:13:23: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] foo.adb (test.gpr) failed with status 5

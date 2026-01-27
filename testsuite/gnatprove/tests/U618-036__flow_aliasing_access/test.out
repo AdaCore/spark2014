@@ -1,2 +1,3 @@
 hello.adb:18:21: error: "Access" attribute of a type with ownership not directly inside an assignment statement, an object declaration, or a simple return statement is not yet supported
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] hello.adb (test.gpr) failed with status 5

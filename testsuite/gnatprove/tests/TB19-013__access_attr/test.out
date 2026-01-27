@@ -86,3 +86,6 @@ test_access_violation.adb:32:18: warning: no Global contract available for "F" [
 test_access_violation.adb:38:24: error: Access attribute of a named access-to-constant type whose prefix is not a constant part of an object is not allowed in SPARK (SPARK RM 4.1.4(6))
 test_access_violation.adb:38:24: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] ext.ads (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] test_access_ownership_error.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] test_access_violation.adb (test.gpr) failed with status 5

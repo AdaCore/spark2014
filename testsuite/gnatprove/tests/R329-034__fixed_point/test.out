@@ -1,3 +1,4 @@
 fpfloat.adb:7:09: error: conversion between fixed-point and floating-point types is not yet supported
 fpfloat.adb:8:09: error: conversion between fixed-point and floating-point types is not yet supported
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] fpfloat.adb (test.gpr) failed with status 5

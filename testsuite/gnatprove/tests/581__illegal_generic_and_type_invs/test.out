@@ -10,3 +10,6 @@ test.adb:6:14: error: package "Inst" declares a type with an invariant
 test.adb:7:12: error: instance of a generic unit declared in a package containing a type with an invariant outside of this package is not yet supported
 test.adb:7:12: error: package "Inst" declares a type with an invariant
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] inst_child.ads (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] inst_p_child.ads (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] test.adb (test.gpr) failed with status 5

@@ -48,3 +48,8 @@ pragma_placement.ads:116:04: error: incorrect placement for "pragma Annotate (GN
 pragma_placement.ads:122:04: error: "pragma Annotate (GNATprove, Logical_Equal[, ...])" must immediately follow the specification of subprogram "Strictest_Equal"
 pragma_placement.ads:122:04: error: incorrect placement for "pragma Annotate (GNATprove, Logical_Equal[, ...])"
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] ho_specialization.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] inline_and_logical_equal.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] iterable_for_proof_marking.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] ownership_marking.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] pragma_placement.adb (test.gpr) failed with status 5

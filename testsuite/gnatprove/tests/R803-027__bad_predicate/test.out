@@ -2,3 +2,4 @@ pred_vis.ads:8:09: error: type with predicates with different SPARK_Mode values 
 pred_vis.ads:10:09: error: type with predicates with different SPARK_Mode values is not yet supported
 pred_vis.ads:12:09: error: type with predicates with different SPARK_Mode values is not yet supported
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] pred_vis.ads (test.gpr) failed with status 5

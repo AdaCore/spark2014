@@ -17,3 +17,5 @@ collection.ads:116:12: error: tagged type with inherited primitive subprograms w
 reproducer.adb:10:12: error: consider overriding the following primitive subprogram: "P"
 reproducer.adb:10:12: error: tagged type with primitive subprograms inherited from a type declared in a private part with SPARK_Mode Off is not yet supported
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] collection.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] reproducer.adb (test.gpr) failed with status 5

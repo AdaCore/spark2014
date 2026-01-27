@@ -5,3 +5,4 @@ borrow_with_variables.adb:18:37: error: borrowed expression cannot depend on var
 borrow_with_variables.adb:18:37: error: launch "gnatprove --explain=E0007" for more information
 borrow_with_variables.adb:18:37: error: use instead a constant initialized to the expression with variable input
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] borrow_with_variables.adb (test.gpr) failed with status 5

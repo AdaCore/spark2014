@@ -110,3 +110,4 @@ loggers.ads:17:16: error: plain precondition on dispatching subprogram is not al
 loggers.ads:17:16: error: use classwide precondition Pre'Class instead of Pre
 loggers.ads:17:16: error: violation of aspect SPARK_Mode at line 5
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] loggers.adb (test.gpr) failed with status 5

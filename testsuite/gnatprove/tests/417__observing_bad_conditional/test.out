@@ -19,3 +19,4 @@ main.adb:109:23: error: object was borrowed at line 106
 main.adb:133:42: error: object was borrowed at line 130
 main.adb:135:39: error: object was borrowed at line 130
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] main.adb (test.gpr) failed with status 5

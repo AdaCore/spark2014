@@ -67,3 +67,4 @@ test_deep_element_type.adb:47:04: error: "Key" is not writable
 test_deep_element_type.adb:47:04: error: instantiation error at spark-containers-functional-maps.ads:530
 test_deep_element_type.adb:47:04: error: object was declared as not writable at spark-containers-functional-maps.ads:529, instance at line 47
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] test_deep_element_type.adb (test.gpr) failed with status 5

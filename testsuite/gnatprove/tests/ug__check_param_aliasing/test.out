@@ -7,4 +7,5 @@
 --> check_param_aliasing.adb:11:45
    11 |       Whatever (In_1 => Y, In_2 => Z, Out_1 => X, Out_2 => X);  --  illegal
       |                                                ^
-gnatprove: error during generation of Global contracts
+check_param_aliasing.gpr: error: [Ada Global_Gen] check_param_aliasing.adb (check_param_aliasing.gpr) failed with status 5
+gnatprove: error during flow analysis and proof

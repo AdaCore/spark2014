@@ -9,3 +9,4 @@ lsp_checks.adb:41:16: info: implicit aspect Always_Terminates on "Child_Post_Cla
 lsp_checks.adb:44:16: info: implicit aspect Always_Terminates on "Child_Post" has been proved, subprogram will terminate
 lsp_checks.adb:49:17: error: "C" is an Input of overriding subprogram, but it is not an Input of overridden subprogram "Do_Something" at line 10 (SPARK RM 6.1.6)
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] lsp_checks.adb (test.gpr) failed with status 5

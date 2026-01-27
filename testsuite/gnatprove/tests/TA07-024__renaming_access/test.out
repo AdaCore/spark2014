@@ -20,3 +20,7 @@ renam_deep.adb:6:26: error: introduce a constant of an anonymous access type for
 renam_deep.adb:6:26: error: launch "gnatprove --explain=E0007" for more information
 renam_deep.adb:6:26: error: renamed dereference cannot depend on variable input "Y" [E0007]
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] renam2.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] renam4.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] renam5.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] renam_deep.adb (test.gpr) failed with status 5

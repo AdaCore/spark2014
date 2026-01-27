@@ -67,3 +67,4 @@ pkg_e.ads:11:03: low: initialization of "Vis_D" must be mentioned in the Initial
 uninitialized.adb:8:40: info: initialization of "Var" constituent of "State" proved
 uninitialized.ads:6:11: info: data dependencies proved
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] ic.adb (test.gpr) failed with status 5

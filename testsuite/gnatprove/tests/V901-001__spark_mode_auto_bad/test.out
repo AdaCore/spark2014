@@ -7,4 +7,6 @@ p.ads:13:39: error: only configuration pragma "SPARK_Mode" can have value "Auto"
 q.adb:3:32: error: only configuration pragma "SPARK_Mode" can have value "Auto"
 q.adb:4:23: error: only configuration pragma "SPARK_Mode" can have value "Auto"
 q.adb:7:39: error: only configuration pragma "SPARK_Mode" can have value "Auto"
-gnatprove: error during generation of Global contracts
+gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Global_Gen] p.ads (test.gpr) failed with status 5
+test.gpr: error: [Ada Global_Gen] q.adb (test.gpr) failed with status 5

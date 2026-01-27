@@ -34,3 +34,6 @@ test_marking.adb:107:36: error: violation of aspect SPARK_Mode at line 3
 test_marking.adb:108:16: error: "Y" is not allowed in SPARK (due to call to a function with side effects outside of assignment or object declaration without a block)
 test_marking.adb:108:16: error: violation of aspect SPARK_Mode at line 3
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] test_bc.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] test_compiler_generated_constant.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] test_marking.adb (test.gpr) failed with status 5

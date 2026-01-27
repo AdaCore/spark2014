@@ -72,3 +72,6 @@ test_reclaimed_value_illegal.adb:152:12: warning: no reclamation function nor re
 test_reclaimed_value_illegal.adb:166:07: error: "Null_T" shall be declared in same declaration list as "T"
 test_reclaimed_value_illegal.adb:166:07: error: incorrect placement for entity with the "Ownership" annotation
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] test_ownership_flow.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] test_ownership_illegal.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] test_reclaimed_value_illegal.adb (test.gpr) failed with status 5

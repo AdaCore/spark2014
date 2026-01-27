@@ -492,3 +492,24 @@ test_illegal_sets_length.adb:404:12: warning: no "Length" function found for typ
 test_illegal_sets_length.adb:404:12: warning: the cardinality of aggregates will be unknown
 test_illegal_sets_length.adb:436:16: error: a subprogram with the "Container_Aggregates" annotation shall not access global data
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] test_illegal_add.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] test_illegal_aggregates.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] test_illegal_capacity.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] test_illegal_contains.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] test_illegal_default_item.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] test_illegal_empty.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] test_illegal_eq_elements.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] test_illegal_eq_keys.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] test_illegal_first.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] test_illegal_from_model.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] test_illegal_glob.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] test_illegal_has_key.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] test_illegal_last.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] test_illegal_maps.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] test_illegal_maps_get.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] test_illegal_maps_length.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] test_illegal_model.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] test_illegal_seqs.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] test_illegal_seqs_get.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] test_illegal_sets.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] test_illegal_sets_length.adb (test.gpr) failed with status 5

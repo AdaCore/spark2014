@@ -7,3 +7,4 @@ p.adb:21:07: error: declaration of an object of an ownership type outside a bloc
 p.adb:25:10: error: declaration of an object of an ownership type outside a block for declarations is not yet supported
 p.adb:27:10: error: declaration of an object of an ownership type outside a block for declarations is not yet supported
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] p.adb (test.gpr) failed with status 5

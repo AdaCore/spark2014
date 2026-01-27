@@ -11,3 +11,4 @@ conv.adb:27:14: error: conversion between access types with different designated
 conv.adb:44:22: error: conversion between access types with different designated types is not yet supported
 conv.adb:48:04: error: conversion between access types with different designated types is not yet supported
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] conv.adb (test.gpr) failed with status 5

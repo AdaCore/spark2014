@@ -3,3 +3,4 @@ foo.adb:15:30: error: incorrect placement for aspect "Annotate => (GNATprove, No
 foo.adb:20:30: error: aspect "Annotate => (GNATprove, No_Bitwise_Operations[, ...])" must immediately follow the full type declaration of type "T"
 foo.adb:20:30: error: incorrect placement for aspect "Annotate => (GNATprove, No_Bitwise_Operations[, ...])"
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] foo.adb (test.gpr) failed with status 5

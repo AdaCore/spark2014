@@ -5,3 +5,5 @@ test_bc.adb:16:24: error: launch "gnatprove --explain=E0010" for more informatio
 test_bc.adb:16:24: error: object was moved at line 15 [E0010]
 test_bc.adb:16:24: error: part of dereference from "X3" is not readable
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] test.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] test_bc.adb (test.gpr) failed with status 5

@@ -6,3 +6,4 @@ deep_globals.adb:15:14: error: launch "gnatprove --explain=E0010" for more infor
 deep_globals.adb:15:14: error: object was moved at line 17 [E0010]
 deep_globals.adb:15:14: error: return from "Q2" with moved value for "Z2"
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] deep_globals.adb (test.gpr) failed with status 5

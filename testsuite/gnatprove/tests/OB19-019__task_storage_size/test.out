@@ -21,3 +21,6 @@ ss_defined.ads:7:39: error: violation of pragma SPARK_Mode at test.adc:1
 unsupported.adb:3:09: error: access type with Storage_Size is not allowed in SPARK
 unsupported.adb:3:09: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] ss_default.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] ss_defined.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] unsupported.adb (test.gpr) failed with status 5

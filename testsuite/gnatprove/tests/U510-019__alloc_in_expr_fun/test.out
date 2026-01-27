@@ -1,2 +1,3 @@
 bad_alloc.adb:5:46: error: uninitialized allocator inside expression function is not yet supported
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] bad_alloc.adb (test.gpr) failed with status 5

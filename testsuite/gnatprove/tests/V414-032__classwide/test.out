@@ -6,3 +6,5 @@ history.ads:9:18: info: function contract feasibility proved (CVC5: 1 VC)
 history.ads:23:18: info: implicit aspect Always_Terminates on "Can_Log" has been proved, subprogram will terminate
 history.ads:24:43: info: overflow check proved (CVC5: 2 VC)
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] event_package.ads (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] scheduler.adb (test.gpr) failed with status 5

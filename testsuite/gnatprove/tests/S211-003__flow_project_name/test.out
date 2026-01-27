@@ -3,3 +3,4 @@ os_task_list.ads:6:13: info: implicit aspect Always_Terminates on "os_ghost_task
 os_task_list.ads:7:07: info: data dependencies proved
 os_task_list.ads:8:07: info: flow dependencies proved
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] os_arch.ads (test.gpr) failed with status 5

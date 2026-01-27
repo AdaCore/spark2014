@@ -56,3 +56,6 @@ test_protected.ads:19:25: error: outputs mentioned in the expression of an aspec
 test_protected.ads:19:25: error: reference to the implicit self parameter of the protected operation "Do_Nothing" in the expression of its "Program_Exit" aspect is not allowed in SPARK (SPARK RM 6.1.10(1))
 test_protected.ads:19:25: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] test.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] test_bc.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] test_protected.adb (test.gpr) failed with status 5

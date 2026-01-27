@@ -12,3 +12,4 @@ test_reraise.adb:143:12: warning: this statement is never reached
 test_reraise.adb:151:07: info: initialization of "Tmp" proved
 test_reraise.adb:179:12: warning: this statement is never reached
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] test_reraise.adb (test.gpr) failed with status 5

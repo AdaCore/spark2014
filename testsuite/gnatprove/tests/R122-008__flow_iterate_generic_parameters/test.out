@@ -10,3 +10,5 @@ instance_sub.ads:8:47: error: actual for formal object with mode in cannot depen
 instance_sub.ads:8:47: error: launch "gnatprove --explain=E0007" for more information
 instance_sub.ads:8:47: error: use instead a constant initialized to the expression with variable input
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] instance_pack.ads (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] instance_sub.ads (test.gpr) failed with status 5

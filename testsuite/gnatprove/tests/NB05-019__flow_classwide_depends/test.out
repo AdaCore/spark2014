@@ -5,3 +5,4 @@ foo.ads:97:26: error: class-wide dependency "Y => B" is not a class-wide depende
 foo.ads:107:14: error: "G" is an Input of overriding subprogram, but it is not an Input of overridden subprogram "Test_06" at line 49 (SPARK RM 6.1.6)
 foo.ads:117:13: error: class-wide dependency "Test_08 => B" is not a class-wide dependency of overridden subprogram "Test_08" at line 58 (SPARK RM 6.1.6)
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] foo.ads (test.gpr) failed with status 5

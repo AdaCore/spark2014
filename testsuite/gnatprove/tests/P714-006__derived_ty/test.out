@@ -5,4 +5,5 @@ foo.adb:12:07: medium: range check might fail [provers gave up before completing
 foo.ads:7:17: high: postcondition might fail (e.g. when A = (others => False)) [provers reached step limit before completing the proof]
 bar.ads:3:38: error: Constraint_Error would have been raised at run time
 bar.ads:3:38: error: static value out of range of type "Standard.Positive"
-gnatprove: error during generation of Global contracts
+gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Global_Gen] bar.ads (test.gpr) failed with status 5

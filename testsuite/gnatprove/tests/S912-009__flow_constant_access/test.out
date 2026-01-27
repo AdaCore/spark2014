@@ -3,3 +3,5 @@ bar.adb:13:09: error: violation of aspect SPARK_Mode at line 1
 foo.adb:5:07: error: assignment into a constant object is not allowed in SPARK (SPARK RM 3.10(3))
 foo.adb:5:07: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] bar.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] foo.adb (test.gpr) failed with status 5

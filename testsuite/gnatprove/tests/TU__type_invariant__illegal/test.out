@@ -62,3 +62,6 @@ type_invariant_illegal_2.ads:28:09: error: classwide invariant is not allowed in
 type_invariant_illegal_2.ads:28:09: error: violation of pragma SPARK_Mode at test.adc:1
 type_invariant_illegal_3.ads:14:09: error: type invariant on tagged types is not yet supported
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] type_invariant_illegal.ads (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] type_invariant_illegal_2.ads (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] type_invariant_illegal_3.ads (test.gpr) failed with status 5

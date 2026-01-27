@@ -16,3 +16,4 @@ test.adb:39:10: error: assignment into a constant object is not allowed in SPARK
 test.adb:39:10: error: the borrowed parameter of a traversal function cannot be modified
 test.adb:39:10: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] test.adb (test.gpr) failed with status 5

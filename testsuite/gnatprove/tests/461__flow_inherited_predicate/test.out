@@ -5,3 +5,4 @@ p.adb:4:49: info: data dependencies proved
 p.adb:14:60: high: "Cond" must be listed in the Global aspect of "Is_Positive" (SPARK RM 6.1.4(15))
 p.adb:15:09: error: "Cond" is referenced in expression function but missing from the Global
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] p.adb (test.gpr) failed with status 5

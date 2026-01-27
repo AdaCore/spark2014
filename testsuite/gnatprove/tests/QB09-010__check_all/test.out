@@ -1,4 +1,3 @@
-Phase 1 of 3: generation of data representation information ...
-Phase 2 of 3: generation of Global contracts ...
 broken.adb:1:14: error: missing body for "Dummy" declared at broken.ads:3
-gnatprove: error during generation of Global contracts
+test.gpr: error: [Ada Global_Gen] broken.adb (test.gpr) failed with status 5
+gnatprove: error during full checking of SPARK legality rules

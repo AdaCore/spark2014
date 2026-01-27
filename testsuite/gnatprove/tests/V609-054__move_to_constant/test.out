@@ -3,3 +3,5 @@ main.adb:11:22: error: violation of aspect SPARK_Mode at line 1
 main_2.adb:10:22: error: "A" is not writable
 main_2.adb:10:22: error: object was declared as not writable at line 9
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] main.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] main_2.adb (test.gpr) failed with status 5

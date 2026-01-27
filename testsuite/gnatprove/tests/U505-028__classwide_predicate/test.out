@@ -1,2 +1,3 @@
 test_tagged_records.adb:12:12: error: subtype predicate on a classwide type is not yet supported
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] test_tagged_records.adb (test.gpr) failed with status 5

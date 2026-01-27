@@ -374,3 +374,4 @@ compiler.adb:1913:25: warning: no Always_Terminates aspect available for "Put" [
 compiler.adb:1913:47: warning: assuming "New_Line" always terminates
 compiler.adb:1913:47: warning: no Always_Terminates aspect available for "New_Line" [assumed-always-terminates]
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] compiler.adb (test.gpr) failed with status 5

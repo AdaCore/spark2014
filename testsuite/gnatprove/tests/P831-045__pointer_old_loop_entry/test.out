@@ -109,3 +109,5 @@ old_loop_entry.ads:35:32: error: call a deep copy function for type "P" as prefi
 old_loop_entry.ads:35:32: error: prefix of "Old" attribute introducing aliasing is not allowed in SPARK (SPARK RM 3.10(13))
 old_loop_entry.ads:35:32: error: violation of pragma SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] lib_level.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] old_loop_entry.adb (test.gpr) failed with status 5

@@ -46,3 +46,4 @@ generic_queue_pack.ads:53:10: medium: "Item.Size" might not be initialized in "D
 generic_queue_pack.ads:54:10: info: initialization of "Has_Succeed" proved, in instantiation at crtp_pack.ads:167
 generic_queue_pack.ads:58:68: info: initialization of "Item" proved, in instantiation at crtp_pack.ads:167
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] crtp_pack.adb (test.gpr) failed with status 5

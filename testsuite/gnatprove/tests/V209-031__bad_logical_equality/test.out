@@ -13,3 +13,4 @@ bad_logical_equal.adb:24:13: error: function with the "Logical_Equal" annotation
 bad_logical_equal.adb:29:13: error: function with the "Logical_Equal" annotation shall not have postconditions or contract cases
 bad_logical_equal.adb:35:13: error: a subprogram with the "Logical_Equal" annotation shall not access global data
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] bad_logical_equal.adb (test.gpr) failed with status 5

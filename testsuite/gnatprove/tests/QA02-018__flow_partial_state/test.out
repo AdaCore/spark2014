@@ -13,3 +13,4 @@ p.ads:16:56: info: data dependencies proved
 p.ads:17:13: info: implicit aspect Always_Terminates on "Read6" has been proved, subprogram will terminate
 p.ads:17:56: info: data dependencies proved
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] p.adb (test.gpr) failed with status 5

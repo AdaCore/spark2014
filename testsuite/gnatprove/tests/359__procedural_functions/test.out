@@ -157,3 +157,5 @@ use_dispatch.adb:28:19: info: assertion proved (CVC5: 1 VC)
 use_dispatch.adb:29:08: info: tag check proved (CVC5: 1 VC)
 use_dispatch.adb:31:19: info: assertion proved (CVC5: 1 VC)
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] bad_call.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] bad_traversal.ads (test.gpr) failed with status 5

@@ -11,3 +11,6 @@ s.ads:4:27: error: default initialization cannot depend on variable input "V" [E
 s.ads:4:27: error: launch "gnatprove --explain=E0007" for more information
 s.ads:4:27: error: use instead a constant initialized to the expression with variable input
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] p.ads (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] q.ads (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] s.ads (test.gpr) failed with status 5

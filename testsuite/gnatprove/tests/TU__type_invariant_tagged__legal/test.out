@@ -28,3 +28,5 @@ type_invariant_legal_8.adb:74:09: error: violation of aspect SPARK_Mode at line 
 type_invariant_legal_8.adb:83:04: warning: analyzing unreferenced procedure "Extra_Test" [unreferenced-procedure]
 type_invariant_legal_8.ads:20:09: error: type invariant on components of tagged types is not yet supported
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] type_invariant_legal_7.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] type_invariant_legal_8.adb (test.gpr) failed with status 5

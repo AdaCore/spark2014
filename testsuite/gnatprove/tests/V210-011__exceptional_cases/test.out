@@ -1,3 +1,4 @@
 main.adb:13:22: error: formal parameter of mode "in out" in consequence of Exceptional_Cases
 main.adb:13:22: error: only parameters passed by reference are allowed
-gnatprove: error during generation of Global contracts
+gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Global_Gen] main.adb (test.gpr) failed with status 5

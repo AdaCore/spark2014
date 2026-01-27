@@ -15,3 +15,4 @@ bad_pledges.adb:24:14: error: violation of aspect SPARK_Mode at line 1
 bad_pledges.adb:26:13: error: a function with the "At_End_Borrow" annotation shall not have contracts
 bad_pledges.adb:31:47: error: last argument of "pragma Annotate (GNATprove, At_End_Borrow[, ...])" must be an entity
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] bad_pledges.adb (test.gpr) failed with status 5

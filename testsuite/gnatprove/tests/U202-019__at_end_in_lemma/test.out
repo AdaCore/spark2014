@@ -14,3 +14,4 @@ test_at_end_in_lemma.adb:42:22: error: call to a function annotated with "At_End
 test_at_end_in_lemma.adb:43:20: error: call to a function annotated with "At_End_Borrow" shall not occur inside a procedure call which is not known to be free of side effects
 test_at_end_in_lemma.adb:44:20: error: call to a function annotated with "At_End_Borrow" shall not occur inside a procedure call which is not known to be free of side effects
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] test_at_end_in_lemma.adb (test.gpr) failed with status 5

@@ -5,3 +5,4 @@ volfun.ads:5:34: error: launch "gnatprove --explain=E0004" for more information
 volfun.ads:5:34: error: violation of aspect SPARK_Mode at line 2
 volfun.ads:5:34: error: volatile object or volatile function call in interfering context is not allowed in SPARK (SPARK RM 7.1.3(9)) [E0004]
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] volfun.adb (test.gpr) failed with status 5

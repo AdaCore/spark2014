@@ -1,5 +1,7 @@
 unsupported_classwides.ads:3:09: error: attribute "Class" of a constrained type is not yet supported
 unsupported_classwides.ads:4:12: error: attribute "Class" of a constrained type is not yet supported
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] unsupported_classwides.ads (test.gpr) failed with status 5
 unsupported_classwides2.ads:3:31: error: invalid constraint: type has unknown discriminants
-gnatprove: error during generation of Global contracts
+gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Global_Gen] unsupported_classwides2.ads (test.gpr) failed with status 5

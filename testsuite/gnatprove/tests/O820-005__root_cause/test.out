@@ -1,3 +1,4 @@
 p.ads:6:31: error: "Y" is not allowed in SPARK (due to iterator specification over multi-dimensional array)
 p.ads:6:31: error: violation of aspect SPARK_Mode at line 5
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] p.ads (test.gpr) failed with status 5

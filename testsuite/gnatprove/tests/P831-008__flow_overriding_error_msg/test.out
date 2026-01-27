@@ -5,3 +5,4 @@ q.ads:4:13: error: function "Heap" with output global "memory accessed through o
 q.ads:4:13: error: launch "gnatprove --explain=E0005" for more information
 q.ads:4:13: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] q.adb (test.gpr) failed with status 5

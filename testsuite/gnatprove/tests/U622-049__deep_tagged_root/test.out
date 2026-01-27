@@ -12,3 +12,4 @@ recursive_cw.adb:20:18: info: pointer dereference check proved (CVC5: 1 VC)
 recursive_cw.adb:20:21: info: overflow check proved (CVC5: 2 VC)
 recursive_cw.adb:21:16: info: pointer dereference check proved (CVC5: 1 VC)
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] main.adb (test.gpr) failed with status 5

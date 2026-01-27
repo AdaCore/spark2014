@@ -7,3 +7,5 @@ parent-priv.ads:1:24: error: refinement of Priv.State2 constituent of Parent.Sta
 parent-priv.ads:1:24: error: refinement of Priv.State2 constituent of Parent.State1 shall mention Priv2.State4 constituent of Priv.State2 (SPARK RM 7.2.6(6))
 parent-priv.ads:4:21: info: data dependencies proved
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] parent-priv-priv.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] parent-priv-priv2.adb (test.gpr) failed with status 5

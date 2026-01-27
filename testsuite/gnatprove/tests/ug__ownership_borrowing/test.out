@@ -17,4 +17,5 @@
 --> ownership_borrowing.adb:14:18
    14 |          Tmp   := X.all;      --  illegal
       |                   ~~^~~
+ownership_borrowing.gpr: error: [Ada Analysis] ownership_borrowing.adb (ownership_borrowing.gpr) failed with status 5
 gnatprove: error during flow analysis and proof

@@ -29,3 +29,13 @@ signed_zeros.ads:1:10: info: implicit aspect Always_Terminates on "Signed_Zeros"
 truncation.ads:1:10: info: implicit aspect Always_Terminates on "Truncation" has been proved, subprogram will terminate
 unbiased_rounding.adb:3:16: error: non-static attribute "Unbiased_Rounding" is not yet supported
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] adjacent.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] compose.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] exponent.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] fraction.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] leading_part.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] machine.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] machine_rounding.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] model.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] scaling.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] unbiased_rounding.adb (test.gpr) failed with status 5

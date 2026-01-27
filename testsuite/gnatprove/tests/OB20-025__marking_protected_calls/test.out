@@ -9,3 +9,5 @@ pt_not_in_spark.ads:14:04: error: violation of pragma SPARK_Mode at test.adc:1
 pt_not_in_spark.ads:15:04: error: "PR" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
 pt_not_in_spark.ads:15:04: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] ps_not_in_spark.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] pt_not_in_spark.adb (test.gpr) failed with status 5

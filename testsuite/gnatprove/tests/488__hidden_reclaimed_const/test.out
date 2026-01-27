@@ -3,3 +3,4 @@ p_bad.ads:9:14: error: violation of aspect SPARK_Mode at line 1
 p_bad.ads:14:14: error: equality on access types is not allowed in SPARK (SPARK RM 3.10(19))
 p_bad.ads:14:14: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] p_bad.ads (test.gpr) failed with status 5

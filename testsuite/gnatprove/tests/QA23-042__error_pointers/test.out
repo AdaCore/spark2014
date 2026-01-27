@@ -283,6 +283,27 @@ spark03c.ads:19:24: info: data dependencies proved
 spark03c.ads:19:63: info: initialization of "Z" proved
 spark03c.ads:19:65: info: initialization of "W" proved
 gnatprove: error during flow analysis and proof
+illegal_spark.gpr: error: [Ada Analysis] n01.adb (illegal_spark.gpr) failed with status 5
+illegal_spark.gpr: error: [Ada Analysis] n04.adb (illegal_spark.gpr) failed with status 5
+illegal_spark.gpr: error: [Ada Analysis] n05.adb (illegal_spark.gpr) failed with status 5
+illegal_spark.gpr: error: [Ada Analysis] n06.adb (illegal_spark.gpr) failed with status 5
+illegal_spark.gpr: error: [Ada Analysis] n07.adb (illegal_spark.gpr) failed with status 5
+illegal_spark.gpr: error: [Ada Analysis] n08.adb (illegal_spark.gpr) failed with status 5
+illegal_spark.gpr: error: [Ada Analysis] n09.adb (illegal_spark.gpr) failed with status 5
+illegal_spark.gpr: error: [Ada Analysis] n09b.adb (illegal_spark.gpr) failed with status 5
+illegal_spark.gpr: error: [Ada Analysis] n09c.adb (illegal_spark.gpr) failed with status 5
+illegal_spark.gpr: error: [Ada Analysis] n10.adb (illegal_spark.gpr) failed with status 5
+illegal_spark.gpr: error: [Ada Analysis] n11.adb (illegal_spark.gpr) failed with status 5
+illegal_spark.gpr: error: [Ada Analysis] n12.adb (illegal_spark.gpr) failed with status 5
+illegal_spark.gpr: error: [Ada Analysis] n13.adb (illegal_spark.gpr) failed with status 5
+illegal_spark.gpr: error: [Ada Analysis] n14.adb (illegal_spark.gpr) failed with status 5
+illegal_spark.gpr: error: [Ada Analysis] n15.adb (illegal_spark.gpr) failed with status 5
+illegal_spark.gpr: error: [Ada Analysis] n16.adb (illegal_spark.gpr) failed with status 5
+illegal_spark.gpr: error: [Ada Analysis] pointers.adb (illegal_spark.gpr) failed with status 5
+illegal_spark.gpr: error: [Ada Analysis] pointers2.adb (illegal_spark.gpr) failed with status 5
+illegal_spark.gpr: error: [Ada Analysis] spark02.adb (illegal_spark.gpr) failed with status 5
+illegal_spark.gpr: error: [Ada Analysis] spark03b.adb (illegal_spark.gpr) failed with status 5
+illegal_spark.gpr: error: [Ada Analysis] spark03c.adb (illegal_spark.gpr) failed with status 5
 n08b.adb:28:26: error: expected type universal integer
 n08b.adb:28:26: error: found type "ACI" defined at line 12
 n08b.adb:30:22: error: expected type "ACI" defined at line 12
@@ -309,4 +330,5 @@ n08b.adb:55:51: error: expected type "Standard.Integer"
 n08b.adb:55:51: error: found type "ACI" defined at line 12
 n08b.adb:56:51: error: expected type "Standard.Integer"
 n08b.adb:56:51: error: found type "ACI" defined at line 12
-gnatprove: error during generation of Global contracts
+gnatprove: error during flow analysis and proof
+illegal_ada.gpr: error: [Ada Global_Gen] n08b.adb (illegal_ada.gpr) failed with status 5

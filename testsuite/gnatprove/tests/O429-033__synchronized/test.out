@@ -11,3 +11,4 @@ lr5.ads:26:07: error: violation of aspect SPARK_Mode at line 3
 lr5.ads:31:07: error: synchronized component "Comp_2" of non-synchronized type "Rec_6" is not allowed in SPARK (SPARK RM 9(5))
 lr5.ads:31:07: error: violation of aspect SPARK_Mode at line 3
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] lr5.ads (test.gpr) failed with status 5

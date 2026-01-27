@@ -7,3 +7,4 @@ p.adb:9:10: error: violation of pragma SPARK_Mode at test.adc:1
 p.adb:9:38: error: Address attribute on a part of a protected component is not allowed in SPARK (SPARK RM 13.7(3))
 p.adb:9:38: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] p.adb (test.gpr) failed with status 5

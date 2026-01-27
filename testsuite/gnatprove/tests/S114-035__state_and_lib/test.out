@@ -6,3 +6,4 @@ test.ads:9:25: low: unused global "Info.State"
 test.ads:10:17: warning: assuming "Is_Valid" has no effect on global items
 test.ads:10:17: warning: no Global contract available for "Is_Valid" [assumed-global-null]
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] test.adb (test.gpr) failed with status 5

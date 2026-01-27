@@ -33,3 +33,4 @@ test_annotate.adb:11:10: info: only expected exception raised (CVC5: 1 VC)
 test_annotate.adb:18:10: info: only expected exception raised (CVC5: 1 VC)
 test_annotate.adb:23:10: info: only expected exception raised (CVC5: 1 VC)
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] pointer_eq.adb (test.gpr) failed with status 5

@@ -1,3 +1,4 @@
 objects.ads:39:14: error: subprogram "Initialize" is inherited from "Drawable" and "Composable"
 objects.ads:39:14: error: subprogram inherited from multiple interfaces is not yet supported
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] objects.adb (test.gpr) failed with status 5

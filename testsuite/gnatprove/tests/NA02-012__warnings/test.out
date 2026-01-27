@@ -3,3 +3,4 @@ warn.adb:4:04: warning: initialization of "X" has no effect
 warn.adb:7:11: info: overflow check proved (CVC5: 2 VC)
 warn.adb:8:19: info: assertion proved (CVC5: 1 VC)
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] warn.adb (test.gpr) failed with status 5

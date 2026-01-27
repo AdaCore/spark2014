@@ -142,3 +142,4 @@ main_illegal.adb:51:13: error: violation of aspect SPARK_Mode at line 4
 main_illegal.adb:55:07: error: "All_To_Zero_3" is not allowed in SPARK (due to structural subprogram variant which is not a parameter of the subprogram)
 main_illegal.adb:55:07: error: violation of aspect SPARK_Mode at line 4
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] main_illegal.adb (test.gpr) failed with status 5

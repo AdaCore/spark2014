@@ -11,3 +11,5 @@ p.ads:3:13: error: launch "gnatprove --explain=E0005" for more information
 p.ads:3:13: error: violation of pragma SPARK_Mode at test.adc:1
 p.ads:3:13: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] client.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] p.adb (test.gpr) failed with status 5

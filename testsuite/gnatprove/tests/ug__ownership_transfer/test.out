@@ -33,4 +33,5 @@
    11 |       Y := X;
       |            ^
       + launch "gnatprove --explain=E0010" for more information
+ownership_transfer.gpr: error: [Ada Analysis] ownership_transfer.adb (ownership_transfer.gpr) failed with status 5
 gnatprove: error during flow analysis and proof

@@ -4,7 +4,8 @@ foo.adb:54:09: error: implied return after this statement would have raised Prog
 foo.adb:54:09: error: procedure "Nr_Test_02" is marked as No_Return
 foo.adb:65:09: error: implied return after this statement would have raised Program_Error
 foo.adb:65:09: error: procedure "Nr_Test_03" is marked as No_Return
-gnatprove: error during generation of Global contracts
+gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Global_Gen] foo.adb (test.gpr) failed with status 5
 main1.adb:5:04: info: data dependencies proved
 main1.adb:5:31: info: initialization of "Lights.State" proved
 main1.adb:6:04: info: flow dependencies proved

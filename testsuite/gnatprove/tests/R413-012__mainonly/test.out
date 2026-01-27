@@ -8,3 +8,4 @@ a~main.ads:6:19: warning: assuming "Get" has no effect on global items
 a~main.ads:6:19: warning: no Global contract available for "Get" [assumed-global-null]
 b.ads:3:04: error: "State" is referenced in expression function but missing from the Global
 gnatprove: error during flow analysis and proof
+main.gpr: error: [Ada Analysis] a~main.adb (main.gpr) failed with status 5

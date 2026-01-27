@@ -10,3 +10,7 @@ simple_types.ads:5:10: error: violation of aspect SPARK_Mode at line 1
 types.ads:16:10: error: deriving "R" from "T" declared as untagged private is not allowed in SPARK (SPARK RM 3.4(1))
 types.ads:16:10: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] parent_types-private_child.ads (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] parent_types-public_child.ads (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] simple_types.ads (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] types.ads (test.gpr) failed with status 5

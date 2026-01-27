@@ -28,3 +28,4 @@ test_hide_annot.adb:194:07: error: "Id" is visible by default
 test_hide_annot.adb:194:07: error: "pragma Annotate (GNATprove, Unhide_Info[, ...])" is redundant
 test_hide_annot.adb:219:07: error: the body of "Annotate" shall be visible at the location of the pragma
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] test_hide_annot.adb (test.gpr) failed with status 5

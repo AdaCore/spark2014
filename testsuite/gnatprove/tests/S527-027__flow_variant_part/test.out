@@ -14,3 +14,5 @@ q.ads:11:30: error: launch "gnatprove --explain=E0007" for more information
 q.ads:11:30: error: subtype constraint cannot depend on variable input "X" [E0007]
 q.ads:11:30: error: use instead a constant initialized to the expression with variable input
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] p.ads (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] q.ads (test.gpr) failed with status 5

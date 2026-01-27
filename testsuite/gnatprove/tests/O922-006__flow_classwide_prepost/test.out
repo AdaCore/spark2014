@@ -8,3 +8,4 @@ null_global.ads:16:07: error: "C" is referenced in Pre but missing from the Glob
 null_global.ads:19:07: error: "C" is referenced in Pre but missing from the Global
 null_global.ads:20:27: high: "C" must be listed in the Global aspect of "Check_F2" (SPARK RM 6.1.4(15))
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] null_global.ads (test.gpr) failed with status 5

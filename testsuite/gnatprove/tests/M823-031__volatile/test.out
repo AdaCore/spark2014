@@ -17,3 +17,4 @@ variables1.ads:19:13: error: function "Func_3" with volatile input global "OK_2"
 variables1.ads:19:13: error: launch "gnatprove --explain=E0005" for more information
 variables1.ads:19:13: error: violation of pragma SPARK_Mode at line 4
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] variables1.adb (test.gpr) failed with status 5

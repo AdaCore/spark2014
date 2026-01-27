@@ -43,3 +43,4 @@ illegal.adb:171:27: error: "Element" is not allowed in SPARK (due to incorrect u
 illegal.adb:171:27: error: violation of aspect SPARK_Mode at line 2
 illegal.adb:188:16: error: a subprogram with the "Iterable_For_Proof" annotation shall not access global data
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] illegal.adb (test.gpr) failed with status 5

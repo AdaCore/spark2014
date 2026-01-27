@@ -13,3 +13,4 @@ unclear.ads:56:17: error: dispatching primitive subprogram overriding with class
 unclear.ads:64:17: error: consider adding a class-wide precondition to subprogram "P"
 unclear.ads:64:17: error: dispatching primitive subprogram overriding with class-wide precondition inherited from a potentially hidden ancestor is not yet supported
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] unclear.ads (test.gpr) failed with status 5

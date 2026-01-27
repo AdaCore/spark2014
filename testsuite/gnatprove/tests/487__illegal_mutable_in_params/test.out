@@ -25,3 +25,4 @@ illegal_mutable_in_parameters.adb:133:14: error: "Bad_Update_12" might mutate it
 illegal_mutable_in_parameters.adb:133:14: error: a subprogram with the "Automatic_Instantiation" annotation shall have no side-effects
 illegal_mutable_in_parameters.adb:143:04: error: subprogram with the "Mutable_In_Parameters" annotation shall have at least an "in" parameter of type "T"
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] illegal_mutable_in_parameters.adb (test.gpr) failed with status 5

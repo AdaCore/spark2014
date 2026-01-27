@@ -3,3 +3,4 @@ main_access.adb:19:07: error: "X" was borrowed at line 17
 main_access.adb:25:07: error: observed object aliased through address clauses is not supported yet
 main_access.adb:32:07: error: borrowed object aliased through address clauses is not supported yet
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] main_access.adb (test.gpr) failed with status 5
