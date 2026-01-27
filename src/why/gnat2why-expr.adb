@@ -25558,12 +25558,30 @@ package body Gnat2Why.Expr is
       --  they are actually for range checks and are checked elsewhere. See the
       --  documentation of sinfo.ads.
 
+      --  References to the 'Length atribute might be computed on bitvectors
+      --  to improve proof performance. In this case, an overflow check is
+      --  introduced during the translation to make sure that there is no
+      --  wraparound during the computation. No need to generate an additional
+      --  overflow check on universal integer in this case, even if it is the
+      --  type chosen by the frontend for the computation, as such big arrays
+      --  cannot be constructed in practice, so this implementation choice
+      --  won't have an effect at runtime.
+
       if Domain = EW_Prog
+        and then Nkind (Expr) = N_Attribute_Reference
+        and then Attribute_Name (Expr) = Name_Length
+        and then Retysp (Expr_Type) = Stand.Universal_Integer
+        and then Why_Type_Is_BitVector (Get_Type (T))
+      then
+         null;
+
+      elsif Domain = EW_Prog
         and then
           Nkind (Expr)
           in N_Attribute_Reference | N_Case_Expression | N_If_Expression | N_Op
         and then Do_Overflow_Check (Expr)
       then
+
          --  Depending on the current mode for integer overflow checks, the
          --  operation is either done in the base type (Strict mode), or in
          --  Long_Long_{Integer|Unsigned} (Minimized mode) if needed, or in
