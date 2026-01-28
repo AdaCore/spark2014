@@ -545,14 +545,18 @@ package body Errout_Wrapper is
    procedure Error_Msg_N
      (Kind          : Error_Message_Kind;
       N             : Node_Id;
+      Msg           : String := "";
       Names         : Node_Lists.List := Node_Lists.Empty;
       Secondary_Loc : Source_Ptr := No_Location;
       Explain_Code  : Explain_Code_Kind := EC_None;
       First         : Boolean := False;
-      Continuations : String_Lists.List := String_Lists.Empty) is
+      Continuations : String_Lists.List := String_Lists.Empty)
+   is
+      Actual_Msg : constant String :=
+        (if Msg /= "" then Msg else Error_Message (Kind));
    begin
       Error_Msg_N
-        (Error_Message (Kind),
+        (Actual_Msg,
          N,
          Error_Kind,
          Names,
