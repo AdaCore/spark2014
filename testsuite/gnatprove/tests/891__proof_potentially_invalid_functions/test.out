@@ -85,7 +85,7 @@ test_function_result.adb:200:20: medium: validity check might fail (e.g. when I 
 test_function_result.adb:200:20: warning: attribute "Valid" is assumed to return True [attribute-valid-always-true]
 test_function_result.adb:204:12: warning: postcondition does not check the outcome of calling "P_Old_4" [-gnatw.t]
 test_function_result.adb:204:20: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
-test_function_result.adb:204:35: medium: validity check might fail (e.g. when I = 0) [possible explanation: enclosing 'Old attribute reference is unconditionally evaluated on subprogram entry] [provers gave up before completing the proof]
+test_function_result.adb:204:35: info: validity check proved (CVC5: 1 VC)
 test_function_result.adb:207:16: medium: validity check might fail [provers reached step limit before completing the proof]
 test_function_result.adb:209:25: medium: assertion might fail [provers reached step limit before completing the proof]
 test_function_result.adb:210:16: medium: validity check might fail [provers reached step limit before completing the proof]
