@@ -219,6 +219,17 @@ package Errout_Wrapper is
       Error_Entry   : Boolean := True);
    --  Same as Error_Msg_N but accepts a Source_Span as location
 
+   procedure Error_Msg_N
+     (Kind          : Error_Message_Kind;
+      N             : Node_Id;
+      Names         : Node_Lists.List := Node_Lists.Empty;
+      Secondary_Loc : Source_Ptr := No_Location;
+      Explain_Code  : Explain_Code_Kind := EC_None;
+      First         : Boolean := False;
+      Continuations : String_Lists.List := String_Lists.Empty);
+   --  Similar to Error_Msg_N, but uses the Error_Kind to generate the
+   --  message text.
+
    --  TODO overload with other warning kinds (VC and flow)
 
    procedure Warning_Msg_N

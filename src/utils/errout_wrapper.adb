@@ -519,10 +519,6 @@ package body Errout_Wrapper is
       Local_Print_Result (My_Msg, Kind, Continuations => My_Conts);
    end Error_Msg_N;
 
-   -----------------
-   -- Error_Msg_N --
-   -----------------
-
    procedure Error_Msg_N
      (Msg           : String;
       N             : Node_Id;
@@ -544,6 +540,26 @@ package body Errout_Wrapper is
          Kind,
          First         => First,
          Continuations => Conts);
+   end Error_Msg_N;
+
+   procedure Error_Msg_N
+     (Kind          : Error_Message_Kind;
+      N             : Node_Id;
+      Names         : Node_Lists.List := Node_Lists.Empty;
+      Secondary_Loc : Source_Ptr := No_Location;
+      Explain_Code  : Explain_Code_Kind := EC_None;
+      First         : Boolean := False;
+      Continuations : String_Lists.List := String_Lists.Empty) is
+   begin
+      Error_Msg_N
+        (Error_Message (Kind),
+         N,
+         Error_Kind,
+         Names,
+         Secondary_Loc,
+         Explain_Code,
+         First         => First,
+         Continuations => Continuations);
    end Error_Msg_N;
 
    ------------
