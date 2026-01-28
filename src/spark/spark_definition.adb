@@ -3834,7 +3834,7 @@ package body SPARK_Definition is
                if No (Search_Component_By_Name (Prefix_Type, Selector)) then
                   if SPARK_Pragma_Is (Opt.On) then
                      Error_Msg_N
-                       ("component not present in &",
+                       (Err_Comp_Not_Present,
                         N,
                         Names         => [Prefix_Type],
                         Continuations =>

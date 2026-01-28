@@ -1202,6 +1202,22 @@ package body VC_Kinds is
 
    pragma Annotate (Xcov, Exempt_Off);
 
+   -------------------
+   -- Error_Message --
+   -------------------
+
+   function Error_Message
+     (Kind : Error_Message_Kind; Name : String := "") return String is
+   begin
+      case Kind is
+         when Err_Comp_Not_Present =>
+            return "component not present in &";
+
+         when Unsupported_Kind     =>
+            return Unsupported_Message (Kind, Name) & " is not yet supported";
+      end case;
+   end Error_Message;
+
    ---------------
    -- From_JSON --
    ---------------

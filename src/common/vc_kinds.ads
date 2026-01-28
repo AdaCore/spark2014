@@ -488,10 +488,12 @@ package VC_Kinds is
    Max_Array_Dimensions : constant Positive := 4;
    --  Maximal number of array dimensions that are currently supported
 
-   --  Used to categorize constructs which are not supported currently by the
-   --  tool.
-   type Unsupported_Kind is
-     (Lim_Abstract_State_Part_Of_Concurrent_Obj,
+   type Error_Message_Kind is
+     (Err_Comp_Not_Present,
+
+      --  Tool limitations
+
+      Lim_Abstract_State_Part_Of_Concurrent_Obj,
       Lim_Access_Attr_With_Ownership_In_Unsupported_Context,
       Lim_Access_Conv,
       Lim_Access_Sub_Formal_With_Inv,
@@ -599,6 +601,10 @@ package VC_Kinds is
       Lim_Unknown_Alignment,
       Lim_Unknown_Size,
       Lim_UU_Tagged_Comp);
+
+   subtype Unsupported_Kind is
+     Error_Message_Kind
+       range Lim_Abstract_State_Part_Of_Concurrent_Obj .. Lim_UU_Tagged_Comp;
 
    subtype Default_Warning_Kind is
      Misc_Warning_Kind
@@ -1104,6 +1110,10 @@ package VC_Kinds is
          when Lim_Hidden_Private_Relaxed_Init                             =>
            "hidden private type containing only subcomponents whose type is"
            & " annotated with Relaxed_Initialization");
+
+   function Error_Message
+     (Kind : Error_Message_Kind; Name : String := "") return String;
+   --  Return the error message for each kind of error
 
    --  Explain codes are used in GNATprove to provide more information on
    --  selected error/warning messages. The subset of those codes used in
