@@ -1,10 +1,10 @@
 p.adb:4:10: warning: address specification on "A" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to or through a potential alias, and valid reads [E0012]
 p.adb:4:10: warning: launch "gnatprove --explain=E0012" for more information
 p.adb:4:10: warning: make sure that all overlapping objects have Async_Writers set to True
-p.adb:6:12: warning: unused assignment
-p.adb:6:19: high: "A" is not initialized
 p.adb:9:10: warning: address specification on "A" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to or through a potential alias, and valid reads [E0012]
 p.adb:9:10: warning: launch "gnatprove --explain=E0012" for more information
 p.adb:9:10: warning: make sure that all overlapping objects have Async_Writers set to True
-p.adb:11:19: high: "A" is not initialized
-p.ads:4:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+p.ads:4:16: error: function "F" with output global "P.Pt.C" is not allowed in SPARK [E0005]
+p.ads:4:16: error: launch "gnatprove --explain=E0005" for more information
+p.ads:4:16: error: violation of pragma SPARK_Mode at test.adc:1
+gnatprove: error during flow analysis and proof
