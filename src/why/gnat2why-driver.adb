@@ -223,9 +223,7 @@ package body Gnat2Why.Driver is
      Pre =>
        Output_File_Map.Length <= Max_Subprocesses
        and then Present (E)
-       and then
-         Ada.Directories.Current_Directory
-         = Ada.Directories.Full_Name (To_String (Gnat2Why_Args.Why3_Dir));
+       and then Ada.Directories.Current_Directory = Gnat2Why_Args.Why3_Dir;
    --  After generating the Why file, run the proof tool. Wait for existing
    --  gnatwhy3 processes to finish if Max_Subprocesses is already reached.
 
