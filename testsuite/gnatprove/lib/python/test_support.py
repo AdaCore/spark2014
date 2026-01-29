@@ -1505,14 +1505,19 @@ def touch(fname, times=None, cwd=None):
         os.utime(path, times)
 
 
+def is_windows_platform():
+    """Returns True on Windows and False otherwise"""
+    platform = sys.platform
+    return platform.startswith("win") or platform.startswith("cygwin")
+
+
 def sleep_on_windows(secs=3):
     """If on Windows then sleep to stabilise the filesystem status
 
     PARAMETERS
     secs: number of seconds to sleep if in Windows
     """
-    platform = sys.platform
-    if platform.startswith("win") or platform.startswith("cygwin"):
+    if is_windows_platform():
         sleep(secs)
 
 
