@@ -196,9 +196,7 @@ procedure Gnatprove with SPARK_Mode is
          then ""
          else
            Ada.Directories.Compose
-             (Configuration.Artifact_Dir (Tree).Display_Full_Name,
-              "data_representation_generation",
-              "log"));
+             (Obj_Dir, "data_representation_generation", "log"));
       Del_Succ      : Boolean;
 
    begin
