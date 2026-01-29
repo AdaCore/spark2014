@@ -1015,9 +1015,18 @@ package body Gnat2Why.Driver is
             Timing_Phase_Completed
               (Timing, Null_Subp, "translation of standard");
 
-            Translate_CUnit;
+            declare
+               use Ada.Directories;
+               Old_Dir : constant String := Current_Directory;
+            begin
+               Set_Directory (To_String (Gnat2Why_Args.Why3_Dir));
 
-            Collect_Results;
+               Translate_CUnit;
+
+               Collect_Results;
+
+               Set_Directory (Old_Dir);
+            end;
             --  If the analysis is requested for a specific piece of code, we
             --  do not warn about useless pragma Annotate, because it's likely
             --  to be a false positive.
@@ -1227,7 +1236,6 @@ package body Gnat2Why.Driver is
       use Ada.Directories;
       use Ada.Containers;
       Fn        : constant String := Compose (Current_Directory, Filename);
-      Old_Dir   : constant String := Current_Directory;
       Why3_Args : String_Lists.List := Gnat2Why_Args.Why3_Args;
       Command   : GNAT.OS_Lib.String_Access :=
         GNAT.OS_Lib.Locate_Exec_On_Path (Why3_Args.First_Element);
@@ -1269,8 +1277,6 @@ package body Gnat2Why.Driver is
 
       Why3_Args.Delete_First (1);
 
-      Set_Directory (To_String (Gnat2Why_Args.Why3_Dir));
-
       --  We need to capture stderr of gnatwhy3 output in case of Out_Of_Memory
       --  messages.
 
@@ -1303,7 +1309,6 @@ package body Gnat2Why.Driver is
             Free (Arg);
          end loop;
       end;
-      Set_Directory (Old_Dir);
       Free (Command);
    end Run_Gnatwhy3;
 
