@@ -219,7 +219,13 @@ package body Gnat2Why.Driver is
    --  Wait until all child gnatwhy3 processes finish and collect their results
 
    procedure Run_Gnatwhy3 (E : Entity_Id; Filename : String)
-   with Pre => Output_File_Map.Length <= Max_Subprocesses and then Present (E);
+   with
+     Pre =>
+       Output_File_Map.Length <= Max_Subprocesses
+       and then Present (E)
+       and then
+         Ada.Directories.Current_Directory
+         = Ada.Directories.Full_Name (To_String (Gnat2Why_Args.Why3_Dir));
    --  After generating the Why file, run the proof tool. Wait for existing
    --  gnatwhy3 processes to finish if Max_Subprocesses is already reached.
 
@@ -1235,7 +1241,8 @@ package body Gnat2Why.Driver is
    procedure Run_Gnatwhy3 (E : Entity_Id; Filename : String) is
       use Ada.Directories;
       use Ada.Containers;
-      Fn        : constant String := Compose (Current_Directory, Filename);
+      Fn        : constant String :=
+        Compose (To_String (Gnat2Why_Args.Why3_Dir), Filename);
       Why3_Args : String_Lists.List := Gnat2Why_Args.Why3_Args;
       Command   : GNAT.OS_Lib.String_Access :=
         GNAT.OS_Lib.Locate_Exec_On_Path (Why3_Args.First_Element);
