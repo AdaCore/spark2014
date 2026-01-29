@@ -92,7 +92,6 @@ with SPARK_Xrefs;
 with Stand;                          use Stand;
 with String_Utils;                   use String_Utils;
 with Switch;                         use Switch;
-with Tempdir;                        use Tempdir;
 with VC_Kinds;                       use VC_Kinds;
 with Why;                            use Why;
 with Why.Atree;                      use Why.Atree;
@@ -199,7 +198,7 @@ package body Gnat2Why.Driver is
    package Pid_Maps is new
      Ada.Containers.Hashed_Maps
        (Key_Type        => Process_Id,
-        Element_Type    => Path_Name_Type,
+        Element_Type    => Temp_File_Name,
         Hash            => Process_Id_Hash,
         Equivalent_Keys => "=",
         "="             => "=");
@@ -252,7 +251,7 @@ package body Gnat2Why.Driver is
       Wait_Process (Pid, Success);
       pragma Assert (Pid /= Invalid_Pid);
       declare
-         Fn : constant String := Get_Name_String (Output_File_Map (Pid));
+         Fn : constant String := Output_File_Map (Pid);
       begin
          Parse_Why3_Results (Fn, Timing);
          Delete_File (Fn, Success);
@@ -1288,7 +1287,7 @@ package body Gnat2Why.Driver is
       declare
          Args : Argument_List := Call.Argument_List_Of_String_List (Why3_Args);
          Fd   : File_Descriptor;
-         Name : Path_Name_Type;
+         Name : Temp_File_Name;
          Pid  : Process_Id;
 
       begin
