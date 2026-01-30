@@ -7,12 +7,159 @@ polyorb_hi-epoch.ads:43:14: warning: "Epoch_Data" constituent of "Elaborated_Var
 polyorb_hi-epoch.ads:43:35: info: initialization of "SST" proved
 polyorb_hi-epoch.ads:44:11: info: data dependencies proved
 polyorb_hi-epoch.ads:48:11: info: data dependencies proved
+polyorb_hi-messages.adb:51:13: high: alignment of source type of unchecked conversion might not be an integral multiple of alignment of target type [possible explanation: alignment of type "Message_Size_Buffer" (which is 1) must be a multiple of the alignment of type "Wrapper" (which is 2)]
+polyorb_hi-messages.adb:51:13: info: types in unchecked conversion have the same size (Trivial)
+polyorb_hi-messages.adb:52:07: info: type is suitable as source for unchecked conversion (Trivial)
+polyorb_hi-messages.adb:52:28: info: type is suitable for unchecked conversion (Trivial)
+polyorb_hi-messages.adb:53:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
+polyorb_hi-messages.adb:53:13: info: types in unchecked conversion have the same size (Trivial)
+polyorb_hi-messages.adb:54:07: info: type is suitable as source for unchecked conversion (Trivial)
+polyorb_hi-messages.adb:54:16: info: type is suitable for unchecked conversion (Trivial)
+polyorb_hi-messages.adb:72:57: info: range check proved (CVC5: 2 VC)
+polyorb_hi-messages.adb:73:07: info: range check proved (CVC5: 2 VC)
+polyorb_hi-messages.adb:73:44: info: length check proved (CVC5: 3 VC)
+polyorb_hi-messages.adb:76:12: info: precondition proved (CVC5: 2 VC)
+polyorb_hi-messages.adb:78:10: info: index check proved (CVC5: 2 VC)
+polyorb_hi-messages.adb:78:15: info: index check proved (CVC5: 2 VC)
+polyorb_hi-messages.adb:78:39: info: precondition proved (CVC5: 1 VC)
+polyorb_hi-messages.adb:78:52: info: range check proved (CVC5: 2 VC)
+polyorb_hi-messages.adb:79:10: info: index check proved (CVC5: 2 VC)
+polyorb_hi-messages.adb:80:10: info: index check proved (CVC5: 2 VC)
+polyorb_hi-messages.adb:81:07: info: range check proved (CVC5: 4 VC)
+polyorb_hi-messages.adb:81:22: info: index check proved (CVC5: 2 VC)
+polyorb_hi-messages.adb:81:42: info: index check proved (CVC5: 2 VC)
+polyorb_hi-messages.adb:81:44: info: precondition proved (CVC5: 1 VC)
+polyorb_hi-messages.adb:81:62: info: length check proved (CVC5: 3 VC)
+polyorb_hi-messages.adb:81:65: info: length check proved (CVC5: 3 VC)
+polyorb_hi-messages.adb:92:51: high: array index check might fail (e.g. when M'First = 5 and M'Last = 0) [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
+polyorb_hi-messages.adb:105:32: info: range check proved (CVC5: 2 VC)
+polyorb_hi-messages.adb:105:42: high: range check might fail, cannot prove upper bound for Item'Length (e.g. when Item = (others => 0) and Item'First = Stream_Element_Offset'First+1 and Item'Last = 0) [provers reached step limit before completing the proof]
+polyorb_hi-messages.adb:105:51: info: precondition proved (CVC5: 1 VC)
+polyorb_hi-messages.adb:107:12: info: length check proved (CVC5: 3 VC)
+polyorb_hi-messages.adb:113:29: info: range check proved (CVC5: 2 VC)
+polyorb_hi-messages.adb:116:29: info: overflow check proved (CVC5: 2 VC)
+polyorb_hi-messages.adb:116:41: info: overflow check proved (CVC5: 2 VC)
+polyorb_hi-messages.adb:119:07: info: range check proved (CVC5: 4 VC)
+polyorb_hi-messages.adb:119:17: info: index check proved (CVC5: 2 VC)
+polyorb_hi-messages.adb:119:27: info: index check proved (CVC5: 2 VC)
+polyorb_hi-messages.adb:120:09: info: length check proved (CVC5: 3 VC)
+polyorb_hi-messages.adb:120:18: info: length check proved (CVC5: 3 VC)
+polyorb_hi-messages.adb:120:18: info: range check proved (CVC5: 4 VC)
+polyorb_hi-messages.adb:120:57: info: overflow check proved (CVC5: 2 VC)
+polyorb_hi-messages.adb:122:23: info: overflow check proved (CVC5: 2 VC)
+polyorb_hi-messages.adb:123:39: info: overflow check proved (CVC5: 2 VC)
+polyorb_hi-messages.adb:123:39: info: range check proved (CVC5: 2 VC)
+polyorb_hi-messages.adb:155:14: high: range check might fail, cannot prove upper bound for Item'Length (e.g. when Item = (others => 0) and Item'First = Stream_Element_Offset'First+1 and Item'Last = 0) [provers reached step limit before completing the proof]
+polyorb_hi-messages.adb:156:16: info: range check proved (CVC5: 4 VC)
+polyorb_hi-messages.adb:156:38: info: index check proved (CVC5: 2 VC)
+polyorb_hi-messages.adb:156:57: info: index check proved (CVC5: 2 VC)
+polyorb_hi-messages.adb:156:57: info: overflow check proved (CVC5: 2 VC)
+polyorb_hi-messages.adb:156:63: info: range check proved (CVC5: 2 VC)
+polyorb_hi-messages.adb:156:72: info: length check proved (CVC5: 3 VC)
+polyorb_hi-messages.adb:156:75: info: length check proved (CVC5: 3 VC)
+polyorb_hi-messages.adb:157:37: info: overflow check proved (CVC5: 2 VC)
+polyorb_hi-messages.adb:157:37: info: range check proved (CVC5: 2 VC)
+polyorb_hi-messages.adb:157:43: info: range check proved (CVC5: 2 VC)
+polyorb_hi-messages.adb:179:55: info: range check proved (CVC5: 1 VC)
+polyorb_hi-messages.ads:66:13: info: implicit aspect Always_Terminates on "To_Length" has been proved, subprogram will terminate
+polyorb_hi-messages.ads:67:13: info: implicit aspect Always_Terminates on "To_Buffer" has been proved, subprogram will terminate
+polyorb_hi-messages.ads:71:13: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
+polyorb_hi-messages.ads:77:07: info: initialization of "Item" proved
+polyorb_hi-messages.ads:78:07: info: initialization of "Last" proved
+polyorb_hi-messages.ads:91:26: info: initialization of "M" proved
+polyorb_hi-messages.ads:94:13: info: implicit aspect Always_Terminates on "Is_Empty" has been proved, subprogram will terminate
+polyorb_hi-messages.ads:97:13: info: implicit aspect Always_Terminates on "Payload" has been proved, subprogram will terminate
+polyorb_hi-messages.ads:98:40: info: precondition proved (CVC5: 1 VC)
+polyorb_hi-messages.ads:99:17: high: postcondition might fail (e.g. when M = (Content => (others => 0), First => 1, Last => 1) and Payload'Result = (others => 0) and Payload'Result'First = 1 and Payload'Result'Last = 19) [provers reached step limit before completing the proof]
+polyorb_hi-messages.ads:99:32: info: range check proved (CVC5: 2 VC)
+polyorb_hi-messages.ads:99:42: info: precondition proved (CVC5: 1 VC)
+polyorb_hi-messages.ads:102:13: info: implicit aspect Always_Terminates on "Sender" has been proved, subprogram will terminate
+polyorb_hi-messages.ads:103:44: info: precondition proved (CVC5: 1 VC)
+polyorb_hi-messages.ads:104:13: info: implicit aspect Always_Terminates on "Sender" has been proved, subprogram will terminate
+polyorb_hi-messages.ads:107:13: info: implicit aspect Always_Terminates on "Encapsulate" has been proved, subprogram will terminate
+polyorb_hi-messages.ads:112:48: info: precondition proved (CVC5: 1 VC)
+polyorb_hi-messages.ads:116:13: info: implicit aspect Always_Terminates on "Valid" has been proved, subprogram will terminate
+polyorb_hi-messages.ads:136:63: info: range check proved (CVC5: 2 VC)
+polyorb_hi-messages.ads:144:13: info: range check proved (CVC5: 4 VC)
+polyorb_hi-messages.ads:147:16: info: precondition proved (CVC5: 2 VC)
+polyorb_hi-output.adb:43:13: error: function "Build_Timestamp" with volatile input global "Elaborated_Variables" with effective reads is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]
+polyorb_hi-output.adb:43:13: error: launch "gnatprove --explain=E0005" for more information
+polyorb_hi-output.adb:43:13: error: violation of pragma SPARK_Mode at polyorb-hi-ada/gnat.adc:19
+polyorb_hi-port_kinds.ads:53:13: info: implicit aspect Always_Terminates on "Is_In" has been proved, subprogram will terminate
+polyorb_hi-port_kinds.ads:54:13: info: implicit aspect Always_Terminates on "Is_Out" has been proved, subprogram will terminate
+polyorb_hi-port_kinds.ads:56:13: info: implicit aspect Always_Terminates on "Is_Event" has been proved, subprogram will terminate
+polyorb_hi-port_kinds.ads:57:13: info: implicit aspect Always_Terminates on "Is_Data" has been proved, subprogram will terminate
+polyorb_hi-protocols.adb:51:14: error: "Send" is not allowed in SPARK (due to function with global outputs)
+polyorb_hi-protocols.adb:51:14: error: violation of pragma SPARK_Mode at polyorb-hi-ada/gnat.adc:19
+polyorb_hi-protocols.ads:44:13: error: consider using the Side_Effects aspect
+polyorb_hi-protocols.ads:44:13: error: function "Send" with output global "Polyorb_Hi.Epoch.Elaborated_Variables" is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]
+polyorb_hi-protocols.ads:44:13: error: launch "gnatprove --explain=E0005" for more information
+polyorb_hi-protocols.ads:44:13: error: violation of pragma SPARK_Mode at polyorb-hi-ada/gnat.adc:19
 polyorb_hi-suspenders.ads:41:27: info: initialization of "Suspenders.Elaborated_Variables" proved
 polyorb_hi-suspenders.ads:46:08: info: flow dependencies proved
 polyorb_hi-transport_low_level.ads:50:13: error: consider using the Side_Effects aspect
+polyorb_hi-transport_low_level.ads:50:13: error: consider using the Side_Effects aspect
 polyorb_hi-transport_low_level.ads:50:13: error: function "Send" with output global "Elaborated_Variables" is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]
+polyorb_hi-transport_low_level.ads:50:13: error: function "Send" with output global "Polyorb_Hi.Epoch.Elaborated_Variables" is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]
+polyorb_hi-transport_low_level.ads:50:13: error: launch "gnatprove --explain=E0005" for more information
 polyorb_hi-transport_low_level.ads:50:13: error: launch "gnatprove --explain=E0005" for more information
 polyorb_hi-transport_low_level.ads:50:13: error: violation of pragma SPARK_Mode at polyorb-hi-ada/gnat.adc:19
+polyorb_hi-transport_low_level.ads:50:13: error: violation of pragma SPARK_Mode at polyorb-hi-ada/gnat.adc:19
+polyorb_hi-utils.adb:46:25: info: range check proved (CVC5: 2 VC)
+polyorb_hi-utils.adb:46:33: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+polyorb_hi-utils.adb:47:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
+polyorb_hi-utils.adb:47:16: info: index check proved (CVC5: 2 VC)
+polyorb_hi-utils.adb:47:33: info: index check proved (CVC5: 2 VC)
+polyorb_hi-utils.adb:47:33: info: overflow check proved (CVC5: 2 VC)
+polyorb_hi-utils.adb:56:34: info: range check proved (CVC5: 2 VC)
+polyorb_hi-utils.adb:59:37: info: length check proved (CVC5: 3 VC)
+polyorb_hi-utils.adb:59:37: info: range check proved (CVC5: 4 VC)
+polyorb_hi-utils.adb:59:59: info: overflow check proved (CVC5: 2 VC)
+polyorb_hi-utils.adb:89:20: info: division check proved (CVC5: 1 VC)
+polyorb_hi-utils.adb:89:32: info: division check proved (CVC5: 1 VC)
+polyorb_hi-utils.adb:98:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
+polyorb_hi-utils.adb:98:16: info: types in unchecked conversion have the same size (Trivial)
+polyorb_hi-utils.adb:98:16: warning: imprecise handling of Unchecked_Conversion (enumeration with non-default representation) [imprecise-unchecked-conversion]
+polyorb_hi-utils.adb:99:10: info: type is suitable as source for unchecked conversion (Trivial)
+polyorb_hi-utils.adb:99:21: info: type is suitable for unchecked conversion (Trivial)
+polyorb_hi-utils.adb:109:16: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
+polyorb_hi-utils.adb:109:16: info: types in unchecked conversion have the same size (Trivial)
+polyorb_hi-utils.adb:109:16: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
+polyorb_hi-utils.adb:110:10: info: type is suitable as source for unchecked conversion (Trivial)
+polyorb_hi-utils.adb:110:23: high: type is unsuitable as a target for unchecked conversion [possible explanation: type "Port_Type" has 4 values but Size 16, which allows 16#1000_0# possible values; invalid values could result from the unchecked conversion [SPARK RM 13.9]]
+polyorb_hi-utils.adb:124:32: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+polyorb_hi-utils.adb:125:16: info: index check proved (CVC5: 2 VC)
+polyorb_hi-utils.adb:126:23: info: overflow check proved (CVC5: 2 VC)
+polyorb_hi-utils.ads:62:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
+polyorb_hi-utils.ads:62:13: info: types in unchecked conversion have the same size (Trivial)
+polyorb_hi-utils.ads:62:13: warning: imprecise handling of Unchecked_Conversion (enumeration with non-default representation) [imprecise-unchecked-conversion]
+polyorb_hi-utils.ads:63:07: info: type is suitable as source for unchecked conversion (Trivial)
+polyorb_hi-utils.ads:63:20: info: type is suitable for unchecked conversion (Trivial)
+polyorb_hi-utils.ads:64:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
+polyorb_hi-utils.ads:64:13: info: types in unchecked conversion have the same size (Trivial)
+polyorb_hi-utils.ads:64:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
+polyorb_hi-utils.ads:65:07: info: type is suitable as source for unchecked conversion (Trivial)
+polyorb_hi-utils.ads:65:19: high: type is unsuitable as a target for unchecked conversion [possible explanation: type "Entity_Type" has 4 values but Size 8, which allows 256 possible values; invalid values could result from the unchecked conversion [SPARK RM 13.9]]
+polyorb_hi-utils.ads:67:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
+polyorb_hi-utils.ads:67:13: info: types in unchecked conversion have the same size (Trivial)
+polyorb_hi-utils.ads:67:13: warning: imprecise handling of Unchecked_Conversion (enumeration with non-default representation) [imprecise-unchecked-conversion]
+polyorb_hi-utils.ads:68:07: info: type is suitable as source for unchecked conversion (Trivial)
+polyorb_hi-utils.ads:68:18: info: type is suitable for unchecked conversion (Trivial)
+polyorb_hi-utils.ads:69:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
+polyorb_hi-utils.ads:69:13: info: types in unchecked conversion have the same size (Trivial)
+polyorb_hi-utils.ads:69:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
+polyorb_hi-utils.ads:70:07: info: type is suitable as source for unchecked conversion (Trivial)
+polyorb_hi-utils.ads:70:19: high: type is unsuitable as a target for unchecked conversion [possible explanation: type "Node_Type" has 2 values but Size 8, which allows 256 possible values; invalid values could result from the unchecked conversion [SPARK RM 13.9]]
+polyorb_hi-utils.ads:72:13: info: implicit aspect Always_Terminates on "Internal_Code" has been proved, subprogram will terminate
+polyorb_hi-utils.ads:73:13: info: implicit aspect Always_Terminates on "Corresponding_Port" has been proved, subprogram will terminate
+polyorb_hi-utils.ads:75:13: info: implicit aspect Always_Terminates on "Swap_Bytes" has been proved, subprogram will terminate
+polyorb_hi-utils.ads:88:13: info: implicit aspect Always_Terminates on "To_Hi_String" has been proved, subprogram will terminate
+polyorb_hi-utils.ads:89:19: info: postcondition proved (CVC5: 1 VC)
+polyorb_hi-utils.ads:91:13: info: implicit aspect Always_Terminates on "To_String" has been proved, subprogram will terminate
+polyorb_hi-utils.ads:94:13: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
+polyorb_hi-utils.ads:97:13: info: implicit aspect Always_Terminates on "Valid" has been proved, subprogram will terminate
+polyorb_hi-utils.ads:99:13: info: implicit aspect Always_Terminates on "Parse_String" has been proved, subprogram will terminate
+polyorb_hi-utils.ads:138:09: info: range check proved (CVC5: 4 VC)
 polyorb_hi_generated-activity.adb:98:03: error: "Producer_Destinations" is not allowed in SPARK (due to attribute "Address" outside an attribute definition clause)
 polyorb_hi_generated-activity.adb:98:03: error: violation of pragma SPARK_Mode at polyorb-hi-ada/gnat.adc:19
 polyorb_hi_generated-activity.adb:100:06: error: attribute "Address" outside an attribute definition clause is not allowed in SPARK (SPARK RM 13.7(2)) [E0002]
@@ -50,6 +197,46 @@ polyorb_hi_generated-activity.ads:102:03: warning: in instantiation at polyorb_h
 polyorb_hi_generated-activity.ads:102:03: warning: pragma "Storage_Size" ignored (not yet supported) [ignored-pragma]
 polyorb_hi_generated-activity.ads:192:03: warning: in instantiation at polyorb_hi-periodic_task.ads:74
 polyorb_hi_generated-activity.ads:192:03: warning: pragma "Storage_Size" ignored (not yet supported) [ignored-pragma]
+polyorb_hi_generated-marshallers.adb:31:13: info: discriminant check proved (CVC5: 1 VC)
+polyorb_hi_generated-marshallers.adb:98:05: info: initialization of "Data_Sink_DATA" proved
+polyorb_hi_generated-marshallers.adb:107:12: info: discriminant check proved (Trivial: 1 VC; altergo: 1 VC)
+polyorb_hi_generated-marshallers.ads:23:05: high: "Data.Data_Source_DATA" is not initialized in "Unmarshall" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "Data.Data_Source_DATA" on all paths, make "Data" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+polyorb_hi_generated-marshallers.ads:33:05: info: initialization of "Data" proved
+polyorb_hi_generated-marshallers.ads:44:05: medium: "Data.Data_Sink_DATA" might not be initialized in "Unmarshall" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "Data.Data_Sink_DATA" on all paths, make "Data" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+polyorb_hi_generated-subprograms.ads:14:05: info: initialization of "Data_Source" proved
+polyorb_hi_generated-transport.adb:54:07: info: no contextual analysis of "Producer_Consumer_Result_Consumer_Deliver" (body not seen yet)
+polyorb_hi_generated-transport.adb:62:12: error: consider using the Side_Effects aspect
+polyorb_hi_generated-transport.adb:62:12: error: function "Producer_Consumer_Producer_Send" with output global "Polyorb_Hi.Epoch.Elaborated_Variables" is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]
+polyorb_hi_generated-transport.adb:62:12: error: launch "gnatprove --explain=E0005" for more information
+polyorb_hi_generated-transport.adb:62:12: error: violation of pragma SPARK_Mode at polyorb-hi-ada/gnat.adc:19
+polyorb_hi_generated-transport.adb:87:14: error: "Producer_Consumer_Producer_Send" is not allowed in SPARK (due to function with global outputs)
+polyorb_hi_generated-transport.adb:87:14: error: violation of pragma SPARK_Mode at polyorb-hi-ada/gnat.adc:19
+polyorb_hi_generated-transport.adb:87:14: info: no contextual analysis of "Producer_Consumer_Producer_Send" (body not seen yet)
+polyorb_hi_generated-transport.adb:117:14: error: "Send" is not allowed in SPARK (due to function with global outputs)
+polyorb_hi_generated-transport.adb:117:14: error: violation of pragma SPARK_Mode at polyorb-hi-ada/gnat.adc:19
+polyorb_hi_generated-transport.ads:20:12: error: consider using the Side_Effects aspect
+polyorb_hi_generated-transport.ads:20:12: error: consider using the Side_Effects aspect
+polyorb_hi_generated-transport.ads:20:12: error: function "Send" with output global "Polyorb_Hi.Epoch.Elaborated_Variables" is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]
+polyorb_hi_generated-transport.ads:20:12: error: function "Send" with output global "Polyorb_Hi.Epoch.Elaborated_Variables" is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]
+polyorb_hi_generated-transport.ads:20:12: error: launch "gnatprove --explain=E0005" for more information
+polyorb_hi_generated-transport.ads:20:12: error: launch "gnatprove --explain=E0005" for more information
+polyorb_hi_generated-transport.ads:20:12: error: violation of pragma SPARK_Mode at polyorb-hi-ada/gnat.adc:19
+polyorb_hi_generated-transport.ads:20:12: error: violation of pragma SPARK_Mode at polyorb-hi-ada/gnat.adc:19
 pr_a.adb:22:20: info: range check proved (CVC5: 2 VC)
 pr_a.adb:25:33: medium: "polyorb_hi.transport_low_level.nodes" might not be initialized after elaboration of main program "pr_A"
+producer_consumer.adb:44:13: info: implicit aspect Always_Terminates on "Get_Node" has been proved, subprogram will terminate
+producer_consumer.adb:51:04: info: no contextual analysis of "Get_Node" (unconstrained return type)
+producer_consumer.adb:68:28: info: overflow check proved (CVC5: 2 VC)
+producer_consumer.adb:71:17: low: range check might fail, cannot prove upper bound for Get_Node & ": produced " [possible fix: you should consider adding a postcondition to function "Get_Node" or turning it into an expression function] [provers reached step limit before completing the proof]
+producer_consumer.adb:72:17: low: range check might fail, cannot prove upper bound for Get_Node & ": produced " & Alpha_Type'Image (Data_Source) [reason for check: input value must fit in parameter type] [possible fix: you should consider adding a postcondition to function "Get_Node" or turning it into an expression function] [provers reached step limit before completing the proof]
+producer_consumer.adb:72:29: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+producer_consumer.adb:82:17: low: range check might fail, cannot prove upper bound for Get_Node & " : consumed " [possible fix: you should consider adding a postcondition to function "Get_Node" or turning it into an expression function] [provers reached step limit before completing the proof]
+producer_consumer.adb:83:17: low: range check might fail, cannot prove upper bound for Get_Node & " : consumed " & Alpha_Type'Image (Data_Sink) [reason for check: input value must fit in parameter type] [possible fix: subprogram at producer_consumer.ads:40 should mention Data_Sink in a precondition] [provers reached step limit before completing the proof]
+producer_consumer.adb:83:29: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+producer_consumer.ads:38:27: info: initialization of "Data_Source" proved
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] polyorb_hi-output.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] polyorb_hi-protocols.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] polyorb_hi-transport_low_level_sockets.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] polyorb_hi_generated-activity.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] polyorb_hi_generated-transport.adb (test.gpr) failed with status 5

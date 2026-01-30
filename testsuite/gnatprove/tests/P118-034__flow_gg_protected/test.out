@@ -4,4 +4,5 @@ a.adb:15:15: error: "Vol" is not allowed in SPARK (due to not fully initialized 
 a.adb:15:15: error: violation of pragma SPARK_Mode at test.adc:1
 a.adb:21:10: error: "Vol" is not allowed in SPARK (due to not fully initialized part of concurrent type)
 a.adb:21:10: error: violation of pragma SPARK_Mode at test.adc:1
+test.gpr: error: [Ada Analysis] a.adb (test.gpr) failed with status 5
 gnatprove: error during flow analysis and proof

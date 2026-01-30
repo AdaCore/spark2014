@@ -245,3 +245,5 @@ test_ownership_annotation.adb:336:09: medium: resource or memory leak might occu
 test_ownership_annotation.adb:338:11: medium: resource or memory leak might occur [possible fix: call at line 337 should mention X (for argument D) in a postcondition] [provers reached step limit before completing the proof]
 test_ownership_annotation.adb:340:07: medium: resource or memory leak might occur [provers reached step limit before completing the proof]
 gnatprove: error during flow analysis and proof
+test.gpr: error: [Ada Analysis] test_borrow.adb (test.gpr) failed with status 5
+test.gpr: error: [Ada Analysis] test_move.adb (test.gpr) failed with status 5
