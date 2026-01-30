@@ -92,7 +92,6 @@ with SPARK_Xrefs;
 with Stand;                          use Stand;
 with String_Utils;                   use String_Utils;
 with Switch;                         use Switch;
-with Tempdir;                        use Tempdir;
 with VC_Kinds;                       use VC_Kinds;
 with Why;                            use Why;
 with Why.Atree;                      use Why.Atree;
@@ -199,7 +198,7 @@ package body Gnat2Why.Driver is
    package Pid_Maps is new
      Ada.Containers.Hashed_Maps
        (Key_Type        => Process_Id,
-        Element_Type    => Path_Name_Type,
+        Element_Type    => Temp_File_Name,
         Hash            => Process_Id_Hash,
         Equivalent_Keys => "=",
         "="             => "=");
@@ -219,7 +218,11 @@ package body Gnat2Why.Driver is
    --  Wait until all child gnatwhy3 processes finish and collect their results
 
    procedure Run_Gnatwhy3 (E : Entity_Id; Filename : String)
-   with Pre => Output_File_Map.Length <= Max_Subprocesses and then Present (E);
+   with
+     Pre =>
+       Output_File_Map.Length <= Max_Subprocesses
+       and then Present (E)
+       and then Ada.Directories.Current_Directory = Gnat2Why_Args.Why3_Dir;
    --  After generating the Why file, run the proof tool. Wait for existing
    --  gnatwhy3 processes to finish if Max_Subprocesses is already reached.
 
@@ -248,7 +251,7 @@ package body Gnat2Why.Driver is
       Wait_Process (Pid, Success);
       pragma Assert (Pid /= Invalid_Pid);
       declare
-         Fn : constant String := Get_Name_String (Output_File_Map (Pid));
+         Fn : constant String := Output_File_Map (Pid);
       begin
          Parse_Why3_Results (Fn, Timing);
          Delete_File (Fn, Success);
@@ -1015,9 +1018,18 @@ package body Gnat2Why.Driver is
             Timing_Phase_Completed
               (Timing, Null_Subp, "translation of standard");
 
-            Translate_CUnit;
+            declare
+               use Ada.Directories;
+               Old_Dir : constant String := Current_Directory;
+            begin
+               Set_Directory (To_String (Gnat2Why_Args.Why3_Dir));
 
-            Collect_Results;
+               Translate_CUnit;
+
+               Collect_Results;
+
+               Set_Directory (Old_Dir);
+            end;
             --  If the analysis is requested for a specific piece of code, we
             --  do not warn about useless pragma Annotate, because it's likely
             --  to be a false positive.
@@ -1226,8 +1238,8 @@ package body Gnat2Why.Driver is
    procedure Run_Gnatwhy3 (E : Entity_Id; Filename : String) is
       use Ada.Directories;
       use Ada.Containers;
-      Fn        : constant String := Compose (Current_Directory, Filename);
-      Old_Dir   : constant String := Current_Directory;
+      Fn        : constant String :=
+        Compose (To_String (Gnat2Why_Args.Why3_Dir), Filename);
       Why3_Args : String_Lists.List := Gnat2Why_Args.Why3_Args;
       Command   : GNAT.OS_Lib.String_Access :=
         GNAT.OS_Lib.Locate_Exec_On_Path (Why3_Args.First_Element);
@@ -1269,15 +1281,13 @@ package body Gnat2Why.Driver is
 
       Why3_Args.Delete_First (1);
 
-      Set_Directory (To_String (Gnat2Why_Args.Why3_Dir));
-
       --  We need to capture stderr of gnatwhy3 output in case of Out_Of_Memory
       --  messages.
 
       declare
          Args : Argument_List := Call.Argument_List_Of_String_List (Why3_Args);
          Fd   : File_Descriptor;
-         Name : Path_Name_Type;
+         Name : Temp_File_Name;
          Pid  : Process_Id;
 
       begin
@@ -1303,7 +1313,6 @@ package body Gnat2Why.Driver is
             Free (Arg);
          end loop;
       end;
-      Set_Directory (Old_Dir);
       Free (Command);
    end Run_Gnatwhy3;
 

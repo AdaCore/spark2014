@@ -186,7 +186,9 @@ procedure Gnatprove with SPARK_Mode is
       --  information. In the second and third steps, it calls gnat2why.
       Call_Gnat2Why : constant Boolean :=
         Translation_Phase /= GS_Data_Representation;
-      Obj_Dir       : constant String := Artifact_Dir (Tree).Display_Full_Name;
+      Obj_Dir       : constant String :=
+        Ada.Directories.Full_Name (Artifact_Dir (Tree).Display_Full_Name);
+      --  Object directory, without trailing directory separators (e.g. '/')
       Opt_File      : constant String :=
         Gnat2Why_Opts.Writing.Pass_Extra_Options_To_Gnat2why
           (Translation_Phase => Translation_Phase = GS_Gnat2Why,
@@ -196,9 +198,7 @@ procedure Gnatprove with SPARK_Mode is
          then ""
          else
            Ada.Directories.Compose
-             (Configuration.Artifact_Dir (Tree).Display_Full_Name,
-              "data_representation_generation",
-              "log"));
+             (Obj_Dir, "data_representation_generation", "log"));
       Del_Succ      : Boolean;
 
    begin
