@@ -4,3 +4,12 @@ test.adb:12:04: info: precondition proved (CVC5: 1 VC)
 test.adb:13:04: info: precondition proved (CVC5: 1 VC)
 test.adb:15:19: info: assertion proved (CVC5: 1 VC)
 test.adb:15:19: info: precondition proved (CVC5: 1 VC)
+test.adb:4:04: warning: check will fail at run time [-gnatw.a]
+test.adb:4:04: warning: check will fail at run time [-gnatw.a]
+test.adb:4:04: warning: check will fail at run time [-gnatw.a]
+test.adb:4:04: warning: in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:110 [-gnatw.a]
+test.adb:4:04: warning: in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:218 [-gnatw.a]
+test.adb:4:04: warning: in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:218 [-gnatw.a]
+test.adb:4:04: warning: in instantiation at spark-containers-functional-maps.ads:144 [-gnatw.a]
+test.adb:4:04: warning: in instantiation at spark-containers-functional-maps.ads:162 [-gnatw.a]
+test.adb:4:04: warning: in instantiation at spark-containers-functional-vectors.ads:176 [-gnatw.a]
