@@ -246,7 +246,6 @@ package body Gnat2Why.Driver is
    procedure Collect_One_Result is
       Pid     : Process_Id;
       Success : Boolean;
-      pragma Warnings (Off, Success); --  modified but then not referenced
    begin
       Wait_Process (Pid, Success);
       pragma Assert (Pid /= Invalid_Pid);
@@ -256,6 +255,7 @@ package body Gnat2Why.Driver is
       begin
          Parse_Why3_Results (Fn, Timing);
          Delete_File (Fn, Success);
+         pragma Assert (Success);
       end;
       Output_File_Map.Delete (Pid);
    end Collect_One_Result;
