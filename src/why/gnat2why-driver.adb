@@ -251,7 +251,9 @@ package body Gnat2Why.Driver is
       Wait_Process (Pid, Success);
       pragma Assert (Pid /= Invalid_Pid);
       declare
-         Fn : constant String := Output_File_Map (Pid);
+         Fn : constant String :=
+           Output_File_Map (Pid) (1 .. Temp_File_Len - 1);
+         --  Name of the results file without trailing NUL
       begin
          Parse_Why3_Results (Fn, Timing);
          Delete_File (Fn, Success);
