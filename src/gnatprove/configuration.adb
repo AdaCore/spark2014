@@ -1579,12 +1579,6 @@ package body Configuration is
       --  set global variable Proof_Dir to the full path
       --  <path-to-project-file>/<value-of-proof-dir>.
 
-      procedure Limit_Provers (Provers : in out String_Lists.List);
-      --  This subprogram is here for SPARK Discovery. It removes
-      --  cvc5/z3/colibri from the provers list, if not found on the PATH. If
-      --  that makes the list of provers become empty, alt-ergo is added as
-      --  prover, so that we have at least one prover.
-
       procedure Sanity_Checking;
       --  Check the command line flags for conflicting flags
 
@@ -1757,49 +1751,6 @@ package body Configuration is
             end if;
          end;
       end Init;
-
-      -------------------
-      -- Limit_Provers --
-      -------------------
-
-      procedure Limit_Provers (Provers : in out String_Lists.List) is
-
-         procedure Remove_Prover (Name : String);
-         --  Remove prover from Provers list
-         --  @param Name prover name to be removed
-
-         -------------------
-         -- Remove_Prover --
-         -------------------
-
-         procedure Remove_Prover (Name : String) is
-            C : String_Lists.Cursor := Case_Insensitive_Find (Provers, Name);
-         begin
-            if String_Lists.Has_Element (C) then
-               Provers.Delete (C);
-            end if;
-         end Remove_Prover;
-
-         Is_Empty_At_Start : constant Boolean := Provers.Is_Empty;
-
-         --  Start of processing for Limit_Prover
-
-      begin
-         if not SPARK_Install.CVC5_Present then
-            Remove_Prover ("cvc5");
-         end if;
-         if not SPARK_Install.Z3_Present then
-            Remove_Prover ("z3");
-         end if;
-         if not SPARK_Install.Colibri_Present then
-            Remove_Prover ("colibri");
-         end if;
-
-         if not Is_Empty_At_Start and then Provers.Is_Empty then
-            Provers.Append ("altergo");
-         end if;
-
-      end Limit_Provers;
 
       --------------------
       -- List_From_Attr --
@@ -2496,7 +2447,6 @@ package body Configuration is
             else Integer'Min (FS.Timeout, Constants.Max_CE_Timeout));
 
          Set_Provers (CL_Switches.Prover, FS);
-         Limit_Provers (FS.Provers);
 
          if CL_Switches.Output_Msg_Only then
             FS.Provers.Clear;
