@@ -491,6 +491,31 @@ package VC_Kinds is
    type Error_Message_Kind is
      (Err_Comp_Not_Present,
 
+      --  Language violations
+
+      Annot_Container_Aggregate_Without_Annotation,
+      Annot_Handler_Conversion,
+      Annot_Wrong_Context_For_Prophecy,
+      Vio_Ownership_Allocator_Invalid_Context,
+      Vio_Ownership_Allocator_Uninitialized,
+      Vio_Ownership_Anonymous_Access_To_Named,
+      Vio_Ownership_Borrow_Of_Constant,
+      Vio_Ownership_Borrow_Of_Non_Markable,
+      Vio_Ownership_Different_Branches,
+      Vio_Ownership_Duplicate_Aggregate_Value,
+      Vio_Ownership_Move_Constant_Part,
+      Vio_Ownership_Move_In_Declare,
+      Vio_Ownership_Move_Not_Name,
+      Vio_Ownership_Move_Traversal_Call,
+      Vio_Ownership_Volatile,
+      Vio_Real_Root,
+      Vio_Relaxed_Init_Part_Generic, --  Any of the three following kinds
+      Vio_Relaxed_Init_Part_Of_Tagged,
+      Vio_Relaxed_Init_Part_Of_Unchecked_Union,
+      Vio_Relaxed_Init_Part_Of_Volatile,
+      Vio_Volatile_Incompatible_Comp,
+      Vio_Volatile_Incompatible_Type,
+
       --  Tool limitations
 
       Lim_Abstract_State_Part_Of_Concurrent_Obj,
@@ -510,6 +535,7 @@ package VC_Kinds is
       Lim_Array_Conv_Different_Size_Modular_Index,
       Lim_Array_Conv_Signed_Modular_Index,
       Lim_Assert_And_Cut_Meet_Inv,
+      Lim_Borrow_Slice,
       Lim_Borrow_Traversal_First_Param,
       Lim_Borrow_Traversal_Volatile,
       Lim_Class_Attr_Of_Constrained_Type,
@@ -540,6 +566,7 @@ package VC_Kinds is
       Lim_Hidden_Private_Relaxed_Init,
       Lim_Img_On_Non_Scalar,
       Lim_Incomplete_Type_Early_Usage,
+      Lim_Indexed_Container_Aggregate,
       Lim_Inherited_Controlling_Result_From_Hidden_Part,
       Lim_Inherited_Controlling_Result_From_SPARK_Off,
       Lim_Inherited_Prim_From_Hidden_Part,
@@ -602,9 +629,25 @@ package VC_Kinds is
       Lim_Unknown_Size,
       Lim_UU_Tagged_Comp);
 
+   subtype Incorrect_Annotation_Kind is
+     Error_Message_Kind
+       range Annot_Container_Aggregate_Without_Annotation
+             .. Annot_Wrong_Context_For_Prophecy;
+
    subtype Unsupported_Kind is
      Error_Message_Kind
        range Lim_Abstract_State_Part_Of_Concurrent_Obj .. Lim_UU_Tagged_Comp;
+
+   subtype Violation_Kind is
+     Error_Message_Kind
+       range Vio_Ownership_Allocator_Invalid_Context
+             .. Vio_Volatile_Incompatible_Type;
+
+   subtype Marking_Error_Kind is Error_Message_Kind
+   with
+     Predicate =>
+       Marking_Error_Kind
+       in Incorrect_Annotation_Kind | Unsupported_Kind | Violation_Kind;
 
    subtype Default_Warning_Kind is
      Misc_Warning_Kind
@@ -850,6 +893,11 @@ package VC_Kinds is
            --  these messages are issued by the front-end
            raise Program_Error);
 
+   function Error_Message (Kind : Error_Message_Kind) return String
+   with Pre => Kind not in Unsupported_Kind | Violation_Kind;
+   --  Return the error message for each kind of error except violations and
+   --  limitations which are handled specificaly.
+
    function Unsupported_Message
      (Kind : Unsupported_Kind; Name : String := "") return String
    is (case Kind is
@@ -1012,6 +1060,8 @@ package VC_Kinds is
            "call to operation of a component of a protected type",
          when Lim_Suspension_On_Formal                                    =>
            "suspension on a formal parameter",
+         when Lim_Borrow_Slice                                            =>
+           "borrow through a slice",
          when Lim_Borrow_Traversal_First_Param                            =>
            "borrowing traversal functions whose first parameter does not have"
            & " an anonymous access-to-variable type",
@@ -1109,11 +1159,31 @@ package VC_Kinds is
            & "type with an invariant outside of this package",
          when Lim_Hidden_Private_Relaxed_Init                             =>
            "hidden private type containing only subcomponents whose type is"
-           & " annotated with Relaxed_Initialization");
+           & " annotated with Relaxed_Initialization",
+         when Lim_Indexed_Container_Aggregate                             =>
+           "indexed container aggregate");
 
-   function Error_Message
-     (Kind : Error_Message_Kind; Name : String := "") return String;
-   --  Return the error message for each kind of error
+   function Incorrect_Annotation_Message
+     (Kind : Incorrect_Annotation_Kind) return String
+   is (case Kind is
+         when Annot_Container_Aggregate_Without_Annotation =>
+           "types of container aggregates shall have the "
+           & """Container_Aggregate"" annotation",
+         when Annot_Handler_Conversion                     =>
+           "an access-to-subprogram type with the ""Handler"" annotation "
+           & "shall not be converted to an access-to-subprogram type "
+           & "without",
+         when Annot_Wrong_Context_For_Prophecy             =>
+           "calls to a function annotated with the ""At_End_Borrow"" "
+           & "annotation and references to constants saving such a call shall "
+           & "occur either in a postcondition, as a parameter of a lemma, in "
+           & "an assertion, or as the initial value of a ghost constant");
+
+   function Violation_Message
+     (Kind : Violation_Kind; Root_Cause : Boolean := False) return String;
+   --  If Root_Cause is True, return the message that should be used as root
+   --  cause message for cascading violations for Kind if it is different from
+   --  the regular message (typically, if it has character insertions).
 
    --  Explain codes are used in GNATprove to provide more information on
    --  selected error/warning messages. The subset of those codes used in

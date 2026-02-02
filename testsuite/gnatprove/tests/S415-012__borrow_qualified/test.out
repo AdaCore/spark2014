@@ -1,3 +1,4 @@
-flow_borrows.adb:15:29: error: borrow of a qualified expression is not allowed in SPARK
+flow_borrows.adb:15:29: error: a qualified expression provides a constant view of an object
+flow_borrows.adb:15:29: error: borrow of a constant object is not allowed in SPARK (SPARK RM 3.10(11))
 flow_borrows.adb:15:29: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during analysis of data and information flow

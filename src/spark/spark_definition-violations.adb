@@ -38,6 +38,23 @@ package body SPARK_Definition.Violations is
    --  Issue an error continuation message for node N with the location of
    --  the violated SPARK_Mode pragma/aspect.
 
+   function SRM_Reference (Kind : Violation_Kind) return String
+   with
+     Post =>
+       SRM_Reference'Result = ""
+       or else
+         (SRM_Reference'Result'Length > 9
+          and then Head (SRM_Reference'Result, 9) = "SPARK RM ");
+   --  Return a reference to the SRM for Kind if any
+
+   function Explain_Code (Kind : Violation_Kind) return Explain_Code_Kind;
+   --  Return an explain code to be displayed along with the error message for
+   --  Kind if any. If SRM_Reference
+   --  is set, the reference to the SRM is appended to the error message. If
+   --  Cont_Msg is set, a continuation message is issued. If Root_Cause_Msg
+   --  is set, the corresponding message is used as root cause message for
+   --  cascading violations (typically used if Msg has character insertions).
+
    ------------------------------
    -- Add_Violation_Root_Cause --
    ------------------------------
@@ -55,6 +72,18 @@ package body SPARK_Definition.Violations is
          Add_Violation_Root_Cause (N, Msg);
       end if;
    end Add_Violation_Root_Cause;
+
+   ------------------
+   -- Explain_Code --
+   ------------------
+
+   function Explain_Code (Kind : Violation_Kind) return Explain_Code_Kind
+   is (case Kind is
+         when Vio_Ownership_Borrow_Of_Non_Markable  =>
+           EC_Incorrect_Source_Of_Borrow,
+         when Vio_Ownership_Allocator_Uninitialized =>
+           EC_Uninitialized_Allocator,
+         when others                                => EC_None);
 
    -------------------------------
    -- GNATprove_Tasking_Profile --
@@ -255,6 +284,44 @@ package body SPARK_Definition.Violations is
    -- Mark_Unsupported --
    ----------------------
 
+   procedure Mark_Incorrect_Use_Of_Annotation
+     (Kind       : Incorrect_Annotation_Kind;
+      N          : Node_Id;
+      Annotation : String;
+      Msg        : String := "";
+      Names      : Node_Lists.List := Node_Lists.Empty;
+      Cont_Msg   : String := "")
+   is
+      Error_Msg : constant String :=
+        (if Msg /= "" then Msg else Incorrect_Annotation_Message (Kind));
+   begin
+      --  Flag the violation, so that the current entity is marked
+      --  accordingly.
+
+      Violation_Detected := True;
+
+      --  Define the root cause
+
+      if Emit_Messages then
+         Add_Violation_Root_Cause
+           (N, Msg => "incorrect use of """ & Annotation & """ annotation");
+      end if;
+
+      --  If SPARK_Mode is On, raise an error
+
+      if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
+         Error_Msg_N
+           (Create (Error_Msg, Names => Names),
+            N,
+            Continuations =>
+              (if Cont_Msg /= "" then [Create (Cont_Msg)] else []));
+      end if;
+   end Mark_Incorrect_Use_Of_Annotation;
+
+   ----------------------
+   -- Mark_Unsupported --
+   ----------------------
+
    procedure Mark_Unsupported
      (Kind           : Unsupported_Kind;
       N              : Node_Id;
@@ -322,6 +389,57 @@ package body SPARK_Definition.Violations is
 
          if SRM_Reference /= "" then
             Full_Msg := Full_Msg & " (" & SRM_Reference & ")";
+         end if;
+
+         declare
+            Mess  : constant Message :=
+              Errout_Wrapper.Create
+                (To_String (Full_Msg), Names => Names, Explain_Code => Code);
+            Conts : Message_Lists.List := Message_Lists.Empty;
+         begin
+            if Cont_Msg /= "" then
+               Conts.Append (Create (Cont_Msg));
+            end if;
+            Conts.Append (Mark_Violation_Of_SPARK_Mode);
+            Error_Msg_N (Mess, N, First => True, Continuations => Conts);
+         end;
+      end if;
+   end Mark_Violation;
+
+   procedure Mark_Violation
+     (Kind     : Violation_Kind;
+      N        : Node_Id;
+      Msg      : String := "";
+      Names    : Node_Lists.List := Node_Lists.Empty;
+      Cont_Msg : String := "")
+   is
+      SRM_Ref  : constant String := SRM_Reference (Kind);
+      Code     : constant Explain_Code_Kind := Explain_Code (Kind);
+      Full_Msg : Unbounded_String;
+   begin
+      --  Flag the violation, so that the current entity is marked
+      --  accordingly.
+
+      Violation_Detected := True;
+
+      --  Define the root cause. Do not use the Msg even if it is given, as it
+      --  might contain references to elements in Names.
+
+      if Emit_Messages then
+         Add_Violation_Root_Cause
+           (N, Msg => Violation_Message (Kind, Root_Cause => True));
+      end if;
+
+      --  If SPARK_Mode is On, raise an error
+
+      if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
+         Full_Msg :=
+           To_Unbounded_String
+             (if Msg /= "" then Msg else Violation_Message (Kind))
+           & " is not allowed in SPARK";
+
+         if SRM_Ref /= "" then
+            Full_Msg := Full_Msg & " (" & SRM_Ref & ")";
          end if;
 
          declare
@@ -468,5 +586,31 @@ package body SPARK_Definition.Violations is
        --  Otherwise there is no applicable pragma, so SPARK_Mode is None
 
        else Mode = Opt.None);
+
+   -------------------
+   -- SRM_Reference --
+   -------------------
+
+   function SRM_Reference (Kind : Violation_Kind) return String
+   is (case Kind is
+         when Vio_Ownership_Allocator_Invalid_Context  => "SPARK RM 4.8(2)",
+         when Vio_Ownership_Allocator_Uninitialized    => "SPARK RM 4.8(1)",
+         when Vio_Ownership_Anonymous_Access_To_Named  => "SPARK RM 3.10(18)",
+         when Vio_Ownership_Borrow_Of_Constant         => "SPARK RM 3.10(11)",
+         when Vio_Ownership_Borrow_Of_Non_Markable     => "SPARK RM 3.10(4)",
+         when Vio_Ownership_Move_Not_Name
+            | Vio_Ownership_Move_Constant_Part
+            | Vio_Ownership_Move_Traversal_Call        => "SPARK RM 3.10(1)",
+         when Vio_Ownership_Volatile                   => "SPARK RM 3.10(16)",
+         when Vio_Ownership_Move_In_Declare
+            | Vio_Ownership_Different_Branches
+            | Vio_Ownership_Duplicate_Aggregate_Value  =>
+           "SPARK RM 3.10", --  We don't have better, use the access section
+         when Vio_Relaxed_Init_Part_Of_Tagged          => "SPARK RM 6.10(6)",
+         when Vio_Relaxed_Init_Part_Of_Unchecked_Union => "SPARK RM 6.10(8)",
+         when Vio_Relaxed_Init_Part_Of_Volatile        => "SPARK RM 6.10(7)",
+         when Vio_Volatile_Incompatible_Comp           => "SPARK RM 7.1.3(6)",
+         when Vio_Volatile_Incompatible_Type           => "SPARK RM 7.1.3(2)",
+         when others                                   => "");
 
 end SPARK_Definition.Violations;

@@ -937,6 +937,8 @@ package body VC_Kinds is
          when Lim_Assert_And_Cut_Meet_Inv                                 =>
            "a pragma Assert_And_Cut occurring immediately within a sequence"
            & " of statements containing a Loop_Invariant",
+         when Lim_Borrow_Slice                                            =>
+           "a borrow of a (part of) a slice",
          when Lim_Borrow_Traversal_First_Param                            =>
            "a borrowing traversal function whose first formal parameter does"
            & " not have an anonymous access-to-variable type",
@@ -1198,7 +1200,9 @@ package body VC_Kinds is
            & "a slice with no padding",
          when Lim_UU_Tagged_Comp                                          =>
            "a component of an unconstrained unchecked union type in a tagged "
-           & "extension");
+           & "extension",
+         when Lim_Indexed_Container_Aggregate                             =>
+           "an indexed container aggregate");
 
    pragma Annotate (Xcov, Exempt_Off);
 
@@ -1206,15 +1210,14 @@ package body VC_Kinds is
    -- Error_Message --
    -------------------
 
-   function Error_Message
-     (Kind : Error_Message_Kind; Name : String := "") return String is
+   function Error_Message (Kind : Error_Message_Kind) return String is
    begin
       case Kind is
          when Err_Comp_Not_Present =>
             return "component not present in &";
 
-         when Unsupported_Kind     =>
-            return Unsupported_Message (Kind, Name) & " is not yet supported";
+         when Marking_Error_Kind   =>
+            raise Program_Error;
       end case;
    end Error_Message;
 
@@ -2221,6 +2224,62 @@ package body VC_Kinds is
 
       return 'E' & Result;
    end To_String;
+
+   -----------------------
+   -- Violation_Message --
+   -----------------------
+
+   function Violation_Message
+     (Kind : Violation_Kind; Root_Cause : Boolean := False) return String
+   is (case Kind is
+         when Vio_Ownership_Allocator_Invalid_Context  =>
+           "allocator or call to allocating function not stored in object "
+           & "as part of assignment, declaration, or return statement",
+         when Vio_Ownership_Allocator_Uninitialized    =>
+           "uninitialized allocator without default initialization",
+         when Vio_Ownership_Anonymous_Access_To_Named  =>
+           "conversion from an anonymous access type to a named access "
+           & "type",
+         when Vio_Ownership_Borrow_Of_Constant         =>
+           "borrow of a constant object",
+         when Vio_Ownership_Borrow_Of_Non_Markable     =>
+           "borrow or observe of an expression which is not part of "
+           & "stand-alone object or parameter",
+         when Vio_Ownership_Different_Branches         =>
+           "observe of a conditional or case expression with "
+           & "branches rooted in different objects",
+         when Vio_Ownership_Duplicate_Aggregate_Value  =>
+           "duplicate value of a type with ownership",
+         when Vio_Ownership_Move_Constant_Part         =>
+           "access-to-constant part of an object as source of move",
+         when Vio_Ownership_Move_In_Declare            =>
+           "move in declare expression",
+         when Vio_Ownership_Move_Not_Name              =>
+           "expression as source of move",
+         when Vio_Ownership_Move_Traversal_Call        =>
+           "call to a traversal function as source of move",
+         when Vio_Ownership_Volatile                   =>
+           "observe, move, or borrow of volatile object",
+         when Vio_Real_Root                            =>
+           "expression of type root_real",
+         when Vio_Relaxed_Init_Part_Generic            =>
+           "part of tagged, Unchecked_Union, or effectively volatile "
+           & "object or type annotated with relaxed initialization",
+         when Vio_Relaxed_Init_Part_Of_Tagged          =>
+           (if Root_Cause
+            then "component of tagged type with relaxed Initialization"
+            else "component & of tagged type & with relaxed initialization"),
+         when Vio_Relaxed_Init_Part_Of_Unchecked_Union =>
+           "part of Unchecked_Union type with relaxed initialization",
+         when Vio_Relaxed_Init_Part_Of_Volatile        =>
+           "part of effectively volatile object or type annotated with "
+           & "relaxed initialization",
+         when Vio_Volatile_Incompatible_Comp           =>
+           "component of composite type or designated type of an access with "
+           & "an incompatible volatility",
+         when Vio_Volatile_Incompatible_Type           =>
+           "standalone object with an incompatible volatility with respect to "
+           & "its type");
 
    --------------
    -- Wrap_CWE --

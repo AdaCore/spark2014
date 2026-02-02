@@ -1,6 +1,5 @@
-test_at_end_copy.adb:25:29: error: call to a function annotated with At_End_Borrow occurring inside the initialization expression of an object other than of a constant of anonymous access-to-constant type is not allowed in SPARK
-test_at_end_copy.adb:25:29: error: violation of aspect SPARK_Mode at line 1
-test_at_end_copy.adb:28:32: error: "X_E" is not allowed in SPARK (due to call to a function annotated with At_End_Borrow occurring inside the initialization expression of an object other than of a constant of anonymous access-to-constant type)
+test_at_end_copy.adb:25:29: error: call to a function annotated with "At_End_Borrow" shall not occur inside the initialization expression of an object other than of a constant of anonymous access-to-constant type
+test_at_end_copy.adb:28:32: error: "X_E" is not allowed in SPARK (due to incorrect use of "At_End_Borrow" annotation)
 test_at_end_copy.adb:28:32: error: violation of aspect SPARK_Mode at line 1
 test_bc.adb:15:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 test_bc.adb:22:13: info: implicit aspect Always_Terminates on "G" has been proved, subprogram will terminate
@@ -18,7 +17,8 @@ test_modification.adb:33:13: error: launch "gnatprove --explain=E0005" for more 
 test_modification.adb:33:13: error: violation of aspect SPARK_Mode at line 1
 test_modification.adb:41:10: error: assignment into a parameter of a traversal function is not allowed in SPARK
 test_modification.adb:41:10: error: violation of aspect SPARK_Mode at line 1
-test_modification.adb:66:29: error: borrow of a constant object is not allowed in SPARK
+test_modification.adb:66:29: error: borrow of a constant object is not allowed in SPARK (SPARK RM 3.10(11))
+test_modification.adb:66:29: error: the root object of the borrowed path is a constant
 test_modification.adb:66:29: error: violation of aspect SPARK_Mode at line 1
 test_modification.adb:68:07: error: "B" is not allowed in SPARK (due to borrow of a constant object)
 test_modification.adb:68:07: error: violation of aspect SPARK_Mode at line 1

@@ -1,3 +1,4 @@
-main.adb:8:48: error: membership test on type whose primitive equality is not in SPARK is not allowed in SPARK
+main.adb:8:48: error: "=" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
+main.adb:8:48: error: membership test on type implicitly calls the primitive equality of type "R"
 main.adb:8:48: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof

@@ -146,6 +146,33 @@ private package SPARK_Definition.Violations is
    --  If Names is set, use this to replace & in error messages.
 
    procedure Mark_Violation
+     (Kind     : Violation_Kind;
+      N        : Node_Id;
+      Msg      : String := "";
+      Names    : Node_Lists.List := Node_Lists.Empty;
+      Cont_Msg : String := "")
+   with
+     Global => (Output => Violation_Detected, Input => Current_SPARK_Pragma);
+   --  Mark node N as a violation of SPARK. An error message pointing to the
+   --  current SPARK_Mode pragma/aspect is issued if current SPARK_Mode is On.
+   --  If Cont_Msg is set, a continuation message is issued.
+   --  If Names is set, use this to replace & in error messages.
+
+   procedure Mark_Incorrect_Use_Of_Annotation
+     (Kind       : Incorrect_Annotation_Kind;
+      N          : Node_Id;
+      Annotation : String;
+      Msg        : String := "";
+      Names      : Node_Lists.List := Node_Lists.Empty;
+      Cont_Msg   : String := "")
+   with
+     Global => (Output => Violation_Detected, Input => Current_SPARK_Pragma);
+   --  Mark node N as an incorrect use of annoation Annotation. An error
+   --  message is issued if current SPARK_Mode is On.
+   --  If Cont_Msg is set, a continuation message is issued.
+   --  If Names is set, use this to replace & in error messages.
+
+   procedure Mark_Violation
      (N : Node_Id; From : Entity_Id; Cont_Msg : String := "")
    with
      Global => (Output => Violation_Detected, Input => Current_SPARK_Pragma);

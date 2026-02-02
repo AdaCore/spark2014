@@ -227,7 +227,8 @@ package Errout_Wrapper is
       Secondary_Loc : Source_Ptr := No_Location;
       Explain_Code  : Explain_Code_Kind := EC_None;
       First         : Boolean := False;
-      Continuations : String_Lists.List := String_Lists.Empty);
+      Continuations : String_Lists.List := String_Lists.Empty)
+   with Pre => Kind not in Unsupported_Kind | Violation_Kind;
    --  Similar to Error_Msg_N, but uses the Error_Kind to generate the
    --  message text.
 

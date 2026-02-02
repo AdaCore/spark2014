@@ -3,7 +3,7 @@ pack.adb:7:07: error: violation of aspect SPARK_Mode at line 2
 pack.adb:9:07: error: "B" is not allowed in SPARK (due to uninitialized object of anonymous access type)
 pack.adb:9:07: error: violation of aspect SPARK_Mode at line 2
 pack.adb:9:12: error: launch "gnatprove --explain=E0019" for more information
-pack.adb:9:12: error: uninitialized allocator without default initialization is not allowed in SPARK [E0019]
+pack.adb:9:12: error: uninitialized allocator without default initialization is not allowed in SPARK (SPARK RM 4.8(1)) [E0019]
 pack.adb:9:12: error: violation of aspect SPARK_Mode at line 2
 pack.adb:10:07: error: "B" is not allowed in SPARK (due to uninitialized object of anonymous access type)
 pack.adb:10:07: error: violation of aspect SPARK_Mode at line 2
@@ -17,7 +17,7 @@ pacq.adb:7:07: error: violation of aspect SPARK_Mode at line 2
 pacq.adb:9:07: error: "B" is not allowed in SPARK (due to uninitialized object of anonymous access type)
 pacq.adb:9:07: error: violation of aspect SPARK_Mode at line 2
 pacq.adb:9:12: error: launch "gnatprove --explain=E0019" for more information
-pacq.adb:9:12: error: uninitialized allocator without default initialization is not allowed in SPARK [E0019]
+pacq.adb:9:12: error: uninitialized allocator without default initialization is not allowed in SPARK (SPARK RM 4.8(1)) [E0019]
 pacq.adb:9:12: error: violation of aspect SPARK_Mode at line 2
 pacq.adb:10:07: error: "B" is not allowed in SPARK (due to uninitialized object of anonymous access type)
 pacq.adb:10:07: error: violation of aspect SPARK_Mode at line 2
