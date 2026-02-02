@@ -1,7 +1,8 @@
 spark-containers-formal-hashed_sets.ads:215:09: error: "S" is referenced in Post but missing from the Global, in instantiation at term.ads:16
 spark-containers-formal-hashed_sets.ads:382:09: error: "S" is referenced in Post but missing from the Global, in instantiation at term.ads:16
-spark-containers-formal-hashed_sets.ads:688:06: error: "S" is referenced in Post but missing from the Global, in instantiation at term.ads:16
-spark-containers-formal-hashed_sets.ads:1478:06: error: "S" is referenced in Post but missing from the Global, in instantiation at term.ads:16
+spark-containers-formal-hashed_sets.ads:615:06: error: "S" is referenced in Pre but missing from the Global, in instantiation at term.ads:16
+spark-containers-formal-hashed_sets.ads:693:06: error: "S" is referenced in Post but missing from the Global, in instantiation at term.ads:16
+spark-containers-formal-hashed_sets.ads:1483:06: error: "S" is referenced in Post but missing from the Global, in instantiation at term.ads:16
 spark-containers-functional-sets.ads:109:06: error: "S" is referenced in Post but missing from the Global, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at term.ads:16
 spark-containers-functional-sets.ads:166:06: error: "S" is referenced in Post but missing from the Global, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at term.ads:16
 spark-containers-functional-sets.ads:204:06: error: "S" is referenced in Post but missing from the Global, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at term.ads:16
