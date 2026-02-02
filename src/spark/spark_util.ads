@@ -342,6 +342,16 @@ package SPARK_Util is
    --  Return True if N is a function call that has been introduced to simulate
    --  contract dispatch.
 
+   procedure Set_Conditional_Old_Attribute
+     (Prefix : Node_Id; Condition : Node_Id);
+   --  Register Prefix of an 'Old attribute reference as conditionally
+   --  evaluated, with the condition under which it should be evaluated.
+
+   function Condition_Of_Conditional_Old (Prefix : Node_Id) return Node_Id;
+   --  For a prefix of an 'Old attribute which is conditionally evaluated,
+   --  return the condition under which it is evaluated. For other nodes,
+   --  return Empty.
+
    -----------------------------------------
    -- General queries related to entities --
    -----------------------------------------

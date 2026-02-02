@@ -526,6 +526,10 @@ package body SPARK_Util is
    --  Map from calls to functions annotated with At_End_Borrow to the related
    --  borrower entity.
 
+   Conditions_Of_Conditional_Old : Node_Maps.Map;
+   --  Map from prefixes of conditionally evaluated 'Old attributes to their
+   --  evaluation condition.
+
    -------------------------------------
    -- Borrower_For_At_End_Borrow_Call --
    -------------------------------------
@@ -1639,6 +1643,21 @@ package body SPARK_Util is
          end;
       end if;
    end Component_Is_Visible_In_SPARK;
+
+   ----------------------------------
+   -- Condition_Of_Conditional_Old --
+   ----------------------------------
+
+   function Condition_Of_Conditional_Old (Prefix : Node_Id) return Node_Id is
+      Position : constant Node_Maps.Cursor :=
+        Conditions_Of_Conditional_Old.Find (Prefix);
+   begin
+      if Node_Maps.Has_Element (Position) then
+         return Node_Maps.Element (Position);
+      else
+         return Empty;
+      end if;
+   end Condition_Of_Conditional_Old;
 
    ------------------------
    -- Contains_Allocator --
@@ -7034,6 +7053,16 @@ package body SPARK_Util is
 
       return Empty;
    end Search_Component_By_Name;
+
+   -----------------------------------
+   -- Set_Conditional_Old_Attribute --
+   -----------------------------------
+
+   procedure Set_Conditional_Old_Attribute
+     (Prefix : Node_Id; Condition : Node_Id) is
+   begin
+      Conditions_Of_Conditional_Old.Insert (Prefix, Condition);
+   end Set_Conditional_Old_Attribute;
 
    -------------------
    -- Shape_Of_Node --

@@ -150,6 +150,13 @@ package body SPARK_Definition is
    --  are attached to the entity itself, which is directly added to the lists
    --  for translation after marking.
 
+   Inside_Old_Condition : Boolean := False;
+   --  Set to true when traversing conditions of conditionally evaluated 'Old
+   --  references. This is is because these conditions can themselves contains
+   --  'Old references. We only need the conditions for 'Old references
+   --  directly in pre-condition pragma, not for the copies made in evaluation
+   --  conditions.
+
    function SPARK_Pragma_Of_Entity (E : Entity_Id) return Node_Id;
    --  Return SPARK_Pragma that applies to entity E. This function is basically
    --  the same as Einfo.SPARK_Pragma, but it is more general because it will
@@ -5326,7 +5333,6 @@ package body SPARK_Definition is
       P       : constant Node_Id := Prefix (N);
       Exprs   : constant List_Id := Expressions (N);
       Attr_Id : constant Attribute_Id := Get_Attribute_Id (Aname);
-
    begin
       --  This case statement must agree with the table specified in SPARK RM
       --  15.2 "Language Defined Attributes".
@@ -5696,6 +5702,48 @@ package body SPARK_Definition is
                   end if;
                end;
             end if;
+
+            --  In Ada 2022, attribute 'Old may be conditionally evaluated. If
+            --  needed, we recover the condition and mark it.
+
+            declare
+               use Sem_Util.Old_Attr_Util.Conditional_Evaluation;
+               function Is_Pragma (N : Node_Id) return Boolean
+               is (Nkind (N) = N_Pragma);
+               function Enclosing_Pragma is new
+                 First_Parent_With_Property (Is_Pragma);
+               Condition : Node_Id;
+            begin
+               if Attr_Id = Attribute_Old
+                 and then Ada_Version >= Ada_2022
+                 and then not Inside_Old_Condition
+                 and then not Violation_Detected
+                 and then Eligible_For_Conditional_Evaluation (N)
+               then
+                  Inside_Old_Condition := True;
+
+                  --  The condition is build as a new expression. This kind of
+                  --  raw ast manipulation would usually belong to
+                  --  spark_rewrite. However, generation of dispatching
+                  --  versions of class-wide contracts generation is also done
+                  --  in marking, which generates additional attribute
+                  --  references. Spark_Rewrite comes too early to catch them,
+                  --  and their conditions are needed later in translation.
+
+                  Condition := Conditional_Evaluation_Condition (N);
+                  Set_Parent (Condition, Enclosing_Pragma (N));
+
+                  Mark (Condition);
+
+                  --  The condition is a copy of anterior marked elements in
+                  --  the same expression, so there should be no new violation,
+                  --  and Violation_Detected has not been reset.
+
+                  pragma Assert (not Violation_Detected);
+                  Set_Conditional_Old_Attribute (P, Condition);
+                  Inside_Old_Condition := False;
+               end if;
+            end;
 
          when Attribute_Access                     =>
             --  We support 'Access if it is directly prefixed by a
@@ -8187,6 +8235,10 @@ package body SPARK_Definition is
                if Class_Present (Prag) then
                   Sanitize_Class_Wide_Condition (Expr);
                   declare
+                     function Is_Pragma (N : Node_Id) return Boolean
+                     is (Nkind (N) = N_Pragma);
+                     function Enclosing_Pragma is new
+                       First_Parent_With_Property (Is_Pragma);
                      New_Expr : constant Node_Id :=
                        New_Copy_Tree (Source => Expr);
                      Valid    : Boolean;
@@ -8197,6 +8249,14 @@ package body SPARK_Definition is
                      --  to try marking the new expression.
 
                      if Valid then
+
+                        --  Some front-end routines expect the expression to
+                        --  be rooted as a pragma (these for conditionally
+                        --  evaluated 'Old references in particular). Attach
+                        --  the new expression to the original pragma.
+
+                        Set_Parent (New_Expr, Enclosing_Pragma (Expr));
+
                         Mark (New_Expr);
                         Set_Dispatching_Contract (Expr, New_Expr);
                         Set_Parent (New_Expr, Prag);
@@ -12595,8 +12655,6 @@ package body SPARK_Definition is
 
    procedure Mark_If_Expression (N : N_If_Expression_Id) is
    begin
-      Mark_Actions (N, Then_Actions (N));
-      Mark_Actions (N, Else_Actions (N));
 
       declare
          Condition : constant Node_Id := First (Expressions (N));
@@ -12604,6 +12662,10 @@ package body SPARK_Definition is
          Else_Expr : constant Node_Id := Next (Then_Expr);
       begin
          Mark (Condition);
+
+         Mark_Actions (N, Then_Actions (N));
+         Mark_Actions (N, Else_Actions (N));
+
          Mark (Then_Expr);
 
          if Present (Else_Expr) then

@@ -394,6 +394,11 @@ package body Gnat2Why.Expr is
    --  Generate a check to make sure that all dispatching parameters of a
    --  dispatching call have the same tag.
 
+   function Condition_Guard_Of_Old
+     (Params : Transformation_Params; Prefix : Node_Id) return W_Prog_Id;
+   --  Translate condition guard of conditionally evaluated 'Old attribute
+   --  reference over prefix Pref in the program domain.
+
    function New_Validity_Tree_Assignment
      (LHS       : N_Subexpr_Id;
       New_Tree  : W_Prog_Id;
@@ -2709,102 +2714,198 @@ package body Gnat2Why.Expr is
    -------------------------------
 
    function Bind_From_Mapping_In_Expr
-     (Params : Transformation_Params;
-      Expr   : W_Expr_Id;
-      N      : Node_Id;
-      Name   : W_Identifier_Id;
-      Domain : EW_Domain) return W_Expr_Id
+     (Params    : Transformation_Params;
+      Expr      : W_Expr_Id;
+      N         : Node_Id;
+      Name      : W_Identifier_Id;
+      Domain    : EW_Domain;
+      Condition : W_Prog_Id := Why_Empty) return W_Expr_Id
    is
       Res : W_Expr_Id := Expr;
+      Typ : constant W_Type_Id := Get_Typ (Name);
+
+      Object_With_Valid : constant Boolean :=
+        Nkind (N) = N_Defining_Identifier and then Object_Has_Valid_Id (N);
+      Expr_With_Valid   : constant Boolean :=
+        Is_Potentially_Invalid_Expr (N)
+        and then not Has_Scalar_Type (Etype (N));
    begin
 
       --  For potentially invalid expressions, also declare a binding for the
       --  validity flag.
 
-      if Nkind (N) = N_Defining_Identifier and then Object_Has_Valid_Id (N)
-      then
-         Res :=
-           New_Typed_Binding
-             (Name    => Name,
-              Domain  => Domain,
-              Def     =>
-                Insert_Simple_Conversion
-                  (Domain => Prog_Or_Term_Domain (Domain),
-                   Expr   =>
-                     Transform_Identifier
-                       (Params, N, N, Prog_Or_Term_Domain (Domain)),
-                   To     => Get_Typ (Name)),
-              Context => Res);
-
-         Res :=
-           New_Typed_Binding
-             (Name    => Get_Valid_Flag_For_Id (Name, Etype (N)),
-              Domain  => Domain,
-              Def     => +Get_Valid_Id_From_Object (N, Params.Ref_Allowed),
-              Context => Res);
-
-      elsif Is_Potentially_Invalid_Expr (N)
-        and then not Has_Scalar_Type (Etype (N))
-      then
+      if Object_With_Valid or else Expr_With_Valid then
          declare
-            Def        : W_Expr_Id;
-            Valid_Flag : W_Expr_Id;
-            Context    : Ref_Context;
+            Value_Def : W_Expr_Id;
+            Valid_Def : W_Expr_Id;
+            Context   : Ref_Context;
+            Flag_Name : constant W_Identifier_Id :=
+              Get_Valid_Flag_For_Id (Name, Etype (N));
          begin
-            Transform_Potentially_Invalid_Expr
-              (Expr       => N,
-               Domain     => Prog_Or_Term_Domain (Domain),
-               Params     => Params,
-               Context    => Context,
-               W_Expr     => Def,
-               Valid_Flag => Valid_Flag);
+            if Object_With_Valid then
+               Value_Def :=
+                 Transform_Identifier
+                   (Params, N, N, Prog_Or_Term_Domain (Domain));
+               Valid_Def := +Get_Valid_Id_From_Object (N, Params.Ref_Allowed);
+            else
+               Transform_Potentially_Invalid_Expr
+                 (Expr       => N,
+                  Domain     => Prog_Or_Term_Domain (Domain),
+                  Params     => Params,
+                  Context    => Context,
+                  W_Expr     => Value_Def,
+                  Valid_Flag => Valid_Def);
+            end if;
+
+            Value_Def :=
+              Insert_Simple_Conversion
+                (Domain => Prog_Or_Term_Domain (Domain),
+                 Expr   => Value_Def,
+                 To     => Typ);
+
+            --  If there is a condition, we cannot directly use the definition.
+            --  We generate pattern:
+            --  let x_value = any { True } in
+            --  let x_valid = any { True } in
+            --  (if condition then
+            --    let tmp = def in assume { x_value, x_valid = tmp });
+            --  <<Res>>
+
+            if Present (Condition) then
+               declare
+                  Temp_Value : constant W_Identifier_Id :=
+                    New_Temp_Identifier (Typ => Typ);
+                  Temp_Flag  : constant W_Identifier_Id :=
+                    Get_Valid_Flag_For_Id (Temp_Value, Etype (N));
+                  Assume_Val : W_Expr_Id :=
+                    +New_Assume_Statement
+                       (Pred =>
+                          New_And_Pred
+                            (New_Comparison
+                               (Symbol => Why_Eq,
+                                Left   => +Name,
+                                Right  => +Temp_Value),
+                             New_Comparison
+                               (Symbol => Why_Eq,
+                                Left   => +Flag_Name,
+                                Right  => +Temp_Flag)));
+               begin
+                  Assume_Val :=
+                    New_Typed_Binding
+                      (Name    => Temp_Value,
+                       Domain  => Domain,
+                       Def     => Value_Def,
+                       Context => Assume_Val);
+                  Assume_Val :=
+                    New_Typed_Binding
+                      (Name    => Temp_Flag,
+                       Domain  => Domain,
+                       Def     => Valid_Def,
+                       Context => Assume_Val);
+                  Assume_Val :=
+                    +Bindings_For_Ref_Context
+                       (Expr    => +Assume_Val,
+                        Context => Context,
+                        Domain  => EW_Prog);
+                  Prepend
+                    (New_Conditional
+                       (Condition => Condition, Then_Part => +Assume_Val),
+                     Res);
+               end;
+
+               Value_Def :=
+                 New_Any_Expr
+                   (Return_Type => Typ, Labels => Symbol_Sets.Empty_Set);
+               Valid_Def :=
+                 New_Any_Expr
+                   (Return_Type => Get_Type (Valid_Def),
+                    Labels      => Symbol_Sets.Empty_Set);
+            end if;
 
             Res :=
               New_Typed_Binding
                 (Name    => Name,
                  Domain  => Domain,
-                 Def     =>
-                   Insert_Simple_Conversion
-                     (Domain => Prog_Or_Term_Domain (Domain),
-                      Expr   => Def,
-                      To     => Get_Typ (Name)),
+                 Def     => Value_Def,
                  Context => Res);
+            Res :=
+              New_Typed_Binding
+                (Name    => Flag_Name,
+                 Domain  => Domain,
+                 Def     => Valid_Def,
+                 Context => Res);
+            if No (Condition) then
+               Res :=
+                 Bindings_For_Ref_Context
+                   (Expr => Res, Context => Context, Domain => Domain);
+            end if;
+         end;
+      else
+         declare
+            Value_Def : W_Expr_Id :=
+              Insert_Simple_Conversion
+                (Domain => Prog_Or_Term_Domain (Domain),
+                 Expr   =>
+                   (Transform_Expr_Or_Identifier
+                      (N, Prog_Or_Term_Domain (Domain), Params)),
+                 To     => Typ);
+         begin
+
+            --  If there is a condition, we cannot directly use the definition.
+            --  We generate pattern:
+            --  let x = any { True } in
+            --  (if condition then
+            --    let tmp = def in assume { x = tmp });
+            --  <<Res>>
+
+            if Present (Condition) then
+               declare
+                  Temp_Value : constant W_Identifier_Id :=
+                    New_Temp_Identifier (Typ => Typ);
+                  Assume_Val : W_Expr_Id :=
+                    +New_Assume_Statement
+                       (Pred =>
+                          New_Comparison
+                            (Symbol => Why_Eq,
+                             Left   => +Name,
+                             Right  => +Temp_Value));
+               begin
+                  Assume_Val :=
+                    New_Typed_Binding
+                      (Name    => Temp_Value,
+                       Domain  => Domain,
+                       Def     => Value_Def,
+                       Context => Assume_Val);
+                  Prepend
+                    (New_Conditional
+                       (Condition => Condition, Then_Part => +Assume_Val),
+                     Res);
+               end;
+
+               Value_Def :=
+                 New_Any_Expr
+                   (Return_Type => Typ, Labels => Symbol_Sets.Empty_Set);
+            end if;
 
             Res :=
               New_Typed_Binding
-                (Name    => Get_Valid_Flag_For_Id (Name, Etype (N)),
+                (Name    => Name,
                  Domain  => Domain,
-                 Def     => +Valid_Flag,
+                 Def     => Value_Def,
                  Context => Res);
-
-            Res :=
-              Bindings_For_Ref_Context
-                (Expr => Res, Context => Context, Domain => Domain);
          end;
-      else
-         Res :=
-           New_Typed_Binding
-             (Name    => Name,
-              Domain  => Domain,
-              Def     =>
-                Insert_Simple_Conversion
-                  (Domain => Prog_Or_Term_Domain (Domain),
-                   Expr   =>
-                     (Transform_Expr_Or_Identifier
-                        (N, Prog_Or_Term_Domain (Domain), Params)),
-                   To     => Get_Typ (Name)),
-              Context => Res);
       end if;
 
       return Res;
    end Bind_From_Mapping_In_Expr;
 
    function Bind_From_Mapping_In_Expr
-     (Params : Transformation_Params;
-      Map    : Ada_To_Why_Ident.Map;
-      Expr   : W_Expr_Id;
-      Domain : EW_Domain;
-      Subset : Node_Sets.Set) return W_Expr_Id
+     (Params       : Transformation_Params;
+      Map          : Ada_To_Why_Ident.Map;
+      Expr         : W_Expr_Id;
+      Domain       : EW_Domain;
+      Subset       : Node_Sets.Set;
+      Old_Prefixes : Boolean := False) return W_Expr_Id
    is
       Result : W_Expr_Id := Expr;
       Cu     : Ada_To_Why_Ident.Cursor;
@@ -2816,11 +2917,15 @@ package body Gnat2Why.Expr is
          if Ada_To_Why_Ident.Has_Element (Cu) then
             Result :=
               Bind_From_Mapping_In_Expr
-                (Params => Params,
-                 Expr   => Result,
-                 N      => N,
-                 Name   => Ada_To_Why_Ident.Element (Cu),
-                 Domain => Domain);
+                (Params    => Params,
+                 Expr      => Result,
+                 N         => N,
+                 Name      => Ada_To_Why_Ident.Element (Cu),
+                 Domain    => Domain,
+                 Condition =>
+                   (if Old_Prefixes
+                    then Condition_Guard_Of_Old (Params => Params, Prefix => N)
+                    else Why_Empty));
          end if;
       end loop;
 
@@ -2832,21 +2937,27 @@ package body Gnat2Why.Expr is
    -------------------------------
 
    function Bind_From_Mapping_In_Prog
-     (Params : Transformation_Params;
-      Map    : Ada_To_Why_Ident.Map;
-      Expr   : W_Prog_Id) return W_Prog_Id
+     (Params       : Transformation_Params;
+      Map          : Ada_To_Why_Ident.Map;
+      Expr         : W_Prog_Id;
+      Old_Prefixes : Boolean := False) return W_Prog_Id
    is
       Result : W_Prog_Id := Expr;
-
+      N      : Node_Id;
    begin
       for C in Map.Iterate loop
+         N := Ada_To_Why_Ident.Key (C);
          Result :=
            +Bind_From_Mapping_In_Expr
-              (Params => Params,
-               Expr   => +Result,
-               N      => Ada_To_Why_Ident.Key (C),
-               Name   => Ada_To_Why_Ident.Element (C),
-               Domain => EW_Prog);
+              (Params    => Params,
+               Expr      => +Result,
+               N         => N,
+               Name      => Ada_To_Why_Ident.Element (C),
+               Domain    => EW_Prog,
+               Condition =>
+                 (if Old_Prefixes
+                  then Condition_Guard_Of_Old (Params => Params, Prefix => N)
+                  else Why_Empty));
       end loop;
 
       return Result;
@@ -8982,6 +9093,45 @@ package body Gnat2Why.Expr is
 
       return Pred;
    end Compute_Type_Invariant;
+
+   ----------------------------
+   -- Condition_Guard_Of_Old --
+   ----------------------------
+
+   function Condition_Guard_Of_Old
+     (Params : Transformation_Params; Prefix : Node_Id) return W_Prog_Id
+   is
+      Cond : constant Node_Id := Condition_Of_Conditional_Old (Prefix);
+   begin
+      if No (Cond) then
+         return Why_Empty;
+      end if;
+      Continuation_Stack.Append
+        (Continuation_Type'
+           (Ada_Node => Prefix,
+            Message  =>
+              To_Unbounded_String
+                ("when evaluating condition for"
+                 & " conditionally evaluated 'Old reference")));
+
+      --  Conditional guards of conditionally evaluated 'Old may themselves
+      --  contain 'Old references, which we can ignore in this context.
+      --  ??? Proceeding in such fashion may duplicate checks. We did not
+      --  handle that corner-case because it would mandate somehow sorting the
+      --  'Old references. Furthermore, If we want to get rid of all potential
+      --  duplicate checks, we would have to factor the conditions.
+
+      return
+         Res : constant W_Prog_Id :=
+           +Transform_Expr
+              (Expr          => Cond,
+               Domain        => EW_Prog,
+               Expected_Type => EW_Bool_Type,
+               Params        => (Params with delta Old_Policy => Ignore))
+      do
+         Continuation_Stack.Delete_Last;
+      end return;
+   end Condition_Guard_Of_Old;
 
    ------------------------------
    -- Count_Numerical_Variants --
