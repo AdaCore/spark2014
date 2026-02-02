@@ -1,3 +1,12 @@
+import os
+
+
+def build_qualifiers():
+    return os.environ.get("ANOD_BUILD_QUALIFIERS", "")
+
+def anod_qualifiers():
+    return os.environ.get("ANOD_QUALIFIERS", "")
+
 def build():
     anod_install("gcc", query_range=20)
     anod_install("gnsa", query_range=20)
@@ -11,42 +20,45 @@ def build():
     anod_install("vss-extra", qualifier="edge", query_range=20)
     anod_install("vss-text", qualifier="edge", query_range=20)
     anod_build("why3")
-    anod_build("spark2014", qualifier="assertions,coverage")
+    anod_build("spark2014", qualifier=build_qualifiers())
 
 def test():
     anod_install("gcc", query_range=20)
     anod_install("e3-for-testing", query_range=20)
     anod_install("gnatcov", query_range=20)
     anod_install("gprbuild", target="host", query_range=20)
-    anod_install("spark2014", qualifier="assertions,coverage")
-    anod_test("spark2014", qualifier="assertions,coverage,cleanup-mode=none,cache")
+    anod_install("spark2014", qualifier=build_qualifiers())
+    anod_test("spark2014", qualifier=anod_qualifiers())
 
 def test_large():
     anod_install("gcc", query_range=20)
     anod_install("e3-for-testing", query_range=20)
     anod_install("gnatcov", query_range=20)
     anod_install("gprbuild", target="host", query_range=20)
-    anod_install("spark2014", qualifier="assertions,coverage")
-    anod_test("spark2014", qualifier="assertions,only_large,coverage,cleanup-mode=none,cache")
+    anod_install("spark2014", qualifier=build_qualifiers())
+    anod_test(
+        "spark2014",
+        qualifier=anod_qualifiers()
+    )
 
 def test_nocache():
     anod_install("gcc", query_range=20)
     anod_install("e3-for-testing", query_range=20)
     anod_install("gnatcov", query_range=20)
     anod_install("gprbuild", target="host", query_range=20)
-    anod_install("spark2014", qualifier="assertions,coverage")
-    anod_test("spark2014", qualifier="assertions,coverage,cleanup-mode=none")
+    anod_install("spark2014", qualifier=build_qualifiers())
+    anod_test("spark2014", qualifier=anod_qualifiers())
 
 def test_acats():
     anod_install("gcc", query_range=20)
     anod_install("e3-for-testing", query_range=20)
     anod_install("gprbuild", target="host", query_range=20)
-    anod_install("spark2014", qualifier="assertions,coverage")
-    anod_test("acats-4-gnatprove-baseline", qualifier="assertions,coverage")
+    anod_install("spark2014", qualifier=build_qualifiers())
+    anod_test("acats-4-gnatprove-baseline", qualifier=anod_qualifiers())
 
 def test_sparklib():
     anod_install("e3-for-testing", query_range=20)
     anod_install("gnat", query_range=20)
     anod_install("gprbuild", target="host", query_range=20)
-    anod_install("spark2014", qualifier="assertions,coverage")
-    anod_test("sparklib", qualifier="assertions,large,coverage")
+    anod_install("spark2014", qualifier=build_qualifiers())
+    anod_test("sparklib", qualifier=anod_qualifiers())
