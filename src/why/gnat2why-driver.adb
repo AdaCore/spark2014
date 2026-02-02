@@ -244,21 +244,23 @@ package body Gnat2Why.Driver is
    ------------------------
 
    procedure Collect_One_Result is
-      Pid     : Process_Id;
-      Success : Boolean;
-      pragma Warnings (Off, Success); --  modified but then not referenced
+      Pid         : Process_Id;
+      Success     : Boolean;
+      Output_File : Pid_Maps.Cursor;
    begin
       Wait_Process (Pid, Success);
       pragma Assert (Pid /= Invalid_Pid);
+      Output_File := Output_File_Map.Find (Pid);
       declare
-         Fn : constant String :=
-           Output_File_Map (Pid) (1 .. Temp_File_Len - 1);
+         Fn : String renames
+           Output_File_Map (Output_File) (1 .. Temp_File_Len - 1);
          --  Name of the results file without trailing NUL
       begin
          Parse_Why3_Results (Fn, Timing);
          Delete_File (Fn, Success);
-         Output_File_Map.Delete (Pid);
+         pragma Assert (Success);
       end;
+      Output_File_Map.Delete (Output_File);
    end Collect_One_Result;
 
    ---------------------
