@@ -248,62 +248,53 @@ example_recursive.adb:352:13: warning: no Global contract available for "Rand" [
 example_recursive.adb:353:10: medium: in inlined expression function body at example_recursive.adb:197
 example_recursive.adb:353:10: medium: precondition might fail, cannot prove not Reachable (Address (L2.Values), L2.Length, A, Memory)
 example_recursive.adb:353:18: warning: "L1" is set by "Append" but not used after the call
-example_tagged_obj.adb:11:16: info: implicit aspect Always_Terminates on "Witness" has been proved, subprogram will terminate
-example_tagged_obj.adb:12:16: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
-example_tagged_obj.adb:14:26: info: postcondition proved
-example_tagged_obj.adb:14:26: info: postcondition proved, in inherited contract at example_tagged_obj.adb:32
-example_tagged_obj.adb:14:40: info: predicate check proved
-example_tagged_obj.adb:14:55: info: predicate check proved
-example_tagged_obj.adb:30:16: info: implicit aspect Always_Terminates on "Witness" has been proved, subprogram will terminate
-example_tagged_obj.adb:31:33: info: predicate check proved
-example_tagged_obj.adb:32:16: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
-example_tagged_obj.adb:37:04: info: initialization of "X1" proved
-example_tagged_obj.adb:38:04: info: initialization of "X2" proved
-example_tagged_obj.adb:39:04: info: initialization of "X3" proved
-example_tagged_obj.adb:40:04: info: initialization of "X1_B" proved
-example_tagged_obj.adb:43:14: info: postcondition proved
-example_tagged_obj.adb:53:14: info: postcondition proved
-example_tagged_obj.adb:53:14: info: precondition proved
-example_tagged_obj.adb:53:26: info: precondition proved
-example_tagged_obj.adb:53:44: info: precondition proved
-example_tagged_obj.adb:53:56: info: precondition proved
-example_tagged_obj.adb:58:38: info: precondition proved
-example_tagged_obj.adb:60:07: info: precondition proved
-example_tagged_obj.adb:60:18: info: precondition proved
-example_tagged_obj.adb:61:07: info: precondition proved
-example_tagged_obj.adb:67:50: info: precondition proved
-example_tagged_obj.adb:70:09: info: postcondition proved
-example_tagged_obj.adb:70:09: info: precondition proved
-example_tagged_obj.adb:70:39: info: precondition proved
-example_tagged_obj.adb:70:39: info: tag check proved
-example_tagged_obj.adb:70:67: info: precondition proved
-example_tagged_obj.adb:70:67: info: tag check proved
-example_tagged_obj.adb:75:42: info: precondition proved
-example_tagged_obj.adb:77:07: info: tag check proved
-example_tagged_obj.adb:77:24: info: pointer dereference check proved
-example_tagged_obj.adb:85:19: info: assertion proved
-example_tagged_obj.adb:85:26: info: precondition proved
-example_tagged_obj.adb:85:26: info: tag check proved
-example_tagged_obj.adb:87:04: info: precondition proved
-example_tagged_obj.adb:88:19: info: assertion proved
-example_tagged_obj.adb:88:26: info: precondition proved
-example_tagged_obj.adb:88:26: info: tag check proved
-example_tagged_obj.adb:89:19: info: assertion proved
-example_tagged_obj.adb:89:26: info: precondition proved
-example_tagged_obj.adb:89:26: info: tag check proved
-example_tagged_obj.adb:90:19: info: assertion proved
-example_tagged_obj.adb:90:26: info: precondition proved
-example_tagged_obj.adb:90:26: info: tag check proved
-example_tagged_obj.adb:91:19: info: assertion proved
-example_tagged_obj.adb:91:26: info: precondition proved
-example_tagged_obj.adb:91:26: info: tag check proved
-example_tagged_obj.adb:92:04: info: precondition proved
-example_tagged_obj.adb:93:19: info: assertion proved
-example_tagged_obj.adb:93:26: info: precondition proved
-example_tagged_obj.adb:93:26: info: tag check proved
-example_tagged_obj.adb:94:19: info: assertion proved
-example_tagged_obj.adb:94:26: info: precondition proved
-example_tagged_obj.adb:94:26: info: tag check proved
+example_tagged_obj.adb:15:04: info: initialization of "X1" proved
+example_tagged_obj.adb:16:04: info: initialization of "X2" proved
+example_tagged_obj.adb:17:04: info: initialization of "X3" proved
+example_tagged_obj.adb:18:04: info: initialization of "X1_B" proved
+example_tagged_obj.adb:21:14: info: postcondition proved
+example_tagged_obj.adb:31:14: info: postcondition proved
+example_tagged_obj.adb:31:14: info: precondition proved
+example_tagged_obj.adb:31:26: info: precondition proved
+example_tagged_obj.adb:31:44: info: precondition proved
+example_tagged_obj.adb:31:56: info: precondition proved
+example_tagged_obj.adb:36:38: info: precondition proved
+example_tagged_obj.adb:38:07: info: precondition proved
+example_tagged_obj.adb:38:18: info: precondition proved
+example_tagged_obj.adb:39:07: info: precondition proved
+example_tagged_obj.adb:45:50: info: precondition proved
+example_tagged_obj.adb:48:09: info: postcondition proved
+example_tagged_obj.adb:48:09: info: precondition proved
+example_tagged_obj.adb:48:39: info: precondition proved
+example_tagged_obj.adb:48:39: info: tag check proved
+example_tagged_obj.adb:48:67: info: precondition proved
+example_tagged_obj.adb:48:67: info: tag check proved
+example_tagged_obj.adb:53:42: info: precondition proved
+example_tagged_obj.adb:55:07: info: tag check proved
+example_tagged_obj.adb:55:24: info: pointer dereference check proved
+example_tagged_obj.adb:63:19: info: assertion proved
+example_tagged_obj.adb:63:26: info: precondition proved
+example_tagged_obj.adb:63:26: info: tag check proved
+example_tagged_obj.adb:65:04: info: precondition proved
+example_tagged_obj.adb:66:19: info: assertion proved
+example_tagged_obj.adb:66:26: info: precondition proved
+example_tagged_obj.adb:66:26: info: tag check proved
+example_tagged_obj.adb:67:19: info: assertion proved
+example_tagged_obj.adb:67:26: info: precondition proved
+example_tagged_obj.adb:67:26: info: tag check proved
+example_tagged_obj.adb:68:19: info: assertion proved
+example_tagged_obj.adb:68:26: info: precondition proved
+example_tagged_obj.adb:68:26: info: tag check proved
+example_tagged_obj.adb:69:19: info: assertion proved
+example_tagged_obj.adb:69:26: info: precondition proved
+example_tagged_obj.adb:69:26: info: tag check proved
+example_tagged_obj.adb:70:04: info: precondition proved
+example_tagged_obj.adb:71:19: info: assertion proved
+example_tagged_obj.adb:71:26: info: precondition proved
+example_tagged_obj.adb:71:26: info: tag check proved
+example_tagged_obj.adb:72:19: info: assertion proved
+example_tagged_obj.adb:72:26: info: precondition proved
+example_tagged_obj.adb:72:26: info: tag check proved
 example_untagged_obj.adb:15:04: info: initialization of "X1" proved
 example_untagged_obj.adb:16:04: info: initialization of "X2" proved
 example_untagged_obj.adb:17:04: info: initialization of "X3" proved
