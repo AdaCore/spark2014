@@ -544,7 +544,7 @@ package body Gnat2Why.Util is
    ------------------------
 
    procedure Collect_Attr_Parts
-     (N : Node_Id; Attr_Name : Name_Id; Parts : in out Node_Sets.Set)
+     (N : Node_Id; Attr_Id : Attribute_Id; Parts : in out Node_Sets.Set)
    is
       function Old_Attribute (N : Node_Id) return Atree.Traverse_Result;
       --  Search for 'Old attibute and enter its prefix in the map
@@ -603,7 +603,7 @@ package body Gnat2Why.Util is
         Traverse_More_Proc (Loop_Entry_Attribute);
 
    begin
-      if Attr_Name = Snames.Name_Old then
+      if Attr_Id = Attribute_Old then
          --  'Old
          Search_Old_Attributes (N);
       else
@@ -614,11 +614,12 @@ package body Gnat2Why.Util is
    end Collect_Attr_Parts;
 
    procedure Collect_Attr_Parts
-     (L : Node_Lists.List; Attr_Name : Name_Id; Parts : in out Node_Sets.Set)
-   is
+     (L       : Node_Lists.List;
+      Attr_Id : Attribute_Id;
+      Parts   : in out Node_Sets.Set) is
    begin
       for N of L loop
-         Collect_Attr_Parts (N, Attr_Name, Parts);
+         Collect_Attr_Parts (N, Attr_Id, Parts);
       end loop;
    end Collect_Attr_Parts;
 
@@ -628,13 +629,13 @@ package body Gnat2Why.Util is
 
    procedure Collect_Old_Parts (N : Node_Id; Parts : in out Node_Sets.Set) is
    begin
-      Collect_Attr_Parts (N, Snames.Name_Old, Parts);
+      Collect_Attr_Parts (N, Attribute_Old, Parts);
    end Collect_Old_Parts;
 
    procedure Collect_Old_Parts
      (L : Node_Lists.List; Parts : in out Node_Sets.Set) is
    begin
-      Collect_Attr_Parts (L, Snames.Name_Old, Parts);
+      Collect_Attr_Parts (L, Attribute_Old, Parts);
    end Collect_Old_Parts;
 
    ------------------

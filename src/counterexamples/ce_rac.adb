@@ -410,8 +410,8 @@ package body CE_RAC is
    --  Lo and behold! The global execution context
 
    procedure Evaluate_Attribute_Prefix_Values
-     (Attr_Name : Name_Id; Prefixes : Node_Sets.Set)
-   with Pre => Attr_Name in Snames.Name_Old | Snames.Name_Loop_Entry;
+     (Attr_Id : Attribute_Id; Prefixes : Node_Sets.Set)
+   with Pre => Attr_Id in Attribute_Old | Attribute_Loop_Entry;
    --  For each node in Prefixes, evaluate it and add its value to the
    --  appropriate map from prefixes to their values.
 
@@ -1593,7 +1593,7 @@ package body CE_RAC is
    --------------------------------------
 
    procedure Evaluate_Attribute_Prefix_Values
-     (Attr_Name : Name_Id; Prefixes : Node_Sets.Set) is
+     (Attr_Id : Attribute_Id; Prefixes : Node_Sets.Set) is
    begin
       for P of Prefixes loop
          declare
@@ -1606,7 +1606,7 @@ package body CE_RAC is
             Position : Node_To_Value.Cursor;
 
          begin
-            if Attr_Name = Name_Old then
+            if Attr_Id = Attribute_Old then
                Ctx.Env (Ctx.Env.First).Old_Attrs.Insert
                  (P, Val, Position, Inserted);
 
@@ -1630,7 +1630,7 @@ package body CE_RAC is
                end;
 
             else
-               pragma Assert (Attr_Name = Name_Loop_Entry);
+               pragma Assert (Attr_Id = Attribute_Loop_Entry);
                Ctx.Env (Ctx.Env.First).Loop_Entry_Attrs.Insert
                  (P, Val, Position, Inserted);
 
@@ -2585,8 +2585,8 @@ package body CE_RAC is
       Ctx.Env.Prepend (Sc);
 
       --  Store value of the 'Old prefixes
-      Collect_Attr_Parts (Posts, Snames.Name_Old, Old_Nodes);
-      Evaluate_Attribute_Prefix_Values (Snames.Name_Old, Old_Nodes);
+      Collect_Attr_Parts (Posts, Attribute_Old, Old_Nodes);
+      Evaluate_Attribute_Prefix_Values (Attribute_Old, Old_Nodes);
 
       --  Check preconditions and get stuck in main functions
       begin
@@ -5535,10 +5535,9 @@ package body CE_RAC is
                --  Collect prefixes of all 'Loop_Entry attribute uses and store
                --  the result of their evaluation.
 
-               Collect_Attr_Parts
-                 (N, Snames.Name_Loop_Entry, Loop_Entry_Nodes);
+               Collect_Attr_Parts (N, Attribute_Loop_Entry, Loop_Entry_Nodes);
                Evaluate_Attribute_Prefix_Values
-                 (Snames.Name_Loop_Entry, Loop_Entry_Nodes);
+                 (Attribute_Loop_Entry, Loop_Entry_Nodes);
 
                Ctx.First_Loop_Iter := True;
 

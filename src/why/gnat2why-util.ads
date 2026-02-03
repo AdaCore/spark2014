@@ -610,15 +610,16 @@ package Gnat2Why.Util is
    --  Returns True if we may produce an axiom for the post of E
 
    procedure Collect_Attr_Parts
-     (N : Node_Id; Attr_Name : Name_Id; Parts : in out Node_Sets.Set)
-   with Pre => Attr_Name in Snames.Name_Old | Snames.Name_Loop_Entry;
-   --  Add to Parts the prefixes of each reference to the Attr_Name
-   --  attribute in N. This is only used for the 'Old and 'Loop_Entry
-   --  attributes.
+     (N : Node_Id; Attr_Id : Attribute_Id; Parts : in out Node_Sets.Set)
+   with Pre => Attr_Id in Attribute_Old | Attribute_Loop_Entry;
+   --  Add to Parts the prefixes of each reference to the Attr_Id attribute in
+   --  N. This is only used for the 'Old and 'Loop_Entry attributes.
 
    procedure Collect_Attr_Parts
-     (L : Node_Lists.List; Attr_Name : Name_Id; Parts : in out Node_Sets.Set);
-   --  Call Collect_Attr_Parts on all elements of L for attribute Attr_Name
+     (L       : Node_Lists.List;
+      Attr_Id : Attribute_Id;
+      Parts   : in out Node_Sets.Set);
+   --  Call Collect_Attr_Parts on all elements of L for attribute Attr_Id
 
    procedure Collect_Old_Parts (N : Node_Id; Parts : in out Node_Sets.Set);
    --  Call Collect_Attr_Parts for 'Old attribute
