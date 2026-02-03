@@ -3409,9 +3409,11 @@ package body CE_RAC is
       -----------------------------
 
       function RAC_Attribute_Reference return Value_Type is
+         Attr_Id : constant Attribute_Id :=
+           Get_Attribute_Id (Attribute_Name (N));
       begin
-         case Attribute_Name (N) is
-            when Snames.Name_Old                               =>
+         case Attr_Id is
+            when Attribute_Old                             =>
                --  E'Old
                declare
                   P : constant Node_Id := Prefix (N);
@@ -3420,7 +3422,7 @@ package body CE_RAC is
                   return Find_Old_Value (P).Content;
                end;
 
-            when Snames.Name_Loop_Entry                        =>
+            when Attribute_Loop_Entry                      =>
                --  E'Loop_Entry
                declare
                   P       : constant Node_Id := Prefix (N);
@@ -3430,7 +3432,7 @@ package body CE_RAC is
                   return Find_Loop_Entry_Value (P, Loop_Id).Content;
                end;
 
-            when Snames.Name_Result                            =>
+            when Attribute_Result                          =>
                --  E'Result
                declare
                   E : constant Entity_Id := SPARK_Atree.Entity (Prefix (N));
@@ -3438,7 +3440,7 @@ package body CE_RAC is
                   return Find_Binding (E).all;
                end;
 
-            when Snames.Name_First | Snames.Name_Last          =>
+            when Attribute_First | Attribute_Last          =>
                if Is_Array_Type (Etype (Prefix (N))) then
                   declare
                      Index_Ty : constant Entity_Id :=
@@ -3447,7 +3449,7 @@ package body CE_RAC is
                   begin
                      case V.K is
                         when Array_K =>
-                           if Attribute_Name (N) = Snames.Name_First then
+                           if Attr_Id = Attribute_First then
                               return
                                 Int_Value (V.First_Attr.Content, Index_Ty);
                            else
@@ -3472,19 +3474,19 @@ package body CE_RAC is
                begin
                   Get_Integer_Type_Bounds (Etype (N), Fst, Lst);
 
-                  case Attribute_Name (N) is
-                     when Snames.Name_First =>
+                  case Attr_Id is
+                     when Attribute_First =>
                         return Int_Value (Fst, Etype (N));
 
-                     when Snames.Name_Last  =>
+                     when Attribute_Last  =>
                         return Int_Value (Lst, Etype (N));
 
-                     when others            =>
+                     when others          =>
                         raise Program_Error;
                   end case;
                end;
 
-            when Snames.Name_Min | Snames.Name_Max             =>
+            when Attribute_Min | Attribute_Max             =>
                if Has_Floating_Point_Type (Etype (N)) then
                   declare
                      Ex   : constant Node_Id := First (Expressions (N));
@@ -3493,14 +3495,14 @@ package body CE_RAC is
                      Val2 : constant CE_Values.Float_Value :=
                        Value_Real (RAC_Expr (Next (Ex)));
                   begin
-                     case Attribute_Name (N) is
-                        when Snames.Name_Min =>
+                     case Attr_Id is
+                        when Attribute_Min =>
                            return Real_Value (Min (Val1, Val2), N);
 
-                        when Snames.Name_Max =>
+                        when Attribute_Max =>
                            return Real_Value (Max (Val1, Val2), N);
 
-                        when others          =>
+                        when others        =>
                            raise Program_Error;
                      end case;
                   end;
@@ -3513,14 +3515,14 @@ package body CE_RAC is
                      I2 : constant Big_Integer :=
                        Value_Enum_Integer (RAC_Expr (Next (Ex)));
                   begin
-                     case Attribute_Name (N) is
-                        when Snames.Name_Min =>
+                     case Attr_Id is
+                        when Attribute_Min =>
                            return Integer_Value (Min (I1, I2), N);
 
-                        when Snames.Name_Max =>
+                        when Attribute_Max =>
                            return Integer_Value (Max (I1, I2), N);
 
-                        when others          =>
+                        when others        =>
                            raise Program_Error;
                      end case;
                   end;
@@ -3530,29 +3532,29 @@ package body CE_RAC is
                     ("RAC_Attribute_Reference min/max on fixed-point", N);
                end if;
 
-            when Snames.Name_Succ | Snames.Name_Pred           =>
+            when Attribute_Succ | Attribute_Pred           =>
                if Has_Floating_Point_Type (Etype (N)) then
                   declare
                      Ex  : constant Node_Id := First (Expressions (N));
                      Val : constant CE_Values.Float_Value :=
                        Value_Real (RAC_Expr (Ex));
                   begin
-                     case Attribute_Name (N) is
-                        when Snames.Name_Succ =>
+                     case Attr_Id is
+                        when Attribute_Succ =>
                            if Is_Last (Val) then
                               RAC_Failure (Ex, VC_Range_Check);
                            end if;
 
                            return Real_Value (Succ (Val), N);
 
-                        when Snames.Name_Pred =>
+                        when Attribute_Pred =>
                            if Is_First (Val) then
                               RAC_Failure (Ex, VC_Range_Check);
                            end if;
 
                            return Real_Value (Pred (Val), N);
 
-                        when others           =>
+                        when others         =>
                            raise Program_Error;
                      end case;
                   end;
@@ -3569,14 +3571,14 @@ package body CE_RAC is
                         else Enumeration_Pos (Ex_Content.Enum_Entity));
                      Res        : Node_Id;
                   begin
-                     case Attribute_Name (N) is
-                        when Snames.Name_Succ =>
+                     case Attr_Id is
+                        when Attribute_Succ =>
                            Val := Val + 1;
 
-                        when Snames.Name_Pred =>
+                        when Attribute_Pred =>
                            Val := Val - 1;
 
-                        when others           =>
+                        when others         =>
                            raise Program_Error;
                      end case;
 
@@ -3601,7 +3603,7 @@ package body CE_RAC is
                     ("RAC_Attribute_Reference succ/prev not enum", N);
                end if;
 
-            when Snames.Name_Update                            =>
+            when Attribute_Update                          =>
                --  Ex'Update ((Ch | ... => V, ...), ...)
                declare
                   Res              : Value_Type;
@@ -3657,7 +3659,7 @@ package body CE_RAC is
                   end if;
                end;
 
-            when Snames.Name_Image                             =>
+            when Attribute_Image                           =>
                if Is_Empty_List (Expressions (N)) then
                   RAC_Unsupported
                     ("RAC_Attribute_Reference 'Image without argument", N);
@@ -3665,7 +3667,7 @@ package body CE_RAC is
                return
                  String_Value (To_String (RAC_Expr (First (Expressions (N)))));
 
-            when Snames.Name_Length                            =>
+            when Attribute_Length                          =>
                if not Is_Empty_List (Expressions (N)) then
                   RAC_Unsupported
                     ("RAC_Attribute_Reference 'Length with argument", N);
@@ -3703,7 +3705,7 @@ package body CE_RAC is
                   end if;
                end;
 
-            when Snames.Name_Valid | Snames.Name_Valid_Scalars =>
+            when Attribute_Valid | Attribute_Valid_Scalars =>
                pragma Assert (No (Expressions (N)));
 
                if Is_Potentially_Invalid_Expr (Prefix (N)) then
@@ -3715,7 +3717,7 @@ package body CE_RAC is
                   return Boolean_Value (True, Etype (N));
                end if;
 
-            when Snames.Name_Copy_Sign                         =>
+            when Attribute_Copy_Sign                       =>
 
                if No (Expressions (N)) then
                   RAC_Unsupported
@@ -3737,7 +3739,7 @@ package body CE_RAC is
                   end;
                end if;
 
-            when Snames.Name_Constrained                       =>
+            when Attribute_Constrained                     =>
                --  E'Constrained
 
                --  The handling of the Constrained attribute here is similar
@@ -3787,7 +3789,7 @@ package body CE_RAC is
                   end if;
                end;
 
-            when others                                        =>
+            when others                                    =>
                RAC_Unsupported
                  ("RAC_Attribute_Reference",
                   Get_Name_String (Attribute_Name (N)));

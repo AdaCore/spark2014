@@ -1004,8 +1004,8 @@ package body CE_Display is
                --  references in the map. It might not be the case if parts of
                --  the prefix is not evaluated.
 
-               case Attribute_Name (N) is
-                  when Snames.Name_Old        =>
+               case Get_Attribute_Id (Attribute_Name (N)) is
+                  when Attribute_Old        =>
                      declare
                         Variables : constant Flow_Id_Sets.Set :=
                           Get_Variables_For_Proof (Prefix (N), Prefix (N));
@@ -1020,7 +1020,7 @@ package body CE_Display is
                      end;
                      return Atree.Skip;
 
-                  when Snames.Name_Loop_Entry =>
+                  when Attribute_Loop_Entry =>
                      declare
                         Variables : constant Flow_Id_Sets.Set :=
                           Get_Variables_For_Proof (Prefix (N), Prefix (N));
@@ -1037,7 +1037,7 @@ package body CE_Display is
                      end;
                      return Atree.Skip;
 
-                  when Snames.Name_Result     =>
+                  when Attribute_Result     =>
                      declare
                         E : constant Entity_Id :=
                           SPARK_Atree.Entity (Prefix (N));
@@ -1046,7 +1046,7 @@ package body CE_Display is
                      end;
                      return Atree.Skip;
 
-                  when others                 =>
+                  when others               =>
                      null;
                end case;
 
