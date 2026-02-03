@@ -1,10 +1,6 @@
-Generated contracts for Nested.State_A_In.Helper_1.Check
-   Global =>
-      Input =>
-         Helper_1.H_1
-   Refined_Global =>
-      Input =>
-         Cache
+Generated contracts for Nested
+   Initializes =>
+      Nested.State_A
 Generated contracts for Nested.State_A_In
    Global =>
       Input =>
@@ -13,21 +9,13 @@ Generated contracts for Nested.State_A_In
       Input =>
          A_1
          A_2
-Generated contracts for Nested.State_A_In_Out.Helper_2.Set
-   Global =>
-      Output =>
-         Helper_2.H_2
-   Refined_Global =>
-      Output =>
-         Tmp
-Generated contracts for Nested.State_A_In_Out.Helper_2.Get
+Generated contracts for Nested.State_A_In.Helper_1.Check
    Global =>
       Input =>
-         Helper_2.H_2
+         Helper_1.H_1
    Refined_Global =>
       Input =>
-         Tmp
-Generated contracts for Nested.State_A_In_Out.Helper_2
+         Cache
 Generated contracts for Nested.State_A_In_Out
    Global =>
       In_Out =>
@@ -36,6 +24,38 @@ Generated contracts for Nested.State_A_In_Out
       In_Out =>
          A_1
          A_2
+Generated contracts for Nested.State_A_In_Out.Helper_2
+Generated contracts for Nested.State_A_In_Out.Helper_2.Get
+   Global =>
+      Input =>
+         Helper_2.H_2
+   Refined_Global =>
+      Input =>
+         Tmp
+Generated contracts for Nested.State_A_In_Out.Helper_2.Set
+   Global =>
+      Output =>
+         Helper_2.H_2
+   Refined_Global =>
+      Output =>
+         Tmp
+Generated contracts for Nested.State_A_Out
+   Global =>
+      Output =>
+         Nested.State_A
+   Refined_Global =>
+      Output =>
+         A_1
+         A_2
+Generated contracts for Nested.State_A_Out.Helper_3
+Generated contracts for Nested.State_A_Out.Helper_3.Get
+   Global =>
+      Input =>
+         Helper_3.H_3
+   Refined_Global =>
+      Input =>
+         H_3_A
+         H_3_B
 Generated contracts for Nested.State_A_Out.Helper_3.P2
    Global =>
       In_Out =>
@@ -51,15 +71,6 @@ Generated contracts for Nested.State_A_Out.Helper_3.P3
    Refined_Global =>
       Output =>
          H_3_B
-Generated contracts for Nested.State_A_Out.Helper_3.Get
-   Global =>
-      Input =>
-         Helper_3.H_3
-   Refined_Global =>
-      Input =>
-         H_3_A
-         H_3_B
-Generated contracts for Nested.State_A_Out.Helper_3
 Generated contracts for Nested.State_A_Out.P1
    Global =>
       In_Out =>
@@ -67,17 +78,6 @@ Generated contracts for Nested.State_A_Out.P1
    Refined_Global =>
       In_Out =>
          Helper_3.H_3
-Generated contracts for Nested.State_A_Out
-   Global =>
-      Output =>
-         Nested.State_A
-   Refined_Global =>
-      Output =>
-         A_1
-         A_2
-Generated contracts for Nested
-   Initializes =>
-      Nested.State_A
 nested.adb:15:28: info: initialization of "Helper_1.H_1" proved
 nested.adb:16:10: info: flow dependencies proved
 nested.adb:18:19: info: implicit aspect Always_Terminates on "Check" has been proved, subprogram will terminate

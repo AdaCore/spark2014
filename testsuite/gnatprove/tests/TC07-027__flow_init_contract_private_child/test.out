@@ -1,3 +1,9 @@
+Generated contracts for P
+   Initializes =>
+      P.State
+Generated contracts for P.C
+   Initializes =>
+      C.X
 Generated contracts for P.C.Proxy
    Global =>
       Output =>
@@ -5,9 +11,6 @@ Generated contracts for P.C.Proxy
    Refined_Global =>
       Output =>
          Y
-Generated contracts for P.C
-   Initializes =>
-      C.X
 Generated contracts for P.Init_Y
    Global =>
       Output =>
@@ -15,14 +18,11 @@ Generated contracts for P.Init_Y
    Refined_Global =>
       Output =>
          Y
-Generated contracts for P
+Generated contracts for Parent
    Initializes =>
-      P.State
+      Parent.A
 Generated contracts for Parent.Child
    Initializes =>
       Child.B
 parent-child.ads:2:25: info: data dependencies proved
-Generated contracts for Parent
-   Initializes =>
-      Parent.A
 parent.ads:3:25: info: data dependencies proved

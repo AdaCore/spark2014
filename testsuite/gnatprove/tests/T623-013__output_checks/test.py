@@ -1,8 +1,15 @@
-from test_support import gnatprove, prove_all
+from test_support import (
+    gnatprove,
+    prove_all,
+    default_refiners_no_sort,
+)
 
 print("default command-line output")
 print("---------------------------")
-gnatprove(opt=["-q", "-P", "test.gpr"], sort_output=False)
+gnatprove(
+    opt=["-q", "-P", "test.gpr"],
+    refiners=default_refiners_no_sort(),
+)
 print("")
 
 print("brief output")

@@ -36,10 +36,6 @@ default_vc_timeout = 120
 parallel_procs = 1
 default_project = "test.gpr"
 default_provers = ["cvc5", "altergo", "z3", "colibri"]
-provers_output_regex = re.compile(
-    r"\((Trivial|Interval|CVC4|CVC5|Z3|altergo|colibri).*\)"
-)
-sparklib_regex = re.compile(r"spark-.*\.ad[bs]:(\d*):\d*: info: .*")
 default_ada = 2022
 
 #  Change directory
@@ -69,6 +65,300 @@ is_msg = re.compile(
     r"([\w-]*\.ad.?):(\d*):\d*:" r" (info|warning|low|medium|high)?(: )?([^(,[]*)(.*)?$"
 )
 is_mark = re.compile(r"@(\w*):(\w*)")
+
+
+# OutputRefiner Classes
+# Classes for processing and refining lists of output strings
+#
+# Refiners can be validators (check output but don't modify) or transformers.
+# Default refiners include: CheckMarks, CheckFail, CheckSarif, SparkLibFilter, Sort
+#
+# Usage Examples:
+#   # Use default refiners (validate + filter SPARKlib + sort):
+#   gnatprove(opt=["-P", "test.gpr"])
+#
+#   # Disable all refiners (no validation, filtering, or sorting):
+#   gnatprove(opt=["-P", "test.gpr"], refiners=[])
+#
+#   # Keep defaults but disable sorting:
+#   gnatprove(opt=["-P", "test.gpr"],
+#             refiners=without_refiner(default_refiners(), SortRefiner))
+#
+#   # Keep defaults but disable mark checking:
+#   gnatprove(opt=["-P", "test.gpr"],
+#             refiners=without_refiner(default_refiners(), CheckMarksRefiner))
+#
+#   # Custom refiners (validate, filter by regex, then sort):
+#   gnatprove(opt=["-P", "test.gpr"],
+#             refiners=[CheckMarksRefiner(),
+#                       RegexFilterRefiner("warning.*"),
+#                       SortRefiner()])
+class OutputRefiner:
+    """Base class for output refiners that transform lists of strings.
+
+    Refiners can either:
+    1. Transform output (return modified list)
+    2. Validate output (return original list, but may log errors/warnings)
+    """
+
+    def refine(self, lines: list[str]) -> list[str]:
+        """Process a list of strings and return a list (potentially modified).
+
+        Args:
+            lines: List of strings to process
+
+        Returns:
+            Transformed or original list of strings
+        """
+        raise NotImplementedError("Subclasses must implement refine()")
+
+    def set_context(self, cwd=None, logger=None, **kwargs):
+        """Set context information needed by the refiner.
+
+        Args:
+            cwd: Working directory for file operations
+            logger: Logger for output
+            **kwargs: Additional context parameters specific to refiners
+        """
+        self.cwd = cwd
+        self.logger = logger
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+
+class SortRefiner(OutputRefiner):
+    """Sorts output lines by error sorting key."""
+
+    def refine(self, lines: list[str]) -> list[str]:
+        sorted_lines = lines.copy()
+        sorted_lines.sort(key=sort_key_for_errors)
+        return sorted_lines
+
+
+class SparkLibFilterRefiner(OutputRefiner):
+    """Filters out SPARKlib-related output lines."""
+
+    sparklib_regex = re.compile(r"spark-.*\.ad[bs]:(\d*):\d*: info: .*")
+
+    def refine(self, lines: list[str]) -> list[str]:
+        return [line for line in lines if self.sparklib_regex.match(line) is None]
+
+
+class RegexFilterRefiner(OutputRefiner):
+    """Filters lines based on a regex pattern."""
+
+    def __init__(self, pattern: str, invert: bool = True):
+        """Initialize regex filter.
+
+        Args:
+            pattern: Regular expression pattern to match
+            invert: If True, keep lines that DON'T match (default behavior)
+        """
+        self.pattern = pattern
+        self.invert = invert
+
+    def refine(self, lines: list[str]) -> list[str]:
+        return grep(self.pattern, lines, invert=self.invert)
+
+
+class CheckMarksRefiner(OutputRefiner):
+    """Validates that marks in source code have matching results.
+
+    This refiner doesn't modify output but performs validation checks.
+    """
+
+    def refine(self, lines: list[str]) -> list[str]:
+        check_marks(lines, cwd=self.cwd, logger=self.logger)
+        return lines
+
+
+class CheckFailRefiner(OutputRefiner):
+    """Validates that no unproved checks are in the output.
+
+    This refiner doesn't modify output but performs validation checks.
+    Always checks for failures - include it in refiners list only when needed.
+    """
+
+    def refine(self, lines: list[str]) -> list[str]:
+        check_fail(lines, no_failures_allowed=True, logger=self.logger)
+        return lines
+
+
+class CheckSarifRefiner(OutputRefiner):
+    """Validates SARIF output against tool output.
+
+    It is checked that each SARIF message is included in the tool output.
+
+    This refiner doesn't modify output but performs validation checks.
+    Always checks SARIF - include it in refiners list only when needed.
+    """
+
+    def __init__(self, report: str | None = None):
+        """Initialize SARIF checker.
+
+        Args:
+            report: Report type (corresponds to gnatprove --report switch)
+        """
+        self.report = report
+
+    def refine(self, lines: list[str]) -> list[str]:
+        check_sarif(lines, self.report, cwd=self.cwd, logger=self.logger)
+        return lines
+
+
+class GeneratedContractsRefiner(OutputRefiner):
+    """Separates and sorts generated contract blocks and message lines.
+
+    Message lines (file:line:col:...) are sorted separately using sort_key_for_errors.
+    Generated contract blocks (starting with "Generated contracts for ...") are sorted
+    alphabetically by entity name while preserving line order within each block.
+    """
+
+    def refine(self, lines: list[str]) -> list[str]:
+        message_lines = []
+        contract_blocks = []
+        current_block = []
+        other_lines = []
+
+        for line in lines:
+            # Check if it's a message line (file:line:col:...)
+            if is_msg.match(line):
+                message_lines.append(line)
+            elif line.startswith("Generated contracts for "):
+                # Start a new contract block
+                if current_block:
+                    contract_blocks.append(current_block)
+                current_block = [line]
+            elif current_block:
+                # Add to current contract block
+                current_block.append(line)
+            else:
+                # Line doesn't fit any pattern and we're not in a block
+                other_lines.append(line)
+
+        # Don't forget the last block
+        if current_block:
+            contract_blocks.append(current_block)
+
+        # Sort message lines using the error sorting key
+        message_lines.sort(key=sort_key_for_errors)
+
+        # Sort contract blocks alphabetically by their first line (entity name)
+        contract_blocks.sort(key=lambda block: block[0] if block else "")
+
+        # Combine: contract blocks first, then message lines, then any other lines
+        result = []
+        for block in contract_blocks:
+            result.extend(block)
+        result.extend(message_lines)
+        result.extend(other_lines)
+
+        return result
+
+
+# Helper functions and constants for common refiner configurations
+
+
+def default_refiners(
+    no_fail: bool = False, do_sarif_check: bool = False, report: str | None = None
+) -> list[OutputRefiner]:
+    """Return the default list of output refiners.
+
+    Returns a fresh list containing the default refiners:
+    [CheckMarksRefiner(), (CheckFailRefiner if no_fail), (CheckSarifRefiner if enabled),
+     SparkLibFilterRefiner(), SortRefiner()]
+
+    Args:
+        no_fail: Whether to include CheckFailRefiner
+        do_sarif_check: Whether to include CheckSarifRefiner
+        report: Report type for SARIF checking
+
+    Users can modify this list to customize behavior while keeping some defaults.
+    """
+    refiners = [CheckMarksRefiner()]
+
+    if no_fail:
+        refiners.append(CheckFailRefiner())
+
+    if do_sarif_check:
+        refiners.append(CheckSarifRefiner(report))
+
+    refiners.extend([SparkLibFilterRefiner(), SortRefiner()])
+
+    return refiners
+
+
+def without_refiner(
+    refiners: list[OutputRefiner], refiner_type: type
+) -> list[OutputRefiner]:
+    """Remove all refiners of a specific type from a list.
+
+    Args:
+        refiners: List of refiners to filter
+        refiner_type: The class type to remove (e.g., SortRefiner)
+
+    Returns:
+        New list with refiners of the specified type removed
+
+    Example:
+        # Get defaults but without sorting:
+        refiners = without_refiner(default_refiners(), SortRefiner)
+    """
+    return [r for r in refiners if not isinstance(r, refiner_type)]
+
+
+def default_refiners_no_sort(
+    no_fail: bool = False, do_sarif_check: bool = False, report: str | None = None
+) -> list[OutputRefiner]:
+    """Return the default list of output refiners without sorting."""
+    refiners = default_refiners(no_fail, do_sarif_check, report)
+    return without_refiner(refiners, SortRefiner)
+
+
+def build_refiners_from_flags(
+    no_fail: bool = False,
+    filter_sparklib: bool = True,
+    sort_output: bool = True,
+    filter_output: str | None = None,
+    do_sarif_check: bool = False,
+    report: str | None = None,
+) -> list[OutputRefiner]:
+    """Build a list of refiners from boolean flags (for YAML compatibility).
+
+    This helper is used by prove_all/do_flow to convert their boolean parameters
+    into refiners for the gnatprove function.
+
+    Args:
+        no_fail: Whether to include CheckFailRefiner
+        filter_sparklib: Whether to filter SPARKlib lines
+        sort_output: Whether to sort output
+        filter_output: Optional regex pattern to filter output
+        do_sarif_check: Whether to include CheckSarifRefiner
+        report: Report type for SARIF checking
+
+    Returns:
+        List of configured OutputRefiner instances
+    """
+    refiners = []
+
+    # Validators - always include marks, conditionally include fail and SARIF
+    refiners.append(CheckMarksRefiner())
+
+    if no_fail:
+        refiners.append(CheckFailRefiner())
+
+    if do_sarif_check:
+        refiners.append(CheckSarifRefiner(report))
+
+    if filter_sparklib:
+        refiners.append(SparkLibFilterRefiner())
+    if filter_output is not None:
+        refiners.append(RegexFilterRefiner(filter_output))
+
+    if sort_output:
+        refiners.append(SortRefiner())
+
+    return refiners
 
 
 def _base_path(cwd):
@@ -848,24 +1138,6 @@ def spark_install_path():
     return os.path.dirname(os.path.dirname(exec_loc))
 
 
-def strip_provers_output(s):
-    """Strip the extra output generated by --report=provers output from the
-    argument string"""
-    return provers_output_regex.sub("", s)
-
-
-def strip_provers_output_from_testout(cwd=None):
-    """Strip the extra output generated by --report=provers output from the
-    test.out file in cwd (or current directory)."""
-    path = _resolve_path("test.out", cwd)
-    if path.is_file():
-        with open(path, "r") as f:
-            content = f.read()
-        content = strip_provers_output(content)
-        with open(path, "w") as f:
-            f.write(content)
-
-
 def preprocess_sparklib_source_file(filepath, logger=None):
     """
     Reads a file line by line and replaces specific SPARK_Mode patterns
@@ -1041,19 +1313,15 @@ def generate_project_file(ada=default_ada, sparklib=False, cwd=None):
 
 def gnatprove(
     opt=None,
-    no_fail=False,
     no_output=False,
-    filter_output=None,
     cache_allowed=True,
-    sort_output=True,
     exit_status=None,
     ada=default_ada,
     sparklib=False,
-    filter_sparklib=True,
     info=True,
     report=None,
-    do_sarif_check=False,
     sparklib_bodymode=False,
+    refiners=None,
     cwd=None,
     timeout=None,
     logger=None,
@@ -1064,9 +1332,14 @@ def gnatprove(
     opt: options to give to gnatprove
     no_output: do not display gnatprove output, only of interest for testing
                exit status
-    filter_output: regex used to remove output from gnatprove
-    no_fail: if set, then we make sure no unproved checks are in the output
     exit_status: if set, expected value of the exit status from gnatprove
+    refiners: list of OutputRefiner instances to process output. If None,
+              uses default refiners:
+                [CheckMarksRefiner(), SparkLibFilterRefiner(), SortRefiner()].
+              Pass [] disable all refinement.
+              To include validation, add CheckFailRefiner() or CheckSarifRefiner() to
+              the list.
+              See usage examples at top of file.
 
     Note: The timeout parameter is *reserved* for usage by the testing
     framework. If set and the timeout is exceeded TimeoutExpired exception is
@@ -1119,10 +1392,6 @@ def gnatprove(
     # running the tool
     # strlist = str.splitlines(process)
 
-    check_marks(strlist, cwd=cwd, logger=logger)
-    check_fail(strlist, no_fail, logger=logger)
-    if do_sarif_check:
-        check_sarif(strlist, report, cwd=cwd, logger=logger)
     # Check that the exit status is as expected
     if exit_status is not None and process.returncode != exit_status:
         log(logger, f"Unexpected exit status of {process.status}")
@@ -1130,18 +1399,21 @@ def gnatprove(
     else:
         failure = False
 
-    if filter_sparklib:
-        strlist = [line for line in strlist if sparklib_regex.match(line) is None]
+    # Apply refiners to output (includes validation and transformation)
+    if refiners is None:
+        refiners = [CheckMarksRefiner(), SparkLibFilterRefiner(), SortRefiner()]
 
-    if filter_output is not None:
-        strlist = grep(filter_output, strlist, invert=True)
+    # Set context for all refiners
+    for refiner in refiners:
+        refiner.set_context(cwd=cwd, logger=logger, report=report)
+
+    # Execute refiners in sequence
+    for refiner in refiners:
+        strlist = refiner.refine(strlist)
 
     if not no_output or failure:
-        if sort_output:
-            log_sorted(logger, strlist)
-        else:
-            for line in strlist:
-                log(logger, line)
+        for line in strlist:
+            log(logger, line)
 
 
 def sarif_msg_text(result):
@@ -1191,7 +1463,7 @@ ignore_patterns = [
 ]
 
 
-def has_pattern(msg):
+def has_ignore_pattern(msg):
     for pattern in ignore_patterns:
         if pattern in msg:
             return True
@@ -1220,7 +1492,7 @@ def check_sarif(lines, report, cwd=None, logger=None):
         if report == "fail" and result["kind"] == "pass":
             continue
         msg = sarif_msg_text(result)
-        if has_pattern(msg):
+        if has_ignore_pattern(msg):
             continue
 
         if not contains(msg):
@@ -1249,13 +1521,14 @@ def prove_all(
     no_output=False,
     sort_output=True,
     filter_output=None,
+    filter_sparklib=True,
+    refiners=None,
     codepeer=False,
     exit_status=None,
     ada=default_ada,
     replay=False,
     warnings="continue",
     sparklib=False,
-    filter_sparklib=True,
     enable_sarif_check=False,
     sparklib_bodymode=False,
     cwd=None,
@@ -1267,8 +1540,12 @@ def prove_all(
     For option steps the default is max_steps set above, setting this
     option to zero disables steps option.
 
-    no_fail and filter_output are passed directly to
-    gnatprove().
+    Boolean parameters (sort_output, filter_output, filter_sparklib, no_fail and
+    enable_sarif_check) are provided for YAML compatibility. They are converted to
+    refiners internally.
+
+    Advanced users can pass a custom refiners list to override all boolean flags.
+    When refiners is not None, all boolean flags are ignored.
 
     Note: The timeout parameter is *reserved* for usage by the testing
     framework. If set and the timeout is exceeded TimeoutExpired exception is
@@ -1331,19 +1608,27 @@ def prove_all(
     report = report if report is not None else "all" if replay else "provers"
     # limit-switches don't play well with sarif output for now
     has_limit_switch = any("--limit" in s for s in fullopt)
+
+    # Build refiners from boolean flags if not explicitly provided
+    if refiners is None:
+        refiners = build_refiners_from_flags(
+            no_fail=no_fail,
+            filter_sparklib=filter_sparklib,
+            sort_output=sort_output,
+            filter_output=filter_output,
+            do_sarif_check=enable_sarif_check and not sparklib and not has_limit_switch,
+            report=report,
+        )
+
     gnatprove(
         fullopt,
-        no_fail=no_fail,
         no_output=no_output,
-        sort_output=sort_output,
+        refiners=refiners,
         cache_allowed=cache_allowed,
         exit_status=exit_status,
         ada=ada,
-        filter_output=filter_output,
         sparklib=sparklib,
-        filter_sparklib=filter_sparklib,
         report=report,
-        do_sarif_check=enable_sarif_check and not sparklib and not has_limit_switch,
         sparklib_bodymode=sparklib_bodymode,
         cwd=cwd,
         timeout=timeout,
@@ -1359,6 +1644,7 @@ def do_flow(
     mode="all",
     gg=True,
     sort_output=True,
+    refiners=None,
     ada=default_ada,
     sparklib=False,
     report=None,
@@ -1370,6 +1656,12 @@ def do_flow(
     """
     Call gnatprove with standard options for flow. We do generate verification
     conditions, but we don't actually try very hard to prove anything.
+
+    Boolean parameters (sort_output, no_fail, enable_sarif_check) are provided
+    for YAML compatibility. They are converted to refiners internally by prove_all.
+
+    Advanced users can pass a custom refiners list to override all boolean flags.
+    When refiners is not None, all boolean flags are ignored.
 
     Note: The timeout parameter is *reserved* for usage by the testing
     framework. If set and the timeout is exceeded TimeoutExpired exception is
@@ -1391,6 +1683,7 @@ def do_flow(
         no_fail=no_fail,
         mode=mode,
         sort_output=sort_output,
+        refiners=refiners,
         ada=ada,
         sparklib=sparklib,
         report=report,
@@ -1725,4 +2018,14 @@ def run_spark_for_gnattest_json(
         cwd=cwd,
         timeout=timeout,
         logger=logger,
+    )
+
+
+def flow_gg(opt=None):
+    if opt is None:
+        opt = []
+    opt += ["--flow-show-gg", "--no-inlining"]
+    do_flow(
+        opt=opt,
+        refiners=default_refiners_no_sort() + [GeneratedContractsRefiner()],
     )
