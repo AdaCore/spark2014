@@ -226,10 +226,11 @@ clean:
 
 BENCHDIR=bench
 RESULTSDIR=benchout
+TESTLIST=$(CURDIR)/testsuite/gnatprove/MANIFEST.bench
 create-benchmark:
 	rm -rf $(BENCHDIR)
 	mkdir -p $(BENCHDIR)
-	testsuite/gnatprove/bench/create_benchmarks.py --testsuite-dir=testsuite/gnatprove --target-dir=$(BENCHDIR) --testlist=testsuite/gnatprove/MANIFEST.bench
+	testsuite/gnatprove/bench/create_benchmarks.py --testsuite-dir=testsuite/gnatprove --target-dir=$(BENCHDIR) --testlist=$(TESTLIST)
 
 run-benchmark:
 	testsuite/gnatprove/bench/benchtests.py -j0 --testsuite-dir=testsuite/gnatprove $(BENCHDIR) --results-dir=$(RESULTSDIR)
