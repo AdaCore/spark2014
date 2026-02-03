@@ -2,7 +2,7 @@ insrc.adb:70:17: warning: assuming "Read" always terminates
 insrc.adb:70:17: warning: assuming "Read" has no effect on global items
 insrc.adb:70:17: warning: no Always_Terminates aspect available for "Read" [assumed-always-terminates]
 insrc.adb:70:17: warning: no Global contract available for "Read" [assumed-global-null]
-insrc.adb:74:12: error: choice parameter in handler is not allowed in SPARK
+insrc.adb:74:12: error: choice parameter in handler is not allowed in SPARK (SPARK RM 11.2(1))
 insrc.adb:74:12: error: violation of aspect SPARK_Mode at line 28
 insrc.adb:85:14: warning: assuming "Open" always terminates
 insrc.adb:85:14: warning: assuming "Open" has no effect on global items
@@ -14,7 +14,7 @@ insrc.adb:89:14: warning: assuming "Close" always terminates
 insrc.adb:89:14: warning: assuming "Close" has no effect on global items
 insrc.adb:89:14: warning: no Always_Terminates aspect available for "Close" [assumed-always-terminates]
 insrc.adb:89:14: warning: no Global contract available for "Close" [assumed-global-null]
-insrc.adb:93:12: error: choice parameter in handler is not allowed in SPARK
+insrc.adb:93:12: error: choice parameter in handler is not allowed in SPARK (SPARK RM 11.2(1))
 insrc.adb:93:12: error: violation of aspect SPARK_Mode at line 28
 insrc.adb:164:16: info: analyzing call to "AffGenericErr" in context
 insrc.adb:169:16: info: analyzing call to "AffChaineErr" in context

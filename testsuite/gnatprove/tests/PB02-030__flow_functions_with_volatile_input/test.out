@@ -11,24 +11,30 @@ legal.adb:30:04: warning: address specification on "V4" is imprecisely supported
 legal.adb:30:04: warning: launch "gnatprove --explain=E0012" for more information
 legal.adb:30:04: warning: make sure that all overlapping objects have Async_Writers set to True
 legal.adb:59:13: error: launch "gnatprove --explain=E0006" for more information
-legal.adb:59:13: error: nonvolatile function "Test_01" with volatile input global "V1" is not allowed in SPARK [E0006]
+legal.adb:59:13: error: nonvolatile function "Test_01" with volatile input global "V1" is not allowed in SPARK (SPARK RM 7.1.3(7)) [E0006]
 legal.adb:59:13: error: violation of pragma SPARK_Mode at test.adc:1
-legal.adb:67:13: error: function "Test_02" with output global "V2" is not allowed in SPARK [E0005]
+legal.adb:67:13: error: consider using the Side_Effects aspect
+legal.adb:67:13: error: function "Test_02" with output global "V2" is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]
 legal.adb:67:13: error: launch "gnatprove --explain=E0005" for more information
 legal.adb:67:13: error: violation of pragma SPARK_Mode at test.adc:1
-legal.adb:84:13: error: function "Test_04" with output global "V2" is not allowed in SPARK [E0005]
+legal.adb:84:13: error: consider using the Side_Effects aspect
+legal.adb:84:13: error: function "Test_04" with output global "V2" is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]
 legal.adb:84:13: error: launch "gnatprove --explain=E0005" for more information
 legal.adb:84:13: error: violation of pragma SPARK_Mode at test.adc:1
-legal.adb:101:13: error: function "F_03" with output global "PO_V3" is not allowed in SPARK [E0005]
+legal.adb:101:13: error: consider using the Side_Effects aspect
+legal.adb:101:13: error: function "F_03" with output global "PO_V3" is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]
 legal.adb:101:13: error: launch "gnatprove --explain=E0005" for more information
 legal.adb:101:13: error: violation of pragma SPARK_Mode at test.adc:1
-legal.adb:111:13: error: function "F_04" with output global "PO_V3" is not allowed in SPARK [E0005]
+legal.adb:111:13: error: consider using the Side_Effects aspect
+legal.adb:111:13: error: function "F_04" with output global "PO_V3" is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]
 legal.adb:111:13: error: launch "gnatprove --explain=E0005" for more information
 legal.adb:111:13: error: violation of pragma SPARK_Mode at test.adc:1
-legal.adb:120:13: error: function "F_05" with output global "PO_V4" is not allowed in SPARK [E0005]
+legal.adb:120:13: error: consider using the Side_Effects aspect
+legal.adb:120:13: error: function "F_05" with output global "PO_V4" is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]
 legal.adb:120:13: error: launch "gnatprove --explain=E0005" for more information
 legal.adb:120:13: error: violation of pragma SPARK_Mode at test.adc:1
-legal.adb:130:13: error: function "F_06" with output global "PO_V4" is not allowed in SPARK [E0005]
+legal.adb:130:13: error: consider using the Side_Effects aspect
+legal.adb:130:13: error: function "F_06" with output global "PO_V4" is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]
 legal.adb:130:13: error: launch "gnatprove --explain=E0005" for more information
 legal.adb:130:13: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof
@@ -39,8 +45,9 @@ illegal.adb:21:04: warning: address specification on "V4" is imprecisely support
 illegal.adb:21:04: warning: launch "gnatprove --explain=E0012" for more information
 illegal.adb:21:04: warning: make sure that all overlapping objects have Async_Writers set to True
 illegal.adb:57:13: error: launch "gnatprove --explain=E0006" for more information
-illegal.adb:57:13: error: nonvolatile function "F2" with volatile input global "PO_V3" is not allowed in SPARK [E0006]
+illegal.adb:57:13: error: nonvolatile function "F2" with volatile input global "PO_V3" is not allowed in SPARK (SPARK RM 7.1.3(7)) [E0006]
 illegal.adb:57:13: error: violation of pragma SPARK_Mode at test.adc:1
-illegal.adb:57:35: error: call to a volatile function in interfering context is not allowed in SPARK
+illegal.adb:57:35: error: launch "gnatprove --explain=E0004" for more information
 illegal.adb:57:35: error: violation of pragma SPARK_Mode at test.adc:1
+illegal.adb:57:35: error: volatile object or volatile function call in interfering context is not allowed in SPARK (SPARK RM 7.1.3(9)) [E0004]
 gnatprove: error during flow analysis and proof

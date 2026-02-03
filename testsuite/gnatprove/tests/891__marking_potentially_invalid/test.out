@@ -1,48 +1,43 @@
-ext.ads:18:13: error: function returning a scalar that is not imported with Potentially_Invalid aspect is not allowed in SPARK
+ext.ads:18:13: error: function returning a scalar that is not imported with Potentially_Invalid aspect is not allowed in SPARK (SPARK RM 13.9.1(4))
 ext.ads:18:13: error: violation of aspect SPARK_Mode at line 4
-ext.ads:29:04: error: potentially invalid object with a part of a concurrent type is not allowed in SPARK
+ext.ads:29:04: error: potentially invalid object with a part of a concurrent type is not allowed in SPARK (SPARK RM 13.9.1(5))
 ext.ads:29:04: error: violation of aspect SPARK_Mode at line 4
-ext.ads:33:04: error: potentially invalid object with a part of a concurrent type is not allowed in SPARK
+ext.ads:33:04: error: potentially invalid object with a part of a concurrent type is not allowed in SPARK (SPARK RM 13.9.1(5))
 ext.ads:33:04: error: violation of aspect SPARK_Mode at line 4
-ext.ads:43:04: error: potentially invalid object marked Part_Of a protected object is not allowed in SPARK
-ext.ads:43:04: error: violation of aspect SPARK_Mode at line 4
-ext.ads:49:04: error: potentially invalid object with a part of an access type is not allowed in SPARK
+ext.ads:43:04: error: potentially invalid object marked Part_Of a protected object is not yet supported
+ext.ads:49:04: error: potentially invalid object with a part of an access type is not allowed in SPARK (SPARK RM 13.9.1(5))
 ext.ads:49:04: error: violation of aspect SPARK_Mode at line 4
-ext.ads:53:04: error: potentially invalid object with a part of an access type is not allowed in SPARK
+ext.ads:53:04: error: potentially invalid object with a part of an access type is not allowed in SPARK (SPARK RM 13.9.1(5))
 ext.ads:53:04: error: violation of aspect SPARK_Mode at line 4
-ext.ads:59:04: error: potentially invalid object with a part of an access type is not allowed in SPARK
+ext.ads:59:04: error: potentially invalid object with a part of an access type is not allowed in SPARK (SPARK RM 13.9.1(5))
 ext.ads:59:04: error: violation of aspect SPARK_Mode at line 4
-ext.ads:72:04: error: potentially invalid object with a part of an ownership type is not allowed in SPARK
-ext.ads:72:04: error: violation of aspect SPARK_Mode at line 4
-ext.ads:76:04: error: potentially invalid object with a part of an ownership type is not allowed in SPARK
-ext.ads:76:04: error: violation of aspect SPARK_Mode at line 4
-ext.ads:82:04: error: potentially invalid object with a part of an ownership type is not allowed in SPARK
-ext.ads:82:04: error: violation of aspect SPARK_Mode at line 4
-ext.ads:88:04: error: potentially invalid object with a part of a tagged type is not allowed in SPARK
+ext.ads:72:04: error: no part of an object or function result annotated with Potentially_Invalid shall be of a type with an "Ownership" annotation
+ext.ads:76:04: error: no part of an object or function result annotated with Potentially_Invalid shall be of a type with an "Ownership" annotation
+ext.ads:82:04: error: no part of an object or function result annotated with Potentially_Invalid shall be of a type with an "Ownership" annotation
+ext.ads:88:04: error: potentially invalid object with a part of a tagged type is not allowed in SPARK (SPARK RM 13.9.1(5))
 ext.ads:88:04: error: violation of aspect SPARK_Mode at line 4
-ext.ads:92:04: error: potentially invalid object with a part of a tagged type is not allowed in SPARK
+ext.ads:92:04: error: potentially invalid object with a part of a tagged type is not allowed in SPARK (SPARK RM 13.9.1(5))
 ext.ads:92:04: error: violation of aspect SPARK_Mode at line 4
-ext.ads:98:04: error: potentially invalid object with a part of a tagged type is not allowed in SPARK
+ext.ads:98:04: error: potentially invalid object with a part of a tagged type is not allowed in SPARK (SPARK RM 13.9.1(5))
 ext.ads:98:04: error: violation of aspect SPARK_Mode at line 4
-ext.ads:111:04: error: potentially invalid object with a part of an Unchecked_Union type is not allowed in SPARK
+ext.ads:111:04: error: potentially invalid object with a part of an Unchecked_Union type is not allowed in SPARK (SPARK RM 13.9.1(5))
 ext.ads:111:04: error: violation of aspect SPARK_Mode at line 4
-ext.ads:115:04: error: potentially invalid object with a part of an Unchecked_Union type is not allowed in SPARK
+ext.ads:115:04: error: potentially invalid object with a part of an Unchecked_Union type is not allowed in SPARK (SPARK RM 13.9.1(5))
 ext.ads:115:04: error: violation of aspect SPARK_Mode at line 4
-ext.ads:121:04: error: potentially invalid object with a part of an Unchecked_Union type is not allowed in SPARK
+ext.ads:121:04: error: potentially invalid object with a part of an Unchecked_Union type is not allowed in SPARK (SPARK RM 13.9.1(5))
 ext.ads:121:04: error: violation of aspect SPARK_Mode at line 4
-ext.ads:131:04: error: potentially invalid object with a part subject to a type invariant is not allowed in SPARK
+ext.ads:131:04: error: potentially invalid object with a part subject to a type invariant is not allowed in SPARK (SPARK RM 13.9.1(7))
 ext.ads:131:04: error: violation of aspect SPARK_Mode at line 4
-ext.ads:135:04: error: potentially invalid object with a part subject to a type invariant is not allowed in SPARK
+ext.ads:135:04: error: potentially invalid object with a part subject to a type invariant is not allowed in SPARK (SPARK RM 13.9.1(7))
 ext.ads:135:04: error: violation of aspect SPARK_Mode at line 4
-ext.ads:142:17: error: dispatching operation with Potentially_Invalid aspect is not allowed in SPARK
+ext.ads:142:17: error: dispatching operation with Potentially_Invalid aspect is not allowed in SPARK (SPARK RM 13.9.1(9))
 ext.ads:142:17: error: violation of aspect SPARK_Mode at line 4
-ext.ads:146:16: error: dispatching operation with Potentially_Invalid aspect is not allowed in SPARK
+ext.ads:146:16: error: dispatching operation with Potentially_Invalid aspect is not allowed in SPARK (SPARK RM 13.9.1(9))
 ext.ads:146:16: error: violation of aspect SPARK_Mode at line 4
-ext.ads:155:13: error: Potentially_Invalid aspect on the primitive equality of a record type is not allowed in SPARK
-ext.ads:155:13: error: violation of aspect SPARK_Mode at line 4
-ext.ads:162:04: error: potentially invalid overlaid object is not allowed in SPARK
+ext.ads:155:13: error: Potentially_Invalid aspect on the primitive equality of a record type is not yet supported
+ext.ads:162:04: error: potentially invalid overlaid object is not allowed in SPARK (SPARK RM 13.9.1(8))
 ext.ads:162:04: error: violation of aspect SPARK_Mode at line 4
-ext.ads:165:04: error: potentially invalid overlaid object is not allowed in SPARK
+ext.ads:165:04: error: potentially invalid overlaid object is not allowed in SPARK (SPARK RM 13.9.1(8))
 ext.ads:165:04: error: violation of aspect SPARK_Mode at line 4
 ext.ads:173:04: error: potentially invalid object with a part subject to predicates is not yet supported
 ext.ads:177:04: error: potentially invalid object with a part subject to predicates is not yet supported
@@ -60,10 +55,8 @@ ext.ads:254:04: error: potentially invalid object with a part whose full view is
 ext.ads:260:04: error: potentially invalid object with a part whose full view is not in SPARK is not yet supported
 ext.ads:268:36: error: access to a subprogram annotated with Potentially_Invalid is not yet supported
 ext.ads:276:25: error: Potentially_Invalid aspect on a function associated to the aspect Iterable is not yet supported
-ext.ads:287:13: error: traversal function with a potentially invalid traversed parameter is not allowed in SPARK
-ext.ads:287:13: error: violation of aspect SPARK_Mode at line 4
-ext.ads:291:13: error: traversal function with a potentially invalid traversed parameter is not allowed in SPARK
-ext.ads:291:13: error: violation of aspect SPARK_Mode at line 4
+ext.ads:287:13: error: traversal function with a potentially invalid traversed parameter is not yet supported
+ext.ads:291:13: error: traversal function with a potentially invalid traversed parameter is not yet supported
 ext.ads:297:13: error: Entity parameter of a pragma Logical_Equal shall not have a Potentially_Invalid aspect
 ext.ads:305:39: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
 ext.ads:314:13: error: function annotated with Inline_For_Proof with a postcondition shall not have a potentially invalid result

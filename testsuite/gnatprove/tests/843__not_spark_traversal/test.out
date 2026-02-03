@@ -5,17 +5,22 @@ test_bc.adb:15:13: info: implicit aspect Always_Terminates on "F" has been prove
 test_bc.adb:22:13: info: implicit aspect Always_Terminates on "G" has been proved, subprogram will terminate
 test_bc.adb:35:23: error: object was borrowed at line 33
 test_bc.adb:43:23: error: object was borrowed at line 41
-test_modification.adb:9:13: error: function "F_1" with output global "memory accessed through objects of access type" is not allowed in SPARK [E0005]
+test_modification.adb:9:13: error: consider using the Side_Effects aspect
+test_modification.adb:9:13: error: function "F_1" with output global "memory accessed through objects of access type" is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]
 test_modification.adb:9:13: error: launch "gnatprove --explain=E0005" for more information
 test_modification.adb:9:13: error: violation of aspect SPARK_Mode at line 1
-test_modification.adb:14:07: error: assignment into a parameter of a traversal function is not allowed in SPARK
+test_modification.adb:14:07: error: assignment into a constant object is not allowed in SPARK (SPARK RM 3.10(3))
+test_modification.adb:14:07: error: the borrowed parameter of a traversal function cannot be modified
 test_modification.adb:14:07: error: violation of aspect SPARK_Mode at line 1
-test_modification.adb:29:15: error: parameter of a traversal function as "in" parameter of an access-to-variable type is not allowed in SPARK
+test_modification.adb:29:15: error: constant object as "in" parameter of an access-to-variable type is not allowed in SPARK (SPARK RM 3.10(3))
+test_modification.adb:29:15: error: the borrowed parameter of a traversal function cannot be modified
 test_modification.adb:29:15: error: violation of aspect SPARK_Mode at line 1
-test_modification.adb:33:13: error: function "F_3" with output global "memory accessed through objects of access type" is not allowed in SPARK [E0005]
+test_modification.adb:33:13: error: consider using the Side_Effects aspect
+test_modification.adb:33:13: error: function "F_3" with output global "memory accessed through objects of access type" is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]
 test_modification.adb:33:13: error: launch "gnatprove --explain=E0005" for more information
 test_modification.adb:33:13: error: violation of aspect SPARK_Mode at line 1
-test_modification.adb:41:10: error: assignment into a parameter of a traversal function is not allowed in SPARK
+test_modification.adb:41:10: error: assignment into a constant object is not allowed in SPARK (SPARK RM 3.10(3))
+test_modification.adb:41:10: error: the borrowed parameter of a traversal function cannot be modified
 test_modification.adb:41:10: error: violation of aspect SPARK_Mode at line 1
 test_modification.adb:66:29: error: borrow of a constant object is not allowed in SPARK (SPARK RM 3.10(11))
 test_modification.adb:66:29: error: the root object of the borrowed path is a constant

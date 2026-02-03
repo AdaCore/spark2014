@@ -385,6 +385,7 @@ package body SPARK_Definition is
      (Typ      : Type_Kind_Id;
       N        : Node_Id;
       Kind     : Violation_Kind;
+      Msg      : String := "";
       Names    : Node_Lists.List := Node_Lists.Empty;
       Cont_Msg : String := "");
    --  Check that Typ has no subcomponent with relaxed initialization. If
@@ -715,6 +716,11 @@ package body SPARK_Definition is
    --  sure to skip over those to avoid dealing with this abnormal case in
    --  Mark. Why aren't these kind of nodes Indexed_Components instead ?
 
+   procedure Mark_Use_Of_Pointer_Eq (N : Node_Id; Exp : Type_Kind_Id);
+   --  Report a violation on the use of the predifined equality of Exp on N.
+   --  This is expected to be used in combination with
+   --  Predefined_Eq_Uses_Pointer_Eq.
+
    function Is_Incomplete_Type_From_Limited_With (E : Entity_Id) return Boolean
    is ((Is_Incomplete_Type (E) or else Is_Class_Wide_Type (E))
        and then From_Limited_With (E));
@@ -795,7 +801,7 @@ package body SPARK_Definition is
         and then not Has_Handler_Annotation (Expected_Type)
       then
          Mark_Incorrect_Use_Of_Annotation
-           (Annot_Handler_Conversion, Expression, "Handler");
+           (Annot_Handler_Conversion, Expression);
       end if;
    end Check_Compatible_Access_Types;
 
@@ -1239,9 +1245,8 @@ package body SPARK_Definition is
 
                      <<Not_Lemma>>
                      Mark_Incorrect_Use_Of_Annotation
-                       (Annot_Wrong_Context_For_Prophecy,
+                       (Annot_At_End_Borrow_Context,
                         Proph,
-                        "At_End_Borrow",
                         Msg =>
                           Msg_Prefix
                           & " shall not occur inside a procedure call which is"
@@ -1252,9 +1257,8 @@ package body SPARK_Definition is
                  and then Attribute_Name (N) in Name_Loop_Entry | Name_Old
                then
                   Mark_Incorrect_Use_Of_Annotation
-                    (Annot_Wrong_Context_For_Prophecy,
+                    (Annot_At_End_Borrow_Context,
                      Proph,
-                     "At_End_Borrow",
                      Msg =>
                        Msg_Prefix
                        & " shall not occur inside a reference to the 'Old or"
@@ -1280,9 +1284,8 @@ package body SPARK_Definition is
                        or else not Is_Constant_Object (Var)
                      then
                         Mark_Incorrect_Use_Of_Annotation
-                          (Annot_Wrong_Context_For_Prophecy,
+                          (Annot_At_End_Borrow_Context,
                            Proph,
-                           "At_End_Borrow",
                            Msg =>
                              Msg_Prefix
                              & " shall not occur inside the initialization"
@@ -1331,9 +1334,8 @@ package body SPARK_Definition is
 
                      <<Bad_Prophecy_Save>>
                      Mark_Incorrect_Use_Of_Annotation
-                       (Annot_Wrong_Context_For_Prophecy,
+                       (Annot_At_End_Borrow_Context,
                         Proph,
-                        "At_End_Borrow",
                         Msg =>
                           Msg_Prefix
                           & " shall not occur inside the initialization"
@@ -1350,9 +1352,8 @@ package body SPARK_Definition is
       end loop;
 
       Mark_Incorrect_Use_Of_Annotation
-        (Annot_Wrong_Context_For_Prophecy,
+        (Annot_At_End_Borrow_Context,
          Proph,
-         "At_End_Borrow",
          Msg =>
            Msg_Prefix
            & " shall not occur outside of a postcondition, contract cases, or"
@@ -1555,6 +1556,7 @@ package body SPARK_Definition is
      (Typ      : Type_Kind_Id;
       N        : Node_Id;
       Kind     : Violation_Kind;
+      Msg      : String := "";
       Names    : Node_Lists.List := Node_Lists.Empty;
       Cont_Msg : String := "")
    is
@@ -1571,7 +1573,11 @@ package body SPARK_Definition is
       begin
          if Has_Relaxed_Init (C_Typ) then
             Mark_Violation
-              (Kind => Kind, N => N, Names => Names, Cont_Msg => Cont_Msg);
+              (Kind     => Kind,
+               N        => N,
+               Msg      => Msg,
+               Names    => Names,
+               Cont_Msg => Cont_Msg);
             return Pass;
 
          --  Protected components cannot have relaxed initialization
@@ -3073,10 +3079,7 @@ package body SPARK_Definition is
                --  respect to overridden Empty and Add_* primitives.
 
                if not Has_Aggregate_Annotation (Etype (N)) then
-                  Mark_Incorrect_Use_Of_Annotation
-                    (Annot_Container_Aggregate_Without_Annotation,
-                     N,
-                     "Container_Aggregate");
+                  Mark_Violation (Vio_Container_Aggregate, N);
                else
                   declare
                      Annot : constant Aggregate_Annotation :=
@@ -3244,19 +3247,19 @@ package body SPARK_Definition is
                Mark (Var);
                Mark (Expr);
 
-               --  ??? We need a rule that forbids targets of assignment for
+               --  SPARK RM 3.10(3) forbids targets of assignment for
                --  which the path is not known, for example when there is a
                --  function call involved (which includes calls to traversal
                --  functions). Otherwise there is no way to update the
                --  corresponding path permission.
 
                if No (Root) then
-                  Mark_Violation ("assignment to a complex expression", Var);
+                  Mark_Violation (Vio_Ownership_Assign_To_Expr, Var);
 
                --  Assigned object should not be a constant
 
                elsif Is_Constant_In_SPARK (Root) then
-                  Mark_Violation ("assignment into a constant object", Var);
+                  Mark_Violation (Vio_Ownership_Assign_To_Constant, Var);
 
                --  Assigned object should not be a constant borrower unless
                --  the assignment is a reborrow.
@@ -3266,24 +3269,33 @@ package body SPARK_Definition is
                  and then Is_Constant_Borrower (Root)
                then
                   Mark_Violation
-                    ("assignment into a parameter of a traversal function",
-                     Var);
+                    (Vio_Ownership_Assign_To_Constant,
+                     Var,
+                     Cont_Msg =>
+                       "the borrowed parameter of a traversal function cannot "
+                       & "be modified");
 
                --  Assigned object should not be inside an access-to-constant
                --  type.
 
                elsif Traverse_Access_To_Constant (Var) then
                   Mark_Violation
-                    ("assignment into an access-to-constant part"
-                     & " of an object",
-                     Var);
+                    (Vio_Ownership_Assign_To_Constant,
+                     Var,
+                     Cont_Msg =>
+                       "assignment into an access-to-constant part"
+                       & " of an object");
 
                --  Qualified expressions are considered to provide a constant
                --  view of the object
 
                elsif Path_Contains_Qualified_Expr (Var) then
                   Mark_Violation
-                    ("assignment into a qualified expression", Var);
+                    (Vio_Ownership_Assign_To_Constant,
+                     Var,
+                     Cont_Msg =>
+                       "a qualified expression provides a constant view of an "
+                       & "object");
 
                --  SPARK RM 3.10(8): If the type of the target is an anonymous
                --  access-to-variable type (an owning access type), the source
@@ -3308,14 +3320,7 @@ package body SPARK_Definition is
                       Get_Root_Object (Get_Observed_Or_Borrowed_Expr (Expr))
                       /= Root
                   then
-                     Mark_Violation
-                       ((if Is_Access_Constant (Etype (Var))
-                         then "observed"
-                         else "borrowed")
-                        & " expression which does not have the left-hand side"
-                        & " as a root",
-                        Expr,
-                        SRM_Reference => "SPARK RM 3.10(8)");
+                     Mark_Violation (Vio_Ownership_Reborrow, Expr);
                   end if;
 
                --  If we are performing a move operation, check that we are
@@ -3358,7 +3363,7 @@ package body SPARK_Definition is
             Mark_Stmt_Or_Decl_List (Statements (N));
 
          when N_Code_Statement                                       =>
-            Mark_Violation ("code statement", N);
+            Mark_Violation (Vio_Code_Statement, N);
 
          when N_Component_Association                                =>
             pragma Assert (No (Loop_Actions (N)));
@@ -3429,7 +3434,7 @@ package body SPARK_Definition is
             --  it is a backward goto. Reject it.
 
             if Goto_Labels.Contains (Entity (Name (N))) then
-               Mark_Violation ("backward goto statement", N);
+               Mark_Violation (Vio_Backward_Goto, N);
             end if;
 
          when N_Handled_Sequence_Of_Statements                       =>
@@ -3498,9 +3503,10 @@ package body SPARK_Definition is
                --  other forms of iteration are not allowed in SPARK.
 
                Mark_Violation
-                 ("iterator specification",
+                 (Vio_Iterator_Specification,
                   N,
-                  SRM_Reference => "SPARK RM 5.5.2");
+                  Cont_Msg =>
+                    "consider using the ""Iterable"" aspect instead");
             end if;
 
             --  Mark iterator's identifier
@@ -3519,7 +3525,7 @@ package body SPARK_Definition is
                Orig : constant Node_Id := Original_Node (N);
             begin
                if Orig /= N and then Nkind (Orig) = N_Goto_Statement then
-                  Mark_Violation ("backward goto statement", Orig);
+                  Mark_Violation (Vio_Backward_Goto, Orig);
                end if;
             end;
 
@@ -3564,7 +3570,7 @@ package body SPARK_Definition is
             --  use of the Ada equality.
 
             declare
-               Exp          : Unbounded_String;
+               Exp          : Opt_Type_Kind_Id;
                Eq_On_Access : constant Boolean :=
                  not Is_Concurrent_Type (Retysp (Etype (Left_Opnd (N))))
                  and then
@@ -3598,8 +3604,7 @@ package body SPARK_Definition is
                         if not Is_Null_Or_Reclaimed_Expr
                                  (Alt, Null_Value => True)
                         then
-                           Mark_Violation
-                             ("equality on " & To_String (Exp), Alt);
+                           Mark_Use_Of_Pointer_Eq (Alt, Exp);
                            exit;
                         end if;
                      end if;
@@ -3618,7 +3623,7 @@ package body SPARK_Definition is
                       not Is_Null_Or_Reclaimed_Expr
                             (Right_Opnd (N), Null_Value => True)
                   then
-                     Mark_Violation ("equality on " & To_String (Exp), N);
+                     Mark_Use_Of_Pointer_Eq (N, Exp);
                   end if;
                   pragma Annotate (Xcov, Exempt_Off);
                end if;
@@ -4345,18 +4350,18 @@ package body SPARK_Definition is
             | N_Requeue_Statement
             | N_Selective_Accept
             | N_Timed_Entry_Call                                     =>
-            Mark_Violation ("tasking", N);
+            Mark_Violation (Vio_Tasking_Unsupported_Construct, N);
 
          --  Unsupported GNAT extensions
 
          when N_Goto_When_Statement                                  =>
-            Mark_Violation ("GNAT extension for conditional goto", N);
+            Mark_Unsupported (Lim_GNAT_Ext_Conditional_Goto, N);
 
          when N_Raise_When_Statement                                 =>
-            Mark_Violation ("GNAT extension for conditional raise", N);
+            Mark_Unsupported (Lim_GNAT_Ext_Conditional_Raise, N);
 
          when N_Return_When_Statement                                =>
-            Mark_Violation ("GNAT extension for conditional return", N);
+            Mark_Unsupported (Lim_GNAT_Ext_Conditional_Return, N);
 
          --  The following kinds can be safely ignored by marking
 
@@ -4451,7 +4456,7 @@ package body SPARK_Definition is
                            then
                               if SPARK_Pragma_Is (Opt.On) then
                                  Error_Msg_N
-                                   ("component not present in &",
+                                   (Err_Comp_Not_Present,
                                     Choice,
                                     Names         => [Pref_Ty],
                                     Continuations =>
@@ -4529,7 +4534,7 @@ package body SPARK_Definition is
 
             --  A call to a function with side effects shall not reference the
             --  symbol ``@`` to refer to the target name of the assignment
-            --  (SPARK RM 6.11(7)).
+            --  (SPARK RM 6.4.2(7)).
 
             declare
                function Is_Assignment (N : Node_Id) return Boolean
@@ -4546,18 +4551,15 @@ package body SPARK_Definition is
                  and then
                    Is_Function_With_Side_Effects (Get_Called_Entity (Expr))
                then
-                  Mark_Violation
-                    ("use of ""@"" inside a call to a function"
-                     & " with side effects",
-                     N);
+                  Mark_Violation (Vio_Target_Name_In_Call_With_Side_Effets, N);
                end if;
             end;
 
          when N_Interpolated_String_Literal                          =>
-            Mark_Unsupported (Lim_Interpolated_String_Literal, N);
+            Mark_Unsupported (Lim_GNAT_Ext_Interpolated_String_Literal, N);
 
          when N_External_Initializer                                 =>
-            null; --  todo?
+            null;
 
          when N_Continue_Statement                                   =>
             if Present (Condition (N)) then
@@ -4968,9 +4970,11 @@ package body SPARK_Definition is
 
             if Is_Protected_Component_Or_Discr_Or_Part_Of (E) then
                Mark_Violation
-                 ("precisely supported address clause for Part_Of constituent"
-                  & " of a protected object",
-                  Address);
+                 (Vio_Overlay_Part_Of_Protected,
+                  Address,
+                  Msg =>
+                    "precisely supported address clause for Part_Of "
+                    & "constituent of a protected object");
                return;
             end if;
 
@@ -4979,11 +4983,14 @@ package body SPARK_Definition is
 
             if Is_Protected_Component_Or_Discr_Or_Part_Of (Aliased_Object) then
                Mark_Violation
-                 ("Address attribute on a part of "
-                  & (if Ekind (Aliased_Object) in E_Component | E_Discriminant
-                     then "a protected component"
-                     else "a Part_Of constituent of a protected object"),
-                  Address_Expr);
+                 (Vio_Overlay_Part_Of_Protected,
+                  Address_Expr,
+                  Msg =>
+                    "Address attribute on a part of "
+                    & (if Ekind (Aliased_Object)
+                          in E_Component | E_Discriminant
+                       then "a protected component"
+                       else "a Part_Of constituent of a protected object"));
                return;
             end if;
 
@@ -5002,12 +5009,14 @@ package body SPARK_Definition is
                     (if E_Is_Constant then "mutable" else "constant");
                begin
                   Mark_Violation
-                    ("address clause for a "
-                     & E_Mod
-                     & " object referencing a "
-                     & R_Mod
-                     & " part of an object",
-                     Address);
+                    (Vio_Overlay_Mutable_Constant,
+                     Address,
+                     Msg =>
+                       "address clause for a "
+                       & E_Mod
+                       & " object referencing a "
+                       & R_Mod
+                       & " part of an object");
                end;
             end if;
 
@@ -5116,7 +5125,7 @@ package body SPARK_Definition is
                 and then not Is_Constant_In_SPARK (E))
               or else Is_Potentially_Invalid (Aliased_Object)
             then
-               Mark_Violation ("potentially invalid overlaid object", E);
+               Mark_Violation (Vio_Potentially_Invalid_Overlay, E);
             end if;
          end if;
 
@@ -5135,7 +5144,6 @@ package body SPARK_Definition is
                --  Only emit the warning for constants, it is redundant for
                --  variables.
 
-               --  TODO ???
                if E_Is_Constant then
                   Warning_Msg_N
                     (Warn_Initialization_To_Alias,
@@ -5151,10 +5159,7 @@ package body SPARK_Definition is
             --  imported.
 
             elsif E_Is_Constant then
-               Mark_Violation
-                 ("constant object with an address clause which is not"
-                  & " imported",
-                  E);
+               Mark_Violation (Vio_Overlay_Constant_Not_Imported, E);
 
             --  To avoid introducing invalid values in aliases, E
             --  should be initialized at declaration.
@@ -5171,11 +5176,13 @@ package body SPARK_Definition is
                       Default_Initialization (Etype (E))
                       /= Full_Default_Initialization
                   then
-                     Mark_Violation
-                       ("object with an address clause which is not"
-                        & " fully initialized at declaration",
+                     Mark_Unsupported
+                       (Lim_Overlay_Uninitialized,
                         E,
-                        Cont_Msg => "consider marking it as imported");
+                        Cont_Msg =>
+                          Create
+                            ("consider annotating & with Import",
+                             Names => [E]));
                   end if;
                end;
             end if;
@@ -5605,10 +5612,11 @@ package body SPARK_Definition is
             then
                if not Expr_Has_Relaxed_Discr (Prefix (P)) then
                   Mark_Violation
-                    ("attribute """
-                     & Standard_Ada_Case (Get_Name_String (Aname))
-                     & """ on a discriminant which is always initialized",
-                     N);
+                    (Vio_Relaxed_Init_Initialized_Prefix,
+                     N,
+                     Cont_Msg =>
+                       "discriminant of object with relaxed "
+                       & "initialization is always initialized");
                end if;
             elsif not Expr_Has_Relaxed_Init (P, No_Eval => True)
               and then not Has_Relaxed_Init (Etype (P))
@@ -5619,11 +5627,7 @@ package body SPARK_Definition is
                        in Formal_Kind | Constant_Or_Variable_Kind
                      and then Has_Relaxed_Initialization (Entity (P)))
             then
-               Mark_Violation
-                 ("prefix of attribute """
-                  & Standard_Ada_Case (Get_Name_String (Aname))
-                  & """ without initialization by proof",
-                  N);
+               Mark_Violation (Vio_Relaxed_Init_Initialized_Prefix, N);
             end if;
 
          --  Attribute Address is only allowed inside an Address aspect
@@ -5655,11 +5659,7 @@ package body SPARK_Definition is
                   elsif Nkind (M) in N_Subexpr then
                      null;
                   else
-                     Mark_Violation
-                       ("attribute ""Address"" outside an attribute definition"
-                        & " clause",
-                        N,
-                        Code => EC_Address_In_Expression);
+                     Mark_Violation (Vio_Address_Outside_Address_Clause, N);
                      exit;
                   end if;
                   M := Parent (M);
@@ -5671,11 +5671,7 @@ package body SPARK_Definition is
             if Nkind (P) in N_Identifier | N_Expanded_Name
               and then not Is_Object (Entity (P))
             then
-               Mark_Violation
-                 ("attribute """
-                  & Standard_Ada_Case (Get_Name_String (Aname))
-                  & """ of a non-object entity",
-                  N);
+               Mark_Violation (Vio_Address_Of_Non_Object, N);
             end if;
 
          --  Check SPARK RM 3.10(13) regarding 'Old and 'Loop_Entry on access
@@ -5701,10 +5697,13 @@ package body SPARK_Definition is
                      null;
                   elsif Nkind (P) /= N_Function_Call then
                      Mark_Violation
-                       ("prefix of """ & Astring & """ introducing aliasing",
+                       (Vio_Ownership_Loop_Entry_Old_Copy,
                         P,
-                        SRM_Reference => "SPARK RM 3.10(13)",
-                        Cont_Msg      =>
+                        Msg      =>
+                          Violation_Message
+                            (Vio_Ownership_Loop_Entry_Old_Copy,
+                             Name => Astring),
+                        Cont_Msg =>
                           "call a deep copy function for "
                           & Pretty_Source_Name (Etype (P))
                           & " as prefix of """
@@ -5713,11 +5712,12 @@ package body SPARK_Definition is
 
                   elsif Is_Traversal_Function_Call (P) then
                      Mark_Violation
-                       ("traversal function call as a prefix of """
-                        & Astring
-                        & """ attribute",
+                       (Vio_Ownership_Loop_Entry_Old_Traversal,
                         P,
-                        SRM_Reference => "SPARK RM 3.10(13)");
+                        Msg =>
+                          Violation_Message
+                            (Vio_Ownership_Loop_Entry_Old_Traversal,
+                             Name => Astring));
                   end if;
                end;
             end if;
@@ -5782,7 +5782,7 @@ package body SPARK_Definition is
                   --  currently.
 
                   elsif Is_Dispatching_Operation (Subp) then
-                     Mark_Unsupported (Lim_Access_To_Dispatch_Op, N);
+                     Mark_Violation (Vio_Access_To_Dispatch_Op, N);
 
                   --  Functions with side effects, volatile functions and
                   --  subprograms declared within a protected object have
@@ -5793,20 +5793,17 @@ package body SPARK_Definition is
                     and then Is_Function_With_Side_Effects (Subp)
                     and then not Has_Handler_Annotation (Etype (N))
                   then
-                     Mark_Violation
-                       ("access to function with side effects", N);
+                     Mark_Violation (Vio_Access_Function_With_Side_Effects, N);
 
                   elsif Ekind (Subp) = E_Function
                     and then Is_Volatile_Function (Subp)
                     and then not Has_Handler_Annotation (Etype (N))
                   then
-                     Mark_Violation ("access to volatile function", N);
+                     Mark_Violation (Vio_Access_Volatile_Function, N);
 
                   elsif Within_Protected_Type (Subp) then
                      Mark_Violation
-                       ("access to subprogram declared within a protected"
-                        & " object",
-                        N);
+                       (Vio_Access_Subprogram_Within_Protected, N);
 
                   --  Subprograms annotated with relaxed initialization need
                   --  a special handling at call.
@@ -5877,9 +5874,7 @@ package body SPARK_Definition is
                              or else not Globals.Inputs.Is_Empty
                              or else not Globals.Outputs.Is_Empty
                            then
-                              Mark_Violation
-                                ("access to subprogram with global effects",
-                                 N);
+                              Mark_Violation (Vio_Access_Sub_With_Globals, N);
                            end if;
                         end;
                      end if;
@@ -5889,7 +5884,15 @@ package body SPARK_Definition is
             --  N should visibly be of an access type
 
             elsif not Is_Access_Type (Retysp (Etype (N))) then
-               Mark_Violation ("Access attribute of a private type", N);
+               declare
+                  From : Entity_Id := Etype (N);
+               begin
+                  if Present (Full_View (From)) then
+                     From := Full_View (From);
+                  end if;
+                  Mark_Violation (N, From => From);
+               end;
+
                return;
 
             --  The prefix must be a path rooted inside an object
@@ -5897,12 +5900,11 @@ package body SPARK_Definition is
             elsif not Is_Access_Object_Type (Retysp (Etype (N)))
               or else not Is_Path_Expression (P)
             then
-               Mark_Violation ("Access attribute on a complex expression", N);
+               Mark_Violation (Vio_Access_Expression, N);
                return;
 
             elsif No (Get_Root_Object (P)) then
-               Mark_Violation
-                 ("Access attribute of a path not rooted inside an object", N);
+               Mark_Violation (Vio_Access_No_Root, N);
                return;
 
             --  For a named access-to-constant type, mark the prefix before
@@ -5930,11 +5932,7 @@ package body SPARK_Definition is
                       or else Ekind (Root) = E_In_Parameter)
                     and then not Traverse_Access_To_Constant (P)
                   then
-                     Mark_Violation
-                       ("Access attribute of a named access-to-constant"
-                        & " type whose prefix is not a constant part of an"
-                        & " object",
-                        N);
+                     Mark_Violation (Vio_Access_Constant, N);
                   end if;
                end;
 
@@ -5964,10 +5962,12 @@ package body SPARK_Definition is
 
          when others                               =>
             Mark_Violation
-              ("attribute """
-               & Standard_Ada_Case (Get_Name_String (Aname))
-               & """",
-               N);
+              (Vio_Unsupported_Attribute,
+               N,
+               Msg =>
+                 Violation_Message
+                   (Vio_Unsupported_Attribute,
+                    Standard_Ada_Case (Get_Name_String (Aname))));
             return;
       end case;
 
@@ -5981,7 +5981,7 @@ package body SPARK_Definition is
 
    procedure Mark_Binary_Op (N : N_Binary_Op_Id) is
       E   : constant Subprogram_Kind_Id := Entity (N);
-      Exp : Unbounded_String;
+      Exp : Opt_Type_Kind_Id;
 
    begin
       --  Call is in SPARK only if the subprogram called is in SPARK.
@@ -6016,15 +6016,13 @@ package body SPARK_Definition is
         and then
           not Is_Null_Or_Reclaimed_Expr (Right_Opnd (N), Null_Value => True)
       then
-         Mark_Violation ("equality on " & To_String (Exp), N);
+         Mark_Use_Of_Pointer_Eq (N, Exp);
 
       elsif Nkind (N) in N_Op_And | N_Op_Or | N_Op_Xor
         and then Has_Modular_Operations (Etype (N))
         and then Has_No_Bitwise_Operations_Annotation (Etype (N))
       then
-         Mark_Violation
-           ("bitwise operation on type with No_Bitwise_Operations annotation",
-            N);
+         Mark_Incorrect_Use_Of_Annotation (Annot_No_Bitwise_Operations_Use, N);
 
       --  Only support multiplication and division operations on fixed-point
       --  types if either:
@@ -6247,14 +6245,13 @@ package body SPARK_Definition is
 
             else
                Mark_Violation
-                 (Msg           =>
+                 (Vio_Volatile_In_Interferring_Context,
+                  N   => Actual,
+                  Msg =>
                     (case Nkind (Actual) is
                        when N_Function_Call => "volatile function call",
                        when others          => "volatile object")
-                    & " as actual",
-                  N             => Actual,
-                  Code          => EC_Volatile_Non_Interfering_Context,
-                  SRM_Reference => "SPARK RM 7.1.3(9)");
+                    & " as actual");
             end if;
          end if;
 
@@ -6321,13 +6318,19 @@ package body SPARK_Definition is
 
                if No (Root) then
                   if not Is_Null_Owning_Access (Actual) then
-                     Mark_Violation ("expression as " & Mode, Actual);
+                     Mark_Violation
+                       (Vio_Ownership_Assign_To_Expr,
+                        Actual,
+                        Msg => "expression as " & Mode);
                   end if;
 
                --  The root object of Actual should not be a constant object
 
                elsif Is_Constant_In_SPARK (Root) then
-                  Mark_Violation ("constant object as " & Mode, Actual);
+                  Mark_Violation
+                    (Vio_Ownership_Assign_To_Constant,
+                     Actual,
+                     Msg => "constant object as " & Mode);
 
                --  The root object of Actual should not be a constant borrower
 
@@ -6335,20 +6338,34 @@ package body SPARK_Definition is
                  and then Is_Constant_Borrower (Root)
                then
                   Mark_Violation
-                    ("parameter of a traversal function as " & Mode, Actual);
+                    (Vio_Ownership_Assign_To_Constant,
+                     Actual,
+                     Msg      => "constant object as " & Mode,
+                     Cont_Msg =>
+                       "the borrowed parameter of a traversal function cannot "
+                       & "be modified");
 
                --  The actual should not be inside an access-to-constant type
 
                elsif Traverse_Access_To_Constant (Actual) then
                   Mark_Violation
-                    ("access-to-constant part of an object as " & Mode,
-                     Actual);
+                    (Vio_Ownership_Assign_To_Constant,
+                     Actual,
+                     Msg      => "constant object as " & Mode,
+                     Cont_Msg =>
+                       "parameter is an access-to-constant part of an object");
 
                --  Qualified expressions are considered to provide a constant
                --  view of the object
 
                elsif Path_Contains_Qualified_Expr (Actual) then
-                  Mark_Violation ("qualified expression as " & Mode, Actual);
+                  Mark_Violation
+                    (Vio_Ownership_Assign_To_Constant,
+                     Actual,
+                     Msg      => "constant object as " & Mode,
+                     Cont_Msg =>
+                       "a qualified expression provides a constant view of an "
+                       & "object");
                end if;
             end;
          end if;
@@ -6382,9 +6399,7 @@ package body SPARK_Definition is
         and then Has_Modular_Operations (Etype (N))
         and then Has_No_Bitwise_Operations_Annotation (Etype (N))
       then
-         Mark_Violation
-           ("bitwise operation on type with No_Bitwise_Operations annotation",
-            N);
+         Mark_Incorrect_Use_Of_Annotation (Annot_No_Bitwise_Operations_Use, N);
       end if;
 
       --  If N is a call to the predefined equality of a tagged type, mark
@@ -6397,7 +6412,7 @@ package body SPARK_Definition is
          declare
             Left  : constant Node_Id := First_Actual (N);
             Right : constant Node_Id := Next_Actual (Left);
-            Exp   : Unbounded_String;
+            Exp   : Opt_Type_Kind_Id;
             pragma Assert (No (Next_Actual (Right)));
          begin
             if Predefined_Eq_Uses_Pointer_Eq (Etype (Left), Exp)
@@ -6405,7 +6420,7 @@ package body SPARK_Definition is
               and then
                 not Is_Null_Or_Reclaimed_Expr (Right, Null_Value => True)
             then
-               Mark_Violation ("equality on " & To_String (Exp), N);
+               Mark_Use_Of_Pointer_Eq (N, Exp);
             end if;
 
             Touch_Record_Fields_For_Eq (Etype (Left), Force_Predef => True);
@@ -6423,10 +6438,7 @@ package body SPARK_Definition is
          --  Make sure they are never called from SPARK code.
 
          if Has_Handler_Annotation (Etype (Prefix (Name (N)))) then
-            Mark_Violation
-              ("call to an access-to-subprogram type with the "
-               & """Handler"" annotation",
-               N);
+            Mark_Incorrect_Use_Of_Annotation (Annot_Handler_Call, N);
          end if;
 
          return;
@@ -6477,8 +6489,7 @@ package body SPARK_Definition is
                      raise Program_Error;
                end case;
             else
-               Mark_Violation
-                 ("call through access to protected operation", N);
+               Mark_Unsupported (Lim_Protected_Operation_Of_Expression, N);
                return;
             end if;
          end;
@@ -6505,8 +6516,7 @@ package body SPARK_Definition is
                      raise Program_Error;
                end case;
             else
-               Mark_Violation
-                 ("suspension through access to suspension object", N);
+               Mark_Unsupported (Lim_Suspension_On_Expression, N);
                return;
             end if;
          end;
@@ -6528,18 +6538,7 @@ package body SPARK_Definition is
               and then Is_Internal (Defining_Entity (Parent (N))))
            or else not Is_Declared_In_Statements (Parent (N)))
       then
-         declare
-            Msg : constant String :=
-              (if Nkind (Parent (N)) = N_Object_Declaration
-                 and then not Is_Declared_In_Statements (Parent (N))
-               then "in declarative part"
-               else "outside of assignment or object declaration");
-         begin
-            Mark_Violation
-              ("call to a function with side effects " & Msg,
-               N,
-               Code => EC_Call_To_Function_With_Side_Effects);
-         end;
+         Mark_Violation (Vio_Side_Effects_Call_Context, N);
          return;
       end if;
 
@@ -6550,8 +6549,7 @@ package body SPARK_Definition is
                  (Context => Parent (N), Obj_Ref => N, Check_Actuals => True)
            or else In_Loop_Entry_Or_Old_Attribute (N))
       then
-         Mark_Violation
-           ("call to a volatile function in interfering context", N);
+         Mark_Violation (Vio_Volatile_In_Interferring_Context, N);
          return;
       end if;
 
@@ -6603,8 +6601,7 @@ package body SPARK_Definition is
         and then Present (Controlling_Argument (N))
         and then Is_Hidden_Dispatching_Operation (E)
       then
-         Mark_Violation
-           ("dispatching call on primitive of untagged private", N);
+         Mark_Violation (Vio_Dispatching_Untagged_Type, N);
 
       --  Warn about assumptions, but only when the SPARK_Mode is On
 
@@ -6878,22 +6875,16 @@ package body SPARK_Definition is
                   Set_At_End_Borrow_Call (N, Entity (Prefix (Fst_Actual)));
 
                else
-                  Mark_Violation
-                    ("actual parameter of a function annotated with"
-                     & " At_End_Borrow in a contract which is not a"
-                     & " local borrower or the borrowed parameter of a"
-                     & " traversal function",
-                     Fst_Actual);
+                  Mark_Incorrect_Use_Of_Annotation
+                    (Annot_At_End_Borrow_Param_In_Contract, Fst_Actual);
                end if;
 
             --  Otherwise, we only check that the actual is a path. The rest
             --  will be checked by the borrow checker.
 
             elsif not Is_Path_To_Object then
-               Mark_Violation
-                 ("actual parameter of a function annotated with At_End_Borrow"
-                  & " which is not a path",
-                  Fst_Actual);
+               Mark_Incorrect_Use_Of_Annotation
+                 (Annot_At_End_Borrow_Param, Fst_Actual);
             end if;
          end;
       end if;
@@ -6975,8 +6966,7 @@ package body SPARK_Definition is
 
          begin
             if not Check_Call_Context (N) then
-               Mark_Violation
-                 ("call to a cut operation in an incorrect context", N);
+               Mark_Unsupported (Lim_Cut_Operation_Context, N);
             end if;
          end;
       end if;
@@ -7346,11 +7336,7 @@ package body SPARK_Definition is
                               | No_Possible_Initialization
                        and then not Has_Relaxed_Init (Choice_Typ)
                      then
-                        Mark_Violation
-                          ("box notation without default or relaxed "
-                           & "initialization",
-                           Choice,
-                           SRM_Reference => "SPARK RM 4.3(1)");
+                        Mark_Violation (Vio_Box_Notation_Without_Init, Choice);
 
                      --  Record components might be used for default value.
                      --  Update the Unused_Records set.
@@ -7375,11 +7361,7 @@ package body SPARK_Definition is
                            | No_Possible_Initialization
                     and then not Has_Relaxed_Init (Typ)
                   then
-                     Mark_Violation
-                       ("box notation without default or relaxed "
-                        & "initialization",
-                        N,
-                        SRM_Reference => "SPARK RM 4.3(1)");
+                     Mark_Violation (Vio_Box_Notation_Without_Init, N);
 
                   --  Record components might be used for default value.
                   --  Update the Unused_Records set.
@@ -7412,11 +7394,9 @@ package body SPARK_Definition is
 
       --  The declaration of an effectively volatile stand-alone object or type
       --  shall be a library-level declaration (SPARK RM 7.1.3(3)).
+
       if not Is_Library_Level_Entity (E) then
-         Mark_Violation
-           ("effectively volatile type not at library level",
-            E,
-            Code => EC_Volatile_At_Library_Level);
+         Mark_Violation (Vio_Volatile_At_Library_Level, E);
       end if;
 
       if Has_Discriminants (E) then
@@ -7519,7 +7499,7 @@ package body SPARK_Definition is
 
       begin
          --  A variable whose Part_Of pragma specifies a single concurrent
-         --  type as encapsulator must be (SPARK RM 9.4):
+         --  type as encapsulator must be (SPARK RM 9(4)):
          --    * Of a type that defines full default initialization, or
          --    * Declared with a default value, or
          --    * Imported.
@@ -7534,13 +7514,14 @@ package body SPARK_Definition is
            and then not Is_Imported (E)
          then
             Mark_Violation
-              ("not fully initialized part of "
-               & (if Ekind (Etype (Encap_Id)) = E_Task_Type
-                  then "task"
-                  else "protected")
-               & " type",
+              (Vio_Tasking_Unintialized_Concurrent,
                Def,
-               SRM_Reference => "SPARK RM 9.4");
+               Msg =>
+                 "not fully initialized part of "
+                 & (if Ekind (Etype (Encap_Id)) = E_Task_Type
+                    then "task"
+                    else "protected")
+                 & " type");
          end if;
 
          --  The object is in SPARK if-and-only-if its type is in SPARK and
@@ -7567,19 +7548,12 @@ package body SPARK_Definition is
                Scop : constant Entity_Id := Scope (E);
             begin
                if not Is_Local_Context (Scop) then
-                  Mark_Violation
-                    ("object of anonymous access not declared "
-                     & "immediately within a subprogram, entry or block",
-                     N,
-                     SRM_Reference => "SPARK RM 3.10(5)");
+                  Mark_Violation (Vio_Ownership_Anonymous_Object_Context, N);
                end if;
             end;
 
             if No (Expr) then
-               Mark_Violation
-                 ("uninitialized object of anonymous access type",
-                  N,
-                  SRM_Reference => "SPARK RM 3.10(5)");
+               Mark_Violation (Vio_Ownership_Anonymous_Object_Init, N);
             end if;
          end if;
 
@@ -7591,12 +7565,9 @@ package body SPARK_Definition is
          if Is_Effectively_Volatile (E) then
 
             --  A ghost type or object shall not be effectively volatile (SPARK
-            --  RM 6.9(7)).
+            --  RM 6.9(9)).
             if Is_Ghost_Entity (E) then
-               Mark_Violation
-                 ("volatile ghost object",
-                  N,
-                  SRM_Reference => "SPARK RM 6.9(7)");
+               Mark_Violation (Vio_Ghost_Volatile, N);
 
             --  The declaration of an effectively volatile stand-alone
             --  object or type shall be a library-level declaration
@@ -7605,10 +7576,7 @@ package body SPARK_Definition is
             elsif not Is_Library_Level_Entity (E)
               and then not Is_Return_Object (E)
             then
-               Mark_Violation
-                 ("effectively volatile object not at library level",
-                  E,
-                  Code => EC_Volatile_At_Library_Level);
+               Mark_Violation (Vio_Volatile_At_Library_Level, E);
 
             --  An object decl shall be compatible with respect to volatility
             --  with its type (SPARK RM 7.1.3(2)).
@@ -7761,7 +7729,7 @@ package body SPARK_Definition is
          elsif Ekind (E) = E_Loop_Parameter
            and then Is_Effectively_Volatile (E)
          then
-            Mark_Violation ("effectively volatile loop parameter", E);
+            Mark_Violation (Vio_Volatile_Loop_Param, E);
 
          else
 
@@ -7889,17 +7857,16 @@ package body SPARK_Definition is
             if not Is_Volatile_Func
               and then Is_Effectively_Volatile_For_Reading (Etype (Id))
             then
-               Mark_Violation
-                 ("nonvolatile function with effectively volatile result", Id);
+               Mark_Violation (Vio_Volatile_Result, Id);
             end if;
 
             --  A function with side effects shall not be a traversal function
-            --  (SPARK RM 6.1.11(7)).
+            --  (SPARK RM 6.1.13(7)).
 
             if Is_Function_With_Side_Effects (Id)
               and then Is_Traversal_Function (Id)
             then
-               Mark_Violation ("traversal function with side effects", Id);
+               Mark_Violation (Vio_Side_Effects_Traversal, Id);
             end if;
 
             --  Only traversal functions can return anonymous access types.
@@ -7913,10 +7880,7 @@ package body SPARK_Definition is
                  or else Retysp_In_SPARK (Etype (First_Formal (Id))))
               and then not Is_Traversal_Function (Id)
             then
-               Mark_Violation
-                 ("anonymous access type for result for "
-                  & "non-traversal functions",
-                  Id);
+               Mark_Violation (Vio_Ownership_Anonymous_Result, Id);
 
             --  If Id is a borrowing traversal function, it shall not be a
             --  volatile function.
@@ -7940,10 +7904,7 @@ package body SPARK_Definition is
             if Is_Traversal_Function (Id)
               and then Has_Potentially_Invalid (First_Formal (Id))
             then
-               Mark_Violation
-                 ("traversal function with a potentially invalid traversed "
-                  & "parameter",
-                  Id);
+               Mark_Unsupported (Lim_Potentially_Invalid_Traversal, Id);
             end if;
 
             if Is_User_Defined_Equality (Id) and then Is_Primitive (Id) then
@@ -7956,24 +7917,16 @@ package body SPARK_Definition is
                      --  A user-defined primitive equality operation on a
                      --  record type shall not be a function with side effects,
                      --  unless the record type has only limited views (SPARK
-                     --  RM 6.11(8)).
+                     --  RM 6.1.13(8)).
                      if Is_Function_With_Side_Effects (Id) then
-                        Mark_Violation
-                          ("function with side effects as"
-                           & " user-defined equality on record type",
-                           Id,
-                           SRM_Reference => "SPARK RM 6.11(8)");
+                        Mark_Violation (Vio_Side_Effects_Eq, Id);
 
                      --  A user-defined primitive equality operation on a
                      --  record type shall not be a volatile function, unless
                      --  the record type has only limited views (SPARK RM
                      --  7.1.3(10)).
                      elsif Is_Volatile_Func then
-                        Mark_Violation
-                          ("volatile function as"
-                           & " user-defined equality on record type",
-                           Id,
-                           SRM_Reference => "SPARK RM 7.1.3(10)");
+                        Mark_Violation (Vio_Volatile_Eq, Id);
 
                      --  A user-defined primitive equality operation on a
                      --  non-ghost record type shall not be ghost, unless the
@@ -7981,30 +7934,24 @@ package body SPARK_Definition is
                      elsif Is_Ghost_Entity (Id)
                        and then not Is_Ghost_Entity (Typ)
                      then
-                        Mark_Violation
-                          ("ghost function as user-defined equality"
-                           & " on non-ghost record type",
-                           Id,
-                           SRM_Reference => "SPARK RM 6.9(23)");
+                        Mark_Violation (Vio_Ghost_Eq, Id);
 
                      --  A user-defined primitive equality operation on a
                      --  record type shall not have a subprogram variant.
                      elsif Present (Get_Pragma (Id, Pragma_Subprogram_Variant))
                      then
-                        Mark_Violation
-                          ("subprogram variant on a user-defined equality"
-                           & " on record type",
+                        Mark_Unsupported
+                          (Lim_Subp_Variant_Eq,
                            Id,
                            Cont_Msg =>
-                             "consider introducing another recursive"
-                             & " function and defining ""="" as a wrapper");
+                             Create
+                               ("consider introducing another recursive"
+                                & " function and defining ""="" as a "
+                                & "wrapper"));
 
                      --  Aspect potentially invalid requires a special handling
                      elsif Has_Aspect (Id, Aspect_Potentially_Invalid) then
-                        Mark_Violation
-                          ("Potentially_Invalid aspect on the primitive"
-                           & " equality of a record type",
-                           Id);
+                        Mark_Unsupported (Lim_Potentially_Invalid_Eq, Id);
                      end if;
                   end if;
                end;
@@ -8036,10 +7983,7 @@ package body SPARK_Definition is
                         and then Is_Predicate_Function (Id))
                  and then Is_Effectively_Volatile_For_Reading (Etype (Formal))
                then
-                  Mark_Violation
-                    ("nonvolatile function with effectively volatile "
-                     & "parameter",
-                     Id);
+                  Mark_Violation (Vio_Volatile_Parameter, Id);
                end if;
 
                --  The declaration of a function without side effects shall not
@@ -8049,14 +7993,21 @@ package body SPARK_Definition is
                if not Is_Function_With_Side_Effects (Id) then
                   case Ekind (Formal) is
                      when E_Out_Parameter    =>
-                        Mark_Violation ("function with ""out"" parameter", Id);
+                        Mark_Violation
+                          (Vio_Function_Out_Param,
+                           Id,
+                           Cont_Msg =>
+                             "consider using the Side_Effects aspect");
 
                      when E_In_Out_Parameter =>
                         if not Is_Borrowing_Traversal_Function (Id)
                           or else Formal /= First_Formal (Id)
                         then
                            Mark_Violation
-                             ("function with ""in out"" parameter", Id);
+                             (Vio_Function_Out_Param,
+                              Id,
+                              Cont_Msg =>
+                                "consider using the Side_Effects aspect");
                         end if;
 
                      when E_In_Parameter     =>
@@ -8098,7 +8049,7 @@ package body SPARK_Definition is
             elsif Ekind (Id) in E_Subprogram_Type
               and then Invariant_Check_Needed (Etype (Id))
             then
-               Mark_Unsupported (Lim_Access_Sub_Return_Type_With_Inv, Id);
+               Mark_Violation (Vio_Access_Sub_Return_Type_With_Inv, Id);
             end if;
 
             --  Go over the global objects accessed by Id to make sure that
@@ -8144,12 +8095,13 @@ package body SPARK_Definition is
                               Names.Append (G.Node);
                            end if;
                            Mark_Violation
-                             ("function & with output global " & G_Name,
+                             (Vio_Function_Global_Output,
                               Id,
-                              Names          => Names,
-                              Code           => EC_Function_Output_Global,
-                              Root_Cause_Msg =>
-                                "function with global outputs");
+                              Msg      =>
+                                "function & with output global " & G_Name,
+                              Names    => Names,
+                              Cont_Msg =>
+                                "consider using the Side_Effects aspect");
                         end;
                      end loop;
 
@@ -8175,14 +8127,13 @@ package body SPARK_Definition is
                                  Names.Append (G.Node);
                               end if;
                               Mark_Violation
-                                ("function & with volatile input global "
-                                 & G_Name
-                                 & " with effective reads",
+                                (Vio_Function_Global_Output,
                                  Id,
-                                 Names          => Names,
-                                 Root_Cause_Msg =>
-                                   "function with global "
-                                   & "inputs with effective reads");
+                                 Msg   =>
+                                   "function & with volatile input global "
+                                   & G_Name
+                                   & " with effective reads",
+                                 Names => Names);
                            end;
                         end if;
 
@@ -8205,16 +8156,13 @@ package body SPARK_Definition is
                                  Names.Append (G.Node);
                               end if;
                               Mark_Violation
-                                ("nonvolatile function & with volatile input "
-                                 & "global "
-                                 & G_Name,
+                                (Vio_Volatile_Global,
                                  Id,
-                                 Names          => Names,
-                                 Code           =>
-                                   EC_Function_Volatile_Input_Global,
-                                 Root_Cause_Msg =>
-                                   "nonvolatile function with "
-                                   & " volatile global inputs");
+                                 Msg   =>
+                                   "nonvolatile function & with volatile "
+                                   & "input global "
+                                   & G_Name,
+                                 Names => Names);
                            end;
                         end if;
                      end loop;
@@ -8406,38 +8354,36 @@ package body SPARK_Definition is
                                  Ent      : constant Entity_Id :=
                                    Get_Direct_Mapping_Id (Obj);
                                  Cont_Str : constant String :=
-                                   "Outputs mentioned in the "
+                                   "outputs mentioned in the "
                                    & "expression of an aspect Program_Exit "
-                                   & "shall be a stand-alone objects";
-                                 Root_Str : constant String :=
-                                   "Output mentioned in the "
-                                   & "expression of an aspect Program_Exit "
-                                   & "which is not a stand-alone objects";
+                                   & "shall be stand-alone objects";
                               begin
                                  case Ekind (Ent) is
                                     when Protected_Kind            =>
                                        Mark_Violation
-                                         ("reference to the implicit self "
-                                          & "parameter of the protected "
-                                          & "operation & in the expression of "
-                                          & "its ""Program_Exit"" aspect",
+                                         (Vio_Program_Exit_Outputs,
                                           Cond,
-                                          [E],
-                                          Cont_Msg       => Cont_Str,
-                                          Root_Cause_Msg => Root_Str);
+                                          Msg      =>
+                                            "reference to the implicit self "
+                                            & "parameter of the protected "
+                                            & "operation & in the expression "
+                                            & "of its ""Program_Exit"" aspect",
+                                          Names    => [E],
+                                          Cont_Msg => Cont_Str);
 
                                     when Constant_Or_Variable_Kind =>
                                        null;
 
                                     when others                    =>
                                        Mark_Violation
-                                         ("reference to &, output of &, in the"
-                                          & " expression of its "
-                                          & """Program_Exit"" aspect",
+                                         (Vio_Program_Exit_Outputs,
                                           Cond,
-                                          [Ent, E],
-                                          Cont_Msg       => Cont_Str,
-                                          Root_Cause_Msg => Root_Str);
+                                          Msg      =>
+                                            "reference to &, output of &, in "
+                                            & "the expression of its "
+                                            & """Program_Exit"" aspect",
+                                          Names    => [Ent, E],
+                                          Cont_Msg => Cont_Str);
                                  end case;
                               end;
                            end if;
@@ -8512,9 +8458,7 @@ package body SPARK_Definition is
                                 and then Exc_Set.Is_Empty
                               then
                                  Mark_Violation
-                                   ("exit case mentioning exceptions when "
-                                    & "no exceptions can be propagated",
-                                    Exit_Kind);
+                                   (Vio_Exit_Cases_Exception, Exit_Kind);
                               end if;
 
                            when N_Aggregate  =>
@@ -8530,9 +8474,7 @@ package body SPARK_Definition is
                                 and then not Exc_Set.Contains (Entity (Except))
                               then
                                  Mark_Violation
-                                   ("exit case mentionning an exception which "
-                                    & "cannot be propagated",
-                                    Except);
+                                   (Vio_Exit_Cases_Exception, Except);
                               end if;
 
                            when others       =>
@@ -8547,10 +8489,7 @@ package body SPARK_Definition is
                   --  program and raising exceptions.
 
                   if Exc_Set.Is_Empty and then not Has_Program_Exit (E) then
-                     Mark_Violation
-                       ("Exit_Case on subprogram which can only return "
-                        & "normally",
-                        Prag);
+                     Mark_Violation (Vio_Exit_Cases_Normal_Only, Prag);
                   end if;
                end;
             end if;
@@ -8562,8 +8501,7 @@ package body SPARK_Definition is
                --  different assertion levels.
 
                if Find_Contracts (E, Pragma_Subprogram_Variant).Length > 1 then
-                  Mark_Violation
-                    ("multiple subprogram variants on a subprogram", Prag);
+                  Mark_Unsupported (Lim_Subp_Variant_Duplicate, Prag);
                end if;
 
                declare
@@ -8590,10 +8528,7 @@ package body SPARK_Definition is
                                  and then Ekind (Entity (Expr)) in Formal_Kind
                                  and then Scope (Entity (Expr)) = E)
                         then
-                           Mark_Violation
-                             ("structural subprogram variant which is not a"
-                              & " parameter of the subprogram",
-                              Expr);
+                           Mark_Violation (Vio_Subp_Variant_Structural, Expr);
                         end if;
                      end;
 
@@ -8632,9 +8567,7 @@ package body SPARK_Definition is
               and then Is_Dispatching_Operation (E)
               and then Present (Find_Dispatching_Type (E))
             then
-               Mark_Violation
-                 ("dispatching operation with Relaxed_Initialization aspect",
-                  E);
+               Mark_Violation (Vio_Relaxed_Init_Dispatch, E);
             end if;
 
             if Has_Aspect (E, Aspect_Potentially_Invalid) then
@@ -8647,10 +8580,7 @@ package body SPARK_Definition is
                  and then Is_Potentially_Invalid (E)
                  and then not Is_Imported (E)
                then
-                  Mark_Violation
-                    ("function returning a scalar that is not imported with "
-                     & "Potentially_Invalid aspect",
-                     E);
+                  Mark_Violation (Vio_Potentially_Invalid_Scalar, E);
 
                --  Dispatching operations shall not have a Potentially_Invalid
                --  aspect.
@@ -8658,9 +8588,7 @@ package body SPARK_Definition is
                elsif Is_Dispatching_Operation (E)
                  and then Present (Find_Dispatching_Type (E))
                then
-                  Mark_Violation
-                    ("dispatching operation with Potentially_Invalid aspect",
-                     E);
+                  Mark_Violation (Vio_Potentially_Invalid_Dispatch, E);
                end if;
             end if;
 
@@ -8704,7 +8632,7 @@ package body SPARK_Definition is
                elsif Ekind (Id) in E_Subprogram_Type
                  and then Invariant_Check_Needed (Etype (Formal))
                then
-                  Mark_Unsupported (Lim_Access_Sub_Formal_With_Inv, Formal);
+                  Mark_Violation (Vio_Access_Sub_Formal_With_Inv, Formal);
 
                --  Parameters of mode IN OUT or OUT subjected to ownership are
                --  not supported on procedures with exceptional contracts
@@ -9519,9 +9447,7 @@ package body SPARK_Definition is
          if Is_Unchecked_Deallocation_Instance (E)
            and then Is_General_Access_Type (Etype (First_Formal (E)))
          then
-            Mark_Violation
-              ("instance of Unchecked_Deallocation with a general access type",
-               E);
+            Mark_Violation (Vio_Ownership_Deallocate_General, E);
          end if;
 
          Mark_Subprogram_Specification (E);
@@ -9543,10 +9469,7 @@ package body SPARK_Definition is
                --  address of access values.
 
                if Contains_Access_Subcomponents (From) then
-                  Mark_Violation
-                    ("unchecked conversion instance from a type with access"
-                     & " subcomponents",
-                     E);
+                  Mark_Violation (Vio_UC_From_Access, E);
 
                --  We reject unchecked conversions to a type containing access
                --  subcomponents. We still accept conversion from integer types
@@ -9555,34 +9478,31 @@ package body SPARK_Definition is
 
                elsif Is_Access_Subprogram_Type (To) then
                   Mark_Violation
-                    ("unchecked conversion instance to an access to"
-                     & " subprogram type",
-                     E);
+                    (Vio_UC_To_Access,
+                     E,
+                     Msg =>
+                       "unchecked conversion instance to an "
+                       & "access-to-subprogram type");
                elsif not Is_Access_Type (To)
                  and then Contains_Access_Subcomponents (To)
                then
-                  Mark_Violation
-                    ("unchecked conversion instance to a composite type with"
-                     & " access subcomponents",
-                     E);
+                  Mark_Violation (Vio_UC_To_Access_Components, E);
                elsif Is_Access_Type (To)
                  and then
                    (not Is_Integer_Type (From)
                     and then not Is_System_Address_Type (Base_Retysp (From)))
                then
-                  Mark_Violation
-                    ("unchecked conversion instance to an access-to-object"
-                     & " type from a type which is neither System.Address nor"
-                     & " an integer type",
-                     E);
+                  Mark_Violation (Vio_UC_To_Access_From, E);
                elsif Is_Access_Type (To)
                  and then not Is_Access_Constant (To)
                  and then not Is_General_Access_Type (To)
                then
                   Mark_Violation
-                    ("unchecked conversion instance to a pool-specific access"
-                     & " type",
-                     E);
+                    (Vio_UC_To_Access,
+                     E,
+                     Msg =>
+                       "unchecked conversion instance to a pool-specific "
+                       & "access type");
 
                --  Precise unchecked conversion accesses record fields, update
                --  the Unused_Records set. Avoid calling touch on access types
@@ -9679,10 +9599,9 @@ package body SPARK_Definition is
                     and then not Is_Hidden_Dispatching_Operation (E)
                   then
                      Mark_Violation
-                       ("plain precondition on dispatching subprogram",
+                       (Vio_Dispatch_Plain_Pre,
                         Pre,
-                        SRM_Reference => "SPARK RM 6.1.1(2)",
-                        Cont_Msg      =>
+                        Cont_Msg =>
                           "use classwide precondition Pre'Class"
                           & " instead of Pre");
                   end if;
@@ -10163,11 +10082,7 @@ package body SPARK_Definition is
                --  enclosing type; SPARK RM 3.8(1).
 
                if Uses_Current_Type_Instance (Expr) then
-                  Mark_Violation
-                    ("default expression with current "
-                     & "instance of enclosing type",
-                     Expr,
-                     SRM_Reference => "SPARK RM 3.8(1)");
+                  Mark_Violation (Vio_Default_With_Current_Instance, Expr);
                else
                   Mark (Expr);
                end if;
@@ -10232,7 +10147,7 @@ package body SPARK_Definition is
          --  Controlled types are not allowed in SPARK
 
          if Is_Controlled (E) then
-            Mark_Violation ("controlled types", E);
+            Mark_Violation (Vio_Controlled_Types, E);
          end if;
 
          --  Front-end in GNATprove mode (see freeze.adb, call to
@@ -10375,10 +10290,7 @@ package body SPARK_Definition is
                   (Discriminant_Specifications (Original_Node (Parent (E)))))
            and then Entity_Comes_From_Source (E)
          then
-            Mark_Violation
-              ("discriminant on derived type",
-               Parent (E),
-               SRM_Reference => "SPARK RM 3.7(2)");
+            Mark_Violation (Vio_Discriminant_Derived, Parent (E));
          end if;
 
          --  Mark discriminants if any
@@ -10403,14 +10315,14 @@ package body SPARK_Definition is
                   --  A discriminant or a loop parameter shall not be
                   --  effectively volatile (SPARK RM 7.1.3(4)).
                   if Is_Effectively_Volatile (Etype (Disc)) then
-                     Mark_Violation ("volatile discriminant", Disc);
+                     Mark_Violation (Vio_Volatile_Discriminant, Disc);
                   end if;
 
                   --  Check that the discriminant is not of an access type as
-                  --  specified in SPARK RM 3.10
+                  --  specified in SPARK RM 3.7(1)
 
                   if Has_Access_Type (Etype (Disc)) then
-                     Mark_Violation ("access discriminant", Disc);
+                     Mark_Violation (Vio_Discriminant_Access, Disc);
                   end if;
 
                   --  Check that the default expression is in SPARK
@@ -10529,25 +10441,15 @@ package body SPARK_Definition is
             --  Classwide invariants are not in SPARK
 
             if Has_Inheritable_Invariants (E) then
-               Mark_Violation
-                 ("classwide invariant",
-                  E,
-                  SRM_Reference => "SPARK RM 7.3.2(2)");
+               Mark_Violation (Vio_Invariant_Class, E);
 
             --  Partial invariants are not allowed in SPARK
 
             elsif Present (Partial_Invariant_Procedure (E)) then
-               Mark_Violation
-                 ("type invariant on private_type_declaration or"
-                  & " private_type_extension",
-                  E,
-                  SRM_Reference => "SPARK RM 7.3.2(2)");
+               Mark_Violation (Vio_Invariant_Partial, E);
 
             elsif Is_Effectively_Volatile_For_Reading (E) then
-               Mark_Violation
-                 ("type invariant on effectively volatile type",
-                  E,
-                  SRM_Reference => "SPARK RM 7.3.2(4)");
+               Mark_Violation (Vio_Invariant_Volatile, E);
 
             --  Only mark the invariant as part of the type's fullview
 
@@ -10571,11 +10473,7 @@ package body SPARK_Definition is
                       Nkind (Parent (E_Partial_View))
                       = N_Private_Extension_Declaration
                   then
-                     Mark_Violation
-                       ("type invariant on completion of "
-                        & "private_type_extension",
-                        E,
-                        SRM_Reference => "SPARK RM 7.3.2(2)");
+                     Mark_Violation (Vio_Invariant_Ext, E);
 
                   --  We currently do not support invariants on protected
                   --  types. To support them, we would probably need some
@@ -10628,10 +10526,7 @@ package body SPARK_Definition is
 
          if Has_Predicates (E) and then Is_Effectively_Volatile_For_Reading (E)
          then
-            Mark_Violation
-              ("subtype predicate on effectively volatile type for reading",
-               E,
-               SRM_Reference => "SPARK RM 3.2.4(3)");
+            Mark_Violation (Vio_Predicate_Volatile, E);
          end if;
 
          --  Iterable aspect must be declared on partial view
@@ -10651,10 +10546,7 @@ package body SPARK_Definition is
               and then Declares_Iterable_Aspect (Full)
               and then not Declares_Iterable_Aspect (E)
             then
-               Mark_Violation
-                 ("Iterable aspect declared on the full view "
-                  & "of a private type",
-                  Full);
+               Mark_Violation (Vio_Iterable_Full_View, Full);
             end if;
          end;
 
@@ -10699,12 +10591,9 @@ package body SPARK_Definition is
                  and then not Is_Tagged_Type (Partial_View)
                then
                   Mark_Violation
-                    ("deriving & from & declared as untagged private",
+                    (Vio_Derived_Untagged_With_Tagged_Full_View,
                      E,
-                     Names          => [E, Partial_View],
-                     SRM_Reference  => "SPARK RM 3.4(1)",
-                     Root_Cause_Msg =>
-                       "deriving from type declared as untagged private");
+                     Names => [E, Partial_View]);
                end if;
             end;
          end if;
@@ -10756,10 +10645,7 @@ package body SPARK_Definition is
              in N_Full_Type_Declaration | N_Subtype_Declaration
            and then Comes_From_Source (Parent (E))
          then
-            Mark_Violation
-              ("effectively volatile type not at library level",
-               E,
-               Code => EC_Volatile_At_Library_Level);
+            Mark_Violation (Vio_Volatile_At_Library_Level, E);
          end if;
 
          if Is_Array_Type (E) then
@@ -10776,7 +10662,7 @@ package body SPARK_Definition is
 
                if Is_Anonymous_Access_Object_Type (Component_Typ) then
                   Mark_Violation
-                    ("component of anonymous access type", Component_Typ);
+                    (Vio_Ownership_Anonymous_Component, Component_Typ);
                end if;
 
                --  A component of a composite type (in this case, the composite
@@ -10792,11 +10678,10 @@ package body SPARK_Definition is
                      Kind          => Vio_Volatile_Incompatible_Comp);
                elsif Is_Effectively_Volatile (Component_Type (E)) then
                   Mark_Violation
-                    ("volatile component & of non-volatile type &",
+                    (Vio_Volatile_Incompatible_Comp,
                      Component_Type (E),
-                     Names          => [Component_Type (E), E],
-                     Root_Cause_Msg =>
-                       "volatile component of non-volatile type");
+                     Msg   => "volatile component & of non-volatile type &",
+                     Names => [Component_Type (E), E]);
                end if;
 
                --  Check that all index types are in SPARK
@@ -11136,7 +11021,7 @@ package body SPARK_Definition is
             --  not have a discriminated part (SPARK RM 7.1.3(5)).
             if Is_Effectively_Volatile (E) then
                if Has_Discriminants (E) then
-                  Mark_Violation ("discriminated volatile type", E);
+                  Mark_Violation (Vio_Volatile_Discriminated_Type, E);
                end if;
 
                --  A component of a composite type (in this case, the composite
@@ -11172,11 +11057,11 @@ package body SPARK_Definition is
                           or else Has_Aspect (Comp, Aspect_Volatile))
                      then
                         Mark_Violation
-                          ("volatile component & of non-volatile type &",
+                          (Vio_Volatile_Incompatible_Comp,
                            Comp,
-                           Names          => [Comp, E],
-                           Root_Cause_Msg =>
-                             "volatile component of non-volatile type");
+                           Msg   =>
+                             "volatile component & of non-volatile type &",
+                           Names => [Comp, E]);
                      end if;
 
                      Next_Component (Comp);
@@ -11186,7 +11071,7 @@ package body SPARK_Definition is
 
             --  A type which does not yield synchronized objects shall not have
             --  a component type which yields synchronized objects (SPARK RM
-            --  9.5).
+            --  9(5)).
 
             if not Yields_Synchronized_Object (E) then
                declare
@@ -11197,13 +11082,9 @@ package body SPARK_Definition is
                        and then Yields_Synchronized_Object (Etype (Comp))
                      then
                         Mark_Violation
-                          ("synchronized component & of "
-                           & "non-synchronized type &",
+                          (Vio_Tasking_Synchronized_Comp,
                            Comp,
-                           Names          => [Comp, E],
-                           Root_Cause_Msg =>
-                             "synchronized component of "
-                             & "non-synchronized type");
+                           Names => [Comp, E]);
                      end if;
 
                      Next_Component (Comp);
@@ -11212,7 +11093,7 @@ package body SPARK_Definition is
             end if;
 
             --  A ghost type shall not have a task or protected part (SPARK RM
-            --  6.9(21)).
+            --  6.9(22)).
             if Is_Ghost_Entity (E) then
                declare
                   Comp : Opt_E_Component_Id := First_Component (E);
@@ -11222,11 +11103,9 @@ package body SPARK_Definition is
                        and then Is_Concurrent_Type (Etype (Comp))
                      then
                         Mark_Violation
-                          ("concurrent component & of ghost type &",
+                          (Vio_Ghost_Concurrent_Comp,
                            Comp,
-                           Names          => [Comp, E],
-                           Root_Cause_Msg =>
-                             "concurrent component of ghost type");
+                           Names => [Comp, E]);
                      end if;
 
                      Next_Component (Comp);
@@ -11284,16 +11163,17 @@ package body SPARK_Definition is
                            then
                               if Is_Deep (Comp_Type) then
                                  Mark_Violation
-                                   ("owning component & of tagged extension &",
+                                   (Vio_Ownership_Tagged_Extension,
                                     Comp,
-                                    Names          => [Comp, E],
-                                    Root_Cause_Msg =>
-                                      "owning component of tagged extension");
+                                    Names => [Comp, E]);
 
                               else
                                  Check_No_Relaxed_Init_Part
                                    (Comp_Type,
                                     Kind  => Vio_Relaxed_Init_Part_Of_Tagged,
+                                    Msg   =>
+                                      "component & of tagged type & with "
+                                      & "relaxed initialization",
                                     N     => Comp,
                                     Names => [Comp, E]);
                               end if;
@@ -11323,7 +11203,7 @@ package body SPARK_Definition is
 
                            if Is_Anonymous_Access_Object_Type (Comp_Type) then
                               Mark_Violation
-                                ("component of anonymous access type", Comp);
+                                (Vio_Ownership_Anonymous_Component, Comp);
                            end if;
 
                            --  Mark the equality function for Comp_Type if it
@@ -11374,18 +11254,12 @@ package body SPARK_Definition is
                begin
                   if Scop /= Standard_Standard then
                      if Enclosing_Dynamic_Scope (Etype (E)) /= Scop then
-                        Mark_Violation
-                          ("local derived type from non-local parent",
-                           E,
-                           SRM_Reference => "SPARK RM 3.9.1(1)");
+                        Mark_Violation (Vio_Tagged_Extension_Local, E);
                      end if;
 
                      for Iface of Iter (Interfaces (E)) loop
                         if Enclosing_Dynamic_Scope (Iface) /= Scop then
-                           Mark_Violation
-                             ("local derived type from non-local interface",
-                              E,
-                              SRM_Reference => "SPARK RM 3.9.1(1)");
+                           Mark_Violation (Vio_Tagged_Extension_Local, E);
                         end if;
                      end loop;
                   end if;
@@ -11453,7 +11327,7 @@ package body SPARK_Definition is
                      (Associated_Storage_Pool
                         (Underlying_Type (Root_Type (E))))
                then
-                  Mark_Violation ("access type with Storage_Pool", E);
+                  Mark_Violation (Vio_Ownership_Storage_Pool, E);
 
                --  Storage_Size is not in SPARK
 
@@ -11461,7 +11335,7 @@ package body SPARK_Definition is
                  and then
                    Has_Storage_Size_Clause (Underlying_Type (Root_Type (E)))
                then
-                  Mark_Violation ("access type with Storage_Size", E);
+                  Mark_Violation (Vio_Storage_Size, E);
 
                --  Store the type in the Incomplete_Type map to be marked later
 
@@ -11591,8 +11465,7 @@ package body SPARK_Definition is
                                    (Retysp (Etype (Comp)))
                               then
                                  Mark_Violation
-                                   ("component of anonymous access type",
-                                    Comp);
+                                   (Vio_Ownership_Anonymous_Component, Comp);
                               end if;
 
                               Mark_Default_Expression (Comp);
@@ -11607,10 +11480,7 @@ package body SPARK_Definition is
                                        | No_Possible_Initialization
                               then
                                  Mark_Violation
-                                   ("protected component "
-                                    & "with no default initialization",
-                                    Comp,
-                                    SRM_Reference => "SPARK RM 9.4");
+                                   (Vio_Tasking_Unintialized_Concurrent, Comp);
                               end if;
 
                            else
@@ -11646,9 +11516,7 @@ package body SPARK_Definition is
                                     (Retysp (Etype (Part)))
                               then
                                  Mark_Violation
-                                   ("anonymous access variable marked Part_Of"
-                                    & " a protected object",
-                                    Part);
+                                   (Vio_Ownership_Anonymous_Part_Of, Part);
                               end if;
 
                               --  Initialization by proof of Part_Of variables
@@ -11674,10 +11542,8 @@ package body SPARK_Definition is
                               --  potentially invalid.
 
                               if Is_Potentially_Invalid (Part) then
-                                 Mark_Violation
-                                   ("potentially invalid object marked Part_Of"
-                                    & " a protected object",
-                                    Part);
+                                 Mark_Unsupported
+                                   (Lim_Potentially_Invalid_Part_Of, Part);
                               end if;
                            end loop;
                         end if;
@@ -12195,12 +12061,11 @@ package body SPARK_Definition is
         and then Is_In_Potentially_Hidden_Private (Full_View (E))
       then
          declare
-            Exp : Unbounded_String;
+            Exp : Opt_Type_Kind_Id;
          begin
             if Is_Deep (E) and then not Has_Own_Ownership_Annotation (E) then
-               Mark_Violation
-                 ("owning type in a hidden private part without an Ownership "
-                  & "annotation",
+               Mark_Incorrect_Use_Of_Annotation
+                 (Annot_Hide_Info_Private_Ownership,
                   E,
                   Cont_Msg =>
                     "consider annotating it with a pragma Annotate "
@@ -12215,8 +12080,8 @@ package body SPARK_Definition is
               and then Predefined_Eq_Uses_Pointer_Eq (E, Exp)
               and then not Has_Own_Predefined_Eq_Annotation (E)
             then
-               Mark_Violation
-                 ("hidden type whose predefined equality is restricted",
+               Mark_Incorrect_Use_Of_Annotation
+                 (Annot_Hide_Info_Private_Eq,
                   E,
                   Cont_Msg =>
                     "consider annotating it with a pragma Annotate "
@@ -12360,7 +12225,7 @@ package body SPARK_Definition is
       --  name.
 
       if Present (Choice_Parameter (N)) then
-         Mark_Violation ("choice parameter in handler", Choice_Parameter (N));
+         Mark_Violation (Vio_Handler_Choice_Parameter, Choice_Parameter (N));
 
       else
          declare
@@ -12401,10 +12266,7 @@ package body SPARK_Definition is
       --  SPARK RM 3.10(6): return statement of traversal function
 
       if Is_Traversal_Function (Subp) then
-         Mark_Violation
-           ("extended return applying to a traversal function",
-            N,
-            SRM_Reference => "SPARK RM 3.10(6)");
+         Mark_Violation (Vio_Ownership_Traversal_Extended_Return, N);
       end if;
 
       Mark_Stmt_Or_Decl_List (Return_Object_Declarations (N));
@@ -12543,11 +12405,7 @@ package body SPARK_Definition is
 
                     or else In_Loop_Entry_Or_Old_Attribute (N))
                then
-                  Mark_Violation
-                    ("volatile object in interfering context",
-                     N,
-                     Code          => EC_Volatile_Non_Interfering_Context,
-                     SRM_Reference => "SPARK RM 7.1.3(9)");
+                  Mark_Violation (Vio_Volatile_In_Interferring_Context, N);
                end if;
 
                if Is_Prophecy_Save (E) then
@@ -12732,19 +12590,13 @@ package body SPARK_Definition is
             return;
          end if;
          if Has_Controlling_Result (Ent) then
-            Mark_Violation
-              ("function associated to aspect Iterable"
-               & " with controlling result",
-               N);
+            Mark_Violation (Vio_Iterable_Controlling_Result, N);
          end if;
          if Is_Volatile_Function (Ent) then
-            Mark_Violation
-              ("volatile function associated with aspect Iterable", N);
+            Mark_Violation (Vio_Iterable_Volatile, N);
          end if;
          if Is_Function_With_Side_Effects (Ent) then
-            Mark_Violation
-              ("function with side effects associated with aspect Iterable",
-               N);
+            Mark_Violation (Vio_Iterable_Side_Effects, N);
          end if;
          if Has_Aspect (Ent, Aspect_Potentially_Invalid) then
             Mark_Unsupported (Lim_Potentially_Invalid_Iterable, N);
@@ -12760,10 +12612,7 @@ package body SPARK_Definition is
            or else not Globals.Inputs.Is_Empty
            or else not Globals.Outputs.Is_Empty
          then
-            Mark_Violation
-              ("function associated to aspect Iterable"
-               & " with dependency on globals",
-               N);
+            Mark_Violation (Vio_Iterable_Globals, N);
          end if;
       end Mark_Iterable_Aspect_Function;
 
@@ -12980,14 +12829,13 @@ package body SPARK_Definition is
          begin
             while Present (Scop) loop
                if Has_Hidden_Private_Part (Scop) then
-                  Mark_Violation
-                    ("child of a package whose private part is hidden with a "
-                     & "visible private part",
+                  Mark_Incorrect_Use_Of_Annotation
+                    (Annot_Hide_Info_Private_Child,
                      N,
                      Cont_Msg =>
                        "annotate the private part of "
                        & Pretty_Source_Name (Id)
-                       & " with Hide_Info");
+                       & " with the ""Hide_Info"" annotation");
                   exit;
                end if;
                Scop := Scope (Scop);
@@ -13095,25 +12943,19 @@ package body SPARK_Definition is
       --  Raise violations on cases disallowed by the RM
 
       if Is_Tagged_Type (Rep_Ty) then
-         Mark_Violation
-           ("potentially invalid object with a part of a tagged type", N);
+         Mark_Violation (Vio_Potentially_Invalid_Part_Tagged, N);
       elsif Is_Access_Type (Rep_Ty) then
-         Mark_Violation
-           ("potentially invalid object with a part of an access type", N);
+         Mark_Violation (Vio_Potentially_Invalid_Part_Access, N);
       elsif Is_Concurrent_Type (Rep_Ty) then
-         Mark_Violation
-           ("potentially invalid object with a part of a concurrent type", N);
+         Mark_Violation (Vio_Potentially_Invalid_Part_Concurrent, N);
       elsif Is_Unchecked_Union (Rep_Ty) then
-         Mark_Violation
-           ("potentially invalid object with a part of an Unchecked_Union "
-            & "type",
-            N);
+         Mark_Violation (Vio_Potentially_Invalid_Part_Unchecked_Union, N);
 
       --  Also disallow types with an ownership annotation
 
       elsif Has_Ownership_Annotation (Rep_Ty) then
-         Mark_Violation
-           ("potentially invalid object with a part of an ownership type", N);
+         Mark_Incorrect_Use_Of_Annotation
+           (Annot_Ownership_Potentially_Invalid, N);
 
       --  Also reject currently unsupported cases
 
@@ -13145,10 +12987,7 @@ package body SPARK_Definition is
          loop
             Anc := Retysp (Etype (Anc));
             if Has_Invariants_In_SPARK (Anc) then
-               Mark_Violation
-                 ("potentially invalid object with a part subject to a type"
-                  & " invariant",
-                  N);
+               Mark_Violation (Vio_Potentially_Invalid_Invariant, N);
                exit;
             end if;
             exit when Retysp (Etype (Anc)) = Anc;
@@ -13255,9 +13094,7 @@ package body SPARK_Definition is
                            | N_Loop_Statement
                            | N_Exception_Handler)
                then
-                  Mark_Violation
-                    ("pragma Assert_And_Cut outside a sequence of statements",
-                     N);
+                  Mark_Violation (Vio_Assert_And_Cut_Context, N);
                end if;
             end if;
 
@@ -13290,10 +13127,7 @@ package body SPARK_Definition is
                               and then
                                 Is_Anonymous_Access_Object_Type (Etype (Expr)))
                      then
-                        Mark_Violation
-                          ("structural loop variant which is not a variable of"
-                           & " an anonymous access-to-object type",
-                           Expr);
+                        Mark_Violation (Vio_Loop_Variant_Structural, Expr);
                      else
                         Mark (Expr);
                      end if;
@@ -13672,7 +13506,7 @@ package body SPARK_Definition is
          --  we have not yet defined how they are supported in SPARK.
 
          when others                         =>
-            Mark_Violation ("unknown pragma &", N, Names => [N]);
+            Mark_Violation (Vio_Unsupported_Pragma, N, Names => [N]);
       end case;
    end Mark_Pragma;
 
@@ -14366,19 +14200,13 @@ package body SPARK_Definition is
       if Has_Invariants_In_SPARK (Ty) then
          Mark_Unsupported (Lim_Relaxed_Init_Invariant, N);
       elsif Is_Tagged_Type (Rep_Ty) then
-         Mark_Violation
-           ("tagged type or object with relaxed initialization", N);
+         Mark_Violation (Vio_Relaxed_Init_Part_Of_Tagged, N);
       elsif Is_Access_Subprogram_Type (Rep_Ty) then
          Mark_Unsupported (Lim_Relaxed_Init_Access_Type, N);
       elsif Is_Effectively_Volatile (Rep_Ty) then
-         Mark_Violation
-           ("effectively volatile type or object with relaxed initialization",
-            N);
+         Mark_Violation (Vio_Relaxed_Init_Part_Of_Volatile, N);
       elsif Is_Unchecked_Union (Rep_Ty) then
-         Mark_Violation
-           ("part of type or object with relaxed initialization of "
-            & "Unchecked_Union type",
-            N);
+         Mark_Violation (Vio_Relaxed_Init_Part_Of_Unchecked_Union, N);
       end if;
 
       --  Using conversions, expressions of any ancestor of Rep_Ty can also
@@ -14491,9 +14319,7 @@ package body SPARK_Definition is
         and then Has_Modular_Operations (Etype (N))
         and then Has_No_Bitwise_Operations_Annotation (Etype (N))
       then
-         Mark_Violation
-           ("bitwise operation on type with No_Bitwise_Operations annotation",
-            N);
+         Mark_Incorrect_Use_Of_Annotation (Annot_No_Bitwise_Operations_Use, N);
       end if;
 
       if Ekind (E) = E_Function and then not In_SPARK (E) then
@@ -14502,6 +14328,29 @@ package body SPARK_Definition is
 
       Mark (Right_Opnd (N));
    end Mark_Unary_Op;
+
+   ----------------------------
+   -- Mark_Use_Of_Pointer_Eq --
+   ----------------------------
+
+   procedure Mark_Use_Of_Pointer_Eq (N : Node_Id; Exp : Type_Kind_Id) is
+   begin
+      if Is_Access_Type (Exp) then
+         Mark_Violation (Vio_Ownership_Access_Equality, N);
+      else
+         Mark_Incorrect_Use_Of_Annotation
+           (Annot_Predefined_Equality_Use_Eq,
+            N,
+            Msg   =>
+              "equality on & "
+              & (case Get_Predefined_Eq_Kind (Exp) is
+                   when Only_Null   =>
+                     "shall only be used if one of the operands is "
+                     & "reclaimed",
+                   when No_Equality => "shall not be used in SPARK"),
+            Names => [Root_Retysp (Exp)]);
+      end if;
+   end Mark_Use_Of_Pointer_Eq;
 
    -----------------------------------
    -- Most_Underlying_Type_In_SPARK --

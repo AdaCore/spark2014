@@ -2,46 +2,46 @@ aspects.ads:4:06: error: function annotated with Inline_For_Proof shall not be a
 aspects.ads:9:06: error: function annotated with Inline_For_Proof shall not be a volatile function
 aspects.ads:15:06: error: subprogram annotated with Inline_For_Proof shall not be a dispatching operation
 aspects.ads:19:06: error: function annotated with Inline_For_Proof shall not be a borrowing traversal function
-bad_call.adb:6:20: error: call to a function with side effects in declarative part is not allowed in SPARK [E0018]
+bad_call.adb:6:20: error: call to a function with side effects outside of assignment or object declaration without a block is not allowed in SPARK (SPARK RM 6.1.13(4)) [E0018]
 bad_call.adb:6:20: error: launch "gnatprove --explain=E0018" for more information
 bad_call.adb:6:20: error: violation of aspect SPARK_Mode at line 4
-bad_call.adb:7:20: error: call to a function with side effects outside of assignment or object declaration is not allowed in SPARK [E0018]
+bad_call.adb:7:20: error: call to a function with side effects outside of assignment or object declaration without a block is not allowed in SPARK (SPARK RM 6.1.13(4)) [E0018]
 bad_call.adb:7:20: error: launch "gnatprove --explain=E0018" for more information
 bad_call.adb:7:20: error: violation of aspect SPARK_Mode at line 4
-bad_call.adb:7:30: error: call to a function with side effects outside of assignment or object declaration is not allowed in SPARK [E0018]
+bad_call.adb:7:30: error: call to a function with side effects outside of assignment or object declaration without a block is not allowed in SPARK (SPARK RM 6.1.13(4)) [E0018]
 bad_call.adb:7:30: error: launch "gnatprove --explain=E0018" for more information
 bad_call.adb:7:30: error: violation of aspect SPARK_Mode at line 4
-bad_call.adb:8:24: error: call to a function with side effects outside of assignment or object declaration is not allowed in SPARK [E0018]
+bad_call.adb:8:24: error: call to a function with side effects outside of assignment or object declaration without a block is not allowed in SPARK (SPARK RM 6.1.13(4)) [E0018]
 bad_call.adb:8:24: error: launch "gnatprove --explain=E0018" for more information
 bad_call.adb:8:24: error: violation of aspect SPARK_Mode at line 4
-bad_call.adb:8:46: error: call to a function with side effects outside of assignment or object declaration is not allowed in SPARK [E0018]
+bad_call.adb:8:46: error: call to a function with side effects outside of assignment or object declaration without a block is not allowed in SPARK (SPARK RM 6.1.13(4)) [E0018]
 bad_call.adb:8:46: error: launch "gnatprove --explain=E0018" for more information
 bad_call.adb:8:46: error: violation of aspect SPARK_Mode at line 4
-bad_call.adb:8:71: error: call to a function with side effects outside of assignment or object declaration is not allowed in SPARK [E0018]
+bad_call.adb:8:71: error: call to a function with side effects outside of assignment or object declaration without a block is not allowed in SPARK (SPARK RM 6.1.13(4)) [E0018]
 bad_call.adb:8:71: error: launch "gnatprove --explain=E0018" for more information
 bad_call.adb:8:71: error: violation of aspect SPARK_Mode at line 4
-bad_call.adb:24:19: error: call to a function with side effects outside of assignment or object declaration is not allowed in SPARK [E0018]
+bad_call.adb:24:19: error: call to a function with side effects outside of assignment or object declaration without a block is not allowed in SPARK (SPARK RM 6.1.13(4)) [E0018]
 bad_call.adb:24:19: error: launch "gnatprove --explain=E0018" for more information
 bad_call.adb:24:19: error: violation of aspect SPARK_Mode at line 4
-bad_call.adb:25:10: error: call to a function with side effects outside of assignment or object declaration is not allowed in SPARK [E0018]
+bad_call.adb:25:10: error: call to a function with side effects outside of assignment or object declaration without a block is not allowed in SPARK (SPARK RM 6.1.13(4)) [E0018]
 bad_call.adb:25:10: error: launch "gnatprove --explain=E0018" for more information
 bad_call.adb:25:10: error: violation of aspect SPARK_Mode at line 4
-bad_call.adb:26:14: error: call to a function with side effects outside of assignment or object declaration is not allowed in SPARK [E0018]
+bad_call.adb:26:14: error: call to a function with side effects outside of assignment or object declaration without a block is not allowed in SPARK (SPARK RM 6.1.13(4)) [E0018]
 bad_call.adb:26:14: error: launch "gnatprove --explain=E0018" for more information
 bad_call.adb:26:14: error: violation of aspect SPARK_Mode at line 4
-bad_call.adb:26:30: error: call to a function with side effects outside of assignment or object declaration is not allowed in SPARK [E0018]
+bad_call.adb:26:30: error: call to a function with side effects outside of assignment or object declaration without a block is not allowed in SPARK (SPARK RM 6.1.13(4)) [E0018]
 bad_call.adb:26:30: error: launch "gnatprove --explain=E0018" for more information
 bad_call.adb:26:30: error: violation of aspect SPARK_Mode at line 4
-bad_call.adb:26:43: error: call to a function with side effects outside of assignment or object declaration is not allowed in SPARK [E0018]
+bad_call.adb:26:43: error: call to a function with side effects outside of assignment or object declaration without a block is not allowed in SPARK (SPARK RM 6.1.13(4)) [E0018]
 bad_call.adb:26:43: error: launch "gnatprove --explain=E0018" for more information
 bad_call.adb:26:43: error: violation of aspect SPARK_Mode at line 4
-bad_call.adb:28:14: error: use of "@" inside a call to a function with side effects is not allowed in SPARK
+bad_call.adb:28:14: error: use of "@" inside a call to a function with side effects is not allowed in SPARK (SPARK RM 6.4.2(7))
 bad_call.adb:28:14: error: violation of aspect SPARK_Mode at line 4
-bad_call.adb:29:14: error: use of "@" inside a call to a function with side effects is not allowed in SPARK
+bad_call.adb:29:14: error: use of "@" inside a call to a function with side effects is not allowed in SPARK (SPARK RM 6.4.2(7))
 bad_call.adb:29:14: error: violation of aspect SPARK_Mode at line 4
-bad_call.adb:29:18: error: use of "@" inside a call to a function with side effects is not allowed in SPARK
+bad_call.adb:29:18: error: use of "@" inside a call to a function with side effects is not allowed in SPARK (SPARK RM 6.4.2(7))
 bad_call.adb:29:18: error: violation of aspect SPARK_Mode at line 4
-bad_call.adb:30:18: error: use of "@" inside a call to a function with side effects is not allowed in SPARK
+bad_call.adb:30:18: error: use of "@" inside a call to a function with side effects is not allowed in SPARK (SPARK RM 6.4.2(7))
 bad_call.adb:30:18: error: violation of aspect SPARK_Mode at line 4
 bad_call.adb:31:14: error: @ inside a move assignment is not yet supported
 bad_call.adb:33:10: warning: assuming "F1" always terminates
@@ -76,13 +76,13 @@ bad_call.adb:43:11: warning: assuming "F11" always terminates
 bad_call.adb:43:11: warning: no Always_Terminates aspect available for "F11" [assumed-always-terminates]
 illegal.ads:5:13: error: violation of aspect SPARK_Mode at line 1
 illegal.ads:5:13: error: volatile function as user-defined equality on record type is not allowed in SPARK (SPARK RM 7.1.3(10))
-illegal.ads:10:13: error: function with side effects as user-defined equality on record type is not allowed in SPARK (SPARK RM 6.11(8))
+illegal.ads:10:13: error: function with side effects as user-defined equality on record type is not allowed in SPARK (SPARK RM 6.1.13(8))
 illegal.ads:10:13: error: violation of aspect SPARK_Mode at line 1
 illegal.ads:15:13: error: ghost function as user-defined equality on non-ghost record type is not allowed in SPARK (SPARK RM 6.9(23))
 illegal.ads:15:13: error: violation of aspect SPARK_Mode at line 1
 illegal.ads:39:13: error: violation of aspect SPARK_Mode at line 1
 illegal.ads:39:13: error: volatile function as user-defined equality on record type is not allowed in SPARK (SPARK RM 7.1.3(10))
-illegal.ads:44:13: error: function with side effects as user-defined equality on record type is not allowed in SPARK (SPARK RM 6.11(8))
+illegal.ads:44:13: error: function with side effects as user-defined equality on record type is not allowed in SPARK (SPARK RM 6.1.13(8))
 illegal.ads:44:13: error: violation of aspect SPARK_Mode at line 1
 illegal.ads:49:13: error: ghost function as user-defined equality on non-ghost record type is not allowed in SPARK (SPARK RM 6.9(23))
 illegal.ads:49:13: error: violation of aspect SPARK_Mode at line 1

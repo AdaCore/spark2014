@@ -41,9 +41,9 @@ bad_inv_placement.adb:9:10: error: nested subprogram before loop-invariant is no
 bad_iterators.adb:12:04: error: instantiation error at a-iteint.ads:32
 bad_iterators.adb:12:04: error: interface derived from other interfaces is not yet supported
 bad_iterators.adb:31:33: error: loop on an iterator specification with an iterator filter is not yet supported
-bad_membership.adb:13:31: error: equality on access types is not allowed in SPARK
+bad_membership.adb:13:31: error: equality on access types is not allowed in SPARK (SPARK RM 3.10(19))
 bad_membership.adb:13:31: error: violation of aspect SPARK_Mode at line 1
-bad_membership.adb:14:19: error: equality on access types is not allowed in SPARK
+bad_membership.adb:14:19: error: equality on access types is not allowed in SPARK (SPARK RM 3.10(19))
 bad_membership.adb:14:19: error: violation of aspect SPARK_Mode at line 1
 bad_raise.adb:4:41: error: raise expression in a complex expression in a precondition is not yet supported
 bad_raise.adb:7:43: error: raise expression in a complex expression in a precondition is not yet supported
@@ -51,14 +51,14 @@ bad_relaxed_init.ads:8:07: error: part of effectively volatile object or type an
 bad_relaxed_init.ads:8:07: error: violation of aspect SPARK_Mode at line 3
 bad_relaxed_init.ads:12:04: error: part of effectively volatile object or type annotated with relaxed initialization is not allowed in SPARK (SPARK RM 6.10(7))
 bad_relaxed_init.ads:12:04: error: violation of aspect SPARK_Mode at line 3
-bad_relaxed_init.ads:20:09: error: effectively volatile type or object with relaxed initialization is not allowed in SPARK
+bad_relaxed_init.ads:20:09: error: part of effectively volatile object or type annotated with relaxed initialization is not allowed in SPARK (SPARK RM 6.10(7))
 bad_relaxed_init.ads:20:09: error: violation of aspect SPARK_Mode at line 3
 bad_relaxed_init.ads:27:07: error: component "G" of tagged type "Child" with relaxed initialization is not allowed in SPARK (SPARK RM 6.10(6))
 bad_relaxed_init.ads:27:07: error: violation of aspect SPARK_Mode at line 3
-bad_relaxed_init.ads:30:09: error: tagged type or object with relaxed initialization is not allowed in SPARK
+bad_relaxed_init.ads:30:09: error: part of tagged type with relaxed Initialization is not allowed in SPARK (SPARK RM 6.10(6))
 bad_relaxed_init.ads:30:09: error: violation of aspect SPARK_Mode at line 3
 bad_relaxed_init.ads:37:09: error: access-to-subprogram type used as a subcomponent of a type or an object annotated with relaxed initialization is not yet supported
-bad_relaxed_init.ads:38:09: error: tagged type or object with relaxed initialization is not allowed in SPARK
+bad_relaxed_init.ads:38:09: error: part of tagged type with relaxed Initialization is not allowed in SPARK (SPARK RM 6.10(6))
 bad_relaxed_init.ads:38:09: error: violation of aspect SPARK_Mode at line 3
 bad_relaxed_init.ads:43:07: error: part of effectively volatile object or type annotated with relaxed initialization is not allowed in SPARK (SPARK RM 6.10(7))
 bad_relaxed_init.ads:43:07: error: violation of aspect SPARK_Mode at line 3

@@ -1,13 +1,13 @@
-lr5.ads:6:07: error: synchronized component "Comp_2" of non-synchronized type "Rec_1" is not allowed in SPARK
+lr5.ads:6:07: error: synchronized component "Comp_2" of non-synchronized type "Rec_1" is not allowed in SPARK (SPARK RM 9(5))
 lr5.ads:6:07: error: violation of aspect SPARK_Mode at line 3
-lr5.ads:11:07: error: synchronized component "Comp_2" of non-synchronized type "Rec_2" is not allowed in SPARK
+lr5.ads:11:07: error: synchronized component "Comp_2" of non-synchronized type "Rec_2" is not allowed in SPARK (SPARK RM 9(5))
 lr5.ads:11:07: error: violation of aspect SPARK_Mode at line 3
-lr5.ads:16:07: error: synchronized component "Comp_2" of non-synchronized type "Rec_3" is not allowed in SPARK
+lr5.ads:16:07: error: synchronized component "Comp_2" of non-synchronized type "Rec_3" is not allowed in SPARK (SPARK RM 9(5))
 lr5.ads:16:07: error: violation of aspect SPARK_Mode at line 3
-lr5.ads:21:07: error: synchronized component "Comp_2" of non-synchronized type "Rec_4" is not allowed in SPARK
+lr5.ads:21:07: error: synchronized component "Comp_2" of non-synchronized type "Rec_4" is not allowed in SPARK (SPARK RM 9(5))
 lr5.ads:21:07: error: violation of aspect SPARK_Mode at line 3
-lr5.ads:26:07: error: synchronized component "Comp_2" of non-synchronized type "Rec_5" is not allowed in SPARK
+lr5.ads:26:07: error: synchronized component "Comp_2" of non-synchronized type "Rec_5" is not allowed in SPARK (SPARK RM 9(5))
 lr5.ads:26:07: error: violation of aspect SPARK_Mode at line 3
-lr5.ads:31:07: error: synchronized component "Comp_2" of non-synchronized type "Rec_6" is not allowed in SPARK
+lr5.ads:31:07: error: synchronized component "Comp_2" of non-synchronized type "Rec_6" is not allowed in SPARK (SPARK RM 9(5))
 lr5.ads:31:07: error: violation of aspect SPARK_Mode at line 3
 gnatprove: error during flow analysis and proof

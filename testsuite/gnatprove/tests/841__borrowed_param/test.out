@@ -1,13 +1,18 @@
-test.adb:7:13: error: function "F_1" with output global "memory accessed through objects of access type" is not allowed in SPARK [E0005]
+test.adb:7:13: error: consider using the Side_Effects aspect
+test.adb:7:13: error: function "F_1" with output global "memory accessed through objects of access type" is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]
 test.adb:7:13: error: launch "gnatprove --explain=E0005" for more information
 test.adb:7:13: error: violation of aspect SPARK_Mode at line 1
-test.adb:12:07: error: assignment into a parameter of a traversal function is not allowed in SPARK
+test.adb:12:07: error: assignment into a constant object is not allowed in SPARK (SPARK RM 3.10(3))
+test.adb:12:07: error: the borrowed parameter of a traversal function cannot be modified
 test.adb:12:07: error: violation of aspect SPARK_Mode at line 1
-test.adb:27:15: error: parameter of a traversal function as "in" parameter of an access-to-variable type is not allowed in SPARK
+test.adb:27:15: error: constant object as "in" parameter of an access-to-variable type is not allowed in SPARK (SPARK RM 3.10(3))
+test.adb:27:15: error: the borrowed parameter of a traversal function cannot be modified
 test.adb:27:15: error: violation of aspect SPARK_Mode at line 1
-test.adb:31:13: error: function "F_3" with output global "memory accessed through objects of access type" is not allowed in SPARK [E0005]
+test.adb:31:13: error: consider using the Side_Effects aspect
+test.adb:31:13: error: function "F_3" with output global "memory accessed through objects of access type" is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]
 test.adb:31:13: error: launch "gnatprove --explain=E0005" for more information
 test.adb:31:13: error: violation of aspect SPARK_Mode at line 1
-test.adb:39:10: error: assignment into a parameter of a traversal function is not allowed in SPARK
+test.adb:39:10: error: assignment into a constant object is not allowed in SPARK (SPARK RM 3.10(3))
+test.adb:39:10: error: the borrowed parameter of a traversal function cannot be modified
 test.adb:39:10: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof

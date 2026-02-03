@@ -3457,10 +3457,8 @@ package body SPARK_Definition.Annotate is
                E);
             return;
          elsif not SPARK_Definition.Entity_Body_Compatible_With_SPARK (E) then
-            Mark_Violation
-              ("expression function with Inline_For_Proof whose body is"
-               & " not in SPARK",
-               E);
+            Mark_Incorrect_Use_Of_Annotation
+              (Annot_Inline_For_Proof_Body_Off, E);
             return;
          else
             Value := Expression (Get_Expression_Function (E));
@@ -4980,7 +4978,7 @@ package body SPARK_Definition.Annotate is
                   pragma Assert (Has_Hidden_Private_Part (Scope (Ent)));
 
                   declare
-                     Dummy    : Unbounded_String;
+                     Dummy    : Opt_Type_Kind_Id;
                      Full_Ty  : constant Entity_Id := Retysp (Ent);
                      Exp_Kind : constant Predefined_Eq_Kind :=
                        (if Kind = "only_null" then Only_Null else No_Equality);

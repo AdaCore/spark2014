@@ -5,8 +5,8 @@ test.adb:64:07: error: consider mentioning "G" in the exit postcondition of "P2"
 test.adb:91:04: warning: analyzing unreferenced procedure "Bad_Access" [unreferenced-procedure]
 test.adb:93:17: error: access to procedure which might exit the program is not yet supported
 test.adb:101:04: warning: analyzing unreferenced procedure "Scope" [unreferenced-procedure]
-test.adb:118:25: error: Outputs mentioned in the expression of an aspect Program_Exit shall be a stand-alone objects
-test.adb:118:25: error: reference to "F", output of "Bad", in the expression of its "Program_Exit" aspect is not allowed in SPARK
+test.adb:118:25: error: outputs mentioned in the expression of an aspect Program_Exit shall be stand-alone objects
+test.adb:118:25: error: reference to "F", output of "Bad", in the expression of its "Program_Exit" aspect is not allowed in SPARK (SPARK RM 6.1.10(1))
 test.adb:118:25: error: violation of aspect SPARK_Mode at line 1
 test_bc.adb:17:06: info: data dependencies proved
 test_bc.adb:17:32: warning: "G2" is not modified, could be INPUT
@@ -38,21 +38,21 @@ test_bc.adb:58:07: error: when exiting the program
 test_bc.adb:68:06: info: data dependencies proved
 test_bc.adb:68:28: warning: unused initial value of "G1"
 test_bc.adb:68:32: warning: unused initial value of "G2"
-test_protected.adb:21:25: error: Outputs mentioned in the expression of an aspect Program_Exit shall be a stand-alone objects
-test_protected.adb:21:25: error: reference to the implicit self parameter of the protected operation "Set_2" in the expression of its "Program_Exit" aspect is not allowed in SPARK
+test_protected.adb:21:25: error: outputs mentioned in the expression of an aspect Program_Exit shall be stand-alone objects
+test_protected.adb:21:25: error: reference to the implicit self parameter of the protected operation "Set_2" in the expression of its "Program_Exit" aspect is not allowed in SPARK (SPARK RM 6.1.10(1))
 test_protected.adb:21:25: error: violation of pragma SPARK_Mode at test.adc:1
-test_protected.adb:28:25: error: Outputs mentioned in the expression of an aspect Program_Exit shall be a stand-alone objects
-test_protected.adb:28:25: error: reference to the implicit self parameter of the protected operation "Do_Nothing_2" in the expression of its "Program_Exit" aspect is not allowed in SPARK
+test_protected.adb:28:25: error: outputs mentioned in the expression of an aspect Program_Exit shall be stand-alone objects
+test_protected.adb:28:25: error: reference to the implicit self parameter of the protected operation "Do_Nothing_2" in the expression of its "Program_Exit" aspect is not allowed in SPARK (SPARK RM 6.1.10(1))
 test_protected.adb:28:25: error: violation of pragma SPARK_Mode at test.adc:1
-test_protected.adb:41:28: error: Outputs mentioned in the expression of an aspect Program_Exit shall be a stand-alone objects
-test_protected.adb:41:28: error: reference to the implicit self parameter of the protected operation "Set_3" in the expression of its "Program_Exit" aspect is not allowed in SPARK
+test_protected.adb:41:28: error: outputs mentioned in the expression of an aspect Program_Exit shall be stand-alone objects
+test_protected.adb:41:28: error: reference to the implicit self parameter of the protected operation "Set_3" in the expression of its "Program_Exit" aspect is not allowed in SPARK (SPARK RM 6.1.10(1))
 test_protected.adb:41:28: error: violation of pragma SPARK_Mode at test.adc:1
-test_protected.adb:55:10: error: "Set_3" is not allowed in SPARK (due to Output mentioned in the expression of an aspect Program_Exit which is not a stand-alone objects)
+test_protected.adb:55:10: error: "Set_3" is not allowed in SPARK (due to output mentioned in the expression of an aspect Program_Exit which is not a stand-alone objects)
 test_protected.adb:55:10: error: violation of pragma SPARK_Mode at test.adc:1
-test_protected.ads:16:25: error: Outputs mentioned in the expression of an aspect Program_Exit shall be a stand-alone objects
-test_protected.ads:16:25: error: reference to the implicit self parameter of the protected operation "Set" in the expression of its "Program_Exit" aspect is not allowed in SPARK
+test_protected.ads:16:25: error: outputs mentioned in the expression of an aspect Program_Exit shall be stand-alone objects
+test_protected.ads:16:25: error: reference to the implicit self parameter of the protected operation "Set" in the expression of its "Program_Exit" aspect is not allowed in SPARK (SPARK RM 6.1.10(1))
 test_protected.ads:16:25: error: violation of pragma SPARK_Mode at test.adc:1
-test_protected.ads:19:25: error: Outputs mentioned in the expression of an aspect Program_Exit shall be a stand-alone objects
-test_protected.ads:19:25: error: reference to the implicit self parameter of the protected operation "Do_Nothing" in the expression of its "Program_Exit" aspect is not allowed in SPARK
+test_protected.ads:19:25: error: outputs mentioned in the expression of an aspect Program_Exit shall be stand-alone objects
+test_protected.ads:19:25: error: reference to the implicit self parameter of the protected operation "Do_Nothing" in the expression of its "Program_Exit" aspect is not allowed in SPARK (SPARK RM 6.1.10(1))
 test_protected.ads:19:25: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof

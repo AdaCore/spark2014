@@ -9,7 +9,8 @@ polyorb_hi-epoch.ads:44:11: info: data dependencies proved
 polyorb_hi-epoch.ads:48:11: info: data dependencies proved
 polyorb_hi-suspenders.ads:41:27: info: initialization of "Suspenders.Elaborated_Variables" proved
 polyorb_hi-suspenders.ads:46:08: info: flow dependencies proved
-polyorb_hi-transport_low_level.ads:50:13: error: function "Send" with output global "Elaborated_Variables" is not allowed in SPARK [E0005]
+polyorb_hi-transport_low_level.ads:50:13: error: consider using the Side_Effects aspect
+polyorb_hi-transport_low_level.ads:50:13: error: function "Send" with output global "Elaborated_Variables" is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]
 polyorb_hi-transport_low_level.ads:50:13: error: launch "gnatprove --explain=E0005" for more information
 polyorb_hi-transport_low_level.ads:50:13: error: violation of pragma SPARK_Mode at polyorb-hi-ada/gnat.adc:19
 polyorb_hi_generated-activity.adb:98:03: error: "Producer_Destinations" is not allowed in SPARK (due to attribute "Address" outside an attribute definition clause)
@@ -17,29 +18,33 @@ polyorb_hi_generated-activity.adb:98:03: error: violation of pragma SPARK_Mode a
 polyorb_hi_generated-activity.adb:100:06: error: attribute "Address" outside an attribute definition clause is not allowed in SPARK [E0002]
 polyorb_hi_generated-activity.adb:100:06: error: launch "gnatprove --explain=E0002" for more information
 polyorb_hi_generated-activity.adb:100:06: error: violation of pragma SPARK_Mode at polyorb-hi-ada/gnat.adc:19
-polyorb_hi_generated-activity.adb:102:03: error: function "Get_Time_Stamp" with volatile input global "Elaborated_Variables" with effective reads is not allowed in SPARK
-polyorb_hi_generated-activity.adb:102:03: error: function "Send_Output" with volatile input global "Elaborated_Variables" with effective reads is not allowed in SPARK
+polyorb_hi_generated-activity.adb:102:03: error: function "Get_Time_Stamp" with volatile input global "Elaborated_Variables" with effective reads is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]
+polyorb_hi_generated-activity.adb:102:03: error: function "Send_Output" with volatile input global "Elaborated_Variables" with effective reads is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]
 polyorb_hi_generated-activity.adb:102:03: error: instantiation error at polyorb_hi-thread_interrogators.ads:150
 polyorb_hi_generated-activity.adb:102:03: error: instantiation error at polyorb_hi-thread_interrogators.ads:214
+polyorb_hi_generated-activity.adb:102:03: error: launch "gnatprove --explain=E0005" for more information
+polyorb_hi_generated-activity.adb:102:03: error: launch "gnatprove --explain=E0005" for more information
 polyorb_hi_generated-activity.adb:102:03: error: violation of pragma SPARK_Mode at polyorb-hi-ada/gnat.adc:19
 polyorb_hi_generated-activity.adb:102:03: error: violation of pragma SPARK_Mode at polyorb-hi-ada/gnat.adc:19
 polyorb_hi_generated-activity.adb:121:23: error: "Producer_Destinations" is not allowed in SPARK (due to attribute "Address" outside an attribute definition clause)
 polyorb_hi_generated-activity.adb:121:23: error: violation of pragma SPARK_Mode at polyorb-hi-ada/gnat.adc:19
-polyorb_hi_generated-activity.adb:193:03: error: function "Get_Time_Stamp" with volatile input global "Elaborated_Variables" with effective reads is not allowed in SPARK
-polyorb_hi_generated-activity.adb:193:03: error: function "Send_Output" with volatile input global "Elaborated_Variables" with effective reads is not allowed in SPARK
+polyorb_hi_generated-activity.adb:193:03: error: function "Get_Time_Stamp" with volatile input global "Elaborated_Variables" with effective reads is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]
+polyorb_hi_generated-activity.adb:193:03: error: function "Send_Output" with volatile input global "Elaborated_Variables" with effective reads is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]
 polyorb_hi_generated-activity.adb:193:03: error: instantiation error at polyorb_hi-thread_interrogators.ads:150
 polyorb_hi_generated-activity.adb:193:03: error: instantiation error at polyorb_hi-thread_interrogators.ads:214
+polyorb_hi_generated-activity.adb:193:03: error: launch "gnatprove --explain=E0005" for more information
+polyorb_hi_generated-activity.adb:193:03: error: launch "gnatprove --explain=E0005" for more information
 polyorb_hi_generated-activity.adb:193:03: error: violation of pragma SPARK_Mode at polyorb-hi-ada/gnat.adc:19
 polyorb_hi_generated-activity.adb:193:03: error: violation of pragma SPARK_Mode at polyorb-hi-ada/gnat.adc:19
-polyorb_hi_generated-activity.adb:237:06: error: "Send_Output" is not allowed in SPARK (due to function with global inputs with effective reads)
+polyorb_hi_generated-activity.adb:237:06: error: "Send_Output" is not allowed in SPARK (due to function with global outputs)
 polyorb_hi_generated-activity.adb:237:06: error: violation of pragma SPARK_Mode at polyorb-hi-ada/gnat.adc:19
-polyorb_hi_generated-activity.adb:288:16: error: "Send_Output" is not allowed in SPARK (due to function with global inputs with effective reads)
+polyorb_hi_generated-activity.adb:288:16: error: "Send_Output" is not allowed in SPARK (due to function with global outputs)
 polyorb_hi_generated-activity.adb:288:16: error: violation of pragma SPARK_Mode at polyorb-hi-ada/gnat.adc:19
-polyorb_hi_generated-activity.adb:390:16: error: "Get_Time_Stamp" is not allowed in SPARK (due to function with global inputs with effective reads)
+polyorb_hi_generated-activity.adb:390:16: error: "Get_Time_Stamp" is not allowed in SPARK (due to function with global outputs)
 polyorb_hi_generated-activity.adb:390:16: error: violation of pragma SPARK_Mode at polyorb-hi-ada/gnat.adc:19
-polyorb_hi_generated-activity.adb:459:16: error: "Send_Output" is not allowed in SPARK (due to function with global inputs with effective reads)
+polyorb_hi_generated-activity.adb:459:16: error: "Send_Output" is not allowed in SPARK (due to function with global outputs)
 polyorb_hi_generated-activity.adb:459:16: error: violation of pragma SPARK_Mode at polyorb-hi-ada/gnat.adc:19
-polyorb_hi_generated-activity.adb:561:15: error: "Get_Time_Stamp" is not allowed in SPARK (due to function with global inputs with effective reads)
+polyorb_hi_generated-activity.adb:561:15: error: "Get_Time_Stamp" is not allowed in SPARK (due to function with global outputs)
 polyorb_hi_generated-activity.adb:561:15: error: violation of pragma SPARK_Mode at polyorb-hi-ada/gnat.adc:19
 polyorb_hi_generated-activity.ads:102:03: warning: in instantiation at polyorb_hi-periodic_task.ads:74
 polyorb_hi_generated-activity.ads:102:03: warning: pragma "Storage_Size" ignored (not yet supported) [ignored-pragma]

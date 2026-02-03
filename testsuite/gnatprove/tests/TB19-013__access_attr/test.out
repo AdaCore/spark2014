@@ -72,17 +72,17 @@ test_access_ownership_error.adb:40:31: warning: no Global contract available for
 test_access_ownership_error.adb:42:08: error: object was borrowed at line 39
 test_access_ownership_error.adb:43:10: error: object was borrowed at line 40
 test_access_ownership_error.adb:44:08: error: object was borrowed at line 39
-test_access_violation.adb:28:21: error: Access attribute on a complex expression is not allowed in SPARK
+test_access_violation.adb:28:21: error: Access attribute on a complex expression is not allowed in SPARK (SPARK RM 4.1.4(1))
 test_access_violation.adb:28:21: error: violation of aspect SPARK_Mode at line 1
 test_access_violation.adb:28:29: info: no contextual analysis of "B" (body not seen yet)
-test_access_violation.adb:29:21: error: Access attribute of a path not rooted inside an object is not allowed in SPARK
+test_access_violation.adb:29:21: error: Access attribute of a path not rooted inside a parameter or standalone object is not allowed in SPARK (SPARK RM 4.1.4(1))
 test_access_violation.adb:29:21: error: violation of aspect SPARK_Mode at line 1
 test_access_violation.adb:29:21: info: no contextual analysis of "F" (body not seen yet)
 test_access_violation.adb:30:26: error: "Access" attribute of a type with ownership not directly inside an assignment statement, an object declaration, or a simple return statement is not yet supported
-test_access_violation.adb:31:21: error: Access attribute of a named access-to-constant type whose prefix is not a constant part of an object is not allowed in SPARK
+test_access_violation.adb:31:21: error: Access attribute of a named access-to-constant type whose prefix is not a constant part of an object is not allowed in SPARK (SPARK RM 4.1.4(6))
 test_access_violation.adb:31:21: error: violation of aspect SPARK_Mode at line 1
 test_access_violation.adb:32:18: warning: assuming "F" has no effect on global items
 test_access_violation.adb:32:18: warning: no Global contract available for "F" [assumed-global-null]
-test_access_violation.adb:38:24: error: Access attribute of a named access-to-constant type whose prefix is not a constant part of an object is not allowed in SPARK
+test_access_violation.adb:38:24: error: Access attribute of a named access-to-constant type whose prefix is not a constant part of an object is not allowed in SPARK (SPARK RM 4.1.4(6))
 test_access_violation.adb:38:24: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof

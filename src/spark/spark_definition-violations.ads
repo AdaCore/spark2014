@@ -26,7 +26,6 @@
 
 with Ada.Containers.Indefinite_Hashed_Maps;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Ada.Strings.Fixed;     use Ada.Strings.Fixed;
 with Atree;                 use Atree;
 with Errout_Wrapper;        use Errout_Wrapper;
 with Gnat2Why_Args;         use Gnat2Why_Args;
@@ -120,29 +119,17 @@ private package SPARK_Definition.Violations is
    --  used as root cause message for cascading violations (typically used if
    --  the message for Kind has character insertions).
 
-   procedure Mark_Violation
-     (Msg            : String;
-      N              : Node_Id;
-      Names          : Node_Lists.List := Node_Lists.Empty;
-      Code           : Explain_Code_Kind := EC_None;
-      SRM_Reference  : String := "";
-      Cont_Msg       : String := "";
-      Root_Cause_Msg : String := "")
+   procedure Mark_Incorrect_Use_Of_Annotation
+     (Kind     : Incorrect_Annotation_Kind;
+      N        : Node_Id;
+      Msg      : String := "";
+      Names    : Node_Lists.List := Node_Lists.Empty;
+      Cont_Msg : String := "")
    with
-     Global => (Output => Violation_Detected, Input => Current_SPARK_Pragma),
-     Pre    =>
-       SRM_Reference = ""
-       or else
-         (SRM_Reference'Length > 9
-          and then Head (SRM_Reference, 9) = "SPARK RM ");
-   --  Mark node N as a violation of SPARK. An error message pointing to the
-   --  current SPARK_Mode pragma/aspect is issued if current SPARK_Mode is On.
-   --  If Explain_Code is set to a positive number, this is taken as an explain
-   --  code to be displayed along with the error message. If SRM_Reference
-   --  is set, the reference to the SRM is appended to the error message. If
-   --  Cont_Msg is set, a continuation message is issued. If Root_Cause_Msg
-   --  is set, the corresponding message is used as root cause message for
-   --  cascading violations (typically used if Msg has character insertions).
+     Global => (Output => Violation_Detected, Input => Current_SPARK_Pragma);
+   --  Mark node N as an incorrect use of a GNATprove annotation. An error
+   --  issued if current SPARK_Mode is On.
+   --  If Cont_Msg is set, a continuation message is issued.
    --  If Names is set, use this to replace & in error messages.
 
    procedure Mark_Violation
@@ -155,20 +142,6 @@ private package SPARK_Definition.Violations is
      Global => (Output => Violation_Detected, Input => Current_SPARK_Pragma);
    --  Mark node N as a violation of SPARK. An error message pointing to the
    --  current SPARK_Mode pragma/aspect is issued if current SPARK_Mode is On.
-   --  If Cont_Msg is set, a continuation message is issued.
-   --  If Names is set, use this to replace & in error messages.
-
-   procedure Mark_Incorrect_Use_Of_Annotation
-     (Kind       : Incorrect_Annotation_Kind;
-      N          : Node_Id;
-      Annotation : String;
-      Msg        : String := "";
-      Names      : Node_Lists.List := Node_Lists.Empty;
-      Cont_Msg   : String := "")
-   with
-     Global => (Output => Violation_Detected, Input => Current_SPARK_Pragma);
-   --  Mark node N as an incorrect use of annoation Annotation. An error
-   --  message is issued if current SPARK_Mode is On.
    --  If Cont_Msg is set, a continuation message is issued.
    --  If Names is set, use this to replace & in error messages.
 

@@ -1,23 +1,23 @@
 i2c3.adb:17:07: error: "Initialize" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
 i2c3.adb:17:07: error: violation of aspect SPARK_Mode at line 6
-stm32_svd-gpio.ads:23:09: error: discriminated volatile type is not allowed in SPARK
-stm32_svd-gpio.ads:23:09: error: discriminated volatile type is not allowed in SPARK
+stm32_svd-gpio.ads:23:09: error: discriminated volatile type is not allowed in SPARK (SPARK RM 7.1.3(5))
+stm32_svd-gpio.ads:23:09: error: discriminated volatile type is not allowed in SPARK (SPARK RM 7.1.3(5))
 stm32_svd-gpio.ads:23:09: error: violation of pragma SPARK_Mode at test.adc:1
 stm32_svd-gpio.ads:23:09: error: violation of pragma SPARK_Mode at test.adc:1
-stm32_svd-gpio.ads:93:09: error: discriminated volatile type is not allowed in SPARK
-stm32_svd-gpio.ads:93:09: error: discriminated volatile type is not allowed in SPARK
+stm32_svd-gpio.ads:93:09: error: discriminated volatile type is not allowed in SPARK (SPARK RM 7.1.3(5))
+stm32_svd-gpio.ads:93:09: error: discriminated volatile type is not allowed in SPARK (SPARK RM 7.1.3(5))
 stm32_svd-gpio.ads:93:09: error: violation of pragma SPARK_Mode at test.adc:1
 stm32_svd-gpio.ads:93:09: error: violation of pragma SPARK_Mode at test.adc:1
-stm32_svd-gpio.ads:121:09: error: discriminated volatile type is not allowed in SPARK
-stm32_svd-gpio.ads:121:09: error: discriminated volatile type is not allowed in SPARK
+stm32_svd-gpio.ads:121:09: error: discriminated volatile type is not allowed in SPARK (SPARK RM 7.1.3(5))
+stm32_svd-gpio.ads:121:09: error: discriminated volatile type is not allowed in SPARK (SPARK RM 7.1.3(5))
 stm32_svd-gpio.ads:121:09: error: violation of pragma SPARK_Mode at test.adc:1
 stm32_svd-gpio.ads:121:09: error: violation of pragma SPARK_Mode at test.adc:1
-stm32_svd-gpio.ads:349:09: error: discriminated volatile type is not allowed in SPARK
-stm32_svd-gpio.ads:349:09: error: discriminated volatile type is not allowed in SPARK
+stm32_svd-gpio.ads:349:09: error: discriminated volatile type is not allowed in SPARK (SPARK RM 7.1.3(5))
+stm32_svd-gpio.ads:349:09: error: discriminated volatile type is not allowed in SPARK (SPARK RM 7.1.3(5))
 stm32_svd-gpio.ads:349:09: error: violation of pragma SPARK_Mode at test.adc:1
 stm32_svd-gpio.ads:349:09: error: violation of pragma SPARK_Mode at test.adc:1
-stm32_svd-gpio.ads:377:09: error: discriminated volatile type is not allowed in SPARK
-stm32_svd-gpio.ads:377:09: error: discriminated volatile type is not allowed in SPARK
+stm32_svd-gpio.ads:377:09: error: discriminated volatile type is not allowed in SPARK (SPARK RM 7.1.3(5))
+stm32_svd-gpio.ads:377:09: error: discriminated volatile type is not allowed in SPARK (SPARK RM 7.1.3(5))
 stm32_svd-gpio.ads:377:09: error: violation of pragma SPARK_Mode at test.adc:1
 stm32_svd-gpio.ads:377:09: error: violation of pragma SPARK_Mode at test.adc:1
 stm32_svd-gpio.ads:440:04: error: "GPIO_Peripheral" is not allowed in SPARK (due to discriminated volatile type)

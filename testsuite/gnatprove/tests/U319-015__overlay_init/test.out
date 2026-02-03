@@ -6,9 +6,8 @@ test_overlays.adb:15:04: warning: address specification on "C5" is imprecisely s
 test_overlays.adb:15:04: warning: launch "gnatprove --explain=E0012" for more information
 test_overlays.adb:16:06: warning: consider annotating "C5" with Import
 test_overlays.adb:16:06: warning: initialization of "C5" is assumed to have no effects on other non-volatile objects [initialization-to-alias]
-test_overlays.adb:26:04: error: consider marking it as imported
-test_overlays.adb:26:04: error: object with an address clause which is not fully initialized at declaration is not allowed in SPARK
-test_overlays.adb:26:04: error: violation of aspect SPARK_Mode at line 3
+test_overlays.adb:26:04: error: consider annotating "V5" with Import
+test_overlays.adb:26:04: error: object with an address clause which is not fully initialized at declaration is not yet supported
 test_overlays.adb:28:04: warning: address specification on "V6" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to or through a potential alias [imprecise-address-specification] [E0012]
 test_overlays.adb:28:04: warning: launch "gnatprove --explain=E0012" for more information
 test_overlays.adb:28:04: warning: make sure that all overlapping objects have Async_Writers set to True

@@ -1,11 +1,9 @@
-logging_storage_models.adb:15:07: error: consider marking it as imported
-logging_storage_models.adb:15:07: error: object with an address clause which is not fully initialized at declaration is not allowed in SPARK
-logging_storage_models.adb:15:07: error: violation of pragma SPARK_Mode at spark.adc:1
+logging_storage_models.adb:15:07: error: consider annotating "Address" with Import
+logging_storage_models.adb:15:07: error: object with an address clause which is not fully initialized at declaration is not yet supported
 logging_storage_models.adb:15:30: error: address clause for a mutable object referencing a constant part of an object is not allowed in SPARK
 logging_storage_models.adb:15:30: error: violation of pragma SPARK_Mode at spark.adc:1
-logging_storage_models.adb:33:07: error: consider marking it as imported
-logging_storage_models.adb:33:07: error: object with an address clause which is not fully initialized at declaration is not allowed in SPARK
-logging_storage_models.adb:33:07: error: violation of pragma SPARK_Mode at spark.adc:1
+logging_storage_models.adb:33:07: error: consider annotating "Address" with Import
+logging_storage_models.adb:33:07: error: object with an address clause which is not fully initialized at declaration is not yet supported
 logging_storage_models.adb:36:43: warning: assuming "malloc" has no effect on global items
 logging_storage_models.adb:36:43: warning: no Global contract available for "malloc" [assumed-global-null]
 logging_storage_models.adb:44:07: info: analyzing call to "Log" in context
@@ -27,7 +25,7 @@ logging_storage_models.adb:99:07: warning: no Always_Terminates aspect available
 logging_storage_models.adb:99:07: warning: no Global contract available for "memcpy" [assumed-global-null]
 logging_storage_models.adb:101:07: info: analyzing call to "Log" in context
 logging_storage_models.adb:106:27: info: analyzing call to "Get_Id" in context
-main.adb:8:09: error: access type with Storage_Pool is not allowed in SPARK
+main.adb:8:09: error: access type with Storage_Pool is not allowed in SPARK (SPARK RM 3.10)
 main.adb:8:09: error: violation of pragma SPARK_Mode at spark.adc:1
 main.adb:28:04: error: "Device_Array_Access" is not allowed in SPARK (due to access type with Storage_Pool)
 main.adb:28:04: error: violation of pragma SPARK_Mode at spark.adc:1

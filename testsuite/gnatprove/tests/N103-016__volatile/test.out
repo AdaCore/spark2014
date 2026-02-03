@@ -1,9 +1,9 @@
 shared_variables.ads:15:07: error: violation of aspect SPARK_Mode at line 2
-shared_variables.ads:15:07: error: volatile component "F2" of non-volatile type "R" is not allowed in SPARK
+shared_variables.ads:15:07: error: volatile component "F2" of non-volatile type "R" is not allowed in SPARK (SPARK RM 7.1.3(6))
 shared_variables.ads:21:07: error: violation of aspect SPARK_Mode at line 2
-shared_variables.ads:21:07: error: volatile component "F2" of non-volatile type "R2" is not allowed in SPARK
+shared_variables.ads:21:07: error: volatile component "F2" of non-volatile type "R2" is not allowed in SPARK (SPARK RM 7.1.3(6))
 shared_variables.ads:24:13: error: violation of aspect SPARK_Mode at line 2
-shared_variables.ads:24:13: error: volatile discriminant is not allowed in SPARK
-shared_variables.ads:28:09: error: discriminated volatile type is not allowed in SPARK
+shared_variables.ads:24:13: error: volatile discriminant is not allowed in SPARK (SPARK RM 7.1.3(4))
+shared_variables.ads:28:09: error: discriminated volatile type is not allowed in SPARK (SPARK RM 7.1.3(5))
 shared_variables.ads:28:09: error: violation of aspect SPARK_Mode at line 2
 gnatprove: error during flow analysis and proof

@@ -7,6 +7,6 @@ count.ads:13:08: info: flow dependencies proved
 count.ads:15:20: info: postcondition proved (CVC5: 1 VC)
 count.ads:15:42: info: overflow check proved (CVC5: 2 VC)
 demo.adb:13:06: info: precondition proved (CVC5: 2 VC)
-last_chance_handler.adb:41:16: error: backward goto statement is not allowed in SPARK
+last_chance_handler.adb:41:16: error: backward goto statement is not allowed in SPARK (SPARK RM 5.8(1))
 last_chance_handler.adb:41:16: error: violation of pragma SPARK_Mode at line 28
 gnatprove: error during flow analysis and proof

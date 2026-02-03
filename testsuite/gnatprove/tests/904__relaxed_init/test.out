@@ -2,19 +2,19 @@ recursive_type_with_relaxed_violation.adb:4:09: error: "R" is not allowed in SPA
 recursive_type_with_relaxed_violation.adb:4:09: error: violation of aspect SPARK_Mode at line 1
 recursive_type_with_relaxed_violation.adb:13:09: error: part of tagged, Unchecked_Union, or effectively volatile object or type annotated with relaxed initialization is not allowed in SPARK
 recursive_type_with_relaxed_violation.adb:13:09: error: violation of aspect SPARK_Mode at line 1
-test_dispatch.adb:9:17: error: dispatching operation with Relaxed_Initialization aspect is not allowed in SPARK
+test_dispatch.adb:9:17: error: dispatching operation with Relaxed_Initialization aspect is not allowed in SPARK (SPARK RM 6.10(10))
 test_dispatch.adb:9:17: error: violation of aspect SPARK_Mode at line 1
-test_dispatch.adb:12:16: error: dispatching operation with Relaxed_Initialization aspect is not allowed in SPARK
+test_dispatch.adb:12:16: error: dispatching operation with Relaxed_Initialization aspect is not allowed in SPARK (SPARK RM 6.10(10))
 test_dispatch.adb:12:16: error: violation of aspect SPARK_Mode at line 1
 test_invariant.adb:8:04: error: invariant on a type used as a subcomponent of a type or an object annotated with relaxed initialization is not yet supported
 test_invariant.adb:12:04: error: invariant on a type used as a subcomponent of a type or an object annotated with relaxed initialization is not yet supported
-test_uu.adb:13:04: error: part of type or object with relaxed initialization of Unchecked_Union type is not allowed in SPARK
+test_uu.adb:13:04: error: part of Unchecked_Union type with relaxed initialization is not allowed in SPARK (SPARK RM 6.10(8))
 test_uu.adb:13:04: error: violation of aspect SPARK_Mode at line 1
 test_uu.adb:20:13: error: part of Unchecked_Union type with relaxed initialization is not allowed in SPARK (SPARK RM 6.10(8))
 test_uu.adb:20:13: error: violation of aspect SPARK_Mode at line 1
 test_uu.adb:35:09: error: part of Unchecked_Union type with relaxed initialization is not allowed in SPARK (SPARK RM 6.10(8))
 test_uu.adb:35:09: error: violation of aspect SPARK_Mode at line 1
-test_volatile.ads:6:04: error: effectively volatile type or object with relaxed initialization is not allowed in SPARK
+test_volatile.ads:6:04: error: part of effectively volatile object or type annotated with relaxed initialization is not allowed in SPARK (SPARK RM 6.10(7))
 test_volatile.ads:6:04: error: violation of aspect SPARK_Mode at line 1
 test_volatile.ads:11:07: error: part of effectively volatile object or type annotated with relaxed initialization is not allowed in SPARK (SPARK RM 6.10(7))
 test_volatile.ads:11:07: error: violation of aspect SPARK_Mode at line 1

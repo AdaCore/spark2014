@@ -121,17 +121,17 @@ main_bad.adb:150:11: info: pointer dereference check proved (CVC5: 1 VC)
 main_bad.adb:151:14: info: pointer dereference check proved (CVC5: 1 VC)
 main_bad.adb:152:19: info: pointer dereference check proved (CVC5: 1 VC)
 main_bad.adb:158:16: medium: subprogram variant might fail [possible explanation: structural variant of "All_To_Zero_5" might not be a strict subcomponent of "L"]
-main_illegal.adb:13:46: error: structural subprogram variant which is not a parameter of the subprogram is not allowed in SPARK
+main_illegal.adb:13:46: error: structural subprogram variant which is not a parameter of the subprogram is not allowed in SPARK (SPARK RM 6.1.8(5))
 main_illegal.adb:13:46: error: violation of aspect SPARK_Mode at line 4
 main_illegal.adb:19:10: error: "All_To_Zero_1" is not allowed in SPARK (due to structural subprogram variant which is not a parameter of the subprogram)
 main_illegal.adb:19:10: error: violation of aspect SPARK_Mode at line 4
-main_illegal.adb:26:51: error: structural subprogram variant which is not a parameter of the subprogram is not allowed in SPARK
+main_illegal.adb:26:51: error: structural subprogram variant which is not a parameter of the subprogram is not allowed in SPARK (SPARK RM 6.1.8(5))
 main_illegal.adb:26:51: error: violation of aspect SPARK_Mode at line 4
 main_illegal.adb:33:13: error: "All_To_Zero_2" is not allowed in SPARK (due to structural subprogram variant which is not a parameter of the subprogram)
 main_illegal.adb:33:13: error: violation of aspect SPARK_Mode at line 4
 main_illegal.adb:38:07: error: "All_To_Zero_2" is not allowed in SPARK (due to structural subprogram variant which is not a parameter of the subprogram)
 main_illegal.adb:38:07: error: violation of aspect SPARK_Mode at line 4
-main_illegal.adb:44:51: error: structural subprogram variant which is not a parameter of the subprogram is not allowed in SPARK
+main_illegal.adb:44:51: error: structural subprogram variant which is not a parameter of the subprogram is not allowed in SPARK (SPARK RM 6.1.8(5))
 main_illegal.adb:44:51: error: violation of aspect SPARK_Mode at line 4
 main_illegal.adb:51:13: error: "All_To_Zero_3" is not allowed in SPARK (due to structural subprogram variant which is not a parameter of the subprogram)
 main_illegal.adb:51:13: error: violation of aspect SPARK_Mode at line 4
