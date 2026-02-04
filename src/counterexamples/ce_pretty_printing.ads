@@ -37,7 +37,7 @@ package CE_Pretty_Printing is
    --  Value in a counterexample that should not be displayed
 
    function Make_CNT_Unbounded_String
-     (Str : Unbounded_String;
+     (Str : String;
       Cnt : Natural := 1;
       Els : S_String_List.List := S_String_List.Empty)
       return CNT_Unbounded_String
