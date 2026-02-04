@@ -32,6 +32,7 @@ with CE_RAC;
 with Gnat2Why.Tables;         use Gnat2Why.Tables;
 with Namet;                   use Namet;
 with SPARK_Atree;             use SPARK_Atree;
+with String_Utils;            use String_Utils;
 with Uintp;                   use Uintp;
 
 package body CE_Values is
@@ -619,15 +620,7 @@ package body CE_Values is
 
    function To_String (Attribute : Supported_Attribute) return String is
    begin
-      return Result : String := Attribute'Img do
-
-         --  The 1st character is already in upper case.
-         --  The following characters needs to be converted to lower case.
-
-         for Position in 2 .. Result'Last loop
-            Result (Position) := To_Lower (Result (Position));
-         end loop;
-      end return;
+      return Standard_Ada_Case (Attribute'Img);
    end To_String;
 
 end CE_Values;
