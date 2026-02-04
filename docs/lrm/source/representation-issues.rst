@@ -190,15 +190,27 @@ could be misaligned (as GNAT ensures).
 
 .. container:: heading
 
+   Legality Rules
+
+1. The source subtype of an instances of ``Unchecked_Conversion`` shall not
+   have subcomponents of an access type.
+
+2. The target subtype of an instances of ``Unchecked_Conversion`` shall not
+   have subcomponents of an access type unless it is a general access-to-object
+   type and the source subtype is either an integer subtype or
+   ``System.Address``.
+
+.. container:: heading
+
    Verification Rules
 
-1. The source and target subtypes of an instance of ``Unchecked_Conversion``
+3. The source and target subtypes of an instance of ``Unchecked_Conversion``
    shall have the same Size.
 
-2. The source subtype shall be suitable as the source of an unchecked
+4. The source subtype shall be suitable as the source of an unchecked
    conversion.
 
-3. The target subtype should be suitable for unchecked conversion and it
+5. The target subtype should be suitable for unchecked conversion and it
    should be suitable as the target of an unchecked
    conversion unless the instance of ``Unchecked_Conversion`` has the
    Potentially_Invalid aspect, see :ref:`Data Validity`.

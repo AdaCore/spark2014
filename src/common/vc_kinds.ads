@@ -396,8 +396,7 @@ package VC_Kinds is
    --  Used to categorize warnings that are not issued by proof or flow
    --  analysis.
    type Misc_Warning_Kind is
-     (Warn_Address_To_Access,
-      Warn_Alias_Atomic_Vol,
+     (Warn_Alias_Atomic_Vol,
       Warn_Alias_Different_Volatility,
       Warn_Attribute_Valid,
       Warn_Auto_Lemma_Calls,
@@ -426,6 +425,7 @@ package VC_Kinds is
       Warn_Variant_Not_Recursive,
 
       --  Warnings guaranteed to be issued
+      Warn_Address_To_Access,
       Warn_Assumed_Always_Terminates,
       Warn_Assumed_Global_Null,
       Warn_Imprecisely_Supported_Address,
@@ -651,13 +651,12 @@ package VC_Kinds is
 
    subtype Default_Warning_Kind is
      Misc_Warning_Kind
-       range Warn_Address_To_Access .. Warn_Variant_Not_Recursive;
+       range Warn_Alias_Atomic_Vol .. Warn_Variant_Not_Recursive;
    --  These warnings are on by default
 
    subtype Guaranteed_Warning_Kind is
      Misc_Warning_Kind
-       range Warn_Assumed_Always_Terminates
-             .. Warn_Imprecisely_Supported_Address;
+       range Warn_Address_To_Access .. Warn_Imprecisely_Supported_Address;
    --  These warnings are guaranteed to be issued
 
    subtype Pedantic_Warning_Kind is

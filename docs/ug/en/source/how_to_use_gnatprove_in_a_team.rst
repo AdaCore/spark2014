@@ -686,6 +686,13 @@ of a program:
   Floating Point Operations` as defined in IEEE-754. The compiler, OS, and
   hardware should all be configured so that IEEE-754 semantics are respected.
 
+* [SPARK_UNCHECKED_CONVERSION]
+  Calls to instances of ``Unchecked_Conversion`` whose target subtype is an
+  access type should return valid pointers designating valid data that do not
+  alias with any other object visible in |SPARK|. The warning
+  `address-to-access-conversion` is guaranteed to be issued on calls to such
+  instances of ``Unchecked_Conversion``.
+
 * [SPARK_COMPILATION_SWITCHES]
   Compilation switches that change the behavior of the program should be the
   same between compilation and analysis. This is in particular the case for
