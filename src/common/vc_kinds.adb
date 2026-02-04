@@ -1585,7 +1585,7 @@ package body VC_Kinds is
          declare
             Elt : constant String := Get (Get (Ar, Var_Index));
          begin
-            Res.Append (To_Unbounded_String (Elt));
+            Res.Append (Elt);
          end;
       end loop;
       return Res;

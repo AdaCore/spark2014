@@ -377,15 +377,13 @@ package body CE_Parsing is
             begin
                for Label of Cnt_Labels loop
                   declare
-                     Label_Name  : constant String :=
-                       Ada.Strings.Unbounded.To_String (Label);
                      Label_Parts : Slice_Set;
                   begin
                      --  Search for an attribute of the form field:_:S
                      --  where S is the name of the field.
                      Create
                        (S          => Label_Parts,
-                        From       => Label_Name,
+                        From       => Label,
                         Separators => ":",
                         Mode       => Single);
                      declare

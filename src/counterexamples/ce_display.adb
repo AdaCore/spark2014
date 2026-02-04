@@ -1656,35 +1656,29 @@ package body CE_Display is
          V : Cntexmp_Value_Ptr) is
       begin
          for Elt of L loop
-            declare
-               Str : constant String := To_String (Elt);
-            begin
+            if Elt'Length > 10
+              and then Elt (Elt'First .. Elt'First + 9) = "branch_id="
+            then
 
-               if Str'Length > 10
-                 and then Str (Str'First .. Str'First + 9) = "branch_id="
-               then
+               declare
+                  N : constant Node_Id :=
+                    Get_Entity_Id (False, Elt (Elt'First + 10 .. Elt'Last));
+               begin
+                  if Present (N) and V.T = Cnt_Boolean then
 
-                  declare
-                     N : constant Node_Id :=
-                       Get_Entity_Id (False, Str (Str'First + 10 .. Str'Last));
-                  begin
-                     if Present (N) and V.T = Cnt_Boolean then
+                     if Nkind (N) in N_If_Statement | N_Elsif_Part then
+                        Supp_Lines.Insert_Union (S, Get_Interval_If (N, V.Bo));
 
-                        if Nkind (N) in N_If_Statement | N_Elsif_Part then
-                           Supp_Lines.Insert_Union
-                             (S, Get_Interval_If (N, V.Bo));
+                     elsif Nkind (N) = N_Case_Statement_Alternative then
+                        Supp_Lines.Insert_Union
+                          (S, Get_Interval_Case (N, V.Bo));
 
-                        elsif Nkind (N) = N_Case_Statement_Alternative then
-                           Supp_Lines.Insert_Union
-                             (S, Get_Interval_Case (N, V.Bo));
-
-                        else
-                           null;
-                        end if;
+                     else
+                        null;
                      end if;
-                  end;
-               end if;
-            end;
+                  end if;
+               end;
+            end if;
          end loop;
 
       end Search_Labels;

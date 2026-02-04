@@ -31,7 +31,6 @@ use Ada.Numerics.Big_Numbers.Big_Reals;
 with Ada.Strings.UTF_Encoding.Strings;
 use Ada.Strings.UTF_Encoding.Strings;
 with Ada.Strings.Fixed;                     use Ada.Strings.Fixed;
-with Ada.Strings.Unbounded;
 with Atree;
 with CE_RAC;                                use CE_RAC;
 with Einfo.Entities;
@@ -515,7 +514,6 @@ package body CE_Utils is
    function Prefix_Elements
      (Elems : S_String_List.List; Pref : String) return S_String_List.List
    is
-      use Ada.Strings.Unbounded;
       L : S_String_List.List;
    begin
       for E of Elems loop

@@ -299,7 +299,7 @@ package body CE_Pretty_Printing is
       --  Otherwise if Els is empty, use the singleton " = Str " for the value
 
       if Els.Is_Empty then
-         Elems.Append (" = " & Str);
+         Elems.Append (" = " & To_String (Str));
 
       --  Otherwise use Els
 

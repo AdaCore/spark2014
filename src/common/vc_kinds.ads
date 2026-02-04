@@ -1792,7 +1792,7 @@ package VC_Kinds is
 
    package S_String_List is new
      Ada.Containers.Indefinite_Doubly_Linked_Lists
-       (Element_Type => Unbounded_String,
+       (Element_Type => String,
         "="          => "=");
 
    type CNT_Unbounded_String is record
