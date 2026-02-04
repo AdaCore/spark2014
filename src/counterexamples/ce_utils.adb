@@ -512,9 +512,9 @@ package body CE_Utils is
    ---------------------
 
    function Prefix_Elements
-     (Elems : S_String_List.List; Pref : String) return S_String_List.List
+     (Elems : String_Lists.List; Pref : String) return String_Lists.List
    is
-      L : S_String_List.List;
+      L : String_Lists.List;
    begin
       for E of Elems loop
          L.Append (Pref & E);

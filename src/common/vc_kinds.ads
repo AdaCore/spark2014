@@ -36,7 +36,6 @@
 --    - GPS plug-in spark2014.py
 
 with Ada.Containers.Doubly_Linked_Lists;
-with Ada.Containers.Indefinite_Doubly_Linked_Lists;
 with Ada.Containers.Indefinite_Ordered_Maps;
 with Ada.Containers.Ordered_Maps;
 with Ada.Strings.Fixed;     use Ada.Strings.Fixed;
@@ -1790,15 +1789,10 @@ package VC_Kinds is
    --  For example, floats are actually the concatenation of two numbers "d.n"
    --  This is present in why3 and can be mimicked in SPARK.
 
-   package S_String_List is new
-     Ada.Containers.Indefinite_Doubly_Linked_Lists
-       (Element_Type => String,
-        "="          => "=");
-
    type CNT_Unbounded_String is record
       Str   : Unbounded_String;
       Count : Natural := 0;
-      Elems : S_String_List.List;
+      Elems : String_Lists.List;
    end record
    with Predicate => Count >= Natural (Elems.Length);
    --  Mostly a string for a counterexample value. Component Count
@@ -1813,7 +1807,7 @@ package VC_Kinds is
       Name : Unbounded_String;
       case K is
          when Raw =>
-            Labels : S_String_List.List;
+            Labels : String_Lists.List;
             Value  : Cntexmp_Value_Ptr;
 
          when Pretty_Printed =>
@@ -1959,7 +1953,7 @@ package VC_Kinds is
    function From_JSON (V : JSON_Value) return GP_Mode;
    function From_JSON (V : JSON_Value) return Warning_Status_Array;
 
-   function From_JSON_Labels (Ar : JSON_Array) return S_String_List.List;
+   function From_JSON_Labels (Ar : JSON_Array) return String_Lists.List;
 
    function To_JSON (M : Prover_Stat_Maps.Map) return JSON_Value;
    function To_JSON (P : Prover_Category) return JSON_Value;

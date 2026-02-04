@@ -1578,8 +1578,8 @@ package body VC_Kinds is
    -- From_JSON_Labels --
    ----------------------
 
-   function From_JSON_Labels (Ar : JSON_Array) return S_String_List.List is
-      Res : S_String_List.List := S_String_List.Empty_List;
+   function From_JSON_Labels (Ar : JSON_Array) return String_Lists.List is
+      Res : String_Lists.List := String_Lists.Empty_List;
    begin
       for Var_Index in Positive range 1 .. Length (Ar) loop
          declare

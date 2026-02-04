@@ -48,6 +48,7 @@ with SPARK_Atree.Entities;        use SPARK_Atree.Entities;
 with SPARK_Definition.Annotate;   use SPARK_Definition.Annotate;
 with SPARK_Util;                  use SPARK_Util;
 with SPARK_Util.Types;            use SPARK_Util.Types;
+with String_Utils;                use String_Utils;
 
 package body CE_Display is
 
@@ -1445,7 +1446,7 @@ package body CE_Display is
 
       procedure Search_Labels
         (S : in out Supp_Lines.Interval_Set;
-         L : S_String_List.List;
+         L : String_Lists.List;
          V : Cntexmp_Value_Ptr);
       --  This procedure fills S with new values corresponding to branches that
       --  should not be taken for display of counterexamples.
@@ -1652,7 +1653,7 @@ package body CE_Display is
 
       procedure Search_Labels
         (S : in out Supp_Lines.Interval_Set;
-         L : S_String_List.List;
+         L : String_Lists.List;
          V : Cntexmp_Value_Ptr) is
       begin
          for Elt of L loop

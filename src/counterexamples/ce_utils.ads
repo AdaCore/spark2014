@@ -29,6 +29,7 @@ with GNATCOLL.JSON;        use GNATCOLL.JSON;
 with SPARK_Atree;          use SPARK_Atree;
 with SPARK_Atree.Entities; use SPARK_Atree.Entities;
 with SPARK_Util.Types;     use SPARK_Util.Types;
+with String_Utils;         use String_Utils;
 with Types;                use Types;
 with Uintp;                use Uintp;
 with VC_Kinds;             use VC_Kinds;
@@ -86,7 +87,7 @@ package CE_Utils is
    --  Rec.
 
    function Prefix_Elements
-     (Elems : S_String_List.List; Pref : String) return S_String_List.List;
+     (Elems : String_Lists.List; Pref : String) return String_Lists.List;
    --  Return a copy of Elems where every string has been prefixed with Pref.
 
    function To_Value_Access

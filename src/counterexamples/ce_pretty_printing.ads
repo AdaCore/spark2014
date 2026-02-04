@@ -26,6 +26,7 @@
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with CE_Values;             use CE_Values;
 with GNATCOLL.JSON;
+with String_Utils;          use String_Utils;
 with VC_Kinds;              use VC_Kinds;
 
 package CE_Pretty_Printing is
@@ -33,13 +34,13 @@ package CE_Pretty_Printing is
    Dont_Display : constant CNT_Unbounded_String :=
      (Str   => To_Unbounded_String ("@not_display"),
       Count => 0,
-      Elems => S_String_List.Empty);
+      Elems => String_Lists.Empty);
    --  Value in a counterexample that should not be displayed
 
    function Make_CNT_Unbounded_String
      (Str : String;
       Cnt : Natural := 1;
-      Els : S_String_List.List := S_String_List.Empty)
+      Els : String_Lists.List := String_Lists.Empty)
       return CNT_Unbounded_String
    with Pre => Cnt >= Natural (Els.Length);
    --  Create a CNT_Unbounded_String. Removes "trivial" counterexamples.

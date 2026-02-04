@@ -41,6 +41,7 @@ with SPARK_Atree;                           use SPARK_Atree;
 with SPARK_Util;                            use SPARK_Util;
 with SPARK_Util.Types;                      use SPARK_Util.Types;
 with Stand;                                 use Stand;
+with String_Utils;                          use String_Utils;
 with Uintp;                                 use Uintp;
 with Urealp;                                use Urealp;
 with Why.Gen.Names;                         use Why.Gen.Names;
@@ -59,7 +60,7 @@ package body CE_Parsing is
    with Pre => Cnt_Value.T = Cnt_Float;
 
    function Parse_Cnt_Value
-     (Cnt_Labels : S_String_List.List;
+     (Cnt_Labels : String_Lists.List;
       Cnt_Value  : Cntexmp_Value_Ptr;
       AST_Ty     : Entity_Id) return Value_Type;
    --  Parse the Why3 counterexample value Cnt_Value
@@ -172,7 +173,7 @@ package body CE_Parsing is
    ---------------------
 
    function Parse_Cnt_Value
-     (Cnt_Labels : S_String_List.List;
+     (Cnt_Labels : String_Lists.List;
       Cnt_Value  : Cntexmp_Value_Ptr;
       AST_Ty     : Entity_Id) return Value_Type
    is
@@ -423,7 +424,7 @@ package body CE_Parsing is
                                           --  attribute.
                                           Comp :=
                                             Parse_Cnt_Value
-                                              (S_String_List.Empty_List,
+                                              (String_Lists.Empty_List,
                                                Cnt_Value,
                                                Comp_Ty);
                                           Val.Record_Fields.Insert

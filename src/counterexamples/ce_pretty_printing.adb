@@ -290,10 +290,10 @@ package body CE_Pretty_Printing is
    function Make_CNT_Unbounded_String
      (Str : String;
       Cnt : Natural := 1;
-      Els : S_String_List.List := S_String_List.Empty)
+      Els : String_Lists.List := String_Lists.Empty)
       return CNT_Unbounded_String
    is
-      Elems : S_String_List.List;
+      Elems : String_Lists.List;
 
    begin
       --  Otherwise if Els is empty, use the singleton " = Str " for the value
@@ -384,7 +384,7 @@ package body CE_Pretty_Printing is
          declare
             V      : constant Value_And_Attributes :=
               Print_Value (Value.Designated_Value.all);
-            Elems  : S_String_List.List;
+            Elems  : String_Lists.List;
             Des_Ty : Entity_Id;
          begin
             if V.Value = Dont_Display then
@@ -912,7 +912,7 @@ package body CE_Pretty_Printing is
       Is_String_Lit : Boolean;
       Is_Truncated  : Boolean;
       Count         : Natural := 0;
-      Elems         : S_String_List.List;
+      Elems         : String_Lists.List;
       Res           : Value_And_Attributes;
 
       ---------------------
@@ -924,7 +924,7 @@ package body CE_Pretty_Printing is
           then (if Is_String_Lit then " " else ", ") & "..."
           else "");
 
-      use S_String_List;
+      use String_Lists;
 
       --  Start of processing for Print_Array_Value
 
@@ -965,7 +965,7 @@ package body CE_Pretty_Printing is
                  S_Array (C).Ind_Printed;
                Elem_Printed : constant CNT_Unbounded_String :=
                  S_Array (C).Elem_Printed;
-               C_Elems      : S_String_List.List :=
+               C_Elems      : String_Lists.List :=
                  Prefix_Elements
                    (Elem_Printed.Elems,
                     To_String ('(' & Ind_Printed.Str & ')'));
@@ -1480,7 +1480,7 @@ package body CE_Pretty_Printing is
 
          Str_Val : Unbounded_String := To_Unbounded_String ("(");
          Count   : Natural := 0;
-         Elems   : S_String_List.List;
+         Elems   : String_Lists.List;
       begin
          for C in Visibility_Map.Iterate loop
             declare
@@ -1583,7 +1583,7 @@ package body CE_Pretty_Printing is
             Is_Before := True;
             Count := Count + V.Value.Count;
             Elems.Splice
-              (Before => S_String_List.No_Element, Source => V.Value.Elems);
+              (Before => String_Lists.No_Element, Source => V.Value.Elems);
          end loop;
 
          --  If there are more than one fields that are not
