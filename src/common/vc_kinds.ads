@@ -1889,13 +1889,13 @@ package VC_Kinds is
    --  Type used to store the inputs and location of the subprogram that
    --  lead to the generation of the counterexample
    type Json_Formatted_Input is record
-      Input_As_JSON : Cntexample_Elt_Lists.List := Cntexample_Elt_Lists.Empty;
-      File          : Unbounded_String := To_Unbounded_String ("");
+      Input_As_JSON : Cntexample_Elt_Lists.List;
+      File          : Unbounded_String;
       Line          : Natural := 0;
    end record;
 
    type Cntexample_Data is record
-      Map           : Cntexample_File_Maps.Map := Cntexample_File_Maps.Empty;
+      Map           : Cntexample_File_Maps.Map;
       Input_As_JSON : Json_Formatted_Input;
    end record;
 
