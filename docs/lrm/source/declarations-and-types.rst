@@ -382,7 +382,13 @@ Type Extensions
 Dispatching Operations of Tagged Types
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-No extensions or restrictions.
+.. container:: heading
+
+   Legality Rules
+
+
+1. A call to a primitive of a tagged type with an untagged partial view shall
+   not be dispatching.
 
 Abstract Types and Subprograms
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
