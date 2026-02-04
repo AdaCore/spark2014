@@ -27,22 +27,22 @@ spark-containers-formal-hashed_sets.ads:94:06: info: after a call to "Empty_Set"
 spark-containers-formal-hashed_sets.ads:94:06: info: after a call to "Empty_Set" at spark-containers-formal-hashed_sets.ads:102, in instantiation at test_hsets.ads:8
 spark-containers-formal-hashed_sets.ads:94:06: info: after a call to "Empty_Set" at spark-containers-formal-hashed_sets.ads:102, in instantiation at test_hsets.ads:8
 spark-containers-formal-hashed_sets.ads:94:06: info: after a call to "Empty_Set" at spark-containers-formal-hashed_sets.ads:102, in instantiation at test_hsets.ads:8
-spark-containers-formal-hashed_sets.ads:94:06: info: after a call to "Insert" at spark-containers-formal-hashed_sets.ads:756, in instantiation at test_hsets.ads:12
-spark-containers-formal-hashed_sets.ads:94:06: info: after a call to "Insert" at spark-containers-formal-hashed_sets.ads:756, in instantiation at test_hsets.ads:12
-spark-containers-formal-hashed_sets.ads:94:06: info: after a call to "Insert" at spark-containers-formal-hashed_sets.ads:756, in instantiation at test_hsets.ads:12
-spark-containers-formal-hashed_sets.ads:94:06: info: after a call to "Insert" at spark-containers-formal-hashed_sets.ads:756, in instantiation at test_hsets.ads:8
-spark-containers-formal-hashed_sets.ads:94:06: info: after a call to "Insert" at spark-containers-formal-hashed_sets.ads:756, in instantiation at test_hsets.ads:8
-spark-containers-formal-hashed_sets.ads:94:06: info: after a call to "Insert" at spark-containers-formal-hashed_sets.ads:756, in instantiation at test_hsets.ads:8
+spark-containers-formal-hashed_sets.ads:94:06: info: after a call to "Insert" at spark-containers-formal-hashed_sets.ads:761, in instantiation at test_hsets.ads:12
+spark-containers-formal-hashed_sets.ads:94:06: info: after a call to "Insert" at spark-containers-formal-hashed_sets.ads:761, in instantiation at test_hsets.ads:12
+spark-containers-formal-hashed_sets.ads:94:06: info: after a call to "Insert" at spark-containers-formal-hashed_sets.ads:761, in instantiation at test_hsets.ads:12
+spark-containers-formal-hashed_sets.ads:94:06: info: after a call to "Insert" at spark-containers-formal-hashed_sets.ads:761, in instantiation at test_hsets.ads:8
+spark-containers-formal-hashed_sets.ads:94:06: info: after a call to "Insert" at spark-containers-formal-hashed_sets.ads:761, in instantiation at test_hsets.ads:8
+spark-containers-formal-hashed_sets.ads:94:06: info: after a call to "Insert" at spark-containers-formal-hashed_sets.ads:761, in instantiation at test_hsets.ads:8
 spark-containers-formal-hashed_sets.ads:94:06: info: during checks for container aggregates at spark-containers-formal-hashed_sets.ads:94, in instantiation at test_hsets.ads:12
 spark-containers-formal-hashed_sets.ads:94:06: info: during checks for container aggregates at spark-containers-formal-hashed_sets.ads:94, in instantiation at test_hsets.ads:8
-spark-containers-formal-hashed_sets.ads:94:06: info: when establishing invariant on "Aggr_Capacity" at spark-containers-formal-hashed_sets.ads:1762, in instantiation at test_hsets.ads:12
-spark-containers-formal-hashed_sets.ads:94:06: info: when establishing invariant on "Aggr_Capacity" at spark-containers-formal-hashed_sets.ads:1762, in instantiation at test_hsets.ads:8
+spark-containers-formal-hashed_sets.ads:94:06: info: when establishing invariant on "Aggr_Capacity" at spark-containers-formal-hashed_sets.ads:1767, in instantiation at test_hsets.ads:12
+spark-containers-formal-hashed_sets.ads:94:06: info: when establishing invariant on "Aggr_Capacity" at spark-containers-formal-hashed_sets.ads:1767, in instantiation at test_hsets.ads:8
 spark-containers-formal-hashed_sets.ads:94:06: info: when establishing invariant on "Contains" at spark-containers-functional-sets.ads:99, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at test_hsets.ads:12
 spark-containers-formal-hashed_sets.ads:94:06: info: when establishing invariant on "Contains" at spark-containers-functional-sets.ads:99, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at test_hsets.ads:8
 spark-containers-formal-hashed_sets.ads:94:06: info: when establishing invariant on "Length" at spark-containers-functional-sets.ads:124, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at test_hsets.ads:12
 spark-containers-formal-hashed_sets.ads:94:06: info: when establishing invariant on "Length" at spark-containers-functional-sets.ads:124, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at test_hsets.ads:8
-spark-containers-formal-hashed_sets.ads:94:06: info: when reestablishing invariant on "Aggr_Capacity" at spark-containers-formal-hashed_sets.ads:1762, in instantiation at test_hsets.ads:12
-spark-containers-formal-hashed_sets.ads:94:06: info: when reestablishing invariant on "Aggr_Capacity" at spark-containers-formal-hashed_sets.ads:1762, in instantiation at test_hsets.ads:8
+spark-containers-formal-hashed_sets.ads:94:06: info: when reestablishing invariant on "Aggr_Capacity" at spark-containers-formal-hashed_sets.ads:1767, in instantiation at test_hsets.ads:12
+spark-containers-formal-hashed_sets.ads:94:06: info: when reestablishing invariant on "Aggr_Capacity" at spark-containers-formal-hashed_sets.ads:1767, in instantiation at test_hsets.ads:8
 spark-containers-formal-hashed_sets.ads:94:06: info: when reestablishing invariant on "Contains" at spark-containers-functional-sets.ads:99, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at test_hsets.ads:12
 spark-containers-formal-hashed_sets.ads:94:06: info: when reestablishing invariant on "Contains" at spark-containers-functional-sets.ads:99, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at test_hsets.ads:8
 spark-containers-formal-hashed_sets.ads:94:06: info: when reestablishing invariant on "Length" at spark-containers-functional-sets.ads:124, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at test_hsets.ads:12
@@ -51,64 +51,66 @@ spark-containers-formal-hashed_sets.ads:601:13: info: during checks for quantifi
 spark-containers-formal-hashed_sets.ads:601:13: info: during checks for quantification at spark-containers-formal-hashed_sets.ads:81, in instantiation at test_hsets.ads:8
 spark-containers-formal-hashed_sets.ads:601:13: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:12
 spark-containers-formal-hashed_sets.ads:601:13: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:8
-spark-containers-formal-hashed_sets.ads:638:16: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:12
-spark-containers-formal-hashed_sets.ads:638:16: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:8
-spark-containers-formal-hashed_sets.ads:762:11: info: during checks for container aggregates at spark-containers-formal-hashed_sets.ads:94, in instantiation at test_hsets.ads:12
-spark-containers-formal-hashed_sets.ads:762:11: info: during checks for container aggregates at spark-containers-formal-hashed_sets.ads:94, in instantiation at test_hsets.ads:8
-spark-containers-formal-hashed_sets.ads:762:11: info: precondition proved (Z3: 2 VC), in instantiation at test_hsets.ads:12
-spark-containers-formal-hashed_sets.ads:762:11: info: precondition proved (Z3: 2 VC), in instantiation at test_hsets.ads:8
-spark-containers-formal-hashed_sets.ads:998:40: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:12
-spark-containers-formal-hashed_sets.ads:998:40: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:8
-spark-containers-formal-hashed_sets.ads:1008:16: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:12
-spark-containers-formal-hashed_sets.ads:1008:16: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:8
-spark-containers-formal-hashed_sets.ads:1033:27: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:12
-spark-containers-formal-hashed_sets.ads:1033:27: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:8
-spark-containers-formal-hashed_sets.ads:1034:30: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:12
-spark-containers-formal-hashed_sets.ads:1034:30: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:8
-spark-containers-formal-hashed_sets.ads:1092:44: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:12
-spark-containers-formal-hashed_sets.ads:1092:44: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:8
-spark-containers-formal-hashed_sets.ads:1279:27: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:12
-spark-containers-formal-hashed_sets.ads:1279:27: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:8
-spark-containers-formal-hashed_sets.ads:1280:30: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:12
-spark-containers-formal-hashed_sets.ads:1280:30: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:8
-spark-containers-formal-hashed_sets.ads:1280:48: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:12
-spark-containers-formal-hashed_sets.ads:1280:48: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:8
-spark-containers-formal-hashed_sets.ads:1332:44: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:12
-spark-containers-formal-hashed_sets.ads:1332:44: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:8
-spark-containers-formal-hashed_sets.ads:1418:13: info: during checks for quantification at spark-containers-formal-hashed_sets.ads:81, in instantiation at test_hsets.ads:12
-spark-containers-formal-hashed_sets.ads:1418:13: info: during checks for quantification at spark-containers-formal-hashed_sets.ads:81, in instantiation at test_hsets.ads:8
-spark-containers-formal-hashed_sets.ads:1418:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hsets.ads:12
-spark-containers-formal-hashed_sets.ads:1418:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hsets.ads:8
-spark-containers-formal-hashed_sets.ads:1431:13: info: during checks for quantification at spark-containers-formal-hashed_sets.ads:81, in instantiation at test_hsets.ads:12
-spark-containers-formal-hashed_sets.ads:1431:13: info: during checks for quantification at spark-containers-formal-hashed_sets.ads:81, in instantiation at test_hsets.ads:8
-spark-containers-formal-hashed_sets.ads:1431:13: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:12
-spark-containers-formal-hashed_sets.ads:1431:13: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:8
-spark-containers-formal-hashed_sets.ads:1440:21: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:12
-spark-containers-formal-hashed_sets.ads:1440:21: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:8
-spark-containers-formal-hashed_sets.ads:1465:21: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:12
-spark-containers-formal-hashed_sets.ads:1465:21: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:8
-spark-containers-formal-hashed_sets.ads:1511:13: info: during checks for quantification at spark-containers-formal-hashed_sets.ads:81, in instantiation at test_hsets.ads:12
-spark-containers-formal-hashed_sets.ads:1511:13: info: during checks for quantification at spark-containers-formal-hashed_sets.ads:81, in instantiation at test_hsets.ads:8
-spark-containers-formal-hashed_sets.ads:1511:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hsets.ads:12
-spark-containers-formal-hashed_sets.ads:1511:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hsets.ads:8
-spark-containers-formal-hashed_sets.ads:1535:19: info: aspect Always_Terminates on "Eq_Compatible" has been proved, subprogram will terminate, in instantiation at test_hsets.ads:23
-spark-containers-formal-hashed_sets.ads:1542:19: info: aspect Always_Terminates on "Hash_Compatible" has been proved, subprogram will terminate, in instantiation at test_hsets.ads:23
-spark-containers-formal-hashed_sets.ads:1762:13: info: implicit aspect Always_Terminates on "Aggr_Capacity" has been proved, subprogram will terminate, in instantiation at test_hsets.ads:12
-spark-containers-formal-hashed_sets.ads:1762:13: info: implicit aspect Always_Terminates on "Aggr_Capacity" has been proved, subprogram will terminate, in instantiation at test_hsets.ads:8
-spark-containers-formal-hashed_sets.ads:1766:06: info: data dependencies proved, in instantiation at test_hsets.ads:12
-spark-containers-formal-hashed_sets.ads:1766:06: info: data dependencies proved, in instantiation at test_hsets.ads:8
-spark-containers-formal-hashed_sets.ads:1770:13: info: implicit aspect Always_Terminates on "Aggr_Model" has been proved, subprogram will terminate, in instantiation at test_hsets.ads:12
-spark-containers-formal-hashed_sets.ads:1770:13: info: implicit aspect Always_Terminates on "Aggr_Model" has been proved, subprogram will terminate, in instantiation at test_hsets.ads:8
-spark-containers-formal-hashed_sets.ads:1774:06: info: data dependencies proved, in instantiation at test_hsets.ads:12
-spark-containers-formal-hashed_sets.ads:1774:06: info: data dependencies proved, in instantiation at test_hsets.ads:8
-spark-containers-formal-hashed_sets.ads:1778:13: info: during checks for quantification at spark-containers-formal-hashed_sets.ads:81, in instantiation at test_hsets.ads:12
-spark-containers-formal-hashed_sets.ads:1778:13: info: during checks for quantification at spark-containers-formal-hashed_sets.ads:81, in instantiation at test_hsets.ads:8
-spark-containers-formal-hashed_sets.ads:1778:13: info: implicit aspect Always_Terminates on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_hsets.ads:12
-spark-containers-formal-hashed_sets.ads:1778:13: info: implicit aspect Always_Terminates on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_hsets.ads:8
-spark-containers-formal-hashed_sets.ads:1778:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hsets.ads:12
-spark-containers-formal-hashed_sets.ads:1778:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hsets.ads:8
-spark-containers-formal-hashed_sets.ads:1782:06: info: data dependencies proved, in instantiation at test_hsets.ads:12
-spark-containers-formal-hashed_sets.ads:1782:06: info: data dependencies proved, in instantiation at test_hsets.ads:8
+spark-containers-formal-hashed_sets.ads:620:35: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:12
+spark-containers-formal-hashed_sets.ads:620:35: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:8
+spark-containers-formal-hashed_sets.ads:643:16: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:12
+spark-containers-formal-hashed_sets.ads:643:16: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:8
+spark-containers-formal-hashed_sets.ads:767:11: info: during checks for container aggregates at spark-containers-formal-hashed_sets.ads:94, in instantiation at test_hsets.ads:12
+spark-containers-formal-hashed_sets.ads:767:11: info: during checks for container aggregates at spark-containers-formal-hashed_sets.ads:94, in instantiation at test_hsets.ads:8
+spark-containers-formal-hashed_sets.ads:767:11: info: precondition proved (Z3: 2 VC), in instantiation at test_hsets.ads:12
+spark-containers-formal-hashed_sets.ads:767:11: info: precondition proved (Z3: 2 VC), in instantiation at test_hsets.ads:8
+spark-containers-formal-hashed_sets.ads:1003:40: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:12
+spark-containers-formal-hashed_sets.ads:1003:40: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:8
+spark-containers-formal-hashed_sets.ads:1013:16: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:12
+spark-containers-formal-hashed_sets.ads:1013:16: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:8
+spark-containers-formal-hashed_sets.ads:1038:27: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:12
+spark-containers-formal-hashed_sets.ads:1038:27: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:8
+spark-containers-formal-hashed_sets.ads:1039:30: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:12
+spark-containers-formal-hashed_sets.ads:1039:30: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:8
+spark-containers-formal-hashed_sets.ads:1097:44: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:12
+spark-containers-formal-hashed_sets.ads:1097:44: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:8
+spark-containers-formal-hashed_sets.ads:1284:27: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:12
+spark-containers-formal-hashed_sets.ads:1284:27: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:8
+spark-containers-formal-hashed_sets.ads:1285:30: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:12
+spark-containers-formal-hashed_sets.ads:1285:30: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:8
+spark-containers-formal-hashed_sets.ads:1285:48: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:12
+spark-containers-formal-hashed_sets.ads:1285:48: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:8
+spark-containers-formal-hashed_sets.ads:1337:44: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:12
+spark-containers-formal-hashed_sets.ads:1337:44: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:8
+spark-containers-formal-hashed_sets.ads:1423:13: info: during checks for quantification at spark-containers-formal-hashed_sets.ads:81, in instantiation at test_hsets.ads:12
+spark-containers-formal-hashed_sets.ads:1423:13: info: during checks for quantification at spark-containers-formal-hashed_sets.ads:81, in instantiation at test_hsets.ads:8
+spark-containers-formal-hashed_sets.ads:1423:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hsets.ads:12
+spark-containers-formal-hashed_sets.ads:1423:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hsets.ads:8
+spark-containers-formal-hashed_sets.ads:1436:13: info: during checks for quantification at spark-containers-formal-hashed_sets.ads:81, in instantiation at test_hsets.ads:12
+spark-containers-formal-hashed_sets.ads:1436:13: info: during checks for quantification at spark-containers-formal-hashed_sets.ads:81, in instantiation at test_hsets.ads:8
+spark-containers-formal-hashed_sets.ads:1436:13: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:12
+spark-containers-formal-hashed_sets.ads:1436:13: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:8
+spark-containers-formal-hashed_sets.ads:1445:21: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:12
+spark-containers-formal-hashed_sets.ads:1445:21: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:8
+spark-containers-formal-hashed_sets.ads:1470:21: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:12
+spark-containers-formal-hashed_sets.ads:1470:21: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:8
+spark-containers-formal-hashed_sets.ads:1516:13: info: during checks for quantification at spark-containers-formal-hashed_sets.ads:81, in instantiation at test_hsets.ads:12
+spark-containers-formal-hashed_sets.ads:1516:13: info: during checks for quantification at spark-containers-formal-hashed_sets.ads:81, in instantiation at test_hsets.ads:8
+spark-containers-formal-hashed_sets.ads:1516:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hsets.ads:12
+spark-containers-formal-hashed_sets.ads:1516:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hsets.ads:8
+spark-containers-formal-hashed_sets.ads:1540:19: info: aspect Always_Terminates on "Eq_Compatible" has been proved, subprogram will terminate, in instantiation at test_hsets.ads:23
+spark-containers-formal-hashed_sets.ads:1547:19: info: aspect Always_Terminates on "Hash_Compatible" has been proved, subprogram will terminate, in instantiation at test_hsets.ads:23
+spark-containers-formal-hashed_sets.ads:1767:13: info: implicit aspect Always_Terminates on "Aggr_Capacity" has been proved, subprogram will terminate, in instantiation at test_hsets.ads:12
+spark-containers-formal-hashed_sets.ads:1767:13: info: implicit aspect Always_Terminates on "Aggr_Capacity" has been proved, subprogram will terminate, in instantiation at test_hsets.ads:8
+spark-containers-formal-hashed_sets.ads:1771:06: info: data dependencies proved, in instantiation at test_hsets.ads:12
+spark-containers-formal-hashed_sets.ads:1771:06: info: data dependencies proved, in instantiation at test_hsets.ads:8
+spark-containers-formal-hashed_sets.ads:1775:13: info: implicit aspect Always_Terminates on "Aggr_Model" has been proved, subprogram will terminate, in instantiation at test_hsets.ads:12
+spark-containers-formal-hashed_sets.ads:1775:13: info: implicit aspect Always_Terminates on "Aggr_Model" has been proved, subprogram will terminate, in instantiation at test_hsets.ads:8
+spark-containers-formal-hashed_sets.ads:1779:06: info: data dependencies proved, in instantiation at test_hsets.ads:12
+spark-containers-formal-hashed_sets.ads:1779:06: info: data dependencies proved, in instantiation at test_hsets.ads:8
+spark-containers-formal-hashed_sets.ads:1783:13: info: during checks for quantification at spark-containers-formal-hashed_sets.ads:81, in instantiation at test_hsets.ads:12
+spark-containers-formal-hashed_sets.ads:1783:13: info: during checks for quantification at spark-containers-formal-hashed_sets.ads:81, in instantiation at test_hsets.ads:8
+spark-containers-formal-hashed_sets.ads:1783:13: info: implicit aspect Always_Terminates on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_hsets.ads:12
+spark-containers-formal-hashed_sets.ads:1783:13: info: implicit aspect Always_Terminates on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_hsets.ads:8
+spark-containers-formal-hashed_sets.ads:1783:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hsets.ads:12
+spark-containers-formal-hashed_sets.ads:1783:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hsets.ads:8
+spark-containers-formal-hashed_sets.ads:1787:06: info: data dependencies proved, in instantiation at test_hsets.ads:12
+spark-containers-formal-hashed_sets.ads:1787:06: info: data dependencies proved, in instantiation at test_hsets.ads:8
 spark-containers-formal-unbounded_hashed_sets.ads:34:16: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at test_hsets.ads:35
 spark-containers-formal-unbounded_hashed_sets.ads:37:16: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at test_hsets.ads:35
 spark-containers-formal-unbounded_hashed_sets.ads:40:16: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at test_hsets.ads:35
@@ -128,10 +130,10 @@ spark-containers-formal-unbounded_hashed_sets.ads:86:06: info: after a call to "
 spark-containers-formal-unbounded_hashed_sets.ads:86:06: info: after a call to "Empty_Set" at spark-containers-formal-unbounded_hashed_sets.ads:455, in instantiation at test_hsets.ads:35
 spark-containers-formal-unbounded_hashed_sets.ads:86:06: info: after a call to "Empty_Set" at spark-containers-formal-unbounded_hashed_sets.ads:455, in instantiation at test_hsets.ads:39
 spark-containers-formal-unbounded_hashed_sets.ads:86:06: info: after a call to "Empty_Set" at spark-containers-formal-unbounded_hashed_sets.ads:455, in instantiation at test_hsets.ads:39
-spark-containers-formal-unbounded_hashed_sets.ads:86:06: info: after a call to "Insert" at spark-containers-formal-unbounded_hashed_sets.ads:705, in instantiation at test_hsets.ads:35
-spark-containers-formal-unbounded_hashed_sets.ads:86:06: info: after a call to "Insert" at spark-containers-formal-unbounded_hashed_sets.ads:705, in instantiation at test_hsets.ads:35
-spark-containers-formal-unbounded_hashed_sets.ads:86:06: info: after a call to "Insert" at spark-containers-formal-unbounded_hashed_sets.ads:705, in instantiation at test_hsets.ads:39
-spark-containers-formal-unbounded_hashed_sets.ads:86:06: info: after a call to "Insert" at spark-containers-formal-unbounded_hashed_sets.ads:705, in instantiation at test_hsets.ads:39
+spark-containers-formal-unbounded_hashed_sets.ads:86:06: info: after a call to "Insert" at spark-containers-formal-unbounded_hashed_sets.ads:710, in instantiation at test_hsets.ads:35
+spark-containers-formal-unbounded_hashed_sets.ads:86:06: info: after a call to "Insert" at spark-containers-formal-unbounded_hashed_sets.ads:710, in instantiation at test_hsets.ads:35
+spark-containers-formal-unbounded_hashed_sets.ads:86:06: info: after a call to "Insert" at spark-containers-formal-unbounded_hashed_sets.ads:710, in instantiation at test_hsets.ads:39
+spark-containers-formal-unbounded_hashed_sets.ads:86:06: info: after a call to "Insert" at spark-containers-formal-unbounded_hashed_sets.ads:710, in instantiation at test_hsets.ads:39
 spark-containers-formal-unbounded_hashed_sets.ads:86:06: info: when establishing invariant on "Contains" at spark-containers-functional-sets.ads:99, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:156, in instantiation at test_hsets.ads:35
 spark-containers-formal-unbounded_hashed_sets.ads:86:06: info: when establishing invariant on "Contains" at spark-containers-functional-sets.ads:99, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:156, in instantiation at test_hsets.ads:39
 spark-containers-formal-unbounded_hashed_sets.ads:86:06: info: when establishing invariant on "Length" at spark-containers-functional-sets.ads:124, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:156, in instantiation at test_hsets.ads:35
@@ -144,64 +146,66 @@ spark-containers-formal-unbounded_hashed_sets.ads:550:13: info: during checks fo
 spark-containers-formal-unbounded_hashed_sets.ads:550:13: info: during checks for quantification at spark-containers-formal-unbounded_hashed_sets.ads:77, in instantiation at test_hsets.ads:39
 spark-containers-formal-unbounded_hashed_sets.ads:550:13: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:35
 spark-containers-formal-unbounded_hashed_sets.ads:550:13: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:39
-spark-containers-formal-unbounded_hashed_sets.ads:587:16: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:35
-spark-containers-formal-unbounded_hashed_sets.ads:587:16: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:39
-spark-containers-formal-unbounded_hashed_sets.ads:711:11: info: during checks for container aggregates at spark-containers-formal-unbounded_hashed_sets.ads:86, in instantiation at test_hsets.ads:35
-spark-containers-formal-unbounded_hashed_sets.ads:711:11: info: during checks for container aggregates at spark-containers-formal-unbounded_hashed_sets.ads:86, in instantiation at test_hsets.ads:39
-spark-containers-formal-unbounded_hashed_sets.ads:711:11: info: precondition proved (Z3: 2 VC), in instantiation at test_hsets.ads:35
-spark-containers-formal-unbounded_hashed_sets.ads:711:11: info: precondition proved (Z3: 2 VC), in instantiation at test_hsets.ads:39
-spark-containers-formal-unbounded_hashed_sets.ads:924:40: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:35
-spark-containers-formal-unbounded_hashed_sets.ads:924:40: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:39
-spark-containers-formal-unbounded_hashed_sets.ads:934:16: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:35
-spark-containers-formal-unbounded_hashed_sets.ads:934:16: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:39
-spark-containers-formal-unbounded_hashed_sets.ads:959:27: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:35
-spark-containers-formal-unbounded_hashed_sets.ads:959:27: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:39
-spark-containers-formal-unbounded_hashed_sets.ads:960:30: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:35
-spark-containers-formal-unbounded_hashed_sets.ads:960:30: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:39
-spark-containers-formal-unbounded_hashed_sets.ads:1018:44: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:35
-spark-containers-formal-unbounded_hashed_sets.ads:1018:44: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:39
-spark-containers-formal-unbounded_hashed_sets.ads:1221:27: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:35
-spark-containers-formal-unbounded_hashed_sets.ads:1221:27: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:39
-spark-containers-formal-unbounded_hashed_sets.ads:1222:30: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:35
-spark-containers-formal-unbounded_hashed_sets.ads:1222:30: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:39
-spark-containers-formal-unbounded_hashed_sets.ads:1222:48: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:35
-spark-containers-formal-unbounded_hashed_sets.ads:1222:48: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:39
-spark-containers-formal-unbounded_hashed_sets.ads:1274:44: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:35
-spark-containers-formal-unbounded_hashed_sets.ads:1274:44: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:39
-spark-containers-formal-unbounded_hashed_sets.ads:1360:13: info: during checks for quantification at spark-containers-formal-unbounded_hashed_sets.ads:77, in instantiation at test_hsets.ads:35
-spark-containers-formal-unbounded_hashed_sets.ads:1360:13: info: during checks for quantification at spark-containers-formal-unbounded_hashed_sets.ads:77, in instantiation at test_hsets.ads:39
-spark-containers-formal-unbounded_hashed_sets.ads:1360:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hsets.ads:35
-spark-containers-formal-unbounded_hashed_sets.ads:1360:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hsets.ads:39
-spark-containers-formal-unbounded_hashed_sets.ads:1373:13: info: during checks for quantification at spark-containers-formal-unbounded_hashed_sets.ads:77, in instantiation at test_hsets.ads:35
-spark-containers-formal-unbounded_hashed_sets.ads:1373:13: info: during checks for quantification at spark-containers-formal-unbounded_hashed_sets.ads:77, in instantiation at test_hsets.ads:39
-spark-containers-formal-unbounded_hashed_sets.ads:1373:13: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:35
-spark-containers-formal-unbounded_hashed_sets.ads:1373:13: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:39
-spark-containers-formal-unbounded_hashed_sets.ads:1382:21: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:35
-spark-containers-formal-unbounded_hashed_sets.ads:1382:21: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:39
-spark-containers-formal-unbounded_hashed_sets.ads:1407:21: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:35
-spark-containers-formal-unbounded_hashed_sets.ads:1407:21: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:39
-spark-containers-formal-unbounded_hashed_sets.ads:1453:13: info: during checks for quantification at spark-containers-formal-unbounded_hashed_sets.ads:77, in instantiation at test_hsets.ads:35
-spark-containers-formal-unbounded_hashed_sets.ads:1453:13: info: during checks for quantification at spark-containers-formal-unbounded_hashed_sets.ads:77, in instantiation at test_hsets.ads:39
-spark-containers-formal-unbounded_hashed_sets.ads:1453:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hsets.ads:35
-spark-containers-formal-unbounded_hashed_sets.ads:1453:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hsets.ads:39
-spark-containers-formal-unbounded_hashed_sets.ads:1474:19: info: aspect Always_Terminates on "Eq_Compatible" has been proved, subprogram will terminate, in instantiation at test_hsets.ads:50
-spark-containers-formal-unbounded_hashed_sets.ads:1481:19: info: aspect Always_Terminates on "Hash_Compatible" has been proved, subprogram will terminate, in instantiation at test_hsets.ads:50
-spark-containers-formal-unbounded_hashed_sets.ads:1701:13: info: implicit aspect Always_Terminates on "Aggr_Capacity" has been proved, subprogram will terminate, in instantiation at test_hsets.ads:35
-spark-containers-formal-unbounded_hashed_sets.ads:1701:13: info: implicit aspect Always_Terminates on "Aggr_Capacity" has been proved, subprogram will terminate, in instantiation at test_hsets.ads:39
-spark-containers-formal-unbounded_hashed_sets.ads:1705:06: info: data dependencies proved, in instantiation at test_hsets.ads:35
-spark-containers-formal-unbounded_hashed_sets.ads:1705:06: info: data dependencies proved, in instantiation at test_hsets.ads:39
-spark-containers-formal-unbounded_hashed_sets.ads:1709:13: info: implicit aspect Always_Terminates on "Aggr_Model" has been proved, subprogram will terminate, in instantiation at test_hsets.ads:35
-spark-containers-formal-unbounded_hashed_sets.ads:1709:13: info: implicit aspect Always_Terminates on "Aggr_Model" has been proved, subprogram will terminate, in instantiation at test_hsets.ads:39
-spark-containers-formal-unbounded_hashed_sets.ads:1713:06: info: data dependencies proved, in instantiation at test_hsets.ads:35
-spark-containers-formal-unbounded_hashed_sets.ads:1713:06: info: data dependencies proved, in instantiation at test_hsets.ads:39
-spark-containers-formal-unbounded_hashed_sets.ads:1717:13: info: during checks for quantification at spark-containers-formal-unbounded_hashed_sets.ads:77, in instantiation at test_hsets.ads:35
-spark-containers-formal-unbounded_hashed_sets.ads:1717:13: info: during checks for quantification at spark-containers-formal-unbounded_hashed_sets.ads:77, in instantiation at test_hsets.ads:39
-spark-containers-formal-unbounded_hashed_sets.ads:1717:13: info: implicit aspect Always_Terminates on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_hsets.ads:35
-spark-containers-formal-unbounded_hashed_sets.ads:1717:13: info: implicit aspect Always_Terminates on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_hsets.ads:39
-spark-containers-formal-unbounded_hashed_sets.ads:1717:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hsets.ads:35
-spark-containers-formal-unbounded_hashed_sets.ads:1717:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hsets.ads:39
-spark-containers-formal-unbounded_hashed_sets.ads:1721:06: info: data dependencies proved, in instantiation at test_hsets.ads:35
-spark-containers-formal-unbounded_hashed_sets.ads:1721:06: info: data dependencies proved, in instantiation at test_hsets.ads:39
+spark-containers-formal-unbounded_hashed_sets.ads:569:35: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:35
+spark-containers-formal-unbounded_hashed_sets.ads:569:35: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:39
+spark-containers-formal-unbounded_hashed_sets.ads:592:16: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:35
+spark-containers-formal-unbounded_hashed_sets.ads:592:16: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:39
+spark-containers-formal-unbounded_hashed_sets.ads:716:11: info: during checks for container aggregates at spark-containers-formal-unbounded_hashed_sets.ads:86, in instantiation at test_hsets.ads:35
+spark-containers-formal-unbounded_hashed_sets.ads:716:11: info: during checks for container aggregates at spark-containers-formal-unbounded_hashed_sets.ads:86, in instantiation at test_hsets.ads:39
+spark-containers-formal-unbounded_hashed_sets.ads:716:11: info: precondition proved (Z3: 2 VC), in instantiation at test_hsets.ads:35
+spark-containers-formal-unbounded_hashed_sets.ads:716:11: info: precondition proved (Z3: 2 VC), in instantiation at test_hsets.ads:39
+spark-containers-formal-unbounded_hashed_sets.ads:929:40: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:35
+spark-containers-formal-unbounded_hashed_sets.ads:929:40: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:39
+spark-containers-formal-unbounded_hashed_sets.ads:939:16: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:35
+spark-containers-formal-unbounded_hashed_sets.ads:939:16: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:39
+spark-containers-formal-unbounded_hashed_sets.ads:964:27: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:35
+spark-containers-formal-unbounded_hashed_sets.ads:964:27: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:39
+spark-containers-formal-unbounded_hashed_sets.ads:965:30: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:35
+spark-containers-formal-unbounded_hashed_sets.ads:965:30: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:39
+spark-containers-formal-unbounded_hashed_sets.ads:1023:44: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:35
+spark-containers-formal-unbounded_hashed_sets.ads:1023:44: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:39
+spark-containers-formal-unbounded_hashed_sets.ads:1226:27: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:35
+spark-containers-formal-unbounded_hashed_sets.ads:1226:27: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:39
+spark-containers-formal-unbounded_hashed_sets.ads:1227:30: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:35
+spark-containers-formal-unbounded_hashed_sets.ads:1227:30: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:39
+spark-containers-formal-unbounded_hashed_sets.ads:1227:48: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:35
+spark-containers-formal-unbounded_hashed_sets.ads:1227:48: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:39
+spark-containers-formal-unbounded_hashed_sets.ads:1279:44: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:35
+spark-containers-formal-unbounded_hashed_sets.ads:1279:44: info: overflow check proved (Z3: 2 VC), in instantiation at test_hsets.ads:39
+spark-containers-formal-unbounded_hashed_sets.ads:1365:13: info: during checks for quantification at spark-containers-formal-unbounded_hashed_sets.ads:77, in instantiation at test_hsets.ads:35
+spark-containers-formal-unbounded_hashed_sets.ads:1365:13: info: during checks for quantification at spark-containers-formal-unbounded_hashed_sets.ads:77, in instantiation at test_hsets.ads:39
+spark-containers-formal-unbounded_hashed_sets.ads:1365:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hsets.ads:35
+spark-containers-formal-unbounded_hashed_sets.ads:1365:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hsets.ads:39
+spark-containers-formal-unbounded_hashed_sets.ads:1378:13: info: during checks for quantification at spark-containers-formal-unbounded_hashed_sets.ads:77, in instantiation at test_hsets.ads:35
+spark-containers-formal-unbounded_hashed_sets.ads:1378:13: info: during checks for quantification at spark-containers-formal-unbounded_hashed_sets.ads:77, in instantiation at test_hsets.ads:39
+spark-containers-formal-unbounded_hashed_sets.ads:1378:13: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:35
+spark-containers-formal-unbounded_hashed_sets.ads:1378:13: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:39
+spark-containers-formal-unbounded_hashed_sets.ads:1387:21: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:35
+spark-containers-formal-unbounded_hashed_sets.ads:1387:21: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:39
+spark-containers-formal-unbounded_hashed_sets.ads:1412:21: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:35
+spark-containers-formal-unbounded_hashed_sets.ads:1412:21: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:39
+spark-containers-formal-unbounded_hashed_sets.ads:1458:13: info: during checks for quantification at spark-containers-formal-unbounded_hashed_sets.ads:77, in instantiation at test_hsets.ads:35
+spark-containers-formal-unbounded_hashed_sets.ads:1458:13: info: during checks for quantification at spark-containers-formal-unbounded_hashed_sets.ads:77, in instantiation at test_hsets.ads:39
+spark-containers-formal-unbounded_hashed_sets.ads:1458:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hsets.ads:35
+spark-containers-formal-unbounded_hashed_sets.ads:1458:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hsets.ads:39
+spark-containers-formal-unbounded_hashed_sets.ads:1479:19: info: aspect Always_Terminates on "Eq_Compatible" has been proved, subprogram will terminate, in instantiation at test_hsets.ads:50
+spark-containers-formal-unbounded_hashed_sets.ads:1486:19: info: aspect Always_Terminates on "Hash_Compatible" has been proved, subprogram will terminate, in instantiation at test_hsets.ads:50
+spark-containers-formal-unbounded_hashed_sets.ads:1706:13: info: implicit aspect Always_Terminates on "Aggr_Capacity" has been proved, subprogram will terminate, in instantiation at test_hsets.ads:35
+spark-containers-formal-unbounded_hashed_sets.ads:1706:13: info: implicit aspect Always_Terminates on "Aggr_Capacity" has been proved, subprogram will terminate, in instantiation at test_hsets.ads:39
+spark-containers-formal-unbounded_hashed_sets.ads:1710:06: info: data dependencies proved, in instantiation at test_hsets.ads:35
+spark-containers-formal-unbounded_hashed_sets.ads:1710:06: info: data dependencies proved, in instantiation at test_hsets.ads:39
+spark-containers-formal-unbounded_hashed_sets.ads:1714:13: info: implicit aspect Always_Terminates on "Aggr_Model" has been proved, subprogram will terminate, in instantiation at test_hsets.ads:35
+spark-containers-formal-unbounded_hashed_sets.ads:1714:13: info: implicit aspect Always_Terminates on "Aggr_Model" has been proved, subprogram will terminate, in instantiation at test_hsets.ads:39
+spark-containers-formal-unbounded_hashed_sets.ads:1718:06: info: data dependencies proved, in instantiation at test_hsets.ads:35
+spark-containers-formal-unbounded_hashed_sets.ads:1718:06: info: data dependencies proved, in instantiation at test_hsets.ads:39
+spark-containers-formal-unbounded_hashed_sets.ads:1722:13: info: during checks for quantification at spark-containers-formal-unbounded_hashed_sets.ads:77, in instantiation at test_hsets.ads:35
+spark-containers-formal-unbounded_hashed_sets.ads:1722:13: info: during checks for quantification at spark-containers-formal-unbounded_hashed_sets.ads:77, in instantiation at test_hsets.ads:39
+spark-containers-formal-unbounded_hashed_sets.ads:1722:13: info: implicit aspect Always_Terminates on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_hsets.ads:35
+spark-containers-formal-unbounded_hashed_sets.ads:1722:13: info: implicit aspect Always_Terminates on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_hsets.ads:39
+spark-containers-formal-unbounded_hashed_sets.ads:1722:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hsets.ads:35
+spark-containers-formal-unbounded_hashed_sets.ads:1722:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hsets.ads:39
+spark-containers-formal-unbounded_hashed_sets.ads:1726:06: info: data dependencies proved, in instantiation at test_hsets.ads:35
+spark-containers-formal-unbounded_hashed_sets.ads:1726:06: info: data dependencies proved, in instantiation at test_hsets.ads:39
 spark-containers-functional-maps.ads:36:16: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at test_hsets.ads:12
 spark-containers-functional-maps.ads:36:16: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at test_hsets.ads:8
 spark-containers-functional-maps.ads:36:16: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:289, in instantiation at test_hsets.ads:35
@@ -1274,27 +1278,27 @@ spark-containers-parameter_checks.ads:274:50: info: postcondition proved (Z3: 1 
 spark-containers-parameter_checks.ads:274:50: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:141, in instantiation at test_hsets.ads:39
 spark-containers-parameter_checks.ads:274:50: medium: postcondition might fail, in instantiation at spark-containers-formal-hashed_sets.ads:159, in instantiation at test_hsets.ads:8 [possible fix: you should consider adding a postcondition to function "Hash" or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 spark-containers-parameter_checks.ads:274:50: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:141, in instantiation at test_hsets.ads:35 [possible fix: you should consider adding a postcondition to function "Hash" or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
-spark-containers-parameter_checks.ads:295:17: info: aspect Always_Terminates on "Op_Compatible" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:1556, in instantiation at test_hsets.ads:23
-spark-containers-parameter_checks.ads:295:17: info: aspect Always_Terminates on "Op_Compatible" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:1556, in instantiation at test_hsets.ads:28
-spark-containers-parameter_checks.ads:295:17: info: aspect Always_Terminates on "Op_Compatible" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:1495, in instantiation at test_hsets.ads:50
-spark-containers-parameter_checks.ads:295:17: info: aspect Always_Terminates on "Op_Compatible" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:1495, in instantiation at test_hsets.ads:55
-spark-containers-parameter_checks.ads:296:12: info: data dependencies proved, in instantiation at spark-containers-formal-hashed_sets.ads:1556, in instantiation at test_hsets.ads:23
-spark-containers-parameter_checks.ads:296:12: info: data dependencies proved, in instantiation at spark-containers-formal-hashed_sets.ads:1556, in instantiation at test_hsets.ads:28
-spark-containers-parameter_checks.ads:296:12: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:1495, in instantiation at test_hsets.ads:50
-spark-containers-parameter_checks.ads:296:12: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:1495, in instantiation at test_hsets.ads:55
-spark-containers-parameter_checks.ads:296:36: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-hashed_sets.ads:1556, in instantiation at test_hsets.ads:28
-spark-containers-parameter_checks.ads:296:36: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:1495, in instantiation at test_hsets.ads:55
-spark-containers-parameter_checks.ads:296:36: medium: postcondition might fail, in instantiation at spark-containers-formal-hashed_sets.ads:1556, in instantiation at test_hsets.ads:23 [possible fix: you should consider adding a postcondition to function "Equivalent" and function "F" or turning them into expression functions in their unit spec] [provers gave up before completing the proof]
-spark-containers-parameter_checks.ads:296:36: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:1495, in instantiation at test_hsets.ads:50 [possible fix: you should consider adding a postcondition to function "Equivalent" and function "F" or turning them into expression functions in their unit spec] [provers gave up before completing the proof]
-spark-containers-parameter_checks.ads:317:17: info: aspect Always_Terminates on "Hash_Compatible" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:1566, in instantiation at test_hsets.ads:23
-spark-containers-parameter_checks.ads:317:17: info: aspect Always_Terminates on "Hash_Compatible" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:1566, in instantiation at test_hsets.ads:28
-spark-containers-parameter_checks.ads:317:17: info: aspect Always_Terminates on "Hash_Compatible" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:1505, in instantiation at test_hsets.ads:50
-spark-containers-parameter_checks.ads:317:17: info: aspect Always_Terminates on "Hash_Compatible" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:1505, in instantiation at test_hsets.ads:55
-spark-containers-parameter_checks.ads:318:12: info: data dependencies proved, in instantiation at spark-containers-formal-hashed_sets.ads:1566, in instantiation at test_hsets.ads:23
-spark-containers-parameter_checks.ads:318:12: info: data dependencies proved, in instantiation at spark-containers-formal-hashed_sets.ads:1566, in instantiation at test_hsets.ads:28
-spark-containers-parameter_checks.ads:318:12: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:1505, in instantiation at test_hsets.ads:50
-spark-containers-parameter_checks.ads:318:12: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:1505, in instantiation at test_hsets.ads:55
-spark-containers-parameter_checks.ads:318:36: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-hashed_sets.ads:1566, in instantiation at test_hsets.ads:28
-spark-containers-parameter_checks.ads:318:36: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:1505, in instantiation at test_hsets.ads:55
-spark-containers-parameter_checks.ads:318:36: medium: postcondition might fail, in instantiation at spark-containers-formal-hashed_sets.ads:1566, in instantiation at test_hsets.ads:23 [possible fix: you should consider adding a postcondition to function "Hash" and function "F" or turning them into expression functions in their unit spec] [provers gave up before completing the proof]
-spark-containers-parameter_checks.ads:318:36: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:1505, in instantiation at test_hsets.ads:50 [possible fix: you should consider adding a postcondition to function "Hash" and function "F" or turning them into expression functions in their unit spec] [provers gave up before completing the proof]
+spark-containers-parameter_checks.ads:295:17: info: aspect Always_Terminates on "Op_Compatible" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:1561, in instantiation at test_hsets.ads:23
+spark-containers-parameter_checks.ads:295:17: info: aspect Always_Terminates on "Op_Compatible" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:1561, in instantiation at test_hsets.ads:28
+spark-containers-parameter_checks.ads:295:17: info: aspect Always_Terminates on "Op_Compatible" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:1500, in instantiation at test_hsets.ads:50
+spark-containers-parameter_checks.ads:295:17: info: aspect Always_Terminates on "Op_Compatible" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:1500, in instantiation at test_hsets.ads:55
+spark-containers-parameter_checks.ads:296:12: info: data dependencies proved, in instantiation at spark-containers-formal-hashed_sets.ads:1561, in instantiation at test_hsets.ads:23
+spark-containers-parameter_checks.ads:296:12: info: data dependencies proved, in instantiation at spark-containers-formal-hashed_sets.ads:1561, in instantiation at test_hsets.ads:28
+spark-containers-parameter_checks.ads:296:12: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:1500, in instantiation at test_hsets.ads:50
+spark-containers-parameter_checks.ads:296:12: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:1500, in instantiation at test_hsets.ads:55
+spark-containers-parameter_checks.ads:296:36: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-hashed_sets.ads:1561, in instantiation at test_hsets.ads:28
+spark-containers-parameter_checks.ads:296:36: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:1500, in instantiation at test_hsets.ads:55
+spark-containers-parameter_checks.ads:296:36: medium: postcondition might fail, in instantiation at spark-containers-formal-hashed_sets.ads:1561, in instantiation at test_hsets.ads:23 [possible fix: you should consider adding a postcondition to function "Equivalent" and function "F" or turning them into expression functions in their unit spec] [provers gave up before completing the proof]
+spark-containers-parameter_checks.ads:296:36: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:1500, in instantiation at test_hsets.ads:50 [possible fix: you should consider adding a postcondition to function "Equivalent" and function "F" or turning them into expression functions in their unit spec] [provers gave up before completing the proof]
+spark-containers-parameter_checks.ads:317:17: info: aspect Always_Terminates on "Hash_Compatible" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:1571, in instantiation at test_hsets.ads:23
+spark-containers-parameter_checks.ads:317:17: info: aspect Always_Terminates on "Hash_Compatible" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:1571, in instantiation at test_hsets.ads:28
+spark-containers-parameter_checks.ads:317:17: info: aspect Always_Terminates on "Hash_Compatible" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:1510, in instantiation at test_hsets.ads:50
+spark-containers-parameter_checks.ads:317:17: info: aspect Always_Terminates on "Hash_Compatible" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:1510, in instantiation at test_hsets.ads:55
+spark-containers-parameter_checks.ads:318:12: info: data dependencies proved, in instantiation at spark-containers-formal-hashed_sets.ads:1571, in instantiation at test_hsets.ads:23
+spark-containers-parameter_checks.ads:318:12: info: data dependencies proved, in instantiation at spark-containers-formal-hashed_sets.ads:1571, in instantiation at test_hsets.ads:28
+spark-containers-parameter_checks.ads:318:12: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:1510, in instantiation at test_hsets.ads:50
+spark-containers-parameter_checks.ads:318:12: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:1510, in instantiation at test_hsets.ads:55
+spark-containers-parameter_checks.ads:318:36: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-hashed_sets.ads:1571, in instantiation at test_hsets.ads:28
+spark-containers-parameter_checks.ads:318:36: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:1510, in instantiation at test_hsets.ads:55
+spark-containers-parameter_checks.ads:318:36: medium: postcondition might fail, in instantiation at spark-containers-formal-hashed_sets.ads:1571, in instantiation at test_hsets.ads:23 [possible fix: you should consider adding a postcondition to function "Hash" and function "F" or turning them into expression functions in their unit spec] [provers gave up before completing the proof]
+spark-containers-parameter_checks.ads:318:36: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:1510, in instantiation at test_hsets.ads:50 [possible fix: you should consider adding a postcondition to function "Hash" and function "F" or turning them into expression functions in their unit spec] [provers gave up before completing the proof]

@@ -27,22 +27,22 @@ spark-containers-formal-ordered_sets.ads:89:06: info: after a call to "Empty_Set
 spark-containers-formal-ordered_sets.ads:89:06: info: after a call to "Empty_Set" at spark-containers-formal-ordered_sets.ads:97, in instantiation at test_osets.ads:8
 spark-containers-formal-ordered_sets.ads:89:06: info: after a call to "Empty_Set" at spark-containers-formal-ordered_sets.ads:97, in instantiation at test_osets.ads:8
 spark-containers-formal-ordered_sets.ads:89:06: info: after a call to "Empty_Set" at spark-containers-formal-ordered_sets.ads:97, in instantiation at test_osets.ads:8
-spark-containers-formal-ordered_sets.ads:89:06: info: after a call to "Insert" at spark-containers-formal-ordered_sets.ads:770, in instantiation at test_osets.ads:10
-spark-containers-formal-ordered_sets.ads:89:06: info: after a call to "Insert" at spark-containers-formal-ordered_sets.ads:770, in instantiation at test_osets.ads:10
-spark-containers-formal-ordered_sets.ads:89:06: info: after a call to "Insert" at spark-containers-formal-ordered_sets.ads:770, in instantiation at test_osets.ads:10
-spark-containers-formal-ordered_sets.ads:89:06: info: after a call to "Insert" at spark-containers-formal-ordered_sets.ads:770, in instantiation at test_osets.ads:8
-spark-containers-formal-ordered_sets.ads:89:06: info: after a call to "Insert" at spark-containers-formal-ordered_sets.ads:770, in instantiation at test_osets.ads:8
-spark-containers-formal-ordered_sets.ads:89:06: info: after a call to "Insert" at spark-containers-formal-ordered_sets.ads:770, in instantiation at test_osets.ads:8
+spark-containers-formal-ordered_sets.ads:89:06: info: after a call to "Insert" at spark-containers-formal-ordered_sets.ads:775, in instantiation at test_osets.ads:10
+spark-containers-formal-ordered_sets.ads:89:06: info: after a call to "Insert" at spark-containers-formal-ordered_sets.ads:775, in instantiation at test_osets.ads:10
+spark-containers-formal-ordered_sets.ads:89:06: info: after a call to "Insert" at spark-containers-formal-ordered_sets.ads:775, in instantiation at test_osets.ads:10
+spark-containers-formal-ordered_sets.ads:89:06: info: after a call to "Insert" at spark-containers-formal-ordered_sets.ads:775, in instantiation at test_osets.ads:8
+spark-containers-formal-ordered_sets.ads:89:06: info: after a call to "Insert" at spark-containers-formal-ordered_sets.ads:775, in instantiation at test_osets.ads:8
+spark-containers-formal-ordered_sets.ads:89:06: info: after a call to "Insert" at spark-containers-formal-ordered_sets.ads:775, in instantiation at test_osets.ads:8
 spark-containers-formal-ordered_sets.ads:89:06: info: during checks for container aggregates at spark-containers-formal-ordered_sets.ads:89, in instantiation at test_osets.ads:10
 spark-containers-formal-ordered_sets.ads:89:06: info: during checks for container aggregates at spark-containers-formal-ordered_sets.ads:89, in instantiation at test_osets.ads:8
-spark-containers-formal-ordered_sets.ads:89:06: info: when establishing invariant on "Aggr_Capacity" at spark-containers-formal-ordered_sets.ads:2104, in instantiation at test_osets.ads:10
-spark-containers-formal-ordered_sets.ads:89:06: info: when establishing invariant on "Aggr_Capacity" at spark-containers-formal-ordered_sets.ads:2104, in instantiation at test_osets.ads:8
+spark-containers-formal-ordered_sets.ads:89:06: info: when establishing invariant on "Aggr_Capacity" at spark-containers-formal-ordered_sets.ads:2109, in instantiation at test_osets.ads:10
+spark-containers-formal-ordered_sets.ads:89:06: info: when establishing invariant on "Aggr_Capacity" at spark-containers-formal-ordered_sets.ads:2109, in instantiation at test_osets.ads:8
 spark-containers-formal-ordered_sets.ads:89:06: info: when establishing invariant on "Contains" at spark-containers-functional-sets.ads:99, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_osets.ads:10
 spark-containers-formal-ordered_sets.ads:89:06: info: when establishing invariant on "Contains" at spark-containers-functional-sets.ads:99, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_osets.ads:8
 spark-containers-formal-ordered_sets.ads:89:06: info: when establishing invariant on "Length" at spark-containers-functional-sets.ads:124, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_osets.ads:10
 spark-containers-formal-ordered_sets.ads:89:06: info: when establishing invariant on "Length" at spark-containers-functional-sets.ads:124, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_osets.ads:8
-spark-containers-formal-ordered_sets.ads:89:06: info: when reestablishing invariant on "Aggr_Capacity" at spark-containers-formal-ordered_sets.ads:2104, in instantiation at test_osets.ads:10
-spark-containers-formal-ordered_sets.ads:89:06: info: when reestablishing invariant on "Aggr_Capacity" at spark-containers-formal-ordered_sets.ads:2104, in instantiation at test_osets.ads:8
+spark-containers-formal-ordered_sets.ads:89:06: info: when reestablishing invariant on "Aggr_Capacity" at spark-containers-formal-ordered_sets.ads:2109, in instantiation at test_osets.ads:10
+spark-containers-formal-ordered_sets.ads:89:06: info: when reestablishing invariant on "Aggr_Capacity" at spark-containers-formal-ordered_sets.ads:2109, in instantiation at test_osets.ads:8
 spark-containers-formal-ordered_sets.ads:89:06: info: when reestablishing invariant on "Contains" at spark-containers-functional-sets.ads:99, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_osets.ads:10
 spark-containers-formal-ordered_sets.ads:89:06: info: when reestablishing invariant on "Contains" at spark-containers-functional-sets.ads:99, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_osets.ads:8
 spark-containers-formal-ordered_sets.ads:89:06: info: when reestablishing invariant on "Length" at spark-containers-functional-sets.ads:124, in instantiation at spark-containers-formal-ordered_sets.ads:161, in instantiation at test_osets.ads:10
@@ -51,83 +51,85 @@ spark-containers-formal-ordered_sets.ads:610:13: info: during checks for quantif
 spark-containers-formal-ordered_sets.ads:610:13: info: during checks for quantification at spark-containers-formal-ordered_sets.ads:80, in instantiation at test_osets.ads:8
 spark-containers-formal-ordered_sets.ads:610:13: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:10
 spark-containers-formal-ordered_sets.ads:610:13: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:8
-spark-containers-formal-ordered_sets.ads:647:16: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:10
-spark-containers-formal-ordered_sets.ads:647:16: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:8
-spark-containers-formal-ordered_sets.ads:776:11: info: during checks for container aggregates at spark-containers-formal-ordered_sets.ads:89, in instantiation at test_osets.ads:10
-spark-containers-formal-ordered_sets.ads:776:11: info: during checks for container aggregates at spark-containers-formal-ordered_sets.ads:89, in instantiation at test_osets.ads:8
-spark-containers-formal-ordered_sets.ads:776:11: info: precondition proved (Z3: 2 VC), in instantiation at test_osets.ads:10
-spark-containers-formal-ordered_sets.ads:776:11: info: precondition proved (Z3: 2 VC), in instantiation at test_osets.ads:8
-spark-containers-formal-ordered_sets.ads:1059:40: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:10
-spark-containers-formal-ordered_sets.ads:1059:40: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:8
-spark-containers-formal-ordered_sets.ads:1069:16: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:10
-spark-containers-formal-ordered_sets.ads:1069:16: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:8
-spark-containers-formal-ordered_sets.ads:1109:43: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:10
-spark-containers-formal-ordered_sets.ads:1109:43: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:8
-spark-containers-formal-ordered_sets.ads:1118:19: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:10
-spark-containers-formal-ordered_sets.ads:1118:19: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:8
-spark-containers-formal-ordered_sets.ads:1149:43: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:10
-spark-containers-formal-ordered_sets.ads:1149:43: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:8
-spark-containers-formal-ordered_sets.ads:1158:19: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:10
-spark-containers-formal-ordered_sets.ads:1158:19: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:8
-spark-containers-formal-ordered_sets.ads:1178:27: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:10
-spark-containers-formal-ordered_sets.ads:1178:27: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:8
-spark-containers-formal-ordered_sets.ads:1179:30: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:10
-spark-containers-formal-ordered_sets.ads:1179:30: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:8
-spark-containers-formal-ordered_sets.ads:1233:44: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:10
-spark-containers-formal-ordered_sets.ads:1233:44: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:8
-spark-containers-formal-ordered_sets.ads:1402:27: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:10
-spark-containers-formal-ordered_sets.ads:1402:27: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:8
-spark-containers-formal-ordered_sets.ads:1403:30: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:10
-spark-containers-formal-ordered_sets.ads:1403:30: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:8
-spark-containers-formal-ordered_sets.ads:1403:48: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:10
-spark-containers-formal-ordered_sets.ads:1403:48: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:8
-spark-containers-formal-ordered_sets.ads:1449:44: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:10
-spark-containers-formal-ordered_sets.ads:1449:44: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:8
-spark-containers-formal-ordered_sets.ads:1516:13: info: during checks for quantification at spark-containers-formal-ordered_sets.ads:80, in instantiation at test_osets.ads:10
-spark-containers-formal-ordered_sets.ads:1516:13: info: during checks for quantification at spark-containers-formal-ordered_sets.ads:80, in instantiation at test_osets.ads:8
-spark-containers-formal-ordered_sets.ads:1516:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_osets.ads:10
-spark-containers-formal-ordered_sets.ads:1516:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_osets.ads:8
-spark-containers-formal-ordered_sets.ads:1571:13: info: during checks for quantification at spark-containers-formal-ordered_sets.ads:80, in instantiation at test_osets.ads:10
-spark-containers-formal-ordered_sets.ads:1571:13: info: during checks for quantification at spark-containers-formal-ordered_sets.ads:80, in instantiation at test_osets.ads:8
-spark-containers-formal-ordered_sets.ads:1571:13: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:10
-spark-containers-formal-ordered_sets.ads:1571:13: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:8
-spark-containers-formal-ordered_sets.ads:1580:21: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:10
-spark-containers-formal-ordered_sets.ads:1580:21: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:8
-spark-containers-formal-ordered_sets.ads:1599:21: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:10
-spark-containers-formal-ordered_sets.ads:1599:21: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:8
-spark-containers-formal-ordered_sets.ads:1618:21: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:10
-spark-containers-formal-ordered_sets.ads:1618:21: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:8
-spark-containers-formal-ordered_sets.ads:1636:21: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:10
-spark-containers-formal-ordered_sets.ads:1636:21: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:8
-spark-containers-formal-ordered_sets.ads:1675:50: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:10
-spark-containers-formal-ordered_sets.ads:1675:50: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:8
-spark-containers-formal-ordered_sets.ads:1695:43: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:10
-spark-containers-formal-ordered_sets.ads:1695:43: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:8
-spark-containers-formal-ordered_sets.ads:1717:13: info: during checks for quantification at spark-containers-formal-ordered_sets.ads:80, in instantiation at test_osets.ads:10
-spark-containers-formal-ordered_sets.ads:1717:13: info: during checks for quantification at spark-containers-formal-ordered_sets.ads:80, in instantiation at test_osets.ads:8
-spark-containers-formal-ordered_sets.ads:1717:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_osets.ads:10
-spark-containers-formal-ordered_sets.ads:1717:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_osets.ads:8
-spark-containers-formal-ordered_sets.ads:1736:19: info: aspect Always_Terminates on "Lt_Compatible" has been proved, subprogram will terminate, in instantiation at test_osets.ads:19
-spark-containers-formal-ordered_sets.ads:2051:47: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:19
-spark-containers-formal-ordered_sets.ads:2051:47: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:22
-spark-containers-formal-ordered_sets.ads:2073:41: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:19
-spark-containers-formal-ordered_sets.ads:2073:41: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:22
-spark-containers-formal-ordered_sets.ads:2104:13: info: implicit aspect Always_Terminates on "Aggr_Capacity" has been proved, subprogram will terminate, in instantiation at test_osets.ads:10
-spark-containers-formal-ordered_sets.ads:2104:13: info: implicit aspect Always_Terminates on "Aggr_Capacity" has been proved, subprogram will terminate, in instantiation at test_osets.ads:8
-spark-containers-formal-ordered_sets.ads:2108:06: info: data dependencies proved, in instantiation at test_osets.ads:10
-spark-containers-formal-ordered_sets.ads:2108:06: info: data dependencies proved, in instantiation at test_osets.ads:8
-spark-containers-formal-ordered_sets.ads:2112:13: info: implicit aspect Always_Terminates on "Aggr_Model" has been proved, subprogram will terminate, in instantiation at test_osets.ads:10
-spark-containers-formal-ordered_sets.ads:2112:13: info: implicit aspect Always_Terminates on "Aggr_Model" has been proved, subprogram will terminate, in instantiation at test_osets.ads:8
-spark-containers-formal-ordered_sets.ads:2116:06: info: data dependencies proved, in instantiation at test_osets.ads:10
-spark-containers-formal-ordered_sets.ads:2116:06: info: data dependencies proved, in instantiation at test_osets.ads:8
-spark-containers-formal-ordered_sets.ads:2120:13: info: during checks for quantification at spark-containers-formal-ordered_sets.ads:80, in instantiation at test_osets.ads:10
-spark-containers-formal-ordered_sets.ads:2120:13: info: during checks for quantification at spark-containers-formal-ordered_sets.ads:80, in instantiation at test_osets.ads:8
-spark-containers-formal-ordered_sets.ads:2120:13: info: implicit aspect Always_Terminates on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_osets.ads:10
-spark-containers-formal-ordered_sets.ads:2120:13: info: implicit aspect Always_Terminates on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_osets.ads:8
-spark-containers-formal-ordered_sets.ads:2120:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_osets.ads:10
-spark-containers-formal-ordered_sets.ads:2120:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_osets.ads:8
-spark-containers-formal-ordered_sets.ads:2124:06: info: data dependencies proved, in instantiation at test_osets.ads:10
-spark-containers-formal-ordered_sets.ads:2124:06: info: data dependencies proved, in instantiation at test_osets.ads:8
+spark-containers-formal-ordered_sets.ads:629:35: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:10
+spark-containers-formal-ordered_sets.ads:629:35: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:8
+spark-containers-formal-ordered_sets.ads:652:16: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:10
+spark-containers-formal-ordered_sets.ads:652:16: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:8
+spark-containers-formal-ordered_sets.ads:781:11: info: during checks for container aggregates at spark-containers-formal-ordered_sets.ads:89, in instantiation at test_osets.ads:10
+spark-containers-formal-ordered_sets.ads:781:11: info: during checks for container aggregates at spark-containers-formal-ordered_sets.ads:89, in instantiation at test_osets.ads:8
+spark-containers-formal-ordered_sets.ads:781:11: info: precondition proved (Z3: 2 VC), in instantiation at test_osets.ads:10
+spark-containers-formal-ordered_sets.ads:781:11: info: precondition proved (Z3: 2 VC), in instantiation at test_osets.ads:8
+spark-containers-formal-ordered_sets.ads:1064:40: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:10
+spark-containers-formal-ordered_sets.ads:1064:40: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:8
+spark-containers-formal-ordered_sets.ads:1074:16: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:10
+spark-containers-formal-ordered_sets.ads:1074:16: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:8
+spark-containers-formal-ordered_sets.ads:1114:43: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:10
+spark-containers-formal-ordered_sets.ads:1114:43: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:8
+spark-containers-formal-ordered_sets.ads:1123:19: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:10
+spark-containers-formal-ordered_sets.ads:1123:19: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:8
+spark-containers-formal-ordered_sets.ads:1154:43: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:10
+spark-containers-formal-ordered_sets.ads:1154:43: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:8
+spark-containers-formal-ordered_sets.ads:1163:19: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:10
+spark-containers-formal-ordered_sets.ads:1163:19: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:8
+spark-containers-formal-ordered_sets.ads:1183:27: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:10
+spark-containers-formal-ordered_sets.ads:1183:27: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:8
+spark-containers-formal-ordered_sets.ads:1184:30: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:10
+spark-containers-formal-ordered_sets.ads:1184:30: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:8
+spark-containers-formal-ordered_sets.ads:1238:44: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:10
+spark-containers-formal-ordered_sets.ads:1238:44: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:8
+spark-containers-formal-ordered_sets.ads:1407:27: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:10
+spark-containers-formal-ordered_sets.ads:1407:27: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:8
+spark-containers-formal-ordered_sets.ads:1408:30: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:10
+spark-containers-formal-ordered_sets.ads:1408:30: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:8
+spark-containers-formal-ordered_sets.ads:1408:48: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:10
+spark-containers-formal-ordered_sets.ads:1408:48: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:8
+spark-containers-formal-ordered_sets.ads:1454:44: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:10
+spark-containers-formal-ordered_sets.ads:1454:44: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:8
+spark-containers-formal-ordered_sets.ads:1521:13: info: during checks for quantification at spark-containers-formal-ordered_sets.ads:80, in instantiation at test_osets.ads:10
+spark-containers-formal-ordered_sets.ads:1521:13: info: during checks for quantification at spark-containers-formal-ordered_sets.ads:80, in instantiation at test_osets.ads:8
+spark-containers-formal-ordered_sets.ads:1521:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_osets.ads:10
+spark-containers-formal-ordered_sets.ads:1521:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_osets.ads:8
+spark-containers-formal-ordered_sets.ads:1576:13: info: during checks for quantification at spark-containers-formal-ordered_sets.ads:80, in instantiation at test_osets.ads:10
+spark-containers-formal-ordered_sets.ads:1576:13: info: during checks for quantification at spark-containers-formal-ordered_sets.ads:80, in instantiation at test_osets.ads:8
+spark-containers-formal-ordered_sets.ads:1576:13: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:10
+spark-containers-formal-ordered_sets.ads:1576:13: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:8
+spark-containers-formal-ordered_sets.ads:1585:21: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:10
+spark-containers-formal-ordered_sets.ads:1585:21: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:8
+spark-containers-formal-ordered_sets.ads:1604:21: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:10
+spark-containers-formal-ordered_sets.ads:1604:21: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:8
+spark-containers-formal-ordered_sets.ads:1623:21: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:10
+spark-containers-formal-ordered_sets.ads:1623:21: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:8
+spark-containers-formal-ordered_sets.ads:1641:21: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:10
+spark-containers-formal-ordered_sets.ads:1641:21: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:8
+spark-containers-formal-ordered_sets.ads:1680:50: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:10
+spark-containers-formal-ordered_sets.ads:1680:50: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:8
+spark-containers-formal-ordered_sets.ads:1700:43: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:10
+spark-containers-formal-ordered_sets.ads:1700:43: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:8
+spark-containers-formal-ordered_sets.ads:1722:13: info: during checks for quantification at spark-containers-formal-ordered_sets.ads:80, in instantiation at test_osets.ads:10
+spark-containers-formal-ordered_sets.ads:1722:13: info: during checks for quantification at spark-containers-formal-ordered_sets.ads:80, in instantiation at test_osets.ads:8
+spark-containers-formal-ordered_sets.ads:1722:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_osets.ads:10
+spark-containers-formal-ordered_sets.ads:1722:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_osets.ads:8
+spark-containers-formal-ordered_sets.ads:1741:19: info: aspect Always_Terminates on "Lt_Compatible" has been proved, subprogram will terminate, in instantiation at test_osets.ads:19
+spark-containers-formal-ordered_sets.ads:2056:47: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:19
+spark-containers-formal-ordered_sets.ads:2056:47: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:22
+spark-containers-formal-ordered_sets.ads:2078:41: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:19
+spark-containers-formal-ordered_sets.ads:2078:41: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:22
+spark-containers-formal-ordered_sets.ads:2109:13: info: implicit aspect Always_Terminates on "Aggr_Capacity" has been proved, subprogram will terminate, in instantiation at test_osets.ads:10
+spark-containers-formal-ordered_sets.ads:2109:13: info: implicit aspect Always_Terminates on "Aggr_Capacity" has been proved, subprogram will terminate, in instantiation at test_osets.ads:8
+spark-containers-formal-ordered_sets.ads:2113:06: info: data dependencies proved, in instantiation at test_osets.ads:10
+spark-containers-formal-ordered_sets.ads:2113:06: info: data dependencies proved, in instantiation at test_osets.ads:8
+spark-containers-formal-ordered_sets.ads:2117:13: info: implicit aspect Always_Terminates on "Aggr_Model" has been proved, subprogram will terminate, in instantiation at test_osets.ads:10
+spark-containers-formal-ordered_sets.ads:2117:13: info: implicit aspect Always_Terminates on "Aggr_Model" has been proved, subprogram will terminate, in instantiation at test_osets.ads:8
+spark-containers-formal-ordered_sets.ads:2121:06: info: data dependencies proved, in instantiation at test_osets.ads:10
+spark-containers-formal-ordered_sets.ads:2121:06: info: data dependencies proved, in instantiation at test_osets.ads:8
+spark-containers-formal-ordered_sets.ads:2125:13: info: during checks for quantification at spark-containers-formal-ordered_sets.ads:80, in instantiation at test_osets.ads:10
+spark-containers-formal-ordered_sets.ads:2125:13: info: during checks for quantification at spark-containers-formal-ordered_sets.ads:80, in instantiation at test_osets.ads:8
+spark-containers-formal-ordered_sets.ads:2125:13: info: implicit aspect Always_Terminates on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_osets.ads:10
+spark-containers-formal-ordered_sets.ads:2125:13: info: implicit aspect Always_Terminates on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_osets.ads:8
+spark-containers-formal-ordered_sets.ads:2125:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_osets.ads:10
+spark-containers-formal-ordered_sets.ads:2125:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_osets.ads:8
+spark-containers-formal-ordered_sets.ads:2129:06: info: data dependencies proved, in instantiation at test_osets.ads:10
+spark-containers-formal-ordered_sets.ads:2129:06: info: data dependencies proved, in instantiation at test_osets.ads:8
 spark-containers-formal-unbounded_ordered_sets.ads:29:16: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at test_osets.ads:26
 spark-containers-formal-unbounded_ordered_sets.ads:32:16: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at test_osets.ads:26
 spark-containers-formal-unbounded_ordered_sets.ads:35:16: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at test_osets.ads:26
@@ -147,10 +149,10 @@ spark-containers-formal-unbounded_ordered_sets.ads:87:06: info: after a call to 
 spark-containers-formal-unbounded_ordered_sets.ads:87:06: info: after a call to "Empty_Set" at spark-containers-formal-unbounded_ordered_sets.ads:520, in instantiation at test_osets.ads:26
 spark-containers-formal-unbounded_ordered_sets.ads:87:06: info: after a call to "Empty_Set" at spark-containers-formal-unbounded_ordered_sets.ads:520, in instantiation at test_osets.ads:28
 spark-containers-formal-unbounded_ordered_sets.ads:87:06: info: after a call to "Empty_Set" at spark-containers-formal-unbounded_ordered_sets.ads:520, in instantiation at test_osets.ads:28
-spark-containers-formal-unbounded_ordered_sets.ads:87:06: info: after a call to "Insert" at spark-containers-formal-unbounded_ordered_sets.ads:757, in instantiation at test_osets.ads:26
-spark-containers-formal-unbounded_ordered_sets.ads:87:06: info: after a call to "Insert" at spark-containers-formal-unbounded_ordered_sets.ads:757, in instantiation at test_osets.ads:26
-spark-containers-formal-unbounded_ordered_sets.ads:87:06: info: after a call to "Insert" at spark-containers-formal-unbounded_ordered_sets.ads:757, in instantiation at test_osets.ads:28
-spark-containers-formal-unbounded_ordered_sets.ads:87:06: info: after a call to "Insert" at spark-containers-formal-unbounded_ordered_sets.ads:757, in instantiation at test_osets.ads:28
+spark-containers-formal-unbounded_ordered_sets.ads:87:06: info: after a call to "Insert" at spark-containers-formal-unbounded_ordered_sets.ads:762, in instantiation at test_osets.ads:26
+spark-containers-formal-unbounded_ordered_sets.ads:87:06: info: after a call to "Insert" at spark-containers-formal-unbounded_ordered_sets.ads:762, in instantiation at test_osets.ads:26
+spark-containers-formal-unbounded_ordered_sets.ads:87:06: info: after a call to "Insert" at spark-containers-formal-unbounded_ordered_sets.ads:762, in instantiation at test_osets.ads:28
+spark-containers-formal-unbounded_ordered_sets.ads:87:06: info: after a call to "Insert" at spark-containers-formal-unbounded_ordered_sets.ads:762, in instantiation at test_osets.ads:28
 spark-containers-formal-unbounded_ordered_sets.ads:87:06: info: when establishing invariant on "Contains" at spark-containers-functional-sets.ads:99, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:150, in instantiation at test_osets.ads:26
 spark-containers-formal-unbounded_ordered_sets.ads:87:06: info: when establishing invariant on "Contains" at spark-containers-functional-sets.ads:99, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:150, in instantiation at test_osets.ads:28
 spark-containers-formal-unbounded_ordered_sets.ads:87:06: info: when establishing invariant on "Length" at spark-containers-functional-sets.ads:124, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:150, in instantiation at test_osets.ads:26
@@ -163,83 +165,85 @@ spark-containers-formal-unbounded_ordered_sets.ads:598:13: info: during checks f
 spark-containers-formal-unbounded_ordered_sets.ads:598:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_sets.ads:78, in instantiation at test_osets.ads:28
 spark-containers-formal-unbounded_ordered_sets.ads:598:13: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:26
 spark-containers-formal-unbounded_ordered_sets.ads:598:13: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:28
-spark-containers-formal-unbounded_ordered_sets.ads:635:16: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:26
-spark-containers-formal-unbounded_ordered_sets.ads:635:16: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:28
-spark-containers-formal-unbounded_ordered_sets.ads:763:11: info: during checks for container aggregates at spark-containers-formal-unbounded_ordered_sets.ads:87, in instantiation at test_osets.ads:26
-spark-containers-formal-unbounded_ordered_sets.ads:763:11: info: during checks for container aggregates at spark-containers-formal-unbounded_ordered_sets.ads:87, in instantiation at test_osets.ads:28
-spark-containers-formal-unbounded_ordered_sets.ads:763:11: info: precondition proved (Z3: 2 VC), in instantiation at test_osets.ads:26
-spark-containers-formal-unbounded_ordered_sets.ads:763:11: info: precondition proved (Z3: 2 VC), in instantiation at test_osets.ads:28
-spark-containers-formal-unbounded_ordered_sets.ads:1046:40: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:26
-spark-containers-formal-unbounded_ordered_sets.ads:1046:40: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:28
-spark-containers-formal-unbounded_ordered_sets.ads:1056:16: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:26
-spark-containers-formal-unbounded_ordered_sets.ads:1056:16: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:28
-spark-containers-formal-unbounded_ordered_sets.ads:1096:43: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:26
-spark-containers-formal-unbounded_ordered_sets.ads:1096:43: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:28
-spark-containers-formal-unbounded_ordered_sets.ads:1105:19: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:26
-spark-containers-formal-unbounded_ordered_sets.ads:1105:19: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:28
-spark-containers-formal-unbounded_ordered_sets.ads:1136:43: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:26
-spark-containers-formal-unbounded_ordered_sets.ads:1136:43: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:28
-spark-containers-formal-unbounded_ordered_sets.ads:1145:19: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:26
-spark-containers-formal-unbounded_ordered_sets.ads:1145:19: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:28
-spark-containers-formal-unbounded_ordered_sets.ads:1165:27: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:26
-spark-containers-formal-unbounded_ordered_sets.ads:1165:27: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:28
-spark-containers-formal-unbounded_ordered_sets.ads:1166:30: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:26
-spark-containers-formal-unbounded_ordered_sets.ads:1166:30: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:28
-spark-containers-formal-unbounded_ordered_sets.ads:1220:44: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:26
-spark-containers-formal-unbounded_ordered_sets.ads:1220:44: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:28
-spark-containers-formal-unbounded_ordered_sets.ads:1389:27: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:26
-spark-containers-formal-unbounded_ordered_sets.ads:1389:27: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:28
-spark-containers-formal-unbounded_ordered_sets.ads:1390:30: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:26
-spark-containers-formal-unbounded_ordered_sets.ads:1390:30: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:28
-spark-containers-formal-unbounded_ordered_sets.ads:1390:48: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:26
-spark-containers-formal-unbounded_ordered_sets.ads:1390:48: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:28
-spark-containers-formal-unbounded_ordered_sets.ads:1436:44: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:26
-spark-containers-formal-unbounded_ordered_sets.ads:1436:44: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:28
-spark-containers-formal-unbounded_ordered_sets.ads:1503:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_sets.ads:78, in instantiation at test_osets.ads:26
-spark-containers-formal-unbounded_ordered_sets.ads:1503:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_sets.ads:78, in instantiation at test_osets.ads:28
-spark-containers-formal-unbounded_ordered_sets.ads:1503:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_osets.ads:26
-spark-containers-formal-unbounded_ordered_sets.ads:1503:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_osets.ads:28
-spark-containers-formal-unbounded_ordered_sets.ads:1558:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_sets.ads:78, in instantiation at test_osets.ads:26
-spark-containers-formal-unbounded_ordered_sets.ads:1558:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_sets.ads:78, in instantiation at test_osets.ads:28
-spark-containers-formal-unbounded_ordered_sets.ads:1558:13: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:26
-spark-containers-formal-unbounded_ordered_sets.ads:1558:13: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:28
-spark-containers-formal-unbounded_ordered_sets.ads:1567:21: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:26
-spark-containers-formal-unbounded_ordered_sets.ads:1567:21: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:28
-spark-containers-formal-unbounded_ordered_sets.ads:1586:21: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:26
-spark-containers-formal-unbounded_ordered_sets.ads:1586:21: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:28
-spark-containers-formal-unbounded_ordered_sets.ads:1605:21: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:26
-spark-containers-formal-unbounded_ordered_sets.ads:1605:21: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:28
-spark-containers-formal-unbounded_ordered_sets.ads:1623:21: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:26
-spark-containers-formal-unbounded_ordered_sets.ads:1623:21: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:28
-spark-containers-formal-unbounded_ordered_sets.ads:1662:50: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:26
-spark-containers-formal-unbounded_ordered_sets.ads:1662:50: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:28
-spark-containers-formal-unbounded_ordered_sets.ads:1682:43: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:26
-spark-containers-formal-unbounded_ordered_sets.ads:1682:43: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:28
-spark-containers-formal-unbounded_ordered_sets.ads:1704:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_sets.ads:78, in instantiation at test_osets.ads:26
-spark-containers-formal-unbounded_ordered_sets.ads:1704:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_sets.ads:78, in instantiation at test_osets.ads:28
-spark-containers-formal-unbounded_ordered_sets.ads:1704:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_osets.ads:26
-spark-containers-formal-unbounded_ordered_sets.ads:1704:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_osets.ads:28
-spark-containers-formal-unbounded_ordered_sets.ads:1723:19: info: aspect Always_Terminates on "Lt_Compatible" has been proved, subprogram will terminate, in instantiation at test_osets.ads:37
-spark-containers-formal-unbounded_ordered_sets.ads:2038:47: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:37
-spark-containers-formal-unbounded_ordered_sets.ads:2038:47: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:40
-spark-containers-formal-unbounded_ordered_sets.ads:2060:41: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:37
-spark-containers-formal-unbounded_ordered_sets.ads:2060:41: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:40
-spark-containers-formal-unbounded_ordered_sets.ads:2091:13: info: implicit aspect Always_Terminates on "Aggr_Capacity" has been proved, subprogram will terminate, in instantiation at test_osets.ads:26
-spark-containers-formal-unbounded_ordered_sets.ads:2091:13: info: implicit aspect Always_Terminates on "Aggr_Capacity" has been proved, subprogram will terminate, in instantiation at test_osets.ads:28
-spark-containers-formal-unbounded_ordered_sets.ads:2095:06: info: data dependencies proved, in instantiation at test_osets.ads:26
-spark-containers-formal-unbounded_ordered_sets.ads:2095:06: info: data dependencies proved, in instantiation at test_osets.ads:28
-spark-containers-formal-unbounded_ordered_sets.ads:2099:13: info: implicit aspect Always_Terminates on "Aggr_Model" has been proved, subprogram will terminate, in instantiation at test_osets.ads:26
-spark-containers-formal-unbounded_ordered_sets.ads:2099:13: info: implicit aspect Always_Terminates on "Aggr_Model" has been proved, subprogram will terminate, in instantiation at test_osets.ads:28
-spark-containers-formal-unbounded_ordered_sets.ads:2103:06: info: data dependencies proved, in instantiation at test_osets.ads:26
-spark-containers-formal-unbounded_ordered_sets.ads:2103:06: info: data dependencies proved, in instantiation at test_osets.ads:28
-spark-containers-formal-unbounded_ordered_sets.ads:2107:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_sets.ads:78, in instantiation at test_osets.ads:26
-spark-containers-formal-unbounded_ordered_sets.ads:2107:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_sets.ads:78, in instantiation at test_osets.ads:28
-spark-containers-formal-unbounded_ordered_sets.ads:2107:13: info: implicit aspect Always_Terminates on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_osets.ads:26
-spark-containers-formal-unbounded_ordered_sets.ads:2107:13: info: implicit aspect Always_Terminates on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_osets.ads:28
-spark-containers-formal-unbounded_ordered_sets.ads:2107:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_osets.ads:26
-spark-containers-formal-unbounded_ordered_sets.ads:2107:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_osets.ads:28
-spark-containers-formal-unbounded_ordered_sets.ads:2111:06: info: data dependencies proved, in instantiation at test_osets.ads:26
-spark-containers-formal-unbounded_ordered_sets.ads:2111:06: info: data dependencies proved, in instantiation at test_osets.ads:28
+spark-containers-formal-unbounded_ordered_sets.ads:617:35: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:26
+spark-containers-formal-unbounded_ordered_sets.ads:617:35: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:28
+spark-containers-formal-unbounded_ordered_sets.ads:640:16: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:26
+spark-containers-formal-unbounded_ordered_sets.ads:640:16: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:28
+spark-containers-formal-unbounded_ordered_sets.ads:768:11: info: during checks for container aggregates at spark-containers-formal-unbounded_ordered_sets.ads:87, in instantiation at test_osets.ads:26
+spark-containers-formal-unbounded_ordered_sets.ads:768:11: info: during checks for container aggregates at spark-containers-formal-unbounded_ordered_sets.ads:87, in instantiation at test_osets.ads:28
+spark-containers-formal-unbounded_ordered_sets.ads:768:11: info: precondition proved (Z3: 2 VC), in instantiation at test_osets.ads:26
+spark-containers-formal-unbounded_ordered_sets.ads:768:11: info: precondition proved (Z3: 2 VC), in instantiation at test_osets.ads:28
+spark-containers-formal-unbounded_ordered_sets.ads:1051:40: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:26
+spark-containers-formal-unbounded_ordered_sets.ads:1051:40: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:28
+spark-containers-formal-unbounded_ordered_sets.ads:1061:16: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:26
+spark-containers-formal-unbounded_ordered_sets.ads:1061:16: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:28
+spark-containers-formal-unbounded_ordered_sets.ads:1101:43: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:26
+spark-containers-formal-unbounded_ordered_sets.ads:1101:43: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:28
+spark-containers-formal-unbounded_ordered_sets.ads:1110:19: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:26
+spark-containers-formal-unbounded_ordered_sets.ads:1110:19: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:28
+spark-containers-formal-unbounded_ordered_sets.ads:1141:43: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:26
+spark-containers-formal-unbounded_ordered_sets.ads:1141:43: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:28
+spark-containers-formal-unbounded_ordered_sets.ads:1150:19: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:26
+spark-containers-formal-unbounded_ordered_sets.ads:1150:19: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:28
+spark-containers-formal-unbounded_ordered_sets.ads:1170:27: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:26
+spark-containers-formal-unbounded_ordered_sets.ads:1170:27: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:28
+spark-containers-formal-unbounded_ordered_sets.ads:1171:30: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:26
+spark-containers-formal-unbounded_ordered_sets.ads:1171:30: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:28
+spark-containers-formal-unbounded_ordered_sets.ads:1225:44: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:26
+spark-containers-formal-unbounded_ordered_sets.ads:1225:44: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:28
+spark-containers-formal-unbounded_ordered_sets.ads:1394:27: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:26
+spark-containers-formal-unbounded_ordered_sets.ads:1394:27: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:28
+spark-containers-formal-unbounded_ordered_sets.ads:1395:30: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:26
+spark-containers-formal-unbounded_ordered_sets.ads:1395:30: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:28
+spark-containers-formal-unbounded_ordered_sets.ads:1395:48: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:26
+spark-containers-formal-unbounded_ordered_sets.ads:1395:48: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:28
+spark-containers-formal-unbounded_ordered_sets.ads:1441:44: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:26
+spark-containers-formal-unbounded_ordered_sets.ads:1441:44: info: overflow check proved (Z3: 2 VC), in instantiation at test_osets.ads:28
+spark-containers-formal-unbounded_ordered_sets.ads:1508:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_sets.ads:78, in instantiation at test_osets.ads:26
+spark-containers-formal-unbounded_ordered_sets.ads:1508:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_sets.ads:78, in instantiation at test_osets.ads:28
+spark-containers-formal-unbounded_ordered_sets.ads:1508:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_osets.ads:26
+spark-containers-formal-unbounded_ordered_sets.ads:1508:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_osets.ads:28
+spark-containers-formal-unbounded_ordered_sets.ads:1563:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_sets.ads:78, in instantiation at test_osets.ads:26
+spark-containers-formal-unbounded_ordered_sets.ads:1563:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_sets.ads:78, in instantiation at test_osets.ads:28
+spark-containers-formal-unbounded_ordered_sets.ads:1563:13: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:26
+spark-containers-formal-unbounded_ordered_sets.ads:1563:13: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:28
+spark-containers-formal-unbounded_ordered_sets.ads:1572:21: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:26
+spark-containers-formal-unbounded_ordered_sets.ads:1572:21: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:28
+spark-containers-formal-unbounded_ordered_sets.ads:1591:21: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:26
+spark-containers-formal-unbounded_ordered_sets.ads:1591:21: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:28
+spark-containers-formal-unbounded_ordered_sets.ads:1610:21: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:26
+spark-containers-formal-unbounded_ordered_sets.ads:1610:21: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:28
+spark-containers-formal-unbounded_ordered_sets.ads:1628:21: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:26
+spark-containers-formal-unbounded_ordered_sets.ads:1628:21: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:28
+spark-containers-formal-unbounded_ordered_sets.ads:1667:50: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:26
+spark-containers-formal-unbounded_ordered_sets.ads:1667:50: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:28
+spark-containers-formal-unbounded_ordered_sets.ads:1687:43: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:26
+spark-containers-formal-unbounded_ordered_sets.ads:1687:43: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:28
+spark-containers-formal-unbounded_ordered_sets.ads:1709:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_sets.ads:78, in instantiation at test_osets.ads:26
+spark-containers-formal-unbounded_ordered_sets.ads:1709:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_sets.ads:78, in instantiation at test_osets.ads:28
+spark-containers-formal-unbounded_ordered_sets.ads:1709:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_osets.ads:26
+spark-containers-formal-unbounded_ordered_sets.ads:1709:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_osets.ads:28
+spark-containers-formal-unbounded_ordered_sets.ads:1728:19: info: aspect Always_Terminates on "Lt_Compatible" has been proved, subprogram will terminate, in instantiation at test_osets.ads:37
+spark-containers-formal-unbounded_ordered_sets.ads:2043:47: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:37
+spark-containers-formal-unbounded_ordered_sets.ads:2043:47: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:40
+spark-containers-formal-unbounded_ordered_sets.ads:2065:41: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:37
+spark-containers-formal-unbounded_ordered_sets.ads:2065:41: info: precondition proved (Z3: 1 VC), in instantiation at test_osets.ads:40
+spark-containers-formal-unbounded_ordered_sets.ads:2096:13: info: implicit aspect Always_Terminates on "Aggr_Capacity" has been proved, subprogram will terminate, in instantiation at test_osets.ads:26
+spark-containers-formal-unbounded_ordered_sets.ads:2096:13: info: implicit aspect Always_Terminates on "Aggr_Capacity" has been proved, subprogram will terminate, in instantiation at test_osets.ads:28
+spark-containers-formal-unbounded_ordered_sets.ads:2100:06: info: data dependencies proved, in instantiation at test_osets.ads:26
+spark-containers-formal-unbounded_ordered_sets.ads:2100:06: info: data dependencies proved, in instantiation at test_osets.ads:28
+spark-containers-formal-unbounded_ordered_sets.ads:2104:13: info: implicit aspect Always_Terminates on "Aggr_Model" has been proved, subprogram will terminate, in instantiation at test_osets.ads:26
+spark-containers-formal-unbounded_ordered_sets.ads:2104:13: info: implicit aspect Always_Terminates on "Aggr_Model" has been proved, subprogram will terminate, in instantiation at test_osets.ads:28
+spark-containers-formal-unbounded_ordered_sets.ads:2108:06: info: data dependencies proved, in instantiation at test_osets.ads:26
+spark-containers-formal-unbounded_ordered_sets.ads:2108:06: info: data dependencies proved, in instantiation at test_osets.ads:28
+spark-containers-formal-unbounded_ordered_sets.ads:2112:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_sets.ads:78, in instantiation at test_osets.ads:26
+spark-containers-formal-unbounded_ordered_sets.ads:2112:13: info: during checks for quantification at spark-containers-formal-unbounded_ordered_sets.ads:78, in instantiation at test_osets.ads:28
+spark-containers-formal-unbounded_ordered_sets.ads:2112:13: info: implicit aspect Always_Terminates on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_osets.ads:26
+spark-containers-formal-unbounded_ordered_sets.ads:2112:13: info: implicit aspect Always_Terminates on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_osets.ads:28
+spark-containers-formal-unbounded_ordered_sets.ads:2112:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_osets.ads:26
+spark-containers-formal-unbounded_ordered_sets.ads:2112:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_osets.ads:28
+spark-containers-formal-unbounded_ordered_sets.ads:2116:06: info: data dependencies proved, in instantiation at test_osets.ads:26
+spark-containers-formal-unbounded_ordered_sets.ads:2116:06: info: data dependencies proved, in instantiation at test_osets.ads:28
 spark-containers-functional-maps.ads:36:16: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_sets.ads:344, in instantiation at test_osets.ads:10
 spark-containers-functional-maps.ads:36:16: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_sets.ads:344, in instantiation at test_osets.ads:8
 spark-containers-functional-maps.ads:36:16: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:333, in instantiation at test_osets.ads:26
@@ -1376,15 +1380,15 @@ spark-containers-parameter_checks.ads:255:68: info: postcondition proved (Z3: 2 
 spark-containers-parameter_checks.ads:255:68: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:141, in instantiation at test_osets.ads:8
 spark-containers-parameter_checks.ads:255:68: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:130, in instantiation at test_osets.ads:26
 spark-containers-parameter_checks.ads:255:68: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:130, in instantiation at test_osets.ads:28
-spark-containers-parameter_checks.ads:295:17: info: aspect Always_Terminates on "Op_Compatible" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_sets.ads:1759, in instantiation at test_osets.ads:19
-spark-containers-parameter_checks.ads:295:17: info: aspect Always_Terminates on "Op_Compatible" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_sets.ads:1759, in instantiation at test_osets.ads:22
-spark-containers-parameter_checks.ads:295:17: info: aspect Always_Terminates on "Op_Compatible" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:1746, in instantiation at test_osets.ads:37
-spark-containers-parameter_checks.ads:295:17: info: aspect Always_Terminates on "Op_Compatible" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:1746, in instantiation at test_osets.ads:40
-spark-containers-parameter_checks.ads:296:12: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_sets.ads:1759, in instantiation at test_osets.ads:19
-spark-containers-parameter_checks.ads:296:12: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_sets.ads:1759, in instantiation at test_osets.ads:22
-spark-containers-parameter_checks.ads:296:12: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:1746, in instantiation at test_osets.ads:37
-spark-containers-parameter_checks.ads:296:12: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:1746, in instantiation at test_osets.ads:40
-spark-containers-parameter_checks.ads:296:36: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:1759, in instantiation at test_osets.ads:22
-spark-containers-parameter_checks.ads:296:36: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:1746, in instantiation at test_osets.ads:40
-spark-containers-parameter_checks.ads:296:36: medium: postcondition might fail, in instantiation at spark-containers-formal-ordered_sets.ads:1759, in instantiation at test_osets.ads:19 [possible fix: you should consider adding a postcondition to operator "<" and function "F" or turning them into expression functions in their unit spec] [provers gave up before completing the proof]
-spark-containers-parameter_checks.ads:296:36: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:1746, in instantiation at test_osets.ads:37 [possible fix: you should consider adding a postcondition to operator "<" and function "F" or turning them into expression functions in their unit spec] [provers gave up before completing the proof]
+spark-containers-parameter_checks.ads:295:17: info: aspect Always_Terminates on "Op_Compatible" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_sets.ads:1764, in instantiation at test_osets.ads:19
+spark-containers-parameter_checks.ads:295:17: info: aspect Always_Terminates on "Op_Compatible" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-ordered_sets.ads:1764, in instantiation at test_osets.ads:22
+spark-containers-parameter_checks.ads:295:17: info: aspect Always_Terminates on "Op_Compatible" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:1751, in instantiation at test_osets.ads:37
+spark-containers-parameter_checks.ads:295:17: info: aspect Always_Terminates on "Op_Compatible" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:1751, in instantiation at test_osets.ads:40
+spark-containers-parameter_checks.ads:296:12: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_sets.ads:1764, in instantiation at test_osets.ads:19
+spark-containers-parameter_checks.ads:296:12: info: data dependencies proved, in instantiation at spark-containers-formal-ordered_sets.ads:1764, in instantiation at test_osets.ads:22
+spark-containers-parameter_checks.ads:296:12: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:1751, in instantiation at test_osets.ads:37
+spark-containers-parameter_checks.ads:296:12: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:1751, in instantiation at test_osets.ads:40
+spark-containers-parameter_checks.ads:296:36: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-ordered_sets.ads:1764, in instantiation at test_osets.ads:22
+spark-containers-parameter_checks.ads:296:36: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:1751, in instantiation at test_osets.ads:40
+spark-containers-parameter_checks.ads:296:36: medium: postcondition might fail, in instantiation at spark-containers-formal-ordered_sets.ads:1764, in instantiation at test_osets.ads:19 [possible fix: you should consider adding a postcondition to operator "<" and function "F" or turning them into expression functions in their unit spec] [provers gave up before completing the proof]
+spark-containers-parameter_checks.ads:296:36: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:1751, in instantiation at test_osets.ads:37 [possible fix: you should consider adding a postcondition to operator "<" and function "F" or turning them into expression functions in their unit spec] [provers gave up before completing the proof]
