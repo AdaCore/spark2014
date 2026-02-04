@@ -4,14 +4,14 @@ volatility_compatibility_checks.adb:9:11: error: volatile object as actual is no
 volatility_compatibility_checks.adb:9:19: error: launch "gnatprove --explain=E0004" for more information
 volatility_compatibility_checks.adb:9:19: error: violation of pragma SPARK_Mode at test.adc:1
 volatility_compatibility_checks.adb:9:19: error: volatile object in interfering context is not allowed in SPARK (SPARK RM 7.1.3(9)) [E0004]
-volatility_compatibility_checks.ads:14:07: error: incompatible volatile object and its type with respect to volatility due to Async_Writers is not allowed in SPARK
+volatility_compatibility_checks.ads:14:07: error: incompatible volatile object and its type with respect to volatility due to Async_Writers is not allowed in SPARK (SPARK RM 7.1.3(2))
 volatility_compatibility_checks.ads:14:07: error: violation of aspect SPARK_Mode at line 2
-volatility_compatibility_checks.ads:25:10: error: incompatible record component f3 and its enclosing record type with respect to volatility due to Async_Readers is not allowed in SPARK
+volatility_compatibility_checks.ads:25:10: error: incompatible record component f3 and its enclosing record type with respect to volatility due to Async_Readers is not allowed in SPARK (SPARK RM 7.1.3(6))
 volatility_compatibility_checks.ads:25:10: error: violation of aspect SPARK_Mode at line 2
-volatility_compatibility_checks.ads:30:07: error: incompatible component type and its enclosing array type with respect to volatility due to Async_Readers is not allowed in SPARK
+volatility_compatibility_checks.ads:30:07: error: incompatible component type and its enclosing array type with respect to volatility due to Async_Readers is not allowed in SPARK (SPARK RM 7.1.3(6))
 volatility_compatibility_checks.ads:30:07: error: violation of aspect SPARK_Mode at line 2
-volatility_compatibility_checks.ads:41:12: error: incompatible designated type and access type with respect to volatility due to Async_Readers is not allowed in SPARK
+volatility_compatibility_checks.ads:41:12: error: incompatible designated type and access type with respect to volatility due to Async_Readers is not allowed in SPARK (SPARK RM 7.1.3(6))
 volatility_compatibility_checks.ads:41:12: error: violation of aspect SPARK_Mode at line 2
-volatility_compatibility_checks.ads:87:07: error: incompatible volatile object and its type with respect to volatility due to Async_Writers is not allowed in SPARK
+volatility_compatibility_checks.ads:87:07: error: incompatible volatile object and its type with respect to volatility due to Async_Writers is not allowed in SPARK (SPARK RM 7.1.3(2))
 volatility_compatibility_checks.ads:87:07: error: violation of aspect SPARK_Mode at line 2
 gnatprove: error during flow analysis and proof

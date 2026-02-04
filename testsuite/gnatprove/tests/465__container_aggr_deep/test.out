@@ -40,12 +40,12 @@ deep_vectors.ads:51:29: info: range check proved (CVC5: 2 VC)
 deep_vectors.ads:51:32: info: range check proved (CVC5: 2 VC)
 deep_vectors.ads:54:19: info: null exclusion check proved (CVC5: 1 VC)
 deep_vectors.ads:54:23: info: index check proved (CVC5: 2 VC)
-main.adb:3:04: error: "X" is not allowed in SPARK (due to allocator not stored in object as part of assignment, declaration or return)
+main.adb:3:04: error: "X" is not allowed in SPARK (due to allocator or call to allocating function not stored in object as part of assignment, declaration, or return statement)
 main.adb:3:04: error: violation of aspect SPARK_Mode at line 2
-main.adb:3:25: error: allocator not stored in object as part of assignment, declaration or return is not allowed in SPARK
+main.adb:3:25: error: allocator or call to allocating function not stored in object as part of assignment, declaration, or return statement is not allowed in SPARK (SPARK RM 4.8(2))
 main.adb:3:25: error: violation of aspect SPARK_Mode at line 2
-main.adb:3:49: error: allocator not stored in object as part of assignment, declaration or return is not allowed in SPARK
+main.adb:3:49: error: allocator or call to allocating function not stored in object as part of assignment, declaration, or return statement is not allowed in SPARK (SPARK RM 4.8(2))
 main.adb:3:49: error: violation of aspect SPARK_Mode at line 2
-main.adb:5:11: error: "X" is not allowed in SPARK (due to allocator not stored in object as part of assignment, declaration or return)
+main.adb:5:11: error: "X" is not allowed in SPARK (due to allocator or call to allocating function not stored in object as part of assignment, declaration, or return statement)
 main.adb:5:11: error: violation of aspect SPARK_Mode at line 2
 gnatprove: error during flow analysis and proof

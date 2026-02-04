@@ -5,11 +5,13 @@ access_to_constants.adb:28:18: error: object was declared as not writable at lin
 access_to_constants.ads:19:13: info: implicit aspect Always_Terminates on "Allocate_Int_Acc" has been proved, subprogram will terminate
 access_to_constants.ads:22:44: error: illegal move during elaboration
 access_to_constants_2.ads:7:43: error: illegal move during elaboration
-test_alias.adb:29:07: error: borrow of an access-to-constant part of an object is not allowed in SPARK
+test_alias.adb:29:07: error: borrow of a constant object is not allowed in SPARK (SPARK RM 3.10(11))
+test_alias.adb:29:07: error: the borrowed path is an access-to-constant part of an object
 test_alias.adb:29:07: error: violation of aspect SPARK_Mode at line 5
-test_alias.adb:33:14: error: borrow of an access-to-constant part of an object is not allowed in SPARK
+test_alias.adb:33:14: error: borrow of a constant object is not allowed in SPARK (SPARK RM 3.10(11))
+test_alias.adb:33:14: error: the borrowed path is an access-to-constant part of an object
 test_alias.adb:33:14: error: violation of aspect SPARK_Mode at line 5
-test_alias.adb:44:14: error: access-to-constant part of an object as source of move is not allowed in SPARK
+test_alias.adb:44:14: error: access-to-constant part of an object as source of move is not allowed in SPARK (SPARK RM 3.10(1))
 test_alias.adb:44:14: error: violation of aspect SPARK_Mode at line 5
 test_alias.adb:63:04: warning: assuming "Init" always terminates
 test_alias.adb:63:04: warning: no Always_Terminates aspect available for "Init" [assumed-always-terminates]
@@ -21,35 +23,39 @@ test_alias.adb:67:20: error: violation of aspect SPARK_Mode at line 5
 test_alias.adb:67:20: warning: "Y" may be null [enabled by default]
 test_alias.adb:69:20: error: access-to-constant part of an object as "in" parameter of an access-to-variable type is not allowed in SPARK
 test_alias.adb:69:20: error: violation of aspect SPARK_Mode at line 5
-test_alias.adb:71:20: error: access-to-constant part of an object as source of move is not allowed in SPARK
+test_alias.adb:71:20: error: access-to-constant part of an object as source of move is not allowed in SPARK (SPARK RM 3.10(1))
 test_alias.adb:71:20: error: violation of aspect SPARK_Mode at line 5
 test_alias.adb:71:20: warning: "H_2" may be null [enabled by default]
-test_alias.adb:75:30: error: borrow of an access-to-constant part of an object is not allowed in SPARK
+test_alias.adb:75:30: error: borrow of a constant object is not allowed in SPARK (SPARK RM 3.10(11))
+test_alias.adb:75:30: error: the borrowed path is an access-to-constant part of an object
 test_alias.adb:75:30: error: violation of aspect SPARK_Mode at line 5
-test_alias.adb:77:30: error: borrow of an access-to-constant part of an object is not allowed in SPARK
+test_alias.adb:77:30: error: borrow of a constant object is not allowed in SPARK (SPARK RM 3.10(11))
+test_alias.adb:77:30: error: the borrowed path is an access-to-constant part of an object
 test_alias.adb:77:30: error: violation of aspect SPARK_Mode at line 5
-test_alias.adb:79:30: error: borrow of an access-to-constant part of an object is not allowed in SPARK
+test_alias.adb:79:30: error: borrow of a constant object is not allowed in SPARK (SPARK RM 3.10(11))
+test_alias.adb:79:30: error: the borrowed path is an access-to-constant part of an object
 test_alias.adb:79:30: error: violation of aspect SPARK_Mode at line 5
 test_alias.adb:79:52: warning: "H" may be null [enabled by default]
-test_alias.adb:82:07: error: "B1" is not allowed in SPARK (due to borrow of an access-to-constant part of an object)
+test_alias.adb:82:07: error: "B1" is not allowed in SPARK (due to borrow of a constant object)
 test_alias.adb:82:07: error: violation of aspect SPARK_Mode at line 5
-test_alias.adb:85:12: error: borrow of an access-to-constant part of an object is not allowed in SPARK
+test_alias.adb:85:12: error: borrow of a constant object is not allowed in SPARK (SPARK RM 3.10(11))
+test_alias.adb:85:12: error: the borrowed path is an access-to-constant part of an object
 test_alias.adb:85:12: error: violation of aspect SPARK_Mode at line 5
-test_alias.adb:103:12: error: conversion from an anonymous access type to a named access type is not allowed in SPARK
+test_alias.adb:103:12: error: conversion from an anonymous access type to a named access type is not allowed in SPARK (SPARK RM 3.10(18))
 test_alias.adb:103:12: error: violation of aspect SPARK_Mode at line 5
-test_alias.adb:108:27: error: access-to-constant part of an object as source of move is not allowed in SPARK
+test_alias.adb:108:27: error: access-to-constant part of an object as source of move is not allowed in SPARK (SPARK RM 3.10(1))
 test_alias.adb:108:27: error: violation of aspect SPARK_Mode at line 5
 test_alias.adb:109:22: error: "R" is not allowed in SPARK (due to access-to-constant part of an object as source of move)
 test_alias.adb:109:22: error: violation of aspect SPARK_Mode at line 5
 test_alias.adb:112:22: error: "R" is not allowed in SPARK (due to access-to-constant part of an object as source of move)
 test_alias.adb:112:22: error: violation of aspect SPARK_Mode at line 5
-test_alias.adb:118:09: error: access-to-constant part of an object as source of move is not allowed in SPARK
+test_alias.adb:118:09: error: access-to-constant part of an object as source of move is not allowed in SPARK (SPARK RM 3.10(1))
 test_alias.adb:118:09: error: violation of aspect SPARK_Mode at line 5
-test_alias.adb:123:31: error: access-to-constant part of an object as source of move is not allowed in SPARK
+test_alias.adb:123:31: error: access-to-constant part of an object as source of move is not allowed in SPARK (SPARK RM 3.10(1))
 test_alias.adb:123:31: error: violation of aspect SPARK_Mode at line 5
 test_alias.adb:126:07: error: "S" is not allowed in SPARK (due to access-to-constant part of an object as source of move)
 test_alias.adb:126:07: error: violation of aspect SPARK_Mode at line 5
-test_alias.adb:133:27: error: access-to-constant part of an object as source of move is not allowed in SPARK
+test_alias.adb:133:27: error: access-to-constant part of an object as source of move is not allowed in SPARK (SPARK RM 3.10(1))
 test_alias.adb:133:27: error: violation of aspect SPARK_Mode at line 5
 test_alias.adb:134:36: error: "R" is not allowed in SPARK (due to access-to-constant part of an object as source of move)
 test_alias.adb:134:36: error: violation of aspect SPARK_Mode at line 5

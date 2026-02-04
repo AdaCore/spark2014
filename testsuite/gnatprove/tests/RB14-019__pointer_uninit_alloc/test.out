@@ -1,4 +1,4 @@
 uninit_alloc.ads:10:25: error: launch "gnatprove --explain=E0019" for more information
-uninit_alloc.ads:10:25: error: uninitialized allocator without default initialization is not allowed in SPARK [E0019]
+uninit_alloc.ads:10:25: error: uninitialized allocator without default initialization is not allowed in SPARK (SPARK RM 4.8(1)) [E0019]
 uninit_alloc.ads:10:25: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof

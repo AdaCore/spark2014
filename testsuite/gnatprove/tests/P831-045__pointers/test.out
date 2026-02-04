@@ -65,10 +65,10 @@ n05.adb:53:03: info: precondition proved (Trivial: 1 VC)
 n05.adb:53:10: warning: "AA0" is set by "Out_A" but not used after the call
 n05.adb:54:05: warning: unused assignment
 observingcomposite.adb:20:20: error: launch "gnatprove --explain=E0019" for more information
-observingcomposite.adb:20:20: error: uninitialized allocator without default initialization is not allowed in SPARK [E0019]
+observingcomposite.adb:20:20: error: uninitialized allocator without default initialization is not allowed in SPARK (SPARK RM 4.8(1)) [E0019]
 observingcomposite.adb:20:20: error: violation of aspect SPARK_Mode at line 6
 observingcomposite.adb:21:20: error: launch "gnatprove --explain=E0019" for more information
-observingcomposite.adb:21:20: error: uninitialized allocator without default initialization is not allowed in SPARK [E0019]
+observingcomposite.adb:21:20: error: uninitialized allocator without default initialization is not allowed in SPARK (SPARK RM 4.8(1)) [E0019]
 observingcomposite.adb:21:20: error: violation of aspect SPARK_Mode at line 6
 observingcomposite.adb:22:03: error: "R1" is not allowed in SPARK (due to uninitialized allocator without default initialization)
 observingcomposite.adb:22:03: error: violation of aspect SPARK_Mode at line 6
@@ -84,7 +84,7 @@ observingcomposite.adb:25:23: error: "R1" is not allowed in SPARK (due to uninit
 observingcomposite.adb:25:23: error: violation of aspect SPARK_Mode at line 6
 pointers.adb:112:07: error: assignment into a constant object is not allowed in SPARK
 pointers.adb:112:07: error: violation of aspect SPARK_Mode at line 2
-pointers.adb:116:24: error: access-to-constant part of an object as source of move is not allowed in SPARK
+pointers.adb:116:24: error: access-to-constant part of an object as source of move is not allowed in SPARK (SPARK RM 3.10(1))
 pointers.adb:116:24: error: violation of aspect SPARK_Mode at line 2
 pointers.adb:118:07: error: assignment into a constant object is not allowed in SPARK
 pointers.adb:118:07: error: violation of aspect SPARK_Mode at line 2
@@ -94,7 +94,7 @@ pointers.adb:119:20: error: "Tmp" is not allowed in SPARK (due to access-to-cons
 pointers.adb:119:20: error: violation of aspect SPARK_Mode at line 2
 pointers.adb:124:07: error: assignment into an access-to-constant part of an object is not allowed in SPARK
 pointers.adb:124:07: error: violation of aspect SPARK_Mode at line 2
-pointers.adb:128:24: error: access-to-constant part of an object as source of move is not allowed in SPARK
+pointers.adb:128:24: error: access-to-constant part of an object as source of move is not allowed in SPARK (SPARK RM 3.10(1))
 pointers.adb:128:24: error: violation of aspect SPARK_Mode at line 2
 pointers.adb:130:07: error: assignment into an access-to-constant part of an object is not allowed in SPARK
 pointers.adb:130:07: error: violation of aspect SPARK_Mode at line 2

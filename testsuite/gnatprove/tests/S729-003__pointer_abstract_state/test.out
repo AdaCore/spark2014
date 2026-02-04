@@ -20,7 +20,7 @@ insrc.adb:164:16: info: analyzing call to "AffGenericErr" in context
 insrc.adb:169:16: info: analyzing call to "AffChaineErr" in context
 insrc.adb:208:13: info: analyzing call to "AffGenericErr" in context
 insrc.adb:233:13: info: analyzing call to "AffGenericErr" in context
-insrc.ads:49:04: error: expression as source of move is not allowed in SPARK
+insrc.ads:49:04: error: expression as source of move is not allowed in SPARK (SPARK RM 3.10(1))
 insrc.ads:49:04: error: instantiation error at arbmgr.adb:104
 insrc.ads:49:04: error: violation of aspect SPARK_Mode at arbmgr.adb:22, instance at line 49
 insrc.ads:55:04: error: "AFCB_Ptr" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)

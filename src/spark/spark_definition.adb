@@ -382,12 +382,11 @@ package body SPARK_Definition is
    --  presence of violations.
 
    procedure Check_No_Relaxed_Init_Part
-     (Typ            : Type_Kind_Id;
-      N              : Node_Id;
-      Msg            : String;
-      Names          : Node_Lists.List := Node_Lists.Empty;
-      Cont_Msg       : String := "";
-      Root_Cause_Msg : String := "");
+     (Typ      : Type_Kind_Id;
+      N        : Node_Id;
+      Kind     : Violation_Kind;
+      Names    : Node_Lists.List := Node_Lists.Empty;
+      Cont_Msg : String := "");
    --  Check that Typ has no subcomponent with relaxed initialization. If
    --  such a component is found, a violation is raised using the other
    --  parameters of the procedure.
@@ -433,12 +432,17 @@ package body SPARK_Definition is
    procedure Check_Volatility_Compatibility
      (Id1, Id2                     : Entity_Id;
       Description_1, Description_2 : String;
-      Srcpos_Bearer                : Node_Id);
+      Srcpos_Bearer                : Node_Id;
+      Kind                         : Violation_Kind)
+   with
+     Pre =>
+       Kind in Vio_Volatile_Incompatible_Comp | Vio_Volatile_Incompatible_Type;
 
    procedure Check_Volatility_Compatibility
      (Id1, Id2                     : Entity_Id;
       Description_1, Description_2 : String;
-      Srcpos_Bearer                : Node_Id)
+      Srcpos_Bearer                : Node_Id;
+      Kind                         : Violation_Kind)
    is
       AR1 : constant Boolean := Async_Readers_Enabled (Id1);
       AW1 : constant Boolean := Async_Writers_Enabled (Id1);
@@ -503,13 +507,15 @@ package body SPARK_Definition is
          Note_If_Failure (EW_Check_Failed, "Effective_Writes");
 
          Mark_Violation
-           ("incompatible "
-            & Description_1
-            & " and "
-            & Description_2
-            & " with respect to volatility due to "
-            & Failure_Text,
-            Srcpos_Bearer);
+           (Kind,
+            Srcpos_Bearer,
+            Msg =>
+              "incompatible "
+              & Description_1
+              & " and "
+              & Description_2
+              & " with respect to volatility due to "
+              & Failure_Text);
       end if;
    end Check_Volatility_Compatibility;
 
@@ -788,11 +794,8 @@ package body SPARK_Definition is
         and then Has_Handler_Annotation (Etype (Expression))
         and then not Has_Handler_Annotation (Expected_Type)
       then
-         Mark_Violation
-           ("conversion from an access-to-subprogram type with the "
-            & """Handler"" annotation to an access-to-subprogram type"
-            & " without",
-            Expression);
+         Mark_Incorrect_Use_Of_Annotation
+           (Annot_Handler_Conversion, Expression, "Handler");
       end if;
    end Check_Compatible_Access_Types;
 
@@ -1158,8 +1161,10 @@ package body SPARK_Definition is
 
       Msg_Prefix : constant String :=
         (if Nkind (Proph) in N_Function_Call
-         then "call to a function annotated with At_End_Borrow"
-         else "reference to a variable saving a At_End_Borrow call");
+         then "call to a function annotated with ""At_End_Borrow"""
+         else
+           "reference to a constant saving a call to a function annotated "
+           & "with ""At_End_Borrow""");
       --  Prefix of violation message in case of failed checks.
 
    begin
@@ -1233,21 +1238,27 @@ package body SPARK_Definition is
                      end if;
 
                      <<Not_Lemma>>
-                     Mark_Violation
-                       (Msg_Prefix
-                        & " occurring inside a procedure call which is not"
-                        & " known to be free of side effects",
-                        Proph);
+                     Mark_Incorrect_Use_Of_Annotation
+                       (Annot_Wrong_Context_For_Prophecy,
+                        Proph,
+                        "At_End_Borrow",
+                        Msg =>
+                          Msg_Prefix
+                          & " shall not occur inside a procedure call which is"
+                          & " not known to be free of side effects");
                      return;
                   end;
                elsif Nkind (N) = N_Attribute_Reference
                  and then Attribute_Name (N) in Name_Loop_Entry | Name_Old
                then
-                  Mark_Violation
-                    (Msg_Prefix
-                     & " occurring inside a reference to the 'Old or"
-                     & " 'Loop_Entry attributes",
-                     Proph);
+                  Mark_Incorrect_Use_Of_Annotation
+                    (Annot_Wrong_Context_For_Prophecy,
+                     Proph,
+                     "At_End_Borrow",
+                     Msg =>
+                       Msg_Prefix
+                       & " shall not occur inside a reference to the 'Old or"
+                       & " 'Loop_Entry attributes");
                   return;
                end if;
 
@@ -1268,12 +1279,16 @@ package body SPARK_Definition is
                        or else not Is_Access_Constant (Typ)
                        or else not Is_Constant_Object (Var)
                      then
-                        Mark_Violation
-                          (Msg_Prefix
-                           & " occurring inside the initialization expression"
-                           & " of an object other than of a constant of"
-                           & " anonymous access-to-constant type",
-                           Proph);
+                        Mark_Incorrect_Use_Of_Annotation
+                          (Annot_Wrong_Context_For_Prophecy,
+                           Proph,
+                           "At_End_Borrow",
+                           Msg =>
+                             Msg_Prefix
+                             & " shall not occur inside the initialization"
+                             & " expression of an object other than of a"
+                             & " constant of anonymous access-to-constant"
+                             & " type");
                         return;
                      end if;
 
@@ -1315,12 +1330,16 @@ package body SPARK_Definition is
                      end loop;
 
                      <<Bad_Prophecy_Save>>
-                     Mark_Violation
-                       (Msg_Prefix
-                        & " occurring inside the initialization expression of"
-                        & " an object at a position other than the top or as"
-                        & " the root of a subcomponent Access reference",
-                        Proph);
+                     Mark_Incorrect_Use_Of_Annotation
+                       (Annot_Wrong_Context_For_Prophecy,
+                        Proph,
+                        "At_End_Borrow",
+                        Msg =>
+                          Msg_Prefix
+                          & " shall not occur inside the initialization"
+                          & " expression of an object at a position other than"
+                          & " the top or as the root of a subcomponent Access"
+                          & " reference");
                      return;
                   end;
                end if;
@@ -1330,11 +1349,14 @@ package body SPARK_Definition is
          end case;
       end loop;
 
-      Mark_Violation
-        (Msg_Prefix
-         & " occurring outside of a postcondition, contract cases,"
-         & " assertion",
-         Proph);
+      Mark_Incorrect_Use_Of_Annotation
+        (Annot_Wrong_Context_For_Prophecy,
+         Proph,
+         "At_End_Borrow",
+         Msg =>
+           Msg_Prefix
+           & " shall not occur outside of a postcondition, contract cases, or"
+           & " assertion");
 
       --  Lemma calls/prophecy saves declaration are omitted for default
       --  error message to keep it reasonably short.
@@ -1516,7 +1538,7 @@ package body SPARK_Definition is
            and then not Can_Be_Duplicated (Expression (Assoc))
          then
             Mark_Violation
-              ("duplicate value of a type with ownership",
+              (Vio_Ownership_Duplicate_Aggregate_Value,
                First (Choices),
                Cont_Msg => "singleton choice required to prevent aliasing");
          end if;
@@ -1530,12 +1552,11 @@ package body SPARK_Definition is
    --------------------------------
 
    procedure Check_No_Relaxed_Init_Part
-     (Typ            : Type_Kind_Id;
-      N              : Node_Id;
-      Msg            : String;
-      Names          : Node_Lists.List := Node_Lists.Empty;
-      Cont_Msg       : String := "";
-      Root_Cause_Msg : String := "")
+     (Typ      : Type_Kind_Id;
+      N        : Node_Id;
+      Kind     : Violation_Kind;
+      Names    : Node_Lists.List := Node_Lists.Empty;
+      Cont_Msg : String := "")
    is
       function Check_No_Relaxed_Init (C_Typ : Type_Kind_Id) return Test_Result;
       --  Function traversing a given subcomponent and raising a violation if
@@ -1550,11 +1571,7 @@ package body SPARK_Definition is
       begin
          if Has_Relaxed_Init (C_Typ) then
             Mark_Violation
-              (Msg            => Msg,
-               N              => N,
-               Names          => Names,
-               Cont_Msg       => Cont_Msg,
-               Root_Cause_Msg => Root_Cause_Msg);
+              (Kind => Kind, N => N, Names => Names, Cont_Msg => Cont_Msg);
             return Pass;
 
          --  Protected components cannot have relaxed initialization
@@ -2056,28 +2073,21 @@ package body SPARK_Definition is
                  and then not Is_Traversal_Function_Call (Root_Expr)
                then
                   Mark_Violation
-                    ("borrow or observe of a non-traversal function call",
+                    (Vio_Ownership_Borrow_Of_Non_Markable,
                      Root_Expr,
-                     Code          => EC_Incorrect_Source_Of_Borrow,
-                     SRM_Reference => "SPARK RM 3.10(4)");
+                     Msg =>
+                       "borrow or observe of a non-traversal function call");
                elsif No (Root_Expr) or else No (Get_Root_Object (Root_Expr))
                then
                   Mark_Violation
-                    ("borrow or observe of an expression which is not part "
-                     & "of stand-alone object or parameter",
-                     Alt_Expr,
-                     Code          => EC_Incorrect_Source_Of_Borrow,
-                     SRM_Reference => "SPARK RM 3.10(4)");
+                    (Vio_Ownership_Borrow_Of_Non_Markable, Alt_Expr);
                elsif No (First_Root) then
                   First_Root := Get_Root_Object (Root_Expr);
                elsif Distinct_Not_Emitted
                  and then First_Root /= Get_Root_Object (Root_Expr)
                then
                   Distinct_Not_Emitted := False;
-                  Mark_Violation
-                    ("observe of a conditional or case expression with "
-                     & "branches rooted in different objects",
-                     Expr);
+                  Mark_Violation (Vio_Ownership_Different_Branches, Expr);
                end if;
             end loop;
             pragma Assert (Violation_Detected);
@@ -2086,7 +2096,7 @@ package body SPARK_Definition is
       --  The root object should not be effectively volatile
 
       elsif Is_Effectively_Volatile (Root) then
-         Mark_Violation ("borrow or observe of a volatile object", Expr);
+         Mark_Violation (Vio_Ownership_Volatile, Expr);
 
       --  In case of a borrow, the root should not be a constant object or it
       --  should be the first parameter of a borrowing traversal function in
@@ -2100,14 +2110,20 @@ package body SPARK_Definition is
                and then Is_Borrowing_Traversal_Function (Scope (Root))
                and then Root = First_Formal (Scope (Root)))
       then
-         Mark_Violation ("borrow of a constant object", Expr);
+         Mark_Violation
+           (Vio_Ownership_Borrow_Of_Constant,
+            Expr,
+            Cont_Msg => "the root object of the borrowed path is a constant");
 
       --  In case of a borrow, the path should not traverse an
       --  access-to-constant type.
 
       elsif not In_Observe and then Traverse_Access_To_Constant (Expr) then
          Mark_Violation
-           ("borrow of an access-to-constant part of an object", Expr);
+           (Vio_Ownership_Borrow_Of_Constant,
+            Expr,
+            Cont_Msg =>
+              "the borrowed path is an access-to-constant part of an object");
 
       --  In case of a borrow, all traversal function calls should be borrowing
       --  traversal functions.
@@ -2116,13 +2132,21 @@ package body SPARK_Definition is
         and then Path_Contains_Traversal_Calls (Expr, Only_Observe => True)
       then
          Mark_Violation
-           ("borrow through an observing traversal function", Expr);
+           (Vio_Ownership_Borrow_Of_Constant,
+            Expr,
+            Cont_Msg =>
+              "the borrowed path contains an observing traversal function "
+              & "call");
 
       --  Qualified expressions are considered to provide a constant view of
       --  the object.
 
       elsif not In_Observe and then Path_Contains_Qualified_Expr (Expr) then
-         Mark_Violation ("borrow of a qualified expression", Expr);
+         Mark_Violation
+           (Vio_Ownership_Borrow_Of_Constant,
+            Expr,
+            Cont_Msg =>
+              "a qualified expression provides a constant view of an object");
 
       --  Borrows going through a slice are not supported, and are not
       --  necessary either since the slice is necessary followed by an
@@ -2131,7 +2155,7 @@ package body SPARK_Definition is
       elsif not In_Observe
         and then Path_Contains_Witness (Expr, Is_Slice'Access)
       then
-         Mark_Violation ("borrow through a slice", Expr);
+         Mark_Unsupported (Lim_Borrow_Slice, Expr);
       end if;
    end Check_Source_Of_Borrow_Or_Observe;
 
@@ -2197,13 +2221,11 @@ package body SPARK_Definition is
 
    begin
       if not Is_Path_Expression (Expr) then
-         Mark_Violation ("expression as source of move", Expr);
+         Mark_Violation (Vio_Ownership_Move_Not_Name, Expr);
       elsif not To_Constant and then Traverse_Access_To_Constant (Expr) then
-         Mark_Violation
-           ("access-to-constant part of an object as source of move", Expr);
+         Mark_Violation (Vio_Ownership_Move_Constant_Part, Expr);
       elsif Path_Contains_Traversal_Calls (Expr) then
-         Mark_Violation
-           ("call to a traversal function as source of move", Expr);
+         Mark_Violation (Vio_Ownership_Move_Traversal_Call, Expr);
       else
          declare
             Root : constant N_Subexpr_Id := Get_Root_Expr (Expr);
@@ -2216,7 +2238,7 @@ package body SPARK_Definition is
                   if Is_Object (Entity (Root))
                     and then Is_Effectively_Volatile (Entity (Root))
                   then
-                     Mark_Violation ("move of a volatile object", Expr);
+                     Mark_Violation (Vio_Ownership_Volatile, Expr);
                   end if;
 
                when N_Allocator                    =>
@@ -2272,8 +2294,12 @@ package body SPARK_Definition is
          Mark_Entity (Eq);
          if not Entity_In_SPARK (Eq) then
             Mark_Violation
-              (Msg & " whose primitive equality is not in SPARK", N);
-            Mark_Violation (N, From => Eq);
+              (N,
+               From     => Eq,
+               Cont_Msg =>
+                 Msg
+                 & " implicitly calls the primitive equality of "
+                 & Pretty_Source_Name (Ty));
          end if;
       end if;
    end Check_User_Defined_Eq;
@@ -2986,15 +3012,17 @@ package body SPARK_Definition is
               and then Has_Fixed_Point_Type (Etype (Parent (N)))
             then
                Mark_Violation
-                 ("real literal argument to fixed-point "
-                  & "multiplication or division",
+                 (Vio_Real_Root,
                   N,
+                  Msg      =>
+                    "real literal argument to fixed-point "
+                    & "multiplication or division",
                   Cont_Msg =>
                     "use qualification to give a fixed-point type "
                     & "to the real literal");
             else
                Mark_Violation
-                 ("expression of type root_real",
+                 (Vio_Real_Root,
                   N,
                   Cont_Msg => "value is dependent on the compiler and target");
             end if;
@@ -3045,10 +3073,10 @@ package body SPARK_Definition is
                --  respect to overridden Empty and Add_* primitives.
 
                if not Has_Aggregate_Annotation (Etype (N)) then
-                  Mark_Violation
-                    ("container aggregate whose type does not have a"
-                     & " ""Container_Aggregates"" annotation",
-                     N);
+                  Mark_Incorrect_Use_Of_Annotation
+                    (Annot_Container_Aggregate_Without_Annotation,
+                     N,
+                     "Container_Aggregate");
                else
                   declare
                      Annot : constant Aggregate_Annotation :=
@@ -3068,7 +3096,7 @@ package body SPARK_Definition is
                        and then Present (Component_Associations (N))
                        and then not Is_Empty_List (Component_Associations (N))
                      then
-                        Mark_Violation ("indexed container aggregate", N);
+                        Mark_Unsupported (Lim_Indexed_Container_Aggregate, N);
                      else
                         Mark_List (Expressions (N));
                         Mark_List (Component_Associations (N));
@@ -3097,10 +3125,7 @@ package body SPARK_Definition is
 
          when N_Allocator                                            =>
             if not Is_Valid_Allocating_Context (N) then
-               Mark_Violation
-                 ("allocator not stored in object as "
-                  & "part of assignment, declaration or return",
-                  N);
+               Mark_Violation (Vio_Ownership_Allocator_Invalid_Context, N);
 
             --  Currently forbid the use of an uninitialized allocator (for
             --  a type which defines full default initialization) inside
@@ -3158,10 +3183,7 @@ package body SPARK_Definition is
                                 | No_Possible_Initialization
                      then
                         Mark_Violation
-                          ("uninitialized allocator without"
-                           & " default initialization",
-                           N,
-                           Code => EC_Uninitialized_Allocator);
+                          (Vio_Ownership_Allocator_Uninitialized, N);
 
                      --  Record components might be used during default
                      --  initialization. Update the Unused_Records set.
@@ -4062,10 +4084,7 @@ package body SPARK_Definition is
                if Is_Anonymous_Access_Object_Type (Etype (Expression (N)))
                  and then not Is_Anonymous_Access_Object_Type (Etype (N))
                then
-                  Mark_Violation
-                    ("conversion from an anonymous access type to a named"
-                     & " access type",
-                     N);
+                  Mark_Violation (Vio_Ownership_Anonymous_Access_To_Named, N);
 
                --  A conversion from an access-to-variable type to an
                --  access-to-constant type is considered a move if the
@@ -4684,7 +4703,7 @@ package body SPARK_Definition is
                        and then Present (Get_Root_Object (Expression (N)))
                      then
                         if In_Declare_Expr then
-                           Mark_Violation ("move in declare expression", N);
+                           Mark_Violation (Vio_Ownership_Move_In_Declare, N);
                         else
                            return False;
                         end if;
@@ -6356,10 +6375,7 @@ package body SPARK_Definition is
       if Is_Allocating_Function (E)
         and then not Is_Valid_Allocating_Context (N)
       then
-         Mark_Violation
-           ("call to allocating function not stored in object as "
-            & "part of assignment, declaration or return",
-            N);
+         Mark_Violation (Vio_Ownership_Allocator_Invalid_Context, N);
       end if;
 
       if Is_Simple_Shift_Or_Rotate (E) in N_Op_Shift
@@ -7599,18 +7615,19 @@ package body SPARK_Definition is
 
             elsif Is_Effectively_Volatile (T) then
                Check_Volatility_Compatibility
-                 (E, T, "volatile object", "its type", Srcpos_Bearer => E);
+                 (E,
+                  T,
+                  "volatile object",
+                  "its type",
+                  Srcpos_Bearer => E,
+                  Kind          => Vio_Volatile_Incompatible_Type);
             end if;
 
             --  Effectively volatile objects should not have parts with relaxed
             --  initialization.
 
             Check_No_Relaxed_Init_Part
-              (T,
-               Msg =>
-                 "effectively volatile object with components annotated "
-                 & "with relaxed initialization",
-               N   => N);
+              (T, Kind => Vio_Relaxed_Init_Part_Of_Volatile, N => N);
          end if;
 
          --  Do not allow type invariants on volatile data with asynchronous
@@ -10771,7 +10788,8 @@ package body SPARK_Definition is
                      E,
                      "component type",
                      "its enclosing array type",
-                     Srcpos_Bearer => E);
+                     Srcpos_Bearer => E,
+                     Kind          => Vio_Volatile_Incompatible_Comp);
                elsif Is_Effectively_Volatile (Component_Type (E)) then
                   Mark_Violation
                     ("volatile component & of non-volatile type &",
@@ -10797,11 +10815,7 @@ package body SPARK_Definition is
 
                elsif Is_Effectively_Volatile (E) then
                   Check_No_Relaxed_Init_Part
-                    (E,
-                     Msg =>
-                       "part of effectively volatile type with relaxed "
-                       & "initialization",
-                     N   => E);
+                    (E, Kind => Vio_Relaxed_Init_Part_Of_Volatile, N => E);
                end if;
 
                --  Mark default aspect if any
@@ -10814,7 +10828,7 @@ package body SPARK_Definition is
                --  for the predefined equality of E.
 
                Check_User_Defined_Eq
-                 (Component_Typ, E, "record component type");
+                 (Component_Typ, E, "predefined equality of array type");
             end;
 
          --  Most discrete and floating-point types are in SPARK
@@ -11137,7 +11151,8 @@ package body SPARK_Definition is
                         E,
                         "record component " & Get_Name_String (Chars (Comp)),
                         "its enclosing record type",
-                        Srcpos_Bearer => Comp);
+                        Srcpos_Bearer => Comp,
+                        Kind          => Vio_Volatile_Incompatible_Comp);
                      Next_Component (Comp);
                   end loop;
                end;
@@ -11278,32 +11293,28 @@ package body SPARK_Definition is
                               else
                                  Check_No_Relaxed_Init_Part
                                    (Comp_Type,
-                                    Msg            =>
-                                      "component & of tagged extension & with"
-                                      & " relaxed initialization",
-                                    N              => Comp,
-                                    Names          => [Comp, E],
-                                    Root_Cause_Msg =>
-                                      "component of tagged extension with"
-                                      & " relaxed Initialization");
+                                    Kind  => Vio_Relaxed_Init_Part_Of_Tagged,
+                                    N     => Comp,
+                                    Names => [Comp, E]);
                               end if;
 
                            --  Also check absence of components with
                            --  Relaxed_Init in unchecked unions and effectively
                            --  volatile types.
 
-                           elsif Is_Unchecked_Union (E)
-                             or else Is_Effectively_Volatile (E)
-                           then
+                           elsif Is_Unchecked_Union (E) then
                               Check_No_Relaxed_Init_Part
                                 (Comp_Type,
-                                 Msg =>
-                                   "part of "
-                                   & (if Is_Unchecked_Union (E)
-                                      then "Unchecked_Union"
-                                      else "effectively volatile")
-                                   & " type with relaxed initialization",
-                                 N   =>
+                                 Kind =>
+                                   Vio_Relaxed_Init_Part_Of_Unchecked_Union,
+                                 N    =>
+                                   (if Is_Nouveau_Type (E) then Comp else E));
+
+                           elsif Is_Effectively_Volatile (E) then
+                              Check_No_Relaxed_Init_Part
+                                (Comp_Type,
+                                 Kind => Vio_Relaxed_Init_Part_Of_Volatile,
+                                 N    =>
                                    (if Is_Nouveau_Type (E) then Comp else E));
                            end if;
 
@@ -11319,7 +11330,9 @@ package body SPARK_Definition is
                            --  is used for the predefined equality of E.
 
                            Check_User_Defined_Eq
-                             (Comp_Type, Comp, "record component type");
+                             (Comp_Type,
+                              Comp,
+                              "predefined equality of record type");
 
                            --  Reject components an unconstrained unchecked
                            --  union type in a tagged extension.
@@ -11399,7 +11412,8 @@ package body SPARK_Definition is
                   E,
                   "designated type",
                   "access type",
-                  Srcpos_Bearer => E);
+                  Srcpos_Bearer => E,
+                  Kind          => Vio_Volatile_Incompatible_Comp);
 
                --  For access-to-subprogram types, mark the designated profile
 
@@ -11608,10 +11622,8 @@ package body SPARK_Definition is
 
                            Check_No_Relaxed_Init_Part
                              (Etype (Comp),
-                              Msg =>
-                                "part of effectively volatile type with "
-                                & "relaxed initialization",
-                              N   => Comp);
+                              Kind => Vio_Relaxed_Init_Part_Of_Volatile,
+                              N    => Comp);
 
                            Next_Component (Comp);
                         end loop;
@@ -11647,16 +11659,14 @@ package body SPARK_Definition is
                               then
                                  if Obj_Has_Relaxed_Init (Part) then
                                     Mark_Violation
-                                      ("part of effectively volatile type with"
-                                       & " relaxed initialization",
+                                      (Vio_Relaxed_Init_Part_Of_Volatile,
                                        Part);
                                  else
                                     Check_No_Relaxed_Init_Part
                                       (Etype (Part),
-                                       Msg =>
-                                         "part of effectively volatile type "
-                                         & "with relaxed initialization",
-                                       N   => Part);
+                                       Kind =>
+                                         Vio_Relaxed_Init_Part_Of_Volatile,
+                                       N    => Part);
                                  end if;
                               end if;
 
@@ -11775,9 +11785,7 @@ package body SPARK_Definition is
            and then Requires_No_Relaxed_Init_Check.Contains (E)
          then
             Check_No_Relaxed_Init_Part
-              (E,
-               N   => E,
-               Msg => "designated type with Relaxed_Initialization");
+              (E, N => E, Kind => Vio_Relaxed_Init_Part_Generic);
          end if;
 
          Requires_No_Relaxed_Init_Check.Exclude (E);
@@ -11789,7 +11797,7 @@ package body SPARK_Definition is
            and then E = Base_Retysp (E)
            and then Is_Tagged_Type (E)
          then
-            Check_User_Defined_Eq (E, E, "tagged type");
+            Check_User_Defined_Eq (E, E, "classwide equality");
          end if;
 
          --  If no violations were found and the type is annotated with

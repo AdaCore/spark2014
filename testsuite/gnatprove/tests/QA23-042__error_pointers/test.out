@@ -236,9 +236,9 @@ pointers2.ads:20:14: error: object was moved at pointers2.adb:36 [E0010]
 pointers2.ads:20:14: error: return from "Bad_Move" with moved value for "Y"
 pointers2.ads:20:24: warning: unused initial value of "X"
 pointers2.ads:20:27: warning: "Y" is not modified, could be IN
-spark02.adb:32:04: error: call to allocating function not stored in object as part of assignment, declaration or return is not allowed in SPARK
+spark02.adb:32:04: error: allocator or call to allocating function not stored in object as part of assignment, declaration, or return statement is not allowed in SPARK (SPARK RM 4.8(2))
 spark02.adb:32:04: error: violation of pragma SPARK_Mode at test.adc:3
-spark02.adb:34:09: error: call to allocating function not stored in object as part of assignment, declaration or return is not allowed in SPARK
+spark02.adb:34:09: error: allocator or call to allocating function not stored in object as part of assignment, declaration, or return statement is not allowed in SPARK (SPARK RM 4.8(2))
 spark02.adb:34:09: error: violation of pragma SPARK_Mode at test.adc:3
 spark02.adb:35:09: error: expression as "in out" parameter is not allowed in SPARK
 spark02.adb:35:09: error: violation of pragma SPARK_Mode at test.adc:3

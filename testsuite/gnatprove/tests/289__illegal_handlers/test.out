@@ -1,8 +1,7 @@
 test_illegal.adb:7:07: error: call to an access-to-subprogram type with the "Handler" annotation is not allowed in SPARK
 test_illegal.adb:7:07: error: violation of aspect SPARK_Mode at line 1
-test_illegal.adb:11:31: error: conversion from an access-to-subprogram type with the "Handler" annotation to an access-to-subprogram type without is not allowed in SPARK
-test_illegal.adb:11:31: error: violation of aspect SPARK_Mode at line 1
-test_illegal.adb:13:07: error: "Y" is not allowed in SPARK (due to conversion from an access-to-subprogram type with the "Handler" annotation to an access-to-subprogram type without)
+test_illegal.adb:11:31: error: an access-to-subprogram type with the "Handler" annotation shall not be converted to an access-to-subprogram type without
+test_illegal.adb:13:07: error: "Y" is not allowed in SPARK (due to incorrect use of "Handler" annotation)
 test_illegal.adb:13:07: error: violation of aspect SPARK_Mode at line 1
 test_illegal.adb:20:09: error: access-to-subprogram type annotated with the aspect Handler shall be declared at library level
 test_illegal.ads:6:06: error: wrong number of arguments in aspect Annotate (GNATprove, Handler, ...), expected 3
