@@ -141,8 +141,9 @@ package body CE_Values is
                  Position + Arr2.First_Attr.Content;
                C2        : constant Cursor := Arr2_Values.Find (Offset);
             begin
-               if (Has_Element (C2) and then Element (C1) = Element (C2))
-                 or else Element (C1) = Arr2_Others
+               if (Has_Element (C2)
+                   and then Arr1_Values (C1) = Arr2_Values (C2))
+                 or else Arr1_Values (C1) = Arr2_Others
                then
                   Checked.Insert (Position, Checked_C, Inserted);
                else
@@ -393,13 +394,13 @@ package body CE_Values is
                     Search_Component_In_Type (T_New, Key (C));
                begin
                   if Present (Comp_In_T_New) then
-                     V.Record_Fields.Insert (Comp_In_T_New, Element (C));
+                     V.Record_Fields.Insert (Comp_In_T_New, Old_Fields (C));
                   else
                      pragma Assert (Is_Tagged_Type (T_New));
                      --  For tagged types this is a legal scenario when
                      --  upcasting. For this component keep the component from
                      --  the old type.
-                     V.Record_Fields.Insert (Key (C), Element (C));
+                     V.Record_Fields.Insert (Key (C), Old_Fields (C));
                   end if;
                end;
             end loop;
