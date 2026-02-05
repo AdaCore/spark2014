@@ -86,11 +86,46 @@ package body CE_Fuzzer is
    --  generator to randomly choose a value of Index_Type.
 
    function Fuzz_Integer_Value (Ty : Entity_Id) return Value_Type is
-      C : Type_To_Fuzz_Values_Map.Cursor := Values_To_Try.Find (Ty);
+
+      function Get_Random_Value
+        (Values : Big_Integer_Vector.Vector; Ty : Entity_Id) return Value_Type;
+      --  Return random element from the given values
+      --
+      --  Note: the real purpose of this routine is to repeatedly access the
+      --  container with values, which is stored in a discriminant-dependent
+      --  component. It would be illegal to create a renaming of this container
+      --  and it would be inefficient to create its copy.
+
+      ----------------------
+      -- Get_Random_Value --
+      ----------------------
+
+      function Get_Random_Value
+        (Values : Big_Integer_Vector.Vector; Ty : Entity_Id) return Value_Type
+      is
+         Nb_Values : constant Index_Type := Index_Type (Values.Length);
+
+         --  Since not all types have the same number of values to choose from
+         --  and creating one generator per vector length is impractical,
+         --  the index in the vector is the remainder of the euclidean division
+         --  of the random Index_Type by the number of possible values.
+
+         Index : constant Index_Type :=
+           Random_Index_Generator.Random (Gen) rem Nb_Values;
+      begin
+         return Integer_Value (Values (Index), Ty);
+      end Get_Random_Value;
+
+      Type_Pos : Type_To_Fuzz_Values_Map.Cursor;
+      Inserted : Boolean;
+
    begin
       --  Initialize the variable with a value known to often highlight bugs
 
-      if not Type_To_Fuzz_Values_Map.Has_Element (C) then
+      Values_To_Try.Insert
+        (Key => Ty, Position => Type_Pos, Inserted => Inserted);
+
+      if Inserted then
          declare
             type Known_Values is array (1 .. 3) of Big_Integer;
 
@@ -110,27 +145,13 @@ package body CE_Fuzzer is
                end if;
             end loop;
 
-            Values_To_Try.Insert (Ty, (Scalar_K, (Integer_K, Values)));
-            C := Values_To_Try.Find (Ty);
+            Values_To_Try (Type_Pos) := (Scalar_K, (Integer_K, Values));
          end;
       end if;
 
-      declare
-         Values    : constant Big_Integer_Vector.Vector :=
-           Type_To_Fuzz_Values_Map.Element (C).Scalar_Values.Integer_Values;
-         Nb_Values : constant Index_Type := Index_Type (Values.Length);
-
-         --  Since not all types have the same number of values to choose from
-         --  and creating one generator per vector length is impractical,
-         --  the index in the vector is the remainder of the euclidean division
-         --  of the random Index_Type by the number of possible values.
-
-         Index : constant Index_Type :=
-           Random_Index_Generator.Random (Gen) rem Nb_Values;
-
-      begin
-         return Integer_Value (Values (Index), Ty);
-      end;
+      return
+        Get_Random_Value
+          (Values_To_Try (Type_Pos).Scalar_Values.Integer_Values, Ty);
 
    end Fuzz_Integer_Value;
 
