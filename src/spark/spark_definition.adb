@@ -6723,15 +6723,11 @@ package body SPARK_Definition is
                     (N : Node_Id; G_Name : String; Add_Cont : Boolean) is
                   begin
                      Mark_Unsupported
-                       (Kind           =>
-                          Lim_Program_Exit_Global_Modified_In_Callee,
-                        N              => N,
-                        Names          => [Scop],
-                        Name           => G_Name,
-                        Root_Cause_Msg =>
-                          "call which might exit the program and leave outputs"
-                          & " in an inconsistent state",
-                        Cont_Msg       =>
+                       (Kind     => Lim_Program_Exit_Global_Modified_In_Callee,
+                        N        => N,
+                        Names    => [Scop],
+                        Name     => G_Name,
+                        Cont_Msg =>
                           (if Add_Cont
                            then
                              Create
@@ -8648,9 +8644,7 @@ package body SPARK_Definition is
                   Mark_Unsupported
                     (Lim_Exceptional_Cases_Ownership,
                      Formal,
-                     Root_Cause_Msg =>
-                       "exception propagation and parameters with ownership",
-                     Cont_Msg       =>
+                     Cont_Msg =>
                        Create
                          ("& should be marked as aliased", Names => [Formal]));
                end if;
@@ -14380,11 +14374,10 @@ package body SPARK_Definition is
    begin
       Mark_Unsupported
         (Lim_Limited_Type_From_Limited_With,
-         N              => Marked_Entity,
-         Names          => [Limited_View, Limited_View],
-         Cont_Msg       =>
-           Create ("consider restructuring code to avoid ""limited with"""),
-         Root_Cause_Msg => "limited view coming from limited with");
+         N        => Marked_Entity,
+         Names    => [Limited_View, Limited_View],
+         Cont_Msg =>
+           Create ("consider restructuring code to avoid ""limited with"""));
    end Reject_Incomplete_Type_From_Limited_With;
 
    ---------------------
