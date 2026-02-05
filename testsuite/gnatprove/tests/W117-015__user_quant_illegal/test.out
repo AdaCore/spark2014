@@ -1,16 +1,16 @@
-illegal.adb:13:27: error: function associated to aspect Iterable with dependency on globals is not allowed in SPARK
+illegal.adb:13:27: error: function associated to aspect Iterable with dependency on globals is not allowed in SPARK (SPARK RM 5.5.2(12))
 illegal.adb:13:27: error: violation of aspect SPARK_Mode at line 2
-illegal.adb:14:27: error: function associated to aspect Iterable with dependency on globals is not allowed in SPARK
+illegal.adb:14:27: error: function associated to aspect Iterable with dependency on globals is not allowed in SPARK (SPARK RM 5.5.2(12))
 illegal.adb:14:27: error: violation of aspect SPARK_Mode at line 2
-illegal.adb:15:27: error: function associated to aspect Iterable with dependency on globals is not allowed in SPARK
+illegal.adb:15:27: error: function associated to aspect Iterable with dependency on globals is not allowed in SPARK (SPARK RM 5.5.2(12))
 illegal.adb:15:27: error: violation of aspect SPARK_Mode at line 2
-illegal.adb:16:27: error: function associated to aspect Iterable with dependency on globals is not allowed in SPARK
+illegal.adb:16:27: error: function associated to aspect Iterable with dependency on globals is not allowed in SPARK (SPARK RM 5.5.2(12))
 illegal.adb:16:27: error: violation of aspect SPARK_Mode at line 2
-illegal.adb:17:27: error: function associated to aspect Iterable with dependency on globals is not allowed in SPARK
+illegal.adb:17:27: error: function associated to aspect Iterable with dependency on globals is not allowed in SPARK (SPARK RM 5.5.2(12))
 illegal.adb:17:27: error: violation of aspect SPARK_Mode at line 2
-illegal.adb:18:27: error: function associated to aspect Iterable with dependency on globals is not allowed in SPARK
+illegal.adb:18:27: error: function associated to aspect Iterable with dependency on globals is not allowed in SPARK (SPARK RM 5.5.2(12))
 illegal.adb:18:27: error: violation of aspect SPARK_Mode at line 2
-illegal.adb:39:15: error: Iterable aspect declared on the full view of a private type is not allowed in SPARK
+illegal.adb:39:15: error: Iterable aspect declared on the full view of a private type is not allowed in SPARK (SPARK RM 5.5.2(13))
 illegal.adb:39:15: error: violation of aspect SPARK_Mode at line 2
 illegal.adb:40:30: error: "First" is not allowed in SPARK (due to Iterable aspect declared on the full view of a private type)
 illegal.adb:40:30: error: violation of aspect SPARK_Mode at line 2
@@ -24,17 +24,17 @@ illegal.adb:45:25: error: "T" is not allowed in SPARK (due to Iterable aspect de
 illegal.adb:45:25: error: violation of aspect SPARK_Mode at line 2
 illegal.adb:46:32: error: "T" is not allowed in SPARK (due to Iterable aspect declared on the full view of a private type)
 illegal.adb:46:32: error: violation of aspect SPARK_Mode at line 2
-illegal.adb:92:30: error: function associated to aspect Iterable with controlling result is not allowed in SPARK
+illegal.adb:92:30: error: function associated to aspect Iterable with controlling result is not allowed in SPARK (SPARK RM 5.5.2(12))
 illegal.adb:92:30: error: violation of aspect SPARK_Mode at line 2
-illegal.adb:108:30: error: function associated to aspect Iterable with controlling result is not allowed in SPARK
+illegal.adb:108:30: error: function associated to aspect Iterable with controlling result is not allowed in SPARK (SPARK RM 5.5.2(12))
 illegal.adb:108:30: error: violation of aspect SPARK_Mode at line 2
-illegal.adb:109:30: error: function associated to aspect Iterable with controlling result is not allowed in SPARK
+illegal.adb:109:30: error: function associated to aspect Iterable with controlling result is not allowed in SPARK (SPARK RM 5.5.2(12))
 illegal.adb:109:30: error: violation of aspect SPARK_Mode at line 2
-illegal.adb:111:30: error: function associated to aspect Iterable with controlling result is not allowed in SPARK
+illegal.adb:111:30: error: function associated to aspect Iterable with controlling result is not allowed in SPARK (SPARK RM 5.5.2(12))
 illegal.adb:111:30: error: violation of aspect SPARK_Mode at line 2
-illegal.adb:112:30: error: function associated to aspect Iterable with controlling result is not allowed in SPARK
+illegal.adb:112:30: error: function associated to aspect Iterable with controlling result is not allowed in SPARK (SPARK RM 5.5.2(12))
 illegal.adb:112:30: error: violation of aspect SPARK_Mode at line 2
-illegal.adb:113:30: error: function associated to aspect Iterable with controlling result is not allowed in SPARK
+illegal.adb:113:30: error: function associated to aspect Iterable with controlling result is not allowed in SPARK (SPARK RM 5.5.2(12))
 illegal.adb:113:30: error: violation of aspect SPARK_Mode at line 2
 illegal.adb:160:16: error: Contains function shall not access global data
 illegal.adb:188:16: error: Model function shall not access global data

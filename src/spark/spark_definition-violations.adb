@@ -605,6 +605,8 @@ package body SPARK_Definition.Violations is
          => "SPARK RM 4.1.4(2)",
          when Vio_Access_Volatile_Function
          => "SPARK RM 4.1.4(3)",
+         when Vio_Address_Outside_Address_Clause
+         => "SPARK RM 13.7(2)",
          when Vio_Assert_And_Cut_Context
          => "SPARK RM 5.9",
          when Vio_Backward_Goto
@@ -643,10 +645,23 @@ package body SPARK_Definition.Violations is
          => "SPARK RM 7.3.2(2)",
          when Vio_Invariant_Volatile
          => "SPARK RM 7.3.2(4)",
+         when Vio_Iterable_Controlling_Result
+            | Vio_Iterable_Globals
+            | Vio_Iterable_Side_Effects
+            | Vio_Iterable_Volatile
+         => "SPARK RM 5.5.2(12)",
+         when Vio_Iterable_Full_View
+         => "SPARK RM 5.5.2(13)",
          when Vio_Iterator_Specification
          => "SPARK RM 5.5.2",
          when Vio_Loop_Variant_Structural
          => "SPARK RM 5.5.3 (8)",
+         when Vio_Overlay_Constant_Not_Imported
+         => "SPARK RM 13.7(5)",
+         when Vio_Overlay_Mutable_Constant
+         => "SPARK RM 13.7(4)",
+         when Vio_Overlay_Part_Of_Protected
+         => "SPARK RM 13.7(3)",
          when Vio_Ownership_Access_Equality
          => "SPARK RM 3.10(19)",
          when Vio_Ownership_Allocator_Invalid_Context

@@ -1,6 +1,6 @@
 loop_param.adb:5:10: error: "K" is not allowed in SPARK (due to mutable object and constant object overlaying each others)
 loop_param.adb:5:10: error: violation of pragma SPARK_Mode at test.adc:1
-loop_param.adb:5:27: error: address clause for a mutable object referencing a constant part of an object is not allowed in SPARK
+loop_param.adb:5:27: error: address clause for a mutable object referencing a constant part of an object is not allowed in SPARK (SPARK RM 13.7(4))
 loop_param.adb:5:27: error: violation of pragma SPARK_Mode at test.adc:1
 loop_param.adb:7:10: error: "K" is not allowed in SPARK (due to mutable object and constant object overlaying each others)
 loop_param.adb:7:10: error: violation of pragma SPARK_Mode at test.adc:1

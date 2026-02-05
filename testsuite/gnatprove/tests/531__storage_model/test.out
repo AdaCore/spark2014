@@ -1,6 +1,6 @@
 logging_storage_models.adb:15:07: error: consider annotating "Address" with Import
 logging_storage_models.adb:15:07: error: object with an address clause which is not fully initialized at declaration is not yet supported
-logging_storage_models.adb:15:30: error: address clause for a mutable object referencing a constant part of an object is not allowed in SPARK
+logging_storage_models.adb:15:30: error: address clause for a mutable object referencing a constant part of an object is not allowed in SPARK (SPARK RM 13.7(4))
 logging_storage_models.adb:15:30: error: violation of pragma SPARK_Mode at spark.adc:1
 logging_storage_models.adb:33:07: error: consider annotating "Address" with Import
 logging_storage_models.adb:33:07: error: object with an address clause which is not fully initialized at declaration is not yet supported
