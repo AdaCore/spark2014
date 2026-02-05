@@ -1095,10 +1095,12 @@ package body Gnat2Why.Expr.Loops is
                ---------------------------------
 
                function Exit_Condition_For_Iterable return W_Expr_Id is
-                  H_Elmt   : constant E_Function_Id :=
+                  Is_Reverse : constant Boolean :=
+                    Reverse_Present (LParam_Spec);
+                  H_Elmt     : constant E_Function_Id :=
                     Get_Iterable_Type_Primitive
                       (Etype (Over_Node), Name_Has_Element);
-                  W_H_Elmt : constant W_Identifier_Id :=
+                  W_H_Elmt   : constant W_Identifier_Id :=
                     +Transform_Identifier
                     (Params => Params,
                      Expr   => H_Elmt,
@@ -1106,7 +1108,8 @@ package body Gnat2Why.Expr.Loops is
                      Domain => EW_Prog);
                   N_Elmt   : constant E_Function_Id :=
                     Get_Iterable_Type_Primitive
-                      (Etype (Over_Node), Name_Next);
+                      (Etype (Over_Node),
+                       (if Is_Reverse then Name_Previous else Name_Next));
                   W_N_Elmt : constant W_Identifier_Id :=
                     +Transform_Identifier
                     (Params => Params,
@@ -1146,9 +1149,12 @@ package body Gnat2Why.Expr.Loops is
                ---------------
 
                function Init_Iter return W_Prog_Id is
+                  Is_Reverse : constant Boolean :=
+                    Reverse_Present (LParam_Spec);
                   First      : constant E_Function_Id :=
                     Get_Iterable_Type_Primitive
-                      (Etype (Over_Node), Name_First);
+                      (Etype (Over_Node),
+                       (if Is_Reverse then Name_Last else Name_First));
 
                   pragma Assert (W_Container /= Why_Empty);
 
@@ -1464,10 +1470,15 @@ package body Gnat2Why.Expr.Loops is
                      end;
                   else
                      declare
-                        Next      : constant E_Function_Id :=
+                        Is_Reverse : constant Boolean :=
+                          Reverse_Present (LParam_Spec);
+                        Next       : constant E_Function_Id :=
                           Get_Iterable_Type_Primitive
-                            (Etype (Over_Node), Name_Next);
-                        Cur_Expr  : constant W_Expr_Id :=
+                            (Etype (Over_Node),
+                             (if Is_Reverse
+                              then Name_Previous
+                              else Name_Next));
+                        Cur_Expr   : constant W_Expr_Id :=
                           Insert_Simple_Conversion
                             (Domain => EW_Term,
                              Expr   => +Iter_Deref,
