@@ -108,7 +108,6 @@ VC_INCONSISTENT_ASSUME - pragma Assume always False - Warn if pragma Assume is f
 VC_UNREACHABLE_BRANCH - unreachable branch - Warn if branch is found to be unreachable - EASY
 VC_DEAD_CODE - unreachable code - Warn if code is found to be unreachable - EASY
 [Misc warnings categories]
-address-to-access-conversion - address-to-access-conversion - call to conversion function is assumed to return a valid access designating a valid value - EASY
 alias-volatile-atomic-mismatch - alias-volatile-atomic-mismatch - aliased objects should both be volatile or non-volatile, and both be atomic or non-atomic - EASY
 alias-volatile-prop-mismatch - alias-volatile-prop-mismatch - aliased objects should have the same volatile properties - EASY
 attribute-valid-always-true - attribute-valid-always-true - attribute Valid or Valid_Scalars is assumed to return True - EASY
@@ -136,6 +135,7 @@ useless-potentially-invalid-object - useless-potentially-invalid-object - object
 useless-relaxed-init-func-result - useless-relaxed-init-func-result - function result annotated with Relaxed_Initialization cannot be partially initialized - EASY
 useless-relaxed-init-object - useless-relaxed-init-object - object annotated with Relaxed_Initialization cannot be partially initialized - EASY
 variant-no-recursion - variant-no-recursion - no recursive call visible on subprogram with Subprogram_Variant - EASY
+address-to-access-conversion - address-to-access-conversion - call to conversion function is assumed to return a valid access designating a valid value - EASY
 assumed-always-terminates - assumed-always-terminates - no Always_Terminates aspect available for subprogram, subprogram is assumed to always terminate - EASY
 assumed-global-null - assumed-global-null - no Global contract available for subprogram, null is assumed - EASY
 imprecise-address-specification - imprecise-address-specification - object with an imprecisely supported address specification: non-atomic objects should not be accessed concurrently, volatile properties should be correct, indirect writes to object to and through potential aliases are ignored, and reads should be valid - EASY

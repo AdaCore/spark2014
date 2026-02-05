@@ -6663,7 +6663,7 @@ package body SPARK_Definition is
          --  harmful aliases. The warnings are also emitted on calls to
          --  To_Pointer function from an instance of
          --  System.Address_To_Access_Conversions, which performs the same
-         --  operation.
+         --  operation. This warning is guaranteed to be issued.
 
          if Is_System_Address_To_Access_Conversion (E)
            or else

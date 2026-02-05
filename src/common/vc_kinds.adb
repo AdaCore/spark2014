@@ -670,9 +670,6 @@ package body VC_Kinds is
 
    function Description (Kind : Misc_Warning_Kind) return String
    is (case Kind is
-         when Warn_Address_To_Access               =>
-           "call to conversion function is assumed to return a valid access"
-           & " designating a valid value",
          when Warn_Alias_Atomic_Vol                =>
            "aliased objects should both be volatile or non-volatile, "
            & "and both be atomic or non-atomic",
@@ -743,6 +740,9 @@ package body VC_Kinds is
            "no recursive call visible on subprogram with Subprogram_Variant",
 
          --  Warnings guaranteed to be issued
+         when Warn_Address_To_Access               =>
+           "call to conversion function is assumed to return a valid access"
+           & " designating a valid value",
          when Warn_Assumed_Always_Terminates       =>
            "no Always_Terminates aspect available for subprogram, "
            & "subprogram is assumed to always terminate",
@@ -1856,8 +1856,6 @@ package body VC_Kinds is
 
    function Kind_Name (Kind : Misc_Warning_Kind) return String
    is (case Kind is
-         when Warn_Address_To_Access               =>
-           "address-to-access-conversion",
          when Warn_Alias_Atomic_Vol                =>
            "alias-volatile-atomic-mismatch",
          when Warn_Alias_Different_Volatility      =>
@@ -1902,6 +1900,8 @@ package body VC_Kinds is
          when Warn_Variant_Not_Recursive           => "variant-no-recursion",
 
          --  Warnings guaranteed to be issued
+         when Warn_Address_To_Access               =>
+           "address-to-access-conversion",
          when Warn_Imprecisely_Supported_Address   =>
            "imprecise-address-specification",
          when Warn_Assumed_Always_Terminates       =>
