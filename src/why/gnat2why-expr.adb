@@ -3317,10 +3317,12 @@ package body Gnat2Why.Expr is
       --  Retrieve all relevant operations for quantifier
       --  processing (last/previous are never relevant).
       declare
-         Fn_Has_Elt : constant Entity_Id := Prim (Name_Has_Element);
-         Fn_First   : constant Entity_Id := Prim (Name_First);
-         Fn_Next    : constant Entity_Id := Prim (Name_Next);
-         Fn_Element : constant Entity_Id := Prim (Name_Element);
+         Fn_Has_Elt  : constant Entity_Id := Prim (Name_Has_Element);
+         Fn_First    : constant Entity_Id := Prim (Name_First);
+         Fn_Next     : constant Entity_Id := Prim (Name_Next);
+         Fn_Last     : constant Entity_Id := Prim (Name_Last);
+         Fn_Previous : constant Entity_Id := Prim (Name_Previous);
+         Fn_Element  : constant Entity_Id := Prim (Name_Element);
 
          --  Retrieve types for container/cursor.
          --  Element type is retrieved only if necessary.
@@ -3371,6 +3373,8 @@ package body Gnat2Why.Expr is
          --
          --    let Cont = any in
          --    ignore (First-Check (Cont));
+         --    (* vv  if "Last" specified  vv *)
+         --    ignore (Last-Check (Cont));
          --    (* vv  if Annotation "Model" present  vv *)
          --    ignore (Model-Check (Cont));
          --    (* vv  if Annotation "Contains" present  vv *)
@@ -3382,6 +3386,8 @@ package body Gnat2Why.Expr is
          --    ignore (Has_Element-Check (Cont, Curs));
          --    assume (Has_Element-Pred (Cons, Curs));
          --    ignore (Next-Check (Cont, Curs));
+         --    (* vv  if "Previous" specified  vv *)
+         --    ignore (Previous-Check (Cont));
          --    (* vv  if "Element" specified  vv *)
          --    ignore (Element-Check (Cont, Curs))
 
@@ -3399,6 +3405,9 @@ package body Gnat2Why.Expr is
 
          --  Always check the invariant for cursors
 
+         if Present (Fn_Previous) then
+            Add_Check (Fn_Previous, Args_Both, Curs_Ty_Why, Check_Inv => True);
+         end if;
          Add_Check (Fn_Next, Args_Both, Curs_Ty_Why, Check_Inv => True);
 
          declare
@@ -3464,6 +3473,9 @@ package body Gnat2Why.Expr is
             end case;
          end if;
 
+         if Present (Fn_Last) then
+            Add_Check (Fn_Last, Args_One, Curs_Ty_Why, Check_Inv => True);
+         end if;
          Add_Check (Fn_First, Args_One, Curs_Ty_Why, Check_Inv => True);
          Add_Unknown_Binding (Cont_Ty_Spk, Cont_Ty_Why, Cont_Id);
       end;

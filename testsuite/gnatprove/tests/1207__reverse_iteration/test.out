@@ -1,0 +1,38 @@
+test.adb:20:13: info: during checks for quantification at test.adb:5
+test.adb:20:13: info: implicit aspect Always_Terminates on "Has_Element" has been proved, subprogram will terminate
+test.adb:20:13: info: precondition proved (Trivial: 1 VC)
+test.adb:23:13: info: during checks for quantification at test.adb:5
+test.adb:23:13: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
+test.adb:23:13: info: precondition proved (Trivial: 1 VC)
+test.adb:23:20: warning: unused variable "C"
+test.adb:24:13: info: during checks for quantification at test.adb:5
+test.adb:24:13: info: implicit aspect Always_Terminates on "Next" has been proved, subprogram will terminate
+test.adb:24:13: info: precondition proved (CVC5: 1 VC)
+test.adb:25:30: info: overflow check proved (CVC5: 2 VC)
+test.adb:28:13: info: during checks for quantification at test.adb:5
+test.adb:28:13: info: implicit aspect Always_Terminates on "Last" has been proved, subprogram will terminate
+test.adb:28:13: info: precondition proved (Trivial: 1 VC)
+test.adb:29:13: info: during checks for quantification at test.adb:5
+test.adb:29:13: info: implicit aspect Always_Terminates on "Previous" has been proved, subprogram will terminate
+test.adb:29:13: info: precondition proved (CVC5: 1 VC)
+test.adb:30:30: info: range check proved (CVC5: 2 VC)
+test.adb:33:04: warning: analyzing unreferenced procedure "Test_OK" [unreferenced-procedure]
+test.adb:35:11: info: precondition proved (CVC5: 1 VC)
+test.adb:35:11: info: precondition proved (Trivial: 1 VC)
+test.adb:36:11: info: predicate check proved (CVC5: 4 VC)
+test.adb:36:22: info: index check proved (CVC5: 4 VC)
+test.adb:38:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
+test.adb:38:13: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
+test.adb:39:63: info: index check proved (CVC5: 4 VC)
+test.adb:41:22: info: assertion proved (CVC5: 1 VC)
+test.adb:41:54: info: index check proved (CVC5: 2 VC)
+test.adb:44:04: warning: analyzing unreferenced procedure "Test_Bad" [unreferenced-procedure]
+test.adb:46:11: info: precondition proved (CVC5: 1 VC)
+test.adb:46:11: info: precondition proved (Trivial: 1 VC)
+test.adb:47:11: info: predicate check proved (CVC5: 4 VC)
+test.adb:47:22: info: index check proved (CVC5: 4 VC)
+test.adb:49:13: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
+test.adb:50:50: medium: loop invariant might fail in first iteration, cannot prove C.Content (P2.Position) = 0
+test.adb:50:63: info: index check proved (CVC5: 4 VC)
+test.adb:52:41: medium: assertion might fail, cannot prove C.Content (P2.Position) = 0
+test.adb:52:54: info: index check proved (CVC5: 2 VC)
