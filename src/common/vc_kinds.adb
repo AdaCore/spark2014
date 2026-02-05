@@ -2076,12 +2076,6 @@ package body VC_Kinds is
                end loop;
                Other_Ptr :=
                  new Cntexmp_Value'(Get_Typed_Cntexmp_Value (JS_Array_others));
-               if Other_Ptr = null then
-                  Other_Ptr :=
-                    new Cntexmp_Value'
-                      (T => Cnt_Invalid, S => Null_Unbounded_String);
-
-               end if;
                return
                  (T             => Cnt_Array,
                   Array_Indices => Indice_Array,
