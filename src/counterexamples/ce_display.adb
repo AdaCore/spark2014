@@ -449,11 +449,8 @@ package body CE_Display is
             --  Other_Lines field because Remap_VC_Info was applied.
             if Is_Ada_File_Name (File)
               and then
-                (not Cntexample_Line_Maps.Is_Empty
-                       (Pretty_File_Cntexmp.Other_Lines)
-                 or else
-                   not Previous_Line_Maps.Is_Empty
-                         (Pretty_File_Cntexmp.Previous_Lines))
+                not (Pretty_File_Cntexmp.Other_Lines.Is_Empty
+                     and then Pretty_File_Cntexmp.Previous_Lines.Is_Empty)
             then
                Pretty_Cntexmp.Include (File, Pretty_File_Cntexmp);
             end if;
