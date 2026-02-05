@@ -419,15 +419,10 @@ package body CE_RAC is
    -- Value oracles --
    -------------------
 
-   function Can_Get (N : Node_Id) return Boolean
-   is (Nkind (N) in N_Defining_Identifier | N_Identifier | N_Expanded_Name)
-   with Ghost => True;
-   --  Predicate for nodes, for which the counterexample may have a value
-
    function Get_Cntexmp_Value
-     (N : Node_Id; Cntexmp : Cntexample_File_Maps.Map) return Opt_Value_Type
-   with Pre => Can_Get (N);
-   --  Get the value of variable N from the counterexample
+     (E : Entity_Id; Cntexmp : Cntexample_File_Maps.Map) return Opt_Value_Type
+   with Pre => Is_Object (E);
+   --  Get the value of object E from the counterexample
 
    type Value_Origin is
      (From_Counterexample,
@@ -438,14 +433,14 @@ package body CE_RAC is
    --  The origin of a value in a call to Get
 
    function Get_Value
-     (N            : Node_Id;
+     (E            : Entity_Id;
       Ex           : Node_Id;
       Use_Default  : Boolean;
       Use_Fuzzing  : Boolean;
       Use_Gnattest : Boolean;
       Origin       : out Value_Origin) return Value_Type
-   with Pre => Can_Get (N);
-   --  Get a value for variable N using the first successful of the following
+   with Pre => Is_Object (E);
+   --  Get a value for object E using the first successful of the following
    --  strategies:
    --  1) from gnattest (if the --gnattest_values was passed),
    --  2) from the fuzzer (if Use_Fuzzing is True),
@@ -545,13 +540,14 @@ package body CE_RAC is
    --  compatible with the subtype.
 
    procedure Init_Global
-     (N             : Node_Id;
+     (E             : Entity_Id;
       Use_Expr      : Boolean;
       Use_Fuzzing   : Boolean;
       Default_Value : Boolean;
       Val           : out Value_Access;
-      Descr         : String);
-   --  Initialize a global variable from the appropriate source. The decision
+      Descr         : String)
+   with Pre => Is_Object (E);
+   --  Initialize a global object from the appropriate source. The decision
    --  of the source of the value is made by Get_Value.
 
    function Param_Scope (Call : Node_Id) return Scopes;
@@ -1682,7 +1678,7 @@ package body CE_RAC is
 
       if Do_Init then
          Init_Global
-           (N             => E,
+           (E             => E,
             Use_Expr      => True,
             Use_Fuzzing   => False,
             Default_Value => False,
@@ -1792,17 +1788,13 @@ package body CE_RAC is
    -----------------------
 
    function Get_Cntexmp_Value
-     (N : Node_Id; Cntexmp : Cntexample_File_Maps.Map) return Opt_Value_Type
+     (E : Entity_Id; Cntexmp : Cntexample_File_Maps.Map) return Opt_Value_Type
    is
-      Filename : constant String := File_Name (Sloc (N));
+      Filename : constant String := File_Name (Sloc (E));
       Line     : constant Integer :=
-        Integer (Get_Physical_Line_Number (Sloc (N)));
+        Integer (Get_Physical_Line_Number (Sloc (E)));
       Files_C  : constant Cntexample_File_Maps.Cursor :=
         Cntexmp.Find (Filename);
-      Obj      : constant Entity_Id :=
-        (if Nkind (N) in N_Identifier | N_Expanded_Name
-         then Entity (N)
-         else N);
 
    begin
 
@@ -1822,10 +1814,10 @@ package body CE_RAC is
 
          Val :=
            Get_Counterexample_Value
-             (Obj, Cntexample_Line_Maps.Element (Lines_C));
+             (E, Cntexample_Line_Maps.Element (Lines_C));
 
          if Val.Present then
-            Cleanup_Counterexample_Value (Val.Content, N);
+            Cleanup_Counterexample_Value (Val.Content, E);
          end if;
          return Val;
       end;
@@ -1870,7 +1862,7 @@ package body CE_RAC is
    ---------------
 
    function Get_Value
-     (N            : Node_Id;
+     (E            : Entity_Id;
       Ex           : Node_Id;
       Use_Default  : Boolean;
       Use_Fuzzing  : Boolean;
@@ -1887,14 +1879,14 @@ package body CE_RAC is
             Bindings : constant Entity_Bindings.Map :=
               Gnattest_Values.Values.all (Gnattest_Values.Pos);
          begin
-            Res := Bindings.Element (N).all;
+            Res := Bindings.Element (E).all;
          end;
          Origin := From_Gnattest;
       elsif Use_Fuzzing then
-         Res := Fuzz_Value (Etype (N));
+         Res := Fuzz_Value (Etype (E));
          Origin := From_Fuzzer;
       else
-         OV := Get_Cntexmp_Value (N, Ctx.Cntexmp);
+         OV := Get_Cntexmp_Value (E, Ctx.Cntexmp);
          if OV.Present then
             Res := OV.Content;
             Origin := From_Counterexample;
@@ -1902,23 +1894,23 @@ package body CE_RAC is
             Res := RAC_Expr (Ex);
             Origin := From_Expr;
          elsif Use_Default then
-            Res := Default_Value (Etype (N));
+            Res := Default_Value (Etype (E));
             Origin := From_Type_Default;
          else
             RAC_Incomplete
               ("No counterexample value for program parameter "
-               & Get_Name_String (Chars (N))
+               & Get_Name_String (Chars (E))
                & "("
-               & Node_Id'Image (N)
+               & Entity_Id'Image (E)
                & ")");
          end if;
       end if;
 
-      Ctx.Initial_Values.Include (N, Copy (Res));
+      Ctx.Initial_Values.Include (E, Copy (Res));
 
       RAC_Info
         ("Get "
-         & Get_Name_String (Chars (N))
+         & Get_Name_String (Chars (E))
          & " ("
          & Value_Origin'Image (Origin)
          & ")"
@@ -1932,7 +1924,7 @@ package body CE_RAC is
    -----------------
 
    procedure Init_Global
-     (N             : Node_Id;
+     (E             : Entity_Id;
       Use_Expr      : Boolean;
       Use_Fuzzing   : Boolean;
       Default_Value : Boolean;
@@ -1941,35 +1933,35 @@ package body CE_RAC is
    is
       Origin : Value_Origin;
       Expr   : constant Node_Id :=
-        (if Use_Expr and then not Is_Formal (N)
-         then Expression (Enclosing_Declaration (N))
+        (if Use_Expr and then not Is_Formal (E)
+         then Expression (Enclosing_Declaration (E))
          else Empty);
 
    begin
       Val :=
         new Value_Type'
           (Get_Value
-             (N            => N,
+             (E            => E,
               Ex           => Expr,
               Use_Default  => Default_Value,
               Use_Fuzzing  => Use_Fuzzing,
               Use_Gnattest => False,
               Origin       => Origin));
 
-      Ctx.Env (Ctx.Env.Last).Bindings.Insert (N, Val);
+      Ctx.Env (Ctx.Env.Last).Bindings.Insert (E, Val);
 
-      Ctx.Initial_Values.Include (N, Copy (Val.all));
+      Ctx.Initial_Values.Include (E, Copy (Val.all));
 
       RAC_Trace
         ("Initialize global "
          & Descr
          & " "
-         & Get_Name_String (Chars (N))
+         & Get_Name_String (Chars (E))
          & " to "
          & To_String (Val.all)
          & " "
          & Value_Origin'Image (Origin),
-         N);
+         E);
    end Init_Global;
 
    -------------------
@@ -2495,7 +2487,7 @@ package body CE_RAC is
             Is_Out := Ekind (Param) = E_Out_Parameter;
             V :=
               Get_Value
-                (N            => Param,
+                (E            => Param,
                  Ex           => Empty,
                  Use_Default  => Is_Out,
                  Use_Fuzzing  => Fuzz_Formals,
