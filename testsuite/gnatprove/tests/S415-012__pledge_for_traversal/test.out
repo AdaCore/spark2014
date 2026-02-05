@@ -1,7 +1,7 @@
 traversal_funcs.adb:11:13: info: implicit aspect Always_Terminates on "At_End_Borrow" has been proved, subprogram will terminate
 traversal_funcs.adb:11:86: info: dynamic accessibility check proved (Trivial)
 traversal_funcs.adb:15:13: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
-traversal_funcs.adb:15:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+traversal_funcs.adb:15:13: warning: "Length" is recursive; its implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 traversal_funcs.adb:17:43: info: subprogram variant proved (Trivial)
 traversal_funcs.adb:17:52: info: pointer dereference check proved (CVC5: 1 VC)
 traversal_funcs.adb:17:57: info: overflow check proved (CVC5: 2 VC)

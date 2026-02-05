@@ -1,10 +1,14 @@
 rec_post.adb:2:56: info: division check proved (CVC5: 1 VC)
 rec_post.adb:3:55: info: division check proved (CVC5: 1 VC)
-rec_post.ads:2:13: warning: function contract might not be available on recursive calls [contracts-recursive]
+rec_post.ads:2:13: warning: "Is_Even" is recursive; (implicit) contract of mutally recursive functions might not be available on calls from contracts and assertions [contracts-recursive]
+rec_post.ads:2:13: warning: its contract might be missing
+rec_post.ads:2:13: warning: potentially missing contract for "Is_Odd" declared at line 5
 rec_post.ads:3:14: info: postcondition proved (CVC5: 2 VC)
 rec_post.ads:3:29: medium: implicit aspect Always_Terminates on "Is_Even" could be incorrect, "Is_Even" and "Is_Odd" are mutually recursive [possible fix: annotate "Is_Even" and "Is_Odd" with Subprogram_Variant aspects]
 rec_post.ads:3:56: info: range check proved (CVC5: 2 VC)
-rec_post.ads:5:13: warning: function contract might not be available on recursive calls [contracts-recursive]
+rec_post.ads:5:13: warning: "Is_Odd" is recursive; (implicit) contract of mutally recursive functions might not be available on calls from contracts and assertions [contracts-recursive]
+rec_post.ads:5:13: warning: its contract might be missing
+rec_post.ads:5:13: warning: potentially missing contract for "Is_Even" declared at line 2
 rec_post.ads:6:14: info: postcondition proved (CVC5: 3 VC)
 rec_post.ads:6:28: medium: implicit aspect Always_Terminates on "Is_Odd" could be incorrect, "Is_Odd" and "Is_Even" are mutually recursive [possible fix: annotate "Is_Odd" and "Is_Even" with Subprogram_Variant aspects]
 rec_post.ads:6:58: info: range check proved (CVC5: 2 VC)

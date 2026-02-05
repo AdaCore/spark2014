@@ -1,5 +1,5 @@
 main.adb:16:13: info: implicit aspect Always_Terminates on "Size" has been proved, subprogram will terminate
-main.adb:16:13: warning: function contract might not be available on recursive calls [contracts-recursive]
+main.adb:16:13: warning: "Size" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 main.adb:17:37: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:17:45: info: predicate check proved (Trivial: 1 VC)
 main.adb:17:47: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
@@ -19,14 +19,14 @@ main.adb:36:13: info: absence of resource or memory leak proved (CVC5: 1 VC; Tri
 main.adb:37:15: info: absence of resource or memory leak proved (CVC5: 1 VC)
 main.adb:40:07: info: absence of resource or memory leak proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:43:13: info: implicit aspect Always_Terminates on "Mem" has been proved, subprogram will terminate
-main.adb:43:13: warning: function contract might not be available on recursive calls [contracts-recursive]
+main.adb:43:13: warning: "Mem" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 main.adb:45:23: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:45:34: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:45:48: info: subprogram variant proved (Trivial)
 main.adb:45:54: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:47:16: info: postcondition proved (Trivial: 1 VC)
 main.adb:49:13: info: implicit aspect Always_Terminates on "Deep_Copy" has been proved, subprogram will terminate
-main.adb:49:13: warning: function contract might not be available on recursive calls [contracts-recursive]
+main.adb:49:13: warning: "Deep_Copy" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 main.adb:51:06: info: data dependencies proved
 main.adb:52:14: info: postcondition proved (CVC5: 2 VC)
 main.adb:60:37: info: pointer dereference check proved (CVC5: 1 VC)

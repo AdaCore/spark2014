@@ -25,13 +25,13 @@ list_ex_pledge.adb:21:56: info: precondition proved (CVC5: 2 VC)
 list_ex_pledge.adb:23:11: info: pointer dereference check proved (CVC5: 1 VC)
 list_ex_pledge.adb:24:16: info: pointer dereference check proved (CVC5: 1 VC)
 list_ex_pledge.adb:26:17: info: overflow check proved (CVC5: 2 VC)
-list_ex_pledge.ads:9:14: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+list_ex_pledge.ads:9:14: warning: "Length_Aux" is recursive; its implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 list_ex_pledge.ads:10:08: medium: implicit aspect Always_Terminates on "Length_Aux" could be incorrect, subprogram is recursive [possible fix: annotate "Length_Aux" with a Subprogram_Variant aspect]
 list_ex_pledge.ads:11:27: info: pointer dereference check proved (CVC5: 1 VC)
 list_ex_pledge.ads:13:15: info: overflow check proved (CVC5: 2 VC)
 list_ex_pledge.ads:13:30: info: pointer dereference check proved (CVC5: 1 VC)
 list_ex_pledge.ads:15:14: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
-list_ex_pledge.ads:17:14: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+list_ex_pledge.ads:17:14: warning: "Get_Nth_Val" is recursive; its implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 list_ex_pledge.ads:18:08: medium: implicit aspect Always_Terminates on "Get_Nth_Val" could be incorrect, subprogram is recursive [possible fix: annotate "Get_Nth_Val" with a Subprogram_Variant aspect]
 list_ex_pledge.ads:18:23: info: pointer dereference check proved (CVC5: 1 VC)
 list_ex_pledge.ads:18:35: info: precondition proved (CVC5: 1 VC)

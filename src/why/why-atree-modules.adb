@@ -27,6 +27,7 @@ with Ada.Characters.Handling;        use Ada.Characters.Handling;
 with Ada.Containers;                 use Ada.Containers;
 with Ada.Containers.Ordered_Maps;
 with Ada.Strings.Unbounded;          use Ada.Strings.Unbounded;
+with Errout_Wrapper;                 use Errout_Wrapper;
 with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Gnat2Why.Tables;                use Gnat2Why.Tables;
 with Gnat2Why.Util;                  use Gnat2Why.Util;
@@ -4647,7 +4648,32 @@ package body Why.Atree.Modules is
 
    function Mutually_Recursive_Modules (E : Entity_Id) return Why_Node_Sets.Set
    is
-      S : Why_Node_Sets.Set;
+
+      function Remove_Expr_Fun_Body (F : Entity_Id) return Boolean
+      is (Is_Expression_Function_Or_Completion (F)
+          and then Entity_Body_Compatible_With_SPARK (F)
+          and then No (Retrieve_Inline_Annotation (F))
+          and then Is_Recursive (F)
+          and then Has_Subprogram_Variant (F)
+          and then
+            not Is_Structural_Subprogram_Variant
+                  (Get_Pragma (F, Pragma_Subprogram_Variant)));
+      --  Only remove the defining axioms of expression functions which are
+      --  recursive and have a numeric subprogram variant. The axiom has the
+      --  form f params = expr which is always sound unless expr depends on f
+      --  params, which should not be possible if f is not recursive or if it
+      --  structurally terminates.
+
+      S              : Why_Node_Sets.Set;
+      Recursive_Only : Boolean :=
+        Ekind (E) in E_Entry | E_Procedure | E_Function
+        and then Is_Recursive (E);
+      Own_Msg        : Unbounded_String;
+      Continuations  : Message_Lists.List;
+      --  Store continuations for mutually recursive functions whose contract
+      --  might be unavailable to emit a warning. Recursive_Only is used to
+      --  simplify the wording of the warning when the cycle is caused by
+      --  recursion which should be the most common case.
 
    begin
       --  For recursive functions, include the module for the post axiom of
@@ -4658,22 +4684,9 @@ package body Why.Atree.Modules is
             if Proof_Module_Cyclic (E, F) then
                S.Insert (+Entity_Modules (F) (Fun_Post_Axiom));
 
-               --  Only remove the defining axioms of expression functions
-               --  which are recursive and have a numeric subprogram variant.
-               --  The axiom has the form f params = expr which is always sound
-               --  unless expr depends on f params, which should not be
-               --  possible if f is not recursive or if it structurally
-               --  terminates.
+               --  Remove the defining axioms of expression functions if needed
 
-               if Is_Expression_Function_Or_Completion (F)
-                 and then Entity_Body_Compatible_With_SPARK (F)
-                 and then No (Retrieve_Inline_Annotation (F))
-                 and then Is_Recursive (F)
-                 and then Has_Subprogram_Variant (F)
-                 and then
-                   not Is_Structural_Subprogram_Variant
-                         (Get_Pragma (F, Pragma_Subprogram_Variant))
-               then
+               if Remove_Expr_Fun_Body (F) then
                   S.Insert (+Entity_Modules (F) (Expr_Fun_Axiom));
                end if;
 
@@ -4703,6 +4716,70 @@ package body Why.Atree.Modules is
                then
                   S.Insert (+Entity_Modules (F) (Refined_Post_Axiom));
                end if;
+
+               --  Store explanations about removed information in Own_Msg if
+               --  F is E and Continuations otherwise.
+
+               if Ekind (F) = E_Function then
+                  declare
+                     Has_Expr_Fun_Body      : constant Boolean :=
+                       Remove_Expr_Fun_Body (F);
+                     Has_Explicit_Contracts : constant Boolean :=
+                       Has_Contracts (F, Pragma_Postcondition)
+                       or else Has_Contracts (F, Pragma_Contract_Cases);
+                     Has_Implicit_Contracts : constant Boolean :=
+                       Type_Needs_Dynamic_Invariant (Etype (F));
+                  begin
+
+                     if Has_Expr_Fun_Body
+                       or else Has_Implicit_Contracts
+                       or else Has_Explicit_Contracts
+                     then
+                        if Unique_Entity (E) = Unique_Entity (F)
+                          and then Is_Recursive (E)
+                        then
+                           Own_Msg :=
+                             To_Unbounded_String
+                               ((if Has_Expr_Fun_Body
+                                 then
+                                   "body "
+                                   & (if Has_Implicit_Contracts
+                                        or else Has_Explicit_Contracts
+                                      then "and "
+                                      else "")
+                                 else "")
+                                & (if Has_Explicit_Contracts
+                                   then "contract "
+                                   elsif Has_Implicit_Contracts
+                                   then "implicit contract "
+                                   else ""));
+                        else
+                           Recursive_Only :=
+                             Recursive_Only and then Mutually_Recursive (E, F);
+
+                           Continuations.Append
+                             (Create
+                                ("potentially missing "
+                                 & (if Has_Expr_Fun_Body
+                                    then
+                                      "expression function body "
+                                      & (if Has_Implicit_Contracts
+                                           or else Has_Explicit_Contracts
+                                         then "and "
+                                         else "")
+                                    else "")
+                                 & (if Has_Explicit_Contracts
+                                    then "contract "
+                                    elsif Has_Implicit_Contracts
+                                    then "implicit contract "
+                                    else "")
+                                 & "for & declared #",
+                                 [F],
+                                 Secondary_Loc => Sloc (F)));
+                        end if;
+                     end if;
+                  end;
+               end if;
             end if;
          end loop;
       end if;
@@ -4729,8 +4806,84 @@ package body Why.Atree.Modules is
                   end loop;
                end if;
             end;
+
+            --  For automatically instanciated lemmas, do not warn on the
+            --  associated function or lemmas associated with the same
+            --  function.
+
+            declare
+               F : constant Entity_Id :=
+                 Unique_Entity
+                   (Retrieve_Automatic_Instantiation_Annotation (Lemma));
+            begin
+               if Unique_Entity (Lemma) /= Unique_Entity (E)
+                 and then Unique_Entity (E) /= F
+                 and then
+                   (not Has_Automatic_Instantiation_Annotation (E)
+                    or else
+                      Unique_Entity
+                        (Retrieve_Automatic_Instantiation_Annotation (E))
+                      /= F)
+               then
+                  Continuations.Append
+                    (Create
+                       ("potentially missing automatically instanciated lemma "
+                        & "& declared #",
+                        [Lemma],
+                        Secondary_Loc => Sloc (Lemma)));
+
+                  Recursive_Only :=
+                    Recursive_Only and then Mutually_Recursive (E, F);
+               end if;
+            end;
          end if;
       end loop;
+
+      --  If information might be lost due to proof cycles, emit a warning.
+      --  Special case simply recursive functions.
+
+      if Recursive_Only
+        and then Length (Own_Msg) > 0
+        and then Continuations.Is_Empty
+      then
+         Warning_Msg_N
+           (Warn_Contracts_Recursive,
+            E,
+            Create
+              ("& is recursive; its "
+               & To_String (Own_Msg)
+               & "might not be available on recursive calls from "
+               & "contracts and assertions"
+               & Tag_Suffix (Warn_Contracts_Recursive),
+               [E]));
+
+      --  General case: if any, add Own_Msg to the continuations and emit the
+      --  standard message.
+
+      elsif Length (Own_Msg) > 0 or not Continuations.Is_Empty then
+         if Recursive_Only then
+            if Length (Own_Msg) > 0 then
+               Continuations.Prepend
+                 (Create ("its " & To_String (Own_Msg) & "might be missing"));
+            end if;
+
+            Warning_Msg_N
+              (Warn_Contracts_Recursive,
+               E,
+               Names         => [E],
+               Continuations => Continuations);
+         else
+            if Length (Own_Msg) > 0 then
+               Continuations.Prepend
+                 (Create
+                    ("the " & To_String (Own_Msg) & "of & might be missing",
+                     [E]));
+            end if;
+
+            Warning_Msg_N
+              (Warn_Proof_Module_Cyclic, E, Continuations => Continuations);
+         end if;
+      end if;
 
       return S;
    end Mutually_Recursive_Modules;

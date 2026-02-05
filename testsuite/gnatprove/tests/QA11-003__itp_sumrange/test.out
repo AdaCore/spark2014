@@ -7,7 +7,7 @@ sum.adb:17:33: medium: loop invariant might not be preserved by an arbitrary ite
 sum.adb:17:37: info: precondition proved
 sum.adb:17:48: info: range check proved
 sum.adb:18:17: info: overflow check proved
-sum.ads:11:13: warning: function contract might not be available on recursive calls [contracts-recursive]
+sum.ads:11:13: warning: "Sum" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 sum.ads:12:08: medium: implicit aspect Always_Terminates on "Sum" could be incorrect, subprogram is recursive [possible fix: annotate "Sum" with a Subprogram_Variant aspect]
 sum.ads:15:17: info: overflow check proved
 sum.ads:15:19: info: precondition proved

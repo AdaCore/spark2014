@@ -127,8 +127,7 @@ test_capacity.adb:195:53: info: index check proved (CVC5: 2 VC)
 test_capacity.adb:198:49: info: index check proved (CVC5: 2 VC)
 test_capacity.adb:198:51: info: initialization check proved (CVC5: 1 VC)
 test_capacity.adb:201:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
-test_capacity.adb:201:16: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
-test_capacity.adb:201:16: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+test_capacity.adb:201:16: warning: "Get" is recursive; its body and implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 test_capacity.adb:203:47: info: index check proved (CVC5: 2 VC)
 test_capacity.adb:204:48: info: index check proved (CVC5: 2 VC)
 test_capacity.adb:204:50: info: initialization check proved (CVC5: 1 VC)
@@ -199,8 +198,7 @@ test_capacity.adb:298:53: info: index check proved (CVC5: 2 VC)
 test_capacity.adb:301:49: info: index check proved (CVC5: 2 VC)
 test_capacity.adb:301:51: info: initialization check proved (CVC5: 1 VC)
 test_capacity.adb:304:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
-test_capacity.adb:304:16: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
-test_capacity.adb:304:16: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+test_capacity.adb:304:16: warning: "Get" is recursive; its body and implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 test_capacity.adb:306:47: info: index check proved (CVC5: 2 VC)
 test_capacity.adb:307:48: info: index check proved (CVC5: 2 VC)
 test_capacity.adb:307:50: info: initialization check proved (CVC5: 1 VC)

@@ -1,7 +1,7 @@
 library.ads:4:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
 library.ads:6:08: info: dynamic accessibility check proved (Trivial)
 main.adb:4:13: info: implicit aspect Always_Terminates on "Flip" has been proved, subprogram will terminate
-main.adb:4:13: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
+main.adb:4:13: warning: "Flip" is recursive; its body might not be available on recursive calls from contracts and assertions [contracts-recursive]
 main.adb:5:30: info: subprogram variant proved (CVC5: 1 VC)
 main.adb:5:38: info: overflow check proved (CVC5: 2 VC)
 main.adb:8:21: info: data dependencies proved

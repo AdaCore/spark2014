@@ -1,5 +1,5 @@
 main.adb:12:13: info: implicit aspect Always_Terminates on "B_Length" has been proved, subprogram will terminate
-main.adb:12:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+main.adb:12:13: warning: "B_Length" is recursive; its implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 main.adb:13:37: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:13:45: info: predicate check proved (Trivial: 1 VC)
 main.adb:13:45: info: subprogram variant proved (Trivial)
@@ -7,7 +7,7 @@ main.adb:13:56: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:13:60: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:13:62: info: predicate check proved (Trivial: 1 VC)
 main.adb:16:13: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
-main.adb:16:13: warning: function contract might not be available on recursive calls [contracts-recursive]
+main.adb:16:13: warning: "Length" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 main.adb:17:31: info: precondition proved (CVC5: 1 VC)
 main.adb:17:31: info: subprogram variant proved (Trivial)
 main.adb:17:40: info: pointer dereference check proved (CVC5: 1 VC)

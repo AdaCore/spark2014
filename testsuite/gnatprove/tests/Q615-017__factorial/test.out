@@ -4,8 +4,7 @@ factorial.adb:13:36: info: loop invariant initialization proved (CVC5: 1 VC)
 factorial.adb:13:36: info: loop invariant preservation proved (CVC5: 1 VC)
 factorial.adb:13:45: info: precondition proved (CVC5: 4 VC)
 factorial.ads:7:13: info: implicit aspect Always_Terminates on "Mathematical_Factorial" has been proved, subprogram will terminate
-factorial.ads:7:13: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
-factorial.ads:7:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+factorial.ads:7:13: warning: "Mathematical_Factorial" is recursive; its body and implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 factorial.ads:9:27: medium: overflow check might fail, cannot prove lower bound for X * Mathematical_Factorial (11) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (X * Mathematical_Factorial (11) >= Integer'First) to subprogram at line 7] [provers gave up before completing the proof]
 factorial.ads:9:29: info: precondition proved (CVC5: 2 VC)
 factorial.ads:9:29: info: subprogram variant proved (CVC5: 1 VC)

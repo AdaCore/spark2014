@@ -440,8 +440,7 @@ libst-reals-errors.ads:15:50: info: predicate check proved
 libst-reals-errors.ads:16:13: info: predicate check proved
 libst-reals-errors.ads:16:24: info: predicate check proved
 libst-reals-errors.ads:19:13: info: implicit aspect Always_Terminates on "Weighted_Sum_Abs_Rec" has been proved, subprogram will terminate
-libst-reals-errors.ads:19:13: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
-libst-reals-errors.ads:19:13: warning: function contract might not be available on recursive calls [contracts-recursive]
+libst-reals-errors.ads:19:13: warning: "Weighted_Sum_Abs_Rec" is recursive; its body and contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 libst-reals-errors.ads:25:12: info: predicate check proved
 libst-reals-errors.ads:25:12: info: subprogram variant proved
 libst-reals-errors.ads:25:53: info: range check proved
@@ -488,8 +487,7 @@ libst-reals-errors.ads:87:25: info: predicate check proved
 libst-reals-errors.ads:95:16: info: postcondition proved
 libst-reals-errors.ads:95:23: info: precondition proved
 libst-reals.ads:15:13: info: implicit aspect Always_Terminates on "Sum_Weight_Rec" has been proved, subprogram will terminate
-libst-reals.ads:15:13: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
-libst-reals.ads:15:13: warning: function contract might not be available on recursive calls [contracts-recursive]
+libst-reals.ads:15:13: warning: "Sum_Weight_Rec" is recursive; its body and contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 libst-reals.ads:20:12: info: predicate check proved
 libst-reals.ads:20:12: info: subprogram variant proved
 libst-reals.ads:20:39: info: range check proved
@@ -499,7 +497,7 @@ libst-reals.ads:22:28: info: predicate check proved
 libst-reals.ads:22:39: info: predicate check proved
 libst-reals.ads:23:13: info: implicit aspect Always_Terminates on "Sum_Weight" has been proved, subprogram will terminate
 libst-reals.ads:27:13: info: implicit aspect Always_Terminates on "Weighted_Sum_Rec" has been proved, subprogram will terminate
-libst-reals.ads:27:13: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
+libst-reals.ads:27:13: warning: "Weighted_Sum_Rec" is recursive; its body might not be available on recursive calls from contracts and assertions [contracts-recursive]
 libst-reals.ads:33:12: info: predicate check proved
 libst-reals.ads:33:12: info: subprogram variant proved
 libst-reals.ads:33:49: info: range check proved
@@ -573,7 +571,7 @@ libst.adb:81:18: info: division check proved
 libst.adb:81:18: info: float overflow check proved
 libst.adb:81:18: info: range check proved
 libst.ads:30:13: info: implicit aspect Always_Terminates on "Sum_Weight_Rec" has been proved, subprogram will terminate
-libst.ads:30:13: warning: function contract might not be available on recursive calls [contracts-recursive]
+libst.ads:30:13: warning: "Sum_Weight_Rec" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 libst.ads:36:14: info: postcondition proved
 libst.ads:37:34: info: subprogram variant proved
 libst.ads:37:61: info: range check proved
@@ -583,7 +581,7 @@ libst.ads:38:70: info: range check proved
 libst.ads:39:13: info: implicit aspect Always_Terminates on "Sum_Weight" has been proved, subprogram will terminate
 libst.ads:40:14: info: postcondition proved
 libst.ads:45:13: info: implicit aspect Always_Terminates on "Weighted_Sum_Rec" has been proved, subprogram will terminate
-libst.ads:45:13: warning: function contract might not be available on recursive calls [contracts-recursive]
+libst.ads:45:13: warning: "Weighted_Sum_Rec" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 libst.ads:52:14: info: postcondition proved
 libst.ads:54:16: info: subprogram variant proved
 libst.ads:54:53: info: range check proved

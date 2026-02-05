@@ -1,5 +1,5 @@
 fibo_variant.adb:2:13: info: implicit aspect Always_Terminates on "Fibo" has been proved, subprogram will terminate
-fibo_variant.adb:2:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+fibo_variant.adb:2:13: warning: "Fibo" is recursive; its implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 fibo_variant.adb:3:44: medium: overflow check might fail, cannot prove upper bound for Z + 1 (e.g. when Z = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 2 should mention Z in a precondition] [provers gave up before completing the proof]
 fibo_variant.adb:11:17: info: subprogram variant proved (CVC5: 1 VC)
 fibo_variant.adb:11:25: info: range check proved (CVC5: 2 VC)
@@ -12,7 +12,7 @@ test_bad_variant.adb:6:27: warning: assuming "Bad_1" has no effect on global ite
 test_bad_variant.adb:6:27: warning: no Global contract available for "Bad_1" [assumed-global-null]
 test_bad_variant.adb:6:36: info: range check proved (CVC5: 2 VC)
 test_bad_variant.adb:10:13: info: implicit aspect Always_Terminates on "Bad_2" has been proved, subprogram will terminate
-test_bad_variant.adb:10:13: warning: function contract might not be available on recursive calls [contracts-recursive]
+test_bad_variant.adb:10:13: warning: "Bad_2" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 test_bad_variant.adb:12:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 test_bad_variant.adb:29:13: info: implicit aspect Always_Terminates on "Bad_3" has been proved, subprogram will terminate
 test_bad_variant.adb:40:37: medium: subprogram variant might fail [possible explanation: mutually recursive call should be located directly inside a subprogram]
@@ -45,27 +45,27 @@ test_bad_variant.adb:144:30: info: range check proved (CVC5: 2 VC)
 test_bad_variant.adb:153:17: medium: subprogram variant might fail [possible explanation: mutually recursive subprograms should have compatible variants]
 test_bad_variant.adb:153:31: info: range check proved (CVC5: 2 VC)
 test_bad_variant.adb:157:13: info: implicit aspect Always_Terminates on "Infinite" has been proved, subprogram will terminate
-test_bad_variant.adb:157:13: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
+test_bad_variant.adb:157:13: warning: "Infinite" is recursive; its body might not be available on recursive calls from contracts and assertions [contracts-recursive]
 test_bad_variant.adb:158:07: info: precondition proved (CVC5: 1 VC)
 test_bad_variant.adb:158:07: medium: subprogram variant might fail (e.g. when X = 0) [provers gave up before completing the proof]
 test_bad_variant.adb:158:17: info: overflow check proved (CVC5: 2 VC)
 test_bad_variant.adb:160:58: info: overflow check proved (CVC5: 2 VC)
 test_bad_variant.adb:162:13: info: implicit aspect Always_Terminates on "Bad_4" has been proved, subprogram will terminate
-test_bad_variant.adb:162:13: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
+test_bad_variant.adb:162:13: warning: "Bad_4" is recursive; its body might not be available on recursive calls from contracts and assertions [contracts-recursive]
 test_bad_variant.adb:163:17: medium: subprogram variant might fail (e.g. when B = True and X = -1 and Y = 6) [possible fix: subprogram at line 162 should mention B and X and Y in a precondition] [provers gave up before completing the proof]
 test_bad_variant.adb:163:26: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= Integer'Last - 1) to subprogram at line 162] [provers gave up before completing the proof]
 test_bad_variant.adb:163:33: high: overflow check might fail, cannot prove lower bound for Y - 6 (e.g. when Y = -2147483643) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Y >= Integer'First + 6) to subprogram at line 162] [provers gave up before completing the proof]
 test_bad_variant.adb:164:12: info: subprogram variant proved (CVC5: 1 VC)
 test_bad_variant.adb:164:24: high: overflow check might fail, cannot prove upper bound for Y + 1 (e.g. when Y = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Y <= Integer'Last - 1) to subprogram at line 162] [provers gave up before completing the proof]
 test_bad_variant.adb:167:13: info: implicit aspect Always_Terminates on "OK_2" has been proved, subprogram will terminate
-test_bad_variant.adb:167:13: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
+test_bad_variant.adb:167:13: warning: "OK_2" is recursive; its body might not be available on recursive calls from contracts and assertions [contracts-recursive]
 test_bad_variant.adb:168:17: info: subprogram variant proved (CVC5: 1 VC)
 test_bad_variant.adb:168:25: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= Integer'Last - 1) to subprogram at line 167] [provers gave up before completing the proof]
 test_bad_variant.adb:168:32: high: overflow check might fail, cannot prove lower bound for Y - 6 (e.g. when Y = -2147483643) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Y >= Integer'First + 6) to subprogram at line 167] [provers gave up before completing the proof]
 test_bad_variant.adb:169:12: info: subprogram variant proved (CVC5: 1 VC)
 test_bad_variant.adb:169:23: high: overflow check might fail, cannot prove upper bound for Y + 1 (e.g. when Y = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Y <= Integer'Last - 1) to subprogram at line 167] [provers gave up before completing the proof]
 test_bad_variant.adb:172:13: info: implicit aspect Always_Terminates on "OK_3" has been proved, subprogram will terminate
-test_bad_variant.adb:172:13: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
+test_bad_variant.adb:172:13: warning: "OK_3" is recursive; its body might not be available on recursive calls from contracts and assertions [contracts-recursive]
 test_bad_variant.adb:173:25: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= Integer'Last - 1) to subprogram at line 172] [provers gave up before completing the proof]
 test_bad_variant.adb:173:32: high: overflow check might fail, cannot prove lower bound for Y - 6 (e.g. when Y = -2147483643) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Y >= Integer'First + 6) to subprogram at line 172] [provers gave up before completing the proof]
 test_bad_variant.adb:174:12: info: subprogram variant proved (CVC5: 1 VC)
@@ -73,8 +73,7 @@ test_bad_variant.adb:174:23: high: overflow check might fail, cannot prove upper
 test_bad_variant.adb:177:13: info: implicit aspect Always_Terminates on "Warn" has been proved, subprogram will terminate
 test_bad_variant.adb:179:11: warning: no recursive call visible [variant-no-recursion]
 test_bad_variant.adb:188:13: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
-test_bad_variant.adb:188:13: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
-test_bad_variant.adb:188:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+test_bad_variant.adb:188:13: warning: "Length" is recursive; its body and implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 test_bad_variant.adb:189:67: medium: subprogram variant might fail [possible explanation: recursive call should not appear in a subprogram variant]
 test_bad_variant.adb:189:76: info: pointer dereference check proved (CVC5: 1 VC)
 test_bad_variant.adb:193:32: medium: subprogram variant might fail [possible fix: subprogram at line 188 should mention L in a precondition] [provers reached step limit before completing the proof]

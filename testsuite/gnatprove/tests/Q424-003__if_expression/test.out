@@ -57,7 +57,7 @@ string_utilities.ads:4:12: info: implicit aspect Always_Terminates on "Tail" has
 string_utilities.ads:4:48: info: range check proved (CVC5: 4 VC)
 string_utilities.ads:4:59: high: overflow check might fail, cannot prove upper bound for S'First +1 (e.g. when S'First = Integer'Last and S'Last = 0) [reason for check: result of addition must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
 string_utilities.ads:7:06: medium: implicit aspect Always_Terminates on "Is_Subsequence" could be incorrect, subprogram is recursive [possible fix: annotate "Is_Subsequence" with a Subprogram_Variant aspect]
-string_utilities.ads:13:12: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+string_utilities.ads:13:12: warning: "Slow_LCS_Length" is recursive; its implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 string_utilities.ads:15:06: medium: implicit aspect Always_Terminates on "Slow_LCS_Length" could be incorrect, subprogram is recursive [possible fix: annotate "Slow_LCS_Length" with a Subprogram_Variant aspect]
 string_utilities.ads:17:15: medium: overflow check might fail, cannot prove upper bound for 1 + Slow_LCS_Length (Tail (S1), Tail (S2)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (1 <= Integer'Last - Slow_LCS_Length (Tail (S1), Tail (S2))) to subprogram at line 13] [provers reached step limit before completing the proof]
 string_utilities.ads:24:06: medium: postcondition might fail, cannot prove Is_Subsequence (Longest_Common_Subsequence'Result, S1) [provers reached step limit before completing the proof]

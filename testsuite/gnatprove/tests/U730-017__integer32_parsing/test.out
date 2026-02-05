@@ -54,7 +54,7 @@ integer32_parsing.adb:75:30: info: overflow check proved (CVC5: 2 VC)
 integer32_parsing.adb:76:31: info: precondition proved (CVC5: 3 VC)
 integer32_parsing.adb:76:60: info: range check proved (CVC5: 2 VC)
 integer32_parsing.adb:78:13: info: implicit aspect Always_Terminates on "Is_Integer_32" has been proved, subprogram will terminate
-integer32_parsing.adb:78:13: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
+integer32_parsing.adb:78:13: warning: "Is_Integer_32" is recursive; its body might not be available on recursive calls from contracts and assertions [contracts-recursive]
 integer32_parsing.adb:79:07: info: precondition proved (CVC5: 2 VC)
 integer32_parsing.adb:79:23: info: index check proved (CVC5: 2 VC)
 integer32_parsing.adb:79:39: info: division check proved (CVC5: 1 VC)

@@ -4,12 +4,12 @@ test_route.adb:13:14: info: postcondition proved
 test_route.adb:13:28: info: overflow check proved
 test_route.adb:17:18: info: overflow check proved
 test_route.adb:28:13: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
-test_route.adb:28:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+test_route.adb:28:13: warning: "Length" is recursive; its implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 test_route.adb:30:43: info: subprogram variant proved
 test_route.adb:30:52: info: pointer dereference check proved
 test_route.adb:30:60: info: overflow check proved
 test_route.adb:33:13: info: implicit aspect Always_Terminates on "Nth_X" has been proved, subprogram will terminate
-test_route.adb:33:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+test_route.adb:33:13: warning: "Nth_X" is recursive; its implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 test_route.adb:34:22: info: pointer dereference check proved
 test_route.adb:34:38: info: precondition proved
 test_route.adb:34:38: info: subprogram variant proved
@@ -32,7 +32,7 @@ test_route.adb:59:13: info: implicit aspect Always_Terminates on "At_End_Borrow"
 test_route.adb:60:07: info: dynamic accessibility check proved
 test_route.adb:63:13: info: implicit aspect Always_Terminates on "At_End_Borrow" has been proved, subprogram will terminate
 test_route.adb:64:07: info: dynamic accessibility check proved
-test_route.adb:68:13: warning: function contract might not be available on recursive calls [contracts-recursive]
+test_route.adb:68:13: warning: "Nth_Point" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 test_route.adb:72:09: info: postcondition proved
 test_route.adb:73:13: info: precondition proved
 test_route.adb:73:76: info: pointer dereference check proved

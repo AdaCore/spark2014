@@ -1,5 +1,5 @@
 main.adb:17:13: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
-main.adb:17:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+main.adb:17:13: warning: "Length" is recursive; its implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 main.adb:18:24: info: predicate check proved
 main.adb:18:31: info: predicate check proved
 main.adb:18:31: info: subprogram variant proved
@@ -11,10 +11,10 @@ main.adb:22:49: info: subprogram variant proved
 main.adb:22:63: info: pointer dereference check proved
 main.adb:22:69: info: pointer dereference check proved
 main.adb:26:13: info: implicit aspect Always_Terminates on overriding operator "<=" has been proved, subprogram will terminate
-main.adb:26:13: warning: function contract might not be available on recursive calls [contracts-recursive]
+main.adb:26:13: warning: "<=" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 main.adb:29:19: info: postcondition proved
 main.adb:32:13: info: implicit aspect Always_Terminates on overriding operator "<=" has been proved, subprogram will terminate
-main.adb:32:13: warning: function contract might not be available on recursive calls [contracts-recursive]
+main.adb:32:13: warning: "<=" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 main.adb:35:19: info: postcondition proved
 main.adb:40:37: info: pointer dereference check proved
 main.adb:40:49: info: subprogram variant proved

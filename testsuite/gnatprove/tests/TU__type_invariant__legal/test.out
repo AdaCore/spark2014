@@ -1,5 +1,7 @@
 external_6.adb:5:07: medium: implicit aspect Always_Terminates on "Read" could be incorrect, "Read" and "Pub" are mutually recursive [possible fix: annotate "Read" and "Pub" with Subprogram_Variant aspects]
-external_6.ads:5:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+external_6.ads:5:13: warning: "Read" is recursive; (implicit) contract of mutally recursive functions might not be available on calls from contracts and assertions [contracts-recursive]
+external_6.ads:5:13: warning: its implicit contract might be missing
+external_6.ads:5:13: warning: potentially missing implicit contract for "Pub" declared at type_invariant_legal_6.ads:10
 external_6.ads:6:14: warning: subprogram "Read" has no effect
 external_6.ads:7:21: info: initialization of "X" proved
 type_invariant_legal.adb:3:14: warning: subprogram "Priv_In" has no effect
@@ -338,7 +340,9 @@ type_invariant_legal_6.adb:55:19: warning: "X" is set by "Read_Write" but not us
 type_invariant_legal_6.adb:57:07: medium: for "X" before the call at external_6.ads:8
 type_invariant_legal_6.adb:57:07: medium: in inlined invariant at type_invariant_legal_6.ads:16
 type_invariant_legal_6.adb:57:07: medium: invariant check might fail, cannot prove T /= 0 (e.g. when X = 0) [provers gave up before completing the proof]
-type_invariant_legal_6.ads:10:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+type_invariant_legal_6.ads:10:13: warning: "Pub" is recursive; (implicit) contract of mutally recursive functions might not be available on calls from contracts and assertions [contracts-recursive]
+type_invariant_legal_6.ads:10:13: warning: its implicit contract might be missing
+type_invariant_legal_6.ads:10:13: warning: potentially missing implicit contract for "Read" declared at external_6.ads:5
 type_invariant_legal_6.ads:11:14: warning: subprogram "Pub_In" has no effect
 type_invariant_legal_6.ads:12:14: info: for "X" at the end of "Pub_Out" at type_invariant_legal_6.ads:12
 type_invariant_legal_6.ads:12:14: info: invariant check proved (CVC5: 1 VC)

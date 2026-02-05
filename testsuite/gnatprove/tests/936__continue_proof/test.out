@@ -6,8 +6,7 @@ exhaustive.adb:17:42: info: overflow check proved (CVC5: 4 VC)
 exhaustive.adb:18:39: info: index check proved (CVC5: 4 VC)
 exhaustive.adb:18:63: info: index check proved (CVC5: 4 VC)
 polynomial.adb:15:13: info: implicit aspect Always_Terminates on "Eval_Monomial_Range" has been proved, subprogram will terminate
-polynomial.adb:15:13: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
-polynomial.adb:15:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+polynomial.adb:15:13: warning: "Eval_Monomial_Range" is recursive; its body and implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 polynomial.adb:18:26: info: index check proved (CVC5: 2 VC)
 polynomial.adb:18:32: info: precondition proved (CVC5: 2 VC)
 polynomial.adb:18:32: info: subprogram variant proved (CVC5: 1 VC)
@@ -17,8 +16,7 @@ polynomial.adb:21:13: info: implicit aspect Always_Terminates on "Eval_Monomial"
 polynomial.adb:22:08: info: precondition proved (CVC5: 2 VC)
 polynomial.adb:22:48: info: overflow check proved (CVC5: 2 VC)
 polynomial.adb:24:13: info: implicit aspect Always_Terminates on "Eval_Polynomial_Range" has been proved, subprogram will terminate
-polynomial.adb:24:13: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
-polynomial.adb:24:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+polynomial.adb:24:13: warning: "Eval_Polynomial_Range" is recursive; its body and implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 polynomial.adb:27:15: info: index check proved (CVC5: 2 VC)
 polynomial.adb:27:44: info: index check proved (CVC5: 2 VC)
 polynomial.adb:28:15: info: precondition proved (CVC5: 2 VC)

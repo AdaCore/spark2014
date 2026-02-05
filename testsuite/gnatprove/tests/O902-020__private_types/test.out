@@ -1,4 +1,4 @@
-simple_private_type.ads:8:13: warning: function contract might not be available on recursive calls [contracts-recursive]
+simple_private_type.ads:8:13: warning: "=" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 simple_private_type.ads:10:23: warning: assuming "Is_Zero" has no effect on global items
 simple_private_type.ads:10:23: warning: no Global contract available for "Is_Zero" [assumed-global-null]
 simple_private_type.ads:10:39: warning: assuming "Is_Zero" has no effect on global items

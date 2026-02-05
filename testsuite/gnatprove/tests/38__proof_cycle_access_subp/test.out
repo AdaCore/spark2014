@@ -1,7 +1,10 @@
 main.adb:2:04: info: function contract feasibility proved (Trivial: 1 VC)
 main.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
-main.adb:4:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
+main.adb:4:13: warning: potentially missing contract for "F" declared at line 4
+main.adb:4:13: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 main.adb:4:43: medium: postcondition might fail [provers gave up before completing the proof]
 main.adb:5:13: info: implicit aspect Always_Terminates on "G" has been proved, subprogram will terminate
+main.adb:5:13: warning: potentially missing contract for "F" declared at line 4
+main.adb:5:13: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 main.adb:10:16: medium: call via access-to-function might not terminate [reason for check: functions should always terminate in SPARK] [possible explanation: calls via access-to-subprograms inside function taken as access might hide recursive calls]
 main.adb:12:16: info: pointer dereference check proved (CVC5: 1 VC)

@@ -213,7 +213,7 @@ recursive_mergesort.ads:60:17: info: postcondition proved
 recursive_mergesort.ads:64:17: info: postcondition proved
 recursive_mergesort.ads:68:17: info: postcondition proved
 recursive_mergesort.ads:72:13: info: implicit aspect Always_Terminates on "Occurrences" has been proved, subprogram will terminate
-recursive_mergesort.ads:72:13: warning: function contract might not be available on recursive calls [contracts-recursive]
+recursive_mergesort.ads:72:13: warning: "Occurrences" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 recursive_mergesort.ads:75:14: info: postcondition proved
 recursive_mergesort.ads:76:07: info: predicate check proved
 recursive_mergesort.ads:76:60: info: overflow check proved

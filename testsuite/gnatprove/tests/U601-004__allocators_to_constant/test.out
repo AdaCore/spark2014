@@ -1,10 +1,10 @@
-constant_access.adb:17:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+constant_access.adb:17:13: warning: "Deep_Copy" is recursive; its implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 constant_access.adb:24:10: medium: implicit aspect Always_Terminates on "Deep_Copy" could be incorrect, subprogram is recursive [possible fix: annotate "Deep_Copy" with a Subprogram_Variant aspect]
 constant_access.adb:24:17: medium: resource or memory leak might occur [possible explanation: allocator for an access-to-constant type leaks memory]
 constant_access.adb:24:35: info: pointer dereference check proved (CVC5: 1 VC)
 constant_access.adb:25:46: info: pointer dereference check proved (CVC5: 1 VC)
 constant_access.adb:31:13: info: implicit aspect Always_Terminates on "Deep_Copy_2" has been proved, subprogram will terminate
-constant_access.adb:33:13: warning: function contract might not be available on recursive calls [contracts-recursive]
+constant_access.adb:33:13: warning: "Deep_Copy_Ann" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 constant_access.adb:35:14: info: postcondition proved (CVC5: 2 VC)
 constant_access.adb:41:10: medium: implicit aspect Always_Terminates on "Deep_Copy_Ann" could be incorrect, subprogram is recursive [possible fix: annotate "Deep_Copy_Ann" with a Subprogram_Variant aspect]
 constant_access.adb:41:32: info: null exclusion check proved (CVC5: 1 VC)

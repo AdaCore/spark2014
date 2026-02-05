@@ -131,7 +131,7 @@ multi_induction.adb:1:28: info: initialization of "X1" proved
 multi_induction.adb:1:32: info: initialization of "X2" proved
 multi_induction.adb:6:16: medium: overflow check might fail [CWE 190], cannot prove upper bound for X1 + 2 (e.g. when X1 = Integer'Last-1) [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
 multi_induction.adb:7:16: medium: overflow check might fail [CWE 190], cannot prove upper bound for X2 + 6 (e.g. when X2 = 2147483642) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 5 should mention X2 in a loop invariant] [provers gave up before completing the proof]
-rec_constant.adb:1:10: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+rec_constant.adb:1:10: warning: "Rec_Constant" is recursive; its implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 rec_constant.adb:6:07: medium: implicit aspect Always_Terminates on "Rec_Constant" could be incorrect, subprogram is recursive [CWE 674] [possible fix: annotate "Rec_Constant" with a Subprogram_Variant aspect]
 search.adb:2:10: info: implicit aspect Always_Terminates on "Search" has been proved, subprogram will terminate
 search.adb:4:21: info: unrolling loop [info-unrolling-inlining]

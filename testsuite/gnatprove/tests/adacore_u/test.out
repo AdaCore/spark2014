@@ -570,7 +570,7 @@ mem.ads:3:21: warning: no subprogram exists that can initialize abstract state "
 mem.ads:7:14: info: postcondition proved (CVC5: 1 VC)
 mem.ads:9:13: info: implicit aspect Always_Terminates on "Free_Memory" has been proved, subprogram will terminate
 resources.adb:6:24: info: unrolling loop [info-unrolling-inlining]
-resources.ads:9:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+resources.ads:9:13: warning: "Sum" is recursive; its implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 resources.ads:10:08: medium: implicit aspect Always_Terminates on "Sum" could be incorrect, subprogram is recursive [possible fix: annotate "Sum" with a Subprogram_Variant aspect]
 resources.ads:10:32: info: index check proved (CVC5: 2 VC)
 resources.ads:10:36: info: overflow check proved (CVC5: 2 VC)

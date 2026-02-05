@@ -799,10 +799,19 @@ package body VC_Kinds is
 
          --  Proof limitations
          when Warn_Contracts_Recursive             =>
-           "Explicit and implicit postconditions of a recursive subprogram "
-           & "cannot be used on (mutually) recursive calls occurring inside "
+           "Explicit and implicit postconditions of a recursive subprogram, "
+           & "as well as the definition of a recursive expression function "
+           & "with a numeric (not structural) Subprogram_Variant, might not "
+           & "be available on (mutually) recursive calls occurring inside "
            & "assertions and contracts, but will still be available in "
            & "regular code",
+         when Warn_Proof_Module_Cyclic             =>
+           "A subprogram is part of a dependency cycle with other entities; "
+           & "the explicit and implicit postconditions of mutually dependent "
+           & "functions as well as their definition for recursive expression "
+           & "functions cannot be used on "
+           & "calls from these entities if they occur inside assertions and "
+           & "contracts",
          when Warn_DIC_Ignored                     =>
            "The Default_Initial_Condition of a type won't be assumed on "
            & "subcomponents initialized by default inside assertions and "
@@ -858,12 +867,6 @@ package body VC_Kinds is
            "No reclamation function or reclaimed value was found for an "
            & "ownership type, which may make it impossible to prove that "
            & "values of this type are reclaimed",
-         when Warn_Num_Variant                     =>
-           "For recursive expression functions with a numeric (not "
-           & "structural) Subprogram_Variant, the definition of the "
-           & "expression function might not be available for recursive calls "
-           & "occurring inside assertions and contracts, but will still be "
-           & "available in regular code",
          when Warn_Map_Length_Aggregates           =>
            "A type with predefined map aggregates doesn't have a Length "
            & "function; the length of aggregates will not be known for "
@@ -1936,6 +1939,7 @@ package body VC_Kinds is
          when Warn_Alias_Array                     => "alias-array",
          when Warn_Comp_Relaxed_Init               => "component-relaxed-init",
          when Warn_Contracts_Recursive             => "contracts-recursive",
+         when Warn_Proof_Module_Cyclic             => "cyclic-dependency",
          when Warn_DIC_Ignored                     => "dic-ignored",
          when Warn_Full_View_Visible               => "full-view-visible",
          when Warn_Imprecise_Address               => "imprecise-address",
@@ -1962,7 +1966,6 @@ package body VC_Kinds is
          when Warn_Init_Cond_Ignored               => "init-cond-ignored",
          when Warn_No_Reclam_Func                  =>
            "no-reclamation-function",
-         when Warn_Num_Variant                     => "numeric-variant",
          when Warn_Map_Length_Aggregates           => "map-length-aggregates",
          when Warn_Set_Length_Aggregates           => "set-length-aggregates",
          when Warn_Relaxed_Init_Mutable_Discr      =>

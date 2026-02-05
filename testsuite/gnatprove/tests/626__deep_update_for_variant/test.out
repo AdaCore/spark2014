@@ -1,5 +1,5 @@
 bar.adb:10:13: info: implicit aspect Always_Terminates on "Finite" has been proved, subprogram will terminate
-bar.adb:10:13: warning: function contract might not be available on recursive calls [contracts-recursive]
+bar.adb:10:13: warning: "Finite" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 bar.adb:12:14: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC)
 bar.adb:12:49: info: subprogram variant proved (Trivial)
 bar.adb:12:58: info: pointer dereference check proved (CVC5: 1 VC)
