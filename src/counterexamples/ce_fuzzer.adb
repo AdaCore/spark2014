@@ -86,11 +86,15 @@ package body CE_Fuzzer is
    --  generator to randomly choose a value of Index_Type.
 
    function Fuzz_Integer_Value (Ty : Entity_Id) return Value_Type is
-      C : Type_To_Fuzz_Values_Map.Cursor := Values_To_Try.Find (Ty);
+      Type_Pos : Type_To_Fuzz_Values_Map.Cursor;
+      Inserted : Boolean;
    begin
       --  Initialize the variable with a value known to often highlight bugs
 
-      if not Type_To_Fuzz_Values_Map.Has_Element (C) then
+      Values_To_Try.Insert
+        (Key => Ty, Position => Type_Pos, Inserted => Inserted);
+
+      if Inserted then
          declare
             type Known_Values is array (1 .. 3) of Big_Integer;
 
@@ -110,14 +114,15 @@ package body CE_Fuzzer is
                end if;
             end loop;
 
-            Values_To_Try.Insert (Ty, (Scalar_K, (Integer_K, Values)));
-            C := Values_To_Try.Find (Ty);
+            Values_To_Try (Type_Pos) := (Scalar_K, (Integer_K, Values));
          end;
       end if;
 
       declare
          Values    : constant Big_Integer_Vector.Vector :=
-           Type_To_Fuzz_Values_Map.Element (C).Scalar_Values.Integer_Values;
+           Type_To_Fuzz_Values_Map.Element (Type_Pos)
+             .Scalar_Values
+             .Integer_Values;
          Nb_Values : constant Index_Type := Index_Type (Values.Length);
 
          --  Since not all types have the same number of values to choose from
