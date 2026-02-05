@@ -2606,7 +2606,8 @@ The prefix of an Initialized attribute reference shall denote an object.
 
    * the Relaxed_Initialization aspect of its type is True; or
 
-   * it is a subcomponent of an object that has relaxed initialization; or
+   * it is a subcomponent of an object that has relaxed initialization that
+     is not an immutable discriminant; or
 
    * it is the return object of a function call and the Relaxed_Initialization
      aspect of the function's result is True; or
