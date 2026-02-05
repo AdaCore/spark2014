@@ -95,7 +95,9 @@ Generalized Loop Iteration
 
      iterable_specification ::=
        (First       => name,
-        Next        => name,
+        Next        => name[,
+        Last        => name,
+        Previous    => name],
         Has_Element => name[,
         Element     => name])
 
@@ -113,11 +115,10 @@ Generalized Loop Iteration
 
    Legality Rules
 
-5. Each of the four (or three, if the optional argument is omitted)
-   names shall denote an explicitly declared primitive function of the
-   type, referred to respectively as the First, Next, Has_Element,
-   and Element functions of the type. All parameters of all
-   four subprograms shall be of mode In.
+5. Each of the names shall denote an explicitly declared primitive function of
+   the type, referred to respectively as the First, Next, Last, Previous,
+   Has_Element, and Element functions of the type. All parameters of all
+   six subprograms shall be of mode In.
 
 6. The First function of the type shall take a single parameter,
    which shall be of type T. The "iteration cursor subtype" of T
@@ -128,8 +129,10 @@ Generalized Loop Iteration
    The iteration cursor subtype of T shall be definite and shall not be
    limited.
 
-7. The Next function of the type shall have two parameters, the first
-   of type T and the second of the cursor subtype of T; the result subtype
+7. The Next and Previous function of the type shall have two parameters, the
+   first of type T and the second of the cursor subtype of T; the result subtype
+   of the function shall be the cursor subtype of T. The last function of the
+   type shall have one parameters of type T; the result subtype
    of the function shall be the cursor subtype of T.
 
 8. The Has_Element function of the type shall have two parameters, the first
@@ -141,12 +144,18 @@ Generalized Loop Iteration
    the default element subtype of T is then defined to be the result subtype
    of the Element function.
 
-10. Reverse container element iterators are not in |SPARK|.
-    The loop parameter of a container element iterator is a constant object.
+10. Reverse container iterators are only allowed if the Last and
+    Previous functions are specified.
 
-11. A container element iterator shall only occur as the
-    loop_parameter_specification of a quantified_expression[, and not as
-    the iteration_scheme of a loop statement].
+11. Container element iterators are only allowed if the Element function is
+    specified. The loop parameter of a container element iterator is a constant
+    object.
+
+12. None of the Iterable functions shall have a controlling result, be
+    volatile functions, have side effects, or read global data.
+
+13. The Iterable aspect shall not be specified on the full view of a private
+    type.
 
 .. todo: positional notation in an Iterable aspect spec ok?
 
@@ -154,7 +163,7 @@ Generalized Loop Iteration
 
    Dynamic Semantics
 
-12. Iteration associated with a generalized iterator or a container element
+14. Iteration associated with a generalized iterator or a container element
     iterator proceeds as follows. An object of the iteration cursor subtype
     of T (hereafter called "the cursor") is created
     and is initialized to the result of calling First, passing in the given
