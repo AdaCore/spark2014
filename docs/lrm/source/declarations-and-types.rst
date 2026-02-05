@@ -785,6 +785,14 @@ The following operations are said to be *move* operations:
   named access-to-variable type. [This includes the case of an object of
   named access-to-variable type.]
 
+- An allocator of a named access-to-constant type whose designated type contains
+  subcomponents of a named access-to-variable type if the initial value is not
+  a constant part of an object.
+
+- A conversion from a named access-to-variable type to a named
+  access-to-constant type occurring directly inside an assignment operation
+  if the converted expression is not a constant part of an object.
+
 [Redundant: Passing a parameter by reference is not a move operation.]
 
 A move operation results in a transfer of ownership. The state of the paths
