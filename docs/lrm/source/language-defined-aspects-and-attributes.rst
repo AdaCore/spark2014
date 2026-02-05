@@ -125,7 +125,7 @@ Language-Defined Attributes
 ===================================== ====================== ====================================================
 Attribute                              Allowed in SPARK      Comment
 ===================================== ====================== ====================================================
-P'Access			      No		     Restricted access types
+P'Access			      Yes
 X'Access	    		      Yes
 X'Address	    		      No                     Only allowed in representation clauses
 S'Adjacent	    		      Yes                    Only supported with static attribute expressions; implicit precondition (Ada RM A.5.3(50))
