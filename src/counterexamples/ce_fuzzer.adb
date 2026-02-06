@@ -85,6 +85,10 @@ package body CE_Fuzzer is
    --  order to avoid creating one generator per type, we instead create one
    --  generator to randomly choose a value of Index_Type.
 
+   ------------------------
+   -- Fuzz_Integer_Value --
+   ------------------------
+
    function Fuzz_Integer_Value (Ty : Entity_Id) return Value_Type is
 
       function Get_Random_Value
