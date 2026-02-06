@@ -4100,7 +4100,27 @@ package body CE_RAC is
                              Left.Last_Attr.Content;
                            Val     : Value_Access;
 
+                           Index_Range : constant Node_Id :=
+                             Get_Range (First_Index (Etype (N)));
+                           Low, High   : Big_Integer;
+
                         begin
+                           Get_Bounds (Index_Range, Low, High);
+
+                           --  RM 4.5.3(8): The upper bound is determined
+                           --  by the lower bound and the length. A check is
+                           --  made that the upper bound of the result of the
+                           --  concatenation belongs to the range of the index
+                           --  subtype, unless the result is a null array.
+                           --  Constraint_Error is raised if this check fails.
+
+                           Res.Last_Attr.Content := L_Last + R_Length;
+
+                           if not In_Range (Res.Last_Attr.Content, Low, High)
+                           then
+                              RAC_Failure (N, VC_Range_Check);
+                           end if;
+
                            for K in 1 .. To_Integer (R_Length) loop
                               if Right.Array_Values.Contains
                                    (R_First - 1 + To_Big_Integer (K))
@@ -4118,8 +4138,6 @@ package body CE_RAC is
                                     new Value_Type'(Copy (Val.all)));
                               end if;
                            end loop;
-
-                           Res.Last_Attr.Content := L_Last + R_Length;
 
                            return Res;
                         end;

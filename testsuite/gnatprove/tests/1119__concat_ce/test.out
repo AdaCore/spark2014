@@ -1,2 +1,5 @@
 con2.adb:1:10: info: implicit aspect Always_Terminates on "Con2" has been proved, subprogram will terminate
-con2.adb:5:13: low: range check might fail, cannot prove upper bound for X & Y [reason for check: returned value must fit in the result type of the function] [possible fix: precondition of subprogram at line 1 should mention X and Y] [provers reached step limit before completing the proof]
+con2.adb:5:13: low: range check might fail (e.g. when X = (Positive'Last => 'NUL') and Y = (1 => 'NUL')) [reason for check: returned value must fit in the result type of the function] [possible fix: precondition of subprogram at line 1 should mention X and Y] [provers reached step limit before completing the proof]
+counterexample expected for check at con2.adb:5
+  trace at con2.adb:1 --> X = (Positive'Last => 'NUL') and Y = (1 => 'NUL')
+  trace at con2.adb:5 --> X = (Positive'Last => 'NUL') and Y = (1 => 'NUL')
