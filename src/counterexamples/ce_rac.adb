@@ -3879,8 +3879,8 @@ package body CE_RAC is
 
             when N_Op_Divide .. N_Op_Rem       =>
                if Has_Fixed_Point_Type (Ty)
-                 or Has_Fixed_Point_Type (Left_Type)
-                 or Has_Fixed_Point_Type (Right_Type)
+                 or else Has_Fixed_Point_Type (Left_Type)
+                 or else Has_Fixed_Point_Type (Right_Type)
                then
                   if Nkind (N) = N_Op_Divide and then Is_Zero (Right) then
                      RAC_Failure (N, VC_Division_Check);
