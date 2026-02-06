@@ -711,6 +711,18 @@ of a program:
     ``Cursor`` for which ``Has_Element (Container, Cursor)`` evaluates to
     False in a finite number of steps.
 
+  In addition, if the ``Last`` and ``Previous`` functions are supplied:
+
+  * the function ``Has_Element`` shall be such that,
+    for any container object ``Container`` and cursor object ``Cursor``,
+    ``Has_Element (Container, Cursor)`` only evaluates to True if ``Cursor``
+    is accessible from ``Last (Container)`` using the function ``Previous``, and
+
+  * for any container object ``Container``, the iteration from
+    ``Last (Container)`` through the function ``Previous`` shall reach a cursor
+    ``Cursor`` for which ``Has_Element (Container, Cursor)`` evaluates to
+    False in a finite number of steps.
+
 * [SPARK_ITERABLE_FOR_PROOF]
   When a type has an ``Iterable_For_Proof`` annotation,
 
