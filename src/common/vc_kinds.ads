@@ -491,41 +491,148 @@ package VC_Kinds is
    type Error_Message_Kind is
      (Err_Comp_Not_Present,
 
+      --  Incorrect uses of pragma/aspect Annotate
+
+      Annot_At_End_Borrow_Context,
+      Annot_At_End_Borrow_Param,
+      Annot_At_End_Borrow_Param_In_Contract,
+      Annot_Handler_Call,
+      Annot_Handler_Conversion,
+      Annot_Hide_Info_Private_Child,
+      Annot_Hide_Info_Private_Eq,
+      Annot_Hide_Info_Private_Ownership,
+      Annot_Inline_For_Proof_Body_Off,
+      Annot_No_Bitwise_Operations_Use,
+      Annot_Ownership_Potentially_Invalid,
+      Annot_Predefined_Equality_Use_Eq,
+
       --  Language violations
 
-      Annot_Container_Aggregate_Without_Annotation,
-      Annot_Handler_Conversion,
-      Annot_Wrong_Context_For_Prophecy,
+      Vio_Access_Constant,
+      Vio_Access_Expression,
+      Vio_Access_Function_With_Side_Effects,
+      Vio_Access_No_Root,
+      Vio_Access_Subprogram_Within_Protected,
+      Vio_Access_Sub_Formal_With_Inv,
+      Vio_Access_Sub_Return_Type_With_Inv,
+      Vio_Access_Sub_With_Globals,
+      Vio_Access_To_Dispatch_Op,
+      Vio_Access_Volatile_Function,
+      Vio_Address_Of_Non_Object,
+      Vio_Address_Outside_Address_Clause,
+      Vio_Assert_And_Cut_Context,
+      Vio_Backward_Goto,
+      Vio_Box_Notation_Without_Init,
+      Vio_Code_Statement,
+      Vio_Controlled_Types,
+      Vio_Container_Aggregate,
+      Vio_Default_With_Current_Instance,
+      Vio_Derived_Untagged_With_Tagged_Full_View,
+      Vio_Discriminant_Access,
+      Vio_Discriminant_Derived,
+      Vio_Dispatch_Plain_Pre,
+      Vio_Dispatching_Untagged_Type,
+      Vio_Exit_Cases_Exception,
+      Vio_Exit_Cases_Normal_Only,
+      Vio_Function_Global_Output,
+      Vio_Function_Out_Param,
+      Vio_Ghost_Concurrent_Comp,
+      Vio_Ghost_Eq,
+      Vio_Ghost_Volatile,
+      Vio_Handler_Choice_Parameter,
+      Vio_Invariant_Class,
+      Vio_Invariant_Ext,
+      Vio_Invariant_Partial,
+      Vio_Invariant_Volatile,
+      Vio_Iterable_Controlling_Result,
+      Vio_Iterable_Full_View,
+      Vio_Iterable_Globals,
+      Vio_Iterable_Side_Effects,
+      Vio_Iterable_Volatile,
+      Vio_Iterator_Specification,
+      Vio_Loop_Variant_Structural,
+      Vio_Overlay_Constant_Not_Imported,
+      Vio_Overlay_Mutable_Constant,
+      Vio_Overlay_Part_Of_Protected,
+      Vio_Ownership_Access_Equality,
       Vio_Ownership_Allocator_Invalid_Context,
       Vio_Ownership_Allocator_Uninitialized,
       Vio_Ownership_Anonymous_Access_To_Named,
+      Vio_Ownership_Anonymous_Part_Of,
+      Vio_Ownership_Anonymous_Object_Context,
+      Vio_Ownership_Anonymous_Object_Init,
+      Vio_Ownership_Anonymous_Result,
+      Vio_Ownership_Assign_To_Expr,
+      Vio_Ownership_Assign_To_Constant,
       Vio_Ownership_Borrow_Of_Constant,
       Vio_Ownership_Borrow_Of_Non_Markable,
+      Vio_Ownership_Anonymous_Component,
+      Vio_Ownership_Deallocate_General,
       Vio_Ownership_Different_Branches,
       Vio_Ownership_Duplicate_Aggregate_Value,
+      Vio_Ownership_Loop_Entry_Old_Copy,
+      Vio_Ownership_Loop_Entry_Old_Traversal,
       Vio_Ownership_Move_Constant_Part,
       Vio_Ownership_Move_In_Declare,
       Vio_Ownership_Move_Not_Name,
       Vio_Ownership_Move_Traversal_Call,
+      Vio_Ownership_Reborrow,
+      Vio_Ownership_Storage_Pool,
+      Vio_Ownership_Tagged_Extension,
+      Vio_Ownership_Traversal_Extended_Return,
       Vio_Ownership_Volatile,
+      Vio_Potentially_Invalid_Dispatch,
+      Vio_Potentially_Invalid_Invariant,
+      Vio_Potentially_Invalid_Overlay,
+      Vio_Potentially_Invalid_Part_Access,
+      Vio_Potentially_Invalid_Part_Concurrent,
+      Vio_Potentially_Invalid_Part_Tagged,
+      Vio_Potentially_Invalid_Part_Unchecked_Union,
+      Vio_Potentially_Invalid_Scalar,
+      Vio_Predicate_Volatile,
+      Vio_Program_Exit_Outputs,
       Vio_Real_Root,
+      Vio_Relaxed_Init_Dispatch,
+      Vio_Relaxed_Init_Initialized_Prefix,
       Vio_Relaxed_Init_Part_Generic, --  Any of the three following kinds
       Vio_Relaxed_Init_Part_Of_Tagged,
       Vio_Relaxed_Init_Part_Of_Unchecked_Union,
       Vio_Relaxed_Init_Part_Of_Volatile,
+      Vio_Side_Effects_Call_Context,
+      Vio_Side_Effects_Eq,
+      Vio_Side_Effects_Traversal,
+      Vio_Storage_Size,
+      Vio_Subp_Variant_Structural,
+      Vio_Tagged_Extension_Local,
+      Vio_Target_Name_In_Call_With_Side_Effets,
+      Vio_Tasking_Synchronized_Comp,
+      Vio_Tasking_Unintialized_Concurrent,
+      Vio_Tasking_Unsupported_Construct,
+      Vio_UC_From_Access,
+      Vio_UC_To_Access,
+      Vio_UC_To_Access_Components,
+      Vio_UC_To_Access_From,
+      Vio_Unsupported_Attribute,
+      Vio_Unsupported_Pragma,
+      Vio_Volatile_At_Library_Level,
+      Vio_Volatile_Discriminant,
+      Vio_Volatile_Discriminated_Type,
+      Vio_Volatile_Eq,
+      Vio_Volatile_Global,
+      Vio_Volatile_In_Interferring_Context,
       Vio_Volatile_Incompatible_Comp,
       Vio_Volatile_Incompatible_Type,
+      Vio_Volatile_Loop_Param,
+      Vio_Volatile_Parameter,
+      Vio_Volatile_Result,
 
       --  Tool limitations
 
       Lim_Abstract_State_Part_Of_Concurrent_Obj,
       Lim_Access_Attr_With_Ownership_In_Unsupported_Context,
       Lim_Access_Conv,
-      Lim_Access_Sub_Formal_With_Inv,
       Lim_Access_Sub_Protected,
-      Lim_Access_Sub_Return_Type_With_Inv,
       Lim_Access_Sub_Traversal,
-      Lim_Access_To_Dispatch_Op,
       Lim_Access_To_No_Return_Subp,
       Lim_Access_To_Relaxed_Init_Subp,
       Lim_Access_To_Subp_With_Exc,
@@ -549,6 +656,7 @@ package VC_Kinds is
       Lim_Conv_Fixed_Integer,
       Lim_Conv_Float_Modular_128,
       Lim_Conv_Incompatible_Fixed,
+      Lim_Cut_Operation_Context,
       Lim_Deep_Object_With_Addr,
       Lim_Deep_Value_In_Delta_Aggregate,
       Lim_Derived_Interface,
@@ -559,7 +667,10 @@ package VC_Kinds is
       Lim_Exit_Cases_Dispatch,
       Lim_Ext_Aggregate_With_Type_Ancestor,
       Lim_Extension_Case_Pattern_Matching,
-      Lim_External_Initializer,
+      Lim_GNAT_Ext_Conditional_Goto,
+      Lim_GNAT_Ext_Conditional_Raise,
+      Lim_GNAT_Ext_Conditional_Return,
+      Lim_GNAT_Ext_Interpolated_String_Literal,
       Lim_Generic_In_Hidden_Private,
       Lim_Generic_In_Type_Inv,
       Lim_Goto_Cross_Inv,
@@ -571,7 +682,6 @@ package VC_Kinds is
       Lim_Inherited_Controlling_Result_From_SPARK_Off,
       Lim_Inherited_Prim_From_Hidden_Part,
       Lim_Inherited_Prim_From_SPARK_Off,
-      Lim_Interpolated_String_Literal,
       Lim_Iterated_Element_Association,
       Lim_Iterator_In_Component_Assoc,
       Lim_Limited_Type_From_Limited_With,
@@ -592,22 +702,27 @@ package VC_Kinds is
       Lim_Object_Before_Inv,
       Lim_Op_Fixed_Float,
       Lim_Op_Incompatible_Fixed,
+      Lim_Overlay_Uninitialized,
       Lim_Overlay_With_Deep_Object,
       Lim_Overriding_With_Precondition_Discrepancy_Hiding,
       Lim_Overriding_With_Precondition_Discrepancy_Tagged_Privacy,
       Lim_Deep_Object_Declaration_Outside_Block,
       Lim_Package_Before_Inv,
+      Lim_Potentially_Invalid_Eq,
       Lim_Potentially_Invalid_Iterable,
       Lim_Potentially_Invalid_Mutable_Discr,
+      Lim_Potentially_Invalid_Part_Of,
       Lim_Potentially_Invalid_Predicates,
       Lim_Potentially_Invalid_Private,
       Lim_Potentially_Invalid_Relaxed,
       Lim_Potentially_Invalid_Subp_Access,
+      Lim_Potentially_Invalid_Traversal,
       Lim_Predicate_With_Different_SPARK_Mode,
       Lim_Predicate_With_Different_Visibility,
       Lim_Primitive_Call_In_DIC,
       Lim_Program_Exit_Dispatch,
       Lim_Program_Exit_Global_Modified_In_Callee,
+      Lim_Protected_Operation_Of_Expression,
       Lim_Protected_Operation_Of_Component,
       Lim_Protected_Operation_Of_Formal,
       Lim_Refined_Post_On_Entry,
@@ -616,6 +731,9 @@ package VC_Kinds is
       Lim_Relaxed_Init_Invariant,
       Lim_Relaxed_Init_Variant_Part,
       Lim_Subprogram_Before_Inv,
+      Lim_Subp_Variant_Duplicate,
+      Lim_Subp_Variant_Eq,
+      Lim_Suspension_On_Expression,
       Lim_Suspension_On_Formal,
       Lim_Target_Name_In_Borrow,
       Lim_Target_Name_In_Move,
@@ -631,17 +749,14 @@ package VC_Kinds is
 
    subtype Incorrect_Annotation_Kind is
      Error_Message_Kind
-       range Annot_Container_Aggregate_Without_Annotation
-             .. Annot_Wrong_Context_For_Prophecy;
+       range Annot_At_End_Borrow_Context .. Annot_Predefined_Equality_Use_Eq;
 
    subtype Unsupported_Kind is
      Error_Message_Kind
        range Lim_Abstract_State_Part_Of_Concurrent_Obj .. Lim_UU_Tagged_Comp;
 
    subtype Violation_Kind is
-     Error_Message_Kind
-       range Vio_Ownership_Allocator_Invalid_Context
-             .. Vio_Volatile_Incompatible_Type;
+     Error_Message_Kind range Vio_Access_Constant .. Vio_Volatile_Result;
 
    subtype Marking_Error_Kind is Error_Message_Kind
    with
@@ -893,7 +1008,7 @@ package VC_Kinds is
            raise Program_Error);
 
    function Error_Message (Kind : Error_Message_Kind) return String
-   with Pre => Kind not in Unsupported_Kind | Violation_Kind;
+   with Pre => Kind not in Marking_Error_Kind;
    --  Return the error message for each kind of error except violations and
    --  limitations which are handled specificaly.
 
@@ -909,16 +1024,10 @@ package VC_Kinds is
          when Lim_Access_Conv                                             =>
            "conversion between access types with"
            & " different designated types",
-         when Lim_Access_Sub_Formal_With_Inv                              =>
-           "formal with type invariants in access-to-subprogram",
          when Lim_Access_Sub_Protected                                    =>
            "access to protected subprogram",
-         when Lim_Access_Sub_Return_Type_With_Inv                         =>
-           "access-to-subprogram returning a type with invariants",
          when Lim_Access_Sub_Traversal                                    =>
            "access to borrowing traversal function",
-         when Lim_Access_To_Dispatch_Op                                   =>
-           "access to dispatching operation",
          when Lim_Access_To_No_Return_Subp                                =>
            "access to No_Return procedure",
          when Lim_Access_To_Relaxed_Init_Subp                             =>
@@ -940,6 +1049,10 @@ package VC_Kinds is
            "nested packages before loop-invariant",
          when Lim_Subprogram_Before_Inv                                   =>
            "nested subprogram before loop-invariant",
+         when Lim_Subp_Variant_Eq                                         =>
+           "subprogram variant on a user-defined equality on record type",
+         when Lim_Subp_Variant_Duplicate                                  =>
+           "multiple subprogram variants on a subprogram",
          when Lim_Goto_Cross_Inv                                          =>
            "goto statement to label located inside the loop crossing the loop"
            & " invariant",
@@ -973,8 +1086,14 @@ package VC_Kinds is
            "extension aggregate with subtype ancestor part",
          when Lim_Extension_Case_Pattern_Matching                         =>
            "GNAT extension for case pattern matching",
-         when Lim_External_Initializer                                    =>
-           "GNAT extension for embedded binary resources",
+         when Lim_GNAT_Ext_Conditional_Goto                               =>
+           "GNAT extension for conditional goto",
+         when Lim_GNAT_Ext_Conditional_Raise                              =>
+           "GNAT extension for conditional raise",
+         when Lim_GNAT_Ext_Conditional_Return                             =>
+           "GNAT extension for conditional return",
+         when Lim_GNAT_Ext_Interpolated_String_Literal                    =>
+           "GNAT extension for interpolated string literal",
          when Lim_Iterated_Element_Association                            =>
            "iterated element association",
          when Lim_Multidim_Iterator                                       =>
@@ -1006,6 +1125,8 @@ package VC_Kinds is
            "conversion between fixed-point and integer types",
          when Lim_Conv_Float_Modular_128                                  =>
            "conversion between floating-point and 128-bits modular types",
+         when Lim_Cut_Operation_Context                                   =>
+           "call to a cut operation in an unsupported context",
          when Lim_Target_Name_In_Borrow                                   =>
            "@ inside a reborrow",
          when Lim_Target_Name_In_Move                                     =>
@@ -1019,6 +1140,9 @@ package VC_Kinds is
            "interface derived from other interfaces",
          when Lim_Destructor                                              =>
            "record type with a destructor",
+         when Lim_Overlay_Uninitialized                                   =>
+           "object with an address clause which is not fully initialized at "
+           & "declaration",
          when Lim_Overlay_With_Deep_Object                                =>
            "overlay with an object of an ownership type",
          when Lim_Deep_Object_Declaration_Outside_Block                   =>
@@ -1043,8 +1167,6 @@ package VC_Kinds is
          when Lim_Inherited_Prim_From_SPARK_Off                           =>
            "tagged type with primitive subprograms inherited from a type"
            & " declared in a private part with SPARK_Mode Off",
-         when Lim_Interpolated_String_Literal                             =>
-           "GNAT extension for interpolated string literal",
          when Lim_Unknown_Alignment                                       =>
            "unknown value of object alignment",
          when Lim_Unknown_Size                                            =>
@@ -1053,10 +1175,14 @@ package VC_Kinds is
            "operation between fixed-point and floating-point types",
          when Lim_Op_Incompatible_Fixed                                   =>
            "operation between incompatible fixed-point types",
+         when Lim_Protected_Operation_Of_Expression                       =>
+           "call to operation of a dereference",
          when Lim_Protected_Operation_Of_Formal                           =>
            "call to operation of a formal protected parameter",
          when Lim_Protected_Operation_Of_Component                        =>
            "call to operation of a component of a protected type",
+         when Lim_Suspension_On_Expression                                =>
+           "suspension on a dereference",
          when Lim_Suspension_On_Formal                                    =>
            "suspension on a formal parameter",
          when Lim_Borrow_Slice                                            =>
@@ -1082,11 +1208,16 @@ package VC_Kinds is
            "dispatching primitive subprogram overriding declared for a"
            & " private untagged type with no precondition and a class-wide"
            & " precondition inherited from ancestor",
+         when Lim_Potentially_Invalid_Eq                                  =>
+           "Potentially_Invalid aspect on the primitive equality of a record "
+           & "type",
          when Lim_Potentially_Invalid_Iterable                            =>
            "Potentially_Invalid aspect on a function associated to the aspect"
            & " Iterable",
          when Lim_Potentially_Invalid_Mutable_Discr                       =>
            "part of potentially invalid object with mutable discriminants",
+         when Lim_Potentially_Invalid_Part_Of                             =>
+           "potentially invalid object marked Part_Of a protected object",
          when Lim_Potentially_Invalid_Predicates                          =>
            "potentially invalid object with a part subject to predicates",
          when Lim_Potentially_Invalid_Private                             =>
@@ -1097,6 +1228,9 @@ package VC_Kinds is
            & "initialization",
          when Lim_Potentially_Invalid_Subp_Access                         =>
            "access to a subprogram annotated with Potentially_Invalid",
+         when Lim_Potentially_Invalid_Traversal                           =>
+           "traversal function with a potentially invalid traversed "
+           & "parameter",
          when Lim_Primitive_Call_In_DIC                                   =>
            "primitive calls in default initial condition",
          when Lim_Constrained_Classwide                                   =>
@@ -1165,21 +1299,55 @@ package VC_Kinds is
    function Incorrect_Annotation_Message
      (Kind : Incorrect_Annotation_Kind) return String
    is (case Kind is
-         when Annot_Container_Aggregate_Without_Annotation =>
-           "types of container aggregates shall have the "
-           & """Container_Aggregate"" annotation",
-         when Annot_Handler_Conversion                     =>
-           "an access-to-subprogram type with the ""Handler"" annotation "
-           & "shall not be converted to an access-to-subprogram type "
-           & "without",
-         when Annot_Wrong_Context_For_Prophecy             =>
+         when Annot_At_End_Borrow_Context           =>
            "calls to a function annotated with the ""At_End_Borrow"" "
            & "annotation and references to constants saving such a call shall "
            & "occur either in a postcondition, as a parameter of a lemma, in "
-           & "an assertion, or as the initial value of a ghost constant");
+           & "an assertion, or as the initial value of a ghost constant",
+         when Annot_At_End_Borrow_Param             =>
+           "actual parameter of a call to a function with ""At_End_Borrow"" "
+           & "annotation shall be a path",
+         when Annot_At_End_Borrow_Param_In_Contract =>
+           "actual parameter of a call to a function with ""At_End_Borrow"" "
+           & "annotation occurring in a contract shall be a local borrower "
+           & "or the borrowed parameter of a traversal function",
+         when Annot_Handler_Call                    =>
+           "object of an access-to-subprogram type with the ""Handler"" "
+           & "annotation shall not be called",
+         when Annot_Handler_Conversion              =>
+           "an access-to-subprogram type with the ""Handler"" annotation "
+           & "shall not be converted to an access-to-subprogram type "
+           & "without",
+         when Annot_Hide_Info_Private_Child         =>
+           "child of a package whose private part is hidden using a "
+           & """Hide_Info"" annotation shall not have a visible private part",
+         when Annot_Hide_Info_Private_Eq            =>
+           "if the full view of a type is hidden using a ""Hide_Info"" "
+           & "annotation, its predefined equality shall not be restricted "
+           & "unless its partial view has an explicit "
+           & """Predefined_Equality"" annotation",
+         when Annot_Hide_Info_Private_Ownership     =>
+           "if the full view of a type is hidden using a ""Hide_Info"" "
+           & "annotation, it shall not be subject to onwership unless its "
+           & "partial view has an explicit ""Ownership"" annotation",
+         when Annot_Inline_For_Proof_Body_Off       =>
+           "the body of expression functions with ""Inline_For_Proof"" "
+           & "annotation shall be in SPARK",
+         when Annot_No_Bitwise_Operations_Use       =>
+           "bitwise operation on type with ""No_Bitwise_Operations"" "
+           & "annotation shall not be used in SPARK",
+         when Annot_Ownership_Potentially_Invalid   =>
+           "no part of an object or function result annotated with "
+           & "Potentially_Invalid shall be of a type with an ""Ownership"" "
+           & "annotation",
+         when Annot_Predefined_Equality_Use_Eq      =>
+           "equality on type annotated with the ""Predefined_Equality"" "
+           & "annotation shall abide by the corresponding restrictions");
 
    function Violation_Message
-     (Kind : Violation_Kind; Root_Cause : Boolean := False) return String;
+     (Kind       : Violation_Kind;
+      Name       : String := "";
+      Root_Cause : Boolean := False) return String;
    --  If Root_Cause is True, return the message that should be used as root
    --  cause message for cascading violations for Kind if it is different from
    --  the regular message (typically, if it has character insertions).

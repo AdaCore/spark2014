@@ -2,7 +2,7 @@
 --> main.adb:21:04
    21 |       procedure Q is new P (X);
       |       ^
-      + component of anonymous access type is not allowed in SPARK
+      + component of anonymous access type is not allowed in SPARK (SPARK RM 3.10)
       + violation of aspect SPARK_Mode at line 1
     1 |    procedure Main with SPARK_Mode is
       |                        ^

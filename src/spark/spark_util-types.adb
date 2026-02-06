@@ -2158,7 +2158,7 @@ package body SPARK_Util.Types is
    -----------------------------------
 
    function Predefined_Eq_Uses_Pointer_Eq
-     (Ty : Type_Kind_Id; Exp : out Unbounded_String) return Boolean
+     (Ty : Type_Kind_Id; Exp : out Opt_Type_Kind_Id) return Boolean
    is
 
       function Check_Comp (Comp_Ty : Node_Id) return Test_Result;
@@ -2181,18 +2181,13 @@ package body SPARK_Util.Types is
             return Fail;
 
          elsif Is_Access_Type (Comp_Ty) then
-            Exp := To_Unbounded_String ("access types");
+            Exp := Comp_Ty;
             return Pass;
 
          elsif Has_Predefined_Eq_Annotation (Comp_Ty)
            and then Get_Predefined_Eq_Kind (Comp_Ty) in Only_Null | No_Equality
          then
-            Exp :=
-              To_Unbounded_String
-                (Pretty_Source_Name
-                   (if Is_Tagged_Type (Comp_Ty)
-                    then Base_Type (Comp_Ty)
-                    else Root_Retysp (Comp_Ty)));
+            Exp := Comp_Ty;
             return Pass;
          else
             return Continue;
@@ -2201,6 +2196,8 @@ package body SPARK_Util.Types is
 
       function Uses_Pointer_Eq is new Traverse_Subcomponents (Check_Comp);
    begin
+      Exp := Empty;
+
       --  No need to traverse discriminants, they cannot contain access types
 
       return

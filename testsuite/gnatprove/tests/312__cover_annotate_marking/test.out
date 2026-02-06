@@ -3,8 +3,7 @@ ho_specialization.adb:12:14: warning: it will not be automatically instantiated 
 ho_specialization.adb:29:52: error: subprogram annotated with Higher_Order_Specialization shall only reference its access-to-function parameters in dereferences and as actual parameters in calls to functions annotated with Higher_Order_Specialization
 inline_and_logical_equal.adb:7:47: error: Entity parameter of a pragma Logical_Equal shall not have an Inline_For_Proof annotation
 inline_and_logical_equal.adb:11:50: error: Entity parameter of a pragma Inline_For_Proof shall not have a Logical_Equal annotation
-inline_and_logical_equal.adb:16:16: error: expression function with Inline_For_Proof whose body is not in SPARK is not allowed in SPARK
-inline_and_logical_equal.adb:16:16: error: violation of aspect SPARK_Mode at line 1
+inline_and_logical_equal.adb:16:16: error: the body of expression functions with "Inline_For_Proof" annotation shall be in SPARK
 iterable_for_proof_marking.adb:20:67: error: "Contains" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
 iterable_for_proof_marking.adb:20:67: error: violation of aspect SPARK_Mode at line 1
 iterable_for_proof_marking.adb:48:22: error: "Element" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)

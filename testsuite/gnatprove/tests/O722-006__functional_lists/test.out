@@ -42,18 +42,30 @@ use_lists.ads:5:04: error: "Get_Cursor_Model" is not allowed in SPARK (due to fu
 use_lists.ads:5:04: error: "Get_Element_Model" is not allowed in SPARK (due to function with global outputs)
 use_lists.ads:5:04: error: "Get_Element_Model" is not allowed in SPARK (due to function with global outputs)
 use_lists.ads:5:04: error: "Get_Element_Model" is not allowed in SPARK (due to function with global outputs)
-use_lists.ads:5:04: error: function "Copy" with output global "memory accessed through objects of access type" is not allowed in SPARK [E0005]
-use_lists.ads:5:04: error: function "Element" with output global "memory accessed through objects of access type" is not allowed in SPARK [E0005]
-use_lists.ads:5:04: error: function "First" with output global "memory accessed through objects of access type" is not allowed in SPARK [E0005]
-use_lists.ads:5:04: error: function "Get_Cursor_Model" with output global "memory accessed through objects of access type" is not allowed in SPARK [E0005]
-use_lists.ads:5:04: error: function "Get_Element_Model" with output global "memory accessed through objects of access type" is not allowed in SPARK [E0005]
-use_lists.ads:5:04: error: function "Has_Element" with output global "memory accessed through objects of access type" is not allowed in SPARK [E0005]
-use_lists.ads:5:04: error: function "Set" with output global "memory accessed through objects of access type" is not allowed in SPARK [E0005]
-use_lists.ads:5:04: error: function "Set" with output global "memory accessed through objects of access type" is not allowed in SPARK [E0005]
-use_lists.ads:5:04: error: function "Snoc" with output global "memory accessed through objects of access type" is not allowed in SPARK [E0005]
-use_lists.ads:5:04: error: function "Snoc" with output global "memory accessed through objects of access type" is not allowed in SPARK [E0005]
-use_lists.ads:5:04: error: function "Sub" with output global "memory accessed through objects of access type" is not allowed in SPARK [E0005]
-use_lists.ads:5:04: error: function "Sub" with output global "memory accessed through objects of access type" is not allowed in SPARK [E0005]
+use_lists.ads:5:04: error: consider using the Side_Effects aspect
+use_lists.ads:5:04: error: consider using the Side_Effects aspect
+use_lists.ads:5:04: error: consider using the Side_Effects aspect
+use_lists.ads:5:04: error: consider using the Side_Effects aspect
+use_lists.ads:5:04: error: consider using the Side_Effects aspect
+use_lists.ads:5:04: error: consider using the Side_Effects aspect
+use_lists.ads:5:04: error: consider using the Side_Effects aspect
+use_lists.ads:5:04: error: consider using the Side_Effects aspect
+use_lists.ads:5:04: error: consider using the Side_Effects aspect
+use_lists.ads:5:04: error: consider using the Side_Effects aspect
+use_lists.ads:5:04: error: consider using the Side_Effects aspect
+use_lists.ads:5:04: error: consider using the Side_Effects aspect
+use_lists.ads:5:04: error: function "Copy" with output global "memory accessed through objects of access type" is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]
+use_lists.ads:5:04: error: function "Element" with output global "memory accessed through objects of access type" is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]
+use_lists.ads:5:04: error: function "First" with output global "memory accessed through objects of access type" is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]
+use_lists.ads:5:04: error: function "Get_Cursor_Model" with output global "memory accessed through objects of access type" is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]
+use_lists.ads:5:04: error: function "Get_Element_Model" with output global "memory accessed through objects of access type" is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]
+use_lists.ads:5:04: error: function "Has_Element" with output global "memory accessed through objects of access type" is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]
+use_lists.ads:5:04: error: function "Set" with output global "memory accessed through objects of access type" is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]
+use_lists.ads:5:04: error: function "Set" with output global "memory accessed through objects of access type" is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]
+use_lists.ads:5:04: error: function "Snoc" with output global "memory accessed through objects of access type" is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]
+use_lists.ads:5:04: error: function "Snoc" with output global "memory accessed through objects of access type" is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]
+use_lists.ads:5:04: error: function "Sub" with output global "memory accessed through objects of access type" is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]
+use_lists.ads:5:04: error: function "Sub" with output global "memory accessed through objects of access type" is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]
 use_lists.ads:5:04: error: instantiation error at conts-lists-indefinite_unbounded_spark.ads:30
 use_lists.ads:5:04: error: instantiation error at formal_doubly_linked_lists.ads:10
 use_lists.ads:5:04: error: instantiation error at formal_doubly_linked_lists.ads:23

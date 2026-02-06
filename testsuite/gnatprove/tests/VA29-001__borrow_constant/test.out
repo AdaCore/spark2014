@@ -1,4 +1,4 @@
-main.adb:15:10: error: assignment into a constant object is not allowed in SPARK
+main.adb:15:10: error: assignment into a constant object is not allowed in SPARK (SPARK RM 3.10(3))
 main.adb:15:10: error: violation of aspect SPARK_Mode at line 3
 main.adb:18:32: error: borrow of a constant object is not allowed in SPARK (SPARK RM 3.10(11))
 main.adb:18:32: error: the root object of the borrowed path is a constant

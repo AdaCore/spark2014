@@ -1,9 +1,11 @@
 pack.adb:11:14: error: "F1" is not allowed in SPARK (due to function with global outputs)
 pack.adb:11:14: error: violation of pragma SPARK_Mode at test.adc:1
-pack.ads:6:13: error: function "F1" with output global "X" is not allowed in SPARK [E0005]
+pack.ads:6:13: error: consider using the Side_Effects aspect
+pack.ads:6:13: error: function "F1" with output global "X" is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]
 pack.ads:6:13: error: launch "gnatprove --explain=E0005" for more information
 pack.ads:6:13: error: violation of pragma SPARK_Mode at line 1
-pack.ads:7:13: error: function "F2" with output global "X" is not allowed in SPARK [E0005]
+pack.ads:7:13: error: consider using the Side_Effects aspect
+pack.ads:7:13: error: function "F2" with output global "X" is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]
 pack.ads:7:13: error: launch "gnatprove --explain=E0005" for more information
 pack.ads:7:13: error: violation of pragma SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof

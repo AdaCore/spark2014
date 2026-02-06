@@ -1,4 +1,4 @@
-c413005.adb:17:13: error: anonymous access type for result for non-traversal functions is not allowed in SPARK
+c413005.adb:17:13: error: anonymous access type for result for non-traversal functions is not allowed in SPARK (SPARK RM 3.10)
 c413005.adb:17:13: error: violation of pragma SPARK_Mode at test.adc:1
 c413005.adb:25:04: warning: assuming "Class_Wide_Get" has no effect on global items
 c413005.adb:25:04: warning: assuming "Class_Wide_Set" always terminates

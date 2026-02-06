@@ -1,10 +1,11 @@
-test_callback_bad.adb:9:26: error: access to subprogram declared within a protected object is not allowed in SPARK
+test_callback_bad.adb:9:26: error: access to subprogram declared within a protected object is not allowed in SPARK (SPARK RM 4.1.4(2))
 test_callback_bad.adb:9:26: error: violation of aspect SPARK_Mode at line 1
-test_callback_bad.adb:23:23: error: access to dispatching operation is not yet supported
-test_callback_bad.adb:24:23: error: access to volatile function is not allowed in SPARK
+test_callback_bad.adb:23:19: error: access to dispatching operation is not allowed in SPARK (SPARK RM 4.1.4(2))
+test_callback_bad.adb:23:19: error: violation of aspect SPARK_Mode at line 1
+test_callback_bad.adb:24:23: error: access to volatile function is not allowed in SPARK (SPARK RM 4.1.4(3))
 test_callback_bad.adb:24:23: error: violation of aspect SPARK_Mode at line 1
 test_callback_bad.adb:25:32: error: access to subprogram annotated with Relaxed_Initialization is not yet supported
-test_callback_bad.adb:26:23: error: Access attribute on a complex expression is not allowed in SPARK
+test_callback_bad.adb:26:23: error: Access attribute on a complex expression is not allowed in SPARK (SPARK RM 4.1.4(1))
 test_callback_bad.adb:26:23: error: violation of aspect SPARK_Mode at line 1
 test_callback_bad.ads:13:09: error: access to protected subprogram is not yet supported
 test_callback_bad.ads:16:09: error: access to borrowing traversal function is not yet supported
@@ -12,6 +13,8 @@ test_callback_bad.ads:38:07: error: "T" is not allowed in SPARK (due to entity d
 test_callback_bad.ads:38:07: error: violation of aspect SPARK_Mode at line 4
 test_callback_bad.ads:41:07: error: "T" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
 test_callback_bad.ads:41:07: error: violation of aspect SPARK_Mode at line 4
-test_callback_bad.ads:48:07: error: formal with type invariants in access-to-subprogram is not yet supported
-test_callback_bad.ads:49:04: error: access-to-subprogram returning a type with invariants is not yet supported
+test_callback_bad.ads:48:07: error: formal with type invariants in access-to-subprogram is not allowed in SPARK (SPARK RM 4.1.4(2))
+test_callback_bad.ads:48:07: error: violation of aspect SPARK_Mode at line 4
+test_callback_bad.ads:49:04: error: access-to-subprogram returning a type with invariants is not allowed in SPARK (SPARK RM 4.1.4(2))
+test_callback_bad.ads:49:04: error: violation of aspect SPARK_Mode at line 4
 gnatprove: error during flow analysis and proof

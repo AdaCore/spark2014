@@ -1,10 +1,11 @@
-a.adb:4:13: error: function "G" with output global "memory accessed through objects of access type" is not allowed in SPARK [E0005]
+a.adb:4:13: error: consider using the Side_Effects aspect
+a.adb:4:13: error: function "G" with output global "memory accessed through objects of access type" is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]
 a.adb:4:13: error: launch "gnatprove --explain=E0005" for more information
 a.adb:4:13: error: violation of aspect SPARK_Mode at line 1
-a.adb:11:20: error: constant object as "in" parameter of an access-to-variable type is not allowed in SPARK
+a.adb:11:20: error: constant object as "in" parameter of an access-to-variable type is not allowed in SPARK (SPARK RM 3.10(3))
 a.adb:11:20: error: violation of aspect SPARK_Mode at line 1
-a.adb:16:07: error: assignment into a constant object is not allowed in SPARK
+a.adb:16:07: error: assignment into a constant object is not allowed in SPARK (SPARK RM 3.10(3))
 a.adb:16:07: error: violation of aspect SPARK_Mode at line 1
-a.adb:17:20: error: constant object as "in" parameter of an access-to-variable type is not allowed in SPARK
+a.adb:17:20: error: constant object as "in" parameter of an access-to-variable type is not allowed in SPARK (SPARK RM 3.10(3))
 a.adb:17:20: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof
