@@ -1,0 +1,2 @@
+con2.adb:1:10: info: implicit aspect Always_Terminates on "Con2" has been proved, subprogram will terminate
+con2.adb:5:13: low: range check might fail, cannot prove upper bound for X & Y [reason for check: returned value must fit in the result type of the function] [possible fix: precondition of subprogram at line 1 should mention X and Y] [provers reached step limit before completing the proof]
