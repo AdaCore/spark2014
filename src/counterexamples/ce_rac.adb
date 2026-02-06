@@ -4119,8 +4119,8 @@ package body CE_RAC is
                               end if;
                            end loop;
 
-                           Res.Last_Attr.Content :=
-                             Left.Last_Attr.Content + R_Length;
+                           Res.Last_Attr.Content := L_Last + R_Length;
+
                            return Res;
                         end;
                      end if;
