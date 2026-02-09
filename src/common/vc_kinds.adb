@@ -41,6 +41,76 @@ package body VC_Kinds is
    function Wrap_CWE (S : String) return String;
    --  If non-empty, wrap the string S so that it becomes "[CWE <S>]"
 
+   ---------------------
+   -- Annot_To_String --
+   ---------------------
+
+   function Annot_To_String
+     (Kind     : Incorrect_Annotation_Kind := Common_Annotation_Kind'First;
+      Format   : Annot_Format_Kind := Text_Form;
+      Name     : String := "";
+      Snd_Name : String := "") return String
+   is (if Format = Text_Form
+       then
+         '"'
+         & (if Kind not in Specific_Annotation_Kind and then Name'Length = 0
+            then "GNATprove"
+            else
+              (declare
+                 Fst_Name : constant String :=
+                   (if Kind in Specific_Annotation_Kind
+                    then Annotation_From_Kind (Kind)
+                    else Name);
+               begin
+                 (if Snd_Name'Length = 0
+                  then Fst_Name
+                  else
+                    "(GNATprove, "
+                    & Fst_Name
+                    & ", """
+                    & Snd_Name
+                    & """[, ...])")))
+         & """ annotation"
+       else
+         (if Format = Pragma_Form
+          then """pragma Annotate "
+          else "aspect ""Annotate => ")
+         & "(GNATprove, "
+         & (if Name'Length = 0
+            then "..."
+            else
+              Name
+              & (if Snd_Name'Length = 0 then "" else ", """ & Snd_Name & '"')
+              & "[, ...]")
+         & ")""");
+
+   --------------------------
+   -- Annotation_From_Kind --
+   --------------------------
+
+   function Annotation_From_Kind
+     (Kind : Specific_Annotation_Kind) return String
+   is (case Kind is
+         when Annot_At_End_Borrow_Context
+            | Annot_At_End_Borrow_Param
+            | Annot_At_End_Borrow_Param_In_Contract         => "At_End_Borrow",
+         when Annot_Container_Aggregates_Add
+            | Annot_Container_Aggregates_Add_Access_Param
+            | Annot_Container_Aggregates_No_Aggregate
+            | Annot_Container_Aggregates_Private            =>
+           "Container_Aggregates",
+         when Annot_Handler_Call | Annot_Handler_Conversion => "Handler",
+         when Annot_Hide_Info_Private_Child
+            | Annot_Hide_Info_Private_Eq
+            | Annot_Hide_Info_Private_Ownership             => "Hide_Info",
+         when Annot_Inline_For_Proof_Body_Off               =>
+           "Inline_For_Proof",
+         when Annot_No_Bitwise_Operations_Use               =>
+           "No_Bitwise_Operations",
+         when Annot_Ownership_Potentially_Invalid           => "Ownership",
+         when Annot_Predefined_Equality_Use_Eq              =>
+           "Predefined_Equality");
+
    ------------
    -- CWE_ID --
    ------------
@@ -1242,6 +1312,30 @@ package body VC_Kinds is
       end case;
    end Error_Message;
 
+   ------------------
+   -- Explain_Code --
+   ------------------
+
+   function Explain_Code (Kind : Violation_Kind) return Explain_Code_Kind
+   is (case Kind is
+         when Vio_Address_Outside_Address_Clause    =>
+           EC_Address_In_Expression,
+         when Vio_Function_Global_Output            =>
+           EC_Function_Output_Global,
+         when Vio_Ownership_Borrow_Of_Non_Markable  =>
+           EC_Incorrect_Source_Of_Borrow,
+         when Vio_Ownership_Allocator_Uninitialized =>
+           EC_Uninitialized_Allocator,
+         when Vio_Side_Effects_Call_Context         =>
+           EC_Call_To_Function_With_Side_Effects,
+         when Vio_Volatile_At_Library_Level         =>
+           EC_Volatile_At_Library_Level,
+         when Vio_Volatile_Global                   =>
+           EC_Function_Volatile_Input_Global,
+         when Vio_Volatile_In_Interferring_Context  =>
+           EC_Volatile_Non_Interfering_Context,
+         when others                                => EC_None);
+
    ---------------
    -- From_JSON --
    ---------------
@@ -1682,6 +1776,161 @@ package body VC_Kinds is
       end case;
    end Get_Typed_Cntexmp_Value;
 
+   ----------------------------------
+   -- Incorrect_Annotation_Message --
+   ----------------------------------
+
+   function Incorrect_Annotation_Message
+     (Kind        : Incorrect_Annotation_Kind;
+      From_Aspect : Boolean;
+      Name        : String;
+      Snd_Name    : String) return String
+   is (case Kind is
+
+         --  Common messages on annotations
+
+         when Annot_Argument_Number                       =>
+           "wrong number of arguments in "
+           & Annot_To_String
+               (Kind, Aspect_Or_Pragma (From_Aspect), Name, Snd_Name),
+         when Annot_Bad_Entity                            =>
+           "wrong entity argument for "
+           & Annot_To_String (Kind, Aspect_Or_Pragma (From_Aspect), Name),
+         when Annot_Duplicated_Annotated_Entity           =>
+           "duplicated entity with the "
+           & Annot_To_String (Kind, Name => Name, Snd_Name => Snd_Name)
+           & " in the same scope",
+         when Annot_Duplicated_Annotation                 =>
+           "a single "
+           & Annot_To_String (Kind, Name => Name)
+           & " shall be specified for &",
+         when Annot_Entity_Expected                       =>
+           "last argument of "
+           & Annot_To_String (Kind, Aspect_Or_Pragma (From_Aspect), Name)
+           & " must be an entity",
+         when Annot_Entity_Placement                      =>
+           "incorrect placement for entity with the "
+           & Annot_To_String (Kind, Name => Name),
+         when Annot_Function_Return_Type                  =>
+           "wrong return type for function with the "
+           & Annot_To_String (Kind, Name => Name),
+         when Annot_Function_Traversal                    =>
+           "a function with the "
+           & Annot_To_String (Kind, Name => Name)
+           & " shall not be a traversal function",
+         when Annot_Function_With_Side_Effects            =>
+           "a function with the "
+           & Annot_To_String (Kind, Name => Name)
+           & " shall not have side effects",
+         when Annot_Invalid_Name                          =>
+           "invalid name """
+           & Name
+           & """ in "
+           & Annot_To_String
+               (Kind, Aspect_Or_Pragma (From_Aspect), Name => ""),
+         when Annot_Placement                             =>
+           "incorrect placement for "
+           & Annot_To_String (Kind, Aspect_Or_Pragma (From_Aspect), Name),
+         when Annot_Pragma_On_Generic                     =>
+           Annot_To_String (Kind, Aspect_Or_Pragma (From_Aspect), Name)
+           & " must be in aspect form for generic subprogram",
+         when Annot_String_Third_Argument                 =>
+           "third argument of "
+           & Annot_To_String (Kind, Aspect_Or_Pragma (From_Aspect), Name)
+           & " must be a string",
+         when Annot_Subp_Access_Global                    =>
+           "a subprogram with the "
+           & Annot_To_String (Kind, Name => Name)
+           & " shall not access global data",
+         when Annot_Subp_Parameter_Number                 =>
+           "wrong number of parameters for a subprogram with the "
+           & Annot_To_String (Kind, Name => Name),
+         when Annot_Subp_Parameter_Type                   =>
+           "wrong type for parameter of subprogram with the "
+           & Annot_To_String (Kind, Name => Name),
+         when Annot_Volatile_Function                     =>
+           "a function with the "
+           & Annot_To_String (Kind, Name => Name)
+           & " shall not be volatile",
+         when Annot_Wrong_Third_Parameter                 =>
+           "unexpected third argument for "
+           & Annot_To_String (Kind, Aspect_Or_Pragma (From_Aspect), Name),
+
+         --  Messages for specific annotations
+
+         when Annot_At_End_Borrow_Context                 =>
+           "calls to a function annotated with the "
+           & Annot_To_String (Kind)
+           & " and references to constants saving such a call shall "
+           & "occur either in a postcondition, as a parameter of a lemma, in "
+           & "an assertion, or as the initial value of a ghost constant",
+         when Annot_At_End_Borrow_Param                   =>
+           "actual parameter of a call to a function with "
+           & Annot_To_String (Kind)
+           & " shall be a path",
+         when Annot_At_End_Borrow_Param_In_Contract       =>
+           "actual parameter of a call to a function with "
+           & Annot_To_String (Kind)
+           & " occurring in a contract shall be a local borrower "
+           & "or the borrowed parameter of a traversal function",
+         when Annot_Container_Aggregates_Add              =>
+           "the Aggregate aspect of a type with the "
+           & Annot_To_String (Kind)
+           & " has the wrong form",
+         when Annot_Container_Aggregates_Add_Access_Param =>
+           "procedure used in the Aggregate aspect of a type with the "
+           & Annot_To_String (Kind)
+           & " shall not have access parameters",
+         when Annot_Container_Aggregates_No_Aggregate     =>
+           "a type with the "
+           & Annot_To_String (Kind)
+           & " shall have an Aggregate aspect",
+         when Annot_Container_Aggregates_Private          =>
+           "a type with the "
+           & Annot_To_String (Kind)
+           & " shall have a private declaration",
+         when Annot_Handler_Call                          =>
+           "object of an access-to-subprogram type with the "
+           & Annot_To_String (Kind)
+           & " shall not be called",
+         when Annot_Handler_Conversion                    =>
+           "an access-to-subprogram type with the "
+           & Annot_To_String (Kind)
+           & " shall not be converted to an access-to-subprogram type "
+           & "without",
+         when Annot_Hide_Info_Private_Child               =>
+           "child of a package whose private part is hidden using a "
+           & Annot_To_String (Kind)
+           & " shall not have a visible private part",
+         when Annot_Hide_Info_Private_Eq                  =>
+           "if the full view of a type is hidden using a "
+           & Annot_To_String (Kind)
+           & ", its predefined equality shall not be restricted "
+           & "unless its partial view has an explicit "
+           & """Predefined_Equality"" annotation",
+         when Annot_Hide_Info_Private_Ownership           =>
+           "if the full view of a type is hidden using a "
+           & Annot_To_String (Kind)
+           & ", it shall not be subject to onwership unless its "
+           & "partial view has an explicit "
+           & Annot_To_String (Kind),
+         when Annot_Inline_For_Proof_Body_Off             =>
+           "the body of expression functions with "
+           & Annot_To_String (Kind)
+           & " shall be in SPARK",
+         when Annot_No_Bitwise_Operations_Use             =>
+           "bitwise operation on type with "
+           & Annot_To_String (Kind)
+           & " shall not be used in SPARK",
+         when Annot_Ownership_Potentially_Invalid         =>
+           "no part of an object or function result annotated with "
+           & "Potentially_Invalid shall be of a type with an "
+           & Annot_To_String (Kind),
+         when Annot_Predefined_Equality_Use_Eq            =>
+           "equality on type annotated with the "
+           & Annot_To_String (Kind)
+           & " shall abide by the corresponding restrictions");
+
    ---------------
    -- Kind_Name --
    ---------------
@@ -1994,6 +2243,198 @@ package body VC_Kinds is
    begin
       return Valid_Flow_Tag_Kind'Image (Kind);
    end Rule_Name;
+
+   -------------------
+   -- SRM_Reference --
+   -------------------
+
+   function SRM_Reference (Kind : Violation_Kind) return String
+   is (case Kind is
+         when Vio_Access_Constant
+         => "SPARK RM 4.1.4(6)",
+         when Vio_Access_Expression | Vio_Access_No_Root
+         => "SPARK RM 4.1.4(1)",
+         when Vio_Access_Function_With_Side_Effects
+         => "SPARK RM 4.1.4(4)",
+         when Vio_Access_Subprogram_Within_Protected
+         => "SPARK RM 4.1.4(2)",
+         when Vio_Access_Sub_Formal_With_Inv
+            | Vio_Access_Sub_Return_Type_With_Inv
+         => "SPARK RM 4.1.4(2)",
+         when Vio_Access_Sub_With_Globals
+         => "SPARK RM 4.1.4(7)",
+         when Vio_Access_To_Dispatch_Op
+         => "SPARK RM 4.1.4(2)",
+         when Vio_Access_Volatile_Function
+         => "SPARK RM 4.1.4(3)",
+         when Vio_Address_Outside_Address_Clause
+         => "SPARK RM 13.7(2)",
+         when Vio_Assert_And_Cut_Context
+         => "SPARK RM 5.9",
+         when Vio_Backward_Goto
+         => "SPARK RM 5.8(1)",
+         when Vio_Box_Notation_Without_Init
+         => "SPARK RM 4.3(1)",
+         when Vio_Controlled_Types
+         => "SPARK RM 7.6(1)",
+         when Vio_Default_With_Current_Instance
+         => "SPARK RM 3.8(1)",
+         when Vio_Derived_Untagged_With_Tagged_Full_View
+         => "SPARK RM 3.4(1)",
+         when Vio_Discriminant_Access
+         => "SPARK RM 3.7(2)",
+         when Vio_Discriminant_Derived
+         => "SPARK RM 3.7(2)",
+         when Vio_Dispatch_Plain_Pre
+         => "SPARK RM 6.1.1(2)",
+         when Vio_Dispatching_Untagged_Type
+         => "SPARK RM 3.9.2(1)",
+         when Vio_Exit_Cases_Exception
+         => "SPARK RM 6.1.11(3)",
+         when Vio_Exit_Cases_Normal_Only
+         => "SPARK RM 6.1.11(2)",
+         when Vio_Function_Global_Output | Vio_Function_Out_Param
+         => "SPARK RM 6.1(6)",
+         when Vio_Ghost_Concurrent_Comp
+         => "SPARK RM 6.9(22)",
+         when Vio_Ghost_Eq
+         => "SPARK RM 6.9(23)",
+         when Vio_Ghost_Volatile
+         => "SPARK RM 6.9(9)",
+         when Vio_Handler_Choice_Parameter
+         => "SPARK RM 11.2(1)",
+         when Vio_Invariant_Class | Vio_Invariant_Ext | Vio_Invariant_Partial
+         => "SPARK RM 7.3.2(2)",
+         when Vio_Invariant_Volatile
+         => "SPARK RM 7.3.2(4)",
+         when Vio_Iterable_Controlling_Result
+            | Vio_Iterable_Globals
+            | Vio_Iterable_Side_Effects
+            | Vio_Iterable_Volatile
+         => "SPARK RM 5.5.2(12)",
+         when Vio_Iterable_Full_View
+         => "SPARK RM 5.5.2(13)",
+         when Vio_Iterator_Specification
+         => "SPARK RM 5.5.2",
+         when Vio_Loop_Variant_Structural
+         => "SPARK RM 5.5.3 (8)",
+         when Vio_Overlay_Constant_Not_Imported
+         => "SPARK RM 13.7(5)",
+         when Vio_Overlay_Mutable_Constant
+         => "SPARK RM 13.7(4)",
+         when Vio_Overlay_Part_Of_Protected
+         => "SPARK RM 13.7(3)",
+         when Vio_Ownership_Access_Equality
+         => "SPARK RM 3.10(19)",
+         when Vio_Ownership_Allocator_Invalid_Context
+         => "SPARK RM 4.8(2)",
+         when Vio_Ownership_Allocator_Uninitialized
+         => "SPARK RM 4.8(1)",
+         when Vio_Ownership_Anonymous_Access_To_Named
+         => "SPARK RM 3.10(18)",
+         when Vio_Ownership_Anonymous_Object_Context
+            | Vio_Ownership_Anonymous_Object_Init
+         => "SPARK RM 3.10(5)",
+         when Vio_Ownership_Assign_To_Expr | Vio_Ownership_Assign_To_Constant
+         => "SPARK RM 3.10(3)",
+         when Vio_Ownership_Borrow_Of_Constant
+         => "SPARK RM 3.10(11)",
+         when Vio_Ownership_Borrow_Of_Non_Markable
+         => "SPARK RM 3.10(4)",
+         when Vio_Ownership_Deallocate_General
+         => "SPARK RM 3.10(20)",
+         when Vio_Ownership_Loop_Entry_Old_Copy
+            | Vio_Ownership_Loop_Entry_Old_Traversal
+         => "SPARK RM 3.10(13)",
+         when Vio_Ownership_Move_Not_Name
+            | Vio_Ownership_Move_Constant_Part
+            | Vio_Ownership_Move_Traversal_Call
+         => "SPARK RM 3.10(1)",
+         when Vio_Ownership_Reborrow
+         => "SPARK RM 3.10(8)",
+         when Vio_Ownership_Tagged_Extension
+         => "SPARK RM 3.10(14)",
+         when Vio_Ownership_Traversal_Extended_Return
+         => "SPARK RM 3.10(6)",
+         when Vio_Ownership_Volatile
+         => "SPARK RM 3.10(16)",
+         when Vio_Ownership_Anonymous_Result
+            | Vio_Ownership_Anonymous_Component
+            | Vio_Ownership_Anonymous_Part_Of
+            | Vio_Ownership_Move_In_Declare
+            | Vio_Ownership_Different_Branches
+            | Vio_Ownership_Duplicate_Aggregate_Value
+            | Vio_Ownership_Storage_Pool
+         => "SPARK RM 3.10", --  We don't have better, use the access section
+         when Vio_Potentially_Invalid_Dispatch
+         => "SPARK RM 13.9.1(9)",
+         when Vio_Potentially_Invalid_Invariant
+         => "SPARK RM 13.9.1(7)",
+         when Vio_Potentially_Invalid_Overlay
+         => "SPARK RM 13.9.1(8)",
+         when Vio_Potentially_Invalid_Part_Access
+            | Vio_Potentially_Invalid_Part_Concurrent
+            | Vio_Potentially_Invalid_Part_Tagged
+            | Vio_Potentially_Invalid_Part_Unchecked_Union
+         => "SPARK RM 13.9.1(5)",
+         when Vio_Potentially_Invalid_Scalar
+         => "SPARK RM 13.9.1(4)",
+         when Vio_Program_Exit_Outputs
+         => "SPARK RM 6.1.10(1)",
+         when Vio_Predicate_Volatile
+         => "SPARK RM 3.2.4(3)",
+         when Vio_Relaxed_Init_Dispatch
+         => "SPARK RM 6.10(10)",
+         when Vio_Relaxed_Init_Initialized_Prefix
+         => "SPARK RM 6.10(4)",
+         when Vio_Relaxed_Init_Part_Of_Tagged
+         => "SPARK RM 6.10(6)",
+         when Vio_Relaxed_Init_Part_Of_Unchecked_Union
+         => "SPARK RM 6.10(8)",
+         when Vio_Relaxed_Init_Part_Of_Volatile
+         => "SPARK RM 6.10(7)",
+         when Vio_Side_Effects_Call_Context
+         => "SPARK RM 6.1.13(4)",
+         when Vio_Side_Effects_Eq
+         => "SPARK RM 6.1.13(8)",
+         when Vio_Side_Effects_Traversal
+         => "SPARK RM 6.1.13(7)",
+         when Vio_Subp_Variant_Structural
+         => "SPARK RM 6.1.8(5)",
+         when Vio_Tagged_Extension_Local
+         => "SPARK RM 3.9.1(1)",
+         when Vio_Target_Name_In_Call_With_Side_Effets
+         => "SPARK RM 6.4.2(7)",
+         when Vio_Tasking_Synchronized_Comp
+         => "SPARK RM 9(5)",
+         when Vio_Tasking_Unintialized_Concurrent
+         => "SPARK RM 9(4)",
+         when Vio_UC_From_Access
+         => "SPARK RM 13.9(1)",
+         when Vio_UC_To_Access
+            | Vio_UC_To_Access_Components
+            | Vio_UC_To_Access_From
+         => "SPARK RM 13.9(2)",
+         when Vio_Volatile_At_Library_Level
+         => "SPARK RM 7.1.3(3)",
+         when Vio_Volatile_Discriminant | Vio_Volatile_Loop_Param
+         => "SPARK RM 7.1.3(4)",
+         when Vio_Volatile_Discriminated_Type
+         => "SPARK RM 7.1.3(5)",
+         when Vio_Volatile_Eq
+         => "SPARK RM 7.1.3(10)",
+         when Vio_Volatile_Global
+         => "SPARK RM 7.1.3(7)",
+         when Vio_Volatile_In_Interferring_Context
+         => "SPARK RM 7.1.3(9)",
+         when Vio_Volatile_Incompatible_Comp
+         => "SPARK RM 7.1.3(6)",
+         when Vio_Volatile_Incompatible_Type
+         => "SPARK RM 7.1.3(2)",
+         when Vio_Volatile_Result | Vio_Volatile_Parameter
+         => "SPARK RM 7.1.3(8)",
+         when others
+         => "");
 
    -------------
    -- To_JSON --

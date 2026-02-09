@@ -1,20 +1,36 @@
 illegal.adb:4:06: error: Entity parameter of annotation No_Bitwise_Operations must be a modular type
 illegal.adb:7:06: error: Entity parameter of annotation No_Bitwise_Operations must be a modular type
 illegal.adb:11:06: error: Annotation No_Bitwise_Operations must apply to a type declaration
-illegal.adb:17:55: error: third argument of pragma Annotate No_Bitwise_Operations must be an entity
-illegal.adb:22:04: error: pragma Annotate No_Bitwise_Operations must immediately follow the full type declaration of type "T"
-illegal.adb:26:11: error: bitwise operation on type with "No_Bitwise_Operations" annotation shall not be used in SPARK
-illegal.adb:27:11: error: bitwise operation on type with "No_Bitwise_Operations" annotation shall not be used in SPARK
-illegal.adb:28:11: error: bitwise operation on type with "No_Bitwise_Operations" annotation shall not be used in SPARK
-illegal.adb:29:09: error: bitwise operation on type with "No_Bitwise_Operations" annotation shall not be used in SPARK
-illegal.adb:30:09: error: bitwise operation on type with "No_Bitwise_Operations" annotation shall not be used in SPARK
+illegal.adb:15:04: error: "Base" is not allowed in SPARK (due to incorrect use of "No_Bitwise_Operations" annotation)
+illegal.adb:15:04: error: violation of pragma SPARK_Mode at test.adc:1
+illegal.adb:17:55: error: last argument of "pragma Annotate (GNATprove, No_Bitwise_Operations[, ...])" must be an entity
+illegal.adb:22:04: error: "pragma Annotate (GNATprove, No_Bitwise_Operations[, ...])" must immediately follow the full type declaration of type "T"
+illegal.adb:22:04: error: incorrect placement for "pragma Annotate (GNATprove, No_Bitwise_Operations[, ...])"
+illegal.adb:24:04: error: "Base" is not allowed in SPARK (due to incorrect use of "No_Bitwise_Operations" annotation)
+illegal.adb:24:04: error: violation of pragma SPARK_Mode at test.adc:1
+illegal.adb:24:07: error: "Base" is not allowed in SPARK (due to incorrect use of "No_Bitwise_Operations" annotation)
+illegal.adb:24:07: error: violation of pragma SPARK_Mode at test.adc:1
+illegal.adb:26:09: error: "Base" is not allowed in SPARK (due to incorrect use of "No_Bitwise_Operations" annotation)
+illegal.adb:26:09: error: violation of pragma SPARK_Mode at test.adc:1
+illegal.adb:27:09: error: "Base" is not allowed in SPARK (due to incorrect use of "No_Bitwise_Operations" annotation)
+illegal.adb:27:09: error: violation of pragma SPARK_Mode at test.adc:1
+illegal.adb:28:09: error: "Base" is not allowed in SPARK (due to incorrect use of "No_Bitwise_Operations" annotation)
+illegal.adb:28:09: error: violation of pragma SPARK_Mode at test.adc:1
+illegal.adb:29:09: error: "Base" is not allowed in SPARK (due to incorrect use of "No_Bitwise_Operations" annotation)
+illegal.adb:29:09: error: violation of pragma SPARK_Mode at test.adc:1
+illegal.adb:30:09: error: "Base" is not allowed in SPARK (due to incorrect use of "No_Bitwise_Operations" annotation)
+illegal.adb:30:09: error: violation of pragma SPARK_Mode at test.adc:1
 illegal.adb:30:09: info: no contextual analysis of "Shift_Left" (body not seen yet)
-illegal.adb:31:09: error: bitwise operation on type with "No_Bitwise_Operations" annotation shall not be used in SPARK
+illegal.adb:31:09: error: "Base" is not allowed in SPARK (due to incorrect use of "No_Bitwise_Operations" annotation)
+illegal.adb:31:09: error: violation of pragma SPARK_Mode at test.adc:1
 illegal.adb:31:09: info: no contextual analysis of "Shift_Right" (body not seen yet)
-illegal.adb:32:09: error: bitwise operation on type with "No_Bitwise_Operations" annotation shall not be used in SPARK
+illegal.adb:32:09: error: "Base" is not allowed in SPARK (due to incorrect use of "No_Bitwise_Operations" annotation)
+illegal.adb:32:09: error: violation of pragma SPARK_Mode at test.adc:1
 illegal.adb:32:09: info: no contextual analysis of "Shift_Right_Arithmetic" (body not seen yet)
-illegal.adb:33:09: error: bitwise operation on type with "No_Bitwise_Operations" annotation shall not be used in SPARK
+illegal.adb:33:09: error: "Base" is not allowed in SPARK (due to incorrect use of "No_Bitwise_Operations" annotation)
+illegal.adb:33:09: error: violation of pragma SPARK_Mode at test.adc:1
 illegal.adb:33:09: info: no contextual analysis of "Rotate_Left" (body not seen yet)
-illegal.adb:34:09: error: bitwise operation on type with "No_Bitwise_Operations" annotation shall not be used in SPARK
+illegal.adb:34:09: error: "Base" is not allowed in SPARK (due to incorrect use of "No_Bitwise_Operations" annotation)
+illegal.adb:34:09: error: violation of pragma SPARK_Mode at test.adc:1
 illegal.adb:34:09: info: no contextual analysis of "Rotate_Right" (body not seen yet)
 gnatprove: error during flow analysis and proof

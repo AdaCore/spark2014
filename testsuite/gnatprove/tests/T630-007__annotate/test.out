@@ -11,8 +11,8 @@ bad_annotate.adb:42:24: error: second parameter of Contains must have the type o
 bad_annotate.adb:46:13: error: two Iterable_For_Proof annotations for container type "T"
 bad_annotate.adb:72:26: error: Annotation No_Wrap_Around must apply to a type declaration
 bad_annotate.adb:73:36: error: Entity parameter of annotation No_Wrap_Around must be a modular type
-bad_annotate.adb:77:11: error: invalid name "Do_Something_3" in aspect Annotate (GNATprove, name)
-bad_annotate.adb:78:50: error: third argument of pragma Annotate Inline_For_Proof must be an entity
-bad_annotate.adb:79:48: error: third argument of pragma Annotate No_Wrap_Around must be an entity
+bad_annotate.adb:77:11: error: invalid name "Do_Something_3" in aspect "Annotate => (GNATprove, ...)"
+bad_annotate.adb:78:50: error: last argument of "pragma Annotate (GNATprove, Inline_For_Proof[, ...])" must be an entity
+bad_annotate.adb:79:48: error: last argument of "pragma Annotate (GNATprove, No_Wrap_Around[, ...])" must be an entity
 bad_annotate.adb:80:04: error: missing name in Annotate pragma for GNATprove
 gnatprove: error during flow analysis and proof

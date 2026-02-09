@@ -1,5 +1,6 @@
-illegal_mutable_in_parameters.adb:24:04: error: wrong number of arguments in pragma Annotate (GNATprove, Mutable_In_Parameters, ...), expected 3
-illegal_mutable_in_parameters.adb:30:56: error: third argument of pragma Annotate Mutable_In_Parameters must be an entity
+illegal_mutable_in_parameters.adb:24:04: error: expected 3 arguments
+illegal_mutable_in_parameters.adb:24:04: error: wrong number of arguments in "pragma Annotate (GNATprove, Mutable_In_Parameters[, ...])"
+illegal_mutable_in_parameters.adb:30:56: error: last argument of "pragma Annotate (GNATprove, Mutable_In_Parameters[, ...])" must be an entity
 illegal_mutable_in_parameters.adb:40:28: error: "T" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
 illegal_mutable_in_parameters.adb:40:28: error: violation of aspect SPARK_Mode at line 1
 illegal_mutable_in_parameters.adb:52:04: error: Entity parameter of a pragma Annotate "Mutable_In_Parameters" shall be a private type

@@ -12062,12 +12062,15 @@ package body SPARK_Definition is
                  (Annot_Hide_Info_Private_Ownership,
                   E,
                   Cont_Msg =>
-                    "consider annotating it with a pragma Annotate "
-                    & "(GNATprove, Ownership"
-                    & (if Contains_Allocated_Parts (E)
-                       then ", ""Needs_Reclamation"""
-                       else "")
-                    & ", ...)");
+                    Create
+                      ("consider annotating it with a "
+                       & Annot_To_String
+                           (Format   => Pragma_Form,
+                            Name     => "Ownership",
+                            Snd_Name =>
+                              (if Contains_Allocated_Parts (E)
+                               then "Needs_Reclamation"
+                               else ""))));
             end if;
 
             if not Is_Limited_Type (E)
@@ -12078,17 +12081,21 @@ package body SPARK_Definition is
                  (Annot_Hide_Info_Private_Eq,
                   E,
                   Cont_Msg =>
-                    "consider annotating it with a pragma Annotate "
-                    & "(GNATprove, Predefined_Equality, "
-                    & (if Has_Access_Type (E)
-                         or else
-                           (Has_Predefined_Eq_Annotation (Full_View (E))
-                            and then
-                              Get_Predefined_Eq_Kind (Full_View (E))
-                              = Only_Null)
-                       then "Only_Null"
-                       else "No_Equality")
-                    & ", ...)");
+                    Create
+                      ("consider annotating it with a "
+                       & Annot_To_String
+                           (Format   => Pragma_Form,
+                            Name     => " Predefined_Equality",
+                            Snd_Name =>
+                              (if Has_Access_Type (E)
+                                 or else
+                                   (Has_Predefined_Eq_Annotation
+                                      (Full_View (E))
+                                    and then
+                                      Get_Predefined_Eq_Kind (Full_View (E))
+                                      = Only_Null)
+                               then "Only_Null"
+                               else "No_Equality"))));
             end if;
          end;
       end if;
@@ -12827,9 +12834,10 @@ package body SPARK_Definition is
                     (Annot_Hide_Info_Private_Child,
                      N,
                      Cont_Msg =>
-                       "annotate the private part of "
-                       & Pretty_Source_Name (Id)
-                       & " with the ""Hide_Info"" annotation");
+                       Create
+                         ("annotate the private part of & with the "
+                          & Annot_To_String (Name => "Hide_Info"),
+                          Names => [Id]));
                   exit;
                end if;
                Scop := Scope (Scop);

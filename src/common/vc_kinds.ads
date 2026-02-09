@@ -39,6 +39,7 @@ with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Indefinite_Doubly_Linked_Lists;
 with Ada.Containers.Indefinite_Ordered_Maps;
 with Ada.Containers.Ordered_Maps;
+with Ada.Strings.Fixed;     use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNATCOLL.JSON;         use GNATCOLL.JSON;
 with String_Utils;          use String_Utils;
@@ -493,9 +494,36 @@ package VC_Kinds is
 
       --  Incorrect uses of pragma/aspect Annotate
 
+      --  Common to all annotations
+
+      Annot_Argument_Number,
+      Annot_Bad_Entity,
+      Annot_Duplicated_Annotated_Entity,
+      Annot_Duplicated_Annotation,
+      Annot_Entity_Expected,
+      Annot_Entity_Placement,
+      Annot_Function_Return_Type,
+      Annot_Function_Traversal,
+      Annot_Function_With_Side_Effects,
+      Annot_Invalid_Name,
+      Annot_Placement,
+      Annot_Pragma_On_Generic,
+      Annot_String_Third_Argument,
+      Annot_Subp_Access_Global,
+      Annot_Subp_Parameter_Number,
+      Annot_Subp_Parameter_Type,
+      Annot_Volatile_Function,
+      Annot_Wrong_Third_Parameter,
+
+      --  Specific to a kind of annotation
+
       Annot_At_End_Borrow_Context,
       Annot_At_End_Borrow_Param,
       Annot_At_End_Borrow_Param_In_Contract,
+      Annot_Container_Aggregates_Add,
+      Annot_Container_Aggregates_Add_Access_Param,
+      Annot_Container_Aggregates_No_Aggregate,
+      Annot_Container_Aggregates_Private,
       Annot_Handler_Call,
       Annot_Handler_Conversion,
       Annot_Hide_Info_Private_Child,
@@ -749,7 +777,15 @@ package VC_Kinds is
 
    subtype Incorrect_Annotation_Kind is
      Error_Message_Kind
-       range Annot_At_End_Borrow_Context .. Annot_Predefined_Equality_Use_Eq;
+       range Annot_Argument_Number .. Annot_Predefined_Equality_Use_Eq;
+
+   subtype Common_Annotation_Kind is
+     Incorrect_Annotation_Kind
+       range Incorrect_Annotation_Kind'First .. Annot_Wrong_Third_Parameter;
+
+   subtype Specific_Annotation_Kind is
+     Incorrect_Annotation_Kind
+       range Annot_At_End_Borrow_Context .. Incorrect_Annotation_Kind'Last;
 
    subtype Unsupported_Kind is
      Error_Message_Kind
@@ -1321,53 +1357,34 @@ package VC_Kinds is
          when Lim_Indexed_Container_Aggregate                             =>
            "indexed container aggregate");
 
+   type Annot_Format_Kind is (Text_Form, Aspect_Form, Pragma_Form);
+
+   function Aspect_Or_Pragma (From_Aspect : Boolean) return Annot_Format_Kind
+   is (if From_Aspect then Aspect_Form else Pragma_Form);
+
+   function Annot_To_String
+     (Kind     : Incorrect_Annotation_Kind := Common_Annotation_Kind'First;
+      Format   : Annot_Format_Kind := Text_Form;
+      Name     : String := "";
+      Snd_Name : String := "") return String;
+   --  Pretty print annotation for error.
+   --  Get the name of the annotation from the Kind if it is specific,
+   --  otherwise, it can be supplied in Name or left empty (the annotation
+   --  will then use GNATprove only.
+   --  If Format is
+   --   * Text_Form, output: "Name" annotation
+   --   * Pragma_Form, output: "pragma Annotate (GNATprove, Name, [...])"
+   --   * Aspect_Form, output: aspect "Annotate => (GNATprove, Name, [...])"
+   --  If Snd_Name is supplied, it will be used as a string for the third
+   --  parameter of the aspect.
+
    function Incorrect_Annotation_Message
-     (Kind : Incorrect_Annotation_Kind) return String
-   is (case Kind is
-         when Annot_At_End_Borrow_Context           =>
-           "calls to a function annotated with the ""At_End_Borrow"" "
-           & "annotation and references to constants saving such a call shall "
-           & "occur either in a postcondition, as a parameter of a lemma, in "
-           & "an assertion, or as the initial value of a ghost constant",
-         when Annot_At_End_Borrow_Param             =>
-           "actual parameter of a call to a function with ""At_End_Borrow"" "
-           & "annotation shall be a path",
-         when Annot_At_End_Borrow_Param_In_Contract =>
-           "actual parameter of a call to a function with ""At_End_Borrow"" "
-           & "annotation occurring in a contract shall be a local borrower "
-           & "or the borrowed parameter of a traversal function",
-         when Annot_Handler_Call                    =>
-           "object of an access-to-subprogram type with the ""Handler"" "
-           & "annotation shall not be called",
-         when Annot_Handler_Conversion              =>
-           "an access-to-subprogram type with the ""Handler"" annotation "
-           & "shall not be converted to an access-to-subprogram type "
-           & "without",
-         when Annot_Hide_Info_Private_Child         =>
-           "child of a package whose private part is hidden using a "
-           & """Hide_Info"" annotation shall not have a visible private part",
-         when Annot_Hide_Info_Private_Eq            =>
-           "if the full view of a type is hidden using a ""Hide_Info"" "
-           & "annotation, its predefined equality shall not be restricted "
-           & "unless its partial view has an explicit "
-           & """Predefined_Equality"" annotation",
-         when Annot_Hide_Info_Private_Ownership     =>
-           "if the full view of a type is hidden using a ""Hide_Info"" "
-           & "annotation, it shall not be subject to onwership unless its "
-           & "partial view has an explicit ""Ownership"" annotation",
-         when Annot_Inline_For_Proof_Body_Off       =>
-           "the body of expression functions with ""Inline_For_Proof"" "
-           & "annotation shall be in SPARK",
-         when Annot_No_Bitwise_Operations_Use       =>
-           "bitwise operation on type with ""No_Bitwise_Operations"" "
-           & "annotation shall not be used in SPARK",
-         when Annot_Ownership_Potentially_Invalid   =>
-           "no part of an object or function result annotated with "
-           & "Potentially_Invalid shall be of a type with an ""Ownership"" "
-           & "annotation",
-         when Annot_Predefined_Equality_Use_Eq      =>
-           "equality on type annotated with the ""Predefined_Equality"" "
-           & "annotation shall abide by the corresponding restrictions");
+     (Kind        : Incorrect_Annotation_Kind;
+      From_Aspect : Boolean;
+      Name        : String;
+      Snd_Name    : String) return String;
+   --  Create a message for an incorrect annotation for an aspect or pragma
+   --  Annotate.
 
    function Violation_Message
      (Kind       : Violation_Kind;
@@ -1457,6 +1474,28 @@ package VC_Kinds is
    function Rule_Name (Kind : Valid_Flow_Tag_Kind) return String;
    --  Return a tag for each kind of message that is used to identify the
    --  string e.g. in the GPS plug-in.
+
+   function SRM_Reference (Kind : Violation_Kind) return String
+   with
+     Post =>
+       SRM_Reference'Result = ""
+       or else
+         (SRM_Reference'Result'Length > 9
+          and then Head (SRM_Reference'Result, 9) = "SPARK RM ");
+   --  Return a reference to the SRM for Kind if any
+
+   function Explain_Code (Kind : Violation_Kind) return Explain_Code_Kind;
+   --  Return an explain code to be displayed along with the error message for
+   --  Kind if any. If SRM_Reference
+   --  is set, the reference to the SRM is appended to the error message. If
+   --  Cont_Msg is set, a continuation message is issued. If Root_Cause_Msg
+   --  is set, the corresponding message is used as root cause message for
+   --  cascading violations (typically used if Msg has character insertions).
+
+   function Annotation_From_Kind
+     (Kind : Specific_Annotation_Kind) return String;
+   --  Return the name of the annotation from its kind. It is used to compute
+   --  the root cause for incorrect uses of annotations.
 
    function Locate_On_First_Token (V : VC_Kind) return Boolean
    is (case V is

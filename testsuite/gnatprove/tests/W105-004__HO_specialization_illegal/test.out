@@ -1,4 +1,4 @@
-illegal.adb:6:61: error: third argument of pragma Annotate Higher_Order_Specialization must be an entity
+illegal.adb:6:61: error: last argument of "pragma Annotate (GNATprove, Higher_Order_Specialization[, ...])" must be an entity
 illegal.adb:10:06: error: aspect Higher_Order_Specialization must be applied to a function or a lemma procedure
 illegal.adb:14:14: error: procedure annotated with the aspect Higher_Order_Specialization shall be ghost
 illegal.adb:21:30: error: procedure annotated with the aspectHigher_Order_Specialization shall not have "out" parameters

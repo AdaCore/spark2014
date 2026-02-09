@@ -11,9 +11,9 @@ illegal_hide_private.ads:19:24: error: "T_Preds" is not allowed in SPARK (due to
 illegal_hide_private.ads:19:24: error: violation of aspect SPARK_Mode at line 2
 illegal_hide_private.ads:23:09: error: consider annotating it with Relaxed_Initialization
 illegal_hide_private.ads:23:09: error: hidden private type containing only subcomponents whose type is annotated with Relaxed_Initialization is not yet supported
-illegal_hide_private.ads:27:09: error: consider annotating it with a pragma Annotate (GNATprove, Ownership, "Needs_Reclamation", ...)
-illegal_hide_private.ads:27:09: error: if the full view of a type is hidden using a "Hide_Info" annotation, it shall not be subject to onwership unless its partial view has an explicit "Ownership" annotation
-illegal_hide_private.ads:31:09: error: consider annotating it with a pragma Annotate (GNATprove, Predefined_Equality, Only_Null, ...)
+illegal_hide_private.ads:27:09: error: consider annotating it with a "pragma Annotate (GNATprove, Ownership, "Needs_Reclamation"[, ...])"
+illegal_hide_private.ads:27:09: error: if the full view of a type is hidden using a "Hide_Info" annotation, it shall not be subject to onwership unless its partial view has an explicit "Hide_Info" annotation
+illegal_hide_private.ads:31:09: error: consider annotating it with a "pragma Annotate (GNATprove,  Predefined_Equality, "Only_Null"[, ...])"
 illegal_hide_private.ads:31:09: error: if the full view of a type is hidden using a "Hide_Info" annotation, its predefined equality shall not be restricted unless its partial view has an explicit "Predefined_Equality" annotation
 illegal_hide_private.ads:36:04: error: a pragma Annotate Hide_Info for private part shall have 3 parameters
 illegal_hide_private.ads:41:07: error: pragma Annotate Hide_Info shall be located at the top of the private declarations of a package

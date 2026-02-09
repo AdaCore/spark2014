@@ -117,15 +117,22 @@ private package SPARK_Definition.Violations is
    --  when specified.
 
    procedure Mark_Incorrect_Use_Of_Annotation
-     (Kind     : Incorrect_Annotation_Kind;
-      N        : Node_Id;
-      Msg      : String := "";
-      Names    : Node_Lists.List := Node_Lists.Empty;
-      Cont_Msg : String := "")
+     (Kind        : Incorrect_Annotation_Kind;
+      N           : Node_Id;
+      Msg         : String := "";
+      From_Aspect : Boolean := False;
+      Name        : String := "";
+      Snd_Name    : String := "";
+      Names       : Node_Lists.List := Node_Lists.Empty;
+      Cont_Msg    : Message := No_Message)
    with
-     Global => (Output => Violation_Detected, Input => Current_SPARK_Pragma);
+     Global => (Output => Violation_Detected, Input => Current_SPARK_Pragma),
+     Pre    => (if Kind in Specific_Annotation_Kind then Name'Length = 0);
    --  Mark node N as an incorrect use of a GNATprove annotation. An error
    --  issued if current SPARK_Mode is On.
+   --  If Kind is a generic annotation error, use Name to get the annotation
+   --  name. From_Aspect and Snd_Name are used to pretty print the annotation
+   --  as a pragma/aspect for some messages.
    --  If Cont_Msg is set, a continuation message is issued.
    --  If Names is set, use this to replace & in error messages.
 
@@ -149,6 +156,11 @@ private package SPARK_Definition.Violations is
    --  Mark node N as a violation of SPARK, due to the use of entity
    --  From which is not in SPARK. An error message is issued if current
    --  SPARK_Mode is On.
+
+   procedure Mark_Force_Violation
+     (E : Entity_Id; Reason : Message := No_Message);
+   --  Register a violation on an entity E if it is not in SPARK regardless of
+   --  the SPARK_Mode.
 
    procedure Mark_Violation_In_Tasking (N : Node_Id)
    with

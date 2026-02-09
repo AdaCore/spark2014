@@ -1,10 +1,12 @@
 test_ownership_flow.adb:4:12: warning: checks for ressource or memory reclamation will be unprovable
 test_ownership_flow.adb:4:12: warning: no reclamation function nor reclaimed value found for type with ownership "T1" [no-reclamation-function]
 test_ownership_flow.adb:14:13: error: a function annotated with Ownership shall not access any global data
-test_ownership_illegal.adb:2:04: error: wrong number of arguments in pragma Annotate (GNATprove, Ownership, ...), expected 3
-test_ownership_illegal.adb:3:04: error: wrong number of arguments in pragma Annotate (GNATprove, Ownership, ...), expected 4
-test_ownership_illegal.adb:4:48: error: last argument of pragma Annotate Ownership must be an entity
-test_ownership_illegal.adb:8:41: error: third argument of aspect Annotate Ownership must be a string
+test_ownership_illegal.adb:2:04: error: expected 3 arguments
+test_ownership_illegal.adb:2:04: error: wrong number of arguments in "pragma Annotate (GNATprove, Ownership[, ...])"
+test_ownership_illegal.adb:3:04: error: expected 4 arguments
+test_ownership_illegal.adb:3:04: error: wrong number of arguments in "pragma Annotate (GNATprove, Ownership[, ...])"
+test_ownership_illegal.adb:4:48: error: last argument of "pragma Annotate (GNATprove, Ownership[, ...])" must be an entity
+test_ownership_illegal.adb:8:41: error: third argument of aspect "Annotate => (GNATprove, Ownership[, ...])" must be a string
 test_ownership_illegal.adb:10:14: error: the entity of a pragma Annotate Ownership shall be either a type, a constant, or a function
 test_ownership_illegal.adb:14:09: error: a type annotated with Ownership must be a private type
 test_ownership_illegal.adb:18:12: error: the private part of the scope of a private type annotated with Ownership must have either a pragma SPARK_Mode (Off) or a Hide_Info annotation
@@ -43,7 +45,8 @@ test_reclaimed_value_illegal.adb:104:16: error: "Null_T" conflicts with the curr
 test_reclaimed_value_illegal.adb:104:16: error: a single ownership function or constant shall be supplied for a given type annotated with Ownership
 test_reclaimed_value_illegal.adb:122:07: error: "Is_Null" conflicts with the current annotation
 test_reclaimed_value_illegal.adb:122:07: error: a single ownership function or constant shall be supplied for a given type annotated with Ownership
-test_reclaimed_value_illegal.adb:141:07: error: pragma Annotate Ownership must immediately follow the declaration of constant "Null_T"
+test_reclaimed_value_illegal.adb:141:07: error: "pragma Annotate (GNATprove, Ownership[, ...])" must immediately follow the declaration of constant "Null_T"
+test_reclaimed_value_illegal.adb:141:07: error: incorrect placement for "pragma Annotate (GNATprove, Ownership[, ...])"
 test_reclaimed_value_illegal.adb:152:12: warning: checks for ressource or memory reclamation will be unprovable
 test_reclaimed_value_illegal.adb:152:12: warning: no reclamation function nor reclaimed value found for type with ownership "T" [no-reclamation-function]
 test_reclaimed_value_illegal.adb:166:07: error: constant annotated with ownership shall be declared in same declaration list as its type

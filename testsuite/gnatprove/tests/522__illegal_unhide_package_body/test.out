@@ -1,6 +1,7 @@
 bad_compil.adb:2:04: error: the entity of a pragma Annotate Unhide_Info for package bodies shall not be a compilation unit
 test.adb:6:07: error: aspect Annotate Unhide_Info for package bodies shall be specified on a package body
-test.adb:18:07: error: a pragma Annotate Unhide_Info for package body shall have 3 parameters
+test.adb:18:07: error: expected 3 arguments
+test.adb:18:07: error: wrong number of arguments in "pragma Annotate (GNATprove, Unhide_Info, "Package_Body"[, ...])"
 test.adb:25:07: error: pragma Annotate Unhide_Info shall be located at the top of the declarations of a package body
 test.adb:39:07: error: pragma Annotate Unhide_Info shall be located at the top of the declarations of a package body
 test.adb:49:09: error: pragma Annotate Unhide_Info shall be located at the top of the declarations of a package body

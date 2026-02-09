@@ -1,11 +1,10 @@
-test_illegal.adb:7:09: error: object of an access-to-subprogram type with the "Handler" annotation shall not be called
-test_illegal.adb:11:31: error: an access-to-subprogram type with the "Handler" annotation shall not be converted to an access-to-subprogram type without
-test_illegal.adb:13:07: error: "Y" is not allowed in SPARK (due to incorrect use of "Handler" annotation)
-test_illegal.adb:13:07: error: violation of aspect SPARK_Mode at line 1
-test_illegal.adb:20:09: error: access-to-subprogram type annotated with the aspect Handler shall be declared at library level
-test_illegal.ads:6:06: error: wrong number of arguments in aspect Annotate (GNATprove, Handler, ...), expected 3
-test_illegal.ads:10:41: error: third argument of pragma Annotate Handler must be an entity
-test_illegal.ads:16:04: error: pragma Annotate Handler must immediately follow the full type declaration of type "T2"
+test_illegal.ads:6:06: error: expected 3 arguments
+test_illegal.ads:6:06: error: wrong number of arguments in aspect "Annotate => (GNATprove, Handler[, ...])"
+test_illegal.ads:10:41: error: last argument of "pragma Annotate (GNATprove, Handler[, ...])" must be an entity
+test_illegal.ads:15:04: error: "X" is not allowed in SPARK (due to incorrect use of "Handler" annotation)
+test_illegal.ads:15:04: error: violation of aspect SPARK_Mode at line 1
+test_illegal.ads:16:04: error: "pragma Annotate (GNATprove, Handler[, ...])" must immediately follow the full type declaration of type "T2"
+test_illegal.ads:16:04: error: incorrect placement for "pragma Annotate (GNATprove, Handler[, ...])"
 test_illegal.ads:21:06: error: entity annotated with the aspect Handler must be an access-to-subprogram type
 test_illegal.ads:23:06: error: entity annotated with the aspect Handler must be an access-to-subprogram type
 test_illegal.ads:28:15: error: access-to-subprogram type annotated with the aspect Handler shall not have a precondition
