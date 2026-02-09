@@ -1,11 +1,15 @@
 procedure LSP_Checks (C : Natural) with SPARK_Mode is
 
-   package Nested is
+   package Nested_Root is
       subtype My_Natural is Natural range 0 .. C;
 
       type Root is tagged record
          F1 : My_Natural;
       end record;
+
+      procedure Do_Something (R : Root) with
+        Pre'Class => Root_Pre_Class (R, Glob),
+        Post'Class => Root_Post_Class (R, Glob, Glob'Old);
 
       function Root_Pre_Class (R : Root'Class; G : My_Natural) return Boolean is
         (C - G >= R.F1);
@@ -13,10 +17,17 @@ procedure LSP_Checks (C : Natural) with SPARK_Mode is
         (if C - G_Old >= R.F1 then G = G_Old + R.F1);
 
       Glob : My_Natural := 0;
+   end Nested_Root;
 
-      procedure Do_Something (R : Root) with
-        Pre'Class => Root_Pre_Class (R, Glob),
-        Post'Class => Root_Post_Class (R, Glob, Glob'Old);
+   package body Nested_Root is
+      procedure Do_Something (R : Root) is
+      begin
+         Glob := Glob + R.F1;
+      end Do_Something;
+   end Nested_Root;
+
+   package Nested_Child is
+      use Nested_Root;
 
       type Child is new Root with record
          F2 : My_Natural;
@@ -40,14 +51,9 @@ procedure LSP_Checks (C : Natural) with SPARK_Mode is
         Post => Child_Post (R, Glob, Glob'Old),
         Pre'Class => Child_Pre_Class (R, Glob),
         Post'Class => Child_Post_Class (R, Glob, Glob'Old);
-   end Nested;
+   end Nested_Child;
 
-   package body Nested is
-      procedure Do_Something (R : Root) is
-      begin
-         Glob := Glob + R.F1;
-      end Do_Something;
-
+   package body Nested_Child is
       procedure Do_Something (R : Child)is
       begin
          if C - Glob >= R.F1 then
@@ -56,14 +62,14 @@ procedure LSP_Checks (C : Natural) with SPARK_Mode is
             Glob := Glob + R.F2;
          end if;
       end Do_Something;
-   end Nested;
+   end Nested_Child;
 
-   use Nested;
+   use Nested_Root; use Nested_Child;
 
    R1 : Root'Class := Root'(F1 => 0);
    R2 : Root'Class := Child'(F1 => C, F2 => 0);
 begin
-   Nested.Glob := 0;
+   Nested_Root.Glob := 0;
    Do_Something (R1);
    pragma Assert (Glob = 0);
    Do_Something (R2);
