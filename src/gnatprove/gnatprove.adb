@@ -664,7 +664,7 @@ procedure Gnatprove with SPARK_Mode is
 
          if Configuration.Mode in GPM_All | GPM_Prove then
             if Id /= GNAT.OS_Lib.Invalid_Pid then
-               GNAT.OS_Lib.Kill_Process_Tree (Id, Hard_Kill => False);
+               GNAT.OS_Lib.Kill (Id, Hard_Kill => False);
             end if;
             if Use_Semaphores then
                Close (Why3_Semaphore);
