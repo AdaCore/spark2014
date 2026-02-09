@@ -366,12 +366,11 @@ package body SPARK_Definition.Violations is
    ----------------------
 
    procedure Mark_Unsupported
-     (Kind           : Unsupported_Kind;
-      N              : Node_Id;
-      Names          : Node_Lists.List := Node_Lists.Empty;
-      Name           : String := "";
-      Cont_Msg       : Message := No_Message;
-      Root_Cause_Msg : String := "")
+     (Kind     : Unsupported_Kind;
+      N        : Node_Id;
+      Names    : Node_Lists.List := Node_Lists.Empty;
+      Name     : String := "";
+      Cont_Msg : Message := No_Message)
    is
       Msg : constant String := Unsupported_Message (Kind, Name);
    begin
@@ -384,7 +383,7 @@ package body SPARK_Definition.Violations is
 
       if Emit_Messages then
          Add_Violation_Root_Cause
-           (N, Msg => (if Root_Cause_Msg /= "" then Root_Cause_Msg else Msg));
+           (N, Msg => Unsupported_Message (Kind, Root_Cause => True));
       end if;
 
       --  If SPARK_Mode is On, raise an error

@@ -1013,7 +1013,9 @@ package VC_Kinds is
    --  limitations which are handled specificaly.
 
    function Unsupported_Message
-     (Kind : Unsupported_Kind; Name : String := "") return String
+     (Kind       : Unsupported_Kind;
+      Name       : String := "";
+      Root_Cause : Boolean := False) return String
    is (case Kind is
          when Lim_Abstract_State_Part_Of_Concurrent_Obj                   =>
            "abstract state Part_Of constituent of a single concurrent object",
@@ -1071,17 +1073,26 @@ package VC_Kinds is
          when Lim_Exceptional_Cases_Dispatch                              =>
            "aspect ""Exceptional_Cases"" on dispatching operation",
          when Lim_Exceptional_Cases_Ownership                             =>
-           "procedure which might propagate exceptions with parameters of mode"
-           & " ""in out"" or ""out"" subjected to ownership which might not "
-           & "be passed by reference",
+           (if Root_Cause
+            then "exception propagation and parameters with ownership"
+            else
+              "procedure which might propagate exceptions with parameters "
+              & "of mode ""in out"" or ""out"" subjected to ownership which "
+              & "might not be passed by reference"),
          when Lim_Exit_Cases_Dispatch                                     =>
            "aspect ""Exit_Cases"" on dispatching operation",
          when Lim_Program_Exit_Dispatch                                   =>
            "aspect ""Program_Exit"" on dispatching operation",
          when Lim_Program_Exit_Global_Modified_In_Callee                  =>
-           "call which might exit the program and leave "
-           & Name
-           & " mentioned in the postcondition of & in an inconsistent state",
+           (if Root_Cause or Name = ""
+            then
+              "call which might exit the program and leave outputs"
+              & " in an inconsistent state"
+            else
+              "call which might exit the program and leave "
+              & Name
+              & " mentioned in the postcondition of & in an inconsistent "
+              & "state"),
          when Lim_Ext_Aggregate_With_Type_Ancestor                        =>
            "extension aggregate with subtype ancestor part",
          when Lim_Extension_Case_Pattern_Matching                         =>
@@ -1149,9 +1160,17 @@ package VC_Kinds is
            "declaration of an object of an ownership type outside a block "
            & "for declarations",
          when Lim_Non_Static_Attribute                                    =>
-           "non-static attribute """ & Standard_Ada_Case (Name) & """",
+           "non-static attribute"
+           & (if Name = ""
+              then ""
+              else " """ & Standard_Ada_Case (Name) & """"),
          when Lim_Img_On_Non_Scalar                                       =>
-           "attribute """ & Standard_Ada_Case (Name) & """ on non-scalar type",
+           (if Name = ""
+            then "attribute ""Image"" on non-scalar type"
+            else
+              "attribute """
+              & Standard_Ada_Case (Name)
+              & """ on non-scalar type"),
          when Lim_Incomplete_Type_Early_Usage                             =>
            "usage of incomplete type completed in package body outside of an "
            & "access type declaration",
@@ -1279,7 +1298,9 @@ package VC_Kinds is
            & " subcomponents whose type is annotated with"
            & " Relaxed_Initialization",
          when Lim_Limited_Type_From_Limited_With                          =>
-           "limited view of type & coming from limited with",
+           (if Root_Cause
+            then "limited view coming from limited with"
+            else "limited view of type & coming from limited with"),
          when Lim_Refined_Post_On_Entry                                   =>
            "Refined_Post aspect on a protected entry",
          when Lim_Entry_Family                                            =>
