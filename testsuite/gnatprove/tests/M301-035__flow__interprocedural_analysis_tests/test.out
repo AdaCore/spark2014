@@ -34,7 +34,7 @@ single_compilation_unit.adb:53:10: info: analyzing call to "Factorial" in contex
 single_compilation_unit.adb:53:10: info: no contextual analysis of call to recursive subprogram
 single_compilation_unit.adb:53:25: info: range check proved (CVC5: 2 VC)
 single_compilation_unit.adb:54:23: medium: overflow check might fail, cannot prove upper bound for Fact * Var [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: call at line 53 should mention Fact (for argument Fact) in a postcondition] [provers gave up before completing the proof]
-single_compilation_unit.adb:64:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+single_compilation_unit.adb:64:13: warning: "Fibonacci" is recursive; its implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 single_compilation_unit.adb:69:10: medium: implicit aspect Always_Terminates on "Fibonacci" could be incorrect, subprogram is recursive [possible fix: annotate "Fibonacci" with a Subprogram_Variant aspect]
 single_compilation_unit.adb:69:17: info: analyzing call to "Fibonacci" in context
 single_compilation_unit.adb:69:17: info: no contextual analysis of call to recursive subprogram

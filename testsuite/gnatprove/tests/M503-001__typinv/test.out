@@ -17,7 +17,9 @@ aggregates.ads:25:09: info: invariant check proved on default value (CVC5: 1 VC;
 aggregates.ads:27:09: info: invariant check proved on default value (CVC5: 2 VC)
 external.adb:14:17: medium: implicit aspect Always_Terminates on "Get" could be incorrect, "Get" and "Get" are mutually recursive [possible fix: annotate "Get" and "Get" with Subprogram_Variant aspects]
 external.ads:5:22: info: initialization of "X" proved
-external.ads:9:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+external.ads:9:13: warning: "Get" is recursive; (implicit) contract of mutally recursive functions might not be available on calls from contracts and assertions [contracts-recursive]
+external.ads:9:13: warning: its implicit contract might be missing
+external.ads:9:13: warning: potentially missing implicit contract for "Get" declared at reentrancy.ads:9
 globals.adb:5:04: info: at the end of the elaboration of package at globals.ads:1
 globals.adb:5:04: info: invariant check proved (CVC5: 1 VC)
 globals.adb:15:15: info: overflow check proved (CVC5: 2 VC)
@@ -62,7 +64,9 @@ inside_out.adb:3:14: info: local subprogram "Body_Create" only analyzed in the c
 inside_out.adb:3:27: info: initialization of "X" proved
 inside_out.adb:5:14: info: add a contract to analyze it separately from calling contexts
 inside_out.adb:5:14: info: local subprogram "Body_Update" only analyzed in the context of calls [info-unrolling-inlining]
-inside_out.adb:7:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+inside_out.adb:7:13: warning: "Body_Get" is recursive; (implicit) contract of mutally recursive functions might not be available on calls from contracts and assertions [contracts-recursive]
+inside_out.adb:7:13: warning: its implicit contract might be missing
+inside_out.adb:7:13: warning: potentially missing implicit contract for "Get" declared at inside_out.ads:9
 inside_out.adb:16:07: medium: for "X" before the call at inside_out.ads:7
 inside_out.adb:16:07: medium: in inlined invariant at inside_out.ads:15
 inside_out.adb:16:07: medium: invariant check might fail, cannot prove T /= 0, in call inlined at inside_out.adb:58 (e.g. when Mode = Bod and X = 0) [provers gave up before completing the proof]
@@ -88,7 +92,9 @@ inside_out.ads:7:14: medium: for "X" at the end of "Update" at inside_out.ads:7
 inside_out.ads:7:14: medium: in inlined invariant at inside_out.ads:15
 inside_out.ads:7:14: medium: invariant check might fail, cannot prove T /= 0 (e.g. when Mode = Prv and X = -1) [provers gave up before completing the proof]
 inside_out.ads:7:22: warning: unused initial value of "X"
-inside_out.ads:9:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+inside_out.ads:9:13: warning: "Get" is recursive; (implicit) contract of mutally recursive functions might not be available on calls from contracts and assertions [contracts-recursive]
+inside_out.ads:9:13: warning: its implicit contract might be missing
+inside_out.ads:9:13: warning: potentially missing implicit contract for "Body_Get" declared at inside_out.adb:7
 inside_out.ads:13:09: info: invariant check proved on default value (CVC5: 1 VC)
 inside_out.ads:14:23: info: in default value of private type at inside_out.ads:3
 inside_out.ads:14:23: info: range check proved (CVC5: 2 VC)
@@ -105,7 +111,9 @@ reentrancy.ads:5:14: info: invariant check proved (CVC5: 1 VC)
 reentrancy.ads:5:22: info: initialization of "X" proved
 reentrancy.ads:7:14: info: for "X" at the end of "Update" at reentrancy.ads:7
 reentrancy.ads:7:14: info: invariant check proved (CVC5: 1 VC)
-reentrancy.ads:9:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+reentrancy.ads:9:13: warning: "Get" is recursive; (implicit) contract of mutally recursive functions might not be available on calls from contracts and assertions [contracts-recursive]
+reentrancy.ads:9:13: warning: its implicit contract might be missing
+reentrancy.ads:9:13: warning: potentially missing implicit contract for "Get" declared at external.ads:9
 reentrancy.ads:13:09: info: invariant check proved on default value (CVC5: 1 VC)
 reentrancy.ads:14:23: info: in default value of private type at reentrancy.ads:3
 reentrancy.ads:14:23: info: range check proved (CVC5: 2 VC)

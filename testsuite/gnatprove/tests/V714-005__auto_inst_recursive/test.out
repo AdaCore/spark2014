@@ -5,6 +5,8 @@ test_bad.adb:47:16: info: implicit aspect Always_Terminates on "F" has been prov
 test_bad.adb:50:17: info: implicit aspect Always_Terminates on "Lemma_Prove_P" has been proved, subprogram will terminate
 test_bad.adb:53:17: info: postcondition proved (CVC5: 1 VC)
 test_bad.adb:56:16: info: implicit aspect Always_Terminates on "G" has been proved, subprogram will terminate
+test_bad.adb:56:16: warning: potentially missing automatically instanciated lemma "Lemma_Prove_P" declared at line 50
+test_bad.adb:56:16: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 test_bad.adb:58:42: medium: postcondition might fail, cannot prove P (X) [possible fix: you should consider adding a postcondition to function "P" or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 test_bad.adb:83:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 test_bad.adb:86:17: info: implicit aspect Always_Terminates on "Lemma_Prove_P1" has been proved, subprogram will terminate
@@ -12,12 +14,26 @@ test_bad.adb:89:17: medium: postcondition might fail [possible fix: you should c
 test_bad.adb:94:17: info: implicit aspect Always_Terminates on "Lemma_Prove_P2" has been proved, subprogram will terminate
 test_bad.adb:97:17: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function "P" or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 test_bad.adb:127:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+test_bad.adb:127:16: warning: potentially missing automatically instanciated lemma "Lemma_Prove_P3" declared at line 145
+test_bad.adb:127:16: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 test_bad.adb:130:17: info: implicit aspect Always_Terminates on "Lemma_Prove_P1" has been proved, subprogram will terminate
+test_bad.adb:130:17: warning: potentially missing automatically instanciated lemma "Lemma_Prove_P3" declared at line 145
+test_bad.adb:130:17: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 test_bad.adb:133:17: info: postcondition proved (CVC5: 1 VC)
+test_bad.adb:135:17: warning: potentially missing automatically instanciated lemma "Lemma_Prove_P1" declared at line 130
+test_bad.adb:135:17: warning: potentially missing automatically instanciated lemma "Lemma_Prove_P3" declared at line 145
+test_bad.adb:135:17: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 test_bad.adb:137:17: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function "P" or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 test_bad.adb:142:16: info: implicit aspect Always_Terminates on "G" has been proved, subprogram will terminate
+test_bad.adb:142:16: warning: potentially missing automatically instanciated lemma "Lemma_Prove_P1" declared at line 130
+test_bad.adb:142:16: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 test_bad.adb:145:17: info: implicit aspect Always_Terminates on "Lemma_Prove_P3" has been proved, subprogram will terminate
+test_bad.adb:145:17: warning: potentially missing automatically instanciated lemma "Lemma_Prove_P1" declared at line 130
+test_bad.adb:145:17: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 test_bad.adb:148:17: info: postcondition proved (CVC5: 1 VC)
+test_bad.adb:150:17: warning: potentially missing automatically instanciated lemma "Lemma_Prove_P1" declared at line 130
+test_bad.adb:150:17: warning: potentially missing automatically instanciated lemma "Lemma_Prove_P3" declared at line 145
+test_bad.adb:150:17: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 test_bad.adb:152:17: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function "P" or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 test_bad.adb:190:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 test_bad.adb:196:17: info: postcondition proved (CVC5: 1 VC)

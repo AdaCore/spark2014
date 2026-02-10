@@ -2,12 +2,12 @@ a.adb:11:21: medium: implicit aspect Always_Terminates on overriding operator "=
 a.adb:14:07: medium: implicit aspect Always_Terminates on "Eq" could be incorrect, "Eq" and overriding operator "=" are mutually recursive [possible fix: annotate "Eq" and overriding operator "=" with Subprogram_Variant aspects]
 a.adb:14:37: info: pointer dereference check proved (CVC5: 1 VC)
 a.adb:14:45: info: pointer dereference check proved (CVC5: 1 VC)
-a.adb:16:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+a.adb:16:13: warning: "Length" is recursive; its implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 a.adb:17:07: medium: implicit aspect Always_Terminates on "Length" could be incorrect, subprogram is recursive [possible fix: annotate "Length" with a Subprogram_Variant aspect]
 a.adb:18:22: info: pointer dereference check proved (CVC5: 1 VC)
 a.adb:19:14: info: overflow check proved (CVC5: 2 VC)
 a.adb:19:25: info: pointer dereference check proved (CVC5: 1 VC)
-a.adb:21:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+a.adb:21:13: warning: "Get_Next" is recursive; its implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 a.adb:22:07: info: dynamic accessibility check proved (Trivial)
 a.adb:22:07: medium: implicit aspect Always_Terminates on "Get_Next" could be incorrect, subprogram is recursive [possible fix: annotate "Get_Next" with a Subprogram_Variant aspect]
 a.adb:22:28: info: precondition proved (CVC5: 2 VC)
@@ -28,12 +28,12 @@ b.adb:11:21: medium: implicit aspect Always_Terminates on overriding operator "=
 b.adb:14:07: medium: implicit aspect Always_Terminates on "Eq" could be incorrect, "Eq" and overriding operator "=" are mutually recursive [possible fix: annotate "Eq" and overriding operator "=" with Subprogram_Variant aspects]
 b.adb:14:37: info: pointer dereference check proved (CVC5: 1 VC)
 b.adb:14:45: info: pointer dereference check proved (CVC5: 1 VC)
-b.adb:16:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+b.adb:16:13: warning: "Length" is recursive; its implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 b.adb:17:07: medium: implicit aspect Always_Terminates on "Length" could be incorrect, subprogram is recursive [possible fix: annotate "Length" with a Subprogram_Variant aspect]
 b.adb:18:22: info: pointer dereference check proved (CVC5: 1 VC)
 b.adb:19:14: info: overflow check proved (CVC5: 2 VC)
 b.adb:19:25: info: pointer dereference check proved (CVC5: 1 VC)
-b.adb:21:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+b.adb:21:13: warning: "Get_Next" is recursive; its implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 b.adb:22:07: info: dynamic accessibility check proved (Trivial)
 b.adb:22:07: medium: implicit aspect Always_Terminates on "Get_Next" could be incorrect, subprogram is recursive [possible fix: annotate "Get_Next" with a Subprogram_Variant aspect]
 b.adb:22:45: info: precondition proved (CVC5: 2 VC)

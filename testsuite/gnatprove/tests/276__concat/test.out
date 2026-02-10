@@ -15,7 +15,7 @@ avi_arrays.adb:34:14: info: implicit aspect Always_Terminates on "At_End" has be
 avi_arrays.adb:34:92: info: dynamic accessibility check proved (Trivial)
 avi_arrays.adb:37:09: info: data dependencies proved
 avi_arrays.adb:40:14: info: implicit aspect Always_Terminates on "Model" has been proved, subprogram will terminate
-avi_arrays.adb:40:14: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+avi_arrays.adb:40:14: warning: "Model" is recursive; its implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 avi_arrays.adb:44:25: info: pointer dereference check proved (CVC5: 1 VC)
 avi_arrays.adb:44:33: info: subprogram variant proved (Trivial)
 avi_arrays.adb:44:43: info: pointer dereference check proved (CVC5: 1 VC)

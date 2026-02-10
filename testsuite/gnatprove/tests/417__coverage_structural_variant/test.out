@@ -1,5 +1,5 @@
 main.adb:9:13: info: implicit aspect Always_Terminates on "Bad_Variant" has been proved, subprogram will terminate
-main.adb:9:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+main.adb:9:13: warning: "Bad_Variant" is recursive; its implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 main.adb:11:13: info: implicit aspect Always_Terminates on "Node" has been proved, subprogram will terminate
 main.adb:13:08: medium: resource or memory leak might occur [possible explanation: allocator for an access-to-constant type leaks memory]
 main.adb:19:11: info: pointer dereference check proved (CVC5: 1 VC)

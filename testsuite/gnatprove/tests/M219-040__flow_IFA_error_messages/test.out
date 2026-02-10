@@ -48,7 +48,7 @@ test.adb:129:15: info: flow dependencies proved
 test.adb:135:07: warning: statement has no effect
 test.adb:144:14: warning: subprogram "Ineffective_Statements_4" has no effect
 test.adb:147:07: info: no contextual analysis of "Ineffective_Statements_4" (nested subprogram)
-test.adb:147:16: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+test.adb:147:16: warning: "Factorial" is recursive; its implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 test.adb:150:13: medium: implicit aspect Always_Terminates on "Factorial" could be incorrect, subprogram is recursive [possible fix: annotate "Factorial" with a Subprogram_Variant aspect]
 test.adb:150:24: medium: overflow check might fail, cannot prove upper bound for Val * Factorial (Val - 1) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (Val * Factorial (Val - 1) <= Integer'Last) to subprogram at line 147] [provers gave up before completing the proof]
 test.adb:150:26: info: analyzing call to "Factorial" in context

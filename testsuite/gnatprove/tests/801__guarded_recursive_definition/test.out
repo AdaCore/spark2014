@@ -1,8 +1,12 @@
 test_false_precondition.adb:2:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 test_false_precondition.adb:4:13: info: implicit aspect Always_Terminates on "Bad2" has been proved, subprogram will terminate
-test_false_precondition.adb:4:13: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
+test_false_precondition.adb:4:13: warning: "Bad2" is recursive; (implicit) contract of mutally recursive functions might not be available on calls from contracts and assertions [contracts-recursive]
+test_false_precondition.adb:4:13: warning: its body might be missing
+test_false_precondition.adb:4:13: warning: potentially missing expression function body for "Bad" declared at line 6
 test_false_precondition.adb:6:13: info: implicit aspect Always_Terminates on "Bad" has been proved, subprogram will terminate
-test_false_precondition.adb:6:13: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
+test_false_precondition.adb:6:13: warning: "Bad" is recursive; (implicit) contract of mutally recursive functions might not be available on calls from contracts and assertions [contracts-recursive]
+test_false_precondition.adb:6:13: warning: its body might be missing
+test_false_precondition.adb:6:13: warning: potentially missing expression function body for "Bad2" declared at line 4
 test_false_precondition.adb:6:50: info: precondition proved (CVC5: 1 VC)
 test_false_precondition.adb:6:50: info: subprogram variant proved (CVC5: 1 VC)
 test_false_precondition.adb:8:55: info: precondition proved (CVC5: 1 VC)
@@ -15,9 +19,13 @@ test_false_precondition.adb:12:41: info: precondition proved (CVC5: 1 VC)
 test_false_precondition.adb:13:07: high: assertion might fail [provers gave up before completing the proof]
 test_false_predicate.adb:3:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 test_false_predicate.adb:6:13: info: implicit aspect Always_Terminates on "Bad2" has been proved, subprogram will terminate
-test_false_predicate.adb:6:13: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
+test_false_predicate.adb:6:13: warning: "Bad2" is recursive; (implicit) contract of mutally recursive functions might not be available on calls from contracts and assertions [contracts-recursive]
+test_false_predicate.adb:6:13: warning: its body might be missing
+test_false_predicate.adb:6:13: warning: potentially missing expression function body for "Bad" declared at line 8
 test_false_predicate.adb:8:13: info: implicit aspect Always_Terminates on "Bad" has been proved, subprogram will terminate
-test_false_predicate.adb:8:13: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
+test_false_predicate.adb:8:13: warning: "Bad" is recursive; (implicit) contract of mutally recursive functions might not be available on calls from contracts and assertions [contracts-recursive]
+test_false_predicate.adb:8:13: warning: its body might be missing
+test_false_predicate.adb:8:13: warning: potentially missing expression function body for "Bad2" declared at line 6
 test_false_predicate.adb:8:50: info: subprogram variant proved (CVC5: 1 VC)
 test_false_predicate.adb:10:55: info: subprogram variant proved (CVC5: 1 VC)
 test_false_predicate.adb:12:04: warning: analyzing unreferenced procedure "Test" [unreferenced-procedure]

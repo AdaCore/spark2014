@@ -164,8 +164,7 @@ norm-reals-errors.ads:16:08: info: postcondition proved (Z3: 1 VC)
 norm-reals-errors.ads:17:14: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.ads:17:24: info: predicate check proved (Trivial: 1 VC)
 norm-reals.ads:12:13: info: implicit aspect Always_Terminates on "Sum_Of_Squares_Rec" has been proved, subprogram will terminate
-norm-reals.ads:12:13: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
-norm-reals.ads:12:13: warning: function contract might not be available on recursive calls [contracts-recursive]
+norm-reals.ads:12:13: warning: "Sum_Of_Squares_Rec" is recursive; its body and contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 norm-reals.ads:16:14: info: postcondition proved (CVC5: 1 VC)
 norm-reals.ads:16:43: info: predicate check proved (Trivial: 1 VC)
 norm-reals.ads:22:29: info: predicate check proved (Trivial: 1 VC)
@@ -246,7 +245,7 @@ norm.adb:75:14: medium: range check might fail [reason for check: returned value
 norm.ads:17:07: info: assertion proved (Trivial)
 norm.ads:19:07: info: assertion proved (Trivial)
 norm.ads:27:13: info: implicit aspect Always_Terminates on "Sum_Of_Squares_Rec" has been proved, subprogram will terminate
-norm.ads:27:13: warning: function contract might not be available on recursive calls [contracts-recursive]
+norm.ads:27:13: warning: "Sum_Of_Squares_Rec" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 norm.ads:32:14: info: postcondition proved (CVC5: 1 VC; colibri: 2 VC)
 norm.ads:34:16: info: subprogram variant proved (CVC5: 1 VC)
 norm.ads:34:46: info: range check proved (CVC5: 2 VC)

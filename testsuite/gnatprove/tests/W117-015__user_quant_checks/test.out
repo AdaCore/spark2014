@@ -148,28 +148,23 @@ quant_checks.adb:106:16: medium: precondition might fail, cannot prove Unknown (
 quant_late_errors.adb:13:16: error: iteration primitive shall not be recursive, (including implicitly so)
 quant_late_errors.adb:13:16: info: during checks for quantification at quant_late_errors.adb:6
 quant_late_errors.adb:13:16: info: precondition proved (Trivial: 1 VC)
-quant_late_errors.adb:13:16: warning: function contract might not be available on recursive calls [contracts-recursive]
 quant_late_errors.adb:14:22: info: postcondition proved (Trivial: 1 VC)
 quant_late_errors.adb:15:16: error: iteration primitive shall not be recursive, (including implicitly so)
 quant_late_errors.adb:15:16: info: during checks for quantification at quant_late_errors.adb:6
 quant_late_errors.adb:15:16: info: precondition proved (Trivial: 1 VC)
-quant_late_errors.adb:15:16: warning: function contract might not be available on recursive calls [contracts-recursive]
 quant_late_errors.adb:16:22: info: postcondition proved (Trivial: 1 VC)
 quant_late_errors.adb:17:16: error: iteration primitive shall not be recursive, (including implicitly so)
 quant_late_errors.adb:17:16: info: during checks for quantification at quant_late_errors.adb:6
 quant_late_errors.adb:17:16: info: precondition proved (Trivial: 1 VC)
-quant_late_errors.adb:17:16: warning: function contract might not be available on recursive calls [contracts-recursive]
 quant_late_errors.adb:18:22: info: postcondition proved (Trivial: 1 VC)
 quant_late_errors.adb:19:16: error: iteration primitive shall not be recursive, (including implicitly so)
 quant_late_errors.adb:19:16: info: during checks for quantification at quant_late_errors.adb:6
 quant_late_errors.adb:19:16: info: implicit aspect Always_Terminates on "Contains" has been proved, subprogram will terminate
 quant_late_errors.adb:19:16: info: precondition proved (Trivial: 1 VC)
-quant_late_errors.adb:19:16: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
 quant_late_errors.adb:20:22: info: postcondition proved (Trivial: 1 VC)
 quant_late_errors.adb:22:16: error: iteration primitive shall not be recursive, (including implicitly so)
 quant_late_errors.adb:22:16: info: during checks for quantification at quant_late_errors.adb:6
 quant_late_errors.adb:22:16: info: precondition proved (Trivial: 1 VC)
-quant_late_errors.adb:22:16: warning: function contract might not be available on recursive calls [contracts-recursive]
 quant_late_errors.adb:23:22: info: postcondition proved (Trivial: 1 VC)
 quant_late_errors.adb:24:16: info: during checks for quantification at quant_late_errors.adb:6
 quant_late_errors.adb:24:16: info: implicit aspect Always_Terminates on "Last" has been proved, subprogram will terminate
@@ -209,28 +204,23 @@ quant_late_errors.adb:54:16: info: precondition proved (Trivial: 1 VC)
 quant_late_errors.adb:62:16: error: iteration primitive shall not be recursive, (including implicitly so)
 quant_late_errors.adb:62:16: info: during checks for quantification at quant_late_errors.adb:55
 quant_late_errors.adb:62:16: info: precondition proved (Trivial: 1 VC)
-quant_late_errors.adb:62:16: warning: function contract might not be available on recursive calls [contracts-recursive]
 quant_late_errors.adb:63:22: info: postcondition proved (Trivial: 1 VC)
 quant_late_errors.adb:64:16: error: iteration primitive shall not be recursive, (including implicitly so)
 quant_late_errors.adb:64:16: info: during checks for quantification at quant_late_errors.adb:55
 quant_late_errors.adb:64:16: info: precondition proved (Trivial: 1 VC)
-quant_late_errors.adb:64:16: warning: function contract might not be available on recursive calls [contracts-recursive]
 quant_late_errors.adb:65:22: info: postcondition proved (Trivial: 1 VC)
 quant_late_errors.adb:66:16: error: iteration primitive shall not be recursive, (including implicitly so)
 quant_late_errors.adb:66:16: info: during checks for quantification at quant_late_errors.adb:55
 quant_late_errors.adb:66:16: info: precondition proved (Trivial: 1 VC)
-quant_late_errors.adb:66:16: warning: function contract might not be available on recursive calls [contracts-recursive]
 quant_late_errors.adb:67:22: info: postcondition proved (Trivial: 1 VC)
 quant_late_errors.adb:68:16: error: iteration primitive shall not be recursive, (including implicitly so)
 quant_late_errors.adb:68:16: info: during checks for quantification at quant_late_errors.adb:55
 quant_late_errors.adb:68:16: info: implicit aspect Always_Terminates on "Get_Model" has been proved, subprogram will terminate
 quant_late_errors.adb:68:16: info: precondition proved (Trivial: 1 VC)
-quant_late_errors.adb:68:16: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
 quant_late_errors.adb:69:22: info: postcondition proved (Trivial: 1 VC)
 quant_late_errors.adb:71:16: error: iteration primitive shall not be recursive, (including implicitly so)
 quant_late_errors.adb:71:16: info: during checks for quantification at quant_late_errors.adb:55
 quant_late_errors.adb:71:16: info: precondition proved (Trivial: 1 VC)
-quant_late_errors.adb:71:16: warning: function contract might not be available on recursive calls [contracts-recursive]
 quant_late_errors.adb:72:22: info: postcondition proved (Trivial: 1 VC)
 quant_late_errors.adb:73:16: info: implicit aspect Always_Terminates on "Last" has been proved, subprogram will terminate
 quant_late_errors.adb:73:16: medium: during checks for quantification at quant_late_errors.adb:55

@@ -453,6 +453,7 @@ package VC_Kinds is
       --  Proof limitations not impacting soundness
 
       Warn_Contracts_Recursive,
+      Warn_Proof_Module_Cyclic,
       Warn_DIC_Ignored,
       Warn_Imprecise_Address,
       Warn_Imprecise_Align,
@@ -467,7 +468,6 @@ package VC_Kinds is
       Warn_Imprecise_Image,
       Warn_Loop_Entity,
       Warn_No_Reclam_Func,
-      Warn_Num_Variant,
       Warn_Relaxed_Init_Mutable_Discr,
       Warn_Map_Length_Aggregates,
       Warn_Set_Length_Aggregates,
@@ -947,7 +947,14 @@ package VC_Kinds is
 
          --  Proof limitations
          when Warn_Contracts_Recursive             =>
-           "&function contract might not be available on &",
+           "& is recursive; (implicit) contract of mutally recursive "
+           & "functions might not be available on calls from contracts and "
+           & "assertions",
+         when Warn_Proof_Module_Cyclic             =>
+           "references between entities introduce a cycle in proof "
+           & "dependencies; (implicit) contract of mutally dependent "
+           & "functions might not be available on calls from contracts and "
+           & "assertions",
          when Warn_DIC_Ignored                     =>
            "default initial condition on type & not available for proof in an "
            & "assertion context",
@@ -987,9 +994,6 @@ package VC_Kinds is
          when Warn_No_Reclam_Func                  =>
            "no reclamation function nor reclaimed value found for type with "
            & "ownership &",
-         when Warn_Num_Variant                     =>
-           "expression function body of subprograms with a numeric "
-           & "variant might not be available on recursive calls",
          when Warn_Map_Length_Aggregates           =>
            "no ""Length"" function found for type with predefined map "
            & "aggregates &",

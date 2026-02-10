@@ -72,12 +72,12 @@ test_goto.adb:90:19: medium: assertion might fail [possible fix: loop invariant 
 test_goto.adb:90:19: warning: assuming "B" has no effect on global items
 test_goto.adb:90:19: warning: no Global contract available for "B" [assumed-global-null]
 test_goto_borrow.adb:9:12: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
-test_goto_borrow.adb:9:12: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+test_goto_borrow.adb:9:12: warning: "Length" is recursive; its implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 test_goto_borrow.adb:11:41: info: subprogram variant proved (Trivial)
 test_goto_borrow.adb:11:50: info: pointer dereference check proved (CVC5: 1 VC)
 test_goto_borrow.adb:11:58: info: overflow check proved (CVC5: 2 VC)
 test_goto_borrow.adb:14:12: info: implicit aspect Always_Terminates on "Nth" has been proved, subprogram will terminate
-test_goto_borrow.adb:14:12: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+test_goto_borrow.adb:14:12: warning: "Nth" is recursive; its implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 test_goto_borrow.adb:15:20: info: pointer dereference check proved (CVC5: 1 VC)
 test_goto_borrow.adb:15:31: info: precondition proved (CVC5: 1 VC)
 test_goto_borrow.adb:15:31: info: subprogram variant proved (Trivial)

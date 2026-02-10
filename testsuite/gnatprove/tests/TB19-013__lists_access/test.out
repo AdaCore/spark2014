@@ -1,5 +1,5 @@
 test_list.adb:14:13: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
-test_list.adb:14:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+test_list.adb:14:13: warning: "Length" is recursive; its implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 test_list.adb:15:40: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 test_list.adb:15:48: info: predicate check proved (Trivial: 1 VC)
 test_list.adb:15:48: info: subprogram variant proved (Trivial)
@@ -7,7 +7,7 @@ test_list.adb:15:60: info: pointer dereference check proved (CVC5: 1 VC)
 test_list.adb:15:65: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 test_list.adb:15:67: info: predicate check proved (Trivial: 1 VC)
 test_list.adb:19:13: info: implicit aspect Always_Terminates on "Nth_Int" has been proved, subprogram will terminate
-test_list.adb:19:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+test_list.adb:19:13: warning: "Nth_Int" is recursive; its implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 test_list.adb:20:10: info: predicate check proved (Trivial: 1 VC)
 test_list.adb:20:14: info: predicate check proved (Trivial: 1 VC)
 test_list.adb:20:30: info: precondition proved (CVC5: 1 VC)

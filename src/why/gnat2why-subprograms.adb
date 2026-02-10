@@ -6692,37 +6692,6 @@ package body Gnat2Why.Subprograms is
       --  itself.
 
       if Ekind (E) = E_Function and then Proof_Module_Cyclic (E) then
-
-         --  Raise a warning about missing (implicit) contract on recursive
-         --  calls.
-
-         declare
-            Has_Explicit_Contracts : constant Boolean :=
-              Has_Contracts (E, Pragma_Postcondition)
-              or else Has_Contracts (E, Pragma_Contract_Cases);
-            Has_Implicit_Contracts : constant Boolean :=
-              Type_Needs_Dynamic_Invariant (Etype (E));
-         begin
-
-            if Has_Implicit_Contracts or else Has_Explicit_Contracts then
-               declare
-                  String_For_Implicit : constant String :=
-                    (if Has_Explicit_Contracts then "" else "implicit ");
-                  String_For_Rec      : constant String :=
-                    (if Is_Recursive (E)
-                     then "recursive calls"
-                     else "implicit recursive calls");
-               begin
-                  Warning_Msg_N
-                    (Warn_Contracts_Recursive,
-                     E,
-                     Create_N
-                       (Warn_Contracts_Recursive,
-                        Names => [String_For_Implicit, String_For_Rec]));
-               end;
-            end if;
-         end;
-
          Register_Proof_Cyclic_Function (E);
       end if;
 
@@ -9021,24 +8990,6 @@ package body Gnat2Why.Subprograms is
           not Is_Structural_Subprogram_Variant
                 (Get_Pragma (E, Pragma_Subprogram_Variant))
       then
-
-         --  Raise a warning about missing definition on recursive calls
-
-         declare
-            Scope            : constant Entity_Id := Enclosing_Unit (E);
-            String_For_Scope : constant String :=
-              (if Present (Scope)
-                 and then
-                   Ekind (Scope)
-                   in E_Package | E_Function | E_Procedure | E_Entry
-                 and then Proof_Module_Cyclic (E, Scope)
-               then " and on calls from enclosing unit"
-               else "");
-         begin
-            Warning_Msg_N
-              (Warn_Num_Variant, E, Extra_Message => String_For_Scope);
-         end;
-
          Register_Proof_Cyclic_Function (E);
          Register_Dependency_For_Soundness (E_Module (E, Expr_Fun_Axiom), E);
       end if;
