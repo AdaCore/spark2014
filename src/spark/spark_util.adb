@@ -6358,8 +6358,8 @@ package body SPARK_Util is
             I_Spec : constant Node_Id := Iterator_Specification (Q_Expr);
 
          begin
-            --  On for of quantification over arrays, the quantified variable
-            --  ranges over array elements.
+            --  On for of quantification/iteration over arrays, the quantified
+            --  variable ranges over array elements.
 
             if Present (I_Spec) and then Is_Iterator_Over_Array (I_Spec) then
                declare
@@ -6371,8 +6371,8 @@ package body SPARK_Util is
                               (Component_Type (Etype (Arr_Expr)));
                end;
 
-            --  On for of quantification over containers, the quantified
-            --  variable is assigned the result of Element.
+            --  On for of quantification/iteration over containers, the
+            --  quantified variable is assigned the result of Element.
 
             elsif Present (I_Spec) and then Of_Present (I_Spec) then
                declare
@@ -6383,21 +6383,33 @@ package body SPARK_Util is
                   return Fun_Has_Relaxed_Init (Element);
                end;
 
-            --  On for in quantification over containers, the quantified
-            --  variable is assigned the result of First and Next.
+            --  On for in quantification/iteration over containers, the
+            --  quantified variable is assigned the result of First and Next
+            --  (or Last and Previous if they are supplied).
 
             elsif Present (I_Spec) then
                declare
-                  First : constant Entity_Id :=
+                  First    : constant Entity_Id :=
                     Get_Iterable_Type_Primitive
                       (Etype (Name (I_Spec)), Name_First);
-                  Next  : constant Entity_Id :=
+                  Next     : constant Entity_Id :=
                     Get_Iterable_Type_Primitive
                       (Etype (Name (I_Spec)), Name_Next);
+                  Last     : constant Entity_Id :=
+                    Get_Iterable_Type_Primitive
+                      (Etype (Name (I_Spec)), Name_Last);
+                  Previous : constant Entity_Id :=
+                    Get_Iterable_Type_Primitive
+                      (Etype (Name (I_Spec)), Name_Previous);
                begin
                   return
                     Fun_Has_Relaxed_Init (First)
-                    or else Fun_Has_Relaxed_Init (Next);
+                    or else Fun_Has_Relaxed_Init (Next)
+                    or else
+                      (Present (Last) and then Fun_Has_Relaxed_Init (Last))
+                    or else
+                      (Present (Previous)
+                       and then Fun_Has_Relaxed_Init (Previous));
                end;
             else
                return False;
