@@ -36,9 +36,9 @@ procedure Quant_checks with SPARK_Mode is
       function Element (X : Container; Y : Boolean) return Boolean is (False) --@PRECONDITION:FAIL
         with Pre => False;
       pragma Annotate (GNATprove, Iterable_For_Proof, "contains", Contains);
-      function Last (X : Container) return Boolean is (False)
+      function Last (X : Container) return Boolean is (False) --@PRECONDITION:FAIL
         with Pre => False;
-      function Previous (X : Container; Y : Boolean) return Boolean is (False)
+      function Previous (X : Container; Y : Boolean) return Boolean is (False) --@PRECONDITION:FAIL
         with Pre => False;
    end With_Contains;
    package With_Model is
@@ -72,9 +72,9 @@ procedure Quant_checks with SPARK_Mode is
       function Element (X : Container; Y : Boolean) return Boolean is (False) --@PRECONDITION:FAIL
         with Pre => False;
       pragma Annotate (GNATprove, Iterable_For_Proof, "model", Get_Model);
-      function Last (X : Container) return Boolean is (False)
+      function Last (X : Container) return Boolean is (False) --@PRECONDITION:FAIL
         with Pre => False;
-      function Previous (X : Container; Y : Boolean) return Boolean is (False)
+      function Previous (X : Container; Y : Boolean) return Boolean is (False) --@PRECONDITION:FAIL
         with Pre => False;
    end With_Model;
    package Slightly_Too_Strong is
