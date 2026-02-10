@@ -15,7 +15,7 @@ polyorb_hi-transport_low_level.ads:50:13: error: launch "gnatprove --explain=E00
 polyorb_hi-transport_low_level.ads:50:13: error: violation of pragma SPARK_Mode at polyorb-hi-ada/gnat.adc:19
 polyorb_hi_generated-activity.adb:98:03: error: "Producer_Destinations" is not allowed in SPARK (due to attribute "Address" outside an attribute definition clause)
 polyorb_hi_generated-activity.adb:98:03: error: violation of pragma SPARK_Mode at polyorb-hi-ada/gnat.adc:19
-polyorb_hi_generated-activity.adb:100:06: error: attribute "Address" outside an attribute definition clause is not allowed in SPARK [E0002]
+polyorb_hi_generated-activity.adb:100:06: error: attribute "Address" outside an attribute definition clause is not allowed in SPARK (SPARK RM 13.7(2)) [E0002]
 polyorb_hi_generated-activity.adb:100:06: error: launch "gnatprove --explain=E0002" for more information
 polyorb_hi_generated-activity.adb:100:06: error: violation of pragma SPARK_Mode at polyorb-hi-ada/gnat.adc:19
 polyorb_hi_generated-activity.adb:102:03: error: function "Get_Time_Stamp" with volatile input global "Elaborated_Variables" with effective reads is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]

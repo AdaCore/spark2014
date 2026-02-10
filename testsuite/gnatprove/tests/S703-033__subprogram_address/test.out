@@ -1,4 +1,4 @@
-a.adb:5:38: error: attribute "Address" outside an attribute definition clause is not allowed in SPARK [E0002]
+a.adb:5:38: error: attribute "Address" outside an attribute definition clause is not allowed in SPARK (SPARK RM 13.7(2)) [E0002]
 a.adb:5:38: error: launch "gnatprove --explain=E0002" for more information
 a.adb:5:38: error: violation of aspect SPARK_Mode at line 2
 gnatprove: error during flow analysis and proof

@@ -1,13 +1,13 @@
 ext.adb:5:10: error: "L" is not allowed in SPARK (due to overlaid object which is a part of a protected object)
 ext.adb:5:10: error: violation of aspect SPARK_Mode at line 1
-ext.adb:5:43: error: Address attribute on a part of a protected component is not allowed in SPARK
+ext.adb:5:43: error: Address attribute on a part of a protected component is not allowed in SPARK (SPARK RM 13.7(3))
 ext.adb:5:43: error: violation of aspect SPARK_Mode at line 1
 ext.adb:13:10: error: "L" is not allowed in SPARK (due to overlaid object which is a part of a protected object)
 ext.adb:13:10: error: violation of aspect SPARK_Mode at line 1
-ext.adb:13:43: error: Address attribute on a part of a Part_Of constituent of a protected object is not allowed in SPARK
+ext.adb:13:43: error: Address attribute on a part of a Part_Of constituent of a protected object is not allowed in SPARK (SPARK RM 13.7(3))
 ext.adb:13:43: error: violation of aspect SPARK_Mode at line 1
 ext_2.ads:12:04: error: "Y" is not allowed in SPARK (due to overlaid object which is a part of a protected object)
 ext_2.ads:12:04: error: violation of aspect SPARK_Mode at line 4
-ext_2.ads:12:26: error: precisely supported address clause for Part_Of constituent of a protected object is not allowed in SPARK
+ext_2.ads:12:26: error: precisely supported address clause for Part_Of constituent of a protected object is not allowed in SPARK (SPARK RM 13.7(3))
 ext_2.ads:12:26: error: violation of aspect SPARK_Mode at line 4
 gnatprove: error during flow analysis and proof

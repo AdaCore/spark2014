@@ -1,4 +1,4 @@
-test_overlays.adb:10:04: error: constant object with an address clause which is not imported is not allowed in SPARK
+test_overlays.adb:10:04: error: constant object with an address clause which is not imported is not allowed in SPARK (SPARK RM 13.7(5))
 test_overlays.adb:10:04: error: violation of aspect SPARK_Mode at line 3
 test_overlays.adb:12:04: warning: address specification on "C4" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes through a potential alias [imprecise-address-specification] [E0012]
 test_overlays.adb:12:04: warning: launch "gnatprove --explain=E0012" for more information

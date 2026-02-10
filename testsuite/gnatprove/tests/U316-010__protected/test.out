@@ -1,9 +1,9 @@
 p.adb:4:10: error: "A" is not allowed in SPARK (due to overlaid object which is a part of a protected object)
 p.adb:4:10: error: violation of pragma SPARK_Mode at test.adc:1
-p.adb:4:38: error: Address attribute on a part of a protected component is not allowed in SPARK
+p.adb:4:38: error: Address attribute on a part of a protected component is not allowed in SPARK (SPARK RM 13.7(3))
 p.adb:4:38: error: violation of pragma SPARK_Mode at test.adc:1
 p.adb:9:10: error: "A" is not allowed in SPARK (due to overlaid object which is a part of a protected object)
 p.adb:9:10: error: violation of pragma SPARK_Mode at test.adc:1
-p.adb:9:38: error: Address attribute on a part of a protected component is not allowed in SPARK
+p.adb:9:38: error: Address attribute on a part of a protected component is not allowed in SPARK (SPARK RM 13.7(3))
 p.adb:9:38: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof
