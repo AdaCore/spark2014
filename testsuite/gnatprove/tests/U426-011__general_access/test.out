@@ -1,4 +1,4 @@
-bad_gen_access.adb:9:14: error: instance of Unchecked_Deallocation with a general access type is not allowed in SPARK
+bad_gen_access.adb:9:14: error: instance of Unchecked_Deallocation with a general access type is not allowed in SPARK (SPARK RM 3.10(20))
 bad_gen_access.adb:9:14: error: violation of aspect SPARK_Mode at line 3
 bad_gen_access.adb:14:19: warning: assuming "F" has no effect on global items
 bad_gen_access.adb:14:19: warning: no Global contract available for "F" [assumed-global-null]
