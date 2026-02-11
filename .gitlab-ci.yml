@@ -110,12 +110,15 @@ stages:
 
     # Process the results
     - ANOD_BUILDSPACE=`anod eval spark2014 build_space_name --primitive test --qualifier=$ANOD_QUALIFIERS`
-    - testsuite_reports || exit_code=$?
+    - testsuite_reports || testsuite_exit_code=$?
     - mv $ANOD_DEFAULT_SANDBOX_DIR/x86_64-linux/$ANOD_BUILDSPACE/results/new/ $CI_PROJECT_DIR/testsuite-results
     - mv $ANOD_DEFAULT_SANDBOX_DIR/x86_64-linux/$ANOD_BUILDSPACE/src/cobertura-report/ $CI_PROJECT_DIR/coverage
 
-    # Process test file to generate timing test
-    - (cd $CI_PROJECT_DIR ; python scripts/check_test_times.py --threshold=180 xunit-*.xml xunit-times.xml)
+    # Process test file to generate timing test (skip for large tests)
+    - |
+      if [[ "$ANOD_ENTRY_POINT" != "test_large" ]]; then
+        (cd $CI_PROJECT_DIR ; python scripts/check_test_times.py --threshold=180 xunit-*.xml xunit-times.xml) || timing_exit_code=$?
+      fi
 
     # Reestablish cache
     - mv /tmp/gnatprove_cache $CI_PROJECT_DIR/gnatprove_cache
@@ -127,7 +130,24 @@ stages:
     - if [[ $CI_PIPELINE_SOURCE == "schedule" ]]; then export HTMLTARGETDIR=weekly ; fi
     - publish-pages $ANOD_DEFAULT_SANDBOX_DIR/x86_64-linux/$ANOD_BUILDSPACE/src/html-report --target-subdir $HTMLTARGETDIR --expires 30
     - section_end "coverage_report"
-    - exit $exit_code
+
+    # Determine final exit code based on testsuite and timing results:
+    # - If testsuite_reports failed: fail with its exit code
+    # - If check_test_times.py failed with code other than 0 or 1: fail with its exit code
+    # - If check_test_times.py returned 1 (timing threshold exceeded): exit with code 89
+    #   exit code 89 is special-cased in allow_failure to indicate a warning
+    # - Otherwise: success (exit code 0)
+    - |
+      if [[ -n "$testsuite_exit_code" && "$testsuite_exit_code" != "0" ]]; then
+        # testsuite_reports failed, fail the job
+        exit $testsuite_exit_code
+      elif [[ -n "$timing_exit_code" && "$timing_exit_code" != "0" && "$timing_exit_code" != "1" ]]; then
+        # check_test_times.py failed with exit code other than 0 or 1, fail the job
+        exit $timing_exit_code
+      elif [[ -n "$timing_exit_code" && "$timing_exit_code" == "1" ]]; then
+        # check_test_times.py returned 1 (timing threshold exceeded), use special exit code for warning
+        exit 89
+      fi
 
   artifacts:
      when: always
@@ -194,6 +214,8 @@ spark2014:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: on_success
     - when: never
+  allow_failure:
+    exit_codes: [89]
   variables:
     ANOD_ENTRY_POINT: test
     ANOD_QUALIFIERS: $ANOD_BUILD_QUALIFIERS,cleanup-mode=none,cache

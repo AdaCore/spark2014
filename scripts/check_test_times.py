@@ -10,6 +10,12 @@ test case ("AllTestsWithinThreshold"). This test case:
 - FAILS if any passed test in the input file is *at or over* the threshold.
 
 Failed, errored, and skipped tests from the input file are ignored.
+
+Exit codes:
+- 0: All successful tests are under the threshold.
+- 1: One or more successful tests are at or over the threshold.
+- 2: An unexpected error occurred during processing.
+- Other non-zero codes may occur in unexpected error situations.
 """
 
 import argparse
