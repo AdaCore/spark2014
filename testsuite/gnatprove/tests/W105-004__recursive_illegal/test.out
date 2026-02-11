@@ -4,5 +4,5 @@ test_rec.adb:20:06: warning: postcondition does not mention function result [-gn
 test_rec.adb:26:06: warning: postcondition does not mention function result [-gnatw.t]
 test_rec.adb:43:06: warning: postcondition does not mention function result [-gnatw.t]
 test_rec.adb:48:06: warning: postcondition does not mention function result [-gnatw.t]
-test_rec.adb:48:17: error: subprogram annotated with Higher_Order_Specialization shall only reference its access-to-function parameters in dereferences and as actual parameters in calls to functions annotated with Higher_Order_Specialization
+test_rec.adb:48:17: error: subprogram with the "Higher_Order_Specialization" annotation shall only reference its access-to-function parameters in dereferences and as actual parameters in calls to functions with the "Higher_Order_Specialization" annotation
 gnatprove: error during flow analysis and proof

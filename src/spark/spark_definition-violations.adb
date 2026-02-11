@@ -24,11 +24,12 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Namet;    use Namet;
-with Restrict; use Restrict;
-with Rident;   use Rident;
-with Sem_Prag; use Sem_Prag;
-with Tbuild;   use Tbuild;
+with Namet;                     use Namet;
+with Restrict;                  use Restrict;
+with Rident;                    use Rident;
+with Sem_Prag;                  use Sem_Prag;
+with Tbuild;                    use Tbuild;
+with SPARK_Definition.Annotate; use SPARK_Definition.Annotate;
 
 package body SPARK_Definition.Violations is
 
@@ -312,9 +313,12 @@ package body SPARK_Definition.Violations is
             Msg => "incorrect use of " & Annot_To_String (Kind, Name => Name));
       end if;
 
-      --  If SPARK_Mode is On, raise an error
+      --  If SPARK_Mode is On or if we are traversing delayed annotations,
+      --  raise an error.
 
-      if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
+      if Emit_Messages
+        and then (In_Delayed_Annotation or else SPARK_Pragma_Is (Opt.On))
+      then
          Error_Msg_N
            (Create (Error_Msg, Names => Names),
             N,

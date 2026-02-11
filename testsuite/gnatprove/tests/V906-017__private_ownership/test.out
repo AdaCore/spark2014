@@ -1,6 +1,7 @@
 private_ownership.ads:6:12: warning: checks for ressource or memory reclamation will be unprovable
 private_ownership.ads:6:12: warning: no reclamation function nor reclaimed value found for type with ownership "Pool_Specific_Access" [no-reclamation-function]
-private_ownership.ads:17:13: error: ownership function shall be declared in same declaration list as input type
+private_ownership.ads:17:13: error: "Is_Null" shall be declared in same declaration list as "Pool_Specific_Access"
+private_ownership.ads:17:13: error: incorrect placement for entity with the "Ownership" annotation
 private_ownership.ads:23:07: warning: assuming "Is_D" has no effect on global items
 private_ownership.ads:23:07: warning: no Global contract available for "Is_D" [assumed-global-null]
 gnatprove: error during flow analysis and proof

@@ -1,3 +1,5 @@
-foo.adb:2:14: error: procedure annotated with the aspect Automatic_Instantiation shall not exit the program
-foo.adb:9:14: error: procedure annotated with the aspect Higher_Order_Specialization shall not exit the program
+foo.adb:2:14: error: "Exit_Program" might exit the program abruptly
+foo.adb:2:14: error: a subprogram with the "Automatic_Instantiation" annotation shall have no side-effects
+foo.adb:9:14: error: "Exit_Program_2" might exit the program abruptly
+foo.adb:9:14: error: a subprogram with the "Higher_Order_Specialization" annotation shall have no side-effects
 gnatprove: error during flow analysis and proof

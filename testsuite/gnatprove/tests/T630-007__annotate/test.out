@@ -1,18 +1,31 @@
-bad_annotate.adb:6:11: error: Entity parameter of a pragma Inline_For_Proof must be a function
-bad_annotate.adb:7:14: error: the entity of a Gnatprove Annotate Iterable_For_Proof pragma must be a function
-bad_annotate.adb:10:55: error: the third argument of a Gnatprove Annotate Iterable_For_Proof pragma must be Model or Contains
-bad_annotate.adb:11:13: error: Model function must have exactly one parameter
-bad_annotate.adb:13:19: error: parameter of Model function must allow for of iteration
-bad_annotate.adb:15:13: error: Contains function must have exactly two parameters
-bad_annotate.adb:17:13: error: Contains function must return Booleans
-bad_annotate.adb:19:17: error: first parameter of Contains function must allow for of iteration
-bad_annotate.adb:40:13: error: return type of Model function must allow for of iteration
-bad_annotate.adb:42:24: error: second parameter of Contains must have the type of elements
-bad_annotate.adb:46:13: error: two Iterable_For_Proof annotations for container type "T"
-bad_annotate.adb:72:26: error: Annotation No_Wrap_Around must apply to a type declaration
-bad_annotate.adb:73:36: error: Entity parameter of annotation No_Wrap_Around must be a modular type
+bad_annotate.adb:6:11: error: expected a function
+bad_annotate.adb:6:11: error: wrong entity argument for aspect "Annotate => (GNATprove, Inline_For_Proof[, ...])"
+bad_annotate.adb:7:14: error: expected a function
+bad_annotate.adb:7:14: error: wrong entity argument for aspect "Annotate => (GNATprove, Iterable_For_Proof[, ...])"
+bad_annotate.adb:10:55: error: expected "Model" or "Contains"
+bad_annotate.adb:10:55: error: unexpected third argument for aspect "Annotate => (GNATprove, Iterable_For_Proof[, ...])"
+bad_annotate.adb:11:13: error: expected 1 parameter
+bad_annotate.adb:11:13: error: wrong number of parameters for a subprogram with the "Iterable_For_Proof" annotation
+bad_annotate.adb:13:19: error: type of "X" shall allow container element iteration
+bad_annotate.adb:13:19: error: wrong type for parameter of subprogram with the "Iterable_For_Proof" annotation
+bad_annotate.adb:15:13: error: expected 2 parameters
+bad_annotate.adb:15:13: error: wrong number of parameters for a subprogram with the "Iterable_For_Proof" annotation
+bad_annotate.adb:17:13: error: expected a boolean
+bad_annotate.adb:17:13: error: wrong return type for function with the "Iterable_For_Proof" annotation
+bad_annotate.adb:19:17: error: type of "X" shall allow container element iteration
+bad_annotate.adb:19:17: error: wrong type for parameter of subprogram with the "Iterable_For_Proof" annotation
+bad_annotate.adb:40:13: error: return type shall allow container element iteration
+bad_annotate.adb:40:13: error: wrong return type for function with the "Iterable_For_Proof" annotation
+bad_annotate.adb:42:24: error: "Y" shall have type "Integer"
+bad_annotate.adb:42:24: error: wrong type for parameter of subprogram with the "Iterable_For_Proof" annotation
+bad_annotate.adb:46:13: error: a single "Iterable_For_Proof" annotation shall be specified for "T"
+bad_annotate.adb:72:26: error: expected a type declaration
+bad_annotate.adb:72:26: error: wrong entity argument for aspect "Annotate => (GNATprove, No_Wrap_Around[, ...])"
 bad_annotate.adb:77:11: error: invalid name "Do_Something_3" in aspect "Annotate => (GNATprove, ...)"
 bad_annotate.adb:78:50: error: last argument of "pragma Annotate (GNATprove, Inline_For_Proof[, ...])" must be an entity
 bad_annotate.adb:79:48: error: last argument of "pragma Annotate (GNATprove, No_Wrap_Around[, ...])" must be an entity
-bad_annotate.adb:80:04: error: missing name in Annotate pragma for GNATprove
+bad_annotate.adb:80:04: error: expected at least 2 arguments
+bad_annotate.adb:80:04: error: wrong number of arguments in "pragma Annotate (GNATprove, ...)"
+system.ads:1:01: error: "My_Int" is not allowed in SPARK (due to incorrect use of "No_Wrap_Around" annotation)
+system.ads:1:01: error: violation of aspect SPARK_Mode at bad_annotate.adb:4
 gnatprove: error during flow analysis and proof

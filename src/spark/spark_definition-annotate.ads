@@ -336,6 +336,9 @@ package SPARK_Definition.Annotate is
    --  be considered to also apply to all "Next" declarations following
    --  "Preceding" which are not from source.
 
+   function In_Delayed_Annotation return Boolean;
+   --  Return True while performing delayed checks for pragma annotate
+
    procedure Do_Delayed_Checks_On_Pragma_Annotate;
    --  Some checks for Annotate pragmas or aspects might have been delayed
    --  because necessary entities were not marked yet. Finish the checking and

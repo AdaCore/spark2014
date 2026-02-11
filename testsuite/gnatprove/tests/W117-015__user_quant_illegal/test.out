@@ -36,6 +36,10 @@ illegal.adb:112:30: error: function associated to aspect Iterable with controlli
 illegal.adb:112:30: error: violation of aspect SPARK_Mode at line 2
 illegal.adb:113:30: error: function associated to aspect Iterable with controlling result is not allowed in SPARK (SPARK RM 5.5.2(12))
 illegal.adb:113:30: error: violation of aspect SPARK_Mode at line 2
-illegal.adb:160:16: error: Contains function shall not access global data
-illegal.adb:188:16: error: Model function shall not access global data
+illegal.adb:154:27: error: "Element" is not allowed in SPARK (due to incorrect use of "Iterable_For_Proof" annotation)
+illegal.adb:154:27: error: violation of aspect SPARK_Mode at line 2
+illegal.adb:160:16: error: a subprogram with the "Iterable_For_Proof" annotation shall not access global data
+illegal.adb:171:27: error: "Element" is not allowed in SPARK (due to incorrect use of "Iterable_For_Proof" annotation)
+illegal.adb:171:27: error: violation of aspect SPARK_Mode at line 2
+illegal.adb:188:16: error: a subprogram with the "Iterable_For_Proof" annotation shall not access global data
 gnatprove: error during flow analysis and proof

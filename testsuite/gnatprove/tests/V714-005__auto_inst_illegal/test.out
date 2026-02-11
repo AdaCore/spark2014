@@ -1,12 +1,22 @@
-test_illegal.adb:16:06: error: entity annotated with the aspect Automatic_Instantiation must be a procedure
-test_illegal.adb:21:14: error: procedure annotated with the aspect Automatic_Instantiation must be ghost
-test_illegal.adb:32:14: error: procedure annotated with the aspect Automatic_Instantiation shall not have global outputs
-test_illegal.adb:42:24: error: procedure annotated with the aspect Automatic_Instantiation shall not have "in out" parameters
-test_illegal.adb:52:24: error: procedure annotated with the aspect Automatic_Instantiation shall not have "out" parameters
-test_illegal.adb:62:24: error: procedure annotated with the aspect Automatic_Instantiation shall not have parameters of an access-to-variable type
-test_illegal.adb:73:17: error: procedure annotated with the aspect Automatic_Instantiation shall be declared directly after a function
-test_illegal.adb:84:14: error: procedure annotated with the aspect Automatic_Instantiation shall not be declared after a volatile function
-test_illegal.adb:101:14: error: procedure annotated with the aspect Automatic_Instantiation shall not be declared after a procedure
-test_illegal.adb:117:14: error: procedure annotated with the aspect Automatic_Instantiation shall not be declared after a procedure
-test_illegal.adb:129:14: error: procedure annotated with the aspect Automatic_Instantiation shall be declared directly after a function
+test_illegal.adb:16:06: error: expected a procedure
+test_illegal.adb:16:06: error: wrong entity argument for aspect "Annotate => (GNATprove, Automatic_Instantiation[, ...])"
+test_illegal.adb:21:14: error: a subprogram with the "Automatic_Instantiation" annotation shall be ghost
+test_illegal.adb:32:14: error: "Lemma_F3" has global outputs
+test_illegal.adb:32:14: error: a subprogram with the "Automatic_Instantiation" annotation shall have no side-effects
+test_illegal.adb:42:24: error: "Lemma_F4" has "in out" parameters
+test_illegal.adb:42:24: error: a subprogram with the "Automatic_Instantiation" annotation shall have no side-effects
+test_illegal.adb:52:24: error: "Lemma_F5" has "out" parameters
+test_illegal.adb:52:24: error: a subprogram with the "Automatic_Instantiation" annotation shall have no side-effects
+test_illegal.adb:62:24: error: "Lemma_F6" has parameters of an access-to-variable type
+test_illegal.adb:62:24: error: a subprogram with the "Automatic_Instantiation" annotation shall have no side-effects
+test_illegal.adb:73:17: error: "Lemma_F7" shall be declared directly after a function
+test_illegal.adb:73:17: error: incorrect placement for entity with the "Automatic_Instantiation" annotation
+test_illegal.adb:84:14: error: "Lemma_F8" shall not be declared after a volatile function
+test_illegal.adb:84:14: error: incorrect placement for entity with the "Automatic_Instantiation" annotation
+test_illegal.adb:101:14: error: "Lemma_F9" shall be declared directly after a function
+test_illegal.adb:101:14: error: incorrect placement for entity with the "Automatic_Instantiation" annotation
+test_illegal.adb:117:14: error: "Lemma_F10" shall be declared directly after a function
+test_illegal.adb:117:14: error: incorrect placement for entity with the "Automatic_Instantiation" annotation
+test_illegal.adb:129:14: error: "Lemma_F11" shall be declared directly after a function
+test_illegal.adb:129:14: error: incorrect placement for entity with the "Automatic_Instantiation" annotation
 gnatprove: error during flow analysis and proof

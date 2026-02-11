@@ -126,13 +126,13 @@ private package SPARK_Definition.Violations is
       Names       : Node_Lists.List := Node_Lists.Empty;
       Cont_Msg    : Message := No_Message)
    with
-     Global => (Output => Violation_Detected, Input => Current_SPARK_Pragma),
-     Pre    => (if Kind in Specific_Annotation_Kind then Name'Length = 0);
+     Global => (Output => Violation_Detected, Input => Current_SPARK_Pragma);
    --  Mark node N as an incorrect use of a GNATprove annotation. An error
    --  issued if current SPARK_Mode is On.
-   --  If Kind is a generic annotation error, use Name to get the annotation
-   --  name. From_Aspect and Snd_Name are used to pretty print the annotation
-   --  as a pragma/aspect for some messages.
+   --  If supplied, use Name to get the annotation name. Otherwise, use Kind if
+   --  it is a Specific_Annotation_Kind.
+   --  From_Aspect and Snd_Name are used to pretty print the annotation as a
+   --  pragma/aspect for some messages.
    --  If Cont_Msg is set, a continuation message is issued.
    --  If Names is set, use this to replace & in error messages.
 

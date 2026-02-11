@@ -2,8 +2,10 @@ warn_not_suppr.ads:5:30: medium: "X" might not be initialized in "P" [reason for
 syntax.adb:12:07: error: expected 4 arguments
 syntax.adb:12:07: error: wrong number of arguments in "pragma Annotate (GNATprove, Intentional[, ...])"
 syntax.adb:13:35: error: invalid name "Bla" in "pragma Annotate (GNATprove, ...)"
-syntax.adb:14:07: error: third argument "Pattern" for GNATprove Annotate pragma must be a string literal
-syntax.adb:15:07: error: fourth argument "Reason" for GNATprove Annotate pragma must be a string literal
+syntax.adb:14:50: error: third argument "Pattern" shall be a string literal
+syntax.adb:14:50: error: unexpected third argument for "pragma Annotate (GNATprove, Intentional[, ...])"
+syntax.adb:15:54: error: fourth argument "Reason" shall be a string literal
+syntax.adb:15:54: error: unexpected fourth argument for "pragma Annotate (GNATprove, Intentional[, ...])"
 gnatprove: error during flow analysis and proof
 suppr.adb:10:10: info: justified that "X" might not be initialized
 suppr.adb:11:15: info: justified that "Z" is not initialized
