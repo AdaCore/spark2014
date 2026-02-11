@@ -3,7 +3,8 @@ aliasing.adb:26:13: medium: formal parameters "X" and "Y" might be aliased (SPAR
 aliasing.adb:26:13: warning: aliasing check on components of an array is handled imprecisely [alias-array]
 aliasing.adb:26:16: high: array index check might fail (e.g. when A'First = 1 and A'Last = 0 and I = 0) [reason for check: value must be a valid index into the array] [possible fix: add precondition (I in A'First .. A'Last) to subprogram at aliasing.ads:17] [provers reached step limit before completing the proof]
 aliasing.adb:26:23: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (J in A'First .. A'Last) to subprogram at aliasing.ads:17] [provers reached step limit before completing the proof]
-global_stack.ads:4:12: error: function "Pop" with output global "Top" is not allowed in SPARK [E0005]
+global_stack.ads:4:12: error: consider using the Side_Effects aspect
+global_stack.ads:4:12: error: function "Pop" with output global "Top" is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]
 global_stack.ads:4:12: error: launch "gnatprove --explain=E0005" for more information
 global_stack.ads:4:12: error: violation of aspect SPARK_Mode at line 1
 search_array.adb:7:24: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
@@ -445,9 +446,10 @@ trivial_no_output.ads:13:19: info: initialization of "Val" proved
 trivial_no_output.ads:14:06: info: data dependencies proved
 trivial_no_output.ads:15:06: info: flow dependencies proved
 volatile_functions.ads:12:13: error: launch "gnatprove --explain=E0006" for more information
-volatile_functions.ads:12:13: error: nonvolatile function "Read_Non_Volatile" with volatile input global "AW" is not allowed in SPARK [E0006]
+volatile_functions.ads:12:13: error: nonvolatile function "Read_Non_Volatile" with volatile input global "AW" is not allowed in SPARK (SPARK RM 7.1.3(7)) [E0006]
 volatile_functions.ads:12:13: error: violation of aspect SPARK_Mode at line 4
-volatile_functions.ads:16:13: error: function "Read_ER" with output global "ER" is not allowed in SPARK [E0005]
+volatile_functions.ads:16:13: error: consider using the Side_Effects aspect
+volatile_functions.ads:16:13: error: function "Read_ER" with output global "ER" is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]
 volatile_functions.ads:16:13: error: launch "gnatprove --explain=E0005" for more information
 volatile_functions.ads:16:13: error: violation of aspect SPARK_Mode at line 4
 volatile_placement.ads:9:13: info: implicit aspect Always_Terminates on "Reg" has been proved, subprogram will terminate
@@ -459,7 +461,8 @@ volatile_variable_values.adb:16:04: warning: analyzing unreferenced procedure "R
 volatile_variable_values.adb:19:22: info: assertion proved (CVC5: 1 VC)
 volatile_variable_values.ads:13:14: warning: subprogram "Check" has no effect
 volatile_variables.adb:17:07: info: analyzing call to "Set" in context
-volatile_variables.ads:14:13: error: function "Read_ER" with output global "ER" is not allowed in SPARK [E0005]
+volatile_variables.ads:14:13: error: consider using the Side_Effects aspect
+volatile_variables.ads:14:13: error: function "Read_ER" with output global "ER" is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]
 volatile_variables.ads:14:13: error: launch "gnatprove --explain=E0005" for more information
 volatile_variables.ads:14:13: error: violation of aspect SPARK_Mode at line 4
 gnatprove: error during flow analysis and proof
@@ -570,7 +573,7 @@ mem.ads:3:21: warning: no subprogram exists that can initialize abstract state "
 mem.ads:7:14: info: postcondition proved (CVC5: 1 VC)
 mem.ads:9:13: info: implicit aspect Always_Terminates on "Free_Memory" has been proved, subprogram will terminate
 resources.adb:6:24: info: unrolling loop [info-unrolling-inlining]
-resources.ads:9:13: warning: "Sum" is recursive; its implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
+resources.ads:9:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
 resources.ads:10:08: medium: implicit aspect Always_Terminates on "Sum" could be incorrect, subprogram is recursive [possible fix: annotate "Sum" with a Subprogram_Variant aspect]
 resources.ads:10:32: info: index check proved (CVC5: 2 VC)
 resources.ads:10:36: info: overflow check proved (CVC5: 2 VC)
