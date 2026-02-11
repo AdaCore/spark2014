@@ -1,2 +1,32 @@
-acc_vectors.ads:8:06: error: container aggregates cannot contain access-to-variable elements or keys
+acc_vectors.ads:6:09: error: procedure used in the Aggregate aspect of a type with the "Container_Aggregates" annotation shall not have access parameters
+acc_vectors.ads:17:27: error: "Vector" is not allowed in SPARK (due to incorrect use of "Container_Aggregates" annotation)
+acc_vectors.ads:17:27: error: violation of aspect SPARK_Mode at line 1
+acc_vectors.ads:19:15: error: subtype of "Int_Arr" is not allowed in SPARK (due to incorrect use of "Container_Aggregates" annotation)
+acc_vectors.ads:19:15: error: violation of aspect SPARK_Mode at line 1
+acc_vectors.ads:19:23: error: subtype of "Int_Arr" is not allowed in SPARK (due to incorrect use of "Container_Aggregates" annotation)
+acc_vectors.ads:19:23: error: violation of aspect SPARK_Mode at line 1
+acc_vectors.ads:20:08: error: subtype of "Int_Arr" is not allowed in SPARK (due to incorrect use of "Container_Aggregates" annotation)
+acc_vectors.ads:20:08: error: violation of aspect SPARK_Mode at line 1
+acc_vectors.ads:30:54: error: "Vector" is not allowed in SPARK (due to incorrect use of "Container_Aggregates" annotation)
+acc_vectors.ads:30:54: error: violation of aspect SPARK_Mode at line 1
+acc_vectors.ads:44:19: error: "Vector" is not allowed in SPARK (due to incorrect use of "Container_Aggregates" annotation)
+acc_vectors.ads:44:19: error: violation of aspect SPARK_Mode at line 1
+acc_vectors.ads:44:24: error: "Vector" is not allowed in SPARK (due to incorrect use of "Container_Aggregates" annotation)
+acc_vectors.ads:44:24: error: violation of aspect SPARK_Mode at line 1
+acc_vectors.ads:45:24: error: subtype of "Integer" is not allowed in SPARK (due to incorrect use of "Container_Aggregates" annotation)
+acc_vectors.ads:45:24: error: violation of aspect SPARK_Mode at line 1
+acc_vectors.ads:45:29: error: subtype of "Integer" is not allowed in SPARK (due to incorrect use of "Container_Aggregates" annotation)
+acc_vectors.ads:45:29: error: violation of aspect SPARK_Mode at line 1
+acc_vectors.ads:45:34: error: "Vector" is not allowed in SPARK (due to incorrect use of "Container_Aggregates" annotation)
+acc_vectors.ads:45:34: error: violation of aspect SPARK_Mode at line 1
+acc_vectors.ads:45:44: error: "Vector" is not allowed in SPARK (due to incorrect use of "Container_Aggregates" annotation)
+acc_vectors.ads:45:44: error: violation of aspect SPARK_Mode at line 1
+acc_vectors.ads:45:50: error: "Vector" is not allowed in SPARK (due to incorrect use of "Container_Aggregates" annotation)
+acc_vectors.ads:45:50: error: violation of aspect SPARK_Mode at line 1
+acc_vectors.ads:51:07: error: subtype of "Vector" is not allowed in SPARK (due to incorrect use of "Container_Aggregates" annotation)
+acc_vectors.ads:51:07: error: violation of aspect SPARK_Mode at line 1
+acc_vectors.ads:52:52: error: "Vector" is not allowed in SPARK (due to incorrect use of "Container_Aggregates" annotation)
+acc_vectors.ads:52:52: error: violation of aspect SPARK_Mode at line 1
+acc_vectors.ads:54:13: error: "Vector" is not allowed in SPARK (due to incorrect use of "Container_Aggregates" annotation)
+acc_vectors.ads:54:13: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof

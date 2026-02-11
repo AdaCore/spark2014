@@ -24,12 +24,11 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Strings.Fixed; use Ada.Strings.Fixed;
-with Namet;             use Namet;
-with Restrict;          use Restrict;
-with Rident;            use Rident;
-with Sem_Prag;          use Sem_Prag;
-with Tbuild;            use Tbuild;
+with Namet;    use Namet;
+with Restrict; use Restrict;
+with Rident;   use Rident;
+with Sem_Prag; use Sem_Prag;
+with Tbuild;   use Tbuild;
 
 package body SPARK_Definition.Violations is
 
@@ -38,28 +37,6 @@ package body SPARK_Definition.Violations is
      Global => (Input => (Current_SPARK_Pragma, Current_Delayed_Aspect_Type));
    --  Issue an error continuation message for node N with the location of
    --  the violated SPARK_Mode pragma/aspect.
-
-   function SRM_Reference (Kind : Violation_Kind) return String
-   with
-     Post =>
-       SRM_Reference'Result = ""
-       or else
-         (SRM_Reference'Result'Length > 9
-          and then Head (SRM_Reference'Result, 9) = "SPARK RM ");
-   --  Return a reference to the SRM for Kind if any
-
-   function Explain_Code (Kind : Violation_Kind) return Explain_Code_Kind;
-   --  Return an explain code to be displayed along with the error message for
-   --  Kind if any. If SRM_Reference
-   --  is set, the reference to the SRM is appended to the error message. If
-   --  Cont_Msg is set, a continuation message is issued. If Root_Cause_Msg
-   --  is set, the corresponding message is used as root cause message for
-   --  cascading violations (typically used if Msg has character insertions).
-
-   function Annotation_From_Kind
-     (Kind : Incorrect_Annotation_Kind) return String;
-   --  Return the name of the annotation from its kind. It is used to compute
-   --  the root cause for incorrect uses of annotations.
 
    ------------------------------
    -- Add_Violation_Root_Cause --
@@ -78,52 +55,6 @@ package body SPARK_Definition.Violations is
          Add_Violation_Root_Cause (N, Msg);
       end if;
    end Add_Violation_Root_Cause;
-
-   --------------------------
-   -- Annotation_From_Kind --
-   --------------------------
-
-   function Annotation_From_Kind
-     (Kind : Incorrect_Annotation_Kind) return String
-   is (case Kind is
-         when Annot_At_End_Borrow_Context
-            | Annot_At_End_Borrow_Param
-            | Annot_At_End_Borrow_Param_In_Contract         => "At_End_Borrow",
-         when Annot_Handler_Call | Annot_Handler_Conversion => "Handler",
-         when Annot_Hide_Info_Private_Child
-            | Annot_Hide_Info_Private_Eq
-            | Annot_Hide_Info_Private_Ownership             => "Hide_Info",
-         when Annot_Inline_For_Proof_Body_Off               =>
-           "Inline_For_Proof",
-         when Annot_No_Bitwise_Operations_Use               =>
-           "No_Bitwise_Operations",
-         when Annot_Ownership_Potentially_Invalid           => "Ownership",
-         when Annot_Predefined_Equality_Use_Eq              =>
-           "Predefined_Equality");
-
-   ------------------
-   -- Explain_Code --
-   ------------------
-
-   function Explain_Code (Kind : Violation_Kind) return Explain_Code_Kind
-   is (case Kind is
-         when Vio_Address_Outside_Address_Clause    =>
-           EC_Address_In_Expression,
-         when Vio_Function_Global_Output            =>
-           EC_Function_Output_Global,
-         when Vio_Ownership_Borrow_Of_Non_Markable  =>
-           EC_Incorrect_Source_Of_Borrow,
-         when Vio_Ownership_Allocator_Uninitialized =>
-           EC_Uninitialized_Allocator,
-         when Vio_Side_Effects_Call_Context         =>
-           EC_Call_To_Function_With_Side_Effects,
-         when Vio_Volatile_At_Library_Level         =>
-           EC_Volatile_At_Library_Level,
-         when Vio_Volatile_Global                   =>
-           EC_Function_Volatile_Input_Global,
-         when Vio_Volatile_In_Interferring_Context  =>
-           EC_Volatile_Non_Interfering_Context,
-         when others                                => EC_None);
 
    -------------------------------
    -- GNATprove_Tasking_Profile --
@@ -320,19 +251,53 @@ package body SPARK_Definition.Violations is
       end if;
    end GNATprove_Tasking_Profile;
 
-   ----------------------
-   -- Mark_Unsupported --
-   ----------------------
+   -------------------------
+   -- Mark_Force_Violation --
+   -------------------------
+
+   procedure Mark_Force_Violation
+     (E : Entity_Id; Reason : Message := No_Message) is
+   begin
+      --  If E is not in SPARK, force violation
+
+      if Emit_Messages and then not Entity_In_SPARK (E) then
+         declare
+            Root_Cause : constant String := Get_Violation_Root_Cause (E);
+            Root_Msg   : constant String :=
+              (if Root_Cause = "" then "" else " (due to " & Root_Cause & ")");
+            Conts      : Message_Lists.List := Message_Lists.Empty;
+         begin
+            if Reason /= No_Message then
+               Conts.Append (Reason);
+            end if;
+            Error_Msg_N
+              (Create ("& is not allowed in SPARK" & Root_Msg, Names => [E]),
+               E,
+               First         => True,
+               Continuations => Conts);
+         end;
+      end if;
+   end Mark_Force_Violation;
+
+   --------------------------------------
+   -- Mark_Incorrect_Use_Of_Annotation --
+   --------------------------------------
 
    procedure Mark_Incorrect_Use_Of_Annotation
-     (Kind     : Incorrect_Annotation_Kind;
-      N        : Node_Id;
-      Msg      : String := "";
-      Names    : Node_Lists.List := Node_Lists.Empty;
-      Cont_Msg : String := "")
+     (Kind        : Incorrect_Annotation_Kind;
+      N           : Node_Id;
+      Msg         : String := "";
+      From_Aspect : Boolean := False;
+      Name        : String := "";
+      Snd_Name    : String := "";
+      Names       : Node_Lists.List := Node_Lists.Empty;
+      Cont_Msg    : Message := No_Message)
    is
       Error_Msg : constant String :=
-        (if Msg /= "" then Msg else Incorrect_Annotation_Message (Kind));
+        (if Msg /= ""
+         then Msg
+         else
+           Incorrect_Annotation_Message (Kind, From_Aspect, Name, Snd_Name));
    begin
       --  Flag the violation, so that the current entity is marked
       --  accordingly.
@@ -344,10 +309,7 @@ package body SPARK_Definition.Violations is
       if Emit_Messages then
          Add_Violation_Root_Cause
            (N,
-            Msg =>
-              "incorrect use of """
-              & Annotation_From_Kind (Kind)
-              & """ annotation");
+            Msg => "incorrect use of " & Annot_To_String (Kind, Name => Name));
       end if;
 
       --  If SPARK_Mode is On, raise an error
@@ -357,7 +319,7 @@ package body SPARK_Definition.Violations is
            (Create (Error_Msg, Names => Names),
             N,
             Continuations =>
-              (if Cont_Msg /= "" then [Create (Cont_Msg)] else []));
+              (if Cont_Msg = No_Message then [] else [Cont_Msg]));
       end if;
    end Mark_Incorrect_Use_Of_Annotation;
 
@@ -581,197 +543,5 @@ package body SPARK_Definition.Violations is
        --  Otherwise there is no applicable pragma, so SPARK_Mode is None
 
        else Mode = Opt.None);
-
-   -------------------
-   -- SRM_Reference --
-   -------------------
-
-   function SRM_Reference (Kind : Violation_Kind) return String
-   is (case Kind is
-         when Vio_Access_Constant
-         => "SPARK RM 4.1.4(6)",
-         when Vio_Access_Expression | Vio_Access_No_Root
-         => "SPARK RM 4.1.4(1)",
-         when Vio_Access_Function_With_Side_Effects
-         => "SPARK RM 4.1.4(4)",
-         when Vio_Access_Subprogram_Within_Protected
-         => "SPARK RM 4.1.4(2)",
-         when Vio_Access_Sub_Formal_With_Inv
-            | Vio_Access_Sub_Return_Type_With_Inv
-         => "SPARK RM 4.1.4(2)",
-         when Vio_Access_Sub_With_Globals
-         => "SPARK RM 4.1.4(7)",
-         when Vio_Access_To_Dispatch_Op
-         => "SPARK RM 4.1.4(2)",
-         when Vio_Access_Volatile_Function
-         => "SPARK RM 4.1.4(3)",
-         when Vio_Address_Outside_Address_Clause
-         => "SPARK RM 13.7(2)",
-         when Vio_Assert_And_Cut_Context
-         => "SPARK RM 5.9",
-         when Vio_Backward_Goto
-         => "SPARK RM 5.8(1)",
-         when Vio_Box_Notation_Without_Init
-         => "SPARK RM 4.3(1)",
-         when Vio_Controlled_Types
-         => "SPARK RM 7.6(1)",
-         when Vio_Default_With_Current_Instance
-         => "SPARK RM 3.8(1)",
-         when Vio_Derived_Untagged_With_Tagged_Full_View
-         => "SPARK RM 3.4(1)",
-         when Vio_Discriminant_Access
-         => "SPARK RM 3.7(2)",
-         when Vio_Discriminant_Derived
-         => "SPARK RM 3.7(2)",
-         when Vio_Dispatch_Plain_Pre
-         => "SPARK RM 6.1.1(2)",
-         when Vio_Dispatching_Untagged_Type
-         => "SPARK RM 3.9.2(1)",
-         when Vio_Exit_Cases_Exception
-         => "SPARK RM 6.1.11(3)",
-         when Vio_Exit_Cases_Normal_Only
-         => "SPARK RM 6.1.11(2)",
-         when Vio_Function_Global_Output | Vio_Function_Out_Param
-         => "SPARK RM 6.1(6)",
-         when Vio_Ghost_Concurrent_Comp
-         => "SPARK RM 6.9(22)",
-         when Vio_Ghost_Eq
-         => "SPARK RM 6.9(23)",
-         when Vio_Ghost_Volatile
-         => "SPARK RM 6.9(9)",
-         when Vio_Handler_Choice_Parameter
-         => "SPARK RM 11.2(1)",
-         when Vio_Invariant_Class | Vio_Invariant_Ext | Vio_Invariant_Partial
-         => "SPARK RM 7.3.2(2)",
-         when Vio_Invariant_Volatile
-         => "SPARK RM 7.3.2(4)",
-         when Vio_Iterable_Controlling_Result
-            | Vio_Iterable_Globals
-            | Vio_Iterable_Side_Effects
-            | Vio_Iterable_Volatile
-         => "SPARK RM 5.5.2(12)",
-         when Vio_Iterable_Full_View
-         => "SPARK RM 5.5.2(13)",
-         when Vio_Iterator_Specification
-         => "SPARK RM 5.5.2",
-         when Vio_Loop_Variant_Structural
-         => "SPARK RM 5.5.3 (8)",
-         when Vio_Overlay_Constant_Not_Imported
-         => "SPARK RM 13.7(5)",
-         when Vio_Overlay_Mutable_Constant
-         => "SPARK RM 13.7(4)",
-         when Vio_Overlay_Part_Of_Protected
-         => "SPARK RM 13.7(3)",
-         when Vio_Ownership_Access_Equality
-         => "SPARK RM 3.10(19)",
-         when Vio_Ownership_Allocator_Invalid_Context
-         => "SPARK RM 4.8(2)",
-         when Vio_Ownership_Allocator_Uninitialized
-         => "SPARK RM 4.8(1)",
-         when Vio_Ownership_Anonymous_Access_To_Named
-         => "SPARK RM 3.10(18)",
-         when Vio_Ownership_Anonymous_Object_Context
-            | Vio_Ownership_Anonymous_Object_Init
-         => "SPARK RM 3.10(5)",
-         when Vio_Ownership_Assign_To_Expr | Vio_Ownership_Assign_To_Constant
-         => "SPARK RM 3.10(3)",
-         when Vio_Ownership_Borrow_Of_Constant
-         => "SPARK RM 3.10(11)",
-         when Vio_Ownership_Borrow_Of_Non_Markable
-         => "SPARK RM 3.10(4)",
-         when Vio_Ownership_Deallocate_General
-         => "SPARK RM 3.10(20)",
-         when Vio_Ownership_Loop_Entry_Old_Copy
-            | Vio_Ownership_Loop_Entry_Old_Traversal
-         => "SPARK RM 3.10(13)",
-         when Vio_Ownership_Move_Not_Name
-            | Vio_Ownership_Move_Constant_Part
-            | Vio_Ownership_Move_Traversal_Call
-         => "SPARK RM 3.10(1)",
-         when Vio_Ownership_Reborrow
-         => "SPARK RM 3.10(8)",
-         when Vio_Ownership_Tagged_Extension
-         => "SPARK RM 3.10(14)",
-         when Vio_Ownership_Traversal_Extended_Return
-         => "SPARK RM 3.10(6)",
-         when Vio_Ownership_Volatile
-         => "SPARK RM 3.10(16)",
-         when Vio_Ownership_Anonymous_Result
-            | Vio_Ownership_Anonymous_Component
-            | Vio_Ownership_Anonymous_Part_Of
-            | Vio_Ownership_Move_In_Declare
-            | Vio_Ownership_Different_Branches
-            | Vio_Ownership_Duplicate_Aggregate_Value
-            | Vio_Ownership_Storage_Pool
-         => "SPARK RM 3.10", --  We don't have better, use the access section
-         when Vio_Potentially_Invalid_Dispatch
-         => "SPARK RM 13.9.1(9)",
-         when Vio_Potentially_Invalid_Invariant
-         => "SPARK RM 13.9.1(7)",
-         when Vio_Potentially_Invalid_Overlay
-         => "SPARK RM 13.9.1(8)",
-         when Vio_Potentially_Invalid_Part_Access
-            | Vio_Potentially_Invalid_Part_Concurrent
-            | Vio_Potentially_Invalid_Part_Tagged
-            | Vio_Potentially_Invalid_Part_Unchecked_Union
-         => "SPARK RM 13.9.1(5)",
-         when Vio_Potentially_Invalid_Scalar
-         => "SPARK RM 13.9.1(4)",
-         when Vio_Program_Exit_Outputs
-         => "SPARK RM 6.1.10(1)",
-         when Vio_Predicate_Volatile
-         => "SPARK RM 3.2.4(3)",
-         when Vio_Relaxed_Init_Dispatch
-         => "SPARK RM 6.10(10)",
-         when Vio_Relaxed_Init_Initialized_Prefix
-         => "SPARK RM 6.10(4)",
-         when Vio_Relaxed_Init_Part_Of_Tagged
-         => "SPARK RM 6.10(6)",
-         when Vio_Relaxed_Init_Part_Of_Unchecked_Union
-         => "SPARK RM 6.10(8)",
-         when Vio_Relaxed_Init_Part_Of_Volatile
-         => "SPARK RM 6.10(7)",
-         when Vio_Side_Effects_Call_Context
-         => "SPARK RM 6.1.13(4)",
-         when Vio_Side_Effects_Eq
-         => "SPARK RM 6.1.13(8)",
-         when Vio_Side_Effects_Traversal
-         => "SPARK RM 6.1.13(7)",
-         when Vio_Subp_Variant_Structural
-         => "SPARK RM 6.1.8(5)",
-         when Vio_Tagged_Extension_Local
-         => "SPARK RM 3.9.1(1)",
-         when Vio_Target_Name_In_Call_With_Side_Effets
-         => "SPARK RM 6.4.2(7)",
-         when Vio_Tasking_Synchronized_Comp
-         => "SPARK RM 9(5)",
-         when Vio_Tasking_Unintialized_Concurrent
-         => "SPARK RM 9(4)",
-         when Vio_UC_From_Access
-         => "SPARK RM 13.9(1)",
-         when Vio_UC_To_Access
-            | Vio_UC_To_Access_Components
-            | Vio_UC_To_Access_From
-         => "SPARK RM 13.9(2)",
-         when Vio_Volatile_At_Library_Level
-         => "SPARK RM 7.1.3(3)",
-         when Vio_Volatile_Discriminant | Vio_Volatile_Loop_Param
-         => "SPARK RM 7.1.3(4)",
-         when Vio_Volatile_Discriminated_Type
-         => "SPARK RM 7.1.3(5)",
-         when Vio_Volatile_Eq
-         => "SPARK RM 7.1.3(10)",
-         when Vio_Volatile_Global
-         => "SPARK RM 7.1.3(7)",
-         when Vio_Volatile_In_Interferring_Context
-         => "SPARK RM 7.1.3(9)",
-         when Vio_Volatile_Incompatible_Comp
-         => "SPARK RM 7.1.3(6)",
-         when Vio_Volatile_Incompatible_Type
-         => "SPARK RM 7.1.3(2)",
-         when Vio_Volatile_Result | Vio_Volatile_Parameter
-         => "SPARK RM 7.1.3(8)",
-         when others
-         => "");
 
 end SPARK_Definition.Violations;

@@ -1,7 +1,7 @@
 test_hide_annot.adb:12:04: error: a pragma Annotate Hide_Info for expression function bodies shall have 4 parameters
-test_hide_annot.adb:16:43: error: third argument of pragma Annotate Hide_Info must be a string
-test_hide_annot.adb:20:43: error: unexpected third parameter for pragma Annotate Hide_Info
-test_hide_annot.adb:24:71: error: fourth argument of pragma Annotate Hide_Info must be an entity
+test_hide_annot.adb:16:43: error: third argument of "pragma Annotate (GNATprove, Hide_Info[, ...])" must be a string
+test_hide_annot.adb:20:43: error: unexpected third argument for "pragma Annotate (GNATprove, Hide_Info[, ...])"
+test_hide_annot.adb:24:71: error: last argument of "pragma Annotate (GNATprove, Hide_Info[, ...])" must be an entity
 test_hide_annot.adb:31:74: error: the entity of a pragma Annotate Hide_Info for expression function bodies shall be an expression function
 test_hide_annot.adb:42:74: error: an expression function annotated with Annotate Hide_Info shall be in SPARK
 test_hide_annot.adb:54:74: error: the body of an expression function annotated with Annotate Hide_Info shall be compatible with SPARK
@@ -17,6 +17,6 @@ test_hide_annot.adb:142:13: error: a subprogram annotated with Annotate Hide_Inf
 test_hide_annot.adb:150:07: error: there shall be at most one Hide_Info or Unhide_Info annotation for "Id" in "Duplicated_Annot"
 test_hide_annot.adb:159:07: error: pragma Annotate Hide_Info must appear at the beginning of a subprogram, entry, or package body, or just after a subprogram, entry, or package body or declaration
 test_hide_annot.adb:194:07: error: Unhide_Info annotation is redundant, "Id" is visible by default
-test_hide_annot.adb:195:07: error: Hide_Info annotation is redundant, "Hidden_Id" is hidden by default
+test_hide_annot.adb:195:74: error: an expression function annotated with Annotate Hide_Info shall be in SPARK
 test_hide_annot.adb:219:07: error: the body of "Deferred_Id" is not visible at the current location
 gnatprove: error during flow analysis and proof

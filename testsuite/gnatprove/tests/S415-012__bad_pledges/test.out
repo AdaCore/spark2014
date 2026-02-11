@@ -8,5 +8,5 @@ bad_pledges.adb:20:13: error: At_End_Borrow function should not have a contract
 bad_pledges.adb:24:14: error: equality on access types is not allowed in SPARK (SPARK RM 3.10(19))
 bad_pledges.adb:24:14: error: violation of aspect SPARK_Mode at line 1
 bad_pledges.adb:26:13: error: At_End_Borrow function should not have a contract
-bad_pledges.adb:31:47: error: third argument of pragma Annotate At_End_Borrow must be an entity
+bad_pledges.adb:31:47: error: last argument of "pragma Annotate (GNATprove, At_End_Borrow[, ...])" must be an entity
 gnatprove: error during flow analysis and proof

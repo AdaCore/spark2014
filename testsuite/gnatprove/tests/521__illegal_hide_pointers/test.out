@@ -1,15 +1,15 @@
-illegal_hidden_ownership.ads:34:12: error: consider annotating it with a pragma Annotate (GNATprove, Ownership, "Needs_Reclamation", ...)
-illegal_hidden_ownership.ads:34:12: error: if the full view of a type is hidden using a "Hide_Info" annotation, it shall not be subject to onwership unless its partial view has an explicit "Ownership" annotation
-illegal_hidden_ownership.ads:40:12: error: consider annotating it with a pragma Annotate (GNATprove, Ownership, ...)
-illegal_hidden_ownership.ads:40:12: error: if the full view of a type is hidden using a "Hide_Info" annotation, it shall not be subject to onwership unless its partial view has an explicit "Ownership" annotation
-illegal_hidden_ownership.ads:46:12: error: consider annotating it with a pragma Annotate (GNATprove, Ownership, "Needs_Reclamation", ...)
-illegal_hidden_ownership.ads:46:12: error: if the full view of a type is hidden using a "Hide_Info" annotation, it shall not be subject to onwership unless its partial view has an explicit "Ownership" annotation
-illegal_hidden_ownership.ads:49:12: error: consider annotating it with a pragma Annotate (GNATprove, Ownership, ...)
-illegal_hidden_ownership.ads:49:12: error: if the full view of a type is hidden using a "Hide_Info" annotation, it shall not be subject to onwership unless its partial view has an explicit "Ownership" annotation
-illegal_hidden_ownership.ads:52:12: error: consider annotating it with a pragma Annotate (GNATprove, Ownership, ...)
-illegal_hidden_ownership.ads:52:12: error: if the full view of a type is hidden using a "Hide_Info" annotation, it shall not be subject to onwership unless its partial view has an explicit "Ownership" annotation
-illegal_hidden_ownership.ads:54:12: error: consider annotating it with a pragma Annotate (GNATprove, Ownership, "Needs_Reclamation", ...)
-illegal_hidden_ownership.ads:54:12: error: if the full view of a type is hidden using a "Hide_Info" annotation, it shall not be subject to onwership unless its partial view has an explicit "Ownership" annotation
+illegal_hidden_ownership.ads:34:12: error: consider annotating it with a "pragma Annotate (GNATprove, Ownership, "Needs_Reclamation"[, ...])"
+illegal_hidden_ownership.ads:34:12: error: if the full view of a type is hidden using a "Hide_Info" annotation, it shall not be subject to onwership unless its partial view has an explicit "Hide_Info" annotation
+illegal_hidden_ownership.ads:40:12: error: consider annotating it with a "pragma Annotate (GNATprove, Ownership[, ...])"
+illegal_hidden_ownership.ads:40:12: error: if the full view of a type is hidden using a "Hide_Info" annotation, it shall not be subject to onwership unless its partial view has an explicit "Hide_Info" annotation
+illegal_hidden_ownership.ads:46:12: error: consider annotating it with a "pragma Annotate (GNATprove, Ownership, "Needs_Reclamation"[, ...])"
+illegal_hidden_ownership.ads:46:12: error: if the full view of a type is hidden using a "Hide_Info" annotation, it shall not be subject to onwership unless its partial view has an explicit "Hide_Info" annotation
+illegal_hidden_ownership.ads:49:12: error: consider annotating it with a "pragma Annotate (GNATprove, Ownership[, ...])"
+illegal_hidden_ownership.ads:49:12: error: if the full view of a type is hidden using a "Hide_Info" annotation, it shall not be subject to onwership unless its partial view has an explicit "Hide_Info" annotation
+illegal_hidden_ownership.ads:52:12: error: consider annotating it with a "pragma Annotate (GNATprove, Ownership[, ...])"
+illegal_hidden_ownership.ads:52:12: error: if the full view of a type is hidden using a "Hide_Info" annotation, it shall not be subject to onwership unless its partial view has an explicit "Hide_Info" annotation
+illegal_hidden_ownership.ads:54:12: error: consider annotating it with a "pragma Annotate (GNATprove, Ownership, "Needs_Reclamation"[, ...])"
+illegal_hidden_ownership.ads:54:12: error: if the full view of a type is hidden using a "Hide_Info" annotation, it shall not be subject to onwership unless its partial view has an explicit "Hide_Info" annotation
 illegal_hidden_ownership.ads:97:12: error: full view of type annotated with an Ownership annotation shall be subject to ownership
 illegal_hidden_ownership.ads:101:12: error: full view of type annotated with an Ownership annotation shall be subject to ownership
 illegal_hidden_ownership.ads:118:12: warning: checks for ressource or memory reclamation will be unprovable
@@ -24,13 +24,13 @@ illegal_hidden_ownership.ads:150:12: error: full view of type annotated with an 
 illegal_hidden_ownership.ads:154:12: error: full view of type annotated with "Needs_Reclamation" shall need reclamation
 illegal_hidden_ownership.ads:158:12: error: full view of type annotated with an Ownership annotation shall have a matching annotation
 illegal_hidden_ownership.ads:160:12: error: full view of type annotated with an Ownership annotation shall have a matching annotation
-illegal_hidden_predefined_eq.ads:27:12: error: consider annotating it with a pragma Annotate (GNATprove, Predefined_Equality, Only_Null, ...)
+illegal_hidden_predefined_eq.ads:27:12: error: consider annotating it with a "pragma Annotate (GNATprove,  Predefined_Equality, "Only_Null"[, ...])"
 illegal_hidden_predefined_eq.ads:27:12: error: if the full view of a type is hidden using a "Hide_Info" annotation, its predefined equality shall not be restricted unless its partial view has an explicit "Predefined_Equality" annotation
-illegal_hidden_predefined_eq.ads:29:12: error: consider annotating it with a pragma Annotate (GNATprove, Predefined_Equality, No_Equality, ...)
+illegal_hidden_predefined_eq.ads:29:12: error: consider annotating it with a "pragma Annotate (GNATprove,  Predefined_Equality, "No_Equality"[, ...])"
 illegal_hidden_predefined_eq.ads:29:12: error: if the full view of a type is hidden using a "Hide_Info" annotation, its predefined equality shall not be restricted unless its partial view has an explicit "Predefined_Equality" annotation
-illegal_hidden_predefined_eq.ads:31:12: error: consider annotating it with a pragma Annotate (GNATprove, Predefined_Equality, No_Equality, ...)
+illegal_hidden_predefined_eq.ads:31:12: error: consider annotating it with a "pragma Annotate (GNATprove,  Predefined_Equality, "No_Equality"[, ...])"
 illegal_hidden_predefined_eq.ads:31:12: error: if the full view of a type is hidden using a "Hide_Info" annotation, its predefined equality shall not be restricted unless its partial view has an explicit "Predefined_Equality" annotation
-illegal_hidden_predefined_eq.ads:33:12: error: consider annotating it with a pragma Annotate (GNATprove, Predefined_Equality, Only_Null, ...)
+illegal_hidden_predefined_eq.ads:33:12: error: consider annotating it with a "pragma Annotate (GNATprove,  Predefined_Equality, "Only_Null"[, ...])"
 illegal_hidden_predefined_eq.ads:33:12: error: if the full view of a type is hidden using a "Hide_Info" annotation, its predefined equality shall not be restricted unless its partial view has an explicit "Predefined_Equality" annotation
 illegal_hidden_predefined_eq.ads:68:12: error: full view of type annotated with a Predefined_Equality "Only_Null" annotation shall be an access type
 illegal_hidden_predefined_eq.ads:70:07: error: the value of "C_Float" shall be a null value

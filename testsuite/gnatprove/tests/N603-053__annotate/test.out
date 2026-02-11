@@ -1,6 +1,7 @@
 warn_not_suppr.ads:5:30: medium: "X" might not be initialized in "P" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize "X" on all paths or make "X" an IN OUT parameter]
-syntax.adb:12:07: error: wrong number of arguments in pragma Annotate (GNATprove, Intentional, ...), expected 4
-syntax.adb:13:35: error: invalid name "Bla" in pragma Annotate (GNATprove, name)
+syntax.adb:12:07: error: expected 4 arguments
+syntax.adb:12:07: error: wrong number of arguments in "pragma Annotate (GNATprove, Intentional[, ...])"
+syntax.adb:13:35: error: invalid name "Bla" in "pragma Annotate (GNATprove, ...)"
 syntax.adb:14:07: error: third argument "Pattern" for GNATprove Annotate pragma must be a string literal
 syntax.adb:15:07: error: fourth argument "Reason" for GNATprove Annotate pragma must be a string literal
 gnatprove: error during flow analysis and proof
