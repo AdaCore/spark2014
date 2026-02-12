@@ -1,7 +1,7 @@
 len_problem.adb:6:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 len_problem.adb:8:04: info: range check proved (CVC5: 2 VC)
 len_problem.adb:8:61: info: length check proved (CVC5: 3 VC)
-len_problem.adb:12:19: high: assertion might fail (e.g. when S = "                              " and S'First = 65535) [provers reached step limit before completing the proof]
+len_problem.adb:12:19: high: assertion might fail (e.g. when S = "                               ..." and S'First = 65535 and S'Last = 65791) [provers reached step limit before completing the proof]
 len_problem.adb:12:20: info: range check proved (CVC5: 1 VC)
 len_problem_2.adb:6:14: warning: subprogram "P" has no effect
 len_problem_2.adb:6:42: info: range check proved (CVC5: 1 VC)
