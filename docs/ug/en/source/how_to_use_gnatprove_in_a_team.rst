@@ -946,6 +946,15 @@ only part of a program:
   stated in a Depends contract. This is similar to the [ADA_OBJECT_ADDRESSES]
   rule for pointers hidden inside private types.
 
+* [ADA_AT_END_BORROW]
+  If an ``At_End_Borrow`` annotation is used on a function whose
+  implementation is not analyzed, yet called from SPARK code, the
+  implementation of this function should return an object that is logically
+  equal to its input parameter. See
+  :ref:`Annotation for Accessing the Logical Equality for a Type` for
+  information about the logical equality. Note
+  that this assumption does not apply to functions without any implementation.
+
 In addition, the following assumptions need to be addressed when calling
 GNATprove on only part of a SPARK program at a time (either on an individual
 unit or on a group of units), while providing only the specs of those units
