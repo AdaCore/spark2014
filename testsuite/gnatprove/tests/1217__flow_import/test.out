@@ -1,0 +1,4 @@
+strange_flow.adb:10:29: high: "memory accessed through objects of access type" must be listed in the Global aspect of "Strange_Flow" (SPARK RM 6.1.4(15))
+strange_flow.adb:10:29: warning: assuming "B" has no effect on global items
+strange_flow.adb:10:29: warning: no Global contract available for "B" [assumed-global-null]
+strange_flow.adb:12:09: info: pointer dereference check proved (CVC5: 1 VC)
