@@ -189,6 +189,7 @@ package Gnat2Why.Expr is
       W_Brower      : W_Term_Id;
       Expr          : N_Subexpr_Id;
       Borrowed_Expr : Opt_N_Subexpr_Id := Empty;
+      Params        : Transformation_Params;
       Reconstructed : out W_Term_Id;
       Checks        : out W_Statement_Sequence_Id);
    --  Expr should be a path. Reconstruct Borrowed_Expr, or the root of Expr
