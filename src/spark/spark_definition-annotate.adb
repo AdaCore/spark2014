@@ -2162,6 +2162,7 @@ package body SPARK_Definition.Annotate is
          --  Allow E to not have a body, or to have a body that is not in SPARK
 
          elsif not Entity_Body_In_SPARK (E) then
+            Ok := True;
             return;
 
          elsif not Is_Expression_Function_Or_Completion (E) then
