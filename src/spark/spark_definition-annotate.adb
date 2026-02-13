@@ -2158,6 +2158,12 @@ package body SPARK_Definition.Annotate is
          then
             Error_Msg_N_If
               ("At_End_Borrow function should not have a contract", E);
+
+         --  Allow E to not have a body, or to have a body that is not in SPARK
+
+         elsif not Entity_Body_In_SPARK (E) then
+            return;
+
          elsif not Is_Expression_Function_Or_Completion (E) then
             Error_Msg_N_If
               ("At_End_Borrow function must be an expression function", E);
