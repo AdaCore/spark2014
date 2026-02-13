@@ -8967,7 +8967,8 @@ package body Gnat2Why.Subprograms is
                W_Brower      => +Get_Brower_At_End (E),
                Expr          => Expr,
                Reconstructed => Def,
-               Checks        => Dummy);
+               Checks        => Dummy,
+               Params        => Logic_Params);
             Emit
               (Expr_Fun_Axiom_Th,
                New_Guarded_Axiom

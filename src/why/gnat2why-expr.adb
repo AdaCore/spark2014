@@ -3972,6 +3972,7 @@ package body Gnat2Why.Expr is
       W_Brower      : W_Term_Id;
       Expr          : N_Subexpr_Id;
       Borrowed_Expr : Opt_N_Subexpr_Id := Empty;
+      Params        : Transformation_Params;
       Reconstructed : out W_Term_Id;
       Checks        : out W_Statement_Sequence_Id)
    is
@@ -4026,7 +4027,7 @@ package body Gnat2Why.Expr is
                     Context   => Context,
                     Store     => Store,
                     Exc_Store => Exc_Store,
-                    Params    => Body_Params);
+                    Params    => Params);
                pragma Assert (Context.Is_Empty);
 
             begin
@@ -12752,6 +12753,7 @@ package body Gnat2Why.Expr is
            (if Ekind (Brower) = E_Function
             then Empty
             else Get_Borrowed_Expr (Brower)),
+         Params        => Body_Params,
          Reconstructed => At_End_Value,
          Checks        => Pred_Checks);
 
