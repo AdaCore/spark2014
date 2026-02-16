@@ -1,25 +1,38 @@
-test_illegal_add.adb:26:12: error: "Insert" procedure shall always terminate
+test_illegal_add.adb:14:17: error: subprogram with side effects associated with aspect Aggregate is not allowed in SPARK
+test_illegal_add.adb:14:17: error: the procedure might not terminate
+test_illegal_add.adb:14:17: error: violation of aspect SPARK_Mode at line 2
 test_illegal_add.adb:26:12: warning: no "Length" function found for type with predefined set aggregates "T" [set-length-aggregates]
 test_illegal_add.adb:26:12: warning: the cardinality of aggregates will be unknown
-test_illegal_add.adb:61:12: error: "Insert" procedure shall not propagate exceptions
+test_illegal_add.adb:47:17: error: subprogram with side effects associated with aspect Aggregate is not allowed in SPARK
+test_illegal_add.adb:47:17: error: the procedure might propagate exceptions
+test_illegal_add.adb:47:17: error: violation of aspect SPARK_Mode at line 2
 test_illegal_add.adb:61:12: warning: no "Length" function found for type with predefined set aggregates "T" [set-length-aggregates]
 test_illegal_add.adb:61:12: warning: the cardinality of aggregates will be unknown
-test_illegal_add.adb:97:12: error: "Insert" procedure shall not access global data
+test_illegal_add.adb:84:17: error: subprogram associated to aspect Aggregate with dependency on globals is not allowed in SPARK
+test_illegal_add.adb:84:17: error: violation of aspect SPARK_Mode at line 2
 test_illegal_add.adb:97:12: warning: no "Length" function found for type with predefined set aggregates "T" [set-length-aggregates]
 test_illegal_add.adb:97:12: warning: the cardinality of aggregates will be unknown
-test_illegal_add.adb:133:12: error: "Insert" procedure shall not have global effects
+test_illegal_add.adb:120:17: error: subprogram with side effects associated with aspect Aggregate is not allowed in SPARK
+test_illegal_add.adb:120:17: error: the procedure has global outputs
+test_illegal_add.adb:120:17: error: violation of aspect SPARK_Mode at line 2
 test_illegal_add.adb:133:12: warning: no "Length" function found for type with predefined set aggregates "T" [set-length-aggregates]
 test_illegal_add.adb:133:12: warning: the cardinality of aggregates will be unknown
-test_illegal_add.adb:168:12: error: "Insert" procedure shall not exit the program
+test_illegal_add.adb:154:17: error: subprogram with side effects associated with aspect Aggregate is not allowed in SPARK
+test_illegal_add.adb:154:17: error: the procedure might abruptly exit the whole program
+test_illegal_add.adb:154:17: error: violation of aspect SPARK_Mode at line 2
 test_illegal_add.adb:168:12: warning: no "Length" function found for type with predefined set aggregates "T" [set-length-aggregates]
 test_illegal_add.adb:168:12: warning: the cardinality of aggregates will be unknown
 test_illegal_aggregates.adb:6:07: info: no contextual analysis of "P1" (nested package declaration)
 test_illegal_aggregates.adb:29:21: error: container aggregate whose type does not have the "Container_Aggregate" annotation is not allowed in SPARK
 test_illegal_aggregates.adb:29:21: error: violation of aspect SPARK_Mode at line 1
 test_illegal_aggregates.adb:37:07: info: no contextual analysis of "P2" (nested package declaration)
+test_illegal_aggregates.adb:40:12: error: "Empty" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
+test_illegal_aggregates.adb:40:12: error: violation of aspect SPARK_Mode at line 1
 test_illegal_aggregates.adb:77:21: error: "Empty" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
 test_illegal_aggregates.adb:77:21: error: violation of aspect SPARK_Mode at line 1
 test_illegal_aggregates.adb:85:07: info: no contextual analysis of "P3" (nested package declaration)
+test_illegal_aggregates.adb:88:12: error: "Insert" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
+test_illegal_aggregates.adb:88:12: error: violation of aspect SPARK_Mode at line 1
 test_illegal_aggregates.adb:126:21: error: "Insert" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
 test_illegal_aggregates.adb:126:21: error: violation of aspect SPARK_Mode at line 1
 test_illegal_aggregates.adb:136:07: info: no contextual analysis of "P4" (nested package declaration)
@@ -98,13 +111,16 @@ test_illegal_default_item.adb:264:16: error: a function with the "Container_Aggr
 test_illegal_default_item.adb:282:12: error: no "Has_Key" nor "Default_Item" function found for type with predefined map aggregates "T"
 test_illegal_default_item.adb:332:12: error: no "Has_Key" nor "Default_Item" function found for type with predefined map aggregates "T"
 test_illegal_default_item.adb:363:16: error: a subprogram with the "Container_Aggregates" annotation shall not access global data
-test_illegal_empty.adb:30:12: error: "Empty" function shall not have side effects
+test_illegal_empty.adb:13:16: error: subprogram with side effects associated with aspect Aggregate is not allowed in SPARK
+test_illegal_empty.adb:13:16: error: violation of aspect SPARK_Mode at line 2
 test_illegal_empty.adb:30:12: warning: no "Length" function found for type with predefined set aggregates "T" [set-length-aggregates]
 test_illegal_empty.adb:30:12: warning: the cardinality of aggregates will be unknown
-test_illegal_empty.adb:61:12: error: "Empty" function shall not be volatile
+test_illegal_empty.adb:47:16: error: violation of aspect SPARK_Mode at line 2
+test_illegal_empty.adb:47:16: error: volatile function associated with aspect Aggregate is not allowed in SPARK
 test_illegal_empty.adb:61:12: warning: no "Length" function found for type with predefined set aggregates "T" [set-length-aggregates]
 test_illegal_empty.adb:61:12: warning: the cardinality of aggregates will be unknown
-test_illegal_empty.adb:97:12: error: "Empty" function shall not access global data
+test_illegal_empty.adb:83:16: error: subprogram associated to aspect Aggregate with dependency on globals is not allowed in SPARK
+test_illegal_empty.adb:83:16: error: violation of aspect SPARK_Mode at line 2
 test_illegal_empty.adb:97:12: warning: no "Length" function found for type with predefined set aggregates "T" [set-length-aggregates]
 test_illegal_empty.adb:97:12: warning: the cardinality of aggregates will be unknown
 test_illegal_eq_elements.adb:30:16: error: expected 2 parameters
@@ -224,6 +240,8 @@ test_illegal_has_key.adb:287:16: error: "Has_Key" at line 282 has the same conta
 test_illegal_has_key.adb:287:16: error: duplicated entity with the "(GNATprove, Container_Aggregates, "Has_Key"[, ...])" annotation in the same scope
 test_illegal_has_key.adb:309:12: warning: no "Length" function found for type with predefined map aggregates "T" [map-length-aggregates]
 test_illegal_has_key.adb:309:12: warning: the cardinality of aggregates will be unknown
+test_illegal_has_key.adb:330:09: error: "Insert" is not allowed in SPARK (due to incorrect use of "Container_Aggregates" annotation)
+test_illegal_has_key.adb:330:09: error: violation of aspect SPARK_Mode at line 1
 test_illegal_has_key.adb:337:20: error: "Has_Key" is not allowed in SPARK (due to incorrect use of "Container_Aggregates" annotation)
 test_illegal_has_key.adb:337:20: error: violation of aspect SPARK_Mode at line 1
 test_illegal_has_key.adb:342:19: error: "Has_Key" shall be declared in the same list of declarations as the partial view of "T"
@@ -243,6 +261,8 @@ test_illegal_has_key.adb:527:12: error: no "Has_Key" nor "Default_Item" function
 test_illegal_has_key.adb:558:16: error: "Has_Key" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
 test_illegal_has_key.adb:558:16: error: functions for type "T" with the "Container_Aggregates" annotation are required to be in SPARK
 test_illegal_has_key.adb:581:12: error: no "Has_Key" nor "Default_Item" function found for type with predefined map aggregates "T"
+test_illegal_has_key.adb:602:09: error: "Insert" is not allowed in SPARK (due to incorrect use of "Container_Aggregates" annotation)
+test_illegal_has_key.adb:602:09: error: violation of aspect SPARK_Mode at line 1
 test_illegal_has_key.adb:609:20: error: "Has_Key" is not allowed in SPARK (due to incorrect use of "Container_Aggregates" annotation)
 test_illegal_has_key.adb:609:20: error: violation of aspect SPARK_Mode at line 1
 test_illegal_has_key.adb:615:16: error: a subprogram with the "Container_Aggregates" annotation shall not access global data

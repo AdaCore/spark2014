@@ -782,6 +782,22 @@ package body SPARK_Util.Types is
         and then not Ancestor_Declares_Iterable_Aspect (E, Top_Aspect);
    end Declares_Iterable_Aspect;
 
+   ---------------------------
+   -- Find_Aggregate_Aspect --
+   ---------------------------
+
+   function Find_Aggregate_Aspect (Typ : Type_Kind_Id) return Node_Id is
+      Typ_With_Aspect : constant Type_Kind_Id :=
+        (if Is_Scalar_Type (Typ) and then Present (First_Subtype (Typ))
+         then First_Subtype (Typ)
+         else Typ);
+      --  If Typ is a scalar base type, it might not have the
+      --  aggregate aspect. Look for it on the first subtype
+      --  instead.
+   begin
+      return Find_Value_Of_Aspect (Typ_With_Aspect, Aspect_Aggregate);
+   end Find_Aggregate_Aspect;
+
    -------------------------
    -- Find_Predicate_Item --
    -------------------------

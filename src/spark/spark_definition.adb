@@ -54,6 +54,7 @@ with Rtsfind;                        use Rtsfind;
 with Sem_Aggr;
 with Sem_Aux;                        use Sem_Aux;
 with Sem_Ch12;
+with Sem_Ch13;
 with Sem_Eval;                       use Sem_Eval;
 with Sem_Prag;                       use Sem_Prag;
 with Sinfo.Utils;                    use Sinfo.Utils;
@@ -667,7 +668,16 @@ package body SPARK_Definition is
 
    procedure Mark_Iterable_Aspect
      (Iterable_Aspect : N_Aspect_Specification_Id);
-   --  Mark functions mentioned in the Iterable aspect of a type
+   --  Mark functions mentioned in the Iterable aspect of a type. This is
+   --  expected to be called as a deferred aspect. It sets the
+   --  Current_Delayed_Aspect_Type before marking.
+
+   procedure Mark_Aggregate_Aspect
+     (Aggregate_Aspect : N_Aspect_Specification_Id);
+   --  Make sure that the Empty function and the Add procedure used to
+   --  create the aggregate are well behaved (they do not access global data
+   --  and do not have side effects). This is expected to be called as a
+   --  deferred aspect. It sets the Current_Delayed_Aspect_Type before marking.
 
    procedure Mark_List (L : List_Id);
    --  Call Mark on all nodes in list L
@@ -5190,6 +5200,117 @@ package body SPARK_Definition is
       end;
    end Mark_Address;
 
+   ---------------------------
+   -- Mark_Aggregate_Aspect --
+   ---------------------------
+
+   procedure Mark_Aggregate_Aspect
+     (Aggregate_Aspect : N_Aspect_Specification_Id)
+   is
+      Empty_Subp          : Node_Id := Empty;
+      Add_Named_Subp      : Node_Id := Empty;
+      Add_Unnamed_Subp    : Node_Id := Empty;
+      New_Indexed_Subp    : Node_Id := Empty;
+      Assign_Indexed_Subp : Node_Id := Empty;
+
+      Empty_Function : Entity_Id;
+      Add_Procedure  : Entity_Id;
+      Globals        : Global_Flow_Ids;
+
+   begin
+      Sem_Ch13.Parse_Aspect_Aggregate
+        (N                   => Expression (Aggregate_Aspect),
+         Empty_Subp          => Empty_Subp,
+         Add_Named_Subp      => Add_Named_Subp,
+         Add_Unnamed_Subp    => Add_Unnamed_Subp,
+         New_Indexed_Subp    => New_Indexed_Subp,
+         Assign_Indexed_Subp => Assign_Indexed_Subp);
+
+      Empty_Function := Ultimate_Alias (Entity (Empty_Subp));
+      if Present (Add_Unnamed_Subp) then
+         Add_Procedure := Ultimate_Alias (Entity (Add_Unnamed_Subp));
+      elsif Present (Add_Named_Subp) then
+         Add_Procedure := Ultimate_Alias (Entity (Add_Named_Subp));
+      else
+         Add_Procedure := Empty;
+      end if;
+
+      --  The container type is the type of the empty function
+
+      Current_Delayed_Aspect_Type := Etype (Empty_Function);
+
+      --  Only mark Aggregate aspect if the type has a Container_Aggregates
+      --  annotation. Otherwise, aggregates cannot be used in SPARK.
+
+      if not In_SPARK (Current_Delayed_Aspect_Type)
+        or else not Has_Aggregate_Annotation (Current_Delayed_Aspect_Type)
+      then
+         return;
+      end if;
+
+      if not In_SPARK (Empty_Function) then
+         Mark_Violation (Aggregate_Aspect, From => Empty_Function);
+         return;
+      end if;
+
+      Get_Globals
+        (Subprogram          => Empty_Function,
+         Scope               => (Ent => Empty_Function, Part => Visible_Part),
+         Classwide           => False,
+         Globals             => Globals,
+         Use_Deduced_Globals => not Gnat2Why_Args.Global_Gen_Mode,
+         Ignore_Depends      => False);
+
+      if Is_Function_With_Side_Effects (Empty_Function) then
+         Mark_Violation (Vio_Aggregate_Side_Effects, Empty_Function);
+      elsif not Globals.Proof_Ins.Is_Empty or else not Globals.Inputs.Is_Empty
+      then
+         Mark_Violation (Vio_Aggregate_Globals, Empty_Function);
+      elsif Is_Volatile_Function (Empty_Function) then
+         Mark_Violation (Vio_Aggregate_Volatile, Empty_Function);
+      end if;
+
+      if No (Add_Procedure) then
+         return;
+      elsif not In_SPARK (Add_Procedure) then
+         Mark_Violation (Aggregate_Aspect, From => Add_Procedure);
+         return;
+      end if;
+
+      Get_Globals
+        (Subprogram          => Add_Procedure,
+         Scope               => (Ent => Add_Procedure, Part => Visible_Part),
+         Classwide           => False,
+         Globals             => Globals,
+         Use_Deduced_Globals => not Gnat2Why_Args.Global_Gen_Mode,
+         Ignore_Depends      => False);
+
+      if not Globals.Outputs.Is_Empty then
+         Mark_Violation
+           (Vio_Aggregate_Side_Effects,
+            Add_Procedure,
+            Cont_Msg => "the procedure has global outputs");
+      elsif not Globals.Proof_Ins.Is_Empty or else not Globals.Inputs.Is_Empty
+      then
+         Mark_Violation (Vio_Aggregate_Globals, Add_Procedure);
+      elsif Get_Termination_Condition (Add_Procedure) /= (Static, True) then
+         Mark_Violation
+           (Vio_Aggregate_Side_Effects,
+            Add_Procedure,
+            Cont_Msg => "the procedure might not terminate");
+      elsif Has_Exceptional_Contract (Add_Procedure) then
+         Mark_Violation
+           (Vio_Aggregate_Side_Effects,
+            Add_Procedure,
+            Cont_Msg => "the procedure might propagate exceptions");
+      elsif Has_Program_Exit (Add_Procedure) then
+         Mark_Violation
+           (Vio_Aggregate_Side_Effects,
+            Add_Procedure,
+            Cont_Msg => "the procedure might abruptly exit the whole program");
+      end if;
+   end Mark_Aggregate_Aspect;
+
    --------------------------
    -- Mark_Array_Aggregate --
    --------------------------
@@ -7020,7 +7141,17 @@ package body SPARK_Definition is
       --  aspects)
 
       if Present (Extra_Pragmas) then
-         Mark_Stmt_Or_Decl_List (Extra_Pragmas);
+         declare
+            Save_SPARK_Pragma : constant Opt_N_Pragma_Id :=
+              Current_SPARK_Pragma;
+
+         begin
+            Current_SPARK_Pragma :=
+              SPARK_Pragma_Of_Entity (Defining_Entity (N));
+            Mark_Stmt_Or_Decl_List (Extra_Pragmas);
+            Current_SPARK_Pragma := Save_SPARK_Pragma;
+            Violation_Detected := False;
+         end;
       end if;
 
       --  Mark entities from the marking queue, delayed type aspects, full
@@ -7083,28 +7214,28 @@ package body SPARK_Definition is
                   Mark_Delayed_Aspect := False;
                end if;
 
+               --  Delayed aspect might be either aspects directly or a
+               --  subprogram introduced by the frontend for checks.
+
                if Mark_Delayed_Aspect then
                   if Nkind (N) in N_Aspect_Specification then
                      declare
-                        Iterable_Aspect : constant N_Aspect_Specification_Id :=
+                        Delayed_Aspect : constant N_Aspect_Specification_Id :=
                           N;
                      begin
                         --  Delayed type aspects can't be processed recursively
                         pragma Assert (No (Current_Delayed_Aspect_Type));
 
-                        --  The container type can be found in the type of
-                        --  first parameter, regardless of which primitive
-                        --  come first.
-                        Current_Delayed_Aspect_Type :=
-                          Etype
-                            (First_Formal
-                               (Entity
-                                  (Expression
-                                     (First
-                                        (Component_Associations
-                                           (Expression (Iterable_Aspect)))))));
+                        case Get_Aspect_Id (Delayed_Aspect) is
+                           when Aspect_Iterable  =>
+                              Mark_Iterable_Aspect (Delayed_Aspect);
 
-                        Mark_Iterable_Aspect (Iterable_Aspect);
+                           when Aspect_Aggregate =>
+                              Mark_Aggregate_Aspect (Delayed_Aspect);
+
+                           when others           =>
+                              raise Program_Error;
+                        end case;
 
                         --  Error messages have been emitted for the violations
                         --  so the flag can be reset.
@@ -10544,19 +10675,50 @@ package body SPARK_Definition is
             end if;
          end;
 
-         --  If the type declares an Iterable aspect,
-         --  stores the aspect in the Delayed_Type_Aspects map.
+         --  If the type declares an Iterable or an Aggregate aspect, store the
+         --  aspect in the Delayed_Type_Aspects map.
 
-         if not Violation_Detected and then Declares_Iterable_Aspect (E) then
+         if not Violation_Detected then
             declare
-               Iterable_Aspect : constant Node_Id :=
+               Aggregate_Aspect : constant Node_Id :=
+                 Find_Aggregate_Aspect (E);
+               Iterable_Aspect  : constant Node_Id :=
                  Find_Aspect (E, Aspect_Iterable);
-               Delayed_Mapping : constant Node_Id :=
+               Delayed_Mapping  : constant Node_Id :=
                  (if Present (Current_SPARK_Pragma)
                   then Current_SPARK_Pragma
                   else E);
+
             begin
-               Delayed_Type_Aspects.Include (Iterable_Aspect, Delayed_Mapping);
+               if Present (Aggregate_Aspect) then
+
+                  --  Only mark aggregate aspect on private type declaration.
+                  --  The aggregate annotation is rejected for other type
+                  --  declarations.
+                  --  ??? It would be better to do something similar to what
+                  --  is done for the Iterable aspect, but the full view of
+                  --  a type derivation with the Aggregate aspect seems to have
+                  --  a duplicated, unmarked version of the aspect that we need
+                  --  to avoid marking.
+
+                  declare
+                     Decl : constant Node_Id := Parent (E);
+                  begin
+                     if Present (Decl)
+                       and then
+                         Nkind (Decl)
+                         in N_Private_Type_Declaration
+                          | N_Private_Extension_Declaration
+                     then
+                        Delayed_Type_Aspects.Include
+                          (Parent (Aggregate_Aspect), Delayed_Mapping);
+                     end if;
+                  end;
+               end if;
+               if Declares_Iterable_Aspect (E) then
+                  Delayed_Type_Aspects.Include
+                    (Iterable_Aspect, Delayed_Mapping);
+               end if;
             end;
          end if;
 
@@ -12626,6 +12788,13 @@ package body SPARK_Definition is
 
    begin
       Iterable_Component := First (Iterable_Component_Assoc);
+
+      --  The container type is the type of the first formal, no matter the
+      --  primitive.
+
+      Current_Delayed_Aspect_Type :=
+        Etype (First_Formal (Entity (Expression (Iterable_Component))));
+
       while Present (Iterable_Component) loop
          Mark_Iterable_Aspect_Function (Iterable_Component);
          Next (Iterable_Component);
