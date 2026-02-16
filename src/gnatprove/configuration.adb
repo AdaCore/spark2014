@@ -1836,6 +1836,7 @@ package body Configuration is
               Tree.Load
                 (Proj_Opt,
                  Reporter         => Reporter,
+                 With_Runtime     => True,
                  Absent_Dir_Error => GPR2.No_Error);
 
             if not Status then
