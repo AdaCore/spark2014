@@ -1368,7 +1368,7 @@ package body Flow_Utility is
              (Direct_Mapping_Id (Etype (Encapsulating_State (Root_Entity))),
               Root_Entity);
 
-      elsif Ekind (Root_Entity) in E_Constant | E_Variable
+      elsif Ekind (Root_Entity) = E_Variable
         and then Present (Ultimate_Overlaid_Entity (Root_Entity))
       then
          Map_Root :=
@@ -3393,7 +3393,9 @@ package body Flow_Utility is
 
          --  Handle overlays before filtering constants without variable inputs
 
-         if Present (Ultimate_Overlaid_Entity (E)) then
+         if Ekind (E) = E_Variable
+           and then Present (Ultimate_Overlaid_Entity (E))
+         then
             return Do_Entity (Ultimate_Overlaid_Entity (E));
          end if;
 
@@ -4013,9 +4015,54 @@ package body Flow_Utility is
                return Flow_Id_Sets.Empty_Set;
 
             when Attribute_Address     =>
-               --  The address of anything is totally separate from anything
-               --  flow analysis cares about, so we ignore it.
-               return Flow_Id_Sets.Empty_Set;
+
+               --  For supported overlays like "X'Address" the expression does
+               --  not read the overlying object (but reads array and slice
+               --  expressions in the prefix, if any). For other subexpressoins
+               --  in the prefix we conservatively assume them to be reads.
+
+               declare
+                  Pref : Node_Id := Prefix (N);
+               begin
+                  loop
+                     case Nkind (Pref) is
+                        when N_Identifier | N_Expanded_Name                =>
+                           exit;
+
+                        when N_Explicit_Dereference | N_Selected_Component =>
+                           Pref := Prefix (Pref);
+
+                        when N_Indexed_Component                           =>
+                           declare
+                              Index : Node_Id;
+                           begin
+                              Index := First (Expressions (Pref));
+                              while Present (Index) loop
+                                 Variables.Union (Recurse (Index));
+                                 Next (Index);
+                              end loop;
+                           end;
+
+                           Pref := Prefix (Pref);
+
+                        when N_Slice                                       =>
+                           declare
+                              R : constant Node_Id :=
+                                Get_Range (Discrete_Range (Pref));
+                           begin
+                              Variables.Union (Recurse (Low_Bound (R)));
+                              Variables.Union (Recurse (High_Bound (R)));
+                           end;
+
+                           Pref := Prefix (Pref);
+
+                        when others                                        =>
+                           return Variables.Union (Recurse (Pref));
+                     end case;
+                  end loop;
+               end;
+
+               return Variables;
 
             when Attribute_Old         =>
                --  If Skip_Old is True, ignore the attribute. Otherwise, we
@@ -4488,7 +4535,7 @@ package body Flow_Utility is
                Root_Entity : constant Entity_Id :=
                  Get_Direct_Mapping_Id (Current_Field);
                Alias       : constant Entity_Id :=
-                 (if Ekind (Root_Entity) in E_Constant | E_Variable
+                 (if Ekind (Root_Entity) = E_Variable
                   then Ultimate_Overlaid_Entity (Root_Entity)
                   else Empty);
 
@@ -7545,7 +7592,7 @@ package body Flow_Utility is
                              E),
                           Scope)
 
-                     elsif Ekind (E) in E_Constant | E_Variable
+                     elsif Ekind (E) = E_Variable
                        and then Present (Ultimate_Overlaid_Entity (E))
                      then
                        Flatten_Variable (Ultimate_Overlaid_Entity (E), Scope)
@@ -8304,7 +8351,7 @@ package body Flow_Utility is
                 (Direct_Mapping_Id (Etype (Encapsulating_State (Root_Entity))),
                  Root_Entity)
 
-            elsif Ekind (Root_Entity) in E_Constant | E_Variable
+            elsif Ekind (Root_Entity) = E_Variable
               and then Present (Ultimate_Overlaid_Entity (Root_Entity))
             then Direct_Mapping_Id (Ultimate_Overlaid_Entity (Root_Entity))
 
