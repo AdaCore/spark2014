@@ -166,9 +166,16 @@ package body Array_Comparison_Str is
    --  GROUP 5 --
    --------------
 
-   procedure P_51 is
-      --  "Short" string with an unprintable character.
+   procedure P_51a is
+      --  "Short" string with an unprintable character and lots of 'a'-s.
       X : String := "baaaa" & ASCII.SOH & "aaaaaaaaaaaacdeff";
+   begin
+      pragma Assert (X /= X);
+   end;
+
+   procedure P_51b is
+      --  "Short" string with an unprintable character and no 'a'-s.
+      X : String := "bcccc" & ASCII.SOH & "cccccccccccccdeff";
    begin
       pragma Assert (X /= X);
    end;
@@ -177,9 +184,9 @@ package body Array_Comparison_Str is
       --  The same string as above, aggregate notation, no 'others'.
       X : String :=
         (1        => 'b',
-         2 .. 5   => 'a',
+         2 .. 5   => 'c',
          6        => ASCII.SOH,
-         7 .. 19  => 'a',
+         7 .. 19  => 'c',
          20       => 'd',
          21       => 'e',
          22 .. 23 => 'f');
