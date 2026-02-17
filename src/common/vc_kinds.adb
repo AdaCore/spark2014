@@ -2722,6 +2722,13 @@ package body VC_Kinds is
            "attribute ""Address"" of a non-object entity",
          when Vio_Address_Outside_Address_Clause           =>
            "attribute ""Address"" outside an attribute definition clause",
+         when Vio_Aggregate_Globals                        =>
+           "subprogram associated to aspect Aggregate with dependency on "
+           & "globals",
+         when Vio_Aggregate_Side_Effects                   =>
+           "subprogram with side effects associated with aspect Aggregate",
+         when Vio_Aggregate_Volatile                       =>
+           "volatile function associated with aspect Aggregate",
          when Vio_Assert_And_Cut_Context                   =>
            "pragma Assert_And_Cut outside a sequence of statements",
          when Vio_Backward_Goto                            =>

@@ -332,6 +332,9 @@ package SPARK_Util.Types is
    --  Go over the items linked from Rep_Item to search for a predicate
    --  pragma or aspect applying to Ty.
 
+   function Find_Aggregate_Aspect (Typ : Type_Kind_Id) return Node_Id;
+   --  Find the Aggregate aspect associated to Typ
+
    function Get_View_For_Predicate (Ty : Type_Kind_Id) return Entity_Id
    with Pre => Has_Predicates (Ty) and then not Is_Full_View (Ty);
    --  Return the view of Ty on which its predicate is defined

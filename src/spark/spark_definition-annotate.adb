@@ -589,9 +589,6 @@ package body SPARK_Definition.Annotate is
       Names         : Node_Lists.List := Node_Lists.Empty;
       Continuations : Message_Lists.List := Message_Lists.Empty);
 
-   function Find_Aggregate_Aspect (Typ : Type_Kind_Id) return Node_Id;
-   --  Find the Aggregate aspect associated to Typ
-
    function Get_Container_Function_From_Pragma (N : Node_Id) return Entity_Id
    with Pre => Is_Pragma_Annotate_GNATprove (N);
    --  Return the function F such that N is a pragma Annotate
@@ -5713,79 +5710,6 @@ package body SPARK_Definition.Annotate is
                end;
             end if;
       end case;
-
-      --  Make sure that the Empty function and the Add procedure used to
-      --  create the aggregate are well behaved (they do not access global data
-      --  and do not have side effects).
-
-      declare
-         Globals : Global_Flow_Ids;
-
-      begin
-         Get_Globals
-           (Subprogram          => Annot.Empty_Function,
-            Scope               =>
-              (Ent => Annot.Empty_Function, Part => Visible_Part),
-            Classwide           => False,
-            Globals             => Globals,
-            Use_Deduced_Globals => not Gnat2Why_Args.Global_Gen_Mode,
-            Ignore_Depends      => False);
-
-         if Is_Function_With_Side_Effects (Annot.Empty_Function) then
-            Error_Msg_NE_If
-              ("& function shall not have side effects",
-               Typ,
-               Annot.Empty_Function);
-         elsif not Globals.Proof_Ins.Is_Empty
-           or else not Globals.Inputs.Is_Empty
-         then
-            Error_Msg_NE_If
-              ("& function shall not access global data",
-               Typ,
-               Annot.Empty_Function);
-         elsif Is_Volatile_Function (Annot.Empty_Function) then
-            Error_Msg_NE_If
-              ("& function shall not be volatile", Typ, Annot.Empty_Function);
-         end if;
-
-         Get_Globals
-           (Subprogram          => Annot.Add_Procedure,
-            Scope               =>
-              (Ent => Annot.Add_Procedure, Part => Visible_Part),
-            Classwide           => False,
-            Globals             => Globals,
-            Use_Deduced_Globals => not Gnat2Why_Args.Global_Gen_Mode,
-            Ignore_Depends      => False);
-
-         if not Globals.Outputs.Is_Empty then
-            Error_Msg_NE_If
-              ("& procedure shall not have global effects",
-               Typ,
-               Annot.Add_Procedure);
-         elsif not Globals.Proof_Ins.Is_Empty
-           or else not Globals.Inputs.Is_Empty
-         then
-            Error_Msg_NE_If
-              ("& procedure shall not access global data",
-               Typ,
-               Annot.Add_Procedure);
-         elsif Get_Termination_Condition (Annot.Add_Procedure)
-           /= (Static, True)
-         then
-            Error_Msg_NE_If
-              ("& procedure shall always terminate", Typ, Annot.Add_Procedure);
-         elsif Has_Exceptional_Contract (Annot.Add_Procedure) then
-            Error_Msg_NE_If
-              ("& procedure shall not propagate exceptions",
-               Typ,
-               Annot.Add_Procedure);
-         elsif Has_Program_Exit (Annot.Add_Procedure) then
-            Error_Msg_NE_If
-              ("& procedure shall not exit the program",
-               Typ,
-               Annot.Add_Procedure);
-         end if;
-      end;
    end Do_Delayed_Checks_For_Aggregates;
 
    ------------------------------------------
@@ -5915,22 +5839,6 @@ package body SPARK_Definition.Annotate is
       end loop;
       Delayed_Null_Values.Clear;
    end Do_Delayed_Checks_On_Pragma_Annotate;
-
-   ---------------------------
-   -- Find_Aggregate_Aspect --
-   ---------------------------
-
-   function Find_Aggregate_Aspect (Typ : Type_Kind_Id) return Node_Id is
-      Typ_With_Aspect : constant Type_Kind_Id :=
-        (if Is_Scalar_Type (Typ) and then Present (First_Subtype (Typ))
-         then First_Subtype (Typ)
-         else Typ);
-      --  If Typ is a scalar base type, it might not have the
-      --  aggregate aspect. Look for it on the first subtype
-      --  instead.
-   begin
-      return Find_Value_Of_Aspect (Typ_With_Aspect, Aspect_Aggregate);
-   end Find_Aggregate_Aspect;
 
    ------------------------
    -- Find_Inline_Pragma --
