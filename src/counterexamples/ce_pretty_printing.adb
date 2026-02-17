@@ -68,6 +68,11 @@ package body CE_Pretty_Printing is
    --  Maximum number of array elements in a CE value that are represented in
    --  an aggregate notation. Further elements will be represented by "...".
 
+   function CE_Max_Print_Elems (Is_String : Boolean) return Natural
+   is (if Is_String
+       then CE_Max_Print_Chars_String
+       else CE_Max_Print_Elems_Array);
+
    CE_Max_Exp_Others_In_Aggregate : constant := 1;
    --  Maximal number of elements for which the 'others' value can be expanded
    --  when printing as an aggregate. E.g., when the value is an array, but not
@@ -432,12 +437,14 @@ package body CE_Pretty_Printing is
            "<"          => "<");
 
       procedure Add_Index
-        (S_Array       : in out Sorted_Array.Map;
-         String_Lit    : in out Boolean;
-         Index         : Big_Integer;
-         Index_Type    : Entity_Id;
-         Truncated     : Boolean;
-         Element_Value : Value_And_Attributes);
+        (S_Array             : in out Sorted_Array.Map;
+         Is_String_Lit       : in out Boolean;
+         First_Non_Printable : in out Opt_Big_Integer;
+         Index               : Big_Integer;
+         Index_Type          : Entity_Id;
+         Is_String           : Boolean;
+         Is_Truncated        : Boolean;
+         Element_Value       : Value_And_Attributes);
       --  Add a mapping for Index => Element_Value in S_Array if Index
       --  corresponds to a valid value of type Index_Type and both Index and
       --  Element_Value can be printed.
@@ -447,13 +454,19 @@ package body CE_Pretty_Printing is
       --  information.
       --
       --  @param S_Array Sorted collection of pretty-printed array elements.
-      --  @param String_Lit Flag to indicate whether the array can be
+      --  @param Is_String_Lit Flag to indicate whether the array can be
       --    represented as a string literal or not.
+      --  @param First_Non_Printable The position of the first non-printable
+      --    character. Irrelevant when the array is not a string.
       --  @param Index The currently selected index of the array.
-      --  @param Truncated Flag to indicate whether Index is already beyond the
-      --    truncation limit or not.
-      --  @param Element_Value Holds the pretty-printed value of the array
-      --    element at Index.
+      --  @param Index_Type The type of Index.
+      --  @param Is_String True iff the array is a string.
+      --  @param Is_Truncated Flag to indicate whether Index is already beyond
+      --    the truncation limit or not. In this case the S_Array is not grown
+      --    any more. The new element is added only if it has an index smaller
+      --    than some existing element. The last element will be removed then.
+      --  @param Element_Value Pretty-printed value of the array element at
+      --    Index.
 
       function Is_Normal_Char (S : Unbounded_String) return Boolean
       is (Length (S) = 3)
@@ -471,34 +484,43 @@ package body CE_Pretty_Printing is
       --  value as a big integer into an appropriate string representation.
 
       procedure Print_Elements
-        (Value      : Value_Type;
-         S_Array    : out Sorted_Array.Map;
-         Complete   : out Boolean;
-         String_Lit : out Boolean;
-         Truncated  : out Boolean;
-         Others_Val : out CNT_Unbounded_String;
-         Attributes : out CNT_Attribute_List);
+        (Value         : Value_Type;
+         S_Array       : out Sorted_Array.Map;
+         Is_String_Lit : out Boolean;
+         Is_Complete   : out Boolean;
+         Is_Truncated  : out Boolean;
+         Others_Val    : out CNT_Unbounded_String;
+         Attributes    : out CNT_Attribute_List);
       --  Check and export all parts of Value in an appropriate format.
-      --  Individual elements are stored in S_Array, Complete is set to True
-      --  iff all the elements of the array have a mapping in S_Array, and the
-      --  default value for the array is stored in Others_Val if Complete is
-      --  False. String_Lit is set to True iff all the elements of S_Array
-      --  are normal characters. The Truncated flag indicates whether all
-      --  the elements can be printed or not. Attributes contains the list of
-      --  attributes of Value. The attributes only concern the array value as
-      --  a whole. Attributes of array elements are not printed.
+      --
+      --  @param S_Array A map containing the pretty-printed elements sorted by
+      --    index.
+      --  @param Is_String_Lit A flag that is set to True iff all the printed
+      --    elements are normal characters.
+      --  @param Is_Complete A flag that is set to True iff the S_Array alone
+      --    is sufficient to print the value up to the truncation limit. In
+      --    this case the Others_Val is irrelevant.
+      --  @param Is_Truncated A flag that is set to True iff Value contains
+      --    more elements than a predefined limit and S_Array only contains a
+      --    part of them.
+      --  @param Others_Val The default value for the elements not in S_Array.
+      --  @param Attributes The list of pretty-printed attributes of Value. The
+      --    attributes only concern the array value as a whole. Attributes of
+      --    array elements are not printed.
 
       ---------------
       -- Add_Index --
       ---------------
 
       procedure Add_Index
-        (S_Array       : in out Sorted_Array.Map;
-         String_Lit    : in out Boolean;
-         Index         : Big_Integer;
-         Index_Type    : Entity_Id;
-         Truncated     : Boolean;
-         Element_Value : Value_And_Attributes)
+        (S_Array             : in out Sorted_Array.Map;
+         Is_String_Lit       : in out Boolean;
+         First_Non_Printable : in out Opt_Big_Integer;
+         Index               : Big_Integer;
+         Index_Type          : Entity_Id;
+         Is_String           : Boolean;
+         Is_Truncated        : Boolean;
+         Element_Value       : Value_And_Attributes)
       is
          Ind_Printed : constant CNT_Unbounded_String :=
            Parse_And_Print_Index (Index, Index_Type);
@@ -511,14 +533,25 @@ package body CE_Pretty_Printing is
                   New_Item =>
                     (Ind_Printed  => Ind_Printed,
                      Elem_Printed => Element_Value.Value));
-               String_Lit :=
-                 String_Lit and then Is_Normal_Char (Element_Value.Value.Str);
+
+               if Is_String
+                 and then not Is_Normal_Char (Element_Value.Value.Str)
+               then
+                  Is_String_Lit := False;
+                  if First_Non_Printable.Present then
+                     First_Non_Printable.Content :=
+                       Min (First_Non_Printable.Content, Index);
+                  else
+                     First_Non_Printable :=
+                       (Present => True, Content => Index);
+                  end if;
+               end if;
 
                --  If the output is going to be truncated, then we must keep
                --  the current size. Remove the last element (according to the
                --  sorted order).
 
-               if Truncated then
+               if Is_Truncated then
                   S_Array.Delete_Last;
                end if;
             end if;
@@ -553,29 +586,32 @@ package body CE_Pretty_Printing is
       --------------------
 
       procedure Print_Elements
-        (Value      : Value_Type;
-         S_Array    : out Sorted_Array.Map;
-         Complete   : out Boolean;
-         String_Lit : out Boolean;
-         Truncated  : out Boolean;
-         Others_Val : out CNT_Unbounded_String;
-         Attributes : out CNT_Attribute_List)
+        (Value         : Value_Type;
+         S_Array       : out Sorted_Array.Map;
+         Is_String_Lit : out Boolean;
+         Is_Complete   : out Boolean;
+         Is_Truncated  : out Boolean;
+         Others_Val    : out CNT_Unbounded_String;
+         Attributes    : out CNT_Attribute_List)
       is
          Fst_Index  : Node_Id := First_Index (Value.AST_Ty);
          Index_Type : Entity_Id;
 
          Others_Elem : Value_And_Attributes;
-         Elem_Count  : Natural := 0;
 
-         Attr_First : Opt_Big_Integer := Value.First_Attr;
-         Attr_Last  : Opt_Big_Integer := Value.Last_Attr;
-         U_Fst      : Uint;
-         U_Lst      : Uint;
-         BI_Fst     : Big_Integer;
-         BI_Last    : Big_Integer;
+         Attr_First          : Opt_Big_Integer := Value.First_Attr;
+         Attr_Last           : Opt_Big_Integer := Value.Last_Attr;
+         Value_First_Pos     : Big_Integer;
+         Value_Last_Pos      : Big_Integer;
+         First_Non_Printable : Opt_Big_Integer := (Present => False);
+         Full_Length         : Big_Integer;    --  Full length of the array
+         Is_String           : constant Boolean :=
+           Is_String_Type (Value.AST_Ty);
+
+         use type Ada.Containers.Count_Type;
 
       begin
-         Truncated := False;
+         Is_Truncated := False;
 
          --  Empty arrays can have bounds in the base type of their index type
 
@@ -589,28 +625,34 @@ package body CE_Pretty_Printing is
 
          --  Use static array type bounds or index type bounds as default
 
-         Find_First_Static_Range (Fst_Index, U_Fst, U_Lst);
-         BI_Fst := From_String (UI_Image (U_Fst, Decimal));
-         BI_Last := From_String (UI_Image (U_Lst, Decimal));
+         declare
+            U_Fst : Uint;
+            U_Lst : Uint;
+         begin
+            Find_First_Static_Range (Fst_Index, U_Fst, U_Lst);
+            Value_First_Pos := From_String (UI_Image (U_Fst, Decimal));
+            Value_Last_Pos := From_String (UI_Image (U_Lst, Decimal));
+         end;
 
          --  Update bounds from the attribute values if any. We ignore out of
          --  bound values.
 
-         if Attr_First.Present and then Attr_First.Content >= BI_Fst then
-            BI_Fst := Attr_First.Content;
+         if Attr_First.Present and then Attr_First.Content >= Value_First_Pos
+         then
+            Value_First_Pos := Attr_First.Content;
          else
             Attr_First := (Present => False);
          end if;
 
-         if Attr_Last.Present and then Attr_Last.Content <= BI_Last then
-            BI_Last := Attr_Last.Content;
+         if Attr_Last.Present and then Attr_Last.Content <= Value_Last_Pos then
+            Value_Last_Pos := Attr_Last.Content;
          else
             Attr_Last := (Present => False);
          end if;
 
-         --  Format the others choice if any
+         Full_Length := Max (0, Value_Last_Pos - Value_First_Pos + 1);
 
-         Complete := False;
+         --  Format the "others" choice if any
 
          if Value.Array_Others /= null then
             Others_Elem := Print_Value (Value.Array_Others.all);
@@ -621,11 +663,11 @@ package body CE_Pretty_Printing is
          --  Make an initial guess if the value could be printed as a string
          --  literal or not. It will be refined further down.
 
-         String_Lit := Is_String_Type (Value.AST_Ty);
+         Is_String_Lit := Is_String;
+
+         --  Populate the ordered S_Array with pretty-printed elements
 
          for C in Value.Array_Values.Iterate loop
-
-            --  Reorder the elements inside S_Array
 
             declare
                Index : Big_Integer renames Big_Integer_To_Value_Maps.Key (C);
@@ -637,111 +679,191 @@ package body CE_Pretty_Printing is
                --  We collapse indexes with the others choice if they are the
                --  same.
 
-               if BI_Fst <= Index
-                 and then Index <= BI_Last
+               if Value_First_Pos <= Index
+                 and then Index <= Value_Last_Pos
                  and then
-                   (BI_Fst = BI_Last or else Elem_Printed /= Others_Elem)
+                   (Value_First_Pos = Value_Last_Pos
+                    or else Elem_Printed /= Others_Elem)
                then
                   Add_Index
                     (S_Array,
-                     String_Lit,
+                     Is_String_Lit,
+                     First_Non_Printable,
                      Index,
                      Index_Type,
-                     Truncated,
+                     Is_String,
+                     Is_Truncated,
                      Elem_Printed);
 
-                  Elem_Count := Elem_Count + 1;
                end if;
 
                --  Check for the maximum printed length
 
-               if (String_Lit and then Elem_Count >= CE_Max_Print_Chars_String)
-                 or else
-                   (not String_Lit
-                    and then Elem_Count >= CE_Max_Print_Elems_Array)
+               if Integer (S_Array.Length)
+                 >= CE_Max_Print_Elems (Is_String_Lit)
                then
-                  Truncated := True;
-                  exit;
+
+                  --  Record the fact that we've reached the truncation limit.
+                  --  However, keep going through the values since there might
+                  --  be elements with *lower* index positions remaining than
+                  --  seen so far. Instead we avoid growing the length of
+                  --  S_Array at this point.
+
+                  Is_Truncated := True;
                end if;
             end;
          end loop;
 
-         if String_Lit and then Others_Elem.Value /= Dont_Display then
-            String_Lit := Is_Normal_Char (Others_Elem.Value.Str);
-         end if;
+         Is_Complete :=
+           To_Big_Integer (Integer (S_Array.Length)) >= Full_Length;
 
-         --  No need for "others" if the array is empty or indexes already
-         --  cover the full range.
+         ------------------------------
+         --  Handle the "others" part -
+         ------------------------------
 
-         if To_Big_Integer (Integer (S_Array.Length)) >= BI_Last - BI_Fst + 1
-         then
-            Complete := True;
+         --  If the list of printed elements is not yet complete we'll try to
+         --  use the "others" value, if possible.
 
-         --  Replace "others" by the actual indexes if we have a string or we
-         --  are missing less than CE_Max_Exp_Others_In_Aggregate values, the
-         --  bounds are known, and Others_Val is supplied.
+         if not Is_Complete then
 
-         elsif Others_Elem.Value /= Dont_Display
-           and then
-             (String_Lit
-              or else
-                To_Big_Integer (Integer (S_Array.Length))
-                >= BI_Last - BI_Fst + 1 - CE_Max_Exp_Others_In_Aggregate)
-           and then
-             ((Attr_First.Present and then Attr_Last.Present)
-              or else Is_Static_Array_Type (Value.AST_Ty))
-         then
-            declare
-               Index : Big_Integer := BI_Fst;
-               Limit : constant Big_Integer :=
-                 (if String_Lit
-                  then CE_Max_Print_Chars_String
-                  else CE_Max_Print_Elems_Array);
-               Upper : constant Big_Integer :=
-                 Min (BI_Last, BI_Fst + Limit - 1);
-            begin
-               while Index <= Upper loop
-                  if not S_Array.Contains (Index) then
-                     Add_Index
-                       (S_Array,
-                        String_Lit,
-                        Index,
-                        Index_Type,
-                        Truncated,
-                        Others_Elem);
-                  end if;
-                  Index := Index + 1;
-               end loop;
-               pragma
-                 Assert
-                   (To_Big_Integer (Integer (S_Array.Length))
-                    = Upper - BI_Fst + 1);
-               Complete := not Truncated;
-            end;
+            --  Update the initial guess for Is_String_Lit if the array
+            --  elements are fully defined by "others".
 
-         else
+            if Is_String_Lit
+              and then S_Array.Length = 0
+              and then Others_Elem.Value /= Dont_Display
+            then
+               Is_String_Lit := Is_Normal_Char (Others_Elem.Value.Str);
+            end if;
 
-            --  Check if adding the 'others' element would exceed the printed
-            --  length (irrelevant if it was exceeded already).
+            --  Expand "others" to individual array elements if
+            --  * Others_Val is provided
+            --  * and the bounds are known
+            --  * and
+            --    * we have a printable string
+            --      - Note: If the expanded string would exceed printing limit
+            --        it will be truncated.
+            --    * or we are missing less than CE_Max_Exp_Others_In_Aggregate
+            --      values
+            --      - Note: The same truncation behavior as above is applied.
+
             if Others_Elem.Value /= Dont_Display
               and then
-                ((String_Lit
-                  and then Elem_Count >= CE_Max_Print_Chars_String - 1)
+                ((Attr_First.Present and then Attr_Last.Present)
+                 or else Is_Static_Array_Type (Value.AST_Ty))
+              and then
+                (Is_String_Lit
                  or else
-                   (not String_Lit
-                    and then Elem_Count >= CE_Max_Print_Elems_Array - 1))
+                   To_Big_Integer (Integer (S_Array.Length))
+                   >= Full_Length - CE_Max_Exp_Others_In_Aggregate)
             then
-               Truncated := True;
-               Others_Val := Dont_Display;
-            else
+               declare
+                  Index         : Big_Integer := Value_First_Pos;
+                  Display_Limit : constant Natural :=
+                    CE_Max_Print_Elems (Is_String_Lit);
+                  Print_Upper   : constant Big_Integer :=
+                    Min
+                      (Value_Last_Pos,
+                       Value_First_Pos
+                       + To_Big_Integer (Integer (Display_Limit - 1)));
+               begin
 
-               --  The 'others' element will be printed. However, any
+                  while Index <= Print_Upper loop
+                     if not S_Array.Contains (Index) then
+
+                        --  Add the element to S_Array, but make sure to keep
+                        --  it within the Display_Limit,
+
+                        if Natural (S_Array.Length) >= Display_Limit then
+                           Is_Truncated := True;
+                        end if;
+
+                        Add_Index
+                          (S_Array,
+                           Is_String_Lit,
+                           First_Non_Printable,
+                           Index,
+                           Index_Type,
+                           Is_String,
+                           Is_Truncated,
+                           Others_Elem);
+                     end if;
+
+                     Index := Index + 1;
+                  end loop;
+
+                  --  All the elements that fit to the display limit should
+                  --  exist in S_Array now.
+
+                  pragma
+                    Assert
+                      (To_Big_Integer (Integer (S_Array.Length))
+                       = Print_Upper - Value_First_Pos + 1);
+
+                  --  If the full expansion would have exceeded the display
+                  --  limit, then mark the final value still as truncated.
+
+                  if Print_Upper < Value_Last_Pos then
+                     Is_Truncated := True;
+
+                  --  Otherwise, we have printed everything
+
+                  else
+                     Is_Complete := True;
+                  end if;
+               end;
+
+            --  If we had reached the display limit already, the value will be
+            --  marked as truncated regardless of whether an "others" value was
+            --  provided or not.
+
+            elsif Integer (S_Array.Length)
+              >= CE_Max_Print_Elems (Is_String_Lit)
+            then
+
+               Is_Truncated := True;
+               Others_Val := Dont_Display;
+
+            --  Otherwise, if we have a printable "others" value, then let it
+            --  be explicitly printed using aggregate notation.
+
+            elsif Others_Elem.Value /= Dont_Display then
+
+               --  Explicit "others" element will be printed. However, any
                --  attributes it might have had are dropped.
 
                Others_Val := Others_Elem.Value;
+
+            --  Finally, if we don't have a printable "others" value, then
+            --  treat it the same as a truncated value.
+
+            else
+               Is_Truncated := True;
+               Others_Val := Dont_Display;
+
             end if;
 
          end if;
+
+         -------------------------------
+         --  Adjust printing as string -
+         -------------------------------
+
+         --  If the string has non-printable characters, but they occur after
+         --  the truncation point, then still print as string.
+
+         if Is_String
+           and then Is_Truncated
+           and then not Is_String_Lit
+           and then First_Non_Printable.Present
+           and then First_Non_Printable.Content > S_Array.Last_Key
+         then
+            Is_String_Lit := True;
+         end if;
+
+         -----------------------
+         --  Handle attributes -
+         -----------------------
 
          --  Add the First and Last attributes if any. Do not add the attribute
          --  if the array type is static or if they are implied by the
@@ -752,7 +874,10 @@ package body CE_Pretty_Printing is
          Attributes.Clear;
 
          if not Is_Static_Array_Type (Value.AST_Ty)
-           and then (String_Lit or else not Complete or else BI_Last < BI_Fst)
+           and then
+             (Is_String_Lit
+              or else not Is_Complete
+              or else Value_Last_Pos < Value_First_Pos)
          then
             if Attr_First.Present then
                declare
@@ -764,7 +889,7 @@ package body CE_Pretty_Printing is
                   end if;
                end;
             end if;
-            if (not Complete or else BI_Last < BI_Fst)
+            if (not Is_Complete or else Value_Last_Pos < Value_First_Pos)
               and then Attr_Last.Present
             then
                declare
@@ -781,23 +906,23 @@ package body CE_Pretty_Printing is
 
       --  Local variables
 
-      S          : Unbounded_String;
-      S_Array    : Sorted_Array.Map;
-      Others_Val : CNT_Unbounded_String;
-      Complete   : Boolean;
-      String_Lit : Boolean;
-      Truncated  : Boolean;
-      Count      : Natural := 0;
-      Elems      : S_String_List.List;
-      Res        : Value_And_Attributes;
+      S             : Unbounded_String;
+      S_Array       : Sorted_Array.Map;
+      Others_Val    : CNT_Unbounded_String;
+      Is_Complete   : Boolean;
+      Is_String_Lit : Boolean;
+      Is_Truncated  : Boolean;
+      Count         : Natural := 0;
+      Elems         : S_String_List.List;
+      Res           : Value_And_Attributes;
 
       ---------------------
       -- Truncate_Marker --
       ---------------------
 
       function Truncate_Marker return String
-      is (if Truncated
-          then (if String_Lit then " " else ", ") & "..."
+      is (if Is_Truncated
+          then (if Is_String_Lit then " " else ", ") & "..."
           else "");
 
       use S_String_List;
@@ -808,16 +933,16 @@ package body CE_Pretty_Printing is
       Print_Elements
         (Value,
          S_Array,
-         Complete,
-         String_Lit,
-         Truncated,
+         Is_String_Lit,
+         Is_Complete,
+         Is_Truncated,
          Others_Val,
          Res.Attributes);
 
       --  Print complete strings containing only normal characters as string
       --  literals.
 
-      if String_Lit then
+      if Is_String_Lit then
          for C of S_Array loop
             Append (S, Element (C.Elem_Printed.Str, 2));
          end loop;
@@ -863,20 +988,18 @@ package body CE_Pretty_Printing is
          --  association for its others case. Don't add it if the others case
          --  is unknown and there are no specific cases.
 
-         if not Complete
-           and then not Truncated
+         if not Is_Complete
+           and then not Is_Truncated
            and then Others_Val /= Dont_Display
          then
             if S /= "" then
                Append (S, ", ");
             end if;
 
-            if Others_Val /= Dont_Display then
-               --  Append the "others" value to the buffer S, but do not insert
-               --  a value for it in Elems.
-               Append (S, "others => " & Others_Val.Str);
-               Count := Count + Others_Val.Count;
-            end if;
+            --  Append the "others" value to the buffer S, but do not insert
+            --  a value for it in Elems.
+            Append (S, "others => " & Others_Val.Str);
+            Count := Count + Others_Val.Count;
          end if;
 
          if S = "" then

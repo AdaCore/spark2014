@@ -6,13 +6,13 @@ arrays.adb:62:22: high: postcondition might fail (e.g. when C = ''' and Contains
 arrays.adb:68:13: info: implicit aspect Always_Terminates on "Is_Id_1" has been proved, subprogram will terminate
 arrays.adb:71:19: info: postcondition proved (CVC5: 2 VC)
 arrays.adb:77:13: info: implicit aspect Always_Terminates on "Is_Id_2" has been proved, subprogram will terminate
-arrays.adb:80:19: high: postcondition might fail (e.g. when C = 'FS' and Is_Id_2'Result = True and M = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa") [provers reached step limit before completing the proof]
+arrays.adb:80:19: high: postcondition might fail (e.g. when C = 'FS' and Is_Id_2'Result = True and M = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa ...") [provers reached step limit before completing the proof]
 arrays.adb:88:11: info: flow dependencies proved
 arrays.adb:94:22: info: assertion proved (CVC5: 1 VC)
 arrays.adb:99:11: info: flow dependencies proved
 arrays.adb:104:22: medium: assertion might fail [possible fix: precondition of subprogram at line 97 should mention C] [provers reached step limit before completing the proof]
 arrays.adb:108:11: info: flow dependencies proved
-arrays.adb:112:22: high: assertion might fail (e.g. when M = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA") [possible fix: subprogram at line 107 should mention M in a precondition] [provers reached step limit before completing the proof]
+arrays.adb:112:22: high: assertion might fail (e.g. when M = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA ...") [possible fix: subprogram at line 107 should mention M in a precondition] [provers reached step limit before completing the proof]
 arrays.adb:116:11: info: flow dependencies proved
 arrays.adb:120:22: high: assertion might fail (e.g. when M = (others => Elem_2)) [possible fix: subprogram at line 115 should mention M in a precondition] [provers reached step limit before completing the proof]
 arrays.adb:124:11: info: flow dependencies proved
@@ -72,12 +72,12 @@ counterexample expected for check at arrays.adb:62
   trace at arrays.adb:57 --> C = ''' and S = (''' => False, others => True)
   trace at arrays.adb:62 --> C = ''' and Contains_B'Result = True and S = (''' => False, others => True)
 counterexample expected for check at arrays.adb:80
-  trace at arrays.adb:77 --> C = 'FS' and M = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-  trace at arrays.adb:80 --> C = 'FS' and Is_Id_2'Result = True and M = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  trace at arrays.adb:77 --> C = 'FS' and M = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa ..."
+  trace at arrays.adb:80 --> C = 'FS' and Is_Id_2'Result = True and M = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa ..."
 counterexample expected for check at arrays.adb:112
-  trace at arrays.adb:107 --> M = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-  trace at arrays.adb:111 --> M = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-  trace at arrays.adb:112 --> M = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+  trace at arrays.adb:107 --> M = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA ..."
+  trace at arrays.adb:111 --> M = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA ..."
+  trace at arrays.adb:112 --> M = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA ..."
 counterexample expected for check at arrays.adb:120
   trace at arrays.adb:115 --> M = (others => Elem_2)
   trace at arrays.adb:119 --> M = (others => Elem_2)
