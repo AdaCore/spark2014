@@ -477,7 +477,8 @@ package body Errout_Wrapper is
       Kind          : Msg_Severity := Error_Kind;
       First         : Boolean := False;
       Continuations : Message_Lists.List := Message_Lists.Empty;
-      Error_Entry   : Boolean := True)
+      Error_Entry   : Boolean := True;
+      Tag           : String := "unknown-error")
    is
 
       procedure Node_Locate (Msg : String; First_Node : Node_Id);
@@ -504,7 +505,7 @@ package body Errout_Wrapper is
       My_Conts : Message_Lists.List;
       Result   : JSON_Result_Type :=
         (Severity => Kind,
-         Tag      => To_Unbounded_String ("error"),
+         Tag      => To_Unbounded_String (Tag),
          Span     => To_Span (Sloc (N)),
          Msg      => My_Msg,
          others   => <>);

@@ -191,7 +191,8 @@ package Errout_Wrapper is
       Kind          : Msg_Severity := Error_Kind;
       First         : Boolean := False;
       Continuations : Message_Lists.List := Message_Lists.Empty;
-      Error_Entry   : Boolean := True);
+      Error_Entry   : Boolean := True;
+      Tag           : String := "unknown-error");
    --  Issue a message using Kind as the message type. If First is True, locate
    --  the message at the start of the sloc range of the node, otherwise at the
    --  sloc of the node. Continuations are issued at the same location.
