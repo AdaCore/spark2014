@@ -1,7 +1,7 @@
 example_recursive.adb:20:13: info: implicit aspect Always_Terminates on "Valid_Memory" has been proved, subprogram will terminate
 example_recursive.adb:21:25: info: precondition proved
 example_recursive.adb:31:13: info: implicit aspect Always_Terminates on "Valid_List" has been proved, subprogram will terminate
-example_recursive.adb:31:13: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
+example_recursive.adb:31:13: warning: "Valid_List" is recursive; its body might not be available on recursive calls from contracts and assertions [contracts-recursive]
 example_recursive.adb:35:18: info: precondition proved
 example_recursive.adb:35:18: info: subprogram variant proved
 example_recursive.adb:35:47: info: precondition proved
@@ -22,7 +22,7 @@ example_recursive.adb:59:13: info: implicit aspect Always_Terminates on "Valid_L
 example_recursive.adb:60:07: info: precondition proved
 example_recursive.adb:61:09: info: data dependencies proved
 example_recursive.adb:65:13: info: implicit aspect Always_Terminates on "Reachable" has been proved, subprogram will terminate
-example_recursive.adb:65:13: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
+example_recursive.adb:65:13: warning: "Reachable" is recursive; its body might not be available on recursive calls from contracts and assertions [contracts-recursive]
 example_recursive.adb:68:18: info: precondition proved
 example_recursive.adb:68:18: info: subprogram variant proved
 example_recursive.adb:68:46: info: precondition proved

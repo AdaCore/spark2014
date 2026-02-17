@@ -1020,7 +1020,7 @@ red_black_trees.adb:759:22: medium: assertion might fail, cannot prove Get_Color
 red_black_trees.adb:759:22: medium: in inlined expression function body at red_black_trees.ads:121
 red_black_trees.adb:760:22: medium: assertion might fail [provers reached step limit before completing the proof]
 red_black_trees.ads:26:13: info: implicit aspect Always_Terminates on "Size" has been proved, subprogram will terminate
-red_black_trees.ads:26:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+red_black_trees.ads:26:13: warning: "Size" is recursive; its implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 red_black_trees.ads:27:24: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.ads:28:12: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.ads:28:12: info: subprogram variant proved (Trivial)
@@ -1031,7 +1031,7 @@ red_black_trees.ads:28:35: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.ads:28:43: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.ads:28:45: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.ads:37:13: info: implicit aspect Always_Terminates on "Model" has been proved, subprogram will terminate
-red_black_trees.ads:37:13: warning: function contract might not be available on recursive calls [contracts-recursive]
+red_black_trees.ads:37:13: warning: "Model" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 red_black_trees.ads:39:14: info: postcondition proved (CVC5: 8 VC; Trivial: 1 VC)
 red_black_trees.ads:39:14: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.ads:39:37: info: predicate check proved (Trivial: 1 VC)
@@ -1077,8 +1077,7 @@ red_black_trees.ads:79:22: info: predicate check proved (CVC5: 1 VC; Trivial: 1 
 red_black_trees.ads:79:45: info: precondition proved (CVC5: 2 VC)
 red_black_trees.ads:79:53: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.ads:87:13: info: implicit aspect Always_Terminates on "Nb_Black" has been proved, subprogram will terminate
-red_black_trees.ads:87:13: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
-red_black_trees.ads:87:13: warning: function contract might not be available on recursive calls [contracts-recursive]
+red_black_trees.ads:87:13: warning: "Nb_Black" is recursive; its body and contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 red_black_trees.ads:88:24: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.ads:89:14: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.ads:89:32: info: subprogram variant proved (CVC5: 1 VC)
@@ -1093,7 +1092,7 @@ red_black_trees.ads:91:22: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.ads:91:33: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.ads:92:42: info: range check proved (CVC5: 1 VC)
 red_black_trees.ads:95:13: info: implicit aspect Always_Terminates on "Same_Nb_Black" has been proved, subprogram will terminate
-red_black_trees.ads:95:13: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
+red_black_trees.ads:95:13: warning: "Same_Nb_Black" is recursive; its body might not be available on recursive calls from contracts and assertions [contracts-recursive]
 red_black_trees.ads:97:16: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.ads:97:27: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.ads:97:36: info: predicate check proved (Trivial: 1 VC)
@@ -1106,7 +1105,7 @@ red_black_trees.ads:101:42: info: range check proved (CVC5: 1 VC)
 red_black_trees.ads:104:13: info: implicit aspect Always_Terminates on "Get_Color" has been proved, subprogram will terminate
 red_black_trees.ads:105:36: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.ads:109:13: info: implicit aspect Always_Terminates on "Scarce_Red" has been proved, subprogram will terminate
-red_black_trees.ads:109:13: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
+red_black_trees.ads:109:13: warning: "Scarce_Red" is recursive; its body might not be available on recursive calls from contracts and assertions [contracts-recursive]
 red_black_trees.ads:112:15: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.ads:112:45: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.ads:113:32: info: pointer dereference check proved (CVC5: 1 VC)
