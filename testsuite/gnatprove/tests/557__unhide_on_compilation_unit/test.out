@@ -1,4 +1,5 @@
-gen.adb:1:35: error: the entity of a pragma Annotate Unhide_Info for package bodies shall not be a compilation unit
+gen.adb:1:35: error: the entity with the "Unhide_Info" annotation shall not be a compilation unit
+gen.adb:1:35: error: wrong entity argument for aspect "Annotate => (GNATprove, Unhide_Info, "Package_Body"[, ...])"
 gen.adb:8:05: warning: initialization of "Z" has no effect, in instantiation at main.adb:9
 main.adb:4:14: info: implicit aspect Always_Terminates on "Read_Pre" has been proved, subprogram will terminate
 main.adb:5:15: info: add a contract to analyze it separately from calling contexts

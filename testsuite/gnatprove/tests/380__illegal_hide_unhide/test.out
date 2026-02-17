@@ -1,22 +1,30 @@
-test_hide_annot.adb:12:04: error: a pragma Annotate Hide_Info for expression function bodies shall have 4 parameters
+test_hide_annot.adb:7:13: error: "Hidden_Id" is not allowed in SPARK (due to incorrect use of "Hide_Info" annotation)
+test_hide_annot.adb:7:13: error: an expression function with the "Hide_Info" annotation shall be in SPARK
+test_hide_annot.adb:12:04: error: expected 4 arguments
+test_hide_annot.adb:12:04: error: wrong number of arguments in "pragma Annotate (GNATprove, Hide_Info, "Expression_Function_Body"[, ...])"
 test_hide_annot.adb:16:43: error: third argument of "pragma Annotate (GNATprove, Hide_Info[, ...])" must be a string
 test_hide_annot.adb:20:43: error: unexpected third argument for "pragma Annotate (GNATprove, Hide_Info[, ...])"
 test_hide_annot.adb:24:71: error: last argument of "pragma Annotate (GNATprove, Hide_Info[, ...])" must be an entity
-test_hide_annot.adb:31:74: error: the entity of a pragma Annotate Hide_Info for expression function bodies shall be an expression function
-test_hide_annot.adb:42:74: error: an expression function annotated with Annotate Hide_Info shall be in SPARK
-test_hide_annot.adb:54:74: error: the body of an expression function annotated with Annotate Hide_Info shall be compatible with SPARK
-test_hide_annot.adb:71:77: error: an expression function annotated with Annotate Hide_Info shall not have a refined postcondition
-test_hide_annot.adb:84:74: error: an expression function annotated with Annotate Hide_Info shall not be inlined for proof
-test_hide_annot.adb:92:06: error: a function annotated with Annotate Hide_Info or Unhide_Info shall not be inlined for proof
-test_hide_annot.adb:100:74: error: an expression function annotated with Annotate Hide_Info shall not be a logical equality
-test_hide_annot.adb:106:13: error: a function annotated with Annotate Hide_Info or Unhide_Info shall not be a logical equality
-test_hide_annot.adb:117:74: error: an expression function annotated with Annotate Hide_Info shall not be annotated with At_End_Borow
-test_hide_annot.adb:125:13: error: a function annotated with Annotate Hide_Info or Unhide_Info shall not be annotated with At_End_Borow
-test_hide_annot.adb:136:74: error: an expression function annotated with Annotate Hide_Info shall not have higher-order specialization
-test_hide_annot.adb:142:13: error: a subprogram annotated with Annotate Hide_Info or Unhide_Info shall not have higher-order specialization
-test_hide_annot.adb:150:07: error: there shall be at most one Hide_Info or Unhide_Info annotation for "Id" in "Duplicated_Annot"
-test_hide_annot.adb:159:07: error: pragma Annotate Hide_Info must appear at the beginning of a subprogram, entry, or package body, or just after a subprogram, entry, or package body or declaration
-test_hide_annot.adb:194:07: error: Unhide_Info annotation is redundant, "Id" is visible by default
-test_hide_annot.adb:195:74: error: an expression function annotated with Annotate Hide_Info shall be in SPARK
-test_hide_annot.adb:219:07: error: the body of "Deferred_Id" is not visible at the current location
+test_hide_annot.adb:31:07: error: expected an expression function
+test_hide_annot.adb:31:07: error: wrong entity argument for "pragma Annotate (GNATprove, Hide_Info, "Expression_Function_Body"[, ...])"
+test_hide_annot.adb:39:13: error: "Not_SPARK" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
+test_hide_annot.adb:39:13: error: an expression function with the "Hide_Info" annotation shall be in SPARK
+test_hide_annot.adb:54:74: error: the body of an expression function with the "GNATprove" annotation shall be compatible with SPARK
+test_hide_annot.adb:71:77: error: an expression function with the "GNATprove" annotation shall not have a refined postcondition
+test_hide_annot.adb:84:74: error: an expression function with the "Hide_Info" annotation or "Unhide_Info" annotation shall not have the "Inline_For_Proof" annotation
+test_hide_annot.adb:92:06: error: an expression function with the "Hide_Info" annotation or "Unhide_Info" annotation shall not have the "Inline_For_Proof" annotation
+test_hide_annot.adb:100:74: error: an expression function with the "Hide_Info" annotation or "Unhide_Info" annotation shall not be the "Logical_Equal" annotation
+test_hide_annot.adb:106:13: error: an expression function with the "Hide_Info" annotation or "Unhide_Info" annotation shall not be the "Logical_Equal" annotation
+test_hide_annot.adb:117:74: error: an expression function with the "Hide_Info" annotation or "Unhide_Info" annotation shall not have the "At_End_Borrow" annotation
+test_hide_annot.adb:125:13: error: an expression function with the "Hide_Info" annotation or "Unhide_Info" annotation shall not have the "At_End_Borrow" annotation
+test_hide_annot.adb:136:74: error: an expression function with the "Hide_Info" annotation or "Unhide_Info" annotation shall not have the "Higher_Order_Specialization" annotation
+test_hide_annot.adb:144:06: error: an expression function with the "Hide_Info" annotation or "Unhide_Info" annotation shall not have the "Higher_Order_Specialization" annotation
+test_hide_annot.adb:150:07: error: "Id" shall not have both the "Hide_Info" annotation and the "Unhide_Info" annotation in "Duplicated_Annot"
+test_hide_annot.adb:158:07: error: "X" is not allowed in SPARK (due to incorrect use of "Hide_Info" annotation)
+test_hide_annot.adb:158:07: error: violation of aspect SPARK_Mode at line 1
+test_hide_annot.adb:159:07: error: "pragma Annotate (GNATprove, Hide_Info, "Expression_Function_Body"[, ...])" shall appear at the beginning of a subprogram, entry, or package body, or just after a subprogram, entry, or package body, or declaration
+test_hide_annot.adb:159:07: error: incorrect placement for "pragma Annotate (GNATprove, Hide_Info[, ...])"
+test_hide_annot.adb:194:07: error: "Id" is visible by default
+test_hide_annot.adb:194:07: error: "pragma Annotate (GNATprove, Unhide_Info[, ...])" is redundant
+test_hide_annot.adb:219:07: error: the body of "Annotate" shall be visible at the location of the pragma
 gnatprove: error during flow analysis and proof

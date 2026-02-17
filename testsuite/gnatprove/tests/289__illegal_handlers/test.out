@@ -5,8 +5,10 @@ test_illegal.ads:15:04: error: "X" is not allowed in SPARK (due to incorrect use
 test_illegal.ads:15:04: error: violation of aspect SPARK_Mode at line 1
 test_illegal.ads:16:04: error: "pragma Annotate (GNATprove, Handler[, ...])" must immediately follow the full type declaration of type "T2"
 test_illegal.ads:16:04: error: incorrect placement for "pragma Annotate (GNATprove, Handler[, ...])"
-test_illegal.ads:21:06: error: entity annotated with the aspect Handler must be an access-to-subprogram type
-test_illegal.ads:23:06: error: entity annotated with the aspect Handler must be an access-to-subprogram type
-test_illegal.ads:28:15: error: access-to-subprogram type annotated with the aspect Handler shall not have a precondition
-test_illegal.ads:32:16: error: access-to-subprogram type annotated with the aspect Handler shall not have a postcondition
+test_illegal.ads:21:06: error: expected an access-to-subprogram type
+test_illegal.ads:21:06: error: wrong entity argument for aspect "Annotate => (GNATprove, Handler[, ...])"
+test_illegal.ads:23:06: error: expected an access-to-subprogram type
+test_illegal.ads:23:06: error: wrong entity argument for aspect "Annotate => (GNATprove, Handler[, ...])"
+test_illegal.ads:28:15: error: an access-to-subprogram type with the "Handler" annotation shall not have contracts
+test_illegal.ads:32:16: error: an access-to-subprogram type with the "Handler" annotation shall not have contracts
 gnatprove: error during flow analysis and proof

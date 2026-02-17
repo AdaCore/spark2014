@@ -1,3 +1,3 @@
-main.adb:2:13: error: Entity parameter of a pragma Logical_Equal shall not have post-conditions
-main.adb:8:13: error: Entity parameter of a pragma Logical_Equal shall not have contract cases
+main.adb:2:13: error: function with the "Logical_Equal" annotation shall not have postconditions or contract cases
+main.adb:8:13: error: function with the "Logical_Equal" annotation shall not have postconditions or contract cases
 gnatprove: error during flow analysis and proof

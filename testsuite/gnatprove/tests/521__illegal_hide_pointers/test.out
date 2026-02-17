@@ -1,29 +1,43 @@
 illegal_hidden_ownership.ads:34:12: error: consider annotating it with a "pragma Annotate (GNATprove, Ownership, "Needs_Reclamation"[, ...])"
-illegal_hidden_ownership.ads:34:12: error: if the full view of a type is hidden using a "Hide_Info" annotation, it shall not be subject to onwership unless its partial view has an explicit "Hide_Info" annotation
+illegal_hidden_ownership.ads:34:12: error: if the full view of a type is hidden using a "Hide_Info" annotation, it shall not be subject to onwership unless its partial view has an explicit "Ownership" annotation
 illegal_hidden_ownership.ads:40:12: error: consider annotating it with a "pragma Annotate (GNATprove, Ownership[, ...])"
-illegal_hidden_ownership.ads:40:12: error: if the full view of a type is hidden using a "Hide_Info" annotation, it shall not be subject to onwership unless its partial view has an explicit "Hide_Info" annotation
+illegal_hidden_ownership.ads:40:12: error: if the full view of a type is hidden using a "Hide_Info" annotation, it shall not be subject to onwership unless its partial view has an explicit "Ownership" annotation
 illegal_hidden_ownership.ads:46:12: error: consider annotating it with a "pragma Annotate (GNATprove, Ownership, "Needs_Reclamation"[, ...])"
-illegal_hidden_ownership.ads:46:12: error: if the full view of a type is hidden using a "Hide_Info" annotation, it shall not be subject to onwership unless its partial view has an explicit "Hide_Info" annotation
+illegal_hidden_ownership.ads:46:12: error: if the full view of a type is hidden using a "Hide_Info" annotation, it shall not be subject to onwership unless its partial view has an explicit "Ownership" annotation
 illegal_hidden_ownership.ads:49:12: error: consider annotating it with a "pragma Annotate (GNATprove, Ownership[, ...])"
-illegal_hidden_ownership.ads:49:12: error: if the full view of a type is hidden using a "Hide_Info" annotation, it shall not be subject to onwership unless its partial view has an explicit "Hide_Info" annotation
+illegal_hidden_ownership.ads:49:12: error: if the full view of a type is hidden using a "Hide_Info" annotation, it shall not be subject to onwership unless its partial view has an explicit "Ownership" annotation
 illegal_hidden_ownership.ads:52:12: error: consider annotating it with a "pragma Annotate (GNATprove, Ownership[, ...])"
-illegal_hidden_ownership.ads:52:12: error: if the full view of a type is hidden using a "Hide_Info" annotation, it shall not be subject to onwership unless its partial view has an explicit "Hide_Info" annotation
+illegal_hidden_ownership.ads:52:12: error: if the full view of a type is hidden using a "Hide_Info" annotation, it shall not be subject to onwership unless its partial view has an explicit "Ownership" annotation
 illegal_hidden_ownership.ads:54:12: error: consider annotating it with a "pragma Annotate (GNATprove, Ownership, "Needs_Reclamation"[, ...])"
-illegal_hidden_ownership.ads:54:12: error: if the full view of a type is hidden using a "Hide_Info" annotation, it shall not be subject to onwership unless its partial view has an explicit "Hide_Info" annotation
-illegal_hidden_ownership.ads:97:12: error: full view of type annotated with an Ownership annotation shall be subject to ownership
-illegal_hidden_ownership.ads:101:12: error: full view of type annotated with an Ownership annotation shall be subject to ownership
-illegal_hidden_ownership.ads:118:12: warning: checks for ressource or memory reclamation will be unprovable
-illegal_hidden_ownership.ads:118:12: warning: no reclamation function nor reclaimed value found for type with ownership "T_Gen_Acc" [no-reclamation-function]
-illegal_hidden_ownership.ads:129:12: warning: checks for ressource or memory reclamation will be unprovable
-illegal_hidden_ownership.ads:129:12: warning: no reclamation function nor reclaimed value found for type with ownership "T_Gen_Acc_Holder" [no-reclamation-function]
-illegal_hidden_ownership.ads:133:12: warning: checks for ressource or memory reclamation will be unprovable
-illegal_hidden_ownership.ads:133:12: warning: no reclamation function nor reclaimed value found for type with ownership "T_Priv_No_Reclaim" [no-reclamation-function]
-illegal_hidden_ownership.ads:142:12: error: full view of type annotated with an Ownership annotation without "Needs_Reclamation" shall not need reclamation
-illegal_hidden_ownership.ads:146:12: error: full view of type annotated with "Needs_Reclamation" shall need reclamation
-illegal_hidden_ownership.ads:150:12: error: full view of type annotated with an Ownership annotation without "Needs_Reclamation" shall not need reclamation
-illegal_hidden_ownership.ads:154:12: error: full view of type annotated with "Needs_Reclamation" shall need reclamation
-illegal_hidden_ownership.ads:158:12: error: full view of type annotated with an Ownership annotation shall have a matching annotation
-illegal_hidden_ownership.ads:160:12: error: full view of type annotated with an Ownership annotation shall have a matching annotation
+illegal_hidden_ownership.ads:54:12: error: if the full view of a type is hidden using a "Hide_Info" annotation, it shall not be subject to onwership unless its partial view has an explicit "Ownership" annotation
+illegal_hidden_ownership.ads:88:07: error: "T_Float" is not allowed in SPARK (due to incorrect use of "Ownership" annotation)
+illegal_hidden_ownership.ads:88:07: error: violation of aspect SPARK_Mode at line 1
+illegal_hidden_ownership.ads:97:12: error: full view of "T_Float" shall be subject to ownership
+illegal_hidden_ownership.ads:97:12: error: full view of a private type or deferred constant with the "Ownership" annotation shall comply with the annotation
+illegal_hidden_ownership.ads:99:07: error: "T_Float" is not allowed in SPARK (due to incorrect use of "Ownership" annotation)
+illegal_hidden_ownership.ads:99:07: error: violation of aspect SPARK_Mode at line 1
+illegal_hidden_ownership.ads:101:12: error: full view of "T_Int" shall be subject to ownership
+illegal_hidden_ownership.ads:101:12: error: full view of a private type or deferred constant with the "Ownership" annotation shall comply with the annotation
+illegal_hidden_ownership.ads:115:07: error: "T_Acc" is not allowed in SPARK (due to incorrect use of "Ownership" annotation)
+illegal_hidden_ownership.ads:115:07: error: violation of aspect SPARK_Mode at line 1
+illegal_hidden_ownership.ads:122:07: error: "T_Gen_Acc" is not allowed in SPARK (due to incorrect use of "Ownership" annotation)
+illegal_hidden_ownership.ads:122:07: error: violation of aspect SPARK_Mode at line 1
+illegal_hidden_ownership.ads:142:12: error: full view of "T_Acc" shall not need reclamation
+illegal_hidden_ownership.ads:142:12: error: full view of a private type or deferred constant with the "Ownership" annotation shall comply with the annotation
+illegal_hidden_ownership.ads:144:07: error: "T_Acc" is not allowed in SPARK (due to incorrect use of "Ownership" annotation)
+illegal_hidden_ownership.ads:144:07: error: violation of aspect SPARK_Mode at line 1
+illegal_hidden_ownership.ads:146:12: error: full view of "T_Gen_Acc" shall need reclamation
+illegal_hidden_ownership.ads:146:12: error: full view of a private type or deferred constant with the "Ownership" annotation shall comply with the annotation
+illegal_hidden_ownership.ads:148:07: error: "T_Gen_Acc" is not allowed in SPARK (due to incorrect use of "Ownership" annotation)
+illegal_hidden_ownership.ads:148:07: error: violation of aspect SPARK_Mode at line 1
+illegal_hidden_ownership.ads:150:12: error: full view of "T_Acc_Holder" shall not need reclamation
+illegal_hidden_ownership.ads:150:12: error: full view of a private type or deferred constant with the "Ownership" annotation shall comply with the annotation
+illegal_hidden_ownership.ads:154:12: error: full view of "T_Gen_Acc_Holder" shall need reclamation
+illegal_hidden_ownership.ads:154:12: error: full view of a private type or deferred constant with the "Ownership" annotation shall comply with the annotation
+illegal_hidden_ownership.ads:158:12: error: full view of "T_Priv_No_Reclaim" shall need reclamation
+illegal_hidden_ownership.ads:158:12: error: full view of a private type or deferred constant with the "Ownership" annotation shall comply with the annotation
+illegal_hidden_ownership.ads:160:12: error: full view of "T_Priv_Reclaim" shall not need reclamation
+illegal_hidden_ownership.ads:160:12: error: full view of a private type or deferred constant with the "Ownership" annotation shall comply with the annotation
 illegal_hidden_predefined_eq.ads:27:12: error: consider annotating it with a "pragma Annotate (GNATprove,  Predefined_Equality, "Only_Null"[, ...])"
 illegal_hidden_predefined_eq.ads:27:12: error: if the full view of a type is hidden using a "Hide_Info" annotation, its predefined equality shall not be restricted unless its partial view has an explicit "Predefined_Equality" annotation
 illegal_hidden_predefined_eq.ads:29:12: error: consider annotating it with a "pragma Annotate (GNATprove,  Predefined_Equality, "No_Equality"[, ...])"
@@ -32,15 +46,20 @@ illegal_hidden_predefined_eq.ads:31:12: error: consider annotating it with a "pr
 illegal_hidden_predefined_eq.ads:31:12: error: if the full view of a type is hidden using a "Hide_Info" annotation, its predefined equality shall not be restricted unless its partial view has an explicit "Predefined_Equality" annotation
 illegal_hidden_predefined_eq.ads:33:12: error: consider annotating it with a "pragma Annotate (GNATprove,  Predefined_Equality, "Only_Null"[, ...])"
 illegal_hidden_predefined_eq.ads:33:12: error: if the full view of a type is hidden using a "Hide_Info" annotation, its predefined equality shall not be restricted unless its partial view has an explicit "Predefined_Equality" annotation
-illegal_hidden_predefined_eq.ads:68:12: error: full view of type annotated with a Predefined_Equality "Only_Null" annotation shall be an access type
-illegal_hidden_predefined_eq.ads:70:07: error: the value of "C_Float" shall be a null value
-illegal_hidden_predefined_eq.ads:72:12: error: full view of type annotated with a Predefined_Equality "No_Equality" annotation shall be a composite type whose components have a restricted equality
-illegal_hidden_predefined_eq.ads:84:12: warning: consider annotating a constant with a pragma Annotate (GNATprove, Predefined_Equality, "Null_Value", ...)
-illegal_hidden_predefined_eq.ads:84:12: warning: no null value found for type with predefined equality "T_Cst_Acc_Holder" [predefined-equality-null]
-illegal_hidden_predefined_eq.ads:87:12: warning: consider annotating a constant with a pragma Annotate (GNATprove, Predefined_Equality, "Null_Value", ...)
-illegal_hidden_predefined_eq.ads:87:12: warning: no null value found for type with predefined equality "T_Priv_No_Eq" [predefined-equality-null]
-illegal_hidden_predefined_eq.ads:96:12: error: full view of type annotated with a Predefined_Equality "No_Equality" annotation shall be a composite type whose components have a restricted equality
-illegal_hidden_predefined_eq.ads:100:12: error: full view of type annotated with a Predefined_Equality "Only_Null" annotation shall be an access type
-illegal_hidden_predefined_eq.ads:104:12: error: full view of type annotated with a Predefined_Equality annotation shall have a matching annotation
-illegal_hidden_predefined_eq.ads:106:12: error: full view of type annotated with a Predefined_Equality annotation shall have a matching annotation
+illegal_hidden_predefined_eq.ads:59:07: error: "T_Float" is not allowed in SPARK (due to incorrect use of "Predefined_Equality" annotation)
+illegal_hidden_predefined_eq.ads:59:07: error: violation of aspect SPARK_Mode at line 1
+illegal_hidden_predefined_eq.ads:68:12: error: full view of "T_Float" shall be an access type
+illegal_hidden_predefined_eq.ads:68:12: error: full view of a private type or deferred constant with the "Predefined_Equality" annotation shall comply with the annotation
+illegal_hidden_predefined_eq.ads:70:07: error: "T_Float" is not allowed in SPARK (due to incorrect use of "Predefined_Equality" annotation)
+illegal_hidden_predefined_eq.ads:70:07: error: violation of aspect SPARK_Mode at line 1
+illegal_hidden_predefined_eq.ads:72:12: error: full view of "T_Int" shall be a composite type whose components have a restricted equality
+illegal_hidden_predefined_eq.ads:72:12: error: full view of a private type or deferred constant with the "Predefined_Equality" annotation shall comply with the annotation
+illegal_hidden_predefined_eq.ads:96:12: error: full view of "T_Cst_Acc" shall be a composite type whose components have a restricted equality
+illegal_hidden_predefined_eq.ads:96:12: error: full view of a private type or deferred constant with the "Predefined_Equality" annotation shall comply with the annotation
+illegal_hidden_predefined_eq.ads:100:12: error: full view of "T_Cst_Acc_Holder" shall be an access type
+illegal_hidden_predefined_eq.ads:100:12: error: full view of a private type or deferred constant with the "Predefined_Equality" annotation shall comply with the annotation
+illegal_hidden_predefined_eq.ads:104:12: error: full view of "T_Priv_No_Eq" shall not allow equality
+illegal_hidden_predefined_eq.ads:104:12: error: full view of a private type or deferred constant with the "Predefined_Equality" annotation shall comply with the annotation
+illegal_hidden_predefined_eq.ads:106:12: error: full view of  "T_Priv_Only_Null" shall allow equality on null
+illegal_hidden_predefined_eq.ads:106:12: error: full view of a private type or deferred constant with the "Predefined_Equality" annotation shall comply with the annotation
 gnatprove: error during flow analysis and proof

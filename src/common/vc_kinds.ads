@@ -498,6 +498,7 @@ package VC_Kinds is
 
       Annot_Argument_Number,
       Annot_Bad_Entity,
+      Annot_Compatible_Full_View,
       Annot_Duplicated_Annotated_Entity,
       Annot_Duplicated_Annotation,
       Annot_Entity_Expected,
@@ -505,31 +506,67 @@ package VC_Kinds is
       Annot_Function_Return_Type,
       Annot_Function_Traversal,
       Annot_Function_With_Side_Effects,
+      Annot_Hidden_Private_Part,
+      Annot_Incompatible_Annotated_Entities,
       Annot_Invalid_Name,
+      Annot_Object_Type,
+      Annot_Missing_Annotated_Entity,
       Annot_Placement,
       Annot_Pragma_On_Generic,
+      Annot_Redundant_Annotation,
       Annot_String_Third_Argument,
       Annot_Subp_Access_Global,
+      Annot_Subp_Dispatch,
       Annot_Subp_Parameter_Number,
       Annot_Subp_Parameter_Type,
+      Annot_Subp_Shall_Be_Ghost,
+      Annot_Subp_Shall_Be_Pure,
       Annot_Volatile_Function,
+      Annot_Wrong_Fourth_Parameter,
       Annot_Wrong_Third_Parameter,
 
       --  Specific to a kind of annotation
 
       Annot_At_End_Borrow_Context,
+      Annot_At_End_Borrow_No_Contracts,
       Annot_At_End_Borrow_Param,
       Annot_At_End_Borrow_Param_In_Contract,
       Annot_Container_Aggregates_Add,
       Annot_Container_Aggregates_Add_Access_Param,
+      Annot_Container_Aggregates_Incompatible_Models,
       Annot_Container_Aggregates_No_Aggregate,
       Annot_Container_Aggregates_Private,
       Annot_Handler_Call,
       Annot_Handler_Conversion,
+      Annot_Handler_No_Contracts,
+      Annot_Hide_Info_Expr_Fun_At_End_Borrow,
+      Annot_Hide_Info_Expr_Fun_Body_Hide_Unhide,
+      Annot_Hide_Info_Expr_Fun_Body_Not_SPARK,
+      Annot_Hide_Info_Expr_Fun_HO_Spec,
+      Annot_Hide_Info_Expr_Fun_Inline,
+      Annot_Hide_Info_Expr_Fun_Invisible,
+      Annot_Hide_Info_Expr_Fun_Logical_Eq,
+      Annot_Hide_Info_Expr_Fun_Refined_Post,
+      Annot_Hide_Info_Private_Auto,
       Annot_Hide_Info_Private_Child,
       Annot_Hide_Info_Private_Eq,
       Annot_Hide_Info_Private_Ownership,
+      Annot_HO_Specialization_Formal_In_Iterated_Comp,
+      Annot_HO_Specialization_Inline,
+      Annot_HO_Specialization_No_Formal,
+      Annot_HO_Specialization_Use_Of_Formal,
       Annot_Inline_For_Proof_Body_Off,
+      Annot_Inline_For_Proof_Logical_Equal,
+      Annot_Inline_For_Proof_Potentially_Invalid,
+      Annot_Inline_For_Proof_Post,
+      Annot_Iterable_For_Proof_Circular_Models,
+      Annot_Iterable_For_Proof_Controlling_Result,
+      Annot_Iterable_For_Proof_Prim,
+      Annot_Logical_Equal_Post,
+      Annot_Logical_Equal_Potentially_Invalid,
+      Annot_Mutable_In_Params_Depends,
+      Annot_Mutable_In_Params_No_Params,
+      Annot_Mutable_In_Params_Side_Effects,
       Annot_No_Bitwise_Operations_Use,
       Annot_Ownership_Potentially_Invalid,
       Annot_Predefined_Equality_Use_Eq,
@@ -1360,6 +1397,27 @@ package VC_Kinds is
          when Lim_Indexed_Container_Aggregate                             =>
            "indexed container aggregate");
 
+   --  Names for GNATprove annotations
+
+   At_End_Borrow_Name           : constant String := "At_End_Borrow";
+   Automatic_Instantiation_Name : constant String := "Automatic_Instantiation";
+   Container_Aggregates_Name    : constant String := "Container_Aggregates";
+   Handler_Name                 : constant String := "Handler";
+   Hide_Info_Name               : constant String := "Hide_Info";
+   HO_Specialization_Name       : constant String :=
+     "Higher_Order_Specialization";
+   Inline_For_Proof_Name        : constant String := "Inline_For_Proof";
+   Iterable_For_Proof_Name      : constant String := "Iterable_For_Proof";
+   Logical_Equal_Name           : constant String := "Logical_Equal";
+   Mutable_In_Params_Name       : constant String := "Mutable_In_Parameters";
+   No_Bitwise_Operations_Name   : constant String := "No_Bitwise_Operations";
+   No_Wrap_Around_Name          : constant String := "No_Wrap_Around";
+   Ownership_Name               : constant String := "Ownership";
+   Predefined_Equality_Name     : constant String := "Predefined_Equality";
+   Skip_Flow_And_Proof_Name     : constant String := "Skip_Flow_And_Proof";
+   Skip_Proof_Name              : constant String := "Skip_Proof";
+   Unhide_Info_Name             : constant String := "Unhide_Info";
+
    type Annot_Format_Kind is (Text_Form, Aspect_Form, Pragma_Form);
 
    function Aspect_Or_Pragma (From_Aspect : Boolean) return Annot_Format_Kind
@@ -1373,7 +1431,7 @@ package VC_Kinds is
    --  Pretty print annotation for error.
    --  Get the name of the annotation from the Kind if it is specific,
    --  otherwise, it can be supplied in Name or left empty (the annotation
-   --  will then use GNATprove only.
+   --  will then use GNATprove only).
    --  If Format is
    --   * Text_Form, output: "Name" annotation
    --   * Pragma_Form, output: "pragma Annotate (GNATprove, Name, [...])"

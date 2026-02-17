@@ -3,15 +3,25 @@ illegal_mutable_in_parameters.adb:24:04: error: wrong number of arguments in "pr
 illegal_mutable_in_parameters.adb:30:56: error: last argument of "pragma Annotate (GNATprove, Mutable_In_Parameters[, ...])" must be an entity
 illegal_mutable_in_parameters.adb:40:28: error: "T" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
 illegal_mutable_in_parameters.adb:40:28: error: violation of aspect SPARK_Mode at line 1
-illegal_mutable_in_parameters.adb:52:04: error: Entity parameter of a pragma Annotate "Mutable_In_Parameters" shall be a private type
-illegal_mutable_in_parameters.adb:65:04: error: Entity parameter of a pragma Annotate "Mutable_In_Parameters" shall not be tagged
-illegal_mutable_in_parameters.adb:78:04: error: Entity parameter of a pragma Annotate "Mutable_In_Parameters" shall not have discriminants
-illegal_mutable_in_parameters.adb:90:04: error: the full view of the Entity parameter of a pragma Annotate "Mutable_In_Parameters" shall either be an access-to-variable type or not be visible in SPARK
-illegal_mutable_in_parameters.adb:95:04: error: pragma Annotate "Mutable_In_Parameters" must appear just after a subprogram or entry
-illegal_mutable_in_parameters.adb:100:04: error: pragma Annotate "Mutable_In_Parameters" must appear just after a subprogram or entry
-illegal_mutable_in_parameters.adb:106:04: error: pragma Annotate "Mutable_In_Parameters" cannot appear after function without side effects
-illegal_mutable_in_parameters.adb:120:07: error: pragma Annotate "Mutable_In_Parameters" cannot appear after a dispatching operation
-illegal_mutable_in_parameters.adb:131:04: error: pragma Annotate "Mutable_In_Parameters" cannot appear after an automatically instantiated lemma
-illegal_mutable_in_parameters.adb:133:14: error: procedure annotated with the pragma Automatic_Instantiation shall not have mutable "in" parameters
-illegal_mutable_in_parameters.adb:143:04: error: "Bad_Update_13" does not have any "in" parameter of type "T"
+illegal_mutable_in_parameters.adb:52:63: error: expected a private type
+illegal_mutable_in_parameters.adb:52:63: error: wrong entity argument for "pragma Annotate (GNATprove, Mutable_In_Parameters[, ...])"
+illegal_mutable_in_parameters.adb:65:63: error: "T" shall not be tagged
+illegal_mutable_in_parameters.adb:65:63: error: wrong entity argument for "pragma Annotate (GNATprove, Mutable_In_Parameters[, ...])"
+illegal_mutable_in_parameters.adb:78:65: error: "T" shall not have discriminants
+illegal_mutable_in_parameters.adb:78:65: error: wrong entity argument for "pragma Annotate (GNATprove, Mutable_In_Parameters[, ...])"
+illegal_mutable_in_parameters.adb:90:69: error: the full view of "T" shall either be an access-to-variable type or not be visible in SPARK
+illegal_mutable_in_parameters.adb:90:69: error: wrong entity argument for "pragma Annotate (GNATprove, Mutable_In_Parameters[, ...])"
+illegal_mutable_in_parameters.adb:94:04: error: "Bad_Update_7" is not allowed in SPARK (due to incorrect use of "Mutable_In_Parameters" annotation)
+illegal_mutable_in_parameters.adb:94:04: error: violation of aspect SPARK_Mode at line 1
+illegal_mutable_in_parameters.adb:95:04: error: "pragma Annotate (GNATprove, Mutable_In_Parameters[, ...])" shall be located just after a subprogram or entry
+illegal_mutable_in_parameters.adb:95:04: error: incorrect placement for "pragma Annotate (GNATprove, Mutable_In_Parameters[, ...])"
+illegal_mutable_in_parameters.adb:100:04: error: "pragma Annotate (GNATprove, Mutable_In_Parameters[, ...])" shall be located just after a subprogram or entry
+illegal_mutable_in_parameters.adb:100:04: error: incorrect placement for "pragma Annotate (GNATprove, Mutable_In_Parameters[, ...])"
+illegal_mutable_in_parameters.adb:106:04: error: subprogram with the "Mutable_In_Parameters" annotation shall not be a function without side-effects
+illegal_mutable_in_parameters.adb:120:07: error: a subprogram with the "Mutable_In_Parameters" annotation shall not be a primitive operation of a tagged type
+illegal_mutable_in_parameters.adb:127:14: error: "Bad_Update_11" might mutate its "in" parameters
+illegal_mutable_in_parameters.adb:127:14: error: a subprogram with the "Automatic_Instantiation" annotation shall have no side-effects
+illegal_mutable_in_parameters.adb:133:14: error: "Bad_Update_12" might mutate its "in" parameters
+illegal_mutable_in_parameters.adb:133:14: error: a subprogram with the "Automatic_Instantiation" annotation shall have no side-effects
+illegal_mutable_in_parameters.adb:143:04: error: subprogram with the "Mutable_In_Parameters" annotation shall have at least an "in" parameter of type "T"
 gnatprove: error during flow analysis and proof

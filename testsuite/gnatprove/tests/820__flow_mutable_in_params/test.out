@@ -1,4 +1,4 @@
-bad.ads:9:04: error: pragma Annotate "Mutable_In_Parameters" cannot appear after a subprogram with "Depends" contract
+bad.ads:9:04: error: subprogram with the "Mutable_In_Parameters" annotation shall not have a Depends contract
 h.adb:21:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 h.adb:27:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 h.ads:2:09: info: in default value of private type at h.ads:2

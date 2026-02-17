@@ -1,7 +1,7 @@
-aspects.ads:4:06: error: function annotated with Inline_For_Proof shall not be a function with side effects
-aspects.ads:9:06: error: function annotated with Inline_For_Proof shall not be a volatile function
-aspects.ads:15:06: error: subprogram annotated with Inline_For_Proof shall not be a dispatching operation
-aspects.ads:19:06: error: function annotated with Inline_For_Proof shall not be a borrowing traversal function
+aspects.ads:4:06: error: a function with the "Inline_For_Proof" annotation shall not have side effects
+aspects.ads:9:06: error: a function with the "Inline_For_Proof" annotation shall not be volatile
+aspects.ads:15:06: error: a subprogram with the "Inline_For_Proof" annotation shall not be a primitive operation of a tagged type
+aspects.ads:19:06: error: a function with the "Inline_For_Proof" annotation shall not be a traversal function
 bad_call.adb:6:20: error: call to a function with side effects outside of assignment or object declaration without a block is not allowed in SPARK (SPARK RM 6.1.13(4)) [E0018]
 bad_call.adb:6:20: error: launch "gnatprove --explain=E0018" for more information
 bad_call.adb:6:20: error: violation of aspect SPARK_Mode at line 4

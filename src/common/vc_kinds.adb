@@ -50,18 +50,18 @@ package body VC_Kinds is
       Format   : Annot_Format_Kind := Text_Form;
       Name     : String := "";
       Snd_Name : String := "") return String
-   is (if Format = Text_Form
-       then
-         '"'
-         & (if Kind not in Specific_Annotation_Kind and then Name'Length = 0
-            then "GNATprove"
-            else
-              (declare
-                 Fst_Name : constant String :=
-                   (if Kind in Specific_Annotation_Kind
-                    then Annotation_From_Kind (Kind)
-                    else Name);
-               begin
+   is (declare
+         Fst_Name : constant String :=
+           (if Name'Length = 0 and Kind in Specific_Annotation_Kind
+            then Annotation_From_Kind (Kind)
+            else Name);
+       begin
+         (if Format = Text_Form
+          then
+            '"'
+            & (if Fst_Name'Length = 0
+               then "GNATprove"
+               else
                  (if Snd_Name'Length = 0
                   then Fst_Name
                   else
@@ -69,20 +69,22 @@ package body VC_Kinds is
                     & Fst_Name
                     & ", """
                     & Snd_Name
-                    & """[, ...])")))
-         & """ annotation"
-       else
-         (if Format = Pragma_Form
-          then """pragma Annotate "
-          else "aspect ""Annotate => ")
-         & "(GNATprove, "
-         & (if Name'Length = 0
-            then "..."
-            else
-              Name
-              & (if Snd_Name'Length = 0 then "" else ", """ & Snd_Name & '"')
-              & "[, ...]")
-         & ")""");
+                    & """[, ...])"))
+            & """ annotation"
+          else
+            (if Format = Pragma_Form
+             then """pragma Annotate "
+             else "aspect ""Annotate => ")
+            & "(GNATprove, "
+            & (if Fst_Name'Length = 0
+               then "..."
+               else
+                 Fst_Name
+                 & (if Snd_Name'Length = 0
+                    then ""
+                    else ", """ & Snd_Name & '"')
+                 & "[, ...]")
+            & ")"""));
 
    --------------------------
    -- Annotation_From_Kind --
@@ -92,24 +94,39 @@ package body VC_Kinds is
      (Kind : Specific_Annotation_Kind) return String
    is (case Kind is
          when Annot_At_End_Borrow_Context
-            | Annot_At_End_Borrow_Param
-            | Annot_At_End_Borrow_Param_In_Contract         => "At_End_Borrow",
+            .. Annot_At_End_Borrow_Param_In_Contract
+         => At_End_Borrow_Name,
          when Annot_Container_Aggregates_Add
-            | Annot_Container_Aggregates_Add_Access_Param
-            | Annot_Container_Aggregates_No_Aggregate
-            | Annot_Container_Aggregates_Private            =>
-           "Container_Aggregates",
-         when Annot_Handler_Call | Annot_Handler_Conversion => "Handler",
-         when Annot_Hide_Info_Private_Child
-            | Annot_Hide_Info_Private_Eq
-            | Annot_Hide_Info_Private_Ownership             => "Hide_Info",
-         when Annot_Inline_For_Proof_Body_Off               =>
-           "Inline_For_Proof",
-         when Annot_No_Bitwise_Operations_Use               =>
-           "No_Bitwise_Operations",
-         when Annot_Ownership_Potentially_Invalid           => "Ownership",
-         when Annot_Predefined_Equality_Use_Eq              =>
-           "Predefined_Equality");
+            .. Annot_Container_Aggregates_Private
+         => Container_Aggregates_Name,
+         when Annot_Handler_Call .. Annot_Handler_No_Contracts
+         => Handler_Name,
+         --  Can be Hide_Info or Unhide_Info, the name needs to be supplied
+         when Annot_Hide_Info_Expr_Fun_At_End_Borrow
+            .. Annot_Hide_Info_Expr_Fun_Refined_Post
+         => "",
+         when Annot_Hide_Info_Private_Auto .. Annot_Hide_Info_Private_Ownership
+         => Hide_Info_Name,
+         when Annot_HO_Specialization_Formal_In_Iterated_Comp
+            .. Annot_HO_Specialization_Use_Of_Formal
+         => HO_Specialization_Name,
+         when Annot_Inline_For_Proof_Body_Off .. Annot_Inline_For_Proof_Post
+         => Inline_For_Proof_Name,
+         when Annot_Iterable_For_Proof_Circular_Models
+            .. Annot_Iterable_For_Proof_Prim
+         => Iterable_For_Proof_Name,
+         when Annot_Logical_Equal_Post
+            | Annot_Logical_Equal_Potentially_Invalid
+         => Logical_Equal_Name,
+         when Annot_Mutable_In_Params_Depends
+            .. Annot_Mutable_In_Params_Side_Effects
+         => Mutable_In_Params_Name,
+         when Annot_No_Bitwise_Operations_Use
+         => No_Bitwise_Operations_Name,
+         when Annot_Ownership_Potentially_Invalid
+         => Ownership_Name,
+         when Annot_Predefined_Equality_Use_Eq
+         => Predefined_Equality_Name);
 
    ------------
    -- CWE_ID --
@@ -1789,144 +1806,312 @@ package body VC_Kinds is
 
          --  Common messages on annotations
 
-         when Annot_Argument_Number                       =>
+         when Annot_Argument_Number                           =>
            "wrong number of arguments in "
            & Annot_To_String
                (Kind, Aspect_Or_Pragma (From_Aspect), Name, Snd_Name),
-         when Annot_Bad_Entity                            =>
+         when Annot_Bad_Entity                                =>
            "wrong entity argument for "
-           & Annot_To_String (Kind, Aspect_Or_Pragma (From_Aspect), Name),
-         when Annot_Duplicated_Annotated_Entity           =>
+           & Annot_To_String
+               (Kind, Aspect_Or_Pragma (From_Aspect), Name, Snd_Name),
+         when Annot_Compatible_Full_View                      =>
+           "full view of a private type or deferred constant with the "
+           & Annot_To_String (Name => Name)
+           & " shall comply with the annotation",
+         when Annot_Duplicated_Annotated_Entity               =>
            "duplicated entity with the "
-           & Annot_To_String (Kind, Name => Name, Snd_Name => Snd_Name)
-           & " in the same scope",
-         when Annot_Duplicated_Annotation                 =>
+           & Annot_To_String (Kind, Name => Name, Snd_Name => Snd_Name),
+         when Annot_Duplicated_Annotation                     =>
            "a single "
            & Annot_To_String (Kind, Name => Name)
            & " shall be specified for &",
-         when Annot_Entity_Expected                       =>
+         when Annot_Entity_Expected                           =>
            "last argument of "
            & Annot_To_String (Kind, Aspect_Or_Pragma (From_Aspect), Name)
            & " must be an entity",
-         when Annot_Entity_Placement                      =>
+         when Annot_Entity_Placement                          =>
            "incorrect placement for entity with the "
            & Annot_To_String (Kind, Name => Name),
-         when Annot_Function_Return_Type                  =>
+         when Annot_Function_Return_Type                      =>
            "wrong return type for function with the "
            & Annot_To_String (Kind, Name => Name),
-         when Annot_Function_Traversal                    =>
+         when Annot_Function_Traversal                        =>
            "a function with the "
            & Annot_To_String (Kind, Name => Name)
            & " shall not be a traversal function",
-         when Annot_Function_With_Side_Effects            =>
+         when Annot_Function_With_Side_Effects                =>
            "a function with the "
            & Annot_To_String (Kind, Name => Name)
            & " shall not have side effects",
-         when Annot_Invalid_Name                          =>
+         when Annot_Hidden_Private_Part                       =>
+           "the private part of the scope of a private type with the "
+           & Annot_To_String (Name => Name)
+           & " shall have either a ""pragma SPARK_Mode (Off)"" or a "
+           & Annot_To_String
+               (Format   => Pragma_Form,
+                Name     => Hide_Info_Name,
+                Snd_Name => "Private_Part"),
+         when Annot_Invalid_Name                              =>
            "invalid name """
            & Name
            & """ in "
            & Annot_To_String
                (Kind, Aspect_Or_Pragma (From_Aspect), Name => ""),
-         when Annot_Placement                             =>
+         when Annot_Incompatible_Annotated_Entities           =>
+           "incompatible entities with the "
+           & Annot_To_String (Kind, Name => Name),
+         when Annot_Missing_Annotated_Entity                  =>
+           "no applicable entity with the "
+           & Annot_To_String (Kind, Name => Name, Snd_Name => Snd_Name)
+           & " found",
+         when Annot_Object_Type                               =>
+           "wrong type for object with the "
+           & Annot_To_String (Kind, Name => Name),
+         when Annot_Placement                                 =>
            "incorrect placement for "
            & Annot_To_String (Kind, Aspect_Or_Pragma (From_Aspect), Name),
-         when Annot_Pragma_On_Generic                     =>
+         when Annot_Pragma_On_Generic                         =>
            Annot_To_String (Kind, Aspect_Or_Pragma (From_Aspect), Name)
            & " must be in aspect form for generic subprogram",
-         when Annot_String_Third_Argument                 =>
+         when Annot_Redundant_Annotation                      =>
+           Annot_To_String (Kind, Aspect_Or_Pragma (From_Aspect), Name)
+           & " is redundant",
+         when Annot_String_Third_Argument                     =>
            "third argument of "
            & Annot_To_String (Kind, Aspect_Or_Pragma (From_Aspect), Name)
            & " must be a string",
-         when Annot_Subp_Access_Global                    =>
+         when Annot_Subp_Access_Global                        =>
            "a subprogram with the "
            & Annot_To_String (Kind, Name => Name)
            & " shall not access global data",
-         when Annot_Subp_Parameter_Number                 =>
+         when Annot_Subp_Dispatch                             =>
+           "a subprogram with the "
+           & Annot_To_String (Kind, Name => Name)
+           & " shall not be a primitive operation of a tagged type",
+         when Annot_Subp_Parameter_Number                     =>
            "wrong number of parameters for a subprogram with the "
            & Annot_To_String (Kind, Name => Name),
-         when Annot_Subp_Parameter_Type                   =>
+         when Annot_Subp_Parameter_Type                       =>
            "wrong type for parameter of subprogram with the "
            & Annot_To_String (Kind, Name => Name),
-         when Annot_Volatile_Function                     =>
+         when Annot_Subp_Shall_Be_Ghost                       =>
+           "a subprogram with the "
+           & Annot_To_String (Kind, Name => Name)
+           & " shall be ghost",
+         when Annot_Subp_Shall_Be_Pure                        =>
+           "a subprogram with the "
+           & Annot_To_String (Kind, Name => Name)
+           & " shall have no side-effects",
+         when Annot_Volatile_Function                         =>
            "a function with the "
            & Annot_To_String (Kind, Name => Name)
            & " shall not be volatile",
-         when Annot_Wrong_Third_Parameter                 =>
+         when Annot_Wrong_Fourth_Parameter                    =>
+           "unexpected fourth argument for "
+           & Annot_To_String (Kind, Aspect_Or_Pragma (From_Aspect), Name),
+         when Annot_Wrong_Third_Parameter                     =>
            "unexpected third argument for "
            & Annot_To_String (Kind, Aspect_Or_Pragma (From_Aspect), Name),
 
          --  Messages for specific annotations
 
-         when Annot_At_End_Borrow_Context                 =>
+         when Annot_At_End_Borrow_Context                     =>
            "calls to a function annotated with the "
            & Annot_To_String (Kind)
            & " and references to constants saving such a call shall "
            & "occur either in a postcondition, as a parameter of a lemma, in "
            & "an assertion, or as the initial value of a ghost constant",
-         when Annot_At_End_Borrow_Param                   =>
+         when Annot_At_End_Borrow_No_Contracts                =>
+           "a function with the "
+           & Annot_To_String (Kind)
+           & " shall not have contracts",
+         when Annot_At_End_Borrow_Param                       =>
            "actual parameter of a call to a function with "
            & Annot_To_String (Kind)
            & " shall be a path",
-         when Annot_At_End_Borrow_Param_In_Contract       =>
+         when Annot_At_End_Borrow_Param_In_Contract           =>
            "actual parameter of a call to a function with "
            & Annot_To_String (Kind)
            & " occurring in a contract shall be a local borrower "
            & "or the borrowed parameter of a traversal function",
-         when Annot_Container_Aggregates_Add              =>
+         when Annot_Container_Aggregates_Add                  =>
            "the Aggregate aspect of a type with the "
            & Annot_To_String (Kind)
            & " has the wrong form",
-         when Annot_Container_Aggregates_Add_Access_Param =>
+         when Annot_Container_Aggregates_Add_Access_Param     =>
            "procedure used in the Aggregate aspect of a type with the "
            & Annot_To_String (Kind)
            & " shall not have access parameters",
-         when Annot_Container_Aggregates_No_Aggregate     =>
+         when Annot_Container_Aggregates_Incompatible_Models  =>
+           "concrete and model types of a function with the "
+           & Annot_To_String (Kind)
+           & " shall define compatible aggregates",
+         when Annot_Container_Aggregates_No_Aggregate         =>
            "a type with the "
            & Annot_To_String (Kind)
            & " shall have an Aggregate aspect",
-         when Annot_Container_Aggregates_Private          =>
+         when Annot_Container_Aggregates_Private              =>
            "a type with the "
            & Annot_To_String (Kind)
            & " shall have a private declaration",
-         when Annot_Handler_Call                          =>
+         when Annot_Handler_Call                              =>
            "object of an access-to-subprogram type with the "
            & Annot_To_String (Kind)
            & " shall not be called",
-         when Annot_Handler_Conversion                    =>
+         when Annot_Handler_Conversion                        =>
            "an access-to-subprogram type with the "
            & Annot_To_String (Kind)
            & " shall not be converted to an access-to-subprogram type "
            & "without",
-         when Annot_Hide_Info_Private_Child               =>
+         when Annot_Handler_No_Contracts                      =>
+           "an access-to-subprogram type with the "
+           & Annot_To_String (Kind)
+           & " shall not have contracts",
+         when Annot_Hide_Info_Expr_Fun_Body_Hide_Unhide       =>
+           "& shall not have both the "
+           & Annot_To_String (Name => Hide_Info_Name)
+           & " and the "
+           & Annot_To_String (Name => Unhide_Info_Name)
+           & " in &",
+         when Annot_Hide_Info_Expr_Fun_At_End_Borrow          =>
+           "an expression function with the "
+           & Annot_To_String (Name => Hide_Info_Name)
+           & " or "
+           & Annot_To_String (Name => Unhide_Info_Name)
+           & " shall not have the "
+           & Annot_To_String (Name => At_End_Borrow_Name),
+         when Annot_Hide_Info_Expr_Fun_Body_Not_SPARK         =>
+           "the body of an expression function with the "
+           & Annot_To_String (Kind)
+           & " shall be compatible with SPARK",
+         when Annot_Hide_Info_Expr_Fun_HO_Spec                =>
+           "an expression function with the "
+           & Annot_To_String (Name => Hide_Info_Name)
+           & " or "
+           & Annot_To_String (Name => Unhide_Info_Name)
+           & " shall not have the "
+           & Annot_To_String (Name => HO_Specialization_Name),
+         when Annot_Hide_Info_Expr_Fun_Inline                 =>
+           "an expression function with the "
+           & Annot_To_String (Name => Hide_Info_Name)
+           & " or "
+           & Annot_To_String (Name => Unhide_Info_Name)
+           & " shall not have the "
+           & Annot_To_String (Name => Inline_For_Proof_Name),
+         when Annot_Hide_Info_Expr_Fun_Invisible              =>
+           "the body of & shall be visible at the location of the pragma",
+         when Annot_Hide_Info_Expr_Fun_Logical_Eq             =>
+           "an expression function with the "
+           & Annot_To_String (Name => Hide_Info_Name)
+           & " or "
+           & Annot_To_String (Name => Unhide_Info_Name)
+           & " shall not be the "
+           & Annot_To_String (Name => Logical_Equal_Name),
+         when Annot_Hide_Info_Expr_Fun_Refined_Post           =>
+           "an expression function with the "
+           & Annot_To_String (Kind)
+           & " shall not have a refined postcondition",
+         when Annot_Hide_Info_Private_Auto                    =>
+           "public part of a package whose private part is hidden using a "
+           & Annot_To_String (Kind)
+           & " shall have an applicable SPARK_Mode pragma or aspect",
+         when Annot_Hide_Info_Private_Child                   =>
            "child of a package whose private part is hidden using a "
            & Annot_To_String (Kind)
            & " shall not have a visible private part",
-         when Annot_Hide_Info_Private_Eq                  =>
+         when Annot_Hide_Info_Private_Eq                      =>
            "if the full view of a type is hidden using a "
            & Annot_To_String (Kind)
            & ", its predefined equality shall not be restricted "
            & "unless its partial view has an explicit "
            & """Predefined_Equality"" annotation",
-         when Annot_Hide_Info_Private_Ownership           =>
+         when Annot_Hide_Info_Private_Ownership               =>
            "if the full view of a type is hidden using a "
            & Annot_To_String (Kind)
            & ", it shall not be subject to onwership unless its "
            & "partial view has an explicit "
+           & Annot_To_String (Name => Ownership_Name),
+         when Annot_HO_Specialization_Formal_In_Iterated_Comp =>
+           "subprogram with the "
+           & Annot_To_String (Kind)
+           & " shall not reference its access-to-function"
+           & " parameters inside an iterated component association",
+         when Annot_HO_Specialization_Inline                  =>
+           "inlined function with the "
+           & Annot_To_String (Name => HO_Specialization_Name)
+           & " shall have a postcondition",
+         when Annot_HO_Specialization_No_Formal               =>
+           "subprogram with the "
+           & Annot_To_String (Kind)
+           & " shall have at least a parameter of an anonymous"
+           & " access-to-function type",
+         when Annot_HO_Specialization_Use_Of_Formal           =>
+           "subprogram with the "
+           & Annot_To_String (Kind)
+           & " shall only reference its access-to-function "
+           & "parameters in dereferences and as actual parameters in "
+           & "calls to functions with the "
            & Annot_To_String (Kind),
-         when Annot_Inline_For_Proof_Body_Off             =>
-           "the body of expression functions with "
+         when Annot_Inline_For_Proof_Body_Off                 =>
+           "the body of expression functions with the "
            & Annot_To_String (Kind)
            & " shall be in SPARK",
-         when Annot_No_Bitwise_Operations_Use             =>
+         when Annot_Inline_For_Proof_Logical_Equal            =>
+           "function shall not have both the "
+           & Annot_To_String (Name => Inline_For_Proof_Name)
+           & " and the "
+           & Annot_To_String (Name => Logical_Equal_Name),
+         when Annot_Inline_For_Proof_Potentially_Invalid      =>
+           "function with the "
+           & Annot_To_String (Kind)
+           & " with a postcondition shall not have a potentially invalid "
+           & "result",
+         when Annot_Inline_For_Proof_Post                     =>
+           "function with the "
+           & Annot_To_String (Kind)
+           & " shall either be an expression function or have a single "
+           & "postcondition of the form ""&'Result = Expr""",
+         when Annot_Iterable_For_Proof_Circular_Models        =>
+           "function with the "
+           & Annot_To_String (Kind)
+           & " produces a circular definition for container models",
+         when Annot_Iterable_For_Proof_Controlling_Result     =>
+           "function with the "
+           & Annot_To_String (Kind)
+           & " shall not have a controlling result",
+         when Annot_Iterable_For_Proof_Prim                   =>
+           "function with the "
+           & Annot_To_String (Kind)
+           & " shall be primitive of &",
+         when Annot_Logical_Equal_Post                        =>
+           "function with the "
+           & Annot_To_String (Kind)
+           & " shall not have postconditions or contract cases",
+         when Annot_Logical_Equal_Potentially_Invalid         =>
+           "function with the "
+           & Annot_To_String (Kind)
+           & " shall not have a Potentially_Invalid aspect",
+         when Annot_Mutable_In_Params_Depends                 =>
+           "subprogram with the "
+           & Annot_To_String (Kind)
+           & " shall not have a Depends contract",
+         when Annot_Mutable_In_Params_No_Params               =>
+           "subprogram with the "
+           & Annot_To_String (Kind)
+           & " shall have at least an ""in"" parameter of type &",
+         when Annot_Mutable_In_Params_Side_Effects            =>
+           "subprogram with the "
+           & Annot_To_String (Kind)
+           & " shall not be a function without side-effects",
+         when Annot_No_Bitwise_Operations_Use                 =>
            "bitwise operation on type with "
            & Annot_To_String (Kind)
            & " shall not be used in SPARK",
-         when Annot_Ownership_Potentially_Invalid         =>
-           "no part of an object or function result annotated with "
-           & "Potentially_Invalid shall be of a type with an "
+         when Annot_Ownership_Potentially_Invalid             =>
+           "no part of an object or function result with the "
+           & "Potentially_Invalid aspect shall be of a type with an "
            & Annot_To_String (Kind),
-         when Annot_Predefined_Equality_Use_Eq            =>
+         when Annot_Predefined_Equality_Use_Eq                =>
            "equality on type annotated with the "
            & Annot_To_String (Kind)
            & " shall abide by the corresponding restrictions");

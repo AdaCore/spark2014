@@ -1,5 +1,9 @@
-test_bad.adb:11:13: error: function annotated with both Higher_Order_Specialization and Inline_For_Proof shall have a postcondition
-test_bad.adb:18:13: error: function annotated with both Higher_Order_Specialization and Inline_For_Proof shall have a postcondition
+test_bad.adb:11:13: error: inlined function with the "Higher_Order_Specialization" annotation shall have a postcondition
+test_bad.adb:11:13: error: the body of expression functions is ignored on specializations
+test_bad.adb:18:13: error: inlined function with the "Higher_Order_Specialization" annotation shall have a postcondition
+test_bad.adb:18:13: error: the body of expression functions is ignored on specializations
+test_bad.adb:29:09: error: "Bad_Call_1" is not allowed in SPARK (due to incorrect use of "Higher_Order_Specialization" annotation)
+test_bad.adb:29:09: error: violation of aspect SPARK_Mode at line 3
 test_bad.adb:31:21: error: access to subprogram with global effects is not allowed in SPARK (SPARK RM 4.1.4(7))
 test_bad.adb:31:21: error: violation of aspect SPARK_Mode at line 3
 gnatprove: error during flow analysis and proof

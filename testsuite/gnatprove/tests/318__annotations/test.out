@@ -1,5 +1,9 @@
-effects.adb:5:14: error: No_Return procedure cannot be annotated with the aspect Automatic_Instantiation
-effects.adb:11:14: error: procedure annotated with the aspect Automatic_Instantiation shall not propagate exceptions
-effects.adb:15:14: error: No_Return procedure cannot be annotated with the aspect Higher_Order_Specialization
-effects.adb:19:14: error: procedure annotated with the aspect Higher_Order_Specialization shall not propagate exceptions
+effects.adb:5:14: error: "P1" cannot return normally
+effects.adb:5:14: error: a subprogram with the "Automatic_Instantiation" annotation shall have no side-effects
+effects.adb:11:14: error: "P2" might propagate exceptions
+effects.adb:11:14: error: a subprogram with the "Automatic_Instantiation" annotation shall have no side-effects
+effects.adb:15:14: error: "P3" cannot return normally
+effects.adb:15:14: error: a subprogram with the "Higher_Order_Specialization" annotation shall have no side-effects
+effects.adb:19:14: error: "P4" might propagate exceptions
+effects.adb:19:14: error: a subprogram with the "Higher_Order_Specialization" annotation shall have no side-effects
 gnatprove: error during flow analysis and proof

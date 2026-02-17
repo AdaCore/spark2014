@@ -1,20 +1,21 @@
 ho_specialization.adb:12:14: warning: automatically instantiated lemma contains calls to "Call" which cannot be arbitrarily specialized [auto-lemma-calls]
 ho_specialization.adb:12:14: warning: it will not be automatically instantiated on specializations of "Call"
-ho_specialization.adb:29:52: error: subprogram annotated with Higher_Order_Specialization shall only reference its access-to-function parameters in dereferences and as actual parameters in calls to functions annotated with Higher_Order_Specialization
-inline_and_logical_equal.adb:7:47: error: Entity parameter of a pragma Logical_Equal shall not have an Inline_For_Proof annotation
-inline_and_logical_equal.adb:11:50: error: Entity parameter of a pragma Inline_For_Proof shall not have a Logical_Equal annotation
-inline_and_logical_equal.adb:16:16: error: the body of expression functions with "Inline_For_Proof" annotation shall be in SPARK
+ho_specialization.adb:29:52: error: subprogram with the "Higher_Order_Specialization" annotation shall only reference its access-to-function parameters in dereferences and as actual parameters in calls to functions with the "Higher_Order_Specialization" annotation
+inline_and_logical_equal.adb:7:47: error: function shall not have both the "Inline_For_Proof" annotation and the "Logical_Equal" annotation
+inline_and_logical_equal.adb:11:50: error: function shall not have both the "Inline_For_Proof" annotation and the "Logical_Equal" annotation
+inline_and_logical_equal.adb:16:16: error: the body of expression functions with the "Inline_For_Proof" annotation shall be in SPARK
 iterable_for_proof_marking.adb:20:67: error: "Contains" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
 iterable_for_proof_marking.adb:20:67: error: violation of aspect SPARK_Mode at line 1
 iterable_for_proof_marking.adb:48:22: error: "Element" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
 iterable_for_proof_marking.adb:48:22: error: violation of aspect SPARK_Mode at line 1
-iterable_for_proof_marking.adb:52:26: error: first parameter of Contains functions must allow for of iteration in SPARK
 iterable_for_proof_marking.adb:67:22: error: "Element" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
 iterable_for_proof_marking.adb:67:22: error: violation of aspect SPARK_Mode at line 1
-iterable_for_proof_marking.adb:81:23: error: parameter of Model function must allow for of iteration in SPARK
+iterable_for_proof_marking.adb:94:22: error: "Element" is not allowed in SPARK (due to incorrect use of "Iterable_For_Proof" annotation)
+iterable_for_proof_marking.adb:94:22: error: violation of aspect SPARK_Mode at line 1
 iterable_for_proof_marking.adb:99:22: error: "Element_2" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
 iterable_for_proof_marking.adb:99:22: error: violation of aspect SPARK_Mode at line 1
-iterable_for_proof_marking.adb:108:16: error: return type of Model function must allow for of iteration in SPARK
+iterable_for_proof_marking.adb:108:16: error: primitive "Element_2" for container element iteration on "Abstracted" shall be in SPARK
+iterable_for_proof_marking.adb:108:16: error: wrong return type for function with the "Iterable_For_Proof" annotation
 iterable_for_proof_marking.adb:117:04: error: "X" is not allowed in SPARK (due to incorrect use of "Iterable_For_Proof" annotation)
 iterable_for_proof_marking.adb:117:04: error: violation of aspect SPARK_Mode at line 1
 iterable_for_proof_marking.adb:118:64: error: last argument of "pragma Annotate (GNATprove, Iterable_For_Proof[, ...])" must be an entity
@@ -22,7 +23,7 @@ iterable_for_proof_marking.adb:119:64: error: expected a subprogram, a type, a c
 iterable_for_proof_marking.adb:119:64: error: wrong entity argument for "pragma Annotate (GNATprove, Iterable_For_Proof[, ...])"
 ownership_marking.adb:18:62: error: "Is_Reclaimed" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
 ownership_marking.adb:18:62: error: violation of aspect SPARK_Mode at line 1
-ownership_marking.adb:26:12: error: type shall not have multiple ownership annotations
+ownership_marking.adb:26:12: error: a single "Ownership" annotation shall be specified for "T"
 ownership_marking.adb:38:12: warning: checks for ressource or memory reclamation will be unprovable
 ownership_marking.adb:38:12: warning: no reclamation function nor reclaimed value found for type with ownership "Owned" [no-reclamation-function]
 pragma_placement.ads:12:04: error: "pragma Annotate (GNATprove, ...)" must be in aspect form for generic subprogram
@@ -36,7 +37,8 @@ pragma_placement.ads:57:32: error: "B" is not allowed in SPARK (due to incorrect
 pragma_placement.ads:57:32: error: violation of aspect SPARK_Mode at line 4
 pragma_placement.ads:78:04: error: "pragma Annotate (GNATprove, At_End_Borrow[, ...])" must immediately follow the specification of subprogram "AEB_1"
 pragma_placement.ads:78:04: error: incorrect placement for "pragma Annotate (GNATprove, At_End_Borrow[, ...])"
-pragma_placement.ads:89:14: error: procedure annotated with the pragma Automatic_Instantiation shall not be declared after a procedure
+pragma_placement.ads:89:14: error: "F91_High" shall be declared directly after a function
+pragma_placement.ads:89:14: error: incorrect placement for entity with the "Automatic_Instantiation" annotation
 pragma_placement.ads:96:04: error: "pragma Annotate (GNATprove, Automatic_Instantiation[, ...])" must immediately follow the specification of subprogram "F91_Low"
 pragma_placement.ads:96:04: error: incorrect placement for "pragma Annotate (GNATprove, Automatic_Instantiation[, ...])"
 pragma_placement.ads:109:04: error: "pragma Annotate (GNATprove, Higher_Order_Specialization[, ...])" must immediately follow the specification of subprogram "Specialized_1"

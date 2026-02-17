@@ -1,29 +1,39 @@
 illegal_annot.adb:7:09: error: expected 4 arguments
 illegal_annot.adb:7:09: error: wrong number of arguments in aspect "Annotate => (GNATprove, Predefined_Equality[, ...])"
-illegal_annot.adb:16:17: error: the entity of a pragma Annotate Predefined_Equality shall be either a type or a constant
-illegal_annot.adb:18:12: error: a type annotated with Predefined_Equality must be a private type
-illegal_annot.adb:29:54: error: third argument of aspect "Annotate => (GNATprove, Predefined_Equaliy[, ...])" must be a string
-illegal_annot.adb:39:54: error: third argument of aspect Annotate Predefined_Equality on a type must be either "Only_Null" or "No_Equality"
-illegal_annot.adb:51:54: error: third argument of aspect Annotate Predefined_Equality on a constant must be "Null_Value"
-illegal_annot.adb:61:12: error: the private part of the scope of a type annotated with Predefined_Equality must have either a pragma SPARK_Mode (Off) or a Hide_Info annotation
-illegal_annot.adb:70:12: error: a tagged type cannot be annotated with "Only_Null"
+illegal_annot.adb:16:17: error: expected a type or a constant
+illegal_annot.adb:16:17: error: wrong entity argument for aspect "Annotate => (GNATprove, Predefined_Equality[, ...])"
+illegal_annot.adb:18:12: error: expected a private type
+illegal_annot.adb:18:12: error: wrong entity argument for aspect "Annotate => (GNATprove, Predefined_Equality[, ...])"
+illegal_annot.adb:29:54: error: third argument of aspect "Annotate => (GNATprove, Predefined_Equality[, ...])" must be a string
+illegal_annot.adb:39:54: error: expected "Only_Null" or "No_Equality"
+illegal_annot.adb:39:54: error: unexpected third argument for aspect "Annotate => (GNATprove, Predefined_Equality[, ...])"
+illegal_annot.adb:50:07: error: "C" is not allowed in SPARK (due to incorrect use of "Predefined_Equality" annotation)
+illegal_annot.adb:50:07: error: violation of aspect SPARK_Mode at line 1
+illegal_annot.adb:51:54: error: expected "Null_Value"
+illegal_annot.adb:51:54: error: unexpected third argument for "pragma Annotate (GNATprove, Predefined_Equality[, ...])"
+illegal_annot.adb:61:12: error: the private part of the scope of a private type with the "Predefined_Equality" annotation shall have either a "pragma SPARK_Mode (Off)" or a "pragma Annotate (GNATprove, Hide_Info, "Private_Part"[, ...])"
+illegal_annot.adb:70:12: error: tagged types cannot have a "(GNATprove, Predefined_Equality, "Only_Null"[, ...])" annotation
+illegal_annot.adb:70:12: error: wrong entity argument for aspect "Annotate => (GNATprove, Predefined_Equality[, ...])"
 illegal_annot.adb:88:07: error: "pragma Annotate (GNATprove, Predefined_Equality[, ...])" must immediately follow the  private declaration of type "T"
 illegal_annot.adb:88:07: error: incorrect placement for "pragma Annotate (GNATprove, Predefined_Equality[, ...])"
 illegal_annot.adb:101:07: error: "pragma Annotate (GNATprove, Predefined_Equality[, ...])" must immediately follow the declaration of constant "C"
 illegal_annot.adb:101:07: error: incorrect placement for "pragma Annotate (GNATprove, Predefined_Equality[, ...])"
 illegal_annot.adb:112:15: warning: consider annotating a constant with a pragma Annotate (GNATprove, Predefined_Equality, "Null_Value", ...)
 illegal_annot.adb:112:15: warning: no null value found for type with predefined equality "T" [predefined-equality-null]
-illegal_annot.adb:120:07: error: constant annotated with Predefined_Equality shall be declared in same declaration list as its type
+illegal_annot.adb:120:07: error: "C" shall be declared in same declaration list as "T"
+illegal_annot.adb:120:07: error: incorrect placement for entity with the "Predefined_Equality" annotation
 illegal_annot.adb:128:12: warning: consider annotating a constant with a pragma Annotate (GNATprove, Predefined_Equality, "Null_Value", ...)
 illegal_annot.adb:128:12: warning: no null value found for type with predefined equality "T" [predefined-equality-null]
-illegal_annot.adb:150:07: error: consider annotating it with a pragma Annotate (GNATprove, Predefined_Equality, "Only_Null", ...)
-illegal_annot.adb:150:07: error: the type of a constant annotated with Predefined_Equality must be annotated with Predefined_Equality
-illegal_annot.adb:163:07: error: consider annotating it with a pragma Annotate (GNATprove, Predefined_Equality, "Only_Null", ...)
-illegal_annot.adb:163:07: error: the type of a constant annotated with Predefined_Equality must be annotated with "Only_Null"
+illegal_annot.adb:150:07: error: type of "C" shall have a "(GNATprove, Predefined_Equality, "Null_Value"[, ...])" annotation
+illegal_annot.adb:150:07: error: wrong type for object with the "Predefined_Equality" annotation
+illegal_annot.adb:163:07: error: type of "C" shall have a "(GNATprove, Predefined_Equality, "Null_Value"[, ...])" annotation
+illegal_annot.adb:163:07: error: wrong type for object with the "Predefined_Equality" annotation
 illegal_annot.adb:178:07: error: "C" conflicts with the current annotation
-illegal_annot.adb:178:07: error: a single null value shall be supplied for a given type annotated with Predefined_Equality
-illegal_annot.adb:190:12: error: type shall not have multiple Predefined_Equality annotations
-illegal_annot.adb:203:07: error: constant shall not have multiple Predefined_Equality annotations
+illegal_annot.adb:178:07: error: duplicated entity with the "Predefined_Equality" annotation
+illegal_annot.adb:190:12: error: a single "Predefined_Equality" annotation shall be specified for "T"
+illegal_annot.adb:203:07: error: a single "Predefined_Equality" annotation shall be specified for "C"
+system.ads:1:01: error: "t" is not allowed in SPARK (due to incorrect use of "Predefined_Equality" annotation)
+system.ads:1:01: error: violation of aspect SPARK_Mode at illegal_annot.adb:1
 test_usage.adb:31:07: info: no contextual analysis of "Use_No_Eq" (subtype declaration with predicate)
 test_usage.adb:33:26: error: equality on "T" shall not be used in SPARK
 test_usage.adb:34:29: error: equality on "T" shall not be used in SPARK

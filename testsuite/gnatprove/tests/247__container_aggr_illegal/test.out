@@ -38,8 +38,8 @@ test_illegal_aggregates.adb:126:21: error: violation of aspect SPARK_Mode at lin
 test_illegal_aggregates.adb:136:07: info: no contextual analysis of "P4" (nested package declaration)
 test_illegal_aggregates.adb:212:21: error: indexed container aggregate is not yet supported
 test_illegal_aggregates.adb:221:07: info: no contextual analysis of "P5" (nested package declaration)
-test_illegal_capacity.adb:25:16: error: "Capacity" function for "T" shall take the container as a parameter
-test_illegal_capacity.adb:25:16: error: "Empty" takes the capacity as a parameter
+test_illegal_capacity.adb:25:16: error: expected 1 parameter
+test_illegal_capacity.adb:25:16: error: wrong number of parameters for a subprogram with the "Container_Aggregates" annotation
 test_illegal_capacity.adb:78:16: error: expected no parameters
 test_illegal_capacity.adb:78:16: error: wrong number of parameters for a subprogram with the "Container_Aggregates" annotation
 test_illegal_capacity.adb:128:16: error: type of parameter "X" shall have the "Container_Aggregates" annotation
@@ -49,9 +49,9 @@ test_illegal_capacity.adb:180:16: error: wrong number of parameters for a subpro
 test_illegal_capacity.adb:232:16: error: expected a signed integer type or a subtype of Big_Integer
 test_illegal_capacity.adb:232:16: error: wrong return type for function with the "Container_Aggregates" annotation
 test_illegal_capacity.adb:289:16: error: "Capacity" at line 284 has the same container type "T"
-test_illegal_capacity.adb:289:16: error: duplicated entity with the "(GNATprove, Container_Aggregates, "Capacity"[, ...])" annotation in the same scope
+test_illegal_capacity.adb:289:16: error: duplicated entity with the "(GNATprove, Container_Aggregates, "Capacity"[, ...])" annotation
 test_illegal_capacity.adb:345:16: error: "Capacity" at line 340 is declared in the same scope
-test_illegal_capacity.adb:345:16: error: duplicated entity with the "(GNATprove, Container_Aggregates, "Capacity"[, ...])" annotation in the same scope
+test_illegal_capacity.adb:345:16: error: duplicated entity with the "(GNATprove, Container_Aggregates, "Capacity"[, ...])" annotation
 test_illegal_capacity.adb:398:19: error: "Capacity" shall be declared in the same list of declarations as the partial view of "T"
 test_illegal_capacity.adb:398:19: error: incorrect placement for entity with the "Container_Aggregates" annotation
 test_illegal_capacity.adb:516:07: error: "pragma Annotate (GNATprove, Container_Aggregates[, ...])" must immediately follow the specification of function "Capacity"
@@ -67,49 +67,49 @@ test_illegal_capacity.adb:867:15: error: "Bad" is not allowed in SPARK (due to e
 test_illegal_capacity.adb:867:15: error: violation of aspect SPARK_Mode at line 1
 test_illegal_contains.adb:18:16: error: at least one parameter expected
 test_illegal_contains.adb:18:16: error: wrong number of parameters for a subprogram with the "Container_Aggregates" annotation
-test_illegal_contains.adb:35:12: error: no "Contains" function found for type with predefined set aggregates "T"
+test_illegal_contains.adb:35:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Contains"[, ...])" annotation found
 test_illegal_contains.adb:58:16: error: type of parameter "X" shall have the "Container_Aggregates" annotation
 test_illegal_contains.adb:58:16: error: wrong type for parameter of subprogram with the "Container_Aggregates" annotation
-test_illegal_contains.adb:75:12: error: no "Contains" function found for type with predefined set aggregates "T"
+test_illegal_contains.adb:75:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Contains"[, ...])" annotation found
 test_illegal_contains.adb:98:16: error: expected 2 parameters
 test_illegal_contains.adb:98:16: error: wrong number of parameters for a subprogram with the "Container_Aggregates" annotation
-test_illegal_contains.adb:115:12: error: no "Contains" function found for type with predefined set aggregates "T"
+test_illegal_contains.adb:115:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Contains"[, ...])" annotation found
 test_illegal_contains.adb:138:16: error: parameter "I" shall have element type "Element_Type"
 test_illegal_contains.adb:138:16: error: wrong type for parameter of subprogram with the "Container_Aggregates" annotation
-test_illegal_contains.adb:155:12: error: no "Contains" function found for type with predefined set aggregates "T"
+test_illegal_contains.adb:155:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Contains"[, ...])" annotation found
 test_illegal_contains.adb:178:16: error: expected a boolean
 test_illegal_contains.adb:178:16: error: wrong return type for function with the "Container_Aggregates" annotation
-test_illegal_contains.adb:195:12: error: no "Contains" function found for type with predefined set aggregates "T"
+test_illegal_contains.adb:195:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Contains"[, ...])" annotation found
 test_illegal_contains.adb:223:16: error: "Contains" at line 218 has the same container type "T"
-test_illegal_contains.adb:223:16: error: duplicated entity with the "(GNATprove, Container_Aggregates, "Contains"[, ...])" annotation in the same scope
+test_illegal_contains.adb:223:16: error: duplicated entity with the "(GNATprove, Container_Aggregates, "Contains"[, ...])" annotation
 test_illegal_contains.adb:264:19: error: "Contains" shall be declared in the same list of declarations as the partial view of "T"
 test_illegal_contains.adb:264:19: error: incorrect placement for entity with the "Container_Aggregates" annotation
-test_illegal_contains.adb:282:12: error: no "Contains" function found for type with predefined set aggregates "T"
+test_illegal_contains.adb:282:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Contains"[, ...])" annotation found
 test_illegal_contains.adb:315:07: error: "pragma Annotate (GNATprove, Container_Aggregates[, ...])" must immediately follow the specification of function "Contains"
 test_illegal_contains.adb:315:07: error: incorrect placement for "pragma Annotate (GNATprove, Container_Aggregates[, ...])"
-test_illegal_contains.adb:322:12: error: no "Contains" function found for type with predefined set aggregates "T"
+test_illegal_contains.adb:322:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Contains"[, ...])" annotation found
 test_illegal_contains.adb:345:16: error: a function with the "Container_Aggregates" annotation shall not have side effects
-test_illegal_contains.adb:363:12: error: no "Contains" function found for type with predefined set aggregates "T"
+test_illegal_contains.adb:363:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Contains"[, ...])" annotation found
 test_illegal_contains.adb:386:16: error: a function with the "Container_Aggregates" annotation shall not be volatile
-test_illegal_contains.adb:404:12: error: no "Contains" function found for type with predefined set aggregates "T"
+test_illegal_contains.adb:404:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Contains"[, ...])" annotation found
 test_illegal_contains.adb:427:16: error: "Contains" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
 test_illegal_contains.adb:427:16: error: functions for type "T" with the "Container_Aggregates" annotation are required to be in SPARK
-test_illegal_contains.adb:445:12: error: no "Contains" function found for type with predefined set aggregates "T"
+test_illegal_contains.adb:445:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Contains"[, ...])" annotation found
 test_illegal_contains.adb:470:16: error: a subprogram with the "Container_Aggregates" annotation shall not access global data
 test_illegal_default_item.adb:21:16: error: expected no parameters
 test_illegal_default_item.adb:21:16: error: wrong number of parameters for a subprogram with the "Container_Aggregates" annotation
-test_illegal_default_item.adb:38:12: error: no "Has_Key" nor "Default_Item" function found for type with predefined map aggregates "T"
+test_illegal_default_item.adb:38:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Has_Key"[, ...])" annotation found
 test_illegal_default_item.adb:72:16: error: "Default_Value" at line 67 also returns element type "Element_Type"
-test_illegal_default_item.adb:72:16: error: duplicated entity with the "(GNATprove, Container_Aggregates, "Default_Item"[, ...])" annotation in the same scope
-test_illegal_default_item.adb:141:12: error: no "Has_Key" nor "Default_Item" function found for type with predefined map aggregates "T"
+test_illegal_default_item.adb:72:16: error: duplicated entity with the "(GNATprove, Container_Aggregates, "Default_Item"[, ...])" annotation
+test_illegal_default_item.adb:141:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Has_Key"[, ...])" annotation found
 test_illegal_default_item.adb:180:07: error: "pragma Annotate (GNATprove, Container_Aggregates[, ...])" must immediately follow the specification of function "Default_Value"
 test_illegal_default_item.adb:180:07: error: incorrect placement for "pragma Annotate (GNATprove, Container_Aggregates[, ...])"
-test_illegal_default_item.adb:188:12: error: no "Has_Key" nor "Default_Item" function found for type with predefined map aggregates "T"
+test_illegal_default_item.adb:188:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Has_Key"[, ...])" annotation found
 test_illegal_default_item.adb:217:16: error: a function with the "Container_Aggregates" annotation shall not have side effects
-test_illegal_default_item.adb:235:12: error: no "Has_Key" nor "Default_Item" function found for type with predefined map aggregates "T"
+test_illegal_default_item.adb:235:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Has_Key"[, ...])" annotation found
 test_illegal_default_item.adb:264:16: error: a function with the "Container_Aggregates" annotation shall not be volatile
-test_illegal_default_item.adb:282:12: error: no "Has_Key" nor "Default_Item" function found for type with predefined map aggregates "T"
-test_illegal_default_item.adb:332:12: error: no "Has_Key" nor "Default_Item" function found for type with predefined map aggregates "T"
+test_illegal_default_item.adb:282:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Has_Key"[, ...])" annotation found
+test_illegal_default_item.adb:332:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Has_Key"[, ...])" annotation found
 test_illegal_default_item.adb:363:16: error: a subprogram with the "Container_Aggregates" annotation shall not access global data
 test_illegal_empty.adb:13:16: error: subprogram with side effects associated with aspect Aggregate is not allowed in SPARK
 test_illegal_empty.adb:13:16: error: violation of aspect SPARK_Mode at line 2
@@ -125,73 +125,73 @@ test_illegal_empty.adb:97:12: warning: no "Length" function found for type with 
 test_illegal_empty.adb:97:12: warning: the cardinality of aggregates will be unknown
 test_illegal_eq_elements.adb:30:16: error: expected 2 parameters
 test_illegal_eq_elements.adb:30:16: error: wrong number of parameters for a subprogram with the "Container_Aggregates" annotation
-test_illegal_eq_elements.adb:37:12: error: no "Equivalent_Elements" function found for type with predefined set aggregates "T"
+test_illegal_eq_elements.adb:37:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Equivalent_Elements"[, ...])" annotation found
 test_illegal_eq_elements.adb:72:16: error: parameters of equivalence relations shall have the same type
 test_illegal_eq_elements.adb:72:16: error: wrong type for parameter of subprogram with the "GNATprove" annotation
-test_illegal_eq_elements.adb:79:12: error: no "Equivalent_Elements" function found for type with predefined set aggregates "T"
+test_illegal_eq_elements.adb:79:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Equivalent_Elements"[, ...])" annotation found
 test_illegal_eq_elements.adb:114:16: error: expected a boolean
 test_illegal_eq_elements.adb:114:16: error: wrong return type for function with the "Container_Aggregates" annotation
-test_illegal_eq_elements.adb:121:12: error: no "Equivalent_Elements" function found for type with predefined set aggregates "T"
+test_illegal_eq_elements.adb:121:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Equivalent_Elements"[, ...])" annotation found
 test_illegal_eq_elements.adb:161:16: error: "Eq_Elem" at line 156 has the same element type "Element_Type"
-test_illegal_eq_elements.adb:161:16: error: duplicated entity with the "(GNATprove, Container_Aggregates, "Equivalent_Elements"[, ...])" annotation in the same scope
-test_illegal_eq_elements.adb:215:12: error: no "Equivalent_Elements" function found for type with predefined set aggregates "T"
+test_illegal_eq_elements.adb:161:16: error: duplicated entity with the "(GNATprove, Container_Aggregates, "Equivalent_Elements"[, ...])" annotation
+test_illegal_eq_elements.adb:215:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Equivalent_Elements"[, ...])" annotation found
 test_illegal_eq_elements.adb:254:07: error: "pragma Annotate (GNATprove, Container_Aggregates[, ...])" must immediately follow the specification of function "Eq_Elem"
 test_illegal_eq_elements.adb:254:07: error: incorrect placement for "pragma Annotate (GNATprove, Container_Aggregates[, ...])"
-test_illegal_eq_elements.adb:258:12: error: no "Equivalent_Elements" function found for type with predefined set aggregates "T"
+test_illegal_eq_elements.adb:258:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Equivalent_Elements"[, ...])" annotation found
 test_illegal_eq_elements.adb:293:16: error: a function with the "Container_Aggregates" annotation shall not have side effects
-test_illegal_eq_elements.adb:301:12: error: no "Equivalent_Elements" function found for type with predefined set aggregates "T"
+test_illegal_eq_elements.adb:301:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Equivalent_Elements"[, ...])" annotation found
 test_illegal_eq_elements.adb:336:16: error: a function with the "Container_Aggregates" annotation shall not be volatile
-test_illegal_eq_elements.adb:344:12: error: no "Equivalent_Elements" function found for type with predefined set aggregates "T"
-test_illegal_eq_elements.adb:390:12: error: no "Equivalent_Elements" function found for type with predefined set aggregates "T"
+test_illegal_eq_elements.adb:344:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Equivalent_Elements"[, ...])" annotation found
+test_illegal_eq_elements.adb:390:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Equivalent_Elements"[, ...])" annotation found
 test_illegal_eq_elements.adb:427:16: error: a subprogram with the "Container_Aggregates" annotation shall not access global data
 test_illegal_eq_keys.adb:27:16: error: expected 2 parameters
 test_illegal_eq_keys.adb:27:16: error: wrong number of parameters for a subprogram with the "Container_Aggregates" annotation
-test_illegal_eq_keys.adb:38:12: error: no "Equivalent_Keys" function found for type with predefined map aggregates "T"
+test_illegal_eq_keys.adb:38:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Equivalent_Keys"[, ...])" annotation found
 test_illegal_eq_keys.adb:73:16: error: parameters of equivalence relations shall have the same type
 test_illegal_eq_keys.adb:73:16: error: wrong type for parameter of subprogram with the "GNATprove" annotation
-test_illegal_eq_keys.adb:84:12: error: no "Equivalent_Keys" function found for type with predefined map aggregates "T"
+test_illegal_eq_keys.adb:84:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Equivalent_Keys"[, ...])" annotation found
 test_illegal_eq_keys.adb:119:16: error: expected a boolean
 test_illegal_eq_keys.adb:119:16: error: wrong return type for function with the "Container_Aggregates" annotation
-test_illegal_eq_keys.adb:130:12: error: no "Equivalent_Keys" function found for type with predefined map aggregates "T"
+test_illegal_eq_keys.adb:130:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Equivalent_Keys"[, ...])" annotation found
 test_illegal_eq_keys.adb:170:16: error: "Eq_Key" at line 165 has the same key type "Key_Type"
-test_illegal_eq_keys.adb:170:16: error: duplicated entity with the "(GNATprove, Container_Aggregates, "Equivalent_Keys"[, ...])" annotation in the same scope
-test_illegal_eq_keys.adb:232:12: error: no "Equivalent_Keys" function found for type with predefined map aggregates "T"
+test_illegal_eq_keys.adb:170:16: error: duplicated entity with the "(GNATprove, Container_Aggregates, "Equivalent_Keys"[, ...])" annotation
+test_illegal_eq_keys.adb:232:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Equivalent_Keys"[, ...])" annotation found
 test_illegal_eq_keys.adb:271:07: error: "pragma Annotate (GNATprove, Container_Aggregates[, ...])" must immediately follow the specification of function "Eq_Key"
 test_illegal_eq_keys.adb:271:07: error: incorrect placement for "pragma Annotate (GNATprove, Container_Aggregates[, ...])"
-test_illegal_eq_keys.adb:279:12: error: no "Equivalent_Keys" function found for type with predefined map aggregates "T"
+test_illegal_eq_keys.adb:279:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Equivalent_Keys"[, ...])" annotation found
 test_illegal_eq_keys.adb:314:16: error: a function with the "Container_Aggregates" annotation shall not have side effects
-test_illegal_eq_keys.adb:326:12: error: no "Equivalent_Keys" function found for type with predefined map aggregates "T"
+test_illegal_eq_keys.adb:326:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Equivalent_Keys"[, ...])" annotation found
 test_illegal_eq_keys.adb:361:16: error: a function with the "Container_Aggregates" annotation shall not be volatile
-test_illegal_eq_keys.adb:373:12: error: no "Equivalent_Keys" function found for type with predefined map aggregates "T"
-test_illegal_eq_keys.adb:423:12: error: no "Equivalent_Keys" function found for type with predefined map aggregates "T"
+test_illegal_eq_keys.adb:373:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Equivalent_Keys"[, ...])" annotation found
+test_illegal_eq_keys.adb:423:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Equivalent_Keys"[, ...])" annotation found
 test_illegal_eq_keys.adb:460:16: error: a subprogram with the "Container_Aggregates" annotation shall not access global data
 test_illegal_first.adb:31:16: error: expected no parameters
 test_illegal_first.adb:31:16: error: wrong number of parameters for a subprogram with the "Container_Aggregates" annotation
-test_illegal_first.adb:39:12: error: no "First" function found for type with predefined set aggregates "T"
+test_illegal_first.adb:39:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "First"[, ...])" annotation found
 test_illegal_first.adb:80:16: error: expected a signed integer type or a subtype of Big_Integer
 test_illegal_first.adb:80:16: error: wrong return type for function with the "Container_Aggregates" annotation
-test_illegal_first.adb:88:12: error: no "First" function found for type with predefined set aggregates "T"
-test_illegal_first.adb:140:12: error: no "First" function found for type with predefined set aggregates "T"
+test_illegal_first.adb:88:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "First"[, ...])" annotation found
+test_illegal_first.adb:140:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "First"[, ...])" annotation found
 test_illegal_first.adb:186:16: error: "First" at line 181 returns the same position type "Index_Type"
-test_illegal_first.adb:186:16: error: duplicated entity with the "(GNATprove, Container_Aggregates, "First"[, ...])" annotation in the same scope
-test_illegal_first.adb:248:12: error: no "First" function found for type with predefined set aggregates "T"
+test_illegal_first.adb:186:16: error: duplicated entity with the "(GNATprove, Container_Aggregates, "First"[, ...])" annotation
+test_illegal_first.adb:248:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "First"[, ...])" annotation found
 test_illegal_first.adb:293:07: error: "pragma Annotate (GNATprove, Container_Aggregates[, ...])" must immediately follow the specification of function "First"
 test_illegal_first.adb:293:07: error: incorrect placement for "pragma Annotate (GNATprove, Container_Aggregates[, ...])"
-test_illegal_first.adb:298:12: error: no "First" function found for type with predefined set aggregates "T"
+test_illegal_first.adb:298:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "First"[, ...])" annotation found
 test_illegal_first.adb:339:16: error: a function with the "Container_Aggregates" annotation shall not have side effects
-test_illegal_first.adb:348:12: error: no "First" function found for type with predefined set aggregates "T"
+test_illegal_first.adb:348:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "First"[, ...])" annotation found
 test_illegal_first.adb:389:16: error: a function with the "Container_Aggregates" annotation shall not be volatile
-test_illegal_first.adb:398:12: error: no "First" function found for type with predefined set aggregates "T"
-test_illegal_first.adb:451:12: error: no "First" function found for type with predefined set aggregates "T"
+test_illegal_first.adb:398:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "First"[, ...])" annotation found
+test_illegal_first.adb:451:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "First"[, ...])" annotation found
 test_illegal_first.adb:494:16: error: a subprogram with the "Container_Aggregates" annotation shall not access global data
 test_illegal_from_model.adb:51:12: error: procedure Add_Named or Add_Unnamed is expected
 test_illegal_from_model.adb:51:12: error: the Aggregate aspect of a type with the "Container_Aggregates" annotation has the wrong form
 test_illegal_from_model.adb:87:34: error: "T" is not allowed in SPARK (due to incorrect use of "Container_Aggregates" annotation)
 test_illegal_from_model.adb:87:34: error: violation of aspect SPARK_Mode at line 1
-test_illegal_from_model.adb:109:12: error: no "Model" function found for type with aggregates using models "T"
+test_illegal_from_model.adb:109:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Model"[, ...])" annotation found
 test_illegal_from_model.adb:171:55: error: unexpected third argument for aspect "Annotate => (GNATprove, Container_Aggregates[, ...])"
-test_illegal_from_model.adb:253:12: error: "Empty" takes the capacity as a parameter
-test_illegal_from_model.adb:253:12: error: incompatible "Capacity" function inherited from model type "T"
+test_illegal_from_model.adb:245:16: error: concrete and model types of a function with the "Container_Aggregates" annotation shall define compatible aggregates
+test_illegal_from_model.adb:245:16: error: empty function on concrete type takes the capacity as a parameter, while empty function on model type has no parameters
 test_illegal_glob.adb:10:76: error: last argument of "pragma Annotate (GNATprove, Container_Aggregates[, ...])" must be an entity
 test_illegal_glob.adb:12:16: error: "T" is not allowed in SPARK (due to incorrect use of "Container_Aggregates" annotation)
 test_illegal_glob.adb:12:16: error: violation of aspect SPARK_Mode at line 1
@@ -223,21 +223,21 @@ test_illegal_glob.adb:124:12: error: a type with the "Container_Aggregates" anno
 test_illegal_glob.adb:140:12: error: a type with the "Container_Aggregates" annotation shall have an Aggregate aspect
 test_illegal_has_key.adb:21:16: error: at least one parameter expected
 test_illegal_has_key.adb:21:16: error: wrong number of parameters for a subprogram with the "Container_Aggregates" annotation
-test_illegal_has_key.adb:42:12: error: no "Has_Key" nor "Default_Item" function found for type with predefined map aggregates "T"
+test_illegal_has_key.adb:42:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Has_Key"[, ...])" annotation found
 test_illegal_has_key.adb:73:16: error: type of parameter "X" shall have the "Container_Aggregates" annotation
 test_illegal_has_key.adb:73:16: error: wrong type for parameter of subprogram with the "Container_Aggregates" annotation
-test_illegal_has_key.adb:94:12: error: no "Has_Key" nor "Default_Item" function found for type with predefined map aggregates "T"
+test_illegal_has_key.adb:94:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Has_Key"[, ...])" annotation found
 test_illegal_has_key.adb:125:16: error: expected 2 parameters
 test_illegal_has_key.adb:125:16: error: wrong number of parameters for a subprogram with the "Container_Aggregates" annotation
-test_illegal_has_key.adb:146:12: error: no "Has_Key" nor "Default_Item" function found for type with predefined map aggregates "T"
+test_illegal_has_key.adb:146:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Has_Key"[, ...])" annotation found
 test_illegal_has_key.adb:177:16: error: parameter "K" shall have key type "Key_Type"
 test_illegal_has_key.adb:177:16: error: wrong type for parameter of subprogram with the "Container_Aggregates" annotation
-test_illegal_has_key.adb:198:12: error: no "Has_Key" nor "Default_Item" function found for type with predefined map aggregates "T"
+test_illegal_has_key.adb:198:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Has_Key"[, ...])" annotation found
 test_illegal_has_key.adb:229:16: error: expected a boolean
 test_illegal_has_key.adb:229:16: error: wrong return type for function with the "Container_Aggregates" annotation
-test_illegal_has_key.adb:250:12: error: no "Has_Key" nor "Default_Item" function found for type with predefined map aggregates "T"
+test_illegal_has_key.adb:250:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Has_Key"[, ...])" annotation found
 test_illegal_has_key.adb:287:16: error: "Has_Key" at line 282 has the same container type "T"
-test_illegal_has_key.adb:287:16: error: duplicated entity with the "(GNATprove, Container_Aggregates, "Has_Key"[, ...])" annotation in the same scope
+test_illegal_has_key.adb:287:16: error: duplicated entity with the "(GNATprove, Container_Aggregates, "Has_Key"[, ...])" annotation
 test_illegal_has_key.adb:309:12: warning: no "Length" function found for type with predefined map aggregates "T" [map-length-aggregates]
 test_illegal_has_key.adb:309:12: warning: the cardinality of aggregates will be unknown
 test_illegal_has_key.adb:330:09: error: "Insert" is not allowed in SPARK (due to incorrect use of "Container_Aggregates" annotation)
@@ -250,17 +250,17 @@ test_illegal_has_key.adb:349:16: error: "Get" is not allowed in SPARK (due to in
 test_illegal_has_key.adb:349:16: error: functions for type "T" with the "Container_Aggregates" annotation are required to be in SPARK
 test_illegal_has_key.adb:350:16: error: "Has_Key" is not allowed in SPARK (due to incorrect use of "Container_Aggregates" annotation)
 test_illegal_has_key.adb:350:16: error: violation of aspect SPARK_Mode at line 1
-test_illegal_has_key.adb:366:12: error: no "Has_Key" nor "Default_Item" function found for type with predefined map aggregates "T"
+test_illegal_has_key.adb:366:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Has_Key"[, ...])" annotation found
 test_illegal_has_key.adb:409:07: error: "pragma Annotate (GNATprove, Container_Aggregates[, ...])" must immediately follow the specification of function "Has_Key"
 test_illegal_has_key.adb:409:07: error: incorrect placement for "pragma Annotate (GNATprove, Container_Aggregates[, ...])"
-test_illegal_has_key.adb:421:12: error: no "Has_Key" nor "Default_Item" function found for type with predefined map aggregates "T"
+test_illegal_has_key.adb:421:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Has_Key"[, ...])" annotation found
 test_illegal_has_key.adb:452:16: error: a function with the "Container_Aggregates" annotation shall not have side effects
-test_illegal_has_key.adb:474:12: error: no "Has_Key" nor "Default_Item" function found for type with predefined map aggregates "T"
+test_illegal_has_key.adb:474:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Has_Key"[, ...])" annotation found
 test_illegal_has_key.adb:505:16: error: a function with the "Container_Aggregates" annotation shall not be volatile
-test_illegal_has_key.adb:527:12: error: no "Has_Key" nor "Default_Item" function found for type with predefined map aggregates "T"
+test_illegal_has_key.adb:527:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Has_Key"[, ...])" annotation found
 test_illegal_has_key.adb:558:16: error: "Has_Key" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
 test_illegal_has_key.adb:558:16: error: functions for type "T" with the "Container_Aggregates" annotation are required to be in SPARK
-test_illegal_has_key.adb:581:12: error: no "Has_Key" nor "Default_Item" function found for type with predefined map aggregates "T"
+test_illegal_has_key.adb:581:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Has_Key"[, ...])" annotation found
 test_illegal_has_key.adb:602:09: error: "Insert" is not allowed in SPARK (due to incorrect use of "Container_Aggregates" annotation)
 test_illegal_has_key.adb:602:09: error: violation of aspect SPARK_Mode at line 1
 test_illegal_has_key.adb:609:20: error: "Has_Key" is not allowed in SPARK (due to incorrect use of "Container_Aggregates" annotation)
@@ -270,41 +270,43 @@ test_illegal_has_key.adb:637:12: warning: no "Length" function found for type wi
 test_illegal_has_key.adb:637:12: warning: the cardinality of aggregates will be unknown
 test_illegal_last.adb:24:16: error: at least one parameter expected
 test_illegal_last.adb:24:16: error: wrong number of parameters for a subprogram with the "Container_Aggregates" annotation
-test_illegal_last.adb:38:12: error: no "Last" function found for type with predefined sequence aggregates "T"
+test_illegal_last.adb:38:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Last"[, ...])" annotation found
 test_illegal_last.adb:70:16: error: type of parameter "X" shall have the "Container_Aggregates" annotation
 test_illegal_last.adb:70:16: error: wrong type for parameter of subprogram with the "Container_Aggregates" annotation
-test_illegal_last.adb:84:12: error: no "Last" function found for type with predefined sequence aggregates "T"
+test_illegal_last.adb:84:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Last"[, ...])" annotation found
 test_illegal_last.adb:116:16: error: expected 1 parameter
 test_illegal_last.adb:116:16: error: wrong number of parameters for a subprogram with the "Container_Aggregates" annotation
-test_illegal_last.adb:130:12: error: no "Last" function found for type with predefined sequence aggregates "T"
+test_illegal_last.adb:130:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Last"[, ...])" annotation found
 test_illegal_last.adb:162:16: error: expected a signed integer type or a subtype of Big_Integer
 test_illegal_last.adb:162:16: error: wrong return type for function with the "Container_Aggregates" annotation
-test_illegal_last.adb:176:12: error: no "Last" function found for type with predefined sequence aggregates "T"
+test_illegal_last.adb:176:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Last"[, ...])" annotation found
 test_illegal_last.adb:214:16: error: expected a subtype of "Index_Type"
 test_illegal_last.adb:214:16: error: wrong return type for function with the "Container_Aggregates" annotation
 test_illegal_last.adb:259:16: error: "Last" at line 254 has the same container type "T"
-test_illegal_last.adb:259:16: error: duplicated entity with the "(GNATprove, Container_Aggregates, "Last"[, ...])" annotation in the same scope
+test_illegal_last.adb:259:16: error: duplicated entity with the "(GNATprove, Container_Aggregates, "Last"[, ...])" annotation
 test_illegal_last.adb:306:19: error: "Last" shall be declared in the same list of declarations as the partial view of "T"
 test_illegal_last.adb:306:19: error: incorrect placement for entity with the "Container_Aggregates" annotation
-test_illegal_last.adb:321:12: error: no "Last" function found for type with predefined sequence aggregates "T"
+test_illegal_last.adb:321:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Last"[, ...])" annotation found
 test_illegal_last.adb:363:06: error: "pragma Annotate (GNATprove, Container_Aggregates[, ...])" must immediately follow the specification of function "Last"
 test_illegal_last.adb:363:06: error: incorrect placement for "pragma Annotate (GNATprove, Container_Aggregates[, ...])"
-test_illegal_last.adb:368:12: error: no "Last" function found for type with predefined sequence aggregates "T"
+test_illegal_last.adb:368:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Last"[, ...])" annotation found
 test_illegal_last.adb:400:16: error: a function with the "Container_Aggregates" annotation shall not have side effects
-test_illegal_last.adb:415:12: error: no "Last" function found for type with predefined sequence aggregates "T"
+test_illegal_last.adb:415:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Last"[, ...])" annotation found
 test_illegal_last.adb:447:16: error: a function with the "Container_Aggregates" annotation shall not be volatile
-test_illegal_last.adb:462:12: error: no "Last" function found for type with predefined sequence aggregates "T"
+test_illegal_last.adb:462:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Last"[, ...])" annotation found
 test_illegal_last.adb:494:16: error: "Last" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
 test_illegal_last.adb:494:16: error: functions for type "T" with the "Container_Aggregates" annotation are required to be in SPARK
-test_illegal_last.adb:509:12: error: no "Last" function found for type with predefined sequence aggregates "T"
+test_illegal_last.adb:509:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Last"[, ...])" annotation found
 test_illegal_last.adb:541:16: error: a subprogram with the "Container_Aggregates" annotation shall not access global data
 test_illegal_maps.adb:10:12: error: procedure Add_Named is expected
 test_illegal_maps.adb:10:12: error: the Aggregate aspect of a type with the "Container_Aggregates" annotation has the wrong form
-test_illegal_maps.adb:65:12: error: no "Get" function found for type with predefined map aggregates "T"
-test_illegal_maps.adb:103:12: error: no "Equivalent_Keys" function found for type with predefined map aggregates "T"
-test_illegal_maps.adb:144:12: error: no "Has_Key" nor "Default_Item" function found for type with predefined map aggregates "T"
-test_illegal_maps.adb:197:12: error: "Has_Key" and "Default_Item" functions shall not both be specified for type with predefined map aggregates "T"
-test_illegal_maps.adb:251:12: error: "Length" and "Default_Item" functions shall not both be specified for type with predefined map aggregates "T"
+test_illegal_maps.adb:65:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Get"[, ...])" annotation found
+test_illegal_maps.adb:103:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Equivalent_Keys"[, ...])" annotation found
+test_illegal_maps.adb:144:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Has_Key"[, ...])" annotation found
+test_illegal_maps.adb:197:12: error: "Has_Key" conflict with "Default_Value"
+test_illegal_maps.adb:197:12: error: incompatible entities with the "Container_Aggregates" annotation
+test_illegal_maps.adb:251:12: error: "Length" conflict with "Default_Value"
+test_illegal_maps.adb:251:12: error: incompatible entities with the "Container_Aggregates" annotation
 test_illegal_maps.adb:345:12: warning: no "Length" function found for type with predefined map aggregates "T" [map-length-aggregates]
 test_illegal_maps.adb:345:12: warning: the cardinality of aggregates will be unknown
 test_illegal_maps.adb:454:55: error: unexpected third argument for aspect "Annotate => (GNATprove, Container_Aggregates[, ...])"
@@ -312,36 +314,36 @@ test_illegal_maps.adb:466:12: warning: no "Length" function found for type with 
 test_illegal_maps.adb:466:12: warning: the cardinality of aggregates will be unknown
 test_illegal_maps_get.adb:24:16: error: at least one parameter expected
 test_illegal_maps_get.adb:24:16: error: wrong number of parameters for a subprogram with the "Container_Aggregates" annotation
-test_illegal_maps_get.adb:42:12: error: no "Get" function found for type with predefined map aggregates "T"
+test_illegal_maps_get.adb:42:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Get"[, ...])" annotation found
 test_illegal_maps_get.adb:76:16: error: type of parameter "X" shall have the "Container_Aggregates" annotation
 test_illegal_maps_get.adb:76:16: error: wrong type for parameter of subprogram with the "Container_Aggregates" annotation
-test_illegal_maps_get.adb:94:12: error: no "Get" function found for type with predefined map aggregates "T"
+test_illegal_maps_get.adb:94:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Get"[, ...])" annotation found
 test_illegal_maps_get.adb:128:16: error: expected 2 parameters
 test_illegal_maps_get.adb:128:16: error: wrong number of parameters for a subprogram with the "Container_Aggregates" annotation
-test_illegal_maps_get.adb:146:12: error: no "Get" function found for type with predefined map aggregates "T"
+test_illegal_maps_get.adb:146:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Get"[, ...])" annotation found
 test_illegal_maps_get.adb:180:16: error: parameter "K" shall have key type "Key_Type"
 test_illegal_maps_get.adb:180:16: error: wrong type for parameter of subprogram with the "Container_Aggregates" annotation
-test_illegal_maps_get.adb:198:12: error: no "Get" function found for type with predefined map aggregates "T"
+test_illegal_maps_get.adb:198:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Get"[, ...])" annotation found
 test_illegal_maps_get.adb:232:16: error: expected element type "Element_Type"
 test_illegal_maps_get.adb:232:16: error: wrong return type for function with the "Container_Aggregates" annotation
-test_illegal_maps_get.adb:250:12: error: no "Get" function found for type with predefined map aggregates "T"
+test_illegal_maps_get.adb:250:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Get"[, ...])" annotation found
 test_illegal_maps_get.adb:289:16: error: "Get" at line 284 has the same container type "T"
-test_illegal_maps_get.adb:289:16: error: duplicated entity with the "(GNATprove, Container_Aggregates, "Get"[, ...])" annotation in the same scope
+test_illegal_maps_get.adb:289:16: error: duplicated entity with the "(GNATprove, Container_Aggregates, "Get"[, ...])" annotation
 test_illegal_maps_get.adb:307:12: warning: no "Length" function found for type with predefined map aggregates "T" [map-length-aggregates]
 test_illegal_maps_get.adb:307:12: warning: the cardinality of aggregates will be unknown
 test_illegal_maps_get.adb:342:19: error: "Get" shall be declared in the same list of declarations as the partial view of "T"
 test_illegal_maps_get.adb:342:19: error: incorrect placement for entity with the "Container_Aggregates" annotation
-test_illegal_maps_get.adb:361:12: error: no "Get" function found for type with predefined map aggregates "T"
+test_illegal_maps_get.adb:361:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Get"[, ...])" annotation found
 test_illegal_maps_get.adb:402:07: error: "pragma Annotate (GNATprove, Container_Aggregates[, ...])" must immediately follow the specification of function "Get"
 test_illegal_maps_get.adb:402:07: error: incorrect placement for "pragma Annotate (GNATprove, Container_Aggregates[, ...])"
-test_illegal_maps_get.adb:414:12: error: no "Get" function found for type with predefined map aggregates "T"
+test_illegal_maps_get.adb:414:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Get"[, ...])" annotation found
 test_illegal_maps_get.adb:448:16: error: a function with the "Container_Aggregates" annotation shall not have side effects
-test_illegal_maps_get.adb:467:12: error: no "Get" function found for type with predefined map aggregates "T"
+test_illegal_maps_get.adb:467:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Get"[, ...])" annotation found
 test_illegal_maps_get.adb:501:16: error: a function with the "Container_Aggregates" annotation shall not be volatile
-test_illegal_maps_get.adb:520:12: error: no "Get" function found for type with predefined map aggregates "T"
+test_illegal_maps_get.adb:520:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Get"[, ...])" annotation found
 test_illegal_maps_get.adb:554:16: error: "Get" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
 test_illegal_maps_get.adb:554:16: error: functions for type "T" with the "Container_Aggregates" annotation are required to be in SPARK
-test_illegal_maps_get.adb:573:12: error: no "Get" function found for type with predefined map aggregates "T"
+test_illegal_maps_get.adb:573:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Get"[, ...])" annotation found
 test_illegal_maps_get.adb:609:16: error: a subprogram with the "Container_Aggregates" annotation shall not access global data
 test_illegal_maps_get.adb:627:12: warning: no "Length" function found for type with predefined map aggregates "T" [map-length-aggregates]
 test_illegal_maps_get.adb:627:12: warning: the cardinality of aggregates will be unknown
@@ -362,7 +364,7 @@ test_illegal_maps_length.adb:218:16: error: wrong return type for function with 
 test_illegal_maps_length.adb:233:12: warning: no "Length" function found for type with predefined map aggregates "T" [map-length-aggregates]
 test_illegal_maps_length.adb:233:12: warning: the cardinality of aggregates will be unknown
 test_illegal_maps_length.adb:285:16: error: "Length" at line 280 has the same container type "T"
-test_illegal_maps_length.adb:285:16: error: duplicated entity with the "(GNATprove, Container_Aggregates, "Length"[, ...])" annotation in the same scope
+test_illegal_maps_length.adb:285:16: error: duplicated entity with the "(GNATprove, Container_Aggregates, "Length"[, ...])" annotation
 test_illegal_maps_length.adb:348:19: error: "Length" shall be declared in the same list of declarations as the partial view of "T"
 test_illegal_maps_length.adb:348:19: error: incorrect placement for entity with the "Container_Aggregates" annotation
 test_illegal_maps_length.adb:364:12: warning: no "Length" function found for type with predefined map aggregates "T" [map-length-aggregates]
@@ -384,68 +386,71 @@ test_illegal_maps_length.adb:616:12: warning: the cardinality of aggregates will
 test_illegal_maps_length.adb:665:16: error: a subprogram with the "Container_Aggregates" annotation shall not access global data
 test_illegal_model.adb:118:16: error: at least one parameter expected
 test_illegal_model.adb:118:16: error: wrong number of parameters for a subprogram with the "Container_Aggregates" annotation
-test_illegal_model.adb:126:12: error: no "Model" function found for type with aggregates using models "T"
+test_illegal_model.adb:126:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Model"[, ...])" annotation found
 test_illegal_model.adb:150:16: error: type of parameter "X" shall have the "Container_Aggregates" annotation
 test_illegal_model.adb:150:16: error: wrong type for parameter of subprogram with the "Container_Aggregates" annotation
-test_illegal_model.adb:158:12: error: no "Model" function found for type with aggregates using models "T"
+test_illegal_model.adb:158:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Model"[, ...])" annotation found
 test_illegal_model.adb:182:16: error: expected 1 parameter
 test_illegal_model.adb:182:16: error: wrong number of parameters for a subprogram with the "Container_Aggregates" annotation
-test_illegal_model.adb:190:12: error: no "Model" function found for type with aggregates using models "T"
+test_illegal_model.adb:190:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Model"[, ...])" annotation found
 test_illegal_model.adb:214:16: error: return type of "Model" shall have the "Container_Aggregates" annotation
 test_illegal_model.adb:214:16: error: wrong return type for function with the "Container_Aggregates" annotation
-test_illegal_model.adb:222:12: error: no "Model" function found for type with aggregates using models "T"
-test_illegal_model.adb:246:16: error: concrete and model types of a "Model" function shall define compatible aggregates
-test_illegal_model.adb:278:16: error: concrete and model types of a "Model" function shall define compatible aggregates, element types do not match
-test_illegal_model.adb:308:16: error: concrete and model types of a "Model" function shall define compatible aggregates, element types do not match
-test_illegal_model.adb:343:16: error: concrete and model types of a "Model" function shall define compatible aggregates, key types do not match
+test_illegal_model.adb:222:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Model"[, ...])" annotation found
+test_illegal_model.adb:246:16: error: concrete and model types of a function with the "Container_Aggregates" annotation shall define compatible aggregates
+test_illegal_model.adb:278:16: error: concrete and model types of a function with the "Container_Aggregates" annotation shall define compatible aggregates
+test_illegal_model.adb:278:16: error: element types do not match
+test_illegal_model.adb:308:16: error: concrete and model types of a function with the "Container_Aggregates" annotation shall define compatible aggregates
+test_illegal_model.adb:308:16: error: element types do not match
+test_illegal_model.adb:343:16: error: concrete and model types of a function with the "Container_Aggregates" annotation shall define compatible aggregates
+test_illegal_model.adb:343:16: error: key types do not match
 test_illegal_model.adb:383:16: error: "Model" at line 378 has the same container type "T"
-test_illegal_model.adb:383:16: error: duplicated entity with the "(GNATprove, Container_Aggregates, "Model"[, ...])" annotation in the same scope
+test_illegal_model.adb:383:16: error: duplicated entity with the "(GNATprove, Container_Aggregates, "Model"[, ...])" annotation
 test_illegal_seqs.adb:11:12: error: procedure Add_Unnamed is expected
 test_illegal_seqs.adb:11:12: error: the Aggregate aspect of a type with the "Container_Aggregates" annotation has the wrong form
 test_illegal_seqs.adb:47:34: error: "T" is not allowed in SPARK (due to incorrect use of "Container_Aggregates" annotation)
 test_illegal_seqs.adb:47:34: error: violation of aspect SPARK_Mode at line 1
-test_illegal_seqs.adb:80:12: error: no "Get" function found for type with predefined sequence aggregates "T"
-test_illegal_seqs.adb:120:12: error: no "Last" function found for type with predefined sequence aggregates "T"
-test_illegal_seqs.adb:162:12: error: no "First" function found for type with predefined set aggregates "T"
+test_illegal_seqs.adb:80:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Get"[, ...])" annotation found
+test_illegal_seqs.adb:120:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Last"[, ...])" annotation found
+test_illegal_seqs.adb:162:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "First"[, ...])" annotation found
 test_illegal_seqs.adb:254:55: error: unexpected third argument for aspect "Annotate => (GNATprove, Container_Aggregates[, ...])"
 test_illegal_seqs_get.adb:24:16: error: at least one parameter expected
 test_illegal_seqs_get.adb:24:16: error: wrong number of parameters for a subprogram with the "Container_Aggregates" annotation
-test_illegal_seqs_get.adb:38:12: error: no "Get" function found for type with predefined sequence aggregates "T"
+test_illegal_seqs_get.adb:38:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Get"[, ...])" annotation found
 test_illegal_seqs_get.adb:69:16: error: type of parameter "X" shall have the "Container_Aggregates" annotation
 test_illegal_seqs_get.adb:69:16: error: wrong type for parameter of subprogram with the "Container_Aggregates" annotation
-test_illegal_seqs_get.adb:83:12: error: no "Get" function found for type with predefined sequence aggregates "T"
+test_illegal_seqs_get.adb:83:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Get"[, ...])" annotation found
 test_illegal_seqs_get.adb:114:16: error: expected 2 parameters
 test_illegal_seqs_get.adb:114:16: error: wrong number of parameters for a subprogram with the "Container_Aggregates" annotation
-test_illegal_seqs_get.adb:128:12: error: no "Get" function found for type with predefined sequence aggregates "T"
+test_illegal_seqs_get.adb:128:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Get"[, ...])" annotation found
 test_illegal_seqs_get.adb:159:16: error: parameter "I" shall be a signed integer type or a subtype of Big_Integer
 test_illegal_seqs_get.adb:159:16: error: wrong type for parameter of subprogram with the "Container_Aggregates" annotation
-test_illegal_seqs_get.adb:173:12: error: no "Get" function found for type with predefined sequence aggregates "T"
+test_illegal_seqs_get.adb:173:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Get"[, ...])" annotation found
 test_illegal_seqs_get.adb:207:16: error: parameter "I" shall have index type "Index_Type"
 test_illegal_seqs_get.adb:207:16: error: wrong type for parameter of subprogram with the "Container_Aggregates" annotation
-test_illegal_seqs_get.adb:218:12: error: no "Get" function found for type with predefined sequence aggregates "T"
+test_illegal_seqs_get.adb:218:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Get"[, ...])" annotation found
 test_illegal_seqs_get.adb:249:16: error: expected element type "Element_Type"
 test_illegal_seqs_get.adb:249:16: error: wrong return type for function with the "Container_Aggregates" annotation
-test_illegal_seqs_get.adb:263:12: error: no "Get" function found for type with predefined sequence aggregates "T"
+test_illegal_seqs_get.adb:263:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Get"[, ...])" annotation found
 test_illegal_seqs_get.adb:299:16: error: "Get" at line 294 has the same container type "T"
-test_illegal_seqs_get.adb:299:16: error: duplicated entity with the "(GNATprove, Container_Aggregates, "Get"[, ...])" annotation in the same scope
+test_illegal_seqs_get.adb:299:16: error: duplicated entity with the "(GNATprove, Container_Aggregates, "Get"[, ...])" annotation
 test_illegal_seqs_get.adb:345:19: error: "Get" shall be declared in the same list of declarations as the partial view of "T"
 test_illegal_seqs_get.adb:345:19: error: incorrect placement for entity with the "Container_Aggregates" annotation
-test_illegal_seqs_get.adb:360:12: error: no "Get" function found for type with predefined sequence aggregates "T"
+test_illegal_seqs_get.adb:360:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Get"[, ...])" annotation found
 test_illegal_seqs_get.adb:401:07: error: "pragma Annotate (GNATprove, Container_Aggregates[, ...])" must immediately follow the specification of function "Get"
 test_illegal_seqs_get.adb:401:07: error: incorrect placement for "pragma Annotate (GNATprove, Container_Aggregates[, ...])"
-test_illegal_seqs_get.adb:406:12: error: no "Get" function found for type with predefined sequence aggregates "T"
+test_illegal_seqs_get.adb:406:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Get"[, ...])" annotation found
 test_illegal_seqs_get.adb:437:16: error: a function with the "Container_Aggregates" annotation shall not have side effects
-test_illegal_seqs_get.adb:452:12: error: no "Get" function found for type with predefined sequence aggregates "T"
+test_illegal_seqs_get.adb:452:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Get"[, ...])" annotation found
 test_illegal_seqs_get.adb:483:16: error: a function with the "Container_Aggregates" annotation shall not be volatile
-test_illegal_seqs_get.adb:498:12: error: no "Get" function found for type with predefined sequence aggregates "T"
+test_illegal_seqs_get.adb:498:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Get"[, ...])" annotation found
 test_illegal_seqs_get.adb:529:16: error: "Get" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
 test_illegal_seqs_get.adb:529:16: error: functions for type "T" with the "Container_Aggregates" annotation are required to be in SPARK
-test_illegal_seqs_get.adb:544:12: error: no "Get" function found for type with predefined sequence aggregates "T"
+test_illegal_seqs_get.adb:544:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Get"[, ...])" annotation found
 test_illegal_seqs_get.adb:575:16: error: a subprogram with the "Container_Aggregates" annotation shall not access global data
 test_illegal_sets.adb:7:12: error: procedure Add_Unnamed is expected
 test_illegal_sets.adb:7:12: error: the Aggregate aspect of a type with the "Container_Aggregates" annotation has the wrong form
-test_illegal_sets.adb:48:12: error: no "Contains" function found for type with predefined set aggregates "T"
-test_illegal_sets.adb:76:12: error: no "Equivalent_Elements" function found for type with predefined set aggregates "T"
+test_illegal_sets.adb:48:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Contains"[, ...])" annotation found
+test_illegal_sets.adb:76:12: error: no applicable entity with the "(GNATprove, Container_Aggregates, "Equivalent_Elements"[, ...])" annotation found
 test_illegal_sets.adb:110:12: warning: no "Length" function found for type with predefined set aggregates "T" [set-length-aggregates]
 test_illegal_sets.adb:110:12: warning: the cardinality of aggregates will be unknown
 test_illegal_sets.adb:188:55: error: unexpected third argument for aspect "Annotate => (GNATprove, Container_Aggregates[, ...])"
@@ -466,7 +471,7 @@ test_illegal_sets_length.adb:143:16: error: wrong return type for function with 
 test_illegal_sets_length.adb:153:12: warning: no "Length" function found for type with predefined set aggregates "T" [set-length-aggregates]
 test_illegal_sets_length.adb:153:12: warning: the cardinality of aggregates will be unknown
 test_illegal_sets_length.adb:188:16: error: "Length" at line 183 has the same container type "T"
-test_illegal_sets_length.adb:188:16: error: duplicated entity with the "(GNATprove, Container_Aggregates, "Length"[, ...])" annotation in the same scope
+test_illegal_sets_length.adb:188:16: error: duplicated entity with the "(GNATprove, Container_Aggregates, "Length"[, ...])" annotation
 test_illegal_sets_length.adb:229:19: error: "Length" shall be declared in the same list of declarations as the partial view of "T"
 test_illegal_sets_length.adb:229:19: error: incorrect placement for entity with the "Container_Aggregates" annotation
 test_illegal_sets_length.adb:240:12: warning: no "Length" function found for type with predefined set aggregates "T" [set-length-aggregates]

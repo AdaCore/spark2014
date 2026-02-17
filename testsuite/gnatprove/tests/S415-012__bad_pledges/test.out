@@ -1,12 +1,17 @@
-bad_pledges.adb:2:13: error: At_End_Borrow function must have exactly one parameter
-bad_pledges.adb:5:47: error: entity parameter of a pragma At_End_Borrow must be a function
-bad_pledges.adb:8:13: error: At_End_Borrow function must be the identity function
-bad_pledges.adb:10:13: error: At_End_Borrow function must be a ghost function
-bad_pledges.adb:12:13: error: At_End_Borrow function must be an expression function
-bad_pledges.adb:18:13: error: At_End_Borrow function must be the identity function
-bad_pledges.adb:20:13: error: At_End_Borrow function should not have a contract
+bad_pledges.adb:2:13: error: expected 1 parameter
+bad_pledges.adb:2:13: error: wrong number of parameters for a subprogram with the "At_End_Borrow" annotation
+bad_pledges.adb:5:47: error: expected a function
+bad_pledges.adb:5:47: error: wrong entity argument for "pragma Annotate (GNATprove, At_End_Borrow[, ...])"
+bad_pledges.adb:8:13: error: function with "At_End_Borrow" annotation shall be the identity function
+bad_pledges.adb:8:13: error: wrong entity argument for "pragma Annotate (GNATprove, At_End_Borrow[, ...])"
+bad_pledges.adb:10:13: error: a subprogram with the "At_End_Borrow" annotation shall be ghost
+bad_pledges.adb:12:13: error: function with "At_End_Borrow" annotation shall be an expression function
+bad_pledges.adb:12:13: error: wrong entity argument for "pragma Annotate (GNATprove, At_End_Borrow[, ...])"
+bad_pledges.adb:18:13: error: function with "At_End_Borrow" annotation shall be the identity function
+bad_pledges.adb:18:13: error: wrong entity argument for "pragma Annotate (GNATprove, At_End_Borrow[, ...])"
+bad_pledges.adb:20:13: error: a function with the "At_End_Borrow" annotation shall not have contracts
 bad_pledges.adb:24:14: error: equality on access types is not allowed in SPARK (SPARK RM 3.10(19))
 bad_pledges.adb:24:14: error: violation of aspect SPARK_Mode at line 1
-bad_pledges.adb:26:13: error: At_End_Borrow function should not have a contract
+bad_pledges.adb:26:13: error: a function with the "At_End_Borrow" annotation shall not have contracts
 bad_pledges.adb:31:47: error: last argument of "pragma Annotate (GNATprove, At_End_Borrow[, ...])" must be an entity
 gnatprove: error during flow analysis and proof

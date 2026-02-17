@@ -1,8 +1,9 @@
-auto_hide_private.ads:8:04: error: a pragma Annotate Hide_Info for private part shall have 3 parameters
 illegal_hide_private-child.ads:1:01: error: annotate the private part of "Child" with the "Hide_Info" annotation
 illegal_hide_private-child.ads:1:01: error: child of a package whose private part is hidden using a "Hide_Info" annotation shall not have a visible private part
-illegal_hide_private-p_child-grand_child.ads:9:04: error: pragma Annotate Hide_Info for private parts shall be in a visible package
-illegal_hide_private-p_child.ads:9:04: error: pragma Annotate Hide_Info for private parts shall be in a visible package
+illegal_hide_private-p_child-grand_child.ads:9:04: error: expected a visible package
+illegal_hide_private-p_child-grand_child.ads:9:04: error: wrong entity argument for "pragma Annotate (GNATprove, Hide_Info, "Private_Part"[, ...])"
+illegal_hide_private-p_child.ads:9:04: error: expected a visible package
+illegal_hide_private-p_child.ads:9:04: error: wrong entity argument for "pragma Annotate (GNATprove, Hide_Info, "Private_Part"[, ...])"
 illegal_hide_private.ads:18:09: error: type with predicates with different visibility is not yet supported
 illegal_hide_private.ads:18:09: error: type with predicates with different visibility is not yet supported
 illegal_hide_private.ads:19:19: error: "T_Preds" is not allowed in SPARK (due to type with predicates with different visibility)
@@ -12,13 +13,17 @@ illegal_hide_private.ads:19:24: error: violation of aspect SPARK_Mode at line 2
 illegal_hide_private.ads:23:09: error: consider annotating it with Relaxed_Initialization
 illegal_hide_private.ads:23:09: error: hidden private type containing only subcomponents whose type is annotated with Relaxed_Initialization is not yet supported
 illegal_hide_private.ads:27:09: error: consider annotating it with a "pragma Annotate (GNATprove, Ownership, "Needs_Reclamation"[, ...])"
-illegal_hide_private.ads:27:09: error: if the full view of a type is hidden using a "Hide_Info" annotation, it shall not be subject to onwership unless its partial view has an explicit "Hide_Info" annotation
+illegal_hide_private.ads:27:09: error: if the full view of a type is hidden using a "Hide_Info" annotation, it shall not be subject to onwership unless its partial view has an explicit "Ownership" annotation
 illegal_hide_private.ads:31:09: error: consider annotating it with a "pragma Annotate (GNATprove,  Predefined_Equality, "Only_Null"[, ...])"
 illegal_hide_private.ads:31:09: error: if the full view of a type is hidden using a "Hide_Info" annotation, its predefined equality shall not be restricted unless its partial view has an explicit "Predefined_Equality" annotation
-illegal_hide_private.ads:36:04: error: a pragma Annotate Hide_Info for private part shall have 3 parameters
-illegal_hide_private.ads:41:07: error: pragma Annotate Hide_Info shall be located at the top of the private declarations of a package
-illegal_hide_private.ads:49:07: error: pragma Annotate Hide_Info shall be located at the top of the private declarations of a package
-illegal_hide_private.ads:57:07: error: pragma Annotate Unhide_Info cannot be applied to private part
+illegal_hide_private.ads:36:04: error: expected 3 arguments
+illegal_hide_private.ads:36:04: error: wrong number of arguments in "pragma Annotate (GNATprove, Hide_Info, "Private_Part"[, ...])"
+illegal_hide_private.ads:41:07: error: "pragma Annotate (GNATprove, Hide_Info, "Private_Part"[, ...])" shall be located at the top of the private declarations of a package
+illegal_hide_private.ads:41:07: error: incorrect placement for "pragma Annotate (GNATprove, Hide_Info[, ...])"
+illegal_hide_private.ads:49:07: error: "pragma Annotate (GNATprove, Hide_Info, "Private_Part"[, ...])" shall be located at the top of the private declarations of a package
+illegal_hide_private.ads:49:07: error: incorrect placement for "pragma Annotate (GNATprove, Hide_Info[, ...])"
+illegal_hide_private.ads:57:07: error: "Unhide_Info" annotation cannot be applied to private part
+illegal_hide_private.ads:57:07: error: unexpected third argument for "pragma Annotate (GNATprove, Unhide_Info[, ...])"
 illegal_hide_private.ads:67:27: error: "T_Preds" is not allowed in SPARK (due to type with predicates with different visibility)
 illegal_hide_private.ads:67:27: error: violation of aspect SPARK_Mode at line 2
 illegal_hide_private.ads:67:32: error: "T_Preds" is not allowed in SPARK (due to type with predicates with different visibility)
@@ -27,7 +32,8 @@ illegal_hide_private.ads:67:38: error: "T_Preds" is not allowed in SPARK (due to
 illegal_hide_private.ads:67:38: error: violation of aspect SPARK_Mode at line 2
 illegal_hide_private.ads:67:43: error: "T_Preds" is not allowed in SPARK (due to type with predicates with different visibility)
 illegal_hide_private.ads:67:43: error: violation of aspect SPARK_Mode at line 2
-illegal_hide_private.ads:101:07: error: pragma Annotate Hide_Info for private parts shall be in a visible package
+illegal_hide_private.ads:101:07: error: expected a visible package
+illegal_hide_private.ads:101:07: error: wrong entity argument for "pragma Annotate (GNATprove, Hide_Info, "Private_Part"[, ...])"
 use_generics.adb:5:12: error: instance of a generic unit declared in a package whose private part is hidden outside of this package is not yet supported
 use_generics.adb:5:12: error: the private part of package "Illegal_Hide_Private" is hidden for proof
 use_generics.adb:7:14: error: instance of a generic unit declared in a package whose private part is hidden outside of this package is not yet supported

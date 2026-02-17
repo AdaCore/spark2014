@@ -1,53 +1,74 @@
 test_ownership_flow.adb:4:12: warning: checks for ressource or memory reclamation will be unprovable
 test_ownership_flow.adb:4:12: warning: no reclamation function nor reclaimed value found for type with ownership "T1" [no-reclamation-function]
-test_ownership_flow.adb:14:13: error: a function annotated with Ownership shall not access any global data
+test_ownership_flow.adb:14:13: error: a subprogram with the "Ownership" annotation shall not access global data
 test_ownership_illegal.adb:2:04: error: expected 3 arguments
 test_ownership_illegal.adb:2:04: error: wrong number of arguments in "pragma Annotate (GNATprove, Ownership[, ...])"
 test_ownership_illegal.adb:3:04: error: expected 4 arguments
 test_ownership_illegal.adb:3:04: error: wrong number of arguments in "pragma Annotate (GNATprove, Ownership[, ...])"
 test_ownership_illegal.adb:4:48: error: last argument of "pragma Annotate (GNATprove, Ownership[, ...])" must be an entity
 test_ownership_illegal.adb:8:41: error: third argument of aspect "Annotate => (GNATprove, Ownership[, ...])" must be a string
-test_ownership_illegal.adb:10:14: error: the entity of a pragma Annotate Ownership shall be either a type, a constant, or a function
-test_ownership_illegal.adb:14:09: error: a type annotated with Ownership must be a private type
-test_ownership_illegal.adb:18:12: error: the private part of the scope of a private type annotated with Ownership must have either a pragma SPARK_Mode (Off) or a Hide_Info annotation
+test_ownership_illegal.adb:10:14: error: expected a type, a constant, or a function
+test_ownership_illegal.adb:10:14: error: wrong entity argument for aspect "Annotate => (GNATprove, Ownership[, ...])"
+test_ownership_illegal.adb:14:09: error: expected a private type
+test_ownership_illegal.adb:14:09: error: wrong entity argument for aspect "Annotate => (GNATprove, Ownership[, ...])"
+test_ownership_illegal.adb:18:12: error: the private part of the scope of a private type with the "Ownership" annotation shall have either a "pragma SPARK_Mode (Off)" or a "pragma Annotate (GNATprove, Hide_Info, "Private_Part"[, ...])"
 test_ownership_illegal.adb:25:12: warning: checks for ressource or memory reclamation will be unprovable
 test_ownership_illegal.adb:25:12: warning: no reclamation function nor reclaimed value found for type with ownership "T1" [no-reclamation-function]
-test_ownership_illegal.adb:29:16: error: function annotated with Ownership on a tagged type expects a classwide type
-test_ownership_illegal.adb:46:15: error: a type annotated with Ownership must be a private type
-test_ownership_illegal.adb:49:44: error: third argument of aspect Annotate Ownership on a type must be "Needs_Reclamation"
-test_ownership_illegal.adb:50:12: error: a type annotated with Ownership must be a private type
-test_ownership_illegal.adb:54:12: error: a type annotated with Ownership must be a private type
-test_ownership_illegal.adb:62:13: error: ownership function shall be declared in same declaration list as input type
-test_ownership_illegal.adb:72:19: error: ownership function shall be declared in same declaration list as input type
-test_ownership_illegal.adb:79:09: error: third argument of aspect Annotate Ownership on a function must be either "Needs_Reclamation" or "Is_Reclaimed"
-test_ownership_illegal.adb:83:44: error: third argument of aspect Annotate Ownership on a function must be either "Needs_Reclamation" or "Is_Reclaimed"
-test_ownership_illegal.adb:89:16: error: "F3" conflicts with the current annotation
-test_ownership_illegal.adb:89:16: error: a single ownership function or constant shall be supplied for a given type annotated with Ownership
-test_ownership_illegal.adb:93:16: error: a function annotated with Ownership must return a boolean
-test_ownership_illegal.adb:97:16: error: a function annotated with Ownership must have exactly one formal parameter
-test_ownership_illegal.adb:101:16: error: a function annotated with Ownership must have exactly one formal parameter
-test_ownership_illegal.adb:105:16: error: consider annotating it with a pragma Annotate (GNATprove, Ownership, "Needs_Reclamation", ...)
-test_ownership_illegal.adb:105:16: error: the type of the first parameter of a function annotated with Ownership must be annotated with Ownership
-test_ownership_illegal.adb:109:16: error: consider annotating it with a pragma Annotate (GNATprove, Ownership, "Needs_Reclamation", ...)
-test_ownership_illegal.adb:109:16: error: the type of the first parameter of a function annotated with Ownership shall need reclamation
-test_ownership_illegal.adb:115:16: error: a function annotated with Ownership shall not access any global data
+test_ownership_illegal.adb:29:16: error: type of "X" should be a classwide type
+test_ownership_illegal.adb:29:16: error: wrong type for parameter of subprogram with the "Ownership" annotation
+test_ownership_illegal.adb:46:15: error: expected a private type
+test_ownership_illegal.adb:46:15: error: wrong entity argument for aspect "Annotate => (GNATprove, Ownership[, ...])"
+test_ownership_illegal.adb:49:44: error: expected "Needs_Reclamation"
+test_ownership_illegal.adb:49:44: error: unexpected third argument for aspect "Annotate => (GNATprove, Ownership[, ...])"
+test_ownership_illegal.adb:50:12: error: expected a private type
+test_ownership_illegal.adb:50:12: error: wrong entity argument for aspect "Annotate => (GNATprove, Ownership[, ...])"
+test_ownership_illegal.adb:54:12: error: expected a private type
+test_ownership_illegal.adb:54:12: error: wrong entity argument for aspect "Annotate => (GNATprove, Ownership[, ...])"
+test_ownership_illegal.adb:62:13: error: "F_out" shall be declared in same declaration list as "T1"
+test_ownership_illegal.adb:62:13: error: incorrect placement for entity with the "Ownership" annotation
+test_ownership_illegal.adb:72:19: error: "F0" shall be declared in same declaration list as "T7"
+test_ownership_illegal.adb:72:19: error: incorrect placement for entity with the "Ownership" annotation
+test_ownership_illegal.adb:79:09: error: expected "Needs_Reclamation" or "Is_Reclaimed"
+test_ownership_illegal.adb:79:09: error: unexpected third argument for aspect "Annotate => (GNATprove, Ownership[, ...])"
+test_ownership_illegal.adb:83:44: error: expected "Needs_Reclamation" or "Is_Reclaimed"
+test_ownership_illegal.adb:83:44: error: unexpected third argument for aspect "Annotate => (GNATprove, Ownership[, ...])"
+test_ownership_illegal.adb:89:16: error: "F3" conflicts with "F4"
+test_ownership_illegal.adb:89:16: error: incompatible entities with the "Ownership" annotation
+test_ownership_illegal.adb:93:16: error: expected a boolean
+test_ownership_illegal.adb:93:16: error: wrong return type for function with the "Ownership" annotation
+test_ownership_illegal.adb:97:16: error: expected 1 parameter
+test_ownership_illegal.adb:97:16: error: wrong number of parameters for a subprogram with the "Ownership" annotation
+test_ownership_illegal.adb:101:16: error: expected 1 parameter
+test_ownership_illegal.adb:101:16: error: wrong number of parameters for a subprogram with the "Ownership" annotation
+test_ownership_illegal.adb:105:16: error: type of "X" shall have a "(GNATprove, Ownership, "Needs_Reclamation"[, ...])" annotation
+test_ownership_illegal.adb:105:16: error: wrong type for parameter of subprogram with the "Ownership" annotation
+test_ownership_illegal.adb:109:16: error: type of "X" shall have a "(GNATprove, Ownership, "Needs_Reclamation"[, ...])" annotation
+test_ownership_illegal.adb:109:16: error: wrong type for parameter of subprogram with the "Ownership" annotation
+test_ownership_illegal.adb:115:16: error: a subprogram with the "Ownership" annotation shall not access global data
 test_reclaimed_value_illegal.adb:31:12: warning: checks for ressource or memory reclamation will be unprovable
 test_reclaimed_value_illegal.adb:31:12: warning: no reclamation function nor reclaimed value found for type with ownership "T" [no-reclamation-function]
-test_reclaimed_value_illegal.adb:35:09: error: third argument of aspect Annotate Ownership on a constant must be "Reclaimed_Value"
-test_reclaimed_value_illegal.adb:48:44: error: third argument of aspect Annotate Ownership on a constant must be "Reclaimed_Value"
-test_reclaimed_value_illegal.adb:59:07: error: consider annotating it with a pragma Annotate (GNATprove, Ownership, "Needs_Reclamation", ...)
-test_reclaimed_value_illegal.adb:59:07: error: the type of a constant annotated with Ownership must be annotated with Ownership
-test_reclaimed_value_illegal.adb:72:07: error: consider annotating it with a pragma Annotate (GNATprove, Ownership, "Needs_Reclamation", ...)
-test_reclaimed_value_illegal.adb:72:07: error: the type of a constant annotated with Ownership shall need reclamation
-test_reclaimed_value_illegal.adb:85:07: error: constant annotated with Ownership cannot be used on a tagged type
-test_reclaimed_value_illegal.adb:85:07: error: use a reclamation function instead
-test_reclaimed_value_illegal.adb:104:16: error: "Null_T" conflicts with the current annotation
-test_reclaimed_value_illegal.adb:104:16: error: a single ownership function or constant shall be supplied for a given type annotated with Ownership
-test_reclaimed_value_illegal.adb:122:07: error: "Is_Null" conflicts with the current annotation
-test_reclaimed_value_illegal.adb:122:07: error: a single ownership function or constant shall be supplied for a given type annotated with Ownership
+test_reclaimed_value_illegal.adb:34:07: error: "Null_T" is not allowed in SPARK (due to incorrect use of "Ownership" annotation)
+test_reclaimed_value_illegal.adb:34:07: error: violation of aspect SPARK_Mode at line 2
+test_reclaimed_value_illegal.adb:35:09: error: expected "Reclaimed_Value"
+test_reclaimed_value_illegal.adb:35:09: error: unexpected third argument for aspect "Annotate => (GNATprove, Ownership[, ...])"
+test_reclaimed_value_illegal.adb:47:07: error: "Null_T" is not allowed in SPARK (due to incorrect use of "Ownership" annotation)
+test_reclaimed_value_illegal.adb:47:07: error: violation of aspect SPARK_Mode at line 2
+test_reclaimed_value_illegal.adb:48:44: error: expected "Reclaimed_Value"
+test_reclaimed_value_illegal.adb:48:44: error: unexpected third argument for aspect "Annotate => (GNATprove, Ownership[, ...])"
+test_reclaimed_value_illegal.adb:59:07: error: type of "Null_T" shall have a "(GNATprove, Ownership, "Needs_Reclamation"[, ...])" annotation
+test_reclaimed_value_illegal.adb:59:07: error: wrong type for object with the "Ownership" annotation
+test_reclaimed_value_illegal.adb:72:07: error: type of "Null_T" shall have a "(GNATprove, Ownership, "Needs_Reclamation"[, ...])" annotation
+test_reclaimed_value_illegal.adb:72:07: error: wrong type for object with the "Ownership" annotation
+test_reclaimed_value_illegal.adb:85:07: error: type of "Null_T" shall not be tagged; use a function instead
+test_reclaimed_value_illegal.adb:85:07: error: wrong type for object with the "Ownership" annotation
+test_reclaimed_value_illegal.adb:104:16: error: "Null_T" conflicts with "Is_Null"
+test_reclaimed_value_illegal.adb:104:16: error: incompatible entities with the "Ownership" annotation
+test_reclaimed_value_illegal.adb:122:07: error: "Is_Null" conflicts with "Null_T"
+test_reclaimed_value_illegal.adb:122:07: error: incompatible entities with the "Ownership" annotation
 test_reclaimed_value_illegal.adb:141:07: error: "pragma Annotate (GNATprove, Ownership[, ...])" must immediately follow the declaration of constant "Null_T"
 test_reclaimed_value_illegal.adb:141:07: error: incorrect placement for "pragma Annotate (GNATprove, Ownership[, ...])"
 test_reclaimed_value_illegal.adb:152:12: warning: checks for ressource or memory reclamation will be unprovable
 test_reclaimed_value_illegal.adb:152:12: warning: no reclamation function nor reclaimed value found for type with ownership "T" [no-reclamation-function]
-test_reclaimed_value_illegal.adb:166:07: error: constant annotated with ownership shall be declared in same declaration list as its type
+test_reclaimed_value_illegal.adb:166:07: error: "Null_T" shall be declared in same declaration list as "T"
+test_reclaimed_value_illegal.adb:166:07: error: incorrect placement for entity with the "Ownership" annotation
 gnatprove: error during flow analysis and proof

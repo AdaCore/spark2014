@@ -11,9 +11,9 @@ ext.ads:53:04: error: potentially invalid object with a part of an access type i
 ext.ads:53:04: error: violation of aspect SPARK_Mode at line 4
 ext.ads:59:04: error: potentially invalid object with a part of an access type is not allowed in SPARK (SPARK RM 13.9.1(5))
 ext.ads:59:04: error: violation of aspect SPARK_Mode at line 4
-ext.ads:72:04: error: no part of an object or function result annotated with Potentially_Invalid shall be of a type with an "Ownership" annotation
-ext.ads:76:04: error: no part of an object or function result annotated with Potentially_Invalid shall be of a type with an "Ownership" annotation
-ext.ads:82:04: error: no part of an object or function result annotated with Potentially_Invalid shall be of a type with an "Ownership" annotation
+ext.ads:72:04: error: no part of an object or function result with the Potentially_Invalid aspect shall be of a type with an "Ownership" annotation
+ext.ads:76:04: error: no part of an object or function result with the Potentially_Invalid aspect shall be of a type with an "Ownership" annotation
+ext.ads:82:04: error: no part of an object or function result with the Potentially_Invalid aspect shall be of a type with an "Ownership" annotation
 ext.ads:88:04: error: potentially invalid object with a part of a tagged type is not allowed in SPARK (SPARK RM 13.9.1(5))
 ext.ads:88:04: error: violation of aspect SPARK_Mode at line 4
 ext.ads:92:04: error: potentially invalid object with a part of a tagged type is not allowed in SPARK (SPARK RM 13.9.1(5))
@@ -57,9 +57,9 @@ ext.ads:268:36: error: access to a subprogram annotated with Potentially_Invalid
 ext.ads:276:25: error: Potentially_Invalid aspect on a function associated to the aspect Iterable is not yet supported
 ext.ads:287:13: error: traversal function with a potentially invalid traversed parameter is not yet supported
 ext.ads:291:13: error: traversal function with a potentially invalid traversed parameter is not yet supported
-ext.ads:297:13: error: Entity parameter of a pragma Logical_Equal shall not have a Potentially_Invalid aspect
+ext.ads:297:13: error: function with the "Logical_Equal" annotation shall not have a Potentially_Invalid aspect
 ext.ads:305:39: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
-ext.ads:314:13: error: function annotated with Inline_For_Proof with a postcondition shall not have a potentially invalid result
+ext.ads:314:13: error: function with the "Inline_For_Proof" annotation with a postcondition shall not have a potentially invalid result
 ext.ads:316:27: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
 ext.ads:327:04: warning: "X_Val" cannot have invalid values [useless-potentially-invalid-object]
 ext.ads:329:13: warning: the result of "F_Val" cannot have invalid values [useless-potentially-invalid-func-result]

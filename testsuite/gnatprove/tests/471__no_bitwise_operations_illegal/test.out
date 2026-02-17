@@ -1,6 +1,7 @@
-illegal.adb:4:06: error: Entity parameter of annotation No_Bitwise_Operations must be a modular type
-illegal.adb:7:06: error: Entity parameter of annotation No_Bitwise_Operations must be a modular type
-illegal.adb:11:06: error: Annotation No_Bitwise_Operations must apply to a type declaration
+illegal.adb:4:06: error: expected a modular type
+illegal.adb:4:06: error: wrong entity argument for aspect "Annotate => (GNATprove, No_Bitwise_Operations[, ...])"
+illegal.adb:11:06: error: expected a type declaration
+illegal.adb:11:06: error: wrong entity argument for aspect "Annotate => (GNATprove, No_Bitwise_Operations[, ...])"
 illegal.adb:15:04: error: "Base" is not allowed in SPARK (due to incorrect use of "No_Bitwise_Operations" annotation)
 illegal.adb:15:04: error: violation of pragma SPARK_Mode at test.adc:1
 illegal.adb:17:55: error: last argument of "pragma Annotate (GNATprove, No_Bitwise_Operations[, ...])" must be an entity
@@ -33,4 +34,6 @@ illegal.adb:33:09: info: no contextual analysis of "Rotate_Left" (body not seen 
 illegal.adb:34:09: error: "Base" is not allowed in SPARK (due to incorrect use of "No_Bitwise_Operations" annotation)
 illegal.adb:34:09: error: violation of pragma SPARK_Mode at test.adc:1
 illegal.adb:34:09: info: no contextual analysis of "Rotate_Right" (body not seen yet)
+system.ads:1:01: error: "New_Int" is not allowed in SPARK (due to incorrect use of "No_Bitwise_Operations" annotation)
+system.ads:1:01: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof
