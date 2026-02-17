@@ -2922,7 +2922,7 @@ package body VC_Kinds is
            "box notation without default or relaxed initialization",
          when Vio_Container_Aggregate                      =>
            "container aggregate whose type does not have the "
-           & """Container_Aggregate"" annotation",
+           & Annot_To_String (Name => Container_Aggregates_Name),
          when Vio_Code_Statement                           => "code statement",
          when Vio_Controlled_Types                         =>
            "controlled types",

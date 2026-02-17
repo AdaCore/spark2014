@@ -23,7 +23,7 @@ test_illegal_add.adb:154:17: error: violation of aspect SPARK_Mode at line 2
 test_illegal_add.adb:168:12: warning: no "Length" function found for type with predefined set aggregates "T" [set-length-aggregates]
 test_illegal_add.adb:168:12: warning: the cardinality of aggregates will be unknown
 test_illegal_aggregates.adb:6:07: info: no contextual analysis of "P1" (nested package declaration)
-test_illegal_aggregates.adb:29:21: error: container aggregate whose type does not have the "Container_Aggregate" annotation is not allowed in SPARK
+test_illegal_aggregates.adb:29:21: error: container aggregate whose type does not have the "Container_Aggregates" annotation is not allowed in SPARK
 test_illegal_aggregates.adb:29:21: error: violation of aspect SPARK_Mode at line 1
 test_illegal_aggregates.adb:37:07: info: no contextual analysis of "P2" (nested package declaration)
 test_illegal_aggregates.adb:40:12: error: "Empty" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
