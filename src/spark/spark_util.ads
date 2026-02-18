@@ -1057,6 +1057,11 @@ package SPARK_Util is
    function Is_Non_Exec_Assertion_Level (Level : Entity_Id) return Boolean;
    --  Return true on an assertion level that cannot be enabled at runtime
 
+   function In_Non_Exec_Context (N : Node_Id) return Boolean;
+   --  Return True if N is in a ghost context that cannot be enabled at
+   --  runtime. This function does not check whether the enclosing unit itself
+   --  is non-executable.
+
    function In_Statically_Leaking_Context
      (Expr : N_Subexpr_Id; Ignore_Non_Exec : Boolean) return Boolean;
    --  Return True if Expr occurs in a context where it is statically known

@@ -3261,6 +3261,61 @@ package body SPARK_Util is
       return Present (Find_Loop_Entry_Or_Old_Attribute (N));
    end In_Loop_Entry_Or_Old_Attribute;
 
+   -------------------------
+   -- In_Non_Exec_Context --
+   -------------------------
+
+   function In_Non_Exec_Context (N : Node_Id) return Boolean is
+      function Is_Non_Exec_Entity (E : Entity_Id) return Boolean
+      is (Is_Ghost_Entity (E)
+          and then Is_Non_Exec_Assertion_Level (Ghost_Assertion_Level (E)));
+
+      function Is_Non_Exec_Ghost_Statement (N : Node_Id) return Boolean
+      is ((Nkind (N) = N_Pragma
+           and then
+             (Get_Pragma_Id (Pragma_Name (N))
+              in Pragma_Always_Terminates
+               | Pragma_Program_Exit
+               | Pragma_Subprogram_Variant
+              or else
+                (Assertion_Expression_Pragma (Get_Pragma_Id (Pragma_Name (N)))
+                 and then
+                   Is_Non_Exec_Assertion_Level
+                     (Pragma_Ghost_Assertion_Level (N)))))
+          or else
+            (Nkind (N) = N_Assignment_Statement
+             and then Is_Non_Exec_Entity (Get_Root_Object (Name (N))))
+          or else
+            (Nkind (N) = N_Object_Declaration
+             and then Is_Non_Exec_Entity (Defining_Identifier (N)))
+          or else
+            (Nkind (N) in N_Subprogram_Call
+             and then Is_Non_Exec_Entity (Get_Called_Entity (N)))
+          or else
+            (Is_Inlined_Call (N)
+             and then
+               Is_Non_Exec_Entity (Called_Entity_From_Inlined_Call (N))));
+
+      function Is_Unit_Or_Ghost_Statement (N : Node_Id) return Boolean
+      is (Nkind (N)
+          in N_Package_Body | N_Package_Declaration | N_Subprogram_Body
+          or else Is_Non_Exec_Ghost_Statement (N));
+      --  Return True if N is either a a unit, or a non-executable ghost
+      --  statement.
+
+      function Enclosing_Unit_Or_Ghost_Statement is new
+        First_Parent_With_Property (Is_Unit_Or_Ghost_Statement);
+
+      Par : constant Node_Id := Enclosing_Unit_Or_Ghost_Statement (N);
+
+   begin
+      if No (Par) then
+         return False;
+      else
+         return Is_Non_Exec_Ghost_Statement (Par);
+      end if;
+   end In_Non_Exec_Context;
+
    ---------------------------
    -- In_SPARK_Library_Unit --
    ---------------------------
@@ -3301,11 +3356,7 @@ package body SPARK_Util is
         Present (Par)
         and then Nkind (Par) = N_Pragma
         and then Assertion_Expression_Pragma (Get_Pragma_Id (Par))
-        and then
-          (if Ignore_Non_Exec
-           then
-             not Is_Non_Exec_Assertion_Level
-                   (Pragma_Ghost_Assertion_Level (Par)));
+        and then (if Ignore_Non_Exec then not In_Non_Exec_Context (Expr));
    end In_Statically_Leaking_Context;
 
    -------------------------------------
