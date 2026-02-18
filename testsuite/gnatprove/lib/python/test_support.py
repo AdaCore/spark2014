@@ -21,13 +21,15 @@ Printing to `stderr` is not expected, but can be added in a similar fashion.
 import json
 import os
 import re
+import subprocess
 import sys
+
+from e3.os.process import Run
 from e3.testsuite.result import Log
 from fnmatch import fnmatch
 from time import sleep
 from pathlib import Path
 from shutil import copy, copytree, move, rmtree, which
-import subprocess
 import tempfile
 from test_util import sort_key_for_errors
 
@@ -373,15 +375,44 @@ def _resolve_path(filename, cwd):
     return base / filename
 
 
-def Run(command, cwd=None, timeout=None):
-    result = subprocess.run(
+def run_command(command, cwd=None, timeout=None):
+    """
+    Executes a command in a subprocess with a timeout.
+
+    The process is executed via e3.process.Run which has platform-specific
+    logic to reliably kill a process tree upon timeout. Calling Python's
+    subprocess.run() is specifically avoided because it cannot kill process
+    trees reliably on Windows.
+
+    Args:
+        command (list): The command to run.
+        cwd (str, optional): Current working directory.
+        timeout (int, optional): Timeout in seconds.
+
+    Returns:
+        An instance of e3.process.Run if the process completed before timeout.
+
+    Raises:
+        subprocess.TimeoutExpired: If the timeout is reached.
+    """
+
+    result = Run(
         command,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
         cwd=cwd,
         timeout=timeout,
-        text=True,
     )
+
+    # e3.process.Run executes the command through a custom rlimit tool. On
+    # timeout it returns with status 2 and a message like "rlimit: Real time
+    # limit (<value> s) exceeded". We need to check both to know that it was
+    # really a timeout.
+    if (
+        result.status == 2
+        and result.out
+        and result.out.strip().splitlines()[-1].startswith("rlimit:")
+    ):
+        raise subprocess.TimeoutExpired(cmd=command, timeout=timeout)
+
     return result
 
 
@@ -1103,16 +1134,16 @@ def gcc(src, opt=None, cwd=None, logger=None):
     cmd = ["gcc"]
     cmd += to_list(opt)
     cmd += [src]
-    process = Run(cmd, cwd=cwd)
-    log_sorted(logger, str.splitlines(process.stdout))
+    process = run_command(cmd, cwd=cwd)
+    log_sorted(logger, str.splitlines(process.out))
 
 
 def gprbuild(opt=None, sort_lines=True, cwd=None, logger=None):
     """Call gprbuld -q **opt. Sort the output if sort_lines is True."""
     if opt is None:
         opt = []
-    process = Run(["gprbuild", "-q"] + opt, cwd=cwd)
-    lines = str.splitlines(process.stdout)
+    process = run_command(["gprbuild", "-q"] + opt, cwd=cwd)
+    lines = str.splitlines(process.out)
     if len(lines) == 0:
         return
 
@@ -1381,19 +1412,19 @@ def gnatprove(
     # When not interested in output, force --output=brief to get simpler diffs
     if no_output:
         cmd += ["--output=brief"]
-    process = Run(cmd, cwd=cwd, timeout=timeout)
+    process = run_command(cmd, cwd=cwd, timeout=timeout)
     # Replace line above by the one below for testing the scripts without
     # running the tool:
     # process = open("test.out", 'r').read()
 
     # Check marks in source code and print the command output sorted
-    strlist = str.splitlines(process.stdout)
+    strlist = str.splitlines(process.out)
     # Replace line above by the one below for testing the scripts without
     # running the tool
     # strlist = str.splitlines(process)
 
     # Check that the exit status is as expected
-    if exit_status is not None and process.returncode != exit_status:
+    if exit_status is not None and process.status != exit_status:
         log(logger, f"Unexpected exit status of {process.status}")
         failure = True
     else:
@@ -1939,13 +1970,15 @@ def sparklib_exec_test(
 ):
     cov_mode = coverage_mode()
     if cov_mode:
-        Run(["gnatcov", "instrument", "-P", project_file, "--level=stmt"], cwd=cwd)
+        run_command(
+            ["gnatcov", "instrument", "-P", project_file, "--level=stmt"], cwd=cwd
+        )
     opt = ["-P", project_file]
     if cov_mode:
         opt += ["--src-subdirs=gnatcov-instr", "--implicit-with=gnatcov_rts.gpr"]
     gprbuild(opt=opt, logger=logger, cwd=cwd)
-    p = Run([binary], cwd=cwd)
-    log(logger, p.stdout)
+    p = run_command([binary], cwd=cwd)
+    log(logger, p.out)
 
 
 def print_version(cwd=None, logger=None):
@@ -1968,8 +2001,8 @@ def print_version(cwd=None, logger=None):
     # ??? os.unsetenv didn't work, so setting to empty string instead
     os.environ["LD_LIBRARY_PATH"] = ""
 
-    p = Run(["gnatprove", "--version"], cwd=cwd)
-    lines = p.stdout.splitlines()
+    p = run_command(["gnatprove", "--version"], cwd=cwd)
+    lines = p.out.splitlines()
     # drop first line of output
     lines = lines[1:]
     for line in lines:
