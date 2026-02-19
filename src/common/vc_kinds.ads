@@ -1531,6 +1531,10 @@ package VC_Kinds is
    --  Return a short string for each kind of message as a string, e.g. "index
    --  check" for VC_Index_Check.
 
+   function Unsupported_Kind_Name (Kind : Unsupported_Kind) return String;
+   function Violation_Kind_Name (Kind : Violation_Kind) return String;
+   --  Same as above for limitations and violations
+
    function Rule_Name (Kind : VC_Kind) return String;
    function Rule_Name (Kind : Valid_Flow_Tag_Kind) return String;
    --  Return a tag for each kind of message that is used to identify the

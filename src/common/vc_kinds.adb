@@ -2872,6 +2872,485 @@ package body VC_Kinds is
       return 'E' & Result;
    end To_String;
 
+   ---------------------------
+   -- Unsupported_Kind_Name --
+   ---------------------------
+
+   function Unsupported_Kind_Name (Kind : Unsupported_Kind) return String
+   is (case Kind is
+         when Lim_Abstract_State_Part_Of_Concurrent_Obj                   =>
+           "abstract-state-part-of-concurrent-obj",
+         when Lim_Access_Attr_With_Ownership_In_Unsupported_Context       =>
+           "access-attr-with-ownership-in-unsupported-context",
+         when Lim_Access_Conv                                             =>
+           "access-conv",
+         when Lim_Access_Sub_Protected                                    =>
+           "access-sub-protected",
+         when Lim_Access_Sub_Traversal                                    =>
+           "access-sub-traversal",
+         when Lim_Access_To_No_Return_Subp                                =>
+           "access-to-no-return-subp",
+         when Lim_Access_To_Relaxed_Init_Subp                             =>
+           "access-to-relaxed-init-subp",
+         when Lim_Access_To_Subp_With_Exc                                 =>
+           "access-to-subp-with-exc",
+         when Lim_Access_To_Subp_With_Prog_Exit                           =>
+           "access-to-subp-with-prog-exit",
+         when Lim_Address_Attr_In_Unsupported_Context                     =>
+           "address-attr-in-unsupported-context",
+         when Lim_Alloc_With_Type_Constraints                             =>
+           "alloc-with-type-constraints",
+         when Lim_Array_Conv_Different_Size_Modular_Index                 =>
+           "array-conv-different-size-modular-index",
+         when Lim_Array_Conv_Signed_Modular_Index                         =>
+           "array-conv-signed-modular-index",
+         when Lim_Assert_And_Cut_Meet_Inv                                 =>
+           "assert-and-cut-meet-inv",
+         when Lim_Borrow_Slice                                            =>
+           "borrow-slice",
+         when Lim_Borrow_Traversal_First_Param                            =>
+           "borrow-traversal-first-param",
+         when Lim_Borrow_Traversal_Volatile                               =>
+           "borrow-traversal-volatile",
+         when Lim_Class_Attr_Of_Constrained_Type                          =>
+           "class-attr-of-constrained-type",
+         when Lim_Classwide_Representation_Value                          =>
+           "classwide-representation-value",
+         when Lim_Classwide_With_Predicate                                =>
+           "classwide-with-predicate",
+         when Lim_Complex_Raise_Expr_In_Prec                              =>
+           "complex-raise-expr-in-prec",
+         when Lim_Constrained_Classwide                                   =>
+           "constrained-classwide",
+         when Lim_Continue_Cross_Inv                                      =>
+           "continue-cross-inv",
+         when Lim_Contract_On_Derived_Private_Type                        =>
+           "contract-on-derived-private-type",
+         when Lim_Conv_Fixed_Float                                        =>
+           "conv-fixed-float",
+         when Lim_Conv_Fixed_Integer                                      =>
+           "conv-fixed-integer",
+         when Lim_Conv_Float_Modular_128                                  =>
+           "conv-float-modular-128",
+         when Lim_Conv_Incompatible_Fixed                                 =>
+           "conv-incompatible-fixed",
+         when Lim_Cut_Operation_Context                                   =>
+           "cut-operation-context",
+         when Lim_Deep_Object_With_Addr                                   =>
+           "deep-object-with-addr",
+         when Lim_Deep_Value_In_Delta_Aggregate                           =>
+           "deep-value-in-delta-aggregate",
+         when Lim_Derived_Interface                                       =>
+           "derived-interface",
+         when Lim_Destructor                                              =>
+           "destructor",
+         when Lim_Entry_Family                                            =>
+           "entry-family",
+         when Lim_Exceptional_Cases_Dispatch                              =>
+           "exceptional-cases-dispatch",
+         when Lim_Exceptional_Cases_Ownership                             =>
+           "exceptional-cases-ownership",
+         when Lim_Exit_Cases_Dispatch                                     =>
+           "exit-cases-dispatch",
+         when Lim_Ext_Aggregate_With_Type_Ancestor                        =>
+           "ext-aggregate-with-type-ancestor",
+         when Lim_Extension_Case_Pattern_Matching                         =>
+           "extension-case-pattern-matching",
+         when Lim_GNAT_Ext_Conditional_Goto                               =>
+           "gnat-ext-conditional-goto",
+         when Lim_GNAT_Ext_Conditional_Raise                              =>
+           "gnat-ext-conditional-raise",
+         when Lim_GNAT_Ext_Conditional_Return                             =>
+           "gnat-ext-conditional-return",
+         when Lim_GNAT_Ext_Interpolated_String_Literal                    =>
+           "gnat-ext-interpolated-string-literal",
+         when Lim_Generic_In_Hidden_Private                               =>
+           "generic-in-hidden-private",
+         when Lim_Generic_In_Type_Inv                                     =>
+           "generic-in-type-inv",
+         when Lim_Goto_Cross_Inv                                          =>
+           "goto-cross-inv",
+         when Lim_Hidden_Private_Relaxed_Init                             =>
+           "hidden-private-relaxed-init",
+         when Lim_Img_On_Non_Scalar                                       =>
+           "img-on-non-scalar",
+         when Lim_Incomplete_Type_Early_Usage                             =>
+           "incomplete-type-early-usage",
+         when Lim_Indexed_Container_Aggregate                             =>
+           "indexed-container-aggregate",
+         when Lim_Inherited_Controlling_Result_From_Hidden_Part           =>
+           "inherited-controlling-result-from-hidden-part",
+         when Lim_Inherited_Controlling_Result_From_SPARK_Off             =>
+           "inherited-controlling-result-from-spark-off",
+         when Lim_Inherited_Prim_From_Hidden_Part                         =>
+           "inherited-prim-from-hidden-part",
+         when Lim_Inherited_Prim_From_SPARK_Off                           =>
+           "inherited-prim-from-spark-off",
+         when Lim_Iterated_Element_Association                            =>
+           "iterated-element-association",
+         when Lim_Iterator_In_Component_Assoc                             =>
+           "iterator-in-component-assoc",
+         when Lim_Limited_Type_From_Limited_With                          =>
+           "limited-type-from-limited-with",
+         when Lim_Loop_Inv_And_Handler                                    =>
+           "loop-inv-and-handler",
+         when Lim_Loop_Inv_And_Finally                                    =>
+           "loop-inv-and-finally",
+         when Lim_Loop_With_Iterator_Filter                               =>
+           "loop-with-iterator-filter",
+         when Lim_Max_Array_Dimension                                     =>
+           "max-array-dimension",
+         when Lim_Max_Modulus                                             =>
+           "max-modulus",
+         when Lim_Move_To_Access_Constant                                 =>
+           "move-to-access-constant",
+         when Lim_No_Return_Function                                      =>
+           "no-return-function",
+         when Lim_Non_Static_Attribute                                    =>
+           "non-static-attribute",
+         when Lim_Multiple_Inheritance_Interfaces                         =>
+           "multiple-inheritance-interfaces",
+         when Lim_Multiple_Inheritance_Mixed_SPARK_Mode                   =>
+           "multiple-inheritance-mixed-spark-mode",
+         when Lim_Multiple_Inheritance_Root                               =>
+           "multiple-inheritance-root",
+         when Lim_Multidim_Iterator                                       =>
+           "multidim-iterator",
+         when Lim_Multidim_Update                                         =>
+           "multidim-update",
+         when Lim_Null_Aggregate_In_Branching_Array_Aggregate             =>
+           "null-aggregate-in-branching-array-aggregate",
+         when Lim_Object_Before_Inv                                       =>
+           "object-before-inv",
+         when Lim_Op_Fixed_Float                                          =>
+           "op-fixed-float",
+         when Lim_Op_Incompatible_Fixed                                   =>
+           "op-compatible-fixed",
+         when Lim_Overlay_Uninitialized                                   =>
+           "overlay-uninitialized",
+         when Lim_Overlay_With_Deep_Object                                =>
+           "overlay-with-deep-object",
+         when Lim_Overriding_With_Precondition_Discrepancy_Hiding         =>
+           "overriding-with-precondition-discrepancy-hiding",
+         when Lim_Overriding_With_Precondition_Discrepancy_Tagged_Privacy =>
+           "overriding-with-precondition-discrepancy-tagged-privacy",
+         when Lim_Deep_Object_Declaration_Outside_Block                   =>
+           "deep-object-declaration-outside-block",
+         when Lim_Package_Before_Inv                                      =>
+           "package-before-inv",
+         when Lim_Potentially_Invalid_Eq                                  =>
+           "potentially-invalid-eq",
+         when Lim_Potentially_Invalid_Iterable                            =>
+           "potentially-invalid-iterable",
+         when Lim_Potentially_Invalid_Mutable_Discr                       =>
+           "potentially-invalid-mutable-discr",
+         when Lim_Potentially_Invalid_Part_Of                             =>
+           "potentially-invalid-part-of",
+         when Lim_Potentially_Invalid_Predicates                          =>
+           "potentially-invalid-predicates",
+         when Lim_Potentially_Invalid_Private                             =>
+           "potentially-invalid-private",
+         when Lim_Potentially_Invalid_Relaxed                             =>
+           "potentially-invalid-relaxed",
+         when Lim_Potentially_Invalid_Subp_Access                         =>
+           "potentially-invalid-subp-access",
+         when Lim_Potentially_Invalid_Traversal                           =>
+           "potentially-invalid-traversal",
+         when Lim_Predicate_With_Different_SPARK_Mode                     =>
+           "predicate-with-different-spark-mode",
+         when Lim_Predicate_With_Different_Visibility                     =>
+           "predicate-with-different-visibility",
+         when Lim_Primitive_Call_In_DIC                                   =>
+           "primitive-call-in-dic",
+         when Lim_Program_Exit_Dispatch                                   =>
+           "program-exit-dispatch",
+         when Lim_Program_Exit_Global_Modified_In_Callee                  =>
+           "program-exit-global-modified-in-callee",
+         when Lim_Protected_Operation_Of_Expression                       =>
+           "protected-operation-of-expression",
+         when Lim_Protected_Operation_Of_Component                        =>
+           "protected-operation-of-component",
+         when Lim_Protected_Operation_Of_Formal                           =>
+           "protected-operation-of-formal",
+         when Lim_Refined_Post_On_Entry                                   =>
+           "refined-post-on-entry",
+         when Lim_Relaxed_Init_Access_Type                                =>
+           "relaxed-init-access-type",
+         when Lim_Relaxed_Init_Aliasing                                   =>
+           "relaxed-init-aliasing",
+         when Lim_Relaxed_Init_Invariant                                  =>
+           "relaxed-init-invariant",
+         when Lim_Relaxed_Init_Variant_Part                               =>
+           "relaxed-init-variant-part",
+         when Lim_Subprogram_Before_Inv                                   =>
+           "subprogram-before-inv",
+         when Lim_Subp_Variant_Duplicate                                  =>
+           "subp-variant-duplicate",
+         when Lim_Subp_Variant_Eq                                         =>
+           "subp-variant-eq",
+         when Lim_Suspension_On_Expression                                =>
+           "suspension-on-expression",
+         when Lim_Suspension_On_Formal                                    =>
+           "suspension-on-formal",
+         when Lim_Target_Name_In_Borrow                                   =>
+           "target-name-in-borrow",
+         when Lim_Target_Name_In_Move                                     =>
+           "target-name-in-move",
+         when Lim_Type_Inv_Access_Type                                    =>
+           "type-inv-access-type",
+         when Lim_Type_Inv_Protected_Type                                 =>
+           "type-inv-protected-type",
+         when Lim_Type_Inv_Tagged_Comp                                    =>
+           "type-inv-tagged-comp",
+         when Lim_Type_Inv_Tagged_Type                                    =>
+           "type-inv-tagged-type",
+         when Lim_Type_Inv_Volatile                                       =>
+           "type-inv-volatile",
+         when Lim_Uninit_Alloc_In_Expr_Fun                                =>
+           "uninit-alloc-in-expr-fun",
+         when Lim_Unknown_Alignment                                       =>
+           "unknown-alignment",
+         when Lim_Unknown_Size                                            =>
+           "unknown-size",
+         when Lim_UU_Tagged_Comp                                          =>
+           "uu-tagged-comp");
+
+   -------------------------
+   -- Violation_Kind_Name --
+   -------------------------
+
+   function Violation_Kind_Name (Kind : Violation_Kind) return String
+   is (case Kind is
+         when Vio_Access_Constant                          =>
+           "access-constant",
+         when Vio_Access_Expression                        =>
+           "access-expression",
+         when Vio_Access_Function_With_Side_Effects        =>
+           "access-function-with-side-effects",
+         when Vio_Access_No_Root                           => "access-no-root",
+         when Vio_Access_Subprogram_Within_Protected       =>
+           "access-subprogram-within-protected",
+         when Vio_Access_Sub_Formal_With_Inv               =>
+           "access-sub-formal-with-inv",
+         when Vio_Access_Sub_Return_Type_With_Inv          =>
+           "access-sub-return-type-with-inv",
+         when Vio_Access_Sub_With_Globals                  =>
+           "access-sub-with-globals",
+         when Vio_Access_To_Dispatch_Op                    =>
+           "access-to-dispatch-op",
+         when Vio_Access_Volatile_Function                 =>
+           "access-volatile-function",
+         when Vio_Address_Of_Non_Object                    =>
+           "address-of-non-object",
+         when Vio_Address_Outside_Address_Clause           =>
+           "address-outside-address-clause",
+         when Vio_Aggregate_Globals                        =>
+           "aggregate-globals",
+         when Vio_Aggregate_Side_Effects                   =>
+           "aggregate-side-effects",
+         when Vio_Aggregate_Volatile                       =>
+           "aggregate-volatile",
+         when Vio_Assert_And_Cut_Context                   =>
+           "assert-and-cut-context",
+         when Vio_Backward_Goto                            => "backward-goto",
+         when Vio_Box_Notation_Without_Init                =>
+           "box-notation-without-init",
+         when Vio_Code_Statement                           => "code-statement",
+         when Vio_Controlled_Types                         =>
+           "controlled-types",
+         when Vio_Container_Aggregate                      =>
+           "container-aggregate",
+         when Vio_Default_With_Current_Instance            =>
+           "default-with-current-instance",
+         when Vio_Derived_Untagged_With_Tagged_Full_View   =>
+           "derived-untagged-with-tagged-full-view",
+         when Vio_Discriminant_Access                      =>
+           "discriminant-access",
+         when Vio_Discriminant_Derived                     =>
+           "discriminant-derived",
+         when Vio_Dispatch_Plain_Pre                       =>
+           "dispatch-plain-pre",
+         when Vio_Dispatching_Untagged_Type                =>
+           "dispatching-untagged-type",
+         when Vio_Exit_Cases_Exception                     =>
+           "exit-cases-exception",
+         when Vio_Exit_Cases_Normal_Only                   =>
+           "exit-cases-normal-only",
+         when Vio_Function_Global_Output                   =>
+           "function-global-output",
+         when Vio_Function_Out_Param                       =>
+           "function-out-param",
+         when Vio_Ghost_Concurrent_Comp                    =>
+           "ghost-concurrent-comp",
+         when Vio_Ghost_Eq                                 => "ghost-eq",
+         when Vio_Ghost_Volatile                           => "ghost-volatile",
+         when Vio_Handler_Choice_Parameter                 =>
+           "handler-choice-parameter",
+         when Vio_Invariant_Class                          =>
+           "invariant-class",
+         when Vio_Invariant_Ext                            => "invariant-ext",
+         when Vio_Invariant_Partial                        =>
+           "invariant-partial",
+         when Vio_Invariant_Volatile                       =>
+           "invariant-volatile",
+         when Vio_Iterable_Controlling_Result              =>
+           "iterable-controlling-result",
+         when Vio_Iterable_Full_View                       =>
+           "iterable-full-view",
+         when Vio_Iterable_Globals                         =>
+           "iterable-globals",
+         when Vio_Iterable_Side_Effects                    =>
+           "iterable-side-effects",
+         when Vio_Iterable_Volatile                        =>
+           "iterable-volatile",
+         when Vio_Iterator_Specification                   =>
+           "iterator-specification",
+         when Vio_Loop_Variant_Structural                  =>
+           "loop-variant-structural",
+         when Vio_Overlay_Constant_Not_Imported            =>
+           "overlay-constant-not-imported",
+         when Vio_Overlay_Mutable_Constant                 =>
+           "overlay-mutable-constant",
+         when Vio_Overlay_Part_Of_Protected                =>
+           "overlay-part-of-protected",
+         when Vio_Ownership_Access_Equality                =>
+           "ownership-access-equality",
+         when Vio_Ownership_Allocator_Invalid_Context      =>
+           "ownership-allocator-invalid-context",
+         when Vio_Ownership_Allocator_Uninitialized        =>
+           "ownership-allocator-uninitialized",
+         when Vio_Ownership_Anonymous_Access_To_Named      =>
+           "ownership-anonymous-access-to-named",
+         when Vio_Ownership_Anonymous_Part_Of              =>
+           "ownership-anonymous-part-of",
+         when Vio_Ownership_Anonymous_Object_Context       =>
+           "ownership-anonymous-object-context",
+         when Vio_Ownership_Anonymous_Object_Init          =>
+           "ownership-anonymous-object-init",
+         when Vio_Ownership_Anonymous_Result               =>
+           "ownership-anonymous-result",
+         when Vio_Ownership_Assign_To_Expr                 =>
+           "ownership-assign-to-expr",
+         when Vio_Ownership_Assign_To_Constant             =>
+           "ownership-assign-to-constant",
+         when Vio_Ownership_Borrow_Of_Constant             =>
+           "ownership-borrow-of-constant",
+         when Vio_Ownership_Borrow_Of_Non_Markable         =>
+           "ownership-borrow-of-non-markable",
+         when Vio_Ownership_Anonymous_Component            =>
+           "ownership-anonymous-component",
+         when Vio_Ownership_Deallocate_General             =>
+           "ownership-deallocate-general",
+         when Vio_Ownership_Different_Branches             =>
+           "ownership-different-branches",
+         when Vio_Ownership_Duplicate_Aggregate_Value      =>
+           "ownership-duplicate-aggregate-value",
+         when Vio_Ownership_Loop_Entry_Old_Copy            =>
+           "ownership-loop-entry-old-copy",
+         when Vio_Ownership_Loop_Entry_Old_Traversal       =>
+           "ownership-loop-entry-old-traversal",
+         when Vio_Ownership_Move_Constant_Part             =>
+           "ownership-move-constant-part",
+         when Vio_Ownership_Move_In_Declare                =>
+           "ownership-move-in-declare",
+         when Vio_Ownership_Move_Not_Name                  =>
+           "ownership-move-not-name",
+         when Vio_Ownership_Move_Traversal_Call            =>
+           "ownership-move-traversal-call",
+         when Vio_Ownership_Reborrow                       =>
+           "ownership-reborrow",
+         when Vio_Ownership_Storage_Pool                   =>
+           "ownership-storage-pool",
+         when Vio_Ownership_Tagged_Extension               =>
+           "ownership-tagged-extension",
+         when Vio_Ownership_Traversal_Extended_Return      =>
+           "ownership-traversal-extended-return",
+         when Vio_Ownership_Volatile                       =>
+           "ownership-volatile",
+         when Vio_Potentially_Invalid_Dispatch             =>
+           "potentially-invalid-dispatch",
+         when Vio_Potentially_Invalid_Invariant            =>
+           "potentially-invalid-invariant",
+         when Vio_Potentially_Invalid_Overlay              =>
+           "potentially-invalid-overlay",
+         when Vio_Potentially_Invalid_Part_Access          =>
+           "potentially-invalid-part-access",
+         when Vio_Potentially_Invalid_Part_Concurrent      =>
+           "potentially-invalid-part-concurrent",
+         when Vio_Potentially_Invalid_Part_Tagged          =>
+           "potentially-invalid-part-tagged",
+         when Vio_Potentially_Invalid_Part_Unchecked_Union =>
+           "potentially-invalid-part-unchecked-union",
+         when Vio_Potentially_Invalid_Scalar               =>
+           "potentially-invalid-scalar",
+         when Vio_Predicate_Volatile                       =>
+           "predicate-volatile",
+         when Vio_Program_Exit_Outputs                     =>
+           "program-exit-outputs",
+         when Vio_Real_Root                                => "real-root",
+         when Vio_Relaxed_Init_Dispatch                    =>
+           "relaxed-init-dispatch",
+         when Vio_Relaxed_Init_Initialized_Prefix          =>
+           "relaxed-init-initialized-prefix",
+         when Vio_Relaxed_Init_Part_Generic                =>
+           "relaxed-init-part-generic",
+         when Vio_Relaxed_Init_Part_Of_Tagged              =>
+           "relaxed-init-part-of-tagged",
+         when Vio_Relaxed_Init_Part_Of_Unchecked_Union     =>
+           "relaxed-init-part-of-unchecked-union",
+         when Vio_Relaxed_Init_Part_Of_Volatile            =>
+           "relaxed-init-part-of-volatile",
+         when Vio_Side_Effects_Call_Context                =>
+           "side-effects-call-context",
+         when Vio_Side_Effects_Eq                          =>
+           "side-effects-eq",
+         when Vio_Side_Effects_Traversal                   =>
+           "side-effects-traversal",
+         when Vio_Storage_Size                             => "storage-size",
+         when Vio_Subp_Variant_Structural                  =>
+           "subp-variant-structural",
+         when Vio_Tagged_Extension_Local                   =>
+           "tagged-extension-local",
+         when Vio_Target_Name_In_Call_With_Side_Effets     =>
+           "target-name-in-call-with-side-effets",
+         when Vio_Tasking_Synchronized_Comp                =>
+           "tasking-synchronized-comp",
+         when Vio_Tasking_Unintialized_Concurrent          =>
+           "tasking-unintialized-concurrent",
+         when Vio_Tasking_Unsupported_Construct            =>
+           "tasking-unsupported-construct",
+         when Vio_UC_From_Access                           => "uc-from-access",
+         when Vio_UC_To_Access                             => "uc-to-access",
+         when Vio_UC_To_Access_Components                  =>
+           "uc-to-access-components",
+         when Vio_UC_To_Access_From                        =>
+           "uc-to-access-from",
+         when Vio_Unsupported_Attribute                    =>
+           "unsupported-attribute",
+         when Vio_Unsupported_Pragma                       =>
+           "unsupported-pragma",
+         when Vio_Volatile_At_Library_Level                =>
+           "volatile-at-library-level",
+         when Vio_Volatile_Discriminant                    =>
+           "volatile-discriminant",
+         when Vio_Volatile_Discriminated_Type              =>
+           "volatile-discriminated-type",
+         when Vio_Volatile_Eq                              => "volatile-eq",
+         when Vio_Volatile_Global                          =>
+           "volatile-global",
+         when Vio_Volatile_In_Interferring_Context         =>
+           "volatile-in-interferring-context",
+         when Vio_Volatile_Incompatible_Comp               =>
+           "volatile-incompatible-comp",
+         when Vio_Volatile_Incompatible_Type               =>
+           "volatile-incompatible-type",
+         when Vio_Volatile_Loop_Param                      =>
+           "volatile-loop-param",
+         when Vio_Volatile_Parameter                       =>
+           "volatile-parameter",
+         when Vio_Volatile_Result                          =>
+           "volatile-result");
+
    -----------------------
    -- Violation_Message --
    -----------------------

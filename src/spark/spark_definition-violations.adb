@@ -24,6 +24,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Characters.Handling;   use Ada.Characters.Handling;
 with Namet;                     use Namet;
 with Restrict;                  use Restrict;
 with Rident;                    use Rident;
@@ -274,6 +275,7 @@ package body SPARK_Definition.Violations is
             Error_Msg_N
               (Create ("& is not allowed in SPARK" & Root_Msg, Names => [E]),
                E,
+               Tag           => "use-of-rejected-entity",
                First         => True,
                Continuations => Conts);
          end;
@@ -299,6 +301,13 @@ package body SPARK_Definition.Violations is
          then Msg
          else
            Incorrect_Annotation_Message (Kind, From_Aspect, Name, Snd_Name));
+      Tag       : constant String :=
+        "incorrect-use-of-"
+        & (if Name /= ""
+           then To_Lower (Name)
+           elsif Kind in Specific_Annotation_Kind
+           then To_Lower (Annotation_From_Kind (Kind))
+           else "annotation");
    begin
       --  Flag the violation, so that the current entity is marked
       --  accordingly.
@@ -322,6 +331,7 @@ package body SPARK_Definition.Violations is
          Error_Msg_N
            (Create (Error_Msg, Names => Names),
             N,
+            Tag           => Tag,
             Continuations =>
               (if Cont_Msg = No_Message then [] else [Cont_Msg]));
       end if;
@@ -358,6 +368,7 @@ package body SPARK_Definition.Violations is
          Error_Msg_N
            (Create (Msg & " is not yet supported", Names => Names),
             N,
+            Tag           => "unsupported-" & Unsupported_Kind_Name (Kind),
             Continuations =>
               (if Cont_Msg /= No_Message then [Cont_Msg] else []));
       end if;
@@ -413,7 +424,12 @@ package body SPARK_Definition.Violations is
                Conts.Append (Create (Cont_Msg));
             end if;
             Conts.Append (Mark_Violation_Of_SPARK_Mode);
-            Error_Msg_N (Mess, N, First => True, Continuations => Conts);
+            Error_Msg_N
+              (Mess,
+               N,
+               Tag           => "violation-" & Violation_Kind_Name (Kind),
+               First         => True,
+               Continuations => Conts);
          end;
       end if;
    end Mark_Violation;
@@ -449,6 +465,7 @@ package body SPARK_Definition.Violations is
               (Create
                  ("& is not allowed in SPARK" & Root_Msg, Names => [From]),
                N,
+               Tag           => "use-of-rejected-entity",
                First         => True,
                Continuations => Conts);
          end;
@@ -480,12 +497,14 @@ package body SPARK_Definition.Violations is
             Error_Msg_N
               (Create (Msg_Prefix & "Ravenscar profile" & Msg_Suffix),
                N,
+               Tag           => "violation-tasking-configuration",
                First         => True,
                Continuations => [Mark_Violation_Of_SPARK_Mode]);
          elsif not Sequential_Elaboration then
             Error_Msg_N
               (Create (Msg_Prefix & "sequential elaboration" & Msg_Suffix),
                N,
+               Tag           => "violation-tasking-configuration",
                First         => True,
                Continuations => [Mark_Violation_Of_SPARK_Mode]);
          end if;
