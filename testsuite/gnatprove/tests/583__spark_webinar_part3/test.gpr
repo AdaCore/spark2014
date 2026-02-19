@@ -1,7 +1,7 @@
 with "sparklib.gpr";
 
 project Test is
-   package Builder is
+   package Compiler is
       for Switches ("Ada") use ("-gnatX");
-   end Builder;
+   end Compiler;
 end Test;
