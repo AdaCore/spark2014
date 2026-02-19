@@ -539,6 +539,30 @@ processor configured as big-endian::
   double        15  I  64  64
   long double   15  I  64  64
 
+.. index:: subprojects; externally built projects; library projects
+
+Running GNATprove on Complex Projects
+--------------------------------------
+
+By default, |GNATprove| analyzes all projects withed by the root project,
+recursively. Projects for which the ``Externally_Built`` attribute is set to
+``"true"`` are not analyzed.
+
+The switch ``--no-subprojects`` can be used to restrict analysis to the root
+project(s) only, ignoring all withed subprojects.
+
+When building a library project, |GNATprove| copies files summarizing certain
+information about the library (such as termination information and global
+effects) to the directory specified by the ``Library_Dir`` project attribute,
+or to ``Library_ALI_Dir`` if that attribute is present. These files can be
+used by |GNATprove| when analyzing projects that depend on the library.
+
+Projects that depend on externally built library projects may use these
+summary files if they are present. The analysis still works even when the
+files are absent; |GNATprove| will emit warnings for calls to the library,
+stating that it assumes certain properties (such as termination and absence of
+side effects) of the library's subprograms.
+
 .. index:: GNAT Studio integration
 
 Running GNATprove from GNAT Studio
