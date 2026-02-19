@@ -812,6 +812,7 @@ package VC_Kinds is
       Lim_Uninit_Alloc_In_Expr_Fun,
       Lim_Unknown_Alignment,
       Lim_Unknown_Size,
+      Lim_UU_Constrained_Attr,
       Lim_UU_Tagged_Comp);
 
    subtype Incorrect_Annotation_Kind is
@@ -1361,6 +1362,8 @@ package VC_Kinds is
            "type with predicates with different SPARK_Mode values",
          when Lim_Predicate_With_Different_Visibility                     =>
            "type with predicates with different visibility",
+         when Lim_UU_Constrained_Attr                                     =>
+           "attribute ""Constrained"" on unchecked union prefix",
          when Lim_UU_Tagged_Comp                                          =>
            "component of an unconstrained unchecked union type in a tagged"
            & " extension",
