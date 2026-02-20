@@ -224,8 +224,8 @@ clean:
 	$(MAKE) -C include clean
 	rm -f docs/sphinx_support/confvars.py
 
-BENCHDIR=bench
-RESULTSDIR=benchout
+BENCHDIR=$(CURDIR)/bench
+RESULTSDIR=$(CURDIR)/benchout
 TESTLIST=$(CURDIR)/testsuite/gnatprove/MANIFEST.bench
 create-benchmark:
 	rm -rf $(BENCHDIR)

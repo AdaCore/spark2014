@@ -2,7 +2,6 @@
 
 import argparse
 import os
-import re
 import shutil
 import subprocess
 import config
@@ -12,13 +11,17 @@ Create VC files for selected tests from the testsuite. Store the VCs in the
 target folder, using subfolders for tests and provers.
 """
 
-testname_regex = re.compile("tmp[^/]*\/([^/]*)\/src")  # noqa
-
 
 def extract_testname(path):
-    g = testname_regex.search(path)
-    assert g is not None
-    return g.group(1)
+    # Split the path into components
+    parts = path.split("/")
+
+    # Remove trailing components that are either "gnatprove" or "src"
+    while parts and parts[-1] in ("gnatprove", "src"):
+        parts.pop()
+
+    # last component should be the test name
+    return parts[-1]
 
 
 def create_if_needed(p):
