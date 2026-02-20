@@ -4176,6 +4176,17 @@ package body Gnat2Why.Expr is
          return;
       end if;
 
+      --  Do not complain if the operation is in non-executable ghost code.
+      --  Program_Error cannot be raised at runtime.
+
+      if (Is_Ghost_Entity (Current_Subp)
+          and then
+            Is_Non_Exec_Assertion_Level (Ghost_Assertion_Level (Current_Subp)))
+        or else In_Non_Exec_Context (Expr)
+      then
+         return;
+      end if;
+
       --  Go over the alternatives and search for violations of the UU
       --  restrictions.
 
