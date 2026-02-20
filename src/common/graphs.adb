@@ -999,7 +999,7 @@ package body Graphs is
       --  secondary stack; this is more convenient than returning a pointer
       --  and releasing it.
 
-      return Dom : V_To_V := (others => 0) do
+      return Dom : V_To_V := [others => 0] do
 
          for J in reverse Valid_Vertex_Id range 2 .. N loop
             declare
