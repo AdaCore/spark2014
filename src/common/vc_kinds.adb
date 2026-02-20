@@ -2482,8 +2482,6 @@ package body VC_Kinds is
          => "SPARK RM 6.1(6)",
          when Vio_Ghost_Concurrent_Comp
          => "SPARK RM 6.9(22)",
-         when Vio_Ghost_Eq
-         => "SPARK RM 6.9(23)",
          when Vio_Ghost_Volatile
          => "SPARK RM 6.9(9)",
          when Vio_Handler_Choice_Parameter
@@ -3182,7 +3180,6 @@ package body VC_Kinds is
            "function-out-param",
          when Vio_Ghost_Concurrent_Comp                    =>
            "ghost-concurrent-comp",
-         when Vio_Ghost_Eq                                 => "ghost-eq",
          when Vio_Ghost_Volatile                           => "ghost-volatile",
          when Vio_Handler_Choice_Parameter                 =>
            "handler-choice-parameter",
@@ -3428,8 +3425,6 @@ package body VC_Kinds is
            "function with global outputs",
          when Vio_Function_Out_Param                       =>
            "function with ""out"" or ""in out"" parameters",
-         when Vio_Ghost_Eq                                 =>
-           "ghost function as user-defined equality on non-ghost record type",
          when Vio_Ghost_Concurrent_Comp                    =>
            (if Root_Cause
             then "concurrent component of ghost type"

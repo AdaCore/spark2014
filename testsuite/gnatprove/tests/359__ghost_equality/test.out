@@ -1,0 +1,4 @@
+illegal.ads:5:13: error: but applied to a non-ghost record type at line 3
+illegal.ads:5:13: error: equality operation is defined as ghost
+illegal.ads:5:13: error: incompatible primitive equaility operation
+gnatprove: error during generation of Global contracts

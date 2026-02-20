@@ -605,7 +605,6 @@ package VC_Kinds is
       Vio_Function_Global_Output,
       Vio_Function_Out_Param,
       Vio_Ghost_Concurrent_Comp,
-      Vio_Ghost_Eq,
       Vio_Ghost_Volatile,
       Vio_Handler_Choice_Parameter,
       Vio_Invariant_Class,

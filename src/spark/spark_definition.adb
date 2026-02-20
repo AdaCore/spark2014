@@ -8056,14 +8056,6 @@ package body SPARK_Definition is
                         Mark_Violation (Vio_Volatile_Eq, Id);
 
                      --  A user-defined primitive equality operation on a
-                     --  non-ghost record type shall not be ghost, unless the
-                     --  record type has only limited views (SPARK RM 6.9(23)).
-                     elsif Is_Ghost_Entity (Id)
-                       and then not Is_Ghost_Entity (Typ)
-                     then
-                        Mark_Violation (Vio_Ghost_Eq, Id);
-
-                     --  A user-defined primitive equality operation on a
                      --  record type shall not have a subprogram variant.
                      elsif Present (Get_Pragma (Id, Pragma_Subprogram_Variant))
                      then
