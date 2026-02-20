@@ -1,0 +1,4 @@
+test.adb:10:13: info: implicit aspect Always_Terminates on "B2" has been proved, subprogram will terminate
+test.adb:10:74: medium: dynamic accessibility check might fail [possible fix: subprogram at line 10 should mention X and G in a precondition]
+test.adb:17:09: info: pointer dereference check proved (CVC5: 1 VC)
+test.adb:19:19: info: assertion proved (CVC5: 1 VC)
