@@ -224,6 +224,10 @@ package body SPARK_Definition is
    --  We could change the structure to also store the appropriate violation
    --  message to have better messages.
 
+   Requires_Relaxed_Init_Marking : Node_Maps.Map;
+   --  Register whether an element of Access_To_Incomplete_Types shall be
+   --  checked to be compatible with Relaxed_Init.
+
    Access_To_Incomplete_Views : Node_Maps.Map;
    --  Links full views of incomplete types to an access type designating the
    --  incomplete type.
@@ -11804,18 +11808,38 @@ package body SPARK_Definition is
 
          end if;
 
-         --  If necessary, check that Des_Ty does not have parts with
+         --  If necessary, check that E does not have parts with
          --  Relaxed_Initialization. We could improve the error message if this
          --  occurs in practice.
 
-         if not Violation_Detected
-           and then Requires_No_Relaxed_Init_Check.Contains (E)
-         then
-            Check_No_Relaxed_Init_Part
-              (E, N => E, Kind => Vio_Relaxed_Init_Part_Generic);
-         end if;
+         declare
+            Cu : Hashed_Node_Sets.Cursor :=
+              Requires_No_Relaxed_Init_Check.Find (E);
+            use Hashed_Node_Sets;
+         begin
+            if Has_Element (Cu) then
+               if not Violation_Detected then
+                  Check_No_Relaxed_Init_Part
+                    (E, N => E, Kind => Vio_Relaxed_Init_Part_Generic);
+               end if;
+               Requires_No_Relaxed_Init_Check.Delete (Cu);
+            end if;
+         end;
 
-         Requires_No_Relaxed_Init_Check.Exclude (E);
+         --  If the type needs to be marked as a type with relaxed
+         --  initialization, do it.
+
+         declare
+            Cu : Node_Maps.Cursor := Requires_Relaxed_Init_Marking.Find (E);
+            use Node_Maps;
+         begin
+            if Has_Element (Cu) then
+               if not Violation_Detected then
+                  Mark_Type_With_Relaxed_Init (Element (Cu), E);
+               end if;
+               Requires_Relaxed_Init_Marking.Delete (Cu);
+            end if;
+         end;
 
          --  Check the user defined equality of record types if any, as they
          --  can be used silently as part of the classwide equality.
@@ -14461,9 +14485,16 @@ package body SPARK_Definition is
                Des_Ty := Full_View (Des_Ty);
             end if;
 
-            --  ??? This might crash if the designated type is not marked
+            --  The type designated by an access to object type might not be
+            --  marked. In this case, register that it needs to be marked as a
+            --  type with relaxed initialization.
 
-            Mark_Type_With_Relaxed_Init (N, Des_Ty);
+            if not Entity_Marked (Des_Ty) then
+               pragma Assert (Access_To_Incomplete_Types.Contains (Rep_Ty));
+               Requires_Relaxed_Init_Marking.Include (Des_Ty, N);
+            else
+               Mark_Type_With_Relaxed_Init (N, Des_Ty);
+            end if;
          end;
       end if;
 

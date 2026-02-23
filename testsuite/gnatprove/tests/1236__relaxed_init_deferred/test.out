@@ -1,0 +1,2 @@
+test.adb:11:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test.adb:13:19: info: assertion proved (CVC5: 1 VC)
