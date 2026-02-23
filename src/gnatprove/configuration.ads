@@ -25,7 +25,6 @@
 
 with Ada.Containers.Indefinite_Hashed_Sets;
 with Ada.Containers.Indefinite_Hashed_Maps;
-with Ada.Containers.Indefinite_Ordered_Maps;
 with Ada.Directories;
 with Ada.Environment_Variables;
 with Ada.Strings.Hash;
@@ -395,28 +394,17 @@ package Configuration is
    --  documented way to pass this switch to GNATprove. Other ways to pass
    --  -gnateT switch are not considered.
 
-   package View_File_Maps is new
-     Ada.Containers.Indefinite_Ordered_Maps
-       (GPR2.Project.View.Object,
-        String,
-        "<" => GPR2.Project.View."<");
+   Opt_File_Set : Dir_Name_Sets.Set;
+   --  Set of all created opt file paths, for cleanup
 
-   Global_Gen_Opt_Files : View_File_Maps.Map;
-   Analysis_Opt_Files   : View_File_Maps.Map;
-
-   function Get_Or_Create_Opt_File
-     (View              : Project.View.Object;
-      Map               : in out View_File_Maps.Map;
-      Translation_Phase : Boolean) return String;
-   --  Get or create the opt file for a view, either for analysis
-   --  (Translation_Phase = True) or for global gen (False).
-
-   function Global_Gen_Opt_File (View : Project.View.Object) return String
-   is (Get_Or_Create_Opt_File (View, Global_Gen_Opt_Files, False));
-   --  Get or create the global gen options file for a view
-
-   function Analysis_Opt_File (View : Project.View.Object) return String
-   is (Get_Or_Create_Opt_File (View, Analysis_Opt_Files, True));
-   --  Get or create the analysis options file for a view
+   function Get_Or_Create_Unit_Opt_File
+     (Unit              : GPR2.Build.Compilation_Unit.Object;
+      Translation_Phase : Boolean;
+      Obj_Dir           : String;
+      Why3_Dir          : String) return String;
+   --  Get or create the opt file for a specific unit's configuration.
+   --  Looks up the unit's File_Specific settings and generates a flat
+   --  opt file. Units with identical settings share the same file
+   --  (via content-hash filenames in Write_To_File).
 
 end Configuration;

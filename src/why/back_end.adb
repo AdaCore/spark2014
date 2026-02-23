@@ -25,7 +25,6 @@
 
 --  This is the Why target-dependent version of the Back_End package
 
-with Ada.Directories;
 with Adabkend;
 with Debug; use Debug;
 with Elists;
@@ -36,7 +35,6 @@ with Gnat2Why_Args;
 with Gnat2Why_Opts;
 with Namet;
 with Opt;
-with Osint;
 with SPARK_Definition;
 with System;
 with VC_Kinds;
@@ -133,13 +131,7 @@ package body Back_End is
 
       --  Read extra options for gnat2why
 
-      declare
-         Args_File   : String renames Opt.SPARK_Switches_File_Name.all;
-         Source_File : constant String :=
-           Ada.Directories.Simple_Name (Osint.Get_First_Main_File_Name);
-      begin
-         Gnat2Why_Args.Load (Args_File, Source_File);
-      end;
+      Gnat2Why_Args.Load (Opt.SPARK_Switches_File_Name.all);
 
       --  For the pretty output mode, we set -gnatdF to force alternative
       --  display of messages in Errout.

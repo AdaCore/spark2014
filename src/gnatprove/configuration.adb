@@ -565,37 +565,32 @@ package body Configuration is
       raise GNATprove_Failure with Msg;
    end Fail;
 
-   ----------------------------
-   -- Get_Or_Create_Opt_File --
-   ----------------------------
+   ---------------------------------
+   -- Get_Or_Create_Unit_Opt_File --
+   ---------------------------------
 
-   function Get_Or_Create_Opt_File
-     (View              : Project.View.Object;
-      Map               : in out View_File_Maps.Map;
-      Translation_Phase : Boolean) return String
+   function Get_Or_Create_Unit_Opt_File
+     (Unit              : GPR2.Build.Compilation_Unit.Object;
+      Translation_Phase : Boolean;
+      Obj_Dir           : String;
+      Why3_Dir          : String) return String
    is
-      C : constant View_File_Maps.Cursor := Map.Find (View);
+      Unit_Name : constant String :=
+        String (Unit.Main_Part.Source.Simple_Name);
+      --  ??? This calls Pass_Extra_Options_To_Gnat2why for each unit, which
+      --  may rewrite the same file when units share identical settings.
+      --  Write_To_File skips the write if the file already exists (same
+      --  content = same hash = same filename), so the overhead is minimal.
+      Opt_File  : constant String :=
+        Gnat2Why_Opts.Writing.Pass_Extra_Options_To_Gnat2why
+          (Translation_Phase => Translation_Phase,
+           Obj_Dir           => Obj_Dir,
+           Why3_Dir          => Why3_Dir,
+           Unit_Name         => Unit_Name);
    begin
-      if C.Has_Element then
-         return C.Element;
-      end if;
-      declare
-         Obj_Dir  : constant Path_Name.Object := View.Object_Directory;
-         Opt_File : constant String :=
-           Gnat2Why_Opts.Writing.Pass_Extra_Options_To_Gnat2why
-             (Translation_Phase => Translation_Phase,
-              Obj_Dir           =>
-                Ada.Directories.Full_Name
-                  (Obj_Dir.Virtual_File.Display_Full_Name),
-              Why3_Dir          =>
-                Configuration.Artifact_Dir (View.Tree)
-                  .Virtual_File
-                  .Display_Full_Name);
-      begin
-         Map.Insert (View, Opt_File);
-         return Opt_File;
-      end;
-   end Get_Or_Create_Opt_File;
+      Opt_File_Set.Include (Opt_File);
+      return Opt_File;
+   end Get_Or_Create_Unit_Opt_File;
 
    -------------------------------------
    -- Handle_Project_Loading_Switches --

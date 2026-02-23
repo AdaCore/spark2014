@@ -165,11 +165,7 @@ package body Gnatprove_Build is
          end if;
          if not Configuration.Debug then
             Tree.Artifacts_Database.Clear_Temp_Files;
-            for File of Global_Gen_Opt_Files loop
-               Ada.Directories.Delete_File (File);
-            end loop;
-
-            for File of Analysis_Opt_Files loop
+            for File of Opt_File_Set loop
                Ada.Directories.Delete_File (File);
             end loop;
             Ada.Directories.Delete_File (Object_Path_File);
@@ -277,7 +273,17 @@ package body Gnatprove_Build is
                      GG_Act : GPR2.Build.Actions.Compile.Ada.Global_Gen.Object;
                   begin
                      GG_Act.Initialize
-                       (C.Element, Global_Gen_Opt_File (Owning));
+                       (C.Element,
+                        Get_Or_Create_Unit_Opt_File
+                          (Unit              => C.Element,
+                           Translation_Phase => False,
+                           Obj_Dir           =>
+                             Ada.Directories.Full_Name
+                               (Owning
+                                  .Object_Directory
+                                  .Virtual_File
+                                  .Display_Full_Name),
+                           Why3_Dir          => ""));
                      if not Tree.Artifacts_Database.Add_Action (GG_Act) then
                         Ada.Text_IO.Put_Line
                           ("Error adding Global_Gen action for unit "
@@ -329,7 +335,19 @@ package body Gnatprove_Build is
                      Analysis_Act.Initialize
                        (C.Element,
                         Object_Path_File,
-                        Analysis_Opt_File (Owning),
+                        Get_Or_Create_Unit_Opt_File
+                          (Unit              => C.Element,
+                           Translation_Phase => True,
+                           Obj_Dir           =>
+                             Ada.Directories.Full_Name
+                               (Owning
+                                  .Object_Directory
+                                  .Virtual_File
+                                  .Display_Full_Name),
+                           Why3_Dir          =>
+                             Artifact_Dir (Tree)
+                               .Virtual_File
+                               .Display_Full_Name),
                         Unit_Deps);
                      if not Tree.Artifacts_Database.Add_Action (Analysis_Act)
                      then

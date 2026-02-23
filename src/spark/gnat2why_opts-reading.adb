@@ -33,7 +33,7 @@ package body Gnat2Why_Opts.Reading is
    -- Load --
    ----------
 
-   procedure Load (Args_File : String; Source_File : String) is
+   procedure Load (Args_File : String) is
 
       function Get_Opt (V : JSON_Value; Field : String) return Boolean
       is (Get (Get (V, Field)))
@@ -57,34 +57,24 @@ package body Gnat2Why_Opts.Reading is
       -----------------------------
 
       procedure Read_File_Specific_Info (V : JSON_Value) is
-         R : JSON_Value;
       begin
-         if Has_Field (V, Source_File) then
-            R := Get (V, Source_File);
-         else
-            --  This is incorrect (there shouldn't be a need for default
-            --  switches), but in some corner cases (mostly bodies with pragma
-            --  No_Body), we can't guarantee that our file is mentioned in the
-            --  list of files. In this case we take the default switches.
-            R := Get (V, "default");
-         end if;
-         No_Loop_Unrolling := Get_Opt (R, No_Loop_Unrolling_Name);
-         No_Inlining := Get_Opt (R, No_Inlining_Name);
-         Check_Counterexamples := Get_Opt (R, Check_Counterexamples_Name);
-         Mode := From_JSON (Get (R, GP_Mode_Name));
+         No_Loop_Unrolling := Get_Opt (V, No_Loop_Unrolling_Name);
+         No_Inlining := Get_Opt (V, No_Inlining_Name);
+         Check_Counterexamples := Get_Opt (V, Check_Counterexamples_Name);
+         Mode := From_JSON (Get (V, GP_Mode_Name));
 
          if not Global_Gen_Mode then
-            Proof_Warnings := Get_Opt (R, Proof_Warnings_Name);
+            Proof_Warnings := Get_Opt (V, Proof_Warnings_Name);
 
             declare
-               Ar : constant JSON_Array := Get (R, Why3_Args_Name);
+               Ar : constant JSON_Array := Get (V, Why3_Args_Name);
             begin
                for Var_Index in Positive range 1 .. Length (Ar) loop
                   Why3_Args.Append (Get (Get (Ar, Var_Index)));
                end loop;
             end;
          end if;
-         Warning_Status := VC_Kinds.From_JSON (Get (R, Warning_Status_Name));
+         Warning_Status := VC_Kinds.From_JSON (Get (V, Warning_Status_Name));
       end Read_File_Specific_Info;
 
       V : constant JSON_Value := Read_File_Into_JSON (Args_File);
@@ -131,8 +121,7 @@ package body Gnat2Why_Opts.Reading is
          Why3_Dir := Get_Opt (V, Why3_Dir_Name);
       end if;
 
-      pragma Assert (Has_Field (V, File_Specific_Name));
-      Read_File_Specific_Info (Get (V, File_Specific_Name));
+      Read_File_Specific_Info (V);
    end Load;
 
 end Gnat2Why_Opts.Reading;
