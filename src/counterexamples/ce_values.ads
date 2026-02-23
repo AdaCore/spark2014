@@ -408,8 +408,8 @@ package CE_Values is
    --  Enumeration for attributes that are supported in the RAC.
 
    function To_String (Attribute : Supported_Attribute) return String;
-   --  Procedure to convert supported attributes to a properly capitalized
-   --  string (e.g., "Initialized"). Note that the predefined Image function
-   --  converts the attribute names to all upper case (e.g., "INITIALIZED").
+   --  Convert supported attributes to a properly capitalized string (e.g.,
+   --  "Initialized"). We can't simply use the Image attribute, as it would
+   --  convert the attribute name to all upper case (e.g. "INITIALIZED").
 
 end CE_Values;

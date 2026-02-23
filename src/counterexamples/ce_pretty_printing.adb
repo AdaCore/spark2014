@@ -288,12 +288,12 @@ package body CE_Pretty_Printing is
    -------------------------------
 
    function Make_CNT_Unbounded_String
-     (Str : Unbounded_String;
+     (Str : String;
       Cnt : Natural := 1;
-      Els : S_String_List.List := S_String_List.Empty)
+      Els : String_Lists.List := String_Lists.Empty)
       return CNT_Unbounded_String
    is
-      Elems : S_String_List.List;
+      Elems : String_Lists.List;
 
    begin
       --  Otherwise if Els is empty, use the singleton " = Str " for the value
@@ -307,7 +307,7 @@ package body CE_Pretty_Printing is
          Elems := Els;
       end if;
 
-      return (Str => Str, Count => Cnt, Elems => Elems);
+      return (Str => To_Unbounded_String (Str), Count => Cnt, Elems => Elems);
    end Make_CNT_Unbounded_String;
 
    ------------------------
@@ -373,8 +373,7 @@ package body CE_Pretty_Printing is
 
    begin
       if Value.Is_Null.Present and then Value.Is_Null.Content then
-         Res.Value :=
-           Make_CNT_Unbounded_String (Str => To_Unbounded_String ("null"));
+         Res.Value := Make_CNT_Unbounded_String (Str => "null");
 
       elsif Value.Designated_Value = null then
          Res.Value := Dont_Display;
@@ -385,7 +384,7 @@ package body CE_Pretty_Printing is
          declare
             V      : constant Value_And_Attributes :=
               Print_Value (Value.Designated_Value.all);
-            Elems  : S_String_List.List;
+            Elems  : String_Lists.List;
             Des_Ty : Entity_Id;
          begin
             if V.Value = Dont_Display then
@@ -407,7 +406,7 @@ package body CE_Pretty_Printing is
                       "new "
                       & Raw_Source_Name (Des_Ty)
                       & "'("
-                      & V.Value.Str
+                      & To_String (V.Value.Str)
                       & ')',
                     Cnt => V.Value.Count,
                     Els => Elems);
@@ -913,7 +912,7 @@ package body CE_Pretty_Printing is
       Is_String_Lit : Boolean;
       Is_Truncated  : Boolean;
       Count         : Natural := 0;
-      Elems         : S_String_List.List;
+      Elems         : String_Lists.List;
       Res           : Value_And_Attributes;
 
       ---------------------
@@ -925,7 +924,7 @@ package body CE_Pretty_Printing is
           then (if Is_String_Lit then " " else ", ") & "..."
           else "");
 
-      use S_String_List;
+      use String_Lists;
 
       --  Start of processing for Print_Array_Value
 
@@ -952,7 +951,7 @@ package body CE_Pretty_Printing is
          else
             Res.Value :=
               Make_CNT_Unbounded_String
-                (Str => '"' & S & Truncate_Marker & '"');
+                (Str => '"' & To_String (S) & Truncate_Marker & '"');
          end if;
 
       --  Otherwise, use an aggregate notation
@@ -966,7 +965,7 @@ package body CE_Pretty_Printing is
                  S_Array (C).Ind_Printed;
                Elem_Printed : constant CNT_Unbounded_String :=
                  S_Array (C).Elem_Printed;
-               C_Elems      : S_String_List.List :=
+               C_Elems      : String_Lists.List :=
                  Prefix_Elements
                    (Elem_Printed.Elems,
                     To_String ('(' & Ind_Printed.Str & ')'));
@@ -1007,7 +1006,7 @@ package body CE_Pretty_Printing is
          else
             Res.Value :=
               Make_CNT_Unbounded_String
-                (Str => '(' & S & Truncate_Marker & ')',
+                (Str => '(' & To_String (S) & Truncate_Marker & ')',
                  Cnt => Count,
                  Els => Elems);
          end if;
@@ -1343,14 +1342,16 @@ package body CE_Pretty_Printing is
                  (if To_Display
                   then
                     Make_CNT_Unbounded_String
-                      (Str => Prefix & Comp_Name & " => " & Comp_Val.Value.Str,
+                      (Str =>
+                         Prefix
+                         & Comp_Name
+                         & " => "
+                         & To_String (Comp_Val.Value.Str),
                        Cnt => Comp_Val.Value.Count,
                        Els =>
                          Prefix_Elements
                            (Comp_Val.Value.Elems, '.' & Prefix & Comp_Name))
-                  else
-                    Make_CNT_Unbounded_String
-                      (Str => To_Unbounded_String ("?")));
+                  else Make_CNT_Unbounded_String (Str => "?"));
 
                Pretty_Val_And_Attrs : constant Value_And_Attributes :=
                  (Value      => Pretty_Val,
@@ -1428,10 +1429,9 @@ package body CE_Pretty_Printing is
             Constr_Val : constant CNT_Unbounded_String :=
               Make_CNT_Unbounded_String
                 (Str =>
-                   To_Unbounded_String
-                     (if Value.Constrained_Attr.Content
-                      then "True"
-                      else "False"));
+                   (if Value.Constrained_Attr.Content
+                    then "True"
+                    else "False"));
          begin
             Add_Attribute
               (Ordered_Attributes,
@@ -1480,7 +1480,7 @@ package body CE_Pretty_Printing is
 
          Str_Val : Unbounded_String := To_Unbounded_String ("(");
          Count   : Natural := 0;
-         Elems   : S_String_List.List;
+         Elems   : String_Lists.List;
       begin
          for C in Visibility_Map.Iterate loop
             declare
@@ -1539,9 +1539,7 @@ package body CE_Pretty_Printing is
 
                   Store_Value_Of_Component
                     (First_Unseen,
-                     (Value      =>
-                        Make_CNT_Unbounded_String
-                          (Str => To_Unbounded_String ("?")),
+                     (Value      => Make_CNT_Unbounded_String (Str => "?"),
                       Attributes => CNT_Attribute_Lists.Empty_List),
                      Get_Loc_Info (First_Unseen),
                      Visibility_Map.Element (First_Unseen));
@@ -1585,7 +1583,7 @@ package body CE_Pretty_Printing is
             Is_Before := True;
             Count := Count + V.Value.Count;
             Elems.Splice
-              (Before => S_String_List.No_Element, Source => V.Value.Elems);
+              (Before => String_Lists.No_Element, Source => V.Value.Elems);
          end loop;
 
          --  If there are more than one fields that are not
@@ -1604,7 +1602,7 @@ package body CE_Pretty_Printing is
 
             Res.Value :=
               Make_CNT_Unbounded_String
-                (Str => Str_Val, Cnt => Count, Els => Elems);
+                (Str => To_String (Str_Val), Cnt => Count, Els => Elems);
 
             --  Attributes of the record as a whole
 
@@ -1736,9 +1734,7 @@ package body CE_Pretty_Printing is
       declare
          Result : constant String := To_String (Value);
       begin
-         return
-           Make_CNT_Unbounded_String
-             (Str => To_Unbounded_String (Trim (Result, Both)));
+         return Make_CNT_Unbounded_String (Str => Trim (Result, Both));
       end;
    exception
       when Parse_Error =>
@@ -1764,10 +1760,9 @@ package body CE_Pretty_Printing is
                      Init_Val : constant CNT_Unbounded_String :=
                        Make_CNT_Unbounded_String
                          (Str =>
-                            To_Unbounded_String
-                              (if Value.Initialized_Attr.Content
-                               then "True"
-                               else "False"));
+                            (if Value.Initialized_Attr.Content
+                             then "True"
+                             else "False"));
                   begin
                      Attributes.Append
                        (Make_CNT_Attribute (Initialized, Init_Val));
@@ -1779,10 +1774,9 @@ package body CE_Pretty_Printing is
                      Valid_Val : constant CNT_Unbounded_String :=
                        Make_CNT_Unbounded_String
                          (Str =>
-                            To_Unbounded_String
-                              (if Value.Valid_Attr.Content
-                               then "True"
-                               else "False"));
+                            (if Value.Valid_Attr.Content
+                             then "True"
+                             else "False"));
                   begin
                      Attributes.Append (Make_CNT_Attribute (Valid, Valid_Val));
                   end;
@@ -1824,13 +1818,10 @@ package body CE_Pretty_Printing is
                         Bound_Val : constant CNT_Unbounded_String :=
                           Make_CNT_Unbounded_String
                             (Str =>
-                               To_Unbounded_String
-                                 (Trim
-                                    (To_String
-                                       (Value.Bounds.Content (I)
-                                          .First
-                                          .Content),
-                                     Left)));
+                               (Trim
+                                  (To_String
+                                     (Value.Bounds.Content (I).First.Content),
+                                   Left)));
                      begin
                         Attributes.Append
                           (Make_CNT_Attribute
@@ -1844,11 +1835,10 @@ package body CE_Pretty_Printing is
                         Bound_Val : constant CNT_Unbounded_String :=
                           Make_CNT_Unbounded_String
                             (Str =>
-                               To_Unbounded_String
-                                 (Trim
-                                    (To_String
-                                       (Value.Bounds.Content (I).Last.Content),
-                                     Left)));
+                               Trim
+                                 (To_String
+                                    (Value.Bounds.Content (I).Last.Content),
+                                  Left));
                      begin
                         Attributes.Append
                           (Make_CNT_Attribute
