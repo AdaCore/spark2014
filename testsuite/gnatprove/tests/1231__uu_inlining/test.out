@@ -1,0 +1,6 @@
+test_2.adb:15:22: warning: "X" is not modified, could be IN
+test_2.adb:15:22: warning: unused variable "X"
+test_2.adb:15:54: info: postcondition proved (Trivial: 1 VC)
+test_2.adb:23:14: high: operation on unchecked union type will raise Program_Error [possible explanation: source of conversion should have inferrable discriminants]
+test_2.adb:26:18: info: range check proved (CVC5: 1 VC)
+test_2.adb:26:27: info: discriminant check proved (CVC5: 1 VC)

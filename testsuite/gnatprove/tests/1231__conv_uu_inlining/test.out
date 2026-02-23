@@ -1,0 +1,7 @@
+test.adb:15:14: info: add a contract to analyze it separately from calling contexts
+test.adb:15:14: info: local subprogram "Callee" only analyzed in the context of calls [info-unrolling-inlining]
+test.adb:15:22: warning: "X" is not modified, could be IN
+test.adb:15:22: warning: unused variable "X"
+test.adb:20:17: warning: "X" is not modified, could be IN
+test.adb:20:17: warning: unused variable "X"
+test.adb:22:06: info: analyzing call to "Callee" in context
