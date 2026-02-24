@@ -27,8 +27,8 @@ package use_unchecked_union is
    pragma Unchecked_Union(myUnion);
 
    procedure doStuff (output : out myUnion;
-                      num : in Integer);
-   --  with Pre => not Output'Constrained;
+                      num : in Integer)
+     with Pre => (Static => not Output'Constrained);
 
    procedure doStuff2 (output : out myUnion;
                       num : in Integer);

@@ -5572,9 +5572,11 @@ package body SPARK_Definition is
             --  For now, reject 'Constrained on UU types if it cannot be
             --  statically determined as SPARK and GNAT do not agree on the
             --  semantics of this attribute.
+            --  Accept 'Constrained in non-executable ghost code.
 
             if Is_Unchecked_Union (Etype (P))
               and then not Attr_Constrained_Statically_Known (P)
+              and then not In_Non_Exec_Context (N)
             then
                Mark_Unsupported (Lim_UU_Constrained_Attr, N);
             end if;
