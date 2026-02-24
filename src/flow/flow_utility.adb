@@ -4018,7 +4018,7 @@ package body Flow_Utility is
 
                --  For supported overlays like "X'Address" the expression does
                --  not read the overlying object (but reads array and slice
-               --  expressions in the prefix, if any). For other subexpressoins
+               --  expressions in the prefix, if any). For other subexpressions
                --  in the prefix we conservatively assume them to be reads.
 
                declare
