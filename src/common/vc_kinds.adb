@@ -1185,6 +1185,9 @@ package body VC_Kinds is
            "a reference to the ""Size"" attribute on a prefix which is "
            & "not a standalone object, a formal parameter, a component, or "
            & "a slice with no padding",
+         when Lim_UU_Constrained_Attr                                     =>
+           "a reference to the ""Constrained"" attribute on unchecked union "
+           & "prefix whose value cannot be determined statically",
          when Lim_UU_Tagged_Comp                                          =>
            "a component of an unconstrained unchecked union type in a tagged "
            & "extension");
