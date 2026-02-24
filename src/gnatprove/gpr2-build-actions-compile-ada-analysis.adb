@@ -65,7 +65,19 @@ package body GPR2.Build.Actions.Compile.Ada.Analysis is
       Cmd_Line.Add_Argument ("-gnatc");  --  Do not generate an object file
 
       --  add special options file
-      Cmd_Line.Add_Argument ("-gnates=" & To_String (Self.Opt_File));
+      --  ??? We are not supposed to create temp files if Signature_Only is
+      --  false, but we can't know the file name without creating it.
+      declare
+         Opt_File : constant String :=
+           Configuration.Get_Or_Create_Unit_Opt_File
+             (Self.CU,
+              True,
+              String (Self.CU.Owning_View.Object_Directory.Value),
+              String
+                (Configuration.Artifact_Dir (Self.CU.Owning_View.Tree).Value));
+      begin
+         Cmd_Line.Add_Argument ("-gnates=" & Opt_File);
+      end;
 
       --  object path file
       Cmd_Line.Add_Argument ("-gnateO=" & To_String (Self.Object_Path_File));
@@ -105,7 +117,6 @@ package body GPR2.Build.Actions.Compile.Ada.Analysis is
      (Self             : in out Object;
       Unit             : GPR2.Build.Compilation_Unit.Object;
       Object_Path_File : String;
-      Opt_File         : String;
       Deps             : GPR2.Build.Compilation_Unit.Maps.Map)
    is
 
@@ -124,7 +135,6 @@ package body GPR2.Build.Actions.Compile.Ada.Analysis is
    begin
       GPR2.Build.Actions.Compile.Ada.Object (Self).Initialize (Unit);
       Self.Object_Path_File := To_Unbounded_String (Object_Path_File);
-      Self.Opt_File := To_Unbounded_String (Opt_File);
       Self.Obj_File :=
         Build.Artifacts.Object_File.Create
           (Self.View.Object_Directory.Compose
@@ -151,7 +161,8 @@ package body GPR2.Build.Actions.Compile.Ada.Analysis is
    function Extended (Self : Object) return Object is
    begin
       return Result : Object := Self do
-         Result.Opt_File := Null_Unbounded_String;
+         Result.Object_Path_File := Null_Unbounded_String;
+         Result.ALI_Files := File_Sets.Empty;
       end return;
    end Extended;
 

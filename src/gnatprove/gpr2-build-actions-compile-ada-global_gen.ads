@@ -10,9 +10,7 @@ package GPR2.Build.Actions.Compile.Ada.Global_Gen is
    function Create
      (Src : GPR2.Build.Compilation_Unit.Object) return Global_Gen_Id;
 
-   type Object is new GPR2.Build.Actions.Compile.Ada.Object with record
-      Opt_File : Unbounded_String;
-   end record;
+   type Object is new GPR2.Build.Actions.Compile.Ada.Object with null record;
 
    overriding
    function UID (Self : Object) return GPR2.Build.Actions.Action_Id'Class;
@@ -35,9 +33,7 @@ package GPR2.Build.Actions.Compile.Ada.Global_Gen is
       Stdout : Unbounded_String := Null_Unbounded_String;
       Stderr : Unbounded_String := Null_Unbounded_String) return Boolean;
    procedure Initialize
-     (Self     : in out Object;
-      Unit     : GPR2.Build.Compilation_Unit.Object;
-      Opt_File : String);
+     (Self : in out Object; Unit : GPR2.Build.Compilation_Unit.Object);
 
    overriding
    function Extended (Self : Object) return Object;

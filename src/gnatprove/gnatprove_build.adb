@@ -272,18 +272,7 @@ package body Gnatprove_Build is
                   declare
                      GG_Act : GPR2.Build.Actions.Compile.Ada.Global_Gen.Object;
                   begin
-                     GG_Act.Initialize
-                       (C.Element,
-                        Get_Or_Create_Unit_Opt_File
-                          (Unit              => C.Element,
-                           Translation_Phase => False,
-                           Obj_Dir           =>
-                             Ada.Directories.Full_Name
-                               (Owning
-                                  .Object_Directory
-                                  .Virtual_File
-                                  .Display_Full_Name),
-                           Why3_Dir          => ""));
+                     GG_Act.Initialize (C.Element);
                      if not Tree.Artifacts_Database.Add_Action (GG_Act) then
                         Ada.Text_IO.Put_Line
                           ("Error adding Global_Gen action for unit "
@@ -333,22 +322,7 @@ package body Gnatprove_Build is
                      end;
 
                      Analysis_Act.Initialize
-                       (C.Element,
-                        Object_Path_File,
-                        Get_Or_Create_Unit_Opt_File
-                          (Unit              => C.Element,
-                           Translation_Phase => True,
-                           Obj_Dir           =>
-                             Ada.Directories.Full_Name
-                               (Owning
-                                  .Object_Directory
-                                  .Virtual_File
-                                  .Display_Full_Name),
-                           Why3_Dir          =>
-                             Artifact_Dir (Tree)
-                               .Virtual_File
-                               .Display_Full_Name),
-                        Unit_Deps);
+                       (C.Element, Object_Path_File, Unit_Deps);
                      if not Tree.Artifacts_Database.Add_Action (Analysis_Act)
                      then
                         Ada.Text_IO.Put_Line

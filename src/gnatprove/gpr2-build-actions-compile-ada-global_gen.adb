@@ -27,7 +27,18 @@ package body GPR2.Build.Actions.Compile.Ada.Global_Gen is
       Cmd_Line.Add_Argument ("-gnatc");  --  Do not generate an object file
 
       --  add special options file
-      Cmd_Line.Add_Argument ("-gnates=" & To_String (Self.Opt_File));
+      --  ??? We are not supposed to create temp files if Signature_Only is
+      --  false, but we can't know the file name without creating it.
+      declare
+         Opt_File : constant String :=
+           Configuration.Get_Or_Create_Unit_Opt_File
+             (Self.CU,
+              False,
+              String (Self.CU.Owning_View.Object_Directory.Value),
+              "");
+      begin
+         Cmd_Line.Add_Argument ("-gnates=" & Opt_File);
+      end;
       Cmd_Line.Add_Argument ("-gnatis");  --  Suppress all info messages
 
       for Arg of Configuration.CL_Switches.Cargs_List loop
@@ -35,6 +46,10 @@ package body GPR2.Build.Actions.Compile.Ada.Global_Gen is
       end loop;
 
    end Compute_Command;
+
+   ------------
+   -- Create --
+   ------------
 
    function Create
      (Src : GPR2.Build.Compilation_Unit.Object) return Global_Gen_Id is
@@ -44,25 +59,32 @@ package body GPR2.Build.Actions.Compile.Ada.Global_Gen is
          with null record);
    end Create;
 
+   ----------------
+   -- Initialize --
+   ----------------
+
    procedure Initialize
-     (Self     : in out Object;
-      Unit     : GPR2.Build.Compilation_Unit.Object;
-      Opt_File : String) is
+     (Self : in out Object; Unit : GPR2.Build.Compilation_Unit.Object) is
    begin
       GPR2.Build.Actions.Compile.Ada.Object (Self).Initialize (Unit);
-      Self.Opt_File := To_Unbounded_String (Opt_File);
       --  The ALI file is the expected output of this action
       Self.Obj_File :=
         GPR2.Build.Artifacts.Object_File.Create (Self.Dep_File.Path);
    end Initialize;
 
+   --------------
+   -- Extended --
+   --------------
+
    overriding
    function Extended (Self : Object) return Object is
    begin
-      return Result : Object := Self do
-         Result.Opt_File := Null_Unbounded_String;
-      end return;
+      return Self;
    end Extended;
+
+   ------------------
+   -- Post_Command --
+   ------------------
 
    overriding
    function Post_Command
@@ -96,7 +118,7 @@ package body GPR2.Build.Actions.Compile.Ada.Global_Gen is
             GG_Id : constant Global_Gen_Id := Create (CU);
          begin
             if not Self.Tree.Has_Action (GG_Id) then
-               GG_Act.Initialize (CU, Global_Gen_Opt_File (CU.Owning_View));
+               GG_Act.Initialize (CU);
 
                --  Externally built units allow missing ALIs, because they are
                --  optional to analysis actions.
@@ -214,6 +236,10 @@ package body GPR2.Build.Actions.Compile.Ada.Global_Gen is
 
       return True;
    end Post_Command;
+
+   ---------
+   -- UID --
+   ---------
 
    overriding
    function UID (Self : Object) return Actions.Action_Id'Class is

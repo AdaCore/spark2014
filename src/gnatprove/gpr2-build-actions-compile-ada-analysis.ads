@@ -20,7 +20,6 @@ package GPR2.Build.Actions.Compile.Ada.Analysis is
 
    type Object is new GPR2.Build.Actions.Compile.Ada.Object with record
       Object_Path_File : Unbounded_String;
-      Opt_File         : Unbounded_String;
       ALI_Files        : File_Sets.Set;
    end record;
 
@@ -48,7 +47,6 @@ package GPR2.Build.Actions.Compile.Ada.Analysis is
      (Self             : in out Object;
       Unit             : GPR2.Build.Compilation_Unit.Object;
       Object_Path_File : String;
-      Opt_File         : String;
       Deps             : GPR2.Build.Compilation_Unit.Maps.Map);
    --  ??? TODO decide which type to use for file names
 
