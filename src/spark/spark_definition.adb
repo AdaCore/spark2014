@@ -3777,7 +3777,6 @@ package body SPARK_Definition is
          when Attribute_Callable
             | Attribute_Ceiling
             | Attribute_Class
-            | Attribute_Constrained
             | Attribute_Copy_Sign
             | Attribute_Enum_Rep
             | Attribute_Enum_Val
@@ -3849,6 +3848,18 @@ package body SPARK_Definition is
          =>
             Mark_Unsupported
               (Lim_Non_Static_Attribute, N, Name => Get_Name_String (Aname));
+
+         when Attribute_Constrained                =>
+
+            --  For now, reject 'Constrained on UU types if it cannot be
+            --  statically determined as SPARK and GNAT do not agree on the
+            --  semantics of this attribute.
+
+            if Is_Unchecked_Union (Etype (P))
+              and then not Attr_Constrained_Statically_Known (P)
+            then
+               Mark_Unsupported (Lim_UU_Constrained_Attr, N);
+            end if;
 
          --  We assume a maximal length for the image of any type. This length
          --  may be inaccurate for identifiers.

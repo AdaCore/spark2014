@@ -486,8 +486,8 @@ package VC_Kinds is
       Lim_Type_Inv_Volatile,
       Lim_Uninit_Alloc_In_Expr_Fun,
       Lim_Unknown_Alignment,
-      Lim_UU_Tagged_Comp
-      );
+      Lim_UU_Constrained_Attr,
+      Lim_UU_Tagged_Comp);
 
    subtype Default_Warning_Kind is Misc_Warning_Kind range
      Warn_Address_To_Access .. Warn_Variant_Not_Recursive;
@@ -735,6 +735,8 @@ package VC_Kinds is
            "type aspect on type derived from a private type",
          when Lim_Predicate_With_Different_SPARK_Mode =>
            "type with predicates with different SPARK_Mode values",
+         when Lim_UU_Constrained_Attr =>
+           "attribute ""Constrained"" on unchecked union prefix",
          when Lim_UU_Tagged_Comp =>
            "component of an unconstrained unchecked union type in a tagged"
           & " extension",

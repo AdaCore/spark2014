@@ -832,6 +832,9 @@ package body VC_Kinds is
          when Lim_Unknown_Alignment =>
            "a reference to the ""Alignment"" attribute on a prefix which is "
           & "not a type with an alignment clause",
+         when Lim_UU_Constrained_Attr =>
+           "a reference to the ""Constrained"" attribute on unchecked union "
+           & "prefix whose value cannot be determined statically",
          when Lim_UU_Tagged_Comp =>
            "a component of an unconstrained unchecked union type in a tagged "
           & "extension");
