@@ -15501,6 +15501,26 @@ package body Gnat2Why.Expr is
                     +Insert_Tag_Check
                        (Ada_Node => N, Check_Ty => Etype (N), Expr => +Expr);
                end if;
+
+               --  Check the specific rules for conversions from unchecked
+               --  union types on copy back.
+
+               if Is_Unchecked_Union (Retysp (Etype (N)))
+                 and then
+                   not Is_Unchecked_Union (Retysp (Etype (Expression (N))))
+               then
+
+                  --  Generate a statically known proof result
+
+                  Emit_Static_Proof_Result
+                    (N,
+                     VC_Unchecked_Union_Restriction,
+                     False,
+                     Current_Subp,
+                     Explanation =>
+                       "source of conversion should have inferrable "
+                       & "discriminants");
+               end if;
             end if;
 
             N := Expression (N);
