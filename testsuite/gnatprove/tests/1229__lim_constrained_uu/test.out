@@ -1,0 +1,6 @@
+test.adb:14:18: error: attribute "Constrained" on unchecked union prefix is not yet supported
+test.adb:30:04: warning: analyzing unreferenced procedure "P"
+test.adb:32:06: info: analyzing call to "P_Inlined" in context
+test.adb:37:04: error: "Write_F_Int_If_B" is not allowed in SPARK (due to attribute "Constrained" on unchecked union prefix)
+test.adb:37:04: error: violation of aspect SPARK_Mode at line 1
+gnatprove: error during flow analysis and proof
