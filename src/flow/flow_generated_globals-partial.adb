@@ -273,6 +273,10 @@ package body Flow_Generated_Globals.Partial is
    --  Return globals from the Global and Depends contracts of E (or from their
    --  refined variants iff Refined is True).
 
+   function Contract_Expressions_Globals (E : Entity_Id) return Global_Nodes
+   with Pre => Is_Subprogram (E);
+   --  Return globals from contract expressions, e.g. Pre/Post of subprogram E
+
    procedure Debug (Label : String; E : Entity_Id);
    --  Display Label followed by the entity name of E
 
@@ -652,11 +656,22 @@ package body Flow_Generated_Globals.Partial is
          --  the ALI file they should be indistinguishable from other globals.
 
          else
-            Contr.Globals.Refined := Frontend_Globals (E);
+            --  For imported subprogram whose spec is in SPARK we can get
+            --  precise globals from its pre/post expressions. Tasks and
+            --  entries cannot be imported; entries can have pre/post
+            --  contracts, but for them it is acceptable to rely on the
+            --  frontend globals, and override them with explicit Globals if
+            --  necessary.
 
-            --  Frontend globals does not distinguish Proof_Ins from Inputs;
-            --  conservatively assume that all reads belong to Inputs.
-            pragma Assert (Contr.Globals.Refined.Proof_Ins.Is_Empty);
+            if Is_Imported (E) and then Entity_In_SPARK (E) then
+               Contr.Globals.Refined := Contract_Expressions_Globals (E);
+            else
+               Contr.Globals.Refined := Frontend_Globals (E);
+
+               --  Frontend globals does not distinguish Proof_Ins from Inputs;
+               --  conservatively assume that all reads belong to Inputs.
+               pragma Assert (Contr.Globals.Refined.Proof_Ins.Is_Empty);
+            end if;
 
             Contr.Tasking (Unsynch_Accesses) :=
               Unsynchronized_Globals (Contr.Globals.Refined);
@@ -1241,6 +1256,72 @@ package body Flow_Generated_Globals.Partial is
          Collect_Calls (Expr);
       end loop;
    end Contract_Calls;
+
+   ----------------------------------
+   -- Contract_Expressions_Globals --
+   ----------------------------------
+
+   function Contract_Expressions_Globals (E : Entity_Id) return Global_Nodes is
+      Globals : Node_Sets.Set;
+      --  Global objects references from the contract expressions
+
+      Scop : constant Flow_Scope := (Ent => E, Part => Visible_Part);
+      --  We are looking from the subprogram spec
+
+      procedure Collect_Globals (Expr : Node_Id)
+      with Pre => Nkind (Expr) in N_Subexpr;
+
+      ---------------------
+      -- Collect_Globals --
+      ---------------------
+
+      procedure Collect_Globals (Expr : Node_Id) is
+         Vars : constant Flow_Id_Sets.Set :=
+           To_Entire_Variables
+             (Get_All_Variables
+                (N                    => Expr,
+                 Scope                => Scop,
+                 Target_Name          => Null_Flow_Id,
+                 Use_Computed_Globals => False));
+      begin
+         for Var of Vars loop
+            declare
+               Obj : constant Entity_Id := Get_Direct_Mapping_Id (Var);
+               --  We are in phase 1, so all objects are known by Entity_Id
+            begin
+               --  Filter formal parameters of the subprogram
+
+               if Is_Formal (Obj) and then Scope (Obj) = E then
+                  null;
+
+               --  Filter 'Result of the subprogram itself
+
+               elsif Obj = E then
+                  pragma Assert (Ekind (E) = E_Function);
+
+               --  Otherwise we have a genuine global
+
+               else
+                  Globals.Include (Obj);
+               end if;
+            end;
+         end loop;
+      end Collect_Globals;
+
+   begin
+      for Expr of Get_Precondition_Expressions (E) loop
+         Collect_Globals (Expr);
+      end loop;
+
+      for Expr of Get_Postcondition_Expressions (E, Refined => False) loop
+         Collect_Globals (Expr);
+      end loop;
+
+      --  Anything referenced from pre/post (which are assertion expressions)
+      --  becomes a Proof_In.
+
+      return (Proof_Ins => Globals, Inputs => <>, Outputs => <>);
+   end Contract_Expressions_Globals;
 
    ----------------------
    -- Contract_Globals --
