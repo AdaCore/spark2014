@@ -112,9 +112,12 @@ package body Gnat2Why.Driver is
    use type Ada.Containers.Count_Type;
    --  for comparison of map length
 
-   Max_Subprocesses : constant := 63;
+   Windows_Safe_Limit : constant := 62;
+   --  Maximum value for Max_Subprocesses to safely stay under Windows
+   --  MAXIMUM_WAIT_OBJECTS limit of 64 handles.
+
+   Max_Subprocesses : Positive := Windows_Safe_Limit;
    --  The maximal number of gnatwhy3 processes spawned by a single gnat2why.
-   --  This limits corresponds to MAXIMUM_WAIT_OBJECTS on Windows.
 
    -----------------------
    -- Local Subprograms --
@@ -220,7 +223,7 @@ package body Gnat2Why.Driver is
    procedure Run_Gnatwhy3 (E : Entity_Id; Filename : String)
    with
      Pre =>
-       Output_File_Map.Length <= Max_Subprocesses
+       Output_File_Map.Length <= Ada.Containers.Count_Type (Max_Subprocesses)
        and then Present (E)
        and then Ada.Directories.Current_Directory = Gnat2Why_Args.Why3_Dir;
    --  After generating the Why file, run the proof tool. Wait for existing
@@ -1011,6 +1014,12 @@ package body Gnat2Why.Driver is
 
          if Gnat2Why_Args.Mode not in GPM_Check_All | GPM_Flow then
 
+            --  Set the maximum number of concurrent gnatwhy3 processes based
+            --  on the semaphore value, capped at the Windows-safe limit.
+            Max_Subprocesses :=
+              Integer'Min
+                (Gnat2Why_Args.Max_Why3_Processes, Windows_Safe_Limit);
+
             Why.Gen.Names.Initialize;
             Why.Atree.Modules.Initialize;
             Init_Why_Sections;
@@ -1253,13 +1262,11 @@ package body Gnat2Why.Driver is
          raise Program_Error with "can't locate gnatwhy3";
       end if;
 
-      --  If the maximum is reached, or we are not allowed to run gnatwhy3 in
-      --  parallel, we wait for one process to finish first.
+      --  If the maximum number of concurrent processes is reached, wait for
+      --  one process to finish first. When Max_Subprocesses = 1 (sequential
+      --  mode), this ensures only one process runs at a time.
 
-      if Output_File_Map.Length = Max_Subprocesses
-        or else
-          (not Output_File_Map.Is_Empty
-           and then not Gnat2Why_Args.Parallel_Why3)
+      if Output_File_Map.Length >= Ada.Containers.Count_Type (Max_Subprocesses)
       then
          Collect_One_Result;
       end if;
@@ -1318,7 +1325,7 @@ package body Gnat2Why.Driver is
             raise Program_Error
               with
                 "can't spawn gnatwhy3"
-                & (if Gnat2Why_Args.Parallel_Why3
+                & (if Gnat2Why_Args.Max_Why3_Processes > 1
                    then
                      "(#" & Image (Integer (Output_File_Map.Length), 1) & ')'
                    else "");

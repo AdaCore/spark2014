@@ -2904,6 +2904,21 @@ package body Configuration is
          end if;
       end;
       Sanitize_File_List (Tree);
+
+      --   Set the maximum number of concurrent gnatwhy3 processes based on
+      --  semaphore usage and the calculated parallelism level.
+      if Use_Semaphores then
+         declare
+            Num_Provers : constant Positive :=
+              Integer'Max
+                (1, Integer (File_Specific_Map ("default").Provers.Length));
+         begin
+            Max_Why3_Processes := Integer'Max (1, Parallel / Num_Provers);
+         end;
+      else
+         --  Sequential mode: limit to 1 process
+         Max_Why3_Processes := 1;
+      end if;
    end Read_Command_Line;
 
    ------------------------

@@ -40,6 +40,11 @@ package body Gnat2Why_Opts.Reading is
       with Pre => Has_Field (V, Field);
       --  Return the boolean value of the [Field] of the JSON record [V]
 
+      function Get_Opt (V : JSON_Value; Field : String) return Integer
+      is (Get (Get (V, Field)))
+      with Pre => Has_Field (V, Field);
+      --  Return the natural value of the [Field] of the JSON record [V]
+
       function Get_Opt (V : JSON_Value; Field : String) return Unbounded_String
       is (Get (Get (V, Field)))
       with Pre => Has_Field (V, Field);
@@ -121,7 +126,7 @@ package body Gnat2Why_Opts.Reading is
          Proof_Generate_Guards := Get_Opt (V, Proof_Generate_Guards_Name);
          Ide_Mode := Get_Opt (V, Ide_Mode_Name);
          CWE := Get_Opt (V, CWE_Name);
-         Parallel_Why3 := Get_Opt (V, Parallel_Why3_Name);
+         Max_Why3_Processes := Get_Opt (V, Max_Why3_Processes_Name);
 
          Why3_Dir := Get_Opt (V, Why3_Dir_Name);
       end if;
