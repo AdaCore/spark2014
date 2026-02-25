@@ -1304,10 +1304,18 @@ package body Gnat2Why.Driver is
               Output_File_Descriptor => Fd,
               Err_To_Out             => True);
 
-         --  If spawning fails, for whatever reason, then simply crash
+         --  If spawning fails, for whatever reason, then simply crash.
+         --  If we are spawning parallel gnatwhy3 processes, then also
+         --  indicate how many of them we already have.
 
          if Pid = Invalid_Pid then
-            raise Program_Error with "can't spawn gnatwhy3";
+            raise Program_Error
+              with
+                "can't spawn gnatwhy3"
+                & (if Gnat2Why_Args.Parallel_Why3
+                   then
+                     "(#" & Image (Integer (Output_File_Map.Length), 1) & ')'
+                   else "");
          end if;
 
          Output_File_Map.Insert (Pid, Name);
