@@ -2905,7 +2905,7 @@ package body Configuration is
       end;
       Sanitize_File_List (Tree);
 
-      --   Set the maximum number of concurrent gnatwhy3 processes based on
+      --  Set the maximum number of concurrent gnatwhy3 processes based on
       --  semaphore usage and the calculated parallelism level.
       if Use_Semaphores then
          declare
