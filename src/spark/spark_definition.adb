@@ -12257,7 +12257,7 @@ package body SPARK_Definition is
                       ("consider annotating it with a "
                        & Annot_To_String
                            (Format   => Pragma_Form,
-                            Name     => "Ownership",
+                            Name     => Ownership,
                             Snd_Name =>
                               (if Contains_Allocated_Parts (E)
                                then "Needs_Reclamation"
@@ -12276,7 +12276,7 @@ package body SPARK_Definition is
                       ("consider annotating it with a "
                        & Annot_To_String
                            (Format   => Pragma_Form,
-                            Name     => " Predefined_Equality",
+                            Name     => Predefined_Equality,
                             Snd_Name =>
                               (if Has_Access_Type (E)
                                  or else
@@ -13034,7 +13034,7 @@ package body SPARK_Definition is
                      Cont_Msg =>
                        Create
                          ("annotate the private part of & with the "
-                          & Annot_To_String (Name => "Hide_Info"),
+                          & Annot_To_String (Name => Hide_Info),
                           Names => [Id]));
                   exit;
                end if;

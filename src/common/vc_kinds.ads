@@ -1400,24 +1400,47 @@ package VC_Kinds is
 
    --  Names for GNATprove annotations
 
-   At_End_Borrow_Name           : constant String := "At_End_Borrow";
-   Automatic_Instantiation_Name : constant String := "Automatic_Instantiation";
-   Container_Aggregates_Name    : constant String := "Container_Aggregates";
-   Handler_Name                 : constant String := "Handler";
-   Hide_Info_Name               : constant String := "Hide_Info";
-   HO_Specialization_Name       : constant String :=
-     "Higher_Order_Specialization";
-   Inline_For_Proof_Name        : constant String := "Inline_For_Proof";
-   Iterable_For_Proof_Name      : constant String := "Iterable_For_Proof";
-   Logical_Equal_Name           : constant String := "Logical_Equal";
-   Mutable_In_Params_Name       : constant String := "Mutable_In_Parameters";
-   No_Bitwise_Operations_Name   : constant String := "No_Bitwise_Operations";
-   No_Wrap_Around_Name          : constant String := "No_Wrap_Around";
-   Ownership_Name               : constant String := "Ownership";
-   Predefined_Equality_Name     : constant String := "Predefined_Equality";
-   Skip_Flow_And_Proof_Name     : constant String := "Skip_Flow_And_Proof";
-   Skip_Proof_Name              : constant String := "Skip_Proof";
-   Unhide_Info_Name             : constant String := "Unhide_Info";
+   type GNATprove_Annotation_Kind is
+     (Unknown_Annotation,
+
+      --  Justification of checks
+
+      False_Positive,
+      Intentional,
+
+      --  Currently supported annotations
+
+      At_End_Borrow,
+      Automatic_Instantiation,
+      Container_Aggregates,
+      Handler,
+      Hide_Info,
+      HO_Specialization,
+      Inline_For_Proof,
+      Iterable_For_Proof,
+      Logical_Equal,
+      Mutable_In_Params,
+      No_Bitwise_Operations,
+      No_Wrap_Around,
+      Ownership,
+      Predefined_Equality,
+      Skip_Flow_And_Proof,
+      Skip_Proof,
+      Unhide_Info,
+
+      --  Deprecated annotations
+
+      Always_Return,
+      External_Axiomatization,
+      Might_Not_Return,
+      Terminating);
+
+   subtype Supported_Annotations is
+     GNATprove_Annotation_Kind range At_End_Borrow .. Unhide_Info;
+
+   function Pretty_Annotation_Name
+     (Kind : GNATprove_Annotation_Kind) return String;
+   --  Return the name of an annotation
 
    type Annot_Format_Kind is (Text_Form, Aspect_Form, Pragma_Form);
 
@@ -1427,7 +1450,7 @@ package VC_Kinds is
    function Annot_To_String
      (Kind     : Incorrect_Annotation_Kind := Common_Annotation_Kind'First;
       Format   : Annot_Format_Kind := Text_Form;
-      Name     : String := "";
+      Name     : GNATprove_Annotation_Kind := Unknown_Annotation;
       Snd_Name : String := "") return String;
    --  Pretty print annotation for error.
    --  Get the name of the annotation from the Kind if it is specific,
@@ -1443,7 +1466,7 @@ package VC_Kinds is
    function Incorrect_Annotation_Message
      (Kind        : Incorrect_Annotation_Kind;
       From_Aspect : Boolean;
-      Name        : String;
+      Name        : GNATprove_Annotation_Kind;
       Snd_Name    : String) return String;
    --  Create a message for an incorrect annotation for an aspect or pragma
    --  Annotate.
@@ -1558,10 +1581,10 @@ package VC_Kinds is
    --  is set, the corresponding message is used as root cause message for
    --  cascading violations (typically used if Msg has character insertions).
 
-   function Annotation_From_Kind
-     (Kind : Specific_Annotation_Kind) return String;
-   --  Return the name of the annotation from its kind. It is used to compute
-   --  the root cause for incorrect uses of annotations.
+   function Annotation_From_Error_Kind
+     (Kind : Specific_Annotation_Kind) return GNATprove_Annotation_Kind;
+   --  Return the kind of the annotation from a specific error kind. It is used
+   --  to compute the root cause for incorrect uses of annotations.
 
    function Locate_On_First_Token (V : VC_Kind) return Boolean
    is (case V is

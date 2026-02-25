@@ -48,85 +48,94 @@ package body VC_Kinds is
    function Annot_To_String
      (Kind     : Incorrect_Annotation_Kind := Common_Annotation_Kind'First;
       Format   : Annot_Format_Kind := Text_Form;
-      Name     : String := "";
+      Name     : GNATprove_Annotation_Kind := Unknown_Annotation;
       Snd_Name : String := "") return String
    is (declare
-         Fst_Name : constant String :=
-           (if Name'Length = 0 and Kind in Specific_Annotation_Kind
-            then Annotation_From_Kind (Kind)
+         Fst_Name : constant GNATprove_Annotation_Kind :=
+           (if Name = Unknown_Annotation and Kind in Specific_Annotation_Kind
+            then Annotation_From_Error_Kind (Kind)
             else Name);
        begin
          (if Format = Text_Form
           then
             '"'
-            & (if Fst_Name'Length = 0
-               then "GNATprove"
+            & (if Snd_Name'Length = 0
+               then Pretty_Annotation_Name (Fst_Name)
                else
-                 (if Snd_Name'Length = 0
-                  then Fst_Name
-                  else
-                    "(GNATprove, "
-                    & Fst_Name
-                    & ", """
-                    & Snd_Name
-                    & """[, ...])"))
+                 "(GNATprove, "
+                 & Pretty_Annotation_Name (Fst_Name)
+                 & ", """
+                 & Snd_Name
+                 & """[, ...])")
             & """ annotation"
           else
             (if Format = Pragma_Form
              then """pragma Annotate "
              else "aspect ""Annotate => ")
             & "(GNATprove, "
-            & (if Fst_Name'Length = 0
+            & (if Fst_Name = Unknown_Annotation
                then "..."
                else
-                 Fst_Name
+                 Pretty_Annotation_Name (Fst_Name)
                  & (if Snd_Name'Length = 0
                     then ""
                     else ", """ & Snd_Name & '"')
                  & "[, ...]")
             & ")"""));
 
-   --------------------------
-   -- Annotation_From_Kind --
-   --------------------------
+   --------------------------------
+   -- Annotation_From_Error_Kind --
+   --------------------------------
 
-   function Annotation_From_Kind
-     (Kind : Specific_Annotation_Kind) return String
+   function Annotation_From_Error_Kind
+     (Kind : Specific_Annotation_Kind) return GNATprove_Annotation_Kind
    is (case Kind is
          when Annot_At_End_Borrow_Context
             .. Annot_At_End_Borrow_Param_In_Contract
-         => At_End_Borrow_Name,
+         => At_End_Borrow,
+
          when Annot_Container_Aggregates_Add
             .. Annot_Container_Aggregates_Private
-         => Container_Aggregates_Name,
+         => Container_Aggregates,
+
          when Annot_Handler_Call .. Annot_Handler_No_Contracts
-         => Handler_Name,
+         => Handler,
+
          --  Can be Hide_Info or Unhide_Info, the name needs to be supplied
          when Annot_Hide_Info_Expr_Fun_At_End_Borrow
             .. Annot_Hide_Info_Expr_Fun_Refined_Post
-         => "",
+         => Unknown_Annotation,
+
          when Annot_Hide_Info_Private_Auto .. Annot_Hide_Info_Private_Ownership
-         => Hide_Info_Name,
+         => Hide_Info,
+
          when Annot_HO_Specialization_Formal_In_Iterated_Comp
             .. Annot_HO_Specialization_Use_Of_Formal
-         => HO_Specialization_Name,
+         => HO_Specialization,
+
          when Annot_Inline_For_Proof_Body_Off .. Annot_Inline_For_Proof_Post
-         => Inline_For_Proof_Name,
+         => Inline_For_Proof,
+
          when Annot_Iterable_For_Proof_Circular_Models
             .. Annot_Iterable_For_Proof_Prim
-         => Iterable_For_Proof_Name,
+         => Iterable_For_Proof,
+
          when Annot_Logical_Equal_Post
             | Annot_Logical_Equal_Potentially_Invalid
-         => Logical_Equal_Name,
+         => Logical_Equal,
+
          when Annot_Mutable_In_Params_Depends
             .. Annot_Mutable_In_Params_Side_Effects
-         => Mutable_In_Params_Name,
+         => Mutable_In_Params,
+
          when Annot_No_Bitwise_Operations_Use
-         => No_Bitwise_Operations_Name,
+         => No_Bitwise_Operations,
+
          when Annot_Ownership_Potentially_Invalid
-         => Ownership_Name,
+         => Ownership,
+
          when Annot_Predefined_Equality_Use_Eq
-         => Predefined_Equality_Name);
+         => Predefined_Equality);
 
    ------------
    -- CWE_ID --
@@ -1804,7 +1813,7 @@ package body VC_Kinds is
    function Incorrect_Annotation_Message
      (Kind        : Incorrect_Annotation_Kind;
       From_Aspect : Boolean;
-      Name        : String;
+      Name        : GNATprove_Annotation_Kind;
       Snd_Name    : String) return String
    is (case Kind is
 
@@ -1853,14 +1862,13 @@ package body VC_Kinds is
            & " shall have either a ""pragma SPARK_Mode (Off)"" or a "
            & Annot_To_String
                (Format   => Pragma_Form,
-                Name     => Hide_Info_Name,
+                Name     => Hide_Info,
                 Snd_Name => "Private_Part"),
          when Annot_Invalid_Name                              =>
            "invalid name """
-           & Name
+           & Snd_Name
            & """ in "
-           & Annot_To_String
-               (Kind, Aspect_Or_Pragma (From_Aspect), Name => ""),
+           & Annot_To_String (Kind, Aspect_Or_Pragma (From_Aspect)),
          when Annot_Incompatible_Annotated_Entities           =>
            "incompatible entities with the "
            & Annot_To_String (Kind, Name => Name),
@@ -1973,44 +1981,44 @@ package body VC_Kinds is
            & " shall not have contracts",
          when Annot_Hide_Info_Expr_Fun_Body_Hide_Unhide       =>
            "& shall not have both the "
-           & Annot_To_String (Name => Hide_Info_Name)
+           & Annot_To_String (Name => Hide_Info)
            & " and the "
-           & Annot_To_String (Name => Unhide_Info_Name)
+           & Annot_To_String (Name => Unhide_Info)
            & " in &",
          when Annot_Hide_Info_Expr_Fun_At_End_Borrow          =>
            "an expression function with the "
-           & Annot_To_String (Name => Hide_Info_Name)
+           & Annot_To_String (Name => Hide_Info)
            & " or "
-           & Annot_To_String (Name => Unhide_Info_Name)
+           & Annot_To_String (Name => Unhide_Info)
            & " shall not have the "
-           & Annot_To_String (Name => At_End_Borrow_Name),
+           & Annot_To_String (Name => At_End_Borrow),
          when Annot_Hide_Info_Expr_Fun_Body_Not_SPARK         =>
            "the body of an expression function with the "
            & Annot_To_String (Kind)
            & " shall be compatible with SPARK",
          when Annot_Hide_Info_Expr_Fun_HO_Spec                =>
            "an expression function with the "
-           & Annot_To_String (Name => Hide_Info_Name)
+           & Annot_To_String (Name => Hide_Info)
            & " or "
-           & Annot_To_String (Name => Unhide_Info_Name)
+           & Annot_To_String (Name => Unhide_Info)
            & " shall not have the "
-           & Annot_To_String (Name => HO_Specialization_Name),
+           & Annot_To_String (Name => HO_Specialization),
          when Annot_Hide_Info_Expr_Fun_Inline                 =>
            "an expression function with the "
-           & Annot_To_String (Name => Hide_Info_Name)
+           & Annot_To_String (Name => Hide_Info)
            & " or "
-           & Annot_To_String (Name => Unhide_Info_Name)
+           & Annot_To_String (Name => Unhide_Info)
            & " shall not have the "
-           & Annot_To_String (Name => Inline_For_Proof_Name),
+           & Annot_To_String (Name => Inline_For_Proof),
          when Annot_Hide_Info_Expr_Fun_Invisible              =>
            "the body of & shall be visible at the location of the pragma",
          when Annot_Hide_Info_Expr_Fun_Logical_Eq             =>
            "an expression function with the "
-           & Annot_To_String (Name => Hide_Info_Name)
+           & Annot_To_String (Name => Hide_Info)
            & " or "
-           & Annot_To_String (Name => Unhide_Info_Name)
+           & Annot_To_String (Name => Unhide_Info)
            & " shall not be the "
-           & Annot_To_String (Name => Logical_Equal_Name),
+           & Annot_To_String (Name => Logical_Equal),
          when Annot_Hide_Info_Expr_Fun_Refined_Post           =>
            "an expression function with the "
            & Annot_To_String (Kind)
@@ -2034,7 +2042,7 @@ package body VC_Kinds is
            & Annot_To_String (Kind)
            & ", it shall not be subject to onwership unless its "
            & "partial view has an explicit "
-           & Annot_To_String (Name => Ownership_Name),
+           & Annot_To_String (Name => Ownership),
          when Annot_HO_Specialization_Formal_In_Iterated_Comp =>
            "subprogram with the "
            & Annot_To_String (Kind)
@@ -2042,7 +2050,7 @@ package body VC_Kinds is
            & " parameters inside an iterated component association",
          when Annot_HO_Specialization_Inline                  =>
            "inlined function with the "
-           & Annot_To_String (Name => HO_Specialization_Name)
+           & Annot_To_String (Name => HO_Specialization)
            & " shall have a postcondition",
          when Annot_HO_Specialization_No_Formal               =>
            "subprogram with the "
@@ -2062,9 +2070,9 @@ package body VC_Kinds is
            & " shall be in SPARK",
          when Annot_Inline_For_Proof_Logical_Equal            =>
            "function shall not have both the "
-           & Annot_To_String (Name => Inline_For_Proof_Name)
+           & Annot_To_String (Name => Inline_For_Proof)
            & " and the "
-           & Annot_To_String (Name => Logical_Equal_Name),
+           & Annot_To_String (Name => Logical_Equal),
          when Annot_Inline_For_Proof_Potentially_Invalid      =>
            "function with the "
            & Annot_To_String (Kind)
@@ -2418,6 +2426,47 @@ package body VC_Kinds is
            "info-unrolling-inlining");
 
    pragma Annotate (Xcov, Exempt_Off);
+
+   ----------------------------
+   -- Pretty_Annotation_Name --
+   ----------------------------
+
+   function Pretty_Annotation_Name
+     (Kind : GNATprove_Annotation_Kind) return String
+   is (case Kind is
+         when Unknown_Annotation      => "GNATprove",
+
+         --  Justification of checks
+
+         when False_Positive          => "False_Positive",
+         when Intentional             => "Intentional",
+
+         --   Supported annotations
+
+         when At_End_Borrow           => "At_End_Borrow",
+         when Automatic_Instantiation => "Automatic_Instantiation",
+         when Container_Aggregates    => "Container_Aggregates",
+         when Handler                 => "Handler",
+         when Hide_Info               => "Hide_Info",
+         when HO_Specialization       => "Higher_Order_Specialization",
+         when Inline_For_Proof        => "Inline_For_Proof",
+         when Iterable_For_Proof      => "Iterable_For_Proof",
+         when Logical_Equal           => "Logical_Equal",
+         when Mutable_In_Params       => "Mutable_In_Parameters",
+         when No_Bitwise_Operations   => "No_Bitwise_Operations",
+         when No_Wrap_Around          => "No_Wrap_Around",
+         when Ownership               => "Ownership",
+         when Predefined_Equality     => "Predefined_Equality",
+         when Skip_Flow_And_Proof     => "Skip_Flow_And_Proof",
+         when Skip_Proof              => "Skip_Proof",
+         when Unhide_Info             => "Unhide_Info",
+
+         --  Deprecated annotations
+
+         when Always_Return           => "Always_Return",
+         when External_Axiomatization => "External_Axiomatization",
+         when Might_Not_Return        => "Might_Not_Return",
+         when Terminating             => "Terminating");
 
    ---------------
    -- Rule_Name --
@@ -3404,7 +3453,7 @@ package body VC_Kinds is
            "box notation without default or relaxed initialization",
          when Vio_Container_Aggregate                      =>
            "container aggregate whose type does not have the "
-           & Annot_To_String (Name => Container_Aggregates_Name),
+           & Annot_To_String (Name => Container_Aggregates),
          when Vio_Code_Statement                           => "code statement",
          when Vio_Controlled_Types                         =>
            "controlled types",

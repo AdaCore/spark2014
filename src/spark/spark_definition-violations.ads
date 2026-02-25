@@ -121,7 +121,7 @@ private package SPARK_Definition.Violations is
       N           : Node_Id;
       Msg         : String := "";
       From_Aspect : Boolean := False;
-      Name        : String := "";
+      Name        : GNATprove_Annotation_Kind := Unknown_Annotation;
       Snd_Name    : String := "";
       Names       : Node_Lists.List := Node_Lists.Empty;
       Cont_Msg    : Message := No_Message)

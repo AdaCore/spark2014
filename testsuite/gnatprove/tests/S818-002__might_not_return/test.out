@@ -1,16 +1,16 @@
 bad_spec.ads:12:14: warning: useless postcondition, "Call_Jump" is marked No_Return [-gnatw.t]
 bad_spec_prag.ads:4:04: warning: Terminating, Always_Return, and Might_Not_Return annotations are deprecated, ignored [deprecated-terminating]
-bad_spec_prag.ads:4:04: warning: replace "pragma Annotate (GNATprove, might_not_return, ...)" by "with Always_Terminates => False" or use an exceptional contract or program exit postcondition on the corresponding entity
+bad_spec_prag.ads:4:04: warning: replace "pragma Annotate (GNATprove, Might_Not_Return[, ...])" by "with Always_Terminates => False" or use an exceptional contract or program exit postcondition on the corresponding entity
 bad_spec_prag.ads:7:04: warning: Terminating, Always_Return, and Might_Not_Return annotations are deprecated, ignored [deprecated-terminating]
 bad_spec_prag.ads:7:04: warning: terminating annotation is implicit on functions
 bad_spec_prag.ads:12:06: warning: postcondition does not check the outcome of calling "Call_Jump" [-gnatw.t]
 bad_spec_prag.ads:12:14: warning: useless postcondition, "Call_Jump" is marked No_Return [-gnatw.t]
 bad_spec_prag.ads:13:04: warning: Terminating, Always_Return, and Might_Not_Return annotations are deprecated, ignored [deprecated-terminating]
-bad_spec_prag.ads:13:04: warning: replace "pragma Annotate (GNATprove, might_not_return, ...)" by "with Always_Terminates => False" or use an exceptional contract or program exit postcondition on the corresponding entity
+bad_spec_prag.ads:13:04: warning: replace "pragma Annotate (GNATprove, Might_Not_Return[, ...])" by "with Always_Terminates => False" or use an exceptional contract or program exit postcondition on the corresponding entity
 bad_spec_prag.ads:18:04: warning: Terminating, Always_Return, and Might_Not_Return annotations are deprecated, ignored [deprecated-terminating]
-bad_spec_prag.ads:18:04: warning: replace "pragma Annotate (GNATprove, might_not_return, ...)" by "with Always_Terminates => False" or use an exceptional contract or program exit postcondition on the corresponding entity
+bad_spec_prag.ads:18:04: warning: replace "pragma Annotate (GNATprove, Might_Not_Return[, ...])" by "with Always_Terminates => False" or use an exceptional contract or program exit postcondition on the corresponding entity
 bad_spec_prag.ads:22:04: warning: Terminating, Always_Return, and Might_Not_Return annotations are deprecated, ignored [deprecated-terminating]
-bad_spec_prag.ads:22:04: warning: replace "pragma Annotate (GNATprove, might_not_return, ...)" by "with Always_Terminates => False" or use an exceptional contract or program exit postcondition on the corresponding entity
+bad_spec_prag.ads:22:04: warning: replace "pragma Annotate (GNATprove, Might_Not_Return[, ...])" by "with Always_Terminates => False" or use an exceptional contract or program exit postcondition on the corresponding entity
 bad.adb:5:07: medium: unexpected exception might be raised [reason for check: "Jump" allows propagating no exceptions] [possible explanation: "Program_Error" might be unexpectedly raised] [provers gave up before completing the proof]
 bad.adb:11:07: warning: this statement is never reached
 bad.adb:19:07: medium: unexpected exception might be raised [reason for check: "Call_Jump" allows propagating no exceptions] [possible explanation: "Constraint_Error" might be unexpectedly raised] [provers gave up before completing the proof]

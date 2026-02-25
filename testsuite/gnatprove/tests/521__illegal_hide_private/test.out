@@ -14,7 +14,7 @@ illegal_hide_private.ads:23:09: error: consider annotating it with Relaxed_Initi
 illegal_hide_private.ads:23:09: error: hidden private type containing only subcomponents whose type is annotated with Relaxed_Initialization is not yet supported
 illegal_hide_private.ads:27:09: error: consider annotating it with a "pragma Annotate (GNATprove, Ownership, "Needs_Reclamation"[, ...])"
 illegal_hide_private.ads:27:09: error: if the full view of a type is hidden using a "Hide_Info" annotation, it shall not be subject to onwership unless its partial view has an explicit "Ownership" annotation
-illegal_hide_private.ads:31:09: error: consider annotating it with a "pragma Annotate (GNATprove,  Predefined_Equality, "Only_Null"[, ...])"
+illegal_hide_private.ads:31:09: error: consider annotating it with a "pragma Annotate (GNATprove, Predefined_Equality, "Only_Null"[, ...])"
 illegal_hide_private.ads:31:09: error: if the full view of a type is hidden using a "Hide_Info" annotation, its predefined equality shall not be restricted unless its partial view has an explicit "Predefined_Equality" annotation
 illegal_hide_private.ads:36:04: error: expected 3 arguments
 illegal_hide_private.ads:36:04: error: wrong number of arguments in "pragma Annotate (GNATprove, Hide_Info, "Private_Part"[, ...])"

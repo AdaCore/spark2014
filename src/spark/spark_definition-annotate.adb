@@ -53,7 +53,6 @@ with SPARK_Util.Types;            use SPARK_Util.Types;
 with Stand;                       use Stand;
 with Stringt;                     use Stringt;
 with String_Utils;                use String_Utils;
-with VC_Kinds;                    use VC_Kinds;
 
 package body SPARK_Definition.Annotate is
 
@@ -343,7 +342,7 @@ package body SPARK_Definition.Annotate is
 
    procedure Insert_Annotate_Range
      (Prgma           : Node_Id;
-      Kind            : Annotate_Kind;
+      Kind            : Check_Annotate_Kind;
       Pattern, Reason : String_Id;
       Range_Node      : Node_Id;
       Whole           : Boolean);
@@ -355,14 +354,14 @@ package body SPARK_Definition.Annotate is
 
    procedure Insert_Annotate_Range
      (Prgma           : Node_Id;
-      Kind            : Annotate_Kind;
+      Kind            : Check_Annotate_Kind;
       Pattern, Reason : String_Id;
       First, Last     : Source_Ptr);
    --  Same as above, but take the node range in argument
 
    procedure Insert_With_Next
      (Prgma           : Node_Id;
-      Kind            : Annotate_Kind;
+      Kind            : Check_Annotate_Kind;
       Pattern, Reason : String_Id;
       First_Node      : Node_Id;
       Skip            : Node_Id := Empty);
@@ -376,7 +375,7 @@ package body SPARK_Definition.Annotate is
             null;
 
          when True =>
-            Kind    : Annotate_Kind;
+            Kind    : Check_Annotate_Kind;
             Pattern : String_Id;
             Reason  : String_Id;
       end case;
@@ -394,7 +393,7 @@ package body SPARK_Definition.Annotate is
    procedure Check_Annotate_Entity_Argument
      (Arg                 : Node_Id;
       Prag                : Node_Id;
-      Prag_Name           : String;
+      Prag_Name           : GNATprove_Annotation_Kind;
       Continue            : out Boolean;
       Ignore_SPARK_Status : Boolean := False);
    --  Check that 'Arg' maps to an entity, and emit appropriate error message.
@@ -436,7 +435,7 @@ package body SPARK_Definition.Annotate is
      (Ent           : Entity_Id;
       Ent_Decl_Kind : Annotate_Placement_Kind;
       Prag          : Node_Id;
-      Prag_Name     : String;
+      Prag_Name     : GNATprove_Annotation_Kind;
       Decl_Name     : String;
       Ok            : out Boolean);
    --  Check that 'Prag' is declared immediately after declaration of
@@ -449,7 +448,10 @@ package body SPARK_Definition.Annotate is
    --  to the expected view.
 
    procedure Check_Annotate_Placement
-     (E : Entity_Id; Prag : Node_Id; Prag_Name : String; Ok : out Boolean)
+     (E         : Entity_Id;
+      Prag      : Node_Id;
+      Prag_Name : GNATprove_Annotation_Kind;
+      Ok        : out Boolean)
    with
      Pre =>
        Ekind (E)
@@ -548,8 +550,8 @@ package body SPARK_Definition.Annotate is
    --  ???, E) and update the Predefined_Eq_Annotations map.
 
    procedure Check_Skip_Annotations
-     (Name : String; Arg3_Exp : Node_Id; Prag : Node_Id)
-   with Pre => Name = "skip_proof" or else Name = "skip_flow_and_proof";
+     (Name : GNATprove_Annotation_Kind; Arg3_Exp : Node_Id; Prag : Node_Id)
+   with Pre => Name in Skip_Proof | Skip_Flow_And_Proof;
    --  Check validity of pragma Annotate (GNATprove, Skip_Proof, E) and
    --  pragma Annotate (GNATprove, Skip_Flow_And_Proof, E)
 
@@ -584,6 +586,56 @@ package body SPARK_Definition.Annotate is
    --  Return the constant C such that N is a pragma Annotate
    --  (GNATprove,  Ownership, ..., C) and C and Ty have the same root type if
    --  any.
+
+   function Annotation_Kind_From_String
+     (Name : String) return GNATprove_Annotation_Kind
+   is (if Name = "false_positive"
+       then False_Positive
+       elsif Name = "intentional"
+       then Intentional
+       elsif Name = "at_end_borrow"
+       then At_End_Borrow
+       elsif Name = "automatic_instantiation"
+       then Automatic_Instantiation
+       elsif Name = "container_aggregates"
+       then Container_Aggregates
+       elsif Name = "handler"
+       then Handler
+       elsif Name = "hide_info"
+       then Hide_Info
+       elsif Name = "higher_order_specialization"
+       then HO_Specialization
+       elsif Name = "inline_for_proof"
+       then Inline_For_Proof
+       elsif Name = "iterable_for_proof"
+       then Iterable_For_Proof
+       elsif Name = "logical_equal"
+       then Logical_Equal
+       elsif Name = "mutable_in_parameters"
+       then Mutable_In_Params
+       elsif Name = "no_bitwise_operations"
+       then No_Bitwise_Operations
+       elsif Name = "no_wrap_around"
+       then No_Wrap_Around
+       elsif Name = "ownership"
+       then Ownership
+       elsif Name = "predefined_equality"
+       then Predefined_Equality
+       elsif Name = "skip_flow_and_proof"
+       then Skip_Flow_And_Proof
+       elsif Name = "skip_proof"
+       then Skip_Proof
+       elsif Name = "unhide_info"
+       then Unhide_Info
+       elsif Name = "always_return"
+       then Always_Return
+       elsif Name = "external_axiomatization"
+       then External_Axiomatization
+       elsif Name = "might_not_return"
+       then Might_Not_Return
+       elsif Name = "terminating"
+       then Terminating
+       else Unknown_Annotation);
 
    ---------
    -- "<" --
@@ -654,7 +706,7 @@ package body SPARK_Definition.Annotate is
           or else Is_RTE (Base_Type (Ty), RO_SP_Big_Integer));
 
       From_Aspect : constant Boolean := From_Aspect_Specification (Prag);
-      Prag_Name   : constant String := Container_Aggregates_Name;
+      Prag_Name   : constant GNATprove_Annotation_Kind := Container_Aggregates;
       Ok          : Boolean;
 
    begin
@@ -1847,7 +1899,7 @@ package body SPARK_Definition.Annotate is
    procedure Check_Annotate_Entity_Argument
      (Arg                 : Node_Id;
       Prag                : Node_Id;
-      Prag_Name           : String;
+      Prag_Name           : GNATprove_Annotation_Kind;
       Continue            : out Boolean;
       Ignore_SPARK_Status : Boolean := False)
    is
@@ -1897,7 +1949,7 @@ package body SPARK_Definition.Annotate is
      (Ent           : Entity_Id;
       Ent_Decl_Kind : Annotate_Placement_Kind;
       Prag          : Node_Id;
-      Prag_Name     : String;
+      Prag_Name     : GNATprove_Annotation_Kind;
       Decl_Name     : String;
       Ok            : out Boolean)
    is
@@ -2034,7 +2086,10 @@ package body SPARK_Definition.Annotate is
    end Check_Annotate_Placement;
 
    procedure Check_Annotate_Placement
-     (E : Entity_Id; Prag : Node_Id; Prag_Name : String; Ok : out Boolean) is
+     (E         : Entity_Id;
+      Prag      : Node_Id;
+      Prag_Name : GNATprove_Annotation_Kind;
+      Ok        : out Boolean) is
    begin
       case Ekind (E) is
          when Subprogram_Kind | Generic_Subprogram_Kind =>
@@ -2105,7 +2160,7 @@ package body SPARK_Definition.Annotate is
      (Arg3_Exp : Node_Id; Prag : Node_Id)
    is
       From_Aspect : constant Boolean := From_Aspect_Specification (Prag);
-      Prag_Name   : constant String := At_End_Borrow_Name;
+      Prag_Name   : constant GNATprove_Annotation_Kind := At_End_Borrow;
 
       procedure Check_At_End_Borrow_Entity (E : Entity_Id; Ok : out Boolean);
       --  E should be a ghost identity expression function taking (and
@@ -2178,7 +2233,7 @@ package body SPARK_Definition.Annotate is
                Cont_Msg    =>
                  Create
                    ("function with "
-                    & Annot_To_String (Name => At_End_Borrow_Name)
+                    & Annot_To_String (Name => Prag_Name)
                     & " shall be an expression function"));
 
          elsif Potentially_Hidden_Entities.Contains (E) then
@@ -2203,7 +2258,7 @@ package body SPARK_Definition.Annotate is
                      Cont_Msg    =>
                        Create
                          ("function with "
-                          & Annot_To_String (Name => At_End_Borrow_Name)
+                          & Annot_To_String (Name => Prag_Name)
                           & " shall be the identity function"));
                else
                   Ok := True;
@@ -2477,7 +2532,8 @@ package body SPARK_Definition.Annotate is
    procedure Check_Automatic_Instantiation_Annotation
      (Arg3_Exp : Node_Id; Prag : Node_Id)
    is
-      Prag_Name   : constant String := Automatic_Instantiation_Name;
+      Prag_Name   : constant GNATprove_Annotation_Kind :=
+        Automatic_Instantiation;
       From_Aspect : constant Boolean := From_Aspect_Specification (Prag);
       E           : Entity_Id;
       Ok          : Boolean;
@@ -2750,7 +2806,7 @@ package body SPARK_Definition.Annotate is
    ------------------------------
 
    procedure Check_Handler_Annotation (Arg3_Exp : Node_Id; Prag : Node_Id) is
-      Prag_Name   : constant String := Handler_Name;
+      Prag_Name   : constant GNATprove_Annotation_Kind := Handler;
       From_Aspect : constant Boolean := From_Aspect_Specification (Prag);
       E           : Entity_Id;
       Ok          : Boolean;
@@ -2828,8 +2884,8 @@ package body SPARK_Definition.Annotate is
    is
       From_Aspect        : constant Boolean :=
         From_Aspect_Specification (Prag);
-      Annot              : constant String :=
-        (if Unhide then Unhide_Info_Name else Hide_Info_Name);
+      Annot              : constant GNATprove_Annotation_Kind :=
+        (if Unhide then Unhide_Info else Hide_Info);
       Expr_Fun_Body_Name : constant String := "Expression_Function_Body";
       Private_Part_Name  : constant String := "Private_Part";
       Package_Body_Name  : constant String := "Package_Body";
@@ -3275,7 +3331,7 @@ package body SPARK_Definition.Annotate is
    procedure Check_Higher_Order_Specialization_Annotation
      (Arg3_Exp : Node_Id; Prag : Node_Id)
    is
-      Prag_Name   : constant String := HO_Specialization_Name;
+      Prag_Name   : constant GNATprove_Annotation_Kind := HO_Specialization;
       From_Aspect : constant Boolean := From_Aspect_Specification (Prag);
       E           : Entity_Id;
       Okay        : Boolean;
@@ -3643,7 +3699,7 @@ package body SPARK_Definition.Annotate is
 
       use type Ada.Containers.Count_Type;
 
-      Prag_Name   : constant String := Inline_For_Proof_Name;
+      Prag_Name   : constant GNATprove_Annotation_Kind := Inline_For_Proof;
       From_Aspect : constant Boolean := From_Aspect_Specification (Prag);
 
    begin
@@ -3865,7 +3921,7 @@ package body SPARK_Definition.Annotate is
    procedure Check_Iterable_Annotation
      (Arg3_Exp : Node_Id; Arg4_Exp : Node_Id; Prag : Node_Id)
    is
-      Prag_Name     : constant String := Iterable_For_Proof_Name;
+      Prag_Name     : constant GNATprove_Annotation_Kind := Iterable_For_Proof;
       Model_Name    : constant String := "Model";
       Contains_Name : constant String := "Contains";
 
@@ -4254,14 +4310,14 @@ package body SPARK_Definition.Annotate is
    procedure Check_Logical_Equal_Annotation
      (Arg3_Exp : Node_Id; Prag : Node_Id)
    is
-      Prag_Name : constant String := Logical_Equal_Name;
+      Prag_Name : constant GNATprove_Annotation_Kind := Logical_Equal;
       E         : Entity_Id;
       Ok        : Boolean;
 
    begin
       --  The third argument must be an entity
 
-      Check_Annotate_Entity_Argument (Arg3_Exp, Prag, "Logical_Equal", Ok);
+      Check_Annotate_Entity_Argument (Arg3_Exp, Prag, Prag_Name, Ok);
       if not Ok then
          return;
       end if;
@@ -4370,7 +4426,7 @@ package body SPARK_Definition.Annotate is
          return;
       end if;
 
-      Check_Annotate_Placement (E, Prag, Logical_Equal_Name, Ok);
+      Check_Annotate_Placement (E, Prag, Prag_Name, Ok);
       if not Ok then
          return;
       end if;
@@ -4386,15 +4442,14 @@ package body SPARK_Definition.Annotate is
    procedure Check_Mutable_In_Parameters_Annotation
      (Arg3_Exp : Node_Id; Prag : Node_Id)
    is
-      Prag_Name : constant String := Mutable_In_Params_Name;
+      Prag_Name : constant GNATprove_Annotation_Kind := Mutable_In_Params;
       Ok        : Boolean;
       Ent       : Entity_Id;
       Scope     : Entity_Id;
    begin
       --  The 4th argument must be an entity
 
-      Check_Annotate_Entity_Argument
-        (Arg3_Exp, Prag, Mutable_In_Params_Name, Ok);
+      Check_Annotate_Entity_Argument (Arg3_Exp, Prag, Prag_Name, Ok);
       if not Ok then
          return;
       end if;
@@ -4483,7 +4538,7 @@ package body SPARK_Definition.Annotate is
          Mark_Incorrect_Use_Of_Annotation
            (Annot_Subp_Shall_Be_Pure,
             Scope,
-            Name     => Automatic_Instantiation_Name,
+            Name     => Automatic_Instantiation,
             Cont_Msg =>
               Create
                 ("& might mutate its ""in"" parameters", Names => [Scope]));
@@ -4533,7 +4588,7 @@ package body SPARK_Definition.Annotate is
    procedure Check_No_Bitwise_Operations_Annotation
      (Arg3_Exp : Node_Id; Prag : Node_Id)
    is
-      Prag_Name : constant String := No_Bitwise_Operations_Name;
+      Prag_Name : constant GNATprove_Annotation_Kind := No_Bitwise_Operations;
       E         : Entity_Id;
       Decl      : Node_Id;
       Base      : Entity_Id;
@@ -4605,14 +4660,14 @@ package body SPARK_Definition.Annotate is
    procedure Check_No_Wrap_Around_Annotation
      (Arg3_Exp : Node_Id; Prag : Node_Id)
    is
-      Prag_Name : constant String := No_Wrap_Around_Name;
+      Prag_Name : constant GNATprove_Annotation_Kind := No_Wrap_Around;
       E         : Entity_Id;
       Decl      : Node_Id;
       Base      : Entity_Id;
       Ok        : Boolean;
 
    begin
-      Check_Annotate_Entity_Argument (Arg3_Exp, Prag, No_Wrap_Around_Name, Ok);
+      Check_Annotate_Entity_Argument (Arg3_Exp, Prag, Prag_Name, Ok);
       if not Ok then
          return;
       end if;
@@ -4678,7 +4733,7 @@ package body SPARK_Definition.Annotate is
      (Arg3_Exp : Node_Id; Arg4_Exp : Node_Id; Prag : Node_Id)
    is
       From_Aspect : constant Boolean := From_Aspect_Specification (Prag);
-      Prag_Name   : constant String := Ownership_Name;
+      Prag_Name   : constant GNATprove_Annotation_Kind := Ownership;
       Last_Exp    : constant Node_Id :=
         (if No (Arg4_Exp) then Arg3_Exp else Arg4_Exp);
       Extra_Exp   : constant Node_Id :=
@@ -5160,7 +5215,7 @@ package body SPARK_Definition.Annotate is
      (Arg3_Exp : Node_Id; Arg4_Exp : Node_Id; Prag : Node_Id)
    is
       From_Aspect : constant Boolean := From_Aspect_Specification (Prag);
-      Prag_Name   : constant String := Predefined_Equality_Name;
+      Prag_Name   : constant GNATprove_Annotation_Kind := Predefined_Equality;
       Ok          : Boolean;
 
    begin
@@ -5470,7 +5525,7 @@ package body SPARK_Definition.Annotate is
    --------------------------------------
 
    procedure Do_Delayed_Checks_For_Aggregates (Typ : Entity_Id) is
-      Prag_Name : constant String := Container_Aggregates_Name;
+      Prag_Name : constant GNATprove_Annotation_Kind := Container_Aggregates;
       P_Typ     : constant Entity_Id :=
         (if Is_Full_View (Typ) then Partial_View (Typ) else Typ);
       Typ_List  : constant List_Id := List_Containing (Parent (P_Typ));
@@ -5918,7 +5973,7 @@ package body SPARK_Definition.Annotate is
                      Mark_Incorrect_Use_Of_Annotation
                        (Annot_Redundant_Annotation,
                         Prag,
-                        Name        => Hide_Info_Name,
+                        Name        => Hide_Info,
                         From_Aspect => False,
                         Cont_Msg    =>
                           Create ("& is hidden by default", Names => [E]));
@@ -5927,7 +5982,7 @@ package body SPARK_Definition.Annotate is
                      Mark_Incorrect_Use_Of_Annotation
                        (Annot_Redundant_Annotation,
                         Prag,
-                        Name        => Unhide_Info_Name,
+                        Name        => Unhide_Info,
                         From_Aspect => False,
                         Cont_Msg    =>
                           Create ("& is visible by default", Names => [E]));
@@ -5963,7 +6018,7 @@ package body SPARK_Definition.Annotate is
                Mark_Incorrect_Use_Of_Annotation
                  (Annot_Compatible_Full_View,
                   Decl,
-                  Name     => Ownership_Name,
+                  Name     => Ownership,
                   Snd_Name => "Null_Value",
                   Cont_Msg =>
                     Create
@@ -6038,9 +6093,8 @@ package body SPARK_Definition.Annotate is
          Exp  : constant Node_Id := Expression (Arg4);
 
       begin
-         if Name
-            not in To_Lower (Container_Aggregates_Name)
-                 | To_Lower (Iterable_For_Proof_Name)
+         if Annotation_Kind_From_String (Name)
+            not in Container_Aggregates | Iterable_For_Proof
            or else Nkind (Exp) not in N_Has_Entity
          then
             return Empty;
@@ -6135,7 +6189,7 @@ package body SPARK_Definition.Annotate is
          Exp  : constant Node_Id := Expression (Arg4);
 
       begin
-         if Name /= To_Lower (Ownership_Name)
+         if Annotation_Kind_From_String (Name) /= Ownership
            or else Nkind (Exp) not in N_Has_Entity
          then
             return Empty;
@@ -6183,7 +6237,7 @@ package body SPARK_Definition.Annotate is
          Exp  : constant Node_Id := Expression (Arg4);
 
       begin
-         if Name /= To_Lower (Predefined_Equality_Name)
+         if Annotation_Kind_From_String (Name) /= Predefined_Equality
            or else Nkind (Exp) not in N_Has_Entity
          then
             return Empty;
@@ -6301,7 +6355,7 @@ package body SPARK_Definition.Annotate is
                         Exp  : constant Node_Id := Expression (Arg3);
 
                      begin
-                        if Name = To_Lower (Hide_Info_Name)
+                        if Annotation_Kind_From_String (Name) = Hide_Info
                           and then Nkind (Exp) in N_String_Literal
                           and then
                             To_Lower (To_String (Strval (Exp)))
@@ -6502,7 +6556,7 @@ package body SPARK_Definition.Annotate is
       Arg3_Exp              : Node_Id := Empty;
 
    begin
-      if Name /= To_Lower (Automatic_Instantiation_Name)
+      if Annotation_Kind_From_String (Name) /= Automatic_Instantiation
         or else Number_Of_Pragma_Args /= 3
       then
          return False;
@@ -6601,7 +6655,7 @@ package body SPARK_Definition.Annotate is
 
    procedure Insert_Annotate_Range
      (Prgma           : Node_Id;
-      Kind            : Annotate_Kind;
+      Kind            : Check_Annotate_Kind;
       Pattern, Reason : String_Id;
       Range_Node      : Node_Id;
       Whole           : Boolean)
@@ -6669,7 +6723,7 @@ package body SPARK_Definition.Annotate is
 
    procedure Insert_Annotate_Range
      (Prgma           : Node_Id;
-      Kind            : Annotate_Kind;
+      Kind            : Check_Annotate_Kind;
       Pattern, Reason : String_Id;
       First, Last     : Source_Ptr)
    is
@@ -6701,7 +6755,7 @@ package body SPARK_Definition.Annotate is
 
    procedure Insert_With_Next
      (Prgma           : Node_Id;
-      Kind            : Annotate_Kind;
+      Kind            : Check_Annotate_Kind;
       Pattern, Reason : String_Id;
       First_Node      : Node_Id;
       Skip            : Node_Id := Empty)
@@ -7109,7 +7163,7 @@ package body SPARK_Definition.Annotate is
       --  Local subprograms
 
       procedure Check_Argument_Number
-        (Name : String; Num : Pos; Ok : out Boolean);
+        (Name : GNATprove_Annotation_Kind; Num : Pos; Ok : out Boolean);
       --  Check that annotation for Name has Num arguments. Set Ok to True in
       --  that case, to False otherwise.
 
@@ -7121,7 +7175,7 @@ package body SPARK_Definition.Annotate is
       ---------------------------
 
       procedure Check_Argument_Number
-        (Name : String; Num : Pos; Ok : out Boolean) is
+        (Name : GNATprove_Annotation_Kind; Num : Pos; Ok : out Boolean) is
       begin
          Ok := (Num = Number_Of_Pragma_Args);
 
@@ -7129,7 +7183,7 @@ package body SPARK_Definition.Annotate is
             Mark_Incorrect_Use_Of_Annotation
               (Annot_Argument_Number,
                Prag,
-               Name        => Standard_Ada_Case (Name),
+               Name        => Name,
                From_Aspect => From_Aspect,
                Cont_Msg    => Create ("expected" & Num'Image & " arguments"));
          end if;
@@ -7159,6 +7213,8 @@ package body SPARK_Definition.Annotate is
       Arg1 : constant Node_Id := First (Pragma_Argument_Associations (Prag));
       Arg2 : constant Node_Id := Next (Arg1);
       Name : constant String := Get_Annotation_Name (Arg2);
+      Kind : constant GNATprove_Annotation_Kind :=
+        Annotation_Kind_From_String (Name);
 
       Arg3, Arg4         : Node_Id;
       Arg3_Exp, Arg4_Exp : Node_Id := Empty;
@@ -7185,100 +7241,99 @@ package body SPARK_Definition.Annotate is
 
       --  Check the name and number of arguments
 
-      if Name = "external_axiomatization" then
-         Warning_Msg_N_If (Warn_Pragma_External_Axiomatization, Prag);
-         return;
+      case Kind is
+         when External_Axiomatization
+         =>
+            Warning_Msg_N_If (Warn_Pragma_External_Axiomatization, Prag);
+            return;
 
-      elsif Name in "always_return" | "terminating" | "might_not_return" then
-         declare
-            Conts : Message_Lists.List;
-         begin
-            if Present (Arg3_Exp)
-              and then Nkind (Arg3_Exp) in N_Has_Entity
-              and then Ekind (Entity (Arg3_Exp)) = E_Function
-            then
-               Conts.Append
-                 (Create ("terminating annotation is implicit on functions"));
-            else
-               declare
-                  Deprecated : constant String :=
-                    (if From_Aspect
-                     then """with Annotate => (GNATprove, " & Name & ")"""
-                     else
-                       """pragma Annotate (GNATprove, " & Name & ", ...)""");
-                  New_Syntax : constant String :=
-                    (if Name in "always_return" | "terminating"
-                     then """with Always_Terminates"""
-                     else
-                       """with Always_Terminates => False"" or use an"
-                       & " exceptional contract or program exit postcondition")
-                    & (if not From_Aspect
-                       then " on the corresponding entity"
-                       else "");
-               begin
+         when Always_Return | Might_Not_Return | Terminating
+         =>
+            declare
+               Conts : Message_Lists.List;
+            begin
+               if Present (Arg3_Exp)
+                 and then Nkind (Arg3_Exp) in N_Has_Entity
+                 and then Ekind (Entity (Arg3_Exp)) = E_Function
+               then
                   Conts.Append
-                    (Create ("replace " & Deprecated & " by " & New_Syntax));
-               end;
+                    (Create
+                       ("terminating annotation is implicit on functions"));
+               else
+                  declare
+                     Deprecated : constant String :=
+                       Annot_To_String
+                         (Format => Aspect_Or_Pragma (From_Aspect),
+                          Name   => Kind);
+                     New_Syntax : constant String :=
+                       (if Kind in Always_Return | Terminating
+                        then """with Always_Terminates"""
+                        else
+                          """with Always_Terminates => False"" or use an"
+                          & " exceptional contract or program exit "
+                          & "postcondition")
+                       & (if not From_Aspect
+                          then " on the corresponding entity"
+                          else "");
+                  begin
+                     Conts.Append
+                       (Create
+                          ("replace " & Deprecated & " by " & New_Syntax));
+                  end;
+               end if;
+               Warning_Msg_N_If
+                 (Warn_Pragma_Annotate_Terminating,
+                  Prag,
+                  Continuations => Conts);
+            end;
+            return;
+
+         when At_End_Borrow
+            | Automatic_Instantiation
+            | Handler
+            | HO_Specialization
+            | Inline_For_Proof
+            | Logical_Equal
+            | Mutable_In_Params
+            | No_Bitwise_Operations
+            | No_Wrap_Around
+            | Skip_Proof
+            | Skip_Flow_And_Proof
+         =>
+            Check_Argument_Number (Kind, 3, Ok);
+
+         when Iterable_For_Proof | Container_Aggregates | Predefined_Equality
+         =>
+            Check_Argument_Number (Kind, 4, Ok);
+
+         --  Ownership and Hide_Info/Unhide_Info annotations can have 3 or 4
+         --  arguments.
+
+         when Ownership | Hide_Info | Unhide_Info
+         =>
+            if Number_Of_Pragma_Args <= 3 then
+               Check_Argument_Number (Kind, 3, Ok);
+            else
+               Check_Argument_Number (Kind, 4, Ok);
             end if;
-            Warning_Msg_N_If
-              (Warn_Pragma_Annotate_Terminating, Prag, Continuations => Conts);
-         end;
-         return;
 
-      elsif Name = "at_end_borrow"
-        or else Name = "automatic_instantiation"
-        or else Name = "handler"
-        or else Name = "higher_order_specialization"
-        or else Name = "init_by_proof"
-        or else Name = "inline_for_proof"
-        or else Name = "logical_equal"
-        or else Name = "mutable_in_parameters"
-        or else Name = "no_bitwise_operations"
-        or else Name = "no_wrap_around"
-        or else Name = "skip_proof"
-        or else Name = "skip_flow_and_proof"
-      then
-         Check_Argument_Number (Name, 3, Ok);
+         --  Annotations for justifying check messages may be attached to an
+         --  entity through an aspect notation, in which case a fifth generated
+         --  argument denotes the entity to which the aspect applies.
 
-      elsif Name = "iterable_for_proof"
-        or else Name = "container_aggregates"
-        or else Name = "predefined_equality"
-        or else
-          (not From_Aspect
-           and then (Name = "false_positive" or else Name = "intentional"))
-      then
-         Check_Argument_Number (Name, 4, Ok);
+         when Check_Annotate_Kind
+         =>
+            Check_Argument_Number (Kind, (if From_Aspect then 5 else 4), Ok);
 
-      --  Ownership and Hide_Info/Unhide_Info annotations can have 3 or 4
-      --  arguments.
-
-      elsif Name = "ownership"
-        or else Name = "hide_info"
-        or else Name = "unhide_info"
-      then
-         if Number_Of_Pragma_Args <= 3 then
-            Check_Argument_Number (Name, 3, Ok);
-         else
-            Check_Argument_Number (Name, 4, Ok);
-         end if;
-
-      --  Annotations for justifying check messages may be attached to an
-      --  entity through an aspect notation, in which case a fifth generated
-      --  argument denotes the entity to which the aspect applies.
-
-      elsif From_Aspect
-        and then (Name = "false_positive" or else Name = "intentional")
-      then
-         Check_Argument_Number (Name, 5, Ok);
-
-      else
-         Mark_Incorrect_Use_Of_Annotation
-           (Annot_Invalid_Name,
-            Arg2,
-            From_Aspect => From_Aspect,
-            Name        => Standard_Ada_Case (Name));
-         Ok := False;
-      end if;
+         when Unknown_Annotation
+         =>
+            Mark_Incorrect_Use_Of_Annotation
+              (Annot_Invalid_Name,
+               Arg2,
+               From_Aspect => From_Aspect,
+               Snd_Name    => Standard_Ada_Case (Name));
+            Ok := False;
+      end case;
 
       if not Ok then
          return;
@@ -7288,118 +7343,111 @@ package body SPARK_Definition.Annotate is
       --  result in Result.Present being set to False after verifying the
       --  syntax and semantics of the pragma/aspect.
 
-      --  Annotations with 3 arguments
+      case Kind is
 
-      if Name = "at_end_borrow" then
-         Check_At_End_Borrow_Annotation (Arg3_Exp, Prag);
+         when At_End_Borrow                    =>
+            Check_At_End_Borrow_Annotation (Arg3_Exp, Prag);
 
-      elsif Name = "automatic_instantiation" then
-         Check_Automatic_Instantiation_Annotation (Arg3_Exp, Prag);
+         when Automatic_Instantiation          =>
+            Check_Automatic_Instantiation_Annotation (Arg3_Exp, Prag);
 
-      elsif Name = "container_aggregates" then
-         Check_Aggregate_Annotation (Arg3_Exp, Arg4_Exp, Prag);
+         when Container_Aggregates             =>
+            Check_Aggregate_Annotation (Arg3_Exp, Arg4_Exp, Prag);
 
-      elsif Name = "inline_for_proof" then
-         Check_Inline_Annotation (Arg3_Exp, Prag);
+         when Inline_For_Proof                 =>
+            Check_Inline_Annotation (Arg3_Exp, Prag);
 
-      elsif Name = "handler" then
-         Check_Handler_Annotation (Arg3_Exp, Prag);
+         when Handler                          =>
+            Check_Handler_Annotation (Arg3_Exp, Prag);
 
-      elsif Name = "hide_info" then
-         Check_Hide_Annotation (Arg3_Exp, Arg4_Exp, False, Prag);
+         when Hide_Info                        =>
+            Check_Hide_Annotation (Arg3_Exp, Arg4_Exp, False, Prag);
 
-      elsif Name = "unhide_info" then
-         Check_Hide_Annotation (Arg3_Exp, Arg4_Exp, True, Prag);
+         when Unhide_Info                      =>
+            Check_Hide_Annotation (Arg3_Exp, Arg4_Exp, True, Prag);
 
-      elsif Name = "higher_order_specialization" then
-         Check_Higher_Order_Specialization_Annotation (Arg3_Exp, Prag);
+         when HO_Specialization                =>
+            Check_Higher_Order_Specialization_Annotation (Arg3_Exp, Prag);
 
-      elsif Name = "logical_equal" then
-         Check_Logical_Equal_Annotation (Arg3_Exp, Prag);
+         when Logical_Equal                    =>
+            Check_Logical_Equal_Annotation (Arg3_Exp, Prag);
 
-      elsif Name = "mutable_in_parameters" then
-         Check_Mutable_In_Parameters_Annotation (Arg3_Exp, Prag);
+         when Mutable_In_Params                =>
+            Check_Mutable_In_Parameters_Annotation (Arg3_Exp, Prag);
 
-      elsif Name = "no_bitwise_operations" then
-         Check_No_Bitwise_Operations_Annotation (Arg3_Exp, Prag);
+         when No_Bitwise_Operations            =>
+            Check_No_Bitwise_Operations_Annotation (Arg3_Exp, Prag);
 
-      elsif Name = "no_wrap_around" then
-         Check_No_Wrap_Around_Annotation (Arg3_Exp, Prag);
+         when No_Wrap_Around                   =>
+            Check_No_Wrap_Around_Annotation (Arg3_Exp, Prag);
 
-      --  Annotations with 4 arguments
+         when Ownership                        =>
+            Check_Ownership_Annotation (Arg3_Exp, Arg4_Exp, Prag);
 
-      elsif Name = "ownership" then
-         Check_Ownership_Annotation (Arg3_Exp, Arg4_Exp, Prag);
+         when Iterable_For_Proof               =>
+            Check_Iterable_Annotation (Arg3_Exp, Arg4_Exp, Prag);
 
-      elsif Name = "iterable_for_proof" then
-         Check_Iterable_Annotation (Arg3_Exp, Arg4_Exp, Prag);
+         when Skip_Proof | Skip_Flow_And_Proof =>
+            Check_Skip_Annotations (Kind, Arg3_Exp, Prag);
 
-      elsif Name = "skip_proof" or else Name = "skip_flow_and_proof" then
-         Check_Skip_Annotations (Name, Arg3_Exp, Prag);
+         when Predefined_Equality              =>
+            Check_Predefined_Eq_Annotation (Arg3_Exp, Arg4_Exp, Prag);
 
-      elsif Name = "predefined_equality" then
-         Check_Predefined_Eq_Annotation (Arg3_Exp, Arg4_Exp, Prag);
+         --  Annotation for justifying check messages. This is where we set
+         --  Result.Present to True and fill in values for components Kind,
+         --  Pattern and Reason.
 
-      --  Annotation for justifying check messages. This is where we set
-      --  Result.Present to True and fill in values for components Kind,
-      --  Pattern and Reason.
+         when False_Positive | Intentional     =>
 
-      else
-         declare
-            Pattern, Reason : String_Id;
-            Kind            : Annotate_Kind;
+            declare
+               Pattern, Reason : String_Id;
 
-         begin
-            if Name = "false_positive" then
-               Kind := False_Positive;
-            elsif Name = "intentional" then
-               Kind := Intentional;
-            else
-               raise Program_Error;
-            end if;
+            begin
+               --  We check for operator symbols as well as string literals,
+               --  as things such as "*" are parsed as the operator symbol
+               --  "multiply".
 
-            --  We check for operator symbols as well as string literals,
-            --  as things such as "*" are parsed as the operator symbol
-            --  "multiply".
+               if Nkind (Arg3_Exp) in N_String_Literal | N_Operator_Symbol then
+                  Pattern := Strval (Arg3_Exp);
+               else
+                  Mark_Incorrect_Use_Of_Annotation
+                    (Annot_Wrong_Third_Parameter,
+                     Arg3_Exp,
+                     From_Aspect => From_Aspect,
+                     Name        => Kind,
+                     Cont_Msg    =>
+                       Create
+                         ("third argument ""Pattern"" shall be a string "
+                          & "literal"));
+                  return;
+               end if;
 
-            if Nkind (Arg3_Exp) in N_String_Literal | N_Operator_Symbol then
-               Pattern := Strval (Arg3_Exp);
-            else
-               Mark_Incorrect_Use_Of_Annotation
-                 (Annot_Wrong_Third_Parameter,
-                  Arg3_Exp,
-                  From_Aspect => From_Aspect,
-                  Name        => Standard_Ada_Case (Name),
-                  Cont_Msg    =>
-                    Create
-                      ("third argument ""Pattern"" shall be a string "
-                       & "literal"));
-               return;
-            end if;
+               if Nkind (Arg4_Exp) = N_String_Literal then
+                  Reason := Strval (Arg4_Exp);
+               else
+                  Mark_Incorrect_Use_Of_Annotation
+                    (Annot_Wrong_Fourth_Parameter,
+                     Arg4_Exp,
+                     From_Aspect => From_Aspect,
+                     Name        => Kind,
+                     Cont_Msg    =>
+                       Create
+                         ("fourth argument ""Reason"" shall be a string "
+                          & "literal"));
+                  return;
+               end if;
 
-            if Nkind (Arg4_Exp) = N_String_Literal then
-               Reason := Strval (Arg4_Exp);
-            else
-               Mark_Incorrect_Use_Of_Annotation
-                 (Annot_Wrong_Fourth_Parameter,
-                  Arg4_Exp,
-                  From_Aspect => From_Aspect,
-                  Name        => Standard_Ada_Case (Name),
-                  Cont_Msg    =>
-                    Create
-                      ("fourth argument ""Reason"" shall be a string "
-                       & "literal"));
-               return;
-            end if;
+               Result :=
+                 Check_Justification'
+                   (Present => True,
+                    Kind    => Kind,
+                    Pattern => Pattern,
+                    Reason  => Reason);
+            end;
 
-            Result :=
-              Check_Justification'
-                (Present => True,
-                 Kind    => Kind,
-                 Pattern => Pattern,
-                 Reason  => Reason);
-         end;
-      end if;
+         when others                           =>
+            raise Program_Error;
+      end case;
    end Check_Pragma_Annotate_GNATprove;
 
    ---------------------------------
@@ -7407,14 +7455,13 @@ package body SPARK_Definition.Annotate is
    ---------------------------------
 
    procedure Check_Skip_Annotations
-     (Name : String; Arg3_Exp : Node_Id; Prag : Node_Id)
+     (Name : GNATprove_Annotation_Kind; Arg3_Exp : Node_Id; Prag : Node_Id)
    is
-      From_Aspect    : constant Boolean := From_Aspect_Specification (Prag);
-      E              : Entity_Id;
-      Ok             : Boolean;
-      Error_Msg_Name : constant String := Standard_Ada_Case (Name);
+      From_Aspect : constant Boolean := From_Aspect_Specification (Prag);
+      E           : Entity_Id;
+      Ok          : Boolean;
    begin
-      Check_Annotate_Entity_Argument (Arg3_Exp, Prag, Error_Msg_Name, Ok);
+      Check_Annotate_Entity_Argument (Arg3_Exp, Prag, Name, Ok);
 
       if not Ok then
          return;
@@ -7435,14 +7482,14 @@ package body SPARK_Definition.Annotate is
          Mark_Incorrect_Use_Of_Annotation
            (Annot_Bad_Entity,
             Arg3_Exp,
-            Name        => Error_Msg_Name,
+            Name        => Name,
             From_Aspect => From_Aspect,
             Cont_Msg    =>
               Create ("expected a subprogram, task, entry, or package"));
          return;
       end if;
 
-      Check_Annotate_Placement (E, Prag, Error_Msg_Name, Ok);
+      Check_Annotate_Placement (E, Prag, Name, Ok);
 
       if not Ok then
          return;
@@ -7451,24 +7498,22 @@ package body SPARK_Definition.Annotate is
       --  If we already are in the scope of a Skip_Flow_And_Proof pragma, it's
       --  not allowed to use the Skip_Proof variant. Check for this case.
 
-      if Name = To_Lower (Skip_Proof_Name)
-        and then Has_Skip_Flow_And_Proof_Annotation (E)
-      then
+      if Name = Skip_Proof and then Has_Skip_Flow_And_Proof_Annotation (E) then
          Mark_Incorrect_Use_Of_Annotation
            (Annot_Placement,
             Prag,
-            Name        => Error_Msg_Name,
+            Name        => Name,
             From_Aspect => From_Aspect,
             Cont_Msg    =>
               Create
                 ("entity with the "
-                 & Annot_To_String (Name => Skip_Proof_Name)
+                 & Annot_To_String (Name => Skip_Proof)
                  & " cannot occur in the scope of an entity with the "
-                 & Annot_To_String (Name => Skip_Flow_And_Proof_Name)));
+                 & Annot_To_String (Name => Skip_Flow_And_Proof)));
       end if;
 
       if not Is_Generic_Unit (E) then
-         if Name = To_Lower (Skip_Proof_Name) then
+         if Name = Skip_Proof then
             Skip_Proof_Annotations.Insert (E);
          else
             Skip_Flow_And_Proof_Annotations.Insert (E);

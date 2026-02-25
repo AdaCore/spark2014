@@ -291,22 +291,26 @@ package body SPARK_Definition.Violations is
       N           : Node_Id;
       Msg         : String := "";
       From_Aspect : Boolean := False;
-      Name        : String := "";
+      Name        : GNATprove_Annotation_Kind := Unknown_Annotation;
       Snd_Name    : String := "";
       Names       : Node_Lists.List := Node_Lists.Empty;
       Cont_Msg    : Message := No_Message)
    is
-      Error_Msg : constant String :=
+      Error_Msg  : constant String :=
         (if Msg /= ""
          then Msg
          else
            Incorrect_Annotation_Message (Kind, From_Aspect, Name, Snd_Name));
-      Tag       : constant String :=
+      Annot_Kind : constant GNATprove_Annotation_Kind :=
+        (if Name /= Unknown_Annotation
+         then Name
+         elsif Kind in Specific_Annotation_Kind
+         then Annotation_From_Error_Kind (Kind)
+         else Unknown_Annotation);
+      Tag        : constant String :=
         "incorrect-use-of-"
-        & (if Name /= ""
-           then To_Lower (Name)
-           elsif Kind in Specific_Annotation_Kind
-           then To_Lower (Annotation_From_Kind (Kind))
+        & (if Annot_Kind in Supported_Annotations
+           then To_Lower (Pretty_Annotation_Name (Annot_Kind))
            else "annotation");
    begin
       --  Flag the violation, so that the current entity is marked
