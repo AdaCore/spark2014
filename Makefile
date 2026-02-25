@@ -224,8 +224,13 @@ clean:
 	$(MAKE) -C include clean
 	rm -f docs/sphinx_support/confvars.py
 
+# dir in which "create-benchmark" works
 BENCHDIR=$(CURDIR)/bench
+# dir that stores the actual benchmark files
+BENCHTARGETDIR=$(BENCHDIR)/bench
+# dir that contains benchmark results
 RESULTSDIR=$(CURDIR)/benchout
+# path to testsuite
 TESTLIST=$(CURDIR)/testsuite/gnatprove/MANIFEST.bench
 create-benchmark:
 	rm -rf $(BENCHDIR)
@@ -233,7 +238,7 @@ create-benchmark:
 	testsuite/gnatprove/bench/create_benchmarks.py --testsuite-dir=testsuite/gnatprove --target-dir=$(BENCHDIR) --testlist=$(TESTLIST)
 
 run-benchmark:
-	testsuite/gnatprove/bench/benchtests.py -j0 --testsuite-dir=testsuite/gnatprove $(BENCHDIR) --results-dir=$(RESULTSDIR)
+	testsuite/gnatprove/bench/benchtests.py -j0 --testsuite-dir=testsuite/gnatprove $(BENCHTARGETDIR) --results-dir=$(RESULTSDIR)
 	testsuite/gnatprove/bench/gaia.py --testsuite-dir=testsuite/gnatprove $(RESULTSDIR)/results.json
 
 format:

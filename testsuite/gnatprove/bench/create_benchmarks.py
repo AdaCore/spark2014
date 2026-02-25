@@ -33,7 +33,7 @@ def copy_vcs(tmpdir, resultdir, prover):
     create_if_needed(resultdir)
     for path, _dirs, files in os.walk(tmpdir):
         for f in files:
-            if f.endswith(".smt2") or f.endswith(".ae") or f.endswith(".sexp"):
+            if f.endswith(".smt2") or f.endswith(".psmt2"):
                 testname = extract_testname(path)
                 create_if_needed(os.path.join(resultdir, testname))
                 create_if_needed(os.path.join(resultdir, testname, prover))
