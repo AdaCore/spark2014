@@ -24,7 +24,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers.Hashed_Maps;
+with Ada.Containers.Indefinite_Hashed_Maps;
 with Ada.Directories;
 with Ada.Environment_Variables;
 with Ada.Strings.Unbounded;          use Ada.Strings.Unbounded;
@@ -196,9 +196,9 @@ package body Gnat2Why.Driver is
    --  Hash function for process ids to be used in Hashed maps
 
    package Pid_Maps is new
-     Ada.Containers.Hashed_Maps
+     Ada.Containers.Indefinite_Hashed_Maps
        (Key_Type        => Process_Id,
-        Element_Type    => Temp_File_Name,
+        Element_Type    => String,
         Hash            => Process_Id_Hash,
         Equivalent_Keys => "=",
         "="             => "=");
@@ -252,9 +252,7 @@ package body Gnat2Why.Driver is
       pragma Assert (Pid /= Invalid_Pid);
       Output_File := Output_File_Map.Find (Pid);
       declare
-         Fn : String renames
-           Output_File_Map (Output_File) (1 .. Temp_File_Len - 1);
-         --  Name of the results file without trailing NUL
+         Fn : String renames Output_File_Map (Output_File);
       begin
          Parse_Why3_Results (Fn, Timing);
          Delete_File (Fn, Success);
@@ -1291,11 +1289,19 @@ package body Gnat2Why.Driver is
       declare
          Args : Argument_List := Call.Argument_List_Of_String_List (Why3_Args);
          Fd   : File_Descriptor;
-         Name : Temp_File_Name;
+         Name : constant String :=
+           "RESULT-"
+           & Image (Pid_To_Integer (Current_Process_Id), 1)
+           & Image (Integer (E), 1)
+           & ".json";
+         --  We need a file name that will be unique to the current compilation
+         --  unit and the current entity. We cannot use mktemp (or anything
+         --  that uses mktemp under the hood), because on Windows mktemp can
+         --  only generate 26 names.
          Pid  : Process_Id;
 
       begin
-         Create_Temp_File (Fd, Name);
+         Fd := Create_Output_Text_File (Name);
          pragma Assert (Fd /= Invalid_FD);
          Pid :=
            GNAT.OS_Lib.Non_Blocking_Spawn
