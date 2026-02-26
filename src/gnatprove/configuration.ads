@@ -183,22 +183,24 @@ package Configuration is
    --  Mode - is the maximum analysis mode, taking into account the global
    --         and file-specific modes
 
-   Checks_As_Errors  : Boolean;
-   Debug             : Boolean;
-   Debug_Exec_RAC    : Boolean;
-   GnateT_Switch     : GNAT.Strings.String_Access;
-   Limit_Lines       : String_Lists.List;
-   Mode              : GP_Mode := GPM_Check;
-   Only_Given        : Boolean;
-   Output            : Output_Mode_Type;
-   Parallel          : Integer;
-   Proof_Warnings    : Boolean;
-   Report            : Report_Mode_Type;
-   Use_Semaphores    : Boolean;
-   Warning_Mode      : Gnat2Why_Opts.SPARK_Warning_Mode_Type;
-   Warning_Status    : Warning_Status_Array := VC_Kinds.Warning_Status;
-   Has_Manual_Prover : Boolean;
-   Has_Coq_Prover    : Boolean;
+   Checks_As_Errors   : Boolean;
+   Debug              : Boolean;
+   Debug_Exec_RAC     : Boolean;
+   GnateT_Switch      : GNAT.Strings.String_Access;
+   Limit_Lines        : String_Lists.List;
+   Mode               : GP_Mode := GPM_Check;
+   Only_Given         : Boolean;
+   Output             : Output_Mode_Type;
+   Parallel           : Integer;
+   Max_Why3_Processes : Positive;
+   --  Maximum number of concurrent gnatwhy3 processes to spawn
+   Proof_Warnings     : Boolean;
+   Report             : Report_Mode_Type;
+   Use_Semaphores     : Boolean;
+   Warning_Mode       : Gnat2Why_Opts.SPARK_Warning_Mode_Type;
+   Warning_Status     : Warning_Status_Array := VC_Kinds.Warning_Status;
+   Has_Manual_Prover  : Boolean;
+   Has_Coq_Prover     : Boolean;
 
    All_Projects      : Boolean renames CL_Switches.UU;
    Continue_On_Error : Boolean renames CL_Switches.K;

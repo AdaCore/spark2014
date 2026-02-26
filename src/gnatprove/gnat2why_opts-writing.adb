@@ -170,7 +170,7 @@ package body Gnat2Why_Opts.Writing is
 
          Set_Field (Obj, Ide_Mode_Name, Configuration.IDE_Mode);
          Set_Field (Obj, CWE_Name, CL_Switches.CWE);
-         Set_Field (Obj, Parallel_Why3_Name, Use_Semaphores);
+         Set_Field (Obj, Max_Why3_Processes_Name, Max_Why3_Processes);
 
          Set_Field (Obj, Why3_Dir_Name, Obj_Dir);
       end if;

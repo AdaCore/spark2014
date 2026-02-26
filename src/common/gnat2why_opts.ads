@@ -100,10 +100,10 @@ private
    Limit_Region_Name            : constant String := "limit_region";
    Limit_Subp_Name              : constant String := "limit_subp";
    Limit_Units_Name             : constant String := "limit_units";
+   Max_Why3_Processes_Name      : constant String := "max_why3_processes";
    No_Inlining_Name             : constant String := "no_inlining";
    No_Loop_Unrolling_Name       : constant String := "no_loop_unrolling";
    Output_Mode_Name             : constant String := "output_mode";
-   Parallel_Why3_Name           : constant String := "parallel_why3";
    Proof_Generate_Guards_Name   : constant String :=
      "proof_generate_axiom_guards";
    Proof_Warnings_Name          : constant String := "proof_warnings";

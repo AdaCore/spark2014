@@ -159,9 +159,9 @@ package Gnat2Why_Opts.Reading is
 
    No_Loop_Unrolling : Boolean;
 
-   --  True if gnatwhy3 should be run in parallel
+   --  Maximum number of concurrent gnatwhy3 processes to spawn
 
-   Parallel_Why3 : Boolean;
+   Max_Why3_Processes : Positive;
 
    --  Indicates a json file:line in which to read CE values. Passing this
    --  command also enforces Limit_Subp_Name to the same argument.
