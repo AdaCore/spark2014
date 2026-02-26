@@ -107,10 +107,18 @@ package body GPR2.Build.Actions.Compile.Ada.Global_Gen is
 
          CU     : Compilation_Unit.Object;
          GG_Act : GPR2.Build.Actions.Compile.Ada.Global_Gen.Object;
+
+         use type GPR2.Project.View.Object;
       begin
          CU := Self.Ctxt.Namespace_Roots.First_Element.Unit (Unit);
 
          if not CU.Is_Defined then
+            return True;
+         end if;
+
+         if Configuration.CL_Switches.No_Subprojects
+           and then CU.Owning_View /= Self.CU.Owning_View
+         then
             return True;
          end if;
 
