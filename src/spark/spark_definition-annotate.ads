@@ -28,6 +28,7 @@ with Ada.Containers.Hashed_Maps;
 with Atree;       use Atree;
 with Einfo.Utils; use Einfo.Utils;
 with SPARK_Util;  use SPARK_Util;
+with VC_Kinds;    use VC_Kinds;
 
 package SPARK_Definition.Annotate is
 
@@ -351,12 +352,13 @@ package SPARK_Definition.Annotate is
    --  necessary to pull other entities which are related. Call
    --  Queue_For_Marking on all such entities.
 
-   type Annotate_Kind is (Intentional, False_Positive);
+   subtype Check_Annotate_Kind is
+     GNATprove_Annotation_Kind range False_Positive .. Intentional;
 
    type Annotated_Range (Present : Boolean := False) is record
       case Present is
          when True =>
-            Kind    : Annotate_Kind; --  the kind of pragma Annotate
+            Kind    : Check_Annotate_Kind; --  the kind of pragma Annotate
             Pattern : String_Id;     --  the message pattern
             Reason  : String_Id;     --  the user-provided reason for hiding
             First   : Source_Ptr;    --  first source pointer
@@ -450,12 +452,6 @@ package SPARK_Definition.Annotate is
    --  type (for subtypes). Integer types with Unsigned_Base_Range
    --  must not be registered. Despite the similitude with No_Wrap_Around,
    --  they are affected by overflow mode, which force distinct handling.
-
-   function To_String (Kind : Annotate_Kind) return String
-   is (case Kind is
-         when False_Positive => "false positive",
-         when Intentional    => "intentional");
-   --  Return the string representation of the supplied annotation
 
    function Has_At_End_Borrow_Annotation (E : Entity_Id) return Boolean;
    --  Return True if the function E is a function annotated with at_end_borrow

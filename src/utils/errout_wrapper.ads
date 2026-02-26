@@ -81,7 +81,7 @@ package Errout_Wrapper is
       case Suppression_Kind is
          when Check =>
             Msg           : String_Id;
-            Annot_Kind    : Annotate_Kind;
+            Annot_Kind    : Check_Annotate_Kind;
             Justification : Unbounded_String;
 
          when others =>

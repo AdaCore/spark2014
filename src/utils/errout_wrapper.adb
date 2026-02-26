@@ -148,7 +148,9 @@ package body Errout_Wrapper is
             Set_Field (Value, "suppressed", Suppr_Reason);
             if Obj.Suppr.Suppression_Kind = Check then
                Set_Field
-                 (Value, "annot_kind", To_String (Obj.Suppr.Annot_Kind));
+                 (Value,
+                  "annot_kind",
+                  To_Lower (Pretty_Annotation_Name (Obj.Suppr.Annot_Kind)));
                Set_Field
                  (Value, "justif_msg", To_String (Obj.Suppr.Justification));
             end if;

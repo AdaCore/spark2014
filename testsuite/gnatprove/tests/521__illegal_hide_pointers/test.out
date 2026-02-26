@@ -38,13 +38,13 @@ illegal_hidden_ownership.ads:158:12: error: full view of "T_Priv_No_Reclaim" sha
 illegal_hidden_ownership.ads:158:12: error: full view of a private type or deferred constant with the "Ownership" annotation shall comply with the annotation
 illegal_hidden_ownership.ads:160:12: error: full view of "T_Priv_Reclaim" shall not need reclamation
 illegal_hidden_ownership.ads:160:12: error: full view of a private type or deferred constant with the "Ownership" annotation shall comply with the annotation
-illegal_hidden_predefined_eq.ads:27:12: error: consider annotating it with a "pragma Annotate (GNATprove,  Predefined_Equality, "Only_Null"[, ...])"
+illegal_hidden_predefined_eq.ads:27:12: error: consider annotating it with a "pragma Annotate (GNATprove, Predefined_Equality, "Only_Null"[, ...])"
 illegal_hidden_predefined_eq.ads:27:12: error: if the full view of a type is hidden using a "Hide_Info" annotation, its predefined equality shall not be restricted unless its partial view has an explicit "Predefined_Equality" annotation
-illegal_hidden_predefined_eq.ads:29:12: error: consider annotating it with a "pragma Annotate (GNATprove,  Predefined_Equality, "No_Equality"[, ...])"
+illegal_hidden_predefined_eq.ads:29:12: error: consider annotating it with a "pragma Annotate (GNATprove, Predefined_Equality, "No_Equality"[, ...])"
 illegal_hidden_predefined_eq.ads:29:12: error: if the full view of a type is hidden using a "Hide_Info" annotation, its predefined equality shall not be restricted unless its partial view has an explicit "Predefined_Equality" annotation
-illegal_hidden_predefined_eq.ads:31:12: error: consider annotating it with a "pragma Annotate (GNATprove,  Predefined_Equality, "No_Equality"[, ...])"
+illegal_hidden_predefined_eq.ads:31:12: error: consider annotating it with a "pragma Annotate (GNATprove, Predefined_Equality, "No_Equality"[, ...])"
 illegal_hidden_predefined_eq.ads:31:12: error: if the full view of a type is hidden using a "Hide_Info" annotation, its predefined equality shall not be restricted unless its partial view has an explicit "Predefined_Equality" annotation
-illegal_hidden_predefined_eq.ads:33:12: error: consider annotating it with a "pragma Annotate (GNATprove,  Predefined_Equality, "Only_Null"[, ...])"
+illegal_hidden_predefined_eq.ads:33:12: error: consider annotating it with a "pragma Annotate (GNATprove, Predefined_Equality, "Only_Null"[, ...])"
 illegal_hidden_predefined_eq.ads:33:12: error: if the full view of a type is hidden using a "Hide_Info" annotation, its predefined equality shall not be restricted unless its partial view has an explicit "Predefined_Equality" annotation
 illegal_hidden_predefined_eq.ads:59:07: error: "T_Float" is not allowed in SPARK (due to incorrect use of "Predefined_Equality" annotation)
 illegal_hidden_predefined_eq.ads:59:07: error: violation of aspect SPARK_Mode at line 1
