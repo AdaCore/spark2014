@@ -396,7 +396,7 @@ package body Gnatprove_Build is
          Selected_Files : Unit_Set;
       begin
          if not Configuration.Unit_List.Is_Empty then
-            if CL_Switches.U or else CL_Switches.UU then
+            if Configuration.Only_Given or else CL_Switches.UU then
                Selected_Files := Configuration.Unit_List;
             else
                Main_Files := Configuration.Unit_List;
