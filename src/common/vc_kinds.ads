@@ -35,6 +35,7 @@
 --    - file gnat_expl.ml in gnatwhy3
 --    - GPS plug-in spark2014.py
 
+with Ada.Characters.Handling;
 with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Indefinite_Ordered_Maps;
 with Ada.Containers.Ordered_Maps;
@@ -1442,6 +1443,14 @@ package VC_Kinds is
      (Kind : GNATprove_Annotation_Kind) return String;
    --  Return the name of an annotation
 
+   function Annotation_Tag (Kind : GNATprove_Annotation_Kind) return String
+   is ("incorrect-use-of-"
+       & Ada.Characters.Handling.To_Lower (Pretty_Annotation_Name (Kind)));
+
+   function Annotation_Description
+     (Kind : GNATprove_Annotation_Kind) return String;
+   --  Return a one-line description of an annotation's purpose
+
    type Annot_Format_Kind is (Text_Form, Aspect_Form, Pragma_Form);
 
    function Aspect_Or_Pragma (From_Aspect : Boolean) return Annot_Format_Kind
@@ -1478,6 +1487,31 @@ package VC_Kinds is
    --  If Root_Cause is True, return the message that should be used as root
    --  cause message for cascading violations for Kind if it is different from
    --  the regular message (typically, if it has character insertions).
+
+   --  Misc errors are hardcoded error categories that do not belong to the
+   --  standard VC/flow/violation classification.
+
+   type Misc_Error_Kind is
+     (Unknown_Error, Rejected_Entity, Tasking_Configuration);
+
+   function Misc_Error_Tag (Kind : Misc_Error_Kind) return String
+   is (case Kind is
+         when Unknown_Error         => "unknown-error",
+         when Rejected_Entity       => "use-of-rejected-entity",
+         when Tasking_Configuration => "violation-tasking-configuration");
+
+   function Misc_Error_Name (Kind : Misc_Error_Kind) return String
+   is (case Kind is
+         when Unknown_Error         => "Unknown Error",
+         when Rejected_Entity       => "Use of Rejected Entity",
+         when Tasking_Configuration => "Tasking Configuration Violation");
+
+   function Misc_Error_Description (Kind : Misc_Error_Kind) return String
+   is (case Kind is
+         when Unknown_Error         => "Error with no specific classification",
+         when Rejected_Entity       => "Use of entity rejected from SPARK",
+         when Tasking_Configuration =>
+           "SPARK violation related to tasking configuration");
 
    --  Explain codes are used in GNATprove to provide more information on
    --  selected error/warning messages. The subset of those codes used in
@@ -1549,6 +1583,9 @@ package VC_Kinds is
    function Description (Kind : Unsupported_Kind) return String;
    --  Return a one-line description for each kind of message as a string
 
+   function Violation_Description (Kind : Violation_Kind) return String;
+   --  Return a one-line description for a violation
+
    function Kind_Name (Kind : VC_Kind) return String;
    function Kind_Name (Kind : Valid_Flow_Tag_Kind) return String;
    function Kind_Name (Kind : Misc_Warning_Kind) return String;
@@ -1556,8 +1593,16 @@ package VC_Kinds is
    --  check" for VC_Index_Check.
 
    function Unsupported_Kind_Name (Kind : Unsupported_Kind) return String;
+
+   function Unsupported_Tag (Kind : Unsupported_Kind) return String
+   is ("unsupported-"
+       & Ada.Characters.Handling.To_Lower (Unsupported_Kind_Name (Kind)));
    function Violation_Kind_Name (Kind : Violation_Kind) return String;
    --  Same as above for limitations and violations
+
+   function Violation_Tag (Kind : Violation_Kind) return String
+   is ("violation-"
+       & Ada.Characters.Handling.To_Lower (Violation_Kind_Name (Kind)));
 
    function Rule_Name (Kind : VC_Kind) return String;
    function Rule_Name (Kind : Valid_Flow_Tag_Kind) return String;

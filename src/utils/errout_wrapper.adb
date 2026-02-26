@@ -455,7 +455,7 @@ package body Errout_Wrapper is
 
       Result : constant JSON_Result_Type :=
         (Severity => Kind,
-         Tag      => To_Unbounded_String ("error"),
+         Tag      => To_Unbounded_String ("unknown-error"),
          Span     => Span,
          Msg      => Msg,
          others   => <>);

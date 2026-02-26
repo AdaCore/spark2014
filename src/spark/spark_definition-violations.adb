@@ -308,10 +308,9 @@ package body SPARK_Definition.Violations is
          then Annotation_From_Error_Kind (Kind)
          else Unknown_Annotation);
       Tag        : constant String :=
-        "incorrect-use-of-"
-        & (if Annot_Kind in Supported_Annotations
-           then To_Lower (Pretty_Annotation_Name (Annot_Kind))
-           else "annotation");
+        (if Annot_Kind in Supported_Annotations
+         then Annotation_Tag (Annot_Kind)
+         else "incorrect-use-of-annotation");
    begin
       --  Flag the violation, so that the current entity is marked
       --  accordingly.

@@ -45,6 +45,12 @@ procedure Table_Generator is
      Compose (Target_Dir, "flow_limitations.rst");
    Proof_Limitations_Target       : constant String :=
      Compose (Target_Dir, "proof_limitations.rst");
+   Annotation_Errors_Target       : constant String :=
+     Compose (Target_Dir, "annotation_errors_table.rst");
+   Violation_Target               : constant String :=
+     Compose (Target_Dir, "violation_table.rst");
+   Special_Errors_Target          : constant String :=
+     Compose (Target_Dir, "special_errors_table.rst");
 
    subtype Class_Tag is Character
    with Static_Predicate => Class_Tag in 'E' | 'C' | 'W';
@@ -63,6 +69,9 @@ procedure Table_Generator is
    procedure Produce_Proof_Limitation_List;
    procedure Produce_Proof_Checks_Table;
    procedure Produce_Misc_Warnings_Table;
+   procedure Produce_Annotation_Errors_Table;
+   procedure Produce_Violation_Errors_Table;
+   procedure Produce_Special_Errors_Table;
 
    function Flow_Msg_Type (Tag : Valid_Flow_Tag_Kind) return Class_Tag is
      (case Tag is
@@ -379,12 +388,16 @@ procedure Table_Generator is
       File : File_Type;
    begin
       Create (File, Name => Tool_Limitations_Target);
-      Put_Line (File, "The following unsupported constructs " &
-                  "are detected by GNATprove and reported through an error " &
-                  "message:");
+      Put_Line
+        (File,
+         "The following unsupported constructs "
+         & "are detected by GNATprove and reported through an error "
+         & "message:");
       New_Line (File);
       for Kind in Unsupported_Kind loop
-         Put (File, "* ");
+         Put (File, "    """);
+         Put (File, "unsupported-" & Unsupported_Kind_Name (Kind));
+         Put (File, """, """);
          Put (File, Description (Kind));
          if Kind = Unsupported_Kind'Last then
             Put_Line (File, ".");
@@ -394,6 +407,123 @@ procedure Table_Generator is
          New_Line (File);
       end loop;
    end Produce_Tool_Limitation_List;
+
+   -------------------------------------
+   -- Produce_Annotation_Errors_Table --
+   -------------------------------------
+
+   procedure Produce_Annotation_Errors_Table is
+      File : File_Type;
+   begin
+      Create (File, Name => Annotation_Errors_Target);
+      Put_Line (File, "Errors Related To Annotations");
+      Put_Line (File, "-----------------------------");
+      New_Line (File);
+      Put_Line (File, "The following table shows all annotation types and " &
+                "the corresponding error messages.");
+      New_Line (File);
+      Put_Line (File, ".. tabularcolumns:: |p{2in}|p{1.5in}|p{3in}|");
+      New_Line (File);
+      Put_Line (File, ".. csv-table::");
+      Put_Line
+        (File, "   :header: ""Error Tag"", ""Annotation"", ""Description""");
+      Put_Line (File, "   :widths: 2, 2, 4");
+      New_Line (File);
+
+      for Kind in GNATprove_Annotation_Kind loop
+         Put (File, "    """);
+         Put (File, Annotation_Tag (Kind));
+         Put (File, """, """);
+         Put (File, Pretty_Annotation_Name (Kind));
+         Put (File, """, """);
+         Put (File, Annotation_Description (Kind));
+         Put (File, """");
+         New_Line (File);
+      end loop;
+
+      Close (File);
+   end Produce_Annotation_Errors_Table;
+
+   --------------------------------------
+   -- Produce_Violation_Errors_Table --
+   --------------------------------------
+
+   procedure Produce_Violation_Errors_Table is
+      File : File_Type;
+   begin
+      Create (File, Name => Violation_Target);
+      Put_Line (File, "Error Messages For SPARK Violations");
+      Put_Line (File, "-----------------------------------");
+      New_Line (File);
+      Put_Line (File, "The following table shows all errors that correspond " &
+                "to SPARK language violations.");
+      New_Line (File);
+      Put_Line (File, ".. tabularcolumns:: |p{2in}|l|p{3in}|");
+      New_Line (File);
+      Put_Line (File, ".. csv-table::");
+      Put_Line (File, "   :header: ""Violation Tag"", ""SRM Reference"", " &
+                """Explanation""");
+      Put_Line (File, "   :widths: 2, 1, 4");
+      New_Line (File);
+
+      for Kind in Violation_Kind loop
+         Put (File, "    """);
+         Put (File, "violation-" & Violation_Kind_Name (Kind));
+         Put (File, """, """);
+
+         declare
+            Ref : constant String := SRM_Reference (Kind);
+         begin
+            if Ref /= "" then
+               Put (File, Ref);
+            end if;
+         end;
+
+         Put (File, """, """);
+         Put (File, Violation_Description (Kind));
+         Put (File, """");
+         New_Line (File);
+      end loop;
+      --  special violation categories appended here
+      for K in Rejected_Entity .. Tasking_Configuration loop
+         Put_Line
+           (File,
+            "    """
+            & Misc_Error_Tag (K)
+            & """, """
+            & """, """
+            & Misc_Error_Description (K)
+            & """");
+      end loop;
+
+      Close (File);
+   end Produce_Violation_Errors_Table;
+
+   -----------------------------------
+   -- Produce_Special_Errors_Table --
+   -----------------------------------
+
+   procedure Produce_Special_Errors_Table is
+      File : File_Type;
+   begin
+      Create (File, Name => Special_Errors_Target);
+      Put_Line (File, "Special Error Tags");
+      Put_Line (File, "------------------");
+      New_Line (File);
+      Put_Line (File, "The following table shows special error tags used " &
+                "in specific contexts.");
+      New_Line (File);
+      Put_Line (File, ".. csv-table::");
+      Put_Line (File, "   :header: ""Tag"", ""Description""");
+      Put_Line (File, "   :widths: 2, 4");
+      New_Line (File);
+
+      Put_Line (File, "    """
+        & Misc_Error_Tag (Unknown_Error) & """, """
+        & Misc_Error_Description (Unknown_Error) & """");
+
+      Close (File);
+   end Produce_Special_Errors_Table;
 
    --  Start of processing for Table_Generator
 
@@ -405,4 +535,7 @@ begin
    Produce_Other_Tool_Limitation_List;
    Produce_Flow_Limitation_List;
    Produce_Proof_Limitation_List;
+   Produce_Annotation_Errors_Table;
+   Produce_Violation_Errors_Table;
+   Produce_Special_Errors_Table;
 end Table_Generator;

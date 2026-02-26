@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Characters.Handling;
 with Ada.Directories;
 with SARIF.Types;             use SARIF.Types;
 with SARIF.Types.Outputs;
@@ -357,6 +358,76 @@ procedure Generate_SARIF_Report (Filename : String; Info : JSON_Value) is
                fullDescription => Mk_Multi_Message_String (Description (K)),
                others          => <>));
       end loop;
+
+      --  Add GNATprove annotation rules
+      for K in GNATprove_Annotation_Kind loop
+         result.Append
+           (reportingDescriptor'
+              (id               => To_Virtual_String (Annotation_Tag (K)),
+               shortDescription =>
+                 Mk_Multi_Message_String (Pretty_Annotation_Name (K)),
+               fullDescription  =>
+                 Mk_Multi_Message_String (Annotation_Description (K)),
+               others           => <>));
+      end loop;
+
+      --  Add unsupported construct rules
+      for K in Unsupported_Kind loop
+         declare
+            Rule_ID : constant String :=
+              "unsupported-"
+              & Ada.Characters.Handling.To_Lower (Unsupported_Kind_Name (K));
+         begin
+            result.Append
+              (reportingDescriptor'
+                 (id               => To_Virtual_String (Rule_ID),
+                  shortDescription =>
+                    Mk_Multi_Message_String (Unsupported_Kind_Name (K)),
+                  fullDescription  =>
+                    Mk_Multi_Message_String (Description (K)),
+                  others           => <>));
+         end;
+      end loop;
+
+      --  Add violation rules
+      for K in Violation_Kind loop
+         declare
+            Rule_ID : constant String :=
+              "violation-"
+              & Ada.Characters.Handling.To_Lower (Violation_Kind_Name (K));
+         begin
+            result.Append
+              (reportingDescriptor'
+                 (id               => To_Virtual_String (Rule_ID),
+                  shortDescription =>
+                    Mk_Multi_Message_String (Violation_Kind_Name (K)),
+                  fullDescription  =>
+                    Mk_Multi_Message_String (Violation_Description (K)),
+                  others           => <>));
+         end;
+      end loop;
+      --  special violation categories appended here
+      for K in Rejected_Entity .. Tasking_Configuration loop
+         result.Append
+           (reportingDescriptor'
+              (id               => To_Virtual_String (Misc_Error_Tag (K)),
+               shortDescription =>
+                 Mk_Multi_Message_String (Misc_Error_Name (K)),
+               fullDescription  =>
+                 Mk_Multi_Message_String (Misc_Error_Description (K)),
+               others           => <>));
+      end loop;
+
+      --  Add misc hardcoded rules
+      result.Append
+        (reportingDescriptor'
+           (id               =>
+              To_Virtual_String (Misc_Error_Tag (Unknown_Error)),
+            shortDescription =>
+              Mk_Multi_Message_String (Misc_Error_Name (Unknown_Error)),
+            fullDescription  =>
+              Mk_Multi_Message_String (Misc_Error_Description (Unknown_Error)),
+            others           => <>));
 
       return result;
    end Rules;
