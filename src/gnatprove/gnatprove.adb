@@ -746,8 +746,12 @@ procedure Gnatprove with SPARK_Mode is
          use Ada.Command_Line;
          Cmdline_JSON : JSON_Array;
       begin
+         --  Strip path and extension from the command name
          Append
-           (Cmdline_JSON, Create (Ada.Directories.Simple_Name (Command_Name)));
+           (Cmdline_JSON,
+            Create
+              (Ada.Directories.Base_Name
+                 (Ada.Directories.Simple_Name (Command_Name))));
          for J in 1 .. Argument_Count loop
             Append (Cmdline_JSON, Create (Argument (J)));
          end loop;
