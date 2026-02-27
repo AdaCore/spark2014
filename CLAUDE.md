@@ -48,9 +48,13 @@ cd testsuite/gnatprove
 
 To manually run a test:
 ```bash
-cd testsuite/gnatprove/tests/<test_name>
+cd testsuite/gnatprove/
+./run-tests <testname> -d temp
+cd temp/testname
 gnatprove -P <project>.gpr [options]
 ```
+
+Generally the project file is `test.gpr`.
 
 ## Code Formatting
 
