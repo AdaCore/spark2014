@@ -62,7 +62,6 @@ package body Gnat2Why_Opts.Writing is
          Hash_Context : Blake3_Context;
          File_Name    : String (1 .. 12);
          FT           : File_Type;
-         Cur_Dir      : constant String := Current_Directory;
       begin
          Init_Hash_Context (Hash_Context);
          Update_Hash_Context (Hash_Context, Write_Cont);
@@ -76,15 +75,9 @@ package body Gnat2Why_Opts.Writing is
                return Result;
             end if;
 
-            --  We need to switch to the given Obj_Dir so that the temp file is
-            --  created there.
-
-            Set_Directory (Obj_Dir);
-            Create (FT, Name => File_Name);
+            Create (FT, Name => Result);
             Put (FT, Write_Cont);
-
             Close (FT);
-            Set_Directory (Cur_Dir);
 
             return Result;
          end;

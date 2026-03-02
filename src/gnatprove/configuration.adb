@@ -3121,7 +3121,7 @@ package body Configuration is
                         CL_Switches.File_List.Replace_Element
                           (Cursor, String (CU.Main_Part.Source.Simple_Name));
                         Found := True;
-                        Unit_List.Include (CU.Name, CU);
+                        CL_Units.Include (CU.Name, CU);
                      end if;
                   end if;
                end;

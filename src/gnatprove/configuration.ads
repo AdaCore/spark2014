@@ -204,7 +204,7 @@ package Configuration is
    Warning_Status     : Warning_Status_Array := VC_Kinds.Warning_Status;
    Has_Manual_Prover  : Boolean;
    Has_Coq_Prover     : Boolean;
-   Unit_List         : GPR2.Build.Compilation_Unit.Maps.Map;
+   CL_Units           : GPR2.Build.Compilation_Unit.Maps.Map;
    --  a "copy" of Cl_Switches.File_List, but units instead of files.
 
    All_Projects      : Boolean renames CL_Switches.UU;

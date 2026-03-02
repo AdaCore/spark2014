@@ -59,9 +59,11 @@ package body GPR2.Build.Actions.Compile.Ada.Analysis is
    begin
       GPR2.Build.Actions.Compile.Ada.Object (Self).Compute_Command
         (Slot, Cmd_Line, Signature_Only);
-      --  replace gcc by gnat2why
+      --  replace gcc by gnat2why; we need to explicitly remove the previous
+      --  command, then add ours.
+      Cmd_Line.Remove (0);
       Cmd_Line.Set_Driver ("gnat2why");
-      Cmd_Line.Remove (1);
+
       Cmd_Line.Add_Argument ("-gnatc");  --  Do not generate an object file
 
       --  add special options file
@@ -112,6 +114,10 @@ package body GPR2.Build.Actions.Compile.Ada.Analysis is
         (GPR2.Build.Actions.Compile.Ada.Ada_Compile_Id'(Ada.Create (Src))
          with null record);
    end Create;
+
+   ----------------
+   -- Initialize --
+   ----------------
 
    procedure Initialize
      (Self             : in out Object;

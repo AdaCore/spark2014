@@ -48,7 +48,10 @@ package GPR2.Build.Actions.Compile.Ada.Analysis is
       Unit             : GPR2.Build.Compilation_Unit.Object;
       Object_Path_File : String;
       Deps             : GPR2.Build.Compilation_Unit.Maps.Map);
-   --  ??? TODO decide which type to use for file names
+   --  Initialize the analysis action for the given compilation unit.
+   --  The Object_Path_File is the location of the file that contains all
+   --  Object paths. The Deps is the set of unit dependencies, used to
+   --  calculate the ALI files that are inputs to this action.
 
    overriding
    function On_Tree_Insertion

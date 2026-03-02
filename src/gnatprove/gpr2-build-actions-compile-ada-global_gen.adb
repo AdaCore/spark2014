@@ -21,9 +21,10 @@ package body GPR2.Build.Actions.Compile.Ada.Global_Gen is
    begin
       GPR2.Build.Actions.Compile.Ada.Object (Self).Compute_Command
         (Slot, Cmd_Line, Signature_Only);
-      --  replace gcc by gnat2why
+      --  replace gcc by gnat2why; we need to explicitly remove the previous
+      --  command, then add ours.
+      Cmd_Line.Remove (0);
       Cmd_Line.Set_Driver ("gnat2why");
-      Cmd_Line.Remove (1);
       Cmd_Line.Add_Argument ("-gnatc");  --  Do not generate an object file
 
       --  add special options file
@@ -99,12 +100,11 @@ package body GPR2.Build.Actions.Compile.Ada.Global_Gen is
       --  as an input to the analysis actions that depend on the current ALI
       --  file.
 
-      ---------------------------
-      -- Create_Global_Gen_Dep --
-      ---------------------------
+      ------------------------
+      -- Add_Global_Gen_Dep --
+      ------------------------
 
       function Add_Global_Gen_Dep (Unit : Name_Type) return Boolean is
-
          CU     : Compilation_Unit.Object;
          GG_Act : GPR2.Build.Actions.Compile.Ada.Global_Gen.Object;
 
@@ -202,7 +202,9 @@ package body GPR2.Build.Actions.Compile.Ada.Global_Gen is
                         "failed to copy the ALI file to the library directory",
                         GPR2.Source_Reference.Object
                           (GPR2.Source_Reference.Create
-                             (Self.Dep_File.Path.Value, 0, 0))));
+                             (Self.Dep_File.Path.Value,
+                              Line   => 0,
+                              Column => 0))));
                   return False;
                end if;
             end if;
@@ -221,7 +223,9 @@ package body GPR2.Build.Actions.Compile.Ada.Global_Gen is
                   "failed to analyze the ALI file",
                   GPR2.Source_Reference.Object
                     (GPR2.Source_Reference.Create
-                       (Self.ALI_Object.Path_Name.Value, 0, 0))));
+                       (Self.ALI_Object.Path_Name.Value,
+                        Line   => 0,
+                        Column => 0))));
             return False;
          end if;
 
@@ -236,7 +240,9 @@ package body GPR2.Build.Actions.Compile.Ada.Global_Gen is
                      & " obtained after ALI parsing",
                      GPR2.Source_Reference.Object
                        (GPR2.Source_Reference.Create
-                          (Self.ALI_Object.Path_Name.Value, 0, 0))));
+                          (Self.ALI_Object.Path_Name.Value,
+                           Line   => 0,
+                           Column => 0))));
                return False;
             end if;
          end loop;

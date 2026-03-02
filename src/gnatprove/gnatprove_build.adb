@@ -49,14 +49,15 @@ package body Gnatprove_Build is
    --  The caller is responsible for cleanup (deleting) this file.
 
    subtype Unit_Set is GPR2.Build.Compilation_Unit.Maps.Map;
+   --  The maps from unit names to units are used as sets of units here
 
    type Edge_Colour_T is (No_Colour);
 
-   function Hash_For_Graph
+   function Unit_Hash
      (Key : GPR2.Build.Compilation_Unit.Object) return Ada.Containers.Hash_Type
    is (Hash (Key.Name));
 
-   function Test_Key
+   function Name_Eq
      (Left, Right : GPR2.Build.Compilation_Unit.Object) return Boolean
    is (Left.Name = Right.Name);
 
@@ -65,8 +66,8 @@ package body Gnatprove_Build is
        (Vertex_Key   => GPR2.Build.Compilation_Unit.Object,
         Edge_Colours => Edge_Colour_T,
         Null_Key     => GPR2.Build.Compilation_Unit.Undefined,
-        Key_Hash     => Hash_For_Graph,
-        Test_Key     => Test_Key);
+        Key_Hash     => Unit_Hash,
+        Test_Key     => Name_Eq);
 
    Unit_Dependency_Graph : Unit_Graphs.Graph := Unit_Graphs.Create;
 
@@ -84,7 +85,8 @@ package body Gnatprove_Build is
       Name : constant String :=
         Ada.Directories.Compose
           (Configuration.Artifact_Dir (Tree).Virtual_File.Display_Full_Name,
-           "obj_path.tmp");
+           Name      => "obj_path",
+           Extension => "tmp");
    begin
       --  ??? possibly this needs to change for aggregate projects - one file
       --  per aggregate
@@ -104,13 +106,11 @@ package body Gnatprove_Build is
                      then Lib_Dir / Configuration.Phase2_Subdir
                      else Lib_Dir);
                begin
-                  Put (FT, Target_Dir.Display_Full_Name & ASCII.LF);
+                  Put_Line (FT, Target_Dir.Display_Full_Name);
                end;
             else
-               Put
-                 (FT,
-                  Prj.Object_Directory.Virtual_File.Display_Full_Name
-                  & ASCII.LF);
+               Put_Line
+                 (FT, Prj.Object_Directory.Virtual_File.Display_Full_Name);
             end if;
          end if;
       end loop;
@@ -170,10 +170,6 @@ package body Gnatprove_Build is
             end loop;
             Ada.Directories.Delete_File (Object_Path_File);
          end if;
-      exception
-         --  Don't crash when there are problems during cleanup
-         when others =>
-            null;
       end Cleanup;
 
       --------------------
@@ -189,6 +185,11 @@ package body Gnatprove_Build is
          procedure Analyse_All_Units;
          --  Helper to add all units of the project tree to the To_Analyse set
 
+         procedure Add_Deps
+           (Set_To_Iterate : Unit_Set; Set_To_Add : in out Unit_Set);
+         --  Helper to add all dependencies of the units in Set_To_Iterate to
+         --  Set_To_Add using the Unit_Dependency_Graph.
+
          -----------------------
          -- Analyse_All_Units --
          -----------------------
@@ -202,17 +203,10 @@ package body Gnatprove_Build is
             end loop;
          end Analyse_All_Units;
 
-         use type GPR2.Project.View.Object;
-      begin
-         if CL_Switches.UU and then Selected_Files.Is_Empty then
-            Analyse_All_Units;
-         elsif not Selected_Files.Is_Empty then
-            for C in Selected_Files.Iterate loop
-               To_Analyse.Include (C.Key, C.Element);
-            end loop;
-         elsif not Main_Files.Is_Empty then
-            for C in Main_Files.Iterate loop
-               To_Analyse.Include (C.Key, C.Element);
+         procedure Add_Deps
+           (Set_To_Iterate : Unit_Set; Set_To_Add : in out Unit_Set) is
+         begin
+            for C in Set_To_Iterate.Iterate loop
                --  Add all dependencies using the graph's out-neighbors
                declare
                   V_Id       : constant Unit_Graphs.Vertex_Id :=
@@ -229,36 +223,30 @@ package body Gnatprove_Build is
                           Unit_Graphs.Get_Key
                             (Unit_Dependency_Graph, Dep_V_Id);
                      begin
-                        To_Analyse.Include (Dep.Name, Dep);
+                        Set_To_Add.Include (Dep.Name, Dep);
                      end;
                   end loop;
                end;
             end loop;
+         end Add_Deps;
+
+         use type GPR2.Project.View.Object;
+      begin
+         if CL_Switches.UU and then Selected_Files.Is_Empty then
+            Analyse_All_Units;
+            To_Global_Gen := To_Analyse;
+         elsif not Selected_Files.Is_Empty then
+            To_Analyse := Selected_Files;
+            To_Global_Gen := Selected_Files;
+            Add_Deps (To_Analyse, To_Global_Gen);
+         elsif not Main_Files.Is_Empty then
+            To_Analyse := Main_Files;
+            Add_Deps (Main_Files, To_Analyse);
+            To_Global_Gen := To_Analyse;
          else
             Analyse_All_Units;
+            To_Global_Gen := To_Analyse;
          end if;
-
-         --  all units to be analyzed and all their deps need global gen
-         for C in To_Analyse.Iterate loop
-            To_Global_Gen.Include (C.Key, C.Element);
-            --  Add all dependencies using the graph's out-neighbors
-            declare
-               V_Id       : constant Unit_Graphs.Vertex_Id :=
-                 Unit_Graphs.Get_Vertex (Unit_Dependency_Graph, C.Element);
-               Neighbours : constant Unit_Graphs.Vertex_Collection_T :=
-                 Unit_Graphs.Get_Collection
-                   (Unit_Dependency_Graph, V_Id, Unit_Graphs.Out_Neighbours);
-            begin
-               for Dep_V_Id of Neighbours loop
-                  declare
-                     Dep : constant GPR2.Build.Compilation_Unit.Object :=
-                       Unit_Graphs.Get_Key (Unit_Dependency_Graph, Dep_V_Id);
-                  begin
-                     To_Global_Gen.Include (Dep.Name, Dep);
-                  end;
-               end loop;
-            end;
-         end loop;
 
          for C in To_Global_Gen.Iterate loop
             declare
@@ -284,8 +272,9 @@ package body Gnatprove_Build is
          end loop;
          for C in To_Analyse.Iterate loop
             declare
-               Owning : constant GPR2.Project.View.Object :=
-                 C.Element.Owning_View;
+               Elt    : constant GPR2.Build.Compilation_Unit.Object :=
+                 C.Element;
+               Owning : constant GPR2.Project.View.Object := Elt.Owning_View;
             begin
                if (not CL_Switches.No_Subprojects
                    or else Owning = Tree.Root_Project)
@@ -300,8 +289,7 @@ package body Gnatprove_Build is
                      --  files
                      declare
                         V_Id       : constant Unit_Graphs.Vertex_Id :=
-                          Unit_Graphs.Get_Vertex
-                            (Unit_Dependency_Graph, C.Element);
+                          Unit_Graphs.Get_Vertex (Unit_Dependency_Graph, Elt);
                         Neighbours :
                           constant Unit_Graphs.Vertex_Collection_T :=
                             Unit_Graphs.Get_Collection
@@ -322,12 +310,12 @@ package body Gnatprove_Build is
                      end;
 
                      Analysis_Act.Initialize
-                       (C.Element, Object_Path_File, Unit_Deps);
+                       (Elt, Object_Path_File, Unit_Deps);
                      if not Tree.Artifacts_Database.Add_Action (Analysis_Act)
                      then
                         Ada.Text_IO.Put_Line
                           ("Error adding Analysis action for unit "
-                           & String (C.Element.Name));
+                           & String (Elt.Name));
                      end if;
                   end;
                end if;
@@ -369,11 +357,11 @@ package body Gnatprove_Build is
          Main_Files     : Unit_Set;
          Selected_Files : Unit_Set;
       begin
-         if not Configuration.Unit_List.Is_Empty then
+         if not Configuration.CL_Units.Is_Empty then
             if Configuration.Only_Given or else CL_Switches.UU then
-               Selected_Files := Configuration.Unit_List;
+               Selected_Files := Configuration.CL_Units;
             else
-               Main_Files := Configuration.Unit_List;
+               Main_Files := Configuration.CL_Units;
             end if;
          else
             for NRP of Tree.Namespace_Root_Projects loop
@@ -388,6 +376,10 @@ package body Gnatprove_Build is
                           Main.View.Own_Unit
                             (Source.Units.Element (Main.Index).Name);
                         if Unit.Is_Defined then
+                           --  The "mains" iterated over here are as they
+                           --  appear in the project file, so there might be
+                           --  duplicates. We use "include" here to protect
+                           --  against that.
                            Main_Files.Include (Unit.Name, Unit);
                         end if;
                      end if;
@@ -427,24 +419,20 @@ package body Gnatprove_Build is
       for Prj of Tree.Ordered_Views loop
          for Unit of Prj.Own_Units loop
             if Unit.Is_Defined then
-               All_Units.Include (Unit.Name, Unit);
-               Unit_Graphs.Include_Vertex (Unit_Dependency_Graph, Unit);
+               All_Units.Insert (Unit.Name, Unit);
+               Unit_Graphs.Add_Vertex (Unit_Dependency_Graph, Unit);
             end if;
          end loop;
       end loop;
 
       --  Add edges based on Known_Dependencies
-      for C in All_Units.Iterate loop
-         declare
-            U : constant Build.Compilation_Unit.Object := C.Element;
-         begin
-            for Dep_Name of U.Known_Dependencies loop
-               if All_Units.Contains (Dep_Name) then
-                  Unit_Graphs.Add_Edge
-                    (Unit_Dependency_Graph, U, All_Units.Element (Dep_Name));
-               end if;
-            end loop;
-         end;
+      for U of All_Units loop
+         for Dep_Name of U.Known_Dependencies loop
+            if All_Units.Contains (Dep_Name) then
+               Unit_Graphs.Add_Edge
+                 (Unit_Dependency_Graph, U, All_Units.Element (Dep_Name));
+            end if;
+         end loop;
       end loop;
 
       --  Compute transitive closure using the Close method
