@@ -167,17 +167,19 @@ begin
    --  L : [1, 2, 3, 4]
    --  K : [5, 6, 7, 8]
 
-   Reverse_Elements (L);
-
    Splice (K, First (K), L);
 
-   N := 1;
+   Reverse_Elements (K);
+
+   N := 8;
    C := First (K);
    while C /= No_Element loop
       pragma Assert (Element (K, C) = N);
-      N := N + 1;
+      N := N - 1;
       Next (K, C);
    end loop;
+
+   Reverse_Elements (K);
 
    pragma Assert (Last_Element (K) = 8);
    pragma Assert (First_Element (k) = 1);

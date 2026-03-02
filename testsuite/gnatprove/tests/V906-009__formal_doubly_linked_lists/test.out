@@ -6,10 +6,10 @@ test.adb:14:04: info: initialization of "C" proved
 test.adb:14:07: info: initialization of "D" proved
 test.adb:15:04: info: initialization of "N" proved
 test.adb:22:19: info: assertion proved
-test.adb:26:20: info: unrolling loop
+test.adb:26:20: info: unrolling loop [info-unrolling-inlining]
 test.adb:27:07: info: precondition proved
 test.adb:28:07: info: precondition proved
-test.adb:32:29: info: cannot unroll loop (too many loop iterations)
+test.adb:32:29: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 test.adb:33:22: medium: assertion might fail [possible fix: loop at line 32 should mention C in a loop invariant]
 test.adb:33:22: medium: precondition might fail [possible fix: loop at line 32 should mention C in a loop invariant]
 test.adb:34:07: medium: precondition might fail [possible fix: loop at line 32 should mention C in a loop invariant]
@@ -73,23 +73,23 @@ test.adb:160:04: info: precondition proved
 test.adb:162:04: info: precondition proved
 test.adb:164:04: info: precondition proved
 test.adb:165:04: info: precondition proved
-test.adb:172:04: info: precondition proved
+test.adb:170:04: info: precondition proved
 test.adb:177:22: medium: assertion might fail [possible fix: loop at line 176 should mention N in a loop invariant]
 test.adb:177:22: medium: precondition might fail
-test.adb:178:14: medium: overflow check might fail, cannot prove upper bound for N + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 176 should mention N in a loop invariant]
+test.adb:178:14: medium: range check might fail, cannot prove lower bound for N - 1 [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 176 should mention N in a loop invariant]
 test.adb:179:07: medium: precondition might fail
-test.adb:182:19: info: precondition proved
-test.adb:182:19: medium: assertion might fail
-test.adb:183:19: info: precondition proved
-test.adb:183:19: medium: assertion might fail
-test.adb:186:04: info: precondition proved
-test.adb:187:09: info: precondition proved
-test.adb:189:19: medium: assertion might fail
-test.adb:191:09: info: precondition proved
-test.adb:193:19: medium: assertion might fail
-test.adb:193:19: medium: precondition might fail
-test.adb:195:19: medium: assertion might fail
-test.adb:196:19: medium: assertion might fail
+test.adb:184:19: info: precondition proved
+test.adb:184:19: medium: assertion might fail
+test.adb:185:19: info: precondition proved
+test.adb:185:19: medium: assertion might fail
+test.adb:188:04: info: precondition proved
+test.adb:189:09: info: precondition proved
+test.adb:191:19: medium: assertion might fail
+test.adb:193:09: info: precondition proved
+test.adb:195:19: info: assertion proved
+test.adb:195:19: info: precondition proved
+test.adb:197:19: medium: assertion might fail
+test.adb:198:19: medium: assertion might fail
 test_list.adb:13:07: info: initialization of "L" proved
 test_list.adb:13:10: info: initialization of "K" proved
 test_list.adb:13:20: info: range check proved
@@ -234,7 +234,6 @@ test_list.adb:259:22: info: precondition proved
 test_list.adb:260:22: info: assertion proved
 test_list.adb:260:22: info: precondition proved
 test_list.adb:269:35: info: precondition proved
-test_list.adb:269:46: info: null exclusion check proved
 test_list.adb:271:28: info: assertion proved
 test_list.adb:271:30: info: pointer dereference check proved
 test_list.adb:272:15: info: pointer dereference check proved
@@ -301,7 +300,7 @@ test_list.adb:379:07: info: precondition proved
 test_list.adb:381:07: info: precondition proved
 test_list.adb:383:22: info: assertion proved
 test_list.adb:383:48: info: precondition proved
-test_list.adb:384:22: medium: assertion might fail
+test_list.adb:384:22: info: assertion proved
 test_list.adb:384:48: info: precondition proved
 test_list.adb:385:22: info: assertion proved
 test_list.adb:385:48: info: precondition proved
@@ -316,7 +315,7 @@ test_list.adb:397:07: info: precondition proved
 test_list.adb:399:07: info: precondition proved
 test_list.adb:401:22: info: assertion proved
 test_list.adb:401:48: info: precondition proved
-test_list.adb:402:22: info: assertion proved
+test_list.adb:402:22: medium: assertion might fail
 test_list.adb:402:48: info: precondition proved
 test_list.adb:403:22: info: assertion proved
 test_list.adb:403:48: info: precondition proved
@@ -338,3 +337,21 @@ test_list.adb:417:22: info: assertion proved
 test_list.adb:417:48: info: precondition proved
 test_list.ads:11:23: info: data dependencies proved
 test_list.ads:13:29: info: data dependencies proved
+test.adb:11:04: warning: check will fail at run time [-gnatw.a]
+test.adb:11:04: warning: check will fail at run time [-gnatw.a]
+test.adb:11:04: warning: check will fail at run time [-gnatw.a]
+test.adb:11:04: warning: in instantiation at spark-containers-formal-doubly_linked_lists.ads:112 [-gnatw.a]
+test.adb:11:04: warning: in instantiation at spark-containers-formal-doubly_linked_lists.ads:220 [-gnatw.a]
+test.adb:11:04: warning: in instantiation at spark-containers-formal-doubly_linked_lists.ads:220 [-gnatw.a]
+test.adb:11:04: warning: in instantiation at spark-containers-functional-maps.ads:144 [-gnatw.a]
+test.adb:11:04: warning: in instantiation at spark-containers-functional-maps.ads:162 [-gnatw.a]
+test.adb:11:04: warning: in instantiation at spark-containers-functional-vectors.ads:176 [-gnatw.a]
+test_list.ads:6:04: warning: check will fail at run time [-gnatw.a]
+test_list.ads:6:04: warning: check will fail at run time [-gnatw.a]
+test_list.ads:6:04: warning: check will fail at run time [-gnatw.a]
+test_list.ads:6:04: warning: in instantiation at spark-containers-formal-doubly_linked_lists.ads:112 [-gnatw.a]
+test_list.ads:6:04: warning: in instantiation at spark-containers-formal-doubly_linked_lists.ads:220 [-gnatw.a]
+test_list.ads:6:04: warning: in instantiation at spark-containers-formal-doubly_linked_lists.ads:220 [-gnatw.a]
+test_list.ads:6:04: warning: in instantiation at spark-containers-functional-maps.ads:144 [-gnatw.a]
+test_list.ads:6:04: warning: in instantiation at spark-containers-functional-maps.ads:162 [-gnatw.a]
+test_list.ads:6:04: warning: in instantiation at spark-containers-functional-vectors.ads:176 [-gnatw.a]
