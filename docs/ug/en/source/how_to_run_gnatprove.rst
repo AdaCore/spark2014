@@ -557,6 +557,14 @@ effects) to the directory specified by the ``Library_Dir`` project attribute,
 or to ``Library_ALI_Dir`` if that attribute is present. These files can be
 used by |GNATprove| when analyzing projects that depend on the library.
 
+To copy the summary files to the library installation location when using
+`gprinstall`, the following configuration can be added to the library project
+file::
+
+   package Install is
+      for Artifacts ("lib/gnatprove") use (Project'Library_Dir & "/gnatprove/*.ali");
+   end Install;
+
 Projects that depend on externally built library projects may use these
 summary files if they are present. The analysis still works even when the
 files are absent; |GNATprove| will emit warnings for calls to the library,
