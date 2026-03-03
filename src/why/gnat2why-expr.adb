@@ -7367,12 +7367,37 @@ package body Gnat2Why.Expr is
          --  types.
 
          if Is_Hardcoded_Entity (Root_Retysp (Ty_Ext)) then
-            T :=
-              New_And_Pred
-                (Left  => T,
-                 Right =>
-                   Dynamic_Property_For_Hardcoded_Type
-                     (Root_Retysp (Ty_Ext), Expr));
+            declare
+               Relaxed_Init : constant Boolean :=
+                 Is_Init_Wrapper_Type (Get_Type (+Expr));
+               Init_Flag    : constant W_Pred_Id :=
+                 Pred_Of_Boolean_Term
+                   (if Relaxed_Init
+                    then
+                      +Compute_Is_Initialized
+                         (Ty_Ext,
+                          +Expr,
+                          Params,
+                          EW_Term,
+                          No_Predicate_Check => True,
+                          Exclude_Components => Relaxed)
+                    else Initialized);
+               R_Expr       : constant W_Term_Id :=
+                 Insert_Simple_Conversion
+                   (Expr => Expr, To => EW_Abstract (Ty_Ext));
+               Prop         : W_Pred_Id :=
+                 Dynamic_Property_For_Hardcoded_Type
+                   (Root_Retysp (Ty_Ext), R_Expr);
+            begin
+               if not Is_True_Boolean (+Prop)
+                 and then not Is_True_Boolean (+Init_Flag)
+               then
+                  Prop :=
+                    New_Conditional
+                      (Condition => Init_Flag, Then_Part => Prop);
+               end if;
+               T := New_And_Pred (Left => T, Right => Prop);
+            end;
          end if;
 
       elsif Is_Access_Type (Ty_Ext)
