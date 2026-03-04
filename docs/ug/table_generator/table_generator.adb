@@ -49,8 +49,6 @@ procedure Table_Generator is
      Compose (Target_Dir, "annotation_errors_table.rst");
    Violation_Target               : constant String :=
      Compose (Target_Dir, "violation_table.rst");
-   Special_Errors_Target          : constant String :=
-     Compose (Target_Dir, "special_errors_table.rst");
 
    subtype Class_Tag is Character
    with Static_Predicate => Class_Tag in 'E' | 'C' | 'W';
@@ -71,7 +69,6 @@ procedure Table_Generator is
    procedure Produce_Misc_Warnings_Table;
    procedure Produce_Annotation_Errors_Table;
    procedure Produce_Violation_Errors_Table;
-   procedure Produce_Special_Errors_Table;
 
    function Flow_Msg_Type (Tag : Valid_Flow_Tag_Kind) return Class_Tag is
      (case Tag is
@@ -395,10 +392,9 @@ procedure Table_Generator is
          & "message:");
       New_Line (File);
       for Kind in Unsupported_Kind loop
-         Put (File, "    """);
-         Put (File, "unsupported-" & Unsupported_Kind_Name (Kind));
-         Put (File, """, """);
+         Put (File, "* ");
          Put (File, Description (Kind));
+         Put (File, " (" & Unsupported_Tag (Kind) & ")");
          if Kind = Unsupported_Kind'Last then
             Put_Line (File, ".");
          else
@@ -444,9 +440,9 @@ procedure Table_Generator is
       Close (File);
    end Produce_Annotation_Errors_Table;
 
-   --------------------------------------
+   ------------------------------------
    -- Produce_Violation_Errors_Table --
-   --------------------------------------
+   ------------------------------------
 
    procedure Produce_Violation_Errors_Table is
       File : File_Type;
@@ -468,7 +464,7 @@ procedure Table_Generator is
 
       for Kind in Violation_Kind loop
          Put (File, "    """);
-         Put (File, "violation-" & Violation_Kind_Name (Kind));
+         Put (File, Violation_Tag (Kind));
          Put (File, """, """);
 
          declare

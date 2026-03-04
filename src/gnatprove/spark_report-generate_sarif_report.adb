@@ -23,7 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Characters.Handling;
 with Ada.Directories;
 with SARIF.Types;             use SARIF.Types;
 with SARIF.Types.Outputs;
@@ -374,9 +373,7 @@ procedure Generate_SARIF_Report (Filename : String; Info : JSON_Value) is
       --  Add unsupported construct rules
       for K in Unsupported_Kind loop
          declare
-            Rule_ID : constant String :=
-              "unsupported-"
-              & Ada.Characters.Handling.To_Lower (Unsupported_Kind_Name (K));
+            Rule_ID : constant String := Unsupported_Tag (K);
          begin
             result.Append
               (reportingDescriptor'
@@ -392,9 +389,7 @@ procedure Generate_SARIF_Report (Filename : String; Info : JSON_Value) is
       --  Add violation rules
       for K in Violation_Kind loop
          declare
-            Rule_ID : constant String :=
-              "violation-"
-              & Ada.Characters.Handling.To_Lower (Violation_Kind_Name (K));
+            Rule_ID : constant String := Violation_Tag (K);
          begin
             result.Append
               (reportingDescriptor'

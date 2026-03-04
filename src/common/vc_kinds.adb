@@ -1550,7 +1550,7 @@ package body VC_Kinds is
            "part of effectively volatile object or type annotated with "
            & "relaxed initialization",
          when Vio_Side_Effects_Call_Context                =>
-           "call to a function with side effects outside of assignment or  "
+           "call to a function with side effects outside of assignment or "
            & "object declaration without a block",
          when Vio_Side_Effects_Eq                          =>
            "function with side effects as user-defined equality on record "
@@ -1570,7 +1570,7 @@ package body VC_Kinds is
            "SPARK violation related to tasking configuration",
          when Vio_Tasking_Synchronized_Comp                =>
            "synchronized component of non-synchronized type",
-         when Vio_Tasking_Unintialized_Concurrent          =>
+         when Vio_Tasking_Uninitialized_Concurrent         =>
            "not fully initialized part of concurrent type",
          when Vio_Tasking_Unsupported_Construct            => "tasking",
          when Vio_UC_From_Access                           =>
@@ -1600,7 +1600,7 @@ package body VC_Kinds is
            "volatile function as user-defined equality on record type",
          when Vio_Volatile_Global                          =>
            "nonvolatile function with volatile global inputs",
-         when Vio_Volatile_In_Interferring_Context         =>
+         when Vio_Volatile_In_Interfering_Context          =>
            "volatile object or volatile function call in interfering context",
          when Vio_Volatile_Incompatible_Comp               =>
            "component of composite type or designated type of an access with "
@@ -1650,7 +1650,7 @@ package body VC_Kinds is
            EC_Volatile_At_Library_Level,
          when Vio_Volatile_Global                   =>
            EC_Function_Volatile_Input_Global,
-         when Vio_Volatile_In_Interferring_Context  =>
+         when Vio_Volatile_In_Interfering_Context   =>
            EC_Volatile_Non_Interfering_Context,
          when others                                => EC_None);
 
@@ -2931,7 +2931,7 @@ package body VC_Kinds is
          => "SPARK RM 6.4.2(7)",
          when Vio_Tasking_Synchronized_Comp
          => "SPARK RM 9(5)",
-         when Vio_Tasking_Unintialized_Concurrent
+         when Vio_Tasking_Uninitialized_Concurrent
          => "SPARK RM 9(4)",
          when Vio_UC_From_Access
          => "SPARK RM 13.9(1)",
@@ -2949,7 +2949,7 @@ package body VC_Kinds is
          => "SPARK RM 7.1.3(10)",
          when Vio_Volatile_Global
          => "SPARK RM 7.1.3(7)",
-         when Vio_Volatile_In_Interferring_Context
+         when Vio_Volatile_In_Interfering_Context
          => "SPARK RM 7.1.3(9)",
          when Vio_Volatile_Incompatible_Comp
          => "SPARK RM 7.1.3(6)",
@@ -3654,10 +3654,10 @@ package body VC_Kinds is
          when Vio_Target_Name_In_Call_With_Side_Effets     =>
            "target-name-in-call-with-side-effets",
          when Vio_Tasking_Configuration                    =>
-           "violation-tasking-configuration",
+           "tasking-configuration",
          when Vio_Tasking_Synchronized_Comp                =>
            "tasking-synchronized-comp",
-         when Vio_Tasking_Unintialized_Concurrent          =>
+         when Vio_Tasking_Uninitialized_Concurrent         =>
            "tasking-unintialized-concurrent",
          when Vio_Tasking_Unsupported_Construct            =>
            "tasking-unsupported-construct",
@@ -3682,7 +3682,7 @@ package body VC_Kinds is
          when Vio_Volatile_Eq                              => "volatile-eq",
          when Vio_Volatile_Global                          =>
            "volatile-global",
-         when Vio_Volatile_In_Interferring_Context         =>
+         when Vio_Volatile_In_Interfering_Context          =>
            "volatile-in-interferring-context",
          when Vio_Volatile_Incompatible_Comp               =>
            "volatile-incompatible-comp",
@@ -3808,7 +3808,7 @@ package body VC_Kinds is
          when Vio_Overlay_Constant_Not_Imported                      =>
            "constant object with an address clause which is not imported",
          when Vio_Overlay_Mutable_Constant                           =>
-           "mutable object and constant object overlaying each others",
+           "mutable object and constant object overlaying each other",
          when Vio_Overlay_Part_Of_Protected                          =>
            "overlaid object which is a part of a protected object",
          when Vio_Ownership_Access_Equality                          =>
@@ -3904,7 +3904,7 @@ package body VC_Kinds is
            "subtype predicate on effectively volatile type for reading",
          when Vio_Program_Exit_Outputs                               =>
            "output mentioned in the expression of an aspect Program_Exit "
-           & "which is not a stand-alone objects",
+           & "which is not a stand-alone object",
          when Vio_Real_Root                                          =>
            "expression of type root_real",
          when Vio_Relaxed_Init_Dispatch                              =>
@@ -3916,7 +3916,7 @@ package body VC_Kinds is
            "part of tagged, Unchecked_Union, or effectively volatile "
            & "object or type annotated with relaxed initialization",
          when Vio_Relaxed_Init_Part_Of_Tagged                        =>
-           "part of tagged type with relaxed Initialization",
+           "part of tagged type with relaxed initialization",
          when Vio_Relaxed_Init_Part_Of_Unchecked_Union               =>
            "part of Unchecked_Union type with relaxed initialization",
          when Vio_Relaxed_Init_Part_Of_Volatile                      =>
@@ -3943,7 +3943,7 @@ package body VC_Kinds is
            (if Root_Cause
             then "synchronized component of non-synchronized type"
             else "synchronized component & of non-synchronized type &"),
-         when Vio_Tasking_Unintialized_Concurrent                    =>
+         when Vio_Tasking_Uninitialized_Concurrent                   =>
            "not fully initialized part of concurrent type",
          when Vio_Tasking_Unsupported_Construct                      =>
            "tasking",
@@ -3975,7 +3975,7 @@ package body VC_Kinds is
            "volatile function as user-defined equality on record type",
          when Vio_Volatile_Global                                    =>
            "nonvolatile function with volatile global inputs",
-         when Vio_Volatile_In_Interferring_Context                   =>
+         when Vio_Volatile_In_Interfering_Context                    =>
            "volatile object or volatile function call in interfering context",
          when Vio_Volatile_Incompatible_Comp                         =>
            "component of composite type or designated type of an access with "

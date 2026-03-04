@@ -410,14 +410,14 @@ violation-relaxed-init-part-generic - violation-relaxed-init-part-generic - part
 violation-relaxed-init-part-of-tagged - violation-relaxed-init-part-of-tagged - part of tagged type with relaxed initialization - HIGH
 violation-relaxed-init-part-of-unchecked-union - violation-relaxed-init-part-of-unchecked-union - part of Unchecked_Union type with relaxed initialization - HIGH
 violation-relaxed-init-part-of-volatile - violation-relaxed-init-part-of-volatile - part of effectively volatile object or type annotated with relaxed initialization - HIGH
-violation-side-effects-call-context - violation-side-effects-call-context - call to a function with side effects outside of assignment or  object declaration without a block - HIGH
+violation-side-effects-call-context - violation-side-effects-call-context - call to a function with side effects outside of assignment or object declaration without a block - HIGH
 violation-side-effects-eq - violation-side-effects-eq - function with side effects as user-defined equality on record type - HIGH
 violation-side-effects-traversal - violation-side-effects-traversal - traversal function with side effects - HIGH
 violation-storage-size - violation-storage-size - access type with Storage_Size - HIGH
 violation-subp-variant-structural - violation-subp-variant-structural - structural subprogram variant which is not a parameter of the subprogram - HIGH
 violation-tagged-extension-local - violation-tagged-extension-local - local derived type from non-local parent or interface - HIGH
 violation-target-name-in-call-with-side-effets - violation-target-name-in-call-with-side-effets - use of @ inside a call to a function with side effects - HIGH
-violation-violation-tasking-configuration - violation-violation-tasking-configuration - SPARK violation related to tasking configuration - HIGH
+violation-tasking-configuration - violation-tasking-configuration - SPARK violation related to tasking configuration - HIGH
 violation-tasking-synchronized-comp - violation-tasking-synchronized-comp - synchronized component of non-synchronized type - HIGH
 violation-tasking-unintialized-concurrent - violation-tasking-unintialized-concurrent - not fully initialized part of concurrent type - HIGH
 violation-tasking-unsupported-construct - violation-tasking-unsupported-construct - tasking - HIGH

@@ -6383,7 +6383,7 @@ package body SPARK_Definition is
 
             else
                Mark_Violation
-                 (Vio_Volatile_In_Interferring_Context,
+                 (Vio_Volatile_In_Interfering_Context,
                   N   => Actual,
                   Msg =>
                     (case Nkind (Actual) is
@@ -6687,7 +6687,7 @@ package body SPARK_Definition is
                  (Context => Parent (N), Obj_Ref => N, Check_Actuals => True)
            or else In_Loop_Entry_Or_Old_Attribute (N))
       then
-         Mark_Violation (Vio_Volatile_In_Interferring_Context, N);
+         Mark_Violation (Vio_Volatile_In_Interfering_Context, N);
          return;
       end if;
 
@@ -7658,7 +7658,7 @@ package body SPARK_Definition is
            and then not Is_Imported (E)
          then
             Mark_Violation
-              (Vio_Tasking_Unintialized_Concurrent,
+              (Vio_Tasking_Uninitialized_Concurrent,
                Def,
                Msg =>
                  "not fully initialized part of "
@@ -11645,7 +11645,8 @@ package body SPARK_Definition is
                                        | No_Possible_Initialization
                               then
                                  Mark_Violation
-                                   (Vio_Tasking_Unintialized_Concurrent, Comp);
+                                   (Vio_Tasking_Uninitialized_Concurrent,
+                                    Comp);
                               end if;
 
                            else
@@ -12597,7 +12598,7 @@ package body SPARK_Definition is
 
                     or else In_Loop_Entry_Or_Old_Attribute (N))
                then
-                  Mark_Violation (Vio_Volatile_In_Interferring_Context, N);
+                  Mark_Violation (Vio_Volatile_In_Interfering_Context, N);
                end if;
 
                if Is_Prophecy_Save (E) then
