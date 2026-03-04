@@ -484,46 +484,9 @@ procedure Table_Generator is
          Put (File, """");
          New_Line (File);
       end loop;
-      --  special violation categories appended here
-      for K in Rejected_Entity .. Tasking_Configuration loop
-         Put_Line
-           (File,
-            "    """
-            & Misc_Error_Tag (K)
-            & """, """
-            & """, """
-            & Misc_Error_Description (K)
-            & """");
-      end loop;
 
       Close (File);
    end Produce_Violation_Errors_Table;
-
-   -----------------------------------
-   -- Produce_Special_Errors_Table --
-   -----------------------------------
-
-   procedure Produce_Special_Errors_Table is
-      File : File_Type;
-   begin
-      Create (File, Name => Special_Errors_Target);
-      Put_Line (File, "Special Error Tags");
-      Put_Line (File, "------------------");
-      New_Line (File);
-      Put_Line (File, "The following table shows special error tags used " &
-                "in specific contexts.");
-      New_Line (File);
-      Put_Line (File, ".. csv-table::");
-      Put_Line (File, "   :header: ""Tag"", ""Description""");
-      Put_Line (File, "   :widths: 2, 4");
-      New_Line (File);
-
-      Put_Line (File, "    """
-        & Misc_Error_Tag (Unknown_Error) & """, """
-        & Misc_Error_Description (Unknown_Error) & """");
-
-      Close (File);
-   end Produce_Special_Errors_Table;
 
    --  Start of processing for Table_Generator
 
@@ -537,5 +500,4 @@ begin
    Produce_Proof_Limitation_List;
    Produce_Annotation_Errors_Table;
    Produce_Violation_Errors_Table;
-   Produce_Special_Errors_Table;
 end Table_Generator;

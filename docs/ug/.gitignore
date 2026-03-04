@@ -11,7 +11,6 @@ en/source/flow_limitations.rst
 en/source/proof_limitations.rst
 en/source/annotation_errors_table.rst
 en/source/violation_table.rst
-en/source/special_errors_table.rst
 examples
 _templates/search.html
 static/custom.css

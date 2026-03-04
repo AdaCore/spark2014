@@ -468,7 +468,7 @@ package body SPARK_Definition.Violations is
               (Create
                  ("& is not allowed in SPARK" & Root_Msg, Names => [From]),
                N,
-               Tag           => "use-of-rejected-entity",
+               Tag           => Violation_Tag (Vio_Use_Of_Rejected_Entity),
                First         => True,
                Continuations => Conts);
          end;
@@ -500,14 +500,14 @@ package body SPARK_Definition.Violations is
             Error_Msg_N
               (Create (Msg_Prefix & "Ravenscar profile" & Msg_Suffix),
                N,
-               Tag           => "violation-tasking-configuration",
+               Tag           => Violation_Tag (Vio_Tasking_Configuration),
                First         => True,
                Continuations => [Mark_Violation_Of_SPARK_Mode]);
          elsif not Sequential_Elaboration then
             Error_Msg_N
               (Create (Msg_Prefix & "sequential elaboration" & Msg_Suffix),
                N,
-               Tag           => "violation-tasking-configuration",
+               Tag           => Violation_Tag (Vio_Tasking_Configuration),
                First         => True,
                Continuations => [Mark_Violation_Of_SPARK_Mode]);
          end if;

@@ -406,27 +406,14 @@ procedure Generate_SARIF_Report (Filename : String; Info : JSON_Value) is
                   others           => <>));
          end;
       end loop;
-      --  special violation categories appended here
-      for K in Rejected_Entity .. Tasking_Configuration loop
-         result.Append
-           (reportingDescriptor'
-              (id               => To_Virtual_String (Misc_Error_Tag (K)),
-               shortDescription =>
-                 Mk_Multi_Message_String (Misc_Error_Name (K)),
-               fullDescription  =>
-                 Mk_Multi_Message_String (Misc_Error_Description (K)),
-               others           => <>));
-      end loop;
 
-      --  Add misc hardcoded rules
+      --  Add catch-all rule for errors without classification
       result.Append
         (reportingDescriptor'
-           (id               =>
-              To_Virtual_String (Misc_Error_Tag (Unknown_Error)),
-            shortDescription =>
-              Mk_Multi_Message_String (Misc_Error_Name (Unknown_Error)),
+           (id               => To_Virtual_String (Misc_Error_Tag),
+            shortDescription => Mk_Multi_Message_String (Misc_Error_Name),
             fullDescription  =>
-              Mk_Multi_Message_String (Misc_Error_Description (Unknown_Error)),
+              Mk_Multi_Message_String (Misc_Error_Description),
             others           => <>));
 
       return result;

@@ -417,6 +417,7 @@ violation-storage-size - violation-storage-size - access type with Storage_Size 
 violation-subp-variant-structural - violation-subp-variant-structural - structural subprogram variant which is not a parameter of the subprogram - HIGH
 violation-tagged-extension-local - violation-tagged-extension-local - local derived type from non-local parent or interface - HIGH
 violation-target-name-in-call-with-side-effets - violation-target-name-in-call-with-side-effets - use of @ inside a call to a function with side effects - HIGH
+violation-violation-tasking-configuration - violation-violation-tasking-configuration - SPARK violation related to tasking configuration - HIGH
 violation-tasking-synchronized-comp - violation-tasking-synchronized-comp - synchronized component of non-synchronized type - HIGH
 violation-tasking-unintialized-concurrent - violation-tasking-unintialized-concurrent - not fully initialized part of concurrent type - HIGH
 violation-tasking-unsupported-construct - violation-tasking-unsupported-construct - tasking - HIGH
@@ -426,6 +427,7 @@ violation-uc-to-access-components - violation-uc-to-access-components - unchecke
 violation-uc-to-access-from - violation-uc-to-access-from - unchecked conversion instance to an access-to-object type from a type which is neither System.Address nor an integer type - HIGH
 violation-unsupported-attribute - violation-unsupported-attribute - unsupported attribute - HIGH
 violation-unsupported-pragma - violation-unsupported-pragma - unknown pragma - HIGH
+violation-use-of-rejected-entity - violation-use-of-rejected-entity - use of entity rejected by SPARK - HIGH
 violation-volatile-at-library-level - violation-volatile-at-library-level - effectively volatile type or object not at library level - HIGH
 violation-volatile-discriminant - violation-volatile-discriminant - volatile discriminant - HIGH
 violation-volatile-discriminated-type - violation-volatile-discriminated-type - discriminated volatile type - HIGH
@@ -437,7 +439,5 @@ violation-volatile-incompatible-type - violation-volatile-incompatible-type - st
 violation-volatile-loop-param - violation-volatile-loop-param - effectively volatile loop parameter - HIGH
 violation-volatile-parameter - violation-volatile-parameter - nonvolatile function with effectively volatile parameter - HIGH
 violation-volatile-result - violation-volatile-result - nonvolatile function with effectively volatile result - HIGH
-use-of-rejected-entity - Use of Rejected Entity - Use of entity rejected from SPARK - HIGH
-violation-tasking-configuration - Tasking Configuration Violation - SPARK violation related to tasking configuration - HIGH
 [Misc categories]
 unknown-error - Unknown Error - Error with no specific classification - HIGH

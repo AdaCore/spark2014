@@ -289,7 +289,6 @@ current version of |GNATprove| is based on CWE version 3.2 released on January
    misc_warnings_table
    annotation_errors_table
    violation_table
-   special_errors_table
 
 Messages of a specific category or related to a specific CWE can be filtered
 inside GNAT Studio by typing the desired substring in the search bar of the

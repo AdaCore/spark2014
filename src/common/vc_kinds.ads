@@ -672,6 +672,7 @@ package VC_Kinds is
       Vio_Subp_Variant_Structural,
       Vio_Tagged_Extension_Local,
       Vio_Target_Name_In_Call_With_Side_Effets,
+      Vio_Tasking_Configuration,
       Vio_Tasking_Synchronized_Comp,
       Vio_Tasking_Unintialized_Concurrent,
       Vio_Tasking_Unsupported_Construct,
@@ -681,6 +682,7 @@ package VC_Kinds is
       Vio_UC_To_Access_From,
       Vio_Unsupported_Attribute,
       Vio_Unsupported_Pragma,
+      Vio_Use_Of_Rejected_Entity,
       Vio_Volatile_At_Library_Level,
       Vio_Volatile_Discriminant,
       Vio_Volatile_Discriminated_Type,
@@ -1483,35 +1485,23 @@ package VC_Kinds is
    function Violation_Message
      (Kind       : Violation_Kind;
       Name       : String := "";
-      Root_Cause : Boolean := False) return String;
+      Root_Cause : Boolean := False) return String
+   with
+     Pre => Kind not in Vio_Use_Of_Rejected_Entity | Vio_Tasking_Configuration;
    --  If Root_Cause is True, return the message that should be used as root
    --  cause message for cascading violations for Kind if it is different from
    --  the regular message (typically, if it has character insertions).
 
-   --  Misc errors are hardcoded error categories that do not belong to the
-   --  standard VC/flow/violation classification.
+   --  Tag, name and description for the catch-all error category
 
-   type Misc_Error_Kind is
-     (Unknown_Error, Rejected_Entity, Tasking_Configuration);
+   function Misc_Error_Tag return String
+   is ("unknown-error");
 
-   function Misc_Error_Tag (Kind : Misc_Error_Kind) return String
-   is (case Kind is
-         when Unknown_Error         => "unknown-error",
-         when Rejected_Entity       => "use-of-rejected-entity",
-         when Tasking_Configuration => "violation-tasking-configuration");
+   function Misc_Error_Name return String
+   is ("Unknown Error");
 
-   function Misc_Error_Name (Kind : Misc_Error_Kind) return String
-   is (case Kind is
-         when Unknown_Error         => "Unknown Error",
-         when Rejected_Entity       => "Use of Rejected Entity",
-         when Tasking_Configuration => "Tasking Configuration Violation");
-
-   function Misc_Error_Description (Kind : Misc_Error_Kind) return String
-   is (case Kind is
-         when Unknown_Error         => "Error with no specific classification",
-         when Rejected_Entity       => "Use of entity rejected from SPARK",
-         when Tasking_Configuration =>
-           "SPARK violation related to tasking configuration");
+   function Misc_Error_Description return String
+   is ("Error with no specific classification");
 
    --  Explain codes are used in GNATprove to provide more information on
    --  selected error/warning messages. The subset of those codes used in

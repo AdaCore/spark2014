@@ -1466,24 +1466,14 @@ package body Configuration is
                & " - HIGH");
          end;
       end loop;
-      --  special violation categories appended here
-      for K in Rejected_Entity .. Tasking_Configuration loop
-         Ada.Text_IO.Put_Line
-           (Misc_Error_Tag (K)
-            & " - "
-            & Misc_Error_Name (K)
-            & " - "
-            & Misc_Error_Description (K)
-            & " - HIGH");
-      end loop;
       --  Special hardcoded categories
       Ada.Text_IO.Put_Line ("[Misc categories]");
       Ada.Text_IO.Put_Line
-        (Misc_Error_Tag (Unknown_Error)
+        (Misc_Error_Tag
          & " - "
-         & Misc_Error_Name (Unknown_Error)
+         & Misc_Error_Name
          & " - "
-         & Misc_Error_Description (Unknown_Error)
+         & Misc_Error_Description
          & " - HIGH");
 
       --  ??? TODO GNAT front-end categories
