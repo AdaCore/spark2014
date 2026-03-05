@@ -315,7 +315,7 @@ test_list.adb:397:07: info: precondition proved
 test_list.adb:399:07: info: precondition proved
 test_list.adb:401:22: info: assertion proved
 test_list.adb:401:48: info: precondition proved
-test_list.adb:402:22: medium: assertion might fail
+test_list.adb:402:22: info: assertion proved
 test_list.adb:402:48: info: precondition proved
 test_list.adb:403:22: info: assertion proved
 test_list.adb:403:48: info: precondition proved
