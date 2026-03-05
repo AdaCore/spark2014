@@ -22,7 +22,7 @@ simple_arrays.adb:79:11: info: flow dependencies proved
 simple_arrays.adb:81:13: info: postcondition proved (CVC5: 3 VC; Trivial: 5 VC)
 simple_arrays.adb:85:54: info: index check proved (CVC5: 2 VC)
 simple_arrays.adb:86:50: info: index check proved (CVC5: 2 VC)
-simple_arrays.adb:89:22: high: assertion might fail (e.g. when A = (1 => 5, others => Integer'First) and N = 1) [possible fix: subprogram at line 77 should mention A and N in a precondition] [provers reached step limit before completing the proof]
+simple_arrays.adb:89:22: high: assertion might fail (e.g. when A = (1 => 5, others => Integer'Last) and N = 1) [possible fix: subprogram at line 77 should mention A and N in a precondition] [provers reached step limit before completing the proof]
 simple_arrays.adb:89:36: info: index check proved (CVC5: 2 VC)
 simple_arrays.adb:90:32: info: index check proved (CVC5: 2 VC)
 simple_arrays.adb:90:56: info: index check proved (CVC5: 2 VC)
