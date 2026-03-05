@@ -402,11 +402,6 @@ package body Gnatprove_Build is
       --  TODO in debug mode, output should not be buffered
 
       Cleanup;
-   exception
-      when others =>
-         Cleanup;
-         raise;
-
    end Flow_Analysis_And_Proof;
 
    procedure Full_Deps (Tree : Project.Tree.Object) is
