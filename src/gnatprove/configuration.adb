@@ -1419,6 +1419,63 @@ package body Configuration is
             & " - EASY");
       end loop;
 
+      --  Annotation error categories
+      Ada.Text_IO.Put_Line ("[Annotation error categories]");
+      for K in GNATprove_Annotation_Kind loop
+         declare
+            Rule_ID : constant String := Annotation_Tag (K);
+         begin
+            Ada.Text_IO.Put_Line
+              (Rule_ID
+               & " - "
+               & Rule_ID
+               & " - "
+               & Annotation_Description (K)
+               & " - HIGH");
+         end;
+      end loop;
+
+      --  Unsupported construct categories
+      Ada.Text_IO.Put_Line ("[Unsupported construct categories]");
+      for K in Unsupported_Kind loop
+         declare
+            Rule_ID : constant String := Unsupported_Tag (K);
+         begin
+            Ada.Text_IO.Put_Line
+              (Rule_ID
+               & " - "
+               & Rule_ID
+               & " - "
+               & Description (K)
+               & " - HIGH");
+         end;
+      end loop;
+
+      --  Violation categories
+      Ada.Text_IO.Put_Line ("[Violation categories]");
+      for K in Violation_Kind loop
+         declare
+            Rule_ID : constant String := Violation_Tag (K);
+         begin
+            Ada.Text_IO.Put_Line
+              (Rule_ID
+               & " - "
+               & Rule_ID
+               & " - "
+               & Violation_Description (K)
+               & " - HIGH");
+         end;
+      end loop;
+      --  Special hardcoded categories
+      Ada.Text_IO.Put_Line ("[Misc categories]");
+      Ada.Text_IO.Put_Line
+        (Misc_Error_Tag
+         & " - "
+         & Misc_Error_Name
+         & " - "
+         & Misc_Error_Description
+         & " - HIGH");
+
       --  ??? TODO GNAT front-end categories
    end Produce_List_Categories_Output;
 

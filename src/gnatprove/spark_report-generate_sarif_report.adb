@@ -358,6 +358,59 @@ procedure Generate_SARIF_Report (Filename : String; Info : JSON_Value) is
                others          => <>));
       end loop;
 
+      --  Add GNATprove annotation rules
+      for K in GNATprove_Annotation_Kind loop
+         result.Append
+           (reportingDescriptor'
+              (id               => To_Virtual_String (Annotation_Tag (K)),
+               shortDescription =>
+                 Mk_Multi_Message_String (Pretty_Annotation_Name (K)),
+               fullDescription  =>
+                 Mk_Multi_Message_String (Annotation_Description (K)),
+               others           => <>));
+      end loop;
+
+      --  Add unsupported construct rules
+      for K in Unsupported_Kind loop
+         declare
+            Rule_ID : constant String := Unsupported_Tag (K);
+         begin
+            result.Append
+              (reportingDescriptor'
+                 (id               => To_Virtual_String (Rule_ID),
+                  shortDescription =>
+                    Mk_Multi_Message_String (Unsupported_Kind_Name (K)),
+                  fullDescription  =>
+                    Mk_Multi_Message_String (Description (K)),
+                  others           => <>));
+         end;
+      end loop;
+
+      --  Add violation rules
+      for K in Violation_Kind loop
+         declare
+            Rule_ID : constant String := Violation_Tag (K);
+         begin
+            result.Append
+              (reportingDescriptor'
+                 (id               => To_Virtual_String (Rule_ID),
+                  shortDescription =>
+                    Mk_Multi_Message_String (Violation_Kind_Name (K)),
+                  fullDescription  =>
+                    Mk_Multi_Message_String (Violation_Description (K)),
+                  others           => <>));
+         end;
+      end loop;
+
+      --  Add catch-all rule for errors without classification
+      result.Append
+        (reportingDescriptor'
+           (id               => To_Virtual_String (Misc_Error_Tag),
+            shortDescription => Mk_Multi_Message_String (Misc_Error_Name),
+            fullDescription  =>
+              Mk_Multi_Message_String (Misc_Error_Description),
+            others           => <>));
+
       return result;
    end Rules;
 

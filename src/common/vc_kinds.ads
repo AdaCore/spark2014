@@ -35,6 +35,7 @@
 --    - file gnat_expl.ml in gnatwhy3
 --    - GPS plug-in spark2014.py
 
+with Ada.Characters.Handling;
 with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Indefinite_Ordered_Maps;
 with Ada.Containers.Ordered_Maps;
@@ -671,8 +672,9 @@ package VC_Kinds is
       Vio_Subp_Variant_Structural,
       Vio_Tagged_Extension_Local,
       Vio_Target_Name_In_Call_With_Side_Effets,
+      Vio_Tasking_Configuration,
       Vio_Tasking_Synchronized_Comp,
-      Vio_Tasking_Unintialized_Concurrent,
+      Vio_Tasking_Uninitialized_Concurrent,
       Vio_Tasking_Unsupported_Construct,
       Vio_UC_From_Access,
       Vio_UC_To_Access,
@@ -680,12 +682,13 @@ package VC_Kinds is
       Vio_UC_To_Access_From,
       Vio_Unsupported_Attribute,
       Vio_Unsupported_Pragma,
+      Vio_Use_Of_Rejected_Entity,
       Vio_Volatile_At_Library_Level,
       Vio_Volatile_Discriminant,
       Vio_Volatile_Discriminated_Type,
       Vio_Volatile_Eq,
       Vio_Volatile_Global,
-      Vio_Volatile_In_Interferring_Context,
+      Vio_Volatile_In_Interfering_Context,
       Vio_Volatile_Incompatible_Comp,
       Vio_Volatile_Incompatible_Type,
       Vio_Volatile_Loop_Param,
@@ -1442,6 +1445,14 @@ package VC_Kinds is
      (Kind : GNATprove_Annotation_Kind) return String;
    --  Return the name of an annotation
 
+   function Annotation_Tag (Kind : GNATprove_Annotation_Kind) return String
+   is ("incorrect-use-of-"
+       & Ada.Characters.Handling.To_Lower (Pretty_Annotation_Name (Kind)));
+
+   function Annotation_Description
+     (Kind : GNATprove_Annotation_Kind) return String;
+   --  Return a one-line description of an annotation's purpose
+
    type Annot_Format_Kind is (Text_Form, Aspect_Form, Pragma_Form);
 
    function Aspect_Or_Pragma (From_Aspect : Boolean) return Annot_Format_Kind
@@ -1474,10 +1485,23 @@ package VC_Kinds is
    function Violation_Message
      (Kind       : Violation_Kind;
       Name       : String := "";
-      Root_Cause : Boolean := False) return String;
+      Root_Cause : Boolean := False) return String
+   with
+     Pre => Kind not in Vio_Use_Of_Rejected_Entity | Vio_Tasking_Configuration;
    --  If Root_Cause is True, return the message that should be used as root
    --  cause message for cascading violations for Kind if it is different from
    --  the regular message (typically, if it has character insertions).
+
+   --  Tag, name and description for the catch-all error category
+
+   function Misc_Error_Tag return String
+   is ("unknown-error");
+
+   function Misc_Error_Name return String
+   is ("Unknown Error");
+
+   function Misc_Error_Description return String
+   is ("Error with no specific classification");
 
    --  Explain codes are used in GNATprove to provide more information on
    --  selected error/warning messages. The subset of those codes used in
@@ -1549,6 +1573,9 @@ package VC_Kinds is
    function Description (Kind : Unsupported_Kind) return String;
    --  Return a one-line description for each kind of message as a string
 
+   function Violation_Description (Kind : Violation_Kind) return String;
+   --  Return a one-line description for a violation
+
    function Kind_Name (Kind : VC_Kind) return String;
    function Kind_Name (Kind : Valid_Flow_Tag_Kind) return String;
    function Kind_Name (Kind : Misc_Warning_Kind) return String;
@@ -1556,8 +1583,16 @@ package VC_Kinds is
    --  check" for VC_Index_Check.
 
    function Unsupported_Kind_Name (Kind : Unsupported_Kind) return String;
+
+   function Unsupported_Tag (Kind : Unsupported_Kind) return String
+   is ("unsupported-"
+       & Ada.Characters.Handling.To_Lower (Unsupported_Kind_Name (Kind)));
    function Violation_Kind_Name (Kind : Violation_Kind) return String;
    --  Same as above for limitations and violations
+
+   function Violation_Tag (Kind : Violation_Kind) return String
+   is ("violation-"
+       & Ada.Characters.Handling.To_Lower (Violation_Kind_Name (Kind)));
 
    function Rule_Name (Kind : VC_Kind) return String;
    function Rule_Name (Kind : Valid_Flow_Tag_Kind) return String;

@@ -172,3 +172,272 @@ predefined-equality-null - predefined-equality-null - A type is annotated with O
 init-cond-ignored - init-cond-ignored - The initial condition of a withed package might be ignored if it is not known to be true, due to elaboration order - EASY
 unit-not-spark - unit-not-spark - A unit whose analysis has been requested on the command-line is not annotated with SPARK_Mode Pragma - EASY
 info-unrolling-inlining - info-unrolling-inlining - These messages are issued when the tool is unrolling loops or inlining subprograms, or unable to do so - EASY
+[Annotation error categories]
+incorrect-use-of-gnatprove - incorrect-use-of-gnatprove - incorrect use of pragma Annotate (GNATprove, ...) - HIGH
+incorrect-use-of-false_positive - incorrect-use-of-false_positive - incorrect use of pragma Annotate (GNATprove, False_Positive, ...) - HIGH
+incorrect-use-of-intentional - incorrect-use-of-intentional - incorrect use of pragma Annotate (GNATprove, Intentional, ...) - HIGH
+incorrect-use-of-at_end_borrow - incorrect-use-of-at_end_borrow - incorrect use of pragma Annotate (GNATprove, At_End_Borrow, ...) - HIGH
+incorrect-use-of-automatic_instantiation - incorrect-use-of-automatic_instantiation - incorrect use of pragma Annotate (GNATprove, Automatic_Instantiation, ...) - HIGH
+incorrect-use-of-container_aggregates - incorrect-use-of-container_aggregates - incorrect use of pragma Annotate (GNATprove, Container_Aggregates, ...) - HIGH
+incorrect-use-of-handler - incorrect-use-of-handler - incorrect use of pragma Annotate (GNATprove, Handler, ...) - HIGH
+incorrect-use-of-hide_info - incorrect-use-of-hide_info - incorrect use of pragma Annotate (GNATprove, Hide_Info, ...) - HIGH
+incorrect-use-of-higher_order_specialization - incorrect-use-of-higher_order_specialization - incorrect use of pragma Annotate (GNATprove, Higher_Order_Specialization, ...) - HIGH
+incorrect-use-of-inline_for_proof - incorrect-use-of-inline_for_proof - incorrect use of pragma Annotate (GNATprove, Inline_For_Proof, ...) - HIGH
+incorrect-use-of-iterable_for_proof - incorrect-use-of-iterable_for_proof - incorrect use of pragma Annotate (GNATprove, Iterable_For_Proof, ...) - HIGH
+incorrect-use-of-logical_equal - incorrect-use-of-logical_equal - incorrect use of pragma Annotate (GNATprove, Logical_Equal, ...) - HIGH
+incorrect-use-of-mutable_in_parameters - incorrect-use-of-mutable_in_parameters - incorrect use of pragma Annotate (GNATprove, Mutable_In_Parameters, ...) - HIGH
+incorrect-use-of-no_bitwise_operations - incorrect-use-of-no_bitwise_operations - incorrect use of pragma Annotate (GNATprove, No_Bitwise_Operations, ...) - HIGH
+incorrect-use-of-no_wrap_around - incorrect-use-of-no_wrap_around - incorrect use of pragma Annotate (GNATprove, No_Wrap_Around, ...) - HIGH
+incorrect-use-of-ownership - incorrect-use-of-ownership - incorrect use of pragma Annotate (GNATprove, Ownership, ...) - HIGH
+incorrect-use-of-predefined_equality - incorrect-use-of-predefined_equality - incorrect use of pragma Annotate (GNATprove, Predefined_Equality, ...) - HIGH
+incorrect-use-of-skip_flow_and_proof - incorrect-use-of-skip_flow_and_proof - incorrect use of pragma Annotate (GNATprove, Skip_Flow_And_Proof, ...) - HIGH
+incorrect-use-of-skip_proof - incorrect-use-of-skip_proof - incorrect use of pragma Annotate (GNATprove, Skip_Proof, ...) - HIGH
+incorrect-use-of-unhide_info - incorrect-use-of-unhide_info - incorrect use of pragma Annotate (GNATprove, Unhide_Info, ...) - HIGH
+incorrect-use-of-always_return - incorrect-use-of-always_return - incorrect use of pragma Annotate (GNATprove, Always_Return, ...) - HIGH
+incorrect-use-of-external_axiomatization - incorrect-use-of-external_axiomatization - incorrect use of pragma Annotate (GNATprove, External_Axiomatization, ...) - HIGH
+incorrect-use-of-might_not_return - incorrect-use-of-might_not_return - incorrect use of pragma Annotate (GNATprove, Might_Not_Return, ...) - HIGH
+incorrect-use-of-terminating - incorrect-use-of-terminating - incorrect use of pragma Annotate (GNATprove, Terminating, ...) - HIGH
+[Unsupported construct categories]
+unsupported-abstract-state-part-of-concurrent-obj - unsupported-abstract-state-part-of-concurrent-obj - an abstract state marked as Part_Of a concurrent object - HIGH
+unsupported-access-attr-with-ownership-in-unsupported-context - unsupported-access-attr-with-ownership-in-unsupported-context - a reference to the "Access" attribute of an ownership type which does not occur directly inside an assignment statement, an object declaration, or a simple return statement - HIGH
+unsupported-access-conv - unsupported-access-conv - a conversion between access types with different designated types - HIGH
+unsupported-access-sub-protected - unsupported-access-sub-protected - an access-to-subprogram type designating a protected subprogram - HIGH
+unsupported-access-sub-traversal - unsupported-access-sub-traversal - an access-to-subprogram type designating a borrowing traversal function - HIGH
+unsupported-access-to-no-return-subp - unsupported-access-to-no-return-subp - an access-to-subprogram type designating a No_Return procedure - HIGH
+unsupported-access-to-relaxed-init-subp - unsupported-access-to-relaxed-init-subp - an access-to-subprogram type designating a subprogram annotated with Relaxed_Initialization - HIGH
+unsupported-access-to-subp-with-exc - unsupported-access-to-subp-with-exc - access attribute on a procedure which might raise exceptions - HIGH
+unsupported-access-to-subp-with-prog-exit - unsupported-access-to-subp-with-prog-exit - access to procedure which might exit the program - HIGH
+unsupported-address-attr-in-unsupported-context - unsupported-address-attr-in-unsupported-context - a reference to the "Address" attribute occuring within a subtype indication, a range constraint, or a quantified expression - HIGH
+unsupported-alloc-with-type-constraints - unsupported-alloc-with-type-constraints - an uninitialized allocator whose subtype indication has a type constraint - HIGH
+unsupported-array-conv-different-size-modular-index - unsupported-array-conv-different-size-modular-index - a conversion between array types if some matching index types are modular types of different sizes - HIGH
+unsupported-array-conv-signed-modular-index - unsupported-array-conv-signed-modular-index - a conversion between array types if some matching index types are not both signed or both modular - HIGH
+unsupported-assert-and-cut-meet-inv - unsupported-assert-and-cut-meet-inv - a pragma Assert_And_Cut occurring immediately within a sequence of statements containing a Loop_Invariant - HIGH
+unsupported-borrow-slice - unsupported-borrow-slice - a borrow of a (part of) a slice - HIGH
+unsupported-borrow-traversal-first-param - unsupported-borrow-traversal-first-param - a borrowing traversal function whose first formal parameter does not have an anonymous access-to-variable type - HIGH
+unsupported-borrow-traversal-volatile - unsupported-borrow-traversal-volatile - a borrowing traversal function marked as a volatile function - HIGH
+unsupported-class-attr-of-constrained-type - unsupported-class-attr-of-constrained-type - a reference to the "Class" attribute on a constrained type - HIGH
+unsupported-classwide-representation-value - unsupported-classwide-representation-value - a representation attribute on an object of classwide type - HIGH
+unsupported-classwide-with-predicate - unsupported-classwide-with-predicate - a subtype predicate on a classwide type - HIGH
+unsupported-complex-raise-expr-in-prec - unsupported-complex-raise-expr-in-prec - a raise expression occurring in a precondition, unless it is only used to change the reported error and can safely be interpreted as False - HIGH
+unsupported-constrained-classwide - unsupported-constrained-classwide - a type constraint on a classwide subtype declaration - HIGH
+unsupported-continue-cross-inv - unsupported-continue-cross-inv - a continue statement preceding loop-invariant - HIGH
+unsupported-contract-on-derived-private-type - unsupported-contract-on-derived-private-type - a type contract (subtype predicate, default initial condition, or type invariant) on a private type whose full view is another private type - HIGH
+unsupported-conv-fixed-float - unsupported-conv-fixed-float - a conversion between a fixed-point type and a floating-point type - HIGH
+unsupported-conv-fixed-integer - unsupported-conv-fixed-integer - a conversion between a fixed-point type and an integer type when the small of the fixed-point type is neither an integer nor the reciprocal of an integer - HIGH
+unsupported-conv-float-modular-128 - unsupported-conv-float-modular-128 - a conversion between a floating point type and a modular type of size 128 - HIGH
+unsupported-conv-incompatible-fixed - unsupported-conv-incompatible-fixed - a conversion between fixed point types whose smalls are not "compatible" according to Ada RM G.2.3(21-24): the division of smalls is not an integer or the reciprocal of an integer - HIGH
+unsupported-cut-operation-context - unsupported-cut-operation-context - a call to the "By" or "So" function from the "SPARK.Cut_Operations" library in an unsupported context - HIGH
+unsupported-deep-object-with-addr - unsupported-deep-object-with-addr - an object with subcomponents of an access-to-variable type annotated with an address clause whose value is the address of another object - HIGH
+unsupported-deep-value-in-delta-aggregate - unsupported-deep-value-in-delta-aggregate - delta aggregate with possible aliasing of component associations of an ownership type - HIGH
+unsupported-derived-interface - unsupported-derived-interface - interface derived from other interfaces - HIGH
+unsupported-destructor - unsupported-destructor - record type with a destructors - HIGH
+unsupported-entry-family - unsupported-entry-family - entry families - HIGH
+unsupported-exceptional-cases-dispatch - unsupported-exceptional-cases-dispatch - aspect "Exceptional_Cases" on dispatching operations - HIGH
+unsupported-exceptional-cases-ownership - unsupported-exceptional-cases-ownership - procedure which might propagate exceptions with parameters of mode "in out" or "out" subjected to ownership which might not be passed by reference - HIGH
+unsupported-exit-cases-dispatch - unsupported-exit-cases-dispatch - aspect "Exit_Cases" on dispatching operations - HIGH
+unsupported-ext-aggregate-with-type-ancestor - unsupported-ext-aggregate-with-type-ancestor - an extension aggregate whose ancestor part is a subtype mark - HIGH
+unsupported-extension-case-pattern-matching - unsupported-extension-case-pattern-matching - GNAT extension for case pattern matching - HIGH
+unsupported-gnat-ext-conditional-goto - unsupported-gnat-ext-conditional-goto - GNAT extension for conditional goto - HIGH
+unsupported-gnat-ext-conditional-raise - unsupported-gnat-ext-conditional-raise - GNAT extension for conditional raise - HIGH
+unsupported-gnat-ext-conditional-return - unsupported-gnat-ext-conditional-return - GNAT extension for conditional return - HIGH
+unsupported-gnat-ext-interpolated-string-literal - unsupported-gnat-ext-interpolated-string-literal - GNAT extension for interpolated string literals - HIGH
+unsupported-generic-in-hidden-private - unsupported-generic-in-hidden-private - instance of a generic unit declared in a package whose private part is hidden outside of this package - HIGH
+unsupported-generic-in-type-inv - unsupported-generic-in-type-inv - instance of a generic unit declared in a package containing a type with an invariant outside of this package - HIGH
+unsupported-goto-cross-inv - unsupported-goto-cross-inv - a goto statement occuring in a loop before the invariant which refers to a label occuring inside the loop but after the invariant - HIGH
+unsupported-hidden-private-relaxed-init - unsupported-hidden-private-relaxed-init - private type whose full view contains only subcomponents whose type is annotated with Relaxed_Initialization in a package whose private part is hidden for proof - HIGH
+unsupported-img-on-non-scalar - unsupported-img-on-non-scalar - a reference to the "Image" or "Img" attribute on a type or an object of a type which is not a scalar type - HIGH
+unsupported-incomplete-type-early-usage - unsupported-incomplete-type-early-usage - usage of incomplete type completed in package body outside of an access type declaration - HIGH
+unsupported-indexed-container-aggregate - unsupported-indexed-container-aggregate - an indexed container aggregate - HIGH
+unsupported-inherited-controlling-result-from-hidden-part - unsupported-inherited-controlling-result-from-hidden-part - a subprogram with dispatching result which is inherited, not overriden, by a private extension completed in a hidden private part - HIGH
+unsupported-inherited-controlling-result-from-spark-off - unsupported-inherited-controlling-result-from-spark-off - a subprogram with dispatching result which is inherited, not overriden, by a private extension completed in a private part with SPARK_Mode Off - HIGH
+unsupported-inherited-prim-from-hidden-part - unsupported-inherited-prim-from-hidden-part - a subprogram which is inherited, not overriden, from an ancestor declared in a hidden private part - HIGH
+unsupported-inherited-prim-from-spark-off - unsupported-inherited-prim-from-spark-off - a subprogram which is inherited, not overriden, from an ancestor declared in the private part of a package with SPARK_Mode Off - HIGH
+unsupported-iterated-element-association - unsupported-iterated-element-association - container aggregates - HIGH
+unsupported-iterator-in-component-assoc - unsupported-iterator-in-component-assoc - an iterated component associations with an iterator specification ("for ... of") in an array aggregate - HIGH
+unsupported-limited-type-from-limited-with - unsupported-limited-type-from-limited-with - the use of an incomplete view of a type coming from a limited with - HIGH
+unsupported-loop-inv-and-handler - unsupported-loop-inv-and-handler - a loop invariant in a list of statements with an exception handler - HIGH
+unsupported-loop-inv-and-finally - unsupported-loop-inv-and-finally - a loop invariant in a list of statements with a finally section - HIGH
+unsupported-loop-with-iterator-filter - unsupported-loop-with-iterator-filter - a loop with an iterator filter in its parameter specification - HIGH
+unsupported-max-array-dimension - unsupported-max-array-dimension - an array type with more than 4 dimensions - HIGH
+unsupported-max-modulus - unsupported-max-modulus - a modular type with a modulus greater than 2 ** 128 - HIGH
+unsupported-move-to-access-constant - unsupported-move-to-access-constant - a move operation occuring as part of  an allocator or a conversion to an access-to-constant type which does not occur directly inside an assignment statement, an object declaration, or a simple return statement - HIGH
+unsupported-no-return-function - unsupported-no-return-function - a function annotated as No_Return - HIGH
+unsupported-non-static-attribute - unsupported-non-static-attribute - a reference to a non-static attribute - HIGH
+unsupported-multiple-inheritance-interfaces - unsupported-multiple-inheritance-interfaces - a primitive operation which is inherited from several interfaces in a tagged derivation - HIGH
+unsupported-multiple-inheritance-mixed-spark-mode - unsupported-multiple-inheritance-mixed-spark-mode - a primitive operation which is implicitly inherited from several progenitor types in a tagged derivation, and for which two of these progenitors provide incompatible values for the SPARK  mode of the inherited subprogram - HIGH
+unsupported-multiple-inheritance-root - unsupported-multiple-inheritance-root - a primitive operation which is inherited both from the parent type and from an interface in a tagged derivation - HIGH
+unsupported-multidim-iterator - unsupported-multidim-iterator - an iterator specification on a multidimensional array - HIGH
+unsupported-multidim-update - unsupported-multidim-update - a delta aggregate on a multidimensional array - HIGH
+unsupported-null-aggregate-in-branching-array-aggregate - unsupported-null-aggregate-in-branching-array-aggregate - a null aggregate which is a subaggregate of a multidimensional  array  aggregate with multiple associations - HIGH
+unsupported-object-before-inv - unsupported-object-before-inv - a non-scalar object or an object with an address clause declared before the loop-invariant - HIGH
+unsupported-op-fixed-float - unsupported-op-fixed-float - a multiplication or division between a fixed-point and a floating-point value - HIGH
+unsupported-op-compatible-fixed - unsupported-op-compatible-fixed - a multiplication or division between different fixed-point types if the result is not in the "perfect result set" according to Ada RM G.2.3(21) - HIGH
+unsupported-overlay-uninitialized - unsupported-overlay-uninitialized - an object with an address clause which is not fully initialized at declaration - HIGH
+unsupported-overlay-with-deep-object - unsupported-overlay-with-deep-object - a reference to the "Address" attribute in an address clause whose prefix has subcomponents of an access-to-variable type - HIGH
+unsupported-overriding-with-precondition-discrepancy-hiding - unsupported-overriding-with-precondition-discrepancy-hiding - a dispatching primitive subprogram overriding with class-wide precondition inherited from a potentially hidden ancestor - HIGH
+unsupported-overriding-with-precondition-discrepancy-tagged-privacy - unsupported-overriding-with-precondition-discrepancy-tagged-privacy - a dispatching primitive subprogram overriding declared for a private untagged type with no specific precondition and a class-wide precondition inherited from ancestor - HIGH
+unsupported-deep-object-declaration-outside-block - unsupported-deep-object-declaration-outside-block - a declaration of an object of an ownership type outside a block for declarations - HIGH
+unsupported-package-before-inv - unsupported-package-before-inv - a package declaration occurring in a loop before the loop invariant - HIGH
+unsupported-potentially-invalid-eq - unsupported-potentially-invalid-eq - the primitive equality of a record type with the Potentially_Invalid aspect - HIGH
+unsupported-potentially-invalid-iterable - unsupported-potentially-invalid-iterable - a Potentially_Invalid aspect on a function associated to the aspect Iterable - HIGH
+unsupported-potentially-invalid-mutable-discr - unsupported-potentially-invalid-mutable-discr - a part of potentially invalid object with mutable discriminants - HIGH
+unsupported-potentially-invalid-part-of - unsupported-potentially-invalid-part-of - a potentially invalid object marked Part_Of a protected object - HIGH
+unsupported-potentially-invalid-predicates - unsupported-potentially-invalid-predicates - a potentially invalid object with a part subject to predicates - HIGH
+unsupported-potentially-invalid-private - unsupported-potentially-invalid-private - a potentially invalid object with a part whose full view is not in SPARK - HIGH
+unsupported-potentially-invalid-relaxed - unsupported-potentially-invalid-relaxed - a potentially invalid object with a part annotated with relaxed initialization - HIGH
+unsupported-potentially-invalid-subp-access - unsupported-potentially-invalid-subp-access - an access to a subprogram annotated with Potentially_Invalid - HIGH
+unsupported-potentially-invalid-traversal - unsupported-potentially-invalid-traversal - a traversal function with a potentially invalid traversed parameter - HIGH
+unsupported-predicate-with-different-spark-mode - unsupported-predicate-with-different-spark-mode - a private type whose full view is not in SPARK annotated with two subtype predicates, one on the full view and one on the partial view - HIGH
+unsupported-predicate-with-different-visibility - unsupported-predicate-with-different-visibility - a private type declared in a package whose private part is hidden for proof annotated with two subtype predicates, one on the full view and one on the partial view - HIGH
+unsupported-primitive-call-in-dic - unsupported-primitive-call-in-dic - a call to a primitive operation of a tagged type T occurring in the default initial condition of T with the type instance as a parameter - HIGH
+unsupported-program-exit-dispatch - unsupported-program-exit-dispatch - aspect "Program_Exit" on dispatching operations - HIGH
+unsupported-program-exit-global-modified-in-callee - unsupported-program-exit-global-modified-in-callee - call which might exit the program and leave outputs mentioned in the exit postcondition of its enclosing subprogram in an inconsistent state - HIGH
+unsupported-protected-operation-of-expression - unsupported-protected-operation-of-expression - a call to operation of a dereference - HIGH
+unsupported-protected-operation-of-component - unsupported-protected-operation-of-component - a call to a protected operation of a protected component inside a protected object - HIGH
+unsupported-protected-operation-of-formal - unsupported-protected-operation-of-formal - a call to a protected operation of the formal parameter of a subprogram - HIGH
+unsupported-refined-post-on-entry - unsupported-refined-post-on-entry - a protected entry annotated with a Refined_Post - HIGH
+unsupported-relaxed-init-access-type - unsupported-relaxed-init-access-type - an access-to-subprogram type used as a subcomponent of a type or an object annotated with Relaxed_Initialization - HIGH
+unsupported-relaxed-init-aliasing - unsupported-relaxed-init-aliasing - an object annotated with Relaxed_Initialization is part of an overlay - HIGH
+unsupported-relaxed-init-invariant - unsupported-relaxed-init-invariant - a type annotated with an invariant used as a subcomponent of a type or an object annotated with Relaxed_Initialization - HIGH
+unsupported-relaxed-init-variant-part - unsupported-relaxed-init-variant-part - a subtype with a discriminant constraint containing only subcomponents whose type is annotated with Relaxed_Initialization - HIGH
+unsupported-subprogram-before-inv - unsupported-subprogram-before-inv - a subprogram declaration occurring in a loop before the loop invariant - HIGH
+unsupported-subp-variant-duplicate - unsupported-subp-variant-duplicate - a subprogram with several Subprogram_Variant contracts - HIGH
+unsupported-subp-variant-eq - unsupported-subp-variant-eq - a subprogram variant on the primitive equality of a record type - HIGH
+unsupported-suspension-on-expression - unsupported-suspension-on-expression - a call to a suspend operation on a dereference - HIGH
+unsupported-suspension-on-formal - unsupported-suspension-on-formal - a call to a suspend operation on a suspension formal parameter - HIGH
+unsupported-target-name-in-borrow - unsupported-target-name-in-borrow - an occurrence of the target name @ in an assignment to an object of an anonymous access-to-variable type - HIGH
+unsupported-target-name-in-move - unsupported-target-name-in-move - an occurrence of the target name @ in an assignment to an object containing subcomponents of a named access-to-variable type - HIGH
+unsupported-type-inv-access-type - unsupported-type-inv-access-type - an access type designating an incomplete or private type with a subcomponent annotated with a type invariant - HIGH
+unsupported-type-inv-protected-type - unsupported-type-inv-protected-type - a protected type annotated with a type invariant - HIGH
+unsupported-type-inv-tagged-comp - unsupported-type-inv-tagged-comp - a tagged type with a subcomponent annotated with a type invariant - HIGH
+unsupported-type-inv-tagged-type - unsupported-type-inv-tagged-type - a tagged type annotated with a type invariant - HIGH
+unsupported-type-inv-volatile - unsupported-type-inv-volatile - a volatile object with asynchronous writers or readers and a type invariant - HIGH
+unsupported-uninit-alloc-in-expr-fun - unsupported-uninit-alloc-in-expr-fun - an uninitialized allocator inside an expression function - HIGH
+unsupported-unknown-alignment - unsupported-unknown-alignment - a reference to the "Alignment" attribute on a prefix which is not a type with an alignment clause - HIGH
+unsupported-unknown-size - unsupported-unknown-size - a reference to the "Size" attribute on a prefix which is not a standalone object, a formal parameter, a component, or a slice with no padding - HIGH
+unsupported-uu-constrained-attribute - unsupported-uu-constrained-attribute - a reference to the "Constrained" attribute on unchecked union prefix whose value cannot be determined statically outside of a non-executable context - HIGH
+unsupported-uu-tagged-comp - unsupported-uu-tagged-comp - a component of an unconstrained unchecked union type in a tagged extension - HIGH
+[Violation categories]
+violation-access-constant - violation-access-constant - Access attribute of a named access-to-constant type whose prefix is not a constant part of an object - HIGH
+violation-access-expression - violation-access-expression - Access attribute on a complex expression - HIGH
+violation-access-function-with-side-effects - violation-access-function-with-side-effects - access to function with side effects - HIGH
+violation-access-no-root - violation-access-no-root - Access attribute of a path not rooted inside a parameter or standalone object - HIGH
+violation-access-subprogram-within-protected - violation-access-subprogram-within-protected - access to subprogram declared within a protected object - HIGH
+violation-access-sub-formal-with-inv - violation-access-sub-formal-with-inv - formal with type invariants in access-to-subprogram - HIGH
+violation-access-sub-return-type-with-inv - violation-access-sub-return-type-with-inv - access-to-subprogram returning a type with invariants - HIGH
+violation-access-sub-with-globals - violation-access-sub-with-globals - access to subprogram with global effects - HIGH
+violation-access-to-dispatch-op - violation-access-to-dispatch-op - access to dispatching operation - HIGH
+violation-access-volatile-function - violation-access-volatile-function - access to volatile function - HIGH
+violation-address-of-non-object - violation-address-of-non-object - attribute Address of a non-object entity - HIGH
+violation-address-outside-address-clause - violation-address-outside-address-clause - attribute Address outside an attribute definition clause - HIGH
+violation-aggregate-globals - violation-aggregate-globals - subprogram associated to aspect Aggregate with dependency on globals - HIGH
+violation-aggregate-side-effects - violation-aggregate-side-effects - subprogram with side effects associated with aspect Aggregate - HIGH
+violation-aggregate-volatile - violation-aggregate-volatile - volatile function associated with aspect Aggregate - HIGH
+violation-assert-and-cut-context - violation-assert-and-cut-context - pragma Assert_And_Cut outside a sequence of statements - HIGH
+violation-backward-goto - violation-backward-goto - backward goto statement - HIGH
+violation-box-notation-without-init - violation-box-notation-without-init - box notation without default or relaxed initialization - HIGH
+violation-code-statement - violation-code-statement - code statement - HIGH
+violation-controlled-types - violation-controlled-types - controlled types - HIGH
+violation-container-aggregate - violation-container-aggregate - container aggregate whose type does not have the Container_Aggregates annotation - HIGH
+violation-default-with-current-instance - violation-default-with-current-instance - default expression with current instance of enclosing type - HIGH
+violation-derived-untagged-with-tagged-full-view - violation-derived-untagged-with-tagged-full-view - deriving from type declared as untagged private - HIGH
+violation-discriminant-access - violation-discriminant-access - access discriminant - HIGH
+violation-discriminant-derived - violation-discriminant-derived - discriminant on derived type - HIGH
+violation-dispatch-plain-pre - violation-dispatch-plain-pre - plain precondition on dispatching subprogram - HIGH
+violation-dispatching-untagged-type - violation-dispatching-untagged-type - dispatching call on primitive of type with untagged partial view - HIGH
+violation-exit-cases-exception - violation-exit-cases-exception - exit case mentioning exceptions when no exceptions can be propagated - HIGH
+violation-exit-cases-normal-only - violation-exit-cases-normal-only - Exit_Case on subprogram which can only return normally - HIGH
+violation-function-global-output - violation-function-global-output - function with global outputs - HIGH
+violation-function-out-param - violation-function-out-param - function with out or in out parameters - HIGH
+violation-ghost-concurrent-comp - violation-ghost-concurrent-comp - concurrent component of ghost type - HIGH
+violation-ghost-volatile - violation-ghost-volatile - volatile ghost object - HIGH
+violation-handler-choice-parameter - violation-handler-choice-parameter - choice parameter in handler - HIGH
+violation-invariant-class - violation-invariant-class - classwide invariant - HIGH
+violation-invariant-ext - violation-invariant-ext - type invariant on completion of private_type_extension - HIGH
+violation-invariant-partial - violation-invariant-partial - type invariant on private_type_declaration or private_type_extension - HIGH
+violation-invariant-volatile - violation-invariant-volatile - type invariant on effectively volatile type - HIGH
+violation-iterable-controlling-result - violation-iterable-controlling-result - function associated to aspect Iterable with controlling result - HIGH
+violation-iterable-full-view - violation-iterable-full-view - Iterable aspect declared on the full view of a private type - HIGH
+violation-iterable-globals - violation-iterable-globals - function associated to aspect Iterable with dependency on globals - HIGH
+violation-iterable-side-effects - violation-iterable-side-effects - function with side effects associated with aspect Iterable - HIGH
+violation-iterable-volatile - violation-iterable-volatile - volatile function associated with aspect Iterable - HIGH
+violation-iterator-specification - violation-iterator-specification - iterator specification - HIGH
+violation-loop-variant-structural - violation-loop-variant-structural - structural loop variant which is not a variable of an anonymous access-to-object type - HIGH
+violation-overlay-constant-not-imported - violation-overlay-constant-not-imported - constant object with an address clause which is not imported - HIGH
+violation-overlay-mutable-constant - violation-overlay-mutable-constant - mutable object and constant object overlaying each other - HIGH
+violation-overlay-part-of-protected - violation-overlay-part-of-protected - overlaid object which is a part of a protected object - HIGH
+violation-ownership-access-equality - violation-ownership-access-equality - equality on access types - HIGH
+violation-ownership-allocator-invalid-context - violation-ownership-allocator-invalid-context - allocator or call to allocating function not stored in object as part of assignment, declaration, or return statement - HIGH
+violation-ownership-allocator-uninitialized - violation-ownership-allocator-uninitialized - uninitialized allocator without default initialization - HIGH
+violation-ownership-anonymous-access-to-named - violation-ownership-anonymous-access-to-named - conversion from an anonymous access type to a named access type - HIGH
+violation-ownership-anonymous-part-of - violation-ownership-anonymous-part-of - anonymous access variable marked Part_Of a protected object - HIGH
+violation-ownership-anonymous-object-context - violation-ownership-anonymous-object-context - object of anonymous access not declared immediately within a subprogram, entry or block - HIGH
+violation-ownership-anonymous-object-init - violation-ownership-anonymous-object-init - uninitialized object of anonymous access type - HIGH
+violation-ownership-anonymous-result - violation-ownership-anonymous-result - anonymous access type for result for non-traversal functions - HIGH
+violation-ownership-assign-to-expr - violation-ownership-assign-to-expr - assignment to a complex expression - HIGH
+violation-ownership-assign-to-constant - violation-ownership-assign-to-constant - assignment into a constant object - HIGH
+violation-ownership-borrow-of-constant - violation-ownership-borrow-of-constant - borrow of a constant object - HIGH
+violation-ownership-borrow-of-non-markable - violation-ownership-borrow-of-non-markable - borrow or observe of an expression which is not part of stand-alone object or parameter - HIGH
+violation-ownership-anonymous-component - violation-ownership-anonymous-component - component of anonymous access type - HIGH
+violation-ownership-deallocate-general - violation-ownership-deallocate-general - instance of Unchecked_Deallocation with a general access type - HIGH
+violation-ownership-different-branches - violation-ownership-different-branches - observe of a conditional or case expression with branches rooted in different objects - HIGH
+violation-ownership-duplicate-aggregate-value - violation-ownership-duplicate-aggregate-value - duplicate value of a type with ownership - HIGH
+violation-ownership-loop-entry-old-copy - violation-ownership-loop-entry-old-copy - prefix of Loop_Entry or Old attribute introducing aliasing - HIGH
+violation-ownership-loop-entry-old-traversal - violation-ownership-loop-entry-old-traversal - traversal function call as a prefix of Loop_Entry or Old attribute - HIGH
+violation-ownership-move-constant-part - violation-ownership-move-constant-part - access-to-constant part of an object as source of move - HIGH
+violation-ownership-move-in-declare - violation-ownership-move-in-declare - move in declare expression - HIGH
+violation-ownership-move-not-name - violation-ownership-move-not-name - expression as source of move - HIGH
+violation-ownership-move-traversal-call - violation-ownership-move-traversal-call - call to a traversal function as source of move - HIGH
+violation-ownership-reborrow - violation-ownership-reborrow - observed or borrowed expression which does not have the left-hand side as a root - HIGH
+violation-ownership-storage-pool - violation-ownership-storage-pool - access type with Storage_Pool - HIGH
+violation-ownership-tagged-extension - violation-ownership-tagged-extension - owning component of tagged extension - HIGH
+violation-ownership-traversal-extended-return - violation-ownership-traversal-extended-return - extended return applying to a traversal function - HIGH
+violation-ownership-volatile - violation-ownership-volatile - observe, move, or borrow of volatile object - HIGH
+violation-potentially-invalid-dispatch - violation-potentially-invalid-dispatch - dispatching operation with Potentially_Invalid aspect - HIGH
+violation-potentially-invalid-invariant - violation-potentially-invalid-invariant - potentially invalid object with a part subject to a type invariant - HIGH
+violation-potentially-invalid-overlay - violation-potentially-invalid-overlay - potentially invalid overlaid object - HIGH
+violation-potentially-invalid-part-access - violation-potentially-invalid-part-access - potentially invalid object with a part of an access type - HIGH
+violation-potentially-invalid-part-concurrent - violation-potentially-invalid-part-concurrent - potentially invalid object with a part of a concurrent type - HIGH
+violation-potentially-invalid-part-tagged - violation-potentially-invalid-part-tagged - potentially invalid object with a part of a tagged type - HIGH
+violation-potentially-invalid-part-unchecked-union - violation-potentially-invalid-part-unchecked-union - potentially invalid object with a part of an Unchecked_Union type - HIGH
+violation-potentially-invalid-scalar - violation-potentially-invalid-scalar - function returning a scalar that is not imported with Potentially_Invalid aspect - HIGH
+violation-predicate-volatile - violation-predicate-volatile - subtype predicate on effectively volatile type for reading - HIGH
+violation-program-exit-outputs - violation-program-exit-outputs - output mentioned in the expression of an aspect Program_Exit which is not a stand-alone object - HIGH
+violation-real-root - violation-real-root - expression of type root_real - HIGH
+violation-relaxed-init-dispatch - violation-relaxed-init-dispatch - dispatching operation with Relaxed_Initialization aspect - HIGH
+violation-relaxed-init-initialized-prefix - violation-relaxed-init-initialized-prefix - attribute Initialized on a prefix which does not have relaxed initialization - HIGH
+violation-relaxed-init-part-generic - violation-relaxed-init-part-generic - part of tagged, Unchecked_Union, or effectively volatile object or type annotated with relaxed initialization - HIGH
+violation-relaxed-init-part-of-tagged - violation-relaxed-init-part-of-tagged - part of tagged type with relaxed initialization - HIGH
+violation-relaxed-init-part-of-unchecked-union - violation-relaxed-init-part-of-unchecked-union - part of Unchecked_Union type with relaxed initialization - HIGH
+violation-relaxed-init-part-of-volatile - violation-relaxed-init-part-of-volatile - part of effectively volatile object or type annotated with relaxed initialization - HIGH
+violation-side-effects-call-context - violation-side-effects-call-context - call to a function with side effects outside of assignment or object declaration without a block - HIGH
+violation-side-effects-eq - violation-side-effects-eq - function with side effects as user-defined equality on record type - HIGH
+violation-side-effects-traversal - violation-side-effects-traversal - traversal function with side effects - HIGH
+violation-storage-size - violation-storage-size - access type with Storage_Size - HIGH
+violation-subp-variant-structural - violation-subp-variant-structural - structural subprogram variant which is not a parameter of the subprogram - HIGH
+violation-tagged-extension-local - violation-tagged-extension-local - local derived type from non-local parent or interface - HIGH
+violation-target-name-in-call-with-side-effets - violation-target-name-in-call-with-side-effets - use of @ inside a call to a function with side effects - HIGH
+violation-tasking-configuration - violation-tasking-configuration - SPARK violation related to tasking configuration - HIGH
+violation-tasking-synchronized-comp - violation-tasking-synchronized-comp - synchronized component of non-synchronized type - HIGH
+violation-tasking-unintialized-concurrent - violation-tasking-unintialized-concurrent - not fully initialized part of concurrent type - HIGH
+violation-tasking-unsupported-construct - violation-tasking-unsupported-construct - tasking - HIGH
+violation-uc-from-access - violation-uc-from-access - unchecked conversion instance from a type with access subcomponents - HIGH
+violation-uc-to-access - violation-uc-to-access - unchecked conversion instance to an access type which is not a general access-to-object type - HIGH
+violation-uc-to-access-components - violation-uc-to-access-components - unchecked conversion instance to a composite type with access subcomponents - HIGH
+violation-uc-to-access-from - violation-uc-to-access-from - unchecked conversion instance to an access-to-object type from a type which is neither System.Address nor an integer type - HIGH
+violation-unsupported-attribute - violation-unsupported-attribute - unsupported attribute - HIGH
+violation-unsupported-pragma - violation-unsupported-pragma - unknown pragma - HIGH
+violation-use-of-rejected-entity - violation-use-of-rejected-entity - use of entity rejected by SPARK - HIGH
+violation-volatile-at-library-level - violation-volatile-at-library-level - effectively volatile type or object not at library level - HIGH
+violation-volatile-discriminant - violation-volatile-discriminant - volatile discriminant - HIGH
+violation-volatile-discriminated-type - violation-volatile-discriminated-type - discriminated volatile type - HIGH
+violation-volatile-eq - violation-volatile-eq - volatile function as user-defined equality on record type - HIGH
+violation-volatile-global - violation-volatile-global - nonvolatile function with volatile global inputs - HIGH
+violation-volatile-in-interferring-context - violation-volatile-in-interferring-context - volatile object or volatile function call in interfering context - HIGH
+violation-volatile-incompatible-comp - violation-volatile-incompatible-comp - component of composite type or designated type of an access with an incompatible volatility - HIGH
+violation-volatile-incompatible-type - violation-volatile-incompatible-type - standalone object with an incompatible volatility with respect to its type - HIGH
+violation-volatile-loop-param - violation-volatile-loop-param - effectively volatile loop parameter - HIGH
+violation-volatile-parameter - violation-volatile-parameter - nonvolatile function with effectively volatile parameter - HIGH
+violation-volatile-result - violation-volatile-result - nonvolatile function with effectively volatile result - HIGH
+[Misc categories]
+unknown-error - Unknown Error - Error with no specific classification - HIGH

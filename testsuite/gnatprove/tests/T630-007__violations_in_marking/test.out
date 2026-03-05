@@ -55,10 +55,10 @@ bad_relaxed_init.ads:20:09: error: part of effectively volatile object or type a
 bad_relaxed_init.ads:20:09: error: violation of aspect SPARK_Mode at line 3
 bad_relaxed_init.ads:27:07: error: component "G" of tagged type "Child" with relaxed initialization is not allowed in SPARK (SPARK RM 6.10(6))
 bad_relaxed_init.ads:27:07: error: violation of aspect SPARK_Mode at line 3
-bad_relaxed_init.ads:30:09: error: part of tagged type with relaxed Initialization is not allowed in SPARK (SPARK RM 6.10(6))
+bad_relaxed_init.ads:30:09: error: part of tagged type with relaxed initialization is not allowed in SPARK (SPARK RM 6.10(6))
 bad_relaxed_init.ads:30:09: error: violation of aspect SPARK_Mode at line 3
 bad_relaxed_init.ads:37:09: error: access-to-subprogram type used as a subcomponent of a type or an object annotated with relaxed initialization is not yet supported
-bad_relaxed_init.ads:38:09: error: part of tagged type with relaxed Initialization is not allowed in SPARK (SPARK RM 6.10(6))
+bad_relaxed_init.ads:38:09: error: part of tagged type with relaxed initialization is not allowed in SPARK (SPARK RM 6.10(6))
 bad_relaxed_init.ads:38:09: error: violation of aspect SPARK_Mode at line 3
 bad_relaxed_init.ads:43:07: error: part of effectively volatile object or type annotated with relaxed initialization is not allowed in SPARK (SPARK RM 6.10(7))
 bad_relaxed_init.ads:43:07: error: violation of aspect SPARK_Mode at line 3

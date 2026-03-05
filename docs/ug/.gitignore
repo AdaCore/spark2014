@@ -6,6 +6,11 @@ en/source/flow_checks_table.rst
 en/source/proof_checks_table.rst
 en/source/misc_warnings_table.rst
 en/source/unsupported_constructs.rst
+en/source/other_tool_limitations.rst
+en/source/flow_limitations.rst
+en/source/proof_limitations.rst
+en/source/annotation_errors_table.rst
+en/source/violation_table.rst
 examples
 _templates/search.html
 static/custom.css

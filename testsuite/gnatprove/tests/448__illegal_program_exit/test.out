@@ -47,7 +47,7 @@ test_protected.adb:28:25: error: violation of pragma SPARK_Mode at test.adc:1
 test_protected.adb:41:28: error: outputs mentioned in the expression of an aspect Program_Exit shall be stand-alone objects
 test_protected.adb:41:28: error: reference to the implicit self parameter of the protected operation "Set_3" in the expression of its "Program_Exit" aspect is not allowed in SPARK (SPARK RM 6.1.10(1))
 test_protected.adb:41:28: error: violation of pragma SPARK_Mode at test.adc:1
-test_protected.adb:55:10: error: "Set_3" is not allowed in SPARK (due to output mentioned in the expression of an aspect Program_Exit which is not a stand-alone objects)
+test_protected.adb:55:10: error: "Set_3" is not allowed in SPARK (due to output mentioned in the expression of an aspect Program_Exit which is not a stand-alone object)
 test_protected.adb:55:10: error: violation of pragma SPARK_Mode at test.adc:1
 test_protected.ads:16:25: error: outputs mentioned in the expression of an aspect Program_Exit shall be stand-alone objects
 test_protected.ads:16:25: error: reference to the implicit self parameter of the protected operation "Set" in the expression of its "Program_Exit" aspect is not allowed in SPARK (SPARK RM 6.1.10(1))
