@@ -69,7 +69,7 @@ class BaselineRewriter(BaseBaselineRewriter):
         return os.path.join(prefix, test_name, "test.out")
 
     def rewrite_from_index(self, summary, index):
-        # copy of BaseBaselineRewriter.rewrite_from_index that takes "origin"
+        # Copy of BaseBaselineRewriter.rewrite_from_index that takes "origin"
         # into account and saves the info in our local datastructures
         for test_name, entry in index.entries.items():
             if entry.status == TestStatus.FAIL:
