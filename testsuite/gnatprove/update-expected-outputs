@@ -3,8 +3,9 @@
 import argparse
 from e3.fs import sync_tree
 from e3.gaia.api import GAIA
-from e3.testsuite.report.rewriting import BaseBaselineRewriter, RewritingError
+from e3.testsuite.report.rewriting import BaseBaselineRewriter
 from e3.testsuite.report.index import ReportIndex
+from e3.testsuite.result import FailureReason, TestStatus
 from e3.testsuite.utils import ColorConfig
 from adacore_gitlab_scripts.util.e3_baseline_updates import (
     Gitlab,
@@ -14,6 +15,9 @@ import os.path
 import tarfile
 import tempfile
 import yaml
+
+# Mapping test origin to a subdir
+ORIGIN_TO_DIR = {"main": "tests", "internal": "internal", "sparklib": "sparklib"}
 
 descr = """This script updates the outputs from a previous run of the
 testsuite."""
@@ -53,15 +57,58 @@ def parse_options():
 
 
 class BaselineRewriter(BaseBaselineRewriter):
+    def __init__(self, colors):
+        super().__init__(colors)
+        self.skipped_by_origin: dict[str, list[str]] = {}
+        self.warned_missing: list[tuple[str, str]] = []
+        self._current_origin: str | None = None
+
     def baseline_filename(self, test_name: str) -> str:
-        testdir = os.path.join("tests", test_name)
-        if not os.path.exists(testdir):
-            testdir = os.path.join("internal", test_name)
-        if not os.path.exists(testdir):
-            testdir = os.path.join("sparklib", test_name)
-        if not os.path.exists(testdir):
-            raise RewritingError(f"cannot find test {test_name!r}")
-        return os.path.join(testdir, "test.out")
+        origin = self._current_origin or "main"
+        prefix = ORIGIN_TO_DIR.get(origin, "tests")
+        return os.path.join(prefix, test_name, "test.out")
+
+    def rewrite_from_index(self, summary, index):
+        # copy of BaseBaselineRewriter.rewrite_from_index that takes "origin"
+        # into account and saves the info in our local datastructures
+        for test_name, entry in index.entries.items():
+            if entry.status == TestStatus.FAIL:
+                if entry.failure_reasons != {FailureReason.DIFF}:
+                    self.handle_test_error(
+                        summary, test_name, "test failed for another reason than a diff"
+                    )
+                    continue
+
+                result = entry.load()
+                assert result.env is not None
+                origin = result.env.get("origin", "main")
+                origin_dir = ORIGIN_TO_DIR.get(origin, "tests")
+
+                # Skip if top-level origin directory doesn't exist locally
+                if not os.path.isdir(origin_dir):
+                    self.skipped_by_origin.setdefault(origin_dir, []).append(test_name)
+                    continue
+
+                # Warn if specific test directory doesn't exist
+                if not os.path.isdir(os.path.join(origin_dir, test_name)):
+                    self.warned_missing.append((origin_dir, test_name))
+                    continue
+
+                encoding = result.env.get("encoding", self.default_encoding)
+                if result.out is None:
+                    self.handle_test_error(
+                        summary, test_name, "no output associated to test result"
+                    )
+                    continue
+
+                self._current_origin = origin
+                self.handle_test_diff(summary, test_name, result.out, encoding)
+                self._current_origin = None
+
+            elif entry.status == TestStatus.ERROR:
+                self.handle_test_error(
+                    summary, test_name, "test aborted because of an error"
+                )
 
 
 def get_single_subdir(d):
@@ -222,6 +269,16 @@ def main():
             print(f"deleted empty baseline for {elt}")
         for elt in summary.errors:
             print(f"error updating baseline for {elt}")
+
+    for origin_dir, tests in sorted(BR.skipped_by_origin.items()):
+        print(f"\nSkipped baseline changes from {origin_dir!r}:")
+        for t in sorted(tests):
+            print(f"  - {t}")
+
+    if BR.warned_missing:
+        print("\nWarnings - test directory not found:")
+        for origin_dir, test_name in sorted(BR.warned_missing):
+            print(f"  - {os.path.join(origin_dir, test_name)}")
 
 
 main()
