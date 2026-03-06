@@ -185,6 +185,7 @@ procedure Example_Recursive with SPARK_Mode is
 
    --  Create a cyclic list containing a single cell
    function Create (V : Natural) return List with
+     Volatile_Function,
      Post => Valid_List_No_Leak (Create'Result)
      and then Create'Result.L = 1
      and then Get (Create'Result, 1) = V;
