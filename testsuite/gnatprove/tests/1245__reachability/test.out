@@ -1,0 +1,148 @@
+reachability_test.adb:13:13: info: implicit aspect Always_Terminates on "Next" has been proved, subprogram will terminate
+reachability_test.adb:26:04: warning: in instantiation at spark-higher_order-reachability.ads:117
+reachability_test.adb:26:04: warning: in instantiation at spark-higher_order-reachability.ads:138
+reachability_test.adb:26:04: warning: in instantiation at spark-higher_order-reachability.ads:163
+reachability_test.adb:26:04: warning: in instantiation at spark-higher_order-reachability.ads:167
+reachability_test.adb:26:04: warning: in instantiation at spark-higher_order-reachability.ads:180
+reachability_test.adb:26:04: warning: in instantiation at spark-higher_order-reachability.ads:184
+reachability_test.adb:26:04: warning: in instantiation at spark-higher_order-reachability.ads:203
+reachability_test.adb:26:04: warning: in instantiation at spark-higher_order-reachability.ads:207
+reachability_test.adb:26:04: warning: in instantiation at spark-higher_order-reachability.ads:68
+reachability_test.adb:26:04: warning: in instantiation at spark-higher_order-reachability.ads:73
+reachability_test.adb:26:04: warning: in instantiation at spark-higher_order-reachability.ads:82
+reachability_test.adb:26:04: warning: in instantiation at spark-higher_order-reachability.ads:99
+reachability_test.adb:26:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Is_Acyclic_Def" declared at spark-higher_order-reachability.ads:73, instance at line 26
+reachability_test.adb:26:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Is_Acyclic_Def" declared at spark-higher_order-reachability.ads:73, instance at line 26
+reachability_test.adb:26:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Model_Def" declared at spark-higher_order-reachability.ads:138, instance at line 26
+reachability_test.adb:26:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Model_Def" declared at spark-higher_order-reachability.ads:138, instance at line 26
+reachability_test.adb:26:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Reachable_Def" declared at spark-higher_order-reachability.ads:99, instance at line 26
+reachability_test.adb:26:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Reachable_Def" declared at spark-higher_order-reachability.ads:99, instance at line 26
+reachability_test.adb:26:04: warning: potentially missing automatically instanciated lemma "Lemma_Is_Acyclic_Def" declared at spark-higher_order-reachability.ads:167, instance at line 26
+reachability_test.adb:26:04: warning: potentially missing automatically instanciated lemma "Lemma_Is_Acyclic_Def" declared at spark-higher_order-reachability.ads:167, instance at line 26
+reachability_test.adb:26:04: warning: potentially missing automatically instanciated lemma "Lemma_Model_Def" declared at spark-higher_order-reachability.ads:207, instance at line 26
+reachability_test.adb:26:04: warning: potentially missing automatically instanciated lemma "Lemma_Model_Def" declared at spark-higher_order-reachability.ads:207, instance at line 26
+reachability_test.adb:26:04: warning: potentially missing automatically instanciated lemma "Lemma_Reachable_Def" declared at spark-higher_order-reachability.ads:184, instance at line 26
+reachability_test.adb:26:04: warning: potentially missing automatically instanciated lemma "Lemma_Reachable_Def" declared at spark-higher_order-reachability.ads:184, instance at line 26
+reachability_test.adb:26:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+reachability_test.adb:26:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+reachability_test.adb:26:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+reachability_test.adb:26:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+reachability_test.adb:26:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+reachability_test.adb:26:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+reachability_test.adb:26:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+reachability_test.adb:26:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+reachability_test.adb:26:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+reachability_test.adb:26:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+reachability_test.adb:26:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+reachability_test.adb:26:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+reachability_test.adb:40:14: warning: subprogram "Test_Automated_Def" has no effect
+reachability_test.adb:46:22: info: assertion proved (CVC5: 2 VC)
+reachability_test.adb:46:22: info: precondition proved (CVC5: 2 VC)
+reachability_test.adb:46:42: info: precondition proved (CVC5: 2 VC)
+reachability_test.adb:46:63: info: index check proved (CVC5: 2 VC)
+reachability_test.adb:47:10: info: precondition proved (CVC5: 2 VC)
+reachability_test.adb:48:25: info: assertion proved (CVC5: 1 VC)
+reachability_test.adb:48:25: info: precondition proved (CVC5: 2 VC)
+reachability_test.adb:48:65: info: precondition proved (CVC5: 1 VC)
+reachability_test.adb:48:71: info: precondition proved (CVC5: 2 VC)
+reachability_test.adb:48:95: info: index check proved (CVC5: 2 VC)
+reachability_test.adb:49:25: info: assertion proved (CVC5: 1 VC)
+reachability_test.adb:49:25: info: precondition proved (CVC5: 3 VC)
+reachability_test.adb:49:68: info: precondition proved (CVC5: 3 VC)
+reachability_test.adb:49:84: info: index check proved (CVC5: 2 VC)
+reachability_test.adb:53:04: warning: in instantiation at spark-higher_order-reachability.ads:117
+reachability_test.adb:53:04: warning: in instantiation at spark-higher_order-reachability.ads:138
+reachability_test.adb:53:04: warning: in instantiation at spark-higher_order-reachability.ads:68
+reachability_test.adb:53:04: warning: in instantiation at spark-higher_order-reachability.ads:73
+reachability_test.adb:53:04: warning: in instantiation at spark-higher_order-reachability.ads:82
+reachability_test.adb:53:04: warning: in instantiation at spark-higher_order-reachability.ads:99
+reachability_test.adb:53:04: warning: potentially missing automatically instanciated lemma "Lemma_Is_Acyclic_Def" declared at spark-higher_order-reachability.ads:167, instance at line 53
+reachability_test.adb:53:04: warning: potentially missing automatically instanciated lemma "Lemma_Is_Acyclic_Def" declared at spark-higher_order-reachability.ads:167, instance at line 53
+reachability_test.adb:53:04: warning: potentially missing automatically instanciated lemma "Lemma_Model_Def" declared at spark-higher_order-reachability.ads:207, instance at line 53
+reachability_test.adb:53:04: warning: potentially missing automatically instanciated lemma "Lemma_Model_Def" declared at spark-higher_order-reachability.ads:207, instance at line 53
+reachability_test.adb:53:04: warning: potentially missing automatically instanciated lemma "Lemma_Reachable_Def" declared at spark-higher_order-reachability.ads:184, instance at line 53
+reachability_test.adb:53:04: warning: potentially missing automatically instanciated lemma "Lemma_Reachable_Def" declared at spark-higher_order-reachability.ads:184, instance at line 53
+reachability_test.adb:53:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+reachability_test.adb:53:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+reachability_test.adb:53:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+reachability_test.adb:53:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+reachability_test.adb:53:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+reachability_test.adb:53:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+reachability_test.adb:67:14: warning: subprogram "Test_Manual_Def_1" has no effect
+reachability_test.adb:73:22: info: precondition proved (CVC5: 2 VC)
+reachability_test.adb:73:22: medium: assertion might fail [provers reached step limit before completing the proof]
+reachability_test.adb:73:42: info: precondition proved (CVC5: 2 VC)
+reachability_test.adb:73:63: info: index check proved (CVC5: 2 VC)
+reachability_test.adb:74:10: info: precondition proved (CVC5: 2 VC)
+reachability_test.adb:75:25: info: precondition proved (CVC5: 2 VC)
+reachability_test.adb:75:25: medium: assertion might fail [provers reached step limit before completing the proof]
+reachability_test.adb:75:65: medium: precondition might fail [provers reached step limit before completing the proof]
+reachability_test.adb:75:71: info: precondition proved (CVC5: 2 VC)
+reachability_test.adb:75:95: info: index check proved (CVC5: 2 VC)
+reachability_test.adb:76:25: info: precondition proved (CVC5: 3 VC)
+reachability_test.adb:76:25: medium: assertion might fail [provers reached step limit before completing the proof]
+reachability_test.adb:76:68: info: precondition proved (CVC5: 3 VC)
+reachability_test.adb:76:84: info: index check proved (CVC5: 2 VC)
+reachability_test.adb:83:14: warning: subprogram "Test_Manual_Def_2" has no effect
+reachability_test.adb:89:07: info: precondition proved (CVC5: 3 VC)
+reachability_test.adb:90:22: info: assertion proved (CVC5: 2 VC)
+reachability_test.adb:90:22: info: precondition proved (CVC5: 2 VC)
+reachability_test.adb:90:42: info: precondition proved (CVC5: 2 VC)
+reachability_test.adb:90:63: info: index check proved (CVC5: 2 VC)
+reachability_test.adb:91:10: info: precondition proved (CVC5: 2 VC)
+reachability_test.adb:92:10: info: precondition proved (CVC5: 4 VC)
+reachability_test.adb:93:25: info: assertion proved (CVC5: 1 VC)
+reachability_test.adb:93:25: info: precondition proved (CVC5: 2 VC)
+reachability_test.adb:93:65: info: precondition proved (CVC5: 1 VC)
+reachability_test.adb:93:71: info: precondition proved (CVC5: 2 VC)
+reachability_test.adb:93:95: info: index check proved (CVC5: 2 VC)
+reachability_test.adb:94:10: info: precondition proved (CVC5: 4 VC)
+reachability_test.adb:95:25: info: assertion proved (CVC5: 1 VC)
+reachability_test.adb:95:25: info: precondition proved (CVC5: 3 VC)
+reachability_test.adb:95:68: info: precondition proved (CVC5: 3 VC)
+reachability_test.adb:95:84: info: index check proved (CVC5: 2 VC)
+reachability_test.adb:102:14: warning: subprogram "Test_Manual_Def_3" has no effect
+reachability_test.adb:109:22: info: assertion proved (CVC5: 2 VC)
+reachability_test.adb:109:22: info: precondition proved (CVC5: 2 VC)
+reachability_test.adb:109:42: info: precondition proved (CVC5: 2 VC)
+reachability_test.adb:109:63: info: index check proved (CVC5: 2 VC)
+reachability_test.adb:110:10: info: precondition proved (CVC5: 2 VC)
+reachability_test.adb:114:25: info: precondition proved (CVC5: 2 VC)
+reachability_test.adb:114:25: medium: assertion might fail [provers reached step limit before completing the proof]
+reachability_test.adb:114:65: medium: precondition might fail [provers reached step limit before completing the proof]
+reachability_test.adb:114:71: info: precondition proved (CVC5: 2 VC)
+reachability_test.adb:114:95: info: index check proved (CVC5: 2 VC)
+reachability_test.adb:115:25: info: precondition proved (CVC5: 3 VC)
+reachability_test.adb:115:25: medium: assertion might fail [provers reached step limit before completing the proof]
+reachability_test.adb:115:68: info: precondition proved (CVC5: 3 VC)
+reachability_test.adb:115:84: info: index check proved (CVC5: 2 VC)
+reachability_test.adb:119:14: warning: subprogram "Test_Manual_Def_4" has no effect
+reachability_test.adb:128:22: info: assertion proved (CVC5: 2 VC)
+reachability_test.adb:128:22: info: precondition proved (CVC5: 2 VC)
+reachability_test.adb:128:42: info: precondition proved (CVC5: 2 VC)
+reachability_test.adb:128:63: info: index check proved (CVC5: 2 VC)
+reachability_test.adb:129:10: info: precondition proved (CVC5: 2 VC)
+reachability_test.adb:130:25: info: assertion proved (CVC5: 1 VC)
+reachability_test.adb:130:25: info: precondition proved (CVC5: 2 VC)
+reachability_test.adb:130:65: info: precondition proved (CVC5: 1 VC)
+reachability_test.adb:130:71: info: precondition proved (CVC5: 2 VC)
+reachability_test.adb:130:95: info: index check proved (CVC5: 2 VC)
+reachability_test.adb:131:25: info: assertion proved (CVC5: 1 VC)
+reachability_test.adb:131:25: info: precondition proved (CVC5: 3 VC)
+reachability_test.adb:131:68: info: precondition proved (CVC5: 3 VC)
+reachability_test.adb:131:84: info: index check proved (CVC5: 2 VC)
+reachability_test.adb:135:14: warning: subprogram "Test_Manual_Def_5" has no effect
+reachability_test.adb:142:22: info: assertion proved (CVC5: 2 VC)
+reachability_test.adb:142:22: info: precondition proved (CVC5: 2 VC)
+reachability_test.adb:142:42: info: precondition proved (CVC5: 2 VC)
+reachability_test.adb:142:63: info: index check proved (CVC5: 2 VC)
+reachability_test.adb:143:10: info: precondition proved (CVC5: 2 VC)
+reachability_test.adb:144:25: info: assertion proved (CVC5: 1 VC)
+reachability_test.adb:144:25: info: precondition proved (CVC5: 2 VC)
+reachability_test.adb:144:65: info: precondition proved (CVC5: 1 VC)
+reachability_test.adb:144:71: info: precondition proved (CVC5: 2 VC)
+reachability_test.adb:144:95: info: index check proved (CVC5: 2 VC)
+reachability_test.adb:145:25: info: assertion proved (CVC5: 1 VC)
+reachability_test.adb:145:25: info: precondition proved (CVC5: 3 VC)
+reachability_test.adb:145:68: info: precondition proved (CVC5: 3 VC)
+reachability_test.adb:145:84: info: index check proved (CVC5: 2 VC)
