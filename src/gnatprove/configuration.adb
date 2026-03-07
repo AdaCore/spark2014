@@ -569,7 +569,7 @@ package body Configuration is
    -- Get_Or_Create_Unit_Opt_File --
    ---------------------------------
 
-   function Get_Or_Create_Unit_Opt_File
+   function Extra_Args_File_For_Unit
      (Unit              : GPR2.Build.Compilation_Unit.Object;
       Translation_Phase : Boolean;
       Obj_Dir           : String;
@@ -590,7 +590,7 @@ package body Configuration is
    begin
       Opt_File_Set.Include (Opt_File);
       return Opt_File;
-   end Get_Or_Create_Unit_Opt_File;
+   end Extra_Args_File_For_Unit;
 
    -------------------------------------
    -- Handle_Project_Loading_Switches --
@@ -3030,10 +3030,10 @@ package body Configuration is
       --  Quiet overrides Verbose here; probably "-v" and "--quiet" should
       --  override each other
       declare
-         Reporter : Spark_Reporter :=
+         Reporter       : Spark_Reporter :=
            (GPR2.Reporter.Console.Create (GPR2.Reporter.No_Warnings)
             with null record);
-         UVL      : constant GPR2.Reporter.User_Verbosity_Level :=
+         User_Verbosity : constant GPR2.Reporter.User_Verbosity_Level :=
            (if Configuration.Verbose
             then GPR2.Reporter.Verbose
             elsif Configuration.Quiet
@@ -3041,7 +3041,7 @@ package body Configuration is
             else GPR2.Reporter.Regular);
       begin
          Reporter.Set_Verbosity (GPR2.Reporter.Regular);
-         Reporter.Set_User_Verbosity (UVL);
+         Reporter.Set_User_Verbosity (User_Verbosity);
          Tree.Set_Reporter (Reporter);
       end;
    end Read_Command_Line;

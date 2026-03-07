@@ -52,6 +52,7 @@ package body Gnatprove_Build is
    --  The maps from unit names to units are used as sets of units here
 
    type Edge_Colour_T is (No_Colour);
+   pragma Unreferenced (No_Colour);
 
    function Unit_Hash
      (Key : GPR2.Build.Compilation_Unit.Object) return Ada.Containers.Hash_Type
@@ -133,8 +134,7 @@ package body Gnatprove_Build is
       procedure Cleanup;
       --  Delete temp files, close semaphore, kill VC server
 
-      procedure Insert_Actions
-        (Main_Files : Unit_Set; Selected_Files : Unit_Set);
+      procedure Insert_Actions (Mains : Unit_Set; Selected_Units : Unit_Set);
       --  Build the DAG of actions for global gen and analysis
 
       Object_Path_File : constant String := Create_Object_Path_File (Tree);
@@ -176,41 +176,43 @@ package body Gnatprove_Build is
       -- Insert_Actions --
       --------------------
 
-      procedure Insert_Actions
-        (Main_Files : Unit_Set; Selected_Files : Unit_Set)
-      is
+      procedure Insert_Actions (Mains : Unit_Set; Selected_Units : Unit_Set) is
          To_Analyse    : Unit_Set;
          To_Global_Gen : Unit_Set;
 
-         procedure Analyse_All_Units;
-         --  Helper to add all units of the project tree to the To_Analyse set
+         function All_Project_Units return Unit_Set;
+         --  Return all the units of all projects.
 
-         procedure Add_Deps
-           (Set_To_Iterate : Unit_Set; Set_To_Add : in out Unit_Set);
-         --  Helper to add all dependencies of the units in Set_To_Iterate to
-         --  Set_To_Add using the Unit_Dependency_Graph.
+         procedure Add_Deps (Sources : Unit_Set; Target : in out Unit_Set);
+         --  Helper to add all dependencies of the units in Sources to
+         --  Target using the Unit_Dependency_Graph.
 
          -----------------------
-         -- Analyse_All_Units --
+         -- All_Project_Units --
          -----------------------
 
-         procedure Analyse_All_Units is
+         function All_Project_Units return Unit_Set is
+            Result : Unit_Set;
          begin
             for Prj of Tree.Ordered_Views loop
                for Unit of Prj.Own_Units loop
-                  To_Analyse.Include (Unit.Name, Unit);
+                  Result.Include (Unit.Name, Unit);
                end loop;
             end loop;
-         end Analyse_All_Units;
+            return Result;
+         end All_Project_Units;
 
-         procedure Add_Deps
-           (Set_To_Iterate : Unit_Set; Set_To_Add : in out Unit_Set) is
+         --------------
+         -- Add_Deps --
+         --------------
+
+         procedure Add_Deps (Sources : Unit_Set; Target : in out Unit_Set) is
          begin
-            for C in Set_To_Iterate.Iterate loop
+            for Unit of Sources loop
                --  Add all dependencies using the graph's out-neighbors
                declare
                   V_Id       : constant Unit_Graphs.Vertex_Id :=
-                    Unit_Graphs.Get_Vertex (Unit_Dependency_Graph, C.Element);
+                    Unit_Graphs.Get_Vertex (Unit_Dependency_Graph, Unit);
                   Neighbours : constant Unit_Graphs.Vertex_Collection_T :=
                     Unit_Graphs.Get_Collection
                       (Unit_Dependency_Graph,
@@ -223,7 +225,7 @@ package body Gnatprove_Build is
                           Unit_Graphs.Get_Key
                             (Unit_Dependency_Graph, Dep_V_Id);
                      begin
-                        Set_To_Add.Include (Dep.Name, Dep);
+                        Target.Include (Dep.Name, Dep);
                      end;
                   end loop;
                end;
@@ -232,26 +234,25 @@ package body Gnatprove_Build is
 
          use type GPR2.Project.View.Object;
       begin
-         if CL_Switches.UU and then Selected_Files.Is_Empty then
-            Analyse_All_Units;
+         if CL_Switches.UU and then Selected_Units.Is_Empty then
+            To_Analyse := All_Project_Units;
             To_Global_Gen := To_Analyse;
-         elsif not Selected_Files.Is_Empty then
-            To_Analyse := Selected_Files;
-            To_Global_Gen := Selected_Files;
+         elsif not Selected_Units.Is_Empty then
+            To_Analyse := Selected_Units;
+            To_Global_Gen := Selected_Units;
             Add_Deps (To_Analyse, To_Global_Gen);
-         elsif not Main_Files.Is_Empty then
-            To_Analyse := Main_Files;
-            Add_Deps (Main_Files, To_Analyse);
+         elsif not Mains.Is_Empty then
+            To_Analyse := Mains;
+            Add_Deps (Mains, To_Analyse);
             To_Global_Gen := To_Analyse;
          else
-            Analyse_All_Units;
+            To_Analyse := All_Project_Units;
             To_Global_Gen := To_Analyse;
          end if;
 
-         for C in To_Global_Gen.Iterate loop
+         for Elt of To_Global_Gen loop
             declare
-               Owning : constant GPR2.Project.View.Object :=
-                 C.Element.Owning_View;
+               Owning : constant GPR2.Project.View.Object := Elt.Owning_View;
             begin
                if (not CL_Switches.No_Subprojects
                    or else Owning = Tree.Root_Project)
@@ -260,20 +261,19 @@ package body Gnatprove_Build is
                   declare
                      GG_Act : GPR2.Build.Actions.Compile.Ada.Global_Gen.Object;
                   begin
-                     GG_Act.Initialize (C.Element);
+                     GG_Act.Initialize (Elt);
                      if not Tree.Artifacts_Database.Add_Action (GG_Act) then
                         Ada.Text_IO.Put_Line
-                          ("Error adding Global_Gen action for unit "
-                           & String (C.Element.Name));
+                          (Ada.Text_IO.Standard_Error,
+                           "Error adding Global_Gen action for unit "
+                           & String (Elt.Name));
                      end if;
                   end;
                end if;
             end;
          end loop;
-         for C in To_Analyse.Iterate loop
+         for Elt of To_Analyse loop
             declare
-               Elt    : constant GPR2.Build.Compilation_Unit.Object :=
-                 C.Element;
                Owning : constant GPR2.Project.View.Object := Elt.Owning_View;
             begin
                if (not CL_Switches.No_Subprojects
@@ -314,7 +314,8 @@ package body Gnatprove_Build is
                      if not Tree.Artifacts_Database.Add_Action (Analysis_Act)
                      then
                         Ada.Text_IO.Put_Line
-                          ("Error adding Analysis action for unit "
+                          (Ada.Text_IO.Standard_Error,
+                           "Error adding Analysis action for unit "
                            & String (Elt.Name));
                      end if;
                   end;
@@ -423,10 +424,14 @@ package body Gnatprove_Build is
       --  Add edges based on Known_Dependencies
       for U of All_Units loop
          for Dep_Name of U.Known_Dependencies loop
-            if All_Units.Contains (Dep_Name) then
-               Unit_Graphs.Add_Edge
-                 (Unit_Dependency_Graph, U, All_Units.Element (Dep_Name));
-            end if;
+            declare
+               use GPR2.Build.Compilation_Unit.Maps.Maps;
+               C : constant Cursor := All_Units.Find (Dep_Name);
+            begin
+               if Has_Element (C) then
+                  Unit_Graphs.Add_Edge (Unit_Dependency_Graph, U, Element (C));
+               end if;
+            end;
          end loop;
       end loop;
 
@@ -450,7 +455,9 @@ package body Gnatprove_Build is
       Proc       : GNAT.OS_Lib.Process_Id;
    begin
       if Executable = null then
-         Ada.Text_IO.Put_Line ("Could not find executable " & Command);
+         Ada.Text_IO.Put_Line
+           (Ada.Text_IO.Standard_Error,
+            "Could not find executable " & Command);
          GNAT.OS_Lib.OS_Exit (1);
       end if;
       if Debug then

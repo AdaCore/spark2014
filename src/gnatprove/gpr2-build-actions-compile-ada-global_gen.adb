@@ -21,7 +21,7 @@ package body GPR2.Build.Actions.Compile.Ada.Global_Gen is
    begin
       GPR2.Build.Actions.Compile.Ada.Object (Self).Compute_Command
         (Slot, Cmd_Line, Signature_Only);
-      --  replace gcc by gnat2why; we need to explicitly remove the previous
+      --  Replace gcc by gnat2why; we need to explicitly remove the previous
       --  command, then add ours.
       Cmd_Line.Remove (0);
       Cmd_Line.Set_Driver ("gnat2why");
@@ -32,7 +32,7 @@ package body GPR2.Build.Actions.Compile.Ada.Global_Gen is
       --  false, but we can't know the file name without creating it.
       declare
          Opt_File : constant String :=
-           Configuration.Get_Or_Create_Unit_Opt_File
+           Configuration.Extra_Args_File_For_Unit
              (Self.CU,
               False,
               String (Self.CU.Owning_View.Object_Directory.Value),

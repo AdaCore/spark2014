@@ -205,7 +205,7 @@ package Configuration is
    Has_Manual_Prover  : Boolean;
    Has_Coq_Prover     : Boolean;
    CL_Units           : GPR2.Build.Compilation_Unit.Maps.Map;
-   --  a "copy" of Cl_Switches.File_List, but units instead of files.
+   --  A "copy" of Cl_Switches.File_List, but units instead of files.
 
    All_Projects      : Boolean renames CL_Switches.UU;
    Continue_On_Error : Boolean renames CL_Switches.K;
@@ -397,14 +397,14 @@ package Configuration is
    Opt_File_Set : Dir_Name_Sets.Set;
    --  Set of all created opt file paths, for cleanup
 
-   function Get_Or_Create_Unit_Opt_File
+   function Extra_Args_File_For_Unit
      (Unit              : GPR2.Build.Compilation_Unit.Object;
       Translation_Phase : Boolean;
       Obj_Dir           : String;
       Why3_Dir          : String) return String;
-   --  Get or create the opt file for a specific unit's configuration.
+   --  Retrieve the extra args file for a specific unit's configuration. The
+   --  file is created if it does not exist yet.
    --  Looks up the unit's File_Specific settings and generates a flat
-   --  opt file. Units with identical settings share the same file
-   --  (via content-hash filenames in Write_To_File).
+   --  opt file. Units with identical settings share the same file.
 
 end Configuration;
