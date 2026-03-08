@@ -43,10 +43,10 @@ package body Gnatprove_Build is
    --  Write the Why3 conf file to process prover configuration
 
    function Create_Object_Path_File (Tree : Project.Tree.Object) return String;
-   --  Create the object path file which contains the object dirs
-   --  of all projects and is passed to gnat2why (second phase) via -gnateO
-   --  switch. The result of this function is the file name of the temp file.
-   --  The caller is responsible for cleanup (deleting) this file.
+   --  Create the object path file which contains the object dirs of all
+   --  projects and is passed to gnat2why (second phase) via -gnateO switch.
+   --  The result of this function is the file name of the temp file.  The
+   --  caller is responsible for cleanup (deleting) this file.
 
    subtype Unit_Set is GPR2.Build.Compilation_Unit.Maps.Map;
    --  The maps from unit names to units are used as sets of units here
@@ -73,7 +73,8 @@ package body Gnatprove_Build is
    Unit_Dependency_Graph : Unit_Graphs.Graph := Unit_Graphs.Create;
 
    procedure Full_Deps (Tree : Project.Tree.Object);
-   --  Compute full dependencies for all units using the Graphs module
+   --  Compute full (transitive) dependencies for all units and store them in
+   --  Unit_Dependency_Graph.
 
    -----------------------------
    -- Create_Object_Path_File --
@@ -82,7 +83,7 @@ package body Gnatprove_Build is
    function Create_Object_Path_File (Tree : Project.Tree.Object) return String
    is
       use Ada.Text_IO;
-      FT   : File_Type;
+      File : File_Type;
       Name : constant String :=
         Ada.Directories.Compose
           (Configuration.Artifact_Dir (Tree).Virtual_File.Display_Full_Name,
@@ -93,7 +94,7 @@ package body Gnatprove_Build is
       --  per aggregate
       --  ??? Do we need to add the Library_Dir for library projects
       --  instead of the object dir?
-      Create (FT, Name => Name);
+      Create (File, Name => Name);
       for Prj of Tree.Ordered_Views loop
          if Prj.Kind in With_Object_Dir_Kind then
             if Prj.Is_Library then
@@ -107,15 +108,15 @@ package body Gnatprove_Build is
                      then Lib_Dir / Configuration.Phase2_Subdir
                      else Lib_Dir);
                begin
-                  Put_Line (FT, Target_Dir.Display_Full_Name);
+                  Put_Line (File, Target_Dir.Display_Full_Name);
                end;
             else
                Put_Line
-                 (FT, Prj.Object_Directory.Virtual_File.Display_Full_Name);
+                 (File, Prj.Object_Directory.Virtual_File.Display_Full_Name);
             end if;
          end if;
       end loop;
-      Close (FT);
+      Close (File);
       return Name;
    end Create_Object_Path_File;
 
@@ -181,11 +182,11 @@ package body Gnatprove_Build is
          To_Global_Gen : Unit_Set;
 
          function All_Project_Units return Unit_Set;
-         --  Return all the units of all projects.
+         --  Return all the units of all projects
 
          procedure Add_Deps (Sources : Unit_Set; Target : in out Unit_Set);
          --  Helper to add all dependencies of the units in Sources to
-         --  Target using the Unit_Dependency_Graph.
+         --  Target.
 
          -----------------------
          -- All_Project_Units --
@@ -252,7 +253,7 @@ package body Gnatprove_Build is
 
          for Elt of To_Global_Gen loop
             declare
-               Owning : constant GPR2.Project.View.Object := Elt.Owning_View;
+               Owning : GPR2.Project.View.Object renames Elt.Owning_View;
             begin
                if (not CL_Switches.No_Subprojects
                    or else Owning = Tree.Root_Project)
@@ -274,7 +275,7 @@ package body Gnatprove_Build is
          end loop;
          for Elt of To_Analyse loop
             declare
-               Owning : constant GPR2.Project.View.Object := Elt.Owning_View;
+               Owning : GPR2.Project.View.Object renames Elt.Owning_View;
             begin
                if (not CL_Switches.No_Subprojects
                    or else Owning = Tree.Root_Project)
@@ -353,7 +354,7 @@ package body Gnatprove_Build is
 
       Full_Deps (Tree);
 
-      --  decide which units to analyze
+      --  Decide which units to analyze
       declare
          Main_Files     : Unit_Set;
          Selected_Files : Unit_Set;
@@ -402,6 +403,11 @@ package body Gnatprove_Build is
       --  TODO delete why3 conf files
       --  TODO in debug mode, output should not be buffered
 
+      --  GNAT style checks enforce the wrong column here
+      --  eng/toolchain/gnat#1796
+      --!format off
+      finally
+      --!format on
       Cleanup;
    end Flow_Analysis_And_Proof;
 

@@ -159,7 +159,7 @@ package body GPR2.Build.Actions.Compile.Ada.Global_Gen is
                --  its ALI parsing to be done in the Post_Command.
                Self.Tree.Add_Input (Succ.UID, GG_Act.Lib_Ali_File, True);
 
-               --  Add the ALI file to be used by the analysis action.
+               --  Add the ALI file to be used by the analysis action
                Actions.Compile.Ada.Analysis.Object
                  (Self.Tree.Action_Id_To_Reference (Succ.UID).Element.all)
                  .ALI_Files

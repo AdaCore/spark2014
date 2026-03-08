@@ -220,6 +220,10 @@ package body GPR2.Build.Actions.Compile.Ada.Analysis is
       return True;
    end On_Tree_Insertion;
 
+   ---------
+   -- UID --
+   ---------
+
    overriding
    function UID (Self : Object) return Actions.Action_Id'Class is
    begin

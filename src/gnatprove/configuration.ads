@@ -205,7 +205,7 @@ package Configuration is
    Has_Manual_Prover  : Boolean;
    Has_Coq_Prover     : Boolean;
    CL_Units           : GPR2.Build.Compilation_Unit.Maps.Map;
-   --  A "copy" of Cl_Switches.File_List, but units instead of files.
+   --  A "copy" of Cl_Switches.File_List, but units instead of files
 
    All_Projects      : Boolean renames CL_Switches.UU;
    Continue_On_Error : Boolean renames CL_Switches.K;
@@ -379,7 +379,7 @@ package Configuration is
 
    function Artifact_Dir
      (Tree : GPR2.Project.Tree.Object) return Path_Name.Object;
-   --  place to store the gnatprove artifacts. Use this function over
+   --  Place to store the gnatprove artifacts. Use this function over
    --  `Tree.Root_Project.Object_Directory` or similar as the root project
    --  might not have an object directory.
 
