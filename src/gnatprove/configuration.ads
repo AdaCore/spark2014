@@ -346,8 +346,7 @@ package Configuration is
 
    procedure Create_Dir_And_Parents (Dir : Virtual_File);
    --  Create the directory and necessary parent directories. Do nothing if the
-   --  directory already exists. Check if the directory exists. Abort in case
-   --  of failure.
+   --  directory already exists. Abort in case of failure.
 
    procedure Create_File_Or_Exit
      (File : in out Ada.Text_IO.File_Type;
@@ -380,7 +379,7 @@ package Configuration is
    function Artifact_Dir
      (Tree : GPR2.Project.Tree.Object) return Path_Name.Object;
    --  Place to store the gnatprove artifacts. Use this function over
-   --  `Tree.Root_Project.Object_Directory` or similar as the root project
+   --  Tree.Root_Project.Object_Directory or similar as the root project
    --  might not have an object directory.
 
    function Compute_Why3_Args

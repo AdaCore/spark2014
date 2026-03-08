@@ -29,7 +29,7 @@ package body GPR2.Build.Actions.Compile.Ada.Global_Gen is
 
       --  add special options file
       --  ??? We are not supposed to create temp files if Signature_Only is
-      --  false, but we can't know the file name without creating it.
+      --  false, but we cannot know the file name without creating it.
       declare
          Opt_File : constant String :=
            Configuration.Extra_Args_File_For_Unit
@@ -130,7 +130,8 @@ package body GPR2.Build.Actions.Compile.Ada.Global_Gen is
 
                --  Externally built units allow missing ALIs, because they are
                --  optional to analysis actions.
-               --  Non-external units must have a valid ALI file.
+               --  Units from non-externally-built projects must have a valid
+               --  ALI file.
 
                if CU.Owning_View.Is_Externally_Built
                  and then not GG_Act.Lib_Ali_File.Path.Exists

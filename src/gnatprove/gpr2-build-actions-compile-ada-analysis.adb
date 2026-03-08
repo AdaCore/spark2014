@@ -68,7 +68,7 @@ package body GPR2.Build.Actions.Compile.Ada.Analysis is
 
       --  add special options file
       --  ??? We are not supposed to create temp files if Signature_Only is
-      --  false, but we can't know the file name without creating it.
+      --  false, but we cannot know the file name without creating it.
       declare
          Opt_File : constant String :=
            Configuration.Extra_Args_File_For_Unit
@@ -106,6 +106,10 @@ package body GPR2.Build.Actions.Compile.Ada.Analysis is
          end if;
       end loop;
    end Compute_Signature;
+
+   ------------
+   -- Create --
+   ------------
 
    function Create
      (Src : GPR2.Build.Compilation_Unit.Object) return Analysis_Id is
@@ -149,7 +153,7 @@ package body GPR2.Build.Actions.Compile.Ada.Analysis is
         (GPR2.Build.Artifacts.Files.Create (ALI_For_Unit (Self.CU)));
       for Dep of Deps loop
          if Dep.Is_Defined then
-            --  we use Include here even though the deps should not contain
+            --  We use Include here even though the deps should not contain
             --  duplicates, as they might contain the unit itself, for which
             --  we already added the ALI file.
             Self.ALI_Files.Include

@@ -419,7 +419,7 @@ package body Configuration is
             end if;
             if View.Is_Library then
                Clean_Up_One_Directory (View.Library_Directory.Virtual_File);
-               --  ??? This folder doesn't include the subdir apparently
+               --  ??? This folder does not include the subdir apparently
                Clean_Up_One_Directory
                  (View.Library_Ali_Directory.Virtual_File);
             end if;
@@ -3025,7 +3025,7 @@ package body Configuration is
          Max_Why3_Processes := 1;
       end if;
 
-      --  set reporter for build process
+      --  Set reporter for build process
       --  ??? possibly set Verbosity level in addition to User_Verbosity_Level
       --  Quiet overrides Verbose here; probably "-v" and "--quiet" should
       --  override each other

@@ -90,8 +90,8 @@ package body Gnatprove_Build is
            Name      => "obj_path",
            Extension => "tmp");
    begin
-      --  ??? possibly this needs to change for aggregate projects - one file
-      --  per aggregate
+      --  ??? Possibly this needs to change for aggregate projects: one file
+      --  per aggregate.
       --  ??? Do we need to add the Library_Dir for library projects
       --  instead of the object dir?
       Create (File, Name => Name);
@@ -178,7 +178,7 @@ package body Gnatprove_Build is
       --------------------
 
       procedure Insert_Actions (Mains : Unit_Set; Selected_Units : Unit_Set) is
-         To_Analyse    : Unit_Set;
+         To_Analyze    : Unit_Set;
          To_Global_Gen : Unit_Set;
 
          function All_Project_Units return Unit_Set;
@@ -212,15 +212,15 @@ package body Gnatprove_Build is
             for Unit of Sources loop
                --  Add all dependencies using the graph's out-neighbors
                declare
-                  V_Id       : constant Unit_Graphs.Vertex_Id :=
+                  V_Id      : constant Unit_Graphs.Vertex_Id :=
                     Unit_Graphs.Get_Vertex (Unit_Dependency_Graph, Unit);
-                  Neighbours : constant Unit_Graphs.Vertex_Collection_T :=
+                  Neighbors : constant Unit_Graphs.Vertex_Collection_T :=
                     Unit_Graphs.Get_Collection
                       (Unit_Dependency_Graph,
                        V_Id,
                        Unit_Graphs.Out_Neighbours);
                begin
-                  for Dep_V_Id of Neighbours loop
+                  for Dep_V_Id of Neighbors loop
                      declare
                         Dep : constant GPR2.Build.Compilation_Unit.Object :=
                           Unit_Graphs.Get_Key
@@ -236,19 +236,19 @@ package body Gnatprove_Build is
          use type GPR2.Project.View.Object;
       begin
          if CL_Switches.UU and then Selected_Units.Is_Empty then
-            To_Analyse := All_Project_Units;
-            To_Global_Gen := To_Analyse;
+            To_Analyze := All_Project_Units;
+            To_Global_Gen := To_Analyze;
          elsif not Selected_Units.Is_Empty then
-            To_Analyse := Selected_Units;
+            To_Analyze := Selected_Units;
             To_Global_Gen := Selected_Units;
-            Add_Deps (To_Analyse, To_Global_Gen);
+            Add_Deps (To_Analyze, To_Global_Gen);
          elsif not Mains.Is_Empty then
-            To_Analyse := Mains;
-            Add_Deps (Mains, To_Analyse);
-            To_Global_Gen := To_Analyse;
+            To_Analyze := Mains;
+            Add_Deps (Mains, To_Analyze);
+            To_Global_Gen := To_Analyze;
          else
-            To_Analyse := All_Project_Units;
-            To_Global_Gen := To_Analyse;
+            To_Analyze := All_Project_Units;
+            To_Global_Gen := To_Analyze;
          end if;
 
          for Elt of To_Global_Gen loop
@@ -273,7 +273,7 @@ package body Gnatprove_Build is
                end if;
             end;
          end loop;
-         for Elt of To_Analyse loop
+         for Elt of To_Analyze loop
             declare
                Owning : GPR2.Project.View.Object renames Elt.Owning_View;
             begin
@@ -285,30 +285,12 @@ package body Gnatprove_Build is
                      Analysis_Act :
                        GPR2.Build.Actions.Compile.Ada.Analysis.Object;
                      Unit_Deps    : Unit_Set;
+                     Elt_Set      : Unit_Set;
                   begin
                      --  Build the set of units for which we will need the .ali
                      --  files
-                     declare
-                        V_Id       : constant Unit_Graphs.Vertex_Id :=
-                          Unit_Graphs.Get_Vertex (Unit_Dependency_Graph, Elt);
-                        Neighbours :
-                          constant Unit_Graphs.Vertex_Collection_T :=
-                            Unit_Graphs.Get_Collection
-                              (Unit_Dependency_Graph,
-                               V_Id,
-                               Unit_Graphs.Out_Neighbours);
-                     begin
-                        for Dep_V_Id of Neighbours loop
-                           declare
-                              Dep :
-                                constant GPR2.Build.Compilation_Unit.Object :=
-                                  Unit_Graphs.Get_Key
-                                    (Unit_Dependency_Graph, Dep_V_Id);
-                           begin
-                              Unit_Deps.Include (Dep.Name, Dep);
-                           end;
-                        end loop;
-                     end;
+                     Elt_Set.Include (Elt.Name, Elt);
+                     Add_Deps (Elt_Set, Unit_Deps);
 
                      Analysis_Act.Initialize
                        (Elt, Object_Path_File, Unit_Deps);
@@ -343,7 +325,7 @@ package body Gnatprove_Build is
          Exec_Opts.Force := True;
       end if;
 
-      --  ??? set Exec.Jobs based on CL_Switches.Parallel
+      --  ??? Set Exec.Jobs based on CL_Switches.Parallel
       --  This currently causes a regression in K622-001__multisource
       Exec_Opts.Jobs := Configuration.Parallel;
 
@@ -356,14 +338,14 @@ package body Gnatprove_Build is
 
       --  Decide which units to analyze
       declare
-         Main_Files     : Unit_Set;
-         Selected_Files : Unit_Set;
+         Main_Units     : Unit_Set;
+         Selected_Units : Unit_Set;
       begin
          if not Configuration.CL_Units.Is_Empty then
             if Configuration.Only_Given or else CL_Switches.UU then
-               Selected_Files := Configuration.CL_Units;
+               Selected_Units := Configuration.CL_Units;
             else
-               Main_Files := Configuration.CL_Units;
+               Main_Units := Configuration.CL_Units;
             end if;
          else
             for NRP of Tree.Namespace_Root_Projects loop
@@ -382,14 +364,14 @@ package body Gnatprove_Build is
                            --  appear in the project file, so there might be
                            --  duplicates. We use "include" here to protect
                            --  against that.
-                           Main_Files.Include (Unit.Name, Unit);
+                           Main_Units.Include (Unit.Name, Unit);
                         end if;
                      end if;
                   end;
                end loop;
             end loop;
          end if;
-         Insert_Actions (Main_Files, Selected_Files);
+         Insert_Actions (Main_Units, Selected_Units);
       end;
 
       if Tree.Artifacts_Database.Execute (Process_M, Exec_Opts)
@@ -400,8 +382,8 @@ package body Gnatprove_Build is
          Status := 0;
       end if;
 
-      --  TODO delete why3 conf files
-      --  TODO in debug mode, output should not be buffered
+      --  ??? Delete why3 conf files.
+      --  ??? In debug mode, output should not be buffered.
 
       --  GNAT style checks enforce the wrong column here
       --  eng/toolchain/gnat#1796
@@ -410,6 +392,10 @@ package body Gnatprove_Build is
       --!format on
       Cleanup;
    end Flow_Analysis_And_Proof;
+
+   ---------------
+   -- Full_Deps --
+   ---------------
 
    procedure Full_Deps (Tree : Project.Tree.Object) is
       All_Units : Unit_Set;

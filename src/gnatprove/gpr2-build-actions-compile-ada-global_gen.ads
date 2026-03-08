@@ -32,8 +32,10 @@ package GPR2.Build.Actions.Compile.Ada.Global_Gen is
       Status : Execution_Status;
       Stdout : Unbounded_String := Null_Unbounded_String;
       Stderr : Unbounded_String := Null_Unbounded_String) return Boolean;
+
    procedure Initialize
      (Self : in out Object; Unit : GPR2.Build.Compilation_Unit.Object);
+   --  Initialize the action for the given compilation unit.
 
    overriding
    function Extended (Self : Object) return Object;
