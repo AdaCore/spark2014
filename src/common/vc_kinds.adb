@@ -1777,38 +1777,37 @@ package body VC_Kinds is
    function From_JSON (V : JSON_Value) return Cntexmp_Type is
       pragma Assert (Has_Field (V, "type"));
       T : constant String := Get (V, "type");
-      E : constant Unbounded_String := To_Unbounded_String (T);
 
    begin
-      if E = "Integer" then
+      if T = "Integer" then
          return Cnt_Integer;
       end if;
 
-      if E = "Real" then
+      if T = "Real" then
          return Cnt_Decimal;
       end if;
 
-      if E = "Float" then
+      if T = "Float" then
          return Cnt_Float;
       end if;
 
-      if E = "Boolean" then
+      if T = "Boolean" then
          return Cnt_Boolean;
       end if;
 
-      if E = "BitVector" then
+      if T = "BitVector" then
          return Cnt_Bitvector;
       end if;
 
-      if E = "FunctionLiteral" then
+      if T = "FunctionLiteral" then
          return Cnt_Array;
       end if;
 
-      if E = "Record" then
+      if T = "Record" then
          return Cnt_Record;
       end if;
 
-      if E = "Proj" then
+      if T = "Proj" then
          return Cnt_Projection;
       end if;
 
@@ -2077,12 +2076,6 @@ package body VC_Kinds is
                end loop;
                Other_Ptr :=
                  new Cntexmp_Value'(Get_Typed_Cntexmp_Value (JS_Array_others));
-               if Other_Ptr = null then
-                  Other_Ptr :=
-                    new Cntexmp_Value'
-                      (T => Cnt_Invalid, S => Null_Unbounded_String);
-
-               end if;
                return
                  (T             => Cnt_Array,
                   Array_Indices => Indice_Array,

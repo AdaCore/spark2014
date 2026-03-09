@@ -244,9 +244,11 @@ package body CE_Values is
    end "=";
 
    function "=" (V1, V2 : Value_Access) return Boolean
-   is (if Default_Equal (V1, null)
-       then Default_Equal (V2, null)
-       else not Default_Equal (V2, null) and then V1.all = V2.all);
+   is (Default_Equal (V1, V2)
+       or else
+         (not Default_Equal (V1, null)
+          and then not Default_Equal (V2, null)
+          and then V1.all = V2.all));
 
    ---------------------
    -- Div_Fixed_Point --
