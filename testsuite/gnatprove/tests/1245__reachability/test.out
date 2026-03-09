@@ -5,8 +5,8 @@ reachability_test.adb:26:04: warning: in instantiation at spark-higher_order-rea
 reachability_test.adb:26:04: warning: in instantiation at spark-higher_order-reachability.ads:167
 reachability_test.adb:26:04: warning: in instantiation at spark-higher_order-reachability.ads:180
 reachability_test.adb:26:04: warning: in instantiation at spark-higher_order-reachability.ads:184
-reachability_test.adb:26:04: warning: in instantiation at spark-higher_order-reachability.ads:205
-reachability_test.adb:26:04: warning: in instantiation at spark-higher_order-reachability.ads:209
+reachability_test.adb:26:04: warning: in instantiation at spark-higher_order-reachability.ads:206
+reachability_test.adb:26:04: warning: in instantiation at spark-higher_order-reachability.ads:210
 reachability_test.adb:26:04: warning: in instantiation at spark-higher_order-reachability.ads:68
 reachability_test.adb:26:04: warning: in instantiation at spark-higher_order-reachability.ads:73
 reachability_test.adb:26:04: warning: in instantiation at spark-higher_order-reachability.ads:82
@@ -19,8 +19,8 @@ reachability_test.adb:26:04: warning: potentially missing automatically instanci
 reachability_test.adb:26:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Reachable_Def" declared at spark-higher_order-reachability.ads:99, instance at line 26
 reachability_test.adb:26:04: warning: potentially missing automatically instanciated lemma "Lemma_Is_Acyclic_Def" declared at spark-higher_order-reachability.ads:167, instance at line 26
 reachability_test.adb:26:04: warning: potentially missing automatically instanciated lemma "Lemma_Is_Acyclic_Def" declared at spark-higher_order-reachability.ads:167, instance at line 26
-reachability_test.adb:26:04: warning: potentially missing automatically instanciated lemma "Lemma_Model_Def" declared at spark-higher_order-reachability.ads:209, instance at line 26
-reachability_test.adb:26:04: warning: potentially missing automatically instanciated lemma "Lemma_Model_Def" declared at spark-higher_order-reachability.ads:209, instance at line 26
+reachability_test.adb:26:04: warning: potentially missing automatically instanciated lemma "Lemma_Model_Def" declared at spark-higher_order-reachability.ads:210, instance at line 26
+reachability_test.adb:26:04: warning: potentially missing automatically instanciated lemma "Lemma_Model_Def" declared at spark-higher_order-reachability.ads:210, instance at line 26
 reachability_test.adb:26:04: warning: potentially missing automatically instanciated lemma "Lemma_Reachable_Def" declared at spark-higher_order-reachability.ads:184, instance at line 26
 reachability_test.adb:26:04: warning: potentially missing automatically instanciated lemma "Lemma_Reachable_Def" declared at spark-higher_order-reachability.ads:184, instance at line 26
 reachability_test.adb:26:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
@@ -58,8 +58,8 @@ reachability_test.adb:53:04: warning: in instantiation at spark-higher_order-rea
 reachability_test.adb:53:04: warning: in instantiation at spark-higher_order-reachability.ads:99
 reachability_test.adb:53:04: warning: potentially missing automatically instanciated lemma "Lemma_Is_Acyclic_Def" declared at spark-higher_order-reachability.ads:167, instance at line 53
 reachability_test.adb:53:04: warning: potentially missing automatically instanciated lemma "Lemma_Is_Acyclic_Def" declared at spark-higher_order-reachability.ads:167, instance at line 53
-reachability_test.adb:53:04: warning: potentially missing automatically instanciated lemma "Lemma_Model_Def" declared at spark-higher_order-reachability.ads:209, instance at line 53
-reachability_test.adb:53:04: warning: potentially missing automatically instanciated lemma "Lemma_Model_Def" declared at spark-higher_order-reachability.ads:209, instance at line 53
+reachability_test.adb:53:04: warning: potentially missing automatically instanciated lemma "Lemma_Model_Def" declared at spark-higher_order-reachability.ads:210, instance at line 53
+reachability_test.adb:53:04: warning: potentially missing automatically instanciated lemma "Lemma_Model_Def" declared at spark-higher_order-reachability.ads:210, instance at line 53
 reachability_test.adb:53:04: warning: potentially missing automatically instanciated lemma "Lemma_Reachable_Def" declared at spark-higher_order-reachability.ads:184, instance at line 53
 reachability_test.adb:53:04: warning: potentially missing automatically instanciated lemma "Lemma_Reachable_Def" declared at spark-higher_order-reachability.ads:184, instance at line 53
 reachability_test.adb:53:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
