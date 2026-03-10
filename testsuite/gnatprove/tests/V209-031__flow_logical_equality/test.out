@@ -1,3 +1,2 @@
 flow_logical_eq.adb:3:13: error: a subprogram with the "Logical_Equal" annotation shall not access global data
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] flow_logical_eq.adb (test.gpr) failed with status 5

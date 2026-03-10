@@ -1,3 +1,2 @@
 test.adb:3:22: error: non-static attribute "Machine_Rounding" is not yet supported
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] test.adb (test.gpr) failed with status 5

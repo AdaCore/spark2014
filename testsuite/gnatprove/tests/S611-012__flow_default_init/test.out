@@ -3,4 +3,3 @@ c390010.adb:18:04: error: violation of pragma SPARK_Mode at test.adc:1
 c390010.adb:34:15: error: "Derived_Record" is not allowed in SPARK (due to discriminant on derived type)
 c390010.adb:34:15: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] c390010.adb (test.gpr) failed with status 5

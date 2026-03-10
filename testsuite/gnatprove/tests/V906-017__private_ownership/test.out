@@ -5,4 +5,3 @@ private_ownership.ads:17:13: error: incorrect placement for entity with the "Own
 private_ownership.ads:23:07: warning: assuming "Is_D" has no effect on global items
 private_ownership.ads:23:07: warning: no Global contract available for "Is_D" [assumed-global-null]
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] private_ownership.ads (test.gpr) failed with status 5

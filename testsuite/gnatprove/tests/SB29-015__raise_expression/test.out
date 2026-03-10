@@ -71,4 +71,3 @@ test_raise_bad.adb:9:41: error: raise expression in a complex expression in a pr
 test_raise_bad.adb:10:21: error: raise expression in a complex expression in a precondition is not yet supported
 test_raise_bad.adb:11:28: error: raise expression in a complex expression in a precondition is not yet supported
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] test_raise_bad.adb (test.gpr) failed with status 5

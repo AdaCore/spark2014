@@ -19,7 +19,6 @@ Phase 2 of 2: fast partial checking of SPARK legality rules ...
       --> bad_profile.adc:1:01
     1 |    pragma SPARK_Mode (On);
       |    ^
-bad_profile.gpr: error: [Ada Analysis] p.adb (bad_profile.gpr) failed with status 5
 gnatprove: error during fast partial checking of SPARK legality rules
 
 analysis of bad_pep.gpr
@@ -36,5 +35,4 @@ Phase 2 of 2: fast partial checking of SPARK legality rules ...
       --> bad_pep.adc:1:01
     1 |    pragma SPARK_Mode (On);
       |    ^
-bad_pep.gpr: error: [Ada Analysis] p.adb (bad_pep.gpr) failed with status 5
 gnatprove: error during fast partial checking of SPARK legality rules

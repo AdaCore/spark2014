@@ -6,4 +6,3 @@ repr.adb:24:19: info: postcondition proved (CVC5: 4 VC)
 repr_bad.adb:26:57: error: equality on access types is not allowed in SPARK (SPARK RM 3.10(19))
 repr_bad.adb:26:57: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] repr_bad.adb (test.gpr) failed with status 5

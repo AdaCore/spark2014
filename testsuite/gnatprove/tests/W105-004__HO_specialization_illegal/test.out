@@ -24,4 +24,3 @@ illegal.adb:179:14: error: a subprogram with the "Higher_Order_Specialization" a
 system.ads:1:01: error: "t" is not allowed in SPARK (due to incorrect use of "Higher_Order_Specialization" annotation)
 system.ads:1:01: error: violation of aspect SPARK_Mode at illegal.adb:3
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] illegal.adb (test.gpr) failed with status 5

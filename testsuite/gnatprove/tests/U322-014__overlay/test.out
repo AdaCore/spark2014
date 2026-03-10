@@ -9,4 +9,3 @@ init.adb:13:04: info: precondition proved (Trivial: 1 VC)
 init.adb:13:07: high: "X" is not initialized
 init_relax.adb:4:04: error: relaxed initialization on overlaid objects is not yet supported
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] init_relax.adb (test.gpr) failed with status 5

@@ -11,4 +11,3 @@ p.ads:16:13: info: implicit aspect Always_Terminates on "Wrapper4" has been prov
 p.ads:16:13: medium: "X" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(19))
 p.ads:16:72: info: flow dependencies proved
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] p.ads (test.gpr) failed with status 5

@@ -34,4 +34,3 @@ main.adb:38:50: error: duplicate value of a type with ownership is not allowed i
 main.adb:38:50: error: singleton choice required to prevent aliasing
 main.adb:38:50: error: violation of aspect SPARK_Mode at line 2
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] main.adb (test.gpr) failed with status 5

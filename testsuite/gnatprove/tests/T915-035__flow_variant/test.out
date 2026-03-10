@@ -7,4 +7,3 @@ p.ads:5:110: high: "Y" must be listed in the Global aspect of "B" (SPARK RM 6.1.
 p.ads:5:114: error: "X" is referenced in Pre but missing from the Global
 p.ads:5:114: error: "Y" is referenced in Pre but missing from the Global
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] p.adb (test.gpr) failed with status 5

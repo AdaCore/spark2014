@@ -2,4 +2,3 @@ achiever.ads:1:06: error: "Achiever (body)" depends on "Achiever (spec)"
 achiever.ads:1:06: error: "Achiever (spec)" depends on "Sc_Status_Type (spec)"
 achiever.ads:1:06: error: file "sc_status_type.ads" not found
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Global_Gen] achiever.adb (test.gpr) failed with status 5

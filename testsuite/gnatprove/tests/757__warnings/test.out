@@ -16,7 +16,6 @@ pedantic.adb:7:13: warning: references to the "Image" attribute are handled in a
 rec.ads:3:13: warning: subprogram "P" has no effect
 rec.ads:3:34: error: no recursive call visible [variant-no-recursion]
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] rec.adb (test.gpr) failed with status 5
 ---- expect no warning -------
 pedantic.adb:5:12: info: implicit aspect Always_Terminates on "To_String" has been proved, subprogram will terminate
 pedantic.adb:7:13: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]

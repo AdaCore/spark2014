@@ -3,4 +3,3 @@ p.adb:5:25: error: effectively volatile type or object not at library level is n
 p.adb:5:25: error: launch "gnatprove --explain=E0001" for more information
 p.adb:5:25: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] p.adb (test.gpr) failed with status 5

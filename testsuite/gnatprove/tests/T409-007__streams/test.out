@@ -35,4 +35,3 @@ streamable_types.ads:14:04: info: initialization of "V" proved
 streamable_types.ads:14:04: medium: null exclusion check might fail [provers reached step limit before completing the proof]
 streamable_types.ads:15:04: medium: null exclusion check might fail [provers reached step limit before completing the proof]
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] main.adb (test.gpr) failed with status 5

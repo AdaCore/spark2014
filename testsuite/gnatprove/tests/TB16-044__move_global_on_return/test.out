@@ -22,4 +22,3 @@ test_move.adb:25:13: error: return from "Create_5" with moved value for "Ptr"
 test_move.adb:25:13: info: implicit aspect Always_Terminates on "Create_5" has been proved, subprogram will terminate
 test_move.adb:28:14: info: initialization of "R" proved
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] test_move.adb (test.gpr) failed with status 5

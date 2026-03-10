@@ -47,4 +47,3 @@ log_pack.ads:281:07: error: violation of pragma SPARK_Mode at gnat.adc:2
 log_pack.ads:282:07: error: "Log_Group" is not allowed in SPARK (due to component of anonymous access type)
 log_pack.ads:282:07: error: violation of pragma SPARK_Mode at gnat.adc:2
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] log_pack.adb (test.gpr) failed with status 5

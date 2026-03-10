@@ -1,3 +1,2 @@
 no_return_function.adb:2:13: error: function annotated with No_Return is not yet supported
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] no_return_function.adb (test.gpr) failed with status 5

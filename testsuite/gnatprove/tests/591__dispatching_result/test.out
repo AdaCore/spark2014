@@ -7,6 +7,3 @@ h_3.ads:6:09: error: consider overriding the following primitive subprogram: "Cr
 h_3.ads:6:09: error: tagged type with inherited primitive subprograms with controlling result and private extension outside SPARK is not yet supported
 h_3.ads:6:09: error: tagged type with inherited primitive subprograms with controlling result and private extension outside SPARK is not yet supported
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] h.ads (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] h_3.ads (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] test.adb (test.gpr) failed with status 5

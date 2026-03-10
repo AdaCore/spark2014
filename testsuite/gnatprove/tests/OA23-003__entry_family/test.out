@@ -3,6 +3,3 @@ var.ads:8:13: error: entry family is not yet supported
 zero.ads:3:42: warning: null range [enabled by default]
 zero.ads:6:13: error: entry family is not yet supported
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] one.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] var.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] zero.adb (test.gpr) failed with status 5

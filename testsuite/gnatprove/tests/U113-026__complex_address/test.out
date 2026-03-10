@@ -23,4 +23,3 @@ arrays.ads:35:27: error: violation of aspect SPARK_Mode at line 2
 arrays.ads:35:44: warning: Program_Error will be raised at run time [enabled by default]
 arrays.ads:35:44: warning: cannot call "G" before body seen [enabled by default]
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] arrays.ads (test.gpr) failed with status 5

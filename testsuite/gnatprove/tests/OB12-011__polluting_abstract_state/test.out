@@ -4,4 +4,3 @@ client.adb:6:08: error: volatile object or volatile function call in interfering
 p.adb:12:52: warning: statement has no effect
 p.ads:3:13: info: implicit aspect Always_Terminates on "Blocking" has been proved, subprogram will terminate
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] client.adb (test.gpr) failed with status 5

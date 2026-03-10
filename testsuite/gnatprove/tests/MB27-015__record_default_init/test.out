@@ -67,4 +67,3 @@ p.ads:40:11: info: flow dependencies proved
 p.ads:42:13: info: implicit aspect Always_Terminates on "Op2" has been proved, subprogram will terminate
 p.ads:46:11: info: flow dependencies proved
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] p.adb (test.gpr) failed with status 5

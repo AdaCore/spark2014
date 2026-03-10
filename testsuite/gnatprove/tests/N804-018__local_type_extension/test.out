@@ -11,4 +11,3 @@ local_type_ext.adb:42:15: error: local derived type from non-local parent or int
 local_type_ext.adb:42:15: error: violation of aspect SPARK_Mode at line 2
 local_type_ext.adb:48:04: warning: analyzing unreferenced procedure "OK" [unreferenced-procedure]
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] local_type_ext.adb (test.gpr) failed with status 5

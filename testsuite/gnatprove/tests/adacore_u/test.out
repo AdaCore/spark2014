@@ -14,7 +14,6 @@ search_array.ads:5:13: info: implicit aspect Always_Terminates on "Search_Zero_P
 use_access.adb:3:41: medium: range check might fail, cannot prove lower bound for W (W'First) [reason for check: default component value must fit in the type] [possible fix: subprogram at use_access.ads:4 should mention W in a precondition] [provers reached step limit before completing the proof]
 use_access.adb:3:45: high: array index check might fail (e.g. when W'First = 1 and W'Last = 0) [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
 gnatprove: error during flow analysis and proof
-overview.gpr: error: [Ada Analysis] global_stack.adb (overview.gpr) failed with status 5
 p.adb:8:09: info: data dependencies proved
 p.adb:13:41: info: index check proved (CVC5: 2 VC)
 p.adb:14:16: info: index check proved (CVC5: 2 VC)
@@ -467,8 +466,6 @@ volatile_variables.ads:14:13: error: function "Read_ER" with output global "ER" 
 volatile_variables.ads:14:13: error: launch "gnatprove --explain=E0005" for more information
 volatile_variables.ads:14:13: error: violation of aspect SPARK_Mode at line 4
 gnatprove: error during flow analysis and proof
-systems_programming.gpr: error: [Ada Analysis] volatile_functions.adb (systems_programming.gpr) failed with status 5
-systems_programming.gpr: error: [Ada Analysis] volatile_variables.adb (systems_programming.gpr) failed with status 5
 client.adb:10:10: warning: assuming "Extract" always terminates
 client.adb:10:10: warning: no Always_Terminates aspect available for "Extract" [assumed-always-terminates]
 client.adb:10:19: warning: "X" is set by "Extract" but not used after the call
@@ -524,8 +521,6 @@ trivial.ads:4:14: info: nontermination of task proved (CVC5: 1 VC)
 trivial.ads:5:04: high: possible data race when accessing variable "trivial.id"
 trivial.ads:5:04: high: task "trivial.t1" accesses "trivial.id"
 trivial.ads:5:04: high: task "trivial.t2" accesses "trivial.id"
-concurrency.gpr: error: [Ada Global_Gen] protected_complex.adb (concurrency.gpr) failed with status 5
-concurrency.gpr: error: [Ada Global_Gen] rendezvous.adb (concurrency.gpr) failed with status 5
 gnatprove: error during flow analysis and proof
 abstract_ints.adb:12:30: info: overflow check proved (CVC5: 2 VC)
 abstract_ints.adb:29:10: info: precondition proved (CVC5: 1 VC)

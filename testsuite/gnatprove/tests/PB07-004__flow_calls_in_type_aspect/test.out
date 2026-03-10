@@ -13,5 +13,3 @@ dic.adb:5:10: error: violation of pragma SPARK_Mode at test.adc:1
 dic.ads:5:40: error: "Blocking_True" is not allowed in SPARK (due to function with global outputs)
 dic.ads:5:40: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] blocking_true.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] dic.adb (test.gpr) failed with status 5

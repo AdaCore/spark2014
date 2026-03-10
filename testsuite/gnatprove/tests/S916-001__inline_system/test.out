@@ -2,4 +2,3 @@ s-inline.adb:9:04: error: Constraint_Error would have been raised at run time
 s-inline.adb:9:04: error: error in inlined body at line 5
 s-inline.adb:9:04: error: value not in range of type "Standard.Integer"
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Global_Gen] s-inline.adb (test.gpr) failed with status 5

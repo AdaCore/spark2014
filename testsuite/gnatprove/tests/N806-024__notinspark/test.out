@@ -1,3 +1,2 @@
 notinspark.ads:6:27: error: global item must denote object, state or current instance of concurrent type
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Global_Gen] notinspark.ads (test.gpr) failed with status 5

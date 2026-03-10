@@ -2,4 +2,3 @@ prot.adb:7:40: error: protected function with effective reads "G" is not allowed
 prot.ads:12:13: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 prot.ads:12:37: info: data dependencies proved
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] prot.adb (test.gpr) failed with status 5

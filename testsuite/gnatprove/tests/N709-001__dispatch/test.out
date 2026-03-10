@@ -5,6 +5,3 @@ object.ads:15:31: error: nondispatching call to nonabstract subprogram of abstra
 object.ads:15:31: error: nondispatching call to nonabstract subprogram of abstract type with nonstatic class-wide pre/postconditions
 object.ads:15:31: error: nondispatching call to nonabstract subprogram of abstract type with nonstatic class-wide pre/postconditions
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Global_Gen] object.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Global_Gen] rectangle.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Global_Gen] window.adb (test.gpr) failed with status 5

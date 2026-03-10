@@ -3,4 +3,3 @@ late_init.adb:7:28: error: violation of pragma SPARK_Mode at test.adc:1
 late_init.adb:9:54: error: "T" is not allowed in SPARK
 late_init.adb:9:54: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] late_init.adb (test.gpr) failed with status 5

@@ -2,4 +2,3 @@ tasks.ads:8:37: error: default initialization cannot depend on variable input "X
 tasks.ads:8:37: error: launch "gnatprove --explain=E0007" for more information
 tasks.ads:8:37: error: use instead a constant initialized to the expression with variable input
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] tasks.adb (test.gpr) failed with status 5

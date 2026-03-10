@@ -7,4 +7,3 @@ main.adb:22:32: error: non-static attribute "Machine_Rounding" is not yet suppor
 main.adb:25:32: error: non-static attribute "Adjacent" is not yet supported
 main.adb:28:32: error: non-static attribute "Leading_Part" is not yet supported
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] main.adb (test.gpr) failed with status 5

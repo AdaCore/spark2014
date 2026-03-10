@@ -4,4 +4,3 @@ inl.adb:15:49: error: use instead a constant initialized to the expression with 
 inl.adb:22:04: warning: analyzing unreferenced procedure "Call_Clear" [unreferenced-procedure]
 inl.adb:25:07: info: analyzing call to "Clear_X" in context
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] inl.adb (test.gpr) failed with status 5

@@ -123,4 +123,3 @@ user.ads:33:11: info: flow dependencies proved
 user.ads:36:11: info: data dependencies proved
 user.ads:37:11: info: flow dependencies proved
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] bad_refinement.adb (test.gpr) failed with status 5

@@ -22,4 +22,3 @@ test_move.adb:262:14: error: return from "P9" with moved value for "X"
 test_move.adb:297:19: warning: "X" is not modified, could be IN
 test_move.adb:303:12: warning: this statement is never reached
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] test_move.adb (test.gpr) failed with status 5

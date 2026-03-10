@@ -84,4 +84,3 @@ spark-containers-parameter_checks.ads:255:12: error: "moth.config.read_only_conf
 spark-containers-parameter_checks.ads:255:12: error: "moth.config.read_only_conf" is referenced in Pre but missing from the Global, in instantiation at spark-containers-formal-ordered_sets.ads:141, in instantiation at moth.ads:127
 spark-containers-parameter_checks.ads:255:35: high: "Config.State" must be listed in the Global aspect of "Eq_Transitive" (SPARK RM 6.1.4(15)), in instantiation at spark-containers-formal-ordered_sets.ads:141, in instantiation at moth.ads:127
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] moth.adb (test.gpr) failed with status 5

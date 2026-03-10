@@ -10,4 +10,3 @@ port2.adb:21:19: error: volatile object or volatile function call in interfering
 port2.ads:17:04: warning: address specification on "C" is imprecisely supported: assuming no concurrent accesses to non-atomic object [imprecise-address-specification] [E0012]
 port2.ads:17:04: warning: launch "gnatprove --explain=E0012" for more information
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] port2.adb (test.gpr) failed with status 5

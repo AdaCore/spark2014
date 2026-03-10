@@ -25,4 +25,3 @@ sub.ads:3:13: error: function "F" with output global "memory accessed through ob
 sub.ads:3:13: error: launch "gnatprove --explain=E0005" for more information
 sub.ads:3:13: error: violation of pragma SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] sub.adb (test.gpr) failed with status 5

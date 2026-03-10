@@ -7,5 +7,3 @@ main_access_2.adb:21:32: high: "V_3" must be listed in the Global aspect of "Acc
 main_access_2.adb:29:19: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 main_access_2.adb:35:26: high: "V_4" must be listed in the Global aspect of "Acc_4" (SPARK RM 6.1.4(15))
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] main_access.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] main_access_2.adb (test.gpr) failed with status 5

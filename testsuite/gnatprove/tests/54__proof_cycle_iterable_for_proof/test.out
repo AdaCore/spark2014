@@ -411,8 +411,3 @@ rec_ids.ads:6:13: warning: potentially missing implicit contract for "Element" d
 rec_ids.ads:6:13: warning: potentially missing implicit contract for "Has_Element_Through_Model_Id" declared at line 6
 rec_ids.ads:6:13: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] contains_through_model.ads (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] element_through_model.ads (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] has_element_through_model.ads (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] main.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] p.ads (test.gpr) failed with status 5

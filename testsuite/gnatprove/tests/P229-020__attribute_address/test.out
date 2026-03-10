@@ -5,5 +5,3 @@ address.adb:7:26: error: attribute "Address" outside an attribute definition cla
 address.adb:7:26: error: launch "gnatprove --explain=E0002" for more information
 address.adb:7:26: error: violation of aspect SPARK_Mode at line 4
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] addr_constant.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] address.adb (test.gpr) failed with status 5

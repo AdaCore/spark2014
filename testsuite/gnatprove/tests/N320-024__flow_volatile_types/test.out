@@ -2,4 +2,3 @@ volatile_types.adb:13:12: error: effectively volatile type or object not at libr
 volatile_types.adb:13:12: error: launch "gnatprove --explain=E0001" for more information
 volatile_types.adb:13:12: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] volatile_types.adb (test.gpr) failed with status 5

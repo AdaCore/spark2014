@@ -1,4 +1,3 @@
 prot.ads:16:36: error: "G" is constituent of single protected type "P"
 prot.ads:16:36: error: reference to variable "G" cannot appear in this context
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Global_Gen] prot.adb (test.gpr) failed with status 5

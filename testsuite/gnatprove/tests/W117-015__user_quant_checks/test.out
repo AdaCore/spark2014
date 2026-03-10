@@ -245,4 +245,3 @@ quant_late_errors.adb:86:10: medium: implicit aspect Always_Terminates on "Eleme
 quant_late_errors.adb:86:10: medium: implicit aspect Always_Terminates on "Element" could be incorrect, "Element" and "Next" are mutually recursive [possible fix: annotate "Element" and "Next" with Subprogram_Variant aspects]
 quant_late_errors.adb:86:10: medium: implicit aspect Always_Terminates on "Element" could be incorrect, subprogram is recursive [possible fix: annotate "Element" with a Subprogram_Variant aspect]
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] quant_late_errors.adb (test.gpr) failed with status 5

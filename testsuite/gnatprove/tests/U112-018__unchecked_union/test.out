@@ -38,4 +38,3 @@ uu_mem.ads:27:13: info: implicit aspect Always_Terminates on "C4" has been prove
 uu_mem.ads:45:13: info: implicit aspect Always_Terminates on "C7" has been proved, subprogram will terminate
 uu_mem.ads:48:13: info: implicit aspect Always_Terminates on "C8" has been proved, subprogram will terminate
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] uu_bad.ads (test.gpr) failed with status 5

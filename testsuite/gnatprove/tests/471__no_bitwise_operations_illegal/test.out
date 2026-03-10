@@ -37,4 +37,3 @@ illegal.adb:34:09: info: no contextual analysis of "Rotate_Right" (body not seen
 system.ads:1:01: error: "New_Int" is not allowed in SPARK (due to incorrect use of "No_Bitwise_Operations" annotation)
 system.ads:1:01: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] illegal.adb (test.gpr) failed with status 5

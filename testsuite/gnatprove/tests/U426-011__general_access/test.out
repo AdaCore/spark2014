@@ -136,4 +136,3 @@ gen_access.adb:134:26: info: pointer dereference check proved (CVC5: 1 VC)
 gen_access.adb:134:28: info: pointer dereference check proved (CVC5: 1 VC)
 gen_access.adb:137:04: info: precondition proved (CVC5: 1 VC)
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] bad_gen_access.adb (test.gpr) failed with status 5

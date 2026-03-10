@@ -9,5 +9,3 @@ move_constant.adb:6:15: error: return from "Bad" with moved value for "X"
 move_constant.adb:6:20: warning: "X" is not modified, parameter type could be rewritten as 'access constant Integer'
 move_constant.adb:6:29: info: initialization of "Y" proved
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] missing_check.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] move_constant.adb (test.gpr) failed with status 5

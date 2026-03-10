@@ -5,4 +5,3 @@ p.adb:15:26: error: actual for formal object with mode in cannot depend on varia
 p.adb:15:26: error: launch "gnatprove --explain=E0007" for more information
 p.adb:15:26: error: use instead a constant initialized to the expression with variable input
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] p.adb (test.gpr) failed with status 5

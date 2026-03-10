@@ -7,4 +7,3 @@ main.adb:13:18: error: violation of aspect SPARK_Mode at line 1
 main.adb:13:18: warning: assuming "Id" has no effect on global items
 main.adb:13:18: warning: no Global contract available for "Id" [assumed-global-null]
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] main.adb (test.gpr) failed with status 5

@@ -19,6 +19,3 @@ abstract_state_illegal_4-pub_child.adb:5:57: error: Part_Of indicator specifies 
 abstract_state_illegal_4.ads:9:26: warning: no subprogram exists that can initialize abstract state "Abstract_State_Illegal_4.State"
 abstract_state_illegal_4.ads:11:14: warning: subprogram "P" has no effect
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Global_Gen] abstract_state_illegal.ads (test.gpr) failed with status 5
-test.gpr: error: [Ada Global_Gen] abstract_state_illegal_2.ads (test.gpr) failed with status 5
-test.gpr: error: [Ada Global_Gen] abstract_state_illegal_4-pub_child.adb (test.gpr) failed with status 5

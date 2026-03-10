@@ -24,4 +24,3 @@ test_borrow.adb:65:60: error: launch "gnatprove --explain=E0010" for more inform
 test_borrow.adb:65:60: error: object was moved at line 63 [E0010]
 test_borrow.adb:65:60: error: part of dereference from "X" is not readable
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] test_borrow.adb (test.gpr) failed with status 5

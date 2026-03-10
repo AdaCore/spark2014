@@ -6,4 +6,3 @@ foo.adb:24:07: error: "Asm_Output_Operand" is not allowed in SPARK (due to entit
 foo.adb:24:07: error: violation of aspect SPARK_Mode at line 4
 foo.adb:24:07: error: violation of aspect SPARK_Mode at line 4
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] foo.adb (test.gpr) failed with status 5

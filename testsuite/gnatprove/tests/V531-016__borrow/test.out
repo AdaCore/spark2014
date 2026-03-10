@@ -34,5 +34,3 @@ top.adb:63:13: error: borrower "W" exits its scope with moved value
 top.adb:63:13: error: launch "gnatprove --explain=E0010" for more information
 top.adb:63:13: error: object was moved at line 11 [E0010]
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] hole.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] top.adb (test.gpr) failed with status 5

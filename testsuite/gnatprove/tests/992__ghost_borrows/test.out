@@ -5,4 +5,3 @@ p.adb:18:14: warning: subprogram "Test2" has no effect
 p.adb:27:10: info: no contextual analysis of "Test2" (nested subprogram)
 p.adb:32:23: error: enabled ghost object "X" cannot be borrowed in a call to disabled ghost subprogram "Set_To_Zero"
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] p.adb (test.gpr) failed with status 5

@@ -32,5 +32,3 @@ ext3.ads:23:32: warning: assuming "Create" has no effect on global items
 ext3.ads:23:32: warning: cannot call "Create" before body seen [enabled by default]
 ext3.ads:23:32: warning: no Global contract available for "Create" [assumed-global-null]
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] ext2.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] ext3.ads (test.gpr) failed with status 5

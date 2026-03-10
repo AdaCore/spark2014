@@ -1,4 +1,3 @@
 illegal_glob.adb:7:14: error: "Proc_Out_Global" has global outputs
 illegal_glob.adb:7:14: error: a subprogram with the "Higher_Order_Specialization" annotation shall have no side-effects
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] illegal_glob.adb (test.gpr) failed with status 5

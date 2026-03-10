@@ -272,5 +272,3 @@ linted-update.ads:40:38: info: initialization of "S" proved
 linted-update.ads:41:41: info: initialization of "U" proved
 linted-windows.ads:26:41: info: initialization of "W" proved
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] linted-io_pool.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] linted-timer.adb (test.gpr) failed with status 5

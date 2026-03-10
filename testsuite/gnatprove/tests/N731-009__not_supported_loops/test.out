@@ -1,4 +1,3 @@
 loops.adb:8:13: error: non-scalar object or object with address clause declared before loop-invariant is not yet supported
 loops.adb:164:20: error: non-scalar object or object with address clause declared before loop-invariant is not yet supported
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] loops.adb (test.gpr) failed with status 5

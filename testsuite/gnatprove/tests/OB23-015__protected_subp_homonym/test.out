@@ -29,5 +29,3 @@ t-tt.adb:17:04: info: analyzing call to "Set" in context
 t-tt.adb:18:04: info: analyzing call to "Set" in context
 t.ads:3:14: medium: the task might terminate, which is not allowed in SPARK [provers gave up before completing the proof]
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] p.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] s.adb (test.gpr) failed with status 5

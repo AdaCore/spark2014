@@ -8,4 +8,3 @@ invalid_read_in_elab.adb:35:25: error: object was borrowed at line 30
 invalid_read_in_elab.adb:39:25: error: object was borrowed at line 30
 invalid_read_in_elab_2.ads:8:24: medium: pointer dereference check might fail (e.g. when X = null) [provers reached step limit before completing the proof]
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] invalid_read_in_elab.adb (test.gpr) failed with status 5

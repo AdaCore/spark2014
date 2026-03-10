@@ -110,4 +110,3 @@ test.adb:25:33: medium: validity check might fail [provers reached step limit be
 test.adb:29:14: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
 test.adb:38:24: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] ext.ads (test.gpr) failed with status 5

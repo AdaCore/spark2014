@@ -315,4 +315,3 @@ unsupported.adb:22:10: error: violation of pragma SPARK_Mode at test.adc:1
 unsupported.adb:24:10: error: conversion between incompatible fixed-point types is not yet supported
 unsupported.adb:25:22: error: operation between incompatible fixed-point types is not yet supported
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] unsupported.adb (test.gpr) failed with status 5

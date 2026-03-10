@@ -1,3 +1,2 @@
 gnatprove: Selected prover not installed or not configured.
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] dummy.adb (test.gpr) failed with status 4

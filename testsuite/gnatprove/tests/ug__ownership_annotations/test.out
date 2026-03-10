@@ -9,5 +9,4 @@
    21 |       Y := X;
       |            ^
       + launch "gnatprove --explain=E0010" for more information
-ownership_annotations.gpr: error: [Ada Analysis] simple_ownership.adb (ownership_annotations.gpr) failed with status 5
 gnatprove: error during flow analysis and proof

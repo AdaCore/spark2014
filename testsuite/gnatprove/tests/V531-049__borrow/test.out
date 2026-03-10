@@ -2,7 +2,6 @@ main.adb:6:13: error: "X" is not readable
 main.adb:6:13: error: launch "gnatprove --explain=E0010" for more information
 main.adb:6:13: error: object was moved at line 5 [E0010]
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] main.adb (test.gpr) failed with status 5
 ============================
 Most difficult proved checks
 ============================

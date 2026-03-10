@@ -2,4 +2,3 @@ test_eq.ads:9:13: error: user-defined equality shall have a Global aspect of nul
 test_eq.ads:9:13: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
 test_eq.ads:15:21: info: data dependencies proved
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] test_eq.adb (test.gpr) failed with status 5

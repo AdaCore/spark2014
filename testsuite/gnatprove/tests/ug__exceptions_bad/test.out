@@ -3,5 +3,4 @@
    16 |                            A (I) = (if I < Index then A'Old (I) + 1 else A'Old (I))));
       |                            ^
       + only parameters passed by reference are allowed
-exceptions_bad.gpr: error: [Ada Global_Gen] exceptions_bad.adb (exceptions_bad.gpr) failed with status 5
 gnatprove: error during flow analysis and proof

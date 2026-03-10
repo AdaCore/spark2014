@@ -11,4 +11,3 @@ iter_multi_array.adb:6:27: error: iterator specification over multi-dimensional 
 iter_multi_array.adb:11:27: error: iterator specification over multi-dimensional array is not yet supported
 iter_multi_array.adb:30:27: error: iterator specification over multi-dimensional array is not yet supported
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] iter_multi_array.adb (test.gpr) failed with status 5

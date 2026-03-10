@@ -59,5 +59,3 @@ test_fl_good.adb:61:20: warning: "G" is set by "Random" but not used after the c
 test_fl_good.adb:62:24: info: range check proved (Z3: 2 VC)
 test_fl_good.adb:62:31: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] test_di_bad2.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] test_fl_bad2.adb (test.gpr) failed with status 5

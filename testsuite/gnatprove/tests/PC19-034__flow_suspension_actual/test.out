@@ -3,5 +3,3 @@ q.adb:9:35: error: suspension on a formal parameter is not yet supported
 q.adb:22:38: warning: assuming "Suspend_Until_True" always terminates
 q.adb:22:38: warning: no Always_Terminates aspect available for "Suspend_Until_True" [assumed-always-terminates]
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] p.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] q.adb (test.gpr) failed with status 5

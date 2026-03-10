@@ -4,7 +4,6 @@ bad_spec.ads:9:04: error: aspect "Always_Terminates" cannot apply to function [E
 bad_spec.ads:9:04: error: instantiation error at line 7
 bad_spec.ads:9:04: error: launch "gnatprove --explain=E0016" for more information
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Global_Gen] bad_spec.ads (test.gpr) failed with status 5
 bad_spec_prag.ads:5:04: warning: Terminating, Always_Return, and Might_Not_Return annotations are deprecated, ignored [deprecated-terminating]
 bad_spec_prag.ads:5:04: warning: replace "pragma Annotate (GNATprove, Might_Not_Return[, ...])" by "with Always_Terminates => False" or use an exceptional contract or program exit postcondition on the corresponding entity
 bad_spec_prag.ads:9:04: warning: Terminating, Always_Return, and Might_Not_Return annotations are deprecated, ignored [deprecated-terminating]

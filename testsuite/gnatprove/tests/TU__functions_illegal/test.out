@@ -11,4 +11,3 @@ functions_illegal_2.ads:4:35: error: launch "gnatprove --explain=E0015" for more
 functions_illegal_2.ads:10:38: error: function cannot have parameter of mode "out" or "in out" in SPARK [E0015]
 functions_illegal_2.ads:10:38: error: launch "gnatprove --explain=E0015" for more information
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Global_Gen] functions_illegal_2.adb (test.gpr) failed with status 5

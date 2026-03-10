@@ -63,5 +63,3 @@ illegal_hidden_predefined_eq.ads:104:12: error: full view of a private type or d
 illegal_hidden_predefined_eq.ads:106:12: error: full view of  "T_Priv_Only_Null" shall allow equality on null
 illegal_hidden_predefined_eq.ads:106:12: error: full view of a private type or deferred constant with the "Predefined_Equality" annotation shall comply with the annotation
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] illegal_hidden_ownership.ads (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] illegal_hidden_predefined_eq.ads (test.gpr) failed with status 5

@@ -25,8 +25,3 @@ test_volatile.ads:20:04: error: violation of aspect SPARK_Mode at line 1
 test_volatile.ads:24:04: error: part of effectively volatile object or type annotated with relaxed initialization is not allowed in SPARK (SPARK RM 6.10(7))
 test_volatile.ads:24:04: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] recursive_type_with_relaxed_violation.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] test_dispatch.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] test_invariant.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] test_uu.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] test_volatile.ads (test.gpr) failed with status 5

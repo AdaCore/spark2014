@@ -5,4 +5,3 @@ pointers.ads:9:08: error: violation of aspect SPARK_Mode at line 2
 pointers.ads:14:26: error: "Object_Ptr_Arr" is not allowed in SPARK (due to component of anonymous access type)
 pointers.ads:14:26: error: violation of aspect SPARK_Mode at line 2
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] pointers.adb (test.gpr) failed with status 5

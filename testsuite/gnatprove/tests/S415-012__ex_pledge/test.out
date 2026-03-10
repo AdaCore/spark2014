@@ -73,5 +73,3 @@ pledge_constraints_2.adb:15:13: info: implicit aspect Always_Terminates on "At_E
 pledge_constraints_2.adb:18:13: info: implicit aspect Always_Terminates on "At_End_Borrow" has been proved, subprogram will terminate
 pledge_constraints_2.adb:30:42: error: actual for a call to a function annotated with At_End_Borrow should be rooted at a borrower or a borrowed expression
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] pledge_constraints.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] pledge_constraints_2.adb (test.gpr) failed with status 5

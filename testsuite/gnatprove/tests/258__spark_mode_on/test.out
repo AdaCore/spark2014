@@ -5,5 +5,3 @@ test.adb:6:32: error: "P" is not a library-level subprogram
 test.adb:6:32: error: incorrect placement of aspect "SPARK_Mode" with value "On" [E0011]
 test.adb:6:32: error: launch "gnatprove --explain=E0011" for more information
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Global_Gen] p.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Global_Gen] test.adb (test.gpr) failed with status 5

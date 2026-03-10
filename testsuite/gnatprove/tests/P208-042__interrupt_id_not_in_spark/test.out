@@ -4,4 +4,3 @@ interrupt_handler_with_current_task.ads:12:30: error: violation of aspect SPARK_
 interrupt_handler_with_current_task.ads:12:38: error: "Bad_Interrupt_ID_Ptr" is not allowed in SPARK (due to object of anonymous access not declared immediately within a subprogram, entry or block)
 interrupt_handler_with_current_task.ads:12:38: error: violation of aspect SPARK_Mode at line 3
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] interrupt_handler_with_current_task.ads (test.gpr) failed with status 5

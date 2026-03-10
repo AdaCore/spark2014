@@ -8,4 +8,3 @@ bound.adb:55:19: info: no contextual analysis of "Classify" (in assertion expres
 bound.adb:56:19: info: no contextual analysis of "Classify" (in assertion expression)
 bound.adb:57:19: info: no contextual analysis of "Classify" (in assertion expression)
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] bound.adb (test.gpr) failed with status 5

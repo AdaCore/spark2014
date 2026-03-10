@@ -5,6 +5,3 @@ p.ads:10:35: warning: postcondition does not mention function result [-gnatw.t]
 p.ads:10:50: error: "X" is referenced in Post but missing from the Global
 p.ads:10:50: error: "X" is referenced in Post but missing from the Global
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] p.ads (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] q.ads (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] r.ads (test.gpr) failed with status 5

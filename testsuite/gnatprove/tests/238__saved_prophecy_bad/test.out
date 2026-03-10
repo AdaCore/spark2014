@@ -21,5 +21,3 @@ marking.adb:52:20: error: call to a function annotated with "At_End_Borrow" shal
 marking.adb:53:44: error: call to a function annotated with "At_End_Borrow" shall not occur inside the initialization expression of an object at a position other than the top or as the root of a subcomponent Access reference
 marking.adb:57:12: error: reference to a constant saving a call to a function annotated with "At_End_Borrow" shall not occur inside the initialization expression of an object at a position other than the top or as the root of a subcomponent Access reference
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] borrow_checking.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] marking.adb (test.gpr) failed with status 5

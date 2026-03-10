@@ -8,7 +8,3 @@ updateghostoverlay.adb:7:36: error: overlay with an object of an ownership type 
 updateghostoverlay.adb:9:07: error: "Y" is not allowed in SPARK (due to overlay with an object of an ownership type)
 updateghostoverlay.adb:9:07: error: violation of pragma SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] moveghost.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] updateghost.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] updateghostincall.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] updateghostoverlay.adb (test.gpr) failed with status 5

@@ -4,5 +4,3 @@ e.adb:5:13: error: procedure "E" is marked as No_Return
 e.adb:5:13: error: procedure "E" is marked as No_Return
 effect.ads:1:21: info: flow dependencies proved
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Global_Gen] e.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Global_Gen] main.adb (test.gpr) failed with status 5

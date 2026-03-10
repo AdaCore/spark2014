@@ -3,5 +3,4 @@
    13 |          At_Index : out Index) return Boolean;
       |          ^~~~~~~~
       + launch "gnatprove --explain=E0015" for more information
-linear_search_ada.gpr: error: [Ada Global_Gen] linear_search.adb (linear_search_ada.gpr) failed with status 5
 gnatprove: error during flow analysis and proof

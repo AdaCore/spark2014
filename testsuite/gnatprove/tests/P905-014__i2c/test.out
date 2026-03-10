@@ -63,6 +63,3 @@ stm32_svd-rcc.ads:1804:04: warning: address specification on "RCC_Periph" is imp
 stm32_svd-rcc.ads:1804:04: warning: launch "gnatprove --explain=E0012" for more information
 stm32_svd-rcc.ads:1804:04: warning: make sure that all overlapping objects have Async_Writers set to True
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] i2c3.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] i2c3_support.ads (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] stm32_svd-gpio.ads (test.gpr) failed with status 5

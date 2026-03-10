@@ -1,3 +1,2 @@
 eff.ads:10:22: error: internal call cannot appear in precondition of protected operation
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Global_Gen] eff.adb (test.gpr) failed with status 5

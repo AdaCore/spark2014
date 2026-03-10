@@ -21,4 +21,3 @@ borrow.adb:84:10: warning: initialization of "Loc" has no effect
 borrow.adb:89:07: info: initialization of "YY" proved
 borrow.adb:125:07: info: initialization of "L" proved
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] borrow.adb (test.gpr) failed with status 5

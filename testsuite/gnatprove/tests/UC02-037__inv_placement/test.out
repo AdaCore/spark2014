@@ -1,3 +1,2 @@
 illegal_inv_placement.adb:12:10: error: loop invariant in a list of statements with an exception handler is not yet supported
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] illegal_inv_placement.adb (test.gpr) failed with status 5

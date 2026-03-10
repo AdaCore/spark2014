@@ -22,4 +22,3 @@ illegal_early_fail.adb:443:30: error: volatile function associated with aspect I
 illegal_early_fail.adb:444:30: error: violation of aspect SPARK_Mode at line 1
 illegal_early_fail.adb:444:30: error: volatile function associated with aspect Iterable is not allowed in SPARK (SPARK RM 5.5.2(12))
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] illegal_early_fail.adb (test.gpr) failed with status 5

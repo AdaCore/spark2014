@@ -18,5 +18,3 @@ raw_data.ads:12:11: info: data dependencies proved
 raw_data.ads:15:11: info: data dependencies proved
 raw_data.ads:16:11: info: flow dependencies proved
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] calculate.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] processing.adb (test.gpr) failed with status 5

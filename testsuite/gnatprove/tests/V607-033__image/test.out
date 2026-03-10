@@ -14,4 +14,3 @@ main.adb:18:10: warning: no Global contract available for "Rand" [assumed-global
 main.adb:19:23: error: attribute "Image" on non-scalar type is not yet supported
 main.adb:19:37: error: attribute "Image" on non-scalar type is not yet supported
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] main.adb (test.gpr) failed with status 5

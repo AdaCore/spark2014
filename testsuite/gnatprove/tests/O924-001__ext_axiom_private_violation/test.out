@@ -4,4 +4,3 @@ my_gen.ads:3:01: error: violation of aspect SPARK_Mode at gen.ads:3, instance at
 my_gen.ads:3:01: warning: External Axiomatizations are not supported anymore, ignored [deprecated-external-axiomatization]
 my_gen.ads:3:01: warning: in instantiation at gen.ads:5
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] my_gen.ads (test.gpr) failed with status 5

@@ -68,5 +68,3 @@ statement.adb:36:20: info: predicate check proved (Trivial: 1 VC)
 statement.adb:36:24: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 statement.adb:36:26: info: predicate check proved (Trivial: 1 VC)
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] proves_false.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] statement.adb (test.gpr) failed with status 5

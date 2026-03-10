@@ -1,6 +1,5 @@
 error.adb:7:15: error: unknown value of object alignment is not yet supported
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] error.adb (test.gpr) failed with status 5
 pedantic.adb:7:15: info: range check proved (CVC5: 2 VC)
 pedantic.adb:7:15: warning: attribute "Alignment" has an implementation-defined value [representation-attribute-value]
 pedantic.adb:19:15: warning: attribute "Component_Size" has an implementation-defined value [representation-attribute-value]

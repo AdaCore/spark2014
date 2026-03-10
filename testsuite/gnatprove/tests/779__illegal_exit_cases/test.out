@@ -8,4 +8,3 @@ exit_cases_illegal.adb:49:39: error: exit case mentioning exceptions when no exc
 exit_cases_illegal.adb:49:39: error: violation of aspect SPARK_Mode at line 1
 exit_cases_illegal.adb:72:09: error: aspect "Exit_Cases" on dispatching operation is not yet supported
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] exit_cases_illegal.adb (test.gpr) failed with status 5

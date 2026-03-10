@@ -5,5 +5,3 @@ types.ads:16:10: error: violation of aspect SPARK_Mode at line 1
 use_types.ads:4:14: info: implicit aspect Always_Terminates on "Valid" has been proved, subprogram will terminate
 use_types.ads:4:21: warning: unused variable "X"
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] test_type.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] types.ads (test.gpr) failed with status 5

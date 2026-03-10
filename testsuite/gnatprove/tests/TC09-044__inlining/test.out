@@ -14,7 +14,3 @@ neg.adb:10:04: error: error in inlined body at line 6
 neg.adb:10:04: error: value not in range of type "Standard.Integer"
 neg.adb:10:04: error: value not in range of type "Standard.Integer"
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Global_Gen] main.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Global_Gen] main2.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Global_Gen] main3.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Global_Gen] neg.adb (test.gpr) failed with status 5

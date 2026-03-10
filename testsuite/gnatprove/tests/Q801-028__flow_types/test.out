@@ -10,4 +10,3 @@ demo.adb:13:06: info: precondition proved (CVC5: 2 VC)
 last_chance_handler.adb:41:16: error: backward goto statement is not allowed in SPARK (SPARK RM 5.8(1))
 last_chance_handler.adb:41:16: error: violation of pragma SPARK_Mode at line 28
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] last_chance_handler.adb (test.gpr) failed with status 5

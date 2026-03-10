@@ -1,3 +1,2 @@
 main.adb:12:23: error: conversion between access types with different designated types is not yet supported
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] main.adb (test.gpr) failed with status 5

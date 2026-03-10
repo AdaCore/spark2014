@@ -3,4 +3,3 @@ error.ads:4:44: error: wrong entity argument for "pragma Annotate (GNATprove, Sk
 system.ads:1:01: error: "t" is not allowed in SPARK (due to incorrect use of "Skip_Proof" annotation)
 system.ads:1:01: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] error.ads (test.gpr) failed with status 5

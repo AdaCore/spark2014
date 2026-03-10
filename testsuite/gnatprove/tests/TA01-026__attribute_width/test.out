@@ -4,4 +4,3 @@ getwidth.adb:18:04: error: instantiation error at line 14
 getwidth.adb:18:04: error: non-static attribute "Width" is not yet supported
 getwidth.adb:18:04: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] getwidth.adb (test.gpr) failed with status 5

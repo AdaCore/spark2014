@@ -5,4 +5,3 @@ global_contracts-accessors.ads:9:06: error: "Global_Contracts.S1" is referenced 
 global_contracts.ads:3:22: warning: no subprogram exists that can initialize abstract state "Global_Contracts.S1"
 global_contracts.ads:3:26: warning: no subprogram exists that can initialize abstract state "Global_Contracts.S2"
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] global_contracts-accessors.ads (test.gpr) failed with status 5

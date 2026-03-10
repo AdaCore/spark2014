@@ -41,4 +41,3 @@ test_target_illegal.adb:11:04: error: violation of aspect SPARK_Mode at line 2
 test_target_illegal.adb:11:09: error: @ inside a reborrow is not yet supported
 test_target_illegal.adb:12:22: error: @ inside a move assignment is not yet supported
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] test_target_illegal.adb (test.gpr) failed with status 5

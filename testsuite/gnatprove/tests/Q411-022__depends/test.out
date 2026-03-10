@@ -1,4 +1,3 @@
 lib.ads:5:08: error: add "null => AA" dependency to ignore this input
 lib.ads:5:08: error: current instance of protected type "AA" is missing from input dependence list
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Global_Gen] lib.adb (test.gpr) failed with status 5

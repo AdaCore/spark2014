@@ -25,4 +25,3 @@ p.ads:31:54: error: "P.State" is referenced in expression function but missing f
 p.ads:32:13: info: implicit aspect Always_Terminates on "FC" has been proved, subprogram will terminate
 p.ads:32:54: info: data dependencies proved
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] p.adb (test.gpr) failed with status 5

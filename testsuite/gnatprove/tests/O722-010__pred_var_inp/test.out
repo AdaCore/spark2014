@@ -3,4 +3,3 @@ var.ads:8:60: error: launch "gnatprove --explain=E0007" for more information
 var.ads:8:60: error: predicate cannot depend on variable input "Global_Variable" [E0007]
 var.ads:8:60: error: use instead a constant initialized to the expression with variable input
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] var.ads (test.gpr) failed with status 5

@@ -38,7 +38,3 @@ use_init.adb:4:15: low: unused global "Init.State"
 use_init.adb:13:10: medium: "B" might not be initialized after elaboration of main program "Use_Init"
 use_init.adb:15:10: medium: "E" might not be initialized after elaboration of main program "Use_Init"
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Global_Gen] foo-blah.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Global_Gen] foo.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Global_Gen] nested-priv.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Global_Gen] nested.adb (test.gpr) failed with status 5

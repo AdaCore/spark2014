@@ -7,4 +7,3 @@ test_bad.adb:29:09: error: violation of aspect SPARK_Mode at line 3
 test_bad.adb:31:21: error: access to subprogram with global effects is not allowed in SPARK (SPARK RM 4.1.4(7))
 test_bad.adb:31:21: error: violation of aspect SPARK_Mode at line 3
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] test_bad.adb (test.gpr) failed with status 5

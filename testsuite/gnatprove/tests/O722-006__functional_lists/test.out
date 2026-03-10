@@ -146,4 +146,3 @@ use_lists.ads:19:32: error: violation of aspect SPARK_Mode at line 4
 use_lists.ads:20:32: error: "Get_Element_Model" is not allowed in SPARK (due to function with global outputs)
 use_lists.ads:20:32: error: violation of aspect SPARK_Mode at line 4
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] use_lists.adb (test.gpr) failed with status 5

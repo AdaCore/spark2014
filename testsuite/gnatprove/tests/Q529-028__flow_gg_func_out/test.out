@@ -5,4 +5,3 @@ bad_funcs.ads:3:13: error: violation of aspect SPARK_Mode at line 1
 use_bads.adb:5:19: error: "Bad" is not allowed in SPARK (due to function with global outputs)
 use_bads.adb:5:19: error: violation of aspect SPARK_Mode at line 3
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] use_bads.adb (test.gpr) failed with status 5

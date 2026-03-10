@@ -3,4 +3,3 @@ borrow.adb:24:39: error: borrow through a slice is not yet supported
 borrow.adb:26:07: error: "Y" is not allowed in SPARK (due to borrow through a slice)
 borrow.adb:26:07: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] borrow.adb (test.gpr) failed with status 5

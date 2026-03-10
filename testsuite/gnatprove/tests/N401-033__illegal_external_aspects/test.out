@@ -11,4 +11,3 @@ vc.ads:77:11: error: incorrect placement of aspect "ASYNC_READERS"
 vc.ads:82:11: error: incorrect placement of aspect "ASYNC_READERS"
 vc.ads:87:11: error: incorrect placement of aspect "ASYNC_READERS"
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Global_Gen] vc.ads (test.gpr) failed with status 5

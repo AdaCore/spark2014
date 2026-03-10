@@ -11,4 +11,3 @@ binary_search_trees.adb:86:23: medium: implicit aspect Always_Terminates on "Loo
 binary_search_trees.ads:16:13: info: implicit aspect Always_Terminates on "Lookup" has been proved, subprogram will terminate
 binary_search_trees.ads:19:13: info: implicit aspect Always_Terminates on "Size" has been proved, subprogram will terminate
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] binary_search_trees.adb (test.gpr) failed with status 5

@@ -9,4 +9,3 @@ pack.ads:4:24: warning: unused variable "B"
 pack.ads:4:27: warning: "C" is not modified, could be IN
 pack.ads:4:27: warning: unused variable "C"
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Global_Gen] p.adb (test.gpr) failed with status 5

@@ -6,4 +6,3 @@ discr.adb:12:20: error: violation of aspect SPARK_Mode at line 1
 discr.adb:12:46: error: "U" is not allowed in SPARK (due to discriminant on derived type)
 discr.adb:12:46: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] discr.adb (test.gpr) failed with status 5

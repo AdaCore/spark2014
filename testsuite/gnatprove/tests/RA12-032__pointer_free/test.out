@@ -2,4 +2,3 @@ lists.adb:18:13: error: "Next" is not readable
 lists.adb:18:13: error: launch "gnatprove --explain=E0010" for more information
 lists.adb:18:13: error: object was moved at line 17 [E0010]
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] lists.adb (test.gpr) failed with status 5

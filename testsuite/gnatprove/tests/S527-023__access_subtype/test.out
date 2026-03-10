@@ -3,5 +3,3 @@ p.ads:12:32: error: allocator or call to allocating function not stored in objec
 p.ads:12:32: error: violation of pragma SPARK_Mode at line 1
 p.ads:12:32: error: violation of pragma SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] p.ads (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] test_new.adb (test.gpr) failed with status 5

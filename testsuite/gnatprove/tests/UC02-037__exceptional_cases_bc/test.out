@@ -11,4 +11,3 @@ test.adb:54:14: error: launch "gnatprove --explain=E0010" for more information
 test.adb:54:14: error: object was moved at line 58 [E0010]
 test.adb:54:14: error: return from "Swap_Call_Bad_2" with moved value for "X"
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] test.adb (test.gpr) failed with status 5

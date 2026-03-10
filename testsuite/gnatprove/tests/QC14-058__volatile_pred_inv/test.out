@@ -11,6 +11,3 @@ q.ads:4:04: error: violation of pragma SPARK_Mode at test.adc:1
 r.ads:3:09: error: subtype predicate on effectively volatile type for reading is not allowed in SPARK (SPARK RM 3.2.4(3))
 r.ads:3:09: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] p.ads (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] q.ads (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] r.ads (test.gpr) failed with status 5

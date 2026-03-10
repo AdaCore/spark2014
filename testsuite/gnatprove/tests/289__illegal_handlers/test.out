@@ -12,4 +12,3 @@ test_illegal.ads:23:06: error: wrong entity argument for aspect "Annotate => (GN
 test_illegal.ads:28:15: error: an access-to-subprogram type with the "Handler" annotation shall not have contracts
 test_illegal.ads:32:16: error: an access-to-subprogram type with the "Handler" annotation shall not have contracts
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] test_illegal.adb (test.gpr) failed with status 5

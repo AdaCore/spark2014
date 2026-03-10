@@ -2,5 +2,3 @@ test.ads:8:14: high: "Val" must be listed in the Global aspect of "Test" (SPARK 
 test.ads:9:11: error: "Val" is referenced in expression function but missing from the Global
 test.ads:9:11: error: "Val" is referenced in expression function but missing from the Global
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] main.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] test.ads (test.gpr) failed with status 5

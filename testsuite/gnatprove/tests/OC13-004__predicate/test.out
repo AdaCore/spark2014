@@ -4,4 +4,3 @@ dyn_pred.ads:19:38: info: predicate check proved (CVC5: 1 VC)
 dyn_pred2.ads:8:44: error: expected type "Rec_Type" defined at line 10
 dyn_pred2.ads:8:44: error: found type "Non_Zero_Type" defined at line 14
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Global_Gen] dyn_pred2.ads (test.gpr) failed with status 5

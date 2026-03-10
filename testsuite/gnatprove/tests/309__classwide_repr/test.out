@@ -5,4 +5,3 @@ class.adb:11:19: error: representation attribute on class-wide value is not yet 
 class.adb:12:19: error: representation attribute on class-wide value is not yet supported
 class.adb:13:19: error: representation attribute on class-wide value is not yet supported
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] class.adb (test.gpr) failed with status 5

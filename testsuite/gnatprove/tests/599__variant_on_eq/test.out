@@ -3,4 +3,3 @@ test_illegal.adb:9:13: error: subprogram variant on a user-defined equality on r
 test_illegal.adb:24:13: error: consider introducing another recursive function and defining "=" as a wrapper
 test_illegal.adb:24:13: error: subprogram variant on a user-defined equality on record type is not yet supported
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] test_illegal.adb (test.gpr) failed with status 5

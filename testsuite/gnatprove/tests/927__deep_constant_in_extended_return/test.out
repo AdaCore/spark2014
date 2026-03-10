@@ -7,4 +7,3 @@ test.adb:31:07: warning: "W" is set by "F" but not used after the call
 test.adb:33:15: warning: unused assignment
 test.adb:38:04: info: analyzing call to "Bad_Use_F" in context
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] test.adb (test.gpr) failed with status 5

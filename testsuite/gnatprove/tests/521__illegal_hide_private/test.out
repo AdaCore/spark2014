@@ -39,8 +39,3 @@ use_generics.adb:5:12: error: the private part of package "Illegal_Hide_Private"
 use_generics.adb:7:14: error: instance of a generic unit declared in a package whose private part is hidden outside of this package is not yet supported
 use_generics.adb:7:14: error: the private part of package "Illegal_Hide_Private" is hidden for proof
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] illegal_hide_private-child.ads (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] illegal_hide_private-p_child-grand_child.ads (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] illegal_hide_private-p_child.ads (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] illegal_hide_private.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] use_generics.adb (test.gpr) failed with status 5

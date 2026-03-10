@@ -3,4 +3,3 @@ test_illegal.adb:9:31: error: launch "gnatprove --explain=E0015" for more inform
 test_illegal.adb:11:18: error: function cannot have parameter of mode "out" or "in out" in SPARK [E0015]
 test_illegal.adb:11:18: error: launch "gnatprove --explain=E0015" for more information
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Global_Gen] test_illegal.adb (test.gpr) failed with status 5

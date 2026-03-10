@@ -11,4 +11,3 @@ p.ads:56:11: error: parameter "X" is missing from input dependence list
 p.ads:61:11: error: add "null => A" dependency to ignore this input
 p.ads:61:11: error: global "A" is missing from input dependence list
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Global_Gen] p.ads (test.gpr) failed with status 5

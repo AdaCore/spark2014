@@ -35,4 +35,3 @@ term.adb:5:07: medium: implicit aspect Always_Terminates on "Eq" could be incorr
 term.ads:14:13: info: implicit aspect Always_Terminates on "Hash" has been proved, subprogram will terminate
 term.ads:14:19: warning: unused variable "X"
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] term.adb (test.gpr) failed with status 5

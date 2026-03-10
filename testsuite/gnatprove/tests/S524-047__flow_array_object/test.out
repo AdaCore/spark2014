@@ -2,4 +2,3 @@ p.ads:3:34: error: launch "gnatprove --explain=E0007" for more information
 p.ads:3:34: error: subtype constraint cannot depend on variable input "V" [E0007]
 p.ads:3:34: error: use instead a constant initialized to the expression with variable input
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] p.ads (test.gpr) failed with status 5

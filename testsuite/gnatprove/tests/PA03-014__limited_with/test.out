@@ -23,4 +23,3 @@ aida_character.adb:16:41: error: violation of aspect SPARK_Mode at line 3
 aida_character.ads:21:27: error: consider restructuring code to avoid "limited with"
 aida_character.ads:21:27: error: limited view of type "T" coming from limited with is not yet supported
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] aida_character.adb (test.gpr) failed with status 5

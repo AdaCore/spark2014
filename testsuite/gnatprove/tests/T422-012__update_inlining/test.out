@@ -2,7 +2,6 @@ INLINING ENABLED:
 update.adb:14:10: error: Constraint_Error would have been raised at run time
 update.adb:14:10: error: value not in range of type "Standard.Positive"
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Global_Gen] update.adb (test.gpr) failed with status 5
 INLINING DISABLED:
 update.adb:6:14: warning: subprogram "Test" has no effect
 update.adb:8:33: info: range check proved (CVC5: 2 VC)

@@ -1,3 +1,2 @@
 r.adb:20:10: error: writable actual for "X" overlaps with actual for "Y"
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Global_Gen] r.adb (test.gpr) failed with status 5

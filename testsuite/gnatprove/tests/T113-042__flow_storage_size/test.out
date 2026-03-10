@@ -3,4 +3,3 @@ main.adb:6:09: error: violation of pragma SPARK_Mode at test.adc:1
 main.adb:9:09: error: access type with Storage_Pool is not allowed in SPARK (SPARK RM 3.10)
 main.adb:9:09: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] main.adb (test.gpr) failed with status 5

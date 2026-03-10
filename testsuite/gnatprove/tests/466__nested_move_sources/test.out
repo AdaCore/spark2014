@@ -43,4 +43,3 @@ main.adb:79:04: info: analyzing call to "Through_Delta_Aggregate" in context
 main.adb:80:04: info: analyzing call to "Through_Extension_Aggregate" in context
 main.adb:81:04: info: analyzing call to "Through_Multidimensional_Update" in context
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] main.adb (test.gpr) failed with status 5

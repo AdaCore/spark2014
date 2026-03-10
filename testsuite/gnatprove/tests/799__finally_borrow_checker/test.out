@@ -66,4 +66,3 @@ finally_ownership.adb:261:13: error: launch "gnatprove --explain=E0010" for more
 finally_ownership.adb:261:13: error: object was moved at line 257 [E0010]
 finally_ownership.adb:261:13: error: part of dereference from "Y" is not writable
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] finally_ownership.adb (test.gpr) failed with status 5

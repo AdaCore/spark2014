@@ -28,6 +28,3 @@ test_modification.adb:66:29: error: violation of aspect SPARK_Mode at line 1
 test_modification.adb:68:07: error: "B" is not allowed in SPARK (due to borrow of a constant object)
 test_modification.adb:68:07: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] test_at_end_copy.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] test_bc.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] test_modification.adb (test.gpr) failed with status 5

@@ -3,5 +3,3 @@ crash1.adb:11:11: error: violation of aspect SPARK_Mode at line 1
 crash2.adb:8:11: error: object of anonymous access not declared immediately within a subprogram, entry or block is not allowed in SPARK (SPARK RM 3.10(5))
 crash2.adb:8:11: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] crash1.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] crash2.adb (test.gpr) failed with status 5

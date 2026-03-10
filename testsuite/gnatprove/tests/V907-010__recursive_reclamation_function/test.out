@@ -7,5 +7,3 @@ main_indirect.adb:5:12: warning: no reclamation function nor reclaimed value fou
 main_indirect.adb:31:13: error: "Is_Null" shall be declared in same declaration list as "Pool_Specific_Access"
 main_indirect.adb:31:13: error: incorrect placement for entity with the "Ownership" annotation
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] main.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] main_indirect.adb (test.gpr) failed with status 5

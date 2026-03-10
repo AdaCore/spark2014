@@ -18,7 +18,3 @@ bad_pledge_calls_4.adb:11:30: error: borrowed expression cannot depend on variab
 bad_pledge_calls_4.adb:11:30: error: launch "gnatprove --explain=E0007" for more information
 bad_pledge_calls_4.adb:11:30: error: use instead a constant initialized to the expression with variable input
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] bad_pledge_calls.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] bad_pledge_calls_2.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] bad_pledge_calls_3.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] bad_pledge_calls_4.adb (test.gpr) failed with status 5

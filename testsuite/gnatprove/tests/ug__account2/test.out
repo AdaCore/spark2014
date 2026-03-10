@@ -6,5 +6,4 @@
     2 |      SPARK_Mode
       |      ^
       + launch "gnatprove --explain=E0004" for more information
-account2.gpr: error: [Ada Analysis] account2.adb (account2.gpr) failed with status 5
 gnatprove: error during flow analysis and proof

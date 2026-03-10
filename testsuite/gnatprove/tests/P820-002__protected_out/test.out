@@ -235,8 +235,3 @@ producer_consumer.adb:83:17: low: range check might fail, cannot prove upper bou
 producer_consumer.adb:83:29: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 producer_consumer.ads:38:27: info: initialization of "Data_Source" proved
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] polyorb_hi-output.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] polyorb_hi-protocols.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] polyorb_hi-transport_low_level_sockets.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] polyorb_hi_generated-activity.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] polyorb_hi_generated-transport.adb (test.gpr) failed with status 5

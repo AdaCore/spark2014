@@ -6,4 +6,3 @@ state.ads:4:21: info: initialization of "State.State" proved
 state.ads:5:03: info: flow dependencies proved
 state.ads:14:26: error: "State.State" is referenced in Pre but missing from the Global
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] state.adb (test.gpr) failed with status 5

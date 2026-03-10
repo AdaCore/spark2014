@@ -10,4 +10,3 @@ pack.ads:6:13: error: violation of aspect SPARK_Mode at line 2
 pack.ads:7:18: error: "G" is not allowed in SPARK (due to borrow or observe of an expression which is not part of stand-alone object or parameter)
 pack.ads:7:18: error: violation of aspect SPARK_Mode at line 2
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] pack.adb (test.gpr) failed with status 5

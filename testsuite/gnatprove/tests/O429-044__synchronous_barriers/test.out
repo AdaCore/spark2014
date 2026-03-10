@@ -4,4 +4,3 @@ p.ads:3:09: high: possible data race when accessing variable "p.sb"
 p.ads:3:09: high: task "p.t1" accesses "p.sb"
 p.ads:3:09: high: task "p.t2" accesses "p.sb"
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] p.adb (test.gpr) failed with status 5

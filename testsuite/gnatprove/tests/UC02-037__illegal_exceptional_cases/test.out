@@ -5,5 +5,3 @@ alias_on_exc_exit.adb:27:04: error: violation of aspect SPARK_Mode at line 3
 illegal_uses_of_exc_cases.ads:6:06: error: aspect "Exceptional_Cases" on dispatching operation is not yet supported
 illegal_uses_of_exc_cases.ads:13:38: error: access to procedure which might propagate exceptions is not yet supported
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] alias_on_exc_exit.adb (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] illegal_uses_of_exc_cases.ads (test.gpr) failed with status 5

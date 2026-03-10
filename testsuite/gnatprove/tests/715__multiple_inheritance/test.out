@@ -21,4 +21,3 @@ main.adb:120:12: error: subprogram implicitly inherited from multiple progenitor
 main.adb:130:12: error: subprogram "P" is inherited from "T" and "I"
 main.adb:130:12: error: subprogram inherited from root and interface is not yet supported
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] main.adb (test.gpr) failed with status 5

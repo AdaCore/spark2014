@@ -15,4 +15,3 @@ array_conv.adb:33:13: error: conversion between array types with modular index t
 array_conv.adb:38:13: error: conversion between array types with modular index types of different sizes is not yet supported
 array_conv.adb:39:13: error: conversion between array types with modular index types of different sizes is not yet supported
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] array_conv.adb (test.gpr) failed with status 5

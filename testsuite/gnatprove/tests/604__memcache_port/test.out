@@ -1,3 +1,2 @@
 gnatprove: error during flow analysis and proof
 gnatprove: port value should be an integer between 1 and 65535
-test.gpr: error: [Ada Analysis] main.adb (test.gpr) failed with status 4

@@ -2,4 +2,3 @@ discr_type_missing.ads:6:07: error: missing case value: "C"
 discr_type_missing.ads:16:25: error: value of discriminant "S" is out of range
 discr_type_missing.ads:18:25: error: "Y" is undefined
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Global_Gen] discr_type_missing.ads (test.gpr) failed with status 5

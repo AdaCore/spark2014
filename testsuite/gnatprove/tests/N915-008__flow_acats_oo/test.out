@@ -274,4 +274,3 @@ report.ads:142:18: info: data dependencies proved
 report.ads:144:15: info: implicit aspect Always_Terminates on "EQUAL" has been proved, subprogram will terminate
 report.ads:148:22: info: data dependencies proved
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] c392008_2.adb (test.gpr) failed with status 5

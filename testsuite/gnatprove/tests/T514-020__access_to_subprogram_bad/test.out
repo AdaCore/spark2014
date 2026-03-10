@@ -18,4 +18,3 @@ test_callback_bad.ads:48:07: error: violation of aspect SPARK_Mode at line 4
 test_callback_bad.ads:49:04: error: access-to-subprogram returning a type with invariants is not allowed in SPARK (SPARK RM 4.1.4(2))
 test_callback_bad.ads:49:04: error: violation of aspect SPARK_Mode at line 4
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] test_callback_bad.adb (test.gpr) failed with status 5

@@ -7,4 +7,3 @@ empty.adb:44:16: error: null array aggregate indexed by a modular type
 empty.adb:52:16: error: Constraint_Error would have been raised at run time
 empty.adb:52:16: error: null array aggregate indexed by an enumeration type
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Global_Gen] empty.adb (test.gpr) failed with status 5

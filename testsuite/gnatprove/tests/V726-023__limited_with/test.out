@@ -15,5 +15,3 @@ pkg_two.ads:12:04: error: limited view of type "Access_T" coming from limited wi
 pkg_two.ads:15:09: error: consider restructuring code to avoid "limited with"
 pkg_two.ads:15:09: error: limited view of type "Access_T" coming from limited with is not yet supported
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] pkg_one.ads (test.gpr) failed with status 5
-test.gpr: error: [Ada Analysis] pkg_two.ads (test.gpr) failed with status 5

@@ -1,3 +1,2 @@
 caller.ads:20:09: error: type aspect on type derived from a private type is not yet supported
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] caller.ads (test.gpr) failed with status 5

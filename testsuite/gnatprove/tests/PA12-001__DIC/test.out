@@ -11,4 +11,3 @@ dic_pred.ads:11:22: info: in default value of private type at dic_pred.ads:5
 dic_pred.ads:11:22: info: range check proved (CVC5: 2 VC)
 use_dic_pred.ads:16:09: error: type aspect on type derived from a private type is not yet supported
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] use_dic_pred.ads (test.gpr) failed with status 5

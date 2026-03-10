@@ -20,4 +20,3 @@ run.adb:34:10: info: analyzing call to "Compute_List" in context
 run.adb:34:10: info: in inlined body at line 17
 run.adb:34:10: info: unrolling loop [info-unrolling-inlining]
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] p_u_parent.adb (test.gpr) failed with status 5

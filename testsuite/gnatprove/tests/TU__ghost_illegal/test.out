@@ -7,4 +7,3 @@ ghost_illegal_2.ads:34:36: error: as predicates are checked in membership tests,
 ghost_illegal_2.ads:34:36: error: either make the type ghost or use a Ghost_Predicate or use a type invariant on a private type
 ghost_illegal_2.ads:34:36: error: ghost entity cannot appear in this context
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Global_Gen] ghost_illegal_2.adb (test.gpr) failed with status 5

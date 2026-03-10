@@ -42,4 +42,3 @@ dic3.ads:15:28: info: range check proved (CVC5: 2 VC)
 dic_test.adb:9:49: info: in default value of private type at dic_test.adb:7
 dic_test.adb:9:49: info: range check proved (CVC5: 2 VC)
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Analysis] caller.adb (test.gpr) failed with status 5

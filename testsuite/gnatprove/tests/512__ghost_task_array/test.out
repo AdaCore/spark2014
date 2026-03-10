@@ -1,3 +1,2 @@
 ghostarr.ads:4:09: error: ghost type "ZZ" cannot be concurrent
 gnatprove: error during flow analysis and proof
-test.gpr: error: [Ada Global_Gen] ghostarr.ads (test.gpr) failed with status 5
