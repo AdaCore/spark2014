@@ -194,9 +194,8 @@ build:
     - anod run build
 
     # Create the package
-    - SB_WITHOUT_LEADING_SLASH=`echo $ANOD_DEFAULT_SANDBOX_DIR | cut -b2-`
     - anod-copy-components --standalone-export $ANOD_DEFAULT_SANDBOX_DIR $PACKAGE_EXPORT
-    - tar czf $PACKAGE_ABSOLUTE_NAME -C/ $PACKAGE_EXPORT
+    - tar czf $PACKAGE_ABSOLUTE_NAME -C / $PACKAGE_EXPORT
 
   artifacts:
     paths:
