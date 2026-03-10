@@ -279,6 +279,11 @@ package body Configuration is
    procedure Internal_Report
      (Self : in out Spark_Reporter; Message : GPR2.Message.Object) is
    begin
+      --  Silently drop the "failed with status xx" message that pollute our
+      --  test output.
+      if Contains (Message.Message, "failed with status") then
+         return;
+      end if;
       GPR2.Reporter.Console.Object (Self).Internal_Report (Message);
       Check_Duplicate_Bodies (Message);
    end Internal_Report;
