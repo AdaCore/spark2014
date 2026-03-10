@@ -4,8 +4,9 @@ proj is a GNAT project file
 -cargs switches are passed to gcc
 
 All main units in proj are analyzed by default. Switches to change this:
- -u [files]            Analyze only the given files
-    [files]            Analyze given files and all dependencies
+ [files]               Analyze given files and all dependencies
+ -u                    With files: analyze only those files (no dependencies)
+                       Without files: equivalent to --no-subprojects
  -U                    Analyze all files (including unused) of all projects
                        (can also be used with "--limit-*" switches to analyze
                        all instances of a generic)
