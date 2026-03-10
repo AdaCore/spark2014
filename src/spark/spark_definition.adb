@@ -3330,9 +3330,7 @@ package body SPARK_Definition is
 
                   if Is_Path_Expression (Expr)
                     and then Present (Get_Root_Object (Expr))
-                    and then
-                      Get_Root_Object (Get_Observed_Or_Borrowed_Expr (Expr))
-                      /= Root
+                    and then Get_Root_Object (Expr) /= Root
                   then
                      Mark_Violation (Vio_Ownership_Reborrow, Expr);
                   end if;
