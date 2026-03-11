@@ -8,7 +8,7 @@ initial_condition_illegal_3.adb:6:11: error:   procedure "Init" called at line 9
 initial_condition_illegal_3.adb:6:11: error:   variable "Var" assigned at line 6
 initial_condition_illegal_3.adb:6:11: error: add pragma "Elaborate_Body" to spec "Initial_Condition_Illegal_3" to ensure full initialization
 initial_condition_illegal_3.adb:6:11: error: variable "Var" modified by elaboration code in package body
-gnatprove: error during generation of Global contracts
+gnatprove: error during flow analysis and proof
 initial_condition_illegal_4.ads:8:29: info: initial condition proved (CVC5: 1 VC)
 initial_condition_illegal_4.ads:10:04: info: initialization of "Var" proved
 initial_condition_illegal_4.ads:11:14: warning: subprogram "P1" has no effect

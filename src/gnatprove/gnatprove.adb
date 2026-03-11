@@ -66,30 +66,30 @@
 with Ada.Command_Line;
 with Ada.Directories;
 with Ada.Environment_Variables;
-with Ada.Exceptions;   use Ada.Exceptions;
-with Ada.Strings.Unbounded;
-with Ada.Text_IO;      use Ada.Text_IO;
-with Call;             use Call;
-with Configuration;    use Configuration;
+with Ada.Exceptions;  use Ada.Exceptions;
+with Ada.Text_IO;     use Ada.Text_IO;
+with Call;            use Call;
+with Configuration;   use Configuration;
 with GNAT.OS_Lib;
-with GNAT.Strings;     use GNAT.Strings;
+with GNAT.Strings;    use GNAT.Strings;
+with Gnatprove_Build; use Gnatprove_Build;
 with Gnat2Why_Opts;
-with Gnat2Why_Opts.Writing;
-with GNATCOLL.JSON;    use GNATCOLL.JSON;
+with GNATCOLL.JSON;   use GNATCOLL.JSON;
 with GNATCOLL.Tribooleans;
-with GNATCOLL.Utils;   use GNATCOLL.Utils;
-with GNATCOLL.VFS;     use GNATCOLL.VFS;
-with GPR2;             use GPR2;
+with GNATCOLL.Utils;  use GNATCOLL.Utils;
+with GNATCOLL.VFS;    use GNATCOLL.VFS;
+with GPR2;            use GPR2;
+with GPR2.Path_Name;
 with GPR2.Project.Attribute;
 with GPR2.Project.Tree;
 with GPR2.Project.View;
-with Named_Semaphores; use Named_Semaphores;
-with String_Utils;     use String_Utils;
-with VC_Kinds;         use VC_Kinds;
+with String_Utils;    use String_Utils;
+with VC_Kinds;        use VC_Kinds;
 
 procedure Gnatprove with SPARK_Mode is
 
-   type Gnatprove_Step is (GS_Data_Representation, GS_ALI, GS_Gnat2Why);
+   type Gnatprove_Step is (GS_Data_Representation, GS_Gnat2Why);
+   --  ??? No need for this plan stuff anymore
 
    type Plan_Type is array (Positive range <>) of Gnatprove_Step;
 
@@ -99,23 +99,12 @@ procedure Gnatprove with SPARK_Mode is
    --  are not signalled via the GNATprove_Failure exception.
 
    procedure Call_Gprbuild
-     (Project_File      : String;
-      Tree              : Project.Tree.Object;
-      DB_Dir            : String;
-      Translation_Phase : Gnatprove_Step;
-      Args              : in out String_Lists.List;
-      Status            : out Integer);
+     (Project_File : String;
+      Tree         : Project.Tree.Object;
+      Args         : in out String_Lists.List;
+      Status       : out Integer);
    --  Call gprbuild with the given arguments. DB_Dir is the directory
    --  which contains the information to configure gprbuild correctly.
-
-   procedure Create_Dir_And_Parents (Dir : Virtual_File);
-   --  Create the directory and necessary parent directories. Do nothing if the
-   --  directory already exists. Check if the directory exists. Abort in case
-   --  of failure.
-
-   procedure Compute_ALI_Information
-     (Project_File : String; Tree : Project.Tree.Object; Status : out Integer);
-   --  Compute ALI information for all source units, using gprbuild
 
    procedure Compute_Data_Representation
      (Project_File : String; Tree : Project.Tree.Object; Status : out Integer);
@@ -127,26 +116,10 @@ procedure Gnatprove with SPARK_Mode is
       Project_File : String;
       Tree         : Project.Tree.Object);
 
-   procedure Copy_ALI_Files (Tree : Project.Tree.Object);
-   --  To be called between phase 1 and phase2. Copies the ALI files from the
-   --  subdir of the first phase to the one for the second phase.
-
    procedure Generate_SPARK_Report
      (Tree : Project.Tree.Object; Errors : Boolean);
    --  Generate the SPARK report. Set Errors to True if previous phases
    --  contained errors.
-
-   procedure Flow_Analysis_And_Proof
-     (Project_File : String; Tree : Project.Tree.Object; Status : out Integer);
-   --  Translate all source units to Why, using gnat2why, driven by gprbuild.
-   --  In the process, do flow analysis. Then call gnatwhy3 inside gnat2why to
-   --  prove the program.
-
-   function Spawn_VC_Server_And_Semaphore
-     (Tree : Project.Tree.Object) return GNAT.OS_Lib.Process_Id;
-   --  Spawn the VC server of Why3 and create the semaphore used for gnatwhy3
-   --  processes. Also set the environment variables used by the binaries that
-   --  access these resources.
 
    function Text_Of_Step (Step : Gnatprove_Step) return String;
 
@@ -154,14 +127,6 @@ procedure Gnatprove with SPARK_Mode is
    --  Set the environment before calling other tools.
    --  In particular, add any needed directories in the PATH and
    --  GPR_PROJECT_PATH env vars.
-
-   function Non_Blocking_Spawn
-     (Command : String; Arguments : String_Lists.List)
-      return GNAT.OS_Lib.Process_Id;
-   --  Spawn a process in a non-blocking way
-
-   procedure Write_Why3_Conf_File (Obj_Dir : String);
-   --  Write the Why3 conf file to process prover configuration
 
    procedure Cleanup
      (Tree      : Project.Tree.Object;
@@ -175,32 +140,17 @@ procedure Gnatprove with SPARK_Mode is
    -------------------
 
    procedure Call_Gprbuild
-     (Project_File      : String;
-      Tree              : Project.Tree.Object;
-      DB_Dir            : String;
-      Translation_Phase : Gnatprove_Step;
-      Args              : in out String_Lists.List;
-      Status            : out Integer)
+     (Project_File : String;
+      Tree         : Project.Tree.Object;
+      Args         : in out String_Lists.List;
+      Status       : out Integer)
    is
-      --  In the first step, gprbuild calls gcc to generate data representation
-      --  information. In the second and third steps, it calls gnat2why.
-      Call_Gnat2Why : constant Boolean :=
-        Translation_Phase /= GS_Data_Representation;
-      Obj_Dir       : constant String :=
-        Ada.Directories.Full_Name (Artifact_Dir (Tree).Display_Full_Name);
-      --  Object directory, without trailing directory separators (e.g. '/')
-      Opt_File      : constant String :=
-        Gnat2Why_Opts.Writing.Pass_Extra_Options_To_Gnat2why
-          (Translation_Phase => Translation_Phase = GS_Gnat2Why,
-           Obj_Dir           => Obj_Dir);
-      Output_Name   : constant String :=
-        (if Call_Gnat2Why
-         then ""
-         else
-           Ada.Directories.Compose
-             (Obj_Dir, "data_representation_generation", "log"));
-      Del_Succ      : Boolean;
-
+      Obj_Dir     : constant String :=
+        Ada.Directories.Full_Name
+          (Artifact_Dir (Tree).Virtual_File.Display_Full_Name);
+      Output_Name : constant String :=
+        Ada.Directories.Compose
+          (Obj_Dir, "data_representation_generation", "log");
    begin
       Args.Append ("--restricted-to-languages=ada");
 
@@ -211,11 +161,6 @@ procedure Gnatprove with SPARK_Mode is
       --  target.
 
       Args.Append ("--target=" & String (Tree.Target));
-
-      if Call_Gnat2Why then
-         Args.Append ("--gnatprove");  --  Call gnat2why instead of gcc
-
-      end if;
 
       if Minimal_Compile then
          Args.Append ("-m");
@@ -260,11 +205,6 @@ procedure Gnatprove with SPARK_Mode is
          Args.Append (Project_File);
       end if;
 
-      if Call_Gnat2Why then
-         Args.Append ("--db");
-         Args.Append (DB_Dir);
-      end if;
-
       if CL_Switches.RTS /= null and then CL_Switches.RTS.all /= "" then
          Args.Append ("--RTS=" & CL_Switches.RTS.all);
       end if;
@@ -295,27 +235,16 @@ procedure Gnatprove with SPARK_Mode is
          Args.Append (Arg);
       end loop;
 
-      if Call_Gnat2Why then
-         --  We don't use -gnatc for generating data representation, as it may
-         --  lead to incorrect results, and also decreases the precision of the
-         --  results.
-         Args.Append ("-gnatc");  --  Do not generate an object file
-         Args.Append ("-gnates=" & Opt_File);
-      else
-         Args.Append ("-S");  --  Stop after compilation and do not assemble
-         Args.Append ("-gnatR2js");  --  Generate data representation files
-         Args.Append ("-gnatws");    --  Suppress all warnings
-         Args.Append ("-gnatx");     --  Suppress cross-ref information
-      end if;
+      Args.Append ("-S");  --  Stop after compilation and do not assemble
+      Args.Append ("-gnatR2js");  --  Generate data representation files
+      Args.Append ("-gnatws");    --  Suppress all warnings
+      Args.Append ("-gnatx");     --  Suppress cross-ref information
 
       if GnateT_Switch /= null and then GnateT_Switch.all /= "" then
          Args.Append (Configuration.GnateT_Switch.all);
       end if;
 
-      if Translation_Phase /= GS_Gnat2Why then
-         Args.Append ("-gnatis");  --  Suppress all info messages
-
-      end if;
+      Args.Append ("-gnatis");  --  Suppress all info messages
 
       Call_With_Status
         (Command     => "gprbuild",
@@ -324,9 +253,6 @@ procedure Gnatprove with SPARK_Mode is
          Output_Name => Output_Name,
          Verbose     => Verbose);
 
-      if Status = 0 and then not Debug then
-         GNAT.OS_Lib.Delete_File (Opt_File, Del_Succ);
-      end if;
    end Call_Gprbuild;
 
    -------------
@@ -345,49 +271,6 @@ procedure Gnatprove with SPARK_Mode is
       end if;
       Ada.Command_Line.Set_Exit_Status (Exit_Code);
    end Cleanup;
-
-   -----------------------------
-   -- Compute_ALI_Information --
-   -----------------------------
-
-   procedure Compute_ALI_Information
-     (Project_File : String; Tree : Project.Tree.Object; Status : out Integer)
-   is
-      Args : String_Lists.List;
-   begin
-      declare
-         Subd : constant Virtual_File := Phase2_Subdir / Phase1_Subdir;
-      begin
-         Args.Append ("--subdirs=" & Subd.Display_Full_Name);
-      end;
-      Args.Append ("--no-object-check");
-
-      --  We want to run phase 1 at least on the files that are processed by
-      --  phase 2. By not using -u in phase 1 we will obtain a larger set of
-      --  files, except when -u was used without files. In addition,
-      --  --no-subprojects being equivalent to -u without files, we force -u
-      --  when present.
-
-      if (CL_Switches.U and then CL_Switches.File_List.Is_Empty)
-        or else (not CL_Switches.U and then CL_Switches.No_Subprojects)
-      then
-         Args.Append ("-u");
-      end if;
-
-      --  Keep going after a compilation error in 'check' mode
-
-      if Configuration.Mode = GPM_Check then
-         Args.Append ("-k");
-      end if;
-
-      Call_Gprbuild
-        (Project_File,
-         Tree,
-         SPARK_Install.Gpr_Frames_DB,
-         Translation_Phase => GS_ALI,
-         Args              => Args,
-         Status            => Status);
-   end Compute_ALI_Information;
 
    ---------------------------------
    -- Compute_Data_Representation --
@@ -412,13 +295,7 @@ procedure Gnatprove with SPARK_Mode is
          Args.Append ("-k");
       end if;
 
-      Call_Gprbuild
-        (Project_File,
-         Tree,
-         DB_Dir            => "",
-         Translation_Phase => GS_Data_Representation,
-         Args              => Args,
-         Status            => Status);
+      Call_Gprbuild (Project_File, Tree, Args => Args, Status => Status);
 
       if Status /= 0 then
          if not Quiet then
@@ -436,124 +313,6 @@ procedure Gnatprove with SPARK_Mode is
          Status := 0;
       end if;
    end Compute_Data_Representation;
-
-   --------------------
-   -- Copy_ALI_Files --
-   --------------------
-
-   procedure Copy_ALI_Files (Tree : Project.Tree.Object) is
-
-      procedure Copy_Dir (Source_Dir, Target_Dir : Virtual_File);
-      --  Copy the ALI files from Source_Dir to Target_Dir
-
-      procedure Copy_Phase1 (Target_Dir : Virtual_File);
-      --  Copy the ALI files from Target_Dir/Phase1 to Target_Dir
-
-      --------------
-      -- Copy_Dir --
-      --------------
-
-      procedure Copy_Dir (Source_Dir, Target_Dir : Virtual_File) is
-
-         procedure Copy_File
-           (Directory_Entry : Ada.Directories.Directory_Entry_Type);
-         --  copy the file in Argument to Target_Dir
-
-         ---------------
-         -- Copy_File --
-         ---------------
-
-         procedure Copy_File
-           (Directory_Entry : Ada.Directories.Directory_Entry_Type)
-         is
-            use GNAT.OS_Lib;
-            Success : Boolean;
-            pragma Warnings (Off, Success);  --  modified and then unused
-
-         begin
-            Copy_File
-              (Ada.Directories.Full_Name (Directory_Entry),
-               Target_Dir.Display_Full_Name,
-               Success,
-               Mode     => Overwrite,
-               Preserve => Full);
-         end Copy_File;
-
-      begin
-         if Is_Directory (Source_Dir) then
-            Ada.Directories.Search
-              (Source_Dir.Display_Full_Name,
-               Pattern => "*.ali",
-               Filter  =>
-                 [Ada.Directories.Ordinary_File => True, others => False],
-               Process => Copy_File'Access);
-         end if;
-      end Copy_Dir;
-
-      -----------------
-      -- Copy_Phase1 --
-      -----------------
-
-      procedure Copy_Phase1 (Target_Dir : Virtual_File) is
-         Phase1_Dir : constant Virtual_File := Target_Dir / Phase1_Subdir;
-      begin
-         Copy_Dir (Phase1_Dir, Target_Dir);
-      end Copy_Phase1;
-
-      --  Start of processing for Copy_ALI_Files
-
-   begin
-      for Cursor in
-        Tree.Iterate
-          (Status =>
-             [GPR2.Project.S_Externally_Built => GNATCOLL.Tribooleans.False])
-      loop
-         declare
-            View : constant Project.View.Object :=
-              Project.Tree.Element (Cursor);
-         begin
-            if View.Kind in With_Object_Dir_Kind then
-               Copy_Phase1 (View.Object_Directory.Virtual_File);
-            end if;
-
-            --  In the case of library projects, there is a separate dir where
-            --  ALI files are copied at the end. As the first phase was done
-            --  with a different subdir, we need to copy those files as well.
-
-            if View.Is_Library then
-               declare
-                  Lib_Dir : Virtual_File renames
-                    View.Library_Ali_Directory.Virtual_File;
-               begin
-                  if View.Kind not in With_Object_Dir_Kind
-                    or else View.Object_Directory.Virtual_File /= Lib_Dir
-                  then
-                     Copy_Dir (View.Object_Directory.Virtual_File, Lib_Dir);
-                  end if;
-               end;
-            end if;
-         end;
-      end loop;
-   end Copy_ALI_Files;
-
-   ----------------------------
-   -- Create_Dir_And_Parents --
-   ----------------------------
-
-   procedure Create_Dir_And_Parents (Dir : Virtual_File) is
-   begin
-      if Ada.Directories.Exists (Dir.Display_Full_Name) then
-         return;
-      end if;
-      declare
-         Par : constant Virtual_File := Get_Parent (Dir);
-      begin
-         if Par /= No_File then
-            Create_Dir_And_Parents (Par);
-         end if;
-      end;
-      Create_Directory_Or_Exit (Dir.Display_Full_Name);
-   end Create_Dir_And_Parents;
 
    ------------------
    -- Execute_Step --
@@ -593,12 +352,8 @@ procedure Gnatprove with SPARK_Mode is
                Compute_Data_Representation (Project_File, Tree, Status);
             end if;
 
-         when GS_ALI                 =>
-            Compute_ALI_Information (Project_File, Tree, Status);
-
          when GS_Gnat2Why            =>
-            Copy_ALI_Files (Tree);
-            Flow_Analysis_And_Proof (Project_File, Tree, Status);
+            Flow_Analysis_And_Proof (Tree, Status);
       end case;
 
       if Status /= 0 then
@@ -616,74 +371,6 @@ procedure Gnatprove with SPARK_Mode is
 
    end Execute_Step;
 
-   -----------------------------
-   -- Flow_Analysis_And_Proof --
-   -----------------------------
-
-   procedure Flow_Analysis_And_Proof
-     (Project_File : String; Tree : Project.Tree.Object; Status : out Integer)
-   is
-      use type GNAT.OS_Lib.Process_Id;
-      Obj_Dir : constant String := Artifact_Dir (Tree).Display_Full_Name;
-   begin
-      Write_Why3_Conf_File (Obj_Dir);
-
-      declare
-         use String_Lists;
-         Args : String_Lists.List;
-         Id   : GNAT.OS_Lib.Process_Id := GNAT.OS_Lib.Invalid_Pid;
-      begin
-         Args.Append ("--subdirs=" & Phase2_Subdir.Display_Full_Name);
-
-         if IDE_Mode then
-            Args.Append ("-d");
-         end if;
-
-         if Only_Given or else CL_Switches.No_Subprojects then
-            Args.Append ("-u");
-         end if;
-
-         --  Replay results if up-to-date. We disable this in debug mode to
-         --  be able to see gnat2why output "as it happens", and not only
-         --  when gnat2why is finished.
-
-         Args.Append
-           (if Debug then "--no-complete-output" else "--complete-output");
-
-         if Configuration.Mode in GPM_All | GPM_Prove then
-            Id := Spawn_VC_Server_And_Semaphore (Tree);
-         end if;
-
-         Call_Gprbuild
-           (Project_File,
-            Tree,
-            SPARK_Install.Gpr_Translation_DB,
-            Translation_Phase => GS_Gnat2Why,
-            Args              => Args,
-            Status            => Status);
-
-         if Configuration.Mode in GPM_All | GPM_Prove then
-            if Id /= GNAT.OS_Lib.Invalid_Pid then
-               GNAT.OS_Lib.Kill (Id, Hard_Kill => False);
-               declare
-                  Pid    : GNAT.OS_Lib.Process_Id;
-                  Unused : Boolean;
-               begin
-                  --  Wait for the killed process to genlty terminate and for
-                  --  the underlying resources to be reclaimed.
-
-                  GNAT.OS_Lib.Wait_Process (Pid, Unused);
-                  pragma Assert (Pid = Id);
-               end;
-            end if;
-            if Use_Semaphores then
-               Close (Why3_Semaphore);
-               Delete (Semaphore_Name);
-            end if;
-         end if;
-      end;
-   end Flow_Analysis_And_Proof;
-
    ---------------------------
    -- Generate_SPARK_Report --
    ---------------------------
@@ -691,7 +378,8 @@ procedure Gnatprove with SPARK_Mode is
    procedure Generate_SPARK_Report
      (Tree : Project.Tree.Object; Errors : Boolean)
    is
-      Obj_Dir    : constant String := Artifact_Dir (Tree).Display_Full_Name;
+      Obj_Dir    : constant String :=
+        Artifact_Dir (Tree).Virtual_File.Display_Full_Name;
       Obj_Dir_Fn : constant String :=
         Ada.Directories.Compose (Obj_Dir, "gnatprove.alfad");
       Success    : Boolean;
@@ -858,37 +546,6 @@ procedure Gnatprove with SPARK_Mode is
       end if;
    end Generate_SPARK_Report;
 
-   ------------------------
-   -- Non_Blocking_Spawn --
-   ------------------------
-
-   function Non_Blocking_Spawn
-     (Command : String; Arguments : String_Lists.List)
-      return GNAT.OS_Lib.Process_Id
-   is
-      Executable : GNAT.OS_Lib.String_Access :=
-        GNAT.OS_Lib.Locate_Exec_On_Path (Command);
-      Args       : GNAT.OS_Lib.Argument_List :=
-        Argument_List_Of_String_List (Arguments);
-      Proc       : GNAT.OS_Lib.Process_Id;
-   begin
-      if Executable = null then
-         Ada.Text_IO.Put_Line ("Could not find executable " & Command);
-         GNAT.OS_Lib.OS_Exit (1);
-      end if;
-      if Debug then
-         Ada.Text_IO.Put (Executable.all);
-         for Arg of Args loop
-            Ada.Text_IO.Put (" " & Arg.all);
-         end loop;
-         Ada.Text_IO.New_Line;
-      end if;
-      Proc := GNAT.OS_Lib.Non_Blocking_Spawn (Executable.all, Args);
-      Free (Args);
-      Free (Executable);
-      return Proc;
-   end Non_Blocking_Spawn;
-
    ---------------------
    -- Set_Environment --
    ---------------------
@@ -947,43 +604,6 @@ procedure Gnatprove with SPARK_Mode is
 
    end Set_Environment;
 
-   ---------------------
-   -- Spawn_VC_Server --
-   ---------------------
-
-   function Spawn_VC_Server_And_Semaphore
-     (Tree : Project.Tree.Object) return GNAT.OS_Lib.Process_Id
-   is
-      Args : String_Lists.List;
-      Cur  : constant String := Ada.Directories.Current_Directory;
-      Id   : GNAT.OS_Lib.Process_Id := GNAT.OS_Lib.Invalid_Pid;
-   begin
-      if CL_Switches.Why3_Server = null
-        or else CL_Switches.Why3_Server.all = ""
-      then
-         Ada.Directories.Set_Directory (Artifact_Dir (Tree).Display_Full_Name);
-         Args.Append ("-j");
-         Args.Append (Image (Parallel, 1));
-         Args.Append ("--socket");
-         Args.Append (Socket_Name.all);
-         if Debug then
-            Args.Append ("--logging");
-         end if;
-         Id := Non_Blocking_Spawn ("why3server", Args);
-         Ada.Directories.Set_Directory (Cur);
-         Ada.Environment_Variables.Set ("GNATPROVE_SOCKET", Socket_Name.all);
-      else
-         Ada.Environment_Variables.Set
-           ("GNATPROVE_SOCKET", CL_Switches.Why3_Server.all);
-      end if;
-      if Use_Semaphores then
-         Delete (Semaphore_Name);
-         Create (Semaphore_Name, Max_Why3_Processes, Why3_Semaphore);
-         Ada.Environment_Variables.Set ("GNATPROVE_SEMAPHORE", Semaphore_Name);
-      end if;
-      return Id;
-   end Spawn_VC_Server_And_Semaphore;
-
    ------------------
    -- Text_Of_Step --
    ------------------
@@ -995,13 +615,6 @@ procedure Gnatprove with SPARK_Mode is
       case Step is
          when GS_Data_Representation =>
             return "generation of data representation information";
-
-         when GS_ALI                 =>
-            if CL_Switches.No_Global_Generation then
-               return "generation of program properties";
-            else
-               return "generation of Global contracts";
-            end if;
 
          when GS_Gnat2Why            =>
             case Configuration.Mode is
@@ -1020,264 +633,6 @@ procedure Gnatprove with SPARK_Mode is
       end case;
    end Text_Of_Step;
 
-   --------------------------
-   -- Write_Why3_Conf_File --
-   --------------------------
-
-   procedure Write_Why3_Conf_File (Obj_Dir : String) is
-
-      --  Here we read the "gnatprove.conf" file and generate from it
-      --  the "why3.conf" file. This comment defines the structure of the
-      --  "gnatprove.conf" file.
-      --  Note that we leave many fields uncommented here because they map
-      --  directly to why3 fields.
-      --
-      --  gnatprove.conf =
-      --    { magic    : int,
-      --      memlimit : int,
-      --      provers  : list prover,
-      --      editors  : list editor
-      --    }
-      --
-      --  "magic" and "memlimit" map directly to the entries in Why3.conf in
-      --  the [main] section.
-      --
-      --  prover =
-      --    { executable : string,
-      --      args       : list string,
-      --      args_steps : list string,
-      --      driver     : string,
-      --      name       : string,
-      --      shortcut   : string,
-      --      version    : string
-      --    }
-      --
-      --    "driver", "name", "shortcut", "version" map directly to why3.conf
-      --    keys for a prover. "executable" is just the name of the binary to
-      --    be run. "args" are all the arguments for a run without a step
-      --    limit. "args_steps" are the *extra* arguments that need to be
-      --    provided for a steps limit to be active.
-      --
-      --  editor =
-      --    { title      : string,
-      --      name       : string,
-      --      executable : string,
-      --      args       : list string
-      --    }
-      --
-      --  "title" maps to the name of the editor used in the title of the
-      --  section, e.g. for "[editor coqide]" the title would be "coqide".
-      --  "name" maps to the why3.conf key. "executable" is just the name of
-      --  the binary, and "args" the arguments that need to be provided.
-
-      File : File_Type;
-
-      procedure Start_Section (Name : String);
-      --  Start a section in the why3.conf file
-
-      procedure Set_Key_Value (Key, Value : String);
-      --  Write a line 'key = "value"' to the why3.conf file
-
-      procedure Set_Key_Value_Int (Key : String; Value : Integer);
-      --  Same, but for Integers. We do not use overloading, because in
-      --  connection with the overloading of JSON API, this will require type
-      --  annotations.
-
-      procedure Set_Key_Value_Bool (Key : String; Value : Boolean);
-      --  Same, but for Booleans.
-
-      procedure Write_Prover_Config (Prover : JSON_Value);
-      --  Write the config of a prover
-
-      procedure Write_Editor_Config (Editor : JSON_Value);
-      --  Write the config of an editor
-
-      function Build_Prover_Command
-        (Prover : JSON_Value; Args_Step : Boolean) return String;
-      --  Given a prover configuration in JSON, construct the prover command
-      --  for why3.conf (with or without steps depending on Args_Step value).
-
-      function Build_Executable (Exec : String) return String;
-      --  Build the part of a command that corresponds to the executable. Takes
-      --  into account Benchmark mode.
-
-      ----------------------
-      -- Build_Executable --
-      ----------------------
-
-      function Build_Executable (Exec : String) return String is
-
-         function Add_Memcached_Wrapper (Cmd : String) return String;
-         function Add_Benchmark_Prefix (Cmd : String) return String;
-
-         --------------------------
-         -- Add_Benchmark_Prefix --
-         --------------------------
-
-         function Add_Benchmark_Prefix (Cmd : String) return String is
-         begin
-            if CL_Switches.Benchmark then
-               return "fake_" & Cmd;
-            else
-               return Cmd;
-            end if;
-         end Add_Benchmark_Prefix;
-
-         ---------------------------
-         -- Add_Memcached_Wrapper --
-         ---------------------------
-
-         function Add_Memcached_Wrapper (Cmd : String) return String is
-         begin
-            if CL_Switches.Memcached_Server /= null
-              and then CL_Switches.Memcached_Server.all /= ""
-            then
-               return
-                 "spark_memcached_wrapper %t "
-                 & CL_Switches.Memcached_Server.all
-                 & " "
-                 & Cmd;
-            else
-               return Cmd;
-            end if;
-         end Add_Memcached_Wrapper;
-
-         --  Start of processing for Build_Executable
-
-      begin
-         return Add_Memcached_Wrapper (Add_Benchmark_Prefix (Exec));
-      end Build_Executable;
-
-      --------------------------
-      -- Build_Prover_Command --
-      --------------------------
-
-      function Build_Prover_Command
-        (Prover : JSON_Value; Args_Step : Boolean) return String
-      is
-         use Ada.Strings.Unbounded;
-         Command  : Unbounded_String;
-         Args     : constant JSON_Array := Get (Get (Prover, "args"));
-         Args_Add : constant JSON_Array :=
-           (if Args_Step
-            then Get (Get (Prover, "args_steps"))
-            else Get (Get (Prover, "args_time")));
-      begin
-         Append
-           (Command,
-            Build_Executable (String'(Get (Get (Prover, "executable")))));
-         for Index in 1 .. Length (Args_Add) loop
-            Append (Command, " " & String'(Get (Get (Args_Add, Index))));
-         end loop;
-         for Index in 1 .. Length (Args) loop
-            Append (Command, " " & String'(Get (Get (Args, Index))));
-         end loop;
-         return To_String (Command);
-      end Build_Prover_Command;
-
-      -------------------
-      -- Set_Key_Value --
-      -------------------
-
-      procedure Set_Key_Value (Key, Value : String) is
-      begin
-         Put_Line (File, Key & " = " & '"' & Value & '"');
-      end Set_Key_Value;
-
-      ------------------------
-      -- Set_Key_Value_Bool --
-      ------------------------
-
-      procedure Set_Key_Value_Bool (Key : String; Value : Boolean) is
-      begin
-         Put_Line (File, Key & " = " & (if Value then "true" else "false"));
-      end Set_Key_Value_Bool;
-
-      -----------------------
-      -- Set_Key_Value_Int --
-      -----------------------
-
-      procedure Set_Key_Value_Int (Key : String; Value : Integer) is
-      begin
-         Put_Line (File, Key & " = " & Integer'Image (Value));
-      end Set_Key_Value_Int;
-
-      -------------------
-      -- Start_Section --
-      -------------------
-
-      procedure Start_Section (Name : String) is
-      begin
-         Put_Line (File, "[" & Name & "]");
-      end Start_Section;
-
-      -------------------------
-      -- Write_Editor_Config --
-      -------------------------
-
-      procedure Write_Editor_Config (Editor : JSON_Value) is
-      begin
-         Start_Section ("editor " & Get (Get (Editor, "title")));
-         Set_Key_Value ("name", Get (Get (Editor, "name")));
-         Set_Key_Value
-           ("command", Build_Prover_Command (Editor, Args_Step => False));
-      end Write_Editor_Config;
-
-      -------------------------
-      -- Write_Prover_Config --
-      -------------------------
-
-      procedure Write_Prover_Config (Prover : JSON_Value) is
-      begin
-         Start_Section ("prover");
-         Set_Key_Value
-           ("command", Build_Prover_Command (Prover, Args_Step => False));
-         if Has_Field (Prover, "args_steps") then
-            Set_Key_Value
-              ("command_steps",
-               Build_Prover_Command (Prover, Args_Step => True));
-         end if;
-         Set_Key_Value ("driver", Get (Get (Prover, "driver")));
-         Set_Key_Value ("name", Get (Get (Prover, "name")));
-         Set_Key_Value ("shortcut", Get (Get (Prover, "shortcut")));
-         Set_Key_Value ("version", Get (Get (Prover, "version")));
-         if Has_Field (Prover, "interactive") then
-            Set_Key_Value_Bool
-              ("interactive", Get (Get (Prover, "interactive")));
-         end if;
-         if Has_Field (Prover, "editor") then
-            Set_Key_Value ("editor", Get (Get (Prover, "editor")));
-         end if;
-         if Has_Field (Prover, "in_place") then
-            Set_Key_Value_Bool ("in_place", Get (Get (Prover, "in_place")));
-         end if;
-
-      end Write_Prover_Config;
-
-      Config : constant JSON_Value :=
-        Read_File_Into_JSON (SPARK_Install.Gnatprove_Conf);
-
-      Editors  : constant JSON_Array := Get (Get (Config, "editors"));
-      Provers  : constant JSON_Array := Get (Get (Config, "provers"));
-      Filename : constant String :=
-        Ada.Directories.Compose (Obj_Dir, "why3.conf");
-
-      --  Start of processing for Write_Why3_Conf_File
-
-   begin
-      Create (File, Out_File, Filename);
-      Start_Section ("main");
-      Set_Key_Value_Int ("magic", Get (Get (Config, "magic")));
-      Set_Key_Value_Int ("memlimit", Get (Get (Config, "memlimit")));
-      for Index in 1 .. Length (Editors) loop
-         Write_Editor_Config (Get (Editors, Index));
-      end loop;
-      for Index in 1 .. Length (Provers) loop
-         Write_Prover_Config (Get (Provers, Index));
-      end loop;
-      Close (File);
-   end Write_Why3_Conf_File;
-
    Tree : Project.Tree.Object;
    --  GNAT project tree
 
@@ -1287,14 +642,14 @@ begin
    Set_Environment;
    Read_Command_Line (Tree);
 
-   if Artifact_Dir (Tree) = GNATCOLL.VFS.No_File then
+   if not Artifact_Dir (Tree).Is_Defined then
       Fail
         ("Error while loading project file: "
          & CL_Switches.P.all
          & ": "
          & "could not determine working directory");
    end if;
-   Create_Dir_And_Parents (Artifact_Dir (Tree));
+   Create_Dir_And_Parents (Artifact_Dir (Tree).Virtual_File);
 
    for Cursor in
      Tree.Iterate
@@ -1317,8 +672,7 @@ begin
    end loop;
 
    Analysis : declare
-      Plan : constant Plan_Type :=
-        [GS_Data_Representation, GS_ALI, GS_Gnat2Why];
+      Plan : constant Plan_Type := [GS_Data_Representation, GS_Gnat2Why];
    begin
       for Step in Plan'Range loop
          Execute_Step (Plan, Step, CL_Switches.P.all, Tree);

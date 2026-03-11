@@ -1,3 +1,6 @@
+dyn_pred.ads:4:12: info: implicit aspect Always_Terminates on "Is_Positive" has been proved, subprogram will terminate
+dyn_pred.ads:19:38: info: for inherited predicate at dyn_pred.ads:14
+dyn_pred.ads:19:38: info: predicate check proved (CVC5: 1 VC)
 dyn_pred2.ads:8:44: error: expected type "Rec_Type" defined at line 10
 dyn_pred2.ads:8:44: error: found type "Non_Zero_Type" defined at line 14
-gnatprove: error during generation of Global contracts
+gnatprove: error during flow analysis and proof

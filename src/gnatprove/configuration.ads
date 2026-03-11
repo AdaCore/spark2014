@@ -31,6 +31,9 @@ with Ada.Strings.Hash;
 with Ada.Text_IO;
 with Call;             use Call;
 with GNAT.Strings;
+with GPR2.Build.Compilation_Unit;
+with GPR2.Build.Compilation_Unit.Maps;
+with GPR2.Path_Name;
 with GPR2.Project.Tree;
 with GPR2.Project.View;
 use GPR2;
@@ -201,6 +204,8 @@ package Configuration is
    Warning_Status     : Warning_Status_Array := VC_Kinds.Warning_Status;
    Has_Manual_Prover  : Boolean;
    Has_Coq_Prover     : Boolean;
+   CL_Units           : GPR2.Build.Compilation_Unit.Maps.Map;
+   --  A "copy" of Cl_Switches.File_List, but units instead of files
 
    All_Projects      : Boolean renames CL_Switches.UU;
    Continue_On_Error : Boolean renames CL_Switches.K;
@@ -311,7 +316,6 @@ package Configuration is
 
    Data_Representation_Subdir : constant Virtual_File :=
      Create (+Data_Representation_Subdir_Name);
-   Phase1_Subdir              : constant Virtual_File := Create ("phase1");
    Phase2_Subdir              : Virtual_File := Create ("gnatprove");
    --  The subdir names for the storage of intermediate files (ALI, why3 files,
    --  etc). This is the subdir of the object dir, which might be further
@@ -339,6 +343,10 @@ package Configuration is
    procedure Create_Directory_Or_Exit (New_Directory : String);
    --  Wrapper on Ada.Directories.Create_Directory that exits with a message
    --  instead of propagating an exception in case of error.
+
+   procedure Create_Dir_And_Parents (Dir : Virtual_File);
+   --  Create the directory and necessary parent directories. Do nothing if the
+   --  directory already exists. Abort in case of failure.
 
    procedure Create_File_Or_Exit
      (File : in out Ada.Text_IO.File_Type;
@@ -368,8 +376,11 @@ package Configuration is
    function Prover_List return String;
    function Prover_List (FS : File_Specific) return String;
 
-   function Artifact_Dir (Tree : GPR2.Project.Tree.Object) return Virtual_File;
-   --  place to store the gnatprove artifacts.
+   function Artifact_Dir
+     (Tree : GPR2.Project.Tree.Object) return Path_Name.Object;
+   --  Place to store the gnatprove artifacts. Use this function over
+   --  Tree.Root_Project.Object_Directory or similar as the root project
+   --  might not have an object directory.
 
    function Compute_Why3_Args
      (Obj_Dir : String; FS : File_Specific) return String_Lists.List;
@@ -381,5 +392,18 @@ package Configuration is
    --  the Global_Compilation_Switches of the Builder package. This is the
    --  documented way to pass this switch to GNATprove. Other ways to pass
    --  -gnateT switch are not considered.
+
+   Opt_File_Set : Dir_Name_Sets.Set;
+   --  Set of all created opt file paths, for cleanup
+
+   function Extra_Args_File_For_Unit
+     (Unit              : GPR2.Build.Compilation_Unit.Object;
+      Translation_Phase : Boolean;
+      Obj_Dir           : String;
+      Why3_Dir          : String) return String;
+   --  Retrieve the extra args file for a specific unit's configuration. The
+   --  file is created if it does not exist yet.
+   --  Looks up the unit's File_Specific settings and generates a flat
+   --  opt file. Units with identical settings share the same file.
 
 end Configuration;

@@ -39,16 +39,19 @@ package body Gnat2Why_Opts.Writing is
    ------------------------------------
 
    function Pass_Extra_Options_To_Gnat2why
-     (Translation_Phase : Boolean; Obj_Dir : String) return String
+     (Translation_Phase : Boolean;
+      Obj_Dir           : String;
+      Why3_Dir          : String;
+      Unit_Name         : String) return String
    is
       function Write_To_File (V : JSON_Value) return String;
       --  Write a textual representation of V to file
       --  @return full name of the file that is to be passed to gnat2why using
       --    -gnates=<file>. The chosen file name will be identical for
-      --    identical contents of the file.
+      --    identical contents of the file. If a file with the same content
+      --    hash already exists, the write is skipped.
 
       function To_JSON (SL : String_Lists.List) return JSON_Array;
-      function To_JSON (FS : File_Specific) return JSON_Value;
 
       -------------------
       -- Write_To_File --
@@ -59,53 +62,30 @@ package body Gnat2Why_Opts.Writing is
          Hash_Context : Blake3_Context;
          File_Name    : String (1 .. 12);
          FT           : File_Type;
-         Cur_Dir      : constant String := Current_Directory;
       begin
          Init_Hash_Context (Hash_Context);
          Update_Hash_Context (Hash_Context, Write_Cont);
          File_Name := Hash_Digest (Hash_Context) (1 .. 8) & ".tmp";
 
-         --  We need to switch to the given Obj_Dir so that the temp file is
-         --  created there.
+         --  Skip writing if a file with the same content hash already exists
+         declare
+            Result : constant String := Compose (Obj_Dir, File_Name);
+         begin
+            if Exists (Result) then
+               return Result;
+            end if;
 
-         Set_Directory (Obj_Dir);
-         Create (FT, Name => File_Name);
-         Put (FT, Write_Cont);
+            Create (FT, Name => Result);
+            Put (FT, Write_Cont);
+            Close (FT);
 
-         Close (FT);
-         Set_Directory (Cur_Dir);
-
-         return Compose (Obj_Dir, File_Name);
+            return Result;
+         end;
       end Write_To_File;
 
       -------------
       -- To_JSON --
       -------------
-
-      function To_JSON (FS : Configuration.File_Specific) return JSON_Value is
-         Obj : constant JSON_Value := Create_Object;
-
-      begin
-         Set_Field (Obj, Check_Counterexamples_Name, FS.Check_Counterexamples);
-         Set_Field (Obj, No_Loop_Unrolling_Name, FS.No_Loop_Unrolling);
-         Set_Field (Obj, No_Inlining_Name, FS.No_Inlining);
-         Set_Field (Obj, GP_Mode_Name, To_JSON (FS.Mode));
-         Set_Field (Obj, Warning_Status_Name, To_JSON (FS.Warning_Status));
-
-         --  Why3_Args are only needed in phase 2; also Compute_Why3_Args
-         --  might call gnatwhy3, which requires Write_Why3_Conf_File to be
-         --  called, which happens just before this routine is called with
-         --  Translation_Phase set to True.
-
-         if Translation_Phase then
-            Set_Field (Obj, Proof_Warnings_Name, FS.Proof_Warnings);
-
-            Set_Field
-              (Obj, Why3_Args_Name, To_JSON (Compute_Why3_Args (Obj_Dir, FS)));
-         end if;
-
-         return Obj;
-      end To_JSON;
 
       function To_JSON (SL : String_Lists.List) return JSON_Array is
          A : JSON_Array := GNATCOLL.JSON.Empty_Array;
@@ -172,28 +152,29 @@ package body Gnat2Why_Opts.Writing is
          Set_Field (Obj, CWE_Name, CL_Switches.CWE);
          Set_Field (Obj, Max_Why3_Processes_Name, Max_Why3_Processes);
 
-         Set_Field (Obj, Why3_Dir_Name, Obj_Dir);
+         --  The call to Ada.Directories.Full_Name removes any trailing
+         --  slash, which could confuse gnat2why.
+         Set_Field (Obj, Why3_Dir_Name, Ada.Directories.Full_Name (Why3_Dir));
       end if;
 
-      --  File-specific options
+      --  File-specific options (flattened to top level)
 
       declare
-         FS : constant JSON_Value := Create_Object;
-
+         FS : Configuration.File_Specific renames
+           Configuration.File_Specific_Map (Unit_Name);
       begin
-         for FSC in Configuration.File_Specific_Map.Iterate loop
-            declare
-               File : String renames
-                 Configuration.File_Specific_Maps.Key (FSC);
-               Opts : Configuration.File_Specific renames
-                 Configuration.File_Specific_Map (FSC);
+         Set_Field (Obj, Check_Counterexamples_Name, FS.Check_Counterexamples);
+         Set_Field (Obj, No_Loop_Unrolling_Name, FS.No_Loop_Unrolling);
+         Set_Field (Obj, No_Inlining_Name, FS.No_Inlining);
+         Set_Field (Obj, GP_Mode_Name, To_JSON (FS.Mode));
+         Set_Field (Obj, Warning_Status_Name, To_JSON (FS.Warning_Status));
 
-            begin
-               Set_Field (FS, File, To_JSON (Opts));
-            end;
-         end loop;
+         if Translation_Phase then
+            Set_Field (Obj, Proof_Warnings_Name, FS.Proof_Warnings);
 
-         Set_Field (Obj, File_Specific_Name, FS);
+            Set_Field
+              (Obj, Why3_Args_Name, To_JSON (Compute_Why3_Args (Obj_Dir, FS)));
+         end if;
       end;
 
       return Write_To_File (Obj);

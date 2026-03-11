@@ -13,6 +13,9 @@ abstract_state_illegal.ads:66:07: error: launch "gnatprove --explain=E0009" for 
 abstract_state_illegal.ads:66:07: error: package "Null_Abstract_State_With_Hidden_State" has null abstract state
 abstract_state_illegal.ads:77:07: error: "S1" conflicts with declaration at line 75
 abstract_state_illegal_2.ads:14:48: error: "=>" expected (positional association cannot follow named association)
+abstract_state_illegal_3.ads:6:26: warning: no subprogram exists that can initialize abstract state "Abstract_State_Illegal_3.State"
 abstract_state_illegal_4-pub_child.adb:5:57: error: "Pr_State" cannot act as constituent of state "Pub_State"
 abstract_state_illegal_4-pub_child.adb:5:57: error: Part_Of indicator specifies encapsulator "State"
-gnatprove: error during generation of Global contracts
+abstract_state_illegal_4.ads:9:26: warning: no subprogram exists that can initialize abstract state "Abstract_State_Illegal_4.State"
+abstract_state_illegal_4.ads:11:14: warning: subprogram "P" has no effect
+gnatprove: error during flow analysis and proof

@@ -3,4 +3,4 @@
    16 |                            A (I) = (if I < Index then A'Old (I) + 1 else A'Old (I))));
       |                            ^
       + only parameters passed by reference are allowed
-gnatprove: error during generation of Global contracts
+gnatprove: error during flow analysis and proof

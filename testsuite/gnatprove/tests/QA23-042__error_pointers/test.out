@@ -309,4 +309,4 @@ n08b.adb:55:51: error: expected type "Standard.Integer"
 n08b.adb:55:51: error: found type "ACI" defined at line 12
 n08b.adb:56:51: error: expected type "Standard.Integer"
 n08b.adb:56:51: error: found type "ACI" defined at line 12
-gnatprove: error during generation of Global contracts
+gnatprove: error during flow analysis and proof

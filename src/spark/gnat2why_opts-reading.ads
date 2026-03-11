@@ -172,14 +172,13 @@ package Gnat2Why_Opts.Reading is
    -- Loading option values --
    ---------------------------
 
-   procedure Load (Args_File : String; Source_File : String)
-   with Pre => Args_File /= "" and then Source_File /= "";
+   procedure Load (Args_File : String)
+   with Pre => Args_File /= "";
    --  Read the extra options information and set the corresponding global
    --  variables above.
    --  @param Args_File the filename to read the extra information from.
    --    Basically, you should pass Opt.SPARK_Switches_File_Name.all here. We
    --    want to avoid the dependency on Opt here, so you need to pass it
    --    yourself.
-   --  @param Source_File key for the map with file-specific options
 
 end Gnat2Why_Opts.Reading;

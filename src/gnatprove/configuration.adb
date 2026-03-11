@@ -38,14 +38,11 @@ with GNAT.Expect;
 with GNAT.OS_Lib;
 with GNAT.Regpat;       use GNAT.Regpat;
 with GNAT.Strings;      use GNAT.Strings;
-with GPR2.Build.Compilation_Unit;
-with GPR2.Build.Compilation_Unit.Maps;
 with GPR2.Build.Source;
 with GPR2.Build.View_Db;
 with GPR2.Log;
 with GPR2.Message;
 with GPR2.Options;
-with GPR2.Path_Name;
 with GPR2.Project.Attribute;
 with GPR2.Project.Attribute_Index;
 with GPR2.Project.Registry.Attribute;
@@ -246,15 +243,15 @@ package body Configuration is
    -- Artifact_Dir --
    ------------------
 
-   function Artifact_Dir (Tree : GPR2.Project.Tree.Object) return Virtual_File
-   is
+   function Artifact_Dir
+     (Tree : GPR2.Project.Tree.Object) return Path_Name.Object is
    begin
       if Tree.Root_Project.Kind in GPR2.With_Object_Dir_Kind then
          --  we don't need to add "gnatprove" here as we configured the project
          --  with the correct subdir option.
-         return Tree.Root_Project.Object_Directory.Virtual_File;
+         return Tree.Root_Project.Object_Directory;
       else
-         return Tree.Root_Project.Dir_Name.Virtual_File / "gnatprove";
+         return Path_Name.Compose (Tree.Root_Project.Dir_Name, "gnatprove");
       end if;
    end Artifact_Dir;
 
@@ -282,6 +279,11 @@ package body Configuration is
    procedure Internal_Report
      (Self : in out Spark_Reporter; Message : GPR2.Message.Object) is
    begin
+      --  Silently drop the "failed with status xx" message that pollute our
+      --  test output.
+      if Contains (Message.Message, "failed with status") then
+         return;
+      end if;
       GPR2.Reporter.Console.Object (Self).Internal_Report (Message);
       Check_Duplicate_Bodies (Message);
    end Internal_Report;
@@ -422,6 +424,7 @@ package body Configuration is
             end if;
             if View.Is_Library then
                Clean_Up_One_Directory (View.Library_Directory.Virtual_File);
+               --  ??? This folder does not include the subdir apparently
                Clean_Up_One_Directory
                  (View.Library_Ali_Directory.Virtual_File);
             end if;
@@ -469,9 +472,29 @@ package body Configuration is
       elsif Exists_And_Is_Writable (TMP_Dir) then
          return TMP_Dir;
       else
-         return Artifact_Dir (Tree).Display_Full_Name;
+         return Artifact_Dir (Tree).Virtual_File.Display_Full_Name;
       end if;
    end Compute_Socket_Dir;
+
+   ----------------------------
+   -- Create_Dir_And_Parents --
+   ----------------------------
+
+   procedure Create_Dir_And_Parents (Dir : Virtual_File) is
+      use Standard.Ada.Directories;
+   begin
+      if Exists (Dir.Display_Full_Name) then
+         return;
+      end if;
+      declare
+         Par : constant Virtual_File := Get_Parent (Dir);
+      begin
+         if Par /= No_File then
+            Create_Dir_And_Parents (Par);
+         end if;
+      end;
+      Create_Directory_Or_Exit (Dir.Display_Full_Name);
+   end Create_Dir_And_Parents;
 
    ------------------------------
    -- Create_Directory_Or_Exit --
@@ -546,6 +569,33 @@ package body Configuration is
    begin
       raise GNATprove_Failure with Msg;
    end Fail;
+
+   ---------------------------------
+   -- Get_Or_Create_Unit_Opt_File --
+   ---------------------------------
+
+   function Extra_Args_File_For_Unit
+     (Unit              : GPR2.Build.Compilation_Unit.Object;
+      Translation_Phase : Boolean;
+      Obj_Dir           : String;
+      Why3_Dir          : String) return String
+   is
+      Unit_Name : constant String :=
+        String (Unit.Main_Part.Source.Simple_Name);
+      --  ??? This calls Pass_Extra_Options_To_Gnat2why for each unit, which
+      --  may rewrite the same file when units share identical settings.
+      --  Write_To_File skips the write if the file already exists (same
+      --  content = same hash = same filename), so the overhead is minimal.
+      Opt_File  : constant String :=
+        Gnat2Why_Opts.Writing.Pass_Extra_Options_To_Gnat2why
+          (Translation_Phase => Translation_Phase,
+           Obj_Dir           => Obj_Dir,
+           Why3_Dir          => Why3_Dir,
+           Unit_Name         => Unit_Name);
+   begin
+      Opt_File_Set.Include (Opt_File);
+      return Opt_File;
+   end Extra_Args_File_For_Unit;
 
    -------------------------------------
    -- Handle_Project_Loading_Switches --
@@ -1783,6 +1833,7 @@ package body Configuration is
             Reporter : Spark_Reporter :=
               (GPR2.Reporter.Console.Create (GPR2.Reporter.No_Warnings)
                with null record);
+
          begin
             Proj_Opt.Add_Switch (Options.P, Project_File);
 
@@ -1790,6 +1841,7 @@ package body Configuration is
               Tree.Load
                 (Proj_Opt,
                  Reporter         => Reporter,
+                 With_Runtime     => True,
                  Absent_Dir_Error => GPR2.No_Error);
 
             if not Status then
@@ -1801,6 +1853,7 @@ package body Configuration is
             --  a warning.
 
             Reporter.Set_Verbosity (GPR2.Reporter.Regular);
+
             Tree.Set_Reporter (Reporter);
 
             if not Tree.Update_Sources then
@@ -2976,6 +3029,26 @@ package body Configuration is
          --  Sequential mode: limit to 1 process
          Max_Why3_Processes := 1;
       end if;
+
+      --  Set reporter for build process
+      --  ??? possibly set Verbosity level in addition to User_Verbosity_Level
+      --  Quiet overrides Verbose here; probably "-v" and "--quiet" should
+      --  override each other
+      declare
+         Reporter       : Spark_Reporter :=
+           (GPR2.Reporter.Console.Create (GPR2.Reporter.No_Warnings)
+            with null record);
+         User_Verbosity : constant GPR2.Reporter.User_Verbosity_Level :=
+           (if Configuration.Verbose
+            then GPR2.Reporter.Verbose
+            elsif Configuration.Quiet
+            then GPR2.Reporter.Important_Only
+            else GPR2.Reporter.Regular);
+      begin
+         Reporter.Set_Verbosity (GPR2.Reporter.Regular);
+         Reporter.Set_User_Verbosity (User_Verbosity);
+         Tree.Set_Reporter (Reporter);
+      end;
    end Read_Command_Line;
 
    ------------------------
@@ -3053,6 +3126,7 @@ package body Configuration is
                         CL_Switches.File_List.Replace_Element
                           (Cursor, String (CU.Main_Part.Source.Simple_Name));
                         Found := True;
+                        CL_Units.Include (CU.Name, CU);
                      end if;
                   end if;
                end;

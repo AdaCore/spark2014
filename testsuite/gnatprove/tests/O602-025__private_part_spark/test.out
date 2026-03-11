@@ -1,2 +1,2 @@
 p.ads:6:03: error: aspect specifications not allowed here
-gnatprove: error during generation of Global contracts
+gnatprove: error during flow analysis and proof

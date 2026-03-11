@@ -10,4 +10,4 @@ p.ads:56:11: error: add "null => X" dependency to ignore this input
 p.ads:56:11: error: parameter "X" is missing from input dependence list
 p.ads:61:11: error: add "null => A" dependency to ignore this input
 p.ads:61:11: error: global "A" is missing from input dependence list
-gnatprove: error during generation of Global contracts
+gnatprove: error during flow analysis and proof

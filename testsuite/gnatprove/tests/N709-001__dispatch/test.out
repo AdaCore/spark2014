@@ -4,4 +4,4 @@ object.ads:11:32: error: nondispatching call to nonabstract subprogram of abstra
 object.ads:15:31: error: nondispatching call to nonabstract subprogram of abstract type with nonstatic class-wide pre/postconditions
 object.ads:15:31: error: nondispatching call to nonabstract subprogram of abstract type with nonstatic class-wide pre/postconditions
 object.ads:15:31: error: nondispatching call to nonabstract subprogram of abstract type with nonstatic class-wide pre/postconditions
-gnatprove: error during generation of Global contracts
+gnatprove: error during flow analysis and proof
