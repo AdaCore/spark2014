@@ -1,5 +1,6 @@
 package C_Strings with
   SPARK_Mode,
+  Abstract_State => (Addresses with External => Async_Writers),
   Always_Terminates
 is
    type Chars_Ptr is private with
@@ -9,7 +10,7 @@ is
      Annotate => (GNATprove, Ownership, "Reclaimed_Value");
 
    function New_String (Str : String) return Chars_Ptr with
-     Global => null,
+     Global => Addresses,
      Volatile_Function,
      Post => New_String'Result /= Null_Ptr;
 

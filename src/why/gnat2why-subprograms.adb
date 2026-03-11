@@ -7779,9 +7779,6 @@ package body Gnat2Why.Subprograms is
                   Domain => EW_Pred);
             --  Dynamic invariant and type invariant of the result
 
-            Volatile_State : constant W_Identifier_Id :=
-              New_Identifier (Domain => EW_Term, Name => "volatile__effect");
-
             function Create_Function_Decl
               (Prog_Id  : W_Identifier_Id;
                Selector : Selection_Kind;
@@ -7934,23 +7931,6 @@ package body Gnat2Why.Subprograms is
             end Create_Function_Decl;
 
          begin
-            --  For a volatile function that is not protected, we need to
-            --  generate a dummy effect. Protected functions are OK, they
-            --  already have their own state (the protected object).
-
-            if Has_Pragma_Volatile_Function (E) then
-               Effects_Append_To_Writes (Effects, Volatile_State);
-
-               Emit
-                 (Th,
-                  New_Global_Ref_Declaration
-                    (Ada_Node => E,
-                     Labels   => Symbol_Sets.Empty_Set,
-                     Location => No_Location,
-                     Name     => Volatile_State,
-                     Ref_Type => EW_Private_Type));
-            end if;
-
             --  If the expression function definition might be hidden, generate
             --  a program function without the body as a post.
 

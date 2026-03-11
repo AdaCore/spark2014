@@ -35,7 +35,6 @@ INOUT_ONLY_READ - an IN OUT parameter or an In_Out global that is not written - 
 STABLE - loop with stable statement - A loop with stable statement. - EASY
 UNUSED_VARIABLE - object is not used - A parameter or locally declared object is never used. - EASY
 UNUSED_INITIAL_VALUE - initial value of an object is not used - The initial value of an object is not used. - EASY
-VOLATILE_FUNCTION_WITHOUT_VOLATILE_EFFECTS - non-volatile function wrongly declared as volatile - A non-volatile function wrongly declared as volatile. - EASY
 [Proof check categories]
 VC_DIVISION_CHECK(run-time-check) - divide by zero - Check that the second operand of the division, mod or rem operation is different from zero. - MEDIUM
 VC_INDEX_CHECK(run-time-check) - index check - Check that the given index is within the bounds of the array. - MEDIUM
@@ -135,6 +134,7 @@ useless-potentially-invalid-object - useless-potentially-invalid-object - object
 useless-relaxed-init-func-result - useless-relaxed-init-func-result - function result annotated with Relaxed_Initialization cannot be partially initialized - EASY
 useless-relaxed-init-object - useless-relaxed-init-object - object annotated with Relaxed_Initialization cannot be partially initialized - EASY
 variant-no-recursion - variant-no-recursion - no recursive call visible on subprogram with Subprogram_Variant - EASY
+volatile-no-effects - volatile-no-effects - non-volatile function wrongly declared as volatile - EASY
 address-to-access-conversion - address-to-access-conversion - call to conversion function is assumed to return a valid access designating a valid value - EASY
 assumed-always-terminates - assumed-always-terminates - no Always_Terminates aspect available for subprogram, subprogram is assumed to always terminate - EASY
 assumed-global-null - assumed-global-null - no Global contract available for subprogram, null is assumed - EASY

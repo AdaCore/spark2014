@@ -12,7 +12,9 @@ illegal_early_fail.adb:313:19: error: function with the "Iterable_For_Proof" ann
 illegal_early_fail.adb:337:22: error: function with the "Iterable_For_Proof" annotation shall be primitive of "Tagged_Container"
 illegal_early_fail.adb:371:22: error: function with the "Iterable_For_Proof" annotation shall be primitive of "Boolean_Container"
 illegal_early_fail.adb:401:19: error: a function with the "Iterable_For_Proof" annotation shall not be volatile
+illegal_early_fail.adb:401:19: warning: volatile function "Model" has no volatile effects
 illegal_early_fail.adb:426:19: error: a function with the "Iterable_For_Proof" annotation shall not be volatile
+illegal_early_fail.adb:426:19: warning: volatile function "Contains" has no volatile effects
 illegal_early_fail.adb:441:30: error: violation of aspect SPARK_Mode at line 1
 illegal_early_fail.adb:441:30: error: volatile function associated with aspect Iterable is not allowed in SPARK (SPARK RM 5.5.2(12))
 illegal_early_fail.adb:442:30: error: violation of aspect SPARK_Mode at line 1
@@ -21,4 +23,8 @@ illegal_early_fail.adb:443:30: error: violation of aspect SPARK_Mode at line 1
 illegal_early_fail.adb:443:30: error: volatile function associated with aspect Iterable is not allowed in SPARK (SPARK RM 5.5.2(12))
 illegal_early_fail.adb:444:30: error: violation of aspect SPARK_Mode at line 1
 illegal_early_fail.adb:444:30: error: volatile function associated with aspect Iterable is not allowed in SPARK (SPARK RM 5.5.2(12))
+illegal_early_fail.adb:447:19: warning: volatile function "First" has no volatile effects
+illegal_early_fail.adb:449:19: warning: volatile function "Next" has no volatile effects
+illegal_early_fail.adb:452:19: warning: volatile function "Has_Element" has no volatile effects
+illegal_early_fail.adb:455:19: warning: volatile function "Element" has no volatile effects
 gnatprove: error during flow analysis and proof

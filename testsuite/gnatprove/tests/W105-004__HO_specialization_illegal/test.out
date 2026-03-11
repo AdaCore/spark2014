@@ -4,6 +4,7 @@ illegal.adb:21:30: error: "Proc_Out_Param" has "out" parameters
 illegal.adb:21:30: error: a subprogram with the "Higher_Order_Specialization" annotation shall have no side-effects
 illegal.adb:34:14: error: "Proc_Out_Global" has global outputs
 illegal.adb:34:14: error: a subprogram with the "Higher_Order_Specialization" annotation shall have no side-effects
+illegal.adb:45:13: warning: volatile function "Volatile_Fun" has no volatile effects
 illegal.adb:46:06: error: a function with the "Higher_Order_Specialization" annotation shall not be volatile
 illegal.adb:56:09: error: a subprogram with the "Higher_Order_Specialization" annotation shall not be a primitive operation of a tagged type
 illegal.adb:65:06: error: a function with the "Higher_Order_Specialization" annotation shall not be a traversal function

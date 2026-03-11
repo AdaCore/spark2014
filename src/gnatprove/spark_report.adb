@@ -403,8 +403,7 @@ package body Spark_Report is
                | Non_Volatile_Function_With_Volatile_Effects
                | Refined_State_Wrong
                | Side_Effects
-               | Unused_Global
-               | Volatile_Function_Without_Volatile_Effects            =>
+               | Unused_Global                                         =>
                return Data_Dep;
 
             when Impossible_To_Initialize_State

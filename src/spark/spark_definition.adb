@@ -8303,6 +8303,45 @@ package body SPARK_Definition is
                   end if;
                end;
             end if;
+
+            --  Emit messages about volatile function without volatile effects
+
+            if Ekind (Id) = E_Function
+              and then not Has_Effectively_Volatile_Profile (Id)
+              and then
+                Sem_Prag.Is_Enabled_Pragma
+                  (Get_Pragma (Id, Pragma_Volatile_Function))
+            then
+               declare
+                  Globals : Global_Flow_Ids;
+
+               begin
+                  Get_Globals
+                    (Subprogram          => Id,
+                     Scope               => (Ent => Id, Part => Visible_Part),
+                     Classwide           => False,
+                     Globals             => Globals,
+                     Use_Deduced_Globals => not Gnat2Why_Args.Global_Gen_Mode,
+                     Ignore_Depends      => False);
+
+                  if (for all F of Globals.Proof_Ins =>
+                        not Is_Volatile_For_Reading (F))
+                    and then
+                      (for all F of Globals.Inputs =>
+                         not Is_Volatile_For_Reading (F))
+                  then
+                     if Emit_Warning_Info_Messages then
+                        Warning_Msg_N
+                          (Warn_No_Possible_Termination,
+                           Id,
+                           Msg =>
+                             Create
+                               ("volatile function & has no volatile effects",
+                                Names => [Id]));
+                     end if;
+                  end if;
+               end;
+            end if;
          end Mark_Function_Specification;
 
          -------------------------------

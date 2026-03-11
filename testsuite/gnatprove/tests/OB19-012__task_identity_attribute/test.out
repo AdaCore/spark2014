@@ -1,3 +1,4 @@
+tti.ads:7:14: warning: volatile function "Identity" has no volatile effects
 tti.ads:7:66: error: attribute "Identity" is not allowed in SPARK
 tti.ads:7:66: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof

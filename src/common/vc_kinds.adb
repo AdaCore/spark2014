@@ -316,8 +316,7 @@ package body VC_Kinds is
               | Refined_State_Wrong
               | Side_Effects
               | Stable
-              | Unused_Global
-              | Volatile_Function_Without_Volatile_Effects      => "");
+              | Unused_Global                                   => "");
    end CWE_ID;
 
    -----------------
@@ -760,91 +759,91 @@ package body VC_Kinds is
          when Unused_Initial_Value                        =>
            "The initial value of an object is not used.",
          when Unused_Variable                             =>
-           "A parameter or locally declared object is never used.",
-         when Volatile_Function_Without_Volatile_Effects  =>
-           "A non-volatile function wrongly declared as volatile.");
+           "A parameter or locally declared object is never used.");
 
    function Description (Kind : Misc_Warning_Kind) return String
    is (case Kind is
-         when Warn_Alias_Atomic_Vol                =>
+         when Warn_Alias_Atomic_Vol                           =>
            "aliased objects should both be volatile or non-volatile, "
            & "and both be atomic or non-atomic",
-         when Warn_Alias_Different_Volatility      =>
+         when Warn_Alias_Different_Volatility                 =>
            "aliased objects should have the same volatile properties",
-         when Warn_Attribute_Valid                 =>
+         when Warn_Attribute_Valid                            =>
            "attribute Valid or Valid_Scalars is assumed to return True",
-         when Warn_Auto_Lemma_Calls                =>
+         when Warn_Auto_Lemma_Calls                           =>
            "the automatically instantiated lemma contains calls which"
            & " cannot be arbitrarily specialized",
-         when Warn_Auto_Lemma_Different            =>
+         when Warn_Auto_Lemma_Different                       =>
            "the automatically instantiated lemma contains calls to its"
            & " associated function with different specializations",
-         when Warn_Auto_Lemma_Higher_Order         =>
+         when Warn_Auto_Lemma_Higher_Order                    =>
            "the automatically instantiated lemma is not annotated with"
            & " Higher_Order_Specialization",
-         when Warn_Auto_Lemma_Specializable        =>
+         when Warn_Auto_Lemma_Specializable                   =>
            "the automatically instantiated lemma does not contain any"
            & " specializable calls to its associated function",
-         when Warn_Initialization_To_Alias         =>
+         when Warn_Initialization_To_Alias                    =>
            "initialization of object is assumed to have no effects on"
            & " other non-volatile objects",
-         when Warn_Function_Is_Valid               =>
+         when Warn_Function_Is_Valid                          =>
            "function Is_Valid is assumed to return True",
-         when Warn_Generic_Not_Analyzed            =>
+         when Warn_Generic_Not_Analyzed                       =>
            "GNATprove doesn't analyze generics, only instances",
-         when Warn_No_Possible_Termination         =>
+         when Warn_No_Possible_Termination                    =>
            "procedure which does not return normally nor raises an exception"
            & " cannot always terminate",
-         when Warn_Potentially_Invalid_Read        =>
+         when Warn_Potentially_Invalid_Read                   =>
            "invalid data might be read in the contract of a subprogram "
            & "without an analyzed body; the fact that the read data is valid "
            & "is not checked by SPARK",
-         when Warn_Pragma_Annotate_No_Check        =>
+         when Warn_Pragma_Annotate_No_Check                   =>
            "no check message justified by this pragma",
-         when Warn_Pragma_Annotate_Proved_Check    =>
+         when Warn_Pragma_Annotate_Proved_Check               =>
            "only proved check messages justified by this pragma",
-         when Warn_Pragma_Annotate_Terminating     =>
+         when Warn_Pragma_Annotate_Terminating                =>
            "Terminating, Always_Return, and Might_Not_Return annotations are "
            & "ignored",
-         when Warn_Pragma_External_Axiomatization  =>
+         when Warn_Pragma_External_Axiomatization             =>
            "External Axiomatizations are not supported anymore, ignored",
-         when Warn_Pragma_Ignored                  =>
+         when Warn_Pragma_Ignored                             =>
            "pragma is ignored (it is not yet supported)",
-         when Warn_Pragma_Overflow_Mode            =>
+         when Warn_Pragma_Overflow_Mode                       =>
            "pragma Overflow_Mode in code is ignored",
-         when Warn_Precondition_Statically_False   =>
+         when Warn_Precondition_Statically_False              =>
            "precondition is statically False",
-         when Warn_Restriction_Ignored             =>
+         when Warn_Restriction_Ignored                        =>
            "restriction is ignored (it is not yet supported)",
-         when Warn_Unreferenced_Function           =>
+         when Warn_Unreferenced_Function                      =>
            "analyzing unreferenced function",
-         when Warn_Unreferenced_Procedure          =>
+         when Warn_Unreferenced_Procedure                     =>
            "analyzing unreferenced procedure",
-         when Warn_Useless_Potentially_Invalid_Obj =>
+         when Warn_Useless_Potentially_Invalid_Obj            =>
            "object annotated with Potentially_Invalid cannot have "
            & "invalid values",
-         when Warn_Useless_Potentially_Invalid_Fun =>
+         when Warn_Useless_Potentially_Invalid_Fun            =>
            "function result annotated with Potentially_Invalid cannot have "
            & "invalid values",
-         when Warn_Useless_Relaxed_Init_Fun        =>
+         when Warn_Useless_Relaxed_Init_Fun                   =>
            "function result annotated with Relaxed_Initialization cannot be"
            & " partially initialized",
-         when Warn_Useless_Relaxed_Init_Obj        =>
+         when Warn_Useless_Relaxed_Init_Obj                   =>
            "object annotated with Relaxed_Initialization cannot be"
            & " partially initialized",
-         when Warn_Variant_Not_Recursive           =>
+         when Warn_Variant_Not_Recursive                      =>
            "no recursive call visible on subprogram with Subprogram_Variant",
+         when Warn_Volatile_Function_Without_Volatile_Effects =>
+           "non-volatile function wrongly declared as volatile",
 
          --  Warnings guaranteed to be issued
-         when Warn_Address_To_Access               =>
+         when Warn_Address_To_Access                          =>
            "call to conversion function is assumed to return a valid access"
            & " designating a valid value",
-         when Warn_Assumed_Always_Terminates       =>
+         when Warn_Assumed_Always_Terminates                  =>
            "no Always_Terminates aspect available for subprogram, "
            & "subprogram is assumed to always terminate",
-         when Warn_Assumed_Global_Null             =>
+         when Warn_Assumed_Global_Null                        =>
            "no Global contract available for subprogram, null is assumed",
-         when Warn_Imprecisely_Supported_Address   =>
+         when Warn_Imprecisely_Supported_Address              =>
            "object with an imprecisely supported address specification: "
            & "non-atomic objects should not be accessed concurrently, "
            & "volatile properties should be correct, "
@@ -853,136 +852,136 @@ package body VC_Kinds is
            & "reads should be valid",
 
          --  Warnings enabled by --pedantic switch
-         when Warn_Image_Attribute_Length          =>
+         when Warn_Image_Attribute_Length                     =>
            "string attribute has an implementation-defined length",
-         when Warn_Operator_Reassociation          =>
+         when Warn_Operator_Reassociation                     =>
            "possible operator reassociation due to missing parentheses",
-         when Warn_Representation_Attribute_Value  =>
+         when Warn_Representation_Attribute_Value             =>
            "representation attribute has an implementation-defined value",
 
          --  Warnings enabled by --info switch
-         when Warn_Unit_Not_SPARK                  =>
+         when Warn_Unit_Not_SPARK                             =>
            "A unit whose analysis has been requested on the command-line is "
            & "not annotated with SPARK_Mode Pragma",
 
          --  Other tool limitations
-         when Warn_Comp_Relaxed_Init               =>
+         when Warn_Comp_Relaxed_Init                          =>
            "If all components of a given type are annotated with "
            & " Relaxed_Initialization, the containing type is treated as if "
            & "it had the same annotation",
-         when Warn_Full_View_Visible               =>
+         when Warn_Full_View_Visible                          =>
            "The full view of an incomplete type deferred to the body of a "
            & "withed unit might be visible by GNATprove",
 
          --  Flow limitations
-         when Warn_Imprecise_GG                    =>
+         when Warn_Imprecise_GG                               =>
            "Global generation might wrongly classify an Output item as an "
            & "In_Out for subprograms that call other subprograms with no "
            & "Global contract",
-         when Warn_Init_Array                      =>
+         when Warn_Init_Array                                 =>
            "Initialization of arrays inside FOR loops is only recognized when "
            & "assignments to array element are directly indexed by the loop"
            & "parameter",
-         when Warn_Init_Multidim_Array             =>
+         when Warn_Init_Multidim_Array                        =>
            "Initialization of multi-dimensional array inside FOR loops is "
            & "only recognized when array bounds are static",
-         when Warn_Alias_Array                     =>
+         when Warn_Alias_Array                                =>
            "Aliasing checks might be spurious for actual parameters that are "
            & "array components",
-         when Warn_Tagged_Untangling               =>
+         when Warn_Tagged_Untangling                          =>
            "Assignments to record objects might cause spurious data "
            & "dependencies in some components of the assigned object",
 
          --  Proof limitations
-         when Warn_Contracts_Recursive             =>
+         when Warn_Contracts_Recursive                        =>
            "Explicit and implicit postconditions of a recursive subprogram, "
            & "as well as the definition of a recursive expression function "
            & "with a numeric (not structural) Subprogram_Variant, might not "
            & "be available on (mutually) recursive calls occurring inside "
            & "assertions and contracts, but will still be available in "
            & "regular code",
-         when Warn_Proof_Module_Cyclic             =>
+         when Warn_Proof_Module_Cyclic                        =>
            "A subprogram is part of a dependency cycle with other entities; "
            & "the explicit and implicit postconditions of mutually dependent "
            & "functions as well as their definition for recursive expression "
            & "functions cannot be used on "
            & "calls from these entities if they occur inside assertions and "
            & "contracts",
-         when Warn_DIC_Ignored                     =>
+         when Warn_DIC_Ignored                                =>
            "The Default_Initial_Condition of a type won't be assumed on "
            & "subcomponents initialized by default inside assertions and "
            & "contracts, but will still be available in regular code",
-         when Warn_Imprecise_Address               =>
+         when Warn_Imprecise_Address                          =>
            "The adress of objects is not precisely known if it is not "
            & "supplied through an address clause",
-         when Warn_Imprecise_Align                 =>
+         when Warn_Imprecise_Align                            =>
            "The alignment of an object might not be known for proof if it is "
            & "not supplied through an attribute definition clause",
-         when Warn_Imprecise_Call                  =>
+         when Warn_Imprecise_Call                             =>
            "The behavior of a call might not be known by SPARK and handled in "
            & "an imprecise way; its precondition might be impossible to prove "
            & "and nothing will be known about its result",
-         when Warn_Imprecise_String_Literal        =>
+         when Warn_Imprecise_String_Literal                   =>
            "The value of string literal containing wide characters or "
            & "constructed through the External_Initialization aspect is not "
            & "precisely known",
-         when Warn_Component_Size                  =>
+         when Warn_Component_Size                             =>
            "the value of attribute Component_Size might not be known for "
            & "proof if it is not supplied through an attribute definition "
            & "clause",
-         when Warn_Record_Component_Attr           =>
+         when Warn_Record_Component_Attr                      =>
            "the value of attributes First_Bit, Last_Bit, and Position on "
            & "record components are handled in an imprecise way if the record "
            & "does not have a record representation clause",
-         when Warn_Imprecise_Size                  =>
+         when Warn_Imprecise_Size                             =>
            "The attributes Size, Object_Size or Value_Size might not be "
            & "handled precisely, nothing will be known about their evaluation",
-         when Warn_Imprecise_UC                    =>
+         when Warn_Imprecise_UC                               =>
            "Unchecked conversion might not be handled precisely by SPARK, "
            & "nothing will be known about their result",
-         when Warn_Imprecise_Overlay               =>
+         when Warn_Imprecise_Overlay                          =>
            "Overlay might not be handled precisely by SPARK, the value of "
            & "other overlaid objects will be unknown after an object is "
            & "updated",
-         when Warn_Imprecise_Value                 =>
+         when Warn_Imprecise_Value                            =>
            "References to the attribute Value are handled in an imprecise "
            & "way; its precondition is impossible to prove and nothing will "
            & "be known about the evaluation of the attribute reference",
-         when Warn_Imprecise_Image                 =>
+         when Warn_Imprecise_Image                            =>
            "References to the attributes Image and Img are handled in an "
            & "imprecise way; nothing will be known about the evaluation of the"
            & " attribute reference apart from a bound on its length",
-         when Warn_Loop_Entity                     =>
+         when Warn_Loop_Entity                                =>
            "The initial value of constants declared before the loop invariant "
            & "is not visible after the invariant; it shall be restated in the "
            & "invariant if necessary",
-         when Warn_Init_Cond_Ignored               =>
+         when Warn_Init_Cond_Ignored                          =>
            "The initial condition of a withed package might be ignored if it "
            & "is not known to be true, due to elaboration order",
-         when Warn_No_Reclam_Func                  =>
+         when Warn_No_Reclam_Func                             =>
            "No reclamation function or reclaimed value was found for an "
            & "ownership type, which may make it impossible to prove that "
            & "values of this type are reclaimed",
-         when Warn_Map_Length_Aggregates           =>
+         when Warn_Map_Length_Aggregates                      =>
            "A type with predefined map aggregates doesn't have a Length "
            & "function; the length of aggregates will not be known for "
            & "this type",
-         when Warn_Set_Length_Aggregates           =>
+         when Warn_Set_Length_Aggregates                      =>
            "A type with predefined set aggregates doesn't have a Length "
            & "function; the length of aggregates will not be known for "
            & "this type",
-         when Warn_Relaxed_Init_Mutable_Discr      =>
+         when Warn_Relaxed_Init_Mutable_Discr                 =>
            "The tool enforces that mutable discriminants of standalone objects"
            & " and parameters with relaxed initialization are always"
            & " initialized",
-         when Warn_Predef_Eq_Null                  =>
+         when Warn_Predef_Eq_Null                             =>
            "A type is annotated with Only_Null as value for the "
            & "Predefined_Equality annotation, but no constant annotated with "
            & "Null_Value is found; this will result in all calls to the "
            & "predefined equality being rejected",
 
          --  Info messages enabled by default
-         when Warn_Info_Unrolling_Inlining         =>
+         when Warn_Info_Unrolling_Inlining                    =>
            "These messages are issued when the tool is unrolling loops or "
            & "inlining subprograms, or unable to do so");
 
@@ -2598,112 +2597,145 @@ package body VC_Kinds is
          when Unused_Initial_Value                        =>
            "initial value of an object is not used",
          when Unused_Variable                             =>
-           "object is not used",
-         when Volatile_Function_Without_Volatile_Effects  =>
-           "non-volatile function wrongly declared as volatile");
+           "object is not used");
 
    function Kind_Name (Kind : Misc_Warning_Kind) return String
    is (case Kind is
-         when Warn_Alias_Atomic_Vol                =>
+         when Warn_Alias_Atomic_Vol                           =>
            "alias-volatile-atomic-mismatch",
-         when Warn_Alias_Different_Volatility      =>
+         when Warn_Alias_Different_Volatility                 =>
            "alias-volatile-prop-mismatch",
-         when Warn_Attribute_Valid                 =>
+         when Warn_Attribute_Valid                            =>
            "attribute-valid-always-true",
-         when Warn_Auto_Lemma_Calls                => "auto-lemma-calls",
-         when Warn_Auto_Lemma_Different            => "auto-lemma-different",
-         when Warn_Auto_Lemma_Higher_Order         =>
+         when Warn_Auto_Lemma_Calls                           =>
+           "auto-lemma-calls",
+         when Warn_Auto_Lemma_Different                       =>
+           "auto-lemma-different",
+         when Warn_Auto_Lemma_Higher_Order                    =>
            "auto-lemma-higher-order",
-         when Warn_Auto_Lemma_Specializable        =>
+         when Warn_Auto_Lemma_Specializable                   =>
            "auto-lemma-specializable",
-         when Warn_Initialization_To_Alias         =>
+         when Warn_Initialization_To_Alias                    =>
            "initialization-to-alias",
-         when Warn_Function_Is_Valid               => "is-valid-returns-true",
-         when Warn_Generic_Not_Analyzed            => "generic-not-analyzed",
-         when Warn_No_Possible_Termination         =>
+         when Warn_Function_Is_Valid                          =>
+           "is-valid-returns-true",
+         when Warn_Generic_Not_Analyzed                       =>
+           "generic-not-analyzed",
+         when Warn_No_Possible_Termination                    =>
            "no-possible-termination",
-         when Warn_Potentially_Invalid_Read        =>
+         when Warn_Potentially_Invalid_Read                   =>
            "potentially-invalid-read",
-         when Warn_Pragma_Annotate_No_Check        =>
+         when Warn_Pragma_Annotate_No_Check                   =>
            "no-check-message-justified",
-         when Warn_Pragma_Annotate_Proved_Check    => "proved-check-justified",
-         when Warn_Pragma_Annotate_Terminating     => "deprecated-terminating",
-         when Warn_Pragma_External_Axiomatization  =>
+         when Warn_Pragma_Annotate_Proved_Check               =>
+           "proved-check-justified",
+         when Warn_Pragma_Annotate_Terminating                =>
+           "deprecated-terminating",
+         when Warn_Pragma_External_Axiomatization             =>
            "deprecated-external-axiomatization",
-         when Warn_Pragma_Ignored                  => "ignored-pragma",
-         when Warn_Pragma_Overflow_Mode            => "overflow-mode-ignored",
-         when Warn_Precondition_Statically_False   =>
+         when Warn_Pragma_Ignored                             =>
+           "ignored-pragma",
+         when Warn_Pragma_Overflow_Mode                       =>
+           "overflow-mode-ignored",
+         when Warn_Precondition_Statically_False              =>
            "precondition-statically-false",
-         when Warn_Restriction_Ignored             => "restriction-ignored",
-         when Warn_Unreferenced_Function           => "unreferenced-function",
-         when Warn_Unreferenced_Procedure          => "unreferenced-procedure",
-         when Warn_Useless_Potentially_Invalid_Fun =>
+         when Warn_Restriction_Ignored                        =>
+           "restriction-ignored",
+         when Warn_Unreferenced_Function                      =>
+           "unreferenced-function",
+         when Warn_Unreferenced_Procedure                     =>
+           "unreferenced-procedure",
+         when Warn_Useless_Potentially_Invalid_Fun            =>
            "useless-potentially-invalid-func-result",
-         when Warn_Useless_Potentially_Invalid_Obj =>
+         when Warn_Useless_Potentially_Invalid_Obj            =>
            "useless-potentially-invalid-object",
-         when Warn_Useless_Relaxed_Init_Fun        =>
+         when Warn_Useless_Relaxed_Init_Fun                   =>
            "useless-relaxed-init-func-result",
-         when Warn_Useless_Relaxed_Init_Obj        =>
+         when Warn_Useless_Relaxed_Init_Obj                   =>
            "useless-relaxed-init-object",
-         when Warn_Variant_Not_Recursive           => "variant-no-recursion",
+         when Warn_Variant_Not_Recursive                      =>
+           "variant-no-recursion",
+         when Warn_Volatile_Function_Without_Volatile_Effects =>
+           "volatile-no-effects",
 
          --  Warnings guaranteed to be issued
-         when Warn_Address_To_Access               =>
+         when Warn_Address_To_Access                          =>
            "address-to-access-conversion",
-         when Warn_Imprecisely_Supported_Address   =>
+         when Warn_Imprecisely_Supported_Address              =>
            "imprecise-address-specification",
-         when Warn_Assumed_Always_Terminates       =>
+         when Warn_Assumed_Always_Terminates                  =>
            "assumed-always-terminates",
-         when Warn_Assumed_Global_Null             => "assumed-global-null",
+         when Warn_Assumed_Global_Null                        =>
+           "assumed-global-null",
 
          --  Warnings enabled by --pedantic switch
-         when Warn_Image_Attribute_Length          => "image-attribute-length",
-         when Warn_Operator_Reassociation          => "operator-reassociation",
-         when Warn_Representation_Attribute_Value  =>
+         when Warn_Image_Attribute_Length                     =>
+           "image-attribute-length",
+         when Warn_Operator_Reassociation                     =>
+           "operator-reassociation",
+         when Warn_Representation_Attribute_Value             =>
            "representation-attribute-value",
 
          --  Warnings enabled by --info switch
-         when Warn_Alias_Array                     => "alias-array",
-         when Warn_Comp_Relaxed_Init               => "component-relaxed-init",
-         when Warn_Contracts_Recursive             => "contracts-recursive",
-         when Warn_Proof_Module_Cyclic             => "cyclic-dependency",
-         when Warn_DIC_Ignored                     => "dic-ignored",
-         when Warn_Full_View_Visible               => "full-view-visible",
-         when Warn_Imprecise_Address               => "imprecise-address",
-         when Warn_Imprecise_Align                 => "imprecise-align",
-         when Warn_Imprecise_Call                  => "imprecise-call",
-         when Warn_Imprecise_GG                    =>
+         when Warn_Alias_Array                                => "alias-array",
+         when Warn_Comp_Relaxed_Init                          =>
+           "component-relaxed-init",
+         when Warn_Contracts_Recursive                        =>
+           "contracts-recursive",
+         when Warn_Proof_Module_Cyclic                        =>
+           "cyclic-dependency",
+         when Warn_DIC_Ignored                                => "dic-ignored",
+         when Warn_Full_View_Visible                          =>
+           "full-view-visible",
+         when Warn_Imprecise_Address                          =>
+           "imprecise-address",
+         when Warn_Imprecise_Align                            =>
+           "imprecise-align",
+         when Warn_Imprecise_Call                             =>
+           "imprecise-call",
+         when Warn_Imprecise_GG                               =>
            "imprecise-global-generation",
-         when Warn_Imprecise_String_Literal        =>
+         when Warn_Imprecise_String_Literal                   =>
            "imprecise-string-literal",
-         when Warn_Init_Array                      => "array-initialization",
-         when Warn_Init_Multidim_Array             =>
+         when Warn_Init_Array                                 =>
+           "array-initialization",
+         when Warn_Init_Multidim_Array                        =>
            "multidimensional-array-init",
-         when Warn_Component_Size                  =>
+         when Warn_Component_Size                             =>
            "imprecise-component-size",
-         when Warn_Record_Component_Attr           =>
+         when Warn_Record_Component_Attr                      =>
            "imprecise-record-component-attribute",
-         when Warn_Imprecise_Size                  => "imprecise-size",
-         when Warn_Imprecise_Overlay               => "imprecise-overlay",
-         when Warn_Imprecise_UC                    =>
+         when Warn_Imprecise_Size                             =>
+           "imprecise-size",
+         when Warn_Imprecise_Overlay                          =>
+           "imprecise-overlay",
+         when Warn_Imprecise_UC                               =>
            "imprecise-unchecked-conversion",
-         when Warn_Imprecise_Value                 => "imprecise-value",
-         when Warn_Imprecise_Image                 => "imprecise-image",
-         when Warn_Loop_Entity                     => "constants-in-loops",
-         when Warn_Init_Cond_Ignored               => "init-cond-ignored",
-         when Warn_No_Reclam_Func                  =>
+         when Warn_Imprecise_Value                            =>
+           "imprecise-value",
+         when Warn_Imprecise_Image                            =>
+           "imprecise-image",
+         when Warn_Loop_Entity                                =>
+           "constants-in-loops",
+         when Warn_Init_Cond_Ignored                          =>
+           "init-cond-ignored",
+         when Warn_No_Reclam_Func                             =>
            "no-reclamation-function",
-         when Warn_Map_Length_Aggregates           => "map-length-aggregates",
-         when Warn_Set_Length_Aggregates           => "set-length-aggregates",
-         when Warn_Relaxed_Init_Mutable_Discr      =>
+         when Warn_Map_Length_Aggregates                      =>
+           "map-length-aggregates",
+         when Warn_Set_Length_Aggregates                      =>
+           "set-length-aggregates",
+         when Warn_Relaxed_Init_Mutable_Discr                 =>
            "relaxed-mutable-discriminants",
-         when Warn_Tagged_Untangling               => "tagged-assignment",
-         when Warn_Predef_Eq_Null                  =>
+         when Warn_Tagged_Untangling                          =>
+           "tagged-assignment",
+         when Warn_Predef_Eq_Null                             =>
            "predefined-equality-null",
-         when Warn_Unit_Not_SPARK                  => "unit-not-spark",
+         when Warn_Unit_Not_SPARK                             =>
+           "unit-not-spark",
 
          --  Info messages enabled by default
-         when Warn_Info_Unrolling_Inlining         =>
+         when Warn_Info_Unrolling_Inlining                    =>
            "info-unrolling-inlining");
 
    pragma Annotate (Xcov, Exempt_Off);
