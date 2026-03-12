@@ -43,4 +43,15 @@ package Gnat2Why_Opts.Writing is
    --  Unit_Name selects the file-specific settings from File_Specific_Map.
    --  The opt file contains flattened settings (no nested file_specific map).
 
+   function Opt_File_Name
+     (Translation_Phase : Boolean;
+      Obj_Dir           : String;
+      Why3_Dir          : String;
+      Unit_Name         : String) return String;
+   --  Compute the pathname that Pass_Extra_Options_To_Gnat2why would use for
+   --  the same arguments, without creating or writing any file.
+   --  The filename is derived by hashing the option values directly, so
+   --  semantically identical options always produce the same name regardless
+   --  of JSON serialization differences (whitespace, field ordering).
+
 end Gnat2Why_Opts.Writing;
