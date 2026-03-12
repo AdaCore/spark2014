@@ -1,4 +1,5 @@
 with Configuration;
+with Gnat2Why_Opts.Writing;
 with GNAT.OS_Lib;
 with GNATCOLL.VFS; use GNATCOLL.VFS;
 with GPR2.Build.Actions.Compile.Ada.Analysis;
@@ -27,16 +28,23 @@ package body GPR2.Build.Actions.Compile.Ada.Global_Gen is
       Cmd_Line.Set_Driver ("gnat2why");
       Cmd_Line.Add_Argument ("-gnatc");  --  Do not generate an object file
 
-      --  add special options file
-      --  ??? We are not supposed to create temp files if Signature_Only is
-      --  false, but we cannot know the file name without creating it.
+      --  add special options file; only compute the filename without creating
+      --  the file when Signature_Only is True.
       declare
          Opt_File : constant String :=
-           Configuration.Extra_Args_File_For_Unit
-             (Self.CU,
-              False,
-              String (Self.CU.Owning_View.Object_Directory.Value),
-              "");
+           (if Signature_Only
+            then
+              Gnat2Why_Opts.Writing.Opt_File_Name
+                (False,
+                 String (Self.CU.Owning_View.Object_Directory.Value),
+                 "",
+                 String (Self.CU.Main_Part.Source.Simple_Name))
+            else
+              Configuration.Extra_Args_File_For_Unit
+                (Self.CU,
+                 False,
+                 String (Self.CU.Owning_View.Object_Directory.Value),
+                 ""));
       begin
          Cmd_Line.Add_Argument ("-gnates=" & Opt_File);
       end;
