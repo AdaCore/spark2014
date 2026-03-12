@@ -62,10 +62,10 @@ package body Spark_Report is
    --  End time of analysis, used for the reports. Time zone "0" is UTC
 
    procedure Generate_SARIF_Report
-     (Filename    : String;
-      Obj_Dirs    : String_Lists.List;
-      Cmdline_Str : String;
-      Error_Code  : Integer);
+     (Filename           : String;
+      Obj_Dirs           : String_Lists.List;
+      Command_Line_Image : String;
+      Error_Code         : Integer);
 
    ---------------------
    -- Generate_Report --
@@ -81,10 +81,11 @@ package body Spark_Report is
       --  This variable is set to True when at least one subprogram was
       --  analyzed as being in SPARK.
 
-      Max_Progress : Analysis_Progress := Progress_None;
-      Error_Code   : Integer := 0;
-      Handle       : Ada.Text_IO.File_Type;
-      Obj_Dirs     : String_Lists.List;
+      Max_Progress       : Analysis_Progress := Progress_None;
+      Error_Code         : Integer := 0;
+      Handle             : Ada.Text_IO.File_Type;
+      Obj_Dirs           : String_Lists.List;
+      Command_Line_Image : Unbounded_String;
 
       --  Config values from Configuration/CL_Switches
       Assumptions        : constant Boolean := CL_Switches.Assumptions;
@@ -156,7 +157,8 @@ package body Spark_Report is
          Max_Time  : out Float);
       --  Process the stats record for the VC and update proof information
 
-      procedure Show_Header (Handle : Ada.Text_IO.File_Type);
+      procedure Show_Header
+        (Handle : Ada.Text_IO.File_Type; Command_Line_Image : String);
       --  Print header at start of generated file "gnatprove.out"
 
       -------------------------
@@ -1107,7 +1109,9 @@ package body Spark_Report is
       -- Show_Header --
       -----------------
 
-      procedure Show_Header (Handle : Ada.Text_IO.File_Type) is
+      procedure Show_Header
+        (Handle : Ada.Text_IO.File_Type; Command_Line_Image : String)
+      is
          use Ada.Text_IO;
 
          function OS_String return String;
@@ -1141,21 +1145,7 @@ package body Spark_Report is
             & Integer'Image (Pointer_Size * 8)
             & " bits");
 
-         --  Command line: build directly from Ada.Command_Line
-         declare
-            use Ada.Command_Line;
-            Buf : Unbounded_String;
-         begin
-            Append
-              (Buf,
-               Ada.Directories.Base_Name
-                 (Ada.Directories.Simple_Name (Command_Name)));
-            for J in 1 .. Argument_Count loop
-               Append (Buf, ' ');
-               Append (Buf, Argument (J));
-            end loop;
-            Put_Line (Handle, "command line       : " & To_String (Buf));
-         end;
+         Put_Line (Handle, "command line       : " & Command_Line_Image);
 
          --  Switches attribute from project
          declare
@@ -1405,6 +1395,20 @@ package body Spark_Report is
          Handle_Source_Dir (Dir);
       end loop;
 
+      --  Build the command line string once for use in header and SARIF report
+      declare
+         use Ada.Command_Line;
+      begin
+         Append
+           (Command_Line_Image,
+            Ada.Directories.Base_Name
+              (Ada.Directories.Simple_Name (Command_Name)));
+         for J in 1 .. Argument_Count loop
+            Append (Command_Line_Image, ' ');
+            Append (Command_Line_Image, Argument (J));
+         end loop;
+      end;
+
       Ada.Text_IO.Create
         (Handle,
          Ada.Text_IO.Out_File,
@@ -1415,7 +1419,7 @@ package body Spark_Report is
       end if;
 
       if Output_Header then
-         Show_Header (Handle);
+         Show_Header (Handle, To_String (Command_Line_Image));
          Ada.Text_IO.New_Line (Handle);
          Ada.Text_IO.New_Line (Handle);
       end if;
@@ -1510,35 +1514,21 @@ package body Spark_Report is
          Error_Code := Unproved_Checks_Error_Status;
       end if;
 
-      --  Build the command line string for the SARIF report
-      declare
-         use Ada.Command_Line;
-         Buf : Unbounded_String;
-      begin
-         Append
-           (Buf,
-            Ada.Directories.Base_Name
-              (Ada.Directories.Simple_Name (Command_Name)));
-         for J in 1 .. Argument_Count loop
-            Append (Buf, ' ');
-            Append (Buf, Argument (J));
-         end loop;
-         Generate_SARIF_Report
-           (Filename    =>
-              Ada.Directories.Compose (Out_Dir, "gnatprove.sarif"),
-            Obj_Dirs    => Obj_Dirs,
-            Cmdline_Str => To_String (Buf),
-            Error_Code  => Error_Code);
-      end;
+      Generate_SARIF_Report
+        (Filename           =>
+           Ada.Directories.Compose (Out_Dir, "gnatprove.sarif"),
+         Obj_Dirs           => Obj_Dirs,
+         Command_Line_Image => To_String (Command_Line_Image),
+         Error_Code         => Error_Code);
 
       Status := Error_Code;
    end Generate_Report;
 
    procedure Generate_SARIF_Report
-     (Filename    : String;
-      Obj_Dirs    : String_Lists.List;
-      Cmdline_Str : String;
-      Error_Code  : Integer)
+     (Filename           : String;
+      Obj_Dirs           : String_Lists.List;
+      Command_Line_Image : String;
+      Error_Code         : Integer)
    is separate;
 
 end Spark_Report;

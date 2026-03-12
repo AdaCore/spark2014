@@ -33,10 +33,10 @@ with VSS.Text_Streams.File_Output;
 
 separate (Spark_Report)
 procedure Generate_SARIF_Report
-  (Filename    : String;
-   Obj_Dirs    : String_Lists.List;
-   Cmdline_Str : String;
-   Error_Code  : Integer)
+  (Filename           : String;
+   Obj_Dirs           : String_Lists.List;
+   Command_Line_Image : String;
+   Error_Code         : Integer)
 is
    Root       : SARIF.Types.Root;
    My_Run     : run;
@@ -491,7 +491,7 @@ is
       --  report in this case.
       return
         invocation'
-          (commandLine         => To_Virtual_String (Cmdline_Str),
+          (commandLine         => To_Virtual_String (Command_Line_Image),
            endTimeUtc          => To_Virtual_String (End_Time),
            exitCode            => (True, Error_Code),
            executionSuccessful => True,
