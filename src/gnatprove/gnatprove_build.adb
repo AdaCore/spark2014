@@ -124,7 +124,7 @@ package body Gnatprove_Build is
    -- Flow_Analysis_And_Proof --
    -----------------------------
    procedure Flow_Analysis_And_Proof
-     (Tree : Project.Tree.Object; Status : out Integer)
+     (Tree : Project.Tree.Object; Success : out Boolean)
    is
       Process_M : GPR2.Build.Process_Manager.JSON.Object;
       Exec_Opts : GPR2.Build.Process_Manager.PM_Options;
@@ -374,13 +374,9 @@ package body Gnatprove_Build is
          Insert_Actions (Main_Units, Selected_Units);
       end;
 
-      if Tree.Artifacts_Database.Execute (Process_M, Exec_Opts)
-        /= GPR2.Build.Process_Manager.Success
-      then
-         Status := 1;
-      else
-         Status := 0;
-      end if;
+      Success :=
+        Tree.Artifacts_Database.Execute (Process_M, Exec_Opts)
+        = GPR2.Build.Process_Manager.Success;
 
       --  ??? Delete why3 conf files.
       --  ??? In debug mode, output should not be buffered.

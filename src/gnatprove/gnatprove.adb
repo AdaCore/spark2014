@@ -102,12 +102,14 @@ procedure Gnatprove with SPARK_Mode is
      (Project_File : String;
       Tree         : Project.Tree.Object;
       Args         : in out String_Lists.List;
-      Status       : out Integer);
+      Success      : out Boolean);
    --  Call gprbuild with the given arguments. DB_Dir is the directory
    --  which contains the information to configure gprbuild correctly.
 
    procedure Compute_Data_Representation
-     (Project_File : String; Tree : Project.Tree.Object; Status : out Integer);
+     (Project_File : String;
+      Tree         : Project.Tree.Object;
+      Success      : out Boolean);
    --  Compute data representation for all source units, using gprbuild
 
    procedure Execute_Step
@@ -143,8 +145,9 @@ procedure Gnatprove with SPARK_Mode is
      (Project_File : String;
       Tree         : Project.Tree.Object;
       Args         : in out String_Lists.List;
-      Status       : out Integer)
+      Success      : out Boolean)
    is
+      Exit_Code   : Integer;
       Obj_Dir     : constant String :=
         Ada.Directories.Full_Name
           (Artifact_Dir (Tree).Virtual_File.Display_Full_Name);
@@ -249,9 +252,10 @@ procedure Gnatprove with SPARK_Mode is
       Call_With_Status
         (Command     => "gprbuild",
          Arguments   => Args,
-         Status      => Status,
+         Status      => Exit_Code,
          Output_Name => Output_Name,
          Verbose     => Verbose);
+      Success := Exit_Code = 0;
 
    end Call_Gprbuild;
 
@@ -277,9 +281,10 @@ procedure Gnatprove with SPARK_Mode is
    ---------------------------------
 
    procedure Compute_Data_Representation
-     (Project_File : String; Tree : Project.Tree.Object; Status : out Integer)
+     (Project_File : String; Tree : Project.Tree.Object; Success : out Boolean)
    is
-      Args : String_Lists.List;
+      Args             : String_Lists.List;
+      Gprbuild_Success : Boolean;
    begin
       declare
          Subd : constant Virtual_File :=
@@ -295,9 +300,10 @@ procedure Gnatprove with SPARK_Mode is
          Args.Append ("-k");
       end if;
 
-      Call_Gprbuild (Project_File, Tree, Args => Args, Status => Status);
+      Call_Gprbuild
+        (Project_File, Tree, Args => Args, Success => Gprbuild_Success);
 
-      if Status /= 0 then
+      if not Gprbuild_Success then
          if not Quiet then
             Ada.Text_IO.Put_Line
               ("generation of data representation information failed");
@@ -307,11 +313,11 @@ procedure Gnatprove with SPARK_Mode is
               ("for details, see log file "
                & "gnatprove/data_representation_generation.log");
          end if;
-
-         --  Ignore the status of data representation generation, as this is an
-         --  optional step in GNATprove.
-         Status := 0;
       end if;
+
+      --  Ignore the status of data representation generation, as this is an
+      --  optional step in GNATprove.
+      Success := True;
    end Compute_Data_Representation;
 
    ------------------
@@ -324,7 +330,7 @@ procedure Gnatprove with SPARK_Mode is
       Project_File : String;
       Tree         : Project.Tree.Object)
    is
-      Status : Integer;
+      Success : Boolean;
    begin
       if not Quiet then
          Put_Line
@@ -347,16 +353,16 @@ procedure Gnatprove with SPARK_Mode is
               or else
                 Configuration.Mode in GPM_Check | GPM_Check_All | GPM_Flow
             then
-               Status := 0;
+               Success := True;
             else
-               Compute_Data_Representation (Project_File, Tree, Status);
+               Compute_Data_Representation (Project_File, Tree, Success);
             end if;
 
          when GS_Gnat2Why            =>
-            Flow_Analysis_And_Proof (Tree, Status);
+            Flow_Analysis_And_Proof (Tree, Success);
       end case;
 
-      if Status /= 0 then
+      if not Success then
          declare
             Msg : constant String :=
               "gnatprove: error during " & Text_Of_Step (Plan (Step));
