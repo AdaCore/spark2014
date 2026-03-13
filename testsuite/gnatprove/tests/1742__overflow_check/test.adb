@@ -9,7 +9,7 @@ procedure Test with spark_mode is
    procedure Potato (Data : Byte_Array_T)
    is
    begin
-      if Integer_128 (Data'Length) > 42 then -- @OVERFLOW_CHECK:FAIL
+      if Integer_128 (Data'Length) > 42 then -- @RANGE_CHECK:FAIL
          null;
       end if;
    end Potato;
