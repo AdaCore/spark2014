@@ -72,7 +72,8 @@ package body SPARK_Util.Subprograms is
       --  Always analyze if With_Inlined is True. Also, always analyze
       --  unreferenced subprograms, as they are likely to correspond to
       --  an intermediate stage of development. Otherwise, only analyze
-      --  subprograms that are not inlined.
+      --  subprograms that are not inlined, unless a separate analysis is
+      --  necessary to ensure soundness.
 
       elsif With_Inlined then
          return Analyzed;
@@ -80,11 +81,14 @@ package body SPARK_Util.Subprograms is
       elsif not Referenced (E) then
          return Analyzed;
 
-      elsif Is_Local_Subprogram_Always_Inlined (E) then
-         return Contextually_Analyzed;
+      elsif not Is_Local_Subprogram_Always_Inlined (E) then
+         return Analyzed;
+
+      elsif Requires_Separate_Analysis (E) then
+         return Analyzed;
 
       else
-         return Analyzed;
+         return Contextually_Analyzed;
       end if;
    end Analysis_Requested;
 
@@ -1994,6 +1998,70 @@ package body SPARK_Util.Subprograms is
             raise Program_Error;
       end case;
    end Process_Referenced_Entities;
+
+   --------------------------------
+   -- Requires_Separate_Analysis --
+   --------------------------------
+
+   function Requires_Separate_Analysis (E : Entity_Id) return Boolean is
+
+      function Stmt_Terminates_Abnormally (N : Node_Id) return Traverse_Result;
+      --  Return Abandon if N might cause the enclosing subprogram to fail to
+      --  terminate normally.
+      --  We do not consider raise expressions, as those are never allowed to
+      --  actually raise an exception in SPARK. With respect to termination,
+      --  we are only interested in construct that have dynamic termination
+      --  conditions, as the rest are handled by flow.
+
+      --------------------------------
+      -- Stmt_Terminates_Abnormally --
+      --------------------------------
+
+      function Stmt_Terminates_Abnormally (N : Node_Id) return Traverse_Result
+      is
+      begin
+         case Nkind (N) is
+            when N_Raise_Statement                          =>
+               return Abandon;
+
+            when N_Entry_Call_Statement | N_Subprogram_Call =>
+               declare
+                  Callee : constant Entity_Id := Get_Called_Entity (N);
+
+               begin
+                  if Has_Program_Exit (Callee)
+                    or else Has_Exceptional_Contract (Callee)
+                    or else Get_Termination_Condition (Callee).Kind = Dynamic
+                  then
+                     return Abandon;
+                  else
+                     return OK;
+                  end if;
+               end;
+
+            when others                                     =>
+               return OK;
+         end case;
+      end Stmt_Terminates_Abnormally;
+
+      function Terminates_Abnormally is new
+        Traverse_Func (Stmt_Terminates_Abnormally);
+
+      Body_Id : constant Entity_Id := Get_Body_Entity (E);
+
+      --  Start of processing for Requires_Separate_Analysis
+
+   begin
+      --  Currently, functions with side effects cannot be inlined. If it could
+      --  happen, it would make sense to exempt them from this check.
+
+      pragma Assert (not Is_Function_With_Side_Effects (E));
+
+      return
+        Ekind (E) = E_Function
+        and then
+          Terminates_Abnormally (Unit_Declaration_Node (Body_Id)) = Abandon;
+   end Requires_Separate_Analysis;
 
    ------------------------
    -- Subp_Body_Location --

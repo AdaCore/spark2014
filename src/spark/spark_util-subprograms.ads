@@ -100,6 +100,15 @@ package SPARK_Util.Subprograms is
    is (Analysis_Requested (E, With_Inlined) = Analyzed);
    --  Variant of Analysis_Requested that ignores the reason for no analysis
 
+   function Requires_Separate_Analysis (E : Entity_Id) return Boolean
+   with Pre => Is_Local_Subprogram_Always_Inlined (E);
+   --  Returns True if an entity should be analyzed separately even if it
+   --  is always inlined. Functions that fail to return normally - by raising
+   --  an exception, exiting the whole program, or looping forever - are in
+   --  this case as SPARK needs to ensure that functions cannot have side
+   --  effects - so we are sure that the evaluation order is irrelevant in
+   --  particular.
+
    function Call_Needs_Variant_Check
      (Call : Node_Id; Enclosing_Ent : Entity_Id) return Boolean
    with
