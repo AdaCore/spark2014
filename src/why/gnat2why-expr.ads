@@ -263,6 +263,23 @@ package Gnat2Why.Expr is
    --         if Include_Subtypes is false.
    --  @result The default initial assumption of type Ty over Expr
 
+   function Compute_Default_Value
+     (Ada_Node     : Node_Id;
+      E            : Type_Kind_Id;
+      Relaxed_Init : Boolean;
+      Domain       : EW_Domain;
+      Params       : Transformation_Params := Body_Params) return W_Expr_Id
+   with
+     Pre =>
+       Can_Be_Default_Initialized (Retysp (E))
+       and then not Is_Inherently_Limited_Type (Retysp (E))
+       and then Ekind (Retysp (E)) /= E_String_Literal_Subtype;
+   --  Expression for the default value of an object of type E. In the term
+   --  domain, the values of uninitialized components are set arbitrarily,
+   --  potential default initial conditions are ignored.
+   --  Ada_Node is used to issue info messages on ignored DICs if any when
+   --  --info is set.
+
    function Compute_Dynamic_Predicate
      (Expr          : W_Term_Id;
       Ty            : Type_Kind_Id;
@@ -583,6 +600,18 @@ package Gnat2Why.Expr is
    function Transform_Declarations
      (L : List_Id; Params : Transformation_Params) return W_Prog_Id;
    --  Transform the declarations in the list
+
+   function Transform_Discrete_Choice
+     (Choice      : Node_Id;
+      Choice_Type : Opt_Type_Kind_Id;
+      Expr        : W_Expr_Id;
+      Domain      : EW_Domain;
+      Params      : Transformation_Params) return W_Expr_Id
+   with Pre => Get_Type (Expr) = Base_Why_Type (Get_Type (Expr));
+   --  For an expression Expr of a discrete type and a discrete Choice, build
+   --  the expression that Expr belongs to the range expressed by Choice. In
+   --  programs, also generate a check that dynamic choices are in the subtype
+   --  Choice_Type.
 
    function Transform_Discrete_Choices
      (Choices      : List_Id;
@@ -949,5 +978,35 @@ private
    --  From an item Pattern holding the identifiers for the mutable parts of
    --  a formal parameter and its previous value Pre_Expr, reconstruct an
    --  expression for the new version of the formal.
+
+   ------------------------------------------
+   -- Handling of Expressions with Actions --
+   ------------------------------------------
+
+   --  The detection phase currently allows 3 kinds of nodes in actions:
+   --    N_Object_Declaration for constants
+   --    N_Subtype_Declaration
+   --    N_Full_Type_Declaration
+
+   --  Declarations of constant objects are transformed into let-binding in
+   --  Why, which is possible in any context (program, term, proposition).
+
+   --  Declarations of types are simply ignored. Indeed, we don't know how to
+   --  translate the assignment to type bounds like done in
+   --  Transform_Declaration in a proposition context. Note that this choice
+   --  can possibly lead to dynamic bounds not known at VC level, if such types
+   --  are introduced in actions.
+
+   function Transform_Actions
+     (Actions : List_Id;
+      Expr    : W_Expr_Id;
+      Domain  : EW_Domain;
+      Params  : Transformation_Params) return W_Expr_Id;
+   --  Translate a list of Actions, that should consist only in declarations of
+   --  constants used in Expr.
+
+   procedure Transform_Actions_Preparation (Actions : List_Id);
+   --  Update the symbol table for taking into account the names for
+   --  declarations of constants in Actions.
 
 end Gnat2Why.Expr;
