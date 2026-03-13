@@ -285,164 +285,6 @@ package body Gnat2Why.Util is
 
    end Ada_Ent_To_Why;
 
-   ----------------------
-   -- Get_Base_Of_Type --
-   ----------------------
-
-   function Get_Base_Of_Type (T : Type_Kind_Id) return Type_Kind_Id is
-      Ty : Type_Kind_Id := Retysp (T);
-   begin
-      loop
-         exit when not Type_Is_Modeled_As_Base (Ty);
-         Ty := Retysp (Etype (Ty));
-      end loop;
-      return Ty;
-   end Get_Base_Of_Type;
-
-   ----------------------------
-   -- Get_Borrows_From_Decls --
-   ----------------------------
-
-   procedure Get_Borrows_From_Decls
-     (Decls : List_Id; Borrows : in out Node_Lists.List)
-   is
-      Cur_Decl : Node_Id := First (Decls);
-   begin
-      while Present (Cur_Decl) loop
-         if Nkind (Cur_Decl) = N_Object_Declaration then
-            declare
-               E : constant Constant_Or_Variable_Kind_Id :=
-                 Defining_Identifier (Cur_Decl);
-            begin
-               if Is_Local_Borrower (E) then
-                  Borrows.Prepend (E);
-               end if;
-            end;
-         end if;
-         Next (Cur_Decl);
-      end loop;
-   end Get_Borrows_From_Decls;
-
-   ---------------------------------
-   -- Get_Called_Entity_For_Proof --
-   ---------------------------------
-
-   function Get_Called_Entity_For_Proof (N : Node_Id) return Entity_Id is
-      Subp                : constant Entity_Id := Get_Called_Entity (N);
-      Call_Through_Access : constant Boolean :=
-        Ekind (Subp) = E_Subprogram_Type;
-      pragma
-        Assert
-          (if Call_Through_Access
-           then Nkind (Name (N)) = N_Explicit_Dereference);
-      Position            : Node_Maps.Cursor;
-      use type Node_Maps.Cursor;
-
-   begin
-      --  For calls to access-to-subprograms, check if the prefix is a
-      --  specialized parameter. If so, return its specialization.
-
-      if Call_Through_Access
-        and then Nkind (Prefix (Name (N))) in N_Identifier | N_Expanded_Name
-      then
-         Position := Specialized_Call_Params.Find (Entity (Prefix (Name (N))));
-         if Position /= Node_Maps.No_Element then
-            return Node_Maps.Element (Position);
-         end if;
-      end if;
-
-      --  Otherwise, return the result of Get_Called_Entity
-
-      return Subp;
-   end Get_Called_Entity_For_Proof;
-
-   ---------------------------------------------
-   -- Get_Container_In_Iterator_Specification --
-   ---------------------------------------------
-
-   function Get_Container_In_Iterator_Specification
-     (N : Node_Id) return Node_Id
-   is
-      Iter : constant Node_Id := SPARK_Atree.Name (N);
-   begin
-      return (Iter);
-   end Get_Container_In_Iterator_Specification;
-
-   -------------------------------
-   -- Get_Counterexample_Labels --
-   -------------------------------
-
-   function Get_Counterexample_Labels
-     (E : Entity_Id; Append_To_Name : String := "") return Symbol_Sets.Set
-   is
-      Labels      : Symbol_Sets.Set;
-      Model_Trace : constant Symbol_Sets.Set :=
-        Get_Model_Trace_Label (E, False, Append_To_Name);
-
-      E_Type : constant Type_Kind_Id := Retysp (Etype (E));
-      --  Taking the full_view of the type to be able to match private
-      --  type in the same way as other types because the current intended
-      --  behavior is to print private types as if they were public.
-
-   begin
-      if not Entity_Comes_From_Source (E) then
-         Labels := Symbol_Sets.Empty_Set;
-
-      --  Generate counterexample labels for a function result. As function
-      --  results are translated as refs, we must generate a "model_projected"
-      --  label.
-
-      elsif Ekind (E) = E_Function then
-         Labels := Model_Trace;
-         Labels.Include (Model_Projected);
-
-      --  Generate counterexample labels for variables of supported types.
-      --  For every supported type, we must be decide whether generate "model"
-      --  or "model_projected" label. If Why3 builtin type is used for E, the
-      --  label "model" can be generated, in other cases the label
-      --  "model_projected" must be generated.
-      --
-      --  Note that the label "model_projected" can be generated in all cases,
-      --  but it introduces extra overhead in the number of logical variables
-      --  in the generated formula.
-
-      else
-         case Ekind (E_Type) is
-            when Scalar_Kind                            =>
-               Labels := Model_Trace;
-
-               --  If the type used in Why3 for the entity is not abstract or
-               --  the entity is not mutable, the type is builtin Why3 type.
-
-               if Get_Type_Kind (Type_Of_Node (Etype (E))) = EW_Abstract
-                 or else Is_Mutable_In_Why (E)
-               then
-                  --  Ask the value of E projected to Why3 builtin type in the
-                  --  counterexample.
-                  --
-                  --  If E is of an abstract type, the value of E is projected
-                  --  to the corresponding concrete type using a projection
-                  --  function. If E is mutable, it is translated as a ref
-                  --  (a record with one mutable field representing the value
-                  --  of E) in Why3 in Translate_Variable. The value of E is
-                  --  projected to this field (and then further if it is still
-                  --  not of Why3 Builting type).
-
-                  Labels.Include (Model_Projected);
-               end if;
-
-            when Record_Kind | Array_Kind | Access_Kind =>
-               Labels := Model_Trace;
-               Labels.Include (Model_Projected);
-
-            when others                                 =>
-               null;
-         end case;
-      end if;
-
-      return Labels;
-   end Get_Counterexample_Labels;
-
    ------------------
    -- Add_To_Graph --
    ------------------
@@ -805,6 +647,191 @@ package body Gnat2Why.Util is
       return Result;
    end Create_Zero_Binding;
 
+   ------------------------------
+   -- Discrete_Choice_Is_Range --
+   ------------------------------
+
+   function Discrete_Choice_Is_Range (Choice : Node_Id) return Boolean is
+      Is_Range : Boolean;
+   begin
+      case Nkind (Choice) is
+         when N_Subtype_Indication | N_Range =>
+            Is_Range := True;
+
+         when N_Identifier | N_Expanded_Name =>
+            if Is_Type (Entity (Choice)) then
+               Is_Range := True;
+            else
+               Is_Range := False;
+            end if;
+
+         when N_Others_Choice                =>
+            Is_Range := True;
+
+         when others                         =>
+            Is_Range := False;
+      end case;
+      return Is_Range;
+   end Discrete_Choice_Is_Range;
+
+   ----------------------
+   -- Get_Base_Of_Type --
+   ----------------------
+
+   function Get_Base_Of_Type (T : Type_Kind_Id) return Type_Kind_Id is
+      Ty : Type_Kind_Id := Retysp (T);
+   begin
+      loop
+         exit when not Type_Is_Modeled_As_Base (Ty);
+         Ty := Retysp (Etype (Ty));
+      end loop;
+      return Ty;
+   end Get_Base_Of_Type;
+
+   ----------------------------
+   -- Get_Borrows_From_Decls --
+   ----------------------------
+
+   procedure Get_Borrows_From_Decls
+     (Decls : List_Id; Borrows : in out Node_Lists.List)
+   is
+      Cur_Decl : Node_Id := First (Decls);
+   begin
+      while Present (Cur_Decl) loop
+         if Nkind (Cur_Decl) = N_Object_Declaration then
+            declare
+               E : constant Constant_Or_Variable_Kind_Id :=
+                 Defining_Identifier (Cur_Decl);
+            begin
+               if Is_Local_Borrower (E) then
+                  Borrows.Prepend (E);
+               end if;
+            end;
+         end if;
+         Next (Cur_Decl);
+      end loop;
+   end Get_Borrows_From_Decls;
+
+   ---------------------------------
+   -- Get_Called_Entity_For_Proof --
+   ---------------------------------
+
+   function Get_Called_Entity_For_Proof (N : Node_Id) return Entity_Id is
+      Subp                : constant Entity_Id := Get_Called_Entity (N);
+      Call_Through_Access : constant Boolean :=
+        Ekind (Subp) = E_Subprogram_Type;
+      pragma
+        Assert
+          (if Call_Through_Access
+           then Nkind (Name (N)) = N_Explicit_Dereference);
+      Position            : Node_Maps.Cursor;
+      use type Node_Maps.Cursor;
+
+   begin
+      --  For calls to access-to-subprograms, check if the prefix is a
+      --  specialized parameter. If so, return its specialization.
+
+      if Call_Through_Access
+        and then Nkind (Prefix (Name (N))) in N_Identifier | N_Expanded_Name
+      then
+         Position := Specialized_Call_Params.Find (Entity (Prefix (Name (N))));
+         if Position /= Node_Maps.No_Element then
+            return Node_Maps.Element (Position);
+         end if;
+      end if;
+
+      --  Otherwise, return the result of Get_Called_Entity
+
+      return Subp;
+   end Get_Called_Entity_For_Proof;
+
+   ---------------------------------------------
+   -- Get_Container_In_Iterator_Specification --
+   ---------------------------------------------
+
+   function Get_Container_In_Iterator_Specification
+     (N : Node_Id) return Node_Id
+   is
+      Iter : constant Node_Id := SPARK_Atree.Name (N);
+   begin
+      return (Iter);
+   end Get_Container_In_Iterator_Specification;
+
+   -------------------------------
+   -- Get_Counterexample_Labels --
+   -------------------------------
+
+   function Get_Counterexample_Labels
+     (E : Entity_Id; Append_To_Name : String := "") return Symbol_Sets.Set
+   is
+      Labels      : Symbol_Sets.Set;
+      Model_Trace : constant Symbol_Sets.Set :=
+        Get_Model_Trace_Label (E, False, Append_To_Name);
+
+      E_Type : constant Type_Kind_Id := Retysp (Etype (E));
+      --  Taking the full_view of the type to be able to match private
+      --  type in the same way as other types because the current intended
+      --  behavior is to print private types as if they were public.
+
+   begin
+      if not Entity_Comes_From_Source (E) then
+         Labels := Symbol_Sets.Empty_Set;
+
+      --  Generate counterexample labels for a function result. As function
+      --  results are translated as refs, we must generate a "model_projected"
+      --  label.
+
+      elsif Ekind (E) = E_Function then
+         Labels := Model_Trace;
+         Labels.Include (Model_Projected);
+
+      --  Generate counterexample labels for variables of supported types.
+      --  For every supported type, we must be decide whether generate "model"
+      --  or "model_projected" label. If Why3 builtin type is used for E, the
+      --  label "model" can be generated, in other cases the label
+      --  "model_projected" must be generated.
+      --
+      --  Note that the label "model_projected" can be generated in all cases,
+      --  but it introduces extra overhead in the number of logical variables
+      --  in the generated formula.
+
+      else
+         case Ekind (E_Type) is
+            when Scalar_Kind                            =>
+               Labels := Model_Trace;
+
+               --  If the type used in Why3 for the entity is not abstract or
+               --  the entity is not mutable, the type is builtin Why3 type.
+
+               if Get_Type_Kind (Type_Of_Node (Etype (E))) = EW_Abstract
+                 or else Is_Mutable_In_Why (E)
+               then
+                  --  Ask the value of E projected to Why3 builtin type in the
+                  --  counterexample.
+                  --
+                  --  If E is of an abstract type, the value of E is projected
+                  --  to the corresponding concrete type using a projection
+                  --  function. If E is mutable, it is translated as a ref
+                  --  (a record with one mutable field representing the value
+                  --  of E) in Why3 in Translate_Variable. The value of E is
+                  --  projected to this field (and then further if it is still
+                  --  not of Why3 Builting type).
+
+                  Labels.Include (Model_Projected);
+               end if;
+
+            when Record_Kind | Array_Kind | Access_Kind =>
+               Labels := Model_Trace;
+               Labels.Include (Model_Projected);
+
+            when others                                 =>
+               null;
+         end case;
+      end if;
+
+      return Labels;
+   end Get_Counterexample_Labels;
+
    -----------------------------------
    -- Get_Dispatching_Call_Contract --
    -----------------------------------
@@ -833,24 +860,6 @@ package body Gnat2Why.Util is
    begin
       return +Get_Dispatching_Call_Contract (Params, E, Kind, EW_Pred);
    end Get_Dispatching_Call_Contract;
-
-   ----------------------
-   -- Get_LSP_Contract --
-   ----------------------
-
-   function Get_LSP_Contract
-     (Params : Transformation_Params; E : Callable_Kind_Id; Kind : Pragma_Id)
-      return W_Pred_Id
-   is
-      Conjuncts_List : Node_Lists.List :=
-        Find_Contracts (E, Kind, Classwide => True);
-   begin
-      if Conjuncts_List.Is_Empty then
-         Conjuncts_List := Find_Contracts (E, Kind, Inherited => True);
-      end if;
-
-      return +Compute_Spec (Params, Conjuncts_List, EW_Pred);
-   end Get_LSP_Contract;
 
    ------------------------------
    -- Get_Expr_Quantified_Over --
@@ -925,6 +934,24 @@ package body Gnat2Why.Util is
 
       return Result;
    end Get_Graph_Closure;
+
+   ----------------------
+   -- Get_LSP_Contract --
+   ----------------------
+
+   function Get_LSP_Contract
+     (Params : Transformation_Params; E : Callable_Kind_Id; Kind : Pragma_Id)
+      return W_Pred_Id
+   is
+      Conjuncts_List : Node_Lists.List :=
+        Find_Contracts (E, Kind, Classwide => True);
+   begin
+      if Conjuncts_List.Is_Empty then
+         Conjuncts_List := Find_Contracts (E, Kind, Inherited => True);
+      end if;
+
+      return +Compute_Spec (Params, Conjuncts_List, EW_Pred);
+   end Get_LSP_Contract;
 
    ---------------------------
    -- Get_Model_Trace_Label --

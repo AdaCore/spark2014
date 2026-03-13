@@ -628,6 +628,9 @@ package Gnat2Why.Util is
      (L : Node_Lists.List; Parts : in out Node_Sets.Set);
    --  Call Collect_Attr_Parts on all elements of L for attribute 'Old
 
+   function Discrete_Choice_Is_Range (Choice : Node_Id) return Boolean;
+   --  Return whether Choice is a range ("others" counts as a range)
+
    ------------------------------
    -- Symbol table subprograms --
    ------------------------------
