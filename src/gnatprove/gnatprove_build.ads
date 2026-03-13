@@ -7,7 +7,7 @@ package Gnatprove_Build is
    --  build process of Gnatprove.
 
    procedure Flow_Analysis_And_Proof
-     (Tree : Project.Tree.Object; Status : out Integer);
+     (Tree : Project.Tree.Object; Success : out Boolean);
    --  Call gnat2why on all relevant units in analysis mode, generating
    --  unit.spark file.
 
