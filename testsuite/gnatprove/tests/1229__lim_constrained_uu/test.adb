@@ -1,13 +1,15 @@
 procedure Test with SPARK_Mode is
 
-   type My_Rec (Is_Int : Boolean := False) is record
+   type My_Rec_2 (Is_Int : Boolean := False) is record
       case Is_Int is
          when True =>
             F_Int : Integer;
          when False =>
             F_Float : Float;
       end case;
-   end record with
+   end record;
+
+   type My_Rec is new My_Rec_2 with
      Unchecked_Union;
 
    procedure Write_F_Int_If_B (X : in out My_Rec; B : Boolean) with
@@ -19,8 +21,6 @@ procedure Test with SPARK_Mode is
          X := (True, 12);
       end if;
    end Write_F_Int_If_B;
-
-   type My_Rec_2 is new My_Rec;
 
    procedure P_Inlined (X : in out My_Rec_2) is
    begin
