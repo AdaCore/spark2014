@@ -1,3 +1,4 @@
+container_wrapper.gpr:3:09: warning: project name 'container_wrapper' expected
  info: predicate check proved
 --> my_integer_sets.adb:6:08
 
