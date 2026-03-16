@@ -1828,10 +1828,8 @@ package body Configuration is
                else CL_Switches.P.all);
             Status       : Boolean;
 
-            --  Do not display warnings, as those messages will be duplicated
-            --  during the call to gprbuild.
-            Reporter : Spark_Reporter :=
-              (GPR2.Reporter.Console.Create (GPR2.Reporter.No_Warnings)
+            Reporter : constant Spark_Reporter :=
+              (GPR2.Reporter.Console.Create (GPR2.Reporter.Regular)
                with null record);
 
          begin
@@ -1847,14 +1845,6 @@ package body Configuration is
             if not Status then
                Fail ("");
             end if;
-
-            --  When updating the sources we now need both warnings and
-            --  errors, in particular since duplicated body situation is
-            --  a warning.
-
-            Reporter.Set_Verbosity (GPR2.Reporter.Regular);
-
-            Tree.Set_Reporter (Reporter);
 
             if not Tree.Update_Sources then
                Fail ("");
