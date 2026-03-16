@@ -120,7 +120,9 @@ package body Gnatprove_Build is
    -- Flow_Analysis_And_Proof --
    -----------------------------
    procedure Flow_Analysis_And_Proof
-     (Tree : Project.Tree.Object; Success : out Boolean)
+     (Tree        : Project.Tree.Object;
+      SPARK_Files : out String_Lists.List;
+      Success     : out Boolean)
    is
       Process_M : GPR2.Build.Process_Manager.JSON.Object;
       Exec_Opts : GPR2.Build.Process_Manager.PM_Options;
@@ -131,7 +133,10 @@ package body Gnatprove_Build is
       procedure Cleanup;
       --  Delete temp files, close semaphore, kill VC server
 
-      procedure Insert_Actions (Mains : Unit_Set; Selected_Units : Unit_Set);
+      procedure Insert_Actions
+        (Mains          : Unit_Set;
+         Selected_Units : Unit_Set;
+         SPARK_Files    : in out String_Lists.List);
       --  Build the DAG of actions for global gen and analysis
 
       Object_Path_File : constant String := Create_Object_Path_File (Tree);
@@ -173,7 +178,11 @@ package body Gnatprove_Build is
       -- Insert_Actions --
       --------------------
 
-      procedure Insert_Actions (Mains : Unit_Set; Selected_Units : Unit_Set) is
+      procedure Insert_Actions
+        (Mains          : Unit_Set;
+         Selected_Units : Unit_Set;
+         SPARK_Files    : in out String_Lists.List)
+      is
          To_Analyze    : Unit_Set;
          To_Global_Gen : Unit_Set;
 
@@ -296,6 +305,16 @@ package body Gnatprove_Build is
                           (Ada.Text_IO.Standard_Error,
                            "Error adding Analysis action for unit "
                            & String (Elt.Name));
+                     else
+                        --  Record the expected output path at queue time.
+                        --  The file may not exist if the action fails at
+                        --  runtime; callers must check existence before use.
+                        SPARK_Files.Append
+                          (Analysis_Act
+                             .Object_File
+                             .Path
+                             .Virtual_File
+                             .Display_Full_Name);
                      end if;
                   end;
                end if;
@@ -363,7 +382,7 @@ package body Gnatprove_Build is
                end loop;
             end loop;
          end if;
-         Insert_Actions (Main_Units, Selected_Units);
+         Insert_Actions (Main_Units, Selected_Units, SPARK_Files);
       end;
 
       Success :=

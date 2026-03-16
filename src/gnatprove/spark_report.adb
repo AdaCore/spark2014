@@ -27,7 +27,6 @@ with Ada.Calendar;
 with Ada.Containers;
 with Ada.Command_Line;
 with Ada.Directories;
-with Ada.Exceptions;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO;
 with Assumptions;           use Assumptions;
@@ -36,12 +35,9 @@ with Assumption_Types;      use Assumption_Types;
 with Call;                  use Call;
 with Configuration;         use Configuration;
 with GNAT.Calendar.Time_IO;
-with GNAT.Directory_Operations.Iteration;
 with GNATCOLL.JSON;         use GNATCOLL.JSON;
-with GNATCOLL.Tribooleans;
 with GNATCOLL.Utils;        use GNATCOLL.Utils;
 with GPR2.Project.Attribute;
-with GPR2.Project.View;
 with Gnat2Why_Opts;         use Gnat2Why_Opts;
 with Platform;              use Platform;
 with Print_Table;           use Print_Table;
@@ -63,7 +59,7 @@ package body Spark_Report is
 
    procedure Generate_SARIF_Report
      (Filename           : String;
-      Obj_Dirs           : String_Lists.List;
+      SPARK_Files        : String_Lists.List;
       Command_Line_Image : String;
       Error_Code         : Integer);
 
@@ -72,10 +68,11 @@ package body Spark_Report is
    ---------------------
 
    procedure Generate_Report
-     (Tree       : GPR2.Project.Tree.Object;
-      Out_Dir    : String;
-      Has_Errors : Boolean;
-      Status     : out Integer)
+     (Tree        : GPR2.Project.Tree.Object;
+      Out_Dir     : String;
+      SPARK_Files : String_Lists.List;
+      Has_Errors  : Boolean;
+      Status      : out Integer)
    is
       SPARK_Mode_OK : Boolean := False;
       --  This variable is set to True when at least one subprogram was
@@ -84,7 +81,6 @@ package body Spark_Report is
       Max_Progress       : Analysis_Progress := Progress_None;
       Error_Code         : Integer := 0;
       Handle             : Ada.Text_IO.File_Type;
-      Obj_Dirs           : String_Lists.List;
       Command_Line_Image : Unbounded_String;
 
       --  Config values from Configuration/CL_Switches
@@ -98,6 +94,9 @@ package body Spark_Report is
         or else not Null_Or_Empty_String (CL_Switches.Limit_Region);
       Colors             : constant Boolean :=
         Configuration.Output = GPO_Pretty_Color;
+
+      Existing_Files : String_Lists.List;
+      --  Subset of SPARK_Files that actually exist on disk
 
       procedure Handle_SPARK_File (Fn : String);
       --  Parse and extract all information from a single SPARK file
@@ -113,9 +112,6 @@ package body Spark_Report is
 
       procedure Handle_Assume_Items (V : JSON_Array; Unit : Unit_Type);
       --  Parse and extract all information from an assume result array
-
-      procedure Handle_Source_Dir (Dir : String);
-      --  Parse all result files in the given directory
 
       procedure Print_Analysis_Report (Handle : Ada.Text_IO.File_Type);
       --  Print the proof report in the given file
@@ -640,62 +636,6 @@ package body Spark_Report is
             end;
          end loop;
       end Handle_Proof_Items;
-
-      -----------------------
-      -- Handle_Source_Dir --
-      -----------------------
-
-      procedure Handle_Source_Dir (Dir : String) is
-
-         procedure Local_Handle_SPARK_File
-           (Item : String; Index : Positive; Quit : in out Boolean);
-         --  Wrapper for Handle_SPARK_File
-
-         -----------------------------
-         -- Local_Handle_SPARK_File --
-         -----------------------------
-
-         procedure Local_Handle_SPARK_File
-           (Item : String; Index : Positive; Quit : in out Boolean) is
-         begin
-            pragma Unreferenced (Index);
-            pragma Unreferenced (Quit);
-            Handle_SPARK_File (Item);
-         exception
-            when E : others =>
-               pragma
-                 Debug
-                   (Ada.Text_IO.Put_Line
-                      (Ada.Text_IO.Standard_Error,
-                       "spark_report: "
-                       & Ada.Exceptions.Exception_Message (E)));
-               Ada.Text_IO.Put_Line
-                 (Ada.Text_IO.Standard_Error,
-                  "spark_report: error when processing file "
-                  & Item
-                  & ", skipping");
-               Ada.Text_IO.Put_Line
-                 (Ada.Text_IO.Standard_Error,
-                  "spark_report: try cleaning proofs to remove this error");
-         end Local_Handle_SPARK_File;
-
-         procedure Iterate_SPARK is new
-           GNAT.Directory_Operations.Iteration.Wildcard_Iterator
-             (Action => Local_Handle_SPARK_File);
-
-         Save_Dir : constant String := Ada.Directories.Current_Directory;
-
-         --  Start of processing for Handle_Source_Dir
-
-      begin
-         Ada.Directories.Set_Directory (Dir);
-         Iterate_SPARK (Path => "*." & VC_Kinds.SPARK_Suffix);
-         Ada.Directories.Set_Directory (Save_Dir);
-      exception
-         when others =>
-            Ada.Directories.Set_Directory (Save_Dir);
-            raise;
-      end Handle_Source_Dir;
 
       -----------------------
       -- Handle_SPARK_File --
@@ -1356,42 +1296,29 @@ package body Spark_Report is
       --  Start of processing for Generate_Report
 
    begin
-      --  Build Obj_Dirs by iterating the project tree
-      declare
-         Dir_Names_Seen : Dir_Name_Sets.Set;
-         Inserted       : Boolean;
-         Unused         : Dir_Name_Sets.Cursor;
-      begin
-         for Cursor in
-           Tree.Iterate
-             (Status =>
-                [GPR2.Project.S_Externally_Built =>
-                   GNATCOLL.Tribooleans.False])
-         loop
-            declare
-               View : constant GPR2.Project.View.Object :=
-                 GPR2.Project.Tree.Element (Cursor);
-            begin
-               if View.Kind in With_Object_Dir_Kind then
-                  declare
-                     Dir : constant String :=
-                       View.Object_Directory.Virtual_File.Display_Full_Name;
-                  begin
-                     Dir_Names_Seen.Insert
-                       (New_Item => Dir,
-                        Position => Unused,
-                        Inserted => Inserted);
-                     if Inserted then
-                        Obj_Dirs.Append (Dir);
-                     end if;
-                  end;
-               end if;
-            end;
-         end loop;
-      end;
+      --  Build the list of .spark files that actually exist.
+      --  ??? For now we silently skip missing .spark files; ideally the
+      --  report should mention that some units were not analyzed.
+      for Filename of SPARK_Files loop
+         if Ada.Directories.Exists (Filename) then
+            Existing_Files.Append (Filename);
+         end if;
+      end loop;
 
-      for Dir of Obj_Dirs loop
-         Handle_Source_Dir (Dir);
+      for Filename of Existing_Files loop
+         begin
+            Handle_SPARK_File (Filename);
+         exception
+            when others =>
+               Ada.Text_IO.Put_Line
+                 (Ada.Text_IO.Standard_Error,
+                  "spark_report: error when processing file "
+                  & Filename
+                  & ", skipping");
+               Ada.Text_IO.Put_Line
+                 (Ada.Text_IO.Standard_Error,
+                  "spark_report: try cleaning proofs to remove this error");
+         end;
       end loop;
 
       --  Build the command line string once for use in header and SARIF report
@@ -1516,7 +1443,7 @@ package body Spark_Report is
       Generate_SARIF_Report
         (Filename           =>
            Ada.Directories.Compose (Out_Dir, "gnatprove.sarif"),
-         Obj_Dirs           => Obj_Dirs,
+         SPARK_Files        => Existing_Files,
          Command_Line_Image => To_String (Command_Line_Image),
          Error_Code         => Error_Code);
 
@@ -1525,7 +1452,7 @@ package body Spark_Report is
 
    procedure Generate_SARIF_Report
      (Filename           : String;
-      Obj_Dirs           : String_Lists.List;
+      SPARK_Files        : String_Lists.List;
       Command_Line_Image : String;
       Error_Code         : Integer)
    is separate;
