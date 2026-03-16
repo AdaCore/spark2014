@@ -582,10 +582,6 @@ package body Configuration is
    is
       Unit_Name : constant String :=
         String (Unit.Main_Part.Source.Simple_Name);
-      --  ??? This calls Pass_Extra_Options_To_Gnat2why for each unit, which
-      --  may rewrite the same file when units share identical settings.
-      --  Write_To_File skips the write if the file already exists (same
-      --  content = same hash = same filename), so the overhead is minimal.
       Opt_File  : constant String :=
         Gnat2Why_Opts.Writing.Pass_Extra_Options_To_Gnat2why
           (Translation_Phase => Translation_Phase,
