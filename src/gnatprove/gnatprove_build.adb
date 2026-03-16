@@ -92,8 +92,6 @@ package body Gnatprove_Build is
    begin
       --  ??? Possibly this needs to change for aggregate projects: one file
       --  per aggregate.
-      --  ??? Do we need to add the Library_Dir for library projects
-      --  instead of the object dir?
       Create (File, Name => Name);
       for Prj of Tree.Ordered_Views loop
          if Prj.Kind in With_Object_Dir_Kind then
@@ -101,8 +99,6 @@ package body Gnatprove_Build is
                declare
                   Lib_Dir    : Virtual_File renames
                     Prj.Library_Ali_Directory.Virtual_File;
-                  --  ??? for some reason the subdir is missing for externally
-                  --  built projects
                   Target_Dir : constant Virtual_File :=
                     (if Prj.Is_Externally_Built
                      then Lib_Dir / Configuration.Phase2_Subdir
@@ -325,12 +321,8 @@ package body Gnatprove_Build is
          Exec_Opts.Force := True;
       end if;
 
-      --  ??? Set Exec.Jobs based on CL_Switches.Parallel
-      --  This currently causes a regression in K622-001__multisource
       Exec_Opts.Jobs := Configuration.Parallel;
 
-      --  ??? it seems correct to write this file only once, but will why3
-      --  processes of units of non-root projects find it?
       Write_Why3_Conf_File
         (Configuration.Artifact_Dir (Tree).Virtual_File.Display_Full_Name);
 
