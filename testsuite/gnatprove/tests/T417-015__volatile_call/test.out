@@ -1,3 +1,4 @@
+test_empty.adb:14:14: warning: volatile function "Deep_Copy" has no volatile effects
 test_empty.adb:33:36: error: launch "gnatprove --explain=E0004" for more information
 test_empty.adb:33:36: error: violation of aspect SPARK_Mode at line 1
 test_empty.adb:33:36: error: volatile object or volatile function call in interfering context is not allowed in SPARK (SPARK RM 7.1.3(9)) [E0004]

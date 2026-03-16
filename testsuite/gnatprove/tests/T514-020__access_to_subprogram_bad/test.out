@@ -1,5 +1,6 @@
 test_callback_bad.adb:9:26: error: access to subprogram declared within a protected object is not allowed in SPARK (SPARK RM 4.1.4(2))
 test_callback_bad.adb:9:26: error: violation of aspect SPARK_Mode at line 1
+test_callback_bad.adb:17:13: warning: volatile function "F_Vol" has no volatile effects
 test_callback_bad.adb:23:19: error: access to dispatching operation is not allowed in SPARK (SPARK RM 4.1.4(2))
 test_callback_bad.adb:23:19: error: violation of aspect SPARK_Mode at line 1
 test_callback_bad.adb:24:23: error: access to volatile function is not allowed in SPARK (SPARK RM 4.1.4(3))

@@ -14,4 +14,5 @@ test_deep_volatile.adb:30:14: error: observe, move, or borrow of volatile object
 test_deep_volatile.adb:30:14: error: violation of aspect SPARK_Mode at line 1
 test_deep_volatile.adb:35:10: error: observe, move, or borrow of volatile object is not allowed in SPARK (SPARK RM 3.10(16))
 test_deep_volatile.adb:35:10: error: violation of aspect SPARK_Mode at line 1
+test_deep_volatile.ads:14:13: warning: volatile function "Test5" has no volatile effects
 gnatprove: error during flow analysis and proof
