@@ -24,7 +24,6 @@ gprinspect
 gprls
 gprname
 spark_memcached_wrapper
-spark_report
 spark_semaphore_wrapper
 target.atp
 why3

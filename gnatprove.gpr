@@ -29,7 +29,6 @@ project GNATprove is
    for Source_Dirs use Sources;
 
    for Main use ("gnatprove.adb",
-                 "spark_report.adb",
                  "spark_memcached_wrapper.adb",
                  "spark_semaphore_wrapper.adb");
 
@@ -37,7 +36,6 @@ project GNATprove is
 
    package Builder is
       for Executable ("gnatprove.adb") use "gnatprove";
-      for Executable ("spark_report.adb") use "spark_report";
       for Executable ("spark_memcached_wrapper.adb") use "spark_memcached_wrapper";
       for Executable ("spark_semaphore_wrapper.adb") use "spark_semaphore_wrapper";
 

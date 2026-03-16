@@ -26,14 +26,18 @@
 with Ada.Directories;
 with SARIF.Types;             use SARIF.Types;
 with SARIF.Types.Outputs;
-with VC_Kinds;                use VC_Kinds;
 with VSS.JSON.Push_Writers;
 with VSS.Strings;
 with VSS.Strings.Conversions; use VSS.Strings.Conversions;
 with VSS.Text_Streams.File_Output;
 
-separate (SPARK_Report)
-procedure Generate_SARIF_Report (Filename : String; Info : JSON_Value) is
+separate (Spark_Report)
+procedure Generate_SARIF_Report
+  (Filename           : String;
+   Obj_Dirs           : String_Lists.List;
+   Command_Line_Image : String;
+   Error_Code         : Integer)
+is
    Root       : SARIF.Types.Root;
    My_Run     : run;
    My_Results : SARIF.Types.result_Vector;
@@ -213,15 +217,9 @@ procedure Generate_SARIF_Report (Filename : String; Info : JSON_Value) is
 
    procedure Handle_SPARK_Files is
    begin
-      if Has_Field (Info, "obj_dirs") then
-         declare
-            Ar : constant JSON_Array := Get (Info, "obj_dirs");
-         begin
-            for Var_Index in Positive range 1 .. Length (Ar) loop
-               Handle_Source_Dir (Get (Get (Ar, Var_Index)));
-            end loop;
-         end;
-      end if;
+      for Dir of Obj_Dirs loop
+         Handle_Source_Dir (Dir);
+      end loop;
    end Handle_SPARK_Files;
 
    --------------
@@ -493,8 +491,7 @@ procedure Generate_SARIF_Report (Filename : String; Info : JSON_Value) is
       --  report in this case.
       return
         invocation'
-          (commandLine         =>
-             To_Virtual_String (Build_Switches_String (Get (Info, "cmdline"))),
+          (commandLine         => To_Virtual_String (Command_Line_Image),
            endTimeUtc          => To_Virtual_String (End_Time),
            exitCode            => (True, Error_Code),
            executionSuccessful => True,

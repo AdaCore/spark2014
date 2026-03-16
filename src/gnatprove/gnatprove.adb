@@ -73,16 +73,14 @@ with Configuration;   use Configuration;
 with GNAT.OS_Lib;
 with GNAT.Strings;    use GNAT.Strings;
 with Gnatprove_Build; use Gnatprove_Build;
-with Gnat2Why_Opts;
-with GNATCOLL.JSON;   use GNATCOLL.JSON;
 with GNATCOLL.Tribooleans;
 with GNATCOLL.Utils;  use GNATCOLL.Utils;
 with GNATCOLL.VFS;    use GNATCOLL.VFS;
 with GPR2;            use GPR2;
 with GPR2.Path_Name;
-with GPR2.Project.Attribute;
 with GPR2.Project.Tree;
 with GPR2.Project.View;
+with Spark_Report;
 with String_Utils;    use String_Utils;
 with VC_Kinds;        use VC_Kinds;
 
@@ -384,155 +382,15 @@ procedure Gnatprove with SPARK_Mode is
    procedure Generate_SPARK_Report
      (Tree : Project.Tree.Object; Errors : Boolean)
    is
-      Obj_Dir    : constant String :=
+      Obj_Dir : constant String :=
         Artifact_Dir (Tree).Virtual_File.Display_Full_Name;
-      Obj_Dir_Fn : constant String :=
-        Ada.Directories.Compose (Obj_Dir, "gnatprove.alfad");
-      Success    : Boolean;
-      Status     : Integer;
-      Args       : String_Lists.List;
-      JSON_Rec   : constant JSON_Value := Create_Object;
-      use type Gnat2Why_Opts.Output_Mode_Type;
+      Status  : Integer;
    begin
-
-      declare
-         --  Protect against duplicates in Obj_Path by inserting the items into
-         --  a set and only doing something if there item was really inserted.
-         --  This is more robust than relying on Obj_Path being sorted.
-
-         Dir_Names_Seen : Configuration.Dir_Name_Sets.Set;
-
-         Inserted : Boolean;
-         Unused   : Dir_Name_Sets.Cursor;
-
-         Obj_Dirs_JSON : JSON_Array;
-      begin
-         for Cursor in
-           Tree.Iterate
-             (Status =>
-                [GPR2.Project.S_Externally_Built =>
-                   GNATCOLL.Tribooleans.False])
-         loop
-            declare
-               View : constant Project.View.Object :=
-                 Project.Tree.Element (Cursor);
-            begin
-               if View.Kind in With_Object_Dir_Kind then
-                  declare
-                     Obj_Dir : constant String :=
-                       View.Object_Directory.Virtual_File.Display_Full_Name;
-                  begin
-                     Dir_Names_Seen.Insert
-                       (New_Item => Obj_Dir,
-                        Position => Unused,
-                        Inserted => Inserted);
-                     if Inserted then
-                        Append (Obj_Dirs_JSON, Create (Obj_Dir));
-                     end if;
-                  end;
-               end if;
-            end;
-         end loop;
-         Set_Field (JSON_Rec, "obj_dirs", Obj_Dirs_JSON);
-      end;
-
-      declare
-         use Ada.Command_Line;
-         Cmdline_JSON : JSON_Array;
-      begin
-         --  Strip path and extension from the command name
-         Append
-           (Cmdline_JSON,
-            Create
-              (Ada.Directories.Base_Name
-                 (Ada.Directories.Simple_Name (Command_Name))));
-         for J in 1 .. Argument_Count loop
-            Append (Cmdline_JSON, Create (Argument (J)));
-         end loop;
-         Set_Field (JSON_Rec, "cmdline", Cmdline_JSON);
-      end;
-
-      declare
-         Attr : constant GPR2.Project.Attribute.Object :=
-           Tree.Root_Project.Attribute ((+"Prove", +"Switches"));
-      begin
-         if Attr.Is_Defined then
-            declare
-               Switches_JSON : JSON_Array;
-            begin
-               for Switch of Attr.Values loop
-                  Append (Switches_JSON, Create (String (Switch.Text)));
-               end loop;
-               Set_Field (JSON_Rec, "switches", Switches_JSON);
-            end;
-         end if;
-      end;
-
-      declare
-         FS_Switches_JSON : constant JSON_Value := Create_Object;
-      begin
-         for Attr of
-           Tree.Root_Project.Attributes ((+"Prove", +"Proof_Switches"))
-         loop
-            declare
-               Switch_Arr : JSON_Array;
-            begin
-               for Elt of Attr.Values loop
-                  Append (Switch_Arr, Create (String (Elt.Text)));
-               end loop;
-               Set_Field
-                 (FS_Switches_JSON, String (Attr.Index.Text), Switch_Arr);
-            end;
-         end loop;
-         Set_Field (JSON_Rec, "proof_switches", FS_Switches_JSON);
-      end;
-
-      if not Null_Or_Empty_String (CL_Switches.Limit_Name)
-        or else not Null_Or_Empty_String (CL_Switches.Limit_Subp)
-        or else not Null_Or_Empty_String (CL_Switches.Limit_Line)
-        or else not Null_Or_Empty_String (CL_Switches.Limit_Lines)
-        or else not Null_Or_Empty_String (CL_Switches.Limit_Region)
-      then
-         Set_Field (JSON_Rec, "has_limit_switches", True);
-      end if;
-
-      if CL_Switches.Assumptions then
-         Set_Field (JSON_Rec, "assumptions", True);
-      end if;
-
-      if Quiet then
-         Set_Field (JSON_Rec, "quiet", True);
-      end if;
-
-      if CL_Switches.Output_Header then
-         Set_Field (JSON_Rec, "output_header", True);
-      end if;
-
-      Set_Field (JSON_Rec, "mode", To_JSON (Configuration.Mode));
-      Set_Field (JSON_Rec, "has_errors", Errors);
-
-      Set_Field (JSON_Rec, "colors", Output = Gnat2Why_Opts.GPO_Pretty_Color);
-
-      declare
-         Report_Info_File : File_Type;
-         Write_Cont       : constant String := Write (JSON_Rec);
-      begin
-         Create (Report_Info_File, Out_File, Obj_Dir_Fn);
-         Put (Report_Info_File, Write_Cont);
-         Close (Report_Info_File);
-      end;
-
-      Args.Append (Obj_Dir_Fn);
-
-      Call_With_Status
-        (Command   => "spark_report",
-         Arguments => Args,
-         Status    => Status,
-         Verbose   => Verbose);
-
-      if not Debug then
-         GNAT.OS_Lib.Delete_File (Obj_Dir_Fn, Success);
-      end if;
+      Spark_Report.Generate_Report
+        (Tree       => Tree,
+         Out_Dir    => Obj_Dir,
+         Has_Errors => Errors,
+         Status     => Status);
 
       if not Quiet and then Configuration.Mode /= GPM_Check then
          Put_Line ("Summary logged in " & SPARK_Report_File (Obj_Dir));
