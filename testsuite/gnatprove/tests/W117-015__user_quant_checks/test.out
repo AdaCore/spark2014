@@ -49,7 +49,6 @@ iterable_invariant.ads:30:25: info: in default value of private type at iterable
 iterable_invariant.ads:30:25: info: range check proved (CVC5: 2 VC)
 iterable_invariant.ads:34:19: medium: in inlined invariant at iterable_invariant.ads:29
 iterable_invariant.ads:34:19: medium: invariant check might fail, cannot prove Container /= Invalid_Value [provers gave up before completing the proof]
-iterable_invariant.ads:34:27: warning: unused variable "X" [-gnatw.t]
 iterable_invariant.ads:35:06: warning: postcondition does not check the outcome of calling "Forbidden_Quantification" [-gnatw.t]
 iterable_invariant.ads:35:14: medium: postcondition might fail (e.g. when C = Correct_Value) [provers gave up before completing the proof]
 quant_checks.adb:10:16: info: during checks for quantification at quant_checks.adb:4
