@@ -143,6 +143,32 @@ spark2014/
 - Pre-commit hooks enforce formatting and check test markers
 - If pre-commit hooks modify files, just `git add` the changes and try again
 
+## Ada Style Conventions
+
+### Comments
+
+- Comments start with a capital letter.
+- Multi-line comments end with a period.
+- Single-line comments do NOT end with a period.
+- Each subprogram definition has a subprogram box (header comment).
+- Use `???` in comments to indicate TODO items, areas of improvement, or questions.
+
+### Variable Naming
+
+- Names should be clear and meaningful.
+- Avoid names based on purpose (e.g., `Hash_For_Graph`): the purpose may change and the variable be used differently or elsewhere.
+- Avoid names that merely repeat the type.
+- Avoid abbreviations, except common ones (e.g., `Idx` for index, `Var` for variable) that are widely understood and used locally (e.g., in a small loop).
+
+### Loop Patterns
+
+- Avoid `for X in Container.Iterate loop ... Element(X) ...`.
+- Prefer `for Elt of Container loop ... Elt ...`.
+
+### Container Operations
+
+- Avoid double lookups (e.g., a `Contains` check followed by a separate lookup). Use cursors instead for such cases.
+
 ## Important Notes
 
 - **gnat_src symlink**: The `gnat2why/gnat_src` symbolic link to GNAT sources is required before building gnat2why
