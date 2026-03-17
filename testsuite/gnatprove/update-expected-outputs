@@ -175,7 +175,7 @@ def download_from_gaia(gaia_id):
         name = f.name
     tmpdir = tempfile.mkdtemp()
     with tarfile.open(name, mode="r:gz") as tar:
-        tar.extractall(tmpdir)
+        tar.extractall(tmpdir, filter="data")
     return get_single_subdir(tmpdir)
 
 
