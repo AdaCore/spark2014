@@ -20,6 +20,7 @@ enums.adb:105:13: info: implicit aspect Always_Terminates on "Tick_Pos" has been
 enums.adb:106:19: info: postcondition proved (CVC5: 1 VC)
 enums.adb:106:41: info: range check proved (CVC5: 2 VC)
 enums.adb:108:07: info: initialization of "R" proved
+enums.adb:114:26: info: range check proved (CVC5: 2 VC)
 enums.adb:142:39: info: initialization of "Result" proved
 enums.adb:143:39: info: initialization of "Success" proved
 enums.adb:144:11: info: flow dependencies proved

@@ -1,2 +1,3 @@
 c46042a.adb:9:06: warning: analyzing unreferenced function "IDENT" [unreferenced-function]
 c46042a.adb:9:15: info: implicit aspect Always_Terminates on "IDENT" has been proved, subprogram will terminate
+c46042a.adb:11:36: info: range check proved (CVC5: 2 VC)
