@@ -21,7 +21,6 @@ with GNAT.OS_Lib;
 with GNAT.Strings;          use GNAT.Strings;
 with GNATCOLL.JSON;         use GNATCOLL.JSON;
 with GNATCOLL.Utils;        use GNATCOLL.Utils;
-with GNATCOLL.VFS;          use GNATCOLL.VFS;
 with Named_Semaphores;      use Named_Semaphores;
 with String_Utils;          use String_Utils;
 with VC_Kinds;              use VC_Kinds;
@@ -39,7 +38,7 @@ package body Gnatprove_Build is
       return GNAT.OS_Lib.Process_Id;
    --  Spawn a process in a non-blocking way
 
-   procedure Write_Why3_Conf_File (Obj_Dir : String);
+   procedure Write_Why3_Conf_File (Obj_Dir : Path_Name.Object);
    --  Write the Why3 conf file to process prover configuration
 
    function Create_Object_Path_File (Tree : Project.Tree.Object) return String;
@@ -86,7 +85,7 @@ package body Gnatprove_Build is
       File : File_Type;
       Name : constant String :=
         Ada.Directories.Compose
-          (Configuration.Artifact_Dir (Tree).Virtual_File.Display_Full_Name,
+          (Configuration.Artifact_Dir (Tree).String_Value,
            Name      => "obj_path",
            Extension => "tmp");
    begin
@@ -97,18 +96,21 @@ package body Gnatprove_Build is
          if Prj.Kind in With_Object_Dir_Kind then
             if Prj.Is_Library then
                declare
-                  Lib_Dir    : Virtual_File renames
-                    Prj.Library_Ali_Directory.Virtual_File;
-                  Target_Dir : constant Virtual_File :=
+                  Lib_Dir    : Path_Name.Object renames
+                    Prj.Library_Ali_Directory;
+                  Target_Dir : constant Path_Name.Object :=
                     (if Prj.Is_Externally_Built
-                     then Lib_Dir / Configuration.Phase2_Subdir
+                     then
+                       Lib_Dir.Compose
+                         (Filename_Type
+                            (To_String (Configuration.Phase2_Subdir)),
+                          Directory => True)
                      else Lib_Dir);
                begin
-                  Put_Line (File, Target_Dir.Display_Full_Name);
+                  Put_Line (File, Target_Dir.String_Value);
                end;
             else
-               Put_Line
-                 (File, Prj.Object_Directory.Virtual_File.Display_Full_Name);
+               Put_Line (File, Prj.Object_Directory.String_Value);
             end if;
          end if;
       end loop;
@@ -342,8 +344,7 @@ package body Gnatprove_Build is
 
       Exec_Opts.Jobs := Configuration.Parallel;
 
-      Write_Why3_Conf_File
-        (Configuration.Artifact_Dir (Tree).Virtual_File.Display_Full_Name);
+      Write_Why3_Conf_File (Configuration.Artifact_Dir (Tree));
 
       Full_Deps (Tree);
 
@@ -486,8 +487,7 @@ package body Gnatprove_Build is
       if CL_Switches.Why3_Server = null
         or else CL_Switches.Why3_Server.all = ""
       then
-         Ada.Directories.Set_Directory
-           (Artifact_Dir (Tree).Virtual_File.Display_Full_Name);
+         Ada.Directories.Set_Directory (Artifact_Dir (Tree).String_Value);
          Args.Append ("-j");
          Args.Append (Image (Parallel, 1));
          Args.Append ("--socket");
@@ -514,7 +514,7 @@ package body Gnatprove_Build is
    -- Write_Why3_Conf_File --
    --------------------------
 
-   procedure Write_Why3_Conf_File (Obj_Dir : String) is
+   procedure Write_Why3_Conf_File (Obj_Dir : Path_Name.Object) is
       use Ada.Text_IO;
 
       --  Here we read the "gnatprove.conf" file and generate from it
@@ -749,8 +749,7 @@ package body Gnatprove_Build is
 
       Editors  : constant JSON_Array := Get (Get (Config, "editors"));
       Provers  : constant JSON_Array := Get (Get (Config, "provers"));
-      Filename : constant String :=
-        Ada.Directories.Compose (Obj_Dir, "why3.conf");
+      Filename : constant String := Obj_Dir.Compose ("why3.conf").String_Value;
 
       --  Start of processing for Write_Why3_Conf_File
 
