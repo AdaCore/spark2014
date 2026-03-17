@@ -1771,7 +1771,7 @@ package body Configuration is
          Project.Registry.Attribute.Description.Set_Attribute_Description
            (Q_Attribute_Id'(+"Prove", +"Proof_Switches"),
             "Defines additional command line switches that are used for the "
-            & "invokation of GNATprove. Only the following switches are "
+            & "invocation of GNATprove. Only the following switches are "
             & "allowed for file-specific switches: '--steps', '--timeout', "
             & "'--memlimit', '--proof', '--prover', '--level', '--mode', "
             & "'--counterexamples', '--no-inlining', '--no-loop-unrolling'");
