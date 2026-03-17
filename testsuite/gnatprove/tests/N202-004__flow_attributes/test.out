@@ -58,6 +58,7 @@ foo.adb:141:10: warning: initialization of an array in FOR loop is handled impre
 foo.adb:141:26: medium: overflow check might fail, cannot prove upper bound for Data'First + I [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
 foo.adb:141:30: info: index check proved (CVC5: 2 VC)
 foo.adb:141:30: info: overflow check proved (CVC5: 2 VC)
+foo.adb:141:47: info: range check proved (CVC5: 1 VC)
 foo.adb:141:68: medium: overflow check might fail, cannot prove upper bound for Text'First + I [reason for check: result of addition must fit in a 32-bits machine integer] [provers gave up before completing the proof]
 foo.adb:141:72: info: index check proved (CVC5: 2 VC)
 foo.adb:141:72: info: overflow check proved (CVC5: 2 VC)

@@ -1,5 +1,6 @@
 parsing.adb:6:13: info: implicit aspect Always_Terminates on "Read_Digit" has been proved, subprogram will terminate
 parsing.adb:8:13: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+parsing.adb:8:38: info: range check proved (CVC5: 2 VC)
 parsing.adb:9:13: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 parsing.adb:12:13: info: implicit aspect Always_Terminates on "Read_Number" has been proved, subprogram will terminate
 parsing.adb:12:13: warning: "Read_Number" is recursive; its body and contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
@@ -34,12 +35,14 @@ parsing.adb:42:11: info: exceptional case proved (CVC5: 1 VC)
 parsing.adb:42:11: info: predicate check proved (Trivial: 1 VC)
 parsing.adb:55:24: info: overflow check proved (CVC5: 4 VC)
 parsing.adb:55:44: info: overflow check proved (CVC5: 4 VC)
+parsing.adb:56:24: info: range check proved (CVC5: 4 VC)
 parsing.adb:59:16: info: assertion proved (CVC5: 2 VC)
 parsing.adb:59:16: info: precondition proved (CVC5: 2 VC)
 parsing.adb:59:16: info: predicate check proved (Trivial: 2 VC)
 parsing.adb:63:21: info: overflow check proved (CVC5: 4 VC)
 parsing.adb:63:26: info: overflow check proved (CVC5: 4 VC)
 parsing.adb:63:26: info: range check proved (CVC5: 4 VC)
+parsing.adb:63:38: info: range check proved (CVC5: 4 VC)
 parsing.adb:65:13: info: loop invariant initialization proved (CVC5: 2 VC)
 parsing.adb:65:13: info: loop invariant preservation proved (CVC5: 2 VC)
 parsing.adb:65:45: info: index check proved (CVC5: 4 VC)

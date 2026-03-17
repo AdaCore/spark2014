@@ -1,4 +1,6 @@
 p.adb:4:22: info: unrolling loop [info-unrolling-inlining]
+p.adb:12:18: info: range check proved (CVC5: 2 VC)
+p.adb:17:18: info: range check proved (CVC5: 2 VC)
 p.ads:10:06: warning: postcondition does not check the outcome of calling "Shadow_Effect" [-gnatw.t]
 p.ads:10:37: high: postcondition might fail, cannot prove False (e.g. when C = Red) [provers reached step limit before completing the proof]
 p.ads:12:13: info: implicit aspect Always_Terminates on "P" has been proved, subprogram will terminate
