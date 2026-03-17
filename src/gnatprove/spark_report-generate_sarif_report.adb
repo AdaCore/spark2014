@@ -164,13 +164,13 @@ is
    begin
       for File_Data of SPARK_Files loop
          begin
-            Handle_SPARK_File (File_Data.Dict);
+            Handle_SPARK_File (File_Data.Data);
          exception
             when others =>
                Ada.Text_IO.Put_Line
                  (Ada.Text_IO.Standard_Error,
                   "spark_report: error when processing file "
-                  & To_String (File_Data.Filename)
+                  & To_String (File_Data.File)
                   & ", skipping");
                Ada.Text_IO.Put_Line
                  (Ada.Text_IO.Standard_Error,

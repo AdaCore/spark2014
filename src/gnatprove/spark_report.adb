@@ -52,8 +52,8 @@ with VC_Kinds;              use VC_Kinds;
 package body Spark_Report is
 
    type SPARK_File_Data is record
-      Filename : Unbounded_String;
-      Dict     : JSON_Value;
+      File : Unbounded_String;
+      Data : JSON_Value;
    end record;
 
    package SPARK_File_Lists is new
@@ -1312,8 +1312,8 @@ package body Spark_Report is
             begin
                Parsed_Files.Append
                  (SPARK_File_Data'
-                    (Filename => To_Unbounded_String (Filename),
-                     Dict     => Read_File_Into_JSON (Filename)));
+                    (File => To_Unbounded_String (Filename),
+                     Data => Read_File_Into_JSON (Filename)));
             exception
                when others =>
                   Ada.Text_IO.Put_Line
@@ -1330,13 +1330,13 @@ package body Spark_Report is
 
       for File_Data of Parsed_Files loop
          begin
-            Handle_SPARK_File (To_String (File_Data.Filename), File_Data.Dict);
+            Handle_SPARK_File (To_String (File_Data.File), File_Data.Data);
          exception
             when others =>
                Ada.Text_IO.Put_Line
                  (Ada.Text_IO.Standard_Error,
                   "spark_report: error when processing file "
-                  & To_String (File_Data.Filename)
+                  & To_String (File_Data.File)
                   & ", skipping");
                Ada.Text_IO.Put_Line
                  (Ada.Text_IO.Standard_Error,
