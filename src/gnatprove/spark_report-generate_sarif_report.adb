@@ -33,7 +33,7 @@ with VSS.Text_Streams.File_Output;
 separate (Spark_Report)
 procedure Generate_SARIF_Report
   (Filename           : String;
-   SPARK_Files        : String_Lists.List;
+   SPARK_Files        : SPARK_File_Lists.List;
    Command_Line_Image : String;
    Error_Code         : Integer)
 is
@@ -55,8 +55,8 @@ is
    procedure Handle_SPARK_Files;
    --  Parse all .spark files
 
-   procedure Handle_SPARK_File (Fn : String);
-   --  Parse and extract all information from a single SPARK file.
+   procedure Handle_SPARK_File (Dict : JSON_Value);
+   --  Extract all information from a single already-parsed SPARK file
 
    procedure Handle_Items (V : JSON_Array);
 
@@ -141,9 +141,8 @@ is
    -- Handle_SPARK_File --
    -----------------------
 
-   procedure Handle_SPARK_File (Fn : String) is
+   procedure Handle_SPARK_File (Dict : JSON_Value) is
 
-      Dict      : constant JSON_Value := Read_File_Into_JSON (Fn);
       Has_Flow  : constant Boolean := Has_Field (Dict, "flow");
       Has_Proof : constant Boolean := Has_Field (Dict, "proof");
    begin
@@ -163,15 +162,15 @@ is
 
    procedure Handle_SPARK_Files is
    begin
-      for Filename of SPARK_Files loop
+      for File_Data of SPARK_Files loop
          begin
-            Handle_SPARK_File (Filename);
+            Handle_SPARK_File (File_Data.Dict);
          exception
             when others =>
                Ada.Text_IO.Put_Line
                  (Ada.Text_IO.Standard_Error,
                   "spark_report: error when processing file "
-                  & Filename
+                  & To_String (File_Data.Filename)
                   & ", skipping");
                Ada.Text_IO.Put_Line
                  (Ada.Text_IO.Standard_Error,

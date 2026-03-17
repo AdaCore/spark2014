@@ -25,6 +25,7 @@
 
 with Ada.Calendar;
 with Ada.Containers;
+with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Command_Line;
 with Ada.Directories;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
@@ -50,6 +51,14 @@ with VC_Kinds;              use VC_Kinds;
 
 package body Spark_Report is
 
+   type SPARK_File_Data is record
+      Filename : Unbounded_String;
+      Dict     : JSON_Value;
+   end record;
+
+   package SPARK_File_Lists is new
+     Ada.Containers.Doubly_Linked_Lists (SPARK_File_Data);
+
    End_Time : constant String :=
      GNAT.Calendar.Time_IO.Image
        (Date      => Ada.Calendar.Clock,
@@ -59,7 +68,7 @@ package body Spark_Report is
 
    procedure Generate_SARIF_Report
      (Filename           : String;
-      SPARK_Files        : String_Lists.List;
+      SPARK_Files        : SPARK_File_Lists.List;
       Command_Line_Image : String;
       Error_Code         : Integer);
 
@@ -95,11 +104,11 @@ package body Spark_Report is
       Colors             : constant Boolean :=
         Configuration.Output = GPO_Pretty_Color;
 
-      Existing_Files : String_Lists.List;
-      --  Subset of SPARK_Files that actually exist on disk
+      Parsed_Files : SPARK_File_Lists.List;
+      --  Subset of SPARK_Files that actually exist on disk, with parsed JSON
 
-      procedure Handle_SPARK_File (Fn : String);
-      --  Parse and extract all information from a single SPARK file
+      procedure Handle_SPARK_File (Fn : String; Dict : JSON_Value);
+      --  Extract all information from a single SPARK file
 
       procedure Handle_Flow_Items (V : JSON_Array; Unit : Unit_Type);
       --  Parse and extract all information from a flow result array
@@ -641,7 +650,7 @@ package body Spark_Report is
       -- Handle_SPARK_File --
       -----------------------
 
-      procedure Handle_SPARK_File (Fn : String) is
+      procedure Handle_SPARK_File (Fn : String; Dict : JSON_Value) is
 
          Basename : constant String := Ada.Directories.Base_Name (Fn);
          Unit     : constant Unit_Type := Mk_Unit (Basename);
@@ -669,7 +678,6 @@ package body Spark_Report is
 
          end Handle_SPARK_Status;
 
-         Dict        : constant JSON_Value := Read_File_Into_JSON (Fn);
          Has_Flow    : constant Boolean := Has_Field (Dict, "flow");
          Has_Assumes : constant Boolean := Has_Field (Dict, "pragma_assume");
          Has_Proof   : constant Boolean := Has_Field (Dict, "proof");
@@ -1296,24 +1304,39 @@ package body Spark_Report is
       --  Start of processing for Generate_Report
 
    begin
-      --  Build the list of .spark files that actually exist.
+      --  Build the list of .spark files that actually exist, parsing each one.
       --  ??? For now we silently skip missing .spark files; ideally the
       --  report should mention that some units were not analyzed.
       for Filename of SPARK_Files loop
          if Ada.Directories.Exists (Filename) then
-            Existing_Files.Append (Filename);
+            begin
+               Parsed_Files.Append
+                 (SPARK_File_Data'
+                    (Filename => To_Unbounded_String (Filename),
+                     Dict     => Read_File_Into_JSON (Filename)));
+            exception
+               when others =>
+                  Ada.Text_IO.Put_Line
+                    (Ada.Text_IO.Standard_Error,
+                     "spark_report: error when processing file "
+                     & Filename
+                     & ", skipping");
+                  Ada.Text_IO.Put_Line
+                    (Ada.Text_IO.Standard_Error,
+                     "spark_report: try cleaning proofs to remove this error");
+            end;
          end if;
       end loop;
 
-      for Filename of Existing_Files loop
+      for File_Data of Parsed_Files loop
          begin
-            Handle_SPARK_File (Filename);
+            Handle_SPARK_File (To_String (File_Data.Filename), File_Data.Dict);
          exception
             when others =>
                Ada.Text_IO.Put_Line
                  (Ada.Text_IO.Standard_Error,
                   "spark_report: error when processing file "
-                  & Filename
+                  & To_String (File_Data.Filename)
                   & ", skipping");
                Ada.Text_IO.Put_Line
                  (Ada.Text_IO.Standard_Error,
@@ -1443,7 +1466,7 @@ package body Spark_Report is
       Generate_SARIF_Report
         (Filename           =>
            Ada.Directories.Compose (Out_Dir, "gnatprove.sarif"),
-         SPARK_Files        => Existing_Files,
+         SPARK_Files        => Parsed_Files,
          Command_Line_Image => To_String (Command_Line_Image),
          Error_Code         => Error_Code);
 
@@ -1452,7 +1475,7 @@ package body Spark_Report is
 
    procedure Generate_SARIF_Report
      (Filename           : String;
-      SPARK_Files        : String_Lists.List;
+      SPARK_Files        : SPARK_File_Lists.List;
       Command_Line_Image : String;
       Error_Code         : Integer)
    is separate;
