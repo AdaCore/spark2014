@@ -498,13 +498,13 @@ Traversal Functions
 -------------------
 
 In |SPARK|, it is possible to write a function that computes and returns an
-observer or a borrower of an input data structure, provided the traversed data
-structure is itself an access type. This is called a `traversal function`.
+observer or a borrower of an input data structure. This is called a
+`traversal function`.
 
 Observing Traversal Functions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-An `observing` traversal function takes an access type as its first parameter
+An `observing` traversal function as at least one parameter
 and has as its return type an anonymous access-to-constant type. The value
 returned by the function should be a part of the first parameter.
 
@@ -561,10 +561,10 @@ Borrowing Traversal Functions
 
 It is also possible to return a mutable access inside a data structure using a
 `borrowing` traversal function. Just like observing traversal functions,
-their borrowing counterparts take as a first parameter an access type, but they
+their borrowing counterparts has at least one parameter, but they
 have as a return type an anonymous access-to-variable type. The function
-``Reference`` below is similar to ``Constant_Access`` except that both its
-parameter and its return type are mutable:
+``Reference`` below is similar to ``Constant_Access`` except that its
+return type is mutable:
 
 .. code-block:: ada
 
