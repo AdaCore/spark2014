@@ -485,10 +485,14 @@ package body CE_Utils is
       use Ada.Characters.Handling;
       Id : Entity_Id := First_Formal (E);
    begin
-      while To_Upper (Short_Name (Id)) /= To_Upper (Name) loop
+      while Present (Id) loop
+         if To_Upper (Short_Name (Id)) = To_Upper (Name) then
+            return Id;
+         end if;
          Id := Next_Formal (Id);
       end loop;
-      return Id;
+
+      raise Program_Error with "Formal parameter """ & Name & """ not found";
    end Get_Id_From_Name;
 
    ------------------------

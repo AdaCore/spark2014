@@ -1875,6 +1875,13 @@ package body CE_RAC is
             Bindings : constant Entity_Bindings.Map :=
               Gnattest_Values.Values.all (Gnattest_Values.Pos);
          begin
+            if not Bindings.Contains (E) then
+               raise RAC_Gnattest_Error
+                 with
+                   "No gnattest value for parameter """
+                   & Get_Name_String (Chars (E))
+                   & """";
+            end if;
             Res := Bindings.Element (E).all;
          end;
          Origin := From_Gnattest;
@@ -1894,11 +1901,9 @@ package body CE_RAC is
             Origin := From_Type_Default;
          else
             RAC_Incomplete
-              ("No counterexample value for program parameter "
+              ("No counterexample value for parameter """
                & Get_Name_String (Chars (E))
-               & "("
-               & Entity_Id'Image (E)
-               & ")");
+               & """");
          end if;
       end if;
 
