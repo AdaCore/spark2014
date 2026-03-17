@@ -23,7 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Directories;
 with SARIF.Types;             use SARIF.Types;
 with SARIF.Types.Outputs;
 with VSS.JSON.Push_Writers;
@@ -34,7 +33,7 @@ with VSS.Text_Streams.File_Output;
 separate (Spark_Report)
 procedure Generate_SARIF_Report
   (Filename           : String;
-   Obj_Dirs           : String_Lists.List;
+   SPARK_Files        : SPARK_File_Lists.List;
    Command_Line_Image : String;
    Error_Code         : Integer)
 is
@@ -56,11 +55,8 @@ is
    procedure Handle_SPARK_Files;
    --  Parse all .spark files
 
-   procedure Handle_SPARK_File (Fn : String);
-   --  Parse and extract all information from a single SPARK file.
-
-   procedure Handle_Source_Dir (Dir : String);
-   --  Parse all .spark files in the given directory
+   procedure Handle_SPARK_File (Dict : JSON_Value);
+   --  Extract all information from a single already-parsed SPARK file
 
    procedure Handle_Items (V : JSON_Array);
 
@@ -142,62 +138,11 @@ is
    end Handle_Items;
 
    -----------------------
-   -- Handle_Source_Dir --
-   -----------------------
-
-   procedure Handle_Source_Dir (Dir : String) is
-
-      procedure Local_Handle_SPARK_File
-        (Item : String; Index : Positive; Quit : in out Boolean);
-      --  Wrapper for Handle_SPARK_File
-
-      -----------------------------
-      -- Local_Handle_SPARK_File --
-      -----------------------------
-
-      procedure Local_Handle_SPARK_File
-        (Item : String; Index : Positive; Quit : in out Boolean) is
-      begin
-         pragma Unreferenced (Index);
-         pragma Unreferenced (Quit);
-         Handle_SPARK_File (Item);
-      exception
-         when others =>
-            Ada.Text_IO.Put_Line
-              (Ada.Text_IO.Standard_Error,
-               "spark_report: error when processing file "
-               & Item
-               & ", skipping");
-            Ada.Text_IO.Put_Line
-              (Ada.Text_IO.Standard_Error,
-               "spark_report: try cleaning proofs to remove this error");
-      end Local_Handle_SPARK_File;
-
-      procedure Iterate_SPARK is new
-        GNAT.Directory_Operations.Iteration.Wildcard_Iterator
-          (Action => Local_Handle_SPARK_File);
-
-      Save_Dir : constant String := Ada.Directories.Current_Directory;
-
-      --  Start of processing for Handle_Source_Dir
-
-   begin
-      Ada.Directories.Set_Directory (Dir);
-      Iterate_SPARK (Path => "*." & VC_Kinds.SPARK_Suffix);
-      Ada.Directories.Set_Directory (Save_Dir);
-   exception
-      when others =>
-         Ada.Directories.Set_Directory (Save_Dir);
-         raise;
-   end Handle_Source_Dir;
-
-   -----------------------
    -- Handle_SPARK_File --
    -----------------------
 
-   procedure Handle_SPARK_File (Fn : String) is
+   procedure Handle_SPARK_File (Dict : JSON_Value) is
 
-      Dict      : constant JSON_Value := Read_File_Into_JSON (Fn);
       Has_Flow  : constant Boolean := Has_Field (Dict, "flow");
       Has_Proof : constant Boolean := Has_Field (Dict, "proof");
    begin
@@ -217,8 +162,20 @@ is
 
    procedure Handle_SPARK_Files is
    begin
-      for Dir of Obj_Dirs loop
-         Handle_Source_Dir (Dir);
+      for File_Data of SPARK_Files loop
+         begin
+            Handle_SPARK_File (File_Data.Data);
+         exception
+            when others =>
+               Ada.Text_IO.Put_Line
+                 (Ada.Text_IO.Standard_Error,
+                  "spark_report: error when processing file "
+                  & To_String (File_Data.File)
+                  & ", skipping");
+               Ada.Text_IO.Put_Line
+                 (Ada.Text_IO.Standard_Error,
+                  "spark_report: try cleaning proofs to remove this error");
+         end;
       end loop;
    end Handle_SPARK_Files;
 

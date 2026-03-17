@@ -96,6 +96,10 @@ procedure Gnatprove with SPARK_Mode is
    --  success. This variable is changed to indicate some error situations that
    --  are not signalled via the GNATprove_Failure exception.
 
+   SPARK_Files : String_Lists.List;
+   --  List of .spark files produced by Flow_Analysis_And_Proof, passed to
+   --  Generate_SPARK_Report.
+
    procedure Call_Gprbuild
      (Project_File : String;
       Tree         : Project.Tree.Object;
@@ -357,7 +361,7 @@ procedure Gnatprove with SPARK_Mode is
             end if;
 
          when GS_Gnat2Why            =>
-            Flow_Analysis_And_Proof (Tree, Success);
+            Flow_Analysis_And_Proof (Tree, SPARK_Files, Success);
       end case;
 
       if not Success then
@@ -387,10 +391,11 @@ procedure Gnatprove with SPARK_Mode is
       Status  : Integer;
    begin
       Spark_Report.Generate_Report
-        (Tree       => Tree,
-         Out_Dir    => Obj_Dir,
-         Has_Errors => Errors,
-         Status     => Status);
+        (Tree        => Tree,
+         Out_Dir     => Obj_Dir,
+         SPARK_Files => SPARK_Files,
+         Has_Errors  => Errors,
+         Status      => Status);
 
       if not Quiet and then Configuration.Mode /= GPM_Check then
          Put_Line ("Summary logged in " & SPARK_Report_File (Obj_Dir));
