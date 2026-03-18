@@ -504,7 +504,7 @@ observer or a borrower of an input data structure. This is called a
 Observing Traversal Functions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-An `observing` traversal function as at least one parameter
+An `observing` traversal function has at least one parameter
 and has as its return type an anonymous access-to-constant type. The value
 returned by the function should be a part of the first parameter.
 
