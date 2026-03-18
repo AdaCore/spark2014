@@ -31,6 +31,7 @@ with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded;
 with Ada.Unchecked_Deallocation;
 with GNATCOLL.Tribooleans;
+with GNATCOLL.VFS;      use GNATCOLL.VFS;
 with Gnat2Why_Opts.Writing;
 with GNAT.Command_Line; use GNAT.Command_Line;
 with GNAT.Directory_Operations;
@@ -472,7 +473,7 @@ package body Configuration is
       elsif Exists_And_Is_Writable (TMP_Dir) then
          return TMP_Dir;
       else
-         return Artifact_Dir (Tree).Virtual_File.Display_Full_Name;
+         return Artifact_Dir (Tree).String_Value;
       end if;
    end Compute_Socket_Dir;
 
@@ -480,20 +481,15 @@ package body Configuration is
    -- Create_Dir_And_Parents --
    ----------------------------
 
-   procedure Create_Dir_And_Parents (Dir : Virtual_File) is
-      use Standard.Ada.Directories;
+   procedure Create_Dir_And_Parents (Dir : Path_Name.Object) is
    begin
-      if Exists (Dir.Display_Full_Name) then
+      if Dir.Exists then
          return;
       end if;
-      declare
-         Par : constant Virtual_File := Get_Parent (Dir);
-      begin
-         if Par /= No_File then
-            Create_Dir_And_Parents (Par);
-         end if;
-      end;
-      Create_Directory_Or_Exit (Dir.Display_Full_Name);
+      if not Dir.Is_Root_Dir then
+         Create_Dir_And_Parents (Dir.Containing_Directory);
+      end if;
+      Create_Directory_Or_Exit (Dir.String_Value);
    end Create_Dir_And_Parents;
 
    ------------------------------
@@ -1732,13 +1728,17 @@ package body Configuration is
 
       begin
          if not Null_Or_Empty_String (CL_Switches.Subdirs) then
-            Phase2_Subdir :=
-              Filesystem_String (CL_Switches.Subdirs.all) / Phase2_Subdir;
-
+            declare
+               New_Dir : constant String :=
+                 Ada.Directories.Compose
+                   (Configuration.CL_Switches.Subdirs.all,
+                    Phase2_Subdir.Constant_Reference);
+            begin
+               Phase2_Subdir.Replace_Element (New_Dir);
+            end;
          end if;
-
          Proj_Opt.Add_Switch
-           (Options.Subdirs, Phase2_Subdir.Display_Full_Name);
+           (Options.Subdirs, Phase2_Subdir.Constant_Reference);
          if not Null_Or_Empty_String (CL_Switches.Config) then
             Proj_Opt.Add_Switch (Options.Config, CL_Switches.Config.all);
          end if;
@@ -2992,11 +2992,7 @@ package body Configuration is
                else Ada.Directories.Compose (Socket_Dir, Socket_Base)));
          if Has_Coq_Prover then
             Prepare_Prover_Lib
-              (Tree
-                 .Root_Project
-                 .Object_Directory
-                 .Virtual_File
-                 .Display_Full_Name);
+              (Tree.Root_Project.Object_Directory.String_Value);
          end if;
       end;
       Sanitize_File_List (Tree);

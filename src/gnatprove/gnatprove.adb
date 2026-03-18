@@ -75,7 +75,6 @@ with GNAT.Strings;    use GNAT.Strings;
 with Gnatprove_Build; use Gnatprove_Build;
 with GNATCOLL.Tribooleans;
 with GNATCOLL.Utils;  use GNATCOLL.Utils;
-with GNATCOLL.VFS;    use GNATCOLL.VFS;
 with GPR2;            use GPR2;
 with GPR2.Path_Name;
 with GPR2.Project.Tree;
@@ -151,8 +150,7 @@ procedure Gnatprove with SPARK_Mode is
    is
       Exit_Code   : Integer;
       Obj_Dir     : constant String :=
-        Ada.Directories.Full_Name
-          (Artifact_Dir (Tree).Virtual_File.Display_Full_Name);
+        Ada.Directories.Full_Name (Artifact_Dir (Tree).String_Value);
       Output_Name : constant String :=
         Ada.Directories.Compose
           (Obj_Dir, "data_representation_generation", "log");
@@ -289,10 +287,11 @@ procedure Gnatprove with SPARK_Mode is
       Gprbuild_Success : Boolean;
    begin
       declare
-         Subd : constant Virtual_File :=
-           Phase2_Subdir / Data_Representation_Subdir;
+         Subd : constant String :=
+           Ada.Directories.Compose
+             (Phase2_Subdir.Constant_Reference, Data_Representation_Subdir);
       begin
-         Args.Append ("--subdirs=" & Subd.Display_Full_Name);
+         Args.Append ("--subdirs=" & Subd);
       end;
       Args.Append ("--no-object-check");
 
@@ -386,8 +385,7 @@ procedure Gnatprove with SPARK_Mode is
    procedure Generate_SPARK_Report
      (Tree : Project.Tree.Object; Errors : Boolean)
    is
-      Obj_Dir : constant String :=
-        Artifact_Dir (Tree).Virtual_File.Display_Full_Name;
+      Obj_Dir : constant String := Artifact_Dir (Tree).String_Value;
       Status  : Integer;
    begin
       Spark_Report.Generate_Report
@@ -518,7 +516,7 @@ begin
          & ": "
          & "could not determine working directory");
    end if;
-   Create_Dir_And_Parents (Artifact_Dir (Tree).Virtual_File);
+   Create_Dir_And_Parents (Artifact_Dir (Tree));
 
    for Cursor in
      Tree.Iterate
@@ -535,7 +533,7 @@ begin
          View : constant Project.View.Object := Project.Tree.Element (Cursor);
       begin
          if View.Kind in With_Object_Dir_Kind then
-            Create_Dir_And_Parents (View.Object_Directory.Virtual_File);
+            Create_Dir_And_Parents (View.Object_Directory);
          end if;
       end;
    end loop;

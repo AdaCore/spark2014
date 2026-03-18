@@ -25,6 +25,7 @@
 
 with Ada.Containers.Indefinite_Hashed_Sets;
 with Ada.Containers.Indefinite_Hashed_Maps;
+with Ada.Containers.Indefinite_Holders;
 with Ada.Directories;
 with Ada.Environment_Variables;
 with Ada.Strings.Hash;
@@ -39,7 +40,6 @@ with GPR2.Project.View;
 use GPR2;
 with Gnat2Why_Opts;    use Gnat2Why_Opts;
 with GNATCOLL.Utils;   use GNATCOLL.Utils;
-with GNATCOLL.VFS;     use GNATCOLL.VFS;
 with Named_Semaphores; use Named_Semaphores;
 with String_Utils;     use String_Utils;
 with VC_Kinds;         use VC_Kinds;
@@ -314,9 +314,13 @@ package Configuration is
 
    Default_Steps : constant Natural := 100;
 
-   Data_Representation_Subdir : constant Virtual_File :=
-     Create (+Data_Representation_Subdir_Name);
-   Phase2_Subdir              : Virtual_File := Create ("gnatprove");
+   Data_Representation_Subdir : constant String :=
+     Data_Representation_Subdir_Name;
+
+   package String_Holders is new Ada.Containers.Indefinite_Holders (String);
+
+   Phase2_Subdir : String_Holders.Holder :=
+     String_Holders.To_Holder ("gnatprove");
    --  The subdir names for the storage of intermediate files (ALI, why3 files,
    --  etc). This is the subdir of the object dir, which might be further
    --  modified via the --subdirs switch. Overall, phase 2 will store files in
@@ -344,7 +348,7 @@ package Configuration is
    --  Wrapper on Ada.Directories.Create_Directory that exits with a message
    --  instead of propagating an exception in case of error.
 
-   procedure Create_Dir_And_Parents (Dir : Virtual_File);
+   procedure Create_Dir_And_Parents (Dir : Path_Name.Object);
    --  Create the directory and necessary parent directories. Do nothing if the
    --  directory already exists. Abort in case of failure.
 

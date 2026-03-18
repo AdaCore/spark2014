@@ -1,7 +1,6 @@
 with Configuration;
 with Gnat2Why_Opts.Writing;
 with GNAT.OS_Lib;
-with GNATCOLL.VFS; use GNATCOLL.VFS;
 with GPR2.Build.Actions.Compile.Ada.Analysis;
 with GPR2.Build.Artifacts.Object_File;
 with GPR2.Message;
@@ -190,17 +189,16 @@ package body GPR2.Build.Actions.Compile.Ada.Global_Gen is
          --  In library projects, copy the generated .ali to the library dir
 
          declare
-            Lib_Dir : Virtual_File renames
-              View.Library_Ali_Directory.Virtual_File;
+            Lib_Dir : Path_Name.Object renames View.Library_Ali_Directory;
             Success : Boolean;
          begin
             if View.Kind not in With_Object_Dir_Kind
-              or else View.Object_Directory.Virtual_File /= Lib_Dir
+              or else View.Object_Directory /= Lib_Dir
             then
                Configuration.Create_Dir_And_Parents (Lib_Dir);
                Copy_File
-                 (Self.Dep_File.Path.Virtual_File.Display_Full_Name,
-                  Lib_Dir.Display_Full_Name,
+                 (Self.Dep_File.Path.String_Value,
+                  Lib_Dir.String_Value,
                   Success,
                   Mode => Overwrite);
 
