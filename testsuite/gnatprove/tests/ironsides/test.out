@@ -23,6 +23,7 @@ dns_table_pkg.adb:47:16: info: implicit aspect Always_Terminates on "Hash" has b
 dns_table_pkg.adb:57:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Val <= (I - 1)*Character'Pos (Character'Last) [provers reached step limit before completing the proof]
 dns_table_pkg.adb:59:19: medium: loop invariant might fail in first iteration, cannot prove Character'Pos (DomainName (Q)) <= 255 [possible fix: subprogram at line 47 should mention DomainName in a precondition] [provers reached step limit before completing the proof]
 dns_table_pkg.adb:61:24: medium: overflow check might fail, cannot prove lower bound for Val + Character'Pos (DomainName (I)) [reason for check: result of addition must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
+dns_table_pkg.adb:61:35: medium: range check might fail, cannot prove lower bound for Character'Pos (DomainName (I)) [possible fix: subprogram at line 47 should mention DomainName in a precondition] [provers reached step limit before completing the proof]
 dns_table_pkg.adb:63:22: info: division check proved (CVC5: 1 VC)
 dns_table_pkg.adb:72:10: info: initialization of "Bucket" proved
 dns_table_pkg.adb:73:10: info: initialization of "Lower_DomainName" proved
@@ -402,6 +403,7 @@ parser_utilities.adb:756:07: info: initialization of "TmpVal" proved
 parser_utilities.adb:760:11: info: range check proved (CVC5: 2 VC)
 parser_utilities.adb:762:13: info: loop invariant initialization proved (CVC5: 2 VC)
 parser_utilities.adb:762:13: info: loop invariant preservation proved (CVC5: 2 VC)
+parser_utilities.adb:765:31: info: range check proved (CVC5: 2 VC)
 parser_utilities.adb:765:55: info: range check proved (CVC5: 2 VC)
 parser_utilities.adb:766:22: info: overflow check proved (CVC5: 2 VC)
 parser_utilities.adb:766:30: info: overflow check proved (CVC5: 2 VC)
@@ -411,6 +413,7 @@ parser_utilities.adb:785:07: info: initialization of "TmpVal" proved
 parser_utilities.adb:789:11: info: range check proved (CVC5: 2 VC)
 parser_utilities.adb:791:13: info: loop invariant initialization proved (CVC5: 2 VC)
 parser_utilities.adb:791:13: info: loop invariant preservation proved (CVC5: 2 VC)
+parser_utilities.adb:793:31: info: range check proved (CVC5: 2 VC)
 parser_utilities.adb:793:55: info: range check proved (CVC5: 2 VC)
 parser_utilities.adb:794:22: info: overflow check proved (CVC5: 2 VC)
 parser_utilities.adb:794:30: info: overflow check proved (CVC5: 2 VC)
@@ -420,6 +423,7 @@ parser_utilities.adb:814:07: info: initialization of "TmpVal" proved
 parser_utilities.adb:818:11: info: range check proved (CVC5: 2 VC)
 parser_utilities.adb:820:13: info: loop invariant initialization proved (CVC5: 3 VC)
 parser_utilities.adb:820:13: info: loop invariant preservation proved (CVC5: 3 VC)
+parser_utilities.adb:823:31: info: range check proved (CVC5: 2 VC)
 parser_utilities.adb:824:22: info: overflow check proved (CVC5: 2 VC)
 parser_utilities.adb:824:30: info: overflow check proved (CVC5: 2 VC)
 parser_utilities.adb:831:46: info: range check proved (CVC5: 1 VC)
@@ -433,6 +437,7 @@ parser_utilities.adb:883:13: info: loop invariant initialization proved (CVC5: 4
 parser_utilities.adb:883:13: info: loop invariant preservation proved (CVC5: 4 VC)
 parser_utilities.adb:889:23: info: overflow check proved (CVC5: 2 VC)
 parser_utilities.adb:889:29: info: overflow check proved (CVC5: 2 VC)
+parser_utilities.adb:889:41: info: range check proved (CVC5: 2 VC)
 parser_utilities.adb:897:28: info: overflow check proved (CVC5: 2 VC)
 parser_utilities.adb:897:48: info: precondition proved (CVC5: 1 VC)
 parser_utilities.adb:898:27: info: overflow check proved (CVC5: 2 VC)
@@ -440,6 +445,7 @@ parser_utilities.adb:917:44: info: range check proved (CVC5: 1 VC)
 parser_utilities.adb:931:07: info: initialization of "Num" proved
 parser_utilities.adb:936:13: info: loop invariant initialization proved (CVC5: 6 VC)
 parser_utilities.adb:936:13: info: loop invariant preservation proved (CVC5: 6 VC)
+parser_utilities.adb:942:26: info: range check proved (CVC5: 2 VC)
 parser_utilities.adb:942:47: info: range check proved (CVC5: 2 VC)
 parser_utilities.adb:944:24: info: overflow check proved (CVC5: 2 VC)
 parser_utilities.adb:944:31: info: overflow check proved (CVC5: 2 VC)
@@ -497,15 +503,19 @@ parser_utilities.adb:1143:16: info: implicit aspect Always_Terminates on "Separa
 parser_utilities.adb:1171:31: info: loop variant proved (CVC5: 1 VC)
 parser_utilities.adb:1173:13: info: loop invariant initialization proved (CVC5: 3 VC)
 parser_utilities.adb:1173:13: info: loop invariant preservation proved (CVC5: 3 VC)
+parser_utilities.adb:1178:37: info: range check proved (CVC5: 1 VC)
 parser_utilities.adb:1179:50: info: overflow check proved (CVC5: 2 VC)
+parser_utilities.adb:1182:25: info: range check proved (CVC5: 1 VC)
 parser_utilities.adb:1184:50: info: overflow check proved (CVC5: 2 VC)
 parser_utilities.adb:1186:44: info: overflow check proved (CVC5: 2 VC)
 parser_utilities.adb:1187:34: info: index check proved (CVC5: 2 VC)
 parser_utilities.adb:1188:21: info: index check proved (CVC5: 2 VC)
 parser_utilities.adb:1192:21: info: range check proved (CVC5: 2 VC)
+parser_utilities.adb:1199:37: info: range check proved (CVC5: 1 VC)
 parser_utilities.adb:1200:50: info: overflow check proved (CVC5: 2 VC)
 parser_utilities.adb:1201:35: info: index check proved (CVC5: 2 VC)
 parser_utilities.adb:1201:35: info: overflow check proved (CVC5: 2 VC)
+parser_utilities.adb:1204:25: info: range check proved (CVC5: 1 VC)
 parser_utilities.adb:1206:50: info: overflow check proved (CVC5: 2 VC)
 parser_utilities.adb:1207:35: info: index check proved (CVC5: 2 VC)
 parser_utilities.adb:1207:35: info: overflow check proved (CVC5: 2 VC)
@@ -520,10 +530,12 @@ parser_utilities.adb:1259:10: info: initialization of "RetVal" proved
 parser_utilities.adb:1285:31: info: loop variant proved (CVC5: 1 VC)
 parser_utilities.adb:1287:13: info: loop invariant initialization proved (CVC5: 3 VC)
 parser_utilities.adb:1287:13: info: loop invariant preservation proved (CVC5: 3 VC)
+parser_utilities.adb:1292:36: info: range check proved (CVC5: 1 VC)
 parser_utilities.adb:1293:48: info: overflow check proved (CVC5: 2 VC)
 parser_utilities.adb:1295:44: info: overflow check proved (CVC5: 2 VC)
 parser_utilities.adb:1296:34: info: index check proved (CVC5: 2 VC)
 parser_utilities.adb:1301:21: info: range check proved (CVC5: 2 VC)
+parser_utilities.adb:1309:36: info: range check proved (CVC5: 1 VC)
 parser_utilities.adb:1310:48: info: overflow check proved (CVC5: 2 VC)
 parser_utilities.ads:42:09: info: flow dependencies proved
 parser_utilities.ads:48:09: info: flow dependencies proved
@@ -1037,6 +1049,7 @@ zone_file_parser.adb:1042:23: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:1053:14: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:1055:16: info: loop invariant initialization proved (CVC5: 3 VC)
 zone_file_parser.adb:1056:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove TmpVal >= 0 [provers reached step limit before completing the proof]
+zone_file_parser.adb:1058:34: info: range check proved (CVC5: 1 VC)
 zone_file_parser.adb:1059:26: info: overflow check proved (CVC5: 2 VC)
 zone_file_parser.adb:1059:35: medium: overflow check might fail, cannot prove lower bound for 10 * TmpVal + Long_Long_Integer (DigitVal) [reason for check: result of addition must fit in a 64-bits machine integer] [possible fix: loop invariant at line 1054 should mention DigitVal] [provers reached step limit before completing the proof]
 zone_file_parser.adb:1067:59: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [provers reached step limit before completing the proof]
@@ -1057,6 +1070,7 @@ zone_file_parser.adb:1118:26: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:1127:17: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:1129:19: info: loop invariant initialization proved (CVC5: 2 VC)
 zone_file_parser.adb:1129:19: info: loop invariant preservation proved (CVC5: 2 VC)
+zone_file_parser.adb:1132:27: info: range check proved (CVC5: 1 VC)
 zone_file_parser.adb:1145:36: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:1146:35: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:1151:54: info: range check proved (CVC5: 2 VC)
@@ -1088,16 +1102,19 @@ zone_file_parser.adb:1233:26: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:1242:17: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:1244:19: info: loop invariant initialization proved (CVC5: 2 VC)
 zone_file_parser.adb:1244:19: info: loop invariant preservation proved (CVC5: 2 VC)
+zone_file_parser.adb:1246:37: info: range check proved (CVC5: 1 VC)
 zone_file_parser.adb:1261:36: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:1262:35: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:1271:26: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:1273:28: info: loop invariant initialization proved (CVC5: 2 VC)
 zone_file_parser.adb:1273:28: info: loop invariant preservation proved (CVC5: 2 VC)
+zone_file_parser.adb:1276:36: medium: range check might fail [possible fix: subprogram at zone_file_parser.ads:125 should mention ZoneFileLine in a precondition] [provers reached step limit before completing the proof]
 zone_file_parser.adb:1292:45: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:1293:44: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:1302:35: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:1304:37: info: loop invariant initialization proved (CVC5: 2 VC)
 zone_file_parser.adb:1304:37: info: loop invariant preservation proved (CVC5: 2 VC)
+zone_file_parser.adb:1308:45: medium: range check might fail [possible fix: subprogram at zone_file_parser.ads:125 should mention ZoneFileLine in a precondition] [provers reached step limit before completing the proof]
 zone_file_parser.adb:1326:54: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:1327:53: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:1333:72: info: range check proved (CVC5: 2 VC)
@@ -1105,7 +1122,7 @@ zone_file_parser.adb:1348:44: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:1352:46: info: loop invariant initialization proved (CVC5: 3 VC)
 zone_file_parser.adb:1352:46: info: loop invariant preservation proved (CVC5: 3 VC)
 zone_file_parser.adb:1356:43: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
-zone_file_parser.adb:1356:61: info: overflow check proved (CVC5: 2 VC)
+zone_file_parser.adb:1356:61: medium: overflow check might fail, cannot prove lower bound for (I + 1) [reason for check: result of addition must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
 zone_file_parser.adb:1356:66: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [provers reached step limit before completing the proof]
 zone_file_parser.adb:1356:66: medium: overflow check might fail, cannot prove lower bound for (I + 1) - BegIdx [reason for check: result of subtraction must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
 zone_file_parser.adb:1359:44: info: range check proved (CVC5: 2 VC)
