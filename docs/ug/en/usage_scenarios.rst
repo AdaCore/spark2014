@@ -1508,7 +1508,7 @@ Restrictions (No_Secondary_Stack);``.
 To protect against heap exhaustion, a possible way is to encapsulate
 allocations in a wrapper that handles the possible ``Storage_Error`` exception
 and signals the failure of the allocation to the calling environment via a
-return type.  The verification of this wrapper cannot be effectively done with
+result type.  The verification of this wrapper cannot be effectively done with
 SPARK as the handler would be considered unreachable. The
 following example, inspired by `this Stackoverflow post
 <https://stackoverflow.com/questions/67806008/how-to-check-for-storage-error-in-spark-ada>`_

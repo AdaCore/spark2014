@@ -108,7 +108,7 @@ Here are overviews and examples of each kind of access type.
   :ref:`Borrowing` the designated value of the access type, granting temporary
   access to all or part of the object, such as recursive data structures,
   composite types, or formal containers. These access types may appear as formal
-  parameters of subprograms and as the return type of :ref:`Traversal
+  parameters of subprograms and as the result type of :ref:`Traversal
   Functions`, but they cannot be stored inside of composite types or converted
   to a named access-to-variable type.
 
@@ -140,7 +140,7 @@ Here are overviews and examples of each kind of access type.
   :ref:`Observing` the value of the access type, granting a temporary view of
   all or part of the object, such as recursive data structures, composite types,
   or formal containers. These access types may appear as formal parameters of
-  subprograms and as the return type of :ref:`Traversal Functions`, but they
+  subprograms and as the result type of :ref:`Traversal Functions`, but they
   cannot be stored inside of composite types or converted to a named
   access-to-constant type.
 
@@ -505,7 +505,7 @@ Observing Traversal Functions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 An `observing` traversal function has at least one parameter
-and has as its return type an anonymous access-to-constant type. The value
+and has as its result type an anonymous access-to-constant type. The value
 returned by the function should be a part of the first parameter.
 
 As an example, we can write a function which returns a
@@ -562,9 +562,9 @@ Borrowing Traversal Functions
 It is also possible to return a mutable access inside a data structure using a
 `borrowing` traversal function. Just like observing traversal functions,
 their borrowing counterparts has at least one parameter, but they
-have as a return type an anonymous access-to-variable type. The function
+have as a result type an anonymous access-to-variable type. The function
 ``Reference`` below is similar to ``Constant_Access`` except that its
-return type is mutable:
+result type is mutable:
 
 .. code-block:: ada
 

@@ -772,7 +772,7 @@ the calling subprogram.
 Writing Contracts on Main Subprograms
 -------------------------------------
 
-Parameterless procedures and parameterless functions with Integer return type,
+Parameterless procedures and parameterless functions with Integer result type,
 that are in their own compilation unit, are identified by |GNATprove| as
 potential main subprograms. These subprograms are special because they can
 serve as an entry point to the program. If a main subprogram has a
