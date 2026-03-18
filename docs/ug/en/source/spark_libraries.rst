@@ -908,6 +908,19 @@ Currently, the higher-order function library provides the following functions:
   elements of a one-dimensional or two-dimensional array, and ``Count`` and
   ``Count_2`` the number of elements with a given ``Choose`` property.
 
+* Functions for reasoning about linked structures in an array in
+  ``spark-higher_order-reachability.ads``. They work on arrays that store
+  one or several linked structures using a ``Next`` function: for each cell in
+  the array, the index of the next cell is returned by ``Next``. The
+  ``Reachability`` package defines three properties over these structures, along
+  with some lemmas that can be used to reason over them. The function
+  ``Is_Acyclic`` returns True if the linked structure starting at a given index
+  in an array does not contain cycles. The function ``Reachable_Set`` returns
+  the functional set of all the indices in the array that can be reached from
+  a given index by calling ``Next`` repeatedly. Finally, the  function ``Model``
+  computes a functional sequence that stores the indices reachable from a given
+  index ``X`` in the order in which they occur, starting with ``X`` itself.
+
 .. note::
 
    Unlike the :ref:`SPARK Lemma Library`, these generic functions are
