@@ -2243,7 +2243,7 @@ Representative Theory for Profiles
 
 A module is generated for every profile of subprograms designated by an access
 type, a profile being an ordered sequence of subtypes for parameters with their
-mode, as well as the return type for functions. It is shared between all
+mode, as well as the result type for functions. It is shared between all
 access-to-subprogram types with the same profile. This module is named using the
 following schema (see ``Get_Profile_Theory_Name``)
 ``Profile__((In|Out|InOut)__<Formal_Type_Full_Name>__)*Return__<Return_Type_Full_Name>``.
@@ -4056,8 +4056,8 @@ Implicit Contracts
 
 It is often the case that a only part of the Ada typing information is
 available in the Why types of the subprogram (both parameter types and
-return type). For example, the return type of both Why functions f is
-int, that is, mathematical integers, although the return type of the
+result type). For example, the result type of both Why functions f is
+int, that is, mathematical integers, although the result type of the
 Ada function F is Integer. Additional information for types are added
 in a dynamic way, by enriching the postcondition for the result type
 or for parameters which are references, and by constraining the

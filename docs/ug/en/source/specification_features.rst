@@ -476,7 +476,7 @@ Copying an invalid scalar object is a bounded error in Ada. As a result, the
 validity status of a scalar object or call is in general not propagated and a
 validity check is emitted. As an exception, no validity checks are emitted for
 function calls occuring in declarations or assignments into potentially invalid
-scalar objects if the function is imported and its return type is the expected
+scalar objects if the function is imported and its result type is the expected
 subtype. As an example, no validity check is emitted on the following call:
 
 .. code-block:: ada
