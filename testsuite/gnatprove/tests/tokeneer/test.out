@@ -214,6 +214,8 @@ auditlog.adb:463:22: info: index check proved
 auditlog.adb:463:61: info: index check proved
 auditlog.adb:463:68: info: length check proved
 auditlog.adb:464:22: info: length check proved
+auditlog.adb:494:56: info: range check proved
+auditlog.adb:503:56: info: range check proved
 auditlog.adb:511:35: info: precondition proved
 auditlog.adb:564:11: info: data dependencies proved
 auditlog.adb:568:11: info: flow dependencies proved

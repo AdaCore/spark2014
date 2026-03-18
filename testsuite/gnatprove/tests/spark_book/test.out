@@ -1468,6 +1468,9 @@ very_longs-divide.adb:240:61: info: index check proved (CVC5: 2 VC)
 very_longs.adb:33:54: info: initialization of "Digit" proved
 very_longs.adb:33:73: info: initialization of "Valid" proved
 very_longs.adb:34:11: info: flow dependencies proved
+very_longs.adb:38:48: info: range check proved (CVC5: 1 VC)
+very_longs.adb:39:48: info: range check proved (CVC5: 1 VC)
+very_longs.adb:40:48: info: range check proved (CVC5: 1 VC)
 very_longs.adb:50:28: info: initialization of "Result" proved
 very_longs.adb:50:52: info: initialization of "Carry" proved
 very_longs.adb:52:08: info: flow dependencies proved
