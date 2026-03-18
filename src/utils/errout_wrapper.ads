@@ -279,6 +279,12 @@ package Errout_Wrapper is
    function Escape (S : String) return String;
    --  Escape the special characters # and & in the error message
 
+   procedure Add_Frontend_Messages;
+   --  Snapshot all frontend messages that Errout has accumulated before the
+   --  gnat2why backend starts, and add them to Warnings_Errors so that they
+   --  appear in SARIF output. Must be called before any backend message is
+   --  emitted.
+
    function Compilation_Errors return Boolean
    renames Errout.Compilation_Errors;
 

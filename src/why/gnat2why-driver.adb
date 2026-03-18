@@ -742,6 +742,10 @@ package body Gnat2Why.Driver is
    begin
       Timing_Start (Timing);
 
+      --  Capture any frontend messages that Errout accumulated before the
+      --  backend started, so they appear in SARIF output.
+      Add_Frontend_Messages;
+
       if Is_Generic_Unit (E) then
 
          --  We do nothing for generic units currently. If this get revised
