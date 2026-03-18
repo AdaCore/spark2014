@@ -66,23 +66,22 @@
 with Ada.Command_Line;
 with Ada.Directories;
 with Ada.Environment_Variables;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Ada.Exceptions;        use Ada.Exceptions;
-with Ada.Text_IO;           use Ada.Text_IO;
-with Call;                  use Call;
-with Configuration;         use Configuration;
+with Ada.Exceptions;  use Ada.Exceptions;
+with Ada.Text_IO;     use Ada.Text_IO;
+with Call;            use Call;
+with Configuration;   use Configuration;
 with GNAT.OS_Lib;
-with GNAT.Strings;          use GNAT.Strings;
-with Gnatprove_Build;       use Gnatprove_Build;
+with GNAT.Strings;    use GNAT.Strings;
+with Gnatprove_Build; use Gnatprove_Build;
 with GNATCOLL.Tribooleans;
-with GNATCOLL.Utils;        use GNATCOLL.Utils;
-with GPR2;                  use GPR2;
+with GNATCOLL.Utils;  use GNATCOLL.Utils;
+with GPR2;            use GPR2;
 with GPR2.Path_Name;
 with GPR2.Project.Tree;
 with GPR2.Project.View;
 with Spark_Report;
-with String_Utils;          use String_Utils;
-with VC_Kinds;              use VC_Kinds;
+with String_Utils;    use String_Utils;
+with VC_Kinds;        use VC_Kinds;
 
 procedure Gnatprove with SPARK_Mode is
 
@@ -290,7 +289,7 @@ procedure Gnatprove with SPARK_Mode is
       declare
          Subd : constant String :=
            Ada.Directories.Compose
-             (To_String (Phase2_Subdir), Data_Representation_Subdir);
+             (Phase2_Subdir.Constant_Reference, Data_Representation_Subdir);
       begin
          Args.Append ("--subdirs=" & Subd);
       end;

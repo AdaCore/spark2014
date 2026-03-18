@@ -25,10 +25,10 @@
 
 with Ada.Containers.Indefinite_Hashed_Sets;
 with Ada.Containers.Indefinite_Hashed_Maps;
+with Ada.Containers.Indefinite_Holders;
 with Ada.Directories;
 with Ada.Environment_Variables;
 with Ada.Strings.Hash;
-with Ada.Strings.Unbounded;
 with Ada.Text_IO;
 with Call;             use Call;
 with GNAT.Strings;
@@ -316,8 +316,11 @@ package Configuration is
 
    Data_Representation_Subdir : constant String :=
      Data_Representation_Subdir_Name;
-   Phase2_Subdir              : Ada.Strings.Unbounded.Unbounded_String :=
-     Ada.Strings.Unbounded.To_Unbounded_String ("gnatprove");
+
+   package String_Holders is new Ada.Containers.Indefinite_Holders (String);
+
+   Phase2_Subdir : String_Holders.Holder :=
+     String_Holders.To_Holder ("gnatprove");
    --  The subdir names for the storage of intermediate files (ALI, why3 files,
    --  etc). This is the subdir of the object dir, which might be further
    --  modified via the --subdirs switch. Overall, phase 2 will store files in

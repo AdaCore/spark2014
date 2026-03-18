@@ -98,13 +98,13 @@ package body Gnatprove_Build is
                declare
                   Lib_Dir    : Path_Name.Object renames
                     Prj.Library_Ali_Directory;
+                  Phase_2    : String renames
+                    Configuration.Phase2_Subdir.Constant_Reference;
                   Target_Dir : constant Path_Name.Object :=
                     (if Prj.Is_Externally_Built
                      then
                        Lib_Dir.Compose
-                         (Filename_Type
-                            (To_String (Configuration.Phase2_Subdir)),
-                          Directory => True)
+                         (Filename_Type (Phase_2), Directory => True)
                      else Lib_Dir);
                begin
                   Put_Line (File, Target_Dir.String_Value);

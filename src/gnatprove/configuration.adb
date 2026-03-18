@@ -28,6 +28,7 @@ with Ada.Command_Line;
 with Ada.Containers;    use Ada.Containers;
 with Ada.IO_Exceptions;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
+with Ada.Strings.Unbounded;
 with Ada.Unchecked_Deallocation;
 with GNATCOLL.Tribooleans;
 with GNATCOLL.VFS;      use GNATCOLL.VFS;
@@ -1726,19 +1727,18 @@ package body Configuration is
       procedure Init (Tree : out Project.Tree.Object) is
 
       begin
-         declare
-            use Ada.Strings.Unbounded;
-         begin
-            if not Null_Or_Empty_String (CL_Switches.Subdirs) then
-               Phase2_Subdir :=
-                 To_Unbounded_String
-                   (Ada.Directories.Compose
-                      (Configuration.CL_Switches.Subdirs.all,
-                       To_String (Phase2_Subdir)));
-            end if;
-            Proj_Opt.Add_Switch (Options.Subdirs, To_String (Phase2_Subdir));
-         end;
-
+         if not Null_Or_Empty_String (CL_Switches.Subdirs) then
+            declare
+               New_Dir : constant String :=
+                 Ada.Directories.Compose
+                   (Configuration.CL_Switches.Subdirs.all,
+                    Phase2_Subdir.Constant_Reference);
+            begin
+               Phase2_Subdir.Replace_Element (New_Dir);
+            end;
+         end if;
+         Proj_Opt.Add_Switch
+           (Options.Subdirs, Phase2_Subdir.Constant_Reference);
          if not Null_Or_Empty_String (CL_Switches.Config) then
             Proj_Opt.Add_Switch (Options.Config, CL_Switches.Config.all);
          end if;
