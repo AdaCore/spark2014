@@ -290,6 +290,21 @@ sparklib:
     GENERIC_ANOD_CI_OPTIONS: "--add-dep eng/spark/sparklib"
     ANOD_TARGET: test_sparklib
     ANOD_QUALIFIERS: $ANOD_BUILD_QUALIFIERS,large
+  script:
+    - *setup_repos
+    - *deploy_package
+    - anod run $ANOD_TARGET
+    - testsuite_reports
+    - ANOD_BUILDSPACE=`anod eval sparklib build_space_name --primitive test --qualifier=$ANOD_QUALIFIERS`
+    - mv $ANOD_DEFAULT_SANDBOX_DIR/x86_64-linux/$ANOD_BUILDSPACE/results/new/ $CI_PROJECT_DIR/testsuite-results
+  artifacts:
+     when: always
+     paths:
+        - xunit-*.xml
+        - __results*
+        - testsuite-results
+     reports:
+       junit: xunit-*.xml
 
 ################
 # Build of Doc #
