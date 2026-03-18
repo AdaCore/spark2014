@@ -2054,3 +2054,77 @@ through copies either by making the type limited or by using an
 :ref:`Annotation for Enforcing Ownership Checking on a Private Type`, unless
 memory management is taken care off internally - through controlled types for
 example.
+
+Mathematical Induction
+----------------------
+
+Induction is a method for proving a property for any value of a natural number
+``N``. It works in two steps: the base step requires proving that the property
+holds when ``N`` is 0, and the inductive step asks for the proof of the
+property for any natural number ``N+1``, knowing that it holds for ``N``.
+Together, these two steps ensure that the property holds for any value of ``N``.
+This kind of reasoning is often useful when dealing with properties defined in a
+recursive way, such as the sum of the elements of an array for example, and
+pointer-based data structures, like lists or trees. As an example, we can
+consider a property stating that an array is sorted by comparing each element
+with the following one. Using this property, we want to check that, for some
+indices ``I`` and ``J`` in a sorted array A, if ``I`` is less than ``J`` then
+``A (I)`` is less than ``A (J)``:
+
+.. code-block:: ada
+
+   type Int_Array is array (Positive range <>) of Integer;
+
+   function Is_Sorted (A : Int_Array) return Boolean is
+     (for all I in A'Range =>
+        (if I < A'Last then A (I) <= A (I + 1)));
+
+   procedure Test (A : Int_Array; I, J : Positive) with
+     Pre => I in A'Range and J in A'Range and Is_Sorted (A);
+
+   procedure Test (A : Int_Array; I, J : Positive) is
+   begin
+      pragma Assert (if I <= J then A (I) <= A (J));
+   end Test;
+
+Proving the assertion requires reasoning by induction on the number of elements
+between ``I`` and ``J``. If ``I`` is equal to ``J`` the property holds, because
+``A (I)`` is ``A (J)``, this is the base step. For the induction step, we assume
+that the property holds for any two indexes separated by ``N`` elements, and we
+want to prove it for ``I`` and ``J`` separated by ``N+1`` elements. We can
+consider ``I+1`` and ``J``. Since they are separated by ``N`` elements, the
+property holds, and ``A (I + 1)`` is less than ``A (J)``. Using the definition
+of ``Is_Sorted``, we know that ``A (I)`` is less than ``A (I + 1)``, so we
+can deduce that ``A (I)`` is less than ``A (J)``. We have proved by induction
+over the number of elements between ``I`` and ``J`` that the property holds for
+any value of ``I`` and ``J``.
+
+Unfortunately, the automated solvers used as the backend of |GNATprove| mostly
+cannot perform induction. For example, they are not able to prove the assertion
+in procedure ``Test`` above. Recognizing that a particular check requires inductive
+reasoning is not always easy, all the more since they often seem obvious to a
+human reader. Most often, it becomes apparent when attempting to debug a failed
+proof attempt by inserting intermediate assertions in the code: there is no way
+to split an inductive reasoning into intermediate deduction steps.
+
+It is sometimes possible to reformulate the specification of a program that
+we want to prove so that it does not require inductive reasoning as much or even
+at all. For example, we could reformulate ``Is_Sorted`` to compare any two
+elements in the array instead of two consecutive ones. This would have the
+effect of making it easy to prove the assertion above, as it would no longer
+require induction. It is possible that the inductive reasoning would then be
+required elsewhere (to check that an array is sorted, for example), but it might
+still be worth it if it occurs less often:
+
+.. code-block:: ada
+
+   function Is_Sorted (A : Int_Array) return Boolean is
+     (for all I in A'Range =>
+        (for all J in I .. A'Last => A (I) <= A (J)));
+
+If the problem cannot be reformulated, it is possible to help |GNATprove|
+perform induction using ghost code (see :ref:`Performing Induction`). This can
+be done either with a loop or through a recursive ghost subprogram. For the
+most common recursive properties over arrays, such as counting or summation,
+some useful lemmas are available in the :ref:`Higher Order Function Library` of
+|SPARK|.

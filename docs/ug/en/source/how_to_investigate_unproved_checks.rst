@@ -163,6 +163,10 @@ Another common limitation of automatic provers is that they don't handle
 non-linear arithmetic well. For example, they might fail to prove simple checks
 involving multiplication, division, modulo or exponentiation.
 
+Automatic provers are also not able to prove checks if they require
+:ref:`Mathematical Induction`. It happens for example when reasoning about
+recursive properties, like the sum of the elements of an array.
+
 In that case, a user may either:
 
 * add in the code a call to a lemma from the SPARK lemma library (see details
