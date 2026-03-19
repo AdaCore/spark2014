@@ -312,333 +312,333 @@ container_wrapper.gpr:3:09: warning: project name 'container_wrapper' expected
  info: Container_Aggregates annotation proved, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-functional-maps.ads:105:06
       + when establishing invariant on "Has_Key" at spark-containers-functional-maps.ads:131, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
-      + after a call to "Empty_Map" at spark-containers-functional-maps.ads:297, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+      + after a call to "Empty_Map" at spark-containers-functional-maps.ads:295, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 
  info: Container_Aggregates annotation proved, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-functional-maps.ads:105:06
       + when reestablishing invariant on "Get" at spark-containers-functional-maps.ads:148, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
-      + after a call to "Aggr_Include" at spark-containers-functional-maps.ads:612, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+      + after a call to "Aggr_Include" at spark-containers-functional-maps.ads:610, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 
  info: Container_Aggregates annotation proved, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-functional-maps.ads:105:06
       + when reestablishing invariant on "Has_Key" at spark-containers-functional-maps.ads:131, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
-      + after a call to "Aggr_Include" at spark-containers-functional-maps.ads:612, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+      + after a call to "Aggr_Include" at spark-containers-functional-maps.ads:610, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 
  info: Container_Aggregates annotation proved, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-functional-maps.ads:105:06
       + when establishing invariant on "Length" at spark-containers-functional-maps.ads:178, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
-      + after a call to "Empty_Map" at spark-containers-functional-maps.ads:297, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+      + after a call to "Empty_Map" at spark-containers-functional-maps.ads:295, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 
  info: Container_Aggregates annotation proved, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-functional-maps.ads:105:06
       + when reestablishing invariant on "Length" at spark-containers-functional-maps.ads:178, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
-      + after a call to "Aggr_Include" at spark-containers-functional-maps.ads:612, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+      + after a call to "Aggr_Include" at spark-containers-functional-maps.ads:610, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 
  info: precondition proved, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-functional-maps.ads:131:13
       + during checks for quantification at spark-containers-functional-maps.ads:95, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 
  info: precondition proved, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
---> spark-containers-functional-maps.ads:409:13
-      + during checks for quantification at spark-containers-functional-maps.ads:370, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+--> spark-containers-functional-maps.ads:407:13
+      + during checks for quantification at spark-containers-functional-maps.ads:368, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 
  info: precondition proved, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
---> spark-containers-functional-maps.ads:419:13
-      + during checks for quantification at spark-containers-functional-maps.ads:370, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+--> spark-containers-functional-maps.ads:417:13
+      + during checks for quantification at spark-containers-functional-maps.ads:368, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 
  info: precondition proved, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
---> spark-containers-functional-maps.ads:428:13
-      + during checks for quantification at spark-containers-functional-maps.ads:370, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+--> spark-containers-functional-maps.ads:426:13
+      + during checks for quantification at spark-containers-functional-maps.ads:368, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 
  info: precondition proved, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
---> spark-containers-functional-maps.ads:442:13
-      + during checks for quantification at spark-containers-functional-maps.ads:370, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+--> spark-containers-functional-maps.ads:440:13
+      + during checks for quantification at spark-containers-functional-maps.ads:368, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 
  info: implicit aspect Always_Terminates on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
---> spark-containers-functional-maps.ads:529:13
+--> spark-containers-functional-maps.ads:527:13
 
  info: implicit aspect Always_Terminates on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
---> spark-containers-functional-maps.ads:531:13
+--> spark-containers-functional-maps.ads:529:13
 
  info: precondition proved, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
---> spark-containers-functional-maps.ads:581:13
+--> spark-containers-functional-maps.ads:579:13
       + during checks for quantification at spark-containers-functional-maps.ads:95, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 
  info: precondition proved, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
---> spark-containers-functional-maps.ads:584:13
+--> spark-containers-functional-maps.ads:582:13
       + during checks for quantification at spark-containers-functional-maps.ads:95, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 
  info: precondition proved, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
---> spark-containers-functional-maps.ads:588:13
+--> spark-containers-functional-maps.ads:586:13
       + during checks for quantification at spark-containers-functional-maps.ads:95, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 
  info: precondition proved, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
---> spark-containers-functional-maps.ads:594:13
+--> spark-containers-functional-maps.ads:592:13
       + during checks for quantification at spark-containers-functional-maps.ads:95, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 
  info: implicit aspect Always_Terminates on "Aggr_Eq_Keys" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
---> spark-containers-functional-maps.ads:604:13
+--> spark-containers-functional-maps.ads:602:13
 
  info: data dependencies proved, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
---> spark-containers-functional-maps.ads:607:06
+--> spark-containers-functional-maps.ads:605:06
 
  info: precondition proved, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
---> spark-containers-functional-maps.ads:616:39
+--> spark-containers-functional-maps.ads:614:39
       + during checks for container aggregates at spark-containers-functional-maps.ads:105, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
-
- info: aspect Always_Terminates on "Param_Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:436, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
---> spark-containers-parameter_checks.ads:39:19
-
- info: aspect Always_Terminates on "Param_Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:544, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
---> spark-containers-parameter_checks.ads:39:19
-
- info: aspect Always_Terminates on "Param_Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:553, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
---> spark-containers-parameter_checks.ads:39:19
 
  info: aspect Always_Terminates on "Param_Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:131, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:39:19
 
- info: aspect Always_Terminates on "Param_Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:436, in instantiation at my_integer_sets.ads:9
+ info: aspect Always_Terminates on "Param_Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:434, in instantiation at my_integer_sets.ads:9
 --> spark-containers-parameter_checks.ads:39:19
 
- info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
---> spark-containers-parameter_checks.ads:45:17
+ info: aspect Always_Terminates on "Param_Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+--> spark-containers-parameter_checks.ads:39:19
 
- info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:436, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
---> spark-containers-parameter_checks.ads:45:17
+ info: aspect Always_Terminates on "Param_Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:434, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
+--> spark-containers-parameter_checks.ads:39:19
 
- info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:544, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
---> spark-containers-parameter_checks.ads:45:17
+ info: aspect Always_Terminates on "Param_Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+--> spark-containers-parameter_checks.ads:39:19
 
- info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:553, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+ info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:45:17
 
  info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:131, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:45:17
 
- info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:436, in instantiation at my_integer_sets.ads:9
+ info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:434, in instantiation at my_integer_sets.ads:9
 --> spark-containers-parameter_checks.ads:45:17
 
- info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
---> spark-containers-parameter_checks.ads:46:12
+ info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
+--> spark-containers-parameter_checks.ads:45:17
 
- info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:436, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
---> spark-containers-parameter_checks.ads:46:12
+ info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+--> spark-containers-parameter_checks.ads:45:17
 
- info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:544, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
---> spark-containers-parameter_checks.ads:46:12
+ info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:434, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
+--> spark-containers-parameter_checks.ads:45:17
 
- info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:553, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+ info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:46:12
 
  info: data dependencies proved, in instantiation at spark-containers-formal-hashed_sets.ads:131, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:46:12
 
- info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:436, in instantiation at my_integer_sets.ads:9
+ info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:434, in instantiation at my_integer_sets.ads:9
 --> spark-containers-parameter_checks.ads:46:12
 
- info: postcondition proved, in instantiation at spark-containers-functional-sets.ads:436, in instantiation at my_integer_sets.ads:9
+ info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
+--> spark-containers-parameter_checks.ads:46:12
+
+ info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+--> spark-containers-parameter_checks.ads:46:12
+
+ info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:434, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
+--> spark-containers-parameter_checks.ads:46:12
+
+ info: postcondition proved, in instantiation at spark-containers-functional-sets.ads:434, in instantiation at my_integer_sets.ads:9
 --> spark-containers-parameter_checks.ads:46:36
 
  info: postcondition proved, in instantiation at spark-containers-formal-hashed_sets.ads:131, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:46:36
 
- info: postcondition proved, in instantiation at spark-containers-functional-sets.ads:436, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
+ info: postcondition proved, in instantiation at spark-containers-functional-sets.ads:434, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:46:36
 
  info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:46:36
 
- info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:544, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+ info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:46:36
 
- info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:553, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+ info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:46:36
 
- info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:436, in instantiation at my_integer_sets.ads:9
+ info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:434, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:48:17
 
- info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
---> spark-containers-parameter_checks.ads:48:17
-
- info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:436, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
---> spark-containers-parameter_checks.ads:48:17
-
- info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:544, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
---> spark-containers-parameter_checks.ads:48:17
-
- info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:553, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+ info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:48:17
 
  info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:131, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:48:17
 
- info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:436, in instantiation at my_integer_sets.ads:9
+ info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:434, in instantiation at my_integer_sets.ads:9
+--> spark-containers-parameter_checks.ads:48:17
+
+ info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
+--> spark-containers-parameter_checks.ads:48:17
+
+ info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+--> spark-containers-parameter_checks.ads:48:17
+
+ info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:434, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:49:12
 
- info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
---> spark-containers-parameter_checks.ads:49:12
-
- info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:436, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
---> spark-containers-parameter_checks.ads:49:12
-
- info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:544, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
---> spark-containers-parameter_checks.ads:49:12
-
- info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:553, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+ info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:49:12
 
  info: data dependencies proved, in instantiation at spark-containers-formal-hashed_sets.ads:131, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:49:12
 
- info: postcondition proved, in instantiation at spark-containers-functional-sets.ads:436, in instantiation at my_integer_sets.ads:9
+ info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:434, in instantiation at my_integer_sets.ads:9
+--> spark-containers-parameter_checks.ads:49:12
+
+ info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
+--> spark-containers-parameter_checks.ads:49:12
+
+ info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+--> spark-containers-parameter_checks.ads:49:12
+
+ info: postcondition proved, in instantiation at spark-containers-functional-sets.ads:434, in instantiation at my_integer_sets.ads:9
 --> spark-containers-parameter_checks.ads:49:54
 
  info: postcondition proved, in instantiation at spark-containers-formal-hashed_sets.ads:131, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:49:54
 
- info: postcondition proved, in instantiation at spark-containers-functional-sets.ads:436, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
+ info: postcondition proved, in instantiation at spark-containers-functional-sets.ads:434, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:49:54
 
  info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:49:54
 
- info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:544, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+ info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:49:54
 
- info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:553, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+ info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:49:54
+
+ info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+--> spark-containers-parameter_checks.ads:51:17
+
+ info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:434, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
+--> spark-containers-parameter_checks.ads:51:17
+
+ info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+--> spark-containers-parameter_checks.ads:51:17
 
  info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:131, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:51:17
 
- info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:436, in instantiation at my_integer_sets.ads:9
+ info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:434, in instantiation at my_integer_sets.ads:9
 --> spark-containers-parameter_checks.ads:51:17
 
  info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:51:17
 
- info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:436, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
---> spark-containers-parameter_checks.ads:51:17
+ info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+--> spark-containers-parameter_checks.ads:52:12
 
- info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:544, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
---> spark-containers-parameter_checks.ads:51:17
+ info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:434, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
+--> spark-containers-parameter_checks.ads:52:12
 
- info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:553, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
---> spark-containers-parameter_checks.ads:51:17
+ info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+--> spark-containers-parameter_checks.ads:52:12
 
  info: data dependencies proved, in instantiation at spark-containers-formal-hashed_sets.ads:131, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:52:12
 
- info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:436, in instantiation at my_integer_sets.ads:9
+ info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:434, in instantiation at my_integer_sets.ads:9
 --> spark-containers-parameter_checks.ads:52:12
 
  info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:52:12
 
- info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:436, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
---> spark-containers-parameter_checks.ads:52:12
-
- info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:544, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
---> spark-containers-parameter_checks.ads:52:12
-
- info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:553, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
---> spark-containers-parameter_checks.ads:52:12
-
- info: postcondition proved, in instantiation at spark-containers-functional-sets.ads:436, in instantiation at my_integer_sets.ads:9
+ info: postcondition proved, in instantiation at spark-containers-functional-sets.ads:434, in instantiation at my_integer_sets.ads:9
 --> spark-containers-parameter_checks.ads:52:68
 
  info: postcondition proved, in instantiation at spark-containers-formal-hashed_sets.ads:131, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:52:68
 
- info: postcondition proved, in instantiation at spark-containers-functional-sets.ads:436, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
+ info: postcondition proved, in instantiation at spark-containers-functional-sets.ads:434, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:52:68
 
  info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:52:68
 
- info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:544, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+ info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:52:68
 
- info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:553, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+ info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:52:68
 
- info: aspect Always_Terminates on "Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:436, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
+ info: aspect Always_Terminates on "Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:57:17
 
- info: aspect Always_Terminates on "Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:544, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+ info: aspect Always_Terminates on "Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:434, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:57:17
 
- info: aspect Always_Terminates on "Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:553, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+ info: aspect Always_Terminates on "Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:57:17
 
  info: aspect Always_Terminates on "Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:131, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:57:17
 
- info: aspect Always_Terminates on "Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:436, in instantiation at my_integer_sets.ads:9
+ info: aspect Always_Terminates on "Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:434, in instantiation at my_integer_sets.ads:9
 --> spark-containers-parameter_checks.ads:57:17
 
  info: aspect Always_Terminates on "Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:57:17
 
- info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:436, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
+ info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:59:09
 
- info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:544, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+ info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:434, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:59:09
 
- info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:553, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+ info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:59:09
 
  info: data dependencies proved, in instantiation at spark-containers-formal-hashed_sets.ads:131, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:59:09
 
- info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:436, in instantiation at my_integer_sets.ads:9
+ info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:434, in instantiation at my_integer_sets.ads:9
 --> spark-containers-parameter_checks.ads:59:09
 
  info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:59:09
 
- info: postcondition proved, in instantiation at spark-containers-functional-sets.ads:436, in instantiation at my_integer_sets.ads:9
+ info: postcondition proved, in instantiation at spark-containers-functional-sets.ads:434, in instantiation at my_integer_sets.ads:9
 --> spark-containers-parameter_checks.ads:61:19
 
  info: postcondition proved, in instantiation at spark-containers-formal-hashed_sets.ads:131, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:61:19
 
- info: postcondition proved, in instantiation at spark-containers-functional-sets.ads:436, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
+ info: postcondition proved, in instantiation at spark-containers-functional-sets.ads:434, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:61:19
 
  info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:61:19
 
- info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:544, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+ info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:61:19
 
- info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:553, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+ info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:61:19
+
+ info: aspect Always_Terminates on "Param_Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+--> spark-containers-parameter_checks.ads:92:19
 
  info: aspect Always_Terminates on "Param_Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:147, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:92:19
 
- info: aspect Always_Terminates on "Param_Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:563, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
---> spark-containers-parameter_checks.ads:92:19
-
- info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
+ info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:98:17
 
  info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:147, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:98:17
 
- info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:563, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+ info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:98:17
 
- info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
+ info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:99:12
 
  info: data dependencies proved, in instantiation at spark-containers-formal-hashed_sets.ads:147, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:99:12
 
- info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:563, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+ info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:99:12
 
  info: postcondition proved, in instantiation at spark-containers-formal-hashed_sets.ads:147, in instantiation at my_integer_sets.ads:31
@@ -647,25 +647,25 @@ container_wrapper.gpr:3:09: warning: project name 'container_wrapper' expected
  info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:99:50
 
- info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:563, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+ info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:99:50
 
- info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:563, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
---> spark-containers-parameter_checks.ads:104:17
-
- info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
+ info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:104:17
 
  info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:147, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:104:17
 
- info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:563, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
---> spark-containers-parameter_checks.ads:105:12
+ info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
+--> spark-containers-parameter_checks.ads:104:17
 
- info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
+ info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:105:12
 
  info: data dependencies proved, in instantiation at spark-containers-formal-hashed_sets.ads:147, in instantiation at my_integer_sets.ads:31
+--> spark-containers-parameter_checks.ads:105:12
+
+ info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:105:12
 
  info: postcondition proved, in instantiation at spark-containers-formal-hashed_sets.ads:147, in instantiation at my_integer_sets.ads:31
@@ -674,22 +674,22 @@ container_wrapper.gpr:3:09: warning: project name 'container_wrapper' expected
  info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:105:36
 
- info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:563, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+ info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:105:36
 
- info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:147, in instantiation at my_integer_sets.ads:31
+ info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:107:17
 
- info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:563, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+ info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:147, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:107:17
 
  info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:107:17
 
- info: data dependencies proved, in instantiation at spark-containers-formal-hashed_sets.ads:147, in instantiation at my_integer_sets.ads:31
+ info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:108:12
 
- info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:563, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+ info: data dependencies proved, in instantiation at spark-containers-formal-hashed_sets.ads:147, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:108:12
 
  info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
@@ -701,25 +701,25 @@ container_wrapper.gpr:3:09: warning: project name 'container_wrapper' expected
  info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:108:54
 
- info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:563, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+ info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:108:54
-
- info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:147, in instantiation at my_integer_sets.ads:31
---> spark-containers-parameter_checks.ads:110:17
-
- info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:563, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
---> spark-containers-parameter_checks.ads:110:17
 
  info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:110:17
 
- info: data dependencies proved, in instantiation at spark-containers-formal-hashed_sets.ads:147, in instantiation at my_integer_sets.ads:31
---> spark-containers-parameter_checks.ads:111:12
+ info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+--> spark-containers-parameter_checks.ads:110:17
 
- info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:563, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
---> spark-containers-parameter_checks.ads:111:12
+ info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:147, in instantiation at my_integer_sets.ads:31
+--> spark-containers-parameter_checks.ads:110:17
 
  info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
+--> spark-containers-parameter_checks.ads:111:12
+
+ info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+--> spark-containers-parameter_checks.ads:111:12
+
+ info: data dependencies proved, in instantiation at spark-containers-formal-hashed_sets.ads:147, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:111:12
 
  info: postcondition proved, in instantiation at spark-containers-formal-hashed_sets.ads:147, in instantiation at my_integer_sets.ads:31
@@ -728,7 +728,7 @@ container_wrapper.gpr:3:09: warning: project name 'container_wrapper' expected
  info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:111:68
 
- info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:563, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+ info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.ads:111:68
 
  info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:140, in instantiation at my_integer_sets.ads:31
@@ -758,51 +758,51 @@ container_wrapper.gpr:3:09: warning: project name 'container_wrapper' expected
  info: aspect Always_Terminates on "Equivalent_Elements_Transitive" has been proved, subprogram will terminate, in instantiation at my_integer_sets.ads:9
 --> spark-containers-functional-sets.ads:37:16
 
- info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate, in instantiation at my_integer_sets.ads:9
+ info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
 --> spark-containers-functional-sets.ads:48:16
 
- info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
+ info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate, in instantiation at my_integer_sets.ads:9
 --> spark-containers-functional-sets.ads:48:16
 
  info: Container_Aggregates annotation proved, in instantiation at my_integer_sets.ads:9
 --> spark-containers-functional-sets.ads:74:06
       + when establishing invariant on "Contains" at spark-containers-functional-sets.ads:99, in instantiation at my_integer_sets.ads:9
-      + after a call to "Empty_Set" at spark-containers-functional-sets.ads:260, in instantiation at my_integer_sets.ads:9
+      + after a call to "Empty_Set" at spark-containers-functional-sets.ads:258, in instantiation at my_integer_sets.ads:9
 
  info: Container_Aggregates annotation proved, in instantiation at my_integer_sets.ads:9
 --> spark-containers-functional-sets.ads:74:06
       + when reestablishing invariant on "Contains" at spark-containers-functional-sets.ads:99, in instantiation at my_integer_sets.ads:9
-      + after a call to "Aggr_Include" at spark-containers-functional-sets.ads:484, in instantiation at my_integer_sets.ads:9
+      + after a call to "Aggr_Include" at spark-containers-functional-sets.ads:482, in instantiation at my_integer_sets.ads:9
 
  info: Container_Aggregates annotation proved, in instantiation at my_integer_sets.ads:9
 --> spark-containers-functional-sets.ads:74:06
       + when establishing invariant on "Length" at spark-containers-functional-sets.ads:124, in instantiation at my_integer_sets.ads:9
-      + after a call to "Empty_Set" at spark-containers-functional-sets.ads:260, in instantiation at my_integer_sets.ads:9
+      + after a call to "Empty_Set" at spark-containers-functional-sets.ads:258, in instantiation at my_integer_sets.ads:9
 
  info: Container_Aggregates annotation proved, in instantiation at my_integer_sets.ads:9
 --> spark-containers-functional-sets.ads:74:06
       + when reestablishing invariant on "Length" at spark-containers-functional-sets.ads:124, in instantiation at my_integer_sets.ads:9
-      + after a call to "Aggr_Include" at spark-containers-functional-sets.ads:484, in instantiation at my_integer_sets.ads:9
+      + after a call to "Aggr_Include" at spark-containers-functional-sets.ads:482, in instantiation at my_integer_sets.ads:9
 
  info: Container_Aggregates annotation proved, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
 --> spark-containers-functional-sets.ads:74:06
       + when establishing invariant on "Contains" at spark-containers-functional-sets.ads:99, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
-      + after a call to "Empty_Set" at spark-containers-functional-sets.ads:260, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
+      + after a call to "Empty_Set" at spark-containers-functional-sets.ads:258, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
 
  info: Container_Aggregates annotation proved, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
 --> spark-containers-functional-sets.ads:74:06
       + when reestablishing invariant on "Contains" at spark-containers-functional-sets.ads:99, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
-      + after a call to "Aggr_Include" at spark-containers-functional-sets.ads:484, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
+      + after a call to "Aggr_Include" at spark-containers-functional-sets.ads:482, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
 
  info: Container_Aggregates annotation proved, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
 --> spark-containers-functional-sets.ads:74:06
       + when establishing invariant on "Length" at spark-containers-functional-sets.ads:124, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
-      + after a call to "Empty_Set" at spark-containers-functional-sets.ads:260, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
+      + after a call to "Empty_Set" at spark-containers-functional-sets.ads:258, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
 
  info: Container_Aggregates annotation proved, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
 --> spark-containers-functional-sets.ads:74:06
       + when reestablishing invariant on "Length" at spark-containers-functional-sets.ads:124, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
-      + after a call to "Aggr_Include" at spark-containers-functional-sets.ads:484, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
+      + after a call to "Aggr_Include" at spark-containers-functional-sets.ads:482, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
 
  info: precondition proved, in instantiation at my_integer_sets.ads:9
 --> spark-containers-functional-sets.ads:99:13
@@ -813,93 +813,93 @@ container_wrapper.gpr:3:09: warning: project name 'container_wrapper' expected
       + during checks for quantification at spark-containers-functional-sets.ads:64, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
 
  info: precondition proved, in instantiation at my_integer_sets.ads:9
---> spark-containers-functional-sets.ads:378:13
-      + during checks for quantification at spark-containers-functional-sets.ads:340, in instantiation at my_integer_sets.ads:9
+--> spark-containers-functional-sets.ads:376:13
+      + during checks for quantification at spark-containers-functional-sets.ads:338, in instantiation at my_integer_sets.ads:9
 
  info: precondition proved, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
---> spark-containers-functional-sets.ads:378:13
-      + during checks for quantification at spark-containers-functional-sets.ads:340, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
+--> spark-containers-functional-sets.ads:376:13
+      + during checks for quantification at spark-containers-functional-sets.ads:338, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
 
  info: precondition proved, in instantiation at my_integer_sets.ads:9
---> spark-containers-functional-sets.ads:388:13
-      + during checks for quantification at spark-containers-functional-sets.ads:340, in instantiation at my_integer_sets.ads:9
+--> spark-containers-functional-sets.ads:386:13
+      + during checks for quantification at spark-containers-functional-sets.ads:338, in instantiation at my_integer_sets.ads:9
 
  info: precondition proved, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
---> spark-containers-functional-sets.ads:388:13
-      + during checks for quantification at spark-containers-functional-sets.ads:340, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
+--> spark-containers-functional-sets.ads:386:13
+      + during checks for quantification at spark-containers-functional-sets.ads:338, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
 
  info: precondition proved, in instantiation at my_integer_sets.ads:9
---> spark-containers-functional-sets.ads:397:13
-      + during checks for quantification at spark-containers-functional-sets.ads:340, in instantiation at my_integer_sets.ads:9
+--> spark-containers-functional-sets.ads:395:13
+      + during checks for quantification at spark-containers-functional-sets.ads:338, in instantiation at my_integer_sets.ads:9
 
  info: precondition proved, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
---> spark-containers-functional-sets.ads:397:13
-      + during checks for quantification at spark-containers-functional-sets.ads:340, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
+--> spark-containers-functional-sets.ads:395:13
+      + during checks for quantification at spark-containers-functional-sets.ads:338, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
 
  info: precondition proved, in instantiation at my_integer_sets.ads:9
---> spark-containers-functional-sets.ads:411:13
-      + during checks for quantification at spark-containers-functional-sets.ads:340, in instantiation at my_integer_sets.ads:9
+--> spark-containers-functional-sets.ads:409:13
+      + during checks for quantification at spark-containers-functional-sets.ads:338, in instantiation at my_integer_sets.ads:9
 
  info: precondition proved, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
---> spark-containers-functional-sets.ads:411:13
-      + during checks for quantification at spark-containers-functional-sets.ads:340, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
-
- info: implicit aspect Always_Terminates on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
---> spark-containers-functional-sets.ads:427:13
+--> spark-containers-functional-sets.ads:409:13
+      + during checks for quantification at spark-containers-functional-sets.ads:338, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
 
  info: implicit aspect Always_Terminates on "Copy_Element" has been proved, subprogram will terminate, in instantiation at my_integer_sets.ads:9
---> spark-containers-functional-sets.ads:427:13
+--> spark-containers-functional-sets.ads:425:13
+
+ info: implicit aspect Always_Terminates on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
+--> spark-containers-functional-sets.ads:425:13
 
  info: precondition proved, in instantiation at my_integer_sets.ads:9
---> spark-containers-functional-sets.ads:452:13
+--> spark-containers-functional-sets.ads:450:13
       + during checks for quantification at spark-containers-functional-sets.ads:64, in instantiation at my_integer_sets.ads:9
 
  info: precondition proved, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
---> spark-containers-functional-sets.ads:452:13
+--> spark-containers-functional-sets.ads:450:13
       + during checks for quantification at spark-containers-functional-sets.ads:64, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
 
  info: precondition proved, in instantiation at my_integer_sets.ads:9
---> spark-containers-functional-sets.ads:455:13
+--> spark-containers-functional-sets.ads:453:13
       + during checks for quantification at spark-containers-functional-sets.ads:64, in instantiation at my_integer_sets.ads:9
 
  info: precondition proved, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
---> spark-containers-functional-sets.ads:455:13
+--> spark-containers-functional-sets.ads:453:13
       + during checks for quantification at spark-containers-functional-sets.ads:64, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
 
  info: precondition proved, in instantiation at my_integer_sets.ads:9
---> spark-containers-functional-sets.ads:459:13
+--> spark-containers-functional-sets.ads:457:13
       + during checks for quantification at spark-containers-functional-sets.ads:64, in instantiation at my_integer_sets.ads:9
 
  info: precondition proved, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
---> spark-containers-functional-sets.ads:459:13
+--> spark-containers-functional-sets.ads:457:13
       + during checks for quantification at spark-containers-functional-sets.ads:64, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
 
  info: precondition proved, in instantiation at my_integer_sets.ads:9
---> spark-containers-functional-sets.ads:465:13
+--> spark-containers-functional-sets.ads:463:13
       + during checks for quantification at spark-containers-functional-sets.ads:64, in instantiation at my_integer_sets.ads:9
 
  info: precondition proved, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
---> spark-containers-functional-sets.ads:465:13
+--> spark-containers-functional-sets.ads:463:13
       + during checks for quantification at spark-containers-functional-sets.ads:64, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
 
  info: implicit aspect Always_Terminates on "Aggr_Eq_Elements" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
---> spark-containers-functional-sets.ads:476:13
+--> spark-containers-functional-sets.ads:474:13
 
  info: implicit aspect Always_Terminates on "Aggr_Eq_Elements" has been proved, subprogram will terminate, in instantiation at my_integer_sets.ads:9
---> spark-containers-functional-sets.ads:476:13
+--> spark-containers-functional-sets.ads:474:13
 
  info: data dependencies proved, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
---> spark-containers-functional-sets.ads:479:06
+--> spark-containers-functional-sets.ads:477:06
 
  info: data dependencies proved, in instantiation at my_integer_sets.ads:9
---> spark-containers-functional-sets.ads:479:06
+--> spark-containers-functional-sets.ads:477:06
 
  info: precondition proved, in instantiation at my_integer_sets.ads:9
---> spark-containers-functional-sets.ads:487:39
+--> spark-containers-functional-sets.ads:485:39
       + during checks for container aggregates at spark-containers-functional-sets.ads:74, in instantiation at my_integer_sets.ads:9
 
  info: precondition proved, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
---> spark-containers-functional-sets.ads:487:39
+--> spark-containers-functional-sets.ads:485:39
       + during checks for container aggregates at spark-containers-functional-sets.ads:74, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
 
  info: aspect Always_Terminates on "Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
@@ -961,121 +961,121 @@ container_wrapper.gpr:3:09: warning: project name 'container_wrapper' expected
 --> spark-containers-functional-vectors.ads:572:56
       + during checks for container aggregates at spark-containers-functional-vectors.ads:99, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
 
- info: precondition proved, in instantiation at spark-containers-functional-sets.ads:436, in instantiation at my_integer_sets.ads:9
+ info: precondition proved, in instantiation at spark-containers-functional-sets.ads:434, in instantiation at my_integer_sets.ads:9
 --> spark-containers-parameter_checks.adb:33:13
 
  info: precondition proved, in instantiation at spark-containers-formal-hashed_sets.ads:131, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.adb:33:13
 
- info: precondition proved, in instantiation at spark-containers-functional-sets.ads:436, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
+ info: precondition proved, in instantiation at spark-containers-functional-sets.ads:434, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.adb:33:13
 
  info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.adb:33:13
 
- info: precondition proved, in instantiation at spark-containers-functional-maps.ads:544, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+ info: precondition proved, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.adb:33:13
 
- info: precondition proved, in instantiation at spark-containers-functional-maps.ads:553, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+ info: precondition proved, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.adb:33:13
 
- info: precondition proved, in instantiation at spark-containers-functional-sets.ads:436, in instantiation at my_integer_sets.ads:9
+ info: precondition proved, in instantiation at spark-containers-functional-sets.ads:434, in instantiation at my_integer_sets.ads:9
 --> spark-containers-parameter_checks.adb:46:13
 
  info: precondition proved, in instantiation at spark-containers-formal-hashed_sets.ads:131, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.adb:46:13
 
- info: precondition proved, in instantiation at spark-containers-functional-sets.ads:436, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
+ info: precondition proved, in instantiation at spark-containers-functional-sets.ads:434, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.adb:46:13
 
  info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.adb:46:13
 
- info: precondition proved, in instantiation at spark-containers-functional-maps.ads:544, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+ info: precondition proved, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.adb:46:13
 
- info: precondition proved, in instantiation at spark-containers-functional-maps.ads:553, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+ info: precondition proved, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.adb:46:13
 
- info: precondition proved, in instantiation at spark-containers-functional-sets.ads:436, in instantiation at my_integer_sets.ads:9
+ info: precondition proved, in instantiation at spark-containers-functional-sets.ads:434, in instantiation at my_integer_sets.ads:9
 --> spark-containers-parameter_checks.adb:49:13
 
  info: precondition proved, in instantiation at spark-containers-formal-hashed_sets.ads:131, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.adb:49:13
 
- info: precondition proved, in instantiation at spark-containers-functional-sets.ads:436, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
+ info: precondition proved, in instantiation at spark-containers-functional-sets.ads:434, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.adb:49:13
 
  info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.adb:49:13
 
- info: precondition proved, in instantiation at spark-containers-functional-maps.ads:544, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+ info: precondition proved, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.adb:49:13
 
- info: precondition proved, in instantiation at spark-containers-functional-maps.ads:553, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+ info: precondition proved, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.adb:49:13
 
- info: precondition proved, in instantiation at spark-containers-functional-sets.ads:436, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
+ info: precondition proved, in instantiation at spark-containers-functional-sets.ads:434, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.adb:53:13
 
  info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.adb:53:13
 
- info: precondition proved, in instantiation at spark-containers-functional-sets.ads:436, in instantiation at my_integer_sets.ads:9
+ info: precondition proved, in instantiation at spark-containers-functional-sets.ads:434, in instantiation at my_integer_sets.ads:9
 --> spark-containers-parameter_checks.adb:64:13
 
  info: precondition proved, in instantiation at spark-containers-formal-hashed_sets.ads:131, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.adb:64:13
 
- info: precondition proved, in instantiation at spark-containers-functional-sets.ads:436, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
+ info: precondition proved, in instantiation at spark-containers-functional-sets.ads:434, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.adb:64:13
 
  info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.adb:64:13
 
- info: precondition proved, in instantiation at spark-containers-functional-maps.ads:544, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+ info: precondition proved, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.adb:64:13
 
- info: precondition proved, in instantiation at spark-containers-functional-maps.ads:553, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+ info: precondition proved, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.adb:64:13
 
- info: precondition proved, in instantiation at spark-containers-functional-sets.ads:436, in instantiation at my_integer_sets.ads:9
+ info: precondition proved, in instantiation at spark-containers-functional-sets.ads:434, in instantiation at my_integer_sets.ads:9
 --> spark-containers-parameter_checks.adb:65:13
 
  info: precondition proved, in instantiation at spark-containers-formal-hashed_sets.ads:131, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.adb:65:13
 
- info: precondition proved, in instantiation at spark-containers-functional-sets.ads:436, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
+ info: precondition proved, in instantiation at spark-containers-functional-sets.ads:434, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.adb:65:13
 
  info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.adb:65:13
 
- info: precondition proved, in instantiation at spark-containers-functional-maps.ads:544, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+ info: precondition proved, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.adb:65:13
 
- info: precondition proved, in instantiation at spark-containers-functional-maps.ads:553, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+ info: precondition proved, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.adb:65:13
 
- info: precondition proved, in instantiation at spark-containers-functional-sets.ads:436, in instantiation at my_integer_sets.ads:9
+ info: precondition proved, in instantiation at spark-containers-functional-sets.ads:434, in instantiation at my_integer_sets.ads:9
 --> spark-containers-parameter_checks.adb:66:13
 
  info: precondition proved, in instantiation at spark-containers-formal-hashed_sets.ads:131, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.adb:66:13
 
- info: precondition proved, in instantiation at spark-containers-functional-sets.ads:436, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
+ info: precondition proved, in instantiation at spark-containers-functional-sets.ads:434, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.adb:66:13
 
  info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.adb:66:13
 
- info: precondition proved, in instantiation at spark-containers-functional-maps.ads:544, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+ info: precondition proved, in instantiation at spark-containers-functional-maps.ads:542, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.adb:66:13
 
- info: precondition proved, in instantiation at spark-containers-functional-maps.ads:553, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+ info: precondition proved, in instantiation at spark-containers-functional-maps.ads:551, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.adb:66:13
 
- info: precondition proved, in instantiation at spark-containers-functional-sets.ads:436, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
+ info: precondition proved, in instantiation at spark-containers-functional-sets.ads:434, in instantiation at spark-containers-formal-hashed_sets.ads:174, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.adb:68:13
 
  info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:378, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
@@ -1087,7 +1087,7 @@ container_wrapper.gpr:3:09: warning: project name 'container_wrapper' expected
  info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.adb:97:10
 
- info: precondition proved, in instantiation at spark-containers-functional-maps.ads:563, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
+ info: precondition proved, in instantiation at spark-containers-functional-maps.ads:561, in instantiation at spark-containers-formal-hashed_sets.ads:306, in instantiation at my_integer_sets.ads:31
 --> spark-containers-parameter_checks.adb:97:10
 
  info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:389, in instantiation at spark-containers-formal-hashed_sets.ads:187, in instantiation at my_integer_sets.ads:31
