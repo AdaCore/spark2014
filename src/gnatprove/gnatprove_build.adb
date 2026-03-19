@@ -328,7 +328,9 @@ package body Gnatprove_Build is
    begin
       Process_M.Set_JSON_File
         (Path_Name.Compose
-           (Configuration.Artifact_Dir (Tree), "gnatprove_build.json"));
+           (Configuration.Artifact_Dir (Tree),
+            "gnatprove_build.json",
+            Directory => True));
       if Configuration.Mode in GPM_All | GPM_Prove then
          Id := Spawn_VC_Server_And_Semaphore (Tree);
       end if;
@@ -749,7 +751,8 @@ package body Gnatprove_Build is
 
       Editors  : constant JSON_Array := Get (Get (Config, "editors"));
       Provers  : constant JSON_Array := Get (Get (Config, "provers"));
-      Filename : constant String := Obj_Dir.Compose ("why3.conf").String_Value;
+      Filename : constant String :=
+        Obj_Dir.Compose ("why3.conf", Directory => True).String_Value;
 
       --  Start of processing for Write_Why3_Conf_File
 
