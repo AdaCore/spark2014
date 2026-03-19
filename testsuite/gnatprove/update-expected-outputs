@@ -17,7 +17,8 @@ import requests
 import tarfile
 import tempfile
 from typing import Literal
-import yaml
+
+from lib.python.suite_util import is_large, make_large, make_nonlarge
 
 SPARK2014_GITLAB_ID = "168"
 
@@ -200,71 +201,6 @@ def update_sessions_from_gaia(gaia_id):
             "warning: failed to update sessions, "
             f"possibly GAIA event doesn't have session files: {str(e)}"
         )
-
-
-def find_test_by_name(name):
-    for d in ["tests", "internal", "sparklib"]:
-        testdir = os.path.join(d, name)
-        if os.path.exists(testdir):
-            return testdir
-    return None
-
-
-def is_large(name):
-    testdir = find_test_by_name(name)
-    if testdir is not None:
-        yamlfile = os.path.join(testdir, "test.yaml")
-        if not os.path.exists(yamlfile):
-            return False
-        with open(yamlfile) as f:
-            data = yaml.safe_load(f)
-        if "large" not in data:
-            return False
-        if data["large"]:
-            return True
-        else:
-            return False
-        return False
-    return None
-
-
-def read_write_yaml(testname, fn):
-    testdir = find_test_by_name(testname)
-    if testdir is None:
-        print(f"Unable to find test dir to modify yaml file for {testname}")
-        return
-    yamlfile = os.path.join(testdir, "test.yaml")
-    if not os.path.exists(yamlfile):
-        data = {}
-    else:
-        with open(yamlfile, "r") as f:
-            data = yaml.safe_load(f)
-    data = fn(data)
-    if not data:
-        os.remove(yamlfile)
-    else:
-        with open(yamlfile, "w") as f:
-            yaml.dump(data, f)
-
-
-def make_large(testname):
-    def set_large(d):
-        result = dict(d)
-        result["large"] = True
-        return result
-
-    print(f"Moving {testname} to large")
-    read_write_yaml(testname, set_large)
-
-
-def make_nonlarge(testname):
-    def erase_large(d):
-        result = dict(d)
-        del result["large"]
-        return result
-
-    print(f"Removing {testname} from large")
-    read_write_yaml(testname, erase_large)
 
 
 def compute_time(outputdir):
