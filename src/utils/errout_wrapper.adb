@@ -974,4 +974,80 @@ package body Errout_Wrapper is
            Msg           => M.Msg & S);
    end "&";
 
+   ---------------------------
+   -- Add_Frontend_Messages --
+   ---------------------------
+
+   procedure Add_Frontend_Messages is
+      use Erroutc;
+
+      E : Error_Msg_Id := First_Error_Msg;
+
+      function Frontend_Severity (E : Error_Msg_Id) return Msg_Severity;
+      --  Map the front-end message kind to its severity
+
+      -----------------------
+      -- Frontend_Severity --
+      -----------------------
+
+      function Frontend_Severity (E : Error_Msg_Id) return Msg_Severity is
+         Obj : Error_Msg_Object renames Errors.Table (E);
+      begin
+         case Obj.Kind is
+            when Erroutc.Error | Erroutc.Non_Serious_Error =>
+               return Error_Kind;
+
+            when Warning                                   =>
+               --  Warnings promoted to errors keep Error_Kind
+               if Obj.Warn_Err /= None then
+                  return Error_Kind;
+               else
+                  return Warning_Kind;
+               end if;
+
+            when Style                                     =>
+               return Warning_Kind;
+
+            when Info                                      =>
+               return Info_Kind;
+
+            when Low_Check                                 =>
+               return Low_Check_Kind;
+
+            when Medium_Check                              =>
+               return Medium_Check_Kind;
+
+            when High_Check                                =>
+               return High_Check_Kind;
+         end case;
+      end Frontend_Severity;
+
+   begin
+      --  Iterate primary messages via Next_Error_Msg (skips continuations and
+      --  deleted entries).
+      while E /= No_Error_Msg loop
+         declare
+            Obj    : Error_Msg_Object renames Errors.Table (E);
+            Conts  : Message_Lists.List;
+            Next_E : Error_Msg_Id := Obj.Next;
+         begin
+            --  Collect continuation messages that immediately follow
+            while Next_E /= No_Error_Msg loop
+               Conts.Append (Create (Errors.Table (Next_E).Text.all));
+               Next_Continuation_Msg (Next_E);
+            end loop;
+
+            Add_Json_Msg
+              (Warnings_Errors,
+               (Tag           => To_Unbounded_String ("frontend"),
+                Severity      => Frontend_Severity (E),
+                Span          => Obj.Sptr,
+                Msg           => Create (Obj.Text.all),
+                Continuations => Conts,
+                others        => <>));
+         end;
+         Next_Error_Msg (E);
+      end loop;
+   end Add_Frontend_Messages;
+
 end Errout_Wrapper;
