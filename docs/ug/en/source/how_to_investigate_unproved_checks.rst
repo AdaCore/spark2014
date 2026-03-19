@@ -82,12 +82,15 @@ spot a missing assertion.
 
 A property can also be conceptually provable, but the model used by
 |GNATprove| can currently not reason about it [MODEL]. (See
-:ref:`GNATprove Limitations` for a list of the current limitations in
+:ref:`Proof Limitations` for a list of the current limitations in
 |GNATprove|.) In particular using the following features of the language
 may yield checks that should be true, but cannot be proved:
 
-* Floating point arithmetic
-* The specific value of dispatching calls when the tag is known
+* Floating point elementary operations, such as square root or trigonometric functions
+* References to the ``Value`` and ``Image`` attributes
+
+Most of these imprecisely supported features are associated with a warning that
+will be emitted if the ``--info`` switch is used.
 
 In the cases where no prover can prove the check, the missing information can
 usually be added using ``pragma Assume``.
