@@ -252,7 +252,9 @@ package body Configuration is
          --  with the correct subdir option.
          return Tree.Root_Project.Object_Directory;
       else
-         return Path_Name.Compose (Tree.Root_Project.Dir_Name, "gnatprove");
+         return
+           Path_Name.Compose
+             (Tree.Root_Project.Dir_Name, "gnatprove", Directory => True);
       end if;
    end Artifact_Dir;
 
