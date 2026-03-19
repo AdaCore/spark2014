@@ -9,8 +9,10 @@ import os
 import re
 import sys
 
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
+
 # import kinds of tags from test_support
-import lib.python.test_support as ts
+import lib.python.test_support as ts  # noqa: E402
 
 # define sets of tests for each TOR
 tor1_spark_mode = set()
