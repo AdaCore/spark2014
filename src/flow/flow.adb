@@ -149,8 +149,6 @@ package body Flow is
          end if;
       end Print_Named_Flow_Id_Set;
 
-      --  Start of processing for Debug_Print_Generated_Contracts
-
    begin
       Write_Str ("Generated contracts for ");
       Write_Str (Full_Source_Name (FA.Spec_Entity));
@@ -356,8 +354,6 @@ package body Flow is
          Outputs : constant Flow_Id_Sets.Set :=
            Change_Variant (Globals.Outputs, Normal_Use);
 
-         --  Start of processing for To_JSON
-
       begin
          Set_Field_Unless_Empty
            (Name_Proof_In, Change_Variant (Globals.Proof_Ins, Normal_Use));
@@ -408,8 +404,6 @@ package body Flow is
       --  Local variables
 
       Obj : JSON_Value;
-
-      --  Start of processing for GG_To_JSON
 
    begin
       --  ??? ignore generated Initializes for now
@@ -482,8 +476,6 @@ package body Flow is
              when others         => Flow_Id_To_String (F))
           & "|"
           & F.Variant'Img);
-
-      --  Start of processing for Print_Graph_Vertex
 
    begin
       Write_Line
@@ -646,8 +638,6 @@ package body Flow is
 
          Output_Buffer : constant Saved_Output_Buffer := Save_Output_Buffer;
          --  Store previous buffer and indentation settings
-
-         --  Start of processing for NDI
 
       begin
          Set_Special_Output (Append_To_Label'Unrestricted_Access);
@@ -1206,8 +1196,6 @@ package body Flow is
          return Rv;
       end EDI;
 
-      --  Start of processing for Print_Graph
-
    begin
       if Gnat2Why_Args.Debug_Mode then
          if Gnat2Why_Args.Flow_Advanced_Debug then
@@ -1336,8 +1324,6 @@ package body Flow is
          end if;
       end Debug_GG_Source;
       pragma Annotate (Xcov, Exempt_Off);
-
-      --  Start of processing for Flow_Analyse_Entity
 
    begin
       Current_Error_Node := E;
@@ -1588,8 +1574,6 @@ package body Flow is
 
       end Build_Graphs_For_Entity;
 
-      --  Start of processing for Build_Graphs_For_Analysis
-
    begin
       if Present (Root_Entity) then
          Build_Graphs_For_Entity (Root_Entity);
@@ -1687,8 +1671,6 @@ package body Flow is
             end if;
          end if;
       end Check_Contracts;
-
-      --  Start of processing for Check_Specification_Contracts
 
    begin
       if Present (Root_Entity) then

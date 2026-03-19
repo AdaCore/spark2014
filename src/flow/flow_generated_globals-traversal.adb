@@ -129,8 +129,6 @@ package body Flow_Generated_Globals.Traversal is
             end if;
          end Insert;
 
-         --  Start of processing for Process
-
       begin
          case Nkind (N) is
             when N_Entry_Declaration
@@ -180,8 +178,6 @@ package body Flow_Generated_Globals.Traversal is
          end case;
       end Process;
 
-      --  Start of processing for Build_Tree
-
    begin
       Traverse (CU);
    end Build_Tree;
@@ -206,8 +202,6 @@ package body Flow_Generated_Globals.Traversal is
          end loop;
          Ada.Text_IO.Put_Line ("***" & Full_Source_Name (E));
       end Dump;
-
-      --  Start of processing for Dump_Tree
 
    begin
       if Debug then
@@ -256,8 +250,6 @@ package body Flow_Generated_Globals.Traversal is
 
          Process (E);
       end Wrapper;
-
-      --  Start of processing for Iterate_Main_Unit
 
    begin
       --  Library-level renamings have no entities; ignore them
@@ -517,8 +509,6 @@ package body Flow_Generated_Globals.Traversal is
          Traverse_Declarations_Or_Statements (Visible_Declarations (N));
          Traverse_Declarations_Or_Statements (Private_Declarations (N));
       end Traverse_Visible_And_Private_Parts;
-
-      --  Start of processing for Traverse_Compilation_Unit
 
    begin
       Traverse_Declaration_Or_Statement (CU);

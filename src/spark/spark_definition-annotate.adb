@@ -2270,8 +2270,6 @@ package body SPARK_Definition.Annotate is
       E  : Entity_Id;
       Ok : Boolean;
 
-      --  Start of processing for Check_At_End_Borrow_Annotation
-
    begin
       Check_Annotate_Entity_Argument (Arg3_Exp, Prag, Prag_Name, Ok);
       if not Ok then
@@ -4238,8 +4236,6 @@ package body SPARK_Definition.Annotate is
       Cont_Element : Entity_Id;
       --  "Element" primitive for relevant container.
       --  Set at most once.
-
-      --  Start of processing for Check_Iterable_Annotation
 
    begin
       --  The fourth argument must be an entity

@@ -648,8 +648,6 @@ package body Why.Gen.Binders is
               Labels   => Get_Labels (Name));
       end Local_Name;
 
-      --  Start of processing for Localize_Binders
-
    begin
       for B of Binders loop
 
@@ -1239,8 +1237,6 @@ package body Why.Gen.Binders is
       end New_Arg_Type;
 
       Result : W_Binder_Array (Binders'Range);
-
-      --  Start of processing for New_Binders
 
    begin
       for B in Binders'Range loop

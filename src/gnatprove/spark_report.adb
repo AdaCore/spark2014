@@ -359,8 +359,6 @@ package body Spark_Report is
             end if;
          end Put_Total_Cell;
 
-         --  Start of processing for Dump_Summary_Table
-
       begin
          Compute_Total_Summary_Line;
          Ada.Text_IO.Put_Line (Handle, "=========================");
@@ -892,8 +890,6 @@ package body Spark_Report is
                end if;
             end For_Each_Subp;
 
-            --  Start of processing for For_Each_Unit
-
          begin
             Put_Line
               (Handle,
@@ -956,8 +952,6 @@ package body Spark_Report is
          N : constant Natural := Num_Units;
 
          Unit_Str : constant String := (if N = 1 then "unit" else "units");
-
-         --  Start of processing for Print_Analysis_Report
 
       begin
          Ada.Text_IO.Put_Line (Handle, "========================");
@@ -1079,8 +1073,6 @@ package body Spark_Report is
 
          Pointer_Size : constant :=
            System.Storage_Elements.Integer_Address'Size / System.Storage_Unit;
-
-         --  Start of processing for Show_Header
 
       begin
          Put_Line (Handle, "date               : " & End_Time);
@@ -1300,8 +1292,6 @@ package body Spark_Report is
                return Warnings;
          end case;
       end VC_Kind_To_Summary;
-
-      --  Start of processing for Generate_Report
 
    begin
       --  Build the list of .spark files that actually exist, parsing each one.

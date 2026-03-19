@@ -786,8 +786,6 @@ package body Gnat2Why.Expr.Aggregates is
             end case;
          end Print_Writes;
 
-         --  Start of processing for Print_Writes
-
       begin
          Print_Writes (Writes, 0);
       end Print_Writes;
@@ -1247,8 +1245,6 @@ package body Gnat2Why.Expr.Aggregates is
       New_Capacity_Call : W_Term_Id := Why_Empty;
       --  capacity (... (model1 new_cont_id))
       --  It is only defined if E has an object specific capacity.
-
-      --  Start of processing for Generate_VCs_For_Aggregate_Annotation
 
    begin
       --  Search for the last model type for E
@@ -3032,8 +3028,6 @@ package body Gnat2Why.Expr.Aggregates is
 
          Th : Theory_UC;
 
-         --  Start of processing for Generate_Logic_Function
-
       begin
          --  Insert new modules for the program and logic functions in the
          --  module map. The translation follows the same schema as regular
@@ -3554,8 +3548,6 @@ package body Gnat2Why.Expr.Aggregates is
                Next (Association);
             end loop;
          end Traverse_Rec_Aggregate;
-
-         --  Start of processing for Get_Aggregate_Elements
 
       begin
          --  We call the dynamic invariant of Comp_Type in the logic
@@ -4446,8 +4438,6 @@ package body Gnat2Why.Expr.Aggregates is
 
             return False;
          end Contains_Iterated_Association;
-
-         --  Start of processing for Should_Use_Function_Translation
 
       begin
          return not Contains_Iterated_Association (Expr, 1);
@@ -5366,8 +5356,6 @@ package body Gnat2Why.Expr.Aggregates is
                end if;
             end Transform_Rec_Complex_Aggregate;
 
-            --  Start of processing for Transform_Aggregate_Values
-
          begin
             --  Use a new scope for indexes of iterated component associations
 
@@ -5389,8 +5377,6 @@ package body Gnat2Why.Expr.Aggregates is
 
             Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
          end Transform_Aggregate_Values;
-
-         --  Start of processing for Transform_Array_Component_Associations
 
       begin
          --  Define index variables
@@ -5474,8 +5460,6 @@ package body Gnat2Why.Expr.Aggregates is
             end if;
          end;
       end Transform_Array_Component_Associations;
-
-      --  Start of processing for Transform_Array_Aggregate
 
    begin
       --  Initialize the array of index types.
@@ -5841,8 +5825,6 @@ package body Gnat2Why.Expr.Aggregates is
          --  ... model2 (model1 aggr_id)
          Capacity_Fun : Entity_Id := Empty;
          --  First encountered capacity function if any
-
-         --  Start of processing for Compute_Aggregate_Def
 
       begin
          --  Search for the last model type for E
@@ -6946,8 +6928,6 @@ package body Gnat2Why.Expr.Aggregates is
       Values    : Node_Vectors.Vector;
       Value_Map : Ada_Node_To_Why_Id.Map;
 
-      --  Start of processing for Transform_Container_Aggregate
-
    begin
       Get_Aggregates_Elements (Annot, Values, Value_Map);
 
@@ -7267,8 +7247,6 @@ package body Gnat2Why.Expr.Aggregates is
               Base_Name => "aggr");
 
          Th : Theory_UC;
-
-         --  Start of processing for Generate_Logic_Function
 
       begin
          --  Modules for expressions are not inserted on the fly like those of
@@ -8688,8 +8666,6 @@ package body Gnat2Why.Expr.Aggregates is
             return New_And_Pred (Conjuncts (1 .. Top));
          end Other_Choices;
 
-         --  Start of processing for Generate_Pred_For_Aggregate
-
       begin
          return
            Generate_Aggregate_Value_Internal
@@ -9041,8 +9017,6 @@ package body Gnat2Why.Expr.Aggregates is
       Writes   : Write_Status_Access;
       Elements : Node_Vectors.Vector;
       T        : W_Expr_Id;
-
-      --  Start of processing for Transform_Deep_Delta_Aggregate
 
    begin
       W_Pref :=

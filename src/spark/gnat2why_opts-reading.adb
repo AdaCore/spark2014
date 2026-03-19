@@ -79,8 +79,6 @@ package body Gnat2Why_Opts.Reading is
 
       V : constant JSON_Value := Read_File_Into_JSON (Args_File);
 
-      --  Start of processing for Load
-
    begin
       Global_Gen_Mode := Get_Opt (V, Global_Gen_Mode_Name);
       Output_Mode := Output_Mode_Type'Value (Get (Get (V, Output_Mode_Name)));

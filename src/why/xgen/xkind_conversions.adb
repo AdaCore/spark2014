@@ -159,8 +159,6 @@ package body Xkind_Conversions is
          end loop;
       end Process_One_Class_Kind;
 
-   --  Start of processing for Print_Conversion_Declarations
-
    begin
       Kinds.Iterate (Process_One_Node_Kind'Access);
       NL (O);

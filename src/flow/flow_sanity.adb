@@ -166,8 +166,6 @@ package body Flow_Sanity is
 
          use type Flow_Id_Sets.Set;
 
-         --  Start of processing for Check_Incomplete_Globals
-
       begin
          Get_Proof_Globals
            (Subprogram      => E,
@@ -247,8 +245,6 @@ package body Flow_Sanity is
                  "& is referenced in Post but missing from the Global");
          end loop;
       end Check_Incomplete_Global;
-
-      --  Start of processing for Check_Incomplete_Globals
 
    begin
       for E of Entities_To_Translate loop

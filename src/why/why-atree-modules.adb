@@ -4590,8 +4590,6 @@ package body Why.Atree.Modules is
          end if;
       end Insert_Type_Symbols;
 
-      --  Start of processing for Insert_Why_Symbols
-
    begin
       if Is_Type (E) then
          Insert_Type_Symbols (E);

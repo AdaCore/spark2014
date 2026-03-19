@@ -1681,8 +1681,6 @@ package body VC_Kinds is
          Map.Insert (Name, From_JSON (Value));
       end Process_Prover_Stat;
 
-      --  Start of processing for From_Json
-
    begin
       Map_JSON_Object (V, Process_Prover_Stat'Access);
       return Map;
@@ -3055,8 +3053,6 @@ package body VC_Kinds is
          return S (S'First + 1 .. S'Last);
       end Line_Number_Image;
 
-      --  Start of processing for To_JSON
-
    begin
       Set_Field (Obj, "previous", Obj_Prev);
       Set_Field (Obj, "current", Obj_Cur);
@@ -3129,8 +3125,6 @@ package body VC_Kinds is
          Set_Field (Res, "others", To_JSON (Other.all));
          return Res;
       end Create_Array;
-
-      --  Start of processing for To_JSON
 
    begin
       return

@@ -144,8 +144,6 @@ package body Assumptions is
          end case;
       end Human_Readable;
 
-      --  Start of processing for To_String
-
    begin
       return Human_Readable (T.Predicate) & " of " & Subp_Name (T.Arg);
    end To_String;

@@ -122,8 +122,6 @@ package body Flow_Classwide is
               when Mode_Out    => "Output");
       end Mode;
 
-      --  Start of processing for Check_Classwide_Global
-
    begin
       Get_Globals
         (Subprogram => Overridden_Operation (E),

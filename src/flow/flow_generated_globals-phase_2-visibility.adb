@@ -162,8 +162,6 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
             Scope_Graph.Add_Edge (Source, Target, Rule);
          end Connect;
 
-         --  Start of processing for Connect
-
       begin
          ----------------------------------------------------------------------
          --  Create edges
@@ -349,8 +347,6 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
                  ((Ent => Info.Container.Ent, Part => Body_Part)));
          end if;
       end Connect;
-
-      --  Start of processing for Connect_Flow_Scopes
 
    begin
       --  The Standard package is special: create vertices for its visible and
@@ -552,8 +548,6 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
       Filename : constant String :=
         Sem_Util.Unique_Name (Main_Unit_Entity) & "_visibility_2";
 
-      --  Start of processing for Print
-
    begin
       G.Write_Pdf_File
         (Filename  => Filename,
@@ -615,8 +609,6 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
                  when Body_Part    => "body"));
       end Print_Vertex;
 
-      --  Start of processing for Print_Path
-
    begin
       Scope_Graphs.Shortest_Path
         (G             => Scope_Graph,
@@ -660,8 +652,6 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
 
          Map (Position).Insert (New_Item);
       end Add;
-
-      --  Start of processing for Register_Name_Scope
 
    begin
       --  We first need info for all vertices and then we connect them

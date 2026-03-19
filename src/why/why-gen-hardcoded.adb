@@ -1628,8 +1628,6 @@ package body Why.Gen.Hardcoded is
             return Why_Empty;
       end Transform_Quotient_Of_Strings;
 
-      --  Start of processing for Transform_Hardcoded_Literal
-
    begin
       --  Go over the actuals to check that their are all string literals
 

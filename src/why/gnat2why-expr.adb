@@ -2443,8 +2443,6 @@ package body Gnat2Why.Expr is
          else Parse_Initializes (E, Get_Flow_Scope (E)));
       Initialized : Flow_Id_Sets.Set;
 
-      --  Start of processing for Assume_For_Nested_Package
-
    begin
       if not For_Decl and then not Nested_Body then
          return;
@@ -3456,8 +3454,6 @@ package body Gnat2Why.Expr is
              (E => Fn, Domain => Domain, Selector => Why.Inter.Standard);
       end Fetch_Name;
 
-      --  Start of processing for Check_Type_With_Iterable
-
    begin
       Ada_Ent_To_Why.Push_Scope (Symbol_Table);
 
@@ -3984,8 +3980,6 @@ package body Gnat2Why.Expr is
       Violation_Found : Boolean := False;
       Ada_Node        : Node_Id := Expr;
       Explanation     : Unbounded_String := To_Unbounded_String ("");
-
-      --  Start of processing for Check_UU_Restrictions
 
    begin
       --  Nothing to do if the type does not contain parts with unchecked union
@@ -5385,8 +5379,6 @@ package body Gnat2Why.Expr is
       --  we are checking a box association.
       Checks : W_Prog_Id;
 
-      --  Start of processing for Compute_Default_Check
-
    begin
       Continuation_Stack.Append
         (Continuation_Type'
@@ -5687,8 +5679,6 @@ package body Gnat2Why.Expr is
       Tmp        : constant W_Term_Id := New_Temp_For_Expr (Expr);
       Assumption : W_Pred_Id := True_Pred;
       Variables  : Flow_Id_Sets.Set;
-
-      --  Start of processing for Compute_Default_Init
 
    begin
       --  If Use_Precomputed_Func is true, then we already have generated a
@@ -6021,8 +6011,6 @@ package body Gnat2Why.Expr is
          W_Ty : constant W_Type_Id := EW_Abstract (Ty, Relaxed_Init);
          Def  : W_Term_Id;
 
-         --  Start of processing for Compute_Default_Value_Rec
-
       begin
          if Is_Scalar_Type (Ty) then
             if Has_Default_Aspect (Ty) then
@@ -6289,8 +6277,6 @@ package body Gnat2Why.Expr is
          end if;
          return Def;
       end Compute_Default_Value_Rec;
-
-      --  Start of processing for Compute_Default_Value
 
    begin
       --  In the term domain, go through the type to compute the default value
@@ -6687,8 +6673,6 @@ package body Gnat2Why.Expr is
          else Type_Of_Node (Ty_Ext));
 
       Variables : Flow_Id_Sets.Set;
-
-      --  Start of processing for Compute_Dynamic_Invariant
 
    begin
       --  If Use_Pred is true, then we already have generated a predicate
@@ -8687,8 +8671,6 @@ package body Gnat2Why.Expr is
 
       procedure Iterate_Call is new Iterate_Call_Parameters (One_Param);
 
-      --  Start of processing for Compute_Tag_Check
-
    begin
       if No (Controlling_Arg) or else Call_Simulates_Contract_Dispatch (Call)
       then
@@ -8840,8 +8822,6 @@ package body Gnat2Why.Expr is
       --  kind.
 
       Pred : W_Pred_Id := True_Pred;
-
-      --  Start of processing for Compute_Type_Invariant
 
    begin
       --  Check for invariants on the type and its ancestors
@@ -9493,8 +9473,6 @@ package body Gnat2Why.Expr is
 
          Subp : constant Callable_Kind_Id := Get_Called_Entity (Call);
 
-         --  Start of processing for Update_Call_Variables
-
       begin
          Do_Parameters (Call);
 
@@ -9537,8 +9515,6 @@ package body Gnat2Why.Expr is
             end if;
          end if;
       end Update_Variable;
-
-      --  Start of processing for Finalization_Actions
 
    begin
       return Result : W_Statement_Sequence_Id := Void_Sequence do
@@ -9692,8 +9668,6 @@ package body Gnat2Why.Expr is
 
       procedure Iter_Scopes is new Iter_Exited_Scopes (Append);
 
-      --  Start of processing for Finalization_Actions_On_Jump
-
    begin
       Iter_Scopes (Jump);
 
@@ -9759,8 +9733,6 @@ package body Gnat2Why.Expr is
       end Stop;
 
       Res : W_Prog_Id;
-
-      --  Start of processing for Havoc_Borrowed_And_Check_No_Leaks_On_Raise
 
    begin
       --  Add a continuation locating the potential checks on exceptional exits
@@ -9866,8 +9838,6 @@ package body Gnat2Why.Expr is
         Generate_Branch_Expr (First_Case, Domain, Params);
       Elsif_Parts  : W_Expr_Array (1 .. Integer (List_Length (Cases)) - 2);
       Elsif_Count  : Natural;
-
-      --  Start of processing for Generate_Case_Expression
 
    begin
       if List_Length (Cases) = 1 then
@@ -10387,8 +10357,6 @@ package body Gnat2Why.Expr is
       W_Quant_Var : W_Identifier_Id;  --  Why3 name for the quantified
       --  variable.
       W_Index_Var : W_Identifier_Id;  --  Why3 name for the index variable
-
-      --  Start of processing for Generate_Quantified_Expression
 
    begin
       --  The usual translation of quantified expression into Why3 is as a
@@ -11718,8 +11686,6 @@ package body Gnat2Why.Expr is
          end if;
       end Compute_Type_Invariant_For_Eq;
 
-      --  Start of processing for Insert_Invariant_Check_For_Eq
-
    begin
       if Domain /= EW_Prog
         or else not Invariant_Check_Needed (Typ, Scop => Current_Subp)
@@ -11832,8 +11798,6 @@ package body Gnat2Why.Expr is
          begin
             Collect_Moved_Objects (Expr, Set => Set, Checks => Checks);
          end Collect_Subobject;
-
-         --  Start of processing for Collect_Moved_Objects
 
       begin
          --  Object can be moved, insert it in the set unless at top-level
@@ -11956,8 +11920,6 @@ package body Gnat2Why.Expr is
       Checks       : W_Prog_Id := +Void;
       Tmp          : constant W_Identifier_Id := Tmp_Of_Expr (+Expr);
       Init         : constant W_Prog_Id := Expr;
-
-      --  Start of processing for Insert_Move_Of_Deep_Parts
 
    begin
       --  There is no move at all for a borrow or observe
@@ -12298,8 +12260,6 @@ package body Gnat2Why.Expr is
       Result      : W_Prog_Id := +Void;
       Domain      : constant EW_Domain :=
         (if Do_Check = No_Checks then EW_Pterm else EW_Prog);
-
-      --  Start of processing for New_Assignment
 
    begin
       --  If Preserv_Tag is set, preserve the tag and extension of objects if
@@ -13524,8 +13484,6 @@ package body Gnat2Why.Expr is
       Pred_Checks   : W_Statement_Sequence_Id;
       At_End_Assume : W_Prog_Id;
       At_End_Checks : W_Prog_Id;
-
-      --  Start of processing for New_Update_For_Borrow_At_End
 
    begin
       --  1. Reconstruct the value of Path from the borrower at end of borrow
@@ -18848,8 +18806,6 @@ package body Gnat2Why.Expr is
       Left_Type : constant Entity_Id := Etype (Left);
       T         : W_Expr_Id;
 
-      --  Start of processing for Transform_Comparison
-
    begin
       --  Special case for equality between Booleans in predicates
 
@@ -19118,8 +19074,6 @@ package body Gnat2Why.Expr is
       begin
          return +New_Discrete_Add (Domain, Left_Last, Right_Length, Typ);
       end Build_Last_No_Slide;
-
-      --  Start of processing for Transform_Concatenation
 
    begin
       --  Step 1: introduce temps for left and right
@@ -19620,8 +19574,6 @@ package body Gnat2Why.Expr is
       end Check_Itypes_Of_Components;
 
       R : W_Prog_Id := +Void;
-
-      --  Start of processing for Transform_Declaration
 
    begin
       case Nkind (Decl) is
@@ -21412,8 +21364,6 @@ package body Gnat2Why.Expr is
                   Check_No_Wrap_Around : constant Boolean :=
                     Domain = EW_Prog and then No_Wrap_Around;
 
-                  --  Start of processing for N_Op_Expon_Case
-
                begin
                   --  Translate powers of 2 on modular types as shifts. If the
                   --  modulus is not a power of two, this cannot be done as the
@@ -21729,8 +21679,6 @@ package body Gnat2Why.Expr is
                     (Local_Params with delta Warn_On_Dead => Warn_On_Right);
                   --  Do not emit dead branch warnings in Right if Left is
                   --  statically disabled.
-
-                  --  Start of processing for Short_Circuit
 
                begin
                   Ada_Ent_To_Why.Push_Scope (Symbol_Table);
@@ -23472,8 +23420,6 @@ package body Gnat2Why.Expr is
          end case;
       end Compute_Runtime_Checks;
 
-      --  Start of processing for Transform_Expr_With_Cutpoints
-
    begin
       Premise := Compute_Premise (Assertion, Split_Params);
       Result := Compute_Result (Assertion);
@@ -23849,8 +23795,6 @@ package body Gnat2Why.Expr is
       Handlers : constant List_Id := Exception_Handlers (N);
       Core     : W_Prog_Id :=
         Transform_Statements_And_Declarations (Statements (N), Params);
-
-      --  Start of processing for Transform_Handled_Statements
 
    begin
       if Present (Handlers) then
@@ -24777,8 +24721,6 @@ package body Gnat2Why.Expr is
         (if Domain = EW_Pred then EW_Term else Domain);
       Var_Expr  : W_Expr_Id;
 
-      --  Start of processing for Transform_Membership_Expression
-
    begin
       --  Check the specific rules for membership tests on unchecked union
       --  types.
@@ -25190,8 +25132,6 @@ package body Gnat2Why.Expr is
       begin
          null;
       end tip;
-
-      --  Start of processing for Transform_Pragma
 
    begin
       case Prag_Id is
@@ -25921,8 +25861,6 @@ package body Gnat2Why.Expr is
       Discr_Index : Positive := 1;
       CL          : List_Id;
       Choice      : Node_Id;
-
-      --  Start of processing for Transform_Record_Component_Associations
 
    begin
       Association := Nlists.First (Assocs);
@@ -28245,8 +28183,6 @@ package body Gnat2Why.Expr is
       --  Local variables
 
       Incompl_Acc : Entity_Sets.Set;
-
-      --  Start of processing for Variables_In_Dynamic_Invariant
 
    begin
       Variables_In_Dynamic_Invariant (Ty, Variables, Incompl_Acc);

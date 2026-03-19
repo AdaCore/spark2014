@@ -738,8 +738,6 @@ package body Gnat2Why.Subprograms is
          Append (Details, To_String (Trace));
       end Msg_Details;
 
-      --  Start of processing for Check_Ceiling_Protocol
-
    begin
       if Ekind (E) not in E_Task_Type | E_Entry
         and then not Might_Be_Main (E)
@@ -1201,8 +1199,6 @@ package body Gnat2Why.Subprograms is
          end loop;
       end Process_Declarations;
 
-      --  Start of processing for Compute_Attach_Handler_Check
-
    begin
       Process_Declarations (Visible_Declarations_Of_Prot_Type (Ty));
 
@@ -1556,8 +1552,6 @@ package body Gnat2Why.Subprograms is
 
       procedure Effects_Append_Binder_To_Writes is new
         Effects_Append_Binder (Effects_Append_To_Writes);
-
-      --  Start of processing for Compute_Effects
 
    begin
       --  Collect global variables potentially read and written
@@ -2277,8 +2271,6 @@ package body Gnat2Why.Subprograms is
       Result : W_Prog_Id := +Void;
       --  Why program for these checks
 
-      --  Start of processing for Compute_Contract_Cases_Entry_Checks
-
    begin
       --  Process individual contract cases
 
@@ -2533,8 +2525,6 @@ package body Gnat2Why.Subprograms is
 
       Result : W_Prog_Id := +Void;
 
-      --  Start of processing for Compute_Contract_Cases_Exit_Checks
-
    begin
       for Aggr of CC_List loop
          --  Process individual contract cases
@@ -2594,8 +2584,6 @@ package body Gnat2Why.Subprograms is
 
       Result : W_Pred_Array (1 .. Natural (CC_List.Length));
       Pos    : Natural := 0;
-
-      --  Start of processing for Compute_Contract_Cases_Postcondition
 
    begin
       for Aggr of CC_List loop
@@ -3358,8 +3346,6 @@ package body Gnat2Why.Subprograms is
          else Symbol_Sets.Empty_Set);
 
       Def : W_Term_Id;
-
-      --  Start of processing for Declare_Logic_Functions
 
    begin
       if Is_Unchecked_Conversion_Instance (E) then
@@ -4275,8 +4261,6 @@ package body Gnat2Why.Subprograms is
       Vis_Decls  : constant List_Id := Visible_Declarations_Of_Prot_Type (E);
       Th         : Theory_UC;
 
-      --  Start of processing for Generate_VCs_For_Protected_Type
-
    begin
       --  We open a new theory, so that the context is fresh for this task
 
@@ -4456,8 +4440,6 @@ package body Gnat2Why.Subprograms is
    procedure Generate_VCs_For_Subprogram (E : Callable_Kind_Id) is
       Name : constant String := Full_Name (E);
       Th   : Theory_UC;
-
-      --  Start of processing for Generate_VCs_For_Subprogram
 
    begin
       Th :=
@@ -4801,8 +4783,6 @@ package body Gnat2Why.Subprograms is
               W_Prog_Array (2 .. Nb_Cases - (if Others_Present then 1 else 0));
             Else_Part        : W_Prog_Id;
             Exceptional_Case : Node_Id := First (Assocs);
-
-            --  Start of processing for Check_Exceptional_Cases
 
          begin
             --  Get the case where there is only one choice out of the way
@@ -5592,8 +5572,6 @@ package body Gnat2Why.Subprograms is
 
       Precondition_Is_Statically_False  : Boolean := False;
       Postcondition_Is_Statically_False : Boolean := False;
-
-      --  Start of processing for Generate_VCs_For_Subprogram
 
    begin
       --  Reset the toplevel exceptions for exit paths
@@ -9102,8 +9080,6 @@ package body Gnat2Why.Subprograms is
       Subp_For_Pre  : Entity_Id := Empty;
       Subp_For_Post : Entity_Id := Empty;
       Contracts     : Node_Lists.List;
-
-      --  Start of processing for Update_Symbol_Table_For_Inherited_Contracts
 
    begin
       --  Find the subprogram from which the precondition is inherited, if any

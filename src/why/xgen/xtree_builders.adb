@@ -233,8 +233,6 @@ package body Xtree_Builders is
 
       end Print_Record_Initialization;
 
-   --  Start of processing for Print_Builder_Implementation
-
    begin
       PL (O, "Node_Table.Append (" &
              Empty_Nodes & "." & Mixed_Case_Name (Kind) & "_Node);");
@@ -412,8 +410,6 @@ package body Xtree_Builders is
 
          Field_Number := Field_Number + 1;
       end Print_Parameter_Specification;
-
-   --  Start of processing for Print_Builder_Specification
 
    begin
       Max_Param_Len := Max_Param_Length (Kind);

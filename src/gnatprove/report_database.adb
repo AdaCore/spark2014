@@ -154,8 +154,6 @@ package body Report_Database is
 
       Subp : constant Subp_Type := Claim.Arg;
 
-      --  Start of processing for Add_Claim_With_Assumptions
-
    begin
       Update_Subp_Entry (Subp_Unit_Map (Subp), Subp, Add_Claim_Entry'Access);
    end Add_Claim_With_Assumptions;
@@ -188,8 +186,6 @@ package body Report_Database is
          end case;
       end Process;
 
-      --  Start of processing for Add_Flow_Result
-
    begin
       Update_Subp_Entry (Unit, Subp, Process'Access);
    end Add_Flow_Result;
@@ -218,8 +214,6 @@ package body Report_Database is
                Subp   => Subp));
       end Process;
 
-      --  Start of processing for Add_Pragma_Assume_Result
-
    begin
       Update_Subp_Entry (Unit, Subp, Process'Access);
    end Add_Pragma_Assume_Result;
@@ -245,8 +239,6 @@ package body Report_Database is
             Stat.Proof_Checks_OK := Stat.Proof_Checks_OK + 1;
          end if;
       end Process;
-
-      --  Start of processing for Add_Proof_Result
 
    begin
       Update_Subp_Entry (Unit, Subp, Process'Access);
@@ -281,8 +273,6 @@ package body Report_Database is
       begin
          Stat.SPARK := SPARK_Status;
       end Process;
-
-      --  Start of processing for Add_SPARK_Status
 
    begin
       --  ??? We need to use include instead of insert because GNATprove
@@ -324,8 +314,6 @@ package body Report_Database is
                Line       => Line,
                Column     => Column));
       end Process;
-
-      --  Start of processing for Add_Suppressed_Check
 
    begin
       Update_Subp_Entry (Unit, Subp, Process'Access);
@@ -474,8 +462,6 @@ package body Report_Database is
 
       use Prover_Stat_Maps;
 
-      --  Start of processing for Merge_Stat_Maps
-
    begin
       for C in B.Iterate loop
          declare
@@ -525,8 +511,6 @@ package body Report_Database is
             Count := Count + 1;
          end if;
       end Update;
-
-      --  Start of processing for Num_Subps_SPARK
 
    begin
       Iter_Unit_Subps (Unit, Update'Access);
@@ -610,8 +594,6 @@ package body Report_Database is
       use Unit_Maps;
       C        : Cursor;
       Inserted : Boolean;
-
-      --  Start of processing for Update_Subp_Entry
 
    begin
       Unit_Map.Insert

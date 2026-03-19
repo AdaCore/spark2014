@@ -653,8 +653,6 @@ package body Flow_Utility is
       procedure Traverse is new Traverse_More_Proc (Process => Proc);
       --  AST traversal procedure
 
-      --  Start of processing for Pick_Generated_Info_Internal
-
    begin
       Traverse (N);
    end Pick_Generated_Info_Internal;
@@ -835,8 +833,6 @@ package body Flow_Utility is
       Discard  : Boolean;
       Position : Node_Sets.Cursor;
       Inserted : Boolean;
-
-      --  Start of processing for Process_Type_Contracts_Internal
 
    begin
       --  If we didn't analyze Typ yet, and it is not an access-to-subprogram
@@ -1793,8 +1789,6 @@ package body Flow_Utility is
         First (Pragma_Argument_Associations (Global_Node));
       pragma Assert (Nkind (PAA) = N_Pragma_Argument_Association);
 
-      --  Start of processing for Parse_Global_Contract
-
    begin
       if Nkind (Expression (PAA)) = N_Null then
          --  global => null
@@ -2012,8 +2006,6 @@ package body Flow_Utility is
       end Debug;
 
       pragma Annotate (Xcov, Exempt_Off);
-
-      --  Start of processing for Get_Globals
 
    begin
       Globals.Proof_Ins := Flow_Id_Sets.Empty_Set;
@@ -2581,8 +2573,6 @@ package body Flow_Utility is
 
       Globals : Global_Flow_Ids;
       Scope   : Flow_Scope;
-
-      --  Start of processing for Get_Proof_Globals
 
    begin
       --  We currently have no way to annotate subprogram types with globals,
@@ -3158,8 +3148,6 @@ package body Flow_Utility is
 
          procedure Handle_Parameters is new
            Iterate_Call_Parameters (Handle_Parameter);
-
-         --  Start of processing for Do_Subprogram_Call
 
       begin
          --  Ignore calls to predicate functions, which come from the frontend
@@ -4312,8 +4300,6 @@ package body Flow_Utility is
             end loop;
             Outdent;
          end Untangle_Delta_Fields;
-
-         --  Start of processing for Untangle_Record_Fields
 
       begin
          pragma Annotate (Xcov, Exempt_On, "Debugging code");
@@ -5672,8 +5658,6 @@ package body Flow_Utility is
       --  have more assertions, e.g. about subtype names that can only appear
       --  in specific contexts.
 
-      --  Start of processing for Get_Variables_Internal
-
    begin
       Traverse (N);
 
@@ -5763,8 +5747,6 @@ package body Flow_Utility is
       Scope            : constant Flow_Scope := Get_Flow_Scope (Scope_N);
       Target_Name      : constant Flow_Id :=
         Resolve_Target_Name (Expr_N, Scope);
-
-      --  Start of processing for Get_Variables_For_Proof
 
    begin
       --  Ignore references to array bounds of objects (because they are never
@@ -6672,8 +6654,6 @@ package body Flow_Utility is
          end case;
       end Scan_Contract;
 
-      --  Start of processing for Search_Depends_Contract
-
    begin
       Contract_N := Find_Contract (Unit, Pragma_Refined_Depends);
 
@@ -6849,8 +6829,6 @@ package body Flow_Utility is
 
          end case;
       end Scan_Inputs;
-
-      --  Start of processing for Search_Initializes_Contract
 
    begin
       if Present (Contract) then
@@ -7388,8 +7366,6 @@ package body Flow_Utility is
 
       M : Flow_Id_Maps.Map := Flow_Id_Maps.Empty_Map;
 
-      --  Start of processing for Untangle_Record_Assignment
-
    begin
       pragma Annotate (Xcov, Exempt_On, "Debugging code");
       if Debug_Trace_Untangle_Record then
@@ -7822,8 +7798,6 @@ package body Flow_Utility is
 
       Seq : Node_Lists.List;
       Idx : Positive;
-
-      --  Start of processing for Untangle_Assignment_Target
 
    begin
       pragma Annotate (Xcov, Exempt_On, "Debugging code");

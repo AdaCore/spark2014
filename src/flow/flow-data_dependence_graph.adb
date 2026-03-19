@@ -262,8 +262,6 @@ package body Flow.Data_Dependence_Graph is
 
       Unused : Flow_Graphs.Simple_Traversal_Instruction;
 
-      --  Start of processing for Create
-
    begin
       FA.DDG := FA.CFG.Create;
 

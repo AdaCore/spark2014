@@ -1380,8 +1380,6 @@ package body CE_RAC is
 
       procedure Iterate_Call is new Iterate_Call_Parameters (Process_Param);
 
-      --  Start of processing for Copy_Out_Parameters
-
    begin
       Iterate_Call (Call);
    end Copy_Out_Parameters;
@@ -1839,8 +1837,6 @@ package body CE_RAC is
             return Value_Enum_Integer (RAC_Expr (N));
          end if;
       end To_Big_Integer;
-
-      --  Start of processing for Get_Bounds
 
    begin
       Low := To_Big_Integer (Low_Bound (N));
@@ -2395,8 +2391,6 @@ package body CE_RAC is
 
       procedure Iterate_Call is new Iterate_Call_Parameters (Process_Param);
 
-      --  Start of processing for Param_Scope
-
    begin
       Iterate_Call (Call);
       return Res;
@@ -2548,7 +2542,6 @@ package body CE_RAC is
       Res       : Opt_Value_Type;
       Sc        : Scopes;
 
-      --  Start of processing for RAC_Call
    begin
       RAC_Trace ("call " & Get_Name_String (Chars (E)));
       Rem_Stack_Height_Push;
@@ -2999,8 +2992,6 @@ package body CE_RAC is
             end if;
          end loop;
       end Init_Global_Scope;
-
-      --  Start of processing for RAC_Execute
 
    begin
       Ctx :=
@@ -4604,8 +4595,6 @@ package body CE_RAC is
       --  Local variables
 
       Res : Value_Type;
-
-      --  Start of processing for RAC_Expr
 
    begin
       RAC_Trace ("expr " & Node_Kind'Image (Nkind (N)), N);

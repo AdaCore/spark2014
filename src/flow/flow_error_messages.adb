@@ -377,7 +377,6 @@ package body Flow_Error_Messages is
            Details       => To_Unbounded_String (Details),
            Continuations => Continuations,
            others        => <>);
-      --  Start of processing for Error_Msg_Flow
 
    begin
       --  If the message we are about to emit has already been emitted in the
@@ -566,8 +565,6 @@ package body Flow_Error_Messages is
         (if Erroutc.Continuation or else Path.Is_Empty
          then ""
          else Write_Tracefile (Path));
-
-      --  Start of processing for Error_Msg_Flow
 
    begin
       Error_Msg_Flow
@@ -886,8 +883,6 @@ package body Flow_Error_Messages is
            Unproved_Stat => Unproved_Stat,
            others        => <>);
 
-      --  Start of processing for Error_Msg_Proof
-
    begin
       --  Proof (why3) will only report messages that are relevant wrt
       --  limit-line option, but Interval messages will be issued for all
@@ -1056,8 +1051,6 @@ package body Flow_Error_Messages is
            and then Is_Fixed_Point_Type (Retysp (Etype (N)))
          then "result of fixed-point " & Oper
          else "result of " & Oper);
-
-      --  Start of processing for Get_Details
 
    begin
       --  The structure of the code is taken from
@@ -1881,8 +1874,6 @@ package body Flow_Error_Messages is
 
          use type Ada.Containers.Count_Type;
 
-         --  Start of processing for Explain_Calls
-
       begin
          for Call of Calls loop
             declare
@@ -2147,8 +2138,6 @@ package body Flow_Error_Messages is
          end Add_Call;
 
          procedure Get_All_Calls is new Traverse_More_Proc (Add_Call);
-
-         --  Start of processing for Get_Calls_From_Node
 
       begin
          Get_All_Calls (N);
@@ -2479,8 +2468,6 @@ package body Flow_Error_Messages is
          function Check_Function_Result is new
            Traverse_More_Func (Is_Function_Result);
 
-         --  Start of processing for Has_Attribute_Result
-
       begin
          return Check_Function_Result (N) = Abandon;
       end Has_Attribute_Result;
@@ -2546,8 +2533,6 @@ package body Flow_Error_Messages is
 
          function Find_Post_State is new Traverse_More_Func (Is_Post_State);
 
-         --  Start of processing for Has_Post_State
-
       begin
          return Find_Post_State (N) = Abandon;
       end Has_Post_State;
@@ -2559,8 +2544,6 @@ package body Flow_Error_Messages is
       --  Approximate search for the enclosing subprogram or library package.
       --  It is fine to use this function here even if not always correct, as
       --  it's only used for adding or not an explanation.
-
-      --  Start of processing for Get_Fix
 
    begin
       --  On unprovable checks, avoid producing an incorrect possible fix
@@ -4541,8 +4524,6 @@ package body Flow_Error_Messages is
             Append (R, '"');
          end if;
       end Append_Quote;
-
-      --  Start of processing for Substitute
 
    begin
       for Index in Positive range 1 .. Length (S) loop

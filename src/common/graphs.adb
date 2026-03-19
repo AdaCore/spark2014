@@ -224,8 +224,6 @@ package body Graphs is
          end if;
       end Enqueue_Children;
 
-      --  Start of processing for BFS
-
    begin
       if Include_Start then
          Enqueue (A => Start, B => Start, D => 0);
@@ -385,8 +383,6 @@ package body Graphs is
          end if;
       end SIMPLE_TC;
 
-      --  Start of processing for Close
-
    begin
       for V in Valid_Vertex_Id range 1 .. G.Vertices.Last_Index loop
          if Root (V) = 0 then
@@ -489,8 +485,6 @@ package body Graphs is
       Succ : Component_To_Components_Vectors.Vector renames
         Components.Component_Graph;
       --  Condensation graph and its transitive closure, respectively
-
-      --  Start of processing for SCC
 
    begin
       for V in Valid_Vertex_Id range 1 .. G.Vertices.Last_Index loop
@@ -733,8 +727,6 @@ package body Graphs is
          end if;
       end Should_Visit;
 
-      --  Start of processing for DFS
-
    begin
       --  Seed the stack with either the start node or all its
       --  neighbours.
@@ -956,8 +948,6 @@ package body Graphs is
             B := Tmp;
          end Swap;
 
-         --  Start of processing for Link
-
       begin
          while Semi (Label (W)) < Semi (Label (Child (S))) loop
             if Size (S) + Size (Child (Child (S))) >= 2 * Size (Child (S)) then
@@ -982,8 +972,6 @@ package body Graphs is
             S := Child (S);
          end loop;
       end Link;
-
-      --  Start of processing for Dominator_Tree_Internal
 
    begin
       --  Step 1
@@ -1403,8 +1391,6 @@ package body Graphs is
          end if;
       end Are_We_There_Yet;
 
-      --  Start of processing for Non_Trivial_Path_Exists
-
    begin
       G.DFS
         (Start         => A,
@@ -1441,8 +1427,6 @@ package body Graphs is
             TV := Continue;
          end if;
       end Are_We_There_Yet;
-
-      --  Start of processing for Non_Trivial_Path_Exists
 
    begin
       G.DFS
@@ -1576,8 +1560,6 @@ package body Graphs is
          Tree.Include (V, Origin);
       end Make_Tree;
 
-      --  Start of processing for Shortest_Path
-
    begin
       BFS
         (G             => G,
@@ -1667,8 +1649,6 @@ package body Graphs is
       end Escape;
 
       FD : File_Type;
-
-      --  Start of processing for Write_Dot_File
 
    begin
       Create (FD, Out_File, Filename & ".dot");

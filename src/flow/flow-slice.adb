@@ -95,8 +95,6 @@ package body Flow.Slice is
          TV := Flow_Graphs.Continue;
       end Visitor;
 
-      --  Start of processing for Internal_Dependency
-
    begin
       FA.PDG.DFS
         (Start         => V_Final,
@@ -176,8 +174,6 @@ package body Flow.Slice is
       --  flow error about a missing null dependency.
 
       DM : Dependency_Maps.Map := Dependency_Maps.Empty_Map;
-
-      --  Start of processing for Compute_Dependency_Relation
 
    begin
       --  Determine all out vertices
@@ -416,8 +412,6 @@ package body Flow.Slice is
             end if;
          end Is_Written;
 
-         --  Start of processing for Get_Local_Definite_Writes
-
       begin
          --  Detect initialized local variables
          for LV of FA.GG.Local_Variables loop
@@ -447,8 +441,6 @@ package body Flow.Slice is
       --  Placeholders for the results; they are separate containers because
       --  while we populate them we don't want to care about the predicate on
       --  the result type.
-
-      --  Start of processing for Compute_Globals
 
    begin
       --  Detect ordinary inputs, i.e. non-proof ones, and classify calls into

@@ -172,8 +172,6 @@ package body Flow_Visibility is
             Scope_Graph.Add_Edge (Source, Target, Rule);
          end Connect;
 
-         --  Start of processing for Connect
-
       begin
          ----------------------------------------------------------------------
          --  Create edges
@@ -359,8 +357,6 @@ package body Flow_Visibility is
                  ((Ent => Info.Container.Ent, Part => Body_Part)));
          end if;
       end Connect;
-
-      --  Start of processing for Connect_Flow_Scopes
 
    begin
       for C in Hierarchy_Info.Iterate loop
@@ -768,8 +764,6 @@ package body Flow_Visibility is
       Filename : constant String :=
         Unique_Name (Unique_Main_Unit_Entity) & "_visibility";
 
-      --  Start of processing for Print
-
    begin
       G.Write_Pdf_File
         (Filename  => Filename,
@@ -835,8 +829,6 @@ package body Flow_Visibility is
             Ada.Text_IO.Put_Line ("standard");
          end if;
       end Print_Vertex;
-
-      --  Start of processing for Print_Path
 
    begin
       Scope_Graphs.Shortest_Path
@@ -917,8 +909,6 @@ package body Flow_Visibility is
 
       procedure Traverse is new
         Traverse_Compilation_Unit (Process_Scope_Declaration);
-
-      --  Start of processing for Build_Graph
 
    begin
       if Unit_Node = Standard_Package_Node then
@@ -1229,8 +1219,6 @@ package body Flow_Visibility is
          Traverse_Declarations_Or_Statements (Visible_Declarations (N));
          Traverse_Declarations_Or_Statements (Private_Declarations (N));
       end Traverse_Visible_And_Private_Parts;
-
-      --  Start of processing for Traverse_Compilation_Unit
 
    begin
       Traverse_Declaration_Or_Statement (Unit_Node);

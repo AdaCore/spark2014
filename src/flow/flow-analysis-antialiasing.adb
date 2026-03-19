@@ -179,8 +179,6 @@ package body Flow.Analysis.Antialiasing is
       BL : constant Node_Id := Low_Bound (Range_Expr_B);
       BH : constant Node_Id := High_Bound (Range_Expr_B);
 
-      --  Start of processing for Check_Range
-
    begin
       if Empty (AL, AH)
         or else Empty (BL, BH)
@@ -510,8 +508,6 @@ package body Flow.Analysis.Antialiasing is
       Root_A, Root_B : Entity_Id;
 
       Definitive_Result : Boolean := True;
-
-      --  Start of processing for Aliasing
 
    begin
       Trace_Two_Nodes
@@ -1132,8 +1128,6 @@ package body Flow.Analysis.Antialiasing is
       Globals : Global_Flow_Ids;
 
       use type Node_Sets.Set;
-
-      --  Start of processing for Check_Procedure_Call
 
    begin
       if Ekind (Called_Thing) /= E_Subprogram_Type then

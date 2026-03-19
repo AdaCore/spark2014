@@ -1341,8 +1341,6 @@ package body Gnat2Why.Subprograms.Pointers is
          --  which is not supported in SPARK.
       end Check_No_Globals;
 
-      --  Start of processing for Transform_Access_Attribute_Of_Subprogram
-
    begin
       --  Handlers cannot be called. Use the dummy value of the profile.
 

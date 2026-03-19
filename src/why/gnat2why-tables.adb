@@ -432,8 +432,6 @@ package body Gnat2Why.Tables is
 
       Ancestor_Type : constant Entity_Id := Retysp (Etype (E));
 
-      --  Start of processing for Init_Component_Info
-
    begin
       while Present (Discr) loop
          Info.Variant_Info.Insert

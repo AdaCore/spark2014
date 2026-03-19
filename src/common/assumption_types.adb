@@ -236,8 +236,6 @@ package body Assumption_Types is
          Subp_Map.Insert (Elt, Index);
       end Parse_Entry;
 
-      --  Start of processing for Parse_Entity_Table
-
    begin
       Subp_Map.Clear;
       Subp_Vector.Clear;

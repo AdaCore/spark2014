@@ -768,8 +768,6 @@ package body Gnat2Why.Expr.Loops.Inv is
          end if;
       end Preserve_Bounds_Or_Discriminants;
 
-      --  Start of processing for Equality_Of_Preserved_Components
-
    begin
       case Status.Kind is
          when Discard           =>
@@ -1628,8 +1626,6 @@ package body Gnat2Why.Expr.Loops.Inv is
         Iterate_Call_Parameters (Process_Param);
 
       Subp : constant Callable_Kind_Id := Get_Called_Entity_For_Proof (Call);
-
-      --  Start of processing for Process_Call_Statement
 
    begin
       --  Record writes to out and in out parameters of the call

@@ -877,8 +877,6 @@ package body Errout_Wrapper is
 
       Suppr_Reason : String_Id := Erroutc.Warnings_Suppressed (Sloc (N));
 
-      --  Start of processing for Warning_Is_Suppressed
-
    begin
       if Suppr_Reason = No_String then
          Suppr_Reason :=

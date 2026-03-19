@@ -611,8 +611,6 @@ package body Flow_Generated_Globals.Partial is
             end loop;
          end Collect_Unsynchronized;
 
-         --  Start of processing for Unsynchronized_Globals
-
       begin
          Collect_Unsynchronized (G.Proof_Ins);
          Collect_Unsynchronized (G.Inputs);
@@ -620,8 +618,6 @@ package body Flow_Generated_Globals.Partial is
 
          return Unsynch;
       end Unsynchronized_Globals;
-
-      --  Start of processing for Preanalyze_Spec
 
    begin
       -------------------------------------------------------------------------
@@ -975,8 +971,6 @@ package body Flow_Generated_Globals.Partial is
          end if;
       end Crash_On_Abstract_Callee;
 
-      --  Start of processing for Categorize_Calls
-
    begin
       --  Definitive calls are the easiest to find and the implementation is
       --  fairly straightforward, as it ignores conditional and proof calls.
@@ -1245,8 +1239,6 @@ package body Flow_Generated_Globals.Partial is
          end loop;
       end Collect_Calls;
 
-      --  Start of processing for Contract_Calls
-
    begin
       for Expr of Get_Precondition_Expressions (E) loop
          Collect_Calls (Expr);
@@ -1494,8 +1486,6 @@ package body Flow_Generated_Globals.Partial is
 
          C : constant Entity_Contract_Maps.Cursor := Contracts.Find (E);
 
-         --  Start of processing for Dump
-
       begin
          for Child of Scope_Map (E) loop
             Dump (Child);
@@ -1613,8 +1603,6 @@ package body Flow_Generated_Globals.Partial is
             Ada.Text_IO.New_Line;
          end if;
       end Dump;
-
-      --  Start of processing for Dump
 
    begin
       if Debug_Partial_Contracts then
@@ -1869,8 +1857,6 @@ package body Flow_Generated_Globals.Partial is
 
       Update : Flow_Nodes;
 
-      --  Start of processing for Fold
-
    begin
       for Child of Scope_Map (Folded) loop
          Fold (Child, Analyzed, Contracts, Patches);
@@ -2017,8 +2003,6 @@ package body Flow_Generated_Globals.Partial is
 
          return Result;
       end Remove_Constants_Without_Variable_Input;
-
-      --  Start of processing for Frontend_Globals
 
    begin
       --  Collect frontend globals using only info from the current compilation
@@ -2290,8 +2274,6 @@ package body Flow_Generated_Globals.Partial is
         Unique_Name (Unique_Main_Unit_Entity) & "_constants_1";
       --  ??? this fails on subprogram instantiation as compilation units
 
-      --  Start of processing for Print_Graph
-
    begin
       G.Write_Pdf_File
         (Filename  => Filename,
@@ -2559,8 +2541,6 @@ package body Flow_Generated_Globals.Partial is
       procedure Seed_Exposed_Constants is new
         Iterate_Constants_In_Main_Unit (Seed_Exposed_Constant);
 
-      --  Start of processing for Resolve_Constants
-
    begin
       Constant_Graph := Constant_Graphs.Create;
 
@@ -2711,8 +2691,6 @@ package body Flow_Generated_Globals.Partial is
          Node_Sets.Move (Target => From, Source => Filtered);
       end Strip;
 
-      --  Start of processing for Strip_Constants
-
    begin
       Strip (From.Proper);
       Strip (From.Refined);
@@ -2760,8 +2738,6 @@ package body Flow_Generated_Globals.Partial is
 
       procedure Write_Constants is new
         Iterate_Constants_In_Main_Unit (Write_Constant);
-
-      --  Start of processing for Write_Constants_To_ALI
 
    begin
       Write_Constants;

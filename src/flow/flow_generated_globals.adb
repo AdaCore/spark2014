@@ -64,8 +64,6 @@ package body Flow_Generated_Globals is
    end Disjoint;
    pragma Annotate (Xcov, Exempt_Off);
 
-   --  Start of processing for Flow_Generated_Globals
-
 begin
    Term_Info.Init_For_Stdout (Colors => Yes);
 end Flow_Generated_Globals;

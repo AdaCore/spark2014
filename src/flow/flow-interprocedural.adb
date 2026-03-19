@@ -208,8 +208,6 @@ package body Flow.Interprocedural is
          FA.TDG.Add_Edge (V_A, V_B, EC_TDG);
       end Add_TD_Edge;
 
-      --  Start of processing for Add_Simple_Procedure_Dependency
-
    begin
       if Ekind (Called_Thing) /= E_Subprogram_Type
         and then Has_Depends (Called_Thing)

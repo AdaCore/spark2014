@@ -737,8 +737,6 @@ package body Gnat2Why.Driver is
 
       Stop_Reason : Stop_Reason_Type := Stop_Reason_None;
 
-      --  Start of processing for GNAT_To_Why
-
    begin
       Timing_Start (Timing);
 
@@ -1454,8 +1452,6 @@ package body Gnat2Why.Driver is
          end case;
       end Register_Symbol;
 
-      --  Start of processing for Translate_CUnit
-
    begin
       --  Translation of the __HEAP is hardcoded into the
       --  _gnatprove_standard.Main module.
@@ -1535,8 +1531,6 @@ package body Gnat2Why.Driver is
                 & GNAT.Source_Info.Enclosing_Entity);
          Close_Theory (Th, Kind => Standalone_Theory);
       end Generate_Empty_Axiom_Theory;
-
-      --  Start of processing for Translate_Entity
 
    begin
       --  Check that the global variables are cleared before and after this
@@ -1702,8 +1696,6 @@ package body Gnat2Why.Driver is
          Translate_Entity (E);
          Complete_Declaration (E);
       end Translate_Standard_Entity;
-
-      --  Start of processing for Translate_Standard_Package
 
    begin
       for S_Type in S_Types loop

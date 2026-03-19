@@ -302,8 +302,6 @@ package body Why.Gen.Records is
       I       : Positive := 1;
       T       : W_Pred_Id := True_Pred;
 
-      --  Start of processing for Build_Binary_Predicate_For_Record
-
    begin
       --  As discriminants may occur in bounds of types of other fields,
       --  store them in the Symbol_Table.
@@ -1209,8 +1207,6 @@ package body Why.Gen.Records is
             SPARK_Record => False);
       end Declare_Extension_Type;
 
-      --  Start of processing for Create_Rep_Record_Completion_If_Needed
-
    begin
       --  Empty record types and clones do not require a representative
       --  theory.
@@ -1985,8 +1981,6 @@ package body Why.Gen.Records is
                     Kind => EW_Axdep_Func)));
       end Declare_Attribute_For_Field;
 
-      --  Start of processing for Declare_Component_Attributes
-
    begin
       if Has_Discriminants (E) then
          declare
@@ -2730,8 +2724,6 @@ package body Why.Gen.Records is
                  New_Record_Aggregate (Associations => To_Wrapper_Aggr)));
       end Declare_Wrapper_Conversions;
 
-      --  Start of processing for Declare_Init_Wrapper_For_Record
-
    begin
       --  This type is simply a copy of an existing type, we re-export the
       --  corresponding module and then return.
@@ -3074,8 +3066,6 @@ package body Why.Gen.Records is
               Matched_Expr => Expr,
               Params       => Logic_Params);
       end Transform_Discrete_Choices;
-
-      --  Start of processing for Declare_Protected_Access_Functions
 
    begin
       if Is_Simple_Private_Type (E) then
@@ -3540,8 +3530,6 @@ package body Why.Gen.Records is
             end if;
          end New_Field_Equality;
 
-         --  Start of processing for Declare_Equality_Function
-
       begin
          --  For a record type:
          --
@@ -3997,8 +3985,6 @@ package body Why.Gen.Records is
 
          Declare_Extraction_Functions (Components => Comps);
       end Declare_Extraction_Functions_For_Extension;
-
-      --  Start of processing for Declare_Rep_Record_Type
 
    begin
       --  For types which have a private part, declare a new uninterpreted type
