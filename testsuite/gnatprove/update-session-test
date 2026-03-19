@@ -9,6 +9,8 @@ import subprocess
 import tempfile
 import yaml
 
+from lib.python.suite_util import find_test_dir
+
 descr = """This script will update the session information of a test, and then
 rerun the test. It will run the test twice, so it takes some time.  """
 
@@ -59,14 +61,10 @@ def parse_options():
 
 
 def testdir(testname):
-    testdir = os.path.join("tests", testname)
-    if not os.path.exists(testdir):
-        testdir = os.path.join("internal", testname)
-    if not os.path.exists(testdir):
-        testdir = os.path.join("sparklib", testname)
-    if not os.path.exists(testdir):
+    path = find_test_dir(testname)
+    if path is None:
         raise ValueError
-    return testdir
+    return path
 
 
 def is_replaytest(testname):
