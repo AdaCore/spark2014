@@ -301,7 +301,7 @@ def main():
         tmpdir = download_from_gaia(args.gaia_id)
         outputdirs = [tmpdir]
     elif args.gitlab_id:
-        p = GitLabProjectDescription(SPARK2014_GITLAB_ID, ["spark2014"])
+        p = GitLabProjectDescription(SPARK2014_GITLAB_ID, ["spark2014", "sparklib"])
         gl = Gitlab()
         lookup = get_pipeline_from_mr(gl, SPARK2014_GITLAB_ID, args.gitlab_id)
         if lookup.status == "pipeline":
