@@ -1,7 +1,7 @@
 main.adb:11:16: info: implicit aspect Always_Terminates on "Hash" has been proved, subprogram will terminate
 main.adb:13:12: info: data dependencies proved
 main.adb:17:30: info: data dependencies proved
-main.adb:20:28: info: all elements shall fit in index type and fit in type "Count_Type" for sequence aggregates at spark-containers-formal-doubly_linked_lists.ads:54, in instantiation at main.adb:18
+main.adb:20:28: info: all elements shall fit in index type and fit in type "Count_Type" for sequence aggregates at spark-containers-formal-doubly_linked_lists.ads:56, in instantiation at main.adb:18
 main.adb:20:28: info: precondition proved (CVC5: 2 VC)
 main.adb:22:22: info: assertion proved (CVC5: 1 VC)
 main.adb:23:22: info: assertion proved (CVC5: 1 VC)
@@ -26,7 +26,7 @@ main.adb:41:26: info: precondition proved (CVC5: 4 VC)
 main.adb:43:22: info: assertion proved (CVC5: 1 VC)
 main.adb:44:22: info: assertion proved (CVC5: 3 VC)
 main.adb:47:37: info: data dependencies proved
-main.adb:50:26: info: keys shall be distinct and all elements shall fit in type "Count_Type" for maps aggregates at spark-containers-formal-ordered_maps.ads:91, in instantiation at main.adb:48
+main.adb:50:26: info: keys shall be distinct and all elements shall fit in type "Count_Type" for maps aggregates at spark-containers-formal-ordered_maps.ads:93, in instantiation at main.adb:48
 main.adb:50:26: info: precondition proved (CVC5: 4 VC)
 main.adb:52:22: info: assertion proved (CVC5: 1 VC)
 main.adb:53:22: info: assertion proved (CVC5: 1 VC)
@@ -48,7 +48,7 @@ main.adb:58:22: info: precondition proved (CVC5: 1 VC)
 main.adb:58:34: info: precondition proved (CVC5: 1 VC)
 main.adb:58:43: info: precondition proved (CVC5: 1 VC)
 main.adb:61:37: info: data dependencies proved
-main.adb:64:26: info: elements shall be distinct and shall fit in type "Count_Type" for set aggregates at spark-containers-formal-ordered_sets.ads:89, in instantiation at main.adb:62
+main.adb:64:26: info: elements shall be distinct and shall fit in type "Count_Type" for set aggregates at spark-containers-formal-ordered_sets.ads:91, in instantiation at main.adb:62
 main.adb:64:26: info: precondition proved (CVC5: 4 VC)
 main.adb:66:22: info: assertion proved (CVC5: 1 VC)
 main.adb:67:22: info: assertion proved (CVC5: 1 VC)
