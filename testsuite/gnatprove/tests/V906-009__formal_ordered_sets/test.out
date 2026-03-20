@@ -41,7 +41,7 @@ test_set.adb:55:10: medium: precondition might fail
 test_set.adb:60:28: info: assertion proved
 test_set.adb:65:23: info: precondition proved
 test_set.adb:67:10: info: precondition proved
-test_set.adb:68:25: medium: assertion might fail [provers reached step limit before completing the proof]
+test_set.adb:68:25: info: assertion proved
 test_set.adb:68:28: info: precondition proved
 test_set.adb:68:39: info: precondition proved
 test_set.adb:69:25: info: assertion proved
@@ -249,29 +249,29 @@ test_set.ads:39:34: info: data dependencies proved
 test.adb:5:04: warning: check will fail at run time [-gnatw.a]
 test.adb:5:04: warning: check will fail at run time [-gnatw.a]
 test.adb:5:04: warning: check will fail at run time [-gnatw.a]
-test.adb:5:04: warning: in instantiation at spark-containers-formal-ordered_sets.ads:174 [-gnatw.a]
-test.adb:5:04: warning: in instantiation at spark-containers-formal-ordered_sets.ads:344 [-gnatw.a]
-test.adb:5:04: warning: in instantiation at spark-containers-formal-ordered_sets.ads:344 [-gnatw.a]
+test.adb:5:04: warning: in instantiation at spark-containers-formal-ordered_sets.ads:176 [-gnatw.a]
+test.adb:5:04: warning: in instantiation at spark-containers-formal-ordered_sets.ads:346 [-gnatw.a]
+test.adb:5:04: warning: in instantiation at spark-containers-formal-ordered_sets.ads:346 [-gnatw.a]
 test.adb:5:04: warning: in instantiation at spark-containers-functional-maps.ads:144 [-gnatw.a]
 test.adb:5:04: warning: in instantiation at spark-containers-functional-maps.ads:162 [-gnatw.a]
 test.adb:5:04: warning: in instantiation at spark-containers-functional-vectors.ads:176 [-gnatw.a]
 test_set.ads:6:04: warning: check will fail at run time [-gnatw.a]
 test_set.ads:6:04: warning: check will fail at run time [-gnatw.a]
 test_set.ads:6:04: warning: check will fail at run time [-gnatw.a]
-test_set.ads:6:04: warning: in instantiation at spark-containers-formal-ordered_sets.ads:174 [-gnatw.a]
-test_set.ads:6:04: warning: in instantiation at spark-containers-formal-ordered_sets.ads:344 [-gnatw.a]
-test_set.ads:6:04: warning: in instantiation at spark-containers-formal-ordered_sets.ads:344 [-gnatw.a]
+test_set.ads:6:04: warning: in instantiation at spark-containers-formal-ordered_sets.ads:176 [-gnatw.a]
+test_set.ads:6:04: warning: in instantiation at spark-containers-formal-ordered_sets.ads:346 [-gnatw.a]
+test_set.ads:6:04: warning: in instantiation at spark-containers-formal-ordered_sets.ads:346 [-gnatw.a]
 test_set.ads:6:04: warning: in instantiation at spark-containers-functional-maps.ads:144 [-gnatw.a]
 test_set.ads:6:04: warning: in instantiation at spark-containers-functional-maps.ads:162 [-gnatw.a]
 test_set.ads:6:04: warning: in instantiation at spark-containers-functional-vectors.ads:176 [-gnatw.a]
 test_set.ads:19:04: warning: check will fail at run time [-gnatw.a]
 test_set.ads:19:04: warning: check will fail at run time [-gnatw.a]
 test_set.ads:19:04: warning: check will fail at run time [-gnatw.a]
-test_set.ads:19:04: warning: in instantiation at spark-containers-formal-ordered_sets.ads:174 [-gnatw.a]
-test_set.ads:19:04: warning: in instantiation at spark-containers-formal-ordered_sets.ads:344 [-gnatw.a]
-test_set.ads:19:04: warning: in instantiation at spark-containers-formal-ordered_sets.ads:344 [-gnatw.a]
+test_set.ads:19:04: warning: in instantiation at spark-containers-formal-ordered_sets.ads:176 [-gnatw.a]
+test_set.ads:19:04: warning: in instantiation at spark-containers-formal-ordered_sets.ads:346 [-gnatw.a]
+test_set.ads:19:04: warning: in instantiation at spark-containers-formal-ordered_sets.ads:346 [-gnatw.a]
 test_set.ads:19:04: warning: in instantiation at spark-containers-functional-maps.ads:144 [-gnatw.a]
 test_set.ads:19:04: warning: in instantiation at spark-containers-functional-maps.ads:162 [-gnatw.a]
 test_set.ads:19:04: warning: in instantiation at spark-containers-functional-vectors.ads:176 [-gnatw.a]
 
-raised ADA.ASSERTIONS.ASSERTION_ERROR : failed postcondition from spark-containers-formal-ordered_sets.ads:633 instantiated at test_set.ads:6
+raised ADA.ASSERTIONS.ASSERTION_ERROR : failed postcondition from spark-containers-formal-ordered_sets.ads:635 instantiated at test_set.ads:6
