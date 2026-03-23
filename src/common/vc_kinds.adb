@@ -1381,6 +1381,15 @@ package body VC_Kinds is
            "volatile function associated with aspect Aggregate",
          when Vio_Assert_And_Cut_Context                   =>
            "pragma Assert_And_Cut outside a sequence of statements",
+         when Vio_At_Attribute_Allocation                  =>
+           "reference to the At attribute on a prefix subject to ownership "
+           & "occuring outside of a pragma or a constant part of an object",
+         when Vio_At_Attribute_Assert_And_Cut              =>
+           "reference to the At attribute referencing a label located before "
+           & "an Assert_And_Cut pragma",
+         when Vio_At_Attribute_Loop_Invariant              =>
+           "reference to the At attribute referencing a label located before "
+           & "a loop invariant or variant",
          when Vio_Backward_Goto                            =>
            "backward goto statement",
          when Vio_Box_Notation_Without_Init                =>
@@ -1485,9 +1494,9 @@ package body VC_Kinds is
          when Vio_Ownership_Duplicate_Aggregate_Value      =>
            "duplicate value of a type with ownership",
          when Vio_Ownership_Loop_Entry_Old_Copy            =>
-           "prefix of Loop_Entry or Old attribute introducing aliasing",
+           "prefix of Loop_Entry, Old, or At attribute introducing aliasing",
          when Vio_Ownership_Loop_Entry_Old_Traversal       =>
-           "traversal function call as a prefix of Loop_Entry or Old "
+           "traversal function call as a prefix of Loop_Entry, Old, or At "
            & "attribute",
          when Vio_Ownership_Move_Constant_Part             =>
            "access-to-constant part of an object as source of move",
@@ -3523,6 +3532,12 @@ package body VC_Kinds is
            "aggregate-volatile",
          when Vio_Assert_And_Cut_Context                   =>
            "assert-and-cut-context",
+         when Vio_At_Attribute_Allocation                  =>
+           "at-attribute-allocation",
+         when Vio_At_Attribute_Assert_And_Cut              =>
+           "at-attribute-assert-and-cut",
+         when Vio_At_Attribute_Loop_Invariant              =>
+           "at-attribute-loop-invariant",
          when Vio_Backward_Goto                            => "backward-goto",
          when Vio_Box_Notation_Without_Init                =>
            "box-notation-without-init",
@@ -3616,9 +3631,9 @@ package body VC_Kinds is
          when Vio_Ownership_Duplicate_Aggregate_Value      =>
            "ownership-duplicate-aggregate-value",
          when Vio_Ownership_Loop_Entry_Old_Copy            =>
-           "ownership-loop-entry-old-copy",
+           "ownership-loop-entry-old-at-copy",
          when Vio_Ownership_Loop_Entry_Old_Traversal       =>
-           "ownership-loop-entry-old-traversal",
+           "ownership-loop-entry-old-at-traversal",
          when Vio_Ownership_Move_Constant_Part             =>
            "ownership-move-constant-part",
          when Vio_Ownership_Move_In_Declare                =>
@@ -3769,6 +3784,16 @@ package body VC_Kinds is
            "volatile function associated with aspect Aggregate",
          when Vio_Assert_And_Cut_Context                             =>
            "pragma Assert_And_Cut outside a sequence of statements",
+         when Vio_At_Attribute_Allocation                            =>
+           "reference to the ""At"" attribute on a prefix subject to "
+           & "ownership occuring outside of a pragma or a constant part of an "
+           & "object",
+         when Vio_At_Attribute_Assert_And_Cut                        =>
+           "reference to the ""At"" attribute referencing a label located "
+           & "before an Assert_And_Cut pragma",
+         when Vio_At_Attribute_Loop_Invariant                        =>
+           "reference to the ""At"" attribute referencing a label located "
+           & "before a loop invariant or variant",
          when Vio_Backward_Goto                                      =>
            "backward goto statement",
          when Vio_Box_Notation_Without_Init                          =>
@@ -3881,13 +3906,13 @@ package body VC_Kinds is
          when Vio_Ownership_Loop_Entry_Old_Copy                      =>
            "prefix of """
            & (if Root_Cause or else Name = ""
-              then "Loop_Entry"" or ""Old"
+              then "Loop_Entry"", ""Old"", or ""At"
               else Name)
            & """ attribute introducing aliasing",
          when Vio_Ownership_Loop_Entry_Old_Traversal                 =>
            "traversal function call as a prefix of """
            & (if Root_Cause or else Name = ""
-              then "Loop_Entry"" or ""Old"
+              then "Loop_Entry"", ""Old"", or ""At"
               else Name)
            & """ attribute",
          when Vio_Ownership_Move_Constant_Part                       =>

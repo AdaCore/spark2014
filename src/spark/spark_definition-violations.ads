@@ -141,13 +141,23 @@ private package SPARK_Definition.Violations is
       N        : Node_Id;
       Msg      : String := "";
       Names    : Node_Lists.List := Node_Lists.Empty;
-      Cont_Msg : String := "")
+      Cont_Msg : Message := No_Message)
    with
      Global => (Output => Violation_Detected, Input => Current_SPARK_Pragma);
    --  Mark node N as a violation of SPARK. An error message pointing to the
    --  current SPARK_Mode pragma/aspect is issued if current SPARK_Mode is On.
    --  If Cont_Msg is set, a continuation message is issued.
    --  If Names is set, use this to replace & in error messages.
+
+   procedure Mark_Violation
+     (Kind     : Violation_Kind;
+      N        : Node_Id;
+      Msg      : String := "";
+      Names    : Node_Lists.List := Node_Lists.Empty;
+      Cont_Msg : String)
+   with
+     Global => (Output => Violation_Detected, Input => Current_SPARK_Pragma);
+   --  Same as above but with a single string continuation
 
    procedure Mark_Violation
      (N : Node_Id; From : Entity_Id; Cont_Msg : String := "")

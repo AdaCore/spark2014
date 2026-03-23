@@ -382,7 +382,7 @@ package body SPARK_Definition.Violations is
       N        : Node_Id;
       Msg      : String := "";
       Names    : Node_Lists.List := Node_Lists.Empty;
-      Cont_Msg : String := "")
+      Cont_Msg : Message := No_Message)
    is
       SRM_Ref  : constant String := SRM_Reference (Kind);
       Code     : constant Explain_Code_Kind := Explain_Code (Kind);
@@ -419,8 +419,8 @@ package body SPARK_Definition.Violations is
                 (To_String (Full_Msg), Names => Names, Explain_Code => Code);
             Conts : Message_Lists.List := Message_Lists.Empty;
          begin
-            if Cont_Msg /= "" then
-               Conts.Append (Create (Cont_Msg));
+            if Cont_Msg /= No_Message then
+               Conts.Append (Cont_Msg);
             end if;
             Conts.Append (Mark_Violation_Of_SPARK_Mode);
             Error_Msg_N
@@ -431,6 +431,22 @@ package body SPARK_Definition.Violations is
                Continuations => Conts);
          end;
       end if;
+   end Mark_Violation;
+
+   procedure Mark_Violation
+     (Kind     : Violation_Kind;
+      N        : Node_Id;
+      Msg      : String := "";
+      Names    : Node_Lists.List := Node_Lists.Empty;
+      Cont_Msg : String) is
+   begin
+      Mark_Violation
+        (Kind     => Kind,
+         N        => N,
+         Msg      => Msg,
+         Names    => Names,
+         Cont_Msg =>
+           (if Cont_Msg = "" then No_Message else Create (Cont_Msg)));
    end Mark_Violation;
 
    procedure Mark_Violation

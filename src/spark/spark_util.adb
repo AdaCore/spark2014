@@ -321,6 +321,9 @@ package body SPARK_Util is
    Prophecy_Saves : Node_Sets.Set;
    --  Local observers used to save prophecy variables
 
+   At_Attributes : Node_Graphs.Map;
+   --  Map labels entities to references to 'At that mention this label
+
    package Node_To_List_Maps is new
      Ada.Containers.Hashed_Maps
        (Key_Type        => Node_Id,
@@ -482,6 +485,19 @@ package body SPARK_Util is
          return Empty;
       end if;
    end Visible_Overridden_Operation;
+
+   ---------------------------
+   -- Register_At_Attribute --
+   ---------------------------
+
+   procedure Register_At_Attribute (Ref : N_Attribute_Reference_Id) is
+      Label    : constant Entity_Id := Entity (First (Expressions (Ref)));
+      Position : Node_Graphs.Cursor;
+      Inserted : Boolean;
+   begin
+      At_Attributes.Insert (Label, Node_Sets.Empty_Set, Position, Inserted);
+      At_Attributes (Position).Include (Ref);
+   end Register_At_Attribute;
 
    ------------------------
    -- Register_Exception --
@@ -1996,7 +2012,8 @@ package body SPARK_Util is
             return True;
 
          when N_Attribute_Reference          =>
-            if Attribute_Name (Expr) in Name_Loop_Entry | Name_Old then
+            if Attribute_Name (Expr) in Name_At | Name_Loop_Entry | Name_Old
+            then
                return Expr_Has_Relaxed_Discr (Prefix (Expr));
             else
                return False;
@@ -2457,6 +2474,21 @@ package body SPARK_Util is
 
       return Results;
    end Generic_Actual_Subprograms;
+
+   ---------------------------------
+   -- Get_At_Attributes_For_Label --
+   ---------------------------------
+
+   function Get_At_Attributes_For_Label (E : Entity_Id) return Node_Sets.Set is
+      Position : constant Node_Graphs.Cursor := At_Attributes.Find (E);
+      use Node_Graphs;
+   begin
+      if Has_Element (Position) then
+         return Element (Position);
+      else
+         return Node_Sets.Empty_Set;
+      end if;
+   end Get_At_Attributes_For_Label;
 
    -----------------------------
    -- Get_Exceptions_For_Subp --
@@ -3026,7 +3058,7 @@ package body SPARK_Util is
                pragma
                  Assert
                    (Attribute_Name (Expr)
-                    in Name_Loop_Entry | Name_Old | Name_Update);
+                    in Name_At | Name_Loop_Entry | Name_Old | Name_Update);
                return Expr;
             end if;
 
@@ -3267,22 +3299,22 @@ package body SPARK_Util is
    --  Do not hide private parts in global generation mode. It is necessary
    --  to properly compute proof dependencies.
 
-   ------------------------------------
-   -- In_Loop_Entry_Or_Old_Attribute --
-   ------------------------------------
+   ---------------------------------------
+   -- In_Loop_Entry_Old_Or_At_Attribute --
+   ---------------------------------------
 
-   function In_Loop_Entry_Or_Old_Attribute (N : Node_Id) return Boolean is
+   function In_Loop_Entry_Old_Or_At_Attribute (N : Node_Id) return Boolean is
 
-      function Is_Attribute_Loop_Entry_Or_Old (N : Node_Id) return Boolean
+      function Is_Attribute_Loop_Entry_Old_Or_At (N : Node_Id) return Boolean
       is (Nkind (N) = N_Attribute_Reference
-          and then Attribute_Name (N) in Name_Loop_Entry | Name_Old);
+          and then Attribute_Name (N) in Name_At | Name_Loop_Entry | Name_Old);
 
-      function Find_Loop_Entry_Or_Old_Attribute is new
-        First_Parent_With_Property (Is_Attribute_Loop_Entry_Or_Old);
+      function Find_Loop_Entry_Old_Or_At_Attribute is new
+        First_Parent_With_Property (Is_Attribute_Loop_Entry_Old_Or_At);
 
    begin
-      return Present (Find_Loop_Entry_Or_Old_Attribute (N));
-   end In_Loop_Entry_Or_Old_Attribute;
+      return Present (Find_Loop_Entry_Old_Or_At_Attribute (N));
+   end In_Loop_Entry_Old_Or_At_Attribute;
 
    -------------------------
    -- In_Non_Exec_Context --
@@ -4387,12 +4419,12 @@ package body SPARK_Util is
 
             when N_Attribute_Reference          =>
 
-               --  Old and Loop_Entry attributes can only be called on new
+               --  At, Old, and Loop_Entry attributes can only be called on new
                --  objects. Update attribute is similar to delta aggregates.
 
                return
                  Attribute_Name (Expr)
-                 in Name_Loop_Entry | Name_Old | Name_Update;
+                 in Name_At | Name_Loop_Entry | Name_Old | Name_Update;
 
             when N_Qualified_Expression
                | N_Type_Conversion
@@ -4478,7 +4510,7 @@ package body SPARK_Util is
 
          when N_Attribute_Reference          =>
             return
-              (Attribute_Name (Expr) in Name_Old | Name_Loop_Entry
+              (Attribute_Name (Expr) in Name_At | Name_Old | Name_Loop_Entry
                and then Is_Potentially_Invalid_Expr (Prefix (Expr))
                and then not Has_Scalar_Type (Etype (Expr)))
               or else
@@ -6791,7 +6823,7 @@ package body SPARK_Util is
                pragma
                  Assert
                    (Attribute_Name (Subpath)
-                    in Name_Loop_Entry | Name_Old | Name_Update);
+                    in Name_At | Name_Loop_Entry | Name_Old | Name_Update);
                return False;
 
             when N_Qualified_Expression
