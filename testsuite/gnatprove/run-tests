@@ -135,6 +135,16 @@ class SortLinesRefiner(OutputRefiner):
         return "\n".join(lines)
 
 
+class StripCarriageReturnRefiner(OutputRefiner):
+    """Workaround for tools on Windows that emit \\r\\r\\n instead of \\r\\n.
+
+    See eng/gpr/gpr-issues#806.
+    """
+
+    def refine(self, output):
+        return output.replace("\r\r\n", "\r\n")
+
+
 class SPARKBasicTestDriver(DiffTestDriver):
     """Driver for SPARK tests without a `test.py` script.
 
@@ -321,7 +331,11 @@ class UGTestDriver(ProcessDiffTestDriver):
 
     copy_test_directory = True
 
-    output_refiners = [NoEmptyOutputRefiner(), SortLinesRefiner()]
+    output_refiners = [
+        StripCarriageReturnRefiner(),
+        NoEmptyOutputRefiner(),
+        SortLinesRefiner(),
+    ]
 
     @property
     def test_control_creator(self):
