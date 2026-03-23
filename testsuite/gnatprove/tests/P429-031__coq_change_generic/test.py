@@ -28,8 +28,14 @@ prove_all(
 )
 edit_proof(1)
 print("=======================================")
+# add dummy steps option to trigger reanalysis
 prove_all(
-    opt=["-U", "--prover=coq", "--limit-line=lemmas.ads:17:14:VC_POSTCONDITION"],
+    opt=[
+        "-U",
+        "--prover=coq",
+        "--limit-line=lemmas.ads:17:14:VC_POSTCONDITION",
+        "--steps=10",
+    ],
     steps=None,
     counterexample=False,
     filter_output=".*Grammar extension",
@@ -43,8 +49,14 @@ prove_all(
 )
 edit_proof(2)
 print("=======================================")
+# add dummy steps option to trigger reanalysis
 prove_all(
-    opt=["-U", "--prover=coq", "--limit-line=lemmas.ads:26:14:VC_POSTCONDITION"],
+    opt=[
+        "-U",
+        "--prover=coq",
+        "--limit-line=lemmas.ads:26:14:VC_POSTCONDITION",
+        "--steps=10",
+    ],
     steps=None,
     counterexample=False,
     filter_output=".*Grammar extension",
