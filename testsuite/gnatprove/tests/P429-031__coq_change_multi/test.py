@@ -29,7 +29,11 @@ prove_all(
 edit_proof(1)
 print("=======================================")
 prove_all(
-    opt=["--prover=coq", "--limit-line=lemmas.ads:15:14:VC_POSTCONDITION"],
+    opt=[
+        "--prover=coq",
+        "--limit-line=lemmas.ads:15:14:VC_POSTCONDITION",
+        "--steps=10",
+    ],
     steps=None,
     counterexample=False,
     filter_output=".*Grammar extension",
@@ -44,7 +48,11 @@ prove_all(
 edit_proof(2)
 print("=======================================")
 prove_all(
-    opt=["--prover=coq", "--limit-line=lemmas.ads:24:14:VC_POSTCONDITION"],
+    opt=[
+        "--prover=coq",
+        "--limit-line=lemmas.ads:24:14:VC_POSTCONDITION",
+        "--steps=10",
+    ],
     steps=None,
     counterexample=False,
     filter_output=".*Grammar extension",
