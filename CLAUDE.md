@@ -151,6 +151,8 @@ spark2014/
 - Multi-line comments end with a period.
 - Single-line comments do NOT end with a period.
 - Each subprogram definition has a subprogram box (header comment).
+- Do NOT add `--  Start of processing for <Name>` comments before `begin`. These are a GNAT
+  style convention that this project does not follow.
 - Use `???` in comments to indicate TODO items, areas of improvement, or questions.
 
 ### Variable Naming
