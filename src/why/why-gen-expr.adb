@@ -856,8 +856,6 @@ package body Why.Gen.Expr is
       --  just the value 2**64 - 1, which needs to be expressed based on the
       --  converted value of 2**63 - 1.
 
-      --  Start of processing for Initialize_Tables_Nth_Roots
-
    begin
       Roots_8_Bits :=
         (2 => UI (15), 3 => UI (6), 4 | 5 => UI (3), 6 | 7 => UI (2));
@@ -2409,8 +2407,6 @@ package body Why.Gen.Expr is
       Range_Type : Entity_Id := Empty;
       Check_Kind : Scalar_Check_Kind := RCK_Range;
 
-      --  Start of processing for Insert_Scalar_Conversion
-
    begin
       --  Do nothing when
       --  1. From = To, and
@@ -2504,8 +2500,6 @@ package body Why.Gen.Expr is
 
       --  Set to True after range check has been applied
       Range_Check_Applied : Boolean := False;
-
-      --  Start of processing for Insert_Scalar_Conversion
 
    begin
       --  If the check is a range check on a floating-point type, and we can

@@ -1229,8 +1229,6 @@ package body Gnat2Why.Borrow_Checker is
 
       procedure Process_All is new Process_Referenced_Entities (Handle_Global);
 
-      --  Start of processing for Handle_Globals
-
    begin
       Process_All (Subp);
    end Handle_Globals;
@@ -1486,8 +1484,6 @@ package body Gnat2Why.Borrow_Checker is
       Expr_Root   : Entity_Id;
       Dummy       : Boolean := True;
 
-      --  Start of processing for Check_Assignment
-
    begin
       --  For function calls with side effects, use the handling of
       --  procedure calls as there might be parameters of mode OUT.
@@ -1735,8 +1731,6 @@ package body Gnat2Why.Borrow_Checker is
       procedure Check_Params is new Iterate_Call_Parameters (Check_Param);
 
       procedure Update_Params is new Iterate_Call_Parameters (Update_Param);
-
-      --  Start of processing for Check_Call_With_Side_Effects
 
    begin
       Inside_Procedure_Call := True;
@@ -2207,8 +2201,6 @@ package body Gnat2Why.Borrow_Checker is
             Check_Expression (Expr, Sub_Mode);
          end Check_Subobject;
 
-         --  Start of processing for Check_Anonymous_Object
-
       begin
          pragma Assert (Is_Path_Expression (Expr));
 
@@ -2497,8 +2489,6 @@ package body Gnat2Why.Borrow_Checker is
 
          procedure Read_Params is new Iterate_Call_Parameters (Read_Param);
 
-         --  Start of processing for Read_Indexes
-
       begin
          pragma Assert (Is_Path_Expression (Expr));
 
@@ -2597,8 +2587,6 @@ package body Gnat2Why.Borrow_Checker is
                raise Program_Error;
          end case;
       end Read_Indexes;
-
-      --  Start of processing for Check_Expression
 
    begin
       if Is_Type_Name (Expr) then
@@ -3011,8 +2999,6 @@ package body Gnat2Why.Borrow_Checker is
                E         => Comp_Entry.K);
          end Do_Check;
 
-         --  Start of processing for Check_Is_Less_Restrictive_Env
-
       begin
          --  There is no guarantee the set of keys actually in any of the
          --  environment is a subset of the other, so we need to iterate both.
@@ -3191,8 +3177,6 @@ package body Gnat2Why.Borrow_Checker is
                   end;
             end case;
          end Check_Is_More_Restrictive_Tree_Than;
-
-         --  Start of processing for Check_Is_Less_Restrictive_Tree
 
       begin
          if Permission (New_Tree) < Permission (Orig_Tree) then
@@ -3431,8 +3415,6 @@ package body Gnat2Why.Borrow_Checker is
       Loop_Name : constant Entity_Id := Entity (Identifier (Stmt));
       Loop_Env  : Perm_Env;
       Scheme    : constant Node_Id := Iteration_Scheme (Stmt);
-
-      --  Start of processing for Check_Loop_Statement
 
    begin
       Object_Scope.Push_Scope;
@@ -4110,8 +4092,6 @@ package body Gnat2Why.Borrow_Checker is
 
       procedure Check_Globals_Inst is new Handle_Globals (Check_Global);
 
-      --  Start of processing for Check_Globals
-
    begin
       Check_Globals_Inst (Subp, Loc);
    end Check_Globals;
@@ -4700,8 +4680,6 @@ package body Gnat2Why.Borrow_Checker is
             end if;
          end Do_Local;
 
-         --  Start of processing for Stop
-
       begin
          case Nkind (Destination) is
             when N_Loop_Statement            =>
@@ -4895,8 +4873,6 @@ package body Gnat2Why.Borrow_Checker is
       Main_Path            : Node_Id :=
         (if not N.Is_Ent then N.Expr else N.Ent);
       Result               : Perm_And_Expl;
-
-      --  Start of processing for Get_Perm_And_Expl
 
    begin
       --  If the expression contains a toplevel 'Access, resulting permissions
@@ -5391,8 +5367,6 @@ package body Gnat2Why.Borrow_Checker is
       Common_Len : constant Positive :=
         Positive'Min (Prefix_Path'Length, Expr_Path'Length);
 
-      --  Start of processing for Is_Prefix_Or_Almost
-
    begin
       if Prefix_Root /= Expr_Root then
          return False;
@@ -5735,8 +5709,6 @@ package body Gnat2Why.Borrow_Checker is
       CompSource : Perm_Tree_Access;
       KeyTarget  : Perm_Tree_Maps.Key_Option;
 
-      --  Start of processing for Merge_Env
-
    begin
       KeyTarget := Get_First_Key (Target);
 
@@ -5952,8 +5924,6 @@ package body Gnat2Why.Borrow_Checker is
       Part, Is_Deref : Boolean;
 
       Loc : constant Node_Id := (if N.Is_Ent then N.Loc else N.Expr);
-
-      --  Start of processing for Perm_Error
 
    begin
       if N.Is_Ent then
@@ -6606,8 +6576,6 @@ package body Gnat2Why.Borrow_Checker is
 
       procedure Return_Globals_Inst is new Handle_Globals (Return_Global);
 
-      --  Start of processing for Return_Globals
-
    begin
       Return_Globals_Inst (Subp, Empty);
    end Return_Globals;
@@ -6771,8 +6739,6 @@ package body Gnat2Why.Borrow_Checker is
                end;
          end case;
       end Free_Perm_Tree_Children;
-
-      --  Start of processing for Set_Perm_Extensions
 
    begin
       Free_Perm_Tree_Children (T);
@@ -7378,8 +7344,6 @@ package body Gnat2Why.Borrow_Checker is
       end Setup_Global;
 
       procedure Setup_Globals_Inst is new Handle_Globals (Setup_Global);
-
-      --  Start of processing for Setup_Globals
 
       Scop : Entity_Id := Subp;
 

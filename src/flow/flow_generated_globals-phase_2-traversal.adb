@@ -48,8 +48,6 @@ package body Flow_Generated_Globals.Phase_2.Traversal is
          end loop;
       end Dump_Tree;
 
-      --  Start of processing for Dump_Tree
-
    begin
       if XXX then
          Dump_Tree (Standard_Standard, Indent => 0);

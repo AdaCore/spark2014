@@ -851,8 +851,6 @@ package body SPARK_Util is
       Low, High     : Node_Id;
       Dynamic_Range : Boolean := False;
 
-      --  Start of processing for Candidate_For_Unrolling
-
    begin
       Low_Val := No_Uint;
       High_Val := No_Uint;
@@ -1534,8 +1532,6 @@ package body SPARK_Util is
             Handlers.Append (Get_Body (Destination));
          end if;
       end Collect_Handler;
-
-      --  Start of processing for Collect_Reachable_Handlers
 
    begin
       Collect_All (Call_Or_Stmt);
@@ -2662,8 +2658,6 @@ package body SPARK_Util is
          Result.Union (Exc_Set);
       end Collect_Handled_By;
 
-      --  Start of processing for Get_Handled_Exceptions
-
    begin
       --  Ghost function and procedure calls shall never propagate exceptions
       --  to non-ghost code.
@@ -2758,8 +2752,6 @@ package body SPARK_Util is
                raise Program_Error;
          end case;
       end Find_Func_Call;
-
-      --  Start of processing for Get_Observed_Or_Borrowed_Info
 
    begin
       B_Expr := Expr;
@@ -2955,8 +2947,6 @@ package body SPARK_Util is
       pragma Unmodified (Get_Root_Expr);
       --  Local variable to mask the name of function Get_Root_Expr, to
       --  prevent direct call. Instead GRE wrapper should be called.
-
-      --  Start of processing for Get_Root_Expr
 
    begin
       case Nkind (Expr) is
@@ -4064,8 +4054,6 @@ package body SPARK_Util is
          return False;
       end Has_True_Condition;
 
-      --  Start of processing for Is_In_Statically_Dead_Branch
-
    begin
       while Nkind (Anc) not in N_Entity_Body and then Present (Anc) loop
          if Nkind (Anc) = N_If_Statement
@@ -4350,8 +4338,6 @@ package body SPARK_Util is
                return False;
          end case;
       end Is_Path_Expression_Ann;
-
-      --  Start of processing for Is_Path_Expression
 
    begin
       case Nkind (Expr) is
@@ -5019,8 +5005,6 @@ package body SPARK_Util is
          Stop (Destination, Exc_Set, Is_Continue);
       end Do_Stop;
 
-      --  Start of processing for Iter_Exited_Scopes_With_Specified_Transfer
-
    begin
       --  Index labels
 
@@ -5368,8 +5352,6 @@ package body SPARK_Util is
                end if;
             end loop;
          end Add_Predecessors;
-
-         --  Start of processing for Collect_Vertices_Leading_To
 
       begin
          if not Empty_Paths then
@@ -5916,8 +5898,6 @@ package body SPARK_Util is
                end case;
             end Target_Vertex;
 
-            --  Start of processing for Connect_Transfer_Of_Control
-
          begin
             Do_Connect (Stmt);
          end Connect_Transfer_Of_Control;
@@ -5934,8 +5914,6 @@ package body SPARK_Util is
                  (Depth_In_Enclosing => Depth,
                   Ctrl_Predecessors  => Vertex_Sets.Empty_Set));
          end Insert_Neighborhood;
-
-         --  Start of processing for Cache_Graph_Of_Body
 
       begin
          declare
@@ -6059,8 +6037,6 @@ package body SPARK_Util is
             Append (A, B);
          end if;
       end Combine;
-
-      --  Start of processing for Location_String
 
    begin
       loop
@@ -6264,8 +6240,6 @@ package body SPARK_Util is
 
          Subp : constant Callable_Kind_Id := Get_Called_Entity (Call);
 
-         --  Start of processing for Call_Updates_Deep
-
       begin
          --  Search parameters for updates to a deep part of an element of
          --  Variable, including through borrower.
@@ -6336,8 +6310,6 @@ package body SPARK_Util is
             end return;
          end;
       end Is_Borrower_Of_Variable;
-
-      --  Start of processing for No_Deep_Updates
 
    begin
       for V of Stmts loop
@@ -6418,8 +6390,6 @@ package body SPARK_Util is
       end Find_Assoc;
 
       procedure Count_Assoc is new Traverse_More_Proc (Find_Assoc);
-
-      --  Start of processing for Number_Of_Assocs_In_Expression
 
    begin
       Count_Assoc (N);
@@ -6755,8 +6725,6 @@ package body SPARK_Util is
          end case;
       end Path_Contains_Auxiliary;
 
-      --  Start of processing for Path_Contains_Witness
-
    begin
       case Nkind (Expr) is
          when N_Attribute_Reference =>
@@ -7020,8 +6988,6 @@ package body SPARK_Util is
          Result (1 .. Last) := S (S'First .. Last - S'First + 1);
       end Output_Result;
 
-      --  Start of processing for Real_Image
-
    begin
       Output.Set_Special_Output (Output_Result'Unrestricted_Access);
       UR_Write (U);
@@ -7140,8 +7106,6 @@ package body SPARK_Util is
 
       Buf     : Unbounded_String := Null_Unbounded_String;
       Node_It : Node_Id := Node;
-
-      --  Start of processing for Shape_Of_Node
 
    begin
       while Present (Node_It) loop
@@ -7528,8 +7492,6 @@ package body SPARK_Util is
          end if;
       end Ident_Image;
 
-      --  Start of processing for String_Of_Node
-
    begin
       return Node_To_String (N, "");
    end String_Of_Node;
@@ -7582,8 +7544,6 @@ package body SPARK_Util is
 
       procedure Search_Call_Actual is new
         Iterate_Call_Parameters (Search_Param);
-
-      --  Start of processing for Structurally_Decreases_In_Call
 
    begin
       --  Search for the actual of Call corresponding to the variant of Subp
@@ -8164,8 +8124,6 @@ package body SPARK_Util is
       --  Local variables
 
       Pkg_Spec : constant Node_Id := Package_Specification (E);
-
-      --  Start of processing for States_And_Objects
 
    begin
       --  Pick objects from visible declarations (always), then abstract

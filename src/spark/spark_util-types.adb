@@ -1441,8 +1441,6 @@ package body SPARK_Util.Types is
       function Search_Sub_Typ is new
         Traverse_Subcomponents (Has_Type_Or_Derived);
 
-      --  Start of processing for Has_Subcomponents_Of_Type
-
    begin
       return Search_Sub_Typ (Typ);
    end Has_Subcomponents_Of_Type;
@@ -2338,8 +2336,6 @@ package body SPARK_Util.Types is
       Decls : List_Id := Visible_Declarations_Of_Prot_Type (E);
       Decl  : Node_Id := First (Decls);
 
-      --  Start of processing for Requires_Interrupt_Priority
-
    begin
       while Present (Decl) loop
          if Decl_Has_Attach_Handler (Decl) then
@@ -2831,8 +2827,6 @@ package body SPARK_Util.Types is
                return Traverse_Subcomponents_Only (Rep_Ty);
          end case;
       end Traverse_Type;
-
-      --  Start of processing for Traverse_Subcomponents
 
    begin
       return Traverse_Type (Typ);

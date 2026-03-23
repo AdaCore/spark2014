@@ -391,8 +391,6 @@ package body SPARK_Atree is
       function Search_Attrs is new
         Sem_Util.Traverse_More_Func (Search_Old_Or_Loop_Entry);
 
-      --  Start of processing for Expression_Contains_Old_Or_Loop_Entry
-
    begin
       return Search_Attrs (Expr) = Atree.Abandon;
    end Expression_Contains_Old_Or_Loop_Entry;

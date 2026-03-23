@@ -926,8 +926,6 @@ package body CE_Pretty_Printing is
 
       use String_Lists;
 
-      --  Start of processing for Print_Array_Value
-
    begin
       Print_Elements
         (Value,
@@ -1048,8 +1046,6 @@ package body CE_Pretty_Printing is
       --  Local variables
 
       Nb_Type : Entity_Id := Ty;
-
-      --  Start of processing for Print_Discrete
 
    begin
       --  Try to avoid base types introduced by the compiler if possible
@@ -1419,8 +1415,6 @@ package body CE_Pretty_Printing is
          end if;
       end Process_Component;
 
-      --  Start of processing for Print_Record_Value
-
    begin
       --  Add the 'Constrained to attributes if present
 
@@ -1727,8 +1721,6 @@ package body CE_Pretty_Printing is
                end case;
          end case;
       end To_String;
-
-      --  Start of processing for Print_Scalar_Value
 
    begin
       declare

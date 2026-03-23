@@ -102,8 +102,6 @@ package body SPARK_Definition.Violations is
             end if;
          end Same_Unit;
 
-         --  Start of processing for Restriction_No_Dependence
-
       begin
          --  Loop to look for entry
 
@@ -131,8 +129,6 @@ package body SPARK_Definition.Violations is
       Parent_Unit : Node_Id;
       Child_Unit  : Node_Id;
       --  For constructing names of restricted units
-
-      --  Start of processing for GNATprove_Tasking_Profile
 
    begin
       if Ravenscar_Profile_Cached then

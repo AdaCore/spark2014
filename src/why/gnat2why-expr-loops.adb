@@ -320,8 +320,6 @@ package body Gnat2Why.Expr.Loops is
       Cur_Stmt   : Node_Id := Nlists.First (Stmts);
       Flat_Stmts : Node_Lists.List;
 
-      --  Start of processing for Get_Flat_Statement_And_Declaration_List
-
    begin
       while Present (Cur_Stmt) loop
          case Nkind (Cur_Stmt) is
@@ -419,8 +417,6 @@ package body Gnat2Why.Expr.Loops is
       Cur_State : State := Before_Selected_Block;
 
       use Node_Lists;
-
-      --  Start of processing for Get_Loop_Variant
 
    begin
       for N of Loop_Stmts loop
@@ -724,8 +720,6 @@ package body Gnat2Why.Expr.Loops is
 
       Low_Id  : W_Identifier_Id := Why_Empty;
       High_Id : W_Identifier_Id := Why_Empty;
-
-      --  Start of processing for Transform_Loop_Statement
 
    begin
       --  Add the loop index to the entity table
@@ -1802,8 +1796,6 @@ package body Gnat2Why.Expr.Loops is
                Low_Val  : Uint;
                High_Val : Uint;
                Unroll   : Unrolling_Type;
-
-               --  Start of processing for For_Loop
 
             begin
                Ada_Ent_To_Why.Pop_Scope (Symbol_Table);

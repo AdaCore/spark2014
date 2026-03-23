@@ -139,8 +139,6 @@ package body SPARK_Frame_Conditions is
          end loop;
       end Display_One_Set;
 
-      --  Start of processing for Display_Maps
-
    begin
       Display_One_Map (Reads, "Variables read by subprograms", "reads");
       New_Line;
@@ -262,8 +260,6 @@ package body SPARK_Frame_Conditions is
                raise Program_Error;
          end case;
       end Load_SPARK_Xref;
-
-      --  Start of processing for Load_SPARK_Xrefs
 
    begin
       Load;

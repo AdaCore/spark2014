@@ -288,8 +288,6 @@ package body Xtree_Why_AST is
          end loop;
       end Print_Subtypes;
 
-   --  Start of processing for Print_Ada_Opaque_Ids_To_Json
-
    begin
       Kinds.Iterate (Process_One_Node_Kind'Access);
       Classes.Iterate (Process_One_Class_Kind'Access);
@@ -498,8 +496,6 @@ package body Xtree_Why_AST is
          PL (O, "]");
       end Print_Class_Tag_Type;
 
-   --  Start of processing for Print_OCaml_Tags
-
    begin
       PL (O, "(* Kind tags *)");
       NL (O);
@@ -573,8 +569,6 @@ package body Xtree_Why_AST is
             end;
          end loop;
       end Print_Subtypes;
-
-   --  Start of processing for Print_OCaml_Opaque_Ids
 
    begin
       PL (O, "(* Kind nodes *)");
@@ -891,8 +885,6 @@ package body Xtree_Why_AST is
          end loop;
       end Print_Subtypes;
 
-   --  Start of processing for Print_OCaml_Opaque_Ids_From_Json
-
    begin
       PL (O, "(* Opaque tags from json *)");
       Kinds.Iterate (Process_One_Node_Kind'Access);
@@ -972,8 +964,6 @@ package body Xtree_Why_AST is
          end;
          NL (O);
       end Print_Kind_Class_Coercion;
-
-   --  Start of processing for Print_OCaml_Coercions
 
    begin
       PL (O, "(* Tag coercions *)");

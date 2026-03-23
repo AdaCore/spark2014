@@ -1348,8 +1348,6 @@ package body Flow.Control_Flow_Graph is
 
       From_Atr : V_Attributes renames FA.Atr (From);
 
-      --  Start of processing for Linkup
-
    begin
       --  For parameter vertices we get the execution kind from their
       --  corresponding call vertex.
@@ -1601,8 +1599,6 @@ package body Flow.Control_Flow_Graph is
 
       F : constant Flow_Id := Direct_Mapping_Id (E);
 
-      --  Start of processing for Create_Initial_And_Final_Vertices
-
    begin
       FA.Initial_And_Final_Vertices.Insert (E, Current_Entity, Inserted);
 
@@ -1762,8 +1758,6 @@ package body Flow.Control_Flow_Graph is
             end loop;
          end if;
       end Traverse_Components;
-
-      --  Start of processing for Create_Initial_And_Final_Vertices
 
    begin
       Traverse_Components (F, Null_Grouping);
@@ -3354,8 +3348,6 @@ package body Flow.Control_Flow_Graph is
          V           : Flow_Graphs.Vertex_Id;
          Faux_Exit_V : Flow_Graphs.Vertex_Id;
 
-         --  Start of processing for Do_Loop
-
       begin
          --  The important attributes here are Is_Null_Node equal False (to
          --  prevent simplification of neverending loops), Is_Program_Node
@@ -3658,8 +3650,6 @@ package body Flow.Control_Flow_Graph is
          function Do_Search is new Traverse_More_Func (Proc_Search);
          --  Returns Abandon when Proc_Search returns it for any of the
          --  traversed nodes.
-
-         --  Start of processing for Loop_Might_Exit_Early
 
       begin
          return Do_Search (Loop_N) = Abandon;
@@ -4089,8 +4079,6 @@ package body Flow.Control_Flow_Graph is
                end if;
             end Check_Unused;
 
-            --  Start of processing for Fully_Defined_In_Original_Loop
-
          begin
             FA.CFG.DFS
               (Start         => Lc.Standard_Entry,
@@ -4198,8 +4186,6 @@ package body Flow.Control_Flow_Graph is
             return OK;
          end Proc_Search;
 
-         --  Start of processing for Variables_Initialized_By_Loop
-
       begin
          if Loop_Might_Exit_Early (Loop_N) then
             return Flow_Id_Sets.Empty_Set;
@@ -4280,8 +4266,6 @@ package body Flow.Control_Flow_Graph is
       Fully_Initialized : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
       Loop_Writes       : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
       Outer_Termination : constant Boolean := Ctx.Termination_Proved;
-
-      --  Start of processing for Do_Loop_Statement
 
    begin
       --  Start with a blank slate for the loops entry and exit
@@ -4679,8 +4663,6 @@ package body Flow.Control_Flow_Graph is
             return S;
          end Number_Elements;
 
-         --  Start of processing for Find_Tasks
-
       begin
          if not Has_Task (T) and then not Has_Protected (T) then
             return;
@@ -4868,8 +4850,6 @@ package body Flow.Control_Flow_Graph is
         (if Ekind (E) = E_Variable
          then Ultimate_Overlaid_Entity (E)
          else Types.Empty);
-
-      --  Start of processing for Do_Object_Declaration
 
    begin
 
@@ -5787,8 +5767,6 @@ package body Flow.Control_Flow_Graph is
       V        : Flow_Graphs.Vertex_Id;
       Funcalls : Call_Sets.Set;
       Indcalls : Node_Sets.Set;
-
-      --  Start of processing for Do_Pragma
 
    begin
       if Pragma_Relevant_To_Flow (N) then
@@ -7165,8 +7143,6 @@ package body Flow.Control_Flow_Graph is
       procedure Handle_Parameters is new
         Iterate_Call_Parameters (Handle_Parameter => Handle_Parameter);
 
-      --  Start of processing for Process_Call_Actuals
-
    begin
       Handle_Parameters (Call);
 
@@ -7623,8 +7599,6 @@ package body Flow.Control_Flow_Graph is
       LHS_Root : constant Entity_Id :=
         (if Nkind (LHS) in N_Subexpr then Get_Root_Object (LHS) else LHS);
 
-      --  Start of processing for RHS_Split_Useful
-
    begin
       --  If LHS denotes an overlaid entity, there is no point in splitting the
       --  RHS into components.
@@ -7777,8 +7751,6 @@ package body Flow.Control_Flow_Graph is
             TV := Flow_Graphs.Continue;
          end if;
       end Mark_Reachable;
-
-      --  Start of processing for Mark_Exceptional_Paths
 
    begin
       --  (1) Detect all non-dead-code vertices and place them in set
@@ -8032,8 +8004,6 @@ package body Flow.Control_Flow_Graph is
             TV := Flow_Graphs.Continue;
          end if;
       end Mark_Dead;
-
-      --  Start of processing for Separate_Dead_Paths
 
    begin
       FA.CFG.DFS

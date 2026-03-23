@@ -318,8 +318,6 @@ package body Why.Inter is
 
       SS : Search_State := (Control => Continue, S => Empty_Set);
 
-      --  Start of processing for Compute_Ada_Nodeset
-
    begin
       Traverse (SS, +W);
       return SS.S;
@@ -538,8 +536,6 @@ package body Why.Inter is
          end loop;
       end DFS;
 
-      --  Start of processing for Check_Safe_Guard_Cycles
-
       Entry_Points : Node_Sets.Set;
 
    begin
@@ -676,8 +672,6 @@ package body Why.Inter is
             end if;
          end loop;
       end Record_Dependencies;
-
-      --  Start of processing for Close_Theory
 
    begin
       Add_With_Clause (Th.Th, M_Main.Module, EW_Import);

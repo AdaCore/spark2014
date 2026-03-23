@@ -857,8 +857,6 @@ package body Why.Gen.Scalars is
 
       Rng : constant Node_Id := Get_Range (E);
 
-      --  Start of processing for Declare_Scalar_Type
-
    begin
       --  Create a theory for the underlying fixed point type if needed
 

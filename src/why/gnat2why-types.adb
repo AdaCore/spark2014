@@ -254,8 +254,6 @@ package body Gnat2Why.Types is
          Low  : constant Node_Id := Low_Bound (Rng);
          High : constant Node_Id := High_Bound (Rng);
 
-         --  Start of processing for Create_Axioms_For_Scalar_Bounds
-
       begin
          if not Compile_Time_Known_Value (Low) then
             Create_Axiom_For_Expr
@@ -535,8 +533,6 @@ package body Gnat2Why.Types is
                Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
             end;
          end Create_Dynamic_Invariant;
-
-         --  Start of processing for Create_Dynamic_Invariant
 
       begin
          Create_Dynamic_Invariant
@@ -891,8 +887,6 @@ package body Gnat2Why.Types is
       end Generate_Axioms_For_Equality;
 
       Th : Theory_UC;
-
-      --  Start of processing for Generate_Type_Completion
 
    begin
       Th :=
@@ -1620,8 +1614,6 @@ package body Gnat2Why.Types is
       end Translate_Underlying_Type;
 
       Th : Theory_UC;
-
-      --  Start of processing for Translate_Type
 
    begin
       if Is_Standard_Boolean_Type (E) or else E = Universal_Fixed then

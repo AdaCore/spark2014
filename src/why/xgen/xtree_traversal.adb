@@ -186,8 +186,6 @@ package body Xtree_Traversal is
          PL (O, S);
       end PL_C;
 
-   --  Start of processing for Print_Call_To_Traversal_Proc
-
    begin
       PL_C (O, Traversal_Proc);
       PL_C (O, "  (" & State_Param & ",");
@@ -225,8 +223,6 @@ package body Xtree_Traversal is
             end if;
          end if;
       end Print_Sub_Traversal;
-
-   --  Start of processing for Print_Kind_Traversal_Implementation
 
    begin
       if not In_Stub then
@@ -532,8 +528,6 @@ package body Xtree_Traversal is
             PL (O, "end if;");
          end if;
       end Print_Sub_Traversal;
-
-   --  Start of processing for Print_Treepr_Pre_Impl
 
    begin
       PL (O, "P (O, """ & Mixed_Case_Name (Kind) & """);");

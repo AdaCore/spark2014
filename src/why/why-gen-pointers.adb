@@ -838,8 +838,6 @@ package body Why.Gen.Pointers is
          end;
       end Declare_Wrapper_Conversions;
 
-      --  Start of processing for Complete_Rep_Pointer_Type
-
    begin
       Declare_Access_Function;
 
@@ -1682,8 +1680,6 @@ package body Why.Gen.Pointers is
                Labels      => Symbol_Sets.Empty_Set,
                Def         => +New_And_Pred (Comparison_Null, Sec_Condition)));
       end Declare_Equality_Function;
-
-      --  Start of processing for Declare_Rep_Pointer_Type
 
    begin
       --  For types designating incomplete types, declare a new uninterpreted

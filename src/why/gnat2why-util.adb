@@ -255,8 +255,6 @@ package body Gnat2Why.Util is
          C   : Undo_Stacks.Cursor := M.Undo_Stack.Last;
          Tmp : Undo_Stacks.Cursor;
 
-         --  Start of processing for Pop_Scope
-
       begin
          while Undo_Stacks.Has_Element (C)
            and then M.Undo_Stack (C).Kind /= Boundary
@@ -371,8 +369,6 @@ package body Gnat2Why.Util is
          end loop;
          Plan.Append (+Th);
       end Recurse;
-
-      --  Start of processing for Build_Printing_Plan
 
    begin
       for Th of Why_Sections (WF_Main) loop
@@ -1461,8 +1457,6 @@ package body Gnat2Why.Util is
       Cur   : Loop_Entry_Nodes.Cursor;
       Dummy : Boolean;
 
-      --  Start of processing for Name_For_Loop_Entry
-
    begin
       Loop_Entry_Map.Insert
         (Key => Loop_Id, Position => Cur, Inserted => Dummy);
@@ -1835,8 +1829,6 @@ package body Gnat2Why.Util is
 
          return False;
       end Type_Needs_Dynamic_Invariant_Ann;
-
-      --  Start of processing for Type_Needs_Dynamic_Invariant
 
    begin
       return Type_Needs_Dynamic_Invariant_Ann (T, True);

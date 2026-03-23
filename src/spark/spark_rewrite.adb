@@ -243,8 +243,6 @@ package body SPARK_Rewrite is
       Orig_Name_Id : constant Name_Id := Chars (Defining_Unit_Name (N));
       --  ??? how about homonyms?
 
-      --  Start of processing for Rewrite_Subprogram_Instantiation
-
    begin
       Set_Chars (Subprogram_Instance, Orig_Name_Id);
    end Rewrite_Subprogram_Instantiation;
@@ -563,8 +561,6 @@ package body SPARK_Rewrite is
 
          return OK;
       end Rewrite_Node;
-
-      --   Start of processing for Rewrite_Compilation_Unit
 
    begin
       --  Avoid rewriting generic units which are only preanalyzed, which may

@@ -140,8 +140,6 @@ package body Xtree_Checks is
          end if;
       end Process_One_Node_Kind;
 
-   --  Start of processing for Print_Checks_Bodies
-
    begin
       Kinds.Iterate (Process_One_Node_Kind'Access);
       NL (O);
@@ -211,8 +209,6 @@ package body Xtree_Checks is
             NL (O);
          end if;
       end Process_One_Node_Kind;
-
-   --  Start of processing for Print_Checks_Declarations
 
    begin
       Kinds.Iterate (Process_One_Node_Kind'Access);

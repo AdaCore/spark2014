@@ -174,8 +174,6 @@ package body Xkind_Ids is
          end loop;
       end Print_Subtypes;
 
-   --  Start of processing for Print_Subtypes
-
    begin
       Kinds.Iterate (Process_One_Node_Kind'Access);
       NL (O);

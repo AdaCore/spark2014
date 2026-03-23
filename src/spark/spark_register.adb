@@ -454,8 +454,6 @@ package body SPARK_Register is
          end if;
       end Register_Aspect;
 
-      --  Start of processing for Register_Compilation_Unit
-
    begin
       --  Skip generic units; care only about their instances
 

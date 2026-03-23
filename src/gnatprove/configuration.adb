@@ -404,8 +404,6 @@ package body Configuration is
             end if;
       end Clean_Up_One_Directory;
 
-      --  Start of processing for Clean_Up
-
    begin
       for Cursor in
         Tree.Iterate
@@ -459,8 +457,6 @@ package body Configuration is
            Ada.Directories.Exists (Dir)
            and then GNAT.OS_Lib.Is_Write_Accessible_File (Dir);
       end Exists_And_Is_Writable;
-
-      --  Start of processing for Compute_Socket_Dir
 
    begin
       if Get_OS_Flavor in X86_Windows | X86_64_Windows then
@@ -787,8 +783,6 @@ package body Configuration is
       end Find_Project_File_In_CWD;
 
       Result : constant String := Find_Project_File_In_CWD;
-
-      --  Start of processing for No_Project_File_Mode
 
    begin
       if Result /= "" then
@@ -1381,8 +1375,6 @@ package body Configuration is
                return "EASY";
          end case;
       end Effort;
-
-      --  Start of processing for Produce_List_Categories_Output
 
    begin
 
@@ -2073,8 +2065,6 @@ package body Configuration is
             return Present;
          end On_Path;
 
-         --  Start of processing for Postprocess
-
       begin
          Sanity_Checking;
 
@@ -2300,8 +2290,6 @@ package body Configuration is
             end if;
             Limit_Lines.Append (Spec);
          end Process_Limit_Line;
-
-         --  Start of processing for Process_Limit_Switches
 
       begin
 
@@ -2876,8 +2864,6 @@ package body Configuration is
 
       use CL_Switches;
 
-      --  Start of processing for Read_Command_Line
-
    begin
 
       for Index in 1 .. Com_Lin'Last loop
@@ -3228,8 +3214,6 @@ package body Configuration is
                With_Help => False);
          end if;
       end Prepare_Why3_Manual;
-
-      --  Start of processing for Compute_Why3_Args
 
    begin
       --  The first "argument" is in fact the command name itself, because in

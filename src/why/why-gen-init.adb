@@ -139,8 +139,6 @@ package body Why.Gen.Init is
       R      : W_Expr_Id;
       Tmp    : constant W_Expr_Id := New_Temp_For_Expr (+Name);
 
-      --  Start of processing for Compute_Is_Initialized
-
    begin
       --  An object is necessarily initialized if it does not have a wrapper
       --  type and either it does not have parts which have relaxed

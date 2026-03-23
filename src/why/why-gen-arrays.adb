@@ -2566,8 +2566,6 @@ package body Why.Gen.Arrays is
          Cursor := Cursor + 1;
       end Declare_Attribute;
 
-      --  Start of processing for Declare_Constrained
-
    begin
       if Ekind (Und_Ent) = E_String_Literal_Subtype then
          pragma

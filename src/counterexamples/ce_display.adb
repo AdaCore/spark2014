@@ -150,8 +150,6 @@ package body CE_Display is
       use Entity_To_Extended_Value_Maps;
       Ordered_Variables : Name_Ordered_Entities_Sets.Set;
 
-      --  Start of processing for Build_Pretty_Line
-
    begin
       Pretty_Line_Cntexmp_Arr := Cntexample_Elt_Lists.Empty_List;
 
@@ -301,8 +299,6 @@ package body CE_Display is
          Variables               : Entity_To_Extended_Value_Maps.Map;
          Pretty_Line_Cntexmp_Arr : Cntexample_Elt_Lists.List;
 
-         --  Start of processing for Create_Pretty_Line
-
       begin
          Parse_Counterexample_Line (Line_Cntexmp, Variables);
 
@@ -392,8 +388,6 @@ package body CE_Display is
       Init_Cntexmp_Line : Cntexample_Elt_Lists.List;
 
       Variables : Entity_To_Extended_Value_Maps.Map;
-
-      --  Start of processing for Create_Pretty_Cntexmp
 
    begin
       for File_C in Remapped_Cntexmp.Iterate loop
@@ -503,8 +497,6 @@ package body CE_Display is
         Cntexmp.Find (File);
       Cntexmp_Line : Cntexample_Elt_Lists.List :=
         Cntexample_Elt_Lists.Empty_List;
-
-      --  Start of processing for Get_Cntexmp_One_Liner
 
    begin
       if Cntexample_File_Maps.Has_Element (File_Cur) then
@@ -658,8 +650,6 @@ package body CE_Display is
         Process_Entities_For_One_Liner (Accumulate_Expl_For_Entity);
 
       Cntexmp : Cntexample_File_Maps.Map;
-
-      --  Start of processing for Get_Environment_One_Liner
 
    begin
       --  Find the relevant expression and accumulate information about used
@@ -1680,8 +1670,6 @@ package body CE_Display is
          end loop;
 
       end Search_Labels;
-
-      --  Start of processing for Remove_Irrelevant_Branches
 
       Remapped_Cntexmp : Cntexample_File_Maps.Map := Cntexmp;
       --  Temporary variable containing the branch to remove in files

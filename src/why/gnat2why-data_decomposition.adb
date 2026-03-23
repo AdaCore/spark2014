@@ -215,8 +215,6 @@ package body Gnat2Why.Data_Decomposition is
 
       File_Names : String_Sets.Set;
 
-      --  Start of processing for Read_Data_Decomposition_JSON_File
-
    begin
       for J in Main_Unit .. Last_Unit loop
 

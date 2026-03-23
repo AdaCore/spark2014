@@ -824,8 +824,6 @@ package body Flow.Analysis.Sanity is
             Sane := False;
          end Emit_Error;
 
-         --  Start of processing for Detect_Variable_Inputs
-
       begin
          for F of Variables (N) loop
             case F.Kind is
@@ -1390,8 +1388,6 @@ package body Flow.Analysis.Sanity is
          end loop;
       end Traverse_Variant_Part;
 
-      --  Start of processing for Check_Expressions
-
    begin
       Sane := True;
 
@@ -1623,8 +1619,6 @@ package body Flow.Analysis.Sanity is
       Unknown_Globals_In_Package : Flow_Id_Sets.Set;
       --  Unknown global variables written in the elaboration of the analysed
       --  unit if it is a package.
-
-      --  Start of processing for Check_Illegal_Writes_And_All_Variables_Known
 
    begin
       Sane := True;
@@ -1940,8 +1934,6 @@ package body Flow.Analysis.Sanity is
       --  Unused and missing user globals; Input/Output/Proof_In are stored
       --  in individual containers to not worry about the type predicate of
       --  Global_Flow_Ids.
-
-      --  Start of processing for Check_Generated_Refined_Global
 
    begin
       Sane := True;

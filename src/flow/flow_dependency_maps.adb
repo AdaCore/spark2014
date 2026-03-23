@@ -102,8 +102,6 @@ package body Flow_Dependency_Maps is
       Inputs  : Node_Sets.Set;
       Outputs : Flow_Id_Sets.Set;
 
-      --  Start of processing for Parse_Raw_Dependency_Map
-
    begin
       --  Aspect is written either as:
       --  * "Aspect => null"

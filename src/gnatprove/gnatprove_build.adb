@@ -635,8 +635,6 @@ package body Gnatprove_Build is
             end if;
          end Add_Memcached_Wrapper;
 
-         --  Start of processing for Build_Executable
-
       begin
          return Add_Memcached_Wrapper (Add_Benchmark_Prefix (Exec));
       end Build_Executable;
@@ -753,8 +751,6 @@ package body Gnatprove_Build is
       Provers  : constant JSON_Array := Get (Get (Config, "provers"));
       Filename : constant String :=
         Obj_Dir.Compose ("why3.conf", Directory => True).String_Value;
-
-      --  Start of processing for Write_Why3_Conf_File
 
    begin
       Create (File, Out_File, Filename);

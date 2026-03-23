@@ -851,8 +851,6 @@ package body Flow_Refinement is
          return Up_Project (F, Scope);
       end Visible_View;
 
-      --  Start of processing for Up_Project
-
    begin
       Check_Direct_Mappings (Deps);
 
@@ -1105,8 +1103,6 @@ package body Flow_Refinement is
          end if;
       end Expand;
 
-      --  Start of processing for Down_Project
-
    begin
       Expand (Var);
 
@@ -1276,8 +1272,6 @@ package body Flow_Refinement is
             Context : Flow_Scope := S;
             L       : Scope_Lists.List;
 
-            --  Start of processing for Heritage
-
          begin
             loop
                L.Prepend (Context);
@@ -1295,8 +1289,6 @@ package body Flow_Refinement is
          C2 : Scope_Lists.Cursor := L2.First;
 
          Last_Common_Ancestor : Scope_Lists.Cursor;
-
-         --  Start of processing for Common_Ancestor
 
       begin
          loop
@@ -1323,8 +1315,6 @@ package body Flow_Refinement is
       Init : Boolean;
 
       Common_Scope : constant Flow_Scope := Common_Ancestor (Ptr, S);
-
-      --  Start of processing for Is_Initialized_At_Elaboration
 
    begin
       pragma Annotate (Xcov, Exempt_On, "Debugging code");
@@ -1441,8 +1431,6 @@ package body Flow_Refinement is
       is (Down_Project (E, Scope).Length > 1);
       --  Returns True iff refinement of E is ambiguous, i.e. it is an abstract
       --  state with more than one constituent.
-
-      --  Start of processing for Mentions_State_With_Ambiguous_Refinement
 
    begin
       --  Detect global inputs or proof_ins with ambiguous refinement; global

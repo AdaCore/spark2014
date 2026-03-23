@@ -596,8 +596,6 @@ package body Flow_Generated_Globals.Phase_2 is
 
       use type Flow_Id_Sets.Set;
 
-      --  Start of processing for GG_Get_Globals
-
    begin
       if Entity_Contract_Maps.Has_Element (C) then
          To_Flow_Id_Set
@@ -1325,8 +1323,6 @@ package body Flow_Generated_Globals.Phase_2 is
          end loop;
       end Process_Tasking_Graph;
 
-      --  Start of processing for GG_Complete
-
    begin
       Detect_Main_Subprogram (GNAT_Root);
 
@@ -1455,8 +1451,6 @@ package body Flow_Generated_Globals.Phase_2 is
                begin
                   V := Boolean'Invalid_Value;
                end Unused;
-
-               --  Start of processing for Serialize
 
             begin
                Serialize (V.Local, "local");
@@ -1973,8 +1967,6 @@ package body Flow_Generated_Globals.Phase_2 is
             Terminate_GG_Line;
          end Parse_GG_Line;
 
-         --  Start of processing for Load_GG_Info_From_ALI
-
       begin
          Open (ALI_File, In_File, ALI_File_Name_Str);
 
@@ -2036,8 +2028,6 @@ package body Flow_Generated_Globals.Phase_2 is
          end if;
       end Note_Time;
       pragma Annotate (Xcov, Exempt_Off);
-
-      --  Start of processing for GG_Resolve
 
    begin
       Current_Mode := GG_Read_Mode;
@@ -2231,8 +2221,6 @@ package body Flow_Generated_Globals.Phase_2 is
                   Dump ("Outputs    ", G.Outputs);
                end if;
             end Dump;
-
-            --  Start of processing for Dump_Entity_Contract
 
          begin
             --  ??? For protected types we don't record ALI info now
@@ -2527,8 +2515,6 @@ package body Flow_Generated_Globals.Phase_2 is
               (Ent => Folded, Part => Visible_Part);
 
             Update : Flow_Names;
-
-            --  Start of processing for Fold
 
          begin
             Debug ("Folding", Folded);
@@ -2860,8 +2846,6 @@ package body Flow_Generated_Globals.Phase_2 is
                end loop;
             end Seed;
 
-            --  Start of processing for Resolve_Constants
-
          begin
             Constant_Graph := Constant_Graphs.Create;
 
@@ -3006,15 +2990,11 @@ package body Flow_Generated_Globals.Phase_2 is
                Name_Sets.Move (Target => From, Source => Filtered);
             end Strip;
 
-            --  Start of processing for Strip_Constants
-
          begin
             Strip (From.Proper);
             Strip (From.Refined);
             Strip (From.Initializes);
          end Strip_Constants;
-
-         --  Start of processing for Resolve_Globals
 
       begin
          --  Library-level renamings have no root entity; ignore them
@@ -3245,8 +3225,6 @@ package body Flow_Generated_Globals.Phase_2 is
       end Collect_Objects_From_Subprogram;
 
       Caller : constant Tasking_Graph.Vertex_Id := Call_Graph.Get_Vertex (EN);
-
-      --  Start of processing for Directly_Called_Protected_Objects
 
    begin
       --  Explicitly collect objects from the initial subprogram, because
@@ -3685,8 +3663,6 @@ package body Flow_Generated_Globals.Phase_2 is
          return Types.Empty;
       end Calls_Same_Target_Type;
 
-      --  Start of processing for Potentially_Blocking_External_Call
-
    begin
       for V of
         Protected_Operation_Call_Graph.Get_Collection (Caller, Out_Neighbours)
@@ -3762,8 +3738,6 @@ package body Flow_Generated_Globals.Phase_2 is
       --  Visited call graph nodes
       Stack    : Name_Sets.Set;
       --  Call graph nodes to visit
-
-      --  Start of processing of Calls_Potentially_Nonreturning_Subprogram
 
    begin
       --  Insert the analyzed entity in the sets
@@ -4332,8 +4306,6 @@ package body Flow_Generated_Globals.Phase_2 is
       Has_Left_Node  : constant Boolean := Present (Left.Node);
       Has_Right_Node : constant Boolean := Present (Right.Node);
 
-      --  Start of processing for "<"
-
    begin
       if Has_Left_Node and then Has_Right_Node then
          declare
@@ -4433,8 +4405,6 @@ package body Flow_Generated_Globals.Phase_2 is
       Filename : constant String :=
         Unique_Name (Unique_Main_Unit_Entity) & "_constants_2";
 
-      --  Start of processing for Print_Graph
-
    begin
       if Gnat2Why_Args.Flow_Advanced_Debug then
          G.Write_Pdf_File
@@ -4504,8 +4474,6 @@ package body Flow_Generated_Globals.Phase_2 is
       --  added.
         Unique_Name (Unique_Main_Unit_Entity)
         & "_cpcg";
-
-      --  Start of processing for Print_Graph
 
    begin
       if Gnat2Why_Args.Flow_Advanced_Debug then
@@ -4699,8 +4667,6 @@ package body Flow_Generated_Globals.Phase_2 is
       begin
          return Up_Project (E, Scope);
       end Visible_View;
-
-      --  Start of processing of Up_Project
 
    begin
       --  First, up-project all globals to their most precise representation

@@ -406,8 +406,6 @@ package body SPARK_Util.Subprograms is
       Class_Expected : constant Boolean := Classwide or Inherited;
       --  True iff the Class flag should be set on selected pragmas
 
-      --  Start of processing for Find_Contracts
-
    begin
       case Name is
          when Pragma_Precondition
@@ -658,8 +656,6 @@ package body SPARK_Util.Subprograms is
             return True;
          end if;
       end Has_Output;
-
-      --  Start of processing for Get_Execution_Kind
 
    begin
       return (if Has_Output then Infinite_Loop else Abnormal_Termination);
@@ -1204,8 +1200,6 @@ package body SPARK_Util.Subprograms is
 
       function Scope_Name (Nth : Scope_Index) return Name_Id
       is (Chars (Scopes (Scope_Id + Nth)));
-
-      --  Start of processing for Is_Predefined_Potentially_Blocking
 
    begin
       --  Start from the called subprogram
@@ -2049,8 +2043,6 @@ package body SPARK_Util.Subprograms is
 
       Body_Id : constant Entity_Id := Get_Body_Entity (E);
 
-      --  Start of processing for Requires_Separate_Analysis
-
    begin
       --  Currently, functions with side effects cannot be inlined. If it could
       --  happen, it would make sense to exempt them from this check.
@@ -2212,8 +2204,6 @@ package body SPARK_Util.Subprograms is
       begin
          Scop := Scope (Scop);
       end Scope_Up;
-
-      --  Start of processing for Suspends_On_Suspension_Object
 
    begin
       if Chars (Scop) = Name_Suspend_Until_True then

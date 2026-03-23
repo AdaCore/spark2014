@@ -59,8 +59,6 @@ package body Why.Gen.Terms is
 
       SS : Collect_State := (Control => Continue, Found => False);
 
-      --  Start of processing for Has_Dereference
-
    begin
       Traverse (SS, W);
       return SS.Found;

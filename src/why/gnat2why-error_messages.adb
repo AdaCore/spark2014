@@ -875,8 +875,6 @@ package body Gnat2Why.Error_Messages is
          Print_Fuzzing      : Boolean := False;
          Use_RAC_Cntexmp    : Boolean;
 
-         --  Start of processing for Handle_Result
-
       begin
          if Gnat2Why_Args.Check_Counterexamples and then not Rec.Result then
             if Cntexmp_Present and Gnat2Why_Opts.Reading.Gnattest_Values = ""
@@ -1157,8 +1155,6 @@ package body Gnat2Why.Error_Messages is
                Duration (Time));
          end Timing_Entry;
 
-         --  Start of processing for Handle_Timings
-
       begin
          Map_JSON_Object (V, Timing_Entry'Access);
       end Handle_Timings;
@@ -1266,8 +1262,6 @@ package body Gnat2Why.Error_Messages is
                  then From_JSON (Get (V, "unproved_status"))
                  else FPA_Unknown_Rec));
       end Parse_Why3_Prove_Result;
-
-      --  Start of processing for Parse_Why3_Results
 
    begin
       Mark_Subprograms_With_No_VC_As_Proved;

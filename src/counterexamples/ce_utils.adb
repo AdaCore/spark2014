@@ -280,8 +280,6 @@ package body CE_Utils is
       Comp_Info : constant Component_Info_Map := Get_Variant_Info (Ty);
       Info      : Component_Info;
 
-      --  Start of processing for Component_Is_Removed_In_Type
-
    begin
       --  If Comp is not a component, it cannot be discriminant dependant
 
