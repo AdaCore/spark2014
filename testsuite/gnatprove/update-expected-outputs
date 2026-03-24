@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import argparse
-from dataclasses import dataclass
 from e3.fs import sync_tree
 from e3.gaia.api import GAIA
 from e3.testsuite.report.rewriting import BaseBaselineRewriter
@@ -13,14 +12,11 @@ from adacore_gitlab_scripts.util.e3_baseline_updates import (
     GitLabProjectDescription,
 )
 import os.path
-import requests
 import tarfile
 import tempfile
-from typing import Literal
 
+from lib.python.gitlab_util import SPARK2014_GITLAB_ID, resolve_pipeline_id
 from lib.python.suite_util import is_large, make_large, make_nonlarge
-
-SPARK2014_GITLAB_ID = "168"
 
 # Mapping test origin to a subdir
 ORIGIN_TO_DIR = {"main": "tests", "internal": "internal", "sparklib": "sparklib"}
@@ -60,13 +56,6 @@ def parse_options():
         print("please provide only one of (--output-dir, --from-gaia, --from-gitlab)")
         exit(1)
     return args
-
-
-@dataclass
-class MRPipelineLookup:
-    status: Literal["pipeline", "invalid_mr", "excluded"]
-    pipeline_id: str | None = None
-    reason: str | None = None
 
 
 class BaselineRewriter(BaseBaselineRewriter):
@@ -122,44 +111,6 @@ class BaselineRewriter(BaseBaselineRewriter):
                 self.handle_test_error(
                     summary, test_name, "test aborted because of an error"
                 )
-
-
-def get_pipeline_from_mr(gl, project_id, mr_id):
-    """Resolve an MR id to a finished pipeline.
-
-    Returns an ``MRPipelineLookup`` with one of these outcomes:
-    - ``pipeline``: found a finished pipeline and returns its id;
-    - ``invalid_mr``: MR id is not valid (caller may fallback to pipeline id);
-    - ``excluded``: MR exists but is not eligible (caller should stop).
-    """
-    mr_url = gl.base_url + f"/projects/{project_id}/merge_requests/{mr_id}"
-    mr_response = requests.get(mr_url, gl.data)
-    if mr_response.status_code == 404:
-        return MRPipelineLookup(status="invalid_mr", reason="MR not found")
-
-    mr = mr_response.json()
-    if not isinstance(mr, dict):
-        return MRPipelineLookup(
-            status="invalid_mr",
-            reason="unexpected MR API response",
-        )
-
-    if mr.get("state") == "closed":
-        return MRPipelineLookup(status="excluded", reason="MR is closed")
-
-    pipelines_url = (
-        gl.base_url + f"/projects/{project_id}/merge_requests/{mr_id}/pipelines"
-    )
-    pipelines = requests.get(pipelines_url, gl.data).json()
-    if not isinstance(pipelines, list):
-        return MRPipelineLookup(status="excluded", reason="unable to list MR pipelines")
-
-    finished_statuses = {"success", "failed", "canceled"}
-    for pipeline in pipelines:
-        if pipeline.get("status") in finished_statuses:
-            return MRPipelineLookup(status="pipeline", pipeline_id=str(pipeline["id"]))
-
-    return MRPipelineLookup(status="excluded", reason="MR has no finished pipeline")
 
 
 def get_single_subdir(d):
@@ -239,17 +190,7 @@ def main():
     elif args.gitlab_id:
         p = GitLabProjectDescription(SPARK2014_GITLAB_ID, ["spark2014", "sparklib"])
         gl = Gitlab()
-        lookup = get_pipeline_from_mr(gl, SPARK2014_GITLAB_ID, args.gitlab_id)
-        if lookup.status == "pipeline":
-            assert lookup.pipeline_id is not None
-            pipeline_id = lookup.pipeline_id
-            print(f"MR {args.gitlab_id}: using pipeline {pipeline_id}")
-        elif lookup.status == "invalid_mr":
-            pipeline_id = args.gitlab_id
-        else:
-            reason = lookup.reason or "MR excluded"
-            print(f"MR {args.gitlab_id} doesn't have a suitable pipeline: {reason}")
-            exit(1)
+        pipeline_id = resolve_pipeline_id(gl, SPARK2014_GITLAB_ID, args.gitlab_id)
         outputdirs = gl.download_test_results(p, pipeline_id)
         # artifact contains a coverage subdir which should be ignored
         outputdirs = [item for item in outputdirs if "coverage" not in item]
