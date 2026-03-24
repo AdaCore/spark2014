@@ -3,11 +3,14 @@
 
 Usage:
   trigger-session-update [--tests TEST ...] [--no-wait]
+  trigger-session-update --mr MR_ID [--tests TEST ...] [--no-wait]
   trigger-session-update --apply PIPELINE_ID
 
-Default mode: triggers a pipeline in the session-updater CI project, waits
-for it to finish, then downloads and applies updated session files into the
-working tree.
+Without --mr, the nightly gnatprove build is used (fast, no source build).
+
+With --mr MR_ID, the pipeline builds gnatprove from the MR's source branch.
+Depends-On handling and branch selection for companion repositories is done
+by generic_anod_ci on the CI side; the trigger script only passes the MR ID.
 
 --no-wait: triggers the pipeline and exits immediately, printing the pipeline
 URL and the exact command to run later to retrieve results, e.g.:
@@ -29,6 +32,7 @@ from e3.fs import sync_tree
 from adacore_gitlab_scripts.util.e3_baseline_updates import Gitlab
 
 from lib.python.gitlab_util import (
+    SPARK2014_GITLAB_ID,
     download_job_artifact,
     find_job_in_pipeline,
     trigger_pipeline,
@@ -36,14 +40,14 @@ from lib.python.gitlab_util import (
 )
 
 # GitLab project ID of the dedicated session-updater project.
-# Fill this in once the project has been created.
 SESSION_UPDATER_GITLAB_ID = "1745"
 
 # Default branch of the session-updater project used to trigger pipelines.
 SESSION_UPDATER_PIPELINE_REF = "main"
 
-# Name of the CI job that produces the sessions.tgz artifact.
-UPDATE_SESSIONS_JOB_NAME = "update-sessions"
+# Names of the CI jobs that produce the sessions.tgz artifact, one per mode.
+NIGHTLY_JOB_NAME = "update-sessions-nightly"
+MR_JOB_NAME = "update-sessions-mr"
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 repo_root = os.path.normpath(os.path.join(script_dir, "..", ".."))
@@ -63,6 +67,11 @@ def parse_options():
         help="skip triggering; apply sessions from this already-finished pipeline",
     )
     parser.add_argument(
+        "--mr",
+        metavar="MR_ID",
+        help="build gnatprove from this spark2014 MR instead of the nightly build",
+    )
+    parser.add_argument(
         "--tests",
         nargs="*",
         metavar="TEST",
@@ -74,12 +83,16 @@ def parse_options():
 
 def apply_sessions(gl, pipeline_id):
     """Download sessions.tgz from pipeline_id and apply it to the working tree."""
-    job_id = find_job_in_pipeline(
-        gl, SESSION_UPDATER_GITLAB_ID, pipeline_id, UPDATE_SESSIONS_JOB_NAME
-    )
+    job_id = None
+    for job_name in (NIGHTLY_JOB_NAME, MR_JOB_NAME):
+        job_id = find_job_in_pipeline(
+            gl, SESSION_UPDATER_GITLAB_ID, pipeline_id, job_name
+        )
+        if job_id is not None:
+            break
     if job_id is None:
         print(
-            f"No {UPDATE_SESSIONS_JOB_NAME!r} job found in pipeline {pipeline_id}",
+            f"No session-update job found in pipeline {pipeline_id}",
             file=sys.stderr,
         )
         raise SystemExit(1)
@@ -109,11 +122,24 @@ def main():
     args = parse_options()
     gl = Gitlab()
 
+    if args.apply and args.mr:
+        print("error: --mr cannot be used with --apply", file=sys.stderr)
+        raise SystemExit(1)
+
     if args.apply:
         apply_sessions(gl, args.apply)
         return
 
-    variables = {"UPDATE_SESSION_TESTS": " ".join(args.tests)}
+    if args.mr:
+        variables = {
+            "ACI_UPSTREAM_PROJECT_ID": str(SPARK2014_GITLAB_ID),
+            "ACI_UPSTREAM_MERGE_REQUEST_IID": str(args.mr),
+        }
+    else:
+        variables = {}
+
+    variables["UPDATE_SESSION_TESTS"] = " ".join(args.tests)
+
     pipeline_id, pipeline_url = trigger_pipeline(
         gl, SESSION_UPDATER_GITLAB_ID, SESSION_UPDATER_PIPELINE_REF, variables
     )
