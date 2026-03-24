@@ -1,0 +1,142 @@
+#!/usr/bin/env python3
+"""Trigger a CI session-update pipeline and apply results locally.
+
+Usage:
+  trigger-session-update [--tests TEST ...] [--no-wait]
+  trigger-session-update --apply PIPELINE_ID
+
+Default mode: triggers a pipeline in the session-updater CI project, waits
+for it to finish, then downloads and applies updated session files into the
+working tree.
+
+--no-wait: triggers the pipeline and exits immediately, printing the pipeline
+URL and the exact command to run later to retrieve results, e.g.:
+  ./trigger-session-update --apply 12345
+
+--apply PIPELINE_ID: skips triggering; downloads and applies session files
+from an already-finished pipeline.
+
+Run from testsuite/gnatprove/.
+"""
+
+import argparse
+import os
+import sys
+import tarfile
+import tempfile
+
+from e3.fs import sync_tree
+from adacore_gitlab_scripts.util.e3_baseline_updates import Gitlab
+
+from lib.python.gitlab_util import (
+    download_job_artifact,
+    find_job_in_pipeline,
+    trigger_pipeline,
+    wait_for_pipeline,
+)
+
+# GitLab project ID of the dedicated session-updater project.
+# Fill this in once the project has been created.
+SESSION_UPDATER_GITLAB_ID = "1745"
+
+# Default branch of the session-updater project used to trigger pipelines.
+SESSION_UPDATER_PIPELINE_REF = "main"
+
+# Name of the CI job that produces the sessions.tgz artifact.
+UPDATE_SESSIONS_JOB_NAME = "update-sessions"
+
+script_dir = os.path.dirname(os.path.abspath(__file__))
+repo_root = os.path.normpath(os.path.join(script_dir, "..", ".."))
+
+
+def parse_options():
+    parser = argparse.ArgumentParser(description=__doc__)
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument(
+        "--no-wait",
+        action="store_true",
+        help="trigger pipeline and exit without waiting for results",
+    )
+    mode.add_argument(
+        "--apply",
+        metavar="PIPELINE_ID",
+        help="skip triggering; apply sessions from this already-finished pipeline",
+    )
+    parser.add_argument(
+        "--tests",
+        nargs="*",
+        metavar="TEST",
+        default=[],
+        help="test names to update (default: all session tests)",
+    )
+    return parser.parse_args()
+
+
+def apply_sessions(gl, pipeline_id):
+    """Download sessions.tgz from pipeline_id and apply it to the working tree."""
+    job_id = find_job_in_pipeline(
+        gl, SESSION_UPDATER_GITLAB_ID, pipeline_id, UPDATE_SESSIONS_JOB_NAME
+    )
+    if job_id is None:
+        print(
+            f"No {UPDATE_SESSIONS_JOB_NAME!r} job found in pipeline {pipeline_id}",
+            file=sys.stderr,
+        )
+        raise SystemExit(1)
+
+    print(f"Downloading sessions from job {job_id}...")
+    tgz_path = download_job_artifact(
+        gl, SESSION_UPDATER_GITLAB_ID, job_id, "sessions.tgz"
+    )
+
+    tmpdir = tempfile.mkdtemp()
+    with tarfile.open(tgz_path, "r:gz") as tar:
+        tar.extractall(tmpdir)
+    os.unlink(tgz_path)
+
+    updated, deleted = sync_tree(tmpdir, repo_root, delete=False)
+    assert deleted == []
+
+    count = 0
+    for fn in updated:
+        if os.path.isfile(fn):
+            print(f"  updated {fn}")
+            count += 1
+    print(f"Done. {count} file(s) updated.")
+
+
+def main():
+    args = parse_options()
+    gl = Gitlab()
+
+    if args.apply:
+        apply_sessions(gl, args.apply)
+        return
+
+    variables = {"UPDATE_SESSION_TESTS": " ".join(args.tests)}
+    pipeline_id, pipeline_url = trigger_pipeline(
+        gl, SESSION_UPDATER_GITLAB_ID, SESSION_UPDATER_PIPELINE_REF, variables
+    )
+    print(f"Triggered pipeline {pipeline_id}: {pipeline_url}")
+
+    if args.no_wait:
+        script = os.path.basename(sys.argv[0])
+        print(
+            f"Once the pipeline finishes, retrieve results with:\n"
+            f"  ./{script} --apply {pipeline_id}"
+        )
+        return
+
+    status = wait_for_pipeline(gl, SESSION_UPDATER_GITLAB_ID, pipeline_id)
+    if status != "success":
+        print(
+            f"Pipeline {pipeline_id} ended with status {status!r}. "
+            f"No sessions applied.",
+            file=sys.stderr,
+        )
+        raise SystemExit(1)
+
+    apply_sessions(gl, pipeline_id)
+
+
+main()
