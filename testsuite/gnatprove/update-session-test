@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+import xml.etree.ElementTree as ET
 from e3.testsuite.report.index import ReportIndex
 from e3.testsuite.result import TestStatus
 import os
@@ -10,6 +11,7 @@ import tempfile
 import yaml
 
 from lib.python.suite_util import find_test_dir
+from lib.python.clean_sessions import clean_session_file
 
 descr = """This script will update the session information of a test, and then
 rerun the test. It will run the test twice, so it takes some time.  """
@@ -93,6 +95,24 @@ def failed_replay_tests(resultspath):
     return result
 
 
+def clean_session_files(testdir_path):
+    """Clean all why3session.xml files in the test directory."""
+    session_files = []
+    for root, _dirs, files in os.walk(testdir_path):
+        if "why3session.xml" in files:
+            session_files.append(os.path.join(root, "why3session.xml"))
+
+    if session_files:
+        print(f"Cleaning {len(session_files)} session file(s)...")
+        for filepath in session_files:
+            try:
+                clean_session_file(filepath)
+            except ET.ParseError as e:
+                print(f"Warning: {filepath}: XML parse error: {e}")
+            except Exception as e:
+                print(f"Warning: {filepath}: error during session cleanup: {e}")
+
+
 def replay_test(args, testname):
     d = testdir(testname)
     try:
@@ -100,6 +120,9 @@ def replay_test(args, testname):
         os.chdir(d)
         cmd = os.path.dirname(__file__) + "/lib/python/replay.py"
         subprocess.run([cmd, "-j", str(args.procs)])
+        # Clean up session files after replay
+        os.chdir(curdir)
+        clean_session_files(d)
     finally:
         os.chdir(curdir)
 
