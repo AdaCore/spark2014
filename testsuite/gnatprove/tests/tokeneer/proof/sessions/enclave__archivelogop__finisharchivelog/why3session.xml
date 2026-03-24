@@ -140,7 +140,7 @@
   <proof prover="0"><result status="valid" steps="14"/></proof>
   <proof prover="1"><result status="valid" steps="3020"/></proof>
   <proof prover="2"><result status="valid" steps="2920"/></proof>
-  <proof prover="4"><result status="highfailure"/></proof>
+  <proof prover="4"><result status="valid" steps="115"/></proof>
   </goal>
  </transf>
  </goal>

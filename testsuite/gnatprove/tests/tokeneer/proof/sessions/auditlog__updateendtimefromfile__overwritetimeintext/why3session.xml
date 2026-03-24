@@ -62,7 +62,7 @@
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.10" proved="true">
-  <proof prover="0"><result status="valid" steps="28"/></proof>
+  <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1"><result status="valid" steps="1413"/></proof>
   <proof prover="2"><result status="valid" steps="4360"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
@@ -104,7 +104,7 @@
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.18" proved="true">
-  <proof prover="0"><result status="valid" steps="59"/></proof>
+  <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1"><result status="valid" steps="1823"/></proof>
   <proof prover="2"><result status="valid" steps="1264"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
@@ -128,7 +128,7 @@
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.22" proved="true">
-  <proof prover="0"><result status="valid" steps="544"/></proof>
+  <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1"><result status="valid" steps="5476"/></proof>
   <proof prover="2"><result status="valid" steps="22118"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
