@@ -78,8 +78,8 @@ test.adb:177:22: medium: assertion might fail [possible fix: loop at line 176 sh
 test.adb:177:22: medium: precondition might fail
 test.adb:178:14: medium: range check might fail, cannot prove lower bound for N - 1 [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 176 should mention N in a loop invariant]
 test.adb:179:07: medium: precondition might fail
+test.adb:184:19: info: assertion proved
 test.adb:184:19: info: precondition proved
-test.adb:184:19: medium: assertion might fail
 test.adb:185:19: info: precondition proved
 test.adb:185:19: medium: assertion might fail
 test.adb:188:04: info: precondition proved
@@ -315,7 +315,7 @@ test_list.adb:397:07: info: precondition proved
 test_list.adb:399:07: info: precondition proved
 test_list.adb:401:22: info: assertion proved
 test_list.adb:401:48: info: precondition proved
-test_list.adb:402:22: medium: assertion might fail
+test_list.adb:402:22: info: assertion proved
 test_list.adb:402:48: info: precondition proved
 test_list.adb:403:22: info: assertion proved
 test_list.adb:403:48: info: precondition proved
