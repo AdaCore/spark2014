@@ -554,7 +554,11 @@ package body Gnat2Why.Expr.Loops is
      (Instrs : Node_Lists.List; Params : Transformation_Params)
       return W_Prog_Id
    is
-      Body_Prog : W_Statement_Sequence_Id := Void_Sequence;
+      Other_Seqs : W_Statement_Sequence_Vectors.Vector;
+      At_Labels  : Node_Vectors.Vector;
+      In_Prelude : Boolean := True;
+      Body_Prog  : W_Statement_Sequence_Id := Void_Sequence;
+
    begin
       for Instr of Instrs loop
 
@@ -563,8 +567,15 @@ package body Gnat2Why.Expr.Loops is
          pragma Assert (not Is_Pragma (Instr, Pragma_Loop_Variant));
 
          Transform_Statement_Or_Declaration_In_List
-           (Stmt_Or_Decl => Instr, Params => Params, Seq => Body_Prog);
+           (Stmt_Or_Decl => Instr,
+            Params       => Params,
+            In_Prelude   => In_Prelude,
+            Top_Seq      => Body_Prog,
+            Other_Seqs   => Other_Seqs,
+            At_Labels    => At_Labels);
       end loop;
+
+      Collapse_Statements_In_List (Params, Body_Prog, Other_Seqs, At_Labels);
 
       return +Body_Prog;
    end Transform_Loop_Body_Statements;

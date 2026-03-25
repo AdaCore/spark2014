@@ -5587,6 +5587,11 @@ package body SPARK_Definition is
                   if Do_Alloc then
                      if Nkind (Par) = N_Pragma
                        or else
+                         (Nkind (Par) = N_Function_Call
+                          and then
+                            Has_At_End_Borrow_Annotation
+                              (Get_Called_Entity (Par)))
+                       or else
                          (Nkind (Par) = N_Object_Declaration
                           and then
                             Is_Constant_In_SPARK (Defining_Identifier (Par)))
@@ -6030,11 +6035,12 @@ package body SPARK_Definition is
                     Standard_Ada_Case (Get_Name_String (Aname));
 
                begin
-                  --  Special case: 'Old and 'Loop_Entry are allowed as the
-                  --  actual of a call to a function annotated with
+                  --  Special case: 'Old, 'Loop_Entry, and 'At are allowed as
+                  --  the actual of a call to a function annotated with
                   --  At_End_Borrow.
 
-                  if Attr_Id in Attribute_Loop_Entry | Attribute_Old
+                  if Attr_Id
+                     in Attribute_Loop_Entry | Attribute_Old | Attribute_At
                     and then Present (Par)
                     and then Nkind (Par) = N_Function_Call
                     and then
@@ -7229,9 +7235,11 @@ package body SPARK_Definition is
                     (Annot_At_End_Borrow_Param_In_Contract, Fst_Actual);
                end if;
 
-            --  Specifically allow X'Loop_Entry if X is a local borrower
+            --  Specifically allow X'Loop_Entry and X'At if X is a local
+            --  borrower.
 
-            elsif Is_Attribute_Loop_Entry (Fst_Actual)
+            elsif Nkind (Fst_Actual) = N_Attribute_Reference
+              and then Attribute_Name (Fst_Actual) in Name_At | Name_Loop_Entry
               and then
                 Nkind (Prefix (Fst_Actual)) in N_Identifier | N_Expanded_Name
               and then Is_Local_Borrower (Entity (Prefix (Fst_Actual)))

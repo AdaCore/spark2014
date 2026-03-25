@@ -7883,7 +7883,6 @@ package body Gnat2Why.Expr.Aggregates is
          end if;
 
          declare
-            use all type Ada.Containers.Count_Type;
             Index_Map : Ada_Node_To_Why_Id.Map;
             Value_Map : Ada_Node_To_Why_Id.Map;
          begin

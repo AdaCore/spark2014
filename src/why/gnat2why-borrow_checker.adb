@@ -1503,7 +1503,8 @@ package body Gnat2Why.Borrow_Checker is
 
             --  Check that the root of the initial expression is not an overlay
 
-            if Present (Overlaid_Entity (Expr_Root))
+            if not Is_Prophecy_Save (Target_Root)
+              and then Present (Overlaid_Entity (Expr_Root))
               and then not Is_Constant_In_SPARK (Expr_Root)
             then
                declare
@@ -2266,9 +2267,12 @@ package body Gnat2Why.Borrow_Checker is
          Vars   : Flow_Id_Sets.Set := Get_Variables_For_Proof (Expr, Expr);
 
       begin
-         --  Special case, 'Loop_Entry is only allowed on local borrowers
+         --  Special case, 'Loop_Entry and 'At are only allowed on local
+         --  borrowers.
 
-         if Is_Attribute_Loop_Entry (Actual) then
+         if Nkind (Actual) = N_Attribute_Reference
+           and then Attribute_Name (Actual) in Name_Loop_Entry | Name_At
+         then
             return;
          end if;
 

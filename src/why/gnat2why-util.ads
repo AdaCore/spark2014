@@ -756,6 +756,11 @@ package Gnat2Why.Util is
    --  'Loop_Entry attribute and initial values introduced for frame
    --  conditions.
 
+   function Name_For_At
+     (Attr : N_Attribute_Reference_Id) return W_Identifier_Id
+   with Pre => Attribute_Name (Attr) = Name_At;
+   --  Return the name to use for occurrences of Attr
+
    function Name_For_Loop_Entry
      (Attr : N_Attribute_Reference_Id) return E_Loop_Id
    with Pre => Attribute_Name (Attr) = Name_Loop_Entry;
@@ -776,7 +781,11 @@ package Gnat2Why.Util is
    --  If No_Checks is True, no checks will be introduced for the value of
    --  Expr at the beginning of the loop.
 
-   function Map_For_Loop_Entry (Loop_Id : Node_Id) return Loop_Entry_Values;
+   function Map_For_At (Label_Id : E_Label_Id) return Ada_To_Why_Ident.Map;
+   --  Returns the map of identifiers to use for At attribute references
+   --  associated with label Label_Id.
+
+   function Map_For_Loop_Entry (Loop_Id : E_Loop_Id) return Loop_Entry_Values;
    --  Returns the maps of identifiers to use for Loop_Entry attribute
    --  references applying to loop Loop_Id.
 
@@ -822,6 +831,13 @@ private
         Element_Type    => Loop_Entry_Values,
         Hash            => Node_Hash,
         Equivalent_Keys => "=");
+   package At_Nodes is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Node_Id,
+        Element_Type    => Ada_To_Why_Ident.Map,
+        Hash            => Node_Hash,
+        Equivalent_Keys => "=",
+        "="             => Ada_To_Why_Ident."=");
 
    --  Mapping of all expressions whose 'Old attribute is used in the current
    --  postcondition to the translation of the corresponding expression in
@@ -835,6 +851,7 @@ private
 
    Old_Map        : Ada_To_Why_Ident.Map;
    Loop_Entry_Map : Loop_Entry_Nodes.Map;
+   At_Map         : At_Nodes.Map;
 
    function Map_For_Old return Ada_To_Why_Ident.Map
    is (Old_Map);

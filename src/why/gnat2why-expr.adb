@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Ada.Characters.Handling;        use Ada.Characters.Handling;
-with Ada.Containers;                 use Ada.Containers;
 with Ada.Strings;
 with Ada.Strings.Unbounded;          use Ada.Strings.Unbounded;
 with Ada.Text_IO;  --  For debugging, to print info before raising an exception
@@ -4076,6 +4075,45 @@ package body Gnat2Why.Expr is
          Current_Subp,
          Explanation => To_String (Explanation));
    end Check_UU_Restrictions;
+
+   ---------------------------------
+   -- Collapse_Statements_In_List --
+   ---------------------------------
+
+   procedure Collapse_Statements_In_List
+     (Params     : Transformation_Params;
+      Top_Seq    : in out W_Statement_Sequence_Id;
+      Other_Seqs : in out W_Statement_Sequence_Vectors.Vector;
+      At_Labels  : in out Node_Vectors.Vector;
+      Do_Prelude : Boolean := True) is
+   begin
+      for Seq of reverse Other_Seqs loop
+         declare
+            Right : constant W_Prog_Id :=
+              Bind_From_Mapping_In_Prog
+                (Params, Map_For_At (At_Labels.Last_Element), +Top_Seq);
+         begin
+            Top_Seq := Seq;
+            Append (Top_Seq, Right);
+         end;
+         At_Labels.Delete_Last;
+      end loop;
+      Other_Seqs.Clear;
+
+      if Do_Prelude then
+         declare
+            Prog : W_Prog_Id := +Top_Seq;
+         begin
+            for Label of reverse At_Labels loop
+               Prog :=
+                 Bind_From_Mapping_In_Prog (Params, Map_For_At (Label), Prog);
+            end loop;
+            Top_Seq := Void_Sequence;
+            Append (Top_Seq, Prog);
+         end;
+         At_Labels.Clear;
+      end if;
+   end Collapse_Statements_In_List;
 
    -------------------------------
    -- Collect_Index_Expressions --
@@ -16527,13 +16565,14 @@ package body Gnat2Why.Expr is
             end if;
          end;
 
-      --  If Expr is rooted at a borrower (or if it is a reference to the 'Old
-      --  attribute, in which case its prefix is rooted at a borrower) then
-      --  we translate Expr in a context where Brower is its value at the end
-      --  of the borrow.
-      --  If the reference to 'Old is translated directly, then the definition
-      --  of Brower will be taken from the context. If a map is used, the
-      --  prefix will be specifically recognized when creating the bindings.
+      --  If Expr is rooted at a borrower (or if it is a reference to the 'Old,
+      --  'Loop_Entry, or 'At attribute, in which case its prefix is rooted at
+      --  a borrower) then we translate Expr in a context where Brower is its
+      --  value at the end of the borrow.
+      --  If the reference to 'Old, 'Loop_Entry, or 'At is translated directly,
+      --  then the definition of Brower will be taken from the context. If a
+      --  map is used, the prefix will be specifically recognized when creating
+      --  the bindings.
 
       elsif Nkind (Expr) = N_Attribute_Reference
         or else Brower = Get_Root_Object (Expr)
@@ -16542,7 +16581,7 @@ package body Gnat2Why.Expr is
            Assert
              (if Nkind (Expr) = N_Attribute_Reference
               then
-                Attribute_Name (Expr) in Name_Old | Name_Loop_Entry
+                Attribute_Name (Expr) in Name_Old | Name_Loop_Entry | Name_At
                 and then Brower = Get_Root_Object (Prefix (Expr))
                 and then Is_Local_Borrower_In_Prophecy (Prefix (Expr)));
 
@@ -17222,10 +17261,12 @@ package body Gnat2Why.Expr is
                end case;
             end;
 
-         when Attribute_Loop_Entry                                          =>
+         when Attribute_Loop_Entry | Attribute_At                           =>
             declare
-               Loop_Entry_Id : constant W_Identifier_Id :=
-                 Name_For_Loop_Entry (Expr);
+               W_Id : constant W_Identifier_Id :=
+                 (if Attr_Id = Attribute_Loop_Entry
+                  then Name_For_Loop_Entry (Expr)
+                  else Name_For_At (Expr));
             begin
                --  Validity checks are not introduced when building the map
                --  except for scalars for which copy is disallowed. Do it here.
@@ -17245,15 +17286,15 @@ package body Gnat2Why.Expr is
                                   +New_Is_Valid_Call_For_Expr
                                      (Tree   =>
                                         +Get_Valid_Flag_For_Id
-                                           (Loop_Entry_Id, Etype (Expr)),
+                                           (W_Id, Etype (Expr)),
                                       Ty     => Etype (Expr),
-                                      Expr   => +Loop_Entry_Id,
+                                      Expr   => +W_Id,
                                       Domain => EW_Pred),
                                   VC_Validity_Check),
                              Assert_Kind => EW_Assert),
-                        Right => +Loop_Entry_Id);
+                        Right => +W_Id);
                else
-                  T := +Loop_Entry_Id;
+                  T := +W_Id;
                end if;
             end;
 
@@ -25064,6 +25105,11 @@ package body Gnat2Why.Expr is
                   W_Expr := +Name_For_Loop_Entry (Expr);
                   Valid_Flag := +Get_Valid_Flag_For_Id (+W_Expr, Etype (Expr));
 
+               elsif Name = Name_At then
+                  pragma Assert (not As_Old);
+                  W_Expr := +Name_For_At (Expr);
+                  Valid_Flag := +Get_Valid_Flag_For_Id (+W_Expr, Etype (Expr));
+
                else
                   pragma Assert (Name = Name_Result and not As_Old);
 
@@ -27256,7 +27302,10 @@ package body Gnat2Why.Expr is
    procedure Transform_Statement_Or_Declaration_In_List
      (Stmt_Or_Decl : Node_Id;
       Params       : Transformation_Params;
-      Seq          : in out W_Statement_Sequence_Id)
+      In_Prelude   : in out Boolean;
+      Top_Seq      : in out W_Statement_Sequence_Id;
+      Other_Seqs   : in out W_Statement_Sequence_Vectors.Vector;
+      At_Labels    : in out Node_Vectors.Vector)
    is
       Cut_Assertion_Prag : Opt_N_Pragma_Id;
       Cut_Assertion_Expr : Opt_N_Subexpr_Id;
@@ -27271,32 +27320,51 @@ package body Gnat2Why.Expr is
                 Assert_And_Cut_Expr => Cut_Assertion_Expr,
                 Assert_And_Cut      => Cut_Assertion));
    begin
-      Append (Seq, Prog);
+      Append (Top_Seq, Prog);
 
-      --  If we are translating a label, catch the exception which may have
-      --  been raised by goto statements referencing this label.
+      --  If we are translating a label L, catch the exception which may have
+      --  been raised by goto statements referencing this label. No need to
+      --  collapse the sequence fragments, goto statements for a label can
+      --  never occur in a previous segment. Indeed, if it was the case, there
+      --  would be a label L0 located between the goto statement and L, which
+      --  would forbid the use of L0 in At attributes.
 
       if Nkind (Stmt_Or_Decl) = N_Label then
          pragma Assert (Cut_Assertion = Why_Empty);
 
          declare
-            Exc : constant W_Name_Id :=
-              Goto_Exception_Name (Entity (Identifier (Stmt_Or_Decl)));
+            Label_Id : constant E_Label_Id :=
+              Entity (Identifier (Stmt_Or_Decl));
+            Exc      : constant W_Name_Id := Goto_Exception_Name (Label_Id);
          begin
             Insert_Exception (Exc);
-            Seq :=
+            Top_Seq :=
               +Sequence
                  (Progs =>
                     (1 =>
                        New_Try_Block
                          (Ada_Node => Stmt_Or_Decl,
-                          Prog     => +Seq,
+                          Prog     => +Top_Seq,
                           Handler  =>
                             (1 =>
                                New_Handler
                                  (Ada_Node => Stmt_Or_Decl,
                                   Name     => Exc,
                                   Def      => +Void)))));
+
+            --  Create a new sequence for the label if there are At attributes
+            --  referencing it. It is important not to create a new segment if
+            --  there are no At attributes referencing the label, to preserve
+            --  the fact that all previous goto statements referencing future
+            --  labels are in Top_Seq.
+
+            if not Get_At_Attributes_For_Label (Label_Id).Is_Empty then
+               At_Labels.Append (Label_Id);
+               if not In_Prelude then
+                  Other_Seqs.Append (Top_Seq);
+                  Top_Seq := Void_Sequence;
+               end if;
+            end if;
          end;
 
       --  If we are translating an Assert_And_Cut pragma, enclose the previous
@@ -27304,17 +27372,23 @@ package body Gnat2Why.Expr is
 
       elsif Cut_Assertion /= Why_Empty then
 
+         --  Reconstruct the sequence of statements. Do not include labels
+         --  defined at the beginning of the block if any.
+
+         Collapse_Statements_In_List
+           (Params, Top_Seq, Other_Seqs, At_Labels, Do_Prelude => False);
+
          --  If the assertion contains a cut operation, its premise and
          --  side-conditions will be checked as part of the runtime checks, so
          --  the assertion should be assumed.
 
          if Contains_Cut_Operations (Cut_Assertion_Expr) then
-            Seq :=
+            Top_Seq :=
               +Sequence
                  (Progs =>
                     (1 =>
                        New_Ignore
-                         (Ada_Node => Cut_Assertion_Expr, Prog => +Seq),
+                         (Ada_Node => Cut_Assertion_Expr, Prog => +Top_Seq),
                      2 => New_Assume_Statement (Pred => Cut_Assertion)));
          else
             declare
@@ -27326,13 +27400,13 @@ package body Gnat2Why.Expr is
                   then Strval (Expression (Arg3))
                   else No_String);
             begin
-               Seq :=
+               Top_Seq :=
                  +Sequence
                     (Progs =>
                        (1 =>
                           New_Located_Abstract
                             (Ada_Node   => Cut_Assertion_Expr,
-                             Expr       => +Seq,
+                             Expr       => +Top_Seq,
                              Post       => Cut_Assertion,
                              Reason     => VC_Assert,
                              Check_Info =>
@@ -27356,7 +27430,7 @@ package body Gnat2Why.Expr is
                  and then Is_Mutable_In_Why (V)
                then
                   Append
-                    (Seq,
+                    (Top_Seq,
                      Assume_Dynamic_Invariant
                        (Expr          =>
                           +Transform_Identifier
@@ -27374,6 +27448,10 @@ package body Gnat2Why.Expr is
             end loop;
          end;
       end if;
+
+      In_Prelude :=
+        In_Prelude
+        and then Nkind (Stmt_Or_Decl) in N_Label | N_Ignored_In_SPARK;
    end Transform_Statement_Or_Declaration_In_List;
 
    -------------------------------------------
@@ -27385,6 +27463,9 @@ package body Gnat2Why.Expr is
       return W_Prog_Id
    is
       Cur_Stmt_Or_Decl : Node_Id := Nlists.First (Stmts_And_Decls);
+      Other_Seqs       : W_Statement_Sequence_Vectors.Vector;
+      At_Labels        : Node_Vectors.Vector;
+      In_Prelude       : Boolean := True;
       Result           : W_Statement_Sequence_Id := Void_Sequence;
 
    begin
@@ -27394,10 +27475,17 @@ package body Gnat2Why.Expr is
 
       while Present (Cur_Stmt_Or_Decl) loop
          Transform_Statement_Or_Declaration_In_List
-           (Stmt_Or_Decl => Cur_Stmt_Or_Decl, Params => Params, Seq => Result);
+           (Stmt_Or_Decl => Cur_Stmt_Or_Decl,
+            Params       => Params,
+            In_Prelude   => In_Prelude,
+            Top_Seq      => Result,
+            Other_Seqs   => Other_Seqs,
+            At_Labels    => At_Labels);
 
          Nlists.Next (Cur_Stmt_Or_Decl);
       end loop;
+
+      Collapse_Statements_In_List (Params, Result, Other_Seqs, At_Labels);
 
       return +Result;
    end Transform_Statements_And_Declarations;
