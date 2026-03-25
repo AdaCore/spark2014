@@ -171,6 +171,11 @@ spark2014/
 
 - Avoid double lookups (e.g., a `Contains` check followed by a separate lookup). Use cursors instead for such cases.
 
+### Package Imports
+
+- Use `with P; use P;` style by default — do not prefix entities from `P` with `P.`.
+- Only omit `use` when there is a name conflict or ambiguity that requires explicit qualification.
+
 ## Important Notes
 
 - **gnat_src symlink**: The `gnat2why/gnat_src` symbolic link to GNAT sources is required before building gnat2why
