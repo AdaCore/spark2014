@@ -73,7 +73,7 @@ def write_with_doctype_preserved(tree, filepath):
         new_content = declaration + original_doctype
         if not original_doctype.endswith("\n"):
             new_content += "\n"
-        new_content += rest
+        new_content += rest + "\n"
 
         # Write back
         with open(filepath, "w", encoding="utf-8") as f:
