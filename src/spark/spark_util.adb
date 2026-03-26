@@ -4034,6 +4034,38 @@ package body SPARK_Util is
         and then not Is_Access_Constant (T);
    end Is_Local_Borrower;
 
+   -----------------------------------
+   -- Is_Local_Borrower_In_Prophecy --
+   -----------------------------------
+
+   function Is_Local_Borrower_In_Prophecy (N : Node_Id) return Boolean is
+      Par : Node_Id;
+
+   begin
+      if Nkind (N) not in N_Identifier | N_Expanded_Name
+        or else not Is_Local_Borrower (Entity (N))
+      then
+         return False;
+      end if;
+
+      Par := Parent (N);
+
+      --  Local borrowers can appear as the prefix of a reference to 'Old in
+      --  prophecies.
+
+      if Present (Par)
+        and then Nkind (Par) = N_Attribute_Reference
+        and then Attribute_Name (Par) = Name_Old
+      then
+         Par := Parent (Par);
+      end if;
+
+      return
+        Present (Par)
+        and then Nkind (Par) = N_Function_Call
+        and then Has_At_End_Borrow_Annotation (Get_Called_Entity (Par));
+   end Is_Local_Borrower_In_Prophecy;
+
    ----------------------
    -- Is_Local_Context --
    ----------------------
