@@ -25,6 +25,7 @@ Run from testsuite/gnatprove/.
 import argparse
 import glob
 import os
+import shutil
 import sys
 import tarfile
 import tempfile
@@ -119,6 +120,8 @@ def apply_sessions(gl, pipeline_id):
         )
         testname = session.split(os.sep)[3]
         print(f"{testname}: {len(updated)} file(s) updated, {len(deleted)} deleted.")
+
+    shutil.rmtree(tmpdir)
 
 
 def main():
