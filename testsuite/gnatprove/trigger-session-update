@@ -23,7 +23,7 @@ Run from testsuite/gnatprove/.
 """
 
 import argparse
-import filecmp
+import glob
 import os
 import sys
 import tarfile
@@ -108,21 +108,17 @@ def apply_sessions(gl, pipeline_id):
         tar.extractall(tmpdir)
     os.unlink(tgz_path)
 
-    # Identify files that are new or have changed content before syncing.
-    changed = []
-    for dirpath, _, filenames in os.walk(tmpdir):
-        for name in filenames:
-            src = os.path.join(dirpath, name)
-            dst = os.path.join(repo_root, os.path.relpath(src, tmpdir))
-            if not os.path.exists(dst) or not filecmp.cmp(src, dst, shallow=False):
-                changed.append(dst)
+    sessions = [
+        os.path.relpath(d, tmpdir)
+        for d in glob.glob(os.path.join(tmpdir, "*/*/*/*/*/sessions"))
+    ]
 
-    _, deleted = sync_tree(tmpdir, repo_root, delete=False)
-    assert deleted == []
-
-    for fn in sorted(changed):
-        print(f"  updated {fn}")
-    print(f"Done. {len(changed)} file(s) updated.")
+    for session in sessions:
+        updated, deleted = sync_tree(
+            os.path.join(tmpdir, session), os.path.join(repo_root, session), delete=True
+        )
+        testname = session.split(os.sep)[3]
+        print(f"{testname}: {len(updated)} file(s) updated, {len(deleted)} deleted.")
 
 
 def main():
