@@ -263,12 +263,9 @@ package Errout_Wrapper is
       Msg : String;
       F1  : Flow_Id := Null_Flow_Id;
       F2  : Flow_Id := Null_Flow_Id;
-      F3  : Flow_Id := Null_Flow_Id) return String_Id;
+      F3  : Flow_Id := Null_Flow_Id) return Boolean;
    --  Check if the warning for the given node, message and flow id is
-   --  suppressed. If the function returns No_String, the warning is not
-   --  suppressed. If it returns Null_String_Id the warning is suppressed,
-   --  but no reason has been given. Otherwise, the String_Id of the reason
-   --  is provided.
+   --  suppressed.
 
    function Tag_Suffix (Kind : Misc_Warning_Kind) return String;
    --  If the option is set to print the tag for each warning message, then
