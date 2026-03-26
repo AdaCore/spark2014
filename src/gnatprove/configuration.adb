@@ -157,6 +157,11 @@ package body Configuration is
    --  At the same time we check if the unit/file name is unique in the case of
    --  an aggregate project. If it is not, an error is issued.
 
+   procedure Sanity_Check_SARIF_Base_URI (Tree : Project.Tree.Object);
+   --  Validate each entry in CL_Switches.SARIF_Base_URIs (must have the form
+   --  <id>:<path>). If no entry provides the %SRCROOT% identifier, append a
+   --  default one rooted at the project's root directory.
+
    procedure Produce_Version_Output;
    --  Print the version of gnatprove, why3 and shipped provers
 
@@ -257,6 +262,37 @@ package body Configuration is
              (Tree.Root_Project.Dir_Name, "gnatprove", Directory => True);
       end if;
    end Artifact_Dir;
+
+   ----------------------
+   -- Source_Full_Path --
+   ----------------------
+
+   function Source_Full_Path
+     (Tree : GPR2.Project.Tree.Object; Simple : String) return String is
+   begin
+      for NRP of Tree.Namespace_Root_Projects loop
+         if NRP.Kind in GPR2.With_Source_Dirs_Kind then
+            declare
+               View_DB   : constant GPR2.Build.View_Db.Object :=
+                 Tree.Artifacts_Database (NRP);
+               Ambiguous : Boolean;
+            begin
+               if View_DB.Source_Option > GPR2.No_Source then
+                  declare
+                     Src : constant GPR2.Build.Source.Object :=
+                       View_DB.Visible_Source
+                         (GPR2.Simple_Name (Simple), Ambiguous);
+                  begin
+                     if Src.Is_Defined then
+                        return Src.Path_Name.String_Value;
+                     end if;
+                  end;
+               end if;
+            end;
+         end if;
+      end loop;
+      return "";
+   end Source_Full_Path;
 
    ----------------------------
    -- Check_Duplicate_Bodies --
@@ -621,9 +657,7 @@ package body Configuration is
    -------------------
 
    procedure Handle_Switch
-     (Switch : String; Parameter : String; Section : String)
-   is
-      pragma Unreferenced (Parameter);
+     (Switch : String; Parameter : String; Section : String) is
    begin
       if Section = "cargs" then
          CL_Switches.Cargs_List.Append (Switch);
@@ -642,6 +676,8 @@ package body Configuration is
          null;
       elsif Switch = "-aP" then
          null;
+      elsif Switch = "--sarif-base-uri" then
+         CL_Switches.SARIF_Base_URIs.Append (Parameter);
       else
          raise Invalid_Switch;
       end if;
@@ -993,6 +1029,7 @@ package body Configuration is
            (Config,
             CL_Switches.Why3_Server'Access,
             Long_Switch => "--why3-server=");
+         Define_Switch (Config, Long_Switch => "--sarif-base-uri=");
          Define_Switch
            (Config,
             CL_Switches.Z3_Counterexample'Access,
@@ -2984,6 +3021,7 @@ package body Configuration is
          end if;
       end;
       Sanitize_File_List (Tree);
+      Sanity_Check_SARIF_Base_URI (Tree);
 
       --  Set the maximum number of concurrent gnatwhy3 processes based on
       --  semaphore usage and the calculated parallelism level.
@@ -3111,6 +3149,44 @@ package body Configuration is
          end;
       end loop;
    end Sanitize_File_List;
+
+   ---------------------------------
+   -- Sanity_Check_SARIF_Base_URI --
+   ---------------------------------
+
+   procedure Sanity_Check_SARIF_Base_URI (Tree : Project.Tree.Object) is
+      Has_SRCROOT : Boolean := False;
+   begin
+      for Raw of CL_Switches.SARIF_Base_URIs loop
+         declare
+            Colon : constant Natural := Index (Raw, ":");
+            --  Split on the first colon. Identifiers never contain ':'
+            --  so this correctly handles Windows paths like C:\foo\.
+         begin
+            if Colon = 0 then
+               Abort_Msg
+                 ("--sarif-base-uri: missing ':' in '" & Raw & "'",
+                  With_Help => False);
+            end if;
+            declare
+               Id : constant String := Raw (Raw'First .. Colon - 1);
+            begin
+               if Id = "" then
+                  Abort_Msg
+                    ("--sarif-base-uri: empty identifier in '" & Raw & "'",
+                     With_Help => False);
+               end if;
+               if Id = "%SRCROOT%" then
+                  Has_SRCROOT := True;
+               end if;
+            end;
+         end;
+      end loop;
+      if not Has_SRCROOT then
+         CL_Switches.SARIF_Base_URIs.Append
+           ("%SRCROOT%:" & Tree.Root_Project.Dir_Name.String_Value);
+      end if;
+   end Sanity_Check_SARIF_Base_URI;
 
    -----------------------
    -- SPARK_Report_File --

@@ -70,7 +70,8 @@ package body Spark_Report is
      (Filename           : String;
       SPARK_Files        : SPARK_File_Lists.List;
       Command_Line_Image : String;
-      Error_Code         : Integer);
+      Error_Code         : Integer;
+      Tree               : GPR2.Project.Tree.Object);
 
    ---------------------
    -- Generate_Report --
@@ -1458,7 +1459,8 @@ package body Spark_Report is
            Ada.Directories.Compose (Out_Dir, "gnatprove.sarif"),
          SPARK_Files        => Parsed_Files,
          Command_Line_Image => To_String (Command_Line_Image),
-         Error_Code         => Error_Code);
+         Error_Code         => Error_Code,
+         Tree               => Tree);
 
       Status := Error_Code;
    end Generate_Report;
@@ -1467,7 +1469,8 @@ package body Spark_Report is
      (Filename           : String;
       SPARK_Files        : SPARK_File_Lists.List;
       Command_Line_Image : String;
-      Error_Code         : Integer)
+      Error_Code         : Integer;
+      Tree               : GPR2.Project.Tree.Object)
    is separate;
 
 end Spark_Report;
