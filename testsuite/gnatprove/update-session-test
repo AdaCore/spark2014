@@ -19,6 +19,8 @@ rerun the test. It will run the test twice, so it takes some time.  """
 
 curdir = os.getcwd()
 
+junits = []
+
 
 def parse_options():
     args = None
@@ -64,6 +66,12 @@ def parse_options():
         dest="gitlab",
         action="store_true",
         help="Wrap each test output in GitLab CI foldable section markers",
+    )
+    parser.add_argument(
+        "--junit",
+        dest="junit",
+        action="store_true",
+        help="Generate report.xml in JUnit format",
     )
     args = parser.parse_args()
     return args
@@ -139,11 +147,13 @@ def replay_test(args, testname):
     d = testdir(testname)
     if args.gitlab:
         gitlab_section_start(testname)
+    if args.junit:
+        start_time = time.time()
     try:
         print("switching to", d)
         os.chdir(d)
         cmd = os.path.dirname(__file__) + "/lib/python/replay.py"
-        subprocess.run([cmd, "-j", str(args.procs)])
+        result = subprocess.run([cmd, "-j", str(args.procs)])
         # Clean up session files after replay
         os.chdir(curdir)
         clean_session_files(d)
@@ -151,6 +161,17 @@ def replay_test(args, testname):
         os.chdir(curdir)
         if args.gitlab:
             gitlab_section_end(testname)
+        if args.junit:
+            duration = time.time() - start_time
+            junits.append(
+                {
+                    "name": testname,
+                    "time": duration,
+                    "returncode": result.returncode,
+                    "stdout": result.stdout,
+                    "stderr": result.stderr,
+                }
+            )
 
 
 def run_all_tests_again(args):
@@ -175,6 +196,37 @@ def run_all_tests_again(args):
         os.remove(tmpfile)
 
 
+def write_junit_report(results):
+    # Build the XML tree
+    testsuite = ET.Element("testsuite", name="Regenerate sessions")
+
+    for res in results:
+        testcase = ET.SubElement(
+            testsuite,
+            "testcase",
+            name=res["name"],
+            classname="session",
+            time=str(round(res["time"], 4)),
+        )
+
+        # If return code is non-zero, it's a failure
+        if res["returncode"] != 0:
+            failure = ET.SubElement(
+                testcase, "failure", message=f"Exit code: {res['returncode']}"
+            )
+            # Put the stderr inside the failure tag for GitLab to show
+            failure.text = res["stderr"]
+
+        # Optional: Attach full stdout for successful tests too
+        system_out = ET.SubElement(testcase, "system-out")
+        system_out.text = res["stdout"]
+
+    # Write to file
+    tree = ET.ElementTree(testsuite)
+    ET.indent(tree, space="\t", level=0)
+    tree.write("report.xml", encoding="utf-8", xml_declaration=True)
+
+
 def main():
     args = parse_options()
     testnames = args.testnames
@@ -190,6 +242,8 @@ def main():
         replay_test(args, testname)
     if not args.skip_rerun_tests:
         run_all_tests_again(args)
+    if args.junit:
+        write_junit_report(junits)
 
 
 main()
