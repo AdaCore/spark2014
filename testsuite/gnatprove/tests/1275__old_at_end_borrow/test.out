@@ -1,0 +1,24 @@
+test.adb:14:13: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
+test.adb:14:13: warning: "Length" is recursive; its implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
+test.adb:15:24: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+test.adb:15:31: info: predicate check proved (Trivial: 1 VC)
+test.adb:15:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+test.adb:15:35: info: predicate check proved (Trivial: 1 VC)
+test.adb:15:35: info: subprogram variant proved (Trivial)
+test.adb:15:44: info: pointer dereference check proved (CVC5: 1 VC)
+test.adb:18:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
+test.adb:18:89: info: dynamic accessibility check proved (Trivial)
+test.adb:25:26: info: initialization of "V" proved
+test.adb:27:20: info: postcondition proved (CVC5: 1 VC)
+test.adb:27:20: info: predicate check proved (Trivial: 1 VC)
+test.adb:27:46: info: predicate check proved (Trivial: 1 VC)
+test.adb:27:68: info: predicate check proved (Trivial: 1 VC)
+test.adb:29:28: info: initialization of "V" proved
+test.adb:36:19: info: pointer dereference check proved (CVC5: 1 VC)
+test.adb:37:19: info: pointer dereference check proved (CVC5: 1 VC)
+test.adb:41:28: info: predicate check proved (Trivial: 1 VC)
+test.adb:41:28: info: refined post proved (CVC5: 1 VC)
+test.adb:41:54: info: predicate check proved (Trivial: 1 VC)
+test.adb:41:76: info: predicate check proved (Trivial: 1 VC)
+test.adb:44:19: info: pointer dereference check proved (CVC5: 1 VC)
+test.adb:45:19: info: pointer dereference check proved (CVC5: 1 VC)
