@@ -68,7 +68,7 @@ test.adb:139:09: info: precondition proved
 test.adb:141:04: info: precondition proved
 test.adb:147:09: info: precondition proved
 test.adb:153:04: info: precondition proved
-test.adb:159:04: info: precondition proved
+test.adb:159:04: medium: precondition might fail [provers reached step limit before completing the proof]
 test.adb:160:04: info: precondition proved
 test.adb:162:04: info: precondition proved
 test.adb:164:04: info: precondition proved
