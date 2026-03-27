@@ -8,6 +8,7 @@ import os
 import os.path
 import subprocess
 import tempfile
+import time
 import yaml
 
 from lib.python.suite_util import find_test_dir
@@ -57,6 +58,12 @@ def parse_options():
         type=int,
         help="Number of cores to use to recreate session (default: all)",
         default=0,
+    )
+    parser.add_argument(
+        "--gitlab",
+        dest="gitlab",
+        action="store_true",
+        help="Wrap each test output in GitLab CI foldable section markers",
     )
     args = parser.parse_args()
     return args
@@ -113,8 +120,25 @@ def clean_session_files(testdir_path):
                 print(f"Warning: {filepath}: error during session cleanup: {e}")
 
 
+def gitlab_section_start(testname):
+    section_id = testname.replace("/", "_").replace(" ", "_")
+    ts = int(time.time())
+    print(
+        f"\x1b[0Ksection_start:{ts}:{section_id}\r\x1b[0K{testname}",
+        flush=True,
+    )
+
+
+def gitlab_section_end(testname):
+    section_id = testname.replace("/", "_").replace(" ", "_")
+    ts = int(time.time())
+    print(f"\x1b[0Ksection_end:{ts}:{section_id}\r\x1b[0K", flush=True)
+
+
 def replay_test(args, testname):
     d = testdir(testname)
+    if args.gitlab:
+        gitlab_section_start(testname)
     try:
         print("switching to", d)
         os.chdir(d)
@@ -125,6 +149,8 @@ def replay_test(args, testname):
         clean_session_files(d)
     finally:
         os.chdir(curdir)
+        if args.gitlab:
+            gitlab_section_end(testname)
 
 
 def run_all_tests_again(args):
