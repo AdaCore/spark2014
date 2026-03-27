@@ -445,7 +445,12 @@ Note that the name of the function could be something other than
 ``At_End_Borrow``.
 |GNATprove| will check that a function associated with the ``At_End_Borrow``
 annotation is a ghost expression function which takes a single parameter of an
-access-to-constant type and returns it. ``At_End_Borrow`` functions can only be
+access-to-constant type and returns it. It is also possible for such a function
+to not have a body, or to have a body marked as ``SPARK_Mode => Off``. In this
+case, the user is responsible for ensuring that the return value is, and stays
+throughout the duration of any borrow, logically equal to its parameter.
+
+``At_End_Borrow`` functions can only be
 called inside regular assertions or contracts, within a parameter of a call
 to a lemma subprogram, or within the initialization of a (ghost) constant
 of anonymous access-to-constant type.
@@ -579,6 +584,33 @@ could be modified later in the borrow:
 
       Y.Val := 42;
       Y.Next := null;
+
+In general, the attributes ``Old`` and ``Loop_Entry`` cannot be called on values
+of a type subject to ownership as they produce aliases. However, it is
+possible to use a reference to one of these attributes as the parameter of a
+function annotated with ``At_End_Borrow``, provided their prefix is a local
+borrower. It is useful in particular in the contract of a subprogram that does
+a reborrow, like the procedure ``Next`` below:
+
+.. code-block:: ada
+
+   X : access List := L;
+
+   procedure Next (V : out Integer) with
+     Pre => X /= null,
+     Post => At_End (X'Old) /= null and then V = At_End (X'Old).Val;
+
+   procedure Next (V : out Integer) is
+   begin
+      V := X.Val;
+      X := X.Next;
+   end Next;
+
+The postcondition describes the value, at the end of the scope of ``X``, of the
+structure designated by ``X`` before the call . It states that it
+is necessarily non-null, and that its first element is the value stored in
+``V``. This is something that can be proved by the tool in the postcondition, as
+the reborrow freezes the first value of ``X'Old``.
 
 During sequences of re-borrows, it is additionally possible to
 use constants of anonymous access-to-constant type in order to save
