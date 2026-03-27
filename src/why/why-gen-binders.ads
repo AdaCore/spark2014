@@ -26,11 +26,9 @@
 with Common_Containers;    use Common_Containers;
 with Flow_Types;           use Flow_Types;
 with GNATCOLL.Symbols;     use GNATCOLL.Symbols;
-with Snames;               use Snames;
 with SPARK_Atree;          use SPARK_Atree;
 with SPARK_Atree.Entities; use SPARK_Atree.Entities;
 with SPARK_Definition;     use SPARK_Definition;
-with SPARK_Util;           use SPARK_Util;
 with Types;                use Types;
 with VC_Kinds;             use VC_Kinds;
 with Why.Atree.Accessors;  use Why.Atree.Accessors;
@@ -420,34 +418,6 @@ package Why.Gen.Binders is
    --  components.
    --  Should only be put to True if only localized versions of names are used.
    --  @result An array of items used to represent these variables in Why
-
-   subtype Contextual_Node is Node_Id
-   with
-     Ghost,
-     Predicate =>
-       (case Nkind (Contextual_Node) is
-          when N_Target_Name         => True,
-          when N_Attribute_Reference =>
-            Attribute_Name (Contextual_Node) in Name_Old | Name_Loop_Entry,
-          when N_Defining_Identifier =>
-            Comes_From_Declare_Expr (Contextual_Node),
-          when others                => False);
-   --  Nodes whose translation is a local Why3 objects defined in the context
-   --  of the expression. This includes attributes 'Loop_entry and 'Old, target
-   --  name, and constants coming from declare expressions.
-
-   function Get_Binders_From_Contextual_Nodes
-     (Contextual_Nodes : Node_Sets.Set) return Item_Array
-   with
-     Pre  => (for all E of Contextual_Nodes => E in Contextual_Node),
-     Post =>
-       (for all Item of Get_Binders_From_Contextual_Nodes'Result =>
-          Item.Local and Item.Kind = Regular and not Item.Main.Mutable);
-   --  A set of of items for contextual nodes.
-   --  NB. For split array types, old items will not contain the bounds of
-   --  the array. These elements should be provided separately (it is usually
-   --  done by providing the binders for variables referenced in the
-   --  expression).
 
    function Get_Binders_From_Expression (Expr : Node_Id) return Item_Array
    with Pre => Nkind (Expr) in N_Subexpr;
