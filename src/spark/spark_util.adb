@@ -7122,7 +7122,7 @@ package body SPARK_Util is
    procedure Set_Conditional_Old_Attribute
      (Prefix : Node_Id; Condition : Node_Id) is
    begin
-      Conditions_Of_Conditional_Old.Insert (Prefix, Condition);
+      Conditions_Of_Conditional_Old.Include (Prefix, Condition);
    end Set_Conditional_Old_Attribute;
 
    -------------------

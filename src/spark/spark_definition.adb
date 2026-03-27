@@ -3827,7 +3827,7 @@ package body SPARK_Definition is
                      --  Otherwise, store Expr in Raise_Exprs_From_Pre
 
                      else
-                        Raise_Exprs_From_Pre.Insert (Expr);
+                        Raise_Exprs_From_Pre.Include (Expr);
                      end if;
                   end if;
                end Check_Raise_Context;
@@ -13281,7 +13281,7 @@ package body SPARK_Definition is
          --                  [Check   =>] Boolean_Expression
          --                [,[Message =>] String_Expression]);
 
-         when Pragma_Check                   =>
+         when Pragma_Check                               =>
             if not Is_Ignored_Pragma_Check (N) then
                Mark (Get_Pragma_Arg (Arg2));
 
@@ -13303,6 +13303,25 @@ package body SPARK_Definition is
                end if;
             end if;
 
+         --  Mark expression of pragmas Precondition and Postcondition if they
+         --  are located at the beginning of its body as they might not be part
+         --  of the subprogram contract, and therefore not pulled that way.
+         --
+         --  pragma Postcondition ([Check   =>] Boolean_Expression
+         --                      [,[Message =>] String_Expression]);
+
+         when Pragma_Postcondition | Pragma_Precondition =>
+            declare
+               Subp : constant Node_Id := Find_Related_Declaration_Or_Body (N);
+            begin
+               if Is_List_Member (N)
+                 and then Nkind (Subp) in N_Subprogram_Body | N_Entry_Body
+                 and then List_Containing (N) = Declarations (Subp)
+               then
+                  Mark (Get_Pragma_Arg (Arg1));
+               end if;
+            end;
+
          --  Syntax of this pragma:
          --    pragma Loop_Variant
          --           ( LOOP_VARIANT_ITEM {, LOOP_VARIANT_ITEM } );
@@ -13311,7 +13330,7 @@ package body SPARK_Definition is
 
          --    CHANGE_DIRECTION ::= Increases | Decreases
 
-         when Pragma_Loop_Variant            =>
+         when Pragma_Loop_Variant                        =>
             declare
                Variant : Node_Id := First (Pragma_Argument_Associations (N));
 
@@ -13345,7 +13364,7 @@ package body SPARK_Definition is
          --  Pragma Overflow_Mode is taken into account when used as
          --  configuration pragma in the main unit.
 
-         when Pragma_Overflow_Mode           =>
+         when Pragma_Overflow_Mode                       =>
             if Nkind (Parent (N)) = N_Compilation_Unit then
                Sem_Prag.Set_Overflow_Mode (N);
 
@@ -13361,30 +13380,30 @@ package body SPARK_Definition is
                Warning_Msg_N (Warn_Pragma_Overflow_Mode, N, First => True);
             end if;
 
-         when Pragma_Attach_Handler          =>
+         when Pragma_Attach_Handler                      =>
             --  Arg1 is the handler name; check if it is in SPARK, because
             --  SPARK code should not reference non-SPARK code.
             --  Arg2 is the interrupt ID.
             Mark (Expression (Arg1));
             Mark (Expression (Arg2));
 
-         when Pragma_Interrupt_Priority      =>
+         when Pragma_Interrupt_Priority                  =>
             --  Priority expression is optional
             if Present (Arg1) then
                Mark (Expression (Arg1));
             end if;
 
-         when Pragma_Priority                =>
+         when Pragma_Priority                            =>
             Mark (Expression (Arg1));
 
-         when Pragma_Max_Queue_Length        =>
+         when Pragma_Max_Queue_Length                    =>
             Mark (Expression (Arg1));
 
          --  Pragma Restrictions is ignored in general by GNATprove. Warn on
          --  particular restrictions which might be assumed to have an effect
          --  on verification.
 
-         when Pragma_Restrictions            =>
+         when Pragma_Restrictions                        =>
             declare
                Arg  : Node_Id;
                Id   : Name_Id;
@@ -13533,10 +13552,8 @@ package body SPARK_Definition is
             | Pragma_No_Tagged_Streams
             --  Pragma_Overflow_Mode is handled specially above
             | Pragma_Post
-            | Pragma_Postcondition
             | Pragma_Post_Class
             | Pragma_Pre
-            | Pragma_Precondition
             | Pragma_Pre_Class
             | Pragma_Predicate
             | Pragma_Predicate_Failure
@@ -13557,7 +13574,7 @@ package body SPARK_Definition is
             | Pragma_Validity_Checks
             | Pragma_Volatile_Full_Access
             | Pragma_Warnings
-            | Pragma_Weak_External           =>
+            | Pragma_Weak_External                       =>
             null;
 
          --  Group 1d - These pragmas are re-written and/or removed by the
@@ -13570,7 +13587,7 @@ package body SPARK_Definition is
             | Pragma_Compile_Time_Error
             | Pragma_Compile_Time_Warning
             | Pragma_Debug
-            | Pragma_Loop_Invariant          =>
+            | Pragma_Loop_Invariant                      =>
             pragma Assert (Should_Ignore_Pragma_Sem (N));
 
          --  Group 2 - Remaining pragmas, enumerated here rather than a
@@ -13700,7 +13717,7 @@ package body SPARK_Definition is
             | Pragma_Remote_Types
             | Pragma_Shared_Passive
             | Pragma_Storage_Size
-            | Pragma_Task_Dispatching_Policy =>
+            | Pragma_Task_Dispatching_Policy             =>
             if Emit_Warning_Info_Messages and then SPARK_Pragma_Is (Opt.On)
             then
                Warning_Msg_N (Warn_Pragma_Ignored, N);
@@ -13710,7 +13727,7 @@ package body SPARK_Definition is
          --  deal with all the more recent pragmas introduced in GNAT for which
          --  we have not yet defined how they are supported in SPARK.
 
-         when others                         =>
+         when others                                     =>
             Mark_Violation (Vio_Unsupported_Pragma, N, Names => [N]);
       end case;
    end Mark_Pragma;
