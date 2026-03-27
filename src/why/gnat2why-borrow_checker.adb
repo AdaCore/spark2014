@@ -2264,6 +2264,12 @@ package body Gnat2Why.Borrow_Checker is
          Vars   : Flow_Id_Sets.Set := Get_Variables_For_Proof (Expr, Expr);
 
       begin
+         --  Special case, 'Loop_Entry is only allowed on local borrowers
+
+         if Is_Attribute_Loop_Entry (Actual) then
+            return;
+         end if;
+
          --  Check that the call does not depend on any variable but its root.
          --  ??? Should it be moved to flow analysis?
 
@@ -2285,40 +2291,38 @@ package body Gnat2Why.Borrow_Checker is
          --  a borrower which is the root of the path. If we have both,
          --  we want to consider the borrowed expression.
 
-         if No (Brower) then
-            Key := Get_First_Key (Current_Borrowers);
-            while Key.Present loop
+         Key := Get_First_Key (Current_Borrowers);
+         while Key.Present loop
 
-               --  Root is a local borrower. Keep searching in case Expr is
-               --  also a borrowed expression.
+            --  Root is a local borrower. Keep searching in case Expr is
+            --  also a borrowed expression.
 
-               if Key.K = Root then
-                  Brower := Root;
+            if Key.K = Root then
+               Brower := Root;
 
-               --  A prefix of Expr is a borrowed expression. It cannot be the
-               --  prefix of any other borrowed expression, stop the search
-               --  here.
+            --  A prefix of Expr is a borrowed expression. It cannot be the
+            --  prefix of any other borrowed expression, stop the search
+            --  here.
 
-               else
-                  declare
-                     Borrowed_Bag : constant Node_Vectors.Vector :=
-                       Get (Current_Borrowers, Key.K);
-                  begin
-                     --  A borrower may have only one borrowed path
+            else
+               declare
+                  Borrowed_Bag : constant Node_Vectors.Vector :=
+                    Get (Current_Borrowers, Key.K);
+               begin
+                  --  A borrower may have only one borrowed path
 
-                     pragma Assert (Borrowed_Bag.Length = 1);
-                     if Is_Prefix_Or_Almost
-                          (Pref => Borrowed_Bag.First_Element, Expr => +Actual)
-                     then
-                        Brower := Key.K;
-                        exit;
-                     end if;
-                  end;
-               end if;
+                  pragma Assert (Borrowed_Bag.Length = 1);
+                  if Is_Prefix_Or_Almost
+                       (Pref => Borrowed_Bag.First_Element, Expr => +Actual)
+                  then
+                     Brower := Key.K;
+                     exit;
+                  end if;
+               end;
+            end if;
 
-               Key := Get_Next_Key (Current_Borrowers);
-            end loop;
-         end if;
+            Key := Get_Next_Key (Current_Borrowers);
+         end loop;
 
          --  Inside traversal functions, constant borrowers are handled as
          --  observers. Search similarly in the observers map.
