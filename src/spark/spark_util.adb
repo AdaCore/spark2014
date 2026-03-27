@@ -4116,12 +4116,12 @@ package body SPARK_Util is
 
       Par := Parent (N);
 
-      --  Local borrowers can appear as the prefix of a reference to 'Old in
-      --  prophecies.
+      --  Local borrowers can appear as the prefix of a reference to 'Old or
+      --  'Loop_Entry in prophecies.
 
       if Present (Par)
         and then Nkind (Par) = N_Attribute_Reference
-        and then Attribute_Name (Par) = Name_Old
+        and then Attribute_Name (Par) in Name_Old | Name_Loop_Entry
       then
          Par := Parent (Par);
       end if;

@@ -16446,7 +16446,7 @@ package body Gnat2Why.Expr is
            Assert
              (if Nkind (Expr) = N_Attribute_Reference
               then
-                Attribute_Name (Expr) = Name_Old
+                Attribute_Name (Expr) in Name_Old | Name_Loop_Entry
                 and then Brower = Get_Root_Object (Prefix (Expr))
                 and then Is_Local_Borrower_In_Prophecy (Prefix (Expr)));
 

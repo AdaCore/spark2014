@@ -5805,10 +5805,11 @@ package body SPARK_Definition is
                     Standard_Ada_Case (Get_Name_String (Aname));
 
                begin
-                  --  Special case: 'Old is allowed as the actual of a call to
-                  --  a function annotated with At_End_Borrow.
+                  --  Special case: 'Old and 'Loop_Entry are allowed as the
+                  --  actual of a call to a function annotated with
+                  --  At_End_Borrow.
 
-                  if Attr_Id = Attribute_Old
+                  if Attr_Id in Attribute_Loop_Entry | Attribute_Old
                     and then Present (Par)
                     and then Nkind (Par) = N_Function_Call
                     and then
@@ -6995,8 +6996,17 @@ package body SPARK_Definition is
                     (Annot_At_End_Borrow_Param_In_Contract, Fst_Actual);
                end if;
 
-            --  Otherwise, we only check that the actual is a path. The rest
-            --  will be checked by the borrow checker.
+            --  Specifically allow X'Loop_Entry if X is a local borrower
+
+            elsif Is_Attribute_Loop_Entry (Fst_Actual)
+              and then
+                Nkind (Prefix (Fst_Actual)) in N_Identifier | N_Expanded_Name
+              and then Is_Local_Borrower (Entity (Prefix (Fst_Actual)))
+            then
+               Set_At_End_Borrow_Call (N, Entity (Prefix (Fst_Actual)));
+
+            --  Otherwise, we only check that the actual is a path with a root
+            --  object. The rest will be checked by the borrow checker.
 
             elsif not Is_Path_To_Object then
                Mark_Incorrect_Use_Of_Annotation
