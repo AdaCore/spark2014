@@ -124,6 +124,8 @@ package Configuration is
       Gnattest_Values      : aliased GNAT.Strings.String_Access;
       GPR_Project_Path     : String_Lists.List;
       --  extra paths to look for project files, passed to gnatprove via -aP
+      SARIF_Base_URIs      : String_Lists.List;
+      --  Raw "IDENTIFIER:PATH" strings from --sarif-base-uri= occurrences
       IDE_Progress_Bar     : aliased Boolean;
       Info                 : aliased Boolean;
       J                    : aliased Integer;
@@ -385,6 +387,12 @@ package Configuration is
    --  Place to store the gnatprove artifacts. Use this function over
    --  Tree.Root_Project.Object_Directory or similar as the root project
    --  might not have an object directory.
+
+   function Source_Full_Path
+     (Tree : GPR2.Project.Tree.Object; Simple : String) return String;
+   --  Resolve Simple (a source basename like "foo.adb") to its full absolute
+   --  path by querying the project tree. Returns an empty string if the source
+   --  cannot be found (e.g. runtime files not part of the project).
 
    function Compute_Why3_Args
      (Obj_Dir : String; FS : File_Specific) return String_Lists.List;

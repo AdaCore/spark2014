@@ -146,6 +146,24 @@ Results in SARIF format
 subdirectory of the object directory of the project. This file contains the
 analysis results in SARIF format.
 
+.. index:: --sarif-base-uri
+
+By default, source file locations in the SARIF report are expressed as paths
+relative to the root project directory, identified by the ``%SRCROOT%`` base
+URI. The ``run.originalUriBaseIds`` field in the report maps ``%SRCROOT%`` to
+the absolute path of that directory, which allows SARIF viewers to reconstruct
+full paths regardless of where the report file is opened.
+
+Switch ``--sarif-base-uri=ID:PATH`` adds a mapping from the identifier ``ID``
+to the absolute base path ``PATH`` in ``originalUriBaseIds``. Each source file
+location is then expressed relative to the longest matching base path, with the
+corresponding identifier recorded as its ``uriBaseId``. This switch can be
+repeated to declare several base URIs: for example, one for the project sources
+and another for a shared library. If ``--sarif-base-uri=%SRCROOT%:PATH`` is
+supplied, it overrides the default ``%SRCROOT%`` mapping. Source files that
+cannot be resolved to any declared base path are recorded as absolute
+``file://`` URIs.
+
 
 Categories of Messages
 ----------------------

@@ -121,6 +121,10 @@ gnatprove advanced switches:
  --target=target_name Specify the name of the target platform
  --timeout=nnn        Set the prover timeout in seconds. Use value 0 for
                       no timeout (default when no level set)
+ --sarif-base-uri=ID:PATH
+                      Map SARIF uriBaseId identifier ID to absolute base path
+                      PATH in the generated SARIF report. Repeatable. Default:
+                      %%SRCROOT%% is mapped to the GPR project directory.
  --why3-conf=f        Specify a configuration file for why3
 
  * Output mode values

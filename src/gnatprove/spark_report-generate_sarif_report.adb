@@ -23,9 +23,17 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers.Indefinite_Hashed_Maps;
+with Ada.Strings.Fixed;
+with Ada.Strings.Hash;
+with Ada.Strings.Unbounded;
+with Configuration;
+with GNAT.OS_Lib;
+with GPR2.Project.Tree;
 with SARIF.Types;             use SARIF.Types;
 with SARIF.Types.Outputs;
 with VSS.JSON.Push_Writers;
+with VSS.JSON.Streams;
 with VSS.Strings;
 with VSS.Strings.Conversions; use VSS.Strings.Conversions;
 with VSS.Text_Streams.File_Output;
@@ -35,7 +43,8 @@ procedure Generate_SARIF_Report
   (Filename           : String;
    SPARK_Files        : SPARK_File_Lists.List;
    Command_Line_Image : String;
-   Error_Code         : Integer)
+   Error_Code         : Integer;
+   Tree               : GPR2.Project.Tree.Object)
 is
    Root       : SARIF.Types.Root;
    My_Run     : run;
@@ -44,6 +53,20 @@ is
    Output : aliased VSS.Text_Streams.File_Output.File_Output_Text_Stream;
    Writer : VSS.JSON.Push_Writers.JSON_Simple_Push_Writer;
 
+   package Base_URI_Maps is new
+     Ada.Containers.Indefinite_Hashed_Maps
+       (Key_Type        => String,
+        Element_Type    => String,
+        Hash            => Ada.Strings.Hash,
+        Equivalent_Keys => "=",
+        "="             => "=");
+   --  Maps SARIF uriBaseId identifiers to canonical directory paths.
+   --  Paths always end with a directory separator.
+
+   Base_URIs : Base_URI_Maps.Map;
+   --  Maps SARIF uriBaseId identifiers to canonical directory paths.
+   --  Populated at the start of processing from CL_Switches.SARIF_Base_URIs.
+
    function Tool_Invocation return SARIF.Types.invocation;
    function Rules return SARIF.Types.reportingDescriptor_Vector;
    --  Helper functions that generate subsections of the SARIF report
@@ -51,6 +74,26 @@ is
    function Mk_Multi_Message_String
      (S : String) return Optional_multiformatMessageString;
    --  Helper to create a multiformatMessageString object from a simple String
+
+   function Resolve_Source (Simple : String) return String;
+   --  Resolve a source basename to its full absolute path via the project
+   --  tree.
+   --  Returns an empty string when the source is not found.
+
+   function Normalize_URI_Path (Path : String) return String;
+   --  Replace every backslash in Path with a forward slash and return the
+   --  result. Used to make URI path components portable across platforms.
+
+   function Path_To_File_URI (Path : String) return String;
+   --  Convert an absolute path to a file:// URI with forward slashes.
+
+   function Make_Artifact_Location
+     (Simple_File : String) return SARIF.Types.artifactLocation;
+   --  Build a SARIF artifactLocation for the given source basename, resolving
+   --  it to a full path and applying the base URI map.
+
+   function Build_Original_Uri_Base_Ids return SARIF.Types.Any_Object;
+   --  Build the run.originalUriBaseIds value from Base_URIs.
 
    procedure Handle_SPARK_Files;
    --  Parse all .spark files
@@ -80,6 +123,129 @@ is
    function Severity_To_Result_Level
      (S : String) return SARIF.Types.Enum.result_level;
    --  Map result severity to SARIF result level
+
+   function Ensure_Trailing_Sep (S : String) return String;
+   --  Ensure that S ends with a directory separator, adding one if needed.
+
+   ---------------------------------
+   -- Build_Original_Uri_Base_Ids --
+   ---------------------------------
+
+   function Build_Original_Uri_Base_Ids return SARIF.Types.Any_Object is
+      use VSS.JSON.Streams;
+      Result : SARIF.Types.Any_Object;
+   begin
+      Result.Append ((Kind => Start_Object));
+      for C in Base_URIs.Iterate loop
+         declare
+            Id  : constant String := Base_URI_Maps.Key (C);
+            URI : constant String :=
+              Path_To_File_URI (Base_URI_Maps.Element (C));
+            --  Element already ends with a directory separator, so the URI
+            --  ends with '/' as the SARIF spec requires.
+         begin
+            Result.Append
+              ((Kind => Key_Name, Key_Name => To_Virtual_String (Id)));
+            Result.Append ((Kind => Start_Object));
+            Result.Append
+              ((Kind => Key_Name, Key_Name => To_Virtual_String ("uri")));
+            Result.Append
+              ((Kind         => String_Value,
+                String_Value => To_Virtual_String (URI)));
+            Result.Append ((Kind => End_Object));
+         end;
+      end loop;
+      Result.Append ((Kind => End_Object));
+      return Result;
+   end Build_Original_Uri_Base_Ids;
+
+   -------------------------
+   -- Ensure_Trailing_Sep --
+   -------------------------
+
+   function Ensure_Trailing_Sep (S : String) return String is
+      Sep : constant Character := GNAT.OS_Lib.Directory_Separator;
+   begin
+      if S'Length > 0 and then S (S'Last) = Sep then
+         return S;
+      else
+         return S & Sep;
+      end if;
+   end Ensure_Trailing_Sep;
+
+   ------------------------
+   -- Normalize_URI_Path --
+   ------------------------
+
+   function Normalize_URI_Path (Path : String) return String is
+      S : String := Path;
+   begin
+      for C of S loop
+         if C = '\' then
+            C := '/';
+         end if;
+      end loop;
+      return S;
+   end Normalize_URI_Path;
+
+   ----------------------
+   -- Path_To_File_URI --
+   ----------------------
+
+   function Path_To_File_URI (Path : String) return String is
+      S : constant String := Normalize_URI_Path (Path);
+   begin
+      if S'Length > 0 and then S (S'First) = '/' then
+         return "file://" & S;
+      else
+         return "file:///" & S;
+      end if;
+   end Path_To_File_URI;
+
+   ----------------------------
+   -- Make_Artifact_Location --
+   ----------------------------
+
+   function Make_Artifact_Location
+     (Simple_File : String) return SARIF.Types.artifactLocation
+   is
+      Full        : constant String := Resolve_Source (Simple_File);
+      Best_Id     : Unbounded_String;
+      Best_Prefix : Unbounded_String;
+   begin
+      if Full /= "" then
+         for C in Base_URIs.Iterate loop
+            declare
+               Prefix : constant String := Base_URI_Maps.Element (C);
+            begin
+               if Full'Length >= Prefix'Length
+                 and then
+                   Full (Full'First .. Full'First + Prefix'Length - 1) = Prefix
+                 and then Prefix'Length > Length (Best_Prefix)
+               then
+                  Best_Id := To_Unbounded_String (Base_URI_Maps.Key (C));
+                  Best_Prefix := To_Unbounded_String (Prefix);
+               end if;
+            end;
+         end loop;
+      end if;
+
+      if Length (Best_Id) > 0 then
+         return
+           (uri       =>
+              To_Virtual_String
+                (Normalize_URI_Path
+                   (Full (Full'First + Length (Best_Prefix) .. Full'Last))),
+            uriBaseId => To_Virtual_String (To_String (Best_Id)),
+            others    => <>);
+      elsif Full /= "" then
+         return
+           (uri => To_Virtual_String (Path_To_File_URI (Full)), others => <>);
+      else
+         --  Source not found in project: emit simple name as relative URI
+         return (uri => To_Virtual_String (Simple_File), others => <>);
+      end if;
+   end Make_Artifact_Location;
 
    ------------------
    -- Handle_Items --
@@ -203,8 +369,7 @@ is
           (physicalLocation =>
              (True,
               physicalLocation'
-                (artifactLocation =>
-                   (True, (uri => To_Virtual_String (File), others => <>)),
+                (artifactLocation => (True, Make_Artifact_Location (File)),
                  region           =>
                    (True,
                     (startLine   => (True, Line),
@@ -260,6 +425,13 @@ is
    begin
       return (True, (text => To_Virtual_String (S), others => <>));
    end Mk_Multi_Message_String;
+
+   --------------------
+   -- Resolve_Source --
+   --------------------
+
+   function Resolve_Source (Simple : String) return String
+   is (Configuration.Source_Full_Path (Tree, Simple));
 
    -----------
    -- Rules --
@@ -392,8 +564,7 @@ is
            physicalLocation =>
              (True,
               physicalLocation'
-                (artifactLocation =>
-                   (True, (uri => To_Virtual_String (File), others => <>)),
+                (artifactLocation => (True, Make_Artifact_Location (File)),
                  region           =>
                    (True,
                     (startLine   => (True, Line),
@@ -455,9 +626,17 @@ is
            others              => <>);
    end Tool_Invocation;
 
-   --  Beginning of processing for Generate_SARIF_Report
-
 begin
+   for Raw of Configuration.CL_Switches.SARIF_Base_URIs loop
+      declare
+         Colon : constant Natural := Ada.Strings.Fixed.Index (Raw, ":");
+         Id    : constant String := Raw (Raw'First .. Colon - 1);
+         Path  : constant String := Raw (Colon + 1 .. Raw'Last);
+      begin
+         Base_URIs.Include (Id, Ensure_Trailing_Sep (Path));
+      end;
+   end loop;
+
    My_Run.tool :=
      tool'
        (driver =>
@@ -469,6 +648,7 @@ begin
              others       => <>),
         others => <>);
    My_Run.invocations.Append (Tool_Invocation);
+   My_Run.originalUriBaseIds := Build_Original_Uri_Base_Ids;
    My_Results.Clear (Is_Null => False);
    Handle_SPARK_Files;
    My_Run.results := My_Results;
