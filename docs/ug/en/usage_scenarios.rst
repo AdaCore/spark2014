@@ -2128,3 +2128,186 @@ be done either with a loop or through a recursive ghost subprogram. For the
 most common recursive properties over arrays, such as counting or summation,
 some useful lemmas are available in the :ref:`Higher Order Function Library` of
 |SPARK|.
+
+Object Oriented Programming
+---------------------------
+
+Even if tagged types are supported in |SPARK|, it doesn't follow that all
+common use cases for object oriented programming are amenable to
+formal verification using |GNATprove|. Indeed, |SPARK| supports object-oriented
+programming by checking behavioral subtyping between parent types and
+derived types, see :ref:`Object Oriented Programming and Liskov Substitution Principle`.
+It enforces that overriding operations of a derived type can be substituted for
+the corresponding overridden operation of the parent type anywhere. Whereas this
+behavior allows the verification of subprograms in a modular way, it is not
+compatible with all object-oriented design patterns.
+
+Using OOP in |SPARK| requires adhering to a specific style.
+Primitive subprograms of tagged types or interfaces should be annotated with
+class-wide contracts. These contracts represent potential constraints (for
+preconditions) and guarantees (for postconditions) of these primitives for
+all objects of the tagged derivation. Often, these contracts need to use
+primitive functions so their meaning can be refined on derivation. In the
+following example, the primitive functions ``Is_Initialized`` and
+``Is_Processed`` are used in the classwide contracts of ``Process`` and
+``Initialize``:
+
+.. code-block:: ada
+
+  type Base_Processor is tagged record
+     Data : Integer;
+  end record;
+
+  function Is_Initialized (Obj : Base_Processor) return Boolean is
+    (Obj.Data >= 0);
+
+  function Is_Processed (Obj : Base_Processor) return Boolean
+    (Obj.Data mod 2 = 0);
+
+  procedure Initialize (Obj : out Base_Processor)
+    with Post'Class => Obj.Is_Initialized;
+
+  procedure Process (Obj : in out Base_Processor)
+    with Pre'Class  => Obj.Is_Initialized,
+         Post'Class => Obj.Is_Processed;
+
+These functions can be used as placeholders to add information on a
+derivation, for example to refine the meaning of what it means for a processor
+to be initialized:
+
+.. code-block:: ada
+
+  type Detailed_Processor is new Base_Processor with record
+     More_Data : Integer;
+  end record;
+
+  overriding
+  function Is_Initialized (Obj : Detailed_Processor) return Boolean;
+
+  overriding
+  procedure Initialize (Obj : out Detailed_Processor);
+
+The version of ``Is_Initialized`` used in inherited classwide
+contracts of ``Initialize`` and ``Process`` depends on the version of the
+procedure being called. This kind of refinement would not be possible using
+only the compositional semantics of classwide contracts in Ada, as it does not
+allow for preconditions to be strengthened. Note that it is possible to use
+parent primitives in overridings through explicit view conversions:
+
+.. code-block:: ada
+
+  function Is_Initialized (Obj : Detailed_Processor) return Boolean is
+     (Base_Processor (Obj).Is_Initialized and then Obj.More_Data >= 0);
+
+  procedure Initialize (Obj : out Detailed_Processor) is
+  begin
+     Base_Processor (Obj).Initialize;
+     Obj.More_Data := 0;
+  end Initialize;
+
+Code that does general handling of objects of any type deriving from such a
+type/interface can be defined using a classwide type as a parameter. Dispatching
+is done on all calls to primitives if the parameter has a classwide type. It is
+similar to a generic, but the verification is done once and for all using
+classwide contracts. In our example, the postcondition of ``Initialize`` allows
+the proof of the precondition of ``Process`` for all possible derivations of
+``Base_Processor``:
+
+.. code-block:: ada
+
+  procedure Run_Processor_Lifecycle (Item : out Base_Processor'Class)
+    with Post => Item.Is_Processed;
+
+  procedure Run_Processor_Lifecycle (Item : out Base_Processor'Class) is
+  begin
+     Item.Initialize;
+     Item.Process;
+  end Run_Processor_Lifecycle;
+
+If the envisioned design pattern is not compatible with behavioral subtyping,
+or, more generally, if it does not really
+benefit from this particular handling, it can be better to rewrite the program
+to avoid tagged types altogether and use other idiomatic Ada constructs
+instead. In particular, if the program does not use dynamic polymorphism, or
+dispatching, at all, it is better to simply remove the tagged type. It
+is the case for example when tagged types are used solely to allow prefix
+notation in calls.
+
+Some common OOP patterns have simpler alternatives in SPARK that don't require
+OOP or dynamic dispatch. For example, if there are only a fixed, known number
+of forms a structure might take, it is
+possible to introduce an enumeration and use it as the discriminant of an
+untagged record type. As an example, if you know in advance the different kinds
+of shapes that the program shall handle, a discriminated record can be used to
+define a type for geometrical shapes in |SPARK|:
+
+.. code-block:: ada
+
+  type Shape_Kind is (Circle, Rectangle, Triangle);
+
+  type Shape (Kind : Shape_Kind) is record
+     case Kind is
+        when Circle =>
+           Radius : Float;
+        when Rectangle =>
+           Width, Height : Float;
+        when Triangle =>
+           Base, Side_Height : Float;
+     end case;
+  end record;
+
+Remark that such a change might require code refactoring to group together the
+functionalities for all types in the hierarchy in a single subprogram using a
+case statement:
+
+.. code-block:: ada
+
+  function Get_Area (Item : T) return Float is
+  begin
+     case Item.Kind is
+       when Circle =>
+          return Pi * Item.Radius ** 2;
+       when Rectangle =>
+	  return Item.Width * Item.Height;
+       when Triangle =>
+          return Base * Side_Height / 2.0;
+     end case;
+  end Get_Area;
+
+Similarly, it is possible to share code in a factory-like way by introducing a
+generic. The untagged object type can be given as a generic parameter along
+with the corresponding methods that can be used to apply the processing to
+objects of this type:
+
+.. code-block:: ada
+
+  generic
+     type T is private;
+     with function Create return T;
+     with function Get_Area (Item : T) return Float;
+  package Generic_Factory is
+
+     function Produce return T;
+
+     procedure Display_Area (Item : T);
+
+  end Generic_Factory;
+
+  package body Generic_Factory is
+
+     function Produce return T is
+     begin
+        return Create;
+     end Produce;
+
+     procedure Display_Area (Item : T) is
+     begin
+        Ada.Text_IO.Put_Line ("Area: " & Float'Image (Get_Area (Item)));
+     end Display_Area;
+
+  end Generic_Factory;
+
+Using a generic instead of OOP causes the shared code to be verified separately
+for each usage, as opposed to once and for all based on the Liskov substitution
+principle. This alternative may simplify proof if dynamic dispatching is not
+necessary.
