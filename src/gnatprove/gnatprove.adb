@@ -25,16 +25,13 @@
 ------------------------------------------------------------------------------
 
 --  This program (gnatprove) is the command line interface of the SPARK 2014
---  tools. It works in three steps:
+--  tools. It works in two steps:
 --
---  1) Compute_ALI_Information
---     This step generates, for all relevant units, the ALI files, which
---     contain the computed effects for all subprograms and packages.
---  2) Flow_Analysis_And_Proof
+--  1) Flow_Analysis_And_Proof
 --     This step does all the SPARK analyses: flow analysis and proof. The tool
 --     "gnat2why" is called on all units, translates the SPARK code to Why3
 --     and calls gnatwhy3 to prove the generated VCs.
---  3) Call SPARK_Report. The previous steps have generated extra information,
+--  2) Call SPARK_Report. The previous step has generated extra information,
 --     which is read in by the spark_report tool, and aggregated to a report.
 --     See the documentation of spark_report.adb for the details.
 
@@ -67,14 +64,12 @@ with Ada.Command_Line;
 with Ada.Directories;
 with Ada.Environment_Variables;
 with Ada.Exceptions;  use Ada.Exceptions;
-with Ada.Text_IO;     use Ada.Text_IO;
+with Ada.Text_IO;
 with Call;            use Call;
 with Configuration;   use Configuration;
 with GNAT.OS_Lib;
-with GNAT.Strings;    use GNAT.Strings;
 with Gnatprove_Build; use Gnatprove_Build;
 with GNATCOLL.Tribooleans;
-with GNATCOLL.Utils;  use GNATCOLL.Utils;
 with GPR2;            use GPR2;
 with GPR2.Path_Name;
 with GPR2.Project.Tree;
@@ -85,11 +80,6 @@ with VC_Kinds;        use VC_Kinds;
 
 procedure Gnatprove with SPARK_Mode is
 
-   type Gnatprove_Step is (GS_Data_Representation, GS_Gnat2Why);
-   --  ??? No need for this plan stuff anymore
-
-   type Plan_Type is array (Positive range <>) of Gnatprove_Step;
-
    Success_Exit_Code : Ada.Command_Line.Exit_Status := 0;
    --  This variable contains the exit code emitted by gnatprove in case of
    --  success. This variable is changed to indicate some error situations that
@@ -99,32 +89,10 @@ procedure Gnatprove with SPARK_Mode is
    --  List of .spark files produced by Flow_Analysis_And_Proof, passed to
    --  Generate_SPARK_Report.
 
-   procedure Call_Gprbuild
-     (Project_File : String;
-      Tree         : Project.Tree.Object;
-      Args         : in out String_Lists.List;
-      Success      : out Boolean);
-   --  Call gprbuild with the given arguments. DB_Dir is the directory
-   --  which contains the information to configure gprbuild correctly.
-
-   procedure Compute_Data_Representation
-     (Project_File : String;
-      Tree         : Project.Tree.Object;
-      Success      : out Boolean);
-   --  Compute data representation for all source units, using gprbuild
-
-   procedure Execute_Step
-     (Plan         : Plan_Type;
-      Step         : Positive;
-      Project_File : String;
-      Tree         : Project.Tree.Object);
-
    procedure Generate_SPARK_Report
      (Tree : Project.Tree.Object; Errors : Boolean);
    --  Generate the SPARK report. Set Errors to True if previous phases
    --  contained errors.
-
-   function Text_Of_Step (Step : Gnatprove_Step) return String;
 
    procedure Set_Environment;
    --  Set the environment before calling other tools.
@@ -137,127 +105,6 @@ procedure Gnatprove with SPARK_Mode is
       Exit_Code : Ada.Command_Line.Exit_Status);
    --  Cleanup procedure that is called at the end of every gnatprove
    --  execution. Delete temporary files.
-
-   -------------------
-   -- Call_Gprbuild --
-   -------------------
-
-   procedure Call_Gprbuild
-     (Project_File : String;
-      Tree         : Project.Tree.Object;
-      Args         : in out String_Lists.List;
-      Success      : out Boolean)
-   is
-      Exit_Code   : Integer;
-      Obj_Dir     : constant String :=
-        Ada.Directories.Full_Name (Artifact_Dir (Tree).String_Value);
-      Output_Name : constant String :=
-        Ada.Directories.Compose
-          (Obj_Dir, "data_representation_generation", "log");
-   begin
-      Args.Append ("--restricted-to-languages=ada");
-
-      --  We explicitly set the target (which has been already figured out by
-      --  the GPR machinery). This way gprbuild will only call gprconfig once:
-      --  to generate a configuration for that specific target. Otherwise
-      --  gprbuild would make an extra call to gprconfig, just to find the
-      --  target.
-
-      Args.Append ("--target=" & String (Tree.Target));
-
-      if Minimal_Compile then
-         Args.Append ("-m");
-      end if;
-
-      Args.Append ("-s");
-
-      for File of CL_Switches.File_List loop
-         Args.Append (File);
-      end loop;
-
-      if Verbose then
-         Args.Append ("-v");
-      else
-         Args.Append ("-q");
-         Args.Append ("-ws");
-         Args.Append ("--no-exit-message");
-      end if;
-
-      Args.Append ("-j" & Image (Parallel, Min_Width => 1));
-
-      if Continue_On_Error then
-         Args.Append ("-k");
-      end if;
-
-      if Force or else Has_Manual_Prover or else CL_Switches.Replay then
-         Args.Append ("-f");
-      end if;
-
-      if All_Projects then
-         Args.Append ("-U");
-      end if;
-
-      Args.Append ("-c");
-
-      for Var of CL_Switches.X loop
-         Args.Append (Var);
-      end loop;
-
-      if Project_File /= "" then
-         Args.Append ("-P");
-         Args.Append (Project_File);
-      end if;
-
-      if CL_Switches.RTS /= null and then CL_Switches.RTS.all /= "" then
-         Args.Append ("--RTS=" & CL_Switches.RTS.all);
-      end if;
-
-      if CL_Switches.Target /= null and then CL_Switches.Target.all /= "" then
-         Args.Append ("--target=" & CL_Switches.Target.all);
-      end if;
-
-      if not Null_Or_Empty_String (CL_Switches.Autoconf) then
-         Args.Append ("--autoconf=" & CL_Switches.Autoconf.all);
-      end if;
-
-      if not Null_Or_Empty_String (CL_Switches.Config) then
-         Args.Append ("--config=" & CL_Switches.Config.all);
-      end if;
-
-      for S of CL_Switches.GPR_Project_Path loop
-         Args.Append ("-aP");
-         Args.Append (S);
-      end loop;
-
-      if Debug then
-         Args.Append ("-dn");
-      end if;
-
-      Args.Append ("-cargs:Ada");
-      for Arg of CL_Switches.Cargs_List loop
-         Args.Append (Arg);
-      end loop;
-
-      Args.Append ("-S");  --  Stop after compilation and do not assemble
-      Args.Append ("-gnatR2js");  --  Generate data representation files
-      Args.Append ("-gnatws");    --  Suppress all warnings
-      Args.Append ("-gnatx");     --  Suppress cross-ref information
-
-      if GnateT_Switch /= null and then GnateT_Switch.all /= "" then
-         Args.Append (Configuration.GnateT_Switch.all);
-      end if;
-
-      Args.Append ("-gnatis");  --  Suppress all info messages
-
-      Call_With_Status
-        (Command     => "gprbuild",
-         Arguments   => Args,
-         Status      => Exit_Code,
-         Output_Name => Output_Name,
-         Verbose     => Verbose);
-      Success := Exit_Code = 0;
-
-   end Call_Gprbuild;
 
    -------------
    -- Cleanup --
@@ -275,108 +122,6 @@ procedure Gnatprove with SPARK_Mode is
       end if;
       Ada.Command_Line.Set_Exit_Status (Exit_Code);
    end Cleanup;
-
-   ---------------------------------
-   -- Compute_Data_Representation --
-   ---------------------------------
-
-   procedure Compute_Data_Representation
-     (Project_File : String; Tree : Project.Tree.Object; Success : out Boolean)
-   is
-      Args             : String_Lists.List;
-      Gprbuild_Success : Boolean;
-   begin
-      declare
-         Subd : constant String :=
-           Ada.Directories.Compose
-             (Phase2_Subdir.Constant_Reference, Data_Representation_Subdir);
-      begin
-         Args.Append ("--subdirs=" & Subd);
-      end;
-      Args.Append ("--no-object-check");
-
-      --  Keep going after a compilation error in 'check' mode
-
-      if Configuration.Mode = GPM_Check then
-         Args.Append ("-k");
-      end if;
-
-      Call_Gprbuild
-        (Project_File, Tree, Args => Args, Success => Gprbuild_Success);
-
-      if not Gprbuild_Success then
-         if not Quiet then
-            Ada.Text_IO.Put_Line
-              ("generation of data representation information failed");
-            Ada.Text_IO.Put_Line
-              ("continuing analysis with partial data representation");
-            Ada.Text_IO.Put_Line
-              ("for details, see log file "
-               & "gnatprove/data_representation_generation.log");
-         end if;
-      end if;
-
-      --  Ignore the status of data representation generation, as this is an
-      --  optional step in GNATprove.
-      Success := True;
-   end Compute_Data_Representation;
-
-   ------------------
-   -- Execute_Step --
-   ------------------
-
-   procedure Execute_Step
-     (Plan         : Plan_Type;
-      Step         : Positive;
-      Project_File : String;
-      Tree         : Project.Tree.Object)
-   is
-      Success : Boolean;
-   begin
-      if not Quiet then
-         Put_Line
-           ("Phase"
-            & Positive'Image (Step)
-            & " of"
-            & Positive'Image (Plan'Length)
-            & ": "
-            & Text_Of_Step (Plan (Step))
-            & " ...");
-      end if;
-
-      case Plan (Step) is
-         when GS_Data_Representation =>
-            --  Do not generate data representation if -gnateT is passed
-            --  explicity, as the target representation file might not match
-            --  the target of the compiler used to generate the data
-            --  representation in this phase.
-            if Has_gnateT_Switch (Tree.Root_Project)
-              or else
-                Configuration.Mode in GPM_Check | GPM_Check_All | GPM_Flow
-            then
-               Success := True;
-            else
-               Compute_Data_Representation (Project_File, Tree, Success);
-            end if;
-
-         when GS_Gnat2Why            =>
-            Flow_Analysis_And_Proof (Tree, SPARK_Files, Success);
-      end case;
-
-      if not Success then
-         declare
-            Msg : constant String :=
-              "gnatprove: error during " & Text_Of_Step (Plan (Step));
-         begin
-            if Plan (Step) = GS_Gnat2Why then
-               raise GNATprove_Recoverable_Failure with Msg;
-            else
-               Fail (Msg);
-            end if;
-         end;
-      end if;
-
-   end Execute_Step;
 
    ---------------------------
    -- Generate_SPARK_Report --
@@ -396,7 +141,8 @@ procedure Gnatprove with SPARK_Mode is
          Status      => Status);
 
       if not Quiet and then Configuration.Mode /= GPM_Check then
-         Put_Line ("Summary logged in " & SPARK_Report_File (Obj_Dir));
+         Ada.Text_IO.Put_Line
+           ("Summary logged in " & SPARK_Report_File (Obj_Dir));
       end if;
 
       --  There were unproved checks. If unproved check messages are considered
@@ -471,39 +217,8 @@ procedure Gnatprove with SPARK_Mode is
 
    end Set_Environment;
 
-   ------------------
-   -- Text_Of_Step --
-   ------------------
-
-   function Text_Of_Step (Step : Gnatprove_Step) return String is
-   begin
-      --  These strings have to make sense when preceded by
-      --  "error during ". See the body of procedure Execute_Step.
-      case Step is
-         when GS_Data_Representation =>
-            return "generation of data representation information";
-
-         when GS_Gnat2Why            =>
-            case Configuration.Mode is
-               when GPM_Check           =>
-                  return "fast partial checking of SPARK legality rules";
-
-               when GPM_Check_All       =>
-                  return "full checking of SPARK legality rules";
-
-               when GPM_Flow            =>
-                  return "analysis of data and information flow";
-
-               when GPM_Prove | GPM_All =>
-                  return "flow analysis and proof";
-            end case;
-      end case;
-   end Text_Of_Step;
-
    Tree : Project.Tree.Object;
    --  GNAT project tree
-
-   --  Start processing for Gnatprove
 
 begin
    Set_Environment;
@@ -538,18 +253,24 @@ begin
       end;
    end loop;
 
-   Analysis : declare
-      Plan : constant Plan_Type := [GS_Data_Representation, GS_Gnat2Why];
+   declare
+      --  These strings have to make sense when preceded by "error during".
+      Phase_Text : constant String :=
+        (case Configuration.Mode is
+           when GPM_Check           =>
+             "fast partial checking of SPARK legality rules",
+           when GPM_Check_All       => "full checking of SPARK legality rules",
+           when GPM_Flow            => "analysis of data and information flow",
+           when GPM_Prove | GPM_All => "flow analysis and proof");
+      Success    : Boolean;
    begin
-      for Step in Plan'Range loop
-         Execute_Step (Plan, Step, CL_Switches.P.all, Tree);
-      end loop;
+      Flow_Analysis_And_Proof (Tree, SPARK_Files, Success);
 
-   exception
-      when E : GNATprove_Recoverable_Failure =>
+      if not Success then
          Generate_SPARK_Report (Tree, Errors => True);
-         Fail (Ada.Exceptions.Exception_Message (E));
-   end Analysis;
+         Fail ("gnatprove: error during " & Phase_Text);
+      end if;
+   end;
 
    Generate_SPARK_Report (Tree, Errors => False);
    Cleanup (Tree, "", Success_Exit_Code);

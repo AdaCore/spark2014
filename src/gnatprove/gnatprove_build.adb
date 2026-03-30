@@ -8,6 +8,7 @@ with Configuration;         use Configuration;
 with Graphs;
 with GPR2.Build;
 with GPR2.Build.Actions.Compile.Ada.Analysis;
+with GPR2.Build.Actions.Compile.Ada.Data_Rep;
 with GPR2.Build.Actions.Compile.Ada.Global_Gen;
 with GPR2.Build.Compilation_Unit;
 with GPR2.Build.Compilation_Unit.Maps;
@@ -72,8 +73,9 @@ package body Gnatprove_Build is
    Unit_Dependency_Graph : Unit_Graphs.Graph := Unit_Graphs.Create;
 
    procedure Full_Deps (Tree : Project.Tree.Object);
-   --  Compute full (transitive) dependencies for all units and store them in
-   --  Unit_Dependency_Graph.
+   --  Compute full (transitive) dependencies for all units in Tree and store
+   --  them in the internal Unit_Dependency_Graph. Must be called before any
+   --  analysis actions are added.
 
    -----------------------------
    -- Create_Object_Path_File --
@@ -271,12 +273,32 @@ package body Gnatprove_Build is
                   begin
                      GG_Act.Initialize (Elt);
                      if not Tree.Artifacts_Database.Add_Action (GG_Act) then
-                        Ada.Text_IO.Put_Line
-                          (Ada.Text_IO.Standard_Error,
-                           "Error adding Global_Gen action for unit "
-                           & String (Elt.Name));
+                        pragma
+                          Assert
+                            (False,
+                             "Error adding Global_Gen action for unit "
+                             & String (Elt.Name));
                      end if;
                   end;
+
+                  if GPR2.Build.Actions.Compile.Ada.Data_Rep.Applicable (Elt)
+                  then
+                     declare
+                        Data_Rep_Action :
+                          GPR2.Build.Actions.Compile.Ada.Data_Rep.Object;
+                     begin
+                        Data_Rep_Action.Initialize (Elt);
+                        if not Tree.Artifacts_Database.Add_Action
+                                 (Data_Rep_Action)
+                        then
+                           pragma
+                             Assert
+                               (False,
+                                "Error adding Data_Rep action for unit "
+                                & String (Elt.Name));
+                        end if;
+                     end;
+                  end if;
                end if;
             end;
          end loop;
@@ -291,11 +313,11 @@ package body Gnatprove_Build is
                   declare
                      Analysis_Act :
                        GPR2.Build.Actions.Compile.Ada.Analysis.Object;
-                     Unit_Deps    : Unit_Set;
                      Elt_Set      : Unit_Set;
+                     Unit_Deps    : Unit_Set;
                   begin
-                     --  Build the set of units for which we will need the .ali
-                     --  files
+                     --  Build the set of units for which we will need the
+                     --  .ali files.
                      Elt_Set.Include (Elt.Name, Elt);
                      Add_Deps (Elt_Set, Unit_Deps);
 
@@ -303,10 +325,11 @@ package body Gnatprove_Build is
                        (Elt, Object_Path_File, Unit_Deps);
                      if not Tree.Artifacts_Database.Add_Action (Analysis_Act)
                      then
-                        Ada.Text_IO.Put_Line
-                          (Ada.Text_IO.Standard_Error,
-                           "Error adding Analysis action for unit "
-                           & String (Elt.Name));
+                        pragma
+                          Assert
+                            (False,
+                             "Error adding Analysis action for unit "
+                             & String (Elt.Name));
                      else
                         --  Record the expected output path at queue time.
                         --  The file may not exist if the action fails at

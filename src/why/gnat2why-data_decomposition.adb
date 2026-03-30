@@ -36,7 +36,6 @@ with SPARK_Atree;          use SPARK_Atree;
 with SPARK_Atree.Entities; use SPARK_Atree.Entities;
 with SPARK_Util;           use SPARK_Util;
 with String_Utils;         use String_Utils;
-with VC_Kinds;             use VC_Kinds;
 
 package body Gnat2Why.Data_Decomposition is
 
@@ -226,10 +225,7 @@ package body Gnat2Why.Data_Decomposition is
                Source_File_Name : constant String :=
                  Get_Name_String (Unit_File_Name (J));
                JSON_File_Name   : constant String :=
-                 Ada.Directories.Compose
-                   (Containing_Directory => Data_Representation_Subdir_Name,
-                    Name                 => Source_File_Name,
-                    Extension            => "json");
+                 Source_File_Name & ".json";
             begin
                if not File_Names.Contains (Source_File_Name)
                  and then Ada.Directories.Exists (JSON_File_Name)

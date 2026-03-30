@@ -1,7 +1,9 @@
 with Configuration;
 with Gnat2Why_Opts.Writing;
 with GNAT.OS_Lib;
+
 with GPR2.Build.Actions.Compile.Ada.Analysis;
+with GPR2.Build.Actions.Compile.Ada.Data_Rep;
 with GPR2.Build.Artifacts.Object_File;
 with GPR2.Message;
 with GPR2.Source_Reference;
@@ -107,6 +109,11 @@ package body GPR2.Build.Actions.Compile.Ada.Global_Gen is
       --  as an input to the analysis actions that depend on the current ALI
       --  file.
 
+      function Add_Data_Rep_Dep (Unit : Name_Type) return Boolean;
+      --  Create a data-representation action for the given unit and add its
+      --  JSON output as an input to the analysis actions that depend on the
+      --  current ALI file.
+
       ------------------------
       -- Add_Global_Gen_Dep --
       ------------------------
@@ -178,6 +185,63 @@ package body GPR2.Build.Actions.Compile.Ada.Global_Gen is
          return True;
       end Add_Global_Gen_Dep;
 
+      ----------------------
+      -- Add_Data_Rep_Dep --
+      ----------------------
+
+      function Add_Data_Rep_Dep (Unit : Name_Type) return Boolean is
+         CU     : Compilation_Unit.Object;
+         DR_Act : Actions.Compile.Ada.Data_Rep.Object;
+
+         use type GPR2.Project.View.Object;
+      begin
+         CU := Self.Ctxt.Namespace_Roots.First_Element.Unit (Unit);
+
+         if not CU.Is_Defined then
+            return True;
+         end if;
+
+         if not Actions.Compile.Ada.Data_Rep.Applicable (CU) then
+            return True;
+         end if;
+
+         if Configuration.CL_Switches.No_Subprojects
+           and then CU.Owning_View /= Self.CU.Owning_View
+         then
+            return True;
+         end if;
+
+         declare
+            DR_Id : constant Actions.Compile.Ada.Data_Rep.Data_Rep_Id :=
+              Actions.Compile.Ada.Data_Rep.Create (CU);
+         begin
+            if not Self.Tree.Has_Action (DR_Id) then
+               DR_Act.Initialize (CU);
+
+               if not Self.Tree.Add_Action (DR_Act) then
+                  return False;
+               end if;
+            else
+               DR_Act :=
+                 Actions.Compile.Ada.Data_Rep.Object
+                   (Self.Tree.Action (DR_Id));
+            end if;
+         end;
+
+         for Succ of Self.Tree.Successors (Self.Lib_Ali_File) loop
+            if Succ in Actions.Compile.Ada.Analysis.Object'Class then
+               Self.Tree.Add_Input (Succ.UID, DR_Act.JSON_Output, True);
+
+               Actions.Compile.Ada.Analysis.Object
+                 (Self.Tree.Action_Id_To_Reference (Succ.UID).Element.all)
+                 .Data_Rep_JSON_Files
+                 .Include (DR_Act.JSON_Output);
+            end if;
+         end loop;
+
+         return True;
+      end Add_Data_Rep_Dep;
+
       use GNAT.OS_Lib;
       View : constant Project.View.Object := Self.CU.Owning_View;
    begin
@@ -241,8 +305,24 @@ package body GPR2.Build.Actions.Compile.Ada.Global_Gen is
                Self.Tree.Reporter.Report
                  (GPR2.Message.Create
                     (GPR2.Message.Error,
-                     "failed to create a Global_Gen action for the dependency"
-                     & " unit "
+                     "failed to create a Global_Gen action for the"
+                     & " dependency unit "
+                     & String (Dep)
+                     & " obtained after ALI parsing",
+                     GPR2.Source_Reference.Object
+                       (GPR2.Source_Reference.Create
+                          (Self.ALI_Object.Path_Name.Value,
+                           Line   => 0,
+                           Column => 0))));
+               return False;
+            end if;
+
+            if not Add_Data_Rep_Dep (Dep) then
+               Self.Tree.Reporter.Report
+                 (GPR2.Message.Create
+                    (GPR2.Message.Error,
+                     "failed to create a Data_Rep action for the"
+                     & " dependency unit "
                      & String (Dep)
                      & " obtained after ALI parsing",
                      GPR2.Source_Reference.Object

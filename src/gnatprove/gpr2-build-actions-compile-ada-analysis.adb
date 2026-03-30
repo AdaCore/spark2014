@@ -1,5 +1,6 @@
 with Configuration; use Configuration;
 with Gnat2Why_Opts.Writing;
+with GPR2.Build.Actions.Compile.Ada.Data_Rep;
 with GPR2.Build.Artifacts.Source_Files;
 with GPR2.Project.Attribute;
 with GPR2.Project.Registry.Attribute;
@@ -116,6 +117,12 @@ package body GPR2.Build.Actions.Compile.Ada.Analysis is
             return;
          end if;
       end loop;
+
+      for JSON_File of Self.Data_Rep_JSON_Files loop
+         if not Self.Signature.Add_Input (JSON_File, Check_Checksums) then
+            return;
+         end if;
+      end loop;
    end Compute_Signature;
 
    ------------
@@ -140,6 +147,7 @@ package body GPR2.Build.Actions.Compile.Ada.Analysis is
       Object_Path_File : String;
       Deps             : GPR2.Build.Compilation_Unit.Maps.Map)
    is
+      use type GPR2.Project.View.Object;
 
       function ALI_For_Unit
         (CU : GPR2.Build.Compilation_Unit.Object) return GPR2.Path_Name.Object;
@@ -170,8 +178,26 @@ package body GPR2.Build.Actions.Compile.Ada.Analysis is
             Self.ALI_Files.Include
               (GPR2.Build.Artifacts.Files.Create (ALI_For_Unit (Dep)));
          end if;
-
       end loop;
+
+      --  When data representation is applicable, register JSON outputs of
+      --  Data_Rep actions for this unit and all its dependencies as inputs.
+      if Actions.Compile.Ada.Data_Rep.Applicable (Self.CU) then
+         Self.Data_Rep_JSON_Files.Insert
+           (Actions.Compile.Ada.Data_Rep.Data_Rep_File_For_Unit (Self.CU));
+         for Dep of Deps loop
+            if Dep.Is_Defined
+              and then not Dep.Owning_View.Is_Externally_Built
+              and then
+                (not CL_Switches.No_Subprojects
+                 or else Dep.Owning_View = Self.CU.Owning_View)
+              and then Actions.Compile.Ada.Data_Rep.Applicable (Dep)
+            then
+               Self.Data_Rep_JSON_Files.Include
+                 (Actions.Compile.Ada.Data_Rep.Data_Rep_File_For_Unit (Dep));
+            end if;
+         end loop;
+      end if;
    end Initialize;
 
    --------------
@@ -184,6 +210,7 @@ package body GPR2.Build.Actions.Compile.Ada.Analysis is
       return Result : Object := Self do
          Result.Object_Path_File := Null_Unbounded_String;
          Result.ALI_Files := File_Sets.Empty;
+         Result.Data_Rep_JSON_Files := File_Sets.Empty;
       end return;
    end Extended;
 
@@ -224,6 +251,10 @@ package body GPR2.Build.Actions.Compile.Ada.Analysis is
 
       for ALI_File of Self.ALI_Files loop
          Db.Add_Input (Self.UID, ALI_File, True);
+      end loop;
+
+      for JSON_File of Self.Data_Rep_JSON_Files loop
+         Db.Add_Input (UID, JSON_File, True);
       end loop;
 
       if Self.Obj_File.Is_Defined
