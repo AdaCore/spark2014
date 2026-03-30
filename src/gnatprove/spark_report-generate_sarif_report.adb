@@ -529,6 +529,16 @@ is
          end;
       end loop;
 
+      --  Add rule for GNAT front-end diagnostics
+      result.Append
+        (reportingDescriptor'
+           (id               => To_Virtual_String ("GNAT"),
+            shortDescription => Mk_Multi_Message_String ("GNAT Diagnostic"),
+            fullDescription  =>
+              Mk_Multi_Message_String
+                ("Diagnostic message emitted by the GNAT front-end"),
+            others           => <>));
+
       --  Add catch-all rule for errors without classification
       result.Append
         (reportingDescriptor'
