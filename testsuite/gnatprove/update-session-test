@@ -132,7 +132,7 @@ def gitlab_section_start(testname):
     section_id = testname.replace("/", "_").replace(" ", "_")
     ts = int(time.time())
     print(
-        f"\x1b[0Ksection_start:{ts}:{section_id}\r\x1b[0K{testname}",
+        f"\x1b[0Ksection_start:{ts}:{section_id}[collapsed=true]\r\x1b[0K{testname}",
         flush=True,
     )
 
