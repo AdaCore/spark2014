@@ -2490,8 +2490,22 @@ package body Gnat2Why.Expr is
       Domain : EW_Domain;
       As_Old : Boolean := False) return W_Expr_Id
    is
-      Res : W_Expr_Id := Expr;
+      In_Prophecy : constant Boolean :=
+        Is_Local_Borrower_In_Prophecy (N);
+      Res         : W_Expr_Id := Expr;
    begin
+      --  If N is a local borrow inside a prophecy, then update the symbol
+      --  table to use the name of the borrower at the end of the borrow.
+
+      if In_Prophecy then
+         declare
+            Brower : constant Entity_Id := Get_Root_Object (N);
+         begin
+            Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+            Insert_Tmp_Item_For_Entity
+              (Brower, Get_Brower_At_End (Brower), Mutable => True);
+         end;
+      end if;
 
       --  For potentially invalid expressions, also declare a binding for the
       --  validity flag.
@@ -2576,6 +2590,10 @@ package body Gnat2Why.Expr is
                           (N, Prog_Or_Term_Domain (Domain), Params)),
                    To     => Get_Typ (Name)),
               Context => Res);
+      end if;
+
+      if In_Prophecy then
+         Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
       end if;
 
       return Res;
@@ -18653,6 +18671,9 @@ package body Gnat2Why.Expr is
       --  attribute, in which case its prefix is rooted at a borrower) then
       --  we translate Expr in a context where Brower is its value at the end
       --  of the borrow.
+      --  If the reference to 'Old is translated directly, then the definition
+      --  of Brower will be taken from the context. If a map is used, the
+      --  prefix will be specifically recognized when creating the bindings.
 
       elsif Nkind (Expr) = N_Attribute_Reference
         or else Brower = Get_Root_Object (Expr)
@@ -18662,7 +18683,8 @@ package body Gnat2Why.Expr is
              (if Nkind (Expr) = N_Attribute_Reference
                 then
                   Attribute_Name (Expr) = Name_Old
-                  and then Brower = Get_Root_Object (Prefix (Expr)));
+                  and then Brower = Get_Root_Object (Prefix (Expr))
+                  and then Is_Local_Borrower_In_Prophecy (Prefix (Expr)));
 
          Ada_Ent_To_Why.Push_Scope (Symbol_Table);
          Insert_Tmp_Item_For_Entity

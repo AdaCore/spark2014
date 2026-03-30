@@ -1107,6 +1107,10 @@ package SPARK_Util is
    procedure Register_Prophecy_Save (E : Entity_Id);
    --  Registers that E saves a prophecy variable.
 
+   function Is_Local_Borrower_In_Prophecy (N : Node_Id) return Boolean;
+   --  Return True if N is a local borrower occurring inside a call to a
+   --  function annotated with At_End_Borrow.
+
    function Path_Contains_Witness
      (Expr : N_Subexpr_Id;
       Test : not null access function (N : Node_Id) return Boolean)
