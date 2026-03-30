@@ -653,6 +653,10 @@ begin
    Handle_SPARK_Files;
    My_Run.results := My_Results;
    Root.runs.Append (My_Run);
+   Root.schema :=
+     To_Virtual_String
+       ("https://docs.oasis-open.org/sarif/sarif/v2.1.0/errata01/os/"
+        & "schemas/sarif-schema-2.1.0.json");
    Writer.Set_Stream (Output'Unchecked_Access);
    Output.Create (To_Virtual_String (Filename), "utf-8");
    Writer.Start_Document;
