@@ -2611,7 +2611,7 @@ package body Flow_Utility is
          begin
             for V of
               Get_Variables_For_Proof
-                (Expr_N => Get_Expr_From_Return_Only_Func (E), Scope_N => E)
+                (Expr_N => Get_Predicate_Expression (E), Scope_N => E)
             loop
                if V.Kind = Direct_Mapping and then V.Node = Param then
                   null;

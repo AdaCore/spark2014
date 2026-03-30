@@ -546,7 +546,7 @@ package body Flow.Analysis.Sanity is
          if Present (Rep) then
             declare
                Expr : constant Node_Id :=
-                 Get_Expr_From_Return_Only_Func (Predicate_Function (Typ));
+                 Get_Predicate_Expression (Predicate_Function (Typ));
 
                Funcalls     : Call_Sets.Set;
                Indcalls     : Node_Sets.Set;

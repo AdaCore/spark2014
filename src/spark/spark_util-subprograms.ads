@@ -337,14 +337,11 @@ package SPARK_Util.Subprograms is
    --  Extract a condition checked for aspect Default_Initialization and
    --  Type_Invariant.
 
-   function Get_Expr_From_Return_Only_Func
+   function Get_Predicate_Expression
      (E : E_Function_Id) return Opt_N_Subexpr_Id
    with Pre => Is_Predicate_Function (E);
    --  @param E a predicate function
-   --  @return the expression in the first return statement found in the body
-   --     of E, if any, or Empty otherwise
-   --  Extract a condition checked by a function generated for aspect
-   --  [Dynamic_]Predicate.
+   --  @return the expression of the original [Static|Dynamic_]Predicate aspect
 
    function Get_Priority_Or_Interrupt_Priority
      (E : Entity_Id) return Opt_N_Subexpr_Id
