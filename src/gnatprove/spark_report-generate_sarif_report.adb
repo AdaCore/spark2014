@@ -480,9 +480,10 @@ is
       for K in Misc_Warning_Kind loop
          result.Append
            (reportingDescriptor'
-              (id              => To_Virtual_String (Kind_Name (K)),
-               fullDescription => Mk_Multi_Message_String (Description (K)),
-               others          => <>));
+              (id               => To_Virtual_String (Kind_Name (K)),
+               shortDescription => Mk_Multi_Message_String (Description (K)),
+               fullDescription  => Mk_Multi_Message_String (Description (K)),
+               others           => <>));
       end loop;
 
       --  Add GNATprove annotation rules
