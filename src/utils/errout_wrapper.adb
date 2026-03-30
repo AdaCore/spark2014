@@ -840,7 +840,7 @@ package body Errout_Wrapper is
       Msg : String;
       F1  : Flow_Id := Null_Flow_Id;
       F2  : Flow_Id := Null_Flow_Id;
-      F3  : Flow_Id := Null_Flow_Id) return String_Id
+      F3  : Flow_Id := Null_Flow_Id) return Boolean
    is
 
       function Warning_Disabled_For_Entity return Boolean;
@@ -875,19 +875,13 @@ package body Errout_Wrapper is
            or else Is_Entity_And_Has_Warnings_Off (F3);
       end Warning_Disabled_For_Entity;
 
-      Suppr_Reason : String_Id := Erroutc.Warnings_Suppressed (Sloc (N));
-
    begin
-      if Suppr_Reason = No_String then
-         Suppr_Reason :=
-           Erroutc.Warning_Specifically_Suppressed
-             (Loc => Sloc (N), Msg => Msg'Unrestricted_Access);
-
-         if Suppr_Reason = No_String and then Warning_Disabled_For_Entity then
-            Suppr_Reason := Null_String_Id;
-         end if;
-      end if;
-      return Suppr_Reason;
+      return
+        Erroutc.Warnings_Suppressed (Sloc (N))
+        or else
+          Erroutc.Warning_Is_Suppressed
+            (Loc => Sloc (N), Msg => Msg'Unrestricted_Access)
+        or else Warning_Disabled_For_Entity;
    end Warning_Is_Suppressed;
 
    -------------------
@@ -943,8 +937,7 @@ package body Errout_Wrapper is
          --  Warnings (Off), check for the second way here.
          Was_Suppressed : constant Boolean :=
            Suppressed
-           or else
-             Warning_Is_Suppressed (N, To_String (My_Msg.Msg)) /= No_String;
+           or else Warning_Is_Suppressed (N, To_String (My_Msg.Msg));
          Result         : constant JSON_Result_Type :=
            JSON_Result_Type'
              (Msg           => My_Msg,

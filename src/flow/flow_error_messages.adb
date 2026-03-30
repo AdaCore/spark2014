@@ -402,8 +402,7 @@ package body Flow_Error_Messages is
          else
             case Severity is
                when Warning_Kind =>
-                  Suppressed :=
-                    Warning_Is_Suppressed (N, Msg3, F1, F2, F3) /= No_String;
+                  Suppressed := Warning_Is_Suppressed (N, Msg3, F1, F2, F3);
 
                   if Suppressed then
                      Result.Suppr := Suppressed_Warning;
