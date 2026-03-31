@@ -1030,7 +1030,7 @@ package body Errout_Wrapper is
 
             Add_Json_Msg
               (Warnings_Errors,
-               (Tag           => To_Unbounded_String ("frontend"),
+               (Tag           => To_Unbounded_String ("GNAT"),
                 Severity      => Frontend_Severity (E),
                 Span          => Obj.Sptr,
                 Msg           => Create (Obj.Text.all),

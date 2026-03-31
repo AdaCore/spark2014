@@ -480,9 +480,10 @@ is
       for K in Misc_Warning_Kind loop
          result.Append
            (reportingDescriptor'
-              (id              => To_Virtual_String (Kind_Name (K)),
-               fullDescription => Mk_Multi_Message_String (Description (K)),
-               others          => <>));
+              (id               => To_Virtual_String (Kind_Name (K)),
+               shortDescription => Mk_Multi_Message_String (Description (K)),
+               fullDescription  => Mk_Multi_Message_String (Description (K)),
+               others           => <>));
       end loop;
 
       --  Add GNATprove annotation rules
@@ -528,6 +529,16 @@ is
                   others           => <>));
          end;
       end loop;
+
+      --  Add rule for GNAT front-end diagnostics
+      result.Append
+        (reportingDescriptor'
+           (id               => To_Virtual_String ("GNAT"),
+            shortDescription => Mk_Multi_Message_String ("GNAT Diagnostic"),
+            fullDescription  =>
+              Mk_Multi_Message_String
+                ("Diagnostic message emitted by the GNAT front-end"),
+            others           => <>));
 
       --  Add catch-all rule for errors without classification
       result.Append
@@ -653,6 +664,10 @@ begin
    Handle_SPARK_Files;
    My_Run.results := My_Results;
    Root.runs.Append (My_Run);
+   Root.schema :=
+     To_Virtual_String
+       ("https://docs.oasis-open.org/sarif/sarif/v2.1.0/errata01/os/"
+        & "schemas/sarif-schema-2.1.0.json");
    Writer.Set_Stream (Output'Unchecked_Access);
    Output.Create (To_Virtual_String (Filename), "utf-8");
    Writer.Start_Document;
