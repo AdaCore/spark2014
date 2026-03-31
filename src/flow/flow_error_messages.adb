@@ -624,6 +624,7 @@ package body Flow_Error_Messages is
       Stats         : Prover_Stat_Maps.Map;
       Unproved_Stat : Failed_Prover_Answer;
       Check_Info    : Check_Info_Type;
+      Cache_Status  : JSON_Value := Create_Object;
       CE_From_RAC   : Boolean := False)
    is
       function Get_Fix_Or_Verdict
@@ -880,6 +881,7 @@ package body Flow_Error_Messages is
            Stats         => Stats,
            Editor_Cmd    => To_Unbounded_String (Editor_Cmd),
            Unproved_Stat => Unproved_Stat,
+           Cache_Status  => Cache_Status,
            others        => <>);
 
    begin

@@ -356,6 +356,7 @@ package body Gnat2Why.Error_Messages is
       Unproved_Stat : Errout_Wrapper.Failed_Prover_Answer :=
         Errout_Wrapper.FPA_Unknown_Rec;
       Editor_Cmd    : String := "";
+      Cache_Status  : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
       CE_From_RAC   : Boolean := False) is
    begin
       if Kind in VC_Warning_Kind then
@@ -386,6 +387,7 @@ package body Gnat2Why.Error_Messages is
          How_Proved    => How_Proved,
          E             => E,
          Check_Info    => Check_Info,
+         Cache_Status  => Cache_Status,
          CE_From_RAC   => CE_From_RAC);
    end Emit_Proof_Result;
 
@@ -568,6 +570,7 @@ package body Gnat2Why.Error_Messages is
          Cntexmps      : JSON_Value;
          Check_Tree    : JSON_Value;
          Unproved_Stat : Failed_Prover_Answer;
+         Cache_Status  : JSON_Value;
       end record;
 
       function Parse_Why3_Prove_Result
@@ -1134,6 +1137,7 @@ package body Gnat2Why.Error_Messages is
                Unproved_Stat => Rec.Unproved_Stat,
                Extra_Msg     => CP_Msg,
                Check_Info    => Check_Info,
+               Cache_Status  => Rec.Cache_Status,
                CE_From_RAC   => Use_RAC_Cntexmp);
          end;
 
@@ -1266,7 +1270,11 @@ package body Gnat2Why.Error_Messages is
               Unproved_Stat =>
                 (if Has_Field (V, "unproved_status")
                  then From_JSON (Get (V, "unproved_status"))
-                 else FPA_Unknown_Rec));
+                 else FPA_Unknown_Rec),
+              Cache_Status  =>
+                (if Has_Field (V, "cache_status")
+                 then Get (V, "cache_status")
+                 else Create_Object));
       end Parse_Why3_Prove_Result;
 
    begin
