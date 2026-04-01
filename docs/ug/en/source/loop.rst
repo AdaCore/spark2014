@@ -566,7 +566,7 @@ in array ``A``:
    :linenos:
 
 The loop invariant expresses that the value of ``Counter`` is a natural number
-bounded by the current loop index ``J``, and that ``Counter`` is equal to zero
+bounded by the number of elements iterated so far, and that ``Counter`` is equal to zero
 exactly when all elements up to the current loop index have a non-zero value.
 With this loop invariant, |GNATprove| is able to prove the postcondition of
 ``Count_Arr_Zero``, namely that output parameter ``Counter`` is a natural
@@ -720,7 +720,8 @@ in array ``A``:
    :language: ada
    :linenos:
 
-The loop invariant expresses that all elements up to the current loop index
+The first loop invariant states that ``Pos`` is a valid index of the array.
+The other loop invariants express that all elements up to the current loop index
 ``J`` have a value less than ``Max``, and that ``Max`` is the value of one of
 these elements. The last loop invariant gives in fact this element, it is
 ``A(Pos)``, but this part of the loop invariant may not be present if the
@@ -741,9 +742,9 @@ Consider now a variant of the same search loop over a vector:
 Like before, the loop invariant expresses that all elements up to the current
 loop index ``J`` have a value less than ``Max``, and that ``Max`` is the value
 of one of these elements, most precisely the value of ``Element (V, Pos)`` if
-the position ``Pos`` for the optimum is recorded. An additional loop invariant
-is needed here compared to the case of arrays to state that ``Pos`` remains
-within the bounds of the vector. With this loop invariant, |GNATprove| is able
+the position ``Pos`` for the optimum is recorded. Like for arrays, a loop
+invariant is needed here to state that ``Pos`` remains within the bounds of
+the vector. With this loop invariant, |GNATprove| is able
 to prove the postcondition of ``Search_Vec_Max``, namely that output parameter
 ``Max`` is the maximum of the elements in the vector, and that ``Pos`` is the
 index of such an element:
@@ -760,9 +761,9 @@ Similarly, consider a variant of the same search loop over a list:
 The loop invariant expresses that all elements up to the current cursor ``Cu``
 have a value less than ``Max``, and that ``Max`` is the value of one of these
 elements, most precisely the value of ``Element (L, Pos)`` if the cursor
-``Pos`` for the optimum is recorded.  Like for vectors, an additional loop
-invariant is needed here compared to the case of arrays to state that cursor
-``Pos`` is a valid cursor of the list. A minor difference is that a loop
+``Pos`` for the optimum is recorded.  Like for arrays and vectors, a loop
+invariant is needed here to state that cursor ``Pos`` is a valid cursor of
+the list. A minor difference is that a loop
 invariant now starts with ``Max = 0 or else ..`` because the loop invariant is
 stated at the start of the loop (for convenience with the use of
 ``First_To_Previous``) which requires this modification. With this loop
