@@ -24,7 +24,6 @@
 
 --  Package to help print where we spend time
 
-private with Ada.Calendar;
 private with Ada.Containers.Hashed_Maps;
 private with Ada.Containers.Indefinite_Hashed_Maps;
 with Ada.Strings.Hash;
@@ -61,12 +60,13 @@ package Debug.Timing is
 
 private
 
-   --  Timing relies on Ada.Calendar and not Ada.Execution_Time, because the
-   --  latter would force the use of Ada.Real_Time and in turn the GNAT tasking
-   --  runtime, which incurs performance penalty at each allocation and
-   --  deallocation (and we have plenty of those). Here we only care about
-   --  estimate timing, so the less-precise and potentially non-monotonic clock
-   --  from Ada.Calendar is acceptable.
+   --  Timing uses process CPU time (user + system) obtained via a C
+   --  wrapper around clock_gettime(CLOCK_PROCESS_CPUTIME_ID) on POSIX and
+   --  GetProcessTimes on Windows. This excludes time spent blocked waiting
+   --  for spawned prover processes, which is the dominant source of noise
+   --  in wall-clock measurements. Ada.Execution_Time is not used because
+   --  it requires Ada.Real_Time and in turn the GNAT tasking runtime, which
+   --  incurs a performance penalty at every allocation and deallocation.
 
    package Timings is new
      Ada.Containers.Indefinite_Hashed_Maps
@@ -84,7 +84,7 @@ private
         "="             => Timings."=");
 
    type Time_Token is record
-      Start   : Ada.Calendar.Time;
+      Start   : Duration;
       History : Entity_Maps.Map;
    end record;
 
