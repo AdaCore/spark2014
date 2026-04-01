@@ -12,7 +12,7 @@ begin
       if A(J) = 0 then
          Counter := Counter + 1;
       end if;
-      pragma Loop_Invariant (Counter in 0 .. J);
+      pragma Loop_Invariant (Counter in 0 .. J - A'First + 1);
       pragma Loop_Invariant ((Counter = 0) = (for all K in A'First .. J => A(K) /= 0));
    end loop;
 end Count_Arr_Zero;

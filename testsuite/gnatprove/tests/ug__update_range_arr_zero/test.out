@@ -1,8 +1,11 @@
  info: postcondition proved
---> update_range_arr_zero.adb:5:11
+--> update_range_arr_zero.adb:6:11
 
- info: loop invariant preservation proved
---> update_range_arr_zero.adb:10:30
+ info: index check proved
+--> update_range_arr_zero.adb:10:09
 
  info: loop invariant initialization proved
---> update_range_arr_zero.adb:10:30
+--> update_range_arr_zero.adb:11:30
+
+ info: loop invariant preservation proved
+--> update_range_arr_zero.adb:11:30
