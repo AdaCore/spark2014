@@ -23,6 +23,7 @@ gprconfig
 gprinspect
 gprls
 gprname
+spark_data_rep_wrapper
 spark_memcached_wrapper
 spark_semaphore_wrapper
 target.atp
