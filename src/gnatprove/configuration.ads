@@ -49,10 +49,6 @@ package Configuration is
    GNATprove_Success, GNATprove_Failure : exception;
    --  Exceptions used to abort execution early
 
-   GNATprove_Recoverable_Failure : exception;
-   --  Exception used to signal that the report should be generated before
-   --  aborting execution.
-
    procedure Succeed
    with No_Return;
    --  End the program signaling success
@@ -315,9 +311,6 @@ package Configuration is
    --  Maximum length of label in report. Other characters are discarded
 
    Default_Steps : constant Natural := 100;
-
-   Data_Representation_Subdir : constant String :=
-     Data_Representation_Subdir_Name;
 
    package String_Holders is new Ada.Containers.Indefinite_Holders (String);
 

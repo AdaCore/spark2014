@@ -19,8 +19,9 @@ package GPR2.Build.Actions.Compile.Ada.Analysis is
      (Src : GPR2.Build.Compilation_Unit.Object) return Analysis_Id;
 
    type Object is new GPR2.Build.Actions.Compile.Ada.Object with record
-      Object_Path_File : Unbounded_String;
-      ALI_Files        : File_Sets.Set;
+      Object_Path_File    : Unbounded_String;
+      ALI_Files           : File_Sets.Set;
+      Data_Rep_JSON_Files : File_Sets.Set;
    end record;
 
    overriding
@@ -51,7 +52,8 @@ package GPR2.Build.Actions.Compile.Ada.Analysis is
    --  Initialize the analysis action for the given compilation unit.
    --  The Object_Path_File is the location of the file that contains all
    --  Object paths. The Deps is the set of unit dependencies, used to
-   --  calculate the ALI files that are inputs to this action.
+   --  calculate the ALI files and (when data representation is applicable)
+   --  Data_Rep JSON files that are inputs to this action.
 
    overriding
    function On_Tree_Insertion

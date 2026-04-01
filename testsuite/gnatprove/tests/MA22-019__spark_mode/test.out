@@ -1,30 +1,23 @@
-Phase 1 of 2: generation of data representation information ...
-Phase 2 of 2: analysis of data and information flow ...
 Success: all checks proved (2 checks).
 Summary logged in gnatprove/gnatprove.out
 [Ada Analysis]    p.adb
 [Ada Global_Gen]  p.adb
-Phase 1 of 2: generation of data representation information ...
-Phase 2 of 2: flow analysis and proof ...
 Success: all checks proved (4 checks).
 Summary logged in gnatprove/gnatprove.out
 [Ada Analysis]    p.adb
+[Ada Data_Rep]    p.adb
 [Ada Global_Gen]  p.adb
-Phase 1 of 2: generation of data representation information ...
-Phase 2 of 2: flow analysis and proof ...
 Success: all checks proved (4 checks).
 Summary logged in gnatprove/gnatprove.out
 [Ada Analysis]    p.adb
+[Ada Data_Rep]    p.adb
 [Ada Global_Gen]  p.adb
-Phase 1 of 2: generation of data representation information ...
-Phase 2 of 2: analysis of data and information flow ...
 Success: all checks proved (2 checks).
 Summary logged in gnatprove/gnatprove.out
 [Ada Analysis]    p.adb
 [Ada Global_Gen]  p.adb
-Phase 1 of 2: generation of data representation information ...
-Phase 2 of 2: flow analysis and proof ...
 Success: all checks proved (4 checks).
 Summary logged in gnatprove/gnatprove.out
 [Ada Analysis]    p.adb
+[Ada Data_Rep]    p.adb
 [Ada Global_Gen]  p.adb

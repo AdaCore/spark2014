@@ -1,7 +1,6 @@
 No project file given, creating default.gpr
-Phase 1 of 2: generation of data representation information ...
-Phase 2 of 2: flow analysis and proof ...
 [Ada Global_Gen]  add.adb
+[Ada Data_Rep]    add.adb
 [Ada Analysis]    add.adb
  medium: overflow check might fail, cannot prove lower bound for X + Y
 --> add.ads:3:47
