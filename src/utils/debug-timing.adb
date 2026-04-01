@@ -21,10 +21,30 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Text_IO;   use Ada.Text_IO;
-with Gnat2Why_Args; use Gnat2Why_Args;
+with Ada.Calendar.Conversions; use Ada.Calendar.Conversions;
+with Ada.Text_IO;              use Ada.Text_IO;
+with Gnat2Why_Args;            use Gnat2Why_Args;
+with Interfaces.C;             use Interfaces.C;
 
 package body Debug.Timing is
+
+   procedure Process_CPU_Time_C (Sec : out long_long; Nsec : out long)
+   with Import, Convention => C, External_Name => "process_cpu_time";
+
+   function CPU_Clock return Duration;
+   --  Return the CPU time used by the process so far.
+
+   ---------------
+   -- CPU_Clock --
+   ---------------
+
+   function CPU_Clock return Duration is
+      Sec  : long_long;
+      Nsec : long;
+   begin
+      Process_CPU_Time_C (Sec, Nsec);
+      return To_Duration_64 (Sec, Nsec);
+   end CPU_Clock;
 
    ---------------------
    -- External_Timing --
@@ -92,7 +112,7 @@ package body Debug.Timing is
 
    procedure Timing_Start (Timer : out Time_Token) is
    begin
-      Timer := (History => Entity_Maps.Empty_Map, Start => Ada.Calendar.Clock);
+      Timer := (History => Entity_Maps.Empty_Map, Start => CPU_Clock);
    end Timing_Start;
 
    ----------------------------
@@ -103,9 +123,7 @@ package body Debug.Timing is
      (Timer : in out Time_Token; Entity : Subp_Type; Msg : String)
    is
 
-      use Ada.Calendar;
-
-      Now     : constant Time := Clock;
+      Now     : constant Duration := CPU_Clock;
       Elapsed : constant Duration := Now - Timer.Start;
 
    begin
