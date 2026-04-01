@@ -151,16 +151,20 @@ spark2014/
 - Multi-line comments end with a period.
 - Single-line comments do NOT end with a period.
 - Each subprogram definition has a subprogram box (header comment).
-- Do NOT add `--  Start of processing for <Name>` comments before `begin`. These are a GNAT
-  style convention that this project does not follow.
-- Use `???` in comments to indicate TODO items, areas of improvement, or questions.
+- Do NOT add `--  Start of processing for <Name>` comments before `begin`. These
+  are a GNAT style convention that this project does not follow.
+- Use `???` in comments to indicate TODO items, areas of improvement, or
+  questions.
+- Use simple spaces after periods in comments, not double spaces.
 
 ### Variable Naming
 
 - Names should be clear and meaningful.
-- Avoid names based on purpose (e.g., `Hash_For_Graph`): the purpose may change and the variable be used differently or elsewhere.
+- Avoid names based on purpose (e.g., `Hash_For_Graph`): the purpose may change
+  and the variable be used differently or elsewhere.
 - Avoid names that merely repeat the type.
-- Avoid abbreviations, except common ones (e.g., `Idx` for index, `Var` for variable) that are widely understood and used locally (e.g., in a small loop).
+- Avoid abbreviations, except common ones (e.g., `Idx` for index, `Var` for
+  variable) that are widely understood and used locally (e.g., in a small loop).
 
 ### Loop Patterns
 
