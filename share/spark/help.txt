@@ -75,6 +75,8 @@ gnatprove advanced switches:
  --debug-save-vcs     Do not delete intermediate files for provers
  --debug-exec-rac     Only execute runtime assertion checking (RAC) and exit
  --flow-debug         Extra debugging for flow analysis (requires graphviz)
+ --flow-show-gg       Print the automatically generated global contracts to the
+                      standard output.
  --function-sandboxing=c
                       Enable or disable the generation of guards for axioms
                       providing contracts of functions (c=on*,off)
