@@ -1869,12 +1869,19 @@ package body CE_RAC is
       Res : Value_Type;
    begin
       if Use_Gnattest
-        and Gnattest_Values.Values.all'Length - Gnattest_Values.Pos >= 0
+        and then Gnattest_Values.Pos in Gnattest_Values.Values.all'Range
       then
          declare
             Bindings : constant Entity_Bindings.Map :=
               Gnattest_Values.Values.all (Gnattest_Values.Pos);
          begin
+            if not Bindings.Contains (E) then
+               raise RAC_Gnattest_Error
+                 with
+                   "No gnattest value for parameter """
+                   & Get_Name_String (Chars (E))
+                   & """";
+            end if;
             Res := Bindings.Element (E).all;
          end;
          Origin := From_Gnattest;
@@ -1894,11 +1901,9 @@ package body CE_RAC is
             Origin := From_Type_Default;
          else
             RAC_Incomplete
-              ("No counterexample value for program parameter "
+              ("No counterexample value for parameter """
                & Get_Name_String (Chars (E))
-               & "("
-               & Entity_Id'Image (E)
-               & ")");
+               & """");
          end if;
       end if;
 
@@ -1942,6 +1947,9 @@ package body CE_RAC is
               Use_Default  => Default_Value,
               Use_Fuzzing  => Use_Fuzzing,
               Use_Gnattest => False,
+              --  Gnattest values cover only formal parameters of the top-level
+              --  subprogram being checked; globals are never provided via the
+              --  --gnattest-values JSON file.
               Origin       => Origin));
 
       Ctx.Env (Ctx.Env.Last).Bindings.Insert (E, Val);
@@ -2485,7 +2493,7 @@ package body CE_RAC is
                  Ex           => Empty,
                  Use_Default  => Is_Out,
                  Use_Fuzzing  => Fuzz_Formals,
-                 Use_Gnattest => True,
+                 Use_Gnattest => Gnat2Why_Opts.Reading.Gnattest_Values /= "",
                  Origin       => Origin);
             Res.Bindings.Insert (Param, new Value_Type'(V));
             RAC_Trace

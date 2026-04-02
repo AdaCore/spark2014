@@ -1,4 +1,4 @@
-gnatprove: Error processing JSONs/Div_Float.json
+gnatprove: Error processing JSONs/Foo.json
 Parsing error
 Ensure the file follows the GNATtest JSON schema and matches the currently analyzed subprogram
 gnatprove: error during flow analysis and proof

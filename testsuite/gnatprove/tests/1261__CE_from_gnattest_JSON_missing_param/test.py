@@ -6,6 +6,6 @@ run_spark_for_gnattest_json(
     "simple.gpr",
     "simple.ads",
     7,
-    os.path.abspath("JSONs/Div_Float.json"),
+    os.path.abspath("JSONs/Foo.json"),
     refiners=default_refiners_no_sort(),
 )

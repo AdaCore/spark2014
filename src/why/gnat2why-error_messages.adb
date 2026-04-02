@@ -729,6 +729,12 @@ package body Gnat2Why.Error_Messages is
               Decide_Cntexmp_Verdict
                 (Small_Step_Res, Giant_Step_Res, Id, VC, Subp);
          exception
+            when RAC_Gnattest_Error =>
+               --  This error is only given when the tool is executed with the
+               --  --gnattest-values option. If there is a problem with the
+               --  supplied JSON file it is appropriate to exit the tool. It
+               --  is up to the caller to clean up the message.
+               raise;
             when E : others =>
                if Debug_Flag_K
                  and then
@@ -1306,6 +1312,27 @@ package body Gnat2Why.Error_Messages is
          end if;
       end;
    exception
+      when Error : RAC_Gnattest_Error =>
+         --  This error is only given when the tool is executed with the
+         --  --gnattest-values option. If there is a problem with the
+         --  supplied JSON file it is appropriate to exit the tool.
+
+         declare
+            JSON_File_Name : Unbounded_String renames
+              Gnat2Why_Opts.Reading.Gnattest_Values;
+         begin
+            Handle_Error
+              (Msg      =>
+                 "Error processing "
+                 & To_String (JSON_File_Name)
+                 & ASCII.LF
+                 & Exception_Message (Error)
+                 & ASCII.LF
+                 & "Ensure the file follows the GNATtest JSON schema and"
+                 & " matches the currently analyzed subprogram",
+               Internal => False);
+         end;
+
       when Error : Invalid_JSON_Stream =>
          declare
             Error_Msg : constant String :=

@@ -397,6 +397,10 @@ package body Gnat2Why.Driver is
       Ada.Text_IO.Close (FD);
    end Create_JSON_File;
 
+   ---------------------------
+   -- Parse_Gnattest_Values --
+   ---------------------------
+
    procedure Parse_Gnattest_Values (E : Entity_Id) is
       JSON_File_Name : constant Unbounded_String :=
         Gnat2Why_Opts.Reading.Gnattest_Values;
@@ -412,10 +416,7 @@ package body Gnat2Why.Driver is
       end if;
 
       if not Ada.Directories.Exists (To_String (JSON_File_Name)) then
-         Ada.Text_IO.Put_Line
-           (Ada.Strings.Unbounded.To_String
-              ("Cannot find " & JSON_File_Name & "."));
-         return;
+         raise RAC_Gnattest_Error with "File not found";
       end if;
 
       R := GNATCOLL.JSON.Read_File (To_String (JSON_File_Name));
@@ -465,17 +466,13 @@ package body Gnat2Why.Driver is
                end;
             end loop;
          end;
-
-      exception
-         when others =>
-            Ada.Text_IO.Put_Line
-              (Ada.Strings.Unbounded.To_String
-                 ("An unexpected error occurred while "
-                  & "processing file '"
-                  & JSON_File_Name
-                  & "'. No counterexample candidates could "
-                  & "be extracted from this file."));
       end;
+
+   exception
+      when RAC_Gnattest_Error =>
+         raise;
+      when others =>
+         raise RAC_Gnattest_Error with "Parsing error";
    end Parse_Gnattest_Values;
 
    -----------------------
