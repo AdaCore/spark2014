@@ -145,12 +145,14 @@ begin
       while I <= Arg_Last loop
          declare
             Arg : constant String := Args (I).all;
-            Ext : constant String := Ada.Directories.Extension (Arg);
          begin
             if Arg = "-o" and then I < Arg_Last then
                Output_File := new String'(Args (I + 1).all);
                I := I + 2;
-            elsif Ext in "adb" | "ads" then
+            elsif Arg'Length > 0
+              and then Arg (Arg'First) /= '-'
+              and then Ada.Directories.Extension (Arg) in "adb" | "ads"
+            then
                Source_File := new String'(Arg);
                I := I + 1;
             else
