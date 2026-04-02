@@ -59,11 +59,6 @@ project GNAT2Why is
                               "ce_interval_sets",
                               "ce_pretty_printing",
 
-                              --  Exclude units not exercized in gnat2why itself
-                              "assumptions.search",
-                              "memcache_client",
-                              "named_semaphores",
-
                               --  Exclude generated units intentionally not fully covered
                               "gnat1drv",
                               "why.atree.accessors",
