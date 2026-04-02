@@ -855,15 +855,15 @@ package body Gnat2Why.Borrow_Checker is
    --  of permissions for parts potentially accessible under dereference (.all)
    --  from N, together with a matching explanation node.
 
-   function Get_Perm_Or_Tree (N : Expr_Or_Ent) return Perm_Or_Tree;
-   pragma Precondition (N.Is_Ent or else Is_Path_Expression (N.Expr));
+   function Get_Perm_Or_Tree (N : Expr_Or_Ent) return Perm_Or_Tree
+   with Pre => N.Is_Ent or else Is_Path_Expression (N.Expr);
    --  This function gets a node and looks recursively to find the appropriate
    --  subtree for that node. If the tree is folded on that node, then it
    --  returns the permission given at the right level.
    --  If a tree is returned, it must be used in read-only fashion.
 
-   function Get_Perm_Tree (N : Expr_Or_Ent) return Perm_Tree_Access;
-   pragma Precondition (N.Is_Ent or else Is_Path_Expression (N.Expr));
+   function Get_Perm_Tree (N : Expr_Or_Ent) return Perm_Tree_Access
+   with Pre => N.Is_Ent or else Is_Path_Expression (N.Expr);
    --  This function gets a node and looks recursively to find the appropriate
    --  subtree for that node. If the tree is folded, then it unrolls the tree
    --  up to the appropriate level.
@@ -879,8 +879,8 @@ package body Gnat2Why.Borrow_Checker is
    procedure Handle_Globals (Subp : Entity_Id; Loc : Node_Id);
    --  Handling of globals is factored in a generic instantiated below
 
-   function Has_Array_Component (Expr : Node_Id) return Boolean;
-   pragma Precondition (Is_Path_Expression (Expr));
+   function Has_Array_Component (Expr : Node_Id) return Boolean
+   with Pre => Is_Path_Expression (Expr);
    --  This function gets a node and looks recursively to determine whether the
    --  given path has any array component.
 
@@ -978,8 +978,8 @@ package body Gnat2Why.Borrow_Checker is
    --  permission Exp_Perm and a permission obtained Act_Perm. N is the root
    --  of the path leading to the error.
 
-   procedure Process_Path (Expr : Expr_Or_Ent; Mode : Checking_Mode);
-   pragma Precondition (Expr.Is_Ent or else Is_Path_Expression (Expr.Expr));
+   procedure Process_Path (Expr : Expr_Or_Ent; Mode : Checking_Mode)
+   with Pre => Expr.Is_Ent or else Is_Path_Expression (Expr.Expr);
    --  Check correct permission for the path in the checking mode Mode, and
    --  update permissions of the path and its prefixes/extensions.
 
@@ -1020,9 +1020,11 @@ package body Gnat2Why.Borrow_Checker is
      (N           : Expr_Or_Ent;
       Perm        : Perm_Kind_Option;
       Expl        : Node_Id;
-      Move_Access : Boolean := False) return Perm_Tree_Access;
-   pragma Precondition (N.Is_Ent or else Is_Path_Expression (N.Expr));
-   pragma Precondition (if Move_Access then Perm = No_Access);
+      Move_Access : Boolean := False) return Perm_Tree_Access
+   with
+     Pre =>
+       (N.Is_Ent or else Is_Path_Expression (N.Expr))
+       and then (if Move_Access then Perm = No_Access);
    --  This function modifies the permissions of a given node in the permission
    --  environment as well as all the prefixes of the path, to the new
    --  permission Perm. The general rule here is that everybody updates the
@@ -1031,8 +1033,8 @@ package body Gnat2Why.Borrow_Checker is
    --  permission No_Access until a dereference is found, and Write_Only
    --  afterward.
 
-   procedure Set_Perm_Prefixes_Assign (N : Expr_Or_Ent);
-   pragma Precondition (N.Is_Ent or else Is_Path_Expression (N.Expr));
+   procedure Set_Perm_Prefixes_Assign (N : Expr_Or_Ent)
+   with Pre => N.Is_Ent or else Is_Path_Expression (N.Expr);
    --  This procedure takes a name as an input and sets in the permission
    --  tree the given permission to the given name. The general rule here is
    --  that everybody updates the permission of the subtree it is returning.
@@ -5315,8 +5317,8 @@ package body Gnat2Why.Borrow_Checker is
       --  Sequence of expressions that make up a path. The first element is
       --  always an entity when the path has a root.
 
-      function Get_Expr_Array (Expr : Node_Id) return Expr_Array;
-      pragma Precondition (Is_Path_Expression (Expr));
+      function Get_Expr_Array (Expr : Node_Id) return Expr_Array
+      with Pre => Is_Path_Expression (Expr);
       --  Return the sequence of expressions that make up a path, excluding
       --  slices.
 
