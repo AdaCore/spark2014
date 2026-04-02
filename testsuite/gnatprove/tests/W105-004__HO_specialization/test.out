@@ -71,4 +71,4 @@ test_ho_specialization.adb:81:19: info: assertion proved (CVC5: 1 VC)
 test_ho_specialization.adb:82:17: info: null exclusion check proved (CVC5: 1 VC)
 test_ho_specialization.adb:82:20: info: null exclusion check proved (CVC5: 1 VC)
 test_ho_specialization.adb:83:19: info: assertion proved (CVC5: 1 VC)
-test_ho_specialization.adb:84:15: medium: precondition of target might not be strong enough to imply precondition of source [provers reached step limit before completing the proof]
+test_ho_specialization.adb:84:15: medium: precondition of target might not be strong enough to imply precondition of source [provers gave up before completing the proof]
