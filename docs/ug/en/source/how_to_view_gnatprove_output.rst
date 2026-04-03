@@ -297,6 +297,20 @@ Effectiveness Program (`http://cwe.mitre.org/ <http://cwe.mitre.org/>`_). The
 current version of |GNATprove| is based on CWE version 3.2 released on January
 3, 2019.
 
+.. index:: check messages; prover status
+
+For unproved check messages, |GNATprove| may append additional information in
+square brackets explaining why the provers failed to complete the proof. The
+phrase ``[provers reached <limit> limit before completing the proof]``, where
+``<limit>`` is one or more of ``time``, ``step``, and ``memory`` (e.g.
+``[provers reached time and step limit before completing the proof]``),
+indicates that the provers consumed all allocated resources. The corresponding
+limits can be increased using switches ``--timeout``, ``--steps``, and
+``--memlimit`` respectively. The phrase ``[provers gave up before completing
+the proof]`` indicates that the provers stopped without reaching any resource
+limit, typically because a heuristic determined the goal is too difficult to
+pursue further; in this case, increasing resource limits will not help.
+
 .. index:: check messages; categories of messages
 
 .. toctree::
