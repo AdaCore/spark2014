@@ -139,6 +139,15 @@ GNATprove from GNATbench`). The level of 0 is only adequate for simple
 proofs. In general, one should increase the level of proof (up to level 4)
 until no more automatic proofs can be obtained.
 
+Note that increasing resource limits can only help if the check message
+indicates that a limit was actually reached (e.g. ``[provers reached time
+limit before completing the proof]``). If the message instead states that
+``[provers gave up before completing the proof]``, the provers stopped due to
+an internal heuristic rather than exhausting resources, and increasing limits
+will not lead to a proof. In that case, trying a different prover or proof
+strategy is more likely to help. See :ref:`Description of Messages` for
+details on these message suffixes.
+
 As described in the section about :ref:`Running GNATprove from the Command
 Line`, switch ``--level`` is equivalent to setting directly various lower
 level switches like ``--timeout``, ``--prover``, and ``--proof``. Hence, one
