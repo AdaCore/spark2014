@@ -18,7 +18,7 @@ test_eq_vectors.adb:39:13: info: predicate check proved (Trivial: 1 VC)
 test_eq_vectors.adb:39:32: info: predicate check proved (Trivial: 1 VC)
 test_eq_vectors.adb:40:41: info: precondition proved (CVC5: 2 VC)
 test_eq_vectors.adb:40:60: info: precondition proved (CVC5: 2 VC)
-test_eq_vectors.adb:41:14: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function "F" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
+test_eq_vectors.adb:41:14: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function "F" or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 test_eq_vectors.adb:45:14: warning: subprogram "Test_Eq_3" has no effect
 test_eq_vectors.adb:48:13: info: predicate check proved (Trivial: 1 VC)
 test_eq_vectors.adb:48:32: info: predicate check proved (Trivial: 1 VC)

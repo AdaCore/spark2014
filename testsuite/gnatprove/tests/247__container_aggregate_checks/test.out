@@ -61,7 +61,7 @@ test_partial_maps.adb:180:09: info: when establishing invariant on "Has_Key" at 
 test_partial_maps.adb:180:09: info: when establishing invariant on "Length" at test_partial_maps.adb:217
 test_partial_maps.adb:180:09: info: when reestablishing invariant on "Get" at test_partial_maps.adb:206
 test_partial_maps.adb:180:09: info: when reestablishing invariant on "Has_Key" at test_partial_maps.adb:201
-test_partial_maps.adb:180:09: medium: Container_Aggregates annotation might be incorrect [provers reached step limit before completing the proof]
+test_partial_maps.adb:180:09: medium: Container_Aggregates annotation might be incorrect [provers gave up before completing the proof]
 test_partial_maps.adb:180:09: medium: after a call to "Insert" at test_partial_maps.adb:187
 test_partial_maps.adb:180:09: medium: when reestablishing invariant on "Length" at test_partial_maps.adb:217
 test_partial_maps.adb:189:16: info: during checks for container aggregates at test_partial_maps.adb:180
@@ -78,7 +78,7 @@ test_partial_maps.adb:236:09: info: when establishing invariant on "Has_Key" at 
 test_partial_maps.adb:236:09: info: when establishing invariant on "Length" at test_partial_maps.adb:273
 test_partial_maps.adb:236:09: info: when reestablishing invariant on "Get" at test_partial_maps.adb:262
 test_partial_maps.adb:236:09: info: when reestablishing invariant on "Length" at test_partial_maps.adb:273
-test_partial_maps.adb:236:09: medium: Container_Aggregates annotation might be incorrect [provers reached step limit before completing the proof]
+test_partial_maps.adb:236:09: medium: Container_Aggregates annotation might be incorrect [provers gave up before completing the proof]
 test_partial_maps.adb:236:09: medium: after a call to "Insert" at test_partial_maps.adb:243
 test_partial_maps.adb:236:09: medium: when reestablishing invariant on "Has_Key" at test_partial_maps.adb:257
 test_partial_maps.adb:245:16: info: during checks for container aggregates at test_partial_maps.adb:236
@@ -95,7 +95,7 @@ test_partial_maps.adb:292:09: info: when establishing invariant on "Has_Key" at 
 test_partial_maps.adb:292:09: info: when establishing invariant on "Length" at test_partial_maps.adb:328
 test_partial_maps.adb:292:09: info: when reestablishing invariant on "Get" at test_partial_maps.adb:317
 test_partial_maps.adb:292:09: info: when reestablishing invariant on "Length" at test_partial_maps.adb:328
-test_partial_maps.adb:292:09: medium: Container_Aggregates annotation might be incorrect [provers reached step limit before completing the proof]
+test_partial_maps.adb:292:09: medium: Container_Aggregates annotation might be incorrect [provers gave up before completing the proof]
 test_partial_maps.adb:292:09: medium: after a call to "Insert" at test_partial_maps.adb:299
 test_partial_maps.adb:292:09: medium: when reestablishing invariant on "Has_Key" at test_partial_maps.adb:312
 test_partial_maps.adb:301:16: info: during checks for container aggregates at test_partial_maps.adb:292
@@ -112,7 +112,7 @@ test_partial_maps.adb:347:09: info: when establishing invariant on "Has_Key" at 
 test_partial_maps.adb:347:09: info: when establishing invariant on "Length" at test_partial_maps.adb:383
 test_partial_maps.adb:347:09: info: when reestablishing invariant on "Get" at test_partial_maps.adb:372
 test_partial_maps.adb:347:09: info: when reestablishing invariant on "Length" at test_partial_maps.adb:383
-test_partial_maps.adb:347:09: medium: Container_Aggregates annotation might be incorrect [provers reached step limit before completing the proof]
+test_partial_maps.adb:347:09: medium: Container_Aggregates annotation might be incorrect [provers gave up before completing the proof]
 test_partial_maps.adb:347:09: medium: after a call to "Insert" at test_partial_maps.adb:354
 test_partial_maps.adb:347:09: medium: when reestablishing invariant on "Has_Key" at test_partial_maps.adb:367
 test_partial_maps.adb:356:16: info: during checks for container aggregates at test_partial_maps.adb:347
@@ -132,7 +132,7 @@ test_partial_maps.adb:402:09: info: when establishing invariant on "Length" at t
 test_partial_maps.adb:402:09: info: when reestablishing invariant on "Get" at test_partial_maps.adb:428
 test_partial_maps.adb:402:09: info: when reestablishing invariant on "Has_Key" at test_partial_maps.adb:423
 test_partial_maps.adb:402:09: info: when reestablishing invariant on "Length" at test_partial_maps.adb:439
-test_partial_maps.adb:402:09: medium: Container_Aggregates annotation might be incorrect [provers reached step limit before completing the proof]
+test_partial_maps.adb:402:09: medium: Container_Aggregates annotation might be incorrect [provers gave up before completing the proof]
 test_partial_maps.adb:402:09: medium: after a call to "Insert" at test_partial_maps.adb:409
 test_partial_maps.adb:402:09: medium: when reestablishing invariant on "Get" at test_partial_maps.adb:428
 test_partial_maps.adb:411:16: info: during checks for container aggregates at test_partial_maps.adb:402
@@ -152,7 +152,7 @@ test_partial_maps.adb:458:09: info: when establishing invariant on "Length" at t
 test_partial_maps.adb:458:09: info: when reestablishing invariant on "Get" at test_partial_maps.adb:483
 test_partial_maps.adb:458:09: info: when reestablishing invariant on "Has_Key" at test_partial_maps.adb:478
 test_partial_maps.adb:458:09: info: when reestablishing invariant on "Length" at test_partial_maps.adb:494
-test_partial_maps.adb:458:09: medium: Container_Aggregates annotation might be incorrect [provers reached step limit before completing the proof]
+test_partial_maps.adb:458:09: medium: Container_Aggregates annotation might be incorrect [provers gave up before completing the proof]
 test_partial_maps.adb:458:09: medium: after a call to "Insert" at test_partial_maps.adb:465
 test_partial_maps.adb:458:09: medium: when reestablishing invariant on "Get" at test_partial_maps.adb:483
 test_partial_maps.adb:467:16: info: during checks for container aggregates at test_partial_maps.adb:458

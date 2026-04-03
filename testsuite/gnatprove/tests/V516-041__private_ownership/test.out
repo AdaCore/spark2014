@@ -165,7 +165,7 @@ test_ownership_annotation.adb:201:09: medium: resource or memory leak might occu
 test_ownership_annotation.adb:203:11: medium: resource or memory leak might occur [possible fix: call at line 202 should mention X (for argument D) in a postcondition] [provers reached step limit before completing the proof]
 test_ownership_annotation.adb:205:07: medium: resource or memory leak might occur [provers reached step limit before completing the proof]
 test_ownership_annotation.adb:209:06: info: data dependencies proved
-test_ownership_annotation.adb:212:07: medium: resource or memory leak might occur at end of scope [provers gave up before completing the proof]
+test_ownership_annotation.adb:212:07: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 test_ownership_annotation.adb:229:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 test_ownership_annotation.adb:229:07: info: initialization of "A" proved
 test_ownership_annotation.adb:230:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
@@ -173,7 +173,7 @@ test_ownership_annotation.adb:230:07: info: initialization of "B" proved
 test_ownership_annotation.adb:231:07: info: initialization of "C" proved
 test_ownership_annotation.adb:231:07: medium: resource or memory leak might occur at end of scope [provers gave up before completing the proof]
 test_ownership_annotation.adb:232:07: info: initialization of "D" proved
-test_ownership_annotation.adb:232:07: medium: resource or memory leak might occur at end of scope [provers gave up before completing the proof]
+test_ownership_annotation.adb:232:07: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 test_ownership_annotation.adb:233:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 test_ownership_annotation.adb:233:07: info: initialization of "E" proved
 test_ownership_annotation.adb:235:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
@@ -181,8 +181,8 @@ test_ownership_annotation.adb:236:09: info: absence of resource or memory leak p
 test_ownership_annotation.adb:237:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test_ownership_annotation.adb:238:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test_ownership_annotation.adb:240:09: medium: resource or memory leak might occur [provers gave up before completing the proof]
-test_ownership_annotation.adb:242:11: medium: resource or memory leak might occur [possible fix: call at line 241 should mention X (for argument D) in a postcondition] [provers gave up before completing the proof]
-test_ownership_annotation.adb:244:07: medium: resource or memory leak might occur [provers gave up before completing the proof]
+test_ownership_annotation.adb:242:11: medium: resource or memory leak might occur [possible fix: call at line 241 should mention X (for argument D) in a postcondition] [provers reached step limit before completing the proof]
+test_ownership_annotation.adb:244:07: medium: resource or memory leak might occur [provers reached step limit before completing the proof]
 test_ownership_annotation.adb:248:06: info: data dependencies proved
 test_ownership_annotation.adb:252:65: info: precondition proved (CVC5: 1 VC)
 test_ownership_annotation.adb:254:10: info: in default initialization of component "A" at test_ownership_annotation.adb:254
