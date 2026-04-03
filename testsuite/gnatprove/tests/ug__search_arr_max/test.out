@@ -5,16 +5,22 @@
 --> search_arr_max.adb:3:57
 
  info: postcondition proved
---> search_arr_max.adb:5:11
-
- info: loop invariant initialization proved
---> search_arr_max.adb:18:30
-
- info: loop invariant preservation proved
---> search_arr_max.adb:18:30
+--> search_arr_max.adb:6:11
 
  info: index check proved
---> search_arr_max.adb:18:61
+--> search_arr_max.adb:6:38
+
+ info: index check proved
+--> search_arr_max.adb:7:39
+
+ info: index check proved
+--> search_arr_max.adb:8:13
+
+ info: range check proved
+--> search_arr_max.adb:12:12
+
+ info: range check proved
+--> search_arr_max.adb:17:17
 
  info: loop invariant initialization proved
 --> search_arr_max.adb:19:30
@@ -22,11 +28,29 @@
  info: loop invariant preservation proved
 --> search_arr_max.adb:19:30
 
- info: index check proved
---> search_arr_max.adb:19:62
-
  info: loop invariant preservation proved
 --> search_arr_max.adb:20:30
 
  info: loop invariant initialization proved
 --> search_arr_max.adb:20:30
+
+ info: index check proved
+--> search_arr_max.adb:20:61
+
+ info: loop invariant initialization proved
+--> search_arr_max.adb:21:30
+
+ info: loop invariant preservation proved
+--> search_arr_max.adb:21:30
+
+ info: index check proved
+--> search_arr_max.adb:21:62
+
+ info: loop invariant initialization proved
+--> search_arr_max.adb:22:30
+
+ info: loop invariant preservation proved
+--> search_arr_max.adb:22:30
+
+ info: index check proved
+--> search_arr_max.adb:22:32

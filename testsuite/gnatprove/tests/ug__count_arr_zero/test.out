@@ -4,6 +4,12 @@
  info: postcondition proved
 --> count_arr_zero.adb:5:11
 
+ info: range check proved
+--> count_arr_zero.adb:5:29
+
+ info: index check proved
+--> count_arr_zero.adb:6:55
+
  info: overflow check proved
 --> count_arr_zero.adb:13:29
 
@@ -12,6 +18,12 @@
 
  info: loop invariant preservation proved
 --> count_arr_zero.adb:15:30
+
+ info: overflow check proved
+--> count_arr_zero.adb:15:48
+
+ info: overflow check proved
+--> count_arr_zero.adb:15:58
 
  info: loop invariant initialization proved
 --> count_arr_zero.adb:16:30

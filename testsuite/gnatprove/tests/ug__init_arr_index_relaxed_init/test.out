@@ -4,6 +4,12 @@
  info: initialization check proved
 --> init_arr_index.adb:6:59
 
+ info: index check proved
+--> init_arr_index.adb:6:61
+
+ info: range check proved
+--> init_arr_index.adb:10:15
+
  info: loop invariant initialization proved
 --> init_arr_index.adb:11:30
 

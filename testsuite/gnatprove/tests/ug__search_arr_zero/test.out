@@ -8,7 +8,13 @@
 --> search_arr_zero.adb:5:11
 
  info: index check proved
+--> search_arr_zero.adb:5:49
+
+ info: index check proved
 --> search_arr_zero.adb:6:31
+
+ info: range check proved
+--> search_arr_zero.adb:12:17
 
  info: loop invariant initialization proved
 --> search_arr_zero.adb:15:30

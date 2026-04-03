@@ -2,6 +2,7 @@ with Loop_Types; use Loop_Types;
 
 procedure Search_Arr_Max (A : Arr_T; Pos : out Index_T; Max : out Component_T) with
   SPARK_Mode,
+  Pre  => A'Length > 0,
   Post => (for all J in A'Range => A(J) <= Max) and then
           (for some J in A'Range => A(J) = Max) and then
           A(Pos) = Max
@@ -15,6 +16,7 @@ begin
          Max := A(J);
          Pos := J;
       end if;
+      pragma Loop_Invariant (Pos in A'Range);
       pragma Loop_Invariant (for all K in A'First .. J => A(K) <= Max);
       pragma Loop_Invariant (for some K in A'First .. J => A(K) = Max);
       pragma Loop_Invariant (A(Pos) = Max);
