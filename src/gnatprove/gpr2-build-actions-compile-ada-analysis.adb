@@ -183,8 +183,10 @@ package body GPR2.Build.Actions.Compile.Ada.Analysis is
       --  When data representation is applicable, register JSON outputs of
       --  Data_Rep actions for this unit and all its dependencies as inputs.
       if Actions.Compile.Ada.Data_Rep.Applicable (Self.CU) then
-         Self.Data_Rep_JSON_Files.Insert
-           (Actions.Compile.Ada.Data_Rep.Data_Rep_File_For_Unit (Self.CU));
+         for JSON_File of Actions.Compile.Ada.Data_Rep.Data_Rep_Files (Self.CU)
+         loop
+            Self.Data_Rep_JSON_Files.Insert (JSON_File);
+         end loop;
          for Dep of Deps loop
             if Dep.Is_Defined
               and then not Dep.Owning_View.Is_Externally_Built
@@ -193,8 +195,11 @@ package body GPR2.Build.Actions.Compile.Ada.Analysis is
                  or else Dep.Owning_View = Self.CU.Owning_View)
               and then Actions.Compile.Ada.Data_Rep.Applicable (Dep)
             then
-               Self.Data_Rep_JSON_Files.Include
-                 (Actions.Compile.Ada.Data_Rep.Data_Rep_File_For_Unit (Dep));
+               for JSON_File of
+                 Actions.Compile.Ada.Data_Rep.Data_Rep_Files (Dep)
+               loop
+                  Self.Data_Rep_JSON_Files.Include (JSON_File);
+               end loop;
             end if;
          end loop;
       end if;
