@@ -19,7 +19,6 @@ def build():
     anod_install("gnatcoll-core", query_range=20)
     anod_install("vss-extra", qualifier="edge", query_range=20)
     anod_install("vss-text", qualifier="edge", query_range=20)
-    anod_build("why3")
     anod_build("spark2014", qualifier=build_qualifiers())
 
 def test():
