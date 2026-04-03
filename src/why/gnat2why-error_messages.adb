@@ -549,7 +549,12 @@ package body Gnat2Why.Error_Messages is
 
       use GNATCOLL.JSON;
 
-      Subp : Entity_Id;
+      Subp              : Entity_Id;
+      From_Cache_Status : JSON_Value := Create_Object;
+      --  When gnatwhy3's output was served from the wrapper cache, this holds
+      --  a cache_status JSON value representing a full cache hit from the
+      --  wrapper source ("file" or "memcached"). It overrides the per-VC
+      --  cache_status for all proved VCs.
 
       type Cntexample_Info is record
          Cntexample        : Cntexample_File_Maps.Map;
@@ -1137,7 +1142,10 @@ package body Gnat2Why.Error_Messages is
                Unproved_Stat => Rec.Unproved_Stat,
                Extra_Msg     => CP_Msg,
                Check_Info    => Check_Info,
-               Cache_Status  => Rec.Cache_Status,
+               Cache_Status  =>
+                 (if Rec.Result and then not Is_Empty (From_Cache_Status)
+                  then From_Cache_Status
+                  else Rec.Cache_Status),
                CE_From_RAC   => Use_RAC_Cntexmp);
          end;
 
@@ -1284,6 +1292,17 @@ package body Gnat2Why.Error_Messages is
          File    : constant JSON_Value := Read_File_Into_JSON (Fn);
          Results : constant JSON_Array := Get (Get (File, "results"));
       begin
+         if Has_Field (File, "from_cache") then
+            declare
+               Source  : constant String := Get (Get (File, "from_cache"));
+               Sources : JSON_Array := Empty_Array;
+            begin
+               Append (Sources, Create (Source));
+               Set_Field (From_Cache_Status, "use", "full");
+               Set_Field (From_Cache_Status, "sources", Create (Sources));
+            end;
+         end if;
+
          if Has_Field (File, "error") then
             declare
                Msg      : constant String := Get (Get (File, "error"));

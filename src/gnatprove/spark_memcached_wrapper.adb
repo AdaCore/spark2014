@@ -332,7 +332,28 @@ begin
       Status : aliased Integer := 0;
    begin
       if Msg'Length /= 0 then
-         Ada.Text_IO.Put_Line (Msg);
+
+         --  On a cache hit for gnatwhy3, inject a "from_cache" field into the
+         --  top-level JSON record so that the caller can attribute proved VCs
+         --  to the appropriate cache tier.
+
+         if Argument (3) = "gnatwhy3" then
+            declare
+               Info     : String renames Argument (2);
+               Colon    : constant Natural :=
+                 Ada.Strings.Fixed.Index (Info, ":");
+               Source   : constant String :=
+                 (if Info (Info'First .. Colon - 1) = "file"
+                  then "file"
+                  else "memcached");
+               JSON_Msg : constant JSON_Value := Read (Msg);
+            begin
+               Set_Field (JSON_Msg, "from_cache", Source);
+               Ada.Text_IO.Put_Line (Write (JSON_Msg));
+            end;
+         else
+            Ada.Text_IO.Put_Line (Msg);
+         end if;
       else
          declare
             Arguments : Argument_List (1 .. Argument_Count - 3);
