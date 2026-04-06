@@ -319,6 +319,24 @@ procedure SPARK_Memcached_Wrapper with No_Return is
       return C.Hash_Digest;
    end Compute_Key;
 
+   function Cache_Source return String;
+   --  Return either "file" or "memcached" based on the cache specification
+   --  in Argument (2).
+
+   ------------------
+   -- Cache_Source --
+   ------------------
+
+   function Cache_Source return String is
+      Info  : String renames Argument (2);
+      Colon : constant Natural := Ada.Strings.Fixed.Index (Info, ":");
+   begin
+      return
+        (if Info (Info'First .. Colon - 1) = "file"
+         then "file"
+         else "memcached");
+   end Cache_Source;
+
 begin
 
    --  We need this extra declare block so that the declarations are executed
@@ -339,20 +357,18 @@ begin
 
          if Argument (3) = "gnatwhy3" then
             declare
-               Info     : String renames Argument (2);
-               Colon    : constant Natural :=
-                 Ada.Strings.Fixed.Index (Info, ":");
-               Source   : constant String :=
-                 (if Info (Info'First .. Colon - 1) = "file"
-                  then "file"
-                  else "memcached");
                JSON_Msg : constant JSON_Value := Read (Msg);
             begin
-               Set_Field (JSON_Msg, "from_cache", Source);
+               Set_Field (JSON_Msg, "from_cache", Cache_Source);
                Ada.Text_IO.Put_Line (Write (JSON_Msg));
             end;
+
+         --  For prover cache hits, append a marker line so that gnatwhy3 can
+         --  detect the cache source and attribute the VC accordingly.
+
          else
             Ada.Text_IO.Put_Line (Msg);
+            Ada.Text_IO.Put_Line ("spark_memcached_wrapper: " & Cache_Source);
          end if;
       else
          declare
