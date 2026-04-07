@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+import sys
 import xml.etree.ElementTree as ET
 from e3.testsuite.report.index import ReportIndex
 from e3.testsuite.result import TestStatus
@@ -80,7 +81,8 @@ def parse_options():
 def testdir(testname):
     path = find_test_dir(testname)
     if path is None:
-        raise ValueError
+        print(f"error: test {testname!r} not found")
+        sys.exit(1)
     return path
 
 
