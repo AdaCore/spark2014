@@ -86,7 +86,7 @@ procedure SPARK_Data_Rep_Wrapper with No_Return is
    Compiler : String_Access;
 
    Args :
-     String_List (1 .. (if Argument_Count > 1 then Argument_Count - 1 else 0));
+     String_List (1 .. Argument_Count - 1);
 
    Body_JSON : constant String :=
      Ada.Environment_Variables.Value ("SPARK_DATA_REP_BODY_JSON", "");
