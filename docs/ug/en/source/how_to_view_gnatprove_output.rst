@@ -260,7 +260,12 @@ If switch ``--report=all``, ``--report=provers`` or ``--report=statistics`` is
 specified, |GNATprove| additionally prints on the standard output information
 messages for proved checks.
 
-
+When switch ``--report=provers`` is used, the information message for each
+proved check includes which provers were used to discharge the proof obligation.
+It also indicates whether the result was retrieved from a proof cache rather
+than computed fresh: either a session file (see :ref:`Sharing Proof Results with
+Others`) or a Memcached-based cache (see :ref:`Sharing Proof Results Via a
+Cache`).
 
 Description of Messages
 -----------------------
