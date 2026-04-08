@@ -25,25 +25,28 @@
 
 with Ada.Characters.Handling;
 with Ada.Command_Line;
-with Ada.Containers;    use Ada.Containers;
+with Ada.Containers;        use Ada.Containers;
 with Ada.IO_Exceptions;
-with Ada.Strings.Fixed; use Ada.Strings.Fixed;
-with Ada.Strings.Unbounded;
+with Ada.Strings.Fixed;     use Ada.Strings.Fixed;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Unchecked_Deallocation;
+with GNATCOLL.Opt_Parse;
+with GNATCOLL.Strings;
 with GNATCOLL.Tribooleans;
-with GNATCOLL.VFS;      use GNATCOLL.VFS;
+with GNATCOLL.VFS;          use GNATCOLL.VFS;
 with Gnat2Why_Opts.Writing;
-with GNAT.Command_Line; use GNAT.Command_Line;
+with GNAT.Command_Line;     use GNAT.Command_Line;
 with GNAT.Directory_Operations;
 with GNAT.Expect;
 with GNAT.OS_Lib;
-with GNAT.Regpat;       use GNAT.Regpat;
-with GNAT.Strings;      use GNAT.Strings;
+with GNAT.Regpat;           use GNAT.Regpat;
+with GNAT.Strings;          use GNAT.Strings;
 with GPR2.Build.Source;
 with GPR2.Build.View_Db;
 with GPR2.Log;
 with GPR2.Message;
 with GPR2.Options;
+with GPR2.Options.Opt_Parse;
 with GPR2.Project.Attribute;
 with GPR2.Project.Attribute_Index;
 with GPR2.Project.Registry.Attribute;
@@ -65,14 +68,6 @@ package body Configuration is
 
    Usage_Message : constant String := "-Pproj [switches] [-cargs switches]";
    --  Used to print part of the help message for gnatprove
-
-   Clean : aliased Boolean;
-   --  Set to True when --clean was given. Triggers cleanup of GNATprove
-   --  intermediate files.
-
-   Proj_Opt : Options.Object;
-   --  This is the project environment used to load the project. It may be
-   --  modified before loading it, e.g. -X switches
 
    type Spark_Reporter is new GPR2.Reporter.Console.Object with null record;
 
@@ -96,10 +91,6 @@ package body Configuration is
    --  - if TMPDIR is set, exists and is writable, use that
    --  - if /tmp exists and is writable, use that
    --  - otherwise return the object directory.
-
-   procedure Handle_Project_Loading_Switches
-     (Switch : String; Parameter : String; Section : String);
-   --  Command line handler which deals with -X switches and -aP switches
 
    procedure Handle_Switch
      (Switch : String; Parameter : String; Section : String);
@@ -168,7 +159,7 @@ package body Configuration is
    procedure Produce_List_Categories_Output;
    --  List information for all messages issued by the tool
 
-   procedure Produce_Explain_Output;
+   procedure Produce_Explain_Output (Explain_Code : String);
    --  Print the explanation for the requested error/warning code
 
    function Check_gnateT_Switch (View : Project.View.Object) return String;
@@ -202,12 +193,7 @@ package body Configuration is
    --      File_Specific_Only).
 
    type Parsing_Modes is
-     (Project_Parsing,
-      --  only parses switches that are related to loading of the project file
-      --  (-P, -X, etc). and some switches that exit immediately (--version,
-      --  --clean), ignores other switches.
-
-      All_Switches,
+     (All_Switches,
       --  accepts all switches
 
       Global_Switches_Only,
@@ -225,7 +211,30 @@ package body Configuration is
    --  parse the command line switches according to the provided mode; set
    --  global variables associated to the switches.
 
+   type Project_Parsing_Result is record
+      Opt             : GPR2.Options.Object;
+      Version         : Boolean := False;
+      Help            : Boolean := False;
+      List_Categories : Boolean := False;
+      Gpr_Registry    : Boolean := False;
+      Clean           : Boolean := False;
+      Explain         : Unbounded_String := Null_Unbounded_String;
+      Remaining_Args  : String_List_Access := null;
+   end record;
+
+   function Parse_Switches_Before_Project_Parsing
+     (Com_Lin : String_List) return Project_Parsing_Result;
+   --  Parse the command line, but only for switches that are relevant before
+   --  loading the project. This includes switches that influence project
+   --  loading, as well as switches that trigger an immediate output and exit,
+   --  such as --version.
+
+   procedure Set_Project_Attributes;
+   --  Inform GPR API about gnatprove-specific project attributes
+
    procedure Display_Help;
+
+   subtype String_Access is GNAT.OS_Lib.String_Access;
 
    ---------------
    -- Abort_Msg --
@@ -623,35 +632,6 @@ package body Configuration is
       return Opt_File;
    end Extra_Args_File_For_Unit;
 
-   -------------------------------------
-   -- Handle_Project_Loading_Switches --
-   -------------------------------------
-
-   procedure Handle_Project_Loading_Switches
-     (Switch : String; Parameter : String; Section : String)
-   is
-      pragma Unreferenced (Section);
-   begin
-      if Switch'Length > 2 and then Switch (Switch'First + 1) = 'X' then
-
-         --  When a -X switch was found, we need to:
-         --  * add the scenario variable to the environment that we use to load
-         --    the project;
-         --  * store the switch to add it to calls to gprbuild that we do later
-
-         --  First we add the variable to the environment.
-
-         Proj_Opt.Add_Switch
-           (Options.X, Switch (Switch'First + 2 .. Switch'Last));
-
-         --  Second, we add the whole switch to the list of Scenario switches
-
-         CL_Switches.X.Append (Switch);
-      elsif Switch = "-aP" then
-         CL_Switches.GPR_Project_Path.Append (Parameter);
-      end if;
-   end Handle_Project_Loading_Switches;
-
    -------------------
    -- Handle_Switch --
    -------------------
@@ -858,33 +838,7 @@ package body Configuration is
          Usage    => Usage_Message,
          Help_Msg => SPARK_Install.Help_Message);
 
-      if Mode in Project_Parsing | All_Switches then
-         Define_Switch (Config, "-aP=");
-         Define_Switch (Config, Clean'Access, Long_Switch => "--clean");
-         Define_Switch
-           (Config,
-            List_Categories'Access,
-            Long_Switch => "--list-categories");
-         Define_Switch (Config, CL_Switches.P'Access, "-P:");
-         Define_Switch
-           (Config, CL_Switches.Target'Access, Long_Switch => "--target=");
-         Define_Switch
-           (Config, CL_Switches.RTS'Access, Long_Switch => "--RTS=");
-         Define_Switch
-           (Config, CL_Switches.Subdirs'Access, Long_Switch => "--subdirs=");
-         Define_Switch (Config, Version'Access, Long_Switch => "--version");
-         Define_Switch (Config, Explain'Access, Long_Switch => "--explain=");
-         Define_Switch
-           (Config,
-            CL_Switches.Print_Gpr_Registry'Access,
-            Long_Switch => GPR2.Options.Print_GPR_Registry_Option);
-         Define_Switch
-           (Config, CL_Switches.Config'Access, Long_Switch => "--config=");
-         Define_Switch
-           (Config, CL_Switches.Autoconf'Access, Long_Switch => "--autoconf=");
-      end if;
-
-      if Mode in Project_Parsing | All_Switches | Global_Switches_Only then
+      if Mode in All_Switches | Global_Switches_Only then
          Define_Switch
            (Config, CL_Switches.V'Access, "-v", Long_Switch => "--verbose");
       end if;
@@ -1007,8 +961,6 @@ package body Configuration is
            (Config, CL_Switches.Replay'Access, Long_Switch => "--replay");
          Define_Switch
            (Config, CL_Switches.Report'Access, Long_Switch => "--report=");
-         Define_Switch
-           (Config, CL_Switches.Subdirs'Access, Long_Switch => "--subdirs=");
          Define_Switch (Config, CL_Switches.U'Access, "-u");
          Define_Switch (Config, CL_Switches.UU'Access, "-U");
          Define_Switch
@@ -1110,19 +1062,14 @@ package body Configuration is
             Initial     => Invalid_Timeout);
       end if;
 
-      if Mode in All_Switches | Project_Parsing then
+      if Mode in All_Switches then
          Define_Switch (Config, "*", Help => "list of source files");
       end if;
 
-      declare
-         Callback : constant Switch_Handler :=
-           (if Mode = Project_Parsing
-            then Handle_Project_Loading_Switches'Access
-            else Handle_Switch'Access);
       begin
          Getopt
            (Config,
-            Callback    => Callback,
+            Callback    => Handle_Switch'Access,
             Parser      => Parser,
             Concatenate => False);
 
@@ -1140,6 +1087,88 @@ package body Configuration is
       Free (Config);
       Free_Topmost (Com_Lin_Access);
    end Parse_Switches;
+
+   -------------------------------------------
+   -- Parse_Switches_Before_Project_Parsing --
+   -------------------------------------------
+
+   function Parse_Switches_Before_Project_Parsing
+     (Com_Lin : String_List) return Project_Parsing_Result
+   is
+      use GNATCOLL.Opt_Parse;
+      use GNATCOLL.Strings;
+
+      function To_String_List
+        (Args : XString_Vector) return String_List_Access;
+      --  Convert a vector of XStrings to a String_List_Access.
+
+      Parser : Argument_Parser :=
+        Create_Argument_Parser
+          (Help => SPARK_Install.Help_Message, Generate_Help_Flag => False);
+
+      package Version is new
+        Parse_Flag (Parser => Parser, Long => "--version");
+
+      package Clean is new Parse_Flag (Parser => Parser, Long => "--clean");
+
+      package Explain is new
+        Parse_Option
+          (Parser      => Parser,
+           Long        => "--explain=",
+           Arg_Type    => Unbounded_String,
+           Default_Val => Null_Unbounded_String);
+
+      package Help is new Parse_Flag (Parser => Parser, Long => "--help");
+
+      package List_Categories is new
+        Parse_Flag (Parser => Parser, Long => "--list-categories");
+
+      package GPR_Registry is new
+        Parse_Flag
+          (Parser => Parser,
+           Long   => GPR2.Options.Print_GPR_Registry_Option);
+
+      package GPR_Args is new GPR2.Options.Opt_Parse.Args (Parser => Parser);
+
+      XCom_Lin : XString_Array (Com_Lin'Range);
+      Unused   : XString_Vector;
+
+      --------------------
+      -- To_String_List --
+      --------------------
+
+      function To_String_List (Args : XString_Vector) return String_List_Access
+      is
+         Result : constant String_List_Access :=
+           new String_List (1 .. Natural (Args.Length));
+         Index  : Integer := Result'First;
+      begin
+         for Arg of Args loop
+            Result (Index) := new String'(To_String (Arg));
+            Index := Index + 1;
+         end loop;
+         return Result;
+      end To_String_List;
+   begin
+      for I in Com_Lin'Range loop
+         XCom_Lin (I) := GNATCOLL.Strings.To_XString (Com_Lin (I).all);
+      end loop;
+      if not Parser.Parse (XCom_Lin, Unknown_Arguments => Unused) then
+         Abort_Msg
+           ("invalid command line, use --help for more information",
+            With_Help => True);
+      end if;
+
+      return
+        (Opt             => GPR_Args.Parsed_GPR2_Options,
+         Version         => Version.Get,
+         Clean           => Clean.Get,
+         List_Categories => List_Categories.Get,
+         Explain         => Explain.Get,
+         Gpr_Registry    => GPR_Registry.Get,
+         Help            => Help.Get,
+         Remaining_Args  => To_String_List (Unused));
+   end Parse_Switches_Before_Project_Parsing;
 
    ------------------------
    -- Prepare_Prover_Lib --
@@ -1196,7 +1225,7 @@ package body Configuration is
                   Source_Dest);
                --  Build it
                declare
-                  Coqc_Bin : String_Access :=
+                  Coqc_Bin : GNAT.OS_Lib.String_Access :=
                     GNAT.OS_Lib.Locate_Exec_On_Path ("coqc");
                   Args     : GNAT.OS_Lib.Argument_List :=
                     [1 => new String'("-R"),
@@ -1328,9 +1357,8 @@ package body Configuration is
    -- Produce_Explain_Output --
    ----------------------------
 
-   procedure Produce_Explain_Output is
-      C : constant String :=
-        Ada.Characters.Handling.To_Upper (CL_Switches.Explain.all);
+   procedure Produce_Explain_Output (Explain_Code : String) is
+      C : constant String := Ada.Characters.Handling.To_Upper (Explain_Code);
    begin
       --  Validate the format of C as a valid explain code
 
@@ -1644,7 +1672,6 @@ package body Configuration is
    -----------------
 
    function Prover_List (FS : File_Specific) return String is
-      use Ada.Strings.Unbounded;
       use String_Lists;
 
       Buf : Unbounded_String := Null_Unbounded_String;
@@ -1670,7 +1697,8 @@ package body Configuration is
 
    procedure Read_Command_Line (Tree : out Project.Tree.Object) is
 
-      procedure Init (Tree : out Project.Tree.Object);
+      procedure Init
+        (Tree : out Project.Tree.Object; Opt : in out GPR2.Options.Object);
       --  Load the project file; This function requires the project file to be
       --  present.
 
@@ -1755,128 +1783,40 @@ package body Configuration is
       -- Init --
       ----------
 
-      procedure Init (Tree : out Project.Tree.Object) is
-
+      procedure Init
+        (Tree : out Project.Tree.Object; Opt : in out GPR2.Options.Object)
+      is
+         Subdir   : constant String :=
+           Ada.Directories.Compose (To_String (Opt.Subdirs), "gnatprove");
+         Status   : Boolean;
+         Reporter : constant Spark_Reporter :=
+           (GPR2.Reporter.Console.Create (GPR2.Reporter.Regular)
+            with null record);
       begin
-         if not Null_Or_Empty_String (CL_Switches.Subdirs) then
-            declare
-               New_Dir : constant String :=
-                 Ada.Directories.Compose
-                   (Configuration.CL_Switches.Subdirs.all,
-                    Phase2_Subdir.Constant_Reference);
-            begin
-               Phase2_Subdir.Replace_Element (New_Dir);
-            end;
-         end if;
-         Proj_Opt.Add_Switch
-           (Options.Subdirs, Phase2_Subdir.Constant_Reference);
-         if not Null_Or_Empty_String (CL_Switches.Config) then
-            Proj_Opt.Add_Switch (Options.Config, CL_Switches.Config.all);
-         end if;
-         if not Null_Or_Empty_String (CL_Switches.Autoconf) then
-            Proj_Opt.Add_Switch (Options.Autoconf, CL_Switches.Autoconf.all);
-         end if;
-         Project.Registry.Pack.Add
-           (+"Prove", Project.Registry.Pack.Everywhere);
-         Project.Registry.Pack.Description.Set_Package_Description
-           (+"Prove",
-            "This package specifies the options used when calling "
-            & "'gnatprove' tool.");
-         Project.Registry.Attribute.Add
-           (Q_Attribute_Id'(+"Prove", +"Switches"),
-            Index_Type           => Project.Registry.Attribute.No_Index,
-            Value                => Project.Registry.Attribute.List,
-            Value_Case_Sensitive => False,
-            Is_Allowed_In        => Project.Registry.Attribute.Everywhere);
-         Project.Registry.Attribute.Description.Set_Attribute_Description
-           (Q_Attribute_Id'(+"Prove", +"Switches"),
-            "This deprecated attribute is the same as Proof_Switches "
-            & "(""Ada"").");
-         Project.Registry.Attribute.Add
-           (Q_Attribute_Id'(+"Prove", +"Proof_Switches"),
-            Index_Type           =>
-              Project.Registry.Attribute.FileGlob_Or_Language_Index,
-            Value                => Project.Registry.Attribute.List,
-            Value_Case_Sensitive => False,
-            Is_Allowed_In        => Project.Registry.Attribute.Everywhere);
-         Project.Registry.Attribute.Description.Set_Attribute_Description
-           (Q_Attribute_Id'(+"Prove", +"Proof_Switches"),
-            "Defines additional command line switches that are used for the "
-            & "invocation of GNATprove. Only the following switches are "
-            & "allowed for file-specific switches: '--steps', '--timeout', "
-            & "'--memlimit', '--proof', '--prover', '--level', '--mode', "
-            & "'--counterexamples', '--no-inlining', '--no-loop-unrolling'");
-         Project.Registry.Attribute.Add
-           (Q_Attribute_Id'(+"Prove", +"Proof_Dir"),
-            Index_Type           => Project.Registry.Attribute.No_Index,
-            Value                => Project.Registry.Attribute.Single,
-            Value_Case_Sensitive => True,
-            Is_Allowed_In        => Project.Registry.Attribute.Everywhere);
-         Project.Registry.Attribute.Description.Set_Attribute_Description
-           (Q_Attribute_Id'(+"Prove", +"Proof_Dir"),
-            "Defines the directory where are stored the files "
-            & "concerning the state of the proof of a project. This "
-            & "directory contains a sub-directory sessions with one "
-            & "directory per source package analyzed for proof. Each of "
-            & "these package directories contains a Why3 session file. If a "
-            & "manual prover is used to prove some VCs, then a "
-            & "sub-directory called by the name of the prover is created "
-            & "next to sessions, with the same organization of "
-            & "sub-directories. Each of these package directories contains "
-            & "manual proof files. Common proof files to be used across "
-            & "various proofs can be stored at the toplevel of the "
-            & "prover-specific directory.");
+         Opt.Add_Switch (Options.Subdirs, Subdir, Override => True);
 
-         if CL_Switches.Print_Gpr_Registry then
-            --  Print registered gpr attributes and exit as requested
-            --  This should be done here before any warning/error outputs.
-
-            GPR2.Project.Registry.Exchange.Export
-              (Output => Ada.Text_IO.Put'Access);
-            Succeed;
+         if Opt.No_Project then
+            Fail ("gnatprove doesn't support --no-project option");
          end if;
 
-         if CL_Switches.Target /= null and then CL_Switches.Target.all /= ""
-         then
-            Proj_Opt.Add_Switch (Options.Target, CL_Switches.Target.all);
-         end if;
-         if CL_Switches.RTS /= null and then CL_Switches.RTS.all /= "" then
-            Proj_Opt.Add_Switch (Options.RTS, CL_Switches.RTS.all);
+         if not Opt.Project_File.Is_Defined then
+            Opt.Add_Switch (Options.P, No_Project_File_Mode, Override => True);
          end if;
 
-         for S of CL_Switches.GPR_Project_Path loop
-            Proj_Opt.Add_Switch (Options.AP, S);
-         end loop;
+         Status :=
+           Tree.Load
+             (Opt,
+              Reporter         => Reporter,
+              With_Runtime     => True,
+              Absent_Dir_Error => GPR2.No_Error);
 
-         declare
-            Project_File : constant String :=
-              (if Null_Or_Empty_String (CL_Switches.P)
-               then No_Project_File_Mode
-               else CL_Switches.P.all);
-            Status       : Boolean;
+         if not Status then
+            Fail ("");
+         end if;
 
-            Reporter : constant Spark_Reporter :=
-              (GPR2.Reporter.Console.Create (GPR2.Reporter.Regular)
-               with null record);
-
-         begin
-            Proj_Opt.Add_Switch (Options.P, Project_File);
-
-            Status :=
-              Tree.Load
-                (Proj_Opt,
-                 Reporter         => Reporter,
-                 With_Runtime     => True,
-                 Absent_Dir_Error => GPR2.No_Error);
-
-            if not Status then
-               Fail ("");
-            end if;
-
-            if not Tree.Update_Sources then
-               Fail ("");
-            end if;
-         end;
+         if not Tree.Update_Sources then
+            Fail ("");
+         end if;
       end Init;
 
       --------------------
@@ -2894,17 +2834,18 @@ package body Configuration is
 
       --  Local variables
 
-      Com_Lin : String_List := [1 .. Ada.Command_Line.Argument_Count => <>];
-      Attr    : GPR2.Project.Attribute.Object;
+      Full_Com_Lin : String_List :=
+        [1 .. Ada.Command_Line.Argument_Count => <>];
+      Com_Lin      : String_List_Access;
+      Attr         : GPR2.Project.Attribute.Object;
 
-      --  Help message read from a static file
-
-      use CL_Switches;
+      Parse_Result : Project_Parsing_Result;
 
    begin
 
-      for Index in 1 .. Com_Lin'Last loop
-         Com_Lin (Index) := new String'(Ada.Command_Line.Argument (Index));
+      for Index in 1 .. Full_Com_Lin'Last loop
+         Full_Com_Lin (Index) :=
+           new String'(Ada.Command_Line.Argument (Index));
       end loop;
 
       --  The following code calls Parse_Switches several times, with varying
@@ -2921,30 +2862,46 @@ package body Configuration is
       --  This call to Parse_Switches just parses project-relevant switches
       --  (-P, -X etc) and ignores the rest.
 
-      Parse_Switches (Project_Parsing, Com_Lin);
+      Set_Project_Attributes;
+      Parse_Result := Parse_Switches_Before_Project_Parsing (Full_Com_Lin);
+      Free (Full_Com_Lin);
+      Com_Lin := Parse_Result.Remaining_Args;
 
-      if CL_Switches.Version then
+      if Parse_Result.Help then
+         Display_Help;
+         Succeed;
+      end if;
+
+      if Parse_Result.Version then
          Produce_Version_Output;
          Succeed;
       end if;
 
-      if CL_Switches.List_Categories then
+      if Parse_Result.List_Categories then
          Produce_List_Categories_Output;
          Succeed;
       end if;
 
-      if CL_Switches.Explain /= null and then CL_Switches.Explain.all /= ""
-      then
-         Produce_Explain_Output;
+      if Parse_Result.Explain /= Null_Unbounded_String then
+         Produce_Explain_Output (To_String (Parse_Result.Explain));
+         Succeed;
+      end if;
+
+      if Parse_Result.Gpr_Registry then
+         --  Print registered gpr attributes and exit as requested
+         --  This should be done here before any warning/error outputs.
+
+         GPR2.Project.Registry.Exchange.Export
+           (Output => Ada.Text_IO.Put'Access);
          Succeed;
       end if;
 
       --  Before doing the actual second parsing, we read the project file in
 
-      Init (Tree);
+      Init (Tree, Parse_Result.Opt);
       Check_Obsolete_Prove_Switches (Tree.Root_Project);
 
-      if Clean then
+      if Parse_Result.Clean then
          Clean_Up (Tree);
          Succeed;
       end if;
@@ -2979,7 +2936,7 @@ package body Configuration is
          end;
       end if;
 
-      Parse_Proof_Switches (Com_Lin);
+      Parse_Proof_Switches (Com_Lin.all);
 
       --  Release copies of command line arguments; they were already parsed
       --  twice and are no longer needed.
@@ -3187,6 +3144,59 @@ package body Configuration is
            ("%SRCROOT%:" & Tree.Root_Project.Dir_Name.String_Value);
       end if;
    end Sanity_Check_SARIF_Base_URI;
+
+   procedure Set_Project_Attributes is
+   begin
+      Project.Registry.Pack.Add (+"Prove", Project.Registry.Pack.Everywhere);
+      Project.Registry.Pack.Description.Set_Package_Description
+        (+"Prove",
+         "This package specifies the options used when calling "
+         & "'gnatprove' tool.");
+      Project.Registry.Attribute.Add
+        (Q_Attribute_Id'(+"Prove", +"Switches"),
+         Index_Type           => Project.Registry.Attribute.No_Index,
+         Value                => Project.Registry.Attribute.List,
+         Value_Case_Sensitive => False,
+         Is_Allowed_In        => Project.Registry.Attribute.Everywhere);
+      Project.Registry.Attribute.Description.Set_Attribute_Description
+        (Q_Attribute_Id'(+"Prove", +"Switches"),
+         "This deprecated attribute is the same as Proof_Switches "
+         & "(""Ada"").");
+      Project.Registry.Attribute.Add
+        (Q_Attribute_Id'(+"Prove", +"Proof_Switches"),
+         Index_Type           =>
+           Project.Registry.Attribute.FileGlob_Or_Language_Index,
+         Value                => Project.Registry.Attribute.List,
+         Value_Case_Sensitive => False,
+         Is_Allowed_In        => Project.Registry.Attribute.Everywhere);
+      Project.Registry.Attribute.Description.Set_Attribute_Description
+        (Q_Attribute_Id'(+"Prove", +"Proof_Switches"),
+         "Defines additional command line switches that are used for the "
+         & "invocation of GNATprove. Only the following switches are "
+         & "allowed for file-specific switches: '--steps', '--timeout', "
+         & "'--memlimit', '--proof', '--prover', '--level', '--mode', "
+         & "'--counterexamples', '--no-inlining', '--no-loop-unrolling'");
+      Project.Registry.Attribute.Add
+        (Q_Attribute_Id'(+"Prove", +"Proof_Dir"),
+         Index_Type           => Project.Registry.Attribute.No_Index,
+         Value                => Project.Registry.Attribute.Single,
+         Value_Case_Sensitive => True,
+         Is_Allowed_In        => Project.Registry.Attribute.Everywhere);
+      Project.Registry.Attribute.Description.Set_Attribute_Description
+        (Q_Attribute_Id'(+"Prove", +"Proof_Dir"),
+         "Defines the directory where are stored the files "
+         & "concerning the state of the proof of a project. This "
+         & "directory contains a sub-directory sessions with one "
+         & "directory per source package analyzed for proof. Each of "
+         & "these package directories contains a Why3 session file. If a "
+         & "manual prover is used to prove some VCs, then a "
+         & "sub-directory called by the name of the prover is created "
+         & "next to sessions, with the same organization of "
+         & "sub-directories. Each of these package directories contains "
+         & "manual proof files. Common proof files to be used across "
+         & "various proofs can be stored at the toplevel of the "
+         & "prover-specific directory.");
+   end Set_Project_Attributes;
 
    -----------------------
    -- SPARK_Report_File --
