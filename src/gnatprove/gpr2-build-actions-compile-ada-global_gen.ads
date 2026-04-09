@@ -1,3 +1,4 @@
+with GPR2.Build.Artifacts.Files;
 with GPR2.Build.Command_Line;
 with GPR2.Build.Compilation_Unit;
 
@@ -10,7 +11,9 @@ package GPR2.Build.Actions.Compile.Ada.Global_Gen is
    function Create
      (Src : GPR2.Build.Compilation_Unit.Object) return Global_Gen_Id;
 
-   type Object is new GPR2.Build.Actions.Compile.Ada.Object with null record;
+   type Object is new GPR2.Build.Actions.Compile.Ada.Object with record
+      Error_File : GPR2.Build.Artifacts.Files.Object;
+   end record;
 
    overriding
    function UID (Self : Object) return GPR2.Build.Actions.Action_Id'Class;
@@ -32,6 +35,10 @@ package GPR2.Build.Actions.Compile.Ada.Global_Gen is
       Status : Execution_Status;
       Stdout : Unbounded_String := Null_Unbounded_String;
       Stderr : Unbounded_String := Null_Unbounded_String) return Boolean;
+
+   overriding
+   function On_Tree_Insertion
+     (Self : Object; Db : in out GPR2.Build.Tree_Db.Object) return Boolean;
 
    procedure Initialize
      (Self : in out Object; Unit : GPR2.Build.Compilation_Unit.Object);

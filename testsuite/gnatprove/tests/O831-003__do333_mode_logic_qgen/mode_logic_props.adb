@@ -8,7 +8,7 @@
 --    --debug
 --    --typing models/case_studies/NASA-DO-333-Case-Studies/Mode_Logic_Case_Study_Files/Mode_Logic_Props_types.txt
 
-pragma Style_Checks ("M999");  --  ignore long lines
+pragma Style_Checks ("M2000");  --  ignore long lines
 
 with Event_Processing; use Event_Processing;
 with Flight_Modes; use Flight_Modes;
