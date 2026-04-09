@@ -1,8 +1,16 @@
+with GPR2.Build.Artifacts.Files;
 with GPR2.Build.Command_Line;
 with GPR2.Build.Compilation_Unit;
 with GPR2.Build.Tree_Db;
 
 package GPR2.Build.Actions.Compile.Ada.Data_Rep is
+
+   subtype JSON_File_Index is Positive range 1 .. 2;
+   type JSON_File_Array is
+     array (JSON_File_Index range <>) of GPR2.Build.Artifacts.Files.Object;
+   --  Array of JSON output files produced by a data-representation action.
+   --  Contains one entry for spec-only or body-only units, two entries (body
+   --  first, spec second) when the unit has both a body and a spec.
 
    type Data_Rep_Id is new GPR2.Build.Actions.Compile.Ada.Ada_Compile_Id
    with null record;
@@ -45,14 +53,14 @@ package GPR2.Build.Actions.Compile.Ada.Data_Rep is
      (Self : in out Object; Unit : GPR2.Build.Compilation_Unit.Object);
    --  Initialize the action for the given compilation unit
 
-   function Data_Rep_File_For_Unit
-     (CU : GPR2.Build.Compilation_Unit.Object)
-      return GPR2.Build.Artifacts.Files.Object;
-   --  Return the JSON artifact path for the given compilation unit
+   function Data_Rep_Files
+     (Unit : GPR2.Build.Compilation_Unit.Object) return JSON_File_Array
+   with Post => Data_Rep_Files'Result'Length > 0;
+   --  Return the JSON artifact paths for the given compilation unit
 
-   function JSON_Output
-     (Self : Object) return GPR2.Build.Artifacts.Files.Object;
-   --  Return the JSON artifact produced by this action
+   function JSON_Outputs (Self : Object) return JSON_File_Array
+   with Post => JSON_Outputs'Result'Length > 0;
+   --  Return the JSON artifacts produced by this action
 
    overriding
    function On_Tree_Insertion

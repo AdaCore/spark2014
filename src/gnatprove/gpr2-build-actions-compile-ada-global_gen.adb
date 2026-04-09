@@ -230,12 +230,14 @@ package body GPR2.Build.Actions.Compile.Ada.Global_Gen is
 
          for Succ of Self.Tree.Successors (Self.Lib_Ali_File) loop
             if Succ in Actions.Compile.Ada.Analysis.Object'Class then
-               Self.Tree.Add_Input (Succ.UID, DR_Act.JSON_Output, True);
+               for JSON_File of DR_Act.JSON_Outputs loop
+                  Self.Tree.Add_Input (Succ.UID, JSON_File, True);
 
-               Actions.Compile.Ada.Analysis.Object
-                 (Self.Tree.Action_Id_To_Reference (Succ.UID).Element.all)
-                 .Data_Rep_JSON_Files
-                 .Include (DR_Act.JSON_Output);
+                  Actions.Compile.Ada.Analysis.Object
+                    (Self.Tree.Action_Id_To_Reference (Succ.UID).Element.all)
+                    .Data_Rep_JSON_Files
+                    .Include (JSON_File);
+               end loop;
             end if;
          end loop;
 

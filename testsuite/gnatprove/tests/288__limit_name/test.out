@@ -13,9 +13,6 @@ Summary logged in gnatprove/gnatprove.out
 [Ada Analysis]    overload.adb
 [Ada Analysis]    p.adb
 [Ada Analysis]    q.adb
-[Ada Data_Rep]    overload.adb
-[Ada Data_Rep]    p.adb
-[Ada Data_Rep]    q.adb
 [Ada Global_Gen]  overload.adb
 [Ada Global_Gen]  p.adb
 [Ada Global_Gen]  q.adb

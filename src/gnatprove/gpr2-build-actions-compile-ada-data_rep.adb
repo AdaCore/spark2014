@@ -2,7 +2,6 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO;
 with Configuration;
 with GNAT.Strings;          use GNAT.Strings;
-with GPR2.Build.Artifacts.Files;
 with GPR2.Build.Artifacts.Source_Files;
 with VC_Kinds;              use VC_Kinds;
 
@@ -43,12 +42,6 @@ package body GPR2.Build.Actions.Compile.Ada.Data_Rep is
       --  argument so it can delegate the actual compilation.
       Cmd_Line.Set_Driver ("spark_data_rep_wrapper");
 
-      if Configuration.Verbose then
-         Cmd_Line.Add_Argument ("--verbose");
-      elsif Configuration.Quiet then
-         Cmd_Line.Add_Argument ("--quiet");
-      end if;
-
       --  Generate data-representation JSON
       Cmd_Line.Add_Argument ("-gnatR2js");
       Cmd_Line.Add_Argument ("-gnatws");   --  Suppress warnings
@@ -70,6 +63,31 @@ package body GPR2.Build.Actions.Compile.Ada.Data_Rep is
       for Arg of Configuration.CL_Switches.Cargs_List loop
          Cmd_Line.Add_Argument (Arg);
       end loop;
+
+      --  Pass verbosity and expected JSON output paths via environment
+      --  variables. Using env vars avoids interfering with the compiler
+      --  argument list and handles paths containing spaces on all platforms.
+      --  We set all variables unconditionally to avoid that previously set
+      --  values influence the behavior of gnatprove here.
+      Cmd_Line.Add_Env_Variable
+        ("SPARK_DATA_REP_VERBOSITY",
+         (if Configuration.Verbose
+          then "verbose"
+          elsif Configuration.Quiet
+          then "quiet"
+          else "normal"));
+
+      declare
+         Files     : constant JSON_File_Array := Self.JSON_Outputs;
+         Spec_File : constant String :=
+           (if Files'Length = 2
+            then Files (Files'Last).Path.String_Value
+            else "");
+      begin
+         Cmd_Line.Add_Env_Variable
+           ("SPARK_DATA_REP_BODY_JSON", Files (Files'First).Path.String_Value);
+         Cmd_Line.Add_Env_Variable ("SPARK_DATA_REP_SPEC_JSON", Spec_File);
+      end;
    end Compute_Command;
 
    ------------
@@ -104,30 +122,38 @@ package body GPR2.Build.Actions.Compile.Ada.Data_Rep is
       GPR2.Build.Actions.Compile.Ada.Object (Self).Initialize (Unit);
    end Initialize;
 
-   ---------------------------
-   -- Data_Rep_File_For_Unit --
-   ---------------------------
+   -----------------------------
+   -- Data_Rep_Files_For_Unit --
+   -----------------------------
 
-   function Data_Rep_File_For_Unit
-     (CU : GPR2.Build.Compilation_Unit.Object)
-      return GPR2.Build.Artifacts.Files.Object is
+   function Data_Rep_Files
+     (Unit : GPR2.Build.Compilation_Unit.Object) return JSON_File_Array
+   is
+      function Make_Data_Rep_File
+        (Unit_Loc : GPR2.Build.Compilation_Unit.Unit_Location)
+         return GPR2.Build.Artifacts.Files.Object
+      is (GPR2.Build.Artifacts.Files.Create
+            (Unit.Owning_View.Object_Directory.Compose
+               (Filename_Type
+                  (String (Unit_Loc.Source.Simple_Name) & ".json"))));
    begin
-      return
-        GPR2.Build.Artifacts.Files.Create
-          (CU.Owning_View.Object_Directory.Compose
-             (Filename_Type
-                (String (CU.Main_Part.Source.Simple_Name) & ".json")));
-   end Data_Rep_File_For_Unit;
+      if Unit.Has_Part (S_Body) and then Unit.Has_Part (S_Spec) then
+         return
+           [Make_Data_Rep_File (Unit.Main_Body),
+            Make_Data_Rep_File (Unit.Spec)];
+      else
+         return [1 => Make_Data_Rep_File (Unit.Main_Part)];
+      end if;
+   end Data_Rep_Files;
 
-   -----------------
-   -- JSON_Output --
-   -----------------
+   ------------------
+   -- JSON_Outputs --
+   ------------------
 
-   function JSON_Output
-     (Self : Object) return GPR2.Build.Artifacts.Files.Object is
+   function JSON_Outputs (Self : Object) return JSON_File_Array is
    begin
-      return Data_Rep_File_For_Unit (Self.CU);
-   end JSON_Output;
+      return Data_Rep_Files (Self.CU);
+   end JSON_Outputs;
 
    -----------------------
    -- On_Tree_Insertion --
@@ -137,9 +163,7 @@ package body GPR2.Build.Actions.Compile.Ada.Data_Rep is
    function On_Tree_Insertion
      (Self : Object; Db : in out GPR2.Build.Tree_Db.Object) return Boolean
    is
-      UID      : constant Actions.Action_Id'Class := Object'Class (Self).UID;
-      JSON_Out : constant GPR2.Build.Artifacts.Files.Object :=
-        Self.JSON_Output;
+      UID : constant Actions.Action_Id'Class := Object'Class (Self).UID;
    begin
       Db.Add_Input
         (UID,
@@ -154,9 +178,11 @@ package body GPR2.Build.Actions.Compile.Ada.Data_Rep is
       --  unavailable" warning on top of the real error.
       Db.Add_Input (UID, Self.Lib_Ali_File, True);
 
-      if not Db.Add_Output (UID, JSON_Out) then
-         return False;
-      end if;
+      for JSON_File of Self.JSON_Outputs loop
+         if not Db.Add_Output (UID, JSON_File) then
+            return False;
+         end if;
+      end loop;
 
       return True;
    end On_Tree_Insertion;
