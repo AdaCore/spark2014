@@ -1,2 +1,2 @@
 prove_all:
-  opt: ["-P", "cf_spark.gpr"]
+  project: "cf_spark.gpr"
