@@ -778,7 +778,8 @@ package body Flow_Error_Messages is
 
       function Cache_Phrase return String is
       begin
-         if Is_Empty (Cache_Status) then
+         if Gnat2Why_Args.Debug_No_Cache_Output or else Is_Empty (Cache_Status)
+         then
             return "";
          end if;
          declare
