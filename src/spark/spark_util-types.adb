@@ -1873,7 +1873,7 @@ package body SPARK_Util.Types is
                if Entity_In_SPARK (Pred_Fun) then
                   declare
                      Expr : constant Node_Id :=
-                       Get_Expr_From_Return_Only_Func (Pred_Fun);
+                       Get_Predicate_Expression (Pred_Fun);
                   begin
                      --  Ignore predicates which are inherited from parents,
                      --  they will be traversed too.

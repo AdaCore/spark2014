@@ -712,15 +712,15 @@ package body SPARK_Util.Subprograms is
       return Result;
    end Get_Exprs_From_Check_Only_Proc;
 
-   ------------------------------------
-   -- Get_Expr_From_Return_Only_Func --
-   ------------------------------------
+   ------------------------------
+   -- Get_Predicate_Expression --
+   ------------------------------
 
-   function Get_Expr_From_Return_Only_Func
+   function Get_Predicate_Expression
      (E : E_Function_Id) return Opt_N_Subexpr_Id is
    begin
       return Predicate_Expression (E);
-   end Get_Expr_From_Return_Only_Func;
+   end Get_Predicate_Expression;
 
    -----------------------------
    -- Get_Expression_Function --

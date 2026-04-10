@@ -5783,15 +5783,18 @@ package body Gnat2Why.Subprograms is
             First => True);
       end if;
 
-      --  For expression functions, the body is not marked. Retrieve the
-      --  expression directly.
+      --  For expression functions and predicate functions, the body is not
+      --  marked. Retrieve the expression directly.
 
-      if Is_Expression_Function_Or_Completion (E)
+      if ((Ekind (E) = E_Function and then Is_Predicate_Function (E))
+          or else Is_Expression_Function_Or_Completion (E))
         and then Entity_Body_In_SPARK (E)
       then
          declare
             Expr : constant Node_Id :=
-              Expression (Get_Expression_Function (E));
+              (if Is_Predicate_Function (E)
+               then Get_Predicate_Expression (E)
+               else Expression (Get_Expression_Function (E)));
 
          begin
             Why_Body :=
