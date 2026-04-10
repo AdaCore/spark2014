@@ -1,4 +1,10 @@
 illegal.ads:5:13: error: but applied to a non-ghost record type at line 3
 illegal.ads:5:13: error: equality operation is defined as ghost
 illegal.ads:5:13: error: incompatible primitive equaility operation
+illegal.ads:10:13: error: but applied to a non-ghost record type at line 8
+illegal.ads:10:13: error: equality operation is defined as ghost
+illegal.ads:10:13: error: incompatible primitive equaility operation
+illegal.ads:17:16: error: but applied to a non-ghost record type at line 15
+illegal.ads:17:16: error: equality operation is defined as ghost
+illegal.ads:17:16: error: incompatible primitive equaility operation
 gnatprove: error during flow analysis and proof
