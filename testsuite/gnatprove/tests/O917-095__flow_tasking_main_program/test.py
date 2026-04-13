@@ -16,4 +16,4 @@ mains = [
 ]
 
 for m in mains:
-    do_flow(opt=["-P", "test.gpr", m])
+    do_flow(project="test.gpr", opt=[m])

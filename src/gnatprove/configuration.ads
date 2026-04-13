@@ -90,14 +90,12 @@ package Configuration is
       --  * Cargs_List is the list of arguments in the --cargs section
 
       Assumptions           : aliased Boolean;
-      Autoconf              : aliased GNAT.Strings.String_Access;
       Benchmark             : aliased Boolean;
       Memcached_Server      : aliased GNAT.Strings.String_Access;
       Cargs_List            : String_Lists.List;
       CE_Steps              : aliased Integer;
       Check_Counterexamples : aliased GNAT.Strings.String_Access;
       Checks_As_Errors      : aliased GNAT.Strings.String_Access;
-      Config                : aliased GNAT.Strings.String_Access;
 
       Counterexamples      : aliased GNAT.Strings.String_Access;
       CWE                  : aliased Boolean;
@@ -109,7 +107,6 @@ package Configuration is
       Debug_Trivial        : aliased Boolean;
       Debug_Prover_Errors  : aliased Boolean;
       Exclude_Line         : aliased GNAT.Strings.String_Access;
-      Explain              : aliased GNAT.Strings.String_Access;
       F                    : aliased Boolean;
       File_List            : String_Lists.List;
       --  The list of files to be compiled
@@ -118,8 +115,6 @@ package Configuration is
       Flow_Show_GG         : aliased Boolean;
       Function_Sandboxing  : aliased GNAT.Strings.String_Access;
       Gnattest_Values      : aliased GNAT.Strings.String_Access;
-      GPR_Project_Path     : String_Lists.List;
-      --  extra paths to look for project files, passed to gnatprove via -aP
       SARIF_Base_URIs      : String_Lists.List;
       --  Raw "IDENTIFIER:PATH" strings from --sarif-base-uri= occurrences
       IDE_Progress_Bar     : aliased Boolean;
@@ -132,7 +127,6 @@ package Configuration is
       Limit_Name           : aliased GNAT.Strings.String_Access;
       Limit_Region         : aliased GNAT.Strings.String_Access;
       Limit_Subp           : aliased GNAT.Strings.String_Access;
-      List_Categories      : aliased Boolean;
       M                    : aliased Boolean;
       Memlimit             : aliased Integer;
       Mode                 : aliased GNAT.Strings.String_Access;
@@ -148,7 +142,6 @@ package Configuration is
       P                    : aliased GNAT.Strings.String_Access;
       --  The project file name, given with option -P
       Pedantic             : aliased Boolean;
-      Print_Gpr_Registry   : aliased Boolean;
       Proof                : aliased GNAT.Strings.String_Access;
       Proof_Warnings       : aliased GNAT.Strings.String_Access;
       Proof_Warn_Timeout   : aliased Integer;
@@ -156,22 +149,16 @@ package Configuration is
       Q                    : aliased Boolean;
       Replay               : aliased Boolean;
       Report               : aliased GNAT.Strings.String_Access;
-      RTS                  : aliased GNAT.Strings.String_Access;
       Steps                : aliased Integer;
-      Subdirs              : aliased GNAT.Strings.String_Access;
-      Target               : aliased GNAT.Strings.String_Access;
       Timeout              : aliased GNAT.Strings.String_Access;
       U                    : aliased Boolean;
       UU                   : aliased Boolean;
       V                    : aliased Boolean;
-      Version              : aliased Boolean;
       Warnings             : aliased GNAT.Strings.String_Access;
       Why3_Conf            : aliased GNAT.Strings.String_Access;
       Why3_Debug           : aliased GNAT.Strings.String_Access;
       Why3_Logging         : aliased Boolean;
       Why3_Server          : aliased GNAT.Strings.String_Access;
-      X                    : String_Lists.List;
-      --  Scenario variables to be passed to gprbuild
       Z3_Counterexample    : aliased Boolean;
    end CL_Switches;
 
@@ -313,17 +300,6 @@ package Configuration is
    Default_Steps : constant Natural := 100;
 
    package String_Holders is new Ada.Containers.Indefinite_Holders (String);
-
-   Phase2_Subdir : String_Holders.Holder :=
-     String_Holders.To_Holder ("gnatprove");
-   --  The subdir names for the storage of intermediate files (ALI, why3 files,
-   --  etc). This is the subdir of the object dir, which might be further
-   --  modified via the --subdirs switch. Overall, phase 2 will store files in
-   --    <objdir>/<subdirs>/gnatprove
-   --  and phase 1 will store files in
-   --    <objdir>/<subdirs>/gnatprove/phase1
-   --  The fact that the phase 1 dir is a subdir of phase2 makes copying files
-   --  easier later on, and makes cleaning up easier as well.
 
    Proof_Dir : GNAT.Strings.String_Access;
    --  The name of the directory in which will be stored Why3 session file and
