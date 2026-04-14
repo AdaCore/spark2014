@@ -38,3 +38,9 @@
 - E0018: `call to a procedural function outside of assignment is not allowed in SPARK`
 
 - E0019: `uninitialized allocator without default initialization is not allowed in SPARK`
+
+- E0020: `borrow or observe of an expression which is not part of a stand-alone object or parameter`
+
+- E0021: `controlled types`
+
+- E0022: `plain precondition on dispatching subprogram`

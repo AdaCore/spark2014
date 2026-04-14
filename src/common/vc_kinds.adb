@@ -1651,6 +1651,12 @@ package body VC_Kinds is
            EC_Function_Volatile_Input_Global,
          when Vio_Volatile_In_Interfering_Context   =>
            EC_Volatile_Non_Interfering_Context,
+         when Vio_Function_Out_Param                =>
+           EC_Out_Parameter_In_Function,
+         when Vio_Controlled_Types                  =>
+           EC_Controlled_Types,
+         when Vio_Dispatch_Plain_Pre                =>
+           EC_Dispatch_Plain_Pre,
          when others                                => EC_None);
 
    ---------------
