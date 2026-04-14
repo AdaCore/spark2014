@@ -181,6 +181,7 @@ package Flow_Error_Messages is
       Stats         : Prover_Stat_Maps.Map;
       Unproved_Stat : Failed_Prover_Answer;
       Check_Info    : Check_Info_Type;
+      Cache_Status  : JSON_Value := Create_Object;
       CE_From_RAC   : Boolean := False);
    --  register a message for proof (i.e. which corresponds to a check that is
    --  usually taken care of by proof)
@@ -223,6 +224,8 @@ package Flow_Error_Messages is
    --  @param Place_First signal if placement on the beginning of the
    --    expression should be used (instead of the middle)
    --  @param Check_Info extra information for the check
+   --  @param Cache_Status information about use of cache when proving this
+   --    check
    --  @param CE_From_RAC indicates whether there is a counterexample from
    --    the RAC that should be used for the check.
 

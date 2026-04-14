@@ -27,6 +27,7 @@ with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Directories;
 with Ada.Exceptions;
 with Ada.Strings.Fixed;
+with Ada.Strings.Unbounded;
 with Ada.Text_IO;
 with Cache_Client;
 with Filecache_Client;
@@ -87,9 +88,24 @@ procedure SPARK_Memcached_Wrapper with No_Return is
    --  @return the key to be used for this invocation of the wrapper in the
    --    memcached table
 
-   function Init_Client return Cache_Client.Cache'Class;
-   --  @return a connection to the memcached server specified by the first
-   --    command line argument
+   type Cache_Kind is (File_Cache, Memcached_Cache);
+
+   type Cache_Spec (Kind : Cache_Kind := Memcached_Cache) is record
+      case Kind is
+         when File_Cache =>
+            Directory : Ada.Strings.Unbounded.Unbounded_String;
+
+         when Memcached_Cache =>
+            Host : Ada.Strings.Unbounded.Unbounded_String;
+            Port : Port_Type;
+      end case;
+   end record;
+
+   function Parse_Cache_Spec return Cache_Spec;
+   --  @return the parsed and validated cache specification from Argument (2)
+
+   function Init_Client (Spec : Cache_Spec) return Cache_Client.Cache'Class;
+   --  @return a connection to the cache described by Spec
 
    procedure Report_Error (Msg : String)
    with No_Return;
@@ -230,32 +246,68 @@ procedure SPARK_Memcached_Wrapper with No_Return is
    -- Init_Client --
    -----------------
 
-   function Init_Client return Cache_Client.Cache'Class is
+   function Init_Client (Spec : Cache_Spec) return Cache_Client.Cache'Class is
+   begin
+      case Spec.Kind is
+         when File_Cache      =>
+            return
+              Filecache_Client.Init
+                (Ada.Strings.Unbounded.To_String (Spec.Directory));
+
+         when Memcached_Cache =>
+            return
+              Memcache_Client.Init
+                (Ada.Strings.Unbounded.To_String (Spec.Host), Spec.Port);
+      end case;
+   end Init_Client;
+
+   ----------------------
+   -- Parse_Cache_Spec --
+   ----------------------
+
+   function Parse_Cache_Spec return Cache_Spec is
       Info  : String renames Argument (2);
       Colon : constant Natural := Ada.Strings.Fixed.Index (Info, ":");
 
       Wrong_Port_Msg : constant String :=
         ("port value should be an integer between 1 and 65535");
-
+      use type Ada.Directories.File_Kind;
    begin
       if Colon = 0 then
          Report_Error
            ("the expected format of option --memcached-server "
             & "is hostname:portnumber, but no colon was found");
       end if;
+
+      if Colon = Info'First then
+         Report_Error ("cache specification has an empty cache kind/hostname");
+      end if;
+
+      if Colon = Info'Last then
+         Report_Error ("cache specification has an empty port or directory");
+      end if;
+
       declare
          First  : String renames Info (Info'First .. Colon - 1);
          Second : String renames Info (Colon + 1 .. Info'Last);
          Port   : Port_Type;
       begin
-         if First'Length = 4 and then First = "file" then
-            if not Ada.Directories.Exists (Second) then
-               Report_Error ("file caching: no such directory: " & Second);
+         if First = "file" then
+            if not Ada.Directories.Exists (Second)
+              or else
+                Ada.Directories.Kind (Second) /= Ada.Directories.Directory
+            then
+               Report_Error
+                 ("file caching: expected an existing directory: " & Second);
             end if;
-            return Filecache_Client.Init (Second);
+
+            return
+              (Kind      => File_Cache,
+               Directory =>
+                 Ada.Strings.Unbounded.To_Unbounded_String (Second));
          else
             begin
-               Port := Port_Type'Value (Info (Colon + 1 .. Info'Last));
+               Port := Port_Type'Value (Second);
             exception
                when Constraint_Error =>
                   Report_Error (Wrong_Port_Msg);
@@ -263,12 +315,15 @@ procedure SPARK_Memcached_Wrapper with No_Return is
 
             if Port = No_Port then
                Report_Error (Wrong_Port_Msg);
-            else
-               return Memcache_Client.Init (First, Port);
             end if;
+
+            return
+              (Kind => Memcached_Cache,
+               Host => Ada.Strings.Unbounded.To_Unbounded_String (First),
+               Port => Port);
          end if;
       end;
-   end Init_Client;
+   end Parse_Cache_Spec;
 
    ------------------
    -- Report_Error --
@@ -319,20 +374,53 @@ procedure SPARK_Memcached_Wrapper with No_Return is
       return C.Hash_Digest;
    end Compute_Key;
 
+   function Cache_Source (Spec : Cache_Spec) return String;
+   --  Return either "file" or "memcached" based on Spec.
+
+   ------------------
+   -- Cache_Source --
+   ------------------
+
+   function Cache_Source (Spec : Cache_Spec) return String is
+   begin
+      return (if Spec.Kind = File_Cache then "file" else "memcached");
+   end Cache_Source;
+
 begin
 
    --  We need this extra declare block so that the declarations are executed
    --  in the scope of the exception handler below.
 
    declare
-      Cache : Cache_Client.Cache'Class := Init_Client;
+      Spec  : constant Cache_Spec := Parse_Cache_Spec;
+      Cache : Cache_Client.Cache'Class := Init_Client (Spec);
 
       Key    : constant String := Compute_Key;
       Msg    : constant String := Cache.Get (Key);
       Status : aliased Integer := 0;
    begin
       if Msg'Length /= 0 then
-         Ada.Text_IO.Put_Line (Msg);
+
+         --  On a cache hit for gnatwhy3, inject a "from_cache" field into the
+         --  top-level JSON record so that the caller can attribute proved VCs
+         --  to the appropriate cache tier.
+
+         if Argument (3) = "gnatwhy3" then
+            declare
+               JSON_Msg : constant JSON_Value := Read (Msg);
+            begin
+               Set_Field (JSON_Msg, "from_cache", Cache_Source (Spec));
+               Ada.Text_IO.Put_Line (Write (JSON_Msg));
+            end;
+
+         --  For prover cache hits, append a marker line so that gnatwhy3 can
+         --  detect the cache source and attribute the VC accordingly.
+
+         else
+            Ada.Text_IO.Put_Line (Msg);
+            Ada.Text_IO.Put_Line
+              ("spark_memcached_wrapper: " & Cache_Source (Spec));
+         end if;
       else
          declare
             Arguments : Argument_List (1 .. Argument_Count - 3);

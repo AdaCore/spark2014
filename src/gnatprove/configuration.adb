@@ -866,6 +866,10 @@ package body Configuration is
            (Config, CL_Switches.D'Access, "-d", Long_Switch => "--debug");
          Define_Switch
            (Config,
+            CL_Switches.Debug_No_Cache_Output'Access,
+            Long_Switch => "--debug-no-cache-output");
+         Define_Switch
+           (Config,
             CL_Switches.Debug_Save_VCs'Access,
             Long_Switch => "--debug-save-vcs");
          Define_Switch

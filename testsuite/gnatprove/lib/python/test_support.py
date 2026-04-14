@@ -1633,6 +1633,8 @@ def prove_all(
             fullopt += ["--check-counterexamples=off"]
     if why3server_mode():
         fullopt += ["--why3-server=" + why3server_mode()]
+    if cache_allowed:
+        fullopt += ["--debug-no-cache-output"]
     # Add opt last, so that it may include switch -cargs
     if opt is not None:
         fullopt += opt

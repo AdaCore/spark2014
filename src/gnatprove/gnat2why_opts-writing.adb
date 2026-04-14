@@ -84,6 +84,9 @@ package body Gnat2Why_Opts.Writing is
       Hash (Exclude_Line_Name, CL_Switches.Exclude_Line.all);
       Hash (Gnattest_Values_Name, CL_Switches.Gnattest_Values.all);
       Hash (Debug_Exec_RAC_Name, Boolean'Image (Debug_Exec_RAC));
+      Hash
+        (Debug_No_Cache_Output_Name,
+         Boolean'Image (CL_Switches.Debug_No_Cache_Output));
       Hash (Debug_Mode_Name, Boolean'Image (Debug));
       Hash (Flow_Advanced_Debug_Name, Boolean'Image (Flow_Extra_Debug));
       Hash
@@ -205,6 +208,10 @@ package body Gnat2Why_Opts.Writing is
          --  Always store debug options
 
          Set_Field (Obj, Debug_Exec_RAC_Name, Debug_Exec_RAC);
+         Set_Field
+           (Obj,
+            Debug_No_Cache_Output_Name,
+            CL_Switches.Debug_No_Cache_Output);
          Set_Field (Obj, Debug_Mode_Name, Debug);
          Set_Field (Obj, Flow_Advanced_Debug_Name, Flow_Extra_Debug);
          Set_Field

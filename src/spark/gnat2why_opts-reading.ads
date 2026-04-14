@@ -155,6 +155,10 @@ package Gnat2Why_Opts.Reading is
 
    Debug_Exec_RAC : Boolean;
 
+   --  Suppress the cache-use phrase currently emitted in flow proof messages
+
+   Debug_No_Cache_Output : Boolean;
+
    --  Prevent loop unrolling
 
    No_Loop_Unrolling : Boolean;

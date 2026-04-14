@@ -85,6 +85,7 @@ package Gnat2Why.Error_Messages is
       Unproved_Stat : Errout_Wrapper.Failed_Prover_Answer :=
         Errout_Wrapper.FPA_Unknown_Rec;
       Editor_Cmd    : String := "";
+      Cache_Status  : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
       CE_From_RAC   : Boolean := False);
    --  Register the VC identified by node and kind as proved. This will emit
    --  a message if needed and register the result in JSON output.

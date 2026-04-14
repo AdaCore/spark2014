@@ -356,6 +356,7 @@ package body Gnat2Why.Error_Messages is
       Unproved_Stat : Errout_Wrapper.Failed_Prover_Answer :=
         Errout_Wrapper.FPA_Unknown_Rec;
       Editor_Cmd    : String := "";
+      Cache_Status  : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
       CE_From_RAC   : Boolean := False) is
    begin
       if Kind in VC_Warning_Kind then
@@ -386,6 +387,7 @@ package body Gnat2Why.Error_Messages is
          How_Proved    => How_Proved,
          E             => E,
          Check_Info    => Check_Info,
+         Cache_Status  => Cache_Status,
          CE_From_RAC   => CE_From_RAC);
    end Emit_Proof_Result;
 
@@ -547,7 +549,12 @@ package body Gnat2Why.Error_Messages is
 
       use GNATCOLL.JSON;
 
-      Subp : Entity_Id;
+      Subp              : Entity_Id;
+      From_Cache_Status : JSON_Value := Create_Object;
+      --  When gnatwhy3's output was served from the wrapper cache, this holds
+      --  a cache_status JSON value representing a full cache hit from the
+      --  wrapper source ("file" or "memcached"). It overrides the per-VC
+      --  cache_status for all proved VCs.
 
       type Cntexample_Info is record
          Cntexample        : Cntexample_File_Maps.Map;
@@ -568,6 +575,7 @@ package body Gnat2Why.Error_Messages is
          Cntexmps      : JSON_Value;
          Check_Tree    : JSON_Value;
          Unproved_Stat : Failed_Prover_Answer;
+         Cache_Status  : JSON_Value;
       end record;
 
       function Parse_Why3_Prove_Result
@@ -1134,6 +1142,10 @@ package body Gnat2Why.Error_Messages is
                Unproved_Stat => Rec.Unproved_Stat,
                Extra_Msg     => CP_Msg,
                Check_Info    => Check_Info,
+               Cache_Status  =>
+                 (if Rec.Result and then not Is_Empty (From_Cache_Status)
+                  then From_Cache_Status
+                  else Rec.Cache_Status),
                CE_From_RAC   => Use_RAC_Cntexmp);
          end;
 
@@ -1266,7 +1278,11 @@ package body Gnat2Why.Error_Messages is
               Unproved_Stat =>
                 (if Has_Field (V, "unproved_status")
                  then From_JSON (Get (V, "unproved_status"))
-                 else FPA_Unknown_Rec));
+                 else FPA_Unknown_Rec),
+              Cache_Status  =>
+                (if Has_Field (V, "cache_status")
+                 then Get (V, "cache_status")
+                 else Create_Object));
       end Parse_Why3_Prove_Result;
 
    begin
@@ -1276,6 +1292,17 @@ package body Gnat2Why.Error_Messages is
          File    : constant JSON_Value := Read_File_Into_JSON (Fn);
          Results : constant JSON_Array := Get (Get (File, "results"));
       begin
+         if Has_Field (File, "from_cache") then
+            declare
+               Source  : constant String := Get (Get (File, "from_cache"));
+               Sources : JSON_Array := Empty_Array;
+            begin
+               Append (Sources, Create (Source));
+               Set_Field (From_Cache_Status, "use", "full");
+               Set_Field (From_Cache_Status, "sources", Create (Sources));
+            end;
+         end if;
+
          if Has_Field (File, "error") then
             declare
                Msg      : constant String := Get (Get (File, "error"));

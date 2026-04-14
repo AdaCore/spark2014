@@ -624,6 +624,7 @@ package body Flow_Error_Messages is
       Stats         : Prover_Stat_Maps.Map;
       Unproved_Stat : Failed_Prover_Answer;
       Check_Info    : Check_Info_Type;
+      Cache_Status  : JSON_Value := Create_Object;
       CE_From_RAC   : Boolean := False)
    is
       function Get_Fix_Or_Verdict
@@ -642,6 +643,11 @@ package body Flow_Error_Messages is
       --  @result Severity of the proof message
 
       function Nice_Float (F : Float) return String;
+
+      function Cache_Phrase return String;
+      --  Return a string describing cache use for the current check, e.g.
+      --  "from session cache" or "partly from session cache". Returns the
+      --  empty string when no cache was used or no cache info is available.
 
       function Stat_Message return String;
       --  Prepare a message for statistics of proof results
@@ -766,64 +772,101 @@ package body Flow_Error_Messages is
          return Ada.Strings.Fixed.Trim (S, Ada.Strings.Left);
       end Nice_Float;
 
+      -----------------
+      -- Cache_Phrase --
+      -----------------
+
+      function Cache_Phrase return String is
+      begin
+         if Gnat2Why_Args.Debug_No_Cache_Output or else Is_Empty (Cache_Status)
+         then
+            return "";
+         end if;
+         declare
+            Use_Val : constant String := Get (Cache_Status, "use");
+         begin
+            if Use_Val = "none" then
+               return "";
+            end if;
+            declare
+               Sources : constant JSON_Array :=
+                 Get (Get (Cache_Status, "sources"));
+               Buf     : Unbounded_String :=
+                 To_Unbounded_String
+                   (if Use_Val = "partial" then "partly from " else "from ");
+            begin
+               for I in 1 .. Length (Sources) loop
+                  if I > 1 then
+                     Append (Buf, " and ");
+                  end if;
+                  Append (Buf, String'(Get (Get (Sources, I))));
+                  Append (Buf, " cache");
+               end loop;
+               return To_String (Buf);
+            end;
+         end;
+      end Cache_Phrase;
+
       ------------------
       -- Stat_Message --
       ------------------
 
       function Stat_Message return String is
-         Buf : Unbounded_String := Null_Unbounded_String;
+         Buf        : Unbounded_String := Null_Unbounded_String;
+         Show_Stats : constant Boolean :=
+           Gnat2Why_Args.Report_Mode in GPR_Statistics | GPR_Provers;
          use Prover_Stat_Maps;
       begin
-         --  Check if VC is not proved or statistics are enabled
 
-         if not Is_Proved
-           or else
-             Gnat2Why_Args.Report_Mode not in GPR_Statistics | GPR_Provers
-         then
+         if not Show_Stats then
             return "";
          end if;
 
          --  In case of the check being proved not by Why3, simply identify
-         --  this, no need for statistics.
+         --  the category; cache does not apply in that case.
 
          if How_Proved /= PC_Prover then
             return " (" & To_String (How_Proved) & ")";
          end if;
 
-         --  In the case of missing statistics, don't show them
+         --  General case: in prover/statistics report modes, print prover
+         --  stats and append the cache phrase when non-empty.
 
-         if Stats.Is_Empty then
-            return "";
-         end if;
-
-         --  We are now in the general case (several provers). We first count
-         --  the total number of VCs.
-
-         Append (Buf, " (");
-         for C in Stats.Iterate loop
-            declare
-               Elt : Prover_Stat renames Stats (C);
-            begin
-               Append (Buf, Key (C));
-               Append (Buf, ':');
-               Append (Buf, Integer'Image (Elt.Count));
-               Append (Buf, " VC");
-               if Gnat2Why_Args.Report_Mode = GPR_Statistics then
-                  Append (Buf, " in max ");
-                  Append (Buf, Nice_Float (Elt.Max_Time));
-                  Append (Buf, " seconds and");
-                  Append (Buf, Positive'Image (Elt.Max_Steps));
-                  Append (Buf, " step");
-                  if Elt.Max_Steps /= 1 then
-                     Append (Buf, 's');
-                  end if;
-               end if;
-               if Has_Element (Next (C)) then
+         declare
+            Cache_Msg : constant String := Cache_Phrase;
+         begin
+            if not Stats.Is_Empty then
+               Append (Buf, " (");
+               for C in Stats.Iterate loop
+                  declare
+                     Elt : Prover_Stat renames Stats (C);
+                  begin
+                     Append (Buf, Key (C));
+                     Append (Buf, ':');
+                     Append (Buf, Integer'Image (Elt.Count));
+                     Append (Buf, " VC");
+                     if Gnat2Why_Args.Report_Mode = GPR_Statistics then
+                        Append (Buf, " in max ");
+                        Append (Buf, Nice_Float (Elt.Max_Time));
+                        Append (Buf, " seconds and");
+                        Append (Buf, Positive'Image (Elt.Max_Steps));
+                        Append (Buf, " step");
+                        if Elt.Max_Steps /= 1 then
+                           Append (Buf, 's');
+                        end if;
+                     end if;
+                     if Has_Element (Next (C)) then
+                        Append (Buf, "; ");
+                     end if;
+                  end;
+               end loop;
+               if Cache_Msg /= "" then
                   Append (Buf, "; ");
+                  Append (Buf, Cache_Msg);
                end if;
-            end;
-         end loop;
-         Append (Buf, ')');
+               Append (Buf, ')');
+            end if;
+         end;
 
          return To_String (Buf);
       end Stat_Message;
@@ -880,6 +923,7 @@ package body Flow_Error_Messages is
            Stats         => Stats,
            Editor_Cmd    => To_Unbounded_String (Editor_Cmd),
            Unproved_Stat => Unproved_Stat,
+           Cache_Status  => Cache_Status,
            others        => <>);
 
    begin

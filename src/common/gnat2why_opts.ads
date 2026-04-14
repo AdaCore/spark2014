@@ -84,6 +84,7 @@ private
 
    CWE_Name                     : constant String := "cwe";
    Check_Counterexamples_Name   : constant String := "check_counterexamples";
+   Debug_No_Cache_Output_Name   : constant String := "debug_no_cache_output";
    Debug_Exec_RAC_Name          : constant String := "debug_exec_rac";
    GP_Mode_Name                 : constant String := "gp_mode";
    Debug_Mode_Name              : constant String := "debug";

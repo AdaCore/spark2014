@@ -212,6 +212,10 @@ package body Errout_Wrapper is
          Set_Field (Value, "stats", To_JSON (Obj.Stats));
       end if;
 
+      if not Is_Empty (Obj.Cache_Status) then
+         Set_Field (Value, "cache_status", Obj.Cache_Status);
+      end if;
+
       Append (Msg_List, Value);
    end Add_Json_Msg;
 

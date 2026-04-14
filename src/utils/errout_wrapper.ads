@@ -144,6 +144,7 @@ package Errout_Wrapper is
       Stats         : Prover_Stat_Maps.Map;
       Unproved_Stat : Failed_Prover_Answer := FPA_Unknown_Rec;
       Editor_Cmd    : Unbounded_String;
+      Cache_Status  : JSON_Value := Create_Object;
    end record
    with
      Predicate =>
