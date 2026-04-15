@@ -96,7 +96,7 @@ package body Configuration is
      (Switch : String; Parameter : String; Section : String);
    --  Deal with all switches that are not automatic. In gnatprove, all
    --  recognized switches are automatic, so this procedure should only be
-   --  called for unknown switches and for switches in section -cargs.
+   --  called for unknown switches.
 
    procedure Handle_Warning_Switches (Switch, Value : String);
    --  Handle the "-W", "-A", "-D" switches (related to warnings) as well as
@@ -219,6 +219,7 @@ package body Configuration is
       Gpr_Registry    : Boolean := False;
       Clean           : Boolean := False;
       Explain         : Unbounded_String := Null_Unbounded_String;
+      Cargs           : String_List_Access := null;
       Remaining_Args  : String_List_Access := null;
    end record;
 
@@ -639,10 +640,9 @@ package body Configuration is
    procedure Handle_Switch
      (Switch : String; Parameter : String; Section : String) is
    begin
-      if Section = "cargs" then
-         CL_Switches.Cargs_List.Append (Switch);
+      pragma Unreferenced (Section);
 
-      elsif Switch (Switch'First) /= '-' then
+      if Switch (Switch'First) /= '-' then
 
          --  We assume that the "switch" is actually an argument and put it in
          --  the file list
@@ -990,8 +990,6 @@ package body Configuration is
            (Config,
             CL_Switches.Z3_Counterexample'Access,
             Long_Switch => "--z3-counterexample");
-         Define_Section (Config, "cargs");
-         Define_Switch (Config, "*", Section => "cargs");
       end if;
 
       if Mode in All_Switches | Global_Switches_Only | File_Specific_Only then
@@ -1106,6 +1104,9 @@ package body Configuration is
         (Args : XString_Vector) return String_List_Access;
       --  Convert a vector of XStrings to a String_List_Access.
 
+      function To_String_List (Args : String_List) return String_List_Access;
+      --  Copy a String_List into a String_List_Access.
+
       Parser : Argument_Parser :=
         Create_Argument_Parser
           (Help => SPARK_Install.Help_Message, Generate_Help_Flag => False);
@@ -1136,6 +1137,8 @@ package body Configuration is
 
       XCom_Lin : XString_Array (Com_Lin'Range);
       Unused   : XString_Vector;
+      Cargs    : String_List_Access := null;
+      Last_Arg : Natural := Com_Lin'Last;
 
       --------------------
       -- To_String_List --
@@ -1153,11 +1156,39 @@ package body Configuration is
          end loop;
          return Result;
       end To_String_List;
+
+      --------------------
+      -- To_String_List --
+      --------------------
+
+      function To_String_List (Args : String_List) return String_List_Access is
+         Result : constant String_List_Access := new String_List (Args'Range);
+      begin
+         for I in Args'Range loop
+            Result (I) := new String'(Args (I).all);
+         end loop;
+         return Result;
+      end To_String_List;
    begin
       for I in Com_Lin'Range loop
+         if Com_Lin (I).all = "-cargs" then
+            Last_Arg := I - 1;
+
+            if I < Com_Lin'Last then
+               Cargs := To_String_List (Com_Lin (I + 1 .. Com_Lin'Last));
+            end if;
+
+            exit;
+         end if;
+      end loop;
+
+      for I in Com_Lin'First .. Last_Arg loop
          XCom_Lin (I) := GNATCOLL.Strings.To_XString (Com_Lin (I).all);
       end loop;
-      if not Parser.Parse (XCom_Lin, Unknown_Arguments => Unused) then
+      if not Parser.Parse
+               (XCom_Lin (Com_Lin'First .. Last_Arg),
+                Unknown_Arguments => Unused)
+      then
          Abort_Msg
            ("invalid command line, use --help for more information",
             With_Help => True);
@@ -1171,6 +1202,7 @@ package body Configuration is
          Explain         => Explain.Get,
          Gpr_Registry    => GPR_Registry.Get,
          Help            => Help.Get,
+         Cargs           => Cargs,
          Remaining_Args  => To_String_List (Unused));
    end Parse_Switches_Before_Project_Parsing;
 
@@ -2869,6 +2901,13 @@ package body Configuration is
       Set_Project_Attributes;
       Parse_Result := Parse_Switches_Before_Project_Parsing (Full_Com_Lin);
       Free (Full_Com_Lin);
+      CL_Switches.Cargs_List.Clear;
+      if Parse_Result.Cargs /= null then
+         for Arg of Parse_Result.Cargs.all loop
+            CL_Switches.Cargs_List.Append (Arg.all);
+         end loop;
+         Free (Parse_Result.Cargs);
+      end if;
       Com_Lin := Parse_Result.Remaining_Args;
 
       if Parse_Result.Help then
