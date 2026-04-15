@@ -1657,6 +1657,16 @@ package body VC_Kinds is
            EC_Controlled_Types,
          when Vio_Dispatch_Plain_Pre                =>
            EC_Dispatch_Plain_Pre,
+         when Vio_Backward_Goto                     =>
+           EC_Backward_Goto,
+         when Vio_Ghost_Volatile                    =>
+           EC_Ghost_Volatile,
+         when Vio_Handler_Choice_Parameter          =>
+           EC_Handler_Choice_Parameter,
+         when Vio_Overlay_Mutable_Constant          =>
+           EC_Overlay_Mutable_Constant,
+         when Vio_UC_From_Access                    =>
+           EC_UC_From_Access,
          when others                                => EC_None);
 
    ---------------

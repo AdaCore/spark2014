@@ -44,3 +44,13 @@
 - E0021: `controlled types`
 
 - E0022: `plain precondition on dispatching subprogram`
+
+- E0023: `backward goto statement`
+
+- E0024: `volatile ghost object`
+
+- E0025: `choice parameter in handler`
+
+- E0026: `mutable object and constant object overlaying each other`
+
+- E0027: `unchecked conversion instance from a type with access subcomponents`
