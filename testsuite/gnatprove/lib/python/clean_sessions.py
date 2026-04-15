@@ -34,6 +34,11 @@ def get_prover_preference(prover_name):
     return float("inf")
 
 
+def is_coq_prover(prover_name):
+    """Return whether the prover name designates Coq."""
+    return prover_name.strip().lower().startswith("coq")
+
+
 def write_with_doctype_preserved(tree, filepath):
     """
     Write XML tree while preserving the original DOCTYPE declaration.
@@ -154,8 +159,11 @@ def clean_session_file(filepath, prover_map=None):
             result = proof.find("result")
             if result is not None:
                 if result.get("status") == "valid":
-                    # Only count as successful if it has steps information
-                    if result.get("steps") is not None:
+                    prover_id = proof.get("prover")
+                    prover_name = prover_map.get(prover_id, f"unknown_{prover_id}")
+
+                    # Coq proofs are valid even when Why3 does not record steps.
+                    if result.get("steps") is not None or is_coq_prover(prover_name):
                         successful_proofs.append(proof)
                     else:
                         incomplete_proofs.append(proof)
