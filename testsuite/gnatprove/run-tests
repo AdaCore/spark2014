@@ -3,7 +3,7 @@
 from e3.env import Env
 from e3.diff import diff
 from e3.fs import find
-from e3.testsuite import logger, Testsuite
+from e3.testsuite import CleanupMode, logger, Testsuite
 from e3.testsuite.control import AdaCoreLegacyTestControlCreator, TestControl
 from e3.testsuite.driver import TestDriver
 from e3.testsuite.driver.adacore import AdaCoreLegacyTestDriver
@@ -28,10 +28,17 @@ import tempfile
 import time
 import yaml
 from typing import AnyStr, List, Optional, Tuple, Union
+from shutil import rmtree
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "lib", "python"))
 
-from test_support import do_flow, no_crash, prove_all  # noqa: E402
+from test_support import (  # noqa: E402
+    do_flow,
+    no_crash,
+    prepare_sparklib_bodymode,
+    prove_all,
+    sparklib_bodymode_path_env,
+)
 
 # name for the entry in the test_env dict for the subprogram to call
 call_entry = "call_name"
@@ -687,6 +694,14 @@ class SPARKTestFinder(TestFinder):
 class SPARKTestsuite(Testsuite):
     """Testsuite for SPARK."""
 
+    def setup_shared_sparklib_bodymode(self):
+        """Create the shared bodymode SPARKlib tree for this run."""
+        self.shared_sparklib_bodymode_dir = os.path.join(
+            self.working_dir, "sparklib_bodymode"
+        )
+        project_path = prepare_sparklib_bodymode(self.shared_sparklib_bodymode_dir)
+        os.environ[sparklib_bodymode_path_env] = project_path
+
     @property
     def test_finders(self):
         return [
@@ -807,6 +822,8 @@ class SPARKTestsuite(Testsuite):
             self.env.discs += ["large"]
         else:
             self.env.only_large = False
+        self.shared_sparklib_bodymode_dir = None
+        self.setup_shared_sparklib_bodymode()
         if os.path.exists("mass_xfail.yaml"):
             with open("mass_xfail.yaml", "r") as file:
                 self.env.skipped_reasons = yaml.safe_load(file)
@@ -825,6 +842,12 @@ class SPARKTestsuite(Testsuite):
     def tear_down(self):
         if self.why3_process:
             self.why3_process.kill()
+        if (
+            self.shared_sparklib_bodymode_dir is not None
+            and self.env.cleanup_mode != CleanupMode.NONE
+            and os.path.isdir(self.shared_sparklib_bodymode_dir)
+        ):
+            rmtree(self.shared_sparklib_bodymode_dir)
         super().tear_down()
 
 

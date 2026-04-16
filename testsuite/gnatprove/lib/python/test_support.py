@@ -39,6 +39,8 @@ parallel_procs = 1
 default_project = "test.gpr"
 default_provers = ["cvc5", "altergo", "z3", "colibri"]
 default_ada = 2022
+sparklib_project_path_env = "SPARKLIB_PROJECT_PATH"
+sparklib_bodymode_path_env = "SPARKLIB_BODYMODE_PROJECT_PATH"
 
 #  Change directory
 
@@ -1169,6 +1171,35 @@ def spark_install_path():
     return os.path.dirname(os.path.dirname(exec_loc))
 
 
+def resolve_sparklib_location(path=None):
+    """Resolve a SPARKlib location from an override path or the install.
+
+    Returns a tuple `(project_dir, root_dir, installed)` where:
+      - `project_dir` contains `sparklib_internal.gpr`;
+      - `root_dir` is the layout root used to copy files for bodymode;
+      - `installed` tells how `SPARKLIB_INSTALLED` must be set.
+    """
+    if path is None:
+        path = os.environ.get(sparklib_project_path_env)
+
+    if path is None:
+        root_dir = spark_install_path()
+        return (os.path.join(root_dir, "lib", "gnat"), root_dir, True)
+
+    candidate = Path(path).resolve()
+
+    if (candidate / "sparklib_internal.gpr").is_file():
+        if (candidate / "src").is_dir():
+            return (str(candidate), str(candidate), False)
+        return (str(candidate), str(candidate.parent.parent), True)
+
+    installed_project_dir = candidate / "lib" / "gnat"
+    if (installed_project_dir / "sparklib_internal.gpr").is_file():
+        return (str(installed_project_dir), str(candidate), True)
+
+    raise RuntimeError(f"Invalid SPARKlib location: {path}")
+
+
 def preprocess_sparklib_source_file(filepath, logger=None):
     """
     Reads a file line by line and replaces specific SPARK_Mode patterns
@@ -1253,6 +1284,54 @@ def update_projectpath_for_sparklib(newpath):
     os.environ["GPR_PROJECT_PATH"] = os.pathsep.join([newpath] + gpp)
 
 
+def prepare_sparklib_bodymode(base_path, logger=None):
+    """Create a preprocessed SPARKlib tree under `base_path`.
+
+    The tree contains `lib/gnat` project files and `include` sources. Source
+    files are preprocessed in-place while preserving line numbers.
+
+    Returns:
+        The absolute path to the generated `lib/gnat` project directory.
+    """
+    base_path = Path(base_path)
+    _, root_dir, installed = resolve_sparklib_location()
+
+    for rel in ["lib", "include"]:
+        target_dir = base_path / rel
+        if target_dir.is_dir():
+            rmtree(str(target_dir))
+
+    if installed:
+        # Copy install tree into base_path/lib and base_path/include.
+        copytree(os.path.join(root_dir, "lib"), str(base_path / "lib"))
+        copytree(os.path.join(root_dir, "include"), str(base_path / "include"))
+    else:
+        target_gnat = base_path / "lib" / "gnat"
+        target_gnat.mkdir(parents=True, exist_ok=True)
+        copytree(os.path.join(root_dir, "src"), str(base_path / "include" / "spark"))
+
+        for path_obj in Path(root_dir).iterdir():
+            if path_obj.is_file() and path_obj.suffix in [".gpr", ".templ"]:
+                copy(str(path_obj), str(target_gnat / path_obj.name))
+
+        proof_dir = Path(root_dir) / "proof"
+        if proof_dir.is_dir():
+            copytree(str(proof_dir), str(target_gnat / "proof"))
+
+    src_prefix = base_path / "include" / "spark"
+    for target in [
+        src_prefix / "full" / "spark.ads",
+        src_prefix / "light" / "spark.ads",
+    ]:
+        copy(str(src_prefix / "spark__exec.ads"), str(target))
+
+    for path_obj in (base_path / "include").rglob("*"):
+        if path_obj.is_file():
+            preprocess_sparklib_source_file(str(path_obj), logger=logger)
+
+    return str((base_path / "lib" / "gnat").resolve())
+
+
 def create_sparklib(sparklib_bodymode=False, cwd=None, logger=None):
     """If sparklib_bodymode is false, simply create a sparklib.gpr.
     If sparklib_bodymode is true, in addition, create a copy of sparklib,
@@ -1278,30 +1357,17 @@ def create_sparklib(sparklib_bodymode=False, cwd=None, logger=None):
             + "SPARKlib_Internal'Excluded_Source_Files;\n"
         )
         f_prj.write("end SPARKlib;\n")
+
+    project_dir, _, installed = resolve_sparklib_location()
     if sparklib_bodymode:
-        # goal is to create the following folders under base_path:
-        # lib/gnat - contains project files
-        # include/spark - contains src
-        # then preprocess the src
-        sparkinstall = spark_install_path()
-        for rel in ["lib", "include"]:
-            target_dir = base_path / rel
-            if target_dir.is_dir():
-                rmtree(str(target_dir))
-        # copy install tree into base_path/lib and base_path/include
-        copytree(os.path.join(sparkinstall, "lib"), str(base_path / "lib"))
-        copytree(os.path.join(sparkinstall, "include"), str(base_path / "include"))
-        src_prefix = base_path / "include" / "spark"
-        for target in [
-            src_prefix / "full" / "spark.ads",
-            src_prefix / "light" / "spark.ads",
-        ]:
-            copy(str(src_prefix / "spark__exec.ads"), str(target))
-        for path_obj in (base_path / "include").rglob("*"):
-            if path_obj.is_file():
-                preprocess_sparklib_source_file(str(path_obj), logger=logger)
-        newpath = str((base_path / "lib" / "gnat").resolve())
+        newpath = os.environ.get(sparklib_bodymode_path_env)
+        if newpath is None:
+            newpath = prepare_sparklib_bodymode(base_path, logger=logger)
+        os.environ["SPARKLIB_INSTALLED"] = "True"
         update_projectpath_for_sparklib(newpath)
+    else:
+        os.environ["SPARKLIB_INSTALLED"] = "True" if installed else "False"
+        update_projectpath_for_sparklib(project_dir)
 
 
 def generate_project_file(ada=default_ada, sparklib=False, cwd=None):
