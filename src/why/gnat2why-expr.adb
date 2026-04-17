@@ -19981,13 +19981,10 @@ package body Gnat2Why.Expr is
          --  Uses of object renamings are rewritten by expansion, but the name
          --  is still being evaluated at the location of the renaming, even
          --  if there are no uses of the renaming. Check absence of RTE when
-         --  evaluating that name. Skip type conversions and qualifications in
-         --  doing that, as these are not part of the evaluation of the name.
+         --  evaluating that name.
 
          when N_Object_Renaming_Declaration                   =>
-            R :=
-              New_Ignore
-                (Prog => Transform_Prog (Unqual_Conv (Name (Decl)), Params));
+            R := New_Ignore (Prog => Transform_Prog (Name (Decl), Params));
 
          when N_Subtype_Declaration | N_Full_Type_Declaration =>
             declare
