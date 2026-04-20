@@ -80,8 +80,8 @@ gnatprove advanced switches:
  --function-sandboxing=c
                       Enable or disable the generation of guards for axioms
                       providing contracts of functions (c=on*,off)
- --gnattest-values=f  Use file f as the preferred counterexample candidates
-                      source. f must respect GNATtest test input file format
+ --gnattest-values=f  Use file f as the preferred source for counterexample
+                      candidates
  --limit-line=f:l     Limit analysis to given file and line
  --limit-line=f:l:c:k Limit analysis to given file, line, column and kind of
                       check
