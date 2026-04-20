@@ -1,0 +1,16 @@
+test.adb:2:04: warning: analyzing unreferenced procedure "Test_Element" [unreferenced-procedure]
+test.adb:2:14: warning: subprogram "Test_Element" has no effect
+test.adb:14:16: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
+test.adb:14:23: warning: unused variable "C"
+test.adb:15:16: info: implicit aspect Always_Terminates on "Next" has been proved, subprogram will terminate
+test.adb:17:16: info: implicit aspect Always_Terminates on "Has_Element" has been proved, subprogram will terminate
+test.adb:19:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
+test.adb:29:04: warning: analyzing unreferenced procedure "Test_Constant_Reference" [unreferenced-procedure]
+test.adb:29:14: warning: subprogram "Test_Constant_Reference" has no effect
+test.adb:41:16: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
+test.adb:41:23: warning: unused variable "C"
+test.adb:42:16: info: implicit aspect Always_Terminates on "Next" has been proved, subprogram will terminate
+test.adb:44:16: info: implicit aspect Always_Terminates on "Has_Element" has been proved, subprogram will terminate
+test.adb:46:16: info: implicit aspect Always_Terminates on "Constant_Reference" has been proved, subprogram will terminate
+test.adb:52:24: error: object was observed at line 51
+gnatprove: error during flow analysis and proof

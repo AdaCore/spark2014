@@ -380,7 +380,8 @@ package SPARK_Atree.Entities is
    with
      Pre =>
        Nam
-       in Name_Element
+       in Name_Constant_Reference
+        | Name_Element
         | Name_First
         | Name_Has_Element
         | Name_Last

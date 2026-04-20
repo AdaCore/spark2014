@@ -477,10 +477,16 @@ package body Flow_Utility is
 
                      Process_Iterable_Primitive (Name_Has_Element);
 
-                     --  Element is called when OF keyword is present
+                     --  Either Element or Constant_Reference is called when OF
+                     --  keyword is present.
 
                      if Of_Present (N) then
-                        Process_Iterable_Primitive (Name_Element);
+                        Process_Iterable_Primitive
+                          (if Present
+                                (Get_Iterable_Type_Primitive
+                                   (Typ, Name_Element))
+                           then Name_Element
+                           else Name_Constant_Reference);
                      end if;
 
                      --  First/Next and Last/Previous are called depening on

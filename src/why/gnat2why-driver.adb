@@ -1471,6 +1471,9 @@ package body Gnat2Why.Driver is
                    (Ekind (E) = E_Constant
                     and then Is_Partial_View (E)
                     and then Entity_In_SPARK (Full_View (E)))
+                 or else
+                   (Ekind (E) in E_Variable | E_Loop_Parameter
+                    and then Is_Quantified_Loop_Param (E))
                then
                   return;
                end if;
@@ -1591,7 +1594,11 @@ package body Gnat2Why.Driver is
             --  Ignore discriminals, i.e. objects that occur for discriminants
             --  of record types, protected types, and task types.
 
-            if Is_Discriminal (E) then
+            if Is_Discriminal (E)
+              or else
+                (Ekind (E) in E_Variable | E_Loop_Parameter
+                 and then Is_Quantified_Loop_Param (E))
+            then
                Current_Subp := Empty;
                return;
             end if;
