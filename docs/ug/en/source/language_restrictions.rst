@@ -394,7 +394,7 @@ argument as ``X`` is already accessed as a global variable by ``Proc``.
 
 .. literalinclude:: /examples/ug__ownership_transfer_at_call/test.out
    :language: none
-   :lines: 52-54
+   :lines: 58-60
 
 It is also possible to transfer the ownership of an object temporarily, for
 the duration of the lifetime of a local object. This can be achieved by
