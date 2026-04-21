@@ -217,7 +217,7 @@ on which |GNATprove| issues a check message during flow analysis:
 
 .. literalinclude:: /examples/ug__use_logging_classwide/test.out
    :language: none
-   :lines: 2-4
+   :lines: 3-6
 
 Indeed, the call to ``Init_Log`` (a non-dispatching call to
 ``Logging.Init_Log`` due to the conversion on its parameter) only initializes
