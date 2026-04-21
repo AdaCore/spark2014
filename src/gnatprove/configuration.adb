@@ -1119,7 +1119,7 @@ package body Configuration is
       package Explain is new
         Parse_Option
           (Parser      => Parser,
-           Long        => "--explain=",
+           Long        => "--explain",
            Arg_Type    => Unbounded_String,
            Default_Val => Null_Unbounded_String);
 
