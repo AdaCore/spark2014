@@ -441,7 +441,7 @@ Here, |GNATprove| generates a data and flow dependencies for procedure
 
 Since only generated contracts on SPARK subprograms are guaranteed to be correct, and
 the results of |GNATprove|'s analysis depend on assumptions on the correct behavior
-of the non-|SPARK| code, we recommend the users to scrutinize coarsly-generated contracts
+of the non-|SPARK| code, we recommend the users to scrutinize coarsely-generated contracts
 using the printing option (see :ref:`Printing Generated Globals`), and compare them
 against a manual review of the code. See section :ref:`Managing Assumptions` for more
 details on assumptions.
@@ -510,7 +510,7 @@ Infeasible Subprogram Contracts
 
 A contract is said to be *infeasible* if, for some values of its inputs
 satisfying the precondition of the subprogram, there exists no values of its
-outputs satisfying its postcondition. As an example of an infeasible (implict)
+outputs satisfying its postcondition. As an example of an infeasible (implicit)
 contract, consider the function ``Add`` below. It states that it returns a valid
 integer value equal to ``X + Y`` for all valid integer values ``X`` and ``Y``.
 This is not possible for some valid values of ``X`` and ``Y``, so this contract
@@ -766,7 +766,7 @@ the calling subprogram.
 
   The warnings issued by ``--proof-warnings=on`` are not guaranteed to
   be complete: an absence of warnings does not guarantee the logical
-  consistenty of all subprogram contracts or assumptions; nor does it guarantee
+  consistently of all subprogram contracts or assumptions; nor does it guarantee
   an absence of dead branches or code.
 
 Writing Contracts on Main Subprograms
@@ -975,7 +975,7 @@ Subprogram Termination
 ----------------------
 
 |GNATprove| can be used to verify the termination of subprograms. It will do it
-unconditionnally for regular functions and package elaboration (which shall
+unconditionally for regular functions and package elaboration (which shall
 have no side effects in |SPARK|), and on demand for procedures, entries and
 functions with side effects (see :ref:`Aspect Side_Effects`).  In the following
 example, we specify that the five procedures should terminate using the

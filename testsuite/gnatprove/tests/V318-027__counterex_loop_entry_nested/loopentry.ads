@@ -10,7 +10,7 @@ package LoopEntry is
    procedure Increment_Array_Nested_Loop_Inner (A : in out Int_Array)
       with Pre => (for all J in A'Range => A(J) <= Int'Last - 2);
 
-   procedure Increment_Array_Nested_Loop_Outter (A : in out Int_Array)
+   procedure Increment_Array_Nested_Loop_Outer (A : in out Int_Array)
       with Pre => (for all J in A'Range => A(J) <= Int'Last - 2);
 
    procedure Very_Nested (A : in out Int_Array)

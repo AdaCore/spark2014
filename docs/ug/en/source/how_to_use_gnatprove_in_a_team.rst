@@ -562,7 +562,7 @@ gnatprove may output:
 
     "effects on parameters and global variables", "The subprogram does not read or write any other parameters or global variables than what is described in its spec (signature + data dependencies)."
     "absence of run-time errors", "The subprogram is free from run-time errors."
-    "the postcondition", "The postconditon of the subprogram holds after each call of the subprogram."
+    "the postcondition", "The postcondition of the subprogram holds after each call of the subprogram."
 
 Complete List of Assumptions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^

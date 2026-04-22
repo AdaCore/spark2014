@@ -128,7 +128,7 @@ Dispatching Calls and Controlling Operands
 *Supported in Ada 2012*
 
 In a dispatching call, the *controlling operand* is the parameter of class-wide
-type whose dynamic type determinates the actual subprogram called. The dynamic
+type whose dynamic type determines the actual subprogram called. The dynamic
 type of this controlling operand may be any type derived from the specific type
 corresponding to the class-wide type of the parameter (the specific type is
 ``T`` when the class-wide type is ``T'Class``). Thus, in general it is not

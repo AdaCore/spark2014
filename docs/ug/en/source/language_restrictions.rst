@@ -131,7 +131,7 @@ constructs:
    where ``Y`` is another object, and ``Y`` is part of a statically known
    object.
 
-For occurences of these patterns, |SPARK| checks that no invalid values can be
+For occurrences of these patterns, |SPARK| checks that no invalid values can be
 produced. Given that no invalid values can be constructed in |SPARK|, the
 evaluation of the attribute ``Valid`` is assumed to always return True.
 

@@ -287,7 +287,7 @@ Consider now a variant of the same initialization loop over a vector:
    :language: ada
    :linenos:
 
-Like before, we need an additionnal loop invariant to state that the length of
+Like before, we need an additional loop invariant to state that the length of
 the vector is not modified by the loop. The other two invariants are direct
 translations of those used for the loop over arrays: the first one expresses
 that all elements up to the current loop index ``J`` have been incremented, and
@@ -792,7 +792,7 @@ corresponding element. Storing such an object inside an OUT parameter would
 break the ownership model of SPARK by creating an alias. Instead, we use a
 traversal function (see :ref:`Traversal Functions`) to return this pointer
 as a local borrower of the input list. Since we now have a function, we can
-no longer explicitely return the value of the maximum. It is not a problem,
+no longer explicitly return the value of the maximum. It is not a problem,
 as it can be accessed easily as the ``Value`` component of the returned
 pointer. In the postcondition of ``Search_List_Max``, we cannot use
 ``For_All_List`` to express that the returned pointer designates the maximum

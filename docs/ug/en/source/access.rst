@@ -756,7 +756,7 @@ As the contract of an access type is the only one which is known by |GNATprove|
 when checking indirect callers, |SPARK| requires that this contract is a valid
 approximation of the contract of every subprogram designated by an access
 objects of this type. More precisely, each time a value of a given
-access-to-subprogram type is created, |GNATprove| makes sur that:
+access-to-subprogram type is created, |GNATprove| makes sure that:
 
 * the precondition of the access-to-subprogram type if any (or the default
   precondition of True otherwise) is strong enough to imply the precondition of

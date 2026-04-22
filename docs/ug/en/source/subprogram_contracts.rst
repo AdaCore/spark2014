@@ -23,7 +23,7 @@ is made up of various optional parts:
 * The `program exit contract` introduced by aspect ``Program_Exit`` specifies
   in which cases a subprogram might terminate the program abruptly.
 * The `exit cases` introduced by aspect ``Exit_Cases`` is a way to specify how
-  a subprogram is allowed to exit by partioning the input domain. It can replace
+  a subprogram is allowed to exit by partitioning the input domain. It can replace
   or complement a postcondition or an exceptional contract.
 * The `termination contract` introduced by aspect ``Always_Terminates``
   requires procedures and entries to terminate, possibly under a particular
@@ -140,7 +140,7 @@ then`` ensures that a precondition failure will occur before the expression
    instead of ``and`` in preconditions. This is required in some cases by
    |GNATprove| to prove absence of run-time errors inside preconditions.
 
-Raise expressions occuring in preconditions are handled in a special way.
+Raise expressions occurring in preconditions are handled in a special way.
 Indeed, it is a common pattern to use a raise expression to change the
 exception raised by a failed precondition. To support this use case, raising
 an expression in a precondition is considered in |SPARK| to be a failure of the
@@ -850,7 +850,7 @@ is unexpected and
  * in proof, a check is generated for these statements, to prove that
    no such program point is reachable.
 
-Occurences of  ``pragma Assert (X)`` where ``X`` is an expression statically
+Occurrences of  ``pragma Assert (X)`` where ``X`` is an expression statically
 equivalent to ``False`` are treated in the same way.
 
 As an example, consider the artificial subprogram ``Check_OK`` which raises an
@@ -913,7 +913,7 @@ consider the following package:
 
 The ``Do_Exit`` procedure prints the error message ``Msg`` on standard error and
 terminates the program with the error code ``Status``. The
-``Error_Message_Type`` type is a tagged type that can be extanded by users of
+``Error_Message_Type`` type is a tagged type that can be extended by users of
 the library to encode their own error message. It has a ``To_String`` primitive
 used for printing the error message. The ghost functions ``Error_Status`` and
 ``Error_Message`` allow callers of ``Do_Exit`` to specify and
@@ -1236,7 +1236,7 @@ Structural variants are generally used on recursive data-structures. The value
 associated to such a variant is necessarily a formal parameter of the
 subprogram. On every recursive call, a check is generated to ensure that the
 actual parameter denoted by the variant designates a strict subcomponent of the
-formal parameter denoted the variant at the beggining of the call. Since,
+formal parameter denoted the variant at the beginning of the call. Since,
 due to the :ref:`Memory Ownership Policy` of |SPARK|, the data-structures cannot
 contain cycles, it is enough to ensure that there will be no infinite
 chain of recursive calls.
