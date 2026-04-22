@@ -3,7 +3,7 @@ Manual Proof Examples
 
 The examples in this section contain properties that are difficult to prove
 automatically and thus require more user interaction to prove completely. The
-degre of interaction required depends on the difficuly of the proof:
+degree of interaction required depends on the difficulty of the proof:
 
 * simple addition of calls to ghost lemmas for arithmetic properties involving
   multiplication, division and modulo operations, as decribed in :ref:`Manual
@@ -305,7 +305,7 @@ is how a lemma subprogram can be defined for the desired property of
    :language: ada
 
 This "axiom" can then be used to prove an implementation of the selection
-sort algorithm. The lemma subprogram needs to be explicitely called when needed:
+sort algorithm. The lemma subprogram needs to be explicitly called when needed:
 
 .. literalinclude:: /examples/ug__sort/sort.adb
    :language: ada

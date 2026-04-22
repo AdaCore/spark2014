@@ -850,7 +850,7 @@ is unexpected and
  * in proof, a check is generated for these statements, to prove that
    no such program point is reachable.
 
-Occurences of  ``pragma Assert (X)`` where ``X`` is an expression statically
+Occurrences of  ``pragma Assert (X)`` where ``X`` is an expression statically
 equivalent to ``False`` are treated in the same way.
 
 As an example, consider the artificial subprogram ``Check_OK`` which raises an

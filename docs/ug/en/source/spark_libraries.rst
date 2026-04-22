@@ -333,7 +333,7 @@ available resources:
    For example, ``Contains`` can return ``True`` if an equivalent (but not
    equal) element has been added to a set. Similarly, the quantified
    expression ``for Some E of S => Cond (E)`` might be proved if Cond is
-   ``False`` for all elements that were explicitely added to the set,
+   ``False`` for all elements that were explicitly added to the set,
    but ``True`` for an object equivalent to such an element.
 
 The functional sets, maps, sequences, and vectors have child packages providing
