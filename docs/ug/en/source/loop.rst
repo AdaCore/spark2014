@@ -287,7 +287,7 @@ Consider now a variant of the same initialization loop over a vector:
    :language: ada
    :linenos:
 
-Like before, we need an additionnal loop invariant to state that the length of
+Like before, we need an additional loop invariant to state that the length of
 the vector is not modified by the loop. The other two invariants are direct
 translations of those used for the loop over arrays: the first one expresses
 that all elements up to the current loop index ``J`` have been incremented, and

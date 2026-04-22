@@ -246,7 +246,7 @@ the elements:
 
 The sequences defined in ``Functional.Infinite_Sequences`` behave as the one of
 ``Functional.Vectors``. The difference between them lies in the fact that the
-inifinte one are indexed by mathematical integers.
+infinite one are indexed by mathematical integers.
 
 .. code-block:: ada
 
@@ -276,7 +276,7 @@ Multisets are mathematical sets associated with a number of occurrences:
    function Nb_Occurence (S : Multiset; E : Element_Type) return Big_Natural;
    function Cardinality (S : Multiset) return Big_Natural;
 
-Functional trees are recursive mathemathical datastructures such that non-empty
+Functional trees are recursive mathematical datastructures such that non-empty
 trees contain an element and a child tree par element of the ``Way_Type`` formal
 parameter type:
 
@@ -778,7 +778,7 @@ syntax):
    :align: center
    :alt: Property that division is monotonic in Coq syntax
 
-Currenly, the SPARK lemma library provides the following lemmas:
+Currently, the SPARK lemma library provides the following lemmas:
 
 * Lemmas on signed integer arithmetic in file ``spark-lemmas-arithmetic.ads``,
   that are instantiated for 32 bits signed integers (``Integer``) in file
@@ -1009,7 +1009,7 @@ that actually modifies attributes of the ``File_Type`` parameter has
 ``in File_Type`` as a parameter and not ``in out``. This would be
 inconsistent with SPARK rules without the abstract state.
 
-All functions and procedures are annoted with Global, and Pre, Post if
+All functions and procedures are annotated with Global, and Pre, Post if
 necessary. The Global contracts are most of the time ``In_Out`` for
 ``File_System``, even in ``Put`` or ``Get`` procedures that update the
 current column and/or line. Functions have an ``Input`` global
@@ -1108,7 +1108,7 @@ therefore have a ``Layout_Error`` raised when calling ``Col``.
 Not only the handling is partial, but it is also impossible to prove
 preconditions when working with two files or more. Since
 ``Line_Length`` etc. attributes are stored in the ``File_System``, it
-is not posible to prove that the ``Line_Length`` of ``File_2`` has not
+is not possible to prove that the ``Line_Length`` of ``File_2`` has not
 been modified when running any procedure that do input-output on ``File_1``.
 
 Finally, ``Layout_Error`` may be raised when calling ``Put`` to display the

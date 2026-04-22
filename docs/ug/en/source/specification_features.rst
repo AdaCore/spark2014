@@ -333,7 +333,7 @@ Finally, let's consider the type ``Stack`` defined above. We have annotated
 the array type used for its content with the ``Relaxed_Initialization`` aspect,
 so that we do not need to initialize all of its components at declaration.
 However, we still need to know that elements up to ``Top`` have been
-initialized to ensure that poping an element returns an initialized value.
+initialized to ensure that popping an element returns an initialized value.
 This can be stated by extending the subtype predicate of ``Stack`` in the
 following way:
 
@@ -453,7 +453,7 @@ regular record fields or array components. Array bounds and record
 discriminants should always be valid even for objects annotated with
 ``Potentially_Invalid``.
 
-As a general rule, a validity check is emitted each time a potentially invaid
+As a general rule, a validity check is emitted each time a potentially invalid
 object is evaluated. However, if a composite object is potentially invalid, it
 can be copied into another potentially invalid object without trigerring a
 validity check. Instead, the validity status is propagated. This can happen
@@ -475,7 +475,7 @@ validity statuses are propagated through the various copies involved:
 Copying an invalid scalar object is a bounded error in Ada. As a result, the
 validity status of a scalar object or call is in general not propagated and a
 validity check is emitted. As an exception, no validity checks are emitted for
-function calls occuring in declarations or assignments into potentially invalid
+function calls occurring in declarations or assignments into potentially invalid
 scalar objects if the function is imported and its result type is the expected
 subtype. As an example, no validity check is emitted on the following call:
 
@@ -487,7 +487,7 @@ subtype. As an example, no validity check is emitted on the following call:
    C_2 : Nat_8 := F_2 with Potentially_Invalid;
 
 It is also possible to annotate an instance of ``Ada.Unchecked_Conversion``
-with the ``Potentially_Invalid`` aspect, as examplified below:
+with the ``Potentially_Invalid`` aspect, as exemplified below:
 
 .. code-block:: ada
 
@@ -627,23 +627,23 @@ at all indexes not yet seen is unchanged, using :ref:`Quantified Expressions`:
 
 Attribute ``Loop_Entry`` may be indexed by the name of the loop to which it
 applies, which is useful to refer to the value of a variable on entry to an
-outter loop. When used without loop name, the attribute applies to the closest
+outer loop. When used without loop name, the attribute applies to the closest
 enclosing loop. For examples, ``X'Loop_Entry`` is the same as
 ``X'Loop_Entry(Inner)`` in the loop below, which is not the same as
-``X'Loop_Entry(Outter)`` (although all three assertions are true):
+``X'Loop_Entry(Outer)`` (although all three assertions are true):
 
 .. code-block:: ada
 
    procedure Increment_Matrix (X : in out Integer_Matrix) is
    begin
-      Outter: for J in X'Range(1) loop
+      Outer: for J in X'Range(1) loop
          Inner: for K in X'Range(2) loop
             X(J,K) := X(J,K) + 1;
             pragma Assert (X(J,K) = X'Loop_Entry(J,K) + 1);
             pragma Assert (X(J,K) = X'Loop_Entry(Inner)(J,K) + 1);
-            pragma Assert (X(J,K) = X'Loop_Entry(Outter)(J,K) + 1);
+            pragma Assert (X(J,K) = X'Loop_Entry(Outer)(J,K) + 1);
          end loop Inner;
-      end loop Outter;
+      end loop Outer;
    end Increment_Matrix;
 
 By default, similar restrictions exist for the use of attribute ``Loop_Entry``
@@ -1179,14 +1179,14 @@ array ``X`` have been swapped:
    procedure Swap (X : in out Integer_Array; J, K : Positive) with
      Post => X = (X'Old with delta J => X'Old(K), K => X'Old(J));
 
-and the postcondition of procedure ``Rotate_Clockwize_Z`` expresses that the
+and the postcondition of procedure ``Rotate_Clockwise_Z`` expresses that the
 point ``P`` given in parameter has been rotated 90 degrees clockwise around the
 Z axis (thus component ``Z`` is preserved while components ``X`` and ``Y`` are
 modified):
 
 .. code-block:: ada
 
-   procedure Rotate_Clockwize_Z (P : in out Point_3D) with
+   procedure Rotate_Clockwise_Z (P : in out Point_3D) with
      Post => P = (P'Old with delta X => P.Y'Old, Y => - P.X'Old);
 
 Similarly to their use in combination with attribute ``Old`` in postconditions,
@@ -1207,12 +1207,12 @@ of parameter array ``X`` at all indexes already seen is equal to zero:
 
 Delta aggregates can also be used outside of assertions. They are particularly
 useful in expression functions. For example, the functionality in procedure
-``Rotate_Clockwize_Z`` could be expressed equivalently as an expression
+``Rotate_Clockwise_Z`` could be expressed equivalently as an expression
 function:
 
 .. code-block:: ada
 
-   function Rotate_Clockwize_Z (P : Point_3D) return Point_3D is
+   function Rotate_Clockwise_Z (P : Point_3D) return Point_3D is
      (P with delta X => P.Y, Y => - P.X);
 
 Because it requires copying the value of ``P``, the type of ``P`` cannot be
@@ -1300,7 +1300,7 @@ functions that should be used to describe the container. These functions and
 their intended usage are recognized using an
 :ref:`Annotation for Container Aggregates`.
 
-Container aggregates follow the Ada 2022 syntax for homogeous aggregates. The
+Container aggregates follow the Ada 2022 syntax for homogeneous aggregates. The
 values, or associations for named aggregates, are enclosed in square brackets.
 As an example, here are a few aggregates for functional and formal containers
 from the :ref:`SPARK Libraries`.
@@ -1985,7 +1985,7 @@ models can be computed using ghost code.
 Models of Control Flow
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Global variables can be used to enforce properties over call cahains in the
+Global variables can be used to enforce properties over call chains in the
 program. For example, we may want to express that ``Total`` cannot be
 incremented twice in a row without registering the transaction in between. This
 can be done by introducing a ghost global variable
@@ -2179,7 +2179,7 @@ defined equivalently as a ghost imported function as follows:
      Ghost,
      Import;
 
-where ``Log_Type`` is a private type whose actual defintion is hidden from
+where ``Log_Type`` is a private type whose actual definition is hidden from
 |GNATprove|. This
 can be achieved by defining ``Log_Type`` as a private type and marking the
 private part of the enclosing package as not in |SPARK|:

@@ -6,7 +6,7 @@ automatically and thus require more user interaction to prove completely. The
 degree of interaction required depends on the difficulty of the proof:
 
 * simple addition of calls to ghost lemmas for arithmetic properties involving
-  multiplication, division and modulo operations, as decribed in :ref:`Manual
+  multiplication, division and modulo operations, as described in :ref:`Manual
   Proof Using SPARK Lemma Library`
 
 * more involved addition of ghost code for universally or existentially
@@ -424,12 +424,12 @@ Here is the state of the proof as displayed in a suitable IDE for Coq::
   ______________________________________(1/1)
   (r11 <= r21)%Z
 
-Some expresions are enclosed in ``()%Z``, which means that they are dealing
+Some expressions are enclosed in ``()%Z``, which means that they are dealing
 with relative integers. This is necessarily in order to use the operators
 (e.g. ``<`` or ``+``) on relative integers instead of using the associated Coq
 function or to declare a relative integer constant (e.g. ``0%Z``).
 
-Next, we can use the ``subst`` tactic to automaticaly replace variables by
+Next, we can use the ``subst`` tactic to automatically replace variables by
 terms to which they are equal (as stated by the hypotheses in the current
 environment) and clean the environment of replaced variables. Here, we can get
 rid of many variables at once with ``subst.`` (note the presence of the ``.``
@@ -585,7 +585,7 @@ subgoal, every step was detailed in order to show how the tactic ``apply``
 worked. Now, let's see that proof doesn't have to be this detailed. The first
 thing to do is to add the fact that ``1 <= z`` to the current
 environment: ``unfold dynamic_invariant1, in_range1 in h3.`` will add the range
-of ``z`` as an hypthesis in the environment::
+of ``z`` as an hypothesis in the environment::
 
   1 subgoal
   r1, r2 : int

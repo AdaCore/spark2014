@@ -321,7 +321,7 @@ If both ``--level`` is set and an underlying switch is set (``--prover``,
 takes precedence over the value set through ``--level``.
 
 Note that using ``--level`` does not provide results that are reproducible
-accross different machines. For nightly builds or shared repositories, consider
+across different machines. For nightly builds or shared repositories, consider
 using the ``--steps`` or ``--replay`` switches instead. The number of steps
 required to proved an example can be accessed by running |GNATprove| with the option
 ``--report=statistics``.
@@ -354,7 +354,7 @@ reported as warnings in |GNATprove|'s output.
 
   The warnings issued by ``--proof-warnings=on`` are not guaranteed to
   be complete: an absence of warnings does not guarantee the logical
-  consistenty of all subprogram contracts or assumptions; nor does it guarantee
+  consistently of all subprogram contracts or assumptions; nor does it guarantee
   an absence of dead branches or code.
 
 .. index:: -f
@@ -903,7 +903,7 @@ These settings will speed up |GNATprove|:
 
 .. index:: pair: --counterexamples; speeding up
 
-* Use ``--counterexamples=off`` to deactive counterexamples. Counter-examples
+* Use ``--counterexamples=off`` to deactivate counterexamples. Counter-examples
   are very useful to understand the reason for a failed proof attempt. You can
   disable this feature if you are not working on a failed proof attempt.
 
@@ -953,7 +953,7 @@ does not support such folders. To minimize chances for this to occur,
 |GNATprove| determines the folder to create that special file as follows:
 
 * if the environment variable ``TMPDIR`` is set, and the corresponding directory
-  exists and is writeable, use that; otherwise,
+  exists and is writable, use that; otherwise,
 * if ``/tmp`` exists and is writable, use that; otherwise,
 * use the ``gnatprove`` subfolder of the object directory of the root project.
 
