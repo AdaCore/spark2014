@@ -12,7 +12,7 @@ procedure Main with SPARK_Mode is
    procedure Increment_Array_Nested_Loop_Inner (A : in out Int_Array)
       with Pre => (for all J in A'Range => A(J) <= Int'Last - 2);
 
-   procedure Increment_Array_Nested_Loop_Outter (A : in out Int_Array)
+   procedure Increment_Array_Nested_Loop_Outer (A : in out Int_Array)
       with Pre => (for all J in A'Range => A(J) <= Int'Last - 2);
 
    procedure Very_Nested (A : in out Int_Array)
@@ -30,7 +30,7 @@ procedure Main with SPARK_Mode is
    procedure Increment_Array_Nested_Loop_Simple (A : in out Int_Array) is
    begin
       Put_Line ("Going to increment every element of A twice...");
-      Outter: for J in A'Range loop
+      Outer: for J in A'Range loop
          A(J) := A(J) + 1;
          Put_Line ("A (" & Int'Image (J) & " ) :" & Int'Image (A(J)));
          Inner: for K in Int(1) .. Int(1) loop   --  Only loop once
@@ -38,7 +38,7 @@ procedure Main with SPARK_Mode is
             pragma Assert (A(J) = A'Loop_Entry(J) + 1);
             Put_Line ("A (" & Int'Image (J) & " ) :" & Int'Image (A(J)));
          end loop Inner;
-      end loop Outter;
+      end loop Outer;
       Put_Line ("Incrementation finished.");
    end Increment_Array_Nested_Loop_Simple;
 
@@ -49,7 +49,7 @@ procedure Main with SPARK_Mode is
    procedure Increment_Array_Nested_Loop_Inner (A : in out Int_Array) is
    begin
       Put_Line ("Going to increment every element of A twice...");
-      Outter: for J in A'Range loop
+      Outer: for J in A'Range loop
          A(J) := A(J) + 1;
          Put_Line ("A (" & Int'Image (J) & " ) :" & Int'Image (A(J)));
          Inner: for K in Int(1) .. Int(1) loop   --  Only loop once
@@ -57,28 +57,28 @@ procedure Main with SPARK_Mode is
             pragma Assert (A(J) = A'Loop_Entry(Inner)(J) + 1);
             Put_Line ("A (" & Int'Image (J) & " ) :" & Int'Image (A(J)));
          end loop Inner;
-      end loop Outter;
+      end loop Outer;
       Put_Line ("Incrementation finished.");
    end Increment_Array_Nested_Loop_Inner;
 
    ----------------------------------------
-   -- Increment_Array_Nested_Loop_Outter --
+   -- Increment_Array_Nested_Loop_Outer --
    ----------------------------------------
 
-   procedure Increment_Array_Nested_Loop_Outter (A : in out Int_Array) is
+   procedure Increment_Array_Nested_Loop_Outer (A : in out Int_Array) is
    begin
       Put_Line ("Going to increment every element of A twice...");
-      Outter: for J in A'Range loop
+      Outer: for J in A'Range loop
          A(J) := A(J) + 1;
          Put_Line ("A (" & Int'Image (J) & " ) :" & Int'Image (A(J)));
          Inner: for K in Int(1) .. Int(1) loop   --  Only loop once
             A(J) := A(J) + K;
-            pragma Assert (A(J) = A'Loop_Entry(Outter)(J) + 2);
+            pragma Assert (A(J) = A'Loop_Entry(Outer)(J) + 2);
             Put_Line ("A (" & Int'Image (J) & " ) :" & Int'Image (A(J)));
          end loop Inner;
-      end loop Outter;
+      end loop Outer;
       Put_Line ("Incrementation finished.");
-   end Increment_Array_Nested_Loop_Outter;
+   end Increment_Array_Nested_Loop_Outer;
 
    -----------------
    -- Very_Nested --
@@ -138,8 +138,8 @@ begin
    Increment_Array_Nested_Loop_Inner (A2);
    Put_Line ("");
 
-   Put_Line ("Increment_Array_Nested_Loop_Outter");
-   Increment_Array_Nested_Loop_Outter (A3);
+   Put_Line ("Increment_Array_Nested_Loop_Outer");
+   Increment_Array_Nested_Loop_Outer (A3);
    Put_Line ("");
 
    Put_Line ("Very_Nested");
