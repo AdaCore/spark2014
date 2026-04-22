@@ -401,9 +401,9 @@ package SPARK_Util.Types is
    function Obj_Has_Only_Valid_Values (Obj : Entity_Id) return Boolean;
    --  Wrapper on Type_Has_Only_Valid_Values for objects
 
-   function Fun_Has_Only_Valid_Values (Fun : Entity_Id) return Boolean;
+   function Fun_Has_Only_Valid_Values (Ret_Ty : Type_Kind_Id) return Boolean;
    --  Wrapper on Type_Has_Only_Valid_Values for the return type of functions.
-   --  It uses the Size of the return type.
+   --  It uses the Size of the return type Ret_Ty.
 
    function Comp_Has_Only_Valid_Values
      (Comp : E_Component_Id; Rec : Type_Kind_Id) return True_Or_Explain;

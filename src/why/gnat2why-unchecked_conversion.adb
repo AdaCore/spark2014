@@ -1419,9 +1419,12 @@ package body Gnat2Why.Unchecked_Conversion is
    is
 
       procedure Generate_Inversion_Axiom
-        (Source_Type, Target_Type : Type_Kind_Id;
-         Module                   : M_UC_Type;
-         Inv_Fun                  : W_Identifier_Id);
+        (Source_Type                : Type_Kind_Id;
+         Potentially_Invalid_Source : Boolean;
+         Target_Type                : Type_Kind_Id;
+         Potentially_Invalid_Target : Boolean;
+         Module                     : M_UC_Type;
+         Inv_Fun                    : W_Identifier_Id);
       --  Create a module for the inversion axiom of the unchecked conversion
       --  function in Module.
 
@@ -1429,15 +1432,19 @@ package body Gnat2Why.Unchecked_Conversion is
         (Source_Type, Target_Type : Type_Kind_Id) return Boolean;
       --  Return True if it is safe to generate the inversion axiom for the
       --  conversion. It is only the case if both directions are valid UCs.
+      --  Do not check potential invalidity of the target.
 
       ------------------------------
       -- Generate_Inversion_Axiom --
       ------------------------------
 
       procedure Generate_Inversion_Axiom
-        (Source_Type, Target_Type : Type_Kind_Id;
-         Module                   : M_UC_Type;
-         Inv_Fun                  : W_Identifier_Id)
+        (Source_Type                : Type_Kind_Id;
+         Potentially_Invalid_Source : Boolean;
+         Target_Type                : Type_Kind_Id;
+         Potentially_Invalid_Target : Boolean;
+         Module                     : M_UC_Type;
+         Inv_Fun                    : W_Identifier_Id)
       is
          Axiom_Module : constant W_Module_Id :=
            New_Module
@@ -1478,13 +1485,63 @@ package body Gnat2Why.Unchecked_Conversion is
              (Name => Module.UC_Id,
               Args => (1 => +Source_Id),
               Typ  => Get_Typ (Module.UC_Id));
+         Guard        : W_Pred_Id :=
+           Compute_Dynamic_Invariant
+             (Expr => +Source_Id, Ty => Source_Type, Params => Logic_Params);
+         Conj         : W_Pred_Id := True_Pred;
+         Inv_Expr     : W_Term_Id := UC_Call;
 
       begin
          --  Generate:
          --
          --    forall source : source_type [uc_id source].
          --      dynamic_invariant source ->
-         --        inv_fun (uc_id source) = source
+         --      <(uc_id source).is_valid -> >
+         --        {(inv_fun (uc_id source)<.value>).is_valid /\}
+         --        (inv_fun (uc_id source)<.value>){.value} = source
+         --
+         --   where expressions in {}/<> are present for potentially invalid
+         --   source/target.
+
+         if Potentially_Invalid_Target then
+            Guard :=
+              New_And_Pred
+                (Left  => Guard,
+                 Right =>
+                   +New_Is_Valid_Call_For_Expr
+                      (Tree   =>
+                         +New_Function_Valid_Flag_Access
+                            (Ty => Target_Type, Name => +Inv_Expr),
+                       Ty     => Target_Type,
+                       Expr   => +Inv_Expr,
+                       Domain => EW_Pred));
+            Inv_Expr :=
+              +New_Function_Valid_Value_Access
+                 (Ty => Target_Type, Name => +Inv_Expr);
+         end if;
+
+         Inv_Expr :=
+           New_Call
+             (Name => Inv_Fun,
+              Args => (1 => +Inv_Expr),
+              Typ  => Get_Typ (Inv_Fun));
+
+         if Potentially_Invalid_Source then
+            Conj :=
+              New_And_Pred
+                (Left  => Conj,
+                 Right =>
+                   +New_Is_Valid_Call_For_Expr
+                      (Tree   =>
+                         +New_Function_Valid_Flag_Access
+                            (Ty => Source_Type, Name => +Inv_Expr),
+                       Ty     => Source_Type,
+                       Expr   => +Inv_Expr,
+                       Domain => EW_Pred));
+            Inv_Expr :=
+              +New_Function_Valid_Value_Access
+                 (Ty => Source_Type, Name => +Inv_Expr);
+         end if;
 
          Emit
            (Th,
@@ -1495,20 +1552,15 @@ package body Gnat2Why.Unchecked_Conversion is
                Triggers =>
                  New_Triggers
                    (Triggers => (1 => New_Trigger (Terms => (1 => +UC_Call)))),
-               Pre      =>
-                 Compute_Dynamic_Invariant
-                   (Expr   => +Source_Id,
-                    Ty     => Source_Type,
-                    Params => Logic_Params),
+               Pre      => Guard,
                Def      =>
-                 New_Comparison
-                   (Symbol => Why_Eq,
-                    Left   =>
-                      New_Call
-                        (Name => Inv_Fun,
-                         Args => (1 => +UC_Call),
-                         Typ  => Get_Typ (Inv_Fun)),
-                    Right  => +Source_Id),
+                 New_And_Pred
+                   (Left  => Conj,
+                    Right =>
+                      New_Comparison
+                        (Symbol => Why_Eq,
+                         Left   => Inv_Expr,
+                         Right  => +Source_Id)),
                Dep      =>
                  New_Axiom_Dep (Name => Module.UC_Id, Kind => EW_Axdep_Func)));
 
@@ -1533,7 +1585,8 @@ package body Gnat2Why.Unchecked_Conversion is
             return False;
          end if;
 
-         Suitable_For_UC_Target_UC_Wrap (Source_Type, Valid, Explanation);
+         Suitable_For_UC_Target_UC_Wrap
+           (Source_Type, Valid, Explanation, Check_Validity => False);
 
          if not Valid then
             return False;
@@ -1544,7 +1597,8 @@ package body Gnat2Why.Unchecked_Conversion is
             return False;
          end if;
 
-         Suitable_For_UC_Target_UC_Wrap (Target_Type, Valid, Explanation);
+         Suitable_For_UC_Target_UC_Wrap
+           (Target_Type, Valid, Explanation, Check_Validity => False);
 
          if not Valid then
             return False;
@@ -1677,30 +1731,39 @@ package body Gnat2Why.Unchecked_Conversion is
       --  Generate axiom modules if the inverse of the UC function already
       --  exists.
 
-      if not Potentially_Invalid and then Source_Type /= Target_Type then
+      if Source_Type /= Target_Type
+        and then
+          (Potentially_Invalid or else Fun_Has_Only_Valid_Values (Target_Type))
+      then
          declare
-            Inv_Module : constant Symbol :=
+            Potentially_Invalid_Inv : constant Boolean :=
+              not Fun_Has_Only_Valid_Values (Source_Type);
+            Inv_Module              : constant Symbol :=
               Get_UC_Theory_Name
                 (Source_Type         => Target_Type,
                  Target_Type         => Source_Type,
-                 Potentially_Invalid => False);
-            Position   : constant Name_Id_UC_Map.Cursor :=
+                 Potentially_Invalid => Potentially_Invalid_Inv);
+            Position                : constant Name_Id_UC_Map.Cursor :=
               M_UCs.Find (Inv_Module);
          begin
             if Name_Id_UC_Map.Has_Element (Position)
               and then Inversion_Axiom_OK (Source_Type, Target_Type)
             then
                Generate_Inversion_Axiom
-                 (Source_Type => Source_Type,
-                  Target_Type => Target_Type,
-                  Module      => M_UCs (Module_Name),
-                  Inv_Fun     => M_UCs (Position).UC_Id);
+                 (Source_Type                => Source_Type,
+                  Potentially_Invalid_Source => Potentially_Invalid_Inv,
+                  Target_Type                => Target_Type,
+                  Potentially_Invalid_Target => Potentially_Invalid,
+                  Module                     => M_UCs (Module_Name),
+                  Inv_Fun                    => M_UCs (Position).UC_Id);
 
                Generate_Inversion_Axiom
-                 (Source_Type => Target_Type,
-                  Target_Type => Source_Type,
-                  Module      => M_UCs (Position),
-                  Inv_Fun     => M_UCs (Module_Name).UC_Id);
+                 (Source_Type                => Target_Type,
+                  Potentially_Invalid_Source => Potentially_Invalid,
+                  Target_Type                => Source_Type,
+                  Potentially_Invalid_Target => Potentially_Invalid_Inv,
+                  Module                     => M_UCs (Position),
+                  Inv_Fun                    => M_UCs (Module_Name).UC_Id);
             end if;
          end;
       end if;
