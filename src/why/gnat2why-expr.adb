@@ -15425,22 +15425,61 @@ package body Gnat2Why.Expr is
                   Name : constant Entity_Id := Defining_Identifier (N);
                   Item : constant Item_Type :=
                     Mk_Item_Of_Entity (Name, Local => True);
-
-               begin
                   pragma Assert (Ekind (Name) = E_Constant);
                   pragma Assert (Item.Kind = Regular);
+
+                  Def : W_Expr_Id;
+
+                  --  Context and validity flag to handle potentially invalid
+                  --  values.
+
+                  Valid_Flag : W_Expr_Id :=
+                    (if Item.Valid.Present
+                     then +New_Valid_Value_For_Type (Etype (Name))
+                     else Why_Empty);
+                  Context    : Ref_Context;
+
+               begin
+                  --  Handle the potential propagation of invalid values
+
+                  if Propagates_Validity_Flag (N) then
+                     pragma Assert (Item.Valid.Present);
+                     Def :=
+                       +Transform_Potentially_Invalid_Expr
+                          (Expr          => Expression (N),
+                           Expected_Type => Get_Typ (Item.Main.B_Name),
+                           Domain        => Subdomain,
+                           Params        => Params,
+                           Context       => Context,
+                           Valid_Flag    => Valid_Flag);
+                  else
+                     Def :=
+                       Transform_Expr
+                         (Expression (N),
+                          Get_Typ (Item.Main.B_Name),
+                          Subdomain,
+                          Params);
+                  end if;
 
                   T :=
                     New_Typed_Binding
                       (Domain  => Subdomain,
                        Name    => Item.Main.B_Name,
-                       Def     =>
-                         Transform_Expr
-                           (Expression (N),
-                            Get_Typ (Item.Main.B_Name),
-                            Subdomain,
-                            Params),
+                       Def     => Def,
                        Context => T);
+
+                  if Item.Valid.Present then
+                     T :=
+                       New_Typed_Binding
+                         (Domain  => Subdomain,
+                          Name    => Item.Valid.Id,
+                          Def     => Valid_Flag,
+                          Context => T);
+                  end if;
+
+                  T :=
+                    +Bindings_For_Ref_Context
+                       (Expr => +T, Context => Context, Domain => Subdomain);
                end;
 
             when N_Ignored_In_SPARK                              =>
