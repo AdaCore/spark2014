@@ -1455,13 +1455,15 @@ package body Gnat2Why.Borrow_Checker is
             for Dep_Path of Terminal_Alternatives (Expr) loop
                Borrowed := Get_Observed_Or_Borrowed_Expr (Dep_Path);
 
-               --  Path'Access borrows/observes Path
+               --  When doing a borrowing like
+               --  A : access * := Y.F; -- access-typed field,
+               --  we should be borrowing the value designated by Y.F, but
+               --  borrow the whole field instead. This mean we may
+               --  over-borrow. This can result in extra null tests (like
+               --  Y.F = null) to be rejected. However, since Y.F.all
+               --  is not readable in such circumstances, it is unlikely that
+               --  there is a valid use case.
 
-               if Nkind (Borrowed) = N_Attribute_Reference
-                 and then Attribute_Name (Borrowed) = Name_Access
-               then
-                  Borrowed := Prefix (Borrowed);
-               end if;
                Borrowed_Bag.Append (Borrowed);
             end loop;
             Set (Map, Var, Borrowed_Bag);

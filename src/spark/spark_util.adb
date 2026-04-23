@@ -2698,8 +2698,9 @@ package body SPARK_Util is
    is
       B_Expr : Node_Id;
       B_Ty   : Entity_Id := Empty;
+      Deref  : Boolean;
    begin
-      Get_Observed_Or_Borrowed_Info (Expr, B_Expr, B_Ty);
+      Get_Observed_Or_Borrowed_Info (Expr, B_Expr, B_Ty, Deref);
       return B_Expr;
    end Get_Observed_Or_Borrowed_Expr;
 
@@ -2708,9 +2709,10 @@ package body SPARK_Util is
    -----------------------------------
 
    procedure Get_Observed_Or_Borrowed_Info
-     (Expr   : N_Subexpr_Id;
-      B_Expr : out N_Subexpr_Id;
-      B_Ty   : in out Opt_Type_Kind_Id)
+     (Expr    : N_Subexpr_Id;
+      B_Expr  : out N_Subexpr_Id;
+      B_Ty    : in out Opt_Type_Kind_Id;
+      B_Deref : out Boolean)
    is
       function Find_Func_Call (Expr : Node_Id) return Node_Id;
       --  Search for function calls in the prefixes of Expr
@@ -2753,8 +2755,15 @@ package body SPARK_Util is
          end case;
       end Find_Func_Call;
 
+      Toplevel : Boolean := True;
+      --  Observer/Borrowers are always of anonymous access types, but the
+      --  expected type argument might be left empty. For sub-expressions, we
+      --  always have the type, so we just remember if B_Expr is the original
+      --  argument.
+
    begin
       B_Expr := Expr;
+      B_Deref := False;
 
       --  Search for the first call to a traversal function in Expr. If there
       --  is one, its first parameter is the borrowed expression. Otherwise,
@@ -2766,10 +2775,34 @@ package body SPARK_Util is
          begin
             exit when No (Call);
             pragma Assert (Is_Traversal_Function_Call (Call));
+            Toplevel := False;
             B_Ty := Etype (First_Formal (Get_Called_Entity (Call)));
             B_Expr := First_Actual (Call);
          end;
       end loop;
+
+      --  A 'Access reference is never a whole object, what is actually
+      --  borrowed in this case is its prefix.
+
+      if Nkind (B_Expr) = N_Attribute_Reference
+        and then Get_Attribute_Id (Attribute_Name (B_Expr)) = Attribute_Access
+      then
+         B_Expr := Prefix (B_Expr);
+         if Present (B_Ty) then
+            B_Ty := Retysp (Directly_Designated_Type (B_Ty));
+         end if;
+         return;
+      end if;
+
+      --  If the borrowed expression is expected to be of an anonymous access
+      --  type, then what is actually borrowed is the designated object. This
+      --  is similar to what happens with 'Access, except we cannot represent
+      --  it by a subexpression. We track this via B_Deref instead.
+
+      if Toplevel or else Is_Anonymous_Access_Object_Type (B_Ty) then
+         B_Deref := True;
+      end if;
+
    end Get_Observed_Or_Borrowed_Info;
 
    -------------------------

@@ -8466,42 +8466,21 @@ package body Gnat2Why.Subprograms is
                then
 
                   declare
-                     Expr            : constant W_Term_Id :=
+                     Expr : constant W_Term_Id :=
                        +Transform_Identifier
                           (Params => Params,
                            Expr   => E,
                            Ent    => E,
                            Domain => EW_Term);
-                     Old_Expr        : constant W_Term_Id :=
-                       +New_Old (+Expr, EW_Term);
-                     Ty              : constant Type_Kind_Id :=
-                       Retysp (Etype (E));
-                     Des_Ty          : constant Type_Kind_Id :=
-                       Retysp (Directly_Designated_Type (Ty));
-                     Preserved_Parts : constant W_Pred_Id :=
-                       New_Equality_Of_Preserved_Parts
-                         (Ty    => Des_Ty,
-                          Expr1 =>
-                            New_Pointer_Value_Access
-                              (E => Ty, Name => Old_Expr),
-                          Expr2 =>
-                            New_Pointer_Value_Access (E => Ty, Name => Expr));
-
                   begin
-                     if not Is_True_Boolean (+Preserved_Parts) then
-                        Result :=
-                          New_And_Pred
-                            (Left  => Result,
-                             Right =>
-                               New_Conditional
-                                 (Condition =>
-                                    New_Not
-                                      (Right =>
-                                         Pred_Of_Boolean_Term
-                                           (New_Pointer_Is_Null_Access
-                                              (Ty, Expr))),
-                                  Then_Part => Preserved_Parts));
-                     end if;
+                     Result :=
+                       New_Equality_Of_Preserved_Parts
+                         (Ty               => Retysp (Etype (E)),
+                          Expr1            => +New_Old (+Expr, EW_Term),
+                          Expr2            => Expr,
+                          Constant_Address => True);
+                     --  The designated value of the pointer might be modified,
+                     --  but Ada forbids changing the address itself.
                   end;
                end if;
             end;
@@ -9256,9 +9235,16 @@ package body Gnat2Why.Subprograms is
                                      Params => Params),
                                 2 =>
                                   New_Equality_Of_Preserved_Parts
-                                    (Ty    => Borrowed_Ty,
-                                     Expr1 => +Borrowed_At_End,
-                                     Expr2 => Borrowed),
+                                    (Ty               => Borrowed_Ty,
+                                     Expr1            => +Borrowed_At_End,
+                                     Expr2            => Borrowed,
+                                     Constant_Address =>
+                                       Is_Access_Type (Borrowed_Ty)
+                                       and then not Is_Aliased (Borrowed_Ent)),
+                                --  If parameter is aliased, then the
+                                --  traversal function is allowed to return
+                                --  'Access over it, meaning the borrower
+                                --  might change the is_null field.,
                                 3 => Post)),
                           Typ     => EW_Bool_Type))),
            Right =>

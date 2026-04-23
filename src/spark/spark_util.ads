@@ -880,24 +880,32 @@ package SPARK_Util is
      (Expr : N_Subexpr_Id) return N_Subexpr_Id
    with Pre => Is_Path_Expression (Expr);
    --  Return the expression being borrowed/observed when borrowing or
-   --  observing Expr, as computed by Get_Observed_Or_Borrowed_Info.
+   --  observing Expr. The expression being actually borrowed may be Expr.all
+   --  rather than Expr itself. Code using that routine should not depend
+   --  on this distinction.
 
    procedure Get_Observed_Or_Borrowed_Info
-     (Expr   : N_Subexpr_Id;
-      B_Expr : out N_Subexpr_Id;
-      B_Ty   : in out Opt_Type_Kind_Id)
+     (Expr    : N_Subexpr_Id;
+      B_Expr  : out N_Subexpr_Id;
+      B_Ty    : in out Opt_Type_Kind_Id;
+      B_Deref : out Boolean)
    with Pre => Is_Path_Expression (Expr);
    --  Compute both the expression being borrowed/observed when borrowing or
    --  observing Expr and the type used for this borrow/observe.
-   --  @param Expr a path used for a borrow/observe
+   --  @param Expr a path used for a borrow/observe. It is considered as a
+   --      left-hand side of a borrow/observe declaration (or assignment
+   --      for reborrows). In particular, it is assumed to be compatible with
+   --      an anonymous access type.
    --  @param B_Expr the expression being borrowed/observed when borrowing or
    --      observing Expr. If Expr contains a call to traversal function, this
    --      is the first actual of the first such call, otherwise it is Expr.
+   --      Any terminal 'Access is removed from the borrowing expression.
    --  @param B_Ty the type of the first borrower/observer in Expr. If Expr
    --      contains a call to traversal function, this is the type of the first
-   --      formal of the function, otherwise it is B_Ty.
-   --      Note that B_Ty is not the type of B_Expr but a compatible anonymous
-   --      access type.
+   --      formal of the function. Otherwise, B_Ty is left as-is.
+   --  @param B_Deref set to True if the expression actually borrowed is
+   --      B_Expr.all, rather than B_Expr itself. B_Ty is still the type of
+   --      B_Expr.
 
    function Get_Root_Expr
      (Expr : N_Subexpr_Id; Through_Traversal : Boolean := True)

@@ -12600,7 +12600,9 @@ package body Gnat2Why.Expr is
    -------------------------------------
 
    function New_Equality_Of_Preserved_Parts
-     (Ty : Type_Kind_Id; Expr1, Expr2 : W_Term_Id) return W_Pred_Id
+     (Ty               : Type_Kind_Id;
+      Expr1, Expr2     : W_Term_Id;
+      Constant_Address : Boolean := False) return W_Pred_Id
    is
       Result : W_Pred_Id;
    begin
@@ -12620,31 +12622,33 @@ package body Gnat2Why.Expr is
              (Left_Arr  => Expr1,
               Right_Arr => Expr2,
               Dim       => Positive (Number_Dimensions (Ty)));
-      elsif Is_Access_Type (Ty) then
-         Result :=
-           New_Comparison
-             (Symbol => Why_Eq,
-              Left   => New_Pointer_Is_Null_Access (Ty, Expr1),
-              Right  => New_Pointer_Is_Null_Access (Ty, Expr2));
+      elsif Constant_Address then
 
-         if Is_Anonymous_Access_Type (Ty) then
+         Result :=
+           New_Equality_Of_Preserved_Parts
+             (Retysp (Directly_Designated_Type (Ty)),
+              New_Pointer_Value_Access (E => Ty, Name => Expr1),
+              New_Pointer_Value_Access (E => Ty, Name => Expr2));
+
+         if not Is_True_Boolean (+Result) then
             Result :=
-              New_And_Pred
-                (Left  => Result,
-                 Right =>
-                   New_Conditional
-                     (Condition =>
-                        New_Not
-                          (Right =>
-                             Pred_Of_Boolean_Term
-                               (New_Pointer_Is_Null_Access (Ty, Expr1))),
-                      Then_Part =>
-                        New_Equality_Of_Preserved_Parts
-                          (Retysp (Directly_Designated_Type (Ty)),
-                           New_Pointer_Value_Access (E => Ty, Name => Expr1),
-                           New_Pointer_Value_Access
-                             (E => Ty, Name => Expr2))));
+              New_Conditional
+                (Condition =>
+                   New_Not
+                     (Right =>
+                        Pred_Of_Boolean_Term
+                          (New_Pointer_Is_Null_Access (Ty, Expr1))),
+                 Then_Part => Result);
          end if;
+
+         Result :=
+           New_And_Pred
+             (New_Comparison
+                (Symbol => Why_Eq,
+                 Left   => New_Pointer_Is_Null_Access (Ty, Expr1),
+                 Right  => New_Pointer_Is_Null_Access (Ty, Expr2)),
+              Result);
+
       else
          Result := True_Pred;
       end if;
@@ -13464,9 +13468,10 @@ package body Gnat2Why.Expr is
                            Initialized => True_Term)),
                    2 =>
                      New_Equality_Of_Preserved_Parts
-                       (Ty    => Retysp (Etype (Brower)),
-                        Expr1 => Transform_Term (Path, Body_Params),
-                        Expr2 => +Result_Id),
+                       (Ty               => Retysp (Etype (Brower)),
+                        Expr1            => Transform_Term (Path, Body_Params),
+                        Expr2            => +Result_Id,
+                        Constant_Address => True),
                    3 =>
                      (if Brower_Relaxed
                       then
@@ -13573,9 +13578,9 @@ package body Gnat2Why.Expr is
                            To   => Get_Type (+W_Borrowed))),
                  3 =>
                    New_Equality_Of_Preserved_Parts
-                     (Ty    => Borrowed_Ty,
-                      Expr1 => W_Borrowed,
-                      Expr2 =>
+                     (Ty               => Borrowed_Ty,
+                      Expr1            => W_Borrowed,
+                      Expr2            =>
                         +Transform_Expr_Or_Identifier
                            (N      =>
                               (if Reborrow
@@ -13584,7 +13589,17 @@ package body Gnat2Why.Expr is
                                then Borrowed_Entity
                                else Get_Borrowed_Expr (Brower)),
                             Domain => EW_Term,
-                            Params => Body_Params)))));
+                            Params => Body_Params),
+                      Constant_Address =>
+                        Reborrow
+                        or else
+                          (Is_Access_Type (Borrowed_Ty)
+                           and then Get_Borrowed_Is_Deref (Brower))))));
+      --  For most borrows, what is actually borrowed is the designated value
+      --  of the pointer, so the is_null field of the borrowed entity cannot
+      --  change. However, it can happen that we borrow a whole pointer entity
+      --  (Y := X.F'Access with X.F access-typed itself). In such cases, we
+      --  do not generate the assumption.
 
       --  3. Put together all the parts.
 
