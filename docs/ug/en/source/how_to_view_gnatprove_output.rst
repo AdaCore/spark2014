@@ -452,13 +452,11 @@ feasible execution of the program, in particular when using the switch
    execution. One can rerun |GNATprove| with value ``progressive`` or
    ``per_path`` to separate possible execution paths in the counterexample.
 
-Using GNAT Studio, it is possible to delegate counterexample candidates generation
-to `GNATtest <https://docs.adacore.com/live/wave/gnatdas/html/gnatdas_ug/gnattest/gnattest_part.html>`_ or
-`GNATfuzz <https://docs.adacore.com/live/wave/gnatdas/html/gnatdas_ug/gnatfuzz/gnatfuzz_part.html>`_.
-To do so, you can use :menuselection:`SPARK --> Generate Counter Examples` in the
-Locations tab for some check, given that GNATtest is in your PATH. It will call
-GNATtest and make it generate a ``.ce`` that you can then pass to |GNATprove|
-through the ``--gnattest-values`` switch. This will cause |GNATprove| to use this
-file as its preferred source of counterexample candidates. Using
-:menuselection:`SPARK --> Fuzz Counter Examples` allows to use GNATfuzz instead
-of GNATtest for value generation, given that GNATfuzz is in your PATH
+If `GNATtest
+<https://docs.adacore.com/live/wave/gnatdas/html/gnatdas_ug/gnattest/gnattest_part.html>`_
+and (optionally) `GNATfuzz
+<https://docs.adacore.com/live/wave/gnatdas/html/gnatdas_ug/gnatfuzz/gnatfuzz_part.html>`_
+are available on your PATH, it is possible to delegate the generation of
+counterexample candidates to these tools using GNAT Studio. See the section
+:ref:`Additional Functionalities for Counterexamples
+<counterexamples_and_gnattest>`.
