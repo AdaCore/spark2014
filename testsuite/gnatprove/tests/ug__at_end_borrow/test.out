@@ -229,11 +229,8 @@
  info: pointer dereference check proved
 --> list_borrows.adb:82:30
 
- medium: assertion might fail
+ info: assertion proved
 --> list_borrows.adb:83:19
-   83 |       pragma Assert (X.Next.Next.Next.Val = 4);
-      |                      ^~~~~~~~~~~~~~~~~~~~~~~~
-      + provers reached step limit before completing the proof
 
  info: pointer dereference check proved
 --> list_borrows.adb:83:20

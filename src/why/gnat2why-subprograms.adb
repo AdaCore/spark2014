@@ -9192,6 +9192,7 @@ package body Gnat2Why.Subprograms is
       --       result_at_end.is_null = result.is_null ->
       --         let borrowed_at_end = E.borrowed_at_end args result_at_end in
       --           borrowed_at_end.is_null = borrowed_arg.is_null
+      --           /\ dyn_inv borrowed_at_end
       --           /\ post)
       --    /\ borrowed_arg = E.borrowed_at_end args result
       --
@@ -9243,12 +9244,17 @@ package body Gnat2Why.Subprograms is
                           Def     => +Borrowed_Call,
                           Context =>
                             New_And_Pred
-                              (Left  =>
-                                 New_Equality_Of_Preserved_Parts
-                                   (Ty    => Borrowed_Ty,
-                                    Expr1 => +Borrowed_At_End,
-                                    Expr2 => Borrowed),
-                               Right => Post),
+                              ((1 =>
+                                  Compute_Dynamic_Inv_And_Initialization
+                                    (Expr   => +Borrowed_At_End,
+                                     Ty     => Borrowed_Ty,
+                                     Params => Params),
+                                2 =>
+                                  New_Equality_Of_Preserved_Parts
+                                    (Ty    => Borrowed_Ty,
+                                     Expr1 => +Borrowed_At_End,
+                                     Expr2 => Borrowed),
+                                3 => Post)),
                           Typ     => EW_Bool_Type))),
            Right =>
              New_Comparison

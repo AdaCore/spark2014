@@ -53,7 +53,7 @@ test_proof.adb:54:14: warning: subprogram "Bad_Call_G" has no effect
 test_proof.adb:55:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 test_proof.adb:55:35: info: null exclusion check proved (CVC5: 1 VC)
 test_proof.adb:60:12: info: pointer dereference check proved (CVC5: 1 VC)
-test_proof.adb:62:22: medium: assertion might fail [provers reached step limit before completing the proof]
+test_proof.adb:62:22: medium: assertion might fail (e.g. when X = (A => 1, C => new Integer'(3))) [provers reached step limit before completing the proof]
 test_proof.adb:66:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 test_proof.adb:66:24: info: null exclusion check proved (CVC5: 1 VC)
 test_proof.adb:71:09: info: pointer dereference check proved (CVC5: 1 VC)

@@ -1,0 +1,10 @@
+test.adb:20:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
+test.adb:23:08: info: dynamic accessibility check proved (Trivial)
+test.adb:50:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
+test.adb:52:08: info: dynamic accessibility check proved (Trivial)
+test.adb:62:06: warning: postcondition does not mention function result [-gnatw.t]
+test.adb:64:13: info: implicit aspect Always_Terminates on "Reference" has been proved, subprogram will terminate
+test.adb:67:14: info: dynamic accessibility check proved (Trivial)
+test.adb:67:14: info: precondition proved (CVC5: 1 VC)
+test.adb:67:41: info: in possible reconstructed values at the end of the borrow at test.adb:64
+test.adb:67:41: info: predicate check proved (CVC5: 1 VC)
