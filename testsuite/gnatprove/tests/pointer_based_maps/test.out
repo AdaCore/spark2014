@@ -30,7 +30,6 @@ my_map.adb:70:14: info: pointer dereference check proved
 my_map.adb:73:16: info: pointer dereference check proved
 my_map.adb:83:17: info: postcondition proved
 my_map.adb:83:37: info: pointer dereference check proved
-my_map.adb:86:14: medium: resource or memory leak might occur at end of scope
 my_map.adb:86:42: medium: resource or memory leak might occur [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
 my_map.adb:89:44: info: pointer dereference check proved
 my_map.adb:89:70: info: range check proved
@@ -156,11 +155,9 @@ my_map.ads:40:14: info: postcondition proved
 my_map.ads:40:45: info: precondition proved
 my_map.ads:44:14: info: postcondition proved
 my_map.ads:44:45: info: precondition proved
-my_map.ads:47:14: medium: resource or memory leak might occur at end of scope
 my_map.ads:47:42: medium: resource or memory leak might occur [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
 my_map.ads:49:44: info: pointer dereference check proved
 my_map.ads:49:70: info: range check proved
-my_map.ads:52:14: medium: resource or memory leak might occur at end of scope
 my_map.ads:52:42: medium: resource or memory leak might occur [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
 my_map.ads:54:30: info: pointer dereference check proved
 my_map.ads:54:60: info: range check proved
