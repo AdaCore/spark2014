@@ -1,0 +1,64 @@
+test.adb:21:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
+test.adb:21:13: info: types in unchecked conversion have the same size (Trivial)
+test.adb:21:13: warning: imprecise handling of Unchecked_Conversion (component offset not known) [imprecise-unchecked-conversion]
+test.adb:21:67: info: type is suitable as source for unchecked conversion (Trivial)
+test.adb:21:76: info: type is suitable for unchecked conversion (Trivial)
+test.adb:22:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
+test.adb:22:13: info: types in unchecked conversion have the same size (Trivial)
+test.adb:22:13: warning: imprecise handling of Unchecked_Conversion (component offset not known) [imprecise-unchecked-conversion]
+test.adb:22:67: info: type is suitable as source for unchecked conversion (Trivial)
+test.adb:22:80: info: type is suitable for unchecked conversion (Trivial)
+test.adb:24:04: warning: analyzing unreferenced procedure "Test_1" [unreferenced-procedure]
+test.adb:24:14: warning: subprogram "Test_1" has no effect
+test.adb:27:10: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
+test.adb:28:41: info: validity check proved (CVC5: 1 VC)
+test.adb:30:10: medium: assertion might fail [possible fix: subprogram at line 24 should mention X in a precondition] [provers reached step limit before completing the proof]
+test.adb:33:04: warning: analyzing unreferenced procedure "Test_2" [unreferenced-procedure]
+test.adb:33:14: warning: subprogram "Test_2" has no effect
+test.adb:36:10: info: assertion proved (CVC5: 1 VC)
+test.adb:38:10: info: assertion proved (CVC5: 1 VC)
+test.adb:38:14: info: validity check proved (CVC5: 1 VC)
+test.adb:41:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
+test.adb:41:13: info: types in unchecked conversion have the same size (Trivial)
+test.adb:41:13: warning: imprecise handling of Unchecked_Conversion (component offset not known) [imprecise-unchecked-conversion]
+test.adb:41:67: info: type is suitable as source for unchecked conversion (Trivial)
+test.adb:41:80: info: type is suitable for unchecked conversion (Trivial)
+test.adb:42:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
+test.adb:42:13: info: types in unchecked conversion have the same size (Trivial)
+test.adb:42:13: warning: imprecise handling of Unchecked_Conversion (component offset not known) [imprecise-unchecked-conversion]
+test.adb:42:67: info: type is suitable as source for unchecked conversion (Trivial)
+test.adb:42:76: info: type is suitable for unchecked conversion (Trivial)
+test.adb:44:04: warning: analyzing unreferenced procedure "Test_3" [unreferenced-procedure]
+test.adb:44:14: warning: subprogram "Test_3" has no effect
+test.adb:47:10: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
+test.adb:48:41: info: validity check proved (CVC5: 1 VC)
+test.adb:50:10: medium: assertion might fail [possible fix: subprogram at line 44 should mention X in a precondition] [provers reached step limit before completing the proof]
+test.adb:53:04: warning: analyzing unreferenced procedure "Test_4" [unreferenced-procedure]
+test.adb:53:14: warning: subprogram "Test_4" has no effect
+test.adb:56:10: info: assertion proved (CVC5: 1 VC)
+test.adb:58:10: info: assertion proved (CVC5: 1 VC)
+test.adb:58:14: info: validity check proved (CVC5: 1 VC)
+test.adb:61:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
+test.adb:61:13: info: types in unchecked conversion have the same size (Trivial)
+test.adb:61:13: warning: imprecise handling of Unchecked_Conversion (component offset not known) [imprecise-unchecked-conversion]
+test.adb:61:71: info: type is suitable as source for unchecked conversion (Trivial)
+test.adb:61:84: info: type is suitable for unchecked conversion (Trivial)
+test.adb:62:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
+test.adb:62:13: info: types in unchecked conversion have the same size (Trivial)
+test.adb:62:13: warning: imprecise handling of Unchecked_Conversion (component offset not known) [imprecise-unchecked-conversion]
+test.adb:62:71: info: type is suitable as source for unchecked conversion (Trivial)
+test.adb:62:84: info: type is suitable for unchecked conversion (Trivial)
+test.adb:64:04: warning: analyzing unreferenced procedure "Test_5" [unreferenced-procedure]
+test.adb:64:14: warning: subprogram "Test_5" has no effect
+test.adb:67:10: info: assertion proved (CVC5: 2 VC; Trivial: 1 VC)
+test.adb:68:41: info: validity check proved (CVC5: 1 VC)
+test.adb:69:22: info: validity check proved (CVC5: 1 VC)
+test.adb:69:48: info: validity check proved (CVC5: 1 VC)
+test.adb:71:10: medium: assertion might fail [possible fix: subprogram at line 64 should mention X in a precondition] [provers reached step limit before completing the proof]
+test.adb:74:04: warning: analyzing unreferenced procedure "Test_6" [unreferenced-procedure]
+test.adb:74:14: warning: subprogram "Test_6" has no effect
+test.adb:77:10: info: assertion proved (CVC5: 2 VC; Trivial: 1 VC)
+test.adb:78:41: info: validity check proved (CVC5: 1 VC)
+test.adb:79:22: info: validity check proved (CVC5: 1 VC)
+test.adb:79:48: info: validity check proved (CVC5: 1 VC)
+test.adb:81:10: medium: assertion might fail [possible fix: subprogram at line 74 should mention X in a precondition] [provers reached step limit before completing the proof]

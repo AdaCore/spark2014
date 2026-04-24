@@ -890,8 +890,8 @@ package body SPARK_Util.Types is
    -- Fun_Has_Only_Valid_Values --
    -------------------------------
 
-   function Fun_Has_Only_Valid_Values (Fun : Entity_Id) return Boolean is
-      Ty       : constant Type_Kind_Id := Retysp (Etype (Fun));
+   function Fun_Has_Only_Valid_Values (Ret_Ty : Type_Kind_Id) return Boolean is
+      Ty       : constant Type_Kind_Id := Retysp (Ret_Ty);
       Size     : Uint;
       Size_Str : Unbounded_String;
       Valid    : True_Or_Explain;

@@ -4407,7 +4407,7 @@ package body SPARK_Util is
          when E_Function               =>
             return
               Has_Potentially_Invalid (E)
-              and then not Fun_Has_Only_Valid_Values (E);
+              and then not Fun_Has_Only_Valid_Values (Etype (E));
 
          when E_Variable | Formal_Kind =>
             return

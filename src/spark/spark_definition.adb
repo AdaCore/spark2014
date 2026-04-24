@@ -9938,7 +9938,7 @@ package body SPARK_Definition is
 
                --  If E cannot have invalid values, emit a warning
 
-               if Fun_Has_Only_Valid_Values (E)
+               if Fun_Has_Only_Valid_Values (Etype (E))
                  and then Emit_Warning_Info_Messages
                then
                   Warning_Msg_N (Warn_Useless_Potentially_Invalid_Fun, E);
