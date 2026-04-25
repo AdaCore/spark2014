@@ -26447,8 +26447,17 @@ package body Gnat2Why.Expr is
 
          if Nkind (Expr) = N_Null then
             declare
-               Borrowed : constant Entity_Id := First_Formal (Subp);
+               Borrowed      : constant Entity_Id := First_Formal (Subp);
+               Brower_At_End : constant W_Identifier_Id :=
+                 Get_Brower_At_End (Subp);
             begin
+               Append
+                 (Result_Stmt,
+                  New_Assignment
+                    (Name   => Brower_At_End,
+                     Value  => +E_Symb (Etype (Subp), WNE_Null_Pointer),
+                     Typ    => Get_Typ (Brower_At_End),
+                     Labels => Symbol_Sets.Empty_Set));
                Append
                  (Result_Stmt,
                   New_Assume_Statement

@@ -8884,13 +8884,18 @@ package body Gnat2Why.Subprograms is
             --  part of the verification of the body of E.
 
          begin
-            Compute_Borrow_At_End_Value
-              (Check_Node    => Empty,
-               W_Brower      => +Get_Brower_At_End (E),
-               Expr          => Expr,
-               Reconstructed => Def,
-               Checks        => Dummy,
-               Params        => Logic_Params);
+            if Nkind (Expr) = N_Null then
+               Def := +E_Symb (Etype (Expr), WNE_Null_Pointer);
+            else
+               Compute_Borrow_At_End_Value
+                 (Check_Node    => Empty,
+                  W_Brower      => +Get_Brower_At_End (E),
+                  Expr          => Expr,
+                  Reconstructed => Def,
+                  Checks        => Dummy,
+                  Params        => Logic_Params);
+            end if;
+
             Emit
               (Expr_Fun_Axiom_Th,
                New_Guarded_Axiom
