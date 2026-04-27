@@ -3002,16 +3002,23 @@ package body Gnat2Why.Expr is
 
             --  Only consider objects in SPARK, so that parts of packages
             --  marked SPARK_Mode Off are ignored.
+            --  Do not introduce checks for constants from declare expressions.
+            --  They can only occur in statically leaking context and are
+            --  handled specifically.
 
             when N_Object_Declaration  =>
-               if Entity_In_SPARK (Defining_Identifier (Cur_Decl)) then
-                  Append
-                    (Result,
-                     Check_No_Memory_Leaks
-                       (Cur_Decl,
-                        Defining_Identifier (Cur_Decl),
-                        At_End_Of_Scope => True));
-               end if;
+               declare
+                  Obj : constant Entity_Id := Defining_Identifier (Cur_Decl);
+               begin
+                  if Entity_In_SPARK (Obj)
+                    and then not Comes_From_Declare_Expr (Obj)
+                  then
+                     Append
+                       (Result,
+                        Check_No_Memory_Leaks
+                          (Cur_Decl, Obj, At_End_Of_Scope => True));
+                  end if;
+               end;
 
             --  Objects in local packages should be deallocated before
             --  returning from the enclosing subprogram.
