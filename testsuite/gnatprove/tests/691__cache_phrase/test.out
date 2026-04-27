@@ -5,12 +5,21 @@ test.adb:10:11: info: overflow check proved (CVC5: 2 VC)
 === second run ===
 test.adb:2:13: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 test.adb:4:19: info: postcondition proved (Trivial: 1 VC)
+test.adb:8:04: info: initialization of "Z" proved
 test.adb:10:11: info: overflow check proved (CVC5: 2 VC; from session cache)
+test.adb:11:19: info: assertion proved (CVC5: 1 VC)
+test.adb:11:25: info: overflow check proved (CVC5: 2 VC)
 === third run ===
 test.adb:2:13: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 test.adb:4:19: info: postcondition proved (Trivial: 1 VC)
+test.adb:8:04: info: initialization of "Z" proved
 test.adb:10:11: info: overflow check proved (CVC5: 2 VC)
+test.adb:11:19: info: assertion proved (CVC5: 1 VC)
+test.adb:11:25: info: overflow check proved (CVC5: 2 VC)
 === fourth run ===
 test.adb:2:13: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 test.adb:4:19: info: postcondition proved (Trivial: 1 VC; from file cache)
+test.adb:8:04: info: initialization of "Z" proved
 test.adb:10:11: info: overflow check proved (CVC5: 2 VC; from file cache)
+test.adb:11:19: info: assertion proved (CVC5: 1 VC; from file cache)
+test.adb:11:25: info: overflow check proved (CVC5: 2 VC; from file cache)
