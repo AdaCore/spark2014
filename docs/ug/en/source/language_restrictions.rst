@@ -367,7 +367,7 @@ In particular, assignment between access objects operates a transfer of
 ownership, where the source object loses its permission to read or write the
 underlying allocated memory.
 
-For example, in the following example:
+For example, in the following code:
 
 .. literalinclude:: /examples/ug__ownership_transfer/ownership_transfer.adb
    :language: ada
