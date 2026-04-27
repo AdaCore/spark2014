@@ -451,3 +451,12 @@ feasible execution of the program, in particular when using the switch
    subprogram, not only the path which corresponds to the feasible
    execution. One can rerun |GNATprove| with value ``progressive`` or
    ``per_path`` to separate possible execution paths in the counterexample.
+
+If `GNATtest
+<https://docs.adacore.com/live/wave/gnatdas/html/gnatdas_ug/gnattest/gnattest_part.html>`_
+and (optionally) `GNATfuzz
+<https://docs.adacore.com/live/wave/gnatdas/html/gnatdas_ug/gnatfuzz/gnatfuzz_part.html>`_
+are available on your PATH, it is possible to delegate the generation of
+counterexample candidates to these tools using GNAT Studio. See the section
+:ref:`Additional Functionalities for Counterexamples
+<counterexamples_and_gnattest>`.
