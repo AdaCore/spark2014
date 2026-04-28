@@ -1,6 +1,6 @@
 test.adb:6:04: warning: analyzing unreferenced procedure "Test_Add" [unreferenced-procedure]
 test.adb:6:14: warning: subprogram "Test_Add" has no effect
-test.adb:7:22: medium: range check might fail [reason for check: default component value must fit in the type] [possible fix: subprogram at line 6 should mention X and Y in a precondition] [provers gave up before completing the proof]
+test.adb:7:22: medium: range check might fail [reason for check: default component value must fit in the type] [possible fix: subprogram at line 6 should mention X and Y in a precondition] [provers reached step limit before completing the proof]
 test.adb:8:22: info: range check proved (CVC5: 1 VC)
 test.adb:9:22: info: assertion proved (CVC5: 1 VC)
 test.adb:10:27: medium: range check might fail [reason for check: default component value must fit in the type] [possible fix: subprogram at line 6 should mention Y in a precondition] [provers gave up before completing the proof]
@@ -11,9 +11,9 @@ test.adb:12:28: info: range check proved (CVC5: 1 VC)
 test.adb:17:04: warning: analyzing unreferenced procedure "Test_Subst" [unreferenced-procedure]
 test.adb:17:14: warning: subprogram "Test_Subst" has no effect
 test.adb:18:23: medium: range check might fail [reason for check: default component value must fit in the type] [possible fix: subprogram at line 17 should mention X1 and Y1 in a precondition] [provers gave up before completing the proof]
-test.adb:19:28: medium: range check might fail [reason for check: default component value must fit in the type] [possible fix: subprogram at line 17 should mention X1 and X2 in a precondition] [provers reached step limit before completing the proof]
-test.adb:20:28: medium: range check might fail [reason for check: default component value must fit in the type] [possible fix: subprogram at line 17 should mention Y1 and Y2 in a precondition] [provers reached step limit before completing the proof]
-test.adb:21:25: medium: range check might fail [reason for check: default component value must fit in the type] [possible fix: subprogram at line 17 should mention Y1 in a precondition] [provers reached step limit before completing the proof]
+test.adb:19:28: medium: range check might fail [reason for check: default component value must fit in the type] [possible fix: subprogram at line 17 should mention X1 and X2 in a precondition] [provers gave up before completing the proof]
+test.adb:20:28: medium: range check might fail [reason for check: default component value must fit in the type] [possible fix: subprogram at line 17 should mention Y1 and Y2 in a precondition] [provers gave up before completing the proof]
+test.adb:21:25: medium: range check might fail [reason for check: default component value must fit in the type] [possible fix: subprogram at line 17 should mention Y1 in a precondition] [provers gave up before completing the proof]
 test.adb:26:04: warning: analyzing unreferenced procedure "Test_Mult" [unreferenced-procedure]
 test.adb:26:14: warning: subprogram "Test_Mult" has no effect
 test.adb:27:27: medium: range check might fail [reason for check: default component value must fit in the type] [possible fix: subprogram at line 26 should mention X and Y in a precondition] [provers gave up before completing the proof]

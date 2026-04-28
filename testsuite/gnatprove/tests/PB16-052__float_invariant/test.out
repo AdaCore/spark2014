@@ -85,7 +85,7 @@ attempt_3.adb:63:40: info: overflow check proved (CVC5: 2 VC)
 attempt_3.adb:63:40: info: range check proved (Trivial)
 attempt_3.adb:63:62: info: range check proved (Trivial)
 attempt_3.adb:63:62: medium: overflow check might fail, cannot prove upper bound for (N+1) * 65 [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers reached step limit before completing the proof]
-attempt_3.adb:64:25: medium: assertion might fail [provers reached step limit before completing the proof]
+attempt_3.adb:64:25: info: assertion proved (colibri: 1 VC)
 attempt_3.adb:64:31: info: float overflow check proved (colibri: 1 VC)
 attempt_3.adb:64:49: medium: overflow check might fail, cannot prove upper bound for N * 65 [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers reached step limit before completing the proof]
 attempt_3.adb:64:54: info: overflow check proved (CVC5: 2 VC)

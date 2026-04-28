@@ -258,7 +258,7 @@
           </goal>
           <goal name="def'vc.48" proved="true">
             <proof prover="4">
-              <result status="valid" steps="1291" />
+              <result status="valid" steps="1155" />
             </proof>
           </goal>
         </transf>
