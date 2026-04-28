@@ -32,7 +32,7 @@ prove_all(
     opt=[
         "--prover=coq",
         "--limit-line=lemmas.ads:15:14:VC_POSTCONDITION",
-        "--steps=10",
+        "-XRUN=2",
     ],
     steps=None,
     counterexample=False,
@@ -51,7 +51,7 @@ prove_all(
     opt=[
         "--prover=coq",
         "--limit-line=lemmas.ads:24:14:VC_POSTCONDITION",
-        "--steps=10",
+        "-XRUN=2",
     ],
     steps=None,
     counterexample=False,

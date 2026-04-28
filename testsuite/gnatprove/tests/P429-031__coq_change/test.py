@@ -42,7 +42,11 @@ print("=======================================")
 # rerun gnatprove with Coq again, to check the proof; the coq proof should be
 # proved now.
 prove_all(
-    opt=["--prover=coq", "--limit-line=lemmas.ads:15:14:VC_POSTCONDITION"],
+    opt=[
+        "--prover=coq",
+        "--limit-line=lemmas.ads:15:14:VC_POSTCONDITION",
+        "-XRUN=2",
+    ],
     steps=None,
     counterexample=False,
     filter_output=".*Grammar extension",
