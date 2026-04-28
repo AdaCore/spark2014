@@ -2,6 +2,14 @@
 Translation to Why3
 ###################
 
+..
+   devguide-meta:
+   covers: Ada to Why3 encoding choices, generated declarations, and modeling
+   decisions
+   primary_code: gnat2why/, src/why/
+   when_to_read: changes to Why3 translation, type modeling, expression
+   encoding, or generated Why3 structure
+
 *************************
 Content of the Why3 files
 *************************

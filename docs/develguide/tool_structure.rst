@@ -2,6 +2,14 @@
 Tool Structure
 ##############
 
+..
+   devguide-meta:
+   covers: overall tool pipeline, gnatprove orchestration, gnat2why modes,
+   gnatwhy3 and why3server interfaces
+   primary_code: src/gnatprove/, gnat2why/, why3/
+   when_to_read: changes to tool orchestration, action scheduling, process
+   boundaries, command-line plumbing, or cross-tool data flow
+
 The SPARK tool is a tool that consists of several executables:
 
 * gnatprove: This tool reads the command line, parses the project

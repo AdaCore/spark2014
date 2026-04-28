@@ -24,6 +24,36 @@ Assume the environment is already set up.
 - `testsuite/gnatprove/tests/`: regression tests
 - `docs/`: user and reference documentation
 
+## Developer Documentation
+
+- `docs/develguide/` is the developer documentation for GNATprove internals.
+- Before changing behavior or architecture in `src/gnatprove/`, `gnat2why/`,
+  `src/flow/`, `src/spark/`, `src/why/`, or `why3/`, read the relevant page(s)
+  in `docs/develguide/`.
+- Start with the mapped page in `docs/develguide/` and only read additional
+  pages when the change clearly crosses subsystem boundaries or the mapped page
+  points elsewhere.
+- If a change affects documented behavior, architecture, data flow, debug
+  workflow, or developer procedures, update the corresponding page in
+  `docs/develguide/` in the same change.
+- If no existing page is a good fit, update the closest page or add a new page
+  and link it from `docs/develguide/index.rst`.
+
+### Developer Guide Routing
+
+- `src/gnatprove/`: `docs/develguide/tool_structure.rst`
+- `gnat2why/` general pipeline: `docs/develguide/tool_structure.rst`
+- Legality rules and marking: `docs/develguide/legality_checking.rst`
+- Flow analysis: `docs/develguide/flow_analysis.rst`
+- Generated globals: `docs/develguide/gg.rst`
+- Ada to Why3 translation: `docs/develguide/translation_why3.rst`
+- `gnatwhy3/` and prover pipeline: `docs/develguide/gnatwhy3.rst`
+- Counterexamples, RAC, and model handling:
+  `docs/develguide/counterexamples.rst`
+- Explanations for unproved checks and related interaction:
+  `docs/develguide/tool_interaction.rst`
+- GNAT Studio integration: `docs/develguide/gps_integration.rst`
+
 ## Test Conventions
 
 - Tests live in `testsuite/gnatprove/tests/<test_name>/`.

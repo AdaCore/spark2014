@@ -2,6 +2,14 @@
 Tool Interaction
 ################
 
+..
+   devguide-meta:
+   covers: explanations for unproved checks and other user-facing tool
+   interaction features
+   primary_code: src/flow/, src/gnatprove/, gnat2why/
+   when_to_read: changes to explanations, diagnostic heuristics, or related
+   user-facing interaction between analysis stages
+
 Besides the use of :ref:`counterexamples`, there are
 other features for tool interaction in GNATprove, which are described here.
 
