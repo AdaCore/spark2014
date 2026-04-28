@@ -1,6 +1,14 @@
 Generated Global Contracts
 ==========================
 
+..
+   devguide-meta:
+   covers: generated global and refined global contracts, preanalysis, and
+   contract generation design
+   primary_code: src/flow/, gnat2why/
+   when_to_read: changes to generated globals, refined globals, or contract
+   inference
+
 The code for generating global contracts has been almost entirely rewritten
 in 2016. The original design document for this rewrite is in
 `docs/flow/generated_globals_2016_redesign/`. Here is a more down-to-code

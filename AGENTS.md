@@ -30,6 +30,9 @@ Assume the environment is already set up.
 - Before changing behavior or architecture in `src/gnatprove/`, `gnat2why/`,
   `src/flow/`, `src/spark/`, `src/why/`, or `why3/`, read the relevant page(s)
   in `docs/develguide/`.
+- Start with the mapped page in `docs/develguide/` and only read additional
+  pages when the change clearly crosses subsystem boundaries or the mapped page
+  points elsewhere.
 - If a change affects documented behavior, architecture, data flow, debug
   workflow, or developer procedures, update the corresponding page in
   `docs/develguide/` in the same change.

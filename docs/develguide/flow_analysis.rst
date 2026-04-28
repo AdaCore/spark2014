@@ -1,6 +1,14 @@
 Flow Analysis
 =============
 
+..
+   devguide-meta:
+   covers: flow analysis architecture, Flow_Id usage, dependency tracking, and
+   analysis traversal
+   primary_code: src/flow/, gnat2why/
+   when_to_read: changes to flow analysis, flow diagnostics, dependency
+   computation, or flow-specific data structures
+
 To start hacking on the flow analaysis you should first read about the general
 tool architecture (:ref:`Tool Structure`). Then the main entry point for the
 gnat2why backed is the GNAT_To_Why routine. Note: we hack on gnat2why with
