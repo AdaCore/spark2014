@@ -28,13 +28,13 @@ prove_all(
 )
 edit_proof(1)
 print("=======================================")
-# add dummy steps option to trigger reanalysis
+# change RUN to force reanalysis after editing the proof script
 prove_all(
     opt=[
         "-U",
         "--prover=coq",
         "--limit-line=lemmas.ads:17:14:VC_POSTCONDITION",
-        "--steps=10",
+        "-XRUN=2",
     ],
     steps=None,
     counterexample=False,
@@ -49,13 +49,13 @@ prove_all(
 )
 edit_proof(2)
 print("=======================================")
-# add dummy steps option to trigger reanalysis
+# change RUN to force reanalysis after editing the proof script
 prove_all(
     opt=[
         "-U",
         "--prover=coq",
         "--limit-line=lemmas.ads:26:14:VC_POSTCONDITION",
-        "--steps=10",
+        "-XRUN=2",
     ],
     steps=None,
     counterexample=False,
