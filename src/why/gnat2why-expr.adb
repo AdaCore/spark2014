@@ -20686,20 +20686,29 @@ package body Gnat2Why.Expr is
 
                         begin
                            if Present (Align) then
-                              Pred := New_Comparison
-                                (Symbol => Why_Eq,
-                                 Left   => New_Call
-                                   (Name =>
-                                      (if W_Typ = EW_Int_Type
-                                       then M_Int_Div.Mod_Id
-                                       else MF_BVs (W_Typ).Urem),
-                                    Args =>
-                                      (1 => +Tmp,
-                                       2 => New_Discrete_Constant
-                                         (Value => Align, Typ => W_Typ)),
-                                    Typ  => W_Typ),
-                                 Right  => New_Discrete_Constant
-                                   (Value => Uint_0, Typ => W_Typ));
+                              Pred :=
+                                New_Comparison
+                                  (Symbol => Why_Eq,
+                                   Left   =>
+                                     New_Call
+                                       (Name =>
+                                          (if W_Typ = EW_Int_Type
+                                           then M_Int_Div.Mod_Id
+                                           else MF_BVs (W_Typ).Urem),
+                                        Args =>
+                                          (1 =>
+                                             Insert_Simple_Conversion
+                                               (Ada_Node => Decl,
+                                                Domain   => EW_Term,
+                                                Expr     => +Tmp,
+                                                To       => W_Typ),
+                                           2 =>
+                                             New_Discrete_Constant
+                                               (Value => Align, Typ => W_Typ)),
+                                        Typ  => W_Typ),
+                                   Right  =>
+                                     New_Discrete_Constant
+                                       (Value => Uint_0, Typ => W_Typ));
                            end if;
                            Address_Why := New_Located_Assert
                              (Ada_Node => Decl,
