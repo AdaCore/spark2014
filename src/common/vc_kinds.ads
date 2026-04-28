@@ -1528,7 +1528,14 @@ package VC_Kinds is
       EC_Exceptional_Cases_On_Function,
       EC_Call_To_Function_With_Side_Effects,
       EC_Uninitialized_Allocator,
-      EC_Incorrect_Source_Of_Borrow);
+      EC_Incorrect_Source_Of_Borrow,
+      EC_Controlled_Types,
+      EC_Dispatch_Plain_Pre,
+      EC_Backward_Goto,
+      EC_Ghost_Volatile,
+      EC_Handler_Choice_Parameter,
+      EC_Overlay_Mutable_Constant,
+      EC_UC_From_Access);
    for Explain_Code_Kind use
      (EC_None                                 => 0,
       EC_Volatile_At_Library_Level            => 1,
@@ -1550,7 +1557,14 @@ package VC_Kinds is
       EC_Exceptional_Cases_On_Function        => 17,
       EC_Call_To_Function_With_Side_Effects   => 18,
       EC_Uninitialized_Allocator              => 19,
-      EC_Incorrect_Source_Of_Borrow           => 20);
+      EC_Incorrect_Source_Of_Borrow           => 20,
+      EC_Controlled_Types                     => 21,
+      EC_Dispatch_Plain_Pre                   => 22,
+      EC_Backward_Goto                        => 23,
+      EC_Ghost_Volatile                       => 24,
+      EC_Handler_Choice_Parameter             => 25,
+      EC_Overlay_Mutable_Constant             => 26,
+      EC_UC_From_Access                       => 27);
 
    function To_String (Code : Explain_Code_Kind) return String
    with Pre => Code /= EC_None;
