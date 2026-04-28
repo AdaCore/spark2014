@@ -79,4 +79,8 @@ project GNAT2Why is
                               );
    end Coverage;
 
+   package Format is
+     for Ignore use "gnat2why_ignore_format.txt";
+   end Format;
+
 end GNAT2Why;
