@@ -2,6 +2,10 @@
 
 Repository guidance for coding agents working on SPARK 2014.
 
+## Project
+
+- GitLab project: `eng/spark/spark2014`
+
 ## Build And Test
 
 Assume the environment is already set up.
