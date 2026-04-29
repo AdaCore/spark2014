@@ -106,7 +106,7 @@ polyorb_hi-transport_low_level.ads:50:13: error: launch "gnatprove --explain=E00
 polyorb_hi-transport_low_level.ads:50:13: error: violation of pragma SPARK_Mode at polyorb-hi-ada/gnat.adc:19
 polyorb_hi-transport_low_level.ads:50:13: error: violation of pragma SPARK_Mode at polyorb-hi-ada/gnat.adc:19
 polyorb_hi-utils.adb:46:25: info: range check proved (CVC5: 2 VC)
-polyorb_hi-utils.adb:46:33: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+polyorb_hi-utils.adb:46:33: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
 polyorb_hi-utils.adb:47:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 polyorb_hi-utils.adb:47:16: info: index check proved (CVC5: 2 VC)
 polyorb_hi-utils.adb:47:33: info: index check proved (CVC5: 2 VC)
@@ -127,7 +127,7 @@ polyorb_hi-utils.adb:109:16: info: types in unchecked conversion have the same s
 polyorb_hi-utils.adb:109:16: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
 polyorb_hi-utils.adb:110:10: info: type is suitable as source for unchecked conversion (Trivial)
 polyorb_hi-utils.adb:110:23: high: type is unsuitable as a target for unchecked conversion [possible explanation: type "Port_Type" has 4 values but Size 16, which allows 16#1000_0# possible values; invalid values could result from the unchecked conversion [SPARK RM 13.9]]
-polyorb_hi-utils.adb:124:32: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+polyorb_hi-utils.adb:124:32: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
 polyorb_hi-utils.adb:125:16: info: index check proved (CVC5: 2 VC)
 polyorb_hi-utils.adb:126:23: info: overflow check proved (CVC5: 2 VC)
 polyorb_hi-utils.ads:62:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)

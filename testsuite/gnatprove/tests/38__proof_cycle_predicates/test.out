@@ -50,7 +50,7 @@ for_loop.adb:4:16: warning: unused initial value of "V"
 for_loop.adb:4:64: medium: postcondition might fail [provers reached step limit before completing the proof]
 for_loop.adb:6:37: info: precondition proved (Trivial: 1 VC)
 for_loop.adb:11:24: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention V] [provers reached step limit before completing the proof]
-for_loop.adb:11:29: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+for_loop.adb:11:29: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
 for_loop.adb:11:29: warning: statement has no effect
 func_actual.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 func_actual.adb:4:13: warning: potentially missing contract for "F" declared at line 4

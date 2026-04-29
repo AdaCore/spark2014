@@ -1,4 +1,4 @@
-p.adb:10:35: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+p.adb:10:35: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
 p.adb:12:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 p.adb:14:25: info: range check proved (CVC5: 4 VC)
 p.adb:16:27: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]

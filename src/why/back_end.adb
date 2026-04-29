@@ -33,6 +33,7 @@ with Erroutc;
 with Gnat2Why.Driver;
 with Gnat2Why_Args;
 with Gnat2Why_Opts;
+with Inline;
 with Namet;
 with Opt;
 with SPARK_Definition;
@@ -174,9 +175,11 @@ package body Back_End is
       end if;
 
       Debug_Flag_M := Gnat2Why_Args.No_Inlining;
-      --  Make this depend on the value for the unrolling warnings
-      Debug_Flag_Underscore_F :=
+      Inline.GNATprove_Inline_Success_Msg :=
         VC_Kinds.Warning_Status (VC_Kinds.Warn_Info_Unrolling_Inlining)
+        /= VC_Kinds.WS_Disabled;
+      Inline.GNATprove_Inline_Failure_Msg :=
+        VC_Kinds.Warning_Status (VC_Kinds.Warn_Unrolling_Inlining_Failures)
         /= VC_Kinds.WS_Disabled;
 
    end Scan_Compiler_Arguments;

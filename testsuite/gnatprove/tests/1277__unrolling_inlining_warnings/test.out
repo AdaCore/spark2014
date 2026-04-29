@@ -1,0 +1,26 @@
+---- default -------
+test.adb:3:14: warning: subprogram "P" has no effect
+test.adb:5:25: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
+test.adb:9:07: info: no contextual analysis of "P" (exception handler)
+test.adb:13:14: info: add a contract to analyze it separately from calling contexts
+test.adb:13:14: info: local subprogram "Q" only analyzed in the context of calls [info-unrolling-inlining]
+test.adb:13:14: warning: subprogram "Q" has no effect
+test.adb:22:04: info: analyzing call to "Q" in context
+test.adb:22:04: info: in inlined body at line 15
+test.adb:22:04: info: unrolling loop [info-unrolling-inlining]
+---- suppress negative warnings -------
+test.adb:3:14: warning: subprogram "P" has no effect
+test.adb:13:14: info: add a contract to analyze it separately from calling contexts
+test.adb:13:14: info: local subprogram "Q" only analyzed in the context of calls [info-unrolling-inlining]
+test.adb:13:14: warning: subprogram "Q" has no effect
+test.adb:22:04: info: analyzing call to "Q" in context
+test.adb:22:04: info: in inlined body at line 15
+test.adb:22:04: info: unrolling loop [info-unrolling-inlining]
+---- negative warnings only -------
+test.adb:3:14: warning: subprogram "P" has no effect
+test.adb:5:25: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
+test.adb:9:07: info: no contextual analysis of "P" (exception handler)
+test.adb:13:14: warning: subprogram "Q" has no effect
+---- suppress both categories -------
+test.adb:3:14: warning: subprogram "P" has no effect
+test.adb:13:14: warning: subprogram "Q" has no effect

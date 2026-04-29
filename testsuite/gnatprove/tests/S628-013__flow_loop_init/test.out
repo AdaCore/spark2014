@@ -1,4 +1,4 @@
-show_composite_types_shortcoming.adb:5:24: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+show_composite_types_shortcoming.adb:5:24: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
 show_composite_types_shortcoming.adb:7:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 show_composite_types_shortcoming.adb:9:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 show_composite_types_shortcoming.adb:9:16: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers gave up before completing the proof]

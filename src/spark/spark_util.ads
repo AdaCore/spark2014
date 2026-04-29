@@ -803,14 +803,16 @@ package SPARK_Util is
    --  Return whether [Loop_Stmt] is unrolled or not
 
    procedure Candidate_For_Loop_Unrolling
-     (Loop_Stmt   : N_Loop_Statement_Id;
-      Output_Info : Boolean;
-      Result      : out Unrolling_Type;
-      Low_Val     : out Uint;
-      High_Val    : out Uint);
-   --  @param Output_Info whether the reason for not unrolling should be
-   --         displayed when the loop has no loop invariant, and a positive
-   --         message that the loop is unrolled when applicable.
+     (Loop_Stmt       : N_Loop_Statement_Id;
+      Output_Info     : Boolean;
+      Output_Warnings : Boolean;
+      Result          : out Unrolling_Type;
+      Low_Val         : out Uint;
+      High_Val        : out Uint);
+   --  @param Output_Info whether a positive message that the loop is
+   --         unrolled should be displayed when applicable.
+   --  @param Output_Warnings whether the reason for not unrolling should be
+   --         displayed when the loop has no loop invariant.
    --  @param Result whether a loop is a candidate for loop unrolling
    --  @param Low_Val the loop bound for loop unrolling
    --  @param High_Val the high bound for loop unrolling

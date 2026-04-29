@@ -1842,13 +1842,17 @@ package body Gnat2Why.Expr.Loops is
                --  loop index.
 
                Candidate_For_Loop_Unrolling
-                 (Loop_Stmt   => Stmt,
-                  Output_Info =>
+                 (Loop_Stmt       => Stmt,
+                  Output_Info     =>
                     Warning_Status (Warn_Info_Unrolling_Inlining) = WS_Enabled
                     and then not Gnat2Why_Args.No_Loop_Unrolling,
-                  Result      => Unroll,
-                  Low_Val     => Low_Val,
-                  High_Val    => High_Val);
+                  Output_Warnings =>
+                    Warning_Status (Warn_Unrolling_Inlining_Failures)
+                    /= WS_Disabled
+                    and then not Gnat2Why_Args.No_Loop_Unrolling,
+                  Result          => Unroll,
+                  Low_Val         => Low_Val,
+                  High_Val        => High_Val);
 
                if not Gnat2Why_Args.No_Loop_Unrolling
                  and then Unroll /= No_Unrolling

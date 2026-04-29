@@ -6,7 +6,7 @@ test1.adb:16:10: info: precondition proved (Trivial: 1 VC)
 test10.adb:3:19: info: initialization of "Y" proved
 test10.adb:8:06: warning: unreachable code [enabled by default]
 test11.adb:3:19: info: initialization of "Y" proved
-test11.adb:7:22: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+test11.adb:7:22: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
 test11.adb:9:09: warning: unreachable code [enabled by default]
 test12.adb:3:19: info: initialization of "Y" proved
 test12.adb:5:06: warning: unused assignment
