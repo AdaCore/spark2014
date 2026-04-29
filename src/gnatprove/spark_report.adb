@@ -1412,35 +1412,51 @@ package body Spark_Report is
          end if;
       end if;
 
-      --  Similarly, we print a success message if some checks exist and
-      --  all have been proved. Suppressed if we are in mode "quiet".
+      --  Print a summary message if some checks exist. Suppressed if we are
+      --  in mode "quiet".
 
-      if not Quiet
-        and then not Has_Errors
-        and then Has_Check
-        and then not Has_Unproved_Check
-      then
+      if not Quiet and then not Has_Errors and then Has_Check then
          declare
-            Sum          : Summary_Line renames Summary (Total);
-            Total_VCs    : constant Natural :=
+            Sum              : Summary_Line renames Summary (Total);
+            Total_VCs        : constant Natural :=
               Sum.Flow + Sum.Justified + Sum.Provers.Total + Sum.Unproved;
-            Enable_Green : constant String :=
+            Proved_VCs       : constant Natural := Total_VCs - Sum.Unproved;
+            Enable_Green     : constant String :=
               (if Colors then ASCII.ESC & "[32m" & ASCII.ESC & "[K" else "");
-            Reset_Color  : constant String :=
+            Reset_Color      : constant String :=
               (if Colors then ASCII.ESC & "[m" & ASCII.ESC & "[K" else "");
-            Checks       : constant String :=
+            Checks           : constant String :=
               (if Total_VCs = 1 then "check" else "checks");
-            Total        : constant String := Natural'Image (Total_VCs);
+            Remaining_Checks : constant String :=
+              (if Sum.Unproved = 1 then "check remains" else "checks remain");
+            Total            : constant String := Natural'Image (Total_VCs);
+            Proved           : constant String := Natural'Image (Proved_VCs);
+            Unproved         : constant String := Natural'Image (Sum.Unproved);
          begin
-            Ada.Text_IO.Put_Line
-              (Enable_Green
-               & "Success:"
-               & Reset_Color
-               & " all checks proved ("
-               & Total (Total'First + 1 .. Total'Last)
-               & " "
-               & Checks
-               & ").");
+            if Sum.Unproved = 0 then
+               Ada.Text_IO.Put_Line
+                 (Enable_Green
+                  & "Success:"
+                  & Reset_Color
+                  & " all checks proved ("
+                  & Total (Total'First + 1 .. Total'Last)
+                  & " "
+                  & Checks
+                  & ").");
+            else
+               Ada.Text_IO.Put_Line
+                 ("Summary: "
+                  & Proved (Proved'First + 1 .. Proved'Last)
+                  & "/"
+                  & Total (Total'First + 1 .. Total'Last)
+                  & " "
+                  & Checks
+                  & " proved, "
+                  & Unproved (Unproved'First + 1 .. Unproved'Last)
+                  & " "
+                  & Remaining_Checks
+                  & ".");
+            end if;
          end;
       end if;
 

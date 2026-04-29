@@ -7,6 +7,7 @@
 --> add.ads:3:47
 No project file given, using test.gpr
 Summary logged in gnatprove/gnatprove.out
+Summary: 5/6 checks proved, 1 check remains.
 [Ada Analysis]    add.adb
 [Ada Data_Rep]    add.adb
 [Ada Global_Gen]  add.adb
