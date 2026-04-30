@@ -42,7 +42,7 @@ package GPR2.Build.Actions.Compile.Ada.Analysis is
      (Self : in out Object; Check_Checksums : Boolean);
 
    overriding
-   function On_Ready_State (Self : in out Object) return Boolean;
+   function On_Static_Completion (Self : in out Object) return Boolean;
 
    procedure Initialize
      (Self             : in out Object;

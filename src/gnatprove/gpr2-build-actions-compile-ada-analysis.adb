@@ -281,16 +281,16 @@ package body GPR2.Build.Actions.Compile.Ada.Analysis is
       return Analysis.Create (Self.CU);
    end UID;
 
-   --------------------
-   -- On_Ready_State --
-   --------------------
+   --------------------------
+   -- On_Static_Completion --
+   --------------------------
 
    overriding
-   function On_Ready_State (Self : in out Object) return Boolean is
+   function On_Static_Completion (Self : in out Object) return Boolean is
       pragma Unreferenced (Self);
    begin
       return True;
-   end On_Ready_State;
+   end On_Static_Completion;
 
    ------------------
    -- Post_Command --
