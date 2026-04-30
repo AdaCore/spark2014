@@ -1,0 +1,11 @@
+symbols.adb:16:66: info: index check proved (CVC5: 2 VC)
+symbols.adb:20:13: info: implicit aspect Always_Terminates on "Space_Left" has been proved, subprogram will terminate
+symbols.adb:25:37: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+symbols.adb:26:72: info: pointer dereference check proved (CVC5: 1 VC)
+symbols.adb:35:37: info: range check proved (CVC5: 2 VC)
+symbols.adb:37:17: info: predicate check proved (CVC5: 1 VC)
+symbols.adb:37:39: info: range check proved (CVC5: 2 VC)
+symbols.adb:38:17: info: absence of resource or memory leak justified
+symbols.adb:39:17: info: predicate check proved (CVC5: 1 VC)
+symbols.ads:9:34: info: initialization of "Sym" proved
+symbols.ads:10:52: info: exceptional case proved (Trivial: 1 VC)
