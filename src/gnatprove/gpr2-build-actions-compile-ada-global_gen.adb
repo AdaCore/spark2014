@@ -287,9 +287,7 @@ package body GPR2.Build.Actions.Compile.Ada.Global_Gen is
       Self.ALI_Object := GPR2.Build.ALI_Parser.Create (Self.Lib_Ali_File.Path);
 
       if Self.ALI_Object.Path_Name.Exists then
-         Self.ALI_Object.Parse;
-
-         if not Self.ALI_Object.Is_Parsed then
+         if not Self.ALI_Object.Parse then
             Self.Tree.Reporter.Report
               (GPR2.Message.Create
                  (GPR2.Message.Error,
