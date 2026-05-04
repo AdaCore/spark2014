@@ -5351,43 +5351,84 @@ package body Gnat2Why.Borrow_Checker is
       function Get_Expr_Array (Expr : Node_Id) return Expr_Array
       with Pre => Is_Path_Expression (Expr);
       --  Return the sequence of expressions that make up a path, excluding
-      --  slices.
+      --  slices, and with consecutive occurrences of (.all, 'Access)
+      --  cancelled out. Also excludes the top-level 'Access if present and
+      --  not already cancelled out. Note that such 'Access would necessarily
+      --  design an aliased object or field.
 
       --------------------
       -- Get_Expr_Array --
       --------------------
 
       function Get_Expr_Array (Expr : Node_Id) return Expr_Array is
+
+         function Get_Expr_Array_Rec (Expr : Node_Id) return Expr_Array;
+         --  Recursive implementation of Get_Expr_Array, does not strip the
+         --  top-level 'Access.
+
+         ------------------------
+         -- Get_Expr_Array_Rec --
+         ------------------------
+
+         function Get_Expr_Array_Rec (Expr : Node_Id) return Expr_Array is
+         begin
+            case Nkind (Expr) is
+               when N_Expanded_Name | N_Identifier =>
+                  return Expr_Array'(1 => Entity (Expr));
+
+               when N_Slice                        =>
+                  return Get_Expr_Array_Rec (Prefix (Expr));
+
+               when N_Explicit_Dereference
+                  | N_Indexed_Component
+                  | N_Selected_Component
+                  | N_Attribute_Reference          =>
+
+                  --  Simplify _.all'Access and _'Access.all.
+
+                  declare
+                     function Cancel_Out (A, B : Node_Id) return Boolean
+                     is (Nkind (A) = N_Explicit_Dereference
+                         and then Nkind (B) = N_Attribute_Reference
+                         and then Attribute_Name (B) = Name_Access);
+                  begin
+                     if Cancel_Out (Expr, Prefix (Expr))
+                       or else Cancel_Out (Prefix (Expr), Expr)
+                     then
+                        return Get_Expr_Array_Rec (Prefix (Prefix (Expr)));
+                     else
+                        return Get_Expr_Array_Rec (Prefix (Expr)) & Expr;
+                     end if;
+                  end;
+
+               when N_Qualified_Expression
+                  | N_Type_Conversion
+                  | N_Unchecked_Type_Conversion    =>
+                  return Get_Expr_Array (Expression (Expr));
+
+               when N_Op_Ne | N_Op_Eq              =>
+                  if Nkind (Left_Opnd (Expr)) = N_Null then
+                     return Get_Expr_Array_Rec (Right_Opnd (Expr)) & Expr;
+                  else
+                     pragma Assert (Nkind (Right_Opnd (Expr)) = N_Null);
+                     return Get_Expr_Array_Rec (Left_Opnd (Expr)) & Expr;
+                  end if;
+
+               when others                         =>
+                  raise Program_Error;
+            end case;
+         end Get_Expr_Array_Rec;
+
+         EA : constant Expr_Array := Get_Expr_Array_Rec (Expr);
+         N  : constant Node_Id := EA (EA'Last);
       begin
-         case Nkind (Expr) is
-            when N_Expanded_Name | N_Identifier =>
-               return Expr_Array'(1 => Entity (Expr));
-
-            when N_Slice                        =>
-               return Get_Expr_Array (Prefix (Expr));
-
-            when N_Explicit_Dereference
-               | N_Indexed_Component
-               | N_Selected_Component
-               | N_Attribute_Reference          =>
-               return Get_Expr_Array (Prefix (Expr)) & Expr;
-
-            when N_Qualified_Expression
-               | N_Type_Conversion
-               | N_Unchecked_Type_Conversion    =>
-               return Get_Expr_Array (Expression (Expr));
-
-            when N_Op_Ne | N_Op_Eq              =>
-               if Nkind (Left_Opnd (Expr)) = N_Null then
-                  return Get_Expr_Array (Right_Opnd (Expr)) & Expr;
-               else
-                  pragma Assert (Nkind (Right_Opnd (Expr)) = N_Null);
-                  return Get_Expr_Array (Left_Opnd (Expr)) & Expr;
-               end if;
-
-            when others                         =>
-               raise Program_Error;
-         end case;
+         if Nkind (N) = N_Attribute_Reference
+           and then Attribute_Name (N) = Name_Access
+         then
+            return EA (EA'First .. (EA'Last - 1));
+         else
+            return EA;
+         end if;
       end Get_Expr_Array;
 
       --  Local variables
@@ -5426,7 +5467,9 @@ package body Gnat2Why.Borrow_Checker is
                when N_Op_Ne | N_Op_Eq | N_Attribute_Reference    =>
                   --  Prefix and Expr cannot be equality operators together,
                   --  nor attribute references together, as one or the other
-                  --  necessarily is a borrowed expression.
+                  --  necessarily is a borrowed expression. 'Access could
+                  --  have been an exception, but we made sure to remove it
+                  --  beforehand.
 
                   raise Program_Error;
 
