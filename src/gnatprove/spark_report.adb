@@ -69,6 +69,7 @@ package body Spark_Report is
    procedure Generate_SARIF_Report
      (Filename           : String;
       SPARK_Files        : SPARK_File_Lists.List;
+      SPARK_Error_Files  : SPARK_File_Lists.List;
       Command_Line_Image : String;
       Error_Code         : Integer;
       Tree               : GPR2.Project.Tree.Object);
@@ -78,11 +79,12 @@ package body Spark_Report is
    ---------------------
 
    procedure Generate_Report
-     (Tree        : GPR2.Project.Tree.Object;
-      Out_Dir     : String;
-      SPARK_Files : String_Lists.List;
-      Has_Errors  : Boolean;
-      Status      : out Integer)
+     (Tree              : GPR2.Project.Tree.Object;
+      Out_Dir           : String;
+      SPARK_Files       : String_Lists.List;
+      SPARK_Error_Files : String_Lists.List;
+      Has_Errors        : Boolean;
+      Status            : out Integer)
    is
       SPARK_Mode_OK : Boolean := False;
       --  This variable is set to True when at least one subprogram was
@@ -107,6 +109,10 @@ package body Spark_Report is
 
       Parsed_Files : SPARK_File_Lists.List;
       --  Subset of SPARK_Files that actually exist on disk, with parsed JSON
+
+      Parsed_Error_Files : SPARK_File_Lists.List;
+      --  Parsed .spark_error files from phase 1, carrying frontend
+      --  diagnostics.
 
       procedure Handle_SPARK_File (Fn : String; Dict : JSON_Value);
       --  Extract all information from a single SPARK file
@@ -1319,6 +1325,49 @@ package body Spark_Report is
          end if;
       end loop;
 
+      --  Parse .spark_error files produced by phase 1.
+      for SPARK_Error_File of SPARK_Error_Files loop
+         if Ada.Directories.Exists (SPARK_Error_File) then
+            begin
+               declare
+                  Data   : constant JSON_Value :=
+                    Read_File_Into_JSON (SPARK_Error_File);
+                  Errors : constant JSON_Array :=
+                    Get (Get (Data, "warn_error"));
+               begin
+                  --  When the corresponding .spark file exists, the
+                  --  .spark_error should have no messages (they would be
+                  --  redundant with what is already in .spark).
+                  pragma
+                    Assert
+                      (Length (Errors) = 0
+                       or else
+                         not Ada.Directories.Exists
+                               (Ada.Directories.Compose
+                                  (Ada.Directories.Containing_Directory
+                                     (SPARK_Error_File),
+                                   Ada.Directories.Base_Name
+                                     (SPARK_Error_File),
+                                   "spark")));
+
+                  if Length (Errors) > 0 then
+                     Parsed_Error_Files.Append
+                       (SPARK_File_Data'
+                          (File => To_Unbounded_String (SPARK_Error_File),
+                           Data => Data));
+                  end if;
+               end;
+            exception
+               when others =>
+                  Ada.Text_IO.Put_Line
+                    (Ada.Text_IO.Standard_Error,
+                     "spark_report: error when processing file "
+                     & SPARK_Error_File
+                     & ", skipping");
+            end;
+         end if;
+      end loop;
+
       for File_Data of Parsed_Files loop
          begin
             Handle_SPARK_File (To_String (File_Data.File), File_Data.Data);
@@ -1473,6 +1522,7 @@ package body Spark_Report is
         (Filename           =>
            Ada.Directories.Compose (Out_Dir, "gnatprove.sarif"),
          SPARK_Files        => Parsed_Files,
+         SPARK_Error_Files  => Parsed_Error_Files,
          Command_Line_Image => To_String (Command_Line_Image),
          Error_Code         => Error_Code,
          Tree               => Tree);
@@ -1483,6 +1533,7 @@ package body Spark_Report is
    procedure Generate_SARIF_Report
      (Filename           : String;
       SPARK_Files        : SPARK_File_Lists.List;
+      SPARK_Error_Files  : SPARK_File_Lists.List;
       Command_Line_Image : String;
       Error_Code         : Integer;
       Tree               : GPR2.Project.Tree.Object)

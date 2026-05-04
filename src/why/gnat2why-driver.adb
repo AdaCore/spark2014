@@ -173,6 +173,10 @@ package body Gnat2Why.Driver is
    --  describes the last analysis done. Stop_Reason indicates why the
    --  analysis did not progress to the next phase.
 
+   procedure Create_Error_JSON_File;
+   --  Write frontend diagnostics to a .spark_error file so they reach the
+   --  SARIF report even when compilation errors prevent phase 2.
+
    function Get_Skip_Proof_JSON return JSON_Array;
    --  Return a list of entities for which proof was skipped.
 
@@ -396,6 +400,23 @@ package body Gnat2Why.Driver is
       Ada.Text_IO.Put (FD, GNATCOLL.JSON.Write (Full, Compact => False));
       Ada.Text_IO.Close (FD);
    end Create_JSON_File;
+
+   ----------------------------
+   -- Create_Error_JSON_File --
+   ----------------------------
+
+   procedure Create_Error_JSON_File is
+      FD        : Ada.Text_IO.File_Type;
+      File_Name : constant String :=
+        Ada.Directories.Compose
+          (Name => Unit_Name, Extension => VC_Kinds.SPARK_Error_Suffix);
+      Full      : constant JSON_Value := Create_Object;
+   begin
+      Set_Field (Full, "warn_error", Create (Warnings_Errors));
+      Ada.Text_IO.Create (FD, Ada.Text_IO.Out_File, File_Name);
+      Ada.Text_IO.Put (FD, GNATCOLL.JSON.Write (Full, Compact => False));
+      Ada.Text_IO.Close (FD);
+   end Create_Error_JSON_File;
 
    ---------------------------
    -- Parse_Gnattest_Values --
@@ -741,6 +762,12 @@ package body Gnat2Why.Driver is
       --  backend started, so they appear in SARIF output.
       Add_Frontend_Messages;
 
+      --  If the frontend reported compilation errors, write the diagnostics
+      --  file and return without any tree processing.
+      if Compilation_Errors then
+         goto Leave;
+      end if;
+
       if Is_Generic_Unit (E) then
 
          --  We do nothing for generic units currently. If this get revised
@@ -1076,6 +1103,12 @@ package body Gnat2Why.Driver is
       end if;
 
       <<Leave>>
+
+      --  In phase 1, always write frontend diagnostics so they reach the
+      --  SARIF report even when compilation errors prevent phase 2.
+      if Gnat2Why_Args.Global_Gen_Mode then
+         Create_Error_JSON_File;
+      end if;
 
       --  If gnat2why is compiled with support for profiling then separate
       --  profiling data for each phase. For file foo.ads two files will be

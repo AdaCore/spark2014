@@ -67,9 +67,6 @@ package body Back_End is
       Elists.Unlock;
 
       Errout.Finalize (Last_Call => False);
-      if Errout.Compilation_Errors then
-         goto Unlock;
-      end if;
 
       GNAT2Why_BE.Call_Back_End;
 

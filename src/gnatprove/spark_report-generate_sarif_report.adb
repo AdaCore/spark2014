@@ -42,6 +42,7 @@ separate (Spark_Report)
 procedure Generate_SARIF_Report
   (Filename           : String;
    SPARK_Files        : SPARK_File_Lists.List;
+   SPARK_Error_Files  : SPARK_File_Lists.List;
    Command_Line_Image : String;
    Error_Code         : Integer;
    Tree               : GPR2.Project.Tree.Object)
@@ -97,6 +98,9 @@ is
 
    procedure Handle_SPARK_Files;
    --  Parse all .spark files
+
+   procedure Handle_SPARK_Error_Files;
+   --  Parse all .spark_error files for frontend diagnostics
 
    procedure Handle_SPARK_File (Dict : JSON_Value);
    --  Extract all information from a single already-parsed SPARK file
@@ -344,6 +348,26 @@ is
          end;
       end loop;
    end Handle_SPARK_Files;
+
+   ------------------------------
+   -- Handle_SPARK_Error_Files --
+   ------------------------------
+
+   procedure Handle_SPARK_Error_Files is
+   begin
+      for SPARK_Error_File of SPARK_Error_Files loop
+         begin
+            Handle_Items (Get (Get (SPARK_Error_File.Data, "warn_error")));
+         exception
+            when others =>
+               Ada.Text_IO.Put_Line
+                 (Ada.Text_IO.Standard_Error,
+                  "spark_report: error when processing file "
+                  & To_String (SPARK_Error_File.File)
+                  & ", skipping");
+         end;
+      end loop;
+   end Handle_SPARK_Error_Files;
 
    --------------
    -- Location --
@@ -662,6 +686,7 @@ begin
    My_Run.originalUriBaseIds := Build_Original_Uri_Base_Ids;
    My_Results.Clear (Is_Null => False);
    Handle_SPARK_Files;
+   Handle_SPARK_Error_Files;
    My_Run.results := My_Results;
    Root.runs.Append (My_Run);
    Root.schema :=

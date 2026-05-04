@@ -1671,6 +1671,9 @@ package VC_Kinds is
    SPARK_Suffix : constant String := "spark";
    --  Extension of the files where spark_report expects gnat2why results
 
+   SPARK_Error_Suffix : constant String := "spark_error";
+   --  Extension of files where phase 1 writes frontend diagnostics
+
    type SPARK_Mode_Status is
      (All_In_SPARK,       --  Spec (and if applicable, body) are in SPARK
       Spec_Only_In_SPARK, --  Only spec is in SPARK, body is not in SPARK

@@ -91,7 +91,9 @@ relevant work:
 
 These actions are connected by their file dependencies, so incremental
 re-execution is handled by the build engine rather than by a separate external
-builder process.
+builder process. In addition to the traditional ALI output of
+global-generation actions, these actions now also register a
+``.spark_error`` output file that is used later during report generation.
 
 Generating data representation information
 ==========================================
@@ -119,13 +121,19 @@ the reading and writing of that file.
 The switch ``Global_Gen_Mode`` dictates if gnat2why is in global-generation
 mode or in analysis mode.
 
-Copying ALI files
-=================
+Copying ALI files and phase-1 diagnostics
+=========================================
 
 Analysis actions consume ALI files produced by global-generation actions. For
 library projects, the global-generation action also takes care of copying the
 generated ALI file to the library ALI directory when needed, so the build
 action itself is responsible for making these files available to later work.
+
+Each global-generation action also produces a ``.spark_error`` file. This file
+contains the frontend warnings and errors collected during phase 1, and it is
+written even when compilation errors prevent later analysis from running. This
+extra artifact is what allows report generation to include frontend diagnostics
+in SARIF for early-exit runs.
 
 Translating to Why
 ==================
@@ -139,7 +147,8 @@ Generating the SPARK report
 ===========================
 
 Once the build actions have finished, ``gnatprove`` generates reports from the
-``.spark`` files that were produced during analysis. The textual summary is
+``.spark`` files that were produced during analysis and the ``.spark_error``
+files that were produced during global generation. The textual summary is
 written to ``gnatprove.out`` and a SARIF report is also generated in
 ``gnatprove.sarif``.
 
@@ -174,6 +183,12 @@ In addition to the compiler-like output of gnat2why on standard
 output, gnat2why produces a machine-parsable output in .spark files
 (if the SPARK input unit is e.g. ``main.adb``, the corresponding
 machine-parsable output is ``main.spark``).
+
+When invoked in global-generation mode, ``gnat2why`` also produces a
+``.spark_error`` JSON file. This file stores the frontend diagnostics gathered
+in phase 1. If compilation errors are detected during global generation,
+``gnat2why`` writes the ``.spark_error`` file and returns without continuing
+to the later tree-processing steps.
 
 ********************************
 gnatwhy3, why3server and provers
@@ -242,8 +257,16 @@ Report Generation
 *****************
 
 Report generation happens after analysis, inside ``gnatprove``. It reads the
-``.spark`` files produced by the analysis actions and aggregates them into the
-user-visible outputs.
+``.spark`` files produced by the analysis actions together with the
+``.spark_error`` files produced by global-generation actions, and aggregates
+them into the user-visible outputs.
+
+The ``.spark`` files remain the main source of flow and proof diagnostics.
+The ``.spark_error`` files are used to carry frontend diagnostics that are
+already known in phase 1, especially in runs that stop before analysis because
+of compilation errors. When a ``.spark`` file exists for a unit, the
+corresponding ``.spark_error`` file is expected to be empty so that diagnostics
+are not duplicated.
 
 At present, the main outputs are:
 
