@@ -544,11 +544,14 @@ package Gnat2Why.Expr is
    --  Create an access to the move tree for Ent
 
    function New_Equality_Of_Preserved_Parts
-     (Ty : Type_Kind_Id; Expr1, Expr2 : W_Term_Id) return W_Pred_Id;
+     (Ty               : Type_Kind_Id;
+      Expr1, Expr2     : W_Term_Id;
+      Constant_Address : Boolean := False) return W_Pred_Id
+   with Pre => (if Constant_Address then Is_Access_Type (Ty));
    --  Return a predicate stating that the (immutable) discriminants,
-   --  array bounds, and is_null and is_moved fields of unconstrained types are
-   --  equal in Expr1 and Expr2. If Ty is an anonymous access type, also assume
-   --  the bounds and discriminants of the designated type.
+   --  array bounds of unconstrained types are equal in Expr1 and Expr2. If
+   --  Constant_Address is True, also assume unchanged is_null fields for the
+   --  pointer, and the bounds and discriminants of the designated type.
    --  This is used to assume that these parts are preserved by the borrow
    --  both in the borrower and in the borrowed expression.
 
