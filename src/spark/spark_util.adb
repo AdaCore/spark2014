@@ -6479,10 +6479,6 @@ package body SPARK_Util is
         or else
           (Ekind (Obj) = E_Variable and then Is_Quantified_Loop_Param (Obj))
       then
-         if Copy_Requires_Init (Etype (Obj)) then
-            return False;
-         end if;
-
          declare
             Q_Expr : constant Node_Id :=
               (if Ekind (Obj) = E_Variable
@@ -6499,13 +6495,18 @@ package body SPARK_Util is
                   Arr_Expr : constant Node_Id := Name (I_Spec);
                begin
                   return
-                    Expr_Has_Relaxed_Init (Arr_Expr, No_Eval => False)
-                    or else
-                      Has_Relaxed_Init (Component_Type (Etype (Arr_Expr)));
+                    not Copy_Requires_Init (Etype (Obj))
+                    and then
+                      (Expr_Has_Relaxed_Init (Arr_Expr, No_Eval => False)
+                       or else
+                         Has_Relaxed_Init (Component_Type (Etype (Arr_Expr))));
                end;
 
             --  On for of quantification/iteration over containers, the
-            --  quantified variable is assigned the result of Element.
+            --  quantified variable is assigned the result of Element if
+            --  supplied. The result of Constant_Reference cannot have
+            --  Relaxed_Initialization, as it is an anonymous elementary type.
+            --  Directly look at its designated type.
 
             elsif Present (I_Spec) and then Of_Present (I_Spec) then
                declare
@@ -6513,7 +6514,20 @@ package body SPARK_Util is
                     Get_Iterable_Type_Primitive
                       (Etype (Name (I_Spec)), Name_Element);
                begin
-                  return Fun_Has_Relaxed_Init (Element);
+                  if Present (Element) then
+                     return Fun_Has_Relaxed_Init (Element);
+                  else
+                     declare
+                        Cst_Ref : constant Entity_Id :=
+                          Get_Iterable_Type_Primitive
+                            (Etype (Name (I_Spec)), Name_Constant_Reference);
+                     begin
+                        pragma Assert (not Fun_Has_Relaxed_Init (Cst_Ref));
+                        return
+                          Has_Relaxed_Init
+                            (Directly_Designated_Type (Etype (Cst_Ref)));
+                     end;
+                  end if;
                end;
 
             --  On for in quantification/iteration over containers, the

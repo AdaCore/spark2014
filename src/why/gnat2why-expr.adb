@@ -3492,6 +3492,7 @@ package body Gnat2Why.Expr is
          Fn_Last     : constant Entity_Id := Prim (Name_Last);
          Fn_Previous : constant Entity_Id := Prim (Name_Previous);
          Fn_Element  : constant Entity_Id := Prim (Name_Element);
+         Fn_Cst_Ref  : constant Entity_Id := Prim (Name_Constant_Reference);
 
          --  Retrieve types for container/cursor.
          --  Element type is retrieved only if necessary.
@@ -3529,6 +3530,7 @@ package body Gnat2Why.Expr is
             Primitives : constant Entity_Array :=
               [Fn_First, Fn_Next, Fn_Has_Elt]
               & (if Present (Fn_Element) then [Fn_Element] else [])
+              & (if Present (Fn_Cst_Ref) then [Fn_Cst_Ref] else [])
               & (if Annot_Present then [Annot.Entity] else []);
          begin
             for C of Primitives loop
@@ -3559,16 +3561,24 @@ package body Gnat2Why.Expr is
          --    ignore (Previous-Check (Cont));
          --    (* vv  if "Element" specified  vv *)
          --    ignore (Element-Check (Cont, Curs))
+         --    (* vv  if "Constant_Reference" specified  vv *)
+         --    ignore (Constant_Reference-Check (Cont, Curs))
+
+         --  Check the invariant for elements if quantification can be
+         --  done on elements.
 
          if Present (Fn_Element) then
-
-            --  Check the invariant for elements if quantification can be
-            --  done on elements.
-
             Add_Check
               (Fn_Element,
                Args_Both,
                To_Why_Ty (Retysp (Etype (Fn_Element))),
+               Check_Inv => Annot_Present and then Annot.Kind = Contains);
+
+         elsif Present (Fn_Cst_Ref) then
+            Add_Check
+              (Fn_Cst_Ref,
+               Args_Both,
+               To_Why_Ty (Retysp (Etype (Fn_Cst_Ref))),
                Check_Inv => Annot_Present and then Annot.Kind = Contains);
          end if;
 
@@ -3614,7 +3624,8 @@ package body Gnat2Why.Expr is
                   declare
                      Checks_Branch : constant W_Prog_Id := Checks;
                      Elt_Ty_Spk    : constant Entity_Id :=
-                       Retysp (Etype (Fn_Element));
+                       Retysp
+                         (Etype (Next_Formal (First_Formal (Annot.Entity))));
                      Elt_Ty_Why    : constant W_Type_Id :=
                        To_Why_Ty (Elt_Ty_Spk);
                      Elt_Id        : constant W_Identifier_Id :=
@@ -10097,41 +10108,58 @@ package body Gnat2Why.Expr is
          Element_T   : W_Type_Id;
          Params      : Transformation_Params) return W_Expr_Id
       is
-         Element_E : constant Entity_Id :=
+         Element_E      : constant Entity_Id :=
            Get_Iterable_Type_Primitive (Over_Type, Name_Element);
-         Cont_Type : constant Entity_Id := Etype (First_Formal (Element_E));
-         Cont_Expr : constant W_Expr_Id :=
+         Constant_Ref_E : constant Entity_Id :=
+           Get_Iterable_Type_Primitive (Over_Type, Name_Constant_Reference);
+         Prim_E         : constant Entity_Id :=
+           (if Present (Element_E) then Element_E else Constant_Ref_E);
+         Cont_Type      : constant Entity_Id := Etype (First_Formal (Prim_E));
+         Cont_Expr      : constant W_Expr_Id :=
            Insert_Simple_Conversion
              (Domain => Domain,
               Expr   => W_Over_E,
               To     => Type_Of_Node (Cont_Type));
-         Curs_Type : constant Entity_Id :=
-           Etype (Next_Formal (First_Formal (Element_E)));
-         Curs_Expr : constant W_Expr_Id :=
+         Curs_Type      : constant Entity_Id :=
+           Etype (Next_Formal (First_Formal (Prim_E)));
+         Curs_Expr      : constant W_Expr_Id :=
            Insert_Simple_Conversion
              (Ada_Node => Empty,
               Domain   => Domain,
               Expr     => +W_Index_Var,
               To       => Type_Of_Node (Curs_Type));
-         Subdomain : constant EW_Domain :=
+         Subdomain      : constant EW_Domain :=
            (if Domain = EW_Prog then EW_Pterm else Domain);
-      begin
-         return
+         Prim_W         : constant W_Identifier_Id :=
+           W_Identifier_Id
+             (Transform_Identifier
+                (Params => Params,
+                 Expr   => Prim_E,
+                 Ent    => Prim_E,
+                 Domain => Subdomain));
+         Res            : W_Expr_Id :=
            New_Function_Call
              (Ada_Node => Ada_Node,
-              Name     =>
-                W_Identifier_Id
-                  (Transform_Identifier
-                     (Params => Params,
-                      Expr   => Element_E,
-                      Ent    => Element_E,
-                      Domain => Subdomain)),
-              Subp     => Element_E,
+              Name     => Prim_W,
+              Subp     => Prim_E,
               Args     => (1 => Cont_Expr, 2 => Curs_Expr),
               Domain   => Subdomain,
               Check    => False,
               --  Checks already done at level of Iterable aspect
-              Typ      => Element_T);
+              Typ      => Get_Typ (Prim_W));
+
+      begin
+         if No (Element_E) then
+            Res :=
+              New_Pointer_Value_Access
+                (Name => Res, E => Etype (Prim_E), Domain => Subdomain);
+
+            Res :=
+              Insert_Simple_Conversion
+                (Expr => Res, To => Element_T, Domain => Subdomain);
+         end if;
+
+         return Res;
       end Make_Binding_For_Iterable;
 
       ----------------------------------
@@ -10314,9 +10342,19 @@ package body Gnat2Why.Expr is
             --  temporary variable.
 
             else
-               Index_Type :=
-                 Etype (Get_Iterable_Type_Primitive (Over_Type, Name_Element));
-
+               declare
+                  Element_E : constant Entity_Id :=
+                    Get_Iterable_Type_Primitive (Over_Type, Name_Element);
+               begin
+                  Index_Type :=
+                    (if Present (Element_E)
+                     then Etype (Element_E)
+                     else
+                       Directly_Designated_Type
+                         (Etype
+                            (Get_Iterable_Type_Primitive
+                               (Over_Type, Name_Constant_Reference))));
+               end;
                Need_Tmp_Var := False;
             end if;
          end if;
@@ -10427,10 +10465,7 @@ package body Gnat2Why.Expr is
           and then
             (Expr_Has_Relaxed_Init (Over_Expr, No_Eval => False)
              or else Has_Relaxed_Init (Quant_Type)))
-        or else
-          (Over_Content
-           and then Has_Relaxed_Init (Quant_Type)
-           and then not Has_Scalar_Type (Quant_Type))
+        or else (Over_Content and then Obj_Has_Relaxed_Init (Quant_Var))
       then
 
          --  Use the abstract form as the initialization flag cannot easily

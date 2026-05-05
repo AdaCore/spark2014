@@ -193,16 +193,26 @@ package body Flow_Utility.Proof_Dependencies is
 
          --  Finally, proof transforms the quantification using
          --  either the Contains function on the type, if it
-         --  exists, or the Has_Element and Element functions
-         --  otherwise.
+         --  exists, or the Has_Element and Element or Constant_Reference
+         --  functions otherwise.
+
          if Found then
             Proof_Dependencies.Include (Iterable_Info.Entity);
 
          elsif Typ /= Etype (Name (N)) then
             Proof_Dependencies.Include
               (Get_Iterable_Type_Primitive (Typ, Name_Has_Element));
-            Proof_Dependencies.Include
-              (Get_Iterable_Type_Primitive (Typ, Name_Element));
+
+            declare
+               Element : Entity_Id :=
+                 Get_Iterable_Type_Primitive (Typ, Name_Element);
+            begin
+               if No (Element) then
+                  Element :=
+                    Get_Iterable_Type_Primitive (Typ, Name_Constant_Reference);
+               end if;
+               Proof_Dependencies.Include (Element);
+            end;
          end if;
       end if;
    end Process_Iterable_For_Proof_Annotation;

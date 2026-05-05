@@ -46,6 +46,7 @@ with Why.Conversions;         use Why.Conversions;
 with Why.Gen.Binders;         use Why.Gen.Binders;
 with Why.Gen.Expr;            use Why.Gen.Expr;
 with Why.Gen.Names;           use Why.Gen.Names;
+with Why.Gen.Pointers;        use Why.Gen.Pointers;
 with Why.Gen.Progs;           use Why.Gen.Progs;
 with Why.Inter;               use Why.Inter;
 
@@ -1203,34 +1204,59 @@ package body Gnat2Why.Expr.Loops is
 
                function Loop_Index_Value (Domain : EW_Domain) return W_Expr_Id
                is
-                  Elmt     : constant E_Function_Id :=
-                    Get_Iterable_Type_Primitive
-                      (Etype (Over_Node), Name_Element);
-                  Cur_Expr : constant W_Expr_Id :=
+                  Cur_Expr     : constant W_Expr_Id :=
                     Insert_Simple_Conversion
                       (Domain => EW_Term,
                        Expr   => +Iter_Deref,
                        To     => Typ_For_Iter);
-                  W_Elmt   : constant W_Identifier_Id :=
+                  Elmt         : constant Entity_Id :=
+                    Get_Iterable_Type_Primitive
+                      (Etype (Over_Node), Name_Element);
+                  Constant_Ref : constant Entity_Id :=
+                    Get_Iterable_Type_Primitive
+                      (Etype (Over_Node), Name_Constant_Reference);
+                  Prim         : constant E_Function_Id :=
+                    (if Present (Elmt) then Elmt else Constant_Ref);
+                  W_Prim       : constant W_Identifier_Id :=
                     +Transform_Identifier
                        (Params => Params,
-                        Expr   => Elmt,
-                        Ent    => Elmt,
+                        Expr   => Prim,
+                        Ent    => Prim,
                         Domain => Domain);
-                  Check    : constant Boolean := Domain = EW_Prog;
-               begin
+                  Check        : constant Boolean := Domain = EW_Prog;
+
                   pragma Assert (W_Container /= Why_Empty);
-                  return
+                  Res : W_Expr_Id :=
                     New_Function_Call
                       (Ada_Node => LParam_Spec,
-                       Subp     => Elmt,
-                       Name     => W_Elmt,
+                       Subp     => Prim,
+                       Name     => W_Prim,
                        Args     =>
                          (1 => (if Check then W_Container else W_Container_T),
                           2 => Cur_Expr),
                        Domain   => Domain,
                        Check    => Check,
-                       Typ      => Type_Of_Node (Etype (Elmt)));
+                       Typ      => Get_Typ (W_Prim));
+               begin
+                  if No (Elmt) then
+                     declare
+                        Subdomain : constant EW_Domain := Term_Domain (Domain);
+                     begin
+                        Res :=
+                          New_Pointer_Value_Access
+                            (Name   => Res,
+                             E      => Etype (Prim),
+                             Domain => Subdomain);
+
+                        Res :=
+                          Insert_Simple_Conversion
+                            (Expr   => Res,
+                             To     => Loop_Index_Type,
+                             Domain => Subdomain);
+                     end;
+                  end if;
+
+                  return Res;
                end Loop_Index_Value;
 
                ------------------
