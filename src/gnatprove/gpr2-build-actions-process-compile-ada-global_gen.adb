@@ -2,8 +2,8 @@ with Configuration;
 with Gnat2Why_Opts.Writing;
 with GNAT.OS_Lib;
 
-with GPR2.Build.Actions.Compile.Ada.Analysis;
-with GPR2.Build.Actions.Compile.Ada.Data_Rep;
+with GPR2.Build.Actions.Process.Compile.Ada.Analysis;
+with GPR2.Build.Actions.Process.Compile.Ada.Data_Rep;
 with GPR2.Build.Artifacts.Object_File;
 with GPR2.Build.Tree_Db;
 with GPR2.Message;
@@ -12,7 +12,7 @@ with GPR2.Project.Registry.Attribute;
 with GPR2.Source_Reference;
 with VC_Kinds;
 
-package body GPR2.Build.Actions.Compile.Ada.Global_Gen is
+package body GPR2.Build.Actions.Process.Compile.Ada.Global_Gen is
 
    package PRA renames GPR2.Project.Registry.Attribute;
 
@@ -86,7 +86,7 @@ package body GPR2.Build.Actions.Compile.Ada.Global_Gen is
       Cmd_Line       : in out GPR2.Build.Command_Line.Object;
       Signature_Only : Boolean) is
    begin
-      GPR2.Build.Actions.Compile.Ada.Object (Self).Compute_Command
+      Compile.Ada.Object (Self).Compute_Command
         (Slot, Cmd_Line, Signature_Only);
       --  Replace gcc by gnat2why; we need to explicitly remove the previous
       --  command, then add ours.
@@ -129,9 +129,7 @@ package body GPR2.Build.Actions.Compile.Ada.Global_Gen is
    function Create
      (Src : GPR2.Build.Compilation_Unit.Object) return Global_Gen_Id is
    begin
-      return
-        (GPR2.Build.Actions.Compile.Ada.Ada_Compile_Id'(Ada.Create (Src))
-         with null record);
+      return (Compile.Ada.Ada_Compile_Id'(Ada.Create (Src)) with null record);
    end Create;
 
    ----------------
@@ -141,7 +139,7 @@ package body GPR2.Build.Actions.Compile.Ada.Global_Gen is
    procedure Initialize
      (Self : in out Object; Unit : GPR2.Build.Compilation_Unit.Object) is
    begin
-      GPR2.Build.Actions.Compile.Ada.Object (Self).Initialize (Unit);
+      Compile.Ada.Object (Self).Initialize (Unit);
       --  The ALI file is the expected output of this action
       Self.Obj_File :=
         GPR2.Build.Artifacts.Object_File.Create (Self.Dep_File.Path);
@@ -172,9 +170,7 @@ package body GPR2.Build.Actions.Compile.Ada.Global_Gen is
    function On_Tree_Insertion
      (Self : Object; Db : in out GPR2.Build.Tree_Db.Object) return Boolean is
    begin
-      if not GPR2.Build.Actions.Compile.Ada.Object (Self).On_Tree_Insertion
-               (Db)
-      then
+      if not Compile.Ada.Object (Self).On_Tree_Insertion (Db) then
          return False;
       end if;
 
@@ -187,12 +183,12 @@ package body GPR2.Build.Actions.Compile.Ada.Global_Gen is
       return True;
    end On_Tree_Insertion;
 
-   ------------------
-   -- Post_Command --
-   ------------------
+   --------------------
+   -- Post_Execution --
+   --------------------
 
    overriding
-   function Post_Command
+   function Post_Execution
      (Self   : in out Object;
       Status : Execution_Status;
       Stdout : Unbounded_String := Null_Unbounded_String;
@@ -215,7 +211,7 @@ package body GPR2.Build.Actions.Compile.Ada.Global_Gen is
 
       function Add_Global_Gen_Dep (Unit : Name_Type) return Boolean is
          CU     : Compilation_Unit.Object;
-         GG_Act : GPR2.Build.Actions.Compile.Ada.Global_Gen.Object;
+         GG_Act : Compile.Ada.Global_Gen.Object;
 
          use type GPR2.Project.View.Object;
       begin
@@ -253,8 +249,7 @@ package body GPR2.Build.Actions.Compile.Ada.Global_Gen is
                end if;
             else
                GG_Act :=
-                 GPR2.Build.Actions.Compile.Ada.Global_Gen.Object
-                   (Self.Tree.Action (GG_Id));
+                 Compile.Ada.Global_Gen.Object (Self.Tree.Action (GG_Id));
             end if;
          end;
 
@@ -263,14 +258,14 @@ package body GPR2.Build.Actions.Compile.Ada.Global_Gen is
          --  depends on GGen B, then Analysis A should also depend on GGen B.
 
          for Succ of Self.Tree.Successors (Self.Lib_Ali_File) loop
-            if Succ in Actions.Compile.Ada.Analysis.Object'Class then
+            if Succ in Compile.Ada.Analysis.Object'Class then
                --  Ensure that GG_Act is always executed before the analysis
                --  action, even if the GG_Act is externally built, as we need
-               --  its ALI parsing to be done in the Post_Command.
+               --  its ALI parsing to be done in the Post_Execution.
                Self.Tree.Add_Input (Succ.UID, GG_Act.Lib_Ali_File, True);
 
                --  Add the ALI file to be used by the analysis action
-               Actions.Compile.Ada.Analysis.Object
+               Compile.Ada.Analysis.Object
                  (Self.Tree.Action_Id_To_Reference (Succ.UID).Element.all)
                  .ALI_Files
                  .Include (GG_Act.Lib_Ali_File);
@@ -286,7 +281,7 @@ package body GPR2.Build.Actions.Compile.Ada.Global_Gen is
 
       function Add_Data_Rep_Dep (Unit : Name_Type) return Boolean is
          CU     : Compilation_Unit.Object;
-         DR_Act : Actions.Compile.Ada.Data_Rep.Object;
+         DR_Act : Compile.Ada.Data_Rep.Object;
 
          use type GPR2.Project.View.Object;
       begin
@@ -296,7 +291,7 @@ package body GPR2.Build.Actions.Compile.Ada.Global_Gen is
             return True;
          end if;
 
-         if not Actions.Compile.Ada.Data_Rep.Applicable (CU) then
+         if not Compile.Ada.Data_Rep.Applicable (CU) then
             return True;
          end if;
 
@@ -307,8 +302,8 @@ package body GPR2.Build.Actions.Compile.Ada.Global_Gen is
          end if;
 
          declare
-            DR_Id : constant Actions.Compile.Ada.Data_Rep.Data_Rep_Id :=
-              Actions.Compile.Ada.Data_Rep.Create (CU);
+            DR_Id : constant Compile.Ada.Data_Rep.Data_Rep_Id :=
+              Compile.Ada.Data_Rep.Create (CU);
          begin
             if not Self.Tree.Has_Action (DR_Id) then
                DR_Act.Initialize (CU);
@@ -318,17 +313,16 @@ package body GPR2.Build.Actions.Compile.Ada.Global_Gen is
                end if;
             else
                DR_Act :=
-                 Actions.Compile.Ada.Data_Rep.Object
-                   (Self.Tree.Action (DR_Id));
+                 Compile.Ada.Data_Rep.Object (Self.Tree.Action (DR_Id));
             end if;
          end;
 
          for Succ of Self.Tree.Successors (Self.Lib_Ali_File) loop
-            if Succ in Actions.Compile.Ada.Analysis.Object'Class then
+            if Succ in Compile.Ada.Analysis.Object'Class then
                for JSON_File of DR_Act.JSON_Outputs loop
                   Self.Tree.Add_Input (Succ.UID, JSON_File, True);
 
-                  Actions.Compile.Ada.Analysis.Object
+                  Compile.Ada.Analysis.Object
                     (Self.Tree.Action_Id_To_Reference (Succ.UID).Element.all)
                     .Data_Rep_JSON_Files
                     .Include (JSON_File);
@@ -431,7 +425,7 @@ package body GPR2.Build.Actions.Compile.Ada.Global_Gen is
       end if;
 
       return True;
-   end Post_Command;
+   end Post_Execution;
 
    ---------
    -- UID --
@@ -443,4 +437,4 @@ package body GPR2.Build.Actions.Compile.Ada.Global_Gen is
       return Global_Gen.Create (Self.CU);
    end UID;
 
-end GPR2.Build.Actions.Compile.Ada.Global_Gen;
+end GPR2.Build.Actions.Process.Compile.Ada.Global_Gen;

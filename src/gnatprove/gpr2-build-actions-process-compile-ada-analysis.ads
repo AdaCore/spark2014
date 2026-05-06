@@ -2,7 +2,7 @@ with GPR2.Build.Command_Line;
 with GPR2.Build.Compilation_Unit;
 with GPR2.Build.Compilation_Unit.Maps;
 
-package GPR2.Build.Actions.Compile.Ada.Analysis is
+package GPR2.Build.Actions.Process.Compile.Ada.Analysis is
 
    package File_Sets is new
      Standard.Ada.Containers.Hashed_Sets
@@ -11,14 +11,13 @@ package GPR2.Build.Actions.Compile.Ada.Analysis is
         Artifacts.Files."=",
         Artifacts.Files."=");
 
-   type Analysis_Id is new GPR2.Build.Actions.Compile.Ada.Ada_Compile_Id
-   with null record;
+   type Analysis_Id is new Compile.Ada.Ada_Compile_Id with null record;
 
    overriding
    function Create
      (Src : GPR2.Build.Compilation_Unit.Object) return Analysis_Id;
 
-   type Object is new GPR2.Build.Actions.Compile.Ada.Object with record
+   type Object is new Compile.Ada.Object with record
       Object_Path_File    : Unbounded_String;
       ALI_Files           : File_Sets.Set;
       Data_Rep_JSON_Files : File_Sets.Set;
@@ -63,10 +62,15 @@ package GPR2.Build.Actions.Compile.Ada.Analysis is
    function Extended (Self : Object) return Object;
 
    overriding
-   function Post_Command
+   function Post_Execution
      (Self   : in out Object;
       Status : Execution_Status;
       Stdout : Unbounded_String := Null_Unbounded_String;
       Stderr : Unbounded_String := Null_Unbounded_String) return Boolean;
 
-end GPR2.Build.Actions.Compile.Ada.Analysis;
+   overriding
+   function Failure_Message (Self : Object) return String
+   is ("");
+   --  Do not display any action failure message
+
+end GPR2.Build.Actions.Process.Compile.Ada.Analysis;

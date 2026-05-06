@@ -2,16 +2,15 @@ with GPR2.Build.Artifacts.Files;
 with GPR2.Build.Command_Line;
 with GPR2.Build.Compilation_Unit;
 
-package GPR2.Build.Actions.Compile.Ada.Global_Gen is
+package GPR2.Build.Actions.Process.Compile.Ada.Global_Gen is
 
-   type Global_Gen_Id is new GPR2.Build.Actions.Compile.Ada.Ada_Compile_Id
-   with null record;
+   type Global_Gen_Id is new Compile.Ada.Ada_Compile_Id with null record;
 
    overriding
    function Create
      (Src : GPR2.Build.Compilation_Unit.Object) return Global_Gen_Id;
 
-   type Object is new GPR2.Build.Actions.Compile.Ada.Object with record
+   type Object is new Compile.Ada.Object with record
       Error_File : GPR2.Build.Artifacts.Files.Object;
    end record;
 
@@ -30,7 +29,7 @@ package GPR2.Build.Actions.Compile.Ada.Global_Gen is
       Signature_Only : Boolean);
 
    overriding
-   function Post_Command
+   function Post_Execution
      (Self   : in out Object;
       Status : Execution_Status;
       Stdout : Unbounded_String := Null_Unbounded_String;
@@ -47,4 +46,9 @@ package GPR2.Build.Actions.Compile.Ada.Global_Gen is
    overriding
    function Extended (Self : Object) return Object;
 
-end GPR2.Build.Actions.Compile.Ada.Global_Gen;
+   overriding
+   function Failure_Message (Self : Object) return String
+   is ("");
+   --  Do not display any action failure message
+
+end GPR2.Build.Actions.Process.Compile.Ada.Global_Gen;

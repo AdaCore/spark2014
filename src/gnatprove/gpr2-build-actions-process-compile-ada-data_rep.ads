@@ -3,7 +3,7 @@ with GPR2.Build.Command_Line;
 with GPR2.Build.Compilation_Unit;
 with GPR2.Build.Tree_Db;
 
-package GPR2.Build.Actions.Compile.Ada.Data_Rep is
+package GPR2.Build.Actions.Process.Compile.Ada.Data_Rep is
 
    subtype JSON_File_Index is Positive range 1 .. 2;
    type JSON_File_Array is
@@ -12,8 +12,7 @@ package GPR2.Build.Actions.Compile.Ada.Data_Rep is
    --  Contains one entry for spec-only or body-only units, two entries (body
    --  first, spec second) when the unit has both a body and a spec.
 
-   type Data_Rep_Id is new GPR2.Build.Actions.Compile.Ada.Ada_Compile_Id
-   with null record;
+   type Data_Rep_Id is new Compile.Ada.Ada_Compile_Id with null record;
 
    overriding
    function Create
@@ -23,7 +22,7 @@ package GPR2.Build.Actions.Compile.Ada.Data_Rep is
    function Action_Class (Self : Data_Rep_Id) return Value_Type
    is ("Data_Rep");
 
-   type Object is new GPR2.Build.Actions.Compile.Ada.Object with null record;
+   type Object is new Compile.Ada.Object with null record;
 
    overriding
    function UID (Self : Object) return GPR2.Build.Actions.Action_Id'Class;
@@ -36,7 +35,7 @@ package GPR2.Build.Actions.Compile.Ada.Data_Rep is
       Signature_Only : Boolean);
 
    overriding
-   function Post_Command
+   function Post_Execution
      (Self   : in out Object;
       Status : Execution_Status;
       Stdout : Unbounded_String := Null_Unbounded_String;
@@ -74,4 +73,9 @@ package GPR2.Build.Actions.Compile.Ada.Data_Rep is
    is (False);
    --  Suppress output for data rep actions
 
-end GPR2.Build.Actions.Compile.Ada.Data_Rep;
+   overriding
+   function Failure_Message (Self : Object) return String
+   is ("");
+   --  Do not display any action failure message
+
+end GPR2.Build.Actions.Process.Compile.Ada.Data_Rep;
