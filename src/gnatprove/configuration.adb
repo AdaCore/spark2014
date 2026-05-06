@@ -66,6 +66,8 @@ package body Configuration is
    Invalid_Steps   : constant := -1;
    Invalid_Timeout : constant := -1;
 
+   type Warning_Status_Set_Array is array (Misc_Warning_Kind) of Boolean;
+
    Usage_Message : constant String := "-Pproj [switches] [-cargs switches]";
    --  Used to print part of the help message for gnatprove
 
@@ -311,6 +313,7 @@ package body Configuration is
            Value_Kind => Flag_Value,
            Layer      => Invocation_Layer),
       Sw_Benchmark             =>
+        --  Undocumented switch for fake prover binaries in benchmarks
         Make_Switch_Metadata
           (Long       => new String'("--benchmark"),
            Value_Kind => Flag_Value,
@@ -649,19 +652,29 @@ package body Configuration is
            Switch_Definitions (Switch).Layer = File_Specific_Layer));
 
    type Switch_Value (Kind : Switch_Value_Kind := Flag_Value) is record
-      Boolean_Val     : aliased Boolean := False;
-      Integer_Val     : aliased Integer := 0;
-      String_Val      : aliased GNAT.Strings.String_Access := null;
-      String_List_Val : String_Lists.List;
-   end record;
-   --  Record holding the value for a switch, to be used with GNAT.Command_Line
-   --  Define_Switch procedures.
-   --  ??? We would like this record to be a variant record, but in that case
-   --  we wouldn't be able to take the 'Access of the value. This requirement
-   --  comes from the typed-output GNAT.Command_Line registration API, so the
-   --  current shape is acceptable as temporary parser scratch storage.
+      case Kind is
+         when Flag_Value =>
+            Boolean_Val : Boolean := False;
 
-   type Switch_Value_Array is array (Switch_Id) of Switch_Value;
+         when Integer_Value =>
+            Integer_Val : Integer := 0;
+
+         when String_Value =>
+            String_Val : GNAT.Strings.String_Access := null;
+
+         when String_List_Value =>
+            String_List_Val : String_Lists.List;
+      end case;
+   end record;
+   --  Record holding the value for a switch.
+
+   type Switch_Value_Array is array (Switch_Id) of Switch_Value
+   with
+     Predicate =>
+       (for all Id in Switch_Id =>
+          Switch_Definitions (Id).Value_Kind = Switch_Value_Array (Id).Kind);
+
+   type Switch_Presence_Array is array (Switch_Id) of Boolean;
 
    function Initial_Switch_Value (Switch : Switch_Id) return Switch_Value;
    --  Return a default value for all Switches
@@ -673,9 +686,12 @@ package body Configuration is
    --  Check that switch definitions and the value array have compatible types
 
    type Parsed_Switches is record
-      Values    : Switch_Value_Array :=
+      Values             : Switch_Value_Array :=
         [for Switch in Switch_Id => Initial_Switch_Value (Switch)];
-      File_List : String_Lists.List;
+      Present            : Switch_Presence_Array := [others => False];
+      File_List          : String_Lists.List;
+      Warning_Status     : Warning_Status_Array := VC_Kinds.Warning_Status;
+      Warning_Status_Set : Warning_Status_Set_Array := [others => False];
    end record;
 
    type Parsed_Switches_Access is access all Parsed_Switches;
@@ -689,9 +705,22 @@ package body Configuration is
      (Parsed : in out Parsed_Switches; Mode : Parsing_Modes);
    --  Copy parsed switch values into CL_Switches for existing consumers
 
+   procedure Merge_Parsed_Switches
+     (Base : in out Parsed_Switches; Over : Parsed_Switches);
+   --  Merge Over onto Base using command-line precedence semantics
+
    procedure Handle_Switch
      (Switch : String; Parameter : String; Section : String);
    --  Deal with switches that are not automatic
+
+   function Find_Switch
+     (Spelling : String; Switch : out Switch_Id) return Boolean;
+   --  Return the switch id with Short or Long spelling equal to Spelling
+
+   function Parse_Switches_Internal
+     (Mode : Parsing_Modes; Com_Lin : String_List) return Parsed_Switches;
+   --  Parse the command line switches according to the provided mode into
+   --  internal storage.
 
    procedure Parse_Switches (Mode : Parsing_Modes; Com_Lin : String_List);
    --  Parse the command line switches according to the provided mode into
@@ -1008,6 +1037,98 @@ package body Configuration is
    end Compute_Socket_Dir;
 
    ---------------------------
+   -- Merge_Parsed_Switches --
+   ---------------------------
+
+   procedure Merge_Parsed_Switches
+     (Base : in out Parsed_Switches; Over : Parsed_Switches)
+   is
+      procedure Append_List
+        (Source : String_Lists.List; Target : in out String_Lists.List);
+      --  Append Source to Target
+
+      procedure Copy_String
+        (Source : GNAT.Strings.String_Access;
+         Target : in out GNAT.Strings.String_Access);
+      --  Replace Target with a copy of Source
+
+      -----------------
+      -- Append_List --
+      -----------------
+
+      procedure Append_List
+        (Source : String_Lists.List; Target : in out String_Lists.List) is
+      begin
+         for Element of Source loop
+            Target.Append (Element);
+         end loop;
+      end Append_List;
+
+      -----------------
+      -- Copy_String --
+      -----------------
+
+      procedure Copy_String
+        (Source : GNAT.Strings.String_Access;
+         Target : in out GNAT.Strings.String_Access) is
+      begin
+         if Target /= null then
+            Free (Target);
+         end if;
+
+         if Source = null then
+            Target := null;
+         else
+            Target := new String'(Source.all);
+         end if;
+      end Copy_String;
+
+   begin
+      for Switch in Switch_Id loop
+         case Switch_Definitions (Switch).Value_Kind is
+            when Flag_Value        =>
+               Base.Values (Switch).Boolean_Val :=
+                 Base.Values (Switch).Boolean_Val
+                 or else Over.Values (Switch).Boolean_Val;
+               Base.Present (Switch) :=
+                 Base.Present (Switch) or else Over.Present (Switch);
+
+            when Integer_Value     =>
+               if Over.Present (Switch) then
+                  Base.Values (Switch).Integer_Val :=
+                    Over.Values (Switch).Integer_Val;
+                  Base.Present (Switch) := True;
+               end if;
+
+            when String_Value      =>
+               if Over.Present (Switch) then
+                  Copy_String
+                    (Over.Values (Switch).String_Val,
+                     Base.Values (Switch).String_Val);
+                  Base.Present (Switch) := True;
+               end if;
+
+            when String_List_Value =>
+               if Over.Present (Switch) then
+                  Append_List
+                    (Over.Values (Switch).String_List_Val,
+                     Base.Values (Switch).String_List_Val);
+                  Base.Present (Switch) := True;
+               end if;
+         end case;
+      end loop;
+
+      for WK in Misc_Warning_Kind loop
+         if Over.Warning_Status_Set (WK) then
+            Base.Warning_Status (WK) := Over.Warning_Status (WK);
+            Base.Warning_Status_Set (WK) := True;
+         end if;
+      end loop;
+
+      Append_List (Over.File_List, Base.File_List);
+   end Merge_Parsed_Switches;
+
+   ---------------------------
    -- Copy_To_CL_Switches --
    ---------------------------
 
@@ -1019,7 +1140,7 @@ package body Configuration is
       --  Replace Target with Source
 
       procedure Move_String
-        (Source : in out GNAT.Strings.String_Access;
+        (Source : GNAT.Strings.String_Access;
          Target : in out GNAT.Strings.String_Access);
       --  Move Source into Target, using an empty string for absent values
 
@@ -1041,7 +1162,7 @@ package body Configuration is
       -----------------
 
       procedure Move_String
-        (Source : in out GNAT.Strings.String_Access;
+        (Source : GNAT.Strings.String_Access;
          Target : in out GNAT.Strings.String_Access) is
       begin
          if Target /= null then
@@ -1051,8 +1172,7 @@ package body Configuration is
          if Source = null then
             Target := new String'("");
          else
-            Target := Source;
-            Source := null;
+            Target := new String'(Source.all);
          end if;
       end Move_String;
 
@@ -1146,6 +1266,8 @@ package body Configuration is
            Parsed.Values (Sw_Debug_Exec_RAC).Boolean_Val;
          Copy_List (Parsed.File_List, CL_Switches.File_List);
       end if;
+
+      Configuration.Warning_Status := Parsed.Warning_Status;
 
       if Mode in All_Switches | Global_Switches_Only | File_Specific_Only then
          CL_Switches.Level := Parsed.Values (Sw_Level).Integer_Val;
@@ -1289,12 +1411,42 @@ package body Configuration is
       return Opt_File;
    end Extra_Args_File_For_Unit;
 
+   -----------------
+   -- Find_Switch --
+   -----------------
+
+   function Find_Switch
+     (Spelling : String; Switch : out Switch_Id) return Boolean is
+   begin
+      for Candidate in Switch_Id loop
+         declare
+            Definition : Switch_Metadata renames
+              Switch_Definitions (Candidate);
+         begin
+            if (Definition.Short /= null
+                and then Definition.Short.all = Spelling)
+              or else
+                (Definition.Long /= null
+                 and then Definition.Long.all = Spelling)
+            then
+               Switch := Candidate;
+               return True;
+            end if;
+         end;
+      end loop;
+
+      return False;
+   end Find_Switch;
+
    -------------------
    -- Handle_Switch --
    -------------------
 
    procedure Handle_Switch
-     (Switch : String; Parameter : String; Section : String) is
+     (Switch : String; Parameter : String; Section : String)
+   is
+      Id    : Switch_Id;
+      Found : Boolean;
    begin
       pragma Unreferenced (Section);
       pragma Assert (Current_Parsed_Switches /= null);
@@ -1313,35 +1465,80 @@ package body Configuration is
          null;
       elsif Switch = "-aP" then
          null;
-      elsif Switch = "--sarif-base-uri" then
-         Current_Parsed_Switches.Values (Sw_SARIF_Base_URI)
-           .String_List_Val
-           .Append (Parameter);
       else
-         raise Invalid_Switch;
+         Found := Find_Switch (Switch, Id);
+
+         if not Found then
+            raise Invalid_Switch;
+         end if;
+
+         Current_Parsed_Switches.Present (Id) := True;
+
+         case Switch_Definitions (Id).Value_Kind is
+            when Flag_Value        =>
+               Current_Parsed_Switches.Values (Id).Boolean_Val := True;
+
+            when Integer_Value     =>
+               begin
+                  Current_Parsed_Switches.Values (Id).Integer_Val :=
+                    Integer'Value (Parameter);
+               exception
+                  when Constraint_Error =>
+                     raise Invalid_Parameter;
+               end;
+
+            when String_Value      =>
+               if Current_Parsed_Switches.Values (Id).String_Val /= null then
+                  Free (Current_Parsed_Switches.Values (Id).String_Val);
+               end if;
+
+               Current_Parsed_Switches.Values (Id).String_Val :=
+                 new String'(Parameter);
+
+            when String_List_Value =>
+               Current_Parsed_Switches.Values (Id).String_List_Val.Append
+                 (Parameter);
+         end case;
       end if;
    end Handle_Switch;
 
-   ---------------------
-   -- Handle_W_Switch --
-   ---------------------
+   -----------------------------
+   -- Handle_Warning_Switches --
+   -----------------------------
 
    procedure Handle_Warning_Switches (Switch, Value : String) is
       Tag    : Misc_Warning_Kind;
       Status : Warning_Enabled_Status;
+
+      procedure Set_Warning_Status
+        (Warning : Misc_Warning_Kind; Status : Warning_Enabled_Status);
+      --  Record the warning status in the current parsed switch storage
+
+      ------------------------
+      -- Set_Warning_Status --
+      ------------------------
+
+      procedure Set_Warning_Status
+        (Warning : Misc_Warning_Kind; Status : Warning_Enabled_Status) is
+      begin
+         pragma Assert (Current_Parsed_Switches /= null);
+
+         Current_Parsed_Switches.Warning_Status (Warning) := Status;
+         Current_Parsed_Switches.Warning_Status_Set (Warning) := True;
+      end Set_Warning_Status;
    begin
 
       --  Handling of pedantic and info
 
       if Switch = "--pedantic" then
          for WK in Pedantic_Warning_Kind loop
-            Configuration.Warning_Status (WK) := VC_Kinds.WS_Enabled;
+            Set_Warning_Status (WK, VC_Kinds.WS_Enabled);
          end loop;
          return;
       end if;
       if Switch = "--info" then
          for WK in Info_Warning_Kind loop
-            Configuration.Warning_Status (WK) := VC_Kinds.WS_Enabled;
+            Set_Warning_Status (WK, VC_Kinds.WS_Enabled);
          end loop;
          return;
       end if;
@@ -1359,7 +1556,7 @@ package body Configuration is
 
       if Value = "all" then
          for WK in Misc_Warning_Kind loop
-            Configuration.Warning_Status (WK) := Status;
+            Set_Warning_Status (WK, Status);
          end loop;
          return;
       end if;
@@ -1379,7 +1576,7 @@ package body Configuration is
                With_Help => False);
       end;
 
-      Configuration.Warning_Status (Tag) := Status;
+      Set_Warning_Status (Tag, Status);
    end Handle_Warning_Switches;
 
    -----------------------
@@ -1410,7 +1607,7 @@ package body Configuration is
    begin
       case Switch_Definitions (Switch).Value_Kind is
          when Flag_Value        =>
-            return (Kind => Flag_Value, Boolean_Val => False, others => <>);
+            return (Kind => Flag_Value, Boolean_Val => False);
 
          when Integer_Value     =>
             return
@@ -1420,14 +1617,15 @@ package body Configuration is
                     when Sw_Level               => Invalid_Level,
                     when Sw_Steps | Sw_CE_Steps => Invalid_Steps,
                     when Sw_Proof_Warn_Timeout  => Invalid_Timeout,
-                    when others                 => 0),
-               others      => <>);
+                    when others                 => 0));
 
          when String_Value      =>
-            return (Kind => String_Value, String_Val => null, others => <>);
+            return (Kind => String_Value, String_Val => null);
 
          when String_List_Value =>
-            return (Kind => String_List_Value, others => <>);
+            return
+              (Kind            => String_List_Value,
+               String_List_Val => String_Lists.Empty);
       end case;
    end Initial_Switch_Value;
 
@@ -1503,10 +1701,13 @@ package body Configuration is
    end No_Project_File_Mode;
 
    --------------------
-   -- Parse_Switches --
-   --------------------
+   -----------------------------
+   -- Parse_Switches_Internal --
+   -----------------------------
 
-   procedure Parse_Switches (Mode : Parsing_Modes; Com_Lin : String_List) is
+   function Parse_Switches_Internal
+     (Mode : Parsing_Modes; Com_Lin : String_List) return Parsed_Switches
+   is
 
       procedure Free_Topmost is new
         Ada.Unchecked_Deallocation
@@ -1537,10 +1738,8 @@ package body Configuration is
         (Switch : Switch_Id) return String;
       --  Return the long switch spelling expected by GNAT.Command_Line
 
-      function GNAT_Command_Line_Value_Switch
-        (Switch : Switch_Id) return String;
-      --  Return the switch spelling for value switches registered with the
-      --  Long_Switch parameter of GNAT.Command_Line.Define_Switch.
+      procedure Register_Switch (Switch : Switch_Id);
+      --  Register Switch so that Handle_Switch stores its value.
 
       function GNAT_Command_Line_Short_Switch
         (Switch : Switch_Id) return String
@@ -1567,15 +1766,20 @@ package body Configuration is
          end if;
       end GNAT_Command_Line_Long_Switch;
 
-      function GNAT_Command_Line_Value_Switch
-        (Switch : Switch_Id) return String is
+      procedure Register_Switch (Switch : Switch_Id) is
+         Short : constant String := Short_Name (Switch);
+         Long  : constant String := Long_Name (Switch);
       begin
-         if Long_Name (Switch) /= "" then
-            return GNAT_Command_Line_Long_Switch (Switch);
-         else
-            return GNAT_Command_Line_Short_Switch (Switch);
-         end if;
-      end GNAT_Command_Line_Value_Switch;
+         Define_Switch
+           (Config,
+            (if Short = ""
+             then ""
+             else GNAT_Command_Line_Short_Switch (Switch)),
+            Long_Switch =>
+              (if Long = ""
+               then ""
+               else GNAT_Command_Line_Long_Switch (Switch)));
+      end Register_Switch;
 
    begin
       pragma Assert (Switch_Values_Have_Expected_Kinds (Parsed.Values));
@@ -1587,297 +1791,47 @@ package body Configuration is
          Help_Msg => SPARK_Install.Help_Message);
 
       if Mode in All_Switches | Global_Switches_Only then
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_V).Boolean_Val'Access,
-            Short_Name (Sw_V),
-            Long_Switch => Long_Name (Sw_V));
-      end if;
-
-      if Mode in All_Switches | Global_Switches_Only then
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_Assumptions).Boolean_Val'Access,
-            Long_Switch => Long_Name (Sw_Assumptions));
-
-         --  This switch is not documented on purpose. We provide the fake_*
-         --  binaries instead of the real prover binaries. This helps when
-         --  collecting benchmarks for prover developers.
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_Benchmark).Boolean_Val'Access,
-            Long_Switch => Long_Name (Sw_Benchmark));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_Checks_As_Errors).String_Val'Access,
-            Long_Switch =>
-              GNAT_Command_Line_Long_Switch (Sw_Checks_As_Errors));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_CWE).Boolean_Val'Access,
-            Long_Switch => Long_Name (Sw_CWE));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_D).Boolean_Val'Access,
-            Short_Name (Sw_D),
-            Long_Switch => Long_Name (Sw_D));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_Debug_No_Cache_Output).Boolean_Val'Access,
-            Long_Switch => Long_Name (Sw_Debug_No_Cache_Output));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_Debug_Save_VCs).Boolean_Val'Access,
-            Long_Switch => Long_Name (Sw_Debug_Save_VCs));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_Dbg_No_Sem).Boolean_Val'Access,
-            Long_Switch => Long_Name (Sw_Dbg_No_Sem));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_Debug_Trivial).Boolean_Val'Access,
-            Long_Switch => Long_Name (Sw_Debug_Trivial));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_Debug_Prover_Errors).Boolean_Val'Access,
-            Long_Switch => Long_Name (Sw_Debug_Prover_Errors));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_Exclude_Line).String_Val'Access,
-            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_Exclude_Line));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_Flow_Debug).Boolean_Val'Access,
-            Long_Switch => Long_Name (Sw_Flow_Debug));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_Flow_Show_GG).Boolean_Val'Access,
-            Long_Switch => Long_Name (Sw_Flow_Show_GG));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_F).Boolean_Val'Access,
-            Short_Name (Sw_F));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_IDE_Progress_Bar).Boolean_Val'Access,
-            Long_Switch => Long_Name (Sw_IDE_Progress_Bar));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_J).Integer_Val'Access,
-            Long_Switch => GNAT_Command_Line_Value_Switch (Sw_J),
-            Initial     => 1);
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_K).Boolean_Val'Access,
-            Short_Name (Sw_K));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_Limit_Line).String_Val'Access,
-            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_Limit_Line));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_Limit_Lines).String_Val'Access,
-            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_Limit_Lines));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_Limit_Name).String_Val'Access,
-            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_Limit_Name));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_Limit_Region).String_Val'Access,
-            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_Limit_Region));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_Limit_Subp).String_Val'Access,
-            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_Limit_Subp));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_Memcached_Server).String_Val'Access,
-            Long_Switch =>
-              GNAT_Command_Line_Long_Switch (Sw_Memcached_Server));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_M).Boolean_Val'Access,
-            Short_Name (Sw_M));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_No_Axiom_Guard).Boolean_Val'Access,
-            Long_Switch => Long_Name (Sw_No_Axiom_Guard));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_Function_Sandboxing).String_Val'Access,
-            Long_Switch =>
-              GNAT_Command_Line_Long_Switch (Sw_Function_Sandboxing));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_No_Global_Generation).Boolean_Val'Access,
-            Long_Switch => Long_Name (Sw_No_Global_Generation));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_No_Subprojects).Boolean_Val'Access,
-            Long_Switch => Long_Name (Sw_No_Subprojects));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_Output).String_Val'Access,
-            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_Output));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_Output_Header).Boolean_Val'Access,
-            Long_Switch => Long_Name (Sw_Output_Header));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_Output_Msg_Only).Boolean_Val'Access,
-            Long_Switch => Long_Name (Sw_Output_Msg_Only));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_Q).Boolean_Val'Access,
-            Short_Name (Sw_Q),
-            Long_Switch => Long_Name (Sw_Q));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_Replay).Boolean_Val'Access,
-            Long_Switch => Long_Name (Sw_Replay));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_Report).String_Val'Access,
-            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_Report));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_U).Boolean_Val'Access,
-            Short_Name (Sw_U));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_UU).Boolean_Val'Access,
-            Short_Name (Sw_UU));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_Warnings).String_Val'Access,
-            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_Warnings));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_Why3_Conf).String_Val'Access,
-            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_Why3_Conf));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_Why3_Debug).String_Val'Access,
-            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_Why3_Debug));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_Why3_Logging).Boolean_Val'Access,
-            Long_Switch => Long_Name (Sw_Why3_Logging));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_Why3_Server).String_Val'Access,
-            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_Why3_Server));
-         Define_Switch
-           (Config,
-            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_SARIF_Base_URI));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_Z3_Counterexample).Boolean_Val'Access,
-            Long_Switch => Long_Name (Sw_Z3_Counterexample));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_Gnattest_Values).String_Val'Access,
-            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_Gnattest_Values));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_Debug_Exec_RAC).Boolean_Val'Access,
-            Long_Switch => Long_Name (Sw_Debug_Exec_RAC));
+         for Switch in Invocation_Switch_Id loop
+            Register_Switch (Switch);
+         end loop;
       end if;
 
       if Mode in All_Switches | Global_Switches_Only | File_Specific_Only then
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_Level).Integer_Val'Access,
-            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_Level),
-            Initial     => Invalid_Level);
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_Memlimit).Integer_Val'Access,
-            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_Memlimit));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_Counterexamples).String_Val'Access,
-            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_Counterexamples));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_Check_Counterexamples).String_Val'Access,
-            Long_Switch =>
-              GNAT_Command_Line_Long_Switch (Sw_Check_Counterexamples));
+         for Switch in File_Specific_Switch_Id loop
+            if Switch
+               not in Sw_Info
+                    | Sw_Pedantic
+                    | Sw_Warn_Enable
+                    | Sw_Warn_Disable
+                    | Sw_Warn_Error
+            then
+               Register_Switch (Switch);
+            end if;
+         end loop;
+
          Define_Switch
            (Config,
             Handle_Warning_Switches'Access,
             Long_Switch => Long_Name (Sw_Info));
          Define_Switch
            (Config,
-            Parsed.Values (Sw_Mode).String_Val'Access,
-            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_Mode));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_No_Counterexample).Boolean_Val'Access,
-            Long_Switch => Long_Name (Sw_No_Counterexample));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_No_Inlining).Boolean_Val'Access,
-            Long_Switch => Long_Name (Sw_No_Inlining));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_No_Loop_Unrolling).Boolean_Val'Access,
-            Long_Switch => Long_Name (Sw_No_Loop_Unrolling));
-         Define_Switch
-           (Config,
             Handle_Warning_Switches'Access,
             Long_Switch => Long_Name (Sw_Pedantic));
          Define_Switch
            (Config,
-            Parsed.Values (Sw_Proof).String_Val'Access,
-            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_Proof));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_Proof_Warnings).String_Val'Access,
-            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_Proof_Warnings));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_Prover).String_Val'Access,
-            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_Prover));
+            Handle_Warning_Switches'Access,
+            GNAT_Command_Line_Short_Switch (Sw_Warn_Enable));
          Define_Switch
            (Config,
             Handle_Warning_Switches'Access,
-            GNAT_Command_Line_Value_Switch (Sw_Warn_Enable));
+            GNAT_Command_Line_Short_Switch (Sw_Warn_Disable));
          Define_Switch
            (Config,
             Handle_Warning_Switches'Access,
-            GNAT_Command_Line_Value_Switch (Sw_Warn_Disable));
-         Define_Switch
-           (Config,
-            Handle_Warning_Switches'Access,
-            GNAT_Command_Line_Value_Switch (Sw_Warn_Error));
-
-         --  If not specified on the command-line, value of steps is invalid
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_Steps).Integer_Val'Access,
-            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_Steps),
-            Initial     => Invalid_Steps);
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_CE_Steps).Integer_Val'Access,
-            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_CE_Steps),
-            Initial     => Invalid_Steps);
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_Timeout).String_Val'Access,
-            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_Timeout));
-         Define_Switch
-           (Config,
-            Parsed.Values (Sw_Proof_Warn_Timeout).Integer_Val'Access,
-            Long_Switch =>
-              GNAT_Command_Line_Long_Switch (Sw_Proof_Warn_Timeout),
-            Initial     => Invalid_Timeout);
+            GNAT_Command_Line_Short_Switch (Sw_Warn_Error));
       end if;
 
-      if Mode in All_Switches then
+      if Mode in All_Switches | Global_Switches_Only then
          Define_Switch (Config, "*", Help => "list of source files");
       end if;
 
@@ -1910,11 +1864,22 @@ package body Configuration is
             raise;
       end;
 
-      Copy_To_CL_Switches (Parsed, Mode);
       Current_Parsed_Switches := null;
 
       Free (Config);
       Free_Topmost (Com_Lin_Access);
+
+      return Parsed;
+   end Parse_Switches_Internal;
+
+   --------------------
+   -- Parse_Switches --
+   --------------------
+
+   procedure Parse_Switches (Mode : Parsing_Modes; Com_Lin : String_List) is
+      Parsed : Parsed_Switches := Parse_Switches_Internal (Mode, Com_Lin);
+   begin
+      Copy_To_CL_Switches (Parsed, Mode);
    end Parse_Switches;
 
    -------------------------------------------
@@ -2714,44 +2679,10 @@ package body Configuration is
 
       procedure Parse_Proof_Switches (Com_Lin : String_List) is
 
-         function Concat
-           (A, B : String_List_Access; C : String_List) return String_List;
-
-         function Concat
-           (A, B, C : String_List_Access; D : String_List) return String_List;
-
          procedure Expand_Ada_Switches (View : Project.View.Object);
          --  Replace the "Ada" section of the File_Specific_Map by entries for
          --  all files in the project, except for those which already have an
          --  entry.
-
-         procedure Reset_File_Specific_Switches;
-         --  Reset file-specific switches between parsing of the full
-         --  command-line for each file.
-
-         ------------
-         -- Concat --
-         ------------
-
-         function Concat
-           (A, B : String_List_Access; C : String_List) return String_List is
-         begin
-            return
-              (if A = null then [] else A.all)
-              & (if B = null then [] else B.all)
-              & C;
-         end Concat;
-
-         function Concat
-           (A, B, C : String_List_Access; D : String_List) return String_List
-         is
-         begin
-            return
-              (if A = null then [] else A.all)
-              & (if B = null then [] else B.all)
-              & (if C = null then [] else C.all)
-              & D;
-         end Concat;
 
          procedure Expand_Ada_Switches (View : Project.View.Object) is
 
@@ -2773,28 +2704,9 @@ package body Configuration is
             end loop;
          end Expand_Ada_Switches;
 
-         ----------------------------------
-         -- Reset_File_Specific_Switches --
-         ----------------------------------
-
-         procedure Reset_File_Specific_Switches is
-         begin
-            CL_Switches.Steps := Invalid_Steps;
-            CL_Switches.CE_Steps := Invalid_Steps;
-            CL_Switches.Timeout := null;
-            CL_Switches.Memlimit := 0;
-            CL_Switches.Proof := null;
-            CL_Switches.Prover := null;
-            CL_Switches.Level := Invalid_Level;
-            CL_Switches.Counterexamples := null;
-            CL_Switches.No_Inlining := False;
-            CL_Switches.Mode := null;
-            CL_Switches.No_Loop_Unrolling := False;
-            CL_Switches.Proof_Warnings := null;
-            CL_Switches.Proof_Warn_Timeout := Invalid_Timeout;
-         end Reset_File_Specific_Switches;
-
-         First : Boolean := True;
+         First                 : Boolean := True;
+         Command_Line_Switches : constant Parsed_Switches :=
+           Parse_Switches_Internal (All_Switches, Com_Lin);
       begin
 
          for Cursor in
@@ -2814,13 +2726,33 @@ package body Configuration is
                    (View.Attribute
                       ((+"Prove", +"Proof_Switches"),
                        Index => GPR2.Project.Attribute_Index.Create ("Ada")));
-               Parsed_Cmdline     : constant String_List :=
-                 Concat (Prove_Switches, Proof_Switches_Ada, Com_Lin);
+               Project_Switches   : Parsed_Switches;
             begin
-               --  parse all switches that apply to all files, concatenated in
-               --  the right order (most important is last).
+               --  Parse all switches that apply to all files, then merge them
+               --  in the right order (most important is last).
 
-               Parse_Switches (All_Switches, Parsed_Cmdline);
+               if Prove_Switches /= null then
+                  Merge_Parsed_Switches
+                    (Project_Switches,
+                     Parse_Switches_Internal
+                       (Global_Switches_Only, Prove_Switches.all));
+               end if;
+
+               if Proof_Switches_Ada /= null then
+                  Merge_Parsed_Switches
+                    (Project_Switches,
+                     Parse_Switches_Internal
+                       (Global_Switches_Only, Proof_Switches_Ada.all));
+               end if;
+
+               declare
+                  Effective : Parsed_Switches;
+               begin
+                  --  Use the merge helper for a deep copy
+                  Merge_Parsed_Switches (Effective, Project_Switches);
+                  Merge_Parsed_Switches (Effective, Command_Line_Switches);
+                  Copy_To_CL_Switches (Effective, All_Switches);
+               end;
                Postprocess;
                File_Specific_Postprocess (FS);
                File_Specific_Map.Insert ("Ada", FS);
@@ -2836,34 +2768,32 @@ package body Configuration is
                   if Attr.Index.Text not in "Ada" | "ada" then
                      Check_File_Part_Of_Project (View, Attr.Index.Text);
                      declare
-                        FS             : File_Specific;
-                        FS_Switches    : constant String_List_Access :=
+                        FS          : File_Specific;
+                        FS_Switches : constant String_List_Access :=
                           List_From_Attr (Attr);
-                        Parsed_Cmdline : constant String_List :=
-                          Concat
-                            (Prove_Switches,
-                             Proof_Switches_Ada,
-                             FS_Switches,
-                             Com_Lin);
+                        Effective   : Parsed_Switches;
                      begin
+                        --  Use the merge helper for a deep copy
+                        Merge_Parsed_Switches (Effective, Project_Switches);
+
                         if FS_Switches /= null then
 
                            --  parse the file switches to check if they contain
                            --  invalid switches; this is for error reporting
                            --  only.
 
-                           Parse_Switches
-                             (File_Specific_Only, FS_Switches.all);
+                           Merge_Parsed_Switches
+                             (Effective,
+                              Parse_Switches_Internal
+                                (File_Specific_Only, FS_Switches.all));
                         end if;
 
-                        --  parse all switches that apply to a single file,
-                        --  *including* the global switches. File-specific
-                        --  switches are more important than the other switches
-                        --  in the project file, but less so than the command
-                        --  line switches.
+                        --  Apply the command-line switches last, so they
+                        --  override file-specific project switches.
 
-                        Reset_File_Specific_Switches;
-                        Parse_Switches (All_Switches, Parsed_Cmdline);
+                        Merge_Parsed_Switches
+                          (Effective, Command_Line_Switches);
+                        Copy_To_CL_Switches (Effective, All_Switches);
                         File_Specific_Postprocess (FS);
                         File_Specific_Map.Insert (Attr.Index.Text, FS);
                      end;
