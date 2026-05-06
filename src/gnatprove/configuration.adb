@@ -3743,6 +3743,49 @@ package body Configuration is
    end Sanity_Check_SARIF_Base_URI;
 
    procedure Set_Project_Attributes is
+
+      function File_Specific_Switch_List return String;
+      --  Return the switches accepted in file-specific Proof_Switches
+      --  attributes, for user consumption.
+
+      function Description_Name
+        (Switch : File_Specific_Switch_Id) return String;
+      --  Return the documented spelling of a file-specific switch
+
+      ----------------------
+      -- Description_Name --
+      ----------------------
+
+      function Description_Name
+        (Switch : File_Specific_Switch_Id) return String
+      is
+         Meta : constant Switch_Metadata := Switch_Definitions (Switch);
+      begin
+         pragma Assert (Meta.Long /= null or else Meta.Short /= null);
+         return
+           "'"
+           & (if Meta.Long /= null then Meta.Long.all else Meta.Short.all)
+           & "'";
+      end Description_Name;
+
+      -------------------------------
+      -- File_Specific_Switch_List --
+      -------------------------------
+
+      function File_Specific_Switch_List return String is
+         Buf   : Unbounded_String := Null_Unbounded_String;
+         First : Boolean := True;
+      begin
+         for Switch in File_Specific_Switch_Id loop
+            if not First then
+               Append (Buf, ", ");
+            end if;
+            Append (Buf, Description_Name (Switch));
+            First := False;
+         end loop;
+         return To_String (Buf);
+      end File_Specific_Switch_List;
+
    begin
       Project.Registry.Pack.Add (+"Prove", Project.Registry.Pack.Everywhere);
       Project.Registry.Pack.Description.Set_Package_Description
@@ -3770,10 +3813,8 @@ package body Configuration is
         (Q_Attribute_Id'(+"Prove", +"Proof_Switches"),
          "Defines additional command line switches that are used for the "
          & "invocation of GNATprove. Only the following switches are "
-         & "allowed for file-specific switches: '--steps', '--timeout', "
-         & "'--memlimit', '--proof', '--prover', '--level', '--mode', "
-         & "'--counterexamples', '--no-inlining', '--no-loop-unrolling', "
-         & "'--proof-warnings'");
+         & "allowed for file-specific switches: "
+         & File_Specific_Switch_List);
       Project.Registry.Attribute.Add
         (Q_Attribute_Id'(+"Prove", +"Proof_Dir"),
          Index_Type           => Project.Registry.Attribute.No_Index,
