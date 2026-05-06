@@ -64,9 +64,10 @@ the ``--timeout`` switch.
 The switch definitions are centralized in the ``Switch_Definitions`` table.
 This table records the spelling and value kind of each switch, as well as its
 semantic layer. Switch ids are ordered so that invocation-level switches are
-contiguous and file-specific switches are contiguous. This keeps the current
-``CL_Switches`` storage model intact, while preparing the parser to store
-values in layer-specific internal arrays.
+contiguous and file-specific switches are contiguous. The parser records switch
+values in internal arrays indexed by these switch ids. After parsing, values are
+copied field by field to ``CL_Switches``, which remains the compatibility
+interface for existing consumers.
 
 .. _Generating Globals:
 
