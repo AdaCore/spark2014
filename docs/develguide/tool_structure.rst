@@ -61,6 +61,13 @@ variables. For example, the timeout that will eventually be used by
 gnatprove is synthesized from various command line switches, including
 the ``--timeout`` switch.
 
+The switch definitions are centralized in the ``Switch_Definitions`` table.
+This table records the spelling and value kind of each switch, as well as its
+semantic layer. Switch ids are ordered so that invocation-level switches are
+contiguous and file-specific switches are contiguous. This keeps the current
+``CL_Switches`` storage model intact, while preparing the parser to store
+values in layer-specific internal arrays.
+
 .. _Generating Globals:
 
 Generating Globals
