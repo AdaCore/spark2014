@@ -207,6 +207,453 @@ package body Configuration is
       --  excludes most switches except --timeout, --steps, etc.
      );
 
+   --  Switch ids are deliberately ordered by their future semantic layer.
+   --  Keep invocation-level switches and file-specific switches contiguous so
+   --  that later parser storage can use array subtypes over these ranges.
+   type Switch_Id is
+     (Sw_Assumptions,
+      Sw_Benchmark,
+      Sw_Checks_As_Errors,
+      Sw_CWE,
+      Sw_D,
+      Sw_Debug_No_Cache_Output,
+      Sw_Debug_Save_VCs,
+      Sw_Dbg_No_Sem,
+      Sw_Debug_Trivial,
+      Sw_Debug_Prover_Errors,
+      Sw_Exclude_Line,
+      Sw_Flow_Debug,
+      Sw_Flow_Show_GG,
+      Sw_F,
+      Sw_IDE_Progress_Bar,
+      Sw_J,
+      Sw_K,
+      Sw_Limit_Line,
+      Sw_Limit_Lines,
+      Sw_Limit_Name,
+      Sw_Limit_Region,
+      Sw_Limit_Subp,
+      Sw_Memcached_Server,
+      Sw_M,
+      Sw_No_Axiom_Guard,
+      Sw_Function_Sandboxing,
+      Sw_No_Global_Generation,
+      Sw_No_Subprojects,
+      Sw_Output,
+      Sw_Output_Header,
+      Sw_Output_Msg_Only,
+      Sw_Q,
+      Sw_Replay,
+      Sw_Report,
+      Sw_U,
+      Sw_UU,
+      Sw_V,
+      Sw_Warnings,
+      Sw_Why3_Conf,
+      Sw_Why3_Debug,
+      Sw_Why3_Logging,
+      Sw_Why3_Server,
+      Sw_SARIF_Base_URI,
+      Sw_Z3_Counterexample,
+      Sw_Gnattest_Values,
+      Sw_Debug_Exec_RAC,
+
+      Sw_Level,
+      Sw_Memlimit,
+      Sw_Counterexamples,
+      Sw_Check_Counterexamples,
+      Sw_Mode,
+      Sw_No_Counterexample,
+      Sw_No_Inlining,
+      Sw_No_Loop_Unrolling,
+      Sw_Proof,
+      Sw_Proof_Warnings,
+      Sw_Proof_Warn_Timeout,
+      Sw_Prover,
+      Sw_Steps,
+      Sw_CE_Steps,
+      Sw_Timeout,
+      Sw_Info,
+      Sw_Pedantic,
+      Sw_Warn_Enable,
+      Sw_Warn_Disable,
+      Sw_Warn_Error);
+
+   subtype Invocation_Switch_Id is
+     Switch_Id range Sw_Assumptions .. Sw_Debug_Exec_RAC;
+   subtype File_Specific_Switch_Id is
+     Switch_Id range Sw_Level .. Sw_Warn_Error;
+
+   type Switch_Layer is (Invocation_Layer, File_Specific_Layer);
+
+   type Switch_Value_Kind is
+     (Flag_Value, Integer_Value, String_Value, String_List_Value);
+
+   type String_Ref is access constant String;
+
+   type Switch_Metadata is record
+      Short      : String_Ref := null;
+      Long       : String_Ref := null;
+      Value_Kind : Switch_Value_Kind;
+      Layer      : Switch_Layer;
+   end record;
+
+   function Make_Switch_Metadata
+     (Value_Kind : Switch_Value_Kind;
+      Layer      : Switch_Layer;
+      Short      : String_Ref := null;
+      Long       : String_Ref := null) return Switch_Metadata
+   is ((Short      => Short,
+        Long       => Long,
+        Value_Kind => Value_Kind,
+        Layer      => Layer));
+   --  Defining this function with default arguments allows us to drop "others"
+   --  field in the below aggregate definition.
+
+   Switch_Definitions : constant array (Switch_Id) of Switch_Metadata :=
+     [Sw_Assumptions           =>
+        Make_Switch_Metadata
+          (Long       => new String'("--assumptions"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_Benchmark             =>
+        Make_Switch_Metadata
+          (Long       => new String'("--benchmark"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_Checks_As_Errors      =>
+        Make_Switch_Metadata
+          (Long       => new String'("--checks-as-errors"),
+           Value_Kind => String_Value,
+           Layer      => Invocation_Layer),
+      Sw_CWE                   =>
+        Make_Switch_Metadata
+          (Long       => new String'("--cwe"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_D                     =>
+        Make_Switch_Metadata
+          (Short      => new String'("-d"),
+           Long       => new String'("--debug"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_Debug_No_Cache_Output =>
+        Make_Switch_Metadata
+          (Long       => new String'("--debug-no-cache-output"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_Debug_Save_VCs        =>
+        Make_Switch_Metadata
+          (Long       => new String'("--debug-save-vcs"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_Dbg_No_Sem            =>
+        Make_Switch_Metadata
+          (Long       => new String'("--debug-no-semaphore"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_Debug_Trivial         =>
+        Make_Switch_Metadata
+          (Long       => new String'("--debug-trivial"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_Debug_Prover_Errors   =>
+        Make_Switch_Metadata
+          (Long       => new String'("--debug-prover-errors"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_Exclude_Line          =>
+        Make_Switch_Metadata
+          (Long       => new String'("--exclude-line"),
+           Value_Kind => String_Value,
+           Layer      => Invocation_Layer),
+      Sw_Flow_Debug            =>
+        Make_Switch_Metadata
+          (Long       => new String'("--flow-debug"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_Flow_Show_GG          =>
+        Make_Switch_Metadata
+          (Long       => new String'("--flow-show-gg"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_F                     =>
+        Make_Switch_Metadata
+          (Short      => new String'("-f"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_IDE_Progress_Bar      =>
+        Make_Switch_Metadata
+          (Long       => new String'("--ide-progress-bar"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_J                     =>
+        Make_Switch_Metadata
+          (Short      => new String'("-j"),
+           Value_Kind => Integer_Value,
+           Layer      => Invocation_Layer),
+      Sw_K                     =>
+        Make_Switch_Metadata
+          (Short      => new String'("-k"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_Limit_Line            =>
+        Make_Switch_Metadata
+          (Long       => new String'("--limit-line"),
+           Value_Kind => String_Value,
+           Layer      => Invocation_Layer),
+      Sw_Limit_Lines           =>
+        Make_Switch_Metadata
+          (Long       => new String'("--limit-lines"),
+           Value_Kind => String_Value,
+           Layer      => Invocation_Layer),
+      Sw_Limit_Name            =>
+        Make_Switch_Metadata
+          (Long       => new String'("--limit-name"),
+           Value_Kind => String_Value,
+           Layer      => Invocation_Layer),
+      Sw_Limit_Region          =>
+        Make_Switch_Metadata
+          (Long       => new String'("--limit-region"),
+           Value_Kind => String_Value,
+           Layer      => Invocation_Layer),
+      Sw_Limit_Subp            =>
+        Make_Switch_Metadata
+          (Long       => new String'("--limit-subp"),
+           Value_Kind => String_Value,
+           Layer      => Invocation_Layer),
+      Sw_Memcached_Server      =>
+        Make_Switch_Metadata
+          (Long       => new String'("--memcached-server"),
+           Value_Kind => String_Value,
+           Layer      => Invocation_Layer),
+      Sw_M                     =>
+        Make_Switch_Metadata
+          (Short      => new String'("-m"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_No_Axiom_Guard        =>
+        Make_Switch_Metadata
+          (Long       => new String'("--no-axiom-guard"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_Function_Sandboxing   =>
+        Make_Switch_Metadata
+          (Long       => new String'("--function-sandboxing"),
+           Value_Kind => String_Value,
+           Layer      => Invocation_Layer),
+      Sw_No_Global_Generation  =>
+        Make_Switch_Metadata
+          (Long       => new String'("--no-global-generation"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_No_Subprojects        =>
+        Make_Switch_Metadata
+          (Long       => new String'("--no-subprojects"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_Output                =>
+        Make_Switch_Metadata
+          (Long       => new String'("--output"),
+           Value_Kind => String_Value,
+           Layer      => Invocation_Layer),
+      Sw_Output_Header         =>
+        Make_Switch_Metadata
+          (Long       => new String'("--output-header"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_Output_Msg_Only       =>
+        Make_Switch_Metadata
+          (Long       => new String'("--output-msg-only"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_Q                     =>
+        Make_Switch_Metadata
+          (Short      => new String'("-q"),
+           Long       => new String'("--quiet"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_Replay                =>
+        Make_Switch_Metadata
+          (Long       => new String'("--replay"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_Report                =>
+        Make_Switch_Metadata
+          (Long       => new String'("--report"),
+           Value_Kind => String_Value,
+           Layer      => Invocation_Layer),
+      Sw_U                     =>
+        Make_Switch_Metadata
+          (Short      => new String'("-u"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_UU                    =>
+        Make_Switch_Metadata
+          (Short      => new String'("-U"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_V                     =>
+        Make_Switch_Metadata
+          (Short      => new String'("-v"),
+           Long       => new String'("--verbose"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_Warnings              =>
+        Make_Switch_Metadata
+          (Long       => new String'("--warnings"),
+           Value_Kind => String_Value,
+           Layer      => Invocation_Layer),
+      Sw_Why3_Conf             =>
+        Make_Switch_Metadata
+          (Long       => new String'("--why3-conf"),
+           Value_Kind => String_Value,
+           Layer      => Invocation_Layer),
+      Sw_Why3_Debug            =>
+        Make_Switch_Metadata
+          (Long       => new String'("--why3-debug"),
+           Value_Kind => String_Value,
+           Layer      => Invocation_Layer),
+      Sw_Why3_Logging          =>
+        Make_Switch_Metadata
+          (Long       => new String'("--why3-logging"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_Why3_Server           =>
+        Make_Switch_Metadata
+          (Long       => new String'("--why3-server"),
+           Value_Kind => String_Value,
+           Layer      => Invocation_Layer),
+      Sw_SARIF_Base_URI        =>
+        Make_Switch_Metadata
+          (Long       => new String'("--sarif-base-uri"),
+           Value_Kind => String_List_Value,
+           Layer      => Invocation_Layer),
+      Sw_Z3_Counterexample     =>
+        Make_Switch_Metadata
+          (Long       => new String'("--z3-counterexample"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_Gnattest_Values       =>
+        Make_Switch_Metadata
+          (Long       => new String'("--gnattest-values"),
+           Value_Kind => String_Value,
+           Layer      => Invocation_Layer),
+      Sw_Debug_Exec_RAC        =>
+        Make_Switch_Metadata
+          (Long       => new String'("--debug-exec-rac"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_Level                 =>
+        Make_Switch_Metadata
+          (Long       => new String'("--level"),
+           Value_Kind => Integer_Value,
+           Layer      => File_Specific_Layer),
+      Sw_Memlimit              =>
+        Make_Switch_Metadata
+          (Long       => new String'("--memlimit"),
+           Value_Kind => Integer_Value,
+           Layer      => File_Specific_Layer),
+      Sw_Counterexamples       =>
+        Make_Switch_Metadata
+          (Long       => new String'("--counterexamples"),
+           Value_Kind => String_Value,
+           Layer      => File_Specific_Layer),
+      Sw_Check_Counterexamples =>
+        Make_Switch_Metadata
+          (Long       => new String'("--check-counterexamples"),
+           Value_Kind => String_Value,
+           Layer      => File_Specific_Layer),
+      Sw_Mode                  =>
+        Make_Switch_Metadata
+          (Long       => new String'("--mode"),
+           Value_Kind => String_Value,
+           Layer      => File_Specific_Layer),
+      Sw_No_Counterexample     =>
+        Make_Switch_Metadata
+          (Long       => new String'("--no-counterexample"),
+           Value_Kind => Flag_Value,
+           Layer      => File_Specific_Layer),
+      Sw_No_Inlining           =>
+        Make_Switch_Metadata
+          (Long       => new String'("--no-inlining"),
+           Value_Kind => Flag_Value,
+           Layer      => File_Specific_Layer),
+      Sw_No_Loop_Unrolling     =>
+        Make_Switch_Metadata
+          (Long       => new String'("--no-loop-unrolling"),
+           Value_Kind => Flag_Value,
+           Layer      => File_Specific_Layer),
+      Sw_Proof                 =>
+        Make_Switch_Metadata
+          (Long       => new String'("--proof"),
+           Value_Kind => String_Value,
+           Layer      => File_Specific_Layer),
+      Sw_Proof_Warnings        =>
+        Make_Switch_Metadata
+          (Long       => new String'("--proof-warnings"),
+           Value_Kind => String_Value,
+           Layer      => File_Specific_Layer),
+      Sw_Proof_Warn_Timeout    =>
+        Make_Switch_Metadata
+          (Long       => new String'("--proof-warnings-timeout"),
+           Value_Kind => Integer_Value,
+           Layer      => File_Specific_Layer),
+      Sw_Prover                =>
+        Make_Switch_Metadata
+          (Long       => new String'("--prover"),
+           Value_Kind => String_Value,
+           Layer      => File_Specific_Layer),
+      Sw_Steps                 =>
+        Make_Switch_Metadata
+          (Long       => new String'("--steps"),
+           Value_Kind => Integer_Value,
+           Layer      => File_Specific_Layer),
+      Sw_CE_Steps              =>
+        Make_Switch_Metadata
+          (Long       => new String'("--ce-steps"),
+           Value_Kind => Integer_Value,
+           Layer      => File_Specific_Layer),
+      Sw_Timeout               =>
+        Make_Switch_Metadata
+          (Long       => new String'("--timeout"),
+           Value_Kind => String_Value,
+           Layer      => File_Specific_Layer),
+      Sw_Info                  =>
+        Make_Switch_Metadata
+          (Long       => new String'("--info"),
+           Value_Kind => Flag_Value,
+           Layer      => File_Specific_Layer),
+      Sw_Pedantic              =>
+        Make_Switch_Metadata
+          (Long       => new String'("--pedantic"),
+           Value_Kind => Flag_Value,
+           Layer      => File_Specific_Layer),
+      Sw_Warn_Enable           =>
+        Make_Switch_Metadata
+          (Short      => new String'("-W"),
+           Value_Kind => String_Value,
+           Layer      => File_Specific_Layer),
+      Sw_Warn_Disable          =>
+        Make_Switch_Metadata
+          (Short      => new String'("-A"),
+           Value_Kind => String_Value,
+           Layer      => File_Specific_Layer),
+      Sw_Warn_Error            =>
+        Make_Switch_Metadata
+          (Short      => new String'("-D"),
+           Value_Kind => String_Value,
+           Layer      => File_Specific_Layer)];
+
+   pragma
+     Assert
+       ((for all Switch in Invocation_Switch_Id =>
+           Switch_Definitions (Switch).Layer = Invocation_Layer));
+   pragma
+     Assert
+       ((for all Switch in File_Specific_Switch_Id =>
+           Switch_Definitions (Switch).Layer = File_Specific_Layer));
+
    procedure Parse_Switches (Mode : Parsing_Modes; Com_Lin : String_List);
    --  parse the command line switches according to the provided mode; set
    --  global variables associated to the switches.
@@ -831,6 +1278,65 @@ package body Configuration is
 
       use CL_Switches;
 
+      function Option_Image (Ref : String_Ref) return String
+      is (if Ref = null then "" else Ref.all);
+
+      function Short_Name (Switch : Switch_Id) return String
+      is (Option_Image (Switch_Definitions (Switch).Short));
+      --  Return the short spelling of Switch, without argument markers
+
+      function Long_Name (Switch : Switch_Id) return String
+      is (Option_Image (Switch_Definitions (Switch).Long));
+      --  Return the long spelling of Switch, without argument markers
+
+      function GNAT_Command_Line_Short_Switch
+        (Switch : Switch_Id) return String;
+      --  Return the short switch spelling expected by GNAT.Command_Line
+
+      function GNAT_Command_Line_Long_Switch
+        (Switch : Switch_Id) return String;
+      --  Return the long switch spelling expected by GNAT.Command_Line
+
+      function GNAT_Command_Line_Value_Switch
+        (Switch : Switch_Id) return String;
+      --  Return the switch spelling for value switches registered with the
+      --  Long_Switch parameter of GNAT.Command_Line.Define_Switch.
+
+      function GNAT_Command_Line_Short_Switch
+        (Switch : Switch_Id) return String
+      is
+         Short : constant String := Short_Name (Switch);
+      begin
+         if Switch_Definitions (Switch).Value_Kind = Flag_Value then
+            return Short;
+         elsif Switch = Sw_J then
+            return Short & ":";
+         else
+            return Short & "=";
+         end if;
+      end GNAT_Command_Line_Short_Switch;
+
+      function GNAT_Command_Line_Long_Switch (Switch : Switch_Id) return String
+      is
+         Long : constant String := Long_Name (Switch);
+      begin
+         if Switch_Definitions (Switch).Value_Kind = Flag_Value then
+            return Long;
+         else
+            return Long & "=";
+         end if;
+      end GNAT_Command_Line_Long_Switch;
+
+      function GNAT_Command_Line_Value_Switch
+        (Switch : Switch_Id) return String is
+      begin
+         if Long_Name (Switch) /= "" then
+            return GNAT_Command_Line_Long_Switch (Switch);
+         else
+            return GNAT_Command_Line_Short_Switch (Switch);
+         end if;
+      end GNAT_Command_Line_Value_Switch;
+
    begin
       Initialize_Option_Scan (Parser, Com_Lin_Access);
       Set_Usage
@@ -840,14 +1346,17 @@ package body Configuration is
 
       if Mode in All_Switches | Global_Switches_Only then
          Define_Switch
-           (Config, CL_Switches.V'Access, "-v", Long_Switch => "--verbose");
+           (Config,
+            CL_Switches.V'Access,
+            Short_Name (Sw_V),
+            Long_Switch => Long_Name (Sw_V));
       end if;
 
       if Mode in All_Switches | Global_Switches_Only then
          Define_Switch
            (Config,
             CL_Switches.Assumptions'Access,
-            Long_Switch => "--assumptions");
+            Long_Switch => Long_Name (Sw_Assumptions));
 
          --  This switch is not documented on purpose. We provide the fake_*
          --  binaries instead of the real prover binaries. This helps when
@@ -855,212 +1364,257 @@ package body Configuration is
          Define_Switch
            (Config,
             CL_Switches.Benchmark'Access,
-            Long_Switch => "--benchmark");
+            Long_Switch => Long_Name (Sw_Benchmark));
          Define_Switch
            (Config,
             CL_Switches.Checks_As_Errors'Access,
-            Long_Switch => "--checks-as-errors=");
+            Long_Switch =>
+              GNAT_Command_Line_Long_Switch (Sw_Checks_As_Errors));
          Define_Switch
-           (Config, CL_Switches.CWE'Access, Long_Switch => "--cwe");
+           (Config, CL_Switches.CWE'Access, Long_Switch => Long_Name (Sw_CWE));
          Define_Switch
-           (Config, CL_Switches.D'Access, "-d", Long_Switch => "--debug");
+           (Config,
+            CL_Switches.D'Access,
+            Short_Name (Sw_D),
+            Long_Switch => Long_Name (Sw_D));
          Define_Switch
            (Config,
             CL_Switches.Debug_No_Cache_Output'Access,
-            Long_Switch => "--debug-no-cache-output");
+            Long_Switch => Long_Name (Sw_Debug_No_Cache_Output));
          Define_Switch
            (Config,
             CL_Switches.Debug_Save_VCs'Access,
-            Long_Switch => "--debug-save-vcs");
+            Long_Switch => Long_Name (Sw_Debug_Save_VCs));
          Define_Switch
            (Config,
             CL_Switches.Dbg_No_Sem'Access,
-            Long_Switch => "--debug-no-semaphore");
+            Long_Switch => Long_Name (Sw_Dbg_No_Sem));
          Define_Switch
            (Config,
             CL_Switches.Debug_Trivial'Access,
-            Long_Switch => "--debug-trivial");
+            Long_Switch => Long_Name (Sw_Debug_Trivial));
          Define_Switch
            (Config,
             CL_Switches.Debug_Prover_Errors'Access,
-            Long_Switch => "--debug-prover-errors");
+            Long_Switch => Long_Name (Sw_Debug_Prover_Errors));
          Define_Switch
            (Config,
             CL_Switches.Exclude_Line'Access,
-            Long_Switch => "--exclude-line=");
+            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_Exclude_Line));
          Define_Switch
            (Config,
             CL_Switches.Flow_Debug'Access,
-            Long_Switch => "--flow-debug");
+            Long_Switch => Long_Name (Sw_Flow_Debug));
          Define_Switch
            (Config,
             CL_Switches.Flow_Show_GG'Access,
-            Long_Switch => "--flow-show-gg");
-         Define_Switch (Config, CL_Switches.F'Access, "-f");
+            Long_Switch => Long_Name (Sw_Flow_Show_GG));
+         Define_Switch (Config, CL_Switches.F'Access, Short_Name (Sw_F));
          Define_Switch
            (Config,
             CL_Switches.IDE_Progress_Bar'Access,
-            Long_Switch => "--ide-progress-bar");
+            Long_Switch => Long_Name (Sw_IDE_Progress_Bar));
          Define_Switch
-           (Config, CL_Switches.J'Access, Long_Switch => "-j:", Initial => 1);
-         Define_Switch (Config, CL_Switches.K'Access, "-k");
+           (Config,
+            CL_Switches.J'Access,
+            Long_Switch => GNAT_Command_Line_Value_Switch (Sw_J),
+            Initial     => 1);
+         Define_Switch (Config, CL_Switches.K'Access, Short_Name (Sw_K));
          Define_Switch
            (Config,
             CL_Switches.Limit_Line'Access,
-            Long_Switch => "--limit-line=");
+            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_Limit_Line));
          Define_Switch
            (Config,
             CL_Switches.Limit_Lines'Access,
-            Long_Switch => "--limit-lines=");
+            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_Limit_Lines));
          Define_Switch
            (Config,
             CL_Switches.Limit_Name'Access,
-            Long_Switch => "--limit-name=");
+            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_Limit_Name));
          Define_Switch
            (Config,
             CL_Switches.Limit_Region'Access,
-            Long_Switch => "--limit-region=");
+            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_Limit_Region));
          Define_Switch
            (Config,
             CL_Switches.Limit_Subp'Access,
-            Long_Switch => "--limit-subp=");
+            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_Limit_Subp));
          Define_Switch
            (Config,
             CL_Switches.Memcached_Server'Access,
-            Long_Switch => "--memcached-server=");
-         Define_Switch (Config, CL_Switches.M'Access, "-m");
+            Long_Switch =>
+              GNAT_Command_Line_Long_Switch (Sw_Memcached_Server));
+         Define_Switch (Config, CL_Switches.M'Access, Short_Name (Sw_M));
          Define_Switch
            (Config,
             CL_Switches.No_Axiom_Guard'Access,
-            Long_Switch => "--no-axiom-guard");
+            Long_Switch => Long_Name (Sw_No_Axiom_Guard));
          Define_Switch
            (Config,
             CL_Switches.Function_Sandboxing'Access,
-            Long_Switch => "--function-sandboxing=");
+            Long_Switch =>
+              GNAT_Command_Line_Long_Switch (Sw_Function_Sandboxing));
          Define_Switch
            (Config,
             CL_Switches.No_Global_Generation'Access,
-            Long_Switch => "--no-global-generation");
+            Long_Switch => Long_Name (Sw_No_Global_Generation));
          Define_Switch
            (Config,
             CL_Switches.No_Subprojects'Access,
-            Long_Switch => "--no-subprojects");
+            Long_Switch => Long_Name (Sw_No_Subprojects));
          Define_Switch
-           (Config, CL_Switches.Output'Access, Long_Switch => "--output=");
+           (Config,
+            CL_Switches.Output'Access,
+            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_Output));
          Define_Switch
            (Config,
             CL_Switches.Output_Header'Access,
-            Long_Switch => "--output-header");
+            Long_Switch => Long_Name (Sw_Output_Header));
          Define_Switch
            (Config,
             CL_Switches.Output_Msg_Only'Access,
-            Long_Switch => "--output-msg-only");
+            Long_Switch => Long_Name (Sw_Output_Msg_Only));
          Define_Switch
            (Config,
-            CL_Switches.Proof_Warnings'Access,
-            Long_Switch => "--proof-warnings=");
+            CL_Switches.Q'Access,
+            Short_Name (Sw_Q),
+            Long_Switch => Long_Name (Sw_Q));
          Define_Switch
-           (Config, CL_Switches.Q'Access, "-q", Long_Switch => "--quiet");
+           (Config,
+            CL_Switches.Replay'Access,
+            Long_Switch => Long_Name (Sw_Replay));
          Define_Switch
-           (Config, CL_Switches.Replay'Access, Long_Switch => "--replay");
+           (Config,
+            CL_Switches.Report'Access,
+            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_Report));
+         Define_Switch (Config, CL_Switches.U'Access, Short_Name (Sw_U));
+         Define_Switch (Config, CL_Switches.UU'Access, Short_Name (Sw_UU));
          Define_Switch
-           (Config, CL_Switches.Report'Access, Long_Switch => "--report=");
-         Define_Switch (Config, CL_Switches.U'Access, "-u");
-         Define_Switch (Config, CL_Switches.UU'Access, "-U");
-         Define_Switch
-           (Config, CL_Switches.Warnings'Access, Long_Switch => "--warnings=");
+           (Config,
+            CL_Switches.Warnings'Access,
+            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_Warnings));
          Define_Switch
            (Config,
             CL_Switches.Why3_Conf'Access,
-            Long_Switch => "--why3-conf=");
+            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_Why3_Conf));
          Define_Switch
            (Config,
             CL_Switches.Why3_Debug'Access,
-            Long_Switch => "--why3-debug=");
+            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_Why3_Debug));
          Define_Switch
            (Config,
             CL_Switches.Why3_Logging'Access,
-            Long_Switch => "--why3-logging");
+            Long_Switch => Long_Name (Sw_Why3_Logging));
          Define_Switch
            (Config,
             CL_Switches.Why3_Server'Access,
-            Long_Switch => "--why3-server=");
-         Define_Switch (Config, Long_Switch => "--sarif-base-uri=");
+            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_Why3_Server));
+         Define_Switch
+           (Config,
+            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_SARIF_Base_URI));
          Define_Switch
            (Config,
             CL_Switches.Z3_Counterexample'Access,
-            Long_Switch => "--z3-counterexample");
+            Long_Switch => Long_Name (Sw_Z3_Counterexample));
+         Define_Switch
+           (Config,
+            CL_Switches.Gnattest_Values'Access,
+            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_Gnattest_Values));
+         Define_Switch
+           (Config,
+            CL_Switches.Debug_Exec_RAC'Access,
+            Long_Switch => Long_Name (Sw_Debug_Exec_RAC));
       end if;
 
       if Mode in All_Switches | Global_Switches_Only | File_Specific_Only then
          Define_Switch
            (Config,
             CL_Switches.Level'Access,
-            Long_Switch => "--level=",
+            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_Level),
             Initial     => Invalid_Level);
          Define_Switch
-           (Config, CL_Switches.Memlimit'Access, Long_Switch => "--memlimit=");
+           (Config,
+            CL_Switches.Memlimit'Access,
+            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_Memlimit));
          Define_Switch
            (Config,
             CL_Switches.Counterexamples'Access,
-            Long_Switch => "--counterexamples=");
+            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_Counterexamples));
          Define_Switch
            (Config,
             CL_Switches.Check_Counterexamples'Access,
-            Long_Switch => "--check-counterexamples=");
-         Define_Switch
-           (Config,
-            CL_Switches.Gnattest_Values'Access,
-            Long_Switch => "--gnattest-values=");
-         Define_Switch
-           (Config,
-            CL_Switches.Debug_Exec_RAC'Access,
-            Long_Switch => "--debug-exec-rac");
-         Define_Switch
-           (Config, Handle_Warning_Switches'Access, Long_Switch => "--info");
-         Define_Switch
-           (Config, CL_Switches.Mode'Access, Long_Switch => "--mode=");
-         Define_Switch
-           (Config,
-            CL_Switches.No_Counterexample'Access,
-            Long_Switch => "--no-counterexample");
-         Define_Switch
-           (Config,
-            CL_Switches.No_Inlining'Access,
-            Long_Switch => "--no-inlining");
-         Define_Switch
-           (Config,
-            CL_Switches.No_Loop_Unrolling'Access,
-            Long_Switch => "--no-loop-unrolling");
+            Long_Switch =>
+              GNAT_Command_Line_Long_Switch (Sw_Check_Counterexamples));
          Define_Switch
            (Config,
             Handle_Warning_Switches'Access,
-            Long_Switch => "--pedantic");
+            Long_Switch => Long_Name (Sw_Info));
          Define_Switch
-           (Config, CL_Switches.Proof'Access, Long_Switch => "--proof=");
+           (Config,
+            CL_Switches.Mode'Access,
+            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_Mode));
          Define_Switch
-           (Config, CL_Switches.Prover'Access, Long_Switch => "--prover=");
-         Define_Switch (Config, Handle_Warning_Switches'Access, "-W=");
-         Define_Switch (Config, Handle_Warning_Switches'Access, "-A=");
-         Define_Switch (Config, Handle_Warning_Switches'Access, "-D=");
+           (Config,
+            CL_Switches.No_Counterexample'Access,
+            Long_Switch => Long_Name (Sw_No_Counterexample));
+         Define_Switch
+           (Config,
+            CL_Switches.No_Inlining'Access,
+            Long_Switch => Long_Name (Sw_No_Inlining));
+         Define_Switch
+           (Config,
+            CL_Switches.No_Loop_Unrolling'Access,
+            Long_Switch => Long_Name (Sw_No_Loop_Unrolling));
+         Define_Switch
+           (Config,
+            Handle_Warning_Switches'Access,
+            Long_Switch => Long_Name (Sw_Pedantic));
+         Define_Switch
+           (Config,
+            CL_Switches.Proof'Access,
+            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_Proof));
+         Define_Switch
+           (Config,
+            CL_Switches.Proof_Warnings'Access,
+            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_Proof_Warnings));
+         Define_Switch
+           (Config,
+            CL_Switches.Prover'Access,
+            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_Prover));
+         Define_Switch
+           (Config,
+            Handle_Warning_Switches'Access,
+            GNAT_Command_Line_Value_Switch (Sw_Warn_Enable));
+         Define_Switch
+           (Config,
+            Handle_Warning_Switches'Access,
+            GNAT_Command_Line_Value_Switch (Sw_Warn_Disable));
+         Define_Switch
+           (Config,
+            Handle_Warning_Switches'Access,
+            GNAT_Command_Line_Value_Switch (Sw_Warn_Error));
 
          --  If not specified on the command-line, value of steps is invalid
          Define_Switch
            (Config,
             CL_Switches.Steps'Access,
-            Long_Switch => "--steps=",
+            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_Steps),
             Initial     => Invalid_Steps);
          Define_Switch
            (Config,
             CL_Switches.CE_Steps'Access,
-            Long_Switch => "--ce-steps=",
+            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_CE_Steps),
             Initial     => Invalid_Steps);
          Define_Switch
-           (Config, CL_Switches.Timeout'Access, Long_Switch => "--timeout=");
+           (Config,
+            CL_Switches.Timeout'Access,
+            Long_Switch => GNAT_Command_Line_Long_Switch (Sw_Timeout));
          Define_Switch
            (Config,
             CL_Switches.Proof_Warn_Timeout'Access,
-            Long_Switch => "--proof-warnings-timeout=",
+            Long_Switch =>
+              GNAT_Command_Line_Long_Switch (Sw_Proof_Warn_Timeout),
             Initial     => Invalid_Timeout);
       end if;
 
@@ -3218,7 +3772,8 @@ package body Configuration is
          & "invocation of GNATprove. Only the following switches are "
          & "allowed for file-specific switches: '--steps', '--timeout', "
          & "'--memlimit', '--proof', '--prover', '--level', '--mode', "
-         & "'--counterexamples', '--no-inlining', '--no-loop-unrolling'");
+         & "'--counterexamples', '--no-inlining', '--no-loop-unrolling', "
+         & "'--proof-warnings'");
       Project.Registry.Attribute.Add
         (Q_Attribute_Id'(+"Prove", +"Proof_Dir"),
          Index_Type           => Project.Registry.Attribute.No_Index,
