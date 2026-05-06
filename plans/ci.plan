@@ -14,7 +14,6 @@ def build():
     anod_install("gprbuild", target="host", query_range=20)
     anod_install("alt-ergo", query_range=20)
     anod_install("xmlada", query_range=20)
-    anod_install("libgpr2", query_range=20)
     anod_install("gnatcoll-core", query_range=20)
     anod_install("vss-extra", qualifier="edge", query_range=20)
     anod_install("vss-text", qualifier="edge", query_range=20)
