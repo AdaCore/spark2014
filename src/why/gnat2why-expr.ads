@@ -339,10 +339,10 @@ package Gnat2Why.Expr is
       Use_Pred          : Boolean;
       New_Preds_Module  : W_Module_Id;
       T                 : out W_Pred_Id;
-      Loc_Incompl_Acc   : Ada_To_Why_Ident.Map;
-      New_Incompl_Acc   : in out Ada_To_Why_Ident.Map;
-      Loc_Incompl_Acc_R : Ada_To_Why_Ident.Map;
-      New_Incompl_Acc_R : in out Ada_To_Why_Ident.Map;
+      Loc_Incompl_Acc   : Ada_Node_To_Why_Id.Map;
+      New_Incompl_Acc   : in out Ada_Node_To_Why_Id.Map;
+      Loc_Incompl_Acc_R : Ada_Node_To_Why_Id.Map;
+      New_Incompl_Acc_R : in out Ada_Node_To_Why_Id.Map;
       Expand_Incompl    : Boolean)
    with
      Pre  =>
@@ -975,7 +975,7 @@ package Gnat2Why.Expr is
 
    function Bind_From_Mapping_In_Prog
      (Params       : Transformation_Params;
-      Map          : Ada_To_Why_Ident.Map;
+      Map          : Ada_Node_To_Why_Id.Map;
       Expr         : W_Prog_Id;
       Old_Prefixes : Boolean := False) return W_Prog_Id;
    --  Bind names from Map to their corresponding values, obtained by
@@ -995,7 +995,7 @@ package Gnat2Why.Expr is
 
    function Bind_From_Mapping_In_Expr
      (Params       : Transformation_Params;
-      Map          : Ada_To_Why_Ident.Map;
+      Map          : Ada_Node_To_Why_Id.Map;
       Expr         : W_Expr_Id;
       Domain       : EW_Domain;
       Subset       : Node_Sets.Set;
@@ -1017,10 +1017,10 @@ package Gnat2Why.Expr is
    --  RTE checks.
 
 private
-   Incompl_Access_Dyn_Inv_Map : Ada_To_Why_Ident.Map;
+   Incompl_Access_Dyn_Inv_Map : Ada_Node_To_Why_Id.Map;
    --  Map storing predicates for invariants of access to incomplete types
 
-   Incompl_Access_Dyn_Inv_Map_R : Ada_To_Why_Ident.Map;
+   Incompl_Access_Dyn_Inv_Map_R : Ada_Node_To_Why_Id.Map;
    --  Same but for predicates of init wrappers
 
    procedure Get_Item_From_Expr

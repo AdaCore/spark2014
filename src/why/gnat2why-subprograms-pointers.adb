@@ -48,7 +48,7 @@ with Why.Inter;                      use Why.Inter;
 
 package body Gnat2Why.Subprograms.Pointers is
 
-   Access_Ids : Ada_To_Why_Ident.Map := Ada_To_Why_Ident.Empty_Map;
+   Access_Ids : Ada_Node_To_Why_Id.Map := Ada_Node_To_Why_Id.Empty_Map;
    --  Maps Subprogram entities to the Why identifiers for their access
 
    function Subp_Binder return Binder_Type
@@ -993,7 +993,7 @@ package body Gnat2Why.Subprograms.Pointers is
 
       --  Select files for the declaration and axiom
 
-      Position : Ada_To_Why_Ident.Cursor;
+      Position : Ada_Node_To_Why_Id.Cursor;
       Inserted : Boolean;
       Th       : Theory_UC;
 
@@ -1017,7 +1017,7 @@ package body Gnat2Why.Subprograms.Pointers is
       --  If it was already present, return the already declared symbol
 
       if not Inserted then
-         Logic_Id := Ada_To_Why_Ident.Element (Position);
+         Logic_Id := Ada_Node_To_Why_Id.Element (Position);
          return;
       end if;
 

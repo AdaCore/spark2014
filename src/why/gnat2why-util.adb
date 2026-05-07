@@ -1293,12 +1293,14 @@ package body Gnat2Why.Util is
    -- Map_For_At --
    ----------------
 
-   function Map_For_At (Label_Id : E_Label_Id) return Ada_To_Why_Ident.Map is
+   function Map_For_At (Label_Id : E_Label_Id) return Ada_Node_To_Why_Id.Map is
       use At_Nodes;
       C : constant At_Nodes.Cursor := At_Map.Find (Label_Id);
    begin
       return
-        (if Has_Element (C) then Element (C) else Ada_To_Why_Ident.Empty_Map);
+        (if Has_Element (C)
+         then Element (C)
+         else Ada_Node_To_Why_Id.Empty_Map);
    end Map_For_At;
 
    ------------------------
@@ -1313,7 +1315,7 @@ package body Gnat2Why.Util is
       return
         (if Has_Element (C)
          then Element (C)
-         else (Ada_To_Why_Ident.Empty_Map, Ada_To_Why_Ident.Empty_Map));
+         else (Ada_Node_To_Why_Id.Empty_Map, Ada_Node_To_Why_Id.Empty_Map));
    end Map_For_Loop_Entry;
 
    -----------------------------------
@@ -1346,7 +1348,7 @@ package body Gnat2Why.Util is
       Expr     : constant Node_Id := Prefix (Attr);
 
       function Name_For_At
-        (Map : in out Ada_To_Why_Ident.Map; Typ : W_Type_Id; Nd : Node_Id)
+        (Map : in out Ada_Node_To_Why_Id.Map; Typ : W_Type_Id; Nd : Node_Id)
          return W_Identifier_Id;
       --  Look for an identifier for Expr in Map. If there is none, create one
       --  of type Typ with node Nd.
@@ -1356,10 +1358,10 @@ package body Gnat2Why.Util is
       -----------------
 
       function Name_For_At
-        (Map : in out Ada_To_Why_Ident.Map; Typ : W_Type_Id; Nd : Node_Id)
+        (Map : in out Ada_Node_To_Why_Id.Map; Typ : W_Type_Id; Nd : Node_Id)
          return W_Identifier_Id
       is
-         Position : Ada_To_Why_Ident.Cursor;
+         Position : Ada_Node_To_Why_Id.Cursor;
          Inserted : Boolean;
 
       begin
@@ -1449,7 +1451,7 @@ package body Gnat2Why.Util is
       Result : W_Identifier_Id;
 
       procedure Get_Name
-        (Loop_Id : Node_Id; Loop_Map : in out Ada_To_Why_Ident.Map);
+        (Loop_Id : Node_Id; Loop_Map : in out Ada_Node_To_Why_Id.Map);
       --  Update the mapping Loop_Map with an entry for Expr if not already
       --  present, and store the corresponding identifier in Result.
 
@@ -1463,15 +1465,15 @@ package body Gnat2Why.Util is
       --------------
 
       procedure Get_Name
-        (Loop_Id : Node_Id; Loop_Map : in out Ada_To_Why_Ident.Map)
+        (Loop_Id : Node_Id; Loop_Map : in out Ada_Node_To_Why_Id.Map)
       is
          Typ : W_Type_Id;
          Nd  : Node_Id;
 
-         Pos   : Ada_To_Why_Ident.Cursor := Loop_Map.Find (Expr);
+         Pos   : Ada_Node_To_Why_Id.Cursor := Loop_Map.Find (Expr);
          Dummy : Boolean;
 
-         use Ada_To_Why_Ident;
+         use Ada_Node_To_Why_Id;
 
          Attrs       : String_Utils.String_Sets.Set :=
            String_Utils.String_Sets.Empty_Set;
@@ -1547,10 +1549,10 @@ package body Gnat2Why.Util is
    ------------------
 
    function Name_For_Old (N : Node_Id) return W_Identifier_Id is
-      Position : Ada_To_Why_Ident.Cursor;
+      Position : Ada_Node_To_Why_Id.Cursor;
       Inserted : Boolean;
 
-      use Ada_To_Why_Ident;
+      use Ada_Node_To_Why_Id;
 
    begin
       --  Tentatively insert an empty node to update it later

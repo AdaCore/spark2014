@@ -738,17 +738,9 @@ package Gnat2Why.Util is
 
    --  Context for the translation of expressions
 
-   package Ada_To_Why_Ident is new
-     Ada.Containers.Hashed_Maps
-       (Key_Type        => Node_Id,
-        Element_Type    => W_Identifier_Id,
-        Hash            => Node_Hash,
-        Equivalent_Keys => "=",
-        "="             => "=");
-
    type Loop_Entry_Values is record
-      Regular   : Ada_To_Why_Ident.Map;
-      No_Checks : Ada_To_Why_Ident.Map;
+      Regular   : Ada_Node_To_Why_Id.Map;
+      No_Checks : Ada_Node_To_Why_Id.Map;
    end record;
    --  For values at the beginning of the loop, store 2 tables depending on
    --  whether or not checks are mandated for the expression at the beginning
@@ -781,7 +773,7 @@ package Gnat2Why.Util is
    --  If No_Checks is True, no checks will be introduced for the value of
    --  Expr at the beginning of the loop.
 
-   function Map_For_At (Label_Id : E_Label_Id) return Ada_To_Why_Ident.Map;
+   function Map_For_At (Label_Id : E_Label_Id) return Ada_Node_To_Why_Id.Map;
    --  Returns the map of identifiers to use for At attribute references
    --  associated with label Label_Id.
 
@@ -789,7 +781,7 @@ package Gnat2Why.Util is
    --  Returns the maps of identifiers to use for Loop_Entry attribute
    --  references applying to loop Loop_Id.
 
-   function Map_For_Old return Ada_To_Why_Ident.Map;
+   function Map_For_Old return Ada_Node_To_Why_Id.Map;
    --  Returns the map of identifiers to use for Old attribute references in
    --  the current subprogram.
 
@@ -834,10 +826,10 @@ private
    package At_Nodes is new
      Ada.Containers.Hashed_Maps
        (Key_Type        => Node_Id,
-        Element_Type    => Ada_To_Why_Ident.Map,
+        Element_Type    => Ada_Node_To_Why_Id.Map,
         Hash            => Node_Hash,
         Equivalent_Keys => "=",
-        "="             => Ada_To_Why_Ident."=");
+        "="             => Ada_Node_To_Why_Id."=");
 
    --  Mapping of all expressions whose 'Old attribute is used in the current
    --  postcondition to the translation of the corresponding expression in
@@ -849,11 +841,11 @@ private
    --  the body and postcondition, filled during the translation, and used
    --  afterwards to generate the necessary copy instructions.
 
-   Old_Map        : Ada_To_Why_Ident.Map;
+   Old_Map        : Ada_Node_To_Why_Id.Map;
    Loop_Entry_Map : Loop_Entry_Nodes.Map;
    At_Map         : At_Nodes.Map;
 
-   function Map_For_Old return Ada_To_Why_Ident.Map
+   function Map_For_Old return Ada_Node_To_Why_Id.Map
    is (Old_Map);
 
 end Gnat2Why.Util;
