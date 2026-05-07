@@ -65,7 +65,9 @@ The switch definitions are centralized in the ``Switch_Definitions`` table.
 This table records the spelling and value kind of each switch, as well as its
 semantic layer. Switch ids are ordered so that invocation-level switches are
 contiguous and file-specific switches are contiguous. The parser records switch
-values in internal arrays indexed by these switch ids. After parsing, values are
+values in internal arrays indexed by these switch ids. Separate parses, such as
+project-wide attributes, file-specific attributes, and the actual command line,
+are merged in precedence order before projection. After merging, values are
 copied field by field to ``CL_Switches``, which remains the compatibility
 interface for existing consumers.
 
