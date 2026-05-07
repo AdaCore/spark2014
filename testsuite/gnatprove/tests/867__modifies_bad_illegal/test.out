@@ -1,0 +1,25 @@
+ext.adb:4:64: error: clause of Modifies contract mentioning an object that is not an output of the subprogram is not allowed in SPARK
+ext.adb:4:64: error: self reference of protected operation is implicit in Modifies contracts
+ext.adb:4:64: error: violation of aspect SPARK_Mode at line 1
+ext.adb:7:69: error: clause of Modifies contract mentioning an object that is not an output of the subprogram is not allowed in SPARK
+ext.adb:7:69: error: self reference of protected operation is implicit in Modifies contracts
+ext.adb:7:69: error: violation of aspect SPARK_Mode at line 1
+ext.adb:27:64: error: clause of Modifies contract mentioning an object that is not an output of the subprogram is not allowed in SPARK
+ext.adb:27:64: error: self reference of protected operation is implicit in Modifies contracts
+ext.adb:27:64: error: violation of aspect SPARK_Mode at line 1
+ext.adb:30:69: error: clause of Modifies contract mentioning an object that is not an output of the subprogram is not allowed in SPARK
+ext.adb:30:69: error: self reference of protected operation is implicit in Modifies contracts
+ext.adb:30:69: error: violation of aspect SPARK_Mode at line 1
+test.adb:12:26: error: "F" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
+test.adb:12:26: error: violation of aspect SPARK_Mode at line 1
+test.adb:17:22: error: "F" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
+test.adb:17:22: error: violation of aspect SPARK_Mode at line 1
+test.adb:22:22: error: "F" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
+test.adb:22:22: error: violation of aspect SPARK_Mode at line 1
+test.adb:36:18: error: clause of Modifies contract mentioning an object that is not an output of the subprogram is not allowed in SPARK
+test.adb:36:18: error: violation of aspect SPARK_Mode at line 1
+test.adb:40:18: error: clause of Modifies contract mentioning an object that is not an output of the subprogram is not allowed in SPARK
+test.adb:40:18: error: violation of aspect SPARK_Mode at line 1
+test.adb:44:18: error: clause of Modifies contract mentioning an object that is not an output of the subprogram is not allowed in SPARK
+test.adb:44:18: error: violation of aspect SPARK_Mode at line 1
+gnatprove: error during flow analysis and proof

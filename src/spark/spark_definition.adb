@@ -8966,6 +8966,132 @@ package body SPARK_Definition is
                end;
             end if;
 
+            Prag := Get_Pragma (E, Pragma_Modifies);
+            if Present (Prag) then
+               declare
+                  procedure Mark_Modified_Object (N : Node_Id);
+                  --  Mark the modified object and check that it is an output
+                  --  of the subprogram.
+
+                  --------------------------
+                  -- Mark_Modified_Object --
+                  --------------------------
+
+                  procedure Mark_Modified_Object (N : Node_Id) is
+                     Root : Entity_Id;
+                  begin
+                     if Nkind (N) in N_Expanded_Name | N_Identifier
+                       and then Ekind (Entity (N)) = E_Abstract_State
+                     then
+                        Mark_Entity (Entity (N));
+                        Root := Entity (N);
+                     else
+                        Mark (N);
+
+                        Root := Get_Root_Object (N);
+                        pragma Assert (Present (Root));
+
+                        if Is_Constant_In_SPARK (Root)
+                          or else Traverse_Access_To_Constant (N)
+                        then
+                           Mark_Violation (Vio_Modifies_Not_Output, N);
+                        end if;
+                     end if;
+
+                     if Is_Formal (Root) and then Scope (Root) = E then
+                        null;
+
+                     --  Reject parts of protected objects and overlays with
+                     --  a specific continuation.
+
+                     elsif Is_Protected_Component_Or_Discr_Or_Part_Of (Root)
+                     then
+                        Mark_Violation
+                          (Vio_Modifies_Not_Output,
+                           N,
+                           Cont_Msg =>
+                             Create
+                               ("self reference of protected operation is "
+                                & "implicit in Modifies contracts"));
+
+                     elsif Present (Overlaid_Entity (Root)) then
+                        Mark_Violation
+                          (Vio_Modifies_Not_Output,
+                           N,
+                           Cont_Msg =>
+                             Create
+                               ("Modifies aspect should mention "
+                                & "overlaid object instead"));
+
+                     --  Check that Root is an output of E
+
+                     elsif not Gnat2Why_Args.Global_Gen_Mode then
+                        declare
+                           Globals : Global_Flow_Ids;
+                        begin
+                           Get_Globals
+                             (Subprogram          => E,
+                              Scope               =>
+                                (Ent => E, Part => Visible_Part),
+                              Classwide           => False,
+                              Globals             => Globals,
+                              Use_Deduced_Globals => True,
+                              Ignore_Depends      => False);
+
+                           if (for all F_Id of Globals.Outputs =>
+                                 (if F_Id.Kind = Direct_Mapping
+                                  then F_Id.Node /= Root))
+                           then
+                              Mark_Violation (Vio_Modifies_Not_Output, N);
+                           end if;
+                        end;
+                     end if;
+                  end Mark_Modified_Object;
+
+                  Assocs  : constant List_Id :=
+                    Pragma_Argument_Associations (Prag);
+                  pragma Assert (List_Length (Assocs) = 1);
+                  Clauses : constant Node_Id := Expression (First (Assocs));
+               begin
+                  declare
+                     Clause : Node_Id :=
+                       First (Component_Associations (Clauses));
+                  begin
+                     while Present (Clause) loop
+
+                        --  Mark the guard
+
+                        if Present (Expression (Clause)) then
+                           Mark (Expression (Clause));
+                        end if;
+
+                        --  Mark the objects
+
+                        declare
+                           Object : Node_Id := First (Choices (Clause));
+                        begin
+                           loop
+                              Mark_Modified_Object (Object);
+                              Next (Object);
+                              exit when No (Object);
+                           end loop;
+                        end;
+
+                        Next (Clause);
+                     end loop;
+                  end;
+
+                  declare
+                     Object : Node_Id := First (Expressions (Clauses));
+                  begin
+                     while Present (Object) loop
+                        Mark_Modified_Object (Object);
+                        Next (Object);
+                     end loop;
+                  end;
+               end;
+            end if;
+
             --  Dispatching operations shall not have a Relaxed_Initialization
             --  aspect.
 
@@ -13817,6 +13943,7 @@ package body SPARK_Definition is
             --  Pragma_Loop_Invariant is transformed into pragma Check
             --  handled above.
             --  Pragma_Loop_Variant is handled specially above
+            | Pragma_Modifies
             | Pragma_No_Caching
             | Pragma_Part_Of
             | Pragma_Refined_Depends

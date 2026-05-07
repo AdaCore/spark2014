@@ -1463,6 +1463,9 @@ package body VC_Kinds is
          when Vio_Loop_Variant_Structural                  =>
            "structural loop variant which is not a variable of an anonymous "
            & "access-to-object type",
+         when Vio_Modifies_Not_Output                      =>
+           "clause of Modifies contract mentioning an object that is not an "
+           & "output of the subprogram",
          when Vio_Overlay_Constant_Not_Imported            =>
            "constant object with an address clause which is not imported",
          when Vio_Overlay_Mutable_Constant                 =>
@@ -3620,6 +3623,8 @@ package body VC_Kinds is
            "iterator-specification",
          when Vio_Loop_Variant_Structural                  =>
            "loop-variant-structural",
+         when Vio_Modifies_Not_Output                      =>
+           "modifies-not-output",
          when Vio_Overlay_Constant_Not_Imported            =>
            "overlay-constant-not-imported",
          when Vio_Overlay_Mutable_Constant                 =>
@@ -3891,6 +3896,9 @@ package body VC_Kinds is
          when Vio_Loop_Variant_Structural                            =>
            "structural loop variant which is not a variable of an"
            & " anonymous access-to-object type",
+         when Vio_Modifies_Not_Output                                =>
+           "clause of Modifies contract mentioning an object that is not an "
+           & "output of the subprogram",
          when Vio_Overlay_Constant_Not_Imported                      =>
            "constant object with an address clause which is not imported",
          when Vio_Overlay_Mutable_Constant                           =>

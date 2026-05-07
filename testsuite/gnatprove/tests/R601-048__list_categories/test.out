@@ -369,6 +369,7 @@ violation-iterable-side-effects - violation-iterable-side-effects - function wit
 violation-iterable-volatile - violation-iterable-volatile - volatile function associated with aspect Iterable - HIGH
 violation-iterator-specification - violation-iterator-specification - iterator specification - HIGH
 violation-loop-variant-structural - violation-loop-variant-structural - structural loop variant which is not a variable of an anonymous access-to-object type - HIGH
+violation-modifies-not-output - violation-modifies-not-output - clause of Modifies contract mentioning an object that is not an output of the subprogram - HIGH
 violation-overlay-constant-not-imported - violation-overlay-constant-not-imported - constant object with an address clause which is not imported - HIGH
 violation-overlay-mutable-constant - violation-overlay-mutable-constant - mutable object and constant object overlaying each other - HIGH
 violation-overlay-part-of-protected - violation-overlay-part-of-protected - overlaid object which is a part of a protected object - HIGH
