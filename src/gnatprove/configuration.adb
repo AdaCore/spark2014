@@ -215,7 +215,6 @@ package body Configuration is
       Sw_Debug_No_Cache_Output,
       Sw_Debug_Save_VCs,
       Sw_Dbg_No_Sem,
-      Sw_Debug_Trivial,
       Sw_Debug_Prover_Errors,
       Sw_Exclude_Line,
       Sw_Flow_Debug,
@@ -347,11 +346,6 @@ package body Configuration is
       Sw_Dbg_No_Sem            =>
         Make_Switch_Metadata
           (Long       => new String'("--debug-no-semaphore"),
-           Value_Kind => Flag_Value,
-           Layer      => Invocation_Layer),
-      Sw_Debug_Trivial         =>
-        Make_Switch_Metadata
-          (Long       => new String'("--debug-trivial"),
            Value_Kind => Flag_Value,
            Layer      => Invocation_Layer),
       Sw_Debug_Prover_Errors   =>
@@ -1191,8 +1185,6 @@ package body Configuration is
          CL_Switches.Debug_Save_VCs :=
            Parsed.Values (Sw_Debug_Save_VCs).Boolean_Val;
          CL_Switches.Dbg_No_Sem := Parsed.Values (Sw_Dbg_No_Sem).Boolean_Val;
-         CL_Switches.Debug_Trivial :=
-           Parsed.Values (Sw_Debug_Trivial).Boolean_Val;
          CL_Switches.Debug_Prover_Errors :=
            Parsed.Values (Sw_Debug_Prover_Errors).Boolean_Val;
          Move_String

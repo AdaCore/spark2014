@@ -105,7 +105,6 @@ package Configuration is
       --  disable use of semaphores for ease of debugging
       Debug_Exec_RAC        : aliased Boolean;
       Debug_Save_VCs        : aliased Boolean;
-      Debug_Trivial         : aliased Boolean;
       Debug_Prover_Errors   : aliased Boolean;
       Exclude_Line          : aliased GNAT.Strings.String_Access;
       F                     : aliased Boolean;
