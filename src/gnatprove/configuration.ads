@@ -138,8 +138,6 @@ package Configuration is
       Output                : aliased GNAT.Strings.String_Access;
       Output_Header         : aliased Boolean;
       Output_Msg_Only       : aliased Boolean;
-      P                     : aliased GNAT.Strings.String_Access;
-      --  The project file name, given with option -P
       Proof                 : aliased GNAT.Strings.String_Access;
       Proof_Warnings        : aliased GNAT.Strings.String_Access;
       Proof_Warn_Timeout    : aliased Integer;

@@ -232,7 +232,7 @@ begin
    if not Artifact_Dir (Tree).Is_Defined then
       Fail
         ("Error while loading project file: "
-         & CL_Switches.P.all
+         & Tree.Root_Project.Path_Name.String_Value
          & ": "
          & "could not determine working directory");
    end if;
