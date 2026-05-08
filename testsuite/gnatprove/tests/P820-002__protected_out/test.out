@@ -235,3 +235,5 @@ producer_consumer.adb:83:17: low: range check might fail, cannot prove upper bou
 producer_consumer.adb:83:29: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 producer_consumer.ads:38:27: info: initialization of "Data_Source" proved
 gnatprove: error during flow analysis and proof
+warning: invocation switch "--report" in attribute "Proof_Switches ("Ada")" of non-root project "polyorb-hi-ada/polyorb_hi.gpr" is ignored
+warning: invocation switch "--warnings" in attribute "Proof_Switches ("Ada")" of non-root project "polyorb-hi-ada/polyorb_hi.gpr" is ignored

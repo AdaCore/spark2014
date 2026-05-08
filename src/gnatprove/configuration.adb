@@ -2483,6 +2483,13 @@ package body Configuration is
       --  Read the switch variables set by command-line parsing and set the
       --  gnatprove variables.
 
+      procedure Warn_And_Strip_Non_Root_Invocation_Switches
+        (View           : Project.View.Object;
+         Attribute_Name : String;
+         Switches       : in out Parsed_Switches);
+      --  Invocation-level switches from non-root projects are accepted for
+      --  compatibility but ignored semantically.
+
       procedure File_Specific_Postprocess
         (Parsed : Parsed_Switches; FS : out File_Specific);
       --  Same as Postprocess, but for the switches that can be file-specific.
@@ -2650,6 +2657,49 @@ package body Configuration is
          end if;
       end Switch_String;
 
+      -------------------------------------------------
+      -- Warn_And_Strip_Non_Root_Invocation_Switches --
+      -------------------------------------------------
+
+      procedure Warn_And_Strip_Non_Root_Invocation_Switches
+        (View           : Project.View.Object;
+         Attribute_Name : String;
+         Switches       : in out Parsed_Switches)
+      is
+         function Switch_Image (Switch : Switch_Id) return String;
+         --  Return the preferred user-facing spelling for Switch
+
+         ------------------
+         -- Switch_Image --
+         ------------------
+
+         function Switch_Image (Switch : Switch_Id) return String is
+         begin
+            if Switch_Definitions (Switch).Long /= null then
+               return Switch_Definitions (Switch).Long.all;
+            else
+               return Switch_Definitions (Switch).Short.all;
+            end if;
+         end Switch_Image;
+
+      begin
+         for Switch in Invocation_Switch_Id loop
+            if Switches.Present (Switch) then
+               Ada.Text_IO.Put_Line
+                 (Ada.Text_IO.Standard_Error,
+                  "warning: invocation switch """
+                  & Switch_Image (Switch)
+                  & """ in attribute """
+                  & Attribute_Name
+                  & """ of non-root project """
+                  & View.Path_Name.String_Value
+                  & """ is ignored");
+               Switches.Values (Switch) := Initial_Switch_Value (Switch);
+               Switches.Present (Switch) := False;
+            end if;
+         end loop;
+      end Warn_And_Strip_Non_Root_Invocation_Switches;
+
       --------------------------
       -- Parse_Proof_Switches --
       --------------------------
@@ -2693,6 +2743,8 @@ package body Configuration is
                    GNATCOLL.Tribooleans.False])
          loop
             declare
+               use type Project.View.Object;
+
                View               : constant Project.View.Object :=
                  Project.Tree.Element (Cursor);
                FS                 : File_Specific;
@@ -2705,21 +2757,32 @@ package body Configuration is
                        Index => GPR2.Project.Attribute_Index.Create ("Ada")));
                Project_Switches   : Parsed_Switches;
             begin
-               --  Parse all switches that apply to all files, then merge them
-               --  in the right order (most important is last).
-
                if Prove_Switches /= null then
-                  Merge_Parsed_Switches
-                    (Project_Switches,
-                     Parse_Switches_Internal
-                       (Global_Switches_Only, Prove_Switches.all));
+                  declare
+                     Parsed : Parsed_Switches :=
+                       Parse_Switches_Internal
+                         (Global_Switches_Only, Prove_Switches.all);
+                  begin
+                     if View /= Tree.Root_Project then
+                        Warn_And_Strip_Non_Root_Invocation_Switches
+                          (View, "Switches", Parsed);
+                     end if;
+                     Merge_Parsed_Switches (Project_Switches, Parsed);
+                  end;
                end if;
 
                if Proof_Switches_Ada /= null then
-                  Merge_Parsed_Switches
-                    (Project_Switches,
-                     Parse_Switches_Internal
-                       (Global_Switches_Only, Proof_Switches_Ada.all));
+                  declare
+                     Parsed : Parsed_Switches :=
+                       Parse_Switches_Internal
+                         (Global_Switches_Only, Proof_Switches_Ada.all);
+                  begin
+                     if View /= Tree.Root_Project then
+                        Warn_And_Strip_Non_Root_Invocation_Switches
+                          (View, "Proof_Switches (""Ada"")", Parsed);
+                     end if;
+                     Merge_Parsed_Switches (Project_Switches, Parsed);
+                  end;
                end if;
 
                declare
