@@ -8031,6 +8031,46 @@ package body Gnat2Why.Expr.Aggregates is
 
                when Record_Components                =>
 
+                  --  The tag and extension are preserved
+
+                  if Is_Tagged_Type (Writes.Ty) then
+                     for I in Values'Range loop
+                        Eqs (I) :=
+                          New_And_Pred
+                            ((1 => Eqs (I),
+                              2 =>
+                                New_Comparison
+                                  (Symbol => Why_Eq,
+                                   Left   =>
+                                     +New_Tag_Access
+                                        (Name   => +Prefix,
+                                         Domain => EW_Term,
+                                         Ty     => Writes.Ty),
+                                   Right  =>
+                                     +New_Tag_Access
+                                        (Name   => +Values (I),
+                                         Domain => EW_Term,
+                                         Ty     => Writes.Ty)),
+                              3 =>
+                                New_Comparison
+                                  (Symbol => Why_Eq,
+                                   Left   =>
+                                     +New_Ext_Access
+                                        (Name =>
+                                           New_Fields_Access
+                                             (Name => +Prefix,
+                                              Ty   => Writes.Ty),
+                                         Ty   => Writes.Ty),
+                                   Right  =>
+                                     +New_Ext_Access
+                                        (Name =>
+                                           New_Fields_Access
+                                             (Name => +Values (I),
+                                              Ty   => Writes.Ty),
+                                         Ty   => Writes.Ty))));
+                     end loop;
+                  end if;
+
                   --  Discriminants are preserved
 
                   if Has_Discriminants (Writes.Ty) then
