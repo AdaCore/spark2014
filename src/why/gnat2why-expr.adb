@@ -2736,26 +2736,26 @@ package body Gnat2Why.Expr is
 
    function Bind_From_Mapping_In_Expr
      (Params       : Transformation_Params;
-      Map          : Ada_To_Why_Ident.Map;
+      Map          : Ada_Node_To_Why_Id.Map;
       Expr         : W_Expr_Id;
       Domain       : EW_Domain;
       Subset       : Node_Sets.Set;
       Old_Prefixes : Boolean := False) return W_Expr_Id
    is
       Result : W_Expr_Id := Expr;
-      Cu     : Ada_To_Why_Ident.Cursor;
+      Cu     : Ada_Node_To_Why_Id.Cursor;
 
    begin
       for N of Subset loop
          Cu := Map.Find (N);
 
-         if Ada_To_Why_Ident.Has_Element (Cu) then
+         if Ada_Node_To_Why_Id.Has_Element (Cu) then
             Result :=
               Bind_From_Mapping_In_Expr
                 (Params    => Params,
                  Expr      => Result,
                  N         => N,
-                 Name      => Ada_To_Why_Ident.Element (Cu),
+                 Name      => Ada_Node_To_Why_Id.Element (Cu),
                  Domain    => Domain,
                  Condition =>
                    (if Old_Prefixes
@@ -2773,7 +2773,7 @@ package body Gnat2Why.Expr is
 
    function Bind_From_Mapping_In_Prog
      (Params       : Transformation_Params;
-      Map          : Ada_To_Why_Ident.Map;
+      Map          : Ada_Node_To_Why_Id.Map;
       Expr         : W_Prog_Id;
       Old_Prefixes : Boolean := False) return W_Prog_Id
    is
@@ -2781,13 +2781,13 @@ package body Gnat2Why.Expr is
       N      : Node_Id;
    begin
       for C in Map.Iterate loop
-         N := Ada_To_Why_Ident.Key (C);
+         N := Ada_Node_To_Why_Id.Key (C);
          Result :=
            +Bind_From_Mapping_In_Expr
               (Params    => Params,
                Expr      => +Result,
                N         => N,
-               Name      => Ada_To_Why_Ident.Element (C),
+               Name      => Ada_Node_To_Why_Id.Element (C),
                Domain    => EW_Prog,
                Condition =>
                  (if Old_Prefixes
@@ -2811,8 +2811,8 @@ package body Gnat2Why.Expr is
            +Bind_From_Mapping_In_Expr
               (Params => Params,
                Expr   => +Result,
-               N      => Ada_To_Why_Ident.Key (C),
-               Name   => Ada_To_Why_Ident.Element (C),
+               N      => Ada_Node_To_Why_Id.Key (C),
+               Name   => Ada_Node_To_Why_Id.Element (C),
                Domain => EW_Pterm);
       end loop;
 
@@ -2821,8 +2821,8 @@ package body Gnat2Why.Expr is
            +Bind_From_Mapping_In_Expr
               (Params => Params,
                Expr   => +Result,
-               N      => Ada_To_Why_Ident.Key (C),
-               Name   => Ada_To_Why_Ident.Element (C),
+               N      => Ada_Node_To_Why_Id.Key (C),
+               Name   => Ada_Node_To_Why_Id.Element (C),
                Domain => EW_Prog);
       end loop;
 
@@ -6488,8 +6488,8 @@ package body Gnat2Why.Expr is
       Use_Pred       : Boolean := True) return W_Pred_Id
    is
       T                 : W_Pred_Id;
-      New_Incompl_Acc   : Ada_To_Why_Ident.Map;
-      New_Incompl_Acc_R : Ada_To_Why_Ident.Map;
+      New_Incompl_Acc   : Ada_Node_To_Why_Id.Map;
+      New_Incompl_Acc_R : Ada_Node_To_Why_Id.Map;
    begin
       --  Current_Subp is used as a scope to determine which local invariants
       --  should be included in the dynamic invariant. It should be set.
@@ -6511,9 +6511,9 @@ package body Gnat2Why.Expr is
          Use_Pred          => Use_Pred,
          New_Preds_Module  => Why_Empty,
          T                 => T,
-         Loc_Incompl_Acc   => Ada_To_Why_Ident.Empty_Map,
+         Loc_Incompl_Acc   => Ada_Node_To_Why_Id.Empty_Map,
          New_Incompl_Acc   => New_Incompl_Acc,
-         Loc_Incompl_Acc_R => Ada_To_Why_Ident.Empty_Map,
+         Loc_Incompl_Acc_R => Ada_Node_To_Why_Id.Empty_Map,
          New_Incompl_Acc_R => New_Incompl_Acc_R,
          Expand_Incompl    => True);
 
@@ -6536,10 +6536,10 @@ package body Gnat2Why.Expr is
       Use_Pred          : Boolean;
       New_Preds_Module  : W_Module_Id;
       T                 : out W_Pred_Id;
-      Loc_Incompl_Acc   : Ada_To_Why_Ident.Map;
-      New_Incompl_Acc   : in out Ada_To_Why_Ident.Map;
-      Loc_Incompl_Acc_R : Ada_To_Why_Ident.Map;
-      New_Incompl_Acc_R : in out Ada_To_Why_Ident.Map;
+      Loc_Incompl_Acc   : Ada_Node_To_Why_Id.Map;
+      New_Incompl_Acc   : in out Ada_Node_To_Why_Id.Map;
+      Loc_Incompl_Acc_R : Ada_Node_To_Why_Id.Map;
+      New_Incompl_Acc_R : in out Ada_Node_To_Why_Id.Map;
       Expand_Incompl    : Boolean)
    is
 
@@ -7315,11 +7315,11 @@ package body Gnat2Why.Expr is
             --  so that we get the local name if there is one.
 
             declare
-               use Ada_To_Why_Ident;
+               use Ada_Node_To_Why_Id;
                Rep_Ty_Ext  : Type_Kind_Id := Repr_Pointer_Type (Ty_Ext);
                Des_Ty      : Type_Kind_Id :=
                  Retysp (Directly_Designated_Type (Ty_Ext));
-               Dyn_Inv_Pos : Ada_To_Why_Ident.Cursor;
+               Dyn_Inv_Pos : Ada_Node_To_Why_Id.Cursor;
                Inserted    : Boolean;
 
             begin

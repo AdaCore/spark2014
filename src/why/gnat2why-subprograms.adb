@@ -161,7 +161,7 @@ package body Gnat2Why.Subprograms is
 
    function Compute_Cases_Entry_Checks
      (Aggr           : Node_Id;
-      Guard_Map      : Ada_To_Why_Ident.Map;
+      Guard_Map      : Ada_Node_To_Why_Id.Map;
       Check_Complete : Boolean) return W_Prog_Id;
    --  Returns the Why program for checking that the guards of a Contract_Cases
    --  or Exit_Cases pragma with parameter Aggr are disjoint, and, if
@@ -175,7 +175,7 @@ package body Gnat2Why.Subprograms is
    function Compute_Contract_Cases_Exit_Checks
      (Params    : Transformation_Params;
       E         : Entity_Id;
-      Guard_Map : Ada_To_Why_Ident.Map) return W_Prog_Id;
+      Guard_Map : Ada_Node_To_Why_Id.Map) return W_Prog_Id;
    --  Returns in Result the Why program for checking that the consequences of
    --  enabled guards of the Contract_Cases pragmas attached to subprogram E
    --  (if any) do not raise a run-time error, and that they hold. Guard_Map
@@ -184,7 +184,7 @@ package body Gnat2Why.Subprograms is
    --  and bind them appropriately.
 
    procedure Compute_Cases_Guard_Map
-     (Aggr : Node_Id; Guard_Map : out Ada_To_Why_Ident.Map);
+     (Aggr : Node_Id; Guard_Map : out Ada_Node_To_Why_Id.Map);
    --  Returns the map from contracts cases or exit cases nodes in Aggr,
    --  to Why identifiers for the value of these guards in the Why3
    --  program. If the cases contain an "others" case, associate an
@@ -192,13 +192,13 @@ package body Gnat2Why.Subprograms is
    --  this case is enabled.
 
    function Compute_Cases_Others_Expr
-     (Aggr : Node_Id; Guard_Map : Ada_To_Why_Ident.Map) return W_Term_Id;
+     (Aggr : Node_Id; Guard_Map : Ada_Node_To_Why_Id.Map) return W_Term_Id;
    --  Return the Why3 expression that should be used to define the identifier
    --  for the others case in Aggr. If there is no "others" case, return
    --  Why_Empty.
 
    function Compute_Exit_Cases_Simple_Checks
-     (E : Entity_Id; Name : Name_Id; Guard_Map : Ada_To_Why_Ident.Map)
+     (E : Entity_Id; Name : Name_Id; Guard_Map : Ada_Node_To_Why_Id.Map)
       return W_Prog_Id;
    --  Returns in Result the Why program for checking the exit kind of
    --  enabled guard of the Exit_Cases pragma attached to subprogram E (if
@@ -210,7 +210,7 @@ package body Gnat2Why.Subprograms is
 
    function Compute_Exit_Cases_Exceptional_Exit_Checks
      (E         : Entity_Id;
-      Guard_Map : Ada_To_Why_Ident.Map;
+      Guard_Map : Ada_Node_To_Why_Id.Map;
       Exc_Id    : W_Identifier_Id) return W_Prog_Id;
    --  Returns in Result the Why program for checking the exit kind of
    --  enabled guard of the Exit_Cases pragma attached to subprogram E (if
@@ -2175,7 +2175,7 @@ package body Gnat2Why.Subprograms is
    --    let guardOTHERS = not (guard1 or guard2 ... or guardN) in
 
    procedure Compute_Cases_Guard_Map
-     (Aggr : Node_Id; Guard_Map : out Ada_To_Why_Ident.Map)
+     (Aggr : Node_Id; Guard_Map : out Ada_Node_To_Why_Id.Map)
    is
       Contract_Case : Node_Id;
       Case_Guard    : Node_Id;
@@ -2250,7 +2250,7 @@ package body Gnat2Why.Subprograms is
 
    function Compute_Cases_Entry_Checks
      (Aggr           : Node_Id;
-      Guard_Map      : Ada_To_Why_Ident.Map;
+      Guard_Map      : Ada_Node_To_Why_Id.Map;
       Check_Complete : Boolean) return W_Prog_Id
    is
       function Is_Pragma (N : Node_Id) return Boolean
@@ -2372,7 +2372,7 @@ package body Gnat2Why.Subprograms is
    -------------------------------
 
    function Compute_Cases_Others_Expr
-     (Aggr : Node_Id; Guard_Map : Ada_To_Why_Ident.Map) return W_Term_Id
+     (Aggr : Node_Id; Guard_Map : Ada_Node_To_Why_Id.Map) return W_Term_Id
    is
       Result        : W_Term_Id;
       Contract_Case : Node_Id;
@@ -2435,7 +2435,7 @@ package body Gnat2Why.Subprograms is
    function Compute_Contract_Cases_Exit_Checks
      (Params    : Transformation_Params;
       E         : Entity_Id;
-      Guard_Map : Ada_To_Why_Ident.Map) return W_Prog_Id
+      Guard_Map : Ada_Node_To_Why_Id.Map) return W_Prog_Id
    is
       CC_List       : constant Node_Lists.List :=
         Find_Contracts (E, Pragma_Contract_Cases);
@@ -2770,7 +2770,7 @@ package body Gnat2Why.Subprograms is
 
    function Compute_Exit_Cases_Exceptional_Exit_Checks
      (E         : Entity_Id;
-      Guard_Map : Ada_To_Why_Ident.Map;
+      Guard_Map : Ada_Node_To_Why_Id.Map;
       Exc_Id    : W_Identifier_Id) return W_Prog_Id
    is
       Prag   : constant Node_Id := Get_Pragma (E, Pragma_Exit_Cases);
@@ -2991,7 +2991,7 @@ package body Gnat2Why.Subprograms is
    --  pragma Assert (not guardi); --  if Exit_Kindi is not Name
 
    function Compute_Exit_Cases_Simple_Checks
-     (E : Entity_Id; Name : Name_Id; Guard_Map : Ada_To_Why_Ident.Map)
+     (E : Entity_Id; Name : Name_Id; Guard_Map : Ada_Node_To_Why_Id.Map)
       return W_Prog_Id
    is
       Prag   : constant Node_Id := Get_Pragma (E, Pragma_Exit_Cases);
@@ -4534,8 +4534,8 @@ package body Gnat2Why.Subprograms is
 
       --  Mapping from guards to temporary names, and Why program to check
       --  contract cases and exit cases on exit.
-      CC_Guard_Map : Ada_To_Why_Ident.Map;
-      EC_Guard_Map : Ada_To_Why_Ident.Map;
+      CC_Guard_Map : Ada_Node_To_Why_Id.Map;
+      EC_Guard_Map : Ada_Node_To_Why_Id.Map;
 
       function CC_EC_And_RTE_Post return W_Prog_Id;
       --  Return verification of the contract cases, exit cases on normal
@@ -4558,7 +4558,7 @@ package body Gnat2Why.Subprograms is
       --  Generate a VC to warn on inconsistent postconditions
 
       function Wrap_Decls_For_Guards
-        (P : W_Prog_Id; Guard_Map : Ada_To_Why_Ident.Map) return W_Prog_Id;
+        (P : W_Prog_Id; Guard_Map : Ada_Node_To_Why_Id.Map) return W_Prog_Id;
       --  Helper subprogram, introduce bindings for guards of contract or exit
       --  cases over P.
 
@@ -5515,7 +5515,7 @@ package body Gnat2Why.Subprograms is
       ---------------------------
 
       function Wrap_Decls_For_Guards
-        (P : W_Prog_Id; Guard_Map : Ada_To_Why_Ident.Map) return W_Prog_Id
+        (P : W_Prog_Id; Guard_Map : Ada_Node_To_Why_Id.Map) return W_Prog_Id
       is
          Prog : W_Prog_Id := P;
 
@@ -5524,8 +5524,8 @@ package body Gnat2Why.Subprograms is
 
          for C in Guard_Map.Iterate loop
             declare
-               Id : constant W_Identifier_Id := Ada_To_Why_Ident.Element (C);
-               N  : constant Node_Id := Ada_To_Why_Ident.Key (C);
+               Id : constant W_Identifier_Id := Ada_Node_To_Why_Id.Element (C);
+               N  : constant Node_Id := Ada_Node_To_Why_Id.Key (C);
 
             begin
                if Nkind (N) = N_Aggregate then
@@ -5542,8 +5542,8 @@ package body Gnat2Why.Subprograms is
 
          for C in Guard_Map.Iterate loop
             declare
-               Id : constant W_Identifier_Id := Ada_To_Why_Ident.Element (C);
-               N  : constant Node_Id := Ada_To_Why_Ident.Key (C);
+               Id : constant W_Identifier_Id := Ada_Node_To_Why_Id.Element (C);
+               N  : constant Node_Id := Ada_Node_To_Why_Id.Key (C);
 
             begin
                if Nkind (N) /= N_Aggregate then
