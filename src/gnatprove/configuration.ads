@@ -105,24 +105,18 @@ package Configuration is
       --  disable use of semaphores for ease of debugging
       Debug_Exec_RAC        : aliased Boolean;
       Debug_Save_VCs        : aliased Boolean;
-      Debug_Trivial         : aliased Boolean;
       Debug_Prover_Errors   : aliased Boolean;
       Exclude_Line          : aliased GNAT.Strings.String_Access;
-      Explain               : aliased GNAT.Strings.String_Access;
       F                     : aliased Boolean;
       File_List             : String_Lists.List;
       --  The list of files to be compiled
       Flow_Debug            : aliased Boolean;
-      Flow_Termination      : aliased Boolean;
       Flow_Show_GG          : aliased Boolean;
       Function_Sandboxing   : aliased GNAT.Strings.String_Access;
       Gnattest_Values       : aliased GNAT.Strings.String_Access;
-      GPR_Project_Path      : String_Lists.List;
-      --  extra paths to look for project files, passed to gnatprove via -aP
       SARIF_Base_URIs       : String_Lists.List;
       --  Raw "IDENTIFIER:PATH" strings from --sarif-base-uri= occurrences
       IDE_Progress_Bar      : aliased Boolean;
-      Info                  : aliased Boolean;
       J                     : aliased Integer;
       K                     : aliased Boolean;
       Level                 : aliased Integer;
@@ -131,7 +125,6 @@ package Configuration is
       Limit_Name            : aliased GNAT.Strings.String_Access;
       Limit_Region          : aliased GNAT.Strings.String_Access;
       Limit_Subp            : aliased GNAT.Strings.String_Access;
-      List_Categories       : aliased Boolean;
       M                     : aliased Boolean;
       Memlimit              : aliased Integer;
       Mode                  : aliased GNAT.Strings.String_Access;
@@ -144,10 +137,6 @@ package Configuration is
       Output                : aliased GNAT.Strings.String_Access;
       Output_Header         : aliased Boolean;
       Output_Msg_Only       : aliased Boolean;
-      P                     : aliased GNAT.Strings.String_Access;
-      --  The project file name, given with option -P
-      Pedantic              : aliased Boolean;
-      Print_Gpr_Registry    : aliased Boolean;
       Proof                 : aliased GNAT.Strings.String_Access;
       Proof_Warnings        : aliased GNAT.Strings.String_Access;
       Proof_Warn_Timeout    : aliased Integer;
@@ -155,22 +144,16 @@ package Configuration is
       Q                     : aliased Boolean;
       Replay                : aliased Boolean;
       Report                : aliased GNAT.Strings.String_Access;
-      RTS                   : aliased GNAT.Strings.String_Access;
       Steps                 : aliased Integer;
-      Subdirs               : aliased GNAT.Strings.String_Access;
-      Target                : aliased GNAT.Strings.String_Access;
       Timeout               : aliased GNAT.Strings.String_Access;
       U                     : aliased Boolean;
       UU                    : aliased Boolean;
       V                     : aliased Boolean;
-      Version               : aliased Boolean;
       Warnings              : aliased GNAT.Strings.String_Access;
       Why3_Conf             : aliased GNAT.Strings.String_Access;
       Why3_Debug            : aliased GNAT.Strings.String_Access;
       Why3_Logging          : aliased Boolean;
       Why3_Server           : aliased GNAT.Strings.String_Access;
-      X                     : String_Lists.List;
-      --  Scenario variables to be passed to gprbuild
       Z3_Counterexample     : aliased Boolean;
    end CL_Switches;
 
