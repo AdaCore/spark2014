@@ -1450,13 +1450,6 @@ package body Configuration is
 
          Current_Parsed_Switches.File_List.Append (Switch);
 
-      --  We explicitly ignore project-loading switches here. They have been
-      --  taken into account in the parsing of the command line.
-
-      elsif Switch'Length >= 2 and then Switch (Switch'First + 1) = 'X' then
-         null;
-      elsif Switch = "-aP" then
-         null;
       else
          Found := Find_Switch (Switch, Id);
 
@@ -1606,6 +1599,7 @@ package body Configuration is
               (Kind        => Integer_Value,
                Integer_Val =>
                  (case Switch is
+                    when Sw_J                   => 1,
                     when Sw_Level               => Invalid_Level,
                     when Sw_Steps | Sw_CE_Steps => Invalid_Steps,
                     when Sw_Proof_Warn_Timeout  => Invalid_Timeout,
