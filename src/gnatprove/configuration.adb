@@ -66,8 +66,6 @@ package body Configuration is
    Invalid_Steps   : constant := -1;
    Invalid_Timeout : constant := -1;
 
-   type Warning_Status_Set_Array is array (Misc_Warning_Kind) of Boolean;
-
    Usage_Message : constant String := "-Pproj [switches] [-cargs switches]";
    --  Used to print part of the help message for gnatprove
 
@@ -680,12 +678,11 @@ package body Configuration is
    --  Check that switch definitions and the value array have compatible types
 
    type Parsed_Switches is record
-      Values             : Switch_Value_Array :=
+      Values         : Switch_Value_Array :=
         [for Switch in Switch_Id => Initial_Switch_Value (Switch)];
-      Present            : Switch_Presence_Array := [others => False];
-      File_List          : String_Lists.List;
-      Warning_Status     : Warning_Status_Array := VC_Kinds.Warning_Status;
-      Warning_Status_Set : Warning_Status_Set_Array := [others => False];
+      Present        : Switch_Presence_Array := [others => False];
+      File_List      : String_Lists.List;
+      Warning_Status : Opt_Warning_Status_Array := [others => WS_None];
    end record;
 
    type Parsed_Switches_Access is access all Parsed_Switches;
@@ -1113,9 +1110,8 @@ package body Configuration is
       end loop;
 
       for WK in Misc_Warning_Kind loop
-         if Over.Warning_Status_Set (WK) then
+         if Over.Warning_Status (WK) /= WS_None then
             Base.Warning_Status (WK) := Over.Warning_Status (WK);
-            Base.Warning_Status_Set (WK) := True;
          end if;
       end loop;
 
@@ -1259,7 +1255,12 @@ package body Configuration is
          Copy_List (Parsed.File_List, CL_Switches.File_List);
       end if;
 
-      Configuration.Warning_Status := Parsed.Warning_Status;
+      for WK in Misc_Warning_Kind loop
+         Configuration.Warning_Status (WK) :=
+           (if Parsed.Warning_Status (WK) /= WS_None
+            then Parsed.Warning_Status (WK)
+            else VC_Kinds.Warning_Status (WK));
+      end loop;
 
       if Mode in All_Switches | Global_Switches_Only | File_Specific_Only then
          CL_Switches.Level := Parsed.Values (Sw_Level).Integer_Val;
@@ -1509,7 +1510,6 @@ package body Configuration is
          pragma Assert (Current_Parsed_Switches /= null);
 
          Current_Parsed_Switches.Warning_Status (Warning) := Status;
-         Current_Parsed_Switches.Warning_Status_Set (Warning) := True;
       end Set_Warning_Status;
    begin
 

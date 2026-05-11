@@ -893,11 +893,18 @@ package VC_Kinds is
 
    --  Warning enabling/disabling mechanism
 
-   type Warning_Enabled_Status is (WS_Enabled, WS_Disabled, WS_Error);
+   type Opt_Warning_Enabled_Status is
+     (WS_None, WS_Enabled, WS_Disabled, WS_Error);
+   subtype Warning_Enabled_Status is
+     Opt_Warning_Enabled_Status range WS_Enabled .. WS_Error;
    --  A warning can be enabled, disabled or promoted to an error
 
    type Warning_Status_Array is
      array (Misc_Warning_Kind) of Warning_Enabled_Status;
+
+   type Opt_Warning_Status_Array is
+     array (Misc_Warning_Kind) of Opt_Warning_Enabled_Status;
+   --  This array type which allows for absent values is used during parsing
 
    function From_Tag (Tag : String) return Misc_Warning_Kind;
    --  Compute the warning kind from a string. Raise Constraint_Error if the
