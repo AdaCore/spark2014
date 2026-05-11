@@ -4629,13 +4629,6 @@ package body Gnat2Why.Expr.Aggregates is
                      Params => Params);
             end if;
 
-            --  Array components have the tag of their types
-
-            if Is_Record_Type_In_Why (Comp_Type) then
-               Arg_Val :=
-                 New_Tag_And_Ext_Update (Name => Arg_Val, Ty => Comp_Type);
-            end if;
-
             --  Special case for the expression of the delta aggregate. In
             --  that case, we want to build the value Prefix(i,j..) with the
             --  default indexes.
@@ -4681,6 +4674,13 @@ package body Gnat2Why.Expr.Aggregates is
             --      to_base (arr (indexes)) = tmp
 
             else
+               --  Array components have the tag of their types
+
+               if Is_Record_Type_In_Why (Comp_Type) then
+                  Arg_Val :=
+                    New_Tag_And_Ext_Update (Name => Arg_Val, Ty => Comp_Type);
+               end if;
+
                declare
                   Is_Init : W_Pred_Id := True_Pred;
                   Value   : W_Term_Id;
