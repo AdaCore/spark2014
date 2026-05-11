@@ -118,6 +118,7 @@ package VC_Kinds is
       VC_Assert_Premise,             --  Premise for proof with cut points
       VC_Raise,
       VC_Unexpected_Program_Exit,
+      VC_Modifies,
 
       VC_Feasible_Post,
       --  Check that the postcondition of abstract functions and

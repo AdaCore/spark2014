@@ -669,13 +669,18 @@ package body Gnat2Why.Expr is
       Expr          : W_Expr_Id;
       Domain        : EW_Domain;
       Params        : Transformation_Params;
-      No_Init_Check : Boolean) return W_Expr_Id;
+      No_Init_Check : Boolean;
+      Index_Map     : Ada_Node_To_Why_Id.Map := Ada_Node_To_Why_Id.Empty_Map)
+      return W_Expr_Id;
    --  Compute an access expression for record and array accesses without
    --  considering subexpressions. [N] represents the Ada node of the access,
    --  and [Expr] the Why expression of the prefix. If No_Init_Check is True,
    --  the expression does not need to be initialized and predicate checks and
    --  initialization checks for discriminants will not be emitted on
    --  expressions annotated with Relaxed_Initialization.
+   --  If supplied, Index_Map is a mapping from index nodes in N to identifiers
+   --  that should be used to refer to these indices. It is supplied when the
+   --  indices should be evaluated in a different context.
 
    function One_Level_Update
      (N            : Node_Id;
@@ -5015,6 +5020,61 @@ package body Gnat2Why.Expr is
          return Why_Args;
       end;
    end Compute_Call_Args;
+
+   -------------------------------------
+   -- Compute_Checks_For_Subcomponent --
+   -------------------------------------
+
+   function Compute_Checks_For_Subcomponent
+     (Expr : Node_Id; Index_Map : Ada_Node_To_Why_Id.Map) return W_Prog_Id
+   is
+      function Compute_Checks (Expr : Node_Id) return W_Prog_Id;
+      --  Translate Expr to generate checks. Do not check for validity and
+      --  initialization (except when it is necessary to evaluate the access).
+
+      --------------------
+      -- Compute_Checks --
+      --------------------
+
+      function Compute_Checks (Expr : Node_Id) return W_Prog_Id is
+      begin
+         case Nkind (Expr) is
+            when N_Identifier | N_Expanded_Name =>
+               return
+                 +Transform_Identifier
+                    (Body_Params,
+                     Expr,
+                     Entity (Expr),
+                     EW_Prog,
+                     No_Init_Check     => True,
+                     No_Validity_Check => True);
+
+            when N_Explicit_Dereference
+               | N_Selected_Component
+               | N_Indexed_Component            =>
+
+               pragma
+                 Assert
+                   (if Nkind (Expr) = N_Indexed_Component
+                    then not Index_Map.Is_Empty);
+
+               return
+                 +One_Level_Access
+                    (Expr,
+                     +Compute_Checks (Prefix (Expr)),
+                     EW_Prog,
+                     Body_Params,
+                     No_Init_Check => True,
+                     Index_Map     => Index_Map);
+
+            when others                         =>
+               raise Program_Error;
+         end case;
+      end Compute_Checks;
+
+   begin
+      return New_Ignore (Prog => Compute_Checks (Expr));
+   end Compute_Checks_For_Subcomponent;
 
    ---------------------------
    -- Compute_Default_Check --
@@ -14131,7 +14191,9 @@ package body Gnat2Why.Expr is
       Expr          : W_Expr_Id;
       Domain        : EW_Domain;
       Params        : Transformation_Params;
-      No_Init_Check : Boolean) return W_Expr_Id
+      No_Init_Check : Boolean;
+      Index_Map     : Ada_Node_To_Why_Id.Map := Ada_Node_To_Why_Id.Empty_Map)
+      return W_Expr_Id
    is
       R : W_Expr_Id;
    begin
@@ -14220,11 +14282,15 @@ package body Gnat2Why.Expr is
             begin
                while Present (Cursor) loop
                   Indices (Count) :=
-                    Transform_Expr
-                      (Cursor,
-                       Base_Why_Type_No_Bool (Node_Id'(Type_Of_Node (Cursor))),
-                       Domain,
-                       Params);
+                    (if Index_Map.Is_Empty
+                     then
+                       Transform_Expr
+                         (Cursor,
+                          Base_Why_Type_No_Bool
+                            (Node_Id'(Type_Of_Node (Cursor))),
+                          Domain,
+                          Params)
+                     else +Index_Map.Element (Cursor));
 
                   --  Insert Index Check if needed
 

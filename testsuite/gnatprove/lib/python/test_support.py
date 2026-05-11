@@ -893,6 +893,7 @@ def is_spark_assertion_tag(tag):
         "EXCEPTIONAL_CASE",
         "PROGRAM_EXIT_POST",
         "EXIT_CASE",
+        "MODIFIES",
     )
 
 
@@ -1153,6 +1154,8 @@ def check_marks(strlist, cwd=None, logger=None):
             return "FEASIBLE_POST"
         elif "exceptional case" in text:
             return "EXCEPTIONAL_CASE"
+        elif "modifies contract" or "part of output might be modified" in text:
+            return "MODIFIES"
 
         # no tag recognized
         return None

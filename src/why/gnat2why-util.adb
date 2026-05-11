@@ -46,6 +46,7 @@ with Why.Conversions;           use Why.Conversions;
 with Why.Gen.Expr;              use Why.Gen.Expr;
 with Why.Gen.Hardcoded;         use Why.Gen.Hardcoded;
 with Why.Gen.Names;             use Why.Gen.Names;
+with Why.Gen.Terms;             use Why.Gen.Terms;
 with Why.Inter;                 use Why.Inter;
 with Why.Keywords;              use Why.Keywords;
 
@@ -373,7 +374,7 @@ package body Gnat2Why.Util is
       procedure Insert_Array_Association
         (Writes       : not null Write_Status_Access;
          Ada_Node     : Node_Id;
-         Choice       : Node_Id;
+         Choice       : Array_Indices;
          Status       : Write_Type;
          Unfold       : Boolean;
          Local_Writes : out not null Write_Status_Access)
@@ -439,8 +440,11 @@ package body Gnat2Why.Util is
       --  to its subtrees. If Unfold is True, also unfold Local_Writes so it
       --  can be further extended.
 
-      procedure Unfold_Tree (Writes : in out not null Write_Status_Access);
-      --  Unfold a folded subtree depending on its type
+      procedure Unfold_Tree
+        (Writes          : in out not null Write_Status_Access;
+         Skip_Last_Value : Boolean := False);
+      --  Unfold a folded subtree depending on its type. If Skip_Last_Value is
+      --  True, do not insert the last value in the unfolded subtree.
 
       ------------
       -- Create --
@@ -533,7 +537,7 @@ package body Gnat2Why.Util is
       procedure Insert_Array_Association
         (Writes       : not null Write_Status_Access;
          Ada_Node     : Node_Id;
-         Choice       : Node_Id;
+         Choice       : Array_Indices;
          Status       : Write_Type;
          Unfold       : Boolean;
          Local_Writes : out not null Write_Status_Access) is
@@ -636,7 +640,7 @@ package body Gnat2Why.Util is
             --  Unfold the tree if necessary
 
             if Unfold then
-               Unfold_Tree (Writes);
+               Unfold_Tree (Writes, Skip_Last_Value => True);
             end if;
 
             Local_Writes := Writes;
@@ -657,7 +661,7 @@ package body Gnat2Why.Util is
                Insert_Array_Association
                  (Writes       => Prefix_Writes,
                   Ada_Node     => Deep_Access,
-                  Choice       => Deep_Access,
+                  Choice       => (Dim => 1, Indices => (1 => Deep_Access)),
                   Status       => Status,
                   Unfold       => Unfold,
                   Local_Writes => Local_Writes);
@@ -701,15 +705,22 @@ package body Gnat2Why.Util is
             case Nkind (Deep_Access) is
                when N_Indexed_Component    =>
                   declare
-                     Index_Value : constant Node_Id :=
+                     Dim         : constant Array_Dim :=
+                       Array_Dim (List_Length (Expressions (Deep_Access)));
+                     Indices     : Indices_Type (1 .. Dim);
+                     Index_Value : Node_Id :=
                        First (Expressions (Deep_Access));
-                     pragma Assert (No (Next (Index_Value)));
 
                   begin
+                     for I in 1 .. Dim loop
+                        Indices (I) := Index_Value;
+                        Next (Index_Value);
+                     end loop;
+
                      Insert_Array_Association
                        (Writes       => Prefix_Writes,
                         Ada_Node     => Deep_Access,
-                        Choice       => Index_Value,
+                        Choice       => (Dim, Indices),
                         Status       => Status,
                         Unfold       => Unfold,
                         Local_Writes => Local_Writes);
@@ -883,18 +894,32 @@ package body Gnat2Why.Util is
                else
                   Ada.Text_IO.Put ("[");
                   for K in 1 .. Writes.Values.Element (I).Size loop
-                     if No (Writes.Values.Element (I).Choices (K)) then
-                        Ada.Text_IO.Put (".");
-                     elsif Nkind (Writes.Values.Element (I).Choices (K))
-                           in N_Expanded_Name | N_Identifier
-                     then
-                        Ada.Text_IO.Put
-                          (Raw_Source_Name
-                             (Entity (Writes.Values.Element (I).Choices (K))));
-                     else
-                        Ada.Text_IO.Put
-                          (Writes.Values.Element (I).Choices (K)'Image);
-                     end if;
+                     for J in 1 .. Writes.Values.Element (I).Choices (K).Dim
+                     loop
+                        if J /= 1 then
+                           Ada.Text_IO.Put (", ");
+                        end if;
+                        if No
+                             (Writes.Values.Element (I).Choices (K).Indices
+                                (J))
+                        then
+                           Ada.Text_IO.Put (".");
+                        elsif Nkind
+                                (Writes.Values.Element (I).Choices (K).Indices
+                                   (J))
+                              in N_Expanded_Name | N_Identifier
+                        then
+                           Ada.Text_IO.Put
+                             (Raw_Source_Name
+                                (Entity
+                                   (Writes.Values.Element (I).Choices (K)
+                                      .Indices (J))));
+                        else
+                           Ada.Text_IO.Put
+                             (Writes.Values.Element (I).Choices (K).Indices
+                                (J)'Image);
+                        end if;
+                     end loop;
                      if K /= Writes.Values.Element (I).Size then
                         Ada.Text_IO.Put (", ");
                      end if;
@@ -975,7 +1000,10 @@ package body Gnat2Why.Util is
                Propagate
                  (Writes.Content_Status,
                   Guard,
-                  Choices & Empty,
+                  Choices
+                  & Array_Indices'
+                      (Dim     => Number_Dimensions (Writes.Ty),
+                       Indices => (others => Empty)),
                   Array_Access (Status, Choices'Length + 1));
 
             when Designated_Data   =>
@@ -987,11 +1015,59 @@ package body Gnat2Why.Util is
          end case;
       end Propagate;
 
+      ----------------------
+      -- Transform_Choice --
+      ----------------------
+
+      function Transform_Choice
+        (Choice    : Node_Id;
+         Index     : W_Identifier_Id;
+         Value_Map : Ada_Node_To_Why_Id.Map) return W_Pred_Id is
+      begin
+         if No (Choice) then
+            return True_Pred;
+         else
+            return
+              New_Comparison
+                (Symbol => Why_Eq,
+                 Left   => +Index,
+                 Right  => +Value_Map.Element (Choice));
+         end if;
+      end Transform_Choice;
+
+      -----------------------
+      -- Transform_Choices --
+      -----------------------
+
+      function Transform_Choices
+        (Choices   : Choice_Array;
+         Indices   : W_Identifier_Array;
+         Value_Map : Ada_Node_To_Why_Id.Map) return W_Pred_Id
+      is
+         Top_Index : Natural := 0;
+         Conjuncts : W_Pred_Array (Indices'Range);
+
+      begin
+         for I in Choices'Range loop
+            for J in Choices (I).Indices'Range loop
+               Top_Index := Top_Index + 1;
+               Conjuncts (Top_Index) :=
+                 Transform_Choice
+                   (Choices (I).Indices (J), Indices (Top_Index), Value_Map);
+            end loop;
+         end loop;
+
+         return New_And_Pred (Conjuncts);
+      end Transform_Choices;
+
       -----------------
       -- Unfold_Tree --
       -----------------
 
-      procedure Unfold_Tree (Writes : in out not null Write_Status_Access) is
+      procedure Unfold_Tree
+        (Writes          : in out not null Write_Status_Access;
+         Skip_Last_Value : Boolean := False)
+      is
          Old_Writes : Write_Status_Access := Writes;
       begin
          --  If Writes has type Entire_Object, unfold it
@@ -1014,16 +1090,31 @@ package body Gnat2Why.Util is
                   --  to state that all indexes are written.
 
                begin
-                  for Pref_Value of Old_Writes.Values loop
-                     Values.Append
-                       (Constrained_Value'
-                          (Size     => Pref_Value.Size + 1,
-                           Ada_Node => Pref_Value.Ada_Node,
-                           Guard    => Pref_Value.Guard,
-                           Choices  => Pref_Value.Choices & Types.Empty,
-                           Status   =>
-                             Array_Access
-                               (Pref_Value.Status, Pref_Value.Size + 1)));
+                  for I in
+                    1
+                    ..
+                      Old_Writes.Values.Last_Index
+                      - (if Skip_Last_Value then 1 else 0)
+                  loop
+                     declare
+                        Pref_Value : Constrained_Value renames
+                          Old_Writes.Values (I);
+                     begin
+                        Values.Append
+                          (Constrained_Value'
+                             (Size     => Pref_Value.Size + 1,
+                              Ada_Node => Pref_Value.Ada_Node,
+                              Guard    => Pref_Value.Guard,
+                              Choices  =>
+                                Pref_Value.Choices
+                                & Array_Indices'
+                                    (Dim     =>
+                                       Number_Dimensions (Old_Writes.Ty),
+                                     Indices => (others => Types.Empty)),
+                              Status   =>
+                                Array_Access
+                                  (Pref_Value.Status, Pref_Value.Size + 1)));
+                     end;
                   end loop;
 
                   Writes :=
@@ -1039,17 +1130,42 @@ package body Gnat2Why.Util is
                end;
             else
                pragma Assert (Is_Access_Type (Old_Writes.Ty));
-               Writes :=
-                 new Write_Status'
-                   (Kind              => Designated_Data,
-                    Ty                => Old_Writes.Ty,
-                    Values            => Old_Writes.Values,
-                    Designated_Status =>
-                      new Write_Status'
-                        (Kind   => Entire_Object,
-                         Ty     =>
-                           Retysp (Directly_Designated_Type (Old_Writes.Ty)),
-                         Values => Old_Writes.Values));
+               declare
+                  use Constrained_Value_Vectors;
+                  Values : Constrained_Value_Vectors.Vector;
+
+               begin
+                  for I in
+                    1
+                    ..
+                      Old_Writes.Values.Last_Index
+                      - (if Skip_Last_Value then 1 else 0)
+                  loop
+                     declare
+                        Pref_Value : Constrained_Value renames
+                          Old_Writes.Values (I);
+                     begin
+                        Values.Append
+                          ((Pref_Value
+                            with delta
+                              Status =>
+                                Designated_Data_Access (Pref_Value.Status)));
+                     end;
+                  end loop;
+
+                  Writes :=
+                    new Write_Status'
+                      (Kind              => Designated_Data,
+                       Ty                => Old_Writes.Ty,
+                       Values            => Old_Writes.Values,
+                       Designated_Status =>
+                         new Write_Status'
+                           (Kind   => Entire_Object,
+                            Ty     =>
+                              Retysp
+                                (Directly_Designated_Type (Old_Writes.Ty)),
+                            Values => Values));
+               end;
             end if;
             Free (Old_Writes);
          end if;
