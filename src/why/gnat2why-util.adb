@@ -1289,11 +1289,24 @@ package body Gnat2Why.Util is
       Section := Why_Node_Lists.Empty_List;
    end Make_Empty_Why_Section;
 
+   ----------------
+   -- Map_For_At --
+   ----------------
+
+   function Map_For_At (Label_Id : E_Label_Id) return Ada_To_Why_Ident.Map is
+      use At_Nodes;
+      C : constant At_Nodes.Cursor := At_Map.Find (Label_Id);
+   begin
+      return
+        (if Has_Element (C) then Element (C) else Ada_To_Why_Ident.Empty_Map);
+   end Map_For_At;
+
    ------------------------
    -- Map_For_Loop_Entry --
    ------------------------
 
-   function Map_For_Loop_Entry (Loop_Id : Node_Id) return Loop_Entry_Values is
+   function Map_For_Loop_Entry (Loop_Id : E_Loop_Id) return Loop_Entry_Values
+   is
       use Loop_Entry_Nodes;
       C : constant Loop_Entry_Nodes.Cursor := Loop_Entry_Map.Find (Loop_Id);
    begin
@@ -1321,6 +1334,68 @@ package body Gnat2Why.Util is
          end;
       end if;
    end Might_Need_Discriminant_Check;
+
+   -----------------
+   -- Name_For_At --
+   -----------------
+
+   function Name_For_At
+     (Attr : N_Attribute_Reference_Id) return W_Identifier_Id
+   is
+      Label_Id : constant E_Label_Id := Entity (First (Expressions (Attr)));
+      Expr     : constant Node_Id := Prefix (Attr);
+
+      function Name_For_At
+        (Map : in out Ada_To_Why_Ident.Map; Typ : W_Type_Id; Nd : Node_Id)
+         return W_Identifier_Id;
+      --  Look for an identifier for Expr in Map. If there is none, create one
+      --  of type Typ with node Nd.
+
+      -----------------
+      -- Name_For_At --
+      -----------------
+
+      function Name_For_At
+        (Map : in out Ada_To_Why_Ident.Map; Typ : W_Type_Id; Nd : Node_Id)
+         return W_Identifier_Id
+      is
+         Position : Ada_To_Why_Ident.Cursor;
+         Inserted : Boolean;
+
+      begin
+         Map.Insert
+           (Key      => Expr,
+            New_Item => W_Identifier_Id'(Why_Empty),
+            Position => Position,
+            Inserted => Inserted);
+
+         if Inserted then
+            Map (Position) :=
+              New_Temp_Identifier
+                (Base_Name => "at", Typ => Typ, Ada_Node => Nd);
+         end if;
+
+         return Map (Position);
+      end Name_For_At;
+
+      Cur   : At_Nodes.Cursor;
+      Dummy : Boolean;
+      Typ   : W_Type_Id;
+      Nd    : Node_Id;
+
+   begin
+      At_Map.Insert (Key => Label_Id, Position => Cur, Inserted => Dummy);
+
+      if Nkind (Expr) in N_Identifier | N_Expanded_Name then
+         Typ := Why_Type_Of_Entity (Entity (Expr));
+         Nd := Entity (Expr);
+      else
+         Typ := Type_Of_Node (Expr);
+         Nd := Types.Empty;
+      end if;
+
+      return Name_For_At (At_Map (Cur), Typ, Nd);
+   end Name_For_At;
 
    -------------------------
    -- Name_For_Loop_Entry --

@@ -1503,7 +1503,8 @@ package body Gnat2Why.Borrow_Checker is
 
             --  Check that the root of the initial expression is not an overlay
 
-            if Present (Overlaid_Entity (Expr_Root))
+            if not Is_Prophecy_Save (Target_Root)
+              and then Present (Overlaid_Entity (Expr_Root))
               and then not Is_Constant_In_SPARK (Expr_Root)
             then
                declare
@@ -2266,9 +2267,12 @@ package body Gnat2Why.Borrow_Checker is
          Vars   : Flow_Id_Sets.Set := Get_Variables_For_Proof (Expr, Expr);
 
       begin
-         --  Special case, 'Loop_Entry is only allowed on local borrowers
+         --  Special case, 'Loop_Entry and 'At are only allowed on local
+         --  borrowers.
 
-         if Is_Attribute_Loop_Entry (Actual) then
+         if Nkind (Actual) = N_Attribute_Reference
+           and then Attribute_Name (Actual) in Name_Loop_Entry | Name_At
+         then
             return;
          end if;
 
@@ -2564,7 +2568,8 @@ package body Gnat2Why.Borrow_Checker is
                pragma
                  Assert
                    (Get_Attribute_Id (Attribute_Name (Expr))
-                    in Attribute_Loop_Entry
+                    in Attribute_At
+                     | Attribute_Loop_Entry
                      | Attribute_Update
                      | Attribute_Image
                      | Attribute_Img
@@ -2573,11 +2578,16 @@ package body Gnat2Why.Borrow_Checker is
                      | Attribute_Length
                      | Attribute_Access);
 
-               if Get_Attribute_Id (Attribute_Name (Expr))
-                  in Attribute_First
-                   | Attribute_Last
-                   | Attribute_Length
-                   | Attribute_Access
+               --  References to at should not be checked in the current
+               --  context.
+
+               if Get_Attribute_Id (Attribute_Name (Expr)) = Attribute_At then
+                  null;
+               elsif Get_Attribute_Id (Attribute_Name (Expr))
+                     in Attribute_First
+                      | Attribute_Last
+                      | Attribute_Length
+                      | Attribute_Access
                then
                   Read_Indexes (Prefix (Expr));
                else
@@ -2781,10 +2791,11 @@ package body Gnat2Why.Borrow_Checker is
                      null;
 
                   --  Postconditions should not be analyzed. Attributes Update,
-                  --  Old and Loop_Entry correspond to paths which are handled
-                  --  previously.
+                  --  At, Old, and Loop_Entry correspond to paths which are
+                  --  handled previously.
 
-                  when Attribute_Loop_Entry
+                  when Attribute_At
+                     | Attribute_Loop_Entry
                      | Attribute_Old
                      | Attribute_Result
                      | Attribute_Update                         =>
@@ -3664,9 +3675,15 @@ package body Gnat2Why.Borrow_Checker is
 
          --  When a goto label is reached, we merge the accumulated
          --  environment coming from goto statements mentioning this label in
-         --  the current environment.
+         --  the current environment. We also check that the prefixed of all
+         --  references to 'At mentioning the label can be read.
 
          when N_Label                                                     =>
+            for Expr of Get_At_Attributes_For_Label (Entity (Identifier (N)))
+            loop
+               Check_Expression (Prefix (Expr), Read);
+            end loop;
+
             Merge_Transfer_Of_Control_Env
               (Current_Goto_Accumulators, Entity (Identifier (N)));
 

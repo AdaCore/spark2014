@@ -1266,15 +1266,16 @@ package body SPARK_Definition is
                      return;
                   end;
                elsif Nkind (N) = N_Attribute_Reference
-                 and then Attribute_Name (N) in Name_Loop_Entry | Name_Old
+                 and then
+                   Attribute_Name (N) in Name_Loop_Entry | Name_Old | Name_At
                then
                   Mark_Incorrect_Use_Of_Annotation
                     (Annot_At_End_Borrow_Context,
                      Proph,
                      Msg =>
                        Msg_Prefix
-                       & " shall not occur inside a reference to the 'Old or"
-                       & " 'Loop_Entry attributes");
+                       & " shall not occur inside a reference to the 'Old,"
+                       & " 'Loop_Entry, or 'At attributes");
                   return;
                end if;
 
@@ -2555,6 +2556,15 @@ package body SPARK_Definition is
 
             when N_Component_Association | N_Iterated_Component_Association =>
                null;
+
+            --  Unlike 'Old and 'Loop_Entry, 'At might occur outside of a
+            --  statically leaking context. Allow such attribute reference if
+            --  the context is a valid allocating context.
+
+            when N_Attribute_Reference                                      =>
+               if Attribute_Name (Context) /= Name_At then
+                  return False;
+               end if;
 
             when others                                                     =>
                return False;
@@ -5462,6 +5472,226 @@ package body SPARK_Definition is
    ------------------------------
 
    procedure Mark_Attribute_Reference (N : N_Attribute_Reference_Id) is
+
+      procedure Check_Attribute_At_Placement (N : N_Attribute_Reference_Id);
+      --  Emit a violation if there is a loop variant/invariant or a
+      --  pragma Assert_And_Cut that hides the label referenced by a reference
+      --  to the At attribute N. If the prefix of N is an allocating function
+      --  call, emit a violation if it is not inside a pragma, constant
+      --  delaration, or move to constant.
+
+      ----------------------------------
+      -- Check_Attribute_At_Placement --
+      ----------------------------------
+
+      procedure Check_Attribute_At_Placement (N : N_Attribute_Reference_Id) is
+
+         procedure Search_Inv (Stmt : Node_Id; Do_Inv : in out Boolean)
+         with Pre => No (Stmt) or else Is_List_Member (Stmt);
+         --  Raise a violation on N if there is a loop invariant or variant
+         --  before Stmt (including Stmt). Set Do_Inv to False in this case.
+
+         ----------------
+         -- Search_Inv --
+         ----------------
+
+         procedure Search_Inv (Stmt : Node_Id; Do_Inv : in out Boolean) is
+            Current : Node_Id := Stmt;
+         begin
+            while Present (Current) loop
+               if Is_Pragma_Check (Current, Name_Loop_Invariant)
+                 or else Is_Pragma (Current, Pragma_Loop_Variant)
+               then
+                  Do_Inv := False;
+                  Mark_Violation (Vio_At_Attribute_Loop_Invariant, N);
+                  return;
+               end if;
+               Current := Prev (Current);
+            end loop;
+         end Search_Inv;
+
+         Label_Entity : constant Entity_Id := Entity (First (Expressions (N)));
+         Label_Node   : constant N_Label_Id :=
+           Label_Construct (Parent (Label_Entity));
+         Label_List   : constant List_Id := List_Containing (Label_Node);
+
+         Stmt              : Node_Id := N;
+         Scopes            : Node_Vectors.Vector;
+         Do_Inv            : Boolean;
+         Do_Assert_And_Cut : Boolean;
+         Do_Alloc          : Boolean := Is_Deep (Etype (Prefix (N)));
+
+      begin
+         --  Set Do_Inv to True if the label is located inside a loop
+         --  potentially in nested block statements.
+
+         declare
+            Par : Node_Id := Label_Node;
+         begin
+            loop
+               Par := Parent (Par);
+               case Nkind (Par) is
+                  when N_Loop_Statement                                     =>
+                     Do_Inv := True;
+                     exit;
+
+                  when N_Block_Statement | N_Handled_Sequence_Of_Statements =>
+                     null;
+
+                  when others                                               =>
+                     Do_Inv := False;
+                     exit;
+               end case;
+            end loop;
+         end;
+
+         --  Set Do_Assert_And_Cut to False if the label is at the beginning of
+         --  the enclosing block.
+
+         declare
+            Current : Node_Id := Label_Node;
+         begin
+            Do_Assert_And_Cut := False;
+            loop
+               Current := Prev (Current);
+               exit when No (Current);
+
+               if Nkind (Current) not in N_Ignored_In_SPARK | N_Label then
+                  Do_Assert_And_Cut := True;
+                  exit;
+               end if;
+            end loop;
+         end;
+
+         if not Do_Assert_And_Cut and then not Do_Inv and then not Do_Alloc
+         then
+            return;
+         end if;
+
+         --  Search for the statement enclosing N in Label_List. If Do_Inv is
+         --  true, store in Scopes the sequence of all the statements enclosing
+         --  N that occur inside Stmt potentially in nested block statements.
+         --  If Do_Alloc is True, search for an enclosing pragma, constant
+         --  declaration, or move to constant.
+
+         declare
+            Alloc_Violation : Boolean := Do_Alloc;
+         begin
+            while not Is_List_Member (Stmt)
+              or else List_Containing (Stmt) /= Label_List
+            loop
+               declare
+                  Par : constant Node_Id := Parent (Stmt);
+
+               begin
+                  if Do_Alloc then
+                     if Nkind (Par) = N_Pragma
+                       or else
+                         (Nkind (Par) = N_Function_Call
+                          and then
+                            Has_At_End_Borrow_Annotation
+                              (Get_Called_Entity (Par)))
+                       or else
+                         (Nkind (Par) = N_Object_Declaration
+                          and then
+                            Is_Constant_In_SPARK (Defining_Identifier (Par)))
+                       or else
+                         (Nkind (Par) = N_Allocator
+                          and then Is_Access_Constant (Etype (Par)))
+                       or else
+                         (Nkind (Par) = N_Type_Conversion
+                          and then Is_Access_Object_Type (Etype (Par))
+                          and then Is_Access_Constant (Etype (Par))
+                          and then not Is_Anonymous_Access_Type (Etype (Par)))
+                     then
+                        Alloc_Violation := False;
+                        Do_Alloc := False;
+
+                     elsif Nkind (Par)
+                           in N_Object_Declaration
+                            | N_Assignment_Statement
+                            | N_Simple_Return_Statement
+                     then
+                        Do_Alloc := False;
+                     end if;
+                  end if;
+
+                  if Do_Inv then
+                     if Nkind (Par) = N_Handled_Sequence_Of_Statements
+                       and then Nkind (Parent (Par)) = N_Block_Statement
+                     then
+                        Scopes.Append (Stmt);
+                     elsif Nkind (Stmt) = N_Block_Statement then
+                        Scopes.Clear;
+                     end if;
+                  end if;
+                  Stmt := Par;
+               end;
+            end loop;
+
+            if Alloc_Violation then
+               Mark_Violation (Vio_At_Attribute_Allocation, N);
+            end if;
+         end;
+
+         --  Look for loop variants/invariants or pragma Assert_And_Cut
+         --  occuring between Label_Node and Stmt. If Do_Inv is True, also
+         --  traverse nested blocks to look for loop invariants (but not
+         --  Assert_And_Cut).
+
+         declare
+            Current : Node_Id := Stmt;
+         begin
+            while (Do_Inv or Do_Assert_And_Cut) and then Current /= Label_Node
+            loop
+
+               --  A pragma Assert_And_Cut occurs between the definition of a
+               --  label and its reference in N. Emit a violation.
+
+               if Do_Assert_And_Cut
+                 and then Is_Pragma_Check (Current, Name_Assert_And_Cut)
+               then
+                  Mark_Violation
+                    (Vio_At_Attribute_Assert_And_Cut,
+                     N,
+                     Cont_Msg =>
+                       Create
+                         ("pragma Assert_And_Cut hides label & #",
+                          Names         => [Label_Entity],
+                          Secondary_Loc => Sloc (Current)));
+
+               --  If Do_Inv is True, look for invariants in the current
+               --  sequence and in nested block statements.
+
+               elsif not Do_Inv then
+                  null;
+
+               elsif Is_Pragma_Check (Current, Name_Loop_Invariant)
+                 or else Is_Pragma (Current, Pragma_Loop_Variant)
+               then
+                  Mark_Violation (Vio_At_Attribute_Loop_Invariant, N);
+                  Do_Inv := False;
+
+               elsif Current /= Stmt
+                 and then Nkind (Current) = N_Block_Statement
+               then
+                  Search_Inv
+                    (Last (Statements (Handled_Statement_Sequence (Current))),
+                     Do_Inv);
+               end if;
+               Current := Prev (Current);
+            end loop;
+         end;
+
+         --  If Stmt is in a loop, then also look for loop variants/invariants
+         --  in nested blocks.
+
+         for Scop of Scopes loop
+            exit when not Do_Inv;
+            Search_Inv (Scop, Do_Inv);
+         end loop;
+      end Check_Attribute_At_Placement;
+
       Aname   : constant Name_Id := Attribute_Name (N);
       P       : constant Node_Id := Prefix (N);
       Exprs   : constant List_Id := Expressions (N);
@@ -5503,7 +5733,7 @@ package body SPARK_Definition is
             | Attribute_Val
             | Attribute_Valid
             | Attribute_Valid_Scalars
-            | Attribute_Value                      =>
+            | Attribute_Value                                     =>
             null;
 
          --  These attributes are supported according to SPARM RM, but we
@@ -5549,11 +5779,11 @@ package body SPARK_Definition is
             | Attribute_Wide_Wide_Value
             | Attribute_Wide_Wide_Width
             | Attribute_Wide_Width
-            | Attribute_Width                      =>
+            | Attribute_Width                                     =>
             Mark_Unsupported
               (Lim_Non_Static_Attribute, N, Name => Get_Name_String (Aname));
 
-         when Attribute_Constrained                =>
+         when Attribute_Constrained                               =>
 
             --  For now, reject 'Constrained on UU types if it cannot be
             --  statically determined as SPARK and GNAT do not agree on the
@@ -5567,7 +5797,7 @@ package body SPARK_Definition is
                Mark_Unsupported (Lim_UU_Constrained_Attr, N);
             end if;
 
-         when Attribute_Result                     =>
+         when Attribute_Result                                    =>
 
             --  If a potentially invalid object occurs in a postcondition,
             --  emit a warning if we cannot acertain that the access is
@@ -5580,7 +5810,7 @@ package body SPARK_Definition is
          --  We assume a maximal length for the image of any type. This length
          --  may be inaccurate for identifiers.
 
-         when Attribute_Img | Attribute_Image      =>
+         when Attribute_Img | Attribute_Image                     =>
             --  We do not support 'Image on types which are not scalars. We
             --  could theoretically encode the attribute as an uninterpreted
             --  function for all types which do not contain subcomponents of
@@ -5617,7 +5847,7 @@ package body SPARK_Definition is
             | Attribute_Object_Size
             | Attribute_Position
             | Attribute_Size
-            | Attribute_Value_Size                 =>
+            | Attribute_Value_Size                                =>
             if Attr_Id
                in Attribute_Alignment
                 | Attribute_Object_Size
@@ -5717,7 +5947,7 @@ package body SPARK_Definition is
          --  Only allow 'Initialized on a discriminant if it can actually not
          --  be initialized to avoid confusion as much as possible.
 
-         when Attribute_Initialized                =>
+         when Attribute_Initialized                               =>
             if not Retysp_In_SPARK (Etype (P)) then
                Mark_Violation (N, From => Etype (P));
 
@@ -5756,7 +5986,7 @@ package body SPARK_Definition is
          --  domain from Prog to Pred, as this is not supported in the
          --  translation currently.
 
-         when Attribute_Address                    =>
+         when Attribute_Address                                   =>
 
             declare
                M : Node_Id := Parent (N);
@@ -5794,10 +6024,10 @@ package body SPARK_Definition is
                Mark_Violation (Vio_Address_Of_Non_Object, N);
             end if;
 
-         --  Check SPARK RM 3.10(13) regarding 'Old and 'Loop_Entry on access
-         --  types.
+         --  Check SPARK RM 3.10(13) regarding 'Old, 'Loop_Entry, and 'At on
+         --  access types.
 
-         when Attribute_Loop_Entry | Attribute_Old =>
+         when Attribute_Loop_Entry | Attribute_Old | Attribute_At =>
             if Is_Deep (Etype (P)) then
                declare
                   Par     : constant Node_Id := Parent (N);
@@ -5805,11 +6035,12 @@ package body SPARK_Definition is
                     Standard_Ada_Case (Get_Name_String (Aname));
 
                begin
-                  --  Special case: 'Old and 'Loop_Entry are allowed as the
-                  --  actual of a call to a function annotated with
+                  --  Special case: 'Old, 'Loop_Entry, and 'At are allowed as
+                  --  the actual of a call to a function annotated with
                   --  At_End_Borrow.
 
-                  if Attr_Id in Attribute_Loop_Entry | Attribute_Old
+                  if Attr_Id
+                     in Attribute_Loop_Entry | Attribute_Old | Attribute_At
                     and then Present (Par)
                     and then Nkind (Par) = N_Function_Call
                     and then
@@ -5885,7 +6116,15 @@ package body SPARK_Definition is
                end if;
             end;
 
-         when Attribute_Access                     =>
+            --  Check restrictions on the placement of attribute 'At and store
+            --  it in a map for further use.
+
+            if Attr_Id = Attribute_At then
+               Check_Attribute_At_Placement (N);
+               Register_At_Attribute (N);
+            end if;
+
+         when Attribute_Access                                    =>
             --  We support 'Access if it is directly prefixed by a
             --  subprogram name.
 
@@ -6081,7 +6320,7 @@ package body SPARK_Definition is
                return;
             end if;
 
-         when others                               =>
+         when others                                              =>
             Mark_Violation
               (Vio_Unsupported_Attribute,
                N,
@@ -6668,7 +6907,7 @@ package body SPARK_Definition is
         and then
           (not Is_OK_Volatile_Context
                  (Context => Parent (N), Obj_Ref => N, Check_Actuals => True)
-           or else In_Loop_Entry_Or_Old_Attribute (N))
+           or else In_Loop_Entry_Old_Or_At_Attribute (N))
       then
          Mark_Violation (Vio_Volatile_In_Interfering_Context, N);
          return;
@@ -6996,9 +7235,11 @@ package body SPARK_Definition is
                     (Annot_At_End_Borrow_Param_In_Contract, Fst_Actual);
                end if;
 
-            --  Specifically allow X'Loop_Entry if X is a local borrower
+            --  Specifically allow X'Loop_Entry and X'At if X is a local
+            --  borrower.
 
-            elsif Is_Attribute_Loop_Entry (Fst_Actual)
+            elsif Nkind (Fst_Actual) = N_Attribute_Reference
+              and then Attribute_Name (Fst_Actual) in Name_At | Name_Loop_Entry
               and then
                 Nkind (Prefix (Fst_Actual)) in N_Identifier | N_Expanded_Name
               and then Is_Local_Borrower (Entity (Prefix (Fst_Actual)))
@@ -9106,7 +9347,7 @@ package body SPARK_Definition is
 
                               when N_Attribute_Reference     =>
                                  --  Notional type propagates through
-                                 --  'Old/'Loop_Entry/'Access.
+                                 --  'At/'Old/'Loop_Entry/'Access.
 
                                  if Attribute_Name (Above)
                                     in Name_Old | Name_Loop_Entry | Name_Access
@@ -12614,7 +12855,7 @@ package body SPARK_Definition is
                            Obj_Ref       => N,
                            Check_Actuals => True)
 
-                    or else In_Loop_Entry_Or_Old_Attribute (N))
+                    or else In_Loop_Entry_Old_Or_At_Attribute (N))
                then
                   Mark_Violation (Vio_Volatile_In_Interfering_Context, N);
                end if;
@@ -12694,6 +12935,11 @@ package body SPARK_Definition is
          when E_Loop                                                         =>
             null;
 
+         --  Label identifiers appear in the "X'At (Label)" expressions
+
+         when E_Label                                                        =>
+            null;
+
          --  Abstract state entities are passed directly to Mark_Entity
 
          when E_Abstract_State                                               =>
@@ -12709,8 +12955,7 @@ package body SPARK_Definition is
          --  Identifiers that we do not expect to mark (or that do not appear
          --  in the backend).
 
-         when E_Label
-            | E_Return_Statement
+         when E_Return_Statement
             | E_Package
             | E_Exception
             | E_Block

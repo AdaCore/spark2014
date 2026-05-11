@@ -334,6 +334,9 @@ violation-aggregate-globals - violation-aggregate-globals - subprogram associate
 violation-aggregate-side-effects - violation-aggregate-side-effects - subprogram with side effects associated with aspect Aggregate - HIGH
 violation-aggregate-volatile - violation-aggregate-volatile - volatile function associated with aspect Aggregate - HIGH
 violation-assert-and-cut-context - violation-assert-and-cut-context - pragma Assert_And_Cut outside a sequence of statements - HIGH
+violation-at-attribute-allocation - violation-at-attribute-allocation - reference to the At attribute on a prefix subject to ownership occuring outside of a pragma or a constant part of an object - HIGH
+violation-at-attribute-assert-and-cut - violation-at-attribute-assert-and-cut - reference to the At attribute referencing a label located before an Assert_And_Cut pragma - HIGH
+violation-at-attribute-loop-invariant - violation-at-attribute-loop-invariant - reference to the At attribute referencing a label located before a loop invariant or variant - HIGH
 violation-backward-goto - violation-backward-goto - backward goto statement - HIGH
 violation-box-notation-without-init - violation-box-notation-without-init - box notation without default or relaxed initialization - HIGH
 violation-code-statement - violation-code-statement - code statement - HIGH
@@ -382,8 +385,8 @@ violation-ownership-anonymous-component - violation-ownership-anonymous-componen
 violation-ownership-deallocate-general - violation-ownership-deallocate-general - instance of Unchecked_Deallocation with a general access type - HIGH
 violation-ownership-different-branches - violation-ownership-different-branches - observe of a conditional or case expression with branches rooted in different objects - HIGH
 violation-ownership-duplicate-aggregate-value - violation-ownership-duplicate-aggregate-value - duplicate value of a type with ownership - HIGH
-violation-ownership-loop-entry-old-copy - violation-ownership-loop-entry-old-copy - prefix of Loop_Entry or Old attribute introducing aliasing - HIGH
-violation-ownership-loop-entry-old-traversal - violation-ownership-loop-entry-old-traversal - traversal function call as a prefix of Loop_Entry or Old attribute - HIGH
+violation-ownership-loop-entry-old-at-copy - violation-ownership-loop-entry-old-at-copy - prefix of Loop_Entry, Old, or At attribute introducing aliasing - HIGH
+violation-ownership-loop-entry-old-at-traversal - violation-ownership-loop-entry-old-at-traversal - traversal function call as a prefix of Loop_Entry, Old, or At attribute - HIGH
 violation-ownership-move-constant-part - violation-ownership-move-constant-part - access-to-constant part of an object as source of move - HIGH
 violation-ownership-move-in-declare - violation-ownership-move-in-declare - move in declare expression - HIGH
 violation-ownership-move-not-name - violation-ownership-move-not-name - expression as source of move - HIGH

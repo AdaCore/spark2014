@@ -72,6 +72,7 @@ package SPARK_Atree.Entities is
    subtype E_Discriminant_Id is EE.E_Discriminant_Id;
    subtype E_Enumeration_Literal_Id is EE.E_Enumeration_Literal_Id;
    subtype E_In_Parameter_Id is EE.E_In_Parameter_Id;
+   subtype E_Label_Id is EE.E_Label_Id;
    subtype E_Loop_Id is EE.E_Loop_Id;
    subtype E_Loop_Parameter_Id is EE.E_Loop_Parameter_Id;
    subtype E_Function_Id is EE.E_Function_Id;
