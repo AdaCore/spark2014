@@ -692,8 +692,7 @@ package body Configuration is
    Current_Parsed_Switches : Parsed_Switches_Access := null;
    --  Temporary target for GNAT.Command_Line callbacks during Parse_Switches
 
-   procedure Copy_To_CL_Switches
-     (Parsed : in out Parsed_Switches; Mode : Parsing_Modes);
+   procedure Copy_To_CL_Switches (Parsed : in out Parsed_Switches);
    --  Copy parsed switch values into CL_Switches for existing consumers
 
    procedure Merge_Parsed_Switches
@@ -712,10 +711,6 @@ package body Configuration is
      (Mode : Parsing_Modes; Com_Lin : String_List) return Parsed_Switches;
    --  Parse the command line switches according to the provided mode into
    --  internal storage.
-
-   procedure Parse_Switches (Mode : Parsing_Modes; Com_Lin : String_List);
-   --  Parse the command line switches according to the provided mode into
-   --  internal storage, then copy the result to CL_Switches.
 
    type Project_Parsing_Result is record
       Opt             : GPR2.Options.Object;
@@ -1122,9 +1117,7 @@ package body Configuration is
    -- Copy_To_CL_Switches --
    ---------------------------
 
-   procedure Copy_To_CL_Switches
-     (Parsed : in out Parsed_Switches; Mode : Parsing_Modes)
-   is
+   procedure Copy_To_CL_Switches (Parsed : in out Parsed_Switches) is
       procedure Copy_List
         (Source : String_Lists.List; Target : in out String_Lists.List);
       --  Replace Target with Source
@@ -1167,93 +1160,83 @@ package body Configuration is
       end Move_String;
 
    begin
-      if Mode in All_Switches | Global_Switches_Only then
-         CL_Switches.V := Parsed.Values (Sw_V).Boolean_Val;
-         CL_Switches.Assumptions := Parsed.Values (Sw_Assumptions).Boolean_Val;
-         CL_Switches.Benchmark := Parsed.Values (Sw_Benchmark).Boolean_Val;
-         Move_String
-           (Parsed.Values (Sw_Checks_As_Errors).String_Val,
-            CL_Switches.Checks_As_Errors);
-         CL_Switches.CWE := Parsed.Values (Sw_CWE).Boolean_Val;
-         CL_Switches.D := Parsed.Values (Sw_D).Boolean_Val;
-         CL_Switches.Debug_No_Cache_Output :=
-           Parsed.Values (Sw_Debug_No_Cache_Output).Boolean_Val;
-         CL_Switches.Debug_Save_VCs :=
-           Parsed.Values (Sw_Debug_Save_VCs).Boolean_Val;
-         CL_Switches.Dbg_No_Sem := Parsed.Values (Sw_Dbg_No_Sem).Boolean_Val;
-         CL_Switches.Debug_Prover_Errors :=
-           Parsed.Values (Sw_Debug_Prover_Errors).Boolean_Val;
-         Move_String
-           (Parsed.Values (Sw_Exclude_Line).String_Val,
-            CL_Switches.Exclude_Line);
-         CL_Switches.Flow_Debug := Parsed.Values (Sw_Flow_Debug).Boolean_Val;
-         CL_Switches.Flow_Show_GG :=
-           Parsed.Values (Sw_Flow_Show_GG).Boolean_Val;
-         CL_Switches.F := Parsed.Values (Sw_F).Boolean_Val;
-         CL_Switches.IDE_Progress_Bar :=
-           Parsed.Values (Sw_IDE_Progress_Bar).Boolean_Val;
-         CL_Switches.J := Parsed.Values (Sw_J).Integer_Val;
-         CL_Switches.K := Parsed.Values (Sw_K).Boolean_Val;
-         Move_String
-           (Parsed.Values (Sw_Limit_Line).String_Val, CL_Switches.Limit_Line);
-         Move_String
-           (Parsed.Values (Sw_Limit_Lines).String_Val,
-            CL_Switches.Limit_Lines);
-         Move_String
-           (Parsed.Values (Sw_Limit_Name).String_Val, CL_Switches.Limit_Name);
-         Move_String
-           (Parsed.Values (Sw_Limit_Region).String_Val,
-            CL_Switches.Limit_Region);
-         Move_String
-           (Parsed.Values (Sw_Limit_Subp).String_Val, CL_Switches.Limit_Subp);
-         Move_String
-           (Parsed.Values (Sw_Memcached_Server).String_Val,
-            CL_Switches.Memcached_Server);
-         CL_Switches.M := Parsed.Values (Sw_M).Boolean_Val;
-         CL_Switches.No_Axiom_Guard :=
-           Parsed.Values (Sw_No_Axiom_Guard).Boolean_Val;
-         Move_String
-           (Parsed.Values (Sw_Function_Sandboxing).String_Val,
-            CL_Switches.Function_Sandboxing);
-         CL_Switches.No_Global_Generation :=
-           Parsed.Values (Sw_No_Global_Generation).Boolean_Val;
-         CL_Switches.No_Subprojects :=
-           Parsed.Values (Sw_No_Subprojects).Boolean_Val;
-         Move_String
-           (Parsed.Values (Sw_Output).String_Val, CL_Switches.Output);
-         CL_Switches.Output_Header :=
-           Parsed.Values (Sw_Output_Header).Boolean_Val;
-         CL_Switches.Output_Msg_Only :=
-           Parsed.Values (Sw_Output_Msg_Only).Boolean_Val;
-         CL_Switches.Q := Parsed.Values (Sw_Q).Boolean_Val;
-         CL_Switches.Replay := Parsed.Values (Sw_Replay).Boolean_Val;
-         Move_String
-           (Parsed.Values (Sw_Report).String_Val, CL_Switches.Report);
-         CL_Switches.U := Parsed.Values (Sw_U).Boolean_Val;
-         CL_Switches.UU := Parsed.Values (Sw_UU).Boolean_Val;
-         Move_String
-           (Parsed.Values (Sw_Warnings).String_Val, CL_Switches.Warnings);
-         Move_String
-           (Parsed.Values (Sw_Why3_Conf).String_Val, CL_Switches.Why3_Conf);
-         Move_String
-           (Parsed.Values (Sw_Why3_Debug).String_Val, CL_Switches.Why3_Debug);
-         CL_Switches.Why3_Logging :=
-           Parsed.Values (Sw_Why3_Logging).Boolean_Val;
-         Move_String
-           (Parsed.Values (Sw_Why3_Server).String_Val,
-            CL_Switches.Why3_Server);
-         Copy_List
-           (Parsed.Values (Sw_SARIF_Base_URI).String_List_Val,
-            CL_Switches.SARIF_Base_URIs);
-         CL_Switches.Z3_Counterexample :=
-           Parsed.Values (Sw_Z3_Counterexample).Boolean_Val;
-         Move_String
-           (Parsed.Values (Sw_Gnattest_Values).String_Val,
-            CL_Switches.Gnattest_Values);
-         CL_Switches.Debug_Exec_RAC :=
-           Parsed.Values (Sw_Debug_Exec_RAC).Boolean_Val;
-         Copy_List (Parsed.File_List, CL_Switches.File_List);
-      end if;
+      CL_Switches.V := Parsed.Values (Sw_V).Boolean_Val;
+      CL_Switches.Assumptions := Parsed.Values (Sw_Assumptions).Boolean_Val;
+      CL_Switches.Benchmark := Parsed.Values (Sw_Benchmark).Boolean_Val;
+      Move_String
+        (Parsed.Values (Sw_Checks_As_Errors).String_Val,
+         CL_Switches.Checks_As_Errors);
+      CL_Switches.CWE := Parsed.Values (Sw_CWE).Boolean_Val;
+      CL_Switches.D := Parsed.Values (Sw_D).Boolean_Val;
+      CL_Switches.Debug_No_Cache_Output :=
+        Parsed.Values (Sw_Debug_No_Cache_Output).Boolean_Val;
+      CL_Switches.Debug_Save_VCs :=
+        Parsed.Values (Sw_Debug_Save_VCs).Boolean_Val;
+      CL_Switches.Dbg_No_Sem := Parsed.Values (Sw_Dbg_No_Sem).Boolean_Val;
+      CL_Switches.Debug_Prover_Errors :=
+        Parsed.Values (Sw_Debug_Prover_Errors).Boolean_Val;
+      Move_String
+        (Parsed.Values (Sw_Exclude_Line).String_Val, CL_Switches.Exclude_Line);
+      CL_Switches.Flow_Debug := Parsed.Values (Sw_Flow_Debug).Boolean_Val;
+      CL_Switches.Flow_Show_GG := Parsed.Values (Sw_Flow_Show_GG).Boolean_Val;
+      CL_Switches.F := Parsed.Values (Sw_F).Boolean_Val;
+      CL_Switches.IDE_Progress_Bar :=
+        Parsed.Values (Sw_IDE_Progress_Bar).Boolean_Val;
+      CL_Switches.J := Parsed.Values (Sw_J).Integer_Val;
+      CL_Switches.K := Parsed.Values (Sw_K).Boolean_Val;
+      Move_String
+        (Parsed.Values (Sw_Limit_Line).String_Val, CL_Switches.Limit_Line);
+      Move_String
+        (Parsed.Values (Sw_Limit_Lines).String_Val, CL_Switches.Limit_Lines);
+      Move_String
+        (Parsed.Values (Sw_Limit_Name).String_Val, CL_Switches.Limit_Name);
+      Move_String
+        (Parsed.Values (Sw_Limit_Region).String_Val, CL_Switches.Limit_Region);
+      Move_String
+        (Parsed.Values (Sw_Limit_Subp).String_Val, CL_Switches.Limit_Subp);
+      Move_String
+        (Parsed.Values (Sw_Memcached_Server).String_Val,
+         CL_Switches.Memcached_Server);
+      CL_Switches.M := Parsed.Values (Sw_M).Boolean_Val;
+      CL_Switches.No_Axiom_Guard :=
+        Parsed.Values (Sw_No_Axiom_Guard).Boolean_Val;
+      Move_String
+        (Parsed.Values (Sw_Function_Sandboxing).String_Val,
+         CL_Switches.Function_Sandboxing);
+      CL_Switches.No_Global_Generation :=
+        Parsed.Values (Sw_No_Global_Generation).Boolean_Val;
+      CL_Switches.No_Subprojects :=
+        Parsed.Values (Sw_No_Subprojects).Boolean_Val;
+      Move_String (Parsed.Values (Sw_Output).String_Val, CL_Switches.Output);
+      CL_Switches.Output_Header :=
+        Parsed.Values (Sw_Output_Header).Boolean_Val;
+      CL_Switches.Output_Msg_Only :=
+        Parsed.Values (Sw_Output_Msg_Only).Boolean_Val;
+      CL_Switches.Q := Parsed.Values (Sw_Q).Boolean_Val;
+      CL_Switches.Replay := Parsed.Values (Sw_Replay).Boolean_Val;
+      Move_String (Parsed.Values (Sw_Report).String_Val, CL_Switches.Report);
+      CL_Switches.U := Parsed.Values (Sw_U).Boolean_Val;
+      CL_Switches.UU := Parsed.Values (Sw_UU).Boolean_Val;
+      Move_String
+        (Parsed.Values (Sw_Warnings).String_Val, CL_Switches.Warnings);
+      Move_String
+        (Parsed.Values (Sw_Why3_Conf).String_Val, CL_Switches.Why3_Conf);
+      Move_String
+        (Parsed.Values (Sw_Why3_Debug).String_Val, CL_Switches.Why3_Debug);
+      CL_Switches.Why3_Logging := Parsed.Values (Sw_Why3_Logging).Boolean_Val;
+      Move_String
+        (Parsed.Values (Sw_Why3_Server).String_Val, CL_Switches.Why3_Server);
+      Copy_List
+        (Parsed.Values (Sw_SARIF_Base_URI).String_List_Val,
+         CL_Switches.SARIF_Base_URIs);
+      CL_Switches.Z3_Counterexample :=
+        Parsed.Values (Sw_Z3_Counterexample).Boolean_Val;
+      Move_String
+        (Parsed.Values (Sw_Gnattest_Values).String_Val,
+         CL_Switches.Gnattest_Values);
+      CL_Switches.Debug_Exec_RAC :=
+        Parsed.Values (Sw_Debug_Exec_RAC).Boolean_Val;
+      Copy_List (Parsed.File_List, CL_Switches.File_List);
 
       for WK in Misc_Warning_Kind loop
          Configuration.Warning_Status (WK) :=
@@ -1262,34 +1245,30 @@ package body Configuration is
             else VC_Kinds.Warning_Status (WK));
       end loop;
 
-      if Mode in All_Switches | Global_Switches_Only | File_Specific_Only then
-         CL_Switches.Level := Parsed.Values (Sw_Level).Integer_Val;
-         CL_Switches.Memlimit := Parsed.Values (Sw_Memlimit).Integer_Val;
-         Move_String
-           (Parsed.Values (Sw_Counterexamples).String_Val,
-            CL_Switches.Counterexamples);
-         Move_String
-           (Parsed.Values (Sw_Check_Counterexamples).String_Val,
-            CL_Switches.Check_Counterexamples);
-         Move_String (Parsed.Values (Sw_Mode).String_Val, CL_Switches.Mode);
-         CL_Switches.No_Counterexample :=
-           Parsed.Values (Sw_No_Counterexample).Boolean_Val;
-         CL_Switches.No_Inlining := Parsed.Values (Sw_No_Inlining).Boolean_Val;
-         CL_Switches.No_Loop_Unrolling :=
-           Parsed.Values (Sw_No_Loop_Unrolling).Boolean_Val;
-         Move_String (Parsed.Values (Sw_Proof).String_Val, CL_Switches.Proof);
-         Move_String
-           (Parsed.Values (Sw_Proof_Warnings).String_Val,
-            CL_Switches.Proof_Warnings);
-         Move_String
-           (Parsed.Values (Sw_Prover).String_Val, CL_Switches.Prover);
-         CL_Switches.Steps := Parsed.Values (Sw_Steps).Integer_Val;
-         CL_Switches.CE_Steps := Parsed.Values (Sw_CE_Steps).Integer_Val;
-         Move_String
-           (Parsed.Values (Sw_Timeout).String_Val, CL_Switches.Timeout);
-         CL_Switches.Proof_Warn_Timeout :=
-           Parsed.Values (Sw_Proof_Warn_Timeout).Integer_Val;
-      end if;
+      CL_Switches.Level := Parsed.Values (Sw_Level).Integer_Val;
+      CL_Switches.Memlimit := Parsed.Values (Sw_Memlimit).Integer_Val;
+      Move_String
+        (Parsed.Values (Sw_Counterexamples).String_Val,
+         CL_Switches.Counterexamples);
+      Move_String
+        (Parsed.Values (Sw_Check_Counterexamples).String_Val,
+         CL_Switches.Check_Counterexamples);
+      Move_String (Parsed.Values (Sw_Mode).String_Val, CL_Switches.Mode);
+      CL_Switches.No_Counterexample :=
+        Parsed.Values (Sw_No_Counterexample).Boolean_Val;
+      CL_Switches.No_Inlining := Parsed.Values (Sw_No_Inlining).Boolean_Val;
+      CL_Switches.No_Loop_Unrolling :=
+        Parsed.Values (Sw_No_Loop_Unrolling).Boolean_Val;
+      Move_String (Parsed.Values (Sw_Proof).String_Val, CL_Switches.Proof);
+      Move_String
+        (Parsed.Values (Sw_Proof_Warnings).String_Val,
+         CL_Switches.Proof_Warnings);
+      Move_String (Parsed.Values (Sw_Prover).String_Val, CL_Switches.Prover);
+      CL_Switches.Steps := Parsed.Values (Sw_Steps).Integer_Val;
+      CL_Switches.CE_Steps := Parsed.Values (Sw_CE_Steps).Integer_Val;
+      Move_String (Parsed.Values (Sw_Timeout).String_Val, CL_Switches.Timeout);
+      CL_Switches.Proof_Warn_Timeout :=
+        Parsed.Values (Sw_Proof_Warn_Timeout).Integer_Val;
    end Copy_To_CL_Switches;
 
    ----------------------------
@@ -1857,16 +1836,6 @@ package body Configuration is
 
       return Parsed;
    end Parse_Switches_Internal;
-
-   --------------------
-   -- Parse_Switches --
-   --------------------
-
-   procedure Parse_Switches (Mode : Parsing_Modes; Com_Lin : String_List) is
-      Parsed : Parsed_Switches := Parse_Switches_Internal (Mode, Com_Lin);
-   begin
-      Copy_To_CL_Switches (Parsed, Mode);
-   end Parse_Switches;
 
    -------------------------------------------
    -- Parse_Switches_Before_Project_Parsing --
@@ -2520,11 +2489,12 @@ package body Configuration is
       --  Parse the Switches and Proof_Switches attributes in project files.
       --  The regular command line is needed to interpret them properly.
 
-      procedure Postprocess;
+      procedure Postprocess (Parsed : in out Parsed_Switches);
       --  Read the switch variables set by command-line parsing and set the
       --  gnatprove variables.
 
-      procedure File_Specific_Postprocess (FS : out File_Specific);
+      procedure File_Specific_Postprocess
+        (Parsed : Parsed_Switches; FS : out File_Specific);
       --  Same as Postprocess, but for the switches that can be file-specific.
       --  For example, --level, --timeout are handled here.
 
@@ -2532,31 +2502,37 @@ package body Configuration is
       --  Check for the obsolete Prove.Switches attribute and issue a warning
       --  if present.
 
-      procedure Set_Mode (FS : in out File_Specific);
-      procedure Set_Output_Mode;
-      procedure Set_Warning_Mode;
-      procedure Set_Report_Mode;
+      procedure Set_Mode (Parsed : Parsed_Switches; FS : in out File_Specific);
+      procedure Set_Output_Mode (Parsed : Parsed_Switches);
+      procedure Set_Warning_Mode (Parsed : Parsed_Switches);
+      procedure Set_Report_Mode (Parsed : Parsed_Switches);
 
-      procedure Set_Level_Timeout_Steps_Provers (FS : out File_Specific);
+      procedure Set_Level_Timeout_Steps_Provers
+        (Parsed : Parsed_Switches; FS : out File_Specific);
       --  Using the --level, --timeout, --steps, --provers, --ce-steps,
       --  --counterexamples and --proof-warning-timeout switches, set the
       --  corresponding variables.
 
-      procedure Set_Proof_Mode (FS : in out File_Specific);
-      procedure Process_Limit_Switches;
+      procedure Set_Proof_Mode
+        (Parsed : Parsed_Switches; FS : in out File_Specific);
+      procedure Process_Limit_Switches (Parsed : in out Parsed_Switches);
       procedure Set_Provers
-        (Prover : GNAT.Strings.String_Access; FS : in out File_Specific);
+        (Parsed : Parsed_Switches; FS : in out File_Specific);
       procedure Set_Proof_Dir (View : GPR2.Project.View.Object);
       --  If attribute Proof_Dir is set in the project file,
       --  set global variable Proof_Dir to the full path
       --  <path-to-project-file>/<value-of-proof-dir>.
 
-      procedure Sanity_Checking;
+      procedure Sanity_Checking (Parsed : Parsed_Switches);
       --  Check the command line flags for conflicting flags
 
       function List_From_Attr
         (Attribute : GPR2.Project.Attribute.Object) return String_List_Access;
       --  Helper function to convert attribute to list of strings
+
+      function Switch_String
+        (Parsed : Parsed_Switches; Switch : Switch_Id) return String;
+      --  Return the string value for Switch or the empty string when unset
 
       -----------------------------------
       -- Check_Obsolete_Prove_Switches --
@@ -2580,17 +2556,25 @@ package body Configuration is
       -- File_Specific_Postprocess --
       -------------------------------
 
-      procedure File_Specific_Postprocess (FS : out File_Specific) is
+      procedure File_Specific_Postprocess
+        (Parsed : Parsed_Switches; FS : out File_Specific) is
       begin
-         Set_Level_Timeout_Steps_Provers (FS);
-         Set_Proof_Mode (FS);
-         Set_Mode (FS);
-         FS.No_Inlining := CL_Switches.No_Inlining;
-         FS.No_Loop_Unrolling := CL_Switches.No_Loop_Unrolling;
+         Set_Level_Timeout_Steps_Provers (Parsed, FS);
+         Set_Proof_Mode (Parsed, FS);
+         Set_Mode (Parsed, FS);
+         FS.No_Inlining := Parsed.Values (Sw_No_Inlining).Boolean_Val;
+         FS.No_Loop_Unrolling :=
+           Parsed.Values (Sw_No_Loop_Unrolling).Boolean_Val;
          FS.Proof_Warnings := Proof_Warnings;
          FS.No_Inlining :=
-           CL_Switches.No_Inlining or CL_Switches.No_Global_Generation;
-         FS.Warning_Status := Configuration.Warning_Status;
+           Parsed.Values (Sw_No_Inlining).Boolean_Val
+           or Parsed.Values (Sw_No_Global_Generation).Boolean_Val;
+         for WK in Misc_Warning_Kind loop
+            FS.Warning_Status (WK) :=
+              (if Parsed.Warning_Status (WK) /= WS_None
+               then Parsed.Warning_Status (WK)
+               else VC_Kinds.Warning_Status (WK));
+         end loop;
       end File_Specific_Postprocess;
 
       ----------
@@ -2658,6 +2642,23 @@ package body Configuration is
             return null;
          end if;
       end List_From_Attr;
+
+      -------------------
+      -- Switch_String --
+      -------------------
+
+      function Switch_String
+        (Parsed : Parsed_Switches; Switch : Switch_Id) return String
+      is
+         Value : constant GNAT.Strings.String_Access :=
+           Parsed.Values (Switch).String_Val;
+      begin
+         if Value = null then
+            return "";
+         else
+            return Value.all;
+         end if;
+      end Switch_String;
 
       --------------------------
       -- Parse_Proof_Switches --
@@ -2737,10 +2738,9 @@ package body Configuration is
                   --  Use the merge helper for a deep copy
                   Merge_Parsed_Switches (Effective, Project_Switches);
                   Merge_Parsed_Switches (Effective, Command_Line_Switches);
-                  Copy_To_CL_Switches (Effective, All_Switches);
+                  Postprocess (Effective);
+                  File_Specific_Postprocess (Effective, FS);
                end;
-               Postprocess;
-               File_Specific_Postprocess (FS);
                File_Specific_Map.Insert ("Ada", FS);
                Has_Coq_Prover := Case_Insensitive_Contains (FS.Provers, "coq");
                Has_Manual_Prover :=
@@ -2779,8 +2779,8 @@ package body Configuration is
 
                         Merge_Parsed_Switches
                           (Effective, Command_Line_Switches);
-                        Copy_To_CL_Switches (Effective, All_Switches);
-                        File_Specific_Postprocess (FS);
+                        Postprocess (Effective);
+                        File_Specific_Postprocess (Effective, FS);
                         File_Specific_Map.Insert (Attr.Index.Text, FS);
                      end;
                   end if;
@@ -2803,7 +2803,7 @@ package body Configuration is
       -- Postprocess --
       -----------------
 
-      procedure Postprocess is
+      procedure Postprocess (Parsed : in out Parsed_Switches) is
          function On_Path (Exec : String) return Boolean;
          --  Return True iff Exec is present on PATH
 
@@ -2822,14 +2822,16 @@ package body Configuration is
          end On_Path;
 
       begin
-         Sanity_Checking;
+         Sanity_Checking (Parsed);
 
          SPARK_Install.Z3_Present := On_Path ("z3");
          SPARK_Install.CVC5_Present := On_Path ("cvc5");
          SPARK_Install.Colibri_Present := On_Path ("colibri");
 
-         Debug := CL_Switches.D or CL_Switches.Flow_Debug;
-         Debug_Exec_RAC := CL_Switches.Debug_Exec_RAC;
+         Debug :=
+           Parsed.Values (Sw_D).Boolean_Val
+           or Parsed.Values (Sw_Flow_Debug).Boolean_Val;
+         Debug_Exec_RAC := Parsed.Values (Sw_Debug_Exec_RAC).Boolean_Val;
 
          --  Subprograms with no contracts (and a few other criteria) may be
          --  inlined, as this can help provability. In particular it helps as
@@ -2854,60 +2856,62 @@ package body Configuration is
          --  number of processes should be set to the actual number of
          --  processors available on the machine.
 
-         if CL_Switches.J = 0 then
+         if Parsed.Values (Sw_J).Integer_Val = 0 then
             Parallel := Natural (System.Multiprocessors.Number_Of_CPUs);
-         elsif CL_Switches.J < 0 then
+         elsif Parsed.Values (Sw_J).Integer_Val < 0 then
             Abort_Msg ("error: wrong argument for -j", With_Help => False);
          else
-            Parallel := CL_Switches.J;
+            Parallel := Parsed.Values (Sw_J).Integer_Val;
          end if;
 
-         if CL_Switches.No_Counterexample then
+         if Parsed.Values (Sw_No_Counterexample).Boolean_Val then
             Ada.Text_IO.Put_Line
               ("Note: switch ""--no-counterexample"" is ignored.");
             Ada.Text_IO.Put_Line
               ("Note: use ""--counterexamples=off"" instead.");
          end if;
 
-         if CL_Switches.No_Axiom_Guard then
+         if Parsed.Values (Sw_No_Axiom_Guard).Boolean_Val then
             Ada.Text_IO.Put_Line
               ("Note: switch ""--no-axiom-guard"" is ignored.");
             Ada.Text_IO.Put_Line
               ("Note: use ""--function-sandboxing=off"" instead.");
          end if;
 
-         if CL_Switches.Function_Sandboxing.all not in "" | "on" | "off" then
+         if Switch_String (Parsed, Sw_Function_Sandboxing)
+            not in "" | "on" | "off"
+         then
             Abort_Msg
               ("error: wrong argument for --function-sandboxing, "
                & "must be one of (on, off)",
                With_Help => False);
          end if;
 
-         if CL_Switches.Checks_As_Errors.all = ""
-           or else CL_Switches.Checks_As_Errors.all = "off"
+         if Switch_String (Parsed, Sw_Checks_As_Errors) = ""
+           or else Switch_String (Parsed, Sw_Checks_As_Errors) = "off"
          then
             Checks_As_Errors := False;
-         elsif CL_Switches.Checks_As_Errors.all = "on" then
+         elsif Switch_String (Parsed, Sw_Checks_As_Errors) = "on" then
             Checks_As_Errors := True;
          else
             Abort_Msg
               ("error: wrong argument """
-               & CL_Switches.Checks_As_Errors.all
+               & Switch_String (Parsed, Sw_Checks_As_Errors)
                & """ for --checks-as-errors, "
                & "must be one of (on, off)",
                With_Help => False);
          end if;
 
-         if CL_Switches.Proof_Warnings.all = ""
-           or else CL_Switches.Proof_Warnings.all = "off"
+         if Switch_String (Parsed, Sw_Proof_Warnings) = ""
+           or else Switch_String (Parsed, Sw_Proof_Warnings) = "off"
          then
             Proof_Warnings := False;
-         elsif CL_Switches.Proof_Warnings.all = "on" then
+         elsif Switch_String (Parsed, Sw_Proof_Warnings) = "on" then
             Proof_Warnings := True;
          else
             Abort_Msg
               ("error: wrong argument """
-               & CL_Switches.Proof_Warnings.all
+               & Switch_String (Parsed, Sw_Proof_Warnings)
                & """ for --proof-warnings, "
                & "must be one of (on, off)",
                With_Help => False);
@@ -2916,34 +2920,36 @@ package body Configuration is
          --  Handling of Only_Given and Filelist
 
          Only_Given :=
-           CL_Switches.U
-           or not Null_Or_Empty_String (CL_Switches.Limit_Subp)
-           or not Null_Or_Empty_String (CL_Switches.Limit_Line)
-           or not Null_Or_Empty_String (CL_Switches.Limit_Lines);
+           Parsed.Values (Sw_U).Boolean_Val
+           or else Switch_String (Parsed, Sw_Limit_Subp) /= ""
+           or else Switch_String (Parsed, Sw_Limit_Line) /= ""
+           or else Switch_String (Parsed, Sw_Limit_Lines) /= "";
 
-         if CL_Switches.U and then CL_Switches.File_List.Is_Empty then
+         if Parsed.Values (Sw_U).Boolean_Val and then Parsed.File_List.Is_Empty
+         then
             Ada.Text_IO.Put_Line
               (Ada.Text_IO.Standard_Error,
                "warning: switch -u without a file name is equivalent to "
                & "switch --no-subproject");
          end if;
 
-         Process_Limit_Switches;
+         Process_Limit_Switches (Parsed);
 
          GnateT_Switch := new String'(Check_gnateT_Switch (Tree.Root_Project));
-         Set_Output_Mode;
-         Set_Warning_Mode;
-         Set_Report_Mode;
+         Set_Output_Mode (Parsed);
+         Set_Warning_Mode (Parsed);
+         Set_Report_Mode (Parsed);
          Set_Proof_Dir (Tree.Root_Project);
 
-         Use_Semaphores := not Debug and then not CL_Switches.Dbg_No_Sem;
+         Use_Semaphores :=
+           not Debug and then not Parsed.Values (Sw_Dbg_No_Sem).Boolean_Val;
       end Postprocess;
 
       ----------------------------
       -- Process_Limit_Switches --
       ----------------------------
 
-      procedure Process_Limit_Switches is
+      procedure Process_Limit_Switches (Parsed : in out Parsed_Switches) is
 
          Switch_Count : Integer := 0;
 
@@ -2999,8 +3005,8 @@ package body Configuration is
             --  subprogram is inside a generic or itself a generic, so that all
             --  instances of the line/subprogram are analyzed.
 
-            if not All_Projects then
-               CL_Switches.File_List.Append
+            if not Parsed.Values (Sw_UU).Boolean_Val then
+               Parsed.File_List.Append
                  (Limit_String (Limit_String'First .. Colon_Index - 1));
             end if;
          end Process_Limit_Directive;
@@ -3053,17 +3059,22 @@ package body Configuration is
          --  combination of --limit-subp + --limit-line or --limit-region,
          --  as this is used by the gnatstudio plug-in.
 
-         Check_Switch (CL_Switches.Limit_Name);
-         Check_Switch (CL_Switches.Limit_Subp);
-         Check_Switch (CL_Switches.Limit_Region);
-         Check_Switch (CL_Switches.Limit_Line);
-         Check_Switch (CL_Switches.Limit_Lines);
+         Check_Switch (Parsed.Values (Sw_Limit_Name).String_Val);
+         Check_Switch (Parsed.Values (Sw_Limit_Subp).String_Val);
+         Check_Switch (Parsed.Values (Sw_Limit_Region).String_Val);
+         Check_Switch (Parsed.Values (Sw_Limit_Line).String_Val);
+         Check_Switch (Parsed.Values (Sw_Limit_Lines).String_Val);
          if Switch_Count > 1 then
             if Switch_Count = 2
-              and then not Null_Or_Empty_String (CL_Switches.Limit_Subp)
               and then
-                (not Null_Or_Empty_String (CL_Switches.Limit_Region)
-                 or else not Null_Or_Empty_String (CL_Switches.Limit_Line))
+                not Null_Or_Empty_String
+                      (Parsed.Values (Sw_Limit_Subp).String_Val)
+              and then
+                (not Null_Or_Empty_String
+                       (Parsed.Values (Sw_Limit_Region).String_Val)
+                 or else
+                   not Null_Or_Empty_String
+                         (Parsed.Values (Sw_Limit_Line).String_Val))
             then
                null;
             else
@@ -3074,13 +3085,19 @@ package body Configuration is
             end if;
          end if;
 
-         Process_Limit_Directive ("limit-subp", CL_Switches.Limit_Subp);
-         Process_Limit_Directive ("limit-region", CL_Switches.Limit_Region);
-         Process_Limit_Directive ("limit-line", CL_Switches.Limit_Line);
-         if not Null_Or_Empty_String (CL_Switches.Limit_Line) then
-            Process_Limit_Line (CL_Switches.Limit_Line.all);
+         Process_Limit_Directive
+           ("limit-subp", Parsed.Values (Sw_Limit_Subp).String_Val);
+         Process_Limit_Directive
+           ("limit-region", Parsed.Values (Sw_Limit_Region).String_Val);
+         Process_Limit_Directive
+           ("limit-line", Parsed.Values (Sw_Limit_Line).String_Val);
+         if not Null_Or_Empty_String (Parsed.Values (Sw_Limit_Line).String_Val)
+         then
+            Process_Limit_Line (Parsed.Values (Sw_Limit_Line).String_Val.all);
          end if;
-         if not Null_Or_Empty_String (CL_Switches.Limit_Lines) then
+         if not Null_Or_Empty_String
+                  (Parsed.Values (Sw_Limit_Lines).String_Val)
+         then
             declare
                File_Handle : Ada.Text_IO.File_Type;
                Line_Count  : Integer := 1;
@@ -3088,7 +3105,7 @@ package body Configuration is
                Ada.Text_IO.Open
                  (File_Handle,
                   Ada.Text_IO.In_File,
-                  CL_Switches.Limit_Lines.all);
+                  Parsed.Values (Sw_Limit_Lines).String_Val.all);
                while True loop
                   declare
                      Line : constant String :=
@@ -3116,11 +3133,16 @@ package body Configuration is
       -- Sanity_Checking --
       ---------------------
 
-      procedure Sanity_Checking is
+      procedure Sanity_Checking (Parsed : Parsed_Switches) is
       begin
-         if (CL_Switches.Output_Msg_Only and CL_Switches.Replay)
-           or else (CL_Switches.Output_Msg_Only and CL_Switches.F)
-           or else (CL_Switches.F and CL_Switches.Replay)
+         if (Parsed.Values (Sw_Output_Msg_Only).Boolean_Val
+             and then Parsed.Values (Sw_Replay).Boolean_Val)
+           or else
+             (Parsed.Values (Sw_Output_Msg_Only).Boolean_Val
+              and then Parsed.Values (Sw_F).Boolean_Val)
+           or else
+             (Parsed.Values (Sw_F).Boolean_Val
+              and then Parsed.Values (Sw_Replay).Boolean_Val)
          then
             Abort_Msg
               ("only one switch out of -f, --output-msg-only and --replay"
@@ -3133,10 +3155,11 @@ package body Configuration is
       -- Set_Level_Timeout_Steps_Provers --
       -------------------------------------
 
-      procedure Set_Level_Timeout_Steps_Provers (FS : out File_Specific) is
+      procedure Set_Level_Timeout_Steps_Provers
+        (Parsed : Parsed_Switches; FS : out File_Specific) is
       begin
 
-         case CL_Switches.Level is
+         case Parsed.Values (Sw_Level).Integer_Val is
 
             --  If level switch was not provided, set other switches to their
             --  default values.
@@ -3149,8 +3172,8 @@ package body Configuration is
                --  is used (either explicitly or through --level). Otherwise
                --  set to zero to indicate steps are not used.
 
-               if CL_Switches.Steps = Invalid_Steps
-                 and then CL_Switches.Timeout.all = ""
+               if Parsed.Values (Sw_Steps).Integer_Val = Invalid_Steps
+                 and then Switch_String (Parsed, Sw_Timeout) = ""
                then
                   FS.Steps := Default_Steps;
                else
@@ -3218,13 +3241,14 @@ package body Configuration is
          --  If option --timeout was not provided, keep timeout corresponding
          --  to level switch/default value. Otherwise, take the user-provided
          --  timeout. To be able to detect if --timeout was provided,
-         --  CL_Switches.Timeout is string-based.
+         --  Parsed timeout is string-based.
 
-         if CL_Switches.Timeout.all = "" then
+         if Switch_String (Parsed, Sw_Timeout) = "" then
             null;
          else
             begin
-               FS.Timeout := Integer'Value (CL_Switches.Timeout.all);
+               FS.Timeout :=
+                 Integer'Value (Switch_String (Parsed, Sw_Timeout));
                if FS.Timeout < 0 then
                   raise Constraint_Error;
                end if;
@@ -3237,43 +3261,45 @@ package body Configuration is
             end;
          end if;
 
-         if CL_Switches.Memlimit = 0 then
+         if Parsed.Values (Sw_Memlimit).Integer_Val = 0 then
             null;
-         elsif CL_Switches.Memlimit < 0 then
+         elsif Parsed.Values (Sw_Memlimit).Integer_Val < 0 then
             Abort_Msg
               ("error: wrong argument for --memlimit, "
                & "must be a non-negative integer",
                With_Help => False);
          else
-            FS.Memlimit := CL_Switches.Memlimit;
+            FS.Memlimit := Parsed.Values (Sw_Memlimit).Integer_Val;
          end if;
 
-         if CL_Switches.Steps = Invalid_Steps then
+         if Parsed.Values (Sw_Steps).Integer_Val = Invalid_Steps then
             null;
-         elsif CL_Switches.Steps < 0 then
+         elsif Parsed.Values (Sw_Steps).Integer_Val < 0 then
             Abort_Msg
               ("error: wrong argument for --steps", With_Help => False);
          else
-            FS.Steps := CL_Switches.Steps;
+            FS.Steps := Parsed.Values (Sw_Steps).Integer_Val;
          end if;
 
-         if CL_Switches.CE_Steps = Invalid_Steps then
+         if Parsed.Values (Sw_CE_Steps).Integer_Val = Invalid_Steps then
             null;
-         elsif CL_Switches.CE_Steps < 0 then
+         elsif Parsed.Values (Sw_CE_Steps).Integer_Val < 0 then
             Abort_Msg
               ("error: wrong argument for --ce-steps", With_Help => False);
          else
-            FS.CE_Steps := CL_Switches.CE_Steps;
+            FS.CE_Steps := Parsed.Values (Sw_CE_Steps).Integer_Val;
          end if;
 
-         if CL_Switches.Proof_Warn_Timeout = Invalid_Timeout then
+         if Parsed.Values (Sw_Proof_Warn_Timeout).Integer_Val = Invalid_Timeout
+         then
             null;
-         elsif CL_Switches.Proof_Warn_Timeout < 0 then
+         elsif Parsed.Values (Sw_Proof_Warn_Timeout).Integer_Val < 0 then
             Abort_Msg
               ("error: wrong argument for --proof-warn-timeout",
                With_Help => False);
          else
-            FS.Proof_Warn_Timeout := CL_Switches.Proof_Warn_Timeout;
+            FS.Proof_Warn_Timeout :=
+              Parsed.Values (Sw_Proof_Warn_Timeout).Integer_Val;
          end if;
 
          --  Timeout and CE_Steps are fully set now, we can set CE_Timeout.
@@ -3288,17 +3314,17 @@ package body Configuration is
             then Constants.Max_CE_Timeout
             else Integer'Min (FS.Timeout, Constants.Max_CE_Timeout));
 
-         Set_Provers (CL_Switches.Prover, FS);
+         Set_Provers (Parsed, FS);
 
-         if CL_Switches.Output_Msg_Only then
+         if Parsed.Values (Sw_Output_Msg_Only).Boolean_Val then
             FS.Provers.Clear;
          end if;
 
-         if CL_Switches.Counterexamples.all = "" then
+         if Switch_String (Parsed, Sw_Counterexamples) = "" then
             null;
-         elsif CL_Switches.Counterexamples.all = "on" then
+         elsif Switch_String (Parsed, Sw_Counterexamples) = "on" then
             FS.Counterexamples := True;
-         elsif CL_Switches.Counterexamples.all = "off" then
+         elsif Switch_String (Parsed, Sw_Counterexamples) = "off" then
             FS.Counterexamples := False;
          else
             Abort_Msg
@@ -3311,13 +3337,13 @@ package body Configuration is
            FS.Counterexamples
            and then SPARK_Install.CVC5_Present
            and then not Has_Manual_Prover
-           and then not CL_Switches.Output_Msg_Only;
+           and then not Parsed.Values (Sw_Output_Msg_Only).Boolean_Val;
 
-         if CL_Switches.Check_Counterexamples.all = "" then
+         if Switch_String (Parsed, Sw_Check_Counterexamples) = "" then
             null;
-         elsif CL_Switches.Check_Counterexamples.all = "on" then
+         elsif Switch_String (Parsed, Sw_Check_Counterexamples) = "on" then
             FS.Check_Counterexamples := True;
-         elsif CL_Switches.Check_Counterexamples.all = "off" then
+         elsif Switch_String (Parsed, Sw_Check_Counterexamples) = "off" then
             FS.Check_Counterexamples := False;
          else
             Abort_Msg
@@ -3335,25 +3361,26 @@ package body Configuration is
       -- Set_Mode --
       --------------
 
-      procedure Set_Mode (FS : in out File_Specific) is
+      procedure Set_Mode (Parsed : Parsed_Switches; FS : in out File_Specific)
+      is
       begin
-         if CL_Switches.Mode.all = "" then
+         if Switch_String (Parsed, Sw_Mode) = "" then
             FS.Mode := GPM_All;
-         elsif CL_Switches.Mode.all = "prove" then
+         elsif Switch_String (Parsed, Sw_Mode) = "prove" then
             FS.Mode := GPM_Prove;
-         elsif CL_Switches.Mode.all = "check" then
+         elsif Switch_String (Parsed, Sw_Mode) = "check" then
             FS.Mode := GPM_Check;
-         elsif CL_Switches.Mode.all = "check_all"
-           or else CL_Switches.Mode.all = "stone"
+         elsif Switch_String (Parsed, Sw_Mode) = "check_all"
+           or else Switch_String (Parsed, Sw_Mode) = "stone"
          then
             FS.Mode := GPM_Check_All;
-         elsif CL_Switches.Mode.all = "flow"
-           or else CL_Switches.Mode.all = "bronze"
+         elsif Switch_String (Parsed, Sw_Mode) = "flow"
+           or else Switch_String (Parsed, Sw_Mode) = "bronze"
          then
             FS.Mode := GPM_Flow;
-         elsif CL_Switches.Mode.all = "all"
-           or else CL_Switches.Mode.all = "silver"
-           or else CL_Switches.Mode.all = "gold"
+         elsif Switch_String (Parsed, Sw_Mode) = "all"
+           or else Switch_String (Parsed, Sw_Mode) = "silver"
+           or else Switch_String (Parsed, Sw_Mode) = "gold"
          then
             FS.Mode := GPM_All;
          else
@@ -3383,15 +3410,15 @@ package body Configuration is
       -- Set_Output_Mode --
       ---------------------
 
-      procedure Set_Output_Mode is
+      procedure Set_Output_Mode (Parsed : Parsed_Switches) is
       begin
-         if CL_Switches.Output.all = "" then
+         if Switch_String (Parsed, Sw_Output) = "" then
             Output := GPO_Pretty_Simple;
-         elsif CL_Switches.Output.all = "brief" then
+         elsif Switch_String (Parsed, Sw_Output) = "brief" then
             Output := GPO_Brief;
-         elsif CL_Switches.Output.all = "oneline" then
+         elsif Switch_String (Parsed, Sw_Output) = "oneline" then
             Output := GPO_Oneline;
-         elsif CL_Switches.Output.all = "pretty" then
+         elsif Switch_String (Parsed, Sw_Output) = "pretty" then
             Output := GPO_Pretty_Simple;
          else
             Abort_Msg
@@ -3446,8 +3473,10 @@ package body Configuration is
       -- Set_Proof_Mode --
       --------------------
 
-      procedure Set_Proof_Mode (FS : in out File_Specific) is
-         Input       : String renames CL_Switches.Proof.all;
+      procedure Set_Proof_Mode
+        (Parsed : Parsed_Switches; FS : in out File_Specific)
+      is
+         Input       : constant String := Switch_String (Parsed, Sw_Proof);
          Colon_Index : constant Natural :=
            Index (Source => Input, Pattern => ":");
 
@@ -3498,11 +3527,10 @@ package body Configuration is
       -----------------
 
       procedure Set_Provers
-        (Prover : GNAT.Strings.String_Access; FS : in out File_Specific)
+        (Parsed : Parsed_Switches; FS : in out File_Specific)
       is
          First : Integer;
-         S     : constant String :=
-           (if Prover /= null then Prover.all else "");
+         S     : constant String := Switch_String (Parsed, Sw_Prover);
 
       begin
          --  This procedure is called when the Provers list is already filled
@@ -3513,7 +3541,7 @@ package body Configuration is
          --  --provers was explicitly set.
 
          if S = "" then
-            if CL_Switches.Replay then
+            if Parsed.Values (Sw_Replay).Boolean_Val then
                FS.Provers.Clear;
             end if;
             return;
@@ -3569,17 +3597,17 @@ package body Configuration is
       -- Set_Report_Mode --
       ---------------------
 
-      procedure Set_Report_Mode is
+      procedure Set_Report_Mode (Parsed : Parsed_Switches) is
       begin
-         if CL_Switches.Report.all = "" then
+         if Switch_String (Parsed, Sw_Report) = "" then
             Report := GPR_Fail;
-         elsif CL_Switches.Report.all = "fail" then
+         elsif Switch_String (Parsed, Sw_Report) = "fail" then
             Report := GPR_Fail;
-         elsif CL_Switches.Report.all = "all" then
+         elsif Switch_String (Parsed, Sw_Report) = "all" then
             Report := GPR_All;
-         elsif CL_Switches.Report.all = "provers" then
+         elsif Switch_String (Parsed, Sw_Report) = "provers" then
             Report := GPR_Provers;
-         elsif CL_Switches.Report.all = "statistics" then
+         elsif Switch_String (Parsed, Sw_Report) = "statistics" then
             Report := GPR_Statistics;
          else
             Abort_Msg
@@ -3591,8 +3619,8 @@ package body Configuration is
       -- Set_Warning_Mode --
       ----------------------
 
-      procedure Set_Warning_Mode is
-         Warn_Switch : String renames CL_Switches.Warnings.all;
+      procedure Set_Warning_Mode (Parsed : Parsed_Switches) is
+         Warn_Switch : constant String := Switch_String (Parsed, Sw_Warnings);
       begin
          --  Note that "on" here is retained for backwards compatibility
          --  with release 14.0.1
@@ -3618,7 +3646,8 @@ package body Configuration is
       Com_Lin      : String_List_Access;
       Attr         : GPR2.Project.Attribute.Object;
 
-      Parse_Result : Project_Parsing_Result;
+      Parse_Result        : Project_Parsing_Result;
+      Invocation_Switches : Parsed_Switches;
 
    begin
 
@@ -3627,10 +3656,8 @@ package body Configuration is
            new String'(Ada.Command_Line.Argument (Index));
       end loop;
 
-      --  The following code calls Parse_Switches several times, with varying
-      --  mode argument and different switches, for different purposes. The
-      --  same global variables are used for the result of the command line
-      --  parsing (CL_Switches.*), but we make sure that this is correct by:
+      --  The following code parses switches several times, with varying mode
+      --  arguments and different switch lists, for different purposes:
       --   - detecting invalid switches in the various attributes; (so the
       --     parsing of a file-specific switch can't override a switch that can
       --     only be specified globally);
@@ -3638,7 +3665,7 @@ package body Configuration is
       --   - parsing for error messages is done before the "real" parsing to
       --     get the values of switches.
 
-      --  This call to Parse_Switches just parses project-relevant switches
+      --  This call just parses project-relevant switches
       --  (-P, -X etc) and ignores the rest.
 
       Set_Project_Attributes;
@@ -3698,10 +3725,12 @@ package body Configuration is
          declare
             L : String_List_Access := List_From_Attr (Attr);
          begin
-            --  parse the Switches attribute of the project file; this is to
-            --  detect invalid switches only.
+            --  Parse root project switches and keep them for the final
+            --  invocation-wide merge.
 
-            Parse_Switches (Global_Switches_Only, L.all);
+            Merge_Parsed_Switches
+              (Invocation_Switches,
+               Parse_Switches_Internal (Global_Switches_Only, L.all));
             Free (L);
          end;
       end if;
@@ -3714,15 +3743,27 @@ package body Configuration is
          declare
             L : String_List_Access := List_From_Attr (Attr);
          begin
-            --  parse the Proof_Switches ("Ada") attribute of the project file;
-            --  this is to detect invalid switches only.
+            --  Parse root Proof_Switches ("Ada") and keep them for the final
+            --  invocation-wide merge.
 
-            Parse_Switches (Global_Switches_Only, L.all);
+            Merge_Parsed_Switches
+              (Invocation_Switches,
+               Parse_Switches_Internal (Global_Switches_Only, L.all));
             Free (L);
          end;
       end if;
 
       Parse_Proof_Switches (Com_Lin.all);
+
+      Merge_Parsed_Switches
+        (Invocation_Switches,
+         Parse_Switches_Internal (All_Switches, Com_Lin.all));
+
+      --  Derive the invocation-wide semantic configuration
+      Postprocess (Invocation_Switches);
+
+      --  Publish the final invocation settings for legacy consumers
+      Copy_To_CL_Switches (Invocation_Switches);
 
       --  Release copies of command line arguments; they were already parsed
       --  twice and are no longer needed.

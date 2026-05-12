@@ -67,9 +67,10 @@ semantic layer. Switch ids are ordered so that invocation-level switches are
 contiguous and file-specific switches are contiguous. The parser records switch
 values in internal arrays indexed by these switch ids. Separate parses, such as
 project-wide attributes, file-specific attributes, and the actual command line,
-are merged in precedence order before projection. After merging, values are
-copied field by field to ``CL_Switches``, which remains the compatibility
-interface for existing consumers.
+are merged in precedence order before projection. Invocation-wide and
+file-specific postprocessing now read this merged parsed state directly;
+``CL_Switches`` remains the compatibility interface for downstream consumers
+that have not been migrated yet.
 
 .. _Generating Globals:
 

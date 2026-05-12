@@ -1,1 +1,2 @@
 warning: switch -u without a file name is equivalent to switch --no-subproject
+warning: switch -u without a file name is equivalent to switch --no-subproject
