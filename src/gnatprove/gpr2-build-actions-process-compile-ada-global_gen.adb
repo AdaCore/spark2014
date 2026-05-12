@@ -104,7 +104,7 @@ package body GPR2.Build.Actions.Process.Compile.Ada.Global_Gen is
                 (False,
                  String (Self.CU.Owning_View.Object_Directory.Value),
                  "",
-                 String (Self.CU.Main_Part.Source.Simple_Name))
+                 Configuration.File_Specific_Key (Self.CU))
             else
               Configuration.Extra_Args_File_For_Unit
                 (Self.CU,

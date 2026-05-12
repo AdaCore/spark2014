@@ -313,6 +313,10 @@ package Configuration is
    --  path by querying the project tree. Returns an empty string if the source
    --  cannot be found (e.g. runtime files not part of the project).
 
+   function File_Specific_Key
+     (Unit : GPR2.Build.Compilation_Unit.Object) return String;
+   --  Return the key used to retrieve file-specific switches for Unit.
+
    function Compute_Why3_Args
      (Obj_Dir : String; FS : File_Specific) return String_Lists.List;
    --  Compute the list of arguments of gnatwhy3. This list is passed first to

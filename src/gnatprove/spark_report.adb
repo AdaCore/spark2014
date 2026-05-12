@@ -657,8 +657,43 @@ package body Spark_Report is
 
       procedure Handle_SPARK_File (Fn : String; Dict : JSON_Value) is
 
-         Basename : constant String := Ada.Directories.Base_Name (Fn);
-         Unit     : constant Unit_Type := Mk_Unit (Basename);
+         function Unit_Key return String;
+         --  Keep the traditional basename key unless aggregate projects
+         --  produce several .spark files with the same basename.
+
+         --------------
+         -- Unit_Key --
+         --------------
+
+         function Unit_Key return String is
+            Basename  : constant String := Ada.Directories.Base_Name (Fn);
+            Duplicate : Boolean := False;
+         begin
+            for Other of SPARK_Files loop
+               if Other /= Fn
+                 and then Ada.Directories.Base_Name (Other) = Basename
+               then
+                  Duplicate := True;
+                  exit;
+               end if;
+            end loop;
+
+            if Duplicate then
+               declare
+                  Parent     : constant String :=
+                    Ada.Directories.Containing_Directory (Fn);
+                  Object_Dir : constant String :=
+                    Ada.Directories.Containing_Directory (Parent);
+               begin
+                  return
+                    Ada.Directories.Simple_Name (Object_Dir) & "/" & Basename;
+               end;
+            else
+               return Basename;
+            end if;
+         end Unit_Key;
+
+         Unit : constant Unit_Type := Mk_Unit (Unit_Key);
 
          procedure Handle_SPARK_Status
            (Name : UTF8_String; Value : JSON_Value);
