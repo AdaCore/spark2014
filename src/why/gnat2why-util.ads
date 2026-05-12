@@ -191,40 +191,51 @@ package Gnat2Why.Util is
    --  Stack of all the continuation messages relevant for the translation of
    --  the current expression.
 
+   --  This package defines the tree structure which is used to aggregate
+   --  the associations inside deep delta aggregates and Modifies aspects. The
+   --  structure is used as a pattern for the structure of the base expression.
+   --  It is extended on demands depending on the (record) subcomponents which
+   --  are effectively mentioned in selectors. For array components, as the
+   --  index values might not be statically known, a single branch is
+   --  created.
+
    generic
       type Value_Type is private;
+      --  Value stored in written leaves only
 
-      with procedure Free (X : in out Value_Type);
+      with procedure Free (X : in out Value_Type) is null;
+      --  Reclamation procedure for values
       with
         function Record_Access
           (Prefix : Value_Type; Field : Entity_Id) return Value_Type;
       with
         function Array_Access
           (Prefix : Value_Type; Index : Positive) return Value_Type;
+      with
+        function Designated_Data_Access
+          (Prefix : Value_Type) return Value_Type;
+      --  Mutators that deduce the value of components from the value of the
+      --  prefix. They are used when expanding the pattern.
+
+      In_Delta : Boolean;
+      --  True if accesses are coming from deep delta aggregates. They are
+      --  not formated in the same way as regular accesses, as the root is
+      --  missing.
 
    package Association_Trees
    is
-
-      --  This package defines the tree structure which is used to aggregate
-      --  the associations inside deep delta aggregates. The structure is used
-      --  as a pattern for the structure of the base expression. It is extended
-      --  on demands depending on the (record) subcomponents which are
-      --  effectively mentioned in selectors. For array components, as the
-      --  index values might not be statically known, a single branch is
-      --  created.
-      --
-      --  The component associations in the aggregate are inserted in the tree
-      --  in the following manner. Each node in the tree contains a sequence of
-      --  "constrained values", one per association, always in the same order.
+      --  The component associations are inserted in the tree in the following
+      --  manner. Each node in the tree contains a sequence of "constrained
+      --  values", one per association, always in the same order.
       --  These constrained values contain an array of "choices", which are
       --  basically concrete values for the array indexes that occur in the
-      --  prefix of the selector, and a status. The status can be "preserved",
-      --  "partial", if the association updates a subcomponent of the prefix,
-      --  or "entire" with an associated value. The last case corresponds to a
-      --  write. If the tree has several branches after a write - e.g. .F is
-      --  written with the value V, but the tree mentions .F.G - then the write
-      --  is propagated to the subtree - .F.G is entirely written with the
-      --  value V.G.
+      --  prefix of the selector, the association data, and a status. The
+      --  status can be "preserved", "partial", if the association updates a
+      --  subcomponent of the prefix, or "entire" with an associated value. The
+      --  last case corresponds to a write. If the tree has several branches
+      --  after a write - e.g. .F is written with the value V, but the tree
+      --  mentions .F.G - then the write is propagated to the subtree - .F.G is
+      --  entirely written with the value Record_Access (V, G).
       --
       --  As an example, consider the following deep delta aggregate:
       --
@@ -269,6 +280,7 @@ package Gnat2Why.Util is
 
       type Constrained_Value (Size : Natural) is record
          Ada_Node : Node_Id;
+         Guard    : Opt_N_Subexpr_Id;
          Status   : Write_Type;
          Choices  : Choice_Array (1 .. Size);
       end record;
@@ -276,12 +288,13 @@ package Gnat2Why.Util is
       --  values as Ada nodes (if any, Empty otherwise) for the indexes in the
       --  prefix and a status to represent the write. They contain also an
       --  Ada_Node which can be used to locate checks on writes (either record
-      --  or array accesses or predicate checks).
+      --  or array accesses or predicate checks) as well as association data.
 
       package Constrained_Value_Vectors is new
         Ada.Containers.Indefinite_Vectors (Positive, Constrained_Value);
 
-      type Tree_Kind is (Entire_Object, Record_Components, Array_Components);
+      type Tree_Kind is
+        (Entire_Object, Record_Components, Array_Components, Designated_Data);
 
       type Write_Status;
       type Write_Status_Access is access Write_Status;
@@ -305,19 +318,23 @@ package Gnat2Why.Util is
 
             when Array_Components =>
                Content_Status : Write_Status_Access;
+
+            when Designated_Data =>
+               Designated_Status : Write_Status_Access;
          end case;
       end record;
       --  The tree represents the structure of the base expression in the delta
-      --  aggregate. It is extended (or unfolded) on demand so that subtrees
-      --  correspond to subcomponents which are mentionned in the delta
-      --  aggregate.
+      --  aggregate or Modifies aspect element. It is extended (or unfolded) on
+      --  demand so that subtrees correspond to subcomponents which are
+      --  mentioned in the construct.
       --  A tree or subtree can be either a leaf of kind Entire_Object (for
       --  subcomponents which are either not composite or still folded), a
       --  (partially) unfolded record, containing a subtree for each component
-      --  mentioned in the aggregate, or an unfolded array containing a
-      --  subtree for all its components grouped together.
+      --  mentioned in the aggregate, an unfolded array containing a subtree
+      --  for all its components grouped together, or an unfolded access
+      --  containing a subtree for its designated value..
       --  Each node of the tree contains a sequence of constrained values, one
-      --  per association in the delta aggregate. The choices in the
+      --  per association in the aggregate or aspect. The choices in the
       --  constrained values give only the index values in the prefix, so the
       --  values of the Content_Status subtree of an unfolded array write
       --  status will contain an additional choice compared to the values of
@@ -337,9 +354,10 @@ package Gnat2Why.Util is
       --  Deallocate a write status
 
       procedure Insert_Association
-        (Writes      : not null Write_Status_Access;
+        (Writes      : in out not null Write_Status_Access;
          Deep_Access : Node_Id;
-         Value       : Value_Type);
+         Value       : Value_Type;
+         Guard       : Opt_N_Subexpr_Id := Empty);
       --  Insert a new association Deep_Access => Value in Writes
 
       procedure Print_Writes (Writes : Write_Status);

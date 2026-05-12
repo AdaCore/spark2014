@@ -95,12 +95,18 @@ package body Gnat2Why.Expr.Aggregates is
    is (new Path_Link'(Kind => Array_Acc, Prefix => Prefix, Index => Index));
    --  Generate Prefix (Index)
 
+   function Designated_Data_Access (Dummy_Prefix : Path_Type) return Path_Type
+   is (raise Program_Error);
+   --  Dereferences are not expected in deep delta aggregates
+
    package Association_Trees is new
      Gnat2Why.Util.Association_Trees
-       (Value_Type    => Path_Type,
-        Free          => Free,
-        Record_Access => Record_Access,
-        Array_Access  => Array_Access);
+       (Value_Type             => Path_Type,
+        Free                   => Free,
+        Record_Access          => Record_Access,
+        Array_Access           => Array_Access,
+        Designated_Data_Access => Designated_Data_Access,
+        In_Delta               => True);
    use Association_Trees;
 
    -----------------------
@@ -7071,6 +7077,12 @@ package body Gnat2Why.Expr.Aggregates is
                      end;
                   end if;
                end;
+
+            --  Dereferences are not expected in choices of deep delta
+            --  aggregates.
+
+            when Designated_Data   =>
+               raise Program_Error;
          end case;
 
          --  If the target type has a direct or inherited predicate, generate a
@@ -7402,6 +7414,12 @@ package body Gnat2Why.Expr.Aggregates is
                         end if;
                      end;
                   end loop;
+
+               --  Dereferences are not expected in choices of deep delta
+               --  aggregates.
+
+               when Designated_Data                  =>
+                  raise Program_Error;
             end case;
          end Collect_Preserved_Fields;
 
@@ -7778,6 +7796,12 @@ package body Gnat2Why.Expr.Aggregates is
                                     Force_No_Slide => True)),
                           Else_Part => Result);
                   end if;
+
+               --  Dereferences are not expected in choices of deep delta
+               --  aggregates.
+
+               when Designated_Data   =>
+                  raise Program_Error;
             end case;
 
             return Result;
@@ -8104,6 +8128,12 @@ package body Gnat2Why.Expr.Aggregates is
                           Relaxed_Init => Comp_Relaxed,
                           Domain       => Domain,
                           Params       => Params);
+
+                  --  Dereferences are not expected in choices of deep delta
+                  --  aggregates.
+
+                  when Designated_Data   =>
+                     raise Program_Error;
                end case;
 
                Top := Top + 1;
@@ -8217,6 +8247,12 @@ package body Gnat2Why.Expr.Aggregates is
                for C_Writes of Writes.Component_Status loop
                   Get_Aggregate_Elements (C_Writes.all, Value_Map);
                end loop;
+
+            --  Dereferences are not expected in choices of deep delta
+            --  aggregates.
+
+            when Designated_Data   =>
+               raise Program_Error;
          end case;
       end Get_Aggregate_Elements;
 
@@ -8238,6 +8274,12 @@ package body Gnat2Why.Expr.Aggregates is
                return
                  (for all C_Writes of Writes.Component_Status =>
                     Is_Simple_Record_Aggregate (C_Writes.all));
+
+            --  Dereferences are not expected in choices of deep delta
+            --  aggregates.
+
+            when Designated_Data   =>
+               raise Program_Error;
          end case;
       end Is_Simple_Record_Aggregate;
 

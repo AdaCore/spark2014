@@ -345,6 +345,31 @@ package body Gnat2Why.Util is
       --  Generate ENTIRE: Prefix (Index) if Prefix is of entirely updated and
       --  PRESERVED if it is preserved.
 
+      function Designated_Data_Access (Prefix : Write_Type) return Write_Type
+      is (case Prefix.Kind is
+            when Partial   => raise Program_Error,
+            when Preserved => Prefix,
+            when Entire    => (Entire, Designated_Data_Access (Prefix.Value)));
+      --  Generate ENTIRE: Prefix.all if Prefix is of entirely updated and
+      --  PRESERVED if it is preserved.
+
+      procedure Insert_Access_Association
+        (Writes       : not null Write_Status_Access;
+         Ada_Node     : Node_Id;
+         Status       : Write_Type;
+         Unfold       : Boolean;
+         Local_Writes : out not null Write_Status_Access)
+      with
+        Pre  => Writes.Kind = Designated_Data,
+        Post =>
+          Local_Writes.Values.Last_Element.Status = Status
+          and then (if Unfold then Local_Writes.Kind /= Entire_Object);
+      --  Extend the last branch of Writes with an update to its designated
+      --  value with the status Status. Local_Writes is set to the subtree of
+      --  Writes for the designated data after the call.
+      --  If Unfold is True, also unfold Local_Writes so it can be further
+      --  extended.
+
       procedure Insert_Array_Association
         (Writes       : not null Write_Status_Access;
          Ada_Node     : Node_Id;
@@ -386,6 +411,7 @@ package body Gnat2Why.Util is
 
       procedure Propagate
         (Writes    : not null Write_Status_Access;
+         Guard     : Opt_N_Subexpr_Id;
          Choices   : Choice_Array;
          Status    : Write_Type;
          Skip_Root : Boolean := False)
@@ -395,7 +421,7 @@ package body Gnat2Why.Util is
       --  the tree.
 
       procedure Insert_Association_Internal
-        (Writes       : not null Write_Status_Access;
+        (Writes       : in out not null Write_Status_Access;
          Deep_Access  : Node_Id;
          Status       : Write_Type;
          Unfold       : Boolean;
@@ -463,9 +489,42 @@ package body Gnat2Why.Util is
 
             when Array_Components  =>
                Finalize (Writes.Content_Status);
+
+            when Designated_Data   =>
+               Finalize (Writes.Designated_Status);
          end case;
          Free (Writes);
       end Finalize;
+
+      -------------------------------
+      -- Insert_Access_Association --
+      -------------------------------
+
+      procedure Insert_Access_Association
+        (Writes       : not null Write_Status_Access;
+         Ada_Node     : Node_Id;
+         Status       : Write_Type;
+         Unfold       : Boolean;
+         Local_Writes : out not null Write_Status_Access) is
+      begin
+         --  Unfold the designated data tree if necessary
+
+         if Unfold then
+            Unfold_Tree (Writes.Designated_Status);
+         end if;
+
+         Local_Writes := Writes.Designated_Status;
+
+         --  Insert the new value
+
+         Local_Writes.Values.Append
+           (Constrained_Value'
+              (Size     => Writes.Values.Last_Element.Size,
+               Ada_Node => Ada_Node,
+               Guard    => Writes.Values.Last_Element.Guard,
+               Status   => Status,
+               Choices  => Writes.Values.Last_Element.Choices));
+      end Insert_Access_Association;
 
       ------------------------------
       -- Insert_Array_Association --
@@ -498,6 +557,7 @@ package body Gnat2Why.Util is
               (Constrained_Value'
                  (Size     => Choices'Length + 1,
                   Ada_Node => Ada_Node,
+                  Guard    => Writes.Values.Last_Element.Guard,
                   Status   => Status,
                   Choices  => Choices & Choice));
          end;
@@ -508,14 +568,30 @@ package body Gnat2Why.Util is
       ------------------------
 
       procedure Insert_Association
-        (Writes      : not null Write_Status_Access;
+        (Writes      : in out not null Write_Status_Access;
          Deep_Access : Node_Id;
-         Value       : Value_Type)
+         Value       : Value_Type;
+         Guard       : Opt_N_Subexpr_Id := Empty)
       is
          Local_Writes : Write_Status_Access;
 
       begin
-         --  Create a branch for the new association
+         --  Insert a new branch for the new association. Use Partial_Write
+         --  as a placeholder. It will necessarily be the right status for
+         --  choices of deep delta aggregates, but might be overwritten by
+         --  Entire_Object otherwise inside Insert_Association_Internal. This
+         --  avoids passing the guard explicitly to the recursive insertion
+         --  function.
+
+         Writes.Values.Append
+           (Constrained_Value'
+              (Size     => 0,
+               Ada_Node => Empty,
+               Guard    => Guard,
+               Status   => Partial_Write,
+               Choices  => (1 .. 0 => <>)));
+
+         --  Add the new association
 
          Insert_Association_Internal
            (Writes       => Writes,
@@ -528,6 +604,7 @@ package body Gnat2Why.Util is
 
          Propagate
            (Writes    => Local_Writes,
+            Guard     => Local_Writes.Values.Last_Element.Guard,
             Choices   => Local_Writes.Values.Last_Element.Choices,
             Status    => Local_Writes.Values.Last_Element.Status,
             Skip_Root => True);
@@ -538,7 +615,7 @@ package body Gnat2Why.Util is
       ---------------------------------
 
       procedure Insert_Association_Internal
-        (Writes       : not null Write_Status_Access;
+        (Writes       : in out not null Write_Status_Access;
          Deep_Access  : Node_Id;
          Status       : Write_Type;
          Unfold       : Boolean;
@@ -549,17 +626,29 @@ package body Gnat2Why.Util is
          --  Create a branch for the new association. Prefixes of Deep_Access
          --  are partially updated. Siblings are preserved.
 
-         if Is_Root_Prefix_Of_Deep_Choice (Deep_Access) then
+         if not In_Delta
+           and then Nkind (Deep_Access) in N_Identifier | N_Expanded_Name
+         then
+            --  We have reached the root, update the status
 
-            --  The root has been reached. Insert a new branch for the new
-            --  association. It is partially written.
+            Writes.Values (Writes.Values.Last_Index).Status := Status;
 
-            Writes.Values.Append
-              (Constrained_Value'
-                 (Size     => 0,
-                  Ada_Node => Deep_Access,
-                  Status   => Partial_Write,
-                  Choices  => (1 .. 0 => <>)));
+            --  Unfold the tree if necessary
+
+            if Unfold then
+               Unfold_Tree (Writes);
+            end if;
+
+            Local_Writes := Writes;
+
+         elsif In_Delta and then Is_Root_Prefix_Of_Deep_Choice (Deep_Access)
+         then
+
+            --  We recognize specifically the root of deep choices as there is
+            --  no last component selection.
+
+            pragma Assert (Writes.Values.Last_Element.Status = Partial_Write);
+
             Prefix_Writes := Writes;
 
             --  Insert the last association
@@ -594,6 +683,7 @@ package body Gnat2Why.Util is
                      Local_Writes => Local_Writes);
                end;
             end if;
+
          else
 
             --  Create a branch for the prefix. It is partially written.
@@ -609,7 +699,7 @@ package body Gnat2Why.Util is
             --  Insert the last association
 
             case Nkind (Deep_Access) is
-               when N_Indexed_Component  =>
+               when N_Indexed_Component    =>
                   declare
                      Index_Value : constant Node_Id :=
                        First (Expressions (Deep_Access));
@@ -625,7 +715,7 @@ package body Gnat2Why.Util is
                         Local_Writes => Local_Writes);
                   end;
 
-               when N_Selected_Component =>
+               when N_Selected_Component   =>
                   declare
                      Sel_Ent : constant Entity_Id :=
                        Entity (Selector_Name (Deep_Access));
@@ -643,7 +733,15 @@ package body Gnat2Why.Util is
                         Local_Writes => Local_Writes);
                   end;
 
-               when others               =>
+               when N_Explicit_Dereference =>
+                  Insert_Access_Association
+                    (Writes       => Prefix_Writes,
+                     Ada_Node     => Deep_Access,
+                     Status       => Status,
+                     Unfold       => Unfold,
+                     Local_Writes => Local_Writes);
+
+               when others                 =>
                   raise Program_Error;
             end case;
          end if;
@@ -677,8 +775,8 @@ package body Gnat2Why.Util is
          if Inserted then
 
             --  To initialize its constrained values, use the values of
-            --  Writes. Delete the last element, as it will be inserted
-            --  afterward specifically.
+            --  Writes. Do not transfer the last element, as it will be
+            --  inserted afterward specifically.
 
             declare
                Values : Constrained_Value_Vectors.Vector;
@@ -694,6 +792,7 @@ package body Gnat2Why.Util is
                             (Size     => Writes.Values.Element (I).Size,
                              Status   => Discard_Write,
                              Ada_Node => Types.Empty,
+                             Guard    => Writes.Values.Element (I).Guard,
                              Choices  => Writes.Values.Element (I).Choices));
 
                   --  Fields of entirely written values are entirely written
@@ -707,6 +806,7 @@ package body Gnat2Why.Util is
                                Record_Access
                                  (Writes.Values.Element (I).Status, Field),
                              Ada_Node => Writes.Values.Element (I).Ada_Node,
+                             Guard    => Writes.Values.Element (I).Guard,
                              Choices  => Writes.Values.Element (I).Choices));
                   end if;
                end loop;
@@ -736,6 +836,7 @@ package body Gnat2Why.Util is
             C_Value : constant Constrained_Value :=
               (Size     => Choices'Length,
                Ada_Node => Ada_Node,
+               Guard    => Writes.Values.Last_Element.Guard,
                Status   => Status,
                Choices  => Choices);
          begin
@@ -748,6 +849,7 @@ package body Gnat2Why.Util is
             if Other_Position /= Position then
                Propagate
                  (Writes  => Writes.Component_Status (Other_Position),
+                  Guard   => Local_Writes.Values.Last_Element.Guard,
                   Choices => Choices,
                   Status  => Discard_Write);
             end if;
@@ -823,6 +925,10 @@ package body Gnat2Why.Util is
                when Array_Components  =>
                   Ada.Text_IO.Put_Line (Spaces & "Content =>");
                   Print_Writes (Writes.Content_Status.all, Padding + 3);
+
+               when Designated_Data   =>
+                  Ada.Text_IO.Put_Line (Spaces & "all =>");
+                  Print_Writes (Writes.Designated_Status.all, Padding + 3);
             end case;
          end Print_Writes;
 
@@ -837,6 +943,7 @@ package body Gnat2Why.Util is
 
       procedure Propagate
         (Writes    : not null Write_Status_Access;
+         Guard     : Opt_N_Subexpr_Id;
          Choices   : Choice_Array;
          Status    : Write_Type;
          Skip_Root : Boolean := False) is
@@ -845,7 +952,8 @@ package body Gnat2Why.Util is
 
          if not Skip_Root then
             Writes.Values.Append
-              (Constrained_Value'(Choices'Length, Empty, Status, Choices));
+              (Constrained_Value'
+                 (Choices'Length, Empty, Guard, Status, Choices));
          end if;
 
          --  Propagate the new association to all subtrees
@@ -858,6 +966,7 @@ package body Gnat2Why.Util is
                for Position in Writes.Component_Status.Iterate loop
                   Propagate
                     (Writes.Component_Status (Position),
+                     Guard,
                      Choices,
                      Record_Access (Status, Write_Status_Maps.Key (Position)));
                end loop;
@@ -865,8 +974,16 @@ package body Gnat2Why.Util is
             when Array_Components  =>
                Propagate
                  (Writes.Content_Status,
+                  Guard,
                   Choices & Empty,
                   Array_Access (Status, Choices'Length + 1));
+
+            when Designated_Data   =>
+               Propagate
+                 (Writes.Designated_Status,
+                  Guard,
+                  Choices,
+                  Designated_Data_Access (Status));
          end case;
       end Propagate;
 
@@ -887,8 +1004,7 @@ package body Gnat2Why.Util is
                     Ty               => Old_Writes.Ty,
                     Values           => Old_Writes.Values,
                     Component_Status => Write_Status_Maps.Empty_Map);
-            else
-               pragma Assert (Is_Array_Type (Old_Writes.Ty));
+            elsif Is_Array_Type (Old_Writes.Ty) then
                declare
                   use Constrained_Value_Vectors;
                   Values : Constrained_Value_Vectors.Vector;
@@ -903,6 +1019,7 @@ package body Gnat2Why.Util is
                        (Constrained_Value'
                           (Size     => Pref_Value.Size + 1,
                            Ada_Node => Pref_Value.Ada_Node,
+                           Guard    => Pref_Value.Guard,
                            Choices  => Pref_Value.Choices & Types.Empty,
                            Status   =>
                              Array_Access
@@ -920,6 +1037,19 @@ package body Gnat2Why.Util is
                             Ty     => Retysp (Component_Type (Old_Writes.Ty)),
                             Values => Values));
                end;
+            else
+               pragma Assert (Is_Access_Type (Old_Writes.Ty));
+               Writes :=
+                 new Write_Status'
+                   (Kind              => Designated_Data,
+                    Ty                => Old_Writes.Ty,
+                    Values            => Old_Writes.Values,
+                    Designated_Status =>
+                      new Write_Status'
+                        (Kind   => Entire_Object,
+                         Ty     =>
+                           Retysp (Directly_Designated_Type (Old_Writes.Ty)),
+                         Values => Old_Writes.Values));
             end if;
             Free (Old_Writes);
          end if;
