@@ -25,6 +25,7 @@
 
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Indefinite_Doubly_Linked_Lists;
+with Ada.Containers.Indefinite_Vectors;
 with Checked_Types;        use Checked_Types;
 with Common_Containers;    use Common_Containers;
 with Gnat2Why.Tables;      use Gnat2Why.Tables;
@@ -189,6 +190,163 @@ package Gnat2Why.Util is
    Continuation_Stack : Continuation_Vectors.Vector;
    --  Stack of all the continuation messages relevant for the translation of
    --  the current expression.
+
+   generic
+      type Value_Type is private;
+
+      with procedure Free (X : in out Value_Type);
+      with
+        function Record_Access
+          (Prefix : Value_Type; Field : Entity_Id) return Value_Type;
+      with
+        function Array_Access
+          (Prefix : Value_Type; Index : Positive) return Value_Type;
+
+   package Association_Trees
+   is
+
+      --  This package defines the tree structure which is used to aggregate
+      --  the associations inside deep delta aggregates. The structure is used
+      --  as a pattern for the structure of the base expression. It is extended
+      --  on demands depending on the (record) subcomponents which are
+      --  effectively mentioned in selectors. For array components, as the
+      --  index values might not be statically known, a single branch is
+      --  created.
+      --
+      --  The component associations in the aggregate are inserted in the tree
+      --  in the following manner. Each node in the tree contains a sequence of
+      --  "constrained values", one per association, always in the same order.
+      --  These constrained values contain an array of "choices", which are
+      --  basically concrete values for the array indexes that occur in the
+      --  prefix of the selector, and a status. The status can be "preserved",
+      --  "partial", if the association updates a subcomponent of the prefix,
+      --  or "entire" with an associated value. The last case corresponds to a
+      --  write. If the tree has several branches after a write - e.g. .F is
+      --  written with the value V, but the tree mentions .F.G - then the write
+      --  is propagated to the subtree - .F.G is entirely written with the
+      --  value V.G.
+      --
+      --  As an example, consider the following deep delta aggregate:
+      --
+      --    (... with delta F (I).G => V,
+      --                    H => W,
+      --                    F (J).G.E => X)
+      --
+      --  Here are the association stored in its update tree:
+      --
+      --  Values => ([], PARTIAL), ([], PARTIAL), ([], PARTIAL)
+      --  Fields =>
+      --     F =>
+      --        Values  => ([], PARTIAL), ([], PRESERVED), ([], PARTIAL)
+      --        Content =>
+      --            Values => ([I], PARTIAL), ([.], PRESERVED), ([J], PARTIAL)
+      --            Fields =>
+      --               G =>
+      --                  Values => ([I], ENTIRE: V), .., ([J], PARTIAL)
+      --                  Fields =>
+      --                     E =>
+      --                       Values => ([I], ENTIRE: V.E), ..,
+      --                                  ([J], ENTIRE: X)
+      --     H =>
+      --        Values => ([], PRESERVED), ([], ENTIRE: W), ([], PRESERVED)
+
+      type Write_Kind is (Preserved, Partial, Entire);
+
+      type Write_Type (Kind : Write_Kind := Preserved) is record
+         case Kind is
+            when Entire =>
+               Value : Value_Type;
+
+            when others =>
+               null;
+         end case;
+      end record;
+      --  Writes are used for the status of constrained values. They can either
+      --  be the special values Preserved and Partial, or Entire with a value
+      --  given as a path.
+
+      type Choice_Array is array (Positive range <>) of Node_Id;
+
+      type Constrained_Value (Size : Natural) is record
+         Ada_Node : Node_Id;
+         Status   : Write_Type;
+         Choices  : Choice_Array (1 .. Size);
+      end record;
+      --  Constrained values contain a sequence of choices giving concrete
+      --  values as Ada nodes (if any, Empty otherwise) for the indexes in the
+      --  prefix and a status to represent the write. They contain also an
+      --  Ada_Node which can be used to locate checks on writes (either record
+      --  or array accesses or predicate checks).
+
+      package Constrained_Value_Vectors is new
+        Ada.Containers.Indefinite_Vectors (Positive, Constrained_Value);
+
+      type Tree_Kind is (Entire_Object, Record_Components, Array_Components);
+
+      type Write_Status;
+      type Write_Status_Access is access Write_Status;
+
+      package Write_Status_Maps is new
+        Ada.Containers.Hashed_Maps
+          (Key_Type        => Node_Id,
+           Element_Type    => Write_Status_Access,
+           Hash            => Common_Containers.Node_Hash,
+           Equivalent_Keys => "=");
+
+      type Write_Status (Kind : Tree_Kind) is limited record
+         Ty     : Entity_Id;
+         Values : Constrained_Value_Vectors.Vector;
+         case Kind is
+            when Entire_Object =>
+               null;
+
+            when Record_Components =>
+               Component_Status : Write_Status_Maps.Map;
+
+            when Array_Components =>
+               Content_Status : Write_Status_Access;
+         end case;
+      end record;
+      --  The tree represents the structure of the base expression in the delta
+      --  aggregate. It is extended (or unfolded) on demand so that subtrees
+      --  correspond to subcomponents which are mentionned in the delta
+      --  aggregate.
+      --  A tree or subtree can be either a leaf of kind Entire_Object (for
+      --  subcomponents which are either not composite or still folded), a
+      --  (partially) unfolded record, containing a subtree for each component
+      --  mentioned in the aggregate, or an unfolded array containing a
+      --  subtree for all its components grouped together.
+      --  Each node of the tree contains a sequence of constrained values, one
+      --  per association in the delta aggregate. The choices in the
+      --  constrained values give only the index values in the prefix, so the
+      --  values of the Content_Status subtree of an unfolded array write
+      --  status will contain an additional choice compared to the values of
+      --  the array. The choice will be empty for preserved and propagated
+      --  values (all indexes are preserved/updated).
+
+      ------------------------------------
+      -- Handling of Write_Status Trees --
+      ------------------------------------
+
+      procedure Create (Ty : Entity_Id; Writes : out Write_Status_Access)
+      with Post => Writes /= null;
+      --  Allocate a write status for the composite type Ty
+
+      procedure Finalize (Writes : in out Write_Status_Access)
+      with Pre => Writes /= null;
+      --  Deallocate a write status
+
+      procedure Insert_Association
+        (Writes      : not null Write_Status_Access;
+         Deep_Access : Node_Id;
+         Value       : Value_Type);
+      --  Insert a new association Deep_Access => Value in Writes
+
+      procedure Print_Writes (Writes : Write_Status);
+      pragma Unreferenced (Print_Writes);
+      --  For debugging purposes
+
+   end Association_Trees;
 
    package W_Pred_Vectors is
       type Vector is limited private;
