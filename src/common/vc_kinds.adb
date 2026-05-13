@@ -979,11 +979,14 @@ package body VC_Kinds is
            & "Predefined_Equality annotation, but no constant annotated with "
            & "Null_Value is found; this will result in all calls to the "
            & "predefined equality being rejected",
+         when Warn_Unrolling_Inlining_Failures                =>
+           "These warnings are issued when the tool is unable to unroll a "
+           & "loop or perform contextual analysis of a subprogram",
 
          --  Info messages enabled by default
          when Warn_Info_Unrolling_Inlining                    =>
            "These messages are issued when the tool is unrolling loops or "
-           & "inlining subprograms, or unable to do so");
+           & "performing contextual analysis of subprograms");
 
    function Description (Kind : Unsupported_Kind) return String
    is (case Kind is
@@ -2751,6 +2754,8 @@ package body VC_Kinds is
            "predefined-equality-null",
          when Warn_Unit_Not_SPARK                             =>
            "unit-not-spark",
+         when Warn_Unrolling_Inlining_Failures                =>
+           "unrolling-inlining-failures",
 
          --  Info messages enabled by default
          when Warn_Info_Unrolling_Inlining                    =>

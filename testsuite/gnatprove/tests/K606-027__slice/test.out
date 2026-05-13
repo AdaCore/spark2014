@@ -7,7 +7,7 @@ fb20a00.adb:15:16: info: implicit aspect Always_Terminates on "Upper_Case" has b
 fb20a00.adb:18:10: info: initialization of "Ret" proved
 fb20a00.adb:18:10: info: range check proved (CVC5: 2 VC)
 fb20a00.adb:19:10: info: initialization of "Pos" proved
-fb20a00.adb:21:29: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+fb20a00.adb:21:29: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
 fb20a00.adb:24:30: info: range check proved (CVC5: 2 VC)
 fb20a00.adb:25:38: info: range check proved (CVC5: 2 VC)
 fb20a00.adb:34:15: info: length check proved (CVC5: 3 VC)

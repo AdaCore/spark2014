@@ -1,6 +1,6 @@
 p.adb:18:14: info: length check proved (CVC5: 3 VC)
 p.adb:18:14: warning: unused assignment
-p.adb:20:07: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+p.adb:20:07: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
 p.adb:21:16: warning: unused assignment
 p.adb:23:10: info: unrolling loop [info-unrolling-inlining]
 p.adb:24:23: warning: unused assignment

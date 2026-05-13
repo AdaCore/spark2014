@@ -277,7 +277,7 @@ main.adb:116:16: info: precondition proved (Trivial: 1 VC)
 main.adb:117:16: error: iteration primitive shall not be recursive, (including implicitly so)
 main.adb:117:16: info: during checks for quantification at main.adb:127
 main.adb:117:16: info: precondition proved (CVC5: 1 VC)
-main.adb:117:16: info: recursive function cannot be inlined for proof
+main.adb:117:16: warning: recursive function cannot be inlined for proof [unrolling-inlining-failures]
 main.adb:118:16: medium: implicit aspect Always_Terminates on "Next" could be incorrect, "Next" and "Has_Element" are mutually recursive [possible fix: annotate "Next" and "Has_Element" with Subprogram_Variant aspects]
 main.adb:119:16: error: iteration primitive shall not be recursive, (including implicitly so)
 main.adb:119:16: info: during checks for quantification at main.adb:127

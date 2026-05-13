@@ -771,11 +771,12 @@ package body SPARK_Util is
    ----------------------------------
 
    procedure Candidate_For_Loop_Unrolling
-     (Loop_Stmt   : N_Loop_Statement_Id;
-      Output_Info : Boolean;
-      Result      : out Unrolling_Type;
-      Low_Val     : out Uint;
-      High_Val    : out Uint)
+     (Loop_Stmt       : N_Loop_Statement_Id;
+      Output_Info     : Boolean;
+      Output_Warnings : Boolean;
+      Result          : out Unrolling_Type;
+      Low_Val         : out Uint;
+      High_Val        : out Uint)
    is
       Reason        : Unbounded_String;
       Secondary_Loc : Source_Ptr := No_Location;
@@ -948,24 +949,24 @@ package body SPARK_Util is
             Reason := To_Unbounded_String ("dynamic loop bounds");
          end if;
 
-         if Output_Info then
-            if Result /= No_Unrolling then
+         if Result /= No_Unrolling then
+            if Output_Info then
                Error_Msg_N
                  ("unrolling loop" & Tag_Suffix (Warn_Info_Unrolling_Inlining),
                   Loop_Stmt,
                   Kind => Info_Kind);
-
-            else
-               pragma Assert (Reason /= "");
-               Error_Msg_N
-                 ("cannot unroll loop ("
-                  & To_String (Reason)
-                  & ")"
-                  & Tag_Suffix (Warn_Info_Unrolling_Inlining),
-                  Loop_Stmt,
-                  Secondary_Loc => Secondary_Loc,
-                  Kind          => Info_Kind);
             end if;
+
+         elsif Output_Warnings then
+            pragma Assert (Reason /= "");
+            Error_Msg_N
+              ("cannot unroll loop ("
+               & To_String (Reason)
+               & ")"
+               & Tag_Suffix (Warn_Unrolling_Inlining_Failures),
+               Loop_Stmt,
+               Secondary_Loc => Secondary_Loc,
+               Kind          => Info_Kind);
          end if;
       end if;
    end Candidate_For_Loop_Unrolling;
@@ -4759,11 +4760,12 @@ package body SPARK_Util is
       Unroll   : Unrolling_Type;
    begin
       Candidate_For_Loop_Unrolling
-        (Loop_Stmt   => Loop_Stmt,
-         Output_Info => False,
-         Result      => Unroll,
-         Low_Val     => Low_Val,
-         High_Val    => High_Val);
+        (Loop_Stmt       => Loop_Stmt,
+         Output_Info     => False,
+         Output_Warnings => False,
+         Result          => Unroll,
+         Low_Val         => Low_Val,
+         High_Val        => High_Val);
 
       return
         not Gnat2Why_Args.No_Loop_Unrolling and then Unroll /= No_Unrolling;

@@ -475,6 +475,7 @@ package VC_Kinds is
       Warn_Predef_Eq_Null,
       Warn_Init_Cond_Ignored,
       Warn_Unit_Not_SPARK,
+      Warn_Unrolling_Inlining_Failures,
 
       --  Info messages enabled by default
       Warn_Info_Unrolling_Inlining);
@@ -861,7 +862,8 @@ package VC_Kinds is
    --  "--pedantic" switch
 
    subtype Info_Warning_Kind is
-     Misc_Warning_Kind range Warn_Comp_Relaxed_Init .. Warn_Unit_Not_SPARK;
+     Misc_Warning_Kind
+       range Warn_Comp_Relaxed_Init .. Warn_Unrolling_Inlining_Failures;
    --  These warnings are disabled by default and enabled collectively by
    --  "--info" switch
 
@@ -1093,6 +1095,8 @@ package VC_Kinds is
            & "relaxed initialization are enforced to always be initialized",
          when Warn_Predef_Eq_Null                             =>
            "no null value found for type with predefined equality &",
+         when Warn_Unrolling_Inlining_Failures                =>
+           "the tool could not unroll a loop or perform contextual analysis",
 
          --  info messages enabled by default
          when Warn_Info_Unrolling_Inlining                    =>

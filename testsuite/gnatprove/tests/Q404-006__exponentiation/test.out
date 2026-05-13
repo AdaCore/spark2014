@@ -14,5 +14,5 @@ exponentiate.adb:19:59: info: division check proved (CVC5: 2 VC)
 exponentiate.adb:20:18: info: division check proved (CVC5: 1 VC)
 exponentiate.adb:23:26: info: division check proved (CVC5: 1 VC)
 exponentiate.adb:25:23: info: range check proved (CVC5: 2 VC)
-test_exponentiate.adb:7:24: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+test_exponentiate.adb:7:24: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
 test_exponentiate.adb:8:22: info: assertion proved (CVC5: 1 VC)

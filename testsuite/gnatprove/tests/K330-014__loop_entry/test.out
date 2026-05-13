@@ -2,10 +2,10 @@ for_loops.adb:16:33: info: loop invariant preservation proved (CVC5: 1 VC)
 for_loops.adb:16:33: medium: loop invariant might fail in first iteration [possible fix: you should consider adding a postcondition to function "Sum_Of" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
 for_loops.adb:29:33: info: loop invariant preservation proved (CVC5: 1 VC)
 for_loops.adb:29:33: medium: loop invariant might fail in first iteration [possible fix: you should consider adding a postcondition to function "Sum_Of" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
-for_loops.adb:40:47: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+for_loops.adb:40:47: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
 for_loops.adb:44:36: info: loop invariant initialization proved (CVC5: 1 VC)
 for_loops.adb:44:36: info: loop invariant preservation proved (CVC5: 1 VC)
-for_loops.adb:55:47: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+for_loops.adb:55:47: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
 for_loops.adb:61:36: info: loop invariant initialization proved (CVC5: 1 VC)
 for_loops.adb:61:36: info: loop invariant preservation proved (CVC5: 1 VC)
 optional.adb:17:33: info: loop invariant initialization proved (CVC5: 1 VC)
