@@ -24,10 +24,8 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Hashed_Maps;
-with Ada.Containers.Indefinite_Vectors;
 with Ada.Containers.Vectors;
 with Ada.Strings.Unbounded;   use Ada.Strings.Unbounded;
-with Ada.Text_IO;
 with Ada.Unchecked_Deallocation;
 with Elists;                  use Elists;
 with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
@@ -56,181 +54,59 @@ with Why.Images;              use Why.Images;
 
 package body Gnat2Why.Expr.Aggregates is
 
-   package Association_Trees is
+   type Path_Kind is (Root, Record_Acc, Array_Acc);
 
-      --  This package defines the tree structure which is used to aggregate
-      --  the associations inside deep delta aggregates. The structure is used
-      --  as a pattern for the structure of the base expression. It is extended
-      --  on demands depending on the (record) subcomponents which are
-      --  effectively mentioned in selectors. For array components, as the
-      --  index values might not be statically known, a single branch is
-      --  created.
-      --
-      --  The component associations in the aggregate are inserted in the tree
-      --  in the following manner. Each node in the tree contains a sequence of
-      --  "constrained values", one per association, always in the same order.
-      --  These constrained values contain an array of "choices", which are
-      --  basically concrete values for the array indexes that occur in the
-      --  prefix of the selector, and a status. The status can be "preserved",
-      --  "partial", if the association updates a subcomponent of the prefix,
-      --  or "entire" with an associated value. The last case corresponds to a
-      --  write. If the tree has several branches after a write - e.g. .F is
-      --  written with the value V, but the tree mentions .F.G - then the write
-      --  is propagated to the subtree - .F.G is entirely written with the
-      --  value V.G.
-      --
-      --  As an example, consider the following deep delta aggregate:
-      --
-      --    (... with delta F (I).G => V,
-      --                    H => W,
-      --                    F (J).G.E => X)
-      --
-      --  Here are the association stored in its update tree:
-      --
-      --  Values => ([], PARTIAL), ([], PARTIAL), ([], PARTIAL)
-      --  Fields =>
-      --     F =>
-      --        Values  => ([], PARTIAL), ([], PRESERVED), ([], PARTIAL)
-      --        Content =>
-      --            Values => ([I], PARTIAL), ([.], PRESERVED), ([J], PARTIAL)
-      --            Fields =>
-      --               G =>
-      --                  Values => ([I], ENTIRE: V), .., ([J], PARTIAL)
-      --                  Fields =>
-      --                     E =>
-      --                       Values => ([I], ENTIRE: V.E), ..,
-      --                                  ([J], ENTIRE: X)
-      --     H =>
-      --        Values => ([], PRESERVED), ([], ENTIRE: W), ([], PRESERVED)
+   type Path_Link (Kind : Path_Kind);
 
-      type Path_Kind is (Root, Record_Acc, Array_Acc);
+   type Path_Type is access Path_Link;
 
-      type Path_Link (Kind : Path_Kind);
+   type Path_Link (Kind : Path_Kind) is record
+      case Kind is
+         when Root =>
+            Expr : N_Subexpr_Id;
 
-      type Opt_Path_Type is access Path_Link;
+         when Record_Acc | Array_Acc =>
+            Prefix : not null Path_Type;
+            case Kind is
+               when Root =>
+                  null;
 
-      subtype Path_Type is not null Opt_Path_Type;
+               when Record_Acc =>
+                  Field : Entity_Id;
 
-      type Path_Link (Kind : Path_Kind) is record
-         case Kind is
-            when Root =>
-               Expr : N_Subexpr_Id;
+               when Array_Acc =>
+                  Index : Positive;
+            end case;
+      end case;
+   end record;
+   --  Paths are used to represent the value of propagated writes, like
+   --  V.E above. A path is either a root with an expression (V) or a
+   --  record or array access in a prefix.
 
-            when Record_Acc | Array_Acc =>
-               Prefix : Path_Type;
-               case Kind is
-                  when Root =>
-                     null;
+   procedure Free is new Ada.Unchecked_Deallocation (Path_Link, Path_Type);
 
-                  when Record_Acc =>
-                     Field : Entity_Id;
+   function Record_Access
+     (Prefix : Path_Type; Field : Entity_Id) return Path_Type
+   is (new Path_Link'(Kind => Record_Acc, Prefix => Prefix, Field => Field));
+   --  Generate Prefix.Field
 
-                  when Array_Acc =>
-                     Index : Positive;
-               end case;
-         end case;
-      end record;
-      --  Paths are used to represent the value of propagated writes, like
-      --  V.E above. A path is either a root with an expression (V) or a
-      --  record or array access in a prefix.
+   function Array_Access
+     (Prefix : Path_Type; Index : Positive) return Path_Type
+   is (new Path_Link'(Kind => Array_Acc, Prefix => Prefix, Index => Index));
+   --  Generate Prefix (Index)
 
-      type Write_Kind is (Preserved, Partial, Entire);
+   function Designated_Data_Access (Dummy_Prefix : Path_Type) return Path_Type
+   is (raise Program_Error);
+   --  Dereferences are not expected in deep delta aggregates
 
-      type Write_Type (Kind : Write_Kind := Preserved) is record
-         case Kind is
-            when Entire =>
-               Path : Path_Type;
-
-            when others =>
-               null;
-         end case;
-      end record;
-      --  Writes are used for the status of constrained values. They can either
-      --  be the special values Preserved and Partial, or Entire with a value
-      --  given as a path.
-
-      type Choice_Array is array (Positive range <>) of Node_Id;
-
-      type Constrained_Value (Size : Natural) is record
-         Ada_Node : Node_Id;
-         Status   : Write_Type;
-         Choices  : Choice_Array (1 .. Size);
-      end record;
-      --  Constrained values contain a sequence of choices giving concrete
-      --  values as Ada nodes (if any, Empty otherwise) for the indexes in the
-      --  prefix and a status to represent the write. They contain also an
-      --  Ada_Node which can be used to locate checks on writes (either record
-      --  or array accesses or predicate checks).
-
-      package Constrained_Value_Vectors is new
-        Ada.Containers.Indefinite_Vectors (Positive, Constrained_Value);
-
-      type Tree_Kind is (Entire_Object, Record_Components, Array_Components);
-
-      type Write_Status;
-      type Write_Status_Access is access Write_Status;
-
-      package Write_Status_Maps is new
-        Ada.Containers.Hashed_Maps
-          (Key_Type        => Node_Id,
-           Element_Type    => Write_Status_Access,
-           Hash            => Common_Containers.Node_Hash,
-           Equivalent_Keys => "=");
-
-      type Write_Status (Kind : Tree_Kind) is limited record
-         Ty     : Entity_Id;
-         Values : Constrained_Value_Vectors.Vector;
-         case Kind is
-            when Entire_Object =>
-               null;
-
-            when Record_Components =>
-               Component_Status : Write_Status_Maps.Map;
-
-            when Array_Components =>
-               Content_Status : Write_Status_Access;
-         end case;
-      end record;
-      --  The tree represents the structure of the base expression in the delta
-      --  aggregate. It is extended (or unfolded) on demand so that subtrees
-      --  correspond to subcomponents which are mentionned in the delta
-      --  aggregate.
-      --  A tree or subtree can be either a leaf of kind Entire_Object (for
-      --  subcomponents which are either not composite or still folded), a
-      --  (partially) unfolded record, containing a subtree for each component
-      --  mentioned in the aggregate, or an unfolded array containing a
-      --  subtree for all its components grouped together.
-      --  Each node of the tree contains a sequence of constrained values, one
-      --  per association in the delta aggregate. The choices in the
-      --  constrained values give only the index values in the prefix, so the
-      --  values of the Content_Status subtree of an unfolded array write
-      --  status will contain an additional choice compared to the values of
-      --  the array. The choice will be empty for preserved and propagated
-      --  values (all indexes are preserved/updated).
-
-      ------------------------------------
-      -- Handling of Write_Status Trees --
-      ------------------------------------
-
-      procedure Create (Ty : Entity_Id; Writes : out Write_Status_Access)
-      with Post => Writes /= null;
-      --  Allocate a write status for the composite type Ty
-
-      procedure Finalize (Writes : in out Write_Status_Access)
-      with Pre => Writes /= null;
-      --  Deallocate a write status
-
-      procedure Insert_Association
-        (Writes      : not null Write_Status_Access;
-         Deep_Access : Node_Id;
-         Value       : N_Subexpr_Id);
-      --  Insert a new association Deep_Access => Value in Writes
-
-      procedure Print_Writes (Writes : Write_Status);
-      pragma Unreferenced (Print_Writes);
-      --  For debugging purposes
-
-   end Association_Trees;
+   package Association_Trees is new
+     Gnat2Why.Util.Association_Trees
+       (Value_Type             => Path_Type,
+        Free                   => Free,
+        Record_Access          => Record_Access,
+        Array_Access           => Array_Access,
+        Designated_Data_Access => Designated_Data_Access,
+        In_Delta               => True);
    use Association_Trees;
 
    -----------------------
@@ -251,641 +127,6 @@ package body Gnat2Why.Expr.Aggregates is
    --  the axiom module linked to the regular module, and a program
    --  function with an instance of the defining axiom inlined in its
    --  postcondition.
-
-   -----------------------
-   -- Association_Trees --
-   -----------------------
-
-   package body Association_Trees is
-
-      -----------------------
-      -- Local Subprograms --
-      -----------------------
-
-      procedure Free is new
-        Ada.Unchecked_Deallocation (Path_Link, Opt_Path_Type);
-      procedure Free is new
-        Ada.Unchecked_Deallocation (Write_Status, Write_Status_Access);
-
-      --  Constructors for writes
-
-      function Partial_Write return Write_Type
-      is (Write_Type'(Kind => Partial));
-      --  PARTIAL
-
-      function Discard_Write return Write_Type
-      is (Write_Type'(Kind => Preserved));
-      --  PRESERVED
-
-      function New_Write (Expr : N_Subexpr_Id) return Write_Type
-      is (Write_Type'(Entire, new Path_Link'(Kind => Root, Expr => Expr)));
-      --  ENTIRE: Expr
-
-      function Record_Access
-        (Prefix : Write_Type; Field : Entity_Id) return Write_Type
-      is (case Prefix.Kind is
-            when Partial   => raise Program_Error,
-            when Preserved => Prefix,
-            when Entire    =>
-              (Entire,
-               new Path_Link'
-                 (Kind => Record_Acc, Prefix => Prefix.Path, Field => Field)));
-      --  Generate ENTIRE: Prefix.Field if Prefix is of entirely updated and
-      --  PRESERVED if it is preserved.
-
-      function Array_Access
-        (Prefix : Write_Type; Index : Positive) return Write_Type
-      is (case Prefix.Kind is
-            when Partial   => raise Program_Error,
-            when Preserved => Prefix,
-            when Entire    =>
-              (Entire,
-               new Path_Link'
-                 (Kind => Array_Acc, Prefix => Prefix.Path, Index => Index)));
-      --  Generate ENTIRE: Prefix (Index) if Prefix is of entirely updated and
-      --  PRESERVED if it is preserved.
-
-      procedure Insert_Array_Association
-        (Writes       : not null Write_Status_Access;
-         Ada_Node     : Node_Id;
-         Choice       : Node_Id;
-         Status       : Write_Type;
-         Unfold       : Boolean;
-         Local_Writes : out not null Write_Status_Access)
-      with
-        Pre  => Writes.Kind = Array_Components,
-        Post =>
-          Local_Writes.Values.Last_Element.Status = Status
-          and then (if Unfold then Local_Writes.Kind /= Entire_Object);
-      --  Extend the last branch of Writes with an update to an array component
-      --  indexed by Choice with the status Status. Local_Writes is set to the
-      --  subtree of Writes for array components after the call.
-      --  If Unfold is True, also unfold Local_Writes so it can be further
-      --  extended.
-
-      procedure Insert_Record_Association
-        (Writes       : not null Write_Status_Access;
-         Ada_Node     : Node_Id;
-         Field        : Entity_Id;
-         Status       : Write_Type;
-         Unfold       : Boolean;
-         Local_Writes : out not null Write_Status_Access)
-      with
-        Pre  => Writes.Kind = Record_Components,
-        Post =>
-          Local_Writes.Values.Last_Element.Status = Status
-          and then (if Unfold then Local_Writes.Kind /= Entire_Object);
-      --  Add a constrained value with the choices of the last value of Writes
-      --  and the status Status to the subtree associated to a record component
-      --  Field in Writes. Also propagate the last constrained value of Writes
-      --  to the potential other components of Writes.
-      --  Local_Writes is set to the subtree of Writes associated to Field
-      --  after the call.
-      --  If Unfold is True, also unfold Local_Writes so it can be further
-      --  extended.
-
-      procedure Propagate
-        (Writes    : not null Write_Status_Access;
-         Choices   : Choice_Array;
-         Status    : Write_Type;
-         Skip_Root : Boolean := False)
-      with Pre => Status.Kind /= Partial;
-      --  Propagate constrained value (Choices, Status) to subtrees of Writes.
-      --  If Skip_Root is True, do not add the constrained value to the root of
-      --  the tree.
-
-      procedure Insert_Association_Internal
-        (Writes       : not null Write_Status_Access;
-         Deep_Access  : Node_Id;
-         Status       : Write_Type;
-         Unfold       : Boolean;
-         Local_Writes : out not null Write_Status_Access)
-      with
-        Pre  => Status.Kind /= Preserved,
-        Post =>
-          Local_Writes.Values.Last_Element.Status = Status
-          and then (if Unfold then Local_Writes.Kind /= Entire_Object);
-      --  Create a branch for an association Deep_Access => Status in Writes.
-      --  PARTIAL is associated to prefixes of Deep_Access and PRESERVED is
-      --  propagated to their siblings. Local_Writes is set to the subtree of
-      --  Writes associated to Deep_Access after the call. Only the root of
-      --  Local_Writes has been updated with Value. It has not been propagated
-      --  to its subtrees. If Unfold is True, also unfold Local_Writes so it
-      --  can be further extended.
-
-      procedure Unfold_Tree (Writes : in out not null Write_Status_Access);
-      --  Unfold a folded subtree depending on its type
-
-      ------------
-      -- Create --
-      ------------
-
-      procedure Create (Ty : Entity_Id; Writes : out Write_Status_Access) is
-      begin
-         Writes :=
-           new Write_Status'
-             (Kind   => Entire_Object,
-              Ty     => Retysp (Ty),
-              Values => Constrained_Value_Vectors.Empty);
-         Unfold_Tree (Writes);
-      end Create;
-
-      --------------
-      -- Finalize --
-      --------------
-
-      procedure Finalize (Writes : in out Write_Status_Access) is
-      begin
-         for Value of Writes.Values loop
-            if Value.Status.Kind = Entire then
-               declare
-                  P : Opt_Path_Type := Value.Status.Path;
-               begin
-                  Free (P);
-                  pragma
-                    Annotate
-                      (GNATSAS,
-                       False_Positive,
-                       "use after free",
-                       "Path is only freed through one owner");
-               end;
-            end if;
-         end loop;
-
-         case Writes.Kind is
-            when Entire_Object     =>
-               null;
-
-            when Record_Components =>
-               for Comp_Writes of Writes.Component_Status loop
-                  Finalize (Comp_Writes);
-               end loop;
-
-            when Array_Components  =>
-               Finalize (Writes.Content_Status);
-         end case;
-         Free (Writes);
-      end Finalize;
-
-      ------------------------------
-      -- Insert_Array_Association --
-      ------------------------------
-
-      procedure Insert_Array_Association
-        (Writes       : not null Write_Status_Access;
-         Ada_Node     : Node_Id;
-         Choice       : Node_Id;
-         Status       : Write_Type;
-         Unfold       : Boolean;
-         Local_Writes : out not null Write_Status_Access) is
-      begin
-         --  Unfold the content tree if necessary
-
-         if Unfold then
-            Unfold_Tree (Writes.Content_Status);
-         end if;
-
-         Local_Writes := Writes.Content_Status;
-
-         --  Insert the new value. Its choice array is obtained by appending
-         --  Choice to the last choices of Writes.
-
-         declare
-            Choices : constant Choice_Array :=
-              Writes.Values.Last_Element.Choices;
-         begin
-            Local_Writes.Values.Append
-              (Constrained_Value'
-                 (Size     => Choices'Length + 1,
-                  Ada_Node => Ada_Node,
-                  Status   => Status,
-                  Choices  => Choices & Choice));
-         end;
-      end Insert_Array_Association;
-
-      ------------------------
-      -- Insert_Association --
-      ------------------------
-
-      procedure Insert_Association
-        (Writes      : not null Write_Status_Access;
-         Deep_Access : Node_Id;
-         Value       : N_Subexpr_Id)
-      is
-         Local_Writes : Write_Status_Access;
-
-      begin
-         --  Create a branch for the new association
-
-         Insert_Association_Internal
-           (Writes       => Writes,
-            Deep_Access  => Deep_Access,
-            Status       => New_Write (Value),
-            Unfold       => False,
-            Local_Writes => Local_Writes);
-
-         --  Propagate the new value in the corresponding subtree
-
-         Propagate
-           (Writes    => Local_Writes,
-            Choices   => Local_Writes.Values.Last_Element.Choices,
-            Status    => Local_Writes.Values.Last_Element.Status,
-            Skip_Root => True);
-      end Insert_Association;
-
-      ---------------------------------
-      -- Insert_Association_Internal --
-      ---------------------------------
-
-      procedure Insert_Association_Internal
-        (Writes       : not null Write_Status_Access;
-         Deep_Access  : Node_Id;
-         Status       : Write_Type;
-         Unfold       : Boolean;
-         Local_Writes : out not null Write_Status_Access)
-      is
-         Prefix_Writes : Write_Status_Access;
-      begin
-         --  Create a branch for the new association. Prefixes of Deep_Access
-         --  are partially updated. Siblings are preserved.
-
-         if Is_Root_Prefix_Of_Deep_Choice (Deep_Access) then
-
-            --  The root has been reached. Insert a new branch for the new
-            --  association. It is partially written.
-
-            Writes.Values.Append
-              (Constrained_Value'
-                 (Size     => 0,
-                  Ada_Node => Deep_Access,
-                  Status   => Partial_Write,
-                  Choices  => (1 .. 0 => <>)));
-            Prefix_Writes := Writes;
-
-            --  Insert the last association
-
-            if Has_Array_Type (Writes.Ty) then
-               Insert_Array_Association
-                 (Writes       => Prefix_Writes,
-                  Ada_Node     => Deep_Access,
-                  Choice       => Deep_Access,
-                  Status       => Status,
-                  Unfold       => Unfold,
-                  Local_Writes => Local_Writes);
-
-            else
-               pragma
-                 Assert
-                   (Nkind (Deep_Access) in N_Identifier | N_Expanded_Name);
-
-               declare
-                  Sel_Ent : constant Entity_Id := Entity (Deep_Access);
-                  Field   : constant Entity_Id :=
-                    Search_Component_In_Type (Prefix_Writes.Ty, Sel_Ent);
-                  pragma Assert (Present (Field));
-
-               begin
-                  Insert_Record_Association
-                    (Writes       => Prefix_Writes,
-                     Ada_Node     => Deep_Access,
-                     Field        => Field,
-                     Status       => Status,
-                     Unfold       => Unfold,
-                     Local_Writes => Local_Writes);
-               end;
-            end if;
-         else
-
-            --  Create a branch for the prefix. It is partially written.
-            --  Unfold it so it can be expanded.
-
-            Insert_Association_Internal
-              (Writes       => Writes,
-               Deep_Access  => Prefix (Deep_Access),
-               Status       => Partial_Write,
-               Unfold       => True,
-               Local_Writes => Prefix_Writes);
-
-            --  Insert the last association
-
-            case Nkind (Deep_Access) is
-               when N_Indexed_Component  =>
-                  declare
-                     Index_Value : constant Node_Id :=
-                       First (Expressions (Deep_Access));
-                     pragma Assert (No (Next (Index_Value)));
-
-                  begin
-                     Insert_Array_Association
-                       (Writes       => Prefix_Writes,
-                        Ada_Node     => Deep_Access,
-                        Choice       => Index_Value,
-                        Status       => Status,
-                        Unfold       => Unfold,
-                        Local_Writes => Local_Writes);
-                  end;
-
-               when N_Selected_Component =>
-                  declare
-                     Sel_Ent : constant Entity_Id :=
-                       Entity (Selector_Name (Deep_Access));
-                     Field   : constant Entity_Id :=
-                       Search_Component_In_Type (Prefix_Writes.Ty, Sel_Ent);
-                     pragma Assert (Present (Field));
-
-                  begin
-                     Insert_Record_Association
-                       (Writes       => Prefix_Writes,
-                        Ada_Node     => Deep_Access,
-                        Field        => Field,
-                        Status       => Status,
-                        Unfold       => Unfold,
-                        Local_Writes => Local_Writes);
-                  end;
-
-               when others               =>
-                  raise Program_Error;
-            end case;
-         end if;
-      end Insert_Association_Internal;
-
-      -------------------------------
-      -- Insert_Record_Association --
-      -------------------------------
-
-      procedure Insert_Record_Association
-        (Writes       : not null Write_Status_Access;
-         Ada_Node     : Node_Id;
-         Field        : Entity_Id;
-         Status       : Write_Type;
-         Unfold       : Boolean;
-         Local_Writes : out not null Write_Status_Access)
-      is
-         use Write_Status_Maps;
-         Choices  : constant Choice_Array :=
-           Writes.Values.Last_Element.Choices;
-         Inserted : Boolean;
-         Position : Write_Status_Maps.Cursor;
-         use Constrained_Value_Vectors;
-
-      begin
-         --  Unfold the subtree if necessary, that is, insert a status for
-         --  Field if there is none.
-
-         Writes.Component_Status.Insert (Field, null, Position, Inserted);
-
-         if Inserted then
-
-            --  To initialize its constrained values, use the values of
-            --  Writes. Delete the last element, as it will be inserted
-            --  afterward specifically.
-
-            declare
-               Values : Constrained_Value_Vectors.Vector;
-            begin
-               for I in 1 .. Writes.Values.Last_Index - 1 loop
-
-                  --  For partially updated values, the new field is preserved
-
-                  if Writes.Values.Element (I).Status.Kind = Partial then
-                     Values.Append
-                       (New_Item =>
-                          Constrained_Value'
-                            (Size     => Writes.Values.Element (I).Size,
-                             Status   => Discard_Write,
-                             Ada_Node => Types.Empty,
-                             Choices  => Writes.Values.Element (I).Choices));
-
-                  --  Fields of entirely written values are entirely written
-
-                  else
-                     Values.Append
-                       (New_Item =>
-                          Constrained_Value'
-                            (Size     => Writes.Values.Element (I).Size,
-                             Status   =>
-                               Record_Access
-                                 (Writes.Values.Element (I).Status, Field),
-                             Ada_Node => Writes.Values.Element (I).Ada_Node,
-                             Choices  => Writes.Values.Element (I).Choices));
-                  end if;
-               end loop;
-
-               Writes.Component_Status (Position) :=
-                 new Write_Status'
-                   (Kind   => Entire_Object,
-                    Ty     => Retysp (Etype (Field)),
-                    Values => Values);
-            end;
-         end if;
-
-         --  Unfold the component's tree if necessary
-
-         if Unfold then
-            Unfold_Tree (Writes.Component_Status (Position));
-         end if;
-
-         --  Local_Writes is the status associated to Field in Writes
-
-         Local_Writes := Writes.Component_Status (Position);
-
-         --  Insert the new value. Its choice array is the last choices of
-         --  Writes.
-
-         declare
-            C_Value : constant Constrained_Value :=
-              (Size     => Choices'Length,
-               Ada_Node => Ada_Node,
-               Status   => Status,
-               Choices  => Choices);
-         begin
-            Local_Writes.Values.Append (New_Item => C_Value);
-         end;
-
-         --  Discard the last choices in siblings of Field if any
-
-         for Other_Position in Writes.Component_Status.Iterate loop
-            if Other_Position /= Position then
-               Propagate
-                 (Writes  => Writes.Component_Status (Other_Position),
-                  Choices => Choices,
-                  Status  => Discard_Write);
-            end if;
-         end loop;
-      end Insert_Record_Association;
-
-      ------------------
-      -- Print_Writes --
-      ------------------
-
-      pragma Annotate (Xcov, Exempt_On, "Debug code");
-      procedure Print_Writes (Writes : Write_Status) is
-
-         procedure Print_Writes (Writes : Write_Status; Padding : Natural);
-         --  Recursive version, takes an additional parameter for padding
-
-         ------------------
-         -- Print_Writes --
-         ------------------
-
-         procedure Print_Writes (Writes : Write_Status; Padding : Natural) is
-            Spaces : constant String := (1 .. Padding => ' ');
-         begin
-            Ada.Text_IO.Put_Line
-              (Spaces & "Ty      => " & Raw_Source_Name (Writes.Ty));
-            Ada.Text_IO.Put (Spaces & "Values  =>");
-            for I in 1 .. Writes.Values.Last_Index loop
-               Ada.Text_IO.Put (" (");
-               if Writes.Values.Element (I).Size = 0 then
-                  Ada.Text_IO.Put ("[]");
-               else
-                  Ada.Text_IO.Put ("[");
-                  for K in 1 .. Writes.Values.Element (I).Size loop
-                     if No (Writes.Values.Element (I).Choices (K)) then
-                        Ada.Text_IO.Put (".");
-                     elsif Nkind (Writes.Values.Element (I).Choices (K))
-                           in N_Expanded_Name | N_Identifier
-                     then
-                        Ada.Text_IO.Put
-                          (Raw_Source_Name
-                             (Entity (Writes.Values.Element (I).Choices (K))));
-                     else
-                        Ada.Text_IO.Put
-                          (Writes.Values.Element (I).Choices (K)'Image);
-                     end if;
-                     if K /= Writes.Values.Element (I).Size then
-                        Ada.Text_IO.Put (", ");
-                     end if;
-                  end loop;
-                  Ada.Text_IO.Put ("]");
-               end if;
-               Ada.Text_IO.Put (", ");
-               Ada.Text_IO.Put
-                 (Writes.Values.Element (I).Status.Kind'Image & ")");
-            end loop;
-            Ada.Text_IO.New_Line;
-            case Writes.Kind is
-               when Entire_Object     =>
-                  null;
-
-               when Record_Components =>
-                  Ada.Text_IO.Put_Line (Spaces & "Fields  =>");
-                  for Position in Writes.Component_Status.Iterate loop
-                     Ada.Text_IO.Put_Line
-                       (Spaces
-                        & "   "
-                        & Raw_Source_Name (Write_Status_Maps.Key (Position))
-                        & " =>");
-                     Print_Writes
-                       (Write_Status_Maps.Element (Position).all, Padding + 6);
-                  end loop;
-
-               when Array_Components  =>
-                  Ada.Text_IO.Put_Line (Spaces & "Content =>");
-                  Print_Writes (Writes.Content_Status.all, Padding + 3);
-            end case;
-         end Print_Writes;
-
-      begin
-         Print_Writes (Writes, 0);
-      end Print_Writes;
-      pragma Annotate (Xcov, Exempt_Off);
-
-      ---------------
-      -- Propagate --
-      ---------------
-
-      procedure Propagate
-        (Writes    : not null Write_Status_Access;
-         Choices   : Choice_Array;
-         Status    : Write_Type;
-         Skip_Root : Boolean := False) is
-      begin
-         --  Update the root itself if necessary
-
-         if not Skip_Root then
-            Writes.Values.Append
-              (Constrained_Value'(Choices'Length, Empty, Status, Choices));
-         end if;
-
-         --  Propagate the new association to all subtrees
-
-         case Writes.Kind is
-            when Entire_Object     =>
-               null;
-
-            when Record_Components =>
-               for Position in Writes.Component_Status.Iterate loop
-                  Propagate
-                    (Writes.Component_Status (Position),
-                     Choices,
-                     Record_Access (Status, Write_Status_Maps.Key (Position)));
-               end loop;
-
-            when Array_Components  =>
-               Propagate
-                 (Writes.Content_Status,
-                  Choices & Empty,
-                  Array_Access (Status, Choices'Length + 1));
-         end case;
-      end Propagate;
-
-      -----------------
-      -- Unfold_Tree --
-      -----------------
-
-      procedure Unfold_Tree (Writes : in out not null Write_Status_Access) is
-         Old_Writes : Write_Status_Access := Writes;
-      begin
-         --  If Writes has type Entire_Object, unfold it
-
-         if Writes.Kind = Entire_Object then
-            if Is_Record_Type (Old_Writes.Ty) then
-               Writes :=
-                 new Write_Status'
-                   (Kind             => Record_Components,
-                    Ty               => Old_Writes.Ty,
-                    Values           => Old_Writes.Values,
-                    Component_Status => Write_Status_Maps.Empty_Map);
-            else
-               pragma Assert (Is_Array_Type (Old_Writes.Ty));
-               declare
-                  use Constrained_Value_Vectors;
-                  Values : Constrained_Value_Vectors.Vector;
-                  --  The array has always been updated as a whole until now.
-                  --  To initialize the constrained values of its components,
-                  --  use the values of Writes with an additional empty choice
-                  --  to state that all indexes are written.
-
-               begin
-                  for Pref_Value of Old_Writes.Values loop
-                     Values.Append
-                       (Constrained_Value'
-                          (Size     => Pref_Value.Size + 1,
-                           Ada_Node => Pref_Value.Ada_Node,
-                           Choices  => Pref_Value.Choices & Types.Empty,
-                           Status   =>
-                             Array_Access
-                               (Pref_Value.Status, Pref_Value.Size + 1)));
-                  end loop;
-
-                  Writes :=
-                    new Write_Status'
-                      (Kind           => Array_Components,
-                       Ty             => Old_Writes.Ty,
-                       Values         => Old_Writes.Values,
-                       Content_Status =>
-                         new Write_Status'
-                           (Kind   => Entire_Object,
-                            Ty     => Retysp (Component_Type (Old_Writes.Ty)),
-                            Values => Values));
-               end;
-            end if;
-            Free (Old_Writes);
-         end if;
-      end Unfold_Tree;
-
-   end Association_Trees;
 
    -------------------------------------------
    -- Generate_VCs_For_Aggregate_Annotation --
@@ -7464,11 +6705,11 @@ package body Gnat2Why.Expr.Aggregates is
 
          for C_Value of Writes.Values loop
             if C_Value.Status.Kind = Entire
-              and then C_Value.Status.Path.Kind = Root
+              and then C_Value.Status.Value.Kind = Root
             then
                declare
                   W_Id : constant W_Identifier_Id :=
-                    Value_Map.Element (C_Value.Status.Path.Expr);
+                    Value_Map.Element (C_Value.Status.Value.Expr);
                begin
                   Context.Append
                     (Ref_Type'
@@ -7476,7 +6717,7 @@ package body Gnat2Why.Expr.Aggregates is
                         Name    => W_Id,
                         Value   =>
                           Transform_Expr
-                            (Expr          => C_Value.Status.Path.Expr,
+                            (Expr          => C_Value.Status.Value.Expr,
                              Expected_Type => Get_Typ (W_Id),
                              Domain        => Domain,
                              Params        => Params)));
@@ -7836,6 +7077,12 @@ package body Gnat2Why.Expr.Aggregates is
                      end;
                   end if;
                end;
+
+            --  Dereferences are not expected in choices of deep delta
+            --  aggregates.
+
+            when Designated_Data   =>
+               raise Program_Error;
          end case;
 
          --  If the target type has a direct or inherited predicate, generate a
@@ -8167,6 +7414,12 @@ package body Gnat2Why.Expr.Aggregates is
                         end if;
                      end;
                   end loop;
+
+               --  Dereferences are not expected in choices of deep delta
+               --  aggregates.
+
+               when Designated_Data                  =>
+                  raise Program_Error;
             end case;
          end Collect_Preserved_Fields;
 
@@ -8247,7 +7500,7 @@ package body Gnat2Why.Expr.Aggregates is
 
                                  Term :=
                                    Transform_Path
-                                     (Path    => C_Value.Status.Path,
+                                     (Path    => C_Value.Status.Value,
                                       Indices => Indices);
 
                                  --  A conversion might be needed if the result
@@ -8363,7 +7616,7 @@ package body Gnat2Why.Expr.Aggregates is
                                       Value_Map => Value_Map);
                                  Terms (Top) :=
                                    Transform_Path
-                                     (Path    => C_Value.Status.Path,
+                                     (Path    => C_Value.Status.Value,
                                       Indices => Indices);
                            end case;
                         end;
@@ -8543,6 +7796,12 @@ package body Gnat2Why.Expr.Aggregates is
                                     Force_No_Slide => True)),
                           Else_Part => Result);
                   end if;
+
+               --  Dereferences are not expected in choices of deep delta
+               --  aggregates.
+
+               when Designated_Data   =>
+                  raise Program_Error;
             end case;
 
             return Result;
@@ -8821,7 +8080,7 @@ package body Gnat2Why.Expr.Aggregates is
                   when Entire_Object     =>
 
                      --  Search for a constrained value which is not preserved.
-                     --  There should be exactly one and its Path should be a
+                     --  There should be exactly one and its Value should be a
                      --  direct expression.
 
                      for Position in C_Writes.Values.Iterate loop
@@ -8831,11 +8090,11 @@ package body Gnat2Why.Expr.Aggregates is
                              Element (Position);
                         begin
                            if C_Value.Status.Kind = Entire then
-                              pragma Assert (C_Value.Status.Path.Kind = Root);
+                              pragma Assert (C_Value.Status.Value.Kind = Root);
 
                               Res :=
                                 Transform_Expr
-                                  (Expr          => C_Value.Status.Path.Expr,
+                                  (Expr          => C_Value.Status.Value.Expr,
                                    Expected_Type => W_Comp_Ty,
                                    Domain        => Domain,
                                    Params        => Params);
@@ -8869,6 +8128,12 @@ package body Gnat2Why.Expr.Aggregates is
                           Relaxed_Init => Comp_Relaxed,
                           Domain       => Domain,
                           Params       => Params);
+
+                  --  Dereferences are not expected in choices of deep delta
+                  --  aggregates.
+
+                  when Designated_Data   =>
+                     raise Program_Error;
                end case;
 
                Top := Top + 1;
@@ -8932,7 +8197,7 @@ package body Gnat2Why.Expr.Aggregates is
 
          for C_Value of Writes.Values loop
             if C_Value.Status.Kind = Entire
-              and then C_Value.Status.Path.Kind = Root
+              and then C_Value.Status.Value.Kind = Root
             then
                declare
                   W_Id : constant W_Identifier_Id :=
@@ -8941,10 +8206,10 @@ package body Gnat2Why.Expr.Aggregates is
                          EW_Abstract
                            (Writes.Ty,
                             Expr_Has_Relaxed_Init
-                              (C_Value.Status.Path.Expr, No_Eval => False)),
+                              (C_Value.Status.Value.Expr, No_Eval => False)),
                        Base_Name => "val");
                begin
-                  Value_Map.Insert (C_Value.Status.Path.Expr, W_Id);
+                  Value_Map.Insert (C_Value.Status.Value.Expr, W_Id);
                end;
             end if;
          end loop;
@@ -8982,6 +8247,12 @@ package body Gnat2Why.Expr.Aggregates is
                for C_Writes of Writes.Component_Status loop
                   Get_Aggregate_Elements (C_Writes.all, Value_Map);
                end loop;
+
+            --  Dereferences are not expected in choices of deep delta
+            --  aggregates.
+
+            when Designated_Data   =>
+               raise Program_Error;
          end case;
       end Get_Aggregate_Elements;
 
@@ -9003,6 +8274,12 @@ package body Gnat2Why.Expr.Aggregates is
                return
                  (for all C_Writes of Writes.Component_Status =>
                     Is_Simple_Record_Aggregate (C_Writes.all));
+
+            --  Dereferences are not expected in choices of deep delta
+            --  aggregates.
+
+            when Designated_Data   =>
+               raise Program_Error;
          end case;
       end Is_Simple_Record_Aggregate;
 
@@ -9084,7 +8361,7 @@ package body Gnat2Why.Expr.Aggregates is
                Insert_Association
                  (Writes      => Writes,
                   Deep_Access => Choice,
-                  Value       => Expression (Assoc));
+                  Value       => new Path_Link'(Root, Expression (Assoc)));
 
                --  Collect both the expression and the indexes if any
 
