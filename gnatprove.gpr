@@ -2,6 +2,7 @@ with "gnatcoll_core";
 with "gpr2";
 with "sarif_ada";
 with "vss_os";
+with "ada_toml";
 
 project GNATprove is
 
