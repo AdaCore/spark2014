@@ -69,6 +69,16 @@ package body Configuration is
    Usage_Message : constant String := "-Pproj [switches] [-cargs switches]";
    --  Used to print part of the help message for gnatprove
 
+   --  Private global state to replace public state from CL_Switches
+   Debug_Save_VCs      : Boolean := False;
+   Debug_Prover_Errors : Boolean := False;
+   File_List           : String_Lists.List;
+   Replay              : Boolean := False;
+   Why3_Conf           : GNAT.Strings.String_Access;
+   Why3_Debug          : GNAT.Strings.String_Access;
+   Why3_Logging        : Boolean := False;
+   Z3_Counterexample   : Boolean := False;
+
    type Spark_Reporter is new GPR2.Reporter.Console.Object with null record;
 
    overriding
@@ -1160,30 +1170,34 @@ package body Configuration is
       end Move_String;
 
    begin
-      CL_Switches.V := Parsed.Values (Sw_V).Boolean_Val;
+      --  package-internal global state
+      Debug_Save_VCs := Parsed.Values (Sw_Debug_Save_VCs).Boolean_Val;
+      Debug_Prover_Errors :=
+        Parsed.Values (Sw_Debug_Prover_Errors).Boolean_Val;
+      Copy_List (Parsed.File_List, File_List);
+      Replay := Parsed.Values (Sw_Replay).Boolean_Val;
+      Move_String (Parsed.Values (Sw_Why3_Conf).String_Val, Why3_Conf);
+      Move_String (Parsed.Values (Sw_Why3_Debug).String_Val, Why3_Debug);
+      Z3_Counterexample := Parsed.Values (Sw_Z3_Counterexample).Boolean_Val;
+
+      --  public global state
+      Flow_Extra_Debug := Parsed.Values (Sw_Flow_Debug).Boolean_Val;
+      IDE_Mode := Parsed.Values (Sw_IDE_Progress_Bar).Boolean_Val;
+      Quiet := Parsed.Values (Sw_Q).Boolean_Val;
+      All_Projects := Parsed.Values (Sw_UU).Boolean_Val;
+      Verbose := Parsed.Values (Sw_V).Boolean_Val;
+      Continue_On_Error := Parsed.Values (Sw_K).Boolean_Val;
+      Force := Parsed.Values (Sw_F).Boolean_Val;
+
+      --  CL_Switches state that's still used
       CL_Switches.Assumptions := Parsed.Values (Sw_Assumptions).Boolean_Val;
       CL_Switches.Benchmark := Parsed.Values (Sw_Benchmark).Boolean_Val;
-      Move_String
-        (Parsed.Values (Sw_Checks_As_Errors).String_Val,
-         CL_Switches.Checks_As_Errors);
       CL_Switches.CWE := Parsed.Values (Sw_CWE).Boolean_Val;
-      CL_Switches.D := Parsed.Values (Sw_D).Boolean_Val;
       CL_Switches.Debug_No_Cache_Output :=
         Parsed.Values (Sw_Debug_No_Cache_Output).Boolean_Val;
-      CL_Switches.Debug_Save_VCs :=
-        Parsed.Values (Sw_Debug_Save_VCs).Boolean_Val;
-      CL_Switches.Dbg_No_Sem := Parsed.Values (Sw_Dbg_No_Sem).Boolean_Val;
-      CL_Switches.Debug_Prover_Errors :=
-        Parsed.Values (Sw_Debug_Prover_Errors).Boolean_Val;
       Move_String
         (Parsed.Values (Sw_Exclude_Line).String_Val, CL_Switches.Exclude_Line);
-      CL_Switches.Flow_Debug := Parsed.Values (Sw_Flow_Debug).Boolean_Val;
       CL_Switches.Flow_Show_GG := Parsed.Values (Sw_Flow_Show_GG).Boolean_Val;
-      CL_Switches.F := Parsed.Values (Sw_F).Boolean_Val;
-      CL_Switches.IDE_Progress_Bar :=
-        Parsed.Values (Sw_IDE_Progress_Bar).Boolean_Val;
-      CL_Switches.J := Parsed.Values (Sw_J).Integer_Val;
-      CL_Switches.K := Parsed.Values (Sw_K).Boolean_Val;
       Move_String
         (Parsed.Values (Sw_Limit_Line).String_Val, CL_Switches.Limit_Line);
       Move_String
@@ -1197,9 +1211,6 @@ package body Configuration is
       Move_String
         (Parsed.Values (Sw_Memcached_Server).String_Val,
          CL_Switches.Memcached_Server);
-      CL_Switches.M := Parsed.Values (Sw_M).Boolean_Val;
-      CL_Switches.No_Axiom_Guard :=
-        Parsed.Values (Sw_No_Axiom_Guard).Boolean_Val;
       Move_String
         (Parsed.Values (Sw_Function_Sandboxing).String_Val,
          CL_Switches.Function_Sandboxing);
@@ -1207,36 +1218,18 @@ package body Configuration is
         Parsed.Values (Sw_No_Global_Generation).Boolean_Val;
       CL_Switches.No_Subprojects :=
         Parsed.Values (Sw_No_Subprojects).Boolean_Val;
-      Move_String (Parsed.Values (Sw_Output).String_Val, CL_Switches.Output);
       CL_Switches.Output_Header :=
         Parsed.Values (Sw_Output_Header).Boolean_Val;
-      CL_Switches.Output_Msg_Only :=
-        Parsed.Values (Sw_Output_Msg_Only).Boolean_Val;
-      CL_Switches.Q := Parsed.Values (Sw_Q).Boolean_Val;
-      CL_Switches.Replay := Parsed.Values (Sw_Replay).Boolean_Val;
-      Move_String (Parsed.Values (Sw_Report).String_Val, CL_Switches.Report);
       CL_Switches.U := Parsed.Values (Sw_U).Boolean_Val;
-      CL_Switches.UU := Parsed.Values (Sw_UU).Boolean_Val;
-      Move_String
-        (Parsed.Values (Sw_Warnings).String_Val, CL_Switches.Warnings);
-      Move_String
-        (Parsed.Values (Sw_Why3_Conf).String_Val, CL_Switches.Why3_Conf);
-      Move_String
-        (Parsed.Values (Sw_Why3_Debug).String_Val, CL_Switches.Why3_Debug);
-      CL_Switches.Why3_Logging := Parsed.Values (Sw_Why3_Logging).Boolean_Val;
+      Why3_Logging := Parsed.Values (Sw_Why3_Logging).Boolean_Val;
       Move_String
         (Parsed.Values (Sw_Why3_Server).String_Val, CL_Switches.Why3_Server);
       Copy_List
         (Parsed.Values (Sw_SARIF_Base_URI).String_List_Val,
          CL_Switches.SARIF_Base_URIs);
-      CL_Switches.Z3_Counterexample :=
-        Parsed.Values (Sw_Z3_Counterexample).Boolean_Val;
       Move_String
         (Parsed.Values (Sw_Gnattest_Values).String_Val,
          CL_Switches.Gnattest_Values);
-      CL_Switches.Debug_Exec_RAC :=
-        Parsed.Values (Sw_Debug_Exec_RAC).Boolean_Val;
-      Copy_List (Parsed.File_List, CL_Switches.File_List);
 
       for WK in Misc_Warning_Kind loop
          Configuration.Warning_Status (WK) :=
@@ -1244,31 +1237,6 @@ package body Configuration is
             then Parsed.Warning_Status (WK)
             else VC_Kinds.Warning_Status (WK));
       end loop;
-
-      CL_Switches.Level := Parsed.Values (Sw_Level).Integer_Val;
-      CL_Switches.Memlimit := Parsed.Values (Sw_Memlimit).Integer_Val;
-      Move_String
-        (Parsed.Values (Sw_Counterexamples).String_Val,
-         CL_Switches.Counterexamples);
-      Move_String
-        (Parsed.Values (Sw_Check_Counterexamples).String_Val,
-         CL_Switches.Check_Counterexamples);
-      Move_String (Parsed.Values (Sw_Mode).String_Val, CL_Switches.Mode);
-      CL_Switches.No_Counterexample :=
-        Parsed.Values (Sw_No_Counterexample).Boolean_Val;
-      CL_Switches.No_Inlining := Parsed.Values (Sw_No_Inlining).Boolean_Val;
-      CL_Switches.No_Loop_Unrolling :=
-        Parsed.Values (Sw_No_Loop_Unrolling).Boolean_Val;
-      Move_String (Parsed.Values (Sw_Proof).String_Val, CL_Switches.Proof);
-      Move_String
-        (Parsed.Values (Sw_Proof_Warnings).String_Val,
-         CL_Switches.Proof_Warnings);
-      Move_String (Parsed.Values (Sw_Prover).String_Val, CL_Switches.Prover);
-      CL_Switches.Steps := Parsed.Values (Sw_Steps).Integer_Val;
-      CL_Switches.CE_Steps := Parsed.Values (Sw_CE_Steps).Integer_Val;
-      Move_String (Parsed.Values (Sw_Timeout).String_Val, CL_Switches.Timeout);
-      CL_Switches.Proof_Warn_Timeout :=
-        Parsed.Values (Sw_Proof_Warn_Timeout).Integer_Val;
    end Copy_To_CL_Switches;
 
    ----------------------------
@@ -3850,16 +3818,16 @@ package body Configuration is
    procedure Sanitize_File_List (Tree : Project.Tree.Object) is
       use String_Lists;
    begin
-      if CL_Switches.File_List.Is_Empty then
+      if File_List.Is_Empty then
          return;
       end if;
 
       --  We iterate over all names in the file list
 
-      for Cursor in CL_Switches.File_List.Iterate loop
+      for Cursor in File_List.Iterate loop
 
          declare
-            File_Entry       : String renames CL_Switches.File_List (Cursor);
+            File_Entry       : String renames File_List (Cursor);
             Has_Path         : constant Boolean :=
               Filename_Type (File_Entry) not in GPR2.Simple_Name;
             Simple_File_Name : constant String :=
@@ -3915,7 +3883,7 @@ package body Configuration is
                            & " is not unique in aggregate project",
                            With_Help => False);
                      else
-                        CL_Switches.File_List.Replace_Element
+                        File_List.Replace_Element
                           (Cursor, String (CU.Main_Part.Source.Simple_Name));
                         Found := True;
                         CL_Units.Include (CU.Name, CU);
@@ -4095,17 +4063,17 @@ package body Configuration is
 
       Args          : String_Lists.List;
       Why3_VF       : constant Virtual_File :=
-        (if CL_Switches.Why3_Conf.all /= ""
-         then Create (Filesystem_String (CL_Switches.Why3_Conf.all))
+        (if Why3_Conf.all /= ""
+         then Create (Filesystem_String (Why3_Conf.all))
          else No_File);
       Gnatwhy3_Conf : constant String :=
         (if Why3_VF /= No_File
          then
            (if Is_Absolute_Path (Why3_VF)
-            then CL_Switches.Why3_Conf.all
+            then Why3_Conf.all
             else
               Ada.Directories.Compose
-                (+Get_Current_Dir.Full_Name, CL_Switches.Why3_Conf.all))
+                (+Get_Current_Dir.Full_Name, Why3_Conf.all))
          else "");
 
       -------------------------
@@ -4219,7 +4187,7 @@ package body Configuration is
          Args.Append ("--debug");
       end if;
 
-      if CL_Switches.Debug_Save_VCs then
+      if Debug_Save_VCs then
          Args.Append ("--debug-save-vcs");
       end if;
 
@@ -4231,7 +4199,7 @@ package body Configuration is
          Args.Append ("--prove-all");
       end if;
 
-      if CL_Switches.Replay then
+      if Replay then
          Args.Append ("--replay");
       end if;
 
@@ -4271,9 +4239,9 @@ package body Configuration is
          Args.Append (Gnatwhy3_Conf);
       end if;
 
-      if CL_Switches.Why3_Debug.all /= "" then
+      if Why3_Debug.all /= "" then
          Args.Append ("--debug-why3");
-         Args.Append (CL_Switches.Why3_Debug.all);
+         Args.Append (Why3_Debug.all);
       end if;
 
       Args.Append ("--counterexample");
@@ -4291,7 +4259,7 @@ package body Configuration is
          end if;
       end if;
 
-      if CL_Switches.Z3_Counterexample then
+      if Z3_Counterexample then
          Args.Append ("--ce-prover");
          Args.Append ("z3_ce");
       end if;
@@ -4308,11 +4276,11 @@ package body Configuration is
          Args.Append (Image (FS.Proof_Warn_Timeout, 1));
       end if;
 
-      if CL_Switches.Debug_Prover_Errors then
+      if Debug_Prover_Errors then
          Args.Append ("--debug-prover-errors");
       end if;
 
-      if CL_Switches.Why3_Logging then
+      if Why3_Logging then
          Args.Append ("--logging");
       end if;
 

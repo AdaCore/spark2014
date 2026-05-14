@@ -243,7 +243,7 @@ package body Gnatprove_Build is
 
          use type GPR2.Project.View.Object;
       begin
-         if CL_Switches.UU and then Selected_Units.Is_Empty then
+         if Configuration.All_Projects and then Selected_Units.Is_Empty then
             To_Analyze := All_Project_Units;
             To_Global_Gen := To_Analyze;
          elsif not Selected_Units.Is_Empty then
@@ -366,10 +366,10 @@ package body Gnatprove_Build is
       if Configuration.Debug then
          Exec_Opts.Keep_Temp_Files := True;
       end if;
-      if CL_Switches.K then
+      if Configuration.Continue_On_Error then
          Exec_Opts.Stop_On_Fail := False;
       end if;
-      if CL_Switches.F then
+      if Configuration.Force then
          Exec_Opts.Force := True;
       end if;
 
@@ -385,7 +385,7 @@ package body Gnatprove_Build is
          Selected_Units : Unit_Set;
       begin
          if not Configuration.CL_Units.Is_Empty then
-            if Configuration.Only_Given or else CL_Switches.UU then
+            if Configuration.Only_Given or else Configuration.All_Projects then
                Selected_Units := Configuration.CL_Units;
             else
                Main_Units := Configuration.CL_Units;
