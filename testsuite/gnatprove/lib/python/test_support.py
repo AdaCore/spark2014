@@ -139,6 +139,22 @@ class SortRefiner(OutputRefiner):
         return sorted_lines
 
 
+class DirectorySeparatorRefiner(OutputRefiner):
+    """
+    Converts backslashes to forward slashes in the output
+
+    This refiner is needed if there exist relative paths in the output other
+    than the current test directory. It is expected that the test driver has
+    already removed the latter from the path prefix. So, the only additional
+    refinement needed is to replace remaining directory separators. However,
+    for simplicity and generality the replacement is done for all backslashes
+    in the output. There is no attempt to guess what could be a path or not.
+    """
+
+    def refine(self, lines: list[str]) -> list[str]:
+        return [line.replace("\\", "/") for line in lines]
+
+
 class SparkLibFilterRefiner(OutputRefiner):
     """Filters out SPARKlib-related output lines."""
 
