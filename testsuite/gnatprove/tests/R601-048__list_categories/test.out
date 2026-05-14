@@ -171,7 +171,8 @@ set-length-aggregates - set-length-aggregates - A type with predefined set aggre
 predefined-equality-null - predefined-equality-null - A type is annotated with Only_Null as value for the Predefined_Equality annotation, but no constant annotated with Null_Value is found; this will result in all calls to the predefined equality being rejected - EASY
 init-cond-ignored - init-cond-ignored - The initial condition of a withed package might be ignored if it is not known to be true, due to elaboration order - EASY
 unit-not-spark - unit-not-spark - A unit whose analysis has been requested on the command-line is not annotated with SPARK_Mode Pragma - EASY
-info-unrolling-inlining - info-unrolling-inlining - These messages are issued when the tool is unrolling loops or inlining subprograms, or unable to do so - EASY
+unrolling-inlining-failures - unrolling-inlining-failures - These warnings are issued when the tool is unable to unroll a loop or perform contextual analysis of a subprogram - EASY
+info-unrolling-inlining - info-unrolling-inlining - These messages are issued when the tool is unrolling loops or performing contextual analysis of subprograms - EASY
 [Annotation error categories]
 incorrect-use-of-gnatprove - incorrect-use-of-gnatprove - incorrect use of pragma Annotate (GNATprove, ...) - HIGH
 incorrect-use-of-false_positive - incorrect-use-of-false_positive - incorrect use of pragma Annotate (GNATprove, False_Positive, ...) - HIGH
