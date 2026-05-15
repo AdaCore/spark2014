@@ -131,9 +131,20 @@ from Step 4. The file should contain:
 3. **Fix or workaround** — a concrete Ada example showing the corrected code.
    If no clean fix exists, acknowledge that and describe the best available
    workaround (e.g., encapsulating in `SPARK_Mode => Off`).
+
+   If you offer more than one fix, each fix must have its own complete,
+   self-contained Ada code example — never prose-only. Step 6a then validates
+   every example. If a candidate fix is too unwieldy to give as a small
+   example, that is a signal to drop it rather than leave it as a bare
+   suggestion.
 4. **Optional SPARK RM link** — if the RM section is informative, link to it
    using a Markdown reference link at the bottom of the file, following the
    pattern in `share/spark/explain_codes/E0001.md`.
+
+Do not add a "See also `E00NN`" block cross-referencing sibling explain codes.
+Existing explain codes do not use them, and they are easy to make inconsistent
+across a batch (some codes listed, some not). The README index already lets
+readers find related codes.
 
 ### Step 6a — Validate examples
 
