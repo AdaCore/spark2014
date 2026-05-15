@@ -1,3 +1,8 @@
+spark-containers-formal-unbounded_vectors.ads:80:06: medium: Container_Aggregates annotation might be incorrect, in instantiation at use_vectors.ads:23 [provers reached step limit before completing the proof]
+spark-containers-formal-unbounded_vectors.ads:80:06: medium: after a call to "Append" at spark-containers-formal-unbounded_vectors.ads:654, in instantiation at use_vectors.ads:23
+spark-containers-formal-unbounded_vectors.ads:80:06: medium: when reestablishing invariant on "Get" at spark-containers-functional-vectors.ads:122, in instantiation at spark-containers-formal-unbounded_vectors.ads:136, in instantiation at use_vectors.ads:23
+spark-containers-formal-unbounded_vectors.ads:657:58: medium: during checks for container aggregates at spark-containers-formal-unbounded_vectors.ads:80, in instantiation at use_vectors.ads:23
+spark-containers-formal-unbounded_vectors.ads:657:58: medium: precondition might fail, in instantiation at use_vectors.ads:23 [provers reached step limit before completing the proof]
 spark-containers-formal-unbounded_vectors.ads:754:60: medium: overflow check might fail, cannot prove upper bound for Index - Index_Type'First, in instantiation at use_vectors.ads:23 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 use_lists.adb:8:33: medium: implicit aspect Always_Terminates on "My_Find" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 use_lists.adb:10:13: info: loop invariant initialization proved
