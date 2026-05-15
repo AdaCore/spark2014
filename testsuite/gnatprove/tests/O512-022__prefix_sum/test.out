@@ -42,12 +42,12 @@ prefixsum.adb:93:49: info: division check proved
 prefixsum.adb:101:31: info: loop variant proved
 prefixsum.adb:103:25: info: overflow check proved
 prefixsum.adb:103:29: info: range check proved
-prefixsum.adb:106:15: info: loop invariant initialization proved
 prefixsum.adb:106:15: info: loop invariant preservation proved
 prefixsum.adb:108:31: info: division check proved
 prefixsum.adb:109:66: info: index check proved
 prefixsum.adb:110:34: info: division check proved
 prefixsum.adb:111:47: info: index check proved
+prefixsum.adb:113:20: medium: loop invariant might fail in first iteration, cannot prove A (K) = A'Loop_Entry (K)
 prefixsum.adb:117:27: info: division check proved
 prefixsum.adb:121:34: info: loop variant proved
 prefixsum.adb:123:32: info: overflow check proved
