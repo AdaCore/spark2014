@@ -39,7 +39,8 @@
 
 .PHONY: clean doc gnat2why gnat2why-nightly gnatprove install \
 	install-all why3 all setup all-nightly doc-nightly run-benchmark \
-        create-benchmark session_archive
+        create-benchmark session_archive install-skills \
+        install-claude-skills install-codex-skills
 
 COVERAGE_ROOT_DIR?=/it/wave/x86_64-linux/spark2014-core_assertions_coverage/src/
 COVERAGE_SOURCE_DIR?=/it/wave/x86_64-linux/spark2014-core_assertions_coverage/src/
@@ -62,6 +63,9 @@ PROD=-XBuild=Production
 CP=cp -pr
 MV=mv -f
 VERSION=0.0w
+CLAUDE_SKILLS_DIR = $(CURDIR)/.claude/skills
+CODEX_SKILLS_DIR = $(CURDIR)/.agents/skills
+SKILL_DIRS = $(wildcard $(CURDIR)/skills/*)
 
 # main target for developers
 all: gnat2why gnatprove why3
@@ -95,6 +99,34 @@ install-all:
 	sha256sum $(INSTALLDIR)/libexec/spark/bin/gnatwhy3 | cut -d' ' -f1 > $(INSTALLDIR)/libexec/spark/bin/gnatwhy3.hash
 	# Create the fake prover scripts to help extract benchmarks.
 	$(CP) benchmark_script/fake_* $(INSTALLDIR)/libexec/spark/bin
+
+install-skills: install-claude-skills install-codex-skills
+
+install-claude-skills:
+	@mkdir -p "$(CLAUDE_SKILLS_DIR)"
+	@for source in $(SKILL_DIRS); do \
+		if [ -d "$$source" ]; then \
+			target="$(CLAUDE_SKILLS_DIR)/$$(basename "$$source")"; \
+			if [ -e "$$target" ] && [ ! -L "$$target" ]; then \
+				echo "Refusing to overwrite $$target" >&2; \
+				exit 1; \
+			fi; \
+			ln -sfn "$$source" "$$target"; \
+		fi; \
+	done
+
+install-codex-skills:
+	@mkdir -p "$(CODEX_SKILLS_DIR)"
+	@for source in $(SKILL_DIRS); do \
+		if [ -d "$$source" ]; then \
+			target="$(CODEX_SKILLS_DIR)/$$(basename "$$source")"; \
+			if [ -e "$$target" ] && [ ! -L "$$target" ]; then \
+				echo "Refusing to overwrite $$target" >&2; \
+				exit 1; \
+			fi; \
+			ln -sfn "$$source" "$$target"; \
+		fi; \
+	done
 
 install:
 	mkdir -p $(INSTALLDIR)/bin $(CONFIGDIR) $(THEORIESDIR) \
