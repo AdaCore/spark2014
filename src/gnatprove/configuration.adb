@@ -730,6 +730,7 @@ package body Configuration is
       Gpr_Registry    : Boolean := False;
       Clean           : Boolean := False;
       Explain         : Unbounded_String := Null_Unbounded_String;
+      Verbosity       : Verbosity_Choice := Normal_Level;
       Cargs           : String_List_Access := null;
       Remaining_Args  : String_List_Access := null;
    end record;
@@ -944,19 +945,19 @@ package body Configuration is
          if Dir /= GNATCOLL.VFS.No_File then
             pragma Assert (Name_Dir = Gnat2Why_Opts.Writing.Name_GNATprove);
             if GNAT.OS_Lib.Is_Directory (Rm_Dir) then
-               if Verbose then
+               if Verbosity = Verbose_Level then
                   Ada.Text_IO.Put ("Deleting directory " & Rm_Dir & "...");
                end if;
                GNAT.Directory_Operations.Remove_Dir
                  (Rm_Dir, Recursive => True);
-               if Verbose then
+               if Verbosity = Verbose_Level then
                   Ada.Text_IO.Put_Line (" done");
                end if;
             end if;
          end if;
       exception
          when GNAT.Directory_Operations.Directory_Error =>
-            if Verbose then
+            if Verbosity = Verbose_Level then
                Ada.Text_IO.Put_Line (" failed, please delete manually");
             end if;
       end Clean_Up_One_Directory;
@@ -1183,9 +1184,7 @@ package body Configuration is
       --  public global state
       Flow_Extra_Debug := Parsed.Values (Sw_Flow_Debug).Boolean_Val;
       IDE_Mode := Parsed.Values (Sw_IDE_Progress_Bar).Boolean_Val;
-      Quiet := Parsed.Values (Sw_Q).Boolean_Val;
       All_Projects := Parsed.Values (Sw_UU).Boolean_Val;
-      Verbose := Parsed.Values (Sw_V).Boolean_Val;
       Continue_On_Error := Parsed.Values (Sw_K).Boolean_Val;
       Force := Parsed.Values (Sw_F).Boolean_Val;
 
@@ -1815,6 +1814,11 @@ package body Configuration is
       use GNATCOLL.Opt_Parse;
       use GNATCOLL.Strings;
 
+      function Parse_Command_Line_Verbosity
+        (Args : String_List) return Verbosity_Choice;
+      --  Return the effective verbosity from the command line slice that is
+      --  parsed before project loading. The last -q/-v wins.
+
       function To_String_List
         (Args : XString_Vector) return String_List_Access;
       --  Convert a vector of XStrings to a String_List_Access.
@@ -1855,6 +1859,25 @@ package body Configuration is
       Cargs    : String_List_Access := null;
       Last_Arg : Natural := Com_Lin'Last;
 
+      ----------------------------------
+      -- Parse_Command_Line_Verbosity --
+      ----------------------------------
+
+      function Parse_Command_Line_Verbosity
+        (Args : String_List) return Verbosity_Choice
+      is
+         Result : Verbosity_Choice := Normal_Level;
+      begin
+         for Arg of Args loop
+            if Arg.all = "-q" or else Arg.all = "--quiet" then
+               Result := Quiet_Level;
+            elsif Arg.all = "-v" or else Arg.all = "--verbose" then
+               Result := Verbose_Level;
+            end if;
+         end loop;
+         return Result;
+      end Parse_Command_Line_Verbosity;
+
       --------------------
       -- To_String_List --
       --------------------
@@ -1884,7 +1907,9 @@ package body Configuration is
          end loop;
          return Result;
       end To_String_List;
+
    begin
+
       for I in Com_Lin'Range loop
          if Com_Lin (I).all = "-cargs" then
             Last_Arg := I - 1;
@@ -1917,6 +1942,8 @@ package body Configuration is
          Explain         => Explain.Get,
          Gpr_Registry    => GPR_Registry.Get,
          Help            => Help.Get,
+         Verbosity       =>
+           Parse_Command_Line_Verbosity (Com_Lin (Com_Lin'First .. Last_Arg)),
          Cargs           => Cargs,
          Remaining_Args  => To_String_List (Unused));
    end Parse_Switches_Before_Project_Parsing;
@@ -3729,6 +3756,7 @@ package body Configuration is
 
       --  Derive the invocation-wide semantic configuration
       Postprocess (Invocation_Switches);
+      Verbosity := Parse_Result.Verbosity;
 
       --  Publish the final invocation settings for legacy consumers
       Copy_To_CL_Switches (Invocation_Switches);
@@ -3791,19 +3819,15 @@ package body Configuration is
       end if;
 
       --  Set reporter for build process
-      --  ??? possibly set Verbosity level in addition to User_Verbosity_Level
-      --  Quiet overrides Verbose here; probably "-v" and "--quiet" should
-      --  override each other
       declare
          Reporter       : Spark_Reporter :=
            (GPR2.Reporter.Console.Create (GPR2.Reporter.No_Warnings)
             with null record);
          User_Verbosity : constant GPR2.Reporter.User_Verbosity_Level :=
-           (if Configuration.Verbose
-            then GPR2.Reporter.Verbose
-            elsif Configuration.Quiet
-            then GPR2.Reporter.Important_Only
-            else GPR2.Reporter.Regular);
+           (case Configuration.Verbosity is
+              when Configuration.Verbose_Level => GPR2.Reporter.Verbose,
+              when Configuration.Quiet_Level   => GPR2.Reporter.Important_Only,
+              when Configuration.Normal_Level  => GPR2.Reporter.Regular);
       begin
          Reporter.Set_Verbosity (GPR2.Reporter.Regular);
          Reporter.Set_User_Verbosity (User_Verbosity);
@@ -4112,7 +4136,7 @@ package body Configuration is
       begin
          --  Use the Obj_Dir of gnat2why which already is "/.../gnatprove"
          Ada.Directories.Set_Directory (Obj_Dir);
-         if Verbose then
+         if Verbosity = Verbose_Level then
             Ada.Text_IO.Put
               ("Changing to object directory: """ & Obj_Dir & """");
             Ada.Text_IO.New_Line;
@@ -4126,7 +4150,7 @@ package body Configuration is
            (Program_Name => Gnatwhy3, Args => Args, Success => Res);
          Free (Args);
          Ada.Directories.Set_Directory (Old_Dir);
-         if Verbose then
+         if Verbosity = Verbose_Level then
             Ada.Text_IO.Put
               ("Changing back to directory: """ & Old_Dir & """");
             Ada.Text_IO.New_Line;

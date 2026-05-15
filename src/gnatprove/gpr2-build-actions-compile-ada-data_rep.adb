@@ -7,6 +7,8 @@ with VC_Kinds;              use VC_Kinds;
 
 package body GPR2.Build.Actions.Compile.Ada.Data_Rep is
 
+   use type Configuration.Verbosity_Choice;
+
    ----------------
    -- Applicable --
    ----------------
@@ -71,9 +73,9 @@ package body GPR2.Build.Actions.Compile.Ada.Data_Rep is
       --  values influence the behavior of gnatprove here.
       Cmd_Line.Add_Env_Variable
         ("SPARK_DATA_REP_VERBOSITY",
-         (if Configuration.Verbose
+         (if Configuration.Verbosity = Configuration.Verbose_Level
           then "verbose"
-          elsif Configuration.Quiet
+          elsif Configuration.Verbosity = Configuration.Quiet_Level
           then "quiet"
           else "normal"));
 
@@ -203,7 +205,9 @@ package body GPR2.Build.Actions.Compile.Ada.Data_Rep is
       --  The wrapper prints to stderr when the compiler fails (a one-line
       --  warning) and, in verbose mode, also the full compiler output.
       --  Forward whatever was captured unless the user asked for quiet output.
-      if Stderr /= Null_Unbounded_String and then not Configuration.Quiet then
+      if Stderr /= Null_Unbounded_String
+        and then Configuration.Verbosity /= Configuration.Quiet_Level
+      then
          Standard.Ada.Text_IO.Put
            (Standard.Ada.Text_IO.Standard_Error, To_String (Stderr));
       end if;

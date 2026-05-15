@@ -145,7 +145,9 @@ procedure Gnatprove with SPARK_Mode is
          Has_Errors        => Errors,
          Status            => Status);
 
-      if not Quiet and then Configuration.Mode /= GPM_Check then
+      if Configuration.Verbosity /= Configuration.Quiet_Level
+        and then Configuration.Mode /= GPM_Check
+      then
          Ada.Text_IO.Put_Line
            ("Summary logged in " & SPARK_Report_File (Obj_Dir));
       end if;
