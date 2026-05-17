@@ -38,39 +38,26 @@ subsections explain the main steps performed by gnatprove.
 Parsing the Command Line
 ========================
 
-gnatprove needs to parse the project file to be able to fully interpret
-switches, because the project file may also contain extra switches to
-be passed to gnatprove. But some command line switches influence the
-way the project is parsed. To break out of this circular dependency,
-the command line is parsed several times:
+Gnatprove command-line parsing is complex because projects (including
+withed projects) may contain the ``Prove.Switches`` attribute (legacy) or
+``Prove.Proof_Switches``. To make things worse, command-line switches can
+influence project parsing. It is therefore done in multiple steps.
 
- - Once only the actual command line (as in ``Ada.Command_Line``) is
-   parsed for some switches that would terminate immediately such as
-   ``--clean`` and ``--version``, and for switches that influence
-   project parsing such as the ``-X`` switches and ``-aP``.
- - Then the actual command line is concatenated with the extra switches
-   in the project file (if any), and the result is parsed again, now
-   looking at all switches.
- - The previous step is repeated for all file-specific switches specified in
-   the project file.
+The first step separates -cargs, handles all switches that cause gnatprove
+to terminate immediately, such as ``--clean`` and ``--version``, and all
+project-relevant switches (these are taken from GPR library). This phase
+only passes the unhandled switches to the next phases. This phase uses
+GNATCOLL.Opt_Parse to be able to reuse the GPR library switch definitions.
 
-Inside ``configuration.adb``, there is a package ``CL_Switches`` that
-represents command line switches (via command line or project file),
-and there is a separate list of variables that represents synthesized
-variables. For example, the timeout that will eventually be used by
-gnatprove is synthesized from various command line switches, including
-the ``--timeout`` switch.
+The next phase parses the command-line and the root project's switch attributes
+into records which are then merged according to precedence rules. This phase
+establishes "invocation-level" settings (That influence the behavior of the
+whole run), but also establishes data that will then be used for file-specific
+switches as well.
 
-The switch definitions are centralized in the ``Switch_Definitions`` table.
-This table records the spelling and value kind of each switch, as well as its
-semantic layer. Switch ids are ordered so that invocation-level switches are
-contiguous and file-specific switches are contiguous. The parser records switch
-values in internal arrays indexed by these switch ids. Separate parses, such as
-project-wide attributes, file-specific attributes, and the actual command line,
-are merged in precedence order before projection. Invocation-wide and
-file-specific postprocessing now read this merged parsed state directly;
-``CL_Switches`` remains the compatibility interface for downstream consumers
-that have not been migrated yet.
+Then, the switches attributes of the entire project tree are parsed
+into records, and merged according to precedence rules, to establish the
+"file-specific" switches, which can be specified on a per-file basis.
 
 .. _Generating Globals:
 

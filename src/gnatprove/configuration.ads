@@ -114,6 +114,7 @@ package Configuration is
    end CL_Switches;
 
    type Proof_Mode is (Progressive, No_WP, All_Split, Per_Path, Per_Check);
+   type Verbosity_Choice is (Quiet_Level, Normal_Level, Verbose_Level);
 
    --  Attributes that are synthesized from the command line and project file.
    --  They are either defined in the Postprocess procedure or are simple
@@ -148,8 +149,7 @@ package Configuration is
    Flow_Extra_Debug  : Boolean := False;  --  --flow-debug
    Force             : Boolean := False;  --  -f
    IDE_Mode          : Boolean := False;  --  --ide-progress-bar
-   Quiet             : Boolean := False;  --  -q
-   Verbose           : Boolean := False;  --  -v
+   Verbosity         : Verbosity_Choice := Normal_Level;
 
    type File_Specific is record
       Proof                 : Proof_Mode;
