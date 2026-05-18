@@ -5,7 +5,7 @@ with GNAT.Strings;          use GNAT.Strings;
 with GPR2.Build.Artifacts.Source_Files;
 with VC_Kinds;              use VC_Kinds;
 
-package body GPR2.Build.Actions.Compile.Ada.Data_Rep is
+package body GPR2.Build.Actions.Process.Compile.Ada.Data_Rep is
 
    use type Configuration.Verbosity_Choice;
 
@@ -37,7 +37,7 @@ package body GPR2.Build.Actions.Compile.Ada.Data_Rep is
       Cmd_Line       : in out GPR2.Build.Command_Line.Object;
       Signature_Only : Boolean) is
    begin
-      GPR2.Build.Actions.Compile.Ada.Object (Self).Compute_Command
+      Compile.Ada.Object (Self).Compute_Command
         (Slot, Cmd_Line, Signature_Only);
 
       --  Prepend the wrapper; the original compiler becomes its first
@@ -99,9 +99,7 @@ package body GPR2.Build.Actions.Compile.Ada.Data_Rep is
    function Create
      (Src : GPR2.Build.Compilation_Unit.Object) return Data_Rep_Id is
    begin
-      return
-        (GPR2.Build.Actions.Compile.Ada.Ada_Compile_Id'(Ada.Create (Src))
-         with null record);
+      return (Compile.Ada.Ada_Compile_Id'(Ada.Create (Src)) with null record);
    end Create;
 
    --------------
@@ -121,7 +119,7 @@ package body GPR2.Build.Actions.Compile.Ada.Data_Rep is
    procedure Initialize
      (Self : in out Object; Unit : GPR2.Build.Compilation_Unit.Object) is
    begin
-      GPR2.Build.Actions.Compile.Ada.Object (Self).Initialize (Unit);
+      Compile.Ada.Object (Self).Initialize (Unit);
    end Initialize;
 
    -----------------------------
@@ -189,12 +187,12 @@ package body GPR2.Build.Actions.Compile.Ada.Data_Rep is
       return True;
    end On_Tree_Insertion;
 
-   ------------------
-   -- Post_Command --
-   ------------------
+   --------------------
+   -- Post_Execution --
+   --------------------
 
    overriding
-   function Post_Command
+   function Post_Execution
      (Self   : in out Object;
       Status : Execution_Status;
       Stdout : Unbounded_String := Null_Unbounded_String;
@@ -213,7 +211,7 @@ package body GPR2.Build.Actions.Compile.Ada.Data_Rep is
       end if;
 
       return True;
-   end Post_Command;
+   end Post_Execution;
 
    ---------
    -- UID --
@@ -225,4 +223,4 @@ package body GPR2.Build.Actions.Compile.Ada.Data_Rep is
       return Data_Rep.Create (Self.CU);
    end UID;
 
-end GPR2.Build.Actions.Compile.Ada.Data_Rep;
+end GPR2.Build.Actions.Process.Compile.Ada.Data_Rep;

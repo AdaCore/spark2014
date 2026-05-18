@@ -1,24 +1,24 @@
 with Configuration; use Configuration;
 with Gnat2Why_Opts.Writing;
-with GPR2.Build.Actions.Compile.Ada.Data_Rep;
+with GPR2.Build.Actions.Process.Compile.Ada.Data_Rep;
 with GPR2.Build.Artifacts.Source_Files;
 with GPR2.Project.Attribute;
 with GPR2.Project.Registry.Attribute;
 
-package body GPR2.Build.Actions.Compile.Ada.Analysis is
+package body GPR2.Build.Actions.Process.Compile.Ada.Analysis is
 
    package PRA renames GPR2.Project.Registry.Attribute;
 
    function Artifacts_Base_Name
      (Unit : GPR2.Build.Compilation_Unit.Object) return Simple_Name;
-   --  ??? copied from gpr2-build-actions-compile-ada.adb
+   --  ??? copied from gpr2-build-actions-process-compile-ada.adb
 
    function Get_Attr
      (V       : GPR2.Project.View.Object;
       Name    : Q_Attribute_Id;
       Idx     : Language_Id;
       Default : Value_Type) return Value_Type;
-   --  ??? copied from gpr2-build-actions-compile-ada.adb
+   --  ??? copied from gpr2-build-actions-process-compile-ada.adb
 
    -------------------------
    -- Artifacts_Base_Name --
@@ -59,7 +59,7 @@ package body GPR2.Build.Actions.Compile.Ada.Analysis is
       Cmd_Line       : in out GPR2.Build.Command_Line.Object;
       Signature_Only : Boolean) is
    begin
-      GPR2.Build.Actions.Compile.Ada.Object (Self).Compute_Command
+      Compile.Ada.Object (Self).Compute_Command
         (Slot, Cmd_Line, Signature_Only);
       --  Replace gcc by gnat2why; we need to explicitly remove the previous
       --  command, then add ours.
@@ -109,8 +109,7 @@ package body GPR2.Build.Actions.Compile.Ada.Analysis is
    procedure Compute_Signature
      (Self : in out Object; Check_Checksums : Boolean) is
    begin
-      GPR2.Build.Actions.Compile.Ada.Object (Self).Compute_Signature
-        (Check_Checksums);
+      Compile.Ada.Object (Self).Compute_Signature (Check_Checksums);
 
       for ALI_File of Self.ALI_Files loop
          if not Self.Signature.Add_Input (ALI_File, Check_Checksums) then
@@ -132,9 +131,7 @@ package body GPR2.Build.Actions.Compile.Ada.Analysis is
    function Create
      (Src : GPR2.Build.Compilation_Unit.Object) return Analysis_Id is
    begin
-      return
-        (GPR2.Build.Actions.Compile.Ada.Ada_Compile_Id'(Ada.Create (Src))
-         with null record);
+      return (Compile.Ada.Ada_Compile_Id'(Ada.Create (Src)) with null record);
    end Create;
 
    ----------------
@@ -162,7 +159,7 @@ package body GPR2.Build.Actions.Compile.Ada.Analysis is
       end ALI_For_Unit;
 
    begin
-      GPR2.Build.Actions.Compile.Ada.Object (Self).Initialize (Unit);
+      Compile.Ada.Object (Self).Initialize (Unit);
       Self.Object_Path_File := To_Unbounded_String (Object_Path_File);
       Self.Obj_File :=
         Build.Artifacts.Object_File.Create
@@ -182,9 +179,8 @@ package body GPR2.Build.Actions.Compile.Ada.Analysis is
 
       --  When data representation is applicable, register JSON outputs of
       --  Data_Rep actions for this unit and all its dependencies as inputs.
-      if Actions.Compile.Ada.Data_Rep.Applicable (Self.CU) then
-         for JSON_File of Actions.Compile.Ada.Data_Rep.Data_Rep_Files (Self.CU)
-         loop
+      if Compile.Ada.Data_Rep.Applicable (Self.CU) then
+         for JSON_File of Compile.Ada.Data_Rep.Data_Rep_Files (Self.CU) loop
             Self.Data_Rep_JSON_Files.Insert (JSON_File);
          end loop;
          for Dep of Deps loop
@@ -193,11 +189,9 @@ package body GPR2.Build.Actions.Compile.Ada.Analysis is
               and then
                 (not CL_Switches.No_Subprojects
                  or else Dep.Owning_View = Self.CU.Owning_View)
-              and then Actions.Compile.Ada.Data_Rep.Applicable (Dep)
+              and then Compile.Ada.Data_Rep.Applicable (Dep)
             then
-               for JSON_File of
-                 Actions.Compile.Ada.Data_Rep.Data_Rep_Files (Dep)
-               loop
+               for JSON_File of Compile.Ada.Data_Rep.Data_Rep_Files (Dep) loop
                   Self.Data_Rep_JSON_Files.Include (JSON_File);
                end loop;
             end if;
@@ -292,12 +286,12 @@ package body GPR2.Build.Actions.Compile.Ada.Analysis is
       return True;
    end On_Static_Completion;
 
-   ------------------
-   -- Post_Command --
-   ------------------
+   --------------------
+   -- Post_Execution --
+   --------------------
 
    overriding
-   function Post_Command
+   function Post_Execution
      (Self   : in out Object;
       Status : Execution_Status;
       Stdout : Unbounded_String := Null_Unbounded_String;
@@ -307,6 +301,6 @@ package body GPR2.Build.Actions.Compile.Ada.Analysis is
 
    begin
       return True;
-   end Post_Command;
+   end Post_Execution;
 
-end GPR2.Build.Actions.Compile.Ada.Analysis;
+end GPR2.Build.Actions.Process.Compile.Ada.Analysis;

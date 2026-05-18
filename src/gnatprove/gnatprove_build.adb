@@ -7,13 +7,13 @@ with Call;                  use Call;
 with Configuration;         use Configuration;
 with Graphs;
 with GPR2.Build;
-with GPR2.Build.Actions.Compile.Ada.Analysis;
-with GPR2.Build.Actions.Compile.Ada.Data_Rep;
-with GPR2.Build.Actions.Compile.Ada.Global_Gen;
+with GPR2.Build.Actions.Process.Compile.Ada.Analysis;
+with GPR2.Build.Actions.Process.Compile.Ada.Data_Rep;
+with GPR2.Build.Actions.Process.Compile.Ada.Global_Gen;
 with GPR2.Build.Compilation_Unit;
 with GPR2.Build.Compilation_Unit.Maps;
-with GPR2.Build.Process_Manager;
-with GPR2.Build.Process_Manager.JSON;
+with GPR2.Build.Actions_Scheduler;
+with GPR2.Build.Actions_Scheduler.JSON;
 with GPR2.Build.Source;
 with GPR2.Build.Tree_Db;
 with GPR2.Path_Name;
@@ -125,10 +125,10 @@ package body Gnatprove_Build is
       SPARK_Error_Files : out String_Lists.List;
       Success           : out Boolean)
    is
-      Process_M : GPR2.Build.Process_Manager.JSON.Object;
-      Exec_Opts : GPR2.Build.Process_Manager.PM_Options;
+      Act_Sched : GPR2.Build.Actions_Scheduler.JSON.Object;
+      Exec_Opts : GPR2.Build.Actions_Scheduler.Options;
       Id        : GNAT.OS_Lib.Process_Id := GNAT.OS_Lib.Invalid_Pid;
-      use type GPR2.Build.Process_Manager.Execution_Status;
+      use type GPR2.Build.Actions_Scheduler.Execution_Status;
       use type GNAT.OS_Lib.Process_Id;
 
       procedure Cleanup;
@@ -242,6 +242,8 @@ package body Gnatprove_Build is
          end Add_Deps;
 
          use type GPR2.Project.View.Object;
+         use GPR2.Build.Actions.Process;
+
       begin
          if Configuration.All_Projects and then Selected_Units.Is_Empty then
             To_Analyze := All_Project_Units;
@@ -268,7 +270,7 @@ package body Gnatprove_Build is
                  and then not Owning.Is_Externally_Built
                then
                   declare
-                     GG_Act : GPR2.Build.Actions.Compile.Ada.Global_Gen.Object;
+                     GG_Act : Compile.Ada.Global_Gen.Object;
                   begin
                      GG_Act.Initialize (Elt);
                      if not Tree.Artifacts_Database.Add_Action (GG_Act) then
@@ -287,11 +289,9 @@ package body Gnatprove_Build is
                      end if;
                   end;
 
-                  if GPR2.Build.Actions.Compile.Ada.Data_Rep.Applicable (Elt)
-                  then
+                  if Compile.Ada.Data_Rep.Applicable (Elt) then
                      declare
-                        Data_Rep_Action :
-                          GPR2.Build.Actions.Compile.Ada.Data_Rep.Object;
+                        Data_Rep_Action : Compile.Ada.Data_Rep.Object;
                      begin
                         Data_Rep_Action.Initialize (Elt);
                         if not Tree.Artifacts_Database.Add_Action
@@ -317,8 +317,7 @@ package body Gnatprove_Build is
                  and then not Owning.Is_Externally_Built
                then
                   declare
-                     Analysis_Act :
-                       GPR2.Build.Actions.Compile.Ada.Analysis.Object;
+                     Analysis_Act : Compile.Ada.Analysis.Object;
                      Elt_Set      : Unit_Set;
                      Unit_Deps    : Unit_Set;
                   begin
@@ -355,7 +354,7 @@ package body Gnatprove_Build is
       end Insert_Actions;
 
    begin
-      Process_M.Set_JSON_File
+      Act_Sched.Set_JSON_File
         (Path_Name.Compose
            (Configuration.Artifact_Dir (Tree),
             "gnatprove_build.json",
@@ -419,8 +418,8 @@ package body Gnatprove_Build is
       end;
 
       Success :=
-        Tree.Artifacts_Database.Execute (Process_M, Exec_Opts)
-        = GPR2.Build.Process_Manager.Success;
+        Tree.Artifacts_Database.Execute (Act_Sched, Exec_Opts)
+        = GPR2.Build.Actions_Scheduler.Success;
 
       --  ??? Delete why3 conf files.
       --  ??? In debug mode, output should not be buffered.
