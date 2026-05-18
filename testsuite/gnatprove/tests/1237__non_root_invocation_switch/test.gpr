@@ -1,0 +1,5 @@
+with "sub/sub";
+
+project Test is
+   for Source_Dirs use (".");
+end Test;
