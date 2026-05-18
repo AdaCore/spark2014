@@ -7,6 +7,8 @@ include:
   - component: $CI_SERVER_FQDN/eng/gitlab-templates/pre-commit@~latest
     inputs:
       stage: check
+  - project: eng/gitlab-templates
+    file: /ci-templates-shared/insteadOf.yml
 
 # In this CI, pipelines are triggered when pushing to a Merge Request and when
 # merging a MR to a protected branch (only for the gnatsas job).
@@ -407,3 +409,32 @@ pre-commit:
     - cd $CI_PROJECT_DIR
     - ln -s $ACI_SUBPROJECTS_ROOT/gnat gnat2why/gnat_src
     - make -C gnat2why setup
+
+check-doc-src-refs:
+  interruptible: true
+  services:
+     - image:pe-base
+  stage: check
+  needs: []
+  variables:
+    GIT_DEPTH: "0"
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - when: never
+  script:
+    -  !reference [.insteadOfPython]
+    -  python -m pip install pre-commit
+    - |
+      set -eu
+
+      base="${CI_MERGE_REQUEST_DIFF_BASE_SHA:?CI_MERGE_REQUEST_DIFF_BASE_SHA is not set}"
+
+      for commit in $(git rev-list --reverse "$base"..HEAD); do
+        echo "Checking commit message for $commit"
+        git log -1 --format=%B "$commit" > .gitlab_commit_msg
+
+        CHECK_DOC_SRC_REFS_COMMIT_SHA="$commit" \
+          pre-commit run check-doc-src-refs \
+            --hook-stage commit-msg \
+            --commit-msg-filename .gitlab_commit_msg
+      done
