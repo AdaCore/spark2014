@@ -23,6 +23,7 @@ main.adb:65:13: info: length check proved (CVC5: 3 VC), in call inlined at main.
 main.adb:65:15: info: length check proved (CVC5: 3 VC), in call inlined at main.adb:68
 main.adb:65:18: info: length check proved (CVC5: 3 VC), in call inlined at main.adb:68
 main.adb:68:10: info: analyzing call to "Assign" in context
+main.adb:68:18: info: length check proved (CVC5: 3 VC)
 main.adb:71:28: info: initialization of "V_A" proved
 main.adb:75:20: info: add a contract to analyze it separately from calling contexts
 main.adb:75:20: info: local subprogram "Assign" only analyzed in the context of calls [info-unrolling-inlining]
@@ -31,6 +32,7 @@ main.adb:77:13: medium: length check might fail, in call inlined at main.adb:80 
 main.adb:77:15: info: length check proved (CVC5: 3 VC), in call inlined at main.adb:80
 main.adb:77:18: info: length check proved (CVC5: 3 VC), in call inlined at main.adb:80
 main.adb:80:10: info: analyzing call to "Assign" in context
+main.adb:80:18: medium: length check might fail [reason for check: array must be of the appropriate length] [possible fix: precondition of subprogram at line 71 should mention V_A'Length or V_A'First or V_A'Last] [provers reached step limit before completing the proof]
 main.adb:83:28: info: initialization of "V_A" proved
 main.adb:87:20: info: add a contract to analyze it separately from calling contexts
 main.adb:87:20: info: local subprogram "Assign" only analyzed in the context of calls [info-unrolling-inlining]
@@ -39,6 +41,7 @@ main.adb:89:13: info: length check proved (CVC5: 3 VC), in call inlined at main.
 main.adb:89:15: info: length check proved (CVC5: 3 VC), in call inlined at main.adb:92
 main.adb:89:18: medium: length check might fail, in call inlined at main.adb:92 [reason for check: array must be of the appropriate length] [provers reached step limit before completing the proof]
 main.adb:92:10: info: analyzing call to "Assign" in context
+main.adb:92:18: medium: length check might fail [reason for check: array must be of the appropriate length] [possible fix: precondition of subprogram at line 83 should mention V_A'Length or V_A'First or V_A'Last] [provers reached step limit before completing the proof]
 main.adb:99:20: info: add a contract to analyze it separately from calling contexts
 main.adb:99:20: info: local subprogram "Assign" only analyzed in the context of calls [info-unrolling-inlining]
 main.adb:101:13: info: length check proved (CVC5: 3 VC), in call inlined at main.adb:104

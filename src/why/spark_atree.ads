@@ -817,9 +817,6 @@ package SPARK_Atree is
    function Unique_Defining_Entity (N : Node_Id) return Entity_Id
    renames Sem_Util.Unique_Defining_Entity;
 
-   function Unqual_Conv (N : Node_Id) return Node_Id
-   with Pre => Nkind (N) in N_Has_Etype;
-
    function Unit (N : Node_Id) return Node_Id
    with Pre => Nkind (N) = N_Compilation_Unit;
 
