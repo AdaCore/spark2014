@@ -133,6 +133,10 @@ package body Errout_Wrapper is
       Set_Field (Value, "col", Col);
       Set_Field (Value, "message", To_JSON (Obj.Msg));
 
+      if Obj.Details /= "" then
+         Set_Field (Value, "reasonForCheck", To_String (Obj.Details));
+      end if;
+
       if Obj.Msg.Secondary_Loc /= No_Location then
          declare
             Locations     : JSON_Array;

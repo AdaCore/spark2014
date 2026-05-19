@@ -26,7 +26,6 @@
 with Ada.Containers.Indefinite_Hashed_Maps;
 with Ada.Strings.Fixed;
 with Ada.Strings.Hash;
-with Ada.Strings.Unbounded;
 with Configuration;
 with GNAT.OS_Lib;
 with GPR2.Project.Tree;
@@ -96,6 +95,9 @@ is
    function Build_Original_Uri_Base_Ids return SARIF.Types.Any_Object;
    --  Build the run.originalUriBaseIds value from Base_URIs.
 
+   function Properties (V : JSON_Value) return Optional_propertyBag;
+   --  Build custom SARIF properties for a given result in GNATprove's JSON
+
    procedure Handle_SPARK_Files;
    --  Parse all .spark files
 
@@ -162,6 +164,31 @@ is
       Result.Append ((Kind => End_Object));
       return Result;
    end Build_Original_Uri_Base_Ids;
+
+   ----------------
+   -- Properties --
+   ----------------
+
+   function Properties (V : JSON_Value) return Optional_propertyBag is
+      use VSS.JSON.Streams;
+      Extra : Any_Object;
+   begin
+      if Has_Field (V, "reasonForCheck") then
+         Extra.Append
+           ((Kind     => Key_Name,
+             Key_Name => To_Virtual_String ("gnatprove/reasonForCheck")));
+         Extra.Append
+           ((Kind         => String_Value,
+             String_Value =>
+               To_Virtual_String (UTF8_String'(Get (V, "reasonForCheck")))));
+
+         return
+           (Is_Set => True,
+            Value  => (tags => <>, Additional_Properties => Extra));
+      else
+         return (Is_Set => False);
+      end if;
+   end Properties;
 
    -------------------------
    -- Ensure_Trailing_Sep --
@@ -299,6 +326,7 @@ is
                   level            =>
                     (True, Severity_To_Result_Level (Severity)),
                   message          => Message (Get (Result, "message")),
+                  properties       => Properties (Result),
                   suppressions     => Suppressions,
                   locations        => Locations (Result),
                   relatedLocations => Rel_Locs,

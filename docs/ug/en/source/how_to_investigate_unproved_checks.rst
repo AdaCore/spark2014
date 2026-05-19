@@ -297,6 +297,7 @@ Entries for proof are of the following form::
       "line"       : int,
       "col"        : int,
       "message"    : SARIF message object,
+      "reasonForCheck" : string,
       "suppressed" : string,
       "rule"       : string,
       "severity"   : string,
@@ -310,6 +311,7 @@ Entries for proof are of the following form::
 * ("file", "line", "col") describe the source location of the message.
 * "rule" describes the kind of check.
 * "message" -  a SARIF message object
+* "reasonForCheck" - if present, explains the purpose of the generated check.
 * "severity" describes the kind status of the message, possible values used
   by gnatwhy3 are "info", "low", "medium", "high" and "error".
 * "tracefile" contains the name of a trace file, if any.

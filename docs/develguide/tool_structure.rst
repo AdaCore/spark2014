@@ -313,6 +313,8 @@ SARIF as follows:
    ``warn_error`` arrays.
  - The ``message`` field is copied into a SARIF message object, including
    message arguments when placeholders were present in the original diagnostic.
+ - ``reasonForCheck`` is emitted as the custom SARIF property
+   ``gnatprove/reasonForCheck`` when available.
  - The ``suppressed`` field becomes a SARIF suppression.
  - ``relatedLocations`` entries are preserved as SARIF related locations.
  - The JSON ``entity`` field is turned into a SARIF logical location naming

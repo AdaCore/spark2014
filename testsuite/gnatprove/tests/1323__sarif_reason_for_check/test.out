@@ -1,0 +1,2 @@
+CLI reason present
+SARIF reason: result of addition must fit in a 32-bits machine integer
