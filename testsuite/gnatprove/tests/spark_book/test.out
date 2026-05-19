@@ -872,8 +872,6 @@ palindrome.adb:25:04: info: initialization of "Line" proved
 palindrome.adb:27:04: info: initialization of "Count" proved
 palindrome.adb:33:15: info: only expected exception raised (CVC5: 1 VC)
 palindrome.adb:36:07: info: analyzing call to "Is_Palindrome" in context
-palindrome.adb:36:07: info: initialization check proved (CVC5: 1 VC; Trivial: 1 VC)
-palindrome.adb:36:07: info: length check proved (CVC5: 3 VC)
 palindrome.adb:36:07: info: range check proved (CVC5: 4 VC)
 parent-private1.ads:6:13: info: implicit aspect Always_Terminates on "Convert" has been proved, subprogram will terminate
 parent-public1.adb:7:07: info: initialization of "Temp" proved
