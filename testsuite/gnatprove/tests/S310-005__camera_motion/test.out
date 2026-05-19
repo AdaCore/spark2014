@@ -82,7 +82,7 @@ camera_motion.adb:149:21: warning: unused assignment, in call inlined at camera_
 camera_motion.adb:150:35: medium: range check might fail, cannot prove lower bound for Mean, in call inlined at camera_motion.adb:240 [reason for check: value must be convertible to the target type of the conversion] [provers reached step limit before completing the proof]
 camera_motion.adb:151:37: info: analyzing call to "Sqrt" in context
 camera_motion.adb:151:37: medium: range check might fail, cannot prove upper bound for Sqrt (Var_Sum / Count), in call inlined at camera_motion.adb:240 [reason for check: value must be convertible to the target type of the conversion] [provers reached step limit before completing the proof]
-camera_motion.adb:151:51: medium: divide by zero might fail, in call inlined at camera_motion.adb:240 [provers reached step limit before completing the proof]
+camera_motion.adb:151:51: medium: divide by zero might fail, in call inlined at camera_motion.adb:240 [provers gave up before completing the proof]
 camera_motion.adb:156:04: info: no contextual analysis of "Clip_Image" (unconstrained return type)
 camera_motion.adb:156:13: info: implicit aspect Always_Terminates on "Clip_Image" has been proved, subprogram will terminate
 camera_motion.adb:158:07: info: initialization of "v" proved
