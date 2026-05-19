@@ -280,6 +280,7 @@ two IDEs developed at AdaCore: GNAT Studio or GNATbench (a plugin of Eclipse).
 
 A general principle is that as little logic as possible should be put in the
 IDE support, as:
+
  - the support may be IDE-specific which entails duplication,
  - we may drop some IDE and add support for others in the future,
  - most features should be usable from the command-line, and
@@ -293,6 +294,7 @@ simply in displaying that information when requested by the user.
 
 The IDE integration consists mostly in the following files inside ``gps``
 repository, under ``share/plug-ins``:
+
  - file :file:`spark2014.py` defines the GNAT Studio integration
  - file :file:`spark2014/gnatprove.xml` defines the pop-up panels and Build
    Targets (shared between GNAT Studio and GNATbench)
