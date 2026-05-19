@@ -1550,7 +1550,8 @@ package VC_Kinds is
       EC_Ghost_Volatile,
       EC_Handler_Choice_Parameter,
       EC_Overlay_Mutable_Constant,
-      EC_UC_From_Access);
+      EC_UC_From_Access,
+      EC_Intrinsic_Operator);
    for Explain_Code_Kind use
      (EC_None                                 => 0,
       EC_Volatile_At_Library_Level            => 1,
@@ -1579,7 +1580,8 @@ package VC_Kinds is
       EC_Ghost_Volatile                       => 24,
       EC_Handler_Choice_Parameter             => 25,
       EC_Overlay_Mutable_Constant             => 26,
-      EC_UC_From_Access                       => 27);
+      EC_UC_From_Access                       => 27,
+      EC_Intrinsic_Operator                   => 33);
 
    function To_String (Code : Explain_Code_Kind) return String
    with Pre => Code /= EC_None;

@@ -1674,6 +1674,7 @@ package body VC_Kinds is
          when Vio_Ghost_Volatile                    => EC_Ghost_Volatile,
          when Vio_Handler_Choice_Parameter          =>
            EC_Handler_Choice_Parameter,
+         when Vio_Intrinsic_Operator                => EC_Intrinsic_Operator,
          when Vio_Overlay_Mutable_Constant          =>
            EC_Overlay_Mutable_Constant,
          when Vio_UC_From_Access                    => EC_UC_From_Access,
@@ -2878,6 +2879,8 @@ package body VC_Kinds is
          => "SPARK RM 6.9(9)",
          when Vio_Handler_Choice_Parameter
          => "SPARK RM 11.2(1)",
+         when Vio_Intrinsic_Operator
+         => "SPARK RM 6.3.1",
          when Vio_Invariant_Class | Vio_Invariant_Ext | Vio_Invariant_Partial
          => "SPARK RM 7.3.2(2)",
          when Vio_Invariant_Volatile

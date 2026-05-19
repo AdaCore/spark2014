@@ -1,7 +1,9 @@
-bad_intrinsic.adb:10:13: error: Intrinsic convention on arithmetic operator with unexpected profile is not allowed in SPARK
+bad_intrinsic.adb:10:13: error: Intrinsic convention on arithmetic operator with unexpected profile is not allowed in SPARK (SPARK RM 6.3.1) [E0033]
+bad_intrinsic.adb:10:13: error: launch "gnatprove --explain=E0033" for more information
 bad_intrinsic.adb:10:13: error: types of operands should match the result type
 bad_intrinsic.adb:10:13: error: violation of aspect SPARK_Mode at line 1
-bad_intrinsic.adb:16:13: error: Intrinsic convention on arithmetic operator with unexpected profile is not allowed in SPARK
+bad_intrinsic.adb:16:13: error: Intrinsic convention on arithmetic operator with unexpected profile is not allowed in SPARK (SPARK RM 6.3.1) [E0033]
+bad_intrinsic.adb:16:13: error: launch "gnatprove --explain=E0033" for more information
 bad_intrinsic.adb:16:13: error: type of left operand should match the result type
 bad_intrinsic.adb:16:13: error: violation of aspect SPARK_Mode at line 1
 bad_intrinsic.adb:25:07: error: "Y" is not allowed in SPARK (due to Intrinsic convention on arithmetic operator with unexpected profile)

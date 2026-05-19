@@ -1899,8 +1899,11 @@ Subprogram Bodies
 Conformance Rules
 ~~~~~~~~~~~~~~~~~
 
-No extensions or restrictions.
-
+Arithmetic operators with the Intrinsic convention should have a profile
+compatible with the profile of the predefined arithmetic operators. In
+particular, the base types of all the parameters of the operator should
+match the base type of the result, except for the second parameter of
+``"**"`` that should be a subtype of ``Integer``.
 
 Inline Expansion of Subprograms
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

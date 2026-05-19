@@ -54,3 +54,5 @@
 - E0026: `mutable object and constant object overlaying each other`
 
 - E0027: `unchecked conversion instance from a type with access subcomponents`
+
+- E0033: `Intrinsic convention on arithmetic operator with unexpected profile`
