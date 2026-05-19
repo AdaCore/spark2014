@@ -6364,6 +6364,69 @@ package body SPARK_Definition is
       Mark (Left_Opnd (N));
       Mark (Right_Opnd (N));
 
+      --  Reject user-defined intrinsic operators if they cannot be matched to
+      --  a predefined operator.
+
+      if Present (Parent (E))
+        and then Nkind (Parent (E)) = N_Function_Specification
+        and then In_SPARK (E)
+        and then not Is_Hardcoded_Entity (E)
+      then
+         case N_Binary_Op'(Nkind (N)) is
+            when N_Op_Add | N_Op_Subtract | N_Multiplying_Operator =>
+               declare
+                  Left_Base   : constant Entity_Id :=
+                    Base_Retysp (Etype (First_Formal (E)));
+                  Right_Base  : constant Entity_Id :=
+                    Base_Retysp (Etype (Next_Formal (First_Formal (E))));
+                  Result_Base : constant Entity_Id := Base_Retysp (Etype (E));
+               begin
+                  if Left_Base /= Right_Base or else Left_Base /= Result_Base
+                  then
+                     Mark_Violation
+                       (Vio_Intrinsic_Operator,
+                        E,
+                        Cont_Msg =>
+                          "types of operands should match the result type");
+                  end if;
+               end;
+
+            when N_Op_Expon                                        =>
+               declare
+                  Left_Base   : constant Entity_Id :=
+                    Base_Retysp (Etype (First_Formal (E)));
+                  Right_Base  : constant Entity_Id :=
+                    Base_Retysp (Etype (Next_Formal (First_Formal (E))));
+                  Result_Base : constant Entity_Id := Base_Retysp (Etype (E));
+               begin
+                  if Right_Base /= Base_Retysp (Standard_Natural) then
+                     pragma
+                       Annotate
+                         (Xcov,
+                          Exempt_On,
+                          "GNAT never seems to resolve calls to such "
+                          & "operators");
+                     Mark_Violation
+                       (Vio_Intrinsic_Operator,
+                        E,
+                        Cont_Msg =>
+                          "type of right operand should be a subtype of "
+                          & """Integer""");
+                     pragma Annotate (Xcov, Exempt_Off);
+                  elsif Left_Base /= Result_Base then
+                     Mark_Violation
+                       (Vio_Intrinsic_Operator,
+                        E,
+                        Cont_Msg =>
+                          "type of left operand should match the result type");
+                  end if;
+               end;
+
+            when others                                            =>
+               null;
+         end case;
+      end if;
+
       --  Disallow equality operators tests if they involved the use of the
       --  predefined equality on access types (except if one of the operands is
       --  syntactically null).
@@ -14801,6 +14864,42 @@ package body SPARK_Definition is
         Assert
           (Is_Intrinsic_Subprogram (E)
            and then Ekind (E) in E_Function | E_Operator);
+
+      --  Reject user-defined intrinsic operators if they cannot be matched to
+      --  a predefined operator.
+
+      if Present (Parent (E))
+        and then Nkind (Parent (E)) = N_Function_Specification
+        and then In_SPARK (E)
+        and then not Is_Hardcoded_Entity (E)
+      then
+         case N_Binary_Op'(Nkind (N)) is
+            when N_Op_Add | N_Op_Subtract =>
+               declare
+                  Op_Base     : constant Entity_Id :=
+                    Base_Retysp (Etype (First_Formal (E)));
+                  Result_Base : constant Entity_Id := Base_Retysp (Etype (E));
+               begin
+                  if Op_Base /= Result_Base then
+                     pragma
+                       Annotate
+                         (Xcov,
+                          Exempt_On,
+                          "GNAT never seems to resolve calls to such "
+                          & "operators");
+                     Mark_Violation
+                       (Vio_Intrinsic_Operator,
+                        E,
+                        Cont_Msg =>
+                          "type of operand should match the result type");
+                     pragma Annotate (Xcov, Exempt_Off);
+                  end if;
+               end;
+
+            when others                   =>
+               null;
+         end case;
+      end if;
 
       if Nkind (N) = N_Op_Not
         and then Has_Modular_Operations (Etype (N))

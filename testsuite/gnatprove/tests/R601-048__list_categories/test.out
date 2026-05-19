@@ -356,6 +356,7 @@ violation-function-out-param - violation-function-out-param - function with out 
 violation-ghost-concurrent-comp - violation-ghost-concurrent-comp - concurrent component of ghost type - HIGH
 violation-ghost-volatile - violation-ghost-volatile - volatile ghost object - HIGH
 violation-handler-choice-parameter - violation-handler-choice-parameter - choice parameter in handler - HIGH
+violation-intrinsic-operator - violation-intrinsic-operator - Intrinsic convention on arithmetic operator with unexpected profile - HIGH
 violation-invariant-class - violation-invariant-class - classwide invariant - HIGH
 violation-invariant-ext - violation-invariant-ext - type invariant on completion of private_type_extension - HIGH
 violation-invariant-partial - violation-invariant-partial - type invariant on private_type_declaration or private_type_extension - HIGH

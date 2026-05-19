@@ -1430,6 +1430,9 @@ package body VC_Kinds is
            "volatile ghost object",
          when Vio_Handler_Choice_Parameter                 =>
            "choice parameter in handler",
+         when Vio_Intrinsic_Operator                       =>
+           "Intrinsic convention on arithmetic operator with unexpected "
+           & "profile",
          when Vio_Invariant_Class                          =>
            "classwide invariant",
          when Vio_Invariant_Ext                            =>
@@ -3576,6 +3579,8 @@ package body VC_Kinds is
          when Vio_Ghost_Volatile                           => "ghost-volatile",
          when Vio_Handler_Choice_Parameter                 =>
            "handler-choice-parameter",
+         when Vio_Intrinsic_Operator                       =>
+           "intrinsic-operator",
          when Vio_Invariant_Class                          =>
            "invariant-class",
          when Vio_Invariant_Ext                            => "invariant-ext",
@@ -3841,6 +3846,9 @@ package body VC_Kinds is
            "volatile ghost object",
          when Vio_Handler_Choice_Parameter                           =>
            "choice parameter in handler",
+         when Vio_Intrinsic_Operator                                 =>
+           "Intrinsic convention on arithmetic operator with unexpected "
+           & "profile",
          when Vio_Invariant_Class                                    =>
            "classwide invariant",
          when Vio_Invariant_Ext                                      =>
