@@ -20844,6 +20844,32 @@ package body Gnat2Why.Expr is
            +Pred_Of_Boolean_Term
               (Transform_Term (Expr, EW_Bool_Type, Local_Params));
 
+      --  Use specific translation for hardcoded operators
+
+      elsif Nkind (Expr) in N_Op and then Is_Hardcoded_Entity (Entity (Expr))
+      then
+         declare
+            Right : constant N_Subexpr_Id := Right_Opnd (Expr);
+            RT    : constant W_Expr_Id :=
+              Transform_Expr (Right, Domain, Local_Params);
+         begin
+            if Nkind (Expr) in N_Unary_Op then
+               T :=
+                 Transform_Hardcoded_Function_Call
+                   (Entity (Expr), [RT], Domain, Expr);
+            else
+               declare
+                  Left : constant N_Subexpr_Id := Left_Opnd (Expr);
+                  LT   : constant W_Expr_Id :=
+                    Transform_Expr (Left, Domain, Local_Params);
+               begin
+                  T :=
+                    Transform_Hardcoded_Function_Call
+                      (Entity (Expr), [LT, RT], Domain, Expr);
+               end;
+            end if;
+         end;
+
       --  Optimization: if we have a discrete value that is statically known,
       --  use the static value.
 
@@ -21367,29 +21393,16 @@ package body Gnat2Why.Expr is
                   RT    : constant W_Expr_Id :=
                     Transform_Expr (Right, Base, Domain, Local_Params);
                begin
-                  if Is_Hardcoded_Operation (Nkind (Expr), Lty, Rty) then
-                     T :=
-                       Transform_Hardcoded_Operation
-                         (Nkind (Expr),
-                          Lty,
-                          Rty,
-                          Expr_Type,
-                          LT,
-                          RT,
-                          Domain,
-                          Expr);
-                  else
-                     T :=
-                       New_Binary_Op_Expr
-                         (Op          => Nkind (Expr),
-                          Left        => LT,
-                          Right       => RT,
-                          Left_Type   => Lty,
-                          Right_Type  => Rty,
-                          Return_Type => Expr_Type,
-                          Domain      => Domain,
-                          Ada_Node    => Expr);
-                  end if;
+                  T :=
+                    New_Binary_Op_Expr
+                      (Op          => Nkind (Expr),
+                       Left        => LT,
+                       Right       => RT,
+                       Left_Type   => Lty,
+                       Right_Type  => Rty,
+                       Return_Type => Expr_Type,
+                       Domain      => Domain,
+                       Ada_Node    => Expr);
                end;
 
             when N_Op_Expon                                =>
