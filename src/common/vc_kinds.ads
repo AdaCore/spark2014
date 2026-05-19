@@ -608,6 +608,7 @@ package VC_Kinds is
       Vio_Ghost_Concurrent_Comp,
       Vio_Ghost_Volatile,
       Vio_Handler_Choice_Parameter,
+      Vio_Intrinsic_Operator,
       Vio_Invariant_Class,
       Vio_Invariant_Ext,
       Vio_Invariant_Partial,
