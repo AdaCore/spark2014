@@ -6,18 +6,15 @@ bad_intrinsic.adb:10:34: error: Intrinsic convention on arithmetic operator with
 bad_intrinsic.adb:10:34: error: launch "gnatprove --explain=E0033" for more information
 bad_intrinsic.adb:10:34: error: type of operand should match the result type
 bad_intrinsic.adb:10:34: error: violation of aspect SPARK_Mode at line 1
-bad_intrinsic.adb:13:34: error: Intrinsic convention on arithmetic operator with unexpected profile is not allowed in SPARK (SPARK RM 6.3.1) [E0033]
-bad_intrinsic.adb:13:34: error: launch "gnatprove --explain=E0033" for more information
-bad_intrinsic.adb:13:34: error: type of operand should be a subtype of "Integer"
-bad_intrinsic.adb:13:34: error: violation of aspect SPARK_Mode at line 1
-bad_intrinsic.adb:16:19: error: Intrinsic convention on arithmetic operator with unexpected profile is not allowed in SPARK (SPARK RM 6.3.1) [E0033]
-bad_intrinsic.adb:16:19: error: launch "gnatprove --explain=E0033" for more information
-bad_intrinsic.adb:16:19: error: type of operand should match the result type
-bad_intrinsic.adb:16:19: error: violation of aspect SPARK_Mode at line 1
-bad_intrinsic.adb:25:24: error: "**" is not allowed in SPARK (due to Intrinsic convention on arithmetic operator with unexpected profile)
-bad_intrinsic.adb:25:24: error: violation of aspect SPARK_Mode at line 1
-bad_intrinsic.adb:30:04: warning: analyzing unreferenced procedure "Test_Add" [unreferenced-procedure]
-bad_intrinsic.adb:34:22: error: "+" is not allowed in SPARK (due to Intrinsic convention on arithmetic operator with unexpected profile)
-bad_intrinsic.adb:34:22: error: violation of aspect SPARK_Mode at line 1
-bad_intrinsic.adb:38:04: info: analyzing call to "Test_Pow" in context
+bad_intrinsic.adb:21:22: error: "+" is not allowed in SPARK (due to Intrinsic convention on arithmetic operator with unexpected profile)
+bad_intrinsic.adb:21:22: error: violation of aspect SPARK_Mode at line 1
+bad_intrinsic.adb:25:04: info: analyzing call to "Test_Add" in context
+very_bad_intrinsic.adb:10:16: error: incorrect intrinsic subprogram, see spec
+very_bad_intrinsic.adb:11:09: error: incorrect operands for intrinsic operator
+very_bad_intrinsic.adb:13:16: error: incorrect intrinsic subprogram, see spec
+very_bad_intrinsic.adb:14:09: error: incorrect operands for intrinsic operator
+very_bad_intrinsic.adb:29:16: error: incorrect intrinsic subprogram, see spec
+very_bad_intrinsic.adb:30:33: error: incorrect operands for intrinsic operator
+very_bad_intrinsic.adb:32:16: error: incorrect intrinsic subprogram, see spec
+very_bad_intrinsic.adb:33:33: error: incorrect operands for intrinsic operator
 gnatprove: error during flow analysis and proof
