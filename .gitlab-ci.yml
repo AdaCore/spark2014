@@ -321,6 +321,8 @@ upload_coverage_html:
     - job: spark2014
       artifacts: true
   rules:
+    - if: $CI_MERGE_REQUEST_LABELS =~ /no-cache/
+      when: never
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: manual
       allow_failure: true
