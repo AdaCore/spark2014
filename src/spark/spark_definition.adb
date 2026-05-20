@@ -14873,8 +14873,8 @@ package body SPARK_Definition is
         and then In_SPARK (E)
         and then not Is_Hardcoded_Entity (E)
       then
-         case N_Binary_Op'(Nkind (N)) is
-            when N_Op_Add | N_Op_Subtract =>
+         case N_Unary_Op'(Nkind (N)) is
+            when N_Op_Plus | N_Op_Minus | N_Op_Abs =>
                declare
                   Op_Base     : constant Entity_Id :=
                     Base_Retysp (Etype (First_Formal (E)));
@@ -14896,7 +14896,7 @@ package body SPARK_Definition is
                   end if;
                end;
 
-            when others                   =>
+            when others                            =>
                null;
          end case;
       end if;
