@@ -3966,17 +3966,21 @@ package body SPARK_Util is
       Real_Entity : constant Node_Id :=
         (if Is_Itype (E) then Associated_Node_For_Itype (E) else E);
 
-      Encl_Unit : constant Node_Id := Enclosing_Lib_Unit_Node (Real_Entity);
-      --  The library unit containing E
-
       Main_Unit_Node : constant Node_Id := Cunit (Main_Unit);
 
    begin
+
+      if Sloc (Real_Entity) = Standard_Location then
+         return False;
+      end if;
+
       --  Check if the entity is either in the spec or in the body of the
       --  current compilation unit. gnat2why is now only called on requested
       --  files, so otherwise just return False.
 
-      return Encl_Unit in Main_Unit_Node | Library_Unit (Main_Unit_Node);
+      return
+        Enclosing_Lib_Unit_Node (Real_Entity)
+        in Main_Unit_Node | Library_Unit (Main_Unit_Node);
    end Is_In_Analyzed_Files;
 
    --------------------------
