@@ -1,13 +1,23 @@
-bad_intrinsic.adb:10:13: error: Intrinsic convention on arithmetic operator with unexpected profile is not allowed in SPARK (SPARK RM 6.3.1) [E0033]
-bad_intrinsic.adb:10:13: error: launch "gnatprove --explain=E0033" for more information
-bad_intrinsic.adb:10:13: error: types of operands should match the result type
-bad_intrinsic.adb:10:13: error: violation of aspect SPARK_Mode at line 1
-bad_intrinsic.adb:16:13: error: Intrinsic convention on arithmetic operator with unexpected profile is not allowed in SPARK (SPARK RM 6.3.1) [E0033]
-bad_intrinsic.adb:16:13: error: launch "gnatprove --explain=E0033" for more information
-bad_intrinsic.adb:16:13: error: type of left operand should match the result type
-bad_intrinsic.adb:16:13: error: violation of aspect SPARK_Mode at line 1
-bad_intrinsic.adb:25:07: error: "Y" is not allowed in SPARK (due to Intrinsic convention on arithmetic operator with unexpected profile)
-bad_intrinsic.adb:25:07: error: violation of aspect SPARK_Mode at line 1
+bad_intrinsic.adb:7:18: error: Intrinsic convention on arithmetic operator with unexpected profile is not allowed in SPARK (SPARK RM 6.3.1) [E0033]
+bad_intrinsic.adb:7:18: error: launch "gnatprove --explain=E0033" for more information
+bad_intrinsic.adb:7:18: error: type of operand should match the result type
+bad_intrinsic.adb:7:18: error: violation of aspect SPARK_Mode at line 1
+bad_intrinsic.adb:10:34: error: Intrinsic convention on arithmetic operator with unexpected profile is not allowed in SPARK (SPARK RM 6.3.1) [E0033]
+bad_intrinsic.adb:10:34: error: launch "gnatprove --explain=E0033" for more information
+bad_intrinsic.adb:10:34: error: type of operand should match the result type
+bad_intrinsic.adb:10:34: error: violation of aspect SPARK_Mode at line 1
+bad_intrinsic.adb:13:34: error: Intrinsic convention on arithmetic operator with unexpected profile is not allowed in SPARK (SPARK RM 6.3.1) [E0033]
+bad_intrinsic.adb:13:34: error: launch "gnatprove --explain=E0033" for more information
+bad_intrinsic.adb:13:34: error: type of operand should be a subtype of "Integer"
+bad_intrinsic.adb:13:34: error: violation of aspect SPARK_Mode at line 1
+bad_intrinsic.adb:16:19: error: Intrinsic convention on arithmetic operator with unexpected profile is not allowed in SPARK (SPARK RM 6.3.1) [E0033]
+bad_intrinsic.adb:16:19: error: launch "gnatprove --explain=E0033" for more information
+bad_intrinsic.adb:16:19: error: type of operand should match the result type
+bad_intrinsic.adb:16:19: error: violation of aspect SPARK_Mode at line 1
+bad_intrinsic.adb:25:24: error: "**" is not allowed in SPARK (due to Intrinsic convention on arithmetic operator with unexpected profile)
+bad_intrinsic.adb:25:24: error: violation of aspect SPARK_Mode at line 1
 bad_intrinsic.adb:30:04: warning: analyzing unreferenced procedure "Test_Add" [unreferenced-procedure]
+bad_intrinsic.adb:34:22: error: "+" is not allowed in SPARK (due to Intrinsic convention on arithmetic operator with unexpected profile)
+bad_intrinsic.adb:34:22: error: violation of aspect SPARK_Mode at line 1
 bad_intrinsic.adb:38:04: info: analyzing call to "Test_Pow" in context
 gnatprove: error during flow analysis and proof
