@@ -1652,3 +1652,7 @@ workspaces.adb:9:27: high: overflow check might fail, cannot prove upper bound f
 workspaces.adb:9:32: info: index check proved (CVC5: 2 VC)
 workspaces.ads:4:13: info: implicit aspect Always_Terminates on "Generate_Workspace" has been proved, subprogram will terminate
 test.gpr: warning: there are no sources of language "Ada" in this project
+warning: invocation switch "-j" in attribute "Switches" of non-root project "Chapter-01/chapter01.gpr" is ignored
+warning: invocation switch "-j" in attribute "Switches" of non-root project "Chapter-05/chapter05.gpr" is ignored
+warning: invocation switch "-j" in attribute "Switches" of non-root project "Chapter-06/chapter06.gpr" is ignored
+warning: invocation switch "-j" in attribute "Switches" of non-root project "Chapter-09/chapter09.gpr" is ignored
