@@ -245,15 +245,14 @@ package body GPR2.Build.Actions.Process.Compile.Ada.Analysis is
    begin
       Db.Add_Input
         (UID,
-         GPR2.Build.Artifacts.Source_Files.Create (Self.Src.Path_Name),
-         True);
+         GPR2.Build.Artifacts.Source_Files.Create (Self.Src.Path_Name));
 
       for ALI_File of Self.ALI_Files loop
-         Db.Add_Input (Self.UID, ALI_File, True);
+         Db.Add_Input (Self.UID, ALI_File);
       end loop;
 
       for JSON_File of Self.Data_Rep_JSON_Files loop
-         Db.Add_Input (UID, JSON_File, True);
+         Db.Add_Input (UID, JSON_File);
       end loop;
 
       if Self.Obj_File.Is_Defined
