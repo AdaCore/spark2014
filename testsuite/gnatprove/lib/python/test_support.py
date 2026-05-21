@@ -1168,7 +1168,7 @@ def gprbuild(opt=None, sort_lines=True, cwd=None, logger=None):
     # Recognize the error markers for gprbuild 1 and gprbuild 2
     # and replace them with single message.
     error_found = False
-    if " phase failed" in lines[-1] or " failed with status" in lines[-1]:
+    if " phase failed" in lines[-1] or " failed." in lines[-1]:
         error_found = True
         lines = lines[:-1]
 
