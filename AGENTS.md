@@ -11,6 +11,8 @@ Repository guidance for coding agents working on SPARK 2014.
 Assume the environment is already set up.
 
 - Build and install with `make` and `make install-all`.
+- The gnatprove testsuite does not rebuild tools automatically. Re-run `make`
+  and `make install-all` before testing source changes.
 - Format Ada code with `make format`; verify formatting with `make check-format`.
 - Run tests from `testsuite/gnatprove/` with `./run-tests`.
 - Useful test commands:
@@ -18,6 +20,9 @@ Assume the environment is already set up.
   - `./run-tests -j8`
   - `./run-tests --discriminants=large`
   - `./run-tests <test_name> -d temp` to keep the generated work directory for manual inspection
+- Do not start multiple `./run-tests` processes concurrently, instead pass all
+  test names to a single `./run-tests` invocation and use the parallelism flag
+  `-j<number>`.
 
 ## Relevant Areas
 
