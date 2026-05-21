@@ -240,8 +240,7 @@ package body GPR2.Build.Actions.Process.Compile.Ada.Analysis is
       UID : constant Actions.Action_Id'Class := Object'Class (Self).UID;
    begin
       Db.Add_Input
-        (UID,
-         GPR2.Build.Artifacts.Source_Files.Create (Self.Src.Path_Name));
+        (UID, GPR2.Build.Artifacts.Source_Files.Create (Self.Src.Path_Name));
 
       for ALI_File of Self.ALI_Files loop
          Db.Add_Input (Self.UID, ALI_File);

@@ -166,8 +166,7 @@ package body GPR2.Build.Actions.Process.Compile.Ada.Data_Rep is
       UID : constant Actions.Action_Id'Class := Object'Class (Self).UID;
    begin
       Db.Add_Input
-        (UID,
-         GPR2.Build.Artifacts.Source_Files.Create (Self.Src.Path_Name));
+        (UID, GPR2.Build.Artifacts.Source_Files.Create (Self.Src.Path_Name));
 
       --  Depend on the ALI file produced by the global-generation phase for
       --  this unit, so that data-representation generation is only executed
