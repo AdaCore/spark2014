@@ -262,7 +262,7 @@ package body GPR2.Build.Actions.Process.Compile.Ada.Global_Gen is
                --  Ensure that GG_Act is always executed before the analysis
                --  action, even if the GG_Act is externally built, as we need
                --  its ALI parsing to be done in the Post_Execution.
-               Self.Tree.Add_Input (Succ.UID, GG_Act.Lib_Ali_File, True);
+               Self.Tree.Add_Input (Succ.UID, GG_Act.Lib_Ali_File);
 
                --  Add the ALI file to be used by the analysis action
                Compile.Ada.Analysis.Object
@@ -320,7 +320,7 @@ package body GPR2.Build.Actions.Process.Compile.Ada.Global_Gen is
          for Succ of Self.Tree.Successors (Self.Lib_Ali_File) loop
             if Succ in Compile.Ada.Analysis.Object'Class then
                for JSON_File of DR_Act.JSON_Outputs loop
-                  Self.Tree.Add_Input (Succ.UID, JSON_File, True);
+                  Self.Tree.Add_Input (Succ.UID, JSON_File);
 
                   Compile.Ada.Analysis.Object
                     (Self.Tree.Action_Id_To_Reference (Succ.UID).Element.all)

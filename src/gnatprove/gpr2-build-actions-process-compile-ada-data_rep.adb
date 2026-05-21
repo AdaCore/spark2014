@@ -167,8 +167,7 @@ package body GPR2.Build.Actions.Process.Compile.Ada.Data_Rep is
    begin
       Db.Add_Input
         (UID,
-         GPR2.Build.Artifacts.Source_Files.Create (Self.Src.Path_Name),
-         True);
+         GPR2.Build.Artifacts.Source_Files.Create (Self.Src.Path_Name));
 
       --  Depend on the ALI file produced by the global-generation phase for
       --  this unit, so that data-representation generation is only executed
@@ -176,7 +175,7 @@ package body GPR2.Build.Actions.Process.Compile.Ada.Data_Rep is
       --  fail without producing an ALI file; the process manager then skips
       --  this action, avoiding a spurious "data representation info
       --  unavailable" warning on top of the real error.
-      Db.Add_Input (UID, Self.Lib_Ali_File, True);
+      Db.Add_Input (UID, Self.Lib_Ali_File);
 
       for JSON_File of Self.JSON_Outputs loop
          if not Db.Add_Output (UID, JSON_File) then
