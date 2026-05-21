@@ -26,7 +26,7 @@ variables:
    PACKAGE_BASE_NAME: spark2014.tar.gz
    PACKAGE_ABSOLUTE_NAME: $CI_PROJECT_DIR/$PACKAGE_BASE_NAME
    PACKAGE_EXPORT: /tmp/spark2014-export
-   ANOD_BUILD_QUALIFIERS: assertions
+   ANOD_BUILD_QUALIFIERS: assertions,coverage
 
 stages:
   - build
