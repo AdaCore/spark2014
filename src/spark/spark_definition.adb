@@ -9572,6 +9572,62 @@ package body SPARK_Definition is
             Mark_Subprogram_Contracts;
          end if;
 
+         --  Reject user-defined intrinsic arithmetic operators if they cannot
+         --  be matched to a predefined operator.
+
+         if Nkind (E) = N_Defining_Operator_Symbol
+           and then Is_Intrinsic_Subprogram (E)
+           and then not Is_Hardcoded_Entity (E)
+         then
+            declare
+               Left        : constant Entity_Id := First_Formal (E);
+               Right       : constant Entity_Id := Next_Formal (Left);
+               Result_Base : constant Entity_Id := Base_Retysp (Etype (E));
+               Violation   : constant String :=
+                 "Intrinsic convention on arithmetic operator with unexpected "
+                 & "profile";
+               Cont        : constant String :=
+                 "type of operand should match the result type";
+            begin
+               if Chars (E) = Name_Op_Expon then
+                  if Base_Retysp (Etype (Right))
+                    /= Base_Retysp (Standard_Integer)
+                  then
+                     Mark_Violation
+                       (Violation,
+                        Right,
+                        Cont_Msg =>
+                          "type of operand should be a subtype of "
+                          & """Integer""");
+                  elsif Base_Retysp (Etype (Left)) /= Result_Base then
+                     Mark_Violation
+                       (Violation, Left, Cont_Msg => Cont);
+                  end if;
+               elsif Chars (E)
+                     not in Name_Op_Add
+                          | Name_Op_Subtract
+                          | Name_Op_Multiply
+                          | Name_Op_Divide
+                          | Name_Op_Rem
+                          | Name_Op_Mod
+                          | Name_Op_Abs
+               then
+                  null;
+               else
+                  if Base_Retysp (Etype (Left)) /= Result_Base then
+                     Mark_Violation
+                       (Violation, Left, Cont_Msg => Cont);
+                  end if;
+                  if Present (Right)
+                    and then Base_Retysp (Etype (Right)) /= Result_Base
+                  then
+                     Mark_Violation
+                       (Violation, Right, Cont_Msg => Cont);
+                  end if;
+               end if;
+            end;
+         end if;
+
          --  Plain preconditions cannot be used in SPARK on dispatching
          --  subprograms. The reason for that is that otherwise the dynamic
          --  semantics of Ada combined with the verification of Liskov
