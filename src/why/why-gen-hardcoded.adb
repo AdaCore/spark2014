@@ -1147,11 +1147,7 @@ package body Why.Gen.Hardcoded is
                end if;
 
                --  Force the computation to be done on Address for Mod and Add.
-
                --  Force the computation to be done on EW_Int for Subtract.
-               --  Left and Right don't necessarily fit in Base, but it is fine
-               --  to supply it for Left_Type and Right_Type as they are only
-               --  used to compute the base type.
 
                declare
                   Base   : constant Type_Kind_Id :=
@@ -1172,8 +1168,8 @@ package body Why.Gen.Hardcoded is
                        Right       =>
                          Insert_Simple_Conversion
                            (Domain => Domain, Expr => RT, To => W_Base),
-                       Left_Type   => Base,
-                       Right_Type  => Base,
+                       Left_Type   => W_Base,
+                       Right_Type  => W_Base,
                        Return_Type => Base,
                        Domain      => Domain,
                        Ada_Node    => Ada_Node);

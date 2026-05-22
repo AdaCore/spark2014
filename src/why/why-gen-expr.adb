@@ -3737,8 +3737,8 @@ package body Why.Gen.Expr is
      (Op          : N_Binary_Op;
       Left        : W_Expr_Id;
       Right       : W_Expr_Id;
-      Left_Type   : Type_Kind_Id;
-      Right_Type  : Type_Kind_Id;
+      Left_Type   : W_Type_Id;
+      Right_Type  : W_Type_Id;
       Return_Type : Type_Kind_Id;
       Domain      : EW_Domain;
       Ada_Node    : Node_Id := Empty) return W_Expr_Id
@@ -3848,11 +3848,11 @@ package body Why.Gen.Expr is
             begin
                --  Look for the appropriate base scalar type
 
-               if Has_Fixed_Point_Type (Left_Type)
-                 and then Has_Fixed_Point_Type (Right_Type)
+               if Why_Type_Is_Fixed (Left_Type)
+                 and then Why_Type_Is_Fixed (Right_Type)
                then
-                  L_Type := Base_Why_Type (Left_Type);
-                  R_Type := Base_Why_Type (Right_Type);
+                  L_Type := Left_Type;
+                  R_Type := Right_Type;
                   Oper := WNE_Fixed_Point_Mult;
 
                   if Has_Fixed_Point_Type (Return_Type) then
@@ -3862,8 +3862,8 @@ package body Why.Gen.Expr is
                      Base := EW_Int_Type;
                   end if;
 
-               elsif Has_Fixed_Point_Type (Left_Type) then
-                  L_Type := Base_Why_Type (Left_Type);
+               elsif Why_Type_Is_Fixed (Left_Type) then
+                  L_Type := Left_Type;
                   R_Type := EW_Int_Type;
                   Base := Base_Why_Type (Return_Type);
                   Oper := WNE_Fixed_Point_Mult_Int;
@@ -3872,8 +3872,8 @@ package body Why.Gen.Expr is
                --  If multiplying an integer and a fixed-point, swap
                --  arguments so that Left is the fixed-point one.
 
-               elsif Has_Fixed_Point_Type (Right_Type) then
-                  L_Type := Base_Why_Type (Right_Type);
+               elsif Why_Type_Is_Fixed (Right_Type) then
+                  L_Type := Right_Type;
                   R_Type := EW_Int_Type;
                   Left_Rep := Right;
                   Right_Rep := Left;
@@ -3903,8 +3903,8 @@ package body Why.Gen.Expr is
 
                --  Construct the operation
 
-               if Has_Fixed_Point_Type (Left_Type)
-                 or else Has_Fixed_Point_Type (Right_Type)
+               if Why_Type_Is_Fixed (Left_Type)
+                 or else Why_Type_Is_Fixed (Right_Type)
                then
                   declare
                      pragma Assert (Oper /= WNE_Empty);
@@ -3914,8 +3914,8 @@ package body Why.Gen.Expr is
                         when WNE_Fixed_Point_Mult     =>
                            Name :=
                              Get_Fixed_Point_Mult_Div_Theory
-                               (Typ_Left   => Left_Type,
-                                Typ_Right  => Right_Type,
+                               (Typ_Left   => Get_Ada_Node (+Left_Type),
+                                Typ_Right  => Get_Ada_Node (+Right_Type),
                                 Typ_Result => Return_Type)
                                .Mult;
 
@@ -3995,11 +3995,11 @@ package body Why.Gen.Expr is
             begin
                --  Look for the appropriate base scalar type
 
-               if Has_Fixed_Point_Type (Left_Type)
-                 and then Has_Fixed_Point_Type (Right_Type)
+               if Why_Type_Is_Fixed (Left_Type)
+                 and then Why_Type_Is_Fixed (Right_Type)
                then
-                  L_Type := Base_Why_Type (Left_Type);
-                  R_Type := Base_Why_Type (Right_Type);
+                  L_Type := Left_Type;
+                  R_Type := Right_Type;
                   Oper := WNE_Fixed_Point_Div;
 
                   if Has_Fixed_Point_Type (Return_Type) then
@@ -4009,9 +4009,9 @@ package body Why.Gen.Expr is
                      Base := EW_Int_Type;
                   end if;
 
-               elsif Has_Fixed_Point_Type (Left_Type) then
+               elsif Why_Type_Is_Fixed (Left_Type) then
                   Base := Base_Why_Type (Return_Type);
-                  L_Type := Base_Why_Type (Left_Type);
+                  L_Type := Left_Type;
                   R_Type := EW_Int_Type;
                   Oper := WNE_Fixed_Point_Div_Int;
                   pragma Assert (L_Type = Base);
@@ -4026,7 +4026,7 @@ package body Why.Gen.Expr is
                pragma
                  Assert
                    (if Has_Fixed_Point_Type (Return_Type)
-                      or else Has_Fixed_Point_Type (Left_Type)
+                      or else Why_Type_Is_Fixed (Left_Type)
                     then Oper /= WNE_Empty);
 
                --  Construct the operation
@@ -4035,8 +4035,8 @@ package body Why.Gen.Expr is
                   when WNE_Fixed_Point_Div     =>
                      Name :=
                        Get_Fixed_Point_Mult_Div_Theory
-                         (Typ_Left   => Left_Type,
-                          Typ_Right  => Right_Type,
+                         (Typ_Left   => Get_Ada_Node (+Left_Type),
+                          Typ_Right  => Get_Ada_Node (+Right_Type),
                           Typ_Result => Return_Type)
                          .Div;
 
@@ -4178,8 +4178,7 @@ package body Why.Gen.Expr is
                   --  Exponentiation on floats can actually cause a division
                   --  check, when the base is 0 and the exponent is negative.
 
-                  if Domain = EW_Prog
-                    and then Is_Floating_Point_Type (Left_Type)
+                  if Domain = EW_Prog and then Why_Type_Is_Float (Left_Type)
                   then
                      declare
                         Expon_Negative : constant W_Pred_Id :=

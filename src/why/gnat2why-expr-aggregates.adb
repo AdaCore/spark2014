@@ -3062,8 +3062,8 @@ package body Gnat2Why.Expr.Aggregates is
                           (Op          => N_Op_Add,
                            Left        => +Low,
                            Right       => +Offset,
-                           Left_Type   => Index_Typ,
-                           Right_Type  => Index_Typ,
+                           Left_Type   => Index_Base,
+                           Right_Type  => Index_Base,
                            Return_Type => Index_Typ,
                            Domain      => EW_Term)
                      else
