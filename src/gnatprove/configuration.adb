@@ -793,7 +793,7 @@ package body Configuration is
      (Tree : GPR2.Project.Tree.Object; Simple : String) return String is
    begin
       for NRP of Tree.Namespace_Root_Projects loop
-         if NRP.Kind in GPR2.With_Source_Dirs_Kind then
+         if NRP.Kind in GPR2.With_Object_Dir_Kind then
             declare
                View_DB   : constant GPR2.Build.View_Db.Object :=
                  Tree.Artifacts_Database (NRP);
@@ -815,6 +815,16 @@ package body Configuration is
       end loop;
       return "";
    end Source_Full_Path;
+
+   -----------------------
+   -- File_Specific_Key --
+   -----------------------
+
+   function File_Specific_Key
+     (Unit : GPR2.Build.Compilation_Unit.Object) return String is
+   begin
+      return Unit.Main_Part.Source.String_Value;
+   end File_Specific_Key;
 
    ----------------------------
    -- Check_Duplicate_Bodies --
@@ -1332,8 +1342,7 @@ package body Configuration is
       Obj_Dir           : String;
       Why3_Dir          : String) return String
    is
-      Unit_Name : constant String :=
-        String (Unit.Main_Part.Source.Simple_Name);
+      Unit_Name : constant String := File_Specific_Key (Unit);
       Opt_File  : constant String :=
         Gnat2Why_Opts.Writing.Pass_Extra_Options_To_Gnat2why
           (Translation_Phase => Translation_Phase,
@@ -2475,7 +2484,8 @@ package body Configuration is
       --  Load the project file; This function requires the project file to be
       --  present.
 
-      procedure Parse_Proof_Switches (Com_Lin : String_List);
+      procedure Parse_Analysis_Attributes
+        (Command_Line : Parsed_Switches; Root_Attributes : Parsed_Switches);
       --  Parse the Switches and Proof_Switches attributes in project files.
       --  The regular command line is needed to interpret them properly.
 
@@ -2526,6 +2536,10 @@ package body Configuration is
       function List_From_Attr
         (Attribute : GPR2.Project.Attribute.Object) return String_List_Access;
       --  Helper function to convert attribute to list of strings
+
+      function Source_Key
+        (View : Project.View.Object; Fn : String) return String;
+      --  Return the file-specific map key for source Fn in View
 
       function Switch_String
         (Parsed : Parsed_Switches; Switch : Switch_Id) return String;
@@ -2640,6 +2654,16 @@ package body Configuration is
          end if;
       end List_From_Attr;
 
+      ----------------
+      -- Source_Key --
+      ----------------
+
+      function Source_Key
+        (View : Project.View.Object; Fn : String) return String is
+      begin
+         return View.Source (GPR2.Simple_Name (Fn)).Path_Name.String_Value;
+      end Source_Key;
+
       -------------------
       -- Switch_String --
       -------------------
@@ -2700,11 +2724,14 @@ package body Configuration is
          end loop;
       end Warn_And_Strip_Non_Root_Invocation_Switches;
 
-      --------------------------
-      -- Parse_Proof_Switches --
-      --------------------------
+      -------------------------------
+      -- Parse_Analysis_Attributes --
+      -------------------------------
 
-      procedure Parse_Proof_Switches (Com_Lin : String_List) is
+      procedure Parse_Analysis_Attributes
+        (Command_Line : Parsed_Switches; Root_Attributes : Parsed_Switches)
+      is
+         use type Project.View.Object;
 
          procedure Expand_Ada_Switches (View : Project.View.Object);
          --  Replace the "Ada" section of the File_Specific_Map by entries for
@@ -2717,23 +2744,22 @@ package body Configuration is
 
             Messages : GPR2.Log.Object;
             pragma Unreferenced (Messages);
-            Units    : GPR2.Build.Compilation_Unit.Maps.Map := View.Own_Units;
+            Units    : constant GPR2.Build.Compilation_Unit.Maps.Map :=
+              View.Own_Units;
             Position : File_Specific_Maps.Cursor;
             Inserted : Boolean;
          begin
             File_Specific_Map.Delete ("Ada");
             for C in Units.Iterate loop
                File_Specific_Map.Insert
-                 (Key      => String (Units (C).Main_Part.Source.Simple_Name),
+                 (Key      => File_Specific_Key (Units (C)),
                   New_Item => Gen,
                   Position => Position,
                   Inserted => Inserted);
             end loop;
          end Expand_Ada_Switches;
 
-         First                 : Boolean := True;
-         Command_Line_Switches : constant Parsed_Switches :=
-           Parse_Switches_Internal (All_Switches, Com_Lin);
+         First : Boolean := True;
       begin
 
          for Cursor in
@@ -2743,8 +2769,6 @@ package body Configuration is
                    GNATCOLL.Tribooleans.False])
          loop
             declare
-               use type Project.View.Object;
-
                View               : constant Project.View.Object :=
                  Project.Tree.Element (Cursor);
                FS                 : File_Specific;
@@ -2757,6 +2781,15 @@ package body Configuration is
                        Index => GPR2.Project.Attribute_Index.Create ("Ada")));
                Project_Switches   : Parsed_Switches;
             begin
+
+               --  Parse all switches that apply to all files, then merge them
+               --  in the right order (most important is last). The root
+               --  attributes are already part of Root_Attributes.
+
+               if View = Tree.Root_Project then
+                  Merge_Parsed_Switches (Project_Switches, Root_Attributes);
+               end if;
+
                if Prove_Switches /= null then
                   declare
                      Parsed : Parsed_Switches :=
@@ -2790,11 +2823,11 @@ package body Configuration is
                begin
                   --  Use the merge helper for a deep copy
                   Merge_Parsed_Switches (Effective, Project_Switches);
-                  Merge_Parsed_Switches (Effective, Command_Line_Switches);
+                  Merge_Parsed_Switches (Effective, Command_Line);
                   Postprocess (Effective);
                   File_Specific_Postprocess (Effective, FS);
                end;
-               File_Specific_Map.Insert ("Ada", FS);
+               File_Specific_Map.Include ("Ada", FS);
                Has_Coq_Prover := Case_Insensitive_Contains (FS.Provers, "coq");
                Has_Manual_Prover :=
                  FS.Provers.Length = 1
@@ -2830,11 +2863,11 @@ package body Configuration is
                         --  Apply the command-line switches last, so they
                         --  override file-specific project switches.
 
-                        Merge_Parsed_Switches
-                          (Effective, Command_Line_Switches);
+                        Merge_Parsed_Switches (Effective, Command_Line);
                         Postprocess (Effective);
                         File_Specific_Postprocess (Effective, FS);
-                        File_Specific_Map.Insert (Attr.Index.Text, FS);
+                        File_Specific_Map.Include
+                          (Source_Key (View, Attr.Index.Text), FS);
                      end;
                   end if;
                end loop;
@@ -2844,13 +2877,13 @@ package body Configuration is
                      Default : constant File_Specific :=
                        File_Specific_Map ("Ada");
                   begin
-                     File_Specific_Map.Insert ("default", Default);
+                     File_Specific_Map.Include ("default", Default);
                   end;
                end if;
                Expand_Ada_Switches (View);
             end;
          end loop;
-      end Parse_Proof_Switches;
+      end Parse_Analysis_Attributes;
 
       -----------------
       -- Postprocess --
@@ -3697,10 +3730,11 @@ package body Configuration is
       Full_Com_Lin : String_List :=
         [1 .. Ada.Command_Line.Argument_Count => <>];
       Com_Lin      : String_List_Access;
-      Attr         : GPR2.Project.Attribute.Object;
 
-      Parse_Result        : Project_Parsing_Result;
-      Invocation_Switches : Parsed_Switches;
+      Parse_Result            : Project_Parsing_Result;
+      Command_Line_Switches   : Parsed_Switches;
+      Invocation_Switches     : Parsed_Switches;
+      Root_Attribute_Switches : Parsed_Switches;
 
    begin
 
@@ -3772,47 +3806,45 @@ package body Configuration is
          Succeed;
       end if;
 
-      if Tree.Root_Project.Check_Attribute
-           ((+"Prove", +"Switches"), Result => Attr)
-      then
-         declare
-            L : String_List_Access := List_From_Attr (Attr);
-         begin
-            --  Parse root project switches and keep them for the final
-            --  invocation-wide merge.
-
+      declare
+         L : String_List_Access :=
+           List_From_Attr
+             (Tree.Root_Project.Attribute ((+"Prove", +"Switches")));
+      begin
+         if L /= null then
             Merge_Parsed_Switches
-              (Invocation_Switches,
+              (Root_Attribute_Switches,
                Parse_Switches_Internal (Global_Switches_Only, L.all));
             Free (L);
-         end;
-      end if;
+         end if;
+      end;
 
-      if Tree.Root_Project.Check_Attribute
-           ((+"Prove", +"Proof_Switches"),
-            Index  => GPR2.Project.Attribute_Index.Create ("Ada"),
-            Result => Attr)
-      then
-         declare
-            L : String_List_Access := List_From_Attr (Attr);
-         begin
-            --  Parse root Proof_Switches ("Ada") and keep them for the final
-            --  invocation-wide merge.
+      for Root_Attr of
+        Tree.Root_Project.Attributes ((+"Prove", +"Proof_Switches"))
+      loop
+         if Root_Attr.Index.Text in "Ada" | "ada" then
+            declare
+               L : String_List_Access := List_From_Attr (Root_Attr);
+            begin
+               if L /= null then
+                  Merge_Parsed_Switches
+                    (Root_Attribute_Switches,
+                     Parse_Switches_Internal (Global_Switches_Only, L.all));
+                  Free (L);
+               end if;
+            end;
+         end if;
+      end loop;
 
-            Merge_Parsed_Switches
-              (Invocation_Switches,
-               Parse_Switches_Internal (Global_Switches_Only, L.all));
-            Free (L);
-         end;
-      end if;
+      Command_Line_Switches :=
+        Parse_Switches_Internal (All_Switches, Com_Lin.all);
 
-      Parse_Proof_Switches (Com_Lin.all);
-
-      Merge_Parsed_Switches
-        (Invocation_Switches,
-         Parse_Switches_Internal (All_Switches, Com_Lin.all));
+      Parse_Analysis_Attributes
+        (Command_Line_Switches, Root_Attribute_Switches);
 
       --  Derive the invocation-wide semantic configuration
+      Merge_Parsed_Switches (Invocation_Switches, Root_Attribute_Switches);
+      Merge_Parsed_Switches (Invocation_Switches, Command_Line_Switches);
       Postprocess (Invocation_Switches);
       Verbosity := Parse_Result.Verbosity;
 
@@ -3933,45 +3965,48 @@ package body Configuration is
             --  the spec, if no body exists.
 
             for NRP of Tree.Namespace_Root_Projects loop
-               declare
-                  View_DB   : constant GPR2.Build.View_Db.Object :=
-                    Tree.Artifacts_Database (NRP);
-                  CU        : GPR2.Build.Compilation_Unit.Object;
-                  VS        : GPR2.Build.Source.Object;
-                  Elt       : constant GPR2.Name_Type :=
-                    Name_Type (Simple_File_Name);
-                  Ambiguous : Boolean;
-               begin
-                  if View_DB.Source_Option >= Sources_Units
-                    and then View_DB.Has_Compilation_Unit (Elt)
-                  then
-                     CU := View_DB.Compilation_Unit (Elt);
-                  elsif View_DB.Source_Option > No_Source then
-                     VS :=
-                       View_DB.Visible_Source
-                         (GPR2.Simple_Name (Elt), Ambiguous);
-                     pragma Assert (not Ambiguous);
-                     if VS.Is_Defined
-                       and then View_DB.Has_Compilation_Unit (VS.Unit.Name)
+               if NRP.Kind in GPR2.With_Object_Dir_Kind then
+                  declare
+                     View_DB   : constant GPR2.Build.View_Db.Object :=
+                       Tree.Artifacts_Database (NRP);
+                     CU        : GPR2.Build.Compilation_Unit.Object;
+                     VS        : GPR2.Build.Source.Object;
+                     Elt       : constant GPR2.Name_Type :=
+                       Name_Type (Simple_File_Name);
+                     Ambiguous : Boolean;
+                  begin
+                     if View_DB.Source_Option >= Sources_Units
+                       and then View_DB.Has_Compilation_Unit (Elt)
                      then
-                        CU := View_DB.Compilation_Unit (VS.Unit.Name);
+                        CU := View_DB.Compilation_Unit (Elt);
+                     elsif View_DB.Source_Option > No_Source then
+                        VS :=
+                          View_DB.Visible_Source
+                            (GPR2.Simple_Name (Elt), Ambiguous);
+                        pragma Assert (not Ambiguous);
+                        if VS.Is_Defined
+                          and then View_DB.Has_Compilation_Unit (VS.Unit.Name)
+                        then
+                           CU := View_DB.Compilation_Unit (VS.Unit.Name);
+                        end if;
                      end if;
-                  end if;
-                  if CU.Is_Defined then
-                     if Found then
-                        Abort_Msg
-                          ("file or compilation unit "
-                           & Simple_File_Name
-                           & " is not unique in aggregate project",
-                           With_Help => False);
-                     else
-                        File_List.Replace_Element
-                          (Cursor, String (CU.Main_Part.Source.Simple_Name));
-                        Found := True;
-                        CL_Units.Include (CU.Name, CU);
+                     if CU.Is_Defined then
+                        if Found then
+                           Abort_Msg
+                             ("file or compilation unit "
+                              & Simple_File_Name
+                              & " is not unique in aggregate project",
+                              With_Help => False);
+                        else
+                           File_List.Replace_Element
+                             (Cursor,
+                              String (CU.Main_Part.Source.Simple_Name));
+                           Found := True;
+                           CL_Units.Include (CU.Name, CU);
+                        end if;
                      end if;
-                  end if;
-               end;
+                  end;
+               end if;
             end loop;
             if not Found then
                Abort_Msg

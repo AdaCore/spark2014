@@ -43,7 +43,7 @@ package body Assumptions.Search is
    procedure Import (L : Rule_Lists.List) is
    begin
       for Elt of L loop
-         Goals.Insert (Key => Elt.Claim, New_Item => Elt.Assumptions);
+         Goals.Include (Key => Elt.Claim, New_Item => Elt.Assumptions);
          --  ??? Elt.Assumptions can be Moved to avoid copying
       end loop;
    end Import;

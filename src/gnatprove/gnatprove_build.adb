@@ -1,6 +1,8 @@
 with Ada.Containers;
+with Ada.Containers.Indefinite_Hashed_Maps;
 with Ada.Directories;
 with Ada.Environment_Variables;
+with Ada.Strings.Hash;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO;
 with Call;                  use Call;
@@ -16,11 +18,13 @@ with GPR2.Build.Actions_Scheduler;
 with GPR2.Build.Actions_Scheduler.JSON;
 with GPR2.Build.Source;
 with GPR2.Build.Tree_Db;
+with GPR2.Build.View_Db;
 with GPR2.Path_Name;
 with GPR2.Project.View;
 with GNAT.OS_Lib;
 with GNAT.Strings;          use GNAT.Strings;
 with GNATCOLL.JSON;         use GNATCOLL.JSON;
+with GNATCOLL.Tribooleans;
 with GNATCOLL.Utils;        use GNATCOLL.Utils;
 with Named_Semaphores;      use Named_Semaphores;
 with String_Utils;          use String_Utils;
@@ -48,19 +52,41 @@ package body Gnatprove_Build is
    --  The result of this function is the file name of the temp file.  The
    --  caller is responsible for cleanup (deleting) this file.
 
-   subtype Unit_Set is GPR2.Build.Compilation_Unit.Maps.Map;
-   --  The maps from unit names to units are used as sets of units here
+   function Unit_Key (Unit : GPR2.Build.Compilation_Unit.Object) return String;
+   --  Return a stable key for sets of compilation units. Unit names are not
+   --  unique across aggregate project roots.
+
+   package Unit_Maps is new
+     Ada.Containers.Indefinite_Hashed_Maps
+       (Key_Type        => String,
+        Element_Type    => GPR2.Build.Compilation_Unit.Object,
+        Hash            => Ada.Strings.Hash,
+        Equivalent_Keys => "=",
+        "="             => GPR2.Build.Compilation_Unit."=");
+
+   subtype Unit_Set is Unit_Maps.Map;
+
+   procedure Include_Unit
+     (Units : in out Unit_Set; Unit : GPR2.Build.Compilation_Unit.Object);
+   --  Add Unit to Units using Unit_Key
+
+   procedure Ensure_Object_Directory (View : GPR2.Project.View.Object);
+   --  Create View's object directory before scheduling custom actions
+
+   function To_GPR_Unit_Map
+     (Units : Unit_Set) return GPR2.Build.Compilation_Unit.Maps.Map;
+   --  Convert Units for GPR2 APIs that still expect a unit-name map
 
    type Edge_Colour_T is (No_Colour);
    pragma Unreferenced (No_Colour);
 
    function Unit_Hash
      (Key : GPR2.Build.Compilation_Unit.Object) return Ada.Containers.Hash_Type
-   is (Hash (Key.Name));
+   is (Ada.Strings.Hash (Unit_Key (Key)));
 
    function Name_Eq
      (Left, Right : GPR2.Build.Compilation_Unit.Object) return Boolean
-   is (Left.Name = Right.Name);
+   is (Unit_Key (Left) = Unit_Key (Right));
 
    package Unit_Graphs is new
      Graphs
@@ -76,6 +102,58 @@ package body Gnatprove_Build is
    --  Compute full (transitive) dependencies for all units in Tree and store
    --  them in the internal Unit_Dependency_Graph. Must be called before any
    --  analysis actions are added.
+
+   ------------------
+   -- Include_Unit --
+   ------------------
+
+   procedure Include_Unit
+     (Units : in out Unit_Set; Unit : GPR2.Build.Compilation_Unit.Object) is
+   begin
+      Units.Include (Unit_Key (Unit), Unit);
+   end Include_Unit;
+
+   -----------------------------
+   -- Ensure_Object_Directory --
+   -----------------------------
+
+   procedure Ensure_Object_Directory (View : GPR2.Project.View.Object) is
+   begin
+      if View.Object_Directory.String_Value /= "" then
+         Ada.Directories.Create_Path (View.Object_Directory.String_Value);
+      end if;
+   end Ensure_Object_Directory;
+
+   ---------------------
+   -- To_GPR_Unit_Map --
+   ---------------------
+
+   function To_GPR_Unit_Map
+     (Units : Unit_Set) return GPR2.Build.Compilation_Unit.Maps.Map
+   is
+      Result : GPR2.Build.Compilation_Unit.Maps.Map;
+   begin
+      for Unit of Units loop
+         if not Result.Contains (Unit.Name) then
+            Result.Insert (Unit.Name, Unit);
+         end if;
+      end loop;
+      return Result;
+   end To_GPR_Unit_Map;
+
+   --------------
+   -- Unit_Key --
+   --------------
+
+   function Unit_Key (Unit : GPR2.Build.Compilation_Unit.Object) return String
+   is
+      Index_Image : constant String := Unit.Main_Part.Index'Image;
+   begin
+      return
+        Unit.Main_Part.Source.String_Value
+        & "@"
+        & Index_Image (Index_Image'First + 1 .. Index_Image'Last);
+   end Unit_Key;
 
    -----------------------------
    -- Create_Object_Path_File --
@@ -189,6 +267,15 @@ package body Gnatprove_Build is
          To_Analyze    : Unit_Set;
          To_Global_Gen : Unit_Set;
 
+         package Global_Gen renames
+           GPR2.Build.Actions.Process.Compile.Ada.Global_Gen;
+
+         package Data_Rep renames
+           GPR2.Build.Actions.Process.Compile.Ada.Data_Rep;
+
+         package Analysis renames
+           GPR2.Build.Actions.Process.Compile.Ada.Analysis;
+
          function All_Project_Units return Unit_Set;
          --  Return all the units of all projects
 
@@ -203,10 +290,22 @@ package body Gnatprove_Build is
          function All_Project_Units return Unit_Set is
             Result : Unit_Set;
          begin
-            for Prj of Tree.Ordered_Views loop
-               for Unit of Prj.Own_Units loop
-                  Result.Include (Unit.Name, Unit);
-               end loop;
+            for Cursor in
+              Tree.Iterate
+                (Status =>
+                   [GPR2.Project.S_Externally_Built =>
+                      GNATCOLL.Tribooleans.False])
+            loop
+               declare
+                  View : constant GPR2.Project.View.Object :=
+                    GPR2.Project.Tree.Element (Cursor);
+               begin
+                  if View.Kind in GPR2.With_Source_Dirs_Kind then
+                     for Unit of View.Own_Units loop
+                        Include_Unit (Result, Unit);
+                     end loop;
+                  end if;
+               end;
             end loop;
             return Result;
          end All_Project_Units;
@@ -234,15 +333,12 @@ package body Gnatprove_Build is
                           Unit_Graphs.Get_Key
                             (Unit_Dependency_Graph, Dep_V_Id);
                      begin
-                        Target.Include (Dep.Name, Dep);
+                        Include_Unit (Target, Dep);
                      end;
                   end loop;
                end;
             end loop;
          end Add_Deps;
-
-         use type GPR2.Project.View.Object;
-         use GPR2.Build.Actions.Process;
 
       begin
          if Configuration.All_Projects and then Selected_Units.Is_Empty then
@@ -266,11 +362,12 @@ package body Gnatprove_Build is
                Owning : GPR2.Project.View.Object renames Elt.Owning_View;
             begin
                if (not CL_Switches.No_Subprojects
-                   or else Owning = Tree.Root_Project)
+                   or else Tree.Namespace_Root_Projects.Contains (Owning))
                  and then not Owning.Is_Externally_Built
                then
+                  Ensure_Object_Directory (Owning);
                   declare
-                     GG_Act : Compile.Ada.Global_Gen.Object;
+                     GG_Act : Global_Gen.Object;
                   begin
                      GG_Act.Initialize (Elt);
                      if not Tree.Artifacts_Database.Add_Action (GG_Act) then
@@ -289,9 +386,9 @@ package body Gnatprove_Build is
                      end if;
                   end;
 
-                  if Compile.Ada.Data_Rep.Applicable (Elt) then
+                  if Data_Rep.Applicable (Elt) then
                      declare
-                        Data_Rep_Action : Compile.Ada.Data_Rep.Object;
+                        Data_Rep_Action : Data_Rep.Object;
                      begin
                         Data_Rep_Action.Initialize (Elt);
                         if not Tree.Artifacts_Database.Add_Action
@@ -313,21 +410,22 @@ package body Gnatprove_Build is
                Owning : GPR2.Project.View.Object renames Elt.Owning_View;
             begin
                if (not CL_Switches.No_Subprojects
-                   or else Owning = Tree.Root_Project)
+                   or else Tree.Namespace_Root_Projects.Contains (Owning))
                  and then not Owning.Is_Externally_Built
                then
+                  Ensure_Object_Directory (Owning);
                   declare
-                     Analysis_Act : Compile.Ada.Analysis.Object;
+                     Analysis_Act : Analysis.Object;
                      Elt_Set      : Unit_Set;
                      Unit_Deps    : Unit_Set;
                   begin
                      --  Build the set of units for which we will need the
                      --  .ali files.
-                     Elt_Set.Include (Elt.Name, Elt);
+                     Include_Unit (Elt_Set, Elt);
                      Add_Deps (Elt_Set, Unit_Deps);
 
                      Analysis_Act.Initialize
-                       (Elt, Object_Path_File, Unit_Deps);
+                       (Elt, Object_Path_File, To_GPR_Unit_Map (Unit_Deps));
                      if not Tree.Artifacts_Database.Add_Action (Analysis_Act)
                      then
                         pragma
@@ -375,6 +473,14 @@ package body Gnatprove_Build is
       Exec_Opts.Jobs := Configuration.Parallel;
 
       Write_Why3_Conf_File (Configuration.Artifact_Dir (Tree));
+      for Prj of Tree.Ordered_Views loop
+         if Prj.Kind in With_Object_Dir_Kind
+           and then not Prj.Is_Externally_Built
+         then
+            Ensure_Object_Directory (Prj);
+            Write_Why3_Conf_File (Prj.Object_Directory);
+         end if;
+      end loop;
 
       Full_Deps (Tree);
 
@@ -385,9 +491,13 @@ package body Gnatprove_Build is
       begin
          if not Configuration.CL_Units.Is_Empty then
             if Configuration.Only_Given or else Configuration.All_Projects then
-               Selected_Units := Configuration.CL_Units;
+               for Unit of Configuration.CL_Units loop
+                  Include_Unit (Selected_Units, Unit);
+               end loop;
             else
-               Main_Units := Configuration.CL_Units;
+               for Unit of Configuration.CL_Units loop
+                  Include_Unit (Main_Units, Unit);
+               end loop;
             end if;
          else
             for NRP of Tree.Namespace_Root_Projects loop
@@ -406,7 +516,7 @@ package body Gnatprove_Build is
                            --  appear in the project file, so there might be
                            --  duplicates. We use "include" here to protect
                            --  against that.
-                           Main_Units.Include (Unit.Name, Unit);
+                           Include_Unit (Main_Units, Unit);
                         end if;
                      end if;
                   end;
@@ -438,32 +548,111 @@ package body Gnatprove_Build is
 
    procedure Full_Deps (Tree : Project.Tree.Object) is
       All_Units : Unit_Set;
+
+      function Namespace_Root
+        (Unit : GPR2.Build.Compilation_Unit.Object)
+         return GPR2.Project.View.Object;
+      --  Return the namespace root through which Unit is visible
+
+      --------------------
+      -- Namespace_Root --
+      --------------------
+
+      function Namespace_Root
+        (Unit : GPR2.Build.Compilation_Unit.Object)
+         return GPR2.Project.View.Object is
+      begin
+         for NRP of Tree.Namespace_Root_Projects loop
+            if NRP.Kind in GPR2.With_Object_Dir_Kind then
+               declare
+                  View_DB : constant GPR2.Build.View_Db.Object :=
+                    Tree.Artifacts_Database (NRP);
+               begin
+                  if View_DB.Source_Option >= Sources_Units
+                    and then View_DB.Has_Compilation_Unit (Unit.Name)
+                    and then
+                      Unit_Key (View_DB.Compilation_Unit (Unit.Name))
+                      = Unit_Key (Unit)
+                  then
+                     return NRP;
+                  end if;
+               end;
+            end if;
+         end loop;
+
+         for Cursor in
+           Tree.Iterate
+             (Status =>
+                [GPR2.Project.S_Externally_Built =>
+                   GNATCOLL.Tribooleans.False])
+         loop
+            declare
+               View : constant GPR2.Project.View.Object :=
+                 GPR2.Project.Tree.Element (Cursor);
+            begin
+               if View.Kind in GPR2.With_Source_Dirs_Kind then
+                  for Candidate of View.Own_Units loop
+                     if Candidate.Name = Unit.Name
+                       and then Unit_Key (Candidate) = Unit_Key (Unit)
+                     then
+                        return Candidate.Owning_View;
+                     end if;
+                  end loop;
+               end if;
+            end;
+         end loop;
+
+         return Unit.Owning_View;
+      end Namespace_Root;
    begin
       --  Clear previous state
       Unit_Dependency_Graph := Unit_Graphs.Create;
 
       --  Collect all units and add them as vertices to the graph
-      for Prj of Tree.Ordered_Views loop
-         for Unit of Prj.Own_Units loop
-            if Unit.Is_Defined then
-               All_Units.Insert (Unit.Name, Unit);
-               Unit_Graphs.Add_Vertex (Unit_Dependency_Graph, Unit);
+      for Cursor in
+        Tree.Iterate
+          (Status =>
+             [GPR2.Project.S_Externally_Built => GNATCOLL.Tribooleans.False])
+      loop
+         declare
+            View : constant GPR2.Project.View.Object :=
+              GPR2.Project.Tree.Element (Cursor);
+         begin
+            if View.Kind in GPR2.With_Source_Dirs_Kind then
+               for Unit of View.Own_Units loop
+                  if Unit.Is_Defined then
+                     if not All_Units.Contains (Unit_Key (Unit)) then
+                        Include_Unit (All_Units, Unit);
+                        Unit_Graphs.Add_Vertex (Unit_Dependency_Graph, Unit);
+                     end if;
+                  end if;
+               end loop;
             end if;
-         end loop;
+         end;
       end loop;
 
       --  Add edges based on Known_Dependencies
       for U of All_Units loop
-         for Dep_Name of U.Known_Dependencies loop
-            declare
-               use GPR2.Build.Compilation_Unit.Maps.Maps;
-               C : constant Cursor := All_Units.Find (Dep_Name);
-            begin
-               if Has_Element (C) then
-                  Unit_Graphs.Add_Edge (Unit_Dependency_Graph, U, Element (C));
+         declare
+            Root    : constant GPR2.Project.View.Object := Namespace_Root (U);
+            View_DB : constant GPR2.Build.View_Db.Object :=
+              Tree.Artifacts_Database (Root);
+         begin
+            for Dep_Name of U.Known_Dependencies loop
+               if View_DB.Source_Option >= Sources_Units
+                 and then View_DB.Has_Compilation_Unit (Dep_Name)
+               then
+                  declare
+                     Dep : constant GPR2.Build.Compilation_Unit.Object :=
+                       View_DB.Compilation_Unit (Dep_Name);
+                  begin
+                     if All_Units.Contains (Unit_Key (Dep)) then
+                        Unit_Graphs.Add_Edge (Unit_Dependency_Graph, U, Dep);
+                     end if;
+                  end;
                end if;
-            end;
-         end loop;
+            end loop;
+         end;
       end loop;
 
       --  Compute transitive closure using the Close method
