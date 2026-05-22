@@ -1,2 +1,2 @@
-CLI reason present
-SARIF reason: result of addition must fit in a 32-bits machine integer
+CLI reasonForCheck: result of addition must fit in a 32-bits machine integer
+SARIF reasonForCheck: result of addition must fit in a 32-bits machine integer

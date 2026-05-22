@@ -337,6 +337,66 @@ explicitly. When multiple base URIs match a file, the longest matching base
 path wins. Files that cannot be resolved to any configured base URI are emitted
 as absolute ``file://`` URIs instead.
 
+SARIF tests
+-----------
+
+SARIF regression tests live in ``testsuite/gnatprove/tests/`` and fall into
+two categories.
+
+The first category consists of SARIF-focused tests that inspect
+``gnatprove.sarif`` directly. These tests generally use a dedicated
+``test.py`` script and should validate the SARIF structure or custom metadata
+as their primary purpose, rather than relying on the textual CLI output as a
+proxy. The helper routines in
+``testsuite/gnatprove/lib/python/test_support.py`` provide common accessors for
+loading the report, iterating over SARIF results, and extracting custom
+properties such as ``gnatprove/reasonForCheck`` or artifact-location base-URI
+data.
+
+When a SARIF field is also expected to appear in the CLI output, such a test
+may add a secondary CLI check. In that case, ``test.out`` should print the
+actual value extracted from SARIF, and also the CLI value when it is part of
+the intended behavior. This keeps baselines uniform for tests that add one or
+custom SARIF properties.
+
+The second category consists of output-consistency tests driven by
+``CheckSarifRefiner``. These tests are not meant to validate a specific SARIF
+property. Instead, they check that the SARIF report remains aligned with the
+normal GNATprove output: for each unsuppressed SARIF result, the message text
+rendered from the SARIF result is expected to be present in the CLI output.
+This catches cases where a diagnostic is emitted in SARIF but not in the
+normal output, or where the two representations drift apart. The refiner uses
+the current report mode as well: when ``--report=fail`` is in effect, SARIF
+results of kind ``pass`` are ignored so that proved messages do not have to
+appear in the filtered CLI output.
+
+Some message families are intentionally excluded from this consistency check in
+``test_support.py`` through ``ignore_patterns``. Those exclusions cover known
+representation mismatches or diagnostics that are not yet rendered
+consistently between SARIF and CLI output, so enabling the check does not mean
+that every SARIF result is compared verbatim.
+
+In tests written through ``test.yaml`` and the standard ``prove_all`` or
+``do_flow`` helpers, setting ``enable_sarif_check: True`` requests this second
+category of validation. The flag is translated internally into the default
+refiner chain by adding ``CheckSarifRefiner`` after ``CheckMarksRefiner`` and
+before the filtering/sorting refiners. This is a validation step only: it does
+not modify the baseline output in ``test.out``. The generated SARIF report is
+still examined only for consistency with the CLI output, not for individual
+fields.
+
+There are three important caveats for ``enable_sarif_check``.
+
+ - If a test supplies an explicit ``refiners`` list in Python, that custom list
+   overrides the boolean compatibility flags, so ``enable_sarif_check`` has no
+   effect unless ``CheckSarifRefiner`` is added explicitly.
+ - The helper code disables the SARIF consistency check automatically for
+   SPARKlib tests and for runs that use ``--limit`` switches, because those
+   modes do not currently interact well with SARIF output generation.
+ - For tests whose purpose is to inspect SARIF-only data, use a dedicated
+   ``test.py`` script and explicit SARIF queries instead of
+   ``enable_sarif_check``.
+
 ***************
 IDE Integration
 ***************

@@ -1,34 +1,24 @@
-import contextlib
-import io
-import json
-import os.path
-
-from test_support import prove_all
+from test_support import (
+    capture_prove_all,
+    find_sarif_results,
+    sarif_result_property,
+)
 
 EXPECTED = "result of addition must fit in a 32-bits machine integer"
+PROPERTY = "gnatprove/reasonForCheck"
 
-
-stream = io.StringIO()
-with contextlib.redirect_stdout(stream):
-    prove_all()
-
-output = stream.getvalue()
+output = capture_prove_all()
 
 if "[reason for check: " + EXPECTED + "]" not in output:
-    print("Missing in CLI:", EXPECTED)
+    print("Missing CLI reasonForCheck:", EXPECTED)
 else:
-    print("CLI reason present")
+    print("CLI reasonForCheck:", EXPECTED)
 
-with open(os.path.join("gnatprove", "gnatprove.sarif")) as f:
-    sarif = json.load(f)
-
-for result in sarif["runs"][0].get("results", []):
-    props = result.get("properties", {})
-    if (
-        result.get("ruleId") == "VC_OVERFLOW_CHECK"
-        and props.get("gnatprove/reasonForCheck") == EXPECTED
-    ):
-        print("SARIF reason:", props["gnatprove/reasonForCheck"])
-        break
+for result in find_sarif_results(
+    rule_id="VC_OVERFLOW_CHECK",
+    predicate=lambda item: sarif_result_property(item, PROPERTY) == EXPECTED,
+):
+    print("SARIF reasonForCheck:", sarif_result_property(result, PROPERTY))
+    break
 else:
-    print("Missing in SARIF:", EXPECTED)
+    print("Missing SARIF reasonForCheck:", EXPECTED)
