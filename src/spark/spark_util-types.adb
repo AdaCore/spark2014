@@ -2765,8 +2765,8 @@ package body SPARK_Util.Types is
 
             return False;
 
-         --  Stop of the access type has already been traversed. Otherwise,
-         --  traverse the designated type.
+         --  Traverse the designated type. It will stop if it has already been
+         --  traversed.
 
          elsif Is_Access_Type (Rep_Ty)
            and then not Is_Access_Subprogram_Type (Rep_Ty)
@@ -2777,13 +2777,11 @@ package body SPARK_Util.Types is
             begin
 
                return
-                 Inserted
-                 and then
-                   Traverse_Type
-                     (if Is_Incomplete_Type (Des_Ty)
-                        and then Present (Full_View (Des_Ty))
-                      then Full_View (Des_Ty)
-                      else Des_Ty);
+                 Traverse_Type
+                   (if Is_Incomplete_Type (Des_Ty)
+                      and then Present (Full_View (Des_Ty))
+                    then Full_View (Des_Ty)
+                    else Des_Ty);
             end;
          else
             pragma
