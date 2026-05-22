@@ -16907,8 +16907,8 @@ package body Gnat2Why.Expr is
                       (Op          => Op,
                        Left        => Old,
                        Right       => Offset,
-                       Left_Type   => NType,
-                       Right_Type  => NType,
+                       Left_Type   => Base_Why_Type (NType),
+                       Right_Type  => Base_Why_Type (NType),
                        Return_Type => NType,
                        Domain      => Domain,
                        Ada_Node    => Expr);
@@ -21321,8 +21321,8 @@ package body Gnat2Why.Expr is
                       (Op          => Nkind (Expr),
                        Left        => Left_Expr,
                        Right       => Right_Expr,
-                       Left_Type   => Etype (Left),
-                       Right_Type  => Etype (Right),
+                       Left_Type   => Base_Why_Type (Etype (Left)),
+                       Right_Type  => Base_Why_Type (Etype (Right)),
                        Return_Type => Expr_Type,
                        Domain      => Domain,
                        Ada_Node    => Expr);
@@ -21374,8 +21374,8 @@ package body Gnat2Why.Expr is
                       (Op          => Nkind (Expr),
                        Left        => L_Why,
                        Right       => R_Why,
-                       Left_Type   => Etype (Left),
-                       Right_Type  => Etype (Right),
+                       Left_Type   => L_Type,
+                       Right_Type  => R_Type,
                        Return_Type => Expr_Type,
                        Domain      => Domain,
                        Ada_Node    => Expr);
@@ -21398,8 +21398,8 @@ package body Gnat2Why.Expr is
                       (Op          => Nkind (Expr),
                        Left        => LT,
                        Right       => RT,
-                       Left_Type   => Lty,
-                       Right_Type  => Rty,
+                       Left_Type   => Base_Why_Type (Lty),
+                       Right_Type  => Base_Why_Type (Rty),
                        Return_Type => Expr_Type,
                        Domain      => Domain,
                        Ada_Node    => Expr);
@@ -21449,7 +21449,7 @@ package body Gnat2Why.Expr is
                      else raise Program_Error);
 
                   function Square
-                    (X : W_Expr_Id; T : Type_Kind_Id) return W_Expr_Id
+                    (X : W_Expr_Id; T : W_Type_Id) return W_Expr_Id
                   is (New_Binary_Op_Expr
                         (Op          => N_Op_Multiply,
                          Left        => X,
@@ -21460,8 +21460,7 @@ package body Gnat2Why.Expr is
                          Domain      => Domain,
                          Ada_Node    => Expr));
 
-                  function Cube
-                    (X : W_Expr_Id; T : Type_Kind_Id) return W_Expr_Id
+                  function Cube (X : W_Expr_Id; T : W_Type_Id) return W_Expr_Id
                   is (New_Binary_Op_Expr
                         (Op          => N_Op_Multiply,
                          Left        => X,
@@ -21472,13 +21471,11 @@ package body Gnat2Why.Expr is
                          Domain      => Domain,
                          Ada_Node    => Expr));
 
-                  function Inv
-                    (X : W_Expr_Id; T : Type_Kind_Id) return W_Expr_Id;
+                  function Inv (X : W_Expr_Id; T : W_Type_Id) return W_Expr_Id;
                   --  Return 1 / X
                   --  Insert a division check depending on the domain
 
-                  function Inv
-                    (X : W_Expr_Id; T : Type_Kind_Id) return W_Expr_Id
+                  function Inv (X : W_Expr_Id; T : W_Type_Id) return W_Expr_Id
                   is
                      Tmp : constant W_Expr_Id :=
                        New_Temp_For_Expr (X, Need_Temp => Domain = EW_Prog);
@@ -21638,23 +21635,23 @@ package body Gnat2Why.Expr is
                         elsif UI_Eq (Exp, Uint_1) then
                            T := W_Left;
                         elsif UI_Eq (Exp, Uint_2) then
-                           T := Square (W_Left, Left_Type);
+                           T := Square (W_Left, Base_Type);
                         elsif UI_Eq (Exp, Uint_3) then
-                           T := Cube (W_Left, Left_Type);
+                           T := Cube (W_Left, Base_Type);
                         elsif UI_Eq (Exp, UI_Negate (Uint_1)) then
-                           T := Inv (W_Left, Left_Type);
+                           T := Inv (W_Left, Base_Type);
                         elsif UI_Eq (Exp, UI_Negate (Uint_2)) then
-                           T := Inv (Square (W_Left, Left_Type), Left_Type);
+                           T := Inv (Square (W_Left, Base_Type), Base_Type);
                         elsif UI_Eq (Exp, UI_Negate (Uint_3)) then
-                           T := Inv (Cube (W_Left, Left_Type), Left_Type);
+                           T := Inv (Cube (W_Left, Base_Type), Base_Type);
                         else
                            T :=
                              New_Binary_Op_Expr
                                (Op          => N_Op_Expon,
                                 Left        => W_Left,
                                 Right       => W_Right,
-                                Left_Type   => Left_Type,
-                                Right_Type  => Etype (Right),
+                                Left_Type   => Base_Type,
+                                Right_Type  => EW_Int_Type,
                                 Return_Type => Expr_Type,
                                 Domain      => Domain,
                                 Ada_Node    => Expr);
@@ -21666,8 +21663,8 @@ package body Gnat2Why.Expr is
                          (Op          => N_Op_Expon,
                           Left        => W_Left,
                           Right       => W_Right,
-                          Left_Type   => Etype (Left),
-                          Right_Type  => Etype (Right),
+                          Left_Type   => Base_Type,
+                          Right_Type  => EW_Int_Type,
                           Return_Type => Expr_Type,
                           Domain      => Domain,
                           Ada_Node    => Expr);
@@ -27883,8 +27880,8 @@ package body Gnat2Why.Expr is
                           (Op          => N_Op_Add,
                            Left        => +Low_Expr,
                            Right       => +Offset,
-                           Left_Type   => Idx_Ty,
-                           Right_Type  => Idx_Ty,
+                           Left_Type   => B_Ty,
+                           Right_Type  => B_Ty,
                            Return_Type => Idx_Ty,
                            Domain      => EW_Term)
                      else
