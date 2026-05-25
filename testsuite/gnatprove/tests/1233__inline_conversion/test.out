@@ -1,0 +1,14 @@
+test_1.adb:8:14: info: add a contract to analyze it separately from calling contexts
+test_1.adb:8:14: info: local subprogram "Test_In" only analyzed in the context of calls [info-unrolling-inlining]
+test_1.adb:12:04: warning: analyzing unreferenced procedure "Call_In" [unreferenced-procedure]
+test_1.adb:12:23: warning: "X" is not modified, could be IN
+test_1.adb:12:23: warning: unused variable "X"
+test_1.adb:14:07: info: analyzing call to "Test_In" in context
+test_1.adb:14:23: medium: predicate check might fail [possible fix: subprogram at line 12 should mention X in a precondition] [provers reached step limit before completing the proof]
+test_2.adb:8:14: info: add a contract to analyze it separately from calling contexts
+test_2.adb:8:14: info: local subprogram "Test_In" only analyzed in the context of calls [info-unrolling-inlining]
+test_2.adb:12:04: warning: analyzing unreferenced procedure "Call_In" [unreferenced-procedure]
+test_2.adb:12:23: warning: "X" is not modified, could be IN
+test_2.adb:12:23: warning: unused variable "X"
+test_2.adb:14:07: info: analyzing call to "Test_In" in context
+test_2.adb:14:16: medium: predicate check might fail [possible fix: subprogram at line 12 should mention X in a precondition] [provers reached step limit before completing the proof]
