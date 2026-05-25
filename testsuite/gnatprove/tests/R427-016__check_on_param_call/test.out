@@ -80,6 +80,7 @@ formals.adb:113:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:114:04: info: analyzing call to "P4" in context
 formals.adb:115:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:116:04: info: analyzing call to "P3" in context
+formals.adb:116:20: medium: predicate check might fail [provers reached step limit before completing the proof]
 formals.adb:117:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:118:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:118:18: medium: in value of subprogram parameter after the call at formals.adb:118
@@ -88,6 +89,7 @@ formals.adb:119:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:120:04: info: analyzing call to "P5" in context
 formals.adb:121:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:122:04: info: analyzing call to "P3" in context
+formals.adb:122:22: medium: predicate check might fail [provers reached step limit before completing the proof]
 formals_arr_split.adb:1:11: warning: subprogram "Formals_Arr_Split" has no effect
 formals_arr_split.adb:3:04: info: range check proved (CVC5: 2 VC)
 formals_arr_split.adb:5:04: info: range check proved (CVC5: 2 VC)
@@ -127,9 +129,11 @@ formals_arr_split.adb:43:04: info: analyzing call to "P2" in context
 formals_arr_split.adb:46:10: info: precondition proved (Trivial: 1 VC)
 formals_arr_split.adb:46:13: medium: length check might fail [reason for check: argument array must have the same length as the parameter array type] [provers reached step limit before completing the proof]
 formals_arr_split.adb:48:10: info: analyzing call to "P2" in context
+formals_arr_split.adb:48:14: medium: length check might fail [reason for check: array must be of the appropriate length] [possible fix: call at line 42 should mention A (for argument V) in a postcondition] [provers reached step limit before completing the proof]
 formals_arr_split.adb:52:10: info: precondition proved (Trivial: 1 VC)
 formals_arr_split.adb:52:13: medium: length check might fail [reason for check: argument array must have the same length as the parameter array type] [provers reached step limit before completing the proof]
 formals_arr_split.adb:54:10: info: analyzing call to "P3" in context
+formals_arr_split.adb:54:24: medium: length check might fail [reason for check: array must be of the appropriate length] [possible fix: call at line 42 should mention A (for argument V) in a postcondition] [provers reached step limit before completing the proof]
 formals_arr_split_pred.adb:5:31: info: index check proved (CVC5: 2 VC)
 formals_arr_split_pred.adb:8:33: info: index check proved (CVC5: 2 VC)
 formals_arr_split_pred.adb:14:07: info: for inherited predicate at formals_arr_split_pred.adb:3
@@ -222,9 +226,11 @@ formals_rec_split.adb:44:04: info: analyzing call to "P2" in context
 formals_rec_split.adb:47:10: info: precondition proved (Trivial: 1 VC)
 formals_rec_split.adb:47:13: high: discriminant check might fail (e.g. when U = (D => False)) [provers reached step limit before completing the proof]
 formals_rec_split.adb:49:10: info: analyzing call to "P2" in context
+formals_rec_split.adb:49:14: medium: discriminant check might fail [possible fix: call at line 43 should mention A (for argument V) in a postcondition] [provers reached step limit before completing the proof]
 formals_rec_split.adb:53:10: info: precondition proved (Trivial: 1 VC)
 formals_rec_split.adb:53:13: high: discriminant check might fail (e.g. when U = (D => False)) [provers reached step limit before completing the proof]
 formals_rec_split.adb:55:10: info: analyzing call to "P3" in context
+formals_rec_split.adb:55:19: medium: discriminant check might fail [possible fix: call at line 43 should mention A (for argument V) in a postcondition] [provers reached step limit before completing the proof]
 formals_rec_split_pred.adb:13:31: info: range check proved (CVC5: 1 VC)
 formals_rec_split_pred.adb:14:29: info: discriminant check proved (CVC5: 1 VC)
 formals_rec_split_pred.adb:16:34: info: range check proved (CVC5: 1 VC)
@@ -306,7 +312,11 @@ formals_rec_split_pred.adb:82:04: info: precondition proved (Trivial: 1 VC)
 formals_rec_split_pred.adb:83:04: info: analyzing call to "P4" in context
 formals_rec_split_pred.adb:84:04: info: precondition proved (Trivial: 1 VC)
 formals_rec_split_pred.adb:85:04: info: analyzing call to "P3" in context
+formals_rec_split_pred.adb:85:20: info: discriminant check proved (CVC5: 1 VC)
+formals_rec_split_pred.adb:85:20: medium: predicate check might fail [provers reached step limit before completing the proof]
 formals_rec_split_pred.adb:86:04: info: precondition proved (Trivial: 1 VC)
 formals_rec_split_pred.adb:87:04: info: analyzing call to "P5" in context
 formals_rec_split_pred.adb:88:04: info: precondition proved (Trivial: 1 VC)
 formals_rec_split_pred.adb:89:04: info: analyzing call to "P3" in context
+formals_rec_split_pred.adb:89:22: info: discriminant check proved (CVC5: 1 VC)
+formals_rec_split_pred.adb:89:22: medium: predicate check might fail [provers reached step limit before completing the proof]
