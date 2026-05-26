@@ -1,0 +1,81 @@
+SPARK generated_globals: Pkg.Flip
+{
+  "Global": {
+    "In_Out": [
+      "Pkg.B"
+    ]
+  },
+  "Refined_Global": {
+    "In_Out": [
+      "Pkg.B"
+    ]
+  }
+}
+SPARK generated_globals: Pkg.Flop
+{
+  "Global": {
+    "Input": [
+      "Pkg.G1"
+    ],
+    "Output": [
+      "Pkg.B",
+      "Pkg.G2"
+    ]
+  },
+  "Refined_Global": {
+    "Input": [
+      "Pkg.G1"
+    ],
+    "Output": [
+      "Pkg.B",
+      "Pkg.G2"
+    ]
+  }
+}
+SPARK generated_globals: Pkg.No_Globals
+{
+  "Global": {},
+  "Refined_Global": {}
+}
+SARIF logicalLocation: Pkg.Flip
+SARIF logicalLocation name: Flip
+{
+  "global": {
+    "inOut": [
+      "Pkg.B"
+    ]
+  },
+  "refinedGlobal": {
+    "inOut": [
+      "Pkg.B"
+    ]
+  }
+}
+SARIF logicalLocation: Pkg.Flop
+SARIF logicalLocation name: Flop
+{
+  "global": {
+    "input": [
+      "Pkg.G1"
+    ],
+    "output": [
+      "Pkg.B",
+      "Pkg.G2"
+    ]
+  },
+  "refinedGlobal": {
+    "input": [
+      "Pkg.G1"
+    ],
+    "output": [
+      "Pkg.B",
+      "Pkg.G2"
+    ]
+  }
+}
+SARIF logicalLocation: Pkg.No_Globals
+SARIF logicalLocation name: No_Globals
+{
+  "global": {},
+  "refinedGlobal": {}
+}

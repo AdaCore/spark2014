@@ -27,6 +27,7 @@ with Ada.Strings.Maps;
 with Ada.Strings;
 with Ada.Strings.Fixed;
 with Ada.Text_IO;
+with Assumption_Types;                 use Assumption_Types;
 with Assumptions;                      use Assumptions;
 with Atree;                            use Atree;
 with Errout_Wrapper;                   use Errout_Wrapper;
@@ -240,11 +241,21 @@ package body Flow is
    --  Each call of Flow_Analyse_Entity appends JSON-formatted GG information
    --  to this array.
 
+   Generated_Globals_JSON_SPARK : JSON_Value := Create_Object;
+   --  A map for the "generated_globals" field in the unit's .spark file. The
+   --  map's keys are entity ids as encoded in the .spark entity table. Map
+   --  values are contract objects of the form
+   --    {"Global": ..., "Refined_Global": ...}.
+
    procedure Write_Flow_GG_To_JSON_File (Arr : JSON_Array);
-   --  Writes out to disk a JSON file of flow analysis' generated globals
+   --  Write the IDE-facing .gg file. This wraps the same contract object
+   --  under contracts[*].globals together with file/line/col metadata.
 
    procedure GG_To_JSON (FA : Flow_Analysis_Graphs; Arr : in out JSON_Array);
    --  Convert the flow-analysis generated contracts from FA to JSON format
+
+   function Get_Generated_Globals_JSON return JSON_Value
+   is (Generated_Globals_JSON_SPARK);
 
    --------------------------------
    -- Write_Flow_GG_To_JSON_File --
@@ -284,8 +295,8 @@ package body Flow is
       --  Returns the full source name for E
 
       function To_JSON return JSON_Value;
-      --  Returns the generated globals and refined globals for the current
-      --  program unit.
+      --  Return the common contract object used by both JSON outputs:
+      --  {"Global": ..., "Refined_Global": ...}.
 
       -------------
       -- To_JSON --
@@ -403,7 +414,7 @@ package body Flow is
 
       --  Local variables
 
-      Obj : JSON_Value;
+      Contract_Modes : JSON_Value;
 
    begin
       --  ??? ignore generated Initializes for now
@@ -416,9 +427,14 @@ package body Flow is
          return;
       end if;
 
-      Obj := To_JSON;
+      Contract_Modes := To_JSON;
 
-      if not Is_Empty (Obj) then
+      if not Is_Empty (Contract_Modes) then
+         Set_Field
+           (Generated_Globals_JSON_SPARK,
+            To_Key (Entity_To_Subp_Assumption (FA.Spec_Entity)),
+            Contract_Modes);
+
          declare
             Result : constant JSON_Value := Create_Object;
             Slc    : constant Source_Ptr :=
@@ -432,7 +448,7 @@ package body Flow is
             Set_Field (Result, "file", File);
             Set_Field (Result, "line", Line);
             Set_Field (Result, "col", Col);
-            Set_Field (Result, "globals", Obj);
+            Set_Field (Result, "globals", Contract_Modes);
             Append (Arr, Result);
          end;
       end if;
@@ -1575,6 +1591,8 @@ package body Flow is
       end Build_Graphs_For_Entity;
 
    begin
+      Generated_Globals_JSON_SPARK := Create_Object;
+
       if Present (Root_Entity) then
          Build_Graphs_For_Entity (Root_Entity);
 
