@@ -28,22 +28,22 @@
           </goal>
           <goal name="def'vc.2" proved="true">
             <proof prover="1">
-              <result status="valid" steps="1508" />
+              <result status="valid" steps="1494" />
             </proof>
           </goal>
           <goal name="def'vc.3" proved="true">
             <proof prover="1">
-              <result status="valid" steps="1481" />
+              <result status="valid" steps="1467" />
             </proof>
           </goal>
           <goal name="def'vc.4" proved="true">
             <proof prover="1">
-              <result status="valid" steps="1423" />
+              <result status="valid" steps="1409" />
             </proof>
           </goal>
           <goal name="def'vc.5" proved="true">
             <proof prover="1">
-              <result status="valid" steps="1639" />
+              <result status="valid" steps="1625" />
             </proof>
           </goal>
           <goal name="def'vc.6" proved="true">
