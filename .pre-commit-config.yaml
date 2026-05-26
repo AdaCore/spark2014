@@ -1,3 +1,6 @@
+default_install_hook_types:
+  - pre-commit
+  - commit-msg
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
@@ -6,16 +9,29 @@ repos:
         exclude: ^\.vscode/
     -   id: check-merge-conflict
     -   id: check-symlinks
+    # Generic YAML validation for all YAML files except GitLab CI.
+    # GitLab CI supports custom YAML tags such as !reference, which generic
+    # YAML loaders used do not understand in strict mode.
     -   id: check-yaml
+        name: check-yaml-strict
+        exclude: ^\.gitlab-ci\.yml$
+    # GitLab CI YAML validation.
+    # --unsafe checks syntax without constructing the YAML object model,
+    # allowing GitLab-specific tags such as !reference.
+    -   id: check-yaml
+        name: check-gitlab-ci-yaml
+        files: ^\.gitlab-ci\.yml$
+        args: [--unsafe]
     -   id: end-of-file-fixer
     -   id: mixed-line-ending
     -   id: trailing-whitespace
   - repo: git-adacore:eng/spark/support
-    rev: "0.1"
+    rev: "v1.1.0"
     hooks:
     -   id: check-submodules
     -   id: check-empty-testoutopt
     -   id: check-testsuite-markers
+    -   id: check-doc-src-refs
   - repo: https://github.com/pycqa/flake8
     rev: 7.1.1
     hooks:
