@@ -207,7 +207,11 @@ package body SPARK_Util.Hardcoded is
          return Is_Subprogram (E);
 
       elsif Is_From_Hardcoded_Unit (E, System_Storage_Elements) then
-         return Get_Name_String (Chars (E)) in SSEN.To_Address
+         return Chars (E) in Name_Op_Add
+                           | Name_Op_Subtract
+                           | Name_Op_Mod
+                  or else
+                Get_Name_String (Chars (E)) in SSEN.To_Address
                                              | SSEN.To_Integer;
 
       end if;
