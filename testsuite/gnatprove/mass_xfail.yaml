@@ -21,6 +21,7 @@ rules:
       - 28__membership_tests
       - 63__c_strings_proof
       - 247__container_aggregate_capacity
+      - 276__concat
       - 281__sorts
       - 308__counterexample
       - 325__difficult_proofs
