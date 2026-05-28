@@ -1842,6 +1842,126 @@ Note that a function with side effects is also a volatile function (see section
    composite type, whose predefined equality operation now has side effects
    through the primitive equality operation on its component.]
 
+Modifies Aspects
+~~~~~~~~~~~~~~~~
+
+To easily specify that some outputs of a subprogram are unchanged on some paths,
+it is possible to annotate it with a Modifies aspect. This aspect provides a
+list of clauses, each specifying a set of objects that are modified by the
+program, possibly with an additional guard. Objects not mentioned in one of
+these clauses, or objects only mentioned in clauses whose guard evaluates to
+False on subprogram entry, are preserved by the subprogram.
+
+.. container:: heading
+
+   Syntax
+
+The Modifies aspect is introduced by an ``aspect_specification`` where the
+``aspect_mark`` is Modifies and the ``aspect_definition`` must follow the
+grammar of ``MODIFIES_SPECIFICATION``:
+
+::
+
+   MODIFIES_SPECIFICATION ::= (MODIFIES_CLAUSE {, MODIFIES_CLAUSE});
+   MODIFIES_CLAUSE ::= MODIFIED_OBJECTS { when GUARD }
+   GUARD ::= boolean_EXPRESSION
+   MODIFIED_OBJECTS ::= MODIFIED_OBJECT | (MODIFIED_OBJECT {, MODIFIED_OBJECT})
+   MODIFIED_OBJECT ::=
+       name
+     | MODIFIED_OBJECT . all
+     | MODIFIED_OBJECT . component_selector_name
+     | MODIFIED_OBJECT (expression {, expression})
+
+.. container:: heading
+
+   Name Resolution Rules
+
+If a ``MODIFIED_OBJECT`` is a name, it shall denote an entire object or a state
+abstraction. Guards and ``MODIFIED_OBJECTs`` which are not state abstractions
+should be resolved as expressions like if they occurred in a precondition.
+
+.. container:: heading
+
+   Static Semantics
+
+This aspect contains a list of clauses made of one or several modified objects
+and an optional guard. All guards are evaluated at the beginning of the
+subprogram call, in the context of the precondition.
+For a set of inputs, clauses without a guard and clauses
+whose guard evaluates to True are said to be *enabled*. There can be more than
+one enabled clause for a set of input.
+
+If a clause of a Modifies aspect is enabled for a subprogram call, then the
+index expressions of its ``MODIFIED_OBJECTS`` are evaluated once and for all at
+the beginning of the call.
+
+.. container:: heading
+
+   Legality Rules
+
+1. If a ``MODIFIED_OBJECT`` is a name, it shall denote an output of the
+   subprogram.
+
+2. If an output of the suprogram is effectively volatile for reading, then it
+   shall be mentioned alone in a ``MODIFIES_CLAUSE`` whithout a guard.
+
+.. container:: heading
+
+   Verification rules
+
+We say that an object is *unchanged* by a subprogram if its input and its
+output values match in the following way:
+
+- For discrete and fixed point objects, their values shall be equal.
+- For floating point objects, they shall have the same bitwise representation.
+- For composite object, matching components shall be unchanged and:
+  - if the object is tagged, its tag shall be the same, and
+  - for array objects, the bounds shall be equal.
+- For access-to-object objects, they shall either be both null or designate
+  unchanged values.
+- For access-to-subprogram objects, they shall either be both null or designate
+  the same subprogram.
+- If the object is potentially invalid (see :ref:`Data Validity`), its
+  attribute Valid_Scalars shall evaluate to the same value before and after the
+  call.
+- If the object has relaxed initialization (see :ref:`Relaxed Initialization`),
+  its attribute Initialized shall evaluate to the same value before and after
+  the call.
+
+3. If a clause of a Modifies aspect is enabled for a subprogram call, then each
+   element of the ``MODIFIED_OBJECTS`` shall denote an object both at the
+   beginning of the subprogram and on normal return.
+   In particular, discriminant-dependent
+   components shall be present, indices shall be within array bounds, and
+   dereferenced pointers shall not be null.
+
+   When a subprogram propagates an exception, each element of the
+   ``MODIFIED_OBJECTS`` of its enabled clauses shall denote an object except
+   those that are part of a parameter that is not known to be passed by
+   reference.
+
+   When a subprogram terminates the execution of the partition, as can be
+   specified with the Program_Exit aspect, each element of
+   the ``MODIFIED_OBJECTS`` of its enabled clauses shall denote an object if
+   they are part of outputs that are mentioned outside an 'Old attribute
+   reference in the assertion expression of the Program_Exit aspect.
+
+4. When a subprogram annotated with a Modifies aspect returns normally, all
+   subcomponents reachable from objects that are outputs of the subprogram
+   shall be unchanged but for those reachable from the evaluation of elements
+   of a ``MODIFIED_OBJECTS`` list of an enabled clause.
+
+   When a subprogram propagates an exception, all subcomponents reachable from
+   objects that are outputs of the subprogram except its parameters that might
+   be passed by copy shall be unchanged but for those reachable from the
+   evaluation of elements of a ``MODIFIED_OBJECTS`` list of an enabled clause.
+
+   When a subprogram terminates the execution of the partition, as can be
+   specified with the Program_Exit aspect, all subcomponents reachable from
+   objects which are output of the subprogram occurring
+   outside an 'Old attribute reference in the assertion expression of the
+   Program_Exit aspect, shall be unchanged but for those reachable from the
+   evaluation of a ``MODIFIED_OBJECTS`` list of an enabled clause.
 
 Formal Parameter Modes
 ----------------------

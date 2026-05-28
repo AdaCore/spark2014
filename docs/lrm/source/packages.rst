@@ -520,9 +520,12 @@ be *compatible with respect to volatility* with E2 if
      Last_Bit, Length, Position, Size, or Storage_Size; or
 
    * the expression of a type conversion, a qualified expression or a
-     parenthesized expression occurring in a non-interfering context; or
+     parenthesized expression occurring in a non-interfering context;
 
-   * the expression in a ``delay_statement``.
+   * the expression in a ``delay_statement``; or
+
+   * a ``modified_object`` that appears alone and without a guard in a Modifies
+     aspect.
 
    [The attributes listed above all have the property that when their prefix
    denotes an object, evaluation of the attribute does not involve the
