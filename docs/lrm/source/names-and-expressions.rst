@@ -110,6 +110,125 @@ should be documented in the User Guide for the tool.
    postcondition of the prefix of the attribute reference.
 
 
+
+.. index:: At
+
+Attribute At
+^^^^^^^^^^^^
+
+.. container:: heading
+
+   Static Semantics
+
+
+1. For a prefix *X* that denotes an object or value of a nonlimited type, the
+   following attribute is defined:
+
+   ::
+
+      X'At (statement_identifier)
+
+
+2. X'At (statement_identifier) denotes a constant object of the type of X.
+   [The value of this constant is the value of X at position of the label
+   statement_identifier.]
+
+
+.. container:: heading
+
+   Legality Rules
+
+
+3. The statement_identifier shall refer to a visible statement_identifier.
+
+4. In many cases, the language rules pertaining to the At
+   attribute match those pertaining to the Old attribute (see Ada LRM 6.1.1),
+   except with "At" substituted for "Old". These include:
+
+   * prefix name resolution rules
+
+   * nominal subtype definition
+
+   * accessibility level definition
+
+   * run-time tag-value determination (in the case where *X* is tagged)
+
+   * interactions with abstract types
+
+   * interactions with anonymous access types
+
+   * forbidden attribute uses in the prefix of the ``attribute_reference``.
+
+   The following rules are not included in the above list;
+   corresponding rules are instead stated explicitly below:
+
+   * the requirement that an Old ``attribute_reference`` shall only occur in a
+     postcondition expression;
+
+   * the rule disallowing a use of an entity declared within the
+     postcondition expression;
+
+   * the rule that a potentially unevaluated Old ``attribute_reference``
+     shall statically name an entity.
+
+5. The innermost sequence of statements enclosing the statement_identifier shall
+   also enclose the At attribute. Furthermore, if the At attribute is enclosed
+   by an accept_statement or a body, then the statement_identifier shall not be
+   outside this enclosing construct. The At attribute shall also not be
+   specified in a subprogram contract. [These are essentially the same rules as
+   for goto statements]
+
+6. Within the innermost sequence of statement enclosing the
+   statement_identifier, the At attribute shall occur in a statement occurring
+   after the statement_identifier it references.
+
+7. For any given sequence of statements immediately enclosing two
+   statement_identifiers L1 and L2, such that L1 precedes L2, if there is a
+   goto statement targeting L2 within a statement preceding L1 in the sequence,
+   then no At attribute shall reference L1.
+
+8. The prefix of an At ``attribute_reference`` shall only reference entities
+   visible at the location of the referenced statement_identifier, or declared
+   within the prefix itself.
+
+9. The prefix of an At ``attribute_reference`` shall not contain a Loop_Entry
+   ``attribute_reference`` without an explicit loop name. If the prefix of an At
+   ``attribute_reference`` contains another At ``attribute_reference``, or a
+   Loop_Entry reference (with an explicit loop name) the inner reference shall
+   be legal at the location of the statement_identifier referenced by the outer
+   attribute. Similarly, if the prefix of an Loop_Entry ``attribute_reference``
+   contains a At ``attribute_reference``, the At reference shall be legal at the
+   location immediately before the referenced loop. [The reference
+   should be legal and keep the same meaning when the expression of the
+   surrounding reference is moved to the implicit declaration point).
+
+10. An At ``attribute_reference`` whose prefix is subject to ownership shall not
+    occur outside of an assertion expression or constant part of an object.
+
+11. There shouldn't be an ``Assert_And_Cut`` pragma in the innermost sequence
+    of statement enclosing the statement_identifier of an At
+    ``attribute_reference`` between the statement_identifier and the statement
+    enclosing the ``attribute_reference``.
+
+12. There shouldn't be any loop variant or invariant between
+    an At ``attribute_reference`` and its statement_identifier unless it is
+    in a nested loop statement.
+
+.. container:: heading
+
+   Dynamic Semantics
+
+
+13. For each X'At other than one occurring within an Ignored ghost statement or
+    assertion expression, a constant is implicitly declared at the location
+    of the statement_identifier. The constant is of the type of X and is
+    initialized to the result of evaluating X (as an expression) at the point
+    of the constant declaration. The value of X'At is the value of this
+    constant; the type of X'At is the type of X. These implicit
+    constant declarations occur in an arbitrary order for a given
+    statement_identifier.
+
+
 User-Defined References
 ~~~~~~~~~~~~~~~~~~~~~~~
 
