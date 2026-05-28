@@ -801,6 +801,7 @@ def is_other_proof_tag(tag):
         "ASSERT_PREMISE",
         "ASSERT_STEP",
         "INLINE_ANNOTATION",
+        "ITERABLE_ANNOTATION",
         "CONTAINER_AGGR_ANNOTATION",
         "RECLAMATION_ENTITY",
         "FEASIBLE_POST",
@@ -1027,6 +1028,8 @@ def check_marks(strlist, cwd=None, logger=None):
             return "UNCHECKED_CONVERSION_VOLATILE"
         elif "Inline_For_Proof or Logical_Equal annotation" in text:
             return "INLINE_ANNOTATION"
+        elif "Iterable_For_Proof annotation" in text:
+            return "ITERABLE_ANNOTATION"
         elif "Container_Aggregates annotation" in text:
             return "CONTAINER_AGGR_ANNOTATION"
         elif "reclamation entity" in text:

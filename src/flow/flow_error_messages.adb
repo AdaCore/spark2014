@@ -4410,6 +4410,9 @@ package body Flow_Error_Messages is
               "Inline_For_Proof or Logical_Equal annotation might be"
               & " incorrect";
 
+         when VC_Iterable_Check                   =>
+            return "Iterable_For_Proof annotation might be incorrect";
+
          when VC_Container_Aggr_Check             =>
             return "Container_Aggregates annotation might be incorrect";
 
@@ -4976,6 +4979,9 @@ package body Flow_Error_Messages is
 
          when VC_Inline_Check                     =>
             return "Inline_For_Proof or Logical_Equal annotation " & Verb;
+
+         when VC_Iterable_Check                   =>
+            return "Iterable_For_Proof annotation " & Verb;
 
          when VC_Container_Aggr_Check             =>
             return "Container_Aggregates annotation " & Verb;

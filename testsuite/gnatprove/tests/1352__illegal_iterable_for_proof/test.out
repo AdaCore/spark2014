@@ -1,0 +1,13 @@
+illegal_element_iterable_for_proof.adb:51:16: error: expected 2 parameters
+illegal_element_iterable_for_proof.adb:51:16: error: wrong number of parameters for a subprogram with the "Iterable_For_Proof" annotation
+illegal_element_iterable_for_proof.adb:78:25: error: type of "C" shall have a Constant_Reference primitive
+illegal_element_iterable_for_proof.adb:78:25: error: wrong type for parameter of subprogram with the "Iterable_For_Proof" annotation
+illegal_element_iterable_for_proof.adb:91:25: error: type of "C" shall have a Constant_Reference primitive
+illegal_element_iterable_for_proof.adb:91:25: error: wrong type for parameter of subprogram with the "Iterable_For_Proof" annotation
+illegal_element_iterable_for_proof.adb:117:25: error: "I" shall have type "Natural"
+illegal_element_iterable_for_proof.adb:117:25: error: wrong type for parameter of subprogram with the "Iterable_For_Proof" annotation
+illegal_element_iterable_for_proof.adb:143:16: error: expected "Integer"
+illegal_element_iterable_for_proof.adb:143:16: error: wrong return type for function with the "Iterable_For_Proof" annotation
+illegal_element_iterable_for_proof.adb:174:11: error: "Element" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
+illegal_element_iterable_for_proof.adb:174:11: error: violation of aspect SPARK_Mode at line 1
+gnatprove: error during flow analysis and proof

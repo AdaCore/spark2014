@@ -1,0 +1,89 @@
+element_iterable_for_proof.adb:9:10: info: range check proved (CVC5: 2 VC)
+element_iterable_for_proof.adb:17:16: info: during checks for quantification at element_iterable_for_proof.adb:8
+element_iterable_for_proof.adb:17:16: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
+element_iterable_for_proof.adb:17:16: info: precondition proved (Trivial: 1 VC)
+element_iterable_for_proof.adb:17:23: warning: unused variable "C"
+element_iterable_for_proof.adb:18:16: info: during checks for quantification at element_iterable_for_proof.adb:8
+element_iterable_for_proof.adb:18:16: info: implicit aspect Always_Terminates on "Next" has been proved, subprogram will terminate
+element_iterable_for_proof.adb:18:16: info: precondition proved (Trivial: 1 VC)
+element_iterable_for_proof.adb:19:40: info: overflow check proved (CVC5: 2 VC)
+element_iterable_for_proof.adb:20:16: info: during checks for quantification at element_iterable_for_proof.adb:8
+element_iterable_for_proof.adb:20:16: info: implicit aspect Always_Terminates on "Has_Element" has been proved, subprogram will terminate
+element_iterable_for_proof.adb:20:16: info: precondition proved (Trivial: 1 VC)
+element_iterable_for_proof.adb:22:16: info: during checks for quantification at element_iterable_for_proof.adb:8
+element_iterable_for_proof.adb:22:16: info: implicit aspect Always_Terminates on "Constant_Reference" has been proved, subprogram will terminate
+element_iterable_for_proof.adb:22:16: info: precondition proved (CVC5: 1 VC)
+element_iterable_for_proof.adb:23:11: info: dynamic accessibility check proved (Trivial)
+element_iterable_for_proof.adb:23:21: info: index check proved (CVC5: 2 VC)
+element_iterable_for_proof.adb:26:16: info: during checks for quantification at element_iterable_for_proof.adb:8
+element_iterable_for_proof.adb:26:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
+element_iterable_for_proof.adb:26:16: info: precondition proved (CVC5: 1 VC)
+element_iterable_for_proof.adb:27:21: info: index check proved (CVC5: 2 VC)
+element_iterable_for_proof.adb:28:16: info: Iterable_For_Proof annotation proved (CVC5: 1 VC)
+element_iterable_for_proof.adb:38:10: info: range check proved (CVC5: 2 VC)
+element_iterable_for_proof.adb:46:16: info: during checks for quantification at element_iterable_for_proof.adb:37
+element_iterable_for_proof.adb:46:16: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
+element_iterable_for_proof.adb:46:16: info: precondition proved (Trivial: 1 VC)
+element_iterable_for_proof.adb:46:23: warning: unused variable "C"
+element_iterable_for_proof.adb:47:16: info: during checks for quantification at element_iterable_for_proof.adb:37
+element_iterable_for_proof.adb:47:16: info: implicit aspect Always_Terminates on "Next" has been proved, subprogram will terminate
+element_iterable_for_proof.adb:47:16: info: precondition proved (Trivial: 1 VC)
+element_iterable_for_proof.adb:48:40: info: overflow check proved (CVC5: 2 VC)
+element_iterable_for_proof.adb:49:16: info: during checks for quantification at element_iterable_for_proof.adb:37
+element_iterable_for_proof.adb:49:16: info: implicit aspect Always_Terminates on "Has_Element" has been proved, subprogram will terminate
+element_iterable_for_proof.adb:49:16: info: precondition proved (Trivial: 1 VC)
+element_iterable_for_proof.adb:51:16: info: during checks for quantification at element_iterable_for_proof.adb:37
+element_iterable_for_proof.adb:51:16: info: implicit aspect Always_Terminates on "Constant_Reference" has been proved, subprogram will terminate
+element_iterable_for_proof.adb:51:16: info: precondition proved (CVC5: 1 VC)
+element_iterable_for_proof.adb:52:11: info: dynamic accessibility check proved (Trivial)
+element_iterable_for_proof.adb:52:21: info: index check proved (CVC5: 2 VC)
+element_iterable_for_proof.adb:57:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
+element_iterable_for_proof.adb:57:16: medium: during checks for quantification at element_iterable_for_proof.adb:37
+element_iterable_for_proof.adb:57:16: medium: precondition might fail, cannot prove F [provers reached step limit before completing the proof]
+element_iterable_for_proof.adb:58:21: info: index check proved (CVC5: 2 VC)
+element_iterable_for_proof.adb:59:16: info: Iterable_For_Proof annotation proved (CVC5: 1 VC)
+element_iterable_for_proof.adb:69:10: info: range check proved (CVC5: 2 VC)
+element_iterable_for_proof.adb:77:16: info: during checks for quantification at element_iterable_for_proof.adb:68
+element_iterable_for_proof.adb:77:16: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
+element_iterable_for_proof.adb:77:16: info: precondition proved (Trivial: 1 VC)
+element_iterable_for_proof.adb:77:23: warning: unused variable "C"
+element_iterable_for_proof.adb:78:16: info: during checks for quantification at element_iterable_for_proof.adb:68
+element_iterable_for_proof.adb:78:16: info: implicit aspect Always_Terminates on "Next" has been proved, subprogram will terminate
+element_iterable_for_proof.adb:78:16: info: precondition proved (Trivial: 1 VC)
+element_iterable_for_proof.adb:79:40: info: overflow check proved (CVC5: 2 VC)
+element_iterable_for_proof.adb:80:16: info: during checks for quantification at element_iterable_for_proof.adb:68
+element_iterable_for_proof.adb:80:16: info: implicit aspect Always_Terminates on "Has_Element" has been proved, subprogram will terminate
+element_iterable_for_proof.adb:80:16: info: precondition proved (Trivial: 1 VC)
+element_iterable_for_proof.adb:82:16: info: during checks for quantification at element_iterable_for_proof.adb:68
+element_iterable_for_proof.adb:82:16: info: implicit aspect Always_Terminates on "Constant_Reference" has been proved, subprogram will terminate
+element_iterable_for_proof.adb:82:16: info: precondition proved (CVC5: 1 VC)
+element_iterable_for_proof.adb:83:11: info: dynamic accessibility check proved (Trivial)
+element_iterable_for_proof.adb:83:21: info: index check proved (CVC5: 2 VC)
+element_iterable_for_proof.adb:86:16: info: during checks for quantification at element_iterable_for_proof.adb:68
+element_iterable_for_proof.adb:86:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
+element_iterable_for_proof.adb:86:16: info: precondition proved (CVC5: 1 VC)
+element_iterable_for_proof.adb:88:16: medium: Iterable_For_Proof annotation might be incorrect [provers reached step limit before completing the proof]
+element_iterable_for_proof.adb:100:10: info: range check proved (CVC5: 2 VC)
+element_iterable_for_proof.adb:108:16: info: during checks for quantification at element_iterable_for_proof.adb:99
+element_iterable_for_proof.adb:108:16: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
+element_iterable_for_proof.adb:108:16: info: precondition proved (Trivial: 1 VC)
+element_iterable_for_proof.adb:108:23: warning: unused variable "C"
+element_iterable_for_proof.adb:109:16: info: during checks for quantification at element_iterable_for_proof.adb:99
+element_iterable_for_proof.adb:109:16: info: implicit aspect Always_Terminates on "Next" has been proved, subprogram will terminate
+element_iterable_for_proof.adb:109:16: info: precondition proved (Trivial: 1 VC)
+element_iterable_for_proof.adb:110:40: info: overflow check proved (CVC5: 2 VC)
+element_iterable_for_proof.adb:111:16: info: during checks for quantification at element_iterable_for_proof.adb:99
+element_iterable_for_proof.adb:111:16: info: implicit aspect Always_Terminates on "Has_Element" has been proved, subprogram will terminate
+element_iterable_for_proof.adb:111:16: info: precondition proved (Trivial: 1 VC)
+element_iterable_for_proof.adb:113:16: info: during checks for quantification at element_iterable_for_proof.adb:99
+element_iterable_for_proof.adb:113:16: info: precondition proved (CVC5: 1 VC)
+element_iterable_for_proof.adb:117:16: info: during checks for quantification at element_iterable_for_proof.adb:99
+element_iterable_for_proof.adb:117:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
+element_iterable_for_proof.adb:117:16: info: precondition proved (CVC5: 1 VC)
+element_iterable_for_proof.adb:118:21: info: index check proved (CVC5: 2 VC)
+element_iterable_for_proof.adb:119:16: medium: Iterable_For_Proof annotation might be incorrect [provers reached step limit before completing the proof]
+element_iterable_for_proof.adb:124:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
+element_iterable_for_proof.adb:124:19: info: range check proved (CVC5: 2 VC)
+element_iterable_for_proof.adb:124:26: info: discriminant check proved (CVC5: 1 VC)
+element_iterable_for_proof.adb:124:60: info: null exclusion check proved (CVC5: 1 VC)
+element_iterable_for_proof.adb:126:19: info: assertion proved (CVC5: 1 VC)
