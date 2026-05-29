@@ -471,6 +471,13 @@ package body SPARK_Definition.Annotate is
    --  being the pragma argument, in particular covering
    --  subprograms and packages.
 
+   procedure Check_Third_Arg_Is_String
+     (Prag_Name   : GNATprove_Annotation_Kind;
+      Arg_3       : Node_Id;
+      From_Aspect : Boolean;
+      Ok          : out Boolean);
+   --  Check that the third argument of a pragma annotate is a string literal
+
    procedure Check_Automatic_Inst_And_HO_Specialization_Compatibility
      (Lemma : Subprogram_Kind_Id; Fun : Function_Kind_Id)
    with
@@ -729,12 +736,9 @@ package body SPARK_Definition.Annotate is
 
       --  The third argument must be a string literal
 
-      if Nkind (Arg3_Exp) not in N_String_Literal then
-         Mark_Incorrect_Use_Of_Annotation
-           (Annot_String_Third_Argument,
-            Arg3_Exp,
-            Name        => Prag_Name,
-            From_Aspect => From_Aspect);
+      Check_Third_Arg_Is_String (Prag_Name, Arg3_Exp, From_Aspect, Ok);
+
+      if not Ok then
          return;
       end if;
 
@@ -2911,13 +2915,11 @@ package body SPARK_Definition.Annotate is
          Ent := Empty;
       end if;
 
-      if Nkind (Arg3_Exp) not in N_String_Literal then
+      --  The third argument must be a string literal
 
-         Mark_Incorrect_Use_Of_Annotation
-           (Annot_String_Third_Argument,
-            Arg3_Exp,
-            Name        => Annot,
-            From_Aspect => From_Aspect);
+      Check_Third_Arg_Is_String (Annot, Arg3_Exp, From_Aspect, Ok);
+
+      if not Ok then
          return;
       end if;
 
@@ -4345,7 +4347,7 @@ package body SPARK_Definition.Annotate is
 
       end Process_Iterable_Annotation;
 
-      Args_Str : constant String_Id := Strval (Arg3_Exp);
+      Args_Str : String_Id;
       Kind     : Iterable_Kind;
       New_Prim : Entity_Id;
       Ok       : Boolean;
@@ -4358,6 +4360,17 @@ package body SPARK_Definition.Annotate is
       if not Ok then
          return;
       end if;
+
+      --  The third argument must be a string literal
+
+      Check_Third_Arg_Is_String
+        (Iterable_For_Proof, Arg3_Exp, From_Aspect_Specification (Prag), Ok);
+
+      if not Ok then
+         return;
+      end if;
+
+      Args_Str := Strval (Arg3_Exp);
 
       New_Prim := Entity (Arg4_Exp);
 
@@ -4868,13 +4881,9 @@ package body SPARK_Definition.Annotate is
 
       --  The extra argument if any must be a string literal
 
-      if Present (Extra_Exp) and then Nkind (Extra_Exp) not in N_String_Literal
-      then
-         Mark_Incorrect_Use_Of_Annotation
-           (Annot_String_Third_Argument,
-            Arg3_Exp,
-            Name        => Prag_Name,
-            From_Aspect => From_Aspect);
+      Check_Third_Arg_Is_String (Prag_Name, Arg3_Exp, From_Aspect, Ok);
+
+      if not Ok then
          return;
       end if;
 
@@ -5348,13 +5357,9 @@ package body SPARK_Definition.Annotate is
 
       --  The extra argument if any must be a string literal
 
-      if Present (Arg3_Exp) and then Nkind (Arg3_Exp) not in N_String_Literal
-      then
-         Mark_Incorrect_Use_Of_Annotation
-           (Annot_String_Third_Argument,
-            Arg3_Exp,
-            Name        => Prag_Name,
-            From_Aspect => From_Aspect);
+      Check_Third_Arg_Is_String (Prag_Name, Arg3_Exp, From_Aspect, Ok);
+
+      if not Ok then
          return;
       end if;
 
@@ -5617,6 +5622,28 @@ package body SPARK_Definition.Annotate is
          end if;
       end;
    end Check_Predefined_Eq_Annotation;
+
+   -------------------------------
+   -- Check_Third_Arg_Is_String --
+   -------------------------------
+
+   procedure Check_Third_Arg_Is_String
+     (Prag_Name   : GNATprove_Annotation_Kind;
+      Arg_3       : Node_Id;
+      From_Aspect : Boolean;
+      Ok          : out Boolean) is
+   begin
+      if Present (Arg_3) and then Nkind (Arg_3) not in N_String_Literal then
+         Mark_Incorrect_Use_Of_Annotation
+           (Annot_String_Third_Argument,
+            Arg_3,
+            Name        => Prag_Name,
+            From_Aspect => From_Aspect);
+         Ok := False;
+      else
+         Ok := True;
+      end if;
+   end Check_Third_Arg_Is_String;
 
    ---------------------------------------
    -- Decl_Starts_Pragma_Annotate_Range --
