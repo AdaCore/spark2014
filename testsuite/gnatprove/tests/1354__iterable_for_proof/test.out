@@ -1,0 +1,35 @@
+minimal.adb:5:07: info: range check proved (CVC5: 2 VC)
+minimal.adb:13:13: info: during checks for quantification at minimal.adb:4
+minimal.adb:13:13: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
+minimal.adb:13:13: info: precondition proved (Trivial: 1 VC)
+minimal.adb:13:20: warning: unused variable "C"
+minimal.adb:14:13: info: during checks for quantification at minimal.adb:4
+minimal.adb:14:13: info: implicit aspect Always_Terminates on "Next" has been proved, subprogram will terminate
+minimal.adb:14:13: info: precondition proved (Trivial: 1 VC)
+minimal.adb:15:37: info: overflow check proved (CVC5: 2 VC)
+minimal.adb:16:13: info: during checks for quantification at minimal.adb:4
+minimal.adb:16:13: info: implicit aspect Always_Terminates on "Has_Element" has been proved, subprogram will terminate
+minimal.adb:16:13: info: precondition proved (Trivial: 1 VC)
+minimal.adb:18:13: info: during checks for quantification at minimal.adb:4
+minimal.adb:18:13: info: implicit aspect Always_Terminates on "Constant_Reference" has been proved, subprogram will terminate
+minimal.adb:18:13: info: precondition proved (CVC5: 1 VC)
+minimal.adb:19:08: info: dynamic accessibility check proved (Trivial)
+minimal.adb:19:18: info: index check proved (CVC5: 2 VC)
+minimal.adb:23:07: info: range check proved (CVC5: 2 VC)
+minimal.adb:31:13: info: during checks for quantification at minimal.adb:22
+minimal.adb:31:13: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
+minimal.adb:31:13: info: precondition proved (Trivial: 1 VC)
+minimal.adb:31:20: warning: unused variable "C"
+minimal.adb:32:13: info: during checks for quantification at minimal.adb:22
+minimal.adb:32:13: info: implicit aspect Always_Terminates on "Next" has been proved, subprogram will terminate
+minimal.adb:32:13: info: precondition proved (Trivial: 1 VC)
+minimal.adb:33:37: info: overflow check proved (CVC5: 2 VC)
+minimal.adb:34:13: info: during checks for quantification at minimal.adb:22
+minimal.adb:34:13: info: implicit aspect Always_Terminates on "Has_Element" has been proved, subprogram will terminate
+minimal.adb:34:13: info: precondition proved (Trivial: 1 VC)
+minimal.adb:36:13: info: during checks for quantification at minimal.adb:22
+minimal.adb:36:13: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
+minimal.adb:36:13: info: precondition proved (CVC5: 1 VC)
+minimal.adb:37:18: info: index check proved (CVC5: 2 VC)
+minimal.adb:40:13: info: during checks for quantification at minimal.adb:22
+minimal.adb:40:13: info: precondition proved (Trivial: 1 VC)

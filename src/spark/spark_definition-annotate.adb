@@ -4195,6 +4195,7 @@ package body SPARK_Definition.Annotate is
 
          Prim          : Entity_Id;
          Cont_Element  : Entity_Id := Empty;
+         Model_Prim    : Entity_Id;
          Model_Element : Entity_Id;
 
       begin
@@ -4232,8 +4233,19 @@ package body SPARK_Definition.Annotate is
             end if;
          end if;
 
-         Model_Element :=
-           Get_Iterable_Type_Primitive (Model_Type, Name_Element);
+         Model_Prim := Get_Iterable_Type_Primitive (Model_Type, Name_Element);
+
+         if Present (Model_Prim) then
+            Model_Element := Etype (Model_Prim);
+         else
+            Model_Prim :=
+              Get_Iterable_Type_Primitive
+                (Model_Type, Name_Constant_Reference);
+
+            if Present (Model_Prim) then
+               Model_Element := Directly_Designated_Type (Etype (Model_Prim));
+            end if;
+         end if;
 
          if No (Prim) then
             Mark_Incorrect_Use_Of_Annotation
@@ -4246,7 +4258,7 @@ package body SPARK_Definition.Annotate is
                     Names => [Param]));
          elsif not In_SPARK (Prim) then
             return;
-         elsif No (Model_Element) then
+         elsif No (Model_Prim) then
             Mark_Incorrect_Use_Of_Annotation
               (Annot_Function_Return_Type,
                E,
@@ -4254,7 +4266,7 @@ package body SPARK_Definition.Annotate is
                Cont_Msg =>
                  Create
                    ("return type shall allow container element iteration"));
-         elsif not In_SPARK (Model_Element) then
+         elsif not In_SPARK (Model_Prim) then
             Mark_Incorrect_Use_Of_Annotation
               (Annot_Function_Return_Type,
                E,
@@ -4263,8 +4275,8 @@ package body SPARK_Definition.Annotate is
                  Create
                    ("primitive & for container element iteration on & shall "
                     & "be in SPARK",
-                    Names => [Model_Element, Model_Type]));
-         elsif Retysp (Cont_Element) /= Retysp (Etype (Model_Element)) then
+                    Names => [Model_Prim, Model_Type]));
+         elsif Retysp (Cont_Element) /= Retysp (Model_Element) then
             Mark_Incorrect_Use_Of_Annotation
               (Annot_Function_Return_Type,
                E,
