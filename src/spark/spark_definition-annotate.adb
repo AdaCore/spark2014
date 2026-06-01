@@ -4881,7 +4881,7 @@ package body SPARK_Definition.Annotate is
 
       --  The extra argument if any must be a string literal
 
-      Check_Third_Arg_Is_String (Prag_Name, Arg3_Exp, From_Aspect, Ok);
+      Check_Third_Arg_Is_String (Prag_Name, Extra_Exp, From_Aspect, Ok);
 
       if not Ok then
          return;
