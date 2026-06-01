@@ -80,7 +80,7 @@ package SPARK_Definition.Annotate is
    --  where
    --    GNATprove            is a fixed identifier
    --    Iterable_For_Proof   is a fixed identifier
-   --    Kind                 must be one of "Model" or "Contains"
+   --    Kind                 must be one of "Model", "Contains", or "Element"
    --    E                    is a function entity
 
    --  If Kind is "Model" then E must have the following signature:
@@ -102,6 +102,18 @@ package SPARK_Definition.Annotate is
    --  When such an annotation is provided, for ... of quantification on a
    --  container C is translated in Why3 as quantification over elements
    --  using the provided Contains function.
+
+   --  If Kind is "Element" then E must have the following signature:
+   --    function Element (C : Container_Type; P : Cursor_Type) return Element;
+
+   --  where Container_Type have an Iterable aspect that allows for ... of
+   --  quantification on elements of type Element using a Constant_Reference
+   --  function and Cursor_Type is its cursor type.
+
+   --  When such an annotation is provided, for ... of quantification on a
+   --  container C is translated in Why3 using the provided Element function
+   --  instead of Constant_Reference. The conformance between the two is
+   --  verified.
 
    --  A pragma Annotate for Inline_For_Proof has the following form:
    --    pragma Annotate (GNATprove, Inline_For_Proof, Entity => E);
@@ -397,13 +409,6 @@ package SPARK_Definition.Annotate is
    --  warning for all pragma Annotate which do not correspond to a check,
    --  or which covers only proved checks.
 
-   type Iterable_Kind is (Model, Contains);
-
-   type Iterable_Annotation is record
-      Kind   : Iterable_Kind;   --  the kind of Annotate Iterable_For_Proof
-      Entity : Entity_Id;       --  the entity of the corresponding function
-   end record;
-
    function Retrieve_Inline_Annotation (E : Entity_Id) return Node_Id;
    --  If a pragma Annotate Inline_For_Proof applies to E then returns the
    --  Ada expression that should be used instead of E.
@@ -418,6 +423,13 @@ package SPARK_Definition.Annotate is
    --  returns this pragma. This is used to get better location when checking
    --  these pragmas.
 
+   type Iterable_Kind is (Model, Contains, Element);
+
+   type Iterable_Annotation is record
+      Kind   : Iterable_Kind;   --  the kind of Annotate Iterable_For_Proof
+      Entity : Entity_Id;       --  the entity of the corresponding function
+   end record;
+
    procedure Retrieve_Iterable_Annotation
      (Container_Type : Entity_Id;
       Found          : out Boolean;
@@ -426,6 +438,11 @@ package SPARK_Definition.Annotate is
    --  pragma Annotate Iterable_For_Proof that applies to type. If so, set
    --  Found to True and fill in the Info record. Otherwise, set Found to False
    --  and leave Info uninitialized.
+
+   function Find_Iterable_Pragma (E : Entity_Id) return Node_Id
+   with Post => Is_Pragma_Annotate_GNATprove (Find_Iterable_Pragma'Result);
+   --  If a pragma Annotate Iterable_For_Proof applies to E then return this
+   --  pragma. This is used to get better location when checking these pragmas.
 
    function Has_Logical_Eq_Annotation (E : Entity_Id) return Boolean;
    --  Return True if a pragma Annotate Logical_Equal applies to entity E

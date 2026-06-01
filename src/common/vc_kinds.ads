@@ -127,6 +127,10 @@ package VC_Kinds is
       --  Check that the Inline_For_Proof or Logical_Equal annotation provided
       --  for a function is correct.
 
+      VC_Iterable_Check,
+      --  Check that the Iterable_For_Proof annotation provided for a function
+      --  is correct.
+
       VC_Container_Aggr_Check,
       --  Check that the Container_Aggregates annotation provided for a
       --  container type is correct.

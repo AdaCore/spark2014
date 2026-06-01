@@ -244,6 +244,7 @@ package body VC_Kinds is
               | VC_Reclamation_Check
               | VC_Feasible_Post
               | VC_Inline_Check
+              | VC_Iterable_Check
               | VC_Container_Aggr_Check
               | VC_Weaker_Pre
               | VC_Trivial_Weaker_Pre
@@ -576,6 +577,11 @@ package body VC_Kinds is
             return
               "Check that an Annotate pragma with the Inline_For_Proof "
               & "or Logical_Equal identifier is correct.";
+
+         when VC_Iterable_Check                   =>
+            return
+              "Check that an Annotate pragma with the Iterable_For_Proof "
+              & "identifier is correct.";
 
          when VC_Container_Aggr_Check             =>
             return
@@ -2505,6 +2511,8 @@ package body VC_Kinds is
            when VC_Feasible_Post                    => "feasible function",
            when VC_Inline_Check                     =>
              "Inline_For_Proof or Logical_Equal annotation",
+           when VC_Iterable_Check                   =>
+             "Iterable_For_Proof annotation",
            when VC_Container_Aggr_Check             =>
              "Container_Aggregates annotation",
            when VC_Reclamation_Check                =>

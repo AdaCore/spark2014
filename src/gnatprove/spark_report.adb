@@ -1313,6 +1313,7 @@ package body Spark_Report is
                | VC_Program_Exit_Post
                | VC_Exit_Case
                | VC_Inline_Check
+               | VC_Iterable_Check
                | VC_Container_Aggr_Check
                | VC_Reclamation_Check
                | VC_Feasible_Post
