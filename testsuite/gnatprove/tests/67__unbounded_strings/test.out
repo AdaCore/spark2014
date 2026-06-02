@@ -1,40 +1,40 @@
 strunb.adb:41:13: info: implicit aspect Always_Terminates on "Sum" has been proved, subprogram will terminate
-strunb.adb:42:35: info: overflow check proved
+strunb.adb:42:46: info: overflow check proved
 strunb.adb:45:13: info: implicit aspect Always_Terminates on "Mul" has been proved, subprogram will terminate
-strunb.adb:50:13: info: implicit aspect Always_Terminates on "Saturated_Sum" has been proved, subprogram will terminate
-strunb.adb:51:19: info: postcondition proved
-strunb.adb:54:13: info: implicit aspect Always_Terminates on "Saturated_Mul" has been proved, subprogram will terminate
-strunb.adb:55:19: info: postcondition proved
-strunb.adb:69:37: info: precondition proved
-strunb.adb:70:07: info: range check proved
-strunb.adb:71:07: info: absence of resource or memory leak at end of scope proved
-strunb.adb:72:09: info: predicate check proved
-strunb.adb:72:30: info: length check proved
-strunb.adb:75:13: info: pointer dereference check proved
-strunb.adb:75:13: info: predicate check proved
-strunb.adb:75:13: info: range check proved
-strunb.adb:75:25: info: index check proved
-strunb.adb:75:30: info: index check proved
-strunb.adb:75:40: info: length check proved
-strunb.adb:76:13: info: length check proved
-strunb.adb:76:13: info: pointer dereference check proved
-strunb.adb:76:13: info: range check proved
-strunb.adb:79:16: info: pointer dereference check proved
-strunb.adb:79:16: info: predicate check proved
-strunb.adb:79:16: info: range check proved
-strunb.adb:79:37: info: index check proved
-strunb.adb:79:37: info: overflow check proved
-strunb.adb:79:50: info: index check proved
-strunb.adb:79:57: info: length check proved
-strunb.adb:80:17: info: length check proved
-strunb.adb:80:17: info: pointer dereference check proved
-strunb.adb:80:17: info: range check proved
-strunb.adb:91:38: info: precondition proved
-strunb.adb:91:58: info: range check proved
-strunb.adb:92:07: info: range check proved
-strunb.adb:93:07: info: absence of resource or memory leak at end of scope proved
-strunb.adb:94:09: info: predicate check proved
-strunb.adb:94:30: info: length check proved
+strunb.adb:54:13: info: implicit aspect Always_Terminates on "Saturated_Sum" has been proved, subprogram will terminate
+strunb.adb:55:17: info: postcondition proved
+strunb.adb:58:13: info: implicit aspect Always_Terminates on "Saturated_Mul" has been proved, subprogram will terminate
+strunb.adb:59:17: info: postcondition proved
+strunb.adb:73:37: info: precondition proved
+strunb.adb:74:07: info: range check proved
+strunb.adb:75:07: info: absence of resource or memory leak at end of scope proved
+strunb.adb:76:09: info: predicate check proved
+strunb.adb:76:30: info: length check proved
+strunb.adb:78:13: info: pointer dereference check proved
+strunb.adb:78:13: info: predicate check proved
+strunb.adb:78:13: info: range check proved
+strunb.adb:78:25: info: index check proved
+strunb.adb:78:30: info: index check proved
+strunb.adb:78:40: info: length check proved
+strunb.adb:78:47: info: length check proved
+strunb.adb:78:47: info: pointer dereference check proved
+strunb.adb:78:47: info: range check proved
+strunb.adb:81:16: info: pointer dereference check proved
+strunb.adb:81:16: info: predicate check proved
+strunb.adb:81:16: info: range check proved
+strunb.adb:81:37: info: index check proved
+strunb.adb:81:37: info: overflow check proved
+strunb.adb:81:50: info: index check proved
+strunb.adb:81:57: info: length check proved
+strunb.adb:82:17: info: length check proved
+strunb.adb:82:17: info: pointer dereference check proved
+strunb.adb:82:17: info: range check proved
+strunb.adb:92:38: info: precondition proved
+strunb.adb:92:58: info: range check proved
+strunb.adb:93:07: info: range check proved
+strunb.adb:94:07: info: absence of resource or memory leak at end of scope proved
+strunb.adb:95:09: info: predicate check proved
+strunb.adb:95:30: info: length check proved
 strunb.adb:97:13: info: pointer dereference check proved
 strunb.adb:97:13: info: predicate check proved
 strunb.adb:97:13: info: range check proved
@@ -53,676 +53,694 @@ strunb.adb:100:50: info: index check proved
 strunb.adb:100:57: info: length check proved
 strunb.adb:101:12: info: length check proved
 strunb.adb:101:27: info: range check proved
-strunb.adb:112:38: info: precondition proved
-strunb.adb:112:47: info: range check proved
-strunb.adb:113:07: info: range check proved
-strunb.adb:114:07: info: absence of resource or memory leak at end of scope proved
-strunb.adb:115:09: info: predicate check proved
-strunb.adb:115:30: info: length check proved
-strunb.adb:118:13: info: pointer dereference check proved
-strunb.adb:118:13: info: predicate check proved
-strunb.adb:118:13: info: range check proved
-strunb.adb:118:25: info: index check proved
-strunb.adb:118:34: info: index check proved
-strunb.adb:118:34: info: range check proved
-strunb.adb:118:43: info: length check proved
-strunb.adb:118:46: info: length check proved
-strunb.adb:118:61: info: range check proved
-strunb.adb:120:14: info: range check proved
-strunb.adb:121:16: info: pointer dereference check proved
-strunb.adb:121:16: info: predicate check proved
-strunb.adb:121:16: info: range check proved
-strunb.adb:121:32: info: range check proved
-strunb.adb:121:40: info: index check proved
-strunb.adb:121:40: info: overflow check proved
-strunb.adb:121:53: info: index check proved
-strunb.adb:121:60: info: length check proved
-strunb.adb:122:17: info: length check proved
-strunb.adb:122:17: info: pointer dereference check proved
-strunb.adb:122:17: info: range check proved
-strunb.adb:132:37: info: precondition proved
-strunb.adb:133:07: info: range check proved
-strunb.adb:134:07: info: absence of resource or memory leak at end of scope proved
-strunb.adb:135:09: info: predicate check proved
-strunb.adb:135:30: info: length check proved
-strunb.adb:138:13: info: pointer dereference check proved
-strunb.adb:138:13: info: predicate check proved
-strunb.adb:138:13: info: range check proved
-strunb.adb:138:25: info: index check proved
-strunb.adb:138:42: info: index check proved
-strunb.adb:138:47: info: length check proved
-strunb.adb:139:13: info: length check proved
-strunb.adb:139:13: info: pointer dereference check proved
-strunb.adb:139:13: info: range check proved
-strunb.adb:140:13: info: pointer dereference check proved
-strunb.adb:140:13: info: predicate check proved
-strunb.adb:140:31: info: index check proved
-strunb.adb:149:37: info: precondition proved
-strunb.adb:150:07: info: range check proved
-strunb.adb:151:07: info: absence of resource or memory leak at end of scope proved
-strunb.adb:152:09: info: predicate check proved
-strunb.adb:152:30: info: length check proved
-strunb.adb:155:13: info: pointer dereference check proved
-strunb.adb:155:13: info: predicate check proved
-strunb.adb:155:25: info: index check proved
-strunb.adb:156:13: info: pointer dereference check proved
-strunb.adb:156:13: info: predicate check proved
-strunb.adb:156:13: info: range check proved
-strunb.adb:156:25: info: index check proved
-strunb.adb:156:36: info: index check proved
-strunb.adb:156:43: info: length check proved
-strunb.adb:157:14: info: length check proved
-strunb.adb:157:14: info: pointer dereference check proved
-strunb.adb:157:14: info: range check proved
-strunb.adb:170:14: info: aspect Always_Terminates on "Lemma_Mod" has been proved, subprogram will terminate
-strunb.adb:174:21: info: division check proved
-strunb.adb:174:30: info: range check proved
-strunb.adb:175:42: info: overflow check proved
-strunb.adb:175:49: info: range check proved
-strunb.adb:176:33: info: overflow check proved
-strunb.adb:176:40: info: range check proved
-strunb.adb:177:14: info: postcondition proved
-strunb.adb:177:16: info: division check proved
-strunb.adb:177:25: info: range check proved
-strunb.adb:177:37: info: overflow check proved
-strunb.adb:181:14: info: aspect Always_Terminates on "Lemma_Split" has been proved, subprogram will terminate
-strunb.adb:188:23: info: division check proved
-strunb.adb:188:32: info: range check proved
+strunb.adb:111:38: info: precondition proved
+strunb.adb:111:47: info: range check proved
+strunb.adb:112:07: info: range check proved
+strunb.adb:113:07: info: absence of resource or memory leak at end of scope proved
+strunb.adb:114:09: info: predicate check proved
+strunb.adb:114:30: info: length check proved
+strunb.adb:116:13: info: pointer dereference check proved
+strunb.adb:116:13: info: predicate check proved
+strunb.adb:116:13: info: range check proved
+strunb.adb:116:25: info: index check proved
+strunb.adb:116:34: info: index check proved
+strunb.adb:116:34: info: range check proved
+strunb.adb:116:43: info: length check proved
+strunb.adb:116:46: info: length check proved
+strunb.adb:116:61: info: range check proved
+strunb.adb:118:14: info: range check proved
+strunb.adb:119:16: info: pointer dereference check proved
+strunb.adb:119:16: info: predicate check proved
+strunb.adb:119:16: info: range check proved
+strunb.adb:119:32: info: range check proved
+strunb.adb:119:40: info: index check proved
+strunb.adb:119:40: info: overflow check proved
+strunb.adb:119:53: info: index check proved
+strunb.adb:119:60: info: length check proved
+strunb.adb:120:17: info: length check proved
+strunb.adb:120:17: info: pointer dereference check proved
+strunb.adb:120:17: info: range check proved
+strunb.adb:129:37: info: precondition proved
+strunb.adb:130:07: info: range check proved
+strunb.adb:131:07: info: absence of resource or memory leak at end of scope proved
+strunb.adb:132:09: info: predicate check proved
+strunb.adb:132:30: info: length check proved
+strunb.adb:134:13: info: pointer dereference check proved
+strunb.adb:134:13: info: predicate check proved
+strunb.adb:134:13: info: range check proved
+strunb.adb:134:25: info: index check proved
+strunb.adb:134:42: info: index check proved
+strunb.adb:134:47: info: length check proved
+strunb.adb:135:13: info: length check proved
+strunb.adb:135:13: info: pointer dereference check proved
+strunb.adb:135:13: info: range check proved
+strunb.adb:136:13: info: pointer dereference check proved
+strunb.adb:136:13: info: predicate check proved
+strunb.adb:136:31: info: index check proved
+strunb.adb:144:37: info: precondition proved
+strunb.adb:145:07: info: range check proved
+strunb.adb:146:07: info: absence of resource or memory leak at end of scope proved
+strunb.adb:147:09: info: predicate check proved
+strunb.adb:147:30: info: length check proved
+strunb.adb:149:13: info: pointer dereference check proved
+strunb.adb:149:13: info: predicate check proved
+strunb.adb:149:25: info: index check proved
+strunb.adb:150:13: info: pointer dereference check proved
+strunb.adb:150:13: info: predicate check proved
+strunb.adb:150:13: info: range check proved
+strunb.adb:150:25: info: index check proved
+strunb.adb:150:36: info: index check proved
+strunb.adb:150:43: info: length check proved
+strunb.adb:150:51: info: length check proved
+strunb.adb:150:51: info: pointer dereference check proved
+strunb.adb:150:51: info: range check proved
+strunb.adb:163:14: info: aspect Always_Terminates on "Lemma_Mod" has been proved, subprogram will terminate
+strunb.adb:168:21: info: division check proved
+strunb.adb:168:30: info: range check proved
+strunb.adb:169:42: info: overflow check proved
+strunb.adb:169:49: info: range check proved
+strunb.adb:170:33: info: overflow check proved
+strunb.adb:170:40: info: range check proved
+strunb.adb:171:14: info: postcondition proved
+strunb.adb:171:16: info: division check proved
+strunb.adb:171:25: info: range check proved
+strunb.adb:171:37: info: overflow check proved
+strunb.adb:175:14: info: aspect Always_Terminates on "Lemma_Split" has been proved, subprogram will terminate
+strunb.adb:183:21: info: division check proved
+strunb.adb:183:30: info: range check proved
+strunb.adb:184:41: info: overflow check proved
+strunb.adb:184:48: info: range check proved
+strunb.adb:185:17: info: range check proved
+strunb.adb:185:45: info: overflow check proved
+strunb.adb:185:52: info: range check proved
+strunb.adb:186:17: info: initialization check proved
+strunb.adb:186:17: info: range check proved
+strunb.adb:186:29: info: overflow check proved
+strunb.adb:186:40: info: overflow check proved
+strunb.adb:186:47: info: range check proved
+strunb.adb:188:08: info: postcondition proved
+strunb.adb:188:26: info: overflow check proved
+strunb.adb:188:37: info: overflow check proved
+strunb.adb:188:44: info: range check proved
+strunb.adb:189:11: info: initialization check proved
+strunb.adb:189:19: info: index check proved
+strunb.adb:189:43: info: index check proved
 strunb.adb:189:43: info: overflow check proved
-strunb.adb:189:50: info: range check proved
-strunb.adb:190:19: info: range check proved
-strunb.adb:190:47: info: overflow check proved
-strunb.adb:190:54: info: range check proved
-strunb.adb:191:19: info: initialization check proved
-strunb.adb:191:19: info: range check proved
-strunb.adb:191:31: info: overflow check proved
-strunb.adb:191:42: info: overflow check proved
-strunb.adb:191:49: info: range check proved
-strunb.adb:193:08: info: postcondition proved
-strunb.adb:193:26: info: overflow check proved
-strunb.adb:193:37: info: overflow check proved
-strunb.adb:193:44: info: range check proved
-strunb.adb:194:10: info: initialization check proved
-strunb.adb:194:18: info: index check proved
-strunb.adb:194:42: info: index check proved
-strunb.adb:194:42: info: overflow check proved
-strunb.adb:194:47: info: overflow check proved
-strunb.adb:194:52: info: division check proved
-strunb.adb:194:61: info: range check proved
-strunb.adb:213:20: info: overflow check proved
-strunb.adb:213:31: info: overflow check proved
-strunb.adb:213:38: info: range check proved
-strunb.adb:214:10: info: precondition proved
-strunb.adb:214:30: info: overflow check proved
-strunb.adb:216:13: info: loop invariant initialization proved
-strunb.adb:216:13: info: loop invariant preservation proved
-strunb.adb:216:30: info: overflow check proved
-strunb.adb:217:15: info: initialization check proved
-strunb.adb:217:23: info: index check proved
-strunb.adb:217:47: info: index check proved
-strunb.adb:217:47: info: overflow check proved
-strunb.adb:217:52: info: overflow check proved
-strunb.adb:217:57: info: division check proved
-strunb.adb:217:66: info: range check proved
-strunb.adb:225:07: info: range check proved
-strunb.adb:226:07: info: absence of resource or memory leak at end of scope proved
-strunb.adb:227:09: info: predicate check proved
-strunb.adb:227:30: info: length check proved
-strunb.adb:230:22: info: pointer dereference check proved
-strunb.adb:231:16: info: pointer dereference check proved
-strunb.adb:231:16: info: predicate check proved
-strunb.adb:231:28: info: index check proved
-strunb.adb:233:13: info: loop invariant initialization proved
-strunb.adb:233:13: info: loop invariant preservation proved
-strunb.adb:234:21: info: pointer dereference check proved
-strunb.adb:234:33: info: index check proved
-strunb.adb:234:63: info: initialization check proved
-strunb.adb:234:63: info: pointer dereference check proved
-strunb.adb:234:75: info: index check proved
-strunb.adb:244:41: info: range check proved
-strunb.adb:245:07: info: initialization of "K" proved
-strunb.adb:247:37: info: precondition proved
-strunb.adb:248:07: info: range check proved
-strunb.adb:249:07: info: absence of resource or memory leak at end of scope proved
-strunb.adb:250:09: info: predicate check proved
-strunb.adb:250:30: info: length check proved
-strunb.adb:259:16: info: pointer dereference check proved
-strunb.adb:259:16: info: predicate check proved
-strunb.adb:259:16: info: range check proved
-strunb.adb:259:30: info: index check proved
-strunb.adb:259:30: info: overflow check proved
-strunb.adb:259:39: info: index check proved
-strunb.adb:259:39: info: overflow check proved
-strunb.adb:259:46: info: length check proved
-strunb.adb:259:49: info: length check proved
-strunb.adb:259:64: info: range check proved
-strunb.adb:260:10: info: precondition proved
-strunb.adb:260:55: info: pointer dereference check proved
-strunb.adb:261:17: info: overflow check proved
-strunb.adb:262:33: info: loop invariant initialization proved
-strunb.adb:262:33: info: loop invariant preservation proved
-strunb.adb:262:39: info: overflow check proved
-strunb.adb:263:33: info: loop invariant initialization proved
-strunb.adb:263:33: info: loop invariant preservation proved
-strunb.adb:263:39: info: pointer dereference check proved
-strunb.adb:263:39: info: range check proved
-strunb.adb:265:13: info: loop invariant initialization proved
-strunb.adb:265:13: info: loop invariant preservation proved
-strunb.adb:266:21: info: initialization check proved
-strunb.adb:266:21: info: pointer dereference check proved
-strunb.adb:266:33: info: index check proved
-strunb.adb:266:58: info: index check proved
-strunb.adb:266:58: info: overflow check proved
-strunb.adb:266:69: info: division check proved
-strunb.adb:277:07: info: initialization of "K" proved
-strunb.adb:279:37: info: precondition proved
-strunb.adb:280:07: info: range check proved
-strunb.adb:281:07: info: absence of resource or memory leak at end of scope proved
-strunb.adb:282:09: info: predicate check proved
-strunb.adb:282:30: info: length check proved
-strunb.adb:289:22: info: assertion proved
-strunb.adb:289:27: info: overflow check proved
-strunb.adb:289:41: info: pointer dereference check proved
-strunb.adb:289:51: info: range check proved
-strunb.adb:293:41: info: precondition proved
-strunb.adb:294:16: info: pointer dereference check proved
-strunb.adb:294:16: info: predicate check proved
-strunb.adb:294:16: info: range check proved
-strunb.adb:294:30: info: index check proved
-strunb.adb:294:30: info: overflow check proved
-strunb.adb:294:39: info: index check proved
-strunb.adb:294:39: info: overflow check proved
-strunb.adb:294:46: info: length check proved
-strunb.adb:295:17: info: length check proved
-strunb.adb:295:17: info: pointer dereference check proved
-strunb.adb:295:17: info: range check proved
-strunb.adb:296:10: info: precondition proved
-strunb.adb:296:67: info: pointer dereference check proved
-strunb.adb:297:17: info: overflow check proved
-strunb.adb:298:33: info: loop invariant initialization proved
-strunb.adb:298:33: info: loop invariant preservation proved
-strunb.adb:298:39: info: overflow check proved
-strunb.adb:299:33: info: loop invariant initialization proved
-strunb.adb:299:33: info: loop invariant preservation proved
-strunb.adb:299:39: info: pointer dereference check proved
-strunb.adb:299:39: info: range check proved
-strunb.adb:301:13: info: loop invariant initialization proved
-strunb.adb:301:13: info: loop invariant preservation proved
-strunb.adb:302:21: info: initialization check proved
-strunb.adb:302:21: info: pointer dereference check proved
-strunb.adb:302:33: info: index check proved
-strunb.adb:302:60: info: index check proved
-strunb.adb:302:60: info: overflow check proved
-strunb.adb:302:71: info: division check proved
-strunb.adb:318:13: info: initialization check proved
-strunb.adb:318:13: info: pointer dereference check proved
-strunb.adb:318:13: info: range check proved
-strunb.adb:318:48: info: initialization check proved
-strunb.adb:318:48: info: pointer dereference check proved
-strunb.adb:318:48: info: range check proved
-strunb.adb:326:14: info: initialization check proved
-strunb.adb:326:26: info: pointer dereference check proved
-strunb.adb:326:26: info: range check proved
-strunb.adb:334:21: info: initialization check proved
-strunb.adb:334:34: info: pointer dereference check proved
-strunb.adb:334:34: info: range check proved
-strunb.adb:347:13: info: initialization check proved
-strunb.adb:347:13: info: pointer dereference check proved
-strunb.adb:347:13: info: range check proved
-strunb.adb:347:49: info: initialization check proved
-strunb.adb:347:49: info: pointer dereference check proved
-strunb.adb:347:49: info: range check proved
+strunb.adb:189:48: info: overflow check proved
+strunb.adb:189:53: info: division check proved
+strunb.adb:189:62: info: range check proved
+strunb.adb:207:20: info: overflow check proved
+strunb.adb:207:31: info: overflow check proved
+strunb.adb:207:38: info: range check proved
+strunb.adb:208:10: info: precondition proved
+strunb.adb:208:30: info: overflow check proved
+strunb.adb:211:15: info: loop invariant initialization proved
+strunb.adb:211:15: info: loop invariant preservation proved
+strunb.adb:211:32: info: overflow check proved
+strunb.adb:212:17: info: initialization check proved
+strunb.adb:212:25: info: index check proved
+strunb.adb:212:49: info: index check proved
+strunb.adb:212:49: info: overflow check proved
+strunb.adb:212:54: info: overflow check proved
+strunb.adb:212:59: info: division check proved
+strunb.adb:212:68: info: range check proved
+strunb.adb:217:07: info: range check proved
+strunb.adb:218:07: info: absence of resource or memory leak at end of scope proved
+strunb.adb:219:09: info: predicate check proved
+strunb.adb:219:30: info: length check proved
+strunb.adb:221:22: info: pointer dereference check proved
+strunb.adb:222:16: info: pointer dereference check proved
+strunb.adb:222:16: info: predicate check proved
+strunb.adb:222:28: info: index check proved
+strunb.adb:225:15: info: loop invariant initialization proved
+strunb.adb:225:15: info: loop invariant preservation proved
+strunb.adb:226:23: info: pointer dereference check proved
+strunb.adb:226:35: info: index check proved
+strunb.adb:227:32: info: initialization check proved
+strunb.adb:227:32: info: pointer dereference check proved
+strunb.adb:227:44: info: index check proved
+strunb.adb:234:38: info: range check proved
+strunb.adb:235:07: info: initialization of "K" proved
+strunb.adb:237:37: info: precondition proved
+strunb.adb:238:07: info: range check proved
+strunb.adb:239:07: info: absence of resource or memory leak at end of scope proved
+strunb.adb:240:09: info: predicate check proved
+strunb.adb:240:30: info: length check proved
+strunb.adb:248:16: info: pointer dereference check proved
+strunb.adb:248:16: info: predicate check proved
+strunb.adb:248:16: info: range check proved
+strunb.adb:248:30: info: index check proved
+strunb.adb:248:30: info: overflow check proved
+strunb.adb:248:39: info: index check proved
+strunb.adb:248:39: info: overflow check proved
+strunb.adb:248:46: info: length check proved
+strunb.adb:248:49: info: length check proved
+strunb.adb:248:64: info: range check proved
+strunb.adb:249:10: info: precondition proved
+strunb.adb:249:55: info: pointer dereference check proved
+strunb.adb:250:17: info: overflow check proved
+strunb.adb:251:33: info: loop invariant initialization proved
+strunb.adb:251:33: info: loop invariant preservation proved
+strunb.adb:251:39: info: overflow check proved
+strunb.adb:252:33: info: loop invariant initialization proved
+strunb.adb:252:33: info: loop invariant preservation proved
+strunb.adb:252:39: info: pointer dereference check proved
+strunb.adb:252:39: info: range check proved
+strunb.adb:255:15: info: loop invariant initialization proved
+strunb.adb:255:15: info: loop invariant preservation proved
+strunb.adb:256:23: info: initialization check proved
+strunb.adb:256:23: info: pointer dereference check proved
+strunb.adb:256:35: info: index check proved
+strunb.adb:257:38: info: index check proved
+strunb.adb:257:38: info: overflow check proved
+strunb.adb:257:49: info: division check proved
+strunb.adb:267:07: info: initialization of "K" proved
+strunb.adb:269:37: info: precondition proved
+strunb.adb:270:07: info: range check proved
+strunb.adb:271:07: info: absence of resource or memory leak at end of scope proved
+strunb.adb:272:09: info: predicate check proved
+strunb.adb:272:30: info: length check proved
+strunb.adb:278:22: info: assertion proved
+strunb.adb:278:27: info: overflow check proved
+strunb.adb:278:41: info: pointer dereference check proved
+strunb.adb:278:51: info: range check proved
+strunb.adb:282:41: info: precondition proved
+strunb.adb:284:16: info: pointer dereference check proved
+strunb.adb:284:16: info: predicate check proved
+strunb.adb:284:16: info: range check proved
+strunb.adb:284:30: info: index check proved
+strunb.adb:284:30: info: overflow check proved
+strunb.adb:284:39: info: index check proved
+strunb.adb:284:39: info: overflow check proved
+strunb.adb:284:46: info: length check proved
+strunb.adb:285:17: info: length check proved
+strunb.adb:285:17: info: pointer dereference check proved
+strunb.adb:285:17: info: range check proved
+strunb.adb:286:10: info: precondition proved
+strunb.adb:286:67: info: pointer dereference check proved
+strunb.adb:287:17: info: overflow check proved
+strunb.adb:288:33: info: loop invariant initialization proved
+strunb.adb:288:33: info: loop invariant preservation proved
+strunb.adb:288:39: info: overflow check proved
+strunb.adb:289:33: info: loop invariant initialization proved
+strunb.adb:289:33: info: loop invariant preservation proved
+strunb.adb:289:39: info: pointer dereference check proved
+strunb.adb:289:39: info: range check proved
+strunb.adb:292:15: info: loop invariant initialization proved
+strunb.adb:292:15: info: loop invariant preservation proved
+strunb.adb:293:23: info: initialization check proved
+strunb.adb:293:23: info: pointer dereference check proved
+strunb.adb:293:35: info: index check proved
+strunb.adb:294:40: info: index check proved
+strunb.adb:294:40: info: overflow check proved
+strunb.adb:294:51: info: division check proved
+strunb.adb:308:13: info: initialization check proved
+strunb.adb:308:13: info: pointer dereference check proved
+strunb.adb:308:13: info: range check proved
+strunb.adb:308:48: info: initialization check proved
+strunb.adb:308:48: info: pointer dereference check proved
+strunb.adb:308:48: info: range check proved
+strunb.adb:313:14: info: initialization check proved
+strunb.adb:313:26: info: pointer dereference check proved
+strunb.adb:313:26: info: range check proved
+strunb.adb:318:21: info: initialization check proved
+strunb.adb:318:34: info: pointer dereference check proved
+strunb.adb:318:34: info: range check proved
+strunb.adb:329:13: info: initialization check proved
+strunb.adb:329:13: info: pointer dereference check proved
+strunb.adb:329:13: info: range check proved
+strunb.adb:329:49: info: initialization check proved
+strunb.adb:329:49: info: pointer dereference check proved
+strunb.adb:329:49: info: range check proved
+strunb.adb:334:14: info: initialization check proved
+strunb.adb:334:26: info: pointer dereference check proved
+strunb.adb:334:26: info: range check proved
+strunb.adb:339:22: info: initialization check proved
+strunb.adb:339:35: info: pointer dereference check proved
+strunb.adb:339:35: info: range check proved
+strunb.adb:350:13: info: initialization check proved
+strunb.adb:350:13: info: pointer dereference check proved
+strunb.adb:350:13: info: range check proved
+strunb.adb:350:48: info: initialization check proved
+strunb.adb:350:48: info: pointer dereference check proved
+strunb.adb:350:48: info: range check proved
 strunb.adb:355:14: info: initialization check proved
 strunb.adb:355:26: info: pointer dereference check proved
 strunb.adb:355:26: info: range check proved
-strunb.adb:363:22: info: initialization check proved
-strunb.adb:363:35: info: pointer dereference check proved
-strunb.adb:363:35: info: range check proved
-strunb.adb:376:13: info: initialization check proved
-strunb.adb:376:13: info: pointer dereference check proved
-strunb.adb:376:13: info: range check proved
-strunb.adb:376:48: info: initialization check proved
-strunb.adb:376:48: info: pointer dereference check proved
-strunb.adb:376:48: info: range check proved
-strunb.adb:384:14: info: initialization check proved
-strunb.adb:384:26: info: pointer dereference check proved
-strunb.adb:384:26: info: range check proved
-strunb.adb:392:21: info: initialization check proved
-strunb.adb:392:34: info: pointer dereference check proved
-strunb.adb:392:34: info: range check proved
-strunb.adb:405:09: info: initialization check proved
-strunb.adb:405:21: info: pointer dereference check proved
-strunb.adb:405:21: info: range check proved
-strunb.adb:405:52: info: initialization check proved
-strunb.adb:405:65: info: pointer dereference check proved
-strunb.adb:405:65: info: range check proved
-strunb.adb:413:14: info: initialization check proved
-strunb.adb:413:26: info: pointer dereference check proved
-strunb.adb:413:26: info: range check proved
-strunb.adb:421:21: info: initialization check proved
-strunb.adb:421:34: info: pointer dereference check proved
-strunb.adb:421:34: info: range check proved
-strunb.adb:434:13: info: initialization check proved
-strunb.adb:434:13: info: pointer dereference check proved
-strunb.adb:434:13: info: range check proved
-strunb.adb:434:49: info: initialization check proved
-strunb.adb:434:49: info: pointer dereference check proved
-strunb.adb:434:49: info: range check proved
-strunb.adb:442:14: info: initialization check proved
-strunb.adb:442:26: info: pointer dereference check proved
-strunb.adb:442:26: info: range check proved
-strunb.adb:450:22: info: initialization check proved
-strunb.adb:450:35: info: pointer dereference check proved
-strunb.adb:450:35: info: range check proved
-strunb.adb:479:07: info: precondition proved
-strunb.adb:482:16: info: pointer dereference check proved
-strunb.adb:482:16: info: predicate check proved
-strunb.adb:482:16: info: range check proved
-strunb.adb:482:40: info: index check proved
-strunb.adb:482:40: info: overflow check proved
-strunb.adb:482:59: info: index check proved
-strunb.adb:482:59: info: overflow check proved
-strunb.adb:482:76: info: length check proved
-strunb.adb:483:20: info: length check proved
-strunb.adb:483:20: info: pointer dereference check proved
-strunb.adb:483:20: info: range check proved
-strunb.adb:486:13: info: predicate check proved
-strunb.adb:486:34: info: overflow check proved
-strunb.adb:494:07: info: precondition proved
-strunb.adb:494:42: info: range check proved
-strunb.adb:497:16: info: pointer dereference check proved
-strunb.adb:497:16: info: predicate check proved
-strunb.adb:497:16: info: range check proved
-strunb.adb:497:40: info: index check proved
-strunb.adb:497:40: info: overflow check proved
-strunb.adb:497:59: info: index check proved
-strunb.adb:497:59: info: overflow check proved
-strunb.adb:497:69: info: range check proved
-strunb.adb:497:78: info: length check proved
-strunb.adb:498:12: info: length check proved
-strunb.adb:498:27: info: range check proved
-strunb.adb:501:13: info: predicate check proved
-strunb.adb:501:34: info: overflow check proved
-strunb.adb:501:44: info: range check proved
-strunb.adb:509:07: info: precondition proved
-strunb.adb:510:13: info: pointer dereference check proved
-strunb.adb:510:13: info: predicate check proved
-strunb.adb:510:37: info: index check proved
-strunb.adb:510:37: info: overflow check proved
-strunb.adb:511:13: info: predicate check proved
-strunb.adb:511:34: info: overflow check proved
-strunb.adb:525:15: info: precondition proved
-strunb.adb:525:23: info: initialization check proved
-strunb.adb:525:23: info: range check proved
-strunb.adb:525:37: info: pointer dereference check proved
-strunb.adb:525:37: info: range check proved
-strunb.adb:535:15: info: precondition proved
-strunb.adb:535:23: info: initialization check proved
-strunb.adb:535:23: info: range check proved
-strunb.adb:535:37: info: pointer dereference check proved
-strunb.adb:535:37: info: range check proved
-strunb.adb:543:28: info: initialization check proved
-strunb.adb:543:28: info: range check proved
-strunb.adb:543:42: info: pointer dereference check proved
-strunb.adb:543:42: info: range check proved
-strunb.adb:558:17: info: precondition proved
-strunb.adb:558:26: info: initialization check proved
-strunb.adb:558:26: info: range check proved
-strunb.adb:558:40: info: pointer dereference check proved
-strunb.adb:558:40: info: range check proved
-strunb.adb:571:10: info: only expected exception raised
-strunb.adb:576:57: info: overflow check proved
-strunb.adb:576:57: info: range check proved
-strunb.adb:580:22: info: pointer dereference check proved
-strunb.adb:580:22: info: predicate check proved
-strunb.adb:580:22: info: range check proved
-strunb.adb:580:34: info: index check proved
-strunb.adb:580:54: info: index check proved
-strunb.adb:580:54: info: overflow check proved
-strunb.adb:580:61: info: length check proved
-strunb.adb:581:24: info: length check proved
-strunb.adb:581:24: info: pointer dereference check proved
-strunb.adb:581:24: info: range check proved
-strunb.adb:581:44: info: overflow check proved
-strunb.adb:584:19: info: predicate check proved
-strunb.adb:584:40: info: overflow check proved
-strunb.adb:584:40: info: range check proved
-strunb.adb:598:16: info: initialization check proved
-strunb.adb:598:16: info: pointer dereference check proved
-strunb.adb:598:28: info: index check proved
-strunb.adb:600:10: info: only expected exception raised
-strunb.adb:641:13: info: precondition proved
-strunb.adb:642:10: info: initialization check proved
-strunb.adb:642:10: info: range check proved
-strunb.adb:642:24: info: pointer dereference check proved
-strunb.adb:642:24: info: range check proved
-strunb.adb:653:13: info: precondition proved
-strunb.adb:654:10: info: initialization check proved
-strunb.adb:654:10: info: range check proved
-strunb.adb:654:24: info: pointer dereference check proved
-strunb.adb:654:24: info: range check proved
-strunb.adb:684:30: info: initialization check proved
-strunb.adb:684:30: info: range check proved
-strunb.adb:684:44: info: pointer dereference check proved
-strunb.adb:684:44: info: range check proved
-strunb.adb:693:07: info: absence of resource or memory leak at end of scope proved
-strunb.adb:694:48: info: range check proved
-strunb.adb:694:55: info: initialization check proved
-strunb.adb:694:55: info: range check proved
-strunb.adb:694:69: info: pointer dereference check proved
-strunb.adb:694:69: info: range check proved
-strunb.adb:696:33: info: pointer dereference check proved
-strunb.adb:696:36: info: range check proved
-strunb.adb:697:07: info: absence of resource or memory leak at end of scope proved
-strunb.adb:699:14: info: absence of resource or memory leak proved
-strunb.adb:699:34: info: predicate check proved
-strunb.adb:714:20: info: precondition proved
-strunb.adb:715:10: info: initialization check proved
-strunb.adb:715:10: info: range check proved
-strunb.adb:715:24: info: pointer dereference check proved
-strunb.adb:715:24: info: range check proved
-strunb.adb:725:20: info: precondition proved
-strunb.adb:726:10: info: initialization check proved
-strunb.adb:726:10: info: range check proved
-strunb.adb:726:24: info: pointer dereference check proved
-strunb.adb:726:24: info: range check proved
-strunb.adb:737:10: info: initialization check proved
-strunb.adb:737:10: info: range check proved
-strunb.adb:737:24: info: pointer dereference check proved
-strunb.adb:737:24: info: range check proved
-strunb.adb:748:20: info: precondition proved
-strunb.adb:749:10: info: initialization check proved
-strunb.adb:749:10: info: range check proved
-strunb.adb:749:24: info: pointer dereference check proved
-strunb.adb:749:24: info: range check proved
-strunb.adb:760:20: info: precondition proved
-strunb.adb:761:10: info: initialization check proved
-strunb.adb:761:10: info: range check proved
-strunb.adb:761:24: info: pointer dereference check proved
-strunb.adb:761:24: info: range check proved
-strunb.adb:773:10: info: assertion proved
-strunb.adb:774:12: info: precondition proved
-strunb.adb:774:34: info: initialization check proved
-strunb.adb:774:48: info: pointer dereference check proved
-strunb.adb:774:48: info: range check proved
-strunb.adb:774:80: info: index check proved
-strunb.adb:775:20: info: precondition proved
-strunb.adb:776:10: info: initialization check proved
-strunb.adb:776:10: info: range check proved
-strunb.adb:776:24: info: pointer dereference check proved
-strunb.adb:776:24: info: range check proved
-strunb.adb:786:12: info: initialization check proved
-strunb.adb:786:12: info: range check proved
-strunb.adb:786:26: info: pointer dereference check proved
-strunb.adb:786:26: info: range check proved
-strunb.adb:796:15: info: precondition proved
-strunb.adb:797:12: info: initialization check proved
-strunb.adb:797:12: info: range check proved
-strunb.adb:797:26: info: pointer dereference check proved
-strunb.adb:797:26: info: range check proved
-strunb.adb:823:23: info: precondition proved
-strunb.adb:823:32: info: initialization check proved
-strunb.adb:823:32: info: range check proved
-strunb.adb:823:46: info: pointer dereference check proved
-strunb.adb:823:46: info: range check proved
-strunb.adb:833:10: info: only expected exception raised
-strunb.adb:836:07: info: precondition proved
-strunb.adb:836:42: info: range check proved
-strunb.adb:839:16: info: pointer dereference check proved
-strunb.adb:839:16: info: predicate check proved
-strunb.adb:839:16: info: range check proved
-strunb.adb:840:20: info: index check proved
-strunb.adb:840:20: info: overflow check proved
-strunb.adb:840:30: info: range check proved
-strunb.adb:840:53: info: index check proved
-strunb.adb:840:53: info: overflow check proved
-strunb.adb:840:63: info: range check proved
-strunb.adb:840:72: info: length check proved
-strunb.adb:841:20: info: length check proved
-strunb.adb:841:20: info: pointer dereference check proved
-strunb.adb:841:20: info: range check proved
-strunb.adb:844:13: info: pointer dereference check proved
-strunb.adb:844:13: info: predicate check proved
-strunb.adb:844:13: info: range check proved
-strunb.adb:844:25: info: index check proved
-strunb.adb:844:46: info: index check proved
-strunb.adb:844:46: info: overflow check proved
-strunb.adb:844:56: info: range check proved
-strunb.adb:844:65: info: length check proved
-strunb.adb:844:68: info: length check proved
-strunb.adb:844:83: info: range check proved
-strunb.adb:845:13: info: predicate check proved
-strunb.adb:845:34: info: overflow check proved
-strunb.adb:845:44: info: range check proved
-strunb.adb:860:12: info: overflow check proved
-strunb.adb:873:23: info: precondition proved
-strunb.adb:874:12: info: initialization check proved
-strunb.adb:874:12: info: range check proved
-strunb.adb:874:26: info: pointer dereference check proved
-strunb.adb:874:26: info: range check proved
-strunb.adb:882:40: info: range check proved
-strunb.adb:884:38: info: overflow check proved
-strunb.adb:885:16: info: pointer dereference check proved
-strunb.adb:885:16: info: predicate check proved
-strunb.adb:885:16: info: range check proved
-strunb.adb:885:28: info: index check proved
-strunb.adb:885:53: info: index check proved
-strunb.adb:885:53: info: overflow check proved
-strunb.adb:885:59: info: length check proved
-strunb.adb:885:62: info: length check proved
-strunb.adb:885:77: info: range check proved
-strunb.adb:888:13: info: absence of resource or memory leak at end of scope proved
-strunb.adb:889:36: info: precondition proved
-strunb.adb:889:36: info: range check proved
-strunb.adb:890:18: info: initialization check proved
-strunb.adb:890:18: info: range check proved
-strunb.adb:890:32: info: pointer dereference check proved
-strunb.adb:890:32: info: range check proved
-strunb.adb:891:13: info: absence of resource or memory leak at end of scope proved
-strunb.adb:893:19: info: predicate check proved
-strunb.adb:893:30: info: absence of resource or memory leak proved
-strunb.adb:894:19: info: predicate check proved
-strunb.adb:894:34: info: pointer dereference check proved
-strunb.adb:894:44: info: range check proved
-strunb.adb:935:44: info: pointer dereference check proved
-strunb.adb:935:54: info: range check proved
-strunb.adb:938:32: info: overflow check proved
-strunb.adb:941:15: info: range check proved
-strunb.adb:942:18: info: precondition proved
-strunb.adb:942:58: info: division check proved
-strunb.adb:946:33: info: division check proved
-strunb.adb:948:13: info: range check proved
-strunb.adb:949:13: info: absence of resource or memory leak at end of scope proved
-strunb.adb:949:52: info: length check proved
-strunb.adb:951:13: info: pointer dereference check proved
-strunb.adb:951:13: info: range check proved
-strunb.adb:951:18: info: index check proved
-strunb.adb:951:29: info: index check proved
-strunb.adb:951:36: info: length check proved
-strunb.adb:951:45: info: length check proved
-strunb.adb:951:45: info: pointer dereference check proved
-strunb.adb:951:45: info: range check proved
-strunb.adb:954:16: info: absence of resource or memory leak at end of scope proved
-strunb.adb:961:19: info: predicate check proved
-strunb.adb:961:30: info: absence of resource or memory leak proved
-strunb.adb:977:16: info: pointer dereference check proved
-strunb.adb:977:16: info: predicate check proved
-strunb.adb:977:28: info: index check proved
-strunb.adb:979:10: info: only expected exception raised
-strunb.adb:995:23: info: precondition proved
-strunb.adb:996:13: info: initialization check proved
-strunb.adb:996:13: info: range check proved
-strunb.adb:996:27: info: pointer dereference check proved
-strunb.adb:996:27: info: range check proved
-strunb.adb:1005:07: info: absence of resource or memory leak at end of scope proved
-strunb.adb:1006:30: info: precondition proved
-strunb.adb:1006:30: info: range check proved
-strunb.adb:1007:13: info: initialization check proved
-strunb.adb:1007:13: info: range check proved
-strunb.adb:1007:27: info: pointer dereference check proved
-strunb.adb:1007:27: info: range check proved
-strunb.adb:1008:33: info: pointer dereference check proved
-strunb.adb:1008:36: info: range check proved
-strunb.adb:1009:07: info: absence of resource or memory leak at end of scope proved
-strunb.adb:1011:14: info: absence of resource or memory leak proved
-strunb.adb:1011:34: info: predicate check proved
-strunb.adb:1023:10: info: precondition proved
-strunb.adb:1023:10: info: range check proved
-strunb.adb:1032:32: info: overflow check proved
-strunb.adb:1033:10: info: precondition proved
-strunb.adb:1045:07: info: absence of resource or memory leak at end of scope proved
-strunb.adb:1046:07: info: range check proved
-strunb.adb:1046:48: info: range check proved
-strunb.adb:1048:14: info: absence of resource or memory leak proved
-strunb.adb:1049:26: info: predicate check proved
-strunb.adb:1049:54: info: length check proved
-strunb.adb:1050:46: info: range check proved
-strunb.adb:1066:10: info: only expected exception raised
-strunb.adb:1068:10: info: initialization check proved
-strunb.adb:1068:10: info: range check proved
-strunb.adb:1068:24: info: pointer dereference check proved
-strunb.adb:1068:24: info: range check proved
-strunb.adb:1075:12: info: overflow check proved
-strunb.adb:1087:30: info: initialization check proved
-strunb.adb:1087:30: info: range check proved
-strunb.adb:1087:44: info: pointer dereference check proved
-strunb.adb:1087:44: info: range check proved
-strunb.adb:1095:07: info: absence of resource or memory leak at end of scope proved
-strunb.adb:1096:30: info: range check proved
-strunb.adb:1096:37: info: initialization check proved
-strunb.adb:1096:37: info: range check proved
-strunb.adb:1096:51: info: pointer dereference check proved
-strunb.adb:1096:51: info: range check proved
-strunb.adb:1097:33: info: pointer dereference check proved
-strunb.adb:1097:36: info: range check proved
-strunb.adb:1098:07: info: absence of resource or memory leak at end of scope proved
-strunb.adb:1100:14: info: absence of resource or memory leak proved
-strunb.adb:1100:34: info: predicate check proved
-strunb.adb:1109:07: info: initialization check proved
-strunb.adb:1109:07: info: range check proved
-strunb.adb:1109:21: info: pointer dereference check proved
-strunb.adb:1109:21: info: range check proved
-strunb.adb:1118:07: info: range check proved
-strunb.adb:1118:48: info: range check proved
-strunb.adb:1119:07: info: absence of resource or memory leak at end of scope proved
-strunb.adb:1120:09: info: predicate check proved
-strunb.adb:1120:30: info: length check proved
-strunb.adb:1121:29: info: range check proved
-strunb.adb:1123:13: info: predicate check proved
-strunb.adb:1123:24: info: length check proved
-strunb.adb:1123:24: info: pointer dereference check proved
-strunb.adb:1123:28: info: length check proved
-strunb.adb:1123:31: info: length check proved
-strunb.adb:1123:46: info: range check proved
-strunb.adb:1155:35: info: initialization check proved
-strunb.adb:1155:35: info: range check proved
-strunb.adb:1155:49: info: pointer dereference check proved
-strunb.adb:1155:49: info: range check proved
-strunb.adb:1163:24: info: initialization check proved
-strunb.adb:1163:24: info: range check proved
-strunb.adb:1163:38: info: in value of subprogram parameter after the call at strunb.adb:1163
-strunb.adb:1163:38: info: pointer dereference check proved
-strunb.adb:1163:38: info: predicate check proved
-strunb.adb:1163:38: info: range check proved
-strunb.adb:1172:23: info: precondition proved
-strunb.adb:1172:35: info: initialization check proved
-strunb.adb:1172:35: info: range check proved
-strunb.adb:1172:49: info: pointer dereference check proved
-strunb.adb:1172:49: info: range check proved
-strunb.adb:1180:12: info: precondition proved
-strunb.adb:1180:24: info: initialization check proved
-strunb.adb:1180:24: info: range check proved
-strunb.adb:1180:38: info: in value of subprogram parameter after the call at strunb.adb:1180
-strunb.adb:1180:38: info: pointer dereference check proved
-strunb.adb:1180:38: info: predicate check proved
-strunb.adb:1180:38: info: range check proved
-strunb.adb:1192:22: info: assertion proved
-strunb.adb:1193:47: info: initialization check proved
-strunb.adb:1193:47: info: range check proved
-strunb.adb:1193:61: info: pointer dereference check proved
-strunb.adb:1193:61: info: range check proved
-strunb.adb:1194:22: info: assertion proved
-strunb.adb:1195:47: info: initialization check proved
-strunb.adb:1195:47: info: range check proved
-strunb.adb:1195:61: info: pointer dereference check proved
-strunb.adb:1195:61: info: range check proved
-strunb.adb:1197:22: info: initialization check proved
-strunb.adb:1197:22: info: range check proved
-strunb.adb:1197:36: info: pointer dereference check proved
-strunb.adb:1197:36: info: range check proved
-strunb.adb:1204:22: info: assertion proved
-strunb.adb:1205:47: info: initialization check proved
-strunb.adb:1205:47: info: range check proved
-strunb.adb:1205:61: info: pointer dereference check proved
-strunb.adb:1205:61: info: range check proved
-strunb.adb:1206:22: info: assertion proved
-strunb.adb:1207:47: info: initialization check proved
-strunb.adb:1207:47: info: range check proved
-strunb.adb:1207:61: info: pointer dereference check proved
-strunb.adb:1207:61: info: range check proved
-strunb.adb:1208:07: info: absence of resource or memory leak at end of scope proved
+strunb.adb:360:21: info: initialization check proved
+strunb.adb:360:34: info: pointer dereference check proved
+strunb.adb:360:34: info: range check proved
+strunb.adb:371:09: info: initialization check proved
+strunb.adb:371:21: info: pointer dereference check proved
+strunb.adb:371:21: info: range check proved
+strunb.adb:372:11: info: initialization check proved
+strunb.adb:372:24: info: pointer dereference check proved
+strunb.adb:372:24: info: range check proved
+strunb.adb:377:14: info: initialization check proved
+strunb.adb:377:26: info: pointer dereference check proved
+strunb.adb:377:26: info: range check proved
+strunb.adb:382:21: info: initialization check proved
+strunb.adb:382:34: info: pointer dereference check proved
+strunb.adb:382:34: info: range check proved
+strunb.adb:393:13: info: initialization check proved
+strunb.adb:393:13: info: pointer dereference check proved
+strunb.adb:393:13: info: range check proved
+strunb.adb:393:49: info: initialization check proved
+strunb.adb:393:49: info: pointer dereference check proved
+strunb.adb:393:49: info: range check proved
+strunb.adb:398:14: info: initialization check proved
+strunb.adb:398:26: info: pointer dereference check proved
+strunb.adb:398:26: info: range check proved
+strunb.adb:403:22: info: initialization check proved
+strunb.adb:403:35: info: pointer dereference check proved
+strunb.adb:403:35: info: range check proved
+strunb.adb:430:07: info: precondition proved
+strunb.adb:433:16: info: pointer dereference check proved
+strunb.adb:433:16: info: predicate check proved
+strunb.adb:433:16: info: range check proved
+strunb.adb:433:40: info: index check proved
+strunb.adb:433:40: info: overflow check proved
+strunb.adb:433:59: info: index check proved
+strunb.adb:433:59: info: overflow check proved
+strunb.adb:433:76: info: length check proved
+strunb.adb:434:20: info: length check proved
+strunb.adb:434:20: info: pointer dereference check proved
+strunb.adb:434:20: info: range check proved
+strunb.adb:437:13: info: predicate check proved
+strunb.adb:437:34: info: overflow check proved
+strunb.adb:442:07: info: precondition proved
+strunb.adb:442:42: info: range check proved
+strunb.adb:445:16: info: pointer dereference check proved
+strunb.adb:445:16: info: predicate check proved
+strunb.adb:445:16: info: range check proved
+strunb.adb:445:40: info: index check proved
+strunb.adb:445:40: info: overflow check proved
+strunb.adb:445:59: info: index check proved
+strunb.adb:445:59: info: overflow check proved
+strunb.adb:445:69: info: range check proved
+strunb.adb:445:78: info: length check proved
+strunb.adb:446:12: info: length check proved
+strunb.adb:446:27: info: range check proved
+strunb.adb:449:13: info: predicate check proved
+strunb.adb:449:34: info: overflow check proved
+strunb.adb:449:44: info: range check proved
+strunb.adb:454:07: info: precondition proved
+strunb.adb:455:13: info: pointer dereference check proved
+strunb.adb:455:13: info: predicate check proved
+strunb.adb:455:37: info: index check proved
+strunb.adb:455:37: info: overflow check proved
+strunb.adb:456:13: info: predicate check proved
+strunb.adb:456:34: info: overflow check proved
+strunb.adb:469:15: info: precondition proved
+strunb.adb:470:12: info: initialization check proved
+strunb.adb:470:12: info: range check proved
+strunb.adb:470:26: info: pointer dereference check proved
+strunb.adb:470:26: info: range check proved
+strunb.adb:479:15: info: precondition proved
+strunb.adb:480:12: info: initialization check proved
+strunb.adb:480:12: info: range check proved
+strunb.adb:480:26: info: pointer dereference check proved
+strunb.adb:480:26: info: range check proved
+strunb.adb:486:28: info: initialization check proved
+strunb.adb:486:28: info: range check proved
+strunb.adb:486:42: info: pointer dereference check proved
+strunb.adb:486:42: info: range check proved
+strunb.adb:499:17: info: precondition proved
+strunb.adb:500:15: info: initialization check proved
+strunb.adb:500:15: info: range check proved
+strunb.adb:500:29: info: pointer dereference check proved
+strunb.adb:500:29: info: range check proved
+strunb.adb:510:10: info: only expected exception raised
+strunb.adb:515:57: info: overflow check proved
+strunb.adb:515:57: info: range check proved
+strunb.adb:519:22: info: pointer dereference check proved
+strunb.adb:519:22: info: predicate check proved
+strunb.adb:519:22: info: range check proved
+strunb.adb:519:34: info: index check proved
+strunb.adb:519:54: info: index check proved
+strunb.adb:519:54: info: overflow check proved
+strunb.adb:519:61: info: length check proved
+strunb.adb:520:24: info: length check proved
+strunb.adb:520:24: info: pointer dereference check proved
+strunb.adb:520:24: info: range check proved
+strunb.adb:520:44: info: overflow check proved
+strunb.adb:523:19: info: predicate check proved
+strunb.adb:523:40: info: overflow check proved
+strunb.adb:523:40: info: range check proved
+strunb.adb:535:19: info: initialization check proved
+strunb.adb:535:19: info: pointer dereference check proved
+strunb.adb:535:31: info: index check proved
+strunb.adb:536:13: info: only expected exception raised
+strunb.adb:577:12: info: assertion proved
+strunb.adb:578:14: info: precondition proved
+strunb.adb:578:31: info: range check proved
+strunb.adb:579:16: info: initialization check proved
+strunb.adb:579:30: info: pointer dereference check proved
+strunb.adb:579:30: info: range check proved
+strunb.adb:579:65: info: index check proved
+strunb.adb:581:13: info: precondition proved
+strunb.adb:582:10: info: initialization check proved
+strunb.adb:582:10: info: range check proved
+strunb.adb:582:24: info: pointer dereference check proved
+strunb.adb:582:24: info: range check proved
+strunb.adb:596:13: info: precondition proved
+strunb.adb:597:10: info: initialization check proved
+strunb.adb:597:10: info: range check proved
+strunb.adb:597:24: info: pointer dereference check proved
+strunb.adb:597:24: info: range check proved
+strunb.adb:628:18: info: initialization check proved
+strunb.adb:628:18: info: range check proved
+strunb.adb:628:32: info: pointer dereference check proved
+strunb.adb:628:32: info: range check proved
+strunb.adb:637:07: info: absence of resource or memory leak at end of scope proved
+strunb.adb:640:20: info: range check proved
+strunb.adb:641:18: info: initialization check proved
+strunb.adb:641:18: info: range check proved
+strunb.adb:641:32: info: pointer dereference check proved
+strunb.adb:641:32: info: range check proved
+strunb.adb:642:37: info: pointer dereference check proved
+strunb.adb:642:40: info: range check proved
+strunb.adb:643:07: info: absence of resource or memory leak at end of scope proved
+strunb.adb:645:14: info: absence of resource or memory leak proved
+strunb.adb:645:34: info: predicate check proved
+strunb.adb:660:15: info: precondition proved
+strunb.adb:661:12: info: initialization check proved
+strunb.adb:661:12: info: range check proved
+strunb.adb:661:26: info: pointer dereference check proved
+strunb.adb:661:26: info: range check proved
+strunb.adb:674:15: info: precondition proved
+strunb.adb:675:12: info: initialization check proved
+strunb.adb:675:12: info: range check proved
+strunb.adb:675:26: info: pointer dereference check proved
+strunb.adb:675:26: info: range check proved
+strunb.adb:689:12: info: initialization check proved
+strunb.adb:689:12: info: range check proved
+strunb.adb:689:26: info: pointer dereference check proved
+strunb.adb:689:26: info: range check proved
+strunb.adb:700:15: info: precondition proved
+strunb.adb:701:12: info: initialization check proved
+strunb.adb:701:12: info: range check proved
+strunb.adb:701:26: info: pointer dereference check proved
+strunb.adb:701:26: info: range check proved
+strunb.adb:716:15: info: precondition proved
+strunb.adb:717:12: info: initialization check proved
+strunb.adb:717:12: info: range check proved
+strunb.adb:717:26: info: pointer dereference check proved
+strunb.adb:717:26: info: range check proved
+strunb.adb:733:12: info: assertion proved
+strunb.adb:734:14: info: precondition proved
+strunb.adb:735:16: info: initialization check proved
+strunb.adb:735:30: info: pointer dereference check proved
+strunb.adb:735:30: info: range check proved
+strunb.adb:735:62: info: index check proved
+strunb.adb:737:15: info: precondition proved
+strunb.adb:738:12: info: initialization check proved
+strunb.adb:738:12: info: range check proved
+strunb.adb:738:26: info: pointer dereference check proved
+strunb.adb:738:26: info: range check proved
+strunb.adb:751:12: info: initialization check proved
+strunb.adb:751:12: info: range check proved
+strunb.adb:751:26: info: pointer dereference check proved
+strunb.adb:751:26: info: range check proved
+strunb.adb:759:15: info: precondition proved
+strunb.adb:760:12: info: initialization check proved
+strunb.adb:760:12: info: range check proved
+strunb.adb:760:26: info: pointer dereference check proved
+strunb.adb:760:26: info: range check proved
+strunb.adb:786:20: info: precondition proved
+strunb.adb:787:18: info: initialization check proved
+strunb.adb:787:18: info: range check proved
+strunb.adb:787:32: info: pointer dereference check proved
+strunb.adb:787:32: info: range check proved
+strunb.adb:797:10: info: only expected exception raised
+strunb.adb:800:07: info: precondition proved
+strunb.adb:800:42: info: range check proved
+strunb.adb:803:16: info: pointer dereference check proved
+strunb.adb:803:16: info: predicate check proved
+strunb.adb:803:16: info: range check proved
+strunb.adb:804:20: info: index check proved
+strunb.adb:804:20: info: overflow check proved
+strunb.adb:804:30: info: range check proved
+strunb.adb:804:53: info: index check proved
+strunb.adb:804:53: info: overflow check proved
+strunb.adb:804:63: info: range check proved
+strunb.adb:804:72: info: length check proved
+strunb.adb:805:18: info: length check proved
+strunb.adb:805:18: info: pointer dereference check proved
+strunb.adb:805:18: info: range check proved
+strunb.adb:808:13: info: pointer dereference check proved
+strunb.adb:808:13: info: predicate check proved
+strunb.adb:808:13: info: range check proved
+strunb.adb:808:25: info: index check proved
+strunb.adb:808:46: info: index check proved
+strunb.adb:808:46: info: overflow check proved
+strunb.adb:808:56: info: range check proved
+strunb.adb:808:65: info: length check proved
+strunb.adb:809:09: info: length check proved
+strunb.adb:809:24: info: range check proved
+strunb.adb:810:13: info: predicate check proved
+strunb.adb:810:34: info: overflow check proved
+strunb.adb:810:44: info: range check proved
+strunb.adb:825:13: info: overflow check proved
+strunb.adb:838:20: info: precondition proved
+strunb.adb:839:18: info: initialization check proved
+strunb.adb:839:18: info: range check proved
+strunb.adb:839:32: info: pointer dereference check proved
+strunb.adb:839:32: info: range check proved
+strunb.adb:847:40: info: range check proved
+strunb.adb:849:38: info: overflow check proved
+strunb.adb:850:16: info: pointer dereference check proved
+strunb.adb:850:16: info: predicate check proved
+strunb.adb:850:16: info: range check proved
+strunb.adb:850:28: info: index check proved
+strunb.adb:850:53: info: index check proved
+strunb.adb:850:53: info: overflow check proved
+strunb.adb:850:59: info: length check proved
+strunb.adb:851:12: info: length check proved
+strunb.adb:851:27: info: range check proved
+strunb.adb:854:13: info: absence of resource or memory leak at end of scope proved
+strunb.adb:857:26: info: precondition proved
+strunb.adb:857:26: info: range check proved
+strunb.adb:858:24: info: initialization check proved
+strunb.adb:858:24: info: range check proved
+strunb.adb:858:38: info: pointer dereference check proved
+strunb.adb:858:38: info: range check proved
+strunb.adb:861:13: info: absence of resource or memory leak at end of scope proved
+strunb.adb:863:19: info: predicate check proved
+strunb.adb:863:30: info: absence of resource or memory leak proved
+strunb.adb:864:19: info: predicate check proved
+strunb.adb:864:34: info: pointer dereference check proved
+strunb.adb:864:44: info: range check proved
+strunb.adb:870:12: info: assertion proved
+strunb.adb:870:12: info: initialization check proved
+strunb.adb:870:26: info: pointer dereference check proved
+strunb.adb:870:26: info: range check proved
+strunb.adb:870:63: info: overflow check proved
+strunb.adb:908:44: info: pointer dereference check proved
+strunb.adb:908:54: info: range check proved
+strunb.adb:911:32: info: overflow check proved
+strunb.adb:914:15: info: range check proved
+strunb.adb:915:18: info: precondition proved
+strunb.adb:915:58: info: division check proved
+strunb.adb:919:33: info: division check proved
+strunb.adb:921:13: info: range check proved
+strunb.adb:922:13: info: absence of resource or memory leak at end of scope proved
+strunb.adb:922:52: info: length check proved
+strunb.adb:924:13: info: pointer dereference check proved
+strunb.adb:924:13: info: range check proved
+strunb.adb:924:18: info: index check proved
+strunb.adb:924:29: info: index check proved
+strunb.adb:924:36: info: length check proved
+strunb.adb:924:45: info: length check proved
+strunb.adb:924:45: info: pointer dereference check proved
+strunb.adb:924:45: info: range check proved
+strunb.adb:927:16: info: absence of resource or memory leak at end of scope proved
+strunb.adb:934:19: info: predicate check proved
+strunb.adb:934:30: info: absence of resource or memory leak proved
+strunb.adb:947:16: info: pointer dereference check proved
+strunb.adb:947:16: info: predicate check proved
+strunb.adb:947:28: info: index check proved
+strunb.adb:949:10: info: only expected exception raised
+strunb.adb:964:20: info: precondition proved
+strunb.adb:965:18: info: initialization check proved
+strunb.adb:965:18: info: range check proved
+strunb.adb:965:32: info: pointer dereference check proved
+strunb.adb:965:32: info: range check proved
+strunb.adb:977:07: info: absence of resource or memory leak at end of scope proved
+strunb.adb:980:20: info: precondition proved
+strunb.adb:980:20: info: range check proved
+strunb.adb:981:18: info: initialization check proved
+strunb.adb:981:18: info: range check proved
+strunb.adb:981:32: info: pointer dereference check proved
+strunb.adb:981:32: info: range check proved
+strunb.adb:985:33: info: pointer dereference check proved
+strunb.adb:985:36: info: range check proved
+strunb.adb:986:07: info: absence of resource or memory leak at end of scope proved
+strunb.adb:988:14: info: absence of resource or memory leak proved
+strunb.adb:988:34: info: predicate check proved
+strunb.adb:999:13: info: precondition proved
+strunb.adb:999:13: info: range check proved
+strunb.adb:1007:33: info: overflow check proved
+strunb.adb:1008:13: info: precondition proved
+strunb.adb:1018:07: info: absence of resource or memory leak at end of scope proved
+strunb.adb:1019:07: info: range check proved
+strunb.adb:1019:48: info: range check proved
+strunb.adb:1021:14: info: absence of resource or memory leak proved
+strunb.adb:1023:11: info: predicate check proved
+strunb.adb:1023:39: info: length check proved
+strunb.adb:1023:63: info: range check proved
+strunb.adb:1037:13: info: only expected exception raised
+strunb.adb:1038:13: info: initialization check proved
+strunb.adb:1038:13: info: range check proved
+strunb.adb:1038:27: info: pointer dereference check proved
+strunb.adb:1038:27: info: range check proved
+strunb.adb:1045:13: info: overflow check proved
+strunb.adb:1059:18: info: initialization check proved
+strunb.adb:1059:18: info: range check proved
+strunb.adb:1059:32: info: pointer dereference check proved
+strunb.adb:1059:32: info: range check proved
+strunb.adb:1067:07: info: absence of resource or memory leak at end of scope proved
+strunb.adb:1070:20: info: range check proved
+strunb.adb:1071:18: info: initialization check proved
+strunb.adb:1071:18: info: range check proved
+strunb.adb:1071:32: info: pointer dereference check proved
+strunb.adb:1071:32: info: range check proved
+strunb.adb:1072:33: info: pointer dereference check proved
+strunb.adb:1072:36: info: range check proved
+strunb.adb:1073:07: info: absence of resource or memory leak at end of scope proved
+strunb.adb:1075:14: info: absence of resource or memory leak proved
+strunb.adb:1075:34: info: predicate check proved
+strunb.adb:1084:08: info: initialization check proved
+strunb.adb:1084:08: info: range check proved
+strunb.adb:1084:22: info: pointer dereference check proved
+strunb.adb:1084:22: info: range check proved
+strunb.adb:1091:07: info: range check proved
+strunb.adb:1091:48: info: range check proved
+strunb.adb:1092:07: info: absence of resource or memory leak at end of scope proved
+strunb.adb:1093:09: info: predicate check proved
+strunb.adb:1093:30: info: length check proved
+strunb.adb:1093:61: info: range check proved
+strunb.adb:1095:13: info: predicate check proved
+strunb.adb:1095:24: info: length check proved
+strunb.adb:1095:24: info: pointer dereference check proved
+strunb.adb:1095:28: info: length check proved
+strunb.adb:1095:31: info: length check proved
+strunb.adb:1095:46: info: range check proved
+strunb.adb:1128:18: info: initialization check proved
+strunb.adb:1128:18: info: range check proved
+strunb.adb:1128:32: info: pointer dereference check proved
+strunb.adb:1128:32: info: range check proved
+strunb.adb:1134:24: info: initialization check proved
+strunb.adb:1134:24: info: range check proved
+strunb.adb:1134:38: info: in value of subprogram parameter after the call at strunb.adb:1134
+strunb.adb:1134:38: info: pointer dereference check proved
+strunb.adb:1134:38: info: predicate check proved
+strunb.adb:1134:38: info: range check proved
+strunb.adb:1144:20: info: precondition proved
+strunb.adb:1145:18: info: initialization check proved
+strunb.adb:1145:18: info: range check proved
+strunb.adb:1145:32: info: pointer dereference check proved
+strunb.adb:1145:32: info: range check proved
+strunb.adb:1152:12: info: precondition proved
+strunb.adb:1152:24: info: initialization check proved
+strunb.adb:1152:24: info: range check proved
+strunb.adb:1152:38: info: in value of subprogram parameter after the call at strunb.adb:1152
+strunb.adb:1152:38: info: pointer dereference check proved
+strunb.adb:1152:38: info: predicate check proved
+strunb.adb:1152:38: info: range check proved
+strunb.adb:1164:12: info: assertion proved
+strunb.adb:1166:17: info: initialization check proved
+strunb.adb:1166:17: info: range check proved
+strunb.adb:1166:31: info: pointer dereference check proved
+strunb.adb:1166:31: info: range check proved
+strunb.adb:1169:12: info: assertion proved
+strunb.adb:1171:17: info: initialization check proved
+strunb.adb:1171:17: info: range check proved
+strunb.adb:1171:31: info: pointer dereference check proved
+strunb.adb:1171:31: info: range check proved
+strunb.adb:1174:24: info: initialization check proved
+strunb.adb:1174:24: info: range check proved
+strunb.adb:1174:38: info: pointer dereference check proved
+strunb.adb:1174:38: info: range check proved
+strunb.adb:1180:12: info: assertion proved
+strunb.adb:1182:17: info: initialization check proved
+strunb.adb:1182:17: info: range check proved
+strunb.adb:1182:31: info: pointer dereference check proved
+strunb.adb:1182:31: info: range check proved
+strunb.adb:1185:12: info: assertion proved
+strunb.adb:1187:17: info: initialization check proved
+strunb.adb:1187:17: info: range check proved
+strunb.adb:1187:31: info: pointer dereference check proved
+strunb.adb:1187:31: info: range check proved
+strunb.adb:1188:07: info: absence of resource or memory leak at end of scope proved
+strunb.adb:1191:20: info: range check proved
+strunb.adb:1192:18: info: initialization check proved
+strunb.adb:1192:18: info: range check proved
+strunb.adb:1192:32: info: pointer dereference check proved
+strunb.adb:1192:32: info: range check proved
+strunb.adb:1193:33: info: pointer dereference check proved
+strunb.adb:1193:36: info: range check proved
+strunb.adb:1194:07: info: absence of resource or memory leak at end of scope proved
+strunb.adb:1196:14: info: absence of resource or memory leak proved
+strunb.adb:1196:34: info: predicate check proved
+strunb.adb:1207:12: info: assertion proved
+strunb.adb:1208:14: info: precondition proved
+strunb.adb:1209:16: info: initialization check proved
+strunb.adb:1209:30: info: pointer dereference check proved
 strunb.adb:1209:30: info: range check proved
-strunb.adb:1209:37: info: initialization check proved
-strunb.adb:1209:37: info: range check proved
-strunb.adb:1209:51: info: pointer dereference check proved
-strunb.adb:1209:51: info: range check proved
-strunb.adb:1210:33: info: pointer dereference check proved
-strunb.adb:1210:36: info: range check proved
-strunb.adb:1211:07: info: absence of resource or memory leak at end of scope proved
-strunb.adb:1213:14: info: absence of resource or memory leak proved
-strunb.adb:1213:34: info: predicate check proved
-strunb.adb:1223:22: info: assertion proved
-strunb.adb:1224:37: info: initialization check proved
-strunb.adb:1224:37: info: range check proved
-strunb.adb:1224:51: info: pointer dereference check proved
-strunb.adb:1224:51: info: range check proved
-strunb.adb:1225:22: info: assertion proved
-strunb.adb:1226:37: info: initialization check proved
-strunb.adb:1226:37: info: range check proved
-strunb.adb:1226:51: info: pointer dereference check proved
-strunb.adb:1226:51: info: range check proved
-strunb.adb:1228:30: info: initialization check proved
-strunb.adb:1228:30: info: range check proved
-strunb.adb:1228:44: info: pointer dereference check proved
-strunb.adb:1228:44: info: range check proved
-strunb.adb:1237:10: info: assertion proved
-strunb.adb:1238:12: info: precondition proved
-strunb.adb:1238:34: info: initialization check proved
-strunb.adb:1238:48: info: pointer dereference check proved
-strunb.adb:1238:48: info: range check proved
-strunb.adb:1238:80: info: index check proved
-strunb.adb:1239:22: info: assertion proved
-strunb.adb:1240:37: info: initialization check proved
-strunb.adb:1240:37: info: range check proved
-strunb.adb:1240:51: info: pointer dereference check proved
-strunb.adb:1240:51: info: range check proved
-strunb.adb:1241:22: info: assertion proved
-strunb.adb:1242:37: info: initialization check proved
-strunb.adb:1242:37: info: range check proved
-strunb.adb:1242:51: info: pointer dereference check proved
-strunb.adb:1242:51: info: range check proved
-strunb.adb:1243:07: info: absence of resource or memory leak at end of scope proved
-strunb.adb:1244:30: info: range check proved
-strunb.adb:1244:37: info: initialization check proved
-strunb.adb:1244:37: info: range check proved
-strunb.adb:1244:51: info: pointer dereference check proved
-strunb.adb:1244:51: info: range check proved
-strunb.adb:1245:33: info: pointer dereference check proved
-strunb.adb:1245:36: info: range check proved
-strunb.adb:1246:07: info: absence of resource or memory leak at end of scope proved
-strunb.adb:1248:14: info: absence of resource or memory leak proved
-strunb.adb:1248:34: info: predicate check proved
-strunb.adb:1263:10: info: only expected exception raised
-strunb.adb:1265:38: info: initialization check proved
-strunb.adb:1265:38: info: range check proved
-strunb.adb:1265:63: info: pointer dereference check proved
-strunb.adb:1265:63: info: range check proved
-strunb.adb:1277:10: info: only expected exception raised
-strunb.adb:1279:17: info: absence of resource or memory leak proved
-strunb.adb:1279:41: info: initialization check proved
-strunb.adb:1279:41: info: range check proved
-strunb.adb:1279:66: info: pointer dereference check proved
-strunb.adb:1279:66: info: range check proved
+strunb.adb:1209:62: info: index check proved
+strunb.adb:1212:12: info: assertion proved
+strunb.adb:1214:17: info: initialization check proved
+strunb.adb:1214:17: info: range check proved
+strunb.adb:1214:31: info: pointer dereference check proved
+strunb.adb:1214:31: info: range check proved
+strunb.adb:1220:12: info: assertion proved
+strunb.adb:1222:17: info: initialization check proved
+strunb.adb:1222:17: info: range check proved
+strunb.adb:1222:31: info: pointer dereference check proved
+strunb.adb:1222:31: info: range check proved
+strunb.adb:1231:18: info: initialization check proved
+strunb.adb:1231:18: info: range check proved
+strunb.adb:1231:32: info: pointer dereference check proved
+strunb.adb:1231:32: info: range check proved
+strunb.adb:1241:12: info: assertion proved
+strunb.adb:1242:14: info: precondition proved
+strunb.adb:1243:16: info: initialization check proved
+strunb.adb:1243:30: info: pointer dereference check proved
+strunb.adb:1243:30: info: range check proved
+strunb.adb:1243:62: info: index check proved
+strunb.adb:1246:12: info: assertion proved
+strunb.adb:1248:17: info: initialization check proved
+strunb.adb:1248:17: info: range check proved
+strunb.adb:1248:31: info: pointer dereference check proved
+strunb.adb:1248:31: info: range check proved
+strunb.adb:1254:12: info: assertion proved
+strunb.adb:1256:17: info: initialization check proved
+strunb.adb:1256:17: info: range check proved
+strunb.adb:1256:31: info: pointer dereference check proved
+strunb.adb:1256:31: info: range check proved
+strunb.adb:1260:07: info: absence of resource or memory leak at end of scope proved
+strunb.adb:1263:20: info: range check proved
+strunb.adb:1264:18: info: initialization check proved
+strunb.adb:1264:18: info: range check proved
+strunb.adb:1264:32: info: pointer dereference check proved
+strunb.adb:1264:32: info: range check proved
+strunb.adb:1265:33: info: pointer dereference check proved
+strunb.adb:1265:36: info: range check proved
+strunb.adb:1266:07: info: absence of resource or memory leak at end of scope proved
+strunb.adb:1268:14: info: absence of resource or memory leak proved
+strunb.adb:1268:34: info: predicate check proved
+strunb.adb:1281:10: info: only expected exception raised
+strunb.adb:1284:33: info: initialization check proved
+strunb.adb:1284:33: info: range check proved
+strunb.adb:1284:58: info: pointer dereference check proved
+strunb.adb:1284:58: info: range check proved
+strunb.adb:1295:10: info: only expected exception raised
+strunb.adb:1297:17: info: absence of resource or memory leak proved
+strunb.adb:1298:33: info: initialization check proved
+strunb.adb:1298:33: info: range check proved
+strunb.adb:1298:58: info: pointer dereference check proved
+strunb.adb:1298:58: info: range check proved
 strunb.ads:64:24: info: initial condition proved
 strunb.ads:74:09: info: predicate check justified on default value
 strunb.ads:75:35: info: default initial condition proved
