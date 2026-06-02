@@ -62,7 +62,7 @@ perm.adb:62:44: info: precondition proved (CVC5: 6 VC)
 perm.adb:62:55: info: range check proved (CVC5: 4 VC)
 perm.adb:64:07: info: assertion proved (Z3: 1 VC)
 perm.adb:65:07: warning: this statement is never reached
-perm.adb:69:16: warning: function contract might not be available on recursive calls [contracts-recursive]
+perm.adb:69:16: warning: "Induction_Hypothesis" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 perm.adb:71:17: info: postcondition proved (Trivial: 1 VC; Z3: 1 VC)
 perm.adb:71:54: info: precondition proved (CVC5: 2 VC)
 perm.adb:79:13: medium: implicit aspect Always_Terminates on "Induction_Hypothesis" could be incorrect, subprogram is recursive [possible fix: annotate "Induction_Hypothesis" with a Subprogram_Variant aspect]
@@ -73,7 +73,7 @@ perm.adb:80:58: info: precondition proved (CVC5: 3 VC)
 perm.adb:80:70: info: range check proved (CVC5: 2 VC)
 perm.adb:82:28: info: assertion proved (CVC5: 1 VC)
 perm.adb:88:14: info: precondition proved (CVC5: 3 VC)
-perm.adb:93:16: warning: function contract might not be available on recursive calls [contracts-recursive]
+perm.adb:93:16: warning: "Induction_Hypothesis" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 perm.adb:94:63: info: precondition proved (CVC5: 2 VC)
 perm.adb:95:17: info: postcondition proved (Trivial: 1 VC; Z3: 1 VC)
 perm.adb:95:54: info: precondition proved (CVC5: 2 VC)
@@ -132,7 +132,7 @@ perm.adb:145:13: info: implicit aspect Always_Terminates on "Shift_Perm_L" has b
 perm.adb:147:30: info: precondition proved (CVC5: 2 VC)
 perm.adb:148:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 perm.adb:148:43: info: precondition proved (CVC5: 2 VC)
-perm.adb:152:16: warning: function contract might not be available on recursive calls [contracts-recursive]
+perm.adb:152:16: warning: "Induction_Hypothesis" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 perm.adb:154:33: info: precondition proved (CVC5: 2 VC)
 perm.adb:155:17: info: postcondition proved (Trivial: 1 VC; Z3: 1 VC)
 perm.adb:155:54: info: precondition proved (CVC5: 2 VC)
@@ -154,7 +154,7 @@ perm.adb:186:22: info: assertion proved (CVC5: 1 VC)
 perm.adb:186:22: info: precondition proved (CVC5: 5 VC)
 perm.adb:187:22: info: assertion proved (CVC5: 1 VC)
 perm.adb:187:22: info: precondition proved (CVC5: 3 VC)
-perm.adb:191:13: warning: function contract might not be available on recursive calls [contracts-recursive]
+perm.adb:191:13: warning: "Extended_Perm" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 perm.adb:192:60: info: precondition proved (CVC5: 2 VC)
 perm.adb:193:14: info: postcondition proved (Trivial: 1 VC; Z3: 1 VC)
 perm.adb:195:52: info: index check proved (CVC5: 2 VC)
@@ -324,7 +324,7 @@ perm.adb:293:39: info: range check proved (CVC5: 4 VC)
 perm.adb:293:43: info: precondition proved (CVC5: 6 VC)
 perm.adb:293:54: info: range check proved (CVC5: 4 VC)
 perm.adb:300:25: info: precondition proved (CVC5: 3 VC)
-perm.adb:307:16: warning: function contract might not be available on recursive calls [contracts-recursive]
+perm.adb:307:16: warning: "Induction_Hypothesis" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 perm.adb:309:18: info: precondition proved (CVC5: 2 VC)
 perm.adb:309:42: info: precondition proved (CVC5: 2 VC)
 perm.adb:310:17: info: postcondition proved (Trivial: 1 VC; Z3: 1 VC)

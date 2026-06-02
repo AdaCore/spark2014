@@ -1,4 +1,5 @@
 test.adb:8:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test.adb:11:16: warning: volatile function "New_String" has no volatile effects
 test.adb:29:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
 test.adb:30:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 test.adb:31:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)

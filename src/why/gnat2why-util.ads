@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                     Copyright (C) 2010-2025, AdaCore                     --
+--                     Copyright (C) 2010-2026, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -33,6 +33,7 @@ with Snames;               use Snames;
 with SPARK_Atree;          use SPARK_Atree;
 with SPARK_Atree.Entities; use SPARK_Atree.Entities;
 with SPARK_Definition;
+with SPARK_Definition.Annotate;
 with SPARK_Util;           use SPARK_Util;
 with SPARK_Util.Types;     use SPARK_Util.Types;
 with Types;                use Types;
@@ -576,6 +577,14 @@ package Gnat2Why.Util is
    --  Returns True if T is a scalar type that should be translated into Why
    --  as a range type. This is currently done for static signed integer types.
 
+   function Is_Bitvector_Type_In_Why (T : Type_Kind_Id) return Boolean
+   is (Has_Modular_Operations (T)
+       and then
+         not SPARK_Definition.Annotate.Has_No_Bitwise_Operations_Annotation
+               (T));
+   --  Return True if T is an integer type that should be translated into why
+   --  as a bitvector type.
+
    function Has_Init_Wrapper (Typ : Type_Kind_Id) return Boolean
    is (SPARK_Definition.Has_Relaxed_Init (Typ)
        or else Might_Contain_Relaxed_Init (Typ));
@@ -601,15 +610,16 @@ package Gnat2Why.Util is
    --  Returns True if we may produce an axiom for the post of E
 
    procedure Collect_Attr_Parts
-     (N : Node_Id; Attr_Name : Name_Id; Parts : in out Node_Sets.Set)
-   with Pre => Attr_Name in Snames.Name_Old | Snames.Name_Loop_Entry;
-   --  Add to Parts the prefixes of each reference to the Attr_Name
-   --  attribute in N. This is only used for the 'Old and 'Loop_Entry
-   --  attributes.
+     (N : Node_Id; Attr_Id : Attribute_Id; Parts : in out Node_Sets.Set)
+   with Pre => Attr_Id in Attribute_Old | Attribute_Loop_Entry;
+   --  Add to Parts the prefixes of each reference to the Attr_Id attribute in
+   --  N. This is only used for the 'Old and 'Loop_Entry attributes.
 
    procedure Collect_Attr_Parts
-     (L : Node_Lists.List; Attr_Name : Name_Id; Parts : in out Node_Sets.Set);
-   --  Call Collect_Attr_Parts on all elements of L for attribute Attr_Name
+     (L       : Node_Lists.List;
+      Attr_Id : Attribute_Id;
+      Parts   : in out Node_Sets.Set);
+   --  Call Collect_Attr_Parts on all elements of L for attribute Attr_Id
 
    procedure Collect_Old_Parts (N : Node_Id; Parts : in out Node_Sets.Set);
    --  Call Collect_Attr_Parts for 'Old attribute
@@ -617,6 +627,9 @@ package Gnat2Why.Util is
    procedure Collect_Old_Parts
      (L : Node_Lists.List; Parts : in out Node_Sets.Set);
    --  Call Collect_Attr_Parts on all elements of L for attribute 'Old
+
+   function Discrete_Choice_Is_Range (Choice : Node_Id) return Boolean;
+   --  Return whether Choice is a range ("others" counts as a range)
 
    ------------------------------
    -- Symbol table subprograms --

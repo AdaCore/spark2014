@@ -2,6 +2,6 @@ main.adb:5:19: info: assertion proved (CVC5: 1 VC)
 main.adb:5:19: info: precondition proved (CVC5: 1 VC)
 main.adb:5:19: warning: assuming "Rec" has no effect on global items
 main.adb:5:19: warning: no Global contract available for "Rec" [assumed-global-null]
-rec.ads:1:10: warning: function contract might not be available on recursive calls [contracts-recursive]
+rec.ads:1:10: warning: "Rec" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 rec.ads:4:34: warning: assuming "Rec" has no effect on global items
 rec.ads:4:34: warning: no Global contract available for "Rec" [assumed-global-null]

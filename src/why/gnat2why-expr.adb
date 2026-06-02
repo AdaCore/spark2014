@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2025, AdaCore                     --
+--                     Copyright (C) 2010-2026, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -23,10 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers.Vectors;
 with Ada.Characters.Handling;        use Ada.Characters.Handling;
 with Ada.Containers;                 use Ada.Containers;
-with Ada.Containers.Hashed_Maps;
 with Ada.Strings;
 with Ada.Strings.Unbounded;          use Ada.Strings.Unbounded;
 with Ada.Text_IO;  --  For debugging, to print info before raising an exception
@@ -278,23 +276,6 @@ package body Gnat2Why.Expr is
    --  temporaries are introduced in Context for parameters so that checks are
    --  not duplicated if the returned array is used several times.
 
-   function Compute_Default_Value
-     (Ada_Node     : Node_Id;
-      E            : Type_Kind_Id;
-      Relaxed_Init : Boolean;
-      Domain       : EW_Domain;
-      Params       : Transformation_Params := Body_Params) return W_Expr_Id
-   with
-     Pre =>
-       Can_Be_Default_Initialized (Retysp (E))
-       and then not Is_Inherently_Limited_Type (Retysp (E))
-       and then Ekind (Retysp (E)) /= E_String_Literal_Subtype;
-   --  Expression for the default value of an object of type E. In the term
-   --  domain, the values of uninitialized components are set arbitrarily,
-   --  potential default initial conditions are ignored.
-   --  Ada_Node is used to issue info messages on ignored DICs if any when
-   --  --info is set.
-
    procedure Compute_Store
      (Pattern        : Item_Type;
       Actual         : Opt_N_Subexpr_Id;
@@ -394,6 +375,11 @@ package body Gnat2Why.Expr is
    --  Generate a check to make sure that all dispatching parameters of a
    --  dispatching call have the same tag.
 
+   function Condition_Guard_Of_Old
+     (Params : Transformation_Params; Prefix : Node_Id) return W_Prog_Id;
+   --  Translate condition guard of conditionally evaluated 'Old attribute
+   --  reference over prefix Pref in the program domain.
+
    function New_Validity_Tree_Assignment
      (LHS       : N_Subexpr_Id;
       New_Tree  : W_Prog_Id;
@@ -430,9 +416,6 @@ package body Gnat2Why.Expr is
    --  @param Params transformation parameters
    --  @return the translation of the expression contained in the predicate
    --  applied on Expr.
-
-   function Discrete_Choice_Is_Range (Choice : Node_Id) return Boolean;
-   --  Return whether Choice is a range ("others" counts as a range)
 
    procedure Emit_Dynamic_Accessibility_Check
      (Returned_Expr : N_Subexpr_Id; Subp : E_Function_Id);
@@ -763,123 +746,6 @@ package body Gnat2Why.Expr is
    --  be used to refer to these indices. It is supplied when the indices
    --  should be evaluated in a different context (typically before a call).
 
-   function Transform_Array_Aggregate
-     (Params        : Transformation_Params;
-      Domain        : EW_Domain;
-      Expr          : N_Aggregate_Kind_Id;
-      Update_Prefix : Opt_N_Subexpr_Id := Empty;
-      Relaxed_Init  : Boolean) return W_Expr_Id;
-   --  Transform an aggregate Expr of array type. The aggregate may be a plain
-   --  array aggregate (Ada RM 4.3.3), an array delta aggregate (Ada RM 4.3.4),
-   --  or a multi-dimensional delta array aggregate defined by a 'Update
-   --  attribute (GNAT extension). The aggregate is delta iff there is a
-   --  non-empty update prefix supplied, in which case only the updates are
-   --  looked up in Expr. Relaxed_Init identify whether the resulting array
-   --  should have relaxed initialization.
-   --
-   --  The core translation is to produce a Why3 proposition P that defines the
-   --  aggregate value by stating what its components and bounds are. The
-   --  subexpressions of the aggregate, its 'elements', are separated out of
-   --  the aggregate through the use of intermediate Why3 variables. This is
-   --  done whenever such separation is possible (for components under iterated
-   --  component association, elements depends on index, so they cannot be
-   --  defined once and for all ahead of time). For example, for aggregate:
-   --
-   --  A : array (B .. B + 3) of Integer :=
-   --    (1 => V + 3, 2 => V + 4, others => K - 1)
-   --
-   --  the defining proposition is generated along the lines of:
-   --
-   --  def_prop a f l x y z :=
-   --      a.__first = f /\ a.__last = l /\ get a 1 = x /\ get a 2 = y
-   --         /\ (forall i. i <> 1 /\ i <> 2 -> get a i = z)
-   --
-   --  With a being a variable standing for the defined value, and x,y,z,f,l
-   --  being free variables standing for the translation of components (x,y,z
-   --  for subexpressions V + 3, V + 4, K-1 respectively) and bounds (f,l for
-   --  lower and upper bounds B, B+3 respectively). In general, the proposition
-   --  will contain additional guards for bounds/indexes to ensures it has a
-   --  witness (a) for every instance of the elements (x,y,z,f,l). That is,
-   --  (forall x y z f l. exists a. def_prop a f l x y z) should be justified
-   --  at the meta level for the translation to be sound.
-   --
-   --  As an alternative to the conjunctive structure above, the components of
-   --  the aggregate can be described for an arbitrary index by a succession of
-   --  ifs (a mix of conjunctive structure and successive if may occur for
-   --  multidimensional arrays). This is necessary for delta aggregates, due to
-   --  updated choices being allowed to overlap (possibly dynamically). For
-   --  example, the following delta aggregate is allowed:
-   --
-   --  (U with delta I .. J => X, K => Y)
-   --
-   --  And the defining proposition (about result array a) is:
-   --
-   --  def_prop a u i j k x y :=
-   --    a.__first = u.__first /\ a.__last = u.__last /\
-   --    (forall index. if index = k then get a index = y else
-   --                   if i <= index <= j then get a index = x else
-   --                   get a index = get u index)
-   --
-   --  The translation may be called multiple times on the same Ada node,
-   --  corresponding to different phases. If all elements of Expr can be
-   --  properly separated away (that is, there is no iterated component
-   --  association), a logic function aggr_func is generated and stored in the
-   --  E_Module for Expr. That function is axiomatized (in the corresponding
-   --  axiom module) as returning a witness for the defining proposition for
-   --  every instance of the elements, taken as parameters.
-   --
-   --  function aggr_func <element-types> : <type of aggregate>
-   --
-   --  axiom aggr_func_def : forall <element-vars>:<element-types>.
-   --    let a = aggr_func <element-vars> in def_prop a <element-vars>
-   --    (* def_prop inline, we do not make a predicate symbol *)
-   --
-   --  The aggregate is then translated by a call to aggr_func, preceded in the
-   --  program domain by the various checks expected for the aggregate.
-   --
-   --  If there are iterated component associations, instead, the expression is
-   --  completely processed every time to translate components under iterated
-   --  association properly. The components cannot be replaced by variables as
-   --  they depend on the iteration index.
-   --  The translation in the program domain replace the function call by an
-   --  any statement:
-   --
-   --  let <element-vars> = <element-values> in
-   --  ... (* Checks *) ...;
-   --  any { def_prop result <element-vars> } (* In place of call *)
-   --
-   --  The translation in the term domain produces a Why3 epsilon:
-   --
-   --  let <element-vars> = <element-values> in
-   --  (epsilon A. def_prop result <element-vars>) (* In place of call *)
-   --
-   --  A function call could be used if we processed components under iterated
-   --  component associations to find the actual variable content and replaced
-   --  it by additional elements. For example, for aggregate:
-   --
-   --  (for I in 1 .. 42 => H (I, G(X,X)))
-   --
-   --  We produce defining proposition:
-   --
-   --  def_prop a :=
-   --    a.__first = 1 /\ a.__last = 42
-   --    /\ (forall i. get A i = 'H' i ('G' 'X' 'X'))
-   --
-   --  Which is only meaningful in a context where reference to variable 'X'
-   --  make sense (so not in axioms). This could be turned into a format
-   --  suitable for the function-based translation if we took X through an
-   --  additional parameter. This is effectively what Why3 does when
-   --  eliminating epsilon on its end, but it would be more error-prone to do
-   --  so ahead of time due to the variety of contextual elements (variables,
-   --  but also reference to 'Old, 'Loop_Entry, @, etc.), and the need to
-   --  correctly replace them by element variables during translation. In
-   --  contrast, Why3's epsilon elimination is a standalone pass which only
-   --  have to deal with substitution of free variables in logic terms. We
-   --  still make the effort of generating the function ourselves when it is
-   --  reasonably easy to do so, because relying on Why3's epsilon elimination
-   --  result in one function symbol per epsilon instead of a single global
-   --  one, resulting in possibly lost sharing.
-
    function Transform_Assignment_Statement
      (Stmt : N_Assignment_Statement_Id; Params : Transformation_Params)
       return W_Prog_Id;
@@ -917,18 +783,6 @@ package body Gnat2Why.Expr is
       Domain             : EW_Domain;
       Ada_Node           : Node_Id) return W_Expr_Id;
    --  Handle concatenation nodes
-
-   function Transform_Discrete_Choice
-     (Choice      : Node_Id;
-      Choice_Type : Opt_Type_Kind_Id;
-      Expr        : W_Expr_Id;
-      Domain      : EW_Domain;
-      Params      : Transformation_Params) return W_Expr_Id
-   with Pre => Get_Type (Expr) = Base_Why_Type (Get_Type (Expr));
-   --  For an expression Expr of a discrete type and a discrete Choice, build
-   --  the expression that Expr belongs to the range expressed by Choice. In
-   --  programs, also generate a check that dynamic choices are in the subtype
-   --  Choice_Type.
 
    function Transform_Delta_Aggregate
      (Ada_Node : Node_Id;
@@ -1018,36 +872,6 @@ package body Gnat2Why.Expr is
       Do_Warn : Boolean) return W_Prog_Id;
    --  Shared functionality for warning on dead branch or dead code.
 
-   ------------------------------------------
-   -- Handling of Expressions with Actions --
-   ------------------------------------------
-
-   --  The detection phase currently allows 3 kinds of nodes in actions:
-   --    N_Object_Declaration for constants
-   --    N_Subtype_Declaration
-   --    N_Full_Type_Declaration
-
-   --  Declarations of constant objects are transformed into let-binding in
-   --  Why, which is possible in any context (program, term, proposition).
-
-   --  Declarations of types are simply ignored. Indeed, we don't know how to
-   --  translate the assignment to type bounds like done in
-   --  Transform_Declaration in a proposition context. Note that this choice
-   --  can possibly lead to dynamic bounds not known at VC level, if such types
-   --  are introduced in actions.
-
-   function Transform_Actions
-     (Actions : List_Id;
-      Expr    : W_Expr_Id;
-      Domain  : EW_Domain;
-      Params  : Transformation_Params) return W_Expr_Id;
-   --  Translate a list of Actions, that should consist only in declarations of
-   --  constants used in Expr.
-
-   procedure Transform_Actions_Preparation (Actions : List_Id);
-   --  Update the symbol table for taking into account the names for
-   --  declarations of constants in Actions.
-
    function Transform_Attr
      (Expr              : N_Attribute_Reference_Id;
       Domain            : EW_Domain;
@@ -1096,10 +920,12 @@ package body Gnat2Why.Expr is
       return W_Expr_Id
    with
      Pre =>
-       Nkind (N) = N_String_Literal
+       Nkind (N) in N_String_Literal | N_External_Initializer
        or else
          (Nkind (N) = N_Unchecked_Type_Conversion
-          and then Nkind (Expression (N)) = N_String_Literal);
+          and then
+            Nkind (Expression (N))
+            in N_String_Literal | N_External_Initializer);
    --  Transform a string literal. It uses an uninterpreted logic function with
    --  no parameters that returns a string value corresponding to the string
    --  literal.
@@ -2617,8 +2443,6 @@ package body Gnat2Why.Expr is
          else Parse_Initializes (E, Get_Flow_Scope (E)));
       Initialized : Flow_Id_Sets.Set;
 
-      --  Start of processing for Assume_For_Nested_Package
-
    begin
       if not For_Decl and then not Nested_Body then
          return;
@@ -2707,111 +2531,217 @@ package body Gnat2Why.Expr is
    -------------------------------
 
    function Bind_From_Mapping_In_Expr
-     (Params : Transformation_Params;
-      Expr   : W_Expr_Id;
-      N      : Node_Id;
-      Name   : W_Identifier_Id;
-      Domain : EW_Domain;
-      As_Old : Boolean := False) return W_Expr_Id
+     (Params    : Transformation_Params;
+      Expr      : W_Expr_Id;
+      N         : Node_Id;
+      Name      : W_Identifier_Id;
+      Domain    : EW_Domain;
+      Condition : W_Prog_Id := Why_Empty) return W_Expr_Id
    is
       Res : W_Expr_Id := Expr;
+      Typ : constant W_Type_Id := Get_Typ (Name);
+
+      In_Prophecy       : constant Boolean :=
+        Is_Local_Borrower_In_Prophecy (N);
+      Object_With_Valid : constant Boolean :=
+        Nkind (N) = N_Defining_Identifier and then Object_Has_Valid_Id (N);
+      Expr_With_Valid   : constant Boolean :=
+        Is_Potentially_Invalid_Expr (N)
+        and then not Has_Scalar_Type (Etype (N));
+
    begin
+      --  If N is a local borrow inside a prophecy, then update the symbol
+      --  table to use the name of the borrower at the end of the borrow.
+
+      if In_Prophecy then
+         declare
+            Brower : constant Entity_Id := Get_Root_Object (N);
+         begin
+            Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+            Insert_Tmp_Item_For_Entity
+              (Brower, Get_Brower_At_End (Brower), Mutable => True);
+         end;
+      end if;
 
       --  For potentially invalid expressions, also declare a binding for the
       --  validity flag.
 
-      if Nkind (N) = N_Defining_Identifier and then Object_Has_Valid_Id (N)
-      then
-         Res :=
-           New_Typed_Binding
-             (Name    => Name,
-              Domain  => Domain,
-              Def     =>
-                Insert_Simple_Conversion
-                  (Domain => Prog_Or_Term_Domain (Domain),
-                   Expr   =>
-                     (if As_Old
-                      then Transform_Attribute_Old (N, Domain, Params)
-                      else
-                        Transform_Identifier
-                          (Params, N, N, Prog_Or_Term_Domain (Domain))),
-                   To     => Get_Typ (Name)),
-              Context => Res);
-
-         Res :=
-           New_Typed_Binding
-             (Name    => Get_Valid_Flag_For_Id (Name, Etype (N)),
-              Domain  => Domain,
-              Def     => +Get_Valid_Id_From_Object (N, Params.Ref_Allowed),
-              Context => Res);
-
-      elsif Is_Potentially_Invalid_Expr (N)
-        and then not Has_Scalar_Type (Etype (N))
-      then
+      if Object_With_Valid or else Expr_With_Valid then
          declare
-            Def        : W_Expr_Id;
-            Valid_Flag : W_Expr_Id;
-            Context    : Ref_Context;
+            Value_Def : W_Expr_Id;
+            Valid_Def : W_Expr_Id;
+            Context   : Ref_Context;
+            Flag_Name : constant W_Identifier_Id :=
+              Get_Valid_Flag_For_Id (Name, Etype (N));
          begin
-            Transform_Potentially_Invalid_Expr
-              (Expr       => N,
-               Domain     => Prog_Or_Term_Domain (Domain),
-               Params     => Params,
-               Context    => Context,
-               W_Expr     => Def,
-               Valid_Flag => Valid_Flag,
-               As_Old     => As_Old);
+            if Object_With_Valid then
+               Value_Def :=
+                 Transform_Identifier
+                   (Params, N, N, Prog_Or_Term_Domain (Domain));
+               Valid_Def := +Get_Valid_Id_From_Object (N, Params.Ref_Allowed);
+            else
+               Transform_Potentially_Invalid_Expr
+                 (Expr       => N,
+                  Domain     => Prog_Or_Term_Domain (Domain),
+                  Params     => Params,
+                  Context    => Context,
+                  W_Expr     => Value_Def,
+                  Valid_Flag => Valid_Def);
+            end if;
+
+            Value_Def :=
+              Insert_Simple_Conversion
+                (Domain => Prog_Or_Term_Domain (Domain),
+                 Expr   => Value_Def,
+                 To     => Typ);
+
+            --  If there is a condition, we cannot directly use the definition.
+            --  We generate pattern:
+            --  let x_value = any { True } in
+            --  let x_valid = any { True } in
+            --  (if condition then
+            --    let tmp = def in assume { x_value, x_valid = tmp });
+            --  <<Res>>
+
+            if Present (Condition) then
+               declare
+                  Temp_Value : constant W_Identifier_Id :=
+                    New_Temp_Identifier (Typ => Typ);
+                  Temp_Flag  : constant W_Identifier_Id :=
+                    Get_Valid_Flag_For_Id (Temp_Value, Etype (N));
+                  Assume_Val : W_Expr_Id :=
+                    +New_Assume_Statement
+                       (Pred =>
+                          New_And_Pred
+                            (New_Comparison
+                               (Symbol => Why_Eq,
+                                Left   => +Name,
+                                Right  => +Temp_Value),
+                             New_Comparison
+                               (Symbol => Why_Eq,
+                                Left   => +Flag_Name,
+                                Right  => +Temp_Flag)));
+               begin
+                  Assume_Val :=
+                    New_Typed_Binding
+                      (Name    => Temp_Value,
+                       Domain  => Domain,
+                       Def     => Value_Def,
+                       Context => Assume_Val);
+                  Assume_Val :=
+                    New_Typed_Binding
+                      (Name    => Temp_Flag,
+                       Domain  => Domain,
+                       Def     => Valid_Def,
+                       Context => Assume_Val);
+                  Assume_Val :=
+                    +Bindings_For_Ref_Context
+                       (Expr    => +Assume_Val,
+                        Context => Context,
+                        Domain  => EW_Prog);
+                  Prepend
+                    (New_Conditional
+                       (Condition => Condition, Then_Part => +Assume_Val),
+                     Res);
+               end;
+
+               Value_Def :=
+                 New_Any_Expr
+                   (Return_Type => Typ, Labels => Symbol_Sets.Empty_Set);
+               Valid_Def :=
+                 New_Any_Expr
+                   (Return_Type => Get_Type (Valid_Def),
+                    Labels      => Symbol_Sets.Empty_Set);
+            end if;
 
             Res :=
               New_Typed_Binding
                 (Name    => Name,
                  Domain  => Domain,
-                 Def     =>
-                   Insert_Simple_Conversion
-                     (Domain => Prog_Or_Term_Domain (Domain),
-                      Expr   => Def,
-                      To     => Get_Typ (Name)),
+                 Def     => Value_Def,
                  Context => Res);
+            Res :=
+              New_Typed_Binding
+                (Name    => Flag_Name,
+                 Domain  => Domain,
+                 Def     => Valid_Def,
+                 Context => Res);
+            if No (Condition) then
+               Res :=
+                 Bindings_For_Ref_Context
+                   (Expr => Res, Context => Context, Domain => Domain);
+            end if;
+         end;
+      else
+         declare
+            Value_Def : W_Expr_Id :=
+              Insert_Simple_Conversion
+                (Domain => Prog_Or_Term_Domain (Domain),
+                 Expr   =>
+                   (Transform_Expr_Or_Identifier
+                      (N, Prog_Or_Term_Domain (Domain), Params)),
+                 To     => Typ);
+         begin
+
+            --  If there is a condition, we cannot directly use the definition.
+            --  We generate pattern:
+            --  let x = any { True } in
+            --  (if condition then
+            --    let tmp = def in assume { x = tmp });
+            --  <<Res>>
+
+            if Present (Condition) then
+               declare
+                  Temp_Value : constant W_Identifier_Id :=
+                    New_Temp_Identifier (Typ => Typ);
+                  Assume_Val : W_Expr_Id :=
+                    +New_Assume_Statement
+                       (Pred =>
+                          New_Comparison
+                            (Symbol => Why_Eq,
+                             Left   => +Name,
+                             Right  => +Temp_Value));
+               begin
+                  Assume_Val :=
+                    New_Typed_Binding
+                      (Name    => Temp_Value,
+                       Domain  => Domain,
+                       Def     => Value_Def,
+                       Context => Assume_Val);
+                  Prepend
+                    (New_Conditional
+                       (Condition => Condition, Then_Part => +Assume_Val),
+                     Res);
+               end;
+
+               Value_Def :=
+                 New_Any_Expr
+                   (Return_Type => Typ, Labels => Symbol_Sets.Empty_Set);
+            end if;
 
             Res :=
               New_Typed_Binding
-                (Name    => Get_Valid_Flag_For_Id (Name, Etype (N)),
+                (Name    => Name,
                  Domain  => Domain,
-                 Def     => +Valid_Flag,
+                 Def     => Value_Def,
                  Context => Res);
-
-            Res :=
-              Bindings_For_Ref_Context
-                (Expr => Res, Context => Context, Domain => Domain);
          end;
-      else
-         Res :=
-           New_Typed_Binding
-             (Name    => Name,
-              Domain  => Domain,
-              Def     =>
-                Insert_Simple_Conversion
-                  (Domain => Prog_Or_Term_Domain (Domain),
-                   Expr   =>
-                     (if As_Old
-                      then Transform_Attribute_Old (N, Domain, Params)
-                      else
-                        Transform_Expr_Or_Identifier
-                          (N, Prog_Or_Term_Domain (Domain), Params)),
-                   To     => Get_Typ (Name)),
-              Context => Res);
+      end if;
+
+      if In_Prophecy then
+         Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
       end if;
 
       return Res;
    end Bind_From_Mapping_In_Expr;
 
    function Bind_From_Mapping_In_Expr
-     (Params : Transformation_Params;
-      Map    : Ada_To_Why_Ident.Map;
-      Expr   : W_Expr_Id;
-      Domain : EW_Domain;
-      Subset : Node_Sets.Set;
-      As_Old : Boolean := False) return W_Expr_Id
+     (Params       : Transformation_Params;
+      Map          : Ada_To_Why_Ident.Map;
+      Expr         : W_Expr_Id;
+      Domain       : EW_Domain;
+      Subset       : Node_Sets.Set;
+      Old_Prefixes : Boolean := False) return W_Expr_Id
    is
       Result : W_Expr_Id := Expr;
       Cu     : Ada_To_Why_Ident.Cursor;
@@ -2823,12 +2753,15 @@ package body Gnat2Why.Expr is
          if Ada_To_Why_Ident.Has_Element (Cu) then
             Result :=
               Bind_From_Mapping_In_Expr
-                (Params => Params,
-                 Expr   => Result,
-                 N      => N,
-                 Name   => Ada_To_Why_Ident.Element (Cu),
-                 Domain => Domain,
-                 As_Old => As_Old);
+                (Params    => Params,
+                 Expr      => Result,
+                 N         => N,
+                 Name      => Ada_To_Why_Ident.Element (Cu),
+                 Domain    => Domain,
+                 Condition =>
+                   (if Old_Prefixes
+                    then Condition_Guard_Of_Old (Params => Params, Prefix => N)
+                    else Why_Empty));
          end if;
       end loop;
 
@@ -2840,22 +2773,27 @@ package body Gnat2Why.Expr is
    -------------------------------
 
    function Bind_From_Mapping_In_Prog
-     (Params : Transformation_Params;
-      Map    : Ada_To_Why_Ident.Map;
-      Expr   : W_Prog_Id) return W_Prog_Id
+     (Params       : Transformation_Params;
+      Map          : Ada_To_Why_Ident.Map;
+      Expr         : W_Prog_Id;
+      Old_Prefixes : Boolean := False) return W_Prog_Id
    is
       Result : W_Prog_Id := Expr;
-
+      N      : Node_Id;
    begin
       for C in Map.Iterate loop
+         N := Ada_To_Why_Ident.Key (C);
          Result :=
            +Bind_From_Mapping_In_Expr
-              (Params => Params,
-               Expr   => +Result,
-               N      => Ada_To_Why_Ident.Key (C),
-               Name   => Ada_To_Why_Ident.Element (C),
-               Domain => EW_Prog,
-               As_Old => False);
+              (Params    => Params,
+               Expr      => +Result,
+               N         => N,
+               Name      => Ada_To_Why_Ident.Element (C),
+               Domain    => EW_Prog,
+               Condition =>
+                 (if Old_Prefixes
+                  then Condition_Guard_Of_Old (Params => Params, Prefix => N)
+                  else Why_Empty));
       end loop;
 
       return Result;
@@ -2876,8 +2814,7 @@ package body Gnat2Why.Expr is
                Expr   => +Result,
                N      => Ada_To_Why_Ident.Key (C),
                Name   => Ada_To_Why_Ident.Element (C),
-               Domain => EW_Pterm,
-               As_Old => False);
+               Domain => EW_Pterm);
       end loop;
 
       for C in Map.Regular.Iterate loop
@@ -2887,8 +2824,7 @@ package body Gnat2Why.Expr is
                Expr   => +Result,
                N      => Ada_To_Why_Ident.Key (C),
                Name   => Ada_To_Why_Ident.Element (C),
-               Domain => EW_Prog,
-               As_Old => False);
+               Domain => EW_Prog);
       end loop;
 
       return Result;
@@ -3066,16 +3002,23 @@ package body Gnat2Why.Expr is
 
             --  Only consider objects in SPARK, so that parts of packages
             --  marked SPARK_Mode Off are ignored.
+            --  Do not introduce checks for constants from declare expressions.
+            --  They can only occur in statically leaking context and are
+            --  handled specifically.
 
             when N_Object_Declaration  =>
-               if Entity_In_SPARK (Defining_Identifier (Cur_Decl)) then
-                  Append
-                    (Result,
-                     Check_No_Memory_Leaks
-                       (Cur_Decl,
-                        Defining_Identifier (Cur_Decl),
-                        At_End_Of_Scope => True));
-               end if;
+               declare
+                  Obj : constant Entity_Id := Defining_Identifier (Cur_Decl);
+               begin
+                  if Entity_In_SPARK (Obj)
+                    and then not Comes_From_Declare_Expr (Obj)
+                  then
+                     Append
+                       (Result,
+                        Check_No_Memory_Leaks
+                          (Cur_Decl, Obj, At_End_Of_Scope => True));
+                  end if;
+               end;
 
             --  Objects in local packages should be deallocated before
             --  returning from the enclosing subprogram.
@@ -3537,18 +3480,18 @@ package body Gnat2Why.Expr is
              (E => Fn, Domain => Domain, Selector => Why.Inter.Standard);
       end Fetch_Name;
 
-      --  Start of processing for Check_Type_With_Iterable
-
    begin
       Ada_Ent_To_Why.Push_Scope (Symbol_Table);
 
       --  Retrieve all relevant operations for quantifier
       --  processing (last/previous are never relevant).
       declare
-         Fn_Has_Elt : constant Entity_Id := Prim (Name_Has_Element);
-         Fn_First   : constant Entity_Id := Prim (Name_First);
-         Fn_Next    : constant Entity_Id := Prim (Name_Next);
-         Fn_Element : constant Entity_Id := Prim (Name_Element);
+         Fn_Has_Elt  : constant Entity_Id := Prim (Name_Has_Element);
+         Fn_First    : constant Entity_Id := Prim (Name_First);
+         Fn_Next     : constant Entity_Id := Prim (Name_Next);
+         Fn_Last     : constant Entity_Id := Prim (Name_Last);
+         Fn_Previous : constant Entity_Id := Prim (Name_Previous);
+         Fn_Element  : constant Entity_Id := Prim (Name_Element);
 
          --  Retrieve types for container/cursor.
          --  Element type is retrieved only if necessary.
@@ -3599,6 +3542,8 @@ package body Gnat2Why.Expr is
          --
          --    let Cont = any in
          --    ignore (First-Check (Cont));
+         --    (* vv  if "Last" specified  vv *)
+         --    ignore (Last-Check (Cont));
          --    (* vv  if Annotation "Model" present  vv *)
          --    ignore (Model-Check (Cont));
          --    (* vv  if Annotation "Contains" present  vv *)
@@ -3610,6 +3555,8 @@ package body Gnat2Why.Expr is
          --    ignore (Has_Element-Check (Cont, Curs));
          --    assume (Has_Element-Pred (Cons, Curs));
          --    ignore (Next-Check (Cont, Curs));
+         --    (* vv  if "Previous" specified  vv *)
+         --    ignore (Previous-Check (Cont));
          --    (* vv  if "Element" specified  vv *)
          --    ignore (Element-Check (Cont, Curs))
 
@@ -3627,6 +3574,9 @@ package body Gnat2Why.Expr is
 
          --  Always check the invariant for cursors
 
+         if Present (Fn_Previous) then
+            Add_Check (Fn_Previous, Args_Both, Curs_Ty_Why, Check_Inv => True);
+         end if;
          Add_Check (Fn_Next, Args_Both, Curs_Ty_Why, Check_Inv => True);
 
          declare
@@ -3692,6 +3642,9 @@ package body Gnat2Why.Expr is
             end case;
          end if;
 
+         if Present (Fn_Last) then
+            Add_Check (Fn_Last, Args_One, Curs_Ty_Why, Check_Inv => True);
+         end if;
          Add_Check (Fn_First, Args_One, Curs_Ty_Why, Check_Inv => True);
          Add_Unknown_Binding (Cont_Ty_Spk, Cont_Ty_Why, Cont_Id);
       end;
@@ -4054,13 +4007,22 @@ package body Gnat2Why.Expr is
       Ada_Node        : Node_Id := Expr;
       Explanation     : Unbounded_String := To_Unbounded_String ("");
 
-      --  Start of processing for Check_UU_Restrictions
-
    begin
       --  Nothing to do if the type does not contain parts with unchecked union
       --  types.
 
       if not Ty_Has_UU_Type and then not Ty_Has_Unconstrained_UU_Component then
+         return;
+      end if;
+
+      --  Do not complain if the operation is in non-executable ghost code.
+      --  Program_Error cannot be raised at runtime.
+
+      if (Is_Ghost_Entity (Current_Subp)
+          and then
+            Is_Non_Exec_Assertion_Level (Ghost_Assertion_Level (Current_Subp)))
+        or else In_Non_Exec_Context (Expr)
+      then
          return;
       end if;
 
@@ -4225,6 +4187,7 @@ package body Gnat2Why.Expr is
       W_Brower      : W_Term_Id;
       Expr          : N_Subexpr_Id;
       Borrowed_Expr : Opt_N_Subexpr_Id := Empty;
+      Params        : Transformation_Params;
       Reconstructed : out W_Term_Id;
       Checks        : out W_Statement_Sequence_Id)
    is
@@ -4279,7 +4242,7 @@ package body Gnat2Why.Expr is
                     Context   => Context,
                     Store     => Store,
                     Exc_Store => Exc_Store,
-                    Params    => Body_Params);
+                    Params    => Params);
                pragma Assert (Context.Is_Empty);
 
             begin
@@ -5442,8 +5405,6 @@ package body Gnat2Why.Expr is
       --  we are checking a box association.
       Checks : W_Prog_Id;
 
-      --  Start of processing for Compute_Default_Check
-
    begin
       Continuation_Stack.Append
         (Continuation_Type'
@@ -5744,8 +5705,6 @@ package body Gnat2Why.Expr is
       Tmp        : constant W_Term_Id := New_Temp_For_Expr (Expr);
       Assumption : W_Pred_Id := True_Pred;
       Variables  : Flow_Id_Sets.Set;
-
-      --  Start of processing for Compute_Default_Init
 
    begin
       --  If Use_Precomputed_Func is true, then we already have generated a
@@ -6078,8 +6037,6 @@ package body Gnat2Why.Expr is
          W_Ty : constant W_Type_Id := EW_Abstract (Ty, Relaxed_Init);
          Def  : W_Term_Id;
 
-         --  Start of processing for Compute_Default_Value_Rec
-
       begin
          if Is_Scalar_Type (Ty) then
             if Has_Default_Aspect (Ty) then
@@ -6346,8 +6303,6 @@ package body Gnat2Why.Expr is
          end if;
          return Def;
       end Compute_Default_Value_Rec;
-
-      --  Start of processing for Compute_Default_Value
 
    begin
       --  In the term domain, go through the type to compute the default value
@@ -6744,8 +6699,6 @@ package body Gnat2Why.Expr is
          else Type_Of_Node (Ty_Ext));
 
       Variables : Flow_Id_Sets.Set;
-
-      --  Start of processing for Compute_Dynamic_Invariant
 
    begin
       --  If Use_Pred is true, then we already have generated a predicate
@@ -7243,12 +7196,37 @@ package body Gnat2Why.Expr is
          --  types.
 
          if Is_Hardcoded_Entity (Root_Retysp (Ty_Ext)) then
-            T :=
-              New_And_Pred
-                (Left  => T,
-                 Right =>
-                   Dynamic_Property_For_Hardcoded_Type
-                     (Root_Retysp (Ty_Ext), Expr));
+            declare
+               Relaxed_Init : constant Boolean :=
+                 Is_Init_Wrapper_Type (Get_Type (+Expr));
+               Init_Flag    : constant W_Pred_Id :=
+                 Pred_Of_Boolean_Term
+                   (if Relaxed_Init
+                    then
+                      +Compute_Is_Initialized
+                         (Ty_Ext,
+                          +Expr,
+                          Params,
+                          EW_Term,
+                          No_Predicate_Check => True,
+                          Exclude_Components => Relaxed)
+                    else Initialized);
+               R_Expr       : constant W_Term_Id :=
+                 Insert_Simple_Conversion
+                   (Expr => Expr, To => EW_Abstract (Ty_Ext));
+               Prop         : W_Pred_Id :=
+                 Dynamic_Property_For_Hardcoded_Type
+                   (Root_Retysp (Ty_Ext), R_Expr);
+            begin
+               if not Is_True_Boolean (+Prop)
+                 and then not Is_True_Boolean (+Init_Flag)
+               then
+                  Prop :=
+                    New_Conditional
+                      (Condition => Init_Flag, Then_Part => Prop);
+               end if;
+               T := New_And_Pred (Left => T, Right => Prop);
+            end;
          end if;
 
       elsif Is_Access_Type (Ty_Ext)
@@ -8116,7 +8094,7 @@ package body Gnat2Why.Expr is
 
                         if not Typ_Precise then
                            Explanation :=
-                             (if Precise
+                             (if Precise or else Typ_Expl = Explanation
                               then ""
                               else To_String (Explanation) & " and ")
                              & Typ_Expl;
@@ -8273,13 +8251,18 @@ package body Gnat2Why.Expr is
          Precise := False;
          Explanation :=
            To_Unbounded_String
-             ("Object_Size of " & Pretty_Source_Name (Typ) & " is missing");
+             (if Is_Array_Type (Typ) and then not Is_Constrained (Typ)
+              then Pretty_Source_Name (Typ) & " is unconstrained"
+              else
+                "Object_Size of " & Pretty_Source_Name (Typ) & " is missing");
       else
          Dynamic_Size := New_Attribute_Expr (Typ, Domain, Attribute_Size);
          Precise := False;
          Explanation :=
            To_Unbounded_String
-             ("Size of " & Pretty_Source_Name (Typ) & " is missing");
+             (if Is_Array_Type (Typ) and then not Is_Constrained (Typ)
+              then Pretty_Source_Name (Typ) & " is unconstrained"
+              else "Size of " & Pretty_Source_Name (Typ) & " is missing");
       end if;
    end Compute_Size_Of_Type;
 
@@ -8714,8 +8697,6 @@ package body Gnat2Why.Expr is
 
       procedure Iterate_Call is new Iterate_Call_Parameters (One_Param);
 
-      --  Start of processing for Compute_Tag_Check
-
    begin
       if No (Controlling_Arg) or else Call_Simulates_Contract_Dispatch (Call)
       then
@@ -8868,8 +8849,6 @@ package body Gnat2Why.Expr is
 
       Pred : W_Pred_Id := True_Pred;
 
-      --  Start of processing for Compute_Type_Invariant
-
    begin
       --  Check for invariants on the type and its ancestors
 
@@ -8989,6 +8968,45 @@ package body Gnat2Why.Expr is
       return Pred;
    end Compute_Type_Invariant;
 
+   ----------------------------
+   -- Condition_Guard_Of_Old --
+   ----------------------------
+
+   function Condition_Guard_Of_Old
+     (Params : Transformation_Params; Prefix : Node_Id) return W_Prog_Id
+   is
+      Cond : constant Node_Id := Condition_Of_Conditional_Old (Prefix);
+   begin
+      if No (Cond) then
+         return Why_Empty;
+      end if;
+      Continuation_Stack.Append
+        (Continuation_Type'
+           (Ada_Node => Prefix,
+            Message  =>
+              To_Unbounded_String
+                ("when evaluating condition for"
+                 & " conditionally evaluated 'Old reference")));
+
+      --  Conditional guards of conditionally evaluated 'Old may themselves
+      --  contain 'Old references, which we can ignore in this context.
+      --  ??? Proceeding in such fashion may duplicate checks. We did not
+      --  handle that corner-case because it would mandate somehow sorting the
+      --  'Old references. Furthermore, If we want to get rid of all potential
+      --  duplicate checks, we would have to factor the conditions.
+
+      return
+         Res : constant W_Prog_Id :=
+           +Transform_Expr
+              (Expr          => Cond,
+               Domain        => EW_Prog,
+               Expected_Type => EW_Bool_Type,
+               Params        => (Params with delta Old_Policy => Ignore))
+      do
+         Continuation_Stack.Delete_Last;
+      end return;
+   end Condition_Guard_Of_Old;
+
    ------------------------------
    -- Count_Numerical_Variants --
    ------------------------------
@@ -9067,33 +9085,6 @@ package body Gnat2Why.Expr is
 
       return Result;
    end DIC_Expression;
-
-   ------------------------------
-   -- Discrete_Choice_Is_Range --
-   ------------------------------
-
-   function Discrete_Choice_Is_Range (Choice : Node_Id) return Boolean is
-      Is_Range : Boolean;
-   begin
-      case Nkind (Choice) is
-         when N_Subtype_Indication | N_Range =>
-            Is_Range := True;
-
-         when N_Identifier | N_Expanded_Name =>
-            if Is_Type (Entity (Choice)) then
-               Is_Range := True;
-            else
-               Is_Range := False;
-            end if;
-
-         when N_Others_Choice                =>
-            Is_Range := True;
-
-         when others                         =>
-            Is_Range := False;
-      end case;
-      return Is_Range;
-   end Discrete_Choice_Is_Range;
 
    ----------------------------------
    -- Dynamic_Predicate_Expression --
@@ -9508,8 +9499,6 @@ package body Gnat2Why.Expr is
 
          Subp : constant Callable_Kind_Id := Get_Called_Entity (Call);
 
-         --  Start of processing for Update_Call_Variables
-
       begin
          Do_Parameters (Call);
 
@@ -9552,8 +9541,6 @@ package body Gnat2Why.Expr is
             end if;
          end if;
       end Update_Variable;
-
-      --  Start of processing for Finalization_Actions
 
    begin
       return Result : W_Statement_Sequence_Id := Void_Sequence do
@@ -9707,8 +9694,6 @@ package body Gnat2Why.Expr is
 
       procedure Iter_Scopes is new Iter_Exited_Scopes (Append);
 
-      --  Start of processing for Finalization_Actions_On_Jump
-
    begin
       Iter_Scopes (Jump);
 
@@ -9774,8 +9759,6 @@ package body Gnat2Why.Expr is
       end Stop;
 
       Res : W_Prog_Id;
-
-      --  Start of processing for Havoc_Borrowed_And_Check_No_Leaks_On_Raise
 
    begin
       --  Add a continuation locating the potential checks on exceptional exits
@@ -9881,8 +9864,6 @@ package body Gnat2Why.Expr is
         Generate_Branch_Expr (First_Case, Domain, Params);
       Elsif_Parts  : W_Expr_Array (1 .. Integer (List_Length (Cases)) - 2);
       Elsif_Count  : Natural;
-
-      --  Start of processing for Generate_Case_Expression
 
    begin
       if List_Length (Cases) = 1 then
@@ -10402,8 +10383,6 @@ package body Gnat2Why.Expr is
       W_Quant_Var : W_Identifier_Id;  --  Why3 name for the quantified
       --  variable.
       W_Index_Var : W_Identifier_Id;  --  Why3 name for the index variable
-
-      --  Start of processing for Generate_Quantified_Expression
 
    begin
       --  The usual translation of quantified expression into Why3 is as a
@@ -11733,8 +11712,6 @@ package body Gnat2Why.Expr is
          end if;
       end Compute_Type_Invariant_For_Eq;
 
-      --  Start of processing for Insert_Invariant_Check_For_Eq
-
    begin
       if Domain /= EW_Prog
         or else not Invariant_Check_Needed (Typ, Scop => Current_Subp)
@@ -11847,8 +11824,6 @@ package body Gnat2Why.Expr is
          begin
             Collect_Moved_Objects (Expr, Set => Set, Checks => Checks);
          end Collect_Subobject;
-
-         --  Start of processing for Collect_Moved_Objects
 
       begin
          --  Object can be moved, insert it in the set unless at top-level
@@ -11971,8 +11946,6 @@ package body Gnat2Why.Expr is
       Checks       : W_Prog_Id := +Void;
       Tmp          : constant W_Identifier_Id := Tmp_Of_Expr (+Expr);
       Init         : constant W_Prog_Id := Expr;
-
-      --  Start of processing for Insert_Move_Of_Deep_Parts
 
    begin
       --  There is no move at all for a borrow or observe
@@ -12313,8 +12286,6 @@ package body Gnat2Why.Expr is
       Result      : W_Prog_Id := +Void;
       Domain      : constant EW_Domain :=
         (if Do_Check = No_Checks then EW_Pterm else EW_Prog);
-
-      --  Start of processing for New_Assignment
 
    begin
       --  If Preserv_Tag is set, preserve the tag and extension of objects if
@@ -13540,8 +13511,6 @@ package body Gnat2Why.Expr is
       At_End_Assume : W_Prog_Id;
       At_End_Checks : W_Prog_Id;
 
-      --  Start of processing for New_Update_For_Borrow_At_End
-
    begin
       --  1. Reconstruct the value of Path from the borrower at end of borrow
 
@@ -13553,6 +13522,7 @@ package body Gnat2Why.Expr is
            (if Ekind (Brower) = E_Function
             then Empty
             else Get_Borrowed_Expr (Brower)),
+         Params        => Body_Params,
          Reconstructed => At_End_Value,
          Checks        => Pred_Checks);
 
@@ -15332,6 +15302,26 @@ package body Gnat2Why.Expr is
                     +Insert_Tag_Check
                        (Ada_Node => N, Check_Ty => Etype (N), Expr => +Expr);
                end if;
+
+               --  Check the specific rules for conversions from unchecked
+               --  union types on copy back.
+
+               if Is_Unchecked_Union (Retysp (Etype (N)))
+                 and then
+                   not Is_Unchecked_Union (Retysp (Etype (Expression (N))))
+               then
+
+                  --  Generate a statically known proof result
+
+                  Emit_Static_Proof_Result
+                    (N,
+                     VC_Unchecked_Union_Restriction,
+                     False,
+                     Current_Subp,
+                     Explanation =>
+                       "source of conversion should have inferrable "
+                       & "discriminants");
+               end if;
             end if;
 
             N := Expression (N);
@@ -15442,22 +15432,61 @@ package body Gnat2Why.Expr is
                   Name : constant Entity_Id := Defining_Identifier (N);
                   Item : constant Item_Type :=
                     Mk_Item_Of_Entity (Name, Local => True);
-
-               begin
                   pragma Assert (Ekind (Name) = E_Constant);
                   pragma Assert (Item.Kind = Regular);
+
+                  Def : W_Expr_Id;
+
+                  --  Context and validity flag to handle potentially invalid
+                  --  values.
+
+                  Valid_Flag : W_Expr_Id :=
+                    (if Item.Valid.Present
+                     then +New_Valid_Value_For_Type (Etype (Name))
+                     else Why_Empty);
+                  Context    : Ref_Context;
+
+               begin
+                  --  Handle the potential propagation of invalid values
+
+                  if Propagates_Validity_Flag (N) then
+                     pragma Assert (Item.Valid.Present);
+                     Def :=
+                       +Transform_Potentially_Invalid_Expr
+                          (Expr          => Expression (N),
+                           Expected_Type => Get_Typ (Item.Main.B_Name),
+                           Domain        => Subdomain,
+                           Params        => Params,
+                           Context       => Context,
+                           Valid_Flag    => Valid_Flag);
+                  else
+                     Def :=
+                       Transform_Expr
+                         (Expression (N),
+                          Get_Typ (Item.Main.B_Name),
+                          Subdomain,
+                          Params);
+                  end if;
 
                   T :=
                     New_Typed_Binding
                       (Domain  => Subdomain,
                        Name    => Item.Main.B_Name,
-                       Def     =>
-                         Transform_Expr
-                           (Expression (N),
-                            Get_Typ (Item.Main.B_Name),
-                            Subdomain,
-                            Params),
+                       Def     => Def,
                        Context => T);
+
+                  if Item.Valid.Present then
+                     T :=
+                       New_Typed_Binding
+                         (Domain  => Subdomain,
+                          Name    => Item.Valid.Id,
+                          Def     => Valid_Flag,
+                          Context => T);
+                  end if;
+
+                  T :=
+                    +Bindings_For_Ref_Context
+                       (Expr => +T, Context => Context, Domain => Subdomain);
                end;
 
             when N_Ignored_In_SPARK                              =>
@@ -15562,2978 +15591,6 @@ package body Gnat2Why.Expr is
          Next (N);
       end loop;
    end Transform_Actions_Preparation;
-
-   -------------------------------
-   -- Transform_Array_Aggregate --
-   -------------------------------
-
-   function Transform_Array_Aggregate
-     (Params        : Transformation_Params;
-      Domain        : EW_Domain;
-      Expr          : N_Aggregate_Kind_Id;
-      Update_Prefix : Opt_N_Subexpr_Id := Empty;
-      Relaxed_Init  : Boolean) return W_Expr_Id
-   is
-      --  The aggregate is the argument of a 'Update attribute_reference or a
-      --  delta aggregate if and only if Update_Prefix has been supplied.
-
-      In_Delta_Aggregate : constant Boolean := Present (Update_Prefix);
-      Empty_Aggregate    : constant Boolean :=
-        Nkind (Expr) = N_Aggregate and then Is_Null_Aggregate (Expr);
-      --  True if Expr is []
-
-      Expr_Typ  : constant Entity_Id := Type_Of_Node (Expr);
-      Ret_Type  : constant W_Type_Id :=
-        EW_Abstract (Expr_Typ, Relaxed_Init => Relaxed_Init);
-      Comp_Type : constant Entity_Id := Retysp (Component_Type (Expr_Typ));
-
-      Nb_Dim : constant Positive := Positive (Number_Dimensions (Expr_Typ));
-      subtype Dimensions is Positive range 1 .. Nb_Dim;
-
-      Needs_Bounds : constant Boolean :=
-        not In_Delta_Aggregate and then not Is_Static_Array_Type (Expr_Typ);
-      --  In general, we need to take the bound as additional elements as they
-      --  can be dynamically determined. We do not need them for
-      --  * Delta aggregates, as they can be read from the element for prefix
-      --  * Static array types, as the bounds are already baked in the type.
-
-      Bound_Count : constant Natural :=
-        (if Needs_Bounds then 2 * Nb_Dim else 0);
-      --  Number of additional bound arguments
-
-      Index_Types : array (Dimensions) of Node_Id;
-      --  Store index types of Expr_Type for each dimension. Not a constant
-      --  because it needs a loop for initialization.
-
-      type Aggregate_Element is record
-         Value : Node_Id;
-         Typ   : Node_Id;
-      end record;
-      --  Aggregate elements corresponds to the subexpression of the aggregate
-      --  that dynamically parameterize it. This include the component values
-      --  of the aggregate, the index expressions used in choices of delta
-      --  aggregates, and the update prefix if any. We do not include there
-      --  component values which are located inside iterated component
-      --  associations, as they may depend on index parameters. This does not
-      --  cover bounds, which are treated outside.
-
-      package Aggregate_Element_Lists is new
-        Ada.Containers.Vectors
-          (Index_Type   => Positive,
-           Element_Type => Aggregate_Element);
-
-      package Node_To_Why_Id is new
-        Ada.Containers.Hashed_Maps
-          (Key_Type        => Node_Id,
-           Element_Type    => W_Identifier_Id,
-           Hash            => Node_Hash,
-           Equivalent_Keys => "=");
-      --  To store mapping from aggregate nodes to Why bindings.
-
-      -----------------------
-      -- Local subprograms --
-      -----------------------
-
-      function Should_Use_Function_Translation return Boolean;
-      --  Detect whether we should use a function-based translation. The
-      --  presence of contextual elements (like 'Old, 'Loop_Entry, target name,
-      --  variables, ...) make this fairly complex for iterated component
-      --  association, so this return False if it is encountered in Expr.
-      --  Instead, we use an epsilon (in term domain) or an any (in program
-      --  domain) for the aggregate.
-
-      procedure Get_Aggregate_Elements
-        (Values              : out Aggregate_Element_Lists.Vector;
-         Variables           : out Flow_Id_Sets.Set;
-         Elements_From_Nodes : out Node_To_Why_Id.Map;
-         Bounds              : out W_Expr_Array);
-      --  Extract elements of the aggregate Expr. Those will be passed in
-      --  parameter to the logic function of the aggregate if one is generated.
-      --
-      --  @param Values is set to the sequence of subexpressions that
-      --  corresponds to an element. The order of Values is used to generate
-      --  the signature of the logic function.
-      --  @param Variables corresponds to additional variables that are needed
-      --  for guards within the defining proposition (and also for default
-      --  value under iterated component association). Those variables need to
-      --  be additional parameters for function-based translation.
-      --  @param Elements_From_Nodes corresponds to the mapping from element
-      --    subexrepssions to their name in Why.
-      --  @param Bounds corresponds to the sequence of name for bound elements,
-      --    if they are needed as parameters.
-
-      procedure Generate_Aggregate_Functions
-        (Values              : Aggregate_Element_Lists.Vector;
-         Variables           : Flow_Id_Sets.Set;
-         Elements_From_Nodes : Node_To_Why_Id.Map;
-         Bounds              : W_Expr_Array)
-      with Pre => Should_Use_Function_Translation;
-      --  Generate the logic function definition for the aggregate Expr, with a
-      --  suitable defining axiom, as well as a program function with a post:
-      --
-      --     function F (<params>) : <type of aggregate>
-      --
-      --     axiom A:
-      --       forall id:<type of aggregate>. forall <params>.
-      --         <proposition for the aggregate F(<params>)>
-      --
-      --     val F (<params>) : <type of aggregate>
-      --       ensures { <proposition for the aggregate result> }
-
-      function Make_Defining_Proposition
-        (Arr                 : W_Term_Id;
-         Elements_From_Nodes : Node_To_Why_Id.Map;
-         Bounds              : W_Expr_Array;
-         Params              : Transformation_Params;
-         Skip_Guards         : Boolean := False) return W_Pred_Id;
-      --  Generates a proposition stating that array Arr contains the result of
-      --  aggregate Expr, using Elements_From_Nodes to map nodes for indices
-      --  and components to Why3 identifiers, and Bounds to figure out the
-      --  bounds when Needs_Bounds = True.
-      --  If Skip_Guards is True, does not generate guards to guarantee the
-      --  soundness of the proposition.
-
-      function Transform_Array_Component_Associations
-        (Arr                 : W_Term_Id;
-         Elements_From_Nodes : Node_To_Why_Id.Map;
-         Bounds              : W_Expr_Array;
-         Params              : Transformation_Params;
-         Skip_Guards         : Boolean := False) return W_Pred_Id;
-      --  Generates the proposition defining the content of components of
-      --  aggregate Arr, based on a mapping between Ada nodes and corresponding
-      --  Why identifiers.
-      --  If Skip_Guards is True, does not generate guards to guarantee the
-      --  soundness of the proposition.
-
-      function Complete_Translation
-        (Func                : W_Identifier_Id;
-         Values              : Aggregate_Element_Lists.Vector;
-         Variables           : Flow_Id_Sets.Set;
-         Elements_From_Nodes : Node_To_Why_Id.Map;
-         Bounds              : W_Expr_Array) return W_Expr_Id
-      with Pre => (Func /= Why_Empty) = Should_Use_Function_Translation;
-      --  Given a logic function Func previously defined for the aggregate,
-      --  generate the actual call to Func by translating arguments Values
-      --  of type Types in the context given by Params. If Func is empty,
-      --  use a translation based on any/epsilon otherwise.
-
-      procedure Insert_Check_For_Choices
-        (T : in out W_Expr_Id; Array_Expr : W_Term_Id)
-      with Pre => Domain = EW_Prog;
-      --  Insert checks for the choices of the aggregate and for component
-      --  values inside iterated component associations.
-
-      function Transform_Aggregate_Value
-        (Value  : Node_Id;
-         Typ    : Entity_Id;
-         Domain : EW_Domain;
-         Params : Transformation_Params) return W_Expr_Id;
-      --  Transform a value of the aggregate. Value can be either a component
-      --  value or an index value.
-
-      --------------------------
-      -- Complete_Translation --
-      --------------------------
-
-      function Complete_Translation
-        (Func                : W_Identifier_Id;
-         Values              : Aggregate_Element_Lists.Vector;
-         Variables           : Flow_Id_Sets.Set;
-         Elements_From_Nodes : Node_To_Why_Id.Map;
-         Bounds              : W_Expr_Array) return W_Expr_Id
-      is
-         R            : W_Expr_Id;
-         Use_Function : constant Boolean := (Func /= Why_Empty);
-      begin
-         if Use_Function then
-            declare
-               Cnt      : Positive;
-               Args     : W_Expr_Array (1 .. Natural (Values.Length));
-               Bnd_Args : W_Expr_Array (1 .. Bound_Count);
-               Var_Args : constant W_Expr_Array :=
-                 Get_Args_From_Variables
-                   (Variables, Ref_Allowed => Params.Ref_Allowed);
-            begin
-               --  Compute the arguments for the function call. The values are
-               --  given directly as parameters.
-
-               Cnt := 1;
-               for Value of Values loop
-                  Args (Cnt) :=
-                    Transform_Aggregate_Value
-                      (Value  => Value.Value,
-                       Typ    => Value.Typ,
-                       Domain => Domain,
-                       Params => Params);
-                  Cnt := Cnt + 1;
-               end loop;
-
-               --  Compute the bounds of the type to be given as additional
-               --  arguments to the aggregate function.
-
-               if Needs_Bounds then
-                  for Dim in Dimensions loop
-                     Bnd_Args (2 * Dim - 1) :=
-                       +Get_Array_Attr
-                          (Term_Domain (Domain),
-                           Expr_Typ,
-                           Attribute_First,
-                           Dim,
-                           Params);
-                     Bnd_Args (2 * Dim) :=
-                       +Get_Array_Attr
-                          (Term_Domain (Domain),
-                           Expr_Typ,
-                           Attribute_Last,
-                           Dim,
-                           Params);
-                  end loop;
-               end if;
-
-               --  If we are in a delta aggregate and we need checks, use the
-               --  identifier for the updated expression so that it can be
-               --  reused for checks of bounds of choices.
-
-               if In_Delta_Aggregate and then Domain = EW_Prog then
-                  Args (1) := New_Temp_For_Expr (Args (1));
-               end if;
-
-               --  Compute the call
-
-               R :=
-                 New_Call
-                   (Ada_Node => Expr,
-                    Domain   => Domain,
-                    Name     => Func,
-                    Args     => Args & Bnd_Args & Var_Args,
-                    Typ      => Ret_Type);
-
-               --  Insert checks for the choices of the aggregate, binding
-               --  temporary variable for update prefix when present.
-
-               if Domain = EW_Prog then
-                  if In_Delta_Aggregate then
-                     Insert_Check_For_Choices (R, +Args (1));
-                     R :=
-                       Binding_For_Temp
-                         (Domain => Domain, Tmp => Args (1), Context => R);
-                  else
-                     Insert_Check_For_Choices (R, Why_Empty);
-                  end if;
-               end if;
-            end;
-         else
-            --  Depending on domain, translate aggregate to an epsilon or an
-            --  any. This translates variables/contextual elements in-place
-            --  and leaves to Why3 to turn the variable content in them into
-            --  additional parameters.
-
-            declare
-               Aggr_Name : W_Identifier_Id;
-            begin
-               case Domain is
-                  when EW_Term            =>
-                     Aggr_Name := New_Temp_Identifier (Typ => Ret_Type);
-                     R :=
-                       New_Epsilon
-                         (Ada_Node => Expr,
-                          Domain   => EW_Term,
-                          Name     => Aggr_Name,
-                          Typ      => Ret_Type,
-                          Pred     =>
-                            Make_Defining_Proposition
-                              (Arr                 => +Aggr_Name,
-                               Elements_From_Nodes => Elements_From_Nodes,
-                               Bounds              => Bounds,
-                               Params              => Params));
-
-                  --  The postcondition of the any expression is only
-                  --  assumed in the current context. No need to emit guards
-                  --  for soundness.
-
-                  when EW_Pterm | EW_Prog =>
-                     Aggr_Name := New_Result_Ident (Ret_Type);
-                     R :=
-                       New_Any_Expr
-                         (Ada_Node    => Expr,
-                          Post        =>
-                            Make_Defining_Proposition
-                              (Arr                 => +Aggr_Name,
-                               Elements_From_Nodes => Elements_From_Nodes,
-                               Bounds              => Bounds,
-                               Params              => Params,
-                               Skip_Guards         => True),
-                          Return_Type => Ret_Type,
-                          Labels      => Symbol_Sets.Empty_Set);
-
-                  when others             =>
-                     raise Program_Error;
-               end case;
-            end;
-
-            --  Insert checks for choices.
-
-            if Domain = EW_Prog then
-               Insert_Check_For_Choices
-                 (R,
-                  (if In_Delta_Aggregate
-                   then +Elements_From_Nodes.Element (Update_Prefix)
-                   else Why_Empty));
-            end if;
-
-            --  Bind the temporaries for elements, for bounds and
-            --  subexpressions.
-
-            if Needs_Bounds then
-               for Dim in reverse Dimensions loop
-                  R :=
-                    New_Typed_Binding
-                      (Domain  => Domain,
-                       Name    => +Bounds (2 * Dim),
-                       Def     =>
-                         +Get_Array_Attr
-                            (Term_Domain (Domain),
-                             Expr_Typ,
-                             Attribute_Last,
-                             Dim,
-                             Params),
-                       Context => R);
-                  R :=
-                    New_Typed_Binding
-                      (Domain  => Domain,
-                       Name    => +Bounds (2 * Dim - 1),
-                       Def     =>
-                         +Get_Array_Attr
-                            (Term_Domain (Domain),
-                             Expr_Typ,
-                             Attribute_First,
-                             Dim,
-                             Params),
-                       Context => R);
-               end loop;
-            end if;
-
-            for Value of reverse Values loop
-               R :=
-                 New_Typed_Binding
-                   (Domain  => Domain,
-                    Name    => Elements_From_Nodes.Element (Value.Value),
-                    Def     =>
-                      Transform_Aggregate_Value
-                        (Value  => Value.Value,
-                         Typ    => Value.Typ,
-                         Domain => Domain,
-                         Params => Params),
-                    Context => R);
-            end loop;
-         end if;
-
-         --  Possibly check the predicate on the aggregate
-
-         if Domain = EW_Prog and then Has_Predicates (Expr_Typ) then
-            R :=
-              +Insert_Predicate_Check
-                 (Ada_Node => Expr, Check_Ty => Expr_Typ, W_Expr => +R);
-         end if;
-
-         return R;
-      end Complete_Translation;
-
-      ----------------------------------
-      -- Generate_Aggregate_Functions --
-      ----------------------------------
-
-      procedure Generate_Aggregate_Functions
-        (Values              : Aggregate_Element_Lists.Vector;
-         Variables           : Flow_Id_Sets.Set;
-         Elements_From_Nodes : Node_To_Why_Id.Map;
-         Bounds              : W_Expr_Array)
-      is
-         function Get_Name_For_Aggregate (Aggr : Node_Id) return String;
-         --  Return a suitable name for the aggregate Aggr. If Aggr is the
-         --  initialization expression in an object declaration, then use the
-         --  name of the object as basis, which ensures stable naming across
-         --  changes in GNATprove. Otherwise, use a temporary name based on a
-         --  counter.
-
-         ----------------------------
-         -- Get_Name_For_Aggregate --
-         ----------------------------
-
-         function Get_Name_For_Aggregate (Aggr : Node_Id) return String is
-            Obj : constant Entity_Id := Get_Initialized_Object (Aggr);
-
-         begin
-            --  If Expr is used to initialize an object, reuse the object name
-            --  to get a stable name.
-
-            if Present (Obj) then
-               return
-                 Get_Module_Name (E_Module (Obj))
-                 & To_String (WNE_Aggregate_Def_Suffix);
-            else
-               return
-                 New_Temp_Identifier (To_String (WNE_Aggregate_Def_Suffix));
-            end if;
-         end Get_Name_For_Aggregate;
-
-         --  Generate name for the function based on the location of the
-         --  aggregate.
-
-         Name : constant String :=
-           Lower_Case_First (Get_Name_For_Aggregate (Expr));
-
-         --  Predicate used to define the aggregate/updated object
-
-         Params_No_Ref : constant Transformation_Params :=
-           (Logic_Params with delta Old_Policy => Raise_Error);
-
-         --  Arrays of binders and arguments, and mapping of nodes to names
-
-         Call_Params : Binder_Array (1 .. Natural (Values.Length));
-         Call_Args   : W_Expr_Array (1 .. Natural (Values.Length));
-
-         --  Additional arguments for the array bounds
-
-         Bnd_Params : constant Binder_Array :=
-           (for I in 1 .. Bound_Count =>
-              (Ada_Node => Standard.Types.Empty,
-               B_Name   => +Bounds (I),
-               B_Ent    => Null_Entity_Name,
-               Mutable  => False,
-               Labels   => <>));
-
-         --  Additional arguments for variables occurring in dynamic invariant/
-         --  default init.
-
-         Var_Items  : constant Item_Array :=
-           Get_Localized_Binders_From_Variables
-             (Variables, Only_Variables => False);
-         Var_Params : constant Binder_Array := To_Binder_Array (Var_Items);
-         Var_Args   : constant W_Expr_Array :=
-           Get_Args_From_Binders (Var_Params, Ref_Allowed => False);
-
-         --  Counter
-
-         Cnt : Positive;
-
-         --  Variables for the call, guard and proposition for the axiom
-
-         Func       : W_Identifier_Id;
-         Aggr       : W_Term_Id;
-         Def_Pred   : W_Pred_Id;
-         Axiom_Body : W_Pred_Id := True_Pred;
-         Post       : W_Pred_Id := True_Pred;
-
-         Aggr_Temp : constant W_Identifier_Id :=
-           New_Temp_Identifier (Typ => Ret_Type);
-
-         Th : Theory_UC;
-
-         --  Start of processing for Generate_Logic_Function
-
-      begin
-         --  Insert new modules for the program and logic functions in the
-         --  module map. The translation follows the same schema as regular
-         --  functions: an early declaration for the logic function exported
-         --  again in the regular module for the aggregate, a defining axiom in
-         --  the axiom module linked to the regular module, and a program
-         --  function with an instance of the defining axiom inlined in its
-         --  postcondition.
-
-         Insert_Extra_Module
-           (Expr,
-            New_Module (Ada_Node => Expr, File => No_Symbol, Name => Name));
-         Insert_Extra_Module
-           (Expr,
-            New_Module (File => No_Symbol, Name => Name & "___logic_fun"),
-            Logic_Function_Decl);
-         Insert_Extra_Module
-           (Expr,
-            New_Module (File => No_Symbol, Name => Name & "___program_fun"),
-            Program_Function_Decl);
-         Insert_Extra_Module
-           (Expr,
-            New_Module
-              (File => No_Symbol, Name => Name & To_String (WNE_Axiom_Suffix)),
-            Axiom);
-
-         --  Compute the parameters/arguments for the axiom/call
-
-         Cnt := 1;
-         for Value of Values loop
-            Call_Params (Cnt) :=
-              (Ada_Node => Standard.Types.Empty,
-               B_Name   => Elements_From_Nodes.Element (Value.Value),
-               B_Ent    => Null_Entity_Name,
-               Mutable  => False,
-               Labels   => Symbol_Sets.Empty_Set);
-            Cnt := Cnt + 1;
-         end loop;
-
-         Call_Args :=
-           Get_Args_From_Binders (Call_Params, Ref_Allowed => False);
-         pragma Assert (Cnt = Call_Params'Last + 1);
-
-         --  Push localized binders for variables to the symbol table. This is
-         --  important so that the translation of the aggregate can be reused
-         --  even if the mappings in the symbol table are updated (typically,
-         --  for formal parameters in postconditions).
-
-         Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-         Push_Binders_To_Symbol_Table (Var_Items);
-
-         --  Compute the call, guard and proposition for the axiom
-
-         Axiom_Body :=
-           Make_Defining_Proposition
-             (Arr                 => +Aggr_Temp,
-              Elements_From_Nodes => Elements_From_Nodes,
-              Bounds              => Bounds,
-              Params              => Params_No_Ref);
-
-         --  The postcondition of the program function is only assumed in the
-         --  context of the call. No need to emit guards for soundness.
-
-         Post :=
-           Make_Defining_Proposition
-             (Arr                 => +New_Result_Ident (Typ => Ret_Type),
-              Elements_From_Nodes => Elements_From_Nodes,
-              Bounds              => Bounds,
-              Params              => Params_No_Ref,
-              Skip_Guards         => True);
-
-         Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
-
-         --  Like for regular functions, call the early declaration of the
-         --  logic function to avoid pulling the axiom when using the program
-         --  function.
-
-         Func :=
-           New_Identifier
-             (Ada_Node => Expr,
-              Domain   => Domain,
-              Module   => E_Module (Expr, Logic_Function_Decl),
-              Symb     => NID (Name));
-
-         Aggr :=
-           New_Call
-             (Ada_Node => Expr,
-              Name     => Func,
-              Args     => Call_Args & Bounds & Var_Args,
-              Typ      => Ret_Type);
-
-         Def_Pred :=
-           New_Typed_Binding
-             (Name => Aggr_Temp, Def => Aggr, Context => Axiom_Body);
-
-         --  Add the equality with the logic function to the post of the
-         --  program function.
-
-         Post :=
-           New_And_Pred
-             (Left  => Post,
-              Right =>
-                New_Comparison
-                  (Symbol => Why_Eq,
-                   Left   => +New_Result_Ident (Typ => Ret_Type),
-                   Right  => Aggr));
-
-         --  Generate the logic function declaration in its specific module
-
-         Th :=
-           Open_Theory
-             (WF_Context,
-              E_Module (Expr, Logic_Function_Decl),
-              Comment =>
-                "Module for initial declaration of the logic function for the "
-                & (if Nkind (Expr) = N_Delta_Aggregate
-                   then "delta aggregate"
-                   elsif In_Delta_Aggregate
-                   then "update attribute"
-                   else "aggregate")
-                & " at "
-                & (if Sloc (Expr) > 0
-                   then Build_Location_String (Sloc (Expr))
-                   else "<no location>")
-                & ", created in "
-                & GNAT.Source_Info.Enclosing_Entity);
-
-         Emit
-           (Th,
-            New_Function_Decl
-              (Domain      => EW_Pterm,
-               Name        => To_Local (Func),
-               Labels      => Symbol_Sets.Empty_Set,
-               Location    => No_Location,
-               Binders     => Call_Params & Bnd_Params & Var_Params,
-               Return_Type => Ret_Type));
-
-         Close_Theory (Th, Kind => Definition_Theory);
-
-         --  Export the logic symbol in Expr's regular module
-
-         Th :=
-           Open_Theory
-             (WF_Context,
-              E_Module (Expr),
-              Comment =>
-                "Module for declaring a logic function for the "
-                & (if Nkind (Expr) = N_Delta_Aggregate
-                   then "delta aggregate"
-                   elsif In_Delta_Aggregate
-                   then "update attribute"
-                   else "aggregate")
-                & " at "
-                & (if Sloc (Expr) > 0
-                   then Build_Location_String (Sloc (Expr))
-                   else "<no location>")
-                & ", created in "
-                & GNAT.Source_Info.Enclosing_Entity);
-
-         Add_With_Clause (Th, E_Module (Expr, Logic_Function_Decl), EW_Export);
-
-         Close_Theory (Th, Kind => Definition_Theory);
-
-         --  Generate the program function declaration in its specific module
-
-         Th :=
-           Open_Theory
-             (WF_Context,
-              E_Module (Expr, Program_Function_Decl),
-              Comment =>
-                "Module for declaring a program function for the "
-                & (if Nkind (Expr) = N_Delta_Aggregate
-                   then "delta aggregate"
-                   elsif In_Delta_Aggregate
-                   then "update attribute"
-                   else "aggregate")
-                & " at "
-                & (if Sloc (Expr) > 0
-                   then Build_Location_String (Sloc (Expr))
-                   else "<no location>")
-                & ", created in "
-                & GNAT.Source_Info.Enclosing_Entity);
-
-         Emit
-           (Th,
-            New_Function_Decl
-              (Domain      => EW_Prog,
-               Name        => To_Local (Func),
-               Labels      => Symbol_Sets.Empty_Set,
-               Location    => No_Location,
-               Binders     => Call_Params & Bnd_Params & Var_Params,
-               Return_Type => Ret_Type,
-               Post        => Post));
-
-         Close_Theory (Th, Kind => Definition_Theory);
-
-         --  Generate the axiom in an axiom module always included with Expr's
-         --  regular module.
-
-         Th :=
-           Open_Theory
-             (WF_Context,
-              E_Module (Expr, Axiom),
-              Comment =>
-                "Module for declaring an axiom defining the value of the "
-                & (if Nkind (Expr) = N_Delta_Aggregate
-                   then "delta aggregate"
-                   elsif In_Delta_Aggregate
-                   then "update attribute"
-                   else "aggregate")
-                & " at "
-                & (if Sloc (Expr) > 0
-                   then Build_Location_String (Sloc (Expr))
-                   else "<no location>")
-                & ", created in "
-                & GNAT.Source_Info.Enclosing_Entity);
-
-         Emit
-           (Th,
-            New_Guarded_Axiom
-              (Name    => NID (Def_Axiom),
-               Binders => Call_Params & Bnd_Params & Var_Params,
-               Def     => Def_Pred,
-               Dep     =>
-                 New_Axiom_Dep (Name => Func, Kind => EW_Axdep_Func)));
-
-         Close_Theory (Th, Kind => Axiom_Theory, Defined_Entity => Expr);
-      end Generate_Aggregate_Functions;
-
-      ----------------------------
-      -- Get_Aggregate_Elements --
-      ----------------------------
-
-      procedure Get_Aggregate_Elements
-        (Values              : out Aggregate_Element_Lists.Vector;
-         Variables           : out Flow_Id_Sets.Set;
-         Elements_From_Nodes : out Node_To_Why_Id.Map;
-         Bounds              : out W_Expr_Array)
-      is
-         In_Iterated_Assoc : Boolean := False;
-         --  Register whether we have traversed iterated component associations
-
-         -----------------------
-         -- Local subprograms --
-         -----------------------
-
-         procedure Add_Element (E : Aggregate_Element);
-         --  Append a new entry in the Value sequence, and add a corresponding
-         --  Why identifier in the Elements_From_Nodes map. If this would cause
-         --  a pre-existing node to be added again, the entry is discarded.
-         --  This could happen if someone were to use the same subtype mark as
-         --  choice twice in a delta aggregate (although the point of doing so
-         --  is dubious, this is legal Ada).
-
-         procedure Traverse_Value_At_Index
-           (Dim : Dimensions; Expr_Or_Association : Node_Id);
-         --  Traverse the value Expr_Or_Association to collect desired elements
-
-         procedure Traverse_Rec_Aggregate
-           (Dim : Dimensions; Subexpr : Node_Id);
-         --  Main recursive function operating over multi-dimensional array
-         --  aggregates.
-
-         -----------------
-         -- Add_Element --
-         -----------------
-
-         procedure Add_Element (E : Aggregate_Element) is
-            Typ      : constant Node_Id := E.Typ;
-            Ident    : constant W_Identifier_Id :=
-              New_Temp_Identifier
-                (Typ =>
-                 --  Special case for associations standing boxes in the
-                 --  aggregate.
-                   (if Nkind (E.Value)
-                       in N_Iterated_Component_Association
-                        | N_Component_Association
-                    then
-                      EW_Abstract
-                        (Typ,
-                         Relaxed_Init =>
-                           (if Relaxed_Init
-                            then Has_Init_Wrapper (Typ)
-                            else Has_Relaxed_Init (Typ)))
-                    elsif Expr_Has_Relaxed_Init (E.Value, No_Eval => False)
-                    then EW_Abstract (Typ, Relaxed_Init => True)
-                    else Type_Of_Node (Typ)));
-            Position : Node_To_Why_Id.Cursor;
-            Inserted : Boolean;
-         begin
-            Elements_From_Nodes.Insert (E.Value, Ident, Position, Inserted);
-            if Inserted then
-               Values.Append (E);
-            end if;
-         end Add_Element;
-
-         -----------------------------
-         -- Traverse_Value_At_Index --
-         -----------------------------
-
-         procedure Traverse_Value_At_Index
-           (Dim : Dimensions; Expr_Or_Association : Node_Id)
-         is
-            Value_Expr             : Node_Id;
-            Choice                 : Node_Id;
-            Rng                    : Node_Id;
-            In_Iterated_Assoc_Save : constant Boolean := In_Iterated_Assoc;
-
-         begin
-            --  For delta aggregates, we need the choices as parameters since
-            --  they can be dynamic. If Expr_Or_Association is a component
-            --  association, first we go through the component association and
-            --  collect them.
-
-            if In_Delta_Aggregate
-              and then
-                Nkind (Expr_Or_Association)
-                in N_Component_Association | N_Iterated_Component_Association
-            then
-               if Is_Others_Choice (Choice_List (Expr_Or_Association)) then
-                  Choice := Empty;
-               else
-                  Choice := First (Choice_List (Expr_Or_Association));
-               end if;
-
-               --  Collect the choices as parameters. Populate Values with
-               --  the parameters needed. Choices of delta aggregates can never
-               --  be in iterated component associations.
-
-               pragma Assert (not In_Iterated_Assoc);
-
-               while Present (Choice) loop
-                  case Nkind (Choice) is
-                     when N_Subtype_Indication | N_Range =>
-
-                        --  The high and low bounds of a range both
-                        --  need to be parameters. We don't use the index
-                        --  type for them as bounds can be outside of the
-                        --  index sutype in case of empty ranges.
-
-                        Rng := Get_Range (Choice);
-                        Add_Element
-                          (Aggregate_Element'
-                             (Value => Low_Bound (Rng),
-                              Typ   => Etype (Low_Bound (Rng))));
-                        Add_Element
-                          (Aggregate_Element'
-                             (Value => High_Bound (Rng),
-                              Typ   => Etype (High_Bound (Rng))));
-
-                     when N_Aggregate                    =>
-
-                        --  This is a special choice, the LHS of an
-                        --  association of a 'Update of a
-                        --  multi-dimensional array,
-                        --  for example: (I, J, K) of
-                        --  'Update((I, J, K) => New_Val)
-
-                        pragma
-                          Assert
-                            (Nb_Dim /= 1
-                             and then Dim = 1
-                             and then No (Component_Associations (Choice)));
-                        declare
-                           Multi_Expr : Node_Id :=
-                             Nlists.First (Expressions (Choice));
-                        begin
-                           for Dim in Dimensions loop
-                              Add_Element
-                                (Aggregate_Element'
-                                   (Value => Multi_Expr,
-                                    Typ   => Index_Types (Dim)));
-                              Next (Multi_Expr);
-                           end loop;
-                           pragma Assert (No (Multi_Expr));
-                        end;
-
-                     when others                         =>
-                        if Is_Entity_Name (Choice)
-                          and then Is_Type (Entity (Choice))
-                        then
-                           declare
-                              Rng : constant Node_Id :=
-                                Get_Range (Entity (Choice));
-                           begin
-                              Add_Element
-                                (Aggregate_Element'
-                                   (Value => Low_Bound (Rng),
-                                    Typ   => Etype (Low_Bound (Rng))));
-                              Add_Element
-                                (Aggregate_Element'
-                                   (Value => High_Bound (Rng),
-                                    Typ   => Etype (High_Bound (Rng))));
-                           end;
-                        else
-                           Add_Element
-                             (Aggregate_Element'
-                                (Value => Choice, Typ => Index_Types (Dim)));
-                        end if;
-                  end case;
-                  Next (Choice);
-               end loop;
-            end if;
-
-            --  Next, for both positional and named associations, and for
-            --  both normal and for delta aggregates, we fill the
-            --  component expressions to the arrays Values and Types, to
-            --  later be used as parameters.
-
-            if Nkind (Expr_Or_Association) = N_Component_Association
-              and then Box_Present (Expr_Or_Association)
-            then
-
-               --  Collecting variables of the default expression for later use
-               --  as parameter.
-
-               if In_Iterated_Assoc then
-                  Variables_In_Default_Init (Comp_Type, Variables);
-
-               --  The default expression is directly used as parameter. Use
-               --  the association as a placeholder.
-
-               else
-                  Add_Element
-                    (Aggregate_Element'
-                       (Value => Expr_Or_Association, Typ => Comp_Type));
-               end if;
-            else
-               --  Get the expression from the association and set
-               --  In_Iterated_Assoc.
-
-               case Nkind (Expr_Or_Association) is
-                  when N_Iterated_Component_Association =>
-                     Value_Expr := Expression (Expr_Or_Association);
-                     In_Iterated_Assoc := True;
-
-                  when N_Component_Association          =>
-                     Value_Expr := Expression (Expr_Or_Association);
-
-                  when others                           =>
-                     Value_Expr := Expr_Or_Association;
-               end case;
-
-               if Dim /= Nb_Dim and then not In_Delta_Aggregate then
-
-                  --  Normal, multidimensional aggregate, for example:
-                  --  Array_2D'(1      => (2 => Expr_1, others => Expr_2),
-                  --            others => (others => Expr_3))
-                  --
-                  --  The components are aggregates as long as Dim < Nb_Dim.
-                  --  Keep recursively peeling the aggregates off.
-
-                  pragma Assert (Nkind (Value_Expr) = N_Aggregate);
-                  Traverse_Rec_Aggregate (Dim + 1, Value_Expr);
-               else
-
-                  --  Two cases here:
-                  --
-                  --  1) A single dimensional aggregate, normal or delta,
-                  --  (for example an innermost of a multidimensional
-                  --  aggregate), or
-                  --
-                  --  2) A multidimensional 'Update aggregate of the form
-                  --  'Update((I, J, K) => New_Val)
-                  --
-                  --  in both cases there are no more aggregates to peel off.
-
-                  pragma
-                    Assert
-                      (Dim = Nb_Dim
-                       or else (In_Delta_Aggregate and then Dim = 1));
-
-                  if not In_Iterated_Assoc then
-                     Add_Element
-                       (Aggregate_Element'
-                          (Value => Value_Expr, Typ => Comp_Type));
-                  end if;
-               end if;
-
-               In_Iterated_Assoc := In_Iterated_Assoc_Save;
-            end if;
-         end Traverse_Value_At_Index;
-
-         ----------------------------
-         -- Traverse_Rec_Aggregate --
-         ----------------------------
-
-         procedure Traverse_Rec_Aggregate (Dim : Dimensions; Subexpr : Node_Id)
-         is
-            Positionals : constant List_Id :=
-              (if Nkind (Subexpr) = N_Delta_Aggregate
-               then No_List
-               else Expressions (Subexpr));
-            Assocs      : constant List_Id := Component_Associations (Subexpr);
-            Positional  : Node_Id := Nlists.First (Positionals);
-            Association : Node_Id := Nlists.First (Assocs);
-
-         begin
-            --  Positional association is not allowed in delta aggregate
-            --  (except in an inner aggregate that is the choice in a
-            --  component association of a multidimensional 'Update
-            --  aggregate, but never on the outer level we are at here).
-
-            pragma
-              Assert (if Present (Positional) then not In_Delta_Aggregate);
-
-            while Present (Positional) loop
-               Traverse_Value_At_Index (Dim, Positional);
-               Next (Positional);
-            end loop;
-
-            --  Although named association is not allowed after positional
-            --  association, an "others" case is allowed, and this is included
-            --  in the list of associations, so we always do the following.
-
-            while Present (Association) loop
-               Traverse_Value_At_Index (Dim, Association);
-               Next (Association);
-            end loop;
-         end Traverse_Rec_Aggregate;
-
-         --  Start of processing for Get_Aggregate_Elements
-
-      begin
-         --  We call the dynamic invariant of Comp_Type in the logic
-         --  function to compute the guards. Add its variable to Variables.
-
-         Variables_In_Dynamic_Invariant
-           (Comp_Type, Variables, Scop => Current_Subp);
-
-         --  In the case of a delta aggregate, add the prefix to be
-         --  a parameter to the logic function.
-
-         if In_Delta_Aggregate then
-            Add_Element
-              (Aggregate_Element'
-                 (Value => Update_Prefix, Typ => Etype (Update_Prefix)));
-         end if;
-
-         Traverse_Rec_Aggregate (Dim => 1, Subexpr => Expr);
-
-         --  If the bounds of the aggregate should be given as additional
-         --  parameters to the call, also bind identifiers for them.
-
-         if Needs_Bounds then
-            for Dim in Dimensions loop
-               declare
-                  BT   : constant W_Type_Id :=
-                    Base_Why_Type_No_Bool (Index_Types (Dim));
-                  F_Id : constant W_Identifier_Id :=
-                    New_Temp_Identifier (Base_Name => "first", Typ => BT);
-                  L_Id : constant W_Identifier_Id :=
-                    New_Temp_Identifier (Base_Name => "last", Typ => BT);
-               begin
-                  Bounds (2 * Dim - 1) := +F_Id;
-                  Bounds (2 * Dim) := +L_Id;
-               end;
-            end loop;
-         end if;
-
-      end Get_Aggregate_Elements;
-
-      ------------------------------
-      -- Insert_Check_For_Choices --
-      ------------------------------
-
-      procedure Insert_Check_For_Choices
-        (T : in out W_Expr_Id; Array_Expr : W_Term_Id)
-      is
-         Choice_Checks     : W_Statement_Sequence_Id := Void_Sequence;
-         Comp_Checks       : W_Statement_Sequence_Id := Void_Sequence;
-         In_Iterated_Assoc : Boolean := False;
-         --  Register whether we have traversed iterated component associations
-
-         Last_Uniq_Dim : Dimensions := 1;
-         --  Register the last dimensional index with a single subaggregate.
-         --  Used to eliminate redundant bound checks as much as possible.
-
-         procedure Insert_Checks (Subexpr : Node_Id; Dim : Dimensions);
-         --  Introduce checks for choices of an expression. Recursively call
-         --  itself to check choices for upper dimensions in regular
-         --  multidimensional aggregates.
-
-         -------------------
-         -- Insert_Checks --
-         -------------------
-
-         procedure Insert_Checks (Subexpr : Node_Id; Dim : Dimensions) is
-            Assocs       : constant List_Id :=
-              Component_Associations (Subexpr);
-            Association  : Node_Id := Nlists.First (Assocs);
-            Positionals  : constant List_Id :=
-              (if Nkind (Subexpr) = N_Delta_Aggregate
-               then No_List
-               else Expressions (Subexpr));
-            Positional   : Node_Id := Nlists.First (Positionals);
-            Index_Typ    : constant Entity_Id := Index_Types (Dim);
-            Index_Base   : constant W_Type_Id :=
-              Base_Why_Type_No_Bool (Index_Typ);
-            Save_In_Iter : constant Boolean := In_Iterated_Assoc;
-            Save_Checks  : W_Statement_Sequence_Id := Why_Empty;
-            Choice       : Node_Id;
-            Idx          : W_Identifier_Id := Why_Empty;
-            Binding      : W_Prog_Id := Why_Empty;
-            Others_Guard : W_Pred_Id :=
-              +Range_Expr
-                 (N      => Get_Range (Index_Typ),
-                  T      => +New_Result_Ident (Index_Base),
-                  Domain => EW_Pred,
-                  Params => Params);
-
-         begin
-            --  Deal with the special case of an empty (sub)aggregate []. Those
-            --  do not have any explicit choices. They use the default ranges
-            --  Index_Type'First .. Index_Type'Base'Pred (Index_Type'First),
-            --  under the GNATprove limitation that [] cannot show up in
-            --  aggregates with multiple association. Make sure that the
-            --  computation of the last bound does not overflow.
-            --
-            --  The limitation comes from the fact that the front-end might not
-            --  provide properly all bounds for null subaggregates. Recomputing
-            --  them in general is tricky as this requires knowing whether
-            --  there is an applicable index constraint from the context. For
-            --  that reason, we do not support null subaggregates when there
-            --  should be subject to matching bound checks. Those cases are
-            --  rejected by marking.
-            --
-            --  Return once done, this completely deal with [] case.
-
-            if No (Association) and then No (Positional) then
-               --  Make sure we do not need bound checks
-
-               pragma
-                 Assert (not In_Delta_Aggregate and then Dim <= Last_Uniq_Dim);
-
-               declare
-                  Dim_Cursor : Positive := 1;
-                  Index      : Node_Id := First_Index (Expr_Typ);
-                  Index_Base : Node_Id := First_Index (Base_Retysp (Expr_Typ));
-
-               begin
-                  --  Walk through indexes of the aggregate until the current
-                  --  dimension.
-
-                  while Dim_Cursor /= Dim loop
-                     Next_Index (Index);
-                     Next_Index (Index_Base);
-                     Dim_Cursor := Dim_Cursor + 1;
-                  end loop;
-
-                  while Present (Index) loop
-                     --  For multi-dimensional aggregates, add the dimension as
-                     --  a continuation.
-
-                     if Nb_Dim /= 1 then
-                        Continuation_Stack.Append
-                          (Continuation_Type'
-                             (Ada_Node => Index_Base,
-                              Message  =>
-                                To_Unbounded_String
-                                  ("for array dimension" & Dim_Cursor'Image)));
-                     end if;
-
-                     --  For checks that fail statically, the frontend uses a
-                     --  N_Raise_xxx_Error node for the lower bound.
-
-                     if Nkind (High_Bound (Index)) in N_Raise_xxx_Error then
-                        Emit_Static_Proof_Result
-                          (Subexpr,
-                           VC_Range_Check,
-                           False,
-                           Current_Subp,
-                           Explanation =>
-                             "empty aggregates cannot be used if there is no"
-                             & " element before the first element of their"
-                             & " index type");
-
-                     --  Otherwise, check that Index'First is not the first
-                     --  element of its base type.
-
-                     else
-                        Append
-                          (Choice_Checks,
-                           New_Located_Assert
-                             (Ada_Node => Subexpr,
-                              Reason   => VC_Range_Check,
-                              Pred     =>
-                                New_Not
-                                  (Right =>
-                                     New_Comparison
-                                       (Symbol => Why_Eq,
-                                        Left   =>
-                                          Transform_Term
-                                            (Expr          =>
-                                               Low_Bound (Index),
-                                             Expected_Type =>
-                                               Base_Why_Type_No_Bool
-                                                 (Etype (Index)),
-                                             Params        => Body_Params),
-                                        Right  =>
-                                          +New_Attribute_Expr
-                                             (Base_Type (Etype (Index)),
-                                              EW_Term,
-                                              Attribute_First,
-                                              Body_Params))),
-                              Kind     => EW_Assert));
-                     end if;
-
-                     if Nb_Dim /= 1 then
-                        Continuation_Stack.Delete_Last;
-                     end if;
-
-                     Next_Index (Index);
-                     Next_Index (Index_Base);
-                     Dim_Cursor := Dim_Cursor + 1;
-                  end loop;
-               end;
-
-               --  There is no other check to generate for null subaggregates,
-               --  exit here.
-
-               return;
-            end if;
-
-            --  When aggregate has positional associations, we need additional
-            --  checks that the implicit indexes of the positional associations
-            --  are all between the bounds, when computed as plain position
-            --  numbers (no modular arithmetic should be involved in their
-            --  computation). It is sufficient to make that check for the last
-            --  positional index:
-            --  * All elements are necessarily >= the lower bound chosen for
-            --    the (sub)aggregate by definition, since they are at a >= 0
-            --    offset from it.
-            --  * All elements are necessarily <= the upper bound if the
-            --    last element is.
-            --  This also means that it is sufficient to test the upper
-            --  bound only. But since we have bitvectors in Why3 when the index
-            --  uses modular integers, we have no proof-convenient way to make
-            --  the translation a check on plain mathematical integers. If we
-            --  carry this check in bitvector arithmetic, it could fail due to
-            --  wraparound. We need to add a no-wraparound check in that case.
-            --  Thanks to the front-end already rejecting the situation where
-            --  there is more positional associations that values in the type,
-            --  in case of wraparound, the index computed in modular arithmetic
-            --  ends up being strictly below the lower bound. So we can reject
-            --  wraparound by testing the lower bound as well.
-            --
-            --  The check we generate for this case is an in-range check for
-            --  the last positional index, with:
-            --  * The upper bound check removed if there is no others case. In
-            --    that case, it is redundant with the matching bound check of
-            --    the subaggregate. This is because subagggregate bounds are
-            --    derived from the number of positional elements in that case,
-            --    so the implicit indices (as position numbers) are between
-            --    those bounds by construction. Matching bound checks make sure
-            --    those actually are the index type bounds of the aggregate.
-            --  * The lower bound check removed for signed integer type,
-            --    as wraparound is only a concern for modular types.
-            --  If there are no others case and the type is not modular, there
-            --  is no need to generate anything.
-
-            if Present (Positional)
-              and then
-                (Present (Association)
-                 or else Why_Type_Is_BitVector (Index_Base))
-            then
-               declare
-                  Pred : W_Pred_Vectors.Vector;
-                  --  Accumulate checks
-
-                  Bounds : constant Node_Id := Aggregate_Bounds (Subexpr);
-                  pragma Assert (Present (Bounds));
-                  Low    : constant W_Term_Id :=
-                    New_Temp_For_Expr
-                      (W_Term_Id'
-                         (+Transform_Expr
-                             (Low_Bound (Bounds),
-                              Index_Base,
-                              EW_Term,
-                              Params)));
-                  --  Translate lower bound
-
-                  Offset : constant W_Term_Id :=
-                    New_Discrete_Constant
-                      (Value =>
-                         UI_From_Int (Nlists.List_Length (Positionals) - 1),
-                       Typ   => Index_Base);
-
-                  Last_Index : constant W_Term_Id :=
-                    (if Why_Type_Is_BitVector (Index_Base)
-                     then
-                       +New_Binary_Op_Expr
-                          (Op          => N_Op_Add,
-                           Left        => +Low,
-                           Right       => +Offset,
-                           Left_Type   => Index_Typ,
-                           Right_Type  => Index_Typ,
-                           Return_Type => Index_Typ,
-                           Domain      => EW_Term)
-                     else
-                       +New_Discrete_Add
-                          (Domain => EW_Term, Left => +Low, Right => +Offset));
-                  --  Construct implicit index of last positional association.
-                  --  Note that we must not compute in the base type for the
-                  --  bitvector case, as using the base modulus may miscompute
-                  --  the upper bound.
-
-               begin
-                  if Why_Type_Is_BitVector (Index_Base) then
-                     --  Generate no-wraparound check.
-
-                     W_Pred_Vectors.Append
-                       (V    => Pred,
-                        Pred =>
-                          New_Comparison
-                            (Symbol => MF_BVs (Index_Base).Ule,
-                             Left   => Low,
-                             Right  => Last_Index));
-                  end if;
-
-                  if Present (Association) then
-                     --  'others' choice. Generate upper bound check.
-
-                     pragma
-                       Assert (Is_Others_Choice (Choice_List (Association)));
-                     W_Pred_Vectors.Append
-                       (V    => Pred,
-                        Pred =>
-                          New_Comparison
-                            (Symbol =>
-                               (if Why_Type_Is_BitVector (Index_Base)
-                                then MF_BVs (Index_Base).Ule
-                                else Int_Infix_Le),
-                             Left   => Last_Index,
-                             Right  =>
-                               +Transform_Expr
-                                  (High_Bound (Bounds),
-                                   Index_Base,
-                                   EW_Term,
-                                   Params)));
-                  end if;
-
-                  pragma Assert (not W_Pred_Vectors.Is_Empty (Pred));
-
-                  Append
-                    (Choice_Checks,
-                     New_Located_Assert
-                       (Ada_Node => Nlists.Last (Positionals),
-                        Reason   => VC_Range_Check,
-                        Kind     => EW_Assert,
-                        Pred     =>
-                          Binding_For_Temp
-                            (Tmp     => Low,
-                             Context =>
-                               New_And_Pred
-                                 (W_Pred_Vectors.To_Array (Pred)))));
-               end;
-            end if;
-
-            --  Go over the list of associations to insert checks
-
-            while Present (Association) loop
-               if not Is_Others_Choice (Choice_List (Association)) then
-                  Choice := First (Choice_List (Association));
-
-                  while Present (Choice) loop
-
-                     --  For delta aggregates, choices are passed as parameters
-                     --  and checks inserted in Transform_Expr when arguments
-                     --  for the function call are computed, so we don't need
-                     --  to check absence of RTE for them. We still need to
-                     --  check that choices are in the bounds of the updated
-                     --  expression. In the case of simple values of an array
-                     --  constrained type, this check may be redundant.
-
-                     if In_Delta_Aggregate then
-
-                        --  For multidimensional 'Update, we generate an
-                        --  index check for each value of the choice aggregate.
-                        --  For (I1, I2) => ... we generate:
-                        --  index_check <I1>; index_check <I2>
-
-                        if Nb_Dim > 1 then
-                           pragma Assert (Nkind (Choice) = N_Aggregate);
-                           declare
-                              Multi_Expr : Node_Id :=
-                                Nlists.First (Expressions (Choice));
-                           begin
-                              for I in Dimensions loop
-                                 pragma Assert (Present (Multi_Expr));
-                                 Append
-                                   (Choice_Checks,
-                                    New_Ignore
-                                      (Prog =>
-                                         Do_Index_Check
-                                           (Ada_Node => Multi_Expr,
-                                            Arr_Expr => Array_Expr,
-                                            W_Expr   =>
-                                              Transform_Expr
-                                                (Expr          => Multi_Expr,
-                                                 Domain        => EW_Pterm,
-                                                 Params        => Params,
-                                                 Expected_Type =>
-                                                   Base_Why_Type_No_Bool
-                                                     (Index_Types (I))),
-                                            Dim      => I)));
-                                 Next (Multi_Expr);
-                              end loop;
-                              pragma Assert (No (Multi_Expr));
-                           end;
-
-                        --  Choices of unary aggregates can involve ranges or
-                        --  subtype indications in addition to values. We reuse
-                        --  translation of choices to generate:
-                        --  let index = any <Index_Type> { result in <Choice> }
-                        --    in index_check index
-
-                        else
-                           declare
-                              Tmp : constant W_Identifier_Id :=
-                                New_Temp_Identifier
-                                  (Base_Name => "index", Typ => Index_Base);
-                           begin
-                              Append
-                                (Choice_Checks,
-                                 (New_Ignore
-                                    (Prog =>
-                                       New_Binding
-                                         (Name    => Tmp,
-                                          Def     =>
-                                            New_Any_Expr
-                                              (Post        =>
-                                                 +Transform_Discrete_Choice
-                                                    (Choice      => Choice,
-                                                     Choice_Type => Index_Typ,
-                                                     Expr        =>
-                                                       +New_Result_Ident
-                                                          (Index_Base),
-                                                     Domain      => EW_Pred,
-                                                     Params      => Params),
-                                               Return_Type => Index_Base,
-                                               Labels      =>
-                                                 Symbol_Sets.Empty_Set),
-                                          Context =>
-                                            Do_Index_Check
-                                              (Ada_Node => Choice,
-                                               Arr_Expr => Array_Expr,
-                                               W_Expr   => +Tmp,
-                                               Dim      => 1)))));
-                           end;
-                        end if;
-
-                     --  For normal aggregates, check absence of RTE in Choice
-
-                     else
-                        Append
-                          (Choice_Checks,
-                           (New_Ignore
-                              (Prog =>
-                                 +Transform_Discrete_Choice
-                                    (Choice      => Choice,
-                                     Choice_Type => Index_Typ,
-                                     Expr        =>
-                                     --  The value does not matter here
-                                       New_Discrete_Constant
-                                            (Value => Uint_0,
-                                             Typ   => Index_Base),
-                                     Domain      => EW_Prog,
-                                     Params      => Params))));
-                     end if;
-
-                     --  If Choice is a subtype indication, insert check for
-                     --  range constraint.
-
-                     case Nkind (Choice) is
-                        when N_Subtype_Indication =>
-                           Append
-                             (Choice_Checks,
-                              Check_Scalar_Range
-                                (Params => Params,
-                                 N      => Get_Range (Choice),
-                                 Base   => Entity (Subtype_Mark (Choice))));
-
-                        when others               =>
-                           null;
-                     end case;
-                     Next (Choice);
-                  end loop;
-               end if;
-
-               --  If we are in an iterated component association, we need to
-               --  wrap the checks introduced for the association in a let
-               --  binding. Introduce a name for the index parameter and store
-               --  it in the Symbol_Table. Save Checks in All_Checks and
-               --  restart a fresh sequence of checks which will be wrapped in
-               --  the binding. Also set In_Iterated_Assoc.
-
-               if Nkind (Association) = N_Iterated_Component_Association then
-                  In_Iterated_Assoc := True;
-
-                  Save_Checks := Comp_Checks;
-                  Comp_Checks := Void_Sequence;
-
-                  declare
-                     Quant_Var : constant Entity_Id :=
-                       Defining_Identifier (Association);
-                     Choices   : constant List_Id := Choice_List (Association);
-                     Constr    : W_Pred_Id;
-                  begin
-                     --  Store in Constr the known constraints for the
-                     --  quantified variables. If Choices is not others, also
-                     --  update the Others_Guard to exclude the current choice.
-
-                     if Is_Others_Choice (Choices) then
-                        Constr := Others_Guard;
-                     else
-                        Constr :=
-                          Transform_Discrete_Choices
-                            (Choices      => Choices,
-                             Choice_Type  => Etype (Quant_Var),
-                             Matched_Expr => +New_Result_Ident (Index_Base),
-                             Params       => Params);
-                        Others_Guard :=
-                          New_And_Pred
-                            (Left  => Others_Guard,
-                             Right => New_Not (Right => Constr));
-                     end if;
-
-                     Idx :=
-                       New_Temp_Identifier
-                         (Typ       => Index_Base,
-                          Base_Name => Short_Name (Quant_Var));
-                     Binding :=
-                       New_Any_Expr
-                         (Post        => Constr,
-                          Return_Type => Index_Base,
-                          Labels      => Symbol_Sets.Empty_Set);
-                     Insert_Tmp_Item_For_Entity (Quant_Var, Idx);
-
-                     if Present (Loop_Actions (Association)) then
-                        Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-                        Transform_Actions_Preparation
-                          (Loop_Actions (Association));
-                     end if;
-                  end;
-               end if;
-
-               --  In regular multidimensional aggregates, we also need to
-               --  check choices in upper dimensions.
-
-               if not In_Delta_Aggregate and then Dim /= Nb_Dim then
-                  Insert_Checks (Expression (Association), Dim + 1);
-
-               --  If we have reached a value which depends on iterated
-               --  component associations, we must check the value.
-
-               elsif In_Iterated_Assoc then
-                  Append
-                    (Comp_Checks,
-                     New_Ignore
-                       (Ada_Node => Expression (Association),
-                        Prog     =>
-                          +Transform_Aggregate_Value
-                             (Value  =>
-                                (if Box_Present (Association)
-                                 then Association
-                                 else Expression (Association)),
-                              Typ    => Comp_Type,
-                              Domain => Domain,
-                              Params => Params)));
-               end if;
-
-               --  For iterated component associations, bind the name of the
-               --  index parameter and restore the Checks sequence. Also reset
-               --  In_Iterated_Assoc.
-
-               if Nkind (Association) = N_Iterated_Component_Association then
-                  if Present (Loop_Actions (Association)) then
-                     Comp_Checks :=
-                       +Transform_Actions
-                          (Actions => Loop_Actions (Association),
-                           Expr    => +Comp_Checks,
-                           Domain  => EW_Prog,
-                           Params  => Params);
-                     Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
-                  end if;
-
-                  Append
-                    (Save_Checks,
-                     New_Binding
-                       (Name    => Idx,
-                        Def     => Binding,
-                        Context => +Comp_Checks,
-                        Typ     => EW_Unit_Type));
-                  Comp_Checks := Save_Checks;
-
-                  In_Iterated_Assoc := Save_In_Iter;
-               end if;
-
-               Next (Association);
-            end loop;
-
-            --  If needed, generate checks that bounds of the sub-aggregates
-            --  match that of the type.
-
-            if not In_Delta_Aggregate
-              and then Dim > Last_Uniq_Dim
-              and then
-                (No (Assocs)
-                 or else No (Nlists.Last (Assocs))
-                 or else
-                   not Is_Others_Choice (Choice_List (Nlists.Last (Assocs))))
-            then
-               --  In a regular aggregate without an 'others' choice, we need
-               --  to check that bounds match the ones expected from the
-               --  aggregate Etype. One subaggregate check is redundant per
-               --  dimension, for the subaggregate whose bounds are taken by
-               --  the front-end. We filter out checks at dimensions where
-               --  there is a single subaggregate since they must be redundant.
-
-               declare
-                  Low_Bnd  : constant W_Term_Id :=
-                    Insert_Simple_Conversion
-                      (Expr =>
-                         Get_Array_Attr
-                           (EW_Term, Expr_Typ, Attribute_First, Dim, Params),
-                       To   => Index_Base);
-                  High_Bnd : constant W_Term_Id :=
-                    Insert_Simple_Conversion
-                      (Expr =>
-                         Get_Array_Attr
-                           (EW_Term, Expr_Typ, Attribute_Last, Dim, Params),
-                       To   => Index_Base);
-                  --  Expected bounds
-
-                  Bounds : constant Node_Id := Aggregate_Bounds (Subexpr);
-                  pragma Assert (Present (Bounds));
-                  --  Aggregate bounds should always be computed for
-                  --  sub-aggregates supported by SPARK (they should be
-                  --  unknown only for iterator_specification aggregates)
-
-                  Low  : constant W_Expr_Id :=
-                    Transform_Expr
-                      (Low_Bound (Bounds), Index_Base, EW_Term, Params);
-                  High : constant W_Expr_Id :=
-                    Transform_Expr
-                      (High_Bound (Bounds), Index_Base, EW_Term, Params);
-
-               begin
-                  Append
-                    (Choice_Checks,
-                     New_Located_Assert
-                       (Ada_Node => Subexpr,
-                        Reason   => VC_Index_Check,
-                        Kind     => EW_Assert,
-                        Pred     =>
-                          New_And_Pred
-                            (Left  =>
-                               New_Comparison
-                                 (Symbol => Why_Eq,
-                                  Left   => +Low,
-                                  Right  => Low_Bnd),
-                             Right =>
-                               New_Comparison
-                                 (Symbol => Why_Eq,
-                                  Left   => +High,
-                                  Right  => High_Bnd))));
-               end;
-            end if;
-
-            --  In regular multidimensional aggregates, we may need to check
-            --  choices in upper dimensions.
-            --  If we have reached a value which depends on iterated
-            --  component associations, we must check the value.
-
-            if (not In_Delta_Aggregate and then Dim /= Nb_Dim)
-              or else In_Iterated_Assoc
-            then
-               while Present (Positional) loop
-                  if not In_Delta_Aggregate and then Dim /= Nb_Dim then
-                     Insert_Checks (Positional, Dim + 1);
-                  else
-                     pragma Assert (In_Iterated_Assoc);
-                     Append
-                       (Comp_Checks,
-                        New_Ignore
-                          (Ada_Node => Positional,
-                           Prog     =>
-                             +Transform_Aggregate_Value
-                                (Value  => Positional,
-                                 Typ    => Comp_Type,
-                                 Domain => Domain,
-                                 Params => Params)));
-                  end if;
-                  Next (Positional);
-               end loop;
-            end if;
-         end Insert_Checks;
-
-         --  Start of processing of Insert_Check_For_Choices
-
-      begin
-         --  Compute Last_Uniq_Dim.
-
-         if not In_Delta_Aggregate then
-            declare
-               Subexpr : Node_Id := Expr;
-            begin
-               loop
-                  exit when Last_Uniq_Dim = Nb_Dim;
-                  declare
-                     Assocs      : constant List_Id :=
-                       Component_Associations (Subexpr);
-                     Association : constant Node_Id := Nlists.First (Assocs);
-                     Exprs       : constant List_Id := Expressions (Subexpr);
-                     Num_Assocs  : constant Nat := Nlists.List_Length (Assocs);
-                     Num_Exprs   : constant Nat := Nlists.List_Length (Exprs);
-                  begin
-                     exit when Num_Assocs >= 2;
-                     exit when Num_Exprs >= 2;
-                     exit when Num_Exprs = Num_Assocs;
-                     if Num_Assocs = 0 then
-                        pragma Assert (Num_Exprs = 1);
-                        Subexpr := Nlists.First (Exprs);
-                     else
-                        pragma Assert (Num_Assocs = 1);
-                        pragma Assert (Num_Exprs = 0);
-                        Subexpr := Expression (Association);
-                     end if;
-                     Last_Uniq_Dim := Last_Uniq_Dim + 1;
-                  end;
-               end loop;
-            end;
-         end if;
-
-         --  For regular aggregates, check the scalar ranges of the
-         --  aggregate subtype against its Etype. It is not necessary for
-         --  delta aggregates where the bounds come from the prefix. In a
-         --  similar way, if the aggregate contains an others choice, then the
-         --  index type is taken from the context so we do not need to check
-         --  it. It is also unnecessary for empty aggregates, as each range
-         --  will either be empty, or the computation of predecessor will
-         --  wraparound (for modular types only) and the associated range check
-         --  from Insert_Checks will fail.
-
-         if not Empty_Aggregate
-           and then not In_Delta_Aggregate
-           and then
-             (Nb_Dim > 1
-              or else Is_Empty_List (Component_Associations (Expr))
-              or else
-                not Is_Others_Choice
-                      (Choice_List
-                         (Nlists.Last (Component_Associations (Expr)))))
-         then
-            declare
-               Index      : Node_Id := First_Index (Expr_Typ);
-               Index_Base : Node_Id := First_Index (Retysp (Etype (Expr_Typ)));
-            begin
-               while Present (Index) loop
-                  Append
-                    (Choice_Checks,
-                     Check_Scalar_Range
-                       (Params => Body_Params,
-                        N      => Etype (Index),
-                        Base   => Etype (Index_Base)));
-                  Next_Index (Index);
-                  Next_Index (Index_Base);
-               end loop;
-            end;
-         end if;
-
-         --  Check the actual choice values
-
-         Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-
-         Insert_Checks (Expr, 1);
-
-         Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
-         Prepend (+Choice_Checks, +Comp_Checks, T);
-      end Insert_Check_For_Choices;
-
-      -------------------------------
-      -- Make_Defining_Proposition --
-      -------------------------------
-
-      function Make_Defining_Proposition
-        (Arr                 : W_Term_Id;
-         Elements_From_Nodes : Node_To_Why_Id.Map;
-         Bounds              : W_Expr_Array;
-         Params              : Transformation_Params;
-         Skip_Guards         : Boolean := False) return W_Pred_Id
-      is
-         Result : W_Pred_Id := True_Pred;
-      begin
-         --  Assume values of the aggregate's bounds. For delta aggregates,
-         --  take the bounds of the array argument, otherwise, bounds are given
-         --  as parameters.
-
-         if not Is_Static_Array_Type (Expr_Typ) then
-            pragma Assert (In_Delta_Aggregate or Needs_Bounds);
-
-            for Dim in Dimensions loop
-               declare
-                  Prefix   : constant W_Term_Id :=
-                    (if In_Delta_Aggregate
-                     then +Elements_From_Nodes.Element (Update_Prefix)
-                     else Why_Empty);
-                  F_Expr   : constant W_Term_Id :=
-                    (if In_Delta_Aggregate
-                     then Get_Array_Attr (Prefix, Attribute_First, Dim)
-                     else +Bounds (2 * Dim - 1));
-                  First_Eq : constant W_Pred_Id :=
-                    New_Comparison
-                      (Symbol => Why_Eq,
-                       Left   => Get_Array_Attr (Arr, Attribute_First, Dim),
-                       Right  => F_Expr);
-                  L_Expr   : constant W_Term_Id :=
-                    (if In_Delta_Aggregate
-                     then Get_Array_Attr (Prefix, Attribute_Last, Dim)
-                     else +Bounds (2 * Dim));
-                  Last_Eq  : constant W_Pred_Id :=
-                    New_Comparison
-                      (Symbol => Why_Eq,
-                       Left   => Get_Array_Attr (Arr, Attribute_Last, Dim),
-                       Right  => L_Expr);
-
-               begin
-                  --  Add equalities to the axiom's body
-
-                  Result := New_And_Pred ([First_Eq, Last_Eq, Result]);
-               end;
-            end loop;
-
-            --  If bounds are taken as parameters, we should add a guard to the
-            --  axiom for the dynamic property of the array to avoid generating
-            --  an unsound axiom if the bounds are not in their type.
-
-            if Needs_Bounds and then not Skip_Guards then
-               Result :=
-                 New_Conditional
-                   (Condition =>
-                      +New_Dynamic_Property
-                         (EW_Pred, Base_Type (Expr_Typ), Bounds, Params),
-                    Then_Part => Result,
-                    Typ       => EW_Bool_Type);
-            end if;
-         end if;
-
-         Result :=
-           New_And_Pred
-             (Result,
-              Transform_Array_Component_Associations
-                (Arr,
-                 Elements_From_Nodes,
-                 Bounds,
-                 Params,
-                 Skip_Guards => Skip_Guards));
-
-         return Result;
-      end Make_Defining_Proposition;
-
-      -------------------------------------
-      -- Should_Use_Function_Translation --
-      -------------------------------------
-
-      function Should_Use_Function_Translation return Boolean is
-         function Contains_Iterated_Association
-           (Subaggr : Node_Id; Dim : Dimensions) return Boolean;
-         --  Recursive search over subaggregate.
-
-         -----------------------------------
-         -- Contains_Iterated_Association --
-         -----------------------------------
-
-         function Contains_Iterated_Association
-           (Subaggr : Node_Id; Dim : Dimensions) return Boolean
-         is
-
-            Positional  : Node_Id :=
-              (if In_Delta_Aggregate
-               then Types.Empty
-               else First (Expressions (Subaggr)));
-            Association : Node_Id := First (Component_Associations (Subaggr));
-            --  Cursors
-
-         begin
-            if Dim /= Nb_Dim and then not In_Delta_Aggregate then
-               while Present (Positional) loop
-                  if Contains_Iterated_Association (Positional, Dim + 1) then
-                     return True;
-                  end if;
-                  Next (Positional);
-               end loop;
-            end if;
-
-            while Present (Association) loop
-               if Nkind (Association) = N_Iterated_Component_Association
-                 or else
-                   (Dim /= Nb_Dim
-                    and then not In_Delta_Aggregate
-                    and then
-                      Contains_Iterated_Association
-                        (Expression (Association), Dim + 1))
-               then
-                  return True;
-               end if;
-               Next (Association);
-            end loop;
-
-            return False;
-         end Contains_Iterated_Association;
-
-         --  Start of processing for Should_Use_Function_Translation
-
-      begin
-         return not Contains_Iterated_Association (Expr, 1);
-      end Should_Use_Function_Translation;
-
-      -------------------------------
-      -- Transform_Aggregate_Value --
-      -------------------------------
-
-      function Transform_Aggregate_Value
-        (Value  : Node_Id;
-         Typ    : Entity_Id;
-         Domain : EW_Domain;
-         Params : Transformation_Params) return W_Expr_Id
-      is
-         Result : W_Expr_Id;
-
-      begin
-         --  Value might be an association with a box. In this case, the
-         --  component is initialized by default.
-
-         if Nkind (Value)
-            in N_Component_Association | N_Iterated_Component_Association
-         then
-            pragma Assert (Box_Present (Value));
-            declare
-               Comp_Relaxed : constant Boolean :=
-                 (if Relaxed_Init
-                  then Has_Init_Wrapper (Comp_Type)
-                  else Has_Relaxed_Init (Comp_Type));
-
-            begin
-               --  If Expr_Typ has a Default_Component_Value aspect, use its
-               --  value.
-
-               if Has_Default_Aspect (Expr_Typ) then
-                  Result :=
-                    Transform_Expr
-                      (Expr          =>
-                         Default_Aspect_Component_Value (Expr_Typ),
-                       Expected_Type => EW_Abstract (Comp_Type, Comp_Relaxed),
-                       Domain        => Domain,
-                       Params        => Params);
-
-               --  Otherwise, use the default value of the type
-
-               else
-                  Result :=
-                    Compute_Default_Value
-                      (Value, Comp_Type, Comp_Relaxed, Domain, Params);
-               end if;
-            end;
-         else
-            Result :=
-              Transform_Expr
-                (Value,
-                 (if Expr_Has_Relaxed_Init (Value, No_Eval => False)
-                  then EW_Abstract (Typ, Relaxed_Init => True)
-                  else Type_Of_Node (Typ)),
-                 --  If a value which is not a scalar type has relaxed
-                 --  initialization, so will the aggregate. Go to the wrapper
-                 --  type to avoid spurious initialization checks.
-
-                 Domain,
-                 Params);
-         end if;
-
-         return Result;
-      end Transform_Aggregate_Value;
-
-      --------------------------------------------
-      -- Transform_Array_Component_Associations --
-      --------------------------------------------
-
-      function Transform_Array_Component_Associations
-        (Arr                 : W_Term_Id;
-         Elements_From_Nodes : Node_To_Why_Id.Map;
-         Bounds              : W_Expr_Array;
-         Params              : Transformation_Params;
-         Skip_Guards         : Boolean := False) return W_Pred_Id
-      is
-         Binders : Binder_Array (Dimensions);
-
-         Indexes : W_Expr_Array (Dimensions);
-         --  This array contains either the identifiers for indexes in the
-         --  normal translation, or the actual values of indexes in the
-         --  translation for "simple" aggregates. For example, in the first
-         --  case it could be:
-         --     (tmp1, tmp2, tmp3)
-         --  while in the second case it could be:
-         --     (1, 3, 2)
-         --  This allows using Constrain_Value_At_Index in both cases to get
-         --  the value of the aggregate at the desired indexes.
-
-         -----------------------
-         -- Local subprograms --
-         -----------------------
-
-         function Constrain_Value_At_Index
-           (Subexpr : Node_Id; Indexes : W_Expr_Array) return W_Pred_Id;
-         --  Return the proposition that the array Arr at the indices Indexes
-         --  is equal to the value given in Subexpr.
-
-         function Lookup_Value (Arg : Node_Id) return W_Term_Id;
-         --  Lookup the value associated to Arg in the Args and convert it
-         --  to the base type for the index.
-
-         function Select_Nth_Index
-           (Dim : Dimensions; Offset : Nat) return W_Term_Id;
-         --  Return the value for Index at Offset from Arr'First (Dim)
-
-         function Select_These_Choices
-           (Dim : Dimensions; L : List_Id) return W_Pred_Id;
-         --  Return a proposition that expresses that Indexes satisfies one
-         --  choice in the list of choices L at dimension Dim. In the case of
-         --  an aggregate of a delta aggregate, the (possibly dynamic) choices
-         --  will be pulled from the arguments to the logic function.
-
-         procedure Transform_Aggregate_Values
-           (Simple_Ranges : out W_Pred_Id;
-            Simple_Assocs : out W_Pred_Id;
-            Other_Assocs  : out W_Pred_Id);
-         --  Main recursive function operating over multi-dimensional array
-         --  aggregates.
-
-         ------------------------------
-         -- Constrain_Value_At_Index --
-         ------------------------------
-
-         function Constrain_Value_At_Index
-           (Subexpr : Node_Id; Indexes : W_Expr_Array) return W_Pred_Id
-         is
-            --  Note that Subexpr here can be the updated expression in the
-            --  default case of the logic function of a delta aggregate.
-            Curs    : constant Node_To_Why_Id.Cursor :=
-              Elements_From_Nodes.Find (Subexpr);
-            Read    : W_Term_Id;
-            Arg_Val : W_Term_Id;
-         begin
-            --  Whenever possible, take advantage of the why3 construct
-            --  for range constants. This improves counterexamples.
-
-            if Nkind (Subexpr)
-               not in N_Component_Association
-                    | N_Iterated_Component_Association
-              and then Is_Range_Type_In_Why (Comp_Type)
-              and then Compile_Time_Known_Value (Subexpr)
-            then
-               return
-                 New_Comparison
-                   (Symbol => Why_Eq,
-                    Left   =>
-                      New_Array_Access
-                        (Ada_Node => Subexpr, Ar => Arr, Index => Indexes),
-                    Right  =>
-                      (if Has_Relaxed_Init (Comp_Type) or else Relaxed_Init
-                       then
-                         Insert_Simple_Conversion
-                           (Expr =>
-                              New_Range_Constant
-                                (Value => Expr_Value (Subexpr),
-                                 Typ   => EW_Abstract (Comp_Type)),
-                            To   =>
-                              EW_Abstract (Comp_Type, Relaxed_Init => True))
-                       else
-                         New_Range_Constant
-                           (Value => Expr_Value (Subexpr),
-                            Typ   => EW_Abstract (Comp_Type))));
-            end if;
-
-            --  Create array access and comparison
-
-            Read :=
-              New_Array_Access
-                (Ada_Node => Subexpr, Ar => Arr, Index => Indexes);
-
-            --  We may not have a mapping for Subexpr in Args if Subexpr is
-            --  part of an iterated association component. In this case, we
-            --  need to translate the expression on the fly.
-
-            if Node_To_Why_Id.Has_Element (Curs) then
-               Arg_Val := +Node_To_Why_Id.Element (Curs);
-            else
-               Arg_Val :=
-                 +Transform_Aggregate_Value
-                    (Value  => Subexpr,
-                     Typ    => Comp_Type,
-                     Domain => EW_Term,
-                     Params => Params);
-            end if;
-
-            --  Array components have the tag of their types
-
-            if Is_Record_Type_In_Why (Comp_Type) then
-               Arg_Val :=
-                 New_Tag_And_Ext_Update (Name => Arg_Val, Ty => Comp_Type);
-            end if;
-
-            --  Special case for the expression of the delta aggregate. In
-            --  that case, we want to build the value Prefix(i,j..) with the
-            --  default indexes.
-            --  We generate:
-            --    arr (indexes) = arg_val (indexes)
-
-            if In_Delta_Aggregate and then Subexpr = Update_Prefix then
-               declare
-                  Prefix_Read : constant W_Term_Id :=
-                    New_Array_Access (Ar => Arg_Val, Index => Indexes);
-               begin
-                  --  In general, the aggregate and its prefix have the same
-                  --  Why3 type. This might not be the case when the delta
-                  --  aggregate has relaxed initialization and not the prefix.
-                  --  Insert a conversion in this case.
-
-                  pragma
-                    Assert
-                      (Get_Ada_Node (+Get_Type (+Prefix_Read))
-                       = Get_Ada_Node (+Get_Type (+Read))
-                       and then
-                         (if Get_Relaxed_Init (Get_Type (+Prefix_Read))
-                          then Get_Relaxed_Init (Get_Type (+Read))));
-
-                  return
-                    New_Comparison
-                      (Symbol => Why_Eq,
-                       Left   => Read,
-                       Right  =>
-                         Insert_Simple_Conversion
-                           (Expr => Prefix_Read, To => Get_Type (+Read)));
-               end;
-
-            --  Use the split form of the component type for the
-            --  comparison to avoid introducing unnecessary
-            --  conversions whenever possible (see Type_Of_Node). For this
-            --  to be correct, we need to guard the axiom so that
-            --  Arg_Val is always in the appropriate type.
-            --  We generate:
-            --    is_initialized (arr (indexes)) /\
-            --    let tmp = arg_val in
-            --      dyn_prop tmp ->
-            --      to_base (arr (indexes)) = tmp
-
-            else
-               declare
-                  Is_Init : W_Pred_Id := True_Pred;
-                  Value   : W_Term_Id;
-                  Prop    : W_Pred_Id;
-
-               begin
-                  Value := New_Temp_For_Expr (Arg_Val);
-
-                  --  If the value has a type which does not have
-                  --  relaxed initialization, it must be initialized.
-
-                  if (Has_Relaxed_Init (Comp_Type) or else Relaxed_Init)
-                    and then
-                      (Has_Scalar_Type (Comp_Type)
-                       or else not Is_Init_Wrapper_Type (Get_Type (+Value)))
-                  then
-                     Is_Init :=
-                       +Compute_Is_Initialized
-                          (Comp_Type,
-                           +Read,
-                           Params,
-                           EW_Pred,
-                           Exclude_Components => Relaxed);
-                  end if;
-
-                  Read :=
-                    Insert_Simple_Conversion
-                      (Expr => Read, To => Get_Type (+Value));
-
-                  Prop :=
-                    New_Comparison
-                      (Symbol => Why_Eq, Left => Read, Right => Value);
-
-                  if not Skip_Guards then
-                     declare
-                        Dyn_Prop : constant W_Pred_Id :=
-                          Compute_Dynamic_Invariant
-                            (Expr => Value, Ty => Comp_Type, Params => Params);
-                     begin
-                        Prop :=
-                          New_Conditional
-                            (Condition => Dyn_Prop, Then_Part => Prop);
-                     end;
-                  end if;
-
-                  return
-                    New_And_Pred
-                      (Left  =>
-                         Binding_For_Temp (Tmp => Value, Context => Prop),
-                       Right => Is_Init);
-               end;
-            end if;
-         end Constrain_Value_At_Index;
-
-         ------------------
-         -- Lookup_Value --
-         ------------------
-
-         function Lookup_Value (Arg : Node_Id) return W_Term_Id is
-            Val : constant W_Term_Id := +Elements_From_Nodes.Element (Arg);
-         begin
-            return
-              Insert_Simple_Conversion
-                (Expr => Val, To => Base_Why_Type_No_Bool (+Val));
-         end Lookup_Value;
-
-         ----------------------
-         -- Select_Nth_Index --
-         ----------------------
-
-         function Select_Nth_Index
-           (Dim : Dimensions; Offset : Nat) return W_Term_Id
-         is
-            Rng   : constant Node_Id := Get_Range (Index_Types (Dim));
-            Typ   : constant W_Type_Id :=
-              Base_Why_Type_No_Bool (Index_Types (Dim));
-            Low   : constant Node_Id := Low_Bound (Rng);
-            First : W_Term_Id;
-            Val   : W_Term_Id;
-
-         begin
-            if Is_Static_Expression (Low) then
-               Val :=
-                 New_Discrete_Constant
-                   (Value => Expr_Value (Low) + UI_From_Int (Offset),
-                    Typ   => Typ);
-            else
-               First := +Bounds (2 * Dim - 1);
-
-               Val :=
-                 +New_Discrete_Add
-                    (Domain => Domain,
-                     Left   => +First,
-                     Right  =>
-                       New_Discrete_Constant
-                         (Value => UI_From_Int (Offset), Typ => Typ));
-            end if;
-
-            return Val;
-         end Select_Nth_Index;
-
-         --------------------------
-         -- Select_These_Choices --
-         --------------------------
-
-         function Select_These_Choices
-           (Dim : Dimensions; L : List_Id) return W_Pred_Id
-         is
-            Result   : W_Pred_Id := False_Pred;
-            Choice   : Node_Id := First (L);
-            Rng_Expr : W_Pred_Id;
-         begin
-            while Present (Choice) loop
-
-               --  For delta aggregates, values used in choices are stored in
-               --  Args. Retrieve them from here.
-
-               if In_Delta_Aggregate then
-                  case Nkind (Choice) is
-                     when N_Range | N_Subtype_Indication =>
-                        declare
-                           Low  : constant Node_Id :=
-                             Low_Bound (Get_Range (Choice));
-                           High : constant Node_Id :=
-                             High_Bound (Get_Range (Choice));
-                        begin
-                           Rng_Expr :=
-                             New_Range_Expr
-                               (Low  => Lookup_Value (Low),
-                                High => Lookup_Value (High),
-                                Expr => +Indexes (Integer (Dim)));
-                        end;
-
-                     when N_Aggregate                    =>
-                        pragma Assert (Nb_Dim /= 1 and then Dim = 1);
-
-                        --  This is a choice of a multidimensional 'Update,
-                        --  for example (I, J, K) of
-                        --  'Update((I, J, K) => New_Val).
-                        --  Create a conjunction of comparisons, one for
-                        --  each dimension.
-
-                        declare
-                           Conjunct     : W_Pred_Id := True_Pred;
-                           Multi_Assocs : constant List_Id :=
-                             Component_Associations (Choice);
-                           Multi_Expr   : Node_Id :=
-                             Nlists.First (Expressions (Choice));
-                        begin
-                           pragma Assert (No (Multi_Assocs));
-
-                           for Current_Dim in Dimensions loop
-                              Rng_Expr :=
-                                New_Comparison
-                                  (Symbol => Why_Eq,
-                                   Left   => +Indexes (Current_Dim),
-                                   Right  => Lookup_Value (Multi_Expr));
-                              Conjunct :=
-                                New_And_Pred
-                                  (Left => Conjunct, Right => Rng_Expr);
-                              Next (Multi_Expr);
-                           end loop;
-                           pragma Assert (No (Multi_Expr));
-
-                           Rng_Expr := Conjunct;
-                        end;
-
-                     when others                         =>
-                        if Is_Entity_Name (Choice)
-                          and then Is_Type (Entity (Choice))
-                        then
-                           declare
-                              Rng : constant Node_Id :=
-                                Get_Range (Entity (Choice));
-                           begin
-                              Rng_Expr :=
-                                New_Range_Expr
-                                  (Low  => Lookup_Value (Low_Bound (Rng)),
-                                   High => Lookup_Value (High_Bound (Rng)),
-                                   Expr => +Indexes (Integer (Dim)));
-                           end;
-                        else
-                           Rng_Expr :=
-                             New_Comparison
-                               (Symbol => Why_Eq,
-                                Left   => +Indexes (Integer (Dim)),
-                                Right  => Lookup_Value (Choice));
-                        end if;
-                  end case;
-
-               --  The choices are not arguments, proceed with standard
-               --  transformation of discrete choice.
-
-               else
-                  Rng_Expr :=
-                    +Transform_Discrete_Choice
-                       (Choice      => Choice,
-                        Choice_Type => Empty,
-                        Expr        => Indexes (Integer (Dim)),
-                        Domain      => EW_Pred,
-                        Params      => Params);
-               end if;
-
-               Result := New_Or_Pred (Left => Result, Right => Rng_Expr);
-               Next (Choice);
-            end loop;
-
-            return Result;
-         end Select_These_Choices;
-
-         --------------------------------
-         -- Transform_Aggregate_Values --
-         --------------------------------
-
-         procedure Transform_Aggregate_Values
-           (Simple_Ranges : out W_Pred_Id;
-            Simple_Assocs : out W_Pred_Id;
-            Other_Assocs  : out W_Pred_Id)
-         is
-            function Transform_Complex_Association
-              (Dim : Dimensions; Expr_Or_Assoc : Node_Id) return W_Pred_Id;
-            --  Either constrains the value at Aggr (Indexes) with the value
-            --  Expr_Or_Assoc if we have reached the last dimension, or call
-            --  Transform_Rec_Complex_Aggregate recursively.
-            --  Also stores indexes of iterated component association in the
-            --  symbol map when necessary.
-
-            procedure Transform_Rec_Aggregate
-              (Dim : Dimensions; Subexpr : Node_Id; Pre : W_Pred_Id)
-            with Pre => (Dim = 1) = (Pre = True_Pred);
-            --  Stores in V_Simple_Assocs the association corresponding to a
-            --  single value of each index and in V_Other_Assocs the other
-            --  associations. V_Other_Assocs links values of Aggr (Indexes)
-            --  while V_Simple_Assocs gives the value of each association
-            --  directly.
-            --  Pre is the guard expressing that all indexes up to Dim have
-            --  the values of Values.
-
-            function Transform_Rec_Complex_Aggregate
-              (Dim : Dimensions; Subexpr : Node_Id) return W_Pred_Id;
-            --  Generate a predicate giving the definition of Aggr (Indexes)
-            --  for values in Expr.
-
-            Values          : W_Expr_Array (Dimensions);
-            --  Array in which the specific value of each simple index is
-            --  stored.
-            use all type W_Pred_Vectors.Vector;
-            V_Simple_Ranges : W_Pred_Vectors.Vector;
-            V_Simple_Assocs : W_Pred_Vectors.Vector;
-            V_Other_Assocs  : W_Pred_Vectors.Vector;
-
-            -----------------------------------
-            -- Transform_Complex_Association --
-            -----------------------------------
-
-            function Transform_Complex_Association
-              (Dim : Dimensions; Expr_Or_Assoc : Node_Id) return W_Pred_Id
-            is
-               Expr    : constant Node_Id :=
-                 (if Nkind (Expr_Or_Assoc)
-                     in N_Iterated_Component_Association
-                      | N_Component_Association
-                    and then not Box_Present (Expr_Or_Assoc)
-                  then Expression (Expr_Or_Assoc)
-                  else Expr_Or_Assoc);
-               Actions : constant List_Id :=
-                 (if Nkind (Expr_Or_Assoc) in N_Iterated_Component_Association
-                  then Loop_Actions (Expr_Or_Assoc)
-                  else No_List);
-               --  Actions associated with iterated component associations
-               Result  : W_Pred_Id;
-
-            begin
-               --  For iterated component associations, we need to introduce
-               --  quantified variable in the symbol table. We map it to the
-               --  current index variable.
-
-               if Nkind (Expr_Or_Assoc) = N_Iterated_Component_Association then
-                  Insert_Tmp_Item_For_Entity
-                    (Defining_Identifier (Expr_Or_Assoc), +Indexes (Dim));
-               end if;
-
-               if Present (Actions) then
-                  Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-                  Transform_Actions_Preparation (Actions);
-               end if;
-
-               if Dim /= Nb_Dim and then not In_Delta_Aggregate then
-                  Result := Transform_Rec_Complex_Aggregate (Dim + 1, Expr);
-               else
-                  Result := Constrain_Value_At_Index (Expr, Indexes);
-               end if;
-
-               if Present (Actions) then
-                  Result :=
-                    +Transform_Actions
-                       (Actions => Actions,
-                        Expr    => +Result,
-                        Domain  => EW_Pred,
-                        Params  => Params);
-                  Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
-               end if;
-
-               return Result;
-            end Transform_Complex_Association;
-
-            -----------------------------
-            -- Transform_Rec_Aggregate --
-            -----------------------------
-
-            procedure Transform_Rec_Aggregate
-              (Dim : Dimensions; Subexpr : Node_Id; Pre : W_Pred_Id)
-            is
-               Positionals : constant List_Id :=
-                 (if In_Delta_Aggregate
-                  then Empty_List
-                  else Expressions (Subexpr));
-               Assocs      : constant List_Id :=
-                 Component_Associations (Subexpr);
-               Assocs_Len  : constant Natural :=
-                 Integer (List_Length (Assocs));
-               Association : Node_Id;
-               Positional  : Node_Id;
-               Condition   : W_Pred_Vectors.Vector;
-
-            begin
-               Positional := Nlists.First (Positionals);
-               Association := Nlists.First (Assocs);
-
-               --  On a positional aggregate, all associations are simple.
-               --  Store the nth index in Values and either constrain the
-               --  value of Aggr or continue the recursion.
-
-               if Present (Positional) then
-                  for Offset in 1 .. List_Length (Positionals) loop
-                     declare
-                        Value : constant W_Term_Id :=
-                          Select_Nth_Index (Dim, Offset - 1);
-                        Cond  : constant W_Pred_Id :=
-                          New_Comparison
-                            (Symbol => Why_Eq,
-                             Left   => +Indexes (Dim),
-                             Right  => Value);
-
-                     begin
-                        Values (Dim) := +Value;
-                        Append
-                          (V => Condition, Pred => New_Not (Right => Cond));
-
-                        Append
-                          (V    => V_Simple_Ranges,
-                           Pred =>
-                             New_Range_Expr
-                               (Low  =>
-                                  Get_Array_Attr (Arr, Attribute_First, Dim),
-                                High =>
-                                  Get_Array_Attr (Arr, Attribute_Last, Dim),
-                                Expr => Value));
-
-                        if Dim = Nb_Dim then
-                           Append
-                             (V    => V_Simple_Assocs,
-                              Pred =>
-                                Constrain_Value_At_Index (Positional, Values));
-                        else
-                           Transform_Rec_Aggregate
-                             (Dim     => Dim + 1,
-                              Subexpr => Positional,
-                              Pre     => New_And_Pred (Pre, Cond));
-                        end if;
-                     end;
-                     Next (Positional);
-                  end loop;
-
-               elsif Present (Association) then
-
-                  --  Go over the choices which are not the others choice.
-                  --  Note that a single choice is handled as an others choice.
-                  --  Along the way, store in Condition, the condition for the
-                  --  others or default choice.
-
-                  if In_Delta_Aggregate or else Assocs_Len > 1 then
-                     loop
-                        declare
-                           Cond : constant W_Pred_Id :=
-                             Select_These_Choices
-                               (Dim, Choice_List (Association));
-
-                        begin
-                           Append
-                             (V => Condition, Pred => New_Not (Right => Cond));
-
-                           --  An association is simple if there is only one
-                           --  choice, and it is neither a range nor an
-                           --  iterated component association.
-
-                           if Nkind (Association)
-                             /= N_Iterated_Component_Association
-                             and then
-                               List_Length (Choice_List (Association)) = 1
-                             and then
-                               not Discrete_Choice_Is_Range
-                                     (First (Choice_List (Association)))
-                           then
-
-                              --  The choice is simple, store the value in
-                              --  Values and continue the recursion.
-
-                              declare
-                                 Choice : constant Node_Id :=
-                                   First (Choice_List (Association));
-                              begin
-                                 Values (Integer (Dim)) :=
-                                   (if In_Delta_Aggregate
-                                    then +Lookup_Value (Choice)
-                                    else
-                                      Transform_Expr
-                                        (Expr          => Choice,
-                                         Expected_Type =>
-                                           Base_Why_Type_No_Bool
-                                             (Etype (Choice)),
-                                         Domain        => EW_Term,
-                                         Params        => Params));
-                              end;
-
-                              Append
-                                (V    => V_Simple_Ranges,
-                                 Pred =>
-                                   New_Range_Expr
-                                     (Low  =>
-                                        Get_Array_Attr
-                                          (Arr, Attribute_First, Dim),
-                                      High =>
-                                        Get_Array_Attr
-                                          (Arr, Attribute_Last, Dim),
-                                      Expr => +Values (Integer (Dim))));
-
-                              if Dim = Nb_Dim then
-                                 Append
-                                   (V    => V_Simple_Assocs,
-                                    Pred =>
-                                      Constrain_Value_At_Index
-                                        ((if Box_Present (Association)
-                                          then Association
-                                          else Expression (Association)),
-                                         Values));
-                              else
-                                 Transform_Rec_Aggregate
-                                   (Dim     => Dim + 1,
-                                    Subexpr => Expression (Association),
-                                    Pre     => New_And_Pred (Pre, Cond));
-                              end if;
-
-                           --  The choice is not simple, we resort to the
-                           --  translation involving a quantifier. We store it
-                           --  in Other_Assocs.
-
-                           else
-                              Append
-                                (V    => V_Other_Assocs,
-                                 Pred =>
-                                   New_Conditional
-                                     (Condition => New_And_Pred (Pre, Cond),
-                                      Then_Part =>
-                                        Transform_Complex_Association
-                                          (Dim, Association)));
-                           end if;
-                           Next (Association);
-
-                           --  Exit the loop when we have reached the end of
-                           --  the associations or the others choice.
-
-                           exit when
-                             No (Association)
-                             or else
-                               (not In_Delta_Aggregate
-                                and then
-                                  List_Length (Choice_List (Association)) = 1
-                                and then
-                                  Nkind (First (Choice_List (Association)))
-                                  = N_Others_Choice);
-                        end;
-                     end loop;
-                  end if;
-               end if;
-
-               --  For delta aggregates, the prefix is used for the default
-               --  value in the logic function.
-
-               if In_Delta_Aggregate then
-                  Append
-                    (V    => V_Other_Assocs,
-                     Pred =>
-                       New_Conditional
-                         (Condition =>
-                            New_And_Pred (Pre & To_Array (Condition)),
-                          Then_Part =>
-                            Constrain_Value_At_Index
-                              (Update_Prefix, Indexes)));
-
-               --  Special case for "others" choice, which must appear alone as
-               --  last association and for aggregates with only one
-               --  association, as their choice might not be static.
-
-               elsif Present (Association) then
-                  pragma Assert (No (Next (Association)));
-
-                  Append
-                    (V    => V_Other_Assocs,
-                     Pred =>
-                       New_Conditional
-                         (Condition =>
-                            New_And_Pred (Pre & To_Array (Condition)),
-                          Then_Part =>
-                            Transform_Complex_Association (Dim, Association)));
-               end if;
-            end Transform_Rec_Aggregate;
-
-            -------------------------------------
-            -- Transform_Rec_Complex_Aggregate --
-            -------------------------------------
-
-            function Transform_Rec_Complex_Aggregate
-              (Dim : Dimensions; Subexpr : Node_Id) return W_Pred_Id
-            is
-               Positionals : constant List_Id :=
-                 (if In_Delta_Aggregate
-                  then Empty_List
-                  else Expressions (Subexpr));
-               Assocs      : constant List_Id :=
-                 Component_Associations (Subexpr);
-               Association : Node_Id :=
-                 (if Is_Empty_List (Assocs)
-                  then Empty
-                  else Nlists.Last (Assocs));
-               Positional  : Node_Id := Nlists.First (Positionals);
-               Assocs_Len  : constant Natural :=
-                 Integer (List_Length (Assocs));
-               Has_Others  : constant Boolean :=
-                 not In_Delta_Aggregate
-                 and then Present (Association)
-                 and then List_Length (Choice_List (Association)) = 1
-                 and then
-                   Nkind (First (Choice_List (Association))) = N_Others_Choice;
-               Else_Part   : constant W_Pred_Id :=
-                 (if In_Delta_Aggregate
-                  then Constrain_Value_At_Index (Update_Prefix, Indexes)
-                  elsif Has_Others
-                    and then (Assocs_Len > 1 or else Present (Positional))
-                  then Transform_Complex_Association (Dim, Association)
-                  else True_Pred);
-
-            begin
-               --  We go over the expressions/associations and generate:
-               --
-               --  if <Choice1> then Aggr (Indexes) = <Expr1>
-               --  elsif <Choice2> then ...
-               --  else Aggr (Indexes) = <Expr_Others>
-               --      or Update_Prefix (Indexes) in case of delta aggregates
-               --
-               --  Associations are taken in the reverse order to accomodate
-               --  the semantics of delta aggregates.
-
-               if Present (Positional) then
-                  pragma
-                    Assert
-                      (No (Association)
-                       or else (Assocs_Len = 1 and then Has_Others));
-
-                  declare
-                     Then_Part   : constant W_Pred_Id :=
-                       Transform_Complex_Association (Dim, Positional);
-                     Elsif_Parts :
-                       W_Pred_Array
-                         (1 .. Integer (List_Length (Positionals)) - 1);
-                  begin
-                     Next (Positional);
-
-                     for Offset in 1 .. List_Length (Positionals) - 1 loop
-                        pragma Assert (Present (Positional));
-                        Elsif_Parts (Integer (Offset)) :=
-                          New_Elsif
-                            (Condition =>
-                               +New_Comparison
-                                  (Symbol => Why_Eq,
-                                   Left   => +Indexes (Integer (Dim)),
-                                   Right  => +Select_Nth_Index (Dim, Offset),
-                                   Domain => EW_Pred),
-                             Then_Part =>
-                               +Transform_Complex_Association
-                                  (Dim, Positional));
-                        Next (Positional);
-                     end loop;
-
-                     pragma Assert (No (Positional));
-                     return
-                       New_Conditional
-                         (Condition   =>
-                            New_Comparison
-                              (Symbol => Why_Eq,
-                               Left   => +Indexes (Integer (Dim)),
-                               Right  => Select_Nth_Index (Dim, 0)),
-                          Then_Part   => Then_Part,
-                          Elsif_Parts => Elsif_Parts,
-                          Else_Part   => Else_Part);
-                  end;
-
-               elsif Present (Association) then
-                  declare
-                     Cond        : W_Pred_Id;
-                     Then_Part   : W_Pred_Id;
-                     Elsif_Parts :
-                       W_Pred_Array
-                         (1 .. Assocs_Len - (if Has_Others then 2 else 1));
-
-                  begin
-                     --  If there is an "others" choice, skip it
-
-                     if Assocs_Len > 1 and then Has_Others then
-                        Prev (Association);
-                     end if;
-
-                     --  Store the last not "others" choice in Then_Part. We
-                     --  only store the condition in Cond if there is more than
-                     --  1 choice.
-
-                     Cond :=
-                       (if Assocs_Len = 1 and then not In_Delta_Aggregate
-                        then True_Pred
-                        else
-                          Select_These_Choices
-                            (Dim, Choice_List (Association)));
-
-                     Then_Part :=
-                       Transform_Complex_Association (Dim, Association);
-                     Prev (Association);
-
-                     --  Go over the remaining associations in reverse order
-
-                     for Count in Elsif_Parts'Range loop
-                        pragma Assert (Present (Association));
-
-                        Elsif_Parts (Count) :=
-                          +New_Elsif
-                             (Condition =>
-                                Select_These_Choices
-                                  (Dim, Choice_List (Association)),
-                              Then_Part =>
-                                Transform_Complex_Association
-                                  (Dim, Association));
-
-                        Prev (Association);
-                     end loop;
-
-                     pragma Assert (No (Association));
-
-                     if Assocs_Len = 1 and then not In_Delta_Aggregate then
-                        return Then_Part;
-                     else
-                        return
-                          New_Conditional
-                            (Condition   => Cond,
-                             Then_Part   => Then_Part,
-                             Elsif_Parts => Elsif_Parts,
-                             Else_Part   => Else_Part);
-                     end if;
-                  end;
-
-               --  Subexpr is the empty string or a null aggregate
-
-               else
-                  return True_Pred;
-               end if;
-            end Transform_Rec_Complex_Aggregate;
-
-            --  Start of processing for Transform_Aggregate_Values
-
-         begin
-            --  Use a new scope for indexes of iterated component associations
-
-            Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-
-            --  For now, do not try to optimize the translation of delta
-            --  aggregate as the order of values is relevant.
-
-            if In_Delta_Aggregate then
-               Simple_Ranges := True_Pred;
-               Simple_Assocs := True_Pred;
-               Other_Assocs := Transform_Rec_Complex_Aggregate (1, Expr);
-            else
-               Transform_Rec_Aggregate (1, Expr, True_Pred);
-               Simple_Ranges := New_And_Pred (To_Array (V_Simple_Ranges));
-               Simple_Assocs := New_And_Pred (To_Array (V_Simple_Assocs));
-               Other_Assocs := New_And_Pred (To_Array (V_Other_Assocs));
-            end if;
-
-            Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
-         end Transform_Aggregate_Values;
-
-         --  Start of processing for Transform_Array_Component_Associations
-
-      begin
-         --  Define index variables
-
-         for Dim in Dimensions loop
-            Binders (Dim) :=
-              (B_Name =>
-                 New_Temp_Identifier
-                   (Typ => Base_Why_Type_No_Bool (Index_Types (Dim))),
-               B_Ent  => Null_Entity_Name,
-               others => <>);
-            Indexes (Dim) := +Binders (Dim).B_Name;
-         end loop;
-
-         --  Create the proposition defining the aggregate
-
-         declare
-            Simple_Ranges : W_Pred_Id;
-            Simple_Assocs : W_Pred_Id;
-            Other_Assocs  : W_Pred_Id;
-         begin
-            Transform_Aggregate_Values
-              (Simple_Ranges => Simple_Ranges,
-               Simple_Assocs => Simple_Assocs,
-               Other_Assocs  => Other_Assocs);
-
-            --  Add the well_formed predicate. It is only valid if all simple
-            --  associations are in range. For complex associations, the range
-            --  is enforced on the quantification.
-
-            if Skip_Guards then
-               Simple_Assocs :=
-                 New_And_Pred
-                   (Left  => Simple_Assocs,
-                    Right => New_Well_Formed_Pred (Arr));
-            else
-               Simple_Assocs :=
-                 New_And_Pred
-                   (Left  => Simple_Assocs,
-                    Right =>
-                      New_Conditional
-                        (Condition => Simple_Ranges,
-                         Then_Part => New_Well_Formed_Pred (Arr)));
-            end if;
-
-            if Is_True_Boolean (+Other_Assocs) then
-               return Simple_Assocs;
-            else
-               declare
-                  Range_Preds : W_Pred_Array (1 .. Nb_Dim);
-
-               begin
-                  for Dim in Range_Preds'Range loop
-                     Range_Preds (Dim) :=
-                       New_Range_Expr
-                         (Low  => Get_Array_Attr (Arr, Attribute_First, Dim),
-                          High => Get_Array_Attr (Arr, Attribute_Last, Dim),
-                          Expr => +Indexes (Dim));
-                  end loop;
-
-                  Other_Assocs :=
-                    New_Universal_Quantif
-                      (Binders  => Binders,
-                       Triggers =>
-                         New_Triggers
-                           (Triggers =>
-                              (1 =>
-                                 New_Trigger
-                                   (Terms =>
-                                      (1 =>
-                                         +New_Array_Access
-                                            (Ar => Arr, Index => Indexes))))),
-                       Pred     =>
-                         New_Conditional
-                           (Condition => New_And_Pred (Range_Preds),
-                            Then_Part => Other_Assocs));
-               end;
-
-               return
-                 New_And_Pred (Left => Simple_Assocs, Right => Other_Assocs);
-            end if;
-         end;
-      end Transform_Array_Component_Associations;
-
-      --  Start of processing for Transform_Array_Aggregate
-
-   begin
-      --  Initialize the array of index types.
-
-      declare
-         Index : Node_Id := First_Index (Expr_Typ);
-      begin
-         for Dim in Dimensions loop
-            Index_Types (Dim) := Etype (Index);
-            Next_Index (Index);
-         end loop;
-         pragma Assert (No (Index));
-      end;
-
-      declare
-         Values              : Aggregate_Element_Lists.Vector;
-         Variables           : Flow_Id_Sets.Set;
-         Elements_From_Nodes : Node_To_Why_Id.Map;
-         Bounds              : W_Expr_Array (1 .. Bound_Count);
-         Func                : W_Identifier_Id := Why_Empty;
-      begin
-         --  Get the aggregate elements that should be passed in parameter
-
-         Get_Aggregate_Elements
-           (Values, Variables, Elements_From_Nodes, Bounds);
-
-         --  If using function-based translation and not done already, generate
-         --  the logic function.
-
-         if Should_Use_Function_Translation then
-
-            declare
-               M : W_Module_Id := E_Module (Expr);
-            begin
-               if M = Why_Empty then
-                  Generate_Aggregate_Functions
-                    (Values, Variables, Elements_From_Nodes, Bounds);
-                  M := E_Module (Expr);
-               end if;
-
-               --  For program terms, use the program function declared in the
-               --  axiom module. It has an instance of the defining axiom as a
-               --  post.
-
-               Func :=
-                 New_Identifier
-                   (Ada_Node => Expr,
-                    Domain   => Domain,
-                    Module   =>
-                      (if Domain in EW_Term | EW_Pred
-                       then M
-                       else E_Module (Expr, Program_Function_Decl)),
-                    Symb     => NID (Lower_Case_First (Img (Get_Name (M)))));
-            end;
-         end if;
-         return
-           Complete_Translation
-             (Func, Values, Variables, Elements_From_Nodes, Bounds);
-      end;
-   end Transform_Array_Aggregate;
 
    --------------------------------
    -- Transform_Array_Comparison --
@@ -19424,6 +16481,9 @@ package body Gnat2Why.Expr is
       --  attribute, in which case its prefix is rooted at a borrower) then
       --  we translate Expr in a context where Brower is its value at the end
       --  of the borrow.
+      --  If the reference to 'Old is translated directly, then the definition
+      --  of Brower will be taken from the context. If a map is used, the
+      --  prefix will be specifically recognized when creating the bindings.
 
       elsif Nkind (Expr) = N_Attribute_Reference
         or else Brower = Get_Root_Object (Expr)
@@ -19432,8 +16492,9 @@ package body Gnat2Why.Expr is
            Assert
              (if Nkind (Expr) = N_Attribute_Reference
               then
-                Attribute_Name (Expr) = Name_Old
-                and then Brower = Get_Root_Object (Prefix (Expr)));
+                Attribute_Name (Expr) in Name_Old | Name_Loop_Entry
+                and then Brower = Get_Root_Object (Prefix (Expr))
+                and then Is_Local_Borrower_In_Prophecy (Prefix (Expr)));
 
          Ada_Ent_To_Why.Push_Scope (Symbol_Table);
          Insert_Tmp_Item_For_Entity
@@ -19732,7 +16793,7 @@ package body Gnat2Why.Expr is
             --  adding 1 to the representation value, and 'Pred is modelled
             --  as subtracting 1 to the representation value.
 
-            elsif Has_Modular_Integer_Type (Etype (Var)) then
+            elsif Has_Modular_Operations (Etype (Var)) then
                declare
                   Opnd   : constant Node_Id := First (Expressions (Expr));
                   W_Type : constant W_Type_Id := Base_Why_Type (Etype (Var));
@@ -20051,15 +17112,25 @@ package body Gnat2Why.Expr is
                                      (Symbol_Table, Entity (Var));
                                  T :=
                                    +Get_Array_Attr
-                                      (Item, Attr_Id, Dim, Typ => Typ);
+                                      (Item,
+                                       Attr_Id,
+                                       Dim,
+                                       Params.Ref_Allowed,
+                                       Typ => Typ);
                                  if Modular_Range_Check then
                                     T :=
                                       +Prepend_Modular_Range_Check
                                          (+T,
                                           +Get_Array_Attr
-                                             (Item, Attribute_First, Dim),
+                                             (Item,
+                                              Attribute_First,
+                                              Dim,
+                                              Params.Ref_Allowed),
                                           +Get_Array_Attr
-                                             (Item, Attribute_Last, Dim));
+                                             (Item,
+                                              Attribute_Last,
+                                              Dim,
+                                              Params.Ref_Allowed));
                                  end if;
                               else
                                  T :=
@@ -20509,9 +17580,7 @@ package body Gnat2Why.Expr is
                  (if Is_Discrete_Type (Ada_Ty)
                     or else Is_Fixed_Point_Type (Ada_Ty)
                   then
-                    (if Is_Modular_Integer_Type (Ada_Ty)
-                       and then
-                         not Has_No_Bitwise_Operations_Annotation (Ada_Ty)
+                    (if Is_Bitvector_Type_In_Why (Ada_Ty)
                      then
                        (if Attr_Id = Attribute_Min
                         then MF_BVs (Base).BV_Min
@@ -21806,8 +18875,6 @@ package body Gnat2Why.Expr is
       Left_Type : constant Entity_Id := Etype (Left);
       T         : W_Expr_Id;
 
-      --  Start of processing for Transform_Comparison
-
    begin
       --  Special case for equality between Booleans in predicates
 
@@ -22076,8 +19143,6 @@ package body Gnat2Why.Expr is
       begin
          return +New_Discrete_Add (Domain, Left_Last, Right_Length, Typ);
       end Build_Last_No_Slide;
-
-      --  Start of processing for Transform_Concatenation
 
    begin
       --  Step 1: introduce temps for left and right
@@ -22578,8 +19643,6 @@ package body Gnat2Why.Expr is
       end Check_Itypes_Of_Components;
 
       R : W_Prog_Id := +Void;
-
-      --  Start of processing for Transform_Declaration
 
    begin
       case Nkind (Decl) is
@@ -23720,7 +20783,7 @@ package body Gnat2Why.Expr is
 
       else
          case Nkind (Expr) is
-            when N_Aggregate                            =>
+            when N_Aggregate                               =>
                if Is_Container_Aggregate (Expr) then
                   T := Transform_Container_Aggregate (Expr, Params, Domain);
 
@@ -23798,7 +20861,7 @@ package body Gnat2Why.Expr is
                          Expr_Has_Relaxed_Init (Expr, No_Eval => False));
                end if;
 
-            when N_Extension_Aggregate                  =>
+            when N_Extension_Aggregate                     =>
                declare
                   Relaxed_Init : constant Boolean :=
                     Expr_Has_Relaxed_Init (Expr, No_Eval => False);
@@ -23876,7 +20939,7 @@ package body Gnat2Why.Expr is
                       (Domain => Domain, Tmp => Tmp, Context => T);
                end;
 
-            when N_Slice                                =>
+            when N_Slice                                   =>
 
                --  If Expr is potentially_Invalid, emit a validity check on the
                --  access so it is as precise as possible.
@@ -23932,7 +20995,7 @@ package body Gnat2Why.Expr is
                        Domain);
                end if;
 
-            when N_Real_Literal                         =>
+            when N_Real_Literal                            =>
 
                --  Literals of fixed-point type are directly translated into
                --  the integer that represents them in the corresponding
@@ -23972,7 +21035,7 @@ package body Gnat2Why.Expr is
                           else raise Program_Error));
                end if;
 
-            when N_Character_Literal                    =>
+            when N_Character_Literal                       =>
                T :=
                  New_Integer_Constant
                    (Ada_Node => Expr, Value => Char_Literal_Value (Expr));
@@ -23985,10 +21048,10 @@ package body Gnat2Why.Expr is
             --  * global mutable variables are references
             --  * loop parameters are always mutable, and of type int
 
-            when N_String_Literal                       =>
+            when N_String_Literal | N_External_Initializer =>
                T := Transform_String_Literal (Expr, Domain, Params);
 
-            when N_Identifier | N_Expanded_Name         =>
+            when N_Identifier | N_Expanded_Name            =>
                T :=
                  Transform_Identifier
                    (Local_Params,
@@ -23998,13 +21061,13 @@ package body Gnat2Why.Expr is
                     No_Init_Check     => No_Init_Check,
                     No_Validity_Check => No_Validity_Check);
 
-            when N_Op_Compare                           =>
+            when N_Op_Compare                              =>
 
                T :=
                  Transform_Comparison
                    (Expr => Expr, Domain => Domain, Params => Local_Params);
 
-            when N_Op_Minus                             =>
+            when N_Op_Minus                                =>
                --  unary minus
                declare
                   Right : constant N_Subexpr_Id := Right_Opnd (Expr);
@@ -24022,15 +21085,24 @@ package body Gnat2Why.Expr is
                   Right_Rep : constant W_Expr_Id :=
                     Transform_Expr (Right, Typ, Domain, Local_Params);
 
+                  --  Detect types with No_Wrap_Around annotation. We do not
+                  --  need modulus for these types, and must additionally check
+                  --  for overflow in program domain. The machinery for these
+                  --  additional SPARK-mandated checks is significantly
+                  --  different from Ada-mandated checks. We cannot delay them
+                  --  like Ada-mandated overflow checks because we may
+                  --  translate to bitvector types, which wraps around. This
+                  --  means checking the result will typically be too late to
+                  --  detect overflow.
+
+                  No_Wrap_Around       : constant Boolean :=
+                    Has_No_Wrap_Around_Annotation (Expr_Type);
                   Check_No_Wrap_Around : constant Boolean :=
-                    Domain = EW_Prog
-                    and then Has_No_Wrap_Around_Annotation (Expr_Type);
+                    Domain = EW_Prog and then No_Wrap_Around;
 
                begin
-                  if Has_Modular_Integer_Type (Expr_Type)
+                  if Is_Bitvector_Type_In_Why (Expr_Type)
                     and then Non_Binary_Modulus (Expr_Type)
-                    and then
-                      not Has_No_Bitwise_Operations_Annotation (Expr_Type)
                   then
                      T :=
                        Transform_Non_Binary_Modular_Operation
@@ -24050,7 +21122,7 @@ package body Gnat2Why.Expr is
                           Args     => (1 => Right_Rep),
                           Typ      => Typ);
 
-                     if not Check_No_Wrap_Around then
+                     if not No_Wrap_Around then
                         T := Apply_Modulus (N_Op_Minus, Expr_Type, T, Domain);
                      end if;
                   end if;
@@ -24092,7 +21164,7 @@ package body Gnat2Why.Expr is
                   end if;
                end;
 
-            when N_Op_Plus                              =>
+            when N_Op_Plus                                 =>
                --  unary plus
                declare
                   Right : constant N_Subexpr_Id := Right_Opnd (Expr);
@@ -24102,7 +21174,7 @@ package body Gnat2Why.Expr is
                       (Right, Base_Why_Type (Right), Domain, Local_Params);
                end;
 
-            when N_Op_Abs                               =>
+            when N_Op_Abs                                  =>
                declare
                   Right : constant N_Subexpr_Id := Right_Opnd (Expr);
                   Typ   : constant W_Type_Id := Base_Why_Type (Right);
@@ -24119,7 +21191,7 @@ package body Gnat2Why.Expr is
                        Typ      => Typ);
                end;
 
-            when N_Op_Add | N_Op_Subtract               =>
+            when N_Op_Add | N_Op_Subtract                  =>
                declare
                   Left       : constant N_Subexpr_Id := Left_Opnd (Expr);
                   Right      : constant N_Subexpr_Id := Right_Opnd (Expr);
@@ -24142,7 +21214,7 @@ package body Gnat2Why.Expr is
                        Ada_Node    => Expr);
                end;
 
-            when N_Op_Multiply | N_Op_Divide            =>
+            when N_Op_Multiply | N_Op_Divide               =>
                declare
                   Left           : constant N_Subexpr_Id := Left_Opnd (Expr);
                   Right          : constant N_Subexpr_Id := Right_Opnd (Expr);
@@ -24195,7 +21267,7 @@ package body Gnat2Why.Expr is
                        Ada_Node    => Expr);
                end;
 
-            when N_Op_Rem | N_Op_Mod                    =>
+            when N_Op_Rem | N_Op_Mod                       =>
                declare
                   Left  : constant N_Subexpr_Id := Left_Opnd (Expr);
                   Right : constant N_Subexpr_Id := Right_Opnd (Expr);
@@ -24232,7 +21304,7 @@ package body Gnat2Why.Expr is
                   end if;
                end;
 
-            when N_Op_Expon                             =>
+            when N_Op_Expon                                =>
 
                --  Optimization: try to inline the exponentiation when
                --  possible. This optimization is primarly intended for
@@ -24260,20 +21332,17 @@ package body Gnat2Why.Expr is
                   Left_Type : constant Type_Kind_Id := Etype (Left);
 
                   One : constant W_Expr_Id :=
-                    (if Has_Modular_Integer_Type (Left_Type)
+                    (if Has_Integer_Type (Left_Type)
                      then
-                       (if Has_No_Bitwise_Operations_Annotation (Left_Type)
+                       (if Is_Bitvector_Type_In_Why (Left_Type)
                         then
-                          New_Integer_Constant
-                            (Ada_Node => Expr, Value => Uint_1)
-                        else
                           New_Modular_Constant
                             (Ada_Node => Expr,
                              Value    => Uint_1,
-                             Typ      => Base_Type))
-                     elsif Has_Signed_Integer_Type (Left_Type)
-                     then
-                       New_Integer_Constant (Ada_Node => Expr, Value => Uint_1)
+                             Typ      => Base_Type)
+                        else
+                          New_Integer_Constant
+                            (Ada_Node => Expr, Value => Uint_1))
                      elsif Has_Floating_Point_Type (Left_Type)
                      then +MF_Floats (Base_Type).One
                      else raise Program_Error);
@@ -24349,11 +21418,20 @@ package body Gnat2Why.Expr is
                           Context  => E);
                   end Inv;
 
-                  Check_No_Wrap_Around : constant Boolean :=
-                    Domain = EW_Prog
-                    and then Has_No_Wrap_Around_Annotation (Expr_Type);
+                  --  Detect types with No_Wrap_Around annotation. We do not
+                  --  need modulus for these types, and must additionally check
+                  --  for overflow in program domain. The machinery for these
+                  --  additional SPARK-mandated checks is significantly
+                  --  different from Ada-mandated checks. We cannot delay them
+                  --  like Ada-mandated overflow checks because we may
+                  --  translate to bitvector types, which wraps around. This
+                  --  means checking the result will typically be too late to
+                  --  detect overflow.
 
-                  --  Start of processing for N_Op_Expon_Case
+                  No_Wrap_Around       : constant Boolean :=
+                    Has_No_Wrap_Around_Annotation (Expr_Type);
+                  Check_No_Wrap_Around : constant Boolean :=
+                    Domain = EW_Prog and then No_Wrap_Around;
 
                begin
                   --  Translate powers of 2 on modular types as shifts. If the
@@ -24361,9 +21439,7 @@ package body Gnat2Why.Expr is
                   --  power computation must not wrap-around on the rep
                   --  bitvector type.
 
-                  if Has_Modular_Integer_Type (Left_Type)
-                    and then
-                      not Has_No_Bitwise_Operations_Annotation (Left_Type)
+                  if Is_Bitvector_Type_In_Why (Left_Type)
                     and then not Non_Binary_Modulus (Left_Type)
                     and then Compile_Time_Known_Value (Left)
                     and then Expr_Value (Left) = Uint_2
@@ -24413,8 +21489,12 @@ package body Gnat2Why.Expr is
                         --  Apply the modulus if it is smaller than the modulus
                         --  of the rep bitvector type.
 
-                        T :=
-                          Apply_Modulus (Nkind (Expr), Left_Type, T, Domain);
+                        if not No_Wrap_Around then
+                           T :=
+                             Apply_Modulus
+                               (Nkind (Expr), Left_Type, T, Domain);
+                        end if;
+
                         T :=
                           Binding_For_Temp
                             (Domain => Domain, Tmp => Expo, Context => T);
@@ -24493,7 +21573,7 @@ package body Gnat2Why.Expr is
                   end if;
                end N_Op_Expon_Case;
 
-            when N_Op_Not                               =>
+            when N_Op_Not                                  =>
                if Has_Array_Type (Etype (Right_Opnd (Expr))) then
                   declare
                      Subdomain : constant EW_Domain :=
@@ -24510,7 +21590,7 @@ package body Gnat2Why.Expr is
                           Do_Check   => Domain = EW_Prog);
                   end;
 
-               elsif Is_Modular_Integer_Type (Expr_Type) then
+               elsif Has_Modular_Operations (Expr_Type) then
                   declare
                      Base : constant W_Type_Id := Base_Why_Type (Expr_Type);
                   begin
@@ -24562,7 +21642,7 @@ package body Gnat2Why.Expr is
                   end;
                end if;
 
-            when N_Op_And | N_Op_Or | N_Op_Xor          =>
+            when N_Op_And | N_Op_Or | N_Op_Xor             =>
                if Has_Array_Type (Etype (Left_Opnd (Expr))) then
                   declare
                      Subdomain : constant EW_Domain :=
@@ -24610,7 +21690,7 @@ package body Gnat2Why.Expr is
                         --  modulus or and xor might overflow : we need to take
                         --  the modulo of the result.
 
-                        if Has_Modular_Integer_Type (Expr_Type)
+                        if Has_Modular_Operations (Expr_Type)
                           and then Non_Binary_Modulus (Expr_Type)
                         then
                            T :=
@@ -24624,7 +21704,7 @@ package body Gnat2Why.Expr is
                   end;
                end if;
 
-            when N_Short_Circuit                        =>
+            when N_Short_Circuit                           =>
                Short_Circuit : declare
 
                   function New_Short_Circuit_Expr
@@ -24669,8 +21749,6 @@ package body Gnat2Why.Expr is
                   --  Do not emit dead branch warnings in Right if Left is
                   --  statically disabled.
 
-                  --  Start of processing for Short_Circuit
-
                begin
                   Ada_Ent_To_Why.Push_Scope (Symbol_Table);
 
@@ -24706,7 +21784,7 @@ package body Gnat2Why.Expr is
                   Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
                end Short_Circuit;
 
-            when N_Op_Concat                            =>
+            when N_Op_Concat                               =>
                T :=
                  Transform_Concatenation
                    (Left               =>
@@ -24721,15 +21799,15 @@ package body Gnat2Why.Expr is
                     Domain             => Domain,
                     Ada_Node           => Expr);
 
-            when N_Membership_Test                      =>
+            when N_Membership_Test                         =>
                T :=
                  Transform_Membership_Expression (Local_Params, Domain, Expr);
 
-            when N_Quantified_Expression                =>
+            when N_Quantified_Expression                   =>
                T :=
                  Transform_Quantified_Expression (Expr, Domain, Local_Params);
 
-            when N_If_Expression                        =>
+            when N_If_Expression                           =>
                declare
                   Cond        : constant N_Subexpr_Id :=
                     First (Expressions (Expr));
@@ -24810,7 +21888,7 @@ package body Gnat2Why.Expr is
                        Typ       => Get_Type (Then_Expr));
                end;
 
-            when N_Type_Conversion                      =>
+            when N_Type_Conversion                         =>
                --  For array conversions, if target and source types have
                --  different component type, we may need to generate an
                --  appropriate conversion theory.
@@ -24854,6 +21932,27 @@ package body Gnat2Why.Expr is
                   end;
                end if;
 
+               --  Check the specific rules for conversions from unchecked
+               --  union types.
+
+               if Domain = EW_Prog
+                 and then
+                   Is_Unchecked_Union (Retysp (Etype (Expression (Expr))))
+                 and then not Is_Unchecked_Union (Expr_Type)
+               then
+
+                  --  Generate a statically known proof result
+
+                  Emit_Static_Proof_Result
+                    (Expr,
+                     VC_Unchecked_Union_Restriction,
+                     Has_Inferable_Discriminants (Expression (Expr)),
+                     Current_Subp,
+                     Explanation =>
+                       "source of conversion should have inferrable "
+                       & "discriminants");
+               end if;
+
                T :=
                  Transform_Expr
                    (Expression (Expr),
@@ -24873,7 +21972,7 @@ package body Gnat2Why.Expr is
                   T := +Insert_Invariant_Check (Expr, Expr_Type, +T);
                end if;
 
-            when N_Qualified_Expression                 =>
+            when N_Qualified_Expression                    =>
 
                --  Tansform the expression with the subtype mark as the
                --  expected type so that checks are introduced if necessary.
@@ -24943,7 +22042,7 @@ package body Gnat2Why.Expr is
                        To       => Type_Of_Node (Expr));
                end;
 
-            when N_Unchecked_Type_Conversion            =>
+            when N_Unchecked_Type_Conversion               =>
                pragma Assert (not Comes_From_Source (Expr));
 
                --  For string literals with a dynamic low bound, the frontend
@@ -24954,7 +22053,9 @@ package body Gnat2Why.Expr is
                --  such subtypes by using the target type of the unchecked
                --  conversion instead.
 
-               if Nkind (Original_Node (Expr)) = N_String_Literal then
+               if Nkind (Original_Node (Expr))
+                  in N_String_Literal | N_External_Initializer
+               then
                   T := Transform_String_Literal (Expr, Domain, Params);
 
                --  Other compiler-generated unchecked type conversions are
@@ -24970,7 +22071,7 @@ package body Gnat2Why.Expr is
                        No_Init_Check);
                end if;
 
-            when N_Function_Call                        =>
+            when N_Function_Call                           =>
                declare
                   Subp : constant Entity_Id :=
                     Get_Called_Entity_For_Proof (Expr);
@@ -25057,7 +22158,7 @@ package body Gnat2Why.Expr is
 
             when N_Indexed_Component
                | N_Selected_Component
-               | N_Explicit_Dereference                 =>
+               | N_Explicit_Dereference                    =>
 
                --  If Expr is potentially_Invalid, emit a validity check on the
                --  access so it is as precise as possible.
@@ -25119,10 +22220,10 @@ package body Gnat2Why.Expr is
             --  the lhs object. However, the lhs should be updated and the
             --  field is_null_pointer in the why representation is set to True
 
-            when N_Null                                 =>
+            when N_Null                                    =>
                T := +E_Symb (Etype (Expr), WNE_Null_Pointer);
 
-            when N_Attribute_Reference                  =>
+            when N_Attribute_Reference                     =>
                T :=
                  Transform_Attr
                    (Expr,
@@ -25131,7 +22232,7 @@ package body Gnat2Why.Expr is
                     Expected_Type,
                     No_Validity_Check => No_Validity_Check);
 
-            when N_Case_Expression                      =>
+            when N_Case_Expression                         =>
                declare
                   function Transform_Branch
                     (N      : Node_Id;
@@ -25182,7 +22283,7 @@ package body Gnat2Why.Expr is
             --  N_Expression_With_Actions is only generated for declare
             --  expressions in GNATprove mode.
 
-            when N_Expression_With_Actions              =>
+            when N_Expression_With_Actions                 =>
                T :=
                  Transform_Expr_With_Actions
                    (Expr          => Expression (Expr),
@@ -25191,7 +22292,7 @@ package body Gnat2Why.Expr is
                     Params        => Params,
                     Expected_Type => Expected_Type);
 
-            when N_Allocator                            =>
+            when N_Allocator                               =>
 
                --  For the evaluation of an initialized allocator, the
                --  evaluation of the qualified_expression is performed first.
@@ -25440,7 +22541,7 @@ package body Gnat2Why.Expr is
                   T := Call;
                end;
 
-            when N_Raise_Expression | N_Raise_xxx_Error =>
+            when N_Raise_Expression | N_Raise_xxx_Error    =>
                --  No condition should be present in SPARK code. Such code
                --  should be rejected after marking and not reach here.
 
@@ -25468,7 +22569,7 @@ package body Gnat2Why.Expr is
                   end if;
                end if;
 
-            when N_Delta_Aggregate                      =>
+            when N_Delta_Aggregate                         =>
                T :=
                  Transform_Delta_Aggregate
                    (Ada_Node => Expr,
@@ -25477,11 +22578,11 @@ package body Gnat2Why.Expr is
                     Domain   => Domain,
                     Params   => Params);
 
-            when N_Target_Name                          =>
+            when N_Target_Name                             =>
                pragma Assert (Target_Name /= Why_Empty);
                T := +Target_Name;
 
-            when others                                 =>
+            when others                                    =>
                Ada.Text_IO.Put_Line
                  ("[Transform_Expr] kind =" & Node_Kind'Image (Nkind (Expr)));
                raise Not_Implemented;
@@ -25514,26 +22615,46 @@ package body Gnat2Why.Expr is
       --  they are actually for range checks and are checked elsewhere. See the
       --  documentation of sinfo.ads.
 
+      --  References to the 'Length atribute might be computed on bitvectors
+      --  to improve proof performance. In this case, an overflow check is
+      --  introduced during the translation to make sure that there is no
+      --  wraparound during the computation. No need to generate an additional
+      --  overflow check on universal integer in this case, even if it is the
+      --  type chosen by the frontend for the computation, as such big arrays
+      --  cannot be constructed in practice, so this implementation choice
+      --  won't have an effect at runtime.
+
       if Domain = EW_Prog
+        and then Nkind (Expr) = N_Attribute_Reference
+        and then Attribute_Name (Expr) = Name_Length
+        and then Retysp (Expr_Type) = Stand.Universal_Integer
+        and then Why_Type_Is_BitVector (Get_Type (T))
+      then
+         null;
+
+      elsif Domain = EW_Prog
         and then
           Nkind (Expr)
           in N_Attribute_Reference | N_Case_Expression | N_If_Expression | N_Op
         and then Do_Overflow_Check (Expr)
       then
+
          --  Depending on the current mode for integer overflow checks, the
          --  operation is either done in the base type (Strict mode), or in
-         --  Long_Long_Integer (Minimized mode) if needed, or in arbitrary
-         --  precision if needed (Eliminated mode). A check may only be
-         --  generated in the Strict and Minimized modes, and the type
+         --  Long_Long_{Integer|Unsigned} (Minimized mode) if needed, or in
+         --  arbitrary precision if needed (Eliminated mode). A check may only
+         --  be generated in the Strict and Minimized modes, and the type
          --  used for the bounds is the base type in the first case, and
          --  Long_Long_Integer in the second case (which is its own base type).
+         --  In minimized mode, Long_Long_Integer is used for standard signed
+         --  types, and Long_Long_Unsigned for types with Unsigned_Base_Range.
 
          --  Use Sem.Scope_Suppress which takes into account the default from
          --  switches and configuration pragma files as defined in
          --  Opt.Suppress_Options, as well as possible configuration pragmas
          --  in the main unit, as done in SPARK_Definition.Mark_Pragma.
 
-         if Is_Signed_Integer_Type (Expr_Type) then
+         if Has_Overflow_Operations (Expr_Type) then
             declare
                Mode : Overflow_Mode_Type;
             begin
@@ -25555,9 +22676,32 @@ package body Gnat2Why.Expr is
                           (Expr, T, Expr_Type, Is_Float => False);
 
                   when Minimized  =>
-                     T :=
-                       +Insert_Overflow_Check
-                          (Expr, T, Standard_Integer_64, Is_Float => False);
+                     if Has_Unsigned_Base_Range_Aspect (Expr_Type) then
+
+                        --  While the type over which overflow range checking
+                        --  should be Long_Long_Unsigned, we cannot reuse
+                        --  Insert_Overflow_Check directly, because
+                        --  Long_Long_Unsigned is a plain modular type. We
+                        --  call a range checking function specifically made
+                        --  for that case instead.
+
+                        T :=
+                          +New_VC_Call
+                             (Ada_Node => Expr,
+                              Name     => Unsigned_Base_Range_Overflow_Check,
+                              Progs    => (1 => T),
+                              Reason   => VC_Overflow_Check,
+                              Typ      => Get_Type (T));
+                     else
+
+                        T :=
+                          +Insert_Overflow_Check
+                             (Expr,
+                              T,
+                              Standard_Long_Long_Integer,
+                              Is_Float => False);
+
+                     end if;
 
                   when Eliminated =>
                      null;
@@ -26345,8 +23489,6 @@ package body Gnat2Why.Expr is
          end case;
       end Compute_Runtime_Checks;
 
-      --  Start of processing for Transform_Expr_With_Cutpoints
-
    begin
       Premise := Compute_Premise (Assertion, Split_Params);
       Result := Compute_Result (Assertion);
@@ -26722,8 +23864,6 @@ package body Gnat2Why.Expr is
       Handlers : constant List_Id := Exception_Handlers (N);
       Core     : W_Prog_Id :=
         Transform_Statements_And_Declarations (Statements (N), Params);
-
-      --  Start of processing for Transform_Handled_Statements
 
    begin
       if Present (Handlers) then
@@ -27650,8 +24790,6 @@ package body Gnat2Why.Expr is
         (if Domain = EW_Pred then EW_Term else Domain);
       Var_Expr  : W_Expr_Id;
 
-      --  Start of processing for Transform_Membership_Expression
-
    begin
       --  Check the specific rules for membership tests on unchecked union
       --  types.
@@ -28063,8 +25201,6 @@ package body Gnat2Why.Expr is
       begin
          null;
       end tip;
-
-      --  Start of processing for Transform_Pragma
 
    begin
       case Prag_Id is
@@ -28795,8 +25931,6 @@ package body Gnat2Why.Expr is
       CL          : List_Id;
       Choice      : Node_Id;
 
-      --  Start of processing for Transform_Record_Component_Associations
-
    begin
       Association := Nlists.First (Assocs);
 
@@ -29106,7 +26240,7 @@ package body Gnat2Why.Expr is
       --  ??? it is assumed that rotate calls are only valid on actual
       --  unsigned_8/16/32/64/128 types with the corresponding 'Size
 
-      if Has_Modular_Integer_Type (Etype (Expr)) then
+      if Has_Modular_Operations (Etype (Expr)) then
          declare
             Modulus_Val : constant Uint := Modulus (Etype (Subp));
             Nb_Of_Bits  : constant Pos :=
@@ -29320,8 +26454,17 @@ package body Gnat2Why.Expr is
 
          if Nkind (Expr) = N_Null then
             declare
-               Borrowed : constant Entity_Id := First_Formal (Subp);
+               Borrowed      : constant Entity_Id := First_Formal (Subp);
+               Brower_At_End : constant W_Identifier_Id :=
+                 Get_Brower_At_End (Subp);
             begin
+               Append
+                 (Result_Stmt,
+                  New_Assignment
+                    (Name   => Brower_At_End,
+                     Value  => +E_Symb (Etype (Subp), WNE_Null_Pointer),
+                     Typ    => Get_Typ (Brower_At_End),
+                     Labels => Symbol_Sets.Empty_Set));
                Append
                  (Result_Stmt,
                   New_Assume_Statement
@@ -30217,17 +27360,17 @@ package body Gnat2Why.Expr is
      (N : Node_Id; Domain : EW_Domain; Params : Transformation_Params)
       return W_Expr_Id
    is
-      Is_Static : constant Boolean := Nkind (N) = N_String_Literal;
-      Expr      : constant N_String_Literal_Id :=
+      Is_Static : constant Boolean := Nkind (N) /= N_Unchecked_Type_Conversion;
+      Expr      : constant Node_Id :=
         (if Is_Static then N else Expression (N));
       Ty        : constant Entity_Id := Type_Of_Node (N);
       pragma Assert (Is_Constrained (Ty));
       pragma Assert (Is_Static = Is_Static_Array_Type (Ty));
 
-      Low       : constant Node_Id :=
+      Low      : constant Node_Id :=
         (if Is_Static then String_Literal_Low_Bound (Ty) else Empty);
-      Why_Type  : constant W_Type_Id := New_Abstract_Base_Type (Ty);
-      Args      : constant W_Expr_Array :=
+      Why_Type : constant W_Type_Id := New_Abstract_Base_Type (Ty);
+      Args     : constant W_Expr_Array :=
         (1 =>
            (if Is_Static
             then +Void
@@ -30241,11 +27384,11 @@ package body Gnat2Why.Expr is
       --  If the low bound is not static, give it as a parameter. Otherwise,
       --  use a function with a unit parameter instead of a constant so that
       --  the axiom is only instantiated when the literal is used.
-      Str_Value : constant String_Id := Strval (Expr);
-      Length    : constant Nat := String_Length (Str_Value);
-      Idx       : constant Entity_Id := First_Index (Retysp (Etype (Ty)));
-      Idx_Ty    : constant Entity_Id := Retysp (Etype (Idx));
-      B_Ty      : constant W_Type_Id := Base_Why_Type_No_Bool (Idx_Ty);
+      Length   : constant Nat :=
+        UI_To_Int (String_Literal_Length (Etype (Expr)));
+      Idx      : constant Entity_Id := First_Index (Retysp (Etype (Ty)));
+      Idx_Ty   : constant Entity_Id := Retysp (Etype (Idx));
+      B_Ty     : constant W_Type_Id := Base_Why_Type_No_Bool (Idx_Ty);
 
       M  : W_Module_Id := E_Module (Expr);
       Id : W_Identifier_Id;
@@ -30307,205 +27450,215 @@ package body Gnat2Why.Expr is
             --  when the literal contains only plain Character as expected by
             --  String_To_Name_Buffer.
 
-            if not (Has_Wide_Character (Expr)
-                    or else Has_Wide_Wide_Character (Expr))
-            then
-               declare
-                  Call       : constant W_Term_Id :=
-                    +New_Call
-                       (Domain  => EW_Term,
-                        Name    => Id,
-                        Binders => Binders,
-                        Typ     => Why_Type);
-                  Axiom_Name : constant String := Name & "__" & Def_Axiom;
-                  Expr_Ar    : W_Pred_Array (1 .. Natural (Length));
-                  Def        : W_Pred_Id;
+            declare
+               Call       : constant W_Term_Id :=
+                 +New_Call
+                    (Domain  => EW_Term,
+                     Name    => Id,
+                     Binders => Binders,
+                     Typ     => Why_Type);
+               Axiom_Name : constant String := Name & "__" & Def_Axiom;
+               Def        : W_Pred_Id;
 
-               begin
-                  --  For each index in the string, add an assumption
-                  --  specifying the value stored in Id at this index.
+            begin
+               if Nkind (Expr) = N_String_Literal
+                 and then
+                   not (Has_Wide_Character (Expr)
+                        or else Has_Wide_Wide_Character (Expr))
+               then
+                  declare
+                     Str_Value : constant String_Id := Strval (Expr);
+                     pragma Assert (String_Length (Str_Value) = Length);
+                     Expr_Ar   : W_Pred_Array (1 .. Natural (Length));
 
-                  for I in 1 .. Length loop
-                     declare
-                        Offset  : constant Uint := UI_From_Int (I - 1);
-                        Idx_Val : constant W_Term_Id :=
-                          (if Is_Static
-                           then
-                             New_Discrete_Constant
-                               (Value => Expr_Value (Low) + Offset,
-                                Typ   => B_Ty)
-                           else
-                             +New_Discrete_Add
-                                (Domain => EW_Term,
-                                 Left   => +Low_Id,
-                                 Right  =>
-                                   New_Discrete_Constant
-                                     (Value => Offset, Typ => B_Ty)));
-                        Arr_Val : constant W_Term_Id :=
-                          New_Array_Access
-                            (Ar => Call, Index => (1 => +Idx_Val));
-                        Char    : constant W_Term_Id :=
-                          New_Integer_Constant
-                            (Value =>
-                               UI_From_CC (Get_String_Char (Str_Value, I)));
-                     begin
-                        Expr_Ar (Positive (I)) :=
-                          New_Comparison
-                            (Symbol => Why_Eq,
-                             Left   =>
-                               Insert_Simple_Conversion
-                                 (Expr => Arr_Val, To => EW_Int_Type),
-                             Right  => Char);
-                     end;
-                  end loop;
+                  begin
+                     --  For each index in the string, add an assumption
+                     --  specifying the value stored in Id at this index.
 
-                  if Length > 0 then
+                     for I in 1 .. Length loop
+                        declare
+                           Offset  : constant Uint := UI_From_Int (I - 1);
+                           Idx_Val : constant W_Term_Id :=
+                             (if Is_Static
+                              then
+                                New_Discrete_Constant
+                                  (Value => Expr_Value (Low) + Offset,
+                                   Typ   => B_Ty)
+                              else
+                                +New_Discrete_Add
+                                   (Domain => EW_Term,
+                                    Left   => +Low_Id,
+                                    Right  =>
+                                      New_Discrete_Constant
+                                        (Value => Offset, Typ => B_Ty)));
+                           Arr_Val : constant W_Term_Id :=
+                             New_Array_Access
+                               (Ar => Call, Index => (1 => +Idx_Val));
+                           Char    : constant W_Term_Id :=
+                             New_Integer_Constant
+                               (Value =>
+                                  UI_From_CC (Get_String_Char (Str_Value, I)));
+                        begin
+                           Expr_Ar (Positive (I)) :=
+                             New_Comparison
+                               (Symbol => Why_Eq,
+                                Left   =>
+                                  Insert_Simple_Conversion
+                                    (Expr => Arr_Val, To => EW_Int_Type),
+                                Right  => Char);
+                        end;
+                     end loop;
+
                      Def := New_And_Pred (Expr_Ar);
-                  else
-                     Def := True_Pred;
-                  end if;
+                  end;
 
-                  --  Add the value of the bounds for string literals with a
-                  --  non-static low bound.
+               --  The aggregate is handled imprecisely, emit a warning
 
-                  if not Is_Static then
-                     declare
-                        High_Term    : constant W_Term_Id :=
-                          (if Length = 0
-                           then
-                             +New_Discrete_Substract
-                                (Domain => EW_Term,
-                                 Left   => +Low_Id,
-                                 Right  =>
-                                   New_Discrete_Constant
-                                     (Value => Uint_1, Typ => B_Ty),
-                                 Typ    => B_Ty)
-                           else
-                             +New_Discrete_Add
-                                (Domain => EW_Term,
-                                 Left   => +Low_Id,
-                                 Right  =>
-                                   New_Discrete_Constant
-                                     (Value => UI_From_Int (Length - 1),
-                                      Typ   => B_Ty),
-                                 Typ    => B_Ty));
-                        Bounds_Value : W_Pred_Id :=
-                          New_And_Pred
-                            (Left  =>
-                               New_Comparison
-                                 (Symbol => Why_Eq,
-                                  Left   =>
-                                    Get_Array_Attr
-                                      (Expr => Call,
-                                       Attr => Attribute_First,
-                                       Dim  => 1),
-                                  Right  => +Low_Id),
-                             Right =>
-                               New_Comparison
-                                 (Symbol => Why_Eq,
-                                  Left   =>
-                                    +Get_Array_Attr
-                                       (Expr => Call,
-                                        Attr => Attribute_Last,
-                                        Dim  => 1),
-                                  Right  => High_Term));
+               else
+                  Def := True_Pred;
 
-                     begin
-                        --  If the computation of the high bound wrap-arounds,
-                        --  do not assume the bounds value to avoid generating
-                        --  an incorrect axiom.
+                  Warning_Msg_N
+                    (Warn_Imprecise_String_Literal,
+                     Expr,
+                     Create_N (Warn_Imprecise_String_Literal));
+               end if;
 
-                        if Is_Modular_Integer_Type (Idx_Ty) then
-                           if Length = 0 then
-                              Bounds_Value :=
-                                New_Conditional
-                                  (Condition =>
-                                     New_Comparison
-                                       (Symbol => MF_BVs (B_Ty).Ugt,
-                                        Left   => +Low_Id,
-                                        Right  => High_Term),
-                                   Then_Part => Bounds_Value);
-                           elsif Length >= 1 then
-                              Bounds_Value :=
-                                New_Conditional
-                                  (Condition =>
-                                     New_Comparison
-                                       (Symbol => MF_BVs (B_Ty).Ule,
-                                        Left   => +Low_Id,
-                                        Right  => High_Term),
-                                   Then_Part => Bounds_Value);
-                           end if;
+               --  Add the value of the bounds for string literals with a
+               --  non-static low bound.
+
+               if not Is_Static then
+                  declare
+                     High_Term    : constant W_Term_Id :=
+                       (if Length = 0
+                        then
+                          +New_Discrete_Substract
+                             (Domain => EW_Term,
+                              Left   => +Low_Id,
+                              Right  =>
+                                New_Discrete_Constant
+                                  (Value => Uint_1, Typ => B_Ty),
+                              Typ    => B_Ty)
+                        else
+                          +New_Discrete_Add
+                             (Domain => EW_Term,
+                              Left   => +Low_Id,
+                              Right  =>
+                                New_Discrete_Constant
+                                  (Value => UI_From_Int (Length - 1),
+                                   Typ   => B_Ty),
+                              Typ    => B_Ty));
+                     Bounds_Value : W_Pred_Id :=
+                       New_And_Pred
+                         (Left  =>
+                            New_Comparison
+                              (Symbol => Why_Eq,
+                               Left   =>
+                                 Get_Array_Attr
+                                   (Expr => Call,
+                                    Attr => Attribute_First,
+                                    Dim  => 1),
+                               Right  => +Low_Id),
+                          Right =>
+                            New_Comparison
+                              (Symbol => Why_Eq,
+                               Left   =>
+                                 +Get_Array_Attr
+                                    (Expr => Call,
+                                     Attr => Attribute_Last,
+                                     Dim  => 1),
+                               Right  => High_Term));
+
+                  begin
+                     --  If the computation of the high bound wrap-arounds,
+                     --  do not assume the bounds value to avoid generating
+                     --  an incorrect axiom.
+
+                     if Is_Bitvector_Type_In_Why (Idx_Ty) then
+                        if Length = 0 then
+                           Bounds_Value :=
+                             New_Conditional
+                               (Condition =>
+                                  New_Comparison
+                                    (Symbol => MF_BVs (B_Ty).Ugt,
+                                     Left   => +Low_Id,
+                                     Right  => High_Term),
+                                Then_Part => Bounds_Value);
+                        elsif Length >= 1 then
+                           Bounds_Value :=
+                             New_Conditional
+                               (Condition =>
+                                  New_Comparison
+                                    (Symbol => MF_BVs (B_Ty).Ule,
+                                     Left   => +Low_Id,
+                                     Right  => High_Term),
+                                Then_Part => Bounds_Value);
                         end if;
+                     end if;
 
-                        --  The low bound is taken as parameter, we should add
-                        --  a guard to the axiom for the dynamic property of
-                        --  the array to avoid generating an unsound axiom if
-                        --  the bounds are not in their type.
+                     --  The low bound is taken as parameter, we should add
+                     --  a guard to the axiom for the dynamic property of
+                     --  the array to avoid generating an unsound axiom if
+                     --  the bounds are not in their type.
 
-                        Bounds_Value :=
-                          New_Conditional
-                            (Condition =>
-                               +New_Dynamic_Property
-                                  (Domain => EW_Pred,
-                                   Ty     => Base_Type (Ty),
-                                   Args   => (+Low_Id, +High_Term),
-                                   Params => Params),
-                             Then_Part => Bounds_Value,
-                             Typ       => EW_Bool_Type);
+                     Bounds_Value :=
+                       New_Conditional
+                         (Condition =>
+                            +New_Dynamic_Property
+                               (Domain => EW_Pred,
+                                Ty     => Base_Type (Ty),
+                                Args   => (+Low_Id, +High_Term),
+                                Params => Params),
+                          Then_Part => Bounds_Value,
+                          Typ       => EW_Bool_Type);
 
-                        Def :=
-                          New_And_Pred (Left => Def, Right => Bounds_Value);
-                     end;
-                  end if;
+                     Def := New_And_Pred (Left => Def, Right => Bounds_Value);
+                  end;
+               end if;
 
-                  --  Emit an axiom containing all the assumptions
+               --  Emit an axiom containing all the assumptions
 
-                  Emit
-                    (Th,
-                     New_Axiom
-                       (Ada_Node => N,
-                        Name     => NID (Axiom_Name),
-                        Def      =>
-                          New_Universal_Quantif
-                            (Binders  => Binders,
-                             Triggers =>
-                               New_Triggers
-                                 (Triggers =>
-                                    (1 =>
-                                       New_Trigger (Terms => (1 => +Call)))),
-                             Pred     => Def),
-                        Dep      =>
-                          New_Axiom_Dep (Name => Id, Kind => EW_Axdep_Func)));
-
-                  if Is_Static then
-                     Def :=
-                       New_Well_Formed_Pred
-                         (New_Call
-                            (Name => Id,
-                             Args => (1 => +Void),
-                             Typ  => Why_Type));
-
-                  else
-                     Def :=
+               Emit
+                 (Th,
+                  New_Axiom
+                    (Ada_Node => N,
+                     Name     => NID (Axiom_Name),
+                     Def      =>
                        New_Universal_Quantif
                          (Binders  => Binders,
                           Triggers =>
                             New_Triggers
                               (Triggers =>
                                  (1 => New_Trigger (Terms => (1 => +Call)))),
-                          Pred     => New_Well_Formed_Pred (Call));
-                  end if;
+                          Pred     => Def),
+                     Dep      =>
+                       New_Axiom_Dep (Name => Id, Kind => EW_Axdep_Func)));
 
-                  Emit
-                    (Th,
-                     New_Axiom
-                       (Ada_Node => Expr,
-                        Name     => NID (Axiom_Name & "__well_formed"),
-                        Def      => Def,
-                        Dep      =>
-                          New_Axiom_Dep (Name => Id, Kind => EW_Axdep_Func)));
-               end;
-            end if;
+               if Is_Static then
+                  Def :=
+                    New_Well_Formed_Pred
+                      (New_Call
+                         (Name => Id, Args => (1 => +Void), Typ => Why_Type));
+
+               else
+                  Def :=
+                    New_Universal_Quantif
+                      (Binders  => Binders,
+                       Triggers =>
+                         New_Triggers
+                           (Triggers =>
+                              (1 => New_Trigger (Terms => (1 => +Call)))),
+                       Pred     => New_Well_Formed_Pred (Call));
+               end if;
+
+               Emit
+                 (Th,
+                  New_Axiom
+                    (Ada_Node => Expr,
+                     Name     => NID (Axiom_Name & "__well_formed"),
+                     Def      => Def,
+                     Dep      =>
+                       New_Axiom_Dep (Name => Id, Kind => EW_Axdep_Func)));
+            end;
 
             Close_Theory
               (Th, Kind => Definition_Theory, Defined_Entity => Expr);
@@ -31108,8 +28261,6 @@ package body Gnat2Why.Expr is
       --  Local variables
 
       Incompl_Acc : Entity_Sets.Set;
-
-      --  Start of processing for Variables_In_Dynamic_Invariant
 
    begin
       Variables_In_Dynamic_Invariant (Ty, Variables, Incompl_Acc);

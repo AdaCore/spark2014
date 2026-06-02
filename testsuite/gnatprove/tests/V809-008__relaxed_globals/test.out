@@ -54,7 +54,7 @@ test_relaxed_globals.adb:121:14: info: predicate check proved (CVC5: 3 VC)
 test_relaxed_globals.adb:121:14: medium: postcondition might fail (e.g. when G2 = (F => 0, G => 0) and G2.F'Initialized = True and G2.G'Initialized = True) [provers reached step limit before completing the proof]
 test_relaxed_globals.adb:121:16: info: initialization check proved (CVC5: 1 VC)
 test_relaxed_globals.adb:121:21: medium: in inlined predicate at test_relaxed_globals.adb:81
-test_relaxed_globals.adb:121:21: medium: predicate check might fail, cannot prove S2.F'Initialized (e.g. when G2 = (F => ?, G => -1) and G2.F'Initialized = False and G2.G'Initialized = True) [provers reached step limit before completing the proof]
+test_relaxed_globals.adb:121:21: medium: predicate check might fail, cannot prove S2.F'Initialized (e.g. when G2.F'Initialized = False and G2.G'Initialized = False) [provers reached step limit before completing the proof]
 test_relaxed_globals.adb:121:23: info: initialization check proved (CVC5: 1 VC)
 test_relaxed_globals.adb:125:16: info: predicate check proved (CVC5: 3 VC)
 test_relaxed_globals.adb:133:06: info: data dependencies proved
@@ -62,7 +62,7 @@ test_relaxed_globals.adb:134:14: info: predicate check proved (CVC5: 3 VC)
 test_relaxed_globals.adb:134:14: medium: postcondition might fail (e.g. when H2 = (F => 0, G => 0) and H2.F'Initialized = True and H2.G'Initialized = True) [provers reached step limit before completing the proof]
 test_relaxed_globals.adb:134:16: info: initialization check proved (CVC5: 1 VC)
 test_relaxed_globals.adb:134:21: medium: in inlined predicate at test_relaxed_globals.adb:81
-test_relaxed_globals.adb:134:21: medium: predicate check might fail, cannot prove S2.F'Initialized (e.g. when H2 = (F => ?, G => -1) and H2.F'Initialized = False and H2.G'Initialized = True) [provers reached step limit before completing the proof]
+test_relaxed_globals.adb:134:21: medium: predicate check might fail, cannot prove S2.F'Initialized (e.g. when H2.F'Initialized = False and H2.G'Initialized = False) [provers reached step limit before completing the proof]
 test_relaxed_globals.adb:134:23: info: initialization check proved (CVC5: 1 VC)
 test_relaxed_globals.adb:138:16: info: predicate check proved (CVC5: 3 VC)
 test_relaxed_globals.adb:151:15: info: predicate check proved (CVC5: 1 VC)
@@ -90,7 +90,7 @@ test_relaxed_globals.adb:187:14: info: initialization check proved (CVC5: 2 VC)
 test_relaxed_globals.adb:187:14: info: predicate check proved (CVC5: 1 VC)
 test_relaxed_globals.adb:187:14: medium: postcondition might fail (e.g. when G3 = (F => 0, G => 0) and G3.F'Initialized = True and G3.G'Initialized = True) [provers reached step limit before completing the proof]
 test_relaxed_globals.adb:187:16: info: initialization check proved (CVC5: 1 VC)
-test_relaxed_globals.adb:187:21: medium: initialization check might fail (e.g. when G3 = (F => ?, G => -1) and G3.F'Initialized = False and G3.G'Initialized = True) [provers reached step limit before completing the proof]
+test_relaxed_globals.adb:187:21: medium: initialization check might fail (e.g. when G3.F'Initialized = False and G3.G'Initialized = False) [provers reached step limit before completing the proof]
 test_relaxed_globals.adb:187:21: medium: predicate check might fail (e.g. when G3 = (F => 0, G => 0) and G3.F'Initialized = True and G3.G'Initialized = True) [provers reached step limit before completing the proof]
 test_relaxed_globals.adb:187:23: info: initialization check proved (CVC5: 1 VC)
 test_relaxed_globals.adb:191:16: info: predicate check proved (CVC5: 1 VC)
@@ -99,7 +99,7 @@ test_relaxed_globals.adb:200:14: info: initialization check proved (CVC5: 2 VC)
 test_relaxed_globals.adb:200:14: info: predicate check proved (CVC5: 1 VC)
 test_relaxed_globals.adb:200:14: medium: postcondition might fail (e.g. when H3 = (F => 0, G => 0) and H3.F'Initialized = True and H3.G'Initialized = True) [provers reached step limit before completing the proof]
 test_relaxed_globals.adb:200:16: info: initialization check proved (CVC5: 1 VC)
-test_relaxed_globals.adb:200:21: medium: initialization check might fail (e.g. when H3 = (F => ?, G => -1) and H3.F'Initialized = False and H3.G'Initialized = True) [provers reached step limit before completing the proof]
+test_relaxed_globals.adb:200:21: medium: initialization check might fail (e.g. when H3.F'Initialized = False and H3.G'Initialized = False) [provers reached step limit before completing the proof]
 test_relaxed_globals.adb:200:21: medium: predicate check might fail (e.g. when H3 = (F => 0, G => 0) and H3.F'Initialized = True and H3.G'Initialized = True) [provers reached step limit before completing the proof]
 test_relaxed_globals.adb:200:23: info: initialization check proved (CVC5: 1 VC)
 test_relaxed_globals.adb:204:16: info: predicate check proved (CVC5: 1 VC)

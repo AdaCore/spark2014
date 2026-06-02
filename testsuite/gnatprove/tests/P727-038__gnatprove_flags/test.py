@@ -13,6 +13,7 @@ basic_options = [
     "--report=all",
     "--prover=altergo",
     "--output=brief",
+    "--debug-no-cache-output",
 ]
 
 print("--- Messages on foo and bar should appear")

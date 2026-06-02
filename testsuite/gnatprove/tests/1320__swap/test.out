@@ -1,0 +1,11 @@
+swap.adb:6:13: info: implicit aspect Always_Terminates on "Logic_Eq" has been proved, subprogram will terminate
+swap.adb:7:60: info: pointer dereference check proved (CVC5: 1 VC)
+swap.adb:7:68: info: pointer dereference check proved (CVC5: 1 VC)
+swap.adb:20:11: info: postcondition proved (CVC5: 2 VC)
+swap.adb:24:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+swap.adb:26:14: info: absence of resource or memory leak proved (CVC5: 1 VC)
+swap.adb:27:14: info: absence of resource or memory leak proved (CVC5: 1 VC)
+swap.adb:33:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+swap.adb:35:21: info: index check proved (CVC5: 2 VC)
+swap.adb:36:18: info: index check proved (CVC5: 2 VC)
+swap.adb:37:18: info: index check proved (CVC5: 2 VC)

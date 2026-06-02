@@ -1,6 +1,15 @@
  info: postcondition proved
 --> update_arr_zero.adb:5:11
 
+ info: index check proved
+--> update_arr_zero.adb:5:38
+
+ info: index check proved
+--> update_arr_zero.adb:5:53
+
+ info: index check proved
+--> update_arr_zero.adb:5:87
+
  info: loop invariant initialization proved
 --> update_arr_zero.adb:12:30
 

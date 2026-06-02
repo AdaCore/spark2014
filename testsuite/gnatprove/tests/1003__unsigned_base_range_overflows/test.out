@@ -1,0 +1,530 @@
+normal.adb:4:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
+normal.adb:6:04: warning: analyzing unreferenced procedure "Self_Difference" [unreferenced-procedure]
+normal.adb:6:14: warning: subprogram "Self_Difference" has no effect
+normal.adb:7:27: info: overflow check proved (CVC5: 2 VC)
+normal.adb:7:27: info: range check proved (CVC5: 2 VC)
+normal.adb:12:04: warning: analyzing unreferenced procedure "Sub_Ok" [unreferenced-procedure]
+normal.adb:12:14: warning: subprogram "Sub_Ok" has no effect
+normal.adb:15:27: info: overflow check proved (CVC5: 2 VC)
+normal.adb:15:27: info: range check proved (CVC5: 2 VC)
+normal.adb:20:04: warning: analyzing unreferenced procedure "Sub_Underflow" [unreferenced-procedure]
+normal.adb:20:14: warning: subprogram "Sub_Underflow" has no effect
+normal.adb:25:27: info: range check proved (CVC5: 2 VC)
+normal.adb:25:27: medium: overflow check might fail, cannot prove lower bound for X - Y [reason for check: result of subtraction must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
+normal.adb:30:04: warning: analyzing unreferenced procedure "Add_Ok" [unreferenced-procedure]
+normal.adb:30:14: warning: subprogram "Add_Ok" has no effect
+normal.adb:33:27: info: overflow check proved (CVC5: 2 VC)
+normal.adb:33:27: info: range check proved (CVC5: 2 VC)
+normal.adb:38:04: warning: analyzing unreferenced procedure "Add_Overflow" [unreferenced-procedure]
+normal.adb:38:14: warning: subprogram "Add_Overflow" has no effect
+normal.adb:41:27: info: range check proved (CVC5: 2 VC)
+normal.adb:41:27: medium: overflow check might fail, cannot prove upper bound for X + Y [reason for check: result of addition must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
+normal.adb:46:04: warning: analyzing unreferenced procedure "Mul_Ok" [unreferenced-procedure]
+normal.adb:46:14: warning: subprogram "Mul_Ok" has no effect
+normal.adb:49:27: info: overflow check proved (CVC5: 2 VC)
+normal.adb:49:27: info: range check proved (CVC5: 2 VC)
+normal.adb:54:04: warning: analyzing unreferenced procedure "Mul_Overflow" [unreferenced-procedure]
+normal.adb:54:14: warning: subprogram "Mul_Overflow" has no effect
+normal.adb:57:27: info: range check proved (CVC5: 2 VC)
+normal.adb:57:27: medium: overflow check might fail, cannot prove upper bound for X * Y [reason for check: result of multiplication must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
+normal.adb:62:04: warning: analyzing unreferenced procedure "Pred_Underflow" [unreferenced-procedure]
+normal.adb:62:14: warning: subprogram "Pred_Underflow" has no effect
+normal.adb:65:20: medium: overflow check might fail [reason for check: value must fit in a 32-bits machine integer] [provers gave up before completing the proof]
+normal.adb:68:04: warning: analyzing unreferenced procedure "Succ_Ok" [unreferenced-procedure]
+normal.adb:68:14: warning: subprogram "Succ_Ok" has no effect
+normal.adb:71:20: info: overflow check proved (CVC5: 1 VC)
+normal.adb:74:04: warning: analyzing unreferenced procedure "Expon_KO" [unreferenced-procedure]
+normal.adb:74:14: warning: subprogram "Expon_KO" has no effect
+normal.adb:77:14: medium: overflow check might fail, cannot prove upper bound for X ** 100 [reason for check: result of exponentiation must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
+normal.adb:80:13: info: implicit aspect Always_Terminates on "Is_Prime" has been proved, subprogram will terminate
+normal.adb:83:08: medium: postcondition might fail [provers reached step limit before completing the proof]
+normal.adb:85:40: medium: overflow check might fail, cannot prove upper bound for I * J [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers reached step limit before completing the proof]
+normal.adb:91:33: info: loop invariant initialization proved (CVC5: 2 VC)
+normal.adb:91:33: info: loop invariant preservation proved (CVC5: 2 VC)
+normal.adb:93:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
+normal.adb:94:40: medium: overflow check might fail, cannot prove upper bound for I * J [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers reached step limit before completing the proof]
+normal.adb:94:53: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove I = 1 or I >= Test [provers reached step limit before completing the proof]
+normal.adb:95:31: info: loop variant proved (CVC5: 1 VC)
+normal.adb:96:28: info: division check proved (CVC5: 1 VC)
+normal.adb:97:15: info: division check proved (CVC5: 1 VC)
+normal.adb:100:23: info: overflow check proved (CVC5: 2 VC)
+normal.adb:109:13: info: aspect Always_Terminates on "Binary_Search" has been proved, subprogram will terminate
+normal.adb:110:11: info: data dependencies proved
+normal.adb:112:48: info: overflow check proved (CVC5: 2 VC)
+normal.adb:112:58: info: index check proved (CVC5: 2 VC)
+normal.adb:112:68: info: index check proved (CVC5: 2 VC)
+normal.adb:112:68: info: overflow check proved (CVC5: 2 VC)
+normal.adb:113:14: info: postcondition proved (CVC5: 2 VC)
+normal.adb:113:30: info: index check proved (CVC5: 2 VC)
+normal.adb:116:11: info: exceptional case proved (CVC5: 1 VC)
+normal.adb:116:49: info: index check proved (CVC5: 2 VC)
+normal.adb:121:17: info: aspect Always_Terminates on "Exceed_High" has been proved, subprogram will terminate
+normal.adb:123:09: info: data dependencies proved
+normal.adb:129:46: info: overflow check proved (CVC5: 2 VC)
+normal.adb:129:56: info: index check proved (CVC5: 2 VC)
+normal.adb:129:66: info: index check proved (CVC5: 2 VC)
+normal.adb:129:66: info: overflow check proved (CVC5: 2 VC)
+normal.adb:130:23: info: index check proved (CVC5: 2 VC)
+normal.adb:131:09: warning: postcondition does not check the outcome of calling "Exceed_High" [-gnatw.t]
+normal.adb:131:17: info: postcondition proved (CVC5: 1 VC)
+normal.adb:131:51: info: index check proved (CVC5: 2 VC)
+normal.adb:136:36: info: loop invariant initialization proved (CVC5: 1 VC)
+normal.adb:136:36: info: loop invariant preservation proved (CVC5: 1 VC)
+normal.adb:136:64: info: index check proved (CVC5: 4 VC)
+normal.adb:137:28: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
+normal.adb:137:51: info: index check proved (CVC5: 2 VC)
+normal.adb:137:61: info: index check proved (CVC5: 2 VC)
+normal.adb:137:61: info: overflow check proved (CVC5: 2 VC)
+normal.adb:141:17: info: aspect Always_Terminates on "Under_Low" has been proved, subprogram will terminate
+normal.adb:143:09: info: data dependencies proved
+normal.adb:149:46: info: overflow check proved (CVC5: 2 VC)
+normal.adb:149:56: info: index check proved (CVC5: 2 VC)
+normal.adb:149:66: info: index check proved (CVC5: 2 VC)
+normal.adb:149:66: info: overflow check proved (CVC5: 2 VC)
+normal.adb:150:23: info: index check proved (CVC5: 2 VC)
+normal.adb:151:09: warning: postcondition does not check the outcome of calling "Under_Low" [-gnatw.t]
+normal.adb:151:17: info: postcondition proved (CVC5: 1 VC)
+normal.adb:151:52: info: index check proved (CVC5: 2 VC)
+normal.adb:156:36: info: loop invariant initialization proved (CVC5: 1 VC)
+normal.adb:156:36: info: loop invariant preservation proved (CVC5: 1 VC)
+normal.adb:156:64: info: index check proved (CVC5: 4 VC)
+normal.adb:157:28: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
+normal.adb:157:53: info: index check proved (CVC5: 2 VC)
+normal.adb:157:53: info: overflow check proved (CVC5: 2 VC)
+normal.adb:157:63: info: index check proved (CVC5: 2 VC)
+normal.adb:161:07: info: initialization of "Low_Index" proved
+normal.adb:162:07: info: initialization of "High_Index" proved
+normal.adb:170:33: info: loop invariant initialization proved (CVC5: 1 VC)
+normal.adb:170:33: info: loop invariant preservation proved (CVC5: 1 VC)
+normal.adb:171:33: info: loop invariant initialization proved (CVC5: 1 VC)
+normal.adb:171:33: info: loop invariant preservation proved (CVC5: 1 VC)
+normal.adb:172:33: info: loop invariant initialization proved (CVC5: 1 VC)
+normal.adb:172:33: info: loop invariant preservation proved (CVC5: 1 VC)
+normal.adb:174:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
+normal.adb:174:13: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
+normal.adb:175:42: info: index check proved (CVC5: 4 VC)
+normal.adb:177:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
+normal.adb:177:13: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
+normal.adb:178:43: info: index check proved (CVC5: 4 VC)
+normal.adb:179:31: info: loop variant proved (CVC5: 1 VC)
+normal.adb:179:56: info: overflow check proved (CVC5: 4 VC)
+normal.adb:181:34: info: overflow check proved (CVC5: 2 VC)
+normal.adb:181:34: info: range check proved (CVC5: 2 VC)
+normal.adb:181:48: info: overflow check proved (CVC5: 2 VC)
+normal.adb:181:61: info: division check proved (CVC5: 1 VC)
+normal.adb:183:19: info: index check proved (CVC5: 2 VC)
+normal.adb:184:16: info: precondition proved (CVC5: 4 VC; Trivial: 1 VC)
+normal.adb:186:33: info: overflow check proved (CVC5: 2 VC)
+normal.adb:187:22: info: index check proved (CVC5: 2 VC)
+normal.adb:188:16: info: precondition proved (CVC5: 4 VC; Trivial: 1 VC)
+normal.adb:190:34: info: overflow check proved (CVC5: 2 VC)
+to_base.adb:4:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
+to_base.adb:6:04: warning: analyzing unreferenced procedure "Self_Difference" [unreferenced-procedure]
+to_base.adb:6:14: warning: subprogram "Self_Difference" has no effect
+to_base.adb:7:32: info: overflow check proved (CVC5: 2 VC)
+to_base.adb:12:04: warning: analyzing unreferenced procedure "Sub_Ok" [unreferenced-procedure]
+to_base.adb:12:14: warning: subprogram "Sub_Ok" has no effect
+to_base.adb:15:32: info: overflow check proved (CVC5: 2 VC)
+to_base.adb:20:04: warning: analyzing unreferenced procedure "Sub_Underflow" [unreferenced-procedure]
+to_base.adb:20:14: warning: subprogram "Sub_Underflow" has no effect
+to_base.adb:25:32: medium: overflow check might fail, cannot prove lower bound for X - Y [reason for check: result of subtraction must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
+to_base.adb:30:04: warning: analyzing unreferenced procedure "Add_Ok" [unreferenced-procedure]
+to_base.adb:30:14: warning: subprogram "Add_Ok" has no effect
+to_base.adb:33:32: info: overflow check proved (CVC5: 2 VC)
+to_base.adb:38:04: warning: analyzing unreferenced procedure "Add_Overflow" [unreferenced-procedure]
+to_base.adb:38:14: warning: subprogram "Add_Overflow" has no effect
+to_base.adb:41:32: medium: overflow check might fail, cannot prove upper bound for X + Y [reason for check: result of addition must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
+to_base.adb:46:04: warning: analyzing unreferenced procedure "Mul_Ok" [unreferenced-procedure]
+to_base.adb:46:14: warning: subprogram "Mul_Ok" has no effect
+to_base.adb:49:32: info: overflow check proved (CVC5: 2 VC)
+to_base.adb:54:04: warning: analyzing unreferenced procedure "Mul_Overflow" [unreferenced-procedure]
+to_base.adb:54:14: warning: subprogram "Mul_Overflow" has no effect
+to_base.adb:57:32: medium: overflow check might fail, cannot prove upper bound for X * Y [reason for check: result of multiplication must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
+to_base.adb:62:04: warning: analyzing unreferenced procedure "Pred_Underflow" [unreferenced-procedure]
+to_base.adb:62:14: warning: subprogram "Pred_Underflow" has no effect
+to_base.adb:65:25: medium: overflow check might fail [reason for check: value must fit in a 32-bits machine integer] [provers gave up before completing the proof]
+to_base.adb:68:04: warning: analyzing unreferenced procedure "Succ_Ok" [unreferenced-procedure]
+to_base.adb:68:14: warning: subprogram "Succ_Ok" has no effect
+to_base.adb:71:25: info: overflow check proved (CVC5: 1 VC)
+to_base.adb:74:04: warning: analyzing unreferenced procedure "Expon_KO" [unreferenced-procedure]
+to_base.adb:74:14: warning: subprogram "Expon_KO" has no effect
+to_base.adb:77:14: medium: overflow check might fail, cannot prove upper bound for X ** 100 [reason for check: result of exponentiation must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
+to_base.adb:80:13: info: implicit aspect Always_Terminates on "Is_Prime" has been proved, subprogram will terminate
+to_base.adb:83:08: medium: postcondition might fail [provers reached step limit before completing the proof]
+to_base.adb:85:45: medium: overflow check might fail, cannot prove upper bound for I * J [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers reached step limit before completing the proof]
+to_base.adb:91:33: info: loop invariant initialization proved (CVC5: 2 VC)
+to_base.adb:91:33: info: loop invariant preservation proved (CVC5: 2 VC)
+to_base.adb:93:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
+to_base.adb:94:45: medium: overflow check might fail, cannot prove upper bound for I * J [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers reached step limit before completing the proof]
+to_base.adb:94:58: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove I = 1 or I >= Test [provers reached step limit before completing the proof]
+to_base.adb:95:31: info: loop variant proved (CVC5: 1 VC)
+to_base.adb:96:28: info: division check proved (CVC5: 1 VC)
+to_base.adb:97:15: info: division check proved (CVC5: 1 VC)
+to_base.adb:100:23: info: overflow check proved (CVC5: 2 VC)
+to_base.adb:109:13: info: aspect Always_Terminates on "Binary_Search" has been proved, subprogram will terminate
+to_base.adb:110:11: info: data dependencies proved
+to_base.adb:112:48: info: overflow check proved (CVC5: 2 VC)
+to_base.adb:112:58: info: index check proved (CVC5: 2 VC)
+to_base.adb:112:68: info: index check proved (CVC5: 2 VC)
+to_base.adb:112:68: info: overflow check proved (CVC5: 2 VC)
+to_base.adb:113:14: info: postcondition proved (CVC5: 2 VC)
+to_base.adb:113:30: info: index check proved (CVC5: 2 VC)
+to_base.adb:116:11: info: exceptional case proved (CVC5: 1 VC)
+to_base.adb:116:49: info: index check proved (CVC5: 2 VC)
+to_base.adb:121:17: info: aspect Always_Terminates on "Exceed_High" has been proved, subprogram will terminate
+to_base.adb:123:09: info: data dependencies proved
+to_base.adb:129:46: info: overflow check proved (CVC5: 2 VC)
+to_base.adb:129:56: info: index check proved (CVC5: 2 VC)
+to_base.adb:129:66: info: index check proved (CVC5: 2 VC)
+to_base.adb:129:66: info: overflow check proved (CVC5: 2 VC)
+to_base.adb:130:23: info: index check proved (CVC5: 2 VC)
+to_base.adb:131:09: warning: postcondition does not check the outcome of calling "Exceed_High" [-gnatw.t]
+to_base.adb:131:17: info: postcondition proved (CVC5: 1 VC)
+to_base.adb:131:51: info: index check proved (CVC5: 2 VC)
+to_base.adb:136:36: info: loop invariant initialization proved (CVC5: 1 VC)
+to_base.adb:136:36: info: loop invariant preservation proved (CVC5: 1 VC)
+to_base.adb:136:64: info: index check proved (CVC5: 4 VC)
+to_base.adb:137:28: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
+to_base.adb:137:51: info: index check proved (CVC5: 2 VC)
+to_base.adb:137:61: info: index check proved (CVC5: 2 VC)
+to_base.adb:137:61: info: overflow check proved (CVC5: 2 VC)
+to_base.adb:141:17: info: aspect Always_Terminates on "Under_Low" has been proved, subprogram will terminate
+to_base.adb:143:09: info: data dependencies proved
+to_base.adb:149:46: info: overflow check proved (CVC5: 2 VC)
+to_base.adb:149:56: info: index check proved (CVC5: 2 VC)
+to_base.adb:149:66: info: index check proved (CVC5: 2 VC)
+to_base.adb:149:66: info: overflow check proved (CVC5: 2 VC)
+to_base.adb:150:23: info: index check proved (CVC5: 2 VC)
+to_base.adb:151:09: warning: postcondition does not check the outcome of calling "Under_Low" [-gnatw.t]
+to_base.adb:151:17: info: postcondition proved (CVC5: 1 VC)
+to_base.adb:151:52: info: index check proved (CVC5: 2 VC)
+to_base.adb:156:36: info: loop invariant initialization proved (CVC5: 1 VC)
+to_base.adb:156:36: info: loop invariant preservation proved (CVC5: 1 VC)
+to_base.adb:156:64: info: index check proved (CVC5: 4 VC)
+to_base.adb:157:28: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
+to_base.adb:157:53: info: index check proved (CVC5: 2 VC)
+to_base.adb:157:53: info: overflow check proved (CVC5: 2 VC)
+to_base.adb:157:63: info: index check proved (CVC5: 2 VC)
+to_base.adb:161:07: info: initialization of "Low_Index" proved
+to_base.adb:162:07: info: initialization of "High_Index" proved
+to_base.adb:170:33: info: loop invariant initialization proved (CVC5: 1 VC)
+to_base.adb:170:33: info: loop invariant preservation proved (CVC5: 1 VC)
+to_base.adb:171:33: info: loop invariant initialization proved (CVC5: 1 VC)
+to_base.adb:171:33: info: loop invariant preservation proved (CVC5: 1 VC)
+to_base.adb:172:33: info: loop invariant initialization proved (CVC5: 1 VC)
+to_base.adb:172:33: info: loop invariant preservation proved (CVC5: 1 VC)
+to_base.adb:174:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
+to_base.adb:174:13: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
+to_base.adb:175:42: info: index check proved (CVC5: 4 VC)
+to_base.adb:177:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
+to_base.adb:177:13: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
+to_base.adb:178:43: info: index check proved (CVC5: 4 VC)
+to_base.adb:179:31: info: loop variant proved (CVC5: 1 VC)
+to_base.adb:179:56: info: overflow check proved (CVC5: 4 VC)
+to_base.adb:181:39: info: overflow check proved (CVC5: 2 VC)
+to_base.adb:181:53: info: overflow check proved (CVC5: 2 VC)
+to_base.adb:181:66: info: division check proved (CVC5: 1 VC)
+to_base.adb:183:19: info: index check proved (CVC5: 2 VC)
+to_base.adb:184:16: info: precondition proved (CVC5: 4 VC; Trivial: 1 VC)
+to_base.adb:186:33: info: overflow check proved (CVC5: 2 VC)
+to_base.adb:187:22: info: index check proved (CVC5: 2 VC)
+to_base.adb:188:16: info: precondition proved (CVC5: 4 VC; Trivial: 1 VC)
+to_base.adb:190:34: info: overflow check proved (CVC5: 2 VC)
+with_derived.adb:4:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
+with_derived.adb:5:12: info: range check proved (CVC5: 2 VC)
+with_derived.adb:8:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
+with_derived.adb:10:04: warning: analyzing unreferenced procedure "Self_Difference" [unreferenced-procedure]
+with_derived.adb:10:14: warning: subprogram "Self_Difference" has no effect
+with_derived.adb:11:27: info: overflow check proved (CVC5: 2 VC)
+with_derived.adb:11:27: info: range check proved (CVC5: 2 VC)
+with_derived.adb:16:04: warning: analyzing unreferenced procedure "Sub_Ok" [unreferenced-procedure]
+with_derived.adb:16:14: warning: subprogram "Sub_Ok" has no effect
+with_derived.adb:17:29: info: range check proved (CVC5: 2 VC)
+with_derived.adb:18:29: info: range check proved (CVC5: 2 VC)
+with_derived.adb:19:27: info: overflow check proved (CVC5: 2 VC)
+with_derived.adb:19:27: info: range check proved (CVC5: 2 VC)
+with_derived.adb:24:04: warning: analyzing unreferenced procedure "Sub_Underflow" [unreferenced-procedure]
+with_derived.adb:24:14: warning: subprogram "Sub_Underflow" has no effect
+with_derived.adb:25:29: info: range check proved (CVC5: 2 VC)
+with_derived.adb:26:29: info: range check proved (CVC5: 2 VC)
+with_derived.adb:29:27: info: range check proved (CVC5: 2 VC)
+with_derived.adb:29:27: medium: overflow check might fail, cannot prove lower bound for X - Y [reason for check: result of subtraction must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
+with_derived.adb:34:04: warning: analyzing unreferenced procedure "Add_Ok" [unreferenced-procedure]
+with_derived.adb:34:14: warning: subprogram "Add_Ok" has no effect
+with_derived.adb:35:29: info: range check proved (CVC5: 2 VC)
+with_derived.adb:36:29: info: range check proved (CVC5: 2 VC)
+with_derived.adb:37:27: info: overflow check proved (CVC5: 2 VC)
+with_derived.adb:37:27: info: range check proved (CVC5: 2 VC)
+with_derived.adb:42:04: warning: analyzing unreferenced procedure "Add_Overflow" [unreferenced-procedure]
+with_derived.adb:42:14: warning: subprogram "Add_Overflow" has no effect
+with_derived.adb:43:29: info: range check proved (CVC5: 2 VC)
+with_derived.adb:44:29: info: range check proved (CVC5: 2 VC)
+with_derived.adb:45:27: info: overflow check proved (CVC5: 2 VC)
+with_derived.adb:45:27: medium: range check might fail, cannot prove upper bound for X + Y [reason for check: default component value must fit in the type] [provers reached step limit before completing the proof]
+with_derived.adb:50:04: warning: analyzing unreferenced procedure "Mul_Ok" [unreferenced-procedure]
+with_derived.adb:50:14: warning: subprogram "Mul_Ok" has no effect
+with_derived.adb:51:29: info: range check proved (CVC5: 2 VC)
+with_derived.adb:52:29: info: range check proved (CVC5: 2 VC)
+with_derived.adb:53:27: info: overflow check proved (CVC5: 2 VC)
+with_derived.adb:53:27: info: range check proved (CVC5: 2 VC)
+with_derived.adb:58:04: warning: analyzing unreferenced procedure "Mul_Overflow" [unreferenced-procedure]
+with_derived.adb:58:14: warning: subprogram "Mul_Overflow" has no effect
+with_derived.adb:59:29: info: range check proved (CVC5: 2 VC)
+with_derived.adb:60:29: info: range check proved (CVC5: 2 VC)
+with_derived.adb:61:27: info: overflow check proved (CVC5: 2 VC)
+with_derived.adb:61:27: medium: range check might fail, cannot prove upper bound for X * Y [reason for check: default component value must fit in the type] [provers reached step limit before completing the proof]
+with_derived.adb:66:04: warning: analyzing unreferenced procedure "Pred_Underflow" [unreferenced-procedure]
+with_derived.adb:66:14: warning: subprogram "Pred_Underflow" has no effect
+with_derived.adb:67:20: info: range check proved (CVC5: 2 VC)
+with_derived.adb:69:13: info: range check proved (CVC5: 2 VC)
+with_derived.adb:69:20: medium: overflow check might fail [reason for check: value must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
+with_derived.adb:72:04: warning: analyzing unreferenced procedure "Succ_Ok" [unreferenced-procedure]
+with_derived.adb:72:14: warning: subprogram "Succ_Ok" has no effect
+with_derived.adb:73:20: info: range check proved (CVC5: 2 VC)
+with_derived.adb:75:13: info: range check proved (CVC5: 2 VC)
+with_derived.adb:75:20: info: overflow check proved (CVC5: 1 VC)
+with_derived.adb:78:04: warning: analyzing unreferenced procedure "Expon_KO" [unreferenced-procedure]
+with_derived.adb:78:14: warning: subprogram "Expon_KO" has no effect
+with_derived.adb:79:20: info: range check proved (CVC5: 2 VC)
+with_derived.adb:81:14: info: range check proved (CVC5: 1 VC; colibri: 1 VC)
+with_derived.adb:81:14: medium: overflow check might fail, cannot prove upper bound for X ** 100 [reason for check: result of exponentiation must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
+with_derived.adb:84:13: info: implicit aspect Always_Terminates on "Is_Prime" has been proved, subprogram will terminate
+with_derived.adb:87:08: medium: postcondition might fail [provers reached step limit before completing the proof]
+with_derived.adb:89:40: info: overflow check proved (CVC5: 1 VC; Z3: 1 VC)
+with_derived.adb:92:19: info: range check proved (CVC5: 2 VC)
+with_derived.adb:95:33: info: loop invariant initialization proved (CVC5: 2 VC)
+with_derived.adb:95:33: info: loop invariant preservation proved (CVC5: 2 VC)
+with_derived.adb:97:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
+with_derived.adb:98:40: info: overflow check proved (CVC5: 3 VC; Z3: 1 VC)
+with_derived.adb:98:53: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove I = 1 or I >= Test [provers reached step limit before completing the proof]
+with_derived.adb:99:31: info: loop variant proved (CVC5: 1 VC)
+with_derived.adb:100:28: info: division check proved (CVC5: 1 VC)
+with_derived.adb:101:15: info: division check proved (CVC5: 1 VC)
+with_derived.adb:104:23: info: overflow check proved (CVC5: 2 VC)
+with_derived.adb:104:23: info: range check proved (CVC5: 2 VC)
+with_derived.adb:111:04: warning: analyzing unreferenced procedure "Bad_Empty_Aggregate" [unreferenced-procedure]
+with_derived.adb:111:14: warning: subprogram "Bad_Empty_Aggregate" has no effect
+with_derived.adb:112:18: medium: range check might fail [reason for check: high bound of empty array aggregate must be a valid value of the base type] [possible explanation: empty aggregates cannot be used if there is no element before the first element of their index type] [provers reached step limit before completing the proof]
+with_derived.adb:119:13: info: aspect Always_Terminates on "Binary_Search" has been proved, subprogram will terminate
+with_derived.adb:120:11: info: data dependencies proved
+with_derived.adb:122:48: info: overflow check proved (CVC5: 2 VC)
+with_derived.adb:122:58: info: index check proved (CVC5: 2 VC)
+with_derived.adb:122:68: info: index check proved (CVC5: 2 VC)
+with_derived.adb:122:68: info: overflow check proved (CVC5: 2 VC)
+with_derived.adb:123:14: info: postcondition proved (CVC5: 2 VC)
+with_derived.adb:123:30: info: index check proved (CVC5: 2 VC)
+with_derived.adb:126:11: info: exceptional case proved (CVC5: 1 VC)
+with_derived.adb:126:49: info: index check proved (CVC5: 2 VC)
+with_derived.adb:131:17: info: aspect Always_Terminates on "Exceed_High" has been proved, subprogram will terminate
+with_derived.adb:133:09: info: data dependencies proved
+with_derived.adb:139:46: info: overflow check proved (CVC5: 2 VC)
+with_derived.adb:139:56: info: index check proved (CVC5: 2 VC)
+with_derived.adb:139:66: info: index check proved (CVC5: 2 VC)
+with_derived.adb:139:66: info: overflow check proved (CVC5: 2 VC)
+with_derived.adb:140:23: info: index check proved (CVC5: 2 VC)
+with_derived.adb:141:09: warning: postcondition does not check the outcome of calling "Exceed_High" [-gnatw.t]
+with_derived.adb:141:17: info: postcondition proved (CVC5: 1 VC)
+with_derived.adb:141:51: info: index check proved (CVC5: 2 VC)
+with_derived.adb:146:36: info: loop invariant initialization proved (CVC5: 1 VC)
+with_derived.adb:146:36: info: loop invariant preservation proved (CVC5: 1 VC)
+with_derived.adb:146:64: info: index check proved (CVC5: 4 VC)
+with_derived.adb:147:28: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
+with_derived.adb:147:51: info: index check proved (CVC5: 2 VC)
+with_derived.adb:147:61: info: index check proved (CVC5: 2 VC)
+with_derived.adb:147:61: info: overflow check proved (CVC5: 2 VC)
+with_derived.adb:151:17: info: aspect Always_Terminates on "Under_Low" has been proved, subprogram will terminate
+with_derived.adb:153:09: info: data dependencies proved
+with_derived.adb:159:46: info: overflow check proved (CVC5: 2 VC)
+with_derived.adb:159:56: info: index check proved (CVC5: 2 VC)
+with_derived.adb:159:66: info: index check proved (CVC5: 2 VC)
+with_derived.adb:159:66: info: overflow check proved (CVC5: 2 VC)
+with_derived.adb:160:23: info: index check proved (CVC5: 2 VC)
+with_derived.adb:161:09: warning: postcondition does not check the outcome of calling "Under_Low" [-gnatw.t]
+with_derived.adb:161:17: info: postcondition proved (CVC5: 1 VC)
+with_derived.adb:161:52: info: index check proved (CVC5: 2 VC)
+with_derived.adb:166:36: info: loop invariant initialization proved (CVC5: 1 VC)
+with_derived.adb:166:36: info: loop invariant preservation proved (CVC5: 1 VC)
+with_derived.adb:166:64: info: index check proved (CVC5: 4 VC)
+with_derived.adb:167:28: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
+with_derived.adb:167:53: info: index check proved (CVC5: 2 VC)
+with_derived.adb:167:53: info: overflow check proved (CVC5: 2 VC)
+with_derived.adb:167:63: info: index check proved (CVC5: 2 VC)
+with_derived.adb:171:07: info: initialization of "Low_Index" proved
+with_derived.adb:172:07: info: initialization of "High_Index" proved
+with_derived.adb:177:21: info: range check proved (CVC5: 2 VC)
+with_derived.adb:178:22: info: range check proved (CVC5: 2 VC)
+with_derived.adb:180:33: info: loop invariant initialization proved (CVC5: 1 VC)
+with_derived.adb:180:33: info: loop invariant preservation proved (CVC5: 1 VC)
+with_derived.adb:181:33: info: loop invariant initialization proved (CVC5: 1 VC)
+with_derived.adb:181:33: info: loop invariant preservation proved (CVC5: 1 VC)
+with_derived.adb:182:33: info: loop invariant initialization proved (CVC5: 1 VC)
+with_derived.adb:182:33: info: loop invariant preservation proved (CVC5: 1 VC)
+with_derived.adb:184:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
+with_derived.adb:184:13: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
+with_derived.adb:185:42: info: index check proved (CVC5: 4 VC)
+with_derived.adb:187:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
+with_derived.adb:187:13: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
+with_derived.adb:188:43: info: index check proved (CVC5: 4 VC)
+with_derived.adb:189:31: info: loop variant proved (CVC5: 1 VC)
+with_derived.adb:189:56: info: overflow check proved (CVC5: 4 VC)
+with_derived.adb:191:34: info: overflow check proved (CVC5: 2 VC)
+with_derived.adb:191:34: info: range check proved (CVC5: 2 VC)
+with_derived.adb:191:48: info: overflow check proved (CVC5: 2 VC)
+with_derived.adb:191:61: info: division check proved (CVC5: 1 VC)
+with_derived.adb:193:19: info: index check proved (CVC5: 2 VC)
+with_derived.adb:194:16: info: precondition proved (CVC5: 4 VC; Trivial: 1 VC)
+with_derived.adb:196:33: info: overflow check proved (CVC5: 2 VC)
+with_derived.adb:196:33: info: range check proved (CVC5: 2 VC)
+with_derived.adb:197:22: info: index check proved (CVC5: 2 VC)
+with_derived.adb:198:16: info: precondition proved (CVC5: 4 VC; Trivial: 1 VC)
+with_derived.adb:200:34: info: overflow check proved (CVC5: 2 VC)
+with_derived.adb:200:34: info: range check proved (CVC5: 2 VC)
+with_subtype.adb:4:13: info: implicit aspect Always_Terminates on "Id0" has been proved, subprogram will terminate
+with_subtype.adb:5:12: info: range check proved (CVC5: 2 VC)
+with_subtype.adb:7:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
+with_subtype.adb:9:04: warning: analyzing unreferenced procedure "Self_Difference" [unreferenced-procedure]
+with_subtype.adb:9:14: warning: subprogram "Self_Difference" has no effect
+with_subtype.adb:10:27: info: overflow check proved (CVC5: 2 VC)
+with_subtype.adb:10:27: info: range check proved (CVC5: 2 VC)
+with_subtype.adb:15:04: warning: analyzing unreferenced procedure "Sub_Ok" [unreferenced-procedure]
+with_subtype.adb:15:14: warning: subprogram "Sub_Ok" has no effect
+with_subtype.adb:16:29: info: range check proved (CVC5: 2 VC)
+with_subtype.adb:17:29: info: range check proved (CVC5: 2 VC)
+with_subtype.adb:18:27: info: overflow check proved (CVC5: 2 VC)
+with_subtype.adb:18:27: info: range check proved (CVC5: 2 VC)
+with_subtype.adb:23:04: warning: analyzing unreferenced procedure "Sub_Underflow" [unreferenced-procedure]
+with_subtype.adb:23:14: warning: subprogram "Sub_Underflow" has no effect
+with_subtype.adb:24:29: info: range check proved (CVC5: 2 VC)
+with_subtype.adb:25:29: info: range check proved (CVC5: 2 VC)
+with_subtype.adb:28:27: info: range check proved (CVC5: 2 VC)
+with_subtype.adb:28:27: medium: overflow check might fail, cannot prove lower bound for X - Y [reason for check: result of subtraction must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
+with_subtype.adb:33:04: warning: analyzing unreferenced procedure "Add_Ok" [unreferenced-procedure]
+with_subtype.adb:33:14: warning: subprogram "Add_Ok" has no effect
+with_subtype.adb:34:29: info: range check proved (CVC5: 2 VC)
+with_subtype.adb:35:29: info: range check proved (CVC5: 2 VC)
+with_subtype.adb:36:27: info: overflow check proved (CVC5: 2 VC)
+with_subtype.adb:36:27: info: range check proved (CVC5: 2 VC)
+with_subtype.adb:41:04: warning: analyzing unreferenced procedure "Add_Overflow" [unreferenced-procedure]
+with_subtype.adb:41:14: warning: subprogram "Add_Overflow" has no effect
+with_subtype.adb:42:29: info: range check proved (CVC5: 2 VC)
+with_subtype.adb:43:29: info: range check proved (CVC5: 2 VC)
+with_subtype.adb:44:27: info: overflow check proved (CVC5: 2 VC)
+with_subtype.adb:44:27: medium: range check might fail, cannot prove upper bound for X + Y [reason for check: default component value must fit in the type] [provers reached step limit before completing the proof]
+with_subtype.adb:49:04: warning: analyzing unreferenced procedure "Mul_Ok" [unreferenced-procedure]
+with_subtype.adb:49:14: warning: subprogram "Mul_Ok" has no effect
+with_subtype.adb:50:29: info: range check proved (CVC5: 2 VC)
+with_subtype.adb:51:29: info: range check proved (CVC5: 2 VC)
+with_subtype.adb:52:27: info: overflow check proved (CVC5: 2 VC)
+with_subtype.adb:52:27: info: range check proved (CVC5: 2 VC)
+with_subtype.adb:57:04: warning: analyzing unreferenced procedure "Mul_Overflow" [unreferenced-procedure]
+with_subtype.adb:57:14: warning: subprogram "Mul_Overflow" has no effect
+with_subtype.adb:58:29: info: range check proved (CVC5: 2 VC)
+with_subtype.adb:59:29: info: range check proved (CVC5: 2 VC)
+with_subtype.adb:60:27: info: overflow check proved (CVC5: 2 VC)
+with_subtype.adb:60:27: medium: range check might fail, cannot prove upper bound for X * Y [reason for check: default component value must fit in the type] [provers reached step limit before completing the proof]
+with_subtype.adb:65:04: warning: analyzing unreferenced procedure "Pred_Underflow" [unreferenced-procedure]
+with_subtype.adb:65:14: warning: subprogram "Pred_Underflow" has no effect
+with_subtype.adb:66:20: info: range check proved (CVC5: 2 VC)
+with_subtype.adb:68:13: info: range check proved (CVC5: 2 VC)
+with_subtype.adb:68:20: medium: overflow check might fail [reason for check: value must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
+with_subtype.adb:71:04: warning: analyzing unreferenced procedure "Succ_Ok" [unreferenced-procedure]
+with_subtype.adb:71:14: warning: subprogram "Succ_Ok" has no effect
+with_subtype.adb:72:20: info: range check proved (CVC5: 2 VC)
+with_subtype.adb:74:13: info: range check proved (CVC5: 2 VC)
+with_subtype.adb:74:20: info: overflow check proved (CVC5: 1 VC)
+with_subtype.adb:77:04: warning: analyzing unreferenced procedure "Expon_KO" [unreferenced-procedure]
+with_subtype.adb:77:14: warning: subprogram "Expon_KO" has no effect
+with_subtype.adb:78:20: info: range check proved (CVC5: 2 VC)
+with_subtype.adb:80:14: info: range check proved (CVC5: 1 VC; colibri: 1 VC)
+with_subtype.adb:80:14: medium: overflow check might fail, cannot prove upper bound for X ** 100 [reason for check: result of exponentiation must fit in a 32-bits machine integer] [provers reached step limit before completing the proof]
+with_subtype.adb:83:13: info: implicit aspect Always_Terminates on "Is_Prime" has been proved, subprogram will terminate
+with_subtype.adb:86:08: medium: postcondition might fail [provers reached step limit before completing the proof]
+with_subtype.adb:88:40: info: overflow check proved (CVC5: 1 VC; Z3: 1 VC)
+with_subtype.adb:91:19: info: range check proved (CVC5: 2 VC)
+with_subtype.adb:94:33: info: loop invariant initialization proved (CVC5: 2 VC)
+with_subtype.adb:94:33: info: loop invariant preservation proved (CVC5: 2 VC)
+with_subtype.adb:96:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
+with_subtype.adb:97:40: info: overflow check proved (CVC5: 3 VC; Z3: 1 VC)
+with_subtype.adb:97:53: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove I = 1 or I >= Test [provers reached step limit before completing the proof]
+with_subtype.adb:98:31: info: loop variant proved (CVC5: 1 VC)
+with_subtype.adb:99:28: info: division check proved (CVC5: 1 VC)
+with_subtype.adb:100:15: info: division check proved (CVC5: 1 VC)
+with_subtype.adb:103:23: info: overflow check proved (CVC5: 2 VC)
+with_subtype.adb:103:23: info: range check proved (CVC5: 2 VC)
+with_subtype.adb:110:04: warning: analyzing unreferenced procedure "Bad_Empty_Aggregate" [unreferenced-procedure]
+with_subtype.adb:110:14: warning: subprogram "Bad_Empty_Aggregate" has no effect
+with_subtype.adb:111:18: medium: range check might fail [reason for check: high bound of empty array aggregate must be a valid value of the base type] [possible explanation: empty aggregates cannot be used if there is no element before the first element of their index type] [provers reached step limit before completing the proof]
+with_subtype.adb:118:13: info: aspect Always_Terminates on "Binary_Search" has been proved, subprogram will terminate
+with_subtype.adb:119:11: info: data dependencies proved
+with_subtype.adb:121:48: info: overflow check proved (CVC5: 2 VC)
+with_subtype.adb:121:58: info: index check proved (CVC5: 2 VC)
+with_subtype.adb:121:68: info: index check proved (CVC5: 2 VC)
+with_subtype.adb:121:68: info: overflow check proved (CVC5: 2 VC)
+with_subtype.adb:122:14: info: postcondition proved (CVC5: 2 VC)
+with_subtype.adb:122:30: info: index check proved (CVC5: 2 VC)
+with_subtype.adb:125:11: info: exceptional case proved (CVC5: 1 VC)
+with_subtype.adb:125:49: info: index check proved (CVC5: 2 VC)
+with_subtype.adb:130:17: info: aspect Always_Terminates on "Exceed_High" has been proved, subprogram will terminate
+with_subtype.adb:132:09: info: data dependencies proved
+with_subtype.adb:138:46: info: overflow check proved (CVC5: 2 VC)
+with_subtype.adb:138:56: info: index check proved (CVC5: 2 VC)
+with_subtype.adb:138:66: info: index check proved (CVC5: 2 VC)
+with_subtype.adb:138:66: info: overflow check proved (CVC5: 2 VC)
+with_subtype.adb:139:23: info: index check proved (CVC5: 2 VC)
+with_subtype.adb:140:09: warning: postcondition does not check the outcome of calling "Exceed_High" [-gnatw.t]
+with_subtype.adb:140:17: info: postcondition proved (CVC5: 1 VC)
+with_subtype.adb:140:51: info: index check proved (CVC5: 2 VC)
+with_subtype.adb:145:36: info: loop invariant initialization proved (CVC5: 1 VC)
+with_subtype.adb:145:36: info: loop invariant preservation proved (CVC5: 1 VC)
+with_subtype.adb:145:64: info: index check proved (CVC5: 4 VC)
+with_subtype.adb:146:28: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
+with_subtype.adb:146:51: info: index check proved (CVC5: 2 VC)
+with_subtype.adb:146:61: info: index check proved (CVC5: 2 VC)
+with_subtype.adb:146:61: info: overflow check proved (CVC5: 2 VC)
+with_subtype.adb:150:17: info: aspect Always_Terminates on "Under_Low" has been proved, subprogram will terminate
+with_subtype.adb:152:09: info: data dependencies proved
+with_subtype.adb:158:46: info: overflow check proved (CVC5: 2 VC)
+with_subtype.adb:158:56: info: index check proved (CVC5: 2 VC)
+with_subtype.adb:158:66: info: index check proved (CVC5: 2 VC)
+with_subtype.adb:158:66: info: overflow check proved (CVC5: 2 VC)
+with_subtype.adb:159:23: info: index check proved (CVC5: 2 VC)
+with_subtype.adb:160:09: warning: postcondition does not check the outcome of calling "Under_Low" [-gnatw.t]
+with_subtype.adb:160:17: info: postcondition proved (CVC5: 1 VC)
+with_subtype.adb:160:52: info: index check proved (CVC5: 2 VC)
+with_subtype.adb:165:36: info: loop invariant initialization proved (CVC5: 1 VC)
+with_subtype.adb:165:36: info: loop invariant preservation proved (CVC5: 1 VC)
+with_subtype.adb:165:64: info: index check proved (CVC5: 4 VC)
+with_subtype.adb:166:28: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
+with_subtype.adb:166:53: info: index check proved (CVC5: 2 VC)
+with_subtype.adb:166:53: info: overflow check proved (CVC5: 2 VC)
+with_subtype.adb:166:63: info: index check proved (CVC5: 2 VC)
+with_subtype.adb:170:07: info: initialization of "Low_Index" proved
+with_subtype.adb:171:07: info: initialization of "High_Index" proved
+with_subtype.adb:176:21: info: range check proved (CVC5: 2 VC)
+with_subtype.adb:177:22: info: range check proved (CVC5: 2 VC)
+with_subtype.adb:179:33: info: loop invariant initialization proved (CVC5: 1 VC)
+with_subtype.adb:179:33: info: loop invariant preservation proved (CVC5: 1 VC)
+with_subtype.adb:180:33: info: loop invariant initialization proved (CVC5: 1 VC)
+with_subtype.adb:180:33: info: loop invariant preservation proved (CVC5: 1 VC)
+with_subtype.adb:181:33: info: loop invariant initialization proved (CVC5: 1 VC)
+with_subtype.adb:181:33: info: loop invariant preservation proved (CVC5: 1 VC)
+with_subtype.adb:183:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
+with_subtype.adb:183:13: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
+with_subtype.adb:184:42: info: index check proved (CVC5: 4 VC)
+with_subtype.adb:186:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
+with_subtype.adb:186:13: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
+with_subtype.adb:187:43: info: index check proved (CVC5: 4 VC)
+with_subtype.adb:188:31: info: loop variant proved (CVC5: 1 VC)
+with_subtype.adb:188:56: info: overflow check proved (CVC5: 4 VC)
+with_subtype.adb:190:34: info: overflow check proved (CVC5: 2 VC)
+with_subtype.adb:190:34: info: range check proved (CVC5: 2 VC)
+with_subtype.adb:190:48: info: overflow check proved (CVC5: 2 VC)
+with_subtype.adb:190:61: info: division check proved (CVC5: 1 VC)
+with_subtype.adb:192:19: info: index check proved (CVC5: 2 VC)
+with_subtype.adb:193:16: info: precondition proved (CVC5: 4 VC; Trivial: 1 VC)
+with_subtype.adb:195:33: info: overflow check proved (CVC5: 2 VC)
+with_subtype.adb:195:33: info: range check proved (CVC5: 2 VC)
+with_subtype.adb:196:22: info: index check proved (CVC5: 2 VC)
+with_subtype.adb:197:16: info: precondition proved (CVC5: 4 VC; Trivial: 1 VC)
+with_subtype.adb:199:34: info: overflow check proved (CVC5: 2 VC)
+with_subtype.adb:199:34: info: range check proved (CVC5: 2 VC)

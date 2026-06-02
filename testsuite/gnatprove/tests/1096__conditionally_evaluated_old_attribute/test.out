@@ -1,0 +1,40 @@
+main.adb:8:46: info: index check proved (CVC5: 2 VC)
+main.adb:9:16: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
+main.adb:9:48: info: index check proved (CVC5: 2 VC)
+main.adb:9:58: info: index check proved (CVC5: 2 VC)
+main.adb:9:65: info: overflow check proved (CVC5: 2 VC)
+main.adb:13:15: info: index check proved (CVC5: 2 VC)
+main.adb:13:26: info: index check proved (CVC5: 2 VC)
+main.adb:13:29: info: overflow check proved (CVC5: 2 VC)
+main.adb:22:08: warning: postcondition does not check the outcome of calling "Nested" [-gnatw.t]
+main.adb:22:16: info: postcondition proved (Trivial: 3 VC)
+main.adb:23:31: info: index check proved (CVC5: 2 VC)
+main.adb:23:31: info: when evaluating condition for conditionally evaluated 'Old reference at main.adb:24
+main.adb:23:45: info: index check proved (CVC5: 2 VC)
+main.adb:23:45: info: when evaluating condition for conditionally evaluated 'Old reference at main.adb:24
+main.adb:24:25: info: index check proved (CVC5: 2 VC)
+main.adb:24:28: info: index check proved (CVC5: 2 VC)
+main.adb:24:41: info: index check proved (CVC5: 2 VC)
+main.adb:24:44: info: index check proved (CVC5: 2 VC)
+main.adb:32:08: warning: postcondition does not check the outcome of calling "Nested_KO" [-gnatw.t]
+main.adb:32:16: info: postcondition proved (Trivial: 3 VC)
+main.adb:33:31: info: index check proved (CVC5: 2 VC)
+main.adb:33:31: info: when evaluating condition for conditionally evaluated 'Old reference at main.adb:34
+main.adb:33:50: info: index check proved (CVC5: 2 VC)
+main.adb:33:50: info: when evaluating condition for conditionally evaluated 'Old reference at main.adb:34
+main.adb:34:25: high: array index check might fail (e.g. when I = 0 and X = (0 => 1) and Y = (0 => 1)) [reason for check: value must be a valid index into the array] [possible explanation: enclosing 'Old attribute reference is conditionally evaluated on subprogram entry] [possible fix: add precondition (X (I) in Integer) to subprogram at line 26] [provers reached step limit before completing the proof]
+main.adb:34:28: info: index check proved (CVC5: 2 VC)
+main.adb:34:41: info: index check proved (CVC5: 2 VC)
+main.adb:34:44: info: index check proved (CVC5: 2 VC)
+potentially_invalid.adb:8:11: info: data dependencies proved
+potentially_invalid.adb:10:06: warning: postcondition does not check the outcome of calling "P" [-gnatw.t]
+potentially_invalid.adb:10:29: high: postcondition might fail, cannot prove X (I)'Old.F >= 2 (e.g. when I'Old = 1 and X'Old = (others => (F => 1))) [provers reached step limit before completing the proof]
+potentially_invalid.adb:10:32: info: index check proved (CVC5: 2 VC)
+potentially_invalid.adb:10:38: medium: validity check might fail [possible fix: precondition of subprogram at line 7 should mention X] [provers reached step limit before completing the proof]
+potentially_invalid.adb:13:10: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (I in 1 .. 42) to subprogram at line 7] [provers reached step limit before completing the proof]
+whoops.adb:9:19: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
+whoops.adb:9:25: info: overflow check proved (CVC5: 2 VC)
+whoops.adb:9:25: medium: overflow check might fail, cannot prove upper bound for X + 10 (e.g. when X = 2147483638) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
+whoops.adb:9:25: medium: when evaluating condition for conditionally evaluated 'Old reference at whoops.adb:9
+whoops.adb:10:35: info: exceptional case proved (Trivial: 1 VC)
+whoops.adb:20:04: info: only expected exception raised (CVC5: 1 VC)

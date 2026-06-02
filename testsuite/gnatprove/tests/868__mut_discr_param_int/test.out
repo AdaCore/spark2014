@@ -1,2 +1,2 @@
-p_int.adb:5:11: high: discriminant check might fail (e.g. when Rec = (K => 1) and Rec'Constrained = True) [possible fix: subprogram at p_int.ads:7 should mention Rec in a precondition]
-p_int.adb:10:11: high: discriminant check might fail (e.g. when Rec = (K => -1) and Rec'Constrained = True) [possible fix: subprogram at p_int.ads:9 should mention Rec'Constrained or Rec.K in a precondition]
+p_int.adb:5:11: high: discriminant check might fail (e.g. when Rec = (K => 1) and Rec'Constrained = True) [possible fix: subprogram at p_int.ads:7 should mention Rec in a precondition] [provers reached step limit before completing the proof]
+p_int.adb:10:11: high: discriminant check might fail (e.g. when Rec = (K => -1) and Rec'Constrained = True) [possible fix: subprogram at p_int.ads:9 should mention Rec'Constrained or Rec.K in a precondition] [provers reached step limit before completing the proof]

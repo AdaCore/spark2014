@@ -25,8 +25,8 @@ keccak-duplex.adb:89:54: info: division check proved (CVC5: 1 VC), in instantiat
 keccak-duplex.adb:94:07: info: precondition proved (CVC5: 2 VC), in instantiation at keccak-keccak_1600.ads:66
 keccak-duplex.adb:106:07: medium: range check might fail, in instantiation at keccak-keccak_1600.ads:66 [reason for check: slice bounds must fit in the underlying array] [provers reached step limit before completing the proof]
 keccak-duplex.adb:106:13: info: index check proved (CVC5: 2 VC), in instantiation at keccak-keccak_1600.ads:66
+keccak-duplex.adb:106:25: info: range check proved (CVC5: 1 VC; colibri: 1 VC), in instantiation at keccak-keccak_1600.ads:66
 keccak-duplex.adb:106:25: info: range check proved (CVC5: 2 VC), in instantiation at keccak-keccak_1600.ads:66
-keccak-duplex.adb:106:25: medium: range check might fail, cannot prove upper bound for In_Data'Length, in instantiation at keccak-keccak_1600.ads:66 [provers reached step limit before completing the proof]
 keccak-duplex.adb:106:33: info: index check proved (CVC5: 2 VC), in instantiation at keccak-keccak_1600.ads:66
 keccak-duplex.adb:106:38: info: length check proved (CVC5: 3 VC), in instantiation at keccak-keccak_1600.ads:66
 keccak-duplex.adb:106:41: info: length check proved (CVC5: 3 VC), in instantiation at keccak-keccak_1600.ads:66

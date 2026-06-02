@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2025, AdaCore                     --
+--                     Copyright (C) 2010-2026, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -253,8 +253,6 @@ package body Gnat2Why.Types is
          Rng  : constant Node_Id := Get_Range (E);
          Low  : constant Node_Id := Low_Bound (Rng);
          High : constant Node_Id := High_Bound (Rng);
-
-         --  Start of processing for Create_Axioms_For_Scalar_Bounds
 
       begin
          if not Compile_Time_Known_Value (Low) then
@@ -535,8 +533,6 @@ package body Gnat2Why.Types is
                Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
             end;
          end Create_Dynamic_Invariant;
-
-         --  Start of processing for Create_Dynamic_Invariant
 
       begin
          Create_Dynamic_Invariant
@@ -891,8 +887,6 @@ package body Gnat2Why.Types is
       end Generate_Axioms_For_Equality;
 
       Th : Theory_UC;
-
-      --  Start of processing for Generate_Type_Completion
 
    begin
       Th :=
@@ -1621,8 +1615,6 @@ package body Gnat2Why.Types is
 
       Th : Theory_UC;
 
-      --  Start of processing for Translate_Type
-
    begin
       if Is_Standard_Boolean_Type (E) or else E = Universal_Fixed then
          return;
@@ -1737,6 +1729,22 @@ package body Gnat2Why.Types is
 
             Close_Theory (Th, Kind => Standalone_Theory);
          end if;
+
+         if E = Standard_Long_Long_Unsigned then
+            Th :=
+              Open_Theory
+                (WF_Context,
+                 Unsigned_Base_Range_Overflow_Module,
+                 Comment =>
+                   "Module defining overflow check program for integers with"
+                   & " Unsigned_Base_Range in minimized mode, created in"
+                   & GNAT.Source_Info.Enclosing_Entity);
+
+            Declare_Additional_Symbols_For_Unsigned_Overflow (Th);
+
+            Close_Theory (Th, Kind => Standalone_Theory);
+         end if;
+
       end if;
 
       --  If the type may be used for expressions with relaxed initialization,

@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2018-2025, AdaCore                     --
+--                     Copyright (C) 2018-2026, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -390,8 +390,6 @@ package body SPARK_Atree is
 
       function Search_Attrs is new
         Sem_Util.Traverse_More_Func (Search_Old_Or_Loop_Entry);
-
-      --  Start of processing for Expression_Contains_Old_Or_Loop_Entry
 
    begin
       return Search_Attrs (Expr) = Atree.Abandon;

@@ -10,4 +10,4 @@ vc.ads:63:04: error: illegal combination of external properties (SPARK RM 7.1.2(
 vc.ads:77:11: error: incorrect placement of aspect "ASYNC_READERS"
 vc.ads:82:11: error: incorrect placement of aspect "ASYNC_READERS"
 vc.ads:87:11: error: incorrect placement of aspect "ASYNC_READERS"
-gnatprove: error during generation of Global contracts
+gnatprove: error during flow analysis and proof

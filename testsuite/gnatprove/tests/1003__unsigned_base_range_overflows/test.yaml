@@ -1,0 +1,4 @@
+prove_all:
+   steps: 20
+   counterexample: False
+   check_counterexamples: False

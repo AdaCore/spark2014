@@ -1,0 +1,4 @@
+:: This script emulates a broken GNAT compiler that emits an invalid JSON file
+:: with data representation info.
+
+@echo [,,,This is invalid JSON file,,,] > p.ads.json

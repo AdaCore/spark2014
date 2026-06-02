@@ -41,7 +41,7 @@ swap_ranges.adb:38:40: info: overflow check proved (CVC5: 4 VC)
 swap_ranges.adb:39:21: info: index check proved (CVC5: 4 VC)
 swap_ranges.adb:39:21: info: overflow check proved (CVC5: 4 VC)
 swap_ranges.adb:42:13: info: loop invariant initialization proved (CVC5: 1 VC)
-swap_ranges.adb:42:13: info: loop invariant preservation proved (Z3: 1 VC)
+swap_ranges.adb:42:13: medium: loop invariant might not be preserved by an arbitrary iteration [provers reached step limit before completing the proof]
 swap_ranges.adb:42:14: info: range check proved (CVC5: 8 VC)
 swap_ranges.adb:42:46: info: overflow check proved (CVC5: 4 VC)
 swap_ranges.adb:43:13: info: range check proved (CVC5: 8 VC)

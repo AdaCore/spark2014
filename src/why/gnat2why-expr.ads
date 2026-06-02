@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                     Copyright (C) 2010-2025, AdaCore                     --
+--                     Copyright (C) 2010-2026, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -189,6 +189,7 @@ package Gnat2Why.Expr is
       W_Brower      : W_Term_Id;
       Expr          : N_Subexpr_Id;
       Borrowed_Expr : Opt_N_Subexpr_Id := Empty;
+      Params        : Transformation_Params;
       Reconstructed : out W_Term_Id;
       Checks        : out W_Statement_Sequence_Id);
    --  Expr should be a path. Reconstruct Borrowed_Expr, or the root of Expr
@@ -261,6 +262,23 @@ package Gnat2Why.Expr is
    --         we only assume the value of its discriminants to be the defaults
    --         if Include_Subtypes is false.
    --  @result The default initial assumption of type Ty over Expr
+
+   function Compute_Default_Value
+     (Ada_Node     : Node_Id;
+      E            : Type_Kind_Id;
+      Relaxed_Init : Boolean;
+      Domain       : EW_Domain;
+      Params       : Transformation_Params := Body_Params) return W_Expr_Id
+   with
+     Pre =>
+       Can_Be_Default_Initialized (Retysp (E))
+       and then not Is_Inherently_Limited_Type (Retysp (E))
+       and then Ekind (Retysp (E)) /= E_String_Literal_Subtype;
+   --  Expression for the default value of an object of type E. In the term
+   --  domain, the values of uninitialized components are set arbitrarily,
+   --  potential default initial conditions are ignored.
+   --  Ada_Node is used to issue info messages on ignored DICs if any when
+   --  --info is set.
 
    function Compute_Dynamic_Predicate
      (Expr          : W_Term_Id;
@@ -583,6 +601,18 @@ package Gnat2Why.Expr is
      (L : List_Id; Params : Transformation_Params) return W_Prog_Id;
    --  Transform the declarations in the list
 
+   function Transform_Discrete_Choice
+     (Choice      : Node_Id;
+      Choice_Type : Opt_Type_Kind_Id;
+      Expr        : W_Expr_Id;
+      Domain      : EW_Domain;
+      Params      : Transformation_Params) return W_Expr_Id
+   with Pre => Get_Type (Expr) = Base_Why_Type (Get_Type (Expr));
+   --  For an expression Expr of a discrete type and a discrete Choice, build
+   --  the expression that Expr belongs to the range expressed by Choice. In
+   --  programs, also generate a check that dynamic choices are in the subtype
+   --  Choice_Type.
+
    function Transform_Discrete_Choices
      (Choices      : List_Id;
       Choice_Type  : Opt_Type_Kind_Id;
@@ -866,13 +896,17 @@ package Gnat2Why.Expr is
    --  protected subprogram.
 
    function Bind_From_Mapping_In_Prog
-     (Params : Transformation_Params;
-      Map    : Ada_To_Why_Ident.Map;
-      Expr   : W_Prog_Id) return W_Prog_Id;
+     (Params       : Transformation_Params;
+      Map          : Ada_To_Why_Ident.Map;
+      Expr         : W_Prog_Id;
+      Old_Prefixes : Boolean := False) return W_Prog_Id;
    --  Bind names from Map to their corresponding values, obtained by
    --  transforming the expression node associated to the name in Map, in Expr.
    --  This is used to bind names for 'Old and 'Loop_Entry attribute reference
    --  to their value.
+   --  If Old_Prefix is set to True, the expression nodes are assumed to be
+   --  prefix of 'Old attributes. The definition of the bindings are guarded
+   --  by the evaluation condition for conditionally evaluated 'Old attributes.
 
    function Bind_From_Mapping_In_Prog
      (Params : Transformation_Params;
@@ -882,25 +916,27 @@ package Gnat2Why.Expr is
    --  attribute reference.
 
    function Bind_From_Mapping_In_Expr
-     (Params : Transformation_Params;
-      Map    : Ada_To_Why_Ident.Map;
-      Expr   : W_Expr_Id;
-      Domain : EW_Domain;
-      Subset : Node_Sets.Set;
-      As_Old : Boolean := False) return W_Expr_Id;
-   --  Same as above but only bind the nodes from Subset. If As_Old is True,
-   --  the expressions in Map should be evaluated in the pre state.
+     (Params       : Transformation_Params;
+      Map          : Ada_To_Why_Ident.Map;
+      Expr         : W_Expr_Id;
+      Domain       : EW_Domain;
+      Subset       : Node_Sets.Set;
+      Old_Prefixes : Boolean := False) return W_Expr_Id
+   with Pre => Domain = EW_Prog or else not Old_Prefixes;
+   --  Same as above but only bind the nodes from Subset.
 
    function Bind_From_Mapping_In_Expr
-     (Params : Transformation_Params;
-      Expr   : W_Expr_Id;
-      N      : Node_Id;
-      Name   : W_Identifier_Id;
-      Domain : EW_Domain;
-      As_Old : Boolean := False) return W_Expr_Id;
+     (Params    : Transformation_Params;
+      Expr      : W_Expr_Id;
+      N         : Node_Id;
+      Name      : W_Identifier_Id;
+      Domain    : EW_Domain;
+      Condition : W_Prog_Id := Why_Empty) return W_Expr_Id
+   with Pre => Domain = EW_Prog or else No (Condition);
    --  Introduce a mapping from the name Name to the Ada expression or entity N
-   --  in Expr. If As_Old is True, the expression should be evaluated in the
-   --  pre state.
+   --  in Expr. If Condition is provided, the name is defined only under the
+   --  condition being true. This is only pertinent in program domain, to guard
+   --  RTE checks.
 
 private
    use type Ada.Containers.Count_Type;
@@ -942,5 +978,35 @@ private
    --  From an item Pattern holding the identifiers for the mutable parts of
    --  a formal parameter and its previous value Pre_Expr, reconstruct an
    --  expression for the new version of the formal.
+
+   ------------------------------------------
+   -- Handling of Expressions with Actions --
+   ------------------------------------------
+
+   --  The detection phase currently allows 3 kinds of nodes in actions:
+   --    N_Object_Declaration for constants
+   --    N_Subtype_Declaration
+   --    N_Full_Type_Declaration
+
+   --  Declarations of constant objects are transformed into let-binding in
+   --  Why, which is possible in any context (program, term, proposition).
+
+   --  Declarations of types are simply ignored. Indeed, we don't know how to
+   --  translate the assignment to type bounds like done in
+   --  Transform_Declaration in a proposition context. Note that this choice
+   --  can possibly lead to dynamic bounds not known at VC level, if such types
+   --  are introduced in actions.
+
+   function Transform_Actions
+     (Actions : List_Id;
+      Expr    : W_Expr_Id;
+      Domain  : EW_Domain;
+      Params  : Transformation_Params) return W_Expr_Id;
+   --  Translate a list of Actions, that should consist only in declarations of
+   --  constants used in Expr.
+
+   procedure Transform_Actions_Preparation (Actions : List_Id);
+   --  Update the symbol table for taking into account the names for
+   --  declarations of constants in Actions.
 
 end Gnat2Why.Expr;

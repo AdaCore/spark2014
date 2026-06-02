@@ -1,6 +1,9 @@
 aco-math-very_longs.adb:21:54: info: initialization of "Digit" proved
 aco-math-very_longs.adb:21:77: info: initialization of "Valid" proved
 aco-math-very_longs.adb:23:08: info: flow dependencies proved
+aco-math-very_longs.adb:28:48: info: range check proved (CVC5: 1 VC)
+aco-math-very_longs.adb:29:48: info: range check proved (CVC5: 1 VC)
+aco-math-very_longs.adb:30:48: info: range check proved (CVC5: 1 VC)
 aco-math-very_longs.adb:39:52: info: initialization of "Result" proved
 aco-math-very_longs.adb:39:76: info: initialization of "Carry" proved
 aco-math-very_longs.adb:41:08: info: flow dependencies proved

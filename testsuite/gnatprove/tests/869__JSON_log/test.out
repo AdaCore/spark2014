@@ -4,7 +4,7 @@ simple.adb:15:24: high: overflow check might fail, cannot prove upper bound for 
 simple.adb:15:24: high: range check might fail, cannot prove upper bound for Alice.Age + Bob.Age (e.g. when Alice = (Name => (others => 'NUL'), Age => 1) and Bob = (Name => (others => 'NUL'), Age => Lifetime'Last)) [reason for check: returned value must fit in the result type of the function] [possible fix: add precondition (Alice.Age <= Lifetime'Last - Bob.Age) to subprogram at simple.ads:18] [provers reached step limit before completing the proof]
 simple.adb:20:18: high: divide by zero might fail (e.g. when N = 3.1415000E+0) [possible fix: add precondition ((N - 3.1415) /= 0) to subprogram at simple.ads:20] [provers reached step limit before completing the proof]
 simple.adb:20:18: info: float overflow check proved (colibri: 1 VC)
-simple.adb:20:23: info: float overflow check proved (CVC5: 1 VC)
+simple.adb:20:23: info: float overflow check proved (Z3: 1 VC)
 simple.adb:25:28: high: range check might fail, cannot prove upper bound for A (1) + A (2) + A (0) (e.g. when A = (0 => 10, 1 => 0, 2 => 1)) [reason for check: returned value must fit in the result type of the function] [possible fix: add precondition (A (1) + A (2) <= T'Last - A (0)) to subprogram at simple.ads:26] [provers gave up before completing the proof]
 simple.adb:29:07: info: initialization of "Z" proved
 simple.adb:31:18: info: range check proved (CVC5: 2 VC)

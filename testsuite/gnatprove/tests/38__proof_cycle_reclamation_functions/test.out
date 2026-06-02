@@ -1,7 +1,10 @@
+local_variable_pkg.adb:6:15: warning: potentially missing contract for "Func" declared at local_variable_pkg.ads:3
+local_variable_pkg.adb:6:15: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 local_variable_pkg.adb:7:10: medium: resource or memory leak might occur at end of scope [provers gave up before completing the proof]
 local_variable_pkg.adb:7:10: warning: unused variable "V"
 local_variable_pkg.ads:3:13: info: implicit aspect Always_Terminates on "Func" has been proved, subprogram will terminate
-local_variable_pkg.ads:3:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
+local_variable_pkg.ads:3:13: warning: potentially missing contract for "Func" declared at line 3
+local_variable_pkg.ads:3:13: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 local_variable_pkg.ads:3:38: warning: postcondition does not mention function result [-gnatw.t]
 local_variable_pkg.ads:3:46: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function "Aux" or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 local_variable_pkg.ads:3:46: warning: assuming "Aux" has no effect on global items
@@ -9,7 +12,8 @@ local_variable_pkg.ads:3:46: warning: no Global contract available for "Aux" [as
 local_variable_rec.adb:6:07: medium: resource or memory leak might occur at end of scope [provers gave up before completing the proof]
 local_variable_rec.adb:6:07: warning: unused variable "V"
 local_variable_rec.ads:3:13: info: implicit aspect Always_Terminates on "Func" has been proved, subprogram will terminate
-local_variable_rec.ads:3:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
+local_variable_rec.ads:3:13: warning: potentially missing contract for "Func" declared at line 3
+local_variable_rec.ads:3:13: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 local_variable_rec.ads:3:38: warning: postcondition does not mention function result [-gnatw.t]
 local_variable_rec.ads:3:46: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function "Aux" or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 local_variable_rec.ads:3:46: warning: assuming "Aux" has no effect on global items
@@ -17,7 +21,8 @@ local_variable_rec.ads:3:46: warning: no Global contract available for "Aux" [as
 local_variable_subp.adb:6:07: medium: resource or memory leak might occur at end of scope [provers gave up before completing the proof]
 local_variable_subp.adb:6:07: warning: unused variable "V"
 local_variable_subp.ads:3:13: info: implicit aspect Always_Terminates on "Func" has been proved, subprogram will terminate
-local_variable_subp.ads:3:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
+local_variable_subp.ads:3:13: warning: potentially missing contract for "Func" declared at line 3
+local_variable_subp.ads:3:13: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 local_variable_subp.ads:3:38: warning: postcondition does not mention function result [-gnatw.t]
 local_variable_subp.ads:3:46: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function "Aux" or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
 local_variable_subp.ads:3:46: warning: assuming "Aux" has no effect on global items
@@ -30,8 +35,14 @@ other_tests.adb:25:20: warning: unused variable "Value"
 other_tests.adb:25:39: info: data dependencies proved
 other_tests.adb:33:10: info: absence of resource or memory leak proved (CVC5: 1 VC)
 p1.ads:8:13: info: implicit aspect Always_Terminates on "Is_Null" has been proved, subprogram will terminate
+p1.ads:8:13: warning: potentially missing contract for "Func" declared at local_variable_subp.ads:3
+p1.ads:8:13: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 p1.ads:8:22: warning: unused variable "V"
 p2.ads:8:13: info: implicit aspect Always_Terminates on "Is_Null" has been proved, subprogram will terminate
+p2.ads:8:13: warning: potentially missing contract for "Func" declared at local_variable_pkg.ads:3
+p2.ads:8:13: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 p2.ads:8:22: warning: unused variable "V"
 rec.ads:16:13: info: implicit aspect Always_Terminates on "Is_Null" has been proved, subprogram will terminate
+rec.ads:16:13: warning: potentially missing contract for "Func" declared at local_variable_rec.ads:3
+rec.ads:16:13: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 rec.ads:16:22: warning: unused variable "V"

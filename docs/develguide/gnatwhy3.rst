@@ -2,6 +2,14 @@
 GNATWhy3
 ########
 
+..
+   devguide-meta:
+   covers: GNATWhy3 behavior, Why3 integration, prover scheduling, and debug
+   workflows
+   primary_code: why3/, gnatwhy3 integration paths
+   when_to_read: changes to GNATWhy3, prover execution, Why3 session handling,
+   or prover debug support
+
 This section provides a quick description of GNATWhy3. GNATWhy3 is an
 executable written in OCaml as an overcoat layer for Why3 (reusing part of its
 API and most of the code). The submodule of spark2014 git repository called

@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2025, AdaCore                     --
+--                     Copyright (C) 2010-2026, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -320,8 +320,6 @@ package body Gnat2Why.Expr.Loops is
       Cur_Stmt   : Node_Id := Nlists.First (Stmts);
       Flat_Stmts : Node_Lists.List;
 
-      --  Start of processing for Get_Flat_Statement_And_Declaration_List
-
    begin
       while Present (Cur_Stmt) loop
          case Nkind (Cur_Stmt) is
@@ -419,8 +417,6 @@ package body Gnat2Why.Expr.Loops is
       Cur_State : State := Before_Selected_Block;
 
       use Node_Lists;
-
-      --  Start of processing for Get_Loop_Variant
 
    begin
       for N of Loop_Stmts loop
@@ -724,8 +720,6 @@ package body Gnat2Why.Expr.Loops is
 
       Low_Id  : W_Identifier_Id := Why_Empty;
       High_Id : W_Identifier_Id := Why_Empty;
-
-      --  Start of processing for Transform_Loop_Statement
 
    begin
       --  Add the loop index to the entity table
@@ -1121,24 +1115,28 @@ package body Gnat2Why.Expr.Loops is
                ---------------------------------
 
                function Exit_Condition_For_Iterable return W_Expr_Id is
-                  H_Elmt   : constant E_Function_Id :=
+                  Is_Reverse : constant Boolean :=
+                    Reverse_Present (LParam_Spec);
+                  H_Elmt     : constant E_Function_Id :=
                     Get_Iterable_Type_Primitive
                       (Etype (Over_Node), Name_Has_Element);
-                  W_H_Elmt : constant W_Identifier_Id :=
+                  W_H_Elmt   : constant W_Identifier_Id :=
                     +Transform_Identifier
                        (Params => Params,
                         Expr   => H_Elmt,
                         Ent    => H_Elmt,
                         Domain => EW_Prog);
-                  N_Elmt   : constant E_Function_Id :=
-                    Get_Iterable_Type_Primitive (Etype (Over_Node), Name_Next);
-                  W_N_Elmt : constant W_Identifier_Id :=
+                  N_Elmt     : constant E_Function_Id :=
+                    Get_Iterable_Type_Primitive
+                      (Etype (Over_Node),
+                       (if Is_Reverse then Name_Previous else Name_Next));
+                  W_N_Elmt   : constant W_Identifier_Id :=
                     +Transform_Identifier
                        (Params => Params,
                         Expr   => N_Elmt,
                         Ent    => N_Elmt,
                         Domain => EW_Prog);
-                  Cur_Expr : constant W_Expr_Id :=
+                  Cur_Expr   : constant W_Expr_Id :=
                     Insert_Simple_Conversion
                       (Domain => EW_Term,
                        Expr   => +Iter_Deref,
@@ -1173,9 +1171,12 @@ package body Gnat2Why.Expr.Loops is
                ---------------
 
                function Init_Iter return W_Prog_Id is
-                  First : constant E_Function_Id :=
+                  Is_Reverse : constant Boolean :=
+                    Reverse_Present (LParam_Spec);
+                  First      : constant E_Function_Id :=
                     Get_Iterable_Type_Primitive
-                      (Etype (Over_Node), Name_First);
+                      (Etype (Over_Node),
+                       (if Is_Reverse then Name_Last else Name_First));
 
                   pragma Assert (W_Container /= Why_Empty);
 
@@ -1502,15 +1503,20 @@ package body Gnat2Why.Expr.Loops is
                      end;
                   else
                      declare
-                        Next      : constant E_Function_Id :=
+                        Is_Reverse : constant Boolean :=
+                          Reverse_Present (LParam_Spec);
+                        Next       : constant E_Function_Id :=
                           Get_Iterable_Type_Primitive
-                            (Etype (Over_Node), Name_Next);
-                        Cur_Expr  : constant W_Expr_Id :=
+                            (Etype (Over_Node),
+                             (if Is_Reverse
+                              then Name_Previous
+                              else Name_Next));
+                        Cur_Expr   : constant W_Expr_Id :=
                           Insert_Simple_Conversion
                             (Domain => EW_Term,
                              Expr   => +Iter_Deref,
                              To     => Typ_For_Iter);
-                        Call_Next : constant W_Expr_Id :=
+                        Call_Next  : constant W_Expr_Id :=
                           +New_VC_Call
                              (Ada_Node => LParam_Spec,
                               Name     =>
@@ -1523,7 +1529,7 @@ package body Gnat2Why.Expr.Loops is
                               Progs    => (1 => W_Container, 2 => Cur_Expr),
                               Reason   => VC_Precondition,
                               Typ      => Typ_For_Iter);
-                        Upd_Next  : constant W_Prog_Id :=
+                        Upd_Next   : constant W_Prog_Id :=
                           New_Assignment
                             (Ada_Node => Stmt,
                              Name     => Nam_For_Iter,
@@ -1790,8 +1796,6 @@ package body Gnat2Why.Expr.Loops is
                Low_Val  : Uint;
                High_Val : Uint;
                Unroll   : Unrolling_Type;
-
-               --  Start of processing for For_Loop
 
             begin
                Ada_Ent_To_Why.Pop_Scope (Symbol_Table);

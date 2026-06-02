@@ -1,40 +1,40 @@
-main.adb:22:13: error: expression as source of move is not allowed in SPARK
+main.adb:22:13: error: expression as source of move is not allowed in SPARK (SPARK RM 3.10(1))
 main.adb:22:13: error: violation of aspect SPARK_Mode at line 1
 main.adb:29:07: error: "Y" is not allowed in SPARK (due to access-to-constant part of an object as source of move)
 main.adb:29:07: error: violation of aspect SPARK_Mode at line 1
-main.adb:29:22: error: access-to-constant part of an object as source of move is not allowed in SPARK
+main.adb:29:22: error: access-to-constant part of an object as source of move is not allowed in SPARK (SPARK RM 3.10(1))
 main.adb:29:22: error: violation of aspect SPARK_Mode at line 1
-main.adb:29:34: error: access-to-constant part of an object as source of move is not allowed in SPARK
+main.adb:29:34: error: access-to-constant part of an object as source of move is not allowed in SPARK (SPARK RM 3.10(1))
 main.adb:29:34: error: violation of aspect SPARK_Mode at line 1
-main.adb:37:11: error: access-to-constant part of an object as source of move is not allowed in SPARK
+main.adb:37:11: error: access-to-constant part of an object as source of move is not allowed in SPARK (SPARK RM 3.10(1))
 main.adb:37:11: error: violation of aspect SPARK_Mode at line 1
-main.adb:37:18: error: duplicate value of a type with ownership is not allowed in SPARK
+main.adb:37:18: error: duplicate value of a type with ownership is not allowed in SPARK (SPARK RM 3.10)
 main.adb:37:18: error: singleton choice required to prevent aliasing
 main.adb:37:18: error: violation of aspect SPARK_Mode at line 1
-main.adb:37:28: error: access-to-constant part of an object as source of move is not allowed in SPARK
+main.adb:37:28: error: access-to-constant part of an object as source of move is not allowed in SPARK (SPARK RM 3.10(1))
 main.adb:37:28: error: violation of aspect SPARK_Mode at line 1
-main.adb:38:11: error: duplicate value of a type with ownership is not allowed in SPARK
+main.adb:38:11: error: duplicate value of a type with ownership is not allowed in SPARK (SPARK RM 3.10)
 main.adb:38:11: error: singleton choice required to prevent aliasing
 main.adb:38:11: error: violation of aspect SPARK_Mode at line 1
-main.adb:38:21: error: access-to-constant part of an object as source of move is not allowed in SPARK
+main.adb:38:21: error: access-to-constant part of an object as source of move is not allowed in SPARK (SPARK RM 3.10(1))
 main.adb:38:21: error: violation of aspect SPARK_Mode at line 1
-main.adb:39:16: error: access-to-constant part of an object as source of move is not allowed in SPARK
+main.adb:39:16: error: access-to-constant part of an object as source of move is not allowed in SPARK (SPARK RM 3.10(1))
 main.adb:39:16: error: violation of aspect SPARK_Mode at line 1
-main.adb:39:28: error: access-to-constant part of an object as source of move is not allowed in SPARK
+main.adb:39:28: error: access-to-constant part of an object as source of move is not allowed in SPARK (SPARK RM 3.10(1))
 main.adb:39:28: error: violation of aspect SPARK_Mode at line 1
-main.adb:39:40: error: access-to-constant part of an object as source of move is not allowed in SPARK
+main.adb:39:40: error: access-to-constant part of an object as source of move is not allowed in SPARK (SPARK RM 3.10(1))
 main.adb:39:40: error: violation of aspect SPARK_Mode at line 1
 main.adb:47:07: error: "Z" is not allowed in SPARK (due to access-to-constant part of an object as source of move)
 main.adb:47:07: error: violation of aspect SPARK_Mode at line 1
-main.adb:47:35: error: access-to-constant part of an object as source of move is not allowed in SPARK
+main.adb:47:35: error: access-to-constant part of an object as source of move is not allowed in SPARK (SPARK RM 3.10(1))
 main.adb:47:35: error: violation of aspect SPARK_Mode at line 1
 main.adb:61:07: error: "Z" is not allowed in SPARK (due to access-to-constant part of an object as source of move)
 main.adb:61:07: error: violation of aspect SPARK_Mode at line 1
-main.adb:61:53: error: access-to-constant part of an object as source of move is not allowed in SPARK
+main.adb:61:53: error: access-to-constant part of an object as source of move is not allowed in SPARK (SPARK RM 3.10(1))
 main.adb:61:53: error: violation of aspect SPARK_Mode at line 1
 main.adb:70:07: error: "Z" is not allowed in SPARK (due to access-to-constant part of an object as source of move)
 main.adb:70:07: error: violation of aspect SPARK_Mode at line 1
-main.adb:70:61: error: access-to-constant part of an object as source of move is not allowed in SPARK
+main.adb:70:61: error: access-to-constant part of an object as source of move is not allowed in SPARK (SPARK RM 3.10(1))
 main.adb:70:61: error: violation of aspect SPARK_Mode at line 1
 main.adb:76:04: info: analyzing call to "Through_Allocator" in context
 main.adb:77:04: info: analyzing call to "Through_Aggregate" in context

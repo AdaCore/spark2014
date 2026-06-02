@@ -139,7 +139,7 @@ matrix of arrays:
    :linenos:
 
 Despite the absence of a loop invariant in the above code,
-|GNATprove| can succesfully verify the assertion on line 13 thanks to the
+|GNATprove| can successfully verify the assertion on line 13 thanks to the
 generated loop invariant. Note that loop invariant generation for preserved
 array components is based on heuristics, and that it is therefore far from
 complete. In particular, it does not handle updates to variable indexes different
@@ -271,7 +271,7 @@ section.
    a loop of the form ``for .. of .. loop``. Indeed,
    the fact that the underlying array index or cursor is implicit, makes it
    impossible to refer to the number of previous iterations of the loop, or
-   to caraterize elements that have already been traversed. The solution is to
+   to characterize elements that have already been traversed. The solution is to
    rewrite the loop to iterate over the array indexes or the cursors of the
    container instead - that is, a loop of the form ``for .. in .. loop``.
 
@@ -325,7 +325,7 @@ Completing a Loop Invariant to Prove Checks After the Loop
 
 With the simple loop invariant given before, |GNATprove| still reports that the
 postcondition of ``Search`` may fail, which corresponds to property [AFTER]. By
-instructing |GNATprove| to prove checks progressively, as seens in
+instructing |GNATprove| to prove checks progressively, as seen in
 :ref:`proving spark programs`, we even get a precise message pointing to the
 part of the postcondition that could not be proved:
 

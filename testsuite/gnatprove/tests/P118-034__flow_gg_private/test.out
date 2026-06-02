@@ -1,14 +1,4 @@
-Generated contracts for A.P_1
-   Global =>
-      In_Out =>
-         A.State_A
-   Refined_Global =>
-      Proof_In =>
-         Priv.I
-      Input =>
-         H
-      In_Out =>
-         G
+Generated contracts for A
 Generated contracts for A.F_1
    Global =>
       Input =>
@@ -41,16 +31,20 @@ Generated contracts for A.F_4
    Refined_Global =>
       Input =>
          G
-Generated contracts for A
-a.adb:10:14: medium: overflow check might fail, cannot prove upper bound for G + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at a.ads:5 should mention G in a precondition] [provers gave up before completing the proof]
-a.adb:12:22: medium: assertion might fail [possible fix: subprogram at a.ads:5 should mention Priv.I in a precondition] [provers gave up before completing the proof]
-a.adb:15:38: medium: overflow check might fail, cannot prove lower bound for H + Priv.F_6 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at a.ads:7 should mention G and H and Priv.I in a precondition] [provers gave up before completing the proof]
-a.ads:2:22: warning: no subprogram exists that can initialize abstract state "A.State_A"
-a.ads:5:19: info: initialization of "X" proved
-a.ads:7:13: info: implicit aspect Always_Terminates on "F_1" has been proved, subprogram will terminate
-a.ads:9:13: info: implicit aspect Always_Terminates on "F_2" has been proved, subprogram will terminate
-a.ads:11:13: info: implicit aspect Always_Terminates on "F_3" has been proved, subprogram will terminate
-a.ads:13:13: info: implicit aspect Always_Terminates on "F_4" has been proved, subprogram will terminate
+Generated contracts for A.P_1
+   Global =>
+      In_Out =>
+         A.State_A
+   Refined_Global =>
+      Proof_In =>
+         Priv.I
+      Input =>
+         H
+      In_Out =>
+         G
+Generated contracts for A.Priv
+a~priv.ads:5:13: info: implicit aspect Always_Terminates on "F_5" has been proved, subprogram will terminate
+a~priv.ads:7:13: info: implicit aspect Always_Terminates on "F_6" has been proved, subprogram will terminate
 Generated contracts for A.Priv.F_5
    Global =>
       Input =>
@@ -69,6 +63,12 @@ Generated contracts for A.Priv.F_6
          G
          A.State_A
          Priv.I
-Generated contracts for A.Priv
-a~priv.ads:5:13: info: implicit aspect Always_Terminates on "F_5" has been proved, subprogram will terminate
-a~priv.ads:7:13: info: implicit aspect Always_Terminates on "F_6" has been proved, subprogram will terminate
+a.adb:10:14: medium: overflow check might fail, cannot prove upper bound for G + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at a.ads:5 should mention G in a precondition] [provers gave up before completing the proof]
+a.adb:12:22: medium: assertion might fail [possible fix: subprogram at a.ads:5 should mention Priv.I in a precondition] [provers gave up before completing the proof]
+a.adb:15:38: medium: overflow check might fail, cannot prove lower bound for H + Priv.F_6 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at a.ads:7 should mention G and H and Priv.I in a precondition] [provers gave up before completing the proof]
+a.ads:2:22: warning: no subprogram exists that can initialize abstract state "A.State_A"
+a.ads:5:19: info: initialization of "X" proved
+a.ads:7:13: info: implicit aspect Always_Terminates on "F_1" has been proved, subprogram will terminate
+a.ads:9:13: info: implicit aspect Always_Terminates on "F_2" has been proved, subprogram will terminate
+a.ads:11:13: info: implicit aspect Always_Terminates on "F_3" has been proved, subprogram will terminate
+a.ads:13:13: info: implicit aspect Always_Terminates on "F_4" has been proved, subprogram will terminate

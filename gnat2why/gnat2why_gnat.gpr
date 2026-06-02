@@ -80,7 +80,7 @@ project GNAT2Why_GNAT is
    end Naming;
 
    package Format is
-     for Ignore use "gnat2why_ignore_format.txt";
+     for Ignore use "gnat_ignore_format.txt";
    end Format;
 
 

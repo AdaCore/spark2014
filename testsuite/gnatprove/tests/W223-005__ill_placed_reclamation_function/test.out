@@ -1,5 +1,7 @@
 ownership.ads:2:09: warning: checks for ressource or memory reclamation will be unprovable
 ownership.ads:2:09: warning: no reclamation function nor reclaimed value found for type with ownership "T" [no-reclamation-function]
-ownership.ads:5:16: error: ownership function shall be declared in same declaration list as input type
-ownership.ads:9:16: error: ownership function shall be declared in same declaration list as input type
+ownership.ads:5:16: error: "Is_Reclaimed" shall be declared in same declaration list as "T"
+ownership.ads:5:16: error: incorrect placement for entity with the "Ownership" annotation
+ownership.ads:9:16: error: "Is_Reclaimed" shall be declared in same declaration list as "T"
+ownership.ads:9:16: error: incorrect placement for entity with the "Ownership" annotation
 gnatprove: error during flow analysis and proof

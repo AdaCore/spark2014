@@ -1,13 +1,13 @@
 from e3.env import Env
-from test_support import Run, spark_install_path
+from test_support import run_command, spark_install_path
 import os.path
 
 installdir = spark_install_path()
 bindir = os.path.join(installdir, "libexec", "spark", "bin")
 Env().add_path(bindir)
 
-process = Run(["cvc5", "--show-config"])
-lines = process.stdout.splitlines()
+process = run_command(["cvc5", "--show-config"])
+lines = process.out.splitlines()
 # First three lines of cvc5 output contain date and exact compiler version, so
 # remove this output. We also remove the "scm" line which refers to the exact
 # git commit in some builds. Same for "portfolio", which is only available on

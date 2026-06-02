@@ -2,37 +2,15 @@ with Interfaces; use Interfaces;
 with Ada.Numerics.Big_Numbers.Big_Integers; use Ada.Numerics.Big_Numbers.Big_Integers;
 with SPARK.Pointers.Pointers_With_Aliasing;
 
-procedure Example_Tagged_Obj with SPARK_Mode is
-   package P1 is
-      type Object is tagged null record;
+with P1; use P1;
+with P2; use P2;
 
-      --  Lemma: Equality on Object is an equivalence.
-      --  It will need to be proved for each new derivation
-      function Witness (O : Object) return Big_Integer is (0);
-      function "=" (O1, O2 : Object) return Boolean is
-        (True)
-      with Post'Class => "="'Result = (Witness (O1) = Witness (O2));
-   end P1;
-   use P1;
+procedure Example_Tagged_Obj with SPARK_Mode is
 
    package Pointers_To_Obj is new SPARK.Pointers.Pointers_With_Aliasing (Object'Class);
 
    use Pointers_To_Obj;
    use Memory_Model;
-
-   package P2 is
-      type Child is new Object with record
-         F : Natural;
-         G : Natural;
-      end record;
-
-      --  Lemma: Equality on Child is still an equivalence
-      function Witness (O : Child) return Big_Integer is
-        (To_Big_Integer (O.F) * 2_147_483_648 + To_Big_Integer (O.G));
-      function "=" (O1, O2 : Child) return Boolean is
-        (O1.F = O2.F and O1.G = O2.G);
-   end P2;
-   use P2;
 
    X1 : Pointer;
    X2 : Pointer;

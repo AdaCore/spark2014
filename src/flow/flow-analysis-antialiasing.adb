@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---              Copyright (C) 2013-2025, Capgemini Engineering              --
+--              Copyright (C) 2013-2026, Capgemini Engineering              --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -178,8 +178,6 @@ package body Flow.Analysis.Antialiasing is
       AH : constant Node_Id := High_Bound (Range_Expr_A);
       BL : constant Node_Id := Low_Bound (Range_Expr_B);
       BH : constant Node_Id := High_Bound (Range_Expr_B);
-
-      --  Start of processing for Check_Range
 
    begin
       if Empty (AL, AH)
@@ -396,7 +394,7 @@ package body Flow.Analysis.Antialiasing is
 
          --  Detect overlay with an Address representation clause
 
-         if Ekind (E) in E_Constant | E_Variable
+         if Ekind (E) = E_Variable
            and then Present (Ultimate_Overlaid_Entity (E))
          then
             return Ultimate_Overlaid_Entity (E);
@@ -510,8 +508,6 @@ package body Flow.Analysis.Antialiasing is
       Root_A, Root_B : Entity_Id;
 
       Definitive_Result : Boolean := True;
-
-      --  Start of processing for Aliasing
 
    begin
       Trace_Two_Nodes
@@ -1132,8 +1128,6 @@ package body Flow.Analysis.Antialiasing is
       Globals : Global_Flow_Ids;
 
       use type Node_Sets.Set;
-
-      --  Start of processing for Check_Procedure_Call
 
    begin
       if Ekind (Called_Thing) /= E_Subprogram_Type then

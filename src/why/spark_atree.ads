@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                     Copyright (C) 2018-2025, AdaCore                     --
+--                     Copyright (C) 2018-2026, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -153,6 +153,8 @@ package SPARK_Atree is
      SN.N_Expression_With_Actions;
    N_Extended_Return_Statement       : Node_Kind renames
      SN.N_Extended_Return_Statement;
+   N_External_Initializer            : Node_Kind renames
+     SN.N_External_Initializer;
    N_Full_Type_Declaration           : Node_Kind renames
      SN.N_Full_Type_Declaration;
    N_Expanded_Name                   : Node_Kind renames SN.N_Expanded_Name;

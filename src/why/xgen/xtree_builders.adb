@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2025, AdaCore                     --
+--                     Copyright (C) 2010-2026, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -233,8 +233,6 @@ package body Xtree_Builders is
 
       end Print_Record_Initialization;
 
-   --  Start of processing for Print_Builder_Implementation
-
    begin
       PL (O, "Node_Table.Append (" &
              Empty_Nodes & "." & Mixed_Case_Name (Kind) & "_Node);");
@@ -412,8 +410,6 @@ package body Xtree_Builders is
 
          Field_Number := Field_Number + 1;
       end Print_Parameter_Specification;
-
-   --  Start of processing for Print_Builder_Specification
 
    begin
       Max_Param_Len := Max_Param_Length (Kind);

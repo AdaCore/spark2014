@@ -1,0 +1,7 @@
+ext.adb:4:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+ext.adb:8:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+ext.adb:16:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+ext.adb:22:22: info: assertion proved (CVC5: 1 VC)
+ext.adb:23:22: medium: assertion might fail [provers gave up before completing the proof]
+ext.adb:24:22: info: assertion proved (CVC5: 1 VC)
+ext.ads:3:14: warning: subprogram "P" has no effect

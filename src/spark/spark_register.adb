@@ -6,7 +6,7 @@
 --                                                                          --
 --                                  B o d y                                 --
 --                                                                          --
---                     Copyright (C) 2013-2025, AdaCore                     --
+--                     Copyright (C) 2013-2026, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -453,8 +453,6 @@ package body SPARK_Register is
             Process_Tree (Expression (Aspect_Node));
          end if;
       end Register_Aspect;
-
-      --  Start of processing for Register_Compilation_Unit
 
    begin
       --  Skip generic units; care only about their instances

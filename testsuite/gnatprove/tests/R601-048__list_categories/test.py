@@ -1,3 +1,3 @@
-from test_support import gnatprove
+from test_support import gnatprove, default_refiners_no_sort
 
-gnatprove(opt=["--list-categories"], sort_output=False)
+gnatprove(opt=["--list-categories"], refiners=default_refiners_no_sort())

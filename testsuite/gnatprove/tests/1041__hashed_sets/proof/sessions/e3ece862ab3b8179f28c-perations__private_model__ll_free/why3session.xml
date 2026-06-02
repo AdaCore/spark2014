@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
+"https://www.why3.org/why3session.dtd">
+<why3session shape_version="6">
+<prover id="0" name="altergo" version="1.30-gnatprove" timelimit="60" steplimit="0" memlimit="2000"/>
+<prover id="1" name="CVC5" version="0.0.7-gnatprove" timelimit="60" steplimit="0" memlimit="2000"/>
+<prover id="2" name="Z3" version="4.5.1-gnatprove" timelimit="60" steplimit="0" memlimit="2000"/>
+<prover id="3" name="Trivial" version="1.0" alternative="trivial" timelimit="1" steplimit="1" memlimit="1000"/>
+<file format="gnat-json" proved="true">
+<path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
+<path name="e3ece862ab3b8179f28c-perations__private_model__ll_free.gnat-json"/>
+<theory name="Ada___data_structure__basic_operations__private_model__ll_free__subprogram_def" proved="true">
+ <goal name="def&#39;vc" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="def&#39;vc.0" proved="true">
+  <proof prover="0"><result status="valid" steps="122"/></proof>
+  <proof prover="1"><result status="valid" steps="4412"/></proof>
+  <proof prover="2"><result status="valid" steps="13097"/></proof>
+  </goal>
+  <goal name="def&#39;vc.1" proved="true">
+  <proof prover="0"><result status="valid" steps="652"/></proof>
+  <proof prover="1"><result status="valid" steps="7896"/></proof>
+  <proof prover="2"><result status="valid" steps="14237"/></proof>
+  </goal>
+  <goal name="def&#39;vc.2" proved="true">
+  <proof prover="3"><result status="valid" steps="1"/></proof>
+  </goal>
+  <goal name="def&#39;vc.3" proved="true">
+  <proof prover="0"><result status="valid" steps="12"/></proof>
+  <proof prover="1"><result status="valid" steps="4968"/></proof>
+  <proof prover="2"><result status="valid" steps="16031"/></proof>
+  </goal>
+  <goal name="def&#39;vc.4" proved="true">
+  <proof prover="0"><result status="valid" steps="353"/></proof>
+  <proof prover="1"><result status="valid" steps="5039"/></proof>
+  <proof prover="2"><result status="valid" steps="16588"/></proof>
+  </goal>
+  <goal name="def&#39;vc.5" proved="true">
+  <proof prover="0"><result status="valid" steps="15"/></proof>
+  <proof prover="1"><result status="valid" steps="5075"/></proof>
+  <proof prover="2"><result status="valid" steps="9368"/></proof>
+  </goal>
+  <goal name="def&#39;vc.6" proved="true">
+  <proof prover="0"><result status="valid" steps="35"/></proof>
+  <proof prover="1"><result status="valid" steps="5073"/></proof>
+  <proof prover="2"><result status="valid" steps="16214"/></proof>
+  </goal>
+  <goal name="def&#39;vc.7" proved="true">
+  <proof prover="0"><result status="valid" steps="16"/></proof>
+  <proof prover="1"><result status="valid" steps="3848"/></proof>
+  <proof prover="2"><result status="valid" steps="16393"/></proof>
+  </goal>
+  <goal name="def&#39;vc.8" proved="true">
+  <proof prover="0"><result status="valid" steps="39"/></proof>
+  <proof prover="1"><result status="valid" steps="3415"/></proof>
+  <proof prover="2"><result status="valid" steps="2449"/></proof>
+  </goal>
+  <goal name="def&#39;vc.9" proved="true">
+  <proof prover="0"><result status="valid" steps="104"/></proof>
+  <proof prover="1"><result status="valid" steps="5261"/></proof>
+  <proof prover="2"><result status="valid" steps="17085"/></proof>
+  </goal>
+  <goal name="def&#39;vc.10" proved="true">
+  <proof prover="0"><result status="valid" steps="123"/></proof>
+  <proof prover="1"><result status="valid" steps="5173"/></proof>
+  <proof prover="2"><result status="valid" steps="16797"/></proof>
+  </goal>
+  <goal name="def&#39;vc.11" proved="true">
+  <proof prover="0"><result status="valid" steps="656"/></proof>
+  <proof prover="1"><result status="valid" steps="9458"/></proof>
+  <proof prover="2"><result status="valid" steps="17857"/></proof>
+  </goal>
+  <goal name="def&#39;vc.12" proved="true">
+  <proof prover="0"><result status="highfailure"/></proof>
+  <proof prover="1"><result status="valid" steps="3644"/></proof>
+  <proof prover="2"><result status="valid" steps="9256"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+</file>
+</why3session>

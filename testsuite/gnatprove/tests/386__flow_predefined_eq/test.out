@@ -1,22 +1,31 @@
+dispatching.adb:10:16: warning: potentially missing contract for "=" declared at line 14
+dispatching.adb:10:16: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 dispatching.adb:10:19: warning: unused variable "X"
 dispatching.adb:10:22: warning: unused variable "Y"
 dispatching.adb:14:16: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
-dispatching.adb:14:16: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
+dispatching.adb:14:16: warning: potentially missing contract for "=" declared at line 14
+dispatching.adb:14:16: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 dispatching.adb:15:34: medium: postcondition might fail [provers gave up before completing the proof]
 dispatching.adb:25:39: warning: assuming "N" has no effect on global items
 dispatching.adb:25:39: warning: no Global contract available for "N" [assumed-global-null]
 dispatching.adb:27:10: medium: implicit aspect Always_Terminates on "F" could be incorrect, indirect dispatching call to record equality might be nonterminating [possible explanation: call could hide recursive calls]
+dispatching_contract.adb:10:16: warning: potentially missing contract for "=" declared at line 14
+dispatching_contract.adb:10:16: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 dispatching_contract.adb:10:19: warning: unused variable "X"
 dispatching_contract.adb:10:22: warning: unused variable "Y"
 dispatching_contract.adb:14:16: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
-dispatching_contract.adb:14:16: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
+dispatching_contract.adb:14:16: warning: potentially missing contract for "=" declared at line 14
+dispatching_contract.adb:14:16: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 dispatching_contract.adb:15:30: medium: postcondition might fail [provers gave up before completing the proof]
 dispatching_contract.adb:25:39: warning: assuming "N" has no effect on global items
 dispatching_contract.adb:25:39: warning: no Global contract available for "N" [assumed-global-null]
 dispatching_contract.adb:27:10: medium: implicit aspect Always_Terminates on "F" could be incorrect, indirect dispatching call to record equality might be nonterminating [possible explanation: call could hide recursive calls]
+dispatching_contract_import.adb:10:16: warning: potentially missing contract for "=" declared at line 14
+dispatching_contract_import.adb:10:16: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 dispatching_contract_import.adb:10:19: warning: unused variable "X"
 dispatching_contract_import.adb:10:22: warning: unused variable "Y"
-dispatching_contract_import.adb:14:16: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
+dispatching_contract_import.adb:14:16: warning: potentially missing contract for "=" declared at line 14
+dispatching_contract_import.adb:14:16: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 dispatching_contract_import.adb:26:39: warning: assuming "N" has no effect on global items
 dispatching_contract_import.adb:26:39: warning: no Global contract available for "N" [assumed-global-null]
 dispatching_contract_import.adb:28:10: medium: implicit aspect Always_Terminates on "F" could be incorrect, indirect dispatching call to record equality might be nonterminating [possible explanation: call could hide recursive calls]
@@ -86,20 +95,35 @@ primitive_eq.adb:14:07: medium: implicit aspect Always_Terminates on "F" could b
 primitive_eq.adb:17:47: info: no contextual analysis of "F" (inside expression function)
 primitive_eq.adb:17:47: medium: implicit aspect Always_Terminates on overriding operator "=" could be incorrect, overriding operator "=" and "F" are mutually recursive [possible fix: annotate overriding operator "=" and "F" with Subprogram_Variant aspects]
 primitive_eq.adb:19:19: info: analyzing call to "F" in context
-recursive_contracts.adb:7:13: warning: function contract might not be available on recursive calls [contracts-recursive]
+recursive_contracts.adb:7:13: warning: "=" is recursive; (implicit) contract of mutally recursive functions might not be available on calls from contracts and assertions [contracts-recursive]
+recursive_contracts.adb:7:13: warning: its contract might be missing
+recursive_contracts.adb:7:13: warning: potentially missing contract for "F" declared at line 11
 recursive_contracts.adb:9:17: info: postcondition proved (CVC5: 2 VC)
 recursive_contracts.adb:9:28: medium: implicit aspect Always_Terminates on overriding operator "=" could be incorrect, overriding operator "=" and "F" are mutually recursive [possible fix: annotate overriding operator "=" and "F" with Subprogram_Variant aspects]
-recursive_contracts.adb:11:13: warning: function contract might not be available on recursive calls [contracts-recursive]
+recursive_contracts.adb:11:13: warning: "F" is recursive; (implicit) contract of mutally recursive functions might not be available on calls from contracts and assertions [contracts-recursive]
+recursive_contracts.adb:11:13: warning: its contract might be missing
+recursive_contracts.adb:11:13: warning: potentially missing contract for "=" declared at line 7
 recursive_contracts.adb:13:17: info: postcondition proved (CVC5: 1 VC)
 recursive_contracts.adb:13:45: medium: implicit aspect Always_Terminates on "F" could be incorrect, "F" and overriding operator "=" are mutually recursive [possible fix: annotate "F" and overriding operator "=" with Subprogram_Variant aspects]
-recursive_contracts_import.adb:7:13: warning: function contract might not be available on recursive calls [contracts-recursive]
+recursive_contracts_import.adb:7:13: warning: "=" is recursive; (implicit) contract of mutally recursive functions might not be available on calls from contracts and assertions [contracts-recursive]
+recursive_contracts_import.adb:7:13: warning: its contract might be missing
+recursive_contracts_import.adb:7:13: warning: potentially missing contract for "F" declared at line 11
 recursive_contracts_import.adb:9:31: warning: assuming "F" has no effect on global items
 recursive_contracts_import.adb:9:31: warning: no Global contract available for "F" [assumed-global-null]
 recursive_contracts_import.adb:9:42: warning: assuming "F" has no effect on global items
 recursive_contracts_import.adb:9:42: warning: no Global contract available for "F" [assumed-global-null]
-recursive_contracts_import.adb:11:13: warning: function contract might not be available on recursive calls [contracts-recursive]
+recursive_contracts_import.adb:11:13: warning: "F" is recursive; (implicit) contract of mutally recursive functions might not be available on calls from contracts and assertions [contracts-recursive]
+recursive_contracts_import.adb:11:13: warning: its contract might be missing
+recursive_contracts_import.adb:11:13: warning: potentially missing contract for "=" declared at line 7
 recursive_contracts_import.adb:13:45: warning: assuming "=" has no effect on global items
 recursive_contracts_import.adb:13:45: warning: no Global contract available for "=" [assumed-global-null]
+types.adb:8:10: warning: in instantiation at gen.ads:3
+types.adb:8:10: warning: in instantiation at gen.ads:5
+types.adb:8:10: warning: potentially missing contract for "=" declared at types.ads:9
+types.adb:8:10: warning: potentially missing contract for "=" declared at types.ads:9
+types.adb:8:10: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+types.adb:8:10: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 types.ads:9:16: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
-types.ads:9:16: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
+types.ads:9:16: warning: potentially missing contract for "=" declared at line 9
+types.ads:9:16: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 types.ads:9:70: info: postcondition proved (CVC5: 1 VC)

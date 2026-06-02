@@ -1,0 +1,13 @@
+project Test is
+
+   for Languages use ("Ada");
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnata", "-gnat2022");
+   end Compiler;
+
+   package Prove is
+      for Proof_Dir use "proof";
+   end Prove;
+
+end Test;

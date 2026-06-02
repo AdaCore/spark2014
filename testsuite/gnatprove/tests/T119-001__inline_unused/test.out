@@ -1,3 +1,5 @@
+test_inline.adb:8:13: warning: volatile function "Read_External_A" has no volatile effects
+test_inline.adb:9:13: warning: volatile function "Read_External_B" has no volatile effects
 test_inline.adb:21:14: info: add a contract to analyze it separately from calling contexts
 test_inline.adb:21:14: info: local subprogram "Set_A_And_B" only analyzed in the context of calls [info-unrolling-inlining]
 test_inline.adb:27:14: info: add a contract to analyze it separately from calling contexts

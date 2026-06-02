@@ -131,7 +131,7 @@ constructs:
    where ``Y`` is another object, and ``Y`` is part of a statically known
    object.
 
-For occurences of these patterns, |SPARK| checks that no invalid values can be
+For occurrences of these patterns, |SPARK| checks that no invalid values can be
 produced. Given that no invalid values can be constructed in |SPARK|, the
 evaluation of the attribute ``Valid`` is assumed to always return True.
 
@@ -367,7 +367,7 @@ In particular, assignment between access objects operates a transfer of
 ownership, where the source object loses its permission to read or write the
 underlying allocated memory.
 
-For example, in the following example:
+For example, in the following code:
 
 .. literalinclude:: /examples/ug__ownership_transfer/ownership_transfer.adb
    :language: ada
@@ -394,7 +394,7 @@ argument as ``X`` is already accessed as a global variable by ``Proc``.
 
 .. literalinclude:: /examples/ug__ownership_transfer_at_call/test.out
    :language: none
-   :lines: 52-54
+   :lines: 69-72
 
 It is also possible to transfer the ownership of an object temporarily, for
 the duration of the lifetime of a local object. This can be achieved by
@@ -503,7 +503,7 @@ messages:
 
 .. literalinclude:: /examples/ug__check_aliasing/test.out
    :language: none
-   :lines: 6-8,18-20
+   :lines: 6-9,21-24
 
 Note that |SPARK| currently does not detect aliasing between objects that
 arises due to the use of Address clauses or aspects.

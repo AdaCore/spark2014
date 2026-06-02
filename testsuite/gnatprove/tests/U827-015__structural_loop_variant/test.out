@@ -353,6 +353,6 @@ main_bad.adb:209:14: info: pointer dereference check proved (CVC5: 1 VC)
 main_bad.adb:209:17: info: absence of resource or memory leak proved (CVC5: 1 VC)
 main_bad.adb:209:36: info: pointer dereference check proved (CVC5: 1 VC)
 main_bad.adb:211:16: info: pointer dereference check proved (CVC5: 1 VC)
-main_illegal.adb:18:45: error: structural loop variant which is not a variable of an anonymous access-to-object type is not allowed in SPARK
+main_illegal.adb:18:45: error: structural loop variant which is not a variable of an anonymous access-to-object type is not allowed in SPARK (SPARK RM 5.5.3 (8))
 main_illegal.adb:18:45: error: violation of aspect SPARK_Mode at line 4
 gnatprove: error during flow analysis and proof

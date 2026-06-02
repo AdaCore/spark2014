@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2017-2025, AdaCore                     --
+--                     Copyright (C) 2017-2026, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -431,8 +431,6 @@ package body Gnat2Why.Tables is
          else Types.Empty);
 
       Ancestor_Type : constant Entity_Id := Retysp (Etype (E));
-
-      --  Start of processing for Init_Component_Info
 
    begin
       while Present (Discr) loop

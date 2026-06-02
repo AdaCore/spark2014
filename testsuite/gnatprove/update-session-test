@@ -1,18 +1,26 @@
 #!/usr/bin/env python3
 
 import argparse
+import sys
+import xml.etree.ElementTree as ET
 from e3.testsuite.report.index import ReportIndex
 from e3.testsuite.result import TestStatus
 import os
 import os.path
 import subprocess
 import tempfile
+import time
 import yaml
+
+from lib.python.suite_util import find_test_dir
+from lib.python.clean_sessions import clean_session_file
 
 descr = """This script will update the session information of a test, and then
 rerun the test. It will run the test twice, so it takes some time.  """
 
 curdir = os.getcwd()
+
+junits = []
 
 
 def parse_options():
@@ -54,19 +62,28 @@ def parse_options():
         help="Number of cores to use to recreate session (default: all)",
         default=0,
     )
+    parser.add_argument(
+        "--gitlab",
+        dest="gitlab",
+        action="store_true",
+        help="Wrap each test output in GitLab CI foldable section markers",
+    )
+    parser.add_argument(
+        "--junit",
+        dest="junit",
+        action="store_true",
+        help="Generate report.xml in JUnit format",
+    )
     args = parser.parse_args()
     return args
 
 
 def testdir(testname):
-    testdir = os.path.join("tests", testname)
-    if not os.path.exists(testdir):
-        testdir = os.path.join("internal", testname)
-    if not os.path.exists(testdir):
-        testdir = os.path.join("sparklib", testname)
-    if not os.path.exists(testdir):
-        raise ValueError
-    return testdir
+    path = find_test_dir(testname)
+    if path is None:
+        print(f"error: test {testname!r} not found")
+        sys.exit(1)
+    return path
 
 
 def is_replaytest(testname):
@@ -95,15 +112,68 @@ def failed_replay_tests(resultspath):
     return result
 
 
+def clean_session_files(testdir_path):
+    """Clean all why3session.xml files in the test directory."""
+    session_files = []
+    for root, _dirs, files in os.walk(testdir_path):
+        if "why3session.xml" in files:
+            session_files.append(os.path.join(root, "why3session.xml"))
+
+    if session_files:
+        print(f"Cleaning {len(session_files)} session file(s)...")
+        for filepath in session_files:
+            try:
+                clean_session_file(filepath)
+            except ET.ParseError as e:
+                print(f"Warning: {filepath}: XML parse error: {e}")
+            except Exception as e:
+                print(f"Warning: {filepath}: error during session cleanup: {e}")
+
+
+def gitlab_section_start(testname):
+    section_id = testname.replace("/", "_").replace(" ", "_")
+    ts = int(time.time())
+    print(
+        f"\x1b[0Ksection_start:{ts}:{section_id}[collapsed=true]\r\x1b[0K{testname}",
+        flush=True,
+    )
+
+
+def gitlab_section_end(testname):
+    section_id = testname.replace("/", "_").replace(" ", "_")
+    ts = int(time.time())
+    print(f"\x1b[0Ksection_end:{ts}:{section_id}\r\x1b[0K", flush=True)
+
+
 def replay_test(args, testname):
     d = testdir(testname)
+    if args.gitlab:
+        gitlab_section_start(testname)
+    if args.junit:
+        start_time = time.time()
     try:
         print("switching to", d)
         os.chdir(d)
         cmd = os.path.dirname(__file__) + "/lib/python/replay.py"
-        subprocess.run([cmd, "-j", str(args.procs)])
+        result = subprocess.run([cmd, "-j", str(args.procs)])
+        # Clean up session files after replay
+        os.chdir(curdir)
+        clean_session_files(d)
     finally:
         os.chdir(curdir)
+        if args.gitlab:
+            gitlab_section_end(testname)
+        if args.junit:
+            duration = time.time() - start_time
+            junits.append(
+                {
+                    "name": testname,
+                    "time": duration,
+                    "returncode": result.returncode,
+                    "stdout": result.stdout,
+                    "stderr": result.stderr,
+                }
+            )
 
 
 def run_all_tests_again(args):
@@ -128,6 +198,37 @@ def run_all_tests_again(args):
         os.remove(tmpfile)
 
 
+def write_junit_report(results):
+    # Build the XML tree
+    testsuite = ET.Element("testsuite", name="Regenerate sessions")
+
+    for res in results:
+        testcase = ET.SubElement(
+            testsuite,
+            "testcase",
+            name=res["name"],
+            classname="session",
+            time=str(round(res["time"], 4)),
+        )
+
+        # If return code is non-zero, it's a failure
+        if res["returncode"] != 0:
+            failure = ET.SubElement(
+                testcase, "failure", message=f"Exit code: {res['returncode']}"
+            )
+            # Put the stderr inside the failure tag for GitLab to show
+            failure.text = res["stderr"]
+
+        # Optional: Attach full stdout for successful tests too
+        system_out = ET.SubElement(testcase, "system-out")
+        system_out.text = res["stdout"]
+
+    # Write to file
+    tree = ET.ElementTree(testsuite)
+    ET.indent(tree, space="\t", level=0)
+    tree.write("report.xml", encoding="utf-8", xml_declaration=True)
+
+
 def main():
     args = parse_options()
     testnames = args.testnames
@@ -143,6 +244,8 @@ def main():
         replay_test(args, testname)
     if not args.skip_rerun_tests:
         run_all_tests_again(args)
+    if args.junit:
+        write_junit_report(junits)
 
 
 main()

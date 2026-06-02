@@ -4,6 +4,9 @@
  info: postcondition proved
 --> validate_full_arr_zero.adb:5:11
 
+ info: index check proved
+--> validate_full_arr_zero.adb:5:48
+
  info: loop invariant initialization proved
 --> validate_full_arr_zero.adb:15:30
 

@@ -1,0 +1,5 @@
+version: 1
+interface:
+  display_name: Test Creator
+  short_description: Scaffold and author new automated tests for this repository.
+  default_prompt: Create or update automated tests that fit the repository's existing conventions.

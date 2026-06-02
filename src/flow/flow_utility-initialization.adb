@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---              Copyright (C) 2014-2025, Capgemini Engineering              --
+--              Copyright (C) 2014-2026, Capgemini Engineering              --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -115,8 +115,6 @@ package body Flow_Utility.Initialization is
       Decl   : Node_Id;
       Def    : Node_Id;
       Result : Default_Initialization_Kind;
-
-      --  Start of processing for Default_Initialization
 
    begin
       --  If we are considering implicit initializations and explicit
@@ -643,8 +641,6 @@ package body Flow_Utility.Initialization is
       N       : Node_Id;
       Comp_Id : Positive;
 
-      --  Start of processing for Get_Default_Initialization
-
    begin
       case F.Kind is
          when Direct_Mapping                                    =>
@@ -726,8 +722,6 @@ package body Flow_Utility.Initialization is
            Default_Initialization (Typ, Ignore_DIC)
            = Full_Default_Initialization;
       end Has_Full_Default_Initialization;
-
-      --  Start of processing for Is_Default_Initialized
 
    begin
       case F.Kind is

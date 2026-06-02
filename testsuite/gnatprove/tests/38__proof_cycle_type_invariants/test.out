@@ -3,23 +3,33 @@ external.adb:4:42: medium: for "X" before the call at external_util.ads:3
 external.adb:4:42: medium: in inlined invariant at external.ads:10
 external.adb:4:42: medium: invariant check might fail, cannot prove F (T) [possible fix: subprogram at external.ads:5 should mention X in a precondition] [provers gave up before completing the proof]
 external.ads:5:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
-external.ads:5:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
+external.ads:5:13: warning: potentially missing contract for "F" declared at line 5
+external.ads:5:13: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 external.ads:5:51: medium: postcondition might fail [provers gave up before completing the proof]
 external.ads:7:09: info: invariant check proved on default value (CVC5: 1 VC)
 external_util.ads:3:10: info: implicit aspect Always_Terminates on "External_Util" has been proved, subprogram will terminate
+external_util.ads:3:10: warning: potentially missing contract for "F" declared at external.ads:5
+external_util.ads:3:10: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 external_util.ads:3:25: warning: unused variable "X"
 glob.adb:3:04: info: invariant check proved (CVC5: 1 VC)
 glob.ads:5:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
-glob.ads:5:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
+glob.ads:5:13: warning: potentially missing contract for "F" declared at line 5
+glob.ads:5:13: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 glob.ads:5:51: medium: postcondition might fail [provers gave up before completing the proof]
 glob.ads:7:09: info: invariant check proved on default value (CVC5: 1 VC)
 imported_return.adb:4:42: warning: assuming "Imported_Return_Util" has no effect on global items
 imported_return.adb:4:42: warning: no Global contract available for "Imported_Return_Util" [assumed-global-null]
 imported_return.ads:5:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
-imported_return.ads:5:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
+imported_return.ads:5:13: warning: potentially missing contract for "F" declared at line 5
+imported_return.ads:5:13: warning: potentially missing implicit contract for "Imported_Return_Util" declared at imported_return_util.ads:3
+imported_return.ads:5:13: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 imported_return.ads:5:51: medium: postcondition might fail [provers reached step limit before completing the proof]
 imported_return.ads:7:09: info: invariant check proved on default value (CVC5: 1 VC)
-imported_return_util.ads:3:10: warning: implicit function contract might not be available on implicit recursive calls [contracts-recursive]
+imported_return_util.ads:3:10: warning: potentially missing contract for "F" declared at imported_return.ads:5
+imported_return_util.ads:3:10: warning: potentially missing implicit contract for "Imported_Return_Util" declared at line 3
+imported_return_util.ads:3:10: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+local_global.adb:4:17: warning: potentially missing contract for "F" declared at local_global.ads:6
+local_global.adb:4:17: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 local_global.adb:4:17: warning: subprogram "P" has no effect
 local_global.adb:6:25: medium: assertion might fail [possible fix: precondition of subprogram at line 4 should mention G] [provers gave up before completing the proof]
 local_global.adb:9:07: info: precondition proved (Trivial: 1 VC)
@@ -27,13 +37,15 @@ local_global.adb:9:07: medium: for "G" before the call at local_global.adb:3
 local_global.adb:9:07: medium: in inlined invariant at local_global.ads:11
 local_global.adb:9:07: medium: invariant check might fail, cannot prove F (T) [provers gave up before completing the proof]
 local_global.ads:6:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
-local_global.ads:6:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
+local_global.ads:6:13: warning: potentially missing contract for "F" declared at line 6
+local_global.ads:6:13: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 local_global.ads:6:16: warning: unused variable "X"
 local_global.ads:6:51: medium: postcondition might fail [provers gave up before completing the proof]
 local_global.ads:8:09: info: invariant check proved on default value (CVC5: 1 VC)
 object_decl.adb:3:07: warning: unused variable "Y"
 object_decl.ads:6:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
-object_decl.ads:6:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
+object_decl.ads:6:13: warning: potentially missing contract for "F" declared at line 6
+object_decl.ads:6:13: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 object_decl.ads:6:16: warning: unused variable "X"
 object_decl.ads:6:51: medium: postcondition might fail [provers gave up before completing the proof]
 object_decl.ads:8:09: info: invariant check proved on default value (CVC5: 1 VC)

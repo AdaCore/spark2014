@@ -4,17 +4,17 @@ tasks.adb:58:04: error: "Bad_Store" is not allowed in SPARK (due to "Access" att
 tasks.adb:58:04: error: violation of pragma SPARK_Mode at test.adc:1
 tasks.adb:89:25: error: attribute "Identity" is not allowed in SPARK
 tasks.adb:89:25: error: violation of pragma SPARK_Mode at test.adc:1
-tasks.ads:3:46: error: access discriminant is not allowed in SPARK
+tasks.ads:3:46: error: access discriminant is not allowed in SPARK (SPARK RM 3.7(2))
 tasks.ads:3:46: error: violation of pragma SPARK_Mode at test.adc:1
-tasks.ads:24:07: error: protected component with no default initialization is not allowed in SPARK (SPARK RM 9.4)
+tasks.ads:24:07: error: not fully initialized part of concurrent type is not allowed in SPARK (SPARK RM 9(4))
 tasks.ads:24:07: error: violation of pragma SPARK_Mode at test.adc:1
-tasks.ads:25:07: error: component of anonymous access type is not allowed in SPARK
+tasks.ads:25:07: error: component of anonymous access type is not allowed in SPARK (SPARK RM 3.10)
 tasks.ads:25:07: error: violation of pragma SPARK_Mode at test.adc:1
 tasks.ads:25:46: error: "Access" attribute of a type with ownership not directly inside an assignment statement, an object declaration, or a simple return statement is not yet supported
-tasks.ads:51:07: error: protected component with no default initialization is not allowed in SPARK (SPARK RM 9.4)
+tasks.ads:51:07: error: not fully initialized part of concurrent type is not allowed in SPARK (SPARK RM 9(4))
 tasks.ads:51:07: error: violation of pragma SPARK_Mode at test.adc:1
-tasks.ads:58:07: error: protected component with no default initialization is not allowed in SPARK (SPARK RM 9.4)
+tasks.ads:58:07: error: not fully initialized part of concurrent type is not allowed in SPARK (SPARK RM 9(4))
 tasks.ads:58:07: error: violation of pragma SPARK_Mode at test.adc:1
-tasks.ads:69:07: error: protected component with no default initialization is not allowed in SPARK (SPARK RM 9.4)
+tasks.ads:69:07: error: not fully initialized part of concurrent type is not allowed in SPARK (SPARK RM 9(4))
 tasks.ads:69:07: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof

@@ -1508,7 +1508,7 @@ Restrictions (No_Secondary_Stack);``.
 To protect against heap exhaustion, a possible way is to encapsulate
 allocations in a wrapper that handles the possible ``Storage_Error`` exception
 and signals the failure of the allocation to the calling environment via a
-return type.  The verification of this wrapper cannot be effectively done with
+result type.  The verification of this wrapper cannot be effectively done with
 SPARK as the handler would be considered unreachable. The
 following example, inspired by `this Stackoverflow post
 <https://stackoverflow.com/questions/67806008/how-to-check-for-storage-error-in-spark-ada>`_
@@ -2054,3 +2054,260 @@ through copies either by making the type limited or by using an
 :ref:`Annotation for Enforcing Ownership Checking on a Private Type`, unless
 memory management is taken care off internally - through controlled types for
 example.
+
+Mathematical Induction
+----------------------
+
+Induction is a method for proving a property for any value of a natural number
+``N``. It works in two steps: the base step requires proving that the property
+holds when ``N`` is 0, and the inductive step asks for the proof of the
+property for any natural number ``N+1``, knowing that it holds for ``N``.
+Together, these two steps ensure that the property holds for any value of ``N``.
+This kind of reasoning is often useful when dealing with properties defined in a
+recursive way, such as the sum of the elements of an array for example, and
+pointer-based data structures, like lists or trees. As an example, we can
+consider a property stating that an array is sorted by comparing each element
+with the following one. Using this property, we want to check that, for some
+indices ``I`` and ``J`` in a sorted array A, if ``I`` is less than ``J`` then
+``A (I)`` is less than ``A (J)``:
+
+.. code-block:: ada
+
+   type Int_Array is array (Positive range <>) of Integer;
+
+   function Is_Sorted (A : Int_Array) return Boolean is
+     (for all I in A'Range =>
+        (if I < A'Last then A (I) <= A (I + 1)));
+
+   procedure Test (A : Int_Array; I, J : Positive) with
+     Pre => I in A'Range and J in A'Range and Is_Sorted (A);
+
+   procedure Test (A : Int_Array; I, J : Positive) is
+   begin
+      pragma Assert (if I <= J then A (I) <= A (J));
+   end Test;
+
+Proving the assertion requires reasoning by induction on the number of elements
+between ``I`` and ``J``. If ``I`` is equal to ``J`` the property holds, because
+``A (I)`` is ``A (J)``, this is the base step. For the induction step, we assume
+that the property holds for any two indexes separated by ``N`` elements, and we
+want to prove it for ``I`` and ``J`` separated by ``N+1`` elements. We can
+consider ``I+1`` and ``J``. Since they are separated by ``N`` elements, the
+property holds, and ``A (I + 1)`` is less than ``A (J)``. Using the definition
+of ``Is_Sorted``, we know that ``A (I)`` is less than ``A (I + 1)``, so we
+can deduce that ``A (I)`` is less than ``A (J)``. We have proved by induction
+over the number of elements between ``I`` and ``J`` that the property holds for
+any value of ``I`` and ``J``.
+
+Unfortunately, the automated solvers used as the backend of |GNATprove| mostly
+cannot perform induction. For example, they are not able to prove the assertion
+in procedure ``Test`` above. Recognizing that a particular check requires inductive
+reasoning is not always easy, all the more since they often seem obvious to a
+human reader. Most often, it becomes apparent when attempting to debug a failed
+proof attempt by inserting intermediate assertions in the code: there is no way
+to split an inductive reasoning into intermediate deduction steps.
+
+It is sometimes possible to reformulate the specification of a program that
+we want to prove so that it does not require inductive reasoning as much or even
+at all. For example, we could reformulate ``Is_Sorted`` to compare any two
+elements in the array instead of two consecutive ones. This would have the
+effect of making it easy to prove the assertion above, as it would no longer
+require induction. It is possible that the inductive reasoning would then be
+required elsewhere (to check that an array is sorted, for example), but it might
+still be worth it if it occurs less often:
+
+.. code-block:: ada
+
+   function Is_Sorted (A : Int_Array) return Boolean is
+     (for all I in A'Range =>
+        (for all J in I .. A'Last => A (I) <= A (J)));
+
+If the problem cannot be reformulated, it is possible to help |GNATprove|
+perform induction using ghost code (see :ref:`Performing Induction`). This can
+be done either with a loop or through a recursive ghost subprogram. For the
+most common recursive properties over arrays, such as counting or summation,
+some useful lemmas are available in the :ref:`Higher Order Function Library` of
+|SPARK|.
+
+Object Oriented Programming
+---------------------------
+
+Even if tagged types are supported in |SPARK|, it doesn't follow that all
+common use cases for object oriented programming are amenable to
+formal verification using |GNATprove|. Indeed, |SPARK| supports object-oriented
+programming by checking behavioral subtyping between parent types and
+derived types, see :ref:`Object Oriented Programming and Liskov Substitution Principle`.
+It enforces that overriding operations of a derived type can be substituted for
+the corresponding overridden operation of the parent type anywhere. Whereas this
+behavior allows the verification of subprograms in a modular way, it is not
+compatible with all object-oriented design patterns.
+
+Using OOP in |SPARK| requires adhering to a specific style.
+Primitive subprograms of tagged types or interfaces should be annotated with
+class-wide contracts. These contracts represent potential constraints (for
+preconditions) and guarantees (for postconditions) of these primitives for
+all objects of the tagged derivation. Often, these contracts need to use
+primitive functions so their meaning can be refined on derivation. In the
+following example, the primitive functions ``Is_Initialized`` and
+``Is_Processed`` are used in the classwide contracts of ``Process`` and
+``Initialize``:
+
+.. code-block:: ada
+
+  type Base_Processor is tagged record
+     Data : Integer;
+  end record;
+
+  function Is_Initialized (Obj : Base_Processor) return Boolean is
+    (Obj.Data >= 0);
+
+  function Is_Processed (Obj : Base_Processor) return Boolean
+    (Obj.Data mod 2 = 0);
+
+  procedure Initialize (Obj : out Base_Processor)
+    with Post'Class => Obj.Is_Initialized;
+
+  procedure Process (Obj : in out Base_Processor)
+    with Pre'Class  => Obj.Is_Initialized,
+         Post'Class => Obj.Is_Processed;
+
+These functions can be used as placeholders to add information on a
+derivation, for example to refine the meaning of what it means for a processor
+to be initialized:
+
+.. code-block:: ada
+
+  type Detailed_Processor is new Base_Processor with record
+     More_Data : Integer;
+  end record;
+
+  overriding
+  function Is_Initialized (Obj : Detailed_Processor) return Boolean;
+
+  overriding
+  procedure Initialize (Obj : out Detailed_Processor);
+
+The version of ``Is_Initialized`` used in inherited classwide
+contracts of ``Initialize`` and ``Process`` depends on the version of the
+procedure being called. This kind of refinement would not be possible using
+only the compositional semantics of classwide contracts in Ada, as it does not
+allow for preconditions to be strengthened. Note that it is possible to use
+parent primitives in overridings through explicit view conversions:
+
+.. code-block:: ada
+
+  function Is_Initialized (Obj : Detailed_Processor) return Boolean is
+     (Base_Processor (Obj).Is_Initialized and then Obj.More_Data >= 0);
+
+  procedure Initialize (Obj : out Detailed_Processor) is
+  begin
+     Base_Processor (Obj).Initialize;
+     Obj.More_Data := 0;
+  end Initialize;
+
+Code that does general handling of objects of any type deriving from such a
+type/interface can be defined using a classwide type as a parameter. Dispatching
+is done on all calls to primitives if the parameter has a classwide type. It is
+similar to a generic, but the verification is done once and for all using
+classwide contracts. In our example, the postcondition of ``Initialize`` allows
+the proof of the precondition of ``Process`` for all possible derivations of
+``Base_Processor``:
+
+.. code-block:: ada
+
+  procedure Run_Processor_Lifecycle (Item : out Base_Processor'Class)
+    with Post => Item.Is_Processed;
+
+  procedure Run_Processor_Lifecycle (Item : out Base_Processor'Class) is
+  begin
+     Item.Initialize;
+     Item.Process;
+  end Run_Processor_Lifecycle;
+
+If the envisioned design pattern is not compatible with behavioral subtyping,
+or, more generally, if it does not really
+benefit from this particular handling, it can be better to rewrite the program
+to avoid tagged types altogether and use other idiomatic Ada constructs
+instead. In particular, if the program does not use dynamic polymorphism, or
+dispatching, at all, it is better to simply remove the tagged type. It
+is the case for example when tagged types are used solely to allow prefix
+notation in calls.
+
+Some common OOP patterns have simpler alternatives in SPARK that don't require
+OOP or dynamic dispatch. For example, if there are only a fixed, known number
+of forms a structure might take, it is
+possible to introduce an enumeration and use it as the discriminant of an
+untagged record type. As an example, if you know in advance the different kinds
+of shapes that the program shall handle, a discriminated record can be used to
+define a type for geometrical shapes in |SPARK|:
+
+.. code-block:: ada
+
+  type Shape_Kind is (Circle, Rectangle, Triangle);
+
+  type Shape (Kind : Shape_Kind) is record
+     case Kind is
+        when Circle =>
+           Radius : Float;
+        when Rectangle =>
+           Width, Height : Float;
+        when Triangle =>
+           Base, Side_Height : Float;
+     end case;
+  end record;
+
+Remark that such a change might require code refactoring to group together the
+functionalities for all types in the hierarchy in a single subprogram using a
+case statement:
+
+.. code-block:: ada
+
+  function Get_Area (Item : T) return Float is
+  begin
+     case Item.Kind is
+       when Circle =>
+          return Pi * Item.Radius ** 2;
+       when Rectangle =>
+	  return Item.Width * Item.Height;
+       when Triangle =>
+          return Base * Side_Height / 2.0;
+     end case;
+  end Get_Area;
+
+Similarly, it is possible to share code in a factory-like way by introducing a
+generic. The untagged object type can be given as a generic parameter along
+with the corresponding methods that can be used to apply the processing to
+objects of this type:
+
+.. code-block:: ada
+
+  generic
+     type T is private;
+     with function Create return T;
+     with function Get_Area (Item : T) return Float;
+  package Generic_Factory is
+
+     function Produce return T;
+
+     procedure Display_Area (Item : T);
+
+  end Generic_Factory;
+
+  package body Generic_Factory is
+
+     function Produce return T is
+     begin
+        return Create;
+     end Produce;
+
+     procedure Display_Area (Item : T) is
+     begin
+        Ada.Text_IO.Put_Line ("Area: " & Float'Image (Get_Area (Item)));
+     end Display_Area;
+
+  end Generic_Factory;
+
+Using a generic instead of OOP causes the shared code to be verified separately
+for each usage, as opposed to once and for all based on the Liskov substitution
+principle. This alternative may simplify proof if dynamic dispatching is not
+necessary.

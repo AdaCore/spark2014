@@ -19,13 +19,13 @@ test.adb:52:28: high: assertion might fail (e.g. when Y12 = (R => (D1 => False, 
 test.adb:55:28: high: assertion might fail (e.g. when Y13 = (R => (D1 => False, D2 => False, F => 12345)) and Y13.R'Constrained = False) [provers reached step limit before completing the proof]
 test.adb:58:28: high: assertion might fail (e.g. when Y14 = (R => (D1 => False, D2 => False, F => 12345)) and Y14.R'Constrained = False) [provers reached step limit before completing the proof]
 test.adb:61:28: high: assertion might fail (e.g. when Y21 = (R => (D1 => True, D2 => False, F => 20202))) [provers reached step limit before completing the proof]
-test.adb:64:22: high: discriminant check might fail (e.g. when X = (D1 => True, D2 => True, F => 12345)) [possible fix: precondition of subprogram at test.ads:26 should mention X] [provers reached step limit before completing the proof]
+test.adb:64:22: high: discriminant check might fail (e.g. when X = (D1 => True, D2 => True, F => 10101)) [possible fix: precondition of subprogram at test.ads:26 should mention X] [provers reached step limit before completing the proof]
 test.adb:67:28: high: assertion might fail (e.g. when Y22 = (R => (D1 => True, D2 => False, F => 10101))) [provers reached step limit before completing the proof]
-test.adb:70:22: high: discriminant check might fail (e.g. when X = (D1 => True, D2 => True, F => 12345)) [possible fix: precondition of subprogram at test.ads:26 should mention X] [provers reached step limit before completing the proof]
+test.adb:70:22: high: discriminant check might fail (e.g. when X = (D1 => True, D2 => True, F => 10101)) [possible fix: precondition of subprogram at test.ads:26 should mention X] [provers reached step limit before completing the proof]
 test.adb:73:28: high: assertion might fail (e.g. when Y23 = (R => (D1 => True, D2 => False, F => 20202))) [provers reached step limit before completing the proof]
-test.adb:76:22: high: discriminant check might fail (e.g. when X = (D1 => True, D2 => True, F => 12345)) [possible fix: precondition of subprogram at test.ads:26 should mention X] [provers reached step limit before completing the proof]
+test.adb:76:22: high: discriminant check might fail (e.g. when X = (D1 => True, D2 => True, F => 10101)) [possible fix: precondition of subprogram at test.ads:26 should mention X] [provers reached step limit before completing the proof]
 test.adb:79:28: high: assertion might fail (e.g. when Y24 = (R => (D1 => True, D2 => False, F => 10101))) [provers reached step limit before completing the proof]
-test.adb:82:22: high: discriminant check might fail (e.g. when X = (D1 => True, D2 => True, F => 12345)) [possible fix: precondition of subprogram at test.ads:26 should mention X] [provers reached step limit before completing the proof]
+test.adb:82:22: high: discriminant check might fail (e.g. when X = (D1 => True, D2 => True, F => 10101)) [possible fix: precondition of subprogram at test.ads:26 should mention X] [provers reached step limit before completing the proof]
 test.adb:87:22: info: assertion proved (Trivial)
 test.ads:16:22: info: range check proved (CVC5: 1 VC)
 test.ads:16:28: info: range check proved (CVC5: 1 VC)

@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---              Copyright (C) 2013-2025, Capgemini Engineering              --
+--              Copyright (C) 2013-2026, Capgemini Engineering              --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -653,8 +653,6 @@ package body Flow_Utility is
       procedure Traverse is new Traverse_More_Proc (Process => Proc);
       --  AST traversal procedure
 
-      --  Start of processing for Pick_Generated_Info_Internal
-
    begin
       Traverse (N);
    end Pick_Generated_Info_Internal;
@@ -835,8 +833,6 @@ package body Flow_Utility is
       Discard  : Boolean;
       Position : Node_Sets.Cursor;
       Inserted : Boolean;
-
-      --  Start of processing for Process_Type_Contracts_Internal
 
    begin
       --  If we didn't analyze Typ yet, and it is not an access-to-subprogram
@@ -1368,7 +1364,7 @@ package body Flow_Utility is
              (Direct_Mapping_Id (Etype (Encapsulating_State (Root_Entity))),
               Root_Entity);
 
-      elsif Ekind (Root_Entity) in E_Constant | E_Variable
+      elsif Ekind (Root_Entity) = E_Variable
         and then Present (Ultimate_Overlaid_Entity (Root_Entity))
       then
          Map_Root :=
@@ -1793,8 +1789,6 @@ package body Flow_Utility is
         First (Pragma_Argument_Associations (Global_Node));
       pragma Assert (Nkind (PAA) = N_Pragma_Argument_Association);
 
-      --  Start of processing for Parse_Global_Contract
-
    begin
       if Nkind (Expression (PAA)) = N_Null then
          --  global => null
@@ -2012,8 +2006,6 @@ package body Flow_Utility is
       end Debug;
 
       pragma Annotate (Xcov, Exempt_Off);
-
-      --  Start of processing for Get_Globals
 
    begin
       Globals.Proof_Ins := Flow_Id_Sets.Empty_Set;
@@ -2582,8 +2574,6 @@ package body Flow_Utility is
       Globals : Global_Flow_Ids;
       Scope   : Flow_Scope;
 
-      --  Start of processing for Get_Proof_Globals
-
    begin
       --  We currently have no way to annotate subprogram types with globals,
       --  assume that they have none.
@@ -2621,7 +2611,7 @@ package body Flow_Utility is
          begin
             for V of
               Get_Variables_For_Proof
-                (Expr_N => Get_Expr_From_Return_Only_Func (E), Scope_N => E)
+                (Expr_N => Get_Predicate_Expression (E), Scope_N => E)
             loop
                if V.Kind = Direct_Mapping and then V.Node = Param then
                   null;
@@ -3159,8 +3149,6 @@ package body Flow_Utility is
          procedure Handle_Parameters is new
            Iterate_Call_Parameters (Handle_Parameter);
 
-         --  Start of processing for Do_Subprogram_Call
-
       begin
          --  Ignore calls to predicate functions, which come from the frontend
          --  applying predicate checks where needed.
@@ -3393,7 +3381,9 @@ package body Flow_Utility is
 
          --  Handle overlays before filtering constants without variable inputs
 
-         if Present (Ultimate_Overlaid_Entity (E)) then
+         if Ekind (E) = E_Variable
+           and then Present (Ultimate_Overlaid_Entity (E))
+         then
             return Do_Entity (Ultimate_Overlaid_Entity (E));
          end if;
 
@@ -4013,9 +4003,54 @@ package body Flow_Utility is
                return Flow_Id_Sets.Empty_Set;
 
             when Attribute_Address     =>
-               --  The address of anything is totally separate from anything
-               --  flow analysis cares about, so we ignore it.
-               return Flow_Id_Sets.Empty_Set;
+
+               --  For supported overlays like "X'Address" the expression does
+               --  not read the overlying object (but reads array and slice
+               --  expressions in the prefix, if any). For other subexpressions
+               --  in the prefix we conservatively assume them to be reads.
+
+               declare
+                  Pref : Node_Id := Prefix (N);
+               begin
+                  loop
+                     case Nkind (Pref) is
+                        when N_Identifier | N_Expanded_Name                =>
+                           exit;
+
+                        when N_Explicit_Dereference | N_Selected_Component =>
+                           Pref := Prefix (Pref);
+
+                        when N_Indexed_Component                           =>
+                           declare
+                              Index : Node_Id;
+                           begin
+                              Index := First (Expressions (Pref));
+                              while Present (Index) loop
+                                 Variables.Union (Recurse (Index));
+                                 Next (Index);
+                              end loop;
+                           end;
+
+                           Pref := Prefix (Pref);
+
+                        when N_Slice                                       =>
+                           declare
+                              R : constant Node_Id :=
+                                Get_Range (Discrete_Range (Pref));
+                           begin
+                              Variables.Union (Recurse (Low_Bound (R)));
+                              Variables.Union (Recurse (High_Bound (R)));
+                           end;
+
+                           Pref := Prefix (Pref);
+
+                        when others                                        =>
+                           return Variables.Union (Recurse (Pref));
+                     end case;
+                  end loop;
+               end;
+
+               return Variables;
 
             when Attribute_Old         =>
                --  If Skip_Old is True, ignore the attribute. Otherwise, we
@@ -4266,8 +4301,6 @@ package body Flow_Utility is
             Outdent;
          end Untangle_Delta_Fields;
 
-         --  Start of processing for Untangle_Record_Fields
-
       begin
          pragma Annotate (Xcov, Exempt_On, "Debugging code");
          if Debug_Trace_Untangle_Fields then
@@ -4488,7 +4521,7 @@ package body Flow_Utility is
                Root_Entity : constant Entity_Id :=
                  Get_Direct_Mapping_Id (Current_Field);
                Alias       : constant Entity_Id :=
-                 (if Ekind (Root_Entity) in E_Constant | E_Variable
+                 (if Ekind (Root_Entity) = E_Variable
                   then Ultimate_Overlaid_Entity (Root_Entity)
                   else Empty);
 
@@ -5625,8 +5658,6 @@ package body Flow_Utility is
       --  have more assertions, e.g. about subtype names that can only appear
       --  in specific contexts.
 
-      --  Start of processing for Get_Variables_Internal
-
    begin
       Traverse (N);
 
@@ -5716,8 +5747,6 @@ package body Flow_Utility is
       Scope            : constant Flow_Scope := Get_Flow_Scope (Scope_N);
       Target_Name      : constant Flow_Id :=
         Resolve_Target_Name (Expr_N, Scope);
-
-      --  Start of processing for Get_Variables_For_Proof
 
    begin
       --  Ignore references to array bounds of objects (because they are never
@@ -6625,8 +6654,6 @@ package body Flow_Utility is
          end case;
       end Scan_Contract;
 
-      --  Start of processing for Search_Depends_Contract
-
    begin
       Contract_N := Find_Contract (Unit, Pragma_Refined_Depends);
 
@@ -6802,8 +6829,6 @@ package body Flow_Utility is
 
          end case;
       end Scan_Inputs;
-
-      --  Start of processing for Search_Initializes_Contract
 
    begin
       if Present (Contract) then
@@ -7341,8 +7366,6 @@ package body Flow_Utility is
 
       M : Flow_Id_Maps.Map := Flow_Id_Maps.Empty_Map;
 
-      --  Start of processing for Untangle_Record_Assignment
-
    begin
       pragma Annotate (Xcov, Exempt_On, "Debugging code");
       if Debug_Trace_Untangle_Record then
@@ -7545,7 +7568,7 @@ package body Flow_Utility is
                              E),
                           Scope)
 
-                     elsif Ekind (E) in E_Constant | E_Variable
+                     elsif Ekind (E) = E_Variable
                        and then Present (Ultimate_Overlaid_Entity (E))
                      then
                        Flatten_Variable (Ultimate_Overlaid_Entity (E), Scope)
@@ -7775,8 +7798,6 @@ package body Flow_Utility is
 
       Seq : Node_Lists.List;
       Idx : Positive;
-
-      --  Start of processing for Untangle_Assignment_Target
 
    begin
       pragma Annotate (Xcov, Exempt_On, "Debugging code");
@@ -8304,7 +8325,7 @@ package body Flow_Utility is
                 (Direct_Mapping_Id (Etype (Encapsulating_State (Root_Entity))),
                  Root_Entity)
 
-            elsif Ekind (Root_Entity) in E_Constant | E_Variable
+            elsif Ekind (Root_Entity) = E_Variable
               and then Present (Ultimate_Overlaid_Entity (Root_Entity))
             then Direct_Mapping_Id (Ultimate_Overlaid_Entity (Root_Entity))
 

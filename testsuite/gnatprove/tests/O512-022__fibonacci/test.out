@@ -132,7 +132,7 @@ fib.ads:23:52: info: initialization of "p2" proved
 fib.ads:25:14: info: postcondition proved (CVC5: 1 VC)
 fib.ads:29:65: info: initialization of "p1" proved
 fib.ads:29:69: info: initialization of "p2" proved
-fib.ads:33:14: medium: postcondition might fail [provers reached step limit before completing the proof]
+fib.ads:33:14: info: postcondition proved (CVC5: 1 VC)
 fib.ads:36:41: medium: "A1" might not be initialized in "ArrayPartitionedTransferSC" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "A1" on all paths, make "A1" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 fib.ads:36:45: medium: "A2" might not be initialized in "ArrayPartitionedTransferSC" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "A2" on all paths, make "A2" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 fib.ads:41:50: info: index check proved (CVC5: 2 VC)

@@ -2,10 +2,14 @@ infeasible_access_subp.adb:2:04: medium: contract of function might not be feasi
 infeasible_access_subp.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 infeasible_access_subp.adb:6:14: info: postcondition proved (CVC5: 1 VC)
 infeasible_access_subp.adb:14:13: info: implicit aspect Always_Terminates on "G1" has been proved, subprogram will terminate
-infeasible_access_subp.adb:14:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
+infeasible_access_subp.adb:14:13: warning: potentially missing contract for "G1" declared at line 14
+infeasible_access_subp.adb:14:13: warning: potentially missing contract for "G2" declared at line 16
+infeasible_access_subp.adb:14:13: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 infeasible_access_subp.adb:14:58: info: postcondition proved (CVC5: 1 VC)
 infeasible_access_subp.adb:16:13: info: implicit aspect Always_Terminates on "G2" has been proved, subprogram will terminate
-infeasible_access_subp.adb:16:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
+infeasible_access_subp.adb:16:13: warning: potentially missing contract for "G1" declared at line 14
+infeasible_access_subp.adb:16:13: warning: potentially missing contract for "G2" declared at line 16
+infeasible_access_subp.adb:16:13: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 infeasible_access_subp.adb:16:58: info: postcondition proved (CVC5: 1 VC)
 infeasible_access_subp.adb:19:46: info: postcondition of source is strong enough to imply postcondition of target (CVC5: 1 VC)
 infeasible_access_subp.adb:19:46: medium: call via access-to-function might not terminate [reason for check: functions should always terminate in SPARK] [possible explanation: calls via access-to-subprograms inside function taken as access might hide recursive calls]

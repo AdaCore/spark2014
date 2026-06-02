@@ -87,7 +87,7 @@ binary_search.adb:245:22: info: assertion proved
 binary_search.ads:16:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
 binary_search.ads:19:07: info: dynamic accessibility check proved
 binary_search.ads:24:13: info: implicit aspect Always_Terminates on "M_Contains" has been proved, subprogram will terminate
-binary_search.ads:24:13: warning: function contract might not be available on recursive calls [contracts-recursive]
+binary_search.ads:24:13: warning: "M_Contains" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 binary_search.ads:26:18: info: pointer dereference check proved
 binary_search.ads:26:32: info: subprogram variant proved
 binary_search.ads:26:45: info: pointer dereference check proved
@@ -95,7 +95,7 @@ binary_search.ads:26:63: info: subprogram variant proved
 binary_search.ads:26:76: info: pointer dereference check proved
 binary_search.ads:28:14: info: postcondition proved
 binary_search.ads:32:13: info: implicit aspect Always_Terminates on overriding operator "<" has been proved, subprogram will terminate
-binary_search.ads:32:13: warning: function contract might not be available on recursive calls [contracts-recursive]
+binary_search.ads:32:13: warning: "<" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 binary_search.ads:35:14: info: postcondition proved
 binary_search.ads:38:32: info: pointer dereference check proved
 binary_search.ads:38:42: info: subprogram variant proved
@@ -103,7 +103,7 @@ binary_search.ads:38:47: info: pointer dereference check proved
 binary_search.ads:38:57: info: subprogram variant proved
 binary_search.ads:38:62: info: pointer dereference check proved
 binary_search.ads:42:13: info: implicit aspect Always_Terminates on overriding operator "<" has been proved, subprogram will terminate
-binary_search.ads:42:13: warning: function contract might not be available on recursive calls [contracts-recursive]
+binary_search.ads:42:13: warning: "<" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 binary_search.ads:45:14: info: postcondition proved
 binary_search.ads:48:28: info: pointer dereference check proved
 binary_search.ads:48:42: info: subprogram variant proved
@@ -111,7 +111,7 @@ binary_search.ads:48:43: info: pointer dereference check proved
 binary_search.ads:48:57: info: subprogram variant proved
 binary_search.ads:48:58: info: pointer dereference check proved
 binary_search.ads:52:13: info: implicit aspect Always_Terminates on "Sorted" has been proved, subprogram will terminate
-binary_search.ads:52:13: warning: function contract might not be available on recursive calls [contracts-recursive]
+binary_search.ads:52:13: warning: "Sorted" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 binary_search.ads:54:13: info: pointer dereference check proved
 binary_search.ads:54:22: info: pointer dereference check proved
 binary_search.ads:54:38: info: pointer dereference check proved
@@ -132,7 +132,7 @@ binary_search.ads:84:26: info: discriminant check proved
 binary_search.ads:87:13: info: implicit aspect Always_Terminates on overriding operator "<" has been proved, subprogram will terminate
 binary_search.ads:88:30: info: discriminant check proved
 binary_search.ads:95:13: info: implicit aspect Always_Terminates on "All_V" has been proved, subprogram will terminate
-binary_search.ads:95:13: warning: function contract might not be available on recursive calls [contracts-recursive]
+binary_search.ads:95:13: warning: "All_V" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 binary_search.ads:98:14: info: postcondition proved
 binary_search.ads:103:14: info: postcondition proved
 linear_search.adb:5:27: info: predicate check proved
@@ -226,7 +226,7 @@ linear_search.adb:88:22: info: assertion proved
 linear_search.adb:88:63: info: precondition proved
 linear_search.adb:88:71: info: predicate check proved
 linear_search.ads:17:12: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
-linear_search.ads:17:12: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+linear_search.ads:17:12: warning: "Length" is recursive; its implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 linear_search.ads:18:22: info: predicate check proved
 linear_search.ads:18:29: info: predicate check proved
 linear_search.ads:18:29: info: subprogram variant proved
@@ -234,7 +234,7 @@ linear_search.ads:18:38: info: pointer dereference check proved
 linear_search.ads:18:45: info: predicate check proved
 linear_search.ads:18:47: info: predicate check proved
 linear_search.ads:23:12: info: implicit aspect Always_Terminates on "Nth" has been proved, subprogram will terminate
-linear_search.ads:23:12: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+linear_search.ads:23:12: warning: "Nth" is recursive; its implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 linear_search.ads:24:08: info: predicate check proved
 linear_search.ads:24:12: info: predicate check proved
 linear_search.ads:24:20: info: pointer dereference check proved
@@ -328,7 +328,7 @@ my_map.adb:97:16: info: pointer dereference check proved
 my_map.adb:99:07: info: only expected exception raised
 my_map.ads:7:13: info: implicit aspect Always_Terminates on "Model_Contains" has been proved, subprogram will terminate
 my_map.ads:14:13: info: implicit aspect Always_Terminates on "Model_Value" has been proved, subprogram will terminate
-my_map.ads:14:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+my_map.ads:14:13: warning: "Model_Value" is recursive; its implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 my_map.ads:22:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
 my_map.ads:25:07: info: dynamic accessibility check proved
 my_map.ads:30:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
@@ -385,7 +385,7 @@ test_list.adb:24:15: info: predicate check proved
 test_list.adb:24:17: info: predicate check proved
 test_list.adb:24:19: info: predicate check proved
 test_list.ads:14:13: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
-test_list.ads:14:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+test_list.ads:14:13: warning: "Length" is recursive; its implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 test_list.ads:15:24: info: predicate check proved
 test_list.ads:15:31: info: predicate check proved
 test_list.ads:15:31: info: subprogram variant proved
@@ -393,7 +393,7 @@ test_list.ads:15:40: info: pointer dereference check proved
 test_list.ads:15:47: info: predicate check proved
 test_list.ads:15:49: info: predicate check proved
 test_list.ads:21:13: info: implicit aspect Always_Terminates on "Nth" has been proved, subprogram will terminate
-test_list.ads:21:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+test_list.ads:21:13: warning: "Nth" is recursive; its implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 test_list.ads:22:10: info: predicate check proved
 test_list.ads:22:14: info: predicate check proved
 test_list.ads:22:22: info: pointer dereference check proved
@@ -464,7 +464,7 @@ test_route.ads:29:41: info: overflow check proved
 test_route.ads:30:14: info: postcondition proved
 test_route.ads:30:28: info: overflow check proved
 test_route.ads:41:13: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
-test_route.ads:41:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+test_route.ads:41:13: warning: "Length" is recursive; its implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 test_route.ads:42:24: info: predicate check proved
 test_route.ads:43:12: info: predicate check proved
 test_route.ads:43:12: info: subprogram variant proved
@@ -472,7 +472,7 @@ test_route.ads:43:21: info: pointer dereference check proved
 test_route.ads:43:28: info: predicate check proved
 test_route.ads:43:30: info: predicate check proved
 test_route.ads:47:13: info: implicit aspect Always_Terminates on "Nth_X" has been proved, subprogram will terminate
-test_route.ads:47:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+test_route.ads:47:13: warning: "Nth_X" is recursive; its implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 test_route.ads:48:10: info: predicate check proved
 test_route.ads:48:14: info: predicate check proved
 test_route.ads:48:22: info: pointer dereference check proved
@@ -496,7 +496,7 @@ test_route.ads:68:07: info: dynamic accessibility check proved
 test_route.ads:73:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
 test_route.ads:76:07: info: dynamic accessibility check proved
 test_route.ads:81:13: info: implicit aspect Always_Terminates on "Nth_Point" has been proved, subprogram will terminate
-test_route.ads:81:13: warning: function contract might not be available on recursive calls [contracts-recursive]
+test_route.ads:81:13: warning: "Nth_Point" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 test_route.ads:85:28: info: predicate check proved
 test_route.ads:85:33: info: predicate check proved
 test_route.ads:93:08: info: postcondition proved

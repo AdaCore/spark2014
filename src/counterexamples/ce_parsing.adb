@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2022-2025, AdaCore                     --
+--                     Copyright (C) 2022-2026, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -41,6 +41,7 @@ with SPARK_Atree;                           use SPARK_Atree;
 with SPARK_Util;                            use SPARK_Util;
 with SPARK_Util.Types;                      use SPARK_Util.Types;
 with Stand;                                 use Stand;
+with String_Utils;                          use String_Utils;
 with Uintp;                                 use Uintp;
 with Urealp;                                use Urealp;
 with Why.Gen.Names;                         use Why.Gen.Names;
@@ -59,7 +60,7 @@ package body CE_Parsing is
    with Pre => Cnt_Value.T = Cnt_Float;
 
    function Parse_Cnt_Value
-     (Cnt_Labels : S_String_List.List;
+     (Cnt_Labels : String_Lists.List;
       Cnt_Value  : Cntexmp_Value_Ptr;
       AST_Ty     : Entity_Id) return Value_Type;
    --  Parse the Why3 counterexample value Cnt_Value
@@ -172,7 +173,7 @@ package body CE_Parsing is
    ---------------------
 
    function Parse_Cnt_Value
-     (Cnt_Labels : S_String_List.List;
+     (Cnt_Labels : String_Lists.List;
       Cnt_Value  : Cntexmp_Value_Ptr;
       AST_Ty     : Entity_Id) return Value_Type
    is
@@ -377,15 +378,13 @@ package body CE_Parsing is
             begin
                for Label of Cnt_Labels loop
                   declare
-                     Label_Name  : constant String :=
-                       Ada.Strings.Unbounded.To_String (Label);
                      Label_Parts : Slice_Set;
                   begin
                      --  Search for an attribute of the form field:_:S
                      --  where S is the name of the field.
                      Create
                        (S          => Label_Parts,
-                        From       => Label_Name,
+                        From       => Label,
                         Separators => ":",
                         Mode       => Single);
                      declare
@@ -425,7 +424,7 @@ package body CE_Parsing is
                                           --  attribute.
                                           Comp :=
                                             Parse_Cnt_Value
-                                              (S_String_List.Empty_List,
+                                              (String_Lists.Empty_List,
                                                Cnt_Value,
                                                Comp_Ty);
                                           Val.Record_Fields.Insert
@@ -588,8 +587,7 @@ package body CE_Parsing is
            StringBits_To_Unsigned (Exp);
       begin
          return
-           I_Sign
-           * 2 ** (Bound - 1)
+           I_Sign * 2 ** (Bound - 1)
            + I_Exp * 2 ** Size_Significand
            + I_Significand;
       end StringBits_To_Floatrepr;

@@ -34,7 +34,11 @@ def edit_proof():
 
 print("=======================================")
 prove_all(
-    opt=["--prover=coq", "--limit-line=nonlinear.adb:4:11:VC_POSTCONDITION"],
+    opt=[
+        "--prover=coq",
+        "--limit-line=nonlinear.adb:4:11:VC_POSTCONDITION",
+        "--steps=10",
+    ],
     steps=None,
     counterexample=False,
     filter_output=".*Grammar extension",

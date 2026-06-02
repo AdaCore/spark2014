@@ -1,0 +1,6 @@
+foo.adb:10:25: info: postcondition proved (CVC5: 1 VC)
+foo.adb:10:55: info: overflow check proved (CVC5: 2 VC)
+foo.adb:14:25: info: postcondition proved (CVC5: 1 VC)
+foo.adb:15:50: info: overflow check proved (CVC5: 2 VC)
+foo.adb:19:22: info: overflow check proved (CVC5: 2 VC)
+foo.adb:24:22: info: overflow check proved (CVC5: 2 VC)

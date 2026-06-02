@@ -2,13 +2,13 @@ procedure Main with SPARK_Mode is
 
    package Ptr_Accesses with
      Always_Terminates,
-     Abstract_State => Allocated_Memory,
+     Abstract_State => (Allocated_Memory, (Addresses with External => Async_Writers)),
      Initializes => Allocated_Memory
    is
       type Ptr is private;
 
       function Create (V : Integer) return Ptr with
-        Volatile_Function,
+        Volatile_Function, Global => (Addresses, Allocated_Memory),
         Post => Get (Create'Result) = V;
       function Get (X : Ptr) return Integer with
         Global => Allocated_Memory;
@@ -32,7 +32,7 @@ procedure Main with SPARK_Mode is
    end Ptr_Accesses;
 
    procedure Ownership_Transfer with
-     Global => (In_Out => Ptr_Accesses.Allocated_Memory)
+     Global => (In_Out => Ptr_Accesses.Allocated_Memory, Input => Ptr_Accesses.Addresses)
    is
       X : Ptr_Accesses.Ptr := Ptr_Accesses.Create (1);
       Y : Ptr_Accesses.Ptr;

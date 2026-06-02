@@ -1,2 +1,2 @@
-flow_logical_eq.adb:3:13: error: Entity parameter of a pragma Logical_Equal shall not access any global data
+flow_logical_eq.adb:3:13: error: a subprogram with the "Logical_Equal" annotation shall not access global data
 gnatprove: error during flow analysis and proof

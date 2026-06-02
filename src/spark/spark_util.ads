@@ -6,7 +6,7 @@
 --                                                                          --
 --                                  S p e c                                 --
 --                                                                          --
---                     Copyright (C) 2012-2025, AdaCore                     --
+--                     Copyright (C) 2012-2026, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -341,6 +341,16 @@ package SPARK_Util is
    function Call_Simulates_Contract_Dispatch (N : Node_Id) return Boolean;
    --  Return True if N is a function call that has been introduced to simulate
    --  contract dispatch.
+
+   procedure Set_Conditional_Old_Attribute
+     (Prefix : Node_Id; Condition : Node_Id);
+   --  Register Prefix of an 'Old attribute reference as conditionally
+   --  evaluated, with the condition under which it should be evaluated.
+
+   function Condition_Of_Conditional_Old (Prefix : Node_Id) return Node_Id;
+   --  For a prefix of an 'Old attribute which is conditionally evaluated,
+   --  return the condition under which it is evaluated. For other nodes,
+   --  return Empty.
 
    -----------------------------------------
    -- General queries related to entities --
@@ -742,6 +752,10 @@ package SPARK_Util is
    --  @return True if the node is in a branch that is statically dead. Only
    --      if-statements are detected for now.
 
+   function Is_Within_Finally_Section (N : Node_Id) return Boolean;
+   --  @param N any node
+   --  @return True if the node is in a finally section.
+
    function May_Issue_Warning_On_Node (N : Node_Id) return Boolean;
    --  We do not issue any warnings on nodes which stem from inlining or
    --  instantiation, or in subprograms or library packages whose analysis
@@ -1043,6 +1057,11 @@ package SPARK_Util is
    function Is_Non_Exec_Assertion_Level (Level : Entity_Id) return Boolean;
    --  Return true on an assertion level that cannot be enabled at runtime
 
+   function In_Non_Exec_Context (N : Node_Id) return Boolean;
+   --  Return True if N is in a ghost context that cannot be enabled at
+   --  runtime. This function does not check whether the enclosing unit itself
+   --  is non-executable.
+
    function In_Statically_Leaking_Context
      (Expr : N_Subexpr_Id; Ignore_Non_Exec : Boolean) return Boolean;
    --  Return True if Expr occurs in a context where it is statically known
@@ -1107,6 +1126,10 @@ package SPARK_Util is
 
    procedure Register_Prophecy_Save (E : Entity_Id);
    --  Registers that E saves a prophecy variable.
+
+   function Is_Local_Borrower_In_Prophecy (N : Node_Id) return Boolean;
+   --  Return True if N is a local borrower occurring inside a call to a
+   --  function annotated with At_End_Borrow.
 
    function Path_Contains_Witness
      (Expr : N_Subexpr_Id;

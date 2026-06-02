@@ -23,7 +23,7 @@ test.adb:95:12: warning: assuming "Swap_Without_Contract" always terminates
 test.adb:95:12: warning: assuming "Swap_Without_Contract" has no effect on global items
 test.adb:95:12: warning: no Always_Terminates aspect available for "Swap_Without_Contract" [assumed-always-terminates]
 test.adb:95:12: warning: no Global contract available for "Swap_Without_Contract" [assumed-global-null]
-test.adb:114:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+test.adb:114:13: warning: "Factorial" is recursive; its implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 test.adb:119:10: medium: implicit aspect Always_Terminates on "Factorial" could be incorrect, subprogram is recursive [possible fix: annotate "Factorial" with a Subprogram_Variant aspect]
 test.adb:119:19: medium: overflow check might fail, cannot prove upper bound for N * Factorial (N - 1) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (N * Factorial (N - 1) <= Integer'Last) to subprogram at line 114] [provers gave up before completing the proof]
 test.adb:119:21: info: analyzing call to "Factorial" in context
@@ -88,23 +88,15 @@ test.ads:35:09: info: data dependencies proved
 test.ads:36:09: info: flow dependencies proved
 Trace files' contents:
 test.adb:101
-
 test.adb:101
-
 test.adb:185
-
 test.adb:189
 test.adb:190
 test.adb:178
 
-
-
 test.adb:166
 test.adb:167
 test.adb:167
-
 test.adb:160
-
 test.adb:95
-
 test.adb:95

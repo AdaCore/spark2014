@@ -39,8 +39,6 @@ bounded_table.ads:60:13: info: implicit aspect Always_Terminates on "Index_Of" h
 repro_main.adb:4:11: info: aspect Always_Terminates on "Repro_Main" has been proved, subprogram will terminate
 repro_main.adb:9:04: error: instantiation error at bounded_table.ads:42
 repro_main.adb:9:04: error: iteration primitive shall not be recursive, (including implicitly so)
-repro_main.adb:9:04: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
-repro_main.adb:9:04: warning: in instantiation at bounded_table.ads:42
 repro_main.adb:16:13: info: precondition proved (CVC5: 1 VC)
 repro_main.adb:17:13: info: precondition proved (CVC5: 1 VC)
 repro_main.adb:18:13: info: precondition proved (CVC5: 1 VC)

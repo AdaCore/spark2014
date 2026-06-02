@@ -3,8 +3,9 @@
 import argparse
 from e3.fs import sync_tree
 from e3.gaia.api import GAIA
-from e3.testsuite.report.rewriting import BaseBaselineRewriter, RewritingError
+from e3.testsuite.report.rewriting import BaseBaselineRewriter
 from e3.testsuite.report.index import ReportIndex
+from e3.testsuite.result import FailureReason, TestStatus
 from e3.testsuite.utils import ColorConfig
 from adacore_gitlab_scripts.util.e3_baseline_updates import (
     Gitlab,
@@ -13,7 +14,12 @@ from adacore_gitlab_scripts.util.e3_baseline_updates import (
 import os.path
 import tarfile
 import tempfile
-import yaml
+
+from lib.python.gitlab_util import SPARK2014_GITLAB_ID, resolve_pipeline_id
+from lib.python.suite_util import is_large, make_large, make_nonlarge
+
+# Mapping test origin to a subdir
+ORIGIN_TO_DIR = {"main": "tests", "internal": "internal", "sparklib": "sparklib"}
 
 descr = """This script updates the outputs from a previous run of the
 testsuite."""
@@ -36,7 +42,7 @@ def parse_options():
     parser.add_argument(
         "--from-gitlab",
         dest="gitlab_id",
-        help="Specify the Gitlab pipeline id to read outputs from",
+        help="Specify the Gitlab merge request or pipeline id to read outputs from",
     )
     parser.add_argument(
         "--compute-time", default=False, action=argparse.BooleanOptionalAction
@@ -53,15 +59,58 @@ def parse_options():
 
 
 class BaselineRewriter(BaseBaselineRewriter):
+    def __init__(self, colors):
+        super().__init__(colors)
+        self.skipped_by_origin: dict[str, list[str]] = {}
+        self.warned_missing: list[tuple[str, str]] = []
+        self._current_origin: str | None = None
+
     def baseline_filename(self, test_name: str) -> str:
-        testdir = os.path.join("tests", test_name)
-        if not os.path.exists(testdir):
-            testdir = os.path.join("internal", test_name)
-        if not os.path.exists(testdir):
-            testdir = os.path.join("sparklib", test_name)
-        if not os.path.exists(testdir):
-            raise RewritingError(f"cannot find test {test_name!r}")
-        return os.path.join(testdir, "test.out")
+        origin = self._current_origin or "main"
+        prefix = ORIGIN_TO_DIR.get(origin, "tests")
+        return os.path.join(prefix, test_name, "test.out")
+
+    def rewrite_from_index(self, summary, index):
+        # Copy of BaseBaselineRewriter.rewrite_from_index that takes "origin"
+        # into account and saves the info in our local datastructures
+        for test_name, entry in index.entries.items():
+            if entry.status == TestStatus.FAIL:
+                if entry.failure_reasons != {FailureReason.DIFF}:
+                    self.handle_test_error(
+                        summary, test_name, "test failed for another reason than a diff"
+                    )
+                    continue
+
+                result = entry.load()
+                assert result.env is not None
+                origin = result.env.get("origin", "main")
+                origin_dir = ORIGIN_TO_DIR.get(origin, "tests")
+
+                # Skip if top-level origin directory doesn't exist locally
+                if not os.path.isdir(origin_dir):
+                    self.skipped_by_origin.setdefault(origin_dir, []).append(test_name)
+                    continue
+
+                # Warn if specific test directory doesn't exist
+                if not os.path.isdir(os.path.join(origin_dir, test_name)):
+                    self.warned_missing.append((origin_dir, test_name))
+                    continue
+
+                encoding = result.env.get("encoding", self.default_encoding)
+                if result.out is None:
+                    self.handle_test_error(
+                        summary, test_name, "no output associated to test result"
+                    )
+                    continue
+
+                self._current_origin = origin
+                self.handle_test_diff(summary, test_name, result.out, encoding)
+                self._current_origin = None
+
+            elif entry.status == TestStatus.ERROR:
+                self.handle_test_error(
+                    summary, test_name, "test aborted because of an error"
+                )
 
 
 def get_single_subdir(d):
@@ -78,7 +127,7 @@ def download_from_gaia(gaia_id):
         name = f.name
     tmpdir = tempfile.mkdtemp()
     with tarfile.open(name, mode="r:gz") as tar:
-        tar.extractall(tmpdir)
+        tar.extractall(tmpdir, filter="data")
     return get_single_subdir(tmpdir)
 
 
@@ -103,71 +152,6 @@ def update_sessions_from_gaia(gaia_id):
             "warning: failed to update sessions, "
             f"possibly GAIA event doesn't have session files: {str(e)}"
         )
-
-
-def find_test_by_name(name):
-    for d in ["tests", "internal", "sparklib"]:
-        testdir = os.path.join(d, name)
-        if os.path.exists(testdir):
-            return testdir
-    return None
-
-
-def is_large(name):
-    testdir = find_test_by_name(name)
-    if testdir is not None:
-        yamlfile = os.path.join(testdir, "test.yaml")
-        if not os.path.exists(yamlfile):
-            return False
-        with open(yamlfile) as f:
-            data = yaml.safe_load(f)
-        if "large" not in data:
-            return False
-        if data["large"]:
-            return True
-        else:
-            return False
-        return False
-    return None
-
-
-def read_write_yaml(testname, fn):
-    testdir = find_test_by_name(testname)
-    if testdir is None:
-        print(f"Unable to find test dir to modify yaml file for {testname}")
-        return
-    yamlfile = os.path.join(testdir, "test.yaml")
-    if not os.path.exists(yamlfile):
-        data = {}
-    else:
-        with open(yamlfile, "r") as f:
-            data = yaml.safe_load(f)
-    data = fn(data)
-    if not data:
-        os.remove(yamlfile)
-    else:
-        with open(yamlfile, "w") as f:
-            yaml.dump(data, f)
-
-
-def make_large(testname):
-    def set_large(d):
-        result = dict(d)
-        result["large"] = True
-        return result
-
-    print(f"Moving {testname} to large")
-    read_write_yaml(testname, set_large)
-
-
-def make_nonlarge(testname):
-    def erase_large(d):
-        result = dict(d)
-        del result["large"]
-        return result
-
-    print(f"Removing {testname} from large")
-    read_write_yaml(testname, erase_large)
 
 
 def compute_time(outputdir):
@@ -204,9 +188,10 @@ def main():
         tmpdir = download_from_gaia(args.gaia_id)
         outputdirs = [tmpdir]
     elif args.gitlab_id:
-        p = GitLabProjectDescription("168", ["spark2014"])
+        p = GitLabProjectDescription(SPARK2014_GITLAB_ID, ["spark2014", "sparklib"])
         gl = Gitlab()
-        outputdirs = gl.download_test_results(p, args.gitlab_id)
+        pipeline_id = resolve_pipeline_id(gl, SPARK2014_GITLAB_ID, args.gitlab_id)
+        outputdirs = gl.download_test_results(p, pipeline_id)
         # artifact contains a coverage subdir which should be ignored
         outputdirs = [item for item in outputdirs if "coverage" not in item]
     elif args.outputdir:
@@ -222,6 +207,16 @@ def main():
             print(f"deleted empty baseline for {elt}")
         for elt in summary.errors:
             print(f"error updating baseline for {elt}")
+
+    for origin_dir, tests in sorted(BR.skipped_by_origin.items()):
+        print(f"\nSkipped baseline changes from {origin_dir!r}:")
+        for t in sorted(tests):
+            print(f"  - {t}")
+
+    if BR.warned_missing:
+        print("\nWarnings - test directory not found:")
+        for origin_dir, test_name in sorted(BR.warned_missing):
+            print(f"  - {os.path.join(origin_dir, test_name)}")
 
 
 main()

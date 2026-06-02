@@ -1,1 +1,1 @@
-ALL XFAIL test not fixed yet (eng/spark/spark2014#923)
+ALL XFAIL non-deterministic CE (eng/spark/spark2014#923)

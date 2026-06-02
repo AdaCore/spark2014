@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2020-2025, AdaCore                     --
+--                     Copyright (C) 2020-2026, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -1627,8 +1627,6 @@ package body Why.Gen.Hardcoded is
 
             return Why_Empty;
       end Transform_Quotient_Of_Strings;
-
-      --  Start of processing for Transform_Hardcoded_Literal
 
    begin
       --  Go over the actuals to check that their are all string literals

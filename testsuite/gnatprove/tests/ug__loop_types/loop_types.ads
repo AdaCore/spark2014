@@ -9,7 +9,7 @@ is
    subtype Opt_Index_T is Natural range 0 .. 1000;
    subtype Component_T is Natural;
 
-   type Arr_T is array (Index_T) of Component_T;
+   type Arr_T is array (Index_T range <>) of Component_T;
 
    package Vectors is new SPARK.Containers.Formal.Vectors (Index_T, Component_T);
    subtype Vec_T is Vectors.Vector;

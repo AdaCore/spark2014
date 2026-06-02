@@ -19,6 +19,7 @@ fixed_stream.adb:76:36: info: cannot unroll loop (too many loop iterations) [inf
 fixed_stream.adb:77:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 fixed_stream.adb:77:41: info: index check proved (CVC5: 2 VC)
 fixed_stream.adb:77:41: info: overflow check proved (CVC5: 2 VC)
+fixed_stream.adb:78:39: info: range check proved (CVC5: 1 VC)
 fixed_stream.adb:79:57: info: index check proved (CVC5: 2 VC)
 fixed_stream.adb:79:57: info: overflow check proved (CVC5: 2 VC)
 fixed_stream.ads:13:14: info: implicit aspect Always_Terminates on "Create" has been proved, subprogram will terminate

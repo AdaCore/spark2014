@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2016-2025, AdaCore                     --
+--                     Copyright (C) 2016-2026, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -767,8 +767,6 @@ package body Gnat2Why.Expr.Loops.Inv is
             return True_Pred;
          end if;
       end Preserve_Bounds_Or_Discriminants;
-
-      --  Start of processing for Equality_Of_Preserved_Components
 
    begin
       case Status.Kind is
@@ -1628,8 +1626,6 @@ package body Gnat2Why.Expr.Loops.Inv is
         Iterate_Call_Parameters (Process_Param);
 
       Subp : constant Callable_Kind_Id := Get_Called_Entity_For_Proof (Call);
-
-      --  Start of processing for Process_Call_Statement
 
    begin
       --  Record writes to out and in out parameters of the call

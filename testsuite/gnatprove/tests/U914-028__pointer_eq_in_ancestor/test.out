@@ -3,6 +3,6 @@ repr.adb:11:16: info: implicit aspect Always_Terminates on overriding operator "
 repr.adb:18:35: info: range check proved (CVC5: 2 VC)
 repr.adb:23:13: info: implicit aspect Always_Terminates on "Test" has been proved, subprogram will terminate
 repr.adb:24:19: info: postcondition proved (CVC5: 4 VC)
-repr_bad.adb:26:57: error: equality on access types is not allowed in SPARK
+repr_bad.adb:26:57: error: equality on access types is not allowed in SPARK (SPARK RM 3.10(19))
 repr_bad.adb:26:57: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof

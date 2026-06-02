@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---              Copyright (C) 2013-2025, Capgemini Engineering              --
+--              Copyright (C) 2013-2026, Capgemini Engineering              --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -30,7 +30,6 @@ with Restrict;    use Restrict;
 with Rident;      use Rident;
 with Sem_Aggr;
 with Sem_Aux;     use Sem_Aux;
-with Sem_Prag;
 with Sem_Type;    use Sem_Type;
 with Sem_Warn;    use Sem_Warn;
 with Sinfo.Utils; use Sinfo.Utils;
@@ -215,8 +214,6 @@ package body Flow.Analysis is
             Instruction := Flow_Graphs.Continue;
          end if;
       end Are_We_There_Yet;
-
-      --  Start of processing for Dependency_Path
 
    begin
       for Input of Inputs loop
@@ -498,8 +495,6 @@ package body Flow.Analysis is
       --  This will narrow down the location of the searched for
       --  variable in the given node as far as possible.
 
-      --  Start of processing for First_Variable_Use
-
    begin
       if Targeted then
          case Nkind (N) is
@@ -581,15 +576,11 @@ package body Flow.Analysis is
                    and then
                      To_Entire_Variables (Vars).Contains (E_Var_Normal)));
 
-            --  Start of processing for Of_Interest
-
          begin
             return
               (Check_Read and then Var_Is_In (Atr.Variables_Used))
               or else (Check_Write and then Var_Is_In (Atr.Variables_Defined));
          end Of_Interest;
-
-         --  Start of processing for Proc
 
       begin
          if not Of_Interest then
@@ -648,8 +639,6 @@ package body Flow.Analysis is
               Var     => Var,
               Precise => Precise);
       end Proc;
-
-      --  Start of processing for First_Variable_Use
 
    begin
       FA.CFG.BFS
@@ -837,8 +826,6 @@ package body Flow.Analysis is
 
       function Is_Or_Belongs_To_Concurrent_Object (F : Flow_Id) return Boolean
       is (Is_Concurrent_Type (Get_Direct_Mapping_Id (F)));
-
-      --  Start of processing for Find_Unwritten_Exports
 
    begin
       --  When checking against a user-written Global/Depends we get the
@@ -1444,8 +1431,6 @@ package body Flow.Analysis is
          end loop;
       end Warn_On_Ineffective_Imports;
 
-      --  Start of processing for Find_Ineffective_Imports_And_Unused_Objects
-
    begin
       --  If this subprogram has only exceptional paths, then we already have a
       --  high check for this. We don't issue any other messages as they
@@ -1684,8 +1669,6 @@ package body Flow.Analysis is
             end if;
          end Visitor;
 
-         --  Start of processing for Find_Masking_Code
-
       begin
          FA.CFG.DFS
            (Start         => Ineffective_Statement,
@@ -1825,8 +1808,6 @@ package body Flow.Analysis is
 
          return False;
       end Other_Field_Is_Effective;
-
-      --  Start of processing for Find_Ineffective_Statements
 
    begin
       if FA.Kind = Kind_Subprogram and then not Has_Effects (FA) then
@@ -2329,8 +2310,6 @@ package body Flow.Analysis is
                end if;
             end Add_Loc;
 
-            --  Start of processing for Mark_Definition_Free_Path
-
          begin
             FA.CFG.Shortest_Path
               (Start         => Start,
@@ -2345,8 +2324,6 @@ package body Flow.Analysis is
 
             return (if Path_Found then Path else Vertex_Sets.Empty_Set);
          end Mark_Definition_Free_Path;
-
-         --  Start of processing for Emit_Check_Message
 
       begin
          if not Is_Final_Use then
@@ -2697,8 +2674,6 @@ package body Flow.Analysis is
             end if;
          end Compress_Checks;
 
-         --  Start of processing for Emit_Check_Messages
-
       begin
          for P in Kind_Checks.Iterate loop
             declare
@@ -2831,8 +2806,6 @@ package body Flow.Analysis is
                TV := Flow_Graphs.Continue;
             end if;
          end Vertex_Has_Infinite_Execution;
-
-         --  Start of processing for Has_Only_Infinite_Execution
 
       begin
          FA.CFG.DFS
@@ -3235,8 +3208,6 @@ package body Flow.Analysis is
       --  The Global/Local containers are needed, because messages on global
       --  and local objects are located differently.
 
-      --  Start of processing for Find_Use_Of_Uninitialized_Variables
-
    begin
       --  If this subprogram has only exceptional paths, then we already have a
       --  high check for this. We don't issue any other messages as they
@@ -3453,8 +3424,6 @@ package body Flow.Analysis is
             Severity => Warning_Kind);
       end Error_Msg;
 
-      --  Start of processing for Find_Stable_Conditions
-
    begin
       for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
@@ -3609,8 +3578,6 @@ package body Flow.Analysis is
 
       Raw_Globals        : Raw_Global_Nodes;
       Only_Global_Inputs : Node_Sets.Set;
-
-      --  Start of processing for Find_Input_Only_Used_In_Assertions
 
    begin
       if FA.Kind in Kind_Subprogram | Kind_Task
@@ -3807,8 +3774,6 @@ package body Flow.Analysis is
       function Trivially_Initialized (E : Entity_Id) return Boolean
       is (Has_Volatile (E)
           and then Has_Volatile_Property (E, Pragma_Async_Writers));
-
-      --  Start of processing for Find_Impossible_To_Initialize_State
 
    begin
       if Has_Non_Null_Abstract_State (FA.Spec_Entity) then
@@ -4120,8 +4085,6 @@ package body Flow.Analysis is
         (if Present (FA.Refined_Depends_N)
          then FA.Refined_Depends_N
          else FA.Depends_N);
-
-      --  Start of processing for Check_Depends_Contract
 
    begin
       --  If the user has not specified a dependency relation we have no work
@@ -4719,8 +4682,6 @@ package body Flow.Analysis is
             end if;
          end Is_Private_State;
 
-         --  Start of processing for Examine_Own_Variable
-
       begin
          --  Variable is exposed in the visible part of the package spec
 
@@ -4811,8 +4772,6 @@ package body Flow.Analysis is
 
       Pkg_Spec : constant Node_Id := Package_Specification (FA.Spec_Entity);
       Pkg_Body : constant Node_Id := Package_Body (FA.Spec_Entity);
-
-      --  Start of processing for Check_Hidden_State
 
    begin
       --  Examine all state declared in the current package, i.e. its abstract
@@ -4914,8 +4873,6 @@ package body Flow.Analysis is
       begin
          return Dependency (FA, LHS_Final);
       end Find_RHS;
-
-      --  Start of processing for Check_Initializes_Contract
 
    begin
       --  For library-level packages check if everything in the RHS of an
@@ -5224,8 +5181,6 @@ package body Flow.Analysis is
             Severity => Medium_Check_Kind);
       end Error_Msg;
 
-      --  Start of processing for Check_Refined_State_Contract
-
    begin
       if Has_Non_Null_Abstract_State (FA.Spec_Entity) then
 
@@ -5316,8 +5271,6 @@ package body Flow.Analysis is
 
       Protected_Type : Entity_Id;
       --  For detecting external calls to the same object
-
-      --  Start of processing for Check_Potentially_Blocking
 
    begin
       if Is_Protected_Operation (Protected_Subp) then
@@ -5607,8 +5560,6 @@ package body Flow.Analysis is
          end if;
       end Is_Inlined_Subprogram_Call;
 
-      --  Start of processing for Check_Aliasing
-
    begin
       for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
@@ -5720,8 +5671,6 @@ package body Flow.Analysis is
 
          Globals : Global_Flow_Ids;
 
-         --  Start of processing for Check_Subprogram
-
       begin
          Get_Globals
            (Subprogram => E,
@@ -5736,8 +5685,6 @@ package body Flow.Analysis is
          Emit_Check (Globals.Inputs);
          Emit_Check (Globals.Proof_Ins);
       end Check_Subprogram;
-
-      --  Start of processing for Check_Constant_After_Elaboration
 
    begin
       --  Check calls of a package elaboration
@@ -5764,9 +5711,8 @@ package body Flow.Analysis is
    procedure Check_Function_For_Volatile_Effects
      (FA : in out Flow_Analysis_Graphs)
    is
-      Volatile_Effect_Found    : Boolean := False;
-      Volatile_Effect_Allowed  : Boolean;
-      Volatile_Effect_Expected : Boolean;
+      Volatile_Effect_Found   : Boolean := False;
+      Volatile_Effect_Allowed : Boolean;
 
       procedure Report_Erroneous_Volatility;
       --  Emits a high check for every volatile variable found in a
@@ -5849,8 +5795,6 @@ package body Flow.Analysis is
 
       end Report_Erroneous_Volatility;
 
-      --  Start of processing for Check_Function_For_Volatile_Effects
-
    begin
       if Ekind (FA.Spec_Entity) /= E_Function then
 
@@ -5864,10 +5808,6 @@ package body Flow.Analysis is
         (if Is_Protected_Type (Scope (FA.Spec_Entity))
          then Is_Volatile_For_Internal_Calls (FA.Spec_Entity)
          else Is_Volatile_Function (FA.Spec_Entity));
-
-      Volatile_Effect_Expected :=
-        Sem_Prag.Is_Enabled_Pragma
-          (Get_Pragma (FA.Spec_Entity, Pragma_Volatile_Function));
 
       declare
          Globals : Global_Flow_Ids;
@@ -5905,18 +5845,6 @@ package body Flow.Analysis is
       --  Emit messages about nonvolatile functions with volatile effects
       if not Volatile_Effect_Allowed and then Volatile_Effect_Found then
          Report_Erroneous_Volatility;
-      end if;
-
-      --  Emit messages about volatile function without volatile effects
-
-      if Volatile_Effect_Expected and then not Volatile_Effect_Found then
-         Error_Msg_Flow
-           (FA       => FA,
-            Msg      => "volatile function & has no volatile effects",
-            Severity => Warning_Kind,
-            N        => FA.Spec_Entity,
-            F1       => Direct_Mapping_Id (FA.Spec_Entity),
-            Tag      => Volatile_Function_Without_Volatile_Effects);
       end if;
    end Check_Function_For_Volatile_Effects;
 
@@ -6029,8 +5957,6 @@ package body Flow.Analysis is
 
          Owned_Objects : Name_To_Name_Lists.Map renames
            Object_Owners (Owning_Kind);
-
-         --  Start of processing for Check_Ownership
 
       begin
          for C in Owned_Objects.Iterate loop
@@ -6334,8 +6260,6 @@ package body Flow.Analysis is
             SRM_Ref       => SRM_Ref,
             Continuations => Conts);
       end Report_Violations;
-
-      --  Start of processing for Check_Concurrent_Accesses
 
    begin
       --  Invert mapping read from the ALI files:

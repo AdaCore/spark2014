@@ -55,12 +55,12 @@ test_higher_order.ads:65:42: warning: unused variable "X"
 test_higher_order.ads:77:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 test_higher_order.ads:79:13: info: implicit aspect Always_Terminates on "In_Range" has been proved, subprogram will terminate
 test_higher_order.ads:81:10: info: predicate check proved (Trivial: 1 VC)
-test_higher_order.ads:83:04: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
+test_higher_order.ads:83:04: warning: "No_Overflows" is recursive; its body might not be available on recursive calls from contracts and assertions [contracts-recursive]
 test_higher_order.ads:83:04: warning: in instantiation at spark-higher_order-fold.ads:404
 test_higher_order.ads:94:14: warning: subprogram "Test1" has no effect
 test_higher_order.ads:96:13: info: implicit aspect Always_Terminates on "Is_Pos" has been proved, subprogram will terminate
 test_higher_order.ads:104:14: warning: subprogram "Test2" has no effect
-test_higher_order.ads:106:04: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
+test_higher_order.ads:106:04: warning: "No_Overflows" is recursive; its body might not be available on recursive calls from contracts and assertions [contracts-recursive]
 test_higher_order.ads:106:04: warning: in instantiation at spark-higher_order-fold.ads:760
 test_higher_order.ads:118:14: warning: subprogram "Test3" has no effect
 test_higher_order.ads:127:14: warning: subprogram "Test4" has no effect

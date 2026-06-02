@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2020-2025, AdaCore                     --
+--                     Copyright (C) 2020-2026, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -1340,8 +1340,6 @@ package body Gnat2Why.Subprograms.Pointers is
          --  If we stop here, it means that Subp has some global state,
          --  which is not supported in SPARK.
       end Check_No_Globals;
-
-      --  Start of processing for Transform_Access_Attribute_Of_Subprogram
 
    begin
       --  Handlers cannot be called. Use the dummy value of the profile.

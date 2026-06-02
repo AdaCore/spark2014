@@ -8,5 +8,5 @@ sum_test.ads:19:14: info: implicit aspect Always_Terminates on "Prefix_Sums_To_B
 sum_test.ads:20:14: info: implicit aspect Always_Terminates on "Prefix_Sums_In_Range" has been proved, subprogram will terminate
 sum_test.ads:20:72: info: predicate check proved (Trivial: 1 VC)
 sum_test.ads:20:76: info: predicate check proved (Trivial: 1 VC)
-sum_test.ads:21:05: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
+sum_test.ads:21:05: warning: "No_Overflows" is recursive; its body might not be available on recursive calls from contracts and assertions [contracts-recursive]
 sum_test.ads:21:05: warning: in instantiation at spark-higher_order-fold.ads:404

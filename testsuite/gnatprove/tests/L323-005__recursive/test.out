@@ -1,5 +1,5 @@
 p.adb:6:23: info: assertion proved (CVC5: 1 VC)
-p.ads:2:14: warning: function contract might not be available on recursive calls [contracts-recursive]
+p.ads:2:14: warning: "Id" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 p.ads:3:15: info: postcondition proved (CVC5: 1 VC)
 p.ads:3:25: medium: implicit aspect Always_Terminates on "Id" could be incorrect, subprogram is recursive [possible fix: annotate "Id" with a Subprogram_Variant aspect]
 p.ads:3:53: info: range check proved (CVC5: 2 VC)
@@ -7,7 +7,7 @@ p.ads:3:56: info: overflow check proved (CVC5: 2 VC)
 p.ads:5:37: medium: implicit aspect Always_Terminates on "Bad" could be incorrect, subprogram is recursive [possible fix: annotate "Bad" with a Subprogram_Variant aspect]
 p.ads:7:15: warning: subprogram "Use_Bad" has no effect
 p.ads:7:36: info: postcondition proved (CVC5: 1 VC)
-p.ads:9:14: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+p.ads:9:14: warning: "Down" is recursive; its implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 p.ads:10:09: medium: implicit aspect Always_Terminates on "Down" could be incorrect, subprogram is recursive [possible fix: annotate "Down" with a Subprogram_Variant aspect]
 p.ads:10:38: info: range check proved (CVC5: 2 VC)
 p.ads:10:43: medium: overflow check might fail, cannot prove upper bound for Down (X - 1) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Down (X - 1) <= Integer'Last - 1) to subprogram at line 9] [provers reached step limit before completing the proof]

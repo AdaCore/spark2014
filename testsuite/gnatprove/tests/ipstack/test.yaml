@@ -1,3 +1,4 @@
 prove_all:
   mode: flow
-  opt: ["-aP", "projects", "-aP", "projects.native", "-P", "projects.native/ipstack_dev.gpr"]
+  project: "projects.native/ipstack_dev.gpr"
+  opt: ["-aP", "projects", "-aP", "projects.native"]

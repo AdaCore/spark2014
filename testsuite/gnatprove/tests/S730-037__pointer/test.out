@@ -1,5 +1,6 @@
-ptr.adb:11:29: error: borrow of a qualified expression is not allowed in SPARK
+ptr.adb:11:29: error: a qualified expression provides a constant view of an object
+ptr.adb:11:29: error: borrow of a constant object is not allowed in SPARK (SPARK RM 3.10(11))
 ptr.adb:11:29: error: violation of aspect SPARK_Mode at line 1
-ptr.adb:13:07: error: "Z" is not allowed in SPARK (due to borrow of a qualified expression)
+ptr.adb:13:07: error: "Z" is not allowed in SPARK (due to borrow of a constant object)
 ptr.adb:13:07: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during analysis of data and information flow

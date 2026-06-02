@@ -1,0 +1,54 @@
+Example of illegal code:
+
+```ada
+procedure P is
+   type Int_Ptr is access Integer;
+   X, Y : Int_Ptr;
+begin
+   X := new Integer'(10);
+   Y := X;
+   X.all := 11; -- error: pointer X has been moved
+end P;
+```
+
+This error is issued on reads or writes through pointer objects which have been
+_moved_. Such an access violates legality rules 8 and 9 of [section 3.10 of
+SPARK Reference Manual]. Here, the value of pointer variable `X` has been
+assigned to pointer variable `Y`, which results in `X` being moved (that is,
+the pointer value cannot be read anymore).
+
+This is one of the ownership rules regarding pointers of an
+access-to-variable type in SPARK, as described in section 3.10 of SPARK
+Reference Manual. These rules ensure that objects of an access-to-variable type
+are always distinct.
+
+The fix is to either access the memory through its owner (`Y` here):
+
+```ada
+procedure P is
+   type Int_Ptr is access Integer;
+   X, Y : Int_Ptr;
+begin
+   X := new Integer'(10);
+   Y := X;
+   Y.all := 11;
+end P;
+```
+
+or to reassign a value to the moved pointer before accessing it (for example
+assigning back `Y` to `X` here):
+
+```ada
+procedure P is
+   type Int_Ptr is access Integer;
+   X, Y : Int_Ptr;
+begin
+   X := new Integer'(10);
+   Y := X;
+   X := Y;
+   X.all := 11;
+end P;
+```
+
+[section 3.10 of SPARK Reference Manual]:
+https://docs.adacore.com/live/wave/spark2014/html/spark2014_rm/declarations-and-types.html#access-types

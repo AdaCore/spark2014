@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---              Copyright (C) 2013-2025, Capgemini Engineering              --
+--              Copyright (C) 2013-2026, Capgemini Engineering              --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -77,8 +77,6 @@ package body Flow.Control_Dependence_Graph is
       --  Local variables
 
       Reversed_CFG : Flow_Graphs.Graph;
-
-      --  Start of processing for Create
 
    begin
       --  Reverse CFG and add an edge from end -> start

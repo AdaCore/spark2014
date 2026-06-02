@@ -6,7 +6,7 @@
 --                                                                          --
 --                                  S p e c                                 --
 --                                                                          --
---                     Copyright (C) 2016-2025, AdaCore                     --
+--                     Copyright (C) 2016-2026, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -99,6 +99,15 @@ package SPARK_Util.Subprograms is
      (E : Entity_Id; With_Inlined : Boolean) return Boolean
    is (Analysis_Requested (E, With_Inlined) = Analyzed);
    --  Variant of Analysis_Requested that ignores the reason for no analysis
+
+   function Requires_Separate_Analysis (E : Entity_Id) return Boolean
+   with Pre => Is_Local_Subprogram_Always_Inlined (E);
+   --  Returns True if an entity should be analyzed separately even if it
+   --  is always inlined. Functions that fail to return normally - by raising
+   --  an exception, exiting the whole program, or looping forever - are in
+   --  this case as SPARK needs to ensure that functions cannot have side
+   --  effects - so we are sure that the evaluation order is irrelevant in
+   --  particular.
 
    function Call_Needs_Variant_Check
      (Call : Node_Id; Enclosing_Ent : Entity_Id) return Boolean
@@ -328,14 +337,11 @@ package SPARK_Util.Subprograms is
    --  Extract a condition checked for aspect Default_Initialization and
    --  Type_Invariant.
 
-   function Get_Expr_From_Return_Only_Func
+   function Get_Predicate_Expression
      (E : E_Function_Id) return Opt_N_Subexpr_Id
    with Pre => Is_Predicate_Function (E);
    --  @param E a predicate function
-   --  @return the expression in the first return statement found in the body
-   --     of E, if any, or Empty otherwise
-   --  Extract a condition checked by a function generated for aspect
-   --  [Dynamic_]Predicate.
+   --  @return the expression of the original [Static|Dynamic_]Predicate aspect
 
    function Get_Priority_Or_Interrupt_Priority
      (E : Entity_Id) return Opt_N_Subexpr_Id
@@ -747,8 +753,8 @@ package SPARK_Util.Subprograms is
    --  function E. This is the most partial view which inherits some ancestor
    --  subprogram of E.
 
-   function Completion_Deferred_To_Body
-     (E : Subprogram_Kind_Id) return Boolean;
+   function Completion_Deferred_To_Body (E : Subprogram_Kind_Id) return Boolean
+   with Pre => Is_Expression_Function_Or_Completion (E);
    --  Return True if E is declared in the spec of a package or protected type
    --  and its body is in the package or protected body. This is used for
    --  expression functions to decide whether their body should be handled as a

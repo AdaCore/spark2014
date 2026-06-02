@@ -1,0 +1,11 @@
+good.adb:1:33: info: data dependencies proved
+good.adb:3:04: warning: unused variable "X"
+good.adb:8:12: info: data dependencies proved
+good.adb:11:07: warning: assuming "Callee" always terminates
+good.adb:11:07: warning: assuming "Callee" has no effect on global items
+good.adb:11:07: warning: no Always_Terminates aspect available for "Callee" [assumed-always-terminates]
+good.adb:11:07: warning: no Global contract available for "Callee" [assumed-global-null]
+strange_flow.adb:1:41: info: data dependencies proved
+strange_flow.adb:10:29: warning: assuming "B" has no effect on global items
+strange_flow.adb:10:29: warning: no Global contract available for "B" [assumed-global-null]
+strange_flow.adb:12:09: info: pointer dereference check proved (CVC5: 1 VC)

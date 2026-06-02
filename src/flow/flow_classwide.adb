@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---              Copyright (C) 2014-2025, Capgemini Engineering              --
+--              Copyright (C) 2014-2026, Capgemini Engineering              --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -121,8 +121,6 @@ package body Flow_Classwide is
               when Mode_In_Out => "In_Out",
               when Mode_Out    => "Output");
       end Mode;
-
-      --  Start of processing for Check_Classwide_Global
 
    begin
       Get_Globals

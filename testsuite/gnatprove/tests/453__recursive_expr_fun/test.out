@@ -1,7 +1,6 @@
 p.adb:2:13: info: implicit aspect Always_Terminates on "Not_Statically_False" has been proved, subprogram will terminate
 p.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
-p.adb:4:13: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
-p.adb:4:13: warning: function contract might not be available on recursive calls [contracts-recursive]
+p.adb:4:13: warning: "F" is recursive; its body and contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 p.adb:7:41: info: subprogram variant proved (CVC5: 1 VC)
 p.adb:9:13: medium: subprogram variant might fail (e.g. when X = 0 and Y = 0 and Z = 0) [possible fix: subprogram at line 4 should mention X and Y and Z in a precondition] [provers gave up before completing the proof]
 p.adb:11:14: info: postcondition proved (CVC5: 1 VC)

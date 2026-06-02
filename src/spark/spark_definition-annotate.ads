@@ -6,8 +6,8 @@
 --                                                                          --
 --                                  S p e c                                 --
 --                                                                          --
---                     Copyright (C) 2011-2025, AdaCore                     --
---              Copyright (C) 2014-2025, Capgemini Engineering              --
+--                     Copyright (C) 2011-2026, AdaCore                     --
+--              Copyright (C) 2014-2026, Capgemini Engineering              --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -28,6 +28,7 @@ with Ada.Containers.Hashed_Maps;
 with Atree;       use Atree;
 with Einfo.Utils; use Einfo.Utils;
 with SPARK_Util;  use SPARK_Util;
+with VC_Kinds;    use VC_Kinds;
 
 package SPARK_Definition.Annotate is
 
@@ -336,6 +337,9 @@ package SPARK_Definition.Annotate is
    --  be considered to also apply to all "Next" declarations following
    --  "Preceding" which are not from source.
 
+   function In_Delayed_Annotation return Boolean;
+   --  Return True while performing delayed checks for pragma annotate
+
    procedure Do_Delayed_Checks_On_Pragma_Annotate;
    --  Some checks for Annotate pragmas or aspects might have been delayed
    --  because necessary entities were not marked yet. Finish the checking and
@@ -348,12 +352,13 @@ package SPARK_Definition.Annotate is
    --  necessary to pull other entities which are related. Call
    --  Queue_For_Marking on all such entities.
 
-   type Annotate_Kind is (Intentional, False_Positive);
+   subtype Check_Annotate_Kind is
+     GNATprove_Annotation_Kind range False_Positive .. Intentional;
 
    type Annotated_Range (Present : Boolean := False) is record
       case Present is
          when True =>
-            Kind    : Annotate_Kind; --  the kind of pragma Annotate
+            Kind    : Check_Annotate_Kind; --  the kind of pragma Annotate
             Pattern : String_Id;     --  the message pattern
             Reason  : String_Id;     --  the user-provided reason for hiding
             First   : Source_Ptr;    --  first source pointer
@@ -432,8 +437,10 @@ package SPARK_Definition.Annotate is
 
    procedure Set_Has_No_Bitwise_Operations_Annotation (E : Entity_Id);
    --  Register entity E has having the No_Bitwise_Operations annotation,
-   --  either directly or inherited through a parent type (for derived
-   --  types) or base type (for subtypes).
+   --  either directly or inherited through a parent type (for derived types)
+   --  or base type (for subtypes). Integer types with Unsigned_Base_Range
+   --  must also be registered. They are modular types internally but should be
+   --  treated almost as signed integers.
 
    function Has_No_Wrap_Around_Annotation (E : Entity_Id) return Boolean
    with Pre => Is_Type (E);
@@ -441,13 +448,10 @@ package SPARK_Definition.Annotate is
 
    procedure Set_Has_No_Wrap_Around_Annotation (E : Entity_Id);
    --  Register entity E has having the No_Wrap_Around annotation, either
-   --  directly or inherited through a parent type.
-
-   function To_String (Kind : Annotate_Kind) return String
-   is (case Kind is
-         when False_Positive => "false positive",
-         when Intentional    => "intentional");
-   --  Return the string representation of the supplied annotation
+   --  directly or inherited through a parent type (for derived types) or base
+   --  type (for subtypes). Integer types with Unsigned_Base_Range
+   --  must not be registered. Despite the similitude with No_Wrap_Around,
+   --  they are affected by overflow mode, which force distinct handling.
 
    function Has_At_End_Borrow_Annotation (E : Entity_Id) return Boolean;
    --  Return True if the function E is a function annotated with at_end_borrow

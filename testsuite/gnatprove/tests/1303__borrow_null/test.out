@@ -1,0 +1,14 @@
+test.adb:3:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
+test.adb:4:08: info: dynamic accessibility check proved (Trivial)
+test.adb:7:13: info: implicit aspect Always_Terminates on "Stupid" has been proved, subprogram will terminate
+test.adb:7:21: warning: unused variable "X"
+test.adb:11:13: info: implicit aspect Always_Terminates on "Stupid_2" has been proved, subprogram will terminate
+test.adb:12:14: info: postcondition proved (CVC5: 4 VC; Trivial: 1 VC)
+test.adb:14:40: info: pointer dereference check proved (CVC5: 1 VC)
+test.adb:14:48: info: pointer dereference check proved (CVC5: 1 VC)
+test.adb:21:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test.adb:26:22: info: assertion proved (CVC5: 1 VC)
+test.adb:27:22: info: assertion proved (CVC5: 1 VC)
+test.adb:28:22: info: assertion proved (CVC5: 1 VC)
+test.adb:30:19: info: assertion proved (CVC5: 1 VC)
+test.adb:30:21: info: pointer dereference check proved (CVC5: 1 VC)

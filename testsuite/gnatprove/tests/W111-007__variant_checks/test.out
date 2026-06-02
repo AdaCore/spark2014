@@ -1,5 +1,5 @@
 test.adb:10:13: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
-test.adb:10:13: warning: function contract might not be available on recursive calls [contracts-recursive]
+test.adb:10:13: warning: "Length" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 test.adb:11:06: warning: postcondition does not mention function result [-gnatw.t]
 test.adb:11:38: info: pointer dereference check proved (CVC5: 1 VC)
 test.adb:12:20: medium: postcondition might fail, cannot prove Length (L) >  Length (L.all.Next) [provers reached step limit before completing the proof]
@@ -7,8 +7,10 @@ test.adb:12:20: medium: subprogram variant might fail [possible explanation: str
 test.adb:13:19: info: subprogram variant proved (Trivial)
 test.adb:13:29: info: pointer dereference check proved (CVC5: 1 VC)
 test.adb:16:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
-test.adb:16:13: warning: function contract might not be available on recursive calls [contracts-recursive]
+test.adb:16:13: warning: "F" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 test.adb:18:14: info: postcondition proved (CVC5: 1 VC)
+test.adb:20:14: warning: "P" is recursive; (implicit) contract of mutally recursive functions might not be available on calls from contracts and assertions [contracts-recursive]
+test.adb:20:14: warning: potentially missing contract for "F" declared at line 16
 test.adb:21:14: medium: postcondition might fail [provers reached step limit before completing the proof]
 test.adb:21:14: medium: subprogram variant might fail [possible explanation: structural variant of "F" might not be a strict subcomponent of "L"]
 test.adb:25:09: info: absence of resource or memory leak proved (CVC5: 1 VC)

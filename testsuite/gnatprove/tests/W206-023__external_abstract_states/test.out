@@ -1,3 +1,4 @@
-ext.ads:3:13: error: function "Read_G" with volatile input global "G" with effective reads is not allowed in SPARK
+ext.ads:3:13: error: function "Read_G" with volatile input global "G" with effective reads is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]
+ext.ads:3:13: error: launch "gnatprove --explain=E0005" for more information
 ext.ads:3:13: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof

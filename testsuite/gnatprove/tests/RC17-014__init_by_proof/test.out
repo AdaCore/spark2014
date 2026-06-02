@@ -132,14 +132,14 @@ nested_init_by_proof.adb:66:13: info: initialization check proved (CVC5: 1 VC)
 nested_init_by_proof.adb:66:25: info: initialization check proved (CVC5: 1 VC)
 nested_init_by_proof.adb:67:14: info: for mutable discriminants at nested_init_by_proof.adb:4
 nested_init_by_proof.adb:67:14: info: initialization check proved (CVC5: 1 VC)
-nested_init_by_proof.adb:68:19: info: assertion proved (Z3: 1 VC)
+nested_init_by_proof.adb:68:19: info: assertion proved (CVC5: 1 VC)
 nested_init_by_proof.adb:69:10: info: for mutable discriminants at nested_init_by_proof.adb:4
-nested_init_by_proof.adb:69:10: info: initialization check proved (Z3: 1 VC)
-nested_init_by_proof.adb:69:23: info: discriminant check proved (Z3: 1 VC)
-nested_init_by_proof.adb:69:23: info: initialization check proved (Z3: 1 VC)
+nested_init_by_proof.adb:69:10: info: initialization check proved (CVC5: 1 VC)
+nested_init_by_proof.adb:69:23: info: discriminant check proved (CVC5: 1 VC)
+nested_init_by_proof.adb:69:23: info: initialization check proved (CVC5: 1 VC)
 nested_init_by_proof.adb:70:10: info: for mutable discriminants at nested_init_by_proof.adb:4
-nested_init_by_proof.adb:70:10: info: initialization check proved (Z3: 1 VC)
-nested_init_by_proof.adb:70:23: info: discriminant check proved (Z3: 1 VC)
+nested_init_by_proof.adb:70:10: info: initialization check proved (CVC5: 1 VC)
+nested_init_by_proof.adb:70:23: info: discriminant check proved (CVC5: 1 VC)
 nested_init_by_proof.adb:70:23: medium: initialization check might fail [provers reached step limit before completing the proof]
 output_global.adb:7:22: info: data dependencies proved
 output_global.adb:7:43: low: unused global "G"

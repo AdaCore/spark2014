@@ -6,8 +6,8 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                     Copyright (C) 2010-2025, AdaCore                     --
---              Copyright (C) 2017-2025, Capgemini Engineering              --
+--                     Copyright (C) 2010-2026, AdaCore                     --
+--              Copyright (C) 2017-2026, Capgemini Engineering              --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -155,13 +155,17 @@ package Gnat2Why_Opts.Reading is
 
    Debug_Exec_RAC : Boolean;
 
+   --  Suppress the cache-use phrase currently emitted in flow proof messages
+
+   Debug_No_Cache_Output : Boolean;
+
    --  Prevent loop unrolling
 
    No_Loop_Unrolling : Boolean;
 
-   --  True if gnatwhy3 should be run in parallel
+   --  Maximum number of concurrent gnatwhy3 processes to spawn
 
-   Parallel_Why3 : Boolean;
+   Max_Why3_Processes : Positive;
 
    --  Indicates a json file:line in which to read CE values. Passing this
    --  command also enforces Limit_Subp_Name to the same argument.
@@ -172,14 +176,13 @@ package Gnat2Why_Opts.Reading is
    -- Loading option values --
    ---------------------------
 
-   procedure Load (Args_File : String; Source_File : String)
-   with Pre => Args_File /= "" and then Source_File /= "";
+   procedure Load (Args_File : String)
+   with Pre => Args_File /= "";
    --  Read the extra options information and set the corresponding global
    --  variables above.
    --  @param Args_File the filename to read the extra information from.
    --    Basically, you should pass Opt.SPARK_Switches_File_Name.all here. We
    --    want to avoid the dependency on Opt here, so you need to pass it
    --    yourself.
-   --  @param Source_File key for the map with file-specific options
 
 end Gnat2Why_Opts.Reading;

@@ -18,6 +18,10 @@ termination_explanations_and_fixes.ads:11:14: info: aspect Always_Terminates on 
 termination_explanations_and_fixes.ads:18:14: warning: subprogram "Use_Acc_To_P" has no effect
 termination_explanations_and_fixes.ads:26:13: info: implicit aspect Always_Terminates on "Dispatching_F" has been proved, subprogram will terminate
 termination_explanations_and_fixes.ads:27:29: info: initialization of "X" proved
-termination_explanations_and_fixes.ads:40:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
-termination_explanations_and_fixes.ads:43:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
-termination_explanations_and_fixes.ads:44:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+termination_explanations_and_fixes.ads:40:13: warning: "F_Rec" is recursive; its implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
+termination_explanations_and_fixes.ads:43:13: warning: "A" is recursive; (implicit) contract of mutally recursive functions might not be available on calls from contracts and assertions [contracts-recursive]
+termination_explanations_and_fixes.ads:43:13: warning: its implicit contract might be missing
+termination_explanations_and_fixes.ads:43:13: warning: potentially missing implicit contract for "B" declared at line 44
+termination_explanations_and_fixes.ads:44:13: warning: "B" is recursive; (implicit) contract of mutally recursive functions might not be available on calls from contracts and assertions [contracts-recursive]
+termination_explanations_and_fixes.ads:44:13: warning: its implicit contract might be missing
+termination_explanations_and_fixes.ads:44:13: warning: potentially missing implicit contract for "A" declared at line 43

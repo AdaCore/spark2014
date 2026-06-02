@@ -2,6 +2,14 @@
 Legality Checking
 #################
 
+..
+   devguide-meta:
+   covers: legality rules, GNATprove mode in the frontend, and marking in
+   gnat2why
+   primary_code: gnat2why/, src/spark/
+   when_to_read: changes to legality checks, SPARK mode handling, marking, or
+   --mode=check and --mode=check_all behavior
+
 Legality checking is concerned with the sections labelled `Legality Rules` in
 the SPARK Reference Manual. It is mostly implemented in the frontend and in the
 so-called marking phase of ``gnat2why``.

@@ -16,6 +16,12 @@ GNATprove Developer's Guide
    A copy of the license is included in the section entitled 'GNU
    Free Documentation License'.
 
+..
+   devguide-meta:
+   covers: develguide table of contents and page routing
+   primary_code: docs/develguide/
+   when_to_read: locating the right developer guide page or adding a new one
+
 Contents:
 
 .. toctree::

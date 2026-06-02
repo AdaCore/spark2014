@@ -1620,14 +1620,11 @@ Program_Exit aspects are ignored for execution.
    declaration of a subprogram with side effects (which may be a declaration, a
    body or a body stub).
 
-3. If the Program_Exit aspect is specified for a subprogram, that subprogram
-   shall not be ghost.
-
 .. container:: heading
 
    Verification Rules
 
-4. A verification condition is introduced on calls to subprograms annotated with
+3. A verification condition is introduced on calls to subprograms annotated with
    the Program_Exit aspect. For calls occuring directly inside subprograms also
    annotated with the Program_Exit aspect, it ensures that the boolean
    expression of the Program_Exit aspect of the caller evaluates to True if the
@@ -1697,32 +1694,27 @@ Exit_Cases aspects are ignored for execution.
 3. All exceptions mentioned in the Exit_Cases aspect of a subprogram shall be
    allowed by the Exceptional_Cases contract of the subprogram, if any.
 
-4. If the Exit_Cases aspect has at least one exit case associated with
-   Program_Exit, then the subprogram shall not be ghost. The Program_Exit
-   contract for the subprogram, if any, shall not have a postcondition
-   which is known to be False at compile time.
-
 .. container:: heading
 
    Verification Rules
 
-5. If a subprogram is annotated with Exit_Cases and there are at least two
+4. If a subprogram is annotated with Exit_Cases and there are at least two
    exit cases whose guards are not the **others** choice, then a verification
    condition is introduced to make sure that all the non-**others** guards are
    disjoint in the context of the precondition.
 
-6. If a subprogram annotated with Exit_Cases returns normally, then a
+5. If a subprogram annotated with Exit_Cases returns normally, then a
    verification condition is introduced to make sure that the exit kind of the
    exit case whose guard evaluates to True is Normal_Return, if there is one.
 
-7. If an exception raised in a subprogram annotated with Exit_Cases is not
+6. If an exception raised in a subprogram annotated with Exit_Cases is not
    handled and causes the subprogram body to complete, then a verification
    condition is introduced to make sure that the exit kind of the exit case
    whose guard evaluates to True, if there is one, is either Exception_Raised or
    (Exception_Raised => E), where E is resolved to the exception that is
    propagated.
 
-8. If a subprogram annotated with Exit_Cases exits the whole program, then a
+7. If a subprogram annotated with Exit_Cases exits the whole program, then a
    verification condition is introduced to make sure that the exit kind of the
    exit case whose guard evaluates to True is Program_Exit, if there is one.
 
@@ -2386,6 +2378,9 @@ body (see Ada RM 7.2(4))].
     which specifies an aspect of an entity that is either non-ghost or not
     assertion-level-dependent on E except in the following cases:
 
+    * the aspect specification applies to a ghost entity which is
+      assertion-level-dependent on E;
+
     * the reference occurs within an assertion expression that is
       assertion-level-dependent on E and is not a predicate expression,
       unless the predicate is introduced by aspect Ghost_Predicate; or
@@ -2611,7 +2606,8 @@ The prefix of an Initialized attribute reference shall denote an object.
 
    * the Relaxed_Initialization aspect of its type is True; or
 
-   * it is a subcomponent of an object that has relaxed initialization; or
+   * it is a subcomponent of an object that has relaxed initialization that
+     is not an immutable discriminant; or
 
    * it is the return object of a function call and the Relaxed_Initialization
      aspect of the function's result is True; or

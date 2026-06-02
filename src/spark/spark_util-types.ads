@@ -6,7 +6,7 @@
 --                                                                          --
 --                                  S p e c                                 --
 --                                                                          --
---                     Copyright (C) 2016-2025, AdaCore                     --
+--                     Copyright (C) 2016-2026, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -80,9 +80,6 @@ package SPARK_Util.Types is
    function Has_Integer_Type (T : Type_Kind_Id) return Boolean
    is (Retysp_Kind (T) in Integer_Kind);
 
-   function Has_Modular_Integer_Type (T : Type_Kind_Id) return Boolean
-   is (Retysp_Kind (T) in Modular_Integer_Kind);
-
    function Has_Record_Type (T : Type_Kind_Id) return Boolean
    is (Retysp_Kind (T) in Record_Kind);
 
@@ -91,9 +88,6 @@ package SPARK_Util.Types is
 
    function Has_Scalar_Type (T : Type_Kind_Id) return Boolean
    is (Retysp_Kind (T) in Scalar_Kind);
-
-   function Has_Signed_Integer_Type (T : Type_Kind_Id) return Boolean
-   is (Retysp_Kind (T) in Signed_Integer_Kind);
 
    function Has_Fixed_Point_Type (T : Type_Kind_Id) return Boolean
    is (Retysp_Kind (T) in Fixed_Point_Kind);
@@ -338,6 +332,9 @@ package SPARK_Util.Types is
    --  Go over the items linked from Rep_Item to search for a predicate
    --  pragma or aspect applying to Ty.
 
+   function Find_Aggregate_Aspect (Typ : Type_Kind_Id) return Node_Id;
+   --  Find the Aggregate aspect associated to Typ
+
    function Get_View_For_Predicate (Ty : Type_Kind_Id) return Entity_Id
    with Pre => Has_Predicates (Ty) and then not Is_Full_View (Ty);
    --  Return the view of Ty on which its predicate is defined
@@ -404,9 +401,9 @@ package SPARK_Util.Types is
    function Obj_Has_Only_Valid_Values (Obj : Entity_Id) return Boolean;
    --  Wrapper on Type_Has_Only_Valid_Values for objects
 
-   function Fun_Has_Only_Valid_Values (Fun : Entity_Id) return Boolean;
+   function Fun_Has_Only_Valid_Values (Ret_Ty : Type_Kind_Id) return Boolean;
    --  Wrapper on Type_Has_Only_Valid_Values for the return type of functions.
-   --  It uses the Size of the return type.
+   --  It uses the Size of the return type Ret_Ty.
 
    function Comp_Has_Only_Valid_Values
      (Comp : E_Component_Id; Rec : Type_Kind_Id) return True_Or_Explain;
@@ -508,12 +505,12 @@ package SPARK_Util.Types is
    --  Traverse all predicates associated to the type Ty
 
    function Predefined_Eq_Uses_Pointer_Eq
-     (Ty : Type_Kind_Id; Exp : out Unbounded_String) return Boolean
+     (Ty : Type_Kind_Id; Exp : out Opt_Type_Kind_Id) return Boolean
    with Pre => not Is_Concurrent_Type (Retysp (Ty));
    --  Retur True if the predefined equality of Ty uses the predefined equality
    --  on access types or on types on which the predefined equality is either
    --  completely disallowed or only allowed on null values. In this case, set
-   --  Exp to an explanation of the detected construct.
+   --  Exp to the type of the offending component.
 
    function Predicate_Requires_Initialization
      (Ty : Type_Kind_Id) return Boolean

@@ -1,31 +1,46 @@
 """
-This module contains support functions for all test.py
+This module contains support functions for the gnatprove testsuite
+
+The functions in this module are expected to be imported either directly from
+test.py scripts launched as standalone Python processes or from a dedicated
+test driver which calls the functions in a Python instance that is shared
+between multiple tests.
+
+All printing to `stdout` must be done via calls to the `log` function defined
+in this module. This function and all the top-level functions take an optional
+parameter `logger` of type `e3.testsuite.result.Log`. This parameter must be
+passed down through any calls that may require printing. Consequently, the
+logging calls look like `log(logger, "some text")`.
+
+The value of `logger` can be None in a call to the top-level function. The
+effect is that all the messages and captured process outputs go to `stdout`.
+
+Printing to `stderr` is not expected, but can be added in a similar fashion.
 """
 
-import glob
 import json
 import os
 import re
+import subprocess
 import sys
+
+from e3.os.process import Run
+from e3.testsuite.result import Log
 from fnmatch import fnmatch
 from time import sleep
 from pathlib import Path
 from shutil import copy, copytree, move, rmtree, which
-import subprocess
 import tempfile
 from test_util import sort_key_for_errors
-
 
 max_steps = 200
 default_vc_timeout = 120
 parallel_procs = 1
 default_project = "test.gpr"
 default_provers = ["cvc5", "altergo", "z3", "colibri"]
-provers_output_regex = re.compile(
-    r"\((Trivial|Interval|CVC4|CVC5|Z3|altergo|colibri).*\)"
-)
-sparklib_regex = re.compile(r"spark-.*\.ad[bs]:(\d*):\d*: info: .*")
 default_ada = 2022
+sparklib_project_path_env = "SPARKLIB_PROJECT_PATH"
+sparklib_bodymode_path_env = "SPARKLIB_BODYMODE_PROJECT_PATH"
 
 #  Change directory
 
@@ -56,10 +71,350 @@ is_msg = re.compile(
 is_mark = re.compile(r"@(\w*):(\w*)")
 
 
-def Run(command):
-    result = subprocess.run(
-        command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True
+# OutputRefiner Classes
+# Classes for processing and refining lists of output strings
+#
+# Refiners can be validators (check output but don't modify) or transformers.
+# Default refiners include: CheckMarks, CheckFail, CheckSarif, SparkLibFilter, Sort
+#
+# Usage Examples:
+#   # Use default refiners (validate + filter SPARKlib + sort):
+#   gnatprove(opt=["-P", "test.gpr"])
+#
+#   # Disable all refiners (no validation, filtering, or sorting):
+#   gnatprove(opt=["-P", "test.gpr"], refiners=[])
+#
+#   # Keep defaults but disable sorting:
+#   gnatprove(opt=["-P", "test.gpr"],
+#             refiners=without_refiner(default_refiners(), SortRefiner))
+#
+#   # Keep defaults but disable mark checking:
+#   gnatprove(opt=["-P", "test.gpr"],
+#             refiners=without_refiner(default_refiners(), CheckMarksRefiner))
+#
+#   # Custom refiners (validate, filter by regex, then sort):
+#   gnatprove(opt=["-P", "test.gpr"],
+#             refiners=[CheckMarksRefiner(),
+#                       RegexFilterRefiner("warning.*"),
+#                       SortRefiner()])
+class OutputRefiner:
+    """Base class for output refiners that transform lists of strings.
+
+    Refiners can either:
+    1. Transform output (return modified list)
+    2. Validate output (return original list, but may log errors/warnings)
+    """
+
+    def refine(self, lines: list[str]) -> list[str]:
+        """Process a list of strings and return a list (potentially modified).
+
+        Args:
+            lines: List of strings to process
+
+        Returns:
+            Transformed or original list of strings
+        """
+        raise NotImplementedError("Subclasses must implement refine()")
+
+    def set_context(self, cwd=None, logger=None, **kwargs):
+        """Set context information needed by the refiner.
+
+        Args:
+            cwd: Working directory for file operations
+            logger: Logger for output
+            **kwargs: Additional context parameters specific to refiners
+        """
+        self.cwd = cwd
+        self.logger = logger
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+
+class SortRefiner(OutputRefiner):
+    """Sorts output lines by error sorting key."""
+
+    def refine(self, lines: list[str]) -> list[str]:
+        sorted_lines = lines.copy()
+        sorted_lines.sort(key=sort_key_for_errors)
+        return sorted_lines
+
+
+class SparkLibFilterRefiner(OutputRefiner):
+    """Filters out SPARKlib-related output lines."""
+
+    sparklib_regex = re.compile(r"spark-.*\.ad[bs]:(\d*):\d*: info: .*")
+
+    def refine(self, lines: list[str]) -> list[str]:
+        return [line for line in lines if self.sparklib_regex.match(line) is None]
+
+
+class RegexFilterRefiner(OutputRefiner):
+    """Filters lines based on a regex pattern."""
+
+    def __init__(self, pattern: str, invert: bool = True):
+        """Initialize regex filter.
+
+        Args:
+            pattern: Regular expression pattern to match
+            invert: If True, keep lines that DON'T match (default behavior)
+        """
+        self.pattern = pattern
+        self.invert = invert
+
+    def refine(self, lines: list[str]) -> list[str]:
+        return grep(self.pattern, lines, invert=self.invert)
+
+
+class CheckMarksRefiner(OutputRefiner):
+    """Validates that marks in source code have matching results.
+
+    This refiner doesn't modify output but performs validation checks.
+    """
+
+    def refine(self, lines: list[str]) -> list[str]:
+        check_marks(lines, cwd=self.cwd, logger=self.logger)
+        return lines
+
+
+class CheckFailRefiner(OutputRefiner):
+    """Validates that no unproved checks are in the output.
+
+    This refiner doesn't modify output but performs validation checks.
+    Always checks for failures - include it in refiners list only when needed.
+    """
+
+    def refine(self, lines: list[str]) -> list[str]:
+        check_fail(lines, no_failures_allowed=True, logger=self.logger)
+        return lines
+
+
+class CheckSarifRefiner(OutputRefiner):
+    """Validates SARIF output against tool output.
+
+    It is checked that each SARIF message is included in the tool output.
+
+    This refiner doesn't modify output but performs validation checks.
+    Always checks SARIF - include it in refiners list only when needed.
+    """
+
+    def __init__(self, report: str | None = None):
+        """Initialize SARIF checker.
+
+        Args:
+            report: Report type (corresponds to gnatprove --report switch)
+        """
+        self.report = report
+
+    def refine(self, lines: list[str]) -> list[str]:
+        check_sarif(lines, self.report, cwd=self.cwd, logger=self.logger)
+        return lines
+
+
+class GeneratedContractsRefiner(OutputRefiner):
+    """Separates and sorts generated contract blocks and message lines.
+
+    Message lines (file:line:col:...) are sorted separately using sort_key_for_errors.
+    Generated contract blocks (starting with "Generated contracts for ...") are sorted
+    alphabetically by entity name while preserving line order within each block.
+    """
+
+    def refine(self, lines: list[str]) -> list[str]:
+        message_lines = []
+        contract_blocks = []
+        current_block = []
+        other_lines = []
+
+        for line in lines:
+            # Check if it's a message line (file:line:col:...)
+            if is_msg.match(line):
+                message_lines.append(line)
+            elif line.startswith("Generated contracts for "):
+                # Start a new contract block
+                if current_block:
+                    contract_blocks.append(current_block)
+                current_block = [line]
+            elif current_block:
+                # Add to current contract block
+                current_block.append(line)
+            else:
+                # Line doesn't fit any pattern and we're not in a block
+                other_lines.append(line)
+
+        # Don't forget the last block
+        if current_block:
+            contract_blocks.append(current_block)
+
+        # Sort message lines using the error sorting key
+        message_lines.sort(key=sort_key_for_errors)
+
+        # Sort contract blocks alphabetically by their first line (entity name)
+        contract_blocks.sort(key=lambda block: block[0] if block else "")
+
+        # Combine: contract blocks first, then message lines, then any other lines
+        result = []
+        for block in contract_blocks:
+            result.extend(block)
+        result.extend(message_lines)
+        result.extend(other_lines)
+
+        return result
+
+
+# Helper functions and constants for common refiner configurations
+
+
+def default_refiners(
+    no_fail: bool = False, do_sarif_check: bool = False, report: str | None = None
+) -> list[OutputRefiner]:
+    """Return the default list of output refiners.
+
+    Returns a fresh list containing the default refiners:
+    [CheckMarksRefiner(), (CheckFailRefiner if no_fail), (CheckSarifRefiner if enabled),
+     SparkLibFilterRefiner(), SortRefiner()]
+
+    Args:
+        no_fail: Whether to include CheckFailRefiner
+        do_sarif_check: Whether to include CheckSarifRefiner
+        report: Report type for SARIF checking
+
+    Users can modify this list to customize behavior while keeping some defaults.
+    """
+    refiners = [CheckMarksRefiner()]
+
+    if no_fail:
+        refiners.append(CheckFailRefiner())
+
+    if do_sarif_check:
+        refiners.append(CheckSarifRefiner(report))
+
+    refiners.extend([SparkLibFilterRefiner(), SortRefiner()])
+
+    return refiners
+
+
+def without_refiner(
+    refiners: list[OutputRefiner], refiner_type: type
+) -> list[OutputRefiner]:
+    """Remove all refiners of a specific type from a list.
+
+    Args:
+        refiners: List of refiners to filter
+        refiner_type: The class type to remove (e.g., SortRefiner)
+
+    Returns:
+        New list with refiners of the specified type removed
+
+    Example:
+        # Get defaults but without sorting:
+        refiners = without_refiner(default_refiners(), SortRefiner)
+    """
+    return [r for r in refiners if not isinstance(r, refiner_type)]
+
+
+def default_refiners_no_sort(
+    no_fail: bool = False, do_sarif_check: bool = False, report: str | None = None
+) -> list[OutputRefiner]:
+    """Return the default list of output refiners without sorting."""
+    refiners = default_refiners(no_fail, do_sarif_check, report)
+    return without_refiner(refiners, SortRefiner)
+
+
+def build_refiners_from_flags(
+    no_fail: bool = False,
+    filter_sparklib: bool = True,
+    sort_output: bool = True,
+    filter_output: str | None = None,
+    do_sarif_check: bool = False,
+    report: str | None = None,
+) -> list[OutputRefiner]:
+    """Build a list of refiners from boolean flags (for YAML compatibility).
+
+    This helper is used by prove_all/do_flow to convert their boolean parameters
+    into refiners for the gnatprove function.
+
+    Args:
+        no_fail: Whether to include CheckFailRefiner
+        filter_sparklib: Whether to filter SPARKlib lines
+        sort_output: Whether to sort output
+        filter_output: Optional regex pattern to filter output
+        do_sarif_check: Whether to include CheckSarifRefiner
+        report: Report type for SARIF checking
+
+    Returns:
+        List of configured OutputRefiner instances
+    """
+    refiners = []
+
+    # Validators - always include marks, conditionally include fail and SARIF
+    refiners.append(CheckMarksRefiner())
+
+    if no_fail:
+        refiners.append(CheckFailRefiner())
+
+    if do_sarif_check:
+        refiners.append(CheckSarifRefiner(report))
+
+    if filter_sparklib:
+        refiners.append(SparkLibFilterRefiner())
+    if filter_output is not None:
+        refiners.append(RegexFilterRefiner(filter_output))
+
+    if sort_output:
+        refiners.append(SortRefiner())
+
+    return refiners
+
+
+def _base_path(cwd):
+    return Path(cwd) if cwd else Path(".")
+
+
+def _resolve_path(filename, cwd):
+    p = Path(filename)
+    if p.is_absolute():
+        return p
+    base = _base_path(cwd)
+    return base / filename
+
+
+def run_command(command, cwd=None, timeout=None):
+    """
+    Executes a command in a subprocess with a timeout.
+
+    The process is executed via e3.process.Run which has platform-specific
+    logic to reliably kill a process tree upon timeout. Calling Python's
+    subprocess.run() is specifically avoided because it cannot kill process
+    trees reliably on Windows.
+
+    Args:
+        command (list): The command to run.
+        cwd (str, optional): Current working directory.
+        timeout (int, optional): Timeout in seconds.
+
+    Returns:
+        An instance of e3.process.Run if the process completed before timeout.
+
+    Raises:
+        subprocess.TimeoutExpired: If the timeout is reached.
+    """
+
+    result = Run(
+        command,
+        cwd=cwd,
+        timeout=timeout,
     )
+
+    # e3.process.Run executes the command through a custom rlimit tool. On
+    # timeout it returns with status 2 and a message like "rlimit: Real time
+    # limit (<value> s) exceeded". We need to check both to know that it was
+    # really a timeout.
+    if (
+        result.status == 2
+        and result.out
+        and result.out.strip().splitlines()[-1].startswith("rlimit:")
+    ):
+        raise subprocess.TimeoutExpired(cmd=command, timeout=timeout)
+
     return result
 
 
@@ -100,10 +455,17 @@ def get_default_timeout():
         return default_vc_timeout
 
 
-def print_sorted(strlist):
-    strlist.sort(key=sort_key_for_errors)
-    for line in strlist:
+def log(logger: Log | None, line: str) -> None:
+    if logger:
+        logger += f"{line}\n"
+    else:
         print(line)
+
+
+def log_sorted(logger: Log | None, lines: list[str]) -> None:
+    lines.sort(key=sort_key_for_errors)
+    for line in lines:
+        log(logger, line)
 
 
 def build_prover_switch(proverlist):
@@ -115,22 +477,26 @@ def build_prover_switch(proverlist):
         return ["--prover=" + ",".join(proverlist)]
 
 
-def cat(filename, sort=False, start=1, end=0):
+def cat(filename, sort=False, start=1, end=0, cwd=None, logger=None):
     """Dump the content of a file on stdout
 
     PARAMETERS
       filename: name of the file to print on stdout
       start: first line to output, starting from line 1
       end: last line to output if not 0
+      cwd: base directory to interpret relative filenames
     """
-    if os.path.exists(filename):
-        with open(filename, "r") as f:
+    path = _resolve_path(filename, cwd)
+    if path.exists():
+        with open(path, "r") as f:
             # Dump all the file
             if end == 0:
                 if sort:
-                    print_sorted(f.readlines())
+                    log_sorted(logger, f.readlines())
                 else:
-                    print(f.read())
+                    # read entire content; avoid duplicating trailing newlines
+                    content = f.read()
+                    log(logger, content.rstrip("\n"))
             # Dump only the part of the file between lines start and end
             else:
                 lines = []
@@ -138,18 +504,22 @@ def cat(filename, sort=False, start=1, end=0):
                     if i + 1 >= start and i + 1 <= end:
                         lines.append(line)
                 if sort:
-                    print_sorted(lines)
+                    log_sorted(logger, lines)
                 else:
                     for line in lines:
-                        print(line, end="")
+                        log(logger, line.rstrip("\n"))
+    else:
+        log(logger, f"Error: The path {path!r} does not exist.")
 
 
-def ls(path=".", exclude_pattern=None):
+def ls(path=".", exclude_pattern=None, cwd=None, logger=None):
+    base = _base_path(cwd)
+    target = base / path if not Path(path).is_absolute() else Path(path)
     try:
-        if os.path.isfile(path):
-            print(path)
-        elif os.path.isdir(path):
-            entries = os.listdir(path)
+        if target.is_file():
+            log(logger, str(target))
+        elif target.is_dir():
+            entries = os.listdir(target)
             entries.sort()
 
             if exclude_pattern:
@@ -158,13 +528,13 @@ def ls(path=".", exclude_pattern=None):
                 ]
 
             for entry in entries:
-                print(entry)
+                log(logger, entry)
         else:
-            print(f"Error: '{path!r}' is neither a file nor a directory.")
+            log(logger, f"Error: '{str(target)!r}' is neither a file nor a directory.")
     except FileNotFoundError:
-        print(f"Error: The path '{path!r}' does not exist.")
+        log(logger, f"Error: The path '{str(target)!r}' does not exist.")
     except PermissionError:
-        print(f"Error: Permission denied to access '{path!r}'.")
+        log(logger, f"Error: Permission denied to access '{str(target)!r}'.")
 
 
 def matches(comp_reg, s, invert):
@@ -179,7 +549,7 @@ def matches(comp_reg, s, invert):
     return (invert and not m) or (not invert and m)
 
 
-def verify_counterexamples():
+def verify_counterexamples(cwd=None, logger=None):
     """Checks that marks in source code have a matching counterexample.
 
     Marks are strings in the source that have the format
@@ -189,13 +559,14 @@ def verify_counterexamples():
     form in the output.
 
     """
-    files = sorted(glob.glob("*.ad?"))
-    result_files = glob.glob("gnatprove/*.spark")
-    is_mark = re.compile(r"@COUNTEREXAMPLE")
+    base = _base_path(cwd)
+    files = sorted([p.name for p in base.glob("*.ad?")])
+    result_files = list(base.glob("gnatprove/*.spark"))
+    is_mark_local = re.compile(r"@COUNTEREXAMPLE")
 
     def not_found(f, line):
-        """Print an error that the requested mark has not been found"""
-        print("MISSING COUNTEREXAMPLE at " + f + ":" + str(line))
+        """Log an error that the requested mark has not been found"""
+        log(logger, "MISSING COUNTEREXAMPLE at " + f + ":" + str(line))
 
     # store actual results in a map from (file,line) to a list of strings
     # for the counterexample, where each element of the list gives the
@@ -211,70 +582,82 @@ def verify_counterexamples():
             return
         have_populated_dict = True
         for result_file in result_files:
-            with open(result_file, "r") as f:
-                result = json.load(f)
-                proof_result = result["proof"]
-                for msg in proof_result:
-                    msg_file = msg["file"]
-                    msg_line = msg["line"]
+            try:
+                with open(result_file, "r") as f:
+                    result = json.load(f)
+            except FileNotFoundError:
+                continue
+            proof_result = result.get("proof", [])
+            for msg in proof_result:
+                msg_file = msg.get("file")
+                msg_line = msg.get("line")
 
-                    # list of strings for the trace attached to the counterexample.
-                    # In fact we store here pairs of a location (file,line) and
-                    # a string for the trace element, so that we can sort the trace
-                    # based on location before displaying it.
-                    msg_list = []
+                # list of strings for the trace attached to the counterexample.
+                # In fact we store here pairs of a location (file,line) and
+                # a string for the trace element, so that we can sort the trace
+                # based on location before displaying it.
+                msg_list = []
 
-                    def str_elem(val):
-                        return str(val["name"]) + " = " + str(val["value"])
+                def str_elem(val):
+                    return str(val["name"]) + " = " + str(val["value"])
 
-                    def location(arg):
-                        return arg[0]
+                def location(arg):
+                    return arg[0]
 
-                    def trace(arg):
-                        return arg[1]
+                def trace(arg):
+                    return arg[1]
 
-                    if "cntexmp" in msg:
-                        for ff, file_value in msg["cntexmp"].items():
-                            if "current" in file_value:
-                                for line, values in file_value["current"].items():
-                                    ctx = f"  trace at {ff}:{line} --> " + " and ".join(
-                                        map(str_elem, values)
-                                    )
-                                    msg_list.append(((ff, int(line)), ctx))
-                            if "previous" in file_value:
-                                for line, values in file_value["previous"].items():
-                                    ctx = (
-                                        f"[PREVIOUS]  trace at {ff}:{line} --> "
-                                        + " and ".join(map(str_elem, values))
-                                    )
-                                    msg_list.append(((ff, int(line)), ctx))
+                if "cntexmp" in msg:
+                    for ff, file_value in msg["cntexmp"].items():
+                        if "current" in file_value:
+                            for line, values in file_value["current"].items():
+                                ctx = f"  trace at {ff}:{line} --> " + " and ".join(
+                                    map(str_elem, values)
+                                )
+                                msg_list.append(((ff, int(line)), ctx))
+                        if "previous" in file_value:
+                            for line, values in file_value["previous"].items():
+                                ctx = (
+                                    f"[PREVIOUS]  trace at {ff}:{line} --> "
+                                    + " and ".join(map(str_elem, values))
+                                )
+                                msg_list.append(((ff, int(line)), ctx))
 
-                        # sort the trace elements based on location
-                        msg_list.sort(key=location)
+                    # sort the trace elements based on location
+                    msg_list.sort(key=location)
 
-                        # store only the list of trace elements, not locations.
-                        # Note that only the last counterexample for a given
-                        # location (msg_file,msg_line) is stored in results, when
-                        # multiple counterexamples are present on the same line.
-                        results[(msg_file, msg_line)] = map(trace, msg_list)
+                    # store only the list of trace elements, not locations.
+                    # Note that only the last counterexample for a given
+                    # location (msg_file,msg_line) is stored in results, when
+                    # multiple counterexamples are present on the same line.
+                    results[(msg_file, msg_line)] = [trace(item) for item in msg_list]
 
     # check that marks in source code have a matching counterexample, and
     # display the counterexample when found.
     for f in files:
-        with open(f, "r", encoding="iso-8859-1") as ff:
-            for line, linestr in enumerate(ff):
-                line = line + 1  # first line in file is 1, not 0
-                for _mark in re.finditer(is_mark, linestr):
-                    compute_results_dict()
-                    if (f, line) in results:
-                        print(f"counterexample expected for check at {f}:{line}")
-                        for ctx in results[(f, line)]:
-                            print(ctx)
-                    else:
-                        not_found(f, line)
+        path_to_open = _resolve_path(f, cwd)
+        try:
+            with open(path_to_open, "r", encoding="iso-8859-1") as ff:
+                for line_no, linestr in enumerate(ff):
+                    lineno = line_no + 1  # first line in file is 1, not 0
+                    for _mark in re.finditer(is_mark_local, linestr):
+                        compute_results_dict()
+                        key = (f, lineno)
+                        if key in results:
+                            log(
+                                logger,
+                                f"counterexample expected for check at {f}:{lineno}",
+                            )
+                            for ctx in results[key]:
+                                log(logger, ctx)
+                        else:
+                            not_found(f, lineno)
+        except FileNotFoundError:
+            # If the file cannot be read, log and continue
+            log(logger, f"Error: file not found {path_to_open!s}")
 
 
-def check_fail(strlist, no_failures_allowed):
+def check_fail(strlist, no_failures_allowed, logger=None):
     """Makes sure that we did not have any failed proof attempts."""
 
     failures = frozenset(["low", "medium", "high"])
@@ -284,7 +667,10 @@ def check_fail(strlist, no_failures_allowed):
             if m is not None:
                 kind = m.group(3)
                 if kind in failures:
-                    print("FAILED CHECK UNEXPECTED at %s:%s" % (m.group(1), m.group(2)))
+                    log(
+                        logger,
+                        "FAILED CHECK UNEXPECTED at %s:%s" % (m.group(1), m.group(2)),
+                    )
 
 
 def is_dependency_tag(tag):
@@ -427,12 +813,13 @@ def is_proof_tag(tag):
     )
 
 
-def check_marks(strlist):
+def check_marks(strlist, cwd=None, logger=None):
     """Checks that marks in source code have a matching result.
 
     Given the output from flow analysis and/or proof, check that all marks
     mentioned in source files have a matching expected result, where source
-    files are taken to be the *.ad? files in the current directory.
+    files are taken to be the *.ad? files in the specified cwd (or current
+    directory if None).
 
     Marks are any strings in the source that have the format
         @TAG:RESULT
@@ -456,7 +843,8 @@ def check_marks(strlist):
     source code to easily locate the marks visually.
 
     """
-    files = glob.glob("*.ad?")
+    base = _base_path(cwd)
+    files = [p.name for p in base.glob("*.ad?")]
 
     def get_tag(text):
         """Returns the tag for a given message text, or None if no tag is
@@ -677,16 +1065,15 @@ def check_marks(strlist):
     def not_found(f, line, tag, result):
         """Print an error that the requested mark has not been found"""
         if is_negative_result(result):
-            print("SOUNDNESS BUG ", end="")
+            prefix = "SOUNDNESS BUG "
         else:
             assert is_proof_tag(tag)
-            print("PROOF REGRESSION ", end="")
-        print(f"at {f}:{line}: mark @{tag}:{result} not found")
+            prefix = "PROOF REGRESSION "
+        log(logger, prefix + f"at {f}:{line}: mark @{tag}:{result} not found")
 
     def bad_found(f, line, tag, result):
         """Print an error that the mark has been unexpectedly found"""
-        print("SPURIOUS MESSAGE ", end="")
-        print(f"at {f}:{line}: message @{tag}:{result} found")
+        log(logger, f"SPURIOUS MESSAGE at {f}:{line}: message @{tag}:{result} found")
 
     # store actual results in a map from (file,line) to (TAG,RESULT)
     results = {}
@@ -705,55 +1092,60 @@ def check_marks(strlist):
 
     # check that marks in source code have a matching actual result
     for f in files:
-        with open(f, "r", encoding="iso-8859-1") as ff:
-            for line, linestr in enumerate(ff):
-                line = line + 1  # first line in file is 1, not 0
-                for mark in re.finditer(is_mark, linestr):
-                    tag = mark.group(1).upper()
+        path_to_open = _resolve_path(f, cwd)
+        try:
+            with open(path_to_open, "r", encoding="iso-8859-1") as ff:
+                for line_no, linestr in enumerate(ff):
+                    lineno = line_no + 1  # first line in file is 1, not 0
+                    for mark in re.finditer(is_mark, linestr):
+                        tag = mark.group(1).upper()
 
-                    if not (is_flow_tag(tag) or is_proof_tag(tag)):
-                        print(f"unrecognized tag {tag} at {f}:{line}")
-                        sys.exit(1)
-                    res = mark.group(2).upper()
+                        if not (is_flow_tag(tag) or is_proof_tag(tag)):
+                            log(logger, f"unrecognized tag {tag} at {f}:{lineno}")
+                            sys.exit(1)
+                        res = mark.group(2).upper()
 
-                    if not is_valid_result(res):
-                        print("unrecognized result {res} at {f}:{line}")
-                        sys.exit(1)
+                        if not is_valid_result(res):
+                            log(logger, "unrecognized result {res} at {f}:{line}")
+                            sys.exit(1)
 
-                    if res == "NONE":
-                        if (f, line) in results:
-                            for tag2, res2 in results[f, line]:
-                                if tag == tag2:
-                                    bad_found(f, line, tag2, res2)
-                    else:
-                        if (f, line) not in results or (tag, res) not in results[
-                            f, line
-                        ]:
-                            not_found(f, line, tag, res)
+                        if res == "NONE":
+                            if (f, lineno) in results:
+                                for tag2, res2 in results[f, lineno]:
+                                    if tag == tag2:
+                                        bad_found(f, lineno, tag2, res2)
+                        else:
+                            if (f, lineno) not in results or (tag, res) not in results[
+                                f, lineno
+                            ]:
+                                not_found(f, lineno, tag, res)
+        except FileNotFoundError:
+            log(logger, f"Error: file not found {path_to_open!s}")
 
 
-def gcc(src, opt=None):
+def gcc(src, opt=None, cwd=None, logger=None):
     """gcc wrapper for the testsuite
 
     PARAMETERS
        src: source file to process
        opt: additional options to pass to gcc
+       cwd: base directory for relative paths
     """
     if opt is None:
         opt = ["-c"]
     cmd = ["gcc"]
     cmd += to_list(opt)
     cmd += [src]
-    process = Run(cmd)
-    print_sorted(str.splitlines(process.stdout))
+    process = run_command(cmd, cwd=cwd)
+    log_sorted(logger, str.splitlines(process.out))
 
 
-def gprbuild(opt=None, sort_lines=True):
+def gprbuild(opt=None, sort_lines=True, cwd=None, logger=None):
     """Call gprbuld -q **opt. Sort the output if sort_lines is True."""
     if opt is None:
         opt = []
-    process = Run(["gprbuild", "-q"] + opt)
-    lines = str.splitlines(process.stdout)
+    process = run_command(["gprbuild", "-q"] + opt, cwd=cwd)
+    lines = str.splitlines(process.out)
     if len(lines) == 0:
         return
 
@@ -765,12 +1157,12 @@ def gprbuild(opt=None, sort_lines=True):
         lines = lines[:-1]
 
     if sort_lines:
-        print_sorted(lines)
+        log_sorted(logger, lines)
     else:
         for line in lines:
-            print(line)
+            log(logger, line)
     if error_found:
-        print("[the gprbuild command failed]")
+        log(logger, "[the gprbuild command failed]")
 
 
 def spark_install_path():
@@ -779,24 +1171,36 @@ def spark_install_path():
     return os.path.dirname(os.path.dirname(exec_loc))
 
 
-def strip_provers_output(s):
-    """Strip the extra output generated by --report=provers output from the
-    argument string"""
-    return provers_output_regex.sub("", s)
+def resolve_sparklib_location(path=None):
+    """Resolve a SPARKlib location from an override path or the install.
+
+    Returns a tuple `(project_dir, root_dir, installed)` where:
+      - `project_dir` contains `sparklib_internal.gpr`;
+      - `root_dir` is the layout root used to copy files for bodymode;
+      - `installed` tells how `SPARKLIB_INSTALLED` must be set.
+    """
+    if path is None:
+        path = os.environ.get(sparklib_project_path_env)
+
+    if path is None:
+        root_dir = spark_install_path()
+        return (os.path.join(root_dir, "lib", "gnat"), root_dir, True)
+
+    candidate = Path(path).resolve()
+
+    if (candidate / "sparklib_internal.gpr").is_file():
+        if (candidate / "src").is_dir():
+            return (str(candidate), str(candidate), False)
+        return (str(candidate), str(candidate.parent.parent), True)
+
+    installed_project_dir = candidate / "lib" / "gnat"
+    if (installed_project_dir / "sparklib_internal.gpr").is_file():
+        return (str(installed_project_dir), str(candidate), True)
+
+    raise RuntimeError(f"Invalid SPARKlib location: {path}")
 
 
-def strip_provers_output_from_testout():
-    """Strip the extra output generated by --report=provers output from the
-    test.out file"""
-    if os.path.isfile("test.out"):
-        with open("test.out", "r") as f:
-            content = f.read()
-        content = strip_provers_output(content)
-        with open("test.out", "w") as f:
-            f.write(content)
-
-
-def preprocess_sparklib_source_file(filepath):
+def preprocess_sparklib_source_file(filepath, logger=None):
     """
     Reads a file line by line and replaces specific SPARK_Mode patterns
     in-place, preserving line numbers.
@@ -861,10 +1265,10 @@ def preprocess_sparklib_source_file(filepath):
         move(temp_path, filepath)
 
     except FileNotFoundError:
-        print(f"Error: The file {filepath!r} was not found.", file=sys.stderr)
+        log(logger, f"Error: The file {filepath!r} was not found.")
         sys.exit(1)
     except Exception as e:
-        print(f"An unexpected error occurred: {e}", file=sys.stderr)
+        log(logger, f"An unexpected error occurred: {e}")
         sys.exit(1)
 
 
@@ -880,15 +1284,71 @@ def update_projectpath_for_sparklib(newpath):
     os.environ["GPR_PROJECT_PATH"] = os.pathsep.join([newpath] + gpp)
 
 
-def create_sparklib(sparklib_bodymode=False):
+def prepare_sparklib_bodymode(base_path, logger=None):
+    """Create a preprocessed SPARKlib tree under `base_path`.
+
+    The tree contains `lib/gnat` project files and `include` sources. Source
+    files are preprocessed in-place while preserving line numbers.
+
+    Returns:
+        The absolute path to the generated `lib/gnat` project directory.
+    """
+    base_path = Path(base_path)
+    _, root_dir, installed = resolve_sparklib_location()
+
+    for rel in ["lib", "include"]:
+        target_dir = base_path / rel
+        if target_dir.is_dir():
+            rmtree(str(target_dir))
+
+    if installed:
+        # Copy install tree into base_path/lib and base_path/include.
+        copytree(os.path.join(root_dir, "lib"), str(base_path / "lib"))
+        copytree(os.path.join(root_dir, "include"), str(base_path / "include"))
+    else:
+        target_gnat = base_path / "lib" / "gnat"
+        target_gnat.mkdir(parents=True, exist_ok=True)
+        copytree(os.path.join(root_dir, "src"), str(base_path / "include" / "spark"))
+
+        for path_obj in Path(root_dir).iterdir():
+            if path_obj.is_file() and path_obj.suffix in [".gpr", ".templ"]:
+                copy(str(path_obj), str(target_gnat / path_obj.name))
+
+        proof_dir = Path(root_dir) / "proof"
+        if proof_dir.is_dir():
+            copytree(str(proof_dir), str(target_gnat / "proof"))
+
+    src_prefix = base_path / "include" / "spark"
+    for target in [
+        src_prefix / "full" / "spark.ads",
+        src_prefix / "light" / "spark.ads",
+    ]:
+        copy(str(src_prefix / "spark__exec.ads"), str(target))
+
+    for path_obj in (base_path / "include").rglob("*"):
+        if path_obj.is_file():
+            preprocess_sparklib_source_file(str(path_obj), logger=logger)
+
+    return str((base_path / "lib" / "gnat").resolve())
+
+
+def create_sparklib(sparklib_bodymode=False, cwd=None, logger=None):
     """If sparklib_bodymode is false, simply create a sparklib.gpr.
     If sparklib_bodymode is true, in addition, create a copy of sparklib,
     with the following changes:
       - some SPARK_Mode => Off are replaced,
       - spark__exec.ads replaces spark.ads in both full and light runtime
     then change GPR_PROJECT_PATH to point to this new sparklib.
+
+    The created files and directories are placed in `cwd` if provided,
+    otherwise in the current working directory.
     """
-    with open("sparklib.gpr", "w") as f_prj:
+    base_path = _base_path(cwd)
+    project_file = base_path / "sparklib.gpr"
+    # Ensure parent directory exists (usually base_path itself)
+    base_path.mkdir(parents=True, exist_ok=True)
+
+    with open(project_file, "w") as f_prj:
         f_prj.write('project SPARKlib extends "sparklib_internal" is\n')
         f_prj.write('   for Object_Dir use "sparklib_obj";\n')
         f_prj.write("   for Source_Dirs use SPARKlib_Internal'Source_Dirs;\n")
@@ -897,34 +1357,32 @@ def create_sparklib(sparklib_bodymode=False):
             + "SPARKlib_Internal'Excluded_Source_Files;\n"
         )
         f_prj.write("end SPARKlib;\n")
+
+    project_dir, _, installed = resolve_sparklib_location()
     if sparklib_bodymode:
-        # goal is to create the following folders
-        # lib/gnat - contains project files
-        # include/spark - contains src
-        # then preprocess the src
-        sparkinstall = spark_install_path()
-        for path in ["lib", "include"]:
-            if os.path.isdir(path):
-                rmtree(path)
-        copytree(os.path.join(sparkinstall, "lib"), "lib")
-        copytree(os.path.join(sparkinstall, "include"), "include")
-        src_prefix = os.path.join("include", "spark")
-        for target in [
-            os.path.join(src_prefix, "full", "spark.ads"),
-            os.path.join(src_prefix, "light", "spark.ads"),
-        ]:
-            copy(os.path.join(src_prefix, "spark__exec.ads"), target)
-        for path_obj in Path("include").rglob("*"):
-            if path_obj.is_file():
-                preprocess_sparklib_source_file(path_obj)
-        newpath = os.path.join(os.getcwd(), "lib", "gnat")
+        newpath = os.environ.get(sparklib_bodymode_path_env)
+        if newpath is None:
+            newpath = prepare_sparklib_bodymode(base_path, logger=logger)
+        os.environ["SPARKLIB_INSTALLED"] = "True"
         update_projectpath_for_sparklib(newpath)
+    else:
+        os.environ["SPARKLIB_INSTALLED"] = "True" if installed else "False"
+        update_projectpath_for_sparklib(project_dir)
 
 
-def generate_project_file(ada=default_ada, sparklib=False):
-    # generate an empty project file if not present already
-    if not os.path.isfile(default_project):
-        with open(default_project, "w") as f_prj:
+def generate_project_file(ada=default_ada, sparklib=False, cwd=None):
+    """
+    Creates a GNAT project file and 'test.adc' configuration in the specified
+    'cwd' (or current directory if None), provided the project file does not
+    already exist.
+    """
+
+    base_path = _base_path(cwd)
+    project_path = base_path / default_project
+    adc_path = base_path / "test.adc"
+
+    if not project_path.exists():
+        with open(project_path, "w") as f_prj:
             if sparklib:
                 f_prj.write('with "sparklib";\n')
             f_prj.write("project Test is\n")
@@ -943,7 +1401,8 @@ def generate_project_file(ada=default_ada, sparklib=False):
             f_prj.write('    for Local_Configuration_Pragmas use "test.adc";\n')
             f_prj.write("  end Compiler;\n")
             f_prj.write("end Test;\n")
-        with open("test.adc", "w") as f_adc:
+
+        with open(adc_path, "w") as f_adc:
             f_adc.write("pragma SPARK_Mode (On);\n")
             f_adc.write("pragma Profile (Ravenscar);\n")
             f_adc.write("pragma Partition_Elaboration_Policy (Sequential);\n")
@@ -951,19 +1410,18 @@ def generate_project_file(ada=default_ada, sparklib=False):
 
 def gnatprove(
     opt=None,
-    no_fail=False,
     no_output=False,
-    filter_output=None,
     cache_allowed=True,
-    sort_output=True,
     exit_status=None,
     ada=default_ada,
     sparklib=False,
-    filter_sparklib=True,
     info=True,
     report=None,
-    do_sarif_check=False,
     sparklib_bodymode=False,
+    refiners=None,
+    cwd=None,
+    timeout=None,
+    logger=None,
 ):
     """Invoke gnatprove, and in case of success return list of output lines
 
@@ -971,20 +1429,30 @@ def gnatprove(
     opt: options to give to gnatprove
     no_output: do not display gnatprove output, only of interest for testing
                exit status
-    filter_output: regex used to remove output from gnatprove
-    no_fail: if set, then we make sure no unproved checks are in the output
     exit_status: if set, expected value of the exit status from gnatprove
+    refiners: list of OutputRefiner instances to process output. If None,
+              uses default refiners:
+                [CheckMarksRefiner(), SparkLibFilterRefiner(), SortRefiner()].
+              Pass [] disable all refinement.
+              To include validation, add CheckFailRefiner() or CheckSarifRefiner() to
+              the list.
+              See usage examples at top of file.
+
+    Note: The timeout parameter is *reserved* for usage by the testing
+    framework. If set and the timeout is exceeded TimeoutExpired exception is
+    raised. Do *not* pass this argument explicitly from test.py. Use the
+    'timeout' setting in test.yaml instead.
     """
     if opt is None:
         opt = ["-P", default_project]
 
     if report is not None:
         opt = [f"--report={report}"] + opt
-    generate_project_file(ada, sparklib)
+    generate_project_file(ada, sparklib, cwd)
 
     # Generate sparklib.gpr if the project depends on SPARKlib
     if sparklib:
-        create_sparklib(sparklib_bodymode=sparklib_bodymode)
+        create_sparklib(sparklib_bodymode=sparklib_bodymode, cwd=cwd, logger=logger)
 
     cmd = ["gnatprove"]
     # Continue on errors, to get the maximum number of messages for tests
@@ -1010,40 +1478,39 @@ def gnatprove(
     # When not interested in output, force --output=brief to get simpler diffs
     if no_output:
         cmd += ["--output=brief"]
-    process = Run(cmd)
+    process = run_command(cmd, cwd=cwd, timeout=timeout)
     # Replace line above by the one below for testing the scripts without
     # running the tool:
     # process = open("test.out", 'r').read()
 
     # Check marks in source code and print the command output sorted
-    strlist = str.splitlines(process.stdout)
+    strlist = str.splitlines(process.out)
     # Replace line above by the one below for testing the scripts without
     # running the tool
     # strlist = str.splitlines(process)
 
-    check_marks(strlist)
-    check_fail(strlist, no_fail)
-    if do_sarif_check:
-        check_sarif(strlist, report)
     # Check that the exit status is as expected
-    if exit_status is not None and process.returncode != exit_status:
-        print("Unexpected exit status of", process.status)
+    if exit_status is not None and process.status != exit_status:
+        log(logger, f"Unexpected exit status of {process.status}")
         failure = True
     else:
         failure = False
 
-    if filter_sparklib:
-        strlist = [line for line in strlist if sparklib_regex.match(line) is None]
+    # Apply refiners to output (includes validation and transformation)
+    if refiners is None:
+        refiners = [CheckMarksRefiner(), SparkLibFilterRefiner(), SortRefiner()]
 
-    if filter_output is not None:
-        strlist = grep(filter_output, strlist, invert=True)
+    # Set context for all refiners
+    for refiner in refiners:
+        refiner.set_context(cwd=cwd, logger=logger, report=report)
+
+    # Execute refiners in sequence
+    for refiner in refiners:
+        strlist = refiner.refine(strlist)
 
     if not no_output or failure:
-        if sort_output:
-            print_sorted(strlist)
-        else:
-            for line in strlist:
-                print(line)
+        for line in strlist:
+            log(logger, line)
 
 
 def sarif_msg_text(result):
@@ -1093,14 +1560,15 @@ ignore_patterns = [
 ]
 
 
-def has_pattern(msg):
+def has_ignore_pattern(msg):
     for pattern in ignore_patterns:
         if pattern in msg:
             return True
 
 
-def check_sarif(lines, report):
-    potential_sarif_files = glob.glob("**/gnatprove.sarif")
+def check_sarif(lines, report, cwd=None, logger=None):
+    base = _base_path(cwd)
+    potential_sarif_files = list(base.glob("**/gnatprove.sarif"))
     if len(potential_sarif_files) == 0:
         return
     sarif_file = potential_sarif_files[0]
@@ -1121,12 +1589,15 @@ def check_sarif(lines, report):
         if report == "fail" and result["kind"] == "pass":
             continue
         msg = sarif_msg_text(result)
-        if has_pattern(msg):
+        if has_ignore_pattern(msg):
             continue
 
         if not contains(msg):
-            print("the following SARIF message text is not part of the tool output:")
-            print(msg)
+            log(
+                logger,
+                "the following SARIF message text is not part of the tool output:",
+            )
+            log(logger, msg)
 
 
 def prove_all(
@@ -1147,23 +1618,36 @@ def prove_all(
     no_output=False,
     sort_output=True,
     filter_output=None,
+    filter_sparklib=True,
+    refiners=None,
     codepeer=False,
     exit_status=None,
     ada=default_ada,
     replay=False,
     warnings="continue",
     sparklib=False,
-    filter_sparklib=True,
     enable_sarif_check=False,
     sparklib_bodymode=False,
+    cwd=None,
+    timeout=None,
+    logger=None,
 ):
     """Call gnatprove with standard options.
 
     For option steps the default is max_steps set above, setting this
     option to zero disables steps option.
 
-    no_fail and filter_output are passed directly to
-    gnatprove().
+    Boolean parameters (sort_output, filter_output, filter_sparklib, no_fail and
+    enable_sarif_check) are provided for YAML compatibility. They are converted to
+    refiners internally.
+
+    Advanced users can pass a custom refiners list to override all boolean flags.
+    When refiners is not None, all boolean flags are ignored.
+
+    Note: The timeout parameter is *reserved* for usage by the testing
+    framework. If set and the timeout is exceeded TimeoutExpired exception is
+    raised. Do *not* pass this argument explicitly from test.py. Use the
+    'timeout' setting in test.yaml instead.
     """
     fullopt = ["--output=oneline"]
     if warnings is not None:
@@ -1215,28 +1699,41 @@ def prove_all(
             fullopt += ["--check-counterexamples=off"]
     if why3server_mode():
         fullopt += ["--why3-server=" + why3server_mode()]
+    if cache_allowed:
+        fullopt += ["--debug-no-cache-output"]
     # Add opt last, so that it may include switch -cargs
     if opt is not None:
         fullopt += opt
     report = report if report is not None else "all" if replay else "provers"
     # limit-switches don't play well with sarif output for now
     has_limit_switch = any("--limit" in s for s in fullopt)
+
+    # Build refiners from boolean flags if not explicitly provided
+    if refiners is None:
+        refiners = build_refiners_from_flags(
+            no_fail=no_fail,
+            filter_sparklib=filter_sparklib,
+            sort_output=sort_output,
+            filter_output=filter_output,
+            do_sarif_check=enable_sarif_check and not sparklib and not has_limit_switch,
+            report=report,
+        )
+
     gnatprove(
         fullopt,
-        no_fail=no_fail,
         no_output=no_output,
-        sort_output=sort_output,
+        refiners=refiners,
         cache_allowed=cache_allowed,
         exit_status=exit_status,
         ada=ada,
-        filter_output=filter_output,
         sparklib=sparklib,
-        filter_sparklib=filter_sparklib,
         report=report,
-        do_sarif_check=enable_sarif_check and not sparklib and not has_limit_switch,
         sparklib_bodymode=sparklib_bodymode,
+        cwd=cwd,
+        timeout=timeout,
+        logger=logger,
     )
-    verify_counterexamples()
+    verify_counterexamples(cwd=cwd, logger=logger)
 
 
 def do_flow(
@@ -1246,15 +1743,30 @@ def do_flow(
     mode="all",
     gg=True,
     sort_output=True,
+    refiners=None,
     ada=default_ada,
     sparklib=False,
+    project=default_project,
     report=None,
     enable_sarif_check=False,
+    cwd=None,
+    timeout=None,
+    logger=None,
 ):
     """
-    Call gnatprove with standard options for flow. We do generate
-    verification conditions, but we don't actually try very hard to
-    prove anything.
+    Call gnatprove with standard options for flow. We do generate verification
+    conditions, but we don't actually try very hard to prove anything.
+
+    Boolean parameters (sort_output, no_fail, enable_sarif_check) are provided
+    for YAML compatibility. They are converted to refiners internally by prove_all.
+
+    Advanced users can pass a custom refiners list to override all boolean flags.
+    When refiners is not None, all boolean flags are ignored.
+
+    Note: The timeout parameter is *reserved* for usage by the testing
+    framework. If set and the timeout is exceeded TimeoutExpired exception is
+    raised. Do *not* pass this argument explicitly from test.py. Use the
+    'timeout' setting in test.yaml instead.
     """
 
     if not gg:
@@ -1271,33 +1783,58 @@ def do_flow(
         no_fail=no_fail,
         mode=mode,
         sort_output=sort_output,
+        refiners=refiners,
         ada=ada,
         sparklib=sparklib,
+        project=project,
         report=report,
         enable_sarif_check=enable_sarif_check,
+        cwd=cwd,
+        timeout=timeout,
+        logger=logger,
     )
 
 
-def do_flow_only(opt=None, procs=parallel_procs, no_fail=False, ada=default_ada):
+def do_flow_only(
+    opt=None,
+    procs=parallel_procs,
+    no_fail=False,
+    ada=default_ada,
+    logger=None,
+):
     """
     Similar to do_flow, but we disable VCG. Should only be used for flow
     tests that take an undue amount of time.
     """
 
-    do_flow(opt, procs, no_fail, mode="flow", ada=ada)
+    do_flow(opt, procs, no_fail, mode="flow", ada=ada, logger=logger)
 
 
 def no_crash(
     sparklib=False,
     opt=None,
     sparklib_bodymode=False,
+    cwd=None,
+    timeout=None,
+    logger=None,
 ):
     """
     Only attempt to detect crashes and other unexpected behavior. No expected
     tool output is filed for such tests.
+
+    Note: The timeout parameter is *reserved* for usage by the testing
+    framework. If set and the timeout is exceeded TimeoutExpired exception is
+    raised. Do *not* pass this argument explicitly from test.py. Use the
+    'timeout' setting in test.yaml instead.
     """
     if benchmark_mode():
-        prove_all(sparklib=sparklib, sparklib_bodymode=sparklib_bodymode)
+        prove_all(
+            sparklib=sparklib,
+            sparklib_bodymode=sparklib_bodymode,
+            cwd=cwd,
+            timeout=timeout,
+            logger=logger,
+        )
     else:
         gnatprove(
             no_output=True,
@@ -1305,12 +1842,21 @@ def no_crash(
             sparklib=sparklib,
             opt=opt,
             sparklib_bodymode=sparklib_bodymode,
+            cwd=cwd,
+            timeout=timeout,
+            logger=logger,
         )
 
 
-def clean():
-    """Call gnatprove with standard options to clean proof artifacts"""
-    prove_all(opt=["--clean"], no_fail=True)
+def clean(cwd=None, timeout=None, logger=None):
+    """Call gnatprove with standard options to clean proof artifacts
+
+    Note: The timeout parameter is *reserved* for usage by the testing
+    framework. If set and the timeout is exceeded TimeoutExpired exception is
+    raised. Do *not* pass this argument explicitly from test.py. Use the
+    'timeout' setting in test.yaml instead.
+    """
+    prove_all(opt=["--clean"], no_fail=True, cwd=cwd, timeout=timeout, logger=logger)
 
 
 def to_list(arg):
@@ -1340,15 +1886,23 @@ def grep(regex, strlist, invert=False):
     return [line for line in strlist if matches(p, line, invert)]
 
 
-def touch(fname, times=None):
+def touch(fname, times=None, cwd=None):
     """touch a file so that it appears altered
 
     PARAMETERS
     fname: a string corresponding to a filename
     times: optional paramter so set the access time
+    cwd: base directory for relative filenames
     """
-    with open(fname, "a"):
-        os.utime(fname, times)
+    path = _resolve_path(fname, cwd)
+    with open(path, "a"):
+        os.utime(path, times)
+
+
+def is_windows_platform():
+    """Returns True on Windows and False otherwise"""
+    platform = sys.platform
+    return platform.startswith("win") or platform.startswith("cygwin")
 
 
 def sleep_on_windows(secs=3):
@@ -1357,24 +1911,24 @@ def sleep_on_windows(secs=3):
     PARAMETERS
     secs: number of seconds to sleep if in Windows
     """
-    platform = sys.platform
-    if platform.startswith("win") or platform.startswith("cygwin"):
+    if is_windows_platform():
         sleep(secs)
 
 
-def check_all_spark(result_file, expected_len):
+def check_all_spark(result_file, expected_len, cwd=None):
     """Using a gnatprove result file, check that all subprograms, entries, task
        bodies and packages of that unit are in SPARK. Also check that there are
        as many entries as expected.
 
     PARAMETERS
-        result_file      the file to read
+        result_file      the file to read (relative to cwd if not absolute)
         expected_len     the number of entities expected
     RESULT
         none
 
     """
-    with open(result_file, "r") as f:
+    path = _resolve_path(result_file, cwd)
+    with open(path, "r") as f:
         result = json.load(f)
         spark_result = result["spark"]
         assert len(spark_result) == expected_len
@@ -1382,17 +1936,18 @@ def check_all_spark(result_file, expected_len):
             assert entry == "all"
 
 
-def check_spec_spark(result_file, expected_len):
+def check_spec_spark(result_file, expected_len, cwd=None):
     """Using a gnatprove result file, check that all specs of that unit
        are in SPARK. Also check that there are as many entries as expected.
 
     PARAMETERS
-        result_file      the file to read
+        result_file      the file to read (relative to cwd if not absolute)
         expected_len     the number of entities expected
     RESULT
         none
     """
-    with open(result_file, "r") as f:
+    path = _resolve_path(result_file, cwd)
+    with open(path, "r") as f:
         result = json.load(f)
         spark_result = result["spark"]
         assert len(spark_result) == expected_len
@@ -1400,30 +1955,36 @@ def check_spec_spark(result_file, expected_len):
             assert entry == "spec"
 
 
-def check_trace_files(only_flow=False):
+def check_trace_files(only_flow=False, cwd=None, logger=None):
     # Note that in order for check_trace_files to work, we have to call one of
     # the other functions first. Otherwise, no trace files will have been
     # generated.
 
+    base = _base_path(cwd)
+
     # Create a list that contains all trace files lying under directory
     # gnatprove.
     if only_flow:
-        trace_files = glob.glob("gnatprove/*__flow__*.trace")
+        trace_dir = base / "gnatprove"
+        trace_files = (
+            list(trace_dir.glob("*__flow__*.trace")) if trace_dir.exists() else []
+        )
         # ??? The above pattern might also match non-flow traces created for a
         # unit with "flow" in its name, but the glob routine accepts only
         # simple patterns and not arbitrary regular expressions, so we can't do
         # better; however, this pacricular name is unlikely to happen in our
         # testsuite.
     else:
-        trace_files = glob.glob("gnatprove/*.trace")
+        trace_dir = base / "gnatprove"
+        trace_files = list(trace_dir.glob("*.trace")) if trace_dir.exists() else []
 
-    print("Trace files' contents:")
+    log(logger, "Trace files' contents:")
     # Dump the contents of all trace files on stdout
     for trace_file in sorted(trace_files):
-        cat(trace_file)
+        cat(str(trace_file), cwd=None, logger=logger)
 
 
-def check_output_file(sort=False):
+def check_output_file(sort=False, cwd=None, logger=None):
     """Print content of output file gnatprove.out.
 
     The goal is to make this output independent from the order of provers
@@ -1443,12 +2004,16 @@ def check_output_file(sort=False):
     This ensures a common output whatever the order of provers used.
     """
 
-    filename = os.path.join("gnatprove", "gnatprove.out")
+    filename = _resolve_path(os.path.join("gnatprove", "gnatprove.out"), cwd)
     prover_tag = re.compile(
         r"(^.*)(\((CVC4|altergo|Z3|colibri|Trivial|Interval|CVC5)[^\)]*\))(.*$\n)"
     )
     max_time = re.compile(r"(^.*proved in max )[1-9][0-9]*( seconds.*$\n)")
     output = ""
+
+    if not filename.exists():
+        log(logger, f"Error: {filename!s} not found")
+        return
 
     with open(filename, "r") as f:
         for line in f:
@@ -1465,24 +2030,28 @@ def check_output_file(sort=False):
             # size varies depending on prover order) by a single one.
             output += re.sub(" +", " ", re.sub("-+", "-", newline))
     if sort:
-        print_sorted(str.splitlines(output))
+        log_sorted(logger, str.splitlines(output))
     else:
-        print(output)
+        log(logger, output)
 
 
-def sparklib_exec_test(project_file="test.gpr", binary="./obj/test"):
+def sparklib_exec_test(
+    project_file="test.gpr", binary="./obj/test", cwd=None, logger=None
+):
     cov_mode = coverage_mode()
     if cov_mode:
-        Run(["gnatcov", "instrument", "-P", project_file, "--level=stmt"])
+        run_command(
+            ["gnatcov", "instrument", "-P", project_file, "--level=stmt"], cwd=cwd
+        )
     opt = ["-P", project_file]
     if cov_mode:
         opt += ["--src-subdirs=gnatcov-instr", "--implicit-with=gnatcov_rts.gpr"]
-    gprbuild(opt=opt)
-    p = Run([binary])
-    print(p.stdout)
+    gprbuild(opt=opt, logger=logger, cwd=cwd)
+    p = run_command([binary], cwd=cwd)
+    log(logger, p.out)
 
 
-def print_version():
+def print_version(cwd=None, logger=None):
     """Print the output of "gnatprove --version".
 
     Typical output is like this:
@@ -1502,8 +2071,8 @@ def print_version():
     # ??? os.unsetenv didn't work, so setting to empty string instead
     os.environ["LD_LIBRARY_PATH"] = ""
 
-    p = Run(["gnatprove", "--version"])
-    lines = p.stdout.splitlines()
+    p = run_command(["gnatprove", "--version"], cwd=cwd)
+    lines = p.out.splitlines()
     # drop first line of output
     lines = lines[1:]
     for line in lines:
@@ -1516,10 +2085,28 @@ def print_version():
         # output
         elts = text.split(" - ")
         text = elts[0]
-        print(text)
+        log(logger, text)
 
 
-def run_spark_for_gnattest_json(project_file, filename, line, gnattest_JSON):
+def run_spark_for_gnattest_json(
+    project_file,
+    filename,
+    line,
+    gnattest_JSON,
+    refiners=None,
+    cwd=None,
+    timeout=None,
+    logger=None,
+):
+    """
+    Run gnatprove on the given subprogram with counterexample candidates from
+    gnattest.
+
+    Note: The timeout parameter is *reserved* for usage by the testing
+    framework. If set and the timeout is exceeded TimeoutExpired exception is
+    raised. Do *not* pass this argument explicitly from test.py. Use the
+    'timeout' setting in test.yaml instead.
+    """
     gnatprove(
         opt=[
             f"-P{project_file}",
@@ -1532,4 +2119,18 @@ def run_spark_for_gnattest_json(project_file, filename, line, gnattest_JSON):
             f"--gnattest-values={gnattest_JSON}",
         ],
         report=None,
+        refiners=refiners,
+        cwd=cwd,
+        timeout=timeout,
+        logger=logger,
+    )
+
+
+def flow_gg(opt=None):
+    if opt is None:
+        opt = []
+    opt += ["--flow-show-gg", "--no-inlining"]
+    do_flow(
+        opt=opt,
+        refiners=default_refiners_no_sort() + [GeneratedContractsRefiner()],
     )

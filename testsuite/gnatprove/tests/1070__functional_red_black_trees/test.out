@@ -109,10 +109,10 @@ red_black_trees.adb:165:07: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:166:10: info: precondition proved (CVC5: 1 VC)
 red_black_trees.adb:167:15: info: precondition proved (CVC5: 1 VC)
 red_black_trees.adb:167:29: info: precondition proved (CVC5: 1 VC)
-red_black_trees.ads:14:04: warning: function contract might not be available on recursive calls [contracts-recursive]
-red_black_trees.ads:14:04: warning: function contract might not be available on recursive calls [contracts-recursive]
-red_black_trees.ads:14:04: warning: function contract might not be available on recursive calls [contracts-recursive]
-red_black_trees.ads:14:04: warning: function contract might not be available on recursive calls [contracts-recursive]
+red_black_trees.ads:14:04: warning: "=" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
+red_black_trees.ads:14:04: warning: "Count" is recursive; (implicit) contract of mutally recursive functions might not be available on calls from contracts and assertions [contracts-recursive]
+red_black_trees.ads:14:04: warning: "Count_Children" is recursive; (implicit) contract of mutally recursive functions might not be available on calls from contracts and assertions [contracts-recursive]
+red_black_trees.ads:14:04: warning: "Height" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 red_black_trees.ads:14:04: warning: in instantiation at spark-containers-functional-trees.ads:105
 red_black_trees.ads:14:04: warning: in instantiation at spark-containers-functional-trees.ads:113
 red_black_trees.ads:14:04: warning: in instantiation at spark-containers-functional-trees.ads:125
@@ -120,13 +120,18 @@ red_black_trees.ads:14:04: warning: in instantiation at spark-containers-functio
 red_black_trees.ads:14:04: warning: in instantiation at spark-containers-functional-trees.ads:233
 red_black_trees.ads:14:04: warning: in instantiation at spark-containers-functional-trees.ads:78
 red_black_trees.ads:14:04: warning: in instantiation at spark-containers-functional-trees.ads:97
+red_black_trees.ads:14:04: warning: its contract might be missing
+red_black_trees.ads:14:04: warning: its contract might be missing
+red_black_trees.ads:14:04: warning: potentially missing automatically instanciated lemma "Lemma_Count_Children_Tail" declared at spark-containers-functional-trees.ads:249, instance at line 14
+red_black_trees.ads:14:04: warning: potentially missing contract for "Count" declared at spark-containers-functional-trees.ads:140, instance at line 14
+red_black_trees.ads:14:04: warning: potentially missing contract for "Count_Children" declared at spark-containers-functional-trees.ads:233, instance at line 14
 red_black_trees.ads:14:04: warning: precondition is statically False [precondition-statically-false]
 red_black_trees.ads:14:04: warning: precondition is statically False [precondition-statically-false]
 red_black_trees.ads:14:04: warning: precondition is statically False [precondition-statically-false]
 red_black_trees.ads:20:13: info: implicit aspect Always_Terminates on "Opt_Add" has been proved, subprogram will terminate
 red_black_trees.ads:21:38: info: precondition proved (CVC5: 1 VC)
 red_black_trees.ads:23:13: info: implicit aspect Always_Terminates on "Model" has been proved, subprogram will terminate
-red_black_trees.ads:23:13: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
+red_black_trees.ads:23:13: warning: "Model" is recursive; its body might not be available on recursive calls from contracts and assertions [contracts-recursive]
 red_black_trees.ads:25:28: info: subprogram variant proved (CVC5: 1 VC)
 red_black_trees.ads:25:35: info: precondition proved (CVC5: 1 VC)
 red_black_trees.ads:25:53: info: subprogram variant proved (CVC5: 1 VC)
@@ -134,8 +139,7 @@ red_black_trees.ads:25:60: info: precondition proved (CVC5: 1 VC)
 red_black_trees.ads:25:80: info: precondition proved (CVC5: 1 VC)
 red_black_trees.ads:27:43: info: range check proved (CVC5: 1 VC)
 red_black_trees.ads:29:13: info: implicit aspect Always_Terminates on "Nb_Blacks" has been proved, subprogram will terminate
-red_black_trees.ads:29:13: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
-red_black_trees.ads:29:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+red_black_trees.ads:29:13: warning: "Nb_Blacks" is recursive; its body and implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 red_black_trees.ads:30:28: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.ads:31:12: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.ads:31:12: info: subprogram variant proved (CVC5: 1 VC)
@@ -147,7 +151,7 @@ red_black_trees.ads:31:81: info: predicate check proved (CVC5: 1 VC; Trivial: 1 
 red_black_trees.ads:31:88: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.ads:32:47: info: range check proved (CVC5: 1 VC)
 red_black_trees.ads:34:13: info: implicit aspect Always_Terminates on "Is_Balanced" has been proved, subprogram will terminate
-red_black_trees.ads:34:13: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
+red_black_trees.ads:34:13: warning: "Is_Balanced" is recursive; its body might not be available on recursive calls from contracts and assertions [contracts-recursive]
 red_black_trees.ads:37:14: info: precondition proved (CVC5: 1 VC)
 red_black_trees.ads:38:26: info: precondition proved (CVC5: 1 VC)
 red_black_trees.ads:38:51: info: precondition proved (CVC5: 1 VC)
@@ -165,7 +169,7 @@ red_black_trees.ads:42:19: info: subprogram variant proved (CVC5: 1 VC)
 red_black_trees.ads:42:32: info: precondition proved (CVC5: 1 VC)
 red_black_trees.ads:43:47: info: range check proved (CVC5: 1 VC)
 red_black_trees.ads:45:13: info: implicit aspect Always_Terminates on "Is_Search_Tree" has been proved, subprogram will terminate
-red_black_trees.ads:45:13: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
+red_black_trees.ads:45:13: warning: "Is_Search_Tree" is recursive; its body might not be available on recursive calls from contracts and assertions [contracts-recursive]
 red_black_trees.ads:48:31: info: precondition proved (CVC5: 1 VC)
 red_black_trees.ads:48:52: info: precondition proved (CVC5: 1 VC)
 red_black_trees.ads:49:40: info: precondition proved (CVC5: 1 VC)

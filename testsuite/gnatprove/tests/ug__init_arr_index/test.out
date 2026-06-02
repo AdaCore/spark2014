@@ -7,6 +7,12 @@
  info: justified that "A" might not be initialized
 --> init_arr_index.adb:5:36
 
+ info: index check proved
+--> init_arr_index.adb:5:38
+
+ info: range check proved
+--> init_arr_index.adb:11:15
+
  info: loop invariant initialization proved
 --> init_arr_index.adb:12:30
 

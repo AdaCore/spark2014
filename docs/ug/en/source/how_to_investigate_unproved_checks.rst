@@ -82,12 +82,15 @@ spot a missing assertion.
 
 A property can also be conceptually provable, but the model used by
 |GNATprove| can currently not reason about it [MODEL]. (See
-:ref:`GNATprove Limitations` for a list of the current limitations in
+:ref:`Proof Limitations` for a list of the current limitations in
 |GNATprove|.) In particular using the following features of the language
 may yield checks that should be true, but cannot be proved:
 
-* Floating point arithmetic
-* The specific value of dispatching calls when the tag is known
+* Floating point elementary operations, such as square root or trigonometric functions
+* References to the ``Value`` and ``Image`` attributes
+
+Most of these imprecisely supported features are associated with a warning that
+will be emitted if the ``--info`` switch is used.
 
 In the cases where no prover can prove the check, the missing information can
 usually be added using ``pragma Assume``.
@@ -136,6 +139,15 @@ GNATprove from GNATbench`). The level of 0 is only adequate for simple
 proofs. In general, one should increase the level of proof (up to level 4)
 until no more automatic proofs can be obtained.
 
+Note that increasing resource limits can only help if the check message
+indicates that a limit was actually reached (e.g. ``[provers reached time
+limit before completing the proof]``). If the message instead states that
+``[provers gave up before completing the proof]``, the provers stopped due to
+an internal heuristic rather than exhausting resources, and increasing limits
+will not lead to a proof. In that case, trying a different prover or proof
+strategy is more likely to help. See :ref:`Description of Messages` for
+details on these message suffixes.
+
 As described in the section about :ref:`Running GNATprove from the Command
 Line`, switch ``--level`` is equivalent to setting directly various lower
 level switches like ``--timeout``, ``--prover``, and ``--proof``. Hence, one
@@ -159,6 +171,10 @@ exponentiation).
 Another common limitation of automatic provers is that they don't handle
 non-linear arithmetic well. For example, they might fail to prove simple checks
 involving multiplication, division, modulo or exponentiation.
+
+Automatic provers are also not able to prove checks if they require
+:ref:`Mathematical Induction`. It happens for example when reasoning about
+recursive properties, like the sum of the elements of an array.
 
 In that case, a user may either:
 

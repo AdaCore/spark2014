@@ -1,10 +1,7 @@
-from test_support import cat, do_flow
 from glob import glob
+from test_support import cat, flow_gg
 
-do_flow(
-    opt=["--flow-show-gg", "--no-inlining"] + sorted(glob("*.ad[sb]")),
-    sort_output=False,
-)
+flow_gg()
 
 print("Generated global .gg contents:")
 for file in sorted(glob("gnatprove/*.gg")):

@@ -46,7 +46,8 @@ test_08.ads:23:09: info: invariant check proved on default value (CVC5: 1 VC)
 test_08_util.ads:3:13: info: implicit aspect Always_Terminates on "Is_Positive_Good" has been proved, subprogram will terminate
 test_08_util.ads:4:17: info: postcondition proved (CVC5: 2 VC)
 test_08_util.ads:6:13: info: implicit aspect Always_Terminates on "Is_Positive_Bad" has been proved, subprogram will terminate
-test_08_util.ads:6:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
+test_08_util.ads:6:13: warning: potentially missing contract for "Is_Positive_Bad" declared at line 6
+test_08_util.ads:6:13: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 test_08_util.ads:7:17: info: postcondition proved (CVC5: 2 VC)
 test_08_util.ads:9:13: info: implicit aspect Always_Terminates on "Is_Positive_Ugly" has been proved, subprogram will terminate
 test_08_util.ads:10:17: info: postcondition proved (CVC5: 2 VC)

@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2025, AdaCore                     --
+--                     Copyright (C) 2010-2026, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -173,8 +173,6 @@ package body Xkind_Ids is
             end if;
          end loop;
       end Print_Subtypes;
-
-   --  Start of processing for Print_Subtypes
 
    begin
       Kinds.Iterate (Process_One_Node_Kind'Access);

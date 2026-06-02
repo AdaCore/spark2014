@@ -1,0 +1,3 @@
+hello_world.adb:9:14: info: overflow check proved (CVC5: 4 VC)
+hello_world.adb:10:30: info: loop invariant initialization proved (CVC5: 1 VC)
+hello_world.adb:10:30: info: loop invariant preservation proved (CVC5: 1 VC)

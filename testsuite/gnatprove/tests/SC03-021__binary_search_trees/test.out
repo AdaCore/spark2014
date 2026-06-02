@@ -1,7 +1,7 @@
 binary_search.adb:18:13: info: implicit aspect Always_Terminates on "At_End_Borrow" has been proved, subprogram will terminate
 binary_search.adb:19:07: info: dynamic accessibility check proved
 binary_search.adb:23:13: info: implicit aspect Always_Terminates on "M_Contains" has been proved, subprogram will terminate
-binary_search.adb:23:13: warning: function contract might not be available on recursive calls [contracts-recursive]
+binary_search.adb:23:13: warning: "M_Contains" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 binary_search.adb:25:18: info: pointer dereference check proved
 binary_search.adb:25:32: info: subprogram variant proved
 binary_search.adb:25:45: info: pointer dereference check proved
@@ -9,7 +9,7 @@ binary_search.adb:25:63: info: subprogram variant proved
 binary_search.adb:25:76: info: pointer dereference check proved
 binary_search.adb:27:14: info: postcondition proved
 binary_search.adb:29:13: info: implicit aspect Always_Terminates on overriding operator "<" has been proved, subprogram will terminate
-binary_search.adb:29:13: warning: function contract might not be available on recursive calls [contracts-recursive]
+binary_search.adb:29:13: warning: "<" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 binary_search.adb:32:14: info: postcondition proved
 binary_search.adb:35:32: info: pointer dereference check proved
 binary_search.adb:35:42: info: subprogram variant proved
@@ -26,7 +26,7 @@ binary_search.adb:45:37: info: pointer dereference check proved
 binary_search.adb:45:47: info: subprogram variant proved
 binary_search.adb:45:52: info: pointer dereference check proved
 binary_search.adb:49:13: info: implicit aspect Always_Terminates on overriding operator "<" has been proved, subprogram will terminate
-binary_search.adb:49:13: warning: function contract might not be available on recursive calls [contracts-recursive]
+binary_search.adb:49:13: warning: "<" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 binary_search.adb:52:14: info: postcondition proved
 binary_search.adb:55:28: info: pointer dereference check proved
 binary_search.adb:55:42: info: subprogram variant proved
@@ -70,7 +70,7 @@ binary_search.adb:112:26: info: discriminant check proved
 binary_search.adb:115:13: info: implicit aspect Always_Terminates on overriding operator "<" has been proved, subprogram will terminate
 binary_search.adb:116:30: info: discriminant check proved
 binary_search.adb:122:13: info: implicit aspect Always_Terminates on "Size" has been proved, subprogram will terminate
-binary_search.adb:122:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+binary_search.adb:122:13: warning: "Size" is recursive; its implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 binary_search.adb:124:13: info: subprogram variant proved
 binary_search.adb:124:20: info: pointer dereference check proved
 binary_search.adb:124:42: info: overflow check proved
@@ -83,7 +83,7 @@ binary_search.adb:125:28: info: subprogram variant proved
 binary_search.adb:125:35: info: pointer dereference check proved
 binary_search.adb:125:43: info: overflow check proved
 binary_search.adb:130:13: info: implicit aspect Always_Terminates on "All_V" has been proved, subprogram will terminate
-binary_search.adb:130:13: warning: function contract might not be available on recursive calls [contracts-recursive]
+binary_search.adb:130:13: warning: "All_V" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 binary_search.adb:134:14: info: postcondition proved
 binary_search.adb:134:14: info: predicate check proved
 binary_search.adb:138:14: info: initialization of "S" proved

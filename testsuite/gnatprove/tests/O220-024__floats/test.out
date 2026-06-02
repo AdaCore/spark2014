@@ -1,7 +1,7 @@
-test_pack.adb:7:32: high: float overflow check might fail (e.g. when Measured = 7.2002554E+32 and Pid = (Desired => -3.4028164E+38, Error => 3.4028235E+38)) [reason for check: result of floating-point subtraction must be bounded] [provers reached step limit before completing the proof]
+test_pack.adb:7:32: high: float overflow check might fail (e.g. when Measured = 1.3344102E+36 and Pid = (Desired => -3.3894795E+38, Error => -3.3894795E+38)) [reason for check: result of floating-point subtraction must be bounded] [provers reached step limit before completing the proof]
 test_pack.ads:10:06: info: flow dependencies proved
-test_pack.ads:12:43: info: float overflow check proved (CVC5: 1 VC)
-test_pack.ads:14:42: info: float overflow check proved (CVC5: 1 VC)
+test_pack.ads:12:43: info: float overflow check proved (Z3: 1 VC)
+test_pack.ads:14:42: info: float overflow check proved (Z3: 1 VC)
 wibble.adb:6:12: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
 wibble.adb:6:12: info: types in unchecked conversion have the same size (Trivial)
 wibble.adb:6:12: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]

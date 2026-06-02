@@ -1,10 +1,10 @@
 test.adb:12:04: warning: analyzing unreferenced procedure "Call_P1" [unreferenced-procedure]
 test.adb:12:14: warning: subprogram "Call_P1" has no effect
-test.adb:14:07: medium: call might exit the program [provers gave up before completing the proof]
+test.adb:14:07: medium: call might exit the program [reason for check: "Call_P1" does not allow exiting the program] [provers gave up before completing the proof]
 test.adb:32:14: warning: subprogram "Call_F1_Ghost" has no effect
-test.adb:38:12: medium: call might exit the program [possible fix: you should consider adding a postcondition to function "F1" or turning it into an expression function in its unit spec] [provers gave up before completing the proof]
+test.adb:38:12: medium: call might exit the program [reason for check: ghost subprogram call shall not exit the program] [provers gave up before completing the proof]
 test.adb:41:04: warning: analyzing unreferenced procedure "Call_P2_No_Exit_OK" [unreferenced-procedure]
-test.adb:43:07: medium: call might exit the program [provers gave up before completing the proof]
+test.adb:43:07: medium: call might exit the program [reason for check: "Call_P2_No_Exit_OK" does not allow exiting the program] [provers gave up before completing the proof]
 test.adb:46:04: warning: analyzing unreferenced procedure "Call_P2_No_Exit_Bad" [unreferenced-procedure]
 test.adb:49:07: info: call cannot exit the program proved (CVC5: 1 VC)
 test.adb:55:22: info: program exit postcondition proved (CVC5: 1 VC)

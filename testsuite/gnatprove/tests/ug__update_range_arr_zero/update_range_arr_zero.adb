@@ -2,6 +2,7 @@ with Loop_Types; use Loop_Types;
 
 procedure Update_Range_Arr_Zero (A : in out Arr_T; First, Last : Index_T) with
   SPARK_Mode,
+  Pre  => First in A'Range and then Last in A'Range,
   Post => A = (A'Old with delta First .. Last => 0)
 is
 begin

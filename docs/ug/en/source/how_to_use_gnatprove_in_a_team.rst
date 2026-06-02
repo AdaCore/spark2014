@@ -562,7 +562,7 @@ gnatprove may output:
 
     "effects on parameters and global variables", "The subprogram does not read or write any other parameters or global variables than what is described in its spec (signature + data dependencies)."
     "absence of run-time errors", "The subprogram is free from run-time errors."
-    "the postcondition", "The postconditon of the subprogram holds after each call of the subprogram."
+    "the postcondition", "The postcondition of the subprogram holds after each call of the subprogram."
 
 Complete List of Assumptions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -686,6 +686,13 @@ of a program:
   Floating Point Operations` as defined in IEEE-754. The compiler, OS, and
   hardware should all be configured so that IEEE-754 semantics are respected.
 
+* [SPARK_UNCHECKED_CONVERSION]
+  Calls to instances of ``Unchecked_Conversion`` whose target subtype is an
+  access type should return valid pointers designating valid data that do not
+  alias with any other object visible in |SPARK|. The warning
+  `address-to-access-conversion` is guaranteed to be issued on calls to such
+  instances of ``Unchecked_Conversion``.
+
 * [SPARK_COMPILATION_SWITCHES]
   Compilation switches that change the behavior of the program should be the
   same between compilation and analysis. This is in particular the case for
@@ -701,6 +708,18 @@ of a program:
 
   * for any container object ``Container``, the iteration from
     ``First (Container)`` through the function ``Next`` shall reach a cursor
+    ``Cursor`` for which ``Has_Element (Container, Cursor)`` evaluates to
+    False in a finite number of steps.
+
+  In addition, if the ``Last`` and ``Previous`` functions are supplied:
+
+  * the function ``Has_Element`` shall be such that,
+    for any container object ``Container`` and cursor object ``Cursor``,
+    ``Has_Element (Container, Cursor)`` only evaluates to True if ``Cursor``
+    is accessible from ``Last (Container)`` using the function ``Previous``, and
+
+  * for any container object ``Container``, the iteration from
+    ``Last (Container)`` through the function ``Previous`` shall reach a cursor
     ``Cursor`` for which ``Has_Element (Container, Cursor)`` evaluates to
     False in a finite number of steps.
 
@@ -1028,6 +1047,15 @@ only part of a program:
   reading, or its value depends on an input which is volatile for reading as
   stated in a Depends contract. This is similar to the [ADA_OBJECT_ADDRESSES]
   rule for pointers hidden inside private types.
+
+* [ADA_AT_END_BORROW]
+  If an ``At_End_Borrow`` annotation is used on a function whose
+  implementation is not analyzed, yet called from SPARK code, the
+  implementation of this function should return an object that is logically
+  equal to its input parameter. See
+  :ref:`Annotation for Accessing the Logical Equality for a Type` for
+  information about the logical equality. Note
+  that this assumption does not apply to functions without any implementation.
 
 In addition, the following assumptions need to be addressed when calling
 GNATprove on only part of a SPARK program at a time (either on an individual

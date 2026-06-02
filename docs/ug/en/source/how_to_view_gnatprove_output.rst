@@ -101,7 +101,7 @@ We now explain the columns of the table.
   determined by the ``--prover`` command line switch) proves the most checks,
   because each prover is called only on those checks that were not previously
   proved. The prover percentages are provided in alphabetical order. The special
-  name ``Trivial`` is used to refer to an internal simplication that discards
+  name ``Trivial`` is used to refer to an internal simplification that discards
   checks that are trivially true.
 
 * The ``Justified`` column contains the number of checks for which the user has
@@ -145,6 +145,24 @@ Results in SARIF format
 |GNATprove| generates a result file ``gnatprove.sarif`` in the ``gnatprove``
 subdirectory of the object directory of the project. This file contains the
 analysis results in SARIF format.
+
+.. index:: --sarif-base-uri
+
+By default, source file locations in the SARIF report are expressed as paths
+relative to the root project directory, identified by the ``%SRCROOT%`` base
+URI. The ``run.originalUriBaseIds`` field in the report maps ``%SRCROOT%`` to
+the absolute path of that directory, which allows SARIF viewers to reconstruct
+full paths regardless of where the report file is opened.
+
+Switch ``--sarif-base-uri=ID:PATH`` adds a mapping from the identifier ``ID``
+to the absolute base path ``PATH`` in ``originalUriBaseIds``. Each source file
+location is then expressed relative to the longest matching base path, with the
+corresponding identifier recorded as its ``uriBaseId``. This switch can be
+repeated to declare several base URIs: for example, one for the project sources
+and another for a shared library. If ``--sarif-base-uri=%SRCROOT%:PATH`` is
+supplied, it overrides the default ``%SRCROOT%`` mapping. Source files that
+cannot be resolved to any declared base path are recorded as absolute
+``file://`` URIs.
 
 
 Categories of Messages
@@ -205,7 +223,7 @@ information about this, for example::
 It can be confusing to try to fix errors that come from later stages (e.g.
 proof) while errors in earlier stages are still present (e.g. in other units).
 Therefore we recommend a gradual approach, eliminating simpler errors before
-going to more advanced errors. This can be achieved by usind the ``--mode``
+going to more advanced errors. This can be achieved by using the ``--mode``
 switch, which is explained in detail in the next section.
 
 Effect of Mode on Output
@@ -223,7 +241,7 @@ for which ``SPARK_Mode`` is ``On``.
 In modes ``flow`` and ``prove``, this checking is done as a first phase.
 
 In mode ``flow``, |GNATprove| prints on the standard output messages for
-possible reads of uninitialized data, mismatches betwen the specified data
+possible reads of uninitialized data, mismatches between the specified data
 dependencies and flow dependencies and the implementation, and suspicious
 situations such as unused assignments and missing return statements. These
 messages are all based on flow analysis.
@@ -242,7 +260,12 @@ If switch ``--report=all``, ``--report=provers`` or ``--report=statistics`` is
 specified, |GNATprove| additionally prints on the standard output information
 messages for proved checks.
 
-
+When switch ``--report=provers`` is used, the information message for each
+proved check includes which provers were used to discharge the proof obligation.
+It also indicates whether the result was retrieved from a proof cache rather
+than computed fresh: either a session file (see :ref:`Sharing Proof Results with
+Others`) or a Memcached-based cache (see :ref:`Sharing Proof Results Via a
+Cache`).
 
 Description of Messages
 -----------------------
@@ -279,6 +302,20 @@ Effectiveness Program (`http://cwe.mitre.org/ <http://cwe.mitre.org/>`_). The
 current version of |GNATprove| is based on CWE version 3.2 released on January
 3, 2019.
 
+.. index:: check messages; prover status
+
+For unproved check messages, |GNATprove| may append additional information in
+square brackets explaining why the provers failed to complete the proof. The
+phrase ``[provers reached <limit> limit before completing the proof]``, where
+``<limit>`` is one or more of ``time``, ``step``, and ``memory`` (e.g.
+``[provers reached time and step limit before completing the proof]``),
+indicates that the provers consumed all allocated resources. The corresponding
+limits can be increased using switches ``--timeout``, ``--steps``, and
+``--memlimit`` respectively. The phrase ``[provers gave up before completing
+the proof]`` indicates that the provers stopped without reaching any resource
+limit, typically because a heuristic determined the goal is too difficult to
+pursue further; in this case, increasing resource limits will not help.
+
 .. index:: check messages; categories of messages
 
 .. toctree::
@@ -287,6 +324,8 @@ current version of |GNATprove| is based on CWE version 3.2 released on January
    proof_checks_table
    flow_checks_table
    misc_warnings_table
+   annotation_errors_table
+   violation_table
 
 Messages of a specific category or related to a specific CWE can be filtered
 inside GNAT Studio by typing the desired substring in the search bar of the
@@ -338,7 +377,7 @@ value of output parameter ``R``:
 
 .. literalinclude:: /examples/ug__counterex/test.out
    :language: none
-   :lines: 9-12
+   :lines: 10-15
 
 To limit the time spent trying to generate counterexamples, |GNATprove| sets a
 small timeout to prover cvc5 for generating counterexamples. It can be replaced
@@ -381,15 +420,15 @@ feasible execution of the program, in particular when using the switch
       :linenos:
 
    The counterexample generated by |GNATprove| in the first case shows that the
-   prover could deduce wrongly that ``X`` on ouput is 0 when its value is 1 on
+   prover could deduce wrongly that ``X`` on output is 0 when its value is 1 on
    input, due to a missing contract in the called function:
 
    .. literalinclude:: /examples/ug__counterex_unprovable/test.out
       :language: none
-      :lines: 12-24
+      :lines: 13-27
 
    Similarly, the counterexample generated by |GNATprove| in the second case
-   shows that the prover could deduce wrongly that ``X`` on ouput is -1 when its
+   shows that the prover could deduce wrongly that ``X`` on output is -1 when its
    value is 0 on input, due to a missing loop invariant in the executed loop.
 
 #. When some property cannot be proved due to prover shortcomings (see details
@@ -412,3 +451,12 @@ feasible execution of the program, in particular when using the switch
    subprogram, not only the path which corresponds to the feasible
    execution. One can rerun |GNATprove| with value ``progressive`` or
    ``per_path`` to separate possible execution paths in the counterexample.
+
+If `GNATtest
+<https://docs.adacore.com/live/wave/gnatdas/html/gnatdas_ug/gnattest/gnattest_part.html>`_
+and (optionally) `GNATfuzz
+<https://docs.adacore.com/live/wave/gnatdas/html/gnatdas_ug/gnatfuzz/gnatfuzz_part.html>`_
+are available on your PATH, it is possible to delegate the generation of
+counterexample candidates to these tools using GNAT Studio. See the section
+:ref:`Additional Functionalities for Counterexamples
+<counterexamples_and_gnattest>`.

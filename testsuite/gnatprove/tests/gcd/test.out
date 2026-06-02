@@ -56,7 +56,7 @@ math_simple.adb:12:17: info: range check proved (Z3: 2 VC)
 math_simple.ads:3:13: info: implicit aspect Always_Terminates on "Divides" has been proved, subprogram will terminate
 math_simple.ads:3:63: info: division check proved (Z3: 1 VC)
 math_simple.ads:5:13: info: implicit aspect Always_Terminates on "GCD" has been proved, subprogram will terminate
-math_simple.ads:6:14: info: postcondition proved (Z3: 3 VC)
+math_simple.ads:6:14: info: postcondition proved (CVC5: 1 VC; Z3: 2 VC)
 math_simple.ads:9:34: info: range check proved (Z3: 2 VC)
 math_simple.ads:9:53: info: range check proved (Z3: 2 VC)
 math_simple_abstract.adb:5:06: info: data dependencies proved
@@ -83,7 +83,7 @@ math_simple_abstract.adb:47:33: info: loop invariant preservation proved (Z3: 1 
 math_simple_abstract.adb:48:67: info: range check proved (Z3: 4 VC)
 math_simple_abstract.adb:48:86: info: range check proved (Z3: 4 VC)
 math_simple_abstract.adb:49:17: info: range check proved (Z3: 2 VC)
-math_simple_abstract.adb:52:07: info: precondition proved (Z3: 1 VC)
+math_simple_abstract.adb:52:07: info: precondition proved (altergo: 1 VC)
 math_simple_abstract.adb:53:07: info: precondition proved (Z3: 1 VC)
 math_simple_abstract.ads:3:13: info: implicit aspect Always_Terminates on "Divides" has been proved, subprogram will terminate
 math_simple_abstract.ads:7:13: info: implicit aspect Always_Terminates on "GCD" has been proved, subprogram will terminate
@@ -116,7 +116,7 @@ math_simple_half.adb:33:20: info: range check proved (Z3: 2 VC)
 math_simple_half.ads:3:13: info: implicit aspect Always_Terminates on "Divides" has been proved, subprogram will terminate
 math_simple_half.ads:3:63: info: division check proved (Z3: 1 VC)
 math_simple_half.ads:5:13: info: implicit aspect Always_Terminates on "GCD" has been proved, subprogram will terminate
-math_simple_half.ads:6:14: info: postcondition proved (Z3: 3 VC)
+math_simple_half.ads:6:14: medium: postcondition might fail, cannot prove Divides (GCD'Result, A) [provers reached step limit before completing the proof]
 math_simple_half.ads:9:34: info: range check proved (Z3: 2 VC)
 math_simple_half.ads:9:53: info: range check proved (Z3: 2 VC)
 math_wrong.ads:3:13: info: implicit aspect Always_Terminates on "Divides" has been proved, subprogram will terminate

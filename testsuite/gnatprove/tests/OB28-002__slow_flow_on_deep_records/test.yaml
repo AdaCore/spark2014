@@ -1,2 +1,2 @@
 prove_all:
-  opt: ["-P", "iommu.gpr"]
+  project: iommu.gpr

@@ -1,8 +1,8 @@
 arr_equal.adb:7:22: high: assertion might fail (e.g. when A = (0 => 42)) [possible fix: subprogram at arr_equal.ads:5 should mention A in a precondition] [provers reached step limit before completing the proof]
-arr_equal.adb:16:22: high: assertion might fail (e.g. when A = (0 => 0, others => -2) and A'First = -2 and A'Last = 0) [possible fix: precondition of subprogram at arr_equal.ads:7 should mention A] [provers reached step limit before completing the proof]
+arr_equal.adb:16:22: high: assertion might fail (e.g. when A = (-1 => 1, 0 => -1, 1 => 0)) [possible fix: precondition of subprogram at arr_equal.ads:7 should mention A] [provers reached step limit before completing the proof]
 arr_equal.adb:25:22: high: assertion might fail (e.g. when A = (0 => 0, others => -2) and A'First = -2 and A'Last = 0) [possible fix: precondition of subprogram at arr_equal.ads:10 should mention A] [provers reached step limit before completing the proof]
-arr_equal.adb:34:22: high: assertion might fail (e.g. when A = (0 => 2, others => 3) and A'First = -2 and A'Last = 0) [possible fix: precondition of subprogram at arr_equal.ads:13 should mention A] [provers reached step limit before completing the proof]
-arr_equal.adb:43:22: high: assertion might fail (e.g. when A = (0 => 2, others => -2) and A'First = -2 and A'Last = 0) [possible fix: precondition of subprogram at arr_equal.ads:16 should mention A] [provers reached step limit before completing the proof]
+arr_equal.adb:34:22: high: assertion might fail (e.g. when A = (3 => 2, others => 1) and A'First = 1 and A'Last = 3) [possible fix: precondition of subprogram at arr_equal.ads:13 should mention A] [provers reached step limit before completing the proof]
+arr_equal.adb:43:22: high: assertion might fail (e.g. when A = (-1 => 0, 0 => 2, 1 => 1)) [possible fix: precondition of subprogram at arr_equal.ads:16 should mention A] [provers reached step limit before completing the proof]
 arr_equal.adb:59:22: high: assertion might fail (e.g. when A = (-6 => 2, 2 => 3, 3 => 3, others => 1) and A'First = -7 and A'Last = 3) [possible fix: precondition of subprogram at arr_equal.ads:19 should mention A] [provers reached step limit before completing the proof]
 arr_equal.ads:5:13: info: implicit aspect Always_Terminates on "Empty" has been proved, subprogram will terminate
 arr_equal.ads:7:13: info: implicit aspect Always_Terminates on "All_Same_Values" has been proved, subprogram will terminate
@@ -45,20 +45,20 @@ counterexample expected for check at arr_equal.adb:7
   trace at arr_equal.ads:5 --> A = (0 => 42)
 counterexample expected for check at arr_equal.adb:16
   trace at arr_equal.adb:14 --> B = False
-  trace at arr_equal.adb:16 --> A = (0 => 0, others => -2) and A'First = -2 and A'Last = 0
-  trace at arr_equal.ads:7 --> A = (0 => 0, others => -2) and A'First = -2 and A'Last = 0
+  trace at arr_equal.adb:16 --> A = (-1 => 1, 0 => -1, 1 => 0)
+  trace at arr_equal.ads:7 --> A = (-1 => 1, 0 => -1, 1 => 0)
 counterexample expected for check at arr_equal.adb:25
   trace at arr_equal.adb:23 --> B = False
   trace at arr_equal.adb:25 --> A = (0 => 0, others => -2) and A'First = -2 and A'Last = 0
   trace at arr_equal.ads:10 --> A = (0 => 0, others => -2) and A'First = -2 and A'Last = 0
 counterexample expected for check at arr_equal.adb:34
   trace at arr_equal.adb:32 --> B = False
-  trace at arr_equal.adb:34 --> A = (0 => 2, others => 3) and A'First = -2 and A'Last = 0
-  trace at arr_equal.ads:13 --> A = (0 => 2, others => 3) and A'First = -2 and A'Last = 0
+  trace at arr_equal.adb:34 --> A = (3 => 2, others => 1) and A'First = 1 and A'Last = 3
+  trace at arr_equal.ads:13 --> A = (3 => 2, others => 1) and A'First = 1 and A'Last = 3
 counterexample expected for check at arr_equal.adb:43
   trace at arr_equal.adb:41 --> B = False
-  trace at arr_equal.adb:43 --> A = (0 => 2, others => -2) and A'First = -2 and A'Last = 0
-  trace at arr_equal.ads:16 --> A = (0 => 2, others => -2) and A'First = -2 and A'Last = 0
+  trace at arr_equal.adb:43 --> A = (-1 => 0, 0 => 2, 1 => 1)
+  trace at arr_equal.ads:16 --> A = (-1 => 0, 0 => 2, 1 => 1)
 counterexample expected for check at arr_equal.adb:59
   trace at arr_equal.adb:57 --> B = False
   trace at arr_equal.adb:59 --> A = (-6 => 2, 2 => 3, 3 => 3, others => 1) and A'First = -7 and A'Last = 3

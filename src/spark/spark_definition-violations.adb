@@ -6,8 +6,8 @@
 --                                                                          --
 --                                  B o d y                                 --
 --                                                                          --
---                     Copyright (C) 2020-2025, AdaCore                     --
---              Copyright (C) 2014-2025, Capgemini Engineering              --
+--                     Copyright (C) 2020-2026, AdaCore                     --
+--              Copyright (C) 2014-2026, Capgemini Engineering              --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -24,11 +24,13 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Namet;    use Namet;
-with Restrict; use Restrict;
-with Rident;   use Rident;
-with Sem_Prag; use Sem_Prag;
-with Tbuild;   use Tbuild;
+with Ada.Characters.Handling;   use Ada.Characters.Handling;
+with Namet;                     use Namet;
+with Restrict;                  use Restrict;
+with Rident;                    use Rident;
+with Sem_Prag;                  use Sem_Prag;
+with Tbuild;                    use Tbuild;
+with SPARK_Definition.Annotate; use SPARK_Definition.Annotate;
 
 package body SPARK_Definition.Violations is
 
@@ -100,8 +102,6 @@ package body SPARK_Definition.Violations is
             end if;
          end Same_Unit;
 
-         --  Start of processing for Restriction_No_Dependence
-
       begin
          --  Loop to look for entry
 
@@ -129,8 +129,6 @@ package body SPARK_Definition.Violations is
       Parent_Unit : Node_Id;
       Child_Unit  : Node_Id;
       --  For constructing names of restricted units
-
-      --  Start of processing for GNATprove_Tasking_Profile
 
    begin
       if Ravenscar_Profile_Cached then
@@ -251,17 +249,103 @@ package body SPARK_Definition.Violations is
       end if;
    end GNATprove_Tasking_Profile;
 
+   -------------------------
+   -- Mark_Force_Violation --
+   -------------------------
+
+   procedure Mark_Force_Violation
+     (E : Entity_Id; Reason : Message := No_Message) is
+   begin
+      --  If E is not in SPARK, force violation
+
+      if Emit_Messages and then not Entity_In_SPARK (E) then
+         declare
+            Root_Cause : constant String := Get_Violation_Root_Cause (E);
+            Root_Msg   : constant String :=
+              (if Root_Cause = "" then "" else " (due to " & Root_Cause & ")");
+            Conts      : Message_Lists.List := Message_Lists.Empty;
+         begin
+            if Reason /= No_Message then
+               Conts.Append (Reason);
+            end if;
+            Error_Msg_N
+              (Create ("& is not allowed in SPARK" & Root_Msg, Names => [E]),
+               E,
+               Tag           => "use-of-rejected-entity",
+               First         => True,
+               Continuations => Conts);
+         end;
+      end if;
+   end Mark_Force_Violation;
+
+   --------------------------------------
+   -- Mark_Incorrect_Use_Of_Annotation --
+   --------------------------------------
+
+   procedure Mark_Incorrect_Use_Of_Annotation
+     (Kind        : Incorrect_Annotation_Kind;
+      N           : Node_Id;
+      Msg         : String := "";
+      From_Aspect : Boolean := False;
+      Name        : GNATprove_Annotation_Kind := Unknown_Annotation;
+      Snd_Name    : String := "";
+      Names       : Node_Lists.List := Node_Lists.Empty;
+      Cont_Msg    : Message := No_Message)
+   is
+      Error_Msg  : constant String :=
+        (if Msg /= ""
+         then Msg
+         else
+           Incorrect_Annotation_Message (Kind, From_Aspect, Name, Snd_Name));
+      Annot_Kind : constant GNATprove_Annotation_Kind :=
+        (if Name /= Unknown_Annotation
+         then Name
+         elsif Kind in Specific_Annotation_Kind
+         then Annotation_From_Error_Kind (Kind)
+         else Unknown_Annotation);
+      Tag        : constant String :=
+        (if Annot_Kind in Supported_Annotations
+         then Annotation_Tag (Annot_Kind)
+         else "incorrect-use-of-annotation");
+   begin
+      --  Flag the violation, so that the current entity is marked
+      --  accordingly.
+
+      Violation_Detected := True;
+
+      --  Define the root cause
+
+      if Emit_Messages then
+         Add_Violation_Root_Cause
+           (N,
+            Msg => "incorrect use of " & Annot_To_String (Kind, Name => Name));
+      end if;
+
+      --  If SPARK_Mode is On or if we are traversing delayed annotations,
+      --  raise an error.
+
+      if Emit_Messages
+        and then (In_Delayed_Annotation or else SPARK_Pragma_Is (Opt.On))
+      then
+         Error_Msg_N
+           (Create (Error_Msg, Names => Names),
+            N,
+            Tag           => Tag,
+            Continuations =>
+              (if Cont_Msg = No_Message then [] else [Cont_Msg]));
+      end if;
+   end Mark_Incorrect_Use_Of_Annotation;
+
    ----------------------
    -- Mark_Unsupported --
    ----------------------
 
    procedure Mark_Unsupported
-     (Kind           : Unsupported_Kind;
-      N              : Node_Id;
-      Names          : Node_Lists.List := Node_Lists.Empty;
-      Name           : String := "";
-      Cont_Msg       : Message := No_Message;
-      Root_Cause_Msg : String := "")
+     (Kind     : Unsupported_Kind;
+      N        : Node_Id;
+      Names    : Node_Lists.List := Node_Lists.Empty;
+      Name     : String := "";
+      Cont_Msg : Message := No_Message)
    is
       Msg : constant String := Unsupported_Message (Kind, Name);
    begin
@@ -274,7 +358,7 @@ package body SPARK_Definition.Violations is
 
       if Emit_Messages then
          Add_Violation_Root_Cause
-           (N, Msg => (if Root_Cause_Msg /= "" then Root_Cause_Msg else Msg));
+           (N, Msg => Unsupported_Message (Kind, Root_Cause => True));
       end if;
 
       --  If SPARK_Mode is On, raise an error
@@ -283,6 +367,7 @@ package body SPARK_Definition.Violations is
          Error_Msg_N
            (Create (Msg & " is not yet supported", Names => Names),
             N,
+            Tag           => "unsupported-" & Unsupported_Kind_Name (Kind),
             Continuations =>
               (if Cont_Msg /= No_Message then [Cont_Msg] else []));
       end if;
@@ -293,14 +378,14 @@ package body SPARK_Definition.Violations is
    --------------------
 
    procedure Mark_Violation
-     (Msg            : String;
-      N              : Node_Id;
-      Names          : Node_Lists.List := Node_Lists.Empty;
-      Code           : Explain_Code_Kind := EC_None;
-      SRM_Reference  : String := "";
-      Cont_Msg       : String := "";
-      Root_Cause_Msg : String := "")
+     (Kind     : Violation_Kind;
+      N        : Node_Id;
+      Msg      : String := "";
+      Names    : Node_Lists.List := Node_Lists.Empty;
+      Cont_Msg : String := "")
    is
+      SRM_Ref  : constant String := SRM_Reference (Kind);
+      Code     : constant Explain_Code_Kind := Explain_Code (Kind);
       Full_Msg : Unbounded_String;
    begin
       --  Flag the violation, so that the current entity is marked
@@ -308,20 +393,24 @@ package body SPARK_Definition.Violations is
 
       Violation_Detected := True;
 
-      --  Define the root cause
+      --  Define the root cause. Do not use the Msg even if it is given, as it
+      --  might contain references to elements in Names.
 
       if Emit_Messages then
          Add_Violation_Root_Cause
-           (N, Msg => (if Root_Cause_Msg /= "" then Root_Cause_Msg else Msg));
+           (N, Msg => Violation_Message (Kind, Root_Cause => True));
       end if;
 
       --  If SPARK_Mode is On, raise an error
 
       if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
-         Full_Msg := To_Unbounded_String (Msg & " is not allowed in SPARK");
+         Full_Msg :=
+           To_Unbounded_String
+             (if Msg /= "" then Msg else Violation_Message (Kind))
+           & " is not allowed in SPARK";
 
-         if SRM_Reference /= "" then
-            Full_Msg := Full_Msg & " (" & SRM_Reference & ")";
+         if SRM_Ref /= "" then
+            Full_Msg := Full_Msg & " (" & SRM_Ref & ")";
          end if;
 
          declare
@@ -334,7 +423,12 @@ package body SPARK_Definition.Violations is
                Conts.Append (Create (Cont_Msg));
             end if;
             Conts.Append (Mark_Violation_Of_SPARK_Mode);
-            Error_Msg_N (Mess, N, First => True, Continuations => Conts);
+            Error_Msg_N
+              (Mess,
+               N,
+               Tag           => "violation-" & Violation_Kind_Name (Kind),
+               First         => True,
+               Continuations => Conts);
          end;
       end if;
    end Mark_Violation;
@@ -370,6 +464,7 @@ package body SPARK_Definition.Violations is
               (Create
                  ("& is not allowed in SPARK" & Root_Msg, Names => [From]),
                N,
+               Tag           => Violation_Tag (Vio_Use_Of_Rejected_Entity),
                First         => True,
                Continuations => Conts);
          end;
@@ -401,12 +496,14 @@ package body SPARK_Definition.Violations is
             Error_Msg_N
               (Create (Msg_Prefix & "Ravenscar profile" & Msg_Suffix),
                N,
+               Tag           => Violation_Tag (Vio_Tasking_Configuration),
                First         => True,
                Continuations => [Mark_Violation_Of_SPARK_Mode]);
          elsif not Sequential_Elaboration then
             Error_Msg_N
               (Create (Msg_Prefix & "sequential elaboration" & Msg_Suffix),
                N,
+               Tag           => Violation_Tag (Vio_Tasking_Configuration),
                First         => True,
                Continuations => [Mark_Violation_Of_SPARK_Mode]);
          end if;

@@ -53,8 +53,7 @@ test.adb:91:17: info: postcondition proved (CVC5: 1 VC)
 test.adb:94:16: info: implicit aspect Always_Terminates on "Length_Rec" has been proved, subprogram will terminate
 test.adb:97:16: info: implicit aspect Always_Terminates on "Eq_Elem" has been proved, subprogram will terminate
 test.adb:112:16: info: implicit aspect Always_Terminates on "Length_Rec" has been proved, subprogram will terminate
-test.adb:112:16: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
-test.adb:112:16: warning: function contract might not be available on recursive calls [contracts-recursive]
+test.adb:112:16: warning: "Length_Rec" is recursive; its body and contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 test.adb:115:17: info: postcondition proved (CVC5: 1 VC)
 test.adb:117:17: info: implicit aspect Always_Terminates on "Lemma_Length_Empty" has been proved, subprogram will terminate
 test.adb:120:69: info: range check proved (CVC5: 2 VC)
@@ -102,10 +101,10 @@ test.adb:207:39: info: precondition proved (CVC5: 1 VC)
 test.adb:207:44: medium: resource or memory leak might occur [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
 test.adb:209:16: info: implicit aspect Always_Terminates on "Has_Key" has been proved, subprogram will terminate
 test.adb:213:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
-test.adb:213:16: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+test.adb:213:16: warning: "Get" is recursive; its implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 test.adb:218:16: info: implicit aspect Always_Terminates on "Eq_Key" has been proved, subprogram will terminate
 test.adb:223:16: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
-test.adb:223:16: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+test.adb:223:16: warning: "Length" is recursive; its implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 test.adb:243:43: info: pointer dereference check proved (CVC5: 1 VC)
 test.adb:243:56: info: subprogram variant proved (Trivial)
 test.adb:243:66: info: pointer dereference check proved (CVC5: 1 VC)
@@ -130,7 +129,7 @@ test.adb:283:17: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC)
 test.adb:286:44: medium: resource or memory leak might occur [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
 test.adb:288:16: info: implicit aspect Always_Terminates on "Default_Value" has been proved, subprogram will terminate
 test.adb:291:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
-test.adb:291:16: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+test.adb:291:16: warning: "Get" is recursive; its implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 test.adb:295:16: info: implicit aspect Always_Terminates on "Eq_Key" has been proved, subprogram will terminate
 test.adb:314:40: info: pointer dereference check proved (CVC5: 1 VC)
 test.adb:314:51: info: pointer dereference check proved (CVC5: 1 VC)

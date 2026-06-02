@@ -1,0 +1,13 @@
+=== no switch ===
+%SRCROOT%
+%SRCROOT% src/sarif_test.adb
+=== MYROOT ===
+%SRCROOT%
+MYROOT
+%SRCROOT% src/sarif_test.adb
+=== SRCDIR ===
+%SRCROOT%
+SRCDIR
+SRCDIR sarif_test.adb
+=== explicit %SRCROOT% ===
+%SRCROOT%

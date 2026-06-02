@@ -36,7 +36,11 @@ def edit_file():
 print("=======================================")
 # This is used to create a .v file but fails because the coq proof is not done
 prove_all(
-    opt=["--prover=coq", "--limit-line=lemmas.ads:15:14:VC_POSTCONDITION"],
+    opt=[
+        "--prover=coq",
+        "--limit-line=lemmas.ads:15:14:VC_POSTCONDITION",
+        "-XRUN=2",
+    ],
     steps=None,
     counterexample=False,
     filter_output=".*Grammar extension",
