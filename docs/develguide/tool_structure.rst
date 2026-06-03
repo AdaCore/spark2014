@@ -313,8 +313,8 @@ SARIF as follows:
    ``warn_error`` arrays.
  - The ``message`` field is copied into a SARIF message object, including
    message arguments when placeholders were present in the original diagnostic.
- - ``reasonForCheck`` is emitted as the custom SARIF property
-   ``gnatprove/reasonForCheck`` when available.
+ - ``reasonForCheck`` is emitted in the custom SARIF property bag as
+   ``gnatprove.reasonForCheck`` when available.
  - The ``suppressed`` field becomes a SARIF suppression.
  - ``relatedLocations`` entries are preserved as SARIF related locations.
  - The JSON ``entity`` field is turned into a SARIF logical location naming
@@ -350,8 +350,8 @@ as their primary purpose, rather than relying on the textual CLI output as a
 proxy. The helper routines in
 ``testsuite/gnatprove/lib/python/test_support.py`` provide common accessors for
 loading the report, iterating over SARIF results, and extracting custom
-properties such as ``gnatprove/reasonForCheck`` or artifact-location base-URI
-data.
+properties such as ``gnatprove.reasonForCheck`` or
+artifact-location base-URI data.
 
 When a SARIF field is also expected to appear in the CLI output, such a test
 may add a secondary CLI check. In that case, ``test.out`` should print the

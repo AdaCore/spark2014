@@ -458,10 +458,23 @@ def find_sarif_results(cwd=None, rule_id=None, predicate=None, index=0):
     return matching_results
 
 
-def sarif_result_property(result, name, default=None):
-    """Return a custom SARIF result property."""
+def sarif_result_property(result, name, parent=None):
+    """Return a custom SARIF result property.
 
-    return result.get("properties", {}).get(name, default)
+    If parent is None, look up name directly in the SARIF result properties.
+    Otherwise, first look up the top-level parent property and then look for
+    name inside it.
+    """
+
+    properties = result.get("properties", {})
+    if parent is None:
+        return properties.get(name, None)
+
+    parent_property = properties.get(parent, None)
+    if not isinstance(parent_property, dict):
+        return None
+
+    return parent_property.get(name, None)
 
 
 def iter_sarif_artifact_locations(result):

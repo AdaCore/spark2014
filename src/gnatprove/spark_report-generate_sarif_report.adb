@@ -171,16 +171,26 @@ is
 
    function Properties (V : JSON_Value) return Optional_propertyBag is
       use VSS.JSON.Streams;
-      Extra : Any_Object;
+      Extra     : Any_Object;
+      Gnatprove : Any_Object;
    begin
       if Has_Field (V, "reasonForCheck") then
          Extra.Append
+           ((Kind => Key_Name, Key_Name => To_Virtual_String ("gnatprove")));
+         Extra.Append ((Kind => Start_Object));
+
+         Gnatprove.Append
            ((Kind     => Key_Name,
-             Key_Name => To_Virtual_String ("gnatprove/reasonForCheck")));
-         Extra.Append
+             Key_Name => To_Virtual_String ("reasonForCheck")));
+         Gnatprove.Append
            ((Kind         => String_Value,
              String_Value =>
                To_Virtual_String (UTF8_String'(Get (V, "reasonForCheck")))));
+
+         for Item of Gnatprove loop
+            Extra.Append (Item);
+         end loop;
+         Extra.Append ((Kind => End_Object));
 
          return
            (Is_Set => True,

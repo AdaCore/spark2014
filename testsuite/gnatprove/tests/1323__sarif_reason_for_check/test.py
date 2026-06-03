@@ -5,20 +5,27 @@ from test_support import (
 )
 
 EXPECTED = "result of addition must fit in a 32-bits machine integer"
-PROPERTY = "gnatprove/reasonForCheck"
+PARENT_PROPERTY = "gnatprove"
+CHILD_PROPERTY = "reasonForCheck"
 
 output = capture_prove_all()
 
 if "[reason for check: " + EXPECTED + "]" not in output:
-    print("Missing CLI reasonForCheck:", EXPECTED)
+    print(f"Missing CLI {CHILD_PROPERTY}:", EXPECTED)
 else:
-    print("CLI reasonForCheck:", EXPECTED)
+    print(f"CLI {CHILD_PROPERTY}:", EXPECTED)
 
 for result in find_sarif_results(
     rule_id="VC_OVERFLOW_CHECK",
-    predicate=lambda item: sarif_result_property(item, PROPERTY) == EXPECTED,
+    predicate=lambda item: sarif_result_property(
+        item, CHILD_PROPERTY, parent=PARENT_PROPERTY
+    )
+    == EXPECTED,
 ):
-    print("SARIF reasonForCheck:", sarif_result_property(result, PROPERTY))
+    print(
+        f"SARIF {CHILD_PROPERTY}:",
+        sarif_result_property(result, CHILD_PROPERTY, parent=PARENT_PROPERTY),
+    )
     break
 else:
-    print("Missing SARIF reasonForCheck:", EXPECTED)
+    print(f"Missing SARIF {CHILD_PROPERTY}:", EXPECTED)
