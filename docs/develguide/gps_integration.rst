@@ -2,6 +2,15 @@
 GNAT Studio Integration
 #######################
 
+..
+   devguide-meta:
+   covers: GNAT Studio plugin behavior, proof panel integration, and IDE
+   command-line plumbing
+   primary_code: src/gnatprove/ GNAT Studio integration paths, integration
+   tests
+   when_to_read: changes to GNAT Studio menus, options, workflows, or IDE
+   result display
+
 GNAT Studio is the richest of the two IDE integrations, with some features not
 available on the command-line of in GNATbench. It has unique features for
 launching a GNATprove analysis and for displaying the results.

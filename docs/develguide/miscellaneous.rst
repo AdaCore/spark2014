@@ -2,6 +2,14 @@
 Miscellaneous
 #############
 
+..
+   devguide-meta:
+   covers: developer topics that do not fit other chapters, currently the
+   integration testsuite notes
+   primary_code: testsuite/, external integration tooling
+   when_to_read: changes to documented developer procedures that are outside
+   the main analysis pipeline
+
 This part reference documentation for specific part that are not directly
 gnatprove but that are useful to developers.
 

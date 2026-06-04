@@ -1,6 +1,7 @@
 helpers.ads:15:54: info: division check proved (CVC5: 1 VC)
 helpers.ads:17:13: info: implicit aspect Always_Terminates on "fpeek" has been proved, subprogram will terminate
 helpers.ads:17:20: warning: unused variable "stream"
+helpers.ads:18:66: info: range check proved (CVC5: 2 VC)
 helpers.ads:25:13: info: implicit aspect Always_Terminates on "No_Char_In_Slice" has been proved, subprogram will terminate
 helpers.ads:26:47: info: index check proved (CVC5: 2 VC)
 helpers.ads:33:13: info: implicit aspect Always_Terminates on "Has_Char_In_Slice" has been proved, subprogram will terminate

@@ -1,3 +1,27 @@
+------------------------------------------------------------------------------
+--                                                                          --
+--                            GNAT2WHY COMPONENTS                           --
+--                                                                          --
+--                        E R R O U T _ W R A P P E R                       --
+--                                                                          --
+--                                 S p e c                                  --
+--                                                                          --
+--              Copyright (C) 2014-2026, Capgemini Engineering              --
+--                     Copyright (C) 2014-2026, AdaCore                     --
+--                                                                          --
+-- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
+-- under terms of the  GNU General Public License as published  by the Free --
+-- Software  Foundation;  either version 3,  or (at your option)  any later --
+-- version.  gnat2why is distributed  in the hope that  it will be  useful, --
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of  MERCHAN- --
+-- TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public --
+-- License for  more details.  You should have  received  a copy of the GNU --
+-- General  Public License  distributed with  gnat2why;  see file COPYING3. --
+-- If not,  go to  http://www.gnu.org/licenses  for a complete  copy of the --
+-- license.                                                                 --
+--                                                                          --
+------------------------------------------------------------------------------
+
 with Ada.Containers.Indefinite_Doubly_Linked_Lists;
 with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
 with Common_Containers;         use Common_Containers;
@@ -57,7 +81,7 @@ package Errout_Wrapper is
       case Suppression_Kind is
          when Check =>
             Msg           : String_Id;
-            Annot_Kind    : Annotate_Kind;
+            Annot_Kind    : Check_Annotate_Kind;
             Justification : Unbounded_String;
 
          when others =>
@@ -120,6 +144,7 @@ package Errout_Wrapper is
       Stats         : Prover_Stat_Maps.Map;
       Unproved_Stat : Failed_Prover_Answer := FPA_Unknown_Rec;
       Editor_Cmd    : Unbounded_String;
+      Cache_Status  : JSON_Value := Create_Object;
    end record
    with
      Predicate =>
@@ -167,7 +192,8 @@ package Errout_Wrapper is
       Kind          : Msg_Severity := Error_Kind;
       First         : Boolean := False;
       Continuations : Message_Lists.List := Message_Lists.Empty;
-      Error_Entry   : Boolean := True);
+      Error_Entry   : Boolean := True;
+      Tag           : String := "unknown-error");
    --  Issue a message using Kind as the message type. If First is True, locate
    --  the message at the start of the sloc range of the node, otherwise at the
    --  sloc of the node. Continuations are issued at the same location.
@@ -194,6 +220,19 @@ package Errout_Wrapper is
       Continuations : Message_Lists.List := Message_Lists.Empty;
       Error_Entry   : Boolean := True);
    --  Same as Error_Msg_N but accepts a Source_Span as location
+
+   procedure Error_Msg_N
+     (Kind          : Error_Message_Kind;
+      N             : Node_Id;
+      Msg           : String := "";
+      Names         : Node_Lists.List := Node_Lists.Empty;
+      Secondary_Loc : Source_Ptr := No_Location;
+      Explain_Code  : Explain_Code_Kind := EC_None;
+      First         : Boolean := False;
+      Continuations : String_Lists.List := String_Lists.Empty)
+   with Pre => Kind not in Unsupported_Kind | Violation_Kind;
+   --  Similar to Error_Msg_N, but uses the Error_Kind to generate the
+   --  message text.
 
    --  TODO overload with other warning kinds (VC and flow)
 
@@ -225,12 +264,9 @@ package Errout_Wrapper is
       Msg : String;
       F1  : Flow_Id := Null_Flow_Id;
       F2  : Flow_Id := Null_Flow_Id;
-      F3  : Flow_Id := Null_Flow_Id) return String_Id;
+      F3  : Flow_Id := Null_Flow_Id) return Boolean;
    --  Check if the warning for the given node, message and flow id is
-   --  suppressed. If the function returns No_String, the warning is not
-   --  suppressed. If it returns Null_String_Id the warning is suppressed,
-   --  but no reason has been given. Otherwise, the String_Id of the reason
-   --  is provided.
+   --  suppressed.
 
    function Tag_Suffix (Kind : Misc_Warning_Kind) return String;
    --  If the option is set to print the tag for each warning message, then
@@ -240,6 +276,12 @@ package Errout_Wrapper is
 
    function Escape (S : String) return String;
    --  Escape the special characters # and & in the error message
+
+   procedure Add_Frontend_Messages;
+   --  Snapshot all frontend messages that Errout has accumulated before the
+   --  gnat2why backend starts, and add them to Warnings_Errors so that they
+   --  appear in SARIF output. Must be called before any backend message is
+   --  emitted.
 
    function Compilation_Errors return Boolean
    renames Errout.Compilation_Errors;

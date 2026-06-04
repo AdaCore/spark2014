@@ -1,5 +1,5 @@
-foo.adb:6:34: error: aspect Annotate Ownership must immediately follow the  private declaration of type "T"
-foo.adb:12:34: error: aspect Annotate Predefined_Equality must immediately follow the  private declaration of type "T"
-foo.adb:15:30: error: aspect Annotate No_Wrap_Around must immediately follow the full type declaration of type "T"
-foo.adb:20:30: error: aspect Annotate No_Bitwise_Operations must immediately follow the full type declaration of type "T"
+foo.adb:15:30: error: aspect "Annotate => (GNATprove, No_Wrap_Around[, ...])" must immediately follow the full type declaration of type "T"
+foo.adb:15:30: error: incorrect placement for aspect "Annotate => (GNATprove, No_Wrap_Around[, ...])"
+foo.adb:20:30: error: aspect "Annotate => (GNATprove, No_Bitwise_Operations[, ...])" must immediately follow the full type declaration of type "T"
+foo.adb:20:30: error: incorrect placement for aspect "Annotate => (GNATprove, No_Bitwise_Operations[, ...])"
 gnatprove: error during flow analysis and proof

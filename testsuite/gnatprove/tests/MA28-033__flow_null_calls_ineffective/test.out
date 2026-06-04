@@ -2,45 +2,61 @@ p.adb:7:19: info: initialization of "D" proved
 p.adb:8:11: info: data dependencies proved
 p.adb:9:11: info: flow dependencies proved
 p.adb:12:14: medium: overflow check might fail, cannot prove upper bound for A + Boolean'Pos (B) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Boolean'Pos >= 0 then A <= Integer'Last - Boolean'Pos else A >= Integer'First - Boolean'Pos) to subprogram at line 4] [provers gave up before completing the proof]
+p.adb:12:23: info: range check proved (CVC5: 2 VC)
 p.adb:12:32: medium: overflow check might fail, cannot prove upper bound for A + Boolean'Pos (B) + Character'Pos (C) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Character'Pos >= 0 then A + Boolean'Pos (B) <= Integer'Last - Character'Pos else A + Boolean'Pos (B) >= Integer'First - Character'Pos) to subprogram at line 4] [provers gave up before completing the proof]
+p.adb:12:43: info: range check proved (CVC5: 2 VC)
 p.adb:19:19: info: initialization of "D" proved
 p.adb:20:11: info: data dependencies proved
 p.adb:21:11: info: flow dependencies proved
 p.adb:24:14: medium: overflow check might fail, cannot prove upper bound for A + Boolean'Pos (B) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Boolean'Pos >= 0 then A <= Integer'Last - Boolean'Pos else A >= Integer'First - Boolean'Pos) to subprogram at line 16] [provers gave up before completing the proof]
+p.adb:24:23: info: range check proved (CVC5: 2 VC)
 p.adb:24:32: medium: overflow check might fail, cannot prove upper bound for A + Boolean'Pos (B) + Character'Pos (C) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Character'Pos >= 0 then A + Boolean'Pos (B) <= Integer'Last - Character'Pos else A + Boolean'Pos (B) >= Integer'First - Character'Pos) to subprogram at line 16] [provers gave up before completing the proof]
+p.adb:24:43: info: range check proved (CVC5: 2 VC)
 p.adb:34:19: info: initialization of "D" proved
 p.adb:35:11: info: data dependencies proved
 p.adb:36:11: info: flow dependencies proved
 p.adb:39:14: medium: overflow check might fail, cannot prove upper bound for A + Boolean'Pos (B) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Boolean'Pos >= 0 then A <= Integer'Last - Boolean'Pos else A >= Integer'First - Boolean'Pos) to subprogram at line 31] [provers gave up before completing the proof]
+p.adb:39:23: info: range check proved (CVC5: 2 VC)
 p.adb:39:32: medium: overflow check might fail, cannot prove upper bound for A + Boolean'Pos (B) + Character'Pos (C) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Character'Pos >= 0 then A + Boolean'Pos (B) <= Integer'Last - Character'Pos else A + Boolean'Pos (B) >= Integer'First - Character'Pos) to subprogram at line 31] [provers gave up before completing the proof]
+p.adb:39:43: info: range check proved (CVC5: 2 VC)
 p.adb:49:19: info: initialization of "D" proved
 p.adb:50:11: info: data dependencies proved
 p.adb:51:11: info: flow dependencies proved
 p.adb:54:14: medium: overflow check might fail, cannot prove upper bound for A + Boolean'Pos (B) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Boolean'Pos >= 0 then A <= Integer'Last - Boolean'Pos else A >= Integer'First - Boolean'Pos) to subprogram at line 46] [provers gave up before completing the proof]
+p.adb:54:23: info: range check proved (CVC5: 2 VC)
 p.adb:54:32: medium: overflow check might fail, cannot prove upper bound for A + Boolean'Pos (B) + Character'Pos (C) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Character'Pos >= 0 then A + Boolean'Pos (B) <= Integer'Last - Character'Pos else A + Boolean'Pos (B) >= Integer'First - Character'Pos) to subprogram at line 46] [provers gave up before completing the proof]
+p.adb:54:43: info: range check proved (CVC5: 2 VC)
 p.adb:63:19: info: initialization of "D" proved
 p.adb:64:11: info: data dependencies proved
 p.adb:65:11: info: flow dependencies proved
 p.adb:68:14: medium: overflow check might fail, cannot prove upper bound for A + Boolean'Pos (B) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Boolean'Pos >= 0 then A <= Integer'Last - Boolean'Pos else A >= Integer'First - Boolean'Pos) to subprogram at line 60] [provers gave up before completing the proof]
+p.adb:68:23: info: range check proved (CVC5: 2 VC)
 p.adb:68:32: medium: overflow check might fail, cannot prove upper bound for A + Boolean'Pos (B) + Character'Pos (C) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Character'Pos >= 0 then A + Boolean'Pos (B) <= Integer'Last - Character'Pos else A + Boolean'Pos (B) >= Integer'First - Character'Pos) to subprogram at line 60] [provers gave up before completing the proof]
+p.adb:68:43: info: range check proved (CVC5: 2 VC)
 p.adb:78:19: info: initialization of "D" proved
 p.adb:79:11: info: data dependencies proved
 p.adb:79:40: info: initialization of "TestPoint" proved
 p.adb:80:11: info: flow dependencies proved
 p.adb:84:14: medium: overflow check might fail, cannot prove upper bound for A + Boolean'Pos (B) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Boolean'Pos >= 0 then A <= Integer'Last - Boolean'Pos else A >= Integer'First - Boolean'Pos) to subprogram at line 75] [provers gave up before completing the proof]
+p.adb:84:23: info: range check proved (CVC5: 2 VC)
 p.adb:84:32: medium: overflow check might fail, cannot prove upper bound for A + Boolean'Pos (B) + Character'Pos (C) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Character'Pos >= 0 then A + Boolean'Pos (B) <= Integer'Last - Character'Pos else A + Boolean'Pos (B) >= Integer'First - Character'Pos) to subprogram at line 75] [provers gave up before completing the proof]
+p.adb:84:43: info: range check proved (CVC5: 2 VC)
 p.adb:95:19: info: initialization of "D" proved
 p.adb:96:11: info: data dependencies proved
 p.adb:97:11: info: flow dependencies proved
 p.adb:100:14: medium: overflow check might fail, cannot prove upper bound for A + Boolean'Pos (B) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Boolean'Pos >= 0 then A <= Integer'Last - Boolean'Pos else A >= Integer'First - Boolean'Pos) to subprogram at line 92] [provers gave up before completing the proof]
+p.adb:100:23: info: range check proved (CVC5: 2 VC)
 p.adb:100:32: medium: overflow check might fail, cannot prove upper bound for A + Boolean'Pos (B) + Character'Pos (C) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Character'Pos >= 0 then A + Boolean'Pos (B) <= Integer'Last - Character'Pos else A + Boolean'Pos (B) >= Integer'First - Character'Pos) to subprogram at line 92] [provers gave up before completing the proof]
+p.adb:100:43: info: range check proved (CVC5: 2 VC)
 p.adb:105:24: medium: overflow check might fail, cannot prove upper bound for A+1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (A <= Integer'Last - 1) to subprogram at line 92] [provers gave up before completing the proof]
 p.adb:111:19: info: initialization of "D" proved
 p.adb:112:11: info: data dependencies proved
 p.adb:112:40: info: initialization of "TestPoint" proved
 p.adb:113:11: info: flow dependencies proved
 p.adb:117:14: medium: overflow check might fail, cannot prove upper bound for A + Boolean'Pos (B) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Boolean'Pos >= 0 then A <= Integer'Last - Boolean'Pos else A >= Integer'First - Boolean'Pos) to subprogram at line 108] [provers gave up before completing the proof]
+p.adb:117:23: info: range check proved (CVC5: 2 VC)
 p.adb:117:32: medium: overflow check might fail, cannot prove upper bound for A + Boolean'Pos (B) + Character'Pos (C) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Character'Pos >= 0 then A + Boolean'Pos (B) <= Integer'Last - Character'Pos else A + Boolean'Pos (B) >= Integer'First - Character'Pos) to subprogram at line 108] [provers gave up before completing the proof]
+p.adb:117:43: info: range check proved (CVC5: 2 VC)
 p.adb:123:14: warning: "TestPoint" is set by "Trace_Mixed" but not used after the call
 p.adb:124:29: medium: overflow check might fail, cannot prove upper bound for A+1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (A <= Integer'Last - 1) to subprogram at line 108] [provers gave up before completing the proof]
 p.adb:130:19: info: initialization of "D" proved
@@ -48,13 +64,17 @@ p.adb:131:11: info: data dependencies proved
 p.adb:132:11: info: flow dependencies proved
 p.adb:134:07: info: initialization of "Tmp" proved
 p.adb:136:14: medium: overflow check might fail, cannot prove upper bound for A + Boolean'Pos (B) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Boolean'Pos >= 0 then A <= Integer'Last - Boolean'Pos else A >= Integer'First - Boolean'Pos) to subprogram at line 127] [provers gave up before completing the proof]
+p.adb:136:23: info: range check proved (CVC5: 2 VC)
 p.adb:136:32: medium: overflow check might fail, cannot prove upper bound for A + Boolean'Pos (B) + Character'Pos (C) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Character'Pos >= 0 then A + Boolean'Pos (B) <= Integer'Last - Character'Pos else A + Boolean'Pos (B) >= Integer'First - Character'Pos) to subprogram at line 127] [provers gave up before completing the proof]
+p.adb:136:43: info: range check proved (CVC5: 2 VC)
 p.adb:139:16: medium: overflow check might fail, cannot prove upper bound for A + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (A <= Integer'Last - 1) to subprogram at line 127] [provers gave up before completing the proof]
 p.adb:148:20: info: initialization of "D" proved
 p.adb:149:11: info: data dependencies proved
 p.adb:150:11: info: flow dependencies proved
 p.adb:153:14: medium: overflow check might fail, cannot prove upper bound for A + Boolean'Pos (B) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Boolean'Pos >= 0 then A <= Integer'Last - Boolean'Pos else A >= Integer'First - Boolean'Pos) to subprogram at line 145] [provers gave up before completing the proof]
+p.adb:153:23: info: range check proved (CVC5: 2 VC)
 p.adb:153:32: medium: overflow check might fail, cannot prove upper bound for A + Boolean'Pos (B) + Character'Pos (C) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Character'Pos >= 0 then A + Boolean'Pos (B) <= Integer'Last - Character'Pos else A + Boolean'Pos (B) >= Integer'First - Character'Pos) to subprogram at line 145] [provers gave up before completing the proof]
+p.adb:153:43: info: range check proved (CVC5: 2 VC)
 p.adb:158:28: medium: overflow check might fail, cannot prove upper bound for A + 5 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (A <= Integer'Last - 5) to subprogram at line 145] [provers gave up before completing the proof]
 p.adb:161:28: medium: overflow check might fail, cannot prove lower bound for A - 5 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (A >= Integer'First + 5) to subprogram at line 145] [provers gave up before completing the proof]
 p.adb:167:20: info: initialization of "X" proved

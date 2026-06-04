@@ -36,8 +36,11 @@
  info: precondition proved
 --> perm-lemma_subprograms.adb:7:14
 
- info: postcondition proved
+ medium: postcondition might fail
 --> perm-lemma_subprograms.adb:7:14
+    7 |         Post => Occurrences (A, LA) = Occurrences (B, LB);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      + provers reached time and step limit before completing the proof
 
  info: precondition proved
 --> perm-lemma_subprograms.adb:7:36

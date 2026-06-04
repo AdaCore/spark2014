@@ -1,0 +1,80 @@
+hashtbl.adb:6:30: info: precondition proved
+hashtbl.adb:6:53: info: range check proved
+hashtbl.adb:7:51: info: index check proved
+hashtbl.adb:10:10: info: loop variant proved
+hashtbl.adb:12:13: info: loop invariant initialization proved
+hashtbl.adb:12:13: info: loop invariant preservation proved
+hashtbl.adb:12:46: info: index check proved
+hashtbl.adb:14:17: info: pointer dereference check proved
+hashtbl.adb:17:22: info: pointer dereference check proved
+hashtbl.adb:22:13: info: implicit aspect Always_Terminates on "At_End_Borrow" has been proved, subprogram will terminate
+hashtbl.adb:24:08: info: dynamic accessibility check proved
+hashtbl.adb:28:45: info: range check proved
+hashtbl.adb:29:33: info: precondition proved
+hashtbl.adb:31:19: info: index check proved
+hashtbl.adb:32:11: info: predicate check proved
+hashtbl.adb:32:19: info: index check proved
+hashtbl.adb:32:22: info: absence of resource or memory leak proved
+hashtbl.adb:34:13: info: assertion proved
+hashtbl.adb:34:46: info: index check proved
+hashtbl.adb:35:27: info: overflow check proved
+hashtbl.adb:40:37: info: in reconstructed value at the end of the borrow at hashtbl.adb:40
+hashtbl.adb:40:37: info: predicate check proved
+hashtbl.adb:40:45: info: in reconstructed value at the end of the borrow at hashtbl.adb:40
+hashtbl.adb:40:45: info: index check proved
+hashtbl.adb:43:36: info: loop invariant initialization proved
+hashtbl.adb:43:36: info: loop invariant preservation proved
+hashtbl.adb:44:36: info: loop invariant initialization proved
+hashtbl.adb:44:36: info: loop invariant preservation proved
+hashtbl.adb:44:36: info: precondition proved
+hashtbl.adb:46:16: info: loop invariant initialization proved
+hashtbl.adb:46:16: info: loop invariant preservation proved
+hashtbl.adb:46:20: info: precondition proved
+hashtbl.adb:47:22: info: precondition proved
+hashtbl.adb:47:56: info: index check proved
+hashtbl.adb:49:16: info: loop invariant initialization proved
+hashtbl.adb:49:16: info: loop invariant preservation proved
+hashtbl.adb:51:53: info: index check proved
+hashtbl.adb:52:13: info: loop variant proved
+hashtbl.adb:53:20: info: pointer dereference check proved
+hashtbl.adb:57:20: info: pointer dereference check proved
+hashtbl.adb:58:20: info: pointer dereference check proved
+hashtbl.adb:58:26: info: absence of resource or memory leak proved
+hashtbl.adb:62:28: info: pointer dereference check proved
+hashtbl.adb:67:10: info: assertion proved
+hashtbl.adb:67:43: info: index check proved
+hashtbl.adb:69:27: info: overflow check proved
+hashtbl.ads:20:13: info: implicit aspect Always_Terminates on "Hash" has been proved, subprogram will terminate
+hashtbl.ads:21:16: info: division check proved
+hashtbl.ads:24:13: info: implicit aspect Always_Terminates on "Has_Hash" has been proved, subprogram will terminate
+hashtbl.ads:27:13: info: precondition proved
+hashtbl.ads:27:20: info: pointer dereference check proved
+hashtbl.ads:27:40: info: precondition proved
+hashtbl.ads:27:40: info: subprogram variant proved
+hashtbl.ads:27:51: info: pointer dereference check proved
+hashtbl.ads:39:13: info: precondition proved
+hashtbl.ads:39:33: info: index check proved
+hashtbl.ads:39:53: info: range check proved
+hashtbl.ads:54:16: info: implicit aspect Always_Terminates on "Add_Permissive" has been proved, subprogram will terminate
+hashtbl.ads:55:47: info: precondition proved
+hashtbl.ads:57:16: info: implicit aspect Always_Terminates on "Model" has been proved, subprogram will terminate
+hashtbl.ads:59:32: info: subprogram variant proved
+hashtbl.ads:59:40: info: pointer dereference check proved
+hashtbl.ads:59:49: info: pointer dereference check proved
+hashtbl.ads:63:16: info: implicit aspect Always_Terminates on "Model" has been proved, subprogram will terminate
+hashtbl.ads:63:16: warning: "Model" is recursive; its body might not be available on recursive calls from contracts and assertions [contracts-recursive]
+hashtbl.ads:67:27: info: index check proved
+hashtbl.ads:69:34: info: index check proved
+hashtbl.ads:69:43: info: subprogram variant proved
+hashtbl.ads:69:50: info: range check proved
+hashtbl.ads:72:16: info: implicit aspect Always_Terminates on "Model" has been proved, subprogram will terminate
+hashtbl.ads:76:13: info: implicit aspect Always_Terminates on "Mem" has been proved, subprogram will terminate
+hashtbl.ads:80:08: info: postcondition proved
+hashtbl.ads:82:32: info: index check proved
+hashtbl.ads:82:32: info: precondition proved
+hashtbl.ads:82:55: info: range check proved
+hashtbl.ads:84:52: info: initialization of "Success" proved
+hashtbl.ads:88:08: info: postcondition proved
+hashtbl.ads:89:29: info: index check proved
+hashtbl.ads:89:29: info: precondition proved
+hashtbl.ads:89:52: info: range check proved

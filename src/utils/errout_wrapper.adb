@@ -1,3 +1,27 @@
+------------------------------------------------------------------------------
+--                                                                          --
+--                            GNAT2WHY COMPONENTS                           --
+--                                                                          --
+--                        E R R O U T _ W R A P P E R                       --
+--                                                                          --
+--                                 B o d y                                  --
+--                                                                          --
+--              Copyright (C) 2014-2026, Capgemini Engineering              --
+--                     Copyright (C) 2014-2026, AdaCore                     --
+--                                                                          --
+-- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
+-- under terms of the  GNU General Public License as published  by the Free --
+-- Software  Foundation;  either version 3,  or (at your option)  any later --
+-- version.  gnat2why is distributed  in the hope that  it will be  useful, --
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of  MERCHAN- --
+-- TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public --
+-- License for  more details.  You should have  received  a copy of the GNU --
+-- General  Public License  distributed with  gnat2why;  see file COPYING3. --
+-- If not,  go to  http://www.gnu.org/licenses  for a complete  copy of the --
+-- license.                                                                 --
+--                                                                          --
+------------------------------------------------------------------------------
+
 with Ada.Characters.Handling; use Ada.Characters.Handling;
 with Assumption_Types;        use Assumption_Types;
 with Atree;                   use Atree;
@@ -124,7 +148,9 @@ package body Errout_Wrapper is
             Set_Field (Value, "suppressed", Suppr_Reason);
             if Obj.Suppr.Suppression_Kind = Check then
                Set_Field
-                 (Value, "annot_kind", To_String (Obj.Suppr.Annot_Kind));
+                 (Value,
+                  "annot_kind",
+                  To_Lower (Pretty_Annotation_Name (Obj.Suppr.Annot_Kind)));
                Set_Field
                  (Value, "justif_msg", To_String (Obj.Suppr.Justification));
             end if;
@@ -184,6 +210,10 @@ package body Errout_Wrapper is
 
       if not Obj.Stats.Is_Empty then
          Set_Field (Value, "stats", To_JSON (Obj.Stats));
+      end if;
+
+      if not Is_Empty (Obj.Cache_Status) then
+         Set_Field (Value, "cache_status", Obj.Cache_Status);
       end if;
 
       Append (Msg_List, Value);
@@ -429,7 +459,7 @@ package body Errout_Wrapper is
 
       Result : constant JSON_Result_Type :=
         (Severity => Kind,
-         Tag      => To_Unbounded_String ("error"),
+         Tag      => To_Unbounded_String ("unknown-error"),
          Span     => Span,
          Msg      => Msg,
          others   => <>);
@@ -453,7 +483,8 @@ package body Errout_Wrapper is
       Kind          : Msg_Severity := Error_Kind;
       First         : Boolean := False;
       Continuations : Message_Lists.List := Message_Lists.Empty;
-      Error_Entry   : Boolean := True)
+      Error_Entry   : Boolean := True;
+      Tag           : String := "unknown-error")
    is
 
       procedure Node_Locate (Msg : String; First_Node : Node_Id);
@@ -480,7 +511,7 @@ package body Errout_Wrapper is
       My_Conts : Message_Lists.List;
       Result   : JSON_Result_Type :=
         (Severity => Kind,
-         Tag      => To_Unbounded_String ("error"),
+         Tag      => To_Unbounded_String (Tag),
          Span     => To_Span (Sloc (N)),
          Msg      => My_Msg,
          others   => <>);
@@ -494,10 +525,6 @@ package body Errout_Wrapper is
       end if;
       Local_Print_Result (My_Msg, Kind, Continuations => My_Conts);
    end Error_Msg_N;
-
-   -----------------
-   -- Error_Msg_N --
-   -----------------
 
    procedure Error_Msg_N
      (Msg           : String;
@@ -520,6 +547,30 @@ package body Errout_Wrapper is
          Kind,
          First         => First,
          Continuations => Conts);
+   end Error_Msg_N;
+
+   procedure Error_Msg_N
+     (Kind          : Error_Message_Kind;
+      N             : Node_Id;
+      Msg           : String := "";
+      Names         : Node_Lists.List := Node_Lists.Empty;
+      Secondary_Loc : Source_Ptr := No_Location;
+      Explain_Code  : Explain_Code_Kind := EC_None;
+      First         : Boolean := False;
+      Continuations : String_Lists.List := String_Lists.Empty)
+   is
+      Actual_Msg : constant String :=
+        (if Msg /= "" then Msg else Error_Message (Kind));
+   begin
+      Error_Msg_N
+        (Actual_Msg,
+         N,
+         Error_Kind,
+         Names,
+         Secondary_Loc,
+         Explain_Code,
+         First         => First,
+         Continuations => Continuations);
    end Error_Msg_N;
 
    ------------
@@ -793,7 +844,7 @@ package body Errout_Wrapper is
       Msg : String;
       F1  : Flow_Id := Null_Flow_Id;
       F2  : Flow_Id := Null_Flow_Id;
-      F3  : Flow_Id := Null_Flow_Id) return String_Id
+      F3  : Flow_Id := Null_Flow_Id) return Boolean
    is
 
       function Warning_Disabled_For_Entity return Boolean;
@@ -828,21 +879,13 @@ package body Errout_Wrapper is
            or else Is_Entity_And_Has_Warnings_Off (F3);
       end Warning_Disabled_For_Entity;
 
-      Suppr_Reason : String_Id := Erroutc.Warnings_Suppressed (Sloc (N));
-
-      --  Start of processing for Warning_Is_Suppressed
-
    begin
-      if Suppr_Reason = No_String then
-         Suppr_Reason :=
-           Erroutc.Warning_Specifically_Suppressed
-             (Loc => Sloc (N), Msg => Msg'Unrestricted_Access);
-
-         if Suppr_Reason = No_String and then Warning_Disabled_For_Entity then
-            Suppr_Reason := Null_String_Id;
-         end if;
-      end if;
-      return Suppr_Reason;
+      return
+        Erroutc.Warnings_Suppressed (Sloc (N))
+        or else
+          Erroutc.Warning_Is_Suppressed
+            (Loc => Sloc (N), Msg => Msg'Unrestricted_Access)
+        or else Warning_Disabled_For_Entity;
    end Warning_Is_Suppressed;
 
    -------------------
@@ -898,8 +941,7 @@ package body Errout_Wrapper is
          --  Warnings (Off), check for the second way here.
          Was_Suppressed : constant Boolean :=
            Suppressed
-           or else
-             Warning_Is_Suppressed (N, To_String (My_Msg.Msg)) /= No_String;
+           or else Warning_Is_Suppressed (N, To_String (My_Msg.Msg));
          Result         : constant JSON_Result_Type :=
            JSON_Result_Type'
              (Msg           => My_Msg,
@@ -926,5 +968,81 @@ package body Errout_Wrapper is
            Explain_Code  => M.Explain_Code,
            Msg           => M.Msg & S);
    end "&";
+
+   ---------------------------
+   -- Add_Frontend_Messages --
+   ---------------------------
+
+   procedure Add_Frontend_Messages is
+      use Erroutc;
+
+      E : Error_Msg_Id := First_Error_Msg;
+
+      function Frontend_Severity (E : Error_Msg_Id) return Msg_Severity;
+      --  Map the front-end message kind to its severity
+
+      -----------------------
+      -- Frontend_Severity --
+      -----------------------
+
+      function Frontend_Severity (E : Error_Msg_Id) return Msg_Severity is
+         Obj : Error_Msg_Object renames Errors.Table (E);
+      begin
+         case Obj.Kind is
+            when Erroutc.Error | Erroutc.Non_Serious_Error =>
+               return Error_Kind;
+
+            when Warning                                   =>
+               --  Warnings promoted to errors keep Error_Kind
+               if Obj.Warn_Err /= None then
+                  return Error_Kind;
+               else
+                  return Warning_Kind;
+               end if;
+
+            when Style                                     =>
+               return Warning_Kind;
+
+            when Info                                      =>
+               return Info_Kind;
+
+            when Low_Check                                 =>
+               return Low_Check_Kind;
+
+            when Medium_Check                              =>
+               return Medium_Check_Kind;
+
+            when High_Check                                =>
+               return High_Check_Kind;
+         end case;
+      end Frontend_Severity;
+
+   begin
+      --  Iterate primary messages via Next_Error_Msg (skips continuations and
+      --  deleted entries).
+      while E /= No_Error_Msg loop
+         declare
+            Obj    : Error_Msg_Object renames Errors.Table (E);
+            Conts  : Message_Lists.List;
+            Next_E : Error_Msg_Id := Obj.Next;
+         begin
+            --  Collect continuation messages that immediately follow
+            while Next_E /= No_Error_Msg loop
+               Conts.Append (Create (Errors.Table (Next_E).Text.all));
+               Next_Continuation_Msg (Next_E);
+            end loop;
+
+            Add_Json_Msg
+              (Warnings_Errors,
+               (Tag           => To_Unbounded_String ("GNAT"),
+                Severity      => Frontend_Severity (E),
+                Span          => Obj.Sptr,
+                Msg           => Create (Obj.Text.all),
+                Continuations => Conts,
+                others        => <>));
+         end;
+         Next_Error_Msg (E);
+      end loop;
+   end Add_Frontend_Messages;
 
 end Errout_Wrapper;

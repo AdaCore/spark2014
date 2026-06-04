@@ -1,6 +1,7 @@
 main.adb:2:04: info: function contract feasibility proved (CVC5: 1 VC)
 main.adb:3:13: info: implicit aspect Always_Terminates on "Z" has been proved, subprogram will terminate
-main.adb:3:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
+main.adb:3:13: warning: potentially missing contract for "Z" declared at line 3
+main.adb:3:13: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 main.adb:4:14: info: postcondition proved (CVC5: 1 VC)
 main.adb:6:23: info: null exclusion check proved (Trivial: 1 VC)
 main.adb:11:08: high: call via access-to-function in the predicate of "G" might not terminate (SPARK RM 3.2.4(4))

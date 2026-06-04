@@ -1,2 +1,5 @@
-error.ads:4:44: error: pragma Annotate Skip_Proof must apply to a subprogram, task, entry or package
+error.ads:4:44: error: expected a subprogram, task, entry, or package
+error.ads:4:44: error: wrong entity argument for "pragma Annotate (GNATprove, Skip_Proof[, ...])"
+system.ads:1:01: error: "t" is not allowed in SPARK (due to incorrect use of "Skip_Proof" annotation)
+system.ads:1:01: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof

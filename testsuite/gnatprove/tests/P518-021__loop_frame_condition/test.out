@@ -20,4 +20,4 @@ do_loops.adb:102:13: info: initialization of "D_outer" proved
 do_loops.adb:106:21: info: index check proved (CVC5: 2 VC)
 do_loops.adb:110:22: medium: assertion might fail [possible fix: loop at line 99 should mention D in a loop invariant] [provers reached step limit before completing the proof]
 do_loops.adb:111:22: medium: assertion might fail [possible fix: loop at line 99 should mention D in a loop invariant] [provers reached step limit before completing the proof]
-do_loops.adb:112:22: info: assertion proved (Z3: 1 VC)
+do_loops.adb:112:22: info: assertion proved (CVC5: 1 VC)

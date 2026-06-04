@@ -1,14 +1,19 @@
 main.adb:4:16: info: implicit aspect Always_Terminates on "G" has been proved, subprogram will terminate
-main.adb:12:16: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
+main.adb:12:16: warning: potentially missing contract for "G" declared at line 12
+main.adb:12:16: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 main.adb:12:19: warning: unused variable "X"
 main.adb:12:58: medium: postcondition might fail [provers reached step limit before completing the proof]
 main.adb:18:10: medium: implicit aspect Always_Terminates on "G" could be incorrect, dispatching call to "G" might be nonterminating [possible explanation: call could hide recursive calls]
 main2.adb:2:04: info: function contract feasibility proved (CVC5: 1 VC)
 main2.adb:4:13: info: implicit aspect Always_Terminates on "F1" has been proved, subprogram will terminate
-main2.adb:4:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
+main2.adb:4:13: warning: potentially missing contract for "F1" declared at line 4
+main2.adb:4:13: warning: potentially missing contract for "F2" declared at line 8
+main2.adb:4:13: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 main2.adb:5:14: medium: postcondition might fail [provers reached step limit before completing the proof]
 main2.adb:8:13: info: implicit aspect Always_Terminates on "F2" has been proved, subprogram will terminate
-main2.adb:8:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
+main2.adb:8:13: warning: potentially missing contract for "F1" declared at line 4
+main2.adb:8:13: warning: potentially missing contract for "F2" declared at line 8
+main2.adb:8:13: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 main2.adb:9:14: medium: postcondition might fail [provers reached step limit before completing the proof]
 main2.adb:13:16: medium: call via access-to-function might not terminate [reason for check: functions should always terminate in SPARK] [possible explanation: calls via access-to-subprograms inside function taken as access might hide recursive calls]
 main2.adb:15:29: info: pointer dereference check proved (CVC5: 1 VC)

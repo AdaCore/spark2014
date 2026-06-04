@@ -1,37 +1,37 @@
-bad_call.adb:5:20: error: call to a function with side effects in declarative part is not allowed in SPARK [E0018]
+bad_call.adb:5:20: error: call to a function with side effects outside of assignment or object declaration without a block is not allowed in SPARK (SPARK RM 6.1.13(4)) [E0018]
 bad_call.adb:5:20: error: launch "gnatprove --explain=E0018" for more information
 bad_call.adb:5:20: error: violation of aspect SPARK_Mode at line 3
-bad_call.adb:6:20: error: call to a function with side effects outside of assignment or object declaration is not allowed in SPARK [E0018]
+bad_call.adb:6:20: error: call to a function with side effects outside of assignment or object declaration without a block is not allowed in SPARK (SPARK RM 6.1.13(4)) [E0018]
 bad_call.adb:6:20: error: launch "gnatprove --explain=E0018" for more information
 bad_call.adb:6:20: error: violation of aspect SPARK_Mode at line 3
-bad_call.adb:6:30: error: call to a function with side effects outside of assignment or object declaration is not allowed in SPARK [E0018]
+bad_call.adb:6:30: error: call to a function with side effects outside of assignment or object declaration without a block is not allowed in SPARK (SPARK RM 6.1.13(4)) [E0018]
 bad_call.adb:6:30: error: launch "gnatprove --explain=E0018" for more information
 bad_call.adb:6:30: error: violation of aspect SPARK_Mode at line 3
-bad_call.adb:7:24: error: call to a function with side effects outside of assignment or object declaration is not allowed in SPARK [E0018]
+bad_call.adb:7:24: error: call to a function with side effects outside of assignment or object declaration without a block is not allowed in SPARK (SPARK RM 6.1.13(4)) [E0018]
 bad_call.adb:7:24: error: launch "gnatprove --explain=E0018" for more information
 bad_call.adb:7:24: error: violation of aspect SPARK_Mode at line 3
-bad_call.adb:7:46: error: call to a function with side effects outside of assignment or object declaration is not allowed in SPARK [E0018]
+bad_call.adb:7:46: error: call to a function with side effects outside of assignment or object declaration without a block is not allowed in SPARK (SPARK RM 6.1.13(4)) [E0018]
 bad_call.adb:7:46: error: launch "gnatprove --explain=E0018" for more information
 bad_call.adb:7:46: error: violation of aspect SPARK_Mode at line 3
-bad_call.adb:7:71: error: call to a function with side effects outside of assignment or object declaration is not allowed in SPARK [E0018]
+bad_call.adb:7:71: error: call to a function with side effects outside of assignment or object declaration without a block is not allowed in SPARK (SPARK RM 6.1.13(4)) [E0018]
 bad_call.adb:7:71: error: launch "gnatprove --explain=E0018" for more information
 bad_call.adb:7:71: error: violation of aspect SPARK_Mode at line 3
-bad_call.adb:12:19: error: call to a function with side effects outside of assignment or object declaration is not allowed in SPARK [E0018]
+bad_call.adb:12:19: error: call to a function with side effects outside of assignment or object declaration without a block is not allowed in SPARK (SPARK RM 6.1.13(4)) [E0018]
 bad_call.adb:12:19: error: launch "gnatprove --explain=E0018" for more information
 bad_call.adb:12:19: error: violation of aspect SPARK_Mode at line 3
-bad_call.adb:13:10: error: call to a function with side effects outside of assignment or object declaration is not allowed in SPARK [E0018]
+bad_call.adb:13:10: error: call to a function with side effects outside of assignment or object declaration without a block is not allowed in SPARK (SPARK RM 6.1.13(4)) [E0018]
 bad_call.adb:13:10: error: launch "gnatprove --explain=E0018" for more information
 bad_call.adb:13:10: error: violation of aspect SPARK_Mode at line 3
-bad_call.adb:14:14: error: call to a function with side effects outside of assignment or object declaration is not allowed in SPARK [E0018]
+bad_call.adb:14:14: error: call to a function with side effects outside of assignment or object declaration without a block is not allowed in SPARK (SPARK RM 6.1.13(4)) [E0018]
 bad_call.adb:14:14: error: launch "gnatprove --explain=E0018" for more information
 bad_call.adb:14:14: error: violation of aspect SPARK_Mode at line 3
-bad_call.adb:14:30: error: call to a function with side effects outside of assignment or object declaration is not allowed in SPARK [E0018]
+bad_call.adb:14:30: error: call to a function with side effects outside of assignment or object declaration without a block is not allowed in SPARK (SPARK RM 6.1.13(4)) [E0018]
 bad_call.adb:14:30: error: launch "gnatprove --explain=E0018" for more information
 bad_call.adb:14:30: error: violation of aspect SPARK_Mode at line 3
-bad_call.adb:14:43: error: call to a function with side effects outside of assignment or object declaration is not allowed in SPARK [E0018]
+bad_call.adb:14:43: error: call to a function with side effects outside of assignment or object declaration without a block is not allowed in SPARK (SPARK RM 6.1.13(4)) [E0018]
 bad_call.adb:14:43: error: launch "gnatprove --explain=E0018" for more information
 bad_call.adb:14:43: error: violation of aspect SPARK_Mode at line 3
-bad_traversal.ads:3:13: error: traversal function with side effects is not allowed in SPARK
+bad_traversal.ads:3:13: error: traversal function with side effects is not allowed in SPARK (SPARK RM 6.1.13(7))
 bad_traversal.ads:3:13: error: violation of aspect SPARK_Mode at line 1
 dispatch.ads:6:17: warning: "X" is not modified, could be IN
 dispatch.ads:6:32: info: initialization of "B" proved

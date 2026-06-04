@@ -31,7 +31,7 @@ procedure Test with SPARK_Mode is
      Global => null,
      Program_Exit => True;
 
-   --  Restriction: Program_Exit cannot be specified on a ghost subprogram
+   -- Program_Exit can be specified on a ghost subprogram
 
    procedure Bad_Ghost (X : in out Integer) with
      Ghost,

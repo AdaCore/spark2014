@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2011-2025, AdaCore                     --
+--                     Copyright (C) 2011-2026, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -526,6 +526,10 @@ package body SPARK_Util is
    --  Map from calls to functions annotated with At_End_Borrow to the related
    --  borrower entity.
 
+   Conditions_Of_Conditional_Old : Node_Maps.Map;
+   --  Map from prefixes of conditionally evaluated 'Old attributes to their
+   --  evaluation condition.
+
    -------------------------------------
    -- Borrower_For_At_End_Borrow_Call --
    -------------------------------------
@@ -846,8 +850,6 @@ package body SPARK_Util is
 
       Low, High     : Node_Id;
       Dynamic_Range : Boolean := False;
-
-      --  Start of processing for Candidate_For_Unrolling
 
    begin
       Low_Val := No_Uint;
@@ -1531,8 +1533,6 @@ package body SPARK_Util is
          end if;
       end Collect_Handler;
 
-      --  Start of processing for Collect_Reachable_Handlers
-
    begin
       Collect_All (Call_Or_Stmt);
       Raise_To_Handlers_Map.Insert (Call_Or_Stmt, Handlers);
@@ -1639,6 +1639,21 @@ package body SPARK_Util is
          end;
       end if;
    end Component_Is_Visible_In_SPARK;
+
+   ----------------------------------
+   -- Condition_Of_Conditional_Old --
+   ----------------------------------
+
+   function Condition_Of_Conditional_Old (Prefix : Node_Id) return Node_Id is
+      Position : constant Node_Maps.Cursor :=
+        Conditions_Of_Conditional_Old.Find (Prefix);
+   begin
+      if Node_Maps.Has_Element (Position) then
+         return Node_Maps.Element (Position);
+      else
+         return Empty;
+      end if;
+   end Condition_Of_Conditional_Old;
 
    ------------------------
    -- Contains_Allocator --
@@ -2643,8 +2658,6 @@ package body SPARK_Util is
          Result.Union (Exc_Set);
       end Collect_Handled_By;
 
-      --  Start of processing for Get_Handled_Exceptions
-
    begin
       --  Ghost function and procedure calls shall never propagate exceptions
       --  to non-ghost code.
@@ -2739,8 +2752,6 @@ package body SPARK_Util is
                raise Program_Error;
          end case;
       end Find_Func_Call;
-
-      --  Start of processing for Get_Observed_Or_Borrowed_Info
 
    begin
       B_Expr := Expr;
@@ -2936,8 +2947,6 @@ package body SPARK_Util is
       pragma Unmodified (Get_Root_Expr);
       --  Local variable to mask the name of function Get_Root_Expr, to
       --  prevent direct call. Instead GRE wrapper should be called.
-
-      --  Start of processing for Get_Root_Expr
 
    begin
       case Nkind (Expr) is
@@ -3242,6 +3251,61 @@ package body SPARK_Util is
       return Present (Find_Loop_Entry_Or_Old_Attribute (N));
    end In_Loop_Entry_Or_Old_Attribute;
 
+   -------------------------
+   -- In_Non_Exec_Context --
+   -------------------------
+
+   function In_Non_Exec_Context (N : Node_Id) return Boolean is
+      function Is_Non_Exec_Entity (E : Entity_Id) return Boolean
+      is (Is_Ghost_Entity (E)
+          and then Is_Non_Exec_Assertion_Level (Ghost_Assertion_Level (E)));
+
+      function Is_Non_Exec_Ghost_Statement (N : Node_Id) return Boolean
+      is ((Nkind (N) = N_Pragma
+           and then
+             (Get_Pragma_Id (Pragma_Name (N))
+              in Pragma_Always_Terminates
+               | Pragma_Program_Exit
+               | Pragma_Subprogram_Variant
+              or else
+                (Assertion_Expression_Pragma (Get_Pragma_Id (Pragma_Name (N)))
+                 and then
+                   Is_Non_Exec_Assertion_Level
+                     (Pragma_Ghost_Assertion_Level (N)))))
+          or else
+            (Nkind (N) = N_Assignment_Statement
+             and then Is_Non_Exec_Entity (Get_Root_Object (Name (N))))
+          or else
+            (Nkind (N) = N_Object_Declaration
+             and then Is_Non_Exec_Entity (Defining_Identifier (N)))
+          or else
+            (Nkind (N) in N_Subprogram_Call
+             and then Is_Non_Exec_Entity (Get_Called_Entity (N)))
+          or else
+            (Is_Inlined_Call (N)
+             and then
+               Is_Non_Exec_Entity (Called_Entity_From_Inlined_Call (N))));
+
+      function Is_Unit_Or_Ghost_Statement (N : Node_Id) return Boolean
+      is (Nkind (N)
+          in N_Package_Body | N_Package_Declaration | N_Subprogram_Body
+          or else Is_Non_Exec_Ghost_Statement (N));
+      --  Return True if N is either a a unit, or a non-executable ghost
+      --  statement.
+
+      function Enclosing_Unit_Or_Ghost_Statement is new
+        First_Parent_With_Property (Is_Unit_Or_Ghost_Statement);
+
+      Par : constant Node_Id := Enclosing_Unit_Or_Ghost_Statement (N);
+
+   begin
+      if No (Par) then
+         return False;
+      else
+         return Is_Non_Exec_Ghost_Statement (Par);
+      end if;
+   end In_Non_Exec_Context;
+
    ---------------------------
    -- In_SPARK_Library_Unit --
    ---------------------------
@@ -3282,11 +3346,7 @@ package body SPARK_Util is
         Present (Par)
         and then Nkind (Par) = N_Pragma
         and then Assertion_Expression_Pragma (Get_Pragma_Id (Par))
-        and then
-          (if Ignore_Non_Exec
-           then
-             not Is_Non_Exec_Assertion_Level
-                   (Pragma_Ghost_Assertion_Level (Par)));
+        and then (if Ignore_Non_Exec then not In_Non_Exec_Context (Expr));
    end In_Statically_Leaking_Context;
 
    -------------------------------------
@@ -3994,8 +4054,6 @@ package body SPARK_Util is
          return False;
       end Has_True_Condition;
 
-      --  Start of processing for Is_In_Statically_Dead_Branch
-
    begin
       while Nkind (Anc) not in N_Entity_Body and then Present (Anc) loop
          if Nkind (Anc) = N_If_Statement
@@ -4041,6 +4099,38 @@ package body SPARK_Util is
         and then Is_Anonymous_Access_Object_Type (T)
         and then not Is_Access_Constant (T);
    end Is_Local_Borrower;
+
+   -----------------------------------
+   -- Is_Local_Borrower_In_Prophecy --
+   -----------------------------------
+
+   function Is_Local_Borrower_In_Prophecy (N : Node_Id) return Boolean is
+      Par : Node_Id;
+
+   begin
+      if Nkind (N) not in N_Identifier | N_Expanded_Name
+        or else not Is_Local_Borrower (Entity (N))
+      then
+         return False;
+      end if;
+
+      Par := Parent (N);
+
+      --  Local borrowers can appear as the prefix of a reference to 'Old or
+      --  'Loop_Entry in prophecies.
+
+      if Present (Par)
+        and then Nkind (Par) = N_Attribute_Reference
+        and then Attribute_Name (Par) in Name_Old | Name_Loop_Entry
+      then
+         Par := Parent (Par);
+      end if;
+
+      return
+        Present (Par)
+        and then Nkind (Par) = N_Function_Call
+        and then Has_At_End_Borrow_Annotation (Get_Called_Entity (Par));
+   end Is_Local_Borrower_In_Prophecy;
 
    ----------------------
    -- Is_Local_Context --
@@ -4281,8 +4371,6 @@ package body SPARK_Util is
          end case;
       end Is_Path_Expression_Ann;
 
-      --  Start of processing for Is_Path_Expression
-
    begin
       case Nkind (Expr) is
          when N_Attribute_Reference =>
@@ -4319,7 +4407,7 @@ package body SPARK_Util is
          when E_Function               =>
             return
               Has_Potentially_Invalid (E)
-              and then not Fun_Has_Only_Valid_Values (E);
+              and then not Fun_Has_Only_Valid_Values (Etype (E));
 
          when E_Variable | Formal_Kind =>
             return
@@ -4850,6 +4938,27 @@ package body SPARK_Util is
       end if;
    end To_String;
 
+   -------------------------------
+   -- Is_Within_Finally_Section --
+   -------------------------------
+
+   function Is_Within_Finally_Section (N : Node_Id) return Boolean is
+      Cursor : Node_Id := N;
+      Prev   : Node_Id;
+   begin
+      while Present (Cursor) loop
+         Prev := Cursor;
+         Cursor := Parent (Cursor);
+         if Nkind (Cursor) = N_Handled_Sequence_Of_Statements
+           and then Present (Finally_Statements (Cursor))
+           and then Finally_Statements (Cursor) = List_Containing (Prev)
+         then
+            return True;
+         end if;
+      end loop;
+      return False;
+   end Is_Within_Finally_Section;
+
    ---------------------------
    -- Is_Writable_Parameter --
    ---------------------------
@@ -4928,8 +5037,6 @@ package body SPARK_Util is
          Stop (Destination, Exc_Set, Is_Continue);
       end Do_Stop;
 
-      --  Start of processing for Iter_Exited_Scopes_With_Specified_Transfer
-
    begin
       --  Index labels
 
@@ -5004,10 +5111,16 @@ package body SPARK_Util is
 
                --  Cut propagation of ghost inlined calls here
 
-               if Is_Inlined_Call (Scop)
-                 and then Is_Ghost_With_Respect_To_Context (Scop)
-               then
-                  exit;
+               if Is_Inlined_Call (Scop) then
+                  if Is_Ghost_With_Respect_To_Context (Scop) then
+                     exit;
+
+                  --  If the inlined subprogram has No_Raise then clear the
+                  --  Remaining_Exceptions set.
+
+                  elsif No_Raise (Called_Entity_From_Inlined_Call (Scop)) then
+                     Remaining_Exceptions := Exception_Sets.Empty_Set;
+                  end if;
                end if;
 
             --  Transfer from an exception handlers always exit their
@@ -5271,8 +5384,6 @@ package body SPARK_Util is
                end if;
             end loop;
          end Add_Predecessors;
-
-         --  Start of processing for Collect_Vertices_Leading_To
 
       begin
          if not Empty_Paths then
@@ -5819,8 +5930,6 @@ package body SPARK_Util is
                end case;
             end Target_Vertex;
 
-            --  Start of processing for Connect_Transfer_Of_Control
-
          begin
             Do_Connect (Stmt);
          end Connect_Transfer_Of_Control;
@@ -5837,8 +5946,6 @@ package body SPARK_Util is
                  (Depth_In_Enclosing => Depth,
                   Ctrl_Predecessors  => Vertex_Sets.Empty_Set));
          end Insert_Neighborhood;
-
-         --  Start of processing for Cache_Graph_Of_Body
 
       begin
          declare
@@ -5963,8 +6070,6 @@ package body SPARK_Util is
          end if;
       end Combine;
 
-      --  Start of processing for Location_String
-
    begin
       loop
          declare
@@ -6061,7 +6166,7 @@ package body SPARK_Util is
 
    function Might_Exit_Program (Call : Node_Id) return Boolean is
       function Is_Body (N : Node_Id) return Boolean
-      is (Nkind (N) in N_Entity_Body);
+      is (Nkind (N) in N_Entity_Body or else Is_Inlined_Call (N));
 
       function Enclosing_Body is new First_Parent_With_Property (Is_Body);
 
@@ -6081,8 +6186,18 @@ package body SPARK_Util is
          --  with Program_Exit.
 
          declare
-            Scop : constant Node_Id := Enclosing_Body (Call);
+            Scop : Node_Id := Enclosing_Body (Call);
          begin
+            while Nkind (Scop) not in N_Entity_Body loop
+
+               --  An inlined ghost procedure call shall never exit the program
+
+               if Is_Ghost_With_Respect_To_Context (Scop) then
+                  return False;
+               end if;
+               Scop := Enclosing_Body (Scop);
+            end loop;
+
             return
               Present (Scop)
               and then Has_Program_Exit (Unique_Defining_Entity (Scop));
@@ -6157,8 +6272,6 @@ package body SPARK_Util is
 
          Subp : constant Callable_Kind_Id := Get_Called_Entity (Call);
 
-         --  Start of processing for Call_Updates_Deep
-
       begin
          --  Search parameters for updates to a deep part of an element of
          --  Variable, including through borrower.
@@ -6229,8 +6342,6 @@ package body SPARK_Util is
             end return;
          end;
       end Is_Borrower_Of_Variable;
-
-      --  Start of processing for No_Deep_Updates
 
    begin
       for V of Stmts loop
@@ -6312,8 +6423,6 @@ package body SPARK_Util is
 
       procedure Count_Assoc is new Traverse_More_Proc (Find_Assoc);
 
-      --  Start of processing for Number_Of_Assocs_In_Expression
-
    begin
       Count_Assoc (N);
       return Count;
@@ -6349,8 +6458,8 @@ package body SPARK_Util is
             I_Spec : constant Node_Id := Iterator_Specification (Q_Expr);
 
          begin
-            --  On for of quantification over arrays, the quantified variable
-            --  ranges over array elements.
+            --  On for of quantification/iteration over arrays, the quantified
+            --  variable ranges over array elements.
 
             if Present (I_Spec) and then Is_Iterator_Over_Array (I_Spec) then
                declare
@@ -6362,8 +6471,8 @@ package body SPARK_Util is
                       Has_Relaxed_Init (Component_Type (Etype (Arr_Expr)));
                end;
 
-            --  On for of quantification over containers, the quantified
-            --  variable is assigned the result of Element.
+            --  On for of quantification/iteration over containers, the
+            --  quantified variable is assigned the result of Element.
 
             elsif Present (I_Spec) and then Of_Present (I_Spec) then
                declare
@@ -6374,21 +6483,33 @@ package body SPARK_Util is
                   return Fun_Has_Relaxed_Init (Element);
                end;
 
-            --  On for in quantification over containers, the quantified
-            --  variable is assigned the result of First and Next.
+            --  On for in quantification/iteration over containers, the
+            --  quantified variable is assigned the result of First and Next
+            --  (or Last and Previous if they are supplied).
 
             elsif Present (I_Spec) then
                declare
-                  First : constant Entity_Id :=
+                  First    : constant Entity_Id :=
                     Get_Iterable_Type_Primitive
                       (Etype (Name (I_Spec)), Name_First);
-                  Next  : constant Entity_Id :=
+                  Next     : constant Entity_Id :=
                     Get_Iterable_Type_Primitive
                       (Etype (Name (I_Spec)), Name_Next);
+                  Last     : constant Entity_Id :=
+                    Get_Iterable_Type_Primitive
+                      (Etype (Name (I_Spec)), Name_Last);
+                  Previous : constant Entity_Id :=
+                    Get_Iterable_Type_Primitive
+                      (Etype (Name (I_Spec)), Name_Previous);
                begin
                   return
                     Fun_Has_Relaxed_Init (First)
-                    or else Fun_Has_Relaxed_Init (Next);
+                    or else Fun_Has_Relaxed_Init (Next)
+                    or else
+                      (Present (Last) and then Fun_Has_Relaxed_Init (Last))
+                    or else
+                      (Present (Previous)
+                       and then Fun_Has_Relaxed_Init (Previous));
                end;
             else
                return False;
@@ -6635,8 +6756,6 @@ package body SPARK_Util is
                raise Program_Error;
          end case;
       end Path_Contains_Auxiliary;
-
-      --  Start of processing for Path_Contains_Witness
 
    begin
       case Nkind (Expr) is
@@ -6901,8 +7020,6 @@ package body SPARK_Util is
          Result (1 .. Last) := S (S'First .. Last - S'First + 1);
       end Output_Result;
 
-      --  Start of processing for Real_Image
-
    begin
       Output.Set_Special_Output (Output_Result'Unrestricted_Access);
       UR_Write (U);
@@ -6998,6 +7115,16 @@ package body SPARK_Util is
       return Empty;
    end Search_Component_By_Name;
 
+   -----------------------------------
+   -- Set_Conditional_Old_Attribute --
+   -----------------------------------
+
+   procedure Set_Conditional_Old_Attribute
+     (Prefix : Node_Id; Condition : Node_Id) is
+   begin
+      Conditions_Of_Conditional_Old.Include (Prefix, Condition);
+   end Set_Conditional_Old_Attribute;
+
    -------------------
    -- Shape_Of_Node --
    -------------------
@@ -7011,8 +7138,6 @@ package body SPARK_Util is
 
       Buf     : Unbounded_String := Null_Unbounded_String;
       Node_It : Node_Id := Node;
-
-      --  Start of processing for Shape_Of_Node
 
    begin
       while Present (Node_It) loop
@@ -7399,8 +7524,6 @@ package body SPARK_Util is
          end if;
       end Ident_Image;
 
-      --  Start of processing for String_Of_Node
-
    begin
       return Node_To_String (N, "");
    end String_Of_Node;
@@ -7453,8 +7576,6 @@ package body SPARK_Util is
 
       procedure Search_Call_Actual is new
         Iterate_Call_Parameters (Search_Param);
-
-      --  Start of processing for Structurally_Decreases_In_Call
 
    begin
       --  Search for the actual of Call corresponding to the variant of Subp
@@ -7951,7 +8072,9 @@ package body SPARK_Util is
       procedure Register_Object (Obj : Entity_Id) is
       begin
          if Comes_From_Source (Obj)
-           and then No (Ultimate_Overlaid_Entity (Obj))
+           and then
+             (Ekind (Obj) = E_Constant
+              or else No (Ultimate_Overlaid_Entity (Obj)))
          then
             Results.Insert (Obj);
          end if;
@@ -8033,8 +8156,6 @@ package body SPARK_Util is
       --  Local variables
 
       Pkg_Spec : constant Node_Id := Package_Specification (E);
-
-      --  Start of processing for States_And_Objects
 
    begin
       --  Pick objects from visible declarations (always), then abstract

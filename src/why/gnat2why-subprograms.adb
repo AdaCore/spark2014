@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2025, AdaCore                     --
+--                     Copyright (C) 2010-2026, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -738,8 +738,6 @@ package body Gnat2Why.Subprograms is
          Append (Details, To_String (Trace));
       end Msg_Details;
 
-      --  Start of processing for Check_Ceiling_Protocol
-
    begin
       if Ekind (E) not in E_Task_Type | E_Entry
         and then not Might_Be_Main (E)
@@ -1201,8 +1199,6 @@ package body Gnat2Why.Subprograms is
          end loop;
       end Process_Declarations;
 
-      --  Start of processing for Compute_Attach_Handler_Check
-
    begin
       Process_Declarations (Visible_Declarations_Of_Prot_Type (Ty));
 
@@ -1556,8 +1552,6 @@ package body Gnat2Why.Subprograms is
 
       procedure Effects_Append_Binder_To_Writes is new
         Effects_Append_Binder (Effects_Append_To_Writes);
-
-      --  Start of processing for Compute_Effects
 
    begin
       --  Collect global variables potentially read and written
@@ -2277,8 +2271,6 @@ package body Gnat2Why.Subprograms is
       Result : W_Prog_Id := +Void;
       --  Why program for these checks
 
-      --  Start of processing for Compute_Contract_Cases_Entry_Checks
-
    begin
       --  Process individual contract cases
 
@@ -2533,8 +2525,6 @@ package body Gnat2Why.Subprograms is
 
       Result : W_Prog_Id := +Void;
 
-      --  Start of processing for Compute_Contract_Cases_Exit_Checks
-
    begin
       for Aggr of CC_List loop
          --  Process individual contract cases
@@ -2594,8 +2584,6 @@ package body Gnat2Why.Subprograms is
 
       Result : W_Pred_Array (1 .. Natural (CC_List.Length));
       Pos    : Natural := 0;
-
-      --  Start of processing for Compute_Contract_Cases_Postcondition
 
    begin
       for Aggr of CC_List loop
@@ -3359,8 +3347,6 @@ package body Gnat2Why.Subprograms is
 
       Def : W_Term_Id;
 
-      --  Start of processing for Declare_Logic_Functions
-
    begin
       if Is_Unchecked_Conversion_Instance (E) then
          declare
@@ -3865,11 +3851,12 @@ package body Gnat2Why.Subprograms is
 
          Dispatch_Post_RTE :=
            +Bind_From_Mapping_In_Expr
-              (Params => Params,
-               Map    => Map_For_Old,
-               Expr   => +Dispatch_Post_RTE,
-               Domain => EW_Prog,
-               Subset => Old_Parts);
+              (Params       => Params,
+               Map          => Map_For_Old,
+               Expr         => +Dispatch_Post_RTE,
+               Domain       => EW_Prog,
+               Subset       => Old_Parts,
+               Old_Prefixes => True);
       end if;
 
       Append (Why_Body, Dispatch_Post_RTE);
@@ -4274,8 +4261,6 @@ package body Gnat2Why.Subprograms is
       Vis_Decls  : constant List_Id := Visible_Declarations_Of_Prot_Type (E);
       Th         : Theory_UC;
 
-      --  Start of processing for Generate_VCs_For_Protected_Type
-
    begin
       --  We open a new theory, so that the context is fresh for this task
 
@@ -4455,8 +4440,6 @@ package body Gnat2Why.Subprograms is
    procedure Generate_VCs_For_Subprogram (E : Callable_Kind_Id) is
       Name : constant String := Full_Name (E);
       Th   : Theory_UC;
-
-      --  Start of processing for Generate_VCs_For_Subprogram
 
    begin
       Th :=
@@ -4800,8 +4783,6 @@ package body Gnat2Why.Subprograms is
               W_Prog_Array (2 .. Nb_Cases - (if Others_Present then 1 else 0));
             Else_Part        : W_Prog_Id;
             Exceptional_Case : Node_Id := First (Assocs);
-
-            --  Start of processing for Check_Exceptional_Cases
 
          begin
             --  Get the case where there is only one choice out of the way
@@ -5194,11 +5175,12 @@ package body Gnat2Why.Subprograms is
 
          R :=
            +Bind_From_Mapping_In_Expr
-              (Params => Body_Params,
-               Map    => Map_For_Old,
-               Expr   => +P,
-               Domain => EW_Prog,
-               Subset => Post_Old);
+              (Params       => Body_Params,
+               Map          => Map_For_Old,
+               Expr         => +P,
+               Domain       => EW_Prog,
+               Subset       => Post_Old,
+               Old_Prefixes => True);
 
          --  Add mapping for Old variables coming from the contract case if
          --  any. Checks are generated separately as they should only be done
@@ -5591,8 +5573,6 @@ package body Gnat2Why.Subprograms is
       Precondition_Is_Statically_False  : Boolean := False;
       Postcondition_Is_Statically_False : Boolean := False;
 
-      --  Start of processing for Generate_VCs_For_Subprogram
-
    begin
       --  Reset the toplevel exceptions for exit paths
 
@@ -5803,15 +5783,18 @@ package body Gnat2Why.Subprograms is
             First => True);
       end if;
 
-      --  For expression functions, the body is not marked. Retrieve the
-      --  expression directly.
+      --  For expression functions and predicate functions, the body is not
+      --  marked. Retrieve the expression directly.
 
-      if Is_Expression_Function_Or_Completion (E)
+      if ((Ekind (E) = E_Function and then Is_Predicate_Function (E))
+          or else Is_Expression_Function_Or_Completion (E))
         and then Entity_Body_In_SPARK (E)
       then
          declare
             Expr : constant Node_Id :=
-              Expression (Get_Expression_Function (E));
+              (if Is_Predicate_Function (E)
+               then Get_Predicate_Expression (E)
+               else Expression (Get_Expression_Function (E)));
 
          begin
             Why_Body :=
@@ -6690,37 +6673,6 @@ package body Gnat2Why.Subprograms is
       --  itself.
 
       if Ekind (E) = E_Function and then Proof_Module_Cyclic (E) then
-
-         --  Raise a warning about missing (implicit) contract on recursive
-         --  calls.
-
-         declare
-            Has_Explicit_Contracts : constant Boolean :=
-              Has_Contracts (E, Pragma_Postcondition)
-              or else Has_Contracts (E, Pragma_Contract_Cases);
-            Has_Implicit_Contracts : constant Boolean :=
-              Type_Needs_Dynamic_Invariant (Etype (E));
-         begin
-
-            if Has_Implicit_Contracts or else Has_Explicit_Contracts then
-               declare
-                  String_For_Implicit : constant String :=
-                    (if Has_Explicit_Contracts then "" else "implicit ");
-                  String_For_Rec      : constant String :=
-                    (if Is_Recursive (E)
-                     then "recursive calls"
-                     else "implicit recursive calls");
-               begin
-                  Warning_Msg_N
-                    (Warn_Contracts_Recursive,
-                     E,
-                     Create_N
-                       (Warn_Contracts_Recursive,
-                        Names => [String_For_Implicit, String_For_Rec]));
-               end;
-            end if;
-         end;
-
          Register_Proof_Cyclic_Function (E);
       end if;
 
@@ -7808,9 +7760,6 @@ package body Gnat2Why.Subprograms is
                   Domain => EW_Pred);
             --  Dynamic invariant and type invariant of the result
 
-            Volatile_State : constant W_Identifier_Id :=
-              New_Identifier (Domain => EW_Term, Name => "volatile__effect");
-
             function Create_Function_Decl
               (Prog_Id  : W_Identifier_Id;
                Selector : Selection_Kind;
@@ -7963,23 +7912,6 @@ package body Gnat2Why.Subprograms is
             end Create_Function_Decl;
 
          begin
-            --  For a volatile function that is not protected, we need to
-            --  generate a dummy effect. Protected functions are OK, they
-            --  already have their own state (the protected object).
-
-            if Has_Pragma_Volatile_Function (E) then
-               Effects_Append_To_Writes (Effects, Volatile_State);
-
-               Emit
-                 (Th,
-                  New_Global_Ref_Declaration
-                    (Ada_Node => E,
-                     Labels   => Symbol_Sets.Empty_Set,
-                     Location => No_Location,
-                     Name     => Volatile_State,
-                     Ref_Type => EW_Private_Type));
-            end if;
-
             --  If the expression function definition might be hidden, generate
             --  a program function without the body as a post.
 
@@ -8952,12 +8884,18 @@ package body Gnat2Why.Subprograms is
             --  part of the verification of the body of E.
 
          begin
-            Compute_Borrow_At_End_Value
-              (Check_Node    => Empty,
-               W_Brower      => +Get_Brower_At_End (E),
-               Expr          => Expr,
-               Reconstructed => Def,
-               Checks        => Dummy);
+            if Nkind (Expr) = N_Null then
+               Def := +E_Symb (Etype (Expr), WNE_Null_Pointer);
+            else
+               Compute_Borrow_At_End_Value
+                 (Check_Node    => Empty,
+                  W_Brower      => +Get_Brower_At_End (E),
+                  Expr          => Expr,
+                  Reconstructed => Def,
+                  Checks        => Dummy,
+                  Params        => Logic_Params);
+            end if;
+
             Emit
               (Expr_Fun_Axiom_Th,
                New_Guarded_Axiom
@@ -9019,24 +8957,6 @@ package body Gnat2Why.Subprograms is
           not Is_Structural_Subprogram_Variant
                 (Get_Pragma (E, Pragma_Subprogram_Variant))
       then
-
-         --  Raise a warning about missing definition on recursive calls
-
-         declare
-            Scope            : constant Entity_Id := Enclosing_Unit (E);
-            String_For_Scope : constant String :=
-              (if Present (Scope)
-                 and then
-                   Ekind (Scope)
-                   in E_Package | E_Function | E_Procedure | E_Entry
-                 and then Proof_Module_Cyclic (E, Scope)
-               then " and on calls from enclosing unit"
-               else "");
-         begin
-            Warning_Msg_N
-              (Warn_Num_Variant, E, Extra_Message => String_For_Scope);
-         end;
-
          Register_Proof_Cyclic_Function (E);
          Register_Dependency_For_Soundness (E_Module (E, Expr_Fun_Axiom), E);
       end if;
@@ -9169,8 +9089,6 @@ package body Gnat2Why.Subprograms is
       Subp_For_Post : Entity_Id := Empty;
       Contracts     : Node_Lists.List;
 
-      --  Start of processing for Update_Symbol_Table_For_Inherited_Contracts
-
    begin
       --  Find the subprogram from which the precondition is inherited, if any
 
@@ -9279,6 +9197,7 @@ package body Gnat2Why.Subprograms is
       --       result_at_end.is_null = result.is_null ->
       --         let borrowed_at_end = E.borrowed_at_end args result_at_end in
       --           borrowed_at_end.is_null = borrowed_arg.is_null
+      --           /\ dyn_inv borrowed_at_end
       --           /\ post)
       --    /\ borrowed_arg = E.borrowed_at_end args result
       --
@@ -9330,12 +9249,17 @@ package body Gnat2Why.Subprograms is
                           Def     => +Borrowed_Call,
                           Context =>
                             New_And_Pred
-                              (Left  =>
-                                 New_Equality_Of_Preserved_Parts
-                                   (Ty    => Borrowed_Ty,
-                                    Expr1 => +Borrowed_At_End,
-                                    Expr2 => Borrowed),
-                               Right => Post),
+                              ((1 =>
+                                  Compute_Dynamic_Inv_And_Initialization
+                                    (Expr   => +Borrowed_At_End,
+                                     Ty     => Borrowed_Ty,
+                                     Params => Params),
+                                2 =>
+                                  New_Equality_Of_Preserved_Parts
+                                    (Ty    => Borrowed_Ty,
+                                     Expr1 => +Borrowed_At_End,
+                                     Expr2 => Borrowed),
+                                3 => Post)),
                           Typ     => EW_Bool_Type))),
            Right =>
              New_Comparison

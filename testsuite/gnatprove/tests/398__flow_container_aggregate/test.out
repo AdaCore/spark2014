@@ -19,7 +19,10 @@ p.ads:11:11: medium: when reestablishing invariant on "Get" at spark-containers-
 p.ads:11:11: medium: when reestablishing invariant on "Length" at spark-containers-functional-infinite_sequences.ads:103, in instantiation at p.ads:4
 p.ads:13:13: info: implicit aspect Always_Terminates on "Empty_Set" has been proved, subprogram will terminate
 p.ads:15:13: info: implicit aspect Always_Terminates on "Model" has been proved, subprogram will terminate
-p.ads:15:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
+p.ads:15:13: warning: potentially missing contract for "Model" declared at line 15
+p.ads:15:13: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 p.ads:16:53: medium: postcondition might fail, cannot prove S = P.Empty_Set [possible fix: you should consider adding a postcondition to function "Empty_Set" or turning it into an expression function] [provers gave up before completing the proof]
+p.ads:19:14: warning: potentially missing contract for "Model" declared at line 15
+p.ads:19:14: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 p.ads:20:21: medium: during checks for container aggregates at p.ads:11
 p.ads:20:21: medium: precondition might fail [provers gave up before completing the proof]

@@ -1,0 +1,87 @@
+test_force_analysis.adb:1:64: info: program exit postcondition proved (Trivial: 1 VC)
+test_force_analysis.adb:7:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+test_force_analysis.adb:10:10: medium: unexpected exception might be raised [reason for check: "F" allows propagating no exceptions] [possible explanation: "Program_Error" might be unexpectedly raised] [provers gave up before completing the proof]
+test_force_analysis.adb:23:13: info: implicit aspect Always_Terminates on "F2" has been proved, subprogram will terminate
+test_force_analysis.adb:26:10: info: only expected exception raised (CVC5: 1 VC), in call inlined at test_force_analysis.adb:63
+test_force_analysis.adb:26:10: medium: unexpected exception might be raised [reason for check: "F2" allows propagating no exceptions] [possible explanation: "Constraint_Error" might be unexpectedly raised] [provers gave up before completing the proof]
+test_force_analysis.adb:38:13: info: implicit aspect Always_Terminates on "F3" has been proved, subprogram will terminate
+test_force_analysis.adb:41:10: medium: call might exit the program [reason for check: "F3" does not allow exiting the program] [provers gave up before completing the proof]
+test_force_analysis.adb:52:13: info: implicit aspect Always_Terminates on "F4" has been proved, subprogram will terminate
+test_force_analysis.adb:55:10: info: conditional call termination proved (CVC5: 1 VC), in call inlined at test_force_analysis.adb:63
+test_force_analysis.adb:55:10: medium: call might not terminate [reason for check: functions should always terminate in SPARK] [provers gave up before completing the proof]
+test_force_analysis.adb:60:13: info: implicit aspect Always_Terminates on "G" has been proved, subprogram will terminate
+test_force_analysis.adb:63:04: warning: this statement is never reached
+test_force_analysis.adb:63:10: info: analyzing call to "F" in context
+test_force_analysis.adb:63:10: warning: in inlined body at line 12 [enabled by default]
+test_force_analysis.adb:63:10: warning: unreachable code [enabled by default]
+test_force_analysis.adb:63:20: info: analyzing call to "F2" in context
+test_force_analysis.adb:63:20: warning: in inlined body at line 28 [enabled by default]
+test_force_analysis.adb:63:20: warning: this statement is never reached
+test_force_analysis.adb:63:20: warning: unreachable code [enabled by default]
+test_force_analysis.adb:63:31: info: analyzing call to "F3" in context
+test_force_analysis.adb:63:31: warning: in inlined body at line 43 [enabled by default]
+test_force_analysis.adb:63:31: warning: this statement is never reached
+test_force_analysis.adb:63:31: warning: unreachable code [enabled by default]
+test_force_analysis.adb:63:42: info: analyzing call to "F4" in context
+test_force_analysis.adb:63:42: warning: in inlined body at line 57 [enabled by default]
+test_force_analysis.adb:63:42: warning: this statement is never reached
+test_force_analysis.adb:63:42: warning: unreachable code [enabled by default]
+test_force_analysis_functions.adb:1:74: info: program exit postcondition proved (Trivial: 1 VC)
+test_force_analysis_functions.adb:13:13: info: implicit aspect Always_Terminates on "F2" has been proved, subprogram will terminate
+test_force_analysis_functions.adb:17:10: warning: "C" is set by "Do_Raise" but not used after the call
+test_force_analysis_functions.adb:17:15: info: only expected exception raised (CVC5: 1 VC), in call inlined at test_force_analysis_functions.adb:56
+test_force_analysis_functions.adb:17:15: medium: unexpected exception might be raised [reason for check: "F2" allows propagating no exceptions] [possible explanation: "Constraint_Error" might be unexpectedly raised] [provers gave up before completing the proof]
+test_force_analysis_functions.adb:29:13: info: implicit aspect Always_Terminates on "F3" has been proved, subprogram will terminate
+test_force_analysis_functions.adb:33:10: warning: "C" is set by "Do_Exit" but not used after the call
+test_force_analysis_functions.adb:33:15: medium: call might exit the program [reason for check: "F3" does not allow exiting the program] [provers gave up before completing the proof]
+test_force_analysis_functions.adb:44:13: info: implicit aspect Always_Terminates on "F4" has been proved, subprogram will terminate
+test_force_analysis_functions.adb:44:17: warning: unused initial value of "B"
+test_force_analysis_functions.adb:47:07: warning: statement has no effect
+test_force_analysis_functions.adb:48:10: warning: "C" is set by "Does_Not_Terminate" but not used after the call
+test_force_analysis_functions.adb:48:15: medium: call might not terminate [reason for check: functions should always terminate in SPARK] [provers gave up before completing the proof]
+test_force_analysis_functions.adb:48:15: medium: call might not terminate, in call inlined at test_force_analysis_functions.adb:56 [provers gave up before completing the proof]
+test_force_analysis_functions.adb:48:15: warning: statement has no effect
+test_force_analysis_functions.adb:53:13: info: implicit aspect Always_Terminates on "G" has been proved, subprogram will terminate
+test_force_analysis_functions.adb:56:10: info: analyzing call to "F2" in context
+test_force_analysis_functions.adb:56:21: info: analyzing call to "F3" in context
+test_force_analysis_functions.adb:56:32: info: analyzing call to "F4" in context
+test_force_analysis_inline.adb:1:71: info: program exit postcondition proved (Trivial: 1 VC)
+test_force_analysis_inline.adb:6:14: high: all paths in "I" raise exceptions or do not terminate normally
+test_force_analysis_inline.adb:6:14: info: add a contract to analyze it separately from calling contexts
+test_force_analysis_inline.adb:6:14: info: local subprogram "I" only analyzed in the context of calls [info-unrolling-inlining]
+test_force_analysis_inline.adb:6:14: warning: subprogram "I" has no effect
+test_force_analysis_inline.adb:8:07: medium: unexpected exception might be raised, in call inlined at test_force_analysis_inline.adb:14 [reason for check: "F" allows propagating no exceptions] [possible explanation: "Program_Error" might be unexpectedly raised] [provers gave up before completing the proof]
+test_force_analysis_inline.adb:11:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+test_force_analysis_inline.adb:14:10: info: analyzing call to "I" in context
+test_force_analysis_inline.adb:27:14: high: all paths in "I2" raise exceptions or do not terminate normally
+test_force_analysis_inline.adb:27:14: info: add a contract to analyze it separately from calling contexts
+test_force_analysis_inline.adb:27:14: info: local subprogram "I2" only analyzed in the context of calls [info-unrolling-inlining]
+test_force_analysis_inline.adb:27:14: warning: subprogram "I2" has no effect
+test_force_analysis_inline.adb:29:07: info: only expected exception raised (CVC5: 1 VC), in call inlined at test_force_analysis_inline.adb:35, in call inlined at test_force_analysis_inline.adb:82
+test_force_analysis_inline.adb:29:07: medium: unexpected exception might be raised, in call inlined at test_force_analysis_inline.adb:35 [reason for check: "F2" allows propagating no exceptions] [possible explanation: "Constraint_Error" might be unexpectedly raised] [provers gave up before completing the proof]
+test_force_analysis_inline.adb:32:13: info: implicit aspect Always_Terminates on "F2" has been proved, subprogram will terminate
+test_force_analysis_inline.adb:35:10: info: analyzing call to "I2" in context
+test_force_analysis_inline.adb:47:14: high: all paths in "I3" raise exceptions or do not terminate normally
+test_force_analysis_inline.adb:47:14: info: add a contract to analyze it separately from calling contexts
+test_force_analysis_inline.adb:47:14: info: local subprogram "I3" only analyzed in the context of calls [info-unrolling-inlining]
+test_force_analysis_inline.adb:47:14: warning: subprogram "I3" has no effect
+test_force_analysis_inline.adb:49:07: medium: call might exit the program, in call inlined at test_force_analysis_inline.adb:55 [reason for check: "F3" does not allow exiting the program] [provers gave up before completing the proof]
+test_force_analysis_inline.adb:52:13: info: implicit aspect Always_Terminates on "F3" has been proved, subprogram will terminate
+test_force_analysis_inline.adb:55:10: info: analyzing call to "I3" in context
+test_force_analysis_inline.adb:66:14: high: all paths in "I4" raise exceptions or do not terminate normally
+test_force_analysis_inline.adb:66:14: info: add a contract to analyze it separately from calling contexts
+test_force_analysis_inline.adb:66:14: info: local subprogram "I4" only analyzed in the context of calls [info-unrolling-inlining]
+test_force_analysis_inline.adb:66:14: warning: subprogram "I4" has no effect
+test_force_analysis_inline.adb:68:07: info: conditional call termination proved (CVC5: 1 VC), in call inlined at test_force_analysis_inline.adb:74, in call inlined at test_force_analysis_inline.adb:82
+test_force_analysis_inline.adb:68:07: medium: call might not terminate, in call inlined at test_force_analysis_inline.adb:74 [reason for check: functions should always terminate in SPARK] [provers gave up before completing the proof]
+test_force_analysis_inline.adb:71:13: info: implicit aspect Always_Terminates on "F4" has been proved, subprogram will terminate
+test_force_analysis_inline.adb:74:10: info: analyzing call to "I4" in context
+test_force_analysis_inline.adb:79:13: info: implicit aspect Always_Terminates on "G" has been proved, subprogram will terminate
+test_force_analysis_inline.adb:82:04: warning: this statement is never reached
+test_force_analysis_inline.adb:82:10: info: analyzing call to "F" in context
+test_force_analysis_inline.adb:82:20: info: analyzing call to "F2" in context
+test_force_analysis_inline.adb:82:20: warning: this statement is never reached
+test_force_analysis_inline.adb:82:31: info: analyzing call to "F3" in context
+test_force_analysis_inline.adb:82:31: warning: this statement is never reached
+test_force_analysis_inline.adb:82:42: info: analyzing call to "F4" in context
+test_force_analysis_inline.adb:82:42: warning: this statement is never reached

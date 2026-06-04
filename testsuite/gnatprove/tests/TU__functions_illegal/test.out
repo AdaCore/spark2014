@@ -10,4 +10,4 @@ functions_illegal_2.ads:4:35: error: function cannot have parameter of mode "out
 functions_illegal_2.ads:4:35: error: launch "gnatprove --explain=E0015" for more information
 functions_illegal_2.ads:10:38: error: function cannot have parameter of mode "out" or "in out" in SPARK [E0015]
 functions_illegal_2.ads:10:38: error: launch "gnatprove --explain=E0015" for more information
-gnatprove: error during generation of Global contracts
+gnatprove: error during flow analysis and proof

@@ -40,7 +40,7 @@ begin
 
    pragma Assert_And_Cut (X in 10 .. 1000 and Y > 0 and Z < 0 and Y + Z <= 1000);
 
-   Outter : for H in 1 .. 10 loop
+   Outer : for H in 1 .. 10 loop
       for K in 1 .. 10 loop
          pragma Loop_Invariant (X >= K);
          if Y > K then
@@ -49,7 +49,7 @@ begin
             end if;
          end if;
       end loop;
-   end loop Outter;
+   end loop Outer;
 
    return X + (Y + Z);
 end;

@@ -1,3 +1,7 @@
+Generated contracts for A
+   Initializes =>
+      Var
+      VI1
 Generated contracts for A.Add
    Global =>
    Refined_Global =>
@@ -11,10 +15,6 @@ Generated contracts for A.Test_02
    Refined_Global =>
       Input =>
          VI1
-Generated contracts for A
-   Initializes =>
-      Var
-      VI1
 a.adb:4:55: medium: overflow check might fail, cannot prove lower bound for X + Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Y >= 0 then X <= Integer'Last - Y else X >= Integer'First - Y) to subprogram at a.ads:3] [provers gave up before completing the proof]
 a.adb:6:65: medium: overflow check might fail, cannot prove lower bound for X + Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Y >= 0 then X <= Integer'Last - Y else X >= Integer'First - Y) to subprogram at a.ads:4] [provers gave up before completing the proof]
 a.adb:8:13: info: implicit aspect Always_Terminates on "Add_Annotated_Local" has been proved, subprogram will terminate

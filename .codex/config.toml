@@ -1,0 +1,11 @@
+[features]
+codex_hooks = true
+
+[[hooks.PostToolUse]]
+matcher = "^(Edit|Write|apply_patch)$"
+
+[[hooks.PostToolUse.hooks]]
+type = "command"
+command = '/usr/bin/python3 "$(git rev-parse --show-toplevel)/.codex/hooks/format_ada.py"'
+timeout = 30
+statusMessage = "Formatting Ada files"

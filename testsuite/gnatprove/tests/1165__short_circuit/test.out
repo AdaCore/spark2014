@@ -1,0 +1,3 @@
+test.adb:5:04: warning: analyzing unreferenced procedure "P" [unreferenced-procedure]
+test.adb:5:30: info: initialization of "B" proved
+test.adb:7:26: info: division check proved (CVC5: 1 VC)

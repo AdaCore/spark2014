@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2021-2025, AdaCore                     --
+--                     Copyright (C) 2021-2026, AdaCore                     --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -50,6 +50,7 @@ with Sinput;                 use Sinput;
 with Snames;                 use Snames;
 with SPARK_Atree;            use SPARK_Atree;
 with SPARK_Definition;
+with SPARK_Definition.Annotate;
 with SPARK_Util;             use SPARK_Util;
 with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 with SPARK_Util.Types;       use SPARK_Util.Types;
@@ -409,8 +410,8 @@ package body CE_RAC is
    --  Lo and behold! The global execution context
 
    procedure Evaluate_Attribute_Prefix_Values
-     (Attr_Name : Name_Id; Prefixes : Node_Sets.Set)
-   with Pre => Attr_Name in Snames.Name_Old | Snames.Name_Loop_Entry;
+     (Attr_Id : Attribute_Id; Prefixes : Node_Sets.Set)
+   with Pre => Attr_Id in Attribute_Old | Attribute_Loop_Entry;
    --  For each node in Prefixes, evaluate it and add its value to the
    --  appropriate map from prefixes to their values.
 
@@ -418,15 +419,10 @@ package body CE_RAC is
    -- Value oracles --
    -------------------
 
-   function Can_Get (N : Node_Id) return Boolean
-   is (Nkind (N) in N_Defining_Identifier | N_Identifier | N_Expanded_Name)
-   with Ghost => True;
-   --  Predicate for nodes, for which the counterexample may have a value
-
    function Get_Cntexmp_Value
-     (N : Node_Id; Cntexmp : Cntexample_File_Maps.Map) return Opt_Value_Type
-   with Pre => Can_Get (N);
-   --  Get the value of variable N from the counterexample
+     (E : Entity_Id; Cntexmp : Cntexample_File_Maps.Map) return Opt_Value_Type
+   with Pre => Is_Object (E);
+   --  Get the value of object E from the counterexample
 
    type Value_Origin is
      (From_Counterexample,
@@ -437,14 +433,14 @@ package body CE_RAC is
    --  The origin of a value in a call to Get
 
    function Get_Value
-     (N            : Node_Id;
+     (E            : Entity_Id;
       Ex           : Node_Id;
       Use_Default  : Boolean;
       Use_Fuzzing  : Boolean;
       Use_Gnattest : Boolean;
       Origin       : out Value_Origin) return Value_Type
-   with Pre => Can_Get (N);
-   --  Get a value for variable N using the first successful of the following
+   with Pre => Is_Object (E);
+   --  Get a value for object E using the first successful of the following
    --  strategies:
    --  1) from gnattest (if the --gnattest_values was passed),
    --  2) from the fuzzer (if Use_Fuzzing is True),
@@ -544,13 +540,14 @@ package body CE_RAC is
    --  compatible with the subtype.
 
    procedure Init_Global
-     (N             : Node_Id;
+     (E             : Entity_Id;
       Use_Expr      : Boolean;
       Use_Fuzzing   : Boolean;
       Default_Value : Boolean;
       Val           : out Value_Access;
-      Descr         : String);
-   --  Initialize a global variable from the appropriate source. The decision
+      Descr         : String)
+   with Pre => Is_Object (E);
+   --  Initialize a global object from the appropriate source. The decision
    --  of the source of the value is made by Get_Value.
 
    function Param_Scope (Call : Node_Id) return Scopes;
@@ -1383,8 +1380,6 @@ package body CE_RAC is
 
       procedure Iterate_Call is new Iterate_Call_Parameters (Process_Param);
 
-      --  Start of processing for Copy_Out_Parameters
-
    begin
       Iterate_Call (Call);
    end Copy_Out_Parameters;
@@ -1592,7 +1587,7 @@ package body CE_RAC is
    --------------------------------------
 
    procedure Evaluate_Attribute_Prefix_Values
-     (Attr_Name : Name_Id; Prefixes : Node_Sets.Set) is
+     (Attr_Id : Attribute_Id; Prefixes : Node_Sets.Set) is
    begin
       for P of Prefixes loop
          declare
@@ -1605,7 +1600,7 @@ package body CE_RAC is
             Position : Node_To_Value.Cursor;
 
          begin
-            if Attr_Name = Name_Old then
+            if Attr_Id = Attribute_Old then
                Ctx.Env (Ctx.Env.First).Old_Attrs.Insert
                  (P, Val, Position, Inserted);
 
@@ -1629,7 +1624,7 @@ package body CE_RAC is
                end;
 
             else
-               pragma Assert (Attr_Name = Name_Loop_Entry);
+               pragma Assert (Attr_Id = Attribute_Loop_Entry);
                Ctx.Env (Ctx.Env.First).Loop_Entry_Attrs.Insert
                  (P, Val, Position, Inserted);
 
@@ -1681,7 +1676,7 @@ package body CE_RAC is
 
       if Do_Init then
          Init_Global
-           (N             => E,
+           (E             => E,
             Use_Expr      => True,
             Use_Fuzzing   => False,
             Default_Value => False,
@@ -1791,17 +1786,13 @@ package body CE_RAC is
    -----------------------
 
    function Get_Cntexmp_Value
-     (N : Node_Id; Cntexmp : Cntexample_File_Maps.Map) return Opt_Value_Type
+     (E : Entity_Id; Cntexmp : Cntexample_File_Maps.Map) return Opt_Value_Type
    is
-      Filename : constant String := File_Name (Sloc (N));
+      Filename : constant String := File_Name (Sloc (E));
       Line     : constant Integer :=
-        Integer (Get_Physical_Line_Number (Sloc (N)));
+        Integer (Get_Physical_Line_Number (Sloc (E)));
       Files_C  : constant Cntexample_File_Maps.Cursor :=
         Cntexmp.Find (Filename);
-      Obj      : constant Entity_Id :=
-        (if Nkind (N) in N_Identifier | N_Expanded_Name
-         then Entity (N)
-         else N);
 
    begin
 
@@ -1821,10 +1812,10 @@ package body CE_RAC is
 
          Val :=
            Get_Counterexample_Value
-             (Obj, Cntexample_Line_Maps.Element (Lines_C));
+             (E, Cntexample_Line_Maps.Element (Lines_C));
 
          if Val.Present then
-            Cleanup_Counterexample_Value (Val.Content, N);
+            Cleanup_Counterexample_Value (Val.Content, E);
          end if;
          return Val;
       end;
@@ -1847,8 +1838,6 @@ package body CE_RAC is
          end if;
       end To_Big_Integer;
 
-      --  Start of processing for Get_Bounds
-
    begin
       Low := To_Big_Integer (Low_Bound (N));
       High := To_Big_Integer (High_Bound (N));
@@ -1869,7 +1858,7 @@ package body CE_RAC is
    ---------------
 
    function Get_Value
-     (N            : Node_Id;
+     (E            : Entity_Id;
       Ex           : Node_Id;
       Use_Default  : Boolean;
       Use_Fuzzing  : Boolean;
@@ -1880,20 +1869,27 @@ package body CE_RAC is
       Res : Value_Type;
    begin
       if Use_Gnattest
-        and Gnattest_Values.Values.all'Length - Gnattest_Values.Pos >= 0
+        and then Gnattest_Values.Pos in Gnattest_Values.Values.all'Range
       then
          declare
             Bindings : constant Entity_Bindings.Map :=
               Gnattest_Values.Values.all (Gnattest_Values.Pos);
          begin
-            Res := Bindings.Element (N).all;
+            if not Bindings.Contains (E) then
+               raise RAC_Gnattest_Error
+                 with
+                   "No gnattest value for parameter """
+                   & Get_Name_String (Chars (E))
+                   & """";
+            end if;
+            Res := Bindings.Element (E).all;
          end;
          Origin := From_Gnattest;
       elsif Use_Fuzzing then
-         Res := Fuzz_Value (Etype (N));
+         Res := Fuzz_Value (Etype (E));
          Origin := From_Fuzzer;
       else
-         OV := Get_Cntexmp_Value (N, Ctx.Cntexmp);
+         OV := Get_Cntexmp_Value (E, Ctx.Cntexmp);
          if OV.Present then
             Res := OV.Content;
             Origin := From_Counterexample;
@@ -1901,23 +1897,21 @@ package body CE_RAC is
             Res := RAC_Expr (Ex);
             Origin := From_Expr;
          elsif Use_Default then
-            Res := Default_Value (Etype (N));
+            Res := Default_Value (Etype (E));
             Origin := From_Type_Default;
          else
             RAC_Incomplete
-              ("No counterexample value for program parameter "
-               & Get_Name_String (Chars (N))
-               & "("
-               & Node_Id'Image (N)
-               & ")");
+              ("No counterexample value for parameter """
+               & Get_Name_String (Chars (E))
+               & """");
          end if;
       end if;
 
-      Ctx.Initial_Values.Include (N, Copy (Res));
+      Ctx.Initial_Values.Include (E, Copy (Res));
 
       RAC_Info
         ("Get "
-         & Get_Name_String (Chars (N))
+         & Get_Name_String (Chars (E))
          & " ("
          & Value_Origin'Image (Origin)
          & ")"
@@ -1931,7 +1925,7 @@ package body CE_RAC is
    -----------------
 
    procedure Init_Global
-     (N             : Node_Id;
+     (E             : Entity_Id;
       Use_Expr      : Boolean;
       Use_Fuzzing   : Boolean;
       Default_Value : Boolean;
@@ -1940,35 +1934,38 @@ package body CE_RAC is
    is
       Origin : Value_Origin;
       Expr   : constant Node_Id :=
-        (if Use_Expr and then not Is_Formal (N)
-         then Expression (Enclosing_Declaration (N))
+        (if Use_Expr and then not Is_Formal (E)
+         then Expression (Enclosing_Declaration (E))
          else Empty);
 
    begin
       Val :=
         new Value_Type'
           (Get_Value
-             (N            => N,
+             (E            => E,
               Ex           => Expr,
               Use_Default  => Default_Value,
               Use_Fuzzing  => Use_Fuzzing,
               Use_Gnattest => False,
+              --  Gnattest values cover only formal parameters of the top-level
+              --  subprogram being checked; globals are never provided via the
+              --  --gnattest-values JSON file.
               Origin       => Origin));
 
-      Ctx.Env (Ctx.Env.Last).Bindings.Insert (N, Val);
+      Ctx.Env (Ctx.Env.Last).Bindings.Insert (E, Val);
 
-      Ctx.Initial_Values.Include (N, Copy (Val.all));
+      Ctx.Initial_Values.Include (E, Copy (Val.all));
 
       RAC_Trace
         ("Initialize global "
          & Descr
          & " "
-         & Get_Name_String (Chars (N))
+         & Get_Name_String (Chars (E))
          & " to "
          & To_String (Val.all)
          & " "
          & Value_Origin'Image (Origin),
-         N);
+         E);
    end Init_Global;
 
    -------------------
@@ -2020,7 +2017,10 @@ package body CE_RAC is
    is
       Res : Big_Integer := I;
    begin
-      if Is_Modular_Integer_Type (Ty) then
+      if Has_Modular_Operations (Ty)
+        and then
+          not SPARK_Definition.Annotate.Has_No_Wrap_Around_Annotation (Ty)
+      then
          if No (Modulus (Ty)) then
             --  ??? TODO Modulus 0 for System.Address in
             --      O226-018__address/src/worker_pack__worker_init
@@ -2399,8 +2399,6 @@ package body CE_RAC is
 
       procedure Iterate_Call is new Iterate_Call_Parameters (Process_Param);
 
-      --  Start of processing for Param_Scope
-
    begin
       Iterate_Call (Call);
       return Res;
@@ -2491,11 +2489,11 @@ package body CE_RAC is
             Is_Out := Ekind (Param) = E_Out_Parameter;
             V :=
               Get_Value
-                (N            => Param,
+                (E            => Param,
                  Ex           => Empty,
                  Use_Default  => Is_Out,
                  Use_Fuzzing  => Fuzz_Formals,
-                 Use_Gnattest => True,
+                 Use_Gnattest => Gnat2Why_Opts.Reading.Gnattest_Values /= "",
                  Origin       => Origin);
             Res.Bindings.Insert (Param, new Value_Type'(V));
             RAC_Trace
@@ -2552,7 +2550,6 @@ package body CE_RAC is
       Res       : Opt_Value_Type;
       Sc        : Scopes;
 
-      --  Start of processing for RAC_Call
    begin
       RAC_Trace ("call " & Get_Name_String (Chars (E)));
       Rem_Stack_Height_Push;
@@ -2581,8 +2578,8 @@ package body CE_RAC is
       Ctx.Env.Prepend (Sc);
 
       --  Store value of the 'Old prefixes
-      Collect_Attr_Parts (Posts, Snames.Name_Old, Old_Nodes);
-      Evaluate_Attribute_Prefix_Values (Snames.Name_Old, Old_Nodes);
+      Collect_Attr_Parts (Posts, Attribute_Old, Old_Nodes);
+      Evaluate_Attribute_Prefix_Values (Attribute_Old, Old_Nodes);
 
       --  Check preconditions and get stuck in main functions
       begin
@@ -3004,8 +3001,6 @@ package body CE_RAC is
          end loop;
       end Init_Global_Scope;
 
-      --  Start of processing for RAC_Execute
-
    begin
       Ctx :=
         (Env              => Empty_Global_Env,
@@ -3405,9 +3400,11 @@ package body CE_RAC is
       -----------------------------
 
       function RAC_Attribute_Reference return Value_Type is
+         Attr_Id : constant Attribute_Id :=
+           Get_Attribute_Id (Attribute_Name (N));
       begin
-         case Attribute_Name (N) is
-            when Snames.Name_Old                               =>
+         case Attr_Id is
+            when Attribute_Old                             =>
                --  E'Old
                declare
                   P : constant Node_Id := Prefix (N);
@@ -3416,7 +3413,7 @@ package body CE_RAC is
                   return Find_Old_Value (P).Content;
                end;
 
-            when Snames.Name_Loop_Entry                        =>
+            when Attribute_Loop_Entry                      =>
                --  E'Loop_Entry
                declare
                   P       : constant Node_Id := Prefix (N);
@@ -3426,7 +3423,7 @@ package body CE_RAC is
                   return Find_Loop_Entry_Value (P, Loop_Id).Content;
                end;
 
-            when Snames.Name_Result                            =>
+            when Attribute_Result                          =>
                --  E'Result
                declare
                   E : constant Entity_Id := SPARK_Atree.Entity (Prefix (N));
@@ -3434,7 +3431,7 @@ package body CE_RAC is
                   return Find_Binding (E).all;
                end;
 
-            when Snames.Name_First | Snames.Name_Last          =>
+            when Attribute_First | Attribute_Last          =>
                if Is_Array_Type (Etype (Prefix (N))) then
                   declare
                      Index_Ty : constant Entity_Id :=
@@ -3443,7 +3440,7 @@ package body CE_RAC is
                   begin
                      case V.K is
                         when Array_K =>
-                           if Attribute_Name (N) = Snames.Name_First then
+                           if Attr_Id = Attribute_First then
                               return
                                 Int_Value (V.First_Attr.Content, Index_Ty);
                            else
@@ -3468,19 +3465,19 @@ package body CE_RAC is
                begin
                   Get_Integer_Type_Bounds (Etype (N), Fst, Lst);
 
-                  case Attribute_Name (N) is
-                     when Snames.Name_First =>
+                  case Attr_Id is
+                     when Attribute_First =>
                         return Int_Value (Fst, Etype (N));
 
-                     when Snames.Name_Last  =>
+                     when Attribute_Last  =>
                         return Int_Value (Lst, Etype (N));
 
-                     when others            =>
+                     when others          =>
                         raise Program_Error;
                   end case;
                end;
 
-            when Snames.Name_Min | Snames.Name_Max             =>
+            when Attribute_Min | Attribute_Max             =>
                if Has_Floating_Point_Type (Etype (N)) then
                   declare
                      Ex   : constant Node_Id := First (Expressions (N));
@@ -3489,14 +3486,14 @@ package body CE_RAC is
                      Val2 : constant CE_Values.Float_Value :=
                        Value_Real (RAC_Expr (Next (Ex)));
                   begin
-                     case Attribute_Name (N) is
-                        when Snames.Name_Min =>
+                     case Attr_Id is
+                        when Attribute_Min =>
                            return Real_Value (Min (Val1, Val2), N);
 
-                        when Snames.Name_Max =>
+                        when Attribute_Max =>
                            return Real_Value (Max (Val1, Val2), N);
 
-                        when others          =>
+                        when others        =>
                            raise Program_Error;
                      end case;
                   end;
@@ -3509,14 +3506,14 @@ package body CE_RAC is
                      I2 : constant Big_Integer :=
                        Value_Enum_Integer (RAC_Expr (Next (Ex)));
                   begin
-                     case Attribute_Name (N) is
-                        when Snames.Name_Min =>
+                     case Attr_Id is
+                        when Attribute_Min =>
                            return Integer_Value (Min (I1, I2), N);
 
-                        when Snames.Name_Max =>
+                        when Attribute_Max =>
                            return Integer_Value (Max (I1, I2), N);
 
-                        when others          =>
+                        when others        =>
                            raise Program_Error;
                      end case;
                   end;
@@ -3526,29 +3523,29 @@ package body CE_RAC is
                     ("RAC_Attribute_Reference min/max on fixed-point", N);
                end if;
 
-            when Snames.Name_Succ | Snames.Name_Pred           =>
+            when Attribute_Succ | Attribute_Pred           =>
                if Has_Floating_Point_Type (Etype (N)) then
                   declare
                      Ex  : constant Node_Id := First (Expressions (N));
                      Val : constant CE_Values.Float_Value :=
                        Value_Real (RAC_Expr (Ex));
                   begin
-                     case Attribute_Name (N) is
-                        when Snames.Name_Succ =>
+                     case Attr_Id is
+                        when Attribute_Succ =>
                            if Is_Last (Val) then
                               RAC_Failure (Ex, VC_Range_Check);
                            end if;
 
                            return Real_Value (Succ (Val), N);
 
-                        when Snames.Name_Pred =>
+                        when Attribute_Pred =>
                            if Is_First (Val) then
                               RAC_Failure (Ex, VC_Range_Check);
                            end if;
 
                            return Real_Value (Pred (Val), N);
 
-                        when others           =>
+                        when others         =>
                            raise Program_Error;
                      end case;
                   end;
@@ -3565,14 +3562,14 @@ package body CE_RAC is
                         else Enumeration_Pos (Ex_Content.Enum_Entity));
                      Res        : Node_Id;
                   begin
-                     case Attribute_Name (N) is
-                        when Snames.Name_Succ =>
+                     case Attr_Id is
+                        when Attribute_Succ =>
                            Val := Val + 1;
 
-                        when Snames.Name_Pred =>
+                        when Attribute_Pred =>
                            Val := Val - 1;
 
-                        when others           =>
+                        when others         =>
                            raise Program_Error;
                      end case;
 
@@ -3597,7 +3594,7 @@ package body CE_RAC is
                     ("RAC_Attribute_Reference succ/prev not enum", N);
                end if;
 
-            when Snames.Name_Update                            =>
+            when Attribute_Update                          =>
                --  Ex'Update ((Ch | ... => V, ...), ...)
                declare
                   Res              : Value_Type;
@@ -3653,7 +3650,7 @@ package body CE_RAC is
                   end if;
                end;
 
-            when Snames.Name_Image                             =>
+            when Attribute_Image                           =>
                if Is_Empty_List (Expressions (N)) then
                   RAC_Unsupported
                     ("RAC_Attribute_Reference 'Image without argument", N);
@@ -3661,7 +3658,7 @@ package body CE_RAC is
                return
                  String_Value (To_String (RAC_Expr (First (Expressions (N)))));
 
-            when Snames.Name_Length                            =>
+            when Attribute_Length                          =>
                if not Is_Empty_List (Expressions (N)) then
                   RAC_Unsupported
                     ("RAC_Attribute_Reference 'Length with argument", N);
@@ -3699,7 +3696,7 @@ package body CE_RAC is
                   end if;
                end;
 
-            when Snames.Name_Valid | Snames.Name_Valid_Scalars =>
+            when Attribute_Valid | Attribute_Valid_Scalars =>
                pragma Assert (No (Expressions (N)));
 
                if Is_Potentially_Invalid_Expr (Prefix (N)) then
@@ -3711,7 +3708,7 @@ package body CE_RAC is
                   return Boolean_Value (True, Etype (N));
                end if;
 
-            when Snames.Name_Copy_Sign                         =>
+            when Attribute_Copy_Sign                       =>
 
                if No (Expressions (N)) then
                   RAC_Unsupported
@@ -3733,7 +3730,7 @@ package body CE_RAC is
                   end;
                end if;
 
-            when Snames.Name_Constrained                       =>
+            when Attribute_Constrained                     =>
                --  E'Constrained
 
                --  The handling of the Constrained attribute here is similar
@@ -3783,7 +3780,7 @@ package body CE_RAC is
                   end if;
                end;
 
-            when others                                        =>
+            when others                                    =>
                RAC_Unsupported
                  ("RAC_Attribute_Reference",
                   Get_Name_String (Attribute_Name (N)));
@@ -3881,8 +3878,8 @@ package body CE_RAC is
 
             when N_Op_Divide .. N_Op_Rem       =>
                if Has_Fixed_Point_Type (Ty)
-                 or Has_Fixed_Point_Type (Left_Type)
-                 or Has_Fixed_Point_Type (Right_Type)
+                 or else Has_Fixed_Point_Type (Left_Type)
+                 or else Has_Fixed_Point_Type (Right_Type)
                then
                   if Nkind (N) = N_Op_Divide and then Is_Zero (Right) then
                      RAC_Failure (N, VC_Division_Check);
@@ -4023,7 +4020,7 @@ package body CE_RAC is
                           when others   => raise Program_Error),
                        Etype (N));
 
-               elsif Is_Modular_Integer_Type (Left_Type) then
+               elsif Has_Modular_Operations (Left_Type) then
                   declare
                      L : constant Ulargest :=
                        Ulargest'Value (To_String (Value_Integer (Left)));
@@ -4094,7 +4091,27 @@ package body CE_RAC is
                              Left.Last_Attr.Content;
                            Val     : Value_Access;
 
+                           Index_Range : constant Node_Id :=
+                             Get_Range (First_Index (Etype (N)));
+                           Low, High   : Big_Integer;
+
                         begin
+                           Get_Bounds (Index_Range, Low, High);
+
+                           --  RM 4.5.3(8): The upper bound is determined
+                           --  by the lower bound and the length. A check is
+                           --  made that the upper bound of the result of the
+                           --  concatenation belongs to the range of the index
+                           --  subtype, unless the result is a null array.
+                           --  Constraint_Error is raised if this check fails.
+
+                           Res.Last_Attr.Content := L_Last + R_Length;
+
+                           if not In_Range (Res.Last_Attr.Content, Low, High)
+                           then
+                              RAC_Failure (N, VC_Range_Check);
+                           end if;
+
                            for K in 1 .. To_Integer (R_Length) loop
                               if Right.Array_Values.Contains
                                    (R_First - 1 + To_Big_Integer (K))
@@ -4113,8 +4130,6 @@ package body CE_RAC is
                               end if;
                            end loop;
 
-                           Res.Last_Attr.Content :=
-                             Left.Last_Attr.Content + R_Length;
                            return Res;
                         end;
                      end if;
@@ -4588,8 +4603,6 @@ package body CE_RAC is
       --  Local variables
 
       Res : Value_Type;
-
-      --  Start of processing for RAC_Expr
 
    begin
       RAC_Trace ("expr " & Node_Kind'Image (Nkind (N)), N);
@@ -5529,10 +5542,9 @@ package body CE_RAC is
                --  Collect prefixes of all 'Loop_Entry attribute uses and store
                --  the result of their evaluation.
 
-               Collect_Attr_Parts
-                 (N, Snames.Name_Loop_Entry, Loop_Entry_Nodes);
+               Collect_Attr_Parts (N, Attribute_Loop_Entry, Loop_Entry_Nodes);
                Evaluate_Attribute_Prefix_Values
-                 (Snames.Name_Loop_Entry, Loop_Entry_Nodes);
+                 (Attribute_Loop_Entry, Loop_Entry_Nodes);
 
                Ctx.First_Loop_Iter := True;
 

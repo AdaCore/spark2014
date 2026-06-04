@@ -22,7 +22,7 @@ bad_alignment.adb:8:07: info: object is suitable for aliasing via address clause
 bad_alignment.adb:8:68: info: object is suitable for aliasing via address clause (Trivial)
 bad_alignment.adb:8:68: info: type is suitable as source for unchecked conversion (Trivial)
 bad_alignment.adb:8:68: info: types of aliased objects have the same size (Trivial)
-pointer_eq.adb:9:19: error: equality on access types is not allowed in SPARK
+pointer_eq.adb:9:19: error: equality on access types is not allowed in SPARK (SPARK RM 3.10(19))
 pointer_eq.adb:9:19: error: violation of aspect SPARK_Mode at line 1
 test_annotate.adb:1:11: warning: subprogram "Test_Annotate" has no effect
 test_annotate.adb:4:07: warning: this statement is never reached

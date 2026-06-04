@@ -24,10 +24,10 @@ full.adb:27:11: warning: Size of type "S" is missing
 full.adb:27:11: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
 full.adb:33:11: warning: Size of type "T" is missing
 full.adb:33:11: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
-full.adb:34:16: warning: Size of type "String" is missing
 full.adb:34:16: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
-full.adb:35:13: warning: Size of type "A2D" is missing
+full.adb:34:16: warning: type "String" is unconstrained
 full.adb:35:13: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
+full.adb:35:13: warning: type "A2D" is unconstrained
 init.adb:9:19: info: assertion proved (Trivial: 1 VC)
 main.adb:5:14: info: add a contract to analyze it separately from calling contexts
 main.adb:5:14: info: local subprogram "Test" only analyzed in the context of calls [info-unrolling-inlining]

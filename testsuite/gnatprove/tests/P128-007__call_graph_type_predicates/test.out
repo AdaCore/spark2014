@@ -1,5 +1,6 @@
 client.adb:3:11: info: ceiling priority protocol is respected for "P.Po" (CVC5: 1 VC)
-p.adb:7:13: error: function "Foo" with output global "Tasking_State" is not allowed in SPARK [E0005]
+p.adb:7:13: error: consider using the Side_Effects aspect
+p.adb:7:13: error: function "Foo" with output global "Tasking_State" is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]
 p.adb:7:13: error: launch "gnatprove --explain=E0005" for more information
 p.adb:7:13: error: violation of aspect SPARK_Mode at line 4
 p.adb:16:22: warning: assuming "Yield" always terminates

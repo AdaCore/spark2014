@@ -20,7 +20,7 @@
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.2">
-  <proof prover="1"><result status="unknown" steps="2624"/></proof>
+  <proof prover="1"><result status="unknown" steps="1769"/></proof>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
@@ -29,31 +29,31 @@
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.5">
-  <proof prover="1"><result status="unknown" steps="3060"/></proof>
+  <proof prover="1"><result status="unknown" steps="1981"/></proof>
   </goal>
   <goal name="def&#39;vc.6" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.7" proved="true">
   <proof prover="0"><result status="valid" steps="2"/></proof>
-  <proof prover="1" timelimit="20"><result status="valid" steps="1465"/></proof>
+  <proof prover="1" timelimit="20"><result status="valid" steps="1422"/></proof>
   <proof prover="2"><result status="valid" steps="937"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.8">
-  <proof prover="1"><result status="unknown" steps="3484"/></proof>
+  <proof prover="1"><result status="unknown" steps="2215"/></proof>
   </goal>
   <goal name="def&#39;vc.9" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.10">
-  <proof prover="1"><result status="unknown" steps="3292"/></proof>
+  <proof prover="1"><result status="unknown" steps="2211"/></proof>
   </goal>
   <goal name="def&#39;vc.11" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.12">
-  <proof prover="1"><result status="unknown" steps="2862"/></proof>
+  <proof prover="1"><result status="unknown" steps="1847"/></proof>
   </goal>
   <goal name="def&#39;vc.13" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>

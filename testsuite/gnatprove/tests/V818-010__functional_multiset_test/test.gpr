@@ -4,8 +4,10 @@ project Test is
 
    for Main use ("test.adb");
 
+   package Compiler is
+      for Switches ("ada") use ("-gnata", "-gnat2022");
+   end Compiler;
    package Builder is
-      for Switches ("ada") use ("-gnata", "-gnat2022", "-gnateDSPARK_BODY_MODE=On");
       for Global_Configuration_Pragmas use "pragmas.adc";
    end Builder;
 

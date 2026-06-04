@@ -7,4 +7,4 @@
 --> check_param_aliasing.adb:11:45
    11 |       Whatever (In_1 => Y, In_2 => Z, Out_1 => X, Out_2 => X);  --  illegal
       |                                                ^
-gnatprove: error during generation of Global contracts
+gnatprove: error during flow analysis and proof

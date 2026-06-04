@@ -3,7 +3,9 @@ inline.adb:14:14: warning: subprogram "B" has no effect
 inline.adb:16:20: medium: aspect Always_Terminates on "B" could be incorrect, "B" and "A" are mutually recursive [possible fix: annotate "B" and "A" with Subprogram_Variant aspects]
 inline.adb:21:20: medium: aspect Always_Terminates on "A" could be incorrect, "A" and "B" are mutually recursive [possible fix: annotate "A" and "B" with Subprogram_Variant aspects]
 mutually_recursive_nested_package.adb:1:10: info: implicit aspect Always_Terminates on "Mutually_Recursive_Nested_Package" has been proved, subprogram will terminate
-mutually_recursive_nested_package.adb:1:10: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+mutually_recursive_nested_package.adb:1:10: warning: "Mutually_Recursive_Nested_Package" is recursive; its implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
+mutually_recursive_nested_package.adb:2:12: warning: potentially missing implicit contract for "Mutually_Recursive_Nested_Package" declared at line 1
+mutually_recursive_nested_package.adb:2:12: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 mutually_recursive_nested_package.adb:2:17: medium: implicit aspect Always_Terminates on "P" could be incorrect, "P" and "Mutually_Recursive_Nested_Package" are mutually recursive [possible fix: annotate "P" and "Mutually_Recursive_Nested_Package" with Subprogram_Variant aspects]
 mutually_recursive_nested_package.adb:2:17: warning: initialization of "X" has no effect
 nonterminating.adb:1:11: warning: subprogram "Nonterminating" has no effect

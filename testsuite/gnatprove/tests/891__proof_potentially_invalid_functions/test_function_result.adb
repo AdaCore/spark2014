@@ -201,7 +201,7 @@ procedure Test_Function_Result with spark_mode is
          procedure P_Old_3 (I : Integer) is null;
 
          procedure P_Old_4 (I : Integer) with
-           Post => (if I > 0 then Read_P (I)'Old = I); --   @VALIDITY_CHECK:FAIL
+           Post => (if I > 0 then Read_P (I)'Old = I); --   @VALIDITY_CHECK:PASS
          procedure P_Old_4 (I : Integer) is null;
       begin
          C1 := Read (-5); --  @VALIDITY_CHECK:FAIL

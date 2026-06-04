@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2017-2025, AdaCore                     --
+--                     Copyright (C) 2017-2026, AdaCore                     --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -27,18 +27,25 @@ with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Directories;
 with Ada.Exceptions;
 with Ada.Strings.Fixed;
+with Ada.Strings.Unbounded;
 with Ada.Text_IO;
 with Cache_Client;
 with Filecache_Client;
 with GNAT.Expect;      use GNAT.Expect;
 with GNAT.OS_Lib;      use GNAT.OS_Lib;
-with GNAT.SHA1;
 with GNAT.Sockets;     use GNAT.Sockets;
+with GNATCOLL.Hash.Blake3;
 with GNATCOLL.JSON;    use GNATCOLL.JSON;
 with GNATCOLL.Mmap;
 with Memcache_Client;
 
 procedure SPARK_Memcached_Wrapper with No_Return is
+
+   subtype Hash_Context is GNATCOLL.Hash.Blake3.Blake3_Context;
+   subtype Message_Digest is GNATCOLL.Hash.Blake3.Blake3_Digest;
+   --  The above subtypes make the subsequent code independent of the choosen
+   --  hash function. In the future we can easily switch to other functions,
+   --  as long as their APIs follow the current GNATCOLL.Hash conventions.
 
    --  This is a wrapper program, which caches identical invocations of
    --  gnatwhy3 and provers by hashing the input to the tool (commandline and
@@ -51,7 +58,7 @@ procedure SPARK_Memcached_Wrapper with No_Return is
    --  The salt is an arbitrary string that is hashed as well, but is not part
    --  of the command name or command line of the tool.
 
-   procedure Hash_Commandline (C : in out GNAT.SHA1.Context);
+   procedure Hash_Commandline (C : in out Hash_Context);
    --  @param C the hash context to be updated
    --  Compute a hash of the commandline provided to the wrapper. The procedure
    --  starts hashing at the second argument (the command name) and stops
@@ -60,30 +67,45 @@ procedure SPARK_Memcached_Wrapper with No_Return is
    --  arguments which can be ignored are skipped, for others, instead of
    --  the argument some other content is hashed.
 
-   procedure Hash_Binary (C : in out GNAT.SHA1.Context; Execname : String);
+   procedure Hash_Binary (C : in out Hash_Context; Execname : String);
    --  If the binary Fn is on the PATH and there is a file Fn.hash next to it,
    --  we read that file and add it to the context.
 
-   procedure Hash_File (C : in out GNAT.SHA1.Context; Fn : String);
+   procedure Hash_File (C : in out Hash_Context; Fn : String);
    --  @param C the hash context to be updated
    --  @param Fn the file to be hashed
    --  Compute a hash of the file in argument
 
    procedure Hash_Session_File
-     (C : in out GNAT.SHA1.Context; Proof_Dir : String; Why3_File : String);
+     (C : in out Hash_Context; Proof_Dir : String; Why3_File : String);
    --  @param C the hash context to be updated
    --  @param Proof_Dir name of directory with proof session files
    --  @param Why3_File name of Why3 file to prove
    --  Compute a hash of the session file from Proof_Dir that corresponds to
    --  given Why3_File.
 
-   function Compute_Key return GNAT.SHA1.Message_Digest;
+   function Compute_Key return Message_Digest;
    --  @return the key to be used for this invocation of the wrapper in the
    --    memcached table
 
-   function Init_Client return Cache_Client.Cache'Class;
-   --  @return a connection to the memcached server specified by the first
-   --    command line argument
+   type Cache_Kind is (File_Cache, Memcached_Cache);
+
+   type Cache_Spec (Kind : Cache_Kind := Memcached_Cache) is record
+      case Kind is
+         when File_Cache =>
+            Directory : Ada.Strings.Unbounded.Unbounded_String;
+
+         when Memcached_Cache =>
+            Host : Ada.Strings.Unbounded.Unbounded_String;
+            Port : Port_Type;
+      end case;
+   end record;
+
+   function Parse_Cache_Spec return Cache_Spec;
+   --  @return the parsed and validated cache specification from Argument (2)
+
+   function Init_Client (Spec : Cache_Spec) return Cache_Client.Cache'Class;
+   --  @return a connection to the cache described by Spec
 
    procedure Report_Error (Msg : String)
    with No_Return;
@@ -94,7 +116,7 @@ procedure SPARK_Memcached_Wrapper with No_Return is
    -- Hash_Binary --
    -----------------
 
-   procedure Hash_Binary (C : in out GNAT.SHA1.Context; Execname : String) is
+   procedure Hash_Binary (C : in out Hash_Context; Execname : String) is
 
       function Compute_Hash_Filename (Exec : String) return String;
       --  Compute the hashfile name from the executable name by locating the
@@ -136,7 +158,7 @@ procedure SPARK_Memcached_Wrapper with No_Return is
    -- Hash_Commandline --
    ----------------------
 
-   procedure Hash_Commandline (C : in out GNAT.SHA1.Context) is
+   procedure Hash_Commandline (C : in out Hash_Context) is
       I : Positive := 3;
    begin
       while I < Ada.Command_Line.Argument_Count loop
@@ -160,7 +182,7 @@ procedure SPARK_Memcached_Wrapper with No_Return is
                       (Ada.Command_Line.Argument_Count));
                I := I + 2;
             else
-               GNAT.SHA1.Update (C, Arg);
+               C.Update_Hash_Context (Arg);
                I := I + 1;
             end if;
          end;
@@ -171,7 +193,7 @@ procedure SPARK_Memcached_Wrapper with No_Return is
    -- Hash_File --
    ---------------
 
-   procedure Hash_File (C : in out GNAT.SHA1.Context; Fn : String) is
+   procedure Hash_File (C : in out Hash_Context; Fn : String) is
       use GNATCOLL.Mmap;
       File   : Mapped_File;
       Region : Mapped_Region;
@@ -187,7 +209,7 @@ procedure SPARK_Memcached_Wrapper with No_Return is
          --  A fake string directly mapped onto the file contents
 
       begin
-         GNAT.SHA1.Update (C, S);
+         C.Update_Hash_Context (S);
       end;
 
       Free (Region);
@@ -200,7 +222,7 @@ procedure SPARK_Memcached_Wrapper with No_Return is
    -----------------------
 
    procedure Hash_Session_File
-     (C : in out GNAT.SHA1.Context; Proof_Dir : String; Why3_File : String)
+     (C : in out Hash_Context; Proof_Dir : String; Why3_File : String)
    is
       use Ada.Directories;
 
@@ -224,32 +246,68 @@ procedure SPARK_Memcached_Wrapper with No_Return is
    -- Init_Client --
    -----------------
 
-   function Init_Client return Cache_Client.Cache'Class is
+   function Init_Client (Spec : Cache_Spec) return Cache_Client.Cache'Class is
+   begin
+      case Spec.Kind is
+         when File_Cache      =>
+            return
+              Filecache_Client.Init
+                (Ada.Strings.Unbounded.To_String (Spec.Directory));
+
+         when Memcached_Cache =>
+            return
+              Memcache_Client.Init
+                (Ada.Strings.Unbounded.To_String (Spec.Host), Spec.Port);
+      end case;
+   end Init_Client;
+
+   ----------------------
+   -- Parse_Cache_Spec --
+   ----------------------
+
+   function Parse_Cache_Spec return Cache_Spec is
       Info  : String renames Argument (2);
       Colon : constant Natural := Ada.Strings.Fixed.Index (Info, ":");
 
       Wrong_Port_Msg : constant String :=
         ("port value should be an integer between 1 and 65535");
-
+      use type Ada.Directories.File_Kind;
    begin
       if Colon = 0 then
          Report_Error
            ("the expected format of option --memcached-server "
             & "is hostname:portnumber, but no colon was found");
       end if;
+
+      if Colon = Info'First then
+         Report_Error ("cache specification has an empty cache kind/hostname");
+      end if;
+
+      if Colon = Info'Last then
+         Report_Error ("cache specification has an empty port or directory");
+      end if;
+
       declare
          First  : String renames Info (Info'First .. Colon - 1);
          Second : String renames Info (Colon + 1 .. Info'Last);
          Port   : Port_Type;
       begin
-         if First'Length = 4 and then First = "file" then
-            if not Ada.Directories.Exists (Second) then
-               Report_Error ("file caching: no such directory: " & Second);
+         if First = "file" then
+            if not Ada.Directories.Exists (Second)
+              or else
+                Ada.Directories.Kind (Second) /= Ada.Directories.Directory
+            then
+               Report_Error
+                 ("file caching: expected an existing directory: " & Second);
             end if;
-            return Filecache_Client.Init (Second);
+
+            return
+              (Kind      => File_Cache,
+               Directory =>
+                 Ada.Strings.Unbounded.To_Unbounded_String (Second));
          else
             begin
-               Port := Port_Type'Value (Info (Colon + 1 .. Info'Last));
+               Port := Port_Type'Value (Second);
             exception
                when Constraint_Error =>
                   Report_Error (Wrong_Port_Msg);
@@ -257,12 +315,15 @@ procedure SPARK_Memcached_Wrapper with No_Return is
 
             if Port = No_Port then
                Report_Error (Wrong_Port_Msg);
-            else
-               return Memcache_Client.Init (First, Port);
             end if;
+
+            return
+              (Kind => Memcached_Cache,
+               Host => Ada.Strings.Unbounded.To_Unbounded_String (First),
+               Port => Port);
          end if;
       end;
-   end Init_Client;
+   end Parse_Cache_Spec;
 
    ------------------
    -- Report_Error --
@@ -287,13 +348,14 @@ procedure SPARK_Memcached_Wrapper with No_Return is
    -- Compute_Key --
    -----------------
 
-   function Compute_Key return GNAT.SHA1.Message_Digest is
-      C : GNAT.SHA1.Context := GNAT.SHA1.Initial_Context;
+   function Compute_Key return Message_Digest is
+      C : Hash_Context;
    begin
+      C.Init_Hash_Context;
 
       --  We first hash the salt (first argument of the command line)
 
-      GNAT.SHA1.Update (C, Argument (1));
+      C.Update_Hash_Context (Argument (1));
 
       --  The file is hashed separately here, it always comes last on the
       --  command line.
@@ -309,8 +371,20 @@ procedure SPARK_Memcached_Wrapper with No_Return is
       if Argument_Count >= 3 then
          Hash_Binary (C, Argument (3));
       end if;
-      return GNAT.SHA1.Digest (C);
+      return C.Hash_Digest;
    end Compute_Key;
+
+   function Cache_Source (Spec : Cache_Spec) return String;
+   --  Return either "file" or "memcached" based on Spec.
+
+   ------------------
+   -- Cache_Source --
+   ------------------
+
+   function Cache_Source (Spec : Cache_Spec) return String is
+   begin
+      return (if Spec.Kind = File_Cache then "file" else "memcached");
+   end Cache_Source;
 
 begin
 
@@ -318,14 +392,35 @@ begin
    --  in the scope of the exception handler below.
 
    declare
-      Cache : Cache_Client.Cache'Class := Init_Client;
+      Spec  : constant Cache_Spec := Parse_Cache_Spec;
+      Cache : Cache_Client.Cache'Class := Init_Client (Spec);
 
       Key    : constant String := Compute_Key;
       Msg    : constant String := Cache.Get (Key);
       Status : aliased Integer := 0;
    begin
       if Msg'Length /= 0 then
-         Ada.Text_IO.Put_Line (Msg);
+
+         --  On a cache hit for gnatwhy3, inject a "from_cache" field into the
+         --  top-level JSON record so that the caller can attribute proved VCs
+         --  to the appropriate cache tier.
+
+         if Argument (3) = "gnatwhy3" then
+            declare
+               JSON_Msg : constant JSON_Value := Read (Msg);
+            begin
+               Set_Field (JSON_Msg, "from_cache", Cache_Source (Spec));
+               Ada.Text_IO.Put_Line (Write (JSON_Msg));
+            end;
+
+         --  For prover cache hits, append a marker line so that gnatwhy3 can
+         --  detect the cache source and attribute the VC accordingly.
+
+         else
+            Ada.Text_IO.Put_Line (Msg);
+            Ada.Text_IO.Put_Line
+              ("spark_memcached_wrapper: " & Cache_Source (Spec));
+         end if;
       else
          declare
             Arguments : Argument_List (1 .. Argument_Count - 3);

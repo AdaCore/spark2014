@@ -271,8 +271,8 @@ package body Test_List with SPARK_Mode => On is
          New_List : aliased List := L;
       begin
          declare
-            Access_List : access List := New_List'Access;
-            N : access Natural := Reference (Access_List, C);
+
+            N : access Natural := Reference (New_List, C);
          begin
             pragma Assert (N.all = 1);
             N.all := 2;

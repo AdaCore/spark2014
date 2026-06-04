@@ -65,8 +65,8 @@ string_search.adb:67:76: info: range check proved (CVC5: 8 VC), in call inlined 
 string_search.adb:67:84: info: overflow check proved (CVC5: 8 VC), in call inlined at string_search.adb:85
 string_search.adb:67:88: info: index check proved (CVC5: 8 VC), in call inlined at string_search.adb:85
 string_search.adb:67:88: info: overflow check proved (CVC5: 8 VC), in call inlined at string_search.adb:85
-string_search.adb:69:16: info: loop invariant initialization proved (CVC5: 2 VC), in call inlined at string_search.adb:85
 string_search.adb:69:16: info: loop invariant preservation proved (CVC5: 2 VC), in call inlined at string_search.adb:85
+string_search.adb:69:39: medium: loop invariant might fail in first iteration, cannot prove not Match_At (Needle, Haystack, L), in call inlined at string_search.adb:85 [possible fix: precondition of subprogram at string_search.ads:56 should mention Haystack and Needle] [provers reached step limit before completing the proof]
 string_search.adb:75:07: info: precondition proved (CVC5: 1 VC)
 string_search.adb:79:26: info: range check proved (CVC5: 4 VC)
 string_search.adb:79:34: info: overflow check proved (CVC5: 4 VC)
@@ -87,11 +87,11 @@ string_search.adb:88:46: info: range check proved (CVC5: 4 VC)
 string_search.adb:88:54: info: overflow check proved (CVC5: 4 VC)
 string_search.adb:88:62: info: range check proved (CVC5: 4 VC)
 string_search.adb:90:13: info: loop invariant initialization proved (CVC5: 1 VC)
-string_search.adb:90:13: info: loop invariant preservation proved (CVC5: 1 VC)
 string_search.adb:90:33: info: overflow check proved (CVC5: 4 VC)
 string_search.adb:90:56: info: index check proved (CVC5: 4 VC)
 string_search.adb:90:56: info: overflow check proved (CVC5: 4 VC)
 string_search.adb:90:64: info: range check proved (CVC5: 4 VC)
+string_search.adb:90:81: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove not Match_At (Needle, Haystack, K) [possible fix: precondition of subprogram at string_search.ads:56 should mention Haystack and Needle] [provers reached step limit before completing the proof]
 string_search.adb:92:17: info: overflow check proved (CVC5: 2 VC)
 string_search.adb:92:40: info: index check proved (CVC5: 2 VC)
 string_search.adb:92:40: info: overflow check proved (CVC5: 2 VC)

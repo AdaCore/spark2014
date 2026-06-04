@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2018-2025, AdaCore                     --
+--                     Copyright (C) 2018-2026, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -308,6 +308,20 @@ package body SPARK_Atree.Entities is
    function Has_Interrupt_Handler (Typ : E_Protected_Type_Id) return Boolean
    is (Einfo.Utils.Has_Interrupt_Handler (Typ));
 
+   ----------------------------
+   -- Has_Modular_Operations --
+   ----------------------------
+
+   function Has_Modular_Operations (T : Type_Kind_Id) return Boolean
+   is (Einfo.Utils.Has_Modular_Operations (SPARK_Util.Types.Retysp (T)));
+
+   -----------------------------
+   -- Has_Overflow_Operations --
+   -----------------------------
+
+   function Has_Overflow_Operations (T : Type_Kind_Id) return Boolean
+   is (Einfo.Utils.Has_Overflow_Operations (SPARK_Util.Types.Retysp (T)));
+
    ----------------------------------
    -- Has_Pragma_Volatile_Function --
    ----------------------------------
@@ -327,6 +341,14 @@ package body SPARK_Atree.Entities is
 
    function Has_Predicates (Typ : Type_Kind_Id) return Boolean
    is (Einfo.Entities.Has_Predicates (Typ));
+
+   ------------------------------------
+   -- Has_Unsigned_Base_Range_Aspect --
+   ------------------------------------
+
+   function Has_Unsigned_Base_Range_Aspect (Typ : Type_Kind_Id) return Boolean
+   is (Einfo.Entities.Has_Unsigned_Base_Range_Aspect
+         (SPARK_Util.Types.Base_Retysp (Typ)));
 
    -------------------------
    -- Invariant_Procedure --

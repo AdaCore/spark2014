@@ -6,8 +6,8 @@
 --                                                                          --
 --                                  S p e c                                 --
 --                                                                          --
---                     Copyright (C) 2020-2025, AdaCore                     --
---              Copyright (C) 2014-2025, Capgemini Engineering              --
+--                     Copyright (C) 2020-2026, AdaCore                     --
+--              Copyright (C) 2014-2026, Capgemini Engineering              --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -26,7 +26,6 @@
 
 with Ada.Containers.Indefinite_Hashed_Maps;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Ada.Strings.Fixed;     use Ada.Strings.Fixed;
 with Atree;                 use Atree;
 with Errout_Wrapper;        use Errout_Wrapper;
 with Gnat2Why_Args;         use Gnat2Why_Args;
@@ -106,43 +105,48 @@ private package SPARK_Definition.Violations is
    --  the given Mode.
 
    procedure Mark_Unsupported
-     (Kind           : Unsupported_Kind;
-      N              : Node_Id;
-      Names          : Node_Lists.List := Node_Lists.Empty;
-      Name           : String := "";
-      Cont_Msg       : Message := No_Message;
-      Root_Cause_Msg : String := "")
+     (Kind     : Unsupported_Kind;
+      N        : Node_Id;
+      Names    : Node_Lists.List := Node_Lists.Empty;
+      Name     : String := "";
+      Cont_Msg : Message := No_Message)
    with
      Global => (Output => Violation_Detected, Input => Current_SPARK_Pragma);
    --  Mark node N as an unsupported SPARK construct. An error message is
    --  issued if current SPARK_Mode is On. Cont_Msg is a continuous message
-   --  when specified. If Root_Cause_Msg is set, the corresponding message is
-   --  used as root cause message for cascading violations (typically used if
-   --  the message for Kind has character insertions).
+   --  when specified.
+
+   procedure Mark_Incorrect_Use_Of_Annotation
+     (Kind        : Incorrect_Annotation_Kind;
+      N           : Node_Id;
+      Msg         : String := "";
+      From_Aspect : Boolean := False;
+      Name        : GNATprove_Annotation_Kind := Unknown_Annotation;
+      Snd_Name    : String := "";
+      Names       : Node_Lists.List := Node_Lists.Empty;
+      Cont_Msg    : Message := No_Message)
+   with
+     Global => (Output => Violation_Detected, Input => Current_SPARK_Pragma);
+   --  Mark node N as an incorrect use of a GNATprove annotation. An error
+   --  issued if current SPARK_Mode is On.
+   --  If supplied, use Name to get the annotation name. Otherwise, use Kind if
+   --  it is a Specific_Annotation_Kind.
+   --  From_Aspect and Snd_Name are used to pretty print the annotation as a
+   --  pragma/aspect for some messages.
+   --  If Cont_Msg is set, a continuation message is issued.
+   --  If Names is set, use this to replace & in error messages.
 
    procedure Mark_Violation
-     (Msg            : String;
-      N              : Node_Id;
-      Names          : Node_Lists.List := Node_Lists.Empty;
-      Code           : Explain_Code_Kind := EC_None;
-      SRM_Reference  : String := "";
-      Cont_Msg       : String := "";
-      Root_Cause_Msg : String := "")
+     (Kind     : Violation_Kind;
+      N        : Node_Id;
+      Msg      : String := "";
+      Names    : Node_Lists.List := Node_Lists.Empty;
+      Cont_Msg : String := "")
    with
-     Global => (Output => Violation_Detected, Input => Current_SPARK_Pragma),
-     Pre    =>
-       SRM_Reference = ""
-       or else
-         (SRM_Reference'Length > 9
-          and then Head (SRM_Reference, 9) = "SPARK RM ");
+     Global => (Output => Violation_Detected, Input => Current_SPARK_Pragma);
    --  Mark node N as a violation of SPARK. An error message pointing to the
    --  current SPARK_Mode pragma/aspect is issued if current SPARK_Mode is On.
-   --  If Explain_Code is set to a positive number, this is taken as an explain
-   --  code to be displayed along with the error message. If SRM_Reference
-   --  is set, the reference to the SRM is appended to the error message. If
-   --  Cont_Msg is set, a continuation message is issued. If Root_Cause_Msg
-   --  is set, the corresponding message is used as root cause message for
-   --  cascading violations (typically used if Msg has character insertions).
+   --  If Cont_Msg is set, a continuation message is issued.
    --  If Names is set, use this to replace & in error messages.
 
    procedure Mark_Violation
@@ -152,6 +156,11 @@ private package SPARK_Definition.Violations is
    --  Mark node N as a violation of SPARK, due to the use of entity
    --  From which is not in SPARK. An error message is issued if current
    --  SPARK_Mode is On.
+
+   procedure Mark_Force_Violation
+     (E : Entity_Id; Reason : Message := No_Message);
+   --  Register a violation on an entity E if it is not in SPARK regardless of
+   --  the SPARK_Mode.
 
    procedure Mark_Violation_In_Tasking (N : Node_Id)
    with

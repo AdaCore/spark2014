@@ -66,7 +66,7 @@ test_record_uc.adb:80:14: warning: subprogram "Test_3" has no effect
 test_record_uc.adb:82:28: info: validity check proved (CVC5: 1 VC)
 test_record_uc.adb:87:04: warning: analyzing unreferenced procedure "Test_4" [unreferenced-procedure]
 test_record_uc.adb:87:14: warning: subprogram "Test_4" has no effect
-test_record_uc.adb:89:28: medium: validity check might fail (e.g. when X_1_1000 = 100) [provers reached step limit before completing the proof]
+test_record_uc.adb:89:28: medium: validity check might fail [provers reached step limit before completing the proof]
 test_record_uc.adb:94:04: warning: analyzing unreferenced procedure "Test_5" [unreferenced-procedure]
 test_record_uc.adb:94:14: warning: subprogram "Test_5" has no effect
 test_record_uc.adb:96:24: info: validity check proved (CVC5: 1 VC)

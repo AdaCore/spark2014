@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2025, AdaCore                     --
+--                     Copyright (C) 2010-2026, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -58,8 +58,6 @@ package body Why.Gen.Terms is
       end Deref_Pre_Op;
 
       SS : Collect_State := (Control => Continue, Found => False);
-
-      --  Start of processing for Has_Dereference
 
    begin
       Traverse (SS, W);

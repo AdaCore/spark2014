@@ -39,8 +39,8 @@ binary_trees.adb:149:32: medium: loop invariant might not be preserved by an arb
 binary_trees.adb:154:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 2 VC)
 binary_trees.adb:157:36: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove not (R (J).A < R (K).A) [provers reached step limit before completing the proof]
 binary_trees.adb:160:33: info: loop invariant initialization proved (CVC5: 2 VC)
-binary_trees.adb:160:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove R (Root).K [provers reached step limit before completing the proof]
 binary_trees.adb:160:48: info: predicate check proved (Trivial: 2 VC)
+binary_trees.adb:160:48: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Length (R (Root).A) = 0 [provers reached step limit before completing the proof]
 binary_trees.adb:160:70: info: predicate check proved (Trivial: 2 VC)
 binary_trees.adb:164:13: info: loop invariant initialization proved (CVC5: 2 VC; Trivial: 1 VC)
 binary_trees.adb:165:45: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove F.C (J).Parent /= Empty [provers reached step limit before completing the proof]
@@ -59,8 +59,8 @@ binary_trees.adb:185:46: info: index check proved (CVC5: 4 VC)
 binary_trees.adb:191:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
 binary_trees.adb:192:50: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove not ToDo (F.C (J).Parent) [provers reached step limit before completing the proof]
 binary_trees.adb:192:67: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
+binary_trees.adb:196:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 2 VC)
 binary_trees.adb:196:13: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 2 VC)
-binary_trees.adb:200:24: medium: loop invariant might fail in first iteration, cannot prove J = K [provers reached step limit before completing the proof]
 binary_trees.adb:204:33: info: loop invariant initialization proved (CVC5: 2 VC)
 binary_trees.adb:204:33: info: loop invariant preservation proved (CVC5: 2 VC)
 binary_trees.adb:204:48: info: predicate check proved (Trivial: 2 VC)
@@ -86,15 +86,16 @@ binary_trees.adb:234:22: info: index check proved (CVC5: 2 VC)
 binary_trees.adb:242:34: medium: assertion might fail, cannot prove J = K [provers reached step limit before completing the proof]
 binary_trees.adb:247:45: medium: assertion might fail, cannot prove not (R (J).A < R (K).A) [provers reached step limit before completing the proof]
 binary_trees.adb:250:23: info: index check proved (CVC5: 2 VC)
-binary_trees.adb:252:31: medium: assertion might fail [provers reached step limit before completing the proof]
+binary_trees.adb:252:31: info: assertion proved (CVC5: 1 VC)
 binary_trees.adb:253:19: info: index check proved (CVC5: 2 VC)
 binary_trees.adb:253:28: medium: predicate check might fail [provers reached step limit before completing the proof]
-binary_trees.adb:254:34: medium: precondition might fail [provers reached step limit before completing the proof]
+binary_trees.adb:254:34: info: precondition proved (CVC5: 1 VC)
 binary_trees.adb:254:42: info: index check proved (CVC5: 2 VC)
 binary_trees.adb:255:22: info: index check proved (CVC5: 2 VC)
 binary_trees.adb:263:34: medium: assertion might fail, cannot prove J = K [provers reached step limit before completing the proof]
 binary_trees.adb:268:45: medium: assertion might fail, cannot prove not (R (J).A < R (K).A) [provers reached step limit before completing the proof]
 binary_trees.adb:272:16: info: index check proved (CVC5: 2 VC)
+binary_trees.adb:287:13: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
 binary_trees.adb:288:18: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:288:18: info: invariant check proved (CVC5: 2 VC)
 binary_trees.adb:288:18: info: precondition proved (CVC5: 2 VC)
@@ -102,7 +103,6 @@ binary_trees.adb:288:48: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:288:48: info: invariant check proved (CVC5: 2 VC)
 binary_trees.adb:288:48: info: precondition proved (CVC5: 2 VC)
 binary_trees.adb:289:20: medium: loop invariant might fail in first iteration, cannot prove not Model (F, T2) (I).K [provers reached step limit before completing the proof]
-binary_trees.adb:289:20: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove not Model (F, T2) (I).K [provers reached step limit before completing the proof]
 binary_trees.adb:289:24: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:289:24: info: invariant check proved (CVC5: 2 VC)
 binary_trees.adb:289:24: info: precondition proved (CVC5: 2 VC)
@@ -110,13 +110,15 @@ binary_trees.adb:303:06: info: data dependencies proved
 binary_trees.adb:318:23: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:318:23: info: invariant check proved (CVC5: 1 VC)
 binary_trees.adb:318:23: info: precondition proved (CVC5: 1 VC)
-binary_trees.adb:321:08: medium: postcondition might fail, cannot prove F2.C (Root).Position = Top [provers reached step limit before completing the proof]
 binary_trees.adb:324:17: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:324:17: info: invariant check proved (CVC5: 1 VC)
-binary_trees.adb:324:17: medium: precondition might fail [provers reached step limit before completing the proof]
+binary_trees.adb:324:17: info: precondition proved (CVC5: 1 VC)
+binary_trees.adb:324:17: medium: in inlined expression function body at tree_model.ads:55
+binary_trees.adb:324:17: medium: postcondition might fail, cannot prove M1 (I).A = M2 (I).A [provers reached step limit before completing the proof]
 binary_trees.adb:324:36: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:324:36: info: invariant check proved (CVC5: 1 VC)
-binary_trees.adb:324:36: medium: precondition might fail [provers reached step limit before completing the proof]
+binary_trees.adb:324:36: info: precondition proved (CVC5: 1 VC)
+binary_trees.adb:332:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
 binary_trees.adb:333:18: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:333:18: info: invariant check proved (CVC5: 2 VC)
 binary_trees.adb:333:18: info: precondition proved (CVC5: 2 VC)
@@ -126,55 +128,54 @@ binary_trees.adb:333:51: info: precondition proved (CVC5: 2 VC)
 binary_trees.adb:334:17: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:334:17: info: invariant check proved (CVC5: 2 VC)
 binary_trees.adb:334:17: info: precondition proved (CVC5: 2 VC)
-binary_trees.adb:334:17: medium: loop invariant might fail in first iteration, cannot prove Model (F2, Root) (I).K [provers reached step limit before completing the proof]
 binary_trees.adb:334:17: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Model (F2, Root) (I).K [provers reached step limit before completing the proof]
+binary_trees.adb:339:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
 binary_trees.adb:340:18: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:340:18: info: invariant check proved (CVC5: 2 VC)
-binary_trees.adb:340:18: medium: precondition might fail [provers reached step limit before completing the proof]
+binary_trees.adb:340:18: info: precondition proved (CVC5: 2 VC)
 binary_trees.adb:340:51: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:340:51: info: invariant check proved (CVC5: 2 VC)
-binary_trees.adb:340:51: medium: precondition might fail [provers reached step limit before completing the proof]
+binary_trees.adb:340:51: info: precondition proved (CVC5: 2 VC)
 binary_trees.adb:341:17: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:341:17: info: invariant check proved (CVC5: 2 VC)
 binary_trees.adb:341:17: info: precondition proved (CVC5: 2 VC)
-binary_trees.adb:341:17: medium: loop invariant might fail in first iteration, cannot prove Model (F1, Root) (I).K [provers reached step limit before completing the proof]
 binary_trees.adb:341:17: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Model (F1, Root) (I).K [provers reached step limit before completing the proof]
 binary_trees.adb:349:18: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:349:18: info: invariant check proved (CVC5: 2 VC)
-binary_trees.adb:349:18: medium: precondition might fail [provers reached step limit before completing the proof]
+binary_trees.adb:349:18: info: precondition proved (CVC5: 2 VC)
 binary_trees.adb:349:51: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:349:51: info: invariant check proved (CVC5: 2 VC)
-binary_trees.adb:349:51: medium: precondition might fail [provers reached step limit before completing the proof]
+binary_trees.adb:349:51: info: precondition proved (CVC5: 2 VC)
 binary_trees.adb:350:17: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:350:17: info: invariant check proved (CVC5: 2 VC)
+binary_trees.adb:350:17: info: precondition proved (CVC5: 2 VC)
 binary_trees.adb:350:17: medium: loop invariant might fail in first iteration, cannot prove ( Model (F2, Root) (I).A = Model (F1, Root) (I).A) [provers reached step limit before completing the proof]
 binary_trees.adb:350:17: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove ( Model (F2, Root) (I).A = Model (F1, Root) (I).A) [provers reached step limit before completing the proof]
-binary_trees.adb:350:17: medium: precondition might fail [provers reached step limit before completing the proof]
 binary_trees.adb:350:42: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:350:42: info: invariant check proved (CVC5: 2 VC)
-binary_trees.adb:350:42: medium: precondition might fail [provers reached step limit before completing the proof]
+binary_trees.adb:350:42: info: precondition proved (CVC5: 2 VC)
 binary_trees.adb:359:16: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:359:16: info: invariant check proved (CVC5: 2 VC)
-binary_trees.adb:359:16: medium: precondition might fail [provers reached step limit before completing the proof]
+binary_trees.adb:359:16: info: precondition proved (CVC5: 2 VC)
 binary_trees.adb:359:49: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:359:49: info: invariant check proved (CVC5: 2 VC)
-binary_trees.adb:359:49: medium: precondition might fail [provers reached step limit before completing the proof]
+binary_trees.adb:359:49: info: precondition proved (CVC5: 2 VC)
 binary_trees.adb:360:16: medium: precondition might fail, cannot prove S1 = S2 [provers reached step limit before completing the proof]
 binary_trees.adb:360:38: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:360:38: info: invariant check proved (CVC5: 2 VC)
-binary_trees.adb:360:38: medium: precondition might fail [provers reached step limit before completing the proof]
+binary_trees.adb:360:38: info: precondition proved (CVC5: 2 VC)
 binary_trees.adb:360:64: info: index check proved (CVC5: 4 VC)
 binary_trees.adb:361:38: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:361:38: info: invariant check proved (CVC5: 2 VC)
-binary_trees.adb:361:38: medium: precondition might fail [provers reached step limit before completing the proof]
+binary_trees.adb:361:38: info: precondition proved (CVC5: 2 VC)
 binary_trees.adb:361:64: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
 binary_trees.adb:362:38: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:362:38: info: invariant check proved (CVC5: 2 VC)
-binary_trees.adb:362:38: medium: precondition might fail [provers reached step limit before completing the proof]
+binary_trees.adb:362:38: info: precondition proved (CVC5: 2 VC)
 binary_trees.adb:363:38: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:363:38: info: invariant check proved (CVC5: 2 VC)
-binary_trees.adb:363:38: medium: precondition might fail [provers reached step limit before completing the proof]
-binary_trees.adb:364:46: medium: range check might fail, cannot prove lower bound for F1.C (J).Position [reason for check: input value must fit in parameter type] [provers reached step limit before completing the proof]
+binary_trees.adb:363:38: info: precondition proved (CVC5: 2 VC)
+binary_trees.adb:364:46: medium: range check might fail, cannot prove upper bound for F1.C (J).Position [reason for check: input value must fit in parameter type] [provers reached step limit before completing the proof]
 binary_trees.adb:370:16: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
 binary_trees.adb:371:21: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:371:21: info: invariant check proved (CVC5: 2 VC)
@@ -196,6 +197,7 @@ binary_trees.adb:372:63: info: index check proved (CVC5: 4 VC)
 binary_trees.adb:387:06: info: data dependencies proved
 binary_trees.adb:389:17: info: for "F" before the call at binary_trees.ads:20
 binary_trees.adb:389:17: info: invariant check proved (CVC5: 1 VC)
+binary_trees.adb:391:08: info: postcondition proved (CVC5: 1 VC; Trivial: 3 VC)
 binary_trees.adb:392:14: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:392:14: info: invariant check proved (CVC5: 1 VC)
 binary_trees.adb:392:14: info: precondition proved (CVC5: 1 VC)
@@ -211,14 +213,14 @@ binary_trees.adb:397:55: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:397:55: info: invariant check proved (CVC5: 1 VC)
 binary_trees.adb:397:55: info: precondition proved (CVC5: 1 VC)
 binary_trees.adb:398:24: info: precondition proved (CVC5: 2 VC)
-binary_trees.adb:398:24: medium: postcondition might fail, cannot prove Get (Model (F, Root) (J).A, Last (Model (F, Root) (I).A) + 1) /= D [possible fix: you should consider adding a postcondition to function "Last" and function "Get" or turning them into expression functions in their unit spec] [provers reached step limit before completing the proof]
 binary_trees.adb:398:29: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:398:29: info: invariant check proved (CVC5: 1 VC)
 binary_trees.adb:398:29: info: precondition proved (CVC5: 1 VC)
 binary_trees.adb:398:58: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:398:58: info: invariant check proved (CVC5: 1 VC)
 binary_trees.adb:398:58: info: precondition proved (CVC5: 1 VC)
-binary_trees.adb:398:81: medium: overflow check might fail, cannot prove upper bound for Last (Model (F, Root) (I).A) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers reached step limit before completing the proof]
+binary_trees.adb:398:81: info: overflow check proved (CVC5: 2 VC)
+binary_trees.adb:403:13: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 3 VC)
 binary_trees.adb:404:18: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:404:18: info: invariant check proved (CVC5: 2 VC)
 binary_trees.adb:404:18: info: precondition proved (CVC5: 2 VC)
@@ -239,10 +241,9 @@ binary_trees.adb:410:40: info: precondition proved (CVC5: 2 VC)
 binary_trees.adb:410:72: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:410:72: info: invariant check proved (CVC5: 2 VC)
 binary_trees.adb:410:72: info: precondition proved (CVC5: 2 VC)
-binary_trees.adb:410:95: medium: overflow check might fail, cannot prove upper bound for Last (Model (F, Root) (I).A) + N [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers reached step limit before completing the proof]
+binary_trees.adb:410:95: info: overflow check proved (CVC5: 4 VC)
 binary_trees.adb:411:28: info: precondition proved (CVC5: 4 VC)
 binary_trees.adb:411:28: medium: loop invariant might fail in first iteration, cannot prove Get (Model (F, Root) (J).A, Last (Model (F, Root) (I).A) + 1) /= D [possible fix: you should consider adding a postcondition to function "Last" and function "Get" or turning them into expression functions in their unit spec] [provers reached step limit before completing the proof]
-binary_trees.adb:411:28: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Get (Model (F, Root) (J).A, Last (Model (F, Root) (I).A) + 1) /= D [possible fix: you should consider adding a postcondition to function "Last" and function "Get" or turning them into expression functions in their unit spec] [provers reached step limit before completing the proof]
 binary_trees.adb:411:33: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:411:33: info: invariant check proved (CVC5: 2 VC)
 binary_trees.adb:411:33: info: precondition proved (CVC5: 2 VC)
@@ -259,10 +260,10 @@ binary_trees.adb:451:20: info: precondition proved (CVC5: 1 VC)
 binary_trees.adb:451:41: info: index check proved (CVC5: 2 VC)
 binary_trees.adb:464:30: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:464:30: info: invariant check proved (CVC5: 1 VC)
-binary_trees.adb:464:30: medium: precondition might fail [provers reached step limit before completing the proof]
+binary_trees.adb:464:30: info: precondition proved (CVC5: 1 VC)
 binary_trees.adb:470:30: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:470:30: info: invariant check proved (CVC5: 1 VC)
-binary_trees.adb:470:30: medium: precondition might fail [provers reached step limit before completing the proof]
+binary_trees.adb:470:30: info: precondition proved (CVC5: 1 VC)
 binary_trees.adb:477:17: medium: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:477:17: medium: in inlined invariant at binary_trees.ads:422
 binary_trees.adb:477:17: medium: invariant check might fail, cannot prove Tree_Structure (Forest) [provers reached step limit before completing the proof]
@@ -348,50 +349,50 @@ binary_trees.adb:509:44: medium: precondition might fail [provers reached step l
 binary_trees.adb:509:54: info: range check proved (CVC5: 2 VC)
 binary_trees.adb:520:21: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:520:21: info: invariant check proved (CVC5: 2 VC)
-binary_trees.adb:520:21: medium: precondition might fail [provers reached step limit before completing the proof]
+binary_trees.adb:520:21: info: precondition proved (CVC5: 2 VC)
 binary_trees.adb:520:62: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:520:62: info: invariant check proved (CVC5: 2 VC)
-binary_trees.adb:520:62: medium: precondition might fail [provers reached step limit before completing the proof]
+binary_trees.adb:520:62: info: precondition proved (CVC5: 2 VC)
 binary_trees.adb:521:23: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:521:23: info: invariant check proved (CVC5: 2 VC)
-binary_trees.adb:521:23: medium: precondition might fail [provers reached step limit before completing the proof]
+binary_trees.adb:521:23: info: precondition proved (CVC5: 2 VC)
 binary_trees.adb:521:44: info: index check proved (CVC5: 4 VC)
 binary_trees.adb:521:52: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:521:52: info: invariant check proved (CVC5: 2 VC)
-binary_trees.adb:521:52: medium: precondition might fail [provers reached step limit before completing the proof]
+binary_trees.adb:521:52: info: precondition proved (CVC5: 2 VC)
 binary_trees.adb:522:25: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:522:25: info: invariant check proved (CVC5: 2 VC)
+binary_trees.adb:522:25: info: precondition proved (CVC5: 2 VC)
 binary_trees.adb:522:25: medium: loop invariant might fail in first iteration, cannot prove Model (F, V) (I).K [provers reached step limit before completing the proof]
 binary_trees.adb:522:25: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Model (F, V) (I).K [provers reached step limit before completing the proof]
-binary_trees.adb:522:25: medium: precondition might fail [provers reached step limit before completing the proof]
 binary_trees.adb:522:35: info: range check proved (CVC5: 4 VC)
 binary_trees.adb:523:25: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:523:25: info: invariant check proved (CVC5: 2 VC)
-binary_trees.adb:523:25: medium: precondition might fail [provers reached step limit before completing the proof]
+binary_trees.adb:523:25: info: precondition proved (CVC5: 2 VC)
 binary_trees.adb:529:21: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:529:21: info: invariant check proved (CVC5: 2 VC)
-binary_trees.adb:529:21: medium: precondition might fail [provers reached step limit before completing the proof]
+binary_trees.adb:529:21: info: precondition proved (CVC5: 2 VC)
 binary_trees.adb:529:58: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:529:58: info: invariant check proved (CVC5: 2 VC)
-binary_trees.adb:529:58: medium: precondition might fail [provers reached step limit before completing the proof]
+binary_trees.adb:529:58: info: precondition proved (CVC5: 2 VC)
 binary_trees.adb:530:23: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:530:23: info: invariant check proved (CVC5: 2 VC)
+binary_trees.adb:530:23: info: precondition proved (CVC5: 2 VC)
 binary_trees.adb:530:23: medium: loop invariant might fail in first iteration, cannot prove Model (F_Old, Root) (I).K [provers reached step limit before completing the proof]
 binary_trees.adb:530:23: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Model (F_Old, Root) (I).K [provers reached step limit before completing the proof]
-binary_trees.adb:530:23: medium: precondition might fail [provers reached step limit before completing the proof]
 binary_trees.adb:536:21: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:536:21: info: invariant check proved (CVC5: 2 VC)
-binary_trees.adb:536:21: medium: precondition might fail [provers reached step limit before completing the proof]
+binary_trees.adb:536:21: info: precondition proved (CVC5: 2 VC)
 binary_trees.adb:536:31: info: range check proved (CVC5: 4 VC)
 binary_trees.adb:536:55: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:536:55: info: invariant check proved (CVC5: 2 VC)
-binary_trees.adb:536:55: medium: precondition might fail [provers reached step limit before completing the proof]
+binary_trees.adb:536:55: info: precondition proved (CVC5: 2 VC)
 binary_trees.adb:536:65: info: range check proved (CVC5: 4 VC)
 binary_trees.adb:537:23: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:537:23: info: invariant check proved (CVC5: 2 VC)
+binary_trees.adb:537:23: info: precondition proved (CVC5: 2 VC)
 binary_trees.adb:537:23: medium: loop invariant might fail in first iteration, cannot prove Model (F_Old, Root) (I).K [provers reached step limit before completing the proof]
 binary_trees.adb:537:23: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Model (F_Old, Root) (I).K [provers reached step limit before completing the proof]
-binary_trees.adb:537:23: medium: precondition might fail [provers reached step limit before completing the proof]
 binary_trees.adb:546:16: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 2 VC)
 binary_trees.adb:547:21: medium: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:547:21: medium: in inlined invariant at binary_trees.ads:422
@@ -602,7 +603,7 @@ binary_trees.adb:625:43: medium: in inlined invariant at binary_trees.ads:422
 binary_trees.adb:625:43: medium: invariant check might fail, cannot prove Tree_Structure (Forest) [provers reached step limit before completing the proof]
 binary_trees.adb:625:43: medium: precondition might fail [provers reached step limit before completing the proof]
 binary_trees.adb:625:53: info: range check proved (CVC5: 4 VC)
-binary_trees.adb:638:25: medium: assertion might fail [provers reached step limit before completing the proof]
+binary_trees.adb:638:25: info: assertion proved (CVC5: 1 VC)
 binary_trees.adb:638:30: info: index check proved (CVC5: 2 VC)
 binary_trees.adb:639:15: info: index check proved (CVC5: 2 VC)
 binary_trees.adb:640:15: info: index check proved (CVC5: 2 VC)
@@ -611,7 +612,7 @@ binary_trees.adb:646:10: info: for "F" before the call at binary_trees.ads:121
 binary_trees.adb:646:10: info: for "F_Old" before the call at binary_trees.adb:427
 binary_trees.adb:646:10: info: invariant check proved (CVC5: 1 VC)
 binary_trees.adb:646:10: info: invariant check proved (CVC5: 1 VC)
-binary_trees.adb:646:10: medium: precondition might fail, cannot prove Root <= F.S [provers reached step limit before completing the proof]
+binary_trees.adb:646:10: medium: precondition might fail, cannot prove Model (F_Old, Root) (V).K [provers reached step limit before completing the proof]
 binary_trees.adb:667:09: info: data dependencies proved
 binary_trees.adb:682:29: info: index check proved (CVC5: 2 VC)
 binary_trees.adb:685:25: info: index check proved (CVC5: 2 VC)
@@ -619,13 +620,13 @@ binary_trees.adb:686:20: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:686:20: info: invariant check proved (CVC5: 1 VC)
 binary_trees.adb:686:20: info: precondition proved (CVC5: 1 VC)
 binary_trees.adb:686:46: info: index check proved (CVC5: 2 VC)
-binary_trees.adb:686:48: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
+binary_trees.adb:686:48: info: index check proved (CVC5: 2 VC)
 binary_trees.adb:699:30: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:699:30: info: invariant check proved (CVC5: 1 VC)
-binary_trees.adb:699:30: medium: precondition might fail [provers reached step limit before completing the proof]
+binary_trees.adb:699:30: info: precondition proved (CVC5: 1 VC)
 binary_trees.adb:705:30: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:705:30: info: invariant check proved (CVC5: 1 VC)
-binary_trees.adb:705:30: medium: precondition might fail [provers reached step limit before completing the proof]
+binary_trees.adb:705:30: info: precondition proved (CVC5: 1 VC)
 binary_trees.adb:709:11: medium: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:709:11: medium: in inlined invariant at binary_trees.ads:422
 binary_trees.adb:709:11: medium: invariant check might fail, cannot prove Tree_Structure (Forest) [provers reached step limit before completing the proof]
@@ -717,22 +718,22 @@ binary_trees.adb:743:54: info: range check proved (CVC5: 2 VC)
 binary_trees.adb:749:21: info: predicate check proved (Trivial: 2 VC)
 binary_trees.adb:749:29: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:749:29: info: invariant check proved (CVC5: 2 VC)
-binary_trees.adb:749:29: medium: precondition might fail [provers reached step limit before completing the proof]
+binary_trees.adb:749:29: info: precondition proved (CVC5: 2 VC)
 binary_trees.adb:749:46: info: index check proved (CVC5: 4 VC)
 binary_trees.adb:749:54: info: predicate check proved (Trivial: 2 VC)
 binary_trees.adb:750:29: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:750:29: info: invariant check proved (CVC5: 2 VC)
-binary_trees.adb:750:29: medium: precondition might fail [provers reached step limit before completing the proof]
+binary_trees.adb:750:29: info: precondition proved (CVC5: 2 VC)
 binary_trees.adb:751:35: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:751:35: info: invariant check proved (CVC5: 2 VC)
-binary_trees.adb:751:35: medium: precondition might fail [provers reached step limit before completing the proof]
+binary_trees.adb:751:35: info: precondition proved (CVC5: 2 VC)
 binary_trees.adb:753:24: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:753:24: info: invariant check proved (CVC5: 2 VC)
-binary_trees.adb:753:24: medium: precondition might fail [provers reached step limit before completing the proof]
+binary_trees.adb:753:24: info: precondition proved (CVC5: 2 VC)
 binary_trees.adb:753:41: info: index check proved (CVC5: 4 VC)
 binary_trees.adb:753:49: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:753:49: info: invariant check proved (CVC5: 2 VC)
-binary_trees.adb:753:49: medium: precondition might fail [provers reached step limit before completing the proof]
+binary_trees.adb:753:49: info: precondition proved (CVC5: 2 VC)
 binary_trees.adb:754:26: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:754:26: info: invariant check proved (CVC5: 2 VC)
 binary_trees.adb:754:26: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Model (F_Old, V) (I).K [provers reached step limit before completing the proof]
@@ -744,26 +745,26 @@ binary_trees.adb:755:26: medium: loop invariant might fail in first iteration, c
 binary_trees.adb:755:26: medium: precondition might fail [provers reached step limit before completing the proof]
 binary_trees.adb:761:21: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:761:21: info: invariant check proved (CVC5: 2 VC)
-binary_trees.adb:761:21: medium: precondition might fail [provers reached step limit before completing the proof]
+binary_trees.adb:761:21: info: precondition proved (CVC5: 2 VC)
 binary_trees.adb:761:62: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:761:62: info: invariant check proved (CVC5: 2 VC)
-binary_trees.adb:761:62: medium: precondition might fail [provers reached step limit before completing the proof]
+binary_trees.adb:761:62: info: precondition proved (CVC5: 2 VC)
 binary_trees.adb:762:23: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:762:23: info: invariant check proved (CVC5: 2 VC)
+binary_trees.adb:762:23: info: precondition proved (CVC5: 2 VC)
 binary_trees.adb:762:23: medium: loop invariant might fail in first iteration, cannot prove Model (F, Root) (I).K [provers reached step limit before completing the proof]
 binary_trees.adb:762:23: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Model (F, Root) (I).K [provers reached step limit before completing the proof]
-binary_trees.adb:762:23: medium: precondition might fail [provers reached step limit before completing the proof]
 binary_trees.adb:769:21: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:769:21: info: invariant check proved (CVC5: 2 VC)
-binary_trees.adb:769:21: medium: precondition might fail [provers reached step limit before completing the proof]
+binary_trees.adb:769:21: info: precondition proved (CVC5: 2 VC)
 binary_trees.adb:769:35: info: range check proved (CVC5: 4 VC)
 binary_trees.adb:770:35: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:770:35: info: invariant check proved (CVC5: 2 VC)
-binary_trees.adb:770:35: medium: precondition might fail [provers reached step limit before completing the proof]
+binary_trees.adb:770:35: info: precondition proved (CVC5: 2 VC)
 binary_trees.adb:770:49: info: range check proved (CVC5: 4 VC)
 binary_trees.adb:771:29: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:771:29: info: invariant check proved (CVC5: 2 VC)
-binary_trees.adb:771:29: medium: precondition might fail [provers reached step limit before completing the proof]
+binary_trees.adb:771:29: info: precondition proved (CVC5: 2 VC)
 binary_trees.adb:771:51: info: index check proved (CVC5: 4 VC)
 binary_trees.adb:771:53: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
 binary_trees.adb:772:23: info: for "F" before the call at binary_trees.ads:45
@@ -1000,14 +1001,14 @@ binary_trees.adb:918:24: info: invariant check proved (CVC5: 1 VC)
 binary_trees.adb:918:24: info: precondition proved (CVC5: 1 VC)
 binary_trees.adb:922:20: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:922:20: info: invariant check proved (CVC5: 1 VC)
-binary_trees.adb:922:20: medium: precondition might fail [provers reached step limit before completing the proof]
-binary_trees.adb:922:48: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
+binary_trees.adb:922:20: info: precondition proved (CVC5: 1 VC)
+binary_trees.adb:922:48: info: index check proved (CVC5: 2 VC)
 binary_trees.adb:941:30: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:941:30: info: invariant check proved (CVC5: 1 VC)
-binary_trees.adb:941:30: medium: precondition might fail [provers reached step limit before completing the proof]
+binary_trees.adb:941:30: info: precondition proved (CVC5: 1 VC)
 binary_trees.adb:947:30: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:947:30: info: invariant check proved (CVC5: 1 VC)
-binary_trees.adb:947:30: medium: precondition might fail [provers reached step limit before completing the proof]
+binary_trees.adb:947:30: info: precondition proved (CVC5: 1 VC)
 binary_trees.adb:952:18: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:952:18: info: invariant check proved (CVC5: 1 VC)
 binary_trees.adb:952:18: medium: precondition might fail [provers reached step limit before completing the proof]
@@ -1018,27 +1019,22 @@ binary_trees.adb:952:49: medium: precondition might fail [provers reached step l
 binary_trees.adb:955:20: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:955:20: info: invariant check proved (CVC5: 1 VC)
 binary_trees.adb:955:20: medium: precondition might fail [provers reached step limit before completing the proof]
-binary_trees.adb:960:26: medium: for "F" before the call at binary_trees.ads:45
-binary_trees.adb:960:26: medium: in inlined invariant at binary_trees.ads:422
-binary_trees.adb:960:26: medium: invariant check might fail, cannot prove Tree_Structure (Forest) [provers reached step limit before completing the proof]
+binary_trees.adb:960:26: info: for "F" before the call at binary_trees.ads:45
+binary_trees.adb:960:26: info: invariant check proved (CVC5: 1 VC)
 binary_trees.adb:960:26: medium: precondition might fail [provers reached step limit before completing the proof]
-binary_trees.adb:960:64: medium: for "F" before the call at binary_trees.ads:45
-binary_trees.adb:960:64: medium: in inlined invariant at binary_trees.ads:422
-binary_trees.adb:960:64: medium: invariant check might fail, cannot prove Tree_Structure (Forest) [provers reached step limit before completing the proof]
+binary_trees.adb:960:64: info: for "F" before the call at binary_trees.ads:45
+binary_trees.adb:960:64: info: invariant check proved (CVC5: 1 VC)
 binary_trees.adb:960:64: medium: precondition might fail [provers reached step limit before completing the proof]
-binary_trees.adb:964:26: medium: for "F" before the call at binary_trees.ads:45
-binary_trees.adb:964:26: medium: in inlined invariant at binary_trees.ads:422
-binary_trees.adb:964:26: medium: invariant check might fail, cannot prove Tree_Structure (Forest) [provers reached step limit before completing the proof]
+binary_trees.adb:964:26: info: for "F" before the call at binary_trees.ads:45
+binary_trees.adb:964:26: info: invariant check proved (CVC5: 1 VC)
 binary_trees.adb:964:26: medium: precondition might fail [provers reached step limit before completing the proof]
-binary_trees.adb:964:57: medium: for "F" before the call at binary_trees.ads:45
-binary_trees.adb:964:57: medium: in inlined invariant at binary_trees.ads:422
-binary_trees.adb:964:57: medium: invariant check might fail, cannot prove Tree_Structure (Forest) [provers reached step limit before completing the proof]
+binary_trees.adb:964:57: info: for "F" before the call at binary_trees.ads:45
+binary_trees.adb:964:57: info: invariant check proved (CVC5: 1 VC)
 binary_trees.adb:964:57: medium: precondition might fail [provers reached step limit before completing the proof]
-binary_trees.adb:964:81: medium: for "F" before the call at binary_trees.ads:45
-binary_trees.adb:964:81: medium: in inlined invariant at binary_trees.ads:422
-binary_trees.adb:964:81: medium: invariant check might fail, cannot prove Tree_Structure (Forest) [provers reached step limit before completing the proof]
+binary_trees.adb:964:81: info: for "F" before the call at binary_trees.ads:45
+binary_trees.adb:964:81: info: invariant check proved (CVC5: 1 VC)
 binary_trees.adb:964:81: medium: precondition might fail [provers reached step limit before completing the proof]
-binary_trees.adb:968:49: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
+binary_trees.adb:968:49: info: index check proved (CVC5: 2 VC)
 binary_trees.adb:969:25: medium: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:969:25: medium: in inlined invariant at binary_trees.ads:422
 binary_trees.adb:969:25: medium: invariant check might fail, cannot prove Tree_Structure (Forest) [provers reached step limit before completing the proof]
@@ -1106,15 +1102,13 @@ binary_trees.adb:1007:41: medium: precondition might fail [provers reached step 
 binary_trees.adb:1008:41: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:1008:41: info: invariant check proved (CVC5: 2 VC)
 binary_trees.adb:1008:41: medium: precondition might fail [provers reached step limit before completing the proof]
-binary_trees.adb:1009:49: medium: range check might fail, cannot prove lower bound for F.C (KI).Position [reason for check: input value must fit in parameter type] [provers reached step limit before completing the proof]
-binary_trees.adb:1017:24: medium: for "F" before the call at binary_trees.ads:45
-binary_trees.adb:1017:24: medium: in inlined invariant at binary_trees.ads:422
-binary_trees.adb:1017:24: medium: invariant check might fail, cannot prove Tree_Structure (Forest) [provers reached step limit before completing the proof]
+binary_trees.adb:1009:49: medium: range check might fail, cannot prove upper bound for F.C (KI).Position [reason for check: input value must fit in parameter type] [provers reached step limit before completing the proof]
+binary_trees.adb:1017:24: info: for "F" before the call at binary_trees.ads:45
+binary_trees.adb:1017:24: info: invariant check proved (CVC5: 2 VC)
 binary_trees.adb:1017:24: medium: precondition might fail [provers reached step limit before completing the proof]
 binary_trees.adb:1017:45: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
-binary_trees.adb:1017:65: medium: for "F" before the call at binary_trees.ads:45
-binary_trees.adb:1017:65: medium: in inlined invariant at binary_trees.ads:422
-binary_trees.adb:1017:65: medium: invariant check might fail, cannot prove Tree_Structure (Forest) [provers reached step limit before completing the proof]
+binary_trees.adb:1017:65: info: for "F" before the call at binary_trees.ads:45
+binary_trees.adb:1017:65: info: invariant check proved (CVC5: 2 VC)
 binary_trees.adb:1017:65: medium: precondition might fail [provers reached step limit before completing the proof]
 binary_trees.adb:1017:86: info: index check proved (CVC5: 4 VC)
 binary_trees.adb:1018:23: medium: for "F" before the call at binary_trees.ads:45
@@ -1133,7 +1127,7 @@ binary_trees.adb:1031:16: info: for "F" before the call at binary_trees.ads:109
 binary_trees.adb:1031:16: info: invariant check proved (CVC5: 2 VC)
 binary_trees.adb:1031:16: medium: precondition might fail, cannot prove Valid_Root (F, T1) [provers reached step limit before completing the proof]
 binary_trees.adb:1032:16: medium: precondition might fail, cannot prove F1.C (I) = F2.C (I) [provers reached step limit before completing the proof]
-binary_trees.adb:1039:44: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
+binary_trees.adb:1039:44: info: index check proved (CVC5: 4 VC)
 binary_trees.adb:1040:20: medium: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:1040:20: medium: in inlined expression function body at tree_model.ads:55
 binary_trees.adb:1040:20: medium: in inlined expression function body at tree_model.ads:55
@@ -1143,9 +1137,8 @@ binary_trees.adb:1040:20: medium: loop invariant might fail in first iteration, 
 binary_trees.adb:1040:20: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove M1 (I).A = M2 (I).A [provers reached step limit before completing the proof]
 binary_trees.adb:1040:20: medium: precondition might fail [provers reached step limit before completing the proof]
 binary_trees.adb:1040:34: info: range check proved (CVC5: 4 VC)
-binary_trees.adb:1040:39: medium: for "F" before the call at binary_trees.ads:45
-binary_trees.adb:1040:39: medium: in inlined invariant at binary_trees.ads:422
-binary_trees.adb:1040:39: medium: invariant check might fail, cannot prove Tree_Structure (Forest) [provers reached step limit before completing the proof]
+binary_trees.adb:1040:39: info: for "F" before the call at binary_trees.ads:45
+binary_trees.adb:1040:39: info: invariant check proved (CVC5: 2 VC)
 binary_trees.adb:1040:39: medium: precondition might fail [provers reached step limit before completing the proof]
 binary_trees.adb:1040:49: info: range check proved (CVC5: 4 VC)
 binary_trees.adb:1045:16: info: range check proved (CVC5: 2 VC)
@@ -1160,38 +1153,37 @@ binary_trees.adb:1076:09: info: data dependencies proved
 binary_trees.adb:1090:26: info: index check proved (CVC5: 2 VC)
 binary_trees.adb:1091:16: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:1091:16: info: invariant check proved (CVC5: 1 VC)
+binary_trees.adb:1091:16: info: precondition proved (CVC5: 1 VC)
 binary_trees.adb:1091:16: medium: in inlined expression function body at tree_model.ads:55
 binary_trees.adb:1091:16: medium: postcondition might fail, cannot prove M1 (I).A = M2 (I).A [provers reached step limit before completing the proof]
-binary_trees.adb:1091:16: medium: precondition might fail [provers reached step limit before completing the proof]
 binary_trees.adb:1091:30: info: range check proved (CVC5: 2 VC)
 binary_trees.adb:1091:35: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:1091:35: info: invariant check proved (CVC5: 1 VC)
-binary_trees.adb:1091:35: medium: precondition might fail [provers reached step limit before completing the proof]
+binary_trees.adb:1091:35: info: precondition proved (CVC5: 1 VC)
 binary_trees.adb:1091:45: info: range check proved (CVC5: 2 VC)
 binary_trees.adb:1095:45: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:1095:45: info: invariant check proved (CVC5: 1 VC)
-binary_trees.adb:1095:45: medium: precondition might fail [provers reached step limit before completing the proof]
+binary_trees.adb:1095:45: info: precondition proved (CVC5: 1 VC)
+binary_trees.adb:1105:16: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
+binary_trees.adb:1105:16: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
 binary_trees.adb:1106:21: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:1106:21: info: invariant check proved (CVC5: 2 VC)
-binary_trees.adb:1106:21: medium: precondition might fail [provers reached step limit before completing the proof]
-binary_trees.adb:1107:23: medium: loop invariant might fail in first iteration, cannot prove Last (Model (F, Root) (J).A) > N [possible fix: you should consider adding a postcondition to function "Last" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
-binary_trees.adb:1107:23: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Last (Model (F, Root) (J).A) > N [possible fix: you should consider adding a postcondition to function "Last" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
+binary_trees.adb:1106:21: info: precondition proved (CVC5: 2 VC)
 binary_trees.adb:1107:29: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:1107:29: info: invariant check proved (CVC5: 2 VC)
 binary_trees.adb:1107:29: medium: precondition might fail [provers reached step limit before completing the proof]
 binary_trees.adb:1116:16: medium: precondition might fail, cannot prove F1.C (I) = F2.C (I) [provers reached step limit before completing the proof]
+binary_trees.adb:1122:16: info: loop invariant initialization proved (CVC5: 3 VC; Trivial: 1 VC)
 binary_trees.adb:1123:30: info: index check proved (CVC5: 4 VC)
 binary_trees.adb:1123:53: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:1123:53: info: invariant check proved (CVC5: 2 VC)
 binary_trees.adb:1123:53: medium: in inlined expression function body at tree_model.ads:55
-binary_trees.adb:1123:53: medium: in inlined expression function body at tree_model.ads:55
-binary_trees.adb:1123:53: medium: loop invariant might fail in first iteration, cannot prove M1 (I).A = M2 (I).A [provers reached step limit before completing the proof]
 binary_trees.adb:1123:53: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove M1 (I).A = M2 (I).A [provers reached step limit before completing the proof]
 binary_trees.adb:1123:53: medium: precondition might fail [provers reached step limit before completing the proof]
 binary_trees.adb:1123:67: info: range check proved (CVC5: 4 VC)
 binary_trees.adb:1123:72: info: for "F" before the call at binary_trees.ads:45
 binary_trees.adb:1123:72: info: invariant check proved (CVC5: 2 VC)
-binary_trees.adb:1123:72: medium: precondition might fail [provers reached step limit before completing the proof]
+binary_trees.adb:1123:72: info: precondition proved (CVC5: 2 VC)
 binary_trees.adb:1123:82: info: range check proved (CVC5: 4 VC)
 binary_trees.adb:1127:18: info: range check proved (CVC5: 2 VC)
 binary_trees.adb:1128:16: info: range check proved (CVC5: 2 VC)
@@ -1241,7 +1233,7 @@ binary_trees.ads:41:50: info: precondition proved (CVC5: 1 VC)
 binary_trees.ads:45:13: info: implicit aspect Always_Terminates on "Model" has been proved, subprogram will terminate
 binary_trees.ads:53:14: info: for "F" before the call at binary_trees.ads:20
 binary_trees.ads:53:14: info: invariant check proved (CVC5: 1 VC)
-binary_trees.ads:56:08: medium: postcondition might fail, cannot prove Model'Result (Root).K [provers reached step limit before completing the proof]
+binary_trees.ads:59:17: medium: postcondition might fail, cannot prove Last (Model'Result (Root).A) = 0 [provers reached step limit before completing the proof]
 binary_trees.ads:64:25: medium: for "F" before the call at binary_trees.ads:24
 binary_trees.ads:64:25: medium: in inlined invariant at binary_trees.ads:422
 binary_trees.ads:64:25: medium: invariant check might fail, cannot prove Tree_Structure (Forest) [provers reached step limit before completing the proof]
@@ -1263,6 +1255,7 @@ binary_trees.ads:97:17: info: invariant check proved (CVC5: 1 VC)
 binary_trees.ads:97:17: info: precondition proved (CVC5: 1 VC)
 binary_trees.ads:100:17: info: for "F" before the call at binary_trees.ads:33
 binary_trees.ads:100:17: info: invariant check proved (CVC5: 1 VC)
+binary_trees.ads:104:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 binary_trees.ads:105:20: info: for "F" before the call at binary_trees.ads:45
 binary_trees.ads:105:20: info: invariant check proved (CVC5: 1 VC)
 binary_trees.ads:105:20: info: precondition proved (CVC5: 1 VC)
@@ -1273,20 +1266,19 @@ binary_trees.ads:106:53: info: for "F" before the call at binary_trees.ads:45
 binary_trees.ads:106:53: info: invariant check proved (CVC5: 1 VC)
 binary_trees.ads:106:53: info: precondition proved (CVC5: 1 VC)
 binary_trees.ads:107:22: info: precondition proved (CVC5: 2 VC)
-binary_trees.ads:107:22: medium: postcondition might fail, cannot prove Get (Model (F, Root) (J).A, Last (Model (F, Root) (I).A) + 1) /= D [possible fix: you should consider adding a postcondition to function "Last" and function "Get" or turning them into expression functions in their unit spec] [provers reached step limit before completing the proof]
 binary_trees.ads:107:27: info: for "F" before the call at binary_trees.ads:45
 binary_trees.ads:107:27: info: invariant check proved (CVC5: 1 VC)
 binary_trees.ads:107:27: info: precondition proved (CVC5: 1 VC)
 binary_trees.ads:107:56: info: for "F" before the call at binary_trees.ads:45
 binary_trees.ads:107:56: info: invariant check proved (CVC5: 1 VC)
 binary_trees.ads:107:56: info: precondition proved (CVC5: 1 VC)
-binary_trees.ads:107:79: medium: overflow check might fail, cannot prove upper bound for Last (Model (F, Root) (I).A) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers reached step limit before completing the proof]
+binary_trees.ads:107:79: info: overflow check proved (CVC5: 2 VC)
 binary_trees.ads:114:06: info: data dependencies proved
 binary_trees.ads:116:17: info: for "F" before the call at binary_trees.ads:20
 binary_trees.ads:116:17: info: invariant check proved (CVC5: 1 VC)
 binary_trees.ads:117:17: info: for "F" before the call at binary_trees.ads:20
 binary_trees.ads:117:17: info: invariant check proved (CVC5: 1 VC)
-binary_trees.ads:119:16: medium: postcondition might fail, cannot prove (not Model (F, T1) (I).K or not Model (F, T2) (I).K) [provers reached step limit before completing the proof]
+binary_trees.ads:118:14: info: postcondition proved (CVC5: 1 VC)
 binary_trees.ads:119:21: info: for "F" before the call at binary_trees.ads:45
 binary_trees.ads:119:21: info: invariant check proved (CVC5: 1 VC)
 binary_trees.ads:119:21: info: precondition proved (CVC5: 1 VC)
@@ -1324,8 +1316,9 @@ binary_trees.ads:155:25: info: precondition proved (CVC5: 1 VC)
 binary_trees.ads:155:25: medium: for "F" before the call at binary_trees.ads:29
 binary_trees.ads:155:25: medium: in inlined invariant at binary_trees.ads:422
 binary_trees.ads:155:25: medium: invariant check might fail, cannot prove Tree_Structure (Forest) [provers reached step limit before completing the proof]
-binary_trees.ads:155:43: info: for "F" before the call at binary_trees.ads:29
-binary_trees.ads:155:43: info: invariant check proved (CVC5: 1 VC)
+binary_trees.ads:155:43: medium: for "F" before the call at binary_trees.ads:29
+binary_trees.ads:155:43: medium: in inlined invariant at binary_trees.ads:422
+binary_trees.ads:155:43: medium: invariant check might fail, cannot prove Tree_Structure (Forest) [provers reached step limit before completing the proof]
 binary_trees.ads:155:43: medium: precondition might fail [provers reached step limit before completing the proof]
 binary_trees.ads:161:27: medium: for "F" before the call at binary_trees.ads:33
 binary_trees.ads:161:27: medium: in inlined invariant at binary_trees.ads:422
@@ -1506,9 +1499,10 @@ binary_trees.ads:285:25: medium: for "F" before the call at binary_trees.ads:45
 binary_trees.ads:285:25: medium: in inlined invariant at binary_trees.ads:422
 binary_trees.ads:285:25: medium: invariant check might fail, cannot prove Tree_Structure (Forest) [provers reached step limit before completing the proof]
 binary_trees.ads:285:25: medium: precondition might fail [provers reached step limit before completing the proof]
-binary_trees.ads:285:49: info: for "F" before the call at binary_trees.ads:45
-binary_trees.ads:285:49: info: invariant check proved (CVC5: 1 VC)
 binary_trees.ads:285:49: info: precondition proved (CVC5: 1 VC)
+binary_trees.ads:285:49: medium: for "F" before the call at binary_trees.ads:45
+binary_trees.ads:285:49: medium: in inlined invariant at binary_trees.ads:422
+binary_trees.ads:285:49: medium: invariant check might fail, cannot prove Tree_Structure (Forest) [provers reached step limit before completing the proof]
 binary_trees.ads:291:43: medium: for "F" before the call at binary_trees.ads:45
 binary_trees.ads:291:43: medium: in inlined invariant at binary_trees.ads:422
 binary_trees.ads:291:43: medium: invariant check might fail, cannot prove Tree_Structure (Forest) [provers reached step limit before completing the proof]
@@ -1658,7 +1652,6 @@ binary_trees.ads:384:14: info: for "F" before the call at binary_trees.ads:17
 binary_trees.ads:384:14: info: invariant check proved (CVC5: 1 VC)
 binary_trees.ads:384:25: info: for "F" before the call at binary_trees.ads:17
 binary_trees.ads:384:25: info: invariant check proved (CVC5: 1 VC)
-binary_trees.ads:387:17: medium: postcondition might fail, cannot prove not Valid_Root (F'Old, Root) [provers reached step limit before completing the proof]
 binary_trees.ads:387:21: info: for "F" before the call at binary_trees.ads:20
 binary_trees.ads:387:21: info: invariant check proved (CVC5: 1 VC)
 binary_trees.ads:388:17: info: for "F" before the call at binary_trees.ads:20
@@ -1674,7 +1667,7 @@ binary_trees.ads:395:51: info: invariant check proved (CVC5: 1 VC)
 binary_trees.ads:395:51: info: precondition proved (CVC5: 1 VC)
 binary_trees.ads:395:69: info: for "F" before the call at binary_trees.ads:29
 binary_trees.ads:395:69: info: invariant check proved (CVC5: 1 VC)
-binary_trees.ads:395:69: medium: precondition might fail [provers reached step limit before completing the proof]
+binary_trees.ads:395:69: info: precondition proved (CVC5: 1 VC)
 binary_trees.ads:399:23: info: for "F" before the call at binary_trees.ads:20
 binary_trees.ads:399:23: info: invariant check proved (CVC5: 1 VC)
 binary_trees.ads:399:50: info: for "F" before the call at binary_trees.ads:20
@@ -1687,6 +1680,8 @@ binary_trees.ads:405:23: info: for "F" before the call at binary_trees.ads:20
 binary_trees.ads:405:23: info: invariant check proved (CVC5: 1 VC)
 binary_trees.ads:405:50: info: for "F" before the call at binary_trees.ads:45
 binary_trees.ads:405:50: info: invariant check proved (CVC5: 1 VC)
+binary_trees.ads:405:50: medium: in inlined expression function body at tree_model.ads:55
+binary_trees.ads:405:50: medium: postcondition might fail, cannot prove M1 (I).A = M2 (I).A [provers reached step limit before completing the proof]
 binary_trees.ads:405:50: medium: precondition might fail [provers reached step limit before completing the proof]
 binary_trees.ads:405:65: info: for "F" before the call at binary_trees.ads:45
 binary_trees.ads:405:65: info: invariant check proved (CVC5: 1 VC)
@@ -1716,17 +1711,17 @@ red_black_trees.adb:71:13: info: loop invariant initialization proved (CVC5: 1 V
 red_black_trees.adb:71:40: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Res (I).Count <= Res (I).Depth [provers reached step limit before completing the proof]
 red_black_trees.adb:75:13: info: loop invariant initialization proved (CVC5: 1 VC)
 red_black_trees.adb:76:15: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Res (I).Depth = Max or Res (I).Depth <= N [provers reached step limit before completing the proof]
+red_black_trees.adb:82:13: info: loop invariant initialization proved (CVC5: 6 VC; Trivial: 1 VC)
 red_black_trees.adb:84:21: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Last (M (I).A) < Max - N [possible fix: you should consider adding a postcondition to function "Last" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
-red_black_trees.adb:87:20: medium: loop invariant might fail in first iteration, cannot prove Res (I).Status = (Res (Peek (T.Struct, I, Left)).Count = Res (Peek (T.Struct, I, Right)).Count) [provers reached step limit before completing the proof]
 red_black_trees.adb:88:26: info: precondition proved (CVC5: 4 VC)
 red_black_trees.adb:89:26: info: precondition proved (CVC5: 4 VC)
 red_black_trees.adb:91:26: info: precondition proved (CVC5: 4 VC)
 red_black_trees.adb:92:26: info: precondition proved (CVC5: 4 VC)
 red_black_trees.adb:95:23: medium: overflow check might fail, cannot prove lower bound for (if T.Color (I) = Black then 1 else 0) + Res (Peek (T.Struct, I, Left)).Count [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers reached step limit before completing the proof]
 red_black_trees.adb:95:30: info: precondition proved (CVC5: 4 VC)
+red_black_trees.adb:100:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:102:30: info: precondition proved (CVC5: 4 VC)
 red_black_trees.adb:103:30: info: precondition proved (CVC5: 4 VC)
-red_black_trees.adb:104:19: medium: loop invariant might fail in first iteration, cannot prove Res (J).Depth <= N [provers reached step limit before completing the proof]
 red_black_trees.adb:104:19: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Res (J).Depth <= N [provers reached step limit before completing the proof]
 red_black_trees.adb:109:36: info: loop invariant initialization proved (CVC5: 1 VC)
 red_black_trees.adb:109:36: medium: loop invariant might not be preserved by an arbitrary iteration [provers reached step limit before completing the proof]
@@ -1740,14 +1735,14 @@ red_black_trees.adb:121:16: info: loop invariant initialization proved (CVC5: 1 
 red_black_trees.adb:122:18: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Res (J).Depth = Max or Res (J).Depth <= N [provers reached step limit before completing the proof]
 red_black_trees.adb:122:23: info: index check proved (CVC5: 4 VC)
 red_black_trees.adb:122:46: info: index check proved (CVC5: 4 VC)
-red_black_trees.adb:130:24: medium: loop invariant might fail in first iteration, cannot prove Last (M (J).A) < Max - N [possible fix: you should consider adding a postcondition to function "Last" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
+red_black_trees.adb:128:16: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:130:24: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Last (M (J).A) < Max - N [possible fix: you should consider adding a postcondition to function "Last" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
 red_black_trees.adb:132:16: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:133:25: info: index check proved (CVC5: 4 VC)
 red_black_trees.adb:133:39: info: index check proved (CVC5: 4 VC)
 red_black_trees.adb:134:24: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Last (M (J).A) < Max - (N + 1) [possible fix: you should consider adding a postcondition to function "Last" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
 red_black_trees.adb:134:33: info: index check proved (CVC5: 4 VC)
-red_black_trees.adb:143:23: medium: loop invariant might fail in first iteration, cannot prove Res (J).Status = (Res (Peek (T.Struct, J, Left)).Count = Res (Peek (T.Struct, J, Right)).Count) [provers reached step limit before completing the proof]
+red_black_trees.adb:139:16: info: loop invariant initialization proved (CVC5: 4 VC; Trivial: 1 VC)
 red_black_trees.adb:143:23: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Res (J).Status = (Res (Peek (T.Struct, J, Left)).Count = Res (Peek (T.Struct, J, Right)).Count) [provers reached step limit before completing the proof]
 red_black_trees.adb:144:29: info: precondition proved (CVC5: 4 VC)
 red_black_trees.adb:145:29: info: precondition proved (CVC5: 4 VC)
@@ -1788,13 +1783,13 @@ red_black_trees.adb:232:48: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:233:24: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:234:37: info: precondition proved (CVC5: 1 VC)
 red_black_trees.adb:234:59: info: index check proved (CVC5: 2 VC)
-red_black_trees.adb:234:59: medium: precondition might fail, cannot prove Model (T) (I).K [provers reached step limit before completing the proof]
+red_black_trees.adb:234:59: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:235:14: medium: postcondition might fail [provers reached step limit before completing the proof]
 red_black_trees.adb:247:27: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:248:33: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:249:29: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:249:29: medium: assertion might fail, cannot prove Nb_Blacks (T) (Peek (T.Struct, I, D)).Count = Nb_Blacks (T_Old) (Peek (T_Old.Struct, I, D)).Count [provers reached step limit before completing the proof]
-red_black_trees.adb:249:44: medium: precondition might fail, cannot prove Model (T) (I).K [provers reached step limit before completing the proof]
+red_black_trees.adb:249:44: info: precondition proved (CVC5: 4 VC)
 red_black_trees.adb:250:26: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:250:45: info: precondition proved (CVC5: 4 VC)
 red_black_trees.adb:254:22: info: precondition proved (CVC5: 2 VC)
@@ -1813,7 +1808,7 @@ red_black_trees.adb:276:45: info: precondition proved (CVC5: 1 VC)
 red_black_trees.adb:279:18: info: precondition proved (CVC5: 1 VC)
 red_black_trees.adb:279:43: info: precondition proved (CVC5: 1 VC)
 red_black_trees.adb:283:22: info: precondition proved (CVC5: 1 VC)
-red_black_trees.adb:284:24: medium: precondition might fail, cannot prove Model (T) (I).K [provers reached step limit before completing the proof]
+red_black_trees.adb:284:24: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:284:52: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:288:11: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:289:30: info: index check proved (CVC5: 2 VC)
@@ -1853,8 +1848,8 @@ red_black_trees.adb:346:18: info: precondition proved (CVC5: 1 VC)
 red_black_trees.adb:346:43: info: precondition proved (CVC5: 1 VC)
 red_black_trees.adb:347:51: info: index check proved (CVC5: 2 VC)
 red_black_trees.adb:347:51: info: precondition proved (CVC5: 2 VC)
-red_black_trees.adb:348:15: medium: precondition might fail, cannot prove Model (T) (I).K [provers reached step limit before completing the proof]
-red_black_trees.adb:349:08: medium: precondition might fail, cannot prove Model (T) (I).K [provers reached step limit before completing the proof]
+red_black_trees.adb:348:15: info: precondition proved (CVC5: 2 VC)
+red_black_trees.adb:349:08: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:349:28: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:349:28: info: range check proved (CVC5: 2 VC)
 red_black_trees.adb:350:15: medium: precondition might fail, cannot prove Model (T) (I).K [provers reached step limit before completing the proof]
@@ -1915,7 +1910,7 @@ red_black_trees.adb:410:48: info: precondition proved (CVC5: 1 VC)
 red_black_trees.adb:410:48: medium: assertion might fail, cannot prove Nb_Blacks (T) (I).Status [provers reached step limit before completing the proof]
 red_black_trees.adb:424:49: info: precondition proved (CVC5: 1 VC)
 red_black_trees.adb:425:15: info: precondition proved (CVC5: 2 VC)
-red_black_trees.adb:426:15: medium: precondition might fail, cannot prove Model (T) (I).K [provers reached step limit before completing the proof]
+red_black_trees.adb:426:15: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:426:35: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:426:35: info: range check proved (CVC5: 2 VC)
 red_black_trees.adb:429:18: info: precondition proved (CVC5: 1 VC)
@@ -1926,7 +1921,7 @@ red_black_trees.adb:432:28: info: index check proved (CVC5: 2 VC)
 red_black_trees.adb:432:28: medium: precondition might fail, cannot prove Model (T) (I).K [provers reached step limit before completing the proof]
 red_black_trees.adb:432:48: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:432:48: info: range check proved (CVC5: 2 VC)
-red_black_trees.adb:433:15: medium: precondition might fail, cannot prove Model (T) (I).K [provers reached step limit before completing the proof]
+red_black_trees.adb:433:15: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:434:08: medium: precondition might fail, cannot prove Model (T) (I).K [provers reached step limit before completing the proof]
 red_black_trees.adb:434:28: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:434:28: info: range check proved (CVC5: 2 VC)
@@ -1991,14 +1986,13 @@ red_black_trees.adb:510:07: info: initialization of "X" proved
 red_black_trees.adb:510:10: info: initialization of "Y" proved
 red_black_trees.adb:512:28: info: for "T" before the call at red_black_trees.ads:21
 red_black_trees.adb:512:28: info: invariant check proved (CVC5: 1 VC)
-red_black_trees.adb:515:07: medium: precondition might fail [provers reached step limit before completing the proof]
-red_black_trees.adb:517:10: medium: precondition might fail, cannot prove Same_Nb_Blacks (T_Old) [possible fix: call at line 515 should mention T (for argument T) in a postcondition] [provers reached step limit before completing the proof]
+red_black_trees.adb:515:07: info: precondition proved (CVC5: 1 VC)
+red_black_trees.adb:517:10: medium: precondition might fail, cannot prove Model (T.Struct) (I).K [possible fix: call at line 515 should mention T (for argument T) in a postcondition] [provers reached step limit before completing the proof]
 red_black_trees.adb:520:16: info: index check proved (CVC5: 2 VC)
+red_black_trees.adb:521:22: info: precondition proved (CVC5: 1 VC)
 red_black_trees.adb:521:22: medium: assertion might fail [possible fix: call at line 515 should mention T (for argument T) and I (for argument X) in a postcondition] [provers reached step limit before completing the proof]
-red_black_trees.adb:521:22: medium: precondition might fail [possible fix: call at line 515 should mention T (for argument T) in a postcondition] [provers reached step limit before completing the proof]
-red_black_trees.adb:522:07: medium: precondition might fail, cannot prove Same_Nb_Blacks (T_Old) [possible fix: call at line 515 should mention T (for argument T) in a postcondition] [provers reached step limit before completing the proof]
-red_black_trees.adb:523:22: medium: assertion might fail, cannot prove not Contains (S1, E) [possible fix: call at line 515 should mention T (for argument T) in a postcondition] [provers reached step limit before completing the proof]
-red_black_trees.adb:523:22: medium: in inlined expression function body at tree_model.ads:85
+red_black_trees.adb:522:07: medium: precondition might fail, cannot prove (Size (T_Old.Struct) /= 0 and then Model (T_Old.Struct) (I).K) or else (Nb_Blacks (T) (I).Status and Nb_Blacks (T) (I).Count = 0) [possible fix: call at line 515 should mention T (for argument T) in a postcondition] [provers reached step limit before completing the proof]
+red_black_trees.adb:523:22: info: assertion proved (CVC5: 4 VC)
 red_black_trees.adb:530:33: info: index check proved (CVC5: 2 VC)
 red_black_trees.adb:531:18: medium: assertion might fail, cannot prove T.Color (I) = Black [possible fix: call at line 515 should mention T (for argument T) in a postcondition] [provers reached step limit before completing the proof]
 red_black_trees.adb:535:18: medium: precondition might fail [possible fix: call at line 515 should mention T (for argument T) in a postcondition] [provers reached step limit before completing the proof]
@@ -2156,8 +2150,7 @@ red_black_trees.ads:30:28: info: for "T" before the call at red_black_trees.ads:
 red_black_trees.ads:30:28: info: invariant check proved (CVC5: 1 VC)
 red_black_trees.ads:30:47: info: for "T" before the call at red_black_trees.ads:21
 red_black_trees.ads:30:47: info: invariant check proved (CVC5: 1 VC)
-red_black_trees.ads:36:09: medium: in inlined invariant at red_black_trees.ads:40
-red_black_trees.ads:36:09: medium: invariant check might fail on default value, cannot prove Invariant (Rbt) [provers reached step limit before completing the proof]
+red_black_trees.ads:36:09: info: invariant check proved on default value (CVC5: 1 VC)
 red_black_trees.ads:42:13: info: implicit aspect Always_Terminates on "Color" has been proved, subprogram will terminate
 red_black_trees.ads:43:46: info: index check proved (CVC5: 2 VC)
 red_black_trees.ads:45:13: info: implicit aspect Always_Terminates on "Same_Nb_Blacks" has been proved, subprogram will terminate
@@ -2213,10 +2206,10 @@ search_trees.adb:111:17: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:114:17: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:117:08: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:120:17: info: precondition proved (CVC5: 1 VC)
-search_trees.adb:120:17: medium: postcondition might fail, cannot prove Model (F, Root) (Find_Root'Result).A <= Model (F, Root) (I).A [provers reached step limit before completing the proof]
 search_trees.adb:120:57: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:123:17: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:123:57: info: precondition proved (CVC5: 1 VC)
+search_trees.adb:127:17: medium: postcondition might fail, cannot prove (I = Find_Root'Result or else J = Find_Root'Result or else Get (Model (F, Root) (I).A, Last (Model (F, Root) (Find_Root'Result).A) + 1) /= Get (Model (F, Root) (J).A, Last (Model (F, Root) (Find_Root'Result).A) + 1)) [provers reached step limit before completing the proof]
 search_trees.adb:129:28: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:129:33: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:129:62: info: precondition proved (CVC5: 1 VC)
@@ -2234,13 +2227,13 @@ search_trees.adb:139:51: medium: loop invariant might not be preserved by an arb
 search_trees.adb:140:33: info: loop invariant initialization proved (CVC5: 2 VC)
 search_trees.adb:140:51: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove M (KJ).A <= M (J).A [provers reached step limit before completing the proof]
 search_trees.adb:142:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
+search_trees.adb:142:13: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
 search_trees.adb:142:16: info: predicate check proved (Trivial: 2 VC)
 search_trees.adb:142:36: info: predicate check proved (Trivial: 2 VC)
-search_trees.adb:142:59: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove KJ = J [provers reached step limit before completing the proof]
 search_trees.adb:144:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
+search_trees.adb:144:13: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
 search_trees.adb:144:16: info: predicate check proved (Trivial: 2 VC)
 search_trees.adb:144:36: info: predicate check proved (Trivial: 2 VC)
-search_trees.adb:144:59: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove KI = I [provers reached step limit before completing the proof]
 search_trees.adb:145:13: info: predicate check proved (Trivial: 1 VC)
 search_trees.adb:145:33: info: predicate check proved (Trivial: 1 VC)
 search_trees.adb:146:19: info: range check proved (CVC5: 2 VC)
@@ -2248,7 +2241,7 @@ search_trees.adb:147:16: info: predicate check proved (Trivial: 1 VC)
 search_trees.adb:147:36: info: predicate check proved (Trivial: 1 VC)
 search_trees.adb:148:19: info: range check proved (CVC5: 2 VC)
 search_trees.adb:150:19: medium: range check might fail, cannot prove lower bound for Parent (F, KI) [reason for check: value must fit in the target type of the assignment] [provers reached step limit before completing the proof]
-search_trees.adb:151:19: medium: range check might fail, cannot prove lower bound for Parent (F, KJ) [reason for check: value must fit in the target type of the assignment] [provers reached step limit before completing the proof]
+search_trees.adb:151:19: info: range check proved (CVC5: 2 VC)
 search_trees.adb:163:43: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:165:14: info: postcondition proved (CVC5: 1 VC)
 search_trees.adb:165:14: info: precondition proved (CVC5: 2 VC)
@@ -2257,14 +2250,12 @@ search_trees.adb:165:36: info: index check proved (CVC5: 2 VC)
 search_trees.adb:165:61: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:165:84: info: overflow check proved (CVC5: 2 VC)
 search_trees.adb:180:83: info: precondition proved (CVC5: 1 VC)
+search_trees.adb:181:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 search_trees.adb:181:14: info: precondition proved (CVC5: 1 VC)
-search_trees.adb:181:14: medium: in inlined expression function body at search_trees.adb:80
-search_trees.adb:181:14: medium: postcondition might fail, cannot prove Values (J) < V [provers reached step limit before completing the proof]
 search_trees.adb:184:07: info: precondition proved (CVC5: 3 VC)
 search_trees.adb:196:82: info: precondition proved (CVC5: 1 VC)
+search_trees.adb:197:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 search_trees.adb:197:14: info: precondition proved (CVC5: 1 VC)
-search_trees.adb:197:14: medium: in inlined expression function body at search_trees.adb:84
-search_trees.adb:197:14: medium: postcondition might fail, cannot prove Values (J) > V [provers reached step limit before completing the proof]
 search_trees.adb:200:07: info: precondition proved (CVC5: 3 VC)
 search_trees.adb:213:15: info: predicate check proved (Trivial: 1 VC)
 search_trees.adb:213:28: info: predicate check proved (Trivial: 1 VC)
@@ -2336,8 +2327,8 @@ search_trees.adb:309:48: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:311:31: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:311:31: medium: assertion might fail [provers reached step limit before completing the proof]
 search_trees.adb:311:59: info: precondition proved (CVC5: 2 VC)
+search_trees.adb:312:31: info: precondition proved (CVC5: 6 VC)
 search_trees.adb:312:31: medium: assertion might fail [provers reached step limit before completing the proof]
-search_trees.adb:312:31: medium: precondition might fail, cannot prove Model (I).K [provers reached step limit before completing the proof]
 search_trees.adb:312:47: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:318:21: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:319:29: info: precondition proved (CVC5: 2 VC)
@@ -2378,7 +2369,7 @@ search_trees.adb:359:31: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:359:31: medium: assertion might fail [provers reached step limit before completing the proof]
 search_trees.adb:359:59: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:360:31: medium: assertion might fail [provers reached step limit before completing the proof]
-search_trees.adb:360:31: medium: precondition might fail, cannot prove Model (I).K [provers reached step limit before completing the proof]
+search_trees.adb:360:31: medium: precondition might fail, cannot prove Model (J).K [provers reached step limit before completing the proof]
 search_trees.adb:360:47: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:366:21: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:367:29: info: precondition proved (CVC5: 2 VC)
@@ -2520,8 +2511,8 @@ search_trees.adb:555:55: medium: assertion might fail, cannot prove Model (F1, R
 search_trees.adb:556:16: info: precondition proved (CVC5: 4 VC)
 search_trees.adb:556:30: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:556:54: info: overflow check proved (CVC5: 4 VC)
+search_trees.adb:557:31: info: assertion proved (CVC5: 2 VC)
 search_trees.adb:557:31: info: precondition proved (CVC5: 4 VC)
-search_trees.adb:557:31: medium: assertion might fail [possible fix: you should consider adding a postcondition to function "Last" and function "Get" or turning them into expression functions in their unit spec] [provers reached step limit before completing the proof]
 search_trees.adb:557:45: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:557:69: info: overflow check proved (CVC5: 4 VC)
 search_trees.adb:558:31: info: precondition proved (CVC5: 2 VC)
@@ -2547,7 +2538,7 @@ search_trees.adb:568:69: info: index check proved (CVC5: 4 VC)
 search_trees.adb:570:22: info: precondition proved (CVC5: 4 VC)
 search_trees.adb:570:36: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:570:54: info: index check proved (CVC5: 4 VC)
-search_trees.adb:570:60: medium: overflow check might fail, cannot prove upper bound for Last (Model (F2, Root) (K).A) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers reached step limit before completing the proof]
+search_trees.adb:570:60: info: overflow check proved (CVC5: 4 VC)
 search_trees.adb:571:24: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:571:24: medium: in inlined expression function body at search_trees.adb:80
 search_trees.adb:571:24: medium: in inlined expression function body at search_trees.adb:80
@@ -2560,8 +2551,9 @@ search_trees.adb:587:06: info: data dependencies proved
 search_trees.adb:594:17: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:597:17: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:597:36: info: precondition proved (CVC5: 1 VC)
+search_trees.adb:600:08: info: postcondition proved (CVC5: 1 VC)
 search_trees.adb:600:08: info: precondition proved (CVC5: 1 VC)
-search_trees.adb:600:08: medium: postcondition might fail [provers reached step limit before completing the proof]
+search_trees.adb:604:10: info: assertion proved (CVC5: 4 VC; Trivial: 1 VC)
 search_trees.adb:606:17: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:607:25: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:608:25: info: precondition proved (CVC5: 1 VC)
@@ -2569,7 +2561,6 @@ search_trees.adb:608:50: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:609:19: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:610:25: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:611:25: info: precondition proved (CVC5: 1 VC)
-search_trees.adb:611:25: medium: assertion might fail, cannot prove  Model (F2, Root) (I).A < Model (F2, Root) (J).A [provers reached step limit before completing the proof]
 search_trees.adb:611:50: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:612:25: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:612:30: info: precondition proved (CVC5: 1 VC)
@@ -2648,7 +2639,7 @@ search_trees.adb:732:34: info: initialization of "Dummy_4" proved
 search_trees.adb:732:43: info: initialization of "Dummy_5" proved
 search_trees.adb:738:17: info: add a contract to analyze it separately from calling contexts
 search_trees.adb:738:17: info: local subprogram "Prove_Extract_X" only analyzed in the context of calls [info-unrolling-inlining]
-search_trees.adb:747:16: medium: precondition might fail, cannot prove Valid_Root (F_Old, Root), in call inlined at search_trees.adb:953 [provers reached step limit before completing the proof]
+search_trees.adb:747:16: medium: precondition might fail, cannot prove Model (F_Old, Root) (V).K, in call inlined at search_trees.adb:953 [provers reached step limit before completing the proof]
 search_trees.adb:747:55: info: range check proved (CVC5: 2 VC), in call inlined at search_trees.adb:953
 search_trees.adb:750:16: info: precondition proved (CVC5: 1 VC), in call inlined at search_trees.adb:953
 search_trees.adb:750:42: info: range check proved (CVC5: 2 VC), in call inlined at search_trees.adb:953
@@ -2659,17 +2650,16 @@ search_trees.adb:753:44: info: for "T" before the call at search_trees.ads:22
 search_trees.adb:753:44: info: invariant check proved (CVC5: 4 VC), in call inlined at search_trees.adb:953
 search_trees.adb:753:44: medium: precondition might fail, in call inlined at search_trees.adb:953 [provers reached step limit before completing the proof]
 search_trees.adb:754:27: info: precondition proved (CVC5: 1 VC), in call inlined at search_trees.adb:953
-search_trees.adb:754:44: medium: for "T" before the call at search_trees.ads:22
-search_trees.adb:754:44: medium: in inlined invariant at search_trees.ads:319
-search_trees.adb:754:44: medium: invariant check might fail, cannot prove Root = Empty, in call inlined at search_trees.adb:953 [provers reached step limit before completing the proof]
+search_trees.adb:754:44: info: for "T" before the call at search_trees.ads:22
+search_trees.adb:754:44: info: invariant check proved (CVC5: 4 VC), in call inlined at search_trees.adb:953
 search_trees.adb:754:44: medium: precondition might fail, in call inlined at search_trees.adb:953 [provers reached step limit before completing the proof]
 search_trees.adb:754:63: info: precondition proved (CVC5: 1 VC), in call inlined at search_trees.adb:953
 search_trees.adb:759:17: info: add a contract to analyze it separately from calling contexts
 search_trees.adb:759:17: info: local subprogram "Prove_Extract_Y" only analyzed in the context of calls [info-unrolling-inlining]
-search_trees.adb:765:13: medium: precondition might fail, cannot prove Valid_Root (F_Old, Root), in call inlined at search_trees.adb:958 [provers reached step limit before completing the proof]
+search_trees.adb:765:13: medium: precondition might fail, cannot prove not Valid_Root (F_Old, V), in call inlined at search_trees.adb:958 [provers reached step limit before completing the proof]
 search_trees.adb:766:28: medium: assertion might fail, in call inlined at search_trees.adb:958 [possible fix: you should consider adding a postcondition to function "Get" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
 search_trees.adb:766:28: medium: precondition might fail, in call inlined at search_trees.adb:958 [provers reached step limit before completing the proof]
-search_trees.adb:766:33: medium: precondition might fail, in call inlined at search_trees.adb:958 [provers reached step limit before completing the proof]
+search_trees.adb:766:33: info: precondition proved (CVC5: 1 VC), in call inlined at search_trees.adb:958
 search_trees.adb:767:28: medium: assertion might fail, in call inlined at search_trees.adb:958 [provers reached step limit before completing the proof]
 search_trees.adb:768:28: info: precondition proved (CVC5: 1 VC), in call inlined at search_trees.adb:958
 search_trees.adb:768:28: medium: assertion might fail, cannot prove Values (J) > V, in call inlined at search_trees.adb:958 [provers reached step limit before completing the proof]
@@ -2809,10 +2799,10 @@ search_trees.adb:949:15: info: range check proved (CVC5: 2 VC)
 search_trees.adb:950:15: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:951:10: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:951:30: info: range check proved (CVC5: 2 VC)
-search_trees.adb:951:43: medium: in value of subprogram parameter after the call at search_trees.adb:951
-search_trees.adb:951:43: medium: range check might fail, cannot prove lower bound for X [reason for check: output value must fit in argument type] [provers reached step limit before completing the proof]
+search_trees.adb:951:43: info: in value of subprogram parameter after the call at search_trees.adb:951
+search_trees.adb:951:43: info: range check proved (CVC5: 2 VC)
 search_trees.adb:953:07: info: analyzing call to "Prove_Extract_X" in context
-search_trees.adb:957:07: medium: precondition might fail, cannot prove Valid_Root (F, Root) [provers reached step limit before completing the proof]
+search_trees.adb:957:07: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:957:39: medium: in value of subprogram parameter after the call at search_trees.adb:957
 search_trees.adb:957:39: medium: range check might fail, cannot prove lower bound for Y [reason for check: output value must fit in argument type] [provers reached step limit before completing the proof]
 search_trees.adb:958:07: info: analyzing call to "Prove_Extract_Y" in context
@@ -2868,7 +2858,7 @@ search_trees.adb:1005:41: info: invariant check proved (CVC5: 4 VC)
 search_trees.adb:1005:41: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:1021:17: info: add a contract to analyze it separately from calling contexts
 search_trees.adb:1021:17: info: local subprogram "Prove_Extract_Y" only analyzed in the context of calls [info-unrolling-inlining]
-search_trees.adb:1028:16: medium: precondition might fail, cannot prove Valid_Root (F_Old, Root), in call inlined at search_trees.adb:1234 [provers reached step limit before completing the proof]
+search_trees.adb:1028:16: medium: precondition might fail, cannot prove Model (F_Old, Root) (V).K, in call inlined at search_trees.adb:1234 [provers reached step limit before completing the proof]
 search_trees.adb:1028:55: info: range check proved (CVC5: 2 VC), in call inlined at search_trees.adb:1234
 search_trees.adb:1031:16: info: precondition proved (CVC5: 1 VC), in call inlined at search_trees.adb:1234
 search_trees.adb:1031:42: info: range check proved (CVC5: 2 VC), in call inlined at search_trees.adb:1234
@@ -2879,17 +2869,16 @@ search_trees.adb:1034:44: info: for "T" before the call at search_trees.ads:22
 search_trees.adb:1034:44: info: invariant check proved (CVC5: 4 VC), in call inlined at search_trees.adb:1234
 search_trees.adb:1034:44: medium: precondition might fail, in call inlined at search_trees.adb:1234 [provers reached step limit before completing the proof]
 search_trees.adb:1035:27: info: precondition proved (CVC5: 1 VC), in call inlined at search_trees.adb:1234
-search_trees.adb:1035:44: medium: for "T" before the call at search_trees.ads:22
-search_trees.adb:1035:44: medium: in inlined invariant at search_trees.ads:319
-search_trees.adb:1035:44: medium: invariant check might fail, cannot prove Root = Empty, in call inlined at search_trees.adb:1234 [provers reached step limit before completing the proof]
+search_trees.adb:1035:44: info: for "T" before the call at search_trees.ads:22
+search_trees.adb:1035:44: info: invariant check proved (CVC5: 4 VC), in call inlined at search_trees.adb:1234
 search_trees.adb:1035:44: medium: precondition might fail, in call inlined at search_trees.adb:1234 [provers reached step limit before completing the proof]
 search_trees.adb:1035:63: info: precondition proved (CVC5: 1 VC), in call inlined at search_trees.adb:1234
 search_trees.adb:1040:17: info: add a contract to analyze it separately from calling contexts
 search_trees.adb:1040:17: info: local subprogram "Prove_Extract_X" only analyzed in the context of calls [info-unrolling-inlining]
-search_trees.adb:1046:13: medium: precondition might fail, cannot prove Valid_Root (F_Old, Root), in call inlined at search_trees.adb:1239 [provers reached step limit before completing the proof]
+search_trees.adb:1046:13: medium: precondition might fail, cannot prove not Valid_Root (F_Old, V), in call inlined at search_trees.adb:1239 [provers reached step limit before completing the proof]
 search_trees.adb:1047:28: medium: assertion might fail, in call inlined at search_trees.adb:1239 [possible fix: you should consider adding a postcondition to function "Get" or turning it into an expression function in its unit spec] [provers reached step limit before completing the proof]
 search_trees.adb:1047:28: medium: precondition might fail, in call inlined at search_trees.adb:1239 [provers reached step limit before completing the proof]
-search_trees.adb:1047:33: medium: precondition might fail, in call inlined at search_trees.adb:1239 [provers reached step limit before completing the proof]
+search_trees.adb:1047:33: info: precondition proved (CVC5: 1 VC), in call inlined at search_trees.adb:1239
 search_trees.adb:1048:28: medium: assertion might fail, in call inlined at search_trees.adb:1239 [provers reached step limit before completing the proof]
 search_trees.adb:1049:28: info: precondition proved (CVC5: 1 VC), in call inlined at search_trees.adb:1239
 search_trees.adb:1049:28: medium: assertion might fail, cannot prove Values (J) < V, in call inlined at search_trees.adb:1239 [provers reached step limit before completing the proof]
@@ -3029,10 +3018,10 @@ search_trees.adb:1230:15: info: range check proved (CVC5: 2 VC)
 search_trees.adb:1231:15: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:1232:10: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:1232:30: info: range check proved (CVC5: 2 VC)
-search_trees.adb:1232:43: medium: in value of subprogram parameter after the call at search_trees.adb:1232
-search_trees.adb:1232:43: medium: range check might fail, cannot prove lower bound for Y [reason for check: output value must fit in argument type] [provers reached step limit before completing the proof]
+search_trees.adb:1232:43: info: in value of subprogram parameter after the call at search_trees.adb:1232
+search_trees.adb:1232:43: info: range check proved (CVC5: 2 VC)
 search_trees.adb:1234:07: info: analyzing call to "Prove_Extract_Y" in context
-search_trees.adb:1238:07: medium: precondition might fail, cannot prove Valid_Root (F, Root) [provers reached step limit before completing the proof]
+search_trees.adb:1238:07: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:1238:38: medium: in value of subprogram parameter after the call at search_trees.adb:1238
 search_trees.adb:1238:38: medium: range check might fail, cannot prove lower bound for X [reason for check: output value must fit in argument type] [provers reached step limit before completing the proof]
 search_trees.adb:1239:07: info: analyzing call to "Prove_Extract_X" in context
@@ -3103,7 +3092,7 @@ search_trees.adb:1298:49: info: range check proved (CVC5: 4 VC)
 search_trees.adb:1298:57: info: index check proved (CVC5: 4 VC)
 search_trees.adb:1298:75: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:1298:93: info: range check proved (CVC5: 4 VC)
-search_trees.adb:1298:107: medium: overflow check might fail, cannot prove upper bound for Last (Model (T.Struct, T.Root) (I).A) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers reached step limit before completing the proof]
+search_trees.adb:1298:107: info: overflow check proved (CVC5: 4 VC)
 search_trees.adb:1299:28: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove V < T.Values (I) [possible fix: subprogram at search_trees.ads:42 should mention T and V in a precondition] [provers reached step limit before completing the proof]
 search_trees.adb:1303:27: info: index check proved (CVC5: 2 VC)
 search_trees.adb:1305:30: info: index check proved (CVC5: 2 VC)
@@ -3184,11 +3173,11 @@ search_trees.adb:1430:50: info: range check proved (CVC5: 4 VC)
 search_trees.adb:1430:66: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:1430:84: info: range check proved (CVC5: 4 VC)
 search_trees.adb:1431:26: medium: assertion might fail, cannot prove Ordered_Prefix (Model (T_Old.Struct, T_Old.Root), T_Old.Values, KI, J) [provers reached step limit before completing the proof]
-search_trees.adb:1431:26: medium: precondition might fail, cannot prove Model (I).K [provers reached step limit before completing the proof]
+search_trees.adb:1431:26: medium: precondition might fail, cannot prove Model (I).A < Model (J).A [provers reached step limit before completing the proof]
 search_trees.adb:1431:42: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:1431:68: info: range check proved (CVC5: 4 VC)
 search_trees.adb:1436:22: info: precondition proved (CVC5: 2 VC)
-search_trees.adb:1436:40: medium: range check might fail, cannot prove lower bound for T.Root [reason for check: input value must fit in parameter type] [possible fix: add precondition (T.Root >= Index_Type'First) to subprogram at line 1335] [provers reached step limit before completing the proof]
+search_trees.adb:1436:40: info: range check proved (CVC5: 4 VC)
 search_trees.adb:1437:24: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:1437:42: info: range check proved (CVC5: 4 VC)
 search_trees.adb:1437:58: info: precondition proved (CVC5: 2 VC)
@@ -3200,7 +3189,7 @@ search_trees.adb:1438:54: info: range check proved (CVC5: 4 VC)
 search_trees.adb:1438:70: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:1438:88: info: range check proved (CVC5: 4 VC)
 search_trees.adb:1447:24: info: precondition proved (CVC5: 2 VC)
-search_trees.adb:1447:42: medium: range check might fail, cannot prove lower bound for T.Root [reason for check: input value must fit in parameter type] [possible fix: add precondition (T.Root >= Index_Type'First) to subprogram at line 1335] [provers reached step limit before completing the proof]
+search_trees.adb:1447:42: info: range check proved (CVC5: 4 VC)
 search_trees.adb:1449:32: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:1449:50: info: range check proved (CVC5: 4 VC)
 search_trees.adb:1450:32: info: precondition proved (CVC5: 2 VC)
@@ -3212,7 +3201,7 @@ search_trees.adb:1451:26: medium: assertion might fail, cannot prove Ordered_Pre
 search_trees.adb:1451:42: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:1451:60: info: range check proved (CVC5: 4 VC)
 search_trees.adb:1458:23: info: precondition proved (CVC5: 2 VC)
-search_trees.adb:1458:41: medium: range check might fail, cannot prove lower bound for T.Root [reason for check: input value must fit in parameter type] [possible fix: add precondition (T.Root >= Index_Type'First) to subprogram at line 1335] [provers reached step limit before completing the proof]
+search_trees.adb:1458:41: info: range check proved (CVC5: 4 VC)
 search_trees.adb:1458:49: info: index check proved (CVC5: 4 VC)
 search_trees.adb:1459:31: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:1459:49: info: range check proved (CVC5: 4 VC)
@@ -3242,8 +3231,8 @@ search_trees.adb:1471:58: info: range check proved (CVC5: 2 VC)
 search_trees.adb:1478:10: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:1479:20: info: index check proved (CVC5: 2 VC)
 search_trees.adb:1493:36: info: loop invariant initialization proved (CVC5: 1 VC)
+search_trees.adb:1493:36: info: loop invariant preservation proved (CVC5: 1 VC)
 search_trees.adb:1493:36: info: precondition proved (CVC5: 2 VC)
-search_trees.adb:1493:36: medium: loop invariant might not be preserved by an arbitrary iteration [provers reached step limit before completing the proof]
 search_trees.adb:1493:54: info: range check proved (CVC5: 4 VC)
 search_trees.adb:1493:62: info: index check proved (CVC5: 4 VC)
 search_trees.adb:1499:16: info: loop invariant initialization proved (CVC5: 2 VC; Trivial: 2 VC)
@@ -3267,12 +3256,12 @@ search_trees.adb:1509:31: info: assertion proved (CVC5: 1 VC)
 search_trees.adb:1510:33: info: for "T" before the call at search_trees.ads:31
 search_trees.adb:1510:33: info: invariant check proved (CVC5: 4 VC)
 search_trees.adb:1510:33: info: precondition proved (CVC5: 1 VC)
+search_trees.adb:1511:31: info: assertion proved (CVC5: 1 VC)
 search_trees.adb:1511:31: info: for "T" before the call at search_trees.ads:42
 search_trees.adb:1511:31: info: invariant check proved (CVC5: 4 VC)
-search_trees.adb:1511:31: medium: assertion might fail [possible fix: precondition of subprogram at search_trees.ads:45 should mention V] [provers reached step limit before completing the proof]
 search_trees.adb:1513:33: info: index check proved (CVC5: 2 VC)
 search_trees.adb:1518:40: info: range check proved (CVC5: 2 VC)
-search_trees.adb:1526:10: medium: precondition might fail, cannot prove V < T.Values (I) [possible fix: loop invariant at line 1493 should mention Previous] [provers reached step limit before completing the proof]
+search_trees.adb:1526:10: info: precondition proved (CVC5: 10 VC; Trivial: 2 VC)
 search_trees.adb:1526:32: info: range check proved (CVC5: 2 VC)
 search_trees.adb:1528:10: info: precondition proved (CVC5: 4 VC)
 search_trees.adb:1528:29: info: range check proved (CVC5: 2 VC)
@@ -3333,9 +3322,8 @@ search_trees.ads:62:20: info: for "T" before the call at search_trees.ads:20
 search_trees.ads:62:20: info: invariant check proved (CVC5: 4 VC)
 search_trees.ads:62:31: info: for "T" before the call at search_trees.ads:20
 search_trees.ads:62:31: info: invariant check proved (CVC5: 4 VC)
-search_trees.ads:63:20: medium: for "T" before the call at search_trees.ads:38
-search_trees.ads:63:20: medium: in inlined invariant at search_trees.ads:319
-search_trees.ads:63:20: medium: invariant check might fail, cannot prove Root = Empty [provers reached step limit before completing the proof]
+search_trees.ads:63:20: info: for "T" before the call at search_trees.ads:38
+search_trees.ads:63:20: info: invariant check proved (CVC5: 4 VC)
 search_trees.ads:63:33: info: for "T" before the call at search_trees.ads:38
 search_trees.ads:63:33: info: invariant check proved (CVC5: 4 VC)
 search_trees.ads:64:48: medium: for "T" before the call at search_trees.ads:25

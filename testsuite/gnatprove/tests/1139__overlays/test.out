@@ -15,6 +15,7 @@ main.adb:16:35: high: types of aliased objects do not have the same size [possib
 main.adb:16:35: info: object is suitable for aliasing via address clause (Trivial)
 main.adb:16:35: info: type is suitable as source for unchecked conversion (Trivial)
 main.adb:16:38: warning: alignment of object is not precisely known [imprecise-align]
+main.adb:23:07: info: initialization of "X" proved
 main.adb:24:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: unknown alignment for object] [possible fix: overlaid object should have an Alignment representation clause]
 main.adb:24:07: info: object is suitable for aliasing via address clause (Trivial)
 main.adb:24:07: warning: imprecise handling of overlay (types in unchecked conversion do not have the same size) [imprecise-overlay]

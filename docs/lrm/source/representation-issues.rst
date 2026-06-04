@@ -96,17 +96,27 @@ respect to the program semantics of |SPARK|.
 1. The use of the operators defined for type Address are not permitted
    in |SPARK| except for use within representation clauses.
 
+2. References to the Address attribute are not permitted
+   in |SPARK| except for use within representation clauses.
+
+3. A overlaid object shall not be a part of a protected object.
+
+4. If an object is overlaid on another object, then the objects shall be
+   either both constant or both mutable.
+
+5. If a constant object is overlaid, then it shall be imported.
+
 .. container:: heading
 
    Verification Rules
 
-2. If an object ``X`` is overlaid on an object ``Y``, then the sizes of ``X``
+6. If an object ``X`` is overlaid on an object ``Y``, then the sizes of ``X``
    and ``Y`` shall be known at compile-time and shall be equal.
 
-3. If an object ``X`` is overlaid on an object ``Y``, then the alignment of
+7. If an object ``X`` is overlaid on an object ``Y``, then the alignment of
    ``Y`` shall be an integral multiple of the alignment of ``X``.
 
-4. If an object ``X`` is overlaid on an object ``Y``, ``Y`` shall be suitable
+8. If an object ``X`` is overlaid on an object ``Y``, ``Y`` shall be suitable
    as the source for unchecked conversion (see
    :ref:`Unchecked Type Conversions`); if it is mutable in SPARK, it shall also
    be suitable as the target of an unchecked conversion.
@@ -119,13 +129,7 @@ respect to the program semantics of |SPARK|.
    mentioned in the address clause to the object with the address clause. A
    variable overlay is a bidirectional unchecked conversion.]
 
-5. If the address clause of an object ``X`` is not of the form ``with Address
-   => Y'Address`` for some object ``Y``, then ``X`` shall be volatile.
-
-6. If the address of an object ``Y`` is taken other than in an address clause
-   of the form ``with Address => Y'Address``, then ``Y`` shall be volatile.
-
-7. If an object ``X`` overlays an object ``Y``, then neither ``X`` nor ``Y``
+9. If an object ``X`` overlays an object ``Y``, then neither ``X`` nor ``Y``
    shall be constituents of an abstract state.
 
 Machine Code Insertions
@@ -190,15 +194,27 @@ could be misaligned (as GNAT ensures).
 
 .. container:: heading
 
+   Legality Rules
+
+1. The source subtype of an instances of ``Unchecked_Conversion`` shall not
+   have subcomponents of an access type.
+
+2. The target subtype of an instances of ``Unchecked_Conversion`` shall not
+   have subcomponents of an access type unless it is a general access-to-object
+   type and the source subtype is either an integer subtype or
+   ``System.Address``.
+
+.. container:: heading
+
    Verification Rules
 
-1. The source and target subtypes of an instance of ``Unchecked_Conversion``
+3. The source and target subtypes of an instance of ``Unchecked_Conversion``
    shall have the same Size.
 
-2. The source subtype shall be suitable as the source of an unchecked
+4. The source subtype shall be suitable as the source of an unchecked
    conversion.
 
-3. The target subtype should be suitable for unchecked conversion and it
+5. The target subtype should be suitable for unchecked conversion and it
    should be suitable as the target of an unchecked
    conversion unless the instance of ``Unchecked_Conversion`` has the
    Potentially_Invalid aspect, see :ref:`Data Validity`.

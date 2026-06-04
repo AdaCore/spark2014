@@ -445,7 +445,12 @@ Note that the name of the function could be something other than
 ``At_End_Borrow``.
 |GNATprove| will check that a function associated with the ``At_End_Borrow``
 annotation is a ghost expression function which takes a single parameter of an
-access-to-constant type and returns it. ``At_End_Borrow`` functions can only be
+access-to-constant type and returns it. It is also possible for such a function
+to not have a body, or to have a body marked as ``SPARK_Mode => Off``. In this
+case, the user is responsible for ensuring that the return value is, and stays
+throughout the duration of any borrow, logically equal to its parameter.
+
+``At_End_Borrow`` functions can only be
 called inside regular assertions or contracts, within a parameter of a call
 to a lemma subprogram, or within the initialization of a (ghost) constant
 of anonymous access-to-constant type.
@@ -579,6 +584,33 @@ could be modified later in the borrow:
 
       Y.Val := 42;
       Y.Next := null;
+
+In general, the attributes ``Old`` and ``Loop_Entry`` cannot be called on values
+of a type subject to ownership as they produce aliases. However, it is
+possible to use a reference to one of these attributes as the parameter of a
+function annotated with ``At_End_Borrow``, provided their prefix is a local
+borrower. It is useful in particular in the contract of a subprogram that does
+a reborrow, like the procedure ``Next`` below:
+
+.. code-block:: ada
+
+   X : access List := L;
+
+   procedure Next (V : out Integer) with
+     Pre => X /= null,
+     Post => At_End (X'Old) /= null and then V = At_End (X'Old).Val;
+
+   procedure Next (V : out Integer) is
+   begin
+      V := X.Val;
+      X := X.Next;
+   end Next;
+
+The postcondition describes the value, at the end of the scope of ``X``, of the
+structure designated by ``X`` before the call . It states that it
+is necessarily non-null, and that its first element is the value stored in
+``V``. This is something that can be proved by the tool in the postcondition, as
+the reborrow freezes the first value of ``X'Old``.
 
 During sequences of re-borrows, it is additionally possible to
 use constants of anonymous access-to-constant type in order to save
@@ -1551,7 +1583,7 @@ our example thanks to the postcondition of ``Add`` as made explicit by the
 
 The ``Container_Aggregates`` annotation might also induce
 `restrictions on aggregate usage`. For example, if we had chosen a signed
-integer type for the return type of ``Length`` in ``Predefined``,
+integer type for the result type of ``Length`` in ``Predefined``,
 |GNATprove| would have introduced checks on all aggregates of type ``List`` to
 make sure that the number of elements doesn't exceed the number of indexes.
 
@@ -1606,7 +1638,7 @@ positional aggregates. It supports three kinds of function annotations:
 * The function ``Get`` returns the element associated to a valid index or
   position in the container.
 
-All three functions are mandatory. The return types of ``First`` and ``Last``
+All three functions are mandatory. The result types of ``First`` and ``Last``
 should be subtypes of the same signed integer type, or possibly of
 ``Big_Integer``.
 
@@ -1651,7 +1683,7 @@ these consistency checks:
 
 If ``Last`` returns a signed integer type, there is a restriction on predefined
 sequence aggregates usage: |GNATprove| will make sure that the number of
-elements in an aggregate never exceeds the maximum value of the return type of
+elements in an aggregate never exceeds the maximum value of the result type of
 ``Last``.
 
 When an aggregate ``C`` is encountered, |GNATprove| automatically infers that:
@@ -1728,7 +1760,7 @@ allows the tool to properly assess the cardinality of the resulting set. If
 a ``Length`` function is supplied and returns a signed integer type, and no
 ``Capacity`` function applies to the type, |GNATprove| also makes sure that the
 number of elements in the aggregate does not exceed the upper bound of the
-return type of ``Length``. This last check is replaced by a check on the
+result type of ``Length``. This last check is replaced by a check on the
 capacity if there is one.
 
 When an aggregate ``C`` is encountered, |GNATprove| automatically infers that:
@@ -1858,7 +1890,7 @@ allows the tool to determine the associated element uniquely and to assess the
 cardinality of the resulting map. If a ``Length`` function is supplied and
 returns a signed integer type, and no ``Capacity`` function applies to the type,
 |GNATprove| also makes sure that the number of elements in the aggregate does
-not exceed the upper bound of the return type of ``Length``. This last check is
+not exceed the upper bound of the result type of ``Length``. This last check is
 replaced by a check on the capacity if there is one.
 
 When an aggregate ``C`` is encountered, |GNATprove| automatically infers that:

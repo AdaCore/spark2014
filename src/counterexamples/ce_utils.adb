@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2018-2025, AdaCore                     --
+--                     Copyright (C) 2018-2026, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -31,7 +31,6 @@ use Ada.Numerics.Big_Numbers.Big_Reals;
 with Ada.Strings.UTF_Encoding.Strings;
 use Ada.Strings.UTF_Encoding.Strings;
 with Ada.Strings.Fixed;                     use Ada.Strings.Fixed;
-with Ada.Strings.Unbounded;
 with Atree;
 with CE_RAC;                                use CE_RAC;
 with Einfo.Entities;
@@ -281,8 +280,6 @@ package body CE_Utils is
       Comp_Info : constant Component_Info_Map := Get_Variant_Info (Ty);
       Info      : Component_Info;
 
-      --  Start of processing for Component_Is_Removed_In_Type
-
    begin
       --  If Comp is not a component, it cannot be discriminant dependant
 
@@ -488,10 +485,14 @@ package body CE_Utils is
       use Ada.Characters.Handling;
       Id : Entity_Id := First_Formal (E);
    begin
-      while To_Upper (Short_Name (Id)) /= To_Upper (Name) loop
+      while Present (Id) loop
+         if To_Upper (Short_Name (Id)) = To_Upper (Name) then
+            return Id;
+         end if;
          Id := Next_Formal (Id);
       end loop;
-      return Id;
+
+      raise Program_Error with "Formal parameter """ & Name & """ not found";
    end Get_Id_From_Name;
 
    ------------------------
@@ -513,10 +514,9 @@ package body CE_Utils is
    ---------------------
 
    function Prefix_Elements
-     (Elems : S_String_List.List; Pref : String) return S_String_List.List
+     (Elems : String_Lists.List; Pref : String) return String_Lists.List
    is
-      use Ada.Strings.Unbounded;
-      L : S_String_List.List;
+      L : String_Lists.List;
    begin
       for E of Elems loop
          L.Append (Pref & E);

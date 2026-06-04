@@ -11,7 +11,7 @@ max_copyright_lines = 30
 expected_length = 78
 
 # current year
-current_year = 2025
+current_year = 2026
 
 box_copyright_line_regex = re.compile(
     r"--.*Copyright \(C\) (\d\d\d\d)(-\d\d\d\d)?,(.*)--"

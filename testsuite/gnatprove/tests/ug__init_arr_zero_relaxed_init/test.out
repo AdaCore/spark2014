@@ -4,6 +4,9 @@
  info: initialization check proved
 --> init_arr_zero.adb:6:59
 
+ info: index check proved
+--> init_arr_zero.adb:6:61
+
  info: loop invariant initialization proved
 --> init_arr_zero.adb:11:30
 

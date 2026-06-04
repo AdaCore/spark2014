@@ -1,7 +1,5 @@
 test_illegal.adb:9:13: error: consider introducing another recursive function and defining "=" as a wrapper
-test_illegal.adb:9:13: error: subprogram variant on a user-defined equality on record type is not allowed in SPARK
-test_illegal.adb:9:13: error: violation of aspect SPARK_Mode at line 1
+test_illegal.adb:9:13: error: subprogram variant on a user-defined equality on record type is not yet supported
 test_illegal.adb:24:13: error: consider introducing another recursive function and defining "=" as a wrapper
-test_illegal.adb:24:13: error: subprogram variant on a user-defined equality on record type is not allowed in SPARK
-test_illegal.adb:24:13: error: violation of aspect SPARK_Mode at line 1
+test_illegal.adb:24:13: error: subprogram variant on a user-defined equality on record type is not yet supported
 gnatprove: error during flow analysis and proof

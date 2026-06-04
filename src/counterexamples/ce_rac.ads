@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                     Copyright (C) 2021-2025, AdaCore                     --
+--                     Copyright (C) 2021-2026, AdaCore                     --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -203,6 +203,11 @@ package CE_RAC is
             Res_Reason : Unbounded_String;
       end case;
    end record;
+
+   RAC_Gnattest_Error : exception;
+   --  Raised when --gnattest-values=FILE option was provided but the file is
+   --  not found, cannot be parsed or contains data that isn't compatible with
+   --  the currently analyzed subprogram.
 
    RAC_Unexpected_Error : exception;
    --  Raised when something unforeseen happens, but not program or constraint

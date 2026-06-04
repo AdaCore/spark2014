@@ -17,6 +17,7 @@ fileio.adb:39:13: medium: unexpected exception might be raised [reason for check
 fileio.ads:19:38: info: initialization of "Ch" proved
 fileio.ads:20:32: medium: "The_File" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(19))
 fileio.ads:21:14: medium: postcondition might fail, cannot prove Ch = Character'Pos (The_File (Cur_Position'Old)) [provers gave up before completing the proof]
+fileio.ads:21:28: info: range check proved (CVC5: 2 VC)
 fileio.ads:22:46: medium: overflow check might fail, cannot prove upper bound for Cur_Position'Old + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers] [provers gave up before completing the proof]
 fileio.ads:28:06: info: data dependencies proved
 fileio.ads:29:14: medium: postcondition might fail, cannot prove The_File = The_File'Old'Update (Cur_Position'Old => Character'Val (Ch)) [provers gave up before completing the proof]

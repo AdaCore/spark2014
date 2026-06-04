@@ -6,8 +6,8 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                     Copyright (C) 2010-2025, AdaCore                     --
---              Copyright (C) 2017-2025, Capgemini Engineering              --
+--                     Copyright (C) 2010-2026, AdaCore                     --
+--              Copyright (C) 2017-2026, Capgemini Engineering              --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -31,9 +31,27 @@ package Gnat2Why_Opts.Writing is
    --  GNATprove.
 
    function Pass_Extra_Options_To_Gnat2why
-     (Translation_Phase : Boolean; Obj_Dir : String) return String;
+     (Translation_Phase : Boolean;
+      Obj_Dir           : String;
+      Why3_Dir          : String;
+      Unit_Name         : String) return String;
    --  Create a file with extra options for gnat2why and return its pathname.
    --  Translation_Phase is False for globals generation, and True for
    --  translation to Why.
+   --  Why3_Dir is the directory where gnatwhy3 is intended to run,
+   --  and find the why3.conf file.
+   --  Unit_Name selects the file-specific settings from File_Specific_Map.
+   --  The opt file contains flattened settings (no nested file_specific map).
+
+   function Opt_File_Name
+     (Translation_Phase : Boolean;
+      Obj_Dir           : String;
+      Why3_Dir          : String;
+      Unit_Name         : String) return String;
+   --  Compute the pathname that Pass_Extra_Options_To_Gnat2why would use for
+   --  the same arguments, without creating or writing any file.
+   --  The filename is derived by hashing the option values directly, so
+   --  semantically identical options always produce the same name regardless
+   --  of JSON serialization differences (whitespace, field ordering).
 
 end Gnat2Why_Opts.Writing;

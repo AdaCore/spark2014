@@ -127,26 +127,26 @@ counterexample expected for check at not_discrete.adb:66
   trace at not_discrete.adb:59 --> Is_Small = False
   trace at not_discrete.adb:63 --> Is_Small = True
   trace at not_discrete.adb:66 --> Is_Small = True
-  trace at not_discrete.ads:30 --> R = (Discr => 42, Field => 0)
+  trace at not_discrete.ads:30 --> R = (Discr => 42, Field => 42)
 counterexample expected for check at not_discrete.adb:83
   trace at not_discrete.adb:76 --> Is_Rec = False
   trace at not_discrete.adb:80 --> Is_Rec = True
   trace at not_discrete.adb:83 --> Is_Rec = True
-  trace at not_discrete.ads:32 --> R = (Discr => 42, Field => 0)
+  trace at not_discrete.ads:32 --> R = (Discr => 42, Field => 42)
 counterexample expected for check at not_discrete.adb:100
   trace at not_discrete.adb:93 --> Is_Rec = False
   trace at not_discrete.adb:97 --> Is_Rec = True
   trace at not_discrete.adb:100 --> Is_Rec = True
-  trace at not_discrete.ads:34 --> R = (Discr => 42, Field => 0)
+  trace at not_discrete.ads:34 --> R = (Discr => 42, Field => 42)
 counterexample expected for check at not_discrete.adb:117
   trace at not_discrete.adb:110 --> Is_Sub_42 = False
   trace at not_discrete.adb:114 --> Is_Sub_42 = True
   trace at not_discrete.adb:117 --> Is_Sub_42 = True
-  trace at not_discrete.ads:36 --> R = (Discr => 42, Field => 0)
+  trace at not_discrete.ads:36 --> R = (Discr => 42, Field => 42)
 counterexample expected for check at not_discrete.adb:145
   trace at not_discrete.adb:143 --> B = False
   trace at not_discrete.adb:145 --> B = False
-  trace at not_discrete.ads:41 --> R = (Discr => 42, Field => 0)
+  trace at not_discrete.ads:41 --> R = (Discr => 42, Field => 42)
 counterexample expected for check at not_discrete.adb:229
   trace at not_discrete.adb:222 --> Is_Same = False
   trace at not_discrete.adb:226 --> Is_Same = True

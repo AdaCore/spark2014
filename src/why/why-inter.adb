@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2025, AdaCore                     --
+--                     Copyright (C) 2010-2026, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -318,8 +318,6 @@ package body Why.Inter is
 
       SS : Search_State := (Control => Continue, S => Empty_Set);
 
-      --  Start of processing for Compute_Ada_Nodeset
-
    begin
       Traverse (SS, +W);
       return SS.S;
@@ -538,8 +536,6 @@ package body Why.Inter is
          end loop;
       end DFS;
 
-      --  Start of processing for Check_Safe_Guard_Cycles
-
       Entry_Points : Node_Sets.Set;
 
    begin
@@ -676,8 +672,6 @@ package body Why.Inter is
             end if;
          end loop;
       end Record_Dependencies;
-
-      --  Start of processing for Close_Theory
 
    begin
       Add_With_Clause (Th.Th, M_Main.Module, EW_Import);
@@ -978,9 +972,7 @@ package body Why.Inter is
                return EW_Bool_Type;
             elsif Ty = Universal_Fixed then
                return EW_Real_Type;
-            elsif Is_Modular_Integer_Type (Ty)
-              and then not Has_No_Bitwise_Operations_Annotation (Ty)
-            then
+            elsif Is_Bitvector_Type_In_Why (Ty) then
                declare
                   Size : Uintp.Uint;
                begin

@@ -1,0 +1,47 @@
+resize.adb:16:13: info: implicit aspect Always_Terminates on "Logic_Eq" has been proved, subprogram will terminate
+resize.adb:17:60: info: pointer dereference check proved
+resize.adb:17:68: info: pointer dereference check proved
+resize.adb:28:44: info: exceptional case proved
+resize.adb:32:11: info: postcondition proved
+resize.adb:36:14: info: pointer dereference check proved
+resize.adb:36:29: info: pointer dereference check proved
+resize.adb:36:56: info: pointer dereference check proved
+resize.adb:37:23: info: pointer dereference check proved
+resize.adb:39:20: info: pointer dereference check proved
+resize.adb:41:28: info: range check proved
+resize.adb:41:48: info: pointer dereference check proved
+resize.adb:41:51: info: range check proved
+resize.adb:42:22: info: pointer dereference check proved
+resize.adb:42:25: info: index check proved
+resize.adb:42:30: info: pointer dereference check proved
+resize.adb:42:35: info: pointer dereference check proved
+resize.adb:42:45: info: index check proved
+resize.adb:46:10: info: pointer dereference check proved
+resize.adb:51:16: info: pointer dereference check proved
+resize.adb:51:41: info: pointer dereference check proved
+resize.adb:51:42: info: range check proved
+resize.adb:52:10: info: absence of resource or memory leak at end of scope proved
+resize.adb:52:43: info: range check proved
+resize.adb:52:46: info: range check proved
+resize.adb:54:13: info: pointer dereference check proved
+resize.adb:55:17: info: range check proved
+resize.adb:55:37: info: pointer dereference check proved
+resize.adb:55:38: info: range check proved
+resize.adb:58:21: info: loop invariant initialization proved
+resize.adb:58:21: info: loop invariant preservation proved
+resize.adb:59:30: info: pointer dereference check proved
+resize.adb:60:30: info: pointer dereference check proved
+resize.adb:63:21: info: loop invariant initialization proved
+resize.adb:63:21: info: loop invariant preservation proved
+resize.adb:65:33: info: range check proved
+resize.adb:66:27: info: pointer dereference check proved
+resize.adb:66:33: info: index check proved
+resize.adb:66:38: info: pointer dereference check proved
+resize.adb:66:41: info: pointer dereference check proved
+resize.adb:66:49: info: index check proved
+resize.adb:67:16: info: pointer dereference check proved
+resize.adb:67:22: info: index check proved
+resize.adb:67:28: info: pointer dereference check proved
+resize.adb:67:31: info: pointer dereference check proved
+resize.adb:67:39: info: index check proved
+resize.adb:71:12: info: absence of resource or memory leak proved

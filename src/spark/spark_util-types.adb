@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2016-2025, AdaCore                     --
+--                     Copyright (C) 2016-2026, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -265,8 +265,7 @@ package body SPARK_Util.Types is
          Explanation :=
            To_Unbounded_String
              (Pretty_Source_Name (Typ)
-              & " doesn't "
-              & "have an Object_Size representation "
+              & " doesn't have an Object_Size representation "
               & "clause or aspect");
       end if;
    end Check_Known_Esize;
@@ -344,6 +343,13 @@ package body SPARK_Util.Types is
                     & Pretty_Source_Name (Typ)
                     & " cannot be computed statically");
             end if;
+
+         --  Size cannot be specified on unconstrained array types
+
+         elsif Is_Array_Type (Typ) and then not Is_Constrained (Typ) then
+            Explanation :=
+              To_Unbounded_String
+                (Pretty_Source_Name (Typ) & " is unconstrained");
          else
             Explanation :=
               To_Unbounded_String
@@ -776,6 +782,22 @@ package body SPARK_Util.Types is
         and then not Ancestor_Declares_Iterable_Aspect (E, Top_Aspect);
    end Declares_Iterable_Aspect;
 
+   ---------------------------
+   -- Find_Aggregate_Aspect --
+   ---------------------------
+
+   function Find_Aggregate_Aspect (Typ : Type_Kind_Id) return Node_Id is
+      Typ_With_Aspect : constant Type_Kind_Id :=
+        (if Is_Scalar_Type (Typ) and then Present (First_Subtype (Typ))
+         then First_Subtype (Typ)
+         else Typ);
+      --  If Typ is a scalar base type, it might not have the
+      --  aggregate aspect. Look for it on the first subtype
+      --  instead.
+   begin
+      return Find_Value_Of_Aspect (Typ_With_Aspect, Aspect_Aggregate);
+   end Find_Aggregate_Aspect;
+
    -------------------------
    -- Find_Predicate_Item --
    -------------------------
@@ -868,8 +890,8 @@ package body SPARK_Util.Types is
    -- Fun_Has_Only_Valid_Values --
    -------------------------------
 
-   function Fun_Has_Only_Valid_Values (Fun : Entity_Id) return Boolean is
-      Ty       : constant Type_Kind_Id := Retysp (Etype (Fun));
+   function Fun_Has_Only_Valid_Values (Ret_Ty : Type_Kind_Id) return Boolean is
+      Ty       : constant Type_Kind_Id := Retysp (Ret_Ty);
       Size     : Uint;
       Size_Str : Unbounded_String;
       Valid    : True_Or_Explain;
@@ -1419,8 +1441,6 @@ package body SPARK_Util.Types is
       function Search_Sub_Typ is new
         Traverse_Subcomponents (Has_Type_Or_Derived);
 
-      --  Start of processing for Has_Subcomponents_Of_Type
-
    begin
       return Search_Sub_Typ (Typ);
    end Has_Subcomponents_Of_Type;
@@ -1853,7 +1873,7 @@ package body SPARK_Util.Types is
                if Entity_In_SPARK (Pred_Fun) then
                   declare
                      Expr : constant Node_Id :=
-                       Get_Expr_From_Return_Only_Func (Pred_Fun);
+                       Get_Predicate_Expression (Pred_Fun);
                   begin
                      --  Ignore predicates which are inherited from parents,
                      --  they will be traversed too.
@@ -2152,7 +2172,7 @@ package body SPARK_Util.Types is
    -----------------------------------
 
    function Predefined_Eq_Uses_Pointer_Eq
-     (Ty : Type_Kind_Id; Exp : out Unbounded_String) return Boolean
+     (Ty : Type_Kind_Id; Exp : out Opt_Type_Kind_Id) return Boolean
    is
 
       function Check_Comp (Comp_Ty : Node_Id) return Test_Result;
@@ -2175,18 +2195,13 @@ package body SPARK_Util.Types is
             return Fail;
 
          elsif Is_Access_Type (Comp_Ty) then
-            Exp := To_Unbounded_String ("access types");
+            Exp := Comp_Ty;
             return Pass;
 
          elsif Has_Predefined_Eq_Annotation (Comp_Ty)
            and then Get_Predefined_Eq_Kind (Comp_Ty) in Only_Null | No_Equality
          then
-            Exp :=
-              To_Unbounded_String
-                (Pretty_Source_Name
-                   (if Is_Tagged_Type (Comp_Ty)
-                    then Base_Type (Comp_Ty)
-                    else Root_Retysp (Comp_Ty)));
+            Exp := Comp_Ty;
             return Pass;
          else
             return Continue;
@@ -2195,6 +2210,8 @@ package body SPARK_Util.Types is
 
       function Uses_Pointer_Eq is new Traverse_Subcomponents (Check_Comp);
    begin
+      Exp := Empty;
+
       --  No need to traverse discriminants, they cannot contain access types
 
       return
@@ -2318,8 +2335,6 @@ package body SPARK_Util.Types is
 
       Decls : List_Id := Visible_Declarations_Of_Prot_Type (E);
       Decl  : Node_Id := First (Decls);
-
-      --  Start of processing for Requires_Interrupt_Priority
 
    begin
       while Present (Decl) loop
@@ -2812,8 +2827,6 @@ package body SPARK_Util.Types is
                return Traverse_Subcomponents_Only (Rep_Ty);
          end case;
       end Traverse_Type;
-
-      --  Start of processing for Traverse_Subcomponents
 
    begin
       return Traverse_Type (Typ);

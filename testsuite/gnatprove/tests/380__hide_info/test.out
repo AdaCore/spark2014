@@ -13,20 +13,17 @@ main.adb:38:17: info: postcondition proved (CVC5: 3 VC)
 main.adb:41:16: info: implicit aspect Always_Terminates on "Use_And_3" has been proved, subprogram will terminate
 main.adb:42:17: info: postcondition proved (CVC5: 3 VC)
 main.adb:60:16: info: implicit aspect Always_Terminates on "Rec_And" has been proved, subprogram will terminate
-main.adb:60:16: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
-main.adb:60:16: warning: function contract might not be available on recursive calls [contracts-recursive]
+main.adb:60:16: warning: "Rec_And" is recursive; its body and contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 main.adb:61:57: info: subprogram variant proved (CVC5: 1 VC)
 main.adb:64:32: medium: postcondition might fail, cannot prove Rec_And'Result = Y (e.g. when Rec_And'Result = True and Y = False) [possible fix: add or complete related loop invariants or postconditions] [provers gave up before completing the proof]
 main.adb:69:16: info: implicit aspect Always_Terminates on "Rec_And_2" has been proved, subprogram will terminate
-main.adb:69:16: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
-main.adb:69:16: warning: function contract might not be available on recursive calls [contracts-recursive]
+main.adb:69:16: warning: "Rec_And_2" is recursive; its body and contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 main.adb:70:57: info: subprogram variant proved (CVC5: 1 VC)
 main.adb:73:21: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC)
 main.adb:79:16: info: implicit aspect Always_Terminates on "Use_Rec_And_2" has been proved, subprogram will terminate
 main.adb:80:17: medium: postcondition might fail (e.g. when Use_Rec_And_2'Result = True and X = False and Y = True) [possible fix: add or complete related loop invariants or postconditions] [provers gave up before completing the proof]
 main.adb:84:16: info: implicit aspect Always_Terminates on "Rec_And_3" has been proved, subprogram will terminate
-main.adb:84:16: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
-main.adb:84:16: warning: function contract might not be available on recursive calls [contracts-recursive]
+main.adb:84:16: warning: "Rec_And_3" is recursive; its body and contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 main.adb:85:57: info: subprogram variant proved (CVC5: 1 VC)
 main.adb:88:21: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC)
 main.adb:92:16: info: implicit aspect Always_Terminates on "Use_Rec_And_3" has been proved, subprogram will terminate

@@ -12,4 +12,5 @@ part_of_illegal-pr_child.ads:15:04: error: indicator Part_Of is required in this
 part_of_illegal-pr_child.ads:15:04: error: indicator Part_Of is required in this context [E0009]
 part_of_illegal-pr_child.ads:15:04: error: launch "gnatprove --explain=E0009" for more information
 part_of_illegal-pr_child.ads:15:04: error: launch "gnatprove --explain=E0009" for more information
-gnatprove: error during generation of Global contracts
+part_of_illegal.ads:3:26: warning: no subprogram exists that can initialize abstract state "Part_Of_Illegal.State"
+gnatprove: error during flow analysis and proof

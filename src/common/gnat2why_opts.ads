@@ -6,8 +6,8 @@
 --                                                                          --
 --                                  S p e c                                 --
 --                                                                          --
---                     Copyright (C) 2010-2025, AdaCore                     --
---              Copyright (C) 2017-2025, Capgemini Engineering              --
+--                     Copyright (C) 2010-2026, AdaCore                     --
+--              Copyright (C) 2017-2026, Capgemini Engineering              --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -84,11 +84,11 @@ private
 
    CWE_Name                     : constant String := "cwe";
    Check_Counterexamples_Name   : constant String := "check_counterexamples";
+   Debug_No_Cache_Output_Name   : constant String := "debug_no_cache_output";
    Debug_Exec_RAC_Name          : constant String := "debug_exec_rac";
    GP_Mode_Name                 : constant String := "gp_mode";
    Debug_Mode_Name              : constant String := "debug";
    Exclude_Line_Name            : constant String := "exclude_line";
-   File_Specific_Name           : constant String := "file_specific";
    Flow_Advanced_Debug_Name     : constant String := "flow_advanced_debug";
    Flow_Generate_Contracts_Name : constant String := "flow_generate_contracts";
    Flow_Show_GG_Name            : constant String := "flow_show_gg";
@@ -100,10 +100,10 @@ private
    Limit_Region_Name            : constant String := "limit_region";
    Limit_Subp_Name              : constant String := "limit_subp";
    Limit_Units_Name             : constant String := "limit_units";
+   Max_Why3_Processes_Name      : constant String := "max_why3_processes";
    No_Inlining_Name             : constant String := "no_inlining";
    No_Loop_Unrolling_Name       : constant String := "no_loop_unrolling";
    Output_Mode_Name             : constant String := "output_mode";
-   Parallel_Why3_Name           : constant String := "parallel_why3";
    Proof_Generate_Guards_Name   : constant String :=
      "proof_generate_axiom_guards";
    Proof_Warnings_Name          : constant String := "proof_warnings";

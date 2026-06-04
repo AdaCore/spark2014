@@ -1,3 +1,5 @@
-concurrent.ads:11:04: error: pragma Annotate Skip_Proof must immediately follow the declaration of task type "Some_Task"
-concurrent.ads:21:07: error: pragma Annotate Skip_Proof must immediately follow the declaration of entry "Other_Fake_Entry"
+concurrent.ads:11:04: error: "pragma Annotate (GNATprove, Skip_Proof[, ...])" must immediately follow the declaration of task type "Some_Task"
+concurrent.ads:11:04: error: incorrect placement for "pragma Annotate (GNATprove, Skip_Proof[, ...])"
+concurrent.ads:21:07: error: "pragma Annotate (GNATprove, Skip_Proof[, ...])" must immediately follow the declaration of entry "Other_Fake_Entry"
+concurrent.ads:21:07: error: incorrect placement for "pragma Annotate (GNATprove, Skip_Proof[, ...])"
 gnatprove: error during flow analysis and proof

@@ -1,19 +1,8 @@
-Generated contracts for Bar.Wobble
-   Global =>
-      Input =>
-         B
-   Refined_Global =>
-      Input =>
-         B
-Generated contracts for Bar.Wibble
-   Global =>
-      Input =>
-         G1
-         G2
-   Refined_Global =>
-      Input =>
-         G1
-         G2
+Generated contracts for Bar
+   Initializes =>
+      B
+      G1
+      G2
 Generated contracts for Bar.Donk
    Global =>
       Input =>
@@ -44,18 +33,25 @@ Generated contracts for Bar.Flop
 Generated contracts for Bar.No_Globals
    Global =>
    Refined_Global =>
-Generated contracts for Bar
+Generated contracts for Bar.Wibble
+   Global =>
+      Input =>
+         G1
+         G2
+   Refined_Global =>
+      Input =>
+         G1
+         G2
+Generated contracts for Bar.Wobble
+   Global =>
+      Input =>
+         B
+   Refined_Global =>
+      Input =>
+         B
+Generated contracts for Entity_Name
    Initializes =>
-      B
-      G1
-      G2
-bar.adb:8:13: info: implicit aspect Always_Terminates on "Wobble" has been proved, subprogram will terminate
-bar.adb:18:13: info: implicit aspect Always_Terminates on "Wibble" has been proved, subprogram will terminate
-bar.adb:23:22: medium: assertion might fail [possible fix: subprogram at line 18 should mention G2 and Y in a precondition] [provers gave up before completing the proof]
-bar.adb:24:21: medium: overflow check might fail, cannot prove lower bound for G1 + G2 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 18 should mention G1 and G2 in a precondition] [provers gave up before completing the proof]
-bar.adb:27:13: info: implicit aspect Always_Terminates on "Donk" has been proved, subprogram will terminate
-bar.adb:31:19: info: postcondition proved (Trivial: 1 VC)
-bar.adb:49:13: info: implicit aspect Always_Terminates on "No_Globals" has been proved, subprogram will terminate
+      Hidden
 Generated contracts for Entity_Name.Proxy
    Global =>
       Input =>
@@ -63,31 +59,24 @@ Generated contracts for Entity_Name.Proxy
    Refined_Global =>
       Input =>
          Hidden
-Generated contracts for Entity_Name
-   Initializes =>
-      Hidden
-entity_name.ads:2:13: info: implicit aspect Always_Terminates on "Proxy" has been proved, subprogram will terminate
-Generated contracts for Foo.Inner.Get
-   Global =>
-      Input =>
-         X
-   Refined_Global =>
-      Input =>
-         X
-Generated contracts for Foo.Inner.Get
-   Global =>
-      Input =>
-         X
-         Y
-   Refined_Global =>
-      Input =>
-         X
-         Y
-Generated contracts for Foo.Inner
 Generated contracts for Foo
-foo.ads:6:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
-foo.ads:7:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
-foo.ads:7:45: medium: overflow check might fail, cannot prove lower bound for Foo.X + Foo.Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 7 should mention X and Y in a precondition] [provers gave up before completing the proof]
+Generated contracts for Foo.Inner
+Generated contracts for Foo.Inner.Get
+   Global =>
+      Input =>
+         X
+   Refined_Global =>
+      Input =>
+         X
+Generated contracts for Foo.Inner.Get
+   Global =>
+      Input =>
+         X
+         Y
+   Refined_Global =>
+      Input =>
+         X
+         Y
 Generated contracts for Main
    Global =>
       Input =>
@@ -95,24 +84,35 @@ Generated contracts for Main
    Refined_Global =>
       Input =>
          entity_name__hidden
-Generated contracts for Outer.Inner.Get
-   Global =>
-      Input =>
-         X
-   Refined_Global =>
-      Input =>
-         X
-Generated contracts for Outer.Inner.Get
-   Global =>
-      Input =>
-         X
-         Y
-   Refined_Global =>
-      Input =>
-         X
-         Y
-Generated contracts for Outer.Inner
 Generated contracts for Outer
+Generated contracts for Outer.Inner
+Generated contracts for Outer.Inner.Get
+   Global =>
+      Input =>
+         X
+   Refined_Global =>
+      Input =>
+         X
+Generated contracts for Outer.Inner.Get
+   Global =>
+      Input =>
+         X
+         Y
+   Refined_Global =>
+      Input =>
+         X
+         Y
+bar.adb:8:13: info: implicit aspect Always_Terminates on "Wobble" has been proved, subprogram will terminate
+bar.adb:18:13: info: implicit aspect Always_Terminates on "Wibble" has been proved, subprogram will terminate
+bar.adb:23:22: medium: assertion might fail [possible fix: subprogram at line 18 should mention G2 and Y in a precondition] [provers gave up before completing the proof]
+bar.adb:24:21: medium: overflow check might fail, cannot prove lower bound for G1 + G2 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 18 should mention G1 and G2 in a precondition] [provers gave up before completing the proof]
+bar.adb:27:13: info: implicit aspect Always_Terminates on "Donk" has been proved, subprogram will terminate
+bar.adb:31:19: info: postcondition proved (Trivial: 1 VC)
+bar.adb:49:13: info: implicit aspect Always_Terminates on "No_Globals" has been proved, subprogram will terminate
+entity_name.ads:2:13: info: implicit aspect Always_Terminates on "Proxy" has been proved, subprogram will terminate
+foo.ads:6:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
+foo.ads:7:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
+foo.ads:7:45: medium: overflow check might fail, cannot prove lower bound for Foo.X + Foo.Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 7 should mention X and Y in a precondition] [provers gave up before completing the proof]
 outer.ads:6:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 outer.ads:7:21: warning: unused variable "B"
 outer.ads:12:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate

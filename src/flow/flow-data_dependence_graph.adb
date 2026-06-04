@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---              Copyright (C) 2013-2025, Capgemini Engineering              --
+--              Copyright (C) 2013-2026, Capgemini Engineering              --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -261,8 +261,6 @@ package body Flow.Data_Dependence_Graph is
       --  Local variables
 
       Unused : Flow_Graphs.Simple_Traversal_Instruction;
-
-      --  Start of processing for Create
 
    begin
       FA.DDG := FA.CFG.Create;

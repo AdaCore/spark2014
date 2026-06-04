@@ -6,7 +6,7 @@ package body LoopEntry is
 
    procedure Increment_Array_Nested_Loop_Simple (A : in out Int_Array) is
    begin
-      Outter: for J in A'Range loop
+      Outer: for J in A'Range loop
          A(J) := A(J) + 1;
          Inner: for K in Int(1) .. Int(1) loop   --  Only loop once
             A(J) := A(J) + K;
@@ -18,7 +18,7 @@ package body LoopEntry is
             --  Fails on the first iteration as A(J) has only been incremented
             --  once in the nearest loop.
          end loop Inner;
-      end loop Outter;
+      end loop Outer;
    end Increment_Array_Nested_Loop_Simple;
 
    ---------------------------------------
@@ -27,7 +27,7 @@ package body LoopEntry is
 
    procedure Increment_Array_Nested_Loop_Inner (A : in out Int_Array) is
    begin
-      Outter: for J in A'Range loop
+      Outer: for J in A'Range loop
          A(J) := A(J) + 1;
          Inner: for K in Int(1) .. Int(1) loop   --  Only loop once
             A(J) := A(J) + K;
@@ -36,25 +36,25 @@ package body LoopEntry is
             --  Equivalent to using A'Loop_Entry, should behave like the
             --  previous function.
          end loop Inner;
-      end loop Outter;
+      end loop Outer;
    end Increment_Array_Nested_Loop_Inner;
 
    ----------------------------------------
-   -- Increment_Array_Nested_Loop_Outter --
+   -- Increment_Array_Nested_Loop_Outer --
    ----------------------------------------
 
-   procedure Increment_Array_Nested_Loop_Outter (A : in out Int_Array) is
+   procedure Increment_Array_Nested_Loop_Outer (A : in out Int_Array) is
    begin
-      Outter: for J in A'Range loop
+      Outer: for J in A'Range loop
          A(J) := A(J) + 1;
          Inner: for K in Int(1) .. Int(1) loop   --  Only loop once
             A(J) := A(J) + K;
-            pragma Assert (A(J) = A'Loop_Entry(Outter)(J) + 2);    --  @ASSERT:PASS
-            pragma Assert (A(J) = A'Loop_Entry(Outter)(J) + 1);    --  @ASSERT:FAIL
-            -- A(J) has been incremented twice since entry in Outter loop.
+            pragma Assert (A(J) = A'Loop_Entry(Outer)(J) + 2);    --  @ASSERT:PASS
+            pragma Assert (A(J) = A'Loop_Entry(Outer)(J) + 1);    --  @ASSERT:FAIL
+            -- A(J) has been incremented twice since entry in Outer loop.
          end loop Inner;
-      end loop Outter;
-   end Increment_Array_Nested_Loop_Outter;
+      end loop Outer;
+   end Increment_Array_Nested_Loop_Outer;
 
    -----------------
    -- Very_Nested --

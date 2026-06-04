@@ -56,7 +56,7 @@ main.adb:126:27: info: discriminant check proved (CVC5: 1 VC)
 main.adb:130:40: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:134:10: info: discriminant check proved (CVC5: 1 VC)
 main.adb:134:20: info: pointer dereference check proved (CVC5: 1 VC)
-main.adb:134:24: medium: discriminant check might fail (e.g. when V_R.all = (D => 1, F => 12)) [provers reached step limit before completing the proof]
+main.adb:134:24: medium: discriminant check might fail (e.g. when V_R.all = (D => 1, F => 4)) [provers reached step limit before completing the proof]
 main.adb:134:27: info: discriminant check proved (CVC5: 1 VC)
 main.adb:138:40: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:142:10: medium: discriminant check might fail (e.g. when V_R.all = (D => 1, F => 4)) [provers reached step limit before completing the proof]
@@ -77,7 +77,7 @@ main.adb:171:27: info: discriminant check proved (CVC5: 1 VC)
 main.adb:175:40: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:179:10: info: discriminant check proved (CVC5: 1 VC)
 main.adb:179:20: info: pointer dereference check proved (CVC5: 1 VC)
-main.adb:179:24: medium: discriminant check might fail (e.g. when V_R.all = (D => 1, F => 12)) [provers reached step limit before completing the proof]
+main.adb:179:24: medium: discriminant check might fail (e.g. when V_R.all = (D => 1, F => 4)) [provers reached step limit before completing the proof]
 main.adb:179:27: info: discriminant check proved (CVC5: 1 VC)
 main.adb:183:40: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:187:10: medium: discriminant check might fail (e.g. when V_R.all = (D => 1, F => 4)) [provers reached step limit before completing the proof]

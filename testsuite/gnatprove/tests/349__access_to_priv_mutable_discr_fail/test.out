@@ -8,4 +8,4 @@ test_5.adb:30:39: error: found a composite type
 test_5.adb:35:15: error: too few discriminants given in constraint
 test_5.adb:35:22: error: expected type "Option" defined at line 26
 test_5.adb:35:22: error: found private type "Option" defined at line 26
-gnatprove: error during generation of Global contracts
+gnatprove: error during flow analysis and proof

@@ -6,8 +6,8 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2025, AdaCore                     --
---              Copyright (C) 2014-2025, Capgemini Engineering              --
+--                     Copyright (C) 2010-2026, AdaCore                     --
+--              Copyright (C) 2014-2026, Capgemini Engineering              --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -24,7 +24,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers.Hashed_Maps;
+with Ada.Containers.Indefinite_Hashed_Maps;
 with Ada.Directories;
 with Ada.Environment_Variables;
 with Ada.Strings.Unbounded;          use Ada.Strings.Unbounded;
@@ -54,7 +54,7 @@ with Flow_Utility;                   use Flow_Utility;
 with Flow_Visibility;                use Flow_Visibility;
 with Gnat2Why_Opts.Reading;          use Gnat2Why_Opts.Reading;
 with GNAT.OS_Lib;                    use GNAT.OS_Lib;
-with GNAT.SHA1;
+with GNATCOLL.Hash.Blake3;           use GNATCOLL.Hash.Blake3;
 with GNAT.Source_Info;
 with GNATCOLL.JSON;                  use GNATCOLL.JSON;
 with GNATCOLL.Utils;                 use GNATCOLL.Utils;
@@ -92,7 +92,6 @@ with SPARK_Xrefs;
 with Stand;                          use Stand;
 with String_Utils;                   use String_Utils;
 with Switch;                         use Switch;
-with Tempdir;                        use Tempdir;
 with VC_Kinds;                       use VC_Kinds;
 with Why;                            use Why;
 with Why.Atree;                      use Why.Atree;
@@ -113,9 +112,12 @@ package body Gnat2Why.Driver is
    use type Ada.Containers.Count_Type;
    --  for comparison of map length
 
-   Max_Subprocesses : constant := 63;
+   Windows_Safe_Limit : constant := 62;
+   --  Maximum value for Max_Subprocesses to safely stay under Windows
+   --  MAXIMUM_WAIT_OBJECTS limit of 64 handles.
+
+   Max_Subprocesses : Positive := Windows_Safe_Limit;
    --  The maximal number of gnatwhy3 processes spawned by a single gnat2why.
-   --  This limits corresponds to MAXIMUM_WAIT_OBJECTS on Windows.
 
    -----------------------
    -- Local Subprograms --
@@ -197,9 +199,9 @@ package body Gnat2Why.Driver is
    --  Hash function for process ids to be used in Hashed maps
 
    package Pid_Maps is new
-     Ada.Containers.Hashed_Maps
+     Ada.Containers.Indefinite_Hashed_Maps
        (Key_Type        => Process_Id,
-        Element_Type    => Path_Name_Type,
+        Element_Type    => String,
         Hash            => Process_Id_Hash,
         Equivalent_Keys => "=",
         "="             => "=");
@@ -219,7 +221,11 @@ package body Gnat2Why.Driver is
    --  Wait until all child gnatwhy3 processes finish and collect their results
 
    procedure Run_Gnatwhy3 (E : Entity_Id; Filename : String)
-   with Pre => Output_File_Map.Length <= Max_Subprocesses and then Present (E);
+   with
+     Pre =>
+       Output_File_Map.Length <= Ada.Containers.Count_Type (Max_Subprocesses)
+       and then Present (E)
+       and then Ada.Directories.Current_Directory = Gnat2Why_Args.Why3_Dir;
    --  After generating the Why file, run the proof tool. Wait for existing
    --  gnatwhy3 processes to finish if Max_Subprocesses is already reached.
 
@@ -241,19 +247,21 @@ package body Gnat2Why.Driver is
    ------------------------
 
    procedure Collect_One_Result is
-      Pid     : Process_Id;
-      Success : Boolean;
-      pragma Warnings (Off, Success); --  modified but then not referenced
+      Pid         : Process_Id;
+      Success     : Boolean;
+      Output_File : Pid_Maps.Cursor;
    begin
       Wait_Process (Pid, Success);
       pragma Assert (Pid /= Invalid_Pid);
+      Output_File := Output_File_Map.Find (Pid);
       declare
-         Fn : constant String := Get_Name_String (Output_File_Map (Pid));
+         Fn : String renames Output_File_Map (Output_File);
       begin
          Parse_Why3_Results (Fn, Timing);
          Delete_File (Fn, Success);
-         Output_File_Map.Delete (Pid);
+         pragma Assert (Success);
       end;
+      Output_File_Map.Delete (Output_File);
    end Collect_One_Result;
 
    ---------------------
@@ -318,17 +326,24 @@ package body Gnat2Why.Driver is
    is
       S             : constant String := Full_Name (E);
       Digest_Length : constant := 20;
-      --  Arbitrary number of digits that we take from the SHA1 digest to
+      --  Arbitrary number of digits that we take from the hash digest to
       --  achieve uniqueness.
+
+      Ctx : Blake3_Context;
+
    begin
       if S'Length > Max_Why3_Filename_Length - Extension'Length then
+
+         Ctx.Init_Hash_Context;
+         Ctx.Update_Hash_Context (S);
+
          --  the slice bound is computed as follows:
          --  take Max_Why3_Filename_Length - 1
          --  remove the file ending
          --  remove 1 for the dash
          --  remove Digest_Length for the digest
          return
-           GNAT.SHA1.Digest (S) (1 .. Digest_Length)
+           Ctx.Hash_Digest (1 .. Digest_Length)
            & "-"
            & S
                (S'Last
@@ -382,6 +397,10 @@ package body Gnat2Why.Driver is
       Ada.Text_IO.Close (FD);
    end Create_JSON_File;
 
+   ---------------------------
+   -- Parse_Gnattest_Values --
+   ---------------------------
+
    procedure Parse_Gnattest_Values (E : Entity_Id) is
       JSON_File_Name : constant Unbounded_String :=
         Gnat2Why_Opts.Reading.Gnattest_Values;
@@ -397,10 +416,7 @@ package body Gnat2Why.Driver is
       end if;
 
       if not Ada.Directories.Exists (To_String (JSON_File_Name)) then
-         Ada.Text_IO.Put_Line
-           (Ada.Strings.Unbounded.To_String
-              ("Cannot find " & JSON_File_Name & "."));
-         return;
+         raise RAC_Gnattest_Error with "File not found";
       end if;
 
       R := GNATCOLL.JSON.Read_File (To_String (JSON_File_Name));
@@ -450,17 +466,13 @@ package body Gnat2Why.Driver is
                end;
             end loop;
          end;
-
-      exception
-         when others =>
-            Ada.Text_IO.Put_Line
-              (Ada.Strings.Unbounded.To_String
-                 ("An unexpected error occurred while "
-                  & "processing file '"
-                  & JSON_File_Name
-                  & "'. No counterexample candidates could "
-                  & "be extracted from this file."));
       end;
+
+   exception
+      when RAC_Gnattest_Error =>
+         raise;
+      when others =>
+         raise RAC_Gnattest_Error with "Parsing error";
    end Parse_Gnattest_Values;
 
    -----------------------
@@ -722,10 +734,12 @@ package body Gnat2Why.Driver is
 
       Stop_Reason : Stop_Reason_Type := Stop_Reason_None;
 
-      --  Start of processing for GNAT_To_Why
-
    begin
       Timing_Start (Timing);
+
+      --  Capture any frontend messages that Errout accumulated before the
+      --  backend started, so they appear in SARIF output.
+      Add_Frontend_Messages;
 
       if Is_Generic_Unit (E) then
 
@@ -999,6 +1013,12 @@ package body Gnat2Why.Driver is
 
          if Gnat2Why_Args.Mode not in GPM_Check_All | GPM_Flow then
 
+            --  Set the maximum number of concurrent gnatwhy3 processes based
+            --  on the semaphore value, capped at the Windows-safe limit.
+            Max_Subprocesses :=
+              Integer'Min
+                (Gnat2Why_Args.Max_Why3_Processes, Windows_Safe_Limit);
+
             Why.Gen.Names.Initialize;
             Why.Atree.Modules.Initialize;
             Init_Why_Sections;
@@ -1008,9 +1028,18 @@ package body Gnat2Why.Driver is
             Timing_Phase_Completed
               (Timing, Null_Subp, "translation of standard");
 
-            Translate_CUnit;
+            declare
+               use Ada.Directories;
+               Old_Dir : constant String := Current_Directory;
+            begin
+               Set_Directory (To_String (Gnat2Why_Args.Why3_Dir));
 
-            Collect_Results;
+               Translate_CUnit;
+
+               Collect_Results;
+
+               Set_Directory (Old_Dir);
+            end;
             --  If the analysis is requested for a specific piece of code, we
             --  do not warn about useless pragma Annotate, because it's likely
             --  to be a false positive.
@@ -1219,8 +1248,8 @@ package body Gnat2Why.Driver is
    procedure Run_Gnatwhy3 (E : Entity_Id; Filename : String) is
       use Ada.Directories;
       use Ada.Containers;
-      Fn        : constant String := Compose (Current_Directory, Filename);
-      Old_Dir   : constant String := Current_Directory;
+      Fn        : constant String :=
+        Compose (To_String (Gnat2Why_Args.Why3_Dir), Filename);
       Why3_Args : String_Lists.List := Gnat2Why_Args.Why3_Args;
       Command   : GNAT.OS_Lib.String_Access :=
         GNAT.OS_Lib.Locate_Exec_On_Path (Why3_Args.First_Element);
@@ -1232,13 +1261,11 @@ package body Gnat2Why.Driver is
          raise Program_Error with "can't locate gnatwhy3";
       end if;
 
-      --  If the maximum is reached, or we are not allowed to run gnatwhy3 in
-      --  parallel, we wait for one process to finish first.
+      --  If the maximum number of concurrent processes is reached, wait for
+      --  one process to finish first. When Max_Subprocesses = 1 (sequential
+      --  mode), this ensures only one process runs at a time.
 
-      if Output_File_Map.Length = Max_Subprocesses
-        or else
-          (not Output_File_Map.Is_Empty
-           and then not Gnat2Why_Args.Parallel_Why3)
+      if Output_File_Map.Length >= Ada.Containers.Count_Type (Max_Subprocesses)
       then
          Collect_One_Result;
       end if;
@@ -1262,19 +1289,25 @@ package body Gnat2Why.Driver is
 
       Why3_Args.Delete_First (1);
 
-      Set_Directory (To_String (Gnat2Why_Args.Why3_Dir));
-
       --  We need to capture stderr of gnatwhy3 output in case of Out_Of_Memory
       --  messages.
 
       declare
          Args : Argument_List := Call.Argument_List_Of_String_List (Why3_Args);
          Fd   : File_Descriptor;
-         Name : Path_Name_Type;
+         Name : constant String :=
+           "RESULT-"
+           & Image (Pid_To_Integer (Current_Process_Id), 1)
+           & Image (Integer (E), 1)
+           & ".json";
+         --  We need a file name that will be unique to the current compilation
+         --  unit and the current entity. We cannot use mktemp (or anything
+         --  that uses mktemp under the hood), because on Windows mktemp can
+         --  only generate 26 names.
          Pid  : Process_Id;
 
       begin
-         Create_Temp_File (Fd, Name);
+         Fd := Create_Output_Text_File (Name);
          pragma Assert (Fd /= Invalid_FD);
          Pid :=
            GNAT.OS_Lib.Non_Blocking_Spawn
@@ -1283,10 +1316,18 @@ package body Gnat2Why.Driver is
               Output_File_Descriptor => Fd,
               Err_To_Out             => True);
 
-         --  If spawning fails, for whatever reason, then simply crash
+         --  If spawning fails, for whatever reason, then simply crash.
+         --  If we are spawning parallel gnatwhy3 processes, then also
+         --  indicate how many of them we already have.
 
          if Pid = Invalid_Pid then
-            raise Program_Error with "can't spawn gnatwhy3";
+            raise Program_Error
+              with
+                "can't spawn gnatwhy3"
+                & (if Gnat2Why_Args.Max_Why3_Processes > 1
+                   then
+                     "(#" & Image (Integer (Output_File_Map.Length), 1) & ')'
+                   else "");
          end if;
 
          Output_File_Map.Insert (Pid, Name);
@@ -1296,7 +1337,6 @@ package body Gnat2Why.Driver is
             Free (Arg);
          end loop;
       end;
-      Set_Directory (Old_Dir);
       Free (Command);
    end Run_Gnatwhy3;
 
@@ -1409,8 +1449,6 @@ package body Gnat2Why.Driver is
          end case;
       end Register_Symbol;
 
-      --  Start of processing for Translate_CUnit
-
    begin
       --  Translation of the __HEAP is hardcoded into the
       --  _gnatprove_standard.Main module.
@@ -1490,8 +1528,6 @@ package body Gnat2Why.Driver is
                 & GNAT.Source_Info.Enclosing_Entity);
          Close_Theory (Th, Kind => Standalone_Theory);
       end Generate_Empty_Axiom_Theory;
-
-      --  Start of processing for Translate_Entity
 
    begin
       --  Check that the global variables are cleared before and after this
@@ -1658,8 +1694,6 @@ package body Gnat2Why.Driver is
          Complete_Declaration (E);
       end Translate_Standard_Entity;
 
-      --  Start of processing for Translate_Standard_Package
-
    begin
       for S_Type in S_Types loop
          declare
@@ -1680,6 +1714,16 @@ package body Gnat2Why.Driver is
       Translate_Standard_Entity (Standard_Integer_32);
       Translate_Standard_Entity (Standard_Integer_64);
       Translate_Standard_Entity (Universal_Integer);
+
+      --  The following are referenced by front-end implementation of
+      --  Unsigned_Base_Range.
+
+      Translate_Standard_Entity (Standard_Short_Short_Unsigned);
+      Translate_Standard_Entity (Standard_Short_Unsigned);
+      Translate_Standard_Entity (Standard_Unsigned);
+      Translate_Standard_Entity (Standard_Long_Unsigned);
+      Translate_Standard_Entity (Standard_Long_Long_Unsigned);
+      Translate_Standard_Entity (Standard_Long_Long_Long_Unsigned);
 
    end Translate_Standard_Package;
 

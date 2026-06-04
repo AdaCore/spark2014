@@ -108,7 +108,7 @@ Here are overviews and examples of each kind of access type.
   :ref:`Borrowing` the designated value of the access type, granting temporary
   access to all or part of the object, such as recursive data structures,
   composite types, or formal containers. These access types may appear as formal
-  parameters of subprograms and as the return type of :ref:`Traversal
+  parameters of subprograms and as the result type of :ref:`Traversal
   Functions`, but they cannot be stored inside of composite types or converted
   to a named access-to-variable type.
 
@@ -140,7 +140,7 @@ Here are overviews and examples of each kind of access type.
   :ref:`Observing` the value of the access type, granting a temporary view of
   all or part of the object, such as recursive data structures, composite types,
   or formal containers. These access types may appear as formal parameters of
-  subprograms and as the return type of :ref:`Traversal Functions`, but they
+  subprograms and as the result type of :ref:`Traversal Functions`, but they
   cannot be stored inside of composite types or converted to a named
   access-to-constant type.
 
@@ -498,14 +498,14 @@ Traversal Functions
 -------------------
 
 In |SPARK|, it is possible to write a function that computes and returns an
-observer or a borrower of an input data structure, provided the traversed data
-structure is itself an access type. This is called a `traversal function`.
+observer or a borrower of an input data structure. This is called a
+`traversal function`.
 
 Observing Traversal Functions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-An `observing` traversal function takes an access type as its first parameter
-and has as its return type an anonymous access-to-constant type. The value
+An `observing` traversal function has at least one parameter
+and has as its result type an anonymous access-to-constant type. The value
 returned by the function should be a part of the first parameter.
 
 As an example, we can write a function which returns a
@@ -561,10 +561,10 @@ Borrowing Traversal Functions
 
 It is also possible to return a mutable access inside a data structure using a
 `borrowing` traversal function. Just like observing traversal functions,
-their borrowing counterparts take as a first parameter an access type, but they
-have as a return type an anonymous access-to-variable type. The function
-``Reference`` below is similar to ``Constant_Access`` except that both its
-parameter and its return type are mutable:
+their borrowing counterparts has at least one parameter, but they
+have as a result type an anonymous access-to-variable type. The function
+``Reference`` below is similar to ``Constant_Access`` except that its
+result type is mutable:
 
 .. code-block:: ada
 
@@ -756,7 +756,7 @@ As the contract of an access type is the only one which is known by |GNATprove|
 when checking indirect callers, |SPARK| requires that this contract is a valid
 approximation of the contract of every subprogram designated by an access
 objects of this type. More precisely, each time a value of a given
-access-to-subprogram type is created, |GNATprove| makes sur that:
+access-to-subprogram type is created, |GNATprove| makes sure that:
 
 * the precondition of the access-to-subprogram type if any (or the default
   precondition of True otherwise) is strong enough to imply the precondition of

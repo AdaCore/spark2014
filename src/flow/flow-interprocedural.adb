@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---              Copyright (C) 2013-2025, Capgemini Engineering              --
+--              Copyright (C) 2013-2026, Capgemini Engineering              --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -207,8 +207,6 @@ package body Flow.Interprocedural is
       begin
          FA.TDG.Add_Edge (V_A, V_B, EC_TDG);
       end Add_TD_Edge;
-
-      --  Start of processing for Add_Simple_Procedure_Dependency
 
    begin
       if Ekind (Called_Thing) /= E_Subprogram_Type

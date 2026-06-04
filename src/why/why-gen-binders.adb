@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2025, AdaCore                     --
+--                     Copyright (C) 2010-2026, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -25,9 +25,10 @@
 
 with Flow_Utility;           use Flow_Utility;
 with Gnat2Why.Util;          use Gnat2Why.Util;
-with Namet;                  use Namet;
+with Snames;                 use Snames;
 with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 with SPARK_Util.Types;       use SPARK_Util.Types;
+with SPARK_Util;             use SPARK_Util;
 with Why.Atree.Modules;      use Why.Atree.Modules;
 with Why.Gen.Arrays;         use Why.Gen.Arrays;
 with Why.Gen.Expr;           use Why.Gen.Expr;
@@ -217,49 +218,6 @@ package body Why.Gen.Binders is
          (To_Binder_Array
             (Get_Binders_From_Variables (Variables), Keep_Const => Keep),
           Ref_Allowed));
-
-   ---------------------------------------
-   -- Get_Binders_From_Contextual_Nodes --
-   ---------------------------------------
-
-   function Get_Binders_From_Contextual_Nodes
-     (Contextual_Nodes : Node_Sets.Set) return Item_Array
-   is
-      Binders : Item_Array (1 .. Natural (Contextual_Nodes.Length));
-      I       : Positive := 1;
-   begin
-      for N of Contextual_Nodes loop
-         case Nkind (N) is
-            when N_Target_Name         =>
-               pragma Assert (Target_Name /= Why_Empty);
-               Binders (I) :=
-                 Mk_Tmp_Item_Of_Entity
-                   (E => Empty, Id => Target_Name, Mutable => False);
-
-            when N_Attribute_Reference =>
-               if Attribute_Name (N) = Name_Old then
-                  Binders (I) :=
-                    Mk_Tmp_Item_Of_Entity
-                      (E       => Empty,
-                       Id      => Name_For_Old (Prefix (N)),
-                       Mutable => False);
-               else
-                  pragma Assert (Attribute_Name (N) = Name_Loop_Entry);
-                  Binders (I) :=
-                    Mk_Tmp_Item_Of_Entity
-                      (E       => Empty,
-                       Id      => Name_For_Loop_Entry (N),
-                       Mutable => False);
-               end if;
-
-            when others                =>
-               pragma Assert (Nkind (N) = N_Defining_Identifier);
-               Binders (I) := Ada_Ent_To_Why.Element (Symbol_Table, N);
-         end case;
-         I := I + 1;
-      end loop;
-      return Binders;
-   end Get_Binders_From_Contextual_Nodes;
 
    ---------------------------------
    -- Get_Binders_From_Expression --
@@ -647,8 +605,6 @@ package body Why.Gen.Binders is
               Typ      => Get_Typ (Name),
               Labels   => Get_Labels (Name));
       end Local_Name;
-
-      --  Start of processing for Localize_Binders
 
    begin
       for B of Binders loop
@@ -1239,8 +1195,6 @@ package body Why.Gen.Binders is
       end New_Arg_Type;
 
       Result : W_Binder_Array (Binders'Range);
-
-      --  Start of processing for New_Binders
 
    begin
       for B in Binders'Range loop

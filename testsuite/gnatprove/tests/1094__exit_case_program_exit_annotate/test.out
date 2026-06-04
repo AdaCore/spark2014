@@ -1,3 +1,5 @@
-foo.adb:2:14: error: aspect "Exit_Cases" with exit kind "Program_Exit" on ghost operations is not allowed in SPARK
-foo.adb:2:14: error: violation of aspect SPARK_Mode at line 1
+foo.adb:2:14: error: "Exit_Program" might exit the program abruptly
+foo.adb:2:14: error: a subprogram with the "Automatic_Instantiation" annotation shall have no side-effects
+foo.adb:9:14: error: "Exit_Program_2" might exit the program abruptly
+foo.adb:9:14: error: a subprogram with the "Higher_Order_Specialization" annotation shall have no side-effects
 gnatprove: error during flow analysis and proof

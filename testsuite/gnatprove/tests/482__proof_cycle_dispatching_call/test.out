@@ -1,18 +1,27 @@
 dispatching_call_contr.adb:6:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+dispatching_call_contr.adb:14:14: warning: potentially missing contract for "F" declared at line 20
+dispatching_call_contr.adb:14:14: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 dispatching_call_contr.adb:14:14: warning: subprogram "Foo" has no effect
 dispatching_call_contr.adb:14:50: medium: postcondition might fail [provers reached step limit before completing the proof]
-dispatching_call_contr.adb:20:16: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
+dispatching_call_contr.adb:20:16: warning: potentially missing contract for "F" declared at line 20
+dispatching_call_contr.adb:20:16: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 dispatching_call_contr.adb:20:19: warning: unused variable "V"
 dispatching_call_contr.adb:20:58: medium: postcondition might fail [provers reached step limit before completing the proof]
 dispatching_call_contr.adb:27:10: medium: implicit aspect Always_Terminates on "F" could be incorrect, call to "Foo" might be nonterminating [possible fix: annotate "Foo" with aspect Always_Terminates]
 dispatching_call_func.adb:6:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+dispatching_call_func.adb:14:14: warning: potentially missing contract for "F" declared at line 20
+dispatching_call_func.adb:14:14: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 dispatching_call_func.adb:14:14: warning: subprogram "Foo" has no effect
 dispatching_call_func.adb:14:50: medium: postcondition might fail [provers reached step limit before completing the proof]
-dispatching_call_func.adb:20:16: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
+dispatching_call_func.adb:20:16: warning: potentially missing contract for "F" declared at line 20
+dispatching_call_func.adb:20:16: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 dispatching_call_func.adb:20:19: warning: unused variable "V"
 dispatching_call_func.adb:20:58: info: postcondition proved (CVC5: 1 VC)
 dispatching_call_func.adb:27:10: medium: implicit aspect Always_Terminates on "F" could be incorrect, call to "Foo" might be nonterminating [possible fix: annotate "Foo" with aspect Always_Terminates]
-dispatching_call_proc.adb:14:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
+dispatching_call_proc.adb:14:13: warning: potentially missing contract for "Foo" declared at line 14
+dispatching_call_proc.adb:14:13: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 dispatching_call_proc.adb:14:64: medium: postcondition might fail [provers reached step limit before completing the proof]
+dispatching_call_proc.adb:20:17: warning: potentially missing contract for "Foo" declared at line 14
+dispatching_call_proc.adb:20:17: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 dispatching_call_proc.adb:20:17: warning: subprogram "F" has no effect
 dispatching_call_proc.adb:35:07: medium: implicit aspect Always_Terminates on "Foo" could be incorrect, dispatching call to "F" might be nonterminating

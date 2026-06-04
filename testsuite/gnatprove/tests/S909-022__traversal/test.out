@@ -3,7 +3,9 @@ traversals.adb:16:07: info: dynamic accessibility check proved (Trivial)
 traversals.adb:19:13: info: implicit aspect Always_Terminates on "At_End_Borrow" has been proved, subprogram will terminate
 traversals.adb:20:07: info: dynamic accessibility check proved (Trivial)
 traversals.adb:24:13: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
-traversals.adb:24:13: warning: function contract might not be available on recursive calls [contracts-recursive]
+traversals.adb:24:13: warning: "Length" is recursive; (implicit) contract of mutally recursive functions might not be available on calls from contracts and assertions [contracts-recursive]
+traversals.adb:24:13: warning: its contract might be missing
+traversals.adb:24:13: warning: potentially missing contract for "Length" declared at line 32
 traversals.adb:26:14: info: pointer dereference check proved (CVC5: 1 VC)
 traversals.adb:27:43: info: subprogram variant proved (Trivial)
 traversals.adb:27:52: info: pointer dereference check proved (CVC5: 1 VC)
@@ -14,7 +16,9 @@ traversals.adb:30:80: info: subprogram variant proved (Trivial)
 traversals.adb:30:89: info: pointer dereference check proved (CVC5: 1 VC)
 traversals.adb:30:94: info: overflow check proved (CVC5: 2 VC)
 traversals.adb:32:13: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
-traversals.adb:32:13: warning: function contract might not be available on recursive calls [contracts-recursive]
+traversals.adb:32:13: warning: "Length" is recursive; (implicit) contract of mutally recursive functions might not be available on calls from contracts and assertions [contracts-recursive]
+traversals.adb:32:13: warning: its contract might be missing
+traversals.adb:32:13: warning: potentially missing contract for "Length" declared at line 24
 traversals.adb:34:14: info: pointer dereference check proved (CVC5: 1 VC)
 traversals.adb:35:43: info: subprogram variant proved (Trivial)
 traversals.adb:35:52: info: pointer dereference check proved (CVC5: 1 VC)

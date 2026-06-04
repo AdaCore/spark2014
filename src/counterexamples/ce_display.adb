@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2016-2025, AdaCore                     --
+--                     Copyright (C) 2016-2026, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -48,6 +48,7 @@ with SPARK_Atree.Entities;        use SPARK_Atree.Entities;
 with SPARK_Definition.Annotate;   use SPARK_Definition.Annotate;
 with SPARK_Util;                  use SPARK_Util;
 with SPARK_Util.Types;            use SPARK_Util.Types;
+with String_Utils;                use String_Utils;
 
 package body CE_Display is
 
@@ -148,8 +149,6 @@ package body CE_Display is
    is
       use Entity_To_Extended_Value_Maps;
       Ordered_Variables : Name_Ordered_Entities_Sets.Set;
-
-      --  Start of processing for Build_Pretty_Line
 
    begin
       Pretty_Line_Cntexmp_Arr := Cntexample_Elt_Lists.Empty_List;
@@ -300,8 +299,6 @@ package body CE_Display is
          Variables               : Entity_To_Extended_Value_Maps.Map;
          Pretty_Line_Cntexmp_Arr : Cntexample_Elt_Lists.List;
 
-         --  Start of processing for Create_Pretty_Line
-
       begin
          Parse_Counterexample_Line (Line_Cntexmp, Variables);
 
@@ -392,8 +389,6 @@ package body CE_Display is
 
       Variables : Entity_To_Extended_Value_Maps.Map;
 
-      --  Start of processing for Create_Pretty_Cntexmp
-
    begin
       for File_C in Remapped_Cntexmp.Iterate loop
          declare
@@ -448,11 +443,8 @@ package body CE_Display is
             --  Other_Lines field because Remap_VC_Info was applied.
             if Is_Ada_File_Name (File)
               and then
-                (not Cntexample_Line_Maps.Is_Empty
-                       (Pretty_File_Cntexmp.Other_Lines)
-                 or else
-                   not Previous_Line_Maps.Is_Empty
-                         (Pretty_File_Cntexmp.Previous_Lines))
+                not (Pretty_File_Cntexmp.Other_Lines.Is_Empty
+                     and then Pretty_File_Cntexmp.Previous_Lines.Is_Empty)
             then
                Pretty_Cntexmp.Include (File, Pretty_File_Cntexmp);
             end if;
@@ -505,8 +497,6 @@ package body CE_Display is
         Cntexmp.Find (File);
       Cntexmp_Line : Cntexample_Elt_Lists.List :=
         Cntexample_Elt_Lists.Empty_List;
-
-      --  Start of processing for Get_Cntexmp_One_Liner
 
    begin
       if Cntexample_File_Maps.Has_Element (File_Cur) then
@@ -660,8 +650,6 @@ package body CE_Display is
         Process_Entities_For_One_Liner (Accumulate_Expl_For_Entity);
 
       Cntexmp : Cntexample_File_Maps.Map;
-
-      --  Start of processing for Get_Environment_One_Liner
 
    begin
       --  Find the relevant expression and accumulate information about used
@@ -1004,8 +992,8 @@ package body CE_Display is
                --  references in the map. It might not be the case if parts of
                --  the prefix is not evaluated.
 
-               case Attribute_Name (N) is
-                  when Snames.Name_Old        =>
+               case Get_Attribute_Id (Attribute_Name (N)) is
+                  when Attribute_Old        =>
                      declare
                         Variables : constant Flow_Id_Sets.Set :=
                           Get_Variables_For_Proof (Prefix (N), Prefix (N));
@@ -1020,7 +1008,7 @@ package body CE_Display is
                      end;
                      return Atree.Skip;
 
-                  when Snames.Name_Loop_Entry =>
+                  when Attribute_Loop_Entry =>
                      declare
                         Variables : constant Flow_Id_Sets.Set :=
                           Get_Variables_For_Proof (Prefix (N), Prefix (N));
@@ -1037,7 +1025,7 @@ package body CE_Display is
                      end;
                      return Atree.Skip;
 
-                  when Snames.Name_Result     =>
+                  when Attribute_Result     =>
                      declare
                         E : constant Entity_Id :=
                           SPARK_Atree.Entity (Prefix (N));
@@ -1046,7 +1034,7 @@ package body CE_Display is
                      end;
                      return Atree.Skip;
 
-                  when others                 =>
+                  when others               =>
                      null;
                end case;
 
@@ -1445,7 +1433,7 @@ package body CE_Display is
 
       procedure Search_Labels
         (S : in out Supp_Lines.Interval_Set;
-         L : S_String_List.List;
+         L : String_Lists.List;
          V : Cntexmp_Value_Ptr);
       --  This procedure fills S with new values corresponding to branches that
       --  should not be taken for display of counterexamples.
@@ -1652,44 +1640,36 @@ package body CE_Display is
 
       procedure Search_Labels
         (S : in out Supp_Lines.Interval_Set;
-         L : S_String_List.List;
+         L : String_Lists.List;
          V : Cntexmp_Value_Ptr) is
       begin
          for Elt of L loop
-            declare
-               Str : constant String := To_String (Elt);
-            begin
+            if Elt'Length > 10
+              and then Elt (Elt'First .. Elt'First + 9) = "branch_id="
+            then
 
-               if Str'Length > 10
-                 and then Str (Str'First .. Str'First + 9) = "branch_id="
-               then
+               declare
+                  N : constant Node_Id :=
+                    Get_Entity_Id (False, Elt (Elt'First + 10 .. Elt'Last));
+               begin
+                  if Present (N) and V.T = Cnt_Boolean then
 
-                  declare
-                     N : constant Node_Id :=
-                       Get_Entity_Id (False, Str (Str'First + 10 .. Str'Last));
-                  begin
-                     if Present (N) and V.T = Cnt_Boolean then
+                     if Nkind (N) in N_If_Statement | N_Elsif_Part then
+                        Supp_Lines.Insert_Union (S, Get_Interval_If (N, V.Bo));
 
-                        if Nkind (N) in N_If_Statement | N_Elsif_Part then
-                           Supp_Lines.Insert_Union
-                             (S, Get_Interval_If (N, V.Bo));
+                     elsif Nkind (N) = N_Case_Statement_Alternative then
+                        Supp_Lines.Insert_Union
+                          (S, Get_Interval_Case (N, V.Bo));
 
-                        elsif Nkind (N) = N_Case_Statement_Alternative then
-                           Supp_Lines.Insert_Union
-                             (S, Get_Interval_Case (N, V.Bo));
-
-                        else
-                           null;
-                        end if;
+                     else
+                        null;
                      end if;
-                  end;
-               end if;
-            end;
+                  end if;
+               end;
+            end if;
          end loop;
 
       end Search_Labels;
-
-      --  Start of processing for Remove_Irrelevant_Branches
 
       Remapped_Cntexmp : Cntexample_File_Maps.Map := Cntexmp;
       --  Temporary variable containing the branch to remove in files

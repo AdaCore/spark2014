@@ -3,11 +3,17 @@
 from e3.env import Env
 from e3.diff import diff
 from e3.fs import find
-from e3.testsuite import logger, Testsuite
+from e3.testsuite import CleanupMode, logger, Testsuite
 from e3.testsuite.control import AdaCoreLegacyTestControlCreator, TestControl
 from e3.testsuite.driver import TestDriver
 from e3.testsuite.driver.adacore import AdaCoreLegacyTestDriver
-from e3.testsuite.driver.diff import DiffTestDriver, OutputRefiner, RefiningChain
+from e3.testsuite.driver.diff import (
+    DiffTestDriver,
+    LineByLine,
+    OutputRefiner,
+    RefiningChain,
+    Substitute,
+)
 from e3.testsuite.result import binary_repr, FailureReason, Log, truncated
 from e3.testsuite.testcase_finder import ParsedTest, ProbingError, TestFinder
 import e3.yaml
@@ -21,13 +27,26 @@ import sys
 import tempfile
 import time
 import yaml
-from typing import AnyStr, List, Optional
+from typing import AnyStr, List, Optional, Tuple, Union
+from shutil import rmtree
+
+sys.path.append(os.path.join(os.path.dirname(__file__), "lib", "python"))
+
+from test_support import (  # noqa: E402
+    do_flow,
+    no_crash,
+    prepare_sparklib_bodymode,
+    prove_all,
+    sparklib_bodymode_path_env,
+)
 
 # name for the entry in the test_env dict for the subprogram to call
 call_entry = "call_name"
 # name for the entry in the test_env dict for arguments to
 # prove_all/do_flow/no_crash calls
 args_entry = "call_args"
+# name for the entry in the test dict for the origin of the test
+test_origin = "origin"
 
 
 def is_sublist(main_list, sublist):
@@ -83,11 +102,13 @@ class SPARKControlCreator(AdaCoreLegacyTestControlCreator):
         self.condition_env = {} if env is None else env
 
 
-class ProofTestDriver(AdaCoreLegacyTestDriver):
-    """Driver for all SPARK tests. This test generates a test.py if not already
-    there. The generated test.py contains a call to the method in
-    self.test_env[call_entry], with the arguments in
-    self.test_env[args_entry]."""
+class SPARKLegacyTestDriver(AdaCoreLegacyTestDriver):
+    """Legacy driver for SPARK tests
+
+    This driver leverages from the flexibility in AdaCoreLegacyTestDriver. It
+    expects a "test.py" script in its directory and passes this script to the
+    AdaCoreLegacyTestDriver.
+    """
 
     copy_test_directory = True
 
@@ -98,14 +119,6 @@ class ProofTestDriver(AdaCoreLegacyTestDriver):
 
     def get_script_command_line(self):
         script_file = self.working_dir("src", "test.py")
-        if not os.path.isfile(script_file):
-            assert call_entry in self.test_env
-            assert args_entry in self.test_env
-            argdict = self.test_env[args_entry]
-            with open(script_file, "w") as fn:
-                fn.write("from test_support import *" + "\n")
-                fn.write("args = " + str(argdict) + "\n")
-                fn.write(self.test_env[call_entry] + "(**args)" + "\n")
         self.test_control.opt_results["CMD"] = script_file
         return super().get_script_command_line()
 
@@ -129,12 +142,112 @@ class SortLinesRefiner(OutputRefiner):
         return "\n".join(lines)
 
 
-class SPARKDiffTestDriver(DiffTestDriver):
-    """Base class used by RACTestDriver and UGTestDriver to factor common
-    code.
+class StripCarriageReturnRefiner(OutputRefiner):
+    """Workaround for tools on Windows that emit \\r\\r\\n instead of \\r\\n.
 
-    A requirement is that children define a variable self.test_process that
-    contains the process used for testing.
+    See eng/gpr/gpr-issues#806.
+    """
+
+    def refine(self, output):
+        return output.replace("\r\r\n", "\r\n")
+
+
+class SPARKBasicTestDriver(DiffTestDriver):
+    """Driver for SPARK tests without a `test.py` script.
+
+    Calls a dedicated testing function directly in the same Python process. The
+    supported functions are defined in the `_function_mapping` below.
+    """
+
+    copy_test_directory = True
+    diff_ignore_white_chars = True
+
+    _function_mapping = {
+        "do_flow": do_flow,
+        "prove_all": prove_all,
+        "no_crash": no_crash,
+    }
+
+    _timeout_occurred = False
+    _has_empty_baseline = False
+
+    @property
+    def test_control_creator(self):
+        assert isinstance(self.env.discs, list)
+        return SPARKControlCreator(self.env.discs, self.test_env)
+
+    @property
+    def baseline(self) -> Tuple[Optional[str], Union[str, bytes], bool]:
+        if self._has_empty_baseline:
+            return (None, "", False)
+
+        return super().baseline
+
+    def set_up(self) -> None:
+        super().set_up()
+        assert self.test_control.opt_results is not None
+
+        # Unless we are in the baseline rewrite mode consider a missing
+        # baseline to indicate that the output should be empty.
+        if not self.rewrite_baseline:
+            baseline = self.test_control.opt_results["OUT"]
+            self._original_baseline_file = self.test_dir(baseline)
+            if not os.path.isfile(self._original_baseline_file):
+                self._has_empty_baseline = True
+
+    @property
+    def output_refiners(self) -> List[OutputRefiner[bytes]]:
+        return [
+            # Remove occurences of the working dir
+            LineByLine(Substitute(self.test_env["working_dir"] + os.sep, "")),
+        ]
+
+    def run(self):
+        assert call_entry in self.test_env
+        assert args_entry in self.test_env
+
+        function_name = self.test_env[call_entry]
+        args = self.test_env[args_entry]
+
+        args["cwd"] = self.test_env["working_dir"]
+        # The call below gets the timeout defined in test.yaml, if present.
+        # Otherwise, the default value specified here will be used.
+        args["timeout"] = self.test_env.get("timeout", 780)
+        args["logger"] = self.output
+
+        if function_name not in self._function_mapping:
+            supported_functions = ", ".join(sorted(self._function_mapping.keys()))
+            raise RuntimeError(
+                f"Unknown call entry: {function_name!r}. "
+                f"Supported entries: {supported_functions}"
+            )
+
+        try:
+            # Execute the function directly and capture its output
+            self._function_mapping[function_name](**args)
+        except subprocess.TimeoutExpired:
+            self._timeout_occurred = True
+
+    def compute_failures(self) -> List[str]:
+        # First, do compute the failures and let the baseline rewriting
+        # machinery do its magic on the baseline it is given (i.e. the copy in
+        # the working directory: see set_up).
+        result = super().compute_failures()
+
+        if self._timeout_occurred:
+            self.result.failure_reasons.add(FailureReason.TIMEOUT)
+            result.append("test timed out")
+
+        return result
+
+
+class ProcessDiffTestDriver(DiffTestDriver):
+    """A variant of DiffTestDriver for using with an external process
+
+    It is assumed that the child classes launch an external process via the
+    inherited shell(...) function. It is mandatory for the children to define a
+    variable self.test_process containing the respective ProcessResult
+    instance.
     """
 
     def compute_failures(self) -> List[str]:
@@ -152,7 +265,7 @@ class SPARKDiffTestDriver(DiffTestDriver):
         return result
 
 
-class RACTestDriver(SPARKDiffTestDriver):
+class RACTestDriver(ProcessDiffTestDriver):
 
     _baseline = None
 
@@ -203,6 +316,7 @@ end Test;
             "-P",
             self.gprfile,
             "--quiet",
+            "--debug-no-cache-output",
             "--debug-exec-rac",
             "--no-inlining",
             "--warnings=off",
@@ -213,7 +327,7 @@ end Test;
         self.test_process = self.shell(cmd, analyze_output=True, catch_error=False)
 
 
-class UGTestDriver(SPARKDiffTestDriver):
+class UGTestDriver(ProcessDiffTestDriver):
     """Simple test driver (in principle) that just runs a fixed gnatprove
     command on the UG tests. The output is sorted before comparison as we
     have observed diffs in the order of file processing (for the tests that
@@ -225,7 +339,11 @@ class UGTestDriver(SPARKDiffTestDriver):
 
     copy_test_directory = True
 
-    output_refiners = [NoEmptyOutputRefiner(), SortLinesRefiner()]
+    output_refiners = [
+        StripCarriageReturnRefiner(),
+        NoEmptyOutputRefiner(),
+        SortLinesRefiner(),
+    ]
 
     @property
     def test_control_creator(self):
@@ -376,6 +494,7 @@ class UGTestDriver(SPARKDiffTestDriver):
             gprfiles[0],
             "-f",
             "-q",
+            "--debug-no-cache-output",
             "--level=2",
             "--timeout=30",
             "-A",
@@ -461,10 +580,11 @@ class SPARKTestFinder(TestFinder):
         """
         parent_name = os.path.dirname(dirpath)
         testname = os.path.basename(dirpath)
+        parent_dir = os.path.basename(parent_name)
         allowed_testdirs = ["tests", "internal", "sparklib"]
         # If the dir is not a direct subdir of <root_dir/tests>, skip it
         if (
-            os.path.basename(parent_name) not in allowed_testdirs
+            parent_dir not in allowed_testdirs
             or os.path.dirname(parent_name) != self.root_dir
         ):
             return None
@@ -500,6 +620,8 @@ class SPARKTestFinder(TestFinder):
         else:
             test_env = {}
 
+        test_env[test_origin] = "main" if parent_dir == "tests" else parent_dir
+
         # If this is not a large test, but only large was requested, skip
         # test. The "always_fail" test is exempted from this check to include
         # it in both large and non-large testsuites.
@@ -519,14 +641,15 @@ class SPARKTestFinder(TestFinder):
         if "__rac" in testname:
             return ParsedTest(testname, RACTestDriver, {}, dirpath)
 
-        # If the test contains a test.py, we use the AdaCoreLegacyTestDriver,
-        # otherwise we use the proof/flow driver
-        if "test.py" in filenames or "test.cmd" in filenames:
+        # If the test contains a test.py, we use the SPARKLegacyTestDriver
+        if "test.py" in filenames:
             if "prove_all" in test_env or "do_flow" in test_env:
                 logger.warning(
                     '{}: "test.py" file is present, so "prove_all" '
                     'and "do_flow" ignored in "test.yaml"'.format(testname)
                 )
+            return ParsedTest(testname, SPARKLegacyTestDriver, test_env, dirpath)
+
         else:
             # if it's a flow test, we set the call to do_flow, and if no
             # do_flow entry is present, we define empty args.
@@ -558,15 +681,26 @@ class SPARKTestFinder(TestFinder):
                     if "no_crash" in test_env
                     else test_env["prove_all"] if "prove_all" in test_env else {}
                 )
-        # copy replay info into test_env[args_entry] if not already present:
+
+        # Copy replay info into test_env[args_entry] if not already present:
         if "replay" in test_env and "replay" not in test_env[args_entry]:
             test_env[args_entry]["replay"] = test_env["replay"]
-        # This is a valid test, return the ParsedTest object
-        return ParsedTest(testname, ProofTestDriver, test_env, dirpath)
+
+        # By default we'll use the ProofTestDriver to call the entry point
+        # directly
+        return ParsedTest(testname, SPARKBasicTestDriver, test_env, dirpath)
 
 
 class SPARKTestsuite(Testsuite):
     """Testsuite for SPARK."""
+
+    def setup_shared_sparklib_bodymode(self):
+        """Create the shared bodymode SPARKlib tree for this run."""
+        self.shared_sparklib_bodymode_dir = os.path.join(
+            self.working_dir, "sparklib_bodymode"
+        )
+        project_path = prepare_sparklib_bodymode(self.shared_sparklib_bodymode_dir)
+        os.environ[sparklib_bodymode_path_env] = project_path
 
     @property
     def test_finders(self):
@@ -688,6 +822,8 @@ class SPARKTestsuite(Testsuite):
             self.env.discs += ["large"]
         else:
             self.env.only_large = False
+        self.shared_sparklib_bodymode_dir = None
+        self.setup_shared_sparklib_bodymode()
         if os.path.exists("mass_xfail.yaml"):
             with open("mass_xfail.yaml", "r") as file:
                 self.env.skipped_reasons = yaml.safe_load(file)
@@ -706,6 +842,12 @@ class SPARKTestsuite(Testsuite):
     def tear_down(self):
         if self.why3_process:
             self.why3_process.kill()
+        if (
+            self.shared_sparklib_bodymode_dir is not None
+            and self.env.cleanup_mode != CleanupMode.NONE
+            and os.path.isdir(self.shared_sparklib_bodymode_dir)
+        ):
+            rmtree(self.shared_sparklib_bodymode_dir)
         super().tear_down()
 
 

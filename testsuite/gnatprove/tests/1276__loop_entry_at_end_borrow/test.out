@@ -1,0 +1,18 @@
+test.adb:16:13: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
+test.adb:16:13: warning: "Length" is recursive; its implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
+test.adb:17:24: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+test.adb:17:31: info: predicate check proved (Trivial: 1 VC)
+test.adb:17:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+test.adb:17:35: info: predicate check proved (Trivial: 1 VC)
+test.adb:17:35: info: subprogram variant proved (Trivial)
+test.adb:17:44: info: pointer dereference check proved (CVC5: 1 VC)
+test.adb:20:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
+test.adb:20:89: info: dynamic accessibility check proved (Trivial)
+test.adb:28:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
+test.adb:28:13: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
+test.adb:28:16: info: predicate check proved (Trivial: 2 VC)
+test.adb:28:38: info: predicate check proved (Trivial: 2 VC)
+test.adb:29:18: info: predicate check proved (Trivial: 2 VC)
+test.adb:29:61: info: predicate check proved (Trivial: 2 VC)
+test.adb:30:11: info: pointer dereference check proved (CVC5: 1 VC)
+test.adb:31:16: info: pointer dereference check proved (CVC5: 1 VC)

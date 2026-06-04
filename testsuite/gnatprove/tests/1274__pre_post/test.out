@@ -1,0 +1,7 @@
+main.adb:7:29: error: "F" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
+main.adb:7:29: error: separate subprogram declaration from subprogram body to allow calling it from SPARK code
+main.adb:7:29: error: violation of aspect SPARK_Mode at line 1
+main.adb:15:28: error: "F" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
+main.adb:15:28: error: separate subprogram declaration from subprogram body to allow calling it from SPARK code
+main.adb:15:28: error: violation of aspect SPARK_Mode at line 1
+gnatprove: error during flow analysis and proof

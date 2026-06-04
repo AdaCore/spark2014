@@ -12,7 +12,7 @@ div_lemmas.adb:37:16: info: division check proved (CVC5: 1 VC)
 div_lemmas.adb:40:42: info: initialization of "Res" proved
 div_lemmas.adb:42:14: info: postcondition proved (colibri: 1 VC)
 div_lemmas.adb:45:16: high: float overflow check might fail (e.g. when X = 2.8753846E+25 and Y = 4.1231217E-34) [reason for check: result of floating-point division must be bounded] [provers reached step limit before completing the proof]
-div_lemmas.adb:45:16: info: division check proved (CVC5: 1 VC)
+div_lemmas.adb:45:16: info: division check proved (Z3: 1 VC)
 div_lemmas.adb:48:04: info: initialization of "X" proved
 div_lemmas.adb:48:07: info: initialization of "Y" proved
 div_lemmas.adb:53:04: info: precondition proved (CVC5: 1 VC)

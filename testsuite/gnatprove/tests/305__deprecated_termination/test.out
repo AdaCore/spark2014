@@ -4,9 +4,9 @@ main.adb:4:11: warning: terminating annotation is implicit on functions
 main.adb:6:04: warning: analyzing unreferenced procedure "P1" [unreferenced-procedure]
 main.adb:6:18: info: initialization of "X" proved
 main.adb:7:06: warning: Terminating, Always_Return, and Might_Not_Return annotations are deprecated, ignored [deprecated-terminating]
-main.adb:7:06: warning: replace "with Annotate => (GNATprove, always_return)" by "with Always_Terminates"
+main.adb:7:06: warning: replace aspect "Annotate => (GNATprove, Always_Return[, ...])" by "with Always_Terminates"
 main.adb:14:06: warning: Terminating, Always_Return, and Might_Not_Return annotations are deprecated, ignored [deprecated-terminating]
-main.adb:14:06: warning: replace "with Annotate => (GNATprove, always_return)" by "with Always_Terminates"
+main.adb:14:06: warning: replace aspect "Annotate => (GNATprove, Always_Return[, ...])" by "with Always_Terminates"
 main.adb:18:13: info: implicit aspect Always_Terminates on "F2" has been proved, subprogram will terminate
 main.adb:19:04: warning: Terminating, Always_Return, and Might_Not_Return annotations are deprecated, ignored [deprecated-terminating]
 main.adb:19:04: warning: terminating annotation is implicit on functions
@@ -14,6 +14,6 @@ main.adb:21:14: info: add a contract to analyze it separately from calling conte
 main.adb:21:14: info: local subprogram "P2" only analyzed in the context of calls [info-unrolling-inlining]
 main.adb:21:18: info: initialization of "X" proved
 main.adb:26:04: warning: Terminating, Always_Return, and Might_Not_Return annotations are deprecated, ignored [deprecated-terminating]
-main.adb:26:04: warning: replace "pragma Annotate (GNATprove, always_return, ...)" by "with Always_Terminates" on the corresponding entity
+main.adb:26:04: warning: replace "pragma Annotate (GNATprove, Always_Return[, ...])" by "with Always_Terminates" on the corresponding entity
 main.adb:29:07: warning: Terminating, Always_Return, and Might_Not_Return annotations are deprecated, ignored [deprecated-terminating]
-main.adb:29:07: warning: replace "pragma Annotate (GNATprove, always_return, ...)" by "with Always_Terminates" on the corresponding entity
+main.adb:29:07: warning: replace "pragma Annotate (GNATprove, Always_Return[, ...])" by "with Always_Terminates" on the corresponding entity

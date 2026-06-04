@@ -1,0 +1,8 @@
+test.adb:25:35: info: range check proved (CVC5: 2 VC)
+test.adb:29:14: warning: subprogram "Test" has no effect
+test.adb:31:22: medium: assertion might fail [possible fix: subprogram at line 29 should mention X and Y in a precondition] [provers reached step limit before completing the proof]
+test.adb:31:23: medium: discriminant check might fail [possible fix: subprogram at line 29 should mention X in a precondition] [provers reached step limit before completing the proof]
+test.adb:31:35: high: operation on unchecked union type will raise Program_Error [possible explanation: left operand should have inferable discriminants]
+test.adb:31:38: medium: discriminant check might fail [possible fix: subprogram at line 29 should mention Y in a precondition] [provers reached step limit before completing the proof]
+test.adb:34:42: info: discriminant check proved (CVC5: 1 VC)
+test.adb:35:42: info: discriminant check proved (CVC5: 1 VC)

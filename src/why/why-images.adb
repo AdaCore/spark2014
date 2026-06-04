@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2011-2025, AdaCore                     --
+--                     Copyright (C) 2011-2026, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -296,8 +296,6 @@ package body Why.Images is
       Num  : constant Uint := Numerator (Value);
       Den  : constant Uint := Denominator (Value);
       Base : constant Nat := Rbase (Value);
-
-      --  Start of processing for P
 
    begin
       --  ??? Same remark as in the case of integer constants:

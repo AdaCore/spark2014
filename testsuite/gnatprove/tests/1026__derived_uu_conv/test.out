@@ -1,0 +1,1 @@
+main.adb:25:19: high: operation on unchecked union type will raise Program_Error [possible explanation: source of conversion should have inferrable discriminants]

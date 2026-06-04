@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2025, AdaCore                     --
+--                     Copyright (C) 2010-2026, AdaCore                     --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -143,8 +143,6 @@ package body Assumptions is
                return "absence of run-time errors";
          end case;
       end Human_Readable;
-
-      --  Start of processing for To_String
 
    begin
       return Human_Readable (T.Predicate) & " of " & Subp_Name (T.Arg);

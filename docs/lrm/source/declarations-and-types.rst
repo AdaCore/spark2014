@@ -382,7 +382,13 @@ Type Extensions
 Dispatching Operations of Tagged Types
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-No extensions or restrictions.
+.. container:: heading
+
+   Legality Rules
+
+
+1. A call to a primitive of a tagged type with an untagged partial view shall
+   not be dispatching.
 
 Abstract Types and Subprograms
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -778,6 +784,14 @@ The following operations are said to be *move* operations:
   return object (see Ada RM 6.5) of a type containing subcomponents of a
   named access-to-variable type. [This includes the case of an object of
   named access-to-variable type.]
+
+- An allocator of a named access-to-constant type whose designated type contains
+  subcomponents of a named access-to-variable type if the initial value is not
+  a constant part of an object.
+
+- A conversion from a named access-to-variable type to a named
+  access-to-constant type occurring directly inside an assignment operation
+  if the converted expression is not a constant part of an object.
 
 [Redundant: Passing a parameter by reference is not a move operation.]
 

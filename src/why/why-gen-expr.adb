@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2025, AdaCore                     --
+--                     Copyright (C) 2010-2026, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -152,7 +152,7 @@ package body Why.Gen.Expr is
       Modulus_Val : Uint;
       BV_Type     : W_Type_Id;
    begin
-      if not Is_Modular_Integer_Type (Ty) then
+      if not Has_Modular_Operations (Ty) then
          return T;
       end if;
 
@@ -855,8 +855,6 @@ package body Why.Gen.Expr is
       --  which is 64-bits in GNAT for native platforms, to minimize tricks to
       --  just the value 2**64 - 1, which needs to be expressed based on the
       --  converted value of 2**63 - 1.
-
-      --  Start of processing for Initialize_Tables_Nth_Roots
 
    begin
       Roots_8_Bits :=
@@ -1694,14 +1692,6 @@ package body Why.Gen.Expr is
              Is_Init_Wrapper_Type (From) and Is_Init_Wrapper_Type (To));
 
    begin
-      --  The case where we are converting from an unchecked union type
-      --  to a type without unchecked union should not occur as we do not
-      --  support discriminants on derived type currently. If we were to
-      --  support them, we would need to detect this case and emit a
-      --  check message.
-
-      pragma Assert (Is_Unchecked_Union (R) = Is_Unchecked_Union (L));
-
       --  If From has relaxed initialization and not Base, introduce a
       --  conversion and possibly a check.
 
@@ -2068,9 +2058,7 @@ package body Why.Gen.Expr is
       --  on int, as we don't know that the value of the expression fits in a
       --  bitvector.
 
-      if Is_Modular_Integer_Type (Ty)
-        and then not Has_No_Bitwise_Operations_Annotation (Ty)
-      then
+      if Is_Bitvector_Type_In_Why (Ty) then
 
          --  The type of expression is int, so we apply the range check on int
 
@@ -2419,8 +2407,6 @@ package body Why.Gen.Expr is
       Range_Type : Entity_Id := Empty;
       Check_Kind : Scalar_Check_Kind := RCK_Range;
 
-      --  Start of processing for Insert_Scalar_Conversion
-
    begin
       --  Do nothing when
       --  1. From = To, and
@@ -2514,8 +2500,6 @@ package body Why.Gen.Expr is
 
       --  Set to True after range check has been applied
       Range_Check_Applied : Boolean := False;
-
-      --  Start of processing for Insert_Scalar_Conversion
 
    begin
       --  If the check is a range check on a floating-point type, and we can
@@ -2762,9 +2746,7 @@ package body Why.Gen.Expr is
         and then From /= EW_Bool_Type
         and then
           (Base_Why_Type (Range_Type) = Cur
-           or else
-             (Has_Modular_Integer_Type (Range_Type)
-              and then not Has_No_Bitwise_Operations_Annotation (Range_Type)))
+           or else Is_Bitvector_Type_In_Why (Range_Type))
       then
          Range_Check_Applied := True;
          Result :=
@@ -3766,10 +3748,22 @@ package body Why.Gen.Expr is
       Base      : W_Type_Id := Why_Empty;
       T         : W_Expr_Id;
 
+      --  Detect types with No_Wrap_Around annotation. We do not
+      --  need modulus for these types, and must additionally check
+      --  for overflow in program domain. The machinery for these
+      --  additional SPARK-mandated checks is significantly
+      --  different from Ada-mandated checks. We cannot delay them
+      --  like Ada-mandated overflow checks because we may
+      --  translate to bitvector types, which wraps around. This
+      --  means checking the result will typically be too late to
+      --  detect overflow.
+
+      No_Wrap_Around       : constant Boolean :=
+        Has_No_Wrap_Around_Annotation (Return_Type);
       Check_No_Wrap_Around : constant Boolean :=
         Domain = EW_Prog
-        and then Op in N_Op_Add | N_Op_Subtract | N_Op_Multiply | N_Op_Expon
-        and then Has_No_Wrap_Around_Annotation (Return_Type);
+        and then No_Wrap_Around
+        and then Op in N_Op_Add | N_Op_Subtract | N_Op_Multiply | N_Op_Expon;
 
    begin
       case Op is
@@ -3817,9 +3811,7 @@ package body Why.Gen.Expr is
                     Expr     => Right,
                     To       => Base);
 
-               if Has_Modular_Integer_Type (Return_Type)
-                 and then
-                   not Has_No_Bitwise_Operations_Annotation (Return_Type)
+               if Is_Bitvector_Type_In_Why (Return_Type)
                  and then Non_Binary_Modulus (Return_Type)
                then
                   T :=
@@ -3842,7 +3834,7 @@ package body Why.Gen.Expr is
                        Args     => (1 => Left_Rep, 2 => Right_Rep),
                        Typ      => Base);
 
-                  if not Check_No_Wrap_Around then
+                  if not No_Wrap_Around then
                      T := Apply_Modulus (Op, Return_Type, T, Domain);
                   end if;
                end if;
@@ -3945,9 +3937,7 @@ package body Why.Gen.Expr is
                           Typ      => Base);
                   end;
 
-               elsif Has_Modular_Integer_Type (Return_Type)
-                 and then
-                   not Has_No_Bitwise_Operations_Annotation (Return_Type)
+               elsif Is_Bitvector_Type_In_Why (Return_Type)
                  and then Non_Binary_Modulus (Return_Type)
                then
                   T :=
@@ -3981,7 +3971,7 @@ package body Why.Gen.Expr is
                           Typ      => Base);
                   end;
 
-                  if not Check_No_Wrap_Around then
+                  if not No_Wrap_Around then
                      T := Apply_Modulus (Op, Return_Type, T, Domain);
                   end if;
                end if;
@@ -4156,9 +4146,7 @@ package body Why.Gen.Expr is
             begin
                Base := Typ;
 
-               if Has_Modular_Integer_Type (Return_Type)
-                 and then
-                   not Has_No_Bitwise_Operations_Annotation (Return_Type)
+               if Is_Bitvector_Type_In_Why (Return_Type)
                  and then Non_Binary_Modulus (Return_Type)
                then
                   T :=
@@ -4183,7 +4171,7 @@ package body Why.Gen.Expr is
                        Args     => (1 => Value, 2 => Expon),
                        Typ      => Typ);
 
-                  if not Check_No_Wrap_Around then
+                  if not No_Wrap_Around then
                      T := Apply_Modulus (Op, Return_Type, T, Domain);
                   end if;
 

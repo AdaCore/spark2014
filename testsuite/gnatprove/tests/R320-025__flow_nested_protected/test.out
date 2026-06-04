@@ -1,5 +1,5 @@
 p.adb:5:10: warning: objects of this type will violate "No_Local_Protected_Objects" at test.adc:2 [enabled by default]
-p.adb:5:25: error: effectively volatile type not at library level is not allowed in SPARK [E0001]
+p.adb:5:25: error: effectively volatile type or object not at library level is not allowed in SPARK (SPARK RM 7.1.3(3)) [E0001]
 p.adb:5:25: error: launch "gnatprove --explain=E0001" for more information
 p.adb:5:25: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof

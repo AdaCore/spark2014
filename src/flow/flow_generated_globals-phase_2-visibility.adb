@@ -7,7 +7,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---              Copyright (C) 2018-2025, Capgemini Engineering              --
+--              Copyright (C) 2018-2026, Capgemini Engineering              --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -161,8 +161,6 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
             pragma Assert (not Scope_Graph.Edge_Exists (Source, Target));
             Scope_Graph.Add_Edge (Source, Target, Rule);
          end Connect;
-
-         --  Start of processing for Connect
 
       begin
          ----------------------------------------------------------------------
@@ -349,8 +347,6 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
                  ((Ent => Info.Container.Ent, Part => Body_Part)));
          end if;
       end Connect;
-
-      --  Start of processing for Connect_Flow_Scopes
 
    begin
       --  The Standard package is special: create vertices for its visible and
@@ -552,8 +548,6 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
       Filename : constant String :=
         Sem_Util.Unique_Name (Main_Unit_Entity) & "_visibility_2";
 
-      --  Start of processing for Print
-
    begin
       G.Write_Pdf_File
         (Filename  => Filename,
@@ -615,8 +609,6 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
                  when Body_Part    => "body"));
       end Print_Vertex;
 
-      --  Start of processing for Print_Path
-
    begin
       Scope_Graphs.Shortest_Path
         (G             => Scope_Graph,
@@ -660,8 +652,6 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
 
          Map (Position).Insert (New_Item);
       end Add;
-
-      --  Start of processing for Register_Name_Scope
 
    begin
       --  We first need info for all vertices and then we connect them

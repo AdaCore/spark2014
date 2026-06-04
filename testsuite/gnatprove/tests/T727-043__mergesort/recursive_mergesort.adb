@@ -134,6 +134,7 @@ package body Recursive_Mergesort with SPARK_Mode is
             Prove_Add_Merge_L (Occurrences (A_copy, L, L + lii - 1), Occurrences (A_copy, L, L + lii), Occurrences (A_copy, M + 1, M + 1 + rii - 1), Occurrences (A, L, L + aii - 1), Occurrences (A, L, L + aii), A_copy (L + lii));
 
             lii := lii + 1;
+            pragma Assert (Is_Sorted (A, L, L + aii));
          else
             A_iterm := A;
             A (L + aii) := A_copy (M + 1 + rii);
@@ -144,6 +145,7 @@ package body Recursive_Mergesort with SPARK_Mode is
             Prove_Add_Merge_R (Occurrences (A_copy, L, L + lii - 1), Occurrences (A_copy, M + 1, M + 1 + rii - 1), Occurrences (A_copy, M + 1, M + 1 + rii), Occurrences (A, L, L + aii - 1), Occurrences (A, L, L + aii), A_copy (M + 1 + rii));
 
             rii := rii + 1;
+            pragma Assert (Is_Sorted (A, L, L + aii));
          end if;
          aii := aii + 1;
 

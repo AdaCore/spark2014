@@ -6,7 +6,7 @@
 --                                                                          --
 --                                  B o d y                                 --
 --                                                                          --
---                     Copyright (C) 2013-2025, AdaCore                     --
+--                     Copyright (C) 2013-2026, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -243,8 +243,6 @@ package body SPARK_Rewrite is
       Orig_Name_Id : constant Name_Id := Chars (Defining_Unit_Name (N));
       --  ??? how about homonyms?
 
-      --  Start of processing for Rewrite_Subprogram_Instantiation
-
    begin
       Set_Chars (Subprogram_Instance, Orig_Name_Id);
    end Rewrite_Subprogram_Instantiation;
@@ -470,6 +468,27 @@ package body SPARK_Rewrite is
 
             when N_Full_Type_Declaration                                   =>
 
+               --  Loop the type of bounds for root unsigned_base_range type
+               --  to themselves. They are set to standard modular types by the
+               --  front-end. This is apparently necessary for some back-ends,
+               --  but cause translation issues for GNATprove.
+
+               if Nkind (Type_Definition (N))
+                 = N_Signed_Integer_Type_Definition
+               then
+                  declare
+                     E   : constant Entity_Id :=
+                       Base_Type (Defining_Identifier (N));
+                     Rng : Node_Id;
+                  begin
+                     if Has_Unsigned_Base_Range_Aspect (E) then
+                        Rng := Scalar_Range (E);
+                        Set_Etype (Low_Bound (Rng), E);
+                        Set_Etype (High_Bound (Rng), E);
+                     end if;
+                  end;
+               end if;
+
                --  Frontend rewrites declarations of derived types, so only
                --  their original node comes from source.
 
@@ -542,8 +561,6 @@ package body SPARK_Rewrite is
 
          return OK;
       end Rewrite_Node;
-
-      --   Start of processing for Rewrite_Compilation_Unit
 
    begin
       --  Avoid rewriting generic units which are only preanalyzed, which may

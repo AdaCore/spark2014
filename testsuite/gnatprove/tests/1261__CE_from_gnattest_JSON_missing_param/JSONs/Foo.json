@@ -1,0 +1,13 @@
+[
+  {
+    "origin": "TGen",
+    "param_values": [
+      {
+        "name": "X",
+        "type_name": "simple.t",
+        "value": " 9"
+      }
+    ],
+    "global_values": []
+  }
+]

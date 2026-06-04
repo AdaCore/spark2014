@@ -61,7 +61,7 @@ ext_part_extensions_visible.adb:167:29: high: extension of "R" is not initialize
 ext_part_extensions_visible.adb:180:29: medium: extension of "R" might not be initialized in "Initialize" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize extension of "R" on all paths or make "R" an IN OUT parameter]
 ext_part_extensions_visible.adb:197:29: info: initialization of "R" proved
 normal_components.adb:15:07: high: "S" is not initialized
-normal_components.adb:15:22: medium: assertion might fail, cannot prove S.D.A = S.D.B (e.g. when S = (C => 0, D => (A => 0, B => 1))) [provers reached step limit before completing the proof]
+normal_components.adb:15:22: medium: assertion might fail, cannot prove S.D.A = S.D.B (e.g. when S = (C => 1, D => (A => 0, B => 1))) [provers reached step limit before completing the proof]
 normal_components.adb:17:07: high: "S.D" is not initialized
 normal_components.adb:17:22: info: assertion proved (CVC5: 1 VC)
 normal_components.adb:19:22: high: "S.D.A" is not initialized

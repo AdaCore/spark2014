@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---              Copyright (C) 2013-2025, Capgemini Engineering              --
+--              Copyright (C) 2013-2026, Capgemini Engineering              --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -149,12 +149,6 @@ package Flow_Types is
      Flow_Id_Variant range Initial_Value .. Final_Value;
 
    subtype Parameter_Variant is Flow_Id_Variant range In_View .. Out_View;
-
-   type Corresponding_Grouping_Map is
-     array (Initial_Or_Final_Variant) of Flow_Id_Variant;
-
-   Corresponding_Grouping : constant Corresponding_Grouping_Map :=
-     (Initial_Value => Initial_Grouping, Final_Value => Final_Grouping);
 
    type Flow_Id (Kind : Flow_Id_Kind := Null_Value) is record
       Variant : Flow_Id_Variant;
@@ -775,7 +769,7 @@ package Flow_Types is
       First_Field : Flow_Graphs.Vertex_Id;
       --  For vertices coming from declarations and assignments of record
       --  objects, it points to the first vertex in the CFG that represents
-      --  the sequence of vertices with variable useds and variables defined
+      --  the sequence of vertices with variable used and variables defined
       --  for every record component.
 
       Record_RHS : Flow_Graphs.Vertex_Id;

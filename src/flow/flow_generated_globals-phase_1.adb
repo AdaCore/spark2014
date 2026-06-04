@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---              Copyright (C) 2014-2025, Capgemini Engineering              --
+--              Copyright (C) 2014-2026, Capgemini Engineering              --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -383,8 +383,6 @@ package body Flow_Generated_Globals.Phase_1 is
             end if;
          end loop;
       end Process_CAE;
-
-      --  Start of processing for GG_Register_Global_Info
 
    begin
       New_GG_Line (EK_Globals);

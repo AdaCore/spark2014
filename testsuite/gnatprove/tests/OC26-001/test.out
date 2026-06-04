@@ -62,6 +62,7 @@ cubedos-lib-xdr.adb:129:28: info: cannot unroll loop (too many loop iterations) 
 cubedos-lib-xdr.adb:130:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 cubedos-lib-xdr.adb:130:28: info: index check proved (CVC5: 2 VC)
 cubedos-lib-xdr.adb:130:28: info: overflow check proved (CVC5: 2 VC)
+cubedos-lib-xdr.adb:130:55: info: range check proved (CVC5: 1 VC)
 cubedos-lib-xdr.adb:132:07: info: precondition proved (CVC5: 6 VC)
 cubedos-lib-xdr.adb:146:07: info: initialization of "Temp" proved
 cubedos-lib-xdr.adb:148:07: info: precondition proved (CVC5: 5 VC)

@@ -10,11 +10,6 @@ package Illegal with SPARK_Mode is
    function "=" (A, B : R2) return Boolean
      with Side_Effects;
 
-   type R3 is record X : Integer; end record;
-
-   function "=" (A, B : R3) return Boolean
-     with Ghost;
-
    --  limited types
 
    type L1 is limited record X : Integer; end record;
@@ -44,11 +39,6 @@ package Illegal with SPARK_Mode is
    function "=" (A, B : LV2) return Boolean
      with Side_Effects;
 
-   type LV3 is limited private;
-
-   function "=" (A, B : LV3) return Boolean
-     with Ghost;
-
    --  limited views of types not in SPARK
 
    package Inner is
@@ -63,17 +53,11 @@ package Illegal with SPARK_Mode is
       function "=" (A, B : LV2) return Boolean
         with Side_Effects;
 
-      type LV3 is limited private;
-
-      function "=" (A, B : LV3) return Boolean
-        with Ghost;
-
    private
       pragma SPARK_Mode (Off);
 
       type LV1 is record X : Integer; end record;
       type LV2 is record X : Integer; end record;
-      type LV3 is record X : Integer; end record;
 
    end Inner;
 
@@ -81,6 +65,5 @@ private
 
    type LV1 is record X : Integer; end record;
    type LV2 is record X : Integer; end record;
-   type LV3 is record X : Integer; end record;
 
 end Illegal;

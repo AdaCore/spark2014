@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2016-2025, AdaCore                     --
+--                     Copyright (C) 2016-2026, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -72,7 +72,8 @@ package body SPARK_Util.Subprograms is
       --  Always analyze if With_Inlined is True. Also, always analyze
       --  unreferenced subprograms, as they are likely to correspond to
       --  an intermediate stage of development. Otherwise, only analyze
-      --  subprograms that are not inlined.
+      --  subprograms that are not inlined, unless a separate analysis is
+      --  necessary to ensure soundness.
 
       elsif With_Inlined then
          return Analyzed;
@@ -80,11 +81,14 @@ package body SPARK_Util.Subprograms is
       elsif not Referenced (E) then
          return Analyzed;
 
-      elsif Is_Local_Subprogram_Always_Inlined (E) then
-         return Contextually_Analyzed;
+      elsif not Is_Local_Subprogram_Always_Inlined (E) then
+         return Analyzed;
+
+      elsif Requires_Separate_Analysis (E) then
+         return Analyzed;
 
       else
-         return Analyzed;
+         return Contextually_Analyzed;
       end if;
    end Analysis_Requested;
 
@@ -203,13 +207,16 @@ package body SPARK_Util.Subprograms is
    ---------------------------------
 
    function Completion_Deferred_To_Body (E : Subprogram_Kind_Id) return Boolean
-   is ((Ekind (Scope (E)) = E_Package
-        and then Present (Subprogram_Body (E))
-        and then Nkind (Parent (Subprogram_Body (E))) = N_Package_Body)
-       or else
-         (Ekind (Scope (E)) = E_Protected_Type
-          and then Present (Subprogram_Body (E))
-          and then Nkind (Parent (Subprogram_Body (E))) = N_Protected_Body));
+   is (not Is_Expression_Function (Unique_Entity (E))
+       --  Use Is_Expression_Function on the spec entity to decide if E has a
+       --  completion.
+       and then
+         ((Ekind (Scope (E)) = E_Package
+           and then Nkind (Parent (Subprogram_Body (E))) = N_Package_Body)
+          or else
+            (Ekind (Scope (E)) = E_Protected_Type
+             and then
+               Nkind (Parent (Subprogram_Body (E))) = N_Protected_Body)));
 
    -------------------------------
    -- Containing_Protected_Type --
@@ -398,8 +405,6 @@ package body SPARK_Util.Subprograms is
 
       Class_Expected : constant Boolean := Classwide or Inherited;
       --  True iff the Class flag should be set on selected pragmas
-
-      --  Start of processing for Find_Contracts
 
    begin
       case Name is
@@ -652,8 +657,6 @@ package body SPARK_Util.Subprograms is
          end if;
       end Has_Output;
 
-      --  Start of processing for Get_Execution_Kind
-
    begin
       return (if Has_Output then Infinite_Loop else Abnormal_Termination);
    end Get_Execution_Kind;
@@ -709,15 +712,15 @@ package body SPARK_Util.Subprograms is
       return Result;
    end Get_Exprs_From_Check_Only_Proc;
 
-   ------------------------------------
-   -- Get_Expr_From_Return_Only_Func --
-   ------------------------------------
+   ------------------------------
+   -- Get_Predicate_Expression --
+   ------------------------------
 
-   function Get_Expr_From_Return_Only_Func
+   function Get_Predicate_Expression
      (E : E_Function_Id) return Opt_N_Subexpr_Id is
    begin
       return Predicate_Expression (E);
-   end Get_Expr_From_Return_Only_Func;
+   end Get_Predicate_Expression;
 
    -----------------------------
    -- Get_Expression_Function --
@@ -753,7 +756,7 @@ package body SPARK_Util.Subprograms is
    begin
       if Present (Priority_Node) then
          case Nkind (Priority_Node) is
-            when N_Pragma                      =>
+            when N_Pragma                                               =>
                declare
                   Arg : constant Node_Id :=
                     First (Pragma_Argument_Associations (Priority_Node));
@@ -767,10 +770,10 @@ package body SPARK_Util.Subprograms is
                      else Empty);
                end;
 
-            when N_Attribute_Definition_Clause =>
+            when N_Attribute_Definition_Clause | N_Aspect_Specification =>
                return Expression (Priority_Node);
 
-            when others                        =>
+            when others                                                 =>
                raise Program_Error;
          end case;
 
@@ -1197,8 +1200,6 @@ package body SPARK_Util.Subprograms is
 
       function Scope_Name (Nth : Scope_Index) return Name_Id
       is (Chars (Scopes (Scope_Id + Nth)));
-
-      --  Start of processing for Is_Predefined_Potentially_Blocking
 
    begin
       --  Start from the called subprogram
@@ -1992,6 +1993,68 @@ package body SPARK_Util.Subprograms is
       end case;
    end Process_Referenced_Entities;
 
+   --------------------------------
+   -- Requires_Separate_Analysis --
+   --------------------------------
+
+   function Requires_Separate_Analysis (E : Entity_Id) return Boolean is
+
+      function Stmt_Terminates_Abnormally (N : Node_Id) return Traverse_Result;
+      --  Return Abandon if N might cause the enclosing subprogram to fail to
+      --  terminate normally.
+      --  We do not consider raise expressions, as those are never allowed to
+      --  actually raise an exception in SPARK. With respect to termination,
+      --  we are only interested in construct that have dynamic termination
+      --  conditions, as the rest are handled by flow.
+
+      --------------------------------
+      -- Stmt_Terminates_Abnormally --
+      --------------------------------
+
+      function Stmt_Terminates_Abnormally (N : Node_Id) return Traverse_Result
+      is
+      begin
+         case Nkind (N) is
+            when N_Raise_Statement                          =>
+               return Abandon;
+
+            when N_Entry_Call_Statement | N_Subprogram_Call =>
+               declare
+                  Callee : constant Entity_Id := Get_Called_Entity (N);
+
+               begin
+                  if Has_Program_Exit (Callee)
+                    or else Has_Exceptional_Contract (Callee)
+                    or else Get_Termination_Condition (Callee).Kind = Dynamic
+                  then
+                     return Abandon;
+                  else
+                     return OK;
+                  end if;
+               end;
+
+            when others                                     =>
+               return OK;
+         end case;
+      end Stmt_Terminates_Abnormally;
+
+      function Terminates_Abnormally is new
+        Traverse_Func (Stmt_Terminates_Abnormally);
+
+      Body_Id : constant Entity_Id := Get_Body_Entity (E);
+
+   begin
+      --  Currently, functions with side effects cannot be inlined. If it could
+      --  happen, it would make sense to exempt them from this check.
+
+      pragma Assert (not Is_Function_With_Side_Effects (E));
+
+      return
+        Ekind (E) = E_Function
+        and then
+          Terminates_Abnormally (Unit_Declaration_Node (Body_Id)) = Abandon;
+   end Requires_Separate_Analysis;
+
    ------------------------
    -- Subp_Body_Location --
    ------------------------
@@ -2141,8 +2204,6 @@ package body SPARK_Util.Subprograms is
       begin
          Scop := Scope (Scop);
       end Scope_Up;
-
-      --  Start of processing for Suspends_On_Suspension_Object
 
    begin
       if Chars (Scop) = Name_Suspend_Until_True then

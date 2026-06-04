@@ -40,10 +40,14 @@ pragmarc-b_strings.adb:98:18: medium: range check might fail [reason for check: 
 pragmarc-b_strings.adb:98:48: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at pragmarc-b_strings.ads:50 should mention Right in a precondition] [provers reached step limit before completing the proof]
 pragmarc-b_strings.adb:110:18: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at pragmarc-b_strings.ads:52 should mention Left in a precondition] [provers reached step limit before completing the proof]
 pragmarc-b_strings.adb:110:48: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at pragmarc-b_strings.ads:52 should mention Right in a precondition] [provers reached step limit before completing the proof]
-pragmarc-b_strings.ads:25:13: warning: function contract might not be available on recursive calls [contracts-recursive]
+pragmarc-b_strings.ads:25:13: warning: "+" is recursive; (implicit) contract of mutally recursive functions might not be available on calls from contracts and assertions [contracts-recursive]
+pragmarc-b_strings.ads:25:13: warning: its contract might be missing
+pragmarc-b_strings.ads:25:13: warning: potentially missing contract for "+" declared at line 28
 pragmarc-b_strings.ads:26:36: medium: implicit aspect Always_Terminates on overriding operator "+" could be incorrect, overriding operator "+" and overriding operator "+" are mutually recursive [possible fix: annotate overriding operator "+" and overriding operator "+" with Subprogram_Variant aspects]
 pragmarc-b_strings.ads:26:40: medium: postcondition might fail, cannot prove +"+"'Result = Source [provers reached step limit before completing the proof]
-pragmarc-b_strings.ads:28:13: warning: function contract might not be available on recursive calls [contracts-recursive]
+pragmarc-b_strings.ads:28:13: warning: "+" is recursive; (implicit) contract of mutally recursive functions might not be available on calls from contracts and assertions [contracts-recursive]
+pragmarc-b_strings.ads:28:13: warning: its contract might be missing
+pragmarc-b_strings.ads:28:13: warning: potentially missing contract for "+" declared at line 25
 pragmarc-b_strings.ads:29:45: info: range check proved (CVC5: 2 VC)
 pragmarc-b_strings.ads:29:53: medium: implicit aspect Always_Terminates on overriding operator "+" could be incorrect, overriding operator "+" and overriding operator "+" are mutually recursive [possible fix: annotate overriding operator "+" and overriding operator "+" with Subprogram_Variant aspects]
 pragmarc-b_strings.ads:29:57: medium: postcondition might fail, cannot prove +"+"'Result = Source [provers reached step limit before completing the proof]

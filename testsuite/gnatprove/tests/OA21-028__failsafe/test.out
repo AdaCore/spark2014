@@ -50,7 +50,7 @@ failsafe.adb:67:69: info: range check proved (CVC5: 4 VC)
 failsafe.adb:69:66: info: range check proved (CVC5: 2 VC)
 failsafe.adb:70:78: info: range check proved (CVC5: 4 VC)
 failsafe.adb:75:78: info: range check proved (CVC5: 4 VC)
-failsafe.adb:78:25: info: assertion proved (CVC5: 1 VC)
+failsafe.adb:78:25: info: assertion proved (Z3: 1 VC)
 failsafe.ads:5:03: info: flow dependencies proved
 failsafe.ads:22:16: info: implicit aspect Always_Terminates on "Time_Below_Threshold" has been proved, subprogram will terminate
 failsafe.ads:23:09: info: disjoint contract or exit cases proved (CVC5: 1 VC)

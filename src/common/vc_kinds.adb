@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2025, AdaCore                     --
+--                     Copyright (C) 2010-2026, AdaCore                     --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -40,6 +40,102 @@ package body VC_Kinds is
 
    function Wrap_CWE (S : String) return String;
    --  If non-empty, wrap the string S so that it becomes "[CWE <S>]"
+
+   ---------------------
+   -- Annot_To_String --
+   ---------------------
+
+   function Annot_To_String
+     (Kind     : Incorrect_Annotation_Kind := Common_Annotation_Kind'First;
+      Format   : Annot_Format_Kind := Text_Form;
+      Name     : GNATprove_Annotation_Kind := Unknown_Annotation;
+      Snd_Name : String := "") return String
+   is (declare
+         Fst_Name : constant GNATprove_Annotation_Kind :=
+           (if Name = Unknown_Annotation and Kind in Specific_Annotation_Kind
+            then Annotation_From_Error_Kind (Kind)
+            else Name);
+       begin
+         (if Format = Text_Form
+          then
+            '"'
+            & (if Snd_Name'Length = 0
+               then Pretty_Annotation_Name (Fst_Name)
+               else
+                 "(GNATprove, "
+                 & Pretty_Annotation_Name (Fst_Name)
+                 & ", """
+                 & Snd_Name
+                 & """[, ...])")
+            & """ annotation"
+          else
+            (if Format = Pragma_Form
+             then """pragma Annotate "
+             else "aspect ""Annotate => ")
+            & "(GNATprove, "
+            & (if Fst_Name = Unknown_Annotation
+               then "..."
+               else
+                 Pretty_Annotation_Name (Fst_Name)
+                 & (if Snd_Name'Length = 0
+                    then ""
+                    else ", """ & Snd_Name & '"')
+                 & "[, ...]")
+            & ")"""));
+
+   --------------------------------
+   -- Annotation_From_Error_Kind --
+   --------------------------------
+
+   function Annotation_From_Error_Kind
+     (Kind : Specific_Annotation_Kind) return GNATprove_Annotation_Kind
+   is (case Kind is
+         when Annot_At_End_Borrow_Context
+            .. Annot_At_End_Borrow_Param_In_Contract
+         => At_End_Borrow,
+
+         when Annot_Container_Aggregates_Add
+            .. Annot_Container_Aggregates_Private
+         => Container_Aggregates,
+
+         when Annot_Handler_Call .. Annot_Handler_No_Contracts
+         => Handler,
+
+         --  Can be Hide_Info or Unhide_Info, the name needs to be supplied
+         when Annot_Hide_Info_Expr_Fun_At_End_Borrow
+            .. Annot_Hide_Info_Expr_Fun_Refined_Post
+         => Unknown_Annotation,
+
+         when Annot_Hide_Info_Private_Auto .. Annot_Hide_Info_Private_Ownership
+         => Hide_Info,
+
+         when Annot_HO_Specialization_Formal_In_Iterated_Comp
+            .. Annot_HO_Specialization_Use_Of_Formal
+         => HO_Specialization,
+
+         when Annot_Inline_For_Proof_Body_Off .. Annot_Inline_For_Proof_Post
+         => Inline_For_Proof,
+
+         when Annot_Iterable_For_Proof_Circular_Models
+            .. Annot_Iterable_For_Proof_Prim
+         => Iterable_For_Proof,
+
+         when Annot_Logical_Equal_Post
+            | Annot_Logical_Equal_Potentially_Invalid
+         => Logical_Equal,
+
+         when Annot_Mutable_In_Params_Depends
+            .. Annot_Mutable_In_Params_Side_Effects
+         => Mutable_In_Params,
+
+         when Annot_No_Bitwise_Operations_Use
+         => No_Bitwise_Operations,
+
+         when Annot_Ownership_Potentially_Invalid
+         => Ownership,
+
+         when Annot_Predefined_Equality_Use_Eq
+         => Predefined_Equality);
 
    ------------
    -- CWE_ID --
@@ -220,8 +316,7 @@ package body VC_Kinds is
               | Refined_State_Wrong
               | Side_Effects
               | Stable
-              | Unused_Global
-              | Volatile_Function_Without_Volatile_Effects      => "");
+              | Unused_Global                                   => "");
    end CWE_ID;
 
    -----------------
@@ -664,91 +759,91 @@ package body VC_Kinds is
          when Unused_Initial_Value                        =>
            "The initial value of an object is not used.",
          when Unused_Variable                             =>
-           "A parameter or locally declared object is never used.",
-         when Volatile_Function_Without_Volatile_Effects  =>
-           "A non-volatile function wrongly declared as volatile.");
+           "A parameter or locally declared object is never used.");
 
    function Description (Kind : Misc_Warning_Kind) return String
    is (case Kind is
-         when Warn_Address_To_Access               =>
-           "call to conversion function is assumed to return a valid access"
-           & " designating a valid value",
-         when Warn_Alias_Atomic_Vol                =>
+         when Warn_Alias_Atomic_Vol                           =>
            "aliased objects should both be volatile or non-volatile, "
            & "and both be atomic or non-atomic",
-         when Warn_Alias_Different_Volatility      =>
+         when Warn_Alias_Different_Volatility                 =>
            "aliased objects should have the same volatile properties",
-         when Warn_Attribute_Valid                 =>
+         when Warn_Attribute_Valid                            =>
            "attribute Valid or Valid_Scalars is assumed to return True",
-         when Warn_Auto_Lemma_Calls                =>
+         when Warn_Auto_Lemma_Calls                           =>
            "the automatically instantiated lemma contains calls which"
            & " cannot be arbitrarily specialized",
-         when Warn_Auto_Lemma_Different            =>
+         when Warn_Auto_Lemma_Different                       =>
            "the automatically instantiated lemma contains calls to its"
            & " associated function with different specializations",
-         when Warn_Auto_Lemma_Higher_Order         =>
+         when Warn_Auto_Lemma_Higher_Order                    =>
            "the automatically instantiated lemma is not annotated with"
            & " Higher_Order_Specialization",
-         when Warn_Auto_Lemma_Specializable        =>
+         when Warn_Auto_Lemma_Specializable                   =>
            "the automatically instantiated lemma does not contain any"
            & " specializable calls to its associated function",
-         when Warn_Initialization_To_Alias         =>
+         when Warn_Initialization_To_Alias                    =>
            "initialization of object is assumed to have no effects on"
            & " other non-volatile objects",
-         when Warn_Function_Is_Valid               =>
+         when Warn_Function_Is_Valid                          =>
            "function Is_Valid is assumed to return True",
-         when Warn_Generic_Not_Analyzed            =>
+         when Warn_Generic_Not_Analyzed                       =>
            "GNATprove doesn't analyze generics, only instances",
-         when Warn_No_Possible_Termination         =>
+         when Warn_No_Possible_Termination                    =>
            "procedure which does not return normally nor raises an exception"
            & " cannot always terminate",
-         when Warn_Potentially_Invalid_Read        =>
+         when Warn_Potentially_Invalid_Read                   =>
            "invalid data might be read in the contract of a subprogram "
            & "without an analyzed body; the fact that the read data is valid "
            & "is not checked by SPARK",
-         when Warn_Pragma_Annotate_No_Check        =>
+         when Warn_Pragma_Annotate_No_Check                   =>
            "no check message justified by this pragma",
-         when Warn_Pragma_Annotate_Proved_Check    =>
+         when Warn_Pragma_Annotate_Proved_Check               =>
            "only proved check messages justified by this pragma",
-         when Warn_Pragma_Annotate_Terminating     =>
+         when Warn_Pragma_Annotate_Terminating                =>
            "Terminating, Always_Return, and Might_Not_Return annotations are "
            & "ignored",
-         when Warn_Pragma_External_Axiomatization  =>
+         when Warn_Pragma_External_Axiomatization             =>
            "External Axiomatizations are not supported anymore, ignored",
-         when Warn_Pragma_Ignored                  =>
+         when Warn_Pragma_Ignored                             =>
            "pragma is ignored (it is not yet supported)",
-         when Warn_Pragma_Overflow_Mode            =>
+         when Warn_Pragma_Overflow_Mode                       =>
            "pragma Overflow_Mode in code is ignored",
-         when Warn_Precondition_Statically_False   =>
+         when Warn_Precondition_Statically_False              =>
            "precondition is statically False",
-         when Warn_Restriction_Ignored             =>
+         when Warn_Restriction_Ignored                        =>
            "restriction is ignored (it is not yet supported)",
-         when Warn_Unreferenced_Function           =>
+         when Warn_Unreferenced_Function                      =>
            "analyzing unreferenced function",
-         when Warn_Unreferenced_Procedure          =>
+         when Warn_Unreferenced_Procedure                     =>
            "analyzing unreferenced procedure",
-         when Warn_Useless_Potentially_Invalid_Obj =>
+         when Warn_Useless_Potentially_Invalid_Obj            =>
            "object annotated with Potentially_Invalid cannot have "
            & "invalid values",
-         when Warn_Useless_Potentially_Invalid_Fun =>
+         when Warn_Useless_Potentially_Invalid_Fun            =>
            "function result annotated with Potentially_Invalid cannot have "
            & "invalid values",
-         when Warn_Useless_Relaxed_Init_Fun        =>
+         when Warn_Useless_Relaxed_Init_Fun                   =>
            "function result annotated with Relaxed_Initialization cannot be"
            & " partially initialized",
-         when Warn_Useless_Relaxed_Init_Obj        =>
+         when Warn_Useless_Relaxed_Init_Obj                   =>
            "object annotated with Relaxed_Initialization cannot be"
            & " partially initialized",
-         when Warn_Variant_Not_Recursive           =>
+         when Warn_Variant_Not_Recursive                      =>
            "no recursive call visible on subprogram with Subprogram_Variant",
+         when Warn_Volatile_Function_Without_Volatile_Effects =>
+           "non-volatile function wrongly declared as volatile",
 
          --  Warnings guaranteed to be issued
-         when Warn_Assumed_Always_Terminates       =>
+         when Warn_Address_To_Access                          =>
+           "call to conversion function is assumed to return a valid access"
+           & " designating a valid value",
+         when Warn_Assumed_Always_Terminates                  =>
            "no Always_Terminates aspect available for subprogram, "
            & "subprogram is assumed to always terminate",
-         when Warn_Assumed_Global_Null             =>
+         when Warn_Assumed_Global_Null                        =>
            "no Global contract available for subprogram, null is assumed",
-         when Warn_Imprecisely_Supported_Address   =>
+         when Warn_Imprecisely_Supported_Address              =>
            "object with an imprecisely supported address specification: "
            & "non-atomic objects should not be accessed concurrently, "
            & "volatile properties should be correct, "
@@ -757,129 +852,136 @@ package body VC_Kinds is
            & "reads should be valid",
 
          --  Warnings enabled by --pedantic switch
-         when Warn_Image_Attribute_Length          =>
+         when Warn_Image_Attribute_Length                     =>
            "string attribute has an implementation-defined length",
-         when Warn_Operator_Reassociation          =>
+         when Warn_Operator_Reassociation                     =>
            "possible operator reassociation due to missing parentheses",
-         when Warn_Representation_Attribute_Value  =>
+         when Warn_Representation_Attribute_Value             =>
            "representation attribute has an implementation-defined value",
 
          --  Warnings enabled by --info switch
-         when Warn_Unit_Not_SPARK                  =>
+         when Warn_Unit_Not_SPARK                             =>
            "A unit whose analysis has been requested on the command-line is "
            & "not annotated with SPARK_Mode Pragma",
 
          --  Other tool limitations
-         when Warn_Comp_Relaxed_Init               =>
+         when Warn_Comp_Relaxed_Init                          =>
            "If all components of a given type are annotated with "
            & " Relaxed_Initialization, the containing type is treated as if "
            & "it had the same annotation",
-         when Warn_Full_View_Visible               =>
+         when Warn_Full_View_Visible                          =>
            "The full view of an incomplete type deferred to the body of a "
            & "withed unit might be visible by GNATprove",
 
          --  Flow limitations
-         when Warn_Imprecise_GG                    =>
+         when Warn_Imprecise_GG                               =>
            "Global generation might wrongly classify an Output item as an "
            & "In_Out for subprograms that call other subprograms with no "
            & "Global contract",
-         when Warn_Init_Array                      =>
+         when Warn_Init_Array                                 =>
            "Initialization of arrays inside FOR loops is only recognized when "
            & "assignments to array element are directly indexed by the loop"
            & "parameter",
-         when Warn_Init_Multidim_Array             =>
+         when Warn_Init_Multidim_Array                        =>
            "Initialization of multi-dimensional array inside FOR loops is "
            & "only recognized when array bounds are static",
-         when Warn_Alias_Array                     =>
+         when Warn_Alias_Array                                =>
            "Aliasing checks might be spurious for actual parameters that are "
            & "array components",
-         when Warn_Tagged_Untangling               =>
+         when Warn_Tagged_Untangling                          =>
            "Assignments to record objects might cause spurious data "
            & "dependencies in some components of the assigned object",
 
          --  Proof limitations
-         when Warn_Contracts_Recursive             =>
-           "Explicit and implicit postconditions of a recursive subprogram "
-           & "cannot be used on (mutually) recursive calls occurring inside "
+         when Warn_Contracts_Recursive                        =>
+           "Explicit and implicit postconditions of a recursive subprogram, "
+           & "as well as the definition of a recursive expression function "
+           & "with a numeric (not structural) Subprogram_Variant, might not "
+           & "be available on (mutually) recursive calls occurring inside "
            & "assertions and contracts, but will still be available in "
            & "regular code",
-         when Warn_DIC_Ignored                     =>
+         when Warn_Proof_Module_Cyclic                        =>
+           "A subprogram is part of a dependency cycle with other entities; "
+           & "the explicit and implicit postconditions of mutually dependent "
+           & "functions as well as their definition for recursive expression "
+           & "functions cannot be used on "
+           & "calls from these entities if they occur inside assertions and "
+           & "contracts",
+         when Warn_DIC_Ignored                                =>
            "The Default_Initial_Condition of a type won't be assumed on "
            & "subcomponents initialized by default inside assertions and "
            & "contracts, but will still be available in regular code",
-         when Warn_Imprecise_Address               =>
+         when Warn_Imprecise_Address                          =>
            "The adress of objects is not precisely known if it is not "
            & "supplied through an address clause",
-         when Warn_Imprecise_Align                 =>
+         when Warn_Imprecise_Align                            =>
            "The alignment of an object might not be known for proof if it is "
            & "not supplied through an attribute definition clause",
-         when Warn_Imprecise_Call                  =>
+         when Warn_Imprecise_Call                             =>
            "The behavior of a call might not be known by SPARK and handled in "
            & "an imprecise way; its precondition might be impossible to prove "
            & "and nothing will be known about its result",
-         when Warn_Component_Size                  =>
+         when Warn_Imprecise_String_Literal                   =>
+           "The value of string literal containing wide characters or "
+           & "constructed through the External_Initialization aspect is not "
+           & "precisely known",
+         when Warn_Component_Size                             =>
            "the value of attribute Component_Size might not be known for "
            & "proof if it is not supplied through an attribute definition "
            & "clause",
-         when Warn_Record_Component_Attr           =>
+         when Warn_Record_Component_Attr                      =>
            "the value of attributes First_Bit, Last_Bit, and Position on "
            & "record components are handled in an imprecise way if the record "
            & "does not have a record representation clause",
-         when Warn_Imprecise_Size                  =>
+         when Warn_Imprecise_Size                             =>
            "The attributes Size, Object_Size or Value_Size might not be "
            & "handled precisely, nothing will be known about their evaluation",
-         when Warn_Imprecise_UC                    =>
+         when Warn_Imprecise_UC                               =>
            "Unchecked conversion might not be handled precisely by SPARK, "
            & "nothing will be known about their result",
-         when Warn_Imprecise_Overlay               =>
+         when Warn_Imprecise_Overlay                          =>
            "Overlay might not be handled precisely by SPARK, the value of "
            & "other overlaid objects will be unknown after an object is "
            & "updated",
-         when Warn_Imprecise_Value                 =>
+         when Warn_Imprecise_Value                            =>
            "References to the attribute Value are handled in an imprecise "
            & "way; its precondition is impossible to prove and nothing will "
            & "be known about the evaluation of the attribute reference",
-         when Warn_Imprecise_Image                 =>
+         when Warn_Imprecise_Image                            =>
            "References to the attributes Image and Img are handled in an "
            & "imprecise way; nothing will be known about the evaluation of the"
            & " attribute reference apart from a bound on its length",
-         when Warn_Loop_Entity                     =>
+         when Warn_Loop_Entity                                =>
            "The initial value of constants declared before the loop invariant "
            & "is not visible after the invariant; it shall be restated in the "
            & "invariant if necessary",
-         when Warn_Init_Cond_Ignored               =>
+         when Warn_Init_Cond_Ignored                          =>
            "The initial condition of a withed package might be ignored if it "
            & "is not known to be true, due to elaboration order",
-         when Warn_No_Reclam_Func                  =>
+         when Warn_No_Reclam_Func                             =>
            "No reclamation function or reclaimed value was found for an "
            & "ownership type, which may make it impossible to prove that "
            & "values of this type are reclaimed",
-         when Warn_Num_Variant                     =>
-           "For recursive expression functions with a numeric (not "
-           & "structural) Subprogram_Variant, the definition of the "
-           & "expression function might not be available for recursive calls "
-           & "occurring inside assertions and contracts, but will still be "
-           & "available in regular code",
-         when Warn_Map_Length_Aggregates           =>
+         when Warn_Map_Length_Aggregates                      =>
            "A type with predefined map aggregates doesn't have a Length "
            & "function; the length of aggregates will not be known for "
            & "this type",
-         when Warn_Set_Length_Aggregates           =>
+         when Warn_Set_Length_Aggregates                      =>
            "A type with predefined set aggregates doesn't have a Length "
            & "function; the length of aggregates will not be known for "
            & "this type",
-         when Warn_Relaxed_Init_Mutable_Discr      =>
+         when Warn_Relaxed_Init_Mutable_Discr                 =>
            "The tool enforces that mutable discriminants of standalone objects"
            & " and parameters with relaxed initialization are always"
            & " initialized",
-         when Warn_Predef_Eq_Null                  =>
+         when Warn_Predef_Eq_Null                             =>
            "A type is annotated with Only_Null as value for the "
            & "Predefined_Equality annotation, but no constant annotated with "
            & "Null_Value is found; this will result in all calls to the "
            & "predefined equality being rejected",
 
          --  Info messages enabled by default
-         when Warn_Info_Unrolling_Inlining         =>
+         when Warn_Info_Unrolling_Inlining                    =>
            "These messages are issued when the tool is unrolling loops or "
            & "inlining subprograms, or unable to do so");
 
@@ -895,19 +997,11 @@ package body VC_Kinds is
          when Lim_Access_Conv                                             =>
            "a conversion between access types with different "
            & "designated types",
-         when Lim_Access_Sub_Formal_With_Inv                              =>
-           "a formal parameter of an access-to-subprogram type which is"
-           & " annotated with a type invariant",
          when Lim_Access_Sub_Protected                                    =>
            "an access-to-subprogram type designating a protected subprogram",
-         when Lim_Access_Sub_Return_Type_With_Inv                         =>
-           "an access-to-subprogram type whose return type is annotated"
-           & " with a type invariant",
          when Lim_Access_Sub_Traversal                                    =>
            "an access-to-subprogram type designating a borrowing traversal"
            & " function",
-         when Lim_Access_To_Dispatch_Op                                   =>
-           "an access-to-subprogram type designating a dispatching operation",
          when Lim_Access_To_No_Return_Subp                                =>
            "an access-to-subprogram type designating a No_Return procedure",
          when Lim_Access_To_Relaxed_Init_Subp                             =>
@@ -933,6 +1027,8 @@ package body VC_Kinds is
          when Lim_Assert_And_Cut_Meet_Inv                                 =>
            "a pragma Assert_And_Cut occurring immediately within a sequence"
            & " of statements containing a Loop_Invariant",
+         when Lim_Borrow_Slice                                            =>
+           "a borrow of a (part of) a slice",
          when Lim_Borrow_Traversal_First_Param                            =>
            "a borrowing traversal function whose first formal parameter does"
            & " not have an anonymous access-to-variable type",
@@ -969,6 +1065,9 @@ package body VC_Kinds is
            "a conversion between fixed point types whose smalls are not "
            & """compatible"" according to Ada RM G.2.3(21-24): the division of"
            & " smalls is not an integer or the reciprocal of an integer",
+         when Lim_Cut_Operation_Context                                   =>
+           "a call to the ""By"" or ""So"" function from the "
+           & """SPARK.Cut_Operations"" library in an unsupported context",
          when Lim_Deep_Object_With_Addr                                   =>
            "an object with subcomponents of an access-to-variable type "
            & "annotated with an address clause whose value is the address of "
@@ -978,6 +1077,8 @@ package body VC_Kinds is
            & "of an ownership type",
          when Lim_Derived_Interface                                       =>
            "interface derived from other interfaces",
+         when Lim_Destructor                                              =>
+           "record type with a destructors",
          when Lim_Entry_Family                                            =>
            "entry families",
          when Lim_Exceptional_Cases_Dispatch                              =>
@@ -998,8 +1099,14 @@ package body VC_Kinds is
            "an extension aggregate whose ancestor part is a subtype mark",
          when Lim_Extension_Case_Pattern_Matching                         =>
            "GNAT extension for case pattern matching",
-         when Lim_External_Initializer                                    =>
-           "GNAT extension for embedded binary resources",
+         when Lim_GNAT_Ext_Conditional_Goto                               =>
+           "GNAT extension for conditional goto",
+         when Lim_GNAT_Ext_Conditional_Raise                              =>
+           "GNAT extension for conditional raise",
+         when Lim_GNAT_Ext_Conditional_Return                             =>
+           "GNAT extension for conditional return",
+         when Lim_GNAT_Ext_Interpolated_String_Literal                    =>
+           "GNAT extension for interpolated string literals",
          when Lim_Generic_In_Hidden_Private                               =>
            "instance of a generic unit declared in a package whose private "
            & "part is hidden outside of this package",
@@ -1034,8 +1141,6 @@ package body VC_Kinds is
          when Lim_Inherited_Prim_From_SPARK_Off                           =>
            "a subprogram which is inherited, not overriden, from an ancestor"
            & " declared in the private part of a package with SPARK_Mode Off",
-         when Lim_Interpolated_String_Literal                             =>
-           "GNAT extension for interpolated string literals",
          when Lim_Iterated_Element_Association                            =>
            "container aggregates",
          when Lim_Iterator_In_Component_Assoc                             =>
@@ -1094,6 +1199,9 @@ package body VC_Kinds is
            "a multiplication or division between different fixed-point types"
            & " if the result is not in the ""perfect result set"" according to"
            & " Ada RM G.2.3(21)",
+         when Lim_Overlay_Uninitialized                                   =>
+           "an object with an address clause which is not fully initialized "
+           & "at declaration",
          when Lim_Overlay_With_Deep_Object                                =>
            "a reference to the ""Address"" attribute in an address clause"
            & " whose prefix has subcomponents of an access-to-variable type",
@@ -1107,11 +1215,16 @@ package body VC_Kinds is
            "a dispatching primitive subprogram overriding declared for a"
            & " private untagged type with no specific precondition and a"
            & " class-wide precondition inherited from ancestor",
+         when Lim_Potentially_Invalid_Eq                                  =>
+           "the primitive equality of a record type with the "
+           & "Potentially_Invalid aspect",
          when Lim_Potentially_Invalid_Iterable                            =>
            "a Potentially_Invalid aspect on a function associated to the"
            & " aspect Iterable",
          when Lim_Potentially_Invalid_Mutable_Discr                       =>
            "a part of potentially invalid object with mutable discriminants",
+         when Lim_Potentially_Invalid_Part_Of                             =>
+           "a potentially invalid object marked Part_Of a protected object",
          when Lim_Potentially_Invalid_Predicates                          =>
            "a potentially invalid object with a part subject to predicates",
          when Lim_Potentially_Invalid_Private                             =>
@@ -1122,21 +1235,26 @@ package body VC_Kinds is
            & "initialization",
          when Lim_Potentially_Invalid_Subp_Access                         =>
            "an access to a subprogram annotated with Potentially_Invalid",
+         when Lim_Potentially_Invalid_Traversal                           =>
+           "a traversal function with a potentially invalid traversed "
+           & "parameter",
          when Lim_Package_Before_Inv                                      =>
            "a package declaration occurring in a loop before the loop "
            & "invariant",
          when Lim_Predicate_With_Different_SPARK_Mode                     =>
-           "a private type whose full view is not in SPARK annotated with two"
-           & " subtype predicates, one on the full view and one on the private"
-           & " view",
+           "a private type whose full view is not in SPARK annotated with two "
+           & "subtype predicates, one on the full view and one on the partial "
+           & "view",
          when Lim_Predicate_With_Different_Visibility                     =>
-           "a private type declared in a package whose private part is hidden"
-           & " for proof annotated with two subtype predicates, one on the "
-           & " full view and one on the private view",
+           "a private type declared in a package whose private part is hidden "
+           & "for proof annotated with two subtype predicates, one on the "
+           & "full view and one on the partial view",
          when Lim_Primitive_Call_In_DIC                                   =>
            "a call to a primitive operation of a tagged type T occurring in "
            & "the default initial condition of T with the type instance as a "
            & "parameter",
+         when Lim_Protected_Operation_Of_Expression                       =>
+           "a call to operation of a dereference",
          when Lim_Protected_Operation_Of_Component                        =>
            "a call to a protected operation of a protected component inside"
            & " a protected object",
@@ -1161,6 +1279,12 @@ package body VC_Kinds is
          when Lim_Subprogram_Before_Inv                                   =>
            "a subprogram declaration occurring in a loop before the loop "
            & "invariant",
+         when Lim_Subp_Variant_Eq                                         =>
+           "a subprogram variant on the primitive equality of a record type",
+         when Lim_Subp_Variant_Duplicate                                  =>
+           "a subprogram with several Subprogram_Variant contracts",
+         when Lim_Suspension_On_Expression                                =>
+           "a call to a suspend operation on a dereference",
          when Lim_Suspension_On_Formal                                    =>
            "a call to a suspend operation on a suspension formal parameter",
          when Lim_Target_Name_In_Borrow                                   =>
@@ -1190,11 +1314,355 @@ package body VC_Kinds is
            "a reference to the ""Size"" attribute on a prefix which is "
            & "not a standalone object, a formal parameter, a component, or "
            & "a slice with no padding",
+         when Lim_UU_Constrained_Attr                                     =>
+           "a reference to the ""Constrained"" attribute on unchecked union "
+           & "prefix whose value cannot be determined statically outside of "
+           & "a non-executable context",
          when Lim_UU_Tagged_Comp                                          =>
            "a component of an unconstrained unchecked union type in a tagged "
-           & "extension");
+           & "extension",
+         when Lim_Indexed_Container_Aggregate                             =>
+           "an indexed container aggregate");
 
    pragma Annotate (Xcov, Exempt_Off);
+
+   ----------------------------
+   -- Annotation_Description --
+   ----------------------------
+
+   function Annotation_Description
+     (Kind : GNATprove_Annotation_Kind) return String
+   is (case Kind is
+         when Unknown_Annotation =>
+           "incorrect use of pragma Annotate (GNATprove, ...)",
+         when others             =>
+           "incorrect use of pragma Annotate (GNATprove, "
+           & Pretty_Annotation_Name (Kind)
+           & ", ...)");
+
+   ---------------------------
+   -- Violation_Description --
+   ---------------------------
+
+   function Violation_Description (Kind : Violation_Kind) return String
+   is (case Kind is
+         when Vio_Access_Constant                          =>
+           "Access attribute of a named access-to-constant type whose prefix "
+           & "is not a constant part of an object",
+         when Vio_Access_Expression                        =>
+           "Access attribute on a complex expression",
+         when Vio_Access_Function_With_Side_Effects        =>
+           "access to function with side effects",
+         when Vio_Access_No_Root                           =>
+           "Access attribute of a path not rooted inside a parameter or "
+           & "standalone object",
+         when Vio_Access_Subprogram_Within_Protected       =>
+           "access to subprogram declared within a protected object",
+         when Vio_Access_Sub_Formal_With_Inv               =>
+           "formal with type invariants in access-to-subprogram",
+         when Vio_Access_Sub_Return_Type_With_Inv          =>
+           "access-to-subprogram returning a type with invariants",
+         when Vio_Access_Sub_With_Globals                  =>
+           "access to subprogram with global effects",
+         when Vio_Access_To_Dispatch_Op                    =>
+           "access to dispatching operation",
+         when Vio_Access_Volatile_Function                 =>
+           "access to volatile function",
+         when Vio_Address_Of_Non_Object                    =>
+           "attribute Address of a non-object entity",
+         when Vio_Address_Outside_Address_Clause           =>
+           "attribute Address outside an attribute definition clause",
+         when Vio_Aggregate_Globals                        =>
+           "subprogram associated to aspect Aggregate with dependency on "
+           & "globals",
+         when Vio_Aggregate_Side_Effects                   =>
+           "subprogram with side effects associated with aspect Aggregate",
+         when Vio_Aggregate_Volatile                       =>
+           "volatile function associated with aspect Aggregate",
+         when Vio_Assert_And_Cut_Context                   =>
+           "pragma Assert_And_Cut outside a sequence of statements",
+         when Vio_Backward_Goto                            =>
+           "backward goto statement",
+         when Vio_Box_Notation_Without_Init                =>
+           "box notation without default or relaxed initialization",
+         when Vio_Code_Statement                           => "code statement",
+         when Vio_Controlled_Types                         =>
+           "controlled types",
+         when Vio_Container_Aggregate                      =>
+           "container aggregate whose type does not have the "
+           & "Container_Aggregates annotation",
+         when Vio_Default_With_Current_Instance            =>
+           "default expression with current instance of enclosing type",
+         when Vio_Derived_Untagged_With_Tagged_Full_View   =>
+           "deriving from type declared as untagged private",
+         when Vio_Discriminant_Access                      =>
+           "access discriminant",
+         when Vio_Discriminant_Derived                     =>
+           "discriminant on derived type",
+         when Vio_Dispatch_Plain_Pre                       =>
+           "plain precondition on dispatching subprogram",
+         when Vio_Dispatching_Untagged_Type                =>
+           "dispatching call on primitive of type with untagged partial view",
+         when Vio_Exit_Cases_Exception                     =>
+           "exit case mentioning exceptions when no exceptions can be "
+           & "propagated",
+         when Vio_Exit_Cases_Normal_Only                   =>
+           "Exit_Case on subprogram which can only return normally",
+         when Vio_Function_Global_Output                   =>
+           "function with global outputs",
+         when Vio_Function_Out_Param                       =>
+           "function with out or in out parameters",
+         when Vio_Ghost_Concurrent_Comp                    =>
+           "concurrent component of ghost type",
+         when Vio_Ghost_Volatile                           =>
+           "volatile ghost object",
+         when Vio_Handler_Choice_Parameter                 =>
+           "choice parameter in handler",
+         when Vio_Invariant_Class                          =>
+           "classwide invariant",
+         when Vio_Invariant_Ext                            =>
+           "type invariant on completion of private_type_extension",
+         when Vio_Invariant_Partial                        =>
+           "type invariant on private_type_declaration or "
+           & "private_type_extension",
+         when Vio_Invariant_Volatile                       =>
+           "type invariant on effectively volatile type",
+         when Vio_Iterable_Controlling_Result              =>
+           "function associated to aspect Iterable with controlling result",
+         when Vio_Iterable_Full_View                       =>
+           "Iterable aspect declared on the full view of a private type",
+         when Vio_Iterable_Globals                         =>
+           "function associated to aspect Iterable with dependency on globals",
+         when Vio_Iterable_Side_Effects                    =>
+           "function with side effects associated with aspect Iterable",
+         when Vio_Iterable_Volatile                        =>
+           "volatile function associated with aspect Iterable",
+         when Vio_Iterator_Specification                   =>
+           "iterator specification",
+         when Vio_Loop_Variant_Structural                  =>
+           "structural loop variant which is not a variable of an anonymous "
+           & "access-to-object type",
+         when Vio_Overlay_Constant_Not_Imported            =>
+           "constant object with an address clause which is not imported",
+         when Vio_Overlay_Mutable_Constant                 =>
+           "mutable object and constant object overlaying each other",
+         when Vio_Overlay_Part_Of_Protected                =>
+           "overlaid object which is a part of a protected object",
+         when Vio_Ownership_Access_Equality                =>
+           "equality on access types",
+         when Vio_Ownership_Allocator_Invalid_Context      =>
+           "allocator or call to allocating function not stored in object as "
+           & "part of assignment, declaration, or return statement",
+         when Vio_Ownership_Allocator_Uninitialized        =>
+           "uninitialized allocator without default initialization",
+         when Vio_Ownership_Anonymous_Access_To_Named      =>
+           "conversion from an anonymous access type to a named access type",
+         when Vio_Ownership_Anonymous_Part_Of              =>
+           "anonymous access variable marked Part_Of a protected object",
+         when Vio_Ownership_Anonymous_Object_Context       =>
+           "object of anonymous access not declared immediately within a "
+           & "subprogram, entry or block",
+         when Vio_Ownership_Anonymous_Object_Init          =>
+           "uninitialized object of anonymous access type",
+         when Vio_Ownership_Anonymous_Result               =>
+           "anonymous access type for result for non-traversal functions",
+         when Vio_Ownership_Assign_To_Expr                 =>
+           "assignment to a complex expression",
+         when Vio_Ownership_Assign_To_Constant             =>
+           "assignment into a constant object",
+         when Vio_Ownership_Borrow_Of_Constant             =>
+           "borrow of a constant object",
+         when Vio_Ownership_Borrow_Of_Non_Markable         =>
+           "borrow or observe of an expression which is not part of "
+           & "stand-alone object or parameter",
+         when Vio_Ownership_Anonymous_Component            =>
+           "component of anonymous access type",
+         when Vio_Ownership_Deallocate_General             =>
+           "instance of Unchecked_Deallocation with a general access type",
+         when Vio_Ownership_Different_Branches             =>
+           "observe of a conditional or case expression with branches rooted "
+           & "in different objects",
+         when Vio_Ownership_Duplicate_Aggregate_Value      =>
+           "duplicate value of a type with ownership",
+         when Vio_Ownership_Loop_Entry_Old_Copy            =>
+           "prefix of Loop_Entry or Old attribute introducing aliasing",
+         when Vio_Ownership_Loop_Entry_Old_Traversal       =>
+           "traversal function call as a prefix of Loop_Entry or Old "
+           & "attribute",
+         when Vio_Ownership_Move_Constant_Part             =>
+           "access-to-constant part of an object as source of move",
+         when Vio_Ownership_Move_In_Declare                =>
+           "move in declare expression",
+         when Vio_Ownership_Move_Not_Name                  =>
+           "expression as source of move",
+         when Vio_Ownership_Move_Traversal_Call            =>
+           "call to a traversal function as source of move",
+         when Vio_Ownership_Reborrow                       =>
+           "observed or borrowed expression which does not have the left-hand "
+           & "side as a root",
+         when Vio_Ownership_Storage_Pool                   =>
+           "access type with Storage_Pool",
+         when Vio_Ownership_Tagged_Extension               =>
+           "owning component of tagged extension",
+         when Vio_Ownership_Traversal_Extended_Return      =>
+           "extended return applying to a traversal function",
+         when Vio_Ownership_Volatile                       =>
+           "observe, move, or borrow of volatile object",
+         when Vio_Potentially_Invalid_Dispatch             =>
+           "dispatching operation with Potentially_Invalid aspect",
+         when Vio_Potentially_Invalid_Invariant            =>
+           "potentially invalid object with a part subject to a type "
+           & "invariant",
+         when Vio_Potentially_Invalid_Overlay              =>
+           "potentially invalid overlaid object",
+         when Vio_Potentially_Invalid_Part_Access          =>
+           "potentially invalid object with a part of an access type",
+         when Vio_Potentially_Invalid_Part_Concurrent      =>
+           "potentially invalid object with a part of a concurrent type",
+         when Vio_Potentially_Invalid_Part_Tagged          =>
+           "potentially invalid object with a part of a tagged type",
+         when Vio_Potentially_Invalid_Part_Unchecked_Union =>
+           "potentially invalid object with a part of an Unchecked_Union type",
+         when Vio_Potentially_Invalid_Scalar               =>
+           "function returning a scalar that is not imported with "
+           & "Potentially_Invalid aspect",
+         when Vio_Predicate_Volatile                       =>
+           "subtype predicate on effectively volatile type for reading",
+         when Vio_Program_Exit_Outputs                     =>
+           "output mentioned in the expression of an aspect Program_Exit "
+           & "which is not a stand-alone object",
+         when Vio_Real_Root                                =>
+           "expression of type root_real",
+         when Vio_Relaxed_Init_Dispatch                    =>
+           "dispatching operation with Relaxed_Initialization aspect",
+         when Vio_Relaxed_Init_Initialized_Prefix          =>
+           "attribute Initialized on a prefix which does not have relaxed "
+           & "initialization",
+         when Vio_Relaxed_Init_Part_Generic                =>
+           "part of tagged, Unchecked_Union, or effectively volatile object "
+           & "or type annotated with relaxed initialization",
+         when Vio_Relaxed_Init_Part_Of_Tagged              =>
+           "part of tagged type with relaxed initialization",
+         when Vio_Relaxed_Init_Part_Of_Unchecked_Union     =>
+           "part of Unchecked_Union type with relaxed initialization",
+         when Vio_Relaxed_Init_Part_Of_Volatile            =>
+           "part of effectively volatile object or type annotated with "
+           & "relaxed initialization",
+         when Vio_Side_Effects_Call_Context                =>
+           "call to a function with side effects outside of assignment or "
+           & "object declaration without a block",
+         when Vio_Side_Effects_Eq                          =>
+           "function with side effects as user-defined equality on record "
+           & "type",
+         when Vio_Side_Effects_Traversal                   =>
+           "traversal function with side effects",
+         when Vio_Storage_Size                             =>
+           "access type with Storage_Size",
+         when Vio_Subp_Variant_Structural                  =>
+           "structural subprogram variant which is not a parameter of the "
+           & "subprogram",
+         when Vio_Tagged_Extension_Local                   =>
+           "local derived type from non-local parent or interface",
+         when Vio_Target_Name_In_Call_With_Side_Effets     =>
+           "use of @ inside a call to a function with side effects",
+         when Vio_Tasking_Configuration                    =>
+           "SPARK violation related to tasking configuration",
+         when Vio_Tasking_Synchronized_Comp                =>
+           "synchronized component of non-synchronized type",
+         when Vio_Tasking_Uninitialized_Concurrent         =>
+           "not fully initialized part of concurrent type",
+         when Vio_Tasking_Unsupported_Construct            => "tasking",
+         when Vio_UC_From_Access                           =>
+           "unchecked conversion instance from a type with access "
+           & "subcomponents",
+         when Vio_UC_To_Access                             =>
+           "unchecked conversion instance to an access type which is not a "
+           & "general access-to-object type",
+         when Vio_UC_To_Access_Components                  =>
+           "unchecked conversion instance to a composite type with access "
+           & "subcomponents",
+         when Vio_UC_To_Access_From                        =>
+           "unchecked conversion instance to an access-to-object type from a "
+           & "type which is neither System.Address nor an integer type",
+         when Vio_Unsupported_Attribute                    =>
+           "unsupported attribute",
+         when Vio_Unsupported_Pragma                       => "unknown pragma",
+         when Vio_Use_Of_Rejected_Entity                   =>
+           "use of entity rejected by SPARK",
+         when Vio_Volatile_At_Library_Level                =>
+           "effectively volatile type or object not at library level",
+         when Vio_Volatile_Discriminant                    =>
+           "volatile discriminant",
+         when Vio_Volatile_Discriminated_Type              =>
+           "discriminated volatile type",
+         when Vio_Volatile_Eq                              =>
+           "volatile function as user-defined equality on record type",
+         when Vio_Volatile_Global                          =>
+           "nonvolatile function with volatile global inputs",
+         when Vio_Volatile_In_Interfering_Context          =>
+           "volatile object or volatile function call in interfering context",
+         when Vio_Volatile_Incompatible_Comp               =>
+           "component of composite type or designated type of an access with "
+           & "an incompatible volatility",
+         when Vio_Volatile_Incompatible_Type               =>
+           "standalone object with an incompatible volatility with respect to "
+           & "its type",
+         when Vio_Volatile_Loop_Param                      =>
+           "effectively volatile loop parameter",
+         when Vio_Volatile_Parameter                       =>
+           "nonvolatile function with effectively volatile parameter",
+         when Vio_Volatile_Result                          =>
+           "nonvolatile function with effectively volatile result");
+
+   -------------------
+   -- Error_Message --
+   -------------------
+
+   function Error_Message (Kind : Error_Message_Kind) return String is
+   begin
+      case Kind is
+         when Err_Comp_Not_Present =>
+            return "component not present in &";
+
+         when Marking_Error_Kind   =>
+            raise Program_Error;
+      end case;
+   end Error_Message;
+
+   ------------------
+   -- Explain_Code --
+   ------------------
+
+   function Explain_Code (Kind : Violation_Kind) return Explain_Code_Kind
+   is (case Kind is
+         when Vio_Address_Outside_Address_Clause    =>
+           EC_Address_In_Expression,
+         when Vio_Function_Global_Output            =>
+           EC_Function_Output_Global,
+         when Vio_Ownership_Borrow_Of_Non_Markable  =>
+           EC_Incorrect_Source_Of_Borrow,
+         when Vio_Ownership_Allocator_Uninitialized =>
+           EC_Uninitialized_Allocator,
+         when Vio_Side_Effects_Call_Context         =>
+           EC_Call_To_Function_With_Side_Effects,
+         when Vio_Volatile_At_Library_Level         =>
+           EC_Volatile_At_Library_Level,
+         when Vio_Volatile_Global                   =>
+           EC_Function_Volatile_Input_Global,
+         when Vio_Volatile_In_Interfering_Context   =>
+           EC_Volatile_Non_Interfering_Context,
+         when Vio_Function_Out_Param                =>
+           EC_Out_Parameter_In_Function,
+         when Vio_Controlled_Types                  => EC_Controlled_Types,
+         when Vio_Dispatch_Plain_Pre                => EC_Dispatch_Plain_Pre,
+         when Vio_Backward_Goto                     => EC_Backward_Goto,
+         when Vio_Ghost_Volatile                    => EC_Ghost_Volatile,
+         when Vio_Handler_Choice_Parameter          =>
+           EC_Handler_Choice_Parameter,
+         when Vio_Overlay_Mutable_Constant          =>
+           EC_Overlay_Mutable_Constant,
+         when Vio_UC_From_Access                    => EC_UC_From_Access,
+         when others                                => EC_None);
 
    ---------------
    -- From_JSON --
@@ -1223,8 +1691,6 @@ package body VC_Kinds is
       begin
          Map.Insert (Name, From_JSON (Value));
       end Process_Prover_Stat;
-
-      --  Start of processing for From_Json
 
    begin
       Map_JSON_Object (V, Process_Prover_Stat'Access);
@@ -1319,38 +1785,37 @@ package body VC_Kinds is
    function From_JSON (V : JSON_Value) return Cntexmp_Type is
       pragma Assert (Has_Field (V, "type"));
       T : constant String := Get (V, "type");
-      E : constant Unbounded_String := To_Unbounded_String (T);
 
    begin
-      if E = "Integer" then
+      if T = "Integer" then
          return Cnt_Integer;
       end if;
 
-      if E = "Real" then
+      if T = "Real" then
          return Cnt_Decimal;
       end if;
 
-      if E = "Float" then
+      if T = "Float" then
          return Cnt_Float;
       end if;
 
-      if E = "Boolean" then
+      if T = "Boolean" then
          return Cnt_Boolean;
       end if;
 
-      if E = "BitVector" then
+      if T = "BitVector" then
          return Cnt_Bitvector;
       end if;
 
-      if E = "FunctionLiteral" then
+      if T = "FunctionLiteral" then
          return Cnt_Array;
       end if;
 
-      if E = "Record" then
+      if T = "Record" then
          return Cnt_Record;
       end if;
 
-      if E = "Proj" then
+      if T = "Proj" then
          return Cnt_Projection;
       end if;
 
@@ -1418,14 +1883,14 @@ package body VC_Kinds is
    -- From_JSON_Labels --
    ----------------------
 
-   function From_JSON_Labels (Ar : JSON_Array) return S_String_List.List is
-      Res : S_String_List.List := S_String_List.Empty_List;
+   function From_JSON_Labels (Ar : JSON_Array) return String_Lists.List is
+      Res : String_Lists.List := String_Lists.Empty_List;
    begin
       for Var_Index in Positive range 1 .. Length (Ar) loop
          declare
             Elt : constant String := Get (Get (Ar, Var_Index));
          begin
-            Res.Append (To_Unbounded_String (Elt));
+            Res.Append (Elt);
          end;
       end loop;
       return Res;
@@ -1619,12 +2084,6 @@ package body VC_Kinds is
                end loop;
                Other_Ptr :=
                  new Cntexmp_Value'(Get_Typed_Cntexmp_Value (JS_Array_others));
-               if Other_Ptr = null then
-                  Other_Ptr :=
-                    new Cntexmp_Value'
-                      (T => Cnt_Invalid, S => Null_Unbounded_String);
-
-               end if;
                return
                  (T             => Cnt_Array,
                   Array_Indices => Indice_Array,
@@ -1635,6 +2094,328 @@ package body VC_Kinds is
             return (T => Cnt_Invalid, S => Null_Unbounded_String);
       end case;
    end Get_Typed_Cntexmp_Value;
+
+   ----------------------------------
+   -- Incorrect_Annotation_Message --
+   ----------------------------------
+
+   function Incorrect_Annotation_Message
+     (Kind        : Incorrect_Annotation_Kind;
+      From_Aspect : Boolean;
+      Name        : GNATprove_Annotation_Kind;
+      Snd_Name    : String) return String
+   is (case Kind is
+
+         --  Common messages on annotations
+
+         when Annot_Argument_Number                           =>
+           "wrong number of arguments in "
+           & Annot_To_String
+               (Kind, Aspect_Or_Pragma (From_Aspect), Name, Snd_Name),
+         when Annot_Bad_Entity                                =>
+           "wrong entity argument for "
+           & Annot_To_String
+               (Kind, Aspect_Or_Pragma (From_Aspect), Name, Snd_Name),
+         when Annot_Compatible_Full_View                      =>
+           "full view of a private type or deferred constant with the "
+           & Annot_To_String (Name => Name)
+           & " shall comply with the annotation",
+         when Annot_Duplicated_Annotated_Entity               =>
+           "duplicated entity with the "
+           & Annot_To_String (Kind, Name => Name, Snd_Name => Snd_Name),
+         when Annot_Duplicated_Annotation                     =>
+           "a single "
+           & Annot_To_String (Kind, Name => Name)
+           & " shall be specified for &",
+         when Annot_Entity_Expected                           =>
+           "last argument of "
+           & Annot_To_String (Kind, Aspect_Or_Pragma (From_Aspect), Name)
+           & " must be an entity",
+         when Annot_Entity_Placement                          =>
+           "incorrect placement for entity with the "
+           & Annot_To_String (Kind, Name => Name),
+         when Annot_Function_Return_Type                      =>
+           "wrong return type for function with the "
+           & Annot_To_String (Kind, Name => Name),
+         when Annot_Function_Traversal                        =>
+           "a function with the "
+           & Annot_To_String (Kind, Name => Name)
+           & " shall not be a traversal function",
+         when Annot_Function_With_Side_Effects                =>
+           "a function with the "
+           & Annot_To_String (Kind, Name => Name)
+           & " shall not have side effects",
+         when Annot_Hidden_Private_Part                       =>
+           "the private part of the scope of a private type with the "
+           & Annot_To_String (Name => Name)
+           & " shall have either a ""pragma SPARK_Mode (Off)"" or a "
+           & Annot_To_String
+               (Format   => Pragma_Form,
+                Name     => Hide_Info,
+                Snd_Name => "Private_Part"),
+         when Annot_Invalid_Name                              =>
+           "invalid name """
+           & Snd_Name
+           & """ in "
+           & Annot_To_String (Kind, Aspect_Or_Pragma (From_Aspect)),
+         when Annot_Incompatible_Annotated_Entities           =>
+           "incompatible entities with the "
+           & Annot_To_String (Kind, Name => Name),
+         when Annot_Missing_Annotated_Entity                  =>
+           "no applicable entity with the "
+           & Annot_To_String (Kind, Name => Name, Snd_Name => Snd_Name)
+           & " found",
+         when Annot_Object_Type                               =>
+           "wrong type for object with the "
+           & Annot_To_String (Kind, Name => Name),
+         when Annot_Placement                                 =>
+           "incorrect placement for "
+           & Annot_To_String (Kind, Aspect_Or_Pragma (From_Aspect), Name),
+         when Annot_Pragma_On_Generic                         =>
+           Annot_To_String (Kind, Aspect_Or_Pragma (From_Aspect), Name)
+           & " must be in aspect form for generic subprogram",
+         when Annot_Redundant_Annotation                      =>
+           Annot_To_String (Kind, Aspect_Or_Pragma (From_Aspect), Name)
+           & " is redundant",
+         when Annot_String_Third_Argument                     =>
+           "third argument of "
+           & Annot_To_String (Kind, Aspect_Or_Pragma (From_Aspect), Name)
+           & " must be a string",
+         when Annot_Subp_Access_Global                        =>
+           "a subprogram with the "
+           & Annot_To_String (Kind, Name => Name)
+           & " shall not access global data",
+         when Annot_Subp_Dispatch                             =>
+           "a subprogram with the "
+           & Annot_To_String (Kind, Name => Name)
+           & " shall not be a primitive operation of a tagged type",
+         when Annot_Subp_Parameter_Number                     =>
+           "wrong number of parameters for a subprogram with the "
+           & Annot_To_String (Kind, Name => Name),
+         when Annot_Subp_Parameter_Type                       =>
+           "wrong type for parameter of subprogram with the "
+           & Annot_To_String (Kind, Name => Name),
+         when Annot_Subp_Shall_Be_Ghost                       =>
+           "a subprogram with the "
+           & Annot_To_String (Kind, Name => Name)
+           & " shall be ghost",
+         when Annot_Subp_Shall_Be_Pure                        =>
+           "a subprogram with the "
+           & Annot_To_String (Kind, Name => Name)
+           & " shall have no side-effects",
+         when Annot_Volatile_Function                         =>
+           "a function with the "
+           & Annot_To_String (Kind, Name => Name)
+           & " shall not be volatile",
+         when Annot_Wrong_Fourth_Parameter                    =>
+           "unexpected fourth argument for "
+           & Annot_To_String (Kind, Aspect_Or_Pragma (From_Aspect), Name),
+         when Annot_Wrong_Third_Parameter                     =>
+           "unexpected third argument for "
+           & Annot_To_String (Kind, Aspect_Or_Pragma (From_Aspect), Name),
+
+         --  Messages for specific annotations
+
+         when Annot_At_End_Borrow_Context                     =>
+           "calls to a function annotated with the "
+           & Annot_To_String (Kind)
+           & " and references to constants saving such a call shall "
+           & "occur either in a postcondition, as a parameter of a lemma, in "
+           & "an assertion, or as the initial value of a ghost constant",
+         when Annot_At_End_Borrow_No_Contracts                =>
+           "a function with the "
+           & Annot_To_String (Kind)
+           & " shall not have contracts",
+         when Annot_At_End_Borrow_Param                       =>
+           "actual parameter of a call to a function with "
+           & Annot_To_String (Kind)
+           & " shall be a path",
+         when Annot_At_End_Borrow_Param_In_Contract           =>
+           "actual parameter of a call to a function with "
+           & Annot_To_String (Kind)
+           & " occurring in a contract shall be a local borrower "
+           & "or the borrowed parameter of a traversal function",
+         when Annot_Container_Aggregates_Add                  =>
+           "the Aggregate aspect of a type with the "
+           & Annot_To_String (Kind)
+           & " has the wrong form",
+         when Annot_Container_Aggregates_Add_Access_Param     =>
+           "procedure used in the Aggregate aspect of a type with the "
+           & Annot_To_String (Kind)
+           & " shall not have access parameters",
+         when Annot_Container_Aggregates_Incompatible_Models  =>
+           "concrete and model types of a function with the "
+           & Annot_To_String (Kind)
+           & " shall define compatible aggregates",
+         when Annot_Container_Aggregates_No_Aggregate         =>
+           "a type with the "
+           & Annot_To_String (Kind)
+           & " shall have an Aggregate aspect",
+         when Annot_Container_Aggregates_Private              =>
+           "a type with the "
+           & Annot_To_String (Kind)
+           & " shall have a private declaration",
+         when Annot_Handler_Call                              =>
+           "object of an access-to-subprogram type with the "
+           & Annot_To_String (Kind)
+           & " shall not be called",
+         when Annot_Handler_Conversion                        =>
+           "an access-to-subprogram type with the "
+           & Annot_To_String (Kind)
+           & " shall not be converted to an access-to-subprogram type "
+           & "without",
+         when Annot_Handler_No_Contracts                      =>
+           "an access-to-subprogram type with the "
+           & Annot_To_String (Kind)
+           & " shall not have contracts",
+         when Annot_Hide_Info_Expr_Fun_Body_Hide_Unhide       =>
+           "& shall not have both the "
+           & Annot_To_String (Name => Hide_Info)
+           & " and the "
+           & Annot_To_String (Name => Unhide_Info)
+           & " in &",
+         when Annot_Hide_Info_Expr_Fun_At_End_Borrow          =>
+           "an expression function with the "
+           & Annot_To_String (Name => Hide_Info)
+           & " or "
+           & Annot_To_String (Name => Unhide_Info)
+           & " shall not have the "
+           & Annot_To_String (Name => At_End_Borrow),
+         when Annot_Hide_Info_Expr_Fun_Body_Not_SPARK         =>
+           "the body of an expression function with the "
+           & Annot_To_String (Kind)
+           & " shall be compatible with SPARK",
+         when Annot_Hide_Info_Expr_Fun_HO_Spec                =>
+           "an expression function with the "
+           & Annot_To_String (Name => Hide_Info)
+           & " or "
+           & Annot_To_String (Name => Unhide_Info)
+           & " shall not have the "
+           & Annot_To_String (Name => HO_Specialization),
+         when Annot_Hide_Info_Expr_Fun_Inline                 =>
+           "an expression function with the "
+           & Annot_To_String (Name => Hide_Info)
+           & " or "
+           & Annot_To_String (Name => Unhide_Info)
+           & " shall not have the "
+           & Annot_To_String (Name => Inline_For_Proof),
+         when Annot_Hide_Info_Expr_Fun_Invisible              =>
+           "the body of & shall be visible at the location of the pragma",
+         when Annot_Hide_Info_Expr_Fun_Logical_Eq             =>
+           "an expression function with the "
+           & Annot_To_String (Name => Hide_Info)
+           & " or "
+           & Annot_To_String (Name => Unhide_Info)
+           & " shall not be the "
+           & Annot_To_String (Name => Logical_Equal),
+         when Annot_Hide_Info_Expr_Fun_Refined_Post           =>
+           "an expression function with the "
+           & Annot_To_String (Kind)
+           & " shall not have a refined postcondition",
+         when Annot_Hide_Info_Private_Auto                    =>
+           "public part of a package whose private part is hidden using a "
+           & Annot_To_String (Kind)
+           & " shall have an applicable SPARK_Mode pragma or aspect",
+         when Annot_Hide_Info_Private_Child                   =>
+           "child of a package whose private part is hidden using a "
+           & Annot_To_String (Kind)
+           & " shall not have a visible private part",
+         when Annot_Hide_Info_Private_Eq                      =>
+           "if the full view of a type is hidden using a "
+           & Annot_To_String (Kind)
+           & ", its predefined equality shall not be restricted "
+           & "unless its partial view has an explicit "
+           & """Predefined_Equality"" annotation",
+         when Annot_Hide_Info_Private_Ownership               =>
+           "if the full view of a type is hidden using a "
+           & Annot_To_String (Kind)
+           & ", it shall not be subject to onwership unless its "
+           & "partial view has an explicit "
+           & Annot_To_String (Name => Ownership),
+         when Annot_HO_Specialization_Formal_In_Iterated_Comp =>
+           "subprogram with the "
+           & Annot_To_String (Kind)
+           & " shall not reference its access-to-function"
+           & " parameters inside an iterated component association",
+         when Annot_HO_Specialization_Inline                  =>
+           "inlined function with the "
+           & Annot_To_String (Name => HO_Specialization)
+           & " shall have a postcondition",
+         when Annot_HO_Specialization_No_Formal               =>
+           "subprogram with the "
+           & Annot_To_String (Kind)
+           & " shall have at least a parameter of an anonymous"
+           & " access-to-function type",
+         when Annot_HO_Specialization_Use_Of_Formal           =>
+           "subprogram with the "
+           & Annot_To_String (Kind)
+           & " shall only reference its access-to-function "
+           & "parameters in dereferences and as actual parameters in "
+           & "calls to functions with the "
+           & Annot_To_String (Kind),
+         when Annot_Inline_For_Proof_Body_Off                 =>
+           "the body of expression functions with the "
+           & Annot_To_String (Kind)
+           & " shall be in SPARK",
+         when Annot_Inline_For_Proof_Logical_Equal            =>
+           "function shall not have both the "
+           & Annot_To_String (Name => Inline_For_Proof)
+           & " and the "
+           & Annot_To_String (Name => Logical_Equal),
+         when Annot_Inline_For_Proof_Potentially_Invalid      =>
+           "function with the "
+           & Annot_To_String (Kind)
+           & " with a postcondition shall not have a potentially invalid "
+           & "result",
+         when Annot_Inline_For_Proof_Post                     =>
+           "function with the "
+           & Annot_To_String (Kind)
+           & " shall either be an expression function or have a single "
+           & "postcondition of the form ""&'Result = Expr""",
+         when Annot_Iterable_For_Proof_Circular_Models        =>
+           "function with the "
+           & Annot_To_String (Kind)
+           & " produces a circular definition for container models",
+         when Annot_Iterable_For_Proof_Controlling_Result     =>
+           "function with the "
+           & Annot_To_String (Kind)
+           & " shall not have a controlling result",
+         when Annot_Iterable_For_Proof_Prim                   =>
+           "function with the "
+           & Annot_To_String (Kind)
+           & " shall be primitive of &",
+         when Annot_Logical_Equal_Post                        =>
+           "function with the "
+           & Annot_To_String (Kind)
+           & " shall not have postconditions or contract cases",
+         when Annot_Logical_Equal_Potentially_Invalid         =>
+           "function with the "
+           & Annot_To_String (Kind)
+           & " shall not have a Potentially_Invalid aspect",
+         when Annot_Mutable_In_Params_Depends                 =>
+           "subprogram with the "
+           & Annot_To_String (Kind)
+           & " shall not have a Depends contract",
+         when Annot_Mutable_In_Params_No_Params               =>
+           "subprogram with the "
+           & Annot_To_String (Kind)
+           & " shall have at least an ""in"" parameter of type &",
+         when Annot_Mutable_In_Params_Side_Effects            =>
+           "subprogram with the "
+           & Annot_To_String (Kind)
+           & " shall not be a function without side-effects",
+         when Annot_No_Bitwise_Operations_Use                 =>
+           "bitwise operation on type with "
+           & Annot_To_String (Kind)
+           & " shall not be used in SPARK",
+         when Annot_Ownership_Potentially_Invalid             =>
+           "no part of an object or function result with the "
+           & "Potentially_Invalid aspect shall be of a type with an "
+           & Annot_To_String (Kind),
+         when Annot_Predefined_Equality_Use_Eq                =>
+           "equality on type annotated with the "
+           & Annot_To_String (Kind)
+           & " shall abide by the corresponding restrictions");
 
    ---------------
    -- Kind_Name --
@@ -1825,113 +2606,189 @@ package body VC_Kinds is
          when Unused_Initial_Value                        =>
            "initial value of an object is not used",
          when Unused_Variable                             =>
-           "object is not used",
-         when Volatile_Function_Without_Volatile_Effects  =>
-           "non-volatile function wrongly declared as volatile");
+           "object is not used");
 
    function Kind_Name (Kind : Misc_Warning_Kind) return String
    is (case Kind is
-         when Warn_Address_To_Access               =>
-           "address-to-access-conversion",
-         when Warn_Alias_Atomic_Vol                =>
+         when Warn_Alias_Atomic_Vol                           =>
            "alias-volatile-atomic-mismatch",
-         when Warn_Alias_Different_Volatility      =>
+         when Warn_Alias_Different_Volatility                 =>
            "alias-volatile-prop-mismatch",
-         when Warn_Attribute_Valid                 =>
+         when Warn_Attribute_Valid                            =>
            "attribute-valid-always-true",
-         when Warn_Auto_Lemma_Calls                => "auto-lemma-calls",
-         when Warn_Auto_Lemma_Different            => "auto-lemma-different",
-         when Warn_Auto_Lemma_Higher_Order         =>
+         when Warn_Auto_Lemma_Calls                           =>
+           "auto-lemma-calls",
+         when Warn_Auto_Lemma_Different                       =>
+           "auto-lemma-different",
+         when Warn_Auto_Lemma_Higher_Order                    =>
            "auto-lemma-higher-order",
-         when Warn_Auto_Lemma_Specializable        =>
+         when Warn_Auto_Lemma_Specializable                   =>
            "auto-lemma-specializable",
-         when Warn_Initialization_To_Alias         =>
+         when Warn_Initialization_To_Alias                    =>
            "initialization-to-alias",
-         when Warn_Function_Is_Valid               => "is-valid-returns-true",
-         when Warn_Generic_Not_Analyzed            => "generic-not-analyzed",
-         when Warn_No_Possible_Termination         =>
+         when Warn_Function_Is_Valid                          =>
+           "is-valid-returns-true",
+         when Warn_Generic_Not_Analyzed                       =>
+           "generic-not-analyzed",
+         when Warn_No_Possible_Termination                    =>
            "no-possible-termination",
-         when Warn_Potentially_Invalid_Read        =>
+         when Warn_Potentially_Invalid_Read                   =>
            "potentially-invalid-read",
-         when Warn_Pragma_Annotate_No_Check        =>
+         when Warn_Pragma_Annotate_No_Check                   =>
            "no-check-message-justified",
-         when Warn_Pragma_Annotate_Proved_Check    => "proved-check-justified",
-         when Warn_Pragma_Annotate_Terminating     => "deprecated-terminating",
-         when Warn_Pragma_External_Axiomatization  =>
+         when Warn_Pragma_Annotate_Proved_Check               =>
+           "proved-check-justified",
+         when Warn_Pragma_Annotate_Terminating                =>
+           "deprecated-terminating",
+         when Warn_Pragma_External_Axiomatization             =>
            "deprecated-external-axiomatization",
-         when Warn_Pragma_Ignored                  => "ignored-pragma",
-         when Warn_Pragma_Overflow_Mode            => "overflow-mode-ignored",
-         when Warn_Precondition_Statically_False   =>
+         when Warn_Pragma_Ignored                             =>
+           "ignored-pragma",
+         when Warn_Pragma_Overflow_Mode                       =>
+           "overflow-mode-ignored",
+         when Warn_Precondition_Statically_False              =>
            "precondition-statically-false",
-         when Warn_Restriction_Ignored             => "restriction-ignored",
-         when Warn_Unreferenced_Function           => "unreferenced-function",
-         when Warn_Unreferenced_Procedure          => "unreferenced-procedure",
-         when Warn_Useless_Potentially_Invalid_Fun =>
+         when Warn_Restriction_Ignored                        =>
+           "restriction-ignored",
+         when Warn_Unreferenced_Function                      =>
+           "unreferenced-function",
+         when Warn_Unreferenced_Procedure                     =>
+           "unreferenced-procedure",
+         when Warn_Useless_Potentially_Invalid_Fun            =>
            "useless-potentially-invalid-func-result",
-         when Warn_Useless_Potentially_Invalid_Obj =>
+         when Warn_Useless_Potentially_Invalid_Obj            =>
            "useless-potentially-invalid-object",
-         when Warn_Useless_Relaxed_Init_Fun        =>
+         when Warn_Useless_Relaxed_Init_Fun                   =>
            "useless-relaxed-init-func-result",
-         when Warn_Useless_Relaxed_Init_Obj        =>
+         when Warn_Useless_Relaxed_Init_Obj                   =>
            "useless-relaxed-init-object",
-         when Warn_Variant_Not_Recursive           => "variant-no-recursion",
+         when Warn_Variant_Not_Recursive                      =>
+           "variant-no-recursion",
+         when Warn_Volatile_Function_Without_Volatile_Effects =>
+           "volatile-no-effects",
 
          --  Warnings guaranteed to be issued
-         when Warn_Imprecisely_Supported_Address   =>
+         when Warn_Address_To_Access                          =>
+           "address-to-access-conversion",
+         when Warn_Imprecisely_Supported_Address              =>
            "imprecise-address-specification",
-         when Warn_Assumed_Always_Terminates       =>
+         when Warn_Assumed_Always_Terminates                  =>
            "assumed-always-terminates",
-         when Warn_Assumed_Global_Null             => "assumed-global-null",
+         when Warn_Assumed_Global_Null                        =>
+           "assumed-global-null",
 
          --  Warnings enabled by --pedantic switch
-         when Warn_Image_Attribute_Length          => "image-attribute-length",
-         when Warn_Operator_Reassociation          => "operator-reassociation",
-         when Warn_Representation_Attribute_Value  =>
+         when Warn_Image_Attribute_Length                     =>
+           "image-attribute-length",
+         when Warn_Operator_Reassociation                     =>
+           "operator-reassociation",
+         when Warn_Representation_Attribute_Value             =>
            "representation-attribute-value",
 
          --  Warnings enabled by --info switch
-         when Warn_Alias_Array                     => "alias-array",
-         when Warn_Comp_Relaxed_Init               => "component-relaxed-init",
-         when Warn_Contracts_Recursive             => "contracts-recursive",
-         when Warn_DIC_Ignored                     => "dic-ignored",
-         when Warn_Full_View_Visible               => "full-view-visible",
-         when Warn_Imprecise_Address               => "imprecise-address",
-         when Warn_Imprecise_Align                 => "imprecise-align",
-         when Warn_Imprecise_Call                  => "imprecise-call",
-         when Warn_Imprecise_GG                    =>
+         when Warn_Alias_Array                                => "alias-array",
+         when Warn_Comp_Relaxed_Init                          =>
+           "component-relaxed-init",
+         when Warn_Contracts_Recursive                        =>
+           "contracts-recursive",
+         when Warn_Proof_Module_Cyclic                        =>
+           "cyclic-dependency",
+         when Warn_DIC_Ignored                                => "dic-ignored",
+         when Warn_Full_View_Visible                          =>
+           "full-view-visible",
+         when Warn_Imprecise_Address                          =>
+           "imprecise-address",
+         when Warn_Imprecise_Align                            =>
+           "imprecise-align",
+         when Warn_Imprecise_Call                             =>
+           "imprecise-call",
+         when Warn_Imprecise_GG                               =>
            "imprecise-global-generation",
-         when Warn_Init_Array                      => "array-initialization",
-         when Warn_Init_Multidim_Array             =>
+         when Warn_Imprecise_String_Literal                   =>
+           "imprecise-string-literal",
+         when Warn_Init_Array                                 =>
+           "array-initialization",
+         when Warn_Init_Multidim_Array                        =>
            "multidimensional-array-init",
-         when Warn_Component_Size                  =>
+         when Warn_Component_Size                             =>
            "imprecise-component-size",
-         when Warn_Record_Component_Attr           =>
+         when Warn_Record_Component_Attr                      =>
            "imprecise-record-component-attribute",
-         when Warn_Imprecise_Size                  => "imprecise-size",
-         when Warn_Imprecise_Overlay               => "imprecise-overlay",
-         when Warn_Imprecise_UC                    =>
+         when Warn_Imprecise_Size                             =>
+           "imprecise-size",
+         when Warn_Imprecise_Overlay                          =>
+           "imprecise-overlay",
+         when Warn_Imprecise_UC                               =>
            "imprecise-unchecked-conversion",
-         when Warn_Imprecise_Value                 => "imprecise-value",
-         when Warn_Imprecise_Image                 => "imprecise-image",
-         when Warn_Loop_Entity                     => "constants-in-loops",
-         when Warn_Init_Cond_Ignored               => "init-cond-ignored",
-         when Warn_No_Reclam_Func                  =>
+         when Warn_Imprecise_Value                            =>
+           "imprecise-value",
+         when Warn_Imprecise_Image                            =>
+           "imprecise-image",
+         when Warn_Loop_Entity                                =>
+           "constants-in-loops",
+         when Warn_Init_Cond_Ignored                          =>
+           "init-cond-ignored",
+         when Warn_No_Reclam_Func                             =>
            "no-reclamation-function",
-         when Warn_Num_Variant                     => "numeric-variant",
-         when Warn_Map_Length_Aggregates           => "map-length-aggregates",
-         when Warn_Set_Length_Aggregates           => "set-length-aggregates",
-         when Warn_Relaxed_Init_Mutable_Discr      =>
+         when Warn_Map_Length_Aggregates                      =>
+           "map-length-aggregates",
+         when Warn_Set_Length_Aggregates                      =>
+           "set-length-aggregates",
+         when Warn_Relaxed_Init_Mutable_Discr                 =>
            "relaxed-mutable-discriminants",
-         when Warn_Tagged_Untangling               => "tagged-assignment",
-         when Warn_Predef_Eq_Null                  =>
+         when Warn_Tagged_Untangling                          =>
+           "tagged-assignment",
+         when Warn_Predef_Eq_Null                             =>
            "predefined-equality-null",
-         when Warn_Unit_Not_SPARK                  => "unit-not-spark",
+         when Warn_Unit_Not_SPARK                             =>
+           "unit-not-spark",
 
          --  Info messages enabled by default
-         when Warn_Info_Unrolling_Inlining         =>
+         when Warn_Info_Unrolling_Inlining                    =>
            "info-unrolling-inlining");
 
    pragma Annotate (Xcov, Exempt_Off);
+
+   ----------------------------
+   -- Pretty_Annotation_Name --
+   ----------------------------
+
+   function Pretty_Annotation_Name
+     (Kind : GNATprove_Annotation_Kind) return String
+   is (case Kind is
+         when Unknown_Annotation      => "GNATprove",
+
+         --  Justification of checks
+
+         when False_Positive          => "False_Positive",
+         when Intentional             => "Intentional",
+
+         --   Supported annotations
+
+         when At_End_Borrow           => "At_End_Borrow",
+         when Automatic_Instantiation => "Automatic_Instantiation",
+         when Container_Aggregates    => "Container_Aggregates",
+         when Handler                 => "Handler",
+         when Hide_Info               => "Hide_Info",
+         when HO_Specialization       => "Higher_Order_Specialization",
+         when Inline_For_Proof        => "Inline_For_Proof",
+         when Iterable_For_Proof      => "Iterable_For_Proof",
+         when Logical_Equal           => "Logical_Equal",
+         when Mutable_In_Params       => "Mutable_In_Parameters",
+         when No_Bitwise_Operations   => "No_Bitwise_Operations",
+         when No_Wrap_Around          => "No_Wrap_Around",
+         when Ownership               => "Ownership",
+         when Predefined_Equality     => "Predefined_Equality",
+         when Skip_Flow_And_Proof     => "Skip_Flow_And_Proof",
+         when Skip_Proof              => "Skip_Proof",
+         when Unhide_Info             => "Unhide_Info",
+
+         --  Deprecated annotations
+
+         when Always_Return           => "Always_Return",
+         when External_Axiomatization => "External_Axiomatization",
+         when Might_Not_Return        => "Might_Not_Return",
+         when Terminating             => "Terminating");
 
    ---------------
    -- Rule_Name --
@@ -1946,6 +2803,196 @@ package body VC_Kinds is
    begin
       return Valid_Flow_Tag_Kind'Image (Kind);
    end Rule_Name;
+
+   -------------------
+   -- SRM_Reference --
+   -------------------
+
+   function SRM_Reference (Kind : Violation_Kind) return String
+   is (case Kind is
+         when Vio_Access_Constant
+         => "SPARK RM 4.1.4(6)",
+         when Vio_Access_Expression | Vio_Access_No_Root
+         => "SPARK RM 4.1.4(1)",
+         when Vio_Access_Function_With_Side_Effects
+         => "SPARK RM 4.1.4(4)",
+         when Vio_Access_Subprogram_Within_Protected
+         => "SPARK RM 4.1.4(2)",
+         when Vio_Access_Sub_Formal_With_Inv
+            | Vio_Access_Sub_Return_Type_With_Inv
+         => "SPARK RM 4.1.4(2)",
+         when Vio_Access_Sub_With_Globals
+         => "SPARK RM 4.1.4(7)",
+         when Vio_Access_To_Dispatch_Op
+         => "SPARK RM 4.1.4(2)",
+         when Vio_Access_Volatile_Function
+         => "SPARK RM 4.1.4(3)",
+         when Vio_Address_Outside_Address_Clause
+         => "SPARK RM 13.7(2)",
+         when Vio_Assert_And_Cut_Context
+         => "SPARK RM 5.9",
+         when Vio_Backward_Goto
+         => "SPARK RM 5.8(1)",
+         when Vio_Box_Notation_Without_Init
+         => "SPARK RM 4.3(1)",
+         when Vio_Controlled_Types
+         => "SPARK RM 7.6(1)",
+         when Vio_Default_With_Current_Instance
+         => "SPARK RM 3.8(1)",
+         when Vio_Derived_Untagged_With_Tagged_Full_View
+         => "SPARK RM 3.4(1)",
+         when Vio_Discriminant_Access
+         => "SPARK RM 3.7(2)",
+         when Vio_Discriminant_Derived
+         => "SPARK RM 3.7(2)",
+         when Vio_Dispatch_Plain_Pre
+         => "SPARK RM 6.1.1(2)",
+         when Vio_Dispatching_Untagged_Type
+         => "SPARK RM 3.9.2(1)",
+         when Vio_Exit_Cases_Exception
+         => "SPARK RM 6.1.11(3)",
+         when Vio_Exit_Cases_Normal_Only
+         => "SPARK RM 6.1.11(2)",
+         when Vio_Function_Global_Output | Vio_Function_Out_Param
+         => "SPARK RM 6.1(6)",
+         when Vio_Ghost_Concurrent_Comp
+         => "SPARK RM 6.9(22)",
+         when Vio_Ghost_Volatile
+         => "SPARK RM 6.9(9)",
+         when Vio_Handler_Choice_Parameter
+         => "SPARK RM 11.2(1)",
+         when Vio_Invariant_Class | Vio_Invariant_Ext | Vio_Invariant_Partial
+         => "SPARK RM 7.3.2(2)",
+         when Vio_Invariant_Volatile
+         => "SPARK RM 7.3.2(4)",
+         when Vio_Iterable_Controlling_Result
+            | Vio_Iterable_Globals
+            | Vio_Iterable_Side_Effects
+            | Vio_Iterable_Volatile
+         => "SPARK RM 5.5.2(12)",
+         when Vio_Iterable_Full_View
+         => "SPARK RM 5.5.2(13)",
+         when Vio_Iterator_Specification
+         => "SPARK RM 5.5.2",
+         when Vio_Loop_Variant_Structural
+         => "SPARK RM 5.5.3 (8)",
+         when Vio_Overlay_Constant_Not_Imported
+         => "SPARK RM 13.7(5)",
+         when Vio_Overlay_Mutable_Constant
+         => "SPARK RM 13.7(4)",
+         when Vio_Overlay_Part_Of_Protected
+         => "SPARK RM 13.7(3)",
+         when Vio_Ownership_Access_Equality
+         => "SPARK RM 3.10(19)",
+         when Vio_Ownership_Allocator_Invalid_Context
+         => "SPARK RM 4.8(2)",
+         when Vio_Ownership_Allocator_Uninitialized
+         => "SPARK RM 4.8(1)",
+         when Vio_Ownership_Anonymous_Access_To_Named
+         => "SPARK RM 3.10(18)",
+         when Vio_Ownership_Anonymous_Object_Context
+            | Vio_Ownership_Anonymous_Object_Init
+         => "SPARK RM 3.10(5)",
+         when Vio_Ownership_Assign_To_Expr | Vio_Ownership_Assign_To_Constant
+         => "SPARK RM 3.10(3)",
+         when Vio_Ownership_Borrow_Of_Constant
+         => "SPARK RM 3.10(11)",
+         when Vio_Ownership_Borrow_Of_Non_Markable
+         => "SPARK RM 3.10(4)",
+         when Vio_Ownership_Deallocate_General
+         => "SPARK RM 3.10(20)",
+         when Vio_Ownership_Loop_Entry_Old_Copy
+            | Vio_Ownership_Loop_Entry_Old_Traversal
+         => "SPARK RM 3.10(13)",
+         when Vio_Ownership_Move_Not_Name
+            | Vio_Ownership_Move_Constant_Part
+            | Vio_Ownership_Move_Traversal_Call
+         => "SPARK RM 3.10(1)",
+         when Vio_Ownership_Reborrow
+         => "SPARK RM 3.10(8)",
+         when Vio_Ownership_Tagged_Extension
+         => "SPARK RM 3.10(14)",
+         when Vio_Ownership_Traversal_Extended_Return
+         => "SPARK RM 3.10(6)",
+         when Vio_Ownership_Volatile
+         => "SPARK RM 3.10(16)",
+         when Vio_Ownership_Anonymous_Result
+            | Vio_Ownership_Anonymous_Component
+            | Vio_Ownership_Anonymous_Part_Of
+            | Vio_Ownership_Move_In_Declare
+            | Vio_Ownership_Different_Branches
+            | Vio_Ownership_Duplicate_Aggregate_Value
+            | Vio_Ownership_Storage_Pool
+         => "SPARK RM 3.10", --  We don't have better, use the access section
+         when Vio_Potentially_Invalid_Dispatch
+         => "SPARK RM 13.9.1(9)",
+         when Vio_Potentially_Invalid_Invariant
+         => "SPARK RM 13.9.1(7)",
+         when Vio_Potentially_Invalid_Overlay
+         => "SPARK RM 13.9.1(8)",
+         when Vio_Potentially_Invalid_Part_Access
+            | Vio_Potentially_Invalid_Part_Concurrent
+            | Vio_Potentially_Invalid_Part_Tagged
+            | Vio_Potentially_Invalid_Part_Unchecked_Union
+         => "SPARK RM 13.9.1(5)",
+         when Vio_Potentially_Invalid_Scalar
+         => "SPARK RM 13.9.1(4)",
+         when Vio_Program_Exit_Outputs
+         => "SPARK RM 6.1.10(1)",
+         when Vio_Predicate_Volatile
+         => "SPARK RM 3.2.4(3)",
+         when Vio_Relaxed_Init_Dispatch
+         => "SPARK RM 6.10(10)",
+         when Vio_Relaxed_Init_Initialized_Prefix
+         => "SPARK RM 6.10(4)",
+         when Vio_Relaxed_Init_Part_Of_Tagged
+         => "SPARK RM 6.10(6)",
+         when Vio_Relaxed_Init_Part_Of_Unchecked_Union
+         => "SPARK RM 6.10(8)",
+         when Vio_Relaxed_Init_Part_Of_Volatile
+         => "SPARK RM 6.10(7)",
+         when Vio_Side_Effects_Call_Context
+         => "SPARK RM 6.1.13(4)",
+         when Vio_Side_Effects_Eq
+         => "SPARK RM 6.1.13(8)",
+         when Vio_Side_Effects_Traversal
+         => "SPARK RM 6.1.13(7)",
+         when Vio_Subp_Variant_Structural
+         => "SPARK RM 6.1.8(5)",
+         when Vio_Tagged_Extension_Local
+         => "SPARK RM 3.9.1(1)",
+         when Vio_Target_Name_In_Call_With_Side_Effets
+         => "SPARK RM 6.4.2(7)",
+         when Vio_Tasking_Synchronized_Comp
+         => "SPARK RM 9(5)",
+         when Vio_Tasking_Uninitialized_Concurrent
+         => "SPARK RM 9(4)",
+         when Vio_UC_From_Access
+         => "SPARK RM 13.9(1)",
+         when Vio_UC_To_Access
+            | Vio_UC_To_Access_Components
+            | Vio_UC_To_Access_From
+         => "SPARK RM 13.9(2)",
+         when Vio_Volatile_At_Library_Level
+         => "SPARK RM 7.1.3(3)",
+         when Vio_Volatile_Discriminant | Vio_Volatile_Loop_Param
+         => "SPARK RM 7.1.3(4)",
+         when Vio_Volatile_Discriminated_Type
+         => "SPARK RM 7.1.3(5)",
+         when Vio_Volatile_Eq
+         => "SPARK RM 7.1.3(10)",
+         when Vio_Volatile_Global
+         => "SPARK RM 7.1.3(7)",
+         when Vio_Volatile_In_Interfering_Context
+         => "SPARK RM 7.1.3(9)",
+         when Vio_Volatile_Incompatible_Comp
+         => "SPARK RM 7.1.3(6)",
+         when Vio_Volatile_Incompatible_Type
+         => "SPARK RM 7.1.3(2)",
+         when Vio_Volatile_Result | Vio_Volatile_Parameter
+         => "SPARK RM 7.1.3(8)",
+         when others
+         => "");
 
    -------------
    -- To_JSON --
@@ -2016,8 +3063,6 @@ package body VC_Kinds is
       begin
          return S (S'First + 1 .. S'Last);
       end Line_Number_Image;
-
-      --  Start of processing for To_JSON
 
    begin
       Set_Field (Obj, "previous", Obj_Prev);
@@ -2091,8 +3136,6 @@ package body VC_Kinds is
          Set_Field (Res, "others", To_JSON (Other.all));
          return Res;
       end Create_Array;
-
-      --  Start of processing for To_JSON
 
    begin
       return
@@ -2197,6 +3240,787 @@ package body VC_Kinds is
 
       return 'E' & Result;
    end To_String;
+
+   ---------------------------
+   -- Unsupported_Kind_Name --
+   ---------------------------
+
+   function Unsupported_Kind_Name (Kind : Unsupported_Kind) return String
+   is (case Kind is
+         when Lim_Abstract_State_Part_Of_Concurrent_Obj                   =>
+           "abstract-state-part-of-concurrent-obj",
+         when Lim_Access_Attr_With_Ownership_In_Unsupported_Context       =>
+           "access-attr-with-ownership-in-unsupported-context",
+         when Lim_Access_Conv                                             =>
+           "access-conv",
+         when Lim_Access_Sub_Protected                                    =>
+           "access-sub-protected",
+         when Lim_Access_Sub_Traversal                                    =>
+           "access-sub-traversal",
+         when Lim_Access_To_No_Return_Subp                                =>
+           "access-to-no-return-subp",
+         when Lim_Access_To_Relaxed_Init_Subp                             =>
+           "access-to-relaxed-init-subp",
+         when Lim_Access_To_Subp_With_Exc                                 =>
+           "access-to-subp-with-exc",
+         when Lim_Access_To_Subp_With_Prog_Exit                           =>
+           "access-to-subp-with-prog-exit",
+         when Lim_Address_Attr_In_Unsupported_Context                     =>
+           "address-attr-in-unsupported-context",
+         when Lim_Alloc_With_Type_Constraints                             =>
+           "alloc-with-type-constraints",
+         when Lim_Array_Conv_Different_Size_Modular_Index                 =>
+           "array-conv-different-size-modular-index",
+         when Lim_Array_Conv_Signed_Modular_Index                         =>
+           "array-conv-signed-modular-index",
+         when Lim_Assert_And_Cut_Meet_Inv                                 =>
+           "assert-and-cut-meet-inv",
+         when Lim_Borrow_Slice                                            =>
+           "borrow-slice",
+         when Lim_Borrow_Traversal_First_Param                            =>
+           "borrow-traversal-first-param",
+         when Lim_Borrow_Traversal_Volatile                               =>
+           "borrow-traversal-volatile",
+         when Lim_Class_Attr_Of_Constrained_Type                          =>
+           "class-attr-of-constrained-type",
+         when Lim_Classwide_Representation_Value                          =>
+           "classwide-representation-value",
+         when Lim_Classwide_With_Predicate                                =>
+           "classwide-with-predicate",
+         when Lim_Complex_Raise_Expr_In_Prec                              =>
+           "complex-raise-expr-in-prec",
+         when Lim_Constrained_Classwide                                   =>
+           "constrained-classwide",
+         when Lim_Continue_Cross_Inv                                      =>
+           "continue-cross-inv",
+         when Lim_Contract_On_Derived_Private_Type                        =>
+           "contract-on-derived-private-type",
+         when Lim_Conv_Fixed_Float                                        =>
+           "conv-fixed-float",
+         when Lim_Conv_Fixed_Integer                                      =>
+           "conv-fixed-integer",
+         when Lim_Conv_Float_Modular_128                                  =>
+           "conv-float-modular-128",
+         when Lim_Conv_Incompatible_Fixed                                 =>
+           "conv-incompatible-fixed",
+         when Lim_Cut_Operation_Context                                   =>
+           "cut-operation-context",
+         when Lim_Deep_Object_With_Addr                                   =>
+           "deep-object-with-addr",
+         when Lim_Deep_Value_In_Delta_Aggregate                           =>
+           "deep-value-in-delta-aggregate",
+         when Lim_Derived_Interface                                       =>
+           "derived-interface",
+         when Lim_Destructor                                              =>
+           "destructor",
+         when Lim_Entry_Family                                            =>
+           "entry-family",
+         when Lim_Exceptional_Cases_Dispatch                              =>
+           "exceptional-cases-dispatch",
+         when Lim_Exceptional_Cases_Ownership                             =>
+           "exceptional-cases-ownership",
+         when Lim_Exit_Cases_Dispatch                                     =>
+           "exit-cases-dispatch",
+         when Lim_Ext_Aggregate_With_Type_Ancestor                        =>
+           "ext-aggregate-with-type-ancestor",
+         when Lim_Extension_Case_Pattern_Matching                         =>
+           "extension-case-pattern-matching",
+         when Lim_GNAT_Ext_Conditional_Goto                               =>
+           "gnat-ext-conditional-goto",
+         when Lim_GNAT_Ext_Conditional_Raise                              =>
+           "gnat-ext-conditional-raise",
+         when Lim_GNAT_Ext_Conditional_Return                             =>
+           "gnat-ext-conditional-return",
+         when Lim_GNAT_Ext_Interpolated_String_Literal                    =>
+           "gnat-ext-interpolated-string-literal",
+         when Lim_Generic_In_Hidden_Private                               =>
+           "generic-in-hidden-private",
+         when Lim_Generic_In_Type_Inv                                     =>
+           "generic-in-type-inv",
+         when Lim_Goto_Cross_Inv                                          =>
+           "goto-cross-inv",
+         when Lim_Hidden_Private_Relaxed_Init                             =>
+           "hidden-private-relaxed-init",
+         when Lim_Img_On_Non_Scalar                                       =>
+           "img-on-non-scalar",
+         when Lim_Incomplete_Type_Early_Usage                             =>
+           "incomplete-type-early-usage",
+         when Lim_Indexed_Container_Aggregate                             =>
+           "indexed-container-aggregate",
+         when Lim_Inherited_Controlling_Result_From_Hidden_Part           =>
+           "inherited-controlling-result-from-hidden-part",
+         when Lim_Inherited_Controlling_Result_From_SPARK_Off             =>
+           "inherited-controlling-result-from-spark-off",
+         when Lim_Inherited_Prim_From_Hidden_Part                         =>
+           "inherited-prim-from-hidden-part",
+         when Lim_Inherited_Prim_From_SPARK_Off                           =>
+           "inherited-prim-from-spark-off",
+         when Lim_Iterated_Element_Association                            =>
+           "iterated-element-association",
+         when Lim_Iterator_In_Component_Assoc                             =>
+           "iterator-in-component-assoc",
+         when Lim_Limited_Type_From_Limited_With                          =>
+           "limited-type-from-limited-with",
+         when Lim_Loop_Inv_And_Handler                                    =>
+           "loop-inv-and-handler",
+         when Lim_Loop_Inv_And_Finally                                    =>
+           "loop-inv-and-finally",
+         when Lim_Loop_With_Iterator_Filter                               =>
+           "loop-with-iterator-filter",
+         when Lim_Max_Array_Dimension                                     =>
+           "max-array-dimension",
+         when Lim_Max_Modulus                                             =>
+           "max-modulus",
+         when Lim_Move_To_Access_Constant                                 =>
+           "move-to-access-constant",
+         when Lim_No_Return_Function                                      =>
+           "no-return-function",
+         when Lim_Non_Static_Attribute                                    =>
+           "non-static-attribute",
+         when Lim_Multiple_Inheritance_Interfaces                         =>
+           "multiple-inheritance-interfaces",
+         when Lim_Multiple_Inheritance_Mixed_SPARK_Mode                   =>
+           "multiple-inheritance-mixed-spark-mode",
+         when Lim_Multiple_Inheritance_Root                               =>
+           "multiple-inheritance-root",
+         when Lim_Multidim_Iterator                                       =>
+           "multidim-iterator",
+         when Lim_Multidim_Update                                         =>
+           "multidim-update",
+         when Lim_Null_Aggregate_In_Branching_Array_Aggregate             =>
+           "null-aggregate-in-branching-array-aggregate",
+         when Lim_Object_Before_Inv                                       =>
+           "object-before-inv",
+         when Lim_Op_Fixed_Float                                          =>
+           "op-fixed-float",
+         when Lim_Op_Incompatible_Fixed                                   =>
+           "op-compatible-fixed",
+         when Lim_Overlay_Uninitialized                                   =>
+           "overlay-uninitialized",
+         when Lim_Overlay_With_Deep_Object                                =>
+           "overlay-with-deep-object",
+         when Lim_Overriding_With_Precondition_Discrepancy_Hiding         =>
+           "overriding-with-precondition-discrepancy-hiding",
+         when Lim_Overriding_With_Precondition_Discrepancy_Tagged_Privacy =>
+           "overriding-with-precondition-discrepancy-tagged-privacy",
+         when Lim_Deep_Object_Declaration_Outside_Block                   =>
+           "deep-object-declaration-outside-block",
+         when Lim_Package_Before_Inv                                      =>
+           "package-before-inv",
+         when Lim_Potentially_Invalid_Eq                                  =>
+           "potentially-invalid-eq",
+         when Lim_Potentially_Invalid_Iterable                            =>
+           "potentially-invalid-iterable",
+         when Lim_Potentially_Invalid_Mutable_Discr                       =>
+           "potentially-invalid-mutable-discr",
+         when Lim_Potentially_Invalid_Part_Of                             =>
+           "potentially-invalid-part-of",
+         when Lim_Potentially_Invalid_Predicates                          =>
+           "potentially-invalid-predicates",
+         when Lim_Potentially_Invalid_Private                             =>
+           "potentially-invalid-private",
+         when Lim_Potentially_Invalid_Relaxed                             =>
+           "potentially-invalid-relaxed",
+         when Lim_Potentially_Invalid_Subp_Access                         =>
+           "potentially-invalid-subp-access",
+         when Lim_Potentially_Invalid_Traversal                           =>
+           "potentially-invalid-traversal",
+         when Lim_Predicate_With_Different_SPARK_Mode                     =>
+           "predicate-with-different-spark-mode",
+         when Lim_Predicate_With_Different_Visibility                     =>
+           "predicate-with-different-visibility",
+         when Lim_Primitive_Call_In_DIC                                   =>
+           "primitive-call-in-dic",
+         when Lim_Program_Exit_Dispatch                                   =>
+           "program-exit-dispatch",
+         when Lim_Program_Exit_Global_Modified_In_Callee                  =>
+           "program-exit-global-modified-in-callee",
+         when Lim_Protected_Operation_Of_Expression                       =>
+           "protected-operation-of-expression",
+         when Lim_Protected_Operation_Of_Component                        =>
+           "protected-operation-of-component",
+         when Lim_Protected_Operation_Of_Formal                           =>
+           "protected-operation-of-formal",
+         when Lim_Refined_Post_On_Entry                                   =>
+           "refined-post-on-entry",
+         when Lim_Relaxed_Init_Access_Type                                =>
+           "relaxed-init-access-type",
+         when Lim_Relaxed_Init_Aliasing                                   =>
+           "relaxed-init-aliasing",
+         when Lim_Relaxed_Init_Invariant                                  =>
+           "relaxed-init-invariant",
+         when Lim_Relaxed_Init_Variant_Part                               =>
+           "relaxed-init-variant-part",
+         when Lim_Subprogram_Before_Inv                                   =>
+           "subprogram-before-inv",
+         when Lim_Subp_Variant_Duplicate                                  =>
+           "subp-variant-duplicate",
+         when Lim_Subp_Variant_Eq                                         =>
+           "subp-variant-eq",
+         when Lim_Suspension_On_Expression                                =>
+           "suspension-on-expression",
+         when Lim_Suspension_On_Formal                                    =>
+           "suspension-on-formal",
+         when Lim_Target_Name_In_Borrow                                   =>
+           "target-name-in-borrow",
+         when Lim_Target_Name_In_Move                                     =>
+           "target-name-in-move",
+         when Lim_Type_Inv_Access_Type                                    =>
+           "type-inv-access-type",
+         when Lim_Type_Inv_Protected_Type                                 =>
+           "type-inv-protected-type",
+         when Lim_Type_Inv_Tagged_Comp                                    =>
+           "type-inv-tagged-comp",
+         when Lim_Type_Inv_Tagged_Type                                    =>
+           "type-inv-tagged-type",
+         when Lim_Type_Inv_Volatile                                       =>
+           "type-inv-volatile",
+         when Lim_Uninit_Alloc_In_Expr_Fun                                =>
+           "uninit-alloc-in-expr-fun",
+         when Lim_Unknown_Alignment                                       =>
+           "unknown-alignment",
+         when Lim_Unknown_Size                                            =>
+           "unknown-size",
+         when Lim_UU_Constrained_Attr                                     =>
+           "uu-constrained-attribute",
+         when Lim_UU_Tagged_Comp                                          =>
+           "uu-tagged-comp");
+
+   -------------------------
+   -- Violation_Kind_Name --
+   -------------------------
+
+   function Violation_Kind_Name (Kind : Violation_Kind) return String
+   is (case Kind is
+         when Vio_Access_Constant                          =>
+           "access-constant",
+         when Vio_Access_Expression                        =>
+           "access-expression",
+         when Vio_Access_Function_With_Side_Effects        =>
+           "access-function-with-side-effects",
+         when Vio_Access_No_Root                           => "access-no-root",
+         when Vio_Access_Subprogram_Within_Protected       =>
+           "access-subprogram-within-protected",
+         when Vio_Access_Sub_Formal_With_Inv               =>
+           "access-sub-formal-with-inv",
+         when Vio_Access_Sub_Return_Type_With_Inv          =>
+           "access-sub-return-type-with-inv",
+         when Vio_Access_Sub_With_Globals                  =>
+           "access-sub-with-globals",
+         when Vio_Access_To_Dispatch_Op                    =>
+           "access-to-dispatch-op",
+         when Vio_Access_Volatile_Function                 =>
+           "access-volatile-function",
+         when Vio_Address_Of_Non_Object                    =>
+           "address-of-non-object",
+         when Vio_Address_Outside_Address_Clause           =>
+           "address-outside-address-clause",
+         when Vio_Aggregate_Globals                        =>
+           "aggregate-globals",
+         when Vio_Aggregate_Side_Effects                   =>
+           "aggregate-side-effects",
+         when Vio_Aggregate_Volatile                       =>
+           "aggregate-volatile",
+         when Vio_Assert_And_Cut_Context                   =>
+           "assert-and-cut-context",
+         when Vio_Backward_Goto                            => "backward-goto",
+         when Vio_Box_Notation_Without_Init                =>
+           "box-notation-without-init",
+         when Vio_Code_Statement                           => "code-statement",
+         when Vio_Controlled_Types                         =>
+           "controlled-types",
+         when Vio_Container_Aggregate                      =>
+           "container-aggregate",
+         when Vio_Default_With_Current_Instance            =>
+           "default-with-current-instance",
+         when Vio_Derived_Untagged_With_Tagged_Full_View   =>
+           "derived-untagged-with-tagged-full-view",
+         when Vio_Discriminant_Access                      =>
+           "discriminant-access",
+         when Vio_Discriminant_Derived                     =>
+           "discriminant-derived",
+         when Vio_Dispatch_Plain_Pre                       =>
+           "dispatch-plain-pre",
+         when Vio_Dispatching_Untagged_Type                =>
+           "dispatching-untagged-type",
+         when Vio_Exit_Cases_Exception                     =>
+           "exit-cases-exception",
+         when Vio_Exit_Cases_Normal_Only                   =>
+           "exit-cases-normal-only",
+         when Vio_Function_Global_Output                   =>
+           "function-global-output",
+         when Vio_Function_Out_Param                       =>
+           "function-out-param",
+         when Vio_Ghost_Concurrent_Comp                    =>
+           "ghost-concurrent-comp",
+         when Vio_Ghost_Volatile                           => "ghost-volatile",
+         when Vio_Handler_Choice_Parameter                 =>
+           "handler-choice-parameter",
+         when Vio_Invariant_Class                          =>
+           "invariant-class",
+         when Vio_Invariant_Ext                            => "invariant-ext",
+         when Vio_Invariant_Partial                        =>
+           "invariant-partial",
+         when Vio_Invariant_Volatile                       =>
+           "invariant-volatile",
+         when Vio_Iterable_Controlling_Result              =>
+           "iterable-controlling-result",
+         when Vio_Iterable_Full_View                       =>
+           "iterable-full-view",
+         when Vio_Iterable_Globals                         =>
+           "iterable-globals",
+         when Vio_Iterable_Side_Effects                    =>
+           "iterable-side-effects",
+         when Vio_Iterable_Volatile                        =>
+           "iterable-volatile",
+         when Vio_Iterator_Specification                   =>
+           "iterator-specification",
+         when Vio_Loop_Variant_Structural                  =>
+           "loop-variant-structural",
+         when Vio_Overlay_Constant_Not_Imported            =>
+           "overlay-constant-not-imported",
+         when Vio_Overlay_Mutable_Constant                 =>
+           "overlay-mutable-constant",
+         when Vio_Overlay_Part_Of_Protected                =>
+           "overlay-part-of-protected",
+         when Vio_Ownership_Access_Equality                =>
+           "ownership-access-equality",
+         when Vio_Ownership_Allocator_Invalid_Context      =>
+           "ownership-allocator-invalid-context",
+         when Vio_Ownership_Allocator_Uninitialized        =>
+           "ownership-allocator-uninitialized",
+         when Vio_Ownership_Anonymous_Access_To_Named      =>
+           "ownership-anonymous-access-to-named",
+         when Vio_Ownership_Anonymous_Part_Of              =>
+           "ownership-anonymous-part-of",
+         when Vio_Ownership_Anonymous_Object_Context       =>
+           "ownership-anonymous-object-context",
+         when Vio_Ownership_Anonymous_Object_Init          =>
+           "ownership-anonymous-object-init",
+         when Vio_Ownership_Anonymous_Result               =>
+           "ownership-anonymous-result",
+         when Vio_Ownership_Assign_To_Expr                 =>
+           "ownership-assign-to-expr",
+         when Vio_Ownership_Assign_To_Constant             =>
+           "ownership-assign-to-constant",
+         when Vio_Ownership_Borrow_Of_Constant             =>
+           "ownership-borrow-of-constant",
+         when Vio_Ownership_Borrow_Of_Non_Markable         =>
+           "ownership-borrow-of-non-markable",
+         when Vio_Ownership_Anonymous_Component            =>
+           "ownership-anonymous-component",
+         when Vio_Ownership_Deallocate_General             =>
+           "ownership-deallocate-general",
+         when Vio_Ownership_Different_Branches             =>
+           "ownership-different-branches",
+         when Vio_Ownership_Duplicate_Aggregate_Value      =>
+           "ownership-duplicate-aggregate-value",
+         when Vio_Ownership_Loop_Entry_Old_Copy            =>
+           "ownership-loop-entry-old-copy",
+         when Vio_Ownership_Loop_Entry_Old_Traversal       =>
+           "ownership-loop-entry-old-traversal",
+         when Vio_Ownership_Move_Constant_Part             =>
+           "ownership-move-constant-part",
+         when Vio_Ownership_Move_In_Declare                =>
+           "ownership-move-in-declare",
+         when Vio_Ownership_Move_Not_Name                  =>
+           "ownership-move-not-name",
+         when Vio_Ownership_Move_Traversal_Call            =>
+           "ownership-move-traversal-call",
+         when Vio_Ownership_Reborrow                       =>
+           "ownership-reborrow",
+         when Vio_Ownership_Storage_Pool                   =>
+           "ownership-storage-pool",
+         when Vio_Ownership_Tagged_Extension               =>
+           "ownership-tagged-extension",
+         when Vio_Ownership_Traversal_Extended_Return      =>
+           "ownership-traversal-extended-return",
+         when Vio_Ownership_Volatile                       =>
+           "ownership-volatile",
+         when Vio_Potentially_Invalid_Dispatch             =>
+           "potentially-invalid-dispatch",
+         when Vio_Potentially_Invalid_Invariant            =>
+           "potentially-invalid-invariant",
+         when Vio_Potentially_Invalid_Overlay              =>
+           "potentially-invalid-overlay",
+         when Vio_Potentially_Invalid_Part_Access          =>
+           "potentially-invalid-part-access",
+         when Vio_Potentially_Invalid_Part_Concurrent      =>
+           "potentially-invalid-part-concurrent",
+         when Vio_Potentially_Invalid_Part_Tagged          =>
+           "potentially-invalid-part-tagged",
+         when Vio_Potentially_Invalid_Part_Unchecked_Union =>
+           "potentially-invalid-part-unchecked-union",
+         when Vio_Potentially_Invalid_Scalar               =>
+           "potentially-invalid-scalar",
+         when Vio_Predicate_Volatile                       =>
+           "predicate-volatile",
+         when Vio_Program_Exit_Outputs                     =>
+           "program-exit-outputs",
+         when Vio_Real_Root                                => "real-root",
+         when Vio_Relaxed_Init_Dispatch                    =>
+           "relaxed-init-dispatch",
+         when Vio_Relaxed_Init_Initialized_Prefix          =>
+           "relaxed-init-initialized-prefix",
+         when Vio_Relaxed_Init_Part_Generic                =>
+           "relaxed-init-part-generic",
+         when Vio_Relaxed_Init_Part_Of_Tagged              =>
+           "relaxed-init-part-of-tagged",
+         when Vio_Relaxed_Init_Part_Of_Unchecked_Union     =>
+           "relaxed-init-part-of-unchecked-union",
+         when Vio_Relaxed_Init_Part_Of_Volatile            =>
+           "relaxed-init-part-of-volatile",
+         when Vio_Side_Effects_Call_Context                =>
+           "side-effects-call-context",
+         when Vio_Side_Effects_Eq                          =>
+           "side-effects-eq",
+         when Vio_Side_Effects_Traversal                   =>
+           "side-effects-traversal",
+         when Vio_Storage_Size                             => "storage-size",
+         when Vio_Subp_Variant_Structural                  =>
+           "subp-variant-structural",
+         when Vio_Tagged_Extension_Local                   =>
+           "tagged-extension-local",
+         when Vio_Target_Name_In_Call_With_Side_Effets     =>
+           "target-name-in-call-with-side-effets",
+         when Vio_Tasking_Configuration                    =>
+           "tasking-configuration",
+         when Vio_Tasking_Synchronized_Comp                =>
+           "tasking-synchronized-comp",
+         when Vio_Tasking_Uninitialized_Concurrent         =>
+           "tasking-unintialized-concurrent",
+         when Vio_Tasking_Unsupported_Construct            =>
+           "tasking-unsupported-construct",
+         when Vio_UC_From_Access                           => "uc-from-access",
+         when Vio_UC_To_Access                             => "uc-to-access",
+         when Vio_UC_To_Access_Components                  =>
+           "uc-to-access-components",
+         when Vio_UC_To_Access_From                        =>
+           "uc-to-access-from",
+         when Vio_Unsupported_Attribute                    =>
+           "unsupported-attribute",
+         when Vio_Unsupported_Pragma                       =>
+           "unsupported-pragma",
+         when Vio_Use_Of_Rejected_Entity                   =>
+           "use-of-rejected-entity",
+         when Vio_Volatile_At_Library_Level                =>
+           "volatile-at-library-level",
+         when Vio_Volatile_Discriminant                    =>
+           "volatile-discriminant",
+         when Vio_Volatile_Discriminated_Type              =>
+           "volatile-discriminated-type",
+         when Vio_Volatile_Eq                              => "volatile-eq",
+         when Vio_Volatile_Global                          =>
+           "volatile-global",
+         when Vio_Volatile_In_Interfering_Context          =>
+           "volatile-in-interferring-context",
+         when Vio_Volatile_Incompatible_Comp               =>
+           "volatile-incompatible-comp",
+         when Vio_Volatile_Incompatible_Type               =>
+           "volatile-incompatible-type",
+         when Vio_Volatile_Loop_Param                      =>
+           "volatile-loop-param",
+         when Vio_Volatile_Parameter                       =>
+           "volatile-parameter",
+         when Vio_Volatile_Result                          =>
+           "volatile-result");
+
+   -----------------------
+   -- Violation_Message --
+   -----------------------
+
+   function Violation_Message
+     (Kind       : Violation_Kind;
+      Name       : String := "";
+      Root_Cause : Boolean := False) return String
+   is (case Kind is
+         when Vio_Access_Constant                                    =>
+           "Access attribute of a named access-to-constant type whose prefix "
+           & "is not a constant part of an object",
+         when Vio_Access_Expression                                  =>
+           "Access attribute on a complex expression",
+         when Vio_Access_Function_With_Side_Effects                  =>
+           "access to function with side effects",
+         when Vio_Access_No_Root                                     =>
+           "Access attribute of a path not rooted inside a parameter or "
+           & "standalone object",
+         when Vio_Access_Subprogram_Within_Protected                 =>
+           "access to subprogram declared within a protected object",
+         when Vio_Access_Sub_Formal_With_Inv                         =>
+           "formal with type invariants in access-to-subprogram",
+         when Vio_Access_Sub_Return_Type_With_Inv                    =>
+           "access-to-subprogram returning a type with invariants",
+         when Vio_Access_Sub_With_Globals                            =>
+           "access to subprogram with global effects",
+         when Vio_Access_To_Dispatch_Op                              =>
+           "access to dispatching operation",
+         when Vio_Access_Volatile_Function                           =>
+           "access to volatile function",
+         when Vio_Address_Of_Non_Object                              =>
+           "attribute ""Address"" of a non-object entity",
+         when Vio_Address_Outside_Address_Clause                     =>
+           "attribute ""Address"" outside an attribute definition clause",
+         when Vio_Aggregate_Globals                                  =>
+           "subprogram associated to aspect Aggregate with dependency on "
+           & "globals",
+         when Vio_Aggregate_Side_Effects                             =>
+           "subprogram with side effects associated with aspect Aggregate",
+         when Vio_Aggregate_Volatile                                 =>
+           "volatile function associated with aspect Aggregate",
+         when Vio_Assert_And_Cut_Context                             =>
+           "pragma Assert_And_Cut outside a sequence of statements",
+         when Vio_Backward_Goto                                      =>
+           "backward goto statement",
+         when Vio_Box_Notation_Without_Init                          =>
+           "box notation without default or relaxed initialization",
+         when Vio_Container_Aggregate                                =>
+           "container aggregate whose type does not have the "
+           & Annot_To_String (Name => Container_Aggregates),
+         when Vio_Code_Statement                                     =>
+           "code statement",
+         when Vio_Controlled_Types                                   =>
+           "controlled types",
+         when Vio_Default_With_Current_Instance                      =>
+           "default expression with current instance of enclosing type",
+         when Vio_Derived_Untagged_With_Tagged_Full_View             =>
+           (if Root_Cause
+            then "deriving from type declared as untagged private"
+            else "deriving & from & declared as untagged private"),
+         when Vio_Discriminant_Access                                =>
+           "access discriminant",
+         when Vio_Discriminant_Derived                               =>
+           "discriminant on derived type",
+         when Vio_Dispatch_Plain_Pre                                 =>
+           "plain precondition on dispatching subprogram",
+         when Vio_Dispatching_Untagged_Type                          =>
+           "dispatching call on primitive of type with untagged partial view",
+         when Vio_Exit_Cases_Exception                               =>
+           "exit case mentioning exceptions when no exceptions can be "
+           & "propagated",
+         when Vio_Exit_Cases_Normal_Only                             =>
+           "Exit_Case on subprogram which can only return normally",
+         when Vio_Function_Global_Output                             =>
+           "function with global outputs",
+         when Vio_Function_Out_Param                                 =>
+           "function with ""out"" or ""in out"" parameters",
+         when Vio_Ghost_Concurrent_Comp                              =>
+           (if Root_Cause
+            then "concurrent component of ghost type"
+            else "concurrent component & of ghost type &"),
+         when Vio_Ghost_Volatile                                     =>
+           "volatile ghost object",
+         when Vio_Handler_Choice_Parameter                           =>
+           "choice parameter in handler",
+         when Vio_Invariant_Class                                    =>
+           "classwide invariant",
+         when Vio_Invariant_Ext                                      =>
+           "type invariant on completion of private_type_extension",
+         when Vio_Invariant_Partial                                  =>
+           "type invariant on private_type_declaration or"
+           & " private_type_extension",
+         when Vio_Invariant_Volatile                                 =>
+           "type invariant on effectively volatile type",
+         when Vio_Iterable_Controlling_Result                        =>
+           "function associated to aspect Iterable with controlling result",
+         when Vio_Iterable_Full_View                                 =>
+           "Iterable aspect declared on the full view of a private type",
+         when Vio_Iterable_Globals                                   =>
+           "function associated to aspect Iterable with dependency on globals",
+         when Vio_Iterable_Side_Effects                              =>
+           "function with side effects associated with aspect Iterable",
+         when Vio_Iterable_Volatile                                  =>
+           "volatile function associated with aspect Iterable",
+         when Vio_Iterator_Specification                             =>
+           "iterator specification",
+         when Vio_Loop_Variant_Structural                            =>
+           "structural loop variant which is not a variable of an"
+           & " anonymous access-to-object type",
+         when Vio_Overlay_Constant_Not_Imported                      =>
+           "constant object with an address clause which is not imported",
+         when Vio_Overlay_Mutable_Constant                           =>
+           "mutable object and constant object overlaying each other",
+         when Vio_Overlay_Part_Of_Protected                          =>
+           "overlaid object which is a part of a protected object",
+         when Vio_Ownership_Access_Equality                          =>
+           "equality on access types",
+         when Vio_Ownership_Allocator_Invalid_Context                =>
+           "allocator or call to allocating function not stored in object "
+           & "as part of assignment, declaration, or return statement",
+         when Vio_Ownership_Allocator_Uninitialized                  =>
+           "uninitialized allocator without default initialization",
+         when Vio_Ownership_Anonymous_Access_To_Named                =>
+           "conversion from an anonymous access type to a named access "
+           & "type",
+         when Vio_Ownership_Anonymous_Part_Of                        =>
+           "anonymous access variable marked Part_Of a protected object",
+         when Vio_Ownership_Anonymous_Object_Context                 =>
+           "object of anonymous access not declared "
+           & "immediately within a subprogram, entry or block",
+         when Vio_Ownership_Anonymous_Object_Init                    =>
+           "uninitialized object of anonymous access type",
+         when Vio_Ownership_Anonymous_Result                         =>
+           "anonymous access type for result for non-traversal functions",
+         when Vio_Ownership_Assign_To_Expr                           =>
+           "assignment to a complex expression",
+         when Vio_Ownership_Assign_To_Constant                       =>
+           "assignment into a constant object",
+         when Vio_Ownership_Borrow_Of_Constant                       =>
+           "borrow of a constant object",
+         when Vio_Ownership_Borrow_Of_Non_Markable                   =>
+           "borrow or observe of an expression which is not part of "
+           & "stand-alone object or parameter",
+         when Vio_Ownership_Anonymous_Component                      =>
+           "component of anonymous access type",
+         when Vio_Ownership_Deallocate_General                       =>
+           "instance of Unchecked_Deallocation with a general access type",
+         when Vio_Ownership_Different_Branches                       =>
+           "observe of a conditional or case expression with "
+           & "branches rooted in different objects",
+         when Vio_Ownership_Duplicate_Aggregate_Value                =>
+           "duplicate value of a type with ownership",
+         when Vio_Ownership_Loop_Entry_Old_Copy                      =>
+           "prefix of """
+           & (if Root_Cause or else Name = ""
+              then "Loop_Entry"" or ""Old"
+              else Name)
+           & """ attribute introducing aliasing",
+         when Vio_Ownership_Loop_Entry_Old_Traversal                 =>
+           "traversal function call as a prefix of """
+           & (if Root_Cause or else Name = ""
+              then "Loop_Entry"" or ""Old"
+              else Name)
+           & """ attribute",
+         when Vio_Ownership_Move_Constant_Part                       =>
+           "access-to-constant part of an object as source of move",
+         when Vio_Ownership_Move_In_Declare                          =>
+           "move in declare expression",
+         when Vio_Ownership_Move_Not_Name                            =>
+           "expression as source of move",
+         when Vio_Ownership_Move_Traversal_Call                      =>
+           "call to a traversal function as source of move",
+         when Vio_Ownership_Reborrow                                 =>
+           "observed or borrowed expression which does not have the left-hand"
+           & " side as a root",
+         when Vio_Ownership_Storage_Pool                             =>
+           "access type with Storage_Pool",
+         when Vio_Ownership_Tagged_Extension                         =>
+           (if Root_Cause
+            then "owning component of tagged extension"
+            else "owning component & of tagged extension &"),
+         when Vio_Ownership_Traversal_Extended_Return                =>
+           "extended return applying to a traversal function",
+         when Vio_Ownership_Volatile                                 =>
+           "observe, move, or borrow of volatile object",
+         when Vio_Potentially_Invalid_Invariant                      =>
+           "potentially invalid object with a part subject to a type"
+           & " invariant",
+         when Vio_Potentially_Invalid_Dispatch                       =>
+           "dispatching operation with Potentially_Invalid aspect",
+         when Vio_Potentially_Invalid_Overlay                        =>
+           "potentially invalid overlaid object",
+         when Vio_Potentially_Invalid_Part_Access                    =>
+           "potentially invalid object with a part of an access type",
+         when Vio_Potentially_Invalid_Part_Concurrent                =>
+           "potentially invalid object with a part of a concurrent type",
+         when Vio_Potentially_Invalid_Part_Tagged                    =>
+           "potentially invalid object with a part of a tagged type",
+         when Vio_Potentially_Invalid_Part_Unchecked_Union           =>
+           "potentially invalid object with a part of an Unchecked_Union "
+           & "type",
+         when Vio_Potentially_Invalid_Scalar                         =>
+           "function returning a scalar that is not imported with "
+           & "Potentially_Invalid aspect",
+         when Vio_Predicate_Volatile                                 =>
+           "subtype predicate on effectively volatile type for reading",
+         when Vio_Program_Exit_Outputs                               =>
+           "output mentioned in the expression of an aspect Program_Exit "
+           & "which is not a stand-alone object",
+         when Vio_Real_Root                                          =>
+           "expression of type root_real",
+         when Vio_Relaxed_Init_Dispatch                              =>
+           "dispatching operation with Relaxed_Initialization aspect",
+         when Vio_Relaxed_Init_Initialized_Prefix                    =>
+           "attribute ""Initialized"" on a prefix which doesn't have "
+           & "relaxed initialization",
+         when Vio_Relaxed_Init_Part_Generic                          =>
+           "part of tagged, Unchecked_Union, or effectively volatile "
+           & "object or type annotated with relaxed initialization",
+         when Vio_Relaxed_Init_Part_Of_Tagged                        =>
+           "part of tagged type with relaxed initialization",
+         when Vio_Relaxed_Init_Part_Of_Unchecked_Union               =>
+           "part of Unchecked_Union type with relaxed initialization",
+         when Vio_Relaxed_Init_Part_Of_Volatile                      =>
+           "part of effectively volatile object or type annotated with "
+           & "relaxed initialization",
+         when Vio_Side_Effects_Call_Context                          =>
+           "call to a function with side effects outside of assignment or "
+           & "object declaration without a block",
+         when Vio_Side_Effects_Eq                                    =>
+           "function with side effects as user-defined equality on record "
+           & "type",
+         when Vio_Side_Effects_Traversal                             =>
+           "traversal function with side effects",
+         when Vio_Storage_Size                                       =>
+           "access type with Storage_Size",
+         when Vio_Subp_Variant_Structural                            =>
+           "structural subprogram variant which is not a parameter of the "
+           & "subprogram",
+         when Vio_Tagged_Extension_Local                             =>
+           "local derived type from non-local parent or interface",
+         when Vio_Target_Name_In_Call_With_Side_Effets               =>
+           "use of ""@"" inside a call to a function with side effects",
+         when Vio_Tasking_Synchronized_Comp                          =>
+           (if Root_Cause
+            then "synchronized component of non-synchronized type"
+            else "synchronized component & of non-synchronized type &"),
+         when Vio_Tasking_Uninitialized_Concurrent                   =>
+           "not fully initialized part of concurrent type",
+         when Vio_Tasking_Unsupported_Construct                      =>
+           "tasking",
+         when Vio_UC_From_Access                                     =>
+           "unchecked conversion instance from a type with access"
+           & " subcomponents",
+         when Vio_UC_To_Access                                       =>
+           "unchecked conversion instance to an access type which is not a "
+           & "general access-to-object type",
+         when Vio_UC_To_Access_Components                            =>
+           "unchecked conversion instance to a composite type with "
+           & "access subcomponents",
+         when Vio_UC_To_Access_From                                  =>
+           "unchecked conversion instance to an access-to-object type from "
+           & "a type which is neither System.Address nor an integer type",
+         when Vio_Unsupported_Attribute                              =>
+           (if Root_Cause or else Name = ""
+            then "unsupported attribute"
+            else "attribute """ & Name & '"'),
+         when Vio_Unsupported_Pragma                                 =>
+           (if Root_Cause then "unknown pragma" else "unknown pragma &"),
+         when Vio_Volatile_At_Library_Level                          =>
+           "effectively volatile type or object not at library level",
+         when Vio_Volatile_Discriminant                              =>
+           "volatile discriminant",
+         when Vio_Volatile_Discriminated_Type                        =>
+           "discriminated volatile type",
+         when Vio_Volatile_Eq                                        =>
+           "volatile function as user-defined equality on record type",
+         when Vio_Volatile_Global                                    =>
+           "nonvolatile function with volatile global inputs",
+         when Vio_Volatile_In_Interfering_Context                    =>
+           "volatile object or volatile function call in interfering context",
+         when Vio_Volatile_Incompatible_Comp                         =>
+           "component of composite type or designated type of an access with "
+           & "an incompatible volatility",
+         when Vio_Volatile_Incompatible_Type                         =>
+           "standalone object with an incompatible volatility with respect to "
+           & "its type",
+         when Vio_Volatile_Loop_Param                                =>
+           "effectively volatile loop parameter",
+         when Vio_Volatile_Parameter                                 =>
+           "nonvolatile function with effectively volatile parameter",
+         when Vio_Volatile_Result                                    =>
+           "nonvolatile function with effectively volatile result",
+         --  case excluded by precondition
+         when Vio_Use_Of_Rejected_Entity | Vio_Tasking_Configuration => "");
 
    --------------
    -- Wrap_CWE --

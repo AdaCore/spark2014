@@ -1,5 +1,14 @@
+ info: index check proved
+--> map_arr_incr.adb:5:38
+
  info: postcondition proved
 --> map_arr_incr.adb:6:11
+
+ info: index check proved
+--> map_arr_incr.adb:6:38
+
+ info: index check proved
+--> map_arr_incr.adb:6:49
 
  info: overflow check proved
 --> map_arr_incr.adb:6:52

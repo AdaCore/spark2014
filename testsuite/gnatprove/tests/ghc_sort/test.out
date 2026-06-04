@@ -197,7 +197,7 @@ ghc_sort.adb:136:66: info: index check proved
 ghc_sort.adb:137:18: info: subprogram variant proved
 ghc_sort.adb:137:31: info: pointer dereference check proved
 ghc_sort.adb:143:13: info: implicit aspect Always_Terminates on "Sum_Length_Aux" has been proved, subprogram will terminate
-ghc_sort.adb:143:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
+ghc_sort.adb:143:13: warning: "Sum_Length_Aux" is recursive; its implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
 ghc_sort.adb:145:14: info: pointer dereference check proved
 ghc_sort.adb:145:33: info: overflow check proved
 ghc_sort.adb:145:35: info: subprogram variant proved

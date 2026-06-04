@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2018-2025, AdaCore                     --
+--                     Copyright (C) 2018-2026, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -138,8 +138,6 @@ package body Why.Gen.Init is
       P      : W_Pred_Id;
       R      : W_Expr_Id;
       Tmp    : constant W_Expr_Id := New_Temp_For_Expr (+Name);
-
-      --  Start of processing for Compute_Is_Initialized
 
    begin
       --  An object is necessarily initialized if it does not have a wrapper

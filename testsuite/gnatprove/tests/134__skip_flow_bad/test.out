@@ -1,4 +1,5 @@
-bad.adb:4:29: error: aspect Skip_Proof cannot occur in the scope of a Skip_Flow_And_Proof aspect or pragma
+bad.adb:4:29: error: entity with the "Skip_Proof" annotation cannot occur in the scope of an entity with the "Skip_Flow_And_Proof" annotation
+bad.adb:4:29: error: incorrect placement for aspect "Annotate => (GNATprove, Skip_Proof[, ...])"
 bad.adb:8:25: warning: assuming "F" has no effect on global items
 bad.adb:8:25: warning: no Global contract available for "F" [assumed-global-null]
 bad.adb:11:22: warning: assuming "F" has no effect on global items

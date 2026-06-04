@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                     Copyright (C) 2010-2025, AdaCore                     --
+--                     Copyright (C) 2010-2026, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -690,6 +690,12 @@ package Why.Atree.Modules is
    String_Image_Module : W_Module_Id;
    To_String_Id        : W_Identifier_Id;
    Of_String_Id        : W_Identifier_Id;
+
+   --  For overflow checking of Unsigned_Base_Range integers in minimized range
+   --  (-gnato2)
+
+   Unsigned_Base_Range_Overflow_Module : W_Module_Id;
+   Unsigned_Base_Range_Overflow_Check  : W_Identifier_Id;
 
    --  Other identifiers
 

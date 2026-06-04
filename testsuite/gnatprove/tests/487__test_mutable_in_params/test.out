@@ -1,4 +1,5 @@
 test_mutable_in_parameters.adb:10:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test_mutable_in_parameters.adb:13:16: warning: volatile function "New_String" has no volatile effects
 test_mutable_in_parameters.adb:60:25: info: range check proved (CVC5: 2 VC)
 test_mutable_in_parameters.adb:60:49: info: overflow check proved (CVC5: 2 VC)
 test_mutable_in_parameters.adb:61:25: info: range check proved (CVC5: 2 VC)

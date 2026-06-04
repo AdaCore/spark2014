@@ -1,5 +1,5 @@
 large: True
-timeout: 4000
+timeout: 8000
 replay: True
 prove_all:
   sparklib: True

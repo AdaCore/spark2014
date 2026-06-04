@@ -257,8 +257,8 @@ use_set_ho.adb:89:16: info: implicit aspect Always_Terminates on "F" has been pr
 use_set_ho.adb:90:23: info: predicate check proved (Trivial: 1 VC)
 use_set_ho.adb:90:65: info: range check proved (CVC5: 2 VC)
 use_set_ho.adb:90:77: info: predicate check proved (Trivial: 2 VC)
+use_set_ho.adb:94:17: info: postcondition proved (Z3: 1 VC)
 use_set_ho.adb:94:17: info: precondition proved (CVC5: 1 VC)
-use_set_ho.adb:94:17: medium: postcondition might fail [provers reached step limit before completing the proof]
 use_set_ho.adb:94:34: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 use_set_ho.adb:94:66: info: precondition proved (CVC5: 1 VC)
 use_set_ho.adb:94:71: info: precondition proved (CVC5: 1 VC)

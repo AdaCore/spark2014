@@ -6,7 +6,7 @@
 --                                                                          --
 --                                  B o d y                                 --
 --                                                                          --
---                     Copyright (C) 2010-2025, AdaCore                     --
+--                     Copyright (C) 2010-2026, AdaCore                     --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -235,8 +235,6 @@ package body Assumption_Types is
          Subp_Vector.Replace_Element (Index, Elt);
          Subp_Map.Insert (Elt, Index);
       end Parse_Entry;
-
-      --  Start of processing for Parse_Entity_Table
 
    begin
       Subp_Map.Clear;

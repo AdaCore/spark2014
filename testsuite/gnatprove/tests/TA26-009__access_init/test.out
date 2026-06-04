@@ -1,5 +1,5 @@
 c380001.adb:5:13: error: "R2" is not allowed in SPARK (due to access discriminant)
-c380001.adb:5:13: error: access discriminant is not allowed in SPARK
+c380001.adb:5:13: error: access discriminant is not allowed in SPARK (SPARK RM 3.7(2))
 c380001.adb:5:13: error: access to incomplete type access to "R2" is required to be in SPARK
 c380001.adb:5:13: error: violation of pragma SPARK_Mode at test.adc:1
 c380001.adb:8:07: error: subtype of "R3" is not allowed in SPARK (due to access discriminant)

@@ -80,7 +80,7 @@ amortized_queue.adb:75:31: info: range check proved (CVC5: 4 VC)
 amortized_queue.adb:75:36: info: precondition proved (CVC5: 4 VC)
 amortized_queue.adb:75:53: info: range check proved (CVC5: 4 VC)
 amortized_queue.adb:77:13: info: loop invariant initialization proved (CVC5: 1 VC)
-amortized_queue.adb:77:13: info: loop invariant preservation proved (Z3: 1 VC)
+amortized_queue.adb:77:13: info: loop invariant preservation proved (CVC5: 1 VC)
 amortized_queue.adb:78:15: info: precondition proved (CVC5: 4 VC)
 amortized_queue.adb:78:50: info: overflow check proved (CVC5: 4 VC)
 amortized_queue.adb:78:56: info: overflow check proved (CVC5: 4 VC)
@@ -163,7 +163,7 @@ amortized_queue.ads:69:13: info: implicit aspect Always_Terminates on "Tail" has
 amortized_queue.ads:72:06: info: precondition proved (CVC5: 3 VC)
 amortized_queue.ads:72:06: medium: postcondition might fail, cannot prove Model (Q) = Model (Tail'Result) & Last_Element (Model (Q)) [provers reached step limit before completing the proof]
 amortized_queue.ads:72:18: info: precondition proved (CVC5: 3 VC)
-amortized_queue.ads:72:38: info: precondition proved (Z3: 1 VC)
+amortized_queue.ads:72:38: info: precondition proved (CVC5: 1 VC)
 amortized_queue.ads:72:40: info: precondition proved (CVC5: 1 VC)
 amortized_queue.ads:72:54: info: precondition proved (CVC5: 3 VC)
 amortized_queue.ads:74:13: info: implicit aspect Always_Terminates on "Enqueue" has been proved, subprogram will terminate

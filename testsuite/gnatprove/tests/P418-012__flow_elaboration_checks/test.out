@@ -22,6 +22,9 @@ foo.adb:17:10: error:   body of unit "Foo" elaborated
 foo.adb:17:10: error:   variable "Baz" assigned at line 17
 foo.adb:17:10: error: add pragma "Elaborate_Body" to spec "Foo" to ensure full initialization
 foo.adb:17:10: error: variable "Baz" modified by elaboration code in package body
+init.adb:11:06: warning: unused assignment
+init.ads:10:04: low: initialization of "B" must be mentioned in the Initializes contract of "Init" (SPARK RM 7.1.5(9))
+init.ads:12:04: low: initialization of "E" must be mentioned in the Initializes contract of "Init" (SPARK RM 7.1.5(9))
 nested-priv.adb:7:06: error:   body of unit "Priv" elaborated
 nested-priv.adb:7:06: error:   variable "Y" assigned at line 7
 nested-priv.adb:7:06: error: add pragma "Elaborate_Body" to spec "Priv" to ensure full initialization
@@ -30,4 +33,8 @@ nested.adb:11:09: error:   body of unit "Nested" elaborated
 nested.adb:11:09: error:   variable "X" assigned at line 11
 nested.adb:11:09: error: add pragma "Elaborate_Body" to spec "Nested" to ensure full initialization
 nested.adb:11:09: error: variable "X" modified by elaboration code in package body
-gnatprove: error during generation of Global contracts
+use_init.adb:4:04: info: data dependencies proved
+use_init.adb:4:15: low: unused global "Init.State"
+use_init.adb:13:10: medium: "B" might not be initialized after elaboration of main program "Use_Init"
+use_init.adb:15:10: medium: "E" might not be initialized after elaboration of main program "Use_Init"
+gnatprove: error during flow analysis and proof

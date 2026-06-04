@@ -6,8 +6,8 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---              Copyright (C) 2013-2025, Capgemini Engineering              --
---                     Copyright (C) 2013-2025, AdaCore                     --
+--              Copyright (C) 2013-2026, Capgemini Engineering              --
+--                     Copyright (C) 2013-2026, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -377,7 +377,6 @@ package body Flow_Error_Messages is
            Details       => To_Unbounded_String (Details),
            Continuations => Continuations,
            others        => <>);
-      --  Start of processing for Error_Msg_Flow
 
    begin
       --  If the message we are about to emit has already been emitted in the
@@ -403,8 +402,7 @@ package body Flow_Error_Messages is
          else
             case Severity is
                when Warning_Kind =>
-                  Suppressed :=
-                    Warning_Is_Suppressed (N, Msg3, F1, F2, F3) /= No_String;
+                  Suppressed := Warning_Is_Suppressed (N, Msg3, F1, F2, F3);
 
                   if Suppressed then
                      Result.Suppr := Suppressed_Warning;
@@ -567,8 +565,6 @@ package body Flow_Error_Messages is
          then ""
          else Write_Tracefile (Path));
 
-      --  Start of processing for Error_Msg_Flow
-
    begin
       Error_Msg_Flow
         (E             => FA.Spec_Entity,
@@ -628,6 +624,7 @@ package body Flow_Error_Messages is
       Stats         : Prover_Stat_Maps.Map;
       Unproved_Stat : Failed_Prover_Answer;
       Check_Info    : Check_Info_Type;
+      Cache_Status  : JSON_Value := Create_Object;
       CE_From_RAC   : Boolean := False)
    is
       function Get_Fix_Or_Verdict
@@ -646,6 +643,11 @@ package body Flow_Error_Messages is
       --  @result Severity of the proof message
 
       function Nice_Float (F : Float) return String;
+
+      function Cache_Phrase return String;
+      --  Return a string describing cache use for the current check, e.g.
+      --  "from session cache" or "partly from session cache". Returns the
+      --  empty string when no cache was used or no cache info is available.
 
       function Stat_Message return String;
       --  Prepare a message for statistics of proof results
@@ -770,64 +772,101 @@ package body Flow_Error_Messages is
          return Ada.Strings.Fixed.Trim (S, Ada.Strings.Left);
       end Nice_Float;
 
+      -----------------
+      -- Cache_Phrase --
+      -----------------
+
+      function Cache_Phrase return String is
+      begin
+         if Gnat2Why_Args.Debug_No_Cache_Output or else Is_Empty (Cache_Status)
+         then
+            return "";
+         end if;
+         declare
+            Use_Val : constant String := Get (Cache_Status, "use");
+         begin
+            if Use_Val = "none" then
+               return "";
+            end if;
+            declare
+               Sources : constant JSON_Array :=
+                 Get (Get (Cache_Status, "sources"));
+               Buf     : Unbounded_String :=
+                 To_Unbounded_String
+                   (if Use_Val = "partial" then "partly from " else "from ");
+            begin
+               for I in 1 .. Length (Sources) loop
+                  if I > 1 then
+                     Append (Buf, " and ");
+                  end if;
+                  Append (Buf, String'(Get (Get (Sources, I))));
+                  Append (Buf, " cache");
+               end loop;
+               return To_String (Buf);
+            end;
+         end;
+      end Cache_Phrase;
+
       ------------------
       -- Stat_Message --
       ------------------
 
       function Stat_Message return String is
-         Buf : Unbounded_String := Null_Unbounded_String;
+         Buf        : Unbounded_String := Null_Unbounded_String;
+         Show_Stats : constant Boolean :=
+           Gnat2Why_Args.Report_Mode in GPR_Statistics | GPR_Provers;
          use Prover_Stat_Maps;
       begin
-         --  Check if VC is not proved or statistics are enabled
 
-         if not Is_Proved
-           or else
-             Gnat2Why_Args.Report_Mode not in GPR_Statistics | GPR_Provers
-         then
+         if not Show_Stats then
             return "";
          end if;
 
          --  In case of the check being proved not by Why3, simply identify
-         --  this, no need for statistics.
+         --  the category; cache does not apply in that case.
 
          if How_Proved /= PC_Prover then
             return " (" & To_String (How_Proved) & ")";
          end if;
 
-         --  In the case of missing statistics, don't show them
+         --  General case: in prover/statistics report modes, print prover
+         --  stats and append the cache phrase when non-empty.
 
-         if Stats.Is_Empty then
-            return "";
-         end if;
-
-         --  We are now in the general case (several provers). We first count
-         --  the total number of VCs.
-
-         Append (Buf, " (");
-         for C in Stats.Iterate loop
-            declare
-               Elt : Prover_Stat renames Stats (C);
-            begin
-               Append (Buf, Key (C));
-               Append (Buf, ':');
-               Append (Buf, Integer'Image (Elt.Count));
-               Append (Buf, " VC");
-               if Gnat2Why_Args.Report_Mode = GPR_Statistics then
-                  Append (Buf, " in max ");
-                  Append (Buf, Nice_Float (Elt.Max_Time));
-                  Append (Buf, " seconds and");
-                  Append (Buf, Positive'Image (Elt.Max_Steps));
-                  Append (Buf, " step");
-                  if Elt.Max_Steps /= 1 then
-                     Append (Buf, 's');
-                  end if;
-               end if;
-               if Has_Element (Next (C)) then
+         declare
+            Cache_Msg : constant String := Cache_Phrase;
+         begin
+            if not Stats.Is_Empty then
+               Append (Buf, " (");
+               for C in Stats.Iterate loop
+                  declare
+                     Elt : Prover_Stat renames Stats (C);
+                  begin
+                     Append (Buf, Key (C));
+                     Append (Buf, ':');
+                     Append (Buf, Integer'Image (Elt.Count));
+                     Append (Buf, " VC");
+                     if Gnat2Why_Args.Report_Mode = GPR_Statistics then
+                        Append (Buf, " in max ");
+                        Append (Buf, Nice_Float (Elt.Max_Time));
+                        Append (Buf, " seconds and");
+                        Append (Buf, Positive'Image (Elt.Max_Steps));
+                        Append (Buf, " step");
+                        if Elt.Max_Steps /= 1 then
+                           Append (Buf, 's');
+                        end if;
+                     end if;
+                     if Has_Element (Next (C)) then
+                        Append (Buf, "; ");
+                     end if;
+                  end;
+               end loop;
+               if Cache_Msg /= "" then
                   Append (Buf, "; ");
+                  Append (Buf, Cache_Msg);
                end if;
-            end;
-         end loop;
-         Append (Buf, ')');
+               Append (Buf, ')');
+            end if;
+         end;
 
          return To_String (Buf);
       end Stat_Message;
@@ -884,9 +923,8 @@ package body Flow_Error_Messages is
            Stats         => Stats,
            Editor_Cmd    => To_Unbounded_String (Editor_Cmd),
            Unproved_Stat => Unproved_Stat,
+           Cache_Status  => Cache_Status,
            others        => <>);
-
-      --  Start of processing for Error_Msg_Proof
 
    begin
       --  Proof (why3) will only report messages that are relevant wrt
@@ -1057,8 +1095,6 @@ package body Flow_Error_Messages is
          then "result of fixed-point " & Oper
          else "result of " & Oper);
 
-      --  Start of processing for Get_Details
-
    begin
       --  The structure of the code is taken from
       --  SPARK_Atree.Get_Range_Check_Info, in particular regarding
@@ -1141,14 +1177,17 @@ package body Flow_Error_Messages is
 
          when VC_Raise                                 =>
             declare
-               function Is_Body_Or_Ghost_Inlined (N : Node_Id) return Boolean
+               function Is_Body_Or_Inlined (N : Node_Id) return Boolean
                is (Nkind (N) in N_Entity_Body
                    or else
                      (Is_Inlined_Call (N)
-                      and then Is_Ghost_With_Respect_To_Context (N)));
+                      and then
+                        (Is_Ghost_With_Respect_To_Context (N)
+                         or else
+                           No_Raise (Called_Entity_From_Inlined_Call (N)))));
 
-               function Enclosing_Body_Or_Ghost_Inlined is new
-                 First_Parent_With_Property (Is_Body_Or_Ghost_Inlined);
+               function Enclosing_Body_Or_Inlined is new
+                 First_Parent_With_Property (Is_Body_Or_Inlined);
             begin
 
                if Nkind (N) = N_Raise_Expression then
@@ -1164,10 +1203,14 @@ package body Flow_Error_Messages is
                elsif Nkind (N) in N_Raise_xxx_Error then
                   return "";
 
+               elsif Is_Within_Finally_Section (N) then
+                  return
+                    "enclosing finally section shall not propagate "
+                    & "exceptions";
+
                else
                   declare
-                     Scop : constant Node_Id :=
-                       Enclosing_Body_Or_Ghost_Inlined (N);
+                     Scop : constant Node_Id := Enclosing_Body_Or_Inlined (N);
                   begin
                      if Nkind (Scop) in N_Entity_Body then
                         declare
@@ -1182,13 +1225,68 @@ package body Flow_Error_Messages is
                              & Expected_Exc;
                         end;
                      elsif Is_Inlined_Call (Scop) then
+                        declare
+                           Callee : constant Entity_Id :=
+                             Called_Entity_From_Inlined_Call (Scop);
+                        begin
+                           if No_Raise (Callee) then
+                              return
+                                "inlined call to "
+                                & Pretty_Source_Name (Callee)
+                                & " shall not propagate exceptions";
+                           else
+                              return
+                                "ghost inlined call to "
+                                & Pretty_Source_Name (Callee)
+                                & " shall not propagate exceptions";
+                           end if;
+                        end;
+                     else
+                        return "";
+                     end if;
+                  end;
+               end if;
+            end;
+
+         when VC_Unexpected_Program_Exit               =>
+            declare
+               function Is_Body_Or_Ghost_Inlined (N : Node_Id) return Boolean
+               is (Nkind (N) in N_Entity_Body
+                   or else
+                     (Is_Inlined_Call (N)
+                      and then Is_Ghost_With_Respect_To_Context (N)));
+
+               function Enclosing_Body_Or_Ghost_Inlined is new
+                 First_Parent_With_Property (Is_Body_Or_Ghost_Inlined);
+            begin
+
+               if Nkind (N) in N_Subprogram_Call
+                 and then Is_Ghost_With_Respect_To_Context (N)
+               then
+                  return "ghost subprogram call shall not exit the program";
+
+               else
+                  declare
+                     Scop : constant Node_Id :=
+                       Enclosing_Body_Or_Ghost_Inlined (N);
+                  begin
+                     if Nkind (Scop) in N_Entity_Body then
+                        declare
+                           Caller : constant Entity_Id :=
+                             Unique_Defining_Entity (Scop);
+                        begin
+                           return
+                             Pretty_Source_Name (Caller)
+                             & " does not allow exiting the program";
+                        end;
+                     elsif Is_Inlined_Call (Scop) then
                         return
                           "ghost inlined call to "
                           & Pretty_Source_Name
                               (Called_Entity_From_Inlined_Call (Scop))
-                          & " shall not propagate exceptions";
+                          & " shall not exit the program";
                      else
-                        return "";
+                        raise Program_Error;
                      end if;
                   end;
                end if;
@@ -1553,9 +1651,18 @@ package body Flow_Error_Messages is
          begin
             if Present (Par) and then Is_Potentially_Unevaluated (Par) then
                if Attribute_Name (Par) = Name_Old then
-                  return
-                    "enclosing 'Old attribute reference is "
-                    & "unconditionally evaluated on subprogram entry";
+                  declare
+                     use Old_Attr_Util.Conditional_Evaluation;
+                     Conditional : constant String :=
+                       (if Eligible_For_Conditional_Evaluation (Par)
+                        then "conditionally"
+                        else "unconditionally");
+                  begin
+                     return
+                       "enclosing 'Old attribute reference is "
+                       & Conditional
+                       & " evaluated on subprogram entry";
+                  end;
                else
                   return
                     "enclosing 'Loop_Entry attribute reference is "
@@ -1809,8 +1916,6 @@ package body Flow_Error_Messages is
            Entity_Sets.Set;
 
          use type Ada.Containers.Count_Type;
-
-         --  Start of processing for Explain_Calls
 
       begin
          for Call of Calls loop
@@ -2076,8 +2181,6 @@ package body Flow_Error_Messages is
          end Add_Call;
 
          procedure Get_All_Calls is new Traverse_More_Proc (Add_Call);
-
-         --  Start of processing for Get_Calls_From_Node
 
       begin
          Get_All_Calls (N);
@@ -2408,8 +2511,6 @@ package body Flow_Error_Messages is
          function Check_Function_Result is new
            Traverse_More_Func (Is_Function_Result);
 
-         --  Start of processing for Has_Attribute_Result
-
       begin
          return Check_Function_Result (N) = Abandon;
       end Has_Attribute_Result;
@@ -2475,8 +2576,6 @@ package body Flow_Error_Messages is
 
          function Find_Post_State is new Traverse_More_Func (Is_Post_State);
 
-         --  Start of processing for Has_Post_State
-
       begin
          return Find_Post_State (N) = Abandon;
       end Has_Post_State;
@@ -2488,8 +2587,6 @@ package body Flow_Error_Messages is
       --  Approximate search for the enclosing subprogram or library package.
       --  It is fine to use this function here even if not always correct, as
       --  it's only used for adding or not an explanation.
-
-      --  Start of processing for Get_Fix
 
    begin
       --  On unprovable checks, avoid producing an incorrect possible fix
@@ -2996,7 +3093,9 @@ package body Flow_Error_Messages is
             --  of T to decide if the constraint can be expressed as a
             --  precondition.
 
-            if Enclosing_Subp in Runnable_Kind_Id then
+            if Present (Enclosing_Subp)
+              and then Enclosing_Subp in Runnable_Kind_Id
+            then
 
                --  Retrieve the subprogram inputs
 
@@ -3803,7 +3902,11 @@ package body Flow_Error_Messages is
             --  skipped, and in general we don't expect such an explanation to
             --  be relevant).
 
-            if Tag not in VC_Precondition | VC_Precondition_Main | VC_Raise
+            if Tag
+               not in VC_Precondition
+                    | VC_Precondition_Main
+                    | VC_Raise
+                    | VC_Unexpected_Program_Exit
             then
                return
                  Create (To_String (Explain_Calls (Get_Calls_From_Node (N))));
@@ -4464,8 +4567,6 @@ package body Flow_Error_Messages is
             Append (R, '"');
          end if;
       end Append_Quote;
-
-      --  Start of processing for Substitute
 
    begin
       for Index in Positive range 1 .. Length (S) loop

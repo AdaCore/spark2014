@@ -3,4 +3,4 @@
    13 |          At_Index : out Index) return Boolean;
       |          ^~~~~~~~
       + launch "gnatprove --explain=E0015" for more information
-gnatprove: error during generation of Global contracts
+gnatprove: error during flow analysis and proof

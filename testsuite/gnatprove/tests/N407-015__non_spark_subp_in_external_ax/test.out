@@ -1,7 +1,8 @@
 bad_ext_ax.ads:2:04: warning: External Axiomatizations are not supported anymore, ignored [deprecated-external-axiomatization]
 bad_ext_ax.ads:5:04: error: discriminant on derived type is not allowed in SPARK (SPARK RM 3.7(2))
 bad_ext_ax.ads:5:04: error: violation of aspect SPARK_Mode at line 1
-bad_ext_ax.ads:7:13: error: function "Bad_Func" with output global "X" is not allowed in SPARK [E0005]
+bad_ext_ax.ads:7:13: error: consider using the Side_Effects aspect
+bad_ext_ax.ads:7:13: error: function "Bad_Func" with output global "X" is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]
 bad_ext_ax.ads:7:13: error: launch "gnatprove --explain=E0005" for more information
 bad_ext_ax.ads:7:13: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof

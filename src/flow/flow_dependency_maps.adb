@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---              Copyright (C) 2013-2025, Capgemini Engineering              --
+--              Copyright (C) 2013-2026, Capgemini Engineering              --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -101,8 +101,6 @@ package body Flow_Dependency_Maps is
 
       Inputs  : Node_Sets.Set;
       Outputs : Flow_Id_Sets.Set;
-
-      --  Start of processing for Parse_Raw_Dependency_Map
 
    begin
       --  Aspect is written either as:
