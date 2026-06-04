@@ -1684,6 +1684,13 @@ package body VC_Kinds is
          when Vio_Overlay_Mutable_Constant          =>
            EC_Overlay_Mutable_Constant,
          when Vio_UC_From_Access                    => EC_UC_From_Access,
+         when Vio_Iterable_Controlling_Result       =>
+           EC_Iterable_Controlling_Result,
+         when Vio_Iterable_Full_View                => EC_Iterable_Full_View,
+         when Vio_Iterable_Globals                  => EC_Iterable_Globals,
+         when Vio_Iterable_Side_Effects             =>
+           EC_Iterable_Side_Effects,
+         when Vio_Iterable_Volatile                 => EC_Iterable_Volatile,
          when others                                => EC_None);
 
    ---------------

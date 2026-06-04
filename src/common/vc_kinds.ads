@@ -1555,6 +1555,11 @@ package VC_Kinds is
       EC_Handler_Choice_Parameter,
       EC_Overlay_Mutable_Constant,
       EC_UC_From_Access,
+      EC_Iterable_Controlling_Result,
+      EC_Iterable_Full_View,
+      EC_Iterable_Globals,
+      EC_Iterable_Side_Effects,
+      EC_Iterable_Volatile,
       EC_Intrinsic_Operator);
    for Explain_Code_Kind use
      (EC_None                                 => 0,
@@ -1585,6 +1590,11 @@ package VC_Kinds is
       EC_Handler_Choice_Parameter             => 25,
       EC_Overlay_Mutable_Constant             => 26,
       EC_UC_From_Access                       => 27,
+      EC_Iterable_Controlling_Result          => 28,
+      EC_Iterable_Full_View                   => 29,
+      EC_Iterable_Globals                     => 30,
+      EC_Iterable_Side_Effects                => 31,
+      EC_Iterable_Volatile                    => 32,
       EC_Intrinsic_Operator                   => 33);
 
    function To_String (Code : Explain_Code_Kind) return String
