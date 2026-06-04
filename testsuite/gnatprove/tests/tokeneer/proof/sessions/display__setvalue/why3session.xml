@@ -219,8 +219,8 @@
             </proof>
           </goal>
           <goal name="def'vc.41" proved="true">
-            <proof prover="2">
-              <result status="valid" steps="176201" />
+            <proof prover="1">
+              <result status="valid" steps="17116" />
             </proof>
           </goal>
           <goal name="def'vc.42" proved="true">
