@@ -958,7 +958,7 @@ package body Gnat2Why.Subprograms.Pointers is
             Profile : constant Entity_Id := Directly_Designated_Type (E);
          begin
             if Ada_Ent_To_Why.Has_Element (Symbol_Table, Profile) then
-               pragma Assert (not Is_Base_Type (E));
+               pragma Assert (E /= Root_Retysp (E));
             else
                Insert_Item
                  (Profile,

@@ -906,7 +906,7 @@ package body Gnat2Why.Types is
              & ", created in "
              & GNAT.Source_Info.Enclosing_Entity);
 
-      if Is_Access_Subprogram_Type (E) then
+      if Is_Access_Subprogram_Type (E) and then E = Root_Retysp (E) then
 
          --  Generate program function for E
 
