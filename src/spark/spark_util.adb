@@ -28,6 +28,7 @@ with Ada.Containers.Hashed_Maps;
 with Ada.Text_IO;
 with Casing;                      use Casing;
 with Common_Iterators;            use Common_Iterators;
+with Einfo.Utils;                 use Einfo.Utils;
 with Errout;
 with Errout_Wrapper;              use Errout_Wrapper;
 with Flow_Dependency_Maps;        use Flow_Dependency_Maps;
@@ -3621,7 +3622,7 @@ package body SPARK_Util is
    is (Enclosing_Unit (E) = Scope
        and then not Is_Formal (E)
        and then
-         (Ekind (E) /= E_Discriminant or else Sinfo.Nodes.Scope (E) /= Scope));
+         (Ekind (E) /= E_Discriminant or else Einfo.Utils.Scope (E) /= Scope));
 
    ----------------------------
    -- Is_Declared_In_Private --
@@ -3696,7 +3697,7 @@ package body SPARK_Util is
         Is_Declared_Directly_In_Unit (E, Scope)
         or else
           (Ekind (Encl) = E_Package
-           and then Present (Sinfo.Nodes.Scope (Encl))
+           and then Present (Einfo.Utils.Scope (Encl))
            and then Is_Declared_In_Unit (Encl, Scope));
    end Is_Declared_In_Unit;
 

@@ -837,7 +837,7 @@ package body Flow_Refinement is
            Is_Abstract_State (F)
            and then
              Is_Visible
-               (Target_Scope => (Sinfo.Nodes.Scope (F.Node), Private_Part),
+               (Target_Scope => (Einfo.Utils.Scope (F.Node), Private_Part),
                 Looking_From => Body_Scope (Scope))
            and then Down_Project (F, Body_Scope (Scope)).Contains (F);
       end Is_Hidden_Constituent;

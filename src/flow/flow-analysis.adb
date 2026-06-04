@@ -440,7 +440,7 @@ package body Flow.Analysis is
                    or else
                      (Is_Subprogram_Or_Entry (E)
                       and then
-                        Ekind (Sinfo.Nodes.Scope (E)) = E_Protected_Type));
+                        Ekind (Einfo.Utils.Scope (E)) = E_Protected_Type));
             return OK;
 
          elsif Nkind (N)

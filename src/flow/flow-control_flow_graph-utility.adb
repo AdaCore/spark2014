@@ -775,7 +775,7 @@ package body Flow.Control_Flow_Graph.Utility is
          A.Call_Vertex := Callsite;
          A.Parameter_Actual := Direct_Mapping_Id (Prefix (Name (Call)));
          A.Parameter_Formal :=
-           Direct_Mapping_Id (Sinfo.Nodes.Scope (Subprogram));
+           Direct_Mapping_Id (Einfo.Utils.Scope (Subprogram));
          A.Loops := Vertex_Ctx.Current_Loops;
          A.Warnings_Off := Vertex_Ctx.Warnings_Off;
          A.Error_Location := E_Loc;
@@ -835,7 +835,7 @@ package body Flow.Control_Flow_Graph.Utility is
       else
          declare
             Implicit : constant Flow_Id :=
-              Direct_Mapping_Id (Sinfo.Nodes.Scope (Subprogram));
+              Direct_Mapping_Id (Einfo.Utils.Scope (Subprogram));
 
             Implicit_Flat : constant Flow_Id_Sets.Set :=
               Flatten_Variable (Implicit, Scope);

@@ -162,7 +162,7 @@ package body SPARK_Atree.Entities is
    --------------------
 
    function Enclosing_Type (Obj : Entity_Id) return Type_Kind_Id
-   is (Sinfo.Nodes.Scope (Obj));
+   is (Einfo.Utils.Scope (Obj));
 
    -----------
    -- Esize --
@@ -498,7 +498,7 @@ package body SPARK_Atree.Entities is
      (Obj : Record_Field_Kind_Id) return Boolean
    is ((Present (Component_Clause (Obj))
         and then Opt.Ada_Version >= Opt.Ada_2005
-        and then Einfo.Entities.Reverse_Bit_Order (Sinfo.Nodes.Scope (Obj)))
+        and then Einfo.Entities.Reverse_Bit_Order (Einfo.Utils.Scope (Obj)))
        or else Einfo.Utils.Known_Normalized_First_Bit (Obj));
 
    ------------------------------
@@ -509,7 +509,7 @@ package body SPARK_Atree.Entities is
      (Obj : Record_Field_Kind_Id) return Boolean
    is ((Present (Component_Clause (Obj))
         and then Opt.Ada_Version >= Opt.Ada_2005
-        and then Einfo.Entities.Reverse_Bit_Order (Sinfo.Nodes.Scope (Obj)))
+        and then Einfo.Entities.Reverse_Bit_Order (Einfo.Utils.Scope (Obj)))
        or else
          (Einfo.Utils.Known_Static_Component_Bit_Offset (Obj)
           and then Einfo.Utils.Known_Static_Component_Size (Obj)));

@@ -991,7 +991,7 @@ package body Flow_Utility is
         Is_Formal (E)
         and then Is_Tagged_Type (T)
         and then not Is_Class_Wide_Type (T)
-        and then Has_Extensions_Visible (Sinfo.Nodes.Scope (E));
+        and then Has_Extensions_Visible (Einfo.Utils.Scope (E));
    end Extensions_Visible;
 
    function Extensions_Visible (F : Flow_Id; Scope : Flow_Scope) return Boolean
@@ -1361,7 +1361,7 @@ package body Flow_Utility is
       if Is_Protected_Component (Root_Entity) then
          Map_Root :=
            Add_Component
-             (Direct_Mapping_Id (Sinfo.Nodes.Scope (Root_Entity)),
+             (Direct_Mapping_Id (Einfo.Utils.Scope (Root_Entity)),
               Root_Entity);
 
       elsif Is_Part_Of_Concurrent_Object (Root_Entity) then
@@ -1415,7 +1415,7 @@ package body Flow_Utility is
 
                         if Is_Ancestor
                              (Get_Type (Map_Root, Scope),
-                              Get_Type (Sinfo.Nodes.Scope (Field), Scope),
+                              Get_Type (Einfo.Utils.Scope (Field), Scope),
                               Scope)
                         then
                            Map_Root :=
@@ -4489,14 +4489,14 @@ package body Flow_Utility is
                       (Ekind (Root_Entity) in E_Discriminant | E_Component
                        and then
                          Is_Concurrent_Type
-                           (Sinfo.Nodes.Scope (Root_Entity))));
+                           (Einfo.Utils.Scope (Root_Entity))));
 
             begin
                if Is_Protected_Component (Root_Entity) then
                   Comp_Id := 2;
                   Current_Field :=
                     Add_Component
-                      (Direct_Mapping_Id (Sinfo.Nodes.Scope (Root_Entity)),
+                      (Direct_Mapping_Id (Einfo.Utils.Scope (Root_Entity)),
                        Root_Entity);
 
                elsif Is_Part_Of_Concurrent_Object (Root_Entity) then
@@ -7562,7 +7562,7 @@ package body Flow_Utility is
                      then
                        Flatten_Variable
                          (Add_Component
-                            (Direct_Mapping_Id (Sinfo.Nodes.Scope (E)), E),
+                            (Direct_Mapping_Id (Einfo.Utils.Scope (E)), E),
                           Scope)
 
                      elsif Is_Part_Of_Concurrent_Object (E)
