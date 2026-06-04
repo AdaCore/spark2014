@@ -3928,15 +3928,13 @@ package body SPARK_Definition.Annotate is
       --  Checks that are common for Model/Contains function:
       --  No Globals, not volatile, primitive.
 
-      procedure Check_Contains_Entity
-        (E : Entity_Id; Ok : out Boolean; Cont_Element : out Entity_Id);
+      procedure Check_Contains_Entity (E : Entity_Id; Ok : out Boolean);
       --  Checks that E is a valid Contains function for a type with an
-      --  Iterable aspect. Initializes Cont_Element correctly if succeeding.
+      --  Iterable aspect.
 
-      procedure Check_Model_Entity
-        (E : Entity_Id; Ok : out Boolean; Cont_Element : out Entity_Id);
+      procedure Check_Model_Entity (E : Entity_Id; Ok : out Boolean);
       --  Checks that E is a valid Model function for a type with an
-      --  Iterable aspect. Initializes Cont_Element correctly if succeeding.
+      --  Iterable aspect.
 
       function Find_Model_Root (Container_Type : Entity_Id) return Entity_Id;
       --  Computes the final container type at the end of the
@@ -4001,9 +3999,7 @@ package body SPARK_Definition.Annotate is
       -- Check_Contains_Entity --
       ---------------------------
 
-      procedure Check_Contains_Entity
-        (E : Entity_Id; Ok : out Boolean; Cont_Element : out Entity_Id)
-      is
+      procedure Check_Contains_Entity (E : Entity_Id; Ok : out Boolean) is
          C_Param : constant Node_Id := First_Formal (E);
          E_Param : constant Node_Id :=
            (if Present (C_Param) then Next_Formal (C_Param) else Empty);
@@ -4013,9 +4009,11 @@ package body SPARK_Definition.Annotate is
          Element_Type   : Entity_Id;
          --  Type of the second argument of the Contains function
 
+         Prim         : Entity_Id;
+         Cont_Element : Entity_Id := Empty;
+
       begin
          Ok := False;
-         Cont_Element := Empty;
 
          if No (E_Param) or else Present (Next_Formal (E_Param)) then
             Mark_Incorrect_Use_Of_Annotation
@@ -4043,10 +4041,23 @@ package body SPARK_Definition.Annotate is
                Name     => Prag_Name,
                Cont_Msg => Create ("expected a boolean"));
          else
-            Cont_Element :=
-              Get_Iterable_Type_Primitive (Container_Type, Name_Element);
+
+            Prim := Get_Iterable_Type_Primitive (Container_Type, Name_Element);
+
+            if Present (Prim) then
+               Cont_Element := Etype (Prim);
+            else
+               Prim :=
+                 Get_Iterable_Type_Primitive
+                   (Container_Type, Name_Constant_Reference);
+
+               if Present (Prim) then
+                  Cont_Element := Directly_Designated_Type (Etype (Prim));
+               end if;
+            end if;
+
             --  Element primitive of Container_Type
-            if No (Cont_Element) then
+            if No (Prim) then
                Mark_Incorrect_Use_Of_Annotation
                  (Annot_Subp_Parameter_Type,
                   C_Param,
@@ -4055,9 +4066,9 @@ package body SPARK_Definition.Annotate is
                     Create
                       ("type of & shall allow container element iteration",
                        Names => [C_Param]));
-            elsif not In_SPARK (Cont_Element) then
+            elsif not In_SPARK (Prim) then
                return;
-            elsif Retysp (Etype (Cont_Element)) /= Retysp (Element_Type) then
+            elsif Retysp (Cont_Element) /= Retysp (Element_Type) then
                Mark_Incorrect_Use_Of_Annotation
                  (Annot_Subp_Parameter_Type,
                   E_Param,
@@ -4065,7 +4076,7 @@ package body SPARK_Definition.Annotate is
                   Cont_Msg =>
                     Create
                       ("& shall have type &",
-                       Names => [E_Param, Etype (Cont_Element)]));
+                       Names => [E_Param, Cont_Element]));
             else
                Check_Common_Properties (Container_Type, E, Ok);
             end if;
@@ -4076,9 +4087,7 @@ package body SPARK_Definition.Annotate is
       -- Check_Model_Entity --
       ------------------------
 
-      procedure Check_Model_Entity
-        (E : Entity_Id; Ok : out Boolean; Cont_Element : out Entity_Id)
-      is
+      procedure Check_Model_Entity (E : Entity_Id; Ok : out Boolean) is
          Param : constant Node_Id := First_Formal (E);
 
          Model_Type : constant Entity_Id := Etype (E);
@@ -4087,11 +4096,12 @@ package body SPARK_Definition.Annotate is
          Container_Type : Entity_Id;
          --  Type of first argument of the model function
 
+         Prim          : Entity_Id;
+         Cont_Element  : Entity_Id := Empty;
          Model_Element : Entity_Id;
 
       begin
          Ok := False;
-         Cont_Element := Empty;
 
          if No (Param) or else Present (Next_Formal (Param)) then
             Mark_Incorrect_Use_Of_Annotation
@@ -4111,12 +4121,24 @@ package body SPARK_Definition.Annotate is
 
          end if;
 
-         Cont_Element :=
-           Get_Iterable_Type_Primitive (Container_Type, Name_Element);
+         Prim := Get_Iterable_Type_Primitive (Container_Type, Name_Element);
+
+         if Present (Prim) then
+            Cont_Element := Etype (Prim);
+         else
+            Prim :=
+              Get_Iterable_Type_Primitive
+                (Container_Type, Name_Constant_Reference);
+
+            if Present (Prim) then
+               Cont_Element := Directly_Designated_Type (Etype (Prim));
+            end if;
+         end if;
+
          Model_Element :=
            Get_Iterable_Type_Primitive (Model_Type, Name_Element);
 
-         if No (Cont_Element) then
+         if No (Prim) then
             Mark_Incorrect_Use_Of_Annotation
               (Annot_Subp_Parameter_Type,
                Param,
@@ -4125,7 +4147,7 @@ package body SPARK_Definition.Annotate is
                  Create
                    ("type of & shall allow container element iteration",
                     Names => [Param]));
-         elsif not In_SPARK (Cont_Element) then
+         elsif not In_SPARK (Prim) then
             return;
          elsif No (Model_Element) then
             Mark_Incorrect_Use_Of_Annotation
@@ -4145,8 +4167,7 @@ package body SPARK_Definition.Annotate is
                    ("primitive & for container element iteration on & shall "
                     & "be in SPARK",
                     Names => [Model_Element, Model_Type]));
-         elsif Retysp (Etype (Cont_Element)) /= Retysp (Etype (Model_Element))
-         then
+         elsif Retysp (Cont_Element) /= Retysp (Etype (Model_Element)) then
             Mark_Incorrect_Use_Of_Annotation
               (Annot_Function_Return_Type,
                E,
@@ -4155,7 +4176,7 @@ package body SPARK_Definition.Annotate is
                  Create
                    ("return type shall allow container element iteration with "
                     & "element type &",
-                    Names => [Etype (Cont_Element)]));
+                    Names => [Cont_Element]));
          elsif Has_Controlling_Result (E) then
             Mark_Incorrect_Use_Of_Annotation
               (Annot_Iterable_For_Proof_Controlling_Result, E);
@@ -4229,13 +4250,10 @@ package body SPARK_Definition.Annotate is
 
       end Process_Iterable_Annotation;
 
-      Args_Str     : constant String_Id := Strval (Arg3_Exp);
-      Kind         : Iterable_Kind;
-      New_Prim     : Entity_Id;
-      Ok           : Boolean;
-      Cont_Element : Entity_Id;
-      --  "Element" primitive for relevant container.
-      --  Set at most once.
+      Args_Str : constant String_Id := Strval (Arg3_Exp);
+      Kind     : Iterable_Kind;
+      New_Prim : Entity_Id;
+      Ok       : Boolean;
 
    begin
       --  The fourth argument must be an entity
@@ -4260,10 +4278,10 @@ package body SPARK_Definition.Annotate is
 
       if To_Lower (To_String (Args_Str)) = To_Lower (Model_Name) then
          Kind := Model;
-         Check_Model_Entity (New_Prim, Ok, Cont_Element);
+         Check_Model_Entity (New_Prim, Ok);
       elsif To_Lower (To_String (Args_Str)) = To_Lower (Contains_Name) then
          Kind := Contains;
-         Check_Contains_Entity (New_Prim, Ok, Cont_Element);
+         Check_Contains_Entity (New_Prim, Ok);
       else
          Mark_Incorrect_Use_Of_Annotation
            (Annot_Wrong_Third_Parameter,

@@ -69,6 +69,16 @@ package body Configuration is
    Usage_Message : constant String := "-Pproj [switches] [-cargs switches]";
    --  Used to print part of the help message for gnatprove
 
+   --  Private global state to replace public state from CL_Switches
+   Debug_Save_VCs      : Boolean := False;
+   Debug_Prover_Errors : Boolean := False;
+   File_List           : String_Lists.List;
+   Replay              : Boolean := False;
+   Why3_Conf           : GNAT.Strings.String_Access;
+   Why3_Debug          : GNAT.Strings.String_Access;
+   Why3_Logging        : Boolean := False;
+   Z3_Counterexample   : Boolean := False;
+
    type Spark_Reporter is new GPR2.Reporter.Console.Object with null record;
 
    overriding
@@ -91,12 +101,6 @@ package body Configuration is
    --  - if TMPDIR is set, exists and is writable, use that
    --  - if /tmp exists and is writable, use that
    --  - otherwise return the object directory.
-
-   procedure Handle_Switch
-     (Switch : String; Parameter : String; Section : String);
-   --  Deal with all switches that are not automatic. In gnatprove, all
-   --  recognized switches are automatic, so this procedure should only be
-   --  called for unknown switches.
 
    procedure Handle_Warning_Switches (Switch, Value : String);
    --  Handle the "-W", "-A", "-D" switches (related to warnings) as well as
@@ -207,9 +211,516 @@ package body Configuration is
       --  excludes most switches except --timeout, --steps, etc.
      );
 
-   procedure Parse_Switches (Mode : Parsing_Modes; Com_Lin : String_List);
-   --  parse the command line switches according to the provided mode; set
-   --  global variables associated to the switches.
+   --  Switch ids are deliberately ordered by their future semantic layer.
+   --  Keep invocation-level switches and file-specific switches contiguous so
+   --  that later parser storage can use array subtypes over these ranges.
+   type Switch_Id is
+     (Sw_Assumptions,
+      Sw_Benchmark,
+      Sw_Checks_As_Errors,
+      Sw_CWE,
+      Sw_D,
+      Sw_Debug_No_Cache_Output,
+      Sw_Debug_Save_VCs,
+      Sw_Dbg_No_Sem,
+      Sw_Debug_Prover_Errors,
+      Sw_Exclude_Line,
+      Sw_Flow_Debug,
+      Sw_Flow_Show_GG,
+      Sw_F,
+      Sw_IDE_Progress_Bar,
+      Sw_J,
+      Sw_K,
+      Sw_Limit_Line,
+      Sw_Limit_Lines,
+      Sw_Limit_Name,
+      Sw_Limit_Region,
+      Sw_Limit_Subp,
+      Sw_Memcached_Server,
+      Sw_M,
+      Sw_No_Axiom_Guard,
+      Sw_Function_Sandboxing,
+      Sw_No_Global_Generation,
+      Sw_No_Subprojects,
+      Sw_Output,
+      Sw_Output_Header,
+      Sw_Output_Msg_Only,
+      Sw_Q,
+      Sw_Replay,
+      Sw_Report,
+      Sw_U,
+      Sw_UU,
+      Sw_V,
+      Sw_Warnings,
+      Sw_Why3_Conf,
+      Sw_Why3_Debug,
+      Sw_Why3_Logging,
+      Sw_Why3_Server,
+      Sw_SARIF_Base_URI,
+      Sw_Z3_Counterexample,
+      Sw_Gnattest_Values,
+      Sw_Debug_Exec_RAC,
+
+      Sw_Level,
+      Sw_Memlimit,
+      Sw_Counterexamples,
+      Sw_Check_Counterexamples,
+      Sw_Mode,
+      Sw_No_Counterexample,
+      Sw_No_Inlining,
+      Sw_No_Loop_Unrolling,
+      Sw_Proof,
+      Sw_Proof_Warnings,
+      Sw_Proof_Warn_Timeout,
+      Sw_Prover,
+      Sw_Steps,
+      Sw_CE_Steps,
+      Sw_Timeout,
+      Sw_Info,
+      Sw_Pedantic,
+      Sw_Warn_Enable,
+      Sw_Warn_Disable,
+      Sw_Warn_Error);
+
+   subtype Invocation_Switch_Id is
+     Switch_Id range Sw_Assumptions .. Sw_Debug_Exec_RAC;
+   subtype File_Specific_Switch_Id is
+     Switch_Id range Sw_Level .. Sw_Warn_Error;
+
+   type Switch_Layer is (Invocation_Layer, File_Specific_Layer);
+
+   type Switch_Value_Kind is
+     (Flag_Value, Integer_Value, String_Value, String_List_Value);
+
+   type String_Ref is access constant String;
+
+   type Switch_Metadata is record
+      Short      : String_Ref := null;
+      Long       : String_Ref := null;
+      Value_Kind : Switch_Value_Kind;
+      Layer      : Switch_Layer;
+   end record;
+
+   function Make_Switch_Metadata
+     (Value_Kind : Switch_Value_Kind;
+      Layer      : Switch_Layer;
+      Short      : String_Ref := null;
+      Long       : String_Ref := null) return Switch_Metadata
+   is ((Short      => Short,
+        Long       => Long,
+        Value_Kind => Value_Kind,
+        Layer      => Layer));
+   --  Defining this function with default arguments allows us to drop "others"
+   --  field in the below aggregate definition.
+
+   Switch_Definitions : constant array (Switch_Id) of Switch_Metadata :=
+     [Sw_Assumptions           =>
+        Make_Switch_Metadata
+          (Long       => new String'("--assumptions"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_Benchmark             =>
+        --  Undocumented switch for fake prover binaries in benchmarks
+        Make_Switch_Metadata
+          (Long       => new String'("--benchmark"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_Checks_As_Errors      =>
+        Make_Switch_Metadata
+          (Long       => new String'("--checks-as-errors"),
+           Value_Kind => String_Value,
+           Layer      => Invocation_Layer),
+      Sw_CWE                   =>
+        Make_Switch_Metadata
+          (Long       => new String'("--cwe"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_D                     =>
+        Make_Switch_Metadata
+          (Short      => new String'("-d"),
+           Long       => new String'("--debug"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_Debug_No_Cache_Output =>
+        Make_Switch_Metadata
+          (Long       => new String'("--debug-no-cache-output"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_Debug_Save_VCs        =>
+        Make_Switch_Metadata
+          (Long       => new String'("--debug-save-vcs"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_Dbg_No_Sem            =>
+        Make_Switch_Metadata
+          (Long       => new String'("--debug-no-semaphore"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_Debug_Prover_Errors   =>
+        Make_Switch_Metadata
+          (Long       => new String'("--debug-prover-errors"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_Exclude_Line          =>
+        Make_Switch_Metadata
+          (Long       => new String'("--exclude-line"),
+           Value_Kind => String_Value,
+           Layer      => Invocation_Layer),
+      Sw_Flow_Debug            =>
+        Make_Switch_Metadata
+          (Long       => new String'("--flow-debug"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_Flow_Show_GG          =>
+        Make_Switch_Metadata
+          (Long       => new String'("--flow-show-gg"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_F                     =>
+        Make_Switch_Metadata
+          (Short      => new String'("-f"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_IDE_Progress_Bar      =>
+        Make_Switch_Metadata
+          (Long       => new String'("--ide-progress-bar"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_J                     =>
+        Make_Switch_Metadata
+          (Short      => new String'("-j"),
+           Value_Kind => Integer_Value,
+           Layer      => Invocation_Layer),
+      Sw_K                     =>
+        Make_Switch_Metadata
+          (Short      => new String'("-k"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_Limit_Line            =>
+        Make_Switch_Metadata
+          (Long       => new String'("--limit-line"),
+           Value_Kind => String_Value,
+           Layer      => Invocation_Layer),
+      Sw_Limit_Lines           =>
+        Make_Switch_Metadata
+          (Long       => new String'("--limit-lines"),
+           Value_Kind => String_Value,
+           Layer      => Invocation_Layer),
+      Sw_Limit_Name            =>
+        Make_Switch_Metadata
+          (Long       => new String'("--limit-name"),
+           Value_Kind => String_Value,
+           Layer      => Invocation_Layer),
+      Sw_Limit_Region          =>
+        Make_Switch_Metadata
+          (Long       => new String'("--limit-region"),
+           Value_Kind => String_Value,
+           Layer      => Invocation_Layer),
+      Sw_Limit_Subp            =>
+        Make_Switch_Metadata
+          (Long       => new String'("--limit-subp"),
+           Value_Kind => String_Value,
+           Layer      => Invocation_Layer),
+      Sw_Memcached_Server      =>
+        Make_Switch_Metadata
+          (Long       => new String'("--memcached-server"),
+           Value_Kind => String_Value,
+           Layer      => Invocation_Layer),
+      Sw_M                     =>
+        Make_Switch_Metadata
+          (Short      => new String'("-m"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_No_Axiom_Guard        =>
+        Make_Switch_Metadata
+          (Long       => new String'("--no-axiom-guard"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_Function_Sandboxing   =>
+        Make_Switch_Metadata
+          (Long       => new String'("--function-sandboxing"),
+           Value_Kind => String_Value,
+           Layer      => Invocation_Layer),
+      Sw_No_Global_Generation  =>
+        Make_Switch_Metadata
+          (Long       => new String'("--no-global-generation"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_No_Subprojects        =>
+        Make_Switch_Metadata
+          (Long       => new String'("--no-subprojects"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_Output                =>
+        Make_Switch_Metadata
+          (Long       => new String'("--output"),
+           Value_Kind => String_Value,
+           Layer      => Invocation_Layer),
+      Sw_Output_Header         =>
+        Make_Switch_Metadata
+          (Long       => new String'("--output-header"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_Output_Msg_Only       =>
+        Make_Switch_Metadata
+          (Long       => new String'("--output-msg-only"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_Q                     =>
+        Make_Switch_Metadata
+          (Short      => new String'("-q"),
+           Long       => new String'("--quiet"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_Replay                =>
+        Make_Switch_Metadata
+          (Long       => new String'("--replay"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_Report                =>
+        Make_Switch_Metadata
+          (Long       => new String'("--report"),
+           Value_Kind => String_Value,
+           Layer      => Invocation_Layer),
+      Sw_U                     =>
+        Make_Switch_Metadata
+          (Short      => new String'("-u"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_UU                    =>
+        Make_Switch_Metadata
+          (Short      => new String'("-U"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_V                     =>
+        Make_Switch_Metadata
+          (Short      => new String'("-v"),
+           Long       => new String'("--verbose"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_Warnings              =>
+        Make_Switch_Metadata
+          (Long       => new String'("--warnings"),
+           Value_Kind => String_Value,
+           Layer      => Invocation_Layer),
+      Sw_Why3_Conf             =>
+        Make_Switch_Metadata
+          (Long       => new String'("--why3-conf"),
+           Value_Kind => String_Value,
+           Layer      => Invocation_Layer),
+      Sw_Why3_Debug            =>
+        Make_Switch_Metadata
+          (Long       => new String'("--why3-debug"),
+           Value_Kind => String_Value,
+           Layer      => Invocation_Layer),
+      Sw_Why3_Logging          =>
+        Make_Switch_Metadata
+          (Long       => new String'("--why3-logging"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_Why3_Server           =>
+        Make_Switch_Metadata
+          (Long       => new String'("--why3-server"),
+           Value_Kind => String_Value,
+           Layer      => Invocation_Layer),
+      Sw_SARIF_Base_URI        =>
+        Make_Switch_Metadata
+          (Long       => new String'("--sarif-base-uri"),
+           Value_Kind => String_List_Value,
+           Layer      => Invocation_Layer),
+      Sw_Z3_Counterexample     =>
+        Make_Switch_Metadata
+          (Long       => new String'("--z3-counterexample"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_Gnattest_Values       =>
+        Make_Switch_Metadata
+          (Long       => new String'("--gnattest-values"),
+           Value_Kind => String_Value,
+           Layer      => Invocation_Layer),
+      Sw_Debug_Exec_RAC        =>
+        Make_Switch_Metadata
+          (Long       => new String'("--debug-exec-rac"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_Level                 =>
+        Make_Switch_Metadata
+          (Long       => new String'("--level"),
+           Value_Kind => Integer_Value,
+           Layer      => File_Specific_Layer),
+      Sw_Memlimit              =>
+        Make_Switch_Metadata
+          (Long       => new String'("--memlimit"),
+           Value_Kind => Integer_Value,
+           Layer      => File_Specific_Layer),
+      Sw_Counterexamples       =>
+        Make_Switch_Metadata
+          (Long       => new String'("--counterexamples"),
+           Value_Kind => String_Value,
+           Layer      => File_Specific_Layer),
+      Sw_Check_Counterexamples =>
+        Make_Switch_Metadata
+          (Long       => new String'("--check-counterexamples"),
+           Value_Kind => String_Value,
+           Layer      => File_Specific_Layer),
+      Sw_Mode                  =>
+        Make_Switch_Metadata
+          (Long       => new String'("--mode"),
+           Value_Kind => String_Value,
+           Layer      => File_Specific_Layer),
+      Sw_No_Counterexample     =>
+        Make_Switch_Metadata
+          (Long       => new String'("--no-counterexample"),
+           Value_Kind => Flag_Value,
+           Layer      => File_Specific_Layer),
+      Sw_No_Inlining           =>
+        Make_Switch_Metadata
+          (Long       => new String'("--no-inlining"),
+           Value_Kind => Flag_Value,
+           Layer      => File_Specific_Layer),
+      Sw_No_Loop_Unrolling     =>
+        Make_Switch_Metadata
+          (Long       => new String'("--no-loop-unrolling"),
+           Value_Kind => Flag_Value,
+           Layer      => File_Specific_Layer),
+      Sw_Proof                 =>
+        Make_Switch_Metadata
+          (Long       => new String'("--proof"),
+           Value_Kind => String_Value,
+           Layer      => File_Specific_Layer),
+      Sw_Proof_Warnings        =>
+        Make_Switch_Metadata
+          (Long       => new String'("--proof-warnings"),
+           Value_Kind => String_Value,
+           Layer      => File_Specific_Layer),
+      Sw_Proof_Warn_Timeout    =>
+        Make_Switch_Metadata
+          (Long       => new String'("--proof-warnings-timeout"),
+           Value_Kind => Integer_Value,
+           Layer      => File_Specific_Layer),
+      Sw_Prover                =>
+        Make_Switch_Metadata
+          (Long       => new String'("--prover"),
+           Value_Kind => String_Value,
+           Layer      => File_Specific_Layer),
+      Sw_Steps                 =>
+        Make_Switch_Metadata
+          (Long       => new String'("--steps"),
+           Value_Kind => Integer_Value,
+           Layer      => File_Specific_Layer),
+      Sw_CE_Steps              =>
+        Make_Switch_Metadata
+          (Long       => new String'("--ce-steps"),
+           Value_Kind => Integer_Value,
+           Layer      => File_Specific_Layer),
+      Sw_Timeout               =>
+        Make_Switch_Metadata
+          (Long       => new String'("--timeout"),
+           Value_Kind => String_Value,
+           Layer      => File_Specific_Layer),
+      Sw_Info                  =>
+        Make_Switch_Metadata
+          (Long       => new String'("--info"),
+           Value_Kind => Flag_Value,
+           Layer      => File_Specific_Layer),
+      Sw_Pedantic              =>
+        Make_Switch_Metadata
+          (Long       => new String'("--pedantic"),
+           Value_Kind => Flag_Value,
+           Layer      => File_Specific_Layer),
+      Sw_Warn_Enable           =>
+        Make_Switch_Metadata
+          (Short      => new String'("-W"),
+           Value_Kind => String_Value,
+           Layer      => File_Specific_Layer),
+      Sw_Warn_Disable          =>
+        Make_Switch_Metadata
+          (Short      => new String'("-A"),
+           Value_Kind => String_Value,
+           Layer      => File_Specific_Layer),
+      Sw_Warn_Error            =>
+        Make_Switch_Metadata
+          (Short      => new String'("-D"),
+           Value_Kind => String_Value,
+           Layer      => File_Specific_Layer)];
+
+   pragma
+     Assert
+       ((for all Switch in Invocation_Switch_Id =>
+           Switch_Definitions (Switch).Layer = Invocation_Layer));
+   pragma
+     Assert
+       ((for all Switch in File_Specific_Switch_Id =>
+           Switch_Definitions (Switch).Layer = File_Specific_Layer));
+
+   type Switch_Value (Kind : Switch_Value_Kind := Flag_Value) is record
+      case Kind is
+         when Flag_Value =>
+            Boolean_Val : Boolean := False;
+
+         when Integer_Value =>
+            Integer_Val : Integer := 0;
+
+         when String_Value =>
+            String_Val : GNAT.Strings.String_Access := null;
+
+         when String_List_Value =>
+            String_List_Val : String_Lists.List;
+      end case;
+   end record;
+   --  Record holding the value for a switch.
+
+   type Switch_Value_Array is array (Switch_Id) of Switch_Value
+   with
+     Predicate =>
+       (for all Id in Switch_Id =>
+          Switch_Definitions (Id).Value_Kind = Switch_Value_Array (Id).Kind);
+
+   type Switch_Presence_Array is array (Switch_Id) of Boolean;
+
+   function Initial_Switch_Value (Switch : Switch_Id) return Switch_Value;
+   --  Return a default value for all Switches
+
+   function Switch_Values_Have_Expected_Kinds
+     (Values : Switch_Value_Array) return Boolean
+   is ((for all Switch in Switch_Id =>
+          Values (Switch).Kind = Switch_Definitions (Switch).Value_Kind));
+   --  Check that switch definitions and the value array have compatible types
+
+   type Parsed_Switches is record
+      Values         : Switch_Value_Array :=
+        [for Switch in Switch_Id => Initial_Switch_Value (Switch)];
+      Present        : Switch_Presence_Array := [others => False];
+      File_List      : String_Lists.List;
+      Warning_Status : Opt_Warning_Status_Array := [others => WS_None];
+   end record;
+
+   type Parsed_Switches_Access is access all Parsed_Switches;
+   --  GNAT.Command_Line Handle_Switch callback doesn't allow extra user data,
+   --  so we need to use a global access value.
+
+   Current_Parsed_Switches : Parsed_Switches_Access := null;
+   --  Temporary target for GNAT.Command_Line callbacks during Parse_Switches
+
+   procedure Copy_To_CL_Switches (Parsed : in out Parsed_Switches);
+   --  Copy parsed switch values into CL_Switches for existing consumers
+
+   procedure Merge_Parsed_Switches
+     (Base : in out Parsed_Switches; Over : Parsed_Switches);
+   --  Merge Over onto Base using command-line precedence semantics
+
+   procedure Handle_Switch
+     (Switch : String; Parameter : String; Section : String);
+   --  Deal with switches that are not automatic
+
+   function Find_Switch
+     (Spelling : String; Switch : out Switch_Id) return Boolean;
+   --  Return the switch id with Short or Long spelling equal to Spelling
+
+   function Parse_Switches_Internal
+     (Mode : Parsing_Modes; Com_Lin : String_List) return Parsed_Switches;
+   --  Parse the command line switches according to the provided mode into
+   --  internal storage.
 
    type Project_Parsing_Result is record
       Opt             : GPR2.Options.Object;
@@ -219,6 +730,7 @@ package body Configuration is
       Gpr_Registry    : Boolean := False;
       Clean           : Boolean := False;
       Explain         : Unbounded_String := Null_Unbounded_String;
+      Verbosity       : Verbosity_Choice := Normal_Level;
       Cargs           : String_List_Access := null;
       Remaining_Args  : String_List_Access := null;
    end record;
@@ -281,7 +793,7 @@ package body Configuration is
      (Tree : GPR2.Project.Tree.Object; Simple : String) return String is
    begin
       for NRP of Tree.Namespace_Root_Projects loop
-         if NRP.Kind in GPR2.With_Source_Dirs_Kind then
+         if NRP.Kind in GPR2.With_Object_Dir_Kind then
             declare
                View_DB   : constant GPR2.Build.View_Db.Object :=
                  Tree.Artifacts_Database (NRP);
@@ -303,6 +815,16 @@ package body Configuration is
       end loop;
       return "";
    end Source_Full_Path;
+
+   -----------------------
+   -- File_Specific_Key --
+   -----------------------
+
+   function File_Specific_Key
+     (Unit : GPR2.Build.Compilation_Unit.Object) return String is
+   begin
+      return Unit.Main_Part.Source.String_Value;
+   end File_Specific_Key;
 
    ----------------------------
    -- Check_Duplicate_Bodies --
@@ -328,11 +850,6 @@ package body Configuration is
    procedure Internal_Report
      (Self : in out Spark_Reporter; Message : GPR2.Message.Object) is
    begin
-      --  Silently drop the "failed with status xx" message that pollute our
-      --  test output.
-      if Contains (Message.Message, "failed with status") then
-         return;
-      end if;
       GPR2.Reporter.Console.Object (Self).Internal_Report (Message);
       Check_Duplicate_Bodies (Message);
    end Internal_Report;
@@ -433,19 +950,19 @@ package body Configuration is
          if Dir /= GNATCOLL.VFS.No_File then
             pragma Assert (Name_Dir = Gnat2Why_Opts.Writing.Name_GNATprove);
             if GNAT.OS_Lib.Is_Directory (Rm_Dir) then
-               if Verbose then
+               if Verbosity = Verbose_Level then
                   Ada.Text_IO.Put ("Deleting directory " & Rm_Dir & "...");
                end if;
                GNAT.Directory_Operations.Remove_Dir
                  (Rm_Dir, Recursive => True);
-               if Verbose then
+               if Verbosity = Verbose_Level then
                   Ada.Text_IO.Put_Line (" done");
                end if;
             end if;
          end if;
       exception
          when GNAT.Directory_Operations.Directory_Error =>
-            if Verbose then
+            if Verbosity = Verbose_Level then
                Ada.Text_IO.Put_Line (" failed, please delete manually");
             end if;
       end Clean_Up_One_Directory;
@@ -520,6 +1037,211 @@ package body Configuration is
          return Artifact_Dir (Tree).String_Value;
       end if;
    end Compute_Socket_Dir;
+
+   ---------------------------
+   -- Merge_Parsed_Switches --
+   ---------------------------
+
+   procedure Merge_Parsed_Switches
+     (Base : in out Parsed_Switches; Over : Parsed_Switches)
+   is
+      procedure Append_List
+        (Source : String_Lists.List; Target : in out String_Lists.List);
+      --  Append Source to Target
+
+      procedure Copy_String
+        (Source : GNAT.Strings.String_Access;
+         Target : in out GNAT.Strings.String_Access);
+      --  Replace Target with a copy of Source
+
+      -----------------
+      -- Append_List --
+      -----------------
+
+      procedure Append_List
+        (Source : String_Lists.List; Target : in out String_Lists.List) is
+      begin
+         for Element of Source loop
+            Target.Append (Element);
+         end loop;
+      end Append_List;
+
+      -----------------
+      -- Copy_String --
+      -----------------
+
+      procedure Copy_String
+        (Source : GNAT.Strings.String_Access;
+         Target : in out GNAT.Strings.String_Access) is
+      begin
+         if Target /= null then
+            Free (Target);
+         end if;
+
+         if Source = null then
+            Target := null;
+         else
+            Target := new String'(Source.all);
+         end if;
+      end Copy_String;
+
+   begin
+      for Switch in Switch_Id loop
+         case Switch_Definitions (Switch).Value_Kind is
+            when Flag_Value        =>
+               Base.Values (Switch).Boolean_Val :=
+                 Base.Values (Switch).Boolean_Val
+                 or else Over.Values (Switch).Boolean_Val;
+               Base.Present (Switch) :=
+                 Base.Present (Switch) or else Over.Present (Switch);
+
+            when Integer_Value     =>
+               if Over.Present (Switch) then
+                  Base.Values (Switch).Integer_Val :=
+                    Over.Values (Switch).Integer_Val;
+                  Base.Present (Switch) := True;
+               end if;
+
+            when String_Value      =>
+               if Over.Present (Switch) then
+                  Copy_String
+                    (Over.Values (Switch).String_Val,
+                     Base.Values (Switch).String_Val);
+                  Base.Present (Switch) := True;
+               end if;
+
+            when String_List_Value =>
+               if Over.Present (Switch) then
+                  Append_List
+                    (Over.Values (Switch).String_List_Val,
+                     Base.Values (Switch).String_List_Val);
+                  Base.Present (Switch) := True;
+               end if;
+         end case;
+      end loop;
+
+      for WK in Misc_Warning_Kind loop
+         if Over.Warning_Status (WK) /= WS_None then
+            Base.Warning_Status (WK) := Over.Warning_Status (WK);
+         end if;
+      end loop;
+
+      Append_List (Over.File_List, Base.File_List);
+   end Merge_Parsed_Switches;
+
+   ---------------------------
+   -- Copy_To_CL_Switches --
+   ---------------------------
+
+   procedure Copy_To_CL_Switches (Parsed : in out Parsed_Switches) is
+      procedure Copy_List
+        (Source : String_Lists.List; Target : in out String_Lists.List);
+      --  Replace Target with Source
+
+      procedure Move_String
+        (Source : GNAT.Strings.String_Access;
+         Target : in out GNAT.Strings.String_Access);
+      --  Move Source into Target, using an empty string for absent values
+
+      ---------------
+      -- Copy_List --
+      ---------------
+
+      procedure Copy_List
+        (Source : String_Lists.List; Target : in out String_Lists.List) is
+      begin
+         Target.Clear;
+         for Element of Source loop
+            Target.Append (Element);
+         end loop;
+      end Copy_List;
+
+      -----------------
+      -- Move_String --
+      -----------------
+
+      procedure Move_String
+        (Source : GNAT.Strings.String_Access;
+         Target : in out GNAT.Strings.String_Access) is
+      begin
+         if Target /= null then
+            Free (Target);
+         end if;
+
+         if Source = null then
+            Target := new String'("");
+         else
+            Target := new String'(Source.all);
+         end if;
+      end Move_String;
+
+   begin
+      --  package-internal global state
+      Debug_Save_VCs := Parsed.Values (Sw_Debug_Save_VCs).Boolean_Val;
+      Debug_Prover_Errors :=
+        Parsed.Values (Sw_Debug_Prover_Errors).Boolean_Val;
+      Copy_List (Parsed.File_List, File_List);
+      Replay := Parsed.Values (Sw_Replay).Boolean_Val;
+      Move_String (Parsed.Values (Sw_Why3_Conf).String_Val, Why3_Conf);
+      Move_String (Parsed.Values (Sw_Why3_Debug).String_Val, Why3_Debug);
+      Z3_Counterexample := Parsed.Values (Sw_Z3_Counterexample).Boolean_Val;
+
+      --  public global state
+      Flow_Extra_Debug := Parsed.Values (Sw_Flow_Debug).Boolean_Val;
+      IDE_Mode := Parsed.Values (Sw_IDE_Progress_Bar).Boolean_Val;
+      All_Projects := Parsed.Values (Sw_UU).Boolean_Val;
+      Continue_On_Error := Parsed.Values (Sw_K).Boolean_Val;
+      Force := Parsed.Values (Sw_F).Boolean_Val;
+
+      --  CL_Switches state that's still used
+      CL_Switches.Assumptions := Parsed.Values (Sw_Assumptions).Boolean_Val;
+      CL_Switches.Benchmark := Parsed.Values (Sw_Benchmark).Boolean_Val;
+      CL_Switches.CWE := Parsed.Values (Sw_CWE).Boolean_Val;
+      CL_Switches.Debug_No_Cache_Output :=
+        Parsed.Values (Sw_Debug_No_Cache_Output).Boolean_Val;
+      Move_String
+        (Parsed.Values (Sw_Exclude_Line).String_Val, CL_Switches.Exclude_Line);
+      CL_Switches.Flow_Show_GG := Parsed.Values (Sw_Flow_Show_GG).Boolean_Val;
+      Move_String
+        (Parsed.Values (Sw_Limit_Line).String_Val, CL_Switches.Limit_Line);
+      Move_String
+        (Parsed.Values (Sw_Limit_Lines).String_Val, CL_Switches.Limit_Lines);
+      Move_String
+        (Parsed.Values (Sw_Limit_Name).String_Val, CL_Switches.Limit_Name);
+      Move_String
+        (Parsed.Values (Sw_Limit_Region).String_Val, CL_Switches.Limit_Region);
+      Move_String
+        (Parsed.Values (Sw_Limit_Subp).String_Val, CL_Switches.Limit_Subp);
+      Move_String
+        (Parsed.Values (Sw_Memcached_Server).String_Val,
+         CL_Switches.Memcached_Server);
+      Move_String
+        (Parsed.Values (Sw_Function_Sandboxing).String_Val,
+         CL_Switches.Function_Sandboxing);
+      CL_Switches.No_Global_Generation :=
+        Parsed.Values (Sw_No_Global_Generation).Boolean_Val;
+      CL_Switches.No_Subprojects :=
+        Parsed.Values (Sw_No_Subprojects).Boolean_Val;
+      CL_Switches.Output_Header :=
+        Parsed.Values (Sw_Output_Header).Boolean_Val;
+      CL_Switches.U := Parsed.Values (Sw_U).Boolean_Val;
+      Why3_Logging := Parsed.Values (Sw_Why3_Logging).Boolean_Val;
+      Move_String
+        (Parsed.Values (Sw_Why3_Server).String_Val, CL_Switches.Why3_Server);
+      Copy_List
+        (Parsed.Values (Sw_SARIF_Base_URI).String_List_Val,
+         CL_Switches.SARIF_Base_URIs);
+      Move_String
+        (Parsed.Values (Sw_Gnattest_Values).String_Val,
+         CL_Switches.Gnattest_Values);
+
+      for WK in Misc_Warning_Kind loop
+         Configuration.Warning_Status (WK) :=
+           (if Parsed.Warning_Status (WK) /= WS_None
+            then Parsed.Warning_Status (WK)
+            else VC_Kinds.Warning_Status (WK));
+      end loop;
+   end Copy_To_CL_Switches;
 
    ----------------------------
    -- Create_Dir_And_Parents --
@@ -620,8 +1342,7 @@ package body Configuration is
       Obj_Dir           : String;
       Why3_Dir          : String) return String
    is
-      Unit_Name : constant String :=
-        String (Unit.Main_Part.Source.Simple_Name);
+      Unit_Name : constant String := File_Specific_Key (Unit);
       Opt_File  : constant String :=
         Gnat2Why_Opts.Writing.Pass_Extra_Options_To_Gnat2why
           (Translation_Phase => Translation_Phase,
@@ -633,56 +1354,126 @@ package body Configuration is
       return Opt_File;
    end Extra_Args_File_For_Unit;
 
+   -----------------
+   -- Find_Switch --
+   -----------------
+
+   function Find_Switch
+     (Spelling : String; Switch : out Switch_Id) return Boolean is
+   begin
+      for Candidate in Switch_Id loop
+         declare
+            Definition : Switch_Metadata renames
+              Switch_Definitions (Candidate);
+         begin
+            if (Definition.Short /= null
+                and then Definition.Short.all = Spelling)
+              or else
+                (Definition.Long /= null
+                 and then Definition.Long.all = Spelling)
+            then
+               Switch := Candidate;
+               return True;
+            end if;
+         end;
+      end loop;
+
+      return False;
+   end Find_Switch;
+
    -------------------
    -- Handle_Switch --
    -------------------
 
    procedure Handle_Switch
-     (Switch : String; Parameter : String; Section : String) is
+     (Switch : String; Parameter : String; Section : String)
+   is
+      Id    : Switch_Id;
+      Found : Boolean;
    begin
       pragma Unreferenced (Section);
+      pragma Assert (Current_Parsed_Switches /= null);
 
       if Switch (Switch'First) /= '-' then
 
          --  We assume that the "switch" is actually an argument and put it in
          --  the file list
 
-         CL_Switches.File_List.Append (Switch);
+         Current_Parsed_Switches.File_List.Append (Switch);
 
-      --  We explicitly ignore project-loading switches here. They have been
-      --  taken into account in the parsing of the command line.
-
-      elsif Switch'Length >= 2 and then Switch (Switch'First + 1) = 'X' then
-         null;
-      elsif Switch = "-aP" then
-         null;
-      elsif Switch = "--sarif-base-uri" then
-         CL_Switches.SARIF_Base_URIs.Append (Parameter);
       else
-         raise Invalid_Switch;
+         Found := Find_Switch (Switch, Id);
+
+         if not Found then
+            raise Invalid_Switch;
+         end if;
+
+         Current_Parsed_Switches.Present (Id) := True;
+
+         case Switch_Definitions (Id).Value_Kind is
+            when Flag_Value        =>
+               Current_Parsed_Switches.Values (Id).Boolean_Val := True;
+
+            when Integer_Value     =>
+               begin
+                  Current_Parsed_Switches.Values (Id).Integer_Val :=
+                    Integer'Value (Parameter);
+               exception
+                  when Constraint_Error =>
+                     raise Invalid_Parameter;
+               end;
+
+            when String_Value      =>
+               if Current_Parsed_Switches.Values (Id).String_Val /= null then
+                  Free (Current_Parsed_Switches.Values (Id).String_Val);
+               end if;
+
+               Current_Parsed_Switches.Values (Id).String_Val :=
+                 new String'(Parameter);
+
+            when String_List_Value =>
+               Current_Parsed_Switches.Values (Id).String_List_Val.Append
+                 (Parameter);
+         end case;
       end if;
    end Handle_Switch;
 
-   ---------------------
-   -- Handle_W_Switch --
-   ---------------------
+   -----------------------------
+   -- Handle_Warning_Switches --
+   -----------------------------
 
    procedure Handle_Warning_Switches (Switch, Value : String) is
       Tag    : Misc_Warning_Kind;
       Status : Warning_Enabled_Status;
+
+      procedure Set_Warning_Status
+        (Warning : Misc_Warning_Kind; Status : Warning_Enabled_Status);
+      --  Record the warning status in the current parsed switch storage
+
+      ------------------------
+      -- Set_Warning_Status --
+      ------------------------
+
+      procedure Set_Warning_Status
+        (Warning : Misc_Warning_Kind; Status : Warning_Enabled_Status) is
+      begin
+         pragma Assert (Current_Parsed_Switches /= null);
+
+         Current_Parsed_Switches.Warning_Status (Warning) := Status;
+      end Set_Warning_Status;
    begin
 
       --  Handling of pedantic and info
 
       if Switch = "--pedantic" then
          for WK in Pedantic_Warning_Kind loop
-            Configuration.Warning_Status (WK) := VC_Kinds.WS_Enabled;
+            Set_Warning_Status (WK, VC_Kinds.WS_Enabled);
          end loop;
          return;
       end if;
       if Switch = "--info" then
          for WK in Info_Warning_Kind loop
-            Configuration.Warning_Status (WK) := VC_Kinds.WS_Enabled;
+            Set_Warning_Status (WK, VC_Kinds.WS_Enabled);
          end loop;
          return;
       end if;
@@ -700,7 +1491,7 @@ package body Configuration is
 
       if Value = "all" then
          for WK in Misc_Warning_Kind loop
-            Configuration.Warning_Status (WK) := Status;
+            Set_Warning_Status (WK, Status);
          end loop;
          return;
       end if;
@@ -720,7 +1511,7 @@ package body Configuration is
                With_Help => False);
       end;
 
-      Configuration.Warning_Status (Tag) := Status;
+      Set_Warning_Status (Tag, Status);
    end Handle_Warning_Switches;
 
    -----------------------
@@ -742,6 +1533,37 @@ package body Configuration is
          return False;
       end if;
    end Has_gnateT_Switch;
+
+   --------------------------
+   -- Initial_Switch_Value --
+   --------------------------
+
+   function Initial_Switch_Value (Switch : Switch_Id) return Switch_Value is
+   begin
+      case Switch_Definitions (Switch).Value_Kind is
+         when Flag_Value        =>
+            return (Kind => Flag_Value, Boolean_Val => False);
+
+         when Integer_Value     =>
+            return
+              (Kind        => Integer_Value,
+               Integer_Val =>
+                 (case Switch is
+                    when Sw_J                   => 1,
+                    when Sw_Level               => Invalid_Level,
+                    when Sw_Steps | Sw_CE_Steps => Invalid_Steps,
+                    when Sw_Proof_Warn_Timeout  => Invalid_Timeout,
+                    when others                 => 0));
+
+         when String_Value      =>
+            return (Kind => String_Value, String_Val => null);
+
+         when String_List_Value =>
+            return
+              (Kind            => String_List_Value,
+               String_List_Val => String_Lists.Empty);
+      end case;
+   end Initial_Switch_Value;
 
    --------------------------
    -- No_Project_File_Mode --
@@ -815,10 +1637,13 @@ package body Configuration is
    end No_Project_File_Mode;
 
    --------------------
-   -- Parse_Switches --
-   --------------------
+   -----------------------------
+   -- Parse_Switches_Internal --
+   -----------------------------
 
-   procedure Parse_Switches (Mode : Parsing_Modes; Com_Lin : String_List) is
+   function Parse_Switches_Internal
+     (Mode : Parsing_Modes; Com_Lin : String_List) return Parsed_Switches
+   is
 
       procedure Free_Topmost is new
         Ada.Unchecked_Deallocation
@@ -828,10 +1653,73 @@ package body Configuration is
       Config         : Command_Line_Configuration;
       Parser         : Opt_Parser;
       Com_Lin_Access : String_List_Access := new String_List'(Com_Lin);
+      Parsed         : aliased Parsed_Switches;
 
-      use CL_Switches;
+      function Option_Image (Ref : String_Ref) return String
+      is (if Ref = null then "" else Ref.all);
+
+      function Short_Name (Switch : Switch_Id) return String
+      is (Option_Image (Switch_Definitions (Switch).Short));
+      --  Return the short spelling of Switch, without argument markers
+
+      function Long_Name (Switch : Switch_Id) return String
+      is (Option_Image (Switch_Definitions (Switch).Long));
+      --  Return the long spelling of Switch, without argument markers
+
+      function GNAT_Command_Line_Short_Switch
+        (Switch : Switch_Id) return String;
+      --  Return the short switch spelling expected by GNAT.Command_Line
+
+      function GNAT_Command_Line_Long_Switch
+        (Switch : Switch_Id) return String;
+      --  Return the long switch spelling expected by GNAT.Command_Line
+
+      procedure Register_Switch (Switch : Switch_Id);
+      --  Register Switch so that Handle_Switch stores its value.
+
+      function GNAT_Command_Line_Short_Switch
+        (Switch : Switch_Id) return String
+      is
+         Short : constant String := Short_Name (Switch);
+      begin
+         if Switch_Definitions (Switch).Value_Kind = Flag_Value then
+            return Short;
+         elsif Switch = Sw_J then
+            return Short & ":";
+         else
+            return Short & "=";
+         end if;
+      end GNAT_Command_Line_Short_Switch;
+
+      function GNAT_Command_Line_Long_Switch (Switch : Switch_Id) return String
+      is
+         Long : constant String := Long_Name (Switch);
+      begin
+         if Switch_Definitions (Switch).Value_Kind = Flag_Value then
+            return Long;
+         else
+            return Long & "=";
+         end if;
+      end GNAT_Command_Line_Long_Switch;
+
+      procedure Register_Switch (Switch : Switch_Id) is
+         Short : constant String := Short_Name (Switch);
+         Long  : constant String := Long_Name (Switch);
+      begin
+         Define_Switch
+           (Config,
+            (if Short = ""
+             then ""
+             else GNAT_Command_Line_Short_Switch (Switch)),
+            Long_Switch =>
+              (if Long = ""
+               then ""
+               else GNAT_Command_Line_Long_Switch (Switch)));
+      end Register_Switch;
 
    begin
+      pragma Assert (Switch_Values_Have_Expected_Kinds (Parsed.Values));
+
       Initialize_Option_Scan (Parser, Com_Lin_Access);
       Set_Usage
         (Config,
@@ -839,234 +1727,54 @@ package body Configuration is
          Help_Msg => SPARK_Install.Help_Message);
 
       if Mode in All_Switches | Global_Switches_Only then
-         Define_Switch
-           (Config, CL_Switches.V'Access, "-v", Long_Switch => "--verbose");
-      end if;
-
-      if Mode in All_Switches | Global_Switches_Only then
-         Define_Switch
-           (Config,
-            CL_Switches.Assumptions'Access,
-            Long_Switch => "--assumptions");
-
-         --  This switch is not documented on purpose. We provide the fake_*
-         --  binaries instead of the real prover binaries. This helps when
-         --  collecting benchmarks for prover developers.
-         Define_Switch
-           (Config,
-            CL_Switches.Benchmark'Access,
-            Long_Switch => "--benchmark");
-         Define_Switch
-           (Config,
-            CL_Switches.Checks_As_Errors'Access,
-            Long_Switch => "--checks-as-errors=");
-         Define_Switch
-           (Config, CL_Switches.CWE'Access, Long_Switch => "--cwe");
-         Define_Switch
-           (Config, CL_Switches.D'Access, "-d", Long_Switch => "--debug");
-         Define_Switch
-           (Config,
-            CL_Switches.Debug_No_Cache_Output'Access,
-            Long_Switch => "--debug-no-cache-output");
-         Define_Switch
-           (Config,
-            CL_Switches.Debug_Save_VCs'Access,
-            Long_Switch => "--debug-save-vcs");
-         Define_Switch
-           (Config,
-            CL_Switches.Dbg_No_Sem'Access,
-            Long_Switch => "--debug-no-semaphore");
-         Define_Switch
-           (Config,
-            CL_Switches.Debug_Trivial'Access,
-            Long_Switch => "--debug-trivial");
-         Define_Switch
-           (Config,
-            CL_Switches.Debug_Prover_Errors'Access,
-            Long_Switch => "--debug-prover-errors");
-         Define_Switch
-           (Config,
-            CL_Switches.Exclude_Line'Access,
-            Long_Switch => "--exclude-line=");
-         Define_Switch
-           (Config,
-            CL_Switches.Flow_Debug'Access,
-            Long_Switch => "--flow-debug");
-         Define_Switch
-           (Config,
-            CL_Switches.Flow_Show_GG'Access,
-            Long_Switch => "--flow-show-gg");
-         Define_Switch (Config, CL_Switches.F'Access, "-f");
-         Define_Switch
-           (Config,
-            CL_Switches.IDE_Progress_Bar'Access,
-            Long_Switch => "--ide-progress-bar");
-         Define_Switch
-           (Config, CL_Switches.J'Access, Long_Switch => "-j:", Initial => 1);
-         Define_Switch (Config, CL_Switches.K'Access, "-k");
-         Define_Switch
-           (Config,
-            CL_Switches.Limit_Line'Access,
-            Long_Switch => "--limit-line=");
-         Define_Switch
-           (Config,
-            CL_Switches.Limit_Lines'Access,
-            Long_Switch => "--limit-lines=");
-         Define_Switch
-           (Config,
-            CL_Switches.Limit_Name'Access,
-            Long_Switch => "--limit-name=");
-         Define_Switch
-           (Config,
-            CL_Switches.Limit_Region'Access,
-            Long_Switch => "--limit-region=");
-         Define_Switch
-           (Config,
-            CL_Switches.Limit_Subp'Access,
-            Long_Switch => "--limit-subp=");
-         Define_Switch
-           (Config,
-            CL_Switches.Memcached_Server'Access,
-            Long_Switch => "--memcached-server=");
-         Define_Switch (Config, CL_Switches.M'Access, "-m");
-         Define_Switch
-           (Config,
-            CL_Switches.No_Axiom_Guard'Access,
-            Long_Switch => "--no-axiom-guard");
-         Define_Switch
-           (Config,
-            CL_Switches.Function_Sandboxing'Access,
-            Long_Switch => "--function-sandboxing=");
-         Define_Switch
-           (Config,
-            CL_Switches.No_Global_Generation'Access,
-            Long_Switch => "--no-global-generation");
-         Define_Switch
-           (Config,
-            CL_Switches.No_Subprojects'Access,
-            Long_Switch => "--no-subprojects");
-         Define_Switch
-           (Config, CL_Switches.Output'Access, Long_Switch => "--output=");
-         Define_Switch
-           (Config,
-            CL_Switches.Output_Header'Access,
-            Long_Switch => "--output-header");
-         Define_Switch
-           (Config,
-            CL_Switches.Output_Msg_Only'Access,
-            Long_Switch => "--output-msg-only");
-         Define_Switch
-           (Config,
-            CL_Switches.Proof_Warnings'Access,
-            Long_Switch => "--proof-warnings=");
-         Define_Switch
-           (Config, CL_Switches.Q'Access, "-q", Long_Switch => "--quiet");
-         Define_Switch
-           (Config, CL_Switches.Replay'Access, Long_Switch => "--replay");
-         Define_Switch
-           (Config, CL_Switches.Report'Access, Long_Switch => "--report=");
-         Define_Switch (Config, CL_Switches.U'Access, "-u");
-         Define_Switch (Config, CL_Switches.UU'Access, "-U");
-         Define_Switch
-           (Config, CL_Switches.Warnings'Access, Long_Switch => "--warnings=");
-         Define_Switch
-           (Config,
-            CL_Switches.Why3_Conf'Access,
-            Long_Switch => "--why3-conf=");
-         Define_Switch
-           (Config,
-            CL_Switches.Why3_Debug'Access,
-            Long_Switch => "--why3-debug=");
-         Define_Switch
-           (Config,
-            CL_Switches.Why3_Logging'Access,
-            Long_Switch => "--why3-logging");
-         Define_Switch
-           (Config,
-            CL_Switches.Why3_Server'Access,
-            Long_Switch => "--why3-server=");
-         Define_Switch (Config, Long_Switch => "--sarif-base-uri=");
-         Define_Switch
-           (Config,
-            CL_Switches.Z3_Counterexample'Access,
-            Long_Switch => "--z3-counterexample");
+         for Switch in Invocation_Switch_Id loop
+            Register_Switch (Switch);
+         end loop;
       end if;
 
       if Mode in All_Switches | Global_Switches_Only | File_Specific_Only then
-         Define_Switch
-           (Config,
-            CL_Switches.Level'Access,
-            Long_Switch => "--level=",
-            Initial     => Invalid_Level);
-         Define_Switch
-           (Config, CL_Switches.Memlimit'Access, Long_Switch => "--memlimit=");
-         Define_Switch
-           (Config,
-            CL_Switches.Counterexamples'Access,
-            Long_Switch => "--counterexamples=");
-         Define_Switch
-           (Config,
-            CL_Switches.Check_Counterexamples'Access,
-            Long_Switch => "--check-counterexamples=");
-         Define_Switch
-           (Config,
-            CL_Switches.Gnattest_Values'Access,
-            Long_Switch => "--gnattest-values=");
-         Define_Switch
-           (Config,
-            CL_Switches.Debug_Exec_RAC'Access,
-            Long_Switch => "--debug-exec-rac");
-         Define_Switch
-           (Config, Handle_Warning_Switches'Access, Long_Switch => "--info");
-         Define_Switch
-           (Config, CL_Switches.Mode'Access, Long_Switch => "--mode=");
-         Define_Switch
-           (Config,
-            CL_Switches.No_Counterexample'Access,
-            Long_Switch => "--no-counterexample");
-         Define_Switch
-           (Config,
-            CL_Switches.No_Inlining'Access,
-            Long_Switch => "--no-inlining");
-         Define_Switch
-           (Config,
-            CL_Switches.No_Loop_Unrolling'Access,
-            Long_Switch => "--no-loop-unrolling");
+         for Switch in File_Specific_Switch_Id loop
+            if Switch
+               not in Sw_Info
+                    | Sw_Pedantic
+                    | Sw_Warn_Enable
+                    | Sw_Warn_Disable
+                    | Sw_Warn_Error
+            then
+               Register_Switch (Switch);
+            end if;
+         end loop;
+
          Define_Switch
            (Config,
             Handle_Warning_Switches'Access,
-            Long_Switch => "--pedantic");
-         Define_Switch
-           (Config, CL_Switches.Proof'Access, Long_Switch => "--proof=");
-         Define_Switch
-           (Config, CL_Switches.Prover'Access, Long_Switch => "--prover=");
-         Define_Switch (Config, Handle_Warning_Switches'Access, "-W=");
-         Define_Switch (Config, Handle_Warning_Switches'Access, "-A=");
-         Define_Switch (Config, Handle_Warning_Switches'Access, "-D=");
-
-         --  If not specified on the command-line, value of steps is invalid
+            Long_Switch => Long_Name (Sw_Info));
          Define_Switch
            (Config,
-            CL_Switches.Steps'Access,
-            Long_Switch => "--steps=",
-            Initial     => Invalid_Steps);
+            Handle_Warning_Switches'Access,
+            Long_Switch => Long_Name (Sw_Pedantic));
          Define_Switch
            (Config,
-            CL_Switches.CE_Steps'Access,
-            Long_Switch => "--ce-steps=",
-            Initial     => Invalid_Steps);
-         Define_Switch
-           (Config, CL_Switches.Timeout'Access, Long_Switch => "--timeout=");
+            Handle_Warning_Switches'Access,
+            GNAT_Command_Line_Short_Switch (Sw_Warn_Enable));
          Define_Switch
            (Config,
-            CL_Switches.Proof_Warn_Timeout'Access,
-            Long_Switch => "--proof-warnings-timeout=",
-            Initial     => Invalid_Timeout);
+            Handle_Warning_Switches'Access,
+            GNAT_Command_Line_Short_Switch (Sw_Warn_Disable));
+         Define_Switch
+           (Config,
+            Handle_Warning_Switches'Access,
+            GNAT_Command_Line_Short_Switch (Sw_Warn_Error));
       end if;
 
-      if Mode in All_Switches then
+      if Mode in All_Switches | Global_Switches_Only then
          Define_Switch (Config, "*", Help => "list of source files");
       end if;
+
+      --  Getopt calls callbacks synchronously and this access value is cleared
+      --  before returning, so the local Parsed object cannot outlive this use
+      --  and Unchecked_Access is safe here.
+      Current_Parsed_Switches := Parsed'Unchecked_Access;
 
       begin
          Getopt
@@ -1077,18 +1785,28 @@ package body Configuration is
 
       exception
          when Invalid_Switch =>
+            Current_Parsed_Switches := null;
             Fail ("");
          when Exit_From_Command_Line =>
+            Current_Parsed_Switches := null;
             Succeed;
          when Invalid_Parameter =>
+            Current_Parsed_Switches := null;
             Abort_Msg
               ("No parameter given to switch -" & Full_Switch (Parser),
                With_Help => False);
+         when others =>
+            Current_Parsed_Switches := null;
+            raise;
       end;
+
+      Current_Parsed_Switches := null;
 
       Free (Config);
       Free_Topmost (Com_Lin_Access);
-   end Parse_Switches;
+
+      return Parsed;
+   end Parse_Switches_Internal;
 
    -------------------------------------------
    -- Parse_Switches_Before_Project_Parsing --
@@ -1099,6 +1817,11 @@ package body Configuration is
    is
       use GNATCOLL.Opt_Parse;
       use GNATCOLL.Strings;
+
+      function Parse_Command_Line_Verbosity
+        (Args : String_List) return Verbosity_Choice;
+      --  Return the effective verbosity from the command line slice that is
+      --  parsed before project loading. The last -q/-v wins.
 
       function To_String_List
         (Args : XString_Vector) return String_List_Access;
@@ -1140,6 +1863,25 @@ package body Configuration is
       Cargs    : String_List_Access := null;
       Last_Arg : Natural := Com_Lin'Last;
 
+      ----------------------------------
+      -- Parse_Command_Line_Verbosity --
+      ----------------------------------
+
+      function Parse_Command_Line_Verbosity
+        (Args : String_List) return Verbosity_Choice
+      is
+         Result : Verbosity_Choice := Normal_Level;
+      begin
+         for Arg of Args loop
+            if Arg.all = "-q" or else Arg.all = "--quiet" then
+               Result := Quiet_Level;
+            elsif Arg.all = "-v" or else Arg.all = "--verbose" then
+               Result := Verbose_Level;
+            end if;
+         end loop;
+         return Result;
+      end Parse_Command_Line_Verbosity;
+
       --------------------
       -- To_String_List --
       --------------------
@@ -1169,7 +1911,9 @@ package body Configuration is
          end loop;
          return Result;
       end To_String_List;
+
    begin
+
       for I in Com_Lin'Range loop
          if Com_Lin (I).all = "-cargs" then
             Last_Arg := I - 1;
@@ -1202,6 +1946,8 @@ package body Configuration is
          Explain         => Explain.Get,
          Gpr_Registry    => GPR_Registry.Get,
          Help            => Help.Get,
+         Verbosity       =>
+           Parse_Command_Line_Verbosity (Com_Lin (Com_Lin'First .. Last_Arg)),
          Cargs           => Cargs,
          Remaining_Args  => To_String_List (Unused));
    end Parse_Switches_Before_Project_Parsing;
@@ -1738,15 +2484,24 @@ package body Configuration is
       --  Load the project file; This function requires the project file to be
       --  present.
 
-      procedure Parse_Proof_Switches (Com_Lin : String_List);
+      procedure Parse_Analysis_Attributes
+        (Command_Line : Parsed_Switches; Root_Attributes : Parsed_Switches);
       --  Parse the Switches and Proof_Switches attributes in project files.
       --  The regular command line is needed to interpret them properly.
 
-      procedure Postprocess;
+      procedure Postprocess (Parsed : in out Parsed_Switches);
       --  Read the switch variables set by command-line parsing and set the
       --  gnatprove variables.
 
-      procedure File_Specific_Postprocess (FS : out File_Specific);
+      procedure Warn_And_Strip_Non_Root_Invocation_Switches
+        (View           : Project.View.Object;
+         Attribute_Name : String;
+         Switches       : in out Parsed_Switches);
+      --  Invocation-level switches from non-root projects are accepted for
+      --  compatibility but ignored semantically.
+
+      procedure File_Specific_Postprocess
+        (Parsed : Parsed_Switches; FS : out File_Specific);
       --  Same as Postprocess, but for the switches that can be file-specific.
       --  For example, --level, --timeout are handled here.
 
@@ -1754,31 +2509,41 @@ package body Configuration is
       --  Check for the obsolete Prove.Switches attribute and issue a warning
       --  if present.
 
-      procedure Set_Mode (FS : in out File_Specific);
-      procedure Set_Output_Mode;
-      procedure Set_Warning_Mode;
-      procedure Set_Report_Mode;
+      procedure Set_Mode (Parsed : Parsed_Switches; FS : in out File_Specific);
+      procedure Set_Output_Mode (Parsed : Parsed_Switches);
+      procedure Set_Warning_Mode (Parsed : Parsed_Switches);
+      procedure Set_Report_Mode (Parsed : Parsed_Switches);
 
-      procedure Set_Level_Timeout_Steps_Provers (FS : out File_Specific);
+      procedure Set_Level_Timeout_Steps_Provers
+        (Parsed : Parsed_Switches; FS : out File_Specific);
       --  Using the --level, --timeout, --steps, --provers, --ce-steps,
       --  --counterexamples and --proof-warning-timeout switches, set the
       --  corresponding variables.
 
-      procedure Set_Proof_Mode (FS : in out File_Specific);
-      procedure Process_Limit_Switches;
+      procedure Set_Proof_Mode
+        (Parsed : Parsed_Switches; FS : in out File_Specific);
+      procedure Process_Limit_Switches (Parsed : in out Parsed_Switches);
       procedure Set_Provers
-        (Prover : GNAT.Strings.String_Access; FS : in out File_Specific);
+        (Parsed : Parsed_Switches; FS : in out File_Specific);
       procedure Set_Proof_Dir (View : GPR2.Project.View.Object);
       --  If attribute Proof_Dir is set in the project file,
       --  set global variable Proof_Dir to the full path
       --  <path-to-project-file>/<value-of-proof-dir>.
 
-      procedure Sanity_Checking;
+      procedure Sanity_Checking (Parsed : Parsed_Switches);
       --  Check the command line flags for conflicting flags
 
       function List_From_Attr
         (Attribute : GPR2.Project.Attribute.Object) return String_List_Access;
       --  Helper function to convert attribute to list of strings
+
+      function Source_Key
+        (View : Project.View.Object; Fn : String) return String;
+      --  Return the file-specific map key for source Fn in View
+
+      function Switch_String
+        (Parsed : Parsed_Switches; Switch : Switch_Id) return String;
+      --  Return the string value for Switch or the empty string when unset
 
       -----------------------------------
       -- Check_Obsolete_Prove_Switches --
@@ -1802,17 +2567,25 @@ package body Configuration is
       -- File_Specific_Postprocess --
       -------------------------------
 
-      procedure File_Specific_Postprocess (FS : out File_Specific) is
+      procedure File_Specific_Postprocess
+        (Parsed : Parsed_Switches; FS : out File_Specific) is
       begin
-         Set_Level_Timeout_Steps_Provers (FS);
-         Set_Proof_Mode (FS);
-         Set_Mode (FS);
-         FS.No_Inlining := CL_Switches.No_Inlining;
-         FS.No_Loop_Unrolling := CL_Switches.No_Loop_Unrolling;
+         Set_Level_Timeout_Steps_Provers (Parsed, FS);
+         Set_Proof_Mode (Parsed, FS);
+         Set_Mode (Parsed, FS);
+         FS.No_Inlining := Parsed.Values (Sw_No_Inlining).Boolean_Val;
+         FS.No_Loop_Unrolling :=
+           Parsed.Values (Sw_No_Loop_Unrolling).Boolean_Val;
          FS.Proof_Warnings := Proof_Warnings;
          FS.No_Inlining :=
-           CL_Switches.No_Inlining or CL_Switches.No_Global_Generation;
-         FS.Warning_Status := Configuration.Warning_Status;
+           Parsed.Values (Sw_No_Inlining).Boolean_Val
+           or Parsed.Values (Sw_No_Global_Generation).Boolean_Val;
+         for WK in Misc_Warning_Kind loop
+            FS.Warning_Status (WK) :=
+              (if Parsed.Warning_Status (WK) /= WS_None
+               then Parsed.Warning_Status (WK)
+               else VC_Kinds.Warning_Status (WK));
+         end loop;
       end File_Specific_Postprocess;
 
       ----------
@@ -1881,50 +2654,89 @@ package body Configuration is
          end if;
       end List_From_Attr;
 
-      --------------------------
-      -- Parse_Proof_Switches --
-      --------------------------
+      ----------------
+      -- Source_Key --
+      ----------------
 
-      procedure Parse_Proof_Switches (Com_Lin : String_List) is
+      function Source_Key
+        (View : Project.View.Object; Fn : String) return String is
+      begin
+         return View.Source (GPR2.Simple_Name (Fn)).Path_Name.String_Value;
+      end Source_Key;
 
-         function Concat
-           (A, B : String_List_Access; C : String_List) return String_List;
+      -------------------
+      -- Switch_String --
+      -------------------
 
-         function Concat
-           (A, B, C : String_List_Access; D : String_List) return String_List;
+      function Switch_String
+        (Parsed : Parsed_Switches; Switch : Switch_Id) return String
+      is
+         Value : constant GNAT.Strings.String_Access :=
+           Parsed.Values (Switch).String_Val;
+      begin
+         if Value = null then
+            return "";
+         else
+            return Value.all;
+         end if;
+      end Switch_String;
+
+      -------------------------------------------------
+      -- Warn_And_Strip_Non_Root_Invocation_Switches --
+      -------------------------------------------------
+
+      procedure Warn_And_Strip_Non_Root_Invocation_Switches
+        (View           : Project.View.Object;
+         Attribute_Name : String;
+         Switches       : in out Parsed_Switches)
+      is
+         function Switch_Image (Switch : Switch_Id) return String;
+         --  Return the preferred user-facing spelling for Switch
+
+         ------------------
+         -- Switch_Image --
+         ------------------
+
+         function Switch_Image (Switch : Switch_Id) return String is
+         begin
+            if Switch_Definitions (Switch).Long /= null then
+               return Switch_Definitions (Switch).Long.all;
+            else
+               return Switch_Definitions (Switch).Short.all;
+            end if;
+         end Switch_Image;
+
+      begin
+         for Switch in Invocation_Switch_Id loop
+            if Switches.Present (Switch) then
+               Ada.Text_IO.Put_Line
+                 (Ada.Text_IO.Standard_Error,
+                  "warning: invocation switch """
+                  & Switch_Image (Switch)
+                  & """ in attribute """
+                  & Attribute_Name
+                  & """ of non-root project """
+                  & View.Path_Name.String_Value
+                  & """ is ignored");
+               Switches.Values (Switch) := Initial_Switch_Value (Switch);
+               Switches.Present (Switch) := False;
+            end if;
+         end loop;
+      end Warn_And_Strip_Non_Root_Invocation_Switches;
+
+      -------------------------------
+      -- Parse_Analysis_Attributes --
+      -------------------------------
+
+      procedure Parse_Analysis_Attributes
+        (Command_Line : Parsed_Switches; Root_Attributes : Parsed_Switches)
+      is
+         use type Project.View.Object;
 
          procedure Expand_Ada_Switches (View : Project.View.Object);
          --  Replace the "Ada" section of the File_Specific_Map by entries for
          --  all files in the project, except for those which already have an
          --  entry.
-
-         procedure Reset_File_Specific_Switches;
-         --  Reset file-specific switches between parsing of the full
-         --  command-line for each file.
-
-         ------------
-         -- Concat --
-         ------------
-
-         function Concat
-           (A, B : String_List_Access; C : String_List) return String_List is
-         begin
-            return
-              (if A = null then [] else A.all)
-              & (if B = null then [] else B.all)
-              & C;
-         end Concat;
-
-         function Concat
-           (A, B, C : String_List_Access; D : String_List) return String_List
-         is
-         begin
-            return
-              (if A = null then [] else A.all)
-              & (if B = null then [] else B.all)
-              & (if C = null then [] else C.all)
-              & D;
-         end Concat;
 
          procedure Expand_Ada_Switches (View : Project.View.Object) is
 
@@ -1932,40 +2744,20 @@ package body Configuration is
 
             Messages : GPR2.Log.Object;
             pragma Unreferenced (Messages);
-            Units    : GPR2.Build.Compilation_Unit.Maps.Map := View.Own_Units;
+            Units    : constant GPR2.Build.Compilation_Unit.Maps.Map :=
+              View.Own_Units;
             Position : File_Specific_Maps.Cursor;
             Inserted : Boolean;
          begin
             File_Specific_Map.Delete ("Ada");
             for C in Units.Iterate loop
                File_Specific_Map.Insert
-                 (Key      => String (Units (C).Main_Part.Source.Simple_Name),
+                 (Key      => File_Specific_Key (Units (C)),
                   New_Item => Gen,
                   Position => Position,
                   Inserted => Inserted);
             end loop;
          end Expand_Ada_Switches;
-
-         ----------------------------------
-         -- Reset_File_Specific_Switches --
-         ----------------------------------
-
-         procedure Reset_File_Specific_Switches is
-         begin
-            CL_Switches.Steps := Invalid_Steps;
-            CL_Switches.CE_Steps := Invalid_Steps;
-            CL_Switches.Timeout := null;
-            CL_Switches.Memlimit := 0;
-            CL_Switches.Proof := null;
-            CL_Switches.Prover := null;
-            CL_Switches.Level := Invalid_Level;
-            CL_Switches.Counterexamples := null;
-            CL_Switches.No_Inlining := False;
-            CL_Switches.Mode := null;
-            CL_Switches.No_Loop_Unrolling := False;
-            CL_Switches.Proof_Warnings := null;
-            CL_Switches.Proof_Warn_Timeout := Invalid_Timeout;
-         end Reset_File_Specific_Switches;
 
          First : Boolean := True;
       begin
@@ -1987,16 +2779,55 @@ package body Configuration is
                    (View.Attribute
                       ((+"Prove", +"Proof_Switches"),
                        Index => GPR2.Project.Attribute_Index.Create ("Ada")));
-               Parsed_Cmdline     : constant String_List :=
-                 Concat (Prove_Switches, Proof_Switches_Ada, Com_Lin);
+               Project_Switches   : Parsed_Switches;
             begin
-               --  parse all switches that apply to all files, concatenated in
-               --  the right order (most important is last).
 
-               Parse_Switches (All_Switches, Parsed_Cmdline);
-               Postprocess;
-               File_Specific_Postprocess (FS);
-               File_Specific_Map.Insert ("Ada", FS);
+               --  Parse all switches that apply to all files, then merge them
+               --  in the right order (most important is last). The root
+               --  attributes are already part of Root_Attributes.
+
+               if View = Tree.Root_Project then
+                  Merge_Parsed_Switches (Project_Switches, Root_Attributes);
+               end if;
+
+               if Prove_Switches /= null then
+                  declare
+                     Parsed : Parsed_Switches :=
+                       Parse_Switches_Internal
+                         (Global_Switches_Only, Prove_Switches.all);
+                  begin
+                     if View /= Tree.Root_Project then
+                        Warn_And_Strip_Non_Root_Invocation_Switches
+                          (View, "Switches", Parsed);
+                     end if;
+                     Merge_Parsed_Switches (Project_Switches, Parsed);
+                  end;
+               end if;
+
+               if Proof_Switches_Ada /= null then
+                  declare
+                     Parsed : Parsed_Switches :=
+                       Parse_Switches_Internal
+                         (Global_Switches_Only, Proof_Switches_Ada.all);
+                  begin
+                     if View /= Tree.Root_Project then
+                        Warn_And_Strip_Non_Root_Invocation_Switches
+                          (View, "Proof_Switches (""Ada"")", Parsed);
+                     end if;
+                     Merge_Parsed_Switches (Project_Switches, Parsed);
+                  end;
+               end if;
+
+               declare
+                  Effective : Parsed_Switches;
+               begin
+                  --  Use the merge helper for a deep copy
+                  Merge_Parsed_Switches (Effective, Project_Switches);
+                  Merge_Parsed_Switches (Effective, Command_Line);
+                  Postprocess (Effective);
+                  File_Specific_Postprocess (Effective, FS);
+               end;
+               File_Specific_Map.Include ("Ada", FS);
                Has_Coq_Prover := Case_Insensitive_Contains (FS.Provers, "coq");
                Has_Manual_Prover :=
                  FS.Provers.Length = 1
@@ -2009,36 +2840,34 @@ package body Configuration is
                   if Attr.Index.Text not in "Ada" | "ada" then
                      Check_File_Part_Of_Project (View, Attr.Index.Text);
                      declare
-                        FS             : File_Specific;
-                        FS_Switches    : constant String_List_Access :=
+                        FS          : File_Specific;
+                        FS_Switches : constant String_List_Access :=
                           List_From_Attr (Attr);
-                        Parsed_Cmdline : constant String_List :=
-                          Concat
-                            (Prove_Switches,
-                             Proof_Switches_Ada,
-                             FS_Switches,
-                             Com_Lin);
+                        Effective   : Parsed_Switches;
                      begin
+                        --  Use the merge helper for a deep copy
+                        Merge_Parsed_Switches (Effective, Project_Switches);
+
                         if FS_Switches /= null then
 
                            --  parse the file switches to check if they contain
                            --  invalid switches; this is for error reporting
                            --  only.
 
-                           Parse_Switches
-                             (File_Specific_Only, FS_Switches.all);
+                           Merge_Parsed_Switches
+                             (Effective,
+                              Parse_Switches_Internal
+                                (File_Specific_Only, FS_Switches.all));
                         end if;
 
-                        --  parse all switches that apply to a single file,
-                        --  *including* the global switches. File-specific
-                        --  switches are more important than the other switches
-                        --  in the project file, but less so than the command
-                        --  line switches.
+                        --  Apply the command-line switches last, so they
+                        --  override file-specific project switches.
 
-                        Reset_File_Specific_Switches;
-                        Parse_Switches (All_Switches, Parsed_Cmdline);
-                        File_Specific_Postprocess (FS);
-                        File_Specific_Map.Insert (Attr.Index.Text, FS);
+                        Merge_Parsed_Switches (Effective, Command_Line);
+                        Postprocess (Effective);
+                        File_Specific_Postprocess (Effective, FS);
+                        File_Specific_Map.Include
+                          (Source_Key (View, Attr.Index.Text), FS);
                      end;
                   end if;
                end loop;
@@ -2048,19 +2877,19 @@ package body Configuration is
                      Default : constant File_Specific :=
                        File_Specific_Map ("Ada");
                   begin
-                     File_Specific_Map.Insert ("default", Default);
+                     File_Specific_Map.Include ("default", Default);
                   end;
                end if;
                Expand_Ada_Switches (View);
             end;
          end loop;
-      end Parse_Proof_Switches;
+      end Parse_Analysis_Attributes;
 
       -----------------
       -- Postprocess --
       -----------------
 
-      procedure Postprocess is
+      procedure Postprocess (Parsed : in out Parsed_Switches) is
          function On_Path (Exec : String) return Boolean;
          --  Return True iff Exec is present on PATH
 
@@ -2079,14 +2908,16 @@ package body Configuration is
          end On_Path;
 
       begin
-         Sanity_Checking;
+         Sanity_Checking (Parsed);
 
          SPARK_Install.Z3_Present := On_Path ("z3");
          SPARK_Install.CVC5_Present := On_Path ("cvc5");
          SPARK_Install.Colibri_Present := On_Path ("colibri");
 
-         Debug := CL_Switches.D or CL_Switches.Flow_Debug;
-         Debug_Exec_RAC := CL_Switches.Debug_Exec_RAC;
+         Debug :=
+           Parsed.Values (Sw_D).Boolean_Val
+           or Parsed.Values (Sw_Flow_Debug).Boolean_Val;
+         Debug_Exec_RAC := Parsed.Values (Sw_Debug_Exec_RAC).Boolean_Val;
 
          --  Subprograms with no contracts (and a few other criteria) may be
          --  inlined, as this can help provability. In particular it helps as
@@ -2111,60 +2942,62 @@ package body Configuration is
          --  number of processes should be set to the actual number of
          --  processors available on the machine.
 
-         if CL_Switches.J = 0 then
+         if Parsed.Values (Sw_J).Integer_Val = 0 then
             Parallel := Natural (System.Multiprocessors.Number_Of_CPUs);
-         elsif CL_Switches.J < 0 then
+         elsif Parsed.Values (Sw_J).Integer_Val < 0 then
             Abort_Msg ("error: wrong argument for -j", With_Help => False);
          else
-            Parallel := CL_Switches.J;
+            Parallel := Parsed.Values (Sw_J).Integer_Val;
          end if;
 
-         if CL_Switches.No_Counterexample then
+         if Parsed.Values (Sw_No_Counterexample).Boolean_Val then
             Ada.Text_IO.Put_Line
               ("Note: switch ""--no-counterexample"" is ignored.");
             Ada.Text_IO.Put_Line
               ("Note: use ""--counterexamples=off"" instead.");
          end if;
 
-         if CL_Switches.No_Axiom_Guard then
+         if Parsed.Values (Sw_No_Axiom_Guard).Boolean_Val then
             Ada.Text_IO.Put_Line
               ("Note: switch ""--no-axiom-guard"" is ignored.");
             Ada.Text_IO.Put_Line
               ("Note: use ""--function-sandboxing=off"" instead.");
          end if;
 
-         if CL_Switches.Function_Sandboxing.all not in "" | "on" | "off" then
+         if Switch_String (Parsed, Sw_Function_Sandboxing)
+            not in "" | "on" | "off"
+         then
             Abort_Msg
               ("error: wrong argument for --function-sandboxing, "
                & "must be one of (on, off)",
                With_Help => False);
          end if;
 
-         if CL_Switches.Checks_As_Errors.all = ""
-           or else CL_Switches.Checks_As_Errors.all = "off"
+         if Switch_String (Parsed, Sw_Checks_As_Errors) = ""
+           or else Switch_String (Parsed, Sw_Checks_As_Errors) = "off"
          then
             Checks_As_Errors := False;
-         elsif CL_Switches.Checks_As_Errors.all = "on" then
+         elsif Switch_String (Parsed, Sw_Checks_As_Errors) = "on" then
             Checks_As_Errors := True;
          else
             Abort_Msg
               ("error: wrong argument """
-               & CL_Switches.Checks_As_Errors.all
+               & Switch_String (Parsed, Sw_Checks_As_Errors)
                & """ for --checks-as-errors, "
                & "must be one of (on, off)",
                With_Help => False);
          end if;
 
-         if CL_Switches.Proof_Warnings.all = ""
-           or else CL_Switches.Proof_Warnings.all = "off"
+         if Switch_String (Parsed, Sw_Proof_Warnings) = ""
+           or else Switch_String (Parsed, Sw_Proof_Warnings) = "off"
          then
             Proof_Warnings := False;
-         elsif CL_Switches.Proof_Warnings.all = "on" then
+         elsif Switch_String (Parsed, Sw_Proof_Warnings) = "on" then
             Proof_Warnings := True;
          else
             Abort_Msg
               ("error: wrong argument """
-               & CL_Switches.Proof_Warnings.all
+               & Switch_String (Parsed, Sw_Proof_Warnings)
                & """ for --proof-warnings, "
                & "must be one of (on, off)",
                With_Help => False);
@@ -2173,34 +3006,36 @@ package body Configuration is
          --  Handling of Only_Given and Filelist
 
          Only_Given :=
-           CL_Switches.U
-           or not Null_Or_Empty_String (CL_Switches.Limit_Subp)
-           or not Null_Or_Empty_String (CL_Switches.Limit_Line)
-           or not Null_Or_Empty_String (CL_Switches.Limit_Lines);
+           Parsed.Values (Sw_U).Boolean_Val
+           or else Switch_String (Parsed, Sw_Limit_Subp) /= ""
+           or else Switch_String (Parsed, Sw_Limit_Line) /= ""
+           or else Switch_String (Parsed, Sw_Limit_Lines) /= "";
 
-         if CL_Switches.U and then CL_Switches.File_List.Is_Empty then
+         if Parsed.Values (Sw_U).Boolean_Val and then Parsed.File_List.Is_Empty
+         then
             Ada.Text_IO.Put_Line
               (Ada.Text_IO.Standard_Error,
                "warning: switch -u without a file name is equivalent to "
                & "switch --no-subproject");
          end if;
 
-         Process_Limit_Switches;
+         Process_Limit_Switches (Parsed);
 
          GnateT_Switch := new String'(Check_gnateT_Switch (Tree.Root_Project));
-         Set_Output_Mode;
-         Set_Warning_Mode;
-         Set_Report_Mode;
+         Set_Output_Mode (Parsed);
+         Set_Warning_Mode (Parsed);
+         Set_Report_Mode (Parsed);
          Set_Proof_Dir (Tree.Root_Project);
 
-         Use_Semaphores := not Debug and then not CL_Switches.Dbg_No_Sem;
+         Use_Semaphores :=
+           not Debug and then not Parsed.Values (Sw_Dbg_No_Sem).Boolean_Val;
       end Postprocess;
 
       ----------------------------
       -- Process_Limit_Switches --
       ----------------------------
 
-      procedure Process_Limit_Switches is
+      procedure Process_Limit_Switches (Parsed : in out Parsed_Switches) is
 
          Switch_Count : Integer := 0;
 
@@ -2256,8 +3091,8 @@ package body Configuration is
             --  subprogram is inside a generic or itself a generic, so that all
             --  instances of the line/subprogram are analyzed.
 
-            if not All_Projects then
-               CL_Switches.File_List.Append
+            if not Parsed.Values (Sw_UU).Boolean_Val then
+               Parsed.File_List.Append
                  (Limit_String (Limit_String'First .. Colon_Index - 1));
             end if;
          end Process_Limit_Directive;
@@ -2310,17 +3145,22 @@ package body Configuration is
          --  combination of --limit-subp + --limit-line or --limit-region,
          --  as this is used by the gnatstudio plug-in.
 
-         Check_Switch (CL_Switches.Limit_Name);
-         Check_Switch (CL_Switches.Limit_Subp);
-         Check_Switch (CL_Switches.Limit_Region);
-         Check_Switch (CL_Switches.Limit_Line);
-         Check_Switch (CL_Switches.Limit_Lines);
+         Check_Switch (Parsed.Values (Sw_Limit_Name).String_Val);
+         Check_Switch (Parsed.Values (Sw_Limit_Subp).String_Val);
+         Check_Switch (Parsed.Values (Sw_Limit_Region).String_Val);
+         Check_Switch (Parsed.Values (Sw_Limit_Line).String_Val);
+         Check_Switch (Parsed.Values (Sw_Limit_Lines).String_Val);
          if Switch_Count > 1 then
             if Switch_Count = 2
-              and then not Null_Or_Empty_String (CL_Switches.Limit_Subp)
               and then
-                (not Null_Or_Empty_String (CL_Switches.Limit_Region)
-                 or else not Null_Or_Empty_String (CL_Switches.Limit_Line))
+                not Null_Or_Empty_String
+                      (Parsed.Values (Sw_Limit_Subp).String_Val)
+              and then
+                (not Null_Or_Empty_String
+                       (Parsed.Values (Sw_Limit_Region).String_Val)
+                 or else
+                   not Null_Or_Empty_String
+                         (Parsed.Values (Sw_Limit_Line).String_Val))
             then
                null;
             else
@@ -2331,13 +3171,19 @@ package body Configuration is
             end if;
          end if;
 
-         Process_Limit_Directive ("limit-subp", CL_Switches.Limit_Subp);
-         Process_Limit_Directive ("limit-region", CL_Switches.Limit_Region);
-         Process_Limit_Directive ("limit-line", CL_Switches.Limit_Line);
-         if not Null_Or_Empty_String (CL_Switches.Limit_Line) then
-            Process_Limit_Line (CL_Switches.Limit_Line.all);
+         Process_Limit_Directive
+           ("limit-subp", Parsed.Values (Sw_Limit_Subp).String_Val);
+         Process_Limit_Directive
+           ("limit-region", Parsed.Values (Sw_Limit_Region).String_Val);
+         Process_Limit_Directive
+           ("limit-line", Parsed.Values (Sw_Limit_Line).String_Val);
+         if not Null_Or_Empty_String (Parsed.Values (Sw_Limit_Line).String_Val)
+         then
+            Process_Limit_Line (Parsed.Values (Sw_Limit_Line).String_Val.all);
          end if;
-         if not Null_Or_Empty_String (CL_Switches.Limit_Lines) then
+         if not Null_Or_Empty_String
+                  (Parsed.Values (Sw_Limit_Lines).String_Val)
+         then
             declare
                File_Handle : Ada.Text_IO.File_Type;
                Line_Count  : Integer := 1;
@@ -2345,7 +3191,7 @@ package body Configuration is
                Ada.Text_IO.Open
                  (File_Handle,
                   Ada.Text_IO.In_File,
-                  CL_Switches.Limit_Lines.all);
+                  Parsed.Values (Sw_Limit_Lines).String_Val.all);
                while True loop
                   declare
                      Line : constant String :=
@@ -2373,11 +3219,16 @@ package body Configuration is
       -- Sanity_Checking --
       ---------------------
 
-      procedure Sanity_Checking is
+      procedure Sanity_Checking (Parsed : Parsed_Switches) is
       begin
-         if (CL_Switches.Output_Msg_Only and CL_Switches.Replay)
-           or else (CL_Switches.Output_Msg_Only and CL_Switches.F)
-           or else (CL_Switches.F and CL_Switches.Replay)
+         if (Parsed.Values (Sw_Output_Msg_Only).Boolean_Val
+             and then Parsed.Values (Sw_Replay).Boolean_Val)
+           or else
+             (Parsed.Values (Sw_Output_Msg_Only).Boolean_Val
+              and then Parsed.Values (Sw_F).Boolean_Val)
+           or else
+             (Parsed.Values (Sw_F).Boolean_Val
+              and then Parsed.Values (Sw_Replay).Boolean_Val)
          then
             Abort_Msg
               ("only one switch out of -f, --output-msg-only and --replay"
@@ -2390,10 +3241,11 @@ package body Configuration is
       -- Set_Level_Timeout_Steps_Provers --
       -------------------------------------
 
-      procedure Set_Level_Timeout_Steps_Provers (FS : out File_Specific) is
+      procedure Set_Level_Timeout_Steps_Provers
+        (Parsed : Parsed_Switches; FS : out File_Specific) is
       begin
 
-         case CL_Switches.Level is
+         case Parsed.Values (Sw_Level).Integer_Val is
 
             --  If level switch was not provided, set other switches to their
             --  default values.
@@ -2406,8 +3258,8 @@ package body Configuration is
                --  is used (either explicitly or through --level). Otherwise
                --  set to zero to indicate steps are not used.
 
-               if CL_Switches.Steps = Invalid_Steps
-                 and then CL_Switches.Timeout.all = ""
+               if Parsed.Values (Sw_Steps).Integer_Val = Invalid_Steps
+                 and then Switch_String (Parsed, Sw_Timeout) = ""
                then
                   FS.Steps := Default_Steps;
                else
@@ -2475,13 +3327,14 @@ package body Configuration is
          --  If option --timeout was not provided, keep timeout corresponding
          --  to level switch/default value. Otherwise, take the user-provided
          --  timeout. To be able to detect if --timeout was provided,
-         --  CL_Switches.Timeout is string-based.
+         --  Parsed timeout is string-based.
 
-         if CL_Switches.Timeout.all = "" then
+         if Switch_String (Parsed, Sw_Timeout) = "" then
             null;
          else
             begin
-               FS.Timeout := Integer'Value (CL_Switches.Timeout.all);
+               FS.Timeout :=
+                 Integer'Value (Switch_String (Parsed, Sw_Timeout));
                if FS.Timeout < 0 then
                   raise Constraint_Error;
                end if;
@@ -2494,43 +3347,45 @@ package body Configuration is
             end;
          end if;
 
-         if CL_Switches.Memlimit = 0 then
+         if Parsed.Values (Sw_Memlimit).Integer_Val = 0 then
             null;
-         elsif CL_Switches.Memlimit < 0 then
+         elsif Parsed.Values (Sw_Memlimit).Integer_Val < 0 then
             Abort_Msg
               ("error: wrong argument for --memlimit, "
                & "must be a non-negative integer",
                With_Help => False);
          else
-            FS.Memlimit := CL_Switches.Memlimit;
+            FS.Memlimit := Parsed.Values (Sw_Memlimit).Integer_Val;
          end if;
 
-         if CL_Switches.Steps = Invalid_Steps then
+         if Parsed.Values (Sw_Steps).Integer_Val = Invalid_Steps then
             null;
-         elsif CL_Switches.Steps < 0 then
+         elsif Parsed.Values (Sw_Steps).Integer_Val < 0 then
             Abort_Msg
               ("error: wrong argument for --steps", With_Help => False);
          else
-            FS.Steps := CL_Switches.Steps;
+            FS.Steps := Parsed.Values (Sw_Steps).Integer_Val;
          end if;
 
-         if CL_Switches.CE_Steps = Invalid_Steps then
+         if Parsed.Values (Sw_CE_Steps).Integer_Val = Invalid_Steps then
             null;
-         elsif CL_Switches.CE_Steps < 0 then
+         elsif Parsed.Values (Sw_CE_Steps).Integer_Val < 0 then
             Abort_Msg
               ("error: wrong argument for --ce-steps", With_Help => False);
          else
-            FS.CE_Steps := CL_Switches.CE_Steps;
+            FS.CE_Steps := Parsed.Values (Sw_CE_Steps).Integer_Val;
          end if;
 
-         if CL_Switches.Proof_Warn_Timeout = Invalid_Timeout then
+         if Parsed.Values (Sw_Proof_Warn_Timeout).Integer_Val = Invalid_Timeout
+         then
             null;
-         elsif CL_Switches.Proof_Warn_Timeout < 0 then
+         elsif Parsed.Values (Sw_Proof_Warn_Timeout).Integer_Val < 0 then
             Abort_Msg
               ("error: wrong argument for --proof-warn-timeout",
                With_Help => False);
          else
-            FS.Proof_Warn_Timeout := CL_Switches.Proof_Warn_Timeout;
+            FS.Proof_Warn_Timeout :=
+              Parsed.Values (Sw_Proof_Warn_Timeout).Integer_Val;
          end if;
 
          --  Timeout and CE_Steps are fully set now, we can set CE_Timeout.
@@ -2545,17 +3400,17 @@ package body Configuration is
             then Constants.Max_CE_Timeout
             else Integer'Min (FS.Timeout, Constants.Max_CE_Timeout));
 
-         Set_Provers (CL_Switches.Prover, FS);
+         Set_Provers (Parsed, FS);
 
-         if CL_Switches.Output_Msg_Only then
+         if Parsed.Values (Sw_Output_Msg_Only).Boolean_Val then
             FS.Provers.Clear;
          end if;
 
-         if CL_Switches.Counterexamples.all = "" then
+         if Switch_String (Parsed, Sw_Counterexamples) = "" then
             null;
-         elsif CL_Switches.Counterexamples.all = "on" then
+         elsif Switch_String (Parsed, Sw_Counterexamples) = "on" then
             FS.Counterexamples := True;
-         elsif CL_Switches.Counterexamples.all = "off" then
+         elsif Switch_String (Parsed, Sw_Counterexamples) = "off" then
             FS.Counterexamples := False;
          else
             Abort_Msg
@@ -2568,13 +3423,13 @@ package body Configuration is
            FS.Counterexamples
            and then SPARK_Install.CVC5_Present
            and then not Has_Manual_Prover
-           and then not CL_Switches.Output_Msg_Only;
+           and then not Parsed.Values (Sw_Output_Msg_Only).Boolean_Val;
 
-         if CL_Switches.Check_Counterexamples.all = "" then
+         if Switch_String (Parsed, Sw_Check_Counterexamples) = "" then
             null;
-         elsif CL_Switches.Check_Counterexamples.all = "on" then
+         elsif Switch_String (Parsed, Sw_Check_Counterexamples) = "on" then
             FS.Check_Counterexamples := True;
-         elsif CL_Switches.Check_Counterexamples.all = "off" then
+         elsif Switch_String (Parsed, Sw_Check_Counterexamples) = "off" then
             FS.Check_Counterexamples := False;
          else
             Abort_Msg
@@ -2592,25 +3447,26 @@ package body Configuration is
       -- Set_Mode --
       --------------
 
-      procedure Set_Mode (FS : in out File_Specific) is
+      procedure Set_Mode (Parsed : Parsed_Switches; FS : in out File_Specific)
+      is
       begin
-         if CL_Switches.Mode.all = "" then
+         if Switch_String (Parsed, Sw_Mode) = "" then
             FS.Mode := GPM_All;
-         elsif CL_Switches.Mode.all = "prove" then
+         elsif Switch_String (Parsed, Sw_Mode) = "prove" then
             FS.Mode := GPM_Prove;
-         elsif CL_Switches.Mode.all = "check" then
+         elsif Switch_String (Parsed, Sw_Mode) = "check" then
             FS.Mode := GPM_Check;
-         elsif CL_Switches.Mode.all = "check_all"
-           or else CL_Switches.Mode.all = "stone"
+         elsif Switch_String (Parsed, Sw_Mode) = "check_all"
+           or else Switch_String (Parsed, Sw_Mode) = "stone"
          then
             FS.Mode := GPM_Check_All;
-         elsif CL_Switches.Mode.all = "flow"
-           or else CL_Switches.Mode.all = "bronze"
+         elsif Switch_String (Parsed, Sw_Mode) = "flow"
+           or else Switch_String (Parsed, Sw_Mode) = "bronze"
          then
             FS.Mode := GPM_Flow;
-         elsif CL_Switches.Mode.all = "all"
-           or else CL_Switches.Mode.all = "silver"
-           or else CL_Switches.Mode.all = "gold"
+         elsif Switch_String (Parsed, Sw_Mode) = "all"
+           or else Switch_String (Parsed, Sw_Mode) = "silver"
+           or else Switch_String (Parsed, Sw_Mode) = "gold"
          then
             FS.Mode := GPM_All;
          else
@@ -2640,15 +3496,15 @@ package body Configuration is
       -- Set_Output_Mode --
       ---------------------
 
-      procedure Set_Output_Mode is
+      procedure Set_Output_Mode (Parsed : Parsed_Switches) is
       begin
-         if CL_Switches.Output.all = "" then
+         if Switch_String (Parsed, Sw_Output) = "" then
             Output := GPO_Pretty_Simple;
-         elsif CL_Switches.Output.all = "brief" then
+         elsif Switch_String (Parsed, Sw_Output) = "brief" then
             Output := GPO_Brief;
-         elsif CL_Switches.Output.all = "oneline" then
+         elsif Switch_String (Parsed, Sw_Output) = "oneline" then
             Output := GPO_Oneline;
-         elsif CL_Switches.Output.all = "pretty" then
+         elsif Switch_String (Parsed, Sw_Output) = "pretty" then
             Output := GPO_Pretty_Simple;
          else
             Abort_Msg
@@ -2703,8 +3559,10 @@ package body Configuration is
       -- Set_Proof_Mode --
       --------------------
 
-      procedure Set_Proof_Mode (FS : in out File_Specific) is
-         Input       : String renames CL_Switches.Proof.all;
+      procedure Set_Proof_Mode
+        (Parsed : Parsed_Switches; FS : in out File_Specific)
+      is
+         Input       : constant String := Switch_String (Parsed, Sw_Proof);
          Colon_Index : constant Natural :=
            Index (Source => Input, Pattern => ":");
 
@@ -2755,11 +3613,10 @@ package body Configuration is
       -----------------
 
       procedure Set_Provers
-        (Prover : GNAT.Strings.String_Access; FS : in out File_Specific)
+        (Parsed : Parsed_Switches; FS : in out File_Specific)
       is
          First : Integer;
-         S     : constant String :=
-           (if Prover /= null then Prover.all else "");
+         S     : constant String := Switch_String (Parsed, Sw_Prover);
 
       begin
          --  This procedure is called when the Provers list is already filled
@@ -2770,7 +3627,7 @@ package body Configuration is
          --  --provers was explicitly set.
 
          if S = "" then
-            if CL_Switches.Replay then
+            if Parsed.Values (Sw_Replay).Boolean_Val then
                FS.Provers.Clear;
             end if;
             return;
@@ -2826,17 +3683,17 @@ package body Configuration is
       -- Set_Report_Mode --
       ---------------------
 
-      procedure Set_Report_Mode is
+      procedure Set_Report_Mode (Parsed : Parsed_Switches) is
       begin
-         if CL_Switches.Report.all = "" then
+         if Switch_String (Parsed, Sw_Report) = "" then
             Report := GPR_Fail;
-         elsif CL_Switches.Report.all = "fail" then
+         elsif Switch_String (Parsed, Sw_Report) = "fail" then
             Report := GPR_Fail;
-         elsif CL_Switches.Report.all = "all" then
+         elsif Switch_String (Parsed, Sw_Report) = "all" then
             Report := GPR_All;
-         elsif CL_Switches.Report.all = "provers" then
+         elsif Switch_String (Parsed, Sw_Report) = "provers" then
             Report := GPR_Provers;
-         elsif CL_Switches.Report.all = "statistics" then
+         elsif Switch_String (Parsed, Sw_Report) = "statistics" then
             Report := GPR_Statistics;
          else
             Abort_Msg
@@ -2848,8 +3705,8 @@ package body Configuration is
       -- Set_Warning_Mode --
       ----------------------
 
-      procedure Set_Warning_Mode is
-         Warn_Switch : String renames CL_Switches.Warnings.all;
+      procedure Set_Warning_Mode (Parsed : Parsed_Switches) is
+         Warn_Switch : constant String := Switch_String (Parsed, Sw_Warnings);
       begin
          --  Note that "on" here is retained for backwards compatibility
          --  with release 14.0.1
@@ -2873,9 +3730,11 @@ package body Configuration is
       Full_Com_Lin : String_List :=
         [1 .. Ada.Command_Line.Argument_Count => <>];
       Com_Lin      : String_List_Access;
-      Attr         : GPR2.Project.Attribute.Object;
 
-      Parse_Result : Project_Parsing_Result;
+      Parse_Result            : Project_Parsing_Result;
+      Command_Line_Switches   : Parsed_Switches;
+      Invocation_Switches     : Parsed_Switches;
+      Root_Attribute_Switches : Parsed_Switches;
 
    begin
 
@@ -2884,10 +3743,8 @@ package body Configuration is
            new String'(Ada.Command_Line.Argument (Index));
       end loop;
 
-      --  The following code calls Parse_Switches several times, with varying
-      --  mode argument and different switches, for different purposes. The
-      --  same global variables are used for the result of the command line
-      --  parsing (CL_Switches.*), but we make sure that this is correct by:
+      --  The following code parses switches several times, with varying mode
+      --  arguments and different switch lists, for different purposes:
       --   - detecting invalid switches in the various attributes; (so the
       --     parsing of a file-specific switch can't override a switch that can
       --     only be specified globally);
@@ -2895,7 +3752,7 @@ package body Configuration is
       --   - parsing for error messages is done before the "real" parsing to
       --     get the values of switches.
 
-      --  This call to Parse_Switches just parses project-relevant switches
+      --  This call just parses project-relevant switches
       --  (-P, -X etc) and ignores the rest.
 
       Set_Project_Attributes;
@@ -2949,37 +3806,50 @@ package body Configuration is
          Succeed;
       end if;
 
-      if Tree.Root_Project.Check_Attribute
-           ((+"Prove", +"Switches"), Result => Attr)
-      then
-         declare
-            L : String_List_Access := List_From_Attr (Attr);
-         begin
-            --  parse the Switches attribute of the project file; this is to
-            --  detect invalid switches only.
-
-            Parse_Switches (Global_Switches_Only, L.all);
+      declare
+         L : String_List_Access :=
+           List_From_Attr
+             (Tree.Root_Project.Attribute ((+"Prove", +"Switches")));
+      begin
+         if L /= null then
+            Merge_Parsed_Switches
+              (Root_Attribute_Switches,
+               Parse_Switches_Internal (Global_Switches_Only, L.all));
             Free (L);
-         end;
-      end if;
+         end if;
+      end;
 
-      if Tree.Root_Project.Check_Attribute
-           ((+"Prove", +"Proof_Switches"),
-            Index  => GPR2.Project.Attribute_Index.Create ("Ada"),
-            Result => Attr)
-      then
-         declare
-            L : String_List_Access := List_From_Attr (Attr);
-         begin
-            --  parse the Proof_Switches ("Ada") attribute of the project file;
-            --  this is to detect invalid switches only.
+      for Root_Attr of
+        Tree.Root_Project.Attributes ((+"Prove", +"Proof_Switches"))
+      loop
+         if Root_Attr.Index.Text in "Ada" | "ada" then
+            declare
+               L : String_List_Access := List_From_Attr (Root_Attr);
+            begin
+               if L /= null then
+                  Merge_Parsed_Switches
+                    (Root_Attribute_Switches,
+                     Parse_Switches_Internal (Global_Switches_Only, L.all));
+                  Free (L);
+               end if;
+            end;
+         end if;
+      end loop;
 
-            Parse_Switches (Global_Switches_Only, L.all);
-            Free (L);
-         end;
-      end if;
+      Command_Line_Switches :=
+        Parse_Switches_Internal (All_Switches, Com_Lin.all);
 
-      Parse_Proof_Switches (Com_Lin.all);
+      Parse_Analysis_Attributes
+        (Command_Line_Switches, Root_Attribute_Switches);
+
+      --  Derive the invocation-wide semantic configuration
+      Merge_Parsed_Switches (Invocation_Switches, Root_Attribute_Switches);
+      Merge_Parsed_Switches (Invocation_Switches, Command_Line_Switches);
+      Postprocess (Invocation_Switches);
+      Verbosity := Parse_Result.Verbosity;
+
+      --  Publish the final invocation settings for legacy consumers
+      Copy_To_CL_Switches (Invocation_Switches);
 
       --  Release copies of command line arguments; they were already parsed
       --  twice and are no longer needed.
@@ -3039,19 +3909,15 @@ package body Configuration is
       end if;
 
       --  Set reporter for build process
-      --  ??? possibly set Verbosity level in addition to User_Verbosity_Level
-      --  Quiet overrides Verbose here; probably "-v" and "--quiet" should
-      --  override each other
       declare
          Reporter       : Spark_Reporter :=
            (GPR2.Reporter.Console.Create (GPR2.Reporter.No_Warnings)
             with null record);
          User_Verbosity : constant GPR2.Reporter.User_Verbosity_Level :=
-           (if Configuration.Verbose
-            then GPR2.Reporter.Verbose
-            elsif Configuration.Quiet
-            then GPR2.Reporter.Important_Only
-            else GPR2.Reporter.Regular);
+           (case Configuration.Verbosity is
+              when Configuration.Verbose_Level => GPR2.Reporter.Verbose,
+              when Configuration.Quiet_Level   => GPR2.Reporter.Important_Only,
+              when Configuration.Normal_Level  => GPR2.Reporter.Regular);
       begin
          Reporter.Set_Verbosity (GPR2.Reporter.Regular);
          Reporter.Set_User_Verbosity (User_Verbosity);
@@ -3066,16 +3932,16 @@ package body Configuration is
    procedure Sanitize_File_List (Tree : Project.Tree.Object) is
       use String_Lists;
    begin
-      if CL_Switches.File_List.Is_Empty then
+      if File_List.Is_Empty then
          return;
       end if;
 
       --  We iterate over all names in the file list
 
-      for Cursor in CL_Switches.File_List.Iterate loop
+      for Cursor in File_List.Iterate loop
 
          declare
-            File_Entry       : String renames CL_Switches.File_List (Cursor);
+            File_Entry       : String renames File_List (Cursor);
             Has_Path         : constant Boolean :=
               Filename_Type (File_Entry) not in GPR2.Simple_Name;
             Simple_File_Name : constant String :=
@@ -3099,45 +3965,48 @@ package body Configuration is
             --  the spec, if no body exists.
 
             for NRP of Tree.Namespace_Root_Projects loop
-               declare
-                  View_DB   : constant GPR2.Build.View_Db.Object :=
-                    Tree.Artifacts_Database (NRP);
-                  CU        : GPR2.Build.Compilation_Unit.Object;
-                  VS        : GPR2.Build.Source.Object;
-                  Elt       : constant GPR2.Name_Type :=
-                    Name_Type (Simple_File_Name);
-                  Ambiguous : Boolean;
-               begin
-                  if View_DB.Source_Option >= Sources_Units
-                    and then View_DB.Has_Compilation_Unit (Elt)
-                  then
-                     CU := View_DB.Compilation_Unit (Elt);
-                  elsif View_DB.Source_Option > No_Source then
-                     VS :=
-                       View_DB.Visible_Source
-                         (GPR2.Simple_Name (Elt), Ambiguous);
-                     pragma Assert (not Ambiguous);
-                     if VS.Is_Defined
-                       and then View_DB.Has_Compilation_Unit (VS.Unit.Name)
+               if NRP.Kind in GPR2.With_Object_Dir_Kind then
+                  declare
+                     View_DB   : constant GPR2.Build.View_Db.Object :=
+                       Tree.Artifacts_Database (NRP);
+                     CU        : GPR2.Build.Compilation_Unit.Object;
+                     VS        : GPR2.Build.Source.Object;
+                     Elt       : constant GPR2.Name_Type :=
+                       Name_Type (Simple_File_Name);
+                     Ambiguous : Boolean;
+                  begin
+                     if View_DB.Source_Option >= Sources_Units
+                       and then View_DB.Has_Compilation_Unit (Elt)
                      then
-                        CU := View_DB.Compilation_Unit (VS.Unit.Name);
+                        CU := View_DB.Compilation_Unit (Elt);
+                     elsif View_DB.Source_Option > No_Source then
+                        VS :=
+                          View_DB.Visible_Source
+                            (GPR2.Simple_Name (Elt), Ambiguous);
+                        pragma Assert (not Ambiguous);
+                        if VS.Is_Defined
+                          and then View_DB.Has_Compilation_Unit (VS.Unit.Name)
+                        then
+                           CU := View_DB.Compilation_Unit (VS.Unit.Name);
+                        end if;
                      end if;
-                  end if;
-                  if CU.Is_Defined then
-                     if Found then
-                        Abort_Msg
-                          ("file or compilation unit "
-                           & Simple_File_Name
-                           & " is not unique in aggregate project",
-                           With_Help => False);
-                     else
-                        CL_Switches.File_List.Replace_Element
-                          (Cursor, String (CU.Main_Part.Source.Simple_Name));
-                        Found := True;
-                        CL_Units.Include (CU.Name, CU);
+                     if CU.Is_Defined then
+                        if Found then
+                           Abort_Msg
+                             ("file or compilation unit "
+                              & Simple_File_Name
+                              & " is not unique in aggregate project",
+                              With_Help => False);
+                        else
+                           File_List.Replace_Element
+                             (Cursor,
+                              String (CU.Main_Part.Source.Simple_Name));
+                           Found := True;
+                           CL_Units.Include (CU.Name, CU);
+                        end if;
                      end if;
-                  end if;
-               end;
+                  end;
+               end if;
             end loop;
             if not Found then
                Abort_Msg
@@ -3189,6 +4058,49 @@ package body Configuration is
    end Sanity_Check_SARIF_Base_URI;
 
    procedure Set_Project_Attributes is
+
+      function File_Specific_Switch_List return String;
+      --  Return the switches accepted in file-specific Proof_Switches
+      --  attributes, for user consumption.
+
+      function Description_Name
+        (Switch : File_Specific_Switch_Id) return String;
+      --  Return the documented spelling of a file-specific switch
+
+      ----------------------
+      -- Description_Name --
+      ----------------------
+
+      function Description_Name
+        (Switch : File_Specific_Switch_Id) return String
+      is
+         Meta : constant Switch_Metadata := Switch_Definitions (Switch);
+      begin
+         pragma Assert (Meta.Long /= null or else Meta.Short /= null);
+         return
+           "'"
+           & (if Meta.Long /= null then Meta.Long.all else Meta.Short.all)
+           & "'";
+      end Description_Name;
+
+      -------------------------------
+      -- File_Specific_Switch_List --
+      -------------------------------
+
+      function File_Specific_Switch_List return String is
+         Buf   : Unbounded_String := Null_Unbounded_String;
+         First : Boolean := True;
+      begin
+         for Switch in File_Specific_Switch_Id loop
+            if not First then
+               Append (Buf, ", ");
+            end if;
+            Append (Buf, Description_Name (Switch));
+            First := False;
+         end loop;
+         return To_String (Buf);
+      end File_Specific_Switch_List;
+
    begin
       Project.Registry.Pack.Add (+"Prove", Project.Registry.Pack.Everywhere);
       Project.Registry.Pack.Description.Set_Package_Description
@@ -3216,9 +4128,8 @@ package body Configuration is
         (Q_Attribute_Id'(+"Prove", +"Proof_Switches"),
          "Defines additional command line switches that are used for the "
          & "invocation of GNATprove. Only the following switches are "
-         & "allowed for file-specific switches: '--steps', '--timeout', "
-         & "'--memlimit', '--proof', '--prover', '--level', '--mode', "
-         & "'--counterexamples', '--no-inlining', '--no-loop-unrolling'");
+         & "allowed for file-specific switches: "
+         & File_Specific_Switch_List);
       Project.Registry.Attribute.Add
         (Q_Attribute_Id'(+"Prove", +"Proof_Dir"),
          Index_Type           => Project.Registry.Attribute.No_Index,
@@ -3269,17 +4180,17 @@ package body Configuration is
 
       Args          : String_Lists.List;
       Why3_VF       : constant Virtual_File :=
-        (if CL_Switches.Why3_Conf.all /= ""
-         then Create (Filesystem_String (CL_Switches.Why3_Conf.all))
+        (if Why3_Conf.all /= ""
+         then Create (Filesystem_String (Why3_Conf.all))
          else No_File);
       Gnatwhy3_Conf : constant String :=
         (if Why3_VF /= No_File
          then
            (if Is_Absolute_Path (Why3_VF)
-            then CL_Switches.Why3_Conf.all
+            then Why3_Conf.all
             else
               Ada.Directories.Compose
-                (+Get_Current_Dir.Full_Name, CL_Switches.Why3_Conf.all))
+                (+Get_Current_Dir.Full_Name, Why3_Conf.all))
          else "");
 
       -------------------------
@@ -3318,7 +4229,7 @@ package body Configuration is
       begin
          --  Use the Obj_Dir of gnat2why which already is "/.../gnatprove"
          Ada.Directories.Set_Directory (Obj_Dir);
-         if Verbose then
+         if Verbosity = Verbose_Level then
             Ada.Text_IO.Put
               ("Changing to object directory: """ & Obj_Dir & """");
             Ada.Text_IO.New_Line;
@@ -3332,7 +4243,7 @@ package body Configuration is
            (Program_Name => Gnatwhy3, Args => Args, Success => Res);
          Free (Args);
          Ada.Directories.Set_Directory (Old_Dir);
-         if Verbose then
+         if Verbosity = Verbose_Level then
             Ada.Text_IO.Put
               ("Changing back to directory: """ & Old_Dir & """");
             Ada.Text_IO.New_Line;
@@ -3393,7 +4304,7 @@ package body Configuration is
          Args.Append ("--debug");
       end if;
 
-      if CL_Switches.Debug_Save_VCs then
+      if Debug_Save_VCs then
          Args.Append ("--debug-save-vcs");
       end if;
 
@@ -3405,7 +4316,7 @@ package body Configuration is
          Args.Append ("--prove-all");
       end if;
 
-      if CL_Switches.Replay then
+      if Replay then
          Args.Append ("--replay");
       end if;
 
@@ -3445,9 +4356,9 @@ package body Configuration is
          Args.Append (Gnatwhy3_Conf);
       end if;
 
-      if CL_Switches.Why3_Debug.all /= "" then
+      if Why3_Debug.all /= "" then
          Args.Append ("--debug-why3");
-         Args.Append (CL_Switches.Why3_Debug.all);
+         Args.Append (Why3_Debug.all);
       end if;
 
       Args.Append ("--counterexample");
@@ -3465,7 +4376,7 @@ package body Configuration is
          end if;
       end if;
 
-      if CL_Switches.Z3_Counterexample then
+      if Z3_Counterexample then
          Args.Append ("--ce-prover");
          Args.Append ("z3_ce");
       end if;
@@ -3482,11 +4393,11 @@ package body Configuration is
          Args.Append (Image (FS.Proof_Warn_Timeout, 1));
       end if;
 
-      if CL_Switches.Debug_Prover_Errors then
+      if Debug_Prover_Errors then
          Args.Append ("--debug-prover-errors");
       end if;
 
-      if CL_Switches.Why3_Logging then
+      if Why3_Logging then
          Args.Append ("--logging");
       end if;
 

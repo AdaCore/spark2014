@@ -38,28 +38,26 @@ subsections explain the main steps performed by gnatprove.
 Parsing the Command Line
 ========================
 
-gnatprove needs to parse the project file to be able to fully interpret
-switches, because the project file may also contain extra switches to
-be passed to gnatprove. But some command line switches influence the
-way the project is parsed. To break out of this circular dependency,
-the command line is parsed several times:
+Gnatprove command-line parsing is complex because projects (including
+withed projects) may contain the ``Prove.Switches`` attribute (legacy) or
+``Prove.Proof_Switches``. To make things worse, command-line switches can
+influence project parsing. It is therefore done in multiple steps.
 
- - Once only the actual command line (as in ``Ada.Command_Line``) is
-   parsed for some switches that would terminate immediately such as
-   ``--clean`` and ``--version``, and for switches that influence
-   project parsing such as the ``-X`` switches and ``-aP``.
- - Then the actual command line is concatenated with the extra switches
-   in the project file (if any), and the result is parsed again, now
-   looking at all switches.
- - The previous step is repeated for all file-specific switches specified in
-   the project file.
+The first step separates -cargs, handles all switches that cause gnatprove
+to terminate immediately, such as ``--clean`` and ``--version``, and all
+project-relevant switches (these are taken from GPR library). This phase
+only passes the unhandled switches to the next phases. This phase uses
+GNATCOLL.Opt_Parse to be able to reuse the GPR library switch definitions.
 
-Inside ``configuration.adb``, there is a package ``CL_Switches`` that
-represents command line switches (via command line or project file),
-and there is a separate list of variables that represents synthesized
-variables. For example, the timeout that will eventually be used by
-gnatprove is synthesized from various command line switches, including
-the ``--timeout`` switch.
+The next phase parses the command-line and the root project's switch attributes
+into records which are then merged according to precedence rules. This phase
+establishes "invocation-level" settings (That influence the behavior of the
+whole run), but also establishes data that will then be used for file-specific
+switches as well.
+
+Then, the switches attributes of the entire project tree are parsed
+into records, and merged according to precedence rules, to establish the
+"file-specific" switches, which can be specified on a per-file basis.
 
 .. _Generating Globals:
 
@@ -91,7 +89,9 @@ relevant work:
 
 These actions are connected by their file dependencies, so incremental
 re-execution is handled by the build engine rather than by a separate external
-builder process.
+builder process. In addition to the traditional ALI output of
+global-generation actions, these actions now also register a
+``.spark_error`` output file that is used later during report generation.
 
 Generating data representation information
 ==========================================
@@ -119,13 +119,19 @@ the reading and writing of that file.
 The switch ``Global_Gen_Mode`` dictates if gnat2why is in global-generation
 mode or in analysis mode.
 
-Copying ALI files
-=================
+Copying ALI files and phase-1 diagnostics
+=========================================
 
 Analysis actions consume ALI files produced by global-generation actions. For
 library projects, the global-generation action also takes care of copying the
 generated ALI file to the library ALI directory when needed, so the build
 action itself is responsible for making these files available to later work.
+
+Each global-generation action also produces a ``.spark_error`` file. This file
+contains the frontend warnings and errors collected during phase 1, and it is
+written even when compilation errors prevent later analysis from running. This
+extra artifact is what allows report generation to include frontend diagnostics
+in SARIF for early-exit runs.
 
 Translating to Why
 ==================
@@ -139,7 +145,8 @@ Generating the SPARK report
 ===========================
 
 Once the build actions have finished, ``gnatprove`` generates reports from the
-``.spark`` files that were produced during analysis. The textual summary is
+``.spark`` files that were produced during analysis and the ``.spark_error``
+files that were produced during global generation. The textual summary is
 written to ``gnatprove.out`` and a SARIF report is also generated in
 ``gnatprove.sarif``.
 
@@ -174,6 +181,12 @@ In addition to the compiler-like output of gnat2why on standard
 output, gnat2why produces a machine-parsable output in .spark files
 (if the SPARK input unit is e.g. ``main.adb``, the corresponding
 machine-parsable output is ``main.spark``).
+
+When invoked in global-generation mode, ``gnat2why`` also produces a
+``.spark_error`` JSON file. This file stores the frontend diagnostics gathered
+in phase 1. If compilation errors are detected during global generation,
+``gnat2why`` writes the ``.spark_error`` file and returns without continuing
+to the later tree-processing steps.
 
 ********************************
 gnatwhy3, why3server and provers
@@ -242,8 +255,16 @@ Report Generation
 *****************
 
 Report generation happens after analysis, inside ``gnatprove``. It reads the
-``.spark`` files produced by the analysis actions and aggregates them into the
-user-visible outputs.
+``.spark`` files produced by the analysis actions together with the
+``.spark_error`` files produced by global-generation actions, and aggregates
+them into the user-visible outputs.
+
+The ``.spark`` files remain the main source of flow and proof diagnostics.
+The ``.spark_error`` files are used to carry frontend diagnostics that are
+already known in phase 1, especially in runs that stop before analysis because
+of compilation errors. When a ``.spark`` file exists for a unit, the
+corresponding ``.spark_error`` file is expected to be empty so that diagnostics
+are not duplicated.
 
 At present, the main outputs are:
 

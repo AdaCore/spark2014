@@ -1,0 +1,4 @@
+main.adb:9:07: error: "X" conflicts with declaration at line 8
+main.adb:13:04: error: constant declaration requires initialization expression
+main.adb:22:29: error: "B" is undefined
+gnatprove: error during flow analysis and proof

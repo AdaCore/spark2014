@@ -1,0 +1,7 @@
+project Sub is
+   for Source_Dirs use (".");
+
+   package Prove is
+      for Proof_Switches ("Ada") use ("--report=all");
+   end Prove;
+end Sub;

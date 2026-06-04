@@ -98,11 +98,12 @@ package body Why.Gen.Pointers is
    --  for which a completion module has been declared.
 
    type Borrow_Info is record
-      Borrowed_Entity : Entity_Id;
-      Borrowed_Expr   : Node_Id;
-      Borrowed_Ty     : Entity_Id;
-      Borrowed_At_End : W_Identifier_Id;
-      Brower_At_End   : W_Identifier_Id;
+      Borrowed_Entity   : Entity_Id;
+      Borrowed_Expr     : Node_Id;
+      Borrowed_Ty       : Entity_Id;
+      Borrowed_Is_Deref : Boolean;
+      Borrowed_At_End   : W_Identifier_Id;
+      Brower_At_End     : W_Identifier_Id;
    end record;
    --  We store for each borrower,
    --   * the root borrowed object in Borrowed_Entity,
@@ -111,6 +112,8 @@ package body Why.Gen.Pointers is
    --     the type of the first borrow in the expression. It might not be the
    --     type of Borrowed_Expr (usually Borrowed_Expr has a named type while
    --     Borrowed_Ty is an anonymous type) but they are compatible.
+   --   * whether Borrowed_Expr should be considered to borrow the designated
+   --     value rather than the whole pointer entity.
    --   * the name of the constant storing the borrowed expression at the end
    --     of the borrow in Borrowed_At_End. It has type Borrowed_Ty.
    --   * the name of the reference holding the value of the borrower at the
@@ -1192,11 +1195,13 @@ package body Why.Gen.Pointers is
       Borrow_Infos.Insert
         (E,
          Borrow_Info'
-           (Borrowed_Entity => Borrowed_Entity,
-            Borrowed_Expr   => Borrowed_Entity,
-            Borrowed_Ty     => Ty,
-            Borrowed_At_End => Borrowed_Id,
-            Brower_At_End   => Brower_Id));
+           (Borrowed_Entity   => Borrowed_Entity,
+            Borrowed_Expr     => Borrowed_Entity,
+            Borrowed_Ty       => Ty,
+            Borrowed_Is_Deref =>
+              not Is_Aliased (Borrowed_Entity) and then Is_Access_Type (Ty),
+            Borrowed_At_End   => Borrowed_Id,
+            Brower_At_End     => Brower_Id));
    end Declare_At_End_Function;
 
    ------------------------
@@ -1204,9 +1209,10 @@ package body Why.Gen.Pointers is
    ------------------------
 
    procedure Declare_At_End_Ref (Th : Theory_UC; E : Entity_Id) is
-      Borrowed_Expr   : Node_Id;
-      Borrowed_Ty     : Entity_Id := Etype (E);
-      Borrowed_Entity : Entity_Id;
+      Borrowed_Expr     : Node_Id;
+      Borrowed_Ty       : Entity_Id := Etype (E);
+      Borrowed_Entity   : Entity_Id;
+      Borrowed_Is_Deref : Boolean;
 
    begin
       --  Find the borrowed initial expression and type.
@@ -1217,17 +1223,10 @@ package body Why.Gen.Pointers is
       --  function).
 
       Get_Observed_Or_Borrowed_Info
-        (Expression (Enclosing_Declaration (E)), Borrowed_Expr, Borrowed_Ty);
-
-      --  In case of an access attribute, the borrowed expression is the
-      --  prefix.
-
-      if Nkind (Borrowed_Expr) = N_Attribute_Reference
-        and then Attribute_Name (Borrowed_Expr) = Name_Access
-      then
-         Borrowed_Expr := Prefix (Borrowed_Expr);
-         Borrowed_Ty := Etype (Borrowed_Expr);
-      end if;
+        (Expression (Enclosing_Declaration (E)),
+         Borrowed_Expr,
+         Borrowed_Ty,
+         Borrowed_Is_Deref);
 
       --  For constant borrowers, the whole object can be considered to be
       --  borrowed as it really is a part of the borrowed parameter of a
@@ -1319,11 +1318,12 @@ package body Why.Gen.Pointers is
          Borrow_Infos.Insert
            (E,
             Borrow_Info'
-              (Borrowed_Entity => Borrowed_Entity,
-               Borrowed_Expr   => Borrowed_Expr,
-               Borrowed_Ty     => Borrowed_Ty,
-               Borrowed_At_End => Borrowed_Id,
-               Brower_At_End   => Brower_Id));
+              (Borrowed_Entity   => Borrowed_Entity,
+               Borrowed_Expr     => Borrowed_Expr,
+               Borrowed_Ty       => Borrowed_Ty,
+               Borrowed_Is_Deref => Borrowed_Is_Deref,
+               Borrowed_At_End   => Borrowed_Id,
+               Brower_At_End     => Brower_Id));
       end;
    end Declare_At_End_Ref;
 
@@ -1818,6 +1818,13 @@ package body Why.Gen.Pointers is
 
    function Get_Borrowed_At_End (E : Entity_Id) return W_Identifier_Id
    is (Borrow_Infos (E).Borrowed_At_End);
+
+   ---------------------------
+   -- Get_Borrowed_Is_Deref --
+   ---------------------------
+
+   function Get_Borrowed_Is_Deref (E : Entity_Id) return Boolean
+   is (Borrow_Infos (E).Borrowed_Is_Deref);
 
    -------------------------
    -- Get_Borrowed_Entity --

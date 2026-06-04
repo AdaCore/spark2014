@@ -267,6 +267,7 @@ package body SPARK_Register is
 
             begin
                if Has_Aspect (E, Aspect_Iterable) then
+                  Register_Iterable_Primitive (E, Name_Constant_Reference);
                   Register_Iterable_Primitive (E, Name_Element);
                   Register_Iterable_Primitive (E, Name_First);
                   Register_Iterable_Primitive (E, Name_Has_Element);

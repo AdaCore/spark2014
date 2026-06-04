@@ -139,6 +139,22 @@ class SortRefiner(OutputRefiner):
         return sorted_lines
 
 
+class DirectorySeparatorRefiner(OutputRefiner):
+    """
+    Converts backslashes to forward slashes in the output
+
+    This refiner is needed if there exist relative paths in the output other
+    than the current test directory. It is expected that the test driver has
+    already removed the latter from the path prefix. So, the only additional
+    refinement needed is to replace remaining directory separators. However,
+    for simplicity and generality the replacement is done for all backslashes
+    in the output. There is no attempt to guess what could be a path or not.
+    """
+
+    def refine(self, lines: list[str]) -> list[str]:
+        return [line.replace("\\", "/") for line in lines]
+
+
 class SparkLibFilterRefiner(OutputRefiner):
     """Filters out SPARKlib-related output lines."""
 
@@ -1152,7 +1168,7 @@ def gprbuild(opt=None, sort_lines=True, cwd=None, logger=None):
     # Recognize the error markers for gprbuild 1 and gprbuild 2
     # and replace them with single message.
     error_found = False
-    if " phase failed" in lines[-1] or " failed with status" in lines[-1]:
+    if " phase failed" in lines[-1] or " failed." in lines[-1]:
         error_found = True
         lines = lines[:-1]
 

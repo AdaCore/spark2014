@@ -115,15 +115,29 @@ help distinguish between the two cases:
 
 .. index:: --info; investigate unproved checks
 
-When using switch ``--info``, |GNATprove| issues information messages regarding
-internal decisions that could influence provability:
+|GNATprove| issues information messages regarding internal decisions
+that could influence provability:
 
 * whether candidate loops for :ref:`Automatic Unrolling of Simple For-Loops`
-  are effectively unrolled or not;
+  were unrolled;
 * whether candidate subprograms for :ref:`Contextual Analysis of Subprograms
-  Without Contracts` are effectively inlined for proof or not;
+  Without Contracts` were inlined for proof;
 * whether possible subprogram nontermination impacts the proof of calls to that
   subprogram (see the note in the section on :ref:`Subprogram Termination`)
+
+By default, information messages are issued only when |GNATprove|
+unrolls a loop or inlines a subprogram. When using switch ``--info``, or
+activating explicitly such messages via the ``unrolling-inlining-failures``
+message category, |GNATprove| also issues an information message regarding
+unsuccessful attempts at loop unrolling and contextual analysis:
+
+* that candidate loops for :ref:`Automatic Unrolling of Simple For-Loops`
+  cannot be unrolled, with the reason why;
+* that candidate subprograms for :ref:`Contextual Analysis of Subprograms
+  Without Contracts` cannot be analyzed contextually, with the reason why.
+
+The positive information messages are controlled by category
+``info-unrolling-inlining``.
 
 .. index:: --level; investigate unproved checks
 

@@ -475,6 +475,7 @@ package VC_Kinds is
       Warn_Predef_Eq_Null,
       Warn_Init_Cond_Ignored,
       Warn_Unit_Not_SPARK,
+      Warn_Unrolling_Inlining_Failures,
 
       --  Info messages enabled by default
       Warn_Info_Unrolling_Inlining);
@@ -586,6 +587,9 @@ package VC_Kinds is
       Vio_Aggregate_Side_Effects,
       Vio_Aggregate_Volatile,
       Vio_Assert_And_Cut_Context,
+      Vio_At_Attribute_Allocation,
+      Vio_At_Attribute_Assert_And_Cut,
+      Vio_At_Attribute_Loop_Invariant,
       Vio_Backward_Goto,
       Vio_Box_Notation_Without_Init,
       Vio_Code_Statement,
@@ -604,6 +608,7 @@ package VC_Kinds is
       Vio_Ghost_Concurrent_Comp,
       Vio_Ghost_Volatile,
       Vio_Handler_Choice_Parameter,
+      Vio_Intrinsic_Operator,
       Vio_Invariant_Class,
       Vio_Invariant_Ext,
       Vio_Invariant_Partial,
@@ -858,7 +863,8 @@ package VC_Kinds is
    --  "--pedantic" switch
 
    subtype Info_Warning_Kind is
-     Misc_Warning_Kind range Warn_Comp_Relaxed_Init .. Warn_Unit_Not_SPARK;
+     Misc_Warning_Kind
+       range Warn_Comp_Relaxed_Init .. Warn_Unrolling_Inlining_Failures;
    --  These warnings are disabled by default and enabled collectively by
    --  "--info" switch
 
@@ -893,11 +899,18 @@ package VC_Kinds is
 
    --  Warning enabling/disabling mechanism
 
-   type Warning_Enabled_Status is (WS_Enabled, WS_Disabled, WS_Error);
+   type Opt_Warning_Enabled_Status is
+     (WS_None, WS_Enabled, WS_Disabled, WS_Error);
+   subtype Warning_Enabled_Status is
+     Opt_Warning_Enabled_Status range WS_Enabled .. WS_Error;
    --  A warning can be enabled, disabled or promoted to an error
 
    type Warning_Status_Array is
      array (Misc_Warning_Kind) of Warning_Enabled_Status;
+
+   type Opt_Warning_Status_Array is
+     array (Misc_Warning_Kind) of Opt_Warning_Enabled_Status;
+   --  This array type which allows for absent values is used during parsing
 
    function From_Tag (Tag : String) return Misc_Warning_Kind;
    --  Compute the warning kind from a string. Raise Constraint_Error if the
@@ -1083,6 +1096,8 @@ package VC_Kinds is
            & "relaxed initialization are enforced to always be initialized",
          when Warn_Predef_Eq_Null                             =>
            "no null value found for type with predefined equality &",
+         when Warn_Unrolling_Inlining_Failures                =>
+           "the tool could not unroll a loop or perform contextual analysis",
 
          --  info messages enabled by default
          when Warn_Info_Unrolling_Inlining                    =>
@@ -1535,7 +1550,8 @@ package VC_Kinds is
       EC_Ghost_Volatile,
       EC_Handler_Choice_Parameter,
       EC_Overlay_Mutable_Constant,
-      EC_UC_From_Access);
+      EC_UC_From_Access,
+      EC_Intrinsic_Operator);
    for Explain_Code_Kind use
      (EC_None                                 => 0,
       EC_Volatile_At_Library_Level            => 1,
@@ -1564,7 +1580,8 @@ package VC_Kinds is
       EC_Ghost_Volatile                       => 24,
       EC_Handler_Choice_Parameter             => 25,
       EC_Overlay_Mutable_Constant             => 26,
-      EC_UC_From_Access                       => 27);
+      EC_UC_From_Access                       => 27,
+      EC_Intrinsic_Operator                   => 33);
 
    function To_String (Code : Explain_Code_Kind) return String
    with Pre => Code /= EC_None;
@@ -1670,6 +1687,9 @@ package VC_Kinds is
 
    SPARK_Suffix : constant String := "spark";
    --  Extension of the files where spark_report expects gnat2why results
+
+   SPARK_Error_Suffix : constant String := "spark_error";
+   --  Extension of files where phase 1 writes frontend diagnostics
 
    type SPARK_Mode_Status is
      (All_In_SPARK,       --  Spec (and if applicable, body) are in SPARK

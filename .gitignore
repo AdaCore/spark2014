@@ -36,6 +36,8 @@ GNAT-*
 /include
 /spark2014vsn.ads.stderr
 /spark2014vsn.ads.stdout
+/.claude/skills/
+/.agents/skills/
 
 # Artifacts generated when running GNAT SAS on SPARK sources or reviewing GNAT
 # SAS messages

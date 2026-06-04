@@ -879,6 +879,16 @@ package body Gnat2Why.Borrow_Checker is
    procedure Handle_Globals (Subp : Entity_Id; Loc : Node_Id);
    --  Handling of globals is factored in a generic instantiated below
 
+   procedure Handle_Borrow_Or_Observe
+     (Map : in out Variable_Mapping; Var : Entity_Id; Expr : Node_Id);
+   --  Update Map with a new borrow or observe Var := Expr
+
+   procedure Handle_Borrow (Var : Entity_Id; Expr : Node_Id);
+   --  Update map of current borrowers
+
+   procedure Handle_Observe (Var : Entity_Id; Expr : Node_Id);
+   --  Update map of current observers
+
    function Has_Array_Component (Expr : Node_Id) return Boolean
    with Pre => Is_Path_Expression (Expr);
    --  This function gets a node and looks recursively to determine whether the
@@ -1204,6 +1214,52 @@ package body Gnat2Why.Borrow_Checker is
 
    end Object_Scope;
 
+   -------------------
+   -- Handle_Borrow --
+   -------------------
+
+   procedure Handle_Borrow (Var : Entity_Id; Expr : Node_Id) is
+   begin
+      Handle_Borrow_Or_Observe (Current_Borrowers, Var, Expr);
+   end Handle_Borrow;
+
+   ------------------------------
+   -- Handle_Borrow_Or_Observe --
+   ------------------------------
+
+   procedure Handle_Borrow_Or_Observe
+     (Map : in out Variable_Mapping; Var : Entity_Id; Expr : Node_Id)
+   is
+      Borrowed     : Node_Id;
+      Borrowed_Bag : Node_Vectors.Vector;
+
+   begin
+      for Dep_Path of Terminal_Alternatives (Expr) loop
+         Borrowed := Get_Observed_Or_Borrowed_Expr (Dep_Path);
+
+         --  When doing a borrowing like
+         --  A : access * := Y.F; -- access-typed field,
+         --  we should be borrowing the value designated by Y.F, but
+         --  borrow the whole field instead. This mean we may
+         --  over-borrow. This can result in extra null tests (like
+         --  Y.F = null) to be rejected. However, since Y.F.all
+         --  is not readable in such circumstances, it is unlikely that
+         --  there is a valid use case.
+
+         Borrowed_Bag.Append (Borrowed);
+      end loop;
+      Set (Map, Var, Borrowed_Bag);
+   end Handle_Borrow_Or_Observe;
+
+   --------------------
+   -- Handle_Observe --
+   --------------------
+
+   procedure Handle_Observe (Var : Entity_Id; Expr : Node_Id) is
+   begin
+      Handle_Borrow_Or_Observe (Current_Observers, Var, Expr);
+   end Handle_Observe;
+
    --------------------
    -- Handle_Globals --
    --------------------
@@ -1351,16 +1407,6 @@ package body Gnat2Why.Borrow_Checker is
       --  Check that move or borrow of Expr_Root into Target_Root does not
       --  violate the rule wrt ghost having no effect on non-ghost.
 
-      procedure Handle_Borrow_Or_Observe
-        (Map : in out Variable_Mapping; Var : Entity_Id; Expr : Node_Id);
-      --  Update Map with a new borrow or observe Var := Expr
-
-      procedure Handle_Borrow (Var : Entity_Id; Expr : Node_Id);
-      --  Update map of current borrowers
-
-      procedure Handle_Observe (Var : Entity_Id; Expr : Node_Id);
-      --  Update map of current observers
-
       -------------------------------
       -- Check_Assignment_To_Ghost --
       -------------------------------
@@ -1429,56 +1475,6 @@ package body Gnat2Why.Borrow_Checker is
          end if;
       end Check_Assignment_To_Ghost;
 
-      -------------------
-      -- Handle_Borrow --
-      -------------------
-
-      procedure Handle_Borrow (Var : Entity_Id; Expr : Node_Id) is
-      begin
-         Handle_Borrow_Or_Observe (Current_Borrowers, Var, Expr);
-      end Handle_Borrow;
-
-      ------------------------------
-      -- Handle_Borrow_Or_Observe --
-      ------------------------------
-
-      procedure Handle_Borrow_Or_Observe
-        (Map : in out Variable_Mapping; Var : Entity_Id; Expr : Node_Id)
-      is
-         Borrowed     : Node_Id;
-         Borrowed_Bag : Node_Vectors.Vector;
-
-      begin
-         --  Insert in Map if we are in a declaration
-
-         if Is_Decl then
-            for Dep_Path of Terminal_Alternatives (Expr) loop
-               Borrowed := Get_Observed_Or_Borrowed_Expr (Dep_Path);
-
-               --  Path'Access borrows/observes Path
-
-               if Nkind (Borrowed) = N_Attribute_Reference
-                 and then Attribute_Name (Borrowed) = Name_Access
-               then
-                  Borrowed := Prefix (Borrowed);
-               end if;
-               Borrowed_Bag.Append (Borrowed);
-            end loop;
-            Set (Map, Var, Borrowed_Bag);
-         else
-            pragma Assert (Get_Root_Object (Expr) = Var);
-         end if;
-      end Handle_Borrow_Or_Observe;
-
-      --------------------
-      -- Handle_Observe --
-      --------------------
-
-      procedure Handle_Observe (Var : Entity_Id; Expr : Node_Id) is
-      begin
-         Handle_Borrow_Or_Observe (Current_Observers, Var, Expr);
-      end Handle_Observe;
-
       --  Local variables
 
       Target_Typ  : constant Entity_Id := Etype (Target);
@@ -1507,7 +1503,8 @@ package body Gnat2Why.Borrow_Checker is
 
             --  Check that the root of the initial expression is not an overlay
 
-            if Present (Overlaid_Entity (Expr_Root))
+            if not Is_Prophecy_Save (Target_Root)
+              and then Present (Overlaid_Entity (Expr_Root))
               and then not Is_Constant_In_SPARK (Expr_Root)
             then
                declare
@@ -1568,7 +1565,9 @@ package body Gnat2Why.Borrow_Checker is
                    Is_Entity_Name (Target) and then Target_Root = Expr_Root);
 
             Check_Expression (Expr, Observe);
-            Handle_Observe (Target_Root, Expr);
+            if Is_Decl then
+               Handle_Observe (Target_Root, Expr);
+            end if;
 
          --  If the type of the target is an anonymous access-to-variable
          --  type (an owning access type), the source shall be an owning
@@ -1587,7 +1586,9 @@ package body Gnat2Why.Borrow_Checker is
 
             Check_Expression (Expr, Borrow);
             Check_Assignment_To_Ghost (Target_Root, Expr_Root, Borrow);
-            Handle_Borrow (Target_Root, Expr);
+            if Is_Decl then
+               Handle_Borrow (Target_Root, Expr);
+            end if;
          end if;
 
       elsif Is_Deep (Target_Typ) then
@@ -2266,9 +2267,12 @@ package body Gnat2Why.Borrow_Checker is
          Vars   : Flow_Id_Sets.Set := Get_Variables_For_Proof (Expr, Expr);
 
       begin
-         --  Special case, 'Loop_Entry is only allowed on local borrowers
+         --  Special case, 'Loop_Entry and 'At are only allowed on local
+         --  borrowers.
 
-         if Is_Attribute_Loop_Entry (Actual) then
+         if Nkind (Actual) = N_Attribute_Reference
+           and then Attribute_Name (Actual) in Name_Loop_Entry | Name_At
+         then
             return;
          end if;
 
@@ -2564,7 +2568,8 @@ package body Gnat2Why.Borrow_Checker is
                pragma
                  Assert
                    (Get_Attribute_Id (Attribute_Name (Expr))
-                    in Attribute_Loop_Entry
+                    in Attribute_At
+                     | Attribute_Loop_Entry
                      | Attribute_Update
                      | Attribute_Image
                      | Attribute_Img
@@ -2573,11 +2578,16 @@ package body Gnat2Why.Borrow_Checker is
                      | Attribute_Length
                      | Attribute_Access);
 
-               if Get_Attribute_Id (Attribute_Name (Expr))
-                  in Attribute_First
-                   | Attribute_Last
-                   | Attribute_Length
-                   | Attribute_Access
+               --  References to at should not be checked in the current
+               --  context.
+
+               if Get_Attribute_Id (Attribute_Name (Expr)) = Attribute_At then
+                  null;
+               elsif Get_Attribute_Id (Attribute_Name (Expr))
+                     in Attribute_First
+                      | Attribute_Last
+                      | Attribute_Length
+                      | Attribute_Access
                then
                   Read_Indexes (Prefix (Expr));
                else
@@ -2781,10 +2791,11 @@ package body Gnat2Why.Borrow_Checker is
                      null;
 
                   --  Postconditions should not be analyzed. Attributes Update,
-                  --  Old and Loop_Entry correspond to paths which are handled
-                  --  previously.
+                  --  At, Old, and Loop_Entry correspond to paths which are
+                  --  handled previously.
 
-                  when Attribute_Loop_Entry
+                  when Attribute_At
+                     | Attribute_Loop_Entry
                      | Attribute_Old
                      | Attribute_Result
                      | Attribute_Update                         =>
@@ -3421,6 +3432,10 @@ package body Gnat2Why.Borrow_Checker is
       Loop_Name : constant Entity_Id := Entity (Identifier (Stmt));
       Loop_Env  : Perm_Env;
       Scheme    : constant Node_Id := Iteration_Scheme (Stmt);
+      Observer  : Entity_Id := Empty;
+      --  Some FOR loops implicitly introduce an observer. Thid variable is
+      --  introduced so that it can be removed from the set of observers at the
+      --  end of the loop.
 
    begin
       Object_Scope.Push_Scope;
@@ -3434,7 +3449,7 @@ package body Gnat2Why.Borrow_Checker is
       pragma Assert (Get (Current_Exit_Accumulators, Loop_Name) = null);
       pragma Assert (Get (Current_Continue_Accumulators, Loop_Name) = null);
 
-      if Present (Iteration_Scheme (Stmt)) then
+      if Present (Scheme) then
          declare
             Exit_Env : constant Perm_Env_Access := new Perm_Env;
 
@@ -3485,6 +3500,27 @@ package body Gnat2Why.Borrow_Checker is
                   if Present (Iterator_Filter (Iter_Spec)) then
                      Check_Expression (Iterator_Filter (Iter_Spec), Read);
                   end if;
+
+                  --  For FOR loops using Constant_Reference, the loop index
+                  --  is an observer of the container over which we iterate.
+                  --  Store it inside Observer so it can be removed at the end
+                  --  of the loop.
+
+                  if not Is_Iterator_Over_Array (Iter_Spec)
+                    and then Of_Present (Iter_Spec)
+                    and then
+                      Present
+                        (Get_Iterable_Type_Primitive
+                           (Etype
+                              (Get_Container_In_Iterator_Specification
+                                 (Iter_Spec)),
+                            Name_Constant_Reference))
+                  then
+                     Observer := Loop_Index;
+                     Handle_Observe
+                       (Loop_Index,
+                        Get_Container_In_Iterator_Specification (Iter_Spec));
+                  end if;
                end if;
 
             end;
@@ -3506,6 +3542,12 @@ package body Gnat2Why.Borrow_Checker is
       Check_Is_Less_Restrictive_Env
         (Exiting_Env => Current_Perm_Env, Entry_Env => Loop_Env);
       Free_Env (Loop_Env);
+
+      --  Release the observer if it was introduced
+
+      if Present (Observer) then
+         Remove (Current_Observers, Observer);
+      end if;
 
       --  Set environment to the one for exiting the loop
 
@@ -3633,9 +3675,15 @@ package body Gnat2Why.Borrow_Checker is
 
          --  When a goto label is reached, we merge the accumulated
          --  environment coming from goto statements mentioning this label in
-         --  the current environment.
+         --  the current environment. We also check that the prefixed of all
+         --  references to 'At mentioning the label can be read.
 
          when N_Label                                                     =>
+            for Expr of Get_At_Attributes_For_Label (Entity (Identifier (N)))
+            loop
+               Check_Expression (Prefix (Expr), Read);
+            end loop;
+
             Merge_Transfer_Of_Control_Env
               (Current_Goto_Accumulators, Entity (Identifier (N)));
 
@@ -5320,43 +5368,84 @@ package body Gnat2Why.Borrow_Checker is
       function Get_Expr_Array (Expr : Node_Id) return Expr_Array
       with Pre => Is_Path_Expression (Expr);
       --  Return the sequence of expressions that make up a path, excluding
-      --  slices.
+      --  slices, and with consecutive occurrences of (.all, 'Access)
+      --  cancelled out. Also excludes the top-level 'Access if present and
+      --  not already cancelled out. Note that such 'Access would necessarily
+      --  design an aliased object or field.
 
       --------------------
       -- Get_Expr_Array --
       --------------------
 
       function Get_Expr_Array (Expr : Node_Id) return Expr_Array is
+
+         function Get_Expr_Array_Rec (Expr : Node_Id) return Expr_Array;
+         --  Recursive implementation of Get_Expr_Array, does not strip the
+         --  top-level 'Access.
+
+         ------------------------
+         -- Get_Expr_Array_Rec --
+         ------------------------
+
+         function Get_Expr_Array_Rec (Expr : Node_Id) return Expr_Array is
+         begin
+            case Nkind (Expr) is
+               when N_Expanded_Name | N_Identifier =>
+                  return Expr_Array'(1 => Entity (Expr));
+
+               when N_Slice                        =>
+                  return Get_Expr_Array_Rec (Prefix (Expr));
+
+               when N_Explicit_Dereference
+                  | N_Indexed_Component
+                  | N_Selected_Component
+                  | N_Attribute_Reference          =>
+
+                  --  Simplify _.all'Access and _'Access.all.
+
+                  declare
+                     function Cancel_Out (A, B : Node_Id) return Boolean
+                     is (Nkind (A) = N_Explicit_Dereference
+                         and then Nkind (B) = N_Attribute_Reference
+                         and then Attribute_Name (B) = Name_Access);
+                  begin
+                     if Cancel_Out (Expr, Prefix (Expr))
+                       or else Cancel_Out (Prefix (Expr), Expr)
+                     then
+                        return Get_Expr_Array_Rec (Prefix (Prefix (Expr)));
+                     else
+                        return Get_Expr_Array_Rec (Prefix (Expr)) & Expr;
+                     end if;
+                  end;
+
+               when N_Qualified_Expression
+                  | N_Type_Conversion
+                  | N_Unchecked_Type_Conversion    =>
+                  return Get_Expr_Array (Expression (Expr));
+
+               when N_Op_Ne | N_Op_Eq              =>
+                  if Nkind (Left_Opnd (Expr)) = N_Null then
+                     return Get_Expr_Array_Rec (Right_Opnd (Expr)) & Expr;
+                  else
+                     pragma Assert (Nkind (Right_Opnd (Expr)) = N_Null);
+                     return Get_Expr_Array_Rec (Left_Opnd (Expr)) & Expr;
+                  end if;
+
+               when others                         =>
+                  raise Program_Error;
+            end case;
+         end Get_Expr_Array_Rec;
+
+         EA : constant Expr_Array := Get_Expr_Array_Rec (Expr);
+         N  : constant Node_Id := EA (EA'Last);
       begin
-         case Nkind (Expr) is
-            when N_Expanded_Name | N_Identifier =>
-               return Expr_Array'(1 => Entity (Expr));
-
-            when N_Slice                        =>
-               return Get_Expr_Array (Prefix (Expr));
-
-            when N_Explicit_Dereference
-               | N_Indexed_Component
-               | N_Selected_Component
-               | N_Attribute_Reference          =>
-               return Get_Expr_Array (Prefix (Expr)) & Expr;
-
-            when N_Qualified_Expression
-               | N_Type_Conversion
-               | N_Unchecked_Type_Conversion    =>
-               return Get_Expr_Array (Expression (Expr));
-
-            when N_Op_Ne | N_Op_Eq              =>
-               if Nkind (Left_Opnd (Expr)) = N_Null then
-                  return Get_Expr_Array (Right_Opnd (Expr)) & Expr;
-               else
-                  pragma Assert (Nkind (Right_Opnd (Expr)) = N_Null);
-                  return Get_Expr_Array (Left_Opnd (Expr)) & Expr;
-               end if;
-
-            when others                         =>
-               raise Program_Error;
-         end case;
+         if Nkind (N) = N_Attribute_Reference
+           and then Attribute_Name (N) = Name_Access
+         then
+            return EA (EA'First .. (EA'Last - 1));
+         else
+            return EA;
+         end if;
       end Get_Expr_Array;
 
       --  Local variables
@@ -5395,7 +5484,9 @@ package body Gnat2Why.Borrow_Checker is
                when N_Op_Ne | N_Op_Eq | N_Attribute_Reference    =>
                   --  Prefix and Expr cannot be equality operators together,
                   --  nor attribute references together, as one or the other
-                  --  necessarily is a borrowed expression.
+                  --  necessarily is a borrowed expression. 'Access could
+                  --  have been an exception, but we made sure to remove it
+                  --  beforehand.
 
                   raise Program_Error;
 

@@ -29,6 +29,7 @@ with Einfo.Utils;             use Einfo.Utils;
 with Erroutc;
 with Gnat2Why_Args;
 with Gnat2Why_Opts;           use Gnat2Why_Opts;
+with Namet;                   use Namet;
 with Sinfo.Nodes;             use Sinfo.Nodes;
 with Sinfo.Utils;             use Sinfo.Utils;
 with Sinput;                  use Sinput;
@@ -102,8 +103,26 @@ package body Errout_Wrapper is
       Obj      : JSON_Result_Type;
       Msg_Id   : Message_Id := No_Message_Id)
    is
+      function Diagnostic_File return String;
+      --  Return the file name of the diagnostic
+
+      ---------------------
+      -- Diagnostic_File --
+      ---------------------
+
+      function Diagnostic_File return String is
+      begin
+         if Obj.Source_File /= No_Source_File then
+            return Get_Name_String (Reference_Name (Obj.Source_File));
+         else
+            return
+              Get_Name_String
+                (Reference_Name (Get_Source_File_Index (Obj.Span.Ptr)));
+         end if;
+      end Diagnostic_File;
+
       Value : constant JSON_Value := Create_Object;
-      File  : constant String := File_Name (Obj.Span.Ptr);
+      File  : constant String := Diagnostic_File;
       Line  : constant Natural :=
         Positive (Get_Logical_Line_Number (Obj.Span.Ptr));
       Col   : constant Natural := Positive (Get_Column_Number (Obj.Span.Ptr));
@@ -520,7 +539,7 @@ package body Errout_Wrapper is
          My_Conts.Append (Add_Default_Name (Msg, N));
       end loop;
       Result.Continuations := My_Conts;
-      if Error_Entry then
+      if Error_Entry and then not Gnat2Why_Args.Global_Gen_Mode then
          Add_Json_Msg (Warnings_Errors, Result);
       end if;
       Local_Print_Result (My_Msg, Kind, Continuations => My_Conts);
@@ -936,27 +955,29 @@ package body Errout_Wrapper is
       if not Suppressed then
          Error_Msg_N (Msg, N, Severity, First, My_Conts, False);
       end if;
-      declare
-         --  The message can be suppressed via the warning tags, or via pragma
-         --  Warnings (Off), check for the second way here.
-         Was_Suppressed : constant Boolean :=
-           Suppressed
-           or else Warning_Is_Suppressed (N, To_String (My_Msg.Msg));
-         Result         : constant JSON_Result_Type :=
-           JSON_Result_Type'
-             (Msg           => My_Msg,
-              Severity      => Severity,
-              Tag           => To_Unbounded_String (Kind_Name (Kind)),
-              Span          => To_Span (Sloc (N)),
-              Suppr         =>
-                (if Was_Suppressed
-                 then Suppressed_Warning
-                 else No_Suppressed_Message),
-              Continuations => My_Conts,
-              others        => <>);
-      begin
-         Add_Json_Msg (Warnings_Errors, Result);
-      end;
+      if not Gnat2Why_Args.Global_Gen_Mode then
+         declare
+            --  The message can be suppressed via the warning tags, or via
+            --  pragma Warnings (Off), check for the second way here.
+            Was_Suppressed : constant Boolean :=
+              Suppressed
+              or else Warning_Is_Suppressed (N, To_String (My_Msg.Msg));
+            Result         : constant JSON_Result_Type :=
+              JSON_Result_Type'
+                (Msg           => My_Msg,
+                 Severity      => Severity,
+                 Tag           => To_Unbounded_String (Kind_Name (Kind)),
+                 Span          => To_Span (Sloc (N)),
+                 Suppr         =>
+                   (if Was_Suppressed
+                    then Suppressed_Warning
+                    else No_Suppressed_Message),
+                 Continuations => My_Conts,
+                 others        => <>);
+         begin
+            Add_Json_Msg (Warnings_Errors, Result);
+         end;
+      end if;
    end Warning_Msg_N;
 
    function "&" (M : Message; S : String) return Message is
@@ -1037,6 +1058,7 @@ package body Errout_Wrapper is
                (Tag           => To_Unbounded_String ("GNAT"),
                 Severity      => Frontend_Severity (E),
                 Span          => Obj.Sptr,
+                Source_File   => Obj.Sfile,
                 Msg           => Create (Obj.Text.all),
                 Continuations => Conts,
                 others        => <>));

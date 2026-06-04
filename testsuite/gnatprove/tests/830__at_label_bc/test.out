@@ -1,0 +1,12 @@
+test_at_bc.adb:7:13: info: implicit aspect Always_Terminates on "Allocate" has been proved, subprogram will terminate
+test_at_bc.adb:12:04: warning: analyzing unreferenced procedure "Test_1" [unreferenced-procedure]
+test_at_bc.adb:12:14: warning: subprogram "Test_1" has no effect
+test_at_bc.adb:22:04: warning: analyzing unreferenced procedure "Test_2" [unreferenced-procedure]
+test_at_bc.adb:22:14: warning: subprogram "Test_2" has no effect
+test_at_bc.adb:24:07: info: initialization of "Y" proved
+test_at_bc.adb:30:14: error: dereference from "X" is not readable
+test_at_bc.adb:30:14: error: launch "gnatprove --explain=E0010" for more information
+test_at_bc.adb:30:14: error: object was moved at line 27 [E0010]
+test_at_bc.adb:33:04: warning: analyzing unreferenced procedure "Test_3" [unreferenced-procedure]
+test_at_bc.adb:33:14: warning: subprogram "Test_3" has no effect
+gnatprove: error during flow analysis and proof

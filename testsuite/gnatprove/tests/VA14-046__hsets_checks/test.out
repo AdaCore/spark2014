@@ -142,14 +142,14 @@ spark-containers-formal-unbounded_hashed_sets.ads:86:06: info: when reestablishi
 spark-containers-formal-unbounded_hashed_sets.ads:86:06: info: when reestablishing invariant on "Contains" at spark-containers-functional-sets.ads:99, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:156, in instantiation at test_hsets.ads:39
 spark-containers-formal-unbounded_hashed_sets.ads:86:06: info: when reestablishing invariant on "Length" at spark-containers-functional-sets.ads:124, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:156, in instantiation at test_hsets.ads:35
 spark-containers-formal-unbounded_hashed_sets.ads:86:06: info: when reestablishing invariant on "Length" at spark-containers-functional-sets.ads:124, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:156, in instantiation at test_hsets.ads:39
-spark-containers-formal-unbounded_hashed_sets.ads:550:13: info: during checks for quantification at spark-containers-formal-unbounded_hashed_sets.ads:77, in instantiation at test_hsets.ads:35
-spark-containers-formal-unbounded_hashed_sets.ads:550:13: info: during checks for quantification at spark-containers-formal-unbounded_hashed_sets.ads:77, in instantiation at test_hsets.ads:39
-spark-containers-formal-unbounded_hashed_sets.ads:550:13: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:35
-spark-containers-formal-unbounded_hashed_sets.ads:550:13: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:39
 spark-containers-formal-unbounded_hashed_sets.ads:569:35: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:35
 spark-containers-formal-unbounded_hashed_sets.ads:569:35: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:39
 spark-containers-formal-unbounded_hashed_sets.ads:592:16: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:35
 spark-containers-formal-unbounded_hashed_sets.ads:592:16: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:39
+spark-containers-formal-unbounded_hashed_sets.ads:607:13: info: during checks for quantification at spark-containers-formal-unbounded_hashed_sets.ads:77, in instantiation at test_hsets.ads:35
+spark-containers-formal-unbounded_hashed_sets.ads:607:13: info: during checks for quantification at spark-containers-formal-unbounded_hashed_sets.ads:77, in instantiation at test_hsets.ads:39
+spark-containers-formal-unbounded_hashed_sets.ads:607:13: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:35
+spark-containers-formal-unbounded_hashed_sets.ads:607:13: info: precondition proved (Z3: 1 VC), in instantiation at test_hsets.ads:39
 spark-containers-formal-unbounded_hashed_sets.ads:716:11: info: during checks for container aggregates at spark-containers-formal-unbounded_hashed_sets.ads:86, in instantiation at test_hsets.ads:35
 spark-containers-formal-unbounded_hashed_sets.ads:716:11: info: during checks for container aggregates at spark-containers-formal-unbounded_hashed_sets.ads:86, in instantiation at test_hsets.ads:39
 spark-containers-formal-unbounded_hashed_sets.ads:716:11: info: precondition proved (Z3: 2 VC), in instantiation at test_hsets.ads:35

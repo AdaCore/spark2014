@@ -93,88 +93,28 @@ package Configuration is
       Benchmark             : aliased Boolean;
       Memcached_Server      : aliased GNAT.Strings.String_Access;
       Cargs_List            : String_Lists.List;
-      CE_Steps              : aliased Integer;
-      Check_Counterexamples : aliased GNAT.Strings.String_Access;
-      Checks_As_Errors      : aliased GNAT.Strings.String_Access;
-
-      Counterexamples       : aliased GNAT.Strings.String_Access;
       CWE                   : aliased Boolean;
-      D                     : aliased Boolean;
       Debug_No_Cache_Output : aliased Boolean;
-      Dbg_No_Sem            : aliased Boolean;
-      --  disable use of semaphores for ease of debugging
-      Debug_Exec_RAC        : aliased Boolean;
-      Debug_Save_VCs        : aliased Boolean;
-      Debug_Trivial         : aliased Boolean;
-      Debug_Prover_Errors   : aliased Boolean;
       Exclude_Line          : aliased GNAT.Strings.String_Access;
-      Explain               : aliased GNAT.Strings.String_Access;
-      F                     : aliased Boolean;
-      File_List             : String_Lists.List;
-      --  The list of files to be compiled
-      Flow_Debug            : aliased Boolean;
-      Flow_Termination      : aliased Boolean;
       Flow_Show_GG          : aliased Boolean;
       Function_Sandboxing   : aliased GNAT.Strings.String_Access;
       Gnattest_Values       : aliased GNAT.Strings.String_Access;
-      GPR_Project_Path      : String_Lists.List;
-      --  extra paths to look for project files, passed to gnatprove via -aP
       SARIF_Base_URIs       : String_Lists.List;
       --  Raw "IDENTIFIER:PATH" strings from --sarif-base-uri= occurrences
-      IDE_Progress_Bar      : aliased Boolean;
-      Info                  : aliased Boolean;
-      J                     : aliased Integer;
-      K                     : aliased Boolean;
-      Level                 : aliased Integer;
       Limit_Line            : aliased GNAT.Strings.String_Access;
       Limit_Lines           : aliased GNAT.Strings.String_Access;
       Limit_Name            : aliased GNAT.Strings.String_Access;
       Limit_Region          : aliased GNAT.Strings.String_Access;
       Limit_Subp            : aliased GNAT.Strings.String_Access;
-      List_Categories       : aliased Boolean;
-      M                     : aliased Boolean;
-      Memlimit              : aliased Integer;
-      Mode                  : aliased GNAT.Strings.String_Access;
-      No_Axiom_Guard        : aliased Boolean;
-      No_Counterexample     : aliased Boolean;
-      No_Inlining           : aliased Boolean;
-      No_Loop_Unrolling     : aliased Boolean;
       No_Global_Generation  : aliased Boolean;
       No_Subprojects        : aliased Boolean;
-      Output                : aliased GNAT.Strings.String_Access;
       Output_Header         : aliased Boolean;
-      Output_Msg_Only       : aliased Boolean;
-      P                     : aliased GNAT.Strings.String_Access;
-      --  The project file name, given with option -P
-      Pedantic              : aliased Boolean;
-      Print_Gpr_Registry    : aliased Boolean;
-      Proof                 : aliased GNAT.Strings.String_Access;
-      Proof_Warnings        : aliased GNAT.Strings.String_Access;
-      Proof_Warn_Timeout    : aliased Integer;
-      Prover                : aliased GNAT.Strings.String_Access;
-      Q                     : aliased Boolean;
-      Replay                : aliased Boolean;
-      Report                : aliased GNAT.Strings.String_Access;
-      RTS                   : aliased GNAT.Strings.String_Access;
-      Steps                 : aliased Integer;
-      Subdirs               : aliased GNAT.Strings.String_Access;
-      Target                : aliased GNAT.Strings.String_Access;
-      Timeout               : aliased GNAT.Strings.String_Access;
       U                     : aliased Boolean;
-      UU                    : aliased Boolean;
-      V                     : aliased Boolean;
-      Version               : aliased Boolean;
-      Warnings              : aliased GNAT.Strings.String_Access;
-      Why3_Conf             : aliased GNAT.Strings.String_Access;
-      Why3_Debug            : aliased GNAT.Strings.String_Access;
-      Why3_Logging          : aliased Boolean;
       Why3_Server           : aliased GNAT.Strings.String_Access;
-      X                     : String_Lists.List;
-      --  Scenario variables to be passed to gprbuild
-      Z3_Counterexample     : aliased Boolean;
    end CL_Switches;
 
    type Proof_Mode is (Progressive, No_WP, All_Split, Per_Path, Per_Check);
+   type Verbosity_Choice is (Quiet_Level, Normal_Level, Verbose_Level);
 
    --  Attributes that are synthesized from the command line and project file.
    --  They are either defined in the Postprocess procedure or are simple
@@ -204,14 +144,12 @@ package Configuration is
    CL_Units           : GPR2.Build.Compilation_Unit.Maps.Map;
    --  A "copy" of Cl_Switches.File_List, but units instead of files
 
-   All_Projects      : Boolean renames CL_Switches.UU;
-   Continue_On_Error : Boolean renames CL_Switches.K;
-   Flow_Extra_Debug  : Boolean renames CL_Switches.Flow_Debug;
-   Force             : Boolean renames CL_Switches.F;
-   IDE_Mode          : Boolean renames CL_Switches.IDE_Progress_Bar;
-   Minimal_Compile   : Boolean renames CL_Switches.M;
-   Quiet             : Boolean renames CL_Switches.Q;
-   Verbose           : Boolean renames CL_Switches.V;
+   All_Projects      : Boolean := False;  --  -U
+   Continue_On_Error : Boolean := False;  --  -k
+   Flow_Extra_Debug  : Boolean := False;  --  --flow-debug
+   Force             : Boolean := False;  --  -f
+   IDE_Mode          : Boolean := False;  --  --ide-progress-bar
+   Verbosity         : Verbosity_Choice := Normal_Level;
 
    type File_Specific is record
       Proof                 : Proof_Mode;
@@ -374,6 +312,10 @@ package Configuration is
    --  Resolve Simple (a source basename like "foo.adb") to its full absolute
    --  path by querying the project tree. Returns an empty string if the source
    --  cannot be found (e.g. runtime files not part of the project).
+
+   function File_Specific_Key
+     (Unit : GPR2.Build.Compilation_Unit.Object) return String;
+   --  Return the key used to retrieve file-specific switches for Unit.
 
    function Compute_Why3_Args
      (Obj_Dir : String; FS : File_Specific) return String_Lists.List;

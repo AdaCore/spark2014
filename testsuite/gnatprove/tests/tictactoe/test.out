@@ -19,7 +19,7 @@ tictactoe.adb:105:33: info: unrolling loop [info-unrolling-inlining]
 tictactoe.adb:108:34: info: overflow check proved (CVC5: 96 VC)
 tictactoe.adb:110:34: info: overflow check proved (CVC5: 96 VC)
 tictactoe.adb:115:20: info: index check proved (CVC5: 32 VC)
-tictactoe.adb:115:28: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+tictactoe.adb:115:28: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
 tictactoe.adb:116:32: info: index check proved (CVC5: 32 VC)
 tictactoe.adb:116:38: info: index check proved (CVC5: 32 VC)
 tictactoe.adb:118:27: info: index check proved (CVC5: 32 VC)

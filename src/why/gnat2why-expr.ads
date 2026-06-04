@@ -23,7 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers;
+with Ada.Containers;       use Ada.Containers;
+with Ada.Containers.Vectors;
 with Checked_Types;        use Checked_Types;
 with Common_Containers;    use Common_Containers;
 with Flow_Types;           use Flow_Types;
@@ -338,10 +339,10 @@ package Gnat2Why.Expr is
       Use_Pred          : Boolean;
       New_Preds_Module  : W_Module_Id;
       T                 : out W_Pred_Id;
-      Loc_Incompl_Acc   : Ada_To_Why_Ident.Map;
-      New_Incompl_Acc   : in out Ada_To_Why_Ident.Map;
-      Loc_Incompl_Acc_R : Ada_To_Why_Ident.Map;
-      New_Incompl_Acc_R : in out Ada_To_Why_Ident.Map;
+      Loc_Incompl_Acc   : Ada_Node_To_Why_Id.Map;
+      New_Incompl_Acc   : in out Ada_Node_To_Why_Id.Map;
+      Loc_Incompl_Acc_R : Ada_Node_To_Why_Id.Map;
+      New_Incompl_Acc_R : in out Ada_Node_To_Why_Id.Map;
       Expand_Incompl    : Boolean)
    with
      Pre  =>
@@ -544,11 +545,14 @@ package Gnat2Why.Expr is
    --  Create an access to the move tree for Ent
 
    function New_Equality_Of_Preserved_Parts
-     (Ty : Type_Kind_Id; Expr1, Expr2 : W_Term_Id) return W_Pred_Id;
+     (Ty               : Type_Kind_Id;
+      Expr1, Expr2     : W_Term_Id;
+      Constant_Address : Boolean := False) return W_Pred_Id
+   with Pre => (if Constant_Address then Is_Access_Type (Ty));
    --  Return a predicate stating that the (immutable) discriminants,
-   --  array bounds, and is_null and is_moved fields of unconstrained types are
-   --  equal in Expr1 and Expr2. If Ty is an anonymous access type, also assume
-   --  the bounds and discriminants of the designated type.
+   --  array bounds of unconstrained types are equal in Expr1 and Expr2. If
+   --  Constant_Address is True, also assume unchanged is_null fields for the
+   --  pointer, and the bounds and discriminants of the designated type.
    --  This is used to assume that these parts are preserved by the borrow
    --  both in the borrower and in the borrowed expression.
 
@@ -810,13 +814,87 @@ package Gnat2Why.Expr is
      (N : Node_Id; Params : Transformation_Params) return W_Prog_Id;
    --  Transforms an handled list of statements into a Why expression
 
+   package W_Statement_Sequence_Vectors is new
+     Ada.Containers.Vectors (Positive, W_Statement_Sequence_Id);
+
    procedure Transform_Statement_Or_Declaration_In_List
      (Stmt_Or_Decl : Node_Id;
       Params       : Transformation_Params;
-      Seq          : in out W_Statement_Sequence_Id);
+      In_Prelude   : in out Boolean;
+      Top_Seq      : in out W_Statement_Sequence_Id;
+      Other_Seqs   : in out W_Statement_Sequence_Vectors.Vector;
+      At_Labels    : in out Node_Vectors.Vector)
+   with
+     Pre  =>
+       (if In_Prelude
+        then Other_Seqs.Is_Empty
+        else Other_Seqs.Length <= At_Labels.Length),
+     Post =>
+       (if In_Prelude
+        then Other_Seqs.Is_Empty
+        else Other_Seqs.Length <= At_Labels.Length);
    --  Transform the next statement or declaration Stmt_Or_Decl, inside a
-   --  list of statements and declarations. Seq is the transformation of the
-   --  previous statements and declarations in the list.
+   --  list of statements and declarations.
+   --  @param In_Prelude True if we are traversing the first sequence of labels
+   --    at the beginning of a block. Set to False if Stmt_Or_Decl is not a
+   --    label.
+   --  @param Top_Seq is the transformation of the previous statements and
+   --     declarations in the list starting at the last label in At_Labels.
+   --  @param Other_Seqs the transformation of the previous statements and
+   --     declarations in the list between two labels in At_Labels.
+   --  @param At_Labels sequence of labels occuring in previous statements in
+   --     the list for which there are some references of 'At to handle.
+   --
+   --  After running Transform_Statement_Or_Declaration_In_List repeatedly over
+   --  all the following statements starting with empty vectors for Other_Seqs
+   --  and At_Labels:
+   --
+   --    <<L_Prelude_1>>
+   --    ...
+   --    <<L_Prelude_m>>
+   --    Stmt_1;
+   --    ...
+   --    <<L_1>>
+   --    ...
+   --    Stmt_m;
+   --    ...
+   --    <<L_m>>
+   --    Stmt;
+   --    ...
+   --    Stmt_Or_Decl;
+   --
+   --  We generate:
+   --
+   --    Top_Seq <- [<Stmt> ... <Stmt_Or_Decl>]
+   --    Other_Seqs <- [[<Stmt_1> ...] .. [<Stmt_n> ...]]
+   --    At_Labels <- [L_Prelude_1 .. L_Prelude_n] & [L_1 .. L_m]
+
+   procedure Collapse_Statements_In_List
+     (Params     : Transformation_Params;
+      Top_Seq    : in out W_Statement_Sequence_Id;
+      Other_Seqs : in out W_Statement_Sequence_Vectors.Vector;
+      At_Labels  : in out Node_Vectors.Vector;
+      Do_Prelude : Boolean := True);
+   --  Reconstruct the sequence of statements in Top_Seq by putting
+   --  together all segments of Other_Seqs. If Do_Prelude is false, do
+   --  not introduce bindings for additional labels at the beginning of
+   --  At_Labels.
+   --
+   --  For:
+   --
+   --    Top_Seq
+   --    Other_Seqs_1 .. Other_Seqs_n
+   --    At_Label_Prelude_1 .. At_Label_Prelude_m At_Label_1 .. At_Label_n
+   --
+   --  Generate:
+   --
+   --  let expr_at_label_prelude_1 ... in < if Do_Prelude is True >
+   --    other_seqs_1;
+   --    let expr_at_label_1 ... in
+   --      others_seq_2;
+   --      let expr_at_label_2 ... in
+   --        ...
+   --        top_seq;
 
    procedure Variables_In_Default_Init
      (Ty : Type_Kind_Id; Variables : in out Flow_Id_Sets.Set)
@@ -897,7 +975,7 @@ package Gnat2Why.Expr is
 
    function Bind_From_Mapping_In_Prog
      (Params       : Transformation_Params;
-      Map          : Ada_To_Why_Ident.Map;
+      Map          : Ada_Node_To_Why_Id.Map;
       Expr         : W_Prog_Id;
       Old_Prefixes : Boolean := False) return W_Prog_Id;
    --  Bind names from Map to their corresponding values, obtained by
@@ -917,7 +995,7 @@ package Gnat2Why.Expr is
 
    function Bind_From_Mapping_In_Expr
      (Params       : Transformation_Params;
-      Map          : Ada_To_Why_Ident.Map;
+      Map          : Ada_Node_To_Why_Id.Map;
       Expr         : W_Expr_Id;
       Domain       : EW_Domain;
       Subset       : Node_Sets.Set;
@@ -939,12 +1017,10 @@ package Gnat2Why.Expr is
    --  RTE checks.
 
 private
-   use type Ada.Containers.Count_Type;
-
-   Incompl_Access_Dyn_Inv_Map : Ada_To_Why_Ident.Map;
+   Incompl_Access_Dyn_Inv_Map : Ada_Node_To_Why_Id.Map;
    --  Map storing predicates for invariants of access to incomplete types
 
-   Incompl_Access_Dyn_Inv_Map_R : Ada_To_Why_Ident.Map;
+   Incompl_Access_Dyn_Inv_Map_R : Ada_Node_To_Why_Id.Map;
    --  Same but for predicates of init wrappers
 
    procedure Get_Item_From_Expr

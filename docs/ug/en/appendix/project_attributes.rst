@@ -11,11 +11,11 @@ is allowed to contain the following attributes:
   different settings:
 
   * to define switches that should apply to all files in the project.  As an
-    example, the following package in the project file sets the default report
-    mode of |GNATprove| to ``all``::
+    example, the following package in the project file sets the proof level for
+    all units in the project to to 2::
 
       package Prove is
-         for Proof_Switches ("Ada") use ("--report=all");
+         for Proof_Switches ("Ada") use ("--level=2");
       end Prove;
 
   * to define switches that should apply only to one file. The following
@@ -43,13 +43,21 @@ is allowed to contain the following attributes:
        for Proof_Switches ("file.adb") use ("--level=0");
     end Prove;
 
-  The following switches cannot be used inside project files: ``-P``, ``-aP``,
-  ``--subdirs``, ``--clean``, ``--list-categories``, ``--version``, ``-X``.
+  The following switches cannot be used inside project files at all: ``-P``,
+  ``-aP``, ``--subdirs``, ``--clean``, ``--list-categories``, ``--version``,
+  ``-X``, ``-v``, ``-q``, ``--explain``, ``--help``, ``--print-gpr-registry``.
 
-  Only the following switches are allowed for file-specific switches:
+  In the Proof_Switches attribute for specific files, and in the Proof_Switches
+  attribute of project files other than the one that was passed to |GNATprove|
+  on the command-line, only the following switches are allowed for file-specific
+  switches:
   ``--steps``, ``--timeout``, ``--memlimit``, ``--proof``, ``--prover``,
   ``--level``, ``--mode``, ``--counterexamples``, ``--no-inlining``,
-  ``--no-loop-unrolling``, ``--pedantic``, ``--info``, ``-W``, ``-A``, ``-D``.
+  ``--no-loop-unrolling``, ``--proof-warnings``, ``--pedantic``, ``--info``,
+  ``-W``, ``-A``, ``-D``.
+
+  The remaining switches can be used only in the ``Proof_Switches ("Ada")``
+  attribute of the root project.
 
 * ``Switches``. This deprecated attribute is the same as ``Proof_Switches
   ("Ada")``.

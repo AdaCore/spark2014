@@ -57,3 +57,5 @@ polyorb_hi_generated-activity.ads:42:37: info: range check proved (CVC5: 1 VC)
 polyorb_hi_generated-activity.ads:44:39: info: range check proved (CVC5: 1 VC)
 polyorb_hi_generated-subprograms.ads:12:13: warning: subprogram "RMAAadl_Hello_Spg_1" has no effect
 polyorb_hi_generated-subprograms.ads:14:13: warning: subprogram "RMAAadl_Hello_Spg_2" has no effect
+warning: invocation switch "--report" in attribute "Proof_Switches ("Ada")" of non-root project "polyorb_hi.gpr" is ignored
+warning: invocation switch "--warnings" in attribute "Proof_Switches ("Ada")" of non-root project "polyorb_hi.gpr" is ignored

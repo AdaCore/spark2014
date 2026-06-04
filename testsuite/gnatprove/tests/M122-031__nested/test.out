@@ -1,3 +1,3 @@
-p.adb:6:23: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
-p.adb:10:29: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+p.adb:6:23: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
+p.adb:10:29: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
 p.ads:3:14: warning: subprogram "S" has no effect

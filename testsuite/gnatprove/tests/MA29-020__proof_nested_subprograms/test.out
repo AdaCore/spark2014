@@ -12,7 +12,7 @@ skein.adb:48:23: warning: unused assignment, in call inlined at skein.adb:127
 skein.adb:56:22: warning: unused assignment, in call inlined at skein.adb:127
 skein.adb:60:04: warning: analyzing unreferenced procedure "Zero_Pad" [unreferenced-procedure]
 skein.adb:64:11: info: range check proved (CVC5: 2 VC)
-skein.adb:64:98: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+skein.adb:64:98: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
 skein.adb:76:07: info: initialization of "Local_Ctx" proved
 skein.adb:77:07: info: initialization of "N" proved
 skein.adb:78:07: info: initialization of "Blocks_Done" proved
@@ -47,7 +47,7 @@ skein.adb:107:12: info: length check proved (CVC5: 3 VC)
 skein.adb:109:43: warning: unused assignment
 skein.adb:110:07: warning: statement has no effect
 skein.adb:111:10: info: analyzing call to "Zero_Pad_B" in context
-skein.adb:111:10: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+skein.adb:111:10: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
 skein.adb:111:10: info: in inlined body at line 87
 skein.adb:115:52: high: range check might fail, cannot prove lower bound for (Local_Ctx.H.Hash_Bit_Len + 7) / 8 (e.g. when Local_Ctx = (H => (Tweak_Words => (Byte_Count_LSB => 63, Byte_Count_MSB => 0, Reserved => 0, Tree_Level => 0, Bit_Pad => True, Field_Type => 0, First_Block => True, Final_Block => True), Hash_Bit_Len => 0, Byte_Count => 63), X => (others => 63), B => (others => 0))) [reason for check: result of division must fit in the target type of the assignment] [provers reached step limit before completing the proof]
 skein.adb:115:52: info: division check proved (CVC5: 1 VC)
@@ -56,7 +56,7 @@ skein.adb:121:44: info: division check proved (CVC5: 1 VC)
 skein.adb:125:10: info: analyzing call to "Set_B_Counter" in context
 skein.adb:127:10: info: analyzing call to "Skein_Start_New_Type" in context
 skein.adb:139:10: info: analyzing call to "Put_64_LSB_First" in context
-skein.adb:139:10: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+skein.adb:139:10: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
 skein.adb:139:10: info: in inlined body at line 34
 skein.adb:139:10: warning: in inlined body at line 35
 skein.adb:139:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]

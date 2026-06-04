@@ -229,6 +229,12 @@ package Why.Gen.Pointers is
      Post => Is_Type (Get_Borrowed_Typ'Result);
    --  Get the type of the borrower of initially borrowed expression
 
+   function Get_Borrowed_Is_Deref (E : Entity_Id) return Boolean
+   with
+     Pre => Is_Local_Borrower (E) or else Is_Borrowing_Traversal_Function (E);
+   --  Return whether we should take into account an implicit .all dereference
+   --  to get the actual borrowed expression.
+
    function Get_Brower_At_End (E : Entity_Id) return W_Identifier_Id
    with
      Pre => Is_Local_Borrower (E) or else Is_Borrowing_Traversal_Function (E);

@@ -1,0 +1,6 @@
+buffers.adb:12:63: info: predicate check proved (CVC5: 1 VC)
+buffers.adb:27:52: info: range check proved (CVC5: 2 VC)
+buffers.adb:29:49: info: predicate check proved (CVC5: 1 VC)
+buffers.ads:8:03: info: flow dependencies proved
+buffers.ads:11:13: info: implicit aspect Always_Terminates on "Map_Address" has been proved, subprogram will terminate
+types.ads:19:42: info: division check proved (CVC5: 1 VC)

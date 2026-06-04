@@ -321,6 +321,9 @@ package body SPARK_Util is
    Prophecy_Saves : Node_Sets.Set;
    --  Local observers used to save prophecy variables
 
+   At_Attributes : Node_Graphs.Map;
+   --  Map labels entities to references to 'At that mention this label
+
    package Node_To_List_Maps is new
      Ada.Containers.Hashed_Maps
        (Key_Type        => Node_Id,
@@ -482,6 +485,19 @@ package body SPARK_Util is
          return Empty;
       end if;
    end Visible_Overridden_Operation;
+
+   ---------------------------
+   -- Register_At_Attribute --
+   ---------------------------
+
+   procedure Register_At_Attribute (Ref : N_Attribute_Reference_Id) is
+      Label    : constant Entity_Id := Entity (First (Expressions (Ref)));
+      Position : Node_Graphs.Cursor;
+      Inserted : Boolean;
+   begin
+      At_Attributes.Insert (Label, Node_Sets.Empty_Set, Position, Inserted);
+      At_Attributes (Position).Include (Ref);
+   end Register_At_Attribute;
 
    ------------------------
    -- Register_Exception --
@@ -755,11 +771,12 @@ package body SPARK_Util is
    ----------------------------------
 
    procedure Candidate_For_Loop_Unrolling
-     (Loop_Stmt   : N_Loop_Statement_Id;
-      Output_Info : Boolean;
-      Result      : out Unrolling_Type;
-      Low_Val     : out Uint;
-      High_Val    : out Uint)
+     (Loop_Stmt       : N_Loop_Statement_Id;
+      Output_Info     : Boolean;
+      Output_Warnings : Boolean;
+      Result          : out Unrolling_Type;
+      Low_Val         : out Uint;
+      High_Val        : out Uint)
    is
       Reason        : Unbounded_String;
       Secondary_Loc : Source_Ptr := No_Location;
@@ -932,24 +949,24 @@ package body SPARK_Util is
             Reason := To_Unbounded_String ("dynamic loop bounds");
          end if;
 
-         if Output_Info then
-            if Result /= No_Unrolling then
+         if Result /= No_Unrolling then
+            if Output_Info then
                Error_Msg_N
                  ("unrolling loop" & Tag_Suffix (Warn_Info_Unrolling_Inlining),
                   Loop_Stmt,
                   Kind => Info_Kind);
-
-            else
-               pragma Assert (Reason /= "");
-               Error_Msg_N
-                 ("cannot unroll loop ("
-                  & To_String (Reason)
-                  & ")"
-                  & Tag_Suffix (Warn_Info_Unrolling_Inlining),
-                  Loop_Stmt,
-                  Secondary_Loc => Secondary_Loc,
-                  Kind          => Info_Kind);
             end if;
+
+         elsif Output_Warnings then
+            pragma Assert (Reason /= "");
+            Error_Msg_N
+              ("cannot unroll loop ("
+               & To_String (Reason)
+               & ")"
+               & Tag_Suffix (Warn_Unrolling_Inlining_Failures),
+               Loop_Stmt,
+               Secondary_Loc => Secondary_Loc,
+               Kind          => Info_Kind);
          end if;
       end if;
    end Candidate_For_Loop_Unrolling;
@@ -1996,7 +2013,8 @@ package body SPARK_Util is
             return True;
 
          when N_Attribute_Reference          =>
-            if Attribute_Name (Expr) in Name_Loop_Entry | Name_Old then
+            if Attribute_Name (Expr) in Name_At | Name_Loop_Entry | Name_Old
+            then
                return Expr_Has_Relaxed_Discr (Prefix (Expr));
             else
                return False;
@@ -2458,6 +2476,21 @@ package body SPARK_Util is
       return Results;
    end Generic_Actual_Subprograms;
 
+   ---------------------------------
+   -- Get_At_Attributes_For_Label --
+   ---------------------------------
+
+   function Get_At_Attributes_For_Label (E : Entity_Id) return Node_Sets.Set is
+      Position : constant Node_Graphs.Cursor := At_Attributes.Find (E);
+      use Node_Graphs;
+   begin
+      if Has_Element (Position) then
+         return Element (Position);
+      else
+         return Node_Sets.Empty_Set;
+      end if;
+   end Get_At_Attributes_For_Label;
+
    -----------------------------
    -- Get_Exceptions_For_Subp --
    -----------------------------
@@ -2698,8 +2731,9 @@ package body SPARK_Util is
    is
       B_Expr : Node_Id;
       B_Ty   : Entity_Id := Empty;
+      Deref  : Boolean;
    begin
-      Get_Observed_Or_Borrowed_Info (Expr, B_Expr, B_Ty);
+      Get_Observed_Or_Borrowed_Info (Expr, B_Expr, B_Ty, Deref);
       return B_Expr;
    end Get_Observed_Or_Borrowed_Expr;
 
@@ -2708,9 +2742,10 @@ package body SPARK_Util is
    -----------------------------------
 
    procedure Get_Observed_Or_Borrowed_Info
-     (Expr   : N_Subexpr_Id;
-      B_Expr : out N_Subexpr_Id;
-      B_Ty   : in out Opt_Type_Kind_Id)
+     (Expr    : N_Subexpr_Id;
+      B_Expr  : out N_Subexpr_Id;
+      B_Ty    : in out Opt_Type_Kind_Id;
+      B_Deref : out Boolean)
    is
       function Find_Func_Call (Expr : Node_Id) return Node_Id;
       --  Search for function calls in the prefixes of Expr
@@ -2753,8 +2788,15 @@ package body SPARK_Util is
          end case;
       end Find_Func_Call;
 
+      Toplevel : Boolean := True;
+      --  Observer/Borrowers are always of anonymous access types, but the
+      --  expected type argument might be left empty. For sub-expressions, we
+      --  always have the type, so we just remember if B_Expr is the original
+      --  argument.
+
    begin
       B_Expr := Expr;
+      B_Deref := False;
 
       --  Search for the first call to a traversal function in Expr. If there
       --  is one, its first parameter is the borrowed expression. Otherwise,
@@ -2766,10 +2808,34 @@ package body SPARK_Util is
          begin
             exit when No (Call);
             pragma Assert (Is_Traversal_Function_Call (Call));
+            Toplevel := False;
             B_Ty := Etype (First_Formal (Get_Called_Entity (Call)));
             B_Expr := First_Actual (Call);
          end;
       end loop;
+
+      --  A 'Access reference is never a whole object, what is actually
+      --  borrowed in this case is its prefix.
+
+      if Nkind (B_Expr) = N_Attribute_Reference
+        and then Get_Attribute_Id (Attribute_Name (B_Expr)) = Attribute_Access
+      then
+         B_Expr := Prefix (B_Expr);
+         if Present (B_Ty) then
+            B_Ty := Retysp (Directly_Designated_Type (B_Ty));
+         end if;
+         return;
+      end if;
+
+      --  If the borrowed expression is expected to be of an anonymous access
+      --  type, then what is actually borrowed is the designated object. This
+      --  is similar to what happens with 'Access, except we cannot represent
+      --  it by a subexpression. We track this via B_Deref instead.
+
+      if Toplevel or else Is_Anonymous_Access_Object_Type (B_Ty) then
+         B_Deref := True;
+      end if;
+
    end Get_Observed_Or_Borrowed_Info;
 
    -------------------------
@@ -2993,7 +3059,7 @@ package body SPARK_Util is
                pragma
                  Assert
                    (Attribute_Name (Expr)
-                    in Name_Loop_Entry | Name_Old | Name_Update);
+                    in Name_At | Name_Loop_Entry | Name_Old | Name_Update);
                return Expr;
             end if;
 
@@ -3234,22 +3300,22 @@ package body SPARK_Util is
    --  Do not hide private parts in global generation mode. It is necessary
    --  to properly compute proof dependencies.
 
-   ------------------------------------
-   -- In_Loop_Entry_Or_Old_Attribute --
-   ------------------------------------
+   ---------------------------------------
+   -- In_Loop_Entry_Old_Or_At_Attribute --
+   ---------------------------------------
 
-   function In_Loop_Entry_Or_Old_Attribute (N : Node_Id) return Boolean is
+   function In_Loop_Entry_Old_Or_At_Attribute (N : Node_Id) return Boolean is
 
-      function Is_Attribute_Loop_Entry_Or_Old (N : Node_Id) return Boolean
+      function Is_Attribute_Loop_Entry_Old_Or_At (N : Node_Id) return Boolean
       is (Nkind (N) = N_Attribute_Reference
-          and then Attribute_Name (N) in Name_Loop_Entry | Name_Old);
+          and then Attribute_Name (N) in Name_At | Name_Loop_Entry | Name_Old);
 
-      function Find_Loop_Entry_Or_Old_Attribute is new
-        First_Parent_With_Property (Is_Attribute_Loop_Entry_Or_Old);
+      function Find_Loop_Entry_Old_Or_At_Attribute is new
+        First_Parent_With_Property (Is_Attribute_Loop_Entry_Old_Or_At);
 
    begin
-      return Present (Find_Loop_Entry_Or_Old_Attribute (N));
-   end In_Loop_Entry_Or_Old_Attribute;
+      return Present (Find_Loop_Entry_Old_Or_At_Attribute (N));
+   end In_Loop_Entry_Old_Or_At_Attribute;
 
    -------------------------
    -- In_Non_Exec_Context --
@@ -3900,17 +3966,21 @@ package body SPARK_Util is
       Real_Entity : constant Node_Id :=
         (if Is_Itype (E) then Associated_Node_For_Itype (E) else E);
 
-      Encl_Unit : constant Node_Id := Enclosing_Lib_Unit_Node (Real_Entity);
-      --  The library unit containing E
-
       Main_Unit_Node : constant Node_Id := Cunit (Main_Unit);
 
    begin
+
+      if Sloc (Real_Entity) = Standard_Location then
+         return False;
+      end if;
+
       --  Check if the entity is either in the spec or in the body of the
       --  current compilation unit. gnat2why is now only called on requested
       --  files, so otherwise just return False.
 
-      return Encl_Unit in Main_Unit_Node | Library_Unit (Main_Unit_Node);
+      return
+        Enclosing_Lib_Unit_Node (Real_Entity)
+        in Main_Unit_Node | Library_Unit (Main_Unit_Node);
    end Is_In_Analyzed_Files;
 
    --------------------------
@@ -4116,12 +4186,12 @@ package body SPARK_Util is
 
       Par := Parent (N);
 
-      --  Local borrowers can appear as the prefix of a reference to 'Old or
-      --  'Loop_Entry in prophecies.
+      --  Local borrowers can appear as the prefix of a reference to 'Old,
+      --  'Loop_Entry, or 'At in prophecies.
 
       if Present (Par)
         and then Nkind (Par) = N_Attribute_Reference
-        and then Attribute_Name (Par) in Name_Old | Name_Loop_Entry
+        and then Attribute_Name (Par) in Name_Old | Name_Loop_Entry | Name_At
       then
          Par := Parent (Par);
       end if;
@@ -4354,12 +4424,12 @@ package body SPARK_Util is
 
             when N_Attribute_Reference          =>
 
-               --  Old and Loop_Entry attributes can only be called on new
+               --  At, Old, and Loop_Entry attributes can only be called on new
                --  objects. Update attribute is similar to delta aggregates.
 
                return
                  Attribute_Name (Expr)
-                 in Name_Loop_Entry | Name_Old | Name_Update;
+                 in Name_At | Name_Loop_Entry | Name_Old | Name_Update;
 
             when N_Qualified_Expression
                | N_Type_Conversion
@@ -4445,7 +4515,7 @@ package body SPARK_Util is
 
          when N_Attribute_Reference          =>
             return
-              (Attribute_Name (Expr) in Name_Old | Name_Loop_Entry
+              (Attribute_Name (Expr) in Name_At | Name_Old | Name_Loop_Entry
                and then Is_Potentially_Invalid_Expr (Prefix (Expr))
                and then not Has_Scalar_Type (Etype (Expr)))
               or else
@@ -4694,11 +4764,12 @@ package body SPARK_Util is
       Unroll   : Unrolling_Type;
    begin
       Candidate_For_Loop_Unrolling
-        (Loop_Stmt   => Loop_Stmt,
-         Output_Info => False,
-         Result      => Unroll,
-         Low_Val     => Low_Val,
-         High_Val    => High_Val);
+        (Loop_Stmt       => Loop_Stmt,
+         Output_Info     => False,
+         Output_Warnings => False,
+         Result          => Unroll,
+         Low_Val         => Low_Val,
+         High_Val        => High_Val);
 
       return
         not Gnat2Why_Args.No_Loop_Unrolling and then Unroll /= No_Unrolling;
@@ -6446,10 +6517,6 @@ package body SPARK_Util is
         or else
           (Ekind (Obj) = E_Variable and then Is_Quantified_Loop_Param (Obj))
       then
-         if Copy_Requires_Init (Etype (Obj)) then
-            return False;
-         end if;
-
          declare
             Q_Expr : constant Node_Id :=
               (if Ekind (Obj) = E_Variable
@@ -6466,13 +6533,18 @@ package body SPARK_Util is
                   Arr_Expr : constant Node_Id := Name (I_Spec);
                begin
                   return
-                    Expr_Has_Relaxed_Init (Arr_Expr, No_Eval => False)
-                    or else
-                      Has_Relaxed_Init (Component_Type (Etype (Arr_Expr)));
+                    not Copy_Requires_Init (Etype (Obj))
+                    and then
+                      (Expr_Has_Relaxed_Init (Arr_Expr, No_Eval => False)
+                       or else
+                         Has_Relaxed_Init (Component_Type (Etype (Arr_Expr))));
                end;
 
             --  On for of quantification/iteration over containers, the
-            --  quantified variable is assigned the result of Element.
+            --  quantified variable is assigned the result of Element if
+            --  supplied. The result of Constant_Reference cannot have
+            --  Relaxed_Initialization, as it is an anonymous elementary type.
+            --  Directly look at its designated type.
 
             elsif Present (I_Spec) and then Of_Present (I_Spec) then
                declare
@@ -6480,7 +6552,20 @@ package body SPARK_Util is
                     Get_Iterable_Type_Primitive
                       (Etype (Name (I_Spec)), Name_Element);
                begin
-                  return Fun_Has_Relaxed_Init (Element);
+                  if Present (Element) then
+                     return Fun_Has_Relaxed_Init (Element);
+                  else
+                     declare
+                        Cst_Ref : constant Entity_Id :=
+                          Get_Iterable_Type_Primitive
+                            (Etype (Name (I_Spec)), Name_Constant_Reference);
+                     begin
+                        pragma Assert (not Fun_Has_Relaxed_Init (Cst_Ref));
+                        return
+                          Has_Relaxed_Init
+                            (Directly_Designated_Type (Etype (Cst_Ref)));
+                     end;
+                  end if;
                end;
 
             --  On for in quantification/iteration over containers, the
@@ -6744,7 +6829,7 @@ package body SPARK_Util is
                pragma
                  Assert
                    (Attribute_Name (Subpath)
-                    in Name_Loop_Entry | Name_Old | Name_Update);
+                    in Name_At | Name_Loop_Entry | Name_Old | Name_Update);
                return False;
 
             when N_Qualified_Expression

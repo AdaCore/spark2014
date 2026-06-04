@@ -13,7 +13,7 @@ simple.adb:37:16: high: overflow check might fail, cannot prove upper bound for 
 simple.adb:37:16: high: range check might fail, cannot prove upper bound for X * Y (e.g. when X = 129/128 and Y = 254) [reason for check: returned value must fit in the result type of the function] [possible fix: subprogram at simple.ads:33 should mention X and Y in a precondition] [provers reached step limit before completing the proof]
 simple.adb:42:16: high: divide by zero might fail (e.g. when N = 0) [possible fix: add precondition (N /= 0) to subprogram at simple.ads:35] [provers gave up before completing the proof]
 simple.adb:47:22: high: assertion might fail (e.g. when F = 2.4691358E+0) [possible fix: subprogram at simple.ads:37 should mention F in a precondition] [provers reached step limit before completing the proof]
-simple.adb:53:31: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+simple.adb:53:31: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
 simple.adb:54:33: medium: overflow check might fail, cannot prove upper bound for Total_Age + Integer (T.People (N).Age) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 53 should mention Total_Age in a loop invariant] [provers reached step limit before completing the proof]
 simple.adb:56:22: high: assertion might fail (e.g. when Total_Age = 0) [possible fix: loop at line 53 should mention Total_Age in a loop invariant] [provers reached step limit before completing the proof]
 simple.adb:61:22: high: assertion might fail (e.g. when A = Chicken) [possible fix: subprogram at simple.ads:50 should mention A in a precondition] [provers gave up before completing the proof]

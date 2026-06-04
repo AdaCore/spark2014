@@ -353,11 +353,11 @@ package body Gnat2Why.Types is
          package Decl_Lists is new
            Ada.Containers.Doubly_Linked_Lists (W_Declaration_Id);
 
-         Loc_Incompl_Acc : Ada_To_Why_Ident.Map;
+         Loc_Incompl_Acc : Ada_Node_To_Why_Id.Map;
          --  Map of all local symbols introduced for predicates of access to
          --  incomplete access types.
 
-         Loc_Incompl_Acc_R : Ada_To_Why_Ident.Map;
+         Loc_Incompl_Acc_R : Ada_Node_To_Why_Id.Map;
          --  Same as above but for init wrappers
 
          Axioms : Decl_Lists.List;
@@ -417,8 +417,8 @@ package body Gnat2Why.Types is
                --  Expression on which we want to assume the property
 
                Def               : W_Pred_Id;
-               New_Incompl_Acc   : Ada_To_Why_Ident.Map;
-               New_Incompl_Acc_R : Ada_To_Why_Ident.Map;
+               New_Incompl_Acc   : Ada_Node_To_Why_Id.Map;
+               New_Incompl_Acc_R : Ada_Node_To_Why_Id.Map;
 
             begin
                --  Push variable names to Symbol_Table
@@ -456,12 +456,14 @@ package body Gnat2Why.Types is
 
                for C in New_Incompl_Acc.Iterate loop
                   Loc_Incompl_Acc.Insert
-                    (Ada_To_Why_Ident.Key (C), Ada_To_Why_Ident.Element (C));
+                    (Ada_Node_To_Why_Id.Key (C),
+                     Ada_Node_To_Why_Id.Element (C));
                end loop;
 
                for C in New_Incompl_Acc_R.Iterate loop
                   Loc_Incompl_Acc_R.Insert
-                    (Ada_To_Why_Ident.Key (C), Ada_To_Why_Ident.Element (C));
+                    (Ada_Node_To_Why_Id.Key (C),
+                     Ada_Node_To_Why_Id.Element (C));
                end loop;
 
                --  Introduce function symbols (with no definitions) for
@@ -469,16 +471,16 @@ package body Gnat2Why.Types is
 
                for C in New_Incompl_Acc.Iterate loop
                   Create_Dynamic_Invariant
-                    (E            => Ada_To_Why_Ident.Key (C),
-                     Name         => Ada_To_Why_Ident.Element (C),
+                    (E            => Ada_Node_To_Why_Id.Key (C),
+                     Name         => Ada_Node_To_Why_Id.Element (C),
                      Relaxed_Init => False,
                      For_Acc      => True);
                end loop;
 
                for C in New_Incompl_Acc_R.Iterate loop
                   Create_Dynamic_Invariant
-                    (E            => Ada_To_Why_Ident.Key (C),
-                     Name         => Ada_To_Why_Ident.Element (C),
+                    (E            => Ada_Node_To_Why_Id.Key (C),
+                     Name         => Ada_Node_To_Why_Id.Element (C),
                      Relaxed_Init => True,
                      For_Acc      => True);
                end loop;

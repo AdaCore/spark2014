@@ -1002,13 +1002,6 @@ package body SPARK_Atree is
    function Type_Definition (N : Node_Id) return Node_Id
    is (Sinfo.Nodes.Type_Definition (N));
 
-   -----------------
-   -- Unqual_Conv --
-   -----------------
-
-   function Unqual_Conv (N : Node_Id) return Node_Id
-   renames Sem_Util.Unqual_Conv;
-
    ----------
    -- Unit --
    ----------

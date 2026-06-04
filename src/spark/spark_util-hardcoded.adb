@@ -126,6 +126,7 @@ package body SPARK_Util.Hardcoded is
 
       elsif Is_From_Hardcoded_Unit (E, System_Storage_Elements) then
          if Get_Name_String (Chars (E)) in SSEN.To_Address | SSEN.To_Integer
+           or else Chars (E) in Name_Op_Add | Name_Op_Subtract | Name_Op_Mod
          then
             return System_Storage_Elements;
          end if;

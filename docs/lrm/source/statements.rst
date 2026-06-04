@@ -99,12 +99,12 @@ Generalized Loop Iteration
         Last        => name,
         Previous    => name],
         Has_Element => name[,
-        Element     => name])
+        Element => name | Constant_Reference => name])
 
 4. If the aspect Iterable is visibly specified for a type,
    the (view of the) type is defined to be an iterator type (view).
    If the aspect Iterable is visibly specified for a type and the
-   specification includes an Element argument then
+   specification includes an Element or Constant_Reference argument then
    the (view of the) type is defined to be an iterable container type (view).
    [The visibility of an aspect specification is defined in Ada RM 8.8].
    [Because other iterator types and iterable container types as defined in
@@ -139,15 +139,19 @@ Generalized Loop Iteration
    of type T and the second of the cursor subtype of T; the result subtype
    of the function shall be Boolean.
 
-9. The Element function of the type, if one is specified, shall have two
-   parameters, the first of type T and the second of the cursor subtype of T;
-   the default element subtype of T is then defined to be the result subtype
-   of the Element function.
+9. The Element and Constant_Reference functions cannot be specified together for
+   a type. If one of these functions is specified for the type, it shall have
+   two parameters, the first of type T and the second of the cursor subtype of
+   T; the default element subtype of T is then defined to be either the result
+   subtype of the Element function, or the subtype designated by the anonymous
+   access-to-constant type with null exclusion of the Constant_Reference
+   function.
 
 10. Reverse container iterators are only allowed if the Last and
     Previous functions are specified.
 
-11. Container element iterators are only allowed if the Element function is
+11. Container element iterators are only allowed if either the Element or the
+    Constant_Reference function is
     specified. The loop parameter of a container element iterator is a constant
     object.
 
@@ -172,8 +176,9 @@ Generalized Loop Iteration
     associated loop is completed. If True is returned then iteration
     continues and the loop parameter for the next iteration of the loop
     is either (in the case of a generalized iterator) the cursor or
-    (in the case of a container element iterator) the result of calling the
-    Element function, passing in the container and the cursor. At the end of
+    (in the case of a container element iterator) the result of calling either
+    the Element or the Constant_Reference function, passing in the container
+    and the cursor. At the end of
     the iteration, Next is called (passing in the container and the cursor)
     and the result is assigned to the cursor.
 

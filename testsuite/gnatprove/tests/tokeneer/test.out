@@ -144,13 +144,13 @@ auditlog.adb:98:11: info: data dependencies proved
 auditlog.adb:100:11: info: flow dependencies proved
 auditlog.adb:120:13: info: implicit aspect Always_Terminates on "ConvertToAuditDescription" has been proved, subprogram will terminate
 auditlog.adb:127:35: info: range check proved
-auditlog.adb:127:47: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+auditlog.adb:127:47: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
 auditlog.adb:128:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 auditlog.adb:128:40: info: index check proved
 auditlog.adb:128:40: info: overflow check proved
 auditlog.adb:129:46: info: index check proved
 auditlog.adb:129:46: info: overflow check proved
-auditlog.adb:132:45: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+auditlog.adb:132:45: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
 auditlog.adb:133:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 auditlog.adb:134:46: info: index check proved
 auditlog.adb:134:46: info: overflow check proved
@@ -300,7 +300,7 @@ auditlog.adb:1088:90: info: range check proved
 auditlog.adb:1089:91: info: range check proved
 auditlog.adb:1090:26: info: range check proved
 auditlog.adb:1091:32: info: overflow check proved
-auditlog.adb:1092:22: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+auditlog.adb:1092:22: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
 auditlog.adb:1093:56: info: index check proved
 auditlog.adb:1093:95: info: index check proved
 auditlog.adb:1093:95: info: overflow check proved
@@ -631,7 +631,7 @@ clock-interfac.ads:22:59: info: flow dependencies proved
 clock.adb:49:11: info: flow dependencies proved
 clock.adb:54:07: info: initialization of "V" proved
 clock.adb:59:11: info: range check proved
-clock.adb:59:54: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+clock.adb:59:54: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
 clock.adb:60:12: info: index check proved
 clock.adb:60:56: info: division check proved
 clock.adb:61:20: info: division check proved
