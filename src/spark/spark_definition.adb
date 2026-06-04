@@ -8969,9 +8969,14 @@ package body SPARK_Definition is
             Prag := Get_Pragma (E, Pragma_Modifies);
             if Present (Prag) then
                declare
+                  Globals : Global_Flow_Ids;
+                  --  Globals of E if we are not in global generation mode
+                  Seen    : Node_Sets.Set;
+                  --  Set of outputs of E mentioned in the Modifies pragma
+
                   procedure Mark_Modified_Object (N : Node_Id);
                   --  Mark the modified object and check that it is an output
-                  --  of the subprogram.
+                  --  of the subprogram. Store its root in Seen.
 
                   --------------------------
                   -- Mark_Modified_Object --
@@ -8998,6 +9003,10 @@ package body SPARK_Definition is
                         end if;
                      end if;
 
+                     --  Store Root in the set of mentioned outputs
+
+                     Seen.Include (Root);
+
                      if Is_Formal (Root) and then Scope (Root) = E then
                         null;
 
@@ -9023,28 +9032,28 @@ package body SPARK_Definition is
                                ("Modifies aspect should mention "
                                 & "overlaid object instead"));
 
+                     --  Effectively volatile objects for reading shall be
+                     --  entire objects.
+
+                     elsif Nkind (N) not in N_Expanded_Name | N_Identifier
+                       and then Is_Effectively_Volatile_For_Reading (Root)
+                     then
+                        Mark_Violation
+                          (Vio_Modifies_Volatile,
+                           N,
+                           Cont_Msg =>
+                             Create
+                               ("volatile object should be entirely "
+                                & "modified"));
+
                      --  Check that Root is an output of E
 
                      elsif not Gnat2Why_Args.Global_Gen_Mode then
-                        declare
-                           Globals : Global_Flow_Ids;
-                        begin
-                           Get_Globals
-                             (Subprogram          => E,
-                              Scope               =>
-                                (Ent => E, Part => Visible_Part),
-                              Classwide           => False,
-                              Globals             => Globals,
-                              Use_Deduced_Globals => True,
-                              Ignore_Depends      => False);
-
-                           if (for all F_Id of Globals.Outputs =>
-                                 (if F_Id.Kind = Direct_Mapping
-                                  then F_Id.Node /= Root))
-                           then
-                              Mark_Violation (Vio_Modifies_Not_Output, N);
-                           end if;
-                        end;
+                        if not Globals.Outputs.Contains
+                                 (Direct_Mapping_Id (Root, Out_View))
+                        then
+                           Mark_Violation (Vio_Modifies_Not_Output, N);
+                        end if;
                      end if;
                   end Mark_Modified_Object;
 
@@ -9052,7 +9061,18 @@ package body SPARK_Definition is
                     Pragma_Argument_Associations (Prag);
                   pragma Assert (List_Length (Assocs) = 1);
                   Clauses : constant Node_Id := Expression (First (Assocs));
+
                begin
+                  --  Get the globals of E
+
+                  Get_Globals
+                    (Subprogram          => E,
+                     Scope               => (Ent => E, Part => Visible_Part),
+                     Classwide           => False,
+                     Globals             => Globals,
+                     Use_Deduced_Globals => not Gnat2Why_Args.Global_Gen_Mode,
+                     Ignore_Depends      => False);
+
                   declare
                      Clause : Node_Id :=
                        First (Component_Associations (Clauses));
@@ -9089,6 +9109,26 @@ package body SPARK_Definition is
                         Next (Object);
                      end loop;
                   end;
+
+                  --  Go over the globals of E to make sure that all those that
+                  --  are effectively volatile for reading are mentioned in the
+                  --  Modifies aspect.
+
+                  for F_Id of To_Ordered_Flow_Id_Set (Globals.Outputs) loop
+                     if Is_Volatile_For_Reading (F_Id)
+                       and then
+                         (F_Id.Kind = Magic_String
+                          or else not Seen.Contains (F_Id.Node))
+                     then
+                        Mark_Violation
+                          (Vio_Modifies_Volatile,
+                           Prag,
+                           Cont_Msg =>
+                             Create
+                               ("& is not mentioned in the Modifies aspect",
+                                [F_Id.Node]));
+                     end if;
+                  end loop;
                end;
             end if;
 

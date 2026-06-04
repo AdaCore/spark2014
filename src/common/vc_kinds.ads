@@ -626,6 +626,7 @@ package VC_Kinds is
       Vio_Iterator_Specification,
       Vio_Loop_Variant_Structural,
       Vio_Modifies_Not_Output,
+      Vio_Modifies_Volatile,
       Vio_Overlay_Constant_Not_Imported,
       Vio_Overlay_Mutable_Constant,
       Vio_Overlay_Part_Of_Protected,
