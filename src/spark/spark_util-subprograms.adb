@@ -1580,6 +1580,14 @@ package body SPARK_Util.Subprograms is
    function Is_Simple_Shift_Or_Rotate (E : Entity_Id) return N_Op_Shift_Option
    is
       Name : constant Name_Id := Chars (E);
+      Oper : constant N_Op_Shift_Option :=
+        (case Name is
+           when Name_Shift_Right            => N_Op_Shift_Right,
+           when Name_Shift_Right_Arithmetic => N_Op_Shift_Right_Arithmetic,
+           when Name_Shift_Left             => N_Op_Shift_Left,
+           when Name_Rotate_Left            => N_Op_Rotate_Left,
+           when Name_Rotate_Right           => N_Op_Rotate_Right,
+           when others                      => N_Unused_At_Start);
    begin
       --  It is an intrinsic...
 
@@ -1590,28 +1598,17 @@ package body SPARK_Util.Subprograms is
         and then not Has_Contracts (E, Pragma_Precondition)
         and then not Has_Contracts (E, Pragma_Postcondition)
         and then not Has_Contracts (E, Pragma_Contract_Cases)
+
+        --  which corresponds to a shift or rotate...
+
+        and then Oper in N_Op_Shift
+
+        --  returning an integer
+
+        and then Has_Integer_Type (Etype (E))
+
       then
-         --  which corresponds to a shift or rotate
-
-         case Name is
-            when Name_Shift_Right            =>
-               return N_Op_Shift_Right;
-
-            when Name_Shift_Right_Arithmetic =>
-               return N_Op_Shift_Right_Arithmetic;
-
-            when Name_Shift_Left             =>
-               return N_Op_Shift_Left;
-
-            when Name_Rotate_Left            =>
-               return N_Op_Rotate_Left;
-
-            when Name_Rotate_Right           =>
-               return N_Op_Rotate_Right;
-
-            when others                      =>
-               null;
-         end case;
+         return Oper;
       end if;
 
       return N_Unused_At_Start;
