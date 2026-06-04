@@ -35,7 +35,7 @@ libst-reals-errors.adb:72:10: warning: assuming "Lemma_Rounding_Error_Add" has n
 libst-reals-errors.adb:72:10: warning: no Global contract available for "Lemma_Rounding_Error_Add" [assumed-global-null]
 libst-reals-errors.adb:75:25: info: assertion proved
 libst-reals-errors.adb:77:10: info: precondition proved
-libst-reals-errors.adb:77:28: medium: range check might fail [reason for check: input value must fit in parameter type] [provers reached step limit before completing the proof]
+libst-reals-errors.adb:77:28: info: range check proved
 libst-reals-errors.adb:77:35: info: range check proved
 libst-reals-errors.adb:95:25: info: assertion proved
 libst-reals-errors.adb:95:52: info: index check proved

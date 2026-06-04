@@ -57,8 +57,8 @@
             </proof>
           </goal>
           <goal name="def'vc.8" proved="true">
-            <proof prover="1">
-              <result status="valid" steps="4403" />
+            <proof prover="2">
+              <result status="valid" steps="9230" />
             </proof>
           </goal>
           <goal name="def'vc.9" proved="true">
@@ -82,8 +82,8 @@
             </proof>
           </goal>
           <goal name="def'vc.13" proved="true">
-            <proof prover="0">
-              <result status="valid" steps="283" />
+            <proof prover="2">
+              <result status="valid" steps="17356" />
             </proof>
           </goal>
         </transf>

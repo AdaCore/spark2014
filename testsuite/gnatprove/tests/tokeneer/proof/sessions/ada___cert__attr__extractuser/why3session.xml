@@ -77,8 +77,8 @@
             </proof>
           </goal>
           <goal name="def'vc.12" proved="true">
-            <proof prover="1">
-              <result status="valid" steps="14762" />
+            <proof prover="2">
+              <result status="valid" steps="77257" />
             </proof>
           </goal>
           <goal name="def'vc.13" proved="true">
