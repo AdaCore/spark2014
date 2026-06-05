@@ -1472,6 +1472,9 @@ package body VC_Kinds is
          when Vio_Modifies_Not_Output                      =>
            "clause of Modifies contract mentioning an object that is not an "
            & "output of the subprogram",
+         when Vio_Modifies_Volatile                        =>
+           "effectively volatile output of the subprogram not mentioned "
+           & "entirely in Modifies contract",
          when Vio_Overlay_Constant_Not_Imported            =>
            "constant object with an address clause which is not imported",
          when Vio_Overlay_Mutable_Constant                 =>
@@ -3632,6 +3635,8 @@ package body VC_Kinds is
            "loop-variant-structural",
          when Vio_Modifies_Not_Output                      =>
            "modifies-not-output",
+         when Vio_Modifies_Volatile                        =>
+           "modifies-volatile",
          when Vio_Overlay_Constant_Not_Imported            =>
            "overlay-constant-not-imported",
          when Vio_Overlay_Mutable_Constant                 =>
@@ -3906,6 +3911,9 @@ package body VC_Kinds is
          when Vio_Modifies_Not_Output                                =>
            "clause of Modifies contract mentioning an object that is not an "
            & "output of the subprogram",
+         when Vio_Modifies_Volatile                                  =>
+           "effectively volatile output of the subprogram not mentioned "
+           & "entirely in Modifies contract",
          when Vio_Overlay_Constant_Not_Imported                      =>
            "constant object with an address clause which is not imported",
          when Vio_Overlay_Mutable_Constant                           =>
