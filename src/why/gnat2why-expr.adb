@@ -18254,7 +18254,7 @@ package body Gnat2Why.Expr is
             end;
 
          when Attribute_Access                                              =>
-            if Is_Access_Subprogram_Type (Etype (Expr)) then
+            if Is_Access_Subprogram_Type (Retysp (Etype (Expr))) then
                T :=
                  Transform_Access_Attribute_Of_Subprogram
                    (Expr => Expr, Domain => Domain, Params => Params);
@@ -18266,7 +18266,7 @@ package body Gnat2Why.Expr is
                   Relaxed_Init : constant Boolean :=
                     Expr_Has_Relaxed_Init (Expr);
                   Des_Ty       : constant Entity_Id :=
-                    Directly_Designated_Type (Etype (Expr));
+                    Directly_Designated_Type (Retysp (Etype (Expr)));
                   Value_Expr   : constant W_Expr_Id :=
                     Transform_Expr
                       (Expr          => Var,
@@ -18290,7 +18290,7 @@ package body Gnat2Why.Expr is
                           & (if Relaxed_Init
                              then (1 => +True_Term)
                              else (1 .. 0 => <>)),
-                        Ty           => Etype (Expr),
+                        Ty           => Retysp (Etype (Expr)),
                         Relaxed_Init => Relaxed_Init);
 
                   --  If the access type has a direct or inherited predicate,
