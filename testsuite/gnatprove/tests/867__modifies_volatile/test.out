@@ -10,19 +10,10 @@ test.adb:26:22: error: volatile object or volatile function call in interfering 
 test.adb:44:06: error: "Prot" is not mentioned in the Modifies aspect
 test.adb:44:06: error: effectively volatile output of the subprogram not mentioned entirely in Modifies contract is not allowed in SPARK
 test.adb:44:06: error: violation of aspect SPARK_Mode at line 2
-test.adb:48:15: warning: assuming "P" always terminates
-test.adb:48:15: warning: assuming "P" has no effect on global items
-test.adb:48:15: warning: no Always_Terminates aspect available for "P" [assumed-always-terminates]
-test.adb:48:15: warning: no Global contract available for "P" [assumed-global-null]
 test.adb:52:22: error: launch "gnatprove --explain=E0004" for more information
 test.adb:52:22: error: violation of aspect SPARK_Mode at line 2
 test.adb:52:22: error: volatile object or volatile function call in interfering context is not allowed in SPARK (SPARK RM 7.1.3(9)) [E0004]
-test.adb:57:18: warning: assuming "P" always terminates
-test.adb:57:18: warning: assuming "P" has no effect on global items
-test.adb:57:18: warning: no Always_Terminates aspect available for "P" [assumed-always-terminates]
-test.adb:57:18: warning: no Global contract available for "P" [assumed-global-null]
-test.adb:66:15: warning: assuming "P" always terminates
-test.adb:66:15: warning: assuming "P" has no effect on global items
-test.adb:66:15: warning: no Always_Terminates aspect available for "P" [assumed-always-terminates]
-test.adb:66:15: warning: no Global contract available for "P" [assumed-global-null]
+test.adb:70:07: error: "Ext.Y" is not mentioned in the Modifies aspect
+test.adb:70:07: error: effectively volatile output of the subprogram not mentioned entirely in Modifies contract is not allowed in SPARK
+test.adb:70:07: error: violation of aspect SPARK_Mode at line 2
 gnatprove: error during flow analysis and proof

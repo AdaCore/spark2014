@@ -9125,8 +9125,10 @@ package body SPARK_Definition is
                            Prag,
                            Cont_Msg =>
                              Create
-                               ("& is not mentioned in the Modifies aspect",
-                                [F_Id.Node]));
+                               ('"'
+                                & Flow_Id_To_String (F_Id, Pretty => True)
+                                & '"'
+                                & " is not mentioned in the Modifies aspect"));
                      end if;
                   end loop;
                end;
