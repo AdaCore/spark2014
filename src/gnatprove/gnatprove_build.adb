@@ -547,18 +547,27 @@ package body Gnatprove_Build is
    ---------------
 
    procedure Full_Deps (Tree : Project.Tree.Object) is
+      use type GPR2.Project.View.Object;
+
       All_Units : Unit_Set;
 
-      function Namespace_Root
+      function Find_Namespace_Root
         (Unit : GPR2.Build.Compilation_Unit.Object)
          return GPR2.Project.View.Object;
-      --  Return the namespace root through which Unit is visible
+      --  Return the namespace root through which Unit is visible, or
+      --  Undefined if no namespace root exposes the unit.
 
-      --------------------
-      -- Namespace_Root --
-      --------------------
+      function Dependency
+        (Unit : GPR2.Build.Compilation_Unit.Object; Dep_Name : GPR2.Name_Type)
+         return GPR2.Build.Compilation_Unit.Object;
+      --  Return the dependency named Dep_Name in Unit's namespace. Some
+      --  units are not exposed by a namespace root in GPR2's view database.
 
-      function Namespace_Root
+      -------------------------
+      -- Find_Namespace_Root --
+      -------------------------
+
+      function Find_Namespace_Root
         (Unit : GPR2.Build.Compilation_Unit.Object)
          return GPR2.Project.View.Object is
       begin
@@ -580,30 +589,61 @@ package body Gnatprove_Build is
             end if;
          end loop;
 
-         for Cursor in
-           Tree.Iterate
-             (Status =>
-                [GPR2.Project.S_Externally_Built =>
-                   GNATCOLL.Tribooleans.False])
-         loop
+         return GPR2.Project.View.Undefined;
+      end Find_Namespace_Root;
+
+      ----------------
+      -- Dependency --
+      ----------------
+
+      function Dependency
+        (Unit : GPR2.Build.Compilation_Unit.Object; Dep_Name : GPR2.Name_Type)
+         return GPR2.Build.Compilation_Unit.Object
+      is
+         Root : constant GPR2.Project.View.Object :=
+           Find_Namespace_Root (Unit);
+      begin
+         --  The search may fail for units owned by ordinary withed projects;
+         --  GPR2 only accepts real namespace roots for unit lookup.
+         if Root.Is_Defined and then Root.Kind in GPR2.With_Object_Dir_Kind
+         then
             declare
-               View : constant GPR2.Project.View.Object :=
-                 GPR2.Project.Tree.Element (Cursor);
+               View_DB : constant GPR2.Build.View_Db.Object :=
+                 Tree.Artifacts_Database (Root);
             begin
-               if View.Kind in GPR2.With_Source_Dirs_Kind then
-                  for Candidate of View.Own_Units loop
-                     if Candidate.Name = Unit.Name
-                       and then Unit_Key (Candidate) = Unit_Key (Unit)
-                     then
-                        return Candidate.Owning_View;
-                     end if;
-                  end loop;
+               if View_DB.Source_Option >= Sources_Units
+                 and then View_DB.Has_Compilation_Unit (Dep_Name)
+               then
+                  return View_DB.Compilation_Unit (Dep_Name);
                end if;
             end;
+         end if;
+
+         for Candidate of All_Units loop
+            if Candidate.Name = Dep_Name
+              and then Candidate.Owning_View = Unit.Owning_View
+            then
+               return Candidate;
+            end if;
          end loop;
 
-         return Unit.Owning_View;
-      end Namespace_Root;
+         declare
+            Result : GPR2.Build.Compilation_Unit.Object :=
+              GPR2.Build.Compilation_Unit.Undefined;
+         begin
+            for Candidate of All_Units loop
+               if Candidate.Name = Dep_Name then
+                  if Result.Is_Defined then
+                     return GPR2.Build.Compilation_Unit.Undefined;
+                  else
+                     Result := Candidate;
+                  end if;
+               end if;
+            end loop;
+
+            return Result;
+         end;
+      end Dependency;
    begin
       --  Clear previous state
       Unit_Dependency_Graph := Unit_Graphs.Create;
@@ -633,26 +673,17 @@ package body Gnatprove_Build is
 
       --  Add edges based on Known_Dependencies
       for U of All_Units loop
-         declare
-            Root    : constant GPR2.Project.View.Object := Namespace_Root (U);
-            View_DB : constant GPR2.Build.View_Db.Object :=
-              Tree.Artifacts_Database (Root);
-         begin
-            for Dep_Name of U.Known_Dependencies loop
-               if View_DB.Source_Option >= Sources_Units
-                 and then View_DB.Has_Compilation_Unit (Dep_Name)
+         for Dep_Name of U.Known_Dependencies loop
+            declare
+               Dep : constant GPR2.Build.Compilation_Unit.Object :=
+                 Dependency (U, Dep_Name);
+            begin
+               if Dep.Is_Defined and then All_Units.Contains (Unit_Key (Dep))
                then
-                  declare
-                     Dep : constant GPR2.Build.Compilation_Unit.Object :=
-                       View_DB.Compilation_Unit (Dep_Name);
-                  begin
-                     if All_Units.Contains (Unit_Key (Dep)) then
-                        Unit_Graphs.Add_Edge (Unit_Dependency_Graph, U, Dep);
-                     end if;
-                  end;
+                  Unit_Graphs.Add_Edge (Unit_Dependency_Graph, U, Dep);
                end if;
-            end loop;
-         end;
+            end;
+         end loop;
       end loop;
 
       --  Compute transitive closure using the Close method
