@@ -553,17 +553,36 @@ project(s) only, ignoring all withed subprojects.
 
 When building a library project, |GNATprove| copies files summarizing certain
 information about the library (such as termination information and global
-effects) to the directory specified by the ``Library_Dir`` project attribute,
-or to ``Library_ALI_Dir`` if that attribute is present. These files can be
-used by |GNATprove| when analyzing projects that depend on the library.
+effects) into a ``gnatprove`` subdirectory of the library's ALI directory, that
+is, the directory specified by the ``Library_ALI_Dir`` project attribute, or
+the ``Library_Dir`` directory when ``Library_ALI_Dir`` is not set. These files
+can be used by |GNATprove| when analyzing projects that depend on the library.
 
-To copy the summary files to the library installation location when using
-`gprinstall`, the following configuration can be added to the library project
-file::
+When such a library is installed and reused as an externally built library,
+|GNATprove| looks for the summary files in the ``gnatprove`` subdirectory of
+the installed library's ALI directory. Recent versions of `gprinstall` install
+these summary files automatically: when a ``gnatprove`` subdirectory is present
+next to the library, it is copied alongside the library, with no additional
+configuration in the library project file. This automatic copy relies on the
+summary files sitting next to the library, that is, on ``Library_ALI_Dir`` not
+being set to a location separate from ``Library_Dir``.
+
+With older versions of `gprinstall` the summary files are not installed
+automatically. In that case, add an ``Install`` package to the library project
+file to copy them explicitly, for example for a library project named
+``My_Lib``::
 
    package Install is
-      for Artifacts ("lib/gnatprove") use (Project'Library_Dir & "/gnatprove/*.ali");
+      for Artifacts ("lib/my_lib/gnatprove") use
+        (My_Lib'Library_ALI_Dir & "/gnatprove/*.ali");
    end Install;
+
+The source pattern uses ``My_Lib'Library_ALI_Dir`` so that the summary files
+are picked up wherever |GNATprove| produced them, whether or not the project
+sets ``Library_ALI_Dir`` explicitly. The destination is the ``gnatprove``
+subdirectory of the directory where `gprinstall` installs the library's ALI
+files; by default this is ``lib/<library-project-name>`` under the installation
+prefix, so it must be adjusted to match the actual installation layout.
 
 Projects that depend on externally built library projects may use these
 summary files if they are present. The analysis still works even when the
