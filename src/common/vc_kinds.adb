@@ -1703,6 +1703,8 @@ package body VC_Kinds is
          when Vio_Iterable_Side_Effects             =>
            EC_Iterable_Side_Effects,
          when Vio_Iterable_Volatile                 => EC_Iterable_Volatile,
+         when Vio_Modifies_Not_Output               => EC_Modifies_Not_Output,
+         when Vio_Modifies_Volatile                 => EC_Modifies_Volatile,
          when others                                => EC_None);
 
    ---------------
