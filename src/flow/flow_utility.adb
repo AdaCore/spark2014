@@ -2427,6 +2427,7 @@ package body Flow_Utility is
         Get_Pragma (E, Pragma_Subprogram_Variant);
       Exit_Cases         : constant Node_Id :=
         Get_Pragma (E, Pragma_Exit_Cases);
+      Modifies_Spec      : constant Node_Id := Get_Pragma (E, Pragma_Modifies);
 
    begin
       if Is_Dispatching_Operation (E) then
@@ -2503,6 +2504,95 @@ package body Flow_Utility is
 
                exit when No (Exit_Case);
             end loop;
+         end;
+      end if;
+
+      --  If Modifies aspect was found then we pull guard expressions and
+      --  index expressions of the modified object.
+
+      if Present (Modifies_Spec) then
+         declare
+            procedure Process_Modified_Object (N : Node_Id);
+            --  Pull index expressions from the modified object
+
+            -----------------------------
+            -- Process_Modified_Object --
+            -----------------------------
+
+            procedure Process_Modified_Object (N : Node_Id) is
+               Expr : Node_Id;
+               Ref  : Entity_Id := N;
+            begin
+               loop
+                  case Nkind (Ref) is
+                     when N_Expanded_Name | N_Identifier                =>
+                        exit;
+
+                     when N_Selected_Component | N_Explicit_Dereference =>
+                        Ref := Prefix (Ref);
+
+                     when N_Indexed_Component                           =>
+                        Expr := First (Expressions (Ref));
+                        while Present (Expr) loop
+                           Precondition_Expressions.Append (Expr);
+                           Next (Expr);
+                        end loop;
+                        Ref := Prefix (Ref);
+
+                     when others                                        =>
+                        raise Program_Error;
+                  end case;
+               end loop;
+            end Process_Modified_Object;
+
+            Assocs : constant List_Id :=
+              Pragma_Argument_Associations (Modifies_Spec);
+            pragma Assert (List_Length (Assocs) = 1);
+
+            Clauses : constant Node_Id := Expression (First (Assocs));
+
+         begin
+
+            --  Process clauses with guards and those with multiple modified
+            --  objects.
+
+            declare
+               Clause : Node_Id := First (Component_Associations (Clauses));
+            begin
+               while Present (Clause) loop
+
+                  --  Process guard
+
+                  if Present (Expression (Clause)) then
+                     Precondition_Expressions.Append (Expression (Clause));
+                  end if;
+
+                  --  Process modified objects
+
+                  declare
+                     Object : Node_Id := First (Choices (Clause));
+                  begin
+                     loop
+                        Process_Modified_Object (Object);
+                        Next (Object);
+                        exit when No (Object);
+                     end loop;
+                  end;
+
+                  Next (Clause);
+               end loop;
+            end;
+
+            --  Process clauses with a single modified object
+
+            declare
+               Object : Node_Id := First (Expressions (Clauses));
+            begin
+               while Present (Object) loop
+                  Process_Modified_Object (Object);
+                  Next (Object);
+               end loop;
+            end;
          end;
       end if;
 

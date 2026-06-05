@@ -32,7 +32,6 @@ test_modifies.adb:84:06: info: for "State" at test_modifies.adb:36
 test_modifies.adb:84:06: info: modifies contract proved (CVC5: 2 VC; Trivial: 1 VC)
 test_modifies.adb:84:06: medium: for "State_2" at test_modifies.adb:37
 test_modifies.adb:84:06: medium: unexpected part of output might be modified by the subprogram [provers gave up before completing the proof]
-test_modifies.adb:97:33: warning: unused variable "B1"
 test_modifies.adb:98:06: info: data dependencies proved
 test_modifies.adb:98:34: warning: unused initial value of "Nested.State"
 test_modifies.adb:99:06: info: for "State_2" at test_modifies.adb:37
@@ -47,7 +46,6 @@ test_modifies.adb:138:06: info: for "Obj" at test_modifies.adb:137
 test_modifies.adb:138:06: info: modifies contract proved (CVC5: 2 VC)
 test_modifies.adb:146:06: medium: for "Obj" at test_modifies.adb:145
 test_modifies.adb:146:06: medium: unexpected part of output might be modified by the subprogram [provers reached step limit before completing the proof]
-test_modifies.adb:156:33: warning: unused variable "B1"
 test_modifies.adb:157:06: medium: for "Obj" at test_modifies.adb:156
 test_modifies.adb:157:06: medium: unexpected part of output might be modified by the subprogram [provers reached step limit before completing the proof]
 test_modifies.adb:183:06: info: for "Buf" at test_modifies.adb:181

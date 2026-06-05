@@ -1,0 +1,12 @@
+flow1.adb:8:06: info: data dependencies proved
+flow1.adb:8:29: low: unused global "X"
+flow1.adb:8:29: warning: "X" is not modified, could be INPUT
+flow1.adb:9:06: info: flow dependencies proved
+flow1.adb:10:06: info: for "X" at flow1.adb:3
+flow1.adb:10:06: info: modifies contract proved (CVC5: 2 VC; Trivial: 2 VC)
+flow1.adb:10:22: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at line 7 should mention Y in a precondition] [provers gave up before completing the proof]
+flow1.adb:10:22: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at line 7 should mention Y in a precondition] [provers gave up before completing the proof]
+flow1.adb:10:22: medium: on entry of subprogram at flow1.adb:7
+flow1.adb:10:22: medium: on return of subprogram at flow1.adb:7
+flow1.adb:17:04: high: "Y" is not initialized
+flow1.adb:17:04: high: "Z" is not initialized
