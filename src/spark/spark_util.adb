@@ -28,7 +28,6 @@ with Ada.Containers.Hashed_Maps;
 with Ada.Text_IO;
 with Casing;                      use Casing;
 with Common_Iterators;            use Common_Iterators;
-with Einfo.Utils;                 use Einfo.Utils;
 with Errout;
 with Errout_Wrapper;              use Errout_Wrapper;
 with Flow_Dependency_Maps;        use Flow_Dependency_Maps;
