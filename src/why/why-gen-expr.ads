@@ -641,17 +641,21 @@ package Why.Gen.Expr is
      (Op          : N_Binary_Op;
       Left        : W_Expr_Id;
       Right       : W_Expr_Id;
-      Left_Type   : Type_Kind_Id;
-      Right_Type  : Type_Kind_Id;
+      Left_Type   : W_Type_Id;
+      Right_Type  : W_Type_Id;
       Return_Type : Type_Kind_Id;
       Domain      : EW_Domain;
       Ada_Node    : Node_Id := Empty) return W_Expr_Id
-   with Pre => Op in N_Op_Add .. N_Op_Rem;
+   with
+     Pre =>
+       Op in N_Op_Add .. N_Op_Rem
+       and then Base_Why_Type (Left_Type) = Left_Type
+       and then Base_Why_Type (Right_Type) = Right_Type;
    --  @param Op arithmetic binary operator
    --  @param Left why expression for the left hand side
    --  @param Right why expression for the right hand side
-   --  @param Left_Type Ada Type of the left hand side
-   --  @param Right_Type Ada Type of the right hand side
+   --  @param Left_Type Why base Type of the left hand side
+   --  @param Right_Type Why base Type of the right hand side
    --  @param Return_Type Ada Type of the result of the operation
    --  @param Domain domain of the operation
    --  @param Ada_Node node associated to the operation

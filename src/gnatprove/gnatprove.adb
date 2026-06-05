@@ -89,6 +89,10 @@ procedure Gnatprove with SPARK_Mode is
    --  List of .spark files produced by Flow_Analysis_And_Proof, passed to
    --  Generate_SPARK_Report.
 
+   SPARK_Error_Files : String_Lists.List;
+   --  List of .spark_error files produced by Global_Gen actions, passed to
+   --  Generate_SPARK_Report to include frontend diagnostics.
+
    procedure Generate_SPARK_Report
      (Tree : Project.Tree.Object; Errors : Boolean);
    --  Generate the SPARK report. Set Errors to True if previous phases
@@ -134,13 +138,16 @@ procedure Gnatprove with SPARK_Mode is
       Status  : Integer;
    begin
       Spark_Report.Generate_Report
-        (Tree        => Tree,
-         Out_Dir     => Obj_Dir,
-         SPARK_Files => SPARK_Files,
-         Has_Errors  => Errors,
-         Status      => Status);
+        (Tree              => Tree,
+         Out_Dir           => Obj_Dir,
+         SPARK_Files       => SPARK_Files,
+         SPARK_Error_Files => SPARK_Error_Files,
+         Has_Errors        => Errors,
+         Status            => Status);
 
-      if not Quiet and then Configuration.Mode /= GPM_Check then
+      if Configuration.Verbosity /= Configuration.Quiet_Level
+        and then Configuration.Mode /= GPM_Check
+      then
          Ada.Text_IO.Put_Line
            ("Summary logged in " & SPARK_Report_File (Obj_Dir));
       end if;
@@ -227,7 +234,7 @@ begin
    if not Artifact_Dir (Tree).Is_Defined then
       Fail
         ("Error while loading project file: "
-         & CL_Switches.P.all
+         & Tree.Root_Project.Path_Name.String_Value
          & ": "
          & "could not determine working directory");
    end if;
@@ -264,7 +271,7 @@ begin
            when GPM_Prove | GPM_All => "flow analysis and proof");
       Success    : Boolean;
    begin
-      Flow_Analysis_And_Proof (Tree, SPARK_Files, Success);
+      Flow_Analysis_And_Proof (Tree, SPARK_Files, SPARK_Error_Files, Success);
 
       if not Success then
          Generate_SPARK_Report (Tree, Errors => True);

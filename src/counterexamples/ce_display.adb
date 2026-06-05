@@ -1344,14 +1344,25 @@ package body CE_Display is
 
             --  We have found the ultimate model type
 
-            return
-              Raw_Source_Name
-                (Get_Iterable_Type_Primitive (Cont_Typ, Name_Element))
-              & " ("
-              & Container_Name
-              & ", "
-              & R_Value
-              & ")";
+            declare
+               Element_E : constant Entity_Id :=
+                 Get_Iterable_Type_Primitive (Cont_Typ, Name_Element);
+               Prim_E    : constant Entity_Id :=
+                 (if Present (Element_E)
+                  then Element_E
+                  else
+                    Get_Iterable_Type_Primitive
+                      (Cont_Typ, Name_Constant_Reference));
+            begin
+               return
+                 Raw_Source_Name (Prim_E)
+                 & " ("
+                 & Container_Name
+                 & ", "
+                 & R_Value
+                 & ")"
+                 & (if Present (Element_E) then "" else ".all");
+            end;
          end if;
       end Refine_Container_Iterator_Value;
 

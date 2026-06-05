@@ -51,11 +51,11 @@ untangle_tests.adb:40:10: info: index check proved (CVC5: 2 VC)
 untangle_tests.adb:44:04: warning: analyzing unreferenced procedure "Sieve" [unreferenced-procedure]
 untangle_tests.adb:44:21: info: initialization of "P" proved
 untangle_tests.adb:46:07: info: initialization of "N" proved
-untangle_tests.adb:51:46: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+untangle_tests.adb:51:46: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
 untangle_tests.adb:55:19: info: index check proved (CVC5: 2 VC)
 untangle_tests.adb:56:23: info: overflow check proved (CVC5: 2 VC)
 untangle_tests.adb:63:04: warning: analyzing unreferenced procedure "Transform" [unreferenced-procedure]
-untangle_tests.adb:67:51: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+untangle_tests.adb:67:51: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
 untangle_tests.adb:68:26: info: unrolling loop [info-unrolling-inlining]
 untangle_tests.adb:69:60: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: loop at line 67 should mention V and TL in a loop invariant] [provers reached step limit before completing the proof]
 untangle_tests.adb:70:60: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: loop at line 67 should mention V and TL in a loop invariant] [provers reached step limit before completing the proof]

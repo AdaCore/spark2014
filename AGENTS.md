@@ -14,7 +14,7 @@ Assume the environment is already set up.
 - Format Ada code with `make format`; verify formatting with `make check-format`.
 - Run tests from `testsuite/gnatprove/` with `./run-tests`.
 - Useful test commands:
-  - `./run-tests <test_name>`
+  - `./run-tests <test_name1> <test_name2> ...`
   - `./run-tests -j8`
   - `./run-tests --discriminants=large`
   - `./run-tests <test_name> -d temp` to keep the generated work directory for manual inspection

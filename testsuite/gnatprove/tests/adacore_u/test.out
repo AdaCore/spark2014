@@ -7,7 +7,7 @@ global_stack.ads:4:12: error: consider using the Side_Effects aspect
 global_stack.ads:4:12: error: function "Pop" with output global "Top" is not allowed in SPARK (SPARK RM 6.1(6)) [E0005]
 global_stack.ads:4:12: error: launch "gnatprove --explain=E0005" for more information
 global_stack.ads:4:12: error: violation of aspect SPARK_Mode at line 1
-search_array.adb:7:24: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+search_array.adb:7:24: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
 search_array.adb:9:20: info: range check proved (CVC5: 2 VC)
 search_array.adb:12:07: medium: unexpected exception might be raised [reason for check: "Search_Zero_P" allows propagating no exceptions] [possible explanation: "Not_Found" might be unexpectedly raised] [provers reached step limit before completing the proof]
 search_array.ads:5:13: info: implicit aspect Always_Terminates on "Search_Zero_P" has been proved, subprogram will terminate
@@ -20,16 +20,16 @@ p.adb:14:16: info: index check proved (CVC5: 2 VC)
 p.adb:16:16: info: index check proved (CVC5: 2 VC)
 p.adb:16:25: info: index check proved (CVC5: 2 VC)
 p.adb:16:28: info: overflow check proved (CVC5: 2 VC)
-p.adb:20:24: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+p.adb:20:24: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
 p.adb:22:31: info: index check proved (CVC5: 2 VC)
 p.adb:22:31: info: overflow check proved (CVC5: 2 VC)
 p.adb:24:10: info: precondition proved (CVC5: 2 VC)
-p.adb:33:24: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+p.adb:33:24: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
 p.adb:54:33: info: loop invariant initialization proved (CVC5: 1 VC)
 p.adb:54:33: info: loop invariant preservation proved (CVC5: 1 VC)
 p.adb:54:65: info: index check proved (CVC5: 4 VC)
 p.adb:56:07: info: only expected exception raised (CVC5: 1 VC)
-p.adb:63:24: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+p.adb:63:24: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
 p.adb:65:20: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 p.adb:70:14: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 p.adb:76:07: info: initialization of "End_Of_Seq" proved
@@ -48,7 +48,7 @@ p.adb:107:33: info: loop invariant initialization proved (CVC5: 2 VC)
 p.adb:107:33: info: loop invariant preservation proved (CVC5: 2 VC)
 p.adb:107:43: info: overflow check proved (CVC5: 4 VC)
 p.adb:108:10: info: precondition proved (CVC5: 4 VC)
-p.adb:118:24: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+p.adb:118:24: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
 p.adb:119:19: info: range check proved (CVC5: 2 VC)
 p.adb:124:37: info: index check proved (CVC5: 2 VC)
 p.adb:126:10: info: index check proved (CVC5: 2 VC)
@@ -57,7 +57,7 @@ p.adb:127:10: info: index check proved (CVC5: 2 VC)
 p.adb:131:07: info: initialization of "A" proved
 p.adb:131:07: info: range check proved (CVC5: 2 VC)
 p.adb:134:34: info: overflow check proved (CVC5: 2 VC)
-p.adb:134:38: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+p.adb:134:38: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
 p.adb:135:10: info: precondition proved (CVC5: 5 VC)
 p.adb:135:24: info: overflow check proved (CVC5: 2 VC)
 p.ads:6:28: medium: "Result" might not be initialized in "Search_Array" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize "Result" on all paths or make "Result" an IN OUT parameter]

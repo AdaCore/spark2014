@@ -171,7 +171,8 @@ set-length-aggregates - set-length-aggregates - A type with predefined set aggre
 predefined-equality-null - predefined-equality-null - A type is annotated with Only_Null as value for the Predefined_Equality annotation, but no constant annotated with Null_Value is found; this will result in all calls to the predefined equality being rejected - EASY
 init-cond-ignored - init-cond-ignored - The initial condition of a withed package might be ignored if it is not known to be true, due to elaboration order - EASY
 unit-not-spark - unit-not-spark - A unit whose analysis has been requested on the command-line is not annotated with SPARK_Mode Pragma - EASY
-info-unrolling-inlining - info-unrolling-inlining - These messages are issued when the tool is unrolling loops or inlining subprograms, or unable to do so - EASY
+unrolling-inlining-failures - unrolling-inlining-failures - These warnings are issued when the tool is unable to unroll a loop or perform contextual analysis of a subprogram - EASY
+info-unrolling-inlining - info-unrolling-inlining - These messages are issued when the tool is unrolling loops or performing contextual analysis of subprograms - EASY
 [Annotation error categories]
 incorrect-use-of-gnatprove - incorrect-use-of-gnatprove - incorrect use of pragma Annotate (GNATprove, ...) - HIGH
 incorrect-use-of-false_positive - incorrect-use-of-false_positive - incorrect use of pragma Annotate (GNATprove, False_Positive, ...) - HIGH
@@ -334,6 +335,9 @@ violation-aggregate-globals - violation-aggregate-globals - subprogram associate
 violation-aggregate-side-effects - violation-aggregate-side-effects - subprogram with side effects associated with aspect Aggregate - HIGH
 violation-aggregate-volatile - violation-aggregate-volatile - volatile function associated with aspect Aggregate - HIGH
 violation-assert-and-cut-context - violation-assert-and-cut-context - pragma Assert_And_Cut outside a sequence of statements - HIGH
+violation-at-attribute-allocation - violation-at-attribute-allocation - reference to the At attribute on a prefix subject to ownership occuring outside of a pragma or a constant part of an object - HIGH
+violation-at-attribute-assert-and-cut - violation-at-attribute-assert-and-cut - reference to the At attribute referencing a label located before an Assert_And_Cut pragma - HIGH
+violation-at-attribute-loop-invariant - violation-at-attribute-loop-invariant - reference to the At attribute referencing a label located before a loop invariant or variant - HIGH
 violation-backward-goto - violation-backward-goto - backward goto statement - HIGH
 violation-box-notation-without-init - violation-box-notation-without-init - box notation without default or relaxed initialization - HIGH
 violation-code-statement - violation-code-statement - code statement - HIGH
@@ -352,6 +356,7 @@ violation-function-out-param - violation-function-out-param - function with out 
 violation-ghost-concurrent-comp - violation-ghost-concurrent-comp - concurrent component of ghost type - HIGH
 violation-ghost-volatile - violation-ghost-volatile - volatile ghost object - HIGH
 violation-handler-choice-parameter - violation-handler-choice-parameter - choice parameter in handler - HIGH
+violation-intrinsic-operator - violation-intrinsic-operator - Intrinsic convention on arithmetic operator with unexpected profile - HIGH
 violation-invariant-class - violation-invariant-class - classwide invariant - HIGH
 violation-invariant-ext - violation-invariant-ext - type invariant on completion of private_type_extension - HIGH
 violation-invariant-partial - violation-invariant-partial - type invariant on private_type_declaration or private_type_extension - HIGH
@@ -382,8 +387,8 @@ violation-ownership-anonymous-component - violation-ownership-anonymous-componen
 violation-ownership-deallocate-general - violation-ownership-deallocate-general - instance of Unchecked_Deallocation with a general access type - HIGH
 violation-ownership-different-branches - violation-ownership-different-branches - observe of a conditional or case expression with branches rooted in different objects - HIGH
 violation-ownership-duplicate-aggregate-value - violation-ownership-duplicate-aggregate-value - duplicate value of a type with ownership - HIGH
-violation-ownership-loop-entry-old-copy - violation-ownership-loop-entry-old-copy - prefix of Loop_Entry or Old attribute introducing aliasing - HIGH
-violation-ownership-loop-entry-old-traversal - violation-ownership-loop-entry-old-traversal - traversal function call as a prefix of Loop_Entry or Old attribute - HIGH
+violation-ownership-loop-entry-old-at-copy - violation-ownership-loop-entry-old-at-copy - prefix of Loop_Entry, Old, or At attribute introducing aliasing - HIGH
+violation-ownership-loop-entry-old-at-traversal - violation-ownership-loop-entry-old-at-traversal - traversal function call as a prefix of Loop_Entry, Old, or At attribute - HIGH
 violation-ownership-move-constant-part - violation-ownership-move-constant-part - access-to-constant part of an object as source of move - HIGH
 violation-ownership-move-in-declare - violation-ownership-move-in-declare - move in declare expression - HIGH
 violation-ownership-move-not-name - violation-ownership-move-not-name - expression as source of move - HIGH

@@ -1,0 +1,99 @@
+test.adb:5:04: warning: analyzing unreferenced procedure "Test_OK" [unreferenced-procedure]
+test.adb:5:14: warning: subprogram "Test_OK" has no effect
+test.adb:11:22: info: assertion proved (CVC5: 1 VC)
+test.adb:14:04: warning: analyzing unreferenced procedure "Test_RTE" [unreferenced-procedure]
+test.adb:14:14: warning: subprogram "Test_RTE" has no effect
+test.adb:19:22: medium: assertion might fail (e.g. when X = 0) [provers reached step limit before completing the proof]
+test.adb:19:33: medium: divide by zero might fail (e.g. when X = 0) [provers gave up before completing the proof]
+test.adb:22:04: warning: analyzing unreferenced procedure "Test_Multiple" [unreferenced-procedure]
+test.adb:22:14: warning: subprogram "Test_Multiple" has no effect
+test.adb:34:22: info: assertion proved (CVC5: 1 VC)
+test.adb:35:22: info: assertion proved (CVC5: 1 VC)
+test.adb:36:22: info: assertion proved (CVC5: 1 VC)
+test.adb:37:22: info: assertion proved (CVC5: 1 VC)
+test.adb:38:22: info: assertion proved (CVC5: 1 VC)
+test.adb:41:04: warning: analyzing unreferenced procedure "Test_Assert_And_Cut" [unreferenced-procedure]
+test.adb:41:14: warning: subprogram "Test_Assert_And_Cut" has no effect
+test.adb:49:22: info: assertion proved (CVC5: 1 VC)
+test.adb:50:22: info: assertion proved (CVC5: 1 VC)
+test.adb:51:22: info: assertion proved (CVC5: 1 VC)
+test.adb:52:30: info: assertion proved (CVC5: 1 VC)
+test.adb:57:22: info: assertion proved (CVC5: 1 VC)
+test.adb:58:22: info: assertion proved (CVC5: 1 VC)
+test.adb:59:22: info: assertion proved (CVC5: 1 VC)
+test.adb:60:22: info: assertion proved (CVC5: 1 VC)
+test.adb:63:04: warning: analyzing unreferenced procedure "Test_Goto" [unreferenced-procedure]
+test.adb:63:14: warning: subprogram "Test_Goto" has no effect
+test.adb:71:25: info: assertion proved (CVC5: 1 VC)
+test.adb:72:25: info: assertion proved (CVC5: 1 VC)
+test.adb:78:25: info: assertion proved (CVC5: 1 VC)
+test.adb:79:25: info: assertion proved (CVC5: 1 VC)
+test.adb:86:22: info: assertion proved (CVC5: 1 VC)
+test.adb:87:22: info: assertion proved (CVC5: 1 VC)
+test.adb:88:22: info: assertion proved (CVC5: 1 VC)
+test.adb:95:04: warning: analyzing unreferenced procedure "Test_Potentially_Invalid" [unreferenced-procedure]
+test.adb:95:40: warning: unused initial value of "X"
+test.adb:107:35: medium: assertion might fail, cannot prove X1.F'Valid (e.g. when X1 = (F => ?, G => 1) and X1.F'Valid = False and X1.G'Valid = True) [possible fix: subprogram at line 95 should mention X in a precondition] [provers reached step limit before completing the proof]
+test.adb:108:25: info: assertion proved (CVC5: 1 VC)
+test.adb:110:22: info: assertion proved (CVC5: 1 VC)
+test.adb:110:31: info: validity check proved (CVC5: 1 VC)
+test_at_end_borrow.adb:18:13: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
+test_at_end_borrow.adb:18:13: warning: "Length" is recursive; its implicit contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
+test_at_end_borrow.adb:19:24: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+test_at_end_borrow.adb:19:31: info: predicate check proved (Trivial: 1 VC)
+test_at_end_borrow.adb:19:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+test_at_end_borrow.adb:19:35: info: predicate check proved (Trivial: 1 VC)
+test_at_end_borrow.adb:19:35: info: subprogram variant proved (Trivial)
+test_at_end_borrow.adb:19:44: info: pointer dereference check proved (CVC5: 1 VC)
+test_at_end_borrow.adb:22:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
+test_at_end_borrow.adb:22:89: info: dynamic accessibility check proved (Trivial)
+test_at_end_borrow.adb:32:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
+test_at_end_borrow.adb:32:13: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
+test_at_end_borrow.adb:32:16: info: predicate check proved (Trivial: 2 VC)
+test_at_end_borrow.adb:32:38: info: predicate check proved (Trivial: 2 VC)
+test_at_end_borrow.adb:33:18: info: predicate check proved (Trivial: 2 VC)
+test_at_end_borrow.adb:33:67: info: predicate check proved (Trivial: 2 VC)
+test_at_end_borrow.adb:35:11: info: pointer dereference check proved (CVC5: 1 VC)
+test_at_end_borrow.adb:36:16: info: pointer dereference check proved (CVC5: 1 VC)
+test_at_end_borrow.adb:41:28: info: assertion proved (CVC5: 1 VC)
+test_at_end_borrow.adb:41:29: info: pointer dereference check proved (CVC5: 1 VC)
+test_at_end_borrow.adb:43:25: info: assertion proved (CVC5: 1 VC)
+test_at_end_borrow.adb:43:25: info: predicate check proved (Trivial: 1 VC)
+test_at_end_borrow.adb:43:63: info: predicate check proved (Trivial: 1 VC)
+test_at_end_borrow.adb:43:85: info: predicate check proved (Trivial: 1 VC)
+test_loop.adb:17:13: info: implicit aspect Always_Terminates on "Sum" has been proved, subprogram will terminate
+test_loop.adb:17:13: warning: "Sum" is recursive; its body and contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
+test_loop.adb:20:25: info: overflow check proved (CVC5: 2 VC)
+test_loop.adb:20:27: info: subprogram variant proved (CVC5: 1 VC)
+test_loop.adb:20:53: info: range check proved (CVC5: 1 VC)
+test_loop.adb:25:10: info: postcondition proved (CVC5: 1 VC)
+test_loop.adb:25:48: info: range check proved (CVC5: 2 VC)
+test_loop.adb:27:13: info: implicit aspect Always_Terminates on "Sum" has been proved, subprogram will terminate
+test_loop.adb:34:08: info: data dependencies proved
+test_loop.adb:38:32: info: postcondition proved (CVC5: 1 VC)
+test_loop.adb:43:10: info: precondition proved (CVC5: 1 VC)
+test_loop.adb:43:10: info: subprogram variant proved (CVC5: 1 VC)
+test_loop.adb:43:45: info: range check proved (CVC5: 1 VC)
+test_loop.adb:50:08: info: data dependencies proved
+test_loop.adb:55:30: info: postcondition proved (CVC5: 1 VC)
+test_loop.adb:56:50: info: overflow check proved (CVC5: 2 VC)
+test_loop.adb:56:61: info: overflow check proved (CVC5: 2 VC)
+test_loop.adb:62:10: info: precondition proved (CVC5: 1 VC; Trivial: 1 VC)
+test_loop.adb:62:10: info: subprogram variant proved (CVC5: 1 VC)
+test_loop.adb:62:48: info: range check proved (CVC5: 1 VC)
+test_loop.adb:66:13: info: implicit aspect Always_Terminates on "Char_Counts" has been proved, subprogram will terminate
+test_loop.adb:67:14: info: postcondition proved (CVC5: 2 VC)
+test_loop.adb:68:48: info: range check proved (CVC5: 2 VC)
+test_loop.adb:69:44: info: range check proved (CVC5: 2 VC)
+test_loop.adb:74:07: info: precondition proved (CVC5: 1 VC)
+test_loop.adb:77:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
+test_loop.adb:77:51: info: range check proved (CVC5: 4 VC)
+test_loop.adb:78:10: info: precondition proved (CVC5: 2 VC; Trivial: 2 VC)
+test_loop.adb:79:33: info: loop invariant initialization proved (CVC5: 1 VC)
+test_loop.adb:79:33: info: loop invariant preservation proved (CVC5: 1 VC)
+test_loop.adb:80:51: info: overflow check proved (CVC5: 4 VC)
+test_loop.adb:80:65: info: overflow check proved (CVC5: 4 VC)
+test_loop.adb:81:33: info: loop invariant initialization proved (CVC5: 1 VC)
+test_loop.adb:81:33: info: loop invariant preservation proved (CVC5: 1 VC)
+test_loop.adb:81:50: info: overflow check proved (CVC5: 4 VC)
+test_loop.adb:81:64: info: overflow check proved (CVC5: 4 VC)

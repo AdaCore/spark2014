@@ -216,7 +216,7 @@ test_set.adb:416:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_set.adb:417:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_set.adb:419:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:421:08: info: precondition proved (CVC5: 1 VC)
-test_set.adb:426:25: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+test_set.adb:426:25: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
 test_set.adb:427:10: medium: precondition might fail, cannot prove Length (Container) < Count_Type'Last [possible fix: loop at line 426 should mention L in a loop invariant] [provers reached step limit before completing the proof]
 test_set.ads:15:13: info: implicit aspect Always_Terminates on "My_Lt" has been proved, subprogram will terminate
 test_set.ads:16:12: info: postcondition proved (CVC5: 2 VC)

@@ -134,7 +134,6 @@ fixed_lower_bound_types_and_objects.adb:78:04: warning: in inlined body at line 
 fixed_lower_bound_types_and_objects.adb:78:04: warning: in inlined body at line 39
 fixed_lower_bound_types_and_objects.adb:78:04: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 fixed_lower_bound_types_and_objects.adb:78:04: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
-fixed_lower_bound_types_and_objects.adb:78:16: high: "A_0_7" is not initialized
 fixed_lower_bound_types_and_objects.adb:79:04: info: analyzing call to "Proc_FLB_0" in context
 fixed_lower_bound_types_and_objects.adb:79:04: warning: in inlined body at line 38
 fixed_lower_bound_types_and_objects.adb:79:04: warning: in inlined body at line 39
@@ -167,7 +166,6 @@ fixed_lower_bound_types_and_objects.adb:86:04: warning: in inlined body at line 
 fixed_lower_bound_types_and_objects.adb:86:04: warning: in inlined body at line 62
 fixed_lower_bound_types_and_objects.adb:86:04: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 fixed_lower_bound_types_and_objects.adb:86:04: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
-fixed_lower_bound_types_and_objects.adb:86:17: high: "All_Colors" is not initialized
 fixed_lower_bound_types_and_objects.adb:87:04: info: analyzing call to "Proc_Colors" in context
 fixed_lower_bound_types_and_objects.adb:87:04: warning: in inlined body at line 61
 fixed_lower_bound_types_and_objects.adb:87:04: warning: in inlined body at line 62
@@ -195,7 +193,6 @@ fixed_lower_bound_types_and_objects.adb:91:04: warning: in inlined body at line 
 fixed_lower_bound_types_and_objects.adb:91:04: warning: in inlined body at line 62
 fixed_lower_bound_types_and_objects.adb:91:04: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 fixed_lower_bound_types_and_objects.adb:91:04: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
-fixed_lower_bound_types_and_objects.adb:91:17: high: "A_Red_Blue" is not initialized
 fixed_lower_bound_types_and_objects.adb:92:04: info: analyzing call to "Proc_Colors" in context
 fixed_lower_bound_types_and_objects.adb:92:04: warning: in inlined body at line 61
 fixed_lower_bound_types_and_objects.adb:92:04: warning: in inlined body at line 62
@@ -347,7 +344,6 @@ flb_multidimensional_subtypes.adb:45:04: warning: references to the "Image" attr
 flb_multidimensional_subtypes.adb:45:04: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 flb_multidimensional_subtypes.adb:45:04: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 flb_multidimensional_subtypes.adb:45:04: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
-flb_multidimensional_subtypes.adb:45:16: high: "A_FLB_0_7_x_0_12" is not initialized
 flb_multidimensional_subtypes.adb:45:16: info: range check proved (CVC5: 1 VC)
 flb_multidimensional_subtypes.adb:46:04: info: analyzing call to "Proc_FLB_0" in context
 flb_multidimensional_subtypes.adb:46:04: warning: in inlined body at line 15
@@ -358,7 +354,6 @@ flb_multidimensional_subtypes.adb:46:04: warning: references to the "Image" attr
 flb_multidimensional_subtypes.adb:46:04: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 flb_multidimensional_subtypes.adb:46:04: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 flb_multidimensional_subtypes.adb:46:04: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
-flb_multidimensional_subtypes.adb:46:16: high: "A10_x_20" is not initialized
 flb_multidimensional_subtypes.adb:46:16: info: range check proved (CVC5: 2 VC)
 flb_multidimensional_subtypes.adb:47:04: info: analyzing call to "Proc_FLB_0" in context
 flb_multidimensional_subtypes.adb:47:04: warning: in inlined body at line 15
@@ -369,7 +364,6 @@ flb_multidimensional_subtypes.adb:47:04: warning: references to the "Image" attr
 flb_multidimensional_subtypes.adb:47:04: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 flb_multidimensional_subtypes.adb:47:04: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 flb_multidimensional_subtypes.adb:47:04: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
-flb_multidimensional_subtypes.adb:47:16: high: "A_2_7_x_0_11" is not initialized
 flb_multidimensional_subtypes.adb:47:16: info: range check proved (CVC5: 2 VC)
 flb_multidimensional_subtypes.adb:49:04: info: analyzing call to "Proc_FLB_1" in context
 flb_multidimensional_subtypes.adb:49:04: warning: in inlined body at line 27
@@ -399,5 +393,4 @@ flb_multidimensional_subtypes.adb:51:04: warning: references to the "Image" attr
 flb_multidimensional_subtypes.adb:51:04: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 flb_multidimensional_subtypes.adb:51:04: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 flb_multidimensional_subtypes.adb:51:04: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
-flb_multidimensional_subtypes.adb:51:16: high: "A_1_5_x_3_16" is not initialized
 flb_multidimensional_subtypes.adb:51:16: info: range check proved (CVC5: 2 VC)

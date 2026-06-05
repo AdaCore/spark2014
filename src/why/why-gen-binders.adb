@@ -728,7 +728,7 @@ package body Why.Gen.Binders is
         and then Is_Mutable_In_Why (E)
         and then Is_Elementary_Type (Ty)
         and then Obj_Has_Relaxed_Init (E)
-        and then Ekind (E) in E_Variable | E_Out_Parameter;
+        and then Ekind (E) in E_Variable | E_Out_Parameter | E_Loop_Parameter;
       --  We only need an initialization flag for variables and out parameters
       --  of elementary types.
       Needs_Valid_Flag : constant Boolean := Is_Potentially_Invalid (E);

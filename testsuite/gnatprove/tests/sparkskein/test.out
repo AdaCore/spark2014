@@ -95,7 +95,7 @@ skein.adb:538:13: warning: initialization of an array in FOR loop is handled imp
 skein.adb:542:17: info: add a contract to analyze it separately from calling contexts
 skein.adb:542:17: info: local subprogram "Update_Context" only analyzed in the context of calls [info-unrolling-inlining]
 skein.adb:555:11: info: range check proved
-skein.adb:555:66: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+skein.adb:555:66: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
 skein.adb:558:31: info: range check proved
 skein.adb:565:13: info: analyzing call to "Initialize_Key_Schedule" in context
 skein.adb:565:13: info: in inlined body at line 312
@@ -188,7 +188,7 @@ skein.adb:802:12: info: length check proved
 skein.adb:802:15: info: predicate check proved
 skein.adb:802:15: info: range check proved
 skein.adb:806:10: info: analyzing call to "Zero_Pad" in context
-skein.adb:806:10: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+skein.adb:806:10: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
 skein.adb:806:10: info: in inlined body at line 782
 skein.adb:812:07: info: precondition proved
 skein.adb:813:51: info: predicate check proved
@@ -220,7 +220,7 @@ skein.adb:844:10: info: precondition proved
 skein.adb:845:54: info: predicate check proved
 skein.adb:845:54: info: range check proved
 skein.adb:857:10: info: analyzing call to "Put_64_LSB_First" in context
-skein.adb:857:10: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+skein.adb:857:10: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
 skein.adb:857:10: info: in inlined body at line 221
 skein.adb:857:10: warning: in inlined body at line 222
 skein.adb:857:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]

@@ -1,0 +1,2 @@
+NT SKIP test only suitable for x86_64-linux
+aarch64-linux SKIP test only suitable fox x86_64-linux

@@ -126,6 +126,7 @@ package Errout_Wrapper is
       Tag           : Unbounded_String;
       Severity      : Msg_Severity;
       Span          : Source_Span;
+      Source_File   : Source_File_Index := No_Source_File;
       E             : Entity_Id := Empty;
       Msg           : Message;
       Details       : Unbounded_String;

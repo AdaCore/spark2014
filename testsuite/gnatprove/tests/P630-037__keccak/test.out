@@ -86,9 +86,9 @@ keccak-keccak_1600.ads:45:04: warning: initialization of a multi-dimensional arr
 keccak-keccak_1600.ads:45:04: warning: initialization of a multi-dimensional array in nested FOR loops is handled imprecisely [multidimensional-array-init]
 keccak-keccak_1600.ads:45:04: warning: initialization of a multi-dimensional array in nested FOR loops is handled imprecisely [multidimensional-array-init]
 keccak-keccak_1600.ads:45:04: warning: initialization of a multi-dimensional array in nested FOR loops is handled imprecisely [multidimensional-array-init]
-keccak-keccak_1600.ads:53:04: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+keccak-keccak_1600.ads:53:04: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
 keccak-keccak_1600.ads:53:04: info: in instantiation at keccak-keccakf-permutation.adb:35
-keccak-keccak_1600.ads:55:04: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+keccak-keccak_1600.ads:55:04: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
 keccak-keccak_1600.ads:55:04: info: in instantiation at keccak-keccakf-byte_lanes.adb:116
 keccak-keccak_1600.ads:55:04: info: in instantiation at keccak-keccakf-byte_lanes.adb:55
 keccak-keccak_1600.ads:55:04: info: in instantiation at keccak-keccakf-byte_lanes.adb:79

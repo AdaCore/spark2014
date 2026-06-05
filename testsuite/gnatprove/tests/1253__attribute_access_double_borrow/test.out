@@ -1,0 +1,3 @@
+main.adb:10:30: error: object was borrowed at line 9
+main.adb:11:46: error: object was borrowed at line 9
+gnatprove: error during flow analysis and proof

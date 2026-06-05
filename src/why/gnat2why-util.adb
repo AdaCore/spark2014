@@ -26,6 +26,7 @@
 with Ada.Strings;               use Ada.Strings;
 with Ada.Strings.Fixed;         use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
+with Ada.Text_IO;
 with Ada.Unchecked_Deallocation;
 with Atree;
 with Flow_Types;
@@ -298,6 +299,763 @@ package body Gnat2Why.Util is
       Map.Insert (Key => From, Position => Position, Inserted => Ignored);
       Map (Position).Include (To);
    end Add_To_Graph;
+
+   -----------------------
+   -- Association_Trees --
+   -----------------------
+
+   package body Association_Trees is
+
+      -----------------------
+      -- Local Subprograms --
+      -----------------------
+
+      procedure Free is new
+        Ada.Unchecked_Deallocation (Write_Status, Write_Status_Access);
+
+      --  Constructors for writes
+
+      function Partial_Write return Write_Type
+      is (Write_Type'(Kind => Partial));
+      --  PARTIAL
+
+      function Discard_Write return Write_Type
+      is (Write_Type'(Kind => Preserved));
+      --  PRESERVED
+
+      function New_Write (Value : Value_Type) return Write_Type
+      is (Write_Type'(Entire, Value));
+      --  ENTIRE: Expr
+
+      function Record_Access
+        (Prefix : Write_Type; Field : Entity_Id) return Write_Type
+      is (case Prefix.Kind is
+            when Partial   => raise Program_Error,
+            when Preserved => Prefix,
+            when Entire    => (Entire, Record_Access (Prefix.Value, Field)));
+      --  Generate ENTIRE: Prefix.Field if Prefix is of entirely updated and
+      --  PRESERVED if it is preserved.
+
+      function Array_Access
+        (Prefix : Write_Type; Index : Positive) return Write_Type
+      is (case Prefix.Kind is
+            when Partial   => raise Program_Error,
+            when Preserved => Prefix,
+            when Entire    => (Entire, Array_Access (Prefix.Value, Index)));
+      --  Generate ENTIRE: Prefix (Index) if Prefix is of entirely updated and
+      --  PRESERVED if it is preserved.
+
+      function Designated_Data_Access (Prefix : Write_Type) return Write_Type
+      is (case Prefix.Kind is
+            when Partial   => raise Program_Error,
+            when Preserved => Prefix,
+            when Entire    => (Entire, Designated_Data_Access (Prefix.Value)));
+      --  Generate ENTIRE: Prefix.all if Prefix is of entirely updated and
+      --  PRESERVED if it is preserved.
+
+      procedure Insert_Access_Association
+        (Writes       : not null Write_Status_Access;
+         Ada_Node     : Node_Id;
+         Status       : Write_Type;
+         Unfold       : Boolean;
+         Local_Writes : out not null Write_Status_Access)
+      with
+        Pre  => Writes.Kind = Designated_Data,
+        Post =>
+          Local_Writes.Values.Last_Element.Status = Status
+          and then (if Unfold then Local_Writes.Kind /= Entire_Object);
+      --  Extend the last branch of Writes with an update to its designated
+      --  value with the status Status. Local_Writes is set to the subtree of
+      --  Writes for the designated data after the call.
+      --  If Unfold is True, also unfold Local_Writes so it can be further
+      --  extended.
+
+      procedure Insert_Array_Association
+        (Writes       : not null Write_Status_Access;
+         Ada_Node     : Node_Id;
+         Choice       : Node_Id;
+         Status       : Write_Type;
+         Unfold       : Boolean;
+         Local_Writes : out not null Write_Status_Access)
+      with
+        Pre  => Writes.Kind = Array_Components,
+        Post =>
+          Local_Writes.Values.Last_Element.Status = Status
+          and then (if Unfold then Local_Writes.Kind /= Entire_Object);
+      --  Extend the last branch of Writes with an update to an array component
+      --  indexed by Choice with the status Status. Local_Writes is set to the
+      --  subtree of Writes for array components after the call.
+      --  If Unfold is True, also unfold Local_Writes so it can be further
+      --  extended.
+
+      procedure Insert_Record_Association
+        (Writes       : not null Write_Status_Access;
+         Ada_Node     : Node_Id;
+         Field        : Entity_Id;
+         Status       : Write_Type;
+         Unfold       : Boolean;
+         Local_Writes : out not null Write_Status_Access)
+      with
+        Pre  => Writes.Kind = Record_Components,
+        Post =>
+          Local_Writes.Values.Last_Element.Status = Status
+          and then (if Unfold then Local_Writes.Kind /= Entire_Object);
+      --  Add a constrained value with the choices of the last value of Writes
+      --  and the status Status to the subtree associated to a record component
+      --  Field in Writes. Also propagate the last constrained value of Writes
+      --  to the potential other components of Writes.
+      --  Local_Writes is set to the subtree of Writes associated to Field
+      --  after the call.
+      --  If Unfold is True, also unfold Local_Writes so it can be further
+      --  extended.
+
+      procedure Propagate
+        (Writes    : not null Write_Status_Access;
+         Guard     : Opt_N_Subexpr_Id;
+         Choices   : Choice_Array;
+         Status    : Write_Type;
+         Skip_Root : Boolean := False)
+      with Pre => Status.Kind /= Partial;
+      --  Propagate constrained value (Choices, Status) to subtrees of Writes.
+      --  If Skip_Root is True, do not add the constrained value to the root of
+      --  the tree.
+
+      procedure Insert_Association_Internal
+        (Writes       : in out not null Write_Status_Access;
+         Deep_Access  : Node_Id;
+         Status       : Write_Type;
+         Unfold       : Boolean;
+         Local_Writes : out not null Write_Status_Access)
+      with
+        Pre  => Status.Kind /= Preserved,
+        Post =>
+          Local_Writes.Values.Last_Element.Status = Status
+          and then (if Unfold then Local_Writes.Kind /= Entire_Object);
+      --  Create a branch for an association Deep_Access => Status in Writes.
+      --  PARTIAL is associated to prefixes of Deep_Access and PRESERVED is
+      --  propagated to their siblings. Local_Writes is set to the subtree of
+      --  Writes associated to Deep_Access after the call. Only the root of
+      --  Local_Writes has been updated with Value. It has not been propagated
+      --  to its subtrees. If Unfold is True, also unfold Local_Writes so it
+      --  can be further extended.
+
+      procedure Unfold_Tree (Writes : in out not null Write_Status_Access);
+      --  Unfold a folded subtree depending on its type
+
+      ------------
+      -- Create --
+      ------------
+
+      procedure Create (Ty : Entity_Id; Writes : out Write_Status_Access) is
+      begin
+         Writes :=
+           new Write_Status'
+             (Kind   => Entire_Object,
+              Ty     => Retysp (Ty),
+              Values => Constrained_Value_Vectors.Empty);
+         Unfold_Tree (Writes);
+      end Create;
+
+      --------------
+      -- Finalize --
+      --------------
+
+      procedure Finalize (Writes : in out Write_Status_Access) is
+      begin
+         for Value of Writes.Values loop
+            if Value.Status.Kind = Entire then
+               declare
+                  P : Value_Type := Value.Status.Value;
+               begin
+                  Free (P);
+                  pragma
+                    Annotate
+                      (GNATSAS,
+                       False_Positive,
+                       "use after free",
+                       "Value is only freed through one owner");
+               end;
+            end if;
+         end loop;
+
+         case Writes.Kind is
+            when Entire_Object     =>
+               null;
+
+            when Record_Components =>
+               for Comp_Writes of Writes.Component_Status loop
+                  Finalize (Comp_Writes);
+               end loop;
+
+            when Array_Components  =>
+               Finalize (Writes.Content_Status);
+
+            when Designated_Data   =>
+               Finalize (Writes.Designated_Status);
+         end case;
+         Free (Writes);
+      end Finalize;
+
+      -------------------------------
+      -- Insert_Access_Association --
+      -------------------------------
+
+      procedure Insert_Access_Association
+        (Writes       : not null Write_Status_Access;
+         Ada_Node     : Node_Id;
+         Status       : Write_Type;
+         Unfold       : Boolean;
+         Local_Writes : out not null Write_Status_Access) is
+      begin
+         --  Unfold the designated data tree if necessary
+
+         if Unfold then
+            Unfold_Tree (Writes.Designated_Status);
+         end if;
+
+         Local_Writes := Writes.Designated_Status;
+
+         --  Insert the new value
+
+         Local_Writes.Values.Append
+           (Constrained_Value'
+              (Size     => Writes.Values.Last_Element.Size,
+               Ada_Node => Ada_Node,
+               Guard    => Writes.Values.Last_Element.Guard,
+               Status   => Status,
+               Choices  => Writes.Values.Last_Element.Choices));
+      end Insert_Access_Association;
+
+      ------------------------------
+      -- Insert_Array_Association --
+      ------------------------------
+
+      procedure Insert_Array_Association
+        (Writes       : not null Write_Status_Access;
+         Ada_Node     : Node_Id;
+         Choice       : Node_Id;
+         Status       : Write_Type;
+         Unfold       : Boolean;
+         Local_Writes : out not null Write_Status_Access) is
+      begin
+         --  Unfold the content tree if necessary
+
+         if Unfold then
+            Unfold_Tree (Writes.Content_Status);
+         end if;
+
+         Local_Writes := Writes.Content_Status;
+
+         --  Insert the new value. Its choice array is obtained by appending
+         --  Choice to the last choices of Writes.
+
+         declare
+            Choices : constant Choice_Array :=
+              Writes.Values.Last_Element.Choices;
+         begin
+            Local_Writes.Values.Append
+              (Constrained_Value'
+                 (Size     => Choices'Length + 1,
+                  Ada_Node => Ada_Node,
+                  Guard    => Writes.Values.Last_Element.Guard,
+                  Status   => Status,
+                  Choices  => Choices & Choice));
+         end;
+      end Insert_Array_Association;
+
+      ------------------------
+      -- Insert_Association --
+      ------------------------
+
+      procedure Insert_Association
+        (Writes      : in out not null Write_Status_Access;
+         Deep_Access : Node_Id;
+         Value       : Value_Type;
+         Guard       : Opt_N_Subexpr_Id := Empty)
+      is
+         Local_Writes : Write_Status_Access;
+
+      begin
+         --  Insert a new branch for the new association. Use Partial_Write
+         --  as a placeholder. It will necessarily be the right status for
+         --  choices of deep delta aggregates, but might be overwritten by
+         --  Entire_Object otherwise inside Insert_Association_Internal. This
+         --  avoids passing the guard explicitly to the recursive insertion
+         --  function.
+
+         Writes.Values.Append
+           (Constrained_Value'
+              (Size     => 0,
+               Ada_Node => Empty,
+               Guard    => Guard,
+               Status   => Partial_Write,
+               Choices  => (1 .. 0 => <>)));
+
+         --  Add the new association
+
+         Insert_Association_Internal
+           (Writes       => Writes,
+            Deep_Access  => Deep_Access,
+            Status       => New_Write (Value),
+            Unfold       => False,
+            Local_Writes => Local_Writes);
+
+         --  Propagate the new value in the corresponding subtree
+
+         Propagate
+           (Writes    => Local_Writes,
+            Guard     => Local_Writes.Values.Last_Element.Guard,
+            Choices   => Local_Writes.Values.Last_Element.Choices,
+            Status    => Local_Writes.Values.Last_Element.Status,
+            Skip_Root => True);
+      end Insert_Association;
+
+      ---------------------------------
+      -- Insert_Association_Internal --
+      ---------------------------------
+
+      procedure Insert_Association_Internal
+        (Writes       : in out not null Write_Status_Access;
+         Deep_Access  : Node_Id;
+         Status       : Write_Type;
+         Unfold       : Boolean;
+         Local_Writes : out not null Write_Status_Access)
+      is
+         Prefix_Writes : Write_Status_Access;
+      begin
+         --  Create a branch for the new association. Prefixes of Deep_Access
+         --  are partially updated. Siblings are preserved.
+
+         if not In_Delta
+           and then Nkind (Deep_Access) in N_Identifier | N_Expanded_Name
+         then
+            --  We have reached the root, update the status
+
+            Writes.Values (Writes.Values.Last_Index).Status := Status;
+
+            --  Unfold the tree if necessary
+
+            if Unfold then
+               Unfold_Tree (Writes);
+            end if;
+
+            Local_Writes := Writes;
+
+         elsif In_Delta and then Is_Root_Prefix_Of_Deep_Choice (Deep_Access)
+         then
+
+            --  We recognize specifically the root of deep choices as there is
+            --  no last component selection.
+
+            pragma Assert (Writes.Values.Last_Element.Status = Partial_Write);
+
+            Prefix_Writes := Writes;
+
+            --  Insert the last association
+
+            if Has_Array_Type (Writes.Ty) then
+               Insert_Array_Association
+                 (Writes       => Prefix_Writes,
+                  Ada_Node     => Deep_Access,
+                  Choice       => Deep_Access,
+                  Status       => Status,
+                  Unfold       => Unfold,
+                  Local_Writes => Local_Writes);
+
+            else
+               pragma
+                 Assert
+                   (Nkind (Deep_Access) in N_Identifier | N_Expanded_Name);
+
+               declare
+                  Sel_Ent : constant Entity_Id := Entity (Deep_Access);
+                  Field   : constant Entity_Id :=
+                    Search_Component_In_Type (Prefix_Writes.Ty, Sel_Ent);
+                  pragma Assert (Present (Field));
+
+               begin
+                  Insert_Record_Association
+                    (Writes       => Prefix_Writes,
+                     Ada_Node     => Deep_Access,
+                     Field        => Field,
+                     Status       => Status,
+                     Unfold       => Unfold,
+                     Local_Writes => Local_Writes);
+               end;
+            end if;
+
+         else
+
+            --  Create a branch for the prefix. It is partially written.
+            --  Unfold it so it can be expanded.
+
+            Insert_Association_Internal
+              (Writes       => Writes,
+               Deep_Access  => Prefix (Deep_Access),
+               Status       => Partial_Write,
+               Unfold       => True,
+               Local_Writes => Prefix_Writes);
+
+            --  Insert the last association
+
+            case Nkind (Deep_Access) is
+               when N_Indexed_Component    =>
+                  declare
+                     Index_Value : constant Node_Id :=
+                       First (Expressions (Deep_Access));
+                     pragma Assert (No (Next (Index_Value)));
+
+                  begin
+                     Insert_Array_Association
+                       (Writes       => Prefix_Writes,
+                        Ada_Node     => Deep_Access,
+                        Choice       => Index_Value,
+                        Status       => Status,
+                        Unfold       => Unfold,
+                        Local_Writes => Local_Writes);
+                  end;
+
+               when N_Selected_Component   =>
+                  declare
+                     Sel_Ent : constant Entity_Id :=
+                       Entity (Selector_Name (Deep_Access));
+                     Field   : constant Entity_Id :=
+                       Search_Component_In_Type (Prefix_Writes.Ty, Sel_Ent);
+                     pragma Assert (Present (Field));
+
+                  begin
+                     Insert_Record_Association
+                       (Writes       => Prefix_Writes,
+                        Ada_Node     => Deep_Access,
+                        Field        => Field,
+                        Status       => Status,
+                        Unfold       => Unfold,
+                        Local_Writes => Local_Writes);
+                  end;
+
+               when N_Explicit_Dereference =>
+                  Insert_Access_Association
+                    (Writes       => Prefix_Writes,
+                     Ada_Node     => Deep_Access,
+                     Status       => Status,
+                     Unfold       => Unfold,
+                     Local_Writes => Local_Writes);
+
+               when others                 =>
+                  raise Program_Error;
+            end case;
+         end if;
+      end Insert_Association_Internal;
+
+      -------------------------------
+      -- Insert_Record_Association --
+      -------------------------------
+
+      procedure Insert_Record_Association
+        (Writes       : not null Write_Status_Access;
+         Ada_Node     : Node_Id;
+         Field        : Entity_Id;
+         Status       : Write_Type;
+         Unfold       : Boolean;
+         Local_Writes : out not null Write_Status_Access)
+      is
+         use Write_Status_Maps;
+         Choices  : constant Choice_Array :=
+           Writes.Values.Last_Element.Choices;
+         Inserted : Boolean;
+         Position : Write_Status_Maps.Cursor;
+         use Constrained_Value_Vectors;
+
+      begin
+         --  Unfold the subtree if necessary, that is, insert a status for
+         --  Field if there is none.
+
+         Writes.Component_Status.Insert (Field, null, Position, Inserted);
+
+         if Inserted then
+
+            --  To initialize its constrained values, use the values of
+            --  Writes. Do not transfer the last element, as it will be
+            --  inserted afterward specifically.
+
+            declare
+               Values : Constrained_Value_Vectors.Vector;
+            begin
+               for I in 1 .. Writes.Values.Last_Index - 1 loop
+
+                  --  For partially updated values, the new field is preserved
+
+                  if Writes.Values.Element (I).Status.Kind = Partial then
+                     Values.Append
+                       (New_Item =>
+                          Constrained_Value'
+                            (Size     => Writes.Values.Element (I).Size,
+                             Status   => Discard_Write,
+                             Ada_Node => Types.Empty,
+                             Guard    => Writes.Values.Element (I).Guard,
+                             Choices  => Writes.Values.Element (I).Choices));
+
+                  --  Fields of entirely written values are entirely written
+
+                  else
+                     Values.Append
+                       (New_Item =>
+                          Constrained_Value'
+                            (Size     => Writes.Values.Element (I).Size,
+                             Status   =>
+                               Record_Access
+                                 (Writes.Values.Element (I).Status, Field),
+                             Ada_Node => Writes.Values.Element (I).Ada_Node,
+                             Guard    => Writes.Values.Element (I).Guard,
+                             Choices  => Writes.Values.Element (I).Choices));
+                  end if;
+               end loop;
+
+               Writes.Component_Status (Position) :=
+                 new Write_Status'
+                   (Kind   => Entire_Object,
+                    Ty     => Retysp (Etype (Field)),
+                    Values => Values);
+            end;
+         end if;
+
+         --  Unfold the component's tree if necessary
+
+         if Unfold then
+            Unfold_Tree (Writes.Component_Status (Position));
+         end if;
+
+         --  Local_Writes is the status associated to Field in Writes
+
+         Local_Writes := Writes.Component_Status (Position);
+
+         --  Insert the new value. Its choice array is the last choices of
+         --  Writes.
+
+         declare
+            C_Value : constant Constrained_Value :=
+              (Size     => Choices'Length,
+               Ada_Node => Ada_Node,
+               Guard    => Writes.Values.Last_Element.Guard,
+               Status   => Status,
+               Choices  => Choices);
+         begin
+            Local_Writes.Values.Append (New_Item => C_Value);
+         end;
+
+         --  Discard the last choices in siblings of Field if any
+
+         for Other_Position in Writes.Component_Status.Iterate loop
+            if Other_Position /= Position then
+               Propagate
+                 (Writes  => Writes.Component_Status (Other_Position),
+                  Guard   => Local_Writes.Values.Last_Element.Guard,
+                  Choices => Choices,
+                  Status  => Discard_Write);
+            end if;
+         end loop;
+      end Insert_Record_Association;
+
+      ------------------
+      -- Print_Writes --
+      ------------------
+
+      pragma Annotate (Xcov, Exempt_On, "Debug code");
+      procedure Print_Writes (Writes : Write_Status) is
+
+         procedure Print_Writes (Writes : Write_Status; Padding : Natural);
+         --  Recursive version, takes an additional parameter for padding
+
+         ------------------
+         -- Print_Writes --
+         ------------------
+
+         procedure Print_Writes (Writes : Write_Status; Padding : Natural) is
+            Spaces : constant String := (1 .. Padding => ' ');
+         begin
+            Ada.Text_IO.Put_Line
+              (Spaces & "Ty      => " & Raw_Source_Name (Writes.Ty));
+            Ada.Text_IO.Put (Spaces & "Values  =>");
+            for I in 1 .. Writes.Values.Last_Index loop
+               Ada.Text_IO.Put (" (");
+               if Writes.Values.Element (I).Size = 0 then
+                  Ada.Text_IO.Put ("[]");
+               else
+                  Ada.Text_IO.Put ("[");
+                  for K in 1 .. Writes.Values.Element (I).Size loop
+                     if No (Writes.Values.Element (I).Choices (K)) then
+                        Ada.Text_IO.Put (".");
+                     elsif Nkind (Writes.Values.Element (I).Choices (K))
+                           in N_Expanded_Name | N_Identifier
+                     then
+                        Ada.Text_IO.Put
+                          (Raw_Source_Name
+                             (Entity (Writes.Values.Element (I).Choices (K))));
+                     else
+                        Ada.Text_IO.Put
+                          (Writes.Values.Element (I).Choices (K)'Image);
+                     end if;
+                     if K /= Writes.Values.Element (I).Size then
+                        Ada.Text_IO.Put (", ");
+                     end if;
+                  end loop;
+                  Ada.Text_IO.Put ("]");
+               end if;
+               Ada.Text_IO.Put (", ");
+               Ada.Text_IO.Put
+                 (Writes.Values.Element (I).Status.Kind'Image & ")");
+            end loop;
+            Ada.Text_IO.New_Line;
+            case Writes.Kind is
+               when Entire_Object     =>
+                  null;
+
+               when Record_Components =>
+                  Ada.Text_IO.Put_Line (Spaces & "Fields  =>");
+                  for Position in Writes.Component_Status.Iterate loop
+                     Ada.Text_IO.Put_Line
+                       (Spaces
+                        & "   "
+                        & Raw_Source_Name (Write_Status_Maps.Key (Position))
+                        & " =>");
+                     Print_Writes
+                       (Write_Status_Maps.Element (Position).all, Padding + 6);
+                  end loop;
+
+               when Array_Components  =>
+                  Ada.Text_IO.Put_Line (Spaces & "Content =>");
+                  Print_Writes (Writes.Content_Status.all, Padding + 3);
+
+               when Designated_Data   =>
+                  Ada.Text_IO.Put_Line (Spaces & "all =>");
+                  Print_Writes (Writes.Designated_Status.all, Padding + 3);
+            end case;
+         end Print_Writes;
+
+      begin
+         Print_Writes (Writes, 0);
+      end Print_Writes;
+      pragma Annotate (Xcov, Exempt_Off);
+
+      ---------------
+      -- Propagate --
+      ---------------
+
+      procedure Propagate
+        (Writes    : not null Write_Status_Access;
+         Guard     : Opt_N_Subexpr_Id;
+         Choices   : Choice_Array;
+         Status    : Write_Type;
+         Skip_Root : Boolean := False) is
+      begin
+         --  Update the root itself if necessary
+
+         if not Skip_Root then
+            Writes.Values.Append
+              (Constrained_Value'
+                 (Choices'Length, Empty, Guard, Status, Choices));
+         end if;
+
+         --  Propagate the new association to all subtrees
+
+         case Writes.Kind is
+            when Entire_Object     =>
+               null;
+
+            when Record_Components =>
+               for Position in Writes.Component_Status.Iterate loop
+                  Propagate
+                    (Writes.Component_Status (Position),
+                     Guard,
+                     Choices,
+                     Record_Access (Status, Write_Status_Maps.Key (Position)));
+               end loop;
+
+            when Array_Components  =>
+               Propagate
+                 (Writes.Content_Status,
+                  Guard,
+                  Choices & Empty,
+                  Array_Access (Status, Choices'Length + 1));
+
+            when Designated_Data   =>
+               Propagate
+                 (Writes.Designated_Status,
+                  Guard,
+                  Choices,
+                  Designated_Data_Access (Status));
+         end case;
+      end Propagate;
+
+      -----------------
+      -- Unfold_Tree --
+      -----------------
+
+      procedure Unfold_Tree (Writes : in out not null Write_Status_Access) is
+         Old_Writes : Write_Status_Access := Writes;
+      begin
+         --  If Writes has type Entire_Object, unfold it
+
+         if Writes.Kind = Entire_Object then
+            if Is_Record_Type (Old_Writes.Ty) then
+               Writes :=
+                 new Write_Status'
+                   (Kind             => Record_Components,
+                    Ty               => Old_Writes.Ty,
+                    Values           => Old_Writes.Values,
+                    Component_Status => Write_Status_Maps.Empty_Map);
+            elsif Is_Array_Type (Old_Writes.Ty) then
+               declare
+                  use Constrained_Value_Vectors;
+                  Values : Constrained_Value_Vectors.Vector;
+                  --  The array has always been updated as a whole until now.
+                  --  To initialize the constrained values of its components,
+                  --  use the values of Writes with an additional empty choice
+                  --  to state that all indexes are written.
+
+               begin
+                  for Pref_Value of Old_Writes.Values loop
+                     Values.Append
+                       (Constrained_Value'
+                          (Size     => Pref_Value.Size + 1,
+                           Ada_Node => Pref_Value.Ada_Node,
+                           Guard    => Pref_Value.Guard,
+                           Choices  => Pref_Value.Choices & Types.Empty,
+                           Status   =>
+                             Array_Access
+                               (Pref_Value.Status, Pref_Value.Size + 1)));
+                  end loop;
+
+                  Writes :=
+                    new Write_Status'
+                      (Kind           => Array_Components,
+                       Ty             => Old_Writes.Ty,
+                       Values         => Old_Writes.Values,
+                       Content_Status =>
+                         new Write_Status'
+                           (Kind   => Entire_Object,
+                            Ty     => Retysp (Component_Type (Old_Writes.Ty)),
+                            Values => Values));
+               end;
+            else
+               pragma Assert (Is_Access_Type (Old_Writes.Ty));
+               Writes :=
+                 new Write_Status'
+                   (Kind              => Designated_Data,
+                    Ty                => Old_Writes.Ty,
+                    Values            => Old_Writes.Values,
+                    Designated_Status =>
+                      new Write_Status'
+                        (Kind   => Entire_Object,
+                         Ty     =>
+                           Retysp (Directly_Designated_Type (Old_Writes.Ty)),
+                         Values => Old_Writes.Values));
+            end if;
+            Free (Old_Writes);
+         end if;
+      end Unfold_Tree;
+
+   end Association_Trees;
 
    ------------------------
    -- Avoid_Why3_Keyword --
@@ -1289,18 +2047,33 @@ package body Gnat2Why.Util is
       Section := Why_Node_Lists.Empty_List;
    end Make_Empty_Why_Section;
 
+   ----------------
+   -- Map_For_At --
+   ----------------
+
+   function Map_For_At (Label_Id : E_Label_Id) return Ada_Node_To_Why_Id.Map is
+      use At_Nodes;
+      C : constant At_Nodes.Cursor := At_Map.Find (Label_Id);
+   begin
+      return
+        (if Has_Element (C)
+         then Element (C)
+         else Ada_Node_To_Why_Id.Empty_Map);
+   end Map_For_At;
+
    ------------------------
    -- Map_For_Loop_Entry --
    ------------------------
 
-   function Map_For_Loop_Entry (Loop_Id : Node_Id) return Loop_Entry_Values is
+   function Map_For_Loop_Entry (Loop_Id : E_Loop_Id) return Loop_Entry_Values
+   is
       use Loop_Entry_Nodes;
       C : constant Loop_Entry_Nodes.Cursor := Loop_Entry_Map.Find (Loop_Id);
    begin
       return
         (if Has_Element (C)
          then Element (C)
-         else (Ada_To_Why_Ident.Empty_Map, Ada_To_Why_Ident.Empty_Map));
+         else (Ada_Node_To_Why_Id.Empty_Map, Ada_Node_To_Why_Id.Empty_Map));
    end Map_For_Loop_Entry;
 
    -----------------------------------
@@ -1321,6 +2094,68 @@ package body Gnat2Why.Util is
          end;
       end if;
    end Might_Need_Discriminant_Check;
+
+   -----------------
+   -- Name_For_At --
+   -----------------
+
+   function Name_For_At
+     (Attr : N_Attribute_Reference_Id) return W_Identifier_Id
+   is
+      Label_Id : constant E_Label_Id := Entity (First (Expressions (Attr)));
+      Expr     : constant Node_Id := Prefix (Attr);
+
+      function Name_For_At
+        (Map : in out Ada_Node_To_Why_Id.Map; Typ : W_Type_Id; Nd : Node_Id)
+         return W_Identifier_Id;
+      --  Look for an identifier for Expr in Map. If there is none, create one
+      --  of type Typ with node Nd.
+
+      -----------------
+      -- Name_For_At --
+      -----------------
+
+      function Name_For_At
+        (Map : in out Ada_Node_To_Why_Id.Map; Typ : W_Type_Id; Nd : Node_Id)
+         return W_Identifier_Id
+      is
+         Position : Ada_Node_To_Why_Id.Cursor;
+         Inserted : Boolean;
+
+      begin
+         Map.Insert
+           (Key      => Expr,
+            New_Item => W_Identifier_Id'(Why_Empty),
+            Position => Position,
+            Inserted => Inserted);
+
+         if Inserted then
+            Map (Position) :=
+              New_Temp_Identifier
+                (Base_Name => "at", Typ => Typ, Ada_Node => Nd);
+         end if;
+
+         return Map (Position);
+      end Name_For_At;
+
+      Cur   : At_Nodes.Cursor;
+      Dummy : Boolean;
+      Typ   : W_Type_Id;
+      Nd    : Node_Id;
+
+   begin
+      At_Map.Insert (Key => Label_Id, Position => Cur, Inserted => Dummy);
+
+      if Nkind (Expr) in N_Identifier | N_Expanded_Name then
+         Typ := Why_Type_Of_Entity (Entity (Expr));
+         Nd := Entity (Expr);
+      else
+         Typ := Type_Of_Node (Expr);
+         Nd := Types.Empty;
+      end if;
+
+      return Name_For_At (At_Map (Cur), Typ, Nd);
+   end Name_For_At;
 
    -------------------------
    -- Name_For_Loop_Entry --
@@ -1374,7 +2209,7 @@ package body Gnat2Why.Util is
       Result : W_Identifier_Id;
 
       procedure Get_Name
-        (Loop_Id : Node_Id; Loop_Map : in out Ada_To_Why_Ident.Map);
+        (Loop_Id : Node_Id; Loop_Map : in out Ada_Node_To_Why_Id.Map);
       --  Update the mapping Loop_Map with an entry for Expr if not already
       --  present, and store the corresponding identifier in Result.
 
@@ -1388,15 +2223,15 @@ package body Gnat2Why.Util is
       --------------
 
       procedure Get_Name
-        (Loop_Id : Node_Id; Loop_Map : in out Ada_To_Why_Ident.Map)
+        (Loop_Id : Node_Id; Loop_Map : in out Ada_Node_To_Why_Id.Map)
       is
          Typ : W_Type_Id;
          Nd  : Node_Id;
 
-         Pos   : Ada_To_Why_Ident.Cursor := Loop_Map.Find (Expr);
+         Pos   : Ada_Node_To_Why_Id.Cursor := Loop_Map.Find (Expr);
          Dummy : Boolean;
 
-         use Ada_To_Why_Ident;
+         use Ada_Node_To_Why_Id;
 
          Attrs       : String_Utils.String_Sets.Set :=
            String_Utils.String_Sets.Empty_Set;
@@ -1472,10 +2307,10 @@ package body Gnat2Why.Util is
    ------------------
 
    function Name_For_Old (N : Node_Id) return W_Identifier_Id is
-      Position : Ada_To_Why_Ident.Cursor;
+      Position : Ada_Node_To_Why_Id.Cursor;
       Inserted : Boolean;
 
-      use Ada_To_Why_Ident;
+      use Ada_Node_To_Why_Id;
 
    begin
       --  Tentatively insert an empty node to update it later

@@ -978,9 +978,9 @@ X.Link is poisoned by the assignment to Y.]
     contain dereferences.
 
 
-13. The prefix of an Old or Loop_Entry attribute reference shall not be of an
-    anonymous access-to-object type nor of a type with subcomponents of a named
-    access-to-variable type unless the prefix is a call to a non-traversal
+13. The prefix of an Old, Loop_Entry, or At attribute reference shall not be of
+    an anonymous access-to-object type nor of a type with subcomponents of a
+    named access-to-variable type unless the prefix is a call to a non-traversal
     function.
 
 

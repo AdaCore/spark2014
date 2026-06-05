@@ -10,12 +10,12 @@ aliasing_check_array.adb:8:13: info: index check proved (CVC5: 2 VC)
 aliasing_check_array.adb:8:13: info: precondition proved (Trivial: 1 VC)
 array_init.adb:7:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 array_init.adb:9:04: info: range check proved (CVC5: 2 VC)
-array_init.adb:11:21: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+array_init.adb:11:21: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
 array_init.adb:12:07: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 array_init.adb:12:16: info: index check proved (CVC5: 2 VC)
 array_init.adb:12:16: info: overflow check proved (CVC5: 2 VC)
-array_init.adb:15:21: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
-array_init.adb:20:22: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+array_init.adb:15:21: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
+array_init.adb:20:22: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
 array_init.adb:21:07: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 array_init.adb:21:10: info: index check proved (CVC5: 2 VC)
 array_init.adb:25:07: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
@@ -45,8 +45,8 @@ imprecise_untangling.adb:17:07: high: "A" is not initialized
 imprecise_untangling.adb:17:10: high: "B" is not initialized
 multidim_array_init.adb:7:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 multidim_array_init.adb:9:04: info: range check proved (CVC5: 2 VC)
-multidim_array_init.adb:11:21: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
-multidim_array_init.adb:12:25: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+multidim_array_init.adb:11:21: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
+multidim_array_init.adb:12:25: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
 multidim_array_init.adb:13:10: warning: initialization of a multi-dimensional array in nested FOR loops is handled imprecisely [multidimensional-array-init]
 multidim_array_init.adb:13:16: info: index check proved (CVC5: 2 VC)
 multidim_array_init.adb:17:10: medium: "A" might not be initialized

@@ -979,11 +979,14 @@ package body VC_Kinds is
            & "Predefined_Equality annotation, but no constant annotated with "
            & "Null_Value is found; this will result in all calls to the "
            & "predefined equality being rejected",
+         when Warn_Unrolling_Inlining_Failures                =>
+           "These warnings are issued when the tool is unable to unroll a "
+           & "loop or perform contextual analysis of a subprogram",
 
          --  Info messages enabled by default
          when Warn_Info_Unrolling_Inlining                    =>
            "These messages are issued when the tool is unrolling loops or "
-           & "inlining subprograms, or unable to do so");
+           & "performing contextual analysis of subprograms");
 
    function Description (Kind : Unsupported_Kind) return String
    is (case Kind is
@@ -1381,6 +1384,15 @@ package body VC_Kinds is
            "volatile function associated with aspect Aggregate",
          when Vio_Assert_And_Cut_Context                   =>
            "pragma Assert_And_Cut outside a sequence of statements",
+         when Vio_At_Attribute_Allocation                  =>
+           "reference to the At attribute on a prefix subject to ownership "
+           & "occuring outside of a pragma or a constant part of an object",
+         when Vio_At_Attribute_Assert_And_Cut              =>
+           "reference to the At attribute referencing a label located before "
+           & "an Assert_And_Cut pragma",
+         when Vio_At_Attribute_Loop_Invariant              =>
+           "reference to the At attribute referencing a label located before "
+           & "a loop invariant or variant",
          when Vio_Backward_Goto                            =>
            "backward goto statement",
          when Vio_Box_Notation_Without_Init                =>
@@ -1418,6 +1430,9 @@ package body VC_Kinds is
            "volatile ghost object",
          when Vio_Handler_Choice_Parameter                 =>
            "choice parameter in handler",
+         when Vio_Intrinsic_Operator                       =>
+           "Intrinsic convention on arithmetic operator with unexpected "
+           & "profile",
          when Vio_Invariant_Class                          =>
            "classwide invariant",
          when Vio_Invariant_Ext                            =>
@@ -1485,9 +1500,9 @@ package body VC_Kinds is
          when Vio_Ownership_Duplicate_Aggregate_Value      =>
            "duplicate value of a type with ownership",
          when Vio_Ownership_Loop_Entry_Old_Copy            =>
-           "prefix of Loop_Entry or Old attribute introducing aliasing",
+           "prefix of Loop_Entry, Old, or At attribute introducing aliasing",
          when Vio_Ownership_Loop_Entry_Old_Traversal       =>
-           "traversal function call as a prefix of Loop_Entry or Old "
+           "traversal function call as a prefix of Loop_Entry, Old, or At "
            & "attribute",
          when Vio_Ownership_Move_Constant_Part             =>
            "access-to-constant part of an object as source of move",
@@ -1659,6 +1674,7 @@ package body VC_Kinds is
          when Vio_Ghost_Volatile                    => EC_Ghost_Volatile,
          when Vio_Handler_Choice_Parameter          =>
            EC_Handler_Choice_Parameter,
+         when Vio_Intrinsic_Operator                => EC_Intrinsic_Operator,
          when Vio_Overlay_Mutable_Constant          =>
            EC_Overlay_Mutable_Constant,
          when Vio_UC_From_Access                    => EC_UC_From_Access,
@@ -2742,6 +2758,8 @@ package body VC_Kinds is
            "predefined-equality-null",
          when Warn_Unit_Not_SPARK                             =>
            "unit-not-spark",
+         when Warn_Unrolling_Inlining_Failures                =>
+           "unrolling-inlining-failures",
 
          --  Info messages enabled by default
          when Warn_Info_Unrolling_Inlining                    =>
@@ -2861,6 +2879,8 @@ package body VC_Kinds is
          => "SPARK RM 6.9(9)",
          when Vio_Handler_Choice_Parameter
          => "SPARK RM 11.2(1)",
+         when Vio_Intrinsic_Operator
+         => "SPARK RM 6.3.1",
          when Vio_Invariant_Class | Vio_Invariant_Ext | Vio_Invariant_Partial
          => "SPARK RM 7.3.2(2)",
          when Vio_Invariant_Volatile
@@ -3523,6 +3543,12 @@ package body VC_Kinds is
            "aggregate-volatile",
          when Vio_Assert_And_Cut_Context                   =>
            "assert-and-cut-context",
+         when Vio_At_Attribute_Allocation                  =>
+           "at-attribute-allocation",
+         when Vio_At_Attribute_Assert_And_Cut              =>
+           "at-attribute-assert-and-cut",
+         when Vio_At_Attribute_Loop_Invariant              =>
+           "at-attribute-loop-invariant",
          when Vio_Backward_Goto                            => "backward-goto",
          when Vio_Box_Notation_Without_Init                =>
            "box-notation-without-init",
@@ -3556,6 +3582,8 @@ package body VC_Kinds is
          when Vio_Ghost_Volatile                           => "ghost-volatile",
          when Vio_Handler_Choice_Parameter                 =>
            "handler-choice-parameter",
+         when Vio_Intrinsic_Operator                       =>
+           "intrinsic-operator",
          when Vio_Invariant_Class                          =>
            "invariant-class",
          when Vio_Invariant_Ext                            => "invariant-ext",
@@ -3616,9 +3644,9 @@ package body VC_Kinds is
          when Vio_Ownership_Duplicate_Aggregate_Value      =>
            "ownership-duplicate-aggregate-value",
          when Vio_Ownership_Loop_Entry_Old_Copy            =>
-           "ownership-loop-entry-old-copy",
+           "ownership-loop-entry-old-at-copy",
          when Vio_Ownership_Loop_Entry_Old_Traversal       =>
-           "ownership-loop-entry-old-traversal",
+           "ownership-loop-entry-old-at-traversal",
          when Vio_Ownership_Move_Constant_Part             =>
            "ownership-move-constant-part",
          when Vio_Ownership_Move_In_Declare                =>
@@ -3769,6 +3797,16 @@ package body VC_Kinds is
            "volatile function associated with aspect Aggregate",
          when Vio_Assert_And_Cut_Context                             =>
            "pragma Assert_And_Cut outside a sequence of statements",
+         when Vio_At_Attribute_Allocation                            =>
+           "reference to the ""At"" attribute on a prefix subject to "
+           & "ownership occuring outside of a pragma or a constant part of an "
+           & "object",
+         when Vio_At_Attribute_Assert_And_Cut                        =>
+           "reference to the ""At"" attribute referencing a label located "
+           & "before an Assert_And_Cut pragma",
+         when Vio_At_Attribute_Loop_Invariant                        =>
+           "reference to the ""At"" attribute referencing a label located "
+           & "before a loop invariant or variant",
          when Vio_Backward_Goto                                      =>
            "backward goto statement",
          when Vio_Box_Notation_Without_Init                          =>
@@ -3811,6 +3849,9 @@ package body VC_Kinds is
            "volatile ghost object",
          when Vio_Handler_Choice_Parameter                           =>
            "choice parameter in handler",
+         when Vio_Intrinsic_Operator                                 =>
+           "Intrinsic convention on arithmetic operator with unexpected "
+           & "profile",
          when Vio_Invariant_Class                                    =>
            "classwide invariant",
          when Vio_Invariant_Ext                                      =>
@@ -3881,13 +3922,13 @@ package body VC_Kinds is
          when Vio_Ownership_Loop_Entry_Old_Copy                      =>
            "prefix of """
            & (if Root_Cause or else Name = ""
-              then "Loop_Entry"" or ""Old"
+              then "Loop_Entry"", ""Old"", or ""At"
               else Name)
            & """ attribute introducing aliasing",
          when Vio_Ownership_Loop_Entry_Old_Traversal                 =>
            "traversal function call as a prefix of """
            & (if Root_Cause or else Name = ""
-              then "Loop_Entry"" or ""Old"
+              then "Loop_Entry"", ""Old"", or ""At"
               else Name)
            & """ attribute",
          when Vio_Ownership_Move_Constant_Part                       =>

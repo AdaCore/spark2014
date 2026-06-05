@@ -1,0 +1,8 @@
+test.adb:17:19: info: assertion proved (CVC5: 1 VC)
+test.adb:18:19: info: assertion proved (CVC5: 1 VC)
+test.adb:18:26: info: tag check proved (CVC5: 1 VC)
+test.adb:19:19: info: assertion proved (CVC5: 1 VC)
+test.adb:19:36: info: index check proved (CVC5: 2 VC)
+test.adb:20:19: info: assertion proved (CVC5: 1 VC)
+test.adb:20:26: info: tag check proved (CVC5: 1 VC)
+test.adb:20:43: info: index check proved (CVC5: 2 VC)

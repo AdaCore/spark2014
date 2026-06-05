@@ -334,8 +334,8 @@ to cursors that are actually valid in the container, the provided function
 
 Like for the standard Ada iteration mechanism, it is possible to allow
 quantification directly over the elements of the container by providing in
-addition an ``Element`` primitive to the ``Iterable`` aspect. For example, if
-we write:
+addition either an ``Element`` or a ``Constant_Reference`` primitive to the
+``Iterable`` aspect. For example, if we write:
 
 .. code-block:: ada
 
@@ -357,6 +357,34 @@ example, we could rewrite the above property into:
 .. code-block:: ada
 
    (for all E of S => P (E))
+
+Similarly, if we write:
+
+.. code-block:: ada
+
+   type Container is private with
+     Iterable => (First              => First,
+                  Next               => Next,
+                  Has_Element        => Has_Element
+                  Constant_Reference => Constant_Reference);
+
+where
+
+.. code-block:: ada
+
+   function Constant_Reference (S : Set; C : Cursor) return not null access constant Element_Type;
+
+then the property:
+
+.. code-block:: ada
+
+   (for all E of S => P (E))
+
+Would be equivalent to:
+
+.. code-block:: ada
+
+   (for all Cu in S => P (Constant_Reference (S, Cu).all))
 
 For execution, quantification over elements of a container is translated as a
 loop over its cursors. In the same way, for proof, quantification over elements

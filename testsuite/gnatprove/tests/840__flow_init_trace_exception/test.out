@@ -14,7 +14,5 @@ test3.adb:14:44: medium: assertion might fail [provers gave up before completing
 Trace files' contents:
 test2.adb:15
 test2.adb:12
-
 test3.adb:12
-
 test.adb:11

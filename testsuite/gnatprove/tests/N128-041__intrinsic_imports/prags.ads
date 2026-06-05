@@ -29,15 +29,15 @@ is
      with Import,
           Convention => Intrinsic;
 
-   -- Intrinsic operator for mixed types
-   function "+" (Left : Int1; Right : Int2) return Int1
-     with Import,
-          Convention => Intrinsic;
-
-   -- As above, but private types
-   function "-" (Left : PI1; Right : PI2) return PI1
-     with Import,
-          Convention => Intrinsic;
+   --  -- Intrinsic operator for mixed types
+   --  function "+" (Left : Int1; Right : Int2) return Int1
+   --    with Import,
+   --         Convention => Intrinsic;
+   --
+   --  -- As above, but private types
+   --  function "-" (Left : PI1; Right : PI2) return PI1
+   --    with Import,
+   --         Convention => Intrinsic;
 
 
    -- Function Imported from C, so NOT Intrinsic.
