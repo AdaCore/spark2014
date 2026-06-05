@@ -23,9 +23,10 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Namet;     use Namet;
-with Snames;    use Snames;
-with Why.Types; use Why.Types;
+with Namet;            use Namet;
+with Snames;           use Snames;
+with SPARK_Util.Types; use SPARK_Util.Types;
+with Why.Types;        use Why.Types;
 
 package Gnat2Why.Subprograms.Pointers is
 
@@ -96,7 +97,7 @@ package Gnat2Why.Subprograms.Pointers is
    with
      Pre =>
        Attribute_Name (Expr) = Name_Access
-       and then Is_Access_Subprogram_Type (Etype (Expr));
+       and then Is_Access_Subprogram_Type (Retysp (Etype (Expr)));
    --  Transform a reference to the 'Access attribute whose prefix in a
    --  subprogram name. A theory is introduced for accesses to a given
    --  subprogram so that it can be shared between occurrences.
