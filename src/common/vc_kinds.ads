@@ -118,6 +118,7 @@ package VC_Kinds is
       VC_Assert_Premise,             --  Premise for proof with cut points
       VC_Raise,
       VC_Unexpected_Program_Exit,
+      VC_Modifies,
 
       VC_Feasible_Post,
       --  Check that the postcondition of abstract functions and
@@ -624,6 +625,7 @@ package VC_Kinds is
       Vio_Iterable_Volatile,
       Vio_Iterator_Specification,
       Vio_Loop_Variant_Structural,
+      Vio_Modifies_Not_Output,
       Vio_Overlay_Constant_Not_Imported,
       Vio_Overlay_Mutable_Constant,
       Vio_Overlay_Part_Of_Protected,

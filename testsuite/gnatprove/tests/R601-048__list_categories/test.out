@@ -82,6 +82,7 @@ VC_ASSERT_STEP(assertion) - assertion step - Check that the side-condition of a 
 VC_ASSERT_PREMISE(assertion) - assertion premise - Check that the premise of an assertion with cut operations evaluates to True. - MEDIUM
 VC_RAISE(assertion) - raised exception - Check that raise expressions can never be reached and that all exceptions raised by raise statement and procedure calls are expected. - MEDIUM
 VC_UNEXPECTED_PROGRAM_EXIT(assertion) - unexpected program exit - Check that a subprogram call cannot exit the whole program. - MEDIUM
+VC_MODIFIES(assertion) - modifies contract - Check that all parts of outputs that are not mentioned in a modifies contract are preserved. - MEDIUM
 VC_FEASIBLE_POST(assertion) - feasible function - Check that an abstract function or access-to-function type is feasible. - MEDIUM
 VC_INLINE_CHECK(assertion) - Inline_For_Proof or Logical_Equal annotation - Check that an Annotate pragma with the Inline_For_Proof or Logical_Equal identifier is correct. - MEDIUM
 VC_ITERABLE_CHECK(assertion) - Iterable_For_Proof annotation - Check that an Annotate pragma with the Iterable_For_Proof identifier is correct. - MEDIUM
@@ -369,6 +370,7 @@ violation-iterable-side-effects - violation-iterable-side-effects - function wit
 violation-iterable-volatile - violation-iterable-volatile - volatile function associated with aspect Iterable - HIGH
 violation-iterator-specification - violation-iterator-specification - iterator specification - HIGH
 violation-loop-variant-structural - violation-loop-variant-structural - structural loop variant which is not a variable of an anonymous access-to-object type - HIGH
+violation-modifies-not-output - violation-modifies-not-output - clause of Modifies contract mentioning an object that is not an output of the subprogram - HIGH
 violation-overlay-constant-not-imported - violation-overlay-constant-not-imported - constant object with an address clause which is not imported - HIGH
 violation-overlay-mutable-constant - violation-overlay-mutable-constant - mutable object and constant object overlaying each other - HIGH
 violation-overlay-part-of-protected - violation-overlay-part-of-protected - overlaid object which is a part of a protected object - HIGH

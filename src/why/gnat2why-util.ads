@@ -276,7 +276,14 @@ package Gnat2Why.Util is
       --  be the special values Preserved and Partial, or Entire with a value
       --  given as a path.
 
-      type Choice_Array is array (Positive range <>) of Node_Id;
+      subtype Array_Dim is Pos range 1 .. 4;
+      type Indices_Type is array (Array_Dim range <>) of Node_Id;
+
+      type Array_Indices (Dim : Array_Dim := 1) is record
+         Indices : Indices_Type (1 .. Dim);
+      end record;
+
+      type Choice_Array is array (Positive range <>) of Array_Indices;
 
       type Constrained_Value (Size : Natural) is record
          Ada_Node : Node_Id;
@@ -363,6 +370,24 @@ package Gnat2Why.Util is
       procedure Print_Writes (Writes : Write_Status);
       pragma Unreferenced (Print_Writes);
       --  For debugging purposes
+
+      -----------------------------------------------------
+      -- Shared Functionalities for Predicate Generation --
+      -----------------------------------------------------
+
+      function Transform_Choice
+        (Choice    : Node_Id;
+         Index     : W_Identifier_Id;
+         Value_Map : Ada_Node_To_Why_Id.Map) return W_Pred_Id;
+      --  Generates Index = Choice using the mappings in Value_Map to get the
+      --  Temporary identifier which should be used for Choice.
+
+      function Transform_Choices
+        (Choices   : Choice_Array;
+         Indices   : W_Identifier_Array;
+         Value_Map : Ada_Node_To_Why_Id.Map) return W_Pred_Id;
+      --  Generate Indices (I) = Choices (J).Indices (K) /\ ...
+      --  taking the choices and indices in the order in which they appear.
 
    end Association_Trees;
 

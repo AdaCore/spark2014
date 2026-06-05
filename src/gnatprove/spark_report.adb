@@ -1317,6 +1317,7 @@ package body Spark_Report is
                | VC_Container_Aggr_Check
                | VC_Reclamation_Check
                | VC_Feasible_Post
+               | VC_Modifies
             =>
                return Functional_Contracts;
 
