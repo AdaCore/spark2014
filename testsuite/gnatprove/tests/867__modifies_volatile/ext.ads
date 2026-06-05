@@ -1,6 +1,3 @@
-pragma Profile (Jorvik);
-pragma Partition_Elaboration_Policy (Sequential);
-
 package Ext with SPARK_Mode is
    type R is record
       F, G : Integer;
