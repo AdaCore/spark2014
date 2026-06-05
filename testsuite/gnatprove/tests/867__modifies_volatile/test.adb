@@ -65,6 +65,15 @@ procedure Test with SPARK_Mode is
       Y := Ext.X.G;
       Ext.Prot.P;
    end P_Protected_Ok;
+
+   procedure P_Hidden_Volatile (B : Boolean) with
+      Modifies => Y
+   is
+   begin
+      Y := 123;
+      Ext.Update_Hidden_Volatile_Object;
+   end P_Hidden_Volatile;
+
 begin
    null;
 end;

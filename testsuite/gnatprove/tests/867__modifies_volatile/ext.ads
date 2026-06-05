@@ -9,4 +9,6 @@ package Ext with SPARK_Mode is
       procedure P;
    end Prot;
 
+   procedure Update_Hidden_Volatile_Object;
+
 end Ext;
