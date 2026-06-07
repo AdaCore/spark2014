@@ -332,6 +332,12 @@ package Configuration is
    Opt_File_Set : Dir_Name_Sets.Set;
    --  Set of all created opt file paths, for cleanup
 
+   function Extra_Args_File_Name_For_Unit
+     (Unit  : GPR2.Build.Compilation_Unit.Object;
+      Phase : Gnat2Why_Opts.Writing.Gnat2Why_Phase) return String;
+   --  Return the extra args file name for a specific unit's configuration,
+   --  without creating the file.
+
    function Extra_Args_File_For_Unit
      (Unit     : GPR2.Build.Compilation_Unit.Object;
       Phase    : Gnat2Why_Opts.Writing.Gnat2Why_Phase;

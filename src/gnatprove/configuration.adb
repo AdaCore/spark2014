@@ -61,6 +61,8 @@ with System.Multiprocessors;
 
 package body Configuration is
 
+   use type Gnat2Why_Opts.Writing.Gnat2Why_Phase;
+
    Invalid_Level   : constant := -1;
    Invalid_Steps   : constant := -1;
    Invalid_Timeout : constant := -1;
@@ -1352,6 +1354,28 @@ package body Configuration is
       Opt_File_Set.Include (Opt_File);
       return Opt_File;
    end Extra_Args_File_For_Unit;
+
+   -----------------------------------
+   -- Extra_Args_File_Name_For_Unit --
+   -----------------------------------
+
+   function Extra_Args_File_Name_For_Unit
+     (Unit  : GPR2.Build.Compilation_Unit.Object;
+      Phase : Gnat2Why_Opts.Writing.Gnat2Why_Phase) return String
+   is
+      Unit_Name : constant String := File_Specific_Key (Unit);
+      Obj_Dir   : constant String :=
+        String (Unit.Owning_View.Object_Directory.Value);
+      Why3_Dir  : constant String :=
+        (if Phase = Gnat2Why_Opts.Writing.Translation then Obj_Dir else "");
+   begin
+      return
+        Gnat2Why_Opts.Writing.Opt_File_Name
+          (Phase     => Phase,
+           Obj_Dir   => Obj_Dir,
+           Why3_Dir  => Why3_Dir,
+           Unit_Name => Unit_Name);
+   end Extra_Args_File_Name_For_Unit;
 
    -----------------
    -- Find_Switch --
