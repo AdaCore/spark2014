@@ -445,6 +445,15 @@ def sarif_results(cwd=None, index=0):
     return run.get("results", [])
 
 
+def sarif_logical_locations(cwd=None, index=0):
+    """Return the SARIF logical locations list for a GNATprove report run."""
+
+    run = sarif_run(cwd, index)
+    if run is None:
+        return []
+    return run.get("logicalLocations", [])
+
+
 def find_sarif_results(cwd=None, rule_id=None, predicate=None, index=0):
     """Return SARIF results matching the requested filters."""
 
@@ -458,15 +467,33 @@ def find_sarif_results(cwd=None, rule_id=None, predicate=None, index=0):
     return matching_results
 
 
-def sarif_result_property(result, name, parent=None):
-    """Return a custom SARIF result property.
+def find_sarif_logical_locations(
+    cwd=None, fully_qualified_name=None, predicate=None, index=0
+):
+    """Return SARIF logical locations matching the requested filters."""
 
-    If parent is None, look up name directly in the SARIF result properties.
+    matching_locations = []
+    for location in sarif_logical_locations(cwd, index):
+        if (
+            fully_qualified_name is not None
+            and location.get("fullyQualifiedName") != fully_qualified_name
+        ):
+            continue
+        if predicate is not None and not predicate(location):
+            continue
+        matching_locations.append(location)
+    return matching_locations
+
+
+def sarif_property(item, name, parent=None):
+    """Return a custom SARIF property from an item with a properties bag.
+
+    If parent is None, look up name directly in the SARIF item properties.
     Otherwise, first look up the top-level parent property and then look for
     name inside it.
     """
 
-    properties = result.get("properties", {})
+    properties = item.get("properties", {})
     if parent is None:
         return properties.get(name, None)
 
@@ -475,6 +502,18 @@ def sarif_result_property(result, name, parent=None):
         return None
 
     return parent_property.get(name, None)
+
+
+def sarif_result_property(result, name, parent=None):
+    """Return a custom SARIF result property."""
+
+    return sarif_property(result, name, parent)
+
+
+def sarif_logical_location_property(location, name, parent=None):
+    """Return a custom SARIF logical-location property."""
+
+    return sarif_property(location, name, parent)
 
 
 def iter_sarif_artifact_locations(result):
