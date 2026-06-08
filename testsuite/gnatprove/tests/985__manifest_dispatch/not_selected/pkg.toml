@@ -1,0 +1,6 @@
+version = 1
+
+[[subprogram]]
+path = "Pkg.Q"
+kind = "procedure"
+timeout = 1

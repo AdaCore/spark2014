@@ -1,0 +1,10 @@
+version = 1
+
+[[subprogram]]
+path = "Pkg.R"
+timeout = 5
+
+[[subprogram]]
+path = "Pkg.R"
+kind = "procedure"
+timeout = 10

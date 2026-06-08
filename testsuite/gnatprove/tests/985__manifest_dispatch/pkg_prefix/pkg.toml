@@ -1,0 +1,7 @@
+version = 1
+
+[[subprogram]]
+path = "Pkg"
+timeout = 5
+steps = 100
+provers = ["cvc5"]

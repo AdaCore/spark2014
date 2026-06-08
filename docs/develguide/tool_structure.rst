@@ -128,9 +128,25 @@ unit's ``-gnates`` JSON options file for analysis-mode ``gnat2why``
 invocations. This keeps manifest parsing and user-facing diagnostics in
 ``gnatprove``. Before serialization, entries are sorted by their matching
 identity so that directory traversal order does not affect the options seen by
-later pipeline stages. Later pipeline stages consume already-normalized policy
-data; ``gnatwhy3`` receives only the concrete prover options selected by
-``gnat2why``.
+later pipeline stages.
+
+During translation, ``gnat2why`` resolves these manifest entries against the
+semantic entities selected for the current analysis unit. Matching is
+hierarchical: a policy path matches an entity either exactly, or as a strict
+dot-separated prefix of the entity's canonical source path. This means an
+entry on a package or compilation unit covers every nested subprogram, and an
+entry on a subprogram applies only to that subprogram. The optional ``kind``
+and ``profile`` fields further filter on subprogram entities to disambiguate
+overloads. When several entries cover the same entity, the most specific one
+wins (longest dot-separated path); broader entries are not merged in.
+Two policies that match the same entity at the same specificity are reported
+as an ambiguity error, as are multiple overloads matched by a single policy
+that lacks sufficient disambiguation.
+
+The resolution step also rejects entries that are stale, selected only for
+contextual analysis, outside the analyzed files, or not translated for proof.
+Later pipeline stages consume already-normalized policy data; ``gnatwhy3``
+receives only the concrete prover options selected by ``gnat2why``.
 
 Copying ALI files and phase-1 diagnostics
 =========================================

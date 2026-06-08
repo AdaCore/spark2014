@@ -24,9 +24,13 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Characters.Handling;
+with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Indefinite_Hashed_Maps;
 with Ada.Directories;
 with Ada.Environment_Variables;
+with Ada.Strings;
+with Ada.Strings.Fixed;
 with Ada.Strings.Unbounded;          use Ada.Strings.Unbounded;
 with Ada.Text_IO;                    use Ada.Text_IO;
 with ALI.Util;                       use ALI.Util;
@@ -58,6 +62,7 @@ with GNATCOLL.Hash.Blake3;           use GNATCOLL.Hash.Blake3;
 with GNAT.Source_Info;
 with GNATCOLL.JSON;                  use GNATCOLL.JSON;
 with GNATCOLL.Utils;                 use GNATCOLL.Utils;
+with Gnat2Why_Opts;                  use Gnat2Why_Opts;
 with Gnat2Why.Assumptions;           use Gnat2Why.Assumptions;
 with Gnat2Why.Borrow_Checker;        use Gnat2Why.Borrow_Checker;
 with Gnat2Why.Data_Decomposition;    use Gnat2Why.Data_Decomposition;
@@ -75,6 +80,7 @@ with Nlists;                         use Nlists;
 with Osint.C;                        use Osint.C;
 with Osint;                          use Osint;
 with Outputs;                        use Outputs;
+with Proof_Options;
 with Sem;
 with Sem_Aux;                        use Sem_Aux;
 with Sem_Util;                       use Sem_Util;
@@ -119,6 +125,19 @@ package body Gnat2Why.Driver is
    Max_Subprocesses : Positive := Windows_Safe_Limit;
    --  The maximal number of gnatwhy3 processes spawned by a single gnat2why.
 
+   package Manifest_Match_Maps is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Entity_Id,
+        Element_Type    => Positive,
+        Hash            => Common_Containers.Node_Hash,
+        Equivalent_Keys => "=");
+
+   Manifest_Match_Map : Manifest_Match_Maps.Map;
+   --  Map from a translated entity to the index of the matching entry in
+   --  Gnat2Why_Args.Proof_Manifest. Populated by manifest resolution and
+   --  consulted when building the gnatwhy3 command line, to override the
+   --  default per-file proof options for that entity.
+
    -----------------------
    -- Local Subprograms --
    -----------------------
@@ -133,6 +152,10 @@ package body Gnat2Why.Driver is
    with Pre => Entity_In_SPARK (E);
    --  @param E Subprogram entity
    --  @return True iff subprogram E needs to be translated into Why3
+
+   function Is_Proof_Generation_Entity (E : Entity_Id) return Boolean
+   with Pre => Ekind (E) in Entry_Kind | E_Function | E_Package | E_Procedure;
+   --  @return True iff proof VCs may be generated for E
 
    procedure Translate_CUnit;
    --  Translates the current compilation unit into Why
@@ -566,14 +589,7 @@ package body Gnat2Why.Driver is
 
       case Ekind (E) is
          when Entry_Kind | E_Function | E_Procedure =>
-            if Entity_Spec_In_SPARK (E)
-
-              --  Ignore hardcoded subprograms
-              and then not Is_Hardcoded_Entity (E)
-
-              --  Ignore invariant procedures and default initial conditions
-              and then not Subprogram_Is_Ignored_For_Proof (E)
-            then
+            if Is_Proof_Generation_Entity (E) then
                declare
                   LSP_Applies : constant Boolean :=
                     Is_Dispatching_Operation (E)
@@ -1237,6 +1253,27 @@ package body Gnat2Why.Driver is
               and then Switch (First .. First + 9) = "save-temps"));
    end Is_Back_End_Switch;
 
+   --------------------------------
+   -- Is_Proof_Generation_Entity --
+   --------------------------------
+
+   function Is_Proof_Generation_Entity (E : Entity_Id) return Boolean is
+   begin
+      case Ekind (E) is
+         when Entry_Kind | E_Function | E_Procedure =>
+            return
+              Entity_Spec_In_SPARK (E)
+              and then not Is_Hardcoded_Entity (E)
+              and then not Subprogram_Is_Ignored_For_Proof (E);
+
+         when E_Package                             =>
+            return Entity_Spec_In_SPARK (E);
+
+         when others                                =>
+            raise Program_Error;
+      end case;
+   end Is_Proof_Generation_Entity;
+
    ------------------------------
    -- Is_Translated_Subprogram --
    ------------------------------
@@ -1289,6 +1326,56 @@ package body Gnat2Why.Driver is
       Why3_Args : String_Lists.List := Gnat2Why_Args.Why3_Args;
       Command   : GNAT.OS_Lib.String_Access :=
         GNAT.OS_Lib.Locate_Exec_On_Path (Why3_Args.First_Element);
+
+      procedure Append_Provers (Provers : String_Lists.List);
+      --  Append a gnatwhy3 --prover switch for the given prover list
+
+      procedure Apply_Level (Level : Integer);
+      --  Expand a manifest level into the corresponding gnatwhy3 switches
+
+      --------------------
+      -- Append_Provers --
+      --------------------
+
+      procedure Append_Provers (Provers : String_Lists.List) is
+         Buf   : Unbounded_String;
+         First : Boolean := True;
+      begin
+         for P of Provers loop
+            if First then
+               First := False;
+            else
+               Append (Buf, ',');
+            end if;
+            Append (Buf, P);
+         end loop;
+         Why3_Args.Append ("--prover");
+         Why3_Args.Append (To_String (Buf));
+      end Append_Provers;
+
+      -----------------
+      -- Apply_Level --
+      -----------------
+
+      procedure Apply_Level (Level : Integer) is
+         Settings : Proof_Options.Proof_Level_Settings;
+      begin
+         if Level not in Proof_Options.Proof_Level then
+            raise Program_Error;
+         end if;
+
+         Settings :=
+           Proof_Options.Settings_For_Level
+             (Proof_Options.Proof_Level (Level));
+
+         Why3_Args.Append ("--timeout");
+         Why3_Args.Append (Image (Settings.Timeout, 1));
+         Why3_Args.Append ("--steps");
+         Why3_Args.Append (Image (Settings.Steps, 1));
+         Why3_Args.Append ("--memlimit");
+         Why3_Args.Append (Image (Settings.Memlimit, 1));
+         Append_Provers (Proof_Options.Provers_For (Settings.Provers));
+      end Apply_Level;
    begin
       --  Exit gently if gnat2why3 can't be located, for whatever reason,
       --  e.g. when the PATH is wrong in developer setup.
@@ -1308,6 +1395,41 @@ package body Gnat2Why.Driver is
 
       Why3_Args.Append ("--entity");
       Why3_Args.Append (Img (E));
+
+      --  Apply any per-entity proof options from the manifest. Gnatwhy3
+      --  honors the last occurrence of each option, so appending overrides
+      --  the per-file defaults set by gnatprove.
+
+      if Manifest_Match_Map.Contains (E) then
+         declare
+            Policy : Manifest_Subprogram renames
+              Gnat2Why_Args.Proof_Manifest (Manifest_Match_Map (E));
+         begin
+            if Policy.Level /= Invalid_Manifest_Level then
+               Apply_Level (Policy.Level);
+            end if;
+
+            if Policy.Timeout /= Invalid_Manifest_Timeout then
+               Why3_Args.Append ("--timeout");
+               Why3_Args.Append (Image (Policy.Timeout, 1));
+            end if;
+
+            if Policy.Steps /= Invalid_Manifest_Steps then
+               Why3_Args.Append ("--steps");
+               Why3_Args.Append (Image (Policy.Steps, 1));
+            end if;
+
+            if Policy.Memlimit /= Invalid_Manifest_Memlimit then
+               Why3_Args.Append ("--memlimit");
+               Why3_Args.Append (Image (Policy.Memlimit, 1));
+            end if;
+
+            if not Policy.Provers.Is_Empty then
+               Append_Provers (Policy.Provers);
+            end if;
+         end;
+      end if;
+
       --  Modifying the command line and printing it for debug purposes. We
       --  need to append the file first, then print the debug output, because
       --  this corresponds to the actual command line run, and finally remove
@@ -1393,6 +1515,10 @@ package body Gnat2Why.Driver is
       --  Some entities are registered globally in the symbol table. We do this
       --  upfront, so that we do not depend too much on the order of the list
       --  of entities.
+
+      procedure Resolve_Proof_Manifest;
+      --  Resolve manifest entries against entities of the current analysis
+      --  unit and reject entries that cannot drive a separate proof attempt.
 
       ----------------------
       -- For_All_Entities --
@@ -1488,6 +1614,430 @@ package body Gnat2Why.Driver is
          end case;
       end Register_Symbol;
 
+      ----------------------------
+      -- Resolve_Proof_Manifest --
+      ----------------------------
+
+      procedure Resolve_Proof_Manifest is
+
+         function Entry_Image (Index : Positive) return String;
+         --  Return a user-facing string rendering for the manifest entry
+
+         function Entity_Profile (E : Entity_Id) return String;
+         --  Return the profile of the entity as a string; e.g.
+         --    "(_ : Integer; _ : Natural) return Boolean"
+
+         function Entity_Kind (E : Entity_Id) return String;
+         --  Return the entity kind as a string, i.e., "function", "procedure"
+         function Is_Current_Unit_Entry
+           (Policy : Manifest_Subprogram) return Boolean;
+         --  Check whether the argument policy applies to the current unit
+
+         function Is_Manifest_Match
+           (Policy : Manifest_Subprogram; E : Entity_Id) return Boolean;
+         --  Check whether the entity matches the policy, either exactly or
+         --  via the hierarchical (prefix) semantics described in the
+         --  manifest design.
+
+         function Path_Specificity (Path : String) return Positive;
+         --  Number of dot-separated components in Path; higher means more
+         --  specific.
+
+         function Is_Subprogram_Like (E : Entity_Id) return Boolean
+         is (Ekind (E) in E_Entry | E_Function | E_Procedure);
+         --  True for entities for which kind and profile disambiguation
+         --  is meaningful.
+
+         function Same_Manifest_Text (Left, Right : String) return Boolean;
+         --  Check whether two manifest texts are the same after normalization
+
+         function Normalize_Manifest_Text (Text : String) return String;
+         --  Remove trailing and duplicate spaces from the text for more
+         --  stable comparison of strings.
+
+         procedure Manifest_Error (Index : Positive; Msg : String);
+         --  Report the Msg as error for the given manifest index, and stop
+         --  the program
+         --  ??? This should not stop the program, and go through regular
+         --  error msg routines.
+
+         Current_Unit : constant Entity_Id := Unique_Main_Unit_Entity;
+
+         -----------------
+         -- Entry_Image --
+         -----------------
+
+         function Entry_Image (Index : Positive) return String is
+            Policy : Manifest_Subprogram renames
+              Gnat2Why_Args.Proof_Manifest (Index);
+            Result : Unbounded_String :=
+              To_Unbounded_String
+                ("proof manifest entry "
+                 & Image (Integer (Index), 1)
+                 & " for """
+                 & To_String (Policy.Path)
+                 & """");
+         begin
+            if Length (Policy.Kind) > 0 then
+               Append (Result, " kind """ & To_String (Policy.Kind) & """");
+            end if;
+
+            if Length (Policy.Profile) > 0 then
+               Append
+                 (Result, " profile """ & To_String (Policy.Profile) & """");
+            end if;
+
+            return To_String (Result);
+         end Entry_Image;
+
+         --------------------
+         -- Entity_Profile --
+         --------------------
+
+         function Entity_Profile (E : Entity_Id) return String is
+            Formal : Entity_Id := First_Formal (E);
+            Result : Unbounded_String := To_Unbounded_String ("(");
+            First  : Boolean := True;
+         begin
+            while Present (Formal) loop
+               if First then
+                  First := False;
+               else
+                  Append (Result, "; ");
+               end if;
+
+               Append (Result, "_ : ");
+
+               case Ekind (Formal) is
+                  when E_In_Parameter     =>
+                     null;
+
+                  when E_Out_Parameter    =>
+                     Append (Result, "out ");
+
+                  when E_In_Out_Parameter =>
+                     Append (Result, "in out ");
+
+                  when others             =>
+                     raise Program_Error;
+               end case;
+
+               Append (Result, Full_Source_Name (Retysp (Etype (Formal))));
+
+               Next_Formal (Formal);
+            end loop;
+
+            Append (Result, ")");
+
+            if Ekind (E) = E_Function then
+               Append
+                 (Result, " return " & Full_Source_Name (Retysp (Etype (E))));
+            end if;
+
+            return To_String (Result);
+         end Entity_Profile;
+
+         -----------------
+         -- Entity_Kind --
+         -----------------
+
+         function Entity_Kind (E : Entity_Id) return String is
+         begin
+            case Ekind (E) is
+               when E_Entry     =>
+                  return "entry";
+
+               when E_Function  =>
+                  return "function";
+
+               when E_Procedure =>
+                  return "procedure";
+
+               when others      =>
+                  raise Program_Error;
+            end case;
+         end Entity_Kind;
+
+         ---------------------------
+         -- Is_Current_Unit_Entry --
+         ---------------------------
+
+         function Is_Current_Unit_Entry
+           (Policy : Manifest_Subprogram) return Boolean
+         is
+            Path      : constant String :=
+              Normalize_Manifest_Text (To_String (Policy.Path));
+            Unit_Name : constant String :=
+              Normalize_Manifest_Text (Full_Source_Name (Current_Unit));
+         begin
+            return
+              Path = Unit_Name
+              or else
+                (Path'Length > Unit_Name'Length
+                 and then
+                   Path (Path'First .. Path'First + Unit_Name'Length - 1)
+                   = Unit_Name
+                 and then Path (Path'First + Unit_Name'Length) = '.');
+         end Is_Current_Unit_Entry;
+
+         -----------------------
+         -- Is_Manifest_Match --
+         -----------------------
+
+         function Is_Manifest_Match
+           (Policy : Manifest_Subprogram; E : Entity_Id) return Boolean
+         is
+            Path : constant String :=
+              Normalize_Manifest_Text (To_String (Policy.Path));
+            Name : constant String :=
+              Normalize_Manifest_Text (Full_Source_Name (E));
+         begin
+            --  The policy path must either equal the entity name or be a
+            --  strict prefix on a dot boundary. The latter implements the
+            --  hierarchical semantics: an entry on a package or compilation
+            --  unit covers every nested entity.
+
+            if Path = Name then
+               null;
+            elsif Name'Length > Path'Length
+              and then Name (Name'First .. Name'First + Path'Length - 1) = Path
+              and then Name (Name'First + Path'Length) = '.'
+            then
+               null;
+            else
+               return False;
+            end if;
+
+            --  Kind and profile filters only make sense for subprograms;
+            --  if either is provided, the entity must be a subprogram and
+            --  must agree with the requested kind or profile.
+
+            if Length (Policy.Kind) > 0 then
+               if not Is_Subprogram_Like (E)
+                 or else
+                   not Same_Manifest_Text
+                         (To_String (Policy.Kind), Entity_Kind (E))
+               then
+                  return False;
+               end if;
+            end if;
+
+            if Length (Policy.Profile) > 0 then
+               if not Is_Subprogram_Like (E)
+                 or else
+                   not Same_Manifest_Text
+                         (To_String (Policy.Profile), Entity_Profile (E))
+               then
+                  return False;
+               end if;
+            end if;
+
+            return True;
+         end Is_Manifest_Match;
+
+         ----------------------
+         -- Path_Specificity --
+         ----------------------
+
+         function Path_Specificity (Path : String) return Positive is
+            Result : Positive := 1;
+         begin
+            for C of Path loop
+               if C = '.' then
+                  Result := Result + 1;
+               end if;
+            end loop;
+            return Result;
+         end Path_Specificity;
+
+         --------------------
+         -- Manifest_Error --
+         --------------------
+
+         procedure Manifest_Error (Index : Positive; Msg : String) is
+         begin
+            Put_Line
+              (Standard_Error, "error: " & Entry_Image (Index) & " " & Msg);
+            Exit_Program (E_Errors);
+         end Manifest_Error;
+
+         -----------------------------
+         -- Normalize_Manifest_Text --
+         -----------------------------
+
+         function Normalize_Manifest_Text (Text : String) return String is
+            Result         : Unbounded_String;
+            Last_Was_Space : Boolean := True;
+         begin
+            for C of Text loop
+               if C in ' ' | ASCII.HT | ASCII.LF | ASCII.CR | ASCII.FF then
+                  if not Last_Was_Space then
+                     Append (Result, ' ');
+                     Last_Was_Space := True;
+                  end if;
+               else
+                  Append (Result, C);
+                  Last_Was_Space := False;
+               end if;
+            end loop;
+
+            return
+              Ada.Characters.Handling.To_Lower
+                (Ada.Strings.Fixed.Trim
+                   (To_String (Result), Ada.Strings.Both));
+         end Normalize_Manifest_Text;
+
+         ------------------------
+         -- Same_Manifest_Text --
+         ------------------------
+
+         function Same_Manifest_Text (Left, Right : String) return Boolean is
+         begin
+            return
+              Normalize_Manifest_Text (Left) = Normalize_Manifest_Text (Right);
+         end Same_Manifest_Text;
+
+         Policy_Count : constant Natural :=
+           Natural (Gnat2Why_Args.Proof_Manifest.Length);
+
+         type Policy_Info is record
+            Has_Any_Match     : Boolean := False;
+            Has_Proof_Match   : Boolean := False;
+            Exact_Match_Count : Natural := 0;
+            Last_Status       : Analysis_Status := Not_In_Analyzed_Files;
+         end record;
+         --  Per-policy bookkeeping used after the per-entity loop to emit
+         --  diagnostics. Has_Any_Match covers any matched entity (including
+         --  non-proof entities like types), Has_Proof_Match restricts to
+         --  proof entities, Exact_Match_Count counts proof entities whose
+         --  full name has the same depth as the policy path (i.e. leaf
+         --  matches), and Last_Status records the most pessimistic
+         --  Analysis_Status seen for a proof match, with Analyzed treated as
+         --  best.
+
+         Info : array (1 .. Policy_Count) of Policy_Info;
+
+      begin
+         --  Match translated entities to manifest entries
+
+         for Candidate of Entities_To_Translate loop
+            if Ekind (Candidate)
+               in E_Entry | E_Function | E_Procedure | E_Package
+              and then Sloc (Candidate) /= No_Location
+            then
+               declare
+                  Cand_Status : constant Analysis_Status :=
+                    Analysis_Requested (Candidate, With_Inlined => False);
+                  Cand_Depth  : constant Positive :=
+                    Path_Specificity
+                      (Normalize_Manifest_Text (Full_Source_Name (Candidate)));
+                  Cand_Proof  : constant Boolean :=
+                    Is_Proof_Generation_Entity (Candidate);
+
+                  Best       : Natural := 0;
+                  Best_Depth : Natural := 0;
+                  Tied       : Boolean := False;
+               begin
+                  for Index in 1 .. Policy_Count loop
+                     declare
+                        Policy : Manifest_Subprogram renames
+                          Gnat2Why_Args.Proof_Manifest (Index);
+                     begin
+                        if Is_Manifest_Match (Policy, Candidate) then
+                           Info (Index).Has_Any_Match := True;
+
+                           if Cand_Proof then
+                              Info (Index).Has_Proof_Match := True;
+                              if Info (Index).Last_Status /= Analyzed then
+                                 Info (Index).Last_Status := Cand_Status;
+                              end if;
+                           end if;
+
+                           declare
+                              Depth : constant Positive :=
+                                Path_Specificity
+                                  (Normalize_Manifest_Text
+                                     (To_String (Policy.Path)));
+                           begin
+                              if Cand_Proof and then Depth = Cand_Depth then
+                                 Info (Index).Exact_Match_Count :=
+                                   Info (Index).Exact_Match_Count + 1;
+                              end if;
+
+                              if Cand_Proof and then Cand_Status = Analyzed
+                              then
+                                 if Depth > Best_Depth then
+                                    Best := Index;
+                                    Best_Depth := Depth;
+                                    Tied := False;
+                                 elsif Depth = Best_Depth then
+                                    Tied := True;
+                                 end if;
+                              end if;
+                           end;
+                        end if;
+                     end;
+                  end loop;
+
+                  if Best /= 0 then
+                     if Tied then
+                        Manifest_Error
+                          (Best,
+                           "is ambiguous with another entry of equal "
+                           & "specificity matching """
+                           & Full_Source_Name (Candidate)
+                           & """");
+                     end if;
+                     Manifest_Match_Map.Insert (Candidate, Best);
+                  end if;
+               end;
+            end if;
+         end loop;
+
+         --  After the matching, we can report ambiguous or useless manifests
+
+         for Index in 1 .. Policy_Count loop
+            declare
+               Policy : Manifest_Subprogram renames
+                 Gnat2Why_Args.Proof_Manifest (Index);
+               I      : Policy_Info renames Info (Index);
+            begin
+               if I.Exact_Match_Count > 1 then
+                  Manifest_Error
+                    (Index,
+                     "is ambiguous; add or refine the kind or profile field");
+               elsif I.Has_Proof_Match then
+                  case I.Last_Status is
+                     when Analyzed                    =>
+                        null;
+
+                     when Contextually_Analyzed       =>
+                        Manifest_Error
+                          (Index,
+                           "matches an entity analyzed only in calling"
+                           & " contexts");
+
+                     when Not_In_Analyzed_Files       =>
+                        Manifest_Error
+                          (Index, "matches an entity outside analyzed files");
+
+                     when Not_The_Analyzed_Subprogram =>
+                        Manifest_Error
+                          (Index,
+                           "matches an entity not selected for analysis");
+                  end case;
+               elsif I.Has_Any_Match then
+                  Manifest_Error
+                    (Index,
+                     "matches an entity that is not translated for proof");
+               elsif Is_Current_Unit_Entry (Policy) then
+                  Manifest_Error
+                    (Index, "does not match any entity in this analysis unit");
+               end if;
+            end;
+         end loop;
+      end Resolve_Proof_Manifest;
+
    begin
       --  Translation of the __HEAP is hardcoded into the
       --  _gnatprove_standard.Main module.
@@ -1515,6 +2065,8 @@ package body Gnat2Why.Driver is
       For_All_Entities (Translate_Hidden_Globals'Access);
 
       For_All_Entities (Complete_Declaration'Access);
+
+      Resolve_Proof_Manifest;
 
       --  Generate VCs for entities of unit. This must follow the generation of
       --  modules for entities, so that all completions for deferred constants

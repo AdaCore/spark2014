@@ -1,0 +1,13 @@
+version = 1
+
+[[subprogram]]
+path = "Pkg"
+timeout = 5
+steps = 100
+provers = ["cvc5"]
+
+[[subprogram]]
+path = "Pkg.R"
+timeout = 5
+steps = 200
+provers = ["cvc5"]

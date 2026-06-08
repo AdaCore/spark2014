@@ -1,0 +1,6 @@
+version = 1
+
+[[subprogram]]
+path = "Pkg.P"
+kind = "procedure"
+timeout = 1

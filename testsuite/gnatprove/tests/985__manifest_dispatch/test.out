@@ -1,0 +1,32 @@
+===== resolved manifest entry =====
+===== ambiguous manifest entry =====
+Summary logged in gnatprove/gnatprove.out
+[Ada Analysis]    pkg.adb
+[Ada Global_Gen]  pkg.adb
+error: proof manifest entry 1 for "Pkg.P" kind "procedure" is ambiguous; add or refine the kind or profile field
+gnatprove: error during flow analysis and proof
+===== missing manifest entity =====
+Summary logged in gnatprove/gnatprove.out
+[Ada Analysis]    pkg.adb
+error: proof manifest entry 1 for "Pkg.Missing" kind "procedure" does not match any entity in this analysis unit
+gnatprove: error during flow analysis and proof
+===== manifest entity not selected =====
+Summary logged in gnatprove/gnatprove.out
+[Ada Analysis]    pkg.adb
+error: proof manifest entry 1 for "Pkg.Q" kind "procedure" matches an entity not selected for analysis
+gnatprove: error during flow analysis and proof
+===== manifest applies steps override =====
+info: postcondition proved
+--> pkg.ads:11:17
+Success: all checks proved (1 check).
+Summary logged in gnatprove/gnatprove.out
+[Ada Analysis]    pkg.adb
+===== package prefix covers multiple subprograms =====
+===== nested prefix covers single subprogram =====
+===== specific entry overrides broader entry =====
+===== two same-specificity entries are ambiguous =====
+Summary logged in gnatprove/gnatprove.out
+[Ada Analysis]    pkg.adb
+[Ada Global_Gen]  pkg.adb
+error: proof manifest entry 1 for "Pkg.R" is ambiguous with another entry of equal specificity matching "Pkg.R"
+gnatprove: error during flow analysis and proof
