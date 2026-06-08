@@ -39,10 +39,10 @@ package body Gnat2Why_Opts.Writing is
    -------------------
 
    function Opt_File_Name
-     (Translation_Phase : Boolean;
-      Obj_Dir           : String;
-      Why3_Dir          : String;
-      Unit_Name         : String) return String
+     (Phase     : Gnat2Why_Phase;
+      Obj_Dir   : String;
+      Why3_Dir  : String;
+      Unit_Name : String) return String
    is
       Hash_Context : Blake3_Context;
       File_Name    : String (1 .. 12);
@@ -79,7 +79,7 @@ package body Gnat2Why_Opts.Writing is
       --  Pass_Extra_Options_To_Gnat2why calls Set_Field. Keep these two in
       --  sync when adding or removing options.
 
-      Hash (Global_Gen_Mode_Name, Boolean'Image (not Translation_Phase));
+      Hash (Global_Gen_Mode_Name, Boolean'Image (Phase = Global_Generation));
       Hash (Output_Mode_Name, Gnat2Why_Opts.Output_Mode_Type'Image (Output));
       Hash (Exclude_Line_Name, CL_Switches.Exclude_Line.all);
       Hash (Gnattest_Values_Name, CL_Switches.Gnattest_Values.all);
@@ -95,7 +95,7 @@ package body Gnat2Why_Opts.Writing is
 
       --  Options needed only in phase 2
 
-      if Translation_Phase then
+      if Phase = Translation then
          Hash (Limit_Units_Name, Boolean'Image (CL_Switches.U));
          Hash (Limit_Subp_Name, CL_Switches.Limit_Subp.all);
          Hash (Limit_Region_Name, CL_Switches.Limit_Region.all);
@@ -148,7 +148,7 @@ package body Gnat2Why_Opts.Writing is
                & ASCII.NUL);
          end loop;
 
-         if Translation_Phase then
+         if Phase = Translation then
             Hash (Proof_Warnings_Name, Boolean'Image (FS.Proof_Warnings));
             Hash (Why3_Args_Name, Compute_Why3_Args (Obj_Dir, FS));
          end if;
@@ -163,10 +163,10 @@ package body Gnat2Why_Opts.Writing is
    ------------------------------------
 
    function Pass_Extra_Options_To_Gnat2why
-     (Translation_Phase : Boolean;
-      Obj_Dir           : String;
-      Why3_Dir          : String;
-      Unit_Name         : String) return String
+     (Phase     : Gnat2Why_Phase;
+      Obj_Dir   : String;
+      Why3_Dir  : String;
+      Unit_Name : String) return String
    is
       function To_JSON (SL : String_Lists.List) return JSON_Array;
 
@@ -184,7 +184,7 @@ package body Gnat2Why_Opts.Writing is
       end To_JSON;
 
       Result : constant String :=
-        Opt_File_Name (Translation_Phase, Obj_Dir, Why3_Dir, Unit_Name);
+        Opt_File_Name (Phase, Obj_Dir, Why3_Dir, Unit_Name);
 
    begin
       --  Skip writing if a file with the same content hash already exists
@@ -196,7 +196,7 @@ package body Gnat2Why_Opts.Writing is
          Obj         : constant JSON_Value := Create_Object;
          Output_File : File_Type;
       begin
-         Set_Field (Obj, Global_Gen_Mode_Name, not Translation_Phase);
+         Set_Field (Obj, Global_Gen_Mode_Name, Phase = Global_Generation);
          Set_Field
            (Obj,
             Output_Mode_Name,
@@ -220,7 +220,7 @@ package body Gnat2Why_Opts.Writing is
             not CL_Switches.No_Global_Generation);
 
          --  Options needed only in phase 2
-         if Translation_Phase then
+         if Phase = Translation then
             Set_Field (Obj, Limit_Units_Name, CL_Switches.U);
             Set_Field (Obj, Limit_Subp_Name, CL_Switches.Limit_Subp.all);
             Set_Field (Obj, Limit_Region_Name, CL_Switches.Limit_Region.all);
@@ -271,7 +271,7 @@ package body Gnat2Why_Opts.Writing is
             Set_Field (Obj, GP_Mode_Name, To_JSON (FS.Mode));
             Set_Field (Obj, Warning_Status_Name, To_JSON (FS.Warning_Status));
 
-            if Translation_Phase then
+            if Phase = Translation then
                Set_Field (Obj, Proof_Warnings_Name, FS.Proof_Warnings);
 
                Set_Field

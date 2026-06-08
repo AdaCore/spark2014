@@ -34,7 +34,6 @@ with GNATCOLL.Opt_Parse;
 with GNATCOLL.Strings;
 with GNATCOLL.Tribooleans;
 with GNATCOLL.VFS;          use GNATCOLL.VFS;
-with Gnat2Why_Opts.Writing;
 with GNAT.Command_Line;     use GNAT.Command_Line;
 with GNAT.Directory_Operations;
 with GNAT.Expect;
@@ -1337,18 +1336,18 @@ package body Configuration is
    ---------------------------------
 
    function Extra_Args_File_For_Unit
-     (Unit              : GPR2.Build.Compilation_Unit.Object;
-      Translation_Phase : Boolean;
-      Obj_Dir           : String;
-      Why3_Dir          : String) return String
+     (Unit     : GPR2.Build.Compilation_Unit.Object;
+      Phase    : Gnat2Why_Opts.Writing.Gnat2Why_Phase;
+      Obj_Dir  : String;
+      Why3_Dir : String) return String
    is
       Unit_Name : constant String := File_Specific_Key (Unit);
       Opt_File  : constant String :=
         Gnat2Why_Opts.Writing.Pass_Extra_Options_To_Gnat2why
-          (Translation_Phase => Translation_Phase,
-           Obj_Dir           => Obj_Dir,
-           Why3_Dir          => Why3_Dir,
-           Unit_Name         => Unit_Name);
+          (Phase     => Phase,
+           Obj_Dir   => Obj_Dir,
+           Why3_Dir  => Why3_Dir,
+           Unit_Name => Unit_Name);
    begin
       Opt_File_Set.Include (Opt_File);
       return Opt_File;

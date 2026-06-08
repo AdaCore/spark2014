@@ -75,16 +75,20 @@ package body GPR2.Build.Actions.Process.Compile.Ada.Analysis is
            (if Signature_Only
             then
               Gnat2Why_Opts.Writing.Opt_File_Name
-                (True,
-                 String (Self.CU.Owning_View.Object_Directory.Value),
-                 String (Self.CU.Owning_View.Object_Directory.Value),
-                 Configuration.File_Specific_Key (Self.CU))
+                (Phase     => Gnat2Why_Opts.Writing.Translation,
+                 Obj_Dir   =>
+                   String (Self.CU.Owning_View.Object_Directory.Value),
+                 Why3_Dir  =>
+                   String (Self.CU.Owning_View.Object_Directory.Value),
+                 Unit_Name => Configuration.File_Specific_Key (Self.CU))
             else
               Configuration.Extra_Args_File_For_Unit
-                (Self.CU,
-                 True,
-                 String (Self.CU.Owning_View.Object_Directory.Value),
-                 String (Self.CU.Owning_View.Object_Directory.Value)));
+                (Unit     => Self.CU,
+                 Phase    => Gnat2Why_Opts.Writing.Translation,
+                 Obj_Dir  =>
+                   String (Self.CU.Owning_View.Object_Directory.Value),
+                 Why3_Dir =>
+                   String (Self.CU.Owning_View.Object_Directory.Value)));
       begin
          Cmd_Line.Add_Argument ("-gnates=" & Opt_File);
       end;

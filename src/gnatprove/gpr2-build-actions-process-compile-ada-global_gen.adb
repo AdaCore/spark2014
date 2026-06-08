@@ -101,16 +101,18 @@ package body GPR2.Build.Actions.Process.Compile.Ada.Global_Gen is
            (if Signature_Only
             then
               Gnat2Why_Opts.Writing.Opt_File_Name
-                (False,
-                 String (Self.CU.Owning_View.Object_Directory.Value),
-                 "",
-                 Configuration.File_Specific_Key (Self.CU))
+                (Phase     => Gnat2Why_Opts.Writing.Global_Generation,
+                 Obj_Dir   =>
+                   String (Self.CU.Owning_View.Object_Directory.Value),
+                 Why3_Dir  => "",
+                 Unit_Name => Configuration.File_Specific_Key (Self.CU))
             else
               Configuration.Extra_Args_File_For_Unit
-                (Self.CU,
-                 False,
-                 String (Self.CU.Owning_View.Object_Directory.Value),
-                 ""));
+                (Unit     => Self.CU,
+                 Phase    => Gnat2Why_Opts.Writing.Global_Generation,
+                 Obj_Dir  =>
+                   String (Self.CU.Owning_View.Object_Directory.Value),
+                 Why3_Dir => ""));
       begin
          Cmd_Line.Add_Argument ("-gnates=" & Opt_File);
       end;

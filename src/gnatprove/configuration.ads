@@ -39,6 +39,7 @@ with GPR2.Project.Tree;
 with GPR2.Project.View;
 use GPR2;
 with Gnat2Why_Opts;    use Gnat2Why_Opts;
+with Gnat2Why_Opts.Writing;
 with GNATCOLL.Utils;   use GNATCOLL.Utils;
 with Named_Semaphores; use Named_Semaphores;
 with String_Utils;     use String_Utils;
@@ -332,10 +333,10 @@ package Configuration is
    --  Set of all created opt file paths, for cleanup
 
    function Extra_Args_File_For_Unit
-     (Unit              : GPR2.Build.Compilation_Unit.Object;
-      Translation_Phase : Boolean;
-      Obj_Dir           : String;
-      Why3_Dir          : String) return String;
+     (Unit     : GPR2.Build.Compilation_Unit.Object;
+      Phase    : Gnat2Why_Opts.Writing.Gnat2Why_Phase;
+      Obj_Dir  : String;
+      Why3_Dir : String) return String;
    --  Retrieve the extra args file for a specific unit's configuration. The
    --  file is created if it does not exist yet.
    --  Looks up the unit's File_Specific settings and generates a flat
