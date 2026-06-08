@@ -56,6 +56,7 @@ with GPR2.Project.Registry.Pack.Description;
 with GPR2.Reporter.Console;
 
 with Platform;     use Platform;
+with Proof_Options;
 with SPARK2014VSN; use SPARK2014VSN;
 with System.Multiprocessors;
 
@@ -3265,83 +3266,62 @@ package body Configuration is
       -------------------------------------
 
       procedure Set_Level_Timeout_Steps_Provers
-        (Parsed : Parsed_Switches; FS : out File_Specific) is
+        (Parsed : Parsed_Switches; FS : out File_Specific)
+      is
+         procedure Apply_Level_Settings
+           (Settings : Proof_Options.Proof_Level_Settings);
+         --  Apply settings implied by --level before processing explicit
+         --  switches that may override them.
+
+         --------------------------
+         -- Apply_Level_Settings --
+         --------------------------
+
+         procedure Apply_Level_Settings
+           (Settings : Proof_Options.Proof_Level_Settings) is
+         begin
+            FS.Provers := Proof_Options.Provers_For (Settings.Provers);
+            FS.Steps := Settings.Steps;
+            FS.Timeout := Settings.Timeout;
+            FS.Memlimit := Settings.Memlimit;
+            FS.Counterexamples := Settings.Counterexamples;
+         end Apply_Level_Settings;
       begin
 
-         case Parsed.Values (Sw_Level).Integer_Val is
+         if Parsed.Values (Sw_Level).Integer_Val = Invalid_Level then
 
             --  If level switch was not provided, set other switches to their
             --  default values.
 
-            when Invalid_Level =>
+            FS.Provers := Proof_Options.Provers_For (Proof_Options.CVC5_Only);
 
-               FS.Provers.Append ("cvc5");
+            --  Default steps are used only if none of --steps and --timeout
+            --  is used (either explicitly or through --level). Otherwise
+            --  set to zero to indicate steps are not used.
 
-               --  Default steps are used only if none of --steps and --timeout
-               --  is used (either explicitly or through --level). Otherwise
-               --  set to zero to indicate steps are not used.
-
-               if Parsed.Values (Sw_Steps).Integer_Val = Invalid_Steps
-                 and then Switch_String (Parsed, Sw_Timeout) = ""
-               then
-                  FS.Steps := Default_Steps;
-               else
-                  FS.Steps := 0;
-               end if;
-
-               FS.Timeout := 0;
-               FS.Memlimit := 0;
-               FS.Counterexamples := False;
-
-            --  See the UG for the meaning of the level switches
-
-            when 0             =>
-               FS.Provers.Append ("cvc5");
+            if Parsed.Values (Sw_Steps).Integer_Val = Invalid_Steps
+              and then Switch_String (Parsed, Sw_Timeout) = ""
+            then
+               FS.Steps := Proof_Options.Default_Steps;
+            else
                FS.Steps := 0;
-               FS.Timeout := 1;
-               FS.Memlimit := 1000;
-               FS.Counterexamples := False;
+            end if;
 
-            when 1             =>
-               FS.Provers.Append ("cvc5");
-               FS.Provers.Append ("z3");
-               FS.Provers.Append ("altergo");
-               FS.Steps := 0;
-               FS.Timeout := 1;
-               FS.Memlimit := 1000;
-               FS.Counterexamples := False;
+            FS.Timeout := 0;
+            FS.Memlimit := 0;
+            FS.Counterexamples := False;
 
-            when 2             =>
-               FS.Provers.Append ("cvc5");
-               FS.Provers.Append ("z3");
-               FS.Provers.Append ("altergo");
-               FS.Steps := 0;
-               FS.Timeout := 5;
-               FS.Memlimit := 1000;
-               FS.Counterexamples := True;
+         elsif Parsed.Values (Sw_Level).Integer_Val
+               in Proof_Options.Proof_Level
+         then
+            Apply_Level_Settings
+              (Proof_Options.Settings_For_Level
+                 (Parsed.Values (Sw_Level).Integer_Val));
 
-            when 3             =>
-               FS.Provers.Append ("cvc5");
-               FS.Provers.Append ("z3");
-               FS.Provers.Append ("altergo");
-               FS.Steps := 0;
-               FS.Timeout := 20;
-               FS.Memlimit := 2000;
-               FS.Counterexamples := True;
-
-            when 4             =>
-               FS.Provers.Append ("cvc5");
-               FS.Provers.Append ("z3");
-               FS.Provers.Append ("altergo");
-               FS.Steps := 0;
-               FS.Timeout := 60;
-               FS.Memlimit := 2000;
-               FS.Counterexamples := True;
-
-            when others        =>
-               Abort_Msg
-                 ("error: wrong argument for --level", With_Help => False);
-         end case;
+         else
+            Abort_Msg
+              ("error: wrong argument for --level", With_Help => False);
+         end if;
 
          FS.Check_Counterexamples := True;
          FS.CE_Steps := 0;
