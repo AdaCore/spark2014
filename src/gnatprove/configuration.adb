@@ -34,7 +34,6 @@ with GNATCOLL.Opt_Parse;
 with GNATCOLL.Strings;
 with GNATCOLL.Tribooleans;
 with GNATCOLL.VFS;          use GNATCOLL.VFS;
-with Gnat2Why_Opts.Writing;
 with GNAT.Command_Line;     use GNAT.Command_Line;
 with GNAT.Directory_Operations;
 with GNAT.Expect;
@@ -61,6 +60,8 @@ with SPARK2014VSN; use SPARK2014VSN;
 with System.Multiprocessors;
 
 package body Configuration is
+
+   use type Gnat2Why_Opts.Writing.Gnat2Why_Phase;
 
    Invalid_Level   : constant := -1;
    Invalid_Steps   : constant := -1;
@@ -1337,22 +1338,44 @@ package body Configuration is
    ---------------------------------
 
    function Extra_Args_File_For_Unit
-     (Unit              : GPR2.Build.Compilation_Unit.Object;
-      Translation_Phase : Boolean;
-      Obj_Dir           : String;
-      Why3_Dir          : String) return String
+     (Unit     : GPR2.Build.Compilation_Unit.Object;
+      Phase    : Gnat2Why_Opts.Writing.Gnat2Why_Phase;
+      Obj_Dir  : String;
+      Why3_Dir : String) return String
    is
       Unit_Name : constant String := File_Specific_Key (Unit);
       Opt_File  : constant String :=
         Gnat2Why_Opts.Writing.Pass_Extra_Options_To_Gnat2why
-          (Translation_Phase => Translation_Phase,
-           Obj_Dir           => Obj_Dir,
-           Why3_Dir          => Why3_Dir,
-           Unit_Name         => Unit_Name);
+          (Phase     => Phase,
+           Obj_Dir   => Obj_Dir,
+           Why3_Dir  => Why3_Dir,
+           Unit_Name => Unit_Name);
    begin
       Opt_File_Set.Include (Opt_File);
       return Opt_File;
    end Extra_Args_File_For_Unit;
+
+   -----------------------------------
+   -- Extra_Args_File_Name_For_Unit --
+   -----------------------------------
+
+   function Extra_Args_File_Name_For_Unit
+     (Unit  : GPR2.Build.Compilation_Unit.Object;
+      Phase : Gnat2Why_Opts.Writing.Gnat2Why_Phase) return String
+   is
+      Unit_Name : constant String := File_Specific_Key (Unit);
+      Obj_Dir   : constant String :=
+        String (Unit.Owning_View.Object_Directory.Value);
+      Why3_Dir  : constant String :=
+        (if Phase = Gnat2Why_Opts.Writing.Translation then Obj_Dir else "");
+   begin
+      return
+        Gnat2Why_Opts.Writing.Opt_File_Name
+          (Phase     => Phase,
+           Obj_Dir   => Obj_Dir,
+           Why3_Dir  => Why3_Dir,
+           Unit_Name => Unit_Name);
+   end Extra_Args_File_Name_For_Unit;
 
    -----------------
    -- Find_Switch --
