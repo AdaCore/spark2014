@@ -248,8 +248,6 @@ package Configuration is
    Label_Length : constant := 26;
    --  Maximum length of label in report. Other characters are discarded
 
-   Default_Steps : constant Natural := 100;
-
    package String_Holders is new Ada.Containers.Indefinite_Holders (String);
 
    Proof_Dir : GNAT.Strings.String_Access;
