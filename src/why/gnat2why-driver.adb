@@ -138,6 +138,11 @@ package body Gnat2Why.Driver is
    --  consulted when building the gnatwhy3 command line, to override the
    --  default per-file proof options for that entity.
 
+   Manifest_Warnings : JSON_Array;
+   --  Warnings emitted while resolving proof-manifest entries. They are stored
+   --  separately from Errout messages because manifest files are not Ada
+   --  sources.
+
    -----------------------
    -- Local Subprograms --
    -----------------------
@@ -407,6 +412,7 @@ package body Gnat2Why.Driver is
       Set_Field
         (Full, "stop_reason", Create (Stop_Reason_Type'Image (Stop_Reason)));
       Set_Field (Full, "warn_error", Create (Warnings_Errors));
+      Set_Field (Full, "manifest_warnings", Create (Manifest_Warnings));
       if Progress >= Progress_Flow then
          Set_Field (Full, "flow", Create (Flow_Msgs));
       end if;
@@ -1656,10 +1662,7 @@ package body Gnat2Why.Driver is
          --  stable comparison of strings.
 
          procedure Manifest_Error (Index : Positive; Msg : String);
-         --  Report the Msg as error for the given manifest index, and stop
-         --  the program
-         --  ??? This should not stop the program, and go through regular
-         --  error msg routines.
+         --  Report Msg as a warning for the given manifest index
 
          Current_Unit : constant Entity_Id := Unique_Main_Unit_Entity;
 
@@ -1855,10 +1858,19 @@ package body Gnat2Why.Driver is
          --------------------
 
          procedure Manifest_Error (Index : Positive; Msg : String) is
+            Policy  : Manifest_Subprogram renames
+              Gnat2Why_Args.Proof_Manifest (Index);
+            Message : constant JSON_Value := Create_Object;
+            Warning : constant JSON_Value := Create_Object;
          begin
-            Put_Line
-              (Standard_Error, "error: " & Entry_Image (Index) & " " & Msg);
-            Exit_Program (E_Errors);
+            Set_Field (Message, "text", Entry_Image (Index) & " " & Msg);
+            Set_Field (Warning, "file", To_String (Policy.File));
+            Set_Field (Warning, "line", Policy.Line);
+            Set_Field (Warning, "col", Policy.Column);
+            Set_Field (Warning, "message", Message);
+            Set_Field (Warning, "severity", "warning");
+            Set_Field (Warning, "rule", "proof-manifest");
+            Append (Manifest_Warnings, Warning);
          end Manifest_Error;
 
          -----------------------------
@@ -1915,9 +1927,17 @@ package body Gnat2Why.Driver is
          --  Analysis_Status seen for a proof match, with Analyzed treated as
          --  best.
 
-         Info : array (1 .. Policy_Count) of Policy_Info;
+         Info    : array (1 .. Policy_Count) of Policy_Info;
+         Invalid : array (1 .. Policy_Count) of Boolean := [others => False];
 
       begin
+         --  Nothing to resolve without a manifest; skip the per-entity scan so
+         --  ordinary runs pay no cost for this feature.
+
+         if Policy_Count = 0 then
+            return;
+         end if;
+
          --  Match translated entities to manifest entries
 
          for Candidate of Entities_To_Translate loop
@@ -1987,8 +2007,9 @@ package body Gnat2Why.Driver is
                            & "specificity matching """
                            & Full_Source_Name (Candidate)
                            & """");
+                     else
+                        Manifest_Match_Map.Insert (Candidate, Best);
                      end if;
-                     Manifest_Match_Map.Insert (Candidate, Best);
                   end if;
                end;
             end if;
@@ -2006,6 +2027,7 @@ package body Gnat2Why.Driver is
                   Manifest_Error
                     (Index,
                      "is ambiguous; add or refine the kind or profile field");
+                  Invalid (Index) := True;
                elsif I.Has_Proof_Match then
                   case I.Last_Status is
                      when Analyzed                    =>
@@ -2016,25 +2038,38 @@ package body Gnat2Why.Driver is
                           (Index,
                            "matches an entity analyzed only in calling"
                            & " contexts");
+                        Invalid (Index) := True;
 
                      when Not_In_Analyzed_Files       =>
                         Manifest_Error
                           (Index, "matches an entity outside analyzed files");
+                        Invalid (Index) := True;
 
                      when Not_The_Analyzed_Subprogram =>
                         Manifest_Error
                           (Index,
                            "matches an entity not selected for analysis");
+                        Invalid (Index) := True;
                   end case;
                elsif I.Has_Any_Match then
                   Manifest_Error
                     (Index,
                      "matches an entity that is not translated for proof");
+                  Invalid (Index) := True;
                elsif Is_Current_Unit_Entry (Policy) then
                   Manifest_Error
                     (Index, "does not match any entity in this analysis unit");
+                  Invalid (Index) := True;
                end if;
             end;
+         end loop;
+
+         for Candidate of Entities_To_Translate loop
+            if Manifest_Match_Map.Contains (Candidate)
+              and then Invalid (Manifest_Match_Map (Candidate))
+            then
+               Manifest_Match_Map.Delete (Candidate);
+            end if;
          end loop;
       end Resolve_Proof_Manifest;
 

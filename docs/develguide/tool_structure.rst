@@ -125,10 +125,12 @@ the units they describe, using the same stem convention as ``.spark``
 artifacts. Each file is checked before analysis actions are launched, and the
 subprogram-level proof policies relevant to each unit are serialized into that
 unit's ``-gnates`` JSON options file for analysis-mode ``gnat2why``
-invocations. This keeps manifest parsing and user-facing diagnostics in
-``gnatprove``. Before serialization, entries are sorted by their matching
-identity so that directory traversal order does not affect the options seen by
-later pipeline stages.
+invocations, together with the manifest source file and best available entry
+location.
+Manifest parsing, schema checks, and semantic sanity checks performed before
+analysis are fatal and stay in ``gnatprove``. Before serialization, entries are
+sorted by their matching identity so that directory traversal order does not
+affect the options seen by later pipeline stages.
 
 During translation, ``gnat2why`` resolves these manifest entries against the
 semantic entities selected for the current analysis unit. Matching is
@@ -140,13 +142,17 @@ and ``profile`` fields further filter on subprogram entities to disambiguate
 overloads. When several entries cover the same entity, the most specific one
 wins (longest dot-separated path); broader entries are not merged in.
 Two policies that match the same entity at the same specificity are reported
-as an ambiguity error, as are multiple overloads matched by a single policy
+as an ambiguity warning, as are multiple overloads matched by a single policy
 that lacks sufficient disambiguation.
 
-The resolution step also rejects entries that are stale, selected only for
+The resolution step also warns about entries that are stale, selected only for
 contextual analysis, outside the analyzed files, or not translated for proof.
-Later pipeline stages consume already-normalized policy data; ``gnatwhy3``
-receives only the concrete prover options selected by ``gnat2why``.
+These warnings are written to the ``manifest_warnings`` section of the unit's
+``.spark`` file and are later reported by ``gnatprove`` text and SARIF
+generation. They do not stop analysis; affected entities are proved with the
+default options. Later pipeline stages consume already-normalized policy data;
+``gnatwhy3`` receives only the concrete prover options selected by
+``gnat2why``.
 
 Copying ALI files and phase-1 diagnostics
 =========================================
@@ -335,8 +341,8 @@ The data flow is as follows:
  - ``Create_Error_JSON_File`` writes these frontend diagnostics to the unit's
    ``.spark_error`` file.
  - During analysis, phase 2 writes the unit's ``.spark`` file with flow,
-   proof, and warning/error results, plus generated globals when
-   ``--flow-show-gg`` is enabled.
+   proof, warning/error, and manifest-resolution results, plus generated
+   globals when ``--flow-show-gg`` is enabled.
  - After all build actions complete, ``Spark_Report.Generate_Report`` loads the
    parsed ``.spark`` and ``.spark_error`` inputs and calls
    ``Generate_SARIF_Report`` to write ``gnatprove.sarif``.
@@ -350,8 +356,8 @@ final report.
 Within ``Generate_SARIF_Report``, GNATprove maps its JSON report format to
 SARIF as follows:
 
- - SARIF results are collected from the ``flow``, ``proof``, and
-   ``warn_error`` arrays.
+ - SARIF results are collected from the ``flow``, ``proof``, ``warn_error``,
+   and ``manifest_warnings`` arrays.
  - The ``message`` field is copied into a SARIF message object, including
    message arguments when placeholders were present in the original diagnostic.
  - ``reasonForCheck`` is emitted in the custom SARIF property bag as

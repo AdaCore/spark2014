@@ -1734,6 +1734,10 @@ package body Configuration is
       --  Ordering used to normalize the manifest before passing it to
       --  gnat2why.
 
+      procedure Set_Manifest_Location
+        (Policy : in out Manifest_Subprogram; Value : TOML.TOML_Value);
+      --  Save the manifest source location used by gnat2why diagnostics
+
       procedure Load_Manifest_File (File : String);
       --  Read a manifest file
 
@@ -2030,6 +2034,28 @@ package body Configuration is
       end Manifest_Less;
 
       ---------------------------
+      -- Set_Manifest_Location --
+      ---------------------------
+
+      procedure Set_Manifest_Location
+        (Policy : in out Manifest_Subprogram; Value : TOML.TOML_Value)
+      is
+         Loc : constant String := TOML.Format_Location (Value.Location);
+         Sep : constant Natural := Index (Loc, ":");
+      begin
+         Policy.File := Current_File;
+
+         if Sep > 0 then
+            Policy.Line := Natural'Value (Loc (Loc'First .. Sep - 1));
+            Policy.Column := Natural'Value (Loc (Sep + 1 .. Loc'Last));
+         end if;
+      exception
+         when Constraint_Error =>
+            Policy.Line := 1;
+            Policy.Column := 1;
+      end Set_Manifest_Location;
+
+      ---------------------------
       -- Read_Optional_Provers --
       ---------------------------
 
@@ -2101,6 +2127,7 @@ package body Configuration is
          Check_Unit_Prefix
            (Unit_Name, Table.Get_Or_Null ("path"), To_String (Path));
          Policy.Path := Path;
+         Set_Manifest_Location (Policy, Table.Get_Or_Null ("path"));
          Policy.Kind := Get_Optional_String (Table, "kind");
          Policy.Profile := Get_Optional_String (Table, "profile");
          Policy.Timeout :=

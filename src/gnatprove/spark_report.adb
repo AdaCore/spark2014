@@ -123,6 +123,9 @@ package body Spark_Report is
       procedure Handle_Pragma_Assume_Items (V : JSON_Array; Unit : Unit_Type);
       --  Parse and extract all information from a pragma assume result array
 
+      procedure Handle_Manifest_Items (V : JSON_Array);
+      --  Print proof-manifest diagnostics emitted during analysis
+
       procedure Handle_Proof_Items (V : JSON_Array; Unit : Unit_Type);
       --  Parse and extract all information from a proof result array
 
@@ -527,6 +530,38 @@ package body Spark_Report is
          end loop;
       end Handle_Flow_Items;
 
+      ---------------------------
+      -- Handle_Manifest_Items --
+      ---------------------------
+
+      procedure Handle_Manifest_Items (V : JSON_Array) is
+      begin
+         if Verbosity = Quiet_Level then
+            return;
+         end if;
+
+         for Index in 1 .. Length (V) loop
+            declare
+               Result : constant JSON_Value := Get (V, Index);
+               Msg    : constant String :=
+                 Get (Get (Get (Result, "message"), "text"));
+               File   : constant String := Get (Get (Result, "file"));
+               Line   : constant Natural := Get (Get (Result, "line"));
+               Column : constant Natural := Get (Get (Result, "col"));
+            begin
+               Ada.Text_IO.Put_Line
+                 (Ada.Text_IO.Standard_Error,
+                  File
+                  & ":"
+                  & Image (Line, 1)
+                  & ":"
+                  & Image (Column, 1)
+                  & ": warning: invalid "
+                  & Msg);
+            end;
+         end loop;
+      end Handle_Manifest_Items;
+
       --------------------------------
       -- Handle_Pragma_Assume_Items --
       --------------------------------
@@ -718,9 +753,12 @@ package body Spark_Report is
 
          end Handle_SPARK_Status;
 
-         Has_Flow    : constant Boolean := Has_Field (Dict, "flow");
-         Has_Assumes : constant Boolean := Has_Field (Dict, "pragma_assume");
-         Has_Proof   : constant Boolean := Has_Field (Dict, "proof");
+         Has_Flow              : constant Boolean := Has_Field (Dict, "flow");
+         Has_Assumes           : constant Boolean :=
+           Has_Field (Dict, "pragma_assume");
+         Has_Proof             : constant Boolean := Has_Field (Dict, "proof");
+         Has_Manifest_Warnings : constant Boolean :=
+           Has_Field (Dict, "manifest_warnings");
 
          Analysis    : constant Analysis_Progress :=
            Analysis_Progress'Value (String'(Get (Dict, "progress")));
@@ -753,6 +791,9 @@ package body Spark_Report is
          end if;
          if Has_Proof then
             Handle_Proof_Items (Get (Get (Dict, "proof")), Unit);
+         end if;
+         if Has_Manifest_Warnings then
+            Handle_Manifest_Items (Get (Get (Dict, "manifest_warnings")));
          end if;
          if Assumptions and then Has_Field (Dict, "assumptions") then
             Handle_Assume_Items (Get (Get (Dict, "assumptions")), Unit);

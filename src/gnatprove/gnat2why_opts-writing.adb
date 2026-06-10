@@ -81,6 +81,10 @@ package body Gnat2Why_Opts.Writing is
             Hash ("path", To_String (Policy.Path));
             Hash ("kind", To_String (Policy.Kind));
             Hash ("profile", To_String (Policy.Profile));
+            --  File, Line and Column are intentionally excluded from the hash.
+            --  They only locate the entry for diagnostics and do not influence
+            --  proof results, so cosmetic edits to the manifest (comments,
+            --  blank lines, reordering) should not invalidate the analysis.
             Hash ("timeout", Integer'Image (Policy.Timeout));
             Hash ("steps", Integer'Image (Policy.Steps));
             Hash ("memlimit", Integer'Image (Policy.Memlimit));
@@ -215,6 +219,9 @@ package body Gnat2Why_Opts.Writing is
          Obj : constant JSON_Value := Create_Object;
       begin
          Set_Field (Obj, "path", To_String (Policy.Path));
+         Set_Field (Obj, "file", To_String (Policy.File));
+         Set_Field (Obj, "line", Policy.Line);
+         Set_Field (Obj, "col", Policy.Column);
 
          if Length (Policy.Kind) > 0 then
             Set_Field (Obj, "kind", To_String (Policy.Kind));
