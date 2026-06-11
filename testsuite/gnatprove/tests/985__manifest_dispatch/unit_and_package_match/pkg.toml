@@ -1,0 +1,11 @@
+version = 1
+
+[[subprogram]]
+path = "Pkg"
+kind = "unit"
+steps = 100
+
+[[subprogram]]
+path = "Pkg"
+kind = "package"
+steps = 100

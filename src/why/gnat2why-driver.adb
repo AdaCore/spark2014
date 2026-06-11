@@ -1635,6 +1635,7 @@ package body Gnat2Why.Driver is
 
          function Entity_Kind (E : Entity_Id) return String;
          --  Return the entity kind as a string, i.e., "function", "procedure"
+         --  or "package".
          function Is_Current_Unit_Entry
            (Policy : Manifest_Subprogram) return Boolean;
          --  Check whether the argument policy applies to the current unit
@@ -1651,8 +1652,7 @@ package body Gnat2Why.Driver is
 
          function Is_Subprogram_Like (E : Entity_Id) return Boolean
          is (Ekind (E) in E_Entry | E_Function | E_Procedure);
-         --  True for entities for which kind and profile disambiguation
-         --  is meaningful.
+         --  True for entities for which profile disambiguation is meaningful.
 
          function Same_Manifest_Text (Left, Right : String) return Boolean;
          --  Check whether two manifest texts are the same after normalization
@@ -1753,6 +1753,9 @@ package body Gnat2Why.Driver is
                when E_Function  =>
                   return "function";
 
+               when E_Package   =>
+                  return "package";
+
                when E_Procedure =>
                   return "procedure";
 
@@ -1790,36 +1793,53 @@ package body Gnat2Why.Driver is
          function Is_Manifest_Match
            (Policy : Manifest_Subprogram; E : Entity_Id) return Boolean
          is
-            Path : constant String :=
+            Path            : constant String :=
               Normalize_Manifest_Text (To_String (Policy.Path));
-            Name : constant String :=
+            Name            : constant String :=
               Normalize_Manifest_Text (Full_Source_Name (E));
+            Kind            : constant String :=
+              Normalize_Manifest_Text (To_String (Policy.Kind));
+            Is_Exact_Match  : constant Boolean := Path = Name;
+            Is_Prefix_Match : constant Boolean :=
+              Name'Length > Path'Length
+              and then Name (Name'First .. Name'First + Path'Length - 1) = Path
+              and then Name (Name'First + Path'Length) = '.';
          begin
             --  The policy path must either equal the entity name or be a
             --  strict prefix on a dot boundary. The latter implements the
             --  hierarchical semantics: an entry on a package or compilation
             --  unit covers every nested entity.
 
-            if Path = Name then
+            if Is_Exact_Match then
                null;
-            elsif Name'Length > Path'Length
-              and then Name (Name'First .. Name'First + Path'Length - 1) = Path
-              and then Name (Name'First + Path'Length) = '.'
-            then
+            elsif Is_Prefix_Match then
                null;
             else
                return False;
             end if;
 
-            --  Kind and profile filters only make sense for subprograms;
-            --  if either is provided, the entity must be a subprogram and
-            --  must agree with the requested kind or profile.
+            --  A unit default is distinct from the package entity that may
+            --  share the same source name. It applies only hierarchically, so
+            --  a same-path package entry can configure the package body.
 
-            if Length (Policy.Kind) > 0 then
+            if Kind = "unit" then
+               return Is_Prefix_Match;
+            end if;
+
+            --  A package entry identifies the package entity itself. Bare
+            --  package paths keep the broader hierarchical default semantics.
+
+            if Kind = "package" then
+               return Is_Exact_Match and then Ekind (E) = E_Package;
+            end if;
+
+            --  Procedure/function kind and profile filters only make sense
+            --  for subprograms; if either is provided, the entity must be a
+            --  subprogram and must agree with the requested kind or profile.
+
+            if Kind /= "" then
                if not Is_Subprogram_Like (E)
-                 or else
-                   not Same_Manifest_Text
-                         (To_String (Policy.Kind), Entity_Kind (E))
+                 or else not Same_Manifest_Text (Kind, Entity_Kind (E))
                then
                   return False;
                end if;

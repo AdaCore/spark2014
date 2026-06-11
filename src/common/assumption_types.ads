@@ -82,7 +82,9 @@ package Assumption_Types is
 
    function Mk_Base_Sloc
      (File : String; Line : Positive; Column : Positive) return Base_Sloc;
-   function Mk_Subp (Name : String; Sloc : My_Sloc) return Subp_Type;
+   function Mk_Subp
+     (Name : String; Sloc : My_Sloc; Manifest_Kind : String := "")
+      return Subp_Type;
    --  Build a subp object from its defining components
 
    function Mk_Unit (Name : String) return Unit_Type;
@@ -103,8 +105,9 @@ private
    type Unit_Type is new Symbol;
 
    type Subp_Type_Rec is record
-      Name : Symbol;
-      Sloc : My_Sloc;
+      Name          : Symbol;
+      Sloc          : My_Sloc;
+      Manifest_Kind : Symbol;
    end record;
 
    type Subp_Type is access constant Subp_Type_Rec;

@@ -13,6 +13,32 @@ gnatprove(
     no_output=True,
 )
 
+print("===== unit default and package entity =====")
+gnatprove(
+    opt=[
+        "-P",
+        "test.gpr",
+        "--mode=prove",
+        "--proof-manifest-dir=unit_and_package_match",
+        "-u",
+        "pkg.adb",
+    ],
+    no_output=True,
+)
+
+print("===== unit default and nested package entity =====")
+gnatprove(
+    opt=[
+        "-P",
+        "test.gpr",
+        "--mode=prove",
+        "--proof-manifest-dir=unit_and_nested_package_match",
+        "-u",
+        "pkg.adb",
+    ],
+    no_output=True,
+)
+
 print("===== ambiguous manifest entry =====")
 gnatprove(
     opt=[

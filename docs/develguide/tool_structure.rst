@@ -138,7 +138,10 @@ hierarchical: a policy path matches an entity either exactly, or as a strict
 dot-separated prefix of the entity's canonical source path. This means an
 entry on a package or compilation unit covers every nested subprogram, and an
 entry on a subprogram applies only to that subprogram. The optional ``kind``
-and ``profile`` fields further filter on subprogram entities to disambiguate
+and ``profile`` fields further refine the identity. ``kind = "unit"`` denotes
+the unit default and applies only through the hierarchical prefix rule, not to
+the same-path package entity. ``kind = "package"`` denotes the package entity
+itself. Procedure and function kinds, together with ``profile``, disambiguate
 overloads. When several entries cover the same entity, the most specific one
 wins (longest dot-separated path); broader entries are not merged in.
 Two policies that match the same entity at the same specificity are reported

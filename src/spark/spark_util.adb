@@ -1949,6 +1949,7 @@ package body SPARK_Util is
    function Entity_To_Subp_Assumption (E : Entity_Id) return Subp_Type is
       function Loc_To_Assume_Sloc (Loc : Source_Ptr) return My_Sloc
       with Pre => Loc /= No_Location;
+      function Manifest_Kind return String;
 
       ------------------------
       -- Loc_To_Assume_Sloc --
@@ -1975,11 +1976,33 @@ package body SPARK_Util is
          end loop;
          return Sloc;
       end Loc_To_Assume_Sloc;
+
+      -------------------
+      -- Manifest_Kind --
+      -------------------
+
+      function Manifest_Kind return String is
+      begin
+         case Ekind (E) is
+            when E_Function  =>
+               return "function";
+
+            when E_Package   =>
+               return "package";
+
+            when E_Procedure =>
+               return "procedure";
+
+            when others      =>
+               return "";
+         end case;
+      end Manifest_Kind;
    begin
       return
         Mk_Subp
-          (Name => Full_Source_Name (E),
-           Sloc => Loc_To_Assume_Sloc (Sloc (E)));
+          (Name          => Full_Source_Name (E),
+           Sloc          => Loc_To_Assume_Sloc (Sloc (E)),
+           Manifest_Kind => Manifest_Kind);
    end Entity_To_Subp_Assumption;
 
    ----------------------------

@@ -1,4 +1,6 @@
 ===== resolved manifest entry =====
+===== unit default and package entity =====
+===== unit default and nested package entity =====
 ===== ambiguous manifest entry =====
 ambiguous/pkg.toml:4:8: warning: invalid proof manifest entry 1 for "Pkg.P" kind "procedure" is ambiguous; add or refine the kind or profile field
 Success: all checks proved (2 checks).
