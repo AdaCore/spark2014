@@ -271,6 +271,7 @@ spark2014_nocache:
     ANOD_QUALIFIERS: $ANOD_BUILD_QUALIFIERS
 
   artifacts:
+     when: always
      paths:
         - xunit-*.xml
         - __results*
