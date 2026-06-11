@@ -55,8 +55,8 @@ package Debug.Timing is
    with Pre => Time >= 0.0;
    --  Inject a timing that comes from another source than this package. This
    --  allows to integrate timings from spawned processes into the output.
-   --  Unlike timing coming from this package, the external times should be
-   --  non-negative.
+   --  The timing must be a non-negative elapsed duration; callers should
+   --  sanitize unreliable clock data before registering it.
 
 private
 
