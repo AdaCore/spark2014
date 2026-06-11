@@ -64,3 +64,7 @@
 - E0032: `volatile function associated with aspect Iterable`
 
 - E0033: `Intrinsic convention on arithmetic operator with unexpected profile`
+
+- E0039: `clause of Modifies contract mentioning an object that is not an output of the subprogram`
+
+- E0040: `effectively volatile output of the subprogram not mentioned entirely in Modifies contract`

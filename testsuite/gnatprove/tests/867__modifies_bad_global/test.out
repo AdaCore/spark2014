@@ -1,6 +1,8 @@
-test_bad_globals.adb:7:19: error: clause of Modifies contract mentioning an object that is not an output of the subprogram is not allowed in SPARK
+test_bad_globals.adb:7:19: error: clause of Modifies contract mentioning an object that is not an output of the subprogram is not allowed in SPARK [E0039]
+test_bad_globals.adb:7:19: error: launch "gnatprove --explain=E0039" for more information
 test_bad_globals.adb:7:19: error: violation of aspect SPARK_Mode at line 1
 test_bad_globals.adb:20:18: error: Modifies aspect should mention overlaid object instead
-test_bad_globals.adb:20:18: error: clause of Modifies contract mentioning an object that is not an output of the subprogram is not allowed in SPARK
+test_bad_globals.adb:20:18: error: clause of Modifies contract mentioning an object that is not an output of the subprogram is not allowed in SPARK [E0039]
+test_bad_globals.adb:20:18: error: launch "gnatprove --explain=E0039" for more information
 test_bad_globals.adb:20:18: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof

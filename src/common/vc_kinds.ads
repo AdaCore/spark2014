@@ -1563,7 +1563,9 @@ package VC_Kinds is
       EC_Iterable_Globals,
       EC_Iterable_Side_Effects,
       EC_Iterable_Volatile,
-      EC_Intrinsic_Operator);
+      EC_Intrinsic_Operator,
+      EC_Modifies_Not_Output,
+      EC_Modifies_Volatile);
    for Explain_Code_Kind use
      (EC_None                                 => 0,
       EC_Volatile_At_Library_Level            => 1,
@@ -1598,7 +1600,9 @@ package VC_Kinds is
       EC_Iterable_Globals                     => 30,
       EC_Iterable_Side_Effects                => 31,
       EC_Iterable_Volatile                    => 32,
-      EC_Intrinsic_Operator                   => 33);
+      EC_Intrinsic_Operator                   => 33,
+      EC_Modifies_Not_Output                  => 39,
+      EC_Modifies_Volatile                    => 40);
 
    function To_String (Code : Explain_Code_Kind) return String
    with Pre => Code /= EC_None;
