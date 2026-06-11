@@ -1,5 +1,7 @@
-p.ads:10:36: error: access to subprogram with global effects is not allowed in SPARK (SPARK RM 4.1.4(7))
+p.ads:10:36: error: access to subprogram with global effects is not allowed in SPARK (SPARK RM 4.1.4(7)) [E0034]
+p.ads:10:36: error: launch "gnatprove --explain=E0034" for more information
 p.ads:10:36: error: violation of pragma SPARK_Mode at test.adc:1
-p.ads:11:36: error: access to subprogram with global effects is not allowed in SPARK (SPARK RM 4.1.4(7))
+p.ads:11:36: error: access to subprogram with global effects is not allowed in SPARK (SPARK RM 4.1.4(7)) [E0034]
+p.ads:11:36: error: launch "gnatprove --explain=E0034" for more information
 p.ads:11:36: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof
