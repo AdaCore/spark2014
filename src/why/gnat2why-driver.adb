@@ -261,7 +261,7 @@ package body Gnat2Why.Driver is
       declare
          Fn : String renames Output_File_Map (Output_File);
       begin
-         Parse_Why3_Results (Fn, Timing);
+         Parse_Why3_Results (Fn, Timing, Gnatwhy3_Success => Success);
          Delete_File (Fn, Success);
          pragma Assert (Success);
       end;
