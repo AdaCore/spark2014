@@ -225,12 +225,13 @@ As a consequence, these containers are highly inefficient. Thus, they should in
 general be used in ghost code and annotations so that they can be removed from
 the final executable.
 
-There are 6 functional containers, which are part of the |SPARK| library:
+There are 7 functional containers, which are part of the |SPARK| library:
 
 * ``SPARK.Containers.Functional.Infinite_Sequences``
 * ``SPARK.Containers.Functional.Maps``
 * ``SPARK.Containers.Functional.Multisets``
 * ``SPARK.Containers.Functional.Sets``
+* ``SPARK.Containers.Functional.Total_Maps``
 * ``SPARK.Containers.Functional.Trees``
 * ``SPARK.Containers.Functional.Vectors``
 
@@ -268,6 +269,16 @@ Functional maps offer a dictionary between any two types of elements:
 
     function Has_Key (M : Map; K : Key_Type) return Boolean;
     function Get (M : Map; K : Key_Type) return Element_Type;
+
+Total maps defined in ``Functional.Total_Maps`` are maps in which every key is
+mapped to an element. Keys that have not been explicitly set are mapped to a
+default element supplied at instantiation. As a result, ``Get`` is a total
+function and there is no ``Has_Key`` primitive:
+
+.. code-block:: ada
+
+    function Get (M : Map; K : Key_Type) return Element_Type;
+    function Set (M : Map; K : Key_Type; E : Element_Type) return Map;
 
 Multisets are mathematical sets associated with a number of occurrences:
 
