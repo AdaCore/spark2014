@@ -146,6 +146,10 @@ package Gnat2Why_Opts.Reading is
 
    Why3_Args : String_Lists.List;
 
+   --  Subprogram-level proof policies loaded from the proof manifest.
+
+   Proof_Manifest : Manifest_Subprogram_Vectors.Vector;
+
    --  Check counterexamples based on the result from giant-step RAC from
    --  gnatwhy3, and the Ada small-step RAC.
 

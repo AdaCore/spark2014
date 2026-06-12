@@ -51,6 +51,9 @@ package body Gnat2Why_Opts.Reading is
       --  Return the string value of the [Field] of the JSON record [V]
 
       procedure Read_File_Specific_Info (V : JSON_Value);
+      --  Read options only for this file
+      procedure Read_Proof_Manifest (V : JSON_Value);
+      --  Read the options provided by proof manifest
 
       -----------------------------
       -- Read_File_Specific_Info --
@@ -76,6 +79,63 @@ package body Gnat2Why_Opts.Reading is
          end if;
          Warning_Status := VC_Kinds.From_JSON (Get (V, Warning_Status_Name));
       end Read_File_Specific_Info;
+
+      -------------------------
+      -- Read_Proof_Manifest --
+      -------------------------
+
+      procedure Read_Proof_Manifest (V : JSON_Value) is
+         Ar : constant JSON_Array := Get (V, Proof_Manifest_Name);
+      begin
+         Proof_Manifest.Clear;
+
+         for Var_Index in Positive range 1 .. Length (Ar) loop
+            declare
+               Obj    : constant JSON_Value := Get (Ar, Var_Index);
+               Policy : Manifest_Subprogram;
+            begin
+               Policy.Path := Get_Opt (Obj, "path");
+
+               if Has_Field (Obj, "kind") then
+                  Policy.Kind := Get_Opt (Obj, "kind");
+               end if;
+
+               if Has_Field (Obj, "profile") then
+                  Policy.Profile := Get_Opt (Obj, "profile");
+               end if;
+
+               if Has_Field (Obj, "timeout") then
+                  Policy.Timeout := Integer'(Get_Opt (Obj, "timeout"));
+               end if;
+
+               if Has_Field (Obj, "steps") then
+                  Policy.Steps := Integer'(Get_Opt (Obj, "steps"));
+               end if;
+
+               if Has_Field (Obj, "memlimit") then
+                  Policy.Memlimit := Integer'(Get_Opt (Obj, "memlimit"));
+               end if;
+
+               if Has_Field (Obj, "level") then
+                  Policy.Level := Integer'(Get_Opt (Obj, "level"));
+               end if;
+
+               if Has_Field (Obj, "provers") then
+                  declare
+                     Provers : constant JSON_Array := Get (Obj, "provers");
+                  begin
+                     for Prover_Index in Positive range 1 .. Length (Provers)
+                     loop
+                        Policy.Provers.Append
+                          (Get (Get (Provers, Prover_Index)));
+                     end loop;
+                  end;
+               end if;
+
+               Proof_Manifest.Append (Policy);
+            end;
+         end loop;
+      end Read_Proof_Manifest;
 
       V : constant JSON_Value := Read_File_Into_JSON (Args_File);
 
@@ -116,6 +176,7 @@ package body Gnat2Why_Opts.Reading is
          Ide_Mode := Get_Opt (V, Ide_Mode_Name);
          CWE := Get_Opt (V, CWE_Name);
          Max_Why3_Processes := Get_Opt (V, Max_Why3_Processes_Name);
+         Read_Proof_Manifest (V);
 
          Why3_Dir := Get_Opt (V, Why3_Dir_Name);
       end if;

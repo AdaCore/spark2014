@@ -393,11 +393,13 @@ pre-commit:
     - echo $GNATFORMAT_DATE
     - anod install gnat --latest
     - anod install libgpr2 --latest
+    - anod install ada-toml --latest
     - anod install vss-text -Qedge --latest
     - anod install vss-extra -Qedge --latest
     - anod install gnatformat -Qdate=$GNATFORMAT_DATE
     - anod printenv gnat > /tmp/precommit_env.sh
     - anod printenv libgpr2 >> /tmp/precommit_env.sh
+    - anod printenv ada-toml >> /tmp/precommit_env.sh
     - anod printenv vss-text -Qedge >> /tmp/precommit_env.sh
     - anod printenv vss-extra -Qedge >> /tmp/precommit_env.sh
     - anod printenv gnatformat -Qdate=$GNATFORMAT_DATE >> /tmp/precommit_env.sh

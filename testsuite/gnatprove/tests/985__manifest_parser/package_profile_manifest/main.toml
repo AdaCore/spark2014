@@ -1,0 +1,7 @@
+version = 1
+
+[[subprogram]]
+path = "Main"
+kind = "package"
+profile = "()"
+steps = 1

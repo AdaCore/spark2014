@@ -24,13 +24,14 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Configuration;        use Configuration;
-with Ada.Directories;      use Ada.Directories;
-with Ada.Text_IO;          use Ada.Text_IO;
-with GNATCOLL.JSON;        use GNATCOLL.JSON;
-with GNATCOLL.Hash.Blake3; use GNATCOLL.Hash.Blake3;
-with String_Utils;         use String_Utils;
-with VC_Kinds;             use VC_Kinds;
+with Configuration;         use Configuration;
+with Ada.Directories;       use Ada.Directories;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Text_IO;           use Ada.Text_IO;
+with GNATCOLL.JSON;         use GNATCOLL.JSON;
+with GNATCOLL.Hash.Blake3;  use GNATCOLL.Hash.Blake3;
+with String_Utils;          use String_Utils;
+with VC_Kinds;              use VC_Kinds;
 
 package body Gnat2Why_Opts.Writing is
 
@@ -39,16 +40,19 @@ package body Gnat2Why_Opts.Writing is
    -------------------
 
    function Opt_File_Name
-     (Phase     : Gnat2Why_Phase;
-      Obj_Dir   : String;
-      Why3_Dir  : String;
-      Unit_Name : String) return String
+     (Phase          : Gnat2Why_Phase;
+      Obj_Dir        : String;
+      Why3_Dir       : String;
+      Unit_Name      : String;
+      Proof_Manifest : Manifest_Subprogram_Vectors.Vector) return String
    is
       Hash_Context : Blake3_Context;
       File_Name    : String (1 .. 12);
 
       procedure Hash (Key : String; Value : String);
       procedure Hash (Key : String; Value : String_Lists.List);
+      procedure Hash
+        (Key : String; Value : Manifest_Subprogram_Vectors.Vector);
 
       ----------
       -- Hash --
@@ -60,15 +64,28 @@ package body Gnat2Why_Opts.Writing is
            (Hash_Context, Key & ASCII.NUL & Value & ASCII.NUL);
       end Hash;
 
-      ----------
-      -- Hash --
-      ----------
-
       procedure Hash (Key : String; Value : String_Lists.List) is
       begin
          Update_Hash_Context (Hash_Context, Key & ASCII.NUL);
          for S of Value loop
             Update_Hash_Context (Hash_Context, S & ASCII.NUL);
+         end loop;
+      end Hash;
+
+      procedure Hash (Key : String; Value : Manifest_Subprogram_Vectors.Vector)
+      is
+      begin
+         Update_Hash_Context (Hash_Context, Key & ASCII.NUL);
+         for Policy of Value loop
+            Update_Hash_Context (Hash_Context, "subprogram" & ASCII.NUL);
+            Hash ("path", To_String (Policy.Path));
+            Hash ("kind", To_String (Policy.Kind));
+            Hash ("profile", To_String (Policy.Profile));
+            Hash ("timeout", Integer'Image (Policy.Timeout));
+            Hash ("steps", Integer'Image (Policy.Steps));
+            Hash ("memlimit", Integer'Image (Policy.Memlimit));
+            Hash ("level", Integer'Image (Policy.Level));
+            Hash ("provers", Policy.Provers);
          end loop;
       end Hash;
 
@@ -120,6 +137,7 @@ package body Gnat2Why_Opts.Writing is
          Hash (Ide_Mode_Name, Boolean'Image (Configuration.IDE_Mode));
          Hash (CWE_Name, Boolean'Image (CL_Switches.CWE));
          Hash (Max_Why3_Processes_Name, Integer'Image (Max_Why3_Processes));
+         Hash (Proof_Manifest_Name, Proof_Manifest);
          Hash (Why3_Dir_Name, Ada.Directories.Full_Name (Why3_Dir));
       end if;
 
@@ -163,12 +181,17 @@ package body Gnat2Why_Opts.Writing is
    ------------------------------------
 
    function Pass_Extra_Options_To_Gnat2why
-     (Phase     : Gnat2Why_Phase;
-      Obj_Dir   : String;
-      Why3_Dir  : String;
-      Unit_Name : String) return String
+     (Phase          : Gnat2Why_Phase;
+      Obj_Dir        : String;
+      Why3_Dir       : String;
+      Unit_Name      : String;
+      Proof_Manifest : Manifest_Subprogram_Vectors.Vector) return String
    is
       function To_JSON (SL : String_Lists.List) return JSON_Array;
+      function To_JSON
+        (Policy : Manifest_Subprogram) return GNATCOLL.JSON.JSON_Value;
+      function To_JSON
+        (Entries : Manifest_Subprogram_Vectors.Vector) return JSON_Array;
 
       -------------
       -- To_JSON --
@@ -183,8 +206,57 @@ package body Gnat2Why_Opts.Writing is
          return A;
       end To_JSON;
 
+      function To_JSON
+        (Policy : Manifest_Subprogram) return GNATCOLL.JSON.JSON_Value
+      is
+         Obj : constant JSON_Value := Create_Object;
+      begin
+         Set_Field (Obj, "path", To_String (Policy.Path));
+
+         if Length (Policy.Kind) > 0 then
+            Set_Field (Obj, "kind", To_String (Policy.Kind));
+         end if;
+
+         if Length (Policy.Profile) > 0 then
+            Set_Field (Obj, "profile", To_String (Policy.Profile));
+         end if;
+
+         if Policy.Timeout /= Invalid_Manifest_Timeout then
+            Set_Field (Obj, "timeout", Policy.Timeout);
+         end if;
+
+         if Policy.Steps /= Invalid_Manifest_Steps then
+            Set_Field (Obj, "steps", Policy.Steps);
+         end if;
+
+         if Policy.Memlimit /= Invalid_Manifest_Memlimit then
+            Set_Field (Obj, "memlimit", Policy.Memlimit);
+         end if;
+
+         if Policy.Level /= Invalid_Manifest_Level then
+            Set_Field (Obj, "level", Policy.Level);
+         end if;
+
+         if not Policy.Provers.Is_Empty then
+            Set_Field (Obj, "provers", To_JSON (Policy.Provers));
+         end if;
+
+         return Obj;
+      end To_JSON;
+
+      function To_JSON
+        (Entries : Manifest_Subprogram_Vectors.Vector) return JSON_Array
+      is
+         A : JSON_Array := GNATCOLL.JSON.Empty_Array;
+      begin
+         for Policy of Entries loop
+            Append (A, To_JSON (Policy));
+         end loop;
+         return A;
+      end To_JSON;
+
       Result : constant String :=
-        Opt_File_Name (Phase, Obj_Dir, Why3_Dir, Unit_Name);
+        Opt_File_Name (Phase, Obj_Dir, Why3_Dir, Unit_Name, Proof_Manifest);
 
    begin
       --  Skip writing if a file with the same content hash already exists
@@ -251,6 +323,8 @@ package body Gnat2Why_Opts.Writing is
             Set_Field (Obj, Ide_Mode_Name, Configuration.IDE_Mode);
             Set_Field (Obj, CWE_Name, CL_Switches.CWE);
             Set_Field (Obj, Max_Why3_Processes_Name, Max_Why3_Processes);
+
+            Set_Field (Obj, Proof_Manifest_Name, To_JSON (Proof_Manifest));
 
             --  The call to Ada.Directories.Full_Name removes any trailing
             --  slash, which could confuse gnat2why.

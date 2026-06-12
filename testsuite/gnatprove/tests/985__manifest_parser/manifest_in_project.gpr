@@ -1,0 +1,7 @@
+project Manifest_In_Project is
+   for Source_Dirs use (".");
+
+   package Prove is
+      for Switches use ("--proof-manifest-dir=valid_manifest");
+   end Prove;
+end Manifest_In_Project;
