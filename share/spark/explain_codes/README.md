@@ -65,6 +65,16 @@
 
 - E0033: `Intrinsic convention on arithmetic operator with unexpected profile`
 
+- E0034: `access to subprogram with global effects`
+
+- E0035: `access to subprogram declared within a protected object`
+
+- E0036: `access to dispatching operation`
+
+- E0037: `access to function with side effects`
+
+- E0038: `access to volatile function`
+
 - E0039: `clause of Modifies contract mentioning an object that is not an output of the subprogram`
 
 - E0040: `effectively volatile output of the subprogram not mentioned entirely in Modifies contract`

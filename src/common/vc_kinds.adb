@@ -1703,6 +1703,16 @@ package body VC_Kinds is
          when Vio_Iterable_Side_Effects             =>
            EC_Iterable_Side_Effects,
          when Vio_Iterable_Volatile                 => EC_Iterable_Volatile,
+         when Vio_Access_Sub_With_Globals           =>
+           EC_Access_Sub_With_Globals,
+         when Vio_Access_Subprogram_Within_Protected =>
+           EC_Access_Subprogram_Within_Protected,
+         when Vio_Access_To_Dispatch_Op              =>
+           EC_Access_To_Dispatch_Op,
+         when Vio_Access_Function_With_Side_Effects =>
+           EC_Access_Function_With_Side_Effects,
+         when Vio_Access_Volatile_Function           =>
+           EC_Access_Volatile_Function,
          when Vio_Modifies_Not_Output               => EC_Modifies_Not_Output,
          when Vio_Modifies_Volatile                 => EC_Modifies_Volatile,
          when others                                => EC_None);
