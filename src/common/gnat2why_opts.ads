@@ -110,36 +110,43 @@ private
    --  directly rely on them; instead, they should use the writing/reading
    --  routines, respectively.
 
-   CWE_Name                     : constant String := "cwe";
-   Check_Counterexamples_Name   : constant String := "check_counterexamples";
-   Debug_No_Cache_Output_Name   : constant String := "debug_no_cache_output";
-   Debug_Exec_RAC_Name          : constant String := "debug_exec_rac";
-   GP_Mode_Name                 : constant String := "gp_mode";
-   Debug_Mode_Name              : constant String := "debug";
-   Exclude_Line_Name            : constant String := "exclude_line";
-   Flow_Advanced_Debug_Name     : constant String := "flow_advanced_debug";
-   Flow_Generate_Contracts_Name : constant String := "flow_generate_contracts";
-   Flow_Show_GG_Name            : constant String := "flow_show_gg";
-   Global_Gen_Mode_Name         : constant String := "global_gen_mode";
-   Gnattest_Values_Name         : constant String := "gnattest_values";
-   Ide_Mode_Name                : constant String := "ide_mode";
-   Limit_Lines_Name             : constant String := "limit_lines";
-   Limit_Name_Name              : constant String := "limit_name";
-   Limit_Region_Name            : constant String := "limit_region";
-   Limit_Subp_Name              : constant String := "limit_subp";
-   Limit_Units_Name             : constant String := "limit_units";
-   Max_Why3_Processes_Name      : constant String := "max_why3_processes";
-   No_Inlining_Name             : constant String := "no_inlining";
-   No_Loop_Unrolling_Name       : constant String := "no_loop_unrolling";
-   Output_Mode_Name             : constant String := "output_mode";
-   Proof_Generate_Guards_Name   : constant String :=
+   CWE_Name                           : constant String := "cwe";
+   Check_Counterexamples_Name         : constant String :=
+     "check_counterexamples";
+   Debug_Disable_Prover_Feedback_Name : constant String :=
+     "debug_disable_prover_feedback";
+   Debug_No_Cache_Output_Name         : constant String :=
+     "debug_no_cache_output";
+   Debug_Exec_RAC_Name                : constant String := "debug_exec_rac";
+   GP_Mode_Name                       : constant String := "gp_mode";
+   Debug_Mode_Name                    : constant String := "debug";
+   Exclude_Line_Name                  : constant String := "exclude_line";
+   Flow_Advanced_Debug_Name           : constant String :=
+     "flow_advanced_debug";
+   Flow_Generate_Contracts_Name       : constant String :=
+     "flow_generate_contracts";
+   Flow_Show_GG_Name                  : constant String := "flow_show_gg";
+   Global_Gen_Mode_Name               : constant String := "global_gen_mode";
+   Gnattest_Values_Name               : constant String := "gnattest_values";
+   Ide_Mode_Name                      : constant String := "ide_mode";
+   Limit_Lines_Name                   : constant String := "limit_lines";
+   Limit_Name_Name                    : constant String := "limit_name";
+   Limit_Region_Name                  : constant String := "limit_region";
+   Limit_Subp_Name                    : constant String := "limit_subp";
+   Limit_Units_Name                   : constant String := "limit_units";
+   Max_Why3_Processes_Name            : constant String :=
+     "max_why3_processes";
+   No_Inlining_Name                   : constant String := "no_inlining";
+   No_Loop_Unrolling_Name             : constant String := "no_loop_unrolling";
+   Output_Mode_Name                   : constant String := "output_mode";
+   Proof_Generate_Guards_Name         : constant String :=
      "proof_generate_axiom_guards";
-   Proof_Warnings_Name          : constant String := "proof_warnings";
-   Proof_Manifest_Name          : constant String := "proof_manifest";
-   Report_Mode_Name             : constant String := "report_mode";
-   Warning_Mode_Name            : constant String := "warning_mode";
-   Why3_Args_Name               : constant String := "why3_args";
-   Why3_Dir_Name                : constant String := "why3_dir";
-   Warning_Status_Name          : constant String := "warning_status";
+   Proof_Warnings_Name                : constant String := "proof_warnings";
+   Proof_Manifest_Name                : constant String := "proof_manifest";
+   Report_Mode_Name                   : constant String := "report_mode";
+   Warning_Mode_Name                  : constant String := "warning_mode";
+   Why3_Args_Name                     : constant String := "why3_args";
+   Why3_Dir_Name                      : constant String := "why3_dir";
+   Warning_Status_Name                : constant String := "warning_status";
 
 end Gnat2Why_Opts;
