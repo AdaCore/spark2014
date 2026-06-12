@@ -1,1 +1,1 @@
-main.adb:9:29: medium: predicate check might fail [provers reached step limit before completing the proof]
+main.adb:9:29: medium: predicate check might fail

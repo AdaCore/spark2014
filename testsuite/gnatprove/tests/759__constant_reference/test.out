@@ -15,7 +15,7 @@ test.adb:18:13: info: implicit aspect Always_Terminates on "Constant_Reference" 
 test.adb:18:13: info: precondition proved (CVC5: 1 VC)
 test.adb:20:08: info: dynamic accessibility check proved (Trivial)
 test.adb:20:18: info: index check proved (CVC5: 2 VC)
-test.adb:23:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
+test.adb:23:04: medium: resource or memory leak might occur at end of scope
 test.adb:23:54: info: null exclusion check proved (CVC5: 1 VC)
 test.adb:25:08: info: precondition proved (CVC5: 1 VC)
 test.adb:25:08: info: precondition proved (Trivial: 1 VC)
@@ -35,13 +35,13 @@ test_pre.adb:19:13: info: implicit aspect Always_Terminates on "Has_Element" has
 test_pre.adb:19:13: info: precondition proved (Trivial: 1 VC)
 test_pre.adb:22:13: info: implicit aspect Always_Terminates on "Constant_Reference" has been proved, subprogram will terminate
 test_pre.adb:22:13: medium: during checks for quantification at test_pre.adb:7
-test_pre.adb:22:13: medium: precondition might fail, cannot prove Pre (C, I) [provers reached step limit before completing the proof]
+test_pre.adb:22:13: medium: precondition might fail, cannot prove Pre (C, I)
 test_pre.adb:24:08: info: dynamic accessibility check proved (Trivial)
 test_pre.adb:24:18: info: index check proved (CVC5: 2 VC)
-test_pre.adb:27:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
+test_pre.adb:27:04: medium: resource or memory leak might occur at end of scope
 test_pre.adb:27:54: info: null exclusion check proved (CVC5: 1 VC)
 test_pre.adb:29:08: info: precondition proved (Trivial: 1 VC)
-test_pre.adb:29:08: medium: precondition might fail, cannot prove Pre (C, I) [provers reached step limit before completing the proof]
+test_pre.adb:29:08: medium: precondition might fail, cannot prove Pre (C, I)
 test_pre.adb:31:10: info: only expected exception raised (CVC5: 1 VC)
 test_pre.adb:35:19: info: assertion proved (CVC5: 1 VC)
 test_relaxed.adb:3:14: warning: subprogram "Test_Int" has no effect
@@ -66,8 +66,8 @@ test_relaxed.adb:26:07: info: no contextual analysis of "Test_Int" (nested subpr
 test_relaxed.adb:26:17: warning: subprogram "Test" has no effect
 test_relaxed.adb:29:17: info: precondition proved (CVC5: 1 VC)
 test_relaxed.adb:29:17: info: precondition proved (Trivial: 1 VC)
-test_relaxed.adb:30:19: medium: initialization check might fail [provers reached step limit before completing the proof]
-test_relaxed.adb:35:46: medium: assertion might fail, cannot prove E'Initialized [provers reached step limit before completing the proof]
+test_relaxed.adb:30:19: medium: initialization check might fail
+test_relaxed.adb:35:46: medium: assertion might fail, cannot prove E'Initialized
 test_relaxed.adb:42:04: warning: analyzing unreferenced procedure "Test_Record" [unreferenced-procedure]
 test_relaxed.adb:42:14: warning: subprogram "Test_Record" has no effect
 test_relaxed.adb:49:10: info: range check proved (CVC5: 2 VC)
@@ -87,9 +87,9 @@ test_relaxed.adb:62:16: info: implicit aspect Always_Terminates on "Constant_Ref
 test_relaxed.adb:62:16: info: precondition proved (CVC5: 1 VC)
 test_relaxed.adb:64:11: info: dynamic accessibility check proved (Trivial)
 test_relaxed.adb:64:21: info: index check proved (CVC5: 2 VC)
-test_relaxed.adb:68:07: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
+test_relaxed.adb:68:07: medium: resource or memory leak might occur at end of scope
 test_relaxed.adb:68:57: info: null exclusion check proved (CVC5: 1 VC)
 test_relaxed.adb:71:14: info: precondition proved (CVC5: 1 VC)
 test_relaxed.adb:71:14: info: precondition proved (Trivial: 1 VC)
-test_relaxed.adb:72:17: medium: initialization check might fail [provers reached step limit before completing the proof]
-test_relaxed.adb:77:43: medium: assertion might fail, cannot prove E'Initialized [provers reached step limit before completing the proof]
+test_relaxed.adb:72:17: medium: initialization check might fail
+test_relaxed.adb:77:43: medium: assertion might fail, cannot prove E'Initialized

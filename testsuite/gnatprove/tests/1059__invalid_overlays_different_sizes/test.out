@@ -14,4 +14,4 @@ test.adb:15:07: warning: imprecise handling of overlay (types in unchecked conve
 test.adb:16:20: info: object is suitable for aliasing via address clause (Trivial)
 test.adb:16:20: info: type is suitable as source for unchecked conversion (Trivial)
 test.adb:16:20: info: types of aliased objects have the same size (Trivial)
-test.adb:20:22: medium: assertion might fail [provers reached step limit before completing the proof]
+test.adb:20:22: medium: assertion might fail

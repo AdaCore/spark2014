@@ -13,7 +13,7 @@ test.adb:21:29: warning: the value of attribute "Size" is handled in an imprecis
 test.adb:21:29: warning: type "R" is unconstrained
 test.adb:25:07: warning: analyzing unreferenced procedure "P_Bad" [unreferenced-procedure]
 test.adb:25:24: warning: "X" is not modified, could be IN
-test.adb:28:25: medium: assertion might fail [provers reached step limit before completing the proof]
+test.adb:28:25: medium: assertion might fail
 test.adb:28:26: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
 test.adb:28:26: warning: type "R" is unconstrained
 test.adb:28:35: warning: object does not have a Size aspect and type "R" is unconstrained
@@ -42,7 +42,7 @@ test.adb:60:38: warning: Object_Size of type "R" is missing
 test.adb:60:38: warning: the value of attribute "Object_Size" is handled in an imprecise way [imprecise-size]
 test.adb:64:07: warning: analyzing unreferenced procedure "P_Bad" [unreferenced-procedure]
 test.adb:64:24: warning: "X" is not modified, could be IN
-test.adb:67:25: medium: assertion might fail [provers reached step limit before completing the proof]
+test.adb:67:25: medium: assertion might fail
 test.adb:67:26: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
 test.adb:67:26: warning: type "R" is unconstrained and Object_Size of type "R" is missing
 test.adb:67:35: warning: object does not have a Size aspect and type "R" is unconstrained

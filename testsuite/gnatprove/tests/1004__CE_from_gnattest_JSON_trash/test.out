@@ -3,5 +3,5 @@ Parsing error
 Ensure the file follows the GNATtest JSON schema and matches the currently analyzed subprogram
 gnatprove: error during flow analysis and proof
 simple.adb:17:24: info: unrolling loop [info-unrolling-inlining]
-simple.adb:18:25: medium: assertion might fail [possible fix: subprogram at simple.ads:23 should mention F in a precondition] [provers reached time limit before completing the proof]
+simple.adb:18:25: medium: assertion might fail [possible fix: subprogram at simple.ads:23 should mention F in a precondition]
 simple.ads:23:14: warning: subprogram "Check_Family" has no effect

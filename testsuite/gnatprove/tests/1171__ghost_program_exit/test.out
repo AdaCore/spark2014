@@ -15,13 +15,13 @@ test.adb:50:17: info: local subprogram "P3" only analyzed in the context of call
 test.adb:55:07: info: analyzing call to "P3" in context
 test.adb:58:14: warning: subprogram "Bad1" has no effect
 test.adb:58:40: info: program exit postcondition proved (Trivial: 1 VC)
-test.adb:60:07: medium: call might exit the program [reason for check: ghost subprogram call shall not exit the program] [provers gave up before completing the proof]
+test.adb:60:07: medium: call might exit the program [reason for check: ghost subprogram call shall not exit the program]
 test.adb:63:14: warning: subprogram "Bad2" has no effect
 test.adb:63:40: info: program exit postcondition proved (Trivial: 1 VC)
-test.adb:65:07: medium: call might exit the program [reason for check: ghost subprogram call shall not exit the program] [provers gave up before completing the proof]
+test.adb:65:07: medium: call might exit the program [reason for check: ghost subprogram call shall not exit the program]
 test.adb:68:14: warning: subprogram "Bad3" has no effect
 test.adb:68:40: info: program exit postcondition proved (Trivial: 1 VC)
 test.adb:69:17: info: add a contract to analyze it separately from calling contexts
 test.adb:69:17: info: local subprogram "P3" only analyzed in the context of calls [info-unrolling-inlining]
-test.adb:71:09: medium: call might exit the program, in call inlined at test.adb:74 [reason for check: ghost inlined call to "P3" shall not exit the program] [provers gave up before completing the proof]
+test.adb:71:09: medium: call might exit the program, in call inlined at test.adb:74 [reason for check: ghost inlined call to "P3" shall not exit the program]
 test.adb:74:07: info: analyzing call to "P3" in context
