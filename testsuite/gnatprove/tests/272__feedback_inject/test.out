@@ -1,0 +1,24 @@
+feedback: gave up
+inject.adb:1:11: warning: subprogram "Inject" has no effect
+inject.adb:3:19: medium: assertion might fail [possible fix: subprogram at line 1 should mention X in a precondition] [provers gave up before completing the proof]
+feedback: step limit
+inject.adb:1:11: warning: subprogram "Inject" has no effect
+inject.adb:3:19: medium: assertion might fail [possible fix: subprogram at line 1 should mention X in a precondition] [provers reached step limit before completing the proof]
+feedback: time limit
+inject.adb:1:11: warning: subprogram "Inject" has no effect
+inject.adb:3:19: medium: assertion might fail [possible fix: subprogram at line 1 should mention X in a precondition] [provers reached time limit before completing the proof]
+feedback: memory limit
+inject.adb:1:11: warning: subprogram "Inject" has no effect
+inject.adb:3:19: medium: assertion might fail [possible fix: subprogram at line 1 should mention X in a precondition] [provers reached memory limit before completing the proof]
+feedback: time and step limit
+inject.adb:1:11: warning: subprogram "Inject" has no effect
+inject.adb:3:19: medium: assertion might fail [possible fix: subprogram at line 1 should mention X in a precondition] [provers reached time and step limit before completing the proof]
+feedback: time and memory limit
+inject.adb:1:11: warning: subprogram "Inject" has no effect
+inject.adb:3:19: medium: assertion might fail [possible fix: subprogram at line 1 should mention X in a precondition] [provers reached time and memory limit before completing the proof]
+feedback: step and memory limit
+inject.adb:1:11: warning: subprogram "Inject" has no effect
+inject.adb:3:19: medium: assertion might fail [possible fix: subprogram at line 1 should mention X in a precondition] [provers reached step and memory limit before completing the proof]
+feedback: time, step and memory limit
+inject.adb:1:11: warning: subprogram "Inject" has no effect
+inject.adb:3:19: medium: assertion might fail [possible fix: subprogram at line 1 should mention X in a precondition] [provers reached time, step and memory limit before completing the proof]
