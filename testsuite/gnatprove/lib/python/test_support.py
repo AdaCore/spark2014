@@ -454,6 +454,15 @@ def sarif_logical_locations(cwd=None, index=0):
     return run.get("logicalLocations", [])
 
 
+def sarif_rules(cwd=None, index=0):
+    """Return the SARIF rule descriptors list for a GNATprove report run."""
+
+    run = sarif_run(cwd, index)
+    if run is None:
+        return []
+    return run.get("tool", {}).get("driver", {}).get("rules", [])
+
+
 def find_sarif_results(cwd=None, rule_id=None, predicate=None, index=0):
     """Return SARIF results matching the requested filters."""
 
@@ -504,6 +513,19 @@ def sarif_property(item, name, parent=None):
     return parent_property.get(name, None)
 
 
+def find_sarif_rules(cwd=None, rule_id=None, predicate=None, index=0):
+    """Return SARIF rules matching the requested filters."""
+
+    matching_rules = []
+    for rule in sarif_rules(cwd, index):
+        if rule_id is not None and rule.get("id") != rule_id:
+            continue
+        if predicate is not None and not predicate(rule):
+            continue
+        matching_rules.append(rule)
+    return matching_rules
+
+
 def sarif_result_property(result, name, parent=None):
     """Return a custom SARIF result property."""
 
@@ -514,6 +536,12 @@ def sarif_logical_location_property(location, name, parent=None):
     """Return a custom SARIF logical-location property."""
 
     return sarif_property(location, name, parent)
+
+
+def sarif_rule_property(rule, name, parent=None):
+    """Return a custom SARIF rule property."""
+
+    return sarif_property(rule, name, parent)
 
 
 def iter_sarif_artifact_locations(result):
