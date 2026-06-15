@@ -1,6 +1,6 @@
 polyorb_hi-epoch.adb:43:15: info: implicit aspect Always_Terminates on "System_Startup_Time" has been proved, subprogram will terminate
 polyorb_hi-epoch.adb:51:04: info: initialization of "Epoch_Data" constituent of "Elaborated_Variables" proved
-polyorb_hi-epoch.adb:85:16: medium: range check might fail [reason for check: input value must fit in parameter type] [provers reached step limit before completing the proof]
+polyorb_hi-epoch.adb:85:16: medium: range check might fail [reason for check: input value must fit in parameter type]
 polyorb_hi-epoch.adb:85:31: info: range check proved (CVC5: 1 VC)
 polyorb_hi-epoch.ads:40:08: info: flow dependencies proved
 polyorb_hi-epoch.ads:43:14: warning: "Epoch_Data" constituent of "Elaborated_Variables" is not modified, could be INPUT
@@ -31,9 +31,9 @@ polyorb_hi-messages.adb:81:42: info: index check proved (CVC5: 2 VC)
 polyorb_hi-messages.adb:81:44: info: precondition proved (CVC5: 1 VC)
 polyorb_hi-messages.adb:81:62: info: length check proved (CVC5: 3 VC)
 polyorb_hi-messages.adb:81:65: info: length check proved (CVC5: 3 VC)
-polyorb_hi-messages.adb:92:51: high: array index check might fail (e.g. when M'First = 5 and M'Last = 0) [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
+polyorb_hi-messages.adb:92:51: high: array index check might fail (e.g. when M'First = 5 and M'Last = 0) [reason for check: value must be a valid index into the array]
 polyorb_hi-messages.adb:105:32: info: range check proved (CVC5: 2 VC)
-polyorb_hi-messages.adb:105:42: high: range check might fail, cannot prove upper bound for Item'Length (e.g. when Item = (others => 0) and Item'First = Stream_Element_Offset'First+1 and Item'Last = 0) [provers reached step limit before completing the proof]
+polyorb_hi-messages.adb:105:42: high: range check might fail, cannot prove upper bound for Item'Length (e.g. when Item = (others => 0) and Item'First = Stream_Element_Offset'First+1 and Item'Last = 0)
 polyorb_hi-messages.adb:105:51: info: precondition proved (CVC5: 1 VC)
 polyorb_hi-messages.adb:107:12: info: length check proved (CVC5: 3 VC)
 polyorb_hi-messages.adb:113:29: info: range check proved (CVC5: 2 VC)
@@ -49,7 +49,7 @@ polyorb_hi-messages.adb:120:57: info: overflow check proved (CVC5: 2 VC)
 polyorb_hi-messages.adb:122:23: info: overflow check proved (CVC5: 2 VC)
 polyorb_hi-messages.adb:123:39: info: overflow check proved (CVC5: 2 VC)
 polyorb_hi-messages.adb:123:39: info: range check proved (CVC5: 2 VC)
-polyorb_hi-messages.adb:155:14: high: range check might fail, cannot prove upper bound for Item'Length (e.g. when Item = (others => 0) and Item'First = Stream_Element_Offset'First+1 and Item'Last = 0) [provers reached step limit before completing the proof]
+polyorb_hi-messages.adb:155:14: high: range check might fail, cannot prove upper bound for Item'Length (e.g. when Item = (others => 0) and Item'First = Stream_Element_Offset'First+1 and Item'Last = 0)
 polyorb_hi-messages.adb:156:16: info: range check proved (CVC5: 4 VC)
 polyorb_hi-messages.adb:156:38: info: index check proved (CVC5: 2 VC)
 polyorb_hi-messages.adb:156:57: info: index check proved (CVC5: 2 VC)
@@ -70,7 +70,7 @@ polyorb_hi-messages.ads:91:26: info: initialization of "M" proved
 polyorb_hi-messages.ads:94:13: info: implicit aspect Always_Terminates on "Is_Empty" has been proved, subprogram will terminate
 polyorb_hi-messages.ads:97:13: info: implicit aspect Always_Terminates on "Payload" has been proved, subprogram will terminate
 polyorb_hi-messages.ads:98:40: info: precondition proved (CVC5: 1 VC)
-polyorb_hi-messages.ads:99:17: high: postcondition might fail (e.g. when M = (Content => (others => 0), First => 1, Last => 1) and Payload'Result = (others => 0) and Payload'Result'First = 1 and Payload'Result'Last = 19) [provers reached step limit before completing the proof]
+polyorb_hi-messages.ads:99:17: high: postcondition might fail (e.g. when M = (Content => (others => 0), First => 1, Last => 1) and Payload'Result = (others => 0) and Payload'Result'First = 1 and Payload'Result'Last = 19)
 polyorb_hi-messages.ads:99:32: info: range check proved (CVC5: 2 VC)
 polyorb_hi-messages.ads:99:42: info: precondition proved (CVC5: 1 VC)
 polyorb_hi-messages.ads:102:13: info: implicit aspect Always_Terminates on "Sender" has been proved, subprogram will terminate
@@ -227,11 +227,11 @@ pr_a.adb:25:33: medium: "polyorb_hi.transport_low_level.nodes" might not be init
 producer_consumer.adb:44:13: info: implicit aspect Always_Terminates on "Get_Node" has been proved, subprogram will terminate
 producer_consumer.adb:51:04: info: no contextual analysis of "Get_Node" (unconstrained return type)
 producer_consumer.adb:68:28: info: overflow check proved (CVC5: 2 VC)
-producer_consumer.adb:71:17: low: range check might fail, cannot prove upper bound for Get_Node & ": produced " [possible fix: you should consider adding a postcondition to function "Get_Node" or turning it into an expression function] [provers reached step limit before completing the proof]
-producer_consumer.adb:72:17: low: range check might fail, cannot prove upper bound for Get_Node & ": produced " & Alpha_Type'Image (Data_Source) [reason for check: input value must fit in parameter type] [possible fix: you should consider adding a postcondition to function "Get_Node" or turning it into an expression function] [provers reached step limit before completing the proof]
+producer_consumer.adb:71:17: low: range check might fail, cannot prove upper bound for Get_Node & ": produced " [possible fix: you should consider adding a postcondition to function "Get_Node" or turning it into an expression function]
+producer_consumer.adb:72:17: low: range check might fail, cannot prove upper bound for Get_Node & ": produced " & Alpha_Type'Image (Data_Source) [reason for check: input value must fit in parameter type] [possible fix: you should consider adding a postcondition to function "Get_Node" or turning it into an expression function]
 producer_consumer.adb:72:29: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
-producer_consumer.adb:82:17: low: range check might fail, cannot prove upper bound for Get_Node & " : consumed " [possible fix: you should consider adding a postcondition to function "Get_Node" or turning it into an expression function] [provers reached step limit before completing the proof]
-producer_consumer.adb:83:17: low: range check might fail, cannot prove upper bound for Get_Node & " : consumed " & Alpha_Type'Image (Data_Sink) [reason for check: input value must fit in parameter type] [possible fix: subprogram at producer_consumer.ads:40 should mention Data_Sink in a precondition] [provers reached step limit before completing the proof]
+producer_consumer.adb:82:17: low: range check might fail, cannot prove upper bound for Get_Node & " : consumed " [possible fix: you should consider adding a postcondition to function "Get_Node" or turning it into an expression function]
+producer_consumer.adb:83:17: low: range check might fail, cannot prove upper bound for Get_Node & " : consumed " & Alpha_Type'Image (Data_Sink) [reason for check: input value must fit in parameter type] [possible fix: subprogram at producer_consumer.ads:40 should mention Data_Sink in a precondition]
 producer_consumer.adb:83:29: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 producer_consumer.ads:38:27: info: initialization of "Data_Source" proved
 gnatprove: error during flow analysis and proof

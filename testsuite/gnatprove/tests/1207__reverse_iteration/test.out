@@ -32,7 +32,7 @@ test.adb:46:11: info: precondition proved (Trivial: 1 VC)
 test.adb:47:11: info: predicate check proved (CVC5: 4 VC)
 test.adb:47:22: info: index check proved (CVC5: 4 VC)
 test.adb:49:13: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
-test.adb:50:50: medium: loop invariant might fail in first iteration, cannot prove C.Content (P2.Position) = 0 [provers reached step limit before completing the proof]
+test.adb:50:50: medium: loop invariant might fail in first iteration, cannot prove C.Content (P2.Position) = 0
 test.adb:50:63: info: index check proved (CVC5: 4 VC)
-test.adb:52:41: medium: assertion might fail, cannot prove C.Content (P2.Position) = 0 [provers reached step limit before completing the proof]
+test.adb:52:41: medium: assertion might fail, cannot prove C.Content (P2.Position) = 0
 test.adb:52:54: info: index check proved (CVC5: 2 VC)

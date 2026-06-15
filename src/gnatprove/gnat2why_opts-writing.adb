@@ -102,6 +102,9 @@ package body Gnat2Why_Opts.Writing is
       Hash (Gnattest_Values_Name, CL_Switches.Gnattest_Values.all);
       Hash (Debug_Exec_RAC_Name, Boolean'Image (Debug_Exec_RAC));
       Hash
+        (Debug_Disable_Prover_Feedback_Name,
+         Boolean'Image (CL_Switches.Debug_Disable_Prover_Feedback));
+      Hash
         (Debug_No_Cache_Output_Name,
          Boolean'Image (CL_Switches.Debug_No_Cache_Output));
       Hash (Debug_Mode_Name, Boolean'Image (Debug));
@@ -280,6 +283,10 @@ package body Gnat2Why_Opts.Writing is
          --  Always store debug options
 
          Set_Field (Obj, Debug_Exec_RAC_Name, Debug_Exec_RAC);
+         Set_Field
+           (Obj,
+            Debug_Disable_Prover_Feedback_Name,
+            CL_Switches.Debug_Disable_Prover_Feedback);
          Set_Field
            (Obj,
             Debug_No_Cache_Output_Name,

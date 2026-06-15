@@ -41,7 +41,7 @@ test.adb:83:43: info: precondition proved
 test.adb:85:09: info: discriminant check proved
 test.adb:85:09: info: precondition proved
 test.adb:89:19: info: assertion proved
-test.adb:90:19: medium: assertion might fail [provers reached step limit before completing the proof]
+test.adb:90:19: medium: assertion might fail
 test.adb:94:22: medium: assertion might fail
 test.adb:95:22: medium: assertion might fail
 test.adb:95:22: medium: precondition might fail

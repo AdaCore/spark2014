@@ -9,13 +9,13 @@ test.adb:26:20: info: unrolling loop [info-unrolling-inlining]
 test.adb:27:07: info: precondition proved (CVC5: 5 VC)
 test.adb:28:07: info: precondition proved (CVC5: 5 VC)
 test.adb:32:29: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
-test.adb:33:22: medium: assertion might fail [possible fix: loop at line 32 should mention C in a loop invariant] [provers reached step limit before completing the proof]
-test.adb:33:22: medium: precondition might fail [possible fix: loop at line 32 should mention C in a loop invariant] [provers reached step limit before completing the proof]
-test.adb:34:07: medium: precondition might fail [possible fix: loop at line 32 should mention C in a loop invariant] [provers reached step limit before completing the proof]
+test.adb:33:22: medium: assertion might fail [possible fix: loop at line 32 should mention C in a loop invariant]
+test.adb:33:22: medium: precondition might fail [possible fix: loop at line 32 should mention C in a loop invariant]
+test.adb:34:07: medium: precondition might fail [possible fix: loop at line 32 should mention C in a loop invariant]
 test.adb:37:19: info: assertion proved (CVC5: 1 VC)
 test.adb:38:19: info: assertion proved (CVC5: 1 VC)
 test.adb:40:19: info: assertion proved (Z3: 1 VC)
-test.adb:42:19: medium: assertion might fail [provers reached step limit before completing the proof]
+test.adb:42:19: medium: assertion might fail
 test.adb:44:30: info: precondition proved (CVC5: 1 VC)
 test.adb:44:48: info: precondition proved (CVC5: 1 VC)
 test.adb:49:09: info: precondition proved (CVC5: 1 VC)
@@ -26,29 +26,29 @@ test.adb:59:19: info: assertion proved (CVC5: 1 VC)
 test.adb:62:19: info: assertion proved (Z3: 1 VC)
 test.adb:62:19: info: precondition proved (CVC5: 1 VC)
 test.adb:64:04: info: precondition proved (CVC5: 1 VC)
-test.adb:66:22: medium: assertion might fail [possible fix: loop at line 65 should mention N in a loop invariant] [provers reached step limit before completing the proof]
-test.adb:66:22: medium: precondition might fail [provers reached step limit before completing the proof]
-test.adb:67:14: medium: overflow check might fail, cannot prove upper bound for N + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 65 should mention N in a loop invariant] [provers reached step limit before completing the proof]
-test.adb:68:07: medium: precondition might fail [provers reached step limit before completing the proof]
+test.adb:66:22: medium: assertion might fail [possible fix: loop at line 65 should mention N in a loop invariant]
+test.adb:66:22: medium: precondition might fail
+test.adb:67:14: medium: overflow check might fail, cannot prove upper bound for N + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 65 should mention N in a loop invariant]
+test.adb:68:07: medium: precondition might fail
 test.adb:71:09: info: precondition proved (CVC5: 1 VC)
 test.adb:76:04: info: precondition proved (CVC5: 2 VC)
 test.adb:77:04: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-test.adb:79:19: medium: assertion might fail [provers reached step limit before completing the proof]
-test.adb:81:19: medium: assertion might fail [provers reached step limit before completing the proof]
+test.adb:79:19: medium: assertion might fail
+test.adb:81:19: medium: assertion might fail
 test.adb:83:25: info: precondition proved (CVC5: 1 VC)
 test.adb:83:43: info: precondition proved (CVC5: 1 VC)
 test.adb:89:19: info: assertion proved (CVC5: 1 VC)
 test.adb:90:19: info: assertion proved (Z3: 1 VC)
-test.adb:94:22: medium: assertion might fail [provers reached step limit before completing the proof]
-test.adb:95:22: medium: assertion might fail [provers reached step limit before completing the proof]
-test.adb:95:22: medium: precondition might fail [provers reached step limit before completing the proof]
-test.adb:95:39: medium: precondition might fail [provers reached step limit before completing the proof]
-test.adb:96:07: medium: precondition might fail [provers reached step limit before completing the proof]
-test.adb:97:07: medium: precondition might fail [provers reached step limit before completing the proof]
+test.adb:94:22: medium: assertion might fail
+test.adb:95:22: medium: assertion might fail
+test.adb:95:22: medium: precondition might fail
+test.adb:95:39: medium: precondition might fail
+test.adb:96:07: medium: precondition might fail
+test.adb:97:07: medium: precondition might fail
 test.adb:103:19: info: assertion proved (CVC5: 1 VC)
 test.adb:104:19: info: assertion proved (CVC5: 1 VC)
 test.adb:108:19: info: assertion proved (Z3: 1 VC)
-test.adb:109:19: medium: assertion might fail [provers reached step limit before completing the proof]
+test.adb:109:19: medium: assertion might fail
 test.adb:111:25: info: precondition proved (CVC5: 1 VC)
 test.adb:111:43: info: precondition proved (CVC5: 1 VC)
 test.adb:119:04: info: precondition proved (CVC5: 1 VC)
@@ -63,29 +63,29 @@ test.adb:133:04: info: precondition proved (CVC5: 2 VC)
 test.adb:139:09: info: precondition proved (CVC5: 1 VC)
 test.adb:141:04: info: precondition proved (CVC5: 2 VC; Z3: 1 VC)
 test.adb:147:09: info: precondition proved (CVC5: 1 VC)
-test.adb:153:04: medium: precondition might fail, cannot prove Has_Element (Container, J) [provers reached step limit before completing the proof]
+test.adb:153:04: medium: precondition might fail, cannot prove Has_Element (Container, J)
 test.adb:159:04: info: precondition proved (Z3: 1 VC)
 test.adb:160:04: info: precondition proved (Z3: 1 VC)
-test.adb:162:04: medium: precondition might fail, cannot prove Has_Element (Container, Position) [possible fix: call at line 160 should mention Position (for argument C) in a postcondition] [provers reached step limit before completing the proof]
+test.adb:162:04: medium: precondition might fail, cannot prove Has_Element (Container, Position) [possible fix: call at line 160 should mention Position (for argument C) in a postcondition]
 test.adb:164:04: info: precondition proved (Z3: 1 VC)
 test.adb:165:04: info: precondition proved (Z3: 2 VC)
 test.adb:170:04: info: precondition proved (Z3: 2 VC)
-test.adb:177:22: medium: assertion might fail [possible fix: loop at line 176 should mention N in a loop invariant] [provers reached step limit before completing the proof]
-test.adb:177:22: medium: precondition might fail [provers reached step limit before completing the proof]
-test.adb:178:14: medium: range check might fail, cannot prove lower bound for N - 1 [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 176 should mention N in a loop invariant] [provers reached step limit before completing the proof]
-test.adb:179:07: medium: precondition might fail [provers reached step limit before completing the proof]
+test.adb:177:22: medium: assertion might fail [possible fix: loop at line 176 should mention N in a loop invariant]
+test.adb:177:22: medium: precondition might fail
+test.adb:178:14: medium: range check might fail, cannot prove lower bound for N - 1 [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 176 should mention N in a loop invariant]
+test.adb:179:07: medium: precondition might fail
 test.adb:184:19: info: precondition proved (Z3: 1 VC)
-test.adb:184:19: medium: assertion might fail [provers reached step limit before completing the proof]
+test.adb:184:19: medium: assertion might fail
 test.adb:185:19: info: precondition proved (Z3: 1 VC)
-test.adb:185:19: medium: assertion might fail [provers reached step limit before completing the proof]
+test.adb:185:19: medium: assertion might fail
 test.adb:188:04: info: precondition proved (Z3: 1 VC)
 test.adb:189:09: info: precondition proved (Z3: 1 VC)
-test.adb:191:19: medium: assertion might fail [provers reached step limit before completing the proof]
+test.adb:191:19: medium: assertion might fail
 test.adb:193:09: info: precondition proved (Z3: 1 VC)
-test.adb:195:19: medium: assertion might fail [provers reached step limit before completing the proof]
-test.adb:195:19: medium: precondition might fail [provers reached step limit before completing the proof]
-test.adb:197:19: medium: assertion might fail [provers reached step limit before completing the proof]
-test.adb:198:19: medium: assertion might fail [provers reached step limit before completing the proof]
+test.adb:195:19: medium: assertion might fail
+test.adb:195:19: medium: precondition might fail
+test.adb:197:19: medium: assertion might fail
+test.adb:198:19: medium: assertion might fail
 test_list.adb:13:07: info: initialization of "L" proved
 test_list.adb:13:10: info: initialization of "K" proved
 test_list.adb:14:07: info: initialization of "C" proved
@@ -249,7 +249,7 @@ test_list.adb:341:07: info: precondition proved (CVC5: 1 VC)
 test_list.adb:343:22: info: assertion proved (Z3: 1 VC)
 test_list.adb:343:46: info: precondition proved (CVC5: 2 VC)
 test_list.adb:345:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-test_list.adb:347:22: medium: assertion might fail [provers reached step limit before completing the proof]
+test_list.adb:347:22: medium: assertion might fail
 test_list.adb:347:46: info: precondition proved (CVC5: 2 VC)
 test_list.adb:348:22: info: assertion proved (Z3: 1 VC)
 test_list.adb:348:22: info: precondition proved (CVC5: 1 VC)
@@ -258,9 +258,9 @@ test_list.adb:353:07: info: precondition proved (CVC5: 1 VC)
 test_list.adb:354:07: info: precondition proved (CVC5: 1 VC)
 test_list.adb:358:07: info: precondition proved (CVC5: 2 VC)
 test_list.adb:360:22: info: precondition proved (CVC5: 1 VC)
-test_list.adb:360:22: medium: assertion might fail [provers reached step limit before completing the proof]
+test_list.adb:360:22: medium: assertion might fail
 test_list.adb:361:22: info: precondition proved (CVC5: 1 VC)
-test_list.adb:361:22: medium: assertion might fail [provers reached step limit before completing the proof]
+test_list.adb:361:22: medium: assertion might fail
 test_list.adb:364:07: info: precondition proved (CVC5: 1 VC)
 test_list.adb:366:07: info: precondition proved (CVC5: 1 VC)
 test_list.adb:367:07: info: precondition proved (CVC5: 1 VC)
@@ -269,7 +269,7 @@ test_list.adb:372:07: info: precondition proved (Z3: 2 VC)
 test_list.adb:374:22: info: assertion proved (Z3: 1 VC)
 test_list.adb:374:22: info: precondition proved (Z3: 1 VC)
 test_list.adb:375:22: info: precondition proved (Z3: 1 VC)
-test_list.adb:375:22: medium: assertion might fail [provers reached step limit before completing the proof]
+test_list.adb:375:22: medium: assertion might fail
 test_list.adb:378:07: info: precondition proved (CVC5: 1 VC)
 test_list.adb:379:07: info: precondition proved (CVC5: 1 VC)
 test_list.adb:380:07: info: precondition proved (CVC5: 1 VC)
@@ -278,7 +278,7 @@ test_list.adb:385:07: info: precondition proved (Z3: 1 VC)
 test_list.adb:387:07: info: precondition proved (Z3: 2 VC)
 test_list.adb:389:22: info: assertion proved (Z3: 1 VC)
 test_list.adb:389:48: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-test_list.adb:390:22: medium: assertion might fail [provers reached step limit before completing the proof]
+test_list.adb:390:22: medium: assertion might fail
 test_list.adb:390:48: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_list.adb:391:22: info: assertion proved (Z3: 1 VC)
 test_list.adb:391:48: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
@@ -293,7 +293,7 @@ test_list.adb:403:07: info: precondition proved (Z3: 1 VC)
 test_list.adb:405:07: info: precondition proved (Z3: 2 VC)
 test_list.adb:407:22: info: assertion proved (Z3: 1 VC)
 test_list.adb:407:48: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-test_list.adb:408:22: medium: assertion might fail [provers reached step limit before completing the proof]
+test_list.adb:408:22: medium: assertion might fail
 test_list.adb:408:48: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_list.adb:409:22: info: assertion proved (Z3: 1 VC)
 test_list.adb:409:48: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
@@ -305,13 +305,13 @@ test_list.adb:415:22: info: assertion proved (Z3: 1 VC)
 test_list.adb:415:22: info: precondition proved (Z3: 1 VC)
 test_list.adb:417:07: info: precondition proved (Z3: 2 VC)
 test_list.adb:418:07: info: precondition proved (Z3: 2 VC)
-test_list.adb:420:22: medium: assertion might fail [provers reached step limit before completing the proof]
+test_list.adb:420:22: medium: assertion might fail
 test_list.adb:420:48: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-test_list.adb:421:22: medium: assertion might fail [provers reached step limit before completing the proof]
+test_list.adb:421:22: medium: assertion might fail
 test_list.adb:421:48: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-test_list.adb:422:22: medium: assertion might fail [provers reached step limit before completing the proof]
+test_list.adb:422:22: medium: assertion might fail
 test_list.adb:422:48: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-test_list.adb:423:22: medium: assertion might fail [provers reached step limit before completing the proof]
+test_list.adb:423:22: medium: assertion might fail
 test_list.adb:423:48: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_list.ads:11:14: warning: subprogram "Run" has no effect
 test_list.ads:13:14: warning: subprogram "Large_Run" has no effect

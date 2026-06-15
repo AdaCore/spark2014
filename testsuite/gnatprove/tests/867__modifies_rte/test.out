@@ -1,12 +1,12 @@
-test.adb:13:26: medium: precondition might fail [provers reached step limit before completing the proof]
+test.adb:13:26: medium: precondition might fail
 test.adb:20:21: info: index check proved (CVC5: 2 VC)
 test.adb:20:21: info: on entry of subprogram at test.adb:17
-test.adb:20:21: medium: precondition might fail [provers reached step limit before completing the proof]
+test.adb:20:21: medium: precondition might fail
 test.adb:25:22: info: index check proved (CVC5: 2 VC)
 test.adb:25:22: info: on entry of subprogram at test.adb:22
 test.adb:25:22: info: precondition proved (CVC5: 1 VC)
 test.adb:26:32: info: precondition proved (CVC5: 1 VC)
-test.adb:33:21: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (I in 1 .. 10) to subprogram at line 30] [provers reached step limit before completing the proof]
+test.adb:33:21: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (I in 1 .. 10) to subprogram at line 30]
 test.adb:33:21: medium: on entry of subprogram at test.adb:30
 test.adb:38:22: info: index check proved (CVC5: 2 VC)
 test.adb:38:22: info: on entry of subprogram at test.adb:35
@@ -14,14 +14,14 @@ test.adb:45:22: info: index check proved (CVC5: 2 VC)
 test.adb:45:22: info: on entry of subprogram at test.adb:41
 test.adb:46:22: info: index check proved (CVC5: 2 VC)
 test.adb:46:22: info: on entry of subprogram at test.adb:41
-test.adb:59:19: medium: discriminant check might fail [possible fix: subprogram at line 57 should mention B in a precondition] [provers reached step limit before completing the proof]
+test.adb:59:19: medium: discriminant check might fail [possible fix: subprogram at line 57 should mention B in a precondition]
 test.adb:59:19: medium: on entry of subprogram at test.adb:57
 test.adb:63:20: info: discriminant check proved (CVC5: 1 VC)
 test.adb:63:20: info: on entry of subprogram at test.adb:61
 test.adb:68:19: info: discriminant check proved (CVC5: 1 VC)
 test.adb:68:19: info: on entry of subprogram at test.adb:65
 test.adb:74:20: medium: on entry of subprogram at test.adb:72
-test.adb:74:20: medium: pointer dereference check might fail [possible fix: subprogram at line 72 should mention B in a precondition] [provers gave up before completing the proof]
+test.adb:74:20: medium: pointer dereference check might fail [possible fix: subprogram at line 72 should mention B in a precondition]
 test.adb:78:21: info: on entry of subprogram at test.adb:76
 test.adb:78:21: info: pointer dereference check proved (CVC5: 1 VC)
 test.adb:83:20: info: on entry of subprogram at test.adb:80
@@ -43,10 +43,10 @@ test.adb:102:19: info: on return of subprogram at test.adb:100
 test.adb:105:08: info: discriminant check proved (CVC5: 1 VC)
 test.adb:108:37: warning: unused initial value of "B"
 test.adb:110:06: medium: for "B" at test.adb:108
-test.adb:110:06: medium: unexpected part of output might be modified by the subprogram [provers reached step limit before completing the proof]
+test.adb:110:06: medium: unexpected part of output might be modified by the subprogram
 test.adb:110:19: info: discriminant check proved (CVC5: 1 VC)
 test.adb:110:19: info: on entry of subprogram at test.adb:108
-test.adb:110:19: medium: discriminant check might fail [provers reached step limit before completing the proof]
+test.adb:110:19: medium: discriminant check might fail
 test.adb:110:19: medium: on return of subprogram at test.adb:108
 test.adb:113:09: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 test.adb:119:45: info: exceptional case proved (Trivial: 1 VC)
@@ -72,17 +72,17 @@ test.adb:141:40: warning: unused initial value of "B"
 test.adb:142:45: info: exceptional case proved (Trivial: 1 VC)
 test.adb:145:06: medium: for "B" at test.adb:141
 test.adb:145:06: medium: on exceptional exit at test.adb:141
-test.adb:145:06: medium: unexpected part of output might be modified by the subprogram [provers reached step limit before completing the proof]
+test.adb:145:06: medium: unexpected part of output might be modified by the subprogram
 test.adb:145:19: info: discriminant check proved (CVC5: 1 VC)
 test.adb:145:19: info: on entry of subprogram at test.adb:141
-test.adb:145:19: medium: discriminant check might fail [provers reached step limit before completing the proof]
+test.adb:145:19: medium: discriminant check might fail
 test.adb:145:19: medium: on exceptional exit at test.adb:141
 test.adb:148:09: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 test.adb:152:40: warning: unused initial value of "B"
 test.adb:153:45: info: exceptional case proved (Trivial: 1 VC)
 test.adb:156:06: medium: for "B" at test.adb:152
 test.adb:156:06: medium: on exceptional exit at test.adb:152
-test.adb:156:06: medium: unexpected part of output might be modified by the subprogram [provers reached step limit before completing the proof]
+test.adb:156:06: medium: unexpected part of output might be modified by the subprogram
 test.adb:156:19: info: discriminant check proved (CVC5: 1 VC)
 test.adb:156:19: info: on entry of subprogram at test.adb:152
 test.adb:159:09: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
@@ -121,12 +121,12 @@ test.adb:199:06: info: for "B" at test.adb:165
 test.adb:199:06: info: modifies contract proved (CVC5: 1 VC)
 test.adb:199:06: medium: for "B" at test.adb:165
 test.adb:199:06: medium: on program exit at test.adb:194
-test.adb:199:06: medium: unexpected part of output might be modified by the subprogram [provers reached step limit before completing the proof]
+test.adb:199:06: medium: unexpected part of output might be modified by the subprogram
 test.adb:199:19: info: discriminant check proved (CVC5: 1 VC)
 test.adb:199:19: info: discriminant check proved (CVC5: 1 VC)
 test.adb:199:19: info: on entry of subprogram at test.adb:194
 test.adb:199:19: info: on return of subprogram at test.adb:194
-test.adb:199:19: medium: discriminant check might fail [provers reached step limit before completing the proof]
+test.adb:199:19: medium: discriminant check might fail
 test.adb:199:19: medium: on program exit at test.adb:194
 test.adb:202:09: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 test.adb:207:06: info: data dependencies proved
@@ -135,7 +135,7 @@ test.adb:211:06: info: for "B" at test.adb:165
 test.adb:211:06: info: modifies contract proved (CVC5: 1 VC)
 test.adb:211:06: medium: for "B" at test.adb:165
 test.adb:211:06: medium: on program exit at test.adb:206
-test.adb:211:06: medium: unexpected part of output might be modified by the subprogram [provers reached step limit before completing the proof]
+test.adb:211:06: medium: unexpected part of output might be modified by the subprogram
 test.adb:211:19: info: discriminant check proved (CVC5: 1 VC)
 test.adb:211:19: info: discriminant check proved (CVC5: 1 VC)
 test.adb:211:19: info: on entry of subprogram at test.adb:206

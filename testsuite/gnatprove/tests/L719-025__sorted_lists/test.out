@@ -18,4 +18,4 @@ sorted_lists.ads:31:39: info: overflow check proved (CVC5: 2 VC)
 sorted_lists.ads:31:39: info: range check proved (CVC5: 2 VC)
 sorted_lists.ads:31:46: info: precondition proved (CVC5: 2 VC)
 sorted_lists.ads:31:78: info: range check proved (CVC5: 2 VC)
-sorted_lists.ads:33:51: medium: postcondition might fail, cannot prove My_Sort.Is_Sorted (Container) [provers reached step limit before completing the proof]
+sorted_lists.ads:33:51: medium: postcondition might fail, cannot prove My_Sort.Is_Sorted (Container)

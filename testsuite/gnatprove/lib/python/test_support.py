@@ -1623,6 +1623,7 @@ def gnatprove(
     report=None,
     sparklib_bodymode=False,
     refiners=None,
+    prover_feedback=False,
     cwd=None,
     timeout=None,
     logger=None,
@@ -1664,6 +1665,8 @@ def gnatprove(
     # Issue all information messages for tests
     if info:
         cmd += ["--info"]
+    if not prover_feedback:
+        cmd += ["--debug-disable-prover-feedback"]
     # If the tests uses SPARKlib, do not prove them again
     if sparklib:
         cmd += ["--no-subprojects"]
@@ -1825,6 +1828,7 @@ def prove_all(
     ada=default_ada,
     replay=False,
     warnings="continue",
+    prover_feedback=False,
     sparklib=False,
     enable_sarif_check=False,
     sparklib_bodymode=False,
@@ -1929,6 +1933,7 @@ def prove_all(
         sparklib=sparklib,
         report=report,
         sparklib_bodymode=sparklib_bodymode,
+        prover_feedback=prover_feedback,
         cwd=cwd,
         timeout=timeout,
         logger=logger,

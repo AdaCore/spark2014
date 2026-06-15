@@ -1,0 +1,84 @@
+oneline disabled
+badconcat.adb:6:13: info: implicit aspect Always_Terminates on "Put_Integer_Value" has been proved, subprogram will terminate
+badconcat.adb:6:32: warning: unused variable "Value"
+badconcat.adb:15:06: info: precondition proved (Trivial: 1 VC)
+badconcat.adb:16:06: medium: range check might fail, cannot prove lower bound for Put_Integer_Value (0) & Put_Integer_Value (0) [possible fix: you should consider adding a postcondition to function "Put_Integer_Value" or turning it into an expression function]
+badconcat.adb:16:08: info: precondition proved (Trivial: 1 VC)
+badconcat.adb:17:06: medium: range check might fail, cannot prove lower bound for Put_Integer_Value (0) & Put_Integer_Value (0) & Put_Integer_Value (0) [possible fix: you should consider adding a postcondition to function "Put_Integer_Value" or turning it into an expression function]
+badconcat.adb:17:08: info: precondition proved (Trivial: 1 VC)
+badconcat.adb:18:06: medium: range check might fail, cannot prove lower bound for Put_Integer_Value (0) & Put_Integer_Value (0) & Put_Integer_Value (0) & Put_Integer_Value (0) [reason for check: default component value must fit in the type] [possible fix: you should consider adding a postcondition to function "Put_Integer_Value" or turning it into an expression function]
+badconcat.adb:18:08: info: precondition proved (Trivial: 1 VC)
+oneline enabled step limit
+badconcat.adb:6:13: info: implicit aspect Always_Terminates on "Put_Integer_Value" has been proved, subprogram will terminate
+badconcat.adb:6:32: warning: unused variable "Value"
+badconcat.adb:15:06: info: precondition proved (Trivial: 1 VC)
+badconcat.adb:16:06: medium: range check might fail, cannot prove lower bound for Put_Integer_Value (0) & Put_Integer_Value (0) [possible fix: you should consider adding a postcondition to function "Put_Integer_Value" or turning it into an expression function] [provers reached step limit before completing the proof]
+badconcat.adb:16:08: info: precondition proved (Trivial: 1 VC)
+badconcat.adb:17:06: medium: range check might fail, cannot prove lower bound for Put_Integer_Value (0) & Put_Integer_Value (0) & Put_Integer_Value (0) [possible fix: you should consider adding a postcondition to function "Put_Integer_Value" or turning it into an expression function] [provers reached step limit before completing the proof]
+badconcat.adb:17:08: info: precondition proved (Trivial: 1 VC)
+badconcat.adb:18:06: medium: range check might fail, cannot prove lower bound for Put_Integer_Value (0) & Put_Integer_Value (0) & Put_Integer_Value (0) & Put_Integer_Value (0) [reason for check: default component value must fit in the type] [possible fix: you should consider adding a postcondition to function "Put_Integer_Value" or turning it into an expression function] [provers reached step limit before completing the proof]
+badconcat.adb:18:08: info: precondition proved (Trivial: 1 VC)
+pretty enabled
+[Ada Global_Gen]  badconcat.adb
+[Ada Analysis]    badconcat.adb
+ info: implicit aspect Always_Terminates on "Put_Integer_Value" has been proved, subprogram will terminate
+--> badconcat.adb:6:13
+
+ warning: unused variable "Value"
+--> badconcat.adb:6:32
+    6 |       function Put_Integer_Value (Value : Integer) return Octet_Array
+      |                                   ^~~~~
+
+ info: precondition proved (Trivial: 1 VC)
+--> badconcat.adb:15:06
+
+ medium: range check might fail, cannot prove lower bound for Put_Integer_Value (0) & Put_Integer_Value (0)
+--> badconcat.adb:16:06
+   15 |         Put_Integer_Value (0)
+      |         ~~~~~~~~~~~~~~~~~~~~~
+   16 |         & Put_Integer_Value (0)
+      |         ^~~~~~~~~~~~~~~~~~~~~~
+      + possible fix: you should consider adding a postcondition to function "Put_Integer_Value" or turning it into an expression function
+      + provers reached step limit before completing the proof
+
+ info: precondition proved (Trivial: 1 VC)
+--> badconcat.adb:16:08
+
+ medium: range check might fail, cannot prove lower bound for Put_Integer_Value (0) & Put_Integer_Value (0) & Put_Integer_Value (0)
+--> badconcat.adb:17:06
+   15 |         Put_Integer_Value (0)
+      |         ~~~~~~~~~~~~~~~~~~~~~
+      :
+   17 |         & Put_Integer_Value (0)
+      |         ^~~~~~~~~~~~~~~~~~~~~~
+      + possible fix: you should consider adding a postcondition to function "Put_Integer_Value" or turning it into an expression function
+      + provers reached step limit before completing the proof
+
+ info: precondition proved (Trivial: 1 VC)
+--> badconcat.adb:17:08
+
+ medium: range check might fail, cannot prove lower bound for Put_Integer_Value (0) & Put_Integer_Value (0) & Put_Integer_Value (0) & Put_Integer_Value (0)
+--> badconcat.adb:18:06
+   15 |         Put_Integer_Value (0)
+      |         ~~~~~~~~~~~~~~~~~~~~~
+      :
+   18 |         & Put_Integer_Value (0);
+      |         ^~~~~~~~~~~~~~~~~~~~~~
+      + reason for check: default component value must fit in the type
+      + possible fix: you should consider adding a postcondition to function "Put_Integer_Value" or turning it into an expression function
+      + provers reached step limit before completing the proof
+
+ info: precondition proved (Trivial: 1 VC)
+--> badconcat.adb:18:08
+Summary: 5/8 checks proved, 3 checks remain.
+Summary logged in gnatprove/gnatprove.out
+oneline enabled gave up
+badconcat.adb:6:13: info: implicit aspect Always_Terminates on "Put_Integer_Value" has been proved, subprogram will terminate
+badconcat.adb:6:32: warning: unused variable "Value"
+badconcat.adb:15:06: info: precondition proved (Trivial: 1 VC)
+badconcat.adb:16:06: medium: range check might fail, cannot prove upper bound for Put_Integer_Value (0) & Put_Integer_Value (0) [possible fix: you should consider adding a postcondition to function "Put_Integer_Value" or turning it into an expression function] [provers gave up before completing the proof]
+badconcat.adb:16:08: info: precondition proved (Trivial: 1 VC)
+badconcat.adb:17:06: medium: range check might fail, cannot prove upper bound for Put_Integer_Value (0) & Put_Integer_Value (0) & Put_Integer_Value (0) [possible fix: you should consider adding a postcondition to function "Put_Integer_Value" or turning it into an expression function] [provers gave up before completing the proof]
+badconcat.adb:17:08: info: precondition proved (Trivial: 1 VC)
+badconcat.adb:18:06: medium: range check might fail, cannot prove upper bound for Put_Integer_Value (0) & Put_Integer_Value (0) & Put_Integer_Value (0) & Put_Integer_Value (0) [reason for check: default component value must fit in the type] [possible fix: you should consider adding a postcondition to function "Put_Integer_Value" or turning it into an expression function] [provers gave up before completing the proof]
+badconcat.adb:18:08: info: precondition proved (Trivial: 1 VC)
