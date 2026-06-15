@@ -103,6 +103,13 @@ is
    function Contracts_Properties (V : JSON_Value) return Optional_propertyBag;
    --  Build custom SARIF properties for generated global contracts
 
+   function Explain_Command (Code : String) return String;
+   --  Return the command to display help for Explain_Code.
+
+   function Explain_Properties
+     (Code : Explain_Code_Kind) return Optional_propertyBag;
+   --  Build the custom SARIF property bag for a stable rule explain code.
+
    procedure Handle_SPARK_Files;
    --  Parse all .spark files
 
@@ -285,14 +292,12 @@ is
 
    function Properties (V : JSON_Value) return Optional_propertyBag is
       use VSS.JSON.Streams;
-      Extra     : Any_Object;
-      Gnatprove : Any_Object;
+      Extra          : Any_Object;
+      Gnatprove      : Any_Object;
+      Has_Properties : Boolean := False;
    begin
       if Has_Field (V, "reasonForCheck") then
-         Extra.Append
-           ((Kind => Key_Name, Key_Name => To_Virtual_String ("gnatprove")));
-         Extra.Append ((Kind => Start_Object));
-
+         Has_Properties := True;
          Gnatprove.Append
            ((Kind     => Key_Name,
              Key_Name => To_Virtual_String ("reasonForCheck")));
@@ -300,12 +305,36 @@ is
            ((Kind         => String_Value,
              String_Value =>
                To_Virtual_String (UTF8_String'(Get (V, "reasonForCheck")))));
+      end if;
 
+      if Has_Field (V, "explainCode") then
+         declare
+            Code : constant String := UTF8_String'(Get (V, "explainCode"));
+         begin
+            Has_Properties := True;
+            Gnatprove.Append
+              ((Kind     => Key_Name,
+                Key_Name => To_Virtual_String ("explainCode")));
+            Gnatprove.Append
+              ((Kind         => String_Value,
+                String_Value => To_Virtual_String (Code)));
+            Gnatprove.Append
+              ((Kind     => Key_Name,
+                Key_Name => To_Virtual_String ("explainCommand")));
+            Gnatprove.Append
+              ((Kind         => String_Value,
+                String_Value => To_Virtual_String (Explain_Command (Code))));
+         end;
+      end if;
+
+      if Has_Properties then
+         Extra.Append
+           ((Kind => Key_Name, Key_Name => To_Virtual_String ("gnatprove")));
+         Extra.Append ((Kind => Start_Object));
          for Item of Gnatprove loop
             Extra.Append (Item);
          end loop;
          Extra.Append ((Kind => End_Object));
-
          return
            (Is_Set => True,
             Value  => (tags => <>, Additional_Properties => Extra));
@@ -313,6 +342,54 @@ is
          return (Is_Set => False);
       end if;
    end Properties;
+
+   ---------------------
+   -- Explain_Command --
+   ---------------------
+
+   function Explain_Command (Code : String) return String is
+   begin
+      return "gnatprove --explain=" & Code;
+   end Explain_Command;
+
+   ------------------------
+   -- Explain_Properties --
+   ------------------------
+
+   function Explain_Properties
+     (Code : Explain_Code_Kind) return Optional_propertyBag
+   is
+      use VSS.JSON.Streams;
+      Extra     : Any_Object;
+      Gnatprove : Any_Object;
+   begin
+      if Code = EC_None then
+         return (Is_Set => False);
+      end if;
+
+      Extra.Append
+        ((Kind => Key_Name, Key_Name => To_Virtual_String ("gnatprove")));
+      Extra.Append ((Kind => Start_Object));
+      Gnatprove.Append
+        ((Kind => Key_Name, Key_Name => To_Virtual_String ("explainCode")));
+      Gnatprove.Append
+        ((Kind         => String_Value,
+          String_Value => To_Virtual_String (To_String (Code))));
+      Gnatprove.Append
+        ((Kind => Key_Name, Key_Name => To_Virtual_String ("explainCommand")));
+      Gnatprove.Append
+        ((Kind         => String_Value,
+          String_Value =>
+            To_Virtual_String (Explain_Command (To_String (Code)))));
+      for Item of Gnatprove loop
+         Extra.Append (Item);
+      end loop;
+      Extra.Append ((Kind => End_Object));
+
+      return
+        (Is_Set => True,
+         Value  => (tags => <>, Additional_Properties => Extra));
+   end Explain_Properties;
 
    -------------------------
    -- Ensure_Trailing_Sep --
@@ -744,6 +821,7 @@ is
       for K in Violation_Kind loop
          declare
             Rule_ID : constant String := Violation_Tag (K);
+            Code    : constant Explain_Code_Kind := Explain_Code (K);
          begin
             result.Append
               (reportingDescriptor'
@@ -752,6 +830,7 @@ is
                     Mk_Multi_Message_String (Violation_Kind_Name (K)),
                   fullDescription  =>
                     Mk_Multi_Message_String (Violation_Description (K)),
+                  properties       => Explain_Properties (Code),
                   others           => <>));
          end;
       end loop;

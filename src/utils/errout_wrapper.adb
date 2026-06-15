@@ -106,6 +106,9 @@ package body Errout_Wrapper is
       function Diagnostic_File return String;
       --  Return the file name of the diagnostic
 
+      function First_Explain_Code return Explain_Code_Kind;
+      --  Return the first explain code attached to the result
+
       ---------------------
       -- Diagnostic_File --
       ---------------------
@@ -121,17 +124,41 @@ package body Errout_Wrapper is
          end if;
       end Diagnostic_File;
 
+      ------------------------
+      -- First_Explain_Code --
+      ------------------------
+
+      function First_Explain_Code return Explain_Code_Kind is
+      begin
+         if Obj.Msg.Explain_Code /= EC_None then
+            return Obj.Msg.Explain_Code;
+         end if;
+
+         for Cont of Obj.Continuations loop
+            if Cont.Explain_Code /= EC_None then
+               return Cont.Explain_Code;
+            end if;
+         end loop;
+
+         return EC_None;
+      end First_Explain_Code;
+
       Value : constant JSON_Value := Create_Object;
       File  : constant String := Diagnostic_File;
       Line  : constant Natural :=
         Positive (Get_Logical_Line_Number (Obj.Span.Ptr));
       Col   : constant Natural := Positive (Get_Column_Number (Obj.Span.Ptr));
+      Code  : constant Explain_Code_Kind := First_Explain_Code;
 
    begin
       Set_Field (Value, "file", File);
       Set_Field (Value, "line", Line);
       Set_Field (Value, "col", Col);
       Set_Field (Value, "message", To_JSON (Obj.Msg));
+
+      if Code /= EC_None then
+         Set_Field (Value, "explainCode", To_String (Code));
+      end if;
 
       if Obj.Details /= "" then
          Set_Field (Value, "reasonForCheck", To_String (Obj.Details));
