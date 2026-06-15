@@ -9,14 +9,6 @@ common = {
     "refiners": default_refiners_no_sort(),
 }
 
-gave_up_opts = {
-    "prover": ["altergo"],
-    "steps": 0,
-    "counterexample": False,
-    "check_counterexamples": False,
-    "refiners": default_refiners_no_sort(),
-}
-
 print("oneline disabled")
 prove_all(**common)
 
@@ -44,6 +36,3 @@ gnatprove(
     refiners=default_refiners_no_sort(),
     prover_feedback=True,
 )
-
-print("oneline enabled gave up")
-prove_all(**gave_up_opts, prover_feedback=True)
