@@ -1,4 +1,40 @@
-from test_support import gnatprove
+from test_support import gnatprove, run_command
+
+
+def gnatwhy3_lines(manifest):
+    process = run_command(
+        [
+            "gnatprove",
+            "-k",
+            "-P",
+            "test.gpr",
+            "--debug",
+            f"--proof-manifest-dir={manifest}",
+            "-u",
+            "pkg.adb",
+            "--output=brief",
+        ]
+    )
+    return [line for line in process.out.splitlines() if line.startswith("gnatwhy3 ")]
+
+
+def gnatwhy3_line_for(lines, file_stem):
+    matches = [line for line in lines if f"/{file_stem}.gnat-json " in line]
+    if len(matches) != 1:
+        raise AssertionError("\n".join(lines))
+    return f" {matches[0]} "
+
+
+def assert_has_options(line, *options):
+    for option in options:
+        if f" {option} " not in line:
+            raise AssertionError(line)
+
+
+def assert_lacks_options(line, *options):
+    for option in options:
+        if f" {option} " in line:
+            raise AssertionError(line)
 
 
 print("===== resolved manifest entry =====")
@@ -87,39 +123,43 @@ gnatprove(
 )
 
 print("===== package prefix covers multiple subprograms =====")
-gnatprove(
-    opt=[
-        "-P",
-        "test.gpr",
-        "--proof-manifest-dir=pkg_prefix",
-        "-u",
-        "pkg.adb",
-    ],
-    no_output=True,
+lines = gnatwhy3_lines("pkg_prefix")
+assert_has_options(
+    gnatwhy3_line_for(lines, "pkg__r"),
+    "--timeout 5",
+    "--steps 100",
+    "--prover cvc5",
+)
+assert_has_options(
+    gnatwhy3_line_for(lines, "pkg__inner__s"),
+    "--timeout 5",
+    "--steps 100",
+    "--prover cvc5",
 )
 
 print("===== nested prefix covers single subprogram =====")
-gnatprove(
-    opt=[
-        "-P",
-        "test.gpr",
-        "--proof-manifest-dir=inner_prefix",
-        "-u",
-        "pkg.adb",
-    ],
-    no_output=True,
+lines = gnatwhy3_lines("inner_prefix")
+assert_lacks_options(gnatwhy3_line_for(lines, "pkg__r"), "--timeout 5")
+assert_has_options(
+    gnatwhy3_line_for(lines, "pkg__inner__s"),
+    "--timeout 5",
+    "--steps 100",
+    "--prover cvc5",
 )
 
 print("===== specific entry overrides broader entry =====")
-gnatprove(
-    opt=[
-        "-P",
-        "test.gpr",
-        "--proof-manifest-dir=override",
-        "-u",
-        "pkg.adb",
-    ],
-    no_output=True,
+lines = gnatwhy3_lines("override")
+assert_has_options(
+    gnatwhy3_line_for(lines, "pkg__r"),
+    "--timeout 5",
+    "--steps 200",
+    "--prover cvc5",
+)
+assert_has_options(
+    gnatwhy3_line_for(lines, "pkg__inner__s"),
+    "--timeout 5",
+    "--steps 100",
+    "--prover cvc5",
 )
 
 print("===== two same-specificity entries are ambiguous =====")
