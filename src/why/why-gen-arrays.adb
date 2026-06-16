@@ -726,11 +726,16 @@ package body Why.Gen.Arrays is
             Labels      => Symbol_Sets.Empty_Set));
 
       --  Generate an axiom for the conversion function:
+      --
       --  axiom convert__def:
       --    forall a : <from>.
       --      let b = convert a in
-      --        forall i1 : <from.index_type1>, i2 : ....
-      --          to_base (get a i1 i2 ...) = to_base (get b i1 i2 ...)
+      --        (forall f1 l1 : <from.index_type1>, f2 l2 : ....
+      --          has_bounds a f1 l1 f2 l2 ... ->
+      --          has_bounds b f1 l1 f2 l2 ...)
+      --        /\
+      --          (forall i1 : <from.index_type1>, i2 : ....
+      --             to_base (get a i1 i2 ...) = to_base (get b i1 i2 ...))
 
       declare
          Call_Expr : constant W_Term_Id :=
@@ -743,19 +748,44 @@ package body Why.Gen.Arrays is
          Dim       : constant Positive :=
            Positive (Number_Dimensions (Ty_Ext));
          Indexes   : Binder_Array (1 .. Dim);
+         Bounds    : Binder_Array (1 .. 2 * Dim);
          Index     : Node_Id := First_Index (Ty_Ext);
          I         : Positive := 1;
          T_Comp    : W_Pred_Id := True_Pred;
-         Tmp       : W_Identifier_Id;
+         Tmp_I     : W_Identifier_Id;
+         Tmp_F     : W_Identifier_Id;
+         Tmp_L     : W_Identifier_Id;
          T         : W_Pred_Id := True_Pred;
 
       begin
          while Present (Index) loop
-            Tmp := New_Temp_Identifier (Typ => Base_Why_Type_No_Bool (Index));
+            Tmp_I :=
+              New_Temp_Identifier
+                (Typ => Base_Why_Type_No_Bool (Index), Base_Name => "i");
             Indexes (I) :=
               Binder_Type'
                 (Ada_Node => Standard.Types.Empty,
-                 B_Name   => Tmp,
+                 B_Name   => Tmp_I,
+                 B_Ent    => Null_Entity_Name,
+                 Mutable  => False,
+                 Labels   => <>);
+            Tmp_F :=
+              New_Temp_Identifier
+                (Typ => Base_Why_Type_No_Bool (Index), Base_Name => "f");
+            Bounds (I * 2 - 1) :=
+              Binder_Type'
+                (Ada_Node => Standard.Types.Empty,
+                 B_Name   => Tmp_F,
+                 B_Ent    => Null_Entity_Name,
+                 Mutable  => False,
+                 Labels   => <>);
+            Tmp_L :=
+              New_Temp_Identifier
+                (Typ => Base_Why_Type_No_Bool (Index), Base_Name => "l");
+            Bounds (I * 2) :=
+              Binder_Type'
+                (Ada_Node => Standard.Types.Empty,
+                 B_Name   => Tmp_L,
                  B_Ent    => Null_Entity_Name,
                  Mutable  => False,
                  Labels   => <>);
@@ -865,7 +895,28 @@ package body Why.Gen.Arrays is
                      (Symbol => Why_Eq, Left => A_Comp, Right => B_Comp));
          end;
 
-         T := New_Universal_Quantif (Binders => Indexes, Pred => T_Comp);
+         T :=
+           New_And_Pred
+             (Left  =>
+                New_Universal_Quantif (Binders => Indexes, Pred => T_Comp),
+              Right =>
+                New_Universal_Quantif
+                  (Binders => Bounds,
+                   Pred    =>
+                     New_Conditional
+                       (Condition =>
+                          +New_Call
+                             (Domain  => EW_Pred,
+                              Name    => From_Symb.Has_Bounds,
+                              Binders => A_Binder & Bounds),
+                        Then_Part =>
+                          New_And_Pred
+                            (Left  =>
+                               +New_Call
+                                  (Domain  => EW_Pred,
+                                   Name    => To_Symb.Has_Bounds,
+                                   Binders => B_Binder & Bounds),
+                             Right => T))));
 
          T :=
            +New_Typed_Binding

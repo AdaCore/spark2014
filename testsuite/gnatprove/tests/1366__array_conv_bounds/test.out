@@ -1,0 +1,8 @@
+main.adb:15:04: warning: analyzing unreferenced procedure "P" [unreferenced-procedure]
+main.adb:15:14: warning: subprogram "P" has no effect
+main.adb:18:22: info: assertion proved (CVC5: 1 VC)
+main.adb:18:28: info: range check proved (CVC5: 1 VC)
+main.adb:23:14: warning: subprogram "P" has no effect
+main.adb:28:22: info: assertion proved (CVC5: 1 VC)
+main.adb:28:25: info: initialization check proved (CVC5: 1 VC)
+main.adb:28:25: info: range check proved (CVC5: 1 VC)
