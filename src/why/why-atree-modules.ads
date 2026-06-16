@@ -793,8 +793,9 @@ package Why.Atree.Modules is
    --  containing all the axiom modules generated for their specializations.
 
    type M_UC_Type is record
-      Module : W_Module_Id;
-      UC_Id  : W_Identifier_Id;
+      Module   : W_Module_Id;
+      UC_Id    : W_Identifier_Id;
+      Guard_Id : W_Identifier_Id;
    end record;
 
    package Name_Id_UC_Map is new
