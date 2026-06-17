@@ -1,7 +1,49 @@
+import os
+
 from test_support import gnatprove, run_command
 
+# Each case carries its manifest inline so that the manifest being tested sits
+# right next to what is checked about it. Two kinds of cases exist:
+#
+#  * Diagnostic cases use check_manifest: the manifest is echoed and gnatprove's
+#    output is shown, so the whole case can be reviewed from test.out alone.
+#
+#  * Dispatch-inspection cases use inspect: they run gnatprove with --debug and
+#    assert on the proof options that reach the per-subprogram gnatwhy3 calls.
+#    Their expectations live in the assertions below, beside the manifest.
 
-def gnatwhy3_lines(manifest):
+
+def write_manifest(name, manifest):
+    folder = name.replace(" ", "_")
+    os.makedirs(folder, exist_ok=True)
+    with open(os.path.join(folder, "pkg.toml"), "w") as f:
+        f.write(manifest)
+    return folder
+
+
+def check_manifest(name, manifest, opt=None, no_output=False):
+    folder = write_manifest(name, manifest)
+    print(f"===== {name} =====")
+    print("--- manifest pkg.toml ---")
+    print(manifest if manifest.endswith("\n") else manifest + "\n", end="")
+    print("--- output ---")
+    gnatprove(
+        opt=[
+            "-P",
+            "test.gpr",
+            f"--proof-manifest-dir={folder}",
+            *(opt or []),
+            "-u",
+            "pkg.adb",
+        ],
+        no_output=no_output,
+    )
+
+
+def inspect(name, manifest):
+    """Run gnatprove with --debug and return the per-subprogram gnatwhy3 lines."""
+    folder = write_manifest(name, manifest)
+    print(f"===== {name} =====")
     process = run_command(
         [
             "gnatprove",
@@ -9,7 +51,7 @@ def gnatwhy3_lines(manifest):
             "-P",
             "test.gpr",
             "--debug",
-            f"--proof-manifest-dir={manifest}",
+            f"--proof-manifest-dir={folder}",
             "-u",
             "pkg.adb",
             "--output=brief",
@@ -37,120 +79,157 @@ def assert_lacks_options(line, *options):
             raise AssertionError(line)
 
 
-print("===== resolved manifest entry =====")
-gnatprove(
-    opt=[
-        "-P",
-        "test.gpr",
-        "--proof-manifest-dir=resolved",
-        "-u",
-        "pkg.adb",
-    ],
+# A fully resolved entry (path + kind + profile) is accepted silently.
+check_manifest(
+    "resolved manifest entry",
+    """\
+version = 1
+
+[[subprogram]]
+path = "Pkg.P"
+kind = "procedure"
+profile = "(_ : Integer)"
+timeout = 1
+""",
     no_output=True,
 )
 
-print("===== unit default and package entity =====")
-lines = gnatwhy3_lines("unit_and_package_match")
-assert_has_options(
-    gnatwhy3_line_for(lines, "pkg__r"),
-    "--steps 100",
+# A unit-level default and a package-level entry both match; the package entry
+# must not override the unit default for the contained subprograms.
+lines = inspect(
+    "unit default and package entity",
+    """\
+version = 1
+
+[[subprogram]]
+path = "Pkg"
+steps = 100
+
+[[subprogram]]
+path = "Pkg"
+kind = "package"
+hierarchical = false
+steps = 200
+""",
 )
-assert_lacks_options(
-    gnatwhy3_line_for(lines, "pkg__r"),
-    "--steps 200",
+assert_has_options(gnatwhy3_line_for(lines, "pkg__r"), "--steps 100")
+assert_lacks_options(gnatwhy3_line_for(lines, "pkg__r"), "--steps 200")
+assert_has_options(gnatwhy3_line_for(lines, "pkg__inner__s"), "--steps 100")
+assert_lacks_options(gnatwhy3_line_for(lines, "pkg__inner__s"), "--steps 200")
+
+# Same as above but the package entry names the nested package Pkg.Inner.
+lines = inspect(
+    "unit default and nested package entity",
+    """\
+version = 1
+
+[[subprogram]]
+path = "Pkg"
+steps = 100
+
+[[subprogram]]
+path = "Pkg.Inner"
+kind = "package"
+hierarchical = false
+steps = 200
+""",
+)
+assert_has_options(gnatwhy3_line_for(lines, "pkg__r"), "--steps 100")
+assert_lacks_options(gnatwhy3_line_for(lines, "pkg__r"), "--steps 200")
+assert_has_options(gnatwhy3_line_for(lines, "pkg__inner__s"), "--steps 100")
+assert_lacks_options(gnatwhy3_line_for(lines, "pkg__inner__s"), "--steps 200")
+
+# "Pkg.P" without a profile matches both overloads of P and is ambiguous.
+check_manifest(
+    "ambiguous manifest entry",
+    """\
+version = 1
+
+[[subprogram]]
+path = "Pkg.P"
+kind = "procedure"
+timeout = 1
+""",
+)
+
+# An entry naming an entity that does not exist in the unit is reported.
+check_manifest(
+    "missing manifest entity",
+    """\
+version = 1
+
+[[subprogram]]
+path = "Pkg.Missing"
+kind = "procedure"
+timeout = 1
+""",
+)
+
+# An entry matching an entity excluded by --limit-name is reported.
+check_manifest(
+    "manifest entity not selected",
+    """\
+version = 1
+
+[[subprogram]]
+path = "Pkg.Q"
+kind = "procedure"
+timeout = 1
+""",
+    opt=["--limit-name=P"],
+)
+
+# A matching entry applies its proof options to the selected subprogram.
+check_manifest(
+    "manifest applies steps override",
+    """\
+version = 1
+
+[[subprogram]]
+path = "Pkg.R"
+timeout = 5
+steps = 100
+provers = ["cvc5"]
+""",
+    opt=["--report=all", "--limit-name=R"],
+)
+
+# A package-level prefix entry covers every subprogram it contains.
+lines = inspect(
+    "package prefix covers multiple subprograms",
+    """\
+version = 1
+
+[[subprogram]]
+path = "Pkg"
+timeout = 5
+steps = 100
+provers = ["cvc5"]
+""",
+)
+assert_has_options(
+    gnatwhy3_line_for(lines, "pkg__r"), "--timeout 5", "--steps 100", "--prover cvc5"
 )
 assert_has_options(
     gnatwhy3_line_for(lines, "pkg__inner__s"),
-    "--steps 100",
-)
-assert_lacks_options(
-    gnatwhy3_line_for(lines, "pkg__inner__s"),
-    "--steps 200",
-)
-
-print("===== unit default and nested package entity =====")
-lines = gnatwhy3_lines("unit_and_nested_package_match")
-assert_has_options(
-    gnatwhy3_line_for(lines, "pkg__r"),
-    "--steps 100",
-)
-assert_lacks_options(
-    gnatwhy3_line_for(lines, "pkg__r"),
-    "--steps 200",
-)
-assert_has_options(
-    gnatwhy3_line_for(lines, "pkg__inner__s"),
-    "--steps 100",
-)
-assert_lacks_options(
-    gnatwhy3_line_for(lines, "pkg__inner__s"),
-    "--steps 200",
-)
-
-print("===== ambiguous manifest entry =====")
-gnatprove(
-    opt=[
-        "-P",
-        "test.gpr",
-        "--proof-manifest-dir=ambiguous",
-        "-u",
-        "pkg.adb",
-    ]
-)
-
-print("===== missing manifest entity =====")
-gnatprove(
-    opt=[
-        "-P",
-        "test.gpr",
-        "--proof-manifest-dir=missing_entity",
-        "-u",
-        "pkg.adb",
-    ]
-)
-
-print("===== manifest entity not selected =====")
-gnatprove(
-    opt=[
-        "-P",
-        "test.gpr",
-        "--proof-manifest-dir=not_selected",
-        "--limit-name=P",
-        "-u",
-        "pkg.adb",
-    ]
-)
-
-print("===== manifest applies steps override =====")
-gnatprove(
-    opt=[
-        "-P",
-        "test.gpr",
-        "--proof-manifest-dir=apply_steps",
-        "--report=all",
-        "--limit-name=R",
-        "-u",
-        "pkg.adb",
-    ]
-)
-
-print("===== package prefix covers multiple subprograms =====")
-lines = gnatwhy3_lines("pkg_prefix")
-assert_has_options(
-    gnatwhy3_line_for(lines, "pkg__r"),
     "--timeout 5",
     "--steps 100",
     "--prover cvc5",
 )
-assert_has_options(
-    gnatwhy3_line_for(lines, "pkg__inner__s"),
-    "--timeout 5",
-    "--steps 100",
-    "--prover cvc5",
-)
 
-print("===== nested prefix covers single subprogram =====")
-lines = gnatwhy3_lines("inner_prefix")
+# A nested-package prefix covers only the subprograms below it.
+lines = inspect(
+    "nested prefix covers single subprogram",
+    """\
+version = 1
+
+[[subprogram]]
+path = "Pkg.Inner"
+timeout = 5
+steps = 100
+provers = ["cvc5"]
+""",
+)
 assert_lacks_options(gnatwhy3_line_for(lines, "pkg__r"), "--timeout 5")
 assert_has_options(
     gnatwhy3_line_for(lines, "pkg__inner__s"),
@@ -159,21 +238,46 @@ assert_has_options(
     "--prover cvc5",
 )
 
-print("===== prefix kind applies to anchor only =====")
-lines = gnatwhy3_lines("wrong_anchor_kind")
+# A prefix entry with a kind applies to its anchor only, not to the entities it
+# covers: here the function kind must not push options onto Pkg.Inner.F.
+lines = inspect(
+    "prefix kind applies to anchor only",
+    """\
+version = 1
+
+[[subprogram]]
+path = "Pkg.Inner"
+kind = "function"
+timeout = 9
+steps = 321
+provers = ["cvc5"]
+""",
+)
 assert_lacks_options(
-    gnatwhy3_line_for(lines, "pkg__inner__f"),
-    "--timeout 9",
-    "--steps 321",
+    gnatwhy3_line_for(lines, "pkg__inner__f"), "--timeout 9", "--steps 321"
 )
 
-print("===== specific entry overrides broader entry =====")
-lines = gnatwhy3_lines("override")
+# A more specific entry wins over a broader one for the subprogram it names.
+lines = inspect(
+    "specific entry overrides broader entry",
+    """\
+version = 1
+
+[[subprogram]]
+path = "Pkg"
+timeout = 5
+steps = 100
+provers = ["cvc5"]
+
+[[subprogram]]
+path = "Pkg.R"
+timeout = 5
+steps = 200
+provers = ["cvc5"]
+""",
+)
 assert_has_options(
-    gnatwhy3_line_for(lines, "pkg__r"),
-    "--timeout 5",
-    "--steps 200",
-    "--prover cvc5",
+    gnatwhy3_line_for(lines, "pkg__r"), "--timeout 5", "--steps 200", "--prover cvc5"
 )
 assert_has_options(
     gnatwhy3_line_for(lines, "pkg__inner__s"),
@@ -182,13 +286,19 @@ assert_has_options(
     "--prover cvc5",
 )
 
-print("===== two same-specificity entries are ambiguous =====")
-gnatprove(
-    opt=[
-        "-P",
-        "test.gpr",
-        "--proof-manifest-dir=tie_ambiguity",
-        "-u",
-        "pkg.adb",
-    ]
+# Two entries of equal specificity matching the same subprogram are ambiguous.
+check_manifest(
+    "two same-specificity entries are ambiguous",
+    """\
+version = 1
+
+[[subprogram]]
+path = "Pkg.R"
+timeout = 5
+
+[[subprogram]]
+path = "Pkg.R"
+kind = "procedure"
+timeout = 10
+""",
 )

@@ -45,8 +45,8 @@ def check_manifest(name, manifest, manifest_file="main.toml", valid=False):
     )
 
 
-# Valid manifests: exercising every supported field and the unit/package and
-# nested-package combinations. These are accepted, so no output is expected.
+# Valid manifest exercising every supported field. It is accepted, so no output
+# is expected.
 
 check_manifest(
     "valid manifest",
@@ -72,41 +72,9 @@ steps = 200
     valid=True,
 )
 
-check_manifest(
-    "unit and package manifest",
-    """\
-version = 1
-
-[[subprogram]]
-path = "Main"
-steps = 1
-
-[[subprogram]]
-path = "Main"
-kind = "package"
-hierarchical = false
-steps = 2
-""",
-    valid=True,
-)
-
-check_manifest(
-    "unit and nested package manifest",
-    """\
-version = 1
-
-[[subprogram]]
-path = "Main"
-steps = 1
-
-[[subprogram]]
-path = "Main.Nested"
-kind = "package"
-hierarchical = false
-steps = 2
-""",
-    valid=True,
-)
+# Note: manifests combining a unit default with a package entry (with the
+# "hierarchical" field) are exercised, including their dispatch behavior, by
+# 985__manifest_dispatch, so they are not repeated here.
 
 # Invalid manifests: each triggers a specific parser diagnostic.
 

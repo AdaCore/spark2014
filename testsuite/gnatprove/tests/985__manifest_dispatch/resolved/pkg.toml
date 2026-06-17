@@ -1,7 +1,0 @@
-version = 1
-
-[[subprogram]]
-path = "Pkg.P"
-kind = "procedure"
-profile = "(_ : Integer)"
-timeout = 1
