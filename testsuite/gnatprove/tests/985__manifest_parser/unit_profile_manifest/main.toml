@@ -1,6 +1,0 @@
-version = 1
-
-[[subprogram]]
-path = "Main"
-hierarchical = "false"
-steps = 1

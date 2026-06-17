@@ -1,248 +1,290 @@
+import os
+
 from test_support import gnatprove
 
+# Each manifest case is fully described here: a name, the manifest file name,
+# and its inline TOML content. The manifest is written to a per-case folder and
+# echoed into the output, so that test.out shows, for every case, the manifest
+# that was fed to gnatprove right next to the resulting diagnostic. Reviewing a
+# case therefore only requires reading a single contiguous section of test.out.
 
-print("===== valid manifest =====")
-gnatprove(
-    opt=[
-        "-P",
-        "test.gpr",
-        "--proof-manifest-dir=valid_manifest",
-        "--mode=check",
-        "-u",
-        "main.adb",
-    ],
-    no_output=True,
+
+def run(name, opt):
+    print(f"===== {name} =====")
+    gnatprove(
+        opt=["-P", "test.gpr", *opt, "--mode=check", "-u", "main.adb"],
+        no_output=False,
+    )
+
+
+def check_manifest(name, manifest, manifest_file="main.toml", valid=False):
+    """Write MANIFEST to a folder named after NAME, echo it, and run gnatprove.
+
+    When VALID is set, the manifest is expected to be accepted and gnatprove's
+    output is suppressed, so an empty output section signals success.
+    """
+    folder = name.replace(" ", "_")
+    os.makedirs(folder, exist_ok=True)
+    with open(os.path.join(folder, manifest_file), "w") as f:
+        f.write(manifest)
+
+    print(f"===== {name} =====")
+    print(f"--- manifest {manifest_file} ---")
+    print(manifest if manifest.endswith("\n") else manifest + "\n", end="")
+    print("--- output ---")
+    gnatprove(
+        opt=[
+            "-P",
+            "test.gpr",
+            f"--proof-manifest-dir={folder}",
+            "--mode=check",
+            "-u",
+            "main.adb",
+        ],
+        no_output=valid,
+    )
+
+
+# Valid manifests: exercising every supported field and the unit/package and
+# nested-package combinations. These are accepted, so no output is expected.
+
+check_manifest(
+    "valid manifest",
+    """\
+version = 1
+
+[[subprogram]]
+path = "Main"
+kind = "procedure"
+profile = "()"
+timeout = 1
+steps = 100
+memlimit = 1000
+level = 2
+provers = ["cvc5", "z3"]
+
+[[subprogram]]
+path = "Main.Inner"
+kind = "procedure"
+profile = "(_ : Integer)"
+steps = 200
+""",
+    valid=True,
 )
 
-print("===== unit and package manifest =====")
-gnatprove(
-    opt=[
-        "-P",
-        "test.gpr",
-        "--proof-manifest-dir=unit_and_package_manifest",
-        "--mode=check",
-        "-u",
-        "main.adb",
-    ],
-    no_output=True,
+check_manifest(
+    "unit and package manifest",
+    """\
+version = 1
+
+[[subprogram]]
+path = "Main"
+steps = 1
+
+[[subprogram]]
+path = "Main"
+kind = "package"
+hierarchical = false
+steps = 2
+""",
+    valid=True,
 )
 
-print("===== unit and nested package manifest =====")
-gnatprove(
-    opt=[
-        "-P",
-        "test.gpr",
-        "--proof-manifest-dir=unit_and_nested_package_manifest",
-        "--mode=check",
-        "-u",
-        "main.adb",
-    ],
-    no_output=True,
+check_manifest(
+    "unit and nested package manifest",
+    """\
+version = 1
+
+[[subprogram]]
+path = "Main"
+steps = 1
+
+[[subprogram]]
+path = "Main.Nested"
+kind = "package"
+hierarchical = false
+steps = 2
+""",
+    valid=True,
 )
 
-print("===== unknown field =====")
-gnatprove(
-    opt=[
-        "-P",
-        "test.gpr",
-        "--proof-manifest-dir=unknown_field_manifest",
-        "--mode=check",
-        "-u",
-        "main.adb",
-    ]
+# Invalid manifests: each triggers a specific parser diagnostic.
+
+check_manifest(
+    "unknown field",
+    """\
+version = 1
+
+[[subprogram]]
+path = "Main"
+unknown = 1
+""",
 )
 
-print("===== bad provers syntax =====")
-gnatprove(
-    opt=[
-        "-P",
-        "test.gpr",
-        "--proof-manifest-dir=bad_provers_manifest",
-        "--mode=check",
-        "-u",
-        "main.adb",
-    ]
+check_manifest(
+    "bad provers syntax",
+    """\
+version = 1
+
+[[subprogram]]
+path = "Main"
+provers = "cvc5"
+""",
 )
 
-print("===== missing path =====")
-gnatprove(
-    opt=[
-        "-P",
-        "test.gpr",
-        "--proof-manifest-dir=missing_path_manifest",
-        "--mode=check",
-        "-u",
-        "main.adb",
-    ]
+check_manifest(
+    "missing path",
+    """\
+version = 1
+
+[[subprogram]]
+timeout = 1
+""",
 )
 
-print("===== missing version =====")
-gnatprove(
-    opt=[
-        "-P",
-        "test.gpr",
-        "--proof-manifest-dir=missing_version_manifest",
-        "--mode=check",
-        "-u",
-        "main.adb",
-    ]
+check_manifest(
+    "missing version",
+    """\
+[[subprogram]]
+path = "Main"
+""",
 )
 
-print("===== unsupported version =====")
-gnatprove(
-    opt=[
-        "-P",
-        "test.gpr",
-        "--proof-manifest-dir=unsupported_version_manifest",
-        "--mode=check",
-        "-u",
-        "main.adb",
-    ]
+check_manifest(
+    "unsupported version",
+    """\
+version = 2
+
+[[subprogram]]
+path = "Main"
+""",
 )
 
-print("===== missing folder =====")
-gnatprove(
-    opt=[
-        "-P",
-        "test.gpr",
-        "--proof-manifest-dir=missing_manifest",
-        "--mode=check",
-        "-u",
-        "main.adb",
-    ]
+# Folder-level problems that do not involve manifest content.
+
+run("missing folder", ["--proof-manifest-dir=missing_manifest"])
+run("file instead of folder", ["--proof-manifest-dir=main.adb"])
+
+check_manifest(
+    "wrong unit",
+    """\
+version = 1
+
+[[subprogram]]
+path = "Main"
+steps = 1
+""",
+    manifest_file="other.toml",
 )
 
-print("===== file instead of folder =====")
-gnatprove(
-    opt=[
-        "-P",
-        "test.gpr",
-        "--proof-manifest-dir=main.adb",
-        "--mode=check",
-        "-u",
-        "main.adb",
-    ]
+check_manifest(
+    "bad kind",
+    """\
+version = 1
+
+[[subprogram]]
+path = "Main"
+kind = "task"
+steps = 1
+""",
 )
 
-print("===== wrong unit =====")
-gnatprove(
-    opt=[
-        "-P",
-        "test.gpr",
-        "--proof-manifest-dir=wrong_unit_manifest",
-        "--mode=check",
-        "-u",
-        "main.adb",
-    ]
+check_manifest(
+    "profile without kind",
+    """\
+version = 1
+
+[[subprogram]]
+path = "Main"
+profile = "()"
+steps = 1
+""",
 )
 
-print("===== bad kind =====")
-gnatprove(
-    opt=[
-        "-P",
-        "test.gpr",
-        "--proof-manifest-dir=bad_kind_manifest",
-        "--mode=check",
-        "-u",
-        "main.adb",
-    ]
+check_manifest(
+    "bad hierarchical",
+    """\
+version = 1
+
+[[subprogram]]
+path = "Main"
+hierarchical = "false"
+steps = 1
+""",
 )
 
-print("===== profile without kind =====")
-gnatprove(
-    opt=[
-        "-P",
-        "test.gpr",
-        "--proof-manifest-dir=profile_without_kind_manifest",
-        "--mode=check",
-        "-u",
-        "main.adb",
-    ]
+check_manifest(
+    "package profile",
+    """\
+version = 1
+
+[[subprogram]]
+path = "Main"
+kind = "package"
+profile = "()"
+steps = 1
+""",
 )
 
-print("===== bad hierarchical =====")
-gnatprove(
-    opt=[
-        "-P",
-        "test.gpr",
-        "--proof-manifest-dir=unit_profile_manifest",
-        "--mode=check",
-        "-u",
-        "main.adb",
-    ]
+check_manifest(
+    "no options",
+    """\
+version = 1
+
+[[subprogram]]
+path = "Main"
+""",
 )
 
-print("===== package profile =====")
-gnatprove(
-    opt=[
-        "-P",
-        "test.gpr",
-        "--proof-manifest-dir=package_profile_manifest",
-        "--mode=check",
-        "-u",
-        "main.adb",
-    ]
+check_manifest(
+    "bad level",
+    """\
+version = 1
+
+[[subprogram]]
+path = "Main"
+level = 5
+""",
 )
 
-print("===== no options =====")
-gnatprove(
-    opt=[
-        "-P",
-        "test.gpr",
-        "--proof-manifest-dir=no_options_manifest",
-        "--mode=check",
-        "-u",
-        "main.adb",
-    ]
+check_manifest(
+    "duplicate entry",
+    """\
+version = 1
+
+[[subprogram]]
+path = "Main"
+steps = 1
+
+[[subprogram]]
+path = "Main"
+timeout = 1
+""",
 )
 
-print("===== bad level =====")
-gnatprove(
-    opt=[
-        "-P",
-        "test.gpr",
-        "--proof-manifest-dir=bad_level_manifest",
-        "--mode=check",
-        "-u",
-        "main.adb",
-    ]
+check_manifest(
+    "duplicate prover",
+    """\
+version = 1
+
+[[subprogram]]
+path = "Main"
+provers = ["cvc5", "cvc5"]
+""",
 )
 
-print("===== duplicate entry =====")
-gnatprove(
-    opt=[
-        "-P",
-        "test.gpr",
-        "--proof-manifest-dir=duplicate_entry_manifest",
-        "--mode=check",
-        "-u",
-        "main.adb",
-    ]
+check_manifest(
+    "bad path",
+    """\
+version = 1
+
+[[subprogram]]
+path = "Main..Inner"
+steps = 1
+""",
 )
 
-print("===== duplicate prover =====")
-gnatprove(
-    opt=[
-        "-P",
-        "test.gpr",
-        "--proof-manifest-dir=duplicate_prover_manifest",
-        "--mode=check",
-        "-u",
-        "main.adb",
-    ]
-)
-
-print("===== bad path =====")
-gnatprove(
-    opt=[
-        "-P",
-        "test.gpr",
-        "--proof-manifest-dir=bad_path_manifest",
-        "--mode=check",
-        "-u",
-        "main.adb",
-    ]
-)
+# The manifest folder may not be set through the project file.
 
 print("===== project switch rejected =====")
 gnatprove(opt=["-P", "manifest_in_project.gpr", "--mode=check", "-u", "main.adb"])

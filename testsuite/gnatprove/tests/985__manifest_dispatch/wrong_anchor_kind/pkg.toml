@@ -1,0 +1,8 @@
+version = 1
+
+[[subprogram]]
+path = "Pkg.Inner"
+kind = "function"
+timeout = 9
+steps = 321
+provers = ["cvc5"]
