@@ -57,7 +57,8 @@ package body Why.Gen.Arrays is
      (From         : Entity_Id;
       To           : Entity_Id;
       From_Wrapper : Boolean;
-      To_Wrapper   : Boolean);
+      To_Wrapper   : Boolean;
+      Inverse      : W_Identifier_Id := Why_Empty);
    --  Check if the conversion theory for converting from From to To has
    --  already been created. If not create it.
    --  @param Current_File the current file section. Conversion theories are
@@ -67,6 +68,8 @@ package body Why.Gen.Arrays is
    --  @param To the entity of target type of the conversion.
    --  @param From_Wrapper True to convert from a wrapper type.
    --  @param To_Wrapper True to convert to a wrapper type.
+   --  @param Inverse the inverse function for the conversion. If supplied,
+   --     an inversion axiom is generated.
 
    procedure Create_Rep_Array_Theory
      (E            : Entity_Id;
@@ -644,7 +647,8 @@ package body Why.Gen.Arrays is
      (From         : Entity_Id;
       To           : Entity_Id;
       From_Wrapper : Boolean;
-      To_Wrapper   : Boolean)
+      To_Wrapper   : Boolean;
+      Inverse      : W_Identifier_Id := Why_Empty)
    is
       use Name_Id_Name_Id_Conversion_Name_Map;
 
@@ -936,6 +940,33 @@ package body Why.Gen.Arrays is
                    (Name => To_Local (Convert_Id), Kind => EW_Axdep_Func)));
       end;
 
+      --  If Inverse is supplied, generate the inversion axiom
+
+      if Present (Inverse) then
+         Emit
+           (Th,
+            New_Guarded_Axiom
+              (Name    => NID ("convert__inversion"),
+               Binders => (1 => A_Binder),
+               Def     =>
+                 New_Comparison
+                   (Symbol => Why_Eq,
+                    Left   =>
+                      New_Call
+                        (Name => Inverse,
+                         Args =>
+                           (1 =>
+                              +New_Call
+                                 (Name    => To_Local (Convert_Id),
+                                  Binders => (1 => A_Binder),
+                                  Typ     => Get_Typ (Convert_Id))),
+                         Typ  => Get_Typ (Inverse)),
+                    Right  => +A_Binder.B_Name),
+               Dep     =>
+                 New_Axiom_Dep
+                   (Name => To_Local (Convert_Id), Kind => EW_Axdep_Func)));
+      end if;
+
       Close_Theory (Th, Kind => Definition_Theory);
 
       M_Arrays_Conversion (C).Insert (To_Name, Convert_Id);
@@ -1205,8 +1236,16 @@ package body Why.Gen.Arrays is
          Create_Array_Conversion_Theory_If_Needed
            (From => E, To => E, From_Wrapper => True, To_Wrapper => False);
 
+         --  Add an axiom saying that converting to a wrapper and back is a
+         --  no-op. It should be provable but needs an instance of the
+         --  extensionality axiom.
+
          Create_Array_Conversion_Theory_If_Needed
-           (From => E, To => E, From_Wrapper => False, To_Wrapper => True);
+           (From         => E,
+            To           => E,
+            From_Wrapper => False,
+            To_Wrapper   => True,
+            Inverse      => Get_Array_Of_Wrapper_Name (E));
       end if;
    end Create_Rep_Array_Theory_If_Needed;
 
