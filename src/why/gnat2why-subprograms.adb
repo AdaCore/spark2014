@@ -3600,7 +3600,8 @@ package body Gnat2Why.Subprograms is
          then Symbol_Sets.To_Set (NID (GP_Inline_Marker))
          else Symbol_Sets.Empty_Set);
 
-      Def : W_Term_Id;
+      Def       : W_Term_Id;
+      Guard_Def : W_Pred_Id;
 
    begin
       if Is_Unchecked_Conversion_Instance (E) then
@@ -3639,10 +3640,18 @@ package body Gnat2Why.Subprograms is
                      (Source_Type, Target_Type, Is_Potentially_Invalid (E)),
                  Binders => Logic_Why_Binders,
                  Typ     => Why_Type);
+            Guard_Def :=
+              +New_Call
+                 (Domain  => EW_Pred,
+                  Name    =>
+                    Get_UC_Guard_Predicate
+                      (Source_Type, Target_Type, Is_Potentially_Invalid (E)),
+                  Binders => Pred_Binders);
          end;
 
       else
          Def := Compute_Inlined_Expr (E, Logic_Func_Binders, Why_Type, Params);
+         Guard_Def := Why_Empty;
       end if;
 
       --  Generate a logic function
@@ -3668,7 +3677,8 @@ package body Gnat2Why.Subprograms is
             Binders     => Pred_Binders,
             Location    => No_Location,
             Labels      => Symbol_Sets.Empty_Set,
-            Return_Type => EW_Bool_Type));
+            Return_Type => EW_Bool_Type,
+            Def         => +Guard_Def));
 
       --  Generate logic functions and guards for dispatching and
       --  refined versions of the function in a separate module.
@@ -7309,10 +7319,13 @@ package body Gnat2Why.Subprograms is
 
       --  Do not generate an axiom for the postcondition of volatile functions,
       --  protected subprograms and functions with side effects.
+      --  Instances of unchecked conversion already have an axiom for their
+      --  dynamic property (and they cannot have posts).
 
       if not Is_Function_Or_Function_Type (E)
         or else Is_Function_With_Side_Effects (E)
         or else Has_Pragma_Volatile_Function (E)
+        or else Is_Unchecked_Conversion_Instance (E)
       then
          return;
       end if;
