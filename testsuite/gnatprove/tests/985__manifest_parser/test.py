@@ -160,7 +160,7 @@ gnatprove(
     ]
 )
 
-print("===== unit profile =====")
+print("===== bad hierarchical =====")
 gnatprove(
     opt=[
         "-P",

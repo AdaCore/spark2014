@@ -2,10 +2,10 @@ version = 1
 
 [[subprogram]]
 path = "Main"
-kind = "unit"
 steps = 1
 
 [[subprogram]]
 path = "Main"
 kind = "package"
+hierarchical = false
 steps = 2

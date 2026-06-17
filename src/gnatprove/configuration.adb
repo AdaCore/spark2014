@@ -1698,6 +1698,11 @@ package body Configuration is
       --  Same as Get_Required_String, but returns empty string if the key is
       --  missing. Still raises an error in case of type mismatch.
 
+      function Get_Optional_Boolean
+        (Table : TOML.TOML_Value; Key : String; Default : Boolean)
+         return Boolean;
+      --  Similar to Get_Optional_String, but for Boolean
+
       function Get_Optional_Natural
         (Table : TOML.TOML_Value; Key : String; Default : Integer)
          return Integer;
@@ -1828,21 +1833,17 @@ package body Configuration is
            Table.Get_Or_Null ("profile");
       begin
          if Has_Kind
-           and then Kind_Value /= "unit"
            and then Kind_Value /= "package"
            and then Kind_Value /= "procedure"
            and then Kind_Value /= "function"
          then
             Manifest_Error
               (Kind,
-               "field ""kind"" must be one of ""unit"", ""package"","
-               & " ""procedure"" or ""function""");
+               "field ""kind"" must be one of ""package"", ""procedure"""
+               & " or ""function""");
          end if;
 
-         if Kind_Value = "unit" and then Has_Profile then
-            Manifest_Error
-              (Profile, "field ""profile"" is not allowed for unit entries");
-         elsif Has_Profile
+         if Has_Profile
            and then
              (not Has_Kind
               or else
@@ -1862,6 +1863,7 @@ package body Configuration is
                 = Kind_Value
               and then
                 To_String (Existing.Profile) = To_String (Policy.Profile)
+              and then Existing.Hierarchical = Policy.Hierarchical
             then
                Manifest_Error (Table, "duplicate manifest entry");
             end if;
@@ -1912,6 +1914,25 @@ package body Configuration is
             Manifest_Error (Value, "unsupported version, expected 1");
          end if;
       end Check_Version;
+
+      --------------------------
+      -- Get_Optional_Boolean --
+      --------------------------
+
+      function Get_Optional_Boolean
+        (Table : TOML.TOML_Value; Key : String; Default : Boolean)
+         return Boolean
+      is
+         Value : constant TOML.TOML_Value := Table.Get_Or_Null (Key);
+      begin
+         if not Value.Is_Present then
+            return Default;
+         elsif Value.Kind /= TOML.TOML_Boolean then
+            Manifest_Error (Value, "field """ & Key & """ must be a boolean");
+         else
+            return Value.As_Boolean;
+         end if;
+      end Get_Optional_Boolean;
 
       --------------------------
       -- Get_Optional_Natural --
@@ -2114,6 +2135,7 @@ package body Configuration is
          Allowed.Append ("path");
          Allowed.Append ("kind");
          Allowed.Append ("profile");
+         Allowed.Append ("hierarchical");
          Allowed.Append ("timeout");
          Allowed.Append ("steps");
          Allowed.Append ("memlimit");
@@ -2130,6 +2152,8 @@ package body Configuration is
          Set_Manifest_Location (Policy, Table.Get_Or_Null ("path"));
          Policy.Kind := Get_Optional_String (Table, "kind");
          Policy.Profile := Get_Optional_String (Table, "profile");
+         Policy.Hierarchical :=
+           Get_Optional_Boolean (Table, "hierarchical", True);
          Policy.Timeout :=
            Get_Optional_Natural (Table, "timeout", Invalid_Manifest_Timeout);
          Policy.Steps :=

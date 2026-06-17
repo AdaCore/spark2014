@@ -15,5 +15,8 @@ is
    is
       procedure S (X : Integer)
       with Post => Sink = X;
+
+      function F (X : Integer) return Integer
+      with Post => F'Result = X;
    end Inner;
 end Pkg;

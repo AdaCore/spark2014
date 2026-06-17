@@ -3,13 +3,13 @@
 ===== unit default and nested package entity =====
 ===== ambiguous manifest entry =====
 ambiguous/pkg.toml:4:8: warning: invalid proof manifest entry 1 for "Pkg.P" kind "procedure" is ambiguous; add or refine the kind or profile field
-Success: all checks proved (2 checks).
+Success: all checks proved (4 checks).
 Summary logged in gnatprove/gnatprove.out
 [Ada Analysis]    pkg.adb
 [Ada Global_Gen]  pkg.adb
 ===== missing manifest entity =====
 missing_entity/pkg.toml:4:8: warning: invalid proof manifest entry 1 for "Pkg.Missing" kind "procedure" does not match any entity in this analysis unit
-Success: all checks proved (2 checks).
+Success: all checks proved (4 checks).
 Summary logged in gnatprove/gnatprove.out
 [Ada Analysis]    pkg.adb
 ===== manifest entity not selected =====
@@ -24,10 +24,11 @@ Summary logged in gnatprove/gnatprove.out
 [Ada Analysis]    pkg.adb
 ===== package prefix covers multiple subprograms =====
 ===== nested prefix covers single subprogram =====
+===== prefix kind applies to anchor only =====
 ===== specific entry overrides broader entry =====
 ===== two same-specificity entries are ambiguous =====
 tie_ambiguity/pkg.toml:4:8: warning: invalid proof manifest entry 1 for "Pkg.R" is ambiguous with another entry of equal specificity matching "Pkg.R"
-Success: all checks proved (2 checks).
+Success: all checks proved (4 checks).
 Summary logged in gnatprove/gnatprove.out
 [Ada Analysis]    pkg.adb
 [Ada Global_Gen]  pkg.adb

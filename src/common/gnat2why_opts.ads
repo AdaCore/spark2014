@@ -78,22 +78,24 @@ package Gnat2Why_Opts is
    Invalid_Manifest_Level    : constant := -1;
 
    type Manifest_Subprogram is record
-      Path     : Ada.Strings.Unbounded.Unbounded_String;
-      Kind     : Ada.Strings.Unbounded.Unbounded_String;
-      Profile  : Ada.Strings.Unbounded.Unbounded_String;
-      File     : Ada.Strings.Unbounded.Unbounded_String;
-      Line     : Positive := 1;
-      Column   : Positive := 1;
-      Timeout  : Integer := Invalid_Manifest_Timeout;
-      Steps    : Integer := Invalid_Manifest_Steps;
-      Memlimit : Integer := Invalid_Manifest_Memlimit;
-      Level    : Integer := Invalid_Manifest_Level;
-      Provers  : String_Utils.String_Lists.List;
+      Path         : Ada.Strings.Unbounded.Unbounded_String;
+      Kind         : Ada.Strings.Unbounded.Unbounded_String;
+      Profile      : Ada.Strings.Unbounded.Unbounded_String;
+      Hierarchical : Boolean := True;
+      File         : Ada.Strings.Unbounded.Unbounded_String;
+      Line         : Positive := 1;
+      Column       : Positive := 1;
+      Timeout      : Integer := Invalid_Manifest_Timeout;
+      Steps        : Integer := Invalid_Manifest_Steps;
+      Memlimit     : Integer := Invalid_Manifest_Memlimit;
+      Level        : Integer := Invalid_Manifest_Level;
+      Provers      : String_Utils.String_Lists.List;
    end record;
    --  Proof-manifest policy for one source subprogram. Path is required by
-   --  the manifest schema; File, Line and Column locate the manifest entry;
-   --  Kind, Profile and proof options are optional. Invalid_Manifest_* and
-   --  the empty prover list encode absent options.
+   --  the manifest schema; Hierarchical defaults to True; File, Line and
+   --  Column locate the manifest entry; Kind, Profile and proof options are
+   --  optional. Invalid_Manifest_* and the empty prover list encode absent
+   --  options.
 
    package Manifest_Subprogram_Vectors is new
      Ada.Containers.Vectors

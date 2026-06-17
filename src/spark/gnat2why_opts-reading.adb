@@ -116,6 +116,10 @@ package body Gnat2Why_Opts.Reading is
                   Policy.Profile := Get_Opt (Obj, "profile");
                end if;
 
+               if Has_Field (Obj, "hierarchical") then
+                  Policy.Hierarchical := Get_Opt (Obj, "hierarchical");
+               end if;
+
                if Has_Field (Obj, "timeout") then
                   Policy.Timeout := Integer'(Get_Opt (Obj, "timeout"));
                end if;

@@ -81,6 +81,7 @@ package body Gnat2Why_Opts.Writing is
             Hash ("path", To_String (Policy.Path));
             Hash ("kind", To_String (Policy.Kind));
             Hash ("profile", To_String (Policy.Profile));
+            Hash ("hierarchical", Boolean'Image (Policy.Hierarchical));
             Hash ("file", To_String (Policy.File));
             Hash ("line", Integer'Image (Policy.Line));
             Hash ("col", Integer'Image (Policy.Column));
@@ -229,6 +230,8 @@ package body Gnat2Why_Opts.Writing is
          if Length (Policy.Profile) > 0 then
             Set_Field (Obj, "profile", To_String (Policy.Profile));
          end if;
+
+         Set_Field (Obj, "hierarchical", Policy.Hierarchical);
 
          if Policy.Timeout /= Invalid_Manifest_Timeout then
             Set_Field (Obj, "timeout", Policy.Timeout);

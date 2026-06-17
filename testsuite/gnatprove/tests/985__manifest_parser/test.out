@@ -27,13 +27,13 @@ Try "gnatprove --help" for more information.
 error: invalid proof manifest wrong_unit_manifest/other.toml:4:8: path "Main" does not belong to manifest unit "other"
 ===== bad kind =====
 Try "gnatprove --help" for more information.
-error: invalid proof manifest bad_kind_manifest/main.toml:5:8: field "kind" must be one of "unit", "package", "procedure" or "function"
+error: invalid proof manifest bad_kind_manifest/main.toml:5:8: field "kind" must be one of "package", "procedure" or "function"
 ===== profile without kind =====
 Try "gnatprove --help" for more information.
 error: invalid proof manifest profile_without_kind_manifest/main.toml:5:11: field "profile" requires kind "procedure" or "function"
-===== unit profile =====
+===== bad hierarchical =====
 Try "gnatprove --help" for more information.
-error: invalid proof manifest unit_profile_manifest/main.toml:6:11: field "profile" is not allowed for unit entries
+error: invalid proof manifest unit_profile_manifest/main.toml:5:16: field "hierarchical" must be a boolean
 ===== package profile =====
 Try "gnatprove --help" for more information.
 error: invalid proof manifest package_profile_manifest/main.toml:6:11: field "profile" requires kind "procedure" or "function"
@@ -45,7 +45,7 @@ Try "gnatprove --help" for more information.
 error: invalid proof manifest bad_level_manifest/main.toml:5:9: field "level" must be between 0 and 4
 ===== duplicate entry =====
 Try "gnatprove --help" for more information.
-error: invalid proof manifest duplicate_entry_manifest/main.toml:8:1: duplicate manifest entry
+error: invalid proof manifest duplicate_entry_manifest/main.toml:7:1: duplicate manifest entry
 ===== duplicate prover =====
 Try "gnatprove --help" for more information.
 error: invalid proof manifest duplicate_prover_manifest/main.toml:5:20: duplicate prover "cvc5"

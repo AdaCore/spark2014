@@ -133,16 +133,17 @@ entries are sorted by their matching identity so that directory traversal order
 does not affect the options seen by later pipeline stages.
 
 During translation, ``gnat2why`` resolves these manifest entries against the
-semantic entities selected for the current analysis unit. Matching is
-hierarchical: a policy path matches an entity either exactly, or as a strict
-dot-separated prefix of the entity's canonical source path. The optional
-``kind`` and ``profile`` fields further refine the identity. ``kind = "unit"``
-denotes the unit default and applies only through the hierarchical prefix rule,
-not to the same-path package entity. ``kind = "package"`` denotes the package
-entity itself. Procedure and function kinds, together with ``profile``,
-disambiguate overloads. When several entries cover the same entity, the most
-specific one wins (longest dot-separated path); broader entries are not merged
-in.
+semantic entities selected for the current analysis unit. Each policy first
+resolves to an exact anchor entity using its ``path`` and the optional
+``kind`` and ``profile`` identity fields. If ``hierarchical`` is true, which is
+the default, the resolved policy also applies to entities whose canonical
+source path is a strict dot-separated extension of the anchor's source path.
+If ``hierarchical`` is false, the policy applies only to the anchor entity.
+Thus kind/profile disambiguate the named anchor; they do not filter descendant
+entities reached by hierarchical application. When several entries cover the
+same entity, the most specific one wins (longest dot-separated anchor path);
+an exact-only entry also wins over a same-depth hierarchical entry for the
+anchor entity itself. Broader entries are not merged in.
 Two policies that match the same entity at the same specificity are reported
 as an ambiguity warning, as are multiple overloads matched by a single policy
 that lacks sufficient disambiguation.

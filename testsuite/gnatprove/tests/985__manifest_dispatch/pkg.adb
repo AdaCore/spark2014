@@ -26,5 +26,8 @@ is
       begin
          Sink := X;
       end S;
+
+      function F (X : Integer) return Integer
+      is (X);
    end Inner;
 end Pkg;

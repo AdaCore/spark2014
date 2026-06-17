@@ -159,6 +159,14 @@ assert_has_options(
     "--prover cvc5",
 )
 
+print("===== prefix kind applies to anchor only =====")
+lines = gnatwhy3_lines("wrong_anchor_kind")
+assert_lacks_options(
+    gnatwhy3_line_for(lines, "pkg__inner__f"),
+    "--timeout 9",
+    "--steps 321",
+)
+
 print("===== specific entry overrides broader entry =====")
 lines = gnatwhy3_lines("override")
 assert_has_options(

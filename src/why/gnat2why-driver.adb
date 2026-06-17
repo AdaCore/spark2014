@@ -1636,14 +1636,23 @@ package body Gnat2Why.Driver is
          function Entity_Kind (E : Entity_Id) return String;
          --  Return the entity kind as a string, e.g. "function" or
          --  "procedure".
+
+         function Entity_Path (E : Entity_Id) return String;
+         --  Return the dot-separated entity path used for manifest matching
+
          function Is_Current_Unit_Entry
            (Policy : Manifest_Subprogram) return Boolean;
          --  Check whether the argument policy applies to the current unit
 
-         function Is_Manifest_Match
+         function Is_Manifest_Application
+           (Policy : Manifest_Subprogram; Anchor, E : Entity_Id)
+            return Boolean;
+         --  Check whether the entity is covered by Policy after Policy has
+         --  been resolved to its anchor entity.
+
+         function Is_Manifest_Anchor
            (Policy : Manifest_Subprogram; E : Entity_Id) return Boolean;
-         --  Check whether the entity matches the policy, either exactly or
-         --  via the hierarchical (prefix) semantics.
+         --  Check whether E is the exact entity designated by Policy
 
          function Path_Specificity (Path : String) return Positive;
          --  Number of dot-separated components in Path; higher means more
@@ -1687,6 +1696,10 @@ package body Gnat2Why.Driver is
             if Length (Policy.Profile) > 0 then
                Append
                  (Result, " profile """ & To_String (Policy.Profile) & """");
+            end if;
+
+            if not Policy.Hierarchical then
+               Append (Result, " hierarchical false");
             end if;
 
             return To_String (Result);
@@ -1763,6 +1776,23 @@ package body Gnat2Why.Driver is
             end case;
          end Entity_Kind;
 
+         -----------------
+         -- Entity_Path --
+         -----------------
+
+         function Entity_Path (E : Entity_Id) return String is
+            Name : constant String := Raw_Source_Name (E);
+         begin
+            if E = Standard_Standard
+              or else Scope (E) = Standard_Standard
+              or else Ada.Strings.Fixed.Index (Name, ".") /= 0
+            then
+               return Name;
+            else
+               return Entity_Path (Scope (E)) & "." & Name;
+            end if;
+         end Entity_Path;
+
          ---------------------------
          -- Is_Current_Unit_Entry --
          ---------------------------
@@ -1773,7 +1803,7 @@ package body Gnat2Why.Driver is
             Path      : constant String :=
               Normalize_Manifest_Text (To_String (Policy.Path));
             Unit_Name : constant String :=
-              Normalize_Manifest_Text (Full_Source_Name (Current_Unit));
+              Normalize_Manifest_Text (Entity_Path (Current_Unit));
          begin
             return
               Path = Unit_Name
@@ -1785,61 +1815,33 @@ package body Gnat2Why.Driver is
                  and then Path (Path'First + Unit_Name'Length) = '.');
          end Is_Current_Unit_Entry;
 
-         -----------------------
-         -- Is_Manifest_Match --
-         -----------------------
+         ------------------------
+         -- Is_Manifest_Anchor --
+         ------------------------
 
-         function Is_Manifest_Match
+         function Is_Manifest_Anchor
            (Policy : Manifest_Subprogram; E : Entity_Id) return Boolean
          is
-            Path            : constant String :=
+            Path : constant String :=
               Normalize_Manifest_Text (To_String (Policy.Path));
-            Name            : constant String :=
-              Normalize_Manifest_Text (Full_Source_Name (E));
-            Kind            : constant String :=
+            Name : constant String :=
+              Normalize_Manifest_Text (Entity_Path (E));
+            Kind : constant String :=
               Normalize_Manifest_Text (To_String (Policy.Kind));
-            Is_Exact_Match  : constant Boolean := Path = Name;
-            Is_Prefix_Match : constant Boolean :=
-              Name'Length > Path'Length
-              and then Name (Name'First .. Name'First + Path'Length - 1) = Path
-              and then Name (Name'First + Path'Length) = '.';
          begin
-            --  The policy path must either equal the entity name or be a
-            --  strict prefix on a dot boundary. The latter implements the
-            --  hierarchical semantics: an entry on a package or compilation
-            --  unit covers every nested entity.
+            --  Kind and profile refine the identity of the entity named by
+            --  the manifest path. They do not filter the descendants later
+            --  covered by hierarchical application.
 
-            if Is_Exact_Match then
-               null;
-            elsif Is_Prefix_Match then
-               null;
-            else
+            if Path /= Name then
                return False;
             end if;
 
-            --  A unit default is distinct from the package entity that may
-            --  share the same source name. It applies only hierarchically, so
-            --  a same-path package entry can configure the package body.
-
-            if Kind = "unit" then
-               return Is_Prefix_Match;
-            end if;
-
-            --  A package entry identifies the package entity itself. Bare
-            --  package paths keep the broader hierarchical default semantics.
-
-            if Kind = "package" then
-               return Is_Exact_Match and then Ekind (E) = E_Package;
-            end if;
-
             --  Procedure/function kind and profile filters only make sense
-            --  for subprograms; if either is provided, the entity must be a
-            --  subprogram and must agree with the requested kind or profile.
+            --  for subprograms; package kind identifies the package entity.
 
             if Kind /= "" then
-               if not Is_Subprogram_Like (E)
-                 or else not Same_Manifest_Text (Kind, Entity_Kind (E))
-               then
+               if not Same_Manifest_Text (Kind, Entity_Kind (E)) then
                   return False;
                end if;
             end if;
@@ -1855,7 +1857,33 @@ package body Gnat2Why.Driver is
             end if;
 
             return True;
-         end Is_Manifest_Match;
+         end Is_Manifest_Anchor;
+
+         -----------------------------
+         -- Is_Manifest_Application --
+         -----------------------------
+
+         function Is_Manifest_Application
+           (Policy : Manifest_Subprogram; Anchor, E : Entity_Id) return Boolean
+         is
+            Anchor_Name : constant String :=
+              Normalize_Manifest_Text (Entity_Path (Anchor));
+            Name        : constant String :=
+              Normalize_Manifest_Text (Entity_Path (E));
+         begin
+            if Name = Anchor_Name then
+               return True;
+            elsif not Policy.Hierarchical then
+               return False;
+            else
+               return
+                 Name'Length > Anchor_Name'Length
+                 and then
+                   Name (Name'First .. Name'First + Anchor_Name'Length - 1)
+                   = Anchor_Name
+                 and then Name (Name'First + Anchor_Name'Length) = '.';
+            end if;
+         end Is_Manifest_Application;
 
          ----------------------
          -- Path_Specificity --
@@ -1926,17 +1954,17 @@ package body Gnat2Why.Driver is
            Natural (Gnat2Why_Args.Proof_Manifest.Length);
 
          type Policy_Info is record
-            Has_Any_Match     : Boolean := False;
-            Has_Proof_Match   : Boolean := False;
-            Exact_Match_Count : Natural := 0;
-            Last_Status       : Analysis_Status := Not_In_Analyzed_Files;
+            Anchor_Count    : Natural := 0;
+            Anchor          : Entity_Id := Empty;
+            Has_Any_Match   : Boolean := False;
+            Has_Proof_Match : Boolean := False;
+            Last_Status     : Analysis_Status := Not_In_Analyzed_Files;
          end record;
          --  Per-policy bookkeeping used after the per-entity loop to emit
-         --  diagnostics. Has_Any_Match covers any matched entity (including
-         --  non-proof entities like types), Has_Proof_Match restricts to
-         --  proof entities, Exact_Match_Count counts proof entities whose
-         --  full name has the same depth as the policy path (i.e. leaf
-         --  matches), and Last_Status records the most pessimistic
+         --  diagnostics. Anchor_Count counts the exact entities designated
+         --  by the policy identity. Has_Any_Match covers any entity reached
+         --  from the resolved anchor, Has_Proof_Match restricts to proof
+         --  entities, and Last_Status records the most pessimistic
          --  Analysis_Status seen for a proof match, with Analyzed treated as
          --  best.
 
@@ -1951,7 +1979,29 @@ package body Gnat2Why.Driver is
             return;
          end if;
 
-         --  Match translated entities to manifest entries
+         --  Resolve manifest entries to their exact anchor entities
+
+         for Candidate of Entities_To_Translate loop
+            if Ekind (Candidate)
+               in E_Entry | E_Function | E_Procedure | E_Package
+              and then Sloc (Candidate) /= No_Location
+            then
+               for Index in 1 .. Policy_Count loop
+                  declare
+                     Policy : Manifest_Subprogram renames
+                       Gnat2Why_Args.Proof_Manifest (Index);
+                  begin
+                     if Is_Manifest_Anchor (Policy, Candidate) then
+                        Info (Index).Anchor_Count :=
+                          Info (Index).Anchor_Count + 1;
+                        Info (Index).Anchor := Candidate;
+                     end if;
+                  end;
+               end loop;
+            end if;
+         end loop;
+
+         --  Match translated proof entities to resolved manifest anchors
 
          for Candidate of Entities_To_Translate loop
             if Ekind (Candidate)
@@ -1961,49 +2011,58 @@ package body Gnat2Why.Driver is
                declare
                   Cand_Status : constant Analysis_Status :=
                     Analysis_Requested (Candidate, With_Inlined => False);
-                  Cand_Depth  : constant Positive :=
-                    Path_Specificity
-                      (Normalize_Manifest_Text (Full_Source_Name (Candidate)));
                   Cand_Proof  : constant Boolean :=
                     Is_Proof_Generation_Entity (Candidate);
 
                   Best       : Natural := 0;
                   Best_Depth : Natural := 0;
+                  Best_Exact : Boolean := False;
                   Tied       : Boolean := False;
                begin
                   for Index in 1 .. Policy_Count loop
                      declare
                         Policy : Manifest_Subprogram renames
                           Gnat2Why_Args.Proof_Manifest (Index);
+                        I      : Policy_Info renames Info (Index);
                      begin
-                        if Is_Manifest_Match (Policy, Candidate) then
-                           Info (Index).Has_Any_Match := True;
+                        if I.Anchor_Count = 1
+                          and then
+                            Is_Manifest_Application
+                              (Policy, I.Anchor, Candidate)
+                        then
+                           I.Has_Any_Match := True;
 
                            if Cand_Proof then
-                              Info (Index).Has_Proof_Match := True;
-                              if Info (Index).Last_Status /= Analyzed then
-                                 Info (Index).Last_Status := Cand_Status;
+                              I.Has_Proof_Match := True;
+                              if I.Last_Status /= Analyzed then
+                                 I.Last_Status := Cand_Status;
                               end if;
                            end if;
 
                            declare
-                              Depth : constant Positive :=
+                              Depth       : constant Positive :=
                                 Path_Specificity
                                   (Normalize_Manifest_Text
-                                     (To_String (Policy.Path)));
+                                     (Entity_Path (I.Anchor)));
+                              Exact_Level : constant Boolean :=
+                                Candidate = I.Anchor
+                                and then not Policy.Hierarchical;
                            begin
-                              if Cand_Proof and then Depth = Cand_Depth then
-                                 Info (Index).Exact_Match_Count :=
-                                   Info (Index).Exact_Match_Count + 1;
-                              end if;
-
                               if Cand_Proof and then Cand_Status = Analyzed
                               then
-                                 if Depth > Best_Depth then
+                                 if Depth > Best_Depth
+                                   or else
+                                     (Depth = Best_Depth
+                                      and then Exact_Level
+                                      and then not Best_Exact)
+                                 then
                                     Best := Index;
                                     Best_Depth := Depth;
+                                    Best_Exact := Exact_Level;
                                     Tied := False;
-                                 elsif Depth = Best_Depth then
+                                 elsif Depth = Best_Depth
+                                   and then Exact_Level = Best_Exact
+                                 then
                                     Tied := True;
                                  end if;
                               end if;
@@ -2018,7 +2077,7 @@ package body Gnat2Why.Driver is
                           (Best,
                            "is ambiguous with another entry of equal "
                            & "specificity matching """
-                           & Full_Source_Name (Candidate)
+                           & Entity_Path (Candidate)
                            & """");
                      else
                         Manifest_Match_Map.Insert (Candidate, Best);
@@ -2036,7 +2095,7 @@ package body Gnat2Why.Driver is
                  Gnat2Why_Args.Proof_Manifest (Index);
                I      : Policy_Info renames Info (Index);
             begin
-               if I.Exact_Match_Count > 1 then
+               if I.Anchor_Count > 1 then
                   Manifest_Warning
                     (Index,
                      "is ambiguous; add or refine the kind or profile field");
