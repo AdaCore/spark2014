@@ -2046,8 +2046,8 @@ package body Configuration is
          Policy.File := Current_File;
 
          if Sep > 0 then
-            Policy.Line := Natural'Value (Loc (Loc'First .. Sep - 1));
-            Policy.Column := Natural'Value (Loc (Sep + 1 .. Loc'Last));
+            Policy.Line := Positive'Value (Loc (Loc'First .. Sep - 1));
+            Policy.Column := Positive'Value (Loc (Sep + 1 .. Loc'Last));
          end if;
       exception
          when Constraint_Error =>

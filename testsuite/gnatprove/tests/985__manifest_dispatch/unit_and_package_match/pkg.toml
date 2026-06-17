@@ -8,4 +8,4 @@ steps = 100
 [[subprogram]]
 path = "Pkg"
 kind = "package"
-steps = 100
+steps = 200

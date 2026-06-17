@@ -1634,8 +1634,8 @@ package body Gnat2Why.Driver is
          --    "(_ : Integer; _ : Natural) return Boolean"
 
          function Entity_Kind (E : Entity_Id) return String;
-         --  Return the entity kind as a string, i.e., "function", "procedure"
-         --  or "package".
+         --  Return the entity kind as a string, e.g. "function" or
+         --  "procedure".
          function Is_Current_Unit_Entry
            (Policy : Manifest_Subprogram) return Boolean;
          --  Check whether the argument policy applies to the current unit
@@ -1643,8 +1643,7 @@ package body Gnat2Why.Driver is
          function Is_Manifest_Match
            (Policy : Manifest_Subprogram; E : Entity_Id) return Boolean;
          --  Check whether the entity matches the policy, either exactly or
-         --  via the hierarchical (prefix) semantics described in the
-         --  manifest design.
+         --  via the hierarchical (prefix) semantics.
 
          function Path_Specificity (Path : String) return Positive;
          --  Number of dot-separated components in Path; higher means more
@@ -1661,7 +1660,7 @@ package body Gnat2Why.Driver is
          --  Remove trailing and duplicate spaces from the text for more
          --  stable comparison of strings.
 
-         procedure Manifest_Error (Index : Positive; Msg : String);
+         procedure Manifest_Warning (Index : Positive; Msg : String);
          --  Report Msg as a warning for the given manifest index
 
          Current_Unit : constant Entity_Id := Unique_Main_Unit_Entity;
@@ -1863,21 +1862,15 @@ package body Gnat2Why.Driver is
          ----------------------
 
          function Path_Specificity (Path : String) return Positive is
-            Result : Positive := 1;
          begin
-            for C of Path loop
-               if C = '.' then
-                  Result := Result + 1;
-               end if;
-            end loop;
-            return Result;
+            return Positive (Ada.Strings.Fixed.Count (Path, ".") + 1);
          end Path_Specificity;
 
-         --------------------
-         -- Manifest_Error --
-         --------------------
+         ----------------------
+         -- Manifest_Warning --
+         ----------------------
 
-         procedure Manifest_Error (Index : Positive; Msg : String) is
+         procedure Manifest_Warning (Index : Positive; Msg : String) is
             Policy  : Manifest_Subprogram renames
               Gnat2Why_Args.Proof_Manifest (Index);
             Message : constant JSON_Value := Create_Object;
@@ -1891,7 +1884,7 @@ package body Gnat2Why.Driver is
             Set_Field (Warning, "severity", "warning");
             Set_Field (Warning, "rule", "proof-manifest");
             Append (Manifest_Warnings, Warning);
-         end Manifest_Error;
+         end Manifest_Warning;
 
          -----------------------------
          -- Normalize_Manifest_Text --
@@ -2021,7 +2014,7 @@ package body Gnat2Why.Driver is
 
                   if Best /= 0 then
                      if Tied then
-                        Manifest_Error
+                        Manifest_Warning
                           (Best,
                            "is ambiguous with another entry of equal "
                            & "specificity matching """
@@ -2044,7 +2037,7 @@ package body Gnat2Why.Driver is
                I      : Policy_Info renames Info (Index);
             begin
                if I.Exact_Match_Count > 1 then
-                  Manifest_Error
+                  Manifest_Warning
                     (Index,
                      "is ambiguous; add or refine the kind or profile field");
                   Invalid (Index) := True;
@@ -2054,30 +2047,30 @@ package body Gnat2Why.Driver is
                         null;
 
                      when Contextually_Analyzed       =>
-                        Manifest_Error
+                        Manifest_Warning
                           (Index,
                            "matches an entity analyzed only in calling"
                            & " contexts");
                         Invalid (Index) := True;
 
                      when Not_In_Analyzed_Files       =>
-                        Manifest_Error
+                        Manifest_Warning
                           (Index, "matches an entity outside analyzed files");
                         Invalid (Index) := True;
 
                      when Not_The_Analyzed_Subprogram =>
-                        Manifest_Error
+                        Manifest_Warning
                           (Index,
                            "matches an entity not selected for analysis");
                         Invalid (Index) := True;
                   end case;
                elsif I.Has_Any_Match then
-                  Manifest_Error
+                  Manifest_Warning
                     (Index,
                      "matches an entity that is not translated for proof");
                   Invalid (Index) := True;
                elsif Is_Current_Unit_Entry (Policy) then
-                  Manifest_Error
+                  Manifest_Warning
                     (Index, "does not match any entity in this analysis unit");
                   Invalid (Index) := True;
                end if;

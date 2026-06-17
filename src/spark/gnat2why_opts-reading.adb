@@ -101,11 +101,11 @@ package body Gnat2Why_Opts.Reading is
                end if;
 
                if Has_Field (Obj, "line") then
-                  Policy.Line := Natural (Integer'(Get_Opt (Obj, "line")));
+                  Policy.Line := Positive (Integer'(Get_Opt (Obj, "line")));
                end if;
 
                if Has_Field (Obj, "col") then
-                  Policy.Column := Natural (Integer'(Get_Opt (Obj, "col")));
+                  Policy.Column := Positive (Integer'(Get_Opt (Obj, "col")));
                end if;
 
                if Has_Field (Obj, "kind") then

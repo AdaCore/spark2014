@@ -82,8 +82,8 @@ package Gnat2Why_Opts is
       Kind     : Ada.Strings.Unbounded.Unbounded_String;
       Profile  : Ada.Strings.Unbounded.Unbounded_String;
       File     : Ada.Strings.Unbounded.Unbounded_String;
-      Line     : Natural := 1;
-      Column   : Natural := 1;
+      Line     : Positive := 1;
+      Column   : Positive := 1;
       Timeout  : Integer := Invalid_Manifest_Timeout;
       Steps    : Integer := Invalid_Manifest_Steps;
       Memlimit : Integer := Invalid_Manifest_Memlimit;

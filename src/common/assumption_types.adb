@@ -389,7 +389,11 @@ package body Assumption_Types is
        then True
        elsif Right.Name < Left.Name
        then False
-       else Left.Sloc < Right.Sloc);
+       elsif Left.Sloc < Right.Sloc
+       then True
+       elsif Right.Sloc < Left.Sloc
+       then False
+       else Left.Manifest_Kind < Right.Manifest_Kind);
 
    function "<" (Left, Right : Symbol) return Boolean
    is (Get (Left, Empty_If_Null => True).all

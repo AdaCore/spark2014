@@ -50,29 +50,41 @@ gnatprove(
 )
 
 print("===== unit default and package entity =====")
-gnatprove(
-    opt=[
-        "-P",
-        "test.gpr",
-        "--mode=prove",
-        "--proof-manifest-dir=unit_and_package_match",
-        "-u",
-        "pkg.adb",
-    ],
-    no_output=True,
+lines = gnatwhy3_lines("unit_and_package_match")
+assert_has_options(
+    gnatwhy3_line_for(lines, "pkg__r"),
+    "--steps 100",
+)
+assert_lacks_options(
+    gnatwhy3_line_for(lines, "pkg__r"),
+    "--steps 200",
+)
+assert_has_options(
+    gnatwhy3_line_for(lines, "pkg__inner__s"),
+    "--steps 100",
+)
+assert_lacks_options(
+    gnatwhy3_line_for(lines, "pkg__inner__s"),
+    "--steps 200",
 )
 
 print("===== unit default and nested package entity =====")
-gnatprove(
-    opt=[
-        "-P",
-        "test.gpr",
-        "--mode=prove",
-        "--proof-manifest-dir=unit_and_nested_package_match",
-        "-u",
-        "pkg.adb",
-    ],
-    no_output=True,
+lines = gnatwhy3_lines("unit_and_nested_package_match")
+assert_has_options(
+    gnatwhy3_line_for(lines, "pkg__r"),
+    "--steps 100",
+)
+assert_lacks_options(
+    gnatwhy3_line_for(lines, "pkg__r"),
+    "--steps 200",
+)
+assert_has_options(
+    gnatwhy3_line_for(lines, "pkg__inner__s"),
+    "--steps 100",
+)
+assert_lacks_options(
+    gnatwhy3_line_for(lines, "pkg__inner__s"),
+    "--steps 200",
 )
 
 print("===== ambiguous manifest entry =====")

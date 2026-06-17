@@ -81,10 +81,9 @@ package body Gnat2Why_Opts.Writing is
             Hash ("path", To_String (Policy.Path));
             Hash ("kind", To_String (Policy.Kind));
             Hash ("profile", To_String (Policy.Profile));
-            --  File, Line and Column are intentionally excluded from the hash.
-            --  They only locate the entry for diagnostics and do not influence
-            --  proof results, so cosmetic edits to the manifest (comments,
-            --  blank lines, reordering) should not invalidate the analysis.
+            Hash ("file", To_String (Policy.File));
+            Hash ("line", Integer'Image (Policy.Line));
+            Hash ("col", Integer'Image (Policy.Column));
             Hash ("timeout", Integer'Image (Policy.Timeout));
             Hash ("steps", Integer'Image (Policy.Steps));
             Hash ("memlimit", Integer'Image (Policy.Memlimit));

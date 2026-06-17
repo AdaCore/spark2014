@@ -125,31 +125,30 @@ the units they describe, using the same stem convention as ``.spark``
 artifacts. Each file is checked before analysis actions are launched, and the
 subprogram-level proof policies relevant to each unit are serialized into that
 unit's ``-gnates`` JSON options file for analysis-mode ``gnat2why``
-invocations, together with the manifest source file and best available entry
-location.
+invocations, together with the manifest source file path and best available
+entry location.
 Manifest parsing, schema checks, and semantic sanity checks performed before
-analysis are fatal and stay in ``gnatprove``. Before serialization, entries are
-sorted by their matching identity so that directory traversal order does not
-affect the options seen by later pipeline stages.
+analysis are fatal and are implemented in ``gnatprove``. Before serialization,
+entries are sorted by their matching identity so that directory traversal order
+does not affect the options seen by later pipeline stages.
 
 During translation, ``gnat2why`` resolves these manifest entries against the
 semantic entities selected for the current analysis unit. Matching is
 hierarchical: a policy path matches an entity either exactly, or as a strict
-dot-separated prefix of the entity's canonical source path. This means an
-entry on a package or compilation unit covers every nested subprogram, and an
-entry on a subprogram applies only to that subprogram. The optional ``kind``
-and ``profile`` fields further refine the identity. ``kind = "unit"`` denotes
-the unit default and applies only through the hierarchical prefix rule, not to
-the same-path package entity. ``kind = "package"`` denotes the package entity
-itself. Procedure and function kinds, together with ``profile``, disambiguate
-overloads. When several entries cover the same entity, the most specific one
-wins (longest dot-separated path); broader entries are not merged in.
+dot-separated prefix of the entity's canonical source path. The optional
+``kind`` and ``profile`` fields further refine the identity. ``kind = "unit"``
+denotes the unit default and applies only through the hierarchical prefix rule,
+not to the same-path package entity. ``kind = "package"`` denotes the package
+entity itself. Procedure and function kinds, together with ``profile``,
+disambiguate overloads. When several entries cover the same entity, the most
+specific one wins (longest dot-separated path); broader entries are not merged
+in.
 Two policies that match the same entity at the same specificity are reported
 as an ambiguity warning, as are multiple overloads matched by a single policy
 that lacks sufficient disambiguation.
 
 The resolution step also warns about entries that are stale, selected only for
-contextual analysis, outside the analyzed files, or not translated for proof.
+contextual analysis, outside the analyzed files, or not selected for proof.
 These warnings are written to the ``manifest_warnings`` section of the unit's
 ``.spark`` file and are later reported by ``gnatprove`` text and SARIF
 generation. They do not stop analysis; affected entities are proved with the
