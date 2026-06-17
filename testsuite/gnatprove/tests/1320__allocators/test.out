@@ -1,0 +1,843 @@
+allocator-base.adb:21:16: info: implicit aspect Always_Terminates on "Next" has been proved, subprogram will terminate, in instantiation at types.ads:38
+allocator-base.adb:21:16: info: implicit aspect Always_Terminates on "Next" has been proved, subprogram will terminate, in instantiation at types.ads:69
+allocator-base.adb:22:17: info: initialization check proved (CVC5: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:22:17: info: initialization check proved (CVC5: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:22:45: info: initialization check proved (CVC5: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:22:45: info: initialization check proved (CVC5: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:37:16: info: implicit aspect Always_Terminates on "All_From" has been proved, subprogram will terminate, in instantiation at types.ads:38
+allocator-base.adb:37:16: info: implicit aspect Always_Terminates on "All_From" has been proved, subprogram will terminate, in instantiation at types.ads:69
+allocator-base.adb:40:11: info: postcondition proved (CVC5: 3 VC), in instantiation at types.ads:38
+allocator-base.adb:40:11: info: postcondition proved (CVC5: 3 VC), in instantiation at types.ads:69
+allocator-base.adb:40:33: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:40:33: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:44:38: info: precondition proved (CVC5: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:44:38: info: precondition proved (CVC5: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:48:38: info: precondition proved (CVC5: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:48:38: info: precondition proved (CVC5: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:49:57: info: overflow check proved (CVC5: 2 VC), in instantiation at types.ads:38
+allocator-base.adb:49:57: info: overflow check proved (CVC5: 2 VC), in instantiation at types.ads:69
+allocator-base.adb:49:61: info: overflow check proved (CVC5: 2 VC), in instantiation at types.ads:38
+allocator-base.adb:49:61: info: overflow check proved (CVC5: 2 VC), in instantiation at types.ads:69
+allocator-base.adb:63:20: info: subprogram variant proved (CVC5: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:63:20: info: subprogram variant proved (CVC5: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:63:32: info: range check proved (CVC5: 2 VC), in instantiation at types.ads:38
+allocator-base.adb:63:32: info: range check proved (CVC5: 2 VC), in instantiation at types.ads:69
+allocator-base.adb:72:36: info: precondition proved (CVC5: 2 VC), in instantiation at types.ads:38
+allocator-base.adb:72:36: info: precondition proved (CVC5: 2 VC), in instantiation at types.ads:69
+allocator-base.adb:72:55: info: predicate check proved (CVC5: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:72:55: info: predicate check proved (CVC5: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:72:55: info: range check proved (CVC5: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:72:55: info: range check proved (CVC5: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:73:53: info: index check proved (CVC5: 2 VC), in instantiation at types.ads:38
+allocator-base.adb:73:53: info: index check proved (CVC5: 2 VC), in instantiation at types.ads:69
+allocator-base.adb:80:43: info: precondition proved (Z3: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:80:43: info: precondition proved (Z3: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:80:49: info: precondition proved (CVC5: 3 VC), in instantiation at types.ads:38
+allocator-base.adb:80:49: info: precondition proved (CVC5: 3 VC), in instantiation at types.ads:69
+allocator-base.adb:80:66: info: initialization check proved (CVC5: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:80:66: info: initialization check proved (CVC5: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:84:23: info: range check proved (CVC5: 2 VC), in instantiation at types.ads:38
+allocator-base.adb:84:23: info: range check proved (CVC5: 2 VC), in instantiation at types.ads:69
+allocator-base.adb:85:30: info: precondition proved (CVC5: 3 VC), in instantiation at types.ads:38
+allocator-base.adb:85:30: info: precondition proved (CVC5: 3 VC), in instantiation at types.ads:69
+allocator-base.adb:85:44: info: predicate check proved (CVC5: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:85:44: info: predicate check proved (CVC5: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:85:44: info: range check proved (CVC5: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:85:44: info: range check proved (CVC5: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:90:27: info: precondition proved (CVC5: 4 VC; Z3: 1 VC; altergo: 1 VC), in call inlined at allocator-base.adb:276, in instantiation at types.ads:38
+allocator-base.adb:90:27: info: precondition proved (CVC5: 4 VC; Z3: 1 VC; altergo: 1 VC), in call inlined at allocator-base.adb:276, in instantiation at types.ads:69
+allocator-base.adb:90:27: info: precondition proved (CVC5: 4 VC; Z3: 2 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:38
+allocator-base.adb:90:27: info: precondition proved (CVC5: 4 VC; Z3: 2 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:69
+allocator-base.adb:91:19: info: predicate check proved (Z3: 1 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:38
+allocator-base.adb:91:19: info: predicate check proved (Z3: 1 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:69
+allocator-base.adb:91:19: info: predicate check proved (Z3: 1 VC), in call inlined at allocator-base.adb:276, in instantiation at types.ads:38
+allocator-base.adb:91:19: info: predicate check proved (Z3: 1 VC), in call inlined at allocator-base.adb:276, in instantiation at types.ads:69
+allocator-base.adb:91:19: info: range check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:38
+allocator-base.adb:91:19: info: range check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:69
+allocator-base.adb:91:19: info: range check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:276, in instantiation at types.ads:38
+allocator-base.adb:91:19: info: range check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:276, in instantiation at types.ads:69
+allocator-base.adb:91:31: info: predicate check proved (Z3: 1 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:38
+allocator-base.adb:91:31: info: predicate check proved (Z3: 1 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:69
+allocator-base.adb:91:31: info: predicate check proved (Z3: 1 VC), in call inlined at allocator-base.adb:276, in instantiation at types.ads:38
+allocator-base.adb:91:31: info: range check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:38
+allocator-base.adb:91:31: info: range check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:69
+allocator-base.adb:91:31: info: range check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:276, in instantiation at types.ads:38
+allocator-base.adb:91:31: info: range check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:276, in instantiation at types.ads:69
+allocator-base.adb:91:31: medium: in inlined predicate at allocator-base.ads:74, in instantiation at types.ads:69
+allocator-base.adb:91:31: medium: predicate check might fail, cannot prove C'Initialized, in call inlined at allocator-base.adb:276, in instantiation at types.ads:69
+allocator-base.adb:92:27: info: precondition proved (CVC5: 2 VC; Z3: 4 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:38
+allocator-base.adb:92:27: info: precondition proved (CVC5: 2 VC; Z3: 4 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:69
+allocator-base.adb:92:27: info: precondition proved (CVC5: 4 VC; Z3: 2 VC), in call inlined at allocator-base.adb:276, in instantiation at types.ads:38
+allocator-base.adb:92:27: info: precondition proved (CVC5: 4 VC; Z3: 2 VC), in call inlined at allocator-base.adb:276, in instantiation at types.ads:69
+allocator-base.adb:93:19: info: predicate check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:38
+allocator-base.adb:93:19: info: predicate check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:69
+allocator-base.adb:93:19: info: predicate check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:276, in instantiation at types.ads:38
+allocator-base.adb:93:19: info: predicate check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:276, in instantiation at types.ads:69
+allocator-base.adb:93:19: info: range check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:38
+allocator-base.adb:93:19: info: range check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:69
+allocator-base.adb:93:19: info: range check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:276, in instantiation at types.ads:38
+allocator-base.adb:93:19: info: range check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:276, in instantiation at types.ads:69
+allocator-base.adb:93:31: info: predicate check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:38
+allocator-base.adb:93:31: info: predicate check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:69
+allocator-base.adb:93:31: info: predicate check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:276, in instantiation at types.ads:38
+allocator-base.adb:93:31: info: predicate check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:276, in instantiation at types.ads:69
+allocator-base.adb:93:31: info: range check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:38
+allocator-base.adb:93:31: info: range check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:69
+allocator-base.adb:93:31: info: range check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:276, in instantiation at types.ads:38
+allocator-base.adb:93:31: info: range check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:276, in instantiation at types.ads:69
+allocator-base.adb:94:27: info: precondition proved (CVC5: 2 VC; Z3: 4 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:38
+allocator-base.adb:94:27: info: precondition proved (CVC5: 2 VC; Z3: 4 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:69
+allocator-base.adb:94:27: info: precondition proved (CVC5: 2 VC; Z3: 4 VC), in call inlined at allocator-base.adb:276, in instantiation at types.ads:38
+allocator-base.adb:94:27: info: precondition proved (CVC5: 2 VC; Z3: 4 VC), in call inlined at allocator-base.adb:276, in instantiation at types.ads:69
+allocator-base.adb:94:57: info: predicate check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:38
+allocator-base.adb:94:57: info: predicate check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:69
+allocator-base.adb:94:57: info: predicate check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:276, in instantiation at types.ads:38
+allocator-base.adb:94:57: info: predicate check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:276, in instantiation at types.ads:69
+allocator-base.adb:94:57: info: range check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:38
+allocator-base.adb:94:57: info: range check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:69
+allocator-base.adb:94:57: info: range check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:276, in instantiation at types.ads:38
+allocator-base.adb:94:57: info: range check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:276, in instantiation at types.ads:69
+allocator-base.adb:94:69: info: predicate check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:38
+allocator-base.adb:94:69: info: predicate check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:69
+allocator-base.adb:94:69: info: predicate check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:276, in instantiation at types.ads:38
+allocator-base.adb:94:69: info: predicate check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:276, in instantiation at types.ads:69
+allocator-base.adb:94:69: info: range check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:38
+allocator-base.adb:94:69: info: range check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:69
+allocator-base.adb:94:69: info: range check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:276, in instantiation at types.ads:38
+allocator-base.adb:94:69: info: range check proved (CVC5: 1 VC), in call inlined at allocator-base.adb:276, in instantiation at types.ads:69
+allocator-base.adb:101:11: info: refined post proved (CVC5: 3 VC; Z3: 3 VC; altergo: 2 VC), in instantiation at types.ads:38
+allocator-base.adb:101:11: info: refined post proved (CVC5: 3 VC; Z3: 3 VC; altergo: 2 VC), in instantiation at types.ads:69
+allocator-base.adb:101:24: info: precondition proved (CVC5: 3 VC), in instantiation at types.ads:38
+allocator-base.adb:101:24: info: precondition proved (CVC5: 3 VC), in instantiation at types.ads:69
+allocator-base.adb:103:32: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:103:32: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:103:41: info: precondition proved (CVC5: 2 VC; altergo: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:103:41: info: precondition proved (CVC5: 2 VC; altergo: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:104:29: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:104:29: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:115:40: info: precondition proved (CVC5: 3 VC; Z3: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:115:40: info: precondition proved (CVC5: 3 VC; Z3: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:115:58: info: predicate check proved (CVC5: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:115:58: info: predicate check proved (CVC5: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:115:58: info: range check proved (CVC5: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:115:58: info: range check proved (CVC5: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:120:32: info: precondition proved (CVC5: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:120:32: info: precondition proved (CVC5: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:121:38: info: initialization check proved (CVC5: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:121:38: info: initialization check proved (CVC5: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:124:14: info: initialization of "Res" proved, in instantiation at types.ads:38
+allocator-base.adb:124:14: info: initialization of "Res" proved, in instantiation at types.ads:69
+allocator-base.adb:127:40: info: precondition proved (CVC5: 2 VC), in instantiation at types.ads:38
+allocator-base.adb:127:40: info: precondition proved (CVC5: 2 VC), in instantiation at types.ads:69
+allocator-base.adb:127:75: info: initialization check proved (CVC5: 2 VC), in instantiation at types.ads:38
+allocator-base.adb:127:75: info: initialization check proved (CVC5: 2 VC), in instantiation at types.ads:69
+allocator-base.adb:130:21: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:130:21: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:130:21: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:130:21: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:130:76: info: range check proved (CVC5: 4 VC), in instantiation at types.ads:38
+allocator-base.adb:130:76: info: range check proved (CVC5: 4 VC), in instantiation at types.ads:69
+allocator-base.adb:131:39: info: loop invariant initialization proved (CVC5: 2 VC), in instantiation at types.ads:38
+allocator-base.adb:131:39: info: loop invariant initialization proved (CVC5: 2 VC), in instantiation at types.ads:69
+allocator-base.adb:131:39: info: loop invariant preservation proved (CVC5: 2 VC), in instantiation at types.ads:38
+allocator-base.adb:131:39: info: loop invariant preservation proved (CVC5: 2 VC), in instantiation at types.ads:69
+allocator-base.adb:134:21: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:134:21: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:134:21: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:134:21: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:135:40: info: precondition proved (CVC5: 2 VC), in instantiation at types.ads:38
+allocator-base.adb:135:40: info: precondition proved (CVC5: 2 VC), in instantiation at types.ads:69
+allocator-base.adb:136:46: info: initialization check proved (CVC5: 2 VC), in instantiation at types.ads:38
+allocator-base.adb:136:46: info: initialization check proved (CVC5: 2 VC), in instantiation at types.ads:69
+allocator-base.adb:138:34: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:138:34: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:138:34: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:138:34: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:138:51: info: predicate check proved (Trivial: 2 VC), in instantiation at types.ads:38
+allocator-base.adb:138:51: info: predicate check proved (Trivial: 2 VC), in instantiation at types.ads:69
+allocator-base.adb:142:18: info: assertion proved (CVC5: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:142:18: info: assertion proved (CVC5: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:142:35: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:142:35: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:148:35: info: precondition proved (CVC5: 2 VC), in instantiation at types.ads:38
+allocator-base.adb:148:35: info: precondition proved (CVC5: 2 VC), in instantiation at types.ads:69
+allocator-base.adb:148:57: info: predicate check proved (CVC5: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:148:57: info: predicate check proved (CVC5: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:148:57: info: range check proved (CVC5: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:148:57: info: range check proved (CVC5: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:152:44: info: precondition proved (CVC5: 2 VC), in instantiation at types.ads:38
+allocator-base.adb:152:44: info: precondition proved (CVC5: 2 VC), in instantiation at types.ads:69
+allocator-base.adb:155:41: info: precondition proved (CVC5: 2 VC), in instantiation at types.ads:38
+allocator-base.adb:155:41: info: precondition proved (CVC5: 2 VC), in instantiation at types.ads:69
+allocator-base.adb:156:56: info: initialization check proved (CVC5: 2 VC), in instantiation at types.ads:38
+allocator-base.adb:156:56: info: initialization check proved (CVC5: 2 VC), in instantiation at types.ads:69
+allocator-base.adb:158:42: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:158:42: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:158:42: info: loop invariant preservation proved (Z3: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:158:42: info: loop invariant preservation proved (Z3: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:159:42: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:159:42: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:159:42: info: loop invariant preservation proved (Z3: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:159:42: info: loop invariant preservation proved (Z3: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:162:24: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:162:24: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:162:24: info: loop invariant preservation proved (Trivial: 1 VC; Z3: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:162:24: info: loop invariant preservation proved (Trivial: 1 VC; Z3: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:166:24: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:166:24: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:166:24: info: loop invariant preservation proved (Z3: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:166:24: info: loop invariant preservation proved (Z3: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:167:68: info: range check proved (CVC5: 4 VC), in instantiation at types.ads:38
+allocator-base.adb:167:68: info: range check proved (CVC5: 4 VC), in instantiation at types.ads:69
+allocator-base.adb:168:61: info: range check proved (CVC5: 4 VC), in instantiation at types.ads:38
+allocator-base.adb:168:61: info: range check proved (CVC5: 4 VC), in instantiation at types.ads:69
+allocator-base.adb:171:24: info: loop invariant initialization proved (CVC5: 2 VC; Z3: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:171:24: info: loop invariant initialization proved (CVC5: 2 VC; Z3: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:171:24: info: loop invariant preservation proved (CVC5: 1 VC; Z3: 2 VC), in instantiation at types.ads:38
+allocator-base.adb:171:24: info: loop invariant preservation proved (CVC5: 1 VC; Z3: 2 VC), in instantiation at types.ads:69
+allocator-base.adb:176:24: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:176:24: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:176:24: info: loop invariant preservation proved (Z3: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:176:24: info: loop invariant preservation proved (Z3: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:177:43: info: precondition proved (CVC5: 2 VC), in instantiation at types.ads:38
+allocator-base.adb:177:43: info: precondition proved (CVC5: 2 VC), in instantiation at types.ads:69
+allocator-base.adb:178:49: info: initialization check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:178:49: info: initialization check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:181:24: info: loop invariant initialization proved (Z3: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:181:24: info: loop invariant initialization proved (Z3: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:181:24: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:181:24: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:181:41: info: predicate check proved (Trivial: 2 VC), in instantiation at types.ads:38
+allocator-base.adb:181:41: info: predicate check proved (Trivial: 2 VC), in instantiation at types.ads:69
+allocator-base.adb:182:48: info: predicate check proved (Trivial: 2 VC), in instantiation at types.ads:38
+allocator-base.adb:182:48: info: predicate check proved (Trivial: 2 VC), in instantiation at types.ads:69
+allocator-base.adb:182:74: info: precondition proved (CVC5: 4 VC; Z3: 1 VC; altergo: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:182:74: info: precondition proved (CVC5: 4 VC; Z3: 1 VC; altergo: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:182:88: info: predicate check proved (CVC5: 2 VC), in instantiation at types.ads:38
+allocator-base.adb:182:88: info: predicate check proved (CVC5: 2 VC), in instantiation at types.ads:69
+allocator-base.adb:182:88: info: range check proved (CVC5: 2 VC), in instantiation at types.ads:38
+allocator-base.adb:182:88: info: range check proved (CVC5: 2 VC), in instantiation at types.ads:69
+allocator-base.adb:183:53: info: predicate check proved (Trivial: 2 VC), in instantiation at types.ads:38
+allocator-base.adb:183:53: info: predicate check proved (Trivial: 2 VC), in instantiation at types.ads:69
+allocator-base.adb:185:31: info: assertion proved (CVC5: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:185:31: info: assertion proved (CVC5: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:188:21: info: assertion proved (CVC5: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:188:21: info: assertion proved (CVC5: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:188:38: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:188:38: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:189:45: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:189:45: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:190:41: info: precondition proved (CVC5: 3 VC), in instantiation at types.ads:38
+allocator-base.adb:190:41: info: precondition proved (CVC5: 3 VC), in instantiation at types.ads:69
+allocator-base.adb:190:55: info: predicate check proved (CVC5: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:190:55: info: predicate check proved (CVC5: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:190:55: info: range check proved (CVC5: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:190:55: info: range check proved (CVC5: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:201:14: info: initialization of "Res" proved, in instantiation at types.ads:38
+allocator-base.adb:201:14: info: initialization of "Res" proved, in instantiation at types.ads:69
+allocator-base.adb:203:20: info: range check proved (CVC5: 2 VC), in instantiation at types.ads:38
+allocator-base.adb:203:20: info: range check proved (CVC5: 2 VC), in instantiation at types.ads:69
+allocator-base.adb:207:29: info: range check proved (CVC5: 2 VC), in instantiation at types.ads:38
+allocator-base.adb:207:29: info: range check proved (CVC5: 2 VC), in instantiation at types.ads:69
+allocator-base.adb:210:20: info: range check proved (CVC5: 2 VC), in instantiation at types.ads:38
+allocator-base.adb:210:20: info: range check proved (CVC5: 2 VC), in instantiation at types.ads:69
+allocator-base.adb:211:29: info: index check proved (CVC5: 2 VC), in instantiation at types.ads:38
+allocator-base.adb:211:29: info: index check proved (CVC5: 2 VC), in instantiation at types.ads:69
+allocator-base.adb:211:36: info: initialization check proved (CVC5: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:211:36: info: initialization check proved (CVC5: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:211:36: info: range check proved (Z3: 2 VC), in instantiation at types.ads:38
+allocator-base.adb:211:36: info: range check proved (Z3: 2 VC), in instantiation at types.ads:69
+allocator-base.adb:223:36: info: loop invariant initialization proved (Z3: 1 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:38
+allocator-base.adb:223:36: info: loop invariant initialization proved (Z3: 1 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:69
+allocator-base.adb:223:36: medium: loop invariant might not be preserved by an arbitrary iteration, in call inlined at allocator-base.adb:214, in instantiation at types.ads:38
+allocator-base.adb:223:36: medium: loop invariant might not be preserved by an arbitrary iteration, in call inlined at allocator-base.adb:214, in instantiation at types.ads:69
+allocator-base.adb:223:53: info: precondition proved (CVC5: 3 VC; Z3: 1 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:38
+allocator-base.adb:223:53: info: precondition proved (CVC5: 3 VC; Z3: 1 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:69
+allocator-base.adb:223:69: info: predicate check proved (CVC5: 1 VC; Z3: 1 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:38
+allocator-base.adb:223:69: info: predicate check proved (CVC5: 1 VC; Z3: 1 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:69
+allocator-base.adb:223:69: info: range check proved (CVC5: 2 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:38
+allocator-base.adb:223:69: info: range check proved (CVC5: 2 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:69
+allocator-base.adb:226:18: info: loop invariant initialization proved (Z3: 1 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:38
+allocator-base.adb:226:18: info: loop invariant initialization proved (Z3: 1 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:69
+allocator-base.adb:226:18: info: loop invariant preservation proved (Z3: 1 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:38
+allocator-base.adb:226:18: info: loop invariant preservation proved (Z3: 1 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:69
+allocator-base.adb:226:28: info: range check proved (CVC5: 4 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:38
+allocator-base.adb:226:28: info: range check proved (CVC5: 4 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:69
+allocator-base.adb:226:50: medium: precondition might fail, cannot prove Is_Acyclic (X, M), in call inlined at allocator-base.adb:214, in instantiation at types.ads:38
+allocator-base.adb:226:50: medium: precondition might fail, cannot prove Is_Acyclic (X, M), in call inlined at allocator-base.adb:214, in instantiation at types.ads:69
+allocator-base.adb:226:61: info: predicate check proved (CVC5: 2 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:38
+allocator-base.adb:226:61: info: predicate check proved (CVC5: 2 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:69
+allocator-base.adb:226:61: info: range check proved (CVC5: 2 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:38
+allocator-base.adb:226:61: info: range check proved (CVC5: 2 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:69
+allocator-base.adb:229:18: info: loop invariant initialization proved (Z3: 2 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:38
+allocator-base.adb:229:18: info: loop invariant initialization proved (Z3: 2 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:69
+allocator-base.adb:229:18: info: loop invariant preservation proved (Z3: 2 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:38
+allocator-base.adb:230:20: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Memory_Index_Sets.Contains (Node_Reachability.Reachable_Set (K, Memory), L) = (L >= K), in call inlined at allocator-base.adb:214, in instantiation at types.ads:69
+allocator-base.adb:231:40: info: precondition proved (CVC5: 2 VC; Z3: 2 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:38
+allocator-base.adb:231:40: info: precondition proved (CVC5: 2 VC; Z3: 2 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:69
+allocator-base.adb:231:59: info: predicate check proved (CVC5: 2 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:38
+allocator-base.adb:231:59: info: predicate check proved (CVC5: 2 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:69
+allocator-base.adb:231:59: info: range check proved (CVC5: 2 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:38
+allocator-base.adb:231:59: info: range check proved (CVC5: 2 VC), in call inlined at allocator-base.adb:214, in instantiation at types.ads:69
+allocator-base.adb:239:09: info: precondition proved (CVC5: 2 VC; Z3: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:239:09: info: precondition proved (CVC5: 2 VC; Z3: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:241:63: info: precondition proved (CVC5: 2 VC; Z3: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:241:63: info: precondition proved (CVC5: 2 VC; Z3: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:245:23: info: range check proved (CVC5: 2 VC), in instantiation at types.ads:38
+allocator-base.adb:245:23: info: range check proved (CVC5: 2 VC), in instantiation at types.ads:69
+allocator-base.adb:256:24: info: index check proved (CVC5: 4 VC), in instantiation at types.ads:38
+allocator-base.adb:256:24: info: index check proved (CVC5: 4 VC), in instantiation at types.ads:69
+allocator-base.adb:259:21: info: loop invariant initialization proved (CVC5: 2 VC), in instantiation at types.ads:38
+allocator-base.adb:259:21: info: loop invariant initialization proved (CVC5: 2 VC), in instantiation at types.ads:69
+allocator-base.adb:259:21: info: loop invariant preservation proved (Z3: 2 VC), in instantiation at types.ads:38
+allocator-base.adb:259:21: info: loop invariant preservation proved (Z3: 2 VC), in instantiation at types.ads:69
+allocator-base.adb:260:31: info: index check proved (CVC5: 4 VC), in instantiation at types.ads:38
+allocator-base.adb:260:31: info: index check proved (CVC5: 4 VC), in instantiation at types.ads:69
+allocator-base.adb:260:58: info: index check proved (CVC5: 4 VC), in instantiation at types.ads:38
+allocator-base.adb:260:58: info: index check proved (CVC5: 4 VC), in instantiation at types.ads:69
+allocator-base.adb:260:62: info: initialization check proved (CVC5: 1 VC; Z3: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:260:62: info: initialization check proved (CVC5: 1 VC; Z3: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:260:72: info: overflow check proved (CVC5: 4 VC), in instantiation at types.ads:38
+allocator-base.adb:260:72: info: overflow check proved (CVC5: 4 VC), in instantiation at types.ads:69
+allocator-base.adb:264:28: info: assertion proved (CVC5: 3 VC), in instantiation at types.ads:38
+allocator-base.adb:264:28: info: assertion proved (CVC5: 3 VC), in instantiation at types.ads:69
+allocator-base.adb:267:18: info: assertion proved (CVC5: 1 VC; Z3: 4 VC), in instantiation at types.ads:38
+allocator-base.adb:267:18: info: assertion proved (CVC5: 1 VC; Z3: 4 VC), in instantiation at types.ads:69
+allocator-base.adb:268:22: info: precondition proved (CVC5: 3 VC), in instantiation at types.ads:38
+allocator-base.adb:268:22: info: precondition proved (CVC5: 3 VC), in instantiation at types.ads:69
+allocator-base.adb:269:22: info: precondition proved (CVC5: 3 VC), in instantiation at types.ads:38
+allocator-base.adb:269:22: info: precondition proved (CVC5: 3 VC), in instantiation at types.ads:69
+allocator-base.adb:271:44: info: precondition proved (CVC5: 3 VC; Z3: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:271:44: info: precondition proved (CVC5: 3 VC; Z3: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:271:62: info: predicate check proved (CVC5: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:271:62: info: predicate check proved (CVC5: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:271:62: info: range check proved (CVC5: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:271:62: info: range check proved (CVC5: 1 VC), in instantiation at types.ads:69
+allocator-base.adb:279:25: info: assertion proved (Z3: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:279:25: medium: assertion might fail, in instantiation at types.ads:69
+allocator-base.adb:282:28: info: precondition proved (CVC5: 1 VC; Z3: 2 VC), in instantiation at types.ads:38
+allocator-base.adb:282:28: info: precondition proved (CVC5: 1 VC; Z3: 2 VC), in instantiation at types.ads:69
+allocator-base.adb:283:17: medium: assertion might fail, cannot prove Memory_Index_Maps.Has_Key (Allocated_Cells_Old, K), in instantiation at types.ads:38 [possible fix: you should consider adding a postcondition to function "Has_Key" or turning it into an expression function]
+allocator-base.adb:283:17: medium: assertion might fail, cannot prove Memory_Index_Maps.Has_Key (Allocated_Cells_Old, K), in instantiation at types.ads:69 [possible fix: you should consider adding a postcondition to function "Has_Key" or turning it into an expression function]
+allocator-base.adb:286:22: medium: assertion might fail, cannot prove K = I or Memory_Index_Maps.Has_Key (Allocated_Cells, K), in instantiation at types.ads:38 [possible fix: you should consider adding a postcondition to function "Allocated_Cells" and function "Has_Key" or turning them into expression functions]
+allocator-base.adb:286:22: medium: assertion might fail, cannot prove K = I or Memory_Index_Maps.Has_Key (Allocated_Cells, K), in instantiation at types.ads:69 [possible fix: you should consider adding a postcondition to function "Allocated_Cells" and function "Has_Key" or turning them into expression functions]
+allocator-base.adb:286:58: info: precondition proved (CVC5: 1 VC; Z3: 2 VC), in instantiation at types.ads:38
+allocator-base.adb:286:58: medium: in inlined expression function body at allocator-base.adb:71, in instantiation at types.ads:69
+allocator-base.adb:286:58: medium: precondition might fail, cannot prove C'Initialized, in instantiation at types.ads:69
+allocator-base.adb:291:29: info: initialization check proved (CVC5: 1 VC), in instantiation at types.ads:38
+allocator-base.adb:291:29: info: initialization check proved (CVC5: 1 VC), in instantiation at types.ads:69
+allocator-base.ads:25:27: info: range check proved (CVC5: 2 VC), in instantiation at types.ads:38
+allocator-base.ads:25:27: info: range check proved (CVC5: 2 VC), in instantiation at types.ads:69
+allocator-base.ads:55:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at types.ads:38
+allocator-base.ads:55:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at types.ads:69
+allocator-base.ads:55:13: info: types in unchecked conversion have the same size (Trivial), in instantiation at types.ads:38
+allocator-base.ads:55:13: info: types in unchecked conversion have the same size (Trivial), in instantiation at types.ads:69
+allocator-base.ads:57:09: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at types.ads:38
+allocator-base.ads:57:09: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at types.ads:69
+allocator-base.ads:58:09: info: type is suitable for unchecked conversion (Trivial), in instantiation at types.ads:38
+allocator-base.ads:58:09: info: type is suitable for unchecked conversion (Trivial), in instantiation at types.ads:69
+allocator-base.ads:60:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at types.ads:38
+allocator-base.ads:60:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial), in instantiation at types.ads:69
+allocator-base.ads:60:13: info: types in unchecked conversion have the same size (Trivial), in instantiation at types.ads:38
+allocator-base.ads:60:13: info: types in unchecked conversion have the same size (Trivial), in instantiation at types.ads:69
+allocator-base.ads:61:32: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at types.ads:38
+allocator-base.ads:61:32: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at types.ads:69
+allocator-base.ads:61:52: info: type is suitable for unchecked conversion (Trivial), in instantiation at types.ads:38
+allocator-base.ads:61:52: info: type is suitable for unchecked conversion (Trivial), in instantiation at types.ads:69
+allocator-base.ads:63:19: info: assertion proved (Trivial: 1 VC), in instantiation at types.ads:38
+allocator-base.ads:63:19: info: assertion proved (Trivial: 1 VC), in instantiation at types.ads:69
+allocator-base.ads:63:35: info: range check proved (CVC5: 2 VC), in instantiation at types.ads:38
+allocator-base.ads:63:35: info: range check proved (CVC5: 2 VC), in instantiation at types.ads:69
+allocator-base.ads:90:13: info: implicit aspect Always_Terminates on "Base_Invariant" has been proved, subprogram will terminate, in instantiation at types.ads:38
+allocator-base.ads:90:13: info: implicit aspect Always_Terminates on "Base_Invariant" has been proved, subprogram will terminate, in instantiation at types.ads:69
+allocator-base.ads:91:16: info: data dependencies proved, in instantiation at types.ads:38
+allocator-base.ads:91:16: info: data dependencies proved, in instantiation at types.ads:69
+allocator-base.ads:93:13: info: implicit aspect Always_Terminates on "Allocated_Cells" has been proved, subprogram will terminate, in instantiation at types.ads:38
+allocator-base.ads:93:13: info: implicit aspect Always_Terminates on "Allocated_Cells" has been proved, subprogram will terminate, in instantiation at types.ads:69
+allocator-base.ads:94:16: info: data dependencies proved, in instantiation at types.ads:38
+allocator-base.ads:94:16: info: data dependencies proved, in instantiation at types.ads:69
+allocator-base.ads:95:13: info: implicit aspect Always_Terminates on "Free_Cells" has been proved, subprogram will terminate, in instantiation at types.ads:38
+allocator-base.ads:95:13: info: implicit aspect Always_Terminates on "Free_Cells" has been proved, subprogram will terminate, in instantiation at types.ads:69
+allocator-base.ads:96:16: info: data dependencies proved, in instantiation at types.ads:38
+allocator-base.ads:96:16: info: data dependencies proved, in instantiation at types.ads:69
+allocator-base.ads:101:13: info: implicit aspect Always_Terminates on "Model_Invariant" has been proved, subprogram will terminate, in instantiation at types.ads:38
+allocator-base.ads:101:13: info: implicit aspect Always_Terminates on "Model_Invariant" has been proved, subprogram will terminate, in instantiation at types.ads:69
+allocator-base.ads:106:32: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:38
+allocator-base.ads:106:32: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:69
+allocator-base.ads:107:29: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:38
+allocator-base.ads:107:29: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:69
+allocator-base.ads:109:16: info: data dependencies proved, in instantiation at types.ads:38
+allocator-base.ads:109:16: info: data dependencies proved, in instantiation at types.ads:69
+allocator-base.ads:111:13: info: implicit aspect Always_Terminates on "Invariant" has been proved, subprogram will terminate, in instantiation at types.ads:38
+allocator-base.ads:111:13: info: implicit aspect Always_Terminates on "Invariant" has been proved, subprogram will terminate, in instantiation at types.ads:69
+allocator-base.ads:114:06: info: data dependencies proved, in instantiation at types.ads:38
+allocator-base.ads:114:06: info: data dependencies proved, in instantiation at types.ads:69
+allocator-base.ads:116:09: info: postcondition proved (CVC5: 5 VC; Trivial: 1 VC), in instantiation at types.ads:38
+allocator-base.ads:116:09: info: postcondition proved (CVC5: 5 VC; Trivial: 1 VC), in instantiation at types.ads:69
+allocator-base.ads:119:37: info: precondition proved (CVC5: 3 VC), in instantiation at types.ads:38
+allocator-base.ads:119:37: info: precondition proved (CVC5: 3 VC), in instantiation at types.ads:69
+allocator-base.ads:119:54: info: precondition proved (CVC5: 3 VC), in instantiation at types.ads:38
+allocator-base.ads:119:54: info: precondition proved (CVC5: 3 VC), in instantiation at types.ads:69
+allocator-base.ads:124:06: info: data dependencies proved, in instantiation at types.ads:38
+allocator-base.ads:124:06: info: data dependencies proved, in instantiation at types.ads:69
+allocator-base.ads:125:35: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:38
+allocator-base.ads:125:35: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:69
+allocator-base.ads:125:43: info: precondition proved (CVC5: 3 VC), in instantiation at types.ads:38
+allocator-base.ads:125:43: info: precondition proved (CVC5: 3 VC), in instantiation at types.ads:69
+allocator-base.ads:125:57: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:38
+allocator-base.ads:125:57: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:69
+allocator-base.ads:127:08: medium: postcondition might fail, cannot prove Invariant, in instantiation at types.ads:38
+allocator-base.ads:128:17: info: precondition proved (CVC5: 2 VC; altergo: 1 VC), in instantiation at types.ads:38
+allocator-base.ads:128:17: info: precondition proved (CVC5: 2 VC; altergo: 1 VC), in instantiation at types.ads:69
+allocator-base.ads:128:17: medium: postcondition might fail, cannot prove Allocated_Cells'Old <= Allocated_Cells, in instantiation at types.ads:69 [possible fix: you should consider adding a postcondition to function "Allocated_Cells" or turning it into an expression function]
+allocator-base.ads:128:40: info: precondition proved (Z3: 2 VC; altergo: 1 VC), in instantiation at types.ads:38
+allocator-base.ads:128:40: info: precondition proved (Z3: 2 VC; altergo: 1 VC), in instantiation at types.ads:69
+allocator-base.ads:131:13: info: precondition proved (Z3: 2 VC; altergo: 1 VC), in instantiation at types.ads:38
+allocator-base.ads:131:13: info: precondition proved (Z3: 2 VC; altergo: 1 VC), in instantiation at types.ads:69
+allocator-base.ads:131:30: info: precondition proved (CVC5: 2 VC; altergo: 1 VC), in instantiation at types.ads:38
+allocator-base.ads:131:30: info: precondition proved (CVC5: 2 VC; altergo: 1 VC), in instantiation at types.ads:69
+allocator-base.ads:132:30: info: precondition proved (CVC5: 2 VC; altergo: 1 VC), in instantiation at types.ads:38
+allocator-base.ads:132:30: info: precondition proved (CVC5: 2 VC; altergo: 1 VC), in instantiation at types.ads:69
+allocator-base.ads:133:26: info: precondition proved (Z3: 2 VC; altergo: 1 VC), in instantiation at types.ads:38
+allocator-base.ads:133:26: info: precondition proved (Z3: 2 VC; altergo: 1 VC), in instantiation at types.ads:69
+allocator-base.ads:134:17: info: precondition proved (CVC5: 1 VC), in instantiation at types.ads:38
+allocator-base.ads:134:17: info: precondition proved (CVC5: 1 VC), in instantiation at types.ads:69
+allocator-base.ads:134:22: info: precondition proved (Z3: 2 VC; altergo: 1 VC), in instantiation at types.ads:38
+allocator-base.ads:134:22: info: precondition proved (Z3: 2 VC; altergo: 1 VC), in instantiation at types.ads:69
+allocator-base.ads:135:17: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:38
+allocator-base.ads:135:17: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:69
+allocator-base.ads:135:25: info: precondition proved (Z3: 2 VC; altergo: 1 VC), in instantiation at types.ads:38
+allocator-base.ads:135:25: info: precondition proved (Z3: 2 VC; altergo: 1 VC), in instantiation at types.ads:69
+allocator-base.ads:135:44: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:38
+allocator-base.ads:135:44: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:69
+allocator-base.ads:135:52: info: precondition proved (CVC5: 3 VC), in instantiation at types.ads:38
+allocator-base.ads:135:52: info: precondition proved (CVC5: 3 VC), in instantiation at types.ads:69
+allocator-base.ads:135:75: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:38
+allocator-base.ads:135:75: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:69
+allocator-base.ads:136:17: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:38
+allocator-base.ads:136:17: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:69
+allocator-base.ads:136:25: info: precondition proved (Z3: 2 VC; altergo: 1 VC), in instantiation at types.ads:38
+allocator-base.ads:136:25: info: precondition proved (Z3: 2 VC; altergo: 1 VC), in instantiation at types.ads:69
+allocator-base.ads:136:39: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:38
+allocator-base.ads:136:39: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:69
+allocator-base.ads:136:47: info: precondition proved (CVC5: 3 VC), in instantiation at types.ads:38
+allocator-base.ads:136:47: info: precondition proved (CVC5: 3 VC), in instantiation at types.ads:69
+allocator-base.ads:136:65: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:38
+allocator-base.ads:136:65: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:69
+allocator-base.ads:137:17: info: precondition proved (Z3: 2 VC; altergo: 1 VC), in instantiation at types.ads:38
+allocator-base.ads:137:17: info: precondition proved (Z3: 2 VC; altergo: 1 VC), in instantiation at types.ads:69
+allocator-base.ads:137:30: info: precondition proved (CVC5: 3 VC), in instantiation at types.ads:38
+allocator-base.ads:137:30: info: precondition proved (CVC5: 3 VC), in instantiation at types.ads:69
+allocator-base.ads:138:35: info: precondition proved (Z3: 1 VC), in instantiation at types.ads:38
+allocator-base.ads:138:35: info: precondition proved (Z3: 1 VC), in instantiation at types.ads:69
+allocator-base.ads:138:40: info: precondition proved (CVC5: 3 VC), in instantiation at types.ads:38
+allocator-base.ads:138:40: info: precondition proved (CVC5: 3 VC), in instantiation at types.ads:69
+allocator-base.ads:138:62: info: precondition proved (CVC5: 3 VC), in instantiation at types.ads:38
+allocator-base.ads:138:62: info: precondition proved (CVC5: 3 VC), in instantiation at types.ads:69
+allocator-base.ads:142:06: info: data dependencies proved, in instantiation at types.ads:38
+allocator-base.ads:142:06: info: data dependencies proved, in instantiation at types.ads:69
+allocator-base.ads:143:44: info: precondition proved (CVC5: 3 VC), in instantiation at types.ads:38
+allocator-base.ads:143:44: info: precondition proved (CVC5: 3 VC), in instantiation at types.ads:69
+allocator-base.ads:146:17: info: precondition proved (CVC5: 1 VC; altergo: 2 VC), in instantiation at types.ads:38
+allocator-base.ads:146:17: info: precondition proved (CVC5: 1 VC; altergo: 2 VC), in instantiation at types.ads:69
+allocator-base.ads:146:17: medium: postcondition might fail, cannot prove Allocated_Cells <= Allocated_Cells'Old, in instantiation at types.ads:38 [possible fix: you should consider adding a postcondition to function "Allocated_Cells" or turning it into an expression function]
+allocator-base.ads:146:17: medium: postcondition might fail, cannot prove Allocated_Cells <= Allocated_Cells'Old, in instantiation at types.ads:69 [possible fix: you should consider adding a postcondition to function "Allocated_Cells" or turning it into an expression function]
+allocator-base.ads:146:36: info: precondition proved (CVC5: 2 VC; altergo: 1 VC), in instantiation at types.ads:38
+allocator-base.ads:146:36: info: precondition proved (CVC5: 2 VC; altergo: 1 VC), in instantiation at types.ads:69
+allocator-base.ads:147:39: info: precondition proved (CVC5: 2 VC; altergo: 1 VC), in instantiation at types.ads:38
+allocator-base.ads:147:39: info: precondition proved (CVC5: 2 VC; altergo: 1 VC), in instantiation at types.ads:69
+allocator-base.ads:147:60: info: precondition proved (Z3: 2 VC; altergo: 1 VC), in instantiation at types.ads:38
+allocator-base.ads:147:60: info: precondition proved (Z3: 2 VC; altergo: 1 VC), in instantiation at types.ads:69
+allocator-base.ads:148:30: info: precondition proved (Z3: 2 VC; altergo: 1 VC), in instantiation at types.ads:38
+allocator-base.ads:148:30: info: precondition proved (Z3: 2 VC; altergo: 1 VC), in instantiation at types.ads:69
+allocator-base.ads:149:17: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:38
+allocator-base.ads:149:17: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:69
+allocator-base.ads:149:25: info: precondition proved (Z3: 2 VC; altergo: 1 VC), in instantiation at types.ads:38
+allocator-base.ads:149:25: info: precondition proved (Z3: 2 VC; altergo: 1 VC), in instantiation at types.ads:69
+allocator-base.ads:149:44: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:38
+allocator-base.ads:149:44: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:69
+allocator-base.ads:149:52: info: precondition proved (CVC5: 3 VC), in instantiation at types.ads:38
+allocator-base.ads:149:52: info: precondition proved (CVC5: 3 VC), in instantiation at types.ads:69
+allocator-base.ads:149:75: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:38
+allocator-base.ads:149:75: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:69
+allocator-base.ads:150:17: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:38
+allocator-base.ads:150:17: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:69
+allocator-base.ads:150:25: info: precondition proved (Z3: 2 VC; altergo: 1 VC), in instantiation at types.ads:38
+allocator-base.ads:150:25: info: precondition proved (Z3: 2 VC; altergo: 1 VC), in instantiation at types.ads:69
+allocator-base.ads:150:39: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:38
+allocator-base.ads:150:39: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:69
+allocator-base.ads:150:47: info: precondition proved (CVC5: 3 VC), in instantiation at types.ads:38
+allocator-base.ads:150:47: info: precondition proved (CVC5: 3 VC), in instantiation at types.ads:69
+allocator-base.ads:150:65: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:38
+allocator-base.ads:150:65: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:69
+allocator-base.ads:151:17: info: precondition proved (CVC5: 3 VC), in instantiation at types.ads:38
+allocator-base.ads:151:17: info: precondition proved (CVC5: 3 VC), in instantiation at types.ads:69
+allocator-base.ads:151:34: info: precondition proved (Z3: 2 VC; altergo: 1 VC), in instantiation at types.ads:38
+allocator-base.ads:151:34: medium: in inlined expression function body at allocator-base.adb:71, in instantiation at types.ads:69
+allocator-base.ads:151:34: medium: precondition might fail, cannot prove C'Initialized, in instantiation at types.ads:69
+allocator-base.ads:152:21: info: precondition proved (Z3: 1 VC), in instantiation at types.ads:38
+allocator-base.ads:152:21: info: precondition proved (Z3: 1 VC), in instantiation at types.ads:69
+allocator-base.ads:152:26: info: precondition proved (Z3: 2 VC; altergo: 1 VC), in instantiation at types.ads:38
+allocator-base.ads:152:26: info: precondition proved (Z3: 2 VC; altergo: 1 VC), in instantiation at types.ads:69
+allocator-base.ads:152:44: info: precondition proved (Z3: 2 VC; altergo: 1 VC), in instantiation at types.ads:38
+allocator-base.ads:152:44: info: precondition proved (Z3: 2 VC; altergo: 1 VC), in instantiation at types.ads:69
+allocator-base.ads:154:13: info: implicit aspect Always_Terminates on "Deref" has been proved, subprogram will terminate, in instantiation at types.ads:38
+allocator-base.ads:154:13: info: implicit aspect Always_Terminates on "Deref" has been proved, subprogram will terminate, in instantiation at types.ads:69
+allocator-base.ads:156:06: info: data dependencies proved, in instantiation at types.ads:38
+allocator-base.ads:156:06: info: data dependencies proved, in instantiation at types.ads:69
+allocator-base.ads:157:44: info: precondition proved (CVC5: 3 VC), in instantiation at types.ads:38
+allocator-base.ads:157:44: info: precondition proved (CVC5: 3 VC), in instantiation at types.ads:69
+allocator-base.ads:158:16: info: postcondition proved (CVC5: 1 VC), in instantiation at types.ads:38
+allocator-base.ads:158:16: info: postcondition proved (CVC5: 1 VC), in instantiation at types.ads:69
+allocator-base.ads:158:31: info: precondition proved (CVC5: 1 VC), in instantiation at types.ads:38
+allocator-base.ads:158:31: info: precondition proved (CVC5: 1 VC), in instantiation at types.ads:69
+allocator-base.ads:158:36: info: precondition proved (CVC5: 3 VC), in instantiation at types.ads:38
+allocator-base.ads:158:36: info: precondition proved (CVC5: 3 VC), in instantiation at types.ads:69
+allocator-ownership_wrapper.ads:23:26: info: initialization of "Allocators_4.The_Memory" proved, in instantiation at types.ads:45
+allocator-ownership_wrapper.ads:23:26: info: initialization of "Allocators_8.The_Memory" proved, in instantiation at types.ads:76
+allocator-ownership_wrapper.ads:24:05: info: flow dependencies proved, in instantiation at types.ads:45
+allocator-ownership_wrapper.ads:24:05: info: flow dependencies proved, in instantiation at types.ads:76
+allocator-ownership_wrapper.ads:29:27: info: range check proved (CVC5: 2 VC), in instantiation at types.ads:45
+allocator-ownership_wrapper.ads:29:27: info: range check proved (CVC5: 2 VC), in instantiation at types.ads:76
+allocator-ownership_wrapper.ads:56:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at types.ads:45
+allocator-ownership_wrapper.ads:56:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at types.ads:76
+allocator-ownership_wrapper.ads:59:08: info: dynamic accessibility check proved (Trivial), in instantiation at types.ads:45
+allocator-ownership_wrapper.ads:59:08: info: dynamic accessibility check proved (Trivial), in instantiation at types.ads:76
+allocator-ownership_wrapper.ads:62:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at types.ads:45
+allocator-ownership_wrapper.ads:62:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at types.ads:76
+allocator-ownership_wrapper.ads:79:16: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:45
+allocator-ownership_wrapper.ads:79:16: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:76
+allocator-ownership_wrapper.ads:79:27: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:45
+allocator-ownership_wrapper.ads:79:27: info: predicate check proved (Trivial: 1 VC), in instantiation at types.ads:76
+allocator_with_promotion.adb:18:09: info: assertion proved (Trivial: 1 VC)
+allocator_with_promotion.adb:20:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
+allocator_with_promotion.adb:20:13: info: types in unchecked conversion have the same size (Trivial)
+allocator_with_promotion.adb:20:13: warning: imprecise handling of Unchecked_Conversion (component offset not known) [imprecise-unchecked-conversion]
+allocator_with_promotion.adb:21:32: info: type is suitable as source for unchecked conversion (Trivial)
+allocator_with_promotion.adb:21:54: info: type is suitable for unchecked conversion (Trivial)
+allocator_with_promotion.adb:22:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
+allocator_with_promotion.adb:22:13: info: types in unchecked conversion have the same size (Trivial)
+allocator_with_promotion.adb:22:13: warning: imprecise handling of Unchecked_Conversion (component offset not known) [imprecise-unchecked-conversion]
+allocator_with_promotion.adb:23:32: info: type is suitable as source for unchecked conversion (Trivial)
+allocator_with_promotion.adb:23:54: info: type is suitable for unchecked conversion (Trivial)
+allocator_with_promotion.adb:25:04: warning: imprecise handling of Unchecked_Conversion (component offset not known) [imprecise-unchecked-conversion]
+allocator_with_promotion.adb:25:04: warning: imprecise handling of Unchecked_Conversion (component offset not known) [imprecise-unchecked-conversion]
+allocator_with_promotion.adb:25:04: warning: in instantiation at spark-conversions-access_conversions.ads:62
+allocator_with_promotion.adb:25:04: warning: in instantiation at spark-conversions-access_conversions.ads:67
+allocator_with_promotion.adb:30:39: info: precondition proved (CVC5: 1 VC)
+allocator_with_promotion.adb:30:48: info: discriminant check proved (CVC5: 1 VC)
+allocator_with_promotion.adb:32:44: info: precondition proved (CVC5: 1 VC)
+allocator_with_promotion.adb:32:53: info: discriminant check proved (CVC5: 1 VC)
+allocator_with_promotion.adb:40:20: info: dynamic accessibility check proved (Trivial)
+allocator_with_promotion.adb:40:20: info: precondition proved (CVC5: 1 VC)
+allocator_with_promotion.adb:40:41: info: discriminant check proved (CVC5: 1 VC)
+allocator_with_promotion.adb:45:18: info: precondition proved (CVC5: 1 VC)
+allocator_with_promotion.adb:45:39: info: discriminant check proved (CVC5: 1 VC)
+allocator_with_promotion.adb:46:24: info: dynamic accessibility check proved (Trivial)
+allocator_with_promotion.adb:55:20: info: dynamic accessibility check proved (Trivial)
+allocator_with_promotion.adb:55:20: info: precondition proved (CVC5: 1 VC)
+allocator_with_promotion.adb:55:32: info: discriminant check proved (CVC5: 1 VC)
+allocator_with_promotion.adb:60:18: info: precondition proved (CVC5: 1 VC)
+allocator_with_promotion.adb:60:30: info: discriminant check proved (CVC5: 1 VC)
+allocator_with_promotion.adb:61:24: info: dynamic accessibility check proved (Trivial)
+allocator_with_promotion.adb:69:13: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+allocator_with_promotion.adb:69:13: info: initialization of "Ptr" proved
+allocator_with_promotion.adb:71:17: info: absence of resource or memory leak proved (CVC5: 1 VC)
+allocator_with_promotion.adb:71:20: info: precondition proved (CVC5: 1 VC)
+allocator_with_promotion.adb:76:13: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+allocator_with_promotion.adb:76:13: info: initialization of "Ptr" proved
+allocator_with_promotion.adb:78:17: info: absence of resource or memory leak proved (CVC5: 1 VC)
+allocator_with_promotion.adb:78:20: info: precondition proved (CVC5: 1 VC)
+allocator_with_promotion.adb:92:26: info: discriminant check proved (CVC5: 1 VC)
+allocator_with_promotion.adb:95:26: info: discriminant check proved (CVC5: 1 VC)
+allocator_with_promotion.ads:14:38: info: default initial condition proved (CVC5: 2 VC)
+allocator_with_promotion.ads:16:13: info: implicit aspect Always_Terminates on "Is_Null" has been proved, subprogram will terminate
+allocator_with_promotion.ads:18:13: info: implicit aspect Always_Terminates on "Is_Promoted" has been proved, subprogram will terminate
+allocator_with_promotion.ads:19:16: info: data dependencies proved
+allocator_with_promotion.ads:21:13: info: implicit aspect Always_Terminates on "Deref" has been proved, subprogram will terminate
+allocator_with_promotion.ads:22:09: info: data dependencies proved
+allocator_with_promotion.ads:24:13: info: implicit aspect Always_Terminates on "Constant_Reference" has been proved, subprogram will terminate
+allocator_with_promotion.ads:27:06: info: data dependencies proved
+allocator_with_promotion.ads:29:16: info: postcondition proved (CVC5: 1 VC)
+allocator_with_promotion.ads:29:48: info: precondition proved (CVC5: 1 VC)
+allocator_with_promotion.ads:31:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
+allocator_with_promotion.ads:34:08: info: dynamic accessibility check proved (Trivial)
+allocator_with_promotion.ads:37:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
+allocator_with_promotion.ads:41:13: info: implicit aspect Always_Terminates on "Reference" has been proved, subprogram will terminate
+allocator_with_promotion.ads:44:06: info: data dependencies proved
+allocator_with_promotion.ads:47:08: info: postcondition proved (CVC5: 2 VC)
+allocator_with_promotion.ads:48:43: info: pointer dereference check proved (CVC5: 1 VC)
+allocator_with_promotion.ads:48:49: info: precondition proved (CVC5: 1 VC)
+allocator_with_promotion.ads:53:06: info: data dependencies proved
+allocator_with_promotion.ads:55:36: info: predicate check proved (Trivial: 1 VC)
+allocator_with_promotion.ads:55:48: info: predicate check proved (Trivial: 1 VC)
+allocator_with_promotion.ads:55:65: info: predicate check proved (Trivial: 1 VC)
+allocator_with_promotion.ads:55:77: info: predicate check proved (Trivial: 1 VC)
+allocator_with_promotion.ads:57:08: info: postcondition proved (CVC5: 2 VC)
+allocator_with_promotion.ads:57:47: info: precondition proved (CVC5: 1 VC)
+allocator_with_promotion.ads:58:06: warning: contract cases do not mention function result [-gnatw.t]
+allocator_with_promotion.ads:59:09: info: contract case proved (CVC5: 2 VC; Trivial: 1 VC)
+allocator_with_promotion.ads:59:21: info: predicate check proved (Trivial: 1 VC)
+allocator_with_promotion.ads:59:33: info: predicate check proved (Trivial: 1 VC)
+allocator_with_promotion.ads:60:23: info: predicate check proved (Trivial: 1 VC)
+allocator_with_promotion.ads:60:35: info: predicate check proved (Trivial: 1 VC)
+allocator_with_promotion.ads:61:27: info: predicate check proved (Trivial: 1 VC)
+allocator_with_promotion.ads:61:60: info: predicate check proved (Trivial: 1 VC)
+allocator_with_promotion.ads:61:67: info: predicate check proved (Trivial: 1 VC)
+allocator_with_promotion.ads:62:09: info: contract case proved (CVC5: 2 VC; Trivial: 1 VC)
+allocator_with_promotion.ads:63:23: info: predicate check proved (Trivial: 1 VC)
+allocator_with_promotion.ads:63:56: info: predicate check proved (Trivial: 1 VC)
+allocator_with_promotion.ads:63:63: info: predicate check proved (Trivial: 1 VC)
+allocator_with_promotion.ads:64:27: info: predicate check proved (Trivial: 1 VC)
+allocator_with_promotion.ads:64:60: info: predicate check proved (Trivial: 1 VC)
+allocator_with_promotion.ads:68:06: info: data dependencies proved
+allocator_with_promotion.ads:70:24: info: postcondition proved (CVC5: 2 VC)
+allocator_with_promotion.ads:71:06: info: disjoint contract or exit cases proved (CVC5: 1 VC)
+allocator_with_promotion.ads:72:09: info: contract case proved (CVC5: 2 VC; Trivial: 1 VC)
+allocator_with_promotion.ads:73:23: info: predicate check proved (Trivial: 1 VC)
+allocator_with_promotion.ads:73:56: info: predicate check proved (Trivial: 1 VC)
+allocator_with_promotion.ads:74:27: info: predicate check proved (Trivial: 1 VC)
+allocator_with_promotion.ads:74:60: info: predicate check proved (Trivial: 1 VC)
+allocator_with_promotion.ads:75:09: info: contract case proved (CVC5: 2 VC; Trivial: 1 VC)
+allocator_with_promotion.ads:76:23: info: predicate check proved (Trivial: 1 VC)
+allocator_with_promotion.ads:76:56: info: predicate check proved (Trivial: 1 VC)
+allocator_with_promotion.ads:77:27: info: predicate check proved (Trivial: 1 VC)
+allocator_with_promotion.ads:77:60: info: predicate check proved (Trivial: 1 VC)
+allocator_with_promotion.ads:77:67: info: predicate check proved (Trivial: 1 VC)
+allocator_with_promotion.ads:78:09: info: contract case proved (CVC5: 2 VC; Trivial: 1 VC)
+allocator_with_promotion.ads:79:23: info: predicate check proved (Trivial: 1 VC)
+allocator_with_promotion.ads:79:56: info: predicate check proved (Trivial: 1 VC)
+allocator_with_promotion.ads:79:63: info: predicate check proved (Trivial: 1 VC)
+allocator_with_promotion.ads:80:27: info: predicate check proved (Trivial: 1 VC)
+allocator_with_promotion.ads:80:60: info: predicate check proved (Trivial: 1 VC)
+allocator_with_promotion.ads:100:37: info: discriminant check proved (CVC5: 1 VC)
+allocator_with_promotion.ads:101:37: info: discriminant check proved (CVC5: 1 VC)
+typed_allocator.adb:8:04: warning: imprecise handling of Unchecked_Conversion (component offset not known) [imprecise-unchecked-conversion]
+typed_allocator.adb:8:04: warning: imprecise handling of Unchecked_Conversion (component offset not known) [imprecise-unchecked-conversion]
+typed_allocator.adb:8:04: warning: in instantiation at spark-conversions-access_conversions.ads:159
+typed_allocator.adb:8:04: warning: in instantiation at spark-conversions-access_conversions.ads:169
+typed_allocator.adb:13:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
+typed_allocator.adb:13:13: info: types in unchecked conversion have the same size (Trivial)
+typed_allocator.adb:13:13: warning: imprecise handling of Unchecked_Conversion (component offset not known) [imprecise-unchecked-conversion]
+typed_allocator.adb:14:32: info: type is suitable as source for unchecked conversion (Trivial)
+typed_allocator.adb:14:45: info: type is suitable for unchecked conversion (Trivial)
+typed_allocator.adb:20:08: info: validity check proved (CVC5: 1 VC)
+typed_allocator.adb:20:28: info: precondition proved (CVC5: 1 VC)
+typed_allocator.adb:26:34: info: dynamic accessibility check proved (Trivial)
+typed_allocator.adb:26:34: info: precondition proved (CVC5: 1 VC)
+typed_allocator.adb:27:12: info: precondition proved (CVC5: 1 VC)
+typed_allocator.adb:33:39: info: dynamic accessibility check proved (Trivial)
+typed_allocator.adb:33:39: info: precondition proved (CVC5: 1 VC)
+typed_allocator.adb:33:56: info: precondition proved (CVC5: 1 VC)
+typed_allocator.adb:33:67: info: in possible reconstructed values at the end of the borrow at typed_allocator.ads:51
+typed_allocator.adb:33:67: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+typed_allocator.adb:37:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+typed_allocator.adb:37:07: info: initialization of "Ptr" proved
+typed_allocator.adb:39:22: info: assertion proved (CVC5: 1 VC)
+typed_allocator.adb:39:22: info: validity check proved (CVC5: 1 VC)
+typed_allocator.adb:40:11: info: absence of resource or memory leak proved (CVC5: 1 VC)
+typed_allocator.adb:40:26: info: precondition proved (CVC5: 1 VC)
+typed_allocator.adb:41:14: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+typed_allocator.adb:46:20: info: in value of subprogram parameter after the call at typed_allocator.adb:46
+typed_allocator.adb:46:20: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+typed_allocator.ads:26:09: info: in default value of private type at typed_allocator.ads:26
+typed_allocator.ads:26:09: info: predicate check proved on default value (CVC5: 1 VC; Trivial: 1 VC)
+typed_allocator.ads:27:38: info: default initial condition proved (CVC5: 1 VC)
+typed_allocator.ads:29:13: info: implicit aspect Always_Terminates on "Is_Null" has been proved, subprogram will terminate
+typed_allocator.ads:30:09: info: data dependencies proved
+typed_allocator.ads:32:13: info: implicit aspect Always_Terminates on "Deref" has been proved, subprogram will terminate
+typed_allocator.ads:33:09: info: data dependencies proved
+typed_allocator.ads:35:13: info: implicit aspect Always_Terminates on "Constant_Reference" has been proved, subprogram will terminate
+typed_allocator.ads:38:06: info: data dependencies proved
+typed_allocator.ads:40:16: info: postcondition proved (CVC5: 1 VC)
+typed_allocator.ads:40:42: info: pointer dereference check proved (CVC5: 1 VC)
+typed_allocator.ads:40:48: info: precondition proved (CVC5: 1 VC)
+typed_allocator.ads:42:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
+typed_allocator.ads:44:08: info: dynamic accessibility check proved (Trivial)
+typed_allocator.ads:47:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
+typed_allocator.ads:51:13: info: implicit aspect Always_Terminates on "Reference" has been proved, subprogram will terminate
+typed_allocator.ads:54:06: info: data dependencies proved
+typed_allocator.ads:57:08: info: postcondition proved (CVC5: 2 VC)
+typed_allocator.ads:58:43: info: pointer dereference check proved (CVC5: 1 VC)
+typed_allocator.ads:58:49: info: precondition proved (CVC5: 1 VC)
+typed_allocator.ads:63:06: info: data dependencies proved
+typed_allocator.ads:64:16: info: predicate check proved (Trivial: 1 VC)
+typed_allocator.ads:64:27: info: predicate check proved (Trivial: 1 VC)
+typed_allocator.ads:66:08: info: postcondition proved (CVC5: 3 VC)
+typed_allocator.ads:66:08: info: predicate check proved (Trivial: 1 VC)
+typed_allocator.ads:66:27: info: predicate check proved (Trivial: 1 VC)
+typed_allocator.ads:66:34: info: predicate check proved (Trivial: 1 VC)
+typed_allocator.ads:68:17: info: precondition proved (CVC5: 1 VC)
+typed_allocator.ads:72:06: info: data dependencies proved
+typed_allocator.ads:73:24: info: postcondition proved (CVC5: 1 VC)
+typed_allocator.ads:75:09: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
+typed_allocator.ads:75:24: info: predicate check proved (Trivial: 1 VC)
+typed_allocator.ads:75:43: info: predicate check proved (Trivial: 1 VC)
+typed_allocator.ads:76:09: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
+typed_allocator.ads:76:24: info: predicate check proved (Trivial: 1 VC)
+typed_allocator.ads:76:43: info: predicate check proved (Trivial: 1 VC)
+typed_allocator.ads:76:50: info: predicate check proved (Trivial: 1 VC)
+typed_allocator.ads:80:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
+typed_allocator.ads:80:13: info: types in unchecked conversion have the same size (Trivial)
+typed_allocator.ads:80:13: warning: imprecise handling of Unchecked_Conversion (component offset not known) [imprecise-unchecked-conversion]
+typed_allocator.ads:82:09: info: type is suitable as source for unchecked conversion (Trivial)
+typed_allocator.ads:83:09: info: type is suitable for unchecked conversion (Trivial)
+typed_allocator.ads:91:34: info: precondition proved (CVC5: 1 VC)
+types.ads:24:13: info: implicit aspect Always_Terminates on "Byte_Array_4_Eq" has been proved, subprogram will terminate
+types.ads:26:09: info: Inline_For_Proof or Logical_Equal annotation proved (CVC5: 1 VC)
+types.ads:32:13: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
+types.ads:34:09: info: Inline_For_Proof or Logical_Equal annotation proved (CVC5: 2 VC)
+types.ads:38:04: info: add a contract to analyze it separately from calling contexts
+types.ads:38:04: info: add a contract to analyze it separately from calling contexts
+types.ads:38:04: info: analyzing call to "Prove_Expansion" in context
+types.ads:38:04: info: analyzing call to "Prove_Preserved_Free_List" in context
+types.ads:38:04: info: analyzing call to "Prove_Preserved_Free_List" in context
+types.ads:38:04: info: in instantiation at allocator-base.adb:214
+types.ads:38:04: info: in instantiation at allocator-base.adb:220
+types.ads:38:04: info: in instantiation at allocator-base.adb:263
+types.ads:38:04: info: in instantiation at allocator-base.adb:276
+types.ads:38:04: info: in instantiation at allocator-base.adb:87
+types.ads:38:04: info: local subprogram "Prove_Expansion" only analyzed in the context of calls [info-unrolling-inlining]
+types.ads:38:04: info: local subprogram "Prove_Preserved_Free_List" only analyzed in the context of calls [info-unrolling-inlining]
+types.ads:38:04: warning: "All_From" is recursive; its body and contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
+types.ads:38:04: warning: "Init_Memory_Type" is handled as if it was annotated with Relaxed_Initialization as all its components are annotated that way [component-relaxed-init]
+types.ads:38:04: warning: "Memory_Type" is handled as if it was annotated with Relaxed_Initialization as all its components are annotated that way [component-relaxed-init]
+types.ads:38:04: warning: consider annotating "Memory_Type_Base" with Relaxed_Initialization
+types.ads:38:04: warning: consider annotating "Memory_Type_Base" with Relaxed_Initialization
+types.ads:38:04: warning: imprecise handling of Unchecked_Conversion (component offset not known) [imprecise-unchecked-conversion]
+types.ads:38:04: warning: imprecise handling of Unchecked_Conversion (component offset not known) [imprecise-unchecked-conversion]
+types.ads:38:04: warning: in instantiation at allocator-base.adb:25
+types.ads:38:04: warning: in instantiation at allocator-base.adb:25
+types.ads:38:04: warning: in instantiation at allocator-base.adb:25
+types.ads:38:04: warning: in instantiation at allocator-base.adb:25
+types.ads:38:04: warning: in instantiation at allocator-base.adb:25
+types.ads:38:04: warning: in instantiation at allocator-base.adb:25
+types.ads:38:04: warning: in instantiation at allocator-base.adb:25
+types.ads:38:04: warning: in instantiation at allocator-base.adb:25
+types.ads:38:04: warning: in instantiation at allocator-base.adb:25
+types.ads:38:04: warning: in instantiation at allocator-base.adb:25
+types.ads:38:04: warning: in instantiation at allocator-base.adb:25
+types.ads:38:04: warning: in instantiation at allocator-base.adb:25
+types.ads:38:04: warning: in instantiation at allocator-base.adb:25
+types.ads:38:04: warning: in instantiation at allocator-base.adb:37
+types.ads:38:04: warning: in instantiation at allocator-base.ads:55
+types.ads:38:04: warning: in instantiation at allocator-base.ads:55
+types.ads:38:04: warning: in instantiation at allocator-base.ads:60
+types.ads:38:04: warning: in instantiation at allocator-base.ads:73
+types.ads:38:04: warning: in instantiation at spark-higher_order-reachability.ads:117
+types.ads:38:04: warning: in instantiation at spark-higher_order-reachability.ads:138
+types.ads:38:04: warning: in instantiation at spark-higher_order-reachability.ads:163
+types.ads:38:04: warning: in instantiation at spark-higher_order-reachability.ads:167
+types.ads:38:04: warning: in instantiation at spark-higher_order-reachability.ads:180
+types.ads:38:04: warning: in instantiation at spark-higher_order-reachability.ads:184
+types.ads:38:04: warning: in instantiation at spark-higher_order-reachability.ads:20
+types.ads:38:04: warning: in instantiation at spark-higher_order-reachability.ads:206
+types.ads:38:04: warning: in instantiation at spark-higher_order-reachability.ads:210
+types.ads:38:04: warning: in instantiation at spark-higher_order-reachability.ads:68
+types.ads:38:04: warning: in instantiation at spark-higher_order-reachability.ads:73
+types.ads:38:04: warning: in instantiation at spark-higher_order-reachability.ads:82
+types.ads:38:04: warning: in instantiation at spark-higher_order-reachability.ads:99
+types.ads:38:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Is_Acyclic_Def" declared at spark-higher_order-reachability.ads:73, instance at allocator-base.adb:25, instance at line 38
+types.ads:38:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Is_Acyclic_Def" declared at spark-higher_order-reachability.ads:73, instance at allocator-base.adb:25, instance at line 38
+types.ads:38:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Model_Def" declared at spark-higher_order-reachability.ads:138, instance at allocator-base.adb:25, instance at line 38
+types.ads:38:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Model_Def" declared at spark-higher_order-reachability.ads:138, instance at allocator-base.adb:25, instance at line 38
+types.ads:38:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Reachable_Def" declared at spark-higher_order-reachability.ads:99, instance at allocator-base.adb:25, instance at line 38
+types.ads:38:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Reachable_Def" declared at spark-higher_order-reachability.ads:99, instance at allocator-base.adb:25, instance at line 38
+types.ads:38:04: warning: potentially missing automatically instanciated lemma "Lemma_Is_Acyclic_Def" declared at spark-higher_order-reachability.ads:167, instance at allocator-base.adb:25, instance at line 38
+types.ads:38:04: warning: potentially missing automatically instanciated lemma "Lemma_Is_Acyclic_Def" declared at spark-higher_order-reachability.ads:167, instance at allocator-base.adb:25, instance at line 38
+types.ads:38:04: warning: potentially missing automatically instanciated lemma "Lemma_Model_Def" declared at spark-higher_order-reachability.ads:210, instance at allocator-base.adb:25, instance at line 38
+types.ads:38:04: warning: potentially missing automatically instanciated lemma "Lemma_Model_Def" declared at spark-higher_order-reachability.ads:210, instance at allocator-base.adb:25, instance at line 38
+types.ads:38:04: warning: potentially missing automatically instanciated lemma "Lemma_Reachable_Def" declared at spark-higher_order-reachability.ads:184, instance at allocator-base.adb:25, instance at line 38
+types.ads:38:04: warning: potentially missing automatically instanciated lemma "Lemma_Reachable_Def" declared at spark-higher_order-reachability.ads:184, instance at allocator-base.adb:25, instance at line 38
+types.ads:38:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+types.ads:38:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+types.ads:38:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+types.ads:38:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+types.ads:38:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+types.ads:38:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+types.ads:38:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+types.ads:38:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+types.ads:38:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+types.ads:38:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+types.ads:38:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+types.ads:38:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+types.ads:38:04: warning: the result of "To_Object" cannot have invalid values [useless-potentially-invalid-func-result]
+types.ads:55:13: info: implicit aspect Always_Terminates on "Byte_Array_8_Eq" has been proved, subprogram will terminate
+types.ads:57:09: info: Inline_For_Proof or Logical_Equal annotation proved (CVC5: 1 VC)
+types.ads:63:13: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
+types.ads:65:09: info: Inline_For_Proof or Logical_Equal annotation proved (CVC5: 2 VC)
+types.ads:69:04: info: add a contract to analyze it separately from calling contexts
+types.ads:69:04: info: add a contract to analyze it separately from calling contexts
+types.ads:69:04: info: analyzing call to "Prove_Expansion" in context
+types.ads:69:04: info: analyzing call to "Prove_Preserved_Free_List" in context
+types.ads:69:04: info: analyzing call to "Prove_Preserved_Free_List" in context
+types.ads:69:04: info: in instantiation at allocator-base.adb:214
+types.ads:69:04: info: in instantiation at allocator-base.adb:220
+types.ads:69:04: info: in instantiation at allocator-base.adb:263
+types.ads:69:04: info: in instantiation at allocator-base.adb:276
+types.ads:69:04: info: in instantiation at allocator-base.adb:87
+types.ads:69:04: info: local subprogram "Prove_Expansion" only analyzed in the context of calls [info-unrolling-inlining]
+types.ads:69:04: info: local subprogram "Prove_Preserved_Free_List" only analyzed in the context of calls [info-unrolling-inlining]
+types.ads:69:04: warning: "All_From" is recursive; its body and contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
+types.ads:69:04: warning: "Init_Memory_Type" is handled as if it was annotated with Relaxed_Initialization as all its components are annotated that way [component-relaxed-init]
+types.ads:69:04: warning: "Memory_Type" is handled as if it was annotated with Relaxed_Initialization as all its components are annotated that way [component-relaxed-init]
+types.ads:69:04: warning: consider annotating "Memory_Type_Base" with Relaxed_Initialization
+types.ads:69:04: warning: consider annotating "Memory_Type_Base" with Relaxed_Initialization
+types.ads:69:04: warning: imprecise handling of Unchecked_Conversion (component offset not known) [imprecise-unchecked-conversion]
+types.ads:69:04: warning: imprecise handling of Unchecked_Conversion (component offset not known) [imprecise-unchecked-conversion]
+types.ads:69:04: warning: in instantiation at allocator-base.adb:25
+types.ads:69:04: warning: in instantiation at allocator-base.adb:25
+types.ads:69:04: warning: in instantiation at allocator-base.adb:25
+types.ads:69:04: warning: in instantiation at allocator-base.adb:25
+types.ads:69:04: warning: in instantiation at allocator-base.adb:25
+types.ads:69:04: warning: in instantiation at allocator-base.adb:25
+types.ads:69:04: warning: in instantiation at allocator-base.adb:25
+types.ads:69:04: warning: in instantiation at allocator-base.adb:25
+types.ads:69:04: warning: in instantiation at allocator-base.adb:25
+types.ads:69:04: warning: in instantiation at allocator-base.adb:25
+types.ads:69:04: warning: in instantiation at allocator-base.adb:25
+types.ads:69:04: warning: in instantiation at allocator-base.adb:25
+types.ads:69:04: warning: in instantiation at allocator-base.adb:25
+types.ads:69:04: warning: in instantiation at allocator-base.adb:37
+types.ads:69:04: warning: in instantiation at allocator-base.ads:55
+types.ads:69:04: warning: in instantiation at allocator-base.ads:55
+types.ads:69:04: warning: in instantiation at allocator-base.ads:60
+types.ads:69:04: warning: in instantiation at allocator-base.ads:73
+types.ads:69:04: warning: in instantiation at spark-higher_order-reachability.ads:117
+types.ads:69:04: warning: in instantiation at spark-higher_order-reachability.ads:138
+types.ads:69:04: warning: in instantiation at spark-higher_order-reachability.ads:163
+types.ads:69:04: warning: in instantiation at spark-higher_order-reachability.ads:167
+types.ads:69:04: warning: in instantiation at spark-higher_order-reachability.ads:180
+types.ads:69:04: warning: in instantiation at spark-higher_order-reachability.ads:184
+types.ads:69:04: warning: in instantiation at spark-higher_order-reachability.ads:20
+types.ads:69:04: warning: in instantiation at spark-higher_order-reachability.ads:206
+types.ads:69:04: warning: in instantiation at spark-higher_order-reachability.ads:210
+types.ads:69:04: warning: in instantiation at spark-higher_order-reachability.ads:68
+types.ads:69:04: warning: in instantiation at spark-higher_order-reachability.ads:73
+types.ads:69:04: warning: in instantiation at spark-higher_order-reachability.ads:82
+types.ads:69:04: warning: in instantiation at spark-higher_order-reachability.ads:99
+types.ads:69:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Is_Acyclic_Def" declared at spark-higher_order-reachability.ads:73, instance at allocator-base.adb:25, instance at line 69
+types.ads:69:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Is_Acyclic_Def" declared at spark-higher_order-reachability.ads:73, instance at allocator-base.adb:25, instance at line 69
+types.ads:69:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Model_Def" declared at spark-higher_order-reachability.ads:138, instance at allocator-base.adb:25, instance at line 69
+types.ads:69:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Model_Def" declared at spark-higher_order-reachability.ads:138, instance at allocator-base.adb:25, instance at line 69
+types.ads:69:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Reachable_Def" declared at spark-higher_order-reachability.ads:99, instance at allocator-base.adb:25, instance at line 69
+types.ads:69:04: warning: potentially missing automatically instanciated lemma "Lemma_Automatically_Instantiate_Reachable_Def" declared at spark-higher_order-reachability.ads:99, instance at allocator-base.adb:25, instance at line 69
+types.ads:69:04: warning: potentially missing automatically instanciated lemma "Lemma_Is_Acyclic_Def" declared at spark-higher_order-reachability.ads:167, instance at allocator-base.adb:25, instance at line 69
+types.ads:69:04: warning: potentially missing automatically instanciated lemma "Lemma_Is_Acyclic_Def" declared at spark-higher_order-reachability.ads:167, instance at allocator-base.adb:25, instance at line 69
+types.ads:69:04: warning: potentially missing automatically instanciated lemma "Lemma_Model_Def" declared at spark-higher_order-reachability.ads:210, instance at allocator-base.adb:25, instance at line 69
+types.ads:69:04: warning: potentially missing automatically instanciated lemma "Lemma_Model_Def" declared at spark-higher_order-reachability.ads:210, instance at allocator-base.adb:25, instance at line 69
+types.ads:69:04: warning: potentially missing automatically instanciated lemma "Lemma_Reachable_Def" declared at spark-higher_order-reachability.ads:184, instance at allocator-base.adb:25, instance at line 69
+types.ads:69:04: warning: potentially missing automatically instanciated lemma "Lemma_Reachable_Def" declared at spark-higher_order-reachability.ads:184, instance at allocator-base.adb:25, instance at line 69
+types.ads:69:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+types.ads:69:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+types.ads:69:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+types.ads:69:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+types.ads:69:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+types.ads:69:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+types.ads:69:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+types.ads:69:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+types.ads:69:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+types.ads:69:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+types.ads:69:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+types.ads:69:04: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
+types.ads:69:04: warning: the result of "To_Object" cannot have invalid values [useless-potentially-invalid-func-result]
