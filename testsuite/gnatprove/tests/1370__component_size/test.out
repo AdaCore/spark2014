@@ -1,0 +1,9 @@
+uc_crash.ads:14:04: info: range check proved (CVC5: 2 VC)
+uc_crash.ads:15:40: info: range check proved (CVC5: 2 VC)
+uc_crash.ads:15:53: info: division check proved (CVC5: 1 VC)
+uc_crash.ads:27:13: high: alignment of source type of unchecked conversion might not be an integral multiple of alignment of target type [possible explanation: alignment of type "Padded" (which is 1) must be a multiple of the alignment of type "Stor" (which is 8)]
+uc_crash.ads:27:13: info: types in unchecked conversion have the same size (Trivial)
+uc_crash.ads:27:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as source for unchecked conversion) [imprecise-unchecked-conversion]
+uc_crash.ads:27:53: high: type is unsuitable as a source for unchecked conversion [possible explanation: ; type "Padded" might have unused bits that are not modelled in SPARK]
+uc_crash.ads:27:61: info: type is suitable for unchecked conversion (Trivial)
+uc_crash.ads:29:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
