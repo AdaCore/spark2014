@@ -6,8 +6,6 @@ import subprocess
 import shutil
 import tempfile
 
-sparklib_project_path_env = "SPARKLIB_PROJECT_PATH"
-
 
 def run_command(args):
     subprocess.run(args, check=True)
@@ -62,15 +60,9 @@ def report_project(covtempdir):
         covtempdir, "sparklib_bodymode", "lib", "gnat", "sparklib_internal.gpr"
     )
     if os.path.isfile(shared_project):
-        return shared_project, "True"
+        return shared_project
 
-    project_root = os.environ.get(sparklib_project_path_env)
-    if project_root:
-        source_project = os.path.join(project_root, "sparklib_internal.gpr")
-        if os.path.isfile(source_project):
-            return source_project, "False"
-
-    return "../../include/sparklib_internal.gpr", "False"
+    raise RuntimeError(f"Missing generated SPARKlib bodymode project: {shared_project}")
 
 
 def produce_report(covlibdir, covtempdir):
@@ -78,8 +70,7 @@ def produce_report(covlibdir, covtempdir):
     trf = tracefiles(covtempdir)
     sid = sidfiles(covtempdir)
     try:
-        project_file, sparklib_installed = report_project(covtempdir)
-        os.environ["SPARKLIB_INSTALLED"] = sparklib_installed
+        project_file = report_project(covtempdir)
         args = [
             "gnatcov",
             "coverage",

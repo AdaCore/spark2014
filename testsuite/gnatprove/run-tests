@@ -700,6 +700,7 @@ class SPARKTestsuite(Testsuite):
             self.working_dir, "sparklib_bodymode"
         )
         project_path = prepare_sparklib_bodymode(self.shared_sparklib_bodymode_dir)
+        # Body-mode tests consume this shared copy through create_sparklib.
         os.environ[sparklib_bodymode_path_env] = project_path
 
     @property
