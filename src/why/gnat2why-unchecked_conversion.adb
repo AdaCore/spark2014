@@ -1364,7 +1364,8 @@ package body Gnat2Why.Unchecked_Conversion is
                   if not Compile_Time_Known_Value (Low_Bound (Rng))
                     or else not Compile_Time_Known_Value (High_Bound (Rng))
                   then
-                     raise Program_Error;
+                     Result := False;
+                     return;
                   end if;
 
                   Size :=
