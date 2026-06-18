@@ -113,7 +113,7 @@
           </goal>
           <goal name="def'vc.19" proved="true">
             <proof prover="1">
-              <result status="valid" steps="16755" />
+              <result status="valid" steps="16753" />
             </proof>
           </goal>
         </transf>

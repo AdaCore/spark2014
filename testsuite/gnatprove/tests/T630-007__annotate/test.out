@@ -2,7 +2,7 @@ bad_annotate.adb:6:11: error: expected a function
 bad_annotate.adb:6:11: error: wrong entity argument for aspect "Annotate => (GNATprove, Inline_For_Proof[, ...])"
 bad_annotate.adb:7:14: error: expected a function
 bad_annotate.adb:7:14: error: wrong entity argument for aspect "Annotate => (GNATprove, Iterable_For_Proof[, ...])"
-bad_annotate.adb:10:55: error: expected "Model" or "Contains"
+bad_annotate.adb:10:55: error: expected "Model", "Contains", or "Element"
 bad_annotate.adb:10:55: error: unexpected third argument for aspect "Annotate => (GNATprove, Iterable_For_Proof[, ...])"
 bad_annotate.adb:11:13: error: expected 1 parameter
 bad_annotate.adb:11:13: error: wrong number of parameters for a subprogram with the "Iterable_For_Proof" annotation
@@ -26,6 +26,7 @@ bad_annotate.adb:78:50: error: last argument of "pragma Annotate (GNATprove, Inl
 bad_annotate.adb:79:48: error: last argument of "pragma Annotate (GNATprove, No_Wrap_Around[, ...])" must be an entity
 bad_annotate.adb:80:04: error: expected at least 2 arguments
 bad_annotate.adb:80:04: error: wrong number of arguments in "pragma Annotate (GNATprove, ...)"
+bad_annotate.adb:83:63: error: third argument of aspect "Annotate => (GNATprove, Iterable_For_Proof[, ...])" must be a string
 system.ads:1:01: error: "My_Int" is not allowed in SPARK (due to incorrect use of "No_Wrap_Around" annotation)
 system.ads:1:01: error: violation of aspect SPARK_Mode at bad_annotate.adb:4
 gnatprove: error during flow analysis and proof

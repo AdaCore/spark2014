@@ -1,16 +1,23 @@
-illegal.adb:13:27: error: function associated to aspect Iterable with dependency on globals is not allowed in SPARK (SPARK RM 5.5.2(12))
+illegal.adb:13:27: error: function associated to aspect Iterable with dependency on globals is not allowed in SPARK (SPARK RM 5.5.2(12)) [E0030]
+illegal.adb:13:27: error: launch "gnatprove --explain=E0030" for more information
 illegal.adb:13:27: error: violation of aspect SPARK_Mode at line 2
-illegal.adb:14:27: error: function associated to aspect Iterable with dependency on globals is not allowed in SPARK (SPARK RM 5.5.2(12))
+illegal.adb:14:27: error: function associated to aspect Iterable with dependency on globals is not allowed in SPARK (SPARK RM 5.5.2(12)) [E0030]
+illegal.adb:14:27: error: launch "gnatprove --explain=E0030" for more information
 illegal.adb:14:27: error: violation of aspect SPARK_Mode at line 2
-illegal.adb:15:27: error: function associated to aspect Iterable with dependency on globals is not allowed in SPARK (SPARK RM 5.5.2(12))
+illegal.adb:15:27: error: function associated to aspect Iterable with dependency on globals is not allowed in SPARK (SPARK RM 5.5.2(12)) [E0030]
+illegal.adb:15:27: error: launch "gnatprove --explain=E0030" for more information
 illegal.adb:15:27: error: violation of aspect SPARK_Mode at line 2
-illegal.adb:16:27: error: function associated to aspect Iterable with dependency on globals is not allowed in SPARK (SPARK RM 5.5.2(12))
+illegal.adb:16:27: error: function associated to aspect Iterable with dependency on globals is not allowed in SPARK (SPARK RM 5.5.2(12)) [E0030]
+illegal.adb:16:27: error: launch "gnatprove --explain=E0030" for more information
 illegal.adb:16:27: error: violation of aspect SPARK_Mode at line 2
-illegal.adb:17:27: error: function associated to aspect Iterable with dependency on globals is not allowed in SPARK (SPARK RM 5.5.2(12))
+illegal.adb:17:27: error: function associated to aspect Iterable with dependency on globals is not allowed in SPARK (SPARK RM 5.5.2(12)) [E0030]
+illegal.adb:17:27: error: launch "gnatprove --explain=E0030" for more information
 illegal.adb:17:27: error: violation of aspect SPARK_Mode at line 2
-illegal.adb:18:27: error: function associated to aspect Iterable with dependency on globals is not allowed in SPARK (SPARK RM 5.5.2(12))
+illegal.adb:18:27: error: function associated to aspect Iterable with dependency on globals is not allowed in SPARK (SPARK RM 5.5.2(12)) [E0030]
+illegal.adb:18:27: error: launch "gnatprove --explain=E0030" for more information
 illegal.adb:18:27: error: violation of aspect SPARK_Mode at line 2
-illegal.adb:39:15: error: Iterable aspect declared on the full view of a private type is not allowed in SPARK (SPARK RM 5.5.2(13))
+illegal.adb:39:15: error: Iterable aspect declared on the full view of a private type is not allowed in SPARK (SPARK RM 5.5.2(13)) [E0029]
+illegal.adb:39:15: error: launch "gnatprove --explain=E0029" for more information
 illegal.adb:39:15: error: violation of aspect SPARK_Mode at line 2
 illegal.adb:40:30: error: "First" is not allowed in SPARK (due to Iterable aspect declared on the full view of a private type)
 illegal.adb:40:30: error: violation of aspect SPARK_Mode at line 2
@@ -24,17 +31,23 @@ illegal.adb:45:25: error: "T" is not allowed in SPARK (due to Iterable aspect de
 illegal.adb:45:25: error: violation of aspect SPARK_Mode at line 2
 illegal.adb:46:32: error: "T" is not allowed in SPARK (due to Iterable aspect declared on the full view of a private type)
 illegal.adb:46:32: error: violation of aspect SPARK_Mode at line 2
-illegal.adb:92:30: error: function associated to aspect Iterable with controlling result is not allowed in SPARK (SPARK RM 5.5.2(12))
+illegal.adb:92:30: error: function associated to aspect Iterable with controlling result is not allowed in SPARK (SPARK RM 5.5.2(12)) [E0028]
+illegal.adb:92:30: error: launch "gnatprove --explain=E0028" for more information
 illegal.adb:92:30: error: violation of aspect SPARK_Mode at line 2
-illegal.adb:108:30: error: function associated to aspect Iterable with controlling result is not allowed in SPARK (SPARK RM 5.5.2(12))
+illegal.adb:108:30: error: function associated to aspect Iterable with controlling result is not allowed in SPARK (SPARK RM 5.5.2(12)) [E0028]
+illegal.adb:108:30: error: launch "gnatprove --explain=E0028" for more information
 illegal.adb:108:30: error: violation of aspect SPARK_Mode at line 2
-illegal.adb:109:30: error: function associated to aspect Iterable with controlling result is not allowed in SPARK (SPARK RM 5.5.2(12))
+illegal.adb:109:30: error: function associated to aspect Iterable with controlling result is not allowed in SPARK (SPARK RM 5.5.2(12)) [E0028]
+illegal.adb:109:30: error: launch "gnatprove --explain=E0028" for more information
 illegal.adb:109:30: error: violation of aspect SPARK_Mode at line 2
-illegal.adb:111:30: error: function associated to aspect Iterable with controlling result is not allowed in SPARK (SPARK RM 5.5.2(12))
+illegal.adb:111:30: error: function associated to aspect Iterable with controlling result is not allowed in SPARK (SPARK RM 5.5.2(12)) [E0028]
+illegal.adb:111:30: error: launch "gnatprove --explain=E0028" for more information
 illegal.adb:111:30: error: violation of aspect SPARK_Mode at line 2
-illegal.adb:112:30: error: function associated to aspect Iterable with controlling result is not allowed in SPARK (SPARK RM 5.5.2(12))
+illegal.adb:112:30: error: function associated to aspect Iterable with controlling result is not allowed in SPARK (SPARK RM 5.5.2(12)) [E0028]
+illegal.adb:112:30: error: launch "gnatprove --explain=E0028" for more information
 illegal.adb:112:30: error: violation of aspect SPARK_Mode at line 2
-illegal.adb:113:30: error: function associated to aspect Iterable with controlling result is not allowed in SPARK (SPARK RM 5.5.2(12))
+illegal.adb:113:30: error: function associated to aspect Iterable with controlling result is not allowed in SPARK (SPARK RM 5.5.2(12)) [E0028]
+illegal.adb:113:30: error: launch "gnatprove --explain=E0028" for more information
 illegal.adb:113:30: error: violation of aspect SPARK_Mode at line 2
 illegal.adb:154:27: error: "Element" is not allowed in SPARK (due to incorrect use of "Iterable_For_Proof" annotation)
 illegal.adb:154:27: error: violation of aspect SPARK_Mode at line 2

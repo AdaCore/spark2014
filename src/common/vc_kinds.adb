@@ -200,7 +200,8 @@ package body VC_Kinds is
               | VC_Exceptional_Case
               | VC_Exit_Case
               | VC_Program_Exit_Post
-              | VC_Contract_Case                                    => "682",
+              | VC_Contract_Case
+              | VC_Modifies                                         => "682",
 
            --  CWE-843 Access of Resource Using Incompatible Type ('Type
            --  Confusion')
@@ -244,6 +245,7 @@ package body VC_Kinds is
               | VC_Reclamation_Check
               | VC_Feasible_Post
               | VC_Inline_Check
+              | VC_Iterable_Check
               | VC_Container_Aggr_Check
               | VC_Weaker_Pre
               | VC_Trivial_Weaker_Pre
@@ -528,6 +530,11 @@ package body VC_Kinds is
               "Check that, for all cases of the exit cases, the exit "
               & "happens as specified.";
 
+         when VC_Modifies                         =>
+            return
+              "Check that all parts of outputs that are not mentioned in a "
+              & "modifies contract are preserved.";
+
          when VC_Loop_Invariant                   =>
             return
               "Check that the loop invariant evaluates to True on all "
@@ -576,6 +583,11 @@ package body VC_Kinds is
             return
               "Check that an Annotate pragma with the Inline_For_Proof "
               & "or Logical_Equal identifier is correct.";
+
+         when VC_Iterable_Check                   =>
+            return
+              "Check that an Annotate pragma with the Iterable_For_Proof "
+              & "identifier is correct.";
 
          when VC_Container_Aggr_Check             =>
             return
@@ -1457,6 +1469,12 @@ package body VC_Kinds is
          when Vio_Loop_Variant_Structural                  =>
            "structural loop variant which is not a variable of an anonymous "
            & "access-to-object type",
+         when Vio_Modifies_Not_Output                      =>
+           "clause of Modifies contract mentioning an object that is not an "
+           & "output of the subprogram",
+         when Vio_Modifies_Volatile                        =>
+           "effectively volatile output of the subprogram not mentioned "
+           & "entirely in Modifies contract",
          when Vio_Overlay_Constant_Not_Imported            =>
            "constant object with an address clause which is not imported",
          when Vio_Overlay_Mutable_Constant                 =>
@@ -1678,6 +1696,13 @@ package body VC_Kinds is
          when Vio_Overlay_Mutable_Constant          =>
            EC_Overlay_Mutable_Constant,
          when Vio_UC_From_Access                    => EC_UC_From_Access,
+         when Vio_Iterable_Controlling_Result       =>
+           EC_Iterable_Controlling_Result,
+         when Vio_Iterable_Full_View                => EC_Iterable_Full_View,
+         when Vio_Iterable_Globals                  => EC_Iterable_Globals,
+         when Vio_Iterable_Side_Effects             =>
+           EC_Iterable_Side_Effects,
+         when Vio_Iterable_Volatile                 => EC_Iterable_Volatile,
          when others                                => EC_None);
 
    ---------------
@@ -2505,6 +2530,8 @@ package body VC_Kinds is
            when VC_Feasible_Post                    => "feasible function",
            when VC_Inline_Check                     =>
              "Inline_For_Proof or Logical_Equal annotation",
+           when VC_Iterable_Check                   =>
+             "Iterable_For_Proof annotation",
            when VC_Container_Aggr_Check             =>
              "Container_Aggregates annotation",
            when VC_Reclamation_Check                =>
@@ -2522,6 +2549,7 @@ package body VC_Kinds is
            when VC_UC_Volatile                      =>
              "volatile overlay check",
            when VC_Validity_Check                   => "validity check",
+           when VC_Modifies                         => "modifies contract",
            when VC_Weaker_Pre                       =>
              "precondition weaker than class-wide precondition",
            when VC_Trivial_Weaker_Pre               =>
@@ -3605,6 +3633,10 @@ package body VC_Kinds is
            "iterator-specification",
          when Vio_Loop_Variant_Structural                  =>
            "loop-variant-structural",
+         when Vio_Modifies_Not_Output                      =>
+           "modifies-not-output",
+         when Vio_Modifies_Volatile                        =>
+           "modifies-volatile",
          when Vio_Overlay_Constant_Not_Imported            =>
            "overlay-constant-not-imported",
          when Vio_Overlay_Mutable_Constant                 =>
@@ -3876,6 +3908,12 @@ package body VC_Kinds is
          when Vio_Loop_Variant_Structural                            =>
            "structural loop variant which is not a variable of an"
            & " anonymous access-to-object type",
+         when Vio_Modifies_Not_Output                                =>
+           "clause of Modifies contract mentioning an object that is not an "
+           & "output of the subprogram",
+         when Vio_Modifies_Volatile                                  =>
+           "effectively volatile output of the subprogram not mentioned "
+           & "entirely in Modifies contract",
          when Vio_Overlay_Constant_Not_Imported                      =>
            "constant object with an address clause which is not imported",
          when Vio_Overlay_Mutable_Constant                           =>

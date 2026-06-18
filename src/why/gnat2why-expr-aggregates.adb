@@ -6285,20 +6285,6 @@ package body Gnat2Why.Expr.Aggregates is
       --  defined inside Access_Checks and Pred_Checks as the indices in the
       --  array accesses are modeled using an any expression.
 
-      function Transform_Choice
-        (Choice    : Node_Id;
-         Index     : W_Identifier_Id;
-         Value_Map : Ada_Node_To_Why_Id.Map) return W_Pred_Id;
-      --  Generates Index = Choice using the mappings in Value_Map to get the
-      --  Temporary identifier which should be used for Choice.
-
-      function Transform_Choices
-        (Choices   : Choice_Array;
-         Indices   : W_Identifier_Array;
-         Value_Map : Ada_Node_To_Why_Id.Map) return W_Pred_Id
-      with Pre => Choices'Length = Indices'Length;
-      --  Generate Indices (1) = Choices (1) /\ ...
-
       function Generate_Pred_For_Aggregate
         (Writes    : Write_Status;
          New_Name  : W_Term_Id;
@@ -6919,10 +6905,18 @@ package body Gnat2Why.Expr.Aggregates is
                --  Introduce bindings and checks for the index values
 
                for C_Value of Writes.Content_Status.Values loop
-                  if Present (C_Value.Choices (C_Value.Size)) then
+
+                  --  Multidimensional arrays are not allowed in deep
+                  --  delta aggregates.
+
+                  pragma Assert (C_Value.Choices (C_Value.Size).Dim = 1);
+
+                  if Present (C_Value.Choices (C_Value.Size).Indices (1)) then
                      declare
+                        Idx  : constant Node_Id :=
+                          C_Value.Choices (C_Value.Size).Indices (1);
                         W_Id : constant W_Identifier_Id :=
-                          Value_Map.Element (C_Value.Choices (C_Value.Size));
+                          Value_Map.Element (Idx);
                      begin
                         Context.Append
                           (Ref_Type'
@@ -6930,8 +6924,7 @@ package body Gnat2Why.Expr.Aggregates is
                               Name    => W_Id,
                               Value   =>
                                 Transform_Expr
-                                  (Expr          =>
-                                     C_Value.Choices (C_Value.Size),
+                                  (Expr          => Idx,
                                    Domain        => Domain,
                                    Params        => Params,
                                    Expected_Type => Get_Typ (W_Id))));
@@ -6942,8 +6935,7 @@ package body Gnat2Why.Expr.Aggregates is
                               New_Ignore
                                 (Prog =>
                                    Do_Index_Check
-                                     (Ada_Node =>
-                                        C_Value.Choices (C_Value.Size),
+                                     (Ada_Node => Idx,
                                       Arr_Expr => +Old_Name,
                                       W_Expr   => +W_Id,
                                       Dim      => 1)));
@@ -8227,9 +8219,15 @@ package body Gnat2Why.Expr.Aggregates is
                     Nth_Index_Rep_Type_No_Bool (Writes.Ty, 1);
                begin
                   for C_Value of Writes.Content_Status.Values loop
+
+                     --  Multidimensional arrays are not allowed in deep
+                     --  delta aggregates.
+
+                     pragma Assert (C_Value.Choices (C_Value.Size).Dim = 1);
+
                      declare
                         Index : constant Node_Id :=
-                          C_Value.Choices (C_Value.Size);
+                          C_Value.Choices (C_Value.Size).Indices (1);
                      begin
                         if Present (Index) then
                            Value_Map.Insert
@@ -8282,50 +8280,6 @@ package body Gnat2Why.Expr.Aggregates is
                raise Program_Error;
          end case;
       end Is_Simple_Record_Aggregate;
-
-      ----------------------
-      -- Transform_Choice --
-      ----------------------
-
-      function Transform_Choice
-        (Choice    : Node_Id;
-         Index     : W_Identifier_Id;
-         Value_Map : Ada_Node_To_Why_Id.Map) return W_Pred_Id is
-      begin
-         if No (Choice) then
-            return True_Pred;
-         else
-            return
-              New_Comparison
-                (Symbol => Why_Eq,
-                 Left   => +Index,
-                 Right  => +Value_Map.Element (Choice));
-         end if;
-      end Transform_Choice;
-
-      -----------------------
-      -- Transform_Choices --
-      -----------------------
-
-      function Transform_Choices
-        (Choices   : Choice_Array;
-         Indices   : W_Identifier_Array;
-         Value_Map : Ada_Node_To_Why_Id.Map) return W_Pred_Id
-      is
-         Conjuncts : W_Pred_Array (Choices'Range);
-
-      begin
-         if Choices'Length = 0 then
-            return True_Pred;
-         end if;
-
-         for I in Choices'Range loop
-            Conjuncts (I) :=
-              Transform_Choice (Choices (I), Indices (I), Value_Map);
-         end loop;
-
-         return New_And_Pred (Conjuncts);
-      end Transform_Choices;
 
       Pref     : constant Node_Id := Expression (Expr);
       Pref_Typ : constant Entity_Id := Retysp (Etype (Pref));

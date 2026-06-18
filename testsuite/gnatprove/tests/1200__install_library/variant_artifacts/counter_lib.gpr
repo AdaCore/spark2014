@@ -1,0 +1,17 @@
+library project Counter_Lib is
+
+   for Library_Name use "counter";
+   for Library_Kind use "static";
+   for Library_Dir use "lib";
+   for Object_Dir use "obj";
+   for Source_Dirs use ("../lib_src");
+
+   --  An older gprinstall does not install the summary ALI files produced by
+   --  GNATprove automatically. This Install package copies them explicitly
+   --  into the "gnatprove" subfolder of the installed library's ALI directory.
+   package Install is
+      for Artifacts ("lib/counter_lib/gnatprove") use
+        (Counter_Lib'Library_ALI_Dir & "/gnatprove/*.ali");
+   end Install;
+
+end Counter_Lib;

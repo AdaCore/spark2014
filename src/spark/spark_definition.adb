@@ -8966,6 +8966,174 @@ package body SPARK_Definition is
                end;
             end if;
 
+            Prag := Get_Pragma (E, Pragma_Modifies);
+            if Present (Prag) then
+               declare
+                  Globals : Global_Flow_Ids;
+                  --  Globals of E if we are not in global generation mode
+                  Seen    : Node_Sets.Set;
+                  --  Set of outputs of E mentioned in the Modifies pragma
+
+                  procedure Mark_Modified_Object (N : Node_Id);
+                  --  Mark the modified object and check that it is an output
+                  --  of the subprogram. Store its root in Seen.
+
+                  --------------------------
+                  -- Mark_Modified_Object --
+                  --------------------------
+
+                  procedure Mark_Modified_Object (N : Node_Id) is
+                     Root : Entity_Id;
+                  begin
+                     if Nkind (N) in N_Expanded_Name | N_Identifier
+                       and then Ekind (Entity (N)) = E_Abstract_State
+                     then
+                        Mark_Entity (Entity (N));
+                        Root := Entity (N);
+                     else
+                        Mark (N);
+
+                        Root := Get_Root_Object (N);
+                        pragma Assert (Present (Root));
+
+                        if Is_Constant_In_SPARK (Root)
+                          or else Traverse_Access_To_Constant (N)
+                        then
+                           Mark_Violation (Vio_Modifies_Not_Output, N);
+                        end if;
+                     end if;
+
+                     --  Store Root in the set of mentioned outputs
+
+                     Seen.Include (Root);
+
+                     if Is_Formal (Root) and then Scope (Root) = E then
+                        null;
+
+                     --  Reject parts of protected objects and overlays with
+                     --  a specific continuation.
+
+                     elsif Is_Protected_Component_Or_Discr_Or_Part_Of (Root)
+                     then
+                        Mark_Violation
+                          (Vio_Modifies_Not_Output,
+                           N,
+                           Cont_Msg =>
+                             Create
+                               ("self reference of protected operation is "
+                                & "implicit in Modifies contracts"));
+
+                     elsif Present (Overlaid_Entity (Root)) then
+                        Mark_Violation
+                          (Vio_Modifies_Not_Output,
+                           N,
+                           Cont_Msg =>
+                             Create
+                               ("Modifies aspect should mention "
+                                & "overlaid object instead"));
+
+                     --  Effectively volatile objects for reading shall be
+                     --  entire objects.
+
+                     elsif Nkind (N) not in N_Expanded_Name | N_Identifier
+                       and then Is_Effectively_Volatile_For_Reading (Root)
+                     then
+                        Mark_Violation
+                          (Vio_Modifies_Volatile,
+                           N,
+                           Cont_Msg =>
+                             Create
+                               ("volatile object should be entirely "
+                                & "modified"));
+
+                     --  Check that Root is an output of E
+
+                     elsif not Gnat2Why_Args.Global_Gen_Mode then
+                        if not Globals.Outputs.Contains
+                                 (Direct_Mapping_Id (Root, Out_View))
+                        then
+                           Mark_Violation (Vio_Modifies_Not_Output, N);
+                        end if;
+                     end if;
+                  end Mark_Modified_Object;
+
+                  Assocs  : constant List_Id :=
+                    Pragma_Argument_Associations (Prag);
+                  pragma Assert (List_Length (Assocs) = 1);
+                  Clauses : constant Node_Id := Expression (First (Assocs));
+
+               begin
+                  --  Get the globals of E
+
+                  Get_Globals
+                    (Subprogram          => E,
+                     Scope               => (Ent => E, Part => Visible_Part),
+                     Classwide           => False,
+                     Globals             => Globals,
+                     Use_Deduced_Globals => not Gnat2Why_Args.Global_Gen_Mode,
+                     Ignore_Depends      => False);
+
+                  declare
+                     Clause : Node_Id :=
+                       First (Component_Associations (Clauses));
+                  begin
+                     while Present (Clause) loop
+
+                        --  Mark the guard
+
+                        if Present (Expression (Clause)) then
+                           Mark (Expression (Clause));
+                        end if;
+
+                        --  Mark the objects
+
+                        declare
+                           Object : Node_Id := First (Choices (Clause));
+                        begin
+                           loop
+                              Mark_Modified_Object (Object);
+                              Next (Object);
+                              exit when No (Object);
+                           end loop;
+                        end;
+
+                        Next (Clause);
+                     end loop;
+                  end;
+
+                  declare
+                     Object : Node_Id := First (Expressions (Clauses));
+                  begin
+                     while Present (Object) loop
+                        Mark_Modified_Object (Object);
+                        Next (Object);
+                     end loop;
+                  end;
+
+                  --  Go over the globals of E to make sure that all those that
+                  --  are effectively volatile for reading are mentioned in the
+                  --  Modifies aspect.
+
+                  for F_Id of To_Ordered_Flow_Id_Set (Globals.Outputs) loop
+                     if Is_Volatile_For_Reading (F_Id)
+                       and then
+                         (F_Id.Kind = Magic_String
+                          or else not Seen.Contains (F_Id.Node))
+                     then
+                        Mark_Violation
+                          (Vio_Modifies_Volatile,
+                           Prag,
+                           Cont_Msg =>
+                             Create
+                               ('"'
+                                & Flow_Id_To_String (F_Id, Pretty => True)
+                                & '"'
+                                & " is not mentioned in the Modifies aspect"));
+                     end if;
+                  end loop;
+               end;
+            end if;
+
             --  Dispatching operations shall not have a Relaxed_Initialization
             --  aspect.
 
@@ -13817,6 +13985,7 @@ package body SPARK_Definition is
             --  Pragma_Loop_Invariant is transformed into pragma Check
             --  handled above.
             --  Pragma_Loop_Variant is handled specially above
+            | Pragma_Modifies
             | Pragma_No_Caching
             | Pragma_Part_Of
             | Pragma_Refined_Depends

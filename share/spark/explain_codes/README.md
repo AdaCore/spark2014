@@ -55,4 +55,12 @@
 
 - E0027: `unchecked conversion instance from a type with access subcomponents`
 
+- E0028: `function associated to aspect Iterable with controlling result`
+
+- E0029: `Iterable aspect declared on the full view of a private type`
+
+- E0030: `function associated to aspect Iterable with dependency on globals`
+
+- E0032: `volatile function associated with aspect Iterable`
+
 - E0033: `Intrinsic convention on arithmetic operator with unexpected profile`

@@ -1,0 +1,6 @@
+main.adb:12:19: info: implicit aspect Always_Terminates on "To_Handler" has been proved, subprogram will terminate
+main.adb:19:26: warning: unused variable "Handle"
+main.adb:19:51: high: "Handled" is not initialized in "Null_CB" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize "Handled" on all paths or make "Handled" an IN OUT parameter]
+main.adb:19:51: warning: unused variable "Handled"
+main.adb:21:16: info: implicit aspect Always_Terminates on "Null_Handler" has been proved, subprogram will terminate
+p.ads:7:16: info: implicit aspect Always_Terminates on "To_Handler" has been proved, subprogram will terminate

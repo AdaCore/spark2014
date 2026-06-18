@@ -30,6 +30,9 @@ is made up of various optional parts:
   condition.
 * The `subprogram variant` introduced by aspect ``Subprogram_Variant`` is
   used to ensure termination of recursive subprograms.
+* The `modifies clauses` introduced by aspect ``Modifies`` are used to express
+  precisely which parts of a mutable formal parameter or a global object can
+  be modified by a subprogram.
 
 Which contracts to write for a given verification objective, and how
 |GNATprove| generates default contracts, is detailed in :ref:`How to Write
@@ -1280,3 +1283,140 @@ mutually recursive call.
 
 .. literalinclude:: /examples/ug__recursive_subprograms-mutually/test.out
    :language: none
+
+.. index:: modifies clauses
+           Modifies
+
+Modifies Clauses
+----------------
+
+*Specific to SPARK*
+
+It is possible to annotate subprograms with side-effects with a ``Modifies``
+aspect. This aspect provides a list of clauses, each specifying a set of objects
+that are modified by the program, possibly with an additional guard introduced
+by the ``when`` keyword. Objects not mentioned in one of these clauses, or
+objects only mentioned in clauses whose guard evaluates to False, are
+necessarily left unchanged by the subprogram.
+
+This allows users to easily specify that some of their outputs are left
+unchanged on some paths. Here is an example. The global variable ``G`` is only
+written by ``Write_G_If_B`` if its parameter ``B`` evaluates to True. It is
+stated in its ``Modifies`` aspect:
+
+.. code-block:: ada
+
+    G : Integer;
+
+    procedure Write_G_If_B (B : Boolean) with
+      Global => (In_Out => G),
+      Modifies => G when B;
+
+    procedure Write_G_If_B (B : Boolean) is
+    begin
+       if B then
+          G := 0;
+       end if;
+    end Write_G_If_B;
+
+
+Note that the guard here should be read as a precondition. It is evaluated once
+and for all at the beginning of the subprogram, and the corresponding case is
+considered to be enabled if it evaluates to True.
+
+The ``Modifies`` aspect supports listing only parts of an object. It can be
+a record component, an array index, a dereference, or a sequence of them.
+Components that are not listed are considered to be preserved by the
+subprogram. For example, ``Write_G1_F1`` only modifies the ``F1``
+component of the ``G1`` field of ``X``. The components ``X.G2`` and ``X.G1.F2``
+are preserved by the call:
+
+.. code-block:: ada
+
+    type R is record
+       F1, F2 : Boolean;
+    end record;
+    type RR is record
+       G1, G2 : R;
+    end record;
+
+    procedure Write_G1_F1 (X : in out RR) with
+      Modifies => X.G1.F1;
+
+    procedure Write_G1_F1 (X : in out RR) is
+    begin
+       X.G1.F1 := False;
+    end Write_G1_F1;
+
+When an array index is used, the expression of the index is always evaluated
+at the beginning of the call, just like the guard.
+For example, in the following, the
+index of the preserved element is computed at the beginning of the call, so it
+will be the input value of ``I``, not its output value.
+
+.. code-block:: ada
+
+    type A is array (1 .. 10) of Boolean;
+    type AR is record
+       G1, G2 : A;
+    end record;
+
+    procedure Write_G1_I (X : in out AR; I : in out Positive) with
+      Modifies => (X.G1.F1 (I), I);
+
+    procedure Write_G1_I (X : in out AR; I : in out Positive) is
+    begin
+       X.G1 (I) := False;
+       I := 42;
+    end Write_G1_I;
+
+Unlike with contract cases, it is possible that several clauses of a
+``Modifies`` aspect are enabled for a given call - that is, there can be
+several clauses without a guard or whose guard evaluates to True at the
+beginning of the call. In this case, the objects mentioned in enabled
+clause might be modified by the subprogram. As an example, if both ``B1`` and
+``B2`` are set to True, ``Write_G1_F1_And_G2_F2`` is allowed to modify both
+``X.G1.F1`` and ``X.G2.F2``:
+
+.. code-block:: ada
+
+   procedure Write_G1_F1_And_G2_F2 (X : in out RR; B1, B2 : Boolean) with
+     Modifies => (X.G1.F1 when B1, X.G2.F2 when B2);
+
+   procedure Write_G1_F1_And_G2_F2 (X : in out RR; B1, B2 : Boolean) is
+   begin
+      if B1 then
+         X.G1.F1 := False;
+      end if;
+      if B2 then
+         X.G2.F2 := False;
+      end if;
+   end Write_G1_F1_And_G2_F2;
+
+Generally, an object is said to be preserved if its input and its output values
+are *logically equal*, meaning that there is no way to tell the difference
+between the two from a |SPARK| subprogram. The notion of logical equality is
+described more precisely in
+:ref:`Annotation for Accessing the Logical Equality for a Type`. In particular,
+it is important to remember that the address of a pointer is not modeled in
+|SPARK|, which means that two pointers are logically equal if they are
+both null or both designate logically equal values.
+
+.. note::
+
+   Unlike flow dependency contracts, modifies clauses are not used to infer
+   global dependency contracts if they are missing. For example, |GNATprove|
+   generally assumes null dependencies for imported subprograms; see
+   :ref:`Writing Contracts on Imported Subprograms`. Adding modifies clauses
+   explicitly mentioning a global variable won't cause it to be added to the
+   generated data dependencies. Instead, a violation will be emitted as the
+   variable is not an output of the subprogram. Adding an explicit global
+   dependency contract to the subprogram will fix the issue.
+
+.. note::
+
+   As described in
+   :ref:`Annotation for Accessing the Logical Equality for a Type`, if the full
+   view of a type is not entirely visible in |SPARK|, then the logical
+   equality symbol on this type will be left uninterpreted. It might be
+   equated to the predefined equality of the type in some cases.

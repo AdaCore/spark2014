@@ -160,31 +160,46 @@ The translation presented in :ref:`Aspect and Pragma Iterable`
 may produce complicated proofs,
 especially when verifying complex properties over sets. The |GNATprove|
 annotation ``Iterable_For_Proof`` can be used to change the way ``for ... of``
-quantification is translated. More precisely, it allows to provide |GNATprove|
-with a `Contains` function, that will be used for quantification. For example,
-on our sets, we could write:
+quantification is translated. This can be done in several ways. More precisely,
+it allows supplying alternative primitives that will be used to handle
+quantified expression instead of those provided through the ``Iterable`` aspect.
+Three different kinds of primitives can be supplied.
+A `Contains` function can be defined, in particular for set or map like
+structures. It should have the following profile, where ``Set`` is a container
+type with an ``Iterable`` aspect, and ``Element_Type`` is its element type:
 
 .. code-block:: ada
 
   function Mem (S : Set; E : Element_Type) return Boolean with
     Annotate => (GNATprove, Iterable_For_Proof, "Contains");
 
-With this annotation, the postcondition of ``Intersection`` is translated in a
-simpler way, using logic quantification directly over elements (not valid Ada syntax):
+This annotation causes ``for ... of`` quandtification to be translated in a
+simpler way, using logic quantification directly over elements. As an example,
+the property:
+
+.. code-block:: ada
+
+  (for all E of S => P (E))
+
+is normally translated for proof using the ``Has_Element`` and ``Element``
+(or ``Constant_Reference``) primitives in the following way (not valid Ada
+syntax):
 
 ::
 
-  (for all E : Element_Type =>
-       (if Mem (Intersection'Result, E) then Mem (S1, E) and Mem (S2, E)))
-  and (for all E : Element_Type =>
-       (if Mem (S1, E) then
-              (if Mem (S2, E) then Mem (Intersection'Result, E))))
+  (for all C : Cursor_Type => (if Has_Element (S, C) then P (Element (S, C))))
+
+With the ``Iterable_For_Proof`` annotation given above, it would become:
+
+::
+
+  (for all E : Element_Type => (if Mem (S, E) then P (E)))
 
 Note that care should be taken to provide an appropriate function contains,
 which returns true if and only if the element ``E`` is present in ``S``. This
 assumption will not be verified by |GNATprove|.
 
-The annotation ``Iterable_For_Proof`` can also be used in another case.
+Let's now consider another variant of the ``Iterable_For_Proof`` annotation.
 Operations over complex data structures are sometimes specified using operations
 over a simpler model type. In this case, it may be more appropriate to translate
 ``for ... of`` quantification as quantification over the model's cursors. As an
@@ -280,14 +295,75 @@ quantification on the elements of the result's model (not Ada syntax):
      (if I in 1 .. Length (Model (Init'Result)) then
         Get (Model (Init'Result), I) = E));
 
+.. note::
+
+   If the return type of a `Model` function supplied through
+   ``Iterable_For_Proof`` for a container type ``Ty`` itself has an
+   ``Iterable_For_Proof`` annotation, then it will be taken into account to
+   translate quantified expressions over ``Ty``. As an example, if we use
+   a set for the model of a list instead of a sequence, the last line of the
+   postcondition of ``Init`` would be translated for proof as (not Ada syntax):
+
+   ::
+
+     (for all Elt : Element_Type =>
+         (if Mem (Model (Init'Result), Elt) then Elt = E));
+
 Like with the previous annotation, care should be taken to define the model
 function such that it always return a model containing exactly the same elements
 as ``L``.
+
+Finally, the last variant of the ``Iterable_For_Proof`` annotation is
+specifically targetted at container types that use a ``Constant_Reference``
+function for iteration instead of an ``Element`` function. It allows providing
+an `Element` function that will be used instead of ``Constant_Reference`` in
+quantified expressions. As an example, we might want to make iteration over
+the ``Sequence`` type more efficient by avoiding a copy of the element:
+
+.. code-block:: ada
+
+   type Sequence is private with
+     Iterable => (...,
+                  Constant_Reference => Constant_Access);
+   function Length (M : Sequence) return Natural with Ghost;
+   function Constant_Access (M : Sequence; P : Positive)
+     return not null access constant Element_Type
+   with Pre => P <= Length (M);
+
+But this would cause quantification over the content of sequences (and lists) to
+become more complex. The last line of the postcondition of ``Init`` would
+become:
+
+::
+
+  (for all I : Positive =>
+     (if I in 1 .. Length (Model (Init'Result)) then
+        Constant_Access (Model (Init'Result), I).all = E));
+
+To regain the previous behavior, it would be possible to annotate the function
+``Get`` with an ``Iterable_For_Proof`` annotation:
+
+.. code-block:: ada
+
+   function Get (M : Sequence; P : Positive) return Element_Type with
+     Pre => P <= Length (M),
+     Annotate => (GNATprove, Iterable_For_Proof, "Element");
+
+so it is used instead of ``Constant_Access`` in ``for ... of`` quantification.
+With this annotation, the last line of the postcondition of ``Init`` would be
+again:
+
+::
+
+  (for all I : Positive =>
+     (if I in 1 .. Length (Model (Init'Result)) then
+        Get (Model (Init'Result), I) = E));
 
 .. note::
 
    It is not possible to specify more than one ``Iterable_For_Proof`` annotation
    per container type with an ``Iterable`` aspect.
+
 
 .. index:: Annotate; Inline_For_Proof
 

@@ -34,11 +34,6 @@ def get_prover_preference(prover_name):
     return float("inf")
 
 
-def is_coq_prover(prover_name):
-    """Return whether the prover name designates Coq."""
-    return prover_name.strip().lower().startswith("coq")
-
-
 def write_with_doctype_preserved(tree, filepath):
     """
     Write XML tree while preserving the original DOCTYPE declaration.
@@ -88,12 +83,14 @@ def write_with_doctype_preserved(tree, filepath):
 def select_best_proof(successful_proofs, prover_map):
     """Select the best proof based on prover preference order."""
     best = None
-    best_score = float("inf")
+    best_score = (float("inf"), float("inf"))
 
     for proof in successful_proofs:
         prover_id = proof.get("prover")
         prover_name = prover_map.get(prover_id, f"unknown_{prover_id}")
-        score = get_prover_preference(prover_name)
+        result = proof.find("result")
+        unknown_steps = 1 if result is not None and result.get("steps") is None else 0
+        score = (unknown_steps, get_prover_preference(prover_name))
 
         if score < best_score:
             best_score = score
@@ -150,23 +147,15 @@ def clean_session_file(filepath, prover_map=None):
 
         proofs_removed_from_goal = 0
 
-        # Separate successful, unsuccessful, and incomplete proofs
+        # Separate successful and unsuccessful proofs
         successful_proofs = []
         unsuccessful_proofs = []
-        incomplete_proofs = []
 
         for proof in proofs:
             result = proof.find("result")
             if result is not None:
                 if result.get("status") == "valid":
-                    prover_id = proof.get("prover")
-                    prover_name = prover_map.get(prover_id, f"unknown_{prover_id}")
-
-                    # Coq proofs are valid even when Why3 does not record steps.
-                    if result.get("steps") is not None or is_coq_prover(prover_name):
-                        successful_proofs.append(proof)
-                    else:
-                        incomplete_proofs.append(proof)
+                    successful_proofs.append(proof)
                 else:
                     unsuccessful_proofs.append(proof)
             else:
@@ -174,19 +163,6 @@ def clean_session_file(filepath, prover_map=None):
 
         # Remove unsuccessful proofs
         for proof in unsuccessful_proofs:
-            goal.remove(proof)
-            removed_unsuccessful_proofs += 1
-            proofs_removed_from_goal += 1
-
-        # Remove incomplete proofs (valid but missing steps), with a warning
-        for proof in incomplete_proofs:
-            goal_name = goal.get("name", "unknown")
-            prover_id = proof.get("prover", "unknown")
-            prover_name = prover_map.get(prover_id, f"unknown_{prover_id}")
-            print(
-                f"Warning: {filepath}: goal {goal_name!r}:"
-                f" removing proof by {prover_name!r} with valid status but no steps"
-            )
             goal.remove(proof)
             removed_unsuccessful_proofs += 1
             proofs_removed_from_goal += 1
@@ -204,7 +180,7 @@ def clean_session_file(filepath, prover_map=None):
             goals_with_removed_proofs += 1
 
         # Check if goal now has no proofs, but originally had valid proofs
-        if len(goal.findall("proof")) == 0 and (successful_proofs or incomplete_proofs):
+        if len(goal.findall("proof")) == 0 and successful_proofs:
             goal_name = goal.get("name", "unknown")
             goals_with_no_proofs.append(goal_name)
 

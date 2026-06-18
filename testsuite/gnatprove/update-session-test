@@ -123,7 +123,10 @@ def clean_session_files(testdir_path):
         print(f"Cleaning {len(session_files)} session file(s)...")
         for filepath in session_files:
             try:
-                clean_session_file(filepath)
+                result = clean_session_file(filepath)
+                if result["goals_with_no_proofs"]:
+                    goals = ", ".join(result["goals_with_no_proofs"])
+                    print(f"Warning: {filepath}: goals lost all proofs: {goals}")
             except ET.ParseError as e:
                 print(f"Warning: {filepath}: XML parse error: {e}")
             except Exception as e:

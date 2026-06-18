@@ -393,6 +393,121 @@ def _resolve_path(filename, cwd):
     return base / filename
 
 
+def _find_sarif_file(cwd=None):
+    base = _base_path(cwd)
+    default_path = base / "gnatprove" / "gnatprove.sarif"
+    if default_path.exists():
+        return default_path
+
+    potential_sarif_files = list(base.glob("**/gnatprove.sarif"))
+    if len(potential_sarif_files) == 0:
+        return None
+    return potential_sarif_files[0]
+
+
+def load_sarif(cwd=None):
+    """Load the SARIF report emitted by GNATprove.
+
+    Args:
+        cwd: Base directory for the SARIF lookup.
+
+    Returns:
+        The decoded SARIF JSON object, or None if no SARIF report exists.
+    """
+
+    sarif_file = _find_sarif_file(cwd)
+    if sarif_file is None:
+        return None
+
+    with open(sarif_file, "r") as f:
+        return json.load(f)
+
+
+def sarif_run(cwd=None, index=0):
+    """Return a SARIF run from the GNATprove report."""
+
+    sarif = load_sarif(cwd)
+    if sarif is None:
+        return None
+
+    runs = sarif.get("runs", [])
+    if index >= len(runs):
+        return None
+    return runs[index]
+
+
+def sarif_results(cwd=None, index=0):
+    """Return the SARIF results list for a GNATprove report run."""
+
+    run = sarif_run(cwd, index)
+    if run is None:
+        return []
+    return run.get("results", [])
+
+
+def find_sarif_results(cwd=None, rule_id=None, predicate=None, index=0):
+    """Return SARIF results matching the requested filters."""
+
+    matching_results = []
+    for result in sarif_results(cwd, index):
+        if rule_id is not None and result.get("ruleId") != rule_id:
+            continue
+        if predicate is not None and not predicate(result):
+            continue
+        matching_results.append(result)
+    return matching_results
+
+
+def sarif_result_property(result, name, parent=None):
+    """Return a custom SARIF result property.
+
+    If parent is None, look up name directly in the SARIF result properties.
+    Otherwise, first look up the top-level parent property and then look for
+    name inside it.
+    """
+
+    properties = result.get("properties", {})
+    if parent is None:
+        return properties.get(name, None)
+
+    parent_property = properties.get(parent, None)
+    if not isinstance(parent_property, dict):
+        return None
+
+    return parent_property.get(name, None)
+
+
+def iter_sarif_artifact_locations(result):
+    """Yield artifact locations recorded in a SARIF result."""
+
+    for loc in result.get("locations", []):
+        artifact = loc.get("physicalLocation", {}).get("artifactLocation", {})
+        if artifact:
+            yield artifact
+
+
+def first_sarif_artifact_location(cwd=None, predicate=None, index=0):
+    """Return the first artifact location matching the predicate."""
+
+    for result in sarif_results(cwd, index):
+        for artifact in iter_sarif_artifact_locations(result):
+            if predicate is None or predicate(artifact):
+                return artifact
+    return None
+
+
+def capture_prove_all(**kwargs):
+    """Run prove_all with stdout captured and return the captured text."""
+
+    import contextlib
+    import io
+
+    stream = io.StringIO()
+    with contextlib.redirect_stdout(stream):
+        prove_all(**kwargs)
+    return stream.getvalue()
+
+
 def run_command(command, cwd=None, timeout=None):
     """
     Executes a command in a subprocess with a timeout.
@@ -778,6 +893,7 @@ def is_spark_assertion_tag(tag):
         "EXCEPTIONAL_CASE",
         "PROGRAM_EXIT_POST",
         "EXIT_CASE",
+        "MODIFIES",
     )
 
 
@@ -801,6 +917,7 @@ def is_other_proof_tag(tag):
         "ASSERT_PREMISE",
         "ASSERT_STEP",
         "INLINE_ANNOTATION",
+        "ITERABLE_ANNOTATION",
         "CONTAINER_AGGR_ANNOTATION",
         "RECLAMATION_ENTITY",
         "FEASIBLE_POST",
@@ -1027,6 +1144,8 @@ def check_marks(strlist, cwd=None, logger=None):
             return "UNCHECKED_CONVERSION_VOLATILE"
         elif "Inline_For_Proof or Logical_Equal annotation" in text:
             return "INLINE_ANNOTATION"
+        elif "Iterable_For_Proof annotation" in text:
+            return "ITERABLE_ANNOTATION"
         elif "Container_Aggregates annotation" in text:
             return "CONTAINER_AGGR_ANNOTATION"
         elif "reclamation entity" in text:
@@ -1035,6 +1154,8 @@ def check_marks(strlist, cwd=None, logger=None):
             return "FEASIBLE_POST"
         elif "exceptional case" in text:
             return "EXCEPTIONAL_CASE"
+        elif "modifies contract" or "part of output might be modified" in text:
+            return "MODIFIES"
 
         # no tag recognized
         return None
@@ -1583,13 +1704,9 @@ def has_ignore_pattern(msg):
 
 
 def check_sarif(lines, report, cwd=None, logger=None):
-    base = _base_path(cwd)
-    potential_sarif_files = list(base.glob("**/gnatprove.sarif"))
-    if len(potential_sarif_files) == 0:
+    run = sarif_run(cwd)
+    if run is None:
         return
-    sarif_file = potential_sarif_files[0]
-    with open(sarif_file, "r") as f:
-        sarif = json.load(f)
 
     def contains(text):
         for line in lines:
@@ -1597,7 +1714,7 @@ def check_sarif(lines, report, cwd=None, logger=None):
                 return True
         return False
 
-    for result in sarif["runs"][0]["results"]:
+    for result in run.get("results", []):
         # ignore if result suppressed
         if "suppressions" in result and len(result["suppressions"]) > 0:
             continue
