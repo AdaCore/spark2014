@@ -118,6 +118,7 @@ package VC_Kinds is
       VC_Assert_Premise,             --  Premise for proof with cut points
       VC_Raise,
       VC_Unexpected_Program_Exit,
+      VC_Modifies,
 
       VC_Feasible_Post,
       --  Check that the postcondition of abstract functions and
@@ -126,6 +127,10 @@ package VC_Kinds is
       VC_Inline_Check,
       --  Check that the Inline_For_Proof or Logical_Equal annotation provided
       --  for a function is correct.
+
+      VC_Iterable_Check,
+      --  Check that the Iterable_For_Proof annotation provided for a function
+      --  is correct.
 
       VC_Container_Aggr_Check,
       --  Check that the Container_Aggregates annotation provided for a
@@ -620,6 +625,8 @@ package VC_Kinds is
       Vio_Iterable_Volatile,
       Vio_Iterator_Specification,
       Vio_Loop_Variant_Structural,
+      Vio_Modifies_Not_Output,
+      Vio_Modifies_Volatile,
       Vio_Overlay_Constant_Not_Imported,
       Vio_Overlay_Mutable_Constant,
       Vio_Overlay_Part_Of_Protected,
@@ -1551,6 +1558,11 @@ package VC_Kinds is
       EC_Handler_Choice_Parameter,
       EC_Overlay_Mutable_Constant,
       EC_UC_From_Access,
+      EC_Iterable_Controlling_Result,
+      EC_Iterable_Full_View,
+      EC_Iterable_Globals,
+      EC_Iterable_Side_Effects,
+      EC_Iterable_Volatile,
       EC_Intrinsic_Operator);
    for Explain_Code_Kind use
      (EC_None                                 => 0,
@@ -1581,6 +1593,11 @@ package VC_Kinds is
       EC_Handler_Choice_Parameter             => 25,
       EC_Overlay_Mutable_Constant             => 26,
       EC_UC_From_Access                       => 27,
+      EC_Iterable_Controlling_Result          => 28,
+      EC_Iterable_Full_View                   => 29,
+      EC_Iterable_Globals                     => 30,
+      EC_Iterable_Side_Effects                => 31,
+      EC_Iterable_Volatile                    => 32,
       EC_Intrinsic_Operator                   => 33);
 
    function To_String (Code : Explain_Code_Kind) return String

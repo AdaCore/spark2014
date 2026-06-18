@@ -669,13 +669,18 @@ package body Gnat2Why.Expr is
       Expr          : W_Expr_Id;
       Domain        : EW_Domain;
       Params        : Transformation_Params;
-      No_Init_Check : Boolean) return W_Expr_Id;
+      No_Init_Check : Boolean;
+      Index_Map     : Ada_Node_To_Why_Id.Map := Ada_Node_To_Why_Id.Empty_Map)
+      return W_Expr_Id;
    --  Compute an access expression for record and array accesses without
    --  considering subexpressions. [N] represents the Ada node of the access,
    --  and [Expr] the Why expression of the prefix. If No_Init_Check is True,
    --  the expression does not need to be initialized and predicate checks and
    --  initialization checks for discriminants will not be emitted on
    --  expressions annotated with Relaxed_Initialization.
+   --  If supplied, Index_Map is a mapping from index nodes in N to identifiers
+   --  that should be used to refer to these indices. It is supplied when the
+   --  indices should be evaluated in a different context.
 
    function One_Level_Update
      (N            : Node_Id;
@@ -3348,6 +3353,14 @@ package body Gnat2Why.Expr is
       Checks      : W_Prog_Id := +Void;
       Cont_Ty_Spk : constant Entity_Id := Retysp (Ty);
 
+      function Generate_Call
+        (Fn     : Entity_Id;
+         Args   : W_Expr_Array;
+         Typ    : W_Type_Id;
+         Domain : EW_Domain := EW_Prog) return W_Expr_Id;
+      --  Generate a call to Fn (Args) : Typ. If Domain is the program domain,
+      --  add a precondition check.
+
       procedure Add_Check
         (Fn        : Entity_Id;
          Args      : W_Expr_Array;
@@ -3389,28 +3402,8 @@ package body Gnat2Why.Expr is
          Typ       : W_Type_Id;
          Check_Inv : Boolean := False)
       is
-         Name : constant W_Identifier_Id := Fetch_Name (Fn);
-
-         --  In some corner-cases, the first argument type
-         --  might be a non-trivial ancestor of the container type.
-
-         Arg_Ty  : constant W_Type_Id :=
-           To_Why_Ty (Retysp (Etype (First_Formal (Fn))));
-         Args_Cv : constant W_Expr_Array :=
-           (Args
-            with delta
-              1 =>
-                Insert_Simple_Conversion
-                  (Domain => EW_Pterm, Expr => Args (1), To => Arg_Ty));
-         Call    : constant W_Prog_Id :=
-           New_VC_Call
-             (Ada_Node   => Fn,
-              Name       => Name,
-              Progs      => Args_Cv,
-              Reason     => VC_Precondition,
-              Typ        => Typ,
-              Check_Info => Check_Info);
-         Check   : W_Prog_Id := Call;
+         Call  : constant W_Prog_Id := +Generate_Call (Fn, Args, Typ);
+         Check : W_Prog_Id := Call;
       begin
          if Check_Inv then
             Check :=
@@ -3478,6 +3471,48 @@ package body Gnat2Why.Expr is
            To_Why_Id
              (E => Fn, Domain => Domain, Selector => Why.Inter.Standard);
       end Fetch_Name;
+
+      -------------------
+      -- Generate_Call --
+      -------------------
+
+      function Generate_Call
+        (Fn     : Entity_Id;
+         Args   : W_Expr_Array;
+         Typ    : W_Type_Id;
+         Domain : EW_Domain := EW_Prog) return W_Expr_Id
+      is
+         Name : constant W_Identifier_Id := Fetch_Name (Fn, Domain);
+
+         --  In some corner-cases, the first argument type
+         --  might be a non-trivial ancestor of the container type.
+
+         Arg_Ty  : constant W_Type_Id :=
+           To_Why_Ty (Retysp (Etype (First_Formal (Fn))));
+         Args_Cv : constant W_Expr_Array :=
+           (Args
+            with delta
+              1 =>
+                Insert_Simple_Conversion
+                  (Domain => Term_Domain (Domain),
+                   Expr   => Args (1),
+                   To     => Arg_Ty));
+      begin
+         if Domain = EW_Prog then
+            return
+              +New_VC_Call
+                 (Ada_Node   => Fn,
+                  Name       => Name,
+                  Progs      => Args_Cv,
+                  Reason     => VC_Precondition,
+                  Typ        => Typ,
+                  Check_Info => Check_Info);
+         else
+            return
+              New_Call
+                (Name => Name, Args => Args_Cv, Typ => Typ, Domain => Domain);
+         end if;
+      end Generate_Call;
 
    begin
       Ada_Ent_To_Why.Push_Scope (Symbol_Table);
@@ -3562,6 +3597,59 @@ package body Gnat2Why.Expr is
          --    ignore (Element-Check (Cont, Curs))
          --    (* vv  if "Constant_Reference" specified  vv *)
          --    ignore (Constant_Reference-Check (Cont, Curs))
+         --    (* vv  if Annotation "Element" present  vv *)
+         --    ignore {
+         --      let Elt = Element (Cont, Curs) in
+         --      assert {Elt = Constant_Reference (Cont, Curs).all}
+         --    }
+
+         --  The Element variant of Iterable_For_Proof is handled specifically.
+         --  We generate a VC to ensure that it returns the same value as
+         --  Constant_Reference for all valid cursors.
+
+         if Annot_Present and then Annot.Kind = Element then
+            declare
+               Elt_Ty_Spk : constant Entity_Id :=
+                 Retysp (Etype (Annot.Entity));
+               Elt_Ty_Why : constant W_Type_Id := To_Why_Ty (Elt_Ty_Spk);
+               Elt_Id     : constant W_Identifier_Id :=
+                 New_Temp_Identifier (Elt_Ty_Spk, Elt_Ty_Why);
+            begin
+               Checks :=
+                 Sequence
+                   (New_Ignore
+                      (Prog =>
+                         New_Typed_Binding
+                           (Name    => Elt_Id,
+                            Def     =>
+                              +Generate_Call
+                                 (Annot.Entity, Args_Both, Elt_Ty_Why),
+                            Context =>
+                              New_Located_Assert
+                                (Ada_Node =>
+                                   Find_Iterable_Pragma (Annot.Entity),
+                                 Pred     =>
+                                   New_Comparison
+                                     (Why_Eq,
+                                      +Elt_Id,
+                                      Insert_Simple_Conversion
+                                        (Expr =>
+                                           New_Pointer_Value_Access
+                                             (Name =>
+                                                +Generate_Call
+                                                   (Fn_Cst_Ref,
+                                                    Args_Both,
+                                                    To_Why_Ty
+                                                      (Etype (Fn_Cst_Ref)),
+                                                    EW_Term),
+                                              E    => Etype (Fn_Cst_Ref)),
+                                         To   => Elt_Ty_Why)),
+                                 Reason   => VC_Iterable_Check,
+                                 Kind     => EW_Assert))),
+                    Checks);
+
+            end;
+         end if;
 
          --  Check the invariant for elements if quantification can be
          --  done on elements.
@@ -3649,6 +3737,9 @@ package body Gnat2Why.Expr is
                   begin
                      Add_Check (Annot.Entity, Args_One, Model_Ty_Why);
                   end;
+
+               when Element  =>
+                  null;
             end case;
          end if;
 
@@ -4929,6 +5020,61 @@ package body Gnat2Why.Expr is
          return Why_Args;
       end;
    end Compute_Call_Args;
+
+   -------------------------------------
+   -- Compute_Checks_For_Subcomponent --
+   -------------------------------------
+
+   function Compute_Checks_For_Subcomponent
+     (Expr : Node_Id; Index_Map : Ada_Node_To_Why_Id.Map) return W_Prog_Id
+   is
+      function Compute_Checks (Expr : Node_Id) return W_Prog_Id;
+      --  Translate Expr to generate checks. Do not check for validity and
+      --  initialization (except when it is necessary to evaluate the access).
+
+      --------------------
+      -- Compute_Checks --
+      --------------------
+
+      function Compute_Checks (Expr : Node_Id) return W_Prog_Id is
+      begin
+         case Nkind (Expr) is
+            when N_Identifier | N_Expanded_Name =>
+               return
+                 +Transform_Identifier
+                    (Body_Params,
+                     Expr,
+                     Entity (Expr),
+                     EW_Prog,
+                     No_Init_Check     => True,
+                     No_Validity_Check => True);
+
+            when N_Explicit_Dereference
+               | N_Selected_Component
+               | N_Indexed_Component            =>
+
+               pragma
+                 Assert
+                   (if Nkind (Expr) = N_Indexed_Component
+                    then not Index_Map.Is_Empty);
+
+               return
+                 +One_Level_Access
+                    (Expr,
+                     +Compute_Checks (Prefix (Expr)),
+                     EW_Prog,
+                     Body_Params,
+                     No_Init_Check => True,
+                     Index_Map     => Index_Map);
+
+            when others                         =>
+               raise Program_Error;
+         end case;
+      end Compute_Checks;
+
+   begin
+      return New_Ignore (Prog => Compute_Checks (Expr));
+   end Compute_Checks_For_Subcomponent;
 
    ---------------------------
    -- Compute_Default_Check --
@@ -10150,54 +10296,80 @@ package body Gnat2Why.Expr is
            Get_Iterable_Type_Primitive (Over_Type, Name_Element);
          Constant_Ref_E : constant Entity_Id :=
            Get_Iterable_Type_Primitive (Over_Type, Name_Constant_Reference);
-         Prim_E         : constant Entity_Id :=
-           (if Present (Element_E) then Element_E else Constant_Ref_E);
-         Cont_Type      : constant Entity_Id := Etype (First_Formal (Prim_E));
-         Cont_Expr      : constant W_Expr_Id :=
-           Insert_Simple_Conversion
-             (Domain => Domain,
-              Expr   => W_Over_E,
-              To     => Type_Of_Node (Cont_Type));
-         Curs_Type      : constant Entity_Id :=
-           Etype (Next_Formal (First_Formal (Prim_E)));
-         Curs_Expr      : constant W_Expr_Id :=
-           Insert_Simple_Conversion
-             (Ada_Node => Empty,
-              Domain   => Domain,
-              Expr     => +W_Index_Var,
-              To       => Type_Of_Node (Curs_Type));
-         Subdomain      : constant EW_Domain :=
-           (if Domain = EW_Prog then EW_Pterm else Domain);
-         Prim_W         : constant W_Identifier_Id :=
-           W_Identifier_Id
-             (Transform_Identifier
-                (Params => Params,
-                 Expr   => Prim_E,
-                 Ent    => Prim_E,
-                 Domain => Subdomain));
-         Res            : W_Expr_Id :=
-           New_Function_Call
-             (Ada_Node => Ada_Node,
-              Name     => Prim_W,
-              Subp     => Prim_E,
-              Args     => (1 => Cont_Expr, 2 => Curs_Expr),
-              Domain   => Subdomain,
-              Check    => False,
-              --  Checks already done at level of Iterable aspect
-              Typ      => Get_Typ (Prim_W));
+
+         Prim_E      : Entity_Id;
+         Needs_Deref : Boolean;
 
       begin
-         if No (Element_E) then
-            Res :=
-              New_Pointer_Value_Access
-                (Name => Res, E => Etype (Prim_E), Domain => Subdomain);
+         --  Get the appropriate element primitive
 
-            Res :=
-              Insert_Simple_Conversion
-                (Expr => Res, To => Element_T, Domain => Subdomain);
+         if Present (Constant_Ref_E) then
+            declare
+               Found         : Boolean;
+               Iterable_Info : Iterable_Annotation;
+            begin
+               Retrieve_Iterable_Annotation (Over_Type, Found, Iterable_Info);
+               if Found and then Iterable_Info.Kind = Element then
+                  Prim_E := Iterable_Info.Entity;
+                  Needs_Deref := False;
+               else
+                  Prim_E := Constant_Ref_E;
+                  Needs_Deref := True;
+               end if;
+            end;
+         else
+            Prim_E := Element_E;
+            Needs_Deref := False;
          end if;
 
-         return Res;
+         declare
+            Cont_Type : constant Entity_Id := Etype (First_Formal (Prim_E));
+            Cont_Expr : constant W_Expr_Id :=
+              Insert_Simple_Conversion
+                (Domain => Domain,
+                 Expr   => W_Over_E,
+                 To     => Type_Of_Node (Cont_Type));
+            Curs_Type : constant Entity_Id :=
+              Etype (Next_Formal (First_Formal (Prim_E)));
+            Curs_Expr : constant W_Expr_Id :=
+              Insert_Simple_Conversion
+                (Ada_Node => Empty,
+                 Domain   => Domain,
+                 Expr     => +W_Index_Var,
+                 To       => Type_Of_Node (Curs_Type));
+            Subdomain : constant EW_Domain :=
+              (if Domain = EW_Prog then EW_Pterm else Domain);
+            Prim_W    : constant W_Identifier_Id :=
+              W_Identifier_Id
+                (Transform_Identifier
+                   (Params => Params,
+                    Expr   => Prim_E,
+                    Ent    => Prim_E,
+                    Domain => Subdomain));
+            Res       : W_Expr_Id :=
+              New_Function_Call
+                (Ada_Node => Ada_Node,
+                 Name     => Prim_W,
+                 Subp     => Prim_E,
+                 Args     => (1 => Cont_Expr, 2 => Curs_Expr),
+                 Domain   => Subdomain,
+                 Check    => False,
+                 --  Checks already done at level of Iterable aspect
+                 Typ      => Get_Typ (Prim_W));
+
+         begin
+            if Needs_Deref then
+               Res :=
+                 New_Pointer_Value_Access
+                   (Name => Res, E => Etype (Prim_E), Domain => Subdomain);
+
+               Res :=
+                 Insert_Simple_Conversion
+                   (Expr => Res, To => Element_T, Domain => Subdomain);
+            end if;
+
+            return Res;
+         end;
       end Make_Binding_For_Iterable;
 
       ----------------------------------
@@ -10367,11 +10539,12 @@ package body Gnat2Why.Expr is
                Retrieve_Iterable_Annotation (Over_Type, Found, Iterable_Info);
             end loop;
 
-            --  No Contains Iterable_For_Proof annotation found.
+            --  No Contains Iterable_For_Proof annotation found, or an Element
+            --  Iterable_For_Proof annotation has been found.
             --  Iteration is done on cursors, we need a temporary variable
             --  to store the element.
 
-            if not Found then
+            if not Found or else Iterable_Info.Kind = Element then
                Index_Type := Get_Cursor_Type (Over_Type);
                Need_Tmp_Var := True;
 
@@ -10380,6 +10553,7 @@ package body Gnat2Why.Expr is
             --  temporary variable.
 
             else
+               pragma Assert (Iterable_Info.Kind = Contains);
                declare
                   Element_E : constant Entity_Id :=
                     Get_Iterable_Type_Primitive (Over_Type, Name_Element);
@@ -14017,7 +14191,9 @@ package body Gnat2Why.Expr is
       Expr          : W_Expr_Id;
       Domain        : EW_Domain;
       Params        : Transformation_Params;
-      No_Init_Check : Boolean) return W_Expr_Id
+      No_Init_Check : Boolean;
+      Index_Map     : Ada_Node_To_Why_Id.Map := Ada_Node_To_Why_Id.Empty_Map)
+      return W_Expr_Id
    is
       R : W_Expr_Id;
    begin
@@ -14106,11 +14282,15 @@ package body Gnat2Why.Expr is
             begin
                while Present (Cursor) loop
                   Indices (Count) :=
-                    Transform_Expr
-                      (Cursor,
-                       Base_Why_Type_No_Bool (Node_Id'(Type_Of_Node (Cursor))),
-                       Domain,
-                       Params);
+                    (if Index_Map.Is_Empty
+                     then
+                       Transform_Expr
+                         (Cursor,
+                          Base_Why_Type_No_Bool
+                            (Node_Id'(Type_Of_Node (Cursor))),
+                          Domain,
+                          Params)
+                     else +Index_Map.Element (Cursor));
 
                   --  Insert Index Check if needed
 
@@ -18074,7 +18254,7 @@ package body Gnat2Why.Expr is
             end;
 
          when Attribute_Access                                              =>
-            if Is_Access_Subprogram_Type (Etype (Expr)) then
+            if Is_Access_Subprogram_Type (Retysp (Etype (Expr))) then
                T :=
                  Transform_Access_Attribute_Of_Subprogram
                    (Expr => Expr, Domain => Domain, Params => Params);
@@ -18086,7 +18266,7 @@ package body Gnat2Why.Expr is
                   Relaxed_Init : constant Boolean :=
                     Expr_Has_Relaxed_Init (Expr);
                   Des_Ty       : constant Entity_Id :=
-                    Directly_Designated_Type (Etype (Expr));
+                    Directly_Designated_Type (Retysp (Etype (Expr)));
                   Value_Expr   : constant W_Expr_Id :=
                     Transform_Expr
                       (Expr          => Var,
@@ -18110,7 +18290,7 @@ package body Gnat2Why.Expr is
                           & (if Relaxed_Init
                              then (1 => +True_Term)
                              else (1 .. 0 => <>)),
-                        Ty           => Etype (Expr),
+                        Ty           => Retysp (Etype (Expr)),
                         Relaxed_Init => Relaxed_Init);
 
                   --  If the access type has a direct or inherited predicate,

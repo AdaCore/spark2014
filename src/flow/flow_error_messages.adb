@@ -936,23 +936,27 @@ package body Flow_Error_Messages is
       end if;
 
       for Cont of reverse Check_Info.Continuation loop
-         declare
-            Loc  : constant Source_Ptr :=
-              Sloc (Errout.First_Node (Cont.Ada_Node));
-            File : constant String := File_Name (Loc);
-            Line : constant Physical_Line_Number :=
-              Get_Physical_Line_Number (Loc);
-            Msg  : constant String :=
-              To_String (Cont.Message)
-              & " at "
-              & File
-              & ":"
-              & Image (Integer (Line), 1);
+         if No (Cont.Ada_Node) then
+            Result.Continuations.Append (Create (To_String (Cont.Message)));
+         else
+            declare
+               Loc  : constant Source_Ptr :=
+                 Sloc (Errout.First_Node (Cont.Ada_Node));
+               File : constant String := File_Name (Loc);
+               Line : constant Physical_Line_Number :=
+                 Get_Physical_Line_Number (Loc);
+               Msg  : constant String :=
+                 To_String (Cont.Message)
+                 & " at "
+                 & File
+                 & ":"
+                 & Image (Integer (Line), 1);
 
-         begin
-            Result.Continuations.Append
-              (Create (Compute_Message (Msg, Cont.Ada_Node)));
-         end;
+            begin
+               Result.Continuations.Append
+                 (Create (Compute_Message (Msg, Cont.Ada_Node)));
+            end;
+         end if;
       end loop;
 
       --  The call to Check_Is_Annotated needs to happen on all paths, even
@@ -4410,6 +4414,9 @@ package body Flow_Error_Messages is
               "Inline_For_Proof or Logical_Equal annotation might be"
               & " incorrect";
 
+         when VC_Iterable_Check                   =>
+            return "Iterable_For_Proof annotation might be incorrect";
+
          when VC_Container_Aggr_Check             =>
             return "Container_Aggregates annotation might be incorrect";
 
@@ -4487,6 +4494,10 @@ package body Flow_Error_Messages is
             return
               "object with non-trivial address clause or prefix of the "
               & "'Address reference does not have asynchronous writers";
+
+         when VC_Modifies                         =>
+            return
+              "unexpected part of output might be modified by the subprogram";
 
          --  VC_LSP_Kind - Liskov Substitution Principle
 
@@ -4977,6 +4988,9 @@ package body Flow_Error_Messages is
          when VC_Inline_Check                     =>
             return "Inline_For_Proof or Logical_Equal annotation " & Verb;
 
+         when VC_Iterable_Check                   =>
+            return "Iterable_For_Proof annotation " & Verb;
+
          when VC_Container_Aggr_Check             =>
             return "Container_Aggregates annotation " & Verb;
 
@@ -5041,6 +5055,9 @@ package body Flow_Error_Messages is
               Prefix
               & "object with non-trivial address clause and prefix of the"
               & " 'Address attribute have asynchronous writers";
+
+         when VC_Modifies                         =>
+            return "modifies contract " & Verb;
 
          when VC_Weaker_Pre                       =>
             return

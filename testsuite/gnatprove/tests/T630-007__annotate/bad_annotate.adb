@@ -78,6 +78,9 @@ procedure Bad_Annotate with SPARK_Mode is
    pragma Annotate (GNATprove, Inline_For_Proof, "foo");
    pragma Annotate (GNATprove, No_Wrap_Around, "foo");
    pragma Annotate (GNATprove);
+
+   function Toto return Boolean
+     with Import, Annotate => (GNATprove, Iterable_For_Proof, 10);
 begin
    null;
 end Bad_Annotate;

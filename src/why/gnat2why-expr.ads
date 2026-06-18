@@ -389,6 +389,13 @@ package Gnat2Why.Expr is
    --     Expr has an initialization wrapper type, then should only be True if
    --     Expr is at least partially Initialized.
 
+   function Compute_Checks_For_Subcomponent
+     (Expr : Node_Id; Index_Map : Ada_Node_To_Why_Id.Map) return W_Prog_Id;
+   --  Expr should be a subcomponent of an object - as used inside Modifies
+   --  clauses. Generate a subprograms that checks that Expr corresponds to
+   --  an existing subcomponent. Index_Map should store identifiers for the
+   --  indices of all indexed components in Expr.
+
    function Compute_Guard_For_Exceptions
      (Choices : List_Id; Exc_Id : W_Identifier_Id; Domain : EW_Domain)
       return W_Expr_Id

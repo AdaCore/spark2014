@@ -34,25 +34,29 @@ with Ada.Strings.Fixed;
 with Ada.Unchecked_Deallocation;
 with SPARK.Lemmas.Integer_Arithmetic;
 
-package body Strunb with
-  SPARK_Mode
+package body Strunb
+  with SPARK_Mode
 is
 
-   function Sum (Left, Right : Natural) return Natural with Inline,
-     Pre => Right <= Natural'Last - Left;
+   function Sum (Left, Right : Natural) return Natural
+   with Inline, Pre => Right <= Natural'Last - Left;
    --  Returns summary of Left and Right, raise Constraint_Error on overflow
 
-   function Mul (Left, Right : Natural) return Natural with Inline,
-     Pre => Long_Long_Integer (Left) * Long_Long_Integer (Right) <= Long_Long_Integer (Natural'Last);
+   function Mul (Left, Right : Natural) return Natural
+   with
+     Inline,
+     Pre =>
+       Long_Long_Integer (Left) * Long_Long_Integer (Right)
+       <= Long_Long_Integer (Natural'Last);
    --  Returns multiplication of Left and Right, raise Constraint_Error on
    --  overflow.
 
    function Saturated_Sum (Left, Right : Natural) return Natural
-     with Post => Saturated_Sum'Result >= Left;
+   with Post => Saturated_Sum'Result >= Left;
    --  Returns summary of Left and Right or Natural'Last on overflow
 
    function Saturated_Mul (Left, Right : Positive) return Positive
-     with Post => Saturated_Mul'Result >= Left;
+   with Post => Saturated_Mul'Result >= Left;
    --  Returns multiplication of Left and Right or Natural'Last on overflow
 
    ---------
@@ -60,8 +64,8 @@ is
    ---------
 
    function "&"
-     (Left  : Unbounded_String;
-      Right : Unbounded_String) return Unbounded_String
+     (Left : Unbounded_String; Right : Unbounded_String)
+      return Unbounded_String
    is
       L_Length : constant Natural := Left.Last;
       R_Length : constant Natural := Right.Last;
@@ -69,11 +73,9 @@ is
       Strlast : constant Natural := Sum (L_Length, R_Length);
       subtype Str is Uninit_String (1 .. Strlast);
       Result  : Unbounded_String :=
-        (Reference => new Str'(others => <>),
-         Last      => Strlast);
+        (Reference => new Str'(others => <>), Last => Strlast);
    begin
-      Result.Reference (1 .. L_Length) :=
-        Left.Reference (1 .. Left.Last);
+      Result.Reference (1 .. L_Length) := Left.Reference (1 .. Left.Last);
 
       if L_Length < Natural'Last then
          Result.Reference (L_Length + 1 .. Result.Last) :=
@@ -84,15 +86,13 @@ is
    end "&";
 
    function "&"
-     (Left  : Unbounded_String;
-      Right : String) return Unbounded_String
+     (Left : Unbounded_String; Right : String) return Unbounded_String
    is
       L_Length : constant Natural := Left.Last;
       Strlast  : constant Natural := Sum (L_Length, Right'Length);
       subtype Str is Uninit_String (1 .. Strlast);
       Result   : Unbounded_String :=
-        (Reference => new Str'(others => <>),
-         Last      => Strlast);
+        (Reference => new Str'(others => <>), Last => Strlast);
    begin
       Result.Reference (1 .. L_Length) := Left.Reference (1 .. Left.Last);
 
@@ -105,15 +105,13 @@ is
    end "&";
 
    function "&"
-     (Left  : String;
-      Right : Unbounded_String) return Unbounded_String
+     (Left : String; Right : Unbounded_String) return Unbounded_String
    is
       R_Length : constant Natural := Right.Last;
       Strlast  : constant Natural := Sum (Left'Length, R_Length);
       subtype Str is Uninit_String (1 .. Strlast);
       Result   : Unbounded_String :=
-        (Reference => new Str'(others => <>),
-         Last      => Strlast);
+        (Reference => new Str'(others => <>), Last => Strlast);
    begin
       Result.Reference (1 .. Left'Length) := Uninit_String (Left);
 
@@ -126,14 +124,12 @@ is
    end "&";
 
    function "&"
-     (Left  : Unbounded_String;
-      Right : Character) return Unbounded_String
+     (Left : Unbounded_String; Right : Character) return Unbounded_String
    is
       Strlast : constant Natural := Sum (Left.Last, 1);
       subtype Str is Uninit_String (1 .. Strlast);
       Result  : Unbounded_String :=
-        (Reference => new Str'(others => <>),
-         Last      => Strlast);
+        (Reference => new Str'(others => <>), Last => Strlast);
    begin
       Result.Reference (1 .. Result.Last - 1) :=
         Left.Reference (1 .. Left.Last);
@@ -143,18 +139,15 @@ is
    end "&";
 
    function "&"
-     (Left  : Character;
-      Right : Unbounded_String) return Unbounded_String
+     (Left : Character; Right : Unbounded_String) return Unbounded_String
    is
       Strlast : constant Natural := Sum (Right.Last, 1);
       subtype Str is Uninit_String (1 .. Strlast);
       Result  : Unbounded_String :=
-        (Reference => new Str'(others => <>),
-         Last      => Strlast);
+        (Reference => new Str'(others => <>), Last => Strlast);
    begin
       Result.Reference (1) := Left;
-      Result.Reference (2 .. Result.Last) :=
-        Right.Reference (1 .. Right.Last);
+      Result.Reference (2 .. Result.Last) := Right.Reference (1 .. Right.Last);
       return Unbounded_String (Result);
    end "&";
 
@@ -167,9 +160,10 @@ is
    --  the global subprogram. That's why we isolate them in these two ghost
    --  lemmas.
 
-   procedure Lemma_Mod (Right : String; K : Integer; Ptr : Natural) with
+   procedure Lemma_Mod (Right : String; K : Integer; Ptr : Natural)
+   with
      Ghost,
-     Pre =>
+     Pre  =>
        Right'Length /= 0
        and then Ptr mod Right'Length = 0
        and then Ptr in 0 .. Natural'Last - Right'Length
@@ -178,20 +172,21 @@ is
    --  Lemma_Mod is applied to an index considered in Lemma_Split to prove
    --  that it has the right value modulo Right'Length.
 
-   procedure Lemma_Split (Right, Result : String; Ptr : Natural) with
+   procedure Lemma_Split (Right, Result : String; Ptr : Natural)
+   with
      Ghost,
      Relaxed_Initialization => Result,
      Pre                    =>
        Right'Length /= 0
-	 and then Result'First = 1
-	 and then Result'Last >= 0
-	 and then Ptr mod Right'Length = 0
-	 and then Ptr in 0 .. Result'Last - Right'Length
-	 and then Result (Result'First .. Ptr + Right'Length)'Initialized
-	 and then Result (Ptr + 1 .. Ptr + Right'Length) = Right,
+       and then Result'First = 1
+       and then Result'Last >= 0
+       and then Ptr mod Right'Length = 0
+       and then Ptr in 0 .. Result'Last - Right'Length
+       and then Result (Result'First .. Ptr + Right'Length)'Initialized
+       and then Result (Ptr + 1 .. Ptr + Right'Length) = Right,
      Post                   =>
        (for all K in Ptr + 1 .. Ptr + Right'Length =>
-	 Result (K) = Right (Right'First + (K - 1) mod Right'Length));
+          Result (K) = Right (Right'First + (K - 1) mod Right'Length));
    --  Lemma_Split is used after Result (Ptr + 1 .. Ptr + Right'Length) is
    --  updated to Right and concludes that the characters match for each
    --  index when taken modulo Right'Length, as the considered slice starts
@@ -207,48 +202,42 @@ is
    -- Lemma_Split --
    -----------------
 
-   procedure Lemma_Split (Right, Result : String; Ptr : Natural)
-   is
+   procedure Lemma_Split (Right, Result : String; Ptr : Natural) is
    begin
       for K in Ptr + 1 .. Ptr + Right'Length loop
          Lemma_Mod (Right, K - 1, Ptr);
-         pragma Loop_Invariant
-           (for all J in Ptr + 1 .. K =>
-              Result (J) = Right (Right'First + (J - 1) mod Right'Length));
+         pragma
+           Loop_Invariant
+             (for all J in Ptr + 1 .. K =>
+                Result (J) = Right (Right'First + (J - 1) mod Right'Length));
       end loop;
    end Lemma_Split;
 
-   function "*"
-     (Left  : Natural;
-      Right : Character) return Unbounded_String
-   is
+   function "*" (Left : Natural; Right : Character) return Unbounded_String is
       subtype Str is Uninit_String (1 .. Left);
       Result : Unbounded_String :=
-        (Reference => new Str'(others => <>),
-         Last      => Left);
+        (Reference => new Str'(others => <>), Last => Left);
    begin
       for J in Result.Reference'Range loop
          Result.Reference (J) := Right;
-         pragma Loop_Invariant
-           (for all K in 1 .. J =>
-              Result.Reference (K)'Initialized and then Result.Reference (K) = Right);
+         pragma
+           Loop_Invariant
+             (for all K in 1 .. J =>
+                Result.Reference (K)'Initialized
+                and then Result.Reference (K) = Right);
       end loop;
 
       return Result;
    end "*";
 
-   function "*"
-     (Left  : Natural;
-      Right : String) return Unbounded_String
-   is
-      Len    : constant Natural := Right'Length;
-      K      : Natural;
+   function "*" (Left : Natural; Right : String) return Unbounded_String is
+      Len : constant Natural := Right'Length;
+      K   : Natural;
 
       Strlast : constant Natural := Mul (Left, Len);
       subtype Str is Uninit_String (1 .. Strlast);
       Result  : Unbounded_String :=
-        (Reference => new Str'(others => <>),
-         Last      => Strlast);
+        (Reference => new Str'(others => <>), Last => Strlast);
    begin
       if Len = 0 then
          return Result;
@@ -261,26 +250,26 @@ is
          K := K + Len;
          pragma Loop_Invariant (K = J * Len);
          pragma Loop_Invariant (Result.Reference (1 .. K)'Initialized);
-         pragma Loop_Invariant
-           (for all KK in 1 .. K =>
-              Result.Reference (KK) = Right (Right'First + (KK - 1) mod Len));
+         pragma
+           Loop_Invariant
+             (for all KK in 1 .. K =>
+                Result.Reference (KK)
+                = Right (Right'First + (KK - 1) mod Len));
       end loop;
 
       return Result;
    end "*";
 
    function "*"
-     (Left  : Natural;
-      Right : Unbounded_String) return Unbounded_String
+     (Left : Natural; Right : Unbounded_String) return Unbounded_String
    is
-      Len    : constant Natural := Right.Last;
-      K      : Natural;
+      Len : constant Natural := Right.Last;
+      K   : Natural;
 
       Strlast : constant Natural := Mul (Left, Len);
       subtype Str is Uninit_String (1 .. Strlast);
       Result  : Unbounded_String :=
-        (Reference => new Str'(others => <>),
-         Last      => Strlast);
+        (Reference => new Str'(others => <>), Last => Strlast);
    begin
       if Len = 0 then
          return Result;
@@ -290,16 +279,19 @@ is
 
       K := 0;
       for J in 1 .. Left loop
-         SPARK.Lemmas.Integer_Arithmetic.Lemma_Mult_Is_Monotonic (J, Left, Len);
+         SPARK.Lemmas.Integer_Arithmetic.Lemma_Mult_Is_Monotonic
+           (J, Left, Len);
          Result.Reference (K + 1 .. K + Len) :=
            Right.Reference (1 .. Right.Last);
          Lemma_Split (To_String (Right), String (Result.Reference.all), K);
          K := K + Len;
          pragma Loop_Invariant (K = J * Len);
          pragma Loop_Invariant (Result.Reference (1 .. K)'Initialized);
-         pragma Loop_Invariant
-           (for all KK in 1 .. K =>
-              Result.Reference (KK) = To_String (Right) (1 + (KK - 1) mod Len));
+         pragma
+           Loop_Invariant
+             (for all KK in 1 .. K =>
+                Result.Reference (KK)
+                = To_String (Right) (1 + (KK - 1) mod Len));
       end loop;
 
       return Result;
@@ -310,26 +302,18 @@ is
    ---------
 
    function "<"
-     (Left  : Unbounded_String;
-      Right : Unbounded_String) return Boolean
-   is
+     (Left : Unbounded_String; Right : Unbounded_String) return Boolean is
    begin
       return
         Left.Reference (1 .. Left.Last) < Right.Reference (1 .. Right.Last);
    end "<";
 
-   function "<"
-     (Left  : Unbounded_String;
-      Right : String) return Boolean
-   is
+   function "<" (Left : Unbounded_String; Right : String) return Boolean is
    begin
       return String (Left.Reference (1 .. Left.Last)) < Right;
    end "<";
 
-   function "<"
-     (Left  : String;
-      Right : Unbounded_String) return Boolean
-   is
+   function "<" (Left : String; Right : Unbounded_String) return Boolean is
    begin
       return Left < String (Right.Reference (1 .. Right.Last));
    end "<";
@@ -339,26 +323,18 @@ is
    ----------
 
    function "<="
-     (Left  : Unbounded_String;
-      Right : Unbounded_String) return Boolean
-   is
+     (Left : Unbounded_String; Right : Unbounded_String) return Boolean is
    begin
       return
         Left.Reference (1 .. Left.Last) <= Right.Reference (1 .. Right.Last);
    end "<=";
 
-   function "<="
-     (Left  : Unbounded_String;
-      Right : String) return Boolean
-   is
+   function "<=" (Left : Unbounded_String; Right : String) return Boolean is
    begin
       return String (Left.Reference (1 .. Left.Last)) <= Right;
    end "<=";
 
-   function "<="
-     (Left  : String;
-      Right : Unbounded_String) return Boolean
-   is
+   function "<=" (Left : String; Right : Unbounded_String) return Boolean is
    begin
       return Left <= String (Right.Reference (1 .. Right.Last));
    end "<=";
@@ -368,26 +344,18 @@ is
    ---------
 
    function "="
-     (Left  : Unbounded_String;
-      Right : Unbounded_String) return Boolean
-   is
+     (Left : Unbounded_String; Right : Unbounded_String) return Boolean is
    begin
       return
         Left.Reference (1 .. Left.Last) = Right.Reference (1 .. Right.Last);
    end "=";
 
-   function "="
-     (Left  : Unbounded_String;
-      Right : String) return Boolean
-   is
+   function "=" (Left : Unbounded_String; Right : String) return Boolean is
    begin
       return String (Left.Reference (1 .. Left.Last)) = Right;
    end "=";
 
-   function "="
-     (Left  : String;
-      Right : Unbounded_String) return Boolean
-   is
+   function "=" (Left : String; Right : Unbounded_String) return Boolean is
    begin
       return Left = String (Right.Reference (1 .. Right.Last));
    end "=";
@@ -397,26 +365,19 @@ is
    ---------
 
    function ">"
-     (Left  : Unbounded_String;
-      Right : Unbounded_String) return Boolean
-   is
+     (Left : Unbounded_String; Right : Unbounded_String) return Boolean is
    begin
       return
-        String (Left.Reference (1 .. Left.Last)) > String (Right.Reference (1 .. Right.Last));
+        String (Left.Reference (1 .. Left.Last))
+        > String (Right.Reference (1 .. Right.Last));
    end ">";
 
-   function ">"
-     (Left  : Unbounded_String;
-      Right : String) return Boolean
-   is
+   function ">" (Left : Unbounded_String; Right : String) return Boolean is
    begin
       return String (Left.Reference (1 .. Left.Last)) > Right;
    end ">";
 
-   function ">"
-     (Left  : String;
-      Right : Unbounded_String) return Boolean
-   is
+   function ">" (Left : String; Right : Unbounded_String) return Boolean is
    begin
       return Left > String (Right.Reference (1 .. Right.Last));
    end ">";
@@ -426,26 +387,18 @@ is
    ----------
 
    function ">="
-     (Left  : Unbounded_String;
-      Right : Unbounded_String) return Boolean
-   is
+     (Left : Unbounded_String; Right : Unbounded_String) return Boolean is
    begin
       return
         Left.Reference (1 .. Left.Last) >= Right.Reference (1 .. Right.Last);
    end ">=";
 
-   function ">="
-     (Left  : Unbounded_String;
-      Right : String) return Boolean
-   is
+   function ">=" (Left : Unbounded_String; Right : String) return Boolean is
    begin
       return String (Left.Reference (1 .. Left.Last)) >= Right;
    end ">=";
 
-   function ">="
-     (Left  : String;
-      Right : Unbounded_String) return Boolean
-   is
+   function ">=" (Left : String; Right : Unbounded_String) return Boolean is
    begin
       return Left >= String (Right.Reference (1 .. Right.Last));
    end ">=";
@@ -454,8 +407,7 @@ is
    -- Adjust --
    ------------
 
-   procedure Adjust (Object : in out Unbounded_String)
-     with SPARK_Mode => Off
+   procedure Adjust (Object : in out Unbounded_String) with SPARK_Mode => Off
    is
    begin
       --  Copy string, except we do not copy the statically allocated null
@@ -463,7 +415,8 @@ is
       --  extra string room here to avoid dragging unused allocated memory.
 
       if Object.Reference /= Null_String_Access then
-         Object.Reference := new Uninit_String'(Object.Reference (1 .. Object.Last));
+         Object.Reference :=
+           new Uninit_String'(Object.Reference (1 .. Object.Last));
       end if;
    end Adjust;
 
@@ -472,9 +425,7 @@ is
    ------------
 
    procedure Append
-     (Source   : in out Unbounded_String;
-      New_Item : Unbounded_String)
-   is
+     (Source : in out Unbounded_String; New_Item : Unbounded_String) is
    begin
       Realloc_For_Chunk (Source, New_Item.Last);
 
@@ -486,10 +437,7 @@ is
       Source.Last := Source.Last + New_Item.Last;
    end Append;
 
-   procedure Append
-     (Source   : in out Unbounded_String;
-      New_Item : String)
-   is
+   procedure Append (Source : in out Unbounded_String; New_Item : String) is
    begin
       Realloc_For_Chunk (Source, New_Item'Length);
 
@@ -501,10 +449,7 @@ is
       Source.Last := Source.Last + New_Item'Length;
    end Append;
 
-   procedure Append
-     (Source   : in out Unbounded_String;
-      New_Item : Character)
-   is
+   procedure Append (Source : in out Unbounded_String; New_Item : Character) is
    begin
       Realloc_For_Chunk (Source, 1);
       Source.Reference (Source.Last + 1) := New_Item;
@@ -518,27 +463,25 @@ is
    function Count
      (Source  : Unbounded_String;
       Pattern : String;
-      Mapping : Maps.Character_Mapping := Maps.Identity) return Natural
-   is
+      Mapping : Maps.Character_Mapping := Maps.Identity) return Natural is
    begin
       return
-        Search.Count (String (Source.Reference (1 .. Source.Last)), Pattern, Mapping);
+        Search.Count
+          (String (Source.Reference (1 .. Source.Last)), Pattern, Mapping);
    end Count;
 
    function Count
      (Source  : Unbounded_String;
       Pattern : String;
-      Mapping : Maps.Character_Mapping_Function) return Natural
-   is
+      Mapping : Maps.Character_Mapping_Function) return Natural is
    begin
       return
-        Search.Count (String (Source.Reference (1 .. Source.Last)), Pattern, Mapping);
+        Search.Count
+          (String (Source.Reference (1 .. Source.Last)), Pattern, Mapping);
    end Count;
 
    function Count
-     (Source : Unbounded_String;
-      Set    : Maps.Character_Set) return Natural
-   is
+     (Source : Unbounded_String; Set : Maps.Character_Set) return Natural is
    begin
       return Search.Count (String (Source.Reference (1 .. Source.Last)), Set);
    end Count;
@@ -548,21 +491,17 @@ is
    ------------
 
    function Delete
-     (Source  : Unbounded_String;
-      From    : Positive;
-      Through : Natural) return Unbounded_String
-   is
+     (Source : Unbounded_String; From : Positive; Through : Natural)
+      return Unbounded_String is
    begin
       return
         To_Unbounded_String
-          (Fixed.Delete (String (Source.Reference (1 .. Source.Last)), From, Through));
+          (Fixed.Delete
+             (String (Source.Reference (1 .. Source.Last)), From, Through));
    end Delete;
 
    procedure Delete
-     (Source  : in out Unbounded_String;
-      From    : Positive;
-      Through : Natural)
-   is
+     (Source : in out Unbounded_String; From : Positive; Through : Natural) is
    begin
       if From > Through then
          null;
@@ -591,23 +530,19 @@ is
    -------------
 
    function Element
-     (Source : Unbounded_String;
-      Index  : Positive) return Character
-   is
-     (if Index <= Source.Last then
-         Source.Reference (Index)
-      else
-         raise Strings.Index_Error);
+     (Source : Unbounded_String; Index : Positive) return Character
+   is (if Index <= Source.Last
+       then Source.Reference (Index)
+       else raise Strings.Index_Error);
 
    --------------
    -- Finalize --
    --------------
 
-   procedure Finalize (Object : in out Unbounded_String)
-     with SPARK_Mode => Off
+   procedure Finalize (Object : in out Unbounded_String) with SPARK_Mode => Off
    is
-      procedure Deallocate is
-         new Ada.Unchecked_Deallocation (Uninit_String, String_Access);
+      procedure Deallocate is new
+        Ada.Unchecked_Deallocation (Uninit_String, String_Access);
 
    begin
       --  Note: Don't try to free statically allocated null string
@@ -637,9 +572,18 @@ is
       First  : out Positive;
       Last   : out Natural)
    is
+      pragma
+        Assert
+          (for all J in From .. Source.Last =>
+             Element (Source, J)
+             = String (Source.Reference (From .. Source.Last)) (J));
    begin
       Search.Find_Token
-        (String (Source.Reference (From .. Source.Last)), Set, Test, First, Last);
+        (String (Source.Reference (From .. Source.Last)),
+         Set,
+         Test,
+         First,
+         Last);
    end Find_Token;
 
    procedure Find_Token
@@ -647,8 +591,7 @@ is
       Set    : Maps.Character_Set;
       Test   : Strings.Membership;
       First  : out Positive;
-      Last   : out Natural)
-   is
+      Last   : out Natural) is
    begin
       Search.Find_Token
         (String (Source.Reference (1 .. Source.Last)), Set, Test, First, Last);
@@ -659,8 +602,8 @@ is
    ----------
 
    procedure Free (X : in out String_Access) with SPARK_Mode => Off is
-      procedure Deallocate is
-         new Ada.Unchecked_Deallocation (Uninit_String, String_Access);
+      procedure Deallocate is new
+        Ada.Unchecked_Deallocation (Uninit_String, String_Access);
 
    begin
       --  Note: Do not try to free statically allocated null string
@@ -675,13 +618,14 @@ is
    ----------
 
    function Head
-     (Source : Unbounded_String;
-      Count  : Natural;
-      Pad    : Character := Space) return Unbounded_String
-   is
+     (Source : Unbounded_String; Count : Natural; Pad : Character := Space)
+      return Unbounded_String is
    begin
-      return To_Unbounded_String
-        (String (Fixed.Head (String (Source.Reference (1 .. Source.Last)), Count, Pad)));
+      return
+        To_Unbounded_String
+          (String
+             (Fixed.Head
+                (String (Source.Reference (1 .. Source.Last)), Count, Pad)));
    end Head;
 
    procedure Head
@@ -690,11 +634,13 @@ is
       Pad    : Character := Space)
    is
       Old_Len : constant Natural := Source.Last;
-      Tmp : constant String_Access :=
-        new Uninit_String'(Uninit_String (Fixed.Head (String (Source.Reference (1 .. Source.Last)),
-                           Count, Pad)));
-      Len : constant Natural := Tmp'Length;
-      Old : String_Access := Source.Reference;
+      Tmp     : constant String_Access :=
+        new Uninit_String'
+          (Uninit_String
+             (Fixed.Head
+                (String (Source.Reference (1 .. Source.Last)), Count, Pad)));
+      Len     : constant Natural := Tmp'Length;
+      Old     : String_Access := Source.Reference;
    begin
       Source := Unbounded_String'(Reference => Tmp, Last => Len);
       Free (Old);
@@ -708,33 +654,39 @@ is
      (Source  : Unbounded_String;
       Pattern : String;
       Going   : Strings.Direction := Strings.Forward;
-      Mapping : Maps.Character_Mapping := Maps.Identity) return Natural
-   is
+      Mapping : Maps.Character_Mapping := Maps.Identity) return Natural is
    begin
-      return Search.Index
-        (String (Source.Reference (1 .. Source.Last)), Pattern, Going, Mapping);
+      return
+        Search.Index
+          (String (Source.Reference (1 .. Source.Last)),
+           Pattern,
+           Going,
+           Mapping);
    end Index;
 
    function Index
      (Source  : Unbounded_String;
       Pattern : String;
       Going   : Direction := Forward;
-      Mapping : Maps.Character_Mapping_Function) return Natural
-   is
+      Mapping : Maps.Character_Mapping_Function) return Natural is
    begin
-      return Search.Index
-        (String (Source.Reference (1 .. Source.Last)), Pattern, Going, Mapping);
+      return
+        Search.Index
+          (String (Source.Reference (1 .. Source.Last)),
+           Pattern,
+           Going,
+           Mapping);
    end Index;
 
    function Index
      (Source : Unbounded_String;
       Set    : Maps.Character_Set;
       Test   : Strings.Membership := Strings.Inside;
-      Going  : Strings.Direction  := Strings.Forward) return Natural
-   is
+      Going  : Strings.Direction := Strings.Forward) return Natural is
    begin
-      return Search.Index
-        (String (Source.Reference (1 .. Source.Last)), Set, Test, Going);
+      return
+        Search.Index
+          (String (Source.Reference (1 .. Source.Last)), Set, Test, Going);
    end Index;
 
    function Index
@@ -742,11 +694,15 @@ is
       Pattern : String;
       From    : Positive;
       Going   : Direction := Forward;
-      Mapping : Maps.Character_Mapping := Maps.Identity) return Natural
-   is
+      Mapping : Maps.Character_Mapping := Maps.Identity) return Natural is
    begin
-      return Search.Index
-        (String (Source.Reference (1 .. Source.Last)), Pattern, From, Going, Mapping);
+      return
+        Search.Index
+          (String (Source.Reference (1 .. Source.Last)),
+           Pattern,
+           From,
+           Going,
+           Mapping);
    end Index;
 
    function Index
@@ -754,32 +710,41 @@ is
       Pattern : String;
       From    : Positive;
       Going   : Direction := Forward;
-      Mapping : Maps.Character_Mapping_Function) return Natural
-   is
+      Mapping : Maps.Character_Mapping_Function) return Natural is
    begin
-      return Search.Index
-        (String (Source.Reference (1 .. Source.Last)), Pattern, From, Going, Mapping);
+      return
+        Search.Index
+          (String (Source.Reference (1 .. Source.Last)),
+           Pattern,
+           From,
+           Going,
+           Mapping);
    end Index;
 
    function Index
-     (Source  : Unbounded_String;
-      Set     : Maps.Character_Set;
-      From    : Positive;
-      Test    : Membership := Inside;
-      Going   : Direction := Forward) return Natural
-   is
+     (Source : Unbounded_String;
+      Set    : Maps.Character_Set;
+      From   : Positive;
+      Test   : Membership := Inside;
+      Going  : Direction := Forward) return Natural is
    begin
-      pragma Assert
-        (for all J in 1 .. Source.Last =>
-           Element (Source, J) = String (Source.Reference (1 .. Source.Last)) (J));
-      return Search.Index
-        (String (Source.Reference (1 .. Source.Last)), Set, From, Test, Going);
+      pragma
+        Assert
+          (for all J in 1 .. Source.Last =>
+             Element (Source, J)
+             = String (Source.Reference (1 .. Source.Last)) (J));
+      return
+        Search.Index
+          (String (Source.Reference (1 .. Source.Last)),
+           Set,
+           From,
+           Test,
+           Going);
    end Index;
 
    function Index_Non_Blank
-     (Source : Unbounded_String;
-      Going  : Strings.Direction := Strings.Forward) return Natural
-   is
+     (Source : Unbounded_String; Going : Strings.Direction := Strings.Forward)
+      return Natural is
    begin
       return
         Search.Index_Non_Blank
@@ -787,10 +752,8 @@ is
    end Index_Non_Blank;
 
    function Index_Non_Blank
-     (Source : Unbounded_String;
-      From   : Positive;
-      Going  : Direction := Forward) return Natural
-   is
+     (Source : Unbounded_String; From : Positive; Going : Direction := Forward)
+      return Natural is
    begin
       return
         Search.Index_Non_Blank
@@ -802,11 +765,11 @@ is
    ----------------
 
    procedure Initialize (Object : in out Unbounded_String)
-     with SPARK_Mode => Off
+   with SPARK_Mode => Off
    is
    begin
       Object.Reference := Null_Unbounded_String.Reference;
-      Object.Last      := 0;
+      Object.Last := 0;
    end Initialize;
 
    ------------
@@ -814,19 +777,20 @@ is
    ------------
 
    function Insert
-     (Source   : Unbounded_String;
-      Before   : Positive;
-      New_Item : String) return Unbounded_String
-   is
+     (Source : Unbounded_String; Before : Positive; New_Item : String)
+      return Unbounded_String is
    begin
-      return To_Unbounded_String
-        (String (Fixed.Insert (String (Source.Reference (1 .. Source.Last)), Before, New_Item)));
+      return
+        To_Unbounded_String
+          (String
+             (Fixed.Insert
+                (String (Source.Reference (1 .. Source.Last)),
+                 Before,
+                 New_Item)));
    end Insert;
 
    procedure Insert
-     (Source   : in out Unbounded_String;
-      Before   : Positive;
-      New_Item : String)
+     (Source : in out Unbounded_String; Before : Positive; New_Item : String)
    is
    begin
       if Before - 1 > Source.Last then
@@ -838,10 +802,11 @@ is
       if Before <= Source.Last then
          Source.Reference
            (Before + New_Item'Length .. Source.Last + New_Item'Length) :=
-             Source.Reference (Before .. Source.Last);
+           Source.Reference (Before .. Source.Last);
       end if;
 
-      Source.Reference (Before .. Before - 1 + New_Item'Length) := Uninit_String (New_Item);
+      Source.Reference (Before .. Before - 1 + New_Item'Length) :=
+        Uninit_String (New_Item);
       Source.Last := Source.Last + New_Item'Length;
    end Insert;
 
@@ -849,45 +814,50 @@ is
    -- Length --
    ------------
 
-   function Length (Source : Unbounded_String) return Natural is
-     (Source.Last);
+   function Length (Source : Unbounded_String) return Natural
+   is (Source.Last);
 
    ---------
    -- Mul --
    ---------
 
-   function Mul (Left, Right : Natural) return Natural is
-     (Left * Right);
+   function Mul (Left, Right : Natural) return Natural
+   is (Left * Right);
 
    ---------------
    -- Overwrite --
    ---------------
 
    function Overwrite
-     (Source   : Unbounded_String;
-      Position : Positive;
-      New_Item : String) return Unbounded_String
-   is
+     (Source : Unbounded_String; Position : Positive; New_Item : String)
+      return Unbounded_String is
    begin
-      return To_Unbounded_String
-        (String (Fixed.Overwrite
-          (String (Source.Reference (1 .. Source.Last)), Position, New_Item)));
+      return
+        To_Unbounded_String
+          (String
+             (Fixed.Overwrite
+                (String (Source.Reference (1 .. Source.Last)),
+                 Position,
+                 New_Item)));
    end Overwrite;
 
    procedure Overwrite
-     (Source    : in out Unbounded_String;
-      Position  : Positive;
-      New_Item  : String)
+     (Source : in out Unbounded_String; Position : Positive; New_Item : String)
    is
       NL : constant Natural := New_Item'Length;
    begin
       if Position - 1 <= Source.Last - NL then
-         Source.Reference (Position .. Position - 1 + NL) := Uninit_String (New_Item);
+         Source.Reference (Position .. Position - 1 + NL) :=
+           Uninit_String (New_Item);
       else
          declare
-	    Tmp : constant String_Access := new Uninit_String'
-              (Uninit_String (Fixed.Overwrite
-                (String (Source.Reference (1 .. Source.Last)), Position, New_Item)));
+            Tmp : constant String_Access :=
+              new Uninit_String'
+                (Uninit_String
+                   (Fixed.Overwrite
+                      (String (Source.Reference (1 .. Source.Last)),
+                       Position,
+                       New_Item)));
             Old : String_Access := Source.Reference;
          begin
             Source.Reference := Tmp;
@@ -895,6 +865,10 @@ is
             Free (Old);
          end;
       end if;
+      pragma
+        Assert
+          (String (Source.Reference (Position .. Position - 1 + NL))
+           = New_Item);
    end Overwrite;
 
    ---------------
@@ -904,7 +878,7 @@ is
    procedure Put_Image
      (S : in out Ada.Strings.Text_Buffers.Root_Buffer_Type'Class;
       V : Unbounded_String)
-     with SPARK_Mode => Off -- attribute Put_Image is not allowed in SPARK
+   with SPARK_Mode => Off -- attribute Put_Image is not allowed in SPARK
    is
    begin
       String'Put_Image (S, To_String (Unbounded_String (V)));
@@ -915,8 +889,7 @@ is
    -----------------------
 
    procedure Realloc_For_Chunk
-     (Source     : in out Unbounded_String;
-      Chunk_Size : Natural)
+     (Source : in out Unbounded_String; Chunk_Size : Natural)
    is
       Growth_Factor : constant := 2;
       --  The growth factor controls how much extra space is allocated when
@@ -968,10 +941,7 @@ is
    ---------------------
 
    procedure Replace_Element
-     (Source : in out Unbounded_String;
-      Index  : Positive;
-      By     : Character)
-   is
+     (Source : in out Unbounded_String; Index : Positive; By : Character) is
    begin
       if Index <= Source.Last then
          Source.Reference (Index) := By;
@@ -985,15 +955,17 @@ is
    -------------------
 
    function Replace_Slice
-     (Source : Unbounded_String;
-      Low    : Positive;
-      High   : Natural;
-      By     : String) return Unbounded_String
-   is
+     (Source : Unbounded_String; Low : Positive; High : Natural; By : String)
+      return Unbounded_String is
    begin
-      return To_Unbounded_String
-        (String (Fixed.Replace_Slice
-           (String (Source.Reference (1 .. Source.Last)), Low, High, By)));
+      return
+        To_Unbounded_String
+          (String
+             (Fixed.Replace_Slice
+                (String (Source.Reference (1 .. Source.Last)),
+                 Low,
+                 High,
+                 By)));
    end Replace_Slice;
 
    procedure Replace_Slice
@@ -1002,9 +974,14 @@ is
       High   : Natural;
       By     : String)
    is
-      Tmp : constant String_Access := new Uninit_String'
-        (Uninit_String (Fixed.Replace_Slice
-           (String (Source.Reference (1 .. Source.Last)), Low, High, By)));
+      Tmp : constant String_Access :=
+        new Uninit_String'
+          (Uninit_String
+             (Fixed.Replace_Slice
+                (String (Source.Reference (1 .. Source.Last)),
+                 Low,
+                 High,
+                 By)));
       Len : constant Natural := Tmp'Length;
       Old : String_Access := Source.Reference;
    begin
@@ -1016,38 +993,34 @@ is
    -- Saturated_Mul --
    -------------------
 
-   function Saturated_Mul (Left, Right : Positive) return Positive is
-     (if Long_Long_Integer (Left) * Long_Long_Integer (Right) <=
-        Long_Long_Integer (Natural'Last)
-      then
-         Mul (Left, Right)
-      else
-         Natural'Last);
+   function Saturated_Mul (Left, Right : Positive) return Positive
+   is (if Long_Long_Integer (Left) * Long_Long_Integer (Right)
+         <= Long_Long_Integer (Natural'Last)
+       then Mul (Left, Right)
+       else Natural'Last);
 
    -------------------
    -- Saturated_Sum --
    -------------------
 
-   function Saturated_Sum (Left, Right : Natural) return Natural is
-     (if Right <= Natural'Last - Left then
-         Sum (Left, Right)
-      else
-         Natural'Last);
+   function Saturated_Sum (Left, Right : Natural) return Natural
+   is (if Right <= Natural'Last - Left
+       then Sum (Left, Right)
+       else Natural'Last);
 
    --------------------------
    -- Set_Unbounded_String --
    --------------------------
 
    procedure Set_Unbounded_String
-     (Target : in out Unbounded_String;
-      Source : String)
+     (Target : in out Unbounded_String; Source : String)
    is
       Old : String_Access := Target.Reference;
       subtype Str is Uninit_String (1 .. Source'Length);
    begin
       Target :=
-        Unbounded_String'(Reference => new Str'(Str (Source)),
-                          Last      => Source'Length);
+        Unbounded_String'
+          (Reference => new Str'(Str (Source)), Last => Source'Length);
       Free (Old);
    end Set_Unbounded_String;
 
@@ -1056,35 +1029,34 @@ is
    -----------
 
    function Slice
-     (Source : Unbounded_String;
-      Low    : Positive;
-      High   : Natural) return String
+     (Source : Unbounded_String; Low : Positive; High : Natural) return String
    is
       --  Note: test of High > Length is in accordance with AI95-00128
 
-     (if Low - 1 > Source.Last or else High > Source.Last then
-         raise Index_Error
-      else
-         String (Source.Reference (Low .. High)));
+      (if Low - 1 > Source.Last or else High > Source.Last
+       then raise Index_Error
+       else String (Source.Reference (Low .. High)));
 
    ---------
    -- Sum --
    ---------
 
-   function Sum (Left, Right : Natural) return Natural is
-     (Left + Right);
+   function Sum (Left, Right : Natural) return Natural
+   is (Left + Right);
 
    ----------
    -- Tail --
    ----------
 
    function Tail
-     (Source : Unbounded_String;
-      Count  : Natural;
-      Pad    : Character := Space) return Unbounded_String is
+     (Source : Unbounded_String; Count : Natural; Pad : Character := Space)
+      return Unbounded_String is
    begin
-      return To_Unbounded_String
-        (String (Fixed.Tail (String (Source.Reference (1 .. Source.Last)), Count, Pad)));
+      return
+        To_Unbounded_String
+          (String
+             (Fixed.Tail
+                (String (Source.Reference (1 .. Source.Last)), Count, Pad)));
    end Tail;
 
    procedure Tail
@@ -1092,8 +1064,11 @@ is
       Count  : Natural;
       Pad    : Character := Space)
    is
-      Tmp : constant String_Access := new Uninit_String'
-        (Uninit_String (Fixed.Tail (String (Source.Reference (1 .. Source.Last)), Count, Pad)));
+      Tmp : constant String_Access :=
+        new Uninit_String'
+          (Uninit_String
+             (Fixed.Tail
+                (String (Source.Reference (1 .. Source.Last)), Count, Pad)));
       Len : constant Natural := Tmp'Length;
       Old : String_Access := Source.Reference;
    begin
@@ -1105,29 +1080,25 @@ is
    -- To_String --
    ---------------
 
-   function To_String (Source : Unbounded_String) return String is
-     (String (Source.Reference (1 .. Source.Last)));
+   function To_String (Source : Unbounded_String) return String
+   is (String (Source.Reference (1 .. Source.Last)));
 
    -------------------------
    -- To_Unbounded_String --
    -------------------------
 
-   function To_Unbounded_String
-     (Source : String) return Unbounded_String
-   is
+   function To_Unbounded_String (Source : String) return Unbounded_String is
       subtype Str is Uninit_String (1 .. Source'Length);
       Result : Unbounded_String :=
-        (Reference => new Str'(others => <>),
-         Last      => Source'Length);
+        (Reference => new Str'(others => <>), Last => Source'Length);
    begin
       Result.Reference.all := Uninit_String (Source);
 
       return Unbounded_String (Result);
    end To_Unbounded_String;
 
-   function To_Unbounded_String
-     (Length : Natural) return Unbounded_String
-     with SPARK_Mode => Off
+   function To_Unbounded_String (Length : Natural) return Unbounded_String
+   with SPARK_Mode => Off
    is
       Result : Unbounded_String;
 
@@ -1135,7 +1106,7 @@ is
       --  Do not allocate an empty string: keep the default
 
       if Length > 0 then
-         Result.Last      := Length;
+         Result.Last := Length;
          Result.Reference := new Uninit_String (1 .. Length);
       end if;
 
@@ -1147,35 +1118,36 @@ is
    ---------------
 
    function Translate
-     (Source  : Unbounded_String;
-      Mapping : Maps.Character_Mapping) return Unbounded_String
-   is
+     (Source : Unbounded_String; Mapping : Maps.Character_Mapping)
+      return Unbounded_String is
    begin
-      return To_Unbounded_String
-        (String (Fixed.Translate (String (Source.Reference (1 .. Source.Last)), Mapping)));
+      return
+        To_Unbounded_String
+          (String
+             (Fixed.Translate
+                (String (Source.Reference (1 .. Source.Last)), Mapping)));
    end Translate;
 
    procedure Translate
-     (Source  : in out Unbounded_String;
-      Mapping : Maps.Character_Mapping)
-   is
+     (Source : in out Unbounded_String; Mapping : Maps.Character_Mapping) is
    begin
       Fixed.Translate (String (Source.Reference (1 .. Source.Last)), Mapping);
    end Translate;
 
    function Translate
-     (Source  : Unbounded_String;
-      Mapping : Maps.Character_Mapping_Function) return Unbounded_String
-   is
+     (Source : Unbounded_String; Mapping : Maps.Character_Mapping_Function)
+      return Unbounded_String is
    begin
-      return To_Unbounded_String
-        (String (Fixed.Translate (String (Source.Reference (1 .. Source.Last)), Mapping)));
+      return
+        To_Unbounded_String
+          (String
+             (Fixed.Translate
+                (String (Source.Reference (1 .. Source.Last)), Mapping)));
    end Translate;
 
    procedure Translate
      (Source  : in out Unbounded_String;
-      Mapping : Maps.Character_Mapping_Function)
-   is
+      Mapping : Maps.Character_Mapping_Function) is
    begin
       Fixed.Translate (String (Source.Reference (1 .. Source.Last)), Mapping);
    end Translate;
@@ -1185,28 +1157,39 @@ is
    ----------
 
    function Trim
-     (Source : Unbounded_String;
-      Side   : Trim_End) return Unbounded_String
-   is
+     (Source : Unbounded_String; Side : Trim_End) return Unbounded_String is
    begin
-      pragma Assert (Index_Non_Blank (Source, Forward) =
-                       Fixed.Index_Non_Blank (String (Source.Reference (1 .. Source.Last)), Forward));
-      pragma Assert (Index_Non_Blank (Source, Backward) =
-                       Fixed.Index_Non_Blank (String (Source.Reference (1 .. Source.Last)), Backward));
-      return To_Unbounded_String
-        (Fixed.Trim (String (Source.Reference (1 .. Source.Last)), Side));
+      pragma
+        Assert
+          (Index_Non_Blank (Source, Forward)
+           = Fixed.Index_Non_Blank
+               (String (Source.Reference (1 .. Source.Last)), Forward));
+      pragma
+        Assert
+          (Index_Non_Blank (Source, Backward)
+           = Fixed.Index_Non_Blank
+               (String (Source.Reference (1 .. Source.Last)), Backward));
+      return
+        To_Unbounded_String
+          (Fixed.Trim (String (Source.Reference (1 .. Source.Last)), Side));
    end Trim;
 
-   procedure Trim
-     (Source : in out Unbounded_String;
-      Side   : Trim_End)
-   is
-      pragma Assert (Index_Non_Blank (Source, Forward) =
-                       Fixed.Index_Non_Blank (String (Source.Reference (1 .. Source.Last)), Forward));
-      pragma Assert (Index_Non_Blank (Source, Backward) =
-                       Fixed.Index_Non_Blank (String (Source.Reference (1 .. Source.Last)), Backward));
-      Tmp : constant String_Access := new Uninit_String'
-        (Uninit_String (Fixed.Trim (String (Source.Reference (1 .. Source.Last)), Side)));
+   procedure Trim (Source : in out Unbounded_String; Side : Trim_End) is
+      pragma
+        Assert
+          (Index_Non_Blank (Source, Forward)
+           = Fixed.Index_Non_Blank
+               (String (Source.Reference (1 .. Source.Last)), Forward));
+      pragma
+        Assert
+          (Index_Non_Blank (Source, Backward)
+           = Fixed.Index_Non_Blank
+               (String (Source.Reference (1 .. Source.Last)), Backward));
+      Tmp : constant String_Access :=
+        new Uninit_String'
+          (Uninit_String
+             (Fixed.Trim
+                (String (Source.Reference (1 .. Source.Last)), Side)));
       Len : constant Natural := Tmp'Length;
       Old : String_Access := Source.Reference;
    begin
@@ -1219,13 +1202,33 @@ is
       Left   : Maps.Character_Set;
       Right  : Maps.Character_Set) return Unbounded_String
    is
+      pragma
+        Assert
+          (for all J in 1 .. Source.Last =>
+             Element (Source, J)
+             = String (Source.Reference (1 .. Source.Last)) (J));
+      pragma
+        Assert
+          (Index (Source, Left, Outside, Forward)
+           = Fixed.Index
+               (String (Source.Reference (1 .. Source.Last)),
+                Left,
+                Outside,
+                Forward));
+      pragma
+        Assert
+          (Index (Source, Right, Outside, Backward)
+           = Fixed.Index
+               (String (Source.Reference (1 .. Source.Last)),
+                Right,
+                Outside,
+                Backward));
    begin
-      pragma Assert (Index (Source, Left, Outside, Forward) =
-                       Fixed.Index (String (Source.Reference (1 .. Source.Last)), Left, Outside, Forward));
-      pragma Assert (Index (Source, Right, Outside, Backward) =
-                       Fixed.Index (String (Source.Reference (1 .. Source.Last)), Right, Outside, Backward));
-      return To_Unbounded_String
-        (String (Fixed.Trim (String (Source.Reference (1 .. Source.Last)), Left, Right)));
+      return
+        To_Unbounded_String
+          (String
+             (Fixed.Trim
+                (String (Source.Reference (1 .. Source.Last)), Left, Right)));
    end Trim;
 
    procedure Trim
@@ -1233,15 +1236,32 @@ is
       Left   : Maps.Character_Set;
       Right  : Maps.Character_Set)
    is
-      pragma Assert
-        (for all J in 1 .. Source.Last =>
-           Element (Source, J) = String (Source.Reference (1 .. Source.Last)) (J));
-      pragma Assert (Index (Source, Left, Outside, Forward) =
-                       Fixed.Index (String (Source.Reference (1 .. Source.Last)), Left, Outside, Forward));
-      pragma Assert (Index (Source, Right, Outside, Backward) =
-                       Fixed.Index (String (Source.Reference (1 .. Source.Last)), Right, Outside, Backward));
-      Tmp : constant String_Access := new Uninit_String'
-        (Uninit_String (Fixed.Trim (String (Source.Reference (1 .. Source.Last)), Left, Right)));
+      pragma
+        Assert
+          (for all J in 1 .. Source.Last =>
+             Element (Source, J)
+             = String (Source.Reference (1 .. Source.Last)) (J));
+      pragma
+        Assert
+          (Index (Source, Left, Outside, Forward)
+           = Fixed.Index
+               (String (Source.Reference (1 .. Source.Last)),
+                Left,
+                Outside,
+                Forward));
+      pragma
+        Assert
+          (Index (Source, Right, Outside, Backward)
+           = Fixed.Index
+               (String (Source.Reference (1 .. Source.Last)),
+                Right,
+                Outside,
+                Backward));
+      Tmp : constant String_Access :=
+        new Uninit_String'
+          (Uninit_String
+             (Fixed.Trim
+                (String (Source.Reference (1 .. Source.Last)), Left, Right)));
       Len : constant Natural := Tmp'Length;
       Old : String_Access := Source.Reference;
    begin
@@ -1254,15 +1274,14 @@ is
    ---------------------
 
    function Unbounded_Slice
-     (Source : Unbounded_String;
-      Low    : Positive;
-      High   : Natural) return Unbounded_String
-   is
+     (Source : Unbounded_String; Low : Positive; High : Natural)
+      return Unbounded_String is
    begin
       if Low - 1 > Source.Last or else High > Source.Last then
          raise Index_Error;
       else
-         return To_Unbounded_String (String (Source.Reference.all (Low .. High)));
+         return
+           To_Unbounded_String (String (Source.Reference.all (Low .. High)));
       end if;
    end Unbounded_Slice;
 
@@ -1270,13 +1289,13 @@ is
      (Source : Unbounded_String;
       Target : out Unbounded_String;
       Low    : Positive;
-      High   : Natural)
-   is
+      High   : Natural) is
    begin
       if Low - 1 > Source.Last or else High > Source.Last then
          raise Index_Error;
       else
-         Target := To_Unbounded_String (String (Source.Reference.all (Low .. High)));
+         Target :=
+           To_Unbounded_String (String (Source.Reference.all (Low .. High)));
       end if;
    end Unbounded_Slice;
 

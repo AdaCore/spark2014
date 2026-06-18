@@ -26,6 +26,7 @@
 with Ada.Containers;
 use type Ada.Containers.Count_Type;
 with Ada.Containers.Doubly_Linked_Lists;
+with Ada.Containers.Hashed_Maps;
 with Ada.Strings.Unbounded;          use Ada.Strings.Unbounded;
 with Atree;
 with Errout_Wrapper;                 use Errout_Wrapper;
@@ -253,6 +254,155 @@ package body Gnat2Why.Subprograms is
    --  Returns the postcondition corresponding to the Program_Exit pragma for
    --  subprogram E (if any), to be used in the raises effect of the program
    --  function.
+
+   function Compute_Modifies_Component_Checks
+     (E            : Entity_Id;
+      Expr_Map     : Ada_Node_To_Why_Id.Map;
+      Exceptional  : Boolean := False;
+      Program_Exit : Boolean := False) return W_Prog_Id;
+   --  Generate checks for component selection, index, and dereference occuring
+   --  in Modifies contracts. If Exceptional is set, the check is for
+   --  exceptional exit. If Program_Exit is set, its is for program exit.
+
+   package Flow_Id_To_Node_Maps is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Flow_Id,
+        Element_Type    => Node_Id,
+        Hash            => Hash,
+        Equivalent_Keys => "=");
+
+   --  Association trees for Modifies contract do not contain values as none
+   --  are specified in the contract.
+
+   type No_Value is null record;
+   function Record_Access
+     (Prefix : No_Value; Dummy : Entity_Id) return No_Value
+   is (Prefix);
+   function Array_Access (Prefix : No_Value; Dummy : Positive) return No_Value
+   is (Prefix);
+   function Designated_Data_Access (Prefix : No_Value) return No_Value
+   is (Prefix);
+
+   package Modifies_Trees is new
+     Association_Trees
+       (Value_Type             => No_Value,
+        Record_Access          => Record_Access,
+        Array_Access           => Array_Access,
+        Designated_Data_Access => Designated_Data_Access,
+        In_Delta               => False);
+   use Modifies_Trees;
+
+   function Find_Association_In_Modifies
+     (Object : Entity_Id; Association_Tree : Write_Status_Maps.Map)
+      return Write_Status_Access;
+   --  Return the write status for Object in Modifies if any. This version does
+   --  not handle components of abstract states.
+
+   function Find_Association_In_Modifies
+     (Object           : Flow_Id;
+      Abstract_States  : Flow_Id_To_Node_Maps.Map;
+      Association_Tree : Write_Status_Maps.Map) return Write_Status_Access;
+   --  Same as above but with a flow id. Handles components of abstract states
+   --  by looking into the Abstract_States map to retrieve the appropriate
+   --  abstract state.
+
+   function Is_Discarded_In_Modifies
+     (Association : access constant Write_Status) return Boolean
+   is (Association /= null
+       and then
+         (for some V of Association.Values =>
+            No (V.Guard) and then V.Status.Kind = Entire));
+   --  Return True if association contains at least an unconditional
+   --  entire write.
+
+   function Is_Discarded_In_Modifies
+     (Object : Entity_Id; Association_Tree : Write_Status_Maps.Map)
+      return Boolean
+   is (Is_Discarded_In_Modifies
+         (Find_Association_In_Modifies (Object, Association_Tree)));
+
+   function Is_Discarded_In_Modifies
+     (Object           : Flow_Id;
+      Abstract_States  : Flow_Id_To_Node_Maps.Map;
+      Association_Tree : Write_Status_Maps.Map) return Boolean
+   is (Is_Discarded_In_Modifies
+         (Find_Association_In_Modifies
+            (Object, Abstract_States, Association_Tree)));
+
+   procedure Parse_Modifies_Contract
+     (E                : Entity_Id;
+      Old_Expr_Map     : out Ada_Node_To_Why_Id.Map;
+      Abstract_States  : out Flow_Id_To_Node_Maps.Map;
+      Association_Tree : out Write_Status_Maps.Map)
+   with
+     Post =>
+       (for all P in Association_Tree.Iterate =>
+          not Abstract_States.Contains
+                (Direct_Mapping_Id (Write_Status_Maps.Key (P))));
+   --  Parse the Modifies contract of E to retrieve the following information:
+   --  @param Old_Expr_Map the map from expression that should be evaluated in
+   --      the pre state in the Modifies contract of E, to Why identifiers for
+   --      the value of these expressions in the Why3 program. It includes both
+   --      guards and indices of indexed components.
+   --  @param Abstract_States maps outputs of E their abstract state as
+   --      mentioned in E's modfies contract if any.
+   --  @param Association_Tree maps outputs of E to a tree representing its
+   --      potential writes as described by E's modifies contract. Potential
+   --      abstract states are not expanded. The Abstract_States map should be
+   --      used to retrieve the tree for each "proof" global output of E.
+
+   function Insert_Bindings_For_Modifies
+     (Subp         : Entity_Id;
+      Expr         : W_Expr_Id;
+      Domain       : EW_Domain;
+      Params       : Transformation_Params;
+      Old_Expr_Map : Ada_Node_To_Why_Id.Map;
+      As_Old       : Boolean := False) return W_Expr_Id;
+   --  Introduce bindings for expressions that should be evaluated on
+   --  subprogram entry for a Modifies contract.
+   --  If As_Old is True, introduce a reference to old.
+
+   generic
+      with procedure Process_Predicate (Id : Flow_Id; Pred : W_Pred_Id);
+   procedure Process_Modifies_Clauses
+     (E                : Entity_Id;
+      Old_Expr_Map     : Ada_Node_To_Why_Id.Map;
+      Abstract_States  : Flow_Id_To_Node_Maps.Map;
+      Association_Tree : Write_Status_Maps.Map;
+      Params           : Transformation_Params;
+      As_Old           : Boolean;
+      Exceptional      : Boolean := False;
+      Program_Exit     : Boolean := False)
+   with Pre => Present (Get_Pragma (E, Pragma_Modifies));
+   --  Apply Process_Predicate to the predicates generated for each output of E
+   --  that is not discarded.
+   --  If As_Old is True, use old references directly for the old value of
+   --  outputs. Otherwise, use old names stored in Old_Expr_Map.
+   --  If Exceptional is True, discard formal parameter that are not by
+   --  reference.
+   --  If Program_Exit is True, discard all formal parameters and the global
+   --  outputs that are not mentioned in the program exit post of E.
+
+   function Modifies_Contract_As_Pred
+     (E                : Entity_Id;
+      Old_Expr_Map     : Ada_Node_To_Why_Id.Map;
+      Abstract_States  : Flow_Id_To_Node_Maps.Map;
+      Association_Tree : Write_Status_Maps.Map;
+      Params           : Transformation_Params;
+      As_Old           : Boolean;
+      Exceptional      : Boolean := False;
+      Program_Exit     : Boolean := False) return W_Pred_Id;
+   --  Instance of Process_Modifies_Clauses that aggregates all predicates in
+   --  a single conjunction.
+
+   function Modifies_Contract_As_Pred
+     (E            : Entity_Id;
+      Params       : Transformation_Params;
+      Exceptional  : Boolean := False;
+      Program_Exit : Boolean := False) return W_Pred_Id
+   with Pre => Params.Old_Policy in As_Old | Ignore;
+   --  Same as above but get the structures from E by parsing the Modifies
+   --  contract of E. Add let bindings for expressions in Old_Exr_Map.
 
    function Compute_Dynamic_Property_For_Effects
      (E           : Entity_Id;
@@ -1812,6 +1962,111 @@ package body Gnat2Why.Subprograms is
       end loop;
       return Pred;
    end Compute_Guard_Formula;
+
+   ---------------------------------------
+   -- Compute_Modifies_Component_Checks --
+   ---------------------------------------
+
+   function Compute_Modifies_Component_Checks
+     (E            : Entity_Id;
+      Expr_Map     : Ada_Node_To_Why_Id.Map;
+      Exceptional  : Boolean := False;
+      Program_Exit : Boolean := False) return W_Prog_Id
+   is
+      Relevant_Outputs : constant Flow_Id_Sets.Set :=
+        (if Program_Exit
+         then Get_Outputs_From_Program_Exit (E, E)
+         else Flow_Id_Sets.Empty_Set);
+
+      procedure Append_Checks_For_Object
+        (Object : Node_Id; Checks : in out W_Statement_Sequence_Id);
+      --  Append checks for Object to Checks if they are relevant for the
+      --  considered path. We do not try to avoid redoing checks on exits for
+      --  constant constraints for now.
+
+      ------------------------------
+      -- Append_Checks_For_Object --
+      ------------------------------
+
+      procedure Append_Checks_For_Object
+        (Object : Node_Id; Checks : in out W_Statement_Sequence_Id)
+      is
+         Root : constant Entity_Id := Get_Root_Object (Object);
+      begin
+         if Nkind (Object) in N_Identifier | N_Expanded_Name
+           or else
+             (Exceptional
+              and then Is_Formal (Root)
+              and then not By_Reference (Root))
+           or else
+             (Program_Exit
+              and then
+                not Relevant_Outputs.Contains (Direct_Mapping_Id (Root)))
+         then
+            null;
+         else
+            Append
+              (Checks, Compute_Checks_For_Subcomponent (Object, Expr_Map));
+         end if;
+      end Append_Checks_For_Object;
+
+      Prag : constant Node_Id := Get_Pragma (E, Pragma_Modifies);
+      Aggr : Node_Id;
+      P    : W_Statement_Sequence_Id := Void_Sequence;
+
+   begin
+      if Present (Prag) then
+         Aggr := Expression (First (Pragma_Argument_Associations (Prag)));
+         declare
+            Clause : Node_Id := First (Component_Associations (Aggr));
+            Object : Node_Id;
+         begin
+            while Present (Clause) loop
+               declare
+                  Checks : W_Statement_Sequence_Id := Void_Sequence;
+               begin
+
+                  --  Collect checks for objects
+
+                  Object := First (Choice_List (Clause));
+                  loop
+                     Append_Checks_For_Object (Object, Checks);
+                     Next (Object);
+                     exit when No (Object);
+                  end loop;
+
+                  --  Add Checks to P with the guard if any
+
+                  if Is_Void_Sequence (Checks) then
+                     null;
+
+                  elsif Present (Expression (Clause)) then
+                     Append
+                       (P,
+                        New_Conditional
+                          (Condition => +Expr_Map (Expression (Clause)),
+                           Then_Part => +Checks,
+                           Else_Part => +Void));
+
+                  else
+                     Append (P, Checks);
+                  end if;
+               end;
+
+               Next (Clause);
+            end loop;
+
+            Object := First (Expressions (Aggr));
+
+            while Present (Object) loop
+               Append_Checks_For_Object (Object, P);
+               Next (Object);
+            end loop;
+         end;
+      end if;
+
+      return +P;
+   end Compute_Modifies_Component_Checks;
 
    ---------------------------------------------
    -- Compute_Moved_Property_For_Deep_Outputs --
@@ -3453,6 +3708,54 @@ package body Gnat2Why.Subprograms is
       end if;
    end Declare_Logic_Functions;
 
+   ----------------------------------
+   -- Find_Association_In_Modifies --
+   ----------------------------------
+
+   function Find_Association_In_Modifies
+     (Object           : Flow_Id;
+      Abstract_States  : Flow_Id_To_Node_Maps.Map;
+      Association_Tree : Write_Status_Maps.Map) return Write_Status_Access
+   is
+      use Flow_Id_To_Node_Maps;
+      State_Position : constant Flow_Id_To_Node_Maps.Cursor :=
+        Abstract_States.Find (Object);
+   begin
+      --  If Object is part of an abstract state, use it
+
+      if Has_Element (State_Position) then
+         return
+           Find_Association_In_Modifies
+             (Element (State_Position), Association_Tree);
+
+      --  Otherwise, use the associated node if any
+
+      elsif Object.Kind = Direct_Mapping then
+         return Find_Association_In_Modifies (Object.Node, Association_Tree);
+
+      --  Opaque objects can only be mentioned through abstract states
+
+      else
+         pragma Assert (Is_Opaque_For_Proof (Object));
+         return null;
+      end if;
+   end Find_Association_In_Modifies;
+
+   function Find_Association_In_Modifies
+     (Object : Entity_Id; Association_Tree : Write_Status_Maps.Map)
+      return Write_Status_Access
+   is
+      use Write_Status_Maps;
+      Tree_Position : Write_Status_Maps.Cursor;
+   begin
+      Tree_Position := Association_Tree.Find (Object);
+      if Has_Element (Tree_Position) then
+         return Element (Tree_Position);
+      else
+         return null;
+      end if;
+   end Find_Association_In_Modifies;
+
    --------------------------------------
    -- Generate_Ref_For_Concurrent_Self --
    --------------------------------------
@@ -4514,6 +4817,11 @@ package body Gnat2Why.Subprograms is
       --  the Refined_Post as a postcondition.
       --  Assume the dynamic property of modified variables after the call.
 
+      function Check_Components_For_Modifies
+        (On_Entry : Boolean) return W_Prog_Id;
+      --  Compute checks for component access in Modifies on subprogram entry
+      --  (if On_Entry is set) or on normal return.
+
       function Post_As_Pred return W_Pred_Id;
       --  Compute the postcondition predicate based on the Ada postcondition
 
@@ -4565,6 +4873,37 @@ package body Gnat2Why.Subprograms is
       function Wrap_Decls_For_CC_Guards (P : W_Prog_Id) return W_Prog_Id;
 
       function Wrap_Decls_For_EC_Guards (P : W_Prog_Id) return W_Prog_Id;
+
+      Modifies_Old_Map : Ada_Node_To_Why_Id.Map;
+      --  Mapping from expressions that should be evaluated on subprogram entry
+      --  for a Modifies contract to why identifiers.
+
+      Modifies_Abstract_States : Flow_Id_To_Node_Maps.Map;
+      --  Mapping from outputs of E to the abstract state used to refer to them
+      --  in its Modifies contract if any.
+
+      Modifies_Association_Tree : Write_Status_Maps.Map;
+      --  Mapping from outputs of E to the association tree used to represent
+      --  the potential writes allowed by its Modifies aspect.
+
+      procedure Parse_Modifies_Contract;
+      --  Parse the modifies contract of E if any and store the information in
+      --  the maps defined above. Also add ids for outputs of E to
+      --  Modifies_Old_Map.
+
+      function Check_Modifies_Contract
+        (Exceptional : Boolean := False; Program_Exit : Boolean := False)
+         return W_Prog_Id;
+      --  Return a program that performs the preservation checks for the
+      --  modifies contract of E if any.
+
+      function Wrap_Decls_For_Modifies (P : W_Prog_Id) return W_Prog_Id;
+      --  Introduce bindings for E's modifies contract on top of P. Include
+      --  both the constants for the initial values of guards and indexes in
+      --  the contract and initial values of outputs of E used to check the
+      --  contract itself. The values are not stored in the general map for old
+      --  as they are not handled in the same way. In particular, checks should
+      --  not be emitted for initial values of outputs of E.
 
       ----------------------
       -- Assume_For_Input --
@@ -4717,6 +5056,24 @@ package body Gnat2Why.Subprograms is
                     Name      => Name_Normal_Return,
                     Guard_Map => EC_Guard_Map)));
       end CC_EC_And_RTE_Post;
+
+      -----------------------------------
+      -- Check_Components_For_Modifies --
+      -----------------------------------
+
+      function Check_Components_For_Modifies
+        (On_Entry : Boolean) return W_Prog_Id
+      is
+         Cont : constant String :=
+           "on " & (if On_Entry then "entry" else "return") & " of subprogram";
+         Prog : W_Prog_Id;
+      begin
+         Continuation_Stack.Append
+           (Continuation_Type'(E, To_Unbounded_String (Cont)));
+         Prog := Compute_Modifies_Component_Checks (E, Modifies_Old_Map);
+         Continuation_Stack.Delete_Last;
+         return Prog;
+      end Check_Components_For_Modifies;
 
       -----------------------------
       -- Check_Exceptional_Cases --
@@ -5070,6 +5427,70 @@ package body Gnat2Why.Subprograms is
              (E, E, Params, For_Input => False, Exceptional => Exceptional);
       end Check_Invariants_Of_Outputs;
 
+      -----------------------------
+      -- Check_Modifies_Contract --
+      -----------------------------
+
+      function Check_Modifies_Contract
+        (Exceptional : Boolean := False; Program_Exit : Boolean := False)
+         return W_Prog_Id
+      is
+
+         Prag : constant Node_Id := Get_Pragma (E, Pragma_Modifies);
+         Prog : W_Statement_Sequence_Id := Void_Sequence;
+
+         procedure Append_Check_For_Output (F : Flow_Id; Pred : W_Pred_Id);
+         --  Append to Prog an assertion checking Pred. Use F to produce a
+         --  continuation.
+
+         -----------------------------
+         -- Append_Check_For_Output --
+         -----------------------------
+
+         procedure Append_Check_For_Output (F : Flow_Id; Pred : W_Pred_Id) is
+            Cont       : constant Continuation_Type :=
+              (case F.Kind is
+                 when Direct_Mapping =>
+                   (F.Node,
+                    To_Unbounded_String
+                      ("for " & Pretty_Source_Name (F.Node))),
+                 when Magic_String   =>
+                   (Empty,
+                    To_Unbounded_String
+                      ("for """ & Pretty_Print (To_Name (F)) & '"')),
+                 when others         => raise Program_Error);
+            Check_Info : Check_Info_Type := New_Check_Info;
+         begin
+            Check_Info.Continuation.Append (Cont);
+            Append
+              (Prog,
+               New_Ignore
+                 (Prog =>
+                    New_Located_Assert
+                      (Ada_Node   => Prag,
+                       Pred       => Pred,
+                       Reason     => VC_Modifies,
+                       Kind       => EW_Assert,
+                       Check_Info => Check_Info)));
+         end Append_Check_For_Output;
+
+         procedure Append_Checks is new
+           Process_Modifies_Clauses (Append_Check_For_Output);
+      begin
+         if Present (Prag) then
+            Append_Checks
+              (E,
+               Modifies_Old_Map,
+               Modifies_Abstract_States,
+               Modifies_Association_Tree,
+               Body_Params,
+               As_Old       => False,
+               Exceptional  => Exceptional,
+               Program_Exit => Program_Exit);
+         end if;
+         return +Prog;
+      end Check_Modifies_Contract;
+
       ------------------------------
       -- Checking_Of_Refined_Post --
       ------------------------------
@@ -5095,6 +5516,21 @@ package body Gnat2Why.Subprograms is
               (Prog,
                New_Assume_Statement
                  (Pred => Compute_Dynamic_Property_For_Effects (E, Params)));
+
+            --  If E has a modifies contract, it has been checked before the
+            --  refined postcondition. Assume it after the cut.
+
+            Append
+              (Prog,
+               New_Assume_Statement
+                 (Pred =>
+                    Modifies_Contract_As_Pred
+                      (E,
+                       Modifies_Old_Map,
+                       Modifies_Abstract_States,
+                       Modifies_Association_Tree,
+                       Body_Params,
+                       As_Old => False)));
 
             --  For functions we also need to assume the dynamic invariant of
             --  the result.
@@ -5278,6 +5714,76 @@ package body Gnat2Why.Subprograms is
             Next (Decl);
          end loop;
       end Get_Pre_Post_Pragmas;
+
+      -----------------------------
+      -- Parse_Modifies_Contract --
+      -----------------------------
+
+      procedure Parse_Modifies_Contract is
+      begin
+         if Present (Get_Pragma (E, Pragma_Modifies)) then
+            Parse_Modifies_Contract
+              (E,
+               Modifies_Old_Map,
+               Modifies_Abstract_States,
+               Modifies_Association_Tree);
+
+            --  Add outputs of E if they are constrained by the contract
+
+            declare
+               Outputs : Flow_Id_Sets.Set;
+               Inputs  : Flow_Id_Sets.Set;
+               Formal  : Entity_Id := First_Formal (E);
+            begin
+               while Present (Formal) loop
+                  if not Is_Constant_In_SPARK (Formal)
+                    and then
+                      not Is_Discarded_In_Modifies
+                            (Formal, Modifies_Association_Tree)
+                  then
+                     Modifies_Old_Map.Insert
+                       (Formal,
+                        New_Temp_Identifier
+                          (Base_Name => "old", Typ => Type_Of_Node (Formal)));
+                  end if;
+                  Next_Formal (Formal);
+               end loop;
+
+               Get_Proof_Globals
+                 (Subprogram      => E,
+                  Reads           => Inputs,
+                  Writes          => Outputs,
+                  Erase_Constants => True);
+
+               for F of
+                 Outputs
+                 when not Is_Discarded_In_Modifies
+                            (F,
+                             Modifies_Abstract_States,
+                             Modifies_Association_Tree)
+               loop
+                  case F.Kind is
+                     when Direct_Mapping =>
+                        Modifies_Old_Map.Insert
+                          (F.Node,
+                           New_Temp_Identifier
+                             (Base_Name => "old",
+                              Typ       => Type_Of_Node (F.Node)));
+
+                     when Magic_String   =>
+
+                        --  Do not store anything for opaque symbols, their
+                        --  name is computed using Modifies_Old_Append.
+
+                        null;
+
+                     when others         =>
+                        raise Program_Error;
+                  end case;
+               end loop;
+            end;
+         end if;
+      end Parse_Modifies_Contract;
 
       ------------------
       -- Post_As_Pred --
@@ -5560,6 +6066,114 @@ package body Gnat2Why.Subprograms is
          return Prog;
       end Wrap_Decls_For_Guards;
 
+      -----------------------------
+      -- Wrap_Decls_For_Modifies --
+      -----------------------------
+
+      function Wrap_Decls_For_Modifies (P : W_Prog_Id) return W_Prog_Id is
+         Prog : W_Prog_Id := P;
+      begin
+         if Present (Get_Pragma (E, Pragma_Modifies)) then
+
+            --  Add declarations for guards and indexes in the modifies
+            --  contract itself.
+
+            Prog :=
+              +Insert_Bindings_For_Modifies
+                 (E, +Prog, EW_Prog, Body_Params, Modifies_Old_Map);
+
+            --  Add declarations for the initial value of outputs of E if they
+            --  are constrained by the contract.
+
+            declare
+
+               procedure Wrap_Object_Decl (O : Entity_Id);
+               --  Introduce bindings for an object O in Prog
+
+               ----------------------
+               -- Wrap_Object_Decl --
+               ----------------------
+
+               procedure Wrap_Object_Decl (O : Entity_Id) is
+                  W_Id          : constant W_Identifier_Id :=
+                    Modifies_Old_Map.Element (O);
+                  Validity_Tree : constant W_Term_Id :=
+                    Get_Valid_Id_From_Object (O, Ref_Allowed => True);
+               begin
+                  Prog :=
+                    New_Typed_Binding
+                      (Name    => W_Id,
+                       Def     =>
+                         +Transform_Identifier (Body_Params, O, O, EW_Pterm),
+                       Context => Prog);
+
+                  if Present (Validity_Tree) then
+                     Prog :=
+                       New_Typed_Binding
+                         (Name    => Get_Valid_Flag_For_Id (W_Id, Etype (O)),
+                          Def     => +Validity_Tree,
+                          Context => Prog);
+                  end if;
+               end Wrap_Object_Decl;
+
+               Outputs : Flow_Id_Sets.Set;
+               Inputs  : Flow_Id_Sets.Set;
+               Formal  : Entity_Id := First_Formal (E);
+            begin
+               while Present (Formal) loop
+                  if not Is_Constant_In_SPARK (Formal)
+                    and then
+                      not Is_Discarded_In_Modifies
+                            (Formal, Modifies_Association_Tree)
+                  then
+                     Wrap_Object_Decl (Formal);
+                  end if;
+                  Next_Formal (Formal);
+               end loop;
+
+               Get_Proof_Globals
+                 (Subprogram      => E,
+                  Reads           => Inputs,
+                  Writes          => Outputs,
+                  Erase_Constants => True);
+
+               for F of
+                 Outputs
+                 when not Is_Discarded_In_Modifies
+                            (F,
+                             Modifies_Abstract_States,
+                             Modifies_Association_Tree)
+               loop
+                  case F.Kind is
+                     when Direct_Mapping =>
+                        if not Is_Concurrent_Type (F.Node) then
+                           Wrap_Object_Decl (F.Node);
+                        end if;
+
+                     when Magic_String   =>
+                        declare
+                           W_Id : constant W_Identifier_Id :=
+                             To_Why_Id (To_Name (F), Local => False);
+                        begin
+                           Prog :=
+                             New_Typed_Binding
+                               (Name    => Modifies_Old_Append (W_Id),
+                                Def     =>
+                                  New_Deref
+                                    (Right => W_Id, Typ => Get_Typ (W_Id)),
+                                Context => Prog);
+                        end;
+
+                     when others         =>
+                        raise Program_Error;
+                  end case;
+               end loop;
+            end;
+         end if;
+
+         return Prog;
+      end Wrap_Decls_For_Modifies;
+
       Name : constant String := Full_Name (E);
 
       Effects  : constant W_Effects_Id := New_Effects;
@@ -5700,6 +6314,10 @@ package body Gnat2Why.Subprograms is
          end if;
       end;
 
+      --  Retrieve information from the Modifies aspect of E if any
+
+      Parse_Modifies_Contract;
+
       --  Declare global variable to hold the state of a protected object
 
       if Within_Protected_Type (E) and then Ekind (E) /= E_Subprogram_Type then
@@ -5802,7 +6420,9 @@ package body Gnat2Why.Subprograms is
                 ((1 => Check_Ceiling_Protocol (Body_Params, E),
                   2 =>
                     Transform_Simple_Return_Expression
-                      (Expr, E, Type_Of_Node (E), Body_Params)));
+                      (Expr, E, Type_Of_Node (E), Body_Params),
+                  3 => Check_Components_For_Modifies (On_Entry => False),
+                  4 => Check_Modifies_Contract));
 
             Why_Body := Checking_Of_Refined_Post (Why_Body);
 
@@ -5868,13 +6488,16 @@ package body Gnat2Why.Subprograms is
                         Body_Params),
                   3 =>
                     Transform_All_Pragmas
-                      (Post_Prags, "checking of pragma postcondition")));
+                      (Post_Prags, "checking of pragma postcondition"),
+                  4 => Check_Components_For_Modifies (On_Entry => False),
+                  5 => Check_Modifies_Contract));
 
             Why_Body := Checking_Of_Refined_Post (Why_Body);
 
             --  Check type invariants on subprogram's output, absence of
-            --  runtime errors in Post and RTE + validity of contract and exit
-            --  cases, and Inline_For_Proof/Logical_Equal annotation.
+            --  runtime errors in Post and RTE + validity of contract, exit
+            --  cases and modifies contract, and Inline_For_Proof/Logical_Equal
+            --  annotation.
 
             Why_Body :=
               Sequence
@@ -5921,8 +6544,11 @@ package body Gnat2Why.Subprograms is
                               Local_CFG.Vertex'
                                 (Kind => Local_CFG.Body_Exit, Node => E),
                               Body_Params),
-                        2 =>
-                          Check_Invariants_Of_Outputs (Exceptional => True)));
+                        2 => Check_Invariants_Of_Outputs (Exceptional => True),
+                        3 =>
+                          Compute_Modifies_Component_Checks
+                            (E, Modifies_Old_Map, Exceptional => True),
+                        4 => Check_Modifies_Contract (Exceptional => True)));
 
                   Continuation_Stack.Delete_Last;
 
@@ -5978,7 +6604,7 @@ package body Gnat2Why.Subprograms is
                declare
                   Params     : constant Transformation_Params :=
                     Contract_VC_Params;
-                  Loc        : constant String := " on program exit";
+                  Loc        : constant String := "on program exit";
                   Raise_Stmt : constant W_Prog_Id :=
                     New_Raise
                       (Ada_Node => Body_N, Name => M_Main.Program_Exit_Exc);
@@ -6032,6 +6658,7 @@ package body Gnat2Why.Subprograms is
                                       To_Unbounded_String
                                         ("for "
                                          & Pretty_Source_Name (Obj)
+                                         & " "
                                          & Loc)));
 
                               Handler :=
@@ -6049,6 +6676,19 @@ package body Gnat2Why.Subprograms is
                         end;
                      end if;
                   end loop;
+
+                  Continuation_Stack.Append
+                    (Continuation_Type'
+                       (Ada_Node => Body_N,
+                        Message  => To_Unbounded_String (Loc)));
+                  Handler :=
+                    Sequence
+                      ((1 => Handler,
+                        2 =>
+                          Compute_Modifies_Component_Checks
+                            (E, Modifies_Old_Map, Program_Exit => True),
+                        3 => Check_Modifies_Contract (Program_Exit => True)));
+                  Continuation_Stack.Delete_Last;
 
                   --  Check RTE + validity of program exit post and exit cases
                   --  on exceptional exit.
@@ -6208,10 +6848,17 @@ package body Gnat2Why.Subprograms is
       begin
          --  Add declarations for 'Old variables
 
-         Prog := Sequence ((CC_Check, EC_Check, Warn_Post, Why_Body));
+         Prog :=
+           Sequence
+             ((CC_Check,
+               EC_Check,
+               Check_Components_For_Modifies (On_Entry => True),
+               Warn_Post,
+               Why_Body));
          Prog := Declare_Old_Variables (Prog);
          Prog := Wrap_Decls_For_CC_Guards (Prog);
          Prog := Wrap_Decls_For_EC_Guards (Prog);
+         Prog := Wrap_Decls_For_Modifies (Prog);
          Prog := Insert_Bindings_For_Variants (E, Prog, EW_Prog, Body_Params);
          Prog := Declare_Termination_Condition (Prog);
 
@@ -6249,6 +6896,10 @@ package body Gnat2Why.Subprograms is
 
       Self_Name := Why_Empty;
       Self_Is_Mutable := False;
+
+      for Tree of Modifies_Association_Tree loop
+         Finalize (Tree);
+      end loop;
 
       if Ekind (E) = E_Function then
          Result_Name := Why_Empty;
@@ -7625,10 +8276,15 @@ package body Gnat2Why.Subprograms is
                   Arg_Id => Exc_Id,
                   Post   =>
                     New_And_Pred
-                      (Compute_Exceptional_Cases_Postcondition
-                         (Params, E, Exc_Id),
-                       Compute_Exit_Cases_Exceptional_Post
-                         (Params, E, Exc_Id))));
+                      ((1 =>
+                          Compute_Exceptional_Cases_Postcondition
+                            (Params, E, Exc_Id),
+                        2 =>
+                          Compute_Exit_Cases_Exceptional_Post
+                            (Params, E, Exc_Id),
+                        3 =>
+                          Modifies_Contract_As_Pred
+                            (E, Params, Exceptional => True)))));
          end;
       end if;
 
@@ -7642,9 +8298,13 @@ package body Gnat2Why.Subprograms is
                Name   => M_Main.Program_Exit_Exc,
                Post   =>
                  New_And_Pred
-                   (Compute_Program_Exit_Postcondition (Params, E),
-                    Compute_Exit_Cases_Simple_Post
-                      (Params, E, Name_Program_Exit))));
+                   ((1 => Compute_Program_Exit_Postcondition (Params, E),
+                     2 =>
+                       Compute_Exit_Cases_Simple_Post
+                         (Params, E, Name_Program_Exit),
+                     3 =>
+                       Modifies_Contract_As_Pred
+                         (E, Params, Program_Exit => True)))));
       end if;
 
       Pre := Get_Static_Call_Contract (Params, E, Pragma_Precondition);
@@ -7679,44 +8339,57 @@ package body Gnat2Why.Subprograms is
       --  contract.
 
       else
-         Post :=
-           +New_And_Expr
-              (Left   =>
-                 +Compute_Spec (Params, E, Pragma_Postcondition, EW_Pred),
-               Right  => +Compute_CC_And_EC_Postcondition (Params, E),
-               Domain => EW_Pred);
+         declare
+            Modifies : constant W_Pred_Id :=
+              Modifies_Contract_As_Pred (E, Params);
+            --  E's modifies contract if any; it is used both in the post and
+            --  refined post of E.
+         begin
 
-         if Is_Dispatching_Operation (E)
-           and then not Is_Hidden_Dispatching_Operation (E)
-         then
-            Dispatch_Post :=
-              Get_Dispatching_Call_Contract (Params, E, Pragma_Postcondition);
+            Post :=
+              New_And_Pred
+                ((1 =>
+                    +Compute_Spec (Params, E, Pragma_Postcondition, EW_Pred),
+                  2 => +Compute_CC_And_EC_Postcondition (Params, E),
+                  3 => Modifies));
 
-            if not Has_Contracts (E, Pragma_Postcondition)
-              and then not Has_Contracts (E, Pragma_Contract_Cases)
+            if Is_Dispatching_Operation (E)
+              and then not Is_Hidden_Dispatching_Operation (E)
             then
-               Post := Get_LSP_Contract (Params, E, Pragma_Postcondition);
+               Dispatch_Post :=
+                 Get_Dispatching_Call_Contract
+                   (Params, E, Pragma_Postcondition);
+
+               if not Has_Contracts (E, Pragma_Postcondition)
+                 and then not Has_Contracts (E, Pragma_Contract_Cases)
+               then
+                  Post := Get_LSP_Contract (Params, E, Pragma_Postcondition);
+               end if;
             end if;
-         end if;
 
-         --  For higher order specializations, we do not take into account
-         --  refined postcondition if any.
+            --  For higher order specializations, we do not take into account
+            --  refined postcondition if any.
 
-         if Ekind (E) /= E_Subprogram_Type
-           and then Entity_Body_In_SPARK (E)
-           and then Has_Contracts (E, Pragma_Refined_Post)
-           and then Specialization_Module = No_Symbol
-         then
-            Refined_Post :=
-              Get_Static_Call_Contract (Params, E, Pragma_Refined_Post);
+            if Ekind (E) /= E_Subprogram_Type
+              and then Entity_Body_In_SPARK (E)
+              and then Has_Contracts (E, Pragma_Refined_Post)
+              and then Specialization_Module = No_Symbol
+            then
+               Refined_Post :=
+                 New_And_Pred
+                   (Left  =>
+                      Get_Static_Call_Contract
+                        (Params, E, Pragma_Refined_Post),
+                    Right => Modifies);
 
-         --  If E is an expression function, it might have a refinement even if
-         --  it does not have a refine postcondition. In this case, use the
-         --  normal post for the refine version.
+            --  If E is an expression function, it might have a refinement even
+            --  if it does not have a refine postcondition. In this case, use
+            --  the normal post for the refine version.
 
-         elsif Has_Refinement (E) then
-            Refined_Post := Post;
-         end if;
+            elsif Has_Refinement (E) then
+               Refined_Post := Post;
+            end if;
+         end;
       end if;
 
       if Is_Function_Or_Function_Type (E) then
@@ -8398,6 +9071,169 @@ package body Gnat2Why.Subprograms is
    end Get_Logic_Args;
 
    ----------------------------------
+   -- Insert_Bindings_For_Modifies --
+   ----------------------------------
+
+   function Insert_Bindings_For_Modifies
+     (Subp         : Entity_Id;
+      Expr         : W_Expr_Id;
+      Domain       : EW_Domain;
+      Params       : Transformation_Params;
+      Old_Expr_Map : Ada_Node_To_Why_Id.Map;
+      As_Old       : Boolean := False) return W_Expr_Id
+   is
+      Subdomain : constant EW_Domain := Prog_Or_Term_Domain (Domain);
+      Res       : W_Expr_Id := Expr;
+
+      procedure Introduce_Bindings_For_Indices
+        (Object : Node_Id; Guard : W_Identifier_Id := Why_Empty);
+      --  Introduce bindings for all indices used in indexed components in
+      --  Object. If Guard is present, only evaluate the expression when it
+      --  evaluates to True. Otherwise, set the identifier to 0, as it is
+      --  always a valid value of the index base type.
+
+      ------------------------------------
+      -- Introduce_Bindings_For_Indices --
+      ------------------------------------
+
+      procedure Introduce_Bindings_For_Indices
+        (Object : Node_Id; Guard : W_Identifier_Id := Why_Empty)
+      is
+         Expr : Node_Id := Object;
+      begin
+         loop
+            case Nkind (Expr) is
+               when N_Identifier | N_Expanded_Name =>
+                  return;
+
+               when N_Indexed_Component            =>
+                  declare
+                     Index : Node_Id := First (Expressions (Expr));
+                  begin
+                     while Present (Index) loop
+                        declare
+                           W_Id : constant W_Identifier_Id :=
+                             Old_Expr_Map (Index);
+                           Def  : W_Expr_Id :=
+                             Transform_Expr
+                               (Index, Get_Typ (W_Id), Subdomain, Params);
+
+                        begin
+                           if Present (Guard) then
+                              Def :=
+                                New_Conditional
+                                  (Domain    => Domain,
+                                   Condition => +Guard,
+                                   Then_Part => Def,
+                                   Else_Part =>
+                                     New_Discrete_Constant
+                                       (Value => Uint_0,
+                                        Typ   => Get_Typ (W_Id)));
+                           end if;
+
+                           if As_Old
+                             and then
+                               not Get_Variables_For_Proof (Index, Index)
+                                     .Is_Empty
+                           then
+                              Def := New_Old (Def, Domain);
+                           end if;
+
+                           Res :=
+                             New_Typed_Binding
+                               (Domain  => Domain,
+                                Name    => W_Id,
+                                Def     => Def,
+                                Context => Res);
+                        end;
+                        Next (Index);
+                     end loop;
+                  end;
+
+               when others                         =>
+                  null;
+            end case;
+
+            Expr := Prefix (Expr);
+         end loop;
+      end Introduce_Bindings_For_Indices;
+
+      Prag : constant Node_Id := Get_Pragma (Subp, Pragma_Modifies);
+      Aggr : Node_Id;
+
+   begin
+      if Present (Prag) then
+
+         --  Introduce bindings for guards and indexes referenced in the
+         --  contract.
+
+         Aggr := Expression (First (Pragma_Argument_Associations (Prag)));
+         declare
+            Clause      : Node_Id := First (Component_Associations (Aggr));
+            Object      : Node_Id;
+            Guard_Ident : W_Identifier_Id;
+         begin
+            while Present (Clause) loop
+
+               --  Get the identifier for the guard if any
+
+               if Present (Expression (Clause)) then
+                  Guard_Ident := Old_Expr_Map (Expression (Clause));
+               else
+                  Guard_Ident := Why_Empty;
+               end if;
+
+               --  Introduce bindings for indexes in the objects
+
+               Object := First (Choice_List (Clause));
+               loop
+                  Introduce_Bindings_For_Indices (Object, Guard_Ident);
+                  Next (Object);
+                  exit when No (Object);
+               end loop;
+
+               --  Introduce binding for the guard if any
+
+               if Present (Guard_Ident) then
+                  declare
+                     Guard     : constant Node_Id := Expression (Clause);
+                     Guard_Def : W_Expr_Id :=
+                       Transform_Expr (Guard, EW_Bool_Type, Domain, Params);
+                  begin
+                     if As_Old
+                       and then
+                         not Get_Variables_For_Proof (Guard, Guard).Is_Empty
+                     then
+                        Guard_Def := New_Old (Guard_Def, Domain);
+                     end if;
+
+                     Res :=
+                       New_Typed_Binding
+                         (Domain  => Domain,
+                          Name    => Guard_Ident,
+                          Def     => Guard_Def,
+                          Context => Res);
+                  end;
+               end if;
+
+               Next (Clause);
+            end loop;
+
+            --  Introduce bindings for indexes in the objects
+
+            Object := First (Expressions (Aggr));
+
+            while Present (Object) loop
+               Introduce_Bindings_For_Indices (Object);
+               Next (Object);
+            end loop;
+         end;
+      end if;
+
+      return Res;
+   end Insert_Bindings_For_Modifies;
+
+   ----------------------------------
    -- Insert_Bindings_For_Variants --
    ----------------------------------
 
@@ -8433,12 +9269,263 @@ package body Gnat2Why.Subprograms is
       Subprogram_Exceptions.Insert (+Exc);
    end Insert_Exception;
 
+   -------------------------------
+   -- Modifies_Contract_As_Pred --
+   -------------------------------
+
+   function Modifies_Contract_As_Pred
+     (E                : Entity_Id;
+      Old_Expr_Map     : Ada_Node_To_Why_Id.Map;
+      Abstract_States  : Flow_Id_To_Node_Maps.Map;
+      Association_Tree : Write_Status_Maps.Map;
+      Params           : Transformation_Params;
+      As_Old           : Boolean;
+      Exceptional      : Boolean := False;
+      Program_Exit     : Boolean := False) return W_Pred_Id
+   is
+
+      Prag : constant Node_Id := Get_Pragma (E, Pragma_Modifies);
+      Res  : W_Pred_Id := True_Pred;
+
+      procedure Add_Pred_For_Output (Dummy : Flow_Id; Pred : W_Pred_Id);
+      --  Add Pred to Res
+
+      -------------------------
+      -- Add_Pred_For_Output --
+      -------------------------
+
+      procedure Add_Pred_For_Output (Dummy : Flow_Id; Pred : W_Pred_Id) is
+      begin
+         Res := New_And_Pred (Res, Pred);
+      end Add_Pred_For_Output;
+
+      procedure Conjunct_All_Preds is new
+        Process_Modifies_Clauses (Add_Pred_For_Output);
+   begin
+      if Present (Prag) then
+         Conjunct_All_Preds
+           (E,
+            Old_Expr_Map,
+            Abstract_States,
+            Association_Tree,
+            Params,
+            As_Old,
+            Exceptional,
+            Program_Exit);
+      end if;
+      return Res;
+   end Modifies_Contract_As_Pred;
+
+   function Modifies_Contract_As_Pred
+     (E            : Entity_Id;
+      Params       : Transformation_Params;
+      Exceptional  : Boolean := False;
+      Program_Exit : Boolean := False) return W_Pred_Id
+   is
+      Old_Expr_Map     : Ada_Node_To_Why_Id.Map;
+      Abstract_States  : Flow_Id_To_Node_Maps.Map;
+      Association_Tree : Write_Status_Maps.Map;
+      Pred             : W_Pred_Id;
+   begin
+      Parse_Modifies_Contract
+        (E, Old_Expr_Map, Abstract_States, Association_Tree);
+
+      Pred :=
+        Modifies_Contract_As_Pred
+          (E,
+           Old_Expr_Map,
+           Abstract_States,
+           Association_Tree,
+           Params,
+           As_Old       => Params.Old_Policy = As_Old,
+           Exceptional  => Exceptional,
+           Program_Exit => Program_Exit);
+
+      Pred :=
+        +Insert_Bindings_For_Modifies
+           (Subp         => E,
+            Expr         => +Pred,
+            Domain       => EW_Pred,
+            Params       => Params,
+            Old_Expr_Map => Old_Expr_Map,
+            As_Old       => True);
+
+      return Pred;
+   end Modifies_Contract_As_Pred;
+
    ----------------------
    -- Need_Self_Binder --
    ----------------------
 
    function Need_Self_Binder (E : Callable_Kind_Id) return Boolean
    is (Is_Subprogram_Or_Entry (E) and then Within_Protected_Type (E));
+
+   -----------------------------
+   -- Parse_Modifies_Contract --
+   -----------------------------
+
+   procedure Parse_Modifies_Contract
+     (E                : Entity_Id;
+      Old_Expr_Map     : out Ada_Node_To_Why_Id.Map;
+      Abstract_States  : out Flow_Id_To_Node_Maps.Map;
+      Association_Tree : out Write_Status_Maps.Map)
+   is
+
+      procedure Add_Indices (Object : Node_Id);
+      --  Collect all indices used in indexed components in Object
+
+      procedure Collect_Writes
+        (Object : Node_Id; Guard : Opt_N_Subexpr_Id := Empty);
+      --  Fill the Abstract_States and Association_Tree maps for the clause
+      --  Guard => Object.
+
+      -----------------
+      -- Add_Indices --
+      -----------------
+
+      procedure Add_Indices (Object : Node_Id) is
+         Expr : Node_Id := Object;
+      begin
+         loop
+            case Nkind (Expr) is
+               when N_Identifier | N_Expanded_Name =>
+                  return;
+
+               when N_Indexed_Component            =>
+                  declare
+                     Index : Node_Id := First (Expressions (Expr));
+                  begin
+                     while Present (Index) loop
+                        declare
+                           W_Id : constant W_Identifier_Id :=
+                             New_Temp_Identifier
+                               (Typ       =>
+                                  Base_Why_Type_No_Bool
+                                    (Entity_Id'(Type_Of_Node (Index))),
+                                Base_Name => "idx");
+                        begin
+                           Old_Expr_Map.Insert (Index, W_Id);
+                        end;
+                        Next (Index);
+                     end loop;
+                  end;
+
+               when others                         =>
+                  null;
+            end case;
+
+            Expr := Prefix (Expr);
+         end loop;
+      end Add_Indices;
+
+      --------------------
+      -- Collect_Writes --
+      --------------------
+
+      procedure Collect_Writes
+        (Object : Node_Id; Guard : Opt_N_Subexpr_Id := Empty)
+      is
+         Root : constant Entity_Id :=
+           (if Nkind (Object) in N_Identifier | N_Expanded_Name
+            then Entity (Object)
+            else Get_Root_Object (Object));
+      begin
+         if Ekind (Root) = E_Abstract_State then
+            declare
+               Inserted : Boolean;
+               Position : Flow_Id_To_Node_Maps.Cursor;
+            begin
+               for Output of Expand_Abstract_State (Direct_Mapping_Id (Root))
+               loop
+                  Abstract_States.Insert (Output, Root, Position, Inserted);
+                  if not Inserted then
+                     pragma Assert (Abstract_States (Position) = Root);
+                     exit;
+                  end if;
+               end loop;
+            end;
+         end if;
+
+         declare
+            Inserted : Boolean;
+            Position : Write_Status_Maps.Cursor;
+         begin
+            Association_Tree.Insert
+              (Root,
+               new Write_Status'
+                 (Entire_Object,
+                  (if Ekind (Root) = E_Abstract_State
+                   then Types.Empty
+                   else Etype (Root)),
+                  others => <>),
+               Position,
+               Inserted);
+            Insert_Association
+              (Writes      => Association_Tree (Position),
+               Deep_Access => Object,
+               Value       => (null record),
+               Guard       => Guard);
+         end;
+      end Collect_Writes;
+
+      Prag : constant Node_Id := Get_Pragma (E, Pragma_Modifies);
+      Aggr : Node_Id;
+   begin
+      if Present (Prag) then
+         Aggr := Expression (First (Pragma_Argument_Associations (Prag)));
+         declare
+            Clause : Node_Id := First (Component_Associations (Aggr));
+            Object : Node_Id;
+         begin
+            while Present (Clause) loop
+
+               --  Collect the guard
+
+               if Present (Expression (Clause)) then
+                  declare
+                     Guard_Ident : constant W_Identifier_Id :=
+                       New_Temp_Identifier
+                         (Typ => EW_Bool_Type, Base_Name => "guard");
+                  begin
+                     Old_Expr_Map.Include (Expression (Clause), Guard_Ident);
+                  end;
+               end if;
+
+               Object := First (Choice_List (Clause));
+               loop
+
+                  --  Collect indices in Old_Expr_Map
+
+                  Add_Indices (Object);
+
+                  --  Fill the Abstract_States and Association_Tree maps
+
+                  Collect_Writes (Object, Expression (Clause));
+
+                  Next (Object);
+                  exit when No (Object);
+               end loop;
+
+               Next (Clause);
+            end loop;
+
+            Object := First (Expressions (Aggr));
+
+            while Present (Object) loop
+
+               --  Collect indices in Old_Expr_Map
+
+               Add_Indices (Object);
+
+               --  Fill the Abstract_States and Association_Tree maps
+
+               Collect_Writes (Object);
+
+               Next (Object);
+            end loop;
+         end;
+      end if;
+   end Parse_Modifies_Contract;
 
    ---------------------------------------
    -- Preservation_Of_Access_Parameters --
@@ -8506,6 +9593,769 @@ package body Gnat2Why.Subprograms is
         To_Binder_Array (New_Binders, Keep_Const => Local_Only)
         & To_Binder_Array (Old_Binders, Keep_Const => Erase);
    end Procedure_Logic_Binders;
+
+   ------------------------------
+   -- Process_Modifies_Clauses --
+   ------------------------------
+
+   procedure Process_Modifies_Clauses
+     (E                : Entity_Id;
+      Old_Expr_Map     : Ada_Node_To_Why_Id.Map;
+      Abstract_States  : Flow_Id_To_Node_Maps.Map;
+      Association_Tree : Write_Status_Maps.Map;
+      Params           : Transformation_Params;
+      As_Old           : Boolean;
+      Exceptional      : Boolean := False;
+      Program_Exit     : Boolean := False)
+   is
+
+      function Preserved_Value
+        (Ty           : Entity_Id;
+         New_Term     : W_Term_Id;
+         Old_Term     : W_Term_Id;
+         New_Validity : W_Term_Id := Why_Empty;
+         Old_Validity : W_Term_Id := Why_Empty) return W_Pred_Id
+      is (New_And_Pred
+            (Left  =>
+               (if Present (New_Validity)
+                then
+                  New_Comparison
+                    (Symbol => Why_Eq,
+                     Left   => New_Validity,
+                     Right  => Old_Validity)
+                else True_Pred),
+             Right =>
+               (if Present (Ty) and then Has_Array_Type (Ty)
+                then +New_Logic_Eq_Call (New_Term, Old_Term, EW_Pred)
+                else
+                  New_Comparison
+                    (Symbol => Why_Eq, Left => New_Term, Right => Old_Term))))
+      with Pre => Present (New_Validity) = Present (Old_Validity);
+      --  Predicate for the preservation of the entire value. As Modifies
+      --  clauses are both assumed and verified, use the extensional equality
+      --  for arrays.
+
+      function Preservation_Of_Object (O : Entity_Id) return W_Pred_Id;
+      function Preservation_Of_Object (F : Flow_Id) return W_Pred_Id;
+      --  Generate a predicate for the preservation of an object
+
+      function Generate_Pred_From_Writes
+        (Writes       : Write_Status;
+         New_Term     : W_Term_Id;
+         Old_Term     : W_Term_Id;
+         New_Validity : W_Term_Id := Why_Empty;
+         Old_Validity : W_Term_Id := Why_Empty;
+         Indices      : W_Identifier_Array := (1 .. 0 => <>);
+         Prev_Values  : Constrained_Value_Vectors.Vector :=
+           Constrained_Value_Vectors.Empty_Vector;
+         Do_Immutable : Boolean := False) return W_Pred_Id
+      with Pre => Present (New_Validity) = Present (Old_Validity);
+      --  Predicate for the preservation of the parts of a value that are not
+      --  mentioned in Writes.
+
+      procedure Get_Terms_For_Object
+        (Obj          : Entity_Id;
+         New_Term     : out W_Term_Id;
+         Old_Term     : out W_Term_Id;
+         New_Validity : out W_Term_Id;
+         Old_Validity : out W_Term_Id);
+      --  Construct the terms used to reference Obj in the pre and the post
+      --  states.
+
+      -------------------------------
+      -- Generate_Pred_From_Writes --
+      -------------------------------
+
+      function Generate_Pred_From_Writes
+        (Writes       : Write_Status;
+         New_Term     : W_Term_Id;
+         Old_Term     : W_Term_Id;
+         New_Validity : W_Term_Id := Why_Empty;
+         Old_Validity : W_Term_Id := Why_Empty;
+         Indices      : W_Identifier_Array := (1 .. 0 => <>);
+         Prev_Values  : Constrained_Value_Vectors.Vector :=
+           Constrained_Value_Vectors.Empty_Vector;
+         Do_Immutable : Boolean := False) return W_Pred_Id
+      is
+
+         function Condition_For_Value
+           (V : Constrained_Value; Indices : W_Identifier_Array)
+            return W_Pred_Id
+         is (New_And_Pred
+               (Left  =>
+                  (if No (V.Guard)
+                   then True_Pred
+                   else Pred_Of_Boolean_Term (+Old_Expr_Map (V.Guard))),
+                Right =>
+                  Transform_Choices (V.Choices, Indices, Old_Expr_Map)));
+         --  Transform a constrained value into a guard
+
+         --  Wrappers around accessors for validity trees to take into account
+         --  the fact that they are optional.
+
+         function Valid_Array_Access
+           (Ar : W_Term_Id; Index : W_Expr_Array; Ty : Type_Kind_Id)
+            return W_Term_Id
+         is (if No (Ar)
+             then W_Term_Id'(Why_Empty)
+             else
+               +New_Validity_Tree_Array_Access
+                  (Name => +Ar, Index => Index, Ty => Ty, Domain => EW_Term));
+
+         function Valid_Record_Access
+           (Name : W_Term_Id; Field : Entity_Id; Ty : Type_Kind_Id)
+            return W_Term_Id
+         is (if No (Name)
+               or else Ekind (Field) /= E_Component
+               or else Comp_Has_Only_Valid_Values (Field, Ty).Ok
+             then W_Term_Id'(Why_Empty)
+             else
+               +New_Validity_Tree_Record_Access
+                  (Name => +Name, Field => Field, Ty => Ty));
+
+         Pred     : W_Pred_Id := Why_Empty;
+         Conds    : W_Pred_Array (1 .. Natural (Writes.Values.Length));
+         Top_Cond : Natural := 0;
+
+      begin
+         --  Go over the constrained values to look for entire writes that
+         --  have not already been accounted for. They are handled as a global
+         --  condition on the predicate.
+
+         for I in 1 .. Writes.Values.Last_Index loop
+            declare
+               V : Constrained_Value renames Writes.Values (I);
+            begin
+               if V.Status.Kind = Entire
+                 and then
+                   (Prev_Values.Is_Empty
+                    or else Prev_Values (I).Status.Kind /= Entire)
+               then
+                  --  If we have found an unconditional entire write, the value
+                  --  is discarded.
+
+                  if No (V.Guard) and then V.Size = 0 then
+                     return Why_Empty;
+
+                  --  Otherwise, aggregate the new conditions
+
+                  else
+                     Top_Cond := Top_Cond + 1;
+                     Conds (Top_Cond) := Condition_For_Value (V, Indices);
+                  end if;
+               end if;
+            end;
+         end loop;
+
+         case Writes.Kind is
+            when Entire_Object     =>
+
+               --  The object is entirely preserved if it is not entirely
+               --  written.
+
+               Pred :=
+                 Preserved_Value
+                   (Writes.Ty, New_Term, Old_Term, New_Validity, Old_Validity);
+
+            when Record_Components =>
+               declare
+                  Max_Eqs : constant Natural :=
+                    Count_Why_Regular_Fields (Writes.Ty)
+                    + Count_Discriminants (Writes.Ty)
+                    + (if Is_Class_Wide_Type (Writes.Ty) then 1 else 0);
+                  Eqs     : W_Pred_Array (1 .. Max_Eqs);
+                  Top_Eq  : Natural := 0;
+               begin
+
+                  --  Add discriminants if they are mutable or if Do_Immutable
+                  --  is set, they cannot be specified separately.
+
+                  if Has_Mutable_Discriminants (Writes.Ty)
+                    or else
+                      (Do_Immutable
+                       and then Has_Discriminants (Writes.Ty)
+                       and then not Is_Constrained (Writes.Ty))
+                  then
+                     declare
+                        Discr : Entity_Id := First_Discriminant (Writes.Ty);
+                     begin
+                        loop
+                           Top_Eq := Top_Eq + 1;
+                           Eqs (Top_Eq) :=
+                             New_Comparison
+                               (Symbol => Why_Eq,
+                                Left   =>
+                                  New_Ada_Record_Access
+                                    (Name  => New_Term,
+                                     Field => Discr,
+                                     Ty    => Writes.Ty),
+                                Right  =>
+                                  New_Ada_Record_Access
+                                    (Name  => Old_Term,
+                                     Field => Discr,
+                                     Ty    => Writes.Ty));
+                           Next_Discriminant (Discr);
+                           exit when No (Discr);
+                        end loop;
+                     end;
+                  end if;
+
+                  --  Add the expansion of tagged objects
+
+                  if Is_Tagged_Type (Writes.Ty) then
+                     Top_Eq := Top_Eq + 1;
+                     Eqs (Top_Eq) :=
+                       New_Comparison
+                         (Symbol => Why_Eq,
+                          Left   =>
+                            +New_Ext_Access
+                               (Name =>
+                                  +New_Fields_Access
+                                     (Name => New_Term, Ty => Writes.Ty),
+                                Ty   => Writes.Ty),
+                          Right  =>
+                            +New_Ext_Access
+                               (Name =>
+                                  +New_Fields_Access
+                                     (Name => Old_Term, Ty => Writes.Ty),
+                                Ty   => Writes.Ty));
+
+                     --  Add the tag if Do_Immutable is set
+
+                     if Do_Immutable and then Is_Class_Wide_Type (Writes.Ty)
+                     then
+                        Top_Eq := Top_Eq + 1;
+                        Eqs (Top_Eq) :=
+                          New_Comparison
+                            (Symbol => Why_Eq,
+                             Left   =>
+                               +New_Tag_Access
+                                  (Name   => +New_Term,
+                                   Domain => EW_Term,
+                                   Ty     => Writes.Ty),
+                             Right  =>
+                               +New_Tag_Access
+                                  (Name   => +Old_Term,
+                                   Domain => EW_Term,
+                                   Ty     => Writes.Ty));
+                     end if;
+                  end if;
+
+                  --  Add components that are not listed in the tree, they are
+                  --  preserved.
+
+                  for Comp of
+                    Get_Component_Set (Writes.Ty)
+                    when not Writes.Component_Status.Contains (Comp)
+                  loop
+                     Top_Eq := Top_Eq + 1;
+                     Eqs (Top_Eq) :=
+                       Preserved_Value
+                         ((if Ekind (Comp) = E_Component
+                           then Etype (Comp)
+                           else Empty),
+                          New_Ada_Record_Access
+                            (Name => New_Term, Field => Comp, Ty => Writes.Ty),
+                          New_Ada_Record_Access
+                            (Name => Old_Term, Field => Comp, Ty => Writes.Ty),
+                          Valid_Record_Access
+                            (Name  => New_Validity,
+                             Field => Comp,
+                             Ty    => Writes.Ty),
+                          Valid_Record_Access
+                            (Name  => Old_Validity,
+                             Field => Comp,
+                             Ty    => Writes.Ty));
+
+                     if Ekind (Comp) = E_Component
+                       and then Has_Variant_Info (Writes.Ty, Comp)
+                     then
+                        Eqs (Top_Eq) :=
+                          New_Conditional
+                            (Condition =>
+                               New_Ada_Record_Check_For_Field
+                                 (Empty, Old_Term, Comp, Writes.Ty),
+                             Then_Part => Eqs (Top_Eq));
+                     end if;
+                  end loop;
+
+                  --  Add preserved parts of listed components
+
+                  for Position in Writes.Component_Status.Iterate loop
+                     declare
+                        use Write_Status_Maps;
+                        Comp      : Entity_Id renames Key (Position);
+                        Comp_Pred : constant W_Pred_Id :=
+                          Generate_Pred_From_Writes
+                            (Element (Position).all,
+                             New_Ada_Record_Access
+                               (Name  => New_Term,
+                                Field => Comp,
+                                Ty    => Writes.Ty),
+                             New_Ada_Record_Access
+                               (Name  => Old_Term,
+                                Field => Comp,
+                                Ty    => Writes.Ty),
+                             Valid_Record_Access
+                               (Name  => New_Validity,
+                                Field => Comp,
+                                Ty    => Writes.Ty),
+                             Valid_Record_Access
+                               (Name  => Old_Validity,
+                                Field => Comp,
+                                Ty    => Writes.Ty),
+                             Indices     => Indices,
+                             Prev_Values => Writes.Values);
+                     begin
+                        if Present (Comp_Pred) then
+                           Top_Eq := Top_Eq + 1;
+                           Eqs (Top_Eq) := Comp_Pred;
+
+                           if Ekind (Comp) = E_Component
+                             and then Has_Variant_Info (Writes.Ty, Comp)
+                           then
+                              Eqs (Top_Eq) :=
+                                New_Conditional
+                                  (Condition =>
+                                     New_Ada_Record_Check_For_Field
+                                       (Types.Empty,
+                                        Old_Term,
+                                        Comp,
+                                        Writes.Ty),
+                                   Then_Part => Eqs (Top_Eq));
+                           end if;
+                        end if;
+                     end;
+                  end loop;
+
+                  if Top_Eq /= 0 then
+                     Pred := New_And_Pred (Eqs (1 .. Top_Eq));
+                  end if;
+               end;
+
+            when Array_Components  =>
+
+               --  Generate:
+               --
+               --  (if not <conditions for partial writes>
+               --   then New_Term = Old_Term
+               --   else
+               --     (for all I1 in Old_Term'Range (1) =>
+               --       (for all I2 in Old_Term'Range (2) => ...
+               --         <preservation of content>))
+               --
+               --  The top level conditional uses the special equality
+               --  symbol for array that is associated with the extensionality
+               --  axiom. It is so that the predicate can allow to deduce
+               --  easily that the array is preserved when not modified while
+               --  remaining provable extensionally.
+
+               declare
+                  Dim         : constant Positive :=
+                    Positive (Number_Dimensions (Writes.Ty));
+                  New_Indices : W_Identifier_Array (1 .. Dim);
+                  Idx_Exprs   : W_Expr_Array (1 .. Dim);
+                  Binders     : W_Binder_Array (1 .. Dim);
+                  Ranges      : W_Pred_Array (1 .. Dim);
+
+               begin
+                  --  Go over the indices to fill the arrays
+
+                  for I in 1 .. Dim loop
+                     New_Indices (I) :=
+                       New_Temp_Identifier
+                         (Base_Name => "idx",
+                          Typ       =>
+                            Nth_Index_Rep_Type_No_Bool (Writes.Ty, I));
+                     Idx_Exprs (I) := +New_Indices (I);
+                     Binders (I) :=
+                       New_Binder
+                         (Domain   => EW_Pred,
+                          Name     => New_Indices (I),
+                          Arg_Type => Get_Typ (New_Indices (I)));
+                     Ranges (I) :=
+                       +New_Array_Range_Expr
+                          (+New_Indices (I), Old_Term, EW_Pred, I);
+                  end loop;
+
+                  declare
+                     New_Access : constant W_Term_Id :=
+                       New_Array_Access (Ar => New_Term, Index => Idx_Exprs);
+                     Old_Access : constant W_Term_Id :=
+                       New_Array_Access (Ar => Old_Term, Index => Idx_Exprs);
+                     Comp_Pred  : constant W_Pred_Id :=
+                       Generate_Pred_From_Writes
+                         (Writes.Content_Status.all,
+                          New_Access,
+                          Old_Access,
+                          Valid_Array_Access
+                            (New_Validity, Idx_Exprs, Writes.Ty),
+                          Valid_Array_Access
+                            (Old_Validity, Idx_Exprs, Writes.Ty),
+                          Indices     => Indices & New_Indices,
+                          Prev_Values => Writes.Values);
+
+                  begin
+                     Pred :=
+                       New_Universal_Quantif
+                         (Binders  => Binders,
+                          Labels   => Symbol_Sets.Empty_Set,
+                          Triggers =>
+                            New_Triggers
+                              (Triggers =>
+                                 (1 =>
+                                    New_Trigger (Terms => (1 => +New_Access)),
+                                  2 =>
+                                    New_Trigger
+                                      (Terms => (1 => +Old_Access)))),
+                          Pred     =>
+                            New_Conditional
+                              (Condition => New_And_Pred (Ranges),
+                               Then_Part => Comp_Pred));
+                  end;
+               end;
+
+               --  Add preservation of array bounds if Do_Immutable is set
+               --  the array type is unconstrained.
+
+               if Do_Immutable and then not Is_Constrained (Writes.Ty) then
+                  Pred :=
+                    New_And_Pred
+                      (New_Bounds_Equality
+                         (New_Term,
+                          Old_Term,
+                          Positive (Number_Dimensions (Writes.Ty))),
+                       Pred);
+               end if;
+
+               --  Go over the constrained values to look for writes that have
+               --  not already been accounted for to create the top-level
+               --  conditional.
+
+               declare
+                  Cont_Conds    :
+                    W_Pred_Array (1 .. Natural (Writes.Values.Length));
+                  Top_Cont_Cond : Natural := 0;
+
+               begin
+                  for V of Writes.Values loop
+                     if V.Status.Kind = Partial then
+
+                        --  If we have found an unconditional write, no
+                        --  conditional is introduced.
+
+                        if No (V.Guard) and then V.Size = 0 then
+                           Top_Cont_Cond := 0;
+                           exit;
+
+                        --  Otherwise, aggregate the new conditions
+
+                        else
+                           Top_Cont_Cond := Top_Cont_Cond + 1;
+                           Cont_Conds (Top_Cont_Cond) :=
+                             Condition_For_Value (V, Indices);
+                        end if;
+                     end if;
+                  end loop;
+
+                  if Top_Cont_Cond /= 0 then
+                     Pred :=
+                       New_Conditional
+                         (Condition =>
+                            New_Not
+                              (Right =>
+                                 New_Or_Pred
+                                   (Cont_Conds (1 .. Top_Cont_Cond))),
+                          Then_Part =>
+                            Preserved_Value
+                              (Writes.Ty,
+                               New_Term,
+                               Old_Term,
+                               New_Validity,
+                               Old_Validity),
+                          Else_Part => Pred);
+                  end if;
+               end;
+
+            when Designated_Data   =>
+
+               --  Access types cannot be invalid
+
+               pragma Assert (No (New_Validity));
+
+               --  Add preserved parts of the designated data if any
+
+               Pred :=
+                 Generate_Pred_From_Writes
+                   (Writes.Designated_Status.all,
+                    New_Pointer_Value_Access
+                      (E => Writes.Ty, Name => New_Term),
+                    New_Pointer_Value_Access
+                      (E => Writes.Ty, Name => Old_Term),
+                    Indices      => Indices,
+                    Prev_Values  => Writes.Values,
+                    Do_Immutable => True);
+
+               --  If access can be null, guard the predicate of the designated
+               --  value and add preservation of the is_null field.
+
+               if not Can_Never_Be_Null (Writes.Ty) then
+                  if Present (Pred) then
+                     Pred :=
+                       New_Conditional
+                         (Condition =>
+                            New_Not
+                              (Right =>
+                                 Pred_Of_Boolean_Term
+                                   (New_Pointer_Is_Null_Access
+                                      (E => Writes.Ty, Name => Old_Term))),
+                          Then_Part => Pred);
+                  end if;
+
+                  declare
+                     Is_Null_Pred : constant W_Pred_Id :=
+                       New_Comparison
+                         (Symbol => Why_Eq,
+                          Left   =>
+                            New_Pointer_Is_Null_Access
+                              (E => Writes.Ty, Name => New_Term),
+                          Right  =>
+                            New_Pointer_Is_Null_Access
+                              (E => Writes.Ty, Name => Old_Term));
+                  begin
+                     if Present (Pred) then
+                        Pred := New_And_Pred (Is_Null_Pred, Pred);
+                     else
+                        Pred := Is_Null_Pred;
+                     end if;
+                  end;
+               end if;
+         end case;
+
+         --  Add the condition for entire writes
+
+         if Present (Pred) and then Top_Cond >= 1 then
+            Pred :=
+              New_Conditional
+                (Condition =>
+                   New_Not (Right => New_Or_Pred (Conds (1 .. Top_Cond))),
+                 Then_Part => Pred);
+         end if;
+
+         return Pred;
+      end Generate_Pred_From_Writes;
+
+      --------------------------
+      -- Get_Terms_For_Object --
+      --------------------------
+
+      procedure Get_Terms_For_Object
+        (Obj          : Entity_Id;
+         New_Term     : out W_Term_Id;
+         Old_Term     : out W_Term_Id;
+         New_Validity : out W_Term_Id;
+         Old_Validity : out W_Term_Id) is
+      begin
+         New_Term := +Transform_Identifier (Params, Obj, Obj, EW_Term);
+         Old_Term :=
+           (if As_Old
+            then W_Term_Id'(+New_Old (+New_Term, EW_Term))
+            else +Old_Expr_Map.Element (Obj));
+         New_Validity :=
+           Get_Valid_Id_From_Object (Obj, Ref_Allowed => Params.Ref_Allowed);
+         Old_Validity :=
+           (if No (New_Validity)
+            then Why_Empty
+            elsif As_Old
+            then W_Term_Id'(+New_Old (+New_Validity, EW_Term))
+            else +Get_Valid_Flag_For_Id (+Old_Term, Etype (Obj)));
+      end Get_Terms_For_Object;
+
+      ----------------------------
+      -- Preservation_Of_Object --
+      ----------------------------
+
+      function Preservation_Of_Object (O : Entity_Id) return W_Pred_Id is
+         New_Term     : W_Term_Id;
+         Old_Term     : W_Term_Id;
+         New_Validity : W_Term_Id;
+         Old_Validity : W_Term_Id;
+      begin
+         Get_Terms_For_Object
+           (O, New_Term, Old_Term, New_Validity, Old_Validity);
+         return
+           Preserved_Value
+             (Etype (O), New_Term, Old_Term, New_Validity, Old_Validity);
+      end Preservation_Of_Object;
+
+      function Preservation_Of_Object (F : Flow_Id) return W_Pred_Id is
+      begin
+         case F.Kind is
+            when Direct_Mapping =>
+               return Preservation_Of_Object (F.Node);
+
+            when Magic_String   =>
+               declare
+                  W_Id     : constant W_Identifier_Id :=
+                    To_Why_Id (To_Name (F), Local => False);
+                  New_Term : constant W_Term_Id :=
+                    New_Deref (Right => W_Id, Typ => Get_Typ (W_Id));
+                  Old_Term : constant W_Term_Id :=
+                    (if As_Old
+                     then +New_Old (+New_Term, EW_Term)
+                     else +Modifies_Old_Append (+W_Id));
+               begin
+                  return Preserved_Value (Empty, New_Term, Old_Term);
+               end;
+
+            when others         =>
+               raise Program_Error;
+         end case;
+      end Preservation_Of_Object;
+
+      Relevant_Outputs : constant Flow_Id_Sets.Set :=
+        (if Program_Exit
+         then Get_Outputs_From_Program_Exit (E, E)
+         else Flow_Id_Sets.Empty_Set);
+   begin
+      --  Go over the association tree
+
+      for Position in Association_Tree.Iterate loop
+         declare
+            use Write_Status_Maps;
+            Obj    : Entity_Id renames Key (Position);
+            Writes : Write_Status_Access renames Element (Position);
+            Pred   : W_Pred_Id := Why_Empty;
+
+         begin
+            --  Get entire objects (and in particular abstract states) out of
+            --  the way.
+
+            if Writes.Kind = Entire_Object then
+               declare
+                  Conds : W_Pred_Array (1 .. Natural (Writes.Values.Length));
+                  Top   : Natural := 0;
+               begin
+                  for V of Writes.Values loop
+                     pragma Assert (V.Status.Kind = Entire);
+
+                     --  If we have found an unconditional entire write, the
+                     --  value is discarded.
+
+                     if No (V.Guard) then
+                        goto Next_Iter;
+                     end if;
+
+                     Top := Top + 1;
+                     Conds (Top) :=
+                       Pred_Of_Boolean_Term (+Old_Expr_Map (V.Guard));
+                  end loop;
+
+                  --  For abstract states, generate a single check listing
+                  --  all its constituents.
+
+                  if Ekind (Obj) = E_Abstract_State then
+                     declare
+                        Constituents : constant Flow_Id_Sets.Set :=
+                          Expand_Abstract_State (Direct_Mapping_Id (Obj));
+                        Eqs          :
+                          W_Pred_Array (1 .. Natural (Constituents.Length));
+                        Top          : Natural := 0;
+                     begin
+                        for F of Constituents loop
+                           Top := Top + 1;
+                           Eqs (Top) := Preservation_Of_Object (F);
+                        end loop;
+                        Pred := New_And_Pred (Eqs);
+                     end;
+                  else
+                     Pred := Preservation_Of_Object (Obj);
+                  end if;
+
+                  Pred :=
+                    New_Conditional
+                      (Condition => New_Not (Right => New_Or_Pred (Conds)),
+                       Then_Part => Pred);
+
+                  <<Next_Iter>>
+               end;
+
+            else
+               pragma Assert (Ekind (Obj) /= E_Abstract_State);
+
+               declare
+                  New_Term     : W_Term_Id;
+                  Old_Term     : W_Term_Id;
+                  New_Validity : W_Term_Id;
+                  Old_Validity : W_Term_Id;
+               begin
+                  Get_Terms_For_Object
+                    (Obj, New_Term, Old_Term, New_Validity, Old_Validity);
+                  Pred :=
+                    Generate_Pred_From_Writes
+                      (Writes.all,
+                       New_Term,
+                       Old_Term,
+                       New_Validity,
+                       Old_Validity);
+               end;
+            end if;
+
+            if Present (Pred) then
+               Process_Predicate (Direct_Mapping_Id (Obj), Pred);
+            end if;
+         end;
+      end loop;
+
+      --  Go over remaining outputs that are not mentioned in the modifies
+      --  contract.
+
+      declare
+         Outputs : Flow_Id_Sets.Set;
+         Inputs  : Flow_Id_Sets.Set;
+         Formal  : Entity_Id := First_Formal (E);
+
+      begin
+         --  Go over the formal parameters
+
+         if not Program_Exit then
+            while Present (Formal) loop
+               if not Is_Constant_In_SPARK (Formal)
+                 and then (not Exceptional or else By_Reference (Formal))
+                 and then
+                   Find_Association_In_Modifies (Formal, Association_Tree)
+                   = null
+               then
+                  Process_Predicate
+                    (Direct_Mapping_Id (Formal),
+                     Preservation_Of_Object (Formal));
+               end if;
+               Next_Formal (Formal);
+            end loop;
+         end if;
+
+         --  Go over the global outputs
+
+         Get_Proof_Globals
+           (Subprogram      => E,
+            Reads           => Inputs,
+            Writes          => Outputs,
+            Erase_Constants => True);
+
+         for F of
+           Outputs
+           when (if F.Kind = Direct_Mapping
+                 then not Is_Concurrent_Type (F.Node))
+           and then (not Program_Exit or else Relevant_Outputs.Contains (F))
+           and then
+             Find_Association_In_Modifies
+               (F, Abstract_States, Association_Tree)
+             = null
+         loop
+            Process_Predicate (F, Preservation_Of_Object (F));
+         end loop;
+      end;
+   end Process_Modifies_Clauses;
 
    ------------------
    -- Same_Globals --

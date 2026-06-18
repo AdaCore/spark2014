@@ -3807,7 +3807,7 @@ package body Flow.Control_Flow_Graph is
                         if Is_Protected_Component (E) then
                            F :=
                              Add_Component
-                               (Direct_Mapping_Id (Sinfo.Nodes.Scope (E)), E);
+                               (Direct_Mapping_Id (Einfo.Utils.Scope (E)), E);
                         elsif Is_Part_Of_Concurrent_Object (E) then
                            F :=
                              Add_Component

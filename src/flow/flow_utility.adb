@@ -991,7 +991,7 @@ package body Flow_Utility is
         Is_Formal (E)
         and then Is_Tagged_Type (T)
         and then not Is_Class_Wide_Type (T)
-        and then Has_Extensions_Visible (Sinfo.Nodes.Scope (E));
+        and then Has_Extensions_Visible (Einfo.Utils.Scope (E));
    end Extensions_Visible;
 
    function Extensions_Visible (F : Flow_Id; Scope : Flow_Scope) return Boolean
@@ -1361,7 +1361,7 @@ package body Flow_Utility is
       if Is_Protected_Component (Root_Entity) then
          Map_Root :=
            Add_Component
-             (Direct_Mapping_Id (Sinfo.Nodes.Scope (Root_Entity)),
+             (Direct_Mapping_Id (Einfo.Utils.Scope (Root_Entity)),
               Root_Entity);
 
       elsif Is_Part_Of_Concurrent_Object (Root_Entity) then
@@ -1415,7 +1415,7 @@ package body Flow_Utility is
 
                         if Is_Ancestor
                              (Get_Type (Map_Root, Scope),
-                              Get_Type (Sinfo.Nodes.Scope (Field), Scope),
+                              Get_Type (Einfo.Utils.Scope (Field), Scope),
                               Scope)
                         then
                            Map_Root :=
@@ -2427,6 +2427,7 @@ package body Flow_Utility is
         Get_Pragma (E, Pragma_Subprogram_Variant);
       Exit_Cases         : constant Node_Id :=
         Get_Pragma (E, Pragma_Exit_Cases);
+      Modifies_Spec      : constant Node_Id := Get_Pragma (E, Pragma_Modifies);
 
    begin
       if Is_Dispatching_Operation (E) then
@@ -2503,6 +2504,95 @@ package body Flow_Utility is
 
                exit when No (Exit_Case);
             end loop;
+         end;
+      end if;
+
+      --  If Modifies aspect was found then we pull guard expressions and
+      --  index expressions of the modified object.
+
+      if Present (Modifies_Spec) then
+         declare
+            procedure Process_Modified_Object (N : Node_Id);
+            --  Pull index expressions from the modified object
+
+            -----------------------------
+            -- Process_Modified_Object --
+            -----------------------------
+
+            procedure Process_Modified_Object (N : Node_Id) is
+               Expr : Node_Id;
+               Ref  : Entity_Id := N;
+            begin
+               loop
+                  case Nkind (Ref) is
+                     when N_Expanded_Name | N_Identifier                =>
+                        exit;
+
+                     when N_Selected_Component | N_Explicit_Dereference =>
+                        Ref := Prefix (Ref);
+
+                     when N_Indexed_Component                           =>
+                        Expr := First (Expressions (Ref));
+                        while Present (Expr) loop
+                           Precondition_Expressions.Append (Expr);
+                           Next (Expr);
+                        end loop;
+                        Ref := Prefix (Ref);
+
+                     when others                                        =>
+                        raise Program_Error;
+                  end case;
+               end loop;
+            end Process_Modified_Object;
+
+            Assocs : constant List_Id :=
+              Pragma_Argument_Associations (Modifies_Spec);
+            pragma Assert (List_Length (Assocs) = 1);
+
+            Clauses : constant Node_Id := Expression (First (Assocs));
+
+         begin
+
+            --  Process clauses with guards and those with multiple modified
+            --  objects.
+
+            declare
+               Clause : Node_Id := First (Component_Associations (Clauses));
+            begin
+               while Present (Clause) loop
+
+                  --  Process guard
+
+                  if Present (Expression (Clause)) then
+                     Precondition_Expressions.Append (Expression (Clause));
+                  end if;
+
+                  --  Process modified objects
+
+                  declare
+                     Object : Node_Id := First (Choices (Clause));
+                  begin
+                     loop
+                        Process_Modified_Object (Object);
+                        Next (Object);
+                        exit when No (Object);
+                     end loop;
+                  end;
+
+                  Next (Clause);
+               end loop;
+            end;
+
+            --  Process clauses with a single modified object
+
+            declare
+               Object : Node_Id := First (Expressions (Clauses));
+            begin
+               while Present (Object) loop
+                  Process_Modified_Object (Object);
+                  Next (Object);
+               end loop;
+            end;
          end;
       end if;
 
@@ -4489,14 +4579,14 @@ package body Flow_Utility is
                       (Ekind (Root_Entity) in E_Discriminant | E_Component
                        and then
                          Is_Concurrent_Type
-                           (Sinfo.Nodes.Scope (Root_Entity))));
+                           (Einfo.Utils.Scope (Root_Entity))));
 
             begin
                if Is_Protected_Component (Root_Entity) then
                   Comp_Id := 2;
                   Current_Field :=
                     Add_Component
-                      (Direct_Mapping_Id (Sinfo.Nodes.Scope (Root_Entity)),
+                      (Direct_Mapping_Id (Einfo.Utils.Scope (Root_Entity)),
                        Root_Entity);
 
                elsif Is_Part_Of_Concurrent_Object (Root_Entity) then
@@ -7562,7 +7652,7 @@ package body Flow_Utility is
                      then
                        Flatten_Variable
                          (Add_Component
-                            (Direct_Mapping_Id (Sinfo.Nodes.Scope (E)), E),
+                            (Direct_Mapping_Id (Einfo.Utils.Scope (E)), E),
                           Scope)
 
                      elsif Is_Part_Of_Concurrent_Object (E)

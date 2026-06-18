@@ -1,0 +1,193 @@
+ext.adb:4:46: info: for "X" at ext.adb:4
+ext.adb:4:46: info: modifies contract proved (CVC5: 1 VC)
+ext.adb:7:51: info: for "X" at ext.adb:7
+ext.adb:7:51: info: modifies contract proved (CVC5: 1 VC)
+ext.adb:27:46: info: for "X" at ext.adb:27
+ext.adb:27:46: info: modifies contract proved (CVC5: 1 VC)
+ext.adb:30:51: info: for "X" at ext.adb:30
+ext.adb:30:51: info: modifies contract proved (CVC5: 1 VC)
+ext.ads:11:09: info: for "X" at ext.ads:10
+ext.ads:11:09: info: modifies contract proved (CVC5: 1 VC)
+ext.ads:18:09: info: for "X" at ext.ads:17
+ext.ads:18:09: info: modifies contract proved (CVC5: 1 VC)
+test_modifies.adb:7:26: warning: "X" is not modified, could be IN
+test_modifies.adb:7:29: warning: unused initial value of "Y"
+test_modifies.adb:8:09: info: for "X" at test_modifies.adb:7
+test_modifies.adb:8:09: info: modifies contract proved (CVC5: 1 VC)
+test_modifies.adb:9:17: info: postcondition proved (Trivial: 1 VC)
+test_modifies.adb:11:30: warning: unused initial value of "X"
+test_modifies.adb:11:33: warning: unused initial value of "Y"
+test_modifies.adb:12:09: medium: for "X" at test_modifies.adb:11
+test_modifies.adb:12:09: medium: unexpected part of output might be modified by the subprogram [provers gave up before completing the proof]
+test_modifies.adb:13:17: info: postcondition proved (CVC5: 1 VC)
+test_modifies.adb:18:25: info: refined post proved (CVC5: 1 VC)
+test_modifies.adb:25:25: info: refined post proved (CVC5: 1 VC)
+test_modifies.adb:68:06: info: data dependencies proved
+test_modifies.adb:69:06: info: for "State" at test_modifies.adb:36
+test_modifies.adb:69:06: info: for "State_2" at test_modifies.adb:37
+test_modifies.adb:69:06: info: modifies contract proved (CVC5: 1 VC; Trivial: 1 VC)
+test_modifies.adb:69:06: info: modifies contract proved (CVC5: 2 VC; Trivial: 1 VC)
+test_modifies.adb:83:06: info: data dependencies proved
+test_modifies.adb:84:06: info: for "State" at test_modifies.adb:36
+test_modifies.adb:84:06: info: modifies contract proved (CVC5: 2 VC; Trivial: 1 VC)
+test_modifies.adb:84:06: medium: for "State_2" at test_modifies.adb:37
+test_modifies.adb:84:06: medium: unexpected part of output might be modified by the subprogram [provers gave up before completing the proof]
+test_modifies.adb:98:06: info: data dependencies proved
+test_modifies.adb:98:34: warning: unused initial value of "Nested.State"
+test_modifies.adb:99:06: info: for "State_2" at test_modifies.adb:37
+test_modifies.adb:99:06: info: modifies contract proved (CVC5: 1 VC; Trivial: 1 VC)
+test_modifies.adb:99:06: medium: for "State" at test_modifies.adb:36
+test_modifies.adb:99:06: medium: unexpected part of output might be modified by the subprogram [provers gave up before completing the proof]
+test_modifies.adb:114:06: info: for "State_2" at test_modifies.adb:37
+test_modifies.adb:114:06: info: modifies contract proved (CVC5: 1 VC; Trivial: 1 VC)
+test_modifies.adb:114:06: medium: for "Test_Modifies.Hidden_State.X"
+test_modifies.adb:114:06: medium: unexpected part of output might be modified by the subprogram [provers gave up before completing the proof]
+test_modifies.adb:138:06: info: for "Obj" at test_modifies.adb:137
+test_modifies.adb:138:06: info: modifies contract proved (CVC5: 2 VC)
+test_modifies.adb:146:06: medium: for "Obj" at test_modifies.adb:145
+test_modifies.adb:146:06: medium: unexpected part of output might be modified by the subprogram [provers reached step limit before completing the proof]
+test_modifies.adb:157:06: medium: for "Obj" at test_modifies.adb:156
+test_modifies.adb:157:06: medium: unexpected part of output might be modified by the subprogram [provers reached step limit before completing the proof]
+test_modifies.adb:183:06: info: for "Buf" at test_modifies.adb:181
+test_modifies.adb:183:06: info: modifies contract proved (CVC5: 4 VC; Trivial: 4 VC)
+test_modifies.adb:190:14: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
+test_modifies.adb:196:06: medium: for "Buf" at test_modifies.adb:194
+test_modifies.adb:196:06: medium: unexpected part of output might be modified by the subprogram [provers reached step limit before completing the proof]
+test_modifies.adb:203:14: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
+test_modifies.adb:227:06: info: for "D" at test_modifies.adb:226
+test_modifies.adb:227:06: info: modifies contract proved (CVC5: 1 VC)
+test_modifies.adb:236:06: medium: for "D" at test_modifies.adb:234
+test_modifies.adb:236:06: medium: unexpected part of output might be modified by the subprogram [provers reached step limit before completing the proof]
+test_modifies.adb:254:06: info: for "W" at test_modifies.adb:252
+test_modifies.adb:254:06: info: modifies contract proved (CVC5: 1 VC; Trivial: 2 VC)
+test_modifies.adb:254:32: info: index check proved (CVC5: 2 VC)
+test_modifies.adb:254:32: info: index check proved (CVC5: 2 VC)
+test_modifies.adb:254:32: info: on entry of subprogram at test_modifies.adb:252
+test_modifies.adb:254:32: info: on return of subprogram at test_modifies.adb:252
+test_modifies.adb:258:20: info: index check proved (CVC5: 2 VC)
+test_modifies.adb:259:36: info: overflow check proved (CVC5: 2 VC)
+test_modifies.adb:263:06: info: for "W" at test_modifies.adb:262
+test_modifies.adb:263:06: info: modifies contract proved (CVC5: 2 VC; Trivial: 3 VC)
+test_modifies.adb:263:32: info: index check proved (CVC5: 2 VC)
+test_modifies.adb:263:32: info: on return of subprogram at test_modifies.adb:262
+test_modifies.adb:263:32: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at line 262 should mention W in a precondition] [provers reached step limit before completing the proof]
+test_modifies.adb:263:32: medium: on entry of subprogram at test_modifies.adb:262
+test_modifies.adb:267:20: high: array index check might fail (e.g. when W = (Timeline => (others => False), Current_Id => 11)) [reason for check: value must be a valid index into the array] [possible fix: subprogram at line 262 should mention W in a precondition] [provers reached step limit before completing the proof]
+test_modifies.adb:269:39: info: overflow check proved (CVC5: 2 VC)
+test_modifies.adb:275:06: medium: for "W" at test_modifies.adb:273
+test_modifies.adb:275:06: medium: unexpected part of output might be modified by the subprogram [provers reached step limit before completing the proof]
+test_modifies.adb:275:32: info: index check proved (CVC5: 2 VC)
+test_modifies.adb:275:32: info: index check proved (CVC5: 2 VC)
+test_modifies.adb:275:32: info: on entry of subprogram at test_modifies.adb:273
+test_modifies.adb:275:32: info: on return of subprogram at test_modifies.adb:273
+test_modifies.adb:279:36: info: overflow check proved (CVC5: 2 VC)
+test_modifies.adb:280:20: info: index check proved (CVC5: 2 VC)
+test_modifies.adb:284:06: info: for "W" at test_modifies.adb:283
+test_modifies.adb:284:06: info: modifies contract proved (CVC5: 3 VC; Trivial: 3 VC)
+test_modifies.adb:285:22: info: index check proved (CVC5: 2 VC)
+test_modifies.adb:285:22: info: index check proved (CVC5: 2 VC)
+test_modifies.adb:285:22: info: on entry of subprogram at test_modifies.adb:283
+test_modifies.adb:285:22: info: on return of subprogram at test_modifies.adb:283
+test_modifies.adb:291:23: info: index check proved (CVC5: 2 VC)
+test_modifies.adb:307:06: info: for "B" at test_modifies.adb:305
+test_modifies.adb:307:06: info: modifies contract proved (CVC5: 1 VC; Trivial: 2 VC)
+test_modifies.adb:307:29: info: index check proved (CVC5: 2 VC)
+test_modifies.adb:307:29: info: index check proved (CVC5: 2 VC)
+test_modifies.adb:307:29: info: on entry of subprogram at test_modifies.adb:305
+test_modifies.adb:307:29: info: on return of subprogram at test_modifies.adb:305
+test_modifies.adb:311:17: info: index check proved (CVC5: 2 VC)
+test_modifies.adb:330:06: info: for "State" at test_modifies.adb:328
+test_modifies.adb:330:06: info: modifies contract proved (CVC5: 2 VC)
+test_modifies.adb:330:37: info: on entry of subprogram at test_modifies.adb:328
+test_modifies.adb:330:37: info: on return of subprogram at test_modifies.adb:328
+test_modifies.adb:330:37: info: pointer dereference check proved (CVC5: 1 VC)
+test_modifies.adb:330:37: info: pointer dereference check proved (CVC5: 1 VC)
+test_modifies.adb:334:25: info: pointer dereference check proved (CVC5: 1 VC)
+test_modifies.adb:339:06: info: for "State" at test_modifies.adb:337
+test_modifies.adb:339:06: info: modifies contract proved (CVC5: 3 VC; Trivial: 2 VC)
+test_modifies.adb:339:75: info: on entry of subprogram at test_modifies.adb:337
+test_modifies.adb:339:75: info: on return of subprogram at test_modifies.adb:337
+test_modifies.adb:339:75: info: pointer dereference check proved (CVC5: 1 VC)
+test_modifies.adb:339:75: info: pointer dereference check proved (CVC5: 1 VC)
+test_modifies.adb:343:25: info: pointer dereference check proved (CVC5: 1 VC)
+test_modifies.adb:345:28: info: pointer dereference check proved (CVC5: 1 VC)
+test_modifies.adb:351:06: medium: for "State" at test_modifies.adb:349
+test_modifies.adb:351:06: medium: unexpected part of output might be modified by the subprogram [provers reached step limit before completing the proof]
+test_modifies.adb:351:38: info: on entry of subprogram at test_modifies.adb:349
+test_modifies.adb:351:38: info: on return of subprogram at test_modifies.adb:349
+test_modifies.adb:351:38: info: pointer dereference check proved (CVC5: 1 VC)
+test_modifies.adb:351:38: info: pointer dereference check proved (CVC5: 1 VC)
+test_modifies.adb:351:61: info: on return of subprogram at test_modifies.adb:349
+test_modifies.adb:351:61: info: pointer dereference check proved (CVC5: 1 VC)
+test_modifies.adb:351:61: medium: on entry of subprogram at test_modifies.adb:349
+test_modifies.adb:351:61: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+test_modifies.adb:355:25: medium: resource or memory leak might occur [provers reached step limit before completing the proof]
+test_modifies.adb:356:26: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test_modifies.adb:361:06: medium: for "State" at test_modifies.adb:359
+test_modifies.adb:361:06: medium: unexpected part of output might be modified by the subprogram [provers reached step limit before completing the proof]
+test_modifies.adb:361:37: info: on entry of subprogram at test_modifies.adb:359
+test_modifies.adb:361:37: info: on return of subprogram at test_modifies.adb:359
+test_modifies.adb:361:37: info: pointer dereference check proved (CVC5: 1 VC)
+test_modifies.adb:361:37: info: pointer dereference check proved (CVC5: 1 VC)
+test_modifies.adb:365:24: info: pointer dereference check proved (CVC5: 1 VC)
+test_modifies.adb:365:52: info: pointer dereference check proved (CVC5: 1 VC)
+test_modifies.adb:366:25: info: pointer dereference check proved (CVC5: 1 VC)
+test_modifies.adb:380:06: info: for "Manager" at test_modifies.adb:379
+test_modifies.adb:380:06: info: modifies contract proved (CVC5: 1 VC)
+test_modifies.adb:384:22: medium: resource or memory leak might occur [possible fix: subprogram at line 379 should mention Manager in a precondition] [provers reached step limit before completing the proof]
+test_modifies.adb:388:57: info: pointer dereference check proved (CVC5: 1 VC)
+test_modifies.adb:389:06: medium: for "Manager" at test_modifies.adb:387
+test_modifies.adb:389:06: medium: unexpected part of output might be modified by the subprogram [provers reached step limit before completing the proof]
+test_modifies.adb:389:33: info: on entry of subprogram at test_modifies.adb:387
+test_modifies.adb:389:33: info: on return of subprogram at test_modifies.adb:387
+test_modifies.adb:389:33: info: pointer dereference check proved (CVC5: 1 VC)
+test_modifies.adb:389:33: info: pointer dereference check proved (CVC5: 1 VC)
+test_modifies.adb:389:38: info: index check proved (CVC5: 2 VC)
+test_modifies.adb:389:38: info: index check proved (CVC5: 2 VC)
+test_modifies.adb:389:38: info: on entry of subprogram at test_modifies.adb:387
+test_modifies.adb:389:38: info: on return of subprogram at test_modifies.adb:387
+test_modifies.adb:393:14: info: pointer dereference check proved (CVC5: 1 VC)
+test_modifies.adb:393:23: medium: array index check might fail [reason for check: value must be a valid index into the array] [provers reached step limit before completing the proof]
+test_modifies.adb:398:06: info: for "Manager" at test_modifies.adb:396
+test_modifies.adb:398:06: info: modifies contract proved (CVC5: 2 VC)
+test_modifies.adb:398:33: info: on entry of subprogram at test_modifies.adb:396
+test_modifies.adb:398:33: info: on return of subprogram at test_modifies.adb:396
+test_modifies.adb:398:33: info: pointer dereference check proved (CVC5: 1 VC)
+test_modifies.adb:398:33: info: pointer dereference check proved (CVC5: 1 VC)
+test_modifies.adb:402:22: medium: resource or memory leak might occur [provers reached step limit before completing the proof]
+test_modifies.adb:427:06: info: for "N" at test_modifies.adb:426
+test_modifies.adb:427:06: info: modifies contract proved (CVC5: 1 VC)
+test_modifies.adb:430:06: medium: for "N" at test_modifies.adb:429
+test_modifies.adb:430:06: medium: unexpected part of output might be modified by the subprogram [provers reached step limit before completing the proof]
+test_modifies.adb:430:28: info: on return of subprogram at test_modifies.adb:429
+test_modifies.adb:430:28: info: pointer dereference check proved (CVC5: 1 VC)
+test_modifies.adb:430:28: medium: on entry of subprogram at test_modifies.adb:429
+test_modifies.adb:430:28: medium: pointer dereference check might fail [possible fix: subprogram at line 429 should mention N in a precondition] [provers reached step limit before completing the proof]
+test_modifies.adb:434:20: medium: resource or memory leak might occur [possible explanation: allocator for a general access-to-variable type leaks memory]
+test_modifies.adb:439:20: medium: resource or memory leak might occur [possible explanation: allocator for a general access-to-variable type leaks memory]
+test_modifies.adb:445:07: info: range check proved (CVC5: 2 VC)
+test_modifies.adb:455:06: info: for "Manager" at test_modifies.adb:454
+test_modifies.adb:455:06: info: modifies contract proved (CVC5: 1 VC)
+test_modifies.adb:459:22: info: discriminant check proved (Trivial: 1 VC)
+test_modifies.adb:459:22: medium: resource or memory leak might occur [possible fix: subprogram at line 454 should mention Manager in a precondition] [provers reached step limit before completing the proof]
+test_modifies.adb:463:59: info: pointer dereference check proved (CVC5: 1 VC)
+test_modifies.adb:464:06: medium: for "Manager" at test_modifies.adb:462
+test_modifies.adb:464:06: medium: unexpected part of output might be modified by the subprogram [provers reached step limit before completing the proof]
+test_modifies.adb:464:33: info: on entry of subprogram at test_modifies.adb:462
+test_modifies.adb:464:33: info: on return of subprogram at test_modifies.adb:462
+test_modifies.adb:464:33: info: pointer dereference check proved (CVC5: 1 VC)
+test_modifies.adb:464:33: info: pointer dereference check proved (CVC5: 1 VC)
+test_modifies.adb:464:40: info: index check proved (CVC5: 2 VC)
+test_modifies.adb:464:40: info: index check proved (CVC5: 2 VC)
+test_modifies.adb:464:40: info: on entry of subprogram at test_modifies.adb:462
+test_modifies.adb:464:40: info: on return of subprogram at test_modifies.adb:462
+test_modifies.adb:468:21: info: pointer dereference check proved (CVC5: 1 VC)
+test_modifies.adb:468:25: info: index check proved (CVC5: 2 VC)
+test_modifies.adb:473:06: info: for "Manager" at test_modifies.adb:471
+test_modifies.adb:473:06: info: modifies contract proved (CVC5: 2 VC)
+test_modifies.adb:473:33: info: on entry of subprogram at test_modifies.adb:471
+test_modifies.adb:473:33: info: on return of subprogram at test_modifies.adb:471
+test_modifies.adb:473:33: info: pointer dereference check proved (CVC5: 1 VC)
+test_modifies.adb:473:33: info: pointer dereference check proved (CVC5: 1 VC)
+test_modifies.adb:477:22: info: discriminant check proved (Trivial: 1 VC)
+test_modifies.adb:477:22: medium: resource or memory leak might occur [provers reached step limit before completing the proof]

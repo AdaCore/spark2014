@@ -215,11 +215,17 @@ package body SPARK_Definition.Annotate is
    Inline_Pragmas : Common_Containers.Node_Maps.Map :=
      Common_Containers.Node_Maps.Empty_Map;
    --  Maps all the function entities E with a pragma Annotate
-   --  (GNATprove, Inline_For_Proof, E) to th pragma. This is used to get
+   --  (GNATprove, Inline_For_Proof, E) to the pragma. This is used to get
    --  better location for checks for inline.
 
    Iterable_Annotations : Iterable_Maps.Map := Iterable_Maps.Empty_Map;
    --  A map from Iterable aspects to Iterable annotations
+
+   Iterable_Pragmas : Common_Containers.Node_Maps.Map :=
+     Common_Containers.Node_Maps.Empty_Map;
+   --  Maps all the function entities E with a pragma Annotate
+   --  (GNATprove, Iterable_For_Proof, E) to the pragma. This is used to get
+   --  better location for checks for iterable.
 
    Logical_Eq_Annotations : Common_Containers.Node_Sets.Set :=
      Common_Containers.Node_Sets.Empty_Set;
@@ -464,6 +470,13 @@ package body SPARK_Definition.Annotate is
    --  Short form with common filling of arguments for case of entity
    --  being the pragma argument, in particular covering
    --  subprograms and packages.
+
+   procedure Check_Third_Arg_Is_String
+     (Prag_Name   : GNATprove_Annotation_Kind;
+      Arg_3       : Node_Id;
+      From_Aspect : Boolean;
+      Ok          : out Boolean);
+   --  Check that the third argument of a pragma annotate is a string literal
 
    procedure Check_Automatic_Inst_And_HO_Specialization_Compatibility
      (Lemma : Subprogram_Kind_Id; Fun : Function_Kind_Id)
@@ -723,12 +736,9 @@ package body SPARK_Definition.Annotate is
 
       --  The third argument must be a string literal
 
-      if Nkind (Arg3_Exp) not in N_String_Literal then
-         Mark_Incorrect_Use_Of_Annotation
-           (Annot_String_Third_Argument,
-            Arg3_Exp,
-            Name        => Prag_Name,
-            From_Aspect => From_Aspect);
+      Check_Third_Arg_Is_String (Prag_Name, Arg3_Exp, From_Aspect, Ok);
+
+      if not Ok then
          return;
       end if;
 
@@ -2905,13 +2915,11 @@ package body SPARK_Definition.Annotate is
          Ent := Empty;
       end if;
 
-      if Nkind (Arg3_Exp) not in N_String_Literal then
+      --  The third argument must be a string literal
 
-         Mark_Incorrect_Use_Of_Annotation
-           (Annot_String_Third_Argument,
-            Arg3_Exp,
-            Name        => Annot,
-            From_Aspect => From_Aspect);
+      Check_Third_Arg_Is_String (Annot, Arg3_Exp, From_Aspect, Ok);
+
+      if not Ok then
          return;
       end if;
 
@@ -3922,6 +3930,7 @@ package body SPARK_Definition.Annotate is
       Prag_Name     : constant GNATprove_Annotation_Kind := Iterable_For_Proof;
       Model_Name    : constant String := "Model";
       Contains_Name : constant String := "Contains";
+      Element_Name  : constant String := "Element";
 
       procedure Check_Common_Properties
         (Container_Ty : Type_Kind_Id; E : Entity_Id; Ok : out Boolean);
@@ -3934,6 +3943,10 @@ package body SPARK_Definition.Annotate is
 
       procedure Check_Model_Entity (E : Entity_Id; Ok : out Boolean);
       --  Checks that E is a valid Model function for a type with an
+      --  Iterable aspect.
+
+      procedure Check_Element_Entity (E : Entity_Id; Ok : out Boolean);
+      --  Checks that E is a valid Element function for a type with an
       --  Iterable aspect.
 
       function Find_Model_Root (Container_Type : Entity_Id) return Entity_Id;
@@ -4083,6 +4096,90 @@ package body SPARK_Definition.Annotate is
          end if;
       end Check_Contains_Entity;
 
+      --------------------------
+      -- Check_Element_Entity --
+      --------------------------
+
+      procedure Check_Element_Entity (E : Entity_Id; Ok : out Boolean) is
+         C_Param : constant Node_Id := First_Formal (E);
+         P_Param : constant Node_Id :=
+           (if Present (C_Param) then Next_Formal (C_Param) else Empty);
+
+         Container_Type : Entity_Id;
+         --  Type of the first argument of the Element function
+         Cursor_Type    : Entity_Id;
+         --  Type of the second argument of the Element function
+         Element_Type   : Entity_Id;
+         --  Return type of the Element function
+
+         Prim         : Entity_Id;
+         Cont_Element : Entity_Id := Empty;
+         Cont_Cursor  : Entity_Id := Empty;
+
+      begin
+         Ok := False;
+
+         if No (P_Param) or else Present (Next_Formal (P_Param)) then
+            Mark_Incorrect_Use_Of_Annotation
+              (Annot_Subp_Parameter_Number,
+               E,
+               Name     => Prag_Name,
+               Cont_Msg => Create ("expected 2 parameters"));
+            return;
+         end if;
+
+         Container_Type := Etype (C_Param);
+         Cursor_Type := Etype (P_Param);
+         Element_Type := Etype (E);
+
+         if not In_SPARK (Container_Type) then
+            return;
+         --  No needs for checks if container type is not in SPARK,
+         --  the annotation can be silently ignored in that case.
+
+         end if;
+
+         Prim :=
+           Get_Iterable_Type_Primitive
+             (Container_Type, Name_Constant_Reference);
+
+         if No (Prim) then
+            Mark_Incorrect_Use_Of_Annotation
+              (Annot_Subp_Parameter_Type,
+               C_Param,
+               Name     => Prag_Name,
+               Cont_Msg =>
+                 Create
+                   ("type of & shall have a Constant_Reference primitive",
+                    Names => [C_Param]));
+            return;
+         elsif not In_SPARK (Prim) then
+            return;
+         end if;
+
+         Cont_Cursor := Etype (Next_Formal (First_Formal (Prim)));
+         Cont_Element := Directly_Designated_Type (Etype (Prim));
+
+         if Retysp (Cont_Element) /= Retysp (Element_Type) then
+            Mark_Incorrect_Use_Of_Annotation
+              (Annot_Function_Return_Type,
+               E,
+               Name     => Prag_Name,
+               Cont_Msg => Create ("expected &", Names => [Cont_Element]));
+
+         elsif Retysp (Cont_Cursor) /= Retysp (Cursor_Type) then
+            Mark_Incorrect_Use_Of_Annotation
+              (Annot_Subp_Parameter_Type,
+               C_Param,
+               Name     => Prag_Name,
+               Cont_Msg =>
+                 Create
+                   ("& shall have type &", Names => [P_Param, Cont_Cursor]));
+         else
+            Check_Common_Properties (Container_Type, E, Ok);
+         end if;
+      end Check_Element_Entity;
+
       ------------------------
       -- Check_Model_Entity --
       ------------------------
@@ -4098,6 +4195,7 @@ package body SPARK_Definition.Annotate is
 
          Prim          : Entity_Id;
          Cont_Element  : Entity_Id := Empty;
+         Model_Prim    : Entity_Id;
          Model_Element : Entity_Id;
 
       begin
@@ -4135,8 +4233,19 @@ package body SPARK_Definition.Annotate is
             end if;
          end if;
 
-         Model_Element :=
-           Get_Iterable_Type_Primitive (Model_Type, Name_Element);
+         Model_Prim := Get_Iterable_Type_Primitive (Model_Type, Name_Element);
+
+         if Present (Model_Prim) then
+            Model_Element := Etype (Model_Prim);
+         else
+            Model_Prim :=
+              Get_Iterable_Type_Primitive
+                (Model_Type, Name_Constant_Reference);
+
+            if Present (Model_Prim) then
+               Model_Element := Directly_Designated_Type (Etype (Model_Prim));
+            end if;
+         end if;
 
          if No (Prim) then
             Mark_Incorrect_Use_Of_Annotation
@@ -4149,7 +4258,7 @@ package body SPARK_Definition.Annotate is
                     Names => [Param]));
          elsif not In_SPARK (Prim) then
             return;
-         elsif No (Model_Element) then
+         elsif No (Model_Prim) then
             Mark_Incorrect_Use_Of_Annotation
               (Annot_Function_Return_Type,
                E,
@@ -4157,7 +4266,7 @@ package body SPARK_Definition.Annotate is
                Cont_Msg =>
                  Create
                    ("return type shall allow container element iteration"));
-         elsif not In_SPARK (Model_Element) then
+         elsif not In_SPARK (Model_Prim) then
             Mark_Incorrect_Use_Of_Annotation
               (Annot_Function_Return_Type,
                E,
@@ -4166,8 +4275,8 @@ package body SPARK_Definition.Annotate is
                  Create
                    ("primitive & for container element iteration on & shall "
                     & "be in SPARK",
-                    Names => [Model_Element, Model_Type]));
-         elsif Retysp (Cont_Element) /= Retysp (Etype (Model_Element)) then
+                    Names => [Model_Prim, Model_Type]));
+         elsif Retysp (Cont_Element) /= Retysp (Model_Element) then
             Mark_Incorrect_Use_Of_Annotation
               (Annot_Function_Return_Type,
                E,
@@ -4207,10 +4316,10 @@ package body SPARK_Definition.Annotate is
             Retrieve_Iterable_Annotation (Cursor, Found, Annot);
             if Found then
                case Annot.Kind is
-                  when Contains =>
+                  when Contains | Element =>
                      Found := False;
 
-                  when Model    =>
+                  when Model              =>
                      Cursor := Etype (Annot.Entity);
                end case;
             end if;
@@ -4250,7 +4359,7 @@ package body SPARK_Definition.Annotate is
 
       end Process_Iterable_Annotation;
 
-      Args_Str : constant String_Id := Strval (Arg3_Exp);
+      Args_Str : String_Id;
       Kind     : Iterable_Kind;
       New_Prim : Entity_Id;
       Ok       : Boolean;
@@ -4263,6 +4372,17 @@ package body SPARK_Definition.Annotate is
       if not Ok then
          return;
       end if;
+
+      --  The third argument must be a string literal
+
+      Check_Third_Arg_Is_String
+        (Iterable_For_Proof, Arg3_Exp, From_Aspect_Specification (Prag), Ok);
+
+      if not Ok then
+         return;
+      end if;
+
+      Args_Str := Strval (Arg3_Exp);
 
       New_Prim := Entity (Arg4_Exp);
 
@@ -4282,6 +4402,9 @@ package body SPARK_Definition.Annotate is
       elsif To_Lower (To_String (Args_Str)) = To_Lower (Contains_Name) then
          Kind := Contains;
          Check_Contains_Entity (New_Prim, Ok);
+      elsif To_Lower (To_String (Args_Str)) = To_Lower (Element_Name) then
+         Kind := Element;
+         Check_Element_Entity (New_Prim, Ok);
       else
          Mark_Incorrect_Use_Of_Annotation
            (Annot_Wrong_Third_Parameter,
@@ -4292,8 +4415,10 @@ package body SPARK_Definition.Annotate is
               Create
                 ("expected """
                  & Model_Name
-                 & """ or """
+                 & """, """
                  & Contains_Name
+                 & """, or """
+                 & Element_Name
                  & '"'));
          return;
       end if;
@@ -4314,6 +4439,7 @@ package body SPARK_Definition.Annotate is
       end if;
 
       Process_Iterable_Annotation (Kind, New_Prim);
+      Iterable_Pragmas.Insert (New_Prim, Prag);
 
    end Check_Iterable_Annotation;
 
@@ -4767,13 +4893,9 @@ package body SPARK_Definition.Annotate is
 
       --  The extra argument if any must be a string literal
 
-      if Present (Extra_Exp) and then Nkind (Extra_Exp) not in N_String_Literal
-      then
-         Mark_Incorrect_Use_Of_Annotation
-           (Annot_String_Third_Argument,
-            Arg3_Exp,
-            Name        => Prag_Name,
-            From_Aspect => From_Aspect);
+      Check_Third_Arg_Is_String (Prag_Name, Extra_Exp, From_Aspect, Ok);
+
+      if not Ok then
          return;
       end if;
 
@@ -5247,13 +5369,9 @@ package body SPARK_Definition.Annotate is
 
       --  The extra argument if any must be a string literal
 
-      if Present (Arg3_Exp) and then Nkind (Arg3_Exp) not in N_String_Literal
-      then
-         Mark_Incorrect_Use_Of_Annotation
-           (Annot_String_Third_Argument,
-            Arg3_Exp,
-            Name        => Prag_Name,
-            From_Aspect => From_Aspect);
+      Check_Third_Arg_Is_String (Prag_Name, Arg3_Exp, From_Aspect, Ok);
+
+      if not Ok then
          return;
       end if;
 
@@ -5516,6 +5634,28 @@ package body SPARK_Definition.Annotate is
          end if;
       end;
    end Check_Predefined_Eq_Annotation;
+
+   -------------------------------
+   -- Check_Third_Arg_Is_String --
+   -------------------------------
+
+   procedure Check_Third_Arg_Is_String
+     (Prag_Name   : GNATprove_Annotation_Kind;
+      Arg_3       : Node_Id;
+      From_Aspect : Boolean;
+      Ok          : out Boolean) is
+   begin
+      if Present (Arg_3) and then Nkind (Arg_3) not in N_String_Literal then
+         Mark_Incorrect_Use_Of_Annotation
+           (Annot_String_Third_Argument,
+            Arg_3,
+            Name        => Prag_Name,
+            From_Aspect => From_Aspect);
+         Ok := False;
+      else
+         Ok := True;
+      end if;
+   end Check_Third_Arg_Is_String;
 
    ---------------------------------------
    -- Decl_Starts_Pragma_Annotate_Range --
@@ -6053,6 +6193,13 @@ package body SPARK_Definition.Annotate is
 
    function Find_Inline_Pragma (E : Entity_Id) return Node_Id
    is (Inline_Pragmas.Element (E));
+
+   --------------------------
+   -- Find_Iterable_Pragma --
+   --------------------------
+
+   function Find_Iterable_Pragma (E : Entity_Id) return Node_Id
+   is (Iterable_Pragmas.Element (E));
 
    -----------------------------------------------
    -- Generate_Useless_Pragma_Annotate_Warnings --

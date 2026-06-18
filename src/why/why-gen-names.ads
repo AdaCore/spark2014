@@ -408,6 +408,9 @@ package Why.Gen.Names is
       WNE_Content,
       WNE_Havoc,
 
+      --  Suffix for old references used for Modifies contracts
+      WNE_Modifies_Old,
+
       WNE_Of_Array,
       WNE_Of_Base,
       WNE_Of_Rep,
@@ -522,6 +525,12 @@ package Why.Gen.Names is
    function Init_Append (Base : W_Identifier_Id) return W_Identifier_Id;
 
    function Havoc_Append (Base : W_Name_Id) return W_Identifier_Id;
+
+   function Modifies_Old_Append
+     (Base : W_Identifier_Id) return W_Identifier_Id;
+   --  Create a local indentifier from an existing one by appending
+   --  WNE_Modifies_Old as a suffix. It is used to create ids for old values of
+   --  opaque global objects.
 
    function Valid_Append
      (Base : W_Identifier_Id; Typ : W_Type_Id) return W_Identifier_Id;

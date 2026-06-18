@@ -32,7 +32,6 @@ with Gnat2Why.Expr;                  use Gnat2Why.Expr;
 with Sinput;                         use Sinput;
 with SPARK_Util;                     use SPARK_Util;
 with SPARK_Util.Subprograms;         use SPARK_Util.Subprograms;
-with SPARK_Util.Types;               use SPARK_Util.Types;
 with String_Utils;                   use String_Utils;
 with VC_Kinds;                       use VC_Kinds;
 with Why.Atree.Accessors;            use Why.Atree.Accessors;
@@ -958,7 +957,7 @@ package body Gnat2Why.Subprograms.Pointers is
             Profile : constant Entity_Id := Directly_Designated_Type (E);
          begin
             if Ada_Ent_To_Why.Has_Element (Symbol_Table, Profile) then
-               pragma Assert (not Is_Base_Type (E));
+               pragma Assert (E /= Root_Retysp (E));
             else
                Insert_Item
                  (Profile,
@@ -1420,7 +1419,7 @@ package body Gnat2Why.Subprograms.Pointers is
                  Checks_For_Subp_Conversion
                    (Ada_Node => Expr,
                     From     => Subp,
-                    To       => Etype (Expr),
+                    To       => Retysp (Etype (Expr)),
                     Params   => Params),
                Right    => +T);
 

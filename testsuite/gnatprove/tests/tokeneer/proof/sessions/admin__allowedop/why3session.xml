@@ -55,12 +55,12 @@
           </goal>
           <goal name="def'vc.8" proved="true">
             <proof prover="1">
-              <result status="valid" steps="1995" />
+              <result status="valid" steps="1903" />
             </proof>
           </goal>
           <goal name="def'vc.9" proved="true">
             <proof prover="1">
-              <result status="valid" steps="1998" />
+              <result status="valid" steps="1914" />
             </proof>
           </goal>
         </transf>

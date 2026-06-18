@@ -1,0 +1,3 @@
+sse2.ads:40:16: info: implicit aspect Always_Terminates on "Rotate_Left" has been proved, subprogram will terminate
+sse2.ads:42:57: info: range check proved (CVC5: 2 VC)
+sse2.ads:44:07: info: data dependencies proved

@@ -60,7 +60,7 @@ test_map.adb:82:07: info: precondition proved
 test_map.adb:83:07: info: precondition proved
 test_map.adb:85:22: info: assertion proved
 test_map.adb:86:07: info: precondition proved
-test_map.adb:87:22: info: assertion proved
+test_map.adb:87:22: medium: assertion might fail [provers reached step limit before completing the proof]
 test_map.adb:88:07: info: precondition proved
 test_map.adb:90:07: info: precondition proved
 test_map.adb:92:22: info: assertion proved
@@ -95,7 +95,7 @@ test_map.adb:129:07: info: precondition proved
 test_map.adb:130:22: info: assertion proved
 test_map.adb:131:07: info: precondition proved
 test_map.adb:133:07: info: precondition proved
-test_map.adb:135:22: info: assertion proved
+test_map.adb:135:22: medium: assertion might fail
 test_map.adb:136:07: info: precondition proved
 test_map.adb:137:22: info: assertion proved
 test_map.adb:140:22: info: assertion proved
