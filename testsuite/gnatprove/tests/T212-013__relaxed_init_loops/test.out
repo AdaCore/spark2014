@@ -105,7 +105,7 @@ test_loops_2.adb:85:18: info: initialization check proved (CVC5: 1 VC)
 test_loops_2.adb:86:27: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
 test_loops_2.adb:87:10: info: precondition proved (CVC5: 2 VC)
 test_loops_2.adb:87:21: info: in value of subprogram parameter after the call at test_loops_2.adb:87
-test_loops_2.adb:87:21: info: initialization check proved (CVC5: 1 VC)
+test_loops_2.adb:87:21: info: initialization check proved (Z3: 1 VC)
 test_loops_2.adb:89:35: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
 test_loops_2.adb:90:16: info: index check proved (CVC5: 2 VC)
 test_loops_2.adb:92:27: info: cannot unroll loop (too many loop iterations) [unrolling-inlining-failures]
