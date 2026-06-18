@@ -1,0 +1,80 @@
+inst.ads:6:13: info: implicit aspect Always_Terminates on "Equivalent" has been proved, subprogram will terminate
+inst.ads:7:10: info: division check proved (CVC5: 1 VC)
+inst.ads:7:22: info: division check proved (CVC5: 1 VC)
+inst.ads:8:13: info: implicit aspect Always_Terminates on "Equal" has been proved, subprogram will terminate
+inst.ads:9:10: info: division check proved (CVC5: 1 VC)
+inst.ads:9:23: info: division check proved (CVC5: 1 VC)
+test.adb:16:14: info: add a contract to analyze it separately from calling contexts
+test.adb:16:14: info: local subprogram "Test_Default_Map" only analyzed in the context of calls [info-unrolling-inlining]
+test.adb:19:07: info: precondition proved (CVC5: 1 VC), in call inlined at test.adb:133
+test.adb:21:07: info: precondition proved (CVC5: 1 VC), in call inlined at test.adb:133
+test.adb:23:07: info: precondition proved (CVC5: 1 VC), in call inlined at test.adb:133
+test.adb:27:14: info: add a contract to analyze it separately from calling contexts
+test.adb:27:14: info: local subprogram "Test_Default_Init" only analyzed in the context of calls [info-unrolling-inlining]
+test.adb:28:07: info: initialization of "X" proved
+test.adb:28:07: info: initialization of "X" proved, in call inlined at test.adb:134
+test.adb:30:07: info: precondition proved (CVC5: 1 VC), in call inlined at test.adb:134
+test.adb:32:07: info: precondition proved (CVC5: 1 VC), in call inlined at test.adb:134
+test.adb:34:07: info: precondition proved (CVC5: 1 VC), in call inlined at test.adb:134
+test.adb:36:07: info: precondition proved (CVC5: 1 VC), in call inlined at test.adb:134
+test.adb:39:14: info: add a contract to analyze it separately from calling contexts
+test.adb:39:14: info: local subprogram "Test_Get" only analyzed in the context of calls [info-unrolling-inlining]
+test.adb:40:07: info: initialization of "X" proved
+test.adb:40:07: info: initialization of "X" proved, in call inlined at test.adb:135
+test.adb:43:07: info: precondition proved (CVC5: 1 VC), in call inlined at test.adb:135
+test.adb:44:07: info: precondition proved (CVC5: 1 VC), in call inlined at test.adb:135
+test.adb:45:07: info: precondition proved (Z3: 1 VC), in call inlined at test.adb:135
+test.adb:46:07: info: precondition proved (Z3: 1 VC), in call inlined at test.adb:135
+test.adb:51:14: info: add a contract to analyze it separately from calling contexts
+test.adb:51:14: info: local subprogram "Test_Eq" only analyzed in the context of calls [info-unrolling-inlining]
+test.adb:52:07: info: initialization of "X" proved
+test.adb:52:07: info: initialization of "X" proved, in call inlined at test.adb:136
+test.adb:52:10: info: initialization of "Y" proved
+test.adb:52:10: info: initialization of "Y" proved, in call inlined at test.adb:136
+test.adb:54:07: info: precondition proved (Z3: 1 VC), in call inlined at test.adb:136
+test.adb:56:07: info: precondition proved (Z3: 1 VC), in call inlined at test.adb:136
+test.adb:58:07: info: precondition proved (Z3: 1 VC), in call inlined at test.adb:136
+test.adb:61:07: info: precondition proved (Z3: 1 VC), in call inlined at test.adb:136
+test.adb:66:07: info: precondition proved (Z3: 1 VC), in call inlined at test.adb:136
+test.adb:70:07: info: precondition proved (Z3: 1 VC), in call inlined at test.adb:136
+test.adb:74:07: info: precondition proved (Z3: 1 VC), in call inlined at test.adb:136
+test.adb:78:07: info: precondition proved (Z3: 1 VC), in call inlined at test.adb:136
+test.adb:81:14: info: add a contract to analyze it separately from calling contexts
+test.adb:81:14: info: local subprogram "Test_Equivalent_Maps" only analyzed in the context of calls [info-unrolling-inlining]
+test.adb:82:07: info: initialization of "X" proved
+test.adb:82:07: info: initialization of "X" proved, in call inlined at test.adb:137
+test.adb:82:10: info: initialization of "Y" proved
+test.adb:82:10: info: initialization of "Y" proved, in call inlined at test.adb:137
+test.adb:84:07: info: precondition proved (Z3: 1 VC), in call inlined at test.adb:137
+test.adb:86:07: info: precondition proved (Z3: 1 VC), in call inlined at test.adb:137
+test.adb:91:07: info: precondition proved (Z3: 1 VC), in call inlined at test.adb:137
+test.adb:95:07: info: precondition proved (Z3: 1 VC), in call inlined at test.adb:137
+test.adb:100:14: info: add a contract to analyze it separately from calling contexts
+test.adb:100:14: info: local subprogram "Test_Set" only analyzed in the context of calls [info-unrolling-inlining]
+test.adb:101:07: info: initialization of "X" proved
+test.adb:101:07: info: initialization of "X" proved, in call inlined at test.adb:138
+test.adb:104:07: info: precondition proved (CVC5: 1 VC), in call inlined at test.adb:138
+test.adb:105:07: info: precondition proved (Z3: 1 VC), in call inlined at test.adb:138
+test.adb:108:07: info: precondition proved (CVC5: 1 VC), in call inlined at test.adb:138
+test.adb:109:07: info: precondition proved (Z3: 1 VC), in call inlined at test.adb:138
+test.adb:112:07: info: precondition proved (Z3: 1 VC), in call inlined at test.adb:138
+test.adb:113:07: info: precondition proved (Z3: 1 VC), in call inlined at test.adb:138
+test.adb:117:07: info: precondition proved (Z3: 1 VC), in call inlined at test.adb:138
+test.adb:118:07: info: precondition proved (CVC5: 1 VC), in call inlined at test.adb:138
+test.adb:119:07: info: precondition proved (Z3: 1 VC), in call inlined at test.adb:138
+test.adb:122:14: info: add a contract to analyze it separately from calling contexts
+test.adb:122:14: info: local subprogram "Test_Aggregate" only analyzed in the context of calls [info-unrolling-inlining]
+test.adb:123:18: info: keys shall be distinct for maps aggregates at spark-containers-functional-total_maps.ads:117, in instantiation at inst.ads:10
+test.adb:123:18: info: precondition proved (Z3: 1 VC), in call inlined at test.adb:139
+test.adb:125:07: info: precondition proved (CVC5: 1 VC), in call inlined at test.adb:139
+test.adb:126:07: info: precondition proved (CVC5: 1 VC), in call inlined at test.adb:139
+test.adb:127:07: info: precondition proved (Z3: 1 VC), in call inlined at test.adb:139
+test.adb:128:07: info: precondition proved (Z3: 1 VC), in call inlined at test.adb:139
+test.adb:129:07: info: precondition proved (Z3: 1 VC), in call inlined at test.adb:139
+test.adb:133:04: info: analyzing call to "Test_Default_Map" in context
+test.adb:134:04: info: analyzing call to "Test_Default_Init" in context
+test.adb:135:04: info: analyzing call to "Test_Get" in context
+test.adb:136:04: info: analyzing call to "Test_Eq" in context
+test.adb:137:04: info: analyzing call to "Test_Equivalent_Maps" in context
+test.adb:138:04: info: analyzing call to "Test_Set" in context
+test.adb:139:04: info: analyzing call to "Test_Aggregate" in context
