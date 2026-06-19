@@ -1,0 +1,6 @@
+main.adb:6:44: warning: no subprogram exists that can initialize abstract state "Nested_1.S"
+main.adb:18:44: warning: no subprogram exists that can initialize abstract state "Nested_2.S"
+main.adb:31:06: info: for "S" at main.adb:18
+main.adb:31:06: info: for "S" at main.adb:6
+main.adb:31:06: info: modifies contract proved (CVC5: 1 VC; Trivial: 1 VC)
+main.adb:31:06: info: modifies contract proved (CVC5: 1 VC; Trivial: 1 VC)

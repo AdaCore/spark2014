@@ -177,6 +177,11 @@ package Why.Inter is
      (Obj : Entity_Name; Local : Boolean) return W_Identifier_Id;
    --  This function should only be called for object references for effects
 
+   function To_Why_Id_Tmp
+     (Obj : Entity_Name; Prefix : String) return W_Identifier_Id;
+   --  Same as above, but generate a local idnetifier that can be used for a
+   --  local binding. It uses the full name of Obj so it is unique.
+
    function To_Why_Type
      (E : Entity_Id; Local : Boolean := False; Relaxed_Init : Boolean := False)
       return W_Name_Id

@@ -652,21 +652,6 @@ package body Why.Gen.Names is
             Init_Decl => True)
        else Get_Logic_Function (E));
 
-   -------------------------
-   -- Modifies_Old_Append --
-   -------------------------
-
-   function Modifies_Old_Append (Base : W_Identifier_Id) return W_Identifier_Id
-   is
-      Name : constant W_Name_Id := Get_Name (Base);
-   begin
-      return
-        Append_Num
-          (S     => Img (Get_Symb (Name)) & To_String (WNE_Modifies_Old),
-           Count => 1,
-           Typ   => Get_Typ (Base));
-   end Modifies_Old_Append;
-
    -------------
    -- New_Abs --
    -------------
@@ -977,7 +962,7 @@ package body Why.Gen.Names is
          when WNE_Hidden_Extension            => "rec__hidden_ext__",
          when WNE_Hide_Extension              => "hide_ext__",
          when WNE_Init_Wrapper_Suffix         => "__init_wrapper",
-         when WNE_Modifies_Old                => "___modifies_old",
+         when WNE_Modifies_Prefix             => "_modifies___",
          when WNE_Param_Prefix                => "param__",
          when WNE_Rec_Rep                     => "__rep",
          when WNE_Rec_Comp_Prefix             => "rec__",
