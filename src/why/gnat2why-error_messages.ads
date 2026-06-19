@@ -64,7 +64,10 @@ package Gnat2Why.Error_Messages is
    function Num_Registered_VCs_In_Why3 return Natural;
    --  VCs that actually appear in the Why3 file(s)
 
-   procedure Parse_Why3_Results (Fn : String; Timing : in out Time_Token);
+   procedure Parse_Why3_Results
+     (Fn : String; Timing : in out Time_Token; Gnatwhy3_Success : Boolean);
+   --  Parse the result produced by gnatwhy3. The gnatwhy3 process status is
+   --  used only to classify unparseable output.
 
    procedure Emit_Proof_Result
      (Node          : Node_Id;
