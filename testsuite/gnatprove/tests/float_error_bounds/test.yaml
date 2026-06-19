@@ -2,5 +2,6 @@ large: True
 replay: True
 prove_all:
   sparklib: True
+  prover: ["cvc5","z3","altergo"] #remove colibri, it is not needed and does not seem to replay well
 session_opt:
   level: 4

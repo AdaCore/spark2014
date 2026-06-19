@@ -6,7 +6,6 @@
   <prover id="1" name="CVC5" version="0.0.7-gnatprove" timelimit="60" steplimit="0" memlimit="2000" />
   <prover id="2" name="Z3" version="4.5.1-gnatprove" timelimit="60" steplimit="0" memlimit="2000" />
   <prover id="3" name="Trivial" version="1.0" alternative="trivial" timelimit="1" steplimit="1" memlimit="1000" />
-  <prover id="4" name="colibri" version="2137" timelimit="60" steplimit="0" memlimit="2000" />
   <file format="gnat-json" proved="true">
     <path name=".." />
     <path name=".." />
@@ -67,8 +66,8 @@
             </proof>
           </goal>
           <goal name="def'vc.10" proved="true">
-            <proof prover="1">
-              <result status="valid" steps="40427" />
+            <proof prover="2">
+              <result status="valid" steps="5987" />
             </proof>
           </goal>
           <goal name="def'vc.11" proved="true">
@@ -117,8 +116,8 @@
             </proof>
           </goal>
           <goal name="def'vc.20" proved="true">
-            <proof prover="1">
-              <result status="valid" steps="171438" />
+            <proof prover="2">
+              <result status="valid" steps="117717" />
             </proof>
           </goal>
           <goal name="def'vc.21" proved="true">
@@ -147,8 +146,8 @@
             </proof>
           </goal>
           <goal name="def'vc.26" proved="true">
-            <proof prover="1">
-              <result status="valid" steps="42696" />
+            <proof prover="2">
+              <result status="valid" steps="14049" />
             </proof>
           </goal>
           <goal name="def'vc.27" proved="true">
@@ -157,8 +156,8 @@
             </proof>
           </goal>
           <goal name="def'vc.28" proved="true">
-            <proof prover="1">
-              <result status="valid" steps="42482" />
+            <proof prover="2">
+              <result status="valid" steps="6897" />
             </proof>
           </goal>
           <goal name="def'vc.29" proved="true">

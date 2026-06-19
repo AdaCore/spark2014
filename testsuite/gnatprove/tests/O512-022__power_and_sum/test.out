@@ -15,7 +15,7 @@ main.adb:17:14: info: overflow check proved (CVC5: 2 VC)
 power_and_sum.adb:9:33: info: loop invariant initialization proved (CVC5: 2 VC)
 power_and_sum.adb:9:33: info: loop invariant preservation proved (CVC5: 2 VC)
 power_and_sum.adb:9:47: info: range check proved (CVC5: 4 VC)
-power_and_sum.adb:10:27: medium: overflow check might fail, cannot prove lower bound for Result * X [reason for check: result of multiplication must fit in a 32-bits machine integer]
+power_and_sum.adb:10:27: high: overflow check might fail, cannot prove upper bound for Result * X (e.g. when Result = -1073741825 and X = -1073741825) [reason for check: result of multiplication must fit in a 32-bits machine integer]
 power_and_sum.adb:11:17: info: overflow check proved (CVC5: 2 VC)
 power_and_sum.adb:20:33: info: loop invariant initialization proved (CVC5: 1 VC)
 power_and_sum.adb:20:33: info: loop invariant preservation proved (CVC5: 1 VC)

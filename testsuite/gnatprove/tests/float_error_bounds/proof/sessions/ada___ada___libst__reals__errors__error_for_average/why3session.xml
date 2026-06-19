@@ -6,7 +6,6 @@
   <prover id="1" name="CVC5" version="0.0.7-gnatprove" timelimit="60" steplimit="0" memlimit="2000" />
   <prover id="2" name="Z3" version="4.5.1-gnatprove" timelimit="60" steplimit="0" memlimit="2000" />
   <prover id="3" name="Trivial" version="1.0" alternative="trivial" timelimit="1" steplimit="1" memlimit="1000" />
-  <prover id="4" name="colibri" version="2137" timelimit="60" steplimit="0" memlimit="2000" />
   <file format="gnat-json" proved="true">
     <path name=".." />
     <path name=".." />
@@ -142,8 +141,8 @@
             </proof>
           </goal>
           <goal name="def'vc.25" proved="true">
-            <proof prover="1">
-              <result status="valid" steps="40828" />
+            <proof prover="2">
+              <result status="valid" steps="13209" />
             </proof>
           </goal>
           <goal name="def'vc.26" proved="true">
@@ -162,8 +161,8 @@
             </proof>
           </goal>
           <goal name="def'vc.29" proved="true">
-            <proof prover="1">
-              <result status="valid" steps="255506" />
+            <proof prover="0">
+              <result status="valid" steps="24257" />
             </proof>
           </goal>
           <goal name="def'vc.30" proved="true">
@@ -172,8 +171,8 @@
             </proof>
           </goal>
           <goal name="def'vc.31" proved="true">
-            <proof prover="1">
-              <result status="valid" steps="41301" />
+            <proof prover="2">
+              <result status="valid" steps="13405" />
             </proof>
           </goal>
           <goal name="def'vc.32" proved="true">
@@ -187,8 +186,8 @@
             </proof>
           </goal>
           <goal name="def'vc.34" proved="true">
-            <proof prover="1">
-              <result status="valid" steps="4683" />
+            <proof prover="2">
+              <result status="valid" steps="6883" />
             </proof>
           </goal>
           <goal name="def'vc.35" proved="true">
@@ -197,8 +196,8 @@
             </proof>
           </goal>
           <goal name="def'vc.36" proved="true">
-            <proof prover="1">
-              <result status="valid" steps="255865" />
+            <proof prover="0">
+              <result status="valid" steps="25174" />
             </proof>
           </goal>
           <goal name="def'vc.37" proved="true">
@@ -207,8 +206,8 @@
             </proof>
           </goal>
           <goal name="def'vc.38" proved="true">
-            <proof prover="1">
-              <result status="valid" steps="41641" />
+            <proof prover="2">
+              <result status="valid" steps="13703" />
             </proof>
           </goal>
           <goal name="def'vc.39" proved="true">
@@ -232,8 +231,8 @@
             </proof>
           </goal>
           <goal name="def'vc.43" proved="true">
-            <proof prover="4">
-              <result status="valid" steps="3084" />
+            <proof prover="1">
+              <result status="valid" steps="257690" />
             </proof>
           </goal>
           <goal name="def'vc.44" proved="true">
@@ -252,13 +251,13 @@
             </proof>
           </goal>
           <goal name="def'vc.47" proved="true">
-            <proof prover="1">
-              <result status="valid" steps="41817" />
+            <proof prover="2">
+              <result status="valid" steps="13854" />
             </proof>
           </goal>
           <goal name="def'vc.48" proved="true">
-            <proof prover="1">
-              <result status="valid" steps="41801" />
+            <proof prover="2">
+              <result status="valid" steps="13866" />
             </proof>
           </goal>
           <goal name="def'vc.49" proved="true">
@@ -277,8 +276,8 @@
             </proof>
           </goal>
           <goal name="def'vc.52" proved="true">
-            <proof prover="1">
-              <result status="valid" steps="4279" />
+            <proof prover="2">
+              <result status="valid" steps="4651" />
             </proof>
           </goal>
           <goal name="def'vc.53" proved="true">

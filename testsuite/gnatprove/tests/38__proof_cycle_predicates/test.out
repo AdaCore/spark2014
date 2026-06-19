@@ -368,7 +368,6 @@ traverse_access.adb:6:37: info: precondition proved (Trivial: 1 VC)
 traverse_access.adb:16:06: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 unch_conversion.adb:6:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 unch_conversion.adb:6:13: warning: potentially missing contract for "F" declared at line 6
-unch_conversion.adb:6:13: warning: potentially missing implicit contract for "Conv" declared at line 10
 unch_conversion.adb:6:13: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 unch_conversion.adb:6:65: medium: postcondition might fail
 unch_conversion.adb:8:37: info: precondition proved (Trivial: 1 VC)
@@ -376,7 +375,6 @@ unch_conversion.adb:10:13: info: alignment of source type of unchecked conversio
 unch_conversion.adb:10:13: info: types in unchecked conversion have the same size (Trivial)
 unch_conversion.adb:10:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
 unch_conversion.adb:10:13: warning: potentially missing contract for "F" declared at line 6
-unch_conversion.adb:10:13: warning: potentially missing implicit contract for "Conv" declared at line 10
 unch_conversion.adb:10:13: warning: references between entities introduce a cycle in proof dependencies; (implicit) contract of mutally dependent functions might not be available on calls from contracts and assertions [cyclic-dependency]
 unch_conversion.adb:10:51: info: type is suitable as source for unchecked conversion (Trivial)
 unch_conversion.adb:10:54: high: type is unsuitable as a target for unchecked conversion [possible explanation: type "R" has predicates; invalid values could result from the unchecked conversion [SPARK RM 13.9]]
