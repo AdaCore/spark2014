@@ -83,6 +83,7 @@ package Allocator.Pools.Sized_64 with SPARK_Mode is
    procedure Deallocate (P : in out Object_Pointer)
    with
      Global         => (In_Out => Memory_64),
+     Modifies       => (Memory_64 when not Is_Null (P), P),
      Post           => Is_Null (P),
      Contract_Cases =>
        (Is_Null (P) => Num_Free = Num_Free'Old,

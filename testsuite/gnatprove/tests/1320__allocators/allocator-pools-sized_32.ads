@@ -33,6 +33,8 @@ package Allocator.Pools.Sized_32 with SPARK_Mode is
 
    function Is_Null (P : Object_Pointer) return Boolean;
 
+   function Is_Promoted (P : Object_Pointer) return Boolean with Ghost;
+
    --  Logical equality on Object_Type, used in the value contracts.
    function Obj_Eq (X, Y : Object_Type) return Boolean
    with Ghost, Import, Global => null, Annotate => (GNATprove, Logical_Equal);
@@ -78,6 +80,9 @@ package Allocator.Pools.Sized_32 with SPARK_Mode is
    with
      Side_Effects,
      Global => (In_Out => (Memory_32, Memory_64)),
+     Modifies       =>
+       (Memory_32 when Num_Free_32 > 0,
+        Memory_64 when Num_Free_32 = 0),
      Pre    => Num_Free > 0,
      Post   =>
        Num_Free = Num_Free'Old - 1
@@ -87,6 +92,10 @@ package Allocator.Pools.Sized_32 with SPARK_Mode is
    procedure Deallocate (P : in out Object_Pointer)
    with
      Global         => (In_Out => (Memory_32, Memory_64)),
+     Modifies       =>
+       (Memory_32 when not Is_Null (P) and then not Is_Promoted (P),
+        Memory_64 when Is_Promoted (P),
+        P),
      Post           => Is_Null (P),
      Contract_Cases =>
        (Is_Null (P) => Num_Free = Num_Free'Old,
@@ -159,5 +168,12 @@ private
    function Is_Full return Boolean
    is (Wrapper_32.Is_Full
        and then (if With_Promotion then Wrapper_64.Is_Full));
+
+   -----------------
+   -- Is_Promoted --
+   -----------------
+
+   function Is_Promoted (P : Object_Pointer) return Boolean is
+     (P.Pointer.Kind = In_64 and then not Wrapper_64.Is_Null (P.Pointer.P64));
 
 end Allocator.Pools.Sized_32;

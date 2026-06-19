@@ -30,6 +30,17 @@ package Allocator.Pools.Sized_4 with SPARK_Mode is
 
    function Is_Null (P : Object_Pointer) return Boolean;
 
+   function Is_Promoted_8 (P : Object_Pointer) return Boolean with Ghost;
+   function Is_Promoted_16 (P : Object_Pointer) return Boolean with Ghost;
+   function Is_Promoted_32 (P : Object_Pointer) return Boolean with Ghost;
+   function Is_Promoted_64 (P : Object_Pointer) return Boolean with Ghost;
+   function Is_Promoted (P : Object_Pointer) return Boolean is
+     (Is_Promoted_8 (P)
+      or else Is_Promoted_16 (P)
+      or else Is_Promoted_32 (P)
+      or else Is_Promoted_64 (P))
+       with Ghost;
+
    --  Logical equality on Object_Type, used in the value contracts.
    function Obj_Eq (X, Y : Object_Type) return Boolean
    with Ghost, Import, Global => null, Annotate => (GNATprove, Logical_Equal);
@@ -76,6 +87,12 @@ package Allocator.Pools.Sized_4 with SPARK_Mode is
      Side_Effects,
      Global =>
        (In_Out => (Memory_4, Memory_8, Memory_16, Memory_32, Memory_64)),
+     Modifies       =>
+       (Memory_4 when Num_Free_4 > 0,
+        Memory_8 when Num_Free_4 = 0 and Num_Free_8 > 0,
+        Memory_16 when Num_Free_4 = 0 and Num_Free_8 = 0 and Num_Free_16 > 0,
+        Memory_32 when Num_Free_4 = 0 and Num_Free_8 = 0 and Num_Free_16 = 0 and Num_Free_32 > 0,
+        Memory_64 when Num_Free_4 = 0 and Num_Free_8 = 0 and Num_Free_16 = 0 and Num_Free_32 = 0),
      Pre    => Num_Free > 0,
      Post   =>
        Num_Free = Num_Free'Old - 1
@@ -86,6 +103,13 @@ package Allocator.Pools.Sized_4 with SPARK_Mode is
    with
      Global         =>
        (In_Out => (Memory_4, Memory_8, Memory_16, Memory_32, Memory_64)),
+     Modifies       =>
+       (Memory_4 when not Is_Null (P) and then not Is_Promoted (P),
+        Memory_8 when Is_Promoted_8 (P),
+        Memory_16 when Is_Promoted_16 (P),
+        Memory_32 when Is_Promoted_32 (P),
+        Memory_64 when Is_Promoted_64 (P),
+        P),
      Post           => Is_Null (P),
      Contract_Cases =>
        (Is_Null (P) => Num_Free = Num_Free'Old,
@@ -198,5 +222,18 @@ private
             and then Wrapper_16.Is_Full
             and then Wrapper_32.Is_Full
             and then Wrapper_64.Is_Full));
+
+   -----------------
+   -- Is_Promoted --
+   -----------------
+
+   function Is_Promoted_8 (P : Object_Pointer) return Boolean is
+     (P.Pointer.Kind = In_8 and then not Wrapper_8.Is_Null (P.Pointer.P8));
+   function Is_Promoted_16 (P : Object_Pointer) return Boolean is
+     (P.Pointer.Kind = In_16 and then not Wrapper_16.Is_Null (P.Pointer.P16));
+   function Is_Promoted_32 (P : Object_Pointer) return Boolean is
+     (P.Pointer.Kind = In_32 and then not Wrapper_32.Is_Null (P.Pointer.P32));
+   function Is_Promoted_64 (P : Object_Pointer) return Boolean is
+     (P.Pointer.Kind = In_64 and then not Wrapper_64.Is_Null (P.Pointer.P64));
 
 end Allocator.Pools.Sized_4;

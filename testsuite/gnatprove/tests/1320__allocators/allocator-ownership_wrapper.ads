@@ -86,6 +86,7 @@ is
    with
      Depends        => (P => null, The_Memory => +P),
      Global         => (In_Out => The_Memory),
+     Modifies       => (The_Memory when not Is_Null (P)),
      Post           => Is_Null (P),
      Contract_Cases =>
        (Is_Null (P) => Num_Free = Num_Free'Old,
