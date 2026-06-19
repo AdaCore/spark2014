@@ -18,17 +18,17 @@
         <transf name="split_goal_wp_conj" proved="true">
           <goal name="def'vc.0" proved="true">
             <proof prover="1">
-              <result status="valid" steps="2185" />
+              <result status="valid" steps="2476" />
             </proof>
           </goal>
           <goal name="def'vc.1" proved="true">
             <proof prover="1">
-              <result status="valid" steps="1449" />
+              <result status="valid" steps="1719" />
             </proof>
           </goal>
           <goal name="def'vc.2" proved="true">
             <proof prover="1">
-              <result status="valid" steps="2070" />
+              <result status="valid" steps="2361" />
             </proof>
           </goal>
           <goal name="def'vc.3" proved="true">
@@ -38,7 +38,7 @@
           </goal>
           <goal name="def'vc.4" proved="true">
             <proof prover="1">
-              <result status="valid" steps="3274" />
+              <result status="valid" steps="3685" />
             </proof>
           </goal>
           <goal name="def'vc.5" proved="true">
@@ -58,7 +58,7 @@
           </goal>
           <goal name="def'vc.8" proved="true">
             <proof prover="1">
-              <result status="valid" steps="4065" />
+              <result status="valid" steps="4356" />
             </proof>
           </goal>
         </transf>
