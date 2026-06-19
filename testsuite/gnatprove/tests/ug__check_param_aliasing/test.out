@@ -1,9 +1,9 @@
- error: writable actual for "Out_1" overlaps with actual for "Out_2"
+[GNAT0422] error: writable actual for "Out_1" overlaps with actual for "Out_2"
 --> check_param_aliasing.adb:8:45
     8 |       Whatever (In_1 => X, In_2 => X, Out_1 => X, Out_2 => X);  --  illegal
       |                                                ^
 
- error: writable actual for "Out_1" overlaps with actual for "Out_2"
+[GNAT0422] error: writable actual for "Out_1" overlaps with actual for "Out_2"
 --> check_param_aliasing.adb:11:45
    11 |       Whatever (In_1 => Y, In_2 => Z, Out_1 => X, Out_2 => X);  --  illegal
       |                                                ^
