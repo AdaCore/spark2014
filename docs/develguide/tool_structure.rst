@@ -123,7 +123,7 @@ The ``--proof-manifest-dir`` switch is parsed by ``gnatprove`` as an invocation
 option. It designates a directory containing versioned TOML files named after
 the units they describe, using the same stem convention as ``.spark``
 artifacts. Each file is checked before analysis actions are launched, and the
-subprogram-level proof policies relevant to each unit are serialized into that
+proof-manifest rules relevant to each unit are serialized into that
 unit's ``-gnates`` JSON options file for analysis-mode ``gnat2why``
 invocations, together with the manifest source file path and best available
 entry location.

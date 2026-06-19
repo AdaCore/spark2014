@@ -85,7 +85,7 @@ check_manifest(
     """\
 version = 1
 
-[[subprogram]]
+[[rule]]
 path = "Pkg.P"
 kind = "procedure"
 profile = "(_ : Integer)"
@@ -101,11 +101,11 @@ lines = inspect(
     """\
 version = 1
 
-[[subprogram]]
+[[rule]]
 path = "Pkg"
 steps = 100
 
-[[subprogram]]
+[[rule]]
 path = "Pkg"
 kind = "package"
 hierarchical = false
@@ -123,11 +123,11 @@ lines = inspect(
     """\
 version = 1
 
-[[subprogram]]
+[[rule]]
 path = "Pkg"
 steps = 100
 
-[[subprogram]]
+[[rule]]
 path = "Pkg.Inner"
 kind = "package"
 hierarchical = false
@@ -145,7 +145,7 @@ check_manifest(
     """\
 version = 1
 
-[[subprogram]]
+[[rule]]
 path = "Pkg.P"
 kind = "procedure"
 timeout = 1
@@ -158,7 +158,7 @@ check_manifest(
     """\
 version = 1
 
-[[subprogram]]
+[[rule]]
 path = "Pkg.Missing"
 kind = "procedure"
 timeout = 1
@@ -171,7 +171,7 @@ check_manifest(
     """\
 version = 1
 
-[[subprogram]]
+[[rule]]
 path = "Pkg.Q"
 kind = "procedure"
 timeout = 1
@@ -185,7 +185,7 @@ check_manifest(
     """\
 version = 1
 
-[[subprogram]]
+[[rule]]
 path = "Pkg.R"
 timeout = 5
 steps = 100
@@ -200,7 +200,7 @@ lines = inspect(
     """\
 version = 1
 
-[[subprogram]]
+[[rule]]
 path = "Pkg"
 timeout = 5
 steps = 100
@@ -223,7 +223,7 @@ lines = inspect(
     """\
 version = 1
 
-[[subprogram]]
+[[rule]]
 path = "Pkg.Inner"
 timeout = 5
 steps = 100
@@ -245,7 +245,7 @@ lines = inspect(
     """\
 version = 1
 
-[[subprogram]]
+[[rule]]
 path = "Pkg.Inner"
 kind = "function"
 timeout = 9
@@ -263,13 +263,13 @@ lines = inspect(
     """\
 version = 1
 
-[[subprogram]]
+[[rule]]
 path = "Pkg"
 timeout = 5
 steps = 100
 provers = ["cvc5"]
 
-[[subprogram]]
+[[rule]]
 path = "Pkg.R"
 timeout = 5
 steps = 200
@@ -292,11 +292,11 @@ check_manifest(
     """\
 version = 1
 
-[[subprogram]]
+[[rule]]
 path = "Pkg.R"
 timeout = 5
 
-[[subprogram]]
+[[rule]]
 path = "Pkg.R"
 kind = "procedure"
 timeout = 10

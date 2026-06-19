@@ -53,7 +53,7 @@ check_manifest(
     """\
 version = 1
 
-[[subprogram]]
+[[rule]]
 path = "Main"
 kind = "procedure"
 profile = "()"
@@ -63,7 +63,7 @@ memlimit = 1000
 level = 2
 provers = ["cvc5", "z3"]
 
-[[subprogram]]
+[[rule]]
 path = "Main.Inner"
 kind = "procedure"
 profile = "(_ : Integer)"
@@ -83,7 +83,7 @@ check_manifest(
     """\
 version = 1
 
-[[subprogram]]
+[[rule]]
 path = "Main"
 unknown = 1
 """,
@@ -94,7 +94,7 @@ check_manifest(
     """\
 version = 1
 
-[[subprogram]]
+[[rule]]
 path = "Main"
 provers = "cvc5"
 """,
@@ -105,7 +105,7 @@ check_manifest(
     """\
 version = 1
 
-[[subprogram]]
+[[rule]]
 timeout = 1
 """,
 )
@@ -113,7 +113,7 @@ timeout = 1
 check_manifest(
     "missing version",
     """\
-[[subprogram]]
+[[rule]]
 path = "Main"
 """,
 )
@@ -123,7 +123,7 @@ check_manifest(
     """\
 version = 2
 
-[[subprogram]]
+[[rule]]
 path = "Main"
 """,
 )
@@ -138,7 +138,7 @@ check_manifest(
     """\
 version = 1
 
-[[subprogram]]
+[[rule]]
 path = "Main"
 steps = 1
 """,
@@ -150,7 +150,7 @@ check_manifest(
     """\
 version = 1
 
-[[subprogram]]
+[[rule]]
 path = "Main"
 kind = "task"
 steps = 1
@@ -162,7 +162,7 @@ check_manifest(
     """\
 version = 1
 
-[[subprogram]]
+[[rule]]
 path = "Main"
 profile = "()"
 steps = 1
@@ -174,7 +174,7 @@ check_manifest(
     """\
 version = 1
 
-[[subprogram]]
+[[rule]]
 path = "Main"
 hierarchical = "false"
 steps = 1
@@ -186,7 +186,7 @@ check_manifest(
     """\
 version = 1
 
-[[subprogram]]
+[[rule]]
 path = "Main"
 kind = "package"
 profile = "()"
@@ -199,7 +199,7 @@ check_manifest(
     """\
 version = 1
 
-[[subprogram]]
+[[rule]]
 path = "Main"
 """,
 )
@@ -209,7 +209,7 @@ check_manifest(
     """\
 version = 1
 
-[[subprogram]]
+[[rule]]
 path = "Main"
 level = 5
 """,
@@ -220,11 +220,11 @@ check_manifest(
     """\
 version = 1
 
-[[subprogram]]
+[[rule]]
 path = "Main"
 steps = 1
 
-[[subprogram]]
+[[rule]]
 path = "Main"
 timeout = 1
 """,
@@ -235,7 +235,7 @@ check_manifest(
     """\
 version = 1
 
-[[subprogram]]
+[[rule]]
 path = "Main"
 provers = ["cvc5", "cvc5"]
 """,
@@ -246,7 +246,7 @@ check_manifest(
     """\
 version = 1
 
-[[subprogram]]
+[[rule]]
 path = "Main..Inner"
 steps = 1
 """,

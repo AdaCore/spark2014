@@ -2,7 +2,7 @@
 --- manifest main.toml ---
 version = 1
 
-[[subprogram]]
+[[rule]]
 path = "Main"
 kind = "procedure"
 profile = "()"
@@ -12,7 +12,7 @@ memlimit = 1000
 level = 2
 provers = ["cvc5", "z3"]
 
-[[subprogram]]
+[[rule]]
 path = "Main.Inner"
 kind = "procedure"
 profile = "(_ : Integer)"
@@ -22,7 +22,7 @@ steps = 200
 --- manifest main.toml ---
 version = 1
 
-[[subprogram]]
+[[rule]]
 path = "Main"
 unknown = 1
 --- output ---
@@ -32,7 +32,7 @@ error: invalid proof manifest unknown_field/main.toml:5:11: unknown field "unkno
 --- manifest main.toml ---
 version = 1
 
-[[subprogram]]
+[[rule]]
 path = "Main"
 provers = "cvc5"
 --- output ---
@@ -42,14 +42,14 @@ error: invalid proof manifest bad_provers_syntax/main.toml:5:11: field "provers"
 --- manifest main.toml ---
 version = 1
 
-[[subprogram]]
+[[rule]]
 timeout = 1
 --- output ---
 Try "gnatprove --help" for more information.
 error: invalid proof manifest missing_path/main.toml:3:1: missing required field "path"
 ===== missing version =====
 --- manifest main.toml ---
-[[subprogram]]
+[[rule]]
 path = "Main"
 --- output ---
 Try "gnatprove --help" for more information.
@@ -58,7 +58,7 @@ error: invalid proof manifest missing_version/main.toml: missing required field 
 --- manifest main.toml ---
 version = 2
 
-[[subprogram]]
+[[rule]]
 path = "Main"
 --- output ---
 Try "gnatprove --help" for more information.
@@ -73,7 +73,7 @@ error: proof manifest "main.adb" is not a folder
 --- manifest other.toml ---
 version = 1
 
-[[subprogram]]
+[[rule]]
 path = "Main"
 steps = 1
 --- output ---
@@ -83,7 +83,7 @@ error: invalid proof manifest wrong_unit/other.toml:4:8: path "Main" does not be
 --- manifest main.toml ---
 version = 1
 
-[[subprogram]]
+[[rule]]
 path = "Main"
 kind = "task"
 steps = 1
@@ -94,7 +94,7 @@ error: invalid proof manifest bad_kind/main.toml:5:8: field "kind" must be one o
 --- manifest main.toml ---
 version = 1
 
-[[subprogram]]
+[[rule]]
 path = "Main"
 profile = "()"
 steps = 1
@@ -105,7 +105,7 @@ error: invalid proof manifest profile_without_kind/main.toml:5:11: field "profil
 --- manifest main.toml ---
 version = 1
 
-[[subprogram]]
+[[rule]]
 path = "Main"
 hierarchical = "false"
 steps = 1
@@ -116,7 +116,7 @@ error: invalid proof manifest bad_hierarchical/main.toml:5:16: field "hierarchic
 --- manifest main.toml ---
 version = 1
 
-[[subprogram]]
+[[rule]]
 path = "Main"
 kind = "package"
 profile = "()"
@@ -128,7 +128,7 @@ error: invalid proof manifest package_profile/main.toml:6:11: field "profile" re
 --- manifest main.toml ---
 version = 1
 
-[[subprogram]]
+[[rule]]
 path = "Main"
 --- output ---
 Try "gnatprove --help" for more information.
@@ -137,7 +137,7 @@ error: invalid proof manifest no_options/main.toml:3:1: missing proof option
 --- manifest main.toml ---
 version = 1
 
-[[subprogram]]
+[[rule]]
 path = "Main"
 level = 5
 --- output ---
@@ -147,11 +147,11 @@ error: invalid proof manifest bad_level/main.toml:5:9: field "level" must be bet
 --- manifest main.toml ---
 version = 1
 
-[[subprogram]]
+[[rule]]
 path = "Main"
 steps = 1
 
-[[subprogram]]
+[[rule]]
 path = "Main"
 timeout = 1
 --- output ---
@@ -161,7 +161,7 @@ error: invalid proof manifest duplicate_entry/main.toml:7:1: duplicate manifest 
 --- manifest main.toml ---
 version = 1
 
-[[subprogram]]
+[[rule]]
 path = "Main"
 provers = ["cvc5", "cvc5"]
 --- output ---
@@ -171,7 +171,7 @@ error: invalid proof manifest duplicate_prover/main.toml:5:20: duplicate prover 
 --- manifest main.toml ---
 version = 1
 
-[[subprogram]]
+[[rule]]
 path = "Main..Inner"
 steps = 1
 --- output ---

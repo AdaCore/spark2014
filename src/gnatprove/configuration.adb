@@ -1681,7 +1681,7 @@ package body Configuration is
       with No_Return;
       procedure Check_Allowed_Keys
         (Table : TOML.TOML_Value; Allowed : String_Lists.List);
-      --  Check that only the allowed fields are present in the subprogram
+      --  Check that only the allowed fields are present in the rule
       --  entries. Raise an error using Manifest_Error function if unknown
       --  keys are found.
 
@@ -2128,8 +2128,7 @@ package body Configuration is
          Path    : Unbounded_String;
       begin
          if Table.Kind /= TOML.TOML_Table then
-            Manifest_Error
-              (Table, "items of field ""subprogram"" must be tables");
+            Manifest_Error (Table, "items of field ""rule"" must be tables");
          end if;
 
          Allowed.Append ("path");
@@ -2230,15 +2229,15 @@ package body Configuration is
          end if;
 
          Allowed.Append ("version");
-         Allowed.Append ("subprogram");
+         Allowed.Append ("rule");
          Check_Allowed_Keys (Root, Allowed);
          Check_Version (Root);
-         Subs := Root.Get_Or_Null ("subprogram");
+         Subs := Root.Get_Or_Null ("rule");
 
          if not Subs.Is_Present then
             return;
          elsif Subs.Kind /= TOML.TOML_Array then
-            Manifest_Error (Subs, "field ""subprogram"" must be an array");
+            Manifest_Error (Subs, "field ""rule"" must be an array");
          end if;
 
          for I in 1 .. Subs.Length loop
