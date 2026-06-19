@@ -7,7 +7,7 @@ main.adb:15:18: info: range check proved (CVC5: 2 VC)
 main.adb:22:13: info: initialization of "Cmd" proved
 main.adb:23:13: info: initialization of "Last" proved
 main.adb:24:13: info: initialization of "V" proved
-main.adb:27:13: medium: unexpected exception might be raised [reason for check: "Main" allows propagating no exceptions] [possible explanation: "End_Error" might be unexpectedly raised]
+main.adb:27:13: medium: unexpected exception might be raised [reason for check: "Main" allows propagating no exceptions] [possible explanation: "End_Error" and "Data_Error" might be unexpectedly raised]
 main.adb:27:22: medium: in value of subprogram parameter after the call at main.adb:27
 main.adb:27:22: medium: initialization check might fail
 main.adb:28:34: info: range check proved (CVC5: 4 VC)

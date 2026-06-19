@@ -94,31 +94,33 @@ text_io_warnings.adb:96:04: medium: unexpected exception might be raised [reason
 text_io_warnings.adb:97:04: info: precondition proved (CVC5: 1 VC)
 text_io_warnings.adb:97:04: medium: unexpected exception might be raised [reason for check: "Text_IO_Warnings" allows propagating no exceptions] [possible explanation: "Use_Error" might be unexpectedly raised]
 text_io_warnings.adb:99:04: info: precondition proved (CVC5: 2 VC)
-text_io_warnings.adb:99:04: medium: unexpected exception might be raised [reason for check: "Text_IO_Warnings" allows propagating no exceptions] [possible explanation: "End_Error" might be unexpectedly raised]
+text_io_warnings.adb:99:04: medium: unexpected exception might be raised [reason for check: "Text_IO_Warnings" allows propagating no exceptions] [possible explanation: "End_Error" and "Data_Error" might be unexpectedly raised]
 text_io_warnings.adb:100:04: info: precondition proved (CVC5: 2 VC)
-text_io_warnings.adb:101:04: medium: unexpected exception might be raised [reason for check: "Text_IO_Warnings" allows propagating no exceptions] [possible explanation: "End_Error" might be unexpectedly raised]
+text_io_warnings.adb:101:04: medium: unexpected exception might be raised [reason for check: "Text_IO_Warnings" allows propagating no exceptions] [possible explanation: "End_Error" and "Data_Error" might be unexpectedly raised]
 text_io_warnings.adb:104:04: info: precondition proved (CVC5: 2 VC)
+text_io_warnings.adb:104:04: medium: unexpected exception might be raised [reason for check: "Text_IO_Warnings" allows propagating no exceptions] [possible explanation: "Data_Error" might be unexpectedly raised]
 text_io_warnings.adb:106:07: info: precondition proved (CVC5: 2 VC)
+text_io_warnings.adb:108:04: medium: unexpected exception might be raised [reason for check: "Text_IO_Warnings" allows propagating no exceptions] [possible explanation: "Data_Error" might be unexpectedly raised]
 text_io_warnings.adb:110:07: info: precondition proved (CVC5: 2 VC)
 text_io_warnings.adb:112:04: info: precondition proved (CVC5: 2 VC)
-text_io_warnings.adb:112:04: medium: unexpected exception might be raised [reason for check: "Text_IO_Warnings" allows propagating no exceptions] [possible explanation: "End_Error" might be unexpectedly raised]
+text_io_warnings.adb:112:04: medium: unexpected exception might be raised [reason for check: "Text_IO_Warnings" allows propagating no exceptions] [possible explanation: "End_Error" and "Data_Error" might be unexpectedly raised]
 text_io_warnings.adb:113:04: info: precondition proved (CVC5: 2 VC)
-text_io_warnings.adb:114:04: medium: unexpected exception might be raised [reason for check: "Text_IO_Warnings" allows propagating no exceptions] [possible explanation: "End_Error" might be unexpectedly raised]
+text_io_warnings.adb:114:04: medium: unexpected exception might be raised [reason for check: "Text_IO_Warnings" allows propagating no exceptions] [possible explanation: "End_Error" and "Data_Error" might be unexpectedly raised]
 text_io_warnings.adb:116:04: info: precondition proved (CVC5: 2 VC)
-text_io_warnings.adb:116:04: medium: unexpected exception might be raised [reason for check: "Text_IO_Warnings" allows propagating no exceptions] [possible explanation: "End_Error" might be unexpectedly raised]
+text_io_warnings.adb:116:04: medium: unexpected exception might be raised [reason for check: "Text_IO_Warnings" allows propagating no exceptions] [possible explanation: "End_Error" and "Data_Error" might be unexpectedly raised]
 text_io_warnings.adb:118:07: info: precondition proved (CVC5: 2 VC)
-text_io_warnings.adb:120:04: medium: unexpected exception might be raised [reason for check: "Text_IO_Warnings" allows propagating no exceptions] [possible explanation: "End_Error" might be unexpectedly raised]
+text_io_warnings.adb:120:04: medium: unexpected exception might be raised [reason for check: "Text_IO_Warnings" allows propagating no exceptions] [possible explanation: "End_Error" and "Data_Error" might be unexpectedly raised]
 text_io_warnings.adb:125:04: info: precondition proved (CVC5: 2 VC)
-text_io_warnings.adb:125:04: medium: unexpected exception might be raised [reason for check: "Text_IO_Warnings" allows propagating no exceptions] [possible explanation: "End_Error" might be unexpectedly raised]
+text_io_warnings.adb:125:04: medium: unexpected exception might be raised [reason for check: "Text_IO_Warnings" allows propagating no exceptions] [possible explanation: "End_Error" and "Data_Error" might be unexpectedly raised]
 text_io_warnings.adb:126:04: info: precondition proved (CVC5: 2 VC)
-text_io_warnings.adb:127:04: medium: unexpected exception might be raised [reason for check: "Text_IO_Warnings" allows propagating no exceptions] [possible explanation: "End_Error" might be unexpectedly raised]
+text_io_warnings.adb:127:04: medium: unexpected exception might be raised [reason for check: "Text_IO_Warnings" allows propagating no exceptions] [possible explanation: "End_Error" and "Data_Error" might be unexpectedly raised]
 text_io_warnings.adb:130:04: info: precondition proved (CVC5: 2 VC)
-text_io_warnings.adb:130:04: medium: unexpected exception might be raised [reason for check: "Text_IO_Warnings" allows propagating no exceptions] [possible explanation: "End_Error" might be unexpectedly raised]
+text_io_warnings.adb:130:04: medium: unexpected exception might be raised [reason for check: "Text_IO_Warnings" allows propagating no exceptions] [possible explanation: "End_Error" and "Data_Error" might be unexpectedly raised]
 text_io_warnings.adb:130:22: medium: in value of subprogram parameter after the call at text_io_warnings.adb:130
 text_io_warnings.adb:130:22: medium: initialization check might fail
 text_io_warnings.adb:131:04: info: precondition proved (CVC5: 2 VC)
 text_io_warnings.adb:131:22: info: range check proved (CVC5: 3 VC; Z3: 1 VC)
-text_io_warnings.adb:132:04: medium: unexpected exception might be raised [reason for check: "Text_IO_Warnings" allows propagating no exceptions] [possible explanation: "End_Error" might be unexpectedly raised]
+text_io_warnings.adb:132:04: medium: unexpected exception might be raised [reason for check: "Text_IO_Warnings" allows propagating no exceptions] [possible explanation: "End_Error" and "Data_Error" might be unexpectedly raised]
 text_io_warnings.adb:132:14: medium: in value of subprogram parameter after the call at text_io_warnings.adb:132
 text_io_warnings.adb:132:14: medium: initialization check might fail
 text_io_warnings.adb:133:14: info: range check proved (CVC5: 3 VC; Z3: 1 VC)

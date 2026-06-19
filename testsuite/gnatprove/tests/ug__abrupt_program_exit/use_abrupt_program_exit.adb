@@ -13,7 +13,7 @@ package body Use_Abrupt_Program_Exit with SPARK_Mode is
          Do_Exit (1, My_Error_Message'(Kind => Input_Error));
       end if;
    exception
-      when Ada.Text_IO.End_Error =>
+      when Ada.Text_IO.End_Error | Ada.Text_IO.Data_Error =>
          Do_Exit (1, My_Error_Message'(Kind => Input_Error));
    end Get_Digit;
 
