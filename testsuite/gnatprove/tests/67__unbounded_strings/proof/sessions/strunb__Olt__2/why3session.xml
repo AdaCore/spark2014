@@ -18,37 +18,37 @@
         <transf name="split_goal_wp_conj" proved="true">
           <goal name="def'vc.0" proved="true">
             <proof prover="1">
-              <result status="valid" steps="2745" />
+              <result status="valid" steps="3036" />
             </proof>
           </goal>
           <goal name="def'vc.1" proved="true">
             <proof prover="1">
-              <result status="valid" steps="2781" />
+              <result status="valid" steps="3072" />
             </proof>
           </goal>
           <goal name="def'vc.2" proved="true">
             <proof prover="1">
-              <result status="valid" steps="3055" />
+              <result status="valid" steps="3354" />
             </proof>
           </goal>
           <goal name="def'vc.3" proved="true">
             <proof prover="1">
-              <result status="valid" steps="3061" />
+              <result status="valid" steps="3360" />
             </proof>
           </goal>
           <goal name="def'vc.4" proved="true">
             <proof prover="1">
-              <result status="valid" steps="2941" />
+              <result status="valid" steps="3232" />
             </proof>
           </goal>
           <goal name="def'vc.5" proved="true">
             <proof prover="1">
-              <result status="valid" steps="4307" />
+              <result status="valid" steps="4664" />
             </proof>
           </goal>
           <goal name="def'vc.6" proved="true">
             <proof prover="1">
-              <result status="valid" steps="5659" />
+              <result status="valid" steps="6255" />
             </proof>
           </goal>
           <goal name="def'vc.7" proved="true">
@@ -68,12 +68,12 @@
           </goal>
           <goal name="def'vc.10" proved="true">
             <proof prover="1">
-              <result status="valid" steps="11007" />
+              <result status="valid" steps="11403" />
             </proof>
           </goal>
           <goal name="def'vc.11" proved="true">
             <proof prover="1">
-              <result status="valid" steps="11213" />
+              <result status="valid" steps="11609" />
             </proof>
           </goal>
         </transf>
