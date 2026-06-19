@@ -1,0 +1,74 @@
+SPARK generated_globals: A.P_1
+{
+  "Global": {
+    "In_Out": [
+      "A.State_A"
+    ]
+  },
+  "Refined_Global": {
+    "In_Out": [
+      "A.G"
+    ],
+    "Input": [
+      "A.H"
+    ],
+    "Proof_In": [
+      "A.Priv.I"
+    ]
+  }
+}
+SPARK generated_globals: A.Priv.F_6
+{
+  "Global": {
+    "Input": [
+      "A.G",
+      "A.State_A",
+      "A.Priv.I"
+    ]
+  },
+  "Refined_Global": {
+    "Input": [
+      "A.G",
+      "A.State_A",
+      "A.Priv.I"
+    ]
+  }
+}
+SARIF logicalLocation: A.P_1
+SARIF logicalLocation name: P_1
+{
+  "global": {
+    "inOut": [
+      "A.State_A"
+    ]
+  },
+  "refinedGlobal": {
+    "inOut": [
+      "A.G"
+    ],
+    "input": [
+      "A.H"
+    ],
+    "proofIn": [
+      "A.Priv.I"
+    ]
+  }
+}
+SARIF logicalLocation: A.Priv.F_6
+SARIF logicalLocation name: F_6
+{
+  "global": {
+    "input": [
+      "A.G",
+      "A.State_A",
+      "A.Priv.I"
+    ]
+  },
+  "refinedGlobal": {
+    "input": [
+      "A.G",
+      "A.State_A",
+      "A.Priv.I"
+    ]
+  }
+}

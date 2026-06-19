@@ -15,6 +15,45 @@ in 2016. The original design document for this rewrite is in
 explanation, including many important issues with the original design that were
 only discovered while implementing that document.
 
+This chapter uses the term *generative analysis* in the sense used elsewhere
+in SPARK documentation: GNATprove is not only checking user-written contracts,
+it is also synthesizing the missing flow contracts needed for analysis. In the
+flow implementation this is tracked by ``Is_Generative``. For subprograms, that
+flag is set when GNATprove must generate flow information because there is no
+``Global``/``Depends`` contract, or because a visible state refinement makes a
+written ``Global`` or ``Depends`` contract require a generated
+``Refined_Global`` or ``Refined_Depends``. For packages, the analogous case is
+the absence of an ``Initializes`` contract.
+
+Printing Generated Globals
+**************************
+
+When ``gnatprove`` is run with ``--flow-show-gg``, flow analysis emits the
+generated ``Global`` and ``Refined_Global`` contracts into a JSON file
+named ``<unit>.gg`` for each subprogram for which flow analysis is operating in
+the generative mode explained above. The file is written by
+``Write_Flow_GG_To_JSON_File`` in ``src/flow/flow.adb`` and currently contains
+one ``contracts`` array entry per subprogram, with:
+
+- the source location of the declaration (``file``, ``line``, ``col``); and
+- a ``globals`` object containing ``Global`` and ``Refined_Global`` entries,
+  each split by mode (``Proof_In``, ``Input``, ``In_Out``, ``Output``).
+
+This output is produced from the same generated-global computation described in
+this chapter. The corresponding JSON is also stored in the unit's ``.spark``
+file under ``generated_globals`` for report generation and SARIF export, but
+the separate ``.gg`` files are the artifact consumed by IDE integration.
+
+The main consumer of ``.gg`` files is the GNAT Studio SPARK plugin. When the
+user triggers the menu action to show generated globals in the editor, the
+plugin reads the relevant ``.gg`` file and uses it to display the generated
+contracts inline in the source view, as described in the User's Guide.
+
+The code of the GNAT Studio plugin is hosted in the GNAT Studio repository
+and when triggered, the plugin performs an up-to-date check of the
+``.gg`` file corresponding to the currently displayed Ada source file. If
+needed, it reruns ``gnatprove`` with ``--flow-show-gg`` option.
+
 As a running example, let's consider this code:
 
 .. code-block:: ada

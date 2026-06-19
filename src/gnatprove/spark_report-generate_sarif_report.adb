@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Indefinite_Hashed_Maps;
+with Ada.Directories;
 with Ada.Strings.Fixed;
 with Ada.Strings.Hash;
 with Configuration;
@@ -46,9 +47,10 @@ procedure Generate_SARIF_Report
    Error_Code         : Integer;
    Tree               : GPR2.Project.Tree.Object)
 is
-   Root       : SARIF.Types.Root;
-   My_Run     : run;
-   My_Results : SARIF.Types.result_Vector;
+   Root                 : SARIF.Types.Root;
+   My_Run               : run;
+   My_Results           : SARIF.Types.result_Vector;
+   My_Logical_Locations : SARIF.Types.logicalLocation_Vector;
 
    Output : aliased VSS.Text_Streams.File_Output.File_Output_Text_Stream;
    Writer : VSS.JSON.Push_Writers.JSON_Simple_Push_Writer;
@@ -98,6 +100,9 @@ is
    function Properties (V : JSON_Value) return Optional_propertyBag;
    --  Build custom SARIF properties for a given result in GNATprove's JSON
 
+   function Contracts_Properties (V : JSON_Value) return Optional_propertyBag;
+   --  Build custom SARIF properties for generated global contracts
+
    procedure Handle_SPARK_Files;
    --  Parse all .spark files
 
@@ -119,6 +124,16 @@ is
 
    function Message (V : JSON_Value) return SARIF.Types.message;
    --  Produce a SARIF message from a message object
+
+   function Logical_Location
+     (Full_Name  : String;
+      Properties : Optional_propertyBag := (Is_Set => False))
+      return SARIF.Types.logicalLocation;
+   --  Build a SARIF logical location from the given fully qualified name and
+   --  properties.
+
+   function Leaf_Name (Full_Name : String) return String;
+   --  Return the leaf name of a dotted fully qualified name
 
    function SARIF_Location (V : JSON_Value) return SARIF.Types.location;
    --  Copy a SARIF location from JSON to sarif-ada
@@ -164,6 +179,105 @@ is
       Result.Append ((Kind => End_Object));
       return Result;
    end Build_Original_Uri_Base_Ids;
+
+   --------------------------
+   -- Contracts_Properties --
+   --------------------------
+
+   function Contracts_Properties (V : JSON_Value) return Optional_propertyBag
+   is
+      Global_Contracts : constant JSON_Value :=
+        (if Has_Field (V, "globals") then Get (V, "globals") else V);
+
+      procedure Append_Array (Into : in out Any_Object; Values : JSON_Array);
+      --  Append Values as a JSON string array
+
+      procedure Append_Global_Modes
+        (Into : in out Any_Object; Global_Contracts : JSON_Value);
+      --  Append Global/Refined_Global modes as a JSON object
+
+      ------------------
+      -- Append_Array --
+      ------------------
+
+      procedure Append_Array (Into : in out Any_Object; Values : JSON_Array) is
+         use VSS.JSON.Streams;
+      begin
+         Into.Append ((Kind => Start_Array));
+         for Index in Positive range 1 .. Length (Values) loop
+            Into.Append
+              ((Kind         => String_Value,
+                String_Value =>
+                  To_Virtual_String
+                    (UTF8_String'(Get (Get (Values, Index))))));
+         end loop;
+         Into.Append ((Kind => End_Array));
+      end Append_Array;
+
+      -------------------------
+      -- Append_Global_Modes --
+      -------------------------
+
+      procedure Append_Global_Modes
+        (Into : in out Any_Object; Global_Contracts : JSON_Value)
+      is
+         use VSS.JSON.Streams;
+
+         procedure Append_Mode (Ada_Name : String; JSON_Name : String);
+         --  Append one mode when present
+
+         -----------------
+         -- Append_Mode --
+         -----------------
+
+         procedure Append_Mode (Ada_Name : String; JSON_Name : String) is
+         begin
+            if Has_Field (Global_Contracts, Ada_Name) then
+               Into.Append
+                 ((Kind     => Key_Name,
+                   Key_Name => To_Virtual_String (JSON_Name)));
+               Append_Array (Into, Get (Global_Contracts, Ada_Name));
+            end if;
+         end Append_Mode;
+
+      begin
+         Into.Append ((Kind => Start_Object));
+         Append_Mode ("Input", "input");
+         Append_Mode ("In_Out", "inOut");
+         Append_Mode ("Output", "output");
+         Append_Mode ("Proof_In", "proofIn");
+         Into.Append ((Kind => End_Object));
+      end Append_Global_Modes;
+
+      use VSS.JSON.Streams;
+      Extra     : Any_Object;
+      Gnatprove : Any_Object;
+   begin
+      Extra.Append
+        ((Kind => Key_Name, Key_Name => To_Virtual_String ("gnatprove")));
+      Extra.Append ((Kind => Start_Object));
+      Gnatprove.Append
+        ((Kind => Key_Name, Key_Name => To_Virtual_String ("global")));
+      Append_Global_Modes (Gnatprove, Get (Global_Contracts, "Global"));
+      Gnatprove.Append
+        ((Kind => Key_Name, Key_Name => To_Virtual_String ("refinedGlobal")));
+      Append_Global_Modes
+        (Gnatprove, Get (Global_Contracts, "Refined_Global"));
+
+      Extra.Append
+        ((Kind     => Key_Name,
+          Key_Name => To_Virtual_String ("inferredContracts")));
+      Extra.Append ((Kind => Start_Object));
+      for Item of Gnatprove loop
+         Extra.Append (Item);
+      end loop;
+      Extra.Append ((Kind => End_Object));
+      Extra.Append ((Kind => End_Object));
+
+      return
+        (Is_Set => True,
+         Value  => (tags => <>, Additional_Properties => Extra));
+   end Contracts_Properties;
 
    ----------------
    -- Properties --
@@ -351,10 +465,31 @@ is
 
    procedure Handle_SPARK_File (Dict : JSON_Value) is
 
+      procedure Handle_Generated_Globals
+        (Name : UTF8_String; Value : JSON_Value);
+      --  Add inferred contracts from one generated_globals map entry
+
+      ------------------------------
+      -- Handle_Generated_Globals --
+      ------------------------------
+
+      procedure Handle_Generated_Globals
+        (Name : UTF8_String; Value : JSON_Value) is
+      begin
+         My_Logical_Locations.Append
+           (Logical_Location
+              (Full_Name  => Subp_Name (From_Key (String (Name))),
+               Properties => Contracts_Properties (Value)));
+      end Handle_Generated_Globals;
+
       Has_Flow  : constant Boolean := Has_Field (Dict, "flow");
       Has_Proof : constant Boolean := Has_Field (Dict, "proof");
    begin
       Parse_Entity_Table (Get (Dict, "entities"));
+      if Has_Field (Dict, "generated_globals") then
+         Map_JSON_Object
+           (Get (Dict, "generated_globals"), Handle_Generated_Globals'Access);
+      end if;
       if Has_Flow then
          Handle_Items (Get (Get (Dict, "flow")));
       end if;
@@ -407,6 +542,38 @@ is
       end loop;
    end Handle_SPARK_Error_Files;
 
+   ---------------
+   -- Leaf_Name --
+   ---------------
+
+   function Leaf_Name (Full_Name : String) return String is
+   begin
+      for Index in reverse Full_Name'Range loop
+         if Full_Name (Index) = '.' then
+            return Full_Name (Index + 1 .. Full_Name'Last);
+         end if;
+      end loop;
+
+      return Full_Name;
+   end Leaf_Name;
+
+   ----------------------
+   -- Logical_Location --
+   ----------------------
+
+   function Logical_Location
+     (Full_Name  : String;
+      Properties : Optional_propertyBag := (Is_Set => False))
+      return SARIF.Types.logicalLocation is
+   begin
+      return
+        logicalLocation'
+          (name               => To_Virtual_String (Leaf_Name (Full_Name)),
+           fullyQualifiedName => To_Virtual_String (Full_Name),
+           properties         => Properties,
+           others             => <>);
+   end Logical_Location;
+
    --------------
    -- Location --
    --------------
@@ -421,10 +588,7 @@ is
       --  appropriate, if present.
       if Has_Field (V, "entity") then
          Logical_Locations.Append
-           (logicalLocation'
-              (name   =>
-                 To_Virtual_String (Subp_Name (From_JSON (Get (V, "entity")))),
-               others => <>));
+           (Logical_Location (Subp_Name (From_JSON (Get (V, "entity")))));
       end if;
       return
         SARIF.Types.location'
@@ -723,8 +887,10 @@ begin
    My_Run.invocations.Append (Tool_Invocation);
    My_Run.originalUriBaseIds := Build_Original_Uri_Base_Ids;
    My_Results.Clear (Is_Null => False);
+   My_Logical_Locations.Clear (Is_Null => False);
    Handle_SPARK_Files;
    Handle_SPARK_Error_Files;
+   My_Run.logicalLocations := My_Logical_Locations;
    My_Run.results := My_Results;
    Root.runs.Append (My_Run);
    Root.schema :=
