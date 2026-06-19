@@ -7,14 +7,27 @@
 pragma Ada_2022;
 
 with SPARK.Big_Integers; use SPARK.Big_Integers;
+private with Allocator.Base;
 
 generic
-package Allocator.Base.Ownership_Wrapper with
+   Object_Size : Natural;
+   --  Size of the object we want to store in byte
+   Allocator_Length : Natural := 100;
+   --  Maximal number of elements that can be allocated in the buffer
+   type Binary_Object_Type is private;
+   --  An array of Object_Size bytes
+   type Index_Base is range <>;
+
+package Allocator.Ownership_Wrapper with
     SPARK_Mode,
     Abstract_State    => The_Memory,
     Initializes       => The_Memory,
     Initial_Condition => Num_Free = To_Big_Integer (Allocator_Length)
 is
+   pragma
+     Compile_Time_Error
+       (Binary_Object_Type'Size /= 8 * Object_Size,
+        "Binary_Object_Type should have Object_Size bytes");
 
    type Object_Pointer is private
    with
@@ -71,6 +84,7 @@ is
 
    procedure Deallocate (P : in out Object_Pointer)
    with
+     Depends        => (P => null, The_Memory => +P),
      Global         => (In_Out => The_Memory),
      Post           => Is_Null (P),
      Contract_Cases =>
@@ -80,6 +94,14 @@ is
 private
    pragma SPARK_Mode (Off);
 
+   package Base is new
+     Allocator.Base
+       (Object_Size        => Object_Size,
+        Allocator_Length   => Allocator_Length,
+        Binary_Object_Type => Binary_Object_Type,
+        Index_Base         => Index_Base);
+   use Base;
+
    type Object_Pointer is record
       Index : Extended_Index := 0;
    end record
@@ -88,4 +110,4 @@ private
    function Is_Null (P : Object_Pointer) return Boolean
    is (P.Index = 0);
 
-end Allocator.Base.Ownership_Wrapper;
+end Allocator.Ownership_Wrapper;

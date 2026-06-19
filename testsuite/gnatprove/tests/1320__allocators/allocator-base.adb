@@ -36,6 +36,7 @@ is
 
       function All_From (I : Index_Type) return Memory_Index_Sequences.Sequence
       with
+        Pre                => I <= Extended_Index (Allocator_Length),
         Post               =>
           Memory_Index_Sequences.Length (All_From'Result)
           = Big (Index_Type'Last - I + 1)
@@ -58,7 +59,7 @@ is
 
       function All_From (I : Index_Type) return Memory_Index_Sequences.Sequence
       is (Memory_Index_Sequences.Add
-            ((if I = Index_Type'Last
+            ((if I = Extended_Index (Allocator_Length)
               then Memory_Index_Sequences.Empty_Sequence
               else All_From (I + 1)),
              I));
@@ -66,11 +67,15 @@ is
    end Model;
 
    function Base_Invariant return Boolean
-   is (if Free >= 0
-       then
-         (for all C of Memory => C'Initialized)
-         and then Node_Reachability.Is_Acyclic (Free, Memory)
-       else (for all I in 1 .. -Free - 1 => Memory (I)'Initialized));
+   is (Free
+       in Extended_Index (-Allocator_Length)
+        .. Extended_Index (Allocator_Length)
+       and then
+         (if Free >= 0
+          then
+            (for all C of Memory => C'Initialized)
+            and then Node_Reachability.Is_Acyclic (Free, Memory)
+          else (for all I in 1 .. -Free - 1 => Memory (I)'Initialized)));
 
    function Invariant return Boolean
    is (Base_Invariant
@@ -98,7 +103,7 @@ is
    function Allocated_Cells return Memory_Index_Maps.Map
    with
      Refined_Post =>
-         (for all I of Free_Cells => not Has_Key (Allocated_Cells'Result, I))
+       (for all I of Free_Cells => not Has_Key (Allocated_Cells'Result, I))
        and then
          Memory_Index_Sequences.Length (Free_Cells)
          + Memory_Index_Maps.Length (Allocated_Cells'Result)
@@ -106,11 +111,11 @@ is
        and then
          (if Free < 0
           then
-            (for all I in Index_Type =>
+            (for all I in 1 .. Extended_Index (Allocator_Length) =>
                Memory_Index_Maps.Has_Key (Allocated_Cells'Result, I)
                = (I < -Free))
           else
-            (for all I in Index_Type =>
+            (for all I in 1 .. Extended_Index (Allocator_Length) =>
                Memory_Index_Maps.Has_Key (Allocated_Cells'Result, I)
                = (not Node_Reachability.Reachable (Free, Memory, I))))
        and then
@@ -119,6 +124,9 @@ is
             and then
               Memory_Index_Maps.Get (Allocated_Cells'Result, I)
               = To_Object (Memory (I).C))
+       and then
+         (for all I of Allocated_Cells'Result =>
+            I in 1 .. Extended_Index (Allocator_Length))
    is
    begin
       return Res : Memory_Index_Maps.Map do
@@ -141,13 +149,13 @@ is
               Assert
                 (Memory_Index_Maps.Length (Res)
                  + Big (Index_Type'Last + Free + 1)
-                 = Big (Index_Type'Last));
+                 = To_Big_Integer (Allocator_Length));
          else
             declare
                F : Memory_Index_Sets.Set :=
                  Node_Reachability.Reachable_Set (Free, Memory);
             begin
-               for I in Index_Type loop
+               for I in 1 .. Extended_Index (Allocator_Length) loop
                   if Memory_Index_Sets.Contains (F, I) then
                      F := Memory_Index_Sets.Remove (F, I);
                   else
@@ -179,7 +187,8 @@ is
                   pragma
                     Loop_Invariant
                       (Memory_Index_Maps.Length (Res)
-                       + Memory_Index_Sequences.Length (Node_Reachability.Model (Free, Memory))
+                       + Memory_Index_Sequences.Length
+                           (Node_Reachability.Model (Free, Memory))
                        = Big (I) + Memory_Index_Sets.Length (F));
                end loop;
                pragma Assert (Memory_Index_Sets.Is_Empty (F));
@@ -187,8 +196,8 @@ is
                  Assert
                    (Memory_Index_Maps.Length (Res)
                     + Memory_Index_Sequences.Length
-                      (Node_Reachability.Model (Free, Memory))
-                    = Big (Index_Type'Last));
+                        (Node_Reachability.Model (Free, Memory))
+                    = To_Big_Integer (Allocator_Length));
             end;
          end if;
       end return;
@@ -204,7 +213,7 @@ is
             if Free = -Index_Type'Last then
                Free := 0;
             else
-               Free := Free - 1;
+               Free := (if Allocator_Length = 0 then 0 else Free - 1);
             end if;
          else
             Res := Free;
@@ -282,8 +291,9 @@ is
              (for all K of Allocated_Cells =>
                 Memory_Index_Maps.Has_Key (Allocated_Cells_Old, K));
          pragma
-           Assert (for all K of Allocated_Cells_Old =>
-                     K = I or Memory_Index_Maps.Has_Key (Allocated_Cells, K));
+           Assert
+             (for all K of Allocated_Cells_Old =>
+                K = I or Memory_Index_Maps.Has_Key (Allocated_Cells, K));
       end if;
    end Deallocate;
 

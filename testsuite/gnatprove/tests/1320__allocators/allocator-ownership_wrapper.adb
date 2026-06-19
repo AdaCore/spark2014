@@ -1,4 +1,4 @@
-package body Allocator.Base.Ownership_Wrapper
+package body Allocator.Ownership_Wrapper
   with SPARK_Mode => Off
 is
 
@@ -48,4 +48,4 @@ is
       end if;
    end Deallocate;
 
-end Allocator.Base.Ownership_Wrapper;
+end Allocator.Ownership_Wrapper;

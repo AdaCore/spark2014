@@ -10,7 +10,7 @@ with SPARK.Containers.Functional.Infinite_Sequences;
 with SPARK.Containers.Functional.Maps;
 
 generic
-   Object_Size : Natural;
+   Object_Size : Positive;
    --  Size of the object we want to store in byte
    Allocator_Length : Natural := 100;
    --  Maximal number of elements that can be allocated in the buffer
@@ -18,7 +18,11 @@ generic
    --  An array of Object_Size bytes
    type Index_Base is range <>;
 
-package Allocator.Base with SPARK_Mode
+package Allocator.Base with
+    SPARK_Mode,
+    Initial_Condition =>
+      Memory_Index_Sequences.Length (Free_Cells)
+      = To_Big_Integer (Allocator_Length)
 is
    pragma
      Compile_Time_Error
@@ -29,8 +33,17 @@ is
 
    subtype Extended_Index is
      Index_Base'Base
-       range Index_Base'Base (-Allocator_Length)
-             .. Index_Base'Base (Allocator_Length);
+       range (if Allocator_length = 0
+              then Index_Base'First
+              else Index_Base'Base (-Allocator_Length))
+             ..
+               (if Allocator_length = 0
+                then Index_Base'Last
+                else Index_Base'Base (Allocator_Length));
+   --  Do not use an empty type if the allocator is empty to avoid spurious
+   --  compile time errors with static values not in range in the bodies of
+   --  subprogram that cannot be called on empty buffers.
+   subtype Index_Type is Extended_Index range 1 .. Extended_Index'Last;
 
    pragma
      Compile_Time_Error
@@ -38,45 +51,6 @@ is
         "length of allocator is too big");
    --  Make sure that there is enough room in the object to store the linked
    --  free list.
-
-   type Padding_Type is
-     array (Positive range 1 .. Object_Size - Extended_Index'Object_Size / 8)
-     of Unsigned_8;
-
-   type Memory_Cell_Type is record
-      Next    : Extended_Index'Base;
-      Padding : Padding_Type;
-   end record
-   with Alignment => 1;
-   --  An object is a byte array of size Object_Size. Use the beginning of the
-   --  array to store the index of the next free cell if the object is free. A
-   --  negative number stands for the end of the buffer starting at -Next.
-
-   function To_Object is new
-     Ada.Unchecked_Conversion
-       (Memory_Cell_Type,
-        Binary_Object_Type)with Potentially_Invalid;
-
-   function From_Object is new
-     Ada.Unchecked_Conversion (Binary_Object_Type, Memory_Cell_Type);
-
-   pragma Assert (Memory_Cell_Type'Object_Size = 8 * Object_Size);
-
-   type Relaxed_Cell is record
-      C : aliased Memory_Cell_Type;
-   end record
-   with Relaxed_Initialization;
-
-   subtype Index_Type is Extended_Index range 1 .. Extended_Index'Last;
-   type Memory_Type_Base is array (Index_Type range <>) of Relaxed_Cell;
-   subtype Memory_Type is Memory_Type_Base (Index_Type);
-   subtype Init_Memory_Type is Memory_Type_Base
-   with Ghost_Predicate => (for all C of Init_Memory_Type => C'Initialized);
-
-   Memory : Memory_Type;
-   Free   : Extended_Index := -1;
-   --  Buffer and first index of the free list. A negative number stands for
-   --  the end of the buffer starting at -Free.
 
    package Memory_Index_Maps is new
      SPARK.Containers.Functional.Maps (Index_Type, Binary_Object_Type);
@@ -91,7 +65,13 @@ is
    with Ghost, Global => (Memory, Free);
 
    function Allocated_Cells return Memory_Index_Maps.Map
-   with Ghost, Global => (Memory, Free), Pre => Base_Invariant;
+   with
+     Ghost,
+     Global => (Memory, Free),
+     Pre    => Base_Invariant,
+     Post   =>
+       (for all I of Allocated_Cells'Result =>
+          I in 1 .. Extended_Index (Allocator_Length));
    function Free_Cells return Memory_Index_Sequences.Sequence
    with Ghost, Global => (Memory, Free), Pre => Base_Invariant;
    --  The model of the buffer is a pair of a map of allocated indices mapped to
@@ -154,10 +134,55 @@ is
    function Deref (I : Index_Type) return Binary_Object_Type
    with
      Global => (Input => Memory, Proof_In => Free),
-     Pre    => Invariant and then Has_Key (Allocated_Cells, I),
+     Pre    =>
+       I in 1 .. Extended_Index (Allocator_Length)
+       and then Invariant
+       and then Has_Key (Allocated_Cells, I),
      Post   => Deref'Result = Get (Allocated_Cells, I);
 
    --  It is not possible to provide Constant_Reference and Reference functions
-   --  for now as global inputs cannot be borrowed/observed.
+   --  for now as global inputs cannot be borrowed/observed. Instead, we have
+   --  to keep Memory in the public part so it can be accessed directly.
+
+   --  The private part should start here
+
+   type Padding_Type is
+     array (Positive range 1 .. Object_Size - Extended_Index'Object_Size / 8)
+     of Unsigned_8;
+
+   type Memory_Cell_Type is record
+      Next    : Extended_Index'Base;
+      Padding : Padding_Type;
+   end record
+   with Alignment => 1;
+   --  An object is a byte array of size Object_Size. Use the beginning of the
+   --  array to store the index of the next free cell if the object is free. A
+   --  negative number stands for the end of the buffer starting at -Next.
+
+   function To_Object is new
+     Ada.Unchecked_Conversion
+       (Memory_Cell_Type,
+        Binary_Object_Type)with Potentially_Invalid;
+
+   function From_Object is new
+     Ada.Unchecked_Conversion (Binary_Object_Type, Memory_Cell_Type);
+
+   pragma Assert (Memory_Cell_Type'Object_Size = 8 * Object_Size);
+
+   type Relaxed_Cell is record
+      C : aliased Memory_Cell_Type;
+   end record
+   with Relaxed_Initialization;
+
+   type Memory_Type_Base is array (Index_Type range <>) of Relaxed_Cell;
+   subtype Memory_Type is
+     Memory_Type_Base (1 .. Index_Type'Base (Allocator_length));
+   subtype Init_Memory_Type is Memory_Type_Base
+   with Ghost_Predicate => (for all C of Init_Memory_Type => C'Initialized);
+
+   Memory : Memory_Type;
+   Free   : Extended_Index := (if Allocator_Length = 0 then 0 else -1);
+   --  Buffer and first index of the free list. A negative number stands for
+   --  the end of the buffer starting at -Free.
 
 end Allocator.Base;
