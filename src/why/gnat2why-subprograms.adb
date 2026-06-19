@@ -6167,7 +6167,11 @@ package body Gnat2Why.Subprograms is
                         begin
                            Prog :=
                              New_Typed_Binding
-                               (Name    => Modifies_Old_Append (W_Id),
+                               (Name    =>
+                                  To_Why_Id_Tmp
+                                    (To_Name (F),
+                                     Prefix =>
+                                       To_String (WNE_Modifies_Prefix)),
                                 Def     =>
                                   New_Deref
                                     (Right => W_Id, Typ => Get_Typ (W_Id)),
@@ -10216,7 +10220,10 @@ package body Gnat2Why.Subprograms is
                   Old_Term : constant W_Term_Id :=
                     (if As_Old
                      then +New_Old (+New_Term, EW_Term)
-                     else +Modifies_Old_Append (+W_Id));
+                     else
+                       +To_Why_Id_Tmp
+                          (To_Name (F),
+                           Prefix => To_String (WNE_Modifies_Prefix)));
                begin
                   return Preserved_Value (Empty, New_Term, Old_Term);
                end;

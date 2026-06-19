@@ -1532,6 +1532,29 @@ package body Why.Inter is
       end if;
    end To_Why_Id;
 
+   -------------------
+   -- To_Why_Id_Tmp --
+   -------------------
+
+   function To_Why_Id_Tmp
+     (Obj : Entity_Name; Prefix : String) return W_Identifier_Id is
+   begin
+      if Is_Heap_Variable (Obj) then
+         return
+           New_Identifier
+             (Name => Prefix & SPARK_Xrefs.Name_Of_Heap_Variable,
+              Typ  => M_Main.Type_Of_Heap);
+      else
+         declare
+            Ada_Name : constant String := To_String (Obj);
+         begin
+            return
+              New_Identifier
+                (Name => Prefix & Ada_Name, Typ => EW_Private_Type);
+         end;
+      end if;
+   end To_Why_Id_Tmp;
+
    -----------------
    -- To_Why_Type --
    -----------------
