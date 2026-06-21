@@ -105,7 +105,13 @@ package body Assumption_Types is
    function From_JSON_Internal (V : JSON_Value) return Subp_Type is
    begin
       return
-        Mk_Subp (Get (Get (V, "name")), From_JSON (Get (Get (V, "sloc"))));
+        Mk_Subp
+          (Name          => Get (Get (V, "name")),
+           Sloc          => From_JSON (Get (Get (V, "sloc"))),
+           Manifest_Kind =>
+             (if Has_Field (V, "manifest_kind")
+              then Get (Get (V, "manifest_kind"))
+              else ""));
    end From_JSON_Internal;
 
    function From_JSON (V : JSON_Array) return My_Sloc is
@@ -143,7 +149,8 @@ package body Assumption_Types is
    function Hash (S : Subp_Type_Rec) return Ada.Containers.Hash_Type is
       use Ada.Containers;
    begin
-      return 3 * Hash (S.Name) + 9 * Hash (S.Sloc);
+      return
+        3 * Hash (S.Name) + 9 * Hash (S.Sloc) + 11 * Hash (S.Manifest_Kind);
    end Hash;
 
    function Hash (S : Base_Sloc) return Ada.Containers.Hash_Type is
@@ -193,11 +200,16 @@ package body Assumption_Types is
    -- Mk_Subp --
    -------------
 
-   function Mk_Subp (Name : String; Sloc : My_Sloc) return Subp_Type is
+   function Mk_Subp
+     (Name : String; Sloc : My_Sloc; Manifest_Kind : String := "")
+      return Subp_Type is
    begin
       return
         Unique_Subps.Hash_Cons
-          (Subp_Type_Rec'(Name => Find (Symbol_Table, Name), Sloc => Sloc));
+          (Subp_Type_Rec'
+             (Name          => Find (Symbol_Table, Name),
+              Sloc          => Sloc,
+              Manifest_Kind => Find (Symbol_Table, Manifest_Kind)));
    end Mk_Subp;
 
    -------------
@@ -280,8 +292,13 @@ package body Assumption_Types is
    function To_JSON_Internal (S : Subp_Type) return JSON_Value is
       Obj     : constant JSON_Value := Create_Object;
       JS_Sloc : JSON_Array := Empty_Array;
+      Kind    : constant GNATCOLL.Utils.Cst_String_Access :=
+        Get (S.Manifest_Kind);
    begin
       Set_Field (Obj, "name", Subp_Name (S));
+      if Kind.all /= "" then
+         Set_Field (Obj, "manifest_kind", Kind.all);
+      end if;
       for Base_Sloc of S.Sloc loop
          declare
             JS_Base : constant JSON_Value := Create_Object;
@@ -372,7 +389,11 @@ package body Assumption_Types is
        then True
        elsif Right.Name < Left.Name
        then False
-       else Left.Sloc < Right.Sloc);
+       elsif Left.Sloc < Right.Sloc
+       then True
+       elsif Right.Sloc < Left.Sloc
+       then False
+       else Left.Manifest_Kind < Right.Manifest_Kind);
 
    function "<" (Left, Right : Symbol) return Boolean
    is (Get (Left, Empty_If_Null => True).all

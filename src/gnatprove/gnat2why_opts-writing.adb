@@ -81,6 +81,10 @@ package body Gnat2Why_Opts.Writing is
             Hash ("path", To_String (Policy.Path));
             Hash ("kind", To_String (Policy.Kind));
             Hash ("profile", To_String (Policy.Profile));
+            Hash ("hierarchical", Boolean'Image (Policy.Hierarchical));
+            Hash ("file", To_String (Policy.File));
+            Hash ("line", Integer'Image (Policy.Line));
+            Hash ("col", Integer'Image (Policy.Column));
             Hash ("timeout", Integer'Image (Policy.Timeout));
             Hash ("steps", Integer'Image (Policy.Steps));
             Hash ("memlimit", Integer'Image (Policy.Memlimit));
@@ -215,6 +219,9 @@ package body Gnat2Why_Opts.Writing is
          Obj : constant JSON_Value := Create_Object;
       begin
          Set_Field (Obj, "path", To_String (Policy.Path));
+         Set_Field (Obj, "file", To_String (Policy.File));
+         Set_Field (Obj, "line", Policy.Line);
+         Set_Field (Obj, "col", Policy.Column);
 
          if Length (Policy.Kind) > 0 then
             Set_Field (Obj, "kind", To_String (Policy.Kind));
@@ -223,6 +230,8 @@ package body Gnat2Why_Opts.Writing is
          if Length (Policy.Profile) > 0 then
             Set_Field (Obj, "profile", To_String (Policy.Profile));
          end if;
+
+         Set_Field (Obj, "hierarchical", Policy.Hierarchical);
 
          if Policy.Timeout /= Invalid_Manifest_Timeout then
             Set_Field (Obj, "timeout", Policy.Timeout);

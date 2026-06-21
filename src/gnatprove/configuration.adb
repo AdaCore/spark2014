@@ -1681,7 +1681,7 @@ package body Configuration is
       with No_Return;
       procedure Check_Allowed_Keys
         (Table : TOML.TOML_Value; Allowed : String_Lists.List);
-      --  Check that only the allowed fields are present in the subprogram
+      --  Check that only the allowed fields are present in the rule
       --  entries. Raise an error using Manifest_Error function if unknown
       --  keys are found.
 
@@ -1697,6 +1697,11 @@ package body Configuration is
         (Table : TOML.TOML_Value; Key : String) return Unbounded_String;
       --  Same as Get_Required_String, but returns empty string if the key is
       --  missing. Still raises an error in case of type mismatch.
+
+      function Get_Optional_Boolean
+        (Table : TOML.TOML_Value; Key : String; Default : Boolean)
+         return Boolean;
+      --  Similar to Get_Optional_String, but for Boolean
 
       function Get_Optional_Natural
         (Table : TOML.TOML_Value; Key : String; Default : Integer)
@@ -1733,6 +1738,10 @@ package body Configuration is
         (Left, Right : Manifest_Subprogram) return Boolean;
       --  Ordering used to normalize the manifest before passing it to
       --  gnat2why.
+
+      procedure Set_Manifest_Location
+        (Policy : in out Manifest_Subprogram; Value : TOML.TOML_Value);
+      --  Save the manifest source location used by gnat2why diagnostics
 
       procedure Load_Manifest_File (File : String);
       --  Read a manifest file
@@ -1824,21 +1833,17 @@ package body Configuration is
            Table.Get_Or_Null ("profile");
       begin
          if Has_Kind
-           and then Kind_Value /= "unit"
            and then Kind_Value /= "package"
            and then Kind_Value /= "procedure"
            and then Kind_Value /= "function"
          then
             Manifest_Error
               (Kind,
-               "field ""kind"" must be one of ""unit"", ""package"","
-               & " ""procedure"" or ""function""");
+               "field ""kind"" must be one of ""package"", ""procedure"""
+               & " or ""function""");
          end if;
 
-         if Kind_Value = "unit" and then Has_Profile then
-            Manifest_Error
-              (Profile, "field ""profile"" is not allowed for unit entries");
-         elsif Has_Profile
+         if Has_Profile
            and then
              (not Has_Kind
               or else
@@ -1858,6 +1863,7 @@ package body Configuration is
                 = Kind_Value
               and then
                 To_String (Existing.Profile) = To_String (Policy.Profile)
+              and then Existing.Hierarchical = Policy.Hierarchical
             then
                Manifest_Error (Table, "duplicate manifest entry");
             end if;
@@ -1908,6 +1914,25 @@ package body Configuration is
             Manifest_Error (Value, "unsupported version, expected 1");
          end if;
       end Check_Version;
+
+      --------------------------
+      -- Get_Optional_Boolean --
+      --------------------------
+
+      function Get_Optional_Boolean
+        (Table : TOML.TOML_Value; Key : String; Default : Boolean)
+         return Boolean
+      is
+         Value : constant TOML.TOML_Value := Table.Get_Or_Null (Key);
+      begin
+         if not Value.Is_Present then
+            return Default;
+         elsif Value.Kind /= TOML.TOML_Boolean then
+            Manifest_Error (Value, "field """ & Key & """ must be a boolean");
+         else
+            return Value.As_Boolean;
+         end if;
+      end Get_Optional_Boolean;
 
       --------------------------
       -- Get_Optional_Natural --
@@ -2030,6 +2055,28 @@ package body Configuration is
       end Manifest_Less;
 
       ---------------------------
+      -- Set_Manifest_Location --
+      ---------------------------
+
+      procedure Set_Manifest_Location
+        (Policy : in out Manifest_Subprogram; Value : TOML.TOML_Value)
+      is
+         Loc : constant String := TOML.Format_Location (Value.Location);
+         Sep : constant Natural := Index (Loc, ":");
+      begin
+         Policy.File := Current_File;
+
+         if Sep > 0 then
+            Policy.Line := Positive'Value (Loc (Loc'First .. Sep - 1));
+            Policy.Column := Positive'Value (Loc (Sep + 1 .. Loc'Last));
+         end if;
+      exception
+         when Constraint_Error =>
+            Policy.Line := 1;
+            Policy.Column := 1;
+      end Set_Manifest_Location;
+
+      ---------------------------
       -- Read_Optional_Provers --
       ---------------------------
 
@@ -2081,13 +2128,13 @@ package body Configuration is
          Path    : Unbounded_String;
       begin
          if Table.Kind /= TOML.TOML_Table then
-            Manifest_Error
-              (Table, "items of field ""subprogram"" must be tables");
+            Manifest_Error (Table, "items of field ""rule"" must be tables");
          end if;
 
          Allowed.Append ("path");
          Allowed.Append ("kind");
          Allowed.Append ("profile");
+         Allowed.Append ("hierarchical");
          Allowed.Append ("timeout");
          Allowed.Append ("steps");
          Allowed.Append ("memlimit");
@@ -2101,8 +2148,11 @@ package body Configuration is
          Check_Unit_Prefix
            (Unit_Name, Table.Get_Or_Null ("path"), To_String (Path));
          Policy.Path := Path;
+         Set_Manifest_Location (Policy, Table.Get_Or_Null ("path"));
          Policy.Kind := Get_Optional_String (Table, "kind");
          Policy.Profile := Get_Optional_String (Table, "profile");
+         Policy.Hierarchical :=
+           Get_Optional_Boolean (Table, "hierarchical", True);
          Policy.Timeout :=
            Get_Optional_Natural (Table, "timeout", Invalid_Manifest_Timeout);
          Policy.Steps :=
@@ -2179,15 +2229,15 @@ package body Configuration is
          end if;
 
          Allowed.Append ("version");
-         Allowed.Append ("subprogram");
+         Allowed.Append ("rule");
          Check_Allowed_Keys (Root, Allowed);
          Check_Version (Root);
-         Subs := Root.Get_Or_Null ("subprogram");
+         Subs := Root.Get_Or_Null ("rule");
 
          if not Subs.Is_Present then
             return;
          elsif Subs.Kind /= TOML.TOML_Array then
-            Manifest_Error (Subs, "field ""subprogram"" must be an array");
+            Manifest_Error (Subs, "field ""rule"" must be an array");
          end if;
 
          for I in 1 .. Subs.Length loop

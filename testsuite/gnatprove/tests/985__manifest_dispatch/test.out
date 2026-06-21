@@ -1,0 +1,88 @@
+===== resolved manifest entry =====
+--- manifest pkg.toml ---
+version = 1
+
+[[rule]]
+path = "Pkg.P"
+kind = "procedure"
+profile = "(_ : Integer)"
+timeout = 1
+--- output ---
+===== unit default and package entity =====
+===== unit default and nested package entity =====
+===== ambiguous manifest entry =====
+--- manifest pkg.toml ---
+version = 1
+
+[[rule]]
+path = "Pkg.P"
+kind = "procedure"
+timeout = 1
+--- output ---
+ambiguous_manifest_entry/pkg.toml:4:8: warning: invalid proof manifest entry 1 for "Pkg.P" kind "procedure" is ambiguous; add or refine the kind or profile field
+Success: all checks proved (4 checks).
+Summary logged in gnatprove/gnatprove.out
+[Ada Analysis]    pkg.adb
+[Ada Global_Gen]  pkg.adb
+===== missing manifest entity =====
+--- manifest pkg.toml ---
+version = 1
+
+[[rule]]
+path = "Pkg.Missing"
+kind = "procedure"
+timeout = 1
+--- output ---
+missing_manifest_entity/pkg.toml:4:8: warning: invalid proof manifest entry 1 for "Pkg.Missing" kind "procedure" does not match any entity in this analysis unit
+Success: all checks proved (4 checks).
+Summary logged in gnatprove/gnatprove.out
+[Ada Analysis]    pkg.adb
+===== manifest entity not selected =====
+--- manifest pkg.toml ---
+version = 1
+
+[[rule]]
+path = "Pkg.Q"
+kind = "procedure"
+timeout = 1
+--- output ---
+manifest_entity_not_selected/pkg.toml:4:8: warning: invalid proof manifest entry 1 for "Pkg.Q" kind "procedure" matches an entity not selected for analysis
+Summary logged in gnatprove/gnatprove.out
+[Ada Analysis]    pkg.adb
+===== manifest applies steps override =====
+--- manifest pkg.toml ---
+version = 1
+
+[[rule]]
+path = "Pkg.R"
+timeout = 5
+steps = 100
+provers = ["cvc5"]
+--- output ---
+ info: postcondition proved
+--> pkg.ads:11:17
+Success: all checks proved (1 check).
+Summary logged in gnatprove/gnatprove.out
+[Ada Analysis]    pkg.adb
+===== package prefix covers multiple subprograms =====
+===== nested prefix covers single subprogram =====
+===== prefix kind applies to anchor only =====
+===== specific entry overrides broader entry =====
+===== two same-specificity entries are ambiguous =====
+--- manifest pkg.toml ---
+version = 1
+
+[[rule]]
+path = "Pkg.R"
+timeout = 5
+
+[[rule]]
+path = "Pkg.R"
+kind = "procedure"
+timeout = 10
+--- output ---
+two_same-specificity_entries_are_ambiguous/pkg.toml:4:8: warning: invalid proof manifest entry 1 for "Pkg.R" is ambiguous with another entry of equal specificity matching "Pkg.R"
+Success: all checks proved (4 checks).
+Summary logged in gnatprove/gnatprove.out
+[Ada Analysis]    pkg.adb
+[Ada Global_Gen]  pkg.adb

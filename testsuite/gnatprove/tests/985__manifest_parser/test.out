@@ -1,21 +1,68 @@
 ===== valid manifest =====
-===== unit and package manifest =====
-===== unit and nested package manifest =====
+--- manifest main.toml ---
+version = 1
+
+[[rule]]
+path = "Main"
+kind = "procedure"
+profile = "()"
+timeout = 1
+steps = 100
+memlimit = 1000
+level = 2
+provers = ["cvc5", "z3"]
+
+[[rule]]
+path = "Main.Inner"
+kind = "procedure"
+profile = "(_ : Integer)"
+steps = 200
+--- output ---
 ===== unknown field =====
+--- manifest main.toml ---
+version = 1
+
+[[rule]]
+path = "Main"
+unknown = 1
+--- output ---
 Try "gnatprove --help" for more information.
-error: invalid proof manifest unknown_field_manifest/main.toml:5:11: unknown field "unknown"
+error: invalid proof manifest unknown_field/main.toml:5:11: unknown field "unknown"
 ===== bad provers syntax =====
+--- manifest main.toml ---
+version = 1
+
+[[rule]]
+path = "Main"
+provers = "cvc5"
+--- output ---
 Try "gnatprove --help" for more information.
-error: invalid proof manifest bad_provers_manifest/main.toml:5:11: field "provers" must be an array
+error: invalid proof manifest bad_provers_syntax/main.toml:5:11: field "provers" must be an array
 ===== missing path =====
+--- manifest main.toml ---
+version = 1
+
+[[rule]]
+timeout = 1
+--- output ---
 Try "gnatprove --help" for more information.
-error: invalid proof manifest missing_path_manifest/main.toml:3:1: missing required field "path"
+error: invalid proof manifest missing_path/main.toml:3:1: missing required field "path"
 ===== missing version =====
+--- manifest main.toml ---
+[[rule]]
+path = "Main"
+--- output ---
 Try "gnatprove --help" for more information.
-error: invalid proof manifest missing_version_manifest/main.toml: missing required field "version"
+error: invalid proof manifest missing_version/main.toml: missing required field "version"
 ===== unsupported version =====
+--- manifest main.toml ---
+version = 2
+
+[[rule]]
+path = "Main"
+--- output ---
 Try "gnatprove --help" for more information.
-error: invalid proof manifest unsupported_version_manifest/main.toml:1:10: unsupported version, expected 1
+error: invalid proof manifest unsupported_version/main.toml:1:10: unsupported version, expected 1
 ===== missing folder =====
 Try "gnatprove --help" for more information.
 error: proof manifest folder "missing_manifest" does not exist
@@ -23,35 +70,113 @@ error: proof manifest folder "missing_manifest" does not exist
 Try "gnatprove --help" for more information.
 error: proof manifest "main.adb" is not a folder
 ===== wrong unit =====
+--- manifest other.toml ---
+version = 1
+
+[[rule]]
+path = "Main"
+steps = 1
+--- output ---
 Try "gnatprove --help" for more information.
-error: invalid proof manifest wrong_unit_manifest/other.toml:4:8: path "Main" does not belong to manifest unit "other"
+error: invalid proof manifest wrong_unit/other.toml:4:8: path "Main" does not belong to manifest unit "other"
 ===== bad kind =====
+--- manifest main.toml ---
+version = 1
+
+[[rule]]
+path = "Main"
+kind = "task"
+steps = 1
+--- output ---
 Try "gnatprove --help" for more information.
-error: invalid proof manifest bad_kind_manifest/main.toml:5:8: field "kind" must be one of "unit", "package", "procedure" or "function"
+error: invalid proof manifest bad_kind/main.toml:5:8: field "kind" must be one of "package", "procedure" or "function"
 ===== profile without kind =====
+--- manifest main.toml ---
+version = 1
+
+[[rule]]
+path = "Main"
+profile = "()"
+steps = 1
+--- output ---
 Try "gnatprove --help" for more information.
-error: invalid proof manifest profile_without_kind_manifest/main.toml:5:11: field "profile" requires kind "procedure" or "function"
-===== unit profile =====
+error: invalid proof manifest profile_without_kind/main.toml:5:11: field "profile" requires kind "procedure" or "function"
+===== bad hierarchical =====
+--- manifest main.toml ---
+version = 1
+
+[[rule]]
+path = "Main"
+hierarchical = "false"
+steps = 1
+--- output ---
 Try "gnatprove --help" for more information.
-error: invalid proof manifest unit_profile_manifest/main.toml:6:11: field "profile" is not allowed for unit entries
+error: invalid proof manifest bad_hierarchical/main.toml:5:16: field "hierarchical" must be a boolean
 ===== package profile =====
+--- manifest main.toml ---
+version = 1
+
+[[rule]]
+path = "Main"
+kind = "package"
+profile = "()"
+steps = 1
+--- output ---
 Try "gnatprove --help" for more information.
-error: invalid proof manifest package_profile_manifest/main.toml:6:11: field "profile" requires kind "procedure" or "function"
+error: invalid proof manifest package_profile/main.toml:6:11: field "profile" requires kind "procedure" or "function"
 ===== no options =====
+--- manifest main.toml ---
+version = 1
+
+[[rule]]
+path = "Main"
+--- output ---
 Try "gnatprove --help" for more information.
-error: invalid proof manifest no_options_manifest/main.toml:3:1: missing proof option
+error: invalid proof manifest no_options/main.toml:3:1: missing proof option
 ===== bad level =====
+--- manifest main.toml ---
+version = 1
+
+[[rule]]
+path = "Main"
+level = 5
+--- output ---
 Try "gnatprove --help" for more information.
-error: invalid proof manifest bad_level_manifest/main.toml:5:9: field "level" must be between 0 and 4
+error: invalid proof manifest bad_level/main.toml:5:9: field "level" must be between 0 and 4
 ===== duplicate entry =====
+--- manifest main.toml ---
+version = 1
+
+[[rule]]
+path = "Main"
+steps = 1
+
+[[rule]]
+path = "Main"
+timeout = 1
+--- output ---
 Try "gnatprove --help" for more information.
-error: invalid proof manifest duplicate_entry_manifest/main.toml:8:1: duplicate manifest entry
+error: invalid proof manifest duplicate_entry/main.toml:7:1: duplicate manifest entry
 ===== duplicate prover =====
+--- manifest main.toml ---
+version = 1
+
+[[rule]]
+path = "Main"
+provers = ["cvc5", "cvc5"]
+--- output ---
 Try "gnatprove --help" for more information.
-error: invalid proof manifest duplicate_prover_manifest/main.toml:5:20: duplicate prover "cvc5"
+error: invalid proof manifest duplicate_prover/main.toml:5:20: duplicate prover "cvc5"
 ===== bad path =====
+--- manifest main.toml ---
+version = 1
+
+[[rule]]
+path = "Main..Inner"
+steps = 1
+--- output ---
 Try "gnatprove --help" for more information.
-error: invalid proof manifest bad_path_manifest/main.toml:4:8: field "path" must be a dot-separated Ada name
+error: invalid proof manifest bad_path/main.toml:4:8: field "path" must be a dot-separated Ada name
 ===== project switch rejected =====
 gnatprove: unrecognized option '--proof-manifest-dir=valid_manifest'
 try "gnatprove --help" for more information.

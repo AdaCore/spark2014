@@ -96,12 +96,28 @@ package body Gnat2Why_Opts.Reading is
             begin
                Policy.Path := Get_Opt (Obj, "path");
 
+               if Has_Field (Obj, "file") then
+                  Policy.File := Get_Opt (Obj, "file");
+               end if;
+
+               if Has_Field (Obj, "line") then
+                  Policy.Line := Positive (Integer'(Get_Opt (Obj, "line")));
+               end if;
+
+               if Has_Field (Obj, "col") then
+                  Policy.Column := Positive (Integer'(Get_Opt (Obj, "col")));
+               end if;
+
                if Has_Field (Obj, "kind") then
                   Policy.Kind := Get_Opt (Obj, "kind");
                end if;
 
                if Has_Field (Obj, "profile") then
                   Policy.Profile := Get_Opt (Obj, "profile");
+               end if;
+
+               if Has_Field (Obj, "hierarchical") then
+                  Policy.Hierarchical := Get_Opt (Obj, "hierarchical");
                end if;
 
                if Has_Field (Obj, "timeout") then

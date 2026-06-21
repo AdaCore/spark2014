@@ -14,7 +14,7 @@ with open(os.path.join("duplicate_unit_manifest", "Main.toml"), "w") as f:
     f.write(
         """version = 1
 
-[[subprogram]]
+[[rule]]
 path = "Main"
 kind = "procedure"
 level = 2
@@ -25,7 +25,7 @@ with open(os.path.join("duplicate_unit_manifest", "main.toml"), "w") as f:
     f.write(
         """version = 1
 
-[[subprogram]]
+[[rule]]
 path = "Main.Inner"
 kind = "procedure"
 level = 1

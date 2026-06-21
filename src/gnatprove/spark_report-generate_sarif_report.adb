@@ -441,7 +441,10 @@ is
    function Make_Artifact_Location
      (Simple_File : String) return SARIF.Types.artifactLocation
    is
-      Full        : constant String := Resolve_Source (Simple_File);
+      Full        : constant String :=
+        (if Ada.Directories.Simple_Name (Simple_File) = Simple_File
+         then Resolve_Source (Simple_File)
+         else Simple_File);
       Best_Id     : Unbounded_String;
       Best_Prefix : Unbounded_String;
    begin
@@ -470,9 +473,13 @@ is
                    (Full (Full'First + Length (Best_Prefix) .. Full'Last))),
             uriBaseId => To_Virtual_String (To_String (Best_Id)),
             others    => <>);
-      elsif Full /= "" then
+      elsif Full /= "" and then GNAT.OS_Lib.Is_Absolute_Path (Full) then
          return
            (uri => To_Virtual_String (Path_To_File_URI (Full)), others => <>);
+      elsif Full /= "" then
+         return
+           (uri    => To_Virtual_String (Normalize_URI_Path (Full)),
+            others => <>);
       else
          --  Source not found in project: emit simple name as relative URI
          return (uri => To_Virtual_String (Simple_File), others => <>);
@@ -559,8 +566,10 @@ is
                Properties => Contracts_Properties (Value)));
       end Handle_Generated_Globals;
 
-      Has_Flow  : constant Boolean := Has_Field (Dict, "flow");
-      Has_Proof : constant Boolean := Has_Field (Dict, "proof");
+      Has_Flow              : constant Boolean := Has_Field (Dict, "flow");
+      Has_Proof             : constant Boolean := Has_Field (Dict, "proof");
+      Has_Manifest_Warnings : constant Boolean :=
+        Has_Field (Dict, "manifest_warnings");
    begin
       Parse_Entity_Table (Get (Dict, "entities"));
       if Has_Field (Dict, "generated_globals") then
@@ -572,6 +581,9 @@ is
       end if;
       if Has_Proof then
          Handle_Items (Get (Get (Dict, "proof")));
+      end if;
+      if Has_Manifest_Warnings then
+         Handle_Items (Get (Get (Dict, "manifest_warnings")));
       end if;
       Handle_Items (Get (Get (Dict, "warn_error")));
    end Handle_SPARK_File;
@@ -800,6 +812,18 @@ is
                  Mk_Multi_Message_String (Annotation_Description (K)),
                others           => <>));
       end loop;
+
+      --  Add rule for proof-manifest diagnostics
+      result.Append
+        (reportingDescriptor'
+           (id               => To_Virtual_String ("proof-manifest"),
+            shortDescription =>
+              Mk_Multi_Message_String ("Proof Manifest Diagnostic"),
+            fullDescription  =>
+              Mk_Multi_Message_String
+                ("Diagnostic message emitted while resolving proof-manifest"
+                 & " entries"),
+            others           => <>));
 
       --  Add unsupported construct rules
       for K in Unsupported_Kind loop
