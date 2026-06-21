@@ -191,6 +191,11 @@ package body Configuration is
    procedure Produce_Explain_Output (Explain_Code : String);
    --  Print the explanation for the requested error/warning code
 
+   procedure Produce_List_Explain_Codes_Output;
+   --  List all explain codes with their one-line descriptions on standard
+   --  output, derived from the Explain_Code_Kind enumeration. Internal switch
+   --  (exercised by the explain codes test), not advertised to users.
+
    function Check_gnateT_Switch (View : Project.View.Object) return String;
    --  Try to compute the gnateT switch to be used for gnat2why. If there is
    --  a target and runtime set, but we can't compute the switch, a warning
@@ -760,16 +765,17 @@ package body Configuration is
    --  internal storage.
 
    type Project_Parsing_Result is record
-      Opt             : GPR2.Options.Object;
-      Version         : Boolean := False;
-      Help            : Boolean := False;
-      List_Categories : Boolean := False;
-      Gpr_Registry    : Boolean := False;
-      Clean           : Boolean := False;
-      Explain         : Unbounded_String := Null_Unbounded_String;
-      Verbosity       : Verbosity_Choice := Normal_Level;
-      Cargs           : String_List_Access := null;
-      Remaining_Args  : String_List_Access := null;
+      Opt                : GPR2.Options.Object;
+      Version            : Boolean := False;
+      Help               : Boolean := False;
+      List_Categories    : Boolean := False;
+      Gpr_Registry       : Boolean := False;
+      Clean              : Boolean := False;
+      Explain            : Unbounded_String := Null_Unbounded_String;
+      List_Explain_Codes : Boolean := False;
+      Verbosity          : Verbosity_Choice := Normal_Level;
+      Cargs              : String_List_Access := null;
+      Remaining_Args     : String_List_Access := null;
    end record;
 
    function Parse_Switches_Before_Project_Parsing
@@ -2615,6 +2621,9 @@ package body Configuration is
            Arg_Type    => Unbounded_String,
            Default_Val => Null_Unbounded_String);
 
+      package List_Explain_Codes is new
+        Parse_Flag (Parser => Parser, Long => "--debug-list-explain-codes");
+
       package Help is new Parse_Flag (Parser => Parser, Long => "--help");
 
       package List_Categories is new
@@ -2708,17 +2717,18 @@ package body Configuration is
       end if;
 
       return
-        (Opt             => GPR_Args.Parsed_GPR2_Options,
-         Version         => Version.Get,
-         Clean           => Clean.Get,
-         List_Categories => List_Categories.Get,
-         Explain         => Explain.Get,
-         Gpr_Registry    => GPR_Registry.Get,
-         Help            => Help.Get,
-         Verbosity       =>
+        (Opt                => GPR_Args.Parsed_GPR2_Options,
+         Version            => Version.Get,
+         Clean              => Clean.Get,
+         List_Categories    => List_Categories.Get,
+         Explain            => Explain.Get,
+         List_Explain_Codes => List_Explain_Codes.Get,
+         Gpr_Registry       => GPR_Registry.Get,
+         Help               => Help.Get,
+         Verbosity          =>
            Parse_Command_Line_Verbosity (Com_Lin (Com_Lin'First .. Last_Arg)),
-         Cargs           => Cargs,
-         Remaining_Args  => To_String_List (Unused));
+         Cargs              => Cargs,
+         Remaining_Args     => To_String_List (Unused));
    end Parse_Switches_Before_Project_Parsing;
 
    ------------------------
@@ -2943,6 +2953,23 @@ package body Configuration is
          end loop;
       end;
    end Produce_Explain_Output;
+
+   ---------------------------------------
+   -- Produce_List_Explain_Codes_Output --
+   ---------------------------------------
+
+   procedure Produce_List_Explain_Codes_Output is
+   begin
+      --  List every explain code with its one-line description. The list is
+      --  derived from the Explain_Code_Kind enumeration, so it cannot drift
+      --  from the set of codes the tool knows about.
+
+      for Code in Explain_Code_Kind'Succ (EC_None) .. Explain_Code_Kind'Last
+      loop
+         Ada.Text_IO.Put_Line
+           (To_String (Code) & ": " & Explain_Description (Code));
+      end loop;
+   end Produce_List_Explain_Codes_Output;
 
    ------------------------------------
    -- Produce_List_Categories_Output --
@@ -4532,6 +4559,11 @@ package body Configuration is
 
       if Parse_Result.Explain /= Null_Unbounded_String then
          Produce_Explain_Output (To_String (Parse_Result.Explain));
+         Succeed;
+      end if;
+
+      if Parse_Result.List_Explain_Codes then
+         Produce_List_Explain_Codes_Output;
          Succeed;
       end if;
 

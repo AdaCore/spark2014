@@ -56,7 +56,8 @@ it). If validation passes, go to Phase 2 Fix — Change 1 only.
 ### Phase 2 Fix — Update the markdown file
 
 Write the corrected content to `share/spark/explain_codes/E00NN.md`.
-No changes to `vc_kinds.ads`, `vc_kinds.adb`, or `README.md` are needed.
+No changes to `vc_kinds.ads` or `vc_kinds.adb` are needed (unless the one-line
+description in `Explain_Description` is also wrong).
 
 After writing, show the user the `git diff` to review before committing.
 
@@ -154,8 +155,7 @@ from Step 4. The file should contain:
 
 Do not add a "See also `E00NN`" block cross-referencing sibling explain codes.
 Existing explain codes do not use them, and they are easy to make inconsistent
-across a batch (some codes listed, some not). The README index already lets
-readers find related codes.
+across a batch (some codes listed, some not).
 
 ### Step 6a — Validate examples
 
@@ -221,16 +221,20 @@ when Vio_Xxx => EC_Xxx,
 Insert it before the `when others => EC_None` arm, aligned with existing
 entries.
 
-### Change 4 — Update the README index
+### Change 4 — Add the one-line description (`src/common/vc_kinds.adb`)
 
-Append to `share/spark/explain_codes/README.md`:
+In the `Explain_Description (Code : Explain_Code_Kind)` case expression, add an
+arm for `EC_Xxx`, aligned with existing entries:
 
+```ada
+when EC_Xxx => "<short description matching the violation message>",
 ```
-- E00NN: `<short description matching the violation message>`
-```
 
-The short description should be a condensed version of the violation message,
-suitable as a one-line index entry.
+The short description should be a condensed version of the violation message.
+This arm is required: the `Explain_Description` case expression is exhaustive,
+so the code does not compile without it. The descriptions are surfaced by the
+internal `gnatprove --debug-list-explain-codes` switch (used by the
+`1367__explain_codes` test).
 
 ---
 

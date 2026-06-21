@@ -1619,6 +1619,12 @@ package VC_Kinds is
    --  Return the error code to include in the message, in the same format used
    --  by Errout procedures.
 
+   function Explain_Description (Code : Explain_Code_Kind) return String
+   with Pre => Code /= EC_None;
+   --  Return a one-line description for the explain code, suitable as an entry
+   --  of the explain codes index. This is the single source of truth from
+   --  which that index is generated.
+
    function CWE_ID (Kind : VC_Kind) return String;
    function CWE_ID (Kind : Valid_Flow_Tag_Kind) return String;
    --  Return the CWE number for a given kind as a string; return the empty

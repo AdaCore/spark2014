@@ -199,6 +199,15 @@ the rule and the explained message. Every SARIF result or rule that carries
 ``properties.gnatprove.explainCommand`` with the corresponding
 ``gnatprove --explain=E00NN`` command.
 
+Explain codes are defined by the ``Explain_Code_Kind`` enumeration in
+``src/common/vc_kinds.ads``, each with a one-line description in
+``Explain_Description`` and a long-form explanation in
+``share/spark/explain_codes/E00NN.md``. The internal switch
+``gnatprove --debug-list-explain-codes`` lists all codes with their
+descriptions, derived from the enumeration. The ``1367__explain_codes`` test
+uses it to run ``gnatprove --explain`` for every code and ensure each one has a
+working explanation file.
+
 ********
 gnat2why
 ********

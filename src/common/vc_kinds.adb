@@ -3301,6 +3301,106 @@ package body VC_Kinds is
       return 'E' & Result;
    end To_String;
 
+   -------------------------
+   -- Explain_Description --
+   -------------------------
+
+   function Explain_Description (Code : Explain_Code_Kind) return String
+   is (case Code is
+         when EC_None                                 => raise Program_Error,
+         when EC_Volatile_At_Library_Level            =>
+           "effectively volatile <object/type> must be declared at library "
+           & "level",
+         when EC_Address_In_Expression                =>
+           "attribute ""Address"" outside an attribute definition clause",
+         when EC_Type_Early_Call_Region               =>
+           "first freezing point of type <type> must appear within early call "
+           & "region of primitive body",
+         when EC_Volatile_Non_Interfering_Context     =>
+           "volatile object cannot appear in this context",
+         when EC_Function_Output_Global               =>
+           "function <function> with output global <variable>",
+         when EC_Function_Volatile_Input_Global       =>
+           "nonvolatile function <function> with volatile input global "
+           & "<variable>",
+         when EC_Variable_Input_In_Expression         =>
+           "<expression> cannot depend on variable input",
+         when EC_Write_In_Elaboration                 =>
+           "cannot write <variable> during elaboration of <package>",
+         when EC_Required_Part_Of                     =>
+           "indicator Part_Of is required in this context",
+         when EC_Ownership_Moved_Object               =>
+           "dereference from <object> is not <readable/writable>; object was "
+           & "moved",
+         when EC_SPARK_Mode_On_Not_Library_Level      =>
+           "incorrect placement of aspect/pragma ""SPARK_Mode"" with value "
+           & """On""",
+         when EC_Address_Spec_Imprecise_Warn          =>
+           "address specification on <variable> is imprecisely supported",
+         when EC_Always_Terminates_Warn               =>
+           "procedure not terminating normally nor abnormally",
+         when EC_Output_In_Function_Global_Or_Depends =>
+           "<global mode/output item> is not applicable to function",
+         when EC_Out_Parameter_In_Function            =>
+           "function cannot have parameter of mode ""out"" or ""in out"" in "
+           & "SPARK",
+         when EC_Always_Terminates_On_Function        =>
+           "aspect ""Always_Terminates"" cannot apply to function",
+         when EC_Exceptional_Cases_On_Function        =>
+           "aspect ""Exceptional_Cases"" cannot apply to function",
+         when EC_Call_To_Function_With_Side_Effects   =>
+           "call to a procedural function outside of assignment is not "
+           & "allowed in SPARK",
+         when EC_Uninitialized_Allocator              =>
+           "uninitialized allocator without default initialization is not "
+           & "allowed in SPARK",
+         when EC_Incorrect_Source_Of_Borrow           =>
+           "borrow or observe of an expression which is not part of a "
+           & "stand-alone object or parameter",
+         when EC_Controlled_Types                     => "controlled types",
+         when EC_Dispatch_Plain_Pre                   =>
+           "plain precondition on dispatching subprogram",
+         when EC_Backward_Goto                        =>
+           "backward goto statement",
+         when EC_Ghost_Volatile                       =>
+           "volatile ghost object",
+         when EC_Handler_Choice_Parameter             =>
+           "choice parameter in handler",
+         when EC_Overlay_Mutable_Constant             =>
+           "mutable object and constant object overlaying each other",
+         when EC_UC_From_Access                       =>
+           "unchecked conversion instance from a type with access "
+           & "subcomponents",
+         when EC_Iterable_Controlling_Result          =>
+           "function associated to aspect Iterable with controlling result",
+         when EC_Iterable_Full_View                   =>
+           "Iterable aspect declared on the full view of a private type",
+         when EC_Iterable_Globals                     =>
+           "function associated to aspect Iterable with dependency on globals",
+         when EC_Iterable_Side_Effects                =>
+           "function with side effects associated with aspect Iterable",
+         when EC_Iterable_Volatile                    =>
+           "volatile function associated with aspect Iterable",
+         when EC_Intrinsic_Operator                   =>
+           "Intrinsic convention on arithmetic operator with unexpected "
+           & "profile",
+         when EC_Access_Sub_With_Globals              =>
+           "access to subprogram with global effects",
+         when EC_Access_Subprogram_Within_Protected   =>
+           "access to subprogram declared within a protected object",
+         when EC_Access_To_Dispatch_Op                =>
+           "access to dispatching operation",
+         when EC_Access_Function_With_Side_Effects    =>
+           "access to function with side effects",
+         when EC_Access_Volatile_Function             =>
+           "access to volatile function",
+         when EC_Modifies_Not_Output                  =>
+           "clause of Modifies contract mentioning an object that is not an "
+           & "output of the subprogram",
+         when EC_Modifies_Volatile                    =>
+           "effectively volatile output of the subprogram not mentioned "
+           & "entirely in Modifies contract");
+
    ---------------------------
    -- Unsupported_Kind_Name --
    ---------------------------
