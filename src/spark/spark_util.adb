@@ -1950,6 +1950,7 @@ package body SPARK_Util is
       function Loc_To_Assume_Sloc (Loc : Source_Ptr) return My_Sloc
       with Pre => Loc /= No_Location;
       function Manifest_Kind return String;
+      function Manifest_Profile return String;
 
       ------------------------
       -- Loc_To_Assume_Sloc --
@@ -1997,12 +1998,67 @@ package body SPARK_Util is
                return "";
          end case;
       end Manifest_Kind;
+
+      ----------------------
+      -- Manifest_Profile --
+      ----------------------
+
+      function Manifest_Profile return String is
+      begin
+         if Ekind (E) not in E_Function | E_Procedure then
+            return "";
+         end if;
+
+         declare
+            Formal : Entity_Id := First_Formal (E);
+            Result : Unbounded_String := To_Unbounded_String ("(");
+            First  : Boolean := True;
+         begin
+            while Present (Formal) loop
+               if First then
+                  First := False;
+               else
+                  Append (Result, "; ");
+               end if;
+
+               Append (Result, "_ : ");
+
+               case Ekind (Formal) is
+                  when E_In_Parameter     =>
+                     null;
+
+                  when E_Out_Parameter    =>
+                     Append (Result, "out ");
+
+                  when E_In_Out_Parameter =>
+                     Append (Result, "in out ");
+
+                  when others             =>
+                     raise Program_Error;
+               end case;
+
+               Append (Result, Full_Source_Name (Retysp (Etype (Formal))));
+
+               Next_Formal (Formal);
+            end loop;
+
+            Append (Result, ")");
+
+            if Ekind (E) = E_Function then
+               Append
+                 (Result, " return " & Full_Source_Name (Retysp (Etype (E))));
+            end if;
+
+            return To_String (Result);
+         end;
+      end Manifest_Profile;
    begin
       return
         Mk_Subp
-          (Name          => Full_Source_Name (E),
-           Sloc          => Loc_To_Assume_Sloc (Sloc (E)),
-           Manifest_Kind => Manifest_Kind);
+          (Name             => Full_Source_Name (E),
+           Sloc             => Loc_To_Assume_Sloc (Sloc (E)),
+           Manifest_Kind    => Manifest_Kind,
+           Manifest_Profile => Manifest_Profile);
    end Entity_To_Subp_Assumption;
 
    ----------------------------

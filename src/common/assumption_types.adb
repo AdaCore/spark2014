@@ -106,11 +106,15 @@ package body Assumption_Types is
    begin
       return
         Mk_Subp
-          (Name          => Get (Get (V, "name")),
-           Sloc          => From_JSON (Get (Get (V, "sloc"))),
-           Manifest_Kind =>
+          (Name             => Get (Get (V, "name")),
+           Sloc             => From_JSON (Get (Get (V, "sloc"))),
+           Manifest_Kind    =>
              (if Has_Field (V, "manifest_kind")
               then Get (Get (V, "manifest_kind"))
+              else ""),
+           Manifest_Profile =>
+             (if Has_Field (V, "manifest_profile")
+              then Get (Get (V, "manifest_profile"))
               else ""));
    end From_JSON_Internal;
 
@@ -150,7 +154,8 @@ package body Assumption_Types is
       use Ada.Containers;
    begin
       return
-        3 * Hash (S.Name) + 9 * Hash (S.Sloc) + 11 * Hash (S.Manifest_Kind);
+        3 * Hash (S.Name) + 9 * Hash (S.Sloc) + 11 * Hash (S.Manifest_Kind)
+        + 13 * Hash (S.Manifest_Profile);
    end Hash;
 
    function Hash (S : Base_Sloc) return Ada.Containers.Hash_Type is
@@ -201,15 +206,18 @@ package body Assumption_Types is
    -------------
 
    function Mk_Subp
-     (Name : String; Sloc : My_Sloc; Manifest_Kind : String := "")
-      return Subp_Type is
+     (Name             : String;
+      Sloc             : My_Sloc;
+      Manifest_Kind    : String := "";
+      Manifest_Profile : String := "") return Subp_Type is
    begin
       return
         Unique_Subps.Hash_Cons
           (Subp_Type_Rec'
-             (Name          => Find (Symbol_Table, Name),
-              Sloc          => Sloc,
-              Manifest_Kind => Find (Symbol_Table, Manifest_Kind)));
+             (Name             => Find (Symbol_Table, Name),
+              Sloc             => Sloc,
+              Manifest_Kind    => Find (Symbol_Table, Manifest_Kind),
+              Manifest_Profile => Find (Symbol_Table, Manifest_Profile)));
    end Mk_Subp;
 
    -------------
@@ -294,10 +302,15 @@ package body Assumption_Types is
       JS_Sloc : JSON_Array := Empty_Array;
       Kind    : constant GNATCOLL.Utils.Cst_String_Access :=
         Get (S.Manifest_Kind);
+      Profile : constant GNATCOLL.Utils.Cst_String_Access :=
+        Get (S.Manifest_Profile);
    begin
       Set_Field (Obj, "name", Subp_Name (S));
       if Kind.all /= "" then
          Set_Field (Obj, "manifest_kind", Kind.all);
+      end if;
+      if Profile.all /= "" then
+         Set_Field (Obj, "manifest_profile", Profile.all);
       end if;
       for Base_Sloc of S.Sloc loop
          declare
@@ -393,7 +406,11 @@ package body Assumption_Types is
        then True
        elsif Right.Sloc < Left.Sloc
        then False
-       else Left.Manifest_Kind < Right.Manifest_Kind);
+       elsif Left.Manifest_Kind < Right.Manifest_Kind
+       then True
+       elsif Right.Manifest_Kind < Left.Manifest_Kind
+       then False
+       else Left.Manifest_Profile < Right.Manifest_Profile);
 
    function "<" (Left, Right : Symbol) return Boolean
    is (Get (Left, Empty_If_Null => True).all
