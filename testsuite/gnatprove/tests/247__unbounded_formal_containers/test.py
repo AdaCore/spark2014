@@ -7,5 +7,5 @@ if __name__ == "__main__":
     prove_all(sparklib=True)
 
     create_sparklib()
-    gprbuild(["-q", "-P", "test.gpr"])
+    gprbuild(["-q", "-P", "test.gpr"], sparklib=True)
     call("./main")

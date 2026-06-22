@@ -11,6 +11,6 @@ def replay():
 if __name__ == "__main__":
     prove_all(replay=True, sparklib=True, sparklib_bodymode=True)
 
-    gprbuild(["-q", "-P", "test.gpr"])
+    gprbuild(["-q", "-P", "test.gpr"], sparklib_bodymode=True)
     process = Run(["./obj/test"])
     log_sorted(None, str.splitlines(process.out))

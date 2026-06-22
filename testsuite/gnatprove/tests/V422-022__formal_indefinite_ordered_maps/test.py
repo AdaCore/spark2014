@@ -7,5 +7,5 @@ from test_support import prove_all, gprbuild
 if __name__ == "__main__":
     prove_all(counterexample=False, steps=35000, sparklib=True, sparklib_bodymode=True)
 
-    gprbuild(["-q", "-P", "test.gpr"])
+    gprbuild(["-q", "-P", "test.gpr"], sparklib_bodymode=True)
     call(["./obj/test"])
