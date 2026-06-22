@@ -58,6 +58,22 @@
             {
               "msg_id": {
                 "tool_kind": [ "Inspector", "Condition_predetermined" ],
+                "key": "d38d3b6fff8d47c19d3ca84c252ab372",
+                "key_seq": 1
+              },
+              "data": [
+                {
+                  "date": "2026-06-08 17:07:40+09:00",
+                  "status": "False Positive",
+                  "author": "Johannes Kanig",
+                  "text": "",
+                  "from_source": false
+                }
+              ]
+            },
+            {
+              "msg_id": {
+                "tool_kind": [ "Inspector", "Condition_predetermined" ],
                 "key": "e0a0d25caa67970120d58de0bd299b72",
                 "key_seq": 1
               },
@@ -66,6 +82,29 @@
                   "date": "2024-12-11 17:19:55",
                   "status": "False Positive",
                   "author": "kanig",
+                  "text": "",
+                  "from_source": false
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "file_info": { "basename": "flow_debug.adb", "path": "./" },
+        "subps": {
+          "flow_debug.add_to_temp_string": [
+            {
+              "msg_id": {
+                "tool_kind": [ "Inspector", "Condition_predetermined" ],
+                "key": "d9e26250f0972f68edde61552d2d73d6",
+                "key_seq": 1
+              },
+              "data": [
+                {
+                  "date": "2026-06-08 17:07:48+09:00",
+                  "status": "False Positive",
+                  "author": "Johannes Kanig",
                   "text": "",
                   "from_source": false
                 }
@@ -393,6 +432,42 @@
                 }
               ]
             }
+          ],
+          "gnat2why.borrow_checker.merge_transfer_of_control_env": [
+            {
+              "msg_id": {
+                "tool_kind": [ "Infer", "Unassigned_parameter" ],
+                "key": "b105b9c8108bdc035610a7aec7a51c46",
+                "key_seq": 1
+              },
+              "data": [
+                {
+                  "date": "2026-06-08 17:07:06+09:00",
+                  "status": "False Positive",
+                  "author": "Johannes Kanig",
+                  "text": "",
+                  "from_source": false
+                }
+              ]
+            }
+          ],
+          "gnat2why.borrow_checker.unique_entity_in_spark": [
+            {
+              "msg_id": {
+                "tool_kind": [ "Inspector", "Condition_predetermined" ],
+                "key": "d97369126b1606354931a18043513b06",
+                "key_seq": 1
+              },
+              "data": [
+                {
+                  "date": "2026-06-08 17:07:15+09:00",
+                  "status": "False Positive",
+                  "author": "Johannes Kanig",
+                  "text": "",
+                  "from_source": false
+                }
+              ]
+            }
           ]
         }
       },
@@ -428,6 +503,24 @@
           "path": "./"
         },
         "subps": {
+          "gnat2why.expr.aggregates.designated_data_access": [
+            {
+              "msg_id": {
+                "tool_kind": [ "Inspector", "Subp_always_fails" ],
+                "key": "d41d8cd98f00b204e9800998ecf8427e",
+                "key_seq": 1
+              },
+              "data": [
+                {
+                  "date": "2026-06-08 17:07:23+09:00",
+                  "status": "False Positive",
+                  "author": "Johannes Kanig",
+                  "text": "",
+                  "from_source": false
+                }
+              ]
+            }
+          ],
           "gnat2why.expr.aggregates.generate_vcs_for_aggregate_annotation": [
             {
               "msg_id": {
@@ -589,6 +682,24 @@
           "path": "./"
         },
         "subps": {
+          "spark_definition.annotate.check_iterable_annotation.check_model_entity": [
+            {
+              "msg_id": {
+                "tool_kind": [ "Infer", "Validity_check" ],
+                "key": "d0e51e054e2d60b3d67b4b3cecb7b49c",
+                "key_seq": 1
+              },
+              "data": [
+                {
+                  "date": "2026-06-08 17:07:27+09:00",
+                  "status": "False Positive",
+                  "author": "Johannes Kanig",
+                  "text": "",
+                  "from_source": false
+                }
+              ]
+            }
+          ],
           "spark_definition.annotate.check_pragma_annotate_gnatprove": [
             {
               "msg_id": {
@@ -633,6 +744,29 @@
                   "date": "2024-12-11 17:20:59",
                   "status": "False Positive",
                   "author": "kanig",
+                  "text": "",
+                  "from_source": false
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "file_info": { "basename": "vc_kinds.adb", "path": "./" },
+        "subps": {
+          "vc_kinds.violation_message": [
+            {
+              "msg_id": {
+                "tool_kind": [ "Inspector", "Dead_code" ],
+                "key": "142b760a66632761ecc92d4726c48c69",
+                "key_seq": 1
+              },
+              "data": [
+                {
+                  "date": "2026-06-08 17:06:53+09:00",
+                  "status": "False Positive",
+                  "author": "Johannes Kanig",
                   "text": "",
                   "from_source": false
                 }

@@ -31,6 +31,7 @@ with Einfo.Entities;        use Einfo.Entities;
 with Einfo.Utils;           use Einfo.Utils;
 with Flow_Dependency_Maps;  use Flow_Dependency_Maps;
 with Flow_Types;            use Flow_Types;
+with GNATCOLL.JSON;
 with Types;                 use Types;
 
 package Flow is
@@ -362,6 +363,11 @@ package Flow is
    procedure Flow_Analyse_CUnit
      (GNAT_Root : Node_Id; Found_Error : out Boolean);
    --  Flow analyses the current compilation unit
+
+   function Get_Generated_Globals_JSON return GNATCOLL.JSON.JSON_Value;
+   --  Return the value to store in the .spark "generated_globals" field:
+   --  a map keyed by entity ids from the Entity_Table, where each value is a
+   --  contract object containing "Global" and "Refined_Global" entries.
 
    procedure Generate_Globals (GNAT_Root : Node_Id);
    --  Generate flow globals for the current compilation unit

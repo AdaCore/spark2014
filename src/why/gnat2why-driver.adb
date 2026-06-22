@@ -395,6 +395,9 @@ package body Gnat2Why.Driver is
 
       Set_Field (Full, "timings", Timing_History (Timing));
       Set_Field (Full, "entities", Entity_Table);
+      if Gnat2Why_Args.Flow_Show_GG then
+         Set_Field (Full, "generated_globals", Get_Generated_Globals_JSON);
+      end if;
 
       Ada.Text_IO.Create (FD, Ada.Text_IO.Out_File, File_Name);
       Ada.Text_IO.Put (FD, GNATCOLL.JSON.Write (Full, Compact => False));

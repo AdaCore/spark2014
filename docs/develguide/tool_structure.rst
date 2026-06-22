@@ -295,7 +295,8 @@ The data flow is as follows:
  - ``Create_Error_JSON_File`` writes these frontend diagnostics to the unit's
    ``.spark_error`` file.
  - During analysis, phase 2 writes the unit's ``.spark`` file with flow,
-   proof, and warning/error results.
+   proof, and warning/error results, plus generated globals when
+   ``--flow-show-gg`` is enabled.
  - After all build actions complete, ``Spark_Report.Generate_Report`` loads the
    parsed ``.spark`` and ``.spark_error`` inputs and calls
    ``Generate_SARIF_Report`` to write ``gnatprove.sarif``.
@@ -318,7 +319,15 @@ SARIF as follows:
  - The ``suppressed`` field becomes a SARIF suppression.
  - ``relatedLocations`` entries are preserved as SARIF related locations.
  - The JSON ``entity`` field is turned into a SARIF logical location naming
-   the enclosing subprogram.
+   the enclosing subprogram. ``name`` contains the leaf subprogram name, while
+   ``fullyQualifiedName`` carries the full Ada name.
+ - When ``--flow-show-gg`` is set, generated global contracts are written into
+   the unit's ``.spark`` file under the ``generated_globals`` field and exposed
+   from there as top-level ``run.logicalLocations`` entries. Each such entry
+   carries the enclosing subprogram name and a custom ``gnatprove`` property
+   whose ``inferredContracts`` child contains ``global`` and
+   ``refinedGlobal`` objects, with mode-specific arrays of source-level names
+   serialized as strings.
  - GNATprove severities are translated to SARIF ``kind`` and ``level``.
  - The SARIF rule table is synthesized from GNATprove's flow, proof, warning,
    annotation, unsupported, violation, and fallback rule kinds, plus a
