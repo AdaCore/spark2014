@@ -1,0 +1,6 @@
+test.adb:8:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
+test.adb:14:18: info: range check proved (CVC5: 4 VC)
+test.adb:16:17: info: overflow check proved (CVC5: 4 VC)
+test.adb:17:33: info: loop invariant initialization proved (CVC5: 1 VC)
+test.adb:17:33: info: loop invariant preservation proved (CVC5: 1 VC)
+test.adb:18:25: info: assertion proved (CVC5: 2 VC)
