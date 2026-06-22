@@ -11,17 +11,6 @@ package body Allocator.Pools
        Memory_64 => (Wrapper_64.The_Memory))
 is
 
-   function Num_Free_4 return Big_Natural
-   is (Wrapper_4.Num_Free);
-   function Num_Free_8 return Big_Natural
-   is (Wrapper_8.Num_Free);
-   function Num_Free_16 return Big_Natural
-   is (Wrapper_16.Num_Free);
-   function Num_Free_32 return Big_Natural
-   is (Wrapper_32.Num_Free);
-   function Num_Free_64 return Big_Natural
-   is (Wrapper_64.Num_Free);
-
    -----------
    -- Codec --
    -----------

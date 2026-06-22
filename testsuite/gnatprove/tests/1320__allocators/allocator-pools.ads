@@ -259,4 +259,15 @@ private
         Storage_64,
         Integer_16)with Part_Of => Memory_64;
 
+   function Num_Free_4 return Big_Natural
+   is (Wrapper_4.Num_Free);
+   function Num_Free_8 return Big_Natural
+   is (Wrapper_8.Num_Free);
+   function Num_Free_16 return Big_Natural
+   is (Wrapper_16.Num_Free);
+   function Num_Free_32 return Big_Natural
+   is (Wrapper_32.Num_Free);
+   function Num_Free_64 return Big_Natural
+   is (Wrapper_64.Num_Free);
+
 end Allocator.Pools;
