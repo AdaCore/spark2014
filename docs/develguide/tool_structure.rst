@@ -205,6 +205,23 @@ default options. Later pipeline stages consume already-normalized policy data;
 ``gnatwhy3`` receives only the concrete prover options selected by
 ``gnat2why``.
 
+The ``--generate-manifest-dir=DIR`` switch is a separate explicit write mode. It
+does not try to discover stale ``.spark`` files by scanning the object tree.
+Instead, after a successful analysis run, ``gnatprove`` passes the exact list
+of ``.spark`` files produced or reused by the action graph to the manifest
+generator. The generator writes one TOML file per existing ``.spark`` file in
+``DIR``, using the same stem convention as ``--proof-manifest-dir``. Generation is
+based on the proof attempts and manifest identity metadata stored in each
+``.spark`` file, and applies documented compactness heuristics such as a
+per-unit default prover, rounded step buckets, and explicit rules only when
+the unit default is not precise enough. Generated rule paths use Ada-style
+source casing even though the TOML file names follow the ``.spark`` file stem.
+The unit's own entity (its package or top-level subprogram) shares the bare unit
+path used by the default rule; when it needs its own options it is emitted as a
+non-hierarchical entry carrying its kind, so it overrides the default for that
+entity alone without competing with the default over the entities the default
+covers hierarchically.
+
 Copying ALI files and phase-1 diagnostics
 =========================================
 

@@ -44,6 +44,7 @@ package body SPARK_JSON_Entities is
          JS_Sloc : constant JSON_Array := Get (Get (Value, "sloc"));
       begin
          Item.Key := To_Unbounded_String (String (Key));
+         Item.Key_Index := Positive'Value (String (Key));
          Item.Name := To_Unbounded_String (String'(Get (Value, "name")));
 
          if Has_Field (Value, "manifest_kind") then

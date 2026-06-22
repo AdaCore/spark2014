@@ -94,6 +94,7 @@ class YamlGenerator(SessionGenerator):
         if "replay" not in yaml or not yaml["replay"]:
             print("replay not set in test.yaml, session generation skipped")
             exit(1)
+        self.replay = "session" if yaml["replay"] is True else yaml["replay"]
         self.args["procs"] = cmdline_args.procs
 
     @property
@@ -101,6 +102,10 @@ class YamlGenerator(SessionGenerator):
         return self._contains_manual_proof
 
     def recreate_session(self):
+        if self.replay == "manifest":
+            opt = list(self.args.get("opt", []))
+            opt.append("--generate-manifest-dir=%s" % test_support.replay_manifest_dir)
+            self.args["opt"] = opt
         test_support.prove_all(**self.args)
 
 
@@ -129,6 +134,9 @@ def delete(fn, isdir=False):
 if replayer.contains_manual_proof is False:
     print("""deleting subdir "proof/sessions" """)
     path = os.path.join(curdir, "proof", "sessions")
+    shutil.rmtree(path, ignore_errors=True)
+    print("""deleting subdir "proof/manifest" """)
+    path = os.path.join(curdir, test_support.replay_manifest_dir)
     shutil.rmtree(path, ignore_errors=True)
 
 print("running gnatprove to rebuild sessions")

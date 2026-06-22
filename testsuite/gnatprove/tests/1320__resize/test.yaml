@@ -1,4 +1,4 @@
-replay: True
+replay: manifest
 session_opt:
   level: 2
 prove_all:

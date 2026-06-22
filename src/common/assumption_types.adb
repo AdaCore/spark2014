@@ -235,15 +235,14 @@ package body Assumption_Types is
 
       for Entity of Entities loop
          declare
-            Index : constant Positive :=
-              Positive'Value (To_String (Entity.Key));
-            Elt   : constant Subp_Type := From_Entity_Info (Entity);
+            Elt : constant Subp_Type := From_Entity_Info (Entity);
          begin
-            if Index > Subp_Vector.Last_Index then
-               Subp_Vector.Set_Length (Ada.Containers.Count_Type (Index));
+            if Entity.Key_Index > Subp_Vector.Last_Index then
+               Subp_Vector.Set_Length
+                 (Ada.Containers.Count_Type (Entity.Key_Index));
             end if;
-            Subp_Vector.Replace_Element (Index, Elt);
-            Subp_Map.Insert (Elt, Index);
+            Subp_Vector.Replace_Element (Entity.Key_Index, Elt);
+            Subp_Map.Insert (Elt, Entity.Key_Index);
          end;
       end loop;
    end Parse_Entity_Table;

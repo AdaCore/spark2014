@@ -1,4 +1,4 @@
-replay: True
+replay: manifest
 session_opt:
   sparklib: True
   level: 2
