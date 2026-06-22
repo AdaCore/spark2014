@@ -33,10 +33,11 @@ package Gnat2Why_Opts.Writing is
    type Gnat2Why_Phase is (Global_Generation, Translation);
 
    function Pass_Extra_Options_To_Gnat2why
-     (Phase     : Gnat2Why_Phase;
-      Obj_Dir   : String;
-      Why3_Dir  : String;
-      Unit_Name : String) return String;
+     (Phase          : Gnat2Why_Phase;
+      Obj_Dir        : String;
+      Why3_Dir       : String;
+      Unit_Name      : String;
+      Proof_Manifest : Manifest_Subprogram_Vectors.Vector) return String;
    --  Create a file with extra options for gnat2why and return its pathname.
    --  Why3_Dir is the directory where gnatwhy3 is intended to run,
    --  and find the why3.conf file.
@@ -44,10 +45,11 @@ package Gnat2Why_Opts.Writing is
    --  The opt file contains flattened settings (no nested file_specific map).
 
    function Opt_File_Name
-     (Phase     : Gnat2Why_Phase;
-      Obj_Dir   : String;
-      Why3_Dir  : String;
-      Unit_Name : String) return String;
+     (Phase          : Gnat2Why_Phase;
+      Obj_Dir        : String;
+      Why3_Dir       : String;
+      Unit_Name      : String;
+      Proof_Manifest : Manifest_Subprogram_Vectors.Vector) return String;
    --  Compute the pathname that Pass_Extra_Options_To_Gnat2why would use for
    --  the same arguments, without creating or writing any file.
    --  The filename is derived by hashing the option values directly, so

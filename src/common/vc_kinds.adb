@@ -1668,42 +1668,54 @@ package body VC_Kinds is
 
    function Explain_Code (Kind : Violation_Kind) return Explain_Code_Kind
    is (case Kind is
-         when Vio_Address_Outside_Address_Clause    =>
+         when Vio_Address_Outside_Address_Clause     =>
            EC_Address_In_Expression,
-         when Vio_Function_Global_Output            =>
+         when Vio_Function_Global_Output             =>
            EC_Function_Output_Global,
-         when Vio_Ownership_Borrow_Of_Non_Markable  =>
+         when Vio_Ownership_Borrow_Of_Non_Markable   =>
            EC_Incorrect_Source_Of_Borrow,
-         when Vio_Ownership_Allocator_Uninitialized =>
+         when Vio_Ownership_Allocator_Uninitialized  =>
            EC_Uninitialized_Allocator,
-         when Vio_Side_Effects_Call_Context         =>
+         when Vio_Side_Effects_Call_Context          =>
            EC_Call_To_Function_With_Side_Effects,
-         when Vio_Volatile_At_Library_Level         =>
+         when Vio_Volatile_At_Library_Level          =>
            EC_Volatile_At_Library_Level,
-         when Vio_Volatile_Global                   =>
+         when Vio_Volatile_Global                    =>
            EC_Function_Volatile_Input_Global,
-         when Vio_Volatile_In_Interfering_Context   =>
+         when Vio_Volatile_In_Interfering_Context    =>
            EC_Volatile_Non_Interfering_Context,
-         when Vio_Function_Out_Param                =>
+         when Vio_Function_Out_Param                 =>
            EC_Out_Parameter_In_Function,
-         when Vio_Controlled_Types                  => EC_Controlled_Types,
-         when Vio_Dispatch_Plain_Pre                => EC_Dispatch_Plain_Pre,
-         when Vio_Backward_Goto                     => EC_Backward_Goto,
-         when Vio_Ghost_Volatile                    => EC_Ghost_Volatile,
-         when Vio_Handler_Choice_Parameter          =>
+         when Vio_Controlled_Types                   => EC_Controlled_Types,
+         when Vio_Dispatch_Plain_Pre                 => EC_Dispatch_Plain_Pre,
+         when Vio_Backward_Goto                      => EC_Backward_Goto,
+         when Vio_Ghost_Volatile                     => EC_Ghost_Volatile,
+         when Vio_Handler_Choice_Parameter           =>
            EC_Handler_Choice_Parameter,
-         when Vio_Intrinsic_Operator                => EC_Intrinsic_Operator,
-         when Vio_Overlay_Mutable_Constant          =>
+         when Vio_Intrinsic_Operator                 => EC_Intrinsic_Operator,
+         when Vio_Overlay_Mutable_Constant           =>
            EC_Overlay_Mutable_Constant,
-         when Vio_UC_From_Access                    => EC_UC_From_Access,
-         when Vio_Iterable_Controlling_Result       =>
+         when Vio_UC_From_Access                     => EC_UC_From_Access,
+         when Vio_Iterable_Controlling_Result        =>
            EC_Iterable_Controlling_Result,
-         when Vio_Iterable_Full_View                => EC_Iterable_Full_View,
-         when Vio_Iterable_Globals                  => EC_Iterable_Globals,
-         when Vio_Iterable_Side_Effects             =>
+         when Vio_Iterable_Full_View                 => EC_Iterable_Full_View,
+         when Vio_Iterable_Globals                   => EC_Iterable_Globals,
+         when Vio_Iterable_Side_Effects              =>
            EC_Iterable_Side_Effects,
-         when Vio_Iterable_Volatile                 => EC_Iterable_Volatile,
-         when others                                => EC_None);
+         when Vio_Iterable_Volatile                  => EC_Iterable_Volatile,
+         when Vio_Access_Sub_With_Globals            =>
+           EC_Access_Sub_With_Globals,
+         when Vio_Access_Subprogram_Within_Protected =>
+           EC_Access_Subprogram_Within_Protected,
+         when Vio_Access_To_Dispatch_Op              =>
+           EC_Access_To_Dispatch_Op,
+         when Vio_Access_Function_With_Side_Effects  =>
+           EC_Access_Function_With_Side_Effects,
+         when Vio_Access_Volatile_Function           =>
+           EC_Access_Volatile_Function,
+         when Vio_Modifies_Not_Output                => EC_Modifies_Not_Output,
+         when Vio_Modifies_Volatile                  => EC_Modifies_Volatile,
+         when others                                 => EC_None);
 
    ---------------
    -- From_JSON --

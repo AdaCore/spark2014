@@ -98,8 +98,8 @@ one more than the current maximum.
 Read the two or three most recently added `.md` files in
 `share/spark/explain_codes/` (sort by modification time or by highest number).
 Note the structure: illegal code example with `-- error` comments, "This error
-is issued on..." opening sentence, explanation of the rule and its rationale,
-fix or workaround with a code example, optional link to the SPARK RM.
+is issued on..." opening sentence, explanation of the rule, fix or workaround
+with a code example, optional link to the SPARK RM.
 
 ### Step 5 — Research the violation
 
@@ -113,11 +113,16 @@ Using the SRM section number from Step 2:
   Append `#<anchor>` using the section title in lowercase with hyphens.
   The user-provided URL for the violation's topic (if any) takes precedence.
 
-- Search the SPARK User's Guide for discussion of this violation:
+- Search the SPARK User's Guide for discussion of this violation. Check
+  the local source first (`docs/ug/en/source/` — grep for keywords from the
+  violation message and the SPARK RM section number), then fall back to the
+  published version at:
   `https://docs.adacore.com/live/wave/spark2014/html/spark2014_ug/en/`
 
 Record what you found in each source, noting any rationale, examples, or
-suggested workarounds.
+suggested workarounds. Pay attention to whether the docs frame a restriction
+as a fundamental design rule or as a current limitation ("not yet supported",
+"currently").
 
 ### Step 6 — Draft the markdown file
 
@@ -127,7 +132,13 @@ from Step 4. The file should contain:
 1. **Illegal code example** — the minimal Ada snippet that triggers this
    violation, with `-- error` on the offending line(s).
 2. **"This error is issued on..."** — what construct triggers it and why the
-   rule exists. Explain the rationale, not just the rule.
+   rule exists. Include rationale **only** when it is explicitly stated in the
+   SPARK RM, the SPARK User's Guide, or the developer guide. Do not invent or
+   infer rationale — plausible-sounding explanations that are not grounded in
+   a document can be wrong (e.g., presenting a current limitation as a
+   fundamental soundness concern). When the docs give no rationale, state the
+   rule and move on. When the docs frame the restriction as a current
+   limitation ("not yet supported", "currently"), say so.
 3. **Fix or workaround** — a concrete Ada example showing the corrected code.
    If no clean fix exists, acknowledge that and describe the best available
    workaround (e.g., encapsulating in `SPARK_Mode => Off`).
