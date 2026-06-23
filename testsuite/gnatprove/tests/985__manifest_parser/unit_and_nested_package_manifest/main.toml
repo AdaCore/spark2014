@@ -1,0 +1,11 @@
+version = 1
+
+[[subprogram]]
+path = "Main"
+kind = "unit"
+steps = 1
+
+[[subprogram]]
+path = "Main.Nested"
+kind = "package"
+steps = 2

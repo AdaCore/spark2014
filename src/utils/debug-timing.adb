@@ -124,7 +124,9 @@ package body Debug.Timing is
    is
 
       Now     : constant Duration := CPU_Clock;
-      Elapsed : constant Duration := Now - Timer.Start;
+      Elapsed : constant Duration := Duration'Max (0.0, Now - Timer.Start);
+      --  CPU clocks can occasionally regress on virtualized platforms such as
+      --  WSL. Ignore such tiny negative deltas for debug-only timing data.
 
    begin
       Register_Timing (Timer, Entity, Msg, Elapsed);

@@ -1,19 +1,23 @@
 test.adb:10:06: error: "X" is not mentioned in the Modifies aspect
-test.adb:10:06: error: effectively volatile output of the subprogram not mentioned entirely in Modifies contract is not allowed in SPARK
+test.adb:10:06: error: effectively volatile output of the subprogram not mentioned entirely in Modifies contract is not allowed in SPARK [E0040]
+test.adb:10:06: error: launch "gnatprove --explain=E0040" for more information
 test.adb:10:06: error: violation of aspect SPARK_Mode at line 2
-test.adb:18:22: error: effectively volatile output of the subprogram not mentioned entirely in Modifies contract is not allowed in SPARK
+test.adb:18:22: error: effectively volatile output of the subprogram not mentioned entirely in Modifies contract is not allowed in SPARK [E0040]
+test.adb:18:22: error: launch "gnatprove --explain=E0040" for more information
 test.adb:18:22: error: violation of aspect SPARK_Mode at line 2
 test.adb:18:22: error: volatile object should be entirely modified
 test.adb:26:22: error: launch "gnatprove --explain=E0004" for more information
 test.adb:26:22: error: violation of aspect SPARK_Mode at line 2
 test.adb:26:22: error: volatile object or volatile function call in interfering context is not allowed in SPARK (SPARK RM 7.1.3(9)) [E0004]
 test.adb:44:06: error: "Prot" is not mentioned in the Modifies aspect
-test.adb:44:06: error: effectively volatile output of the subprogram not mentioned entirely in Modifies contract is not allowed in SPARK
+test.adb:44:06: error: effectively volatile output of the subprogram not mentioned entirely in Modifies contract is not allowed in SPARK [E0040]
+test.adb:44:06: error: launch "gnatprove --explain=E0040" for more information
 test.adb:44:06: error: violation of aspect SPARK_Mode at line 2
 test.adb:52:22: error: launch "gnatprove --explain=E0004" for more information
 test.adb:52:22: error: violation of aspect SPARK_Mode at line 2
 test.adb:52:22: error: volatile object or volatile function call in interfering context is not allowed in SPARK (SPARK RM 7.1.3(9)) [E0004]
 test.adb:70:07: error: "Ext.Y" is not mentioned in the Modifies aspect
-test.adb:70:07: error: effectively volatile output of the subprogram not mentioned entirely in Modifies contract is not allowed in SPARK
+test.adb:70:07: error: effectively volatile output of the subprogram not mentioned entirely in Modifies contract is not allowed in SPARK [E0040]
+test.adb:70:07: error: launch "gnatprove --explain=E0040" for more information
 test.adb:70:07: error: violation of aspect SPARK_Mode at line 2
 gnatprove: error during flow analysis and proof

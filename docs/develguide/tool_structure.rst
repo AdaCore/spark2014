@@ -119,6 +119,19 @@ the reading and writing of that file.
 The switch ``Global_Gen_Mode`` dictates if gnat2why is in global-generation
 mode or in analysis mode.
 
+The ``--proof-manifest-dir`` switch is parsed by ``gnatprove`` as an invocation
+option. It designates a directory containing versioned TOML files named after
+the units they describe, using the same stem convention as ``.spark``
+artifacts. Each file is checked before analysis actions are launched, and the
+subprogram-level proof policies relevant to each unit are serialized into that
+unit's ``-gnates`` JSON options file for analysis-mode ``gnat2why``
+invocations. This keeps manifest parsing and user-facing diagnostics in
+``gnatprove``. Before serialization, entries are sorted by their matching
+identity so that directory traversal order does not affect the options seen by
+later pipeline stages. Later pipeline stages consume already-normalized policy
+data; ``gnatwhy3`` receives only the concrete prover options selected by
+``gnat2why``.
+
 Copying ALI files and phase-1 diagnostics
 =========================================
 

@@ -1,0 +1,2 @@
+Try "gnatprove --help" for more information.
+error: invalid proof manifest duplicate_unit_manifest/main.toml: file corresponds to the same unit "main" as duplicate_unit_manifest/Main.toml

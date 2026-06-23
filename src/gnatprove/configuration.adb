@@ -59,6 +59,8 @@ with Platform;     use Platform;
 with Proof_Options;
 with SPARK2014VSN; use SPARK2014VSN;
 with System.Multiprocessors;
+with TOML;
+with TOML.File_IO;
 
 package body Configuration is
 
@@ -71,11 +73,21 @@ package body Configuration is
    Usage_Message : constant String := "-Pproj [switches] [-cargs switches]";
    --  Used to print part of the help message for gnatprove
 
+   package Manifest_Maps is new
+     Ada.Containers.Indefinite_Hashed_Maps
+       (Key_Type        => String,
+        Element_Type    => Manifest_Subprogram_Vectors.Vector,
+        Hash            => Ada.Strings.Hash,
+        Equivalent_Keys => "=",
+        "="             => Manifest_Subprogram_Vectors."=");
+
    --  Private global state to replace public state from CL_Switches
    Debug_Save_VCs      : Boolean := False;
    Debug_Prover_Errors : Boolean := False;
    File_List           : String_Lists.List;
    Replay              : Boolean := False;
+   Proof_Manifest_Path : GNAT.Strings.String_Access;
+   Proof_Manifest_Maps : Manifest_Maps.Map;
    Why3_Conf           : GNAT.Strings.String_Access;
    Why3_Debug          : GNAT.Strings.String_Access;
    Why3_Logging        : Boolean := False;
@@ -135,6 +147,17 @@ package body Configuration is
    --    that project is returned.
    --  - If there is exactly one, it returns the name of this project file.
    --  - If there is more than one, it aborts with an error.
+
+   procedure Load_Proof_Manifest;
+   --  Parse the proof manifest directory designated by --proof-manifest-dir,
+   --  if any.
+
+   function Manifest_Unit_Name (File : String) return String;
+   --  Unit name represented by File when used as a manifest or source file
+
+   function Proof_Manifest_For_Unit
+     (Unit_Name : String) return Manifest_Subprogram_Vectors.Vector;
+   --  Return the proof-manifest entries relevant to Unit_Name
 
    procedure Prepare_Prover_Lib (Obj_Dir : String);
    --  Deal with the why3 libraries manual provers might need.
@@ -262,6 +285,7 @@ package body Configuration is
       Sw_Z3_Counterexample,
       Sw_Gnattest_Values,
       Sw_Debug_Exec_RAC,
+      Sw_Proof_Manifest,
 
       Sw_Level,
       Sw_Memlimit,
@@ -285,7 +309,7 @@ package body Configuration is
       Sw_Warn_Error);
 
    subtype Invocation_Switch_Id is
-     Switch_Id range Sw_Assumptions .. Sw_Debug_Exec_RAC;
+     Switch_Id range Sw_Assumptions .. Sw_Proof_Manifest;
    subtype File_Specific_Switch_Id is
      Switch_Id range Sw_Level .. Sw_Warn_Error;
 
@@ -544,6 +568,11 @@ package body Configuration is
         Make_Switch_Metadata
           (Long       => new String'("--debug-exec-rac"),
            Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_Proof_Manifest        =>
+        Make_Switch_Metadata
+          (Long       => new String'("--proof-manifest-dir"),
+           Value_Kind => String_Value,
            Layer      => Invocation_Layer),
       Sw_Level                 =>
         Make_Switch_Metadata
@@ -827,6 +856,24 @@ package body Configuration is
    begin
       return Unit.Main_Part.Source.String_Value;
    end File_Specific_Key;
+
+   ------------------------
+   -- Manifest_Unit_Name --
+   ------------------------
+
+   function Manifest_Unit_Name (File : String) return String is
+      Name   : constant String :=
+        Ada.Characters.Handling.To_Lower (Ada.Directories.Base_Name (File));
+      Result : String := Name;
+   begin
+      for C of Result loop
+         if C = '-' then
+            C := '.';
+         end if;
+      end loop;
+
+      return Result;
+   end Manifest_Unit_Name;
 
    ----------------------------
    -- Check_Duplicate_Bodies --
@@ -1236,6 +1283,8 @@ package body Configuration is
       Move_String
         (Parsed.Values (Sw_Gnattest_Values).String_Val,
          CL_Switches.Gnattest_Values);
+      Move_String
+        (Parsed.Values (Sw_Proof_Manifest).String_Val, Proof_Manifest_Path);
 
       for WK in Misc_Warning_Kind loop
          Configuration.Warning_Status (WK) :=
@@ -1344,13 +1393,14 @@ package body Configuration is
       Obj_Dir  : String;
       Why3_Dir : String) return String
    is
-      Unit_Name : constant String := File_Specific_Key (Unit);
-      Opt_File  : constant String :=
+      Opt_File : constant String :=
         Gnat2Why_Opts.Writing.Pass_Extra_Options_To_Gnat2why
-          (Phase     => Phase,
-           Obj_Dir   => Obj_Dir,
-           Why3_Dir  => Why3_Dir,
-           Unit_Name => Unit_Name);
+          (Phase          => Phase,
+           Obj_Dir        => Obj_Dir,
+           Why3_Dir       => Why3_Dir,
+           Unit_Name      => File_Specific_Key (Unit),
+           Proof_Manifest =>
+             Proof_Manifest_For_Unit (File_Specific_Key (Unit)));
    begin
       Opt_File_Set.Include (Opt_File);
       return Opt_File;
@@ -1372,10 +1422,11 @@ package body Configuration is
    begin
       return
         Gnat2Why_Opts.Writing.Opt_File_Name
-          (Phase     => Phase,
-           Obj_Dir   => Obj_Dir,
-           Why3_Dir  => Why3_Dir,
-           Unit_Name => Unit_Name);
+          (Phase          => Phase,
+           Obj_Dir        => Obj_Dir,
+           Why3_Dir       => Why3_Dir,
+           Unit_Name      => Unit_Name,
+           Proof_Manifest => Proof_Manifest_For_Unit (Unit_Name));
    end Extra_Args_File_Name_For_Unit;
 
    -----------------
@@ -1589,6 +1640,638 @@ package body Configuration is
       end case;
    end Initial_Switch_Value;
 
+   -------------------------
+   -- Load_Proof_Manifest --
+   -------------------------
+
+   procedure Load_Proof_Manifest is
+      use type TOML.Any_Integer;
+      use type TOML.Any_Value_Kind;
+      use type Ada.Directories.File_Kind;
+
+      Manifest_Path : constant String := Proof_Manifest_Path.all;
+      Current_File  : Unbounded_String;
+      All_Policies  : Manifest_Subprogram_Vectors.Vector;
+      --  All policies loaded so far, across all manifest files. Only used to
+      --  detect duplicate entries.
+
+      package Unit_File_Maps is new
+        Ada.Containers.Indefinite_Hashed_Maps
+          (Key_Type        => String,
+           Element_Type    => String,
+           Hash            => Ada.Strings.Hash,
+           Equivalent_Keys => "=");
+
+      Unit_Files : Unit_File_Maps.Map;
+      --  Maps each unit name to the manifest file it was derived from. Used
+      --  to detect distinct manifest files that correspond to the same unit,
+      --  for example "main.toml" and "Main.toml" on a case-sensitive
+      --  filesystem.
+
+      function Kind_Image (Kind : TOML.Any_Value_Kind) return String;
+      procedure Manifest_Error (Value : TOML.TOML_Value; Msg : String)
+      with No_Return;
+      procedure Check_Allowed_Keys
+        (Table : TOML.TOML_Value; Allowed : String_Lists.List);
+      --  Check that only the allowed fields are present in the subprogram
+      --  entries. Raise an error using Manifest_Error function if unknown
+      --  keys are found.
+
+      procedure Check_Version (Table : TOML.TOML_Value);
+      --  Raise an error if the file specifies no version or an unknown version
+
+      function Get_Required_String
+        (Table : TOML.TOML_Value; Key : String) return Unbounded_String;
+      --  Helper function to access a value for a key that must be present in
+      --  the file. Raise an error if absent, or ill-typed.
+
+      function Get_Optional_String
+        (Table : TOML.TOML_Value; Key : String) return Unbounded_String;
+      --  Same as Get_Required_String, but returns empty string if the key is
+      --  missing. Still raises an error in case of type mismatch.
+
+      function Get_Optional_Natural
+        (Table : TOML.TOML_Value; Key : String; Default : Integer)
+         return Integer;
+      --  Similar to Get_Optional_String, but for Integer
+
+      procedure Read_Optional_Provers
+        (Table : TOML.TOML_Value; Policy : in out Manifest_Subprogram);
+      --  Read the provers entry if present
+
+      procedure Check_Unit_Prefix
+        (Unit_Name : String; Value : TOML.TOML_Value; Path : String);
+      --  Check that each entry is for the unit whose file it is in
+
+      procedure Check_Path_Syntax (Value : TOML.TOML_Value; Path : String);
+      --  Check that the "path" field has a meaningful syntax for this field
+
+      procedure Check_Proof_Option_Present (Table : TOML.TOML_Value);
+      --  Raise an error if an entry has no option set at all
+
+      procedure Check_Policy
+        (Table : TOML.TOML_Value; Policy : Manifest_Subprogram);
+      --  Sanity checking of an entry:
+      --  - kind is among valid options
+      --  - if profile is present, must be a function/procedure
+      --  - no duplicate entries
+
+      function Read_Subprogram
+        (Table : TOML.TOML_Value; Unit_Name : String)
+         return Manifest_Subprogram;
+      --  Read a single subprogram entry
+
+      function Manifest_Less
+        (Left, Right : Manifest_Subprogram) return Boolean;
+      --  Ordering used to normalize the manifest before passing it to
+      --  gnat2why.
+
+      procedure Load_Manifest_File (File : String);
+      --  Read a manifest file
+
+      ------------------------
+      -- Check_Allowed_Keys --
+      ------------------------
+
+      procedure Check_Allowed_Keys
+        (Table : TOML.TOML_Value; Allowed : String_Lists.List) is
+      begin
+         for Elt of Table.Iterate_On_Table loop
+            declare
+               Key : constant String := To_String (Elt.Key);
+            begin
+               if not Allowed.Contains (Key) then
+                  Manifest_Error (Elt.Value, "unknown field """ & Key & """");
+               end if;
+            end;
+         end loop;
+      end Check_Allowed_Keys;
+
+      -----------------------
+      -- Check_Path_Syntax --
+      -----------------------
+
+      procedure Check_Path_Syntax (Value : TOML.TOML_Value; Path : String) is
+         function Is_Alpha (C : Character) return Boolean
+         is ((C in 'a' .. 'z') or else (C in 'A' .. 'Z'));
+
+         function Is_Alnum (C : Character) return Boolean
+         is (Is_Alpha (C) or else C in '0' .. '9');
+
+         At_Start : Boolean := True;
+      begin
+         for C of Path loop
+            if At_Start then
+               if not Is_Alpha (C) then
+                  Manifest_Error
+                    (Value, "field ""path"" must be a dot-separated Ada name");
+               end if;
+
+               At_Start := False;
+
+            elsif C = '.' then
+               At_Start := True;
+
+            elsif not (Is_Alnum (C) or else C = '_') then
+               Manifest_Error
+                 (Value, "field ""path"" must be a dot-separated Ada name");
+            end if;
+         end loop;
+
+         if At_Start then
+            Manifest_Error
+              (Value, "field ""path"" must be a dot-separated Ada name");
+         end if;
+      end Check_Path_Syntax;
+
+      --------------------------------
+      -- Check_Proof_Option_Present --
+      --------------------------------
+
+      procedure Check_Proof_Option_Present (Table : TOML.TOML_Value) is
+      begin
+         if not (Table.Get_Or_Null ("level").Is_Present
+                 or else Table.Get_Or_Null ("memlimit").Is_Present
+                 or else Table.Get_Or_Null ("provers").Is_Present
+                 or else Table.Get_Or_Null ("steps").Is_Present
+                 or else Table.Get_Or_Null ("timeout").Is_Present)
+         then
+            Manifest_Error (Table, "missing proof option");
+         end if;
+      end Check_Proof_Option_Present;
+
+      ------------------
+      -- Check_Policy --
+      ------------------
+
+      procedure Check_Policy
+        (Table : TOML.TOML_Value; Policy : Manifest_Subprogram)
+      is
+         Kind_Value  : constant String :=
+           Ada.Characters.Handling.To_Lower (To_String (Policy.Kind));
+         Has_Kind    : constant Boolean := Length (Policy.Kind) > 0;
+         Has_Profile : constant Boolean := Length (Policy.Profile) > 0;
+         Kind        : constant TOML.TOML_Value := Table.Get_Or_Null ("kind");
+         Profile     : constant TOML.TOML_Value :=
+           Table.Get_Or_Null ("profile");
+      begin
+         if Has_Kind
+           and then Kind_Value /= "unit"
+           and then Kind_Value /= "package"
+           and then Kind_Value /= "procedure"
+           and then Kind_Value /= "function"
+         then
+            Manifest_Error
+              (Kind,
+               "field ""kind"" must be one of ""unit"", ""package"","
+               & " ""procedure"" or ""function""");
+         end if;
+
+         if Kind_Value = "unit" and then Has_Profile then
+            Manifest_Error
+              (Profile, "field ""profile"" is not allowed for unit entries");
+         elsif Has_Profile
+           and then
+             (not Has_Kind
+              or else
+                (Kind_Value /= "procedure" and then Kind_Value /= "function"))
+         then
+            Manifest_Error
+              (Profile,
+               "field ""profile"" requires kind ""procedure"""
+               & " or ""function""");
+         end if;
+
+         for Existing of All_Policies loop
+            if Ada.Characters.Handling.To_Lower (To_String (Existing.Path))
+              = Ada.Characters.Handling.To_Lower (To_String (Policy.Path))
+              and then
+                Ada.Characters.Handling.To_Lower (To_String (Existing.Kind))
+                = Kind_Value
+              and then
+                To_String (Existing.Profile) = To_String (Policy.Profile)
+            then
+               Manifest_Error (Table, "duplicate manifest entry");
+            end if;
+         end loop;
+      end Check_Policy;
+
+      -----------------------
+      -- Check_Unit_Prefix --
+      -----------------------
+
+      procedure Check_Unit_Prefix
+        (Unit_Name : String; Value : TOML.TOML_Value; Path : String)
+      is
+         Lower_Path : constant String :=
+           Ada.Characters.Handling.To_Lower (Path);
+      begin
+         if Lower_Path /= Unit_Name
+           and then
+             (Lower_Path'Length <= Unit_Name'Length
+              or else
+                Lower_Path
+                  (Lower_Path'First .. Lower_Path'First + Unit_Name'Length - 1)
+                /= Unit_Name
+              or else Lower_Path (Lower_Path'First + Unit_Name'Length) /= '.')
+         then
+            Manifest_Error
+              (Value,
+               "path """
+               & Path
+               & """ does not belong to manifest unit """
+               & Unit_Name
+               & """");
+         end if;
+      end Check_Unit_Prefix;
+
+      -------------------
+      -- Check_Version --
+      -------------------
+
+      procedure Check_Version (Table : TOML.TOML_Value) is
+         Value : constant TOML.TOML_Value := Table.Get_Or_Null ("version");
+      begin
+         if not Value.Is_Present then
+            Manifest_Error (Table, "missing required field ""version""");
+         elsif Value.Kind /= TOML.TOML_Integer then
+            Manifest_Error (Value, "field ""version"" must be an integer");
+         elsif Value.As_Integer /= 1 then
+            Manifest_Error (Value, "unsupported version, expected 1");
+         end if;
+      end Check_Version;
+
+      --------------------------
+      -- Get_Optional_Natural --
+      --------------------------
+
+      function Get_Optional_Natural
+        (Table : TOML.TOML_Value; Key : String; Default : Integer)
+         return Integer
+      is
+         Value : constant TOML.TOML_Value := Table.Get_Or_Null (Key);
+      begin
+         if not Value.Is_Present then
+            return Default;
+         elsif Value.Kind /= TOML.TOML_Integer then
+            Manifest_Error (Value, "field """ & Key & """ must be an integer");
+         elsif Value.As_Integer < 0 then
+            Manifest_Error
+              (Value, "field """ & Key & """ must be non-negative");
+         elsif Value.As_Integer > TOML.Any_Integer (Natural'Last) then
+            Manifest_Error (Value, "field """ & Key & """ is too large");
+         else
+            return Integer (Value.As_Integer);
+         end if;
+      end Get_Optional_Natural;
+
+      -------------------------
+      -- Get_Optional_String --
+      -------------------------
+
+      function Get_Optional_String
+        (Table : TOML.TOML_Value; Key : String) return Unbounded_String
+      is
+         Value : constant TOML.TOML_Value := Table.Get_Or_Null (Key);
+      begin
+         if not Value.Is_Present then
+            return Null_Unbounded_String;
+         elsif Value.Kind /= TOML.TOML_String then
+            Manifest_Error (Value, "field """ & Key & """ must be a string");
+         elsif Value.As_String = "" then
+            Manifest_Error (Value, "field """ & Key & """ must not be empty");
+         else
+            return Value.As_Unbounded_String;
+         end if;
+      end Get_Optional_String;
+
+      -------------------------
+      -- Get_Required_String --
+      -------------------------
+
+      function Get_Required_String
+        (Table : TOML.TOML_Value; Key : String) return Unbounded_String
+      is
+         Value : constant TOML.TOML_Value := Table.Get_Or_Null (Key);
+      begin
+         if not Value.Is_Present then
+            Manifest_Error (Table, "missing required field """ & Key & """");
+         elsif Value.Kind /= TOML.TOML_String then
+            Manifest_Error (Value, "field """ & Key & """ must be a string");
+         elsif Value.As_String = "" then
+            Manifest_Error (Value, "field """ & Key & """ must not be empty");
+         else
+            return Value.As_Unbounded_String;
+         end if;
+      end Get_Required_String;
+
+      ----------------
+      -- Kind_Image --
+      ----------------
+
+      function Kind_Image (Kind : TOML.Any_Value_Kind) return String is
+         Image : constant String := TOML.Any_Value_Kind'Image (Kind);
+      begin
+         return
+           Ada.Characters.Handling.To_Lower
+             (Image (Image'First + 5 .. Image'Last));
+      end Kind_Image;
+
+      --------------------
+      -- Manifest_Error --
+      --------------------
+
+      procedure Manifest_Error (Value : TOML.TOML_Value; Msg : String) is
+         Loc : constant String := TOML.Format_Location (Value.Location);
+      begin
+         Abort_Msg
+           ("error: invalid proof manifest "
+            & To_String (Current_File)
+            & (if Loc = "" then "" else ":" & Loc)
+            & ": "
+            & Msg,
+            With_Help => False);
+      end Manifest_Error;
+
+      -------------------
+      -- Manifest_Less --
+      -------------------
+
+      function Manifest_Less (Left, Right : Manifest_Subprogram) return Boolean
+      is
+         Left_Path  : constant String :=
+           Ada.Characters.Handling.To_Lower (To_String (Left.Path));
+         Right_Path : constant String :=
+           Ada.Characters.Handling.To_Lower (To_String (Right.Path));
+         Left_Kind  : constant String :=
+           Ada.Characters.Handling.To_Lower (To_String (Left.Kind));
+         Right_Kind : constant String :=
+           Ada.Characters.Handling.To_Lower (To_String (Right.Kind));
+      begin
+         if Left_Path /= Right_Path then
+            return Left_Path < Right_Path;
+         elsif To_String (Left.Path) /= To_String (Right.Path) then
+            return To_String (Left.Path) < To_String (Right.Path);
+         elsif Left_Kind /= Right_Kind then
+            return Left_Kind < Right_Kind;
+         elsif To_String (Left.Kind) /= To_String (Right.Kind) then
+            return To_String (Left.Kind) < To_String (Right.Kind);
+         else
+            return To_String (Left.Profile) < To_String (Right.Profile);
+         end if;
+      end Manifest_Less;
+
+      ---------------------------
+      -- Read_Optional_Provers --
+      ---------------------------
+
+      procedure Read_Optional_Provers
+        (Table : TOML.TOML_Value; Policy : in out Manifest_Subprogram)
+      is
+         Value : constant TOML.TOML_Value := Table.Get_Or_Null ("provers");
+         Seen  : String_Lists.List;
+      begin
+         if not Value.Is_Present then
+            return;
+         elsif Value.Kind /= TOML.TOML_Array then
+            Manifest_Error (Value, "field ""provers"" must be an array");
+         elsif Value.Length = 0 then
+            Manifest_Error (Value, "field ""provers"" must not be empty");
+         end if;
+
+         for I in 1 .. Value.Length loop
+            declare
+               Prover : constant TOML.TOML_Value := Value.Item (I);
+            begin
+               if Prover.Kind /= TOML.TOML_String then
+                  Manifest_Error
+                    (Prover, "items of field ""provers"" must be strings");
+               elsif Prover.As_String = "" then
+                  Manifest_Error
+                    (Prover, "items of field ""provers"" must not be empty");
+               elsif Seen.Contains (Prover.As_String) then
+                  Manifest_Error
+                    (Prover, "duplicate prover """ & Prover.As_String & """");
+               else
+                  Seen.Append (Prover.As_String);
+                  Policy.Provers.Append (Prover.As_String);
+               end if;
+            end;
+         end loop;
+      end Read_Optional_Provers;
+
+      ---------------------
+      -- Read_Subprogram --
+      ---------------------
+
+      function Read_Subprogram
+        (Table : TOML.TOML_Value; Unit_Name : String)
+         return Manifest_Subprogram
+      is
+         Policy  : Manifest_Subprogram;
+         Allowed : String_Lists.List;
+         Path    : Unbounded_String;
+      begin
+         if Table.Kind /= TOML.TOML_Table then
+            Manifest_Error
+              (Table, "items of field ""subprogram"" must be tables");
+         end if;
+
+         Allowed.Append ("path");
+         Allowed.Append ("kind");
+         Allowed.Append ("profile");
+         Allowed.Append ("timeout");
+         Allowed.Append ("steps");
+         Allowed.Append ("memlimit");
+         Allowed.Append ("level");
+         Allowed.Append ("provers");
+         Check_Allowed_Keys (Table, Allowed);
+         Check_Proof_Option_Present (Table);
+
+         Path := Get_Required_String (Table, "path");
+         Check_Path_Syntax (Table.Get_Or_Null ("path"), To_String (Path));
+         Check_Unit_Prefix
+           (Unit_Name, Table.Get_Or_Null ("path"), To_String (Path));
+         Policy.Path := Path;
+         Policy.Kind := Get_Optional_String (Table, "kind");
+         Policy.Profile := Get_Optional_String (Table, "profile");
+         Policy.Timeout :=
+           Get_Optional_Natural (Table, "timeout", Invalid_Manifest_Timeout);
+         Policy.Steps :=
+           Get_Optional_Natural (Table, "steps", Invalid_Manifest_Steps);
+         Policy.Memlimit :=
+           Get_Optional_Natural (Table, "memlimit", Invalid_Manifest_Memlimit);
+         Policy.Level :=
+           Get_Optional_Natural (Table, "level", Invalid_Manifest_Level);
+         if Policy.Level /= Invalid_Manifest_Level
+           and then Policy.Level not in 0 .. 4
+         then
+            Manifest_Error
+              (Table.Get_Or_Null ("level"),
+               "field ""level"" must be between 0 and 4");
+         end if;
+         Read_Optional_Provers (Table, Policy);
+         Check_Policy (Table, Policy);
+
+         return Policy;
+      end Read_Subprogram;
+
+      ------------------------
+      -- Load_Manifest_File --
+      ------------------------
+
+      procedure Load_Manifest_File (File : String) is
+         Root      : TOML.TOML_Value;
+         Subs      : TOML.TOML_Value;
+         Allowed   : String_Lists.List;
+         Unit_Name : constant String := Manifest_Unit_Name (File);
+         Policies  : Manifest_Subprogram_Vectors.Vector;
+      begin
+         Current_File := To_Unbounded_String (File);
+
+         declare
+            Position : Unit_File_Maps.Cursor;
+            Inserted : Boolean;
+         begin
+            Unit_Files.Insert (Unit_Name, File, Position, Inserted);
+
+            if not Inserted then
+               Abort_Msg
+                 ("error: invalid proof manifest "
+                  & File
+                  & ": file corresponds to the same unit """
+                  & Unit_Name
+                  & """ as "
+                  & Unit_File_Maps.Element (Position),
+                  With_Help => False);
+            end if;
+         end;
+
+         declare
+            Result : constant TOML.Read_Result :=
+              TOML.File_IO.Load_File (File);
+         begin
+            if not Result.Success then
+               Abort_Msg
+                 ("error: cannot parse proof manifest "
+                  & File
+                  & ": "
+                  & TOML.Format_Error (Result),
+                  With_Help => False);
+            end if;
+
+            Root := Result.Value;
+         end;
+
+         if Root.Kind /= TOML.TOML_Table then
+            Manifest_Error
+              (Root,
+               "top-level value must be a table, got "
+               & Kind_Image (Root.Kind));
+         end if;
+
+         Allowed.Append ("version");
+         Allowed.Append ("subprogram");
+         Check_Allowed_Keys (Root, Allowed);
+         Check_Version (Root);
+         Subs := Root.Get_Or_Null ("subprogram");
+
+         if not Subs.Is_Present then
+            return;
+         elsif Subs.Kind /= TOML.TOML_Array then
+            Manifest_Error (Subs, "field ""subprogram"" must be an array");
+         end if;
+
+         for I in 1 .. Subs.Length loop
+            declare
+               Policy : constant Manifest_Subprogram :=
+                 Read_Subprogram (Subs.Item (I), Unit_Name);
+            begin
+               All_Policies.Append (Policy);
+               Policies.Append (Policy);
+            end;
+         end loop;
+
+         declare
+            package Manifest_Sorting is new
+              Manifest_Subprogram_Vectors.Generic_Sorting
+                ("<" => Manifest_Less);
+         begin
+            Manifest_Sorting.Sort (Policies);
+
+            --  Files mapping to an already seen unit were rejected above, so
+            --  the unit cannot be in the map yet.
+
+            Proof_Manifest_Maps.Insert (Unit_Name, Policies);
+         end;
+      end Load_Manifest_File;
+
+   begin
+      Proof_Manifest_Maps.Clear;
+
+      if Manifest_Path = "" then
+         return;
+      elsif not Ada.Directories.Exists (Manifest_Path) then
+         Abort_Msg
+           ("error: proof manifest folder """
+            & Manifest_Path
+            & """ does not exist",
+            With_Help => False);
+      elsif Ada.Directories.Kind (Manifest_Path) /= Ada.Directories.Directory
+      then
+         Abort_Msg
+           ("error: proof manifest """ & Manifest_Path & """ is not a folder",
+            With_Help => False);
+      end if;
+
+      declare
+         S     : Ada.Directories.Search_Type;
+         D     : Ada.Directories.Directory_Entry_Type;
+         Files : String_Lists.List;
+         package File_Sorting is new String_Lists.Generic_Sorting;
+      begin
+         Ada.Directories.Start_Search
+           (S,
+            Manifest_Path,
+            "*.toml",
+            [Ada.Directories.Ordinary_File => True, others => False]);
+
+         while Ada.Directories.More_Entries (S) loop
+            Ada.Directories.Get_Next_Entry (S, D);
+            Files.Append
+              (Ada.Directories.Compose
+                 (Manifest_Path, Ada.Directories.Simple_Name (D)));
+         end loop;
+
+         --  Process files in sorted order so that errors are reported
+         --  deterministically, independently of the order of directory
+         --  traversal.
+
+         File_Sorting.Sort (Files);
+
+         for File of Files loop
+            Load_Manifest_File (File);
+         end loop;
+      end;
+   end Load_Proof_Manifest;
+
+   -----------------------------
+   -- Proof_Manifest_For_Unit --
+   -----------------------------
+
+   function Proof_Manifest_For_Unit
+     (Unit_Name : String) return Manifest_Subprogram_Vectors.Vector
+   is
+      Position : constant Manifest_Maps.Cursor :=
+        Proof_Manifest_Maps.Find (Manifest_Unit_Name (Unit_Name));
+   begin
+      if Manifest_Maps.Has_Element (Position) then
+         return Manifest_Maps.Element (Position);
+      else
+         return Manifest_Subprogram_Vectors.Empty_Vector;
+      end if;
+   end Proof_Manifest_For_Unit;
+
    --------------------------
    -- No_Project_File_Mode --
    --------------------------
@@ -1752,7 +2435,11 @@ package body Configuration is
 
       if Mode in All_Switches | Global_Switches_Only then
          for Switch in Invocation_Switch_Id loop
-            Register_Switch (Switch);
+            --  Proof manifests are command-line only for now; project file
+            --  attributes can get their own syntax once the schema settles.
+            if Mode = All_Switches or else Switch /= Sw_Proof_Manifest then
+               Register_Switch (Switch);
+            end if;
          end loop;
       end if;
 
@@ -3853,6 +4540,10 @@ package body Configuration is
 
       --  Publish the final invocation settings for legacy consumers
       Copy_To_CL_Switches (Invocation_Switches);
+
+      --  ??? Need to move the proof manifest to the per-project part of
+      --  cmd-line parsing, as each project can have its own manifest
+      Load_Proof_Manifest;
 
       --  Release copies of command line arguments; they were already parsed
       --  twice and are no longer needed.

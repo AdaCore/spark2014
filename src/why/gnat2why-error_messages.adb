@@ -1170,7 +1170,7 @@ package body Gnat2Why.Error_Messages is
               (Timing,
                Entity_To_Subp_Assumption (Subp),
                Name,
-               Duration (Time));
+               Duration'Max (0.0, Duration (Time)));
          end Timing_Entry;
 
       begin
