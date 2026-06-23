@@ -93,11 +93,11 @@ tokens.adb:15:07: info: initialization of "Word_Size" proved
 tokens.adb:21:15: info: precondition proved (CVC5: 1 VC)
 tokens.adb:24:30: info: range check proved (CVC5: 4 VC)
 tokens.adb:32:31: info: index check proved (CVC5: 2 VC)
-tokens.adb:35:21: medium: discriminant check might fail [possible fix: loop at line 17 should mention V in a loop invariant]
-tokens.adb:39:21: medium: discriminant check might fail [possible fix: loop at line 17 should mention V in a loop invariant]
-tokens.adb:44:24: medium: discriminant check might fail [possible fix: loop at line 17 should mention V in a loop invariant]
-tokens.adb:47:24: medium: discriminant check might fail [possible fix: loop at line 17 should mention V in a loop invariant]
-tokens.adb:54:21: medium: discriminant check might fail [possible fix: loop at line 17 should mention V in a loop invariant]
+tokens.adb:35:21: medium: discriminant check might fail [possible explanation: formal parameter "V" might be constrained] [possible fix: introduce a wrapper for the full view of type "Token" defined at tokens.ads:16]
+tokens.adb:39:21: medium: discriminant check might fail [possible explanation: formal parameter "V" might be constrained] [possible fix: introduce a wrapper for the full view of type "Token" defined at tokens.ads:16]
+tokens.adb:44:24: medium: discriminant check might fail [possible explanation: formal parameter "V" might be constrained] [possible fix: introduce a wrapper for the full view of type "Token" defined at tokens.ads:16]
+tokens.adb:47:24: medium: discriminant check might fail [possible explanation: formal parameter "V" might be constrained] [possible fix: introduce a wrapper for the full view of type "Token" defined at tokens.ads:16]
+tokens.adb:54:21: medium: discriminant check might fail [possible explanation: formal parameter "V" might be constrained] [possible fix: introduce a wrapper for the full view of type "Token" defined at tokens.ads:16]
 tokens.adb:59:19: medium: unexpected exception might be raised [reason for check: "Next" allows propagating no exceptions] [possible explanation: "User_Error" might be unexpectedly raised]
 tokens.adb:74:19: info: precondition proved (CVC5: 1 VC)
 tokens.adb:74:30: info: discriminant check proved (CVC5: 1 VC)

@@ -2,7 +2,7 @@ ex.adb:13:34: info: range check proved (CVC5: 1 VC)
 ex.adb:15:13: info: implicit aspect Always_Terminates on "Read_F_Int" has been proved, subprogram will terminate
 ex.adb:18:57: info: discriminant check proved (CVC5: 1 VC)
 ex.adb:21:25: info: postcondition proved (CVC5: 2 VC)
-ex.adb:26:12: high: discriminant check might fail (e.g. when X = (Is_Int => False, F_Float => 0.0) and X'Constrained = True) [possible fix: subprogram at line 20 should mention X in a precondition]
+ex.adb:26:12: high: discriminant check might fail (e.g. when X = (Is_Int => False, F_Float => 0.0) and X'Constrained = True) [possible explanation: formal parameter "X" might be constrained] [possible fix: add precondition (not X'Constrained) to subprogram at line 20]
 test.adb:13:14: info: add a contract to analyze it separately from calling contexts
 test.adb:13:14: info: local subprogram "P" only analyzed in the context of calls [info-unrolling-inlining]
 test.adb:23:62: info: postcondition proved (Trivial: 1 VC)

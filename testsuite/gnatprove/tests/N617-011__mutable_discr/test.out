@@ -14,7 +14,7 @@ discr.adb:30:12: info: discriminant check proved (CVC5: 1 VC)
 discr.adb:31:12: high: discriminant check might fail (e.g. when C = 1)
 discr.adb:36:26: info: range check proved (CVC5: 2 VC)
 discr.adb:36:32: info: discriminant check proved (CVC5: 1 VC)
-discr.adb:43:12: high: discriminant check might fail (e.g. when D = (C => 1) and D'Constrained = True) [possible fix: precondition of subprogram at line 38 should mention D]
+discr.adb:43:12: high: discriminant check might fail (e.g. when D = (C => 1) and D'Constrained = True) [possible explanation: formal parameter "D" might be constrained] [possible fix: add precondition (not D'Constrained) to subprogram at line 38]
 discr.adb:51:12: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 discr.adb:55:07: info: precondition proved (Trivial: 1 VC)
 discr.adb:56:07: info: precondition proved (Trivial: 1 VC)
@@ -54,7 +54,7 @@ discr.adb:115:12: medium: discriminant check might fail
 discr.adb:120:28: info: range check proved (CVC5: 2 VC)
 discr.adb:120:34: info: discriminant check proved (CVC5: 1 VC)
 discr.adb:122:26: info: initialization of "D" proved
-discr.adb:127:12: medium: discriminant check might fail [possible fix: precondition of subprogram at line 122 should mention D'Constrained or D.C]
+discr.adb:127:12: medium: discriminant check might fail [possible explanation: formal parameter "D" might be constrained] [possible fix: introduce a wrapper for the full view of type "P_With_Default" defined at private_discr.ads:4]
 discr.adb:130:26: info: initialization of "D" proved
 discr.adb:135:12: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 discr.adb:139:07: info: precondition proved (Trivial: 1 VC)
