@@ -17442,16 +17442,39 @@ package body Gnat2Why.Expr is
             end;
 
          when Attribute_Loop_Entry | Attribute_At                           =>
+
+            --  Call Name_For_Loop_Entry even if the identifier is not used
+            --  afterwards so that checks are generated for the expression at
+            --  the beginning of the loop.
+
             declare
                W_Id : constant W_Identifier_Id :=
                  (if Attr_Id = Attribute_Loop_Entry
                   then Name_For_Loop_Entry (Expr)
                   else Name_For_At (Expr));
+
             begin
+               --  If Var does not depend on variables, ignore the attribute.
+               --  It is important for 'At in particular, as such a reference
+               --  could occur in the definition of a nested entity (a type
+               --  constraint for example) and the local reference used for the
+               --  attribute would not be defined here.
+
+               if (for all Obj of Get_Variables_For_Proof (Var, Var) =>
+                     Obj.Kind = Direct_Mapping
+                     and then Is_Constant_In_SPARK (Obj.Node))
+               then
+                  T :=
+                    Transform_Expr
+                      (Var,
+                       Domain,
+                       Params,
+                       No_Validity_Check => No_Validity_Check);
+
                --  Validity checks are not introduced when building the map
                --  except for scalars for which copy is disallowed. Do it here.
 
-               if Domain = EW_Prog
+               elsif Domain = EW_Prog
                  and then not No_Validity_Check
                  and then Is_Potentially_Invalid_Expr (Expr)
                  and then not Has_Scalar_Type (Etype (Expr))
