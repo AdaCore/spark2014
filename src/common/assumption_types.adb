@@ -25,8 +25,10 @@
 
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Vectors;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNATCOLL.Utils;
 with Hash_Cons;
+with SPARK_JSON_Entities;   use SPARK_JSON_Entities;
 
 package body Assumption_Types is
 
@@ -36,10 +38,10 @@ package body Assumption_Types is
    function Hash (S : Base_Sloc) return Ada.Containers.Hash_Type;
    function Hash (S : My_Sloc) return Ada.Containers.Hash_Type;
 
+   function From_JSON (Sloc : Sloc_Vectors.Vector) return My_Sloc;
+   function From_Entity_Info
+     (Info : SPARK_JSON_Entities.Entity_Info) return Subp_Type;
    function To_JSON_Internal (S : Subp_Type) return JSON_Value;
-   function From_JSON_Internal (V : JSON_Value) return Subp_Type;
-
-   function From_JSON (V : JSON_Array) return My_Sloc;
 
    function "<" (Left, Right : Symbol) return Boolean;
    function "<" (Left, Right : Base_Sloc) return Boolean;
@@ -98,41 +100,29 @@ package body Assumption_Types is
       return Subp_Vector (Get (V));
    end From_JSON;
 
-   ------------------------
-   -- From_JSON_Internal --
-   ------------------------
+   ----------------------
+   -- From_Entity_Info --
+   ----------------------
 
-   function From_JSON_Internal (V : JSON_Value) return Subp_Type is
+   function From_Entity_Info
+     (Info : SPARK_JSON_Entities.Entity_Info) return Subp_Type is
    begin
       return
         Mk_Subp
-          (Name             => Get (Get (V, "name")),
-           Sloc             => From_JSON (Get (Get (V, "sloc"))),
-           Manifest_Kind    =>
-             (if Has_Field (V, "manifest_kind")
-              then Get (Get (V, "manifest_kind"))
-              else ""),
-           Manifest_Profile =>
-             (if Has_Field (V, "manifest_profile")
-              then Get (Get (V, "manifest_profile"))
-              else ""));
-   end From_JSON_Internal;
+          (Name             => To_String (Info.Name),
+           Sloc             => From_JSON (Info.Sloc),
+           Manifest_Kind    => To_String (Info.Manifest_Kind),
+           Manifest_Profile => To_String (Info.Manifest_Profile));
+   end From_Entity_Info;
 
-   function From_JSON (V : JSON_Array) return My_Sloc is
-      Sloc : My_Sloc;
+   function From_JSON (Sloc : Sloc_Vectors.Vector) return My_Sloc is
+      Result : My_Sloc;
    begin
-      for Index in 1 .. Length (V) loop
-         declare
-            JS_Base : constant JSON_Value := Get (V, Index);
-         begin
-            Sloc.Append
-              (Mk_Base_Sloc
-                 (Get (JS_Base, "file"),
-                  Get (JS_Base, "line"),
-                  Get (JS_Base, "column")));
-         end;
+      for Base of Sloc loop
+         Result.Append
+           (Mk_Base_Sloc (To_String (Base.File), Base.Line, Base.Column));
       end loop;
-      return Sloc;
+      return Result;
    end From_JSON;
 
    --------------
@@ -237,29 +227,25 @@ package body Assumption_Types is
    ------------------------
 
    procedure Parse_Entity_Table (Table : JSON_Value) is
-
-      procedure Parse_Entry (Name : UTF8_String; Value : JSON_Value);
-      --  parse a mapping of the entity table
-
-      -----------------
-      -- Parse_Entry --
-      -----------------
-
-      procedure Parse_Entry (Name : UTF8_String; Value : JSON_Value) is
-         Index : constant Positive := Positive'Value (Name);
-         Elt   : constant Subp_Type := From_JSON_Internal (Value);
-      begin
-         if Index > Subp_Vector.Last_Index then
-            Subp_Vector.Set_Length (Ada.Containers.Count_Type (Index));
-         end if;
-         Subp_Vector.Replace_Element (Index, Elt);
-         Subp_Map.Insert (Elt, Index);
-      end Parse_Entry;
-
+      Entities : constant Entity_Vectors.Vector :=
+        SPARK_JSON_Entities.Parse_Entity_Table (Table);
    begin
       Subp_Map.Clear;
       Subp_Vector.Clear;
-      Map_JSON_Object (Table, Parse_Entry'Access);
+
+      for Entity of Entities loop
+         declare
+            Index : constant Positive :=
+              Positive'Value (To_String (Entity.Key));
+            Elt   : constant Subp_Type := From_Entity_Info (Entity);
+         begin
+            if Index > Subp_Vector.Last_Index then
+               Subp_Vector.Set_Length (Ada.Containers.Count_Type (Index));
+            end if;
+            Subp_Vector.Replace_Element (Index, Elt);
+            Subp_Map.Insert (Elt, Index);
+         end;
+      end loop;
    end Parse_Entity_Table;
 
    ---------------
