@@ -205,7 +205,7 @@ spark2014:
   rules:
     - if: $CI_MERGE_REQUEST_LABELS =~ /no-cache/
       when: never
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_PIPELINE_SOURCE == "schedule"
       when: on_success
     - when: never
   allow_failure:
@@ -326,6 +326,8 @@ upload_coverage_html:
   rules:
     - if: $CI_MERGE_REQUEST_LABELS =~ /no-cache/
       when: never
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: on_success
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: manual
       allow_failure: true
