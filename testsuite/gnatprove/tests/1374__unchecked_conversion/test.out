@@ -1,0 +1,9 @@
+g.ads:20:07: info: range check proved (CVC5: 2 VC), in instantiation at test.adb:12
+g.ads:20:51: info: range check proved (CVC5: 2 VC), in instantiation at test.adb:12
+spark-conversions-access_conversions.ads:68:35: high: type is unsuitable as a source for unchecked conversion, in instantiation at g.ads:24, in instantiation at test.adb:12 [possible explanation: type of "Pad" has dynamic bounds; type "Padded" might have unused bits that are not modelled in SPARK]
+test.adb:12:04: warning: imprecise handling of Unchecked_Conversion (component offset not known) [imprecise-unchecked-conversion]
+test.adb:12:04: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as source for unchecked conversion) [imprecise-unchecked-conversion]
+test.adb:12:04: warning: in instantiation at g.ads:24
+test.adb:12:04: warning: in instantiation at g.ads:24
+test.adb:12:04: warning: in instantiation at spark-conversions-access_conversions.ads:62
+test.adb:12:04: warning: in instantiation at spark-conversions-access_conversions.ads:67
