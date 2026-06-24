@@ -109,7 +109,7 @@ stages:
     - export COVERAGE_ROOT_DIR=$ANOD_DEFAULT_SANDBOX_DIR/x86_64-linux/$ANOD_BUILDSPACE_SOURCES/src
     - export COVERAGE_SOURCE_DIR=$CI_PROJECT_DIR
     # Test using anod
-    - anod run $ANOD_ENTRY_POINT
+    - anod run $ANOD_ENTRY_POINT --latest
 
     # Process the results
     - ANOD_BUILDSPACE=`anod eval spark2014 build_space_name --primitive test --qualifier=$ANOD_QUALIFIERS`
@@ -265,7 +265,7 @@ spark2014_nocache:
   script:
     - *setup_repos
     - *deploy_package
-    - anod run $ANOD_TARGET
+    - anod run $ANOD_TARGET --latest
     - testsuite_reports
   variables:
     ANOD_QUALIFIERS: $ANOD_BUILD_QUALIFIERS
@@ -301,7 +301,7 @@ sparklib:
   script:
     - *setup_repos
     - *deploy_package
-    - anod run $ANOD_TARGET
+    - anod run $ANOD_TARGET --latest
     - testsuite_reports
     - ANOD_BUILDSPACE=`anod eval sparklib build_space_name --primitive test --qualifier=$ANOD_QUALIFIERS`
     - mv $ANOD_DEFAULT_SANDBOX_DIR/x86_64-linux/$ANOD_BUILDSPACE/results/new/ $CI_PROJECT_DIR/testsuite-results
