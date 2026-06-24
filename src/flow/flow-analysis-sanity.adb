@@ -550,7 +550,7 @@ package body Flow.Analysis.Sanity is
 
                Funcalls     : Call_Sets.Set;
                Indcalls     : Node_Sets.Set;
-               Proofdeps    : Node_Sets.Set;
+               Proofdeps    : Proof_Dependencies_Sets;
                Unused_Locks : Protected_Call_Sets.Set;
 
             begin
@@ -622,7 +622,7 @@ package body Flow.Analysis.Sanity is
                declare
                   Funcalls     : Call_Sets.Set;
                   Indcalls     : Node_Sets.Set;
-                  Proofdeps    : Node_Sets.Set;
+                  Proofdeps    : Proof_Dependencies_Sets;
                   Unused_Locks : Protected_Call_Sets.Set;
 
                begin

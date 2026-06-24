@@ -137,12 +137,11 @@ package body Flow_Utility is
       Scop               : Flow_Scope;
       Function_Calls     : in out Call_Sets.Set;
       Indirect_Calls     : in out Node_Sets.Set;
-      Proof_Dependencies : in out Node_Sets.Set;
+      Proof_Dependencies : in out Proof_Dependencies_Sets;
       Locks              : in out Protected_Call_Sets.Set;
       Types_Seen         : in out Node_Sets.Set;
       Constants_Seen     : in out Node_Sets.Set;
-      Generating_Globals : Boolean)
-   with Post => Proof_Dependencies'Old.Is_Subset (Proof_Dependencies);
+      Generating_Globals : Boolean);
    --  Like Pick_Generated_Info, with additional parameters Types_Seen and
    --  Constants_Seen that allows to track which type predicates and constant
    --  expressions we already traversed to pick proof dependencies.
@@ -150,10 +149,9 @@ package body Flow_Utility is
    procedure Process_Expression
      (Expr               : Node_Id;
       Scop               : Flow_Scope;
-      Proof_Dependencies : in out Node_Sets.Set;
+      Proof_Dependencies : in out Proof_Dependencies_Sets;
       Types_Seen         : in out Node_Sets.Set;
-      Constants_Seen     : in out Node_Sets.Set)
-   with Post => Proof_Dependencies'Old.Is_Subset (Proof_Dependencies);
+      Constants_Seen     : in out Node_Sets.Set);
    --  Extract proof dependencies and functions calls from Expr and add
    --  them to Proof_Dependencies.
 
@@ -272,7 +270,7 @@ package body Flow_Utility is
       Scop               : Flow_Scope;
       Function_Calls     : in out Call_Sets.Set;
       Indirect_Calls     : in out Node_Sets.Set;
-      Proof_Dependencies : in out Node_Sets.Set;
+      Proof_Dependencies : in out Proof_Dependencies_Sets;
       Locks              : in out Protected_Call_Sets.Set;
       Types_Seen         : in out Node_Sets.Set;
       Constants_Seen     : in out Node_Sets.Set;
@@ -359,7 +357,8 @@ package body Flow_Utility is
                   --  keep track of the call for proof dependencies.
 
                   elsif Is_Unchecked_Conversion_Instance (Called_Func) then
-                     Proof_Dependencies.Include (Called_Func);
+                     Proof_Dependencies (Direct_Proof_Dependencies).Include
+                       (Called_Func);
                      return OK;
                   end if;
 
@@ -369,7 +368,8 @@ package body Flow_Utility is
                   if Generating_Globals
                     and then Flow_Classwide.Is_Dispatching_Call (N)
                   then
-                     Process_Dispatching_Call (N, Proof_Dependencies);
+                     Proof_Dependencies (Dispatching_Called_Subprograms)
+                       .Include (Get_Called_Entity (N));
                   end if;
 
                   --  Only external calls to protected functions trigger
@@ -500,8 +500,13 @@ package body Flow_Utility is
                         Process_Iterable_Primitive (Name_Next);
                      end if;
 
-                     Process_Iterable_For_Proof_Annotation
-                       (N, Proof_Dependencies);
+                     --  Proof might transform the quantified expression using
+                     --  the chain of Model functions associated to the types.
+
+                     if Nkind (Parent (Parent (N))) /= N_Loop_Statement then
+                        Proof_Dependencies (Iterable_For_Proof_Annotations)
+                          .Include (Etype (Name (N)));
+                     end if;
 
                   else
                      pragma
@@ -555,7 +560,23 @@ package body Flow_Utility is
 
             when N_Attribute_Reference                      =>
                if Attribute_Name (N) = Name_Access then
-                  Process_Access_Attribute (N, Proof_Dependencies);
+
+                  --  Fill Direct_Proof_Dependencies if the prefix of
+                  --  'Access attribute is a subprogram.
+
+                  P := Prefix (N);
+
+                  declare
+                     E : constant Entity_Id :=
+                       (if Is_Entity_Name (P) then Entity (P) else Empty);
+                  begin
+                     if Present (E)
+                       and then Ekind (E) in E_Function | E_Procedure
+                     then
+                        Proof_Dependencies (Direct_Proof_Dependencies).Include
+                          (E);
+                     end if;
+                  end;
                end if;
 
             --  Pull implicit calls and proof dependencies from container
@@ -571,23 +592,6 @@ package body Flow_Utility is
                   declare
                      Annot : constant Aggregate_Annotation :=
                        Get_Aggregate_Annotation (Etype (N));
-
-                     procedure Add_Proof_Dependency (E : Entity_Id)
-                     with Pre => (if Present (E) then Ekind (E) = E_Function);
-                     --  Add proof dependency on E, if it is specified for
-                     --  the container type.
-
-                     --------------------------
-                     -- Add_Proof_Dependency --
-                     --------------------------
-
-                     procedure Add_Proof_Dependency (E : Entity_Id) is
-                     begin
-                        if Present (E) then
-                           Proof_Dependencies.Include (E);
-                        end if;
-                     end Add_Proof_Dependency;
-
                   begin
                      if Present (Annot.Empty_Function) then
                         Function_Calls.Include
@@ -600,29 +604,8 @@ package body Flow_Utility is
                           (Subprogram_Call'(N => N, E => Annot.Add_Procedure));
                      end if;
 
-                     Add_Proof_Dependency (Annot.Capacity);
-
-                     case Annot.Kind is
-                        when Sets  =>
-                           Add_Proof_Dependency (Annot.Contains);
-                           Add_Proof_Dependency (Annot.Equivalent_Elements);
-                           Add_Proof_Dependency (Annot.Sets_Length);
-
-                        when Maps  =>
-                           Add_Proof_Dependency (Annot.Has_Key);
-                           Add_Proof_Dependency (Annot.Default_Item);
-                           Add_Proof_Dependency (Annot.Equivalent_Keys);
-                           Add_Proof_Dependency (Annot.Maps_Length);
-                           Add_Proof_Dependency (Annot.Maps_Length);
-
-                        when Seqs  =>
-                           Add_Proof_Dependency (Annot.Seqs_Get);
-                           Add_Proof_Dependency (Annot.First);
-                           Add_Proof_Dependency (Annot.Last);
-
-                        when Model =>
-                           Add_Proof_Dependency (Annot.Model);
-                     end case;
+                     Proof_Dependencies (Aggregate_Annotations).Include
+                       (Etype (N));
                   end;
                end if;
 
@@ -672,7 +655,7 @@ package body Flow_Utility is
       Scop               : Flow_Scope;
       Function_Calls     : in out Call_Sets.Set;
       Indirect_Calls     : in out Node_Sets.Set;
-      Proof_Dependencies : in out Node_Sets.Set;
+      Proof_Dependencies : in out Proof_Dependencies_Sets;
       Locks              : in out Protected_Call_Sets.Set;
       Generating_Globals : Boolean)
    is
@@ -697,7 +680,7 @@ package body Flow_Utility is
    procedure Process_Expression
      (Expr               : Node_Id;
       Scop               : Flow_Scope;
-      Proof_Dependencies : in out Node_Sets.Set;
+      Proof_Dependencies : in out Proof_Dependencies_Sets;
       Types_Seen         : in out Node_Sets.Set;
       Constants_Seen     : in out Node_Sets.Set)
    is
@@ -729,7 +712,7 @@ package body Flow_Utility is
          --  E_Subprogram_Type entities?
 
          if Ekind (Call.E) /= E_Subprogram_Type then
-            Proof_Dependencies.Include (Call.E);
+            Proof_Dependencies (Direct_Proof_Dependencies).Include (Call.E);
          end if;
       end loop;
    end Process_Expression;
@@ -742,7 +725,7 @@ package body Flow_Utility is
      (Typ                : Type_Kind_Id;
       Scop               : Flow_Scope;
       Include_Invariant  : Boolean;
-      Proof_Dependencies : in out Node_Sets.Set;
+      Proof_Dependencies : in out Proof_Dependencies_Sets;
       Types_Seen         : in out Node_Sets.Set;
       Constants_Seen     : in out Node_Sets.Set)
    is
@@ -1725,7 +1708,7 @@ package body Flow_Utility is
    is
       Funcalls     : Call_Sets.Set;
       Indcalls     : Node_Sets.Set;
-      Proofdeps    : Node_Sets.Set;
+      Proofdeps    : Proof_Dependencies_Sets;
       Unused_Locks : Protected_Call_Sets.Set;
    begin
       Pick_Generated_Info

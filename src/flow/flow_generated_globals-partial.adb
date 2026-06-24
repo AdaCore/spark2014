@@ -258,7 +258,7 @@ package body Flow_Generated_Globals.Partial is
    procedure Contract_Calls
      (E                  : Entity_Id;
       Function_Calls     : out Node_Sets.Set;
-      Proof_Dependencies : out Node_Sets.Set;
+      Proof_Dependencies : out Proof_Dependencies_Sets;
       Indirect_Calls     : out Node_Sets.Set)
    with
      Pre  => Ekind (E) in Entry_Kind | E_Function | E_Procedure,
@@ -520,7 +520,8 @@ package body Flow_Generated_Globals.Partial is
             end if;
          end loop;
 
-         Contr.Proof_Dependencies := FA.Proof_Dependencies;
+         Process_Proof_Dependencies
+           (FA.Proof_Dependencies, Contr.Proof_Dependencies);
       end if;
 
       --  Register abstract state components for packages whose body has
@@ -691,7 +692,7 @@ package body Flow_Generated_Globals.Partial is
          if Is_Callable (E) then
             declare
                Function_Calls     : Node_Sets.Set;
-               Proof_Dependencies : Node_Sets.Set;
+               Proof_Dependencies : Proof_Dependencies_Sets;
                Indirect_Calls     : Node_Sets.Set;
             begin
                Contract_Calls
@@ -721,11 +722,6 @@ package body Flow_Generated_Globals.Partial is
                   end if;
                end loop;
 
-               --  Collect proof dependencies from the contracts of E
-
-               pragma Assert (Contr.Proof_Dependencies.Is_Empty);
-               Contr.Proof_Dependencies := Proof_Dependencies;
-
                --  Collect calls to dispatching and primitive equalities and
                --  add them to proof dependencies and direct calls
                --  respectively.
@@ -738,8 +734,8 @@ package body Flow_Generated_Globals.Partial is
                         else Etype (Left_Opnd (N)));
                   begin
                      if Calls_Dispatching_Equality (N) then
-                        Process_Indirect_Dispatching_Equality
-                          (Typ, Contr.Proof_Dependencies);
+                        Proof_Dependencies (Indirect_Dispatching_Equalities)
+                          .Include (Typ);
                      else
                         Contr.Direct_Calls.Union
                           (Called_Primitive_Equalities
@@ -747,28 +743,32 @@ package body Flow_Generated_Globals.Partial is
                      end if;
                   end;
                end loop;
+
+               --  Process predicates that apply to formals of E
+
+               for F of Get_Explicit_Formals (E) loop
+                  Process_Type_Contracts
+                    (Etype (F),
+                     Get_Flow_Scope (E),
+                     Is_Globally_Visible (E),
+                     Proof_Dependencies);
+               end loop;
+
+               --  Process predicates that apply to the return type if E is a
+               --  function.
+
+               if Ekind (E) = E_Function then
+                  Process_Type_Contracts
+                    (Etype (E),
+                     Get_Flow_Scope (E),
+                     Is_Globally_Visible (E),
+                     Proof_Dependencies);
+               end if;
+
+               pragma Assert (Contr.Proof_Dependencies.Is_Empty);
+               Process_Proof_Dependencies
+                 (Proof_Dependencies, Contr.Proof_Dependencies);
             end;
-
-            --  Process predicates that apply to formals of E
-
-            for F of Get_Explicit_Formals (E) loop
-               Process_Type_Contracts
-                 (Etype (F),
-                  Get_Flow_Scope (E),
-                  Is_Globally_Visible (E),
-                  Contr.Proof_Dependencies);
-            end loop;
-
-            --  Process predicates that apply to the return type if E is a
-            --  function.
-
-            if Ekind (E) = E_Function then
-               Process_Type_Contracts
-                 (Etype (E),
-                  Get_Flow_Scope (E),
-                  Is_Globally_Visible (E),
-                  Contr.Proof_Dependencies);
-            end if;
          end if;
 
          --  For subprograms in a generic predefined unit with its body not
@@ -1200,7 +1200,7 @@ package body Flow_Generated_Globals.Partial is
    procedure Contract_Calls
      (E                  : Entity_Id;
       Function_Calls     : out Node_Sets.Set;
-      Proof_Dependencies : out Node_Sets.Set;
+      Proof_Dependencies : out Proof_Dependencies_Sets;
       Indirect_Calls     : out Node_Sets.Set)
    is
 
@@ -1234,7 +1234,7 @@ package body Flow_Generated_Globals.Partial is
             --  dependencies.
 
             if Ekind (Call.E) /= E_Subprogram_Type then
-               Proof_Dependencies.Include (Call.E);
+               Proof_Dependencies (Direct_Proof_Dependencies).Include (Call.E);
             end if;
          end loop;
       end Collect_Calls;

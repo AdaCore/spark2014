@@ -46,15 +46,12 @@ package Flow_Utility is
       Scop               : Flow_Scope;
       Function_Calls     : in out Call_Sets.Set;
       Indirect_Calls     : in out Node_Sets.Set;
-      Proof_Dependencies : in out Node_Sets.Set;
+      Proof_Dependencies : in out Proof_Dependencies_Sets;
       Locks              : in out Protected_Call_Sets.Set;
       Generating_Globals : Boolean)
    with
      Pre  => Present (N),
-     Post =>
-       Function_Calls'Old.Is_Subset (Of_Set => Function_Calls)
-       and then
-         Proof_Dependencies'Old.Is_Subset (Of_Set => Proof_Dependencies);
+     Post => Function_Calls'Old.Is_Subset (Of_Set => Function_Calls);
    --  For an expression N collect its called functions, proof dependencies and
    --  update the set of protected objects that are read-locked when evaluating
    --  these functions.
@@ -901,10 +898,9 @@ private
      (Typ                : Type_Kind_Id;
       Scop               : Flow_Scope;
       Include_Invariant  : Boolean;
-      Proof_Dependencies : in out Node_Sets.Set;
+      Proof_Dependencies : in out Proof_Dependencies_Sets;
       Types_Seen         : in out Node_Sets.Set;
-      Constants_Seen     : in out Node_Sets.Set)
-   with Post => Proof_Dependencies'Old.Is_Subset (Proof_Dependencies);
+      Constants_Seen     : in out Node_Sets.Set);
    --  Like Process_Type_Contracts, with additional parameters Types_Seen and
    --  Constants_Seen that allows to track which type predicates and constant
    --  expressions we already traversed to pick proof dependencies.
