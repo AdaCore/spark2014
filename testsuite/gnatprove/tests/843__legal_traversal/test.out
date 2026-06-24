@@ -17,7 +17,7 @@ test_flow.adb:52:34: medium: incorrect dependency "null => I"
 test_flow.adb:56:09: info: pointer dereference check proved (CVC5: 1 VC)
 test_legal.adb:9:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 test_legal.adb:16:13: info: implicit aspect Always_Terminates on "F_2" has been proved, subprogram will terminate
-test_legal.adb:21:14: medium: dynamic accessibility check might fail
+test_legal.adb:21:14: medium: dynamic accessibility check might fail [possible explanation: part of a local object has a local accessibility level]
 test_legal.adb:26:14: info: add a contract to analyze it separately from calling contexts
 test_legal.adb:26:14: info: local subprogram "Test" only analyzed in the context of calls [info-unrolling-inlining]
 test_legal.adb:32:14: info: add a contract to analyze it separately from calling contexts

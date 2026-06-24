@@ -9337,7 +9337,7 @@ package body Gnat2Why.Expr is
       --  Remember already processed locally declared objects.
 
       function Compute_Check
-        (Path : N_Subexpr_Id; Under_Access : Boolean) return Boolean;
+        (Path : N_Subexpr_Id; Under_Access : Boolean) return True_Or_Explain;
       --  Approximate the accessibility level check on the return statement in
       --  the following way:
       --    * If we are in a part of a named access type, then no checks are
@@ -9365,7 +9365,7 @@ package body Gnat2Why.Expr is
       -------------------
 
       function Compute_Check
-        (Path : N_Subexpr_Id; Under_Access : Boolean) return Boolean is
+        (Path : N_Subexpr_Id; Under_Access : Boolean) return True_Or_Explain is
       begin
          --  We are in a part of a named access type. This type is necessarily
          --  declared above the scope of the caller, since it can be found from
@@ -9375,7 +9375,7 @@ package body Gnat2Why.Expr is
          if Is_Access_Type (Retysp (Etype (Path)))
            and then not Is_Anonymous_Access_Type (Etype (Path))
          then
-            return True;
+            return (Ok => True);
          end if;
 
          case Nkind (Path) is
@@ -9385,7 +9385,7 @@ package body Gnat2Why.Expr is
                --  fail.
 
                if Under_Access then
-                  return False;
+                  return False_With_Explain ("part of a local object");
                else
                   declare
                      Root : constant Entity_Id := Get_Root_Object (Path);
@@ -9394,7 +9394,7 @@ package body Gnat2Why.Expr is
                      --  something which was already checked), this is fine.
 
                      if Root = Param or else Seen.Contains (Root) then
-                        return True;
+                        return (Ok => True);
 
                      --  Otherwise, continue verification on the initialization
                      --  expression of the root object.
@@ -9435,7 +9435,10 @@ package body Gnat2Why.Expr is
                pragma Assert (Is_Traversal_Function_Call (Path));
                if Get_Root_Object (Returned_Expr) /= Get_Root_Object (Path)
                then
-                  return False;
+                  return
+                    False_With_Explain
+                      ("part of a traversal function call whose master is "
+                       & "local");
                end if;
 
                --  If the first formal is aliased, an accessibility check might
@@ -9459,14 +9462,25 @@ package body Gnat2Why.Expr is
                return Compute_Check (Expression (Path), Under_Access);
 
             when N_If_Expression | N_Case_Expression                  =>
-               return
-                 (for all P of Terminal_Alternatives (Path) =>
-                    Compute_Check (P, Under_Access));
+               for P of Terminal_Alternatives (Path) loop
+                  declare
+                     Result : constant True_Or_Explain :=
+                       Compute_Check (P, Under_Access);
+                  begin
+                     if not Result.Ok then
+                        return Result;
+                     end if;
+                  end;
+               end loop;
+
+               return (Ok => True);
 
             when others                                               =>
                raise Program_Error;
          end case;
       end Compute_Check;
+
+      Result : True_Or_Explain;
 
    begin
       --  Do not generate a check if the returned expression is a part of the
@@ -9479,11 +9493,19 @@ package body Gnat2Why.Expr is
          return;
       end if;
 
+      Result := Compute_Check (Returned_Expr, Under_Access => False);
+
       Emit_Static_Proof_Result
-        (Node   => Returned_Expr,
-         Kind   => VC_Dynamic_Accessibility_Check,
-         Proved => Compute_Check (Returned_Expr, Under_Access => False),
-         E      => Subp);
+        (Node        => Returned_Expr,
+         Kind        => VC_Dynamic_Accessibility_Check,
+         Proved      => Result.Ok,
+         E           => Subp,
+         Explanation =>
+           (if Result.Ok
+            then ""
+            else
+              To_String (Result.Explanation)
+              & " has a local accessibility level"));
    end Emit_Dynamic_Accessibility_Check;
 
    ---------------------------------
