@@ -10,7 +10,7 @@ test_accessibility.adb:32:13: info: implicit aspect Always_Terminates on "OK2" h
 test_accessibility.adb:33:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility.adb:39:13: info: implicit aspect Always_Terminates on "OK3" has been proved, subprogram will terminate
 test_accessibility.adb:40:14: info: postcondition proved (CVC5: 1 VC)
-test_accessibility.adb:43:14: medium: dynamic accessibility check might fail [possible fix: subprogram at line 39 should mention X in a precondition]
+test_accessibility.adb:43:14: medium: dynamic accessibility check might fail [possible explanation: part of a local object has a local accessibility level] [possible fix: subprogram at line 39 should mention X in a precondition]
 test_accessibility.adb:48:13: info: implicit aspect Always_Terminates on "OK4" has been proved, subprogram will terminate
 test_accessibility.adb:49:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility.adb:56:17: info: dynamic accessibility check proved (Trivial)
@@ -18,19 +18,19 @@ test_accessibility.adb:56:17: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility.adb:60:13: info: implicit aspect Always_Terminates on "KO1" has been proved, subprogram will terminate
 test_accessibility.adb:61:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility.adb:68:17: info: null exclusion check proved (CVC5: 1 VC)
-test_accessibility.adb:68:17: medium: dynamic accessibility check might fail
+test_accessibility.adb:68:17: medium: dynamic accessibility check might fail [possible explanation: part of a local object has a local accessibility level]
 test_accessibility.adb:72:13: info: implicit aspect Always_Terminates on "KO2" has been proved, subprogram will terminate
 test_accessibility.adb:73:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility.adb:79:17: info: null exclusion check proved (CVC5: 1 VC)
-test_accessibility.adb:79:17: medium: dynamic accessibility check might fail
+test_accessibility.adb:79:17: medium: dynamic accessibility check might fail [possible explanation: part of a local object has a local accessibility level]
 test_accessibility.adb:83:13: info: implicit aspect Always_Terminates on "KO3" has been proved, subprogram will terminate
 test_accessibility.adb:84:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility.adb:91:17: info: null exclusion check proved (CVC5: 1 VC)
-test_accessibility.adb:91:17: medium: dynamic accessibility check might fail
+test_accessibility.adb:91:17: medium: dynamic accessibility check might fail [possible explanation: part of a traversal function call whose master is local has a local accessibility level]
 test_accessibility.adb:95:13: info: implicit aspect Always_Terminates on "KO4" has been proved, subprogram will terminate
 test_accessibility.adb:96:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility.adb:102:17: info: null exclusion check proved (CVC5: 1 VC)
-test_accessibility.adb:102:17: medium: dynamic accessibility check might fail
+test_accessibility.adb:102:17: medium: dynamic accessibility check might fail [possible explanation: part of a traversal function call whose master is local has a local accessibility level]
 test_accessibility_2.adb:14:13: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
 test_accessibility_2.adb:19:13: info: implicit aspect Always_Terminates on "Hidden_Access" has been proved, subprogram will terminate
 test_accessibility_2.adb:20:14: info: postcondition proved (CVC5: 1 VC)
@@ -53,15 +53,15 @@ test_accessibility_2.adb:66:13: info: implicit aspect Always_Terminates on "KO2"
 test_accessibility_2.adb:67:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility_2.adb:72:47: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility_2.adb:74:17: info: null exclusion check proved (CVC5: 1 VC)
-test_accessibility_2.adb:74:17: medium: dynamic accessibility check might fail
+test_accessibility_2.adb:74:17: medium: dynamic accessibility check might fail [possible explanation: part of a traversal function call whose master is local has a local accessibility level]
 test_accessibility_2.adb:78:13: info: implicit aspect Always_Terminates on "KO3" has been proved, subprogram will terminate
 test_accessibility_2.adb:79:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility_2.adb:85:17: info: null exclusion check proved (CVC5: 1 VC)
-test_accessibility_2.adb:85:17: medium: dynamic accessibility check might fail
+test_accessibility_2.adb:85:17: medium: dynamic accessibility check might fail [possible explanation: part of a traversal function call whose master is local has a local accessibility level]
 test_accessibility_2.adb:89:13: info: implicit aspect Always_Terminates on "KO4" has been proved, subprogram will terminate
 test_accessibility_2.adb:90:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility_2.adb:96:17: info: null exclusion check proved (CVC5: 1 VC)
-test_accessibility_2.adb:96:17: medium: dynamic accessibility check might fail
+test_accessibility_2.adb:96:17: medium: dynamic accessibility check might fail [possible explanation: part of a traversal function call whose master is local has a local accessibility level]
 test_accessibility_2.adb:100:13: info: implicit aspect Always_Terminates on "OK5" has been proved, subprogram will terminate
 test_accessibility_2.adb:101:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility_2.adb:107:17: info: dynamic accessibility check proved (Trivial)
@@ -70,11 +70,11 @@ test_accessibility_2.adb:111:13: info: implicit aspect Always_Terminates on "KO6
 test_accessibility_2.adb:112:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility_2.adb:117:47: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility_2.adb:119:17: info: null exclusion check proved (CVC5: 1 VC)
-test_accessibility_2.adb:119:17: medium: dynamic accessibility check might fail
+test_accessibility_2.adb:119:17: medium: dynamic accessibility check might fail [possible explanation: part of a traversal function call whose master is local has a local accessibility level]
 test_accessibility_2.adb:123:13: info: implicit aspect Always_Terminates on "KO7" has been proved, subprogram will terminate
 test_accessibility_2.adb:124:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility_2.adb:130:17: info: null exclusion check proved (CVC5: 1 VC)
-test_accessibility_2.adb:130:17: medium: dynamic accessibility check might fail
+test_accessibility_2.adb:130:17: medium: dynamic accessibility check might fail [possible explanation: part of a traversal function call whose master is local has a local accessibility level]
 test_accessibility_2.adb:134:13: info: implicit aspect Always_Terminates on "OK8" has been proved, subprogram will terminate
 test_accessibility_2.adb:135:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility_2.adb:141:17: info: dynamic accessibility check proved (Trivial)
@@ -182,4 +182,4 @@ test_accessibility_list.adb:61:15: info: predicate check proved (Trivial: 1 VC)
 test_accessibility_list.adb:61:17: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 test_accessibility_list.adb:61:19: info: predicate check proved (Trivial: 1 VC)
 test_accessibility_list.adb:66:17: info: null exclusion check proved (CVC5: 1 VC)
-test_accessibility_list.adb:66:17: medium: dynamic accessibility check might fail
+test_accessibility_list.adb:66:17: medium: dynamic accessibility check might fail [possible explanation: part of a local object has a local accessibility level]
