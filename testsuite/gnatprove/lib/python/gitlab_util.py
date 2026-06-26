@@ -191,6 +191,52 @@ def download_test_results(gl, project_desc, pipeline_id):
     return result
 
 
+def issue_status_name(gl, project_path, iid):
+    """Return the work item Status name of an issue, e.g. "Won't do".
+
+    The Status field is not exposed by the REST API, so this queries GraphQL
+    through the same client (and proxy/token) used for REST calls.
+
+    Return None only when the query succeeds but the issue has no resolvable
+    status. Raise RuntimeError when the status cannot be looked up at all (a
+    network or HTTP failure, or a GraphQL-level error), so that callers can
+    tell a genuine "no status" apart from a failed lookup.
+    """
+    query = (
+        "query($path: ID!, $iid: String!) {"
+        " project(fullPath: $path) {"
+        " issue(iid: $iid) { status { name } } } }"
+    )
+    headers = {}
+    token = getattr(gl, "private_token", None)
+    if token:
+        headers["PRIVATE-TOKEN"] = token
+    try:
+        resp = gl.session.post(
+            f"{gl.url}/api/graphql",
+            json={"query": query, "variables": {"path": project_path, "iid": str(iid)}},
+            headers=headers,
+            timeout=30,
+        )
+        resp.raise_for_status()
+        payload = resp.json()
+    except Exception as exc:
+        raise RuntimeError(
+            f"could not query issue status for {project_path}#{iid}"
+        ) from exc
+    # A successful HTTP response can still carry GraphQL-level errors; in that
+    # case the data is not trustworthy, so treat it as a lookup failure.
+    if payload.get("errors"):
+        raise RuntimeError(
+            f"could not query issue status for {project_path}#{iid}: "
+            f"{payload['errors']}"
+        )
+    project = (payload.get("data") or {}).get("project") or {}
+    issue = project.get("issue") or {}
+    status = issue.get("status") or {}
+    return status.get("name")
+
+
 def trigger_pipeline(gl, project_id, ref, variables=None):
     """Trigger a pipeline on ref and return (pipeline_id, web_url).
 
