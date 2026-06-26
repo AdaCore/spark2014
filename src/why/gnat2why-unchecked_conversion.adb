@@ -1365,6 +1365,8 @@ package body Gnat2Why.Unchecked_Conversion is
                     or else not Compile_Time_Known_Value (High_Bound (Rng))
                   then
                      Result := False;
+                     Explanation :=
+                       To_Unbounded_String (Typ_Name & " has dynamic bounds");
                      return;
                   end if;
 
