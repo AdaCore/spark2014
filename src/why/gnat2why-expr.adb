@@ -15083,7 +15083,8 @@ package body Gnat2Why.Expr is
       --  If For_Input is false and E is a function, add the invariants of its
       --  result.
 
-      if not For_Input and then Ekind (E) = E_Function then
+      if not For_Input and then Ekind (E) = E_Function and then not Exceptional
+      then
          declare
             Result : constant W_Term_Id :=
               (if not Result_Is_Mutable
