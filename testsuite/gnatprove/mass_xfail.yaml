@@ -12,19 +12,6 @@
 
 location: "tests"
 rules:
-  - description: crash on large number in representation data
-    issue: eng/spark/spark2014#1377
-    action: xfail
-    tests:
-      - N805-022__unsigned
-      - NC23-020__bitwise
-      - NC26-005__bitwise
-      - NC26-006__bitwise
-      - O204-045__modular
-      - O501-016__array_of_bv
-      - P530-022__loopinv
-      - RA18-029__length
-      - U908-033__hidden_pointers
   - description: minor platform diffs for ARM
     issue: eng/spark/spark2014#965
     discs: ["aarch64-linux"]
