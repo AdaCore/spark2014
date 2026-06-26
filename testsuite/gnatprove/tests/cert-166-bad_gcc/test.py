@@ -18,6 +18,6 @@ with open("test.gpr", "w") as f:
     f.write("   package Compiler is\n")
     f.write('   for Driver ("Ada") use "' + bad_gnat_path + '";\n')
     f.write("   end Compiler;\n")
-    f.write("end Test;")
+    f.write("end Test;\n")
 
-prove_all()
+prove_all(sort_output=False)
