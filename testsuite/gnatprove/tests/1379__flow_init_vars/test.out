@@ -1,0 +1,21 @@
+vectors.adb:9:07: info: only expected exception raised (CVC5: 1 VC)
+vectors.ads:9:22: medium: "Container.Capacity" might not be initialized in "Delete" [reason for check: OUT parameter should be fully initialized on return] [possible explanation: value of "Container.Capacity" is unknown following exceptional exit] [possible fix: initialize "Container.Capacity" on all paths or annotate it with aspect Relaxed_Initialization]
+vectors.ads:9:22: medium: "Container.Dummy" might not be initialized in "Delete" [reason for check: OUT parameter should be fully initialized on return] [possible explanation: value of "Container.Dummy" is unknown following exceptional exit] [possible fix: initialize "Container.Dummy" on all paths or annotate it with aspect Relaxed_Initialization]
+vectors.ads:9:22: medium: "Container.Foo" might not be initialized in "Delete" [reason for check: OUT parameter should be fully initialized on return] [possible explanation: value of "Container.Foo" is unknown following exceptional exit] [possible fix: initialize "Container.Foo" on all paths or annotate it with aspect Relaxed_Initialization]
+vectors.ads:11:06: info: data dependencies proved
+vectors.ads:14:11: info: exit case proved (CVC5: 1 VC)
+vectors.ads:14:11: info: exit case proved (CVC5: 1 VC; Trivial: 1 VC)
+vectors.ads:14:11: info: on exceptional exit from "Delete" at vectors.ads:9
+vectors.ads:14:11: info: on normal return from "Delete" at vectors.ads:9
+vectors.ads:15:19: info: exit case proved (CVC5: 1 VC)
+vectors.ads:15:19: info: on exceptional exit from "Delete" at vectors.ads:9
+vectors.ads:18:07: warning: "Container" is not modified, could be IN
+vectors.ads:18:07: warning: unused variable "Container"
+vectors.ads:18:51: warning: unused variable "Count"
+vectors.ads:20:06: info: data dependencies proved
+vectors.ads:23:11: info: exit case proved (CVC5: 1 VC; Trivial: 1 VC)
+vectors.ads:23:11: info: on exceptional exit from "Delete" at vectors.ads:17
+vectors.ads:23:11: medium: exit case might fail
+vectors.ads:23:11: medium: on normal return from "Delete" at vectors.ads:17
+vectors.ads:24:19: info: exit case proved (CVC5: 1 VC)
+vectors.ads:24:19: info: on exceptional exit from "Delete" at vectors.ads:17
