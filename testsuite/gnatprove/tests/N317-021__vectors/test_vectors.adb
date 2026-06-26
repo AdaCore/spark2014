@@ -1,5 +1,6 @@
 with Indefinite_Unbounded;
 with Indefinite_Unbounded_Tagged;
+with Unbounded;
 
 procedure Test_Vectors is
 begin

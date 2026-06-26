@@ -35,7 +35,7 @@ is
          pragma Assert (Element (W, 2) = 2);
          pragma Assert (Element (W, 3) = 3);
 
-         Append (W, V);
+         Append_Vector (W, V);
          pragma Assert (not Is_Empty (W));
          pragma Assert (Length (W) = 6);
          pragma Assert (Element (W, 1) = 1);

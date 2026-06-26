@@ -1,3 +1,4 @@
+indefinite_unbounded.adb:7:13: info: implicit aspect Always_Terminates on "Lt" has been proved, subprogram will terminate
 indefinite_unbounded.adb:11:07: info: initialization of "V" proved
 indefinite_unbounded.adb:14:22: info: assertion proved (CVC5: 1 VC)
 indefinite_unbounded.adb:15:22: info: assertion proved (CVC5: 1 VC)
@@ -83,18 +84,20 @@ indefinite_unbounded.adb:89:22: info: assertion proved (CVC5: 1 VC)
 indefinite_unbounded.adb:90:22: info: assertion proved (CVC5: 1 VC)
 indefinite_unbounded.adb:91:22: info: assertion proved (CVC5: 1 VC)
 indefinite_unbounded.adb:92:22: info: assertion proved (CVC5: 1 VC)
-indefinite_unbounded.adb:94:22: info: assertion proved (Z3: 1 VC)
+indefinite_unbounded.adb:94:22: info: assertion proved (altergo: 1 VC)
 indefinite_unbounded.adb:96:22: info: assertion proved (CVC5: 1 VC)
 indefinite_unbounded.adb:97:22: info: assertion proved (CVC5: 1 VC)
-indefinite_unbounded.adb:98:22: info: assertion proved (Z3: 1 VC)
+indefinite_unbounded.adb:98:22: info: assertion proved (altergo: 1 VC)
 indefinite_unbounded.adb:98:22: info: precondition proved (CVC5: 2 VC)
-indefinite_unbounded.adb:99:22: info: assertion proved (Z3: 1 VC)
+indefinite_unbounded.adb:99:22: info: assertion proved (altergo: 1 VC)
 indefinite_unbounded.adb:99:22: info: precondition proved (CVC5: 2 VC)
 indefinite_unbounded.adb:100:22: info: assertion proved (CVC5: 1 VC)
 indefinite_unbounded.adb:102:07: info: precondition proved (CVC5: 2 VC)
 indefinite_unbounded.adb:102:30: info: precondition proved (CVC5: 2 VC)
 indefinite_unbounded.adb:104:07: medium: assertion might fail
 indefinite_unbounded.ads:14:14: warning: subprogram "Test" has no effect
+indefinite_unbounded_tagged.adb:6:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+indefinite_unbounded_tagged.adb:8:13: info: implicit aspect Always_Terminates on "Lt" has been proved, subprogram will terminate
 indefinite_unbounded_tagged.adb:12:07: info: initialization of "V" proved
 indefinite_unbounded_tagged.adb:15:22: info: assertion proved (CVC5: 1 VC)
 indefinite_unbounded_tagged.adb:16:22: info: assertion proved (CVC5: 1 VC)
@@ -183,67 +186,115 @@ indefinite_unbounded_tagged.adb:93:22: info: assertion proved (CVC5: 1 VC)
 indefinite_unbounded_tagged.adb:95:22: info: assertion proved (Z3: 1 VC)
 indefinite_unbounded_tagged.adb:97:22: info: assertion proved (CVC5: 1 VC)
 indefinite_unbounded_tagged.adb:98:22: info: assertion proved (CVC5: 1 VC)
-indefinite_unbounded_tagged.adb:99:22: info: assertion proved (Trivial: 1 VC; Z3: 2 VC)
+indefinite_unbounded_tagged.adb:99:22: info: assertion proved (Trivial: 1 VC; Z3: 1 VC; altergo: 1 VC)
 indefinite_unbounded_tagged.adb:99:22: info: precondition proved (CVC5: 2 VC)
-indefinite_unbounded_tagged.adb:100:22: info: assertion proved (Trivial: 1 VC; Z3: 2 VC)
+indefinite_unbounded_tagged.adb:100:22: info: assertion proved (Trivial: 1 VC; Z3: 1 VC; altergo: 1 VC)
 indefinite_unbounded_tagged.adb:100:22: info: precondition proved (CVC5: 2 VC)
 indefinite_unbounded_tagged.adb:101:22: info: assertion proved (CVC5: 1 VC)
 indefinite_unbounded_tagged.adb:103:07: info: precondition proved (CVC5: 2 VC)
 indefinite_unbounded_tagged.adb:103:30: info: precondition proved (CVC5: 2 VC)
 indefinite_unbounded_tagged.adb:105:07: medium: assertion might fail
 indefinite_unbounded_tagged.ads:20:14: warning: subprogram "Test" has no effect
-spark-containers-formal-unbounded_vectors.ads:36:18: info: subprogram "OEQR" will terminate, aspect Always_Terminates has been proved, in instantiation at indefinite_unbounded_tagged.ads:15
-spark-containers-formal-unbounded_vectors.ads:263:13: info: subprogram "At_End" will terminate, aspect Always_Terminates has been proved, in instantiation at indefinite_unbounded.ads:9
-spark-containers-formal-unbounded_vectors.ads:263:13: info: subprogram "At_End" will terminate, aspect Always_Terminates has been proved, in instantiation at indefinite_unbounded_tagged.ads:15
-spark-containers-formal-unbounded_vectors.ads:264:08: info: dynamic accessibility check proved (Trivial), in instantiation at indefinite_unbounded.ads:9
-spark-containers-formal-unbounded_vectors.ads:264:08: info: dynamic accessibility check proved (Trivial), in instantiation at indefinite_unbounded_tagged.ads:15
-spark-containers-formal-unbounded_vectors.ads:268:13: info: subprogram "At_End" will terminate, aspect Always_Terminates has been proved, in instantiation at indefinite_unbounded.ads:9
-spark-containers-formal-unbounded_vectors.ads:268:13: info: subprogram "At_End" will terminate, aspect Always_Terminates has been proved, in instantiation at indefinite_unbounded_tagged.ads:15
-spark-containers-formal-unbounded_vectors.ads:270:08: info: dynamic accessibility check proved (Trivial), in instantiation at indefinite_unbounded.ads:9
-spark-containers-formal-unbounded_vectors.ads:270:08: info: dynamic accessibility check proved (Trivial), in instantiation at indefinite_unbounded_tagged.ads:15
-spark-containers-formal-unbounded_vectors.ads:289:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at indefinite_unbounded.ads:9
-spark-containers-formal-unbounded_vectors.ads:289:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at indefinite_unbounded_tagged.ads:15
-spark-containers-formal-unbounded_vectors.ads:289:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at indefinite_unbounded.ads:9
-spark-containers-formal-unbounded_vectors.ads:289:69: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at indefinite_unbounded_tagged.ads:15
-spark-containers-formal-unbounded_vectors.ads:312:41: info: overflow check proved (CVC5: 2 VC), in instantiation at indefinite_unbounded.ads:9
-spark-containers-formal-unbounded_vectors.ads:312:41: info: overflow check proved (CVC5: 2 VC), in instantiation at indefinite_unbounded_tagged.ads:15
-spark-containers-formal-unbounded_vectors.ads:354:73: info: overflow check proved (CVC5: 2 VC), in instantiation at indefinite_unbounded.ads:9
-spark-containers-formal-unbounded_vectors.ads:354:73: info: overflow check proved (CVC5: 2 VC), in instantiation at indefinite_unbounded_tagged.ads:15
-spark-containers-formal-unbounded_vectors.ads:387:41: info: overflow check proved (CVC5: 2 VC), in instantiation at indefinite_unbounded.ads:9
-spark-containers-formal-unbounded_vectors.ads:387:41: info: overflow check proved (CVC5: 2 VC), in instantiation at indefinite_unbounded_tagged.ads:15
-spark-containers-formal-unbounded_vectors.ads:422:49: info: overflow check proved (CVC5: 2 VC), in instantiation at indefinite_unbounded.ads:9
-spark-containers-formal-unbounded_vectors.ads:422:49: info: overflow check proved (CVC5: 2 VC), in instantiation at indefinite_unbounded_tagged.ads:15
-spark-containers-formal-unbounded_vectors.ads:468:49: info: overflow check proved (CVC5: 2 VC), in instantiation at indefinite_unbounded.ads:9
-spark-containers-formal-unbounded_vectors.ads:468:49: info: overflow check proved (CVC5: 2 VC), in instantiation at indefinite_unbounded_tagged.ads:15
-spark-containers-formal-unbounded_vectors.ads:491:49: info: overflow check proved (CVC5: 2 VC), in instantiation at indefinite_unbounded.ads:9
-spark-containers-formal-unbounded_vectors.ads:491:49: info: overflow check proved (CVC5: 2 VC), in instantiation at indefinite_unbounded_tagged.ads:15
-spark-containers-formal-unbounded_vectors.ads:532:49: info: overflow check proved (CVC5: 2 VC), in instantiation at indefinite_unbounded.ads:9
-spark-containers-formal-unbounded_vectors.ads:532:49: info: overflow check proved (CVC5: 2 VC), in instantiation at indefinite_unbounded_tagged.ads:15
-spark-containers-formal-unbounded_vectors.ads:597:28: info: overflow check proved (CVC5: 2 VC), in instantiation at indefinite_unbounded.ads:9
-spark-containers-formal-unbounded_vectors.ads:597:28: info: overflow check proved (CVC5: 2 VC), in instantiation at indefinite_unbounded_tagged.ads:15
-spark-containers-formal-unbounded_vectors.ads:597:57: info: range check proved (CVC5: 2 VC), in instantiation at indefinite_unbounded.ads:9
-spark-containers-formal-unbounded_vectors.ads:597:57: info: range check proved (CVC5: 2 VC), in instantiation at indefinite_unbounded_tagged.ads:15
-spark-containers-formal-unbounded_vectors.ads:725:23: info: precondition proved (CVC5: 1 VC), in instantiation at indefinite_unbounded.ads:9
-spark-containers-formal-unbounded_vectors.ads:725:23: info: precondition proved (CVC5: 1 VC), in instantiation at indefinite_unbounded_tagged.ads:15
-spark-containers-formal-unbounded_vectors.ads:761:14: info: precondition proved (CVC5: 1 VC), in instantiation at indefinite_unbounded.ads:9
-spark-containers-formal-unbounded_vectors.ads:761:14: info: precondition proved (CVC5: 1 VC), in instantiation at indefinite_unbounded_tagged.ads:15
-spark-containers-formal-unbounded_vectors.ads:858:49: info: overflow check proved (CVC5: 2 VC), in instantiation at indefinite_unbounded.adb:8
-spark-containers-formal-unbounded_vectors.ads:858:49: info: overflow check proved (CVC5: 2 VC), in instantiation at indefinite_unbounded_tagged.adb:9
-spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, aspect Always_Terminates has been proved, in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at indefinite_unbounded.ads:9
-spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, aspect Always_Terminates has been proved, in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at indefinite_unbounded_tagged.ads:15
-spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at indefinite_unbounded.ads:9
-spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at indefinite_unbounded_tagged.ads:15
-spark-containers-functional-vectors.ads:233:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at indefinite_unbounded.ads:9
-spark-containers-functional-vectors.ads:233:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at indefinite_unbounded_tagged.ads:15
-spark-containers-functional-vectors.ads:238:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at indefinite_unbounded.ads:9
-spark-containers-functional-vectors.ads:238:63: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at indefinite_unbounded_tagged.ads:15
-spark-containers-functional-vectors.ads:239:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at indefinite_unbounded.ads:9
-spark-containers-functional-vectors.ads:239:59: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at indefinite_unbounded_tagged.ads:15
-spark-containers-functional-vectors.ads:239:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at indefinite_unbounded.ads:9
-spark-containers-functional-vectors.ads:239:76: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at indefinite_unbounded_tagged.ads:15
-spark-containers-functional-vectors.ads:240:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at indefinite_unbounded.ads:9
-spark-containers-functional-vectors.ads:240:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at indefinite_unbounded_tagged.ads:15
-spark-containers-functional-vectors.ads:301:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at indefinite_unbounded.ads:9
-spark-containers-functional-vectors.ads:301:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at indefinite_unbounded_tagged.ads:15
-spark-containers-functional-vectors.ads:340:13: info: subprogram "Copy_Element" will terminate, aspect Always_Terminates has been proved, in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at indefinite_unbounded.ads:9
-spark-containers-functional-vectors.ads:340:13: info: subprogram "Copy_Element" will terminate, aspect Always_Terminates has been proved, in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at indefinite_unbounded_tagged.ads:15
+spark-containers-formal-unbounded_vectors.ads:19:18: medium: implicit aspect Always_Terminates on "Oeqr" could be incorrect, indirect dispatching call to record equality might be nonterminating, in instantiation at indefinite_unbounded_tagged.ads:15 [possible explanation: call could hide recursive calls]
+spark-containers-parameter_checks.ads:46:36: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_vectors.ads:116, in instantiation at indefinite_unbounded_tagged.ads:15
+spark-containers-parameter_checks.ads:49:54: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_vectors.ads:116, in instantiation at indefinite_unbounded_tagged.ads:15
+spark-containers-parameter_checks.ads:52:68: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_vectors.ads:116, in instantiation at indefinite_unbounded_tagged.ads:15
+spark-containers-parameter_checks.ads:225:50: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_vectors.ads:1011, in instantiation at indefinite_unbounded_tagged.adb:9
+unbounded.adb:6:13: info: implicit aspect Always_Terminates on "Lt" has been proved, subprogram will terminate
+unbounded.adb:10:07: info: initialization of "V" proved
+unbounded.adb:13:22: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:14:22: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:16:07: info: precondition proved (CVC5: 1 VC)
+unbounded.adb:17:07: info: precondition proved (CVC5: 1 VC)
+unbounded.adb:18:07: info: precondition proved (CVC5: 1 VC)
+unbounded.adb:19:22: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:20:22: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:21:22: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:21:22: info: precondition proved (CVC5: 2 VC)
+unbounded.adb:22:22: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:22:22: info: precondition proved (CVC5: 2 VC)
+unbounded.adb:23:22: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:23:22: info: precondition proved (CVC5: 2 VC)
+unbounded.adb:25:22: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:26:22: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:31:25: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:32:25: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:33:25: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:33:25: info: precondition proved (CVC5: 2 VC)
+unbounded.adb:34:25: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:34:25: info: precondition proved (CVC5: 2 VC)
+unbounded.adb:35:25: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:35:25: info: precondition proved (CVC5: 2 VC)
+unbounded.adb:37:10: info: precondition proved (CVC5: 1 VC)
+unbounded.adb:38:25: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:39:25: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:40:25: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:40:25: info: precondition proved (CVC5: 2 VC)
+unbounded.adb:41:25: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:41:25: info: precondition proved (CVC5: 2 VC)
+unbounded.adb:42:25: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:42:25: info: precondition proved (CVC5: 2 VC)
+unbounded.adb:43:25: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:43:25: info: precondition proved (CVC5: 2 VC)
+unbounded.adb:44:25: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:44:25: info: precondition proved (CVC5: 2 VC)
+unbounded.adb:45:25: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:45:25: info: precondition proved (CVC5: 2 VC)
+unbounded.adb:48:25: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:49:25: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:52:07: info: precondition proved (CVC5: 2 VC)
+unbounded.adb:53:22: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:53:22: info: precondition proved (CVC5: 2 VC)
+unbounded.adb:54:22: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:54:22: info: precondition proved (CVC5: 2 VC)
+unbounded.adb:55:22: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:55:22: info: precondition proved (CVC5: 2 VC)
+unbounded.adb:57:07: info: precondition proved (CVC5: 4 VC)
+unbounded.adb:58:22: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:58:22: info: precondition proved (CVC5: 2 VC)
+unbounded.adb:59:22: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:59:22: info: precondition proved (CVC5: 2 VC)
+unbounded.adb:60:22: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:60:22: info: precondition proved (CVC5: 2 VC)
+unbounded.adb:62:07: info: precondition proved (CVC5: 1 VC)
+unbounded.adb:63:22: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:64:22: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:65:22: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:65:22: info: precondition proved (CVC5: 2 VC)
+unbounded.adb:66:22: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:66:22: info: precondition proved (CVC5: 2 VC)
+unbounded.adb:69:22: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:70:22: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:71:22: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:71:22: info: precondition proved (CVC5: 2 VC)
+unbounded.adb:72:22: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:72:22: info: precondition proved (CVC5: 2 VC)
+unbounded.adb:74:22: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:75:22: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:76:22: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:76:22: info: precondition proved (CVC5: 1 VC)
+unbounded.adb:77:22: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:77:22: info: precondition proved (CVC5: 1 VC)
+unbounded.adb:79:22: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:80:22: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:81:22: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:83:22: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:84:22: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:85:22: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:87:22: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:88:22: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:89:22: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:90:22: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:91:22: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:93:22: info: assertion proved (altergo: 1 VC)
+unbounded.adb:95:22: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:96:22: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:97:22: info: assertion proved (altergo: 1 VC)
+unbounded.adb:97:22: info: precondition proved (CVC5: 2 VC)
+unbounded.adb:98:22: info: assertion proved (altergo: 1 VC)
+unbounded.adb:98:22: info: precondition proved (CVC5: 2 VC)
+unbounded.adb:99:22: info: assertion proved (CVC5: 1 VC)
+unbounded.adb:101:07: info: precondition proved (CVC5: 2 VC)
+unbounded.adb:101:30: info: precondition proved (CVC5: 2 VC)
+unbounded.adb:102:07: medium: assertion might fail
+unbounded.ads:14:14: warning: subprogram "Test" has no effect
