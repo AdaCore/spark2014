@@ -80,20 +80,20 @@ class SPARKControlCreator(AdaCoreLegacyTestControlCreator):
             and "large" not in self.system_tags
         ):
             return TestControl("large test", skip=True, xfail=False)
+        result = super().create(driver)
         for rule in driver.env.skipped_reasons["rules"]:
             if "discs" in rule:
                 if not is_sublist(driver.env.discs, rule["discs"]):
                     continue
             reason_string = f"{rule['description']} ({rule['issue']})"
             if driver.test_name in rule["tests"]:
-                skip = False
-                xfail = False
                 if rule["action"] == "skip":
-                    skip = True
+                    result.skip = True
                 if rule["action"] == "xfail":
-                    xfail = True
-                return TestControl(reason_string, skip=skip, xfail=xfail)
-        return super().create(driver)
+                    result.xfail = True
+                result.message = reason_string
+                return result
+        return result
 
     def __init__(
         self, system_tags: List[str], env=None, opt_filename: str = "test.opt"
