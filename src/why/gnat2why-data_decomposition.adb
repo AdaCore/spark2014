@@ -25,6 +25,7 @@
 
 with Ada.Containers.Indefinite_Hashed_Maps;
 with Ada.Directories;
+with Ada.Exceptions;
 with Ada.Strings.Hash;
 with Ada.Text_IO;
 with GNAT.OS_Lib;
@@ -637,12 +638,11 @@ package body Gnat2Why.Data_Decomposition is
                   File_Names.Insert (Source_File_Name);
                end if;
             exception
-               when others =>
+               when E : others =>
                   Ada.Text_IO.Put_Line
                     (Ada.Text_IO.Standard_Error,
-                     "error: GNAT generated an ill-formed JSON file "
-                     & JSON_File_Name
-                     & " for data representation.");
+                     "error: ill-formed GNAT data representation file at "
+                     & Ada.Exceptions.Exception_Message (E));
                   Ada.Text_IO.Put_Line
                     (Ada.Text_IO.Standard_Error,
                      "error: Try installing a more recent version of GNAT.");
