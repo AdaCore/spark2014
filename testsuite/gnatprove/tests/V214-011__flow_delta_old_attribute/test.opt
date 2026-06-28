@@ -1,1 +1,0 @@
-ALL XFAIL 'Old attribute not supported in delta aggregates (eng/spark/spark2014#47)
