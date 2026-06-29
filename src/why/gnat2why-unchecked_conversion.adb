@@ -26,6 +26,7 @@
 with Ada.Containers.Doubly_Linked_Lists;
 with Common_Containers;           use Common_Containers;
 with GNAT.Source_Info;
+with Gnat2Why_Args;
 with Gnat2Why.Expr;               use Gnat2Why.Expr;
 with GNATCOLL.Symbols;            use GNATCOLL.Symbols;
 with Gnat2Why.Data_Decomposition; use Gnat2Why.Data_Decomposition;
@@ -146,9 +147,9 @@ package body Gnat2Why.Unchecked_Conversion is
    --  validity flag is set to True iff all scalar subcomponents of the return
    --  value are in the bounds of their subtype.
 
-   ------------------------
-   -- Get_UC_Theory_Name --
-   ------------------------
+   ---------------------
+   -- Get_UC_Function --
+   ---------------------
 
    function Get_UC_Function
      (Source_Type, Target_Type : Type_Kind_Id; Potentially_Invalid : Boolean)
@@ -156,6 +157,17 @@ package body Gnat2Why.Unchecked_Conversion is
    is (M_UCs
          (Get_UC_Theory_Name (Source_Type, Target_Type, Potentially_Invalid))
          .UC_Id);
+
+   ----------------------------
+   -- Get_UC_Guard_Predicate --
+   ----------------------------
+
+   function Get_UC_Guard_Predicate
+     (Source_Type, Target_Type : Type_Kind_Id; Potentially_Invalid : Boolean)
+      return W_Identifier_Id
+   is (M_UCs
+         (Get_UC_Theory_Name (Source_Type, Target_Type, Potentially_Invalid))
+         .Guard_Id);
 
    ------------------------
    -- Get_UC_Theory_Name --
@@ -1352,7 +1364,8 @@ package body Gnat2Why.Unchecked_Conversion is
                   if not Compile_Time_Known_Value (Low_Bound (Rng))
                     or else not Compile_Time_Known_Value (High_Bound (Rng))
                   then
-                     raise Program_Error;
+                     Result := False;
+                     return;
                   end if;
 
                   Size :=
@@ -1623,12 +1636,22 @@ package body Gnat2Why.Unchecked_Conversion is
       declare
          UC_Module : constant W_Module_Id :=
            New_Module (File => No_Symbol, Name => Module_Name);
+         Why_Ty    : constant W_Type_Id :=
+           (if Potentially_Invalid
+            then Validity_Wrapper_Type (Target_Type)
+            else Type_Of_Node (Target_Type));
          UC_Id     : constant W_Identifier_Id :=
            New_Identifier
              (Symb   => NID (To_String (WNE_UC_Function)),
               Module => UC_Module,
               Domain => EW_Term,
               Typ    => Type_Of_Node (Target_Type));
+         Guard_Id  : constant W_Identifier_Id :=
+           New_Identifier
+             (Symb   =>
+                NID (To_String (WNE_UC_Function) & "__" & Function_Guard),
+              Module => UC_Module,
+              Domain => EW_Pred);
          Source_Id : constant W_Identifier_Id :=
            New_Temp_Identifier
              (Base_Name => "source", Typ => Type_Of_Node (Source_Type));
@@ -1636,7 +1659,7 @@ package body Gnat2Why.Unchecked_Conversion is
          Def       : W_Term_Id;
 
       begin
-         M_UCs.Insert (Module_Name, (UC_Module, UC_Id));
+         M_UCs.Insert (Module_Name, (UC_Module, UC_Id, Guard_Id));
 
          Th :=
            Open_Theory
@@ -1720,10 +1743,92 @@ package body Gnat2Why.Unchecked_Conversion is
                Location    => No_Location,
                Labels      => Symbol_Sets.Empty_Set,
                Def         => +Def,
-               Return_Type =>
-                 (if Potentially_Invalid
-                  then Validity_Wrapper_Type (Target_Type)
-                  else Type_Of_Node (Target_Type))));
+               Return_Type => Why_Ty));
+
+         --  Generate an axiom for the dynamic property of the result. It is
+         --  guarded by a function guard, in case the user generates an UC that
+         --  might return invalid values.
+
+         declare
+            Result_Id         : constant W_Identifier_Id :=
+              New_Temp_Identifier (Base_Name => "result", Typ => Why_Ty);
+            Result_Value      : constant W_Term_Id :=
+              (if Potentially_Invalid
+               then
+                 +New_Function_Valid_Value_Access
+                    (Ty => Target_Type, Name => +Result_Id)
+               else +Result_Id);
+            Result_Valid_Flag : constant W_Term_Id :=
+              (if Potentially_Invalid
+               then
+                 +New_Function_Valid_Flag_Access
+                    (Ty => Target_Type, Name => +Result_Id)
+               else Why_Empty);
+            Guard             : constant W_Pred_Id :=
+              (if Gnat2Why_Args.Proof_Generate_Guards
+                 and then not Precise_UC.Ok
+               then
+                 New_Call
+                   (Name => To_Local (Guard_Id),
+                    Args => (+Result_Id, +Source_Id))
+               else True_Pred);
+            --  The guard is not needed if the conversion is precisely handled.
+            --  Indeed, in this case the dynamic invariant is necessarily
+            --  correct.
+
+            Dynamic_Prop_Param  : constant W_Pred_Id :=
+              +Compute_Dynamic_Inv_And_Initialization
+                 (Expr     => +Source_Id,
+                  Ty       => Source_Type,
+                  Only_Var => False_Term,
+                  Params   => Logic_Params);
+            Dynamic_Prop_Result : constant W_Pred_Id :=
+              +Compute_Dynamic_Inv_And_Initialization
+                 (Expr     => Result_Value,
+                  Ty       => Target_Type,
+                  Only_Var => False_Term,
+                  Valid    => Result_Valid_Flag,
+                  Params   => Logic_Params);
+            Call                : constant W_Term_Id :=
+              New_Call (Name => To_Local (UC_Id), Args => (1 => +Source_Id));
+            Dep                 : constant W_Axiom_Dep_Id :=
+              New_Axiom_Dep (Name => To_Local (UC_Id), Kind => EW_Axdep_Func);
+         begin
+            Emit
+              (Th,
+               New_Function_Decl
+                 (Domain      => EW_Pred,
+                  Name        => To_Local (Guard_Id),
+                  Binders     =>
+                    Binder_Array'
+                      (1 => (B_Name => Result_Id, others => <>),
+                       2 => (B_Name => Source_Id, others => <>)),
+                  Location    => No_Location,
+                  Labels      => Symbol_Sets.Empty_Set,
+                  Return_Type => EW_Bool_Type));
+
+            Emit
+              (Th,
+               New_Guarded_Axiom
+                 (Name     =>
+                    NID (To_String (WNE_UC_Function) & "__" & Post_Axiom),
+                  Binders  =>
+                    Binder_Array'(1 => (B_Name => Source_Id, others => <>)),
+                  Triggers =>
+                    New_Triggers
+                      (Triggers => (1 => New_Trigger (Terms => (1 => +Call)))),
+                  Def      =>
+                    New_Typed_Binding
+                      (Ada_Node => Empty,
+                       Name     => +Result_Id,
+                       Def      => Call,
+                       Context  =>
+                         New_Conditional
+                           (Condition =>
+                              New_And_Pred (Guard, Dynamic_Prop_Param),
+                            Then_Part => Dynamic_Prop_Result)),
+                  Dep      => Dep));
+         end;
 
          Close_Theory (Th, Definition_Theory);
       end;

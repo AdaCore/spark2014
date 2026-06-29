@@ -245,6 +245,7 @@ package body Configuration is
       Sw_Checks_As_Errors,
       Sw_CWE,
       Sw_D,
+      Sw_Debug_Disable_Prover_Feedback,
       Sw_Debug_No_Cache_Output,
       Sw_Debug_Save_VCs,
       Sw_Dbg_No_Sem,
@@ -340,336 +341,341 @@ package body Configuration is
    --  field in the below aggregate definition.
 
    Switch_Definitions : constant array (Switch_Id) of Switch_Metadata :=
-     [Sw_Assumptions           =>
+     [Sw_Assumptions                   =>
         Make_Switch_Metadata
           (Long       => new String'("--assumptions"),
            Value_Kind => Flag_Value,
            Layer      => Invocation_Layer),
-      Sw_Benchmark             =>
+      Sw_Benchmark                     =>
         --  Undocumented switch for fake prover binaries in benchmarks
         Make_Switch_Metadata
           (Long       => new String'("--benchmark"),
            Value_Kind => Flag_Value,
            Layer      => Invocation_Layer),
-      Sw_Checks_As_Errors      =>
+      Sw_Checks_As_Errors              =>
         Make_Switch_Metadata
           (Long       => new String'("--checks-as-errors"),
            Value_Kind => String_Value,
            Layer      => Invocation_Layer),
-      Sw_CWE                   =>
+      Sw_CWE                           =>
         Make_Switch_Metadata
           (Long       => new String'("--cwe"),
            Value_Kind => Flag_Value,
            Layer      => Invocation_Layer),
-      Sw_D                     =>
+      Sw_D                             =>
         Make_Switch_Metadata
           (Short      => new String'("-d"),
            Long       => new String'("--debug"),
            Value_Kind => Flag_Value,
            Layer      => Invocation_Layer),
-      Sw_Debug_No_Cache_Output =>
+      Sw_Debug_Disable_Prover_Feedback =>
+        Make_Switch_Metadata
+          (Long       => new String'("--debug-disable-prover-feedback"),
+           Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_Debug_No_Cache_Output         =>
         Make_Switch_Metadata
           (Long       => new String'("--debug-no-cache-output"),
            Value_Kind => Flag_Value,
            Layer      => Invocation_Layer),
-      Sw_Debug_Save_VCs        =>
+      Sw_Debug_Save_VCs                =>
         Make_Switch_Metadata
           (Long       => new String'("--debug-save-vcs"),
            Value_Kind => Flag_Value,
            Layer      => Invocation_Layer),
-      Sw_Dbg_No_Sem            =>
+      Sw_Dbg_No_Sem                    =>
         Make_Switch_Metadata
           (Long       => new String'("--debug-no-semaphore"),
            Value_Kind => Flag_Value,
            Layer      => Invocation_Layer),
-      Sw_Debug_Prover_Errors   =>
+      Sw_Debug_Prover_Errors           =>
         Make_Switch_Metadata
           (Long       => new String'("--debug-prover-errors"),
            Value_Kind => Flag_Value,
            Layer      => Invocation_Layer),
-      Sw_Exclude_Line          =>
+      Sw_Exclude_Line                  =>
         Make_Switch_Metadata
           (Long       => new String'("--exclude-line"),
            Value_Kind => String_Value,
            Layer      => Invocation_Layer),
-      Sw_Flow_Debug            =>
+      Sw_Flow_Debug                    =>
         Make_Switch_Metadata
           (Long       => new String'("--flow-debug"),
            Value_Kind => Flag_Value,
            Layer      => Invocation_Layer),
-      Sw_Flow_Show_GG          =>
+      Sw_Flow_Show_GG                  =>
         Make_Switch_Metadata
           (Long       => new String'("--flow-show-gg"),
            Value_Kind => Flag_Value,
            Layer      => Invocation_Layer),
-      Sw_F                     =>
+      Sw_F                             =>
         Make_Switch_Metadata
           (Short      => new String'("-f"),
            Value_Kind => Flag_Value,
            Layer      => Invocation_Layer),
-      Sw_IDE_Progress_Bar      =>
+      Sw_IDE_Progress_Bar              =>
         Make_Switch_Metadata
           (Long       => new String'("--ide-progress-bar"),
            Value_Kind => Flag_Value,
            Layer      => Invocation_Layer),
-      Sw_J                     =>
+      Sw_J                             =>
         Make_Switch_Metadata
           (Short      => new String'("-j"),
            Value_Kind => Integer_Value,
            Layer      => Invocation_Layer),
-      Sw_K                     =>
+      Sw_K                             =>
         Make_Switch_Metadata
           (Short      => new String'("-k"),
            Value_Kind => Flag_Value,
            Layer      => Invocation_Layer),
-      Sw_Limit_Line            =>
+      Sw_Limit_Line                    =>
         Make_Switch_Metadata
           (Long       => new String'("--limit-line"),
            Value_Kind => String_Value,
            Layer      => Invocation_Layer),
-      Sw_Limit_Lines           =>
+      Sw_Limit_Lines                   =>
         Make_Switch_Metadata
           (Long       => new String'("--limit-lines"),
            Value_Kind => String_Value,
            Layer      => Invocation_Layer),
-      Sw_Limit_Name            =>
+      Sw_Limit_Name                    =>
         Make_Switch_Metadata
           (Long       => new String'("--limit-name"),
            Value_Kind => String_Value,
            Layer      => Invocation_Layer),
-      Sw_Limit_Region          =>
+      Sw_Limit_Region                  =>
         Make_Switch_Metadata
           (Long       => new String'("--limit-region"),
            Value_Kind => String_Value,
            Layer      => Invocation_Layer),
-      Sw_Limit_Subp            =>
+      Sw_Limit_Subp                    =>
         Make_Switch_Metadata
           (Long       => new String'("--limit-subp"),
            Value_Kind => String_Value,
            Layer      => Invocation_Layer),
-      Sw_Memcached_Server      =>
+      Sw_Memcached_Server              =>
         Make_Switch_Metadata
           (Long       => new String'("--memcached-server"),
            Value_Kind => String_Value,
            Layer      => Invocation_Layer),
-      Sw_M                     =>
+      Sw_M                             =>
         Make_Switch_Metadata
           (Short      => new String'("-m"),
            Value_Kind => Flag_Value,
            Layer      => Invocation_Layer),
-      Sw_No_Axiom_Guard        =>
+      Sw_No_Axiom_Guard                =>
         Make_Switch_Metadata
           (Long       => new String'("--no-axiom-guard"),
            Value_Kind => Flag_Value,
            Layer      => Invocation_Layer),
-      Sw_Function_Sandboxing   =>
+      Sw_Function_Sandboxing           =>
         Make_Switch_Metadata
           (Long       => new String'("--function-sandboxing"),
            Value_Kind => String_Value,
            Layer      => Invocation_Layer),
-      Sw_No_Global_Generation  =>
+      Sw_No_Global_Generation          =>
         Make_Switch_Metadata
           (Long       => new String'("--no-global-generation"),
            Value_Kind => Flag_Value,
            Layer      => Invocation_Layer),
-      Sw_No_Subprojects        =>
+      Sw_No_Subprojects                =>
         Make_Switch_Metadata
           (Long       => new String'("--no-subprojects"),
            Value_Kind => Flag_Value,
            Layer      => Invocation_Layer),
-      Sw_Output                =>
+      Sw_Output                        =>
         Make_Switch_Metadata
           (Long       => new String'("--output"),
            Value_Kind => String_Value,
            Layer      => Invocation_Layer),
-      Sw_Output_Header         =>
+      Sw_Output_Header                 =>
         Make_Switch_Metadata
           (Long       => new String'("--output-header"),
            Value_Kind => Flag_Value,
            Layer      => Invocation_Layer),
-      Sw_Output_Msg_Only       =>
+      Sw_Output_Msg_Only               =>
         Make_Switch_Metadata
           (Long       => new String'("--output-msg-only"),
            Value_Kind => Flag_Value,
            Layer      => Invocation_Layer),
-      Sw_Q                     =>
+      Sw_Q                             =>
         Make_Switch_Metadata
           (Short      => new String'("-q"),
            Long       => new String'("--quiet"),
            Value_Kind => Flag_Value,
            Layer      => Invocation_Layer),
-      Sw_Replay                =>
+      Sw_Replay                        =>
         Make_Switch_Metadata
           (Long       => new String'("--replay"),
            Value_Kind => Flag_Value,
            Layer      => Invocation_Layer),
-      Sw_Report                =>
+      Sw_Report                        =>
         Make_Switch_Metadata
           (Long       => new String'("--report"),
            Value_Kind => String_Value,
            Layer      => Invocation_Layer),
-      Sw_U                     =>
+      Sw_U                             =>
         Make_Switch_Metadata
           (Short      => new String'("-u"),
            Value_Kind => Flag_Value,
            Layer      => Invocation_Layer),
-      Sw_UU                    =>
+      Sw_UU                            =>
         Make_Switch_Metadata
           (Short      => new String'("-U"),
            Value_Kind => Flag_Value,
            Layer      => Invocation_Layer),
-      Sw_V                     =>
+      Sw_V                             =>
         Make_Switch_Metadata
           (Short      => new String'("-v"),
            Long       => new String'("--verbose"),
            Value_Kind => Flag_Value,
            Layer      => Invocation_Layer),
-      Sw_Warnings              =>
+      Sw_Warnings                      =>
         Make_Switch_Metadata
           (Long       => new String'("--warnings"),
            Value_Kind => String_Value,
            Layer      => Invocation_Layer),
-      Sw_Why3_Conf             =>
+      Sw_Why3_Conf                     =>
         Make_Switch_Metadata
           (Long       => new String'("--why3-conf"),
            Value_Kind => String_Value,
            Layer      => Invocation_Layer),
-      Sw_Why3_Debug            =>
+      Sw_Why3_Debug                    =>
         Make_Switch_Metadata
           (Long       => new String'("--why3-debug"),
            Value_Kind => String_Value,
            Layer      => Invocation_Layer),
-      Sw_Why3_Logging          =>
+      Sw_Why3_Logging                  =>
         Make_Switch_Metadata
           (Long       => new String'("--why3-logging"),
            Value_Kind => Flag_Value,
            Layer      => Invocation_Layer),
-      Sw_Why3_Server           =>
+      Sw_Why3_Server                   =>
         Make_Switch_Metadata
           (Long       => new String'("--why3-server"),
            Value_Kind => String_Value,
            Layer      => Invocation_Layer),
-      Sw_SARIF_Base_URI        =>
+      Sw_SARIF_Base_URI                =>
         Make_Switch_Metadata
           (Long       => new String'("--sarif-base-uri"),
            Value_Kind => String_List_Value,
            Layer      => Invocation_Layer),
-      Sw_Z3_Counterexample     =>
+      Sw_Z3_Counterexample             =>
         Make_Switch_Metadata
           (Long       => new String'("--z3-counterexample"),
            Value_Kind => Flag_Value,
            Layer      => Invocation_Layer),
-      Sw_Gnattest_Values       =>
+      Sw_Gnattest_Values               =>
         Make_Switch_Metadata
           (Long       => new String'("--gnattest-values"),
            Value_Kind => String_Value,
            Layer      => Invocation_Layer),
-      Sw_Debug_Exec_RAC        =>
+      Sw_Debug_Exec_RAC                =>
         Make_Switch_Metadata
           (Long       => new String'("--debug-exec-rac"),
            Value_Kind => Flag_Value,
            Layer      => Invocation_Layer),
-      Sw_Proof_Manifest        =>
+      Sw_Proof_Manifest                =>
         Make_Switch_Metadata
           (Long       => new String'("--proof-manifest-dir"),
            Value_Kind => String_Value,
            Layer      => Invocation_Layer),
-      Sw_Level                 =>
+      Sw_Level                         =>
         Make_Switch_Metadata
           (Long       => new String'("--level"),
            Value_Kind => Integer_Value,
            Layer      => File_Specific_Layer),
-      Sw_Memlimit              =>
+      Sw_Memlimit                      =>
         Make_Switch_Metadata
           (Long       => new String'("--memlimit"),
            Value_Kind => Integer_Value,
            Layer      => File_Specific_Layer),
-      Sw_Counterexamples       =>
+      Sw_Counterexamples               =>
         Make_Switch_Metadata
           (Long       => new String'("--counterexamples"),
            Value_Kind => String_Value,
            Layer      => File_Specific_Layer),
-      Sw_Check_Counterexamples =>
+      Sw_Check_Counterexamples         =>
         Make_Switch_Metadata
           (Long       => new String'("--check-counterexamples"),
            Value_Kind => String_Value,
            Layer      => File_Specific_Layer),
-      Sw_Mode                  =>
+      Sw_Mode                          =>
         Make_Switch_Metadata
           (Long       => new String'("--mode"),
            Value_Kind => String_Value,
            Layer      => File_Specific_Layer),
-      Sw_No_Counterexample     =>
+      Sw_No_Counterexample             =>
         Make_Switch_Metadata
           (Long       => new String'("--no-counterexample"),
            Value_Kind => Flag_Value,
            Layer      => File_Specific_Layer),
-      Sw_No_Inlining           =>
+      Sw_No_Inlining                   =>
         Make_Switch_Metadata
           (Long       => new String'("--no-inlining"),
            Value_Kind => Flag_Value,
            Layer      => File_Specific_Layer),
-      Sw_No_Loop_Unrolling     =>
+      Sw_No_Loop_Unrolling             =>
         Make_Switch_Metadata
           (Long       => new String'("--no-loop-unrolling"),
            Value_Kind => Flag_Value,
            Layer      => File_Specific_Layer),
-      Sw_Proof                 =>
+      Sw_Proof                         =>
         Make_Switch_Metadata
           (Long       => new String'("--proof"),
            Value_Kind => String_Value,
            Layer      => File_Specific_Layer),
-      Sw_Proof_Warnings        =>
+      Sw_Proof_Warnings                =>
         Make_Switch_Metadata
           (Long       => new String'("--proof-warnings"),
            Value_Kind => String_Value,
            Layer      => File_Specific_Layer),
-      Sw_Proof_Warn_Timeout    =>
+      Sw_Proof_Warn_Timeout            =>
         Make_Switch_Metadata
           (Long       => new String'("--proof-warnings-timeout"),
            Value_Kind => Integer_Value,
            Layer      => File_Specific_Layer),
-      Sw_Prover                =>
+      Sw_Prover                        =>
         Make_Switch_Metadata
           (Long       => new String'("--prover"),
            Value_Kind => String_Value,
            Layer      => File_Specific_Layer),
-      Sw_Steps                 =>
+      Sw_Steps                         =>
         Make_Switch_Metadata
           (Long       => new String'("--steps"),
            Value_Kind => Integer_Value,
            Layer      => File_Specific_Layer),
-      Sw_CE_Steps              =>
+      Sw_CE_Steps                      =>
         Make_Switch_Metadata
           (Long       => new String'("--ce-steps"),
            Value_Kind => Integer_Value,
            Layer      => File_Specific_Layer),
-      Sw_Timeout               =>
+      Sw_Timeout                       =>
         Make_Switch_Metadata
           (Long       => new String'("--timeout"),
            Value_Kind => String_Value,
            Layer      => File_Specific_Layer),
-      Sw_Info                  =>
+      Sw_Info                          =>
         Make_Switch_Metadata
           (Long       => new String'("--info"),
            Value_Kind => Flag_Value,
            Layer      => File_Specific_Layer),
-      Sw_Pedantic              =>
+      Sw_Pedantic                      =>
         Make_Switch_Metadata
           (Long       => new String'("--pedantic"),
            Value_Kind => Flag_Value,
            Layer      => File_Specific_Layer),
-      Sw_Warn_Enable           =>
+      Sw_Warn_Enable                   =>
         Make_Switch_Metadata
           (Short      => new String'("-W"),
            Value_Kind => String_Value,
            Layer      => File_Specific_Layer),
-      Sw_Warn_Disable          =>
+      Sw_Warn_Disable                  =>
         Make_Switch_Metadata
           (Short      => new String'("-A"),
            Value_Kind => String_Value,
            Layer      => File_Specific_Layer),
-      Sw_Warn_Error            =>
+      Sw_Warn_Error                    =>
         Make_Switch_Metadata
           (Short      => new String'("-D"),
            Value_Kind => String_Value,
@@ -1246,6 +1252,8 @@ package body Configuration is
       CL_Switches.Assumptions := Parsed.Values (Sw_Assumptions).Boolean_Val;
       CL_Switches.Benchmark := Parsed.Values (Sw_Benchmark).Boolean_Val;
       CL_Switches.CWE := Parsed.Values (Sw_CWE).Boolean_Val;
+      CL_Switches.Debug_Disable_Prover_Feedback :=
+        Parsed.Values (Sw_Debug_Disable_Prover_Feedback).Boolean_Val;
       CL_Switches.Debug_No_Cache_Output :=
         Parsed.Values (Sw_Debug_No_Cache_Output).Boolean_Val;
       Move_String

@@ -57,7 +57,8 @@ package body Why.Gen.Arrays is
      (From         : Entity_Id;
       To           : Entity_Id;
       From_Wrapper : Boolean;
-      To_Wrapper   : Boolean);
+      To_Wrapper   : Boolean;
+      Inverse      : W_Identifier_Id := Why_Empty);
    --  Check if the conversion theory for converting from From to To has
    --  already been created. If not create it.
    --  @param Current_File the current file section. Conversion theories are
@@ -67,6 +68,8 @@ package body Why.Gen.Arrays is
    --  @param To the entity of target type of the conversion.
    --  @param From_Wrapper True to convert from a wrapper type.
    --  @param To_Wrapper True to convert to a wrapper type.
+   --  @param Inverse the inverse function for the conversion. If supplied,
+   --     an inversion axiom is generated.
 
    procedure Create_Rep_Array_Theory
      (E            : Entity_Id;
@@ -644,7 +647,8 @@ package body Why.Gen.Arrays is
      (From         : Entity_Id;
       To           : Entity_Id;
       From_Wrapper : Boolean;
-      To_Wrapper   : Boolean)
+      To_Wrapper   : Boolean;
+      Inverse      : W_Identifier_Id := Why_Empty)
    is
       use Name_Id_Name_Id_Conversion_Name_Map;
 
@@ -726,11 +730,16 @@ package body Why.Gen.Arrays is
             Labels      => Symbol_Sets.Empty_Set));
 
       --  Generate an axiom for the conversion function:
+      --
       --  axiom convert__def:
       --    forall a : <from>.
       --      let b = convert a in
-      --        forall i1 : <from.index_type1>, i2 : ....
-      --          to_base (get a i1 i2 ...) = to_base (get b i1 i2 ...)
+      --        (forall f1 l1 : <from.index_type1>, f2 l2 : ....
+      --          has_bounds a f1 l1 f2 l2 ... ->
+      --          has_bounds b f1 l1 f2 l2 ...)
+      --        /\
+      --          (forall i1 : <from.index_type1>, i2 : ....
+      --             to_base (get a i1 i2 ...) = to_base (get b i1 i2 ...))
 
       declare
          Call_Expr : constant W_Term_Id :=
@@ -743,19 +752,44 @@ package body Why.Gen.Arrays is
          Dim       : constant Positive :=
            Positive (Number_Dimensions (Ty_Ext));
          Indexes   : Binder_Array (1 .. Dim);
+         Bounds    : Binder_Array (1 .. 2 * Dim);
          Index     : Node_Id := First_Index (Ty_Ext);
          I         : Positive := 1;
          T_Comp    : W_Pred_Id := True_Pred;
-         Tmp       : W_Identifier_Id;
+         Tmp_I     : W_Identifier_Id;
+         Tmp_F     : W_Identifier_Id;
+         Tmp_L     : W_Identifier_Id;
          T         : W_Pred_Id := True_Pred;
 
       begin
          while Present (Index) loop
-            Tmp := New_Temp_Identifier (Typ => Base_Why_Type_No_Bool (Index));
+            Tmp_I :=
+              New_Temp_Identifier
+                (Typ => Base_Why_Type_No_Bool (Index), Base_Name => "i");
             Indexes (I) :=
               Binder_Type'
                 (Ada_Node => Standard.Types.Empty,
-                 B_Name   => Tmp,
+                 B_Name   => Tmp_I,
+                 B_Ent    => Null_Entity_Name,
+                 Mutable  => False,
+                 Labels   => <>);
+            Tmp_F :=
+              New_Temp_Identifier
+                (Typ => Base_Why_Type_No_Bool (Index), Base_Name => "f");
+            Bounds (I * 2 - 1) :=
+              Binder_Type'
+                (Ada_Node => Standard.Types.Empty,
+                 B_Name   => Tmp_F,
+                 B_Ent    => Null_Entity_Name,
+                 Mutable  => False,
+                 Labels   => <>);
+            Tmp_L :=
+              New_Temp_Identifier
+                (Typ => Base_Why_Type_No_Bool (Index), Base_Name => "l");
+            Bounds (I * 2) :=
+              Binder_Type'
+                (Ada_Node => Standard.Types.Empty,
+                 B_Name   => Tmp_L,
                  B_Ent    => Null_Entity_Name,
                  Mutable  => False,
                  Labels   => <>);
@@ -865,7 +899,28 @@ package body Why.Gen.Arrays is
                      (Symbol => Why_Eq, Left => A_Comp, Right => B_Comp));
          end;
 
-         T := New_Universal_Quantif (Binders => Indexes, Pred => T_Comp);
+         T :=
+           New_And_Pred
+             (Left  =>
+                New_Universal_Quantif (Binders => Indexes, Pred => T_Comp),
+              Right =>
+                New_Universal_Quantif
+                  (Binders => Bounds,
+                   Pred    =>
+                     New_Conditional
+                       (Condition =>
+                          +New_Call
+                             (Domain  => EW_Pred,
+                              Name    => From_Symb.Has_Bounds,
+                              Binders => A_Binder & Bounds),
+                        Then_Part =>
+                          New_And_Pred
+                            (Left  =>
+                               +New_Call
+                                  (Domain  => EW_Pred,
+                                   Name    => To_Symb.Has_Bounds,
+                                   Binders => B_Binder & Bounds),
+                             Right => T))));
 
          T :=
            +New_Typed_Binding
@@ -884,6 +939,33 @@ package body Why.Gen.Arrays is
                  New_Axiom_Dep
                    (Name => To_Local (Convert_Id), Kind => EW_Axdep_Func)));
       end;
+
+      --  If Inverse is supplied, generate the inversion axiom
+
+      if Present (Inverse) then
+         Emit
+           (Th,
+            New_Guarded_Axiom
+              (Name    => NID ("convert__inversion"),
+               Binders => (1 => A_Binder),
+               Def     =>
+                 New_Comparison
+                   (Symbol => Why_Eq,
+                    Left   =>
+                      New_Call
+                        (Name => Inverse,
+                         Args =>
+                           (1 =>
+                              +New_Call
+                                 (Name    => To_Local (Convert_Id),
+                                  Binders => (1 => A_Binder),
+                                  Typ     => Get_Typ (Convert_Id))),
+                         Typ  => Get_Typ (Inverse)),
+                    Right  => +A_Binder.B_Name),
+               Dep     =>
+                 New_Axiom_Dep
+                   (Name => To_Local (Convert_Id), Kind => EW_Axdep_Func)));
+      end if;
 
       Close_Theory (Th, Kind => Definition_Theory);
 
@@ -1154,8 +1236,16 @@ package body Why.Gen.Arrays is
          Create_Array_Conversion_Theory_If_Needed
            (From => E, To => E, From_Wrapper => True, To_Wrapper => False);
 
+         --  Add an axiom saying that converting to a wrapper and back is a
+         --  no-op. It should be provable but needs an instance of the
+         --  extensionality axiom.
+
          Create_Array_Conversion_Theory_If_Needed
-           (From => E, To => E, From_Wrapper => False, To_Wrapper => True);
+           (From         => E,
+            To           => E,
+            From_Wrapper => False,
+            To_Wrapper   => True,
+            Inverse      => Get_Array_Of_Wrapper_Name (E));
       end if;
    end Create_Rep_Array_Theory_If_Needed;
 

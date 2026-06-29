@@ -163,6 +163,17 @@ files that were produced during global generation. The textual summary is
 written to ``gnatprove.out`` and a SARIF report is also generated in
 ``gnatprove.sarif``.
 
+SARIF results may carry GNATprove-specific properties under
+``properties.gnatprove``. During the transition to rule-level classification,
+``explainCode`` is kept on individual SARIF results whenever the corresponding
+GNATprove diagnostic has one. SARIF rule descriptors are more selective:
+``properties.gnatprove.explainCode`` is emitted only for language-violation
+rules, where the ``Violation_Kind`` gives a stable one-to-one mapping between
+the rule and the explained message. Every SARIF result or rule that carries
+``properties.gnatprove.explainCode`` also carries
+``properties.gnatprove.explainCommand`` with the corresponding
+``gnatprove --explain=E00NN`` command.
+
 ********
 gnat2why
 ********
@@ -329,6 +340,15 @@ SARIF as follows:
    message arguments when placeholders were present in the original diagnostic.
  - ``reasonForCheck`` is emitted in the custom SARIF property bag as
    ``gnatprove.reasonForCheck`` when available.
+ - ``explainCode`` is emitted in the custom SARIF property bag as
+   ``gnatprove.explainCode`` when available.
+ - When ``gnatprove.explainCode`` is emitted, ``gnatprove.explainCommand`` is
+   emitted next to it with the corresponding ``gnatprove --explain=E00NN``
+   command.
+ - For rule families whose explain-code mapping is stable by construction,
+   the SARIF rule descriptor also carries ``gnatprove.explainCode`` and
+   ``gnatprove.explainCommand``. This currently applies only to
+   explain-code-bearing ``violation-*`` rules.
  - The ``suppressed`` field becomes a SARIF suppression.
  - ``relatedLocations`` entries are preserved as SARIF related locations.
  - The JSON ``entity`` field is turned into a SARIF logical location naming
@@ -371,15 +391,21 @@ The first category consists of SARIF-focused tests that inspect
 as their primary purpose, rather than relying on the textual CLI output as a
 proxy. The helper routines in
 ``testsuite/gnatprove/lib/python/test_support.py`` provide common accessors for
-loading the report, iterating over SARIF results, and extracting custom
-properties such as ``gnatprove.reasonForCheck`` or
-artifact-location base-URI data.
+loading the report, iterating over SARIF results and rules, and extracting
+custom properties such as ``gnatprove.reasonForCheck``,
+``gnatprove.explainCode``, ``gnatprove.explainCommand``, or artifact-location
+base-URI data.
 
 When a SARIF field is also expected to appear in the CLI output, such a test
 may add a secondary CLI check. In that case, ``test.out`` should print the
 actual value extracted from SARIF, and also the CLI value when it is part of
 the intended behavior. This keeps baselines uniform for tests that add one or
-custom SARIF properties.
+custom SARIF properties. For explain codes, SARIF tests should prefer checking
+the rule-level descriptor metadata for language-violation rules only. For
+warnings, flow diagnostics, front-end diagnostics, and fallback diagnostics,
+tests should check the result-level property during the transition period and
+verify that the rule descriptor does not carry explain-code metadata. Rule
+descriptors should not use SARIF ``help`` for explain-code commands.
 
 The second category consists of output-consistency tests driven by
 ``CheckSarifRefiner``. These tests are not meant to validate a specific SARIF

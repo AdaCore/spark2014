@@ -163,6 +163,10 @@ package Gnat2Why_Opts.Reading is
 
    Debug_No_Cache_Output : Boolean;
 
+   --  Suppress prover limit/gave-up feedback in check messages
+
+   Debug_Disable_Prover_Feedback : Boolean;
+
    --  Prevent loop unrolling
 
    No_Loop_Unrolling : Boolean;

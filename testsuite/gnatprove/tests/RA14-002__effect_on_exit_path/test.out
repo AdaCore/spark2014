@@ -42,4 +42,4 @@ test.ads:76:13: info: implicit aspect Always_Terminates on "os_ghost_mbx_are_wel
 test.ads:80:30: info: initialization of "status" proved
 test.ads:81:30: info: initialization of "mbx_entry" proved
 test.ads:85:15: medium: in inlined expression function body at test.adb:266
-test.ads:85:15: medium: postcondition might fail, cannot prove os_ghost_task_mbx_are_well_formed (task_id) [provers reached step and memory limit before completing the proof]
+test.ads:85:15: medium: postcondition might fail, cannot prove os_ghost_task_mbx_are_well_formed (task_id)

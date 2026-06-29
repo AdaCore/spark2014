@@ -1,6 +1,0 @@
-version = 1
-
-[[subprogram]]
-path = "Main.Inner"
-kind = "procedure"
-level = 1

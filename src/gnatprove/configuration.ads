@@ -90,28 +90,29 @@ package Configuration is
       --    some switch)
       --  * Cargs_List is the list of arguments in the --cargs section
 
-      Assumptions           : aliased Boolean;
-      Benchmark             : aliased Boolean;
-      Memcached_Server      : aliased GNAT.Strings.String_Access;
-      Cargs_List            : String_Lists.List;
-      CWE                   : aliased Boolean;
-      Debug_No_Cache_Output : aliased Boolean;
-      Exclude_Line          : aliased GNAT.Strings.String_Access;
-      Flow_Show_GG          : aliased Boolean;
-      Function_Sandboxing   : aliased GNAT.Strings.String_Access;
-      Gnattest_Values       : aliased GNAT.Strings.String_Access;
-      SARIF_Base_URIs       : String_Lists.List;
+      Assumptions                   : aliased Boolean;
+      Benchmark                     : aliased Boolean;
+      Memcached_Server              : aliased GNAT.Strings.String_Access;
+      Cargs_List                    : String_Lists.List;
+      CWE                           : aliased Boolean;
+      Debug_Disable_Prover_Feedback : aliased Boolean;
+      Debug_No_Cache_Output         : aliased Boolean;
+      Exclude_Line                  : aliased GNAT.Strings.String_Access;
+      Flow_Show_GG                  : aliased Boolean;
+      Function_Sandboxing           : aliased GNAT.Strings.String_Access;
+      Gnattest_Values               : aliased GNAT.Strings.String_Access;
+      SARIF_Base_URIs               : String_Lists.List;
       --  Raw "IDENTIFIER:PATH" strings from --sarif-base-uri= occurrences
-      Limit_Line            : aliased GNAT.Strings.String_Access;
-      Limit_Lines           : aliased GNAT.Strings.String_Access;
-      Limit_Name            : aliased GNAT.Strings.String_Access;
-      Limit_Region          : aliased GNAT.Strings.String_Access;
-      Limit_Subp            : aliased GNAT.Strings.String_Access;
-      No_Global_Generation  : aliased Boolean;
-      No_Subprojects        : aliased Boolean;
-      Output_Header         : aliased Boolean;
-      U                     : aliased Boolean;
-      Why3_Server           : aliased GNAT.Strings.String_Access;
+      Limit_Line                    : aliased GNAT.Strings.String_Access;
+      Limit_Lines                   : aliased GNAT.Strings.String_Access;
+      Limit_Name                    : aliased GNAT.Strings.String_Access;
+      Limit_Region                  : aliased GNAT.Strings.String_Access;
+      Limit_Subp                    : aliased GNAT.Strings.String_Access;
+      No_Global_Generation          : aliased Boolean;
+      No_Subprojects                : aliased Boolean;
+      Output_Header                 : aliased Boolean;
+      U                             : aliased Boolean;
+      Why3_Server                   : aliased GNAT.Strings.String_Access;
    end CL_Switches;
 
    type Proof_Mode is (Progressive, No_WP, All_Split, Per_Path, Per_Check);

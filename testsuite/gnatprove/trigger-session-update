@@ -31,12 +31,12 @@ import tarfile
 import tempfile
 
 from e3.fs import sync_tree
-from adacore_gitlab_scripts.util.e3_baseline_updates import Gitlab
 
 from lib.python.gitlab_util import (
     SPARK2014_GITLAB_ID,
     download_job_artifact,
     find_job_in_pipeline,
+    make_gitlab_client,
     trigger_pipeline,
     wait_for_pipeline,
 )
@@ -126,7 +126,7 @@ def apply_sessions(gl, pipeline_id):
 
 def main():
     args = parse_options()
-    gl = Gitlab()
+    gl = make_gitlab_client()
 
     if args.apply and args.mr:
         print("error: --mr cannot be used with --apply", file=sys.stderr)

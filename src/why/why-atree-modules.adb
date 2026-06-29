@@ -985,6 +985,9 @@ package body Why.Atree.Modules is
            Domain => EW_Term,
            Symb   => NID ("slice"),
            Typ    => Ty);
+      M_Array.Has_Bounds :=
+        New_Identifier
+          (Module => Module, Domain => EW_Pred, Symb => NID ("has_bounds"));
 
       return M_Array;
    end Init_Array_Module;

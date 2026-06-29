@@ -1,0 +1,8 @@
+main.adb:7:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
+main.adb:8:12: info: range check proved (CVC5: 2 VC)
+main.adb:10:13: info: alignment of source type of unchecked conversion is compatible with alignment of target type (Trivial)
+main.adb:10:13: info: types in unchecked conversion have the same size (Trivial)
+main.adb:10:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
+main.adb:11:07: info: type is suitable as source for unchecked conversion (Trivial)
+main.adb:11:14: high: type is unsuitable as a target for unchecked conversion [possible explanation: lower bound for type "S" is not known at compile time; invalid values could result from the unchecked conversion [SPARK RM 13.9]]
+main.adb:14:19: info: assertion proved (CVC5: 2 VC)

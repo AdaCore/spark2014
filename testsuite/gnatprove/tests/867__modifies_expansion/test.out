@@ -2,7 +2,7 @@ complex_data_system.adb:26:07: info: range check proved (CVC5: 2 VC)
 complex_data_system.adb:38:65: info: range check proved (CVC5: 2 VC)
 complex_data_system.adb:80:11: info: for "Node" at complex_data_system.adb:78
 complex_data_system.adb:80:11: info: modifies contract proved (CVC5: 3 VC; Trivial: 1 VC)
-complex_data_system.adb:87:22: medium: resource or memory leak might occur [possible fix: subprogram at line 78 should mention Node in a precondition] [provers reached step limit before completing the proof]
+complex_data_system.adb:87:22: medium: resource or memory leak might occur [possible fix: subprogram at line 78 should mention Node in a precondition]
 complex_data_system.adb:99:11: info: postcondition proved (CVC5: 2 VC)
 complex_data_system.adb:119:11: info: postcondition proved (CVC5: 3 VC)
 complex_data_system.adb:121:40: info: pointer dereference check proved (CVC5: 1 VC)

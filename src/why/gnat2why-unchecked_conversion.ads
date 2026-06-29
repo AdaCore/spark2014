@@ -128,4 +128,9 @@ package Gnat2Why.Unchecked_Conversion is
    --  Return the function that should be used to convert from Source_Type to
    --  Target_Type.
 
+   function Get_UC_Guard_Predicate
+     (Source_Type, Target_Type : Type_Kind_Id; Potentially_Invalid : Boolean)
+      return W_Identifier_Id;
+   --  Return the predicate used to guard UCs from Source_Type to Target_Type
+
 end Gnat2Why.Unchecked_Conversion;
