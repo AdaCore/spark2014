@@ -59,6 +59,54 @@ Then, the switches attributes of the entire project tree are parsed
 into records, and merged according to precedence rules, to establish the
 "file-specific" switches, which can be specified on a per-file basis.
 
+Undocumented switches
+---------------------
+
+The following switches are parsed by ``configuration.adb`` but intentionally
+left out of the user-facing help (``share/spark/help.txt``). They are debugging
+or internal-use switches:
+
+``--benchmark``
+   Run the analysis and prover executables through their ``fake_`` wrappers
+   instead of the real ones (used by the testsuite for benchmarking).
+
+``--debug-disable-prover-feedback``
+   Suppress the explanatory prover-feedback text appended to unproved-check
+   messages.
+
+``--debug-list-explain-codes``
+   Print every explain code with its one-line description and exit (used by the
+   explain-codes test).
+
+``--debug-no-cache-output``
+   Omit the "from cache" phrase from check messages, for deterministic output.
+
+``--debug-no-semaphore``
+   Do not use a semaphore to limit the number of concurrent prover processes.
+
+``--debug-prover-errors``
+   Report errors raised by provers (forwarded as ``--debug-prover-errors`` to
+   gnatwhy3).
+
+``--exclude-line``
+   Suppress the message emitted at a given ``file:line`` location.
+
+``--ide-progress-bar``
+   Emit progress-bar information for IDE integration.
+
+``--why3-debug``
+   Forward the given why3 debug flags to gnatwhy3 (as ``--debug-why3``).
+
+``--why3-logging``
+   Enable logging in the why3 layer (forwarded as ``--logging`` to gnatwhy3).
+
+``--why3-server``
+   Reuse an already-running why3server listening on the given socket instead of
+   spawning a new one.
+
+``--z3-counterexample``
+   Use Z3 (``z3_ce``) as the prover for counterexample generation.
+
 .. _Generating Globals:
 
 Generating Globals
