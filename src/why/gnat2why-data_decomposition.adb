@@ -25,11 +25,13 @@
 
 with Ada.Containers.Indefinite_Hashed_Maps;
 with Ada.Directories;
+with Ada.Exceptions;
 with Ada.Strings.Hash;
 with Ada.Text_IO;
-with Call;                 use Call;
 with GNAT.OS_Lib;
 with GNATCOLL.JSON;        use GNATCOLL.JSON;
+with GNATCOLL.Buffer;
+with GNATCOLL.String_Builders;
 with Lib;                  use Lib;
 with Namet;                use Namet;
 with SPARK_Atree;          use SPARK_Atree;
@@ -55,6 +57,34 @@ package body Gnat2Why.Data_Decomposition is
         "="             => "=");
 
    Data_Decomposition_Table : String_To_Data_Decomposition_Maps.Map;
+
+   procedure Add_Entry
+     (Name, Location : String; Data_Entry : Data_Decomposition_Entry)
+   with Pre => Name'Length > 0 and then Location'Length > 0;
+   --  Add entry with data decomposition
+
+   ---------------
+   -- Add_Entry --
+   ---------------
+
+   procedure Add_Entry
+     (Name, Location : String; Data_Entry : Data_Decomposition_Entry)
+   is
+      pragma Unreferenced (Name);
+      Inserted : Boolean;
+      Position : String_To_Data_Decomposition_Maps.Cursor;
+   begin
+      Data_Decomposition_Table.Insert
+        (Location, Data_Entry, Position, Inserted);
+
+      --  Subunits ("separates") may lead to duplicate entries for the same
+      --  type or object, in files for the subunit and the main unit.
+      if not Inserted
+        and then Data_Entry /= Data_Decomposition_Table (Position)
+      then
+         raise Program_Error with "inconsistent data representation duplicate";
+      end if;
+   end Add_Entry;
 
    -------------------------
    -- Get_Attribute_Value --
@@ -147,71 +177,445 @@ package body Gnat2Why.Data_Decomposition is
       end if;
    end Get_Attribute_Value;
 
+   procedure Read_JSON (File : String);
+   --  Read data representation file using a custom parser that supports
+   --  universal integers to handle object sizes that exceed the range of
+   --  native integer types supported by GNATCOLL.JSON.
+
+   ---------------
+   -- Read_JSON --
+   ---------------
+
+   procedure Read_JSON (File : String) is
+      Data : GNATCOLL.Buffer.Reader'Class := GNATCOLL.Buffer.Open (File);
+      --  ??? We make this a class-wide object to workaround an obscure problem
+      --  with built-in-place function calls from GNATprove (which is built
+      --  with No_Tasking restriction) to GNATCOLL (which is built with no
+      --  restrictions).
+
+      Parser : JSON_Parser;
+      Event  : JSON_Parser_Event;
+      --  Global objects accessed by both parsing and error reporting routines
+
+      use GNATCOLL.String_Builders;
+
+      procedure Bad_Input
+      with No_Return;
+      --  Report bad file input, e.g. ill-formed or unexpected JSON data
+
+      --  The following routines handle individial JSON elements. The valid
+      --  input data looks like:
+      --   [
+      --     {"name": "foo_type",
+      --      "location: "foo.ads:3:3",
+      --      "Size": 8},
+      --     {"name": "bar_type",
+      --      "location: "foo.ads:6:3",
+      --      "Alignment": 8,
+      --      "Small": 0.125}
+      --   ]
+      --  i.e. it is a JSON document with array of with objects with key-value
+      --  pairs. Some of the unsupported keys might include objects or arrays
+      --  that must be ignored (e.g. with complex representation for variants
+      --  and discriminant-dependent components).
+
+      function Current_Token return String;
+      --  Return current token from the parser
+
+      procedure Ignore;
+      --  Ignore next input item; called for data representation info that we
+      --  don't use.
+
+      procedure Parse_Next_Event;
+      --  Read next token in from the event-driven parser
+
+      procedure Read_Doc
+      with Post => Event.Kind = DOC_END;
+      --  Main routine for reading the JSON document
+
+      procedure Read_Type_Array
+      with Pre => Event.Kind = ARRAY_START, Post => Event.Kind = ARRAY_END;
+      --  Read array of type representation items
+
+      procedure Read_Type_Object
+      with Pre => Event.Kind = OBJECT_START, Post => Event.Kind = OBJECT_END;
+      --  Read object with data representation of a single type
+
+      procedure Read_Integer_Value (Value : in out Uint);
+      procedure Read_String_Value (Value : in out String_Builder);
+      --  Read values of a JSON mapping
+
+      function Unquote (S : String) return String
+      with
+        Pre  =>
+          S'Length >= 2 and then S (S'First) = '"' and then S (S'Last) = '"',
+        Post => Unquote'Result'Length = S'Length - 2;
+      --  Utility routine; removes quotes from its parameter
+
+      function UI_From_String (S : String) return Valid_Uint
+      with Pre => S'Length > 0 and then (for all C of S => C in '0' .. '9');
+      --  Conversion routine to read universal integers
+
+      ---------------
+      -- Bad_Input --
+      ---------------
+
+      procedure Bad_Input is
+         Line, Column : Integer;
+      begin
+         --  Raise exception with file:line:column attached
+
+         Data.Current_Text_Position (Line, Column);
+
+         declare
+            Line_Number   : constant String := Line'Img;
+            Column_Number : constant String := Column'Img;
+            Location      : constant String :=
+              Line_Number (Line_Number'First + 1 .. Line_Number'Last)
+              & ':'
+              & Column_Number (Column_Number'First + 1 .. Column_Number'Last);
+         begin
+            raise Invalid_JSON_Stream with File & ':' & Location;
+         end;
+      end Bad_Input;
+
+      -------------------
+      -- Current_Token --
+      -------------------
+
+      function Current_Token return String is
+      begin
+         return GNATCOLL.Buffer.Token (Data, Event.First, Event.Last);
+      end Current_Token;
+
+      ------------
+      -- Ignore --
+      ------------
+
+      procedure Ignore is
+
+         procedure Ignore_Array
+         with Pre => Event.Kind = ARRAY_START, Post => Event.Kind = ARRAY_END;
+
+         procedure Ignore_Object
+         with
+           Pre  => Event.Kind = OBJECT_START,
+           Post => Event.Kind = OBJECT_END;
+         --  Routines for ignoring composite data while keeping track of the
+         --  input structure.
+
+         ------------------
+         -- Ignore_Array --
+         ------------------
+
+         procedure Ignore_Array is
+         begin
+            loop
+               Parse_Next_Event;
+
+               if Event.Kind = DOC_END then
+                  Bad_Input;
+               elsif Event.Kind = ARRAY_END then
+                  exit;
+               elsif Event.Kind = ARRAY_START then
+                  Ignore_Array;
+               elsif Event.Kind = OBJECT_START then
+                  Ignore_Object;
+               else
+                  null;
+               end if;
+            end loop;
+         end Ignore_Array;
+
+         -------------------
+         -- Ignore_Object --
+         -------------------
+
+         procedure Ignore_Object is
+         begin
+            loop
+               Parse_Next_Event;
+
+               if Event.Kind = DOC_END then
+                  Bad_Input;
+               elsif Event.Kind = OBJECT_END then
+                  exit;
+               elsif Event.Kind = ARRAY_START then
+                  Ignore_Array;
+               elsif Event.Kind = OBJECT_START then
+                  Ignore_Object;
+               else
+                  null;
+               end if;
+            end loop;
+         end Ignore_Object;
+
+      begin
+         Parse_Next_Event;
+
+         case Event.Kind is
+            when ARRAY_START                                 =>
+               Ignore_Array;
+
+            when OBJECT_START                                =>
+               Ignore_Object;
+
+            when INTEGER_VALUE | NUMBER_VALUE | STRING_VALUE =>
+               null;
+
+            when others                                      =>
+               Bad_Input;
+         end case;
+      end Ignore;
+
+      ----------------------
+      -- Parse_Next_Event --
+      ----------------------
+
+      procedure Parse_Next_Event is
+      begin
+         Event := Parse_Next (Parser, GNATCOLL.Buffer.Reader (Data));
+      exception
+         when Invalid_JSON_Stream =>
+            --  Propagate exception with location of the error attached
+            Bad_Input;
+      end Parse_Next_Event;
+
+      ---------------------
+      -- Read_Array_Type --
+      ---------------------
+
+      procedure Read_Type_Array is
+      begin
+         loop
+            Parse_Next_Event;
+
+            if Event.Kind = ARRAY_END then
+               exit;
+            elsif Event.Kind = OBJECT_START then
+               Read_Type_Object;
+            else
+               Bad_Input;
+            end if;
+         end loop;
+      end Read_Type_Array;
+
+      ------------------------
+      -- Read_Integer_Value --
+      ------------------------
+
+      procedure Read_Integer_Value (Value : in out Uint) is
+      begin
+         --  Detect duplicate keys
+
+         if Present (Value) then
+            Bad_Input;
+         end if;
+
+         Parse_Next_Event;
+
+         if Event.Kind = INTEGER_VALUE then
+            Value := UI_From_String (Current_Token);
+
+         elsif Event.Kind = STRING_VALUE then
+
+            --  Value "??" indicates that the numerical value depends on back
+            --  annotations by gigi, for variants of records whose size depends
+            --  on discriminants or other values. See comments in repinfo.ads
+            --  for details.
+
+            if Unquote (Current_Token) = "??" then
+               pragma Assert (No (Value));
+            else
+               Bad_Input;
+            end if;
+         else
+            Bad_Input;
+         end if;
+      end Read_Integer_Value;
+
+      -----------------------
+      -- Read_String_Value --
+      -----------------------
+
+      procedure Read_String_Value (Value : in out String_Builder) is
+      begin
+         --  Detect duplicate keys
+
+         if Length (Value) > 0 then
+            Bad_Input;
+         end if;
+
+         Parse_Next_Event;
+
+         if Event.Kind = STRING_VALUE then
+            Set (Value, Unquote (Current_Token));
+         else
+            Bad_Input;
+         end if;
+      end Read_String_Value;
+
+      ----------------------
+      -- Read_Type_Object --
+      ----------------------
+
+      procedure Read_Type_Object is
+         Name, Location : String_Builder;
+         Data_Entry     : Data_Decomposition_Entry;
+         --  Data read field-by-field from the file before we store it in the
+         --  final map.
+
+         function Is_Parent_Variant (Key : String) return Boolean
+         with Ghost;
+         --  Returns True if Key is of the form "(parent_)*variant"
+
+         procedure Read_Value (Key : String);
+         --  Read value mapped to a given Key
+
+         -----------------------
+         -- Is_Parent_Variant --
+         -----------------------
+
+         function Is_Parent_Variant (Key : String) return Boolean is
+         begin
+            if Key'Length > 7 then
+               return
+                 Key (Key'First .. Key'First + 6) = "parent_"
+                 and then Is_Parent_Variant (Key (Key'First + 7 .. Key'Last));
+            else
+               return Key = "variant";
+            end if;
+         end Is_Parent_Variant;
+
+         ----------------
+         -- Read_Value --
+         ----------------
+
+         procedure Read_Value (Key : String) is
+         begin
+            if Key = "name" then
+               Read_String_Value (Name);
+            elsif Key = "location" then
+               Read_String_Value (Location);
+            elsif Key = "Size" then
+               Read_Integer_Value (Data_Entry.Size);
+            elsif Key = "Value_Size" then
+               Read_Integer_Value (Data_Entry.Value_Size);
+            elsif Key = "Object_Size" then
+               Read_Integer_Value (Data_Entry.Object_Size);
+            elsif Key = "Alignment" then
+               Read_Integer_Value (Data_Entry.Alignment);
+            else
+               --  In debug builds we check what data we get from GNAT;
+               --  in production builds we will simply ignore this data.
+
+               pragma
+                 Assert
+                   (Key
+                    in "Bit_Order"
+                     | "Component_Size"
+                     | "Linker_Section"
+                     | "Range"
+                     | "Scalar_Storage_Order"
+                     | "Small"
+                     | "record"
+                    or else Is_Parent_Variant (Key),
+                    "unknown data representation item " & Key);
+               Ignore;
+            end if;
+         end Read_Value;
+
+      begin
+         loop
+            --  Read object keys and their values
+
+            Parse_Next_Event;
+
+            if Event.Kind = OBJECT_END then
+               exit;
+            elsif Event.Kind = STRING_VALUE then
+               Read_Value (Key => Unquote (Current_Token));
+            else
+               Bad_Input;
+            end if;
+         end loop;
+
+         --  For a valid input we will have both name and location
+
+         if Length (Name) > 0 and then Length (Location) > 0 then
+            Add_Entry (As_String (Name), As_String (Location), Data_Entry);
+         else
+            Bad_Input;
+         end if;
+      end Read_Type_Object;
+
+      --------------
+      -- Read_Doc --
+      --------------
+
+      procedure Read_Doc is
+      begin
+         Parse_Next_Event;
+
+         --  Gently accept empty files
+
+         if Event.Kind = DOC_END then
+            return;
+         elsif Event.Kind = ARRAY_START then
+            Read_Type_Array;
+         else
+            Bad_Input;
+         end if;
+
+         --  There should be nothing more in the file
+
+         Parse_Next_Event;
+
+         if Event.Kind /= DOC_END then
+            Bad_Input;
+         end if;
+      end Read_Doc;
+
+      -------------
+      -- Unquote --
+      -------------
+
+      function Unquote (S : String) return String is
+      begin
+         return S (S'First + 1 .. S'Last - 1);
+      end Unquote;
+
+      --------------------
+      -- UI_From_String --
+      --------------------
+
+      function UI_From_String (S : String) return Valid_Uint is
+         Storage_Mark : constant Uintp.Save_Mark := Mark;
+         --  While building the numeric value we will create plenty of
+         --  intermediate objects; they can be safely discarded afterwards.
+
+         Result : Valid_Uint := Uint_0;
+      begin
+         for C of S loop
+            Result := Result * Uint_10;
+            Result :=
+              Result + UI_From_Int (Character'Pos (C) - Character'Pos ('0'));
+         end loop;
+
+         Release_And_Save (Storage_Mark, Result);
+
+         return Result;
+      end UI_From_String;
+
+   begin
+      Read_Doc;
+   end Read_JSON;
+
    ---------------------------------------
    -- Read_Data_Decomposition_JSON_File --
    ---------------------------------------
 
    procedure Read_Data_Decomposition_JSON_File is
-
-      procedure Handle_Entry (JSON_Entry : JSON_Value);
-      --  Insert an entry in the map Data_Decomposition_Table
-
-      function Handle_Field
-        (JSON_Entry : JSON_Value; Field : String) return Uint;
-      --  Return the optional data decomposition entry corresponding to Field
-      --  in JSON_Entry, when possible.
-
-      ------------------
-      -- Handle_Entry --
-      ------------------
-
-      procedure Handle_Entry (JSON_Entry : JSON_Value) is
-         Location   : constant String := Get (JSON_Entry, "location");
-         Data_Entry : Data_Decomposition_Entry;
-      begin
-         Data_Entry.Size := Handle_Field (JSON_Entry, "Size");
-         Data_Entry.Value_Size := Handle_Field (JSON_Entry, "Value_Size");
-         Data_Entry.Object_Size := Handle_Field (JSON_Entry, "Object_Size");
-         Data_Entry.Alignment := Handle_Field (JSON_Entry, "Alignment");
-
-         --  Subunits ("separates") may lead to duplicate entries for the same
-         --  type or object, in files for the subunit and the main unit.
-         if Data_Decomposition_Table.Contains (Location)
-           and then Data_Entry /= Data_Decomposition_Table.Element (Location)
-         then
-            raise Program_Error
-              with "inconsistent data representation duplicate";
-         end if;
-
-         Data_Decomposition_Table.Include (Location, Data_Entry);
-      end Handle_Entry;
-
-      ------------------
-      -- Handle_Field --
-      ------------------
-
-      function Handle_Field
-        (JSON_Entry : JSON_Value; Field : String) return Uint
-      is
-         function To_UI is new UI_From_Integral (Long_Long_Integer);
-      begin
-         --  We must check whether each value is of integer type, as the value
-         --  "??" is used in -gnatR2 mode to indicate that the numerical value
-         --  depends on back annotations by gigi, for variants of records whose
-         --  size depends on discriminants or other values. See comments in
-         --  repinfo.ads for details.
-
-         if Has_Field (JSON_Entry, Field)
-           and then Kind (Get (JSON_Entry, Field)) = JSON_Int_Type
-         then
-            return To_UI (Get (Get (JSON_Entry, Field)));
-         else
-            return No_Uint;
-         end if;
-      end Handle_Field;
-
-      --  Local variables
-
       File_Names : String_Sets.Set;
 
    begin
@@ -230,25 +634,15 @@ package body Gnat2Why.Data_Decomposition is
                if not File_Names.Contains (Source_File_Name)
                  and then Ada.Directories.Exists (JSON_File_Name)
                then
-                  declare
-                     File    : constant JSON_Value :=
-                       Read_File_Into_JSON (JSON_File_Name);
-                     Entries : constant JSON_Array := Get (File);
-                  begin
-                     for Index in 1 .. Length (Entries) loop
-                        Handle_Entry (Get (Entries, Index));
-                     end loop;
-
-                     File_Names.Insert (Source_File_Name);
-                  end;
+                  Read_JSON (JSON_File_Name);
+                  File_Names.Insert (Source_File_Name);
                end if;
             exception
-               when others =>
+               when E : others =>
                   Ada.Text_IO.Put_Line
                     (Ada.Text_IO.Standard_Error,
-                     "error: GNAT generated an ill-formed JSON file "
-                     & JSON_File_Name
-                     & " for data representation.");
+                     "error: ill-formed GNAT data representation file at "
+                     & Ada.Exceptions.Exception_Message (E));
                   Ada.Text_IO.Put_Line
                     (Ada.Text_IO.Standard_Error,
                      "error: Try installing a more recent version of GNAT.");
