@@ -3221,15 +3221,6 @@ package body Flow.Analysis is
          declare
             Parent_Key : Flow_Id renames FA.DDG.Get_Key (Parent);
             Parent_Atr : V_Attributes renames FA.Atr (Parent);
-
-            Visited : Vertex_Sets.Set;
-
-            OK : Boolean := True;
-            --  This flag will be initially True, but will become False if
-            --  any check is emitted when scanning the flow graph. If no such
-            --  checks are emitted, then all uses of the considered object are
-            --  safe and we will get a single info message.
-
          begin
             if Parent_Key.Variant = Initial_Value
               and then not Synthetic (Parent_Key)
@@ -3237,22 +3228,31 @@ package body Flow.Analysis is
               and then not Has_Relaxed_Initialization (Parent_Key)
               and then not Is_Initialized (Parent_Key, Parent_Atr)
             then
-               Scan_Children
-                 (Var                  =>
-                    Change_Variant (Parent_Key, Normal_Use),
-                  V_Initial            => Parent,
-                  Possibly_Initialized => False,
-                  Visited              => Visited,
-                  OK                   => OK);
-
                --  If no checks have been emitted for any of the object
                --  components, then want an info message for the entire object.
 
                declare
+                  Visited : Vertex_Sets.Set;
+
+                  OK : Boolean := True;
+                  --  This flag will be initially True, but will become False
+                  --  if any check is emitted when scanning the flow graph.
+                  --  If no such checks are emitted, then all uses of the
+                  --  considered object are safe and we will get a single
+                  --  info message.
+
                   Obj : constant Flow_Id :=
                     Entire_Variable (Change_Variant (Parent_Key, Normal_Use));
 
                begin
+                  Scan_Children
+                    (Var                  =>
+                       Change_Variant (Parent_Key, Normal_Use),
+                     V_Initial            => Parent,
+                     Possibly_Initialized => False,
+                     Visited              => Visited,
+                     OK                   => OK);
+
                   if Parent_Atr.Is_Global then
                      if OK then
                         Global_OK.Include (Obj);
@@ -3273,14 +3273,11 @@ package body Flow.Analysis is
 
             elsif Parent_Atr.Is_Param_Havoc then
                for Havoc_Var of Parent_Atr.Variables_Defined loop
-                  Scan_Children
-                    (Var                  => Havoc_Var,
-                     V_Initial            => Parent,
-                     Possibly_Initialized => False,
-                     Visited              => Visited,
-                     OK                   => OK);
 
                   declare
+                     Visited : Vertex_Sets.Set;
+                     OK      : Boolean := True;
+
                      Havoc_Atr : V_Attributes renames
                        FA.Atr (Get_Initial_Vertex (FA.DDG, Havoc_Var));
                      --  Attributes of the initial vertex of the havoced
@@ -3288,6 +3285,13 @@ package body Flow.Analysis is
 
                      Obj : constant Flow_Id := Entire_Variable (Havoc_Var);
                   begin
+                     Scan_Children
+                       (Var                  => Havoc_Var,
+                        V_Initial            => Parent,
+                        Possibly_Initialized => False,
+                        Visited              => Visited,
+                        OK                   => OK);
+
                      if Havoc_Atr.Is_Global then
                         if OK then
                            Global_OK.Include (Obj);
