@@ -43,6 +43,7 @@ with Gnat2Why.Expr.Loops;
 with Gnat2Why.Util;               use Gnat2Why.Util;
 with Gnat2Why_Args;               use Gnat2Why_Args;
 with Gnat2Why_Opts;               use Gnat2Why_Opts;
+with Gnat2Why_Opts.Reading;
 with GNATCOLL.Utils;              use GNATCOLL.Utils;
 with Lib.Xref;
 with Namet;                       use Namet;
@@ -4127,6 +4128,8 @@ package body Flow_Error_Messages is
                   else "");
                Unproved_Msg_Raw : constant String :=
                  (if not Is_Suppressed
+                    and then
+                      not Gnat2Why_Opts.Reading.Debug_Disable_Prover_Feedback
                   then To_User_Msg (Obj.Unproved_Stat)
                   else "");
                Unproved_Msg     : constant String :=
@@ -4202,7 +4205,9 @@ package body Flow_Error_Messages is
                      & To_String (Obj.Fix.Msg),
                      Secondary_Loc => Obj.Fix.Secondary_Loc));
             end if;
-            if not Is_Suppressed then
+            if not Is_Suppressed
+              and then not Gnat2Why_Opts.Reading.Debug_Disable_Prover_Feedback
+            then
                declare
                   Unproved_Msg_Raw : constant String :=
                     To_User_Msg (Obj.Unproved_Stat);

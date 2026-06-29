@@ -386,6 +386,79 @@ procedure SPARK_Memcached_Wrapper with No_Return is
       return (if Spec.Kind = File_Cache then "file" else "memcached");
    end Cache_Source;
 
+   function Filter_Prover_Output (Cmd : String; Output : String) return String;
+   --  Return Output with noisy prover statistics removed, to keep cached
+   --  prover results small and easy to inspect. Only cvc5 output is filtered;
+   --  any other command is returned unchanged.
+
+   --------------------------
+   -- Filter_Prover_Output --
+   --------------------------
+
+   function Filter_Prover_Output (Cmd : String; Output : String) return String
+   is
+      use Ada.Strings.Fixed;
+      use Ada.Strings.Unbounded;
+
+      function Is_Dropped_Stat_Line (Line : String) return Boolean;
+      --  True for a cvc5 statistics line that should be removed, that is a
+      --  line of the form "<name> = <value>" whose name is namespaced with
+      --  "::", except for the resource::resourceUnitsUsed statistic, which
+      --  gnatwhy3 consumes to count proof steps.
+
+      --------------------------
+      -- Is_Dropped_Stat_Line --
+      --------------------------
+
+      function Is_Dropped_Stat_Line (Line : String) return Boolean is
+         Sep : constant Natural := Index (Line, " = ");
+      begin
+         if Sep = 0 then
+            return False;
+         end if;
+         declare
+            Name : String renames Line (Line'First .. Sep - 1);
+         begin
+            return
+              Index (Name, "::") > 0
+              and then Name /= "resource::resourceUnitsUsed";
+         end;
+      end Is_Dropped_Stat_Line;
+
+      Result : Unbounded_String;
+      Pos    : Positive := Output'First;
+
+   begin
+      --  cvc5 is invoked with --stats-internal because that is the only switch
+      --  under which it prints the resource::resourceUnitsUsed statistic that
+      --  gnatwhy3 consumes. That switch also dumps many other statistics,
+      --  which needlessly bloat and obscure the proof cache. We keep every
+      --  line except those extra statistics lines. Other tools, including
+      --  gnatwhy3 and the remaining provers, are passed through unchanged.
+
+      if Cmd /= "cvc5" then
+         return Output;
+      end if;
+
+      while Pos <= Output'Last loop
+         declare
+            NL        : constant Natural :=
+              Index (Output (Pos .. Output'Last), "" & ASCII.LF);
+            Line_Last : constant Natural :=
+              (if NL = 0 then Output'Last else NL);
+            Line      : String renames Output (Pos .. Line_Last);
+            --  Current line, including its trailing line feed if any
+         begin
+            if not Is_Dropped_Stat_Line (Line) then
+               Append (Result, Line);
+            end if;
+            Pos := Line_Last + 1;
+         end;
+      end loop;
+
+      return To_String (Result);
+   end Filter_Prover_Output;
+
 begin
 
    --  We need this extra declare block so that the declarations are executed
@@ -431,9 +504,14 @@ begin
             declare
                Cmd : String renames Argument (3);
 
-               Msg : constant String :=
+               Raw : constant String :=
                  Get_Command_Output
                    (Cmd, Arguments, "", Status'Access, Err_To_Out => True);
+
+               --  Filter the output before both caching and forwarding it, so
+               --  that a cache hit replays exactly what a cache miss produces.
+
+               Msg : constant String := Filter_Prover_Output (Cmd, Raw);
             begin
 
                --  We don't want to cache crashes of gnatwhy3; also we know

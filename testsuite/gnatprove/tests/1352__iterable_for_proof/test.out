@@ -39,7 +39,7 @@ element_iterable_for_proof.adb:52:11: info: dynamic accessibility check proved (
 element_iterable_for_proof.adb:52:21: info: index check proved (CVC5: 2 VC)
 element_iterable_for_proof.adb:57:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
 element_iterable_for_proof.adb:57:16: medium: during checks for quantification at element_iterable_for_proof.adb:37
-element_iterable_for_proof.adb:57:16: medium: precondition might fail, cannot prove F [provers reached step limit before completing the proof]
+element_iterable_for_proof.adb:57:16: medium: precondition might fail, cannot prove F
 element_iterable_for_proof.adb:58:21: info: index check proved (CVC5: 2 VC)
 element_iterable_for_proof.adb:59:16: info: Iterable_For_Proof annotation proved (CVC5: 1 VC)
 element_iterable_for_proof.adb:69:10: info: range check proved (CVC5: 2 VC)
@@ -62,7 +62,7 @@ element_iterable_for_proof.adb:83:21: info: index check proved (CVC5: 2 VC)
 element_iterable_for_proof.adb:86:16: info: during checks for quantification at element_iterable_for_proof.adb:68
 element_iterable_for_proof.adb:86:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
 element_iterable_for_proof.adb:86:16: info: precondition proved (CVC5: 1 VC)
-element_iterable_for_proof.adb:88:16: medium: Iterable_For_Proof annotation might be incorrect [provers reached step limit before completing the proof]
+element_iterable_for_proof.adb:88:16: medium: Iterable_For_Proof annotation might be incorrect
 element_iterable_for_proof.adb:100:10: info: range check proved (CVC5: 2 VC)
 element_iterable_for_proof.adb:108:16: info: during checks for quantification at element_iterable_for_proof.adb:99
 element_iterable_for_proof.adb:108:16: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
@@ -81,8 +81,8 @@ element_iterable_for_proof.adb:117:16: info: during checks for quantification at
 element_iterable_for_proof.adb:117:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
 element_iterable_for_proof.adb:117:16: info: precondition proved (CVC5: 1 VC)
 element_iterable_for_proof.adb:118:21: info: index check proved (CVC5: 2 VC)
-element_iterable_for_proof.adb:119:16: medium: Iterable_For_Proof annotation might be incorrect [provers reached step limit before completing the proof]
-element_iterable_for_proof.adb:124:04: medium: resource or memory leak might occur at end of scope [provers reached step limit before completing the proof]
+element_iterable_for_proof.adb:119:16: medium: Iterable_For_Proof annotation might be incorrect
+element_iterable_for_proof.adb:124:04: medium: resource or memory leak might occur at end of scope
 element_iterable_for_proof.adb:124:19: info: range check proved (CVC5: 2 VC)
 element_iterable_for_proof.adb:124:26: info: discriminant check proved (CVC5: 1 VC)
 element_iterable_for_proof.adb:124:60: info: null exclusion check proved (CVC5: 1 VC)

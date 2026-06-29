@@ -17,7 +17,7 @@ main.adb:28:07: warning: imprecise handling of overlay (type is unsuitable as so
 main.adb:28:39: high: object is unsuitable for aliasing via address clause [possible explanation: type "C" is a tagged type]
 main.adb:28:39: high: type is unsuitable as a source for unchecked conversion [possible explanation: type "C" is a tagged type]
 main.adb:28:39: high: types of aliased objects do not have the same size [possible explanation: sizes of overlaid objects differ: type "Big" has Object_Size 128, while type "C" has Object_Size 192]
-main.adb:30:22: medium: assertion might fail (e.g. when X = (F => 0, G => 0)) [provers reached step limit before completing the proof]
+main.adb:30:22: medium: assertion might fail (e.g. when X = (F => 0, G => 0))
 main.adb:33:19: warning: "X" is not modified, could be IN
 main.adb:33:19: warning: unused variable "X"
 main.adb:34:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: "X" must be aliased for its alignment to be known] [possible fix: overlaid object should have an Alignment representation clause]

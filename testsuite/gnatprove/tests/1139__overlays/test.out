@@ -22,5 +22,5 @@ main.adb:24:07: warning: imprecise handling of overlay (types in unchecked conve
 main.adb:24:44: high: object is unsuitable for aliasing via address clause [possible explanation: subtype of "I'Base" has 3 values but subtype of "I'Base" has Object_Size 8, which allows 256 possible values; aliased object could have invalid values [SPARK RM 13.7]]
 main.adb:24:44: high: types of aliased objects do not have the same size [possible explanation: sizes of overlaid objects differ: type "Integer" has Object_Size 32, while subtype of "I'Base" has Object_Size 8]
 main.adb:24:44: info: type is suitable as source for unchecked conversion (Trivial)
-main.adb:24:46: medium: pointer dereference check might fail [provers reached step limit before completing the proof]
+main.adb:24:46: medium: pointer dereference check might fail
 main.adb:24:49: warning: alignment of object is not precisely known [imprecise-align]

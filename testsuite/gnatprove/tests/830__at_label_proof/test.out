@@ -3,8 +3,8 @@ test.adb:5:14: warning: subprogram "Test_OK" has no effect
 test.adb:11:22: info: assertion proved (CVC5: 1 VC)
 test.adb:14:04: warning: analyzing unreferenced procedure "Test_RTE" [unreferenced-procedure]
 test.adb:14:14: warning: subprogram "Test_RTE" has no effect
-test.adb:19:22: medium: assertion might fail (e.g. when X = 0) [provers reached step limit before completing the proof]
-test.adb:19:33: medium: divide by zero might fail (e.g. when X = 0) [provers gave up before completing the proof]
+test.adb:19:22: medium: assertion might fail (e.g. when X = 0)
+test.adb:19:33: medium: divide by zero might fail (e.g. when X = 0)
 test.adb:22:04: warning: analyzing unreferenced procedure "Test_Multiple" [unreferenced-procedure]
 test.adb:22:14: warning: subprogram "Test_Multiple" has no effect
 test.adb:34:22: info: assertion proved (CVC5: 1 VC)
@@ -33,7 +33,7 @@ test.adb:87:22: info: assertion proved (CVC5: 1 VC)
 test.adb:88:22: info: assertion proved (CVC5: 1 VC)
 test.adb:95:04: warning: analyzing unreferenced procedure "Test_Potentially_Invalid" [unreferenced-procedure]
 test.adb:95:40: warning: unused initial value of "X"
-test.adb:107:35: medium: assertion might fail, cannot prove X1.F'Valid (e.g. when X1 = (F => ?, G => 1) and X1.F'Valid = False and X1.G'Valid = True) [possible fix: subprogram at line 95 should mention X in a precondition] [provers reached step limit before completing the proof]
+test.adb:107:35: medium: assertion might fail, cannot prove X1.F'Valid (e.g. when X1 = (F => ?, G => 1) and X1.F'Valid = False and X1.G'Valid = True) [possible fix: subprogram at line 95 should mention X in a precondition]
 test.adb:108:25: info: assertion proved (CVC5: 1 VC)
 test.adb:110:22: info: assertion proved (CVC5: 1 VC)
 test.adb:110:31: info: validity check proved (CVC5: 1 VC)

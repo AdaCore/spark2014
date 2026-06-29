@@ -7,15 +7,17 @@ from e3.testsuite.report.rewriting import BaseBaselineRewriter
 from e3.testsuite.report.index import ReportIndex
 from e3.testsuite.result import FailureReason, TestStatus
 from e3.testsuite.utils import ColorConfig
-from adacore_gitlab_scripts.util.e3_baseline_updates import (
-    Gitlab,
-    GitLabProjectDescription,
-)
 import os.path
 import tarfile
 import tempfile
 
-from lib.python.gitlab_util import SPARK2014_GITLAB_ID, resolve_pipeline_id
+from lib.python.gitlab_util import (
+    GitLabProjectDescription,
+    SPARK2014_GITLAB_ID,
+    download_test_results,
+    make_gitlab_client,
+    resolve_pipeline_id,
+)
 from lib.python.suite_util import is_large, make_large, make_nonlarge
 
 # Mapping test origin to a subdir
@@ -189,9 +191,9 @@ def main():
         outputdirs = [tmpdir]
     elif args.gitlab_id:
         p = GitLabProjectDescription(SPARK2014_GITLAB_ID, ["spark2014", "sparklib"])
-        gl = Gitlab()
+        gl = make_gitlab_client()
         pipeline_id = resolve_pipeline_id(gl, SPARK2014_GITLAB_ID, args.gitlab_id)
-        outputdirs = gl.download_test_results(p, pipeline_id)
+        outputdirs = download_test_results(gl, p, pipeline_id)
         # artifact contains a coverage subdir which should be ignored
         outputdirs = [item for item in outputdirs if "coverage" not in item]
     elif args.outputdir:

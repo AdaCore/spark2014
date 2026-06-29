@@ -1,0 +1,13 @@
+(* Driver for the fake prover used to test prover feedback.
+
+   It reuses the real cvc5 printer and transformations so that Why3 can
+   generate the verification conditions normally, and then maps the marker
+   lines printed by fake_prover.py to specific prover answers. The fake prover
+   never reads the generated file; only the answer regexps below matter. *)
+
+import "cvc5_gnatprove.drv"
+
+unknown "^GNATPROVE_FAKE_GAVEUP$" "fake gave up"
+timeout "^GNATPROVE_FAKE_TIMEOUT$"
+steplimitexceeded "^GNATPROVE_FAKE_STEPLIMIT$"
+outofmemory "^GNATPROVE_FAKE_OUTOFMEMORY$"

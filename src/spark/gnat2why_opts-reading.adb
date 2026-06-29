@@ -145,6 +145,8 @@ package body Gnat2Why_Opts.Reading is
       Exclude_Line := Get_Opt (V, Exclude_Line_Name);
 
       Debug_Exec_RAC := Get_Opt (V, Debug_Exec_RAC_Name);
+      Debug_Disable_Prover_Feedback :=
+        Get_Opt (V, Debug_Disable_Prover_Feedback_Name);
       Debug_No_Cache_Output := Get_Opt (V, Debug_No_Cache_Output_Name);
       Debug_Mode := Get_Opt (V, Debug_Mode_Name);
       Flow_Advanced_Debug := Get_Opt (V, Flow_Advanced_Debug_Name);

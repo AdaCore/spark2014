@@ -1,0 +1,5 @@
+CLI explainCode: E0006
+SARIF explainCode: E0006
+SARIF explainCommand: gnatprove --explain=E0006
+SARIF rule explainCode: E0006
+SARIF rule explainCommand: gnatprove --explain=E0006

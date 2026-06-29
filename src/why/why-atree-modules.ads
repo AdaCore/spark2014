@@ -399,15 +399,16 @@ package Why.Atree.Modules is
    --  Symbols common to all arrays
 
    type M_Array_Type is record
-      Module  : W_Module_Id;
-      Ty      : W_Type_Id;
-      Comp_Ty : W_Type_Id;
-      Get     : W_Identifier_Id;
-      Set     : W_Identifier_Id;
-      Bool_Eq : W_Identifier_Id;
-      Slide   : W_Identifier_Id;
-      Const   : W_Identifier_Id;
-      Slice   : W_Identifier_Id;
+      Module     : W_Module_Id;
+      Ty         : W_Type_Id;
+      Comp_Ty    : W_Type_Id;
+      Get        : W_Identifier_Id;
+      Set        : W_Identifier_Id;
+      Bool_Eq    : W_Identifier_Id;
+      Slide      : W_Identifier_Id;
+      Const      : W_Identifier_Id;
+      Slice      : W_Identifier_Id;
+      Has_Bounds : W_Identifier_Id;
    end record;
 
    --  Symbols for concatenation of one-dimensional arrays. There are four
@@ -793,8 +794,9 @@ package Why.Atree.Modules is
    --  containing all the axiom modules generated for their specializations.
 
    type M_UC_Type is record
-      Module : W_Module_Id;
-      UC_Id  : W_Identifier_Id;
+      Module   : W_Module_Id;
+      UC_Id    : W_Identifier_Id;
+      Guard_Id : W_Identifier_Id;
    end record;
 
    package Name_Id_UC_Map is new
