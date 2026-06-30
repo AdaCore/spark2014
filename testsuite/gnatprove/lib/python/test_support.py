@@ -463,6 +463,37 @@ def sarif_rules(cwd=None, index=0):
     return run.get("tool", {}).get("driver", {}).get("rules", [])
 
 
+def check_sarif_conventions(cwd=None, logger=None):
+    """Check that the SARIF report respects the spec convention on kind/level.
+
+    The SARIF specification requires that a result's "level" is "none" (or
+    absent, which defaults to "none") unless its "kind" is "fail". A violation
+    is reported on the output so that the enclosing test fails.
+    """
+
+    sarif = load_sarif(cwd)
+    if sarif is None:
+        return
+
+    for run in sarif.get("runs", []):
+        for result in run.get("results", []):
+            #  When absent, "kind" defaults to "fail", which puts no constraint
+            #  on "level"; "level" itself defaults to "none".
+            kind = result.get("kind", "fail")
+            level = result.get("level", "none")
+            if kind != "fail" and level != "none":
+                log(
+                    logger,
+                    'SARIF convention violation: result with kind="'
+                    + kind
+                    + '" must have level="none" but has level="'
+                    + level
+                    + '" (ruleId='
+                    + result.get("ruleId", "<none>")
+                    + ")",
+                )
+
+
 def find_sarif_results(cwd=None, rule_id=None, predicate=None, index=0):
     """Return SARIF results matching the requested filters."""
 
@@ -1716,6 +1747,10 @@ def gnatprove(
     # Execute refiners in sequence
     for refiner in refiners:
         strlist = refiner.refine(strlist)
+
+    # Always validate that the SARIF report respects the spec convention on
+    # kind/level, regardless of the refiners selected by the test.
+    check_sarif_conventions(cwd=cwd, logger=logger)
 
     if not no_output or failure:
         for line in strlist:

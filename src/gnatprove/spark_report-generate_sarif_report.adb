@@ -921,9 +921,13 @@ is
    function Severity_To_Result_Kind
      (S : String) return SARIF.Types.Enum.result_kind is
    begin
+      --  Keep kind=open only for unproved checks (low/medium priority).
+      --  Errors, high checks and warnings are reported as kind=fail, so that
+      --  the SARIF level field can carry meaningful severity information (the
+      --  spec requires level=none whenever kind is not "fail").
       if S = "info" then
          return SARIF.Types.Enum.pass;
-      elsif S = "error" or else S = "high" then
+      elsif S = "error" or else S = "high" or else S = "warning" then
          return SARIF.Types.Enum.fail;
       else
          return SARIF.Types.Enum.open;
@@ -937,7 +941,10 @@ is
    function Severity_To_Result_Level
      (S : String) return SARIF.Types.Enum.result_level is
    begin
-      if S = "error" then
+      --  High checks denote serious problems and use level=error, like
+      --  errors. Low/medium checks and info messages keep level=none, as
+      --  required by the SARIF spec when kind is not "fail".
+      if S = "error" or else S = "high" then
          return SARIF.Types.Enum.error;
       elsif S = "warning" then
          return SARIF.Types.Enum.warning;
