@@ -5,7 +5,7 @@ procedure Test_Array_Component with SPARK_Mode is
    type Int_Array is array (Positive range <>) of Integer;
 
    procedure Write_If_B (X : in out Integer; B : Boolean) with
-     Modifies => X when B
+     Modifies => (X when B)
    is
    begin
       if B then
@@ -15,7 +15,7 @@ procedure Test_Array_Component with SPARK_Mode is
 
    procedure Write_Cell_If_B (A : in out Int_Array; I : Positive; B : Boolean) with
      Pre => I in A'Range,
-     Modifies => A (I) when B
+     Modifies => (A (I) when B)
    is
    begin
       Write_If_B (A (I), B);
