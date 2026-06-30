@@ -49,7 +49,6 @@ exit_cases_bad.adb:150:18: medium: on exceptional exit from "P_8" at exit_cases_
 exit_cases_bad.adb:151:19: info: exit case proved (CVC5: 1 VC)
 exit_cases_bad.adb:151:19: info: on normal return from "P_8" at exit_cases_bad.adb:147
 exit_cases_examples.adb:7:13: info: aspect Always_Terminates on "Find" has been proved, subprogram will terminate
-exit_cases_examples.adb:7:13: medium: function "Find" does not return on some paths
 exit_cases_examples.adb:11:39: info: exit case proved (CVC5: 1 VC)
 exit_cases_examples.adb:11:39: info: exit case proved (CVC5: 1 VC; Trivial: 1 VC)
 exit_cases_examples.adb:11:39: info: on exceptional exit from "Find" at exit_cases_examples.adb:7
