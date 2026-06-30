@@ -42,10 +42,10 @@ test_array_component.adb:8:06: info: for "X" at test_array_component.adb:7
 test_array_component.adb:8:06: info: modifies contract proved (CVC5: 1 VC; Trivial: 1 VC)
 test_array_component.adb:18:06: info: for "A" at test_array_component.adb:16
 test_array_component.adb:18:06: info: modifies contract proved (CVC5: 2 VC; Trivial: 2 VC)
-test_array_component.adb:18:21: info: index check proved (CVC5: 2 VC)
-test_array_component.adb:18:21: info: index check proved (CVC5: 2 VC)
-test_array_component.adb:18:21: info: on entry of subprogram at test_array_component.adb:16
-test_array_component.adb:18:21: info: on return of subprogram at test_array_component.adb:16
+test_array_component.adb:18:22: info: index check proved (CVC5: 2 VC)
+test_array_component.adb:18:22: info: index check proved (CVC5: 2 VC)
+test_array_component.adb:18:22: info: on entry of subprogram at test_array_component.adb:16
+test_array_component.adb:18:22: info: on return of subprogram at test_array_component.adb:16
 test_array_component.adb:21:22: info: index check proved (CVC5: 2 VC)
 test_invalid.adb:16:06: info: for "X" at test_invalid.adb:13
 test_invalid.adb:16:06: info: modifies contract proved (CVC5: 3 VC)

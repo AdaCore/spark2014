@@ -25,7 +25,7 @@ procedure Test_Relaxed with SPARK_Mode is
    end Call_Write_F;
 
    procedure Write_X_When_B (B : Boolean) with
-     Modifies => X when B;
+     Modifies => (X when B);
 
    procedure Write_X_When_B (B : Boolean) is
    begin

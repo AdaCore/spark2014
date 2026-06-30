@@ -33,7 +33,7 @@ procedure Test_Invalid with SPARK_Mode is
    end Call_Write_F;
 
    procedure Write_X_When_B (B : Boolean) with
-     Modifies => X when B;
+     Modifies => (X when B);
 
    procedure Write_X_When_B (B : Boolean) is
    begin
@@ -86,7 +86,7 @@ procedure Test_Invalid with SPARK_Mode is
    end Call_Write_1;
 
    procedure Write_Y_When_B (B : Boolean) with
-     Modifies => Y when B;
+     Modifies => (Y when B);
 
    procedure Write_Y_When_B (B : Boolean) is
    begin
