@@ -1,0 +1,8 @@
+main.adb:15:36: medium: "X" might not be initialized in "Call_P" [reason for check: OUT parameter should be fully initialized on return] [possible explanation: value of "X" is unknown following exceptional exit] [possible fix: initialize "X" on all paths or annotate it with aspect Relaxed_Initialization]
+main.adb:17:15: info: exit case proved (CVC5: 1 VC)
+main.adb:17:15: info: exit case proved (CVC5: 1 VC; Trivial: 1 VC)
+main.adb:17:15: info: on exceptional exit from "Call_P" at main.adb:15
+main.adb:17:15: info: on normal return from "Call_P" at main.adb:15
+main.adb:18:19: info: exit case proved (CVC5: 1 VC)
+main.adb:18:19: info: on exceptional exit from "Call_P" at main.adb:15
+main.adb:22:07: info: only expected exception raised (CVC5: 1 VC)
