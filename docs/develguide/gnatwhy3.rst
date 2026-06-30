@@ -924,6 +924,38 @@ interfaces).
 
     end
 
+Staggered prover launches and loop termination
+"""""""""""""""""""""""""""""""""""""""""""""""
+
+For a single check, several provers can be raced against each other (see
+``schedule_goal_prover_race`` in
+:download:`gnat_checks.ml <../../why3/src/gnat/gnat_checks.ml>`). The switches
+``--stagger-ms`` and ``--stagger-window`` (forwarded from the ``--why3-stagger-*``
+gnatprove switches) spread these launches out in time instead of starting them
+all at once: the first provers start immediately and the remaining ones are
+deferred with one-shot timer wakeups (``register_timer`` in the scheduler). This
+reduces the CPU/memory spike of launching every prover at once, and must never
+change proof results, since each prover is given its full budget from its own
+start.
+
+The scheduler main loop terminates when the run is genuinely done. Detecting
+this correctly requires two independent facts:
+
+- the controller has no proof attempt scheduled, waiting or running, and
+- the scheduler has no deferred launch still pending in its timer queue.
+
+The controller cannot be inspected from the scheduler (it is a functor over the
+scheduler), so its observer pushes the first fact in through ``notify_idle`` —
+this is the same idle predicate the observer already computes. The timer queue
+is owned by the scheduler. Both must be consulted: with staggering, a prover can
+finish and leave the controller momentarily idle while the winning prover for
+that goal is still parked in the timer queue. Treating that transient gap as
+completion would abandon every goal that a deferred prover would have proved. For
+the same reason, while the controller is idle and launches are still pending, the
+loop sleeps until the next launch is due (using the timer deadlines) rather than
+busy-waiting, since ``get_new_results`` only blocks while there are prover tasks
+in progress.
+
 Scheduling prover/transformation with controller
 """"""""""""""""""""""""""""""""""""""""""""""""
 

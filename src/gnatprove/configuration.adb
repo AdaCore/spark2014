@@ -72,6 +72,10 @@ package body Configuration is
    Default_Steps : constant Natural := 100;
    --  Default step limit used when neither --steps nor --timeout is set
 
+   Default_Stagger_Ms : constant Natural := 250;
+   --  Default delay in milliseconds between staggered prover launches for one
+   --  goal, used when --why3-stagger-ms is not set.
+
    subtype Proof_Level is Natural range 0 .. 4;
 
    type Prover_Set is (CVC5_Only, Main_Automatic_Provers);
@@ -138,6 +142,8 @@ package body Configuration is
    Why3_Conf           : GNAT.Strings.String_Access;
    Why3_Debug          : GNAT.Strings.String_Access;
    Why3_Logging        : Boolean := False;
+   Why3_Stagger_Ms     : Natural := 0;
+   Why3_Stagger_Window : Natural := 0;
    Z3_Counterexample   : Boolean := False;
 
    type Spark_Reporter is new GPR2.Reporter.Console.Object with null record;
@@ -334,6 +340,8 @@ package body Configuration is
       Sw_Why3_Debug,
       Sw_Why3_Logging,
       Sw_Why3_Server,
+      Sw_Why3_Stagger_Ms,
+      Sw_Why3_Stagger_Window,
       Sw_SARIF_Base_URI,
       Sw_Z3_Counterexample,
       Sw_Gnattest_Values,
@@ -607,6 +615,16 @@ package body Configuration is
         Make_Switch_Metadata
           (Long       => new String'("--why3-server"),
            Value_Kind => String_Value,
+           Layer      => Invocation_Layer),
+      Sw_Why3_Stagger_Ms               =>
+        Make_Switch_Metadata
+          (Long       => new String'("--why3-stagger-ms"),
+           Value_Kind => Integer_Value,
+           Layer      => Invocation_Layer),
+      Sw_Why3_Stagger_Window           =>
+        Make_Switch_Metadata
+          (Long       => new String'("--why3-stagger-window"),
+           Value_Kind => Integer_Value,
            Layer      => Invocation_Layer),
       Sw_SARIF_Base_URI                =>
         Make_Switch_Metadata
@@ -3946,6 +3964,36 @@ package body Configuration is
             Parallel := Parsed.Values (Sw_J).Integer_Val;
          end if;
 
+         --  Validate the staggering switches before converting them to
+         --  Natural, so that an out-of-range value produces a command-line
+         --  error rather than a range check failure during the conversion.
+
+         if Parsed.Values (Sw_Why3_Stagger_Ms).Integer_Val < 0 then
+            Abort_Msg
+              ("error: wrong argument for --why3-stagger-ms",
+               With_Help => False);
+         else
+            Why3_Stagger_Ms :=
+              (if Parsed.Present (Sw_Why3_Stagger_Ms)
+               then Parsed.Values (Sw_Why3_Stagger_Ms).Integer_Val
+               else Default_Stagger_Ms);
+         end if;
+
+         --  A staggering window of zero would be indistinguishable from the
+         --  switch being absent, so an explicit non-positive value is
+         --  rejected.
+
+         if Parsed.Present (Sw_Why3_Stagger_Window)
+           and then Parsed.Values (Sw_Why3_Stagger_Window).Integer_Val <= 0
+         then
+            Abort_Msg
+              ("error: wrong argument for --why3-stagger-window",
+               With_Help => False);
+         else
+            Why3_Stagger_Window :=
+              Parsed.Values (Sw_Why3_Stagger_Window).Integer_Val;
+         end if;
+
          if Parsed.Values (Sw_No_Counterexample).Boolean_Val then
             Ada.Text_IO.Put_Line
               ("Note: switch ""--no-counterexample"" is ignored.");
@@ -5312,6 +5360,16 @@ package body Configuration is
       if Why3_Debug.all /= "" then
          Args.Append ("--debug-why3");
          Args.Append (Why3_Debug.all);
+      end if;
+
+      if Why3_Stagger_Ms > 0 then
+         Args.Append ("--stagger-ms");
+         Args.Append (Image (Why3_Stagger_Ms, 1));
+      end if;
+
+      if Why3_Stagger_Window > 0 then
+         Args.Append ("--stagger-window");
+         Args.Append (Image (Why3_Stagger_Window, 1));
       end if;
 
       Args.Append ("--counterexample");
