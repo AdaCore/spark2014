@@ -1,11 +1,8 @@
 test_2.adb:32:31: error: object subtype must statically match designated subtype
-test_4.adb:33:12: error: too few discriminants given in constraint
-test_4.adb:33:19: error: expected type "Option" defined at line 26
-test_4.adb:33:19: error: found private type "Option" defined at line 26
+test_4.adb:23:14: warning: subprogram "Test" has no effect
+test_4.adb:31:07: info: no contextual analysis of "Test" (nested subprogram)
+test_4.adb:33:16: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 test_5.adb:30:29: error: invalid constraint: type has no discriminant
 test_5.adb:30:39: error: expected private type "Option" defined at line 26
 test_5.adb:30:39: error: found a composite type
-test_5.adb:35:15: error: too few discriminants given in constraint
-test_5.adb:35:22: error: expected type "Option" defined at line 26
-test_5.adb:35:22: error: found private type "Option" defined at line 26
 gnatprove: error during flow analysis and proof

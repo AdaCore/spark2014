@@ -32,7 +32,7 @@ procedure Test_5 with SPARK_Mode is
 
          procedure P (X : in out not null Option_Access) is
          begin
-            X.all := None; -- The compiler emits a spurious error here
+            X.all := None;
          end P;
 
       begin

@@ -118,8 +118,8 @@ algorithm.adb:383:15: info: range check proved (CVC5: 2 VC)
 algorithm.adb:383:71: medium: range check might fail, cannot prove lower bound for Length (This.gapVec) [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (Length (This.gapVec) >= Count_Type(Gap_ID'First)) to subprogram at algorithm.ads:91]
 algorithm.adb:397:22: info: assertion proved (CVC5: 1 VC)
 algorithm.adb:399:43: medium: implicit aspect Always_Terminates on "findBestValley" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
-algorithm.adb:400:33: info: loop invariant initialization proved (CVC5: 2 VC)
-algorithm.adb:400:33: info: loop invariant preservation proved (CVC5: 2 VC)
+algorithm.adb:400:33: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
+algorithm.adb:400:33: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
 algorithm.adb:405:73: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:410:16: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:411:42: info: precondition proved (CVC5: 1 VC)
