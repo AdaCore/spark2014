@@ -8940,7 +8940,7 @@ package body Flow.Control_Flow_Graph is
                --  assignments just before the raise statements will become
                --  flagged as unused.
 
-               if Present (Prag) then
+               if Has_Exceptional_Contract (FA.Spec_Entity) then
                   declare
                      Formal  : Entity_Id;
                      Var_Def : Flow_Id_Sets.Set;
