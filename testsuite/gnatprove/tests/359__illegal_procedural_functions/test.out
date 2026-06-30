@@ -3,39 +3,37 @@ aspects.ads:8:13: warning: volatile function "F2" has no volatile effects
 aspects.ads:9:06: error: a function with the "Inline_For_Proof" annotation shall not be volatile
 aspects.ads:15:06: error: a subprogram with the "Inline_For_Proof" annotation shall not be a primitive operation of a tagged type
 aspects.ads:19:06: error: a function with the "Inline_For_Proof" annotation shall not be a traversal function
-bad_call.adb:6:20: error: call to a function with side effects outside of assignment or object declaration without a block is not allowed in SPARK (SPARK RM 6.1.13(4)) [E0018]
+bad_call.adb:6:20: error: call to a function with side effects not at toplevel or not toplevel dependent subexpression of a statement or object declaration without a block is not allowed in SPARK (SPARK RM 6.1.13(4)) [E0018]
 bad_call.adb:6:20: error: launch "gnatprove --explain=E0018" for more information
 bad_call.adb:6:20: error: violation of aspect SPARK_Mode at line 4
-bad_call.adb:7:20: error: call to a function with side effects outside of assignment or object declaration without a block is not allowed in SPARK (SPARK RM 6.1.13(4)) [E0018]
+bad_call.adb:7:20: error: call to a function with side effects not at toplevel or not toplevel dependent subexpression of a statement or object declaration without a block is not allowed in SPARK (SPARK RM 6.1.13(4)) [E0018]
 bad_call.adb:7:20: error: launch "gnatprove --explain=E0018" for more information
 bad_call.adb:7:20: error: violation of aspect SPARK_Mode at line 4
-bad_call.adb:7:30: error: call to a function with side effects outside of assignment or object declaration without a block is not allowed in SPARK (SPARK RM 6.1.13(4)) [E0018]
+bad_call.adb:7:30: error: call to a function with side effects not at toplevel or not toplevel dependent subexpression of a statement or object declaration without a block is not allowed in SPARK (SPARK RM 6.1.13(4)) [E0018]
 bad_call.adb:7:30: error: launch "gnatprove --explain=E0018" for more information
 bad_call.adb:7:30: error: violation of aspect SPARK_Mode at line 4
-bad_call.adb:8:24: error: call to a function with side effects outside of assignment or object declaration without a block is not allowed in SPARK (SPARK RM 6.1.13(4)) [E0018]
+bad_call.adb:8:24: error: call to a function with side effects not at toplevel or not toplevel dependent subexpression of a statement or object declaration without a block is not allowed in SPARK (SPARK RM 6.1.13(4)) [E0018]
 bad_call.adb:8:24: error: launch "gnatprove --explain=E0018" for more information
 bad_call.adb:8:24: error: violation of aspect SPARK_Mode at line 4
-bad_call.adb:8:46: error: call to a function with side effects outside of assignment or object declaration without a block is not allowed in SPARK (SPARK RM 6.1.13(4)) [E0018]
+bad_call.adb:8:46: error: call to a function with side effects not at toplevel or not toplevel dependent subexpression of a statement or object declaration without a block is not allowed in SPARK (SPARK RM 6.1.13(4)) [E0018]
 bad_call.adb:8:46: error: launch "gnatprove --explain=E0018" for more information
 bad_call.adb:8:46: error: violation of aspect SPARK_Mode at line 4
-bad_call.adb:8:71: error: call to a function with side effects outside of assignment or object declaration without a block is not allowed in SPARK (SPARK RM 6.1.13(4)) [E0018]
+bad_call.adb:8:71: error: call to a function with side effects not at toplevel or not toplevel dependent subexpression of a statement or object declaration without a block is not allowed in SPARK (SPARK RM 6.1.13(4)) [E0018]
 bad_call.adb:8:71: error: launch "gnatprove --explain=E0018" for more information
 bad_call.adb:8:71: error: violation of aspect SPARK_Mode at line 4
-bad_call.adb:24:19: error: call to a function with side effects outside of assignment or object declaration without a block is not allowed in SPARK (SPARK RM 6.1.13(4)) [E0018]
+bad_call.adb:24:19: error: call to a function with side effects not at toplevel or not toplevel dependent subexpression of a statement or object declaration without a block is not allowed in SPARK (SPARK RM 6.1.13(4)) [E0018]
 bad_call.adb:24:19: error: launch "gnatprove --explain=E0018" for more information
 bad_call.adb:24:19: error: violation of aspect SPARK_Mode at line 4
-bad_call.adb:25:10: error: call to a function with side effects outside of assignment or object declaration without a block is not allowed in SPARK (SPARK RM 6.1.13(4)) [E0018]
+bad_call.adb:25:10: error: call to a function with side effects not at toplevel or not toplevel dependent subexpression of a statement or object declaration without a block is not allowed in SPARK (SPARK RM 6.1.13(4)) [E0018]
 bad_call.adb:25:10: error: launch "gnatprove --explain=E0018" for more information
 bad_call.adb:25:10: error: violation of aspect SPARK_Mode at line 4
-bad_call.adb:26:14: error: call to a function with side effects outside of assignment or object declaration without a block is not allowed in SPARK (SPARK RM 6.1.13(4)) [E0018]
+bad_call.adb:26:14: error: call to a function with side effects not at toplevel or not toplevel dependent subexpression of a statement or object declaration without a block is not allowed in SPARK (SPARK RM 6.1.13(4)) [E0018]
 bad_call.adb:26:14: error: launch "gnatprove --explain=E0018" for more information
 bad_call.adb:26:14: error: violation of aspect SPARK_Mode at line 4
-bad_call.adb:26:30: error: call to a function with side effects outside of assignment or object declaration without a block is not allowed in SPARK (SPARK RM 6.1.13(4)) [E0018]
-bad_call.adb:26:30: error: launch "gnatprove --explain=E0018" for more information
-bad_call.adb:26:30: error: violation of aspect SPARK_Mode at line 4
-bad_call.adb:26:43: error: call to a function with side effects outside of assignment or object declaration without a block is not allowed in SPARK (SPARK RM 6.1.13(4)) [E0018]
-bad_call.adb:26:43: error: launch "gnatprove --explain=E0018" for more information
-bad_call.adb:26:43: error: violation of aspect SPARK_Mode at line 4
+bad_call.adb:26:30: warning: assuming "F10" always terminates
+bad_call.adb:26:30: warning: no Always_Terminates aspect available for "F10" [assumed-always-terminates]
+bad_call.adb:26:43: warning: assuming "F11" always terminates
+bad_call.adb:26:43: warning: no Always_Terminates aspect available for "F11" [assumed-always-terminates]
 bad_call.adb:28:14: error: use of "@" inside a call to a function with side effects is not allowed in SPARK (SPARK RM 6.4.2(7))
 bad_call.adb:28:14: error: violation of aspect SPARK_Mode at line 4
 bad_call.adb:29:14: error: use of "@" inside a call to a function with side effects is not allowed in SPARK (SPARK RM 6.4.2(7))
