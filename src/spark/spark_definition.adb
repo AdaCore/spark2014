@@ -6892,35 +6892,74 @@ package body SPARK_Definition is
          end;
       end if;
 
-      --  A call to a function with side effects may only occur as the
-      --  [right-hand side] expression of an assignment statement or of a local
-      --  object declaration without a block. (SPARK RM 6.1.11(4))
+      --  A call to a function with side-effects may only occur as the toplevel
+      --  expression (or dependent expression) of a statement, or of a local
+      --  object declaration without a block.
       --  Also reject declaration of internal objects introduced by the
       --  frontend.
 
-      if Ekind (E) = E_Function
-        and then Is_Function_With_Side_Effects (E)
-        and then
-          (Nkind (Parent (N))
-           not in N_Assignment_Statement | N_Object_Declaration
-           or else
-             (Nkind (Parent (N)) = N_Object_Declaration
-              and then Is_Internal (Defining_Entity (Parent (N))))
-           or else not Is_Declared_In_Statements (Parent (N)))
-      then
-         Mark_Violation (Vio_Side_Effects_Call_Context, N);
-         return;
-      end if;
+      if Ekind (E) = E_Function then
+         if Is_Function_With_Side_Effects (E) then
+            declare
+               Prev   : Node_Id := N;
+               Cursor : Node_Id := N;
+            begin
+               loop
+                  Set_Expr_Has_Side_Effects (Cursor);
+                  Cursor := Parent (Cursor);
+                  case Nkind (Cursor) is
+                     when N_Case_Expression_Alternative =>
+                        Cursor := Parent (Cursor);
+                        Set_Expr_Has_Side_Effects (Cursor);
 
-      if Ekind (E) = E_Function
-        and then Is_Volatile_Call (N)
-        and then
-          (not Is_OK_Volatile_Context
-                 (Context => Parent (N), Obj_Ref => N, Check_Actuals => True)
-           or else In_Loop_Entry_Old_Or_At_Attribute (N))
-      then
-         Mark_Violation (Vio_Volatile_In_Interfering_Context, N);
-         return;
+                     when N_If_Expression               =>
+                        if Prev = First (Expressions (Cursor)) then
+                           Mark_Violation (Vio_Side_Effects_Call_Context, N);
+                           return;
+                        end if;
+
+                     when N_Expression_With_Actions     =>
+                        null;
+
+                     when N_Assignment_Statement
+                        | N_Simple_Return_Statement
+                        | N_If_Statement
+                        | N_Case_Statement
+                        | N_Exit_Statement
+                        | N_Continue_Statement          =>
+                        exit;
+
+                     when N_Object_Declaration          =>
+                        if Nkind (Parent (Cursor))
+                          /= N_Extended_Return_Statement
+                          and then
+                            (Is_Internal (Defining_Entity (Cursor))
+                             or else not Is_Declared_In_Statements (Cursor))
+                        then
+                           Mark_Violation (Vio_Side_Effects_Call_Context, N);
+                           return;
+                        end if;
+                        exit;
+
+                     when others                        =>
+                        Mark_Violation (Vio_Side_Effects_Call_Context, N);
+                        return;
+                  end case;
+                  Prev := Cursor;
+               end loop;
+            end;
+
+         elsif Is_Volatile_Call (N)
+           and then
+             (not Is_OK_Volatile_Context
+                    (Context       => Parent (N),
+                     Obj_Ref       => N,
+                     Check_Actuals => True)
+              or else In_Loop_Entry_Old_Or_At_Attribute (N))
+         then
+            Mark_Violation (Vio_Volatile_In_Interfering_Context, N);
+            return;
+         end if;
       end if;
 
       --  We are calling a predicate function. This is OK, we do not try to

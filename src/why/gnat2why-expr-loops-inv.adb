@@ -281,6 +281,17 @@ package body Gnat2Why.Expr.Loops.Inv is
    --  @param After_Inv True if the call occurs after the loop invariant
    --         in the top level loop.
 
+   procedure Process_Expression
+     (N                 : Node_Id;
+      Loop_Writes       : in out Write_Status_Maps.Map;
+      Invalid_Objects   : in out Node_Sets.Set;
+      Relevant_Vertices : Local_CFG.Vertex_Sets.Set;
+      After_Inv         : Boolean)
+   with Pre => (if Present (N) then N in N_Subexpr_Id);
+   --  Version of Process_Statement for subexpression, for potential
+   --  side-effects. Update the status map for every variable potentially
+   --  written by the sub-expression.
+
    procedure Process_Statement
      (N                 : Node_Id;
       Loop_Writes       : in out Write_Status_Maps.Map;
@@ -1463,7 +1474,7 @@ package body Gnat2Why.Expr.Loops.Inv is
             if Is_Pragma_Check (N_Iter, Name_Loop_Invariant)
               or else Is_Pragma (N_Iter, Pragma_Loop_Variant)
             then
-               Inv_Vertex := Local_CFG.Starting_Vertex (N_Iter);
+               Inv_Vertex := Local_CFG.Main_Vertex (N_Iter);
                goto Found;
             end if;
          end loop;
@@ -1693,6 +1704,73 @@ package body Gnat2Why.Expr.Loops.Inv is
       end if;
    end Process_Call;
 
+   ------------------------
+   -- Process_Expression --
+   ------------------------
+
+   procedure Process_Expression
+     (N                 : Node_Id;
+      Loop_Writes       : in out Write_Status_Maps.Map;
+      Invalid_Objects   : in out Node_Sets.Set;
+      Relevant_Vertices : Local_CFG.Vertex_Sets.Set;
+      After_Inv         : Boolean)
+   is
+      procedure Recursive (N : Node_Id);
+      --  Recursive call. There is never a need to change other parameters.
+
+      ---------------
+      -- Recursive --
+      ---------------
+
+      procedure Recursive (N : Node_Id) is
+      begin
+         Process_Expression
+           (N, Loop_Writes, Invalid_Objects, Relevant_Vertices, After_Inv);
+      end Recursive;
+
+   begin
+      if No (N) or else not Expr_Has_Side_Effects (N) then
+         return;
+      end if;
+      case Nkind (N) is
+         when N_Case_Expression         =>
+            declare
+               Alt : Node_Id := First_Non_Pragma (Alternatives (N));
+            begin
+               while Present (Alt) loop
+                  Recursive (Expression (Alt));
+                  Next_Non_Pragma (Alt);
+               end loop;
+            end;
+
+         when N_If_Expression           =>
+            declare
+               Cursor : Node_Id := First (Expressions (N));
+            begin
+               while Present (Cursor) loop
+                  Recursive (Cursor);
+                  Next (Cursor);
+               end loop;
+            end;
+
+         when N_Expression_With_Actions =>
+            Recursive (Expression (N));
+
+         when N_Function_Call           =>
+            Process_Call
+              (N,
+               Loop_Writes,
+               Invalid_Objects,
+               Relevant_Vertices.Contains (Local_CFG.Main_Vertex (N)),
+               After_Inv);
+
+         when others                    =>
+            --  Other cases are currently unsupported
+
+            raise Program_Error;
+      end case;
+   end Process_Expression;
+
    -----------------------
    -- Process_Statement --
    -----------------------
@@ -1708,16 +1786,15 @@ package body Gnat2Why.Expr.Loops.Inv is
       case Nkind (N) is
          when N_Assignment_Statement                              =>
             declare
-               Lvalue   : constant Entity_Id := SPARK_Atree.Name (N);
-               Rvalue   : constant Node_Id := SPARK_Atree.Expression (N);
-               Relevant : constant Boolean :=
-                 Relevant_Vertices.Contains (Local_CFG.Starting_Vertex (N));
+               Lvalue : constant Entity_Id := SPARK_Atree.Name (N);
+               Rvalue : constant Node_Id := SPARK_Atree.Expression (N);
             begin
                Write_Expr
                  (New_Write     => Lvalue,
                   Loop_Writes   => Loop_Writes,
                   After_Inv     => After_Inv,
-                  Relevant_Path => Relevant);
+                  Relevant_Path =>
+                    Relevant_Vertices.Contains (Local_CFG.Main_Vertex (N)));
 
                --  If the validity flag of the Rvalue is transfered to Lvalue,
                --  add the root object to Invalid_Objects.
@@ -1729,15 +1806,12 @@ package body Gnat2Why.Expr.Loops.Inv is
                     (Unique_Entity (Get_Root_Object (Lvalue)));
                end if;
 
-               if Nkind (Rvalue) = N_Function_Call then
-                  Process_Call
-                    (Call            => Rvalue,
-                     Loop_Writes     => Loop_Writes,
-                     Invalid_Objects => Invalid_Objects,
-                     Relevant_Path   => Relevant,
-                     After_Inv       => After_Inv);
-               end if;
-
+               Process_Expression
+                 (Rvalue,
+                  Loop_Writes,
+                  Invalid_Objects,
+                  Relevant_Vertices,
+                  After_Inv);
             end;
 
          --  Discard writes to variables local to a case statement
@@ -1757,6 +1831,12 @@ package body Gnat2Why.Expr.Loops.Inv is
                      In_Nested => True);
                   Next_Non_Pragma (Alternative);
                end loop;
+               Process_Expression
+                 (Expression (N),
+                  Loop_Writes,
+                  Invalid_Objects,
+                  Relevant_Vertices,
+                  After_Inv);
             end;
 
          --  Discard writes to N if we are in a nested scope or if a loop
@@ -1798,7 +1878,7 @@ package body Gnat2Why.Expr.Loops.Inv is
                  Defining_Identifier (N);
                Rvalue   : constant Node_Id := Expression (N);
                Relevant : constant Boolean :=
-                 Relevant_Vertices.Contains (Local_CFG.Starting_Vertex (N));
+                 Relevant_Vertices.Contains (Local_CFG.Main_Vertex (N));
 
             begin
                --  If a local borrower is declared inside the loop, consider
@@ -1826,15 +1906,13 @@ package body Gnat2Why.Expr.Loops.Inv is
                   end if;
                end if;
 
-               if Present (Rvalue) and then Nkind (Rvalue) = N_Function_Call
-               then
-                  Process_Call
-                    (Rvalue,
-                     Loop_Writes,
-                     Invalid_Objects,
-                     Relevant,
-                     After_Inv);
-               end if;
+               Process_Expression
+                 (Rvalue,
+                  Loop_Writes,
+                  Invalid_Objects,
+                  Relevant_Vertices,
+                  After_Inv);
+
             end;
 
          when N_Elsif_Part                                        =>
@@ -1851,7 +1929,7 @@ package body Gnat2Why.Expr.Loops.Inv is
               (N,
                Loop_Writes,
                Invalid_Objects,
-               Relevant_Vertices.Contains (Local_CFG.Starting_Vertex (N)),
+               Relevant_Vertices.Contains (Local_CFG.Main_Vertex (N)),
                After_Inv);
 
          --  Discard writes to variables local to a return statement
@@ -1881,6 +1959,12 @@ package body Gnat2Why.Expr.Loops.Inv is
          --  Discard writes to variables local to an if statement
 
          when N_If_Statement                                      =>
+            Process_Expression
+              (Condition (N),
+               Loop_Writes,
+               Invalid_Objects,
+               Relevant_Vertices,
+               After_Inv);
             Process_Statement_List
               (Then_Statements (N),
                Loop_Writes,
@@ -1988,14 +2072,27 @@ package body Gnat2Why.Expr.Loops.Inv is
                After_Inv,
                In_Nested => True);
 
+         when N_Exit_Statement | N_Continue_Statement             =>
+            Process_Expression
+              (Condition (N),
+               Loop_Writes,
+               Invalid_Objects,
+               Relevant_Vertices,
+               After_Inv);
+
+         when N_Simple_Return_Statement                           =>
+            Process_Expression
+              (Expression (N),
+               Loop_Writes,
+               Invalid_Objects,
+               Relevant_Vertices,
+               After_Inv);
+
          when N_Ignored_In_SPARK
             | N_Itype_Reference
             | N_Object_Renaming_Declaration
-            | N_Simple_Return_Statement
             | N_Subtype_Declaration
             | N_Full_Type_Declaration
-            | N_Exit_Statement
-            | N_Continue_Statement
             | N_Goto_Statement
             | N_Pragma
             | N_Raise_xxx_Error
