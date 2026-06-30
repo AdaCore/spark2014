@@ -1,0 +1,1 @@
+foo.adb:14:22: high: assertion might fail (e.g. when X = False)

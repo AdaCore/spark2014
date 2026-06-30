@@ -3733,6 +3733,13 @@ package body Flow_Error_Messages is
                         Out_Vars : Flow_Id_Sets.Set;
 
                      begin
+                        --  Ignore generic subprograms and keep searching
+
+                        if Is_Generic_Subprogram (Proc) then
+                           Stmt := Get_Previous_Explain_Node (Stmt);
+                           goto SEARCH;
+                        end if;
+
                         --  A subprogram declaration is the explaining node
                         --  for checks that happen in the precondition or
                         --  postcondition attached to this subprogram. Check
