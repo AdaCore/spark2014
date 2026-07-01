@@ -1,0 +1,7 @@
+test.adb:12:10: info: range check proved (CVC5: 2 VC)
+test.adb:16:04: warning: analyzing unreferenced procedure "Test_Reference" [unreferenced-procedure]
+test.adb:16:14: warning: subprogram "Test_Reference" has no effect
+test.adb:17:29: info: range check proved (CVC5: 2 VC)
+test.adb:18:56: high: private part of "X" is not initialized
+test.adb:18:56: info: discriminant check proved (CVC5: 1 VC)
+test.adb:18:56: info: in reconstructed value at the end of the borrow at test.adb:18

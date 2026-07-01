@@ -13765,7 +13765,7 @@ package body Gnat2Why.Expr is
         (if Reborrow
          then Etype (Brower)
          elsif Ekind (Brower) = E_Function
-         then Etype (Borrowed_Entity)
+         then Type_Of_Node (Borrowed_Entity)
          else Get_Borrowed_Typ (Brower));
       W_Borrowed  : constant W_Term_Id :=
         (if Reborrow
@@ -13850,15 +13850,18 @@ package body Gnat2Why.Expr is
                      (Ty               => Borrowed_Ty,
                       Expr1            => W_Borrowed,
                       Expr2            =>
-                        +Transform_Expr_Or_Identifier
-                           (N      =>
-                              (if Reborrow
-                               then Brower
-                               elsif Ekind (Brower) = E_Function
-                               then Borrowed_Entity
-                               else Get_Borrowed_Expr (Brower)),
-                            Domain => EW_Term,
-                            Params => Body_Params),
+                        Insert_Simple_Conversion
+                          (Expr =>
+                             +Transform_Expr_Or_Identifier
+                                (N      =>
+                                   (if Reborrow
+                                    then Brower
+                                    elsif Ekind (Brower) = E_Function
+                                    then Borrowed_Entity
+                                    else Get_Borrowed_Expr (Brower)),
+                                 Domain => EW_Term,
+                                 Params => Body_Params),
+                           To   => Type_Of_Node (Borrowed_Ty)),
                       Constant_Address =>
                         Reborrow
                         or else
