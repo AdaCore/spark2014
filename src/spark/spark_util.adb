@@ -1985,6 +1985,9 @@ package body SPARK_Util is
       function Manifest_Kind return String is
       begin
          case Ekind (E) is
+            when E_Entry     =>
+               return "entry";
+
             when E_Function  =>
                return "function";
 
@@ -2005,7 +2008,7 @@ package body SPARK_Util is
 
       function Manifest_Profile return String is
       begin
-         if Ekind (E) not in E_Function | E_Procedure then
+         if Ekind (E) not in E_Entry | E_Function | E_Procedure then
             return "";
          end if;
 

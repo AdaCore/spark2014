@@ -1837,8 +1837,9 @@ package body Gnat2Why.Driver is
                return False;
             end if;
 
-            --  Procedure/function kind and profile filters only make sense
-            --  for subprograms; package kind identifies the package entity.
+            --  Entry/procedure/function kind and profile filters only make
+            --  sense for subprograms; package kind identifies the package
+            --  entity.
 
             if Kind /= "" then
                if not Same_Manifest_Text (Kind, Entity_Kind (E)) then
