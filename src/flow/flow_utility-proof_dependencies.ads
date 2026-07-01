@@ -33,23 +33,33 @@ package Flow_Utility.Proof_Dependencies is
    --  Run several analyses on entities contained in Proof_Dependencies to
    --  determine the final set of proof dependencies.
 
+   procedure Union
+     (Target : in out Proof_Dependencies_Sets;
+      Source : Proof_Dependencies_Sets);
+   --  Update Target by computing union operations on sets from Target and
+   --  Source.
+
    procedure Process_Access_To_Subprogram_Contracts
      (Typ                : Entity_Id;
       Scop               : Flow_Scope;
       Proof_Dependencies : in out Proof_Dependencies_Sets;
+      Type_Contracts     : in out Type_Contracts_Maps;
       Generating_Globals : Boolean)
    with
      Pre => Is_Access_Subprogram_Type (Typ) and then No (Parent_Retysp (Typ));
    --  Fill Proof_Dependencies by analyzing the Pre and Post contracts from
-   --  an access-to-subprogram type definition.
+   --  an access-to-subprogram type definition. Type_Contracts is filled when
+   --  encountering type predicates and invariants.
 
    procedure Process_Type_Contracts
      (Typ                : Entity_Id;
       Scop               : Flow_Scope;
       Include_Invariant  : Boolean;
-      Proof_Dependencies : in out Proof_Dependencies_Sets);
+      Proof_Dependencies : in out Proof_Dependencies_Sets;
+      Type_Contracts     : in out Type_Contracts_Maps);
    --  Fill Proof_Dependencies by analyzing predicate and invariant expressions
-   --  that apply to Typ. This also pulls contracts in access-to-subprograms
-   --  types. Include_Invariant is used to determine whether a type invariant
-   --  is pulled.
+   --  that apply to Typ. If not already inserted, fill Type_Contracts with
+   --  information about Typ and its type ancestry in Type_Contracts. This also
+   --  pulls contracts in access-to-subprograms types. Include_Invariant is
+   --  used to determine whether a type invariant is pulled.
 end Flow_Utility.Proof_Dependencies;

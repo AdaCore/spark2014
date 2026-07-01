@@ -73,6 +73,7 @@ package body Flow_Utility.Proof_Dependencies is
      (Typ                : Entity_Id;
       Scop               : Flow_Scope;
       Proof_Dependencies : in out Proof_Dependencies_Sets;
+      Type_Contracts     : in out Type_Contracts_Maps;
       Generating_Globals : Boolean)
    is
       procedure Process_Expressions (L : Node_Lists.List);
@@ -94,6 +95,7 @@ package body Flow_Utility.Proof_Dependencies is
                Funcalls,
                Indcalls,
                Proof_Dependencies,
+               Type_Contracts,
                Unused_Locks,
                Generating_Globals);
          end loop;
@@ -322,7 +324,8 @@ package body Flow_Utility.Proof_Dependencies is
      (Typ                : Entity_Id;
       Scop               : Flow_Scope;
       Include_Invariant  : Boolean;
-      Proof_Dependencies : in out Proof_Dependencies_Sets)
+      Proof_Dependencies : in out Proof_Dependencies_Sets;
+      Type_Contracts     : in out Type_Contracts_Maps)
    is
       Types_Discard, Const_Discard : Node_Sets.Set;
    begin
@@ -331,7 +334,7 @@ package body Flow_Utility.Proof_Dependencies is
          Scop               => Scop,
          Include_Invariant  => Include_Invariant,
          Proof_Dependencies => Proof_Dependencies,
-         Types_Seen         => Types_Discard,
+         Type_Contracts     => Type_Contracts,
          Constants_Seen     => Const_Discard);
    end Process_Type_Contracts;
 
@@ -355,16 +358,16 @@ package body Flow_Utility.Proof_Dependencies is
       end loop;
    end Process_Reclamation_Functions;
 
-   ------------------------------
-   -- Union_Proof_Dependencies --
-   ------------------------------
+   -----------
+   -- Union --
+   -----------
 
-   procedure Union_Proof_Dependencies
+   procedure Union
      (Target : in out Proof_Dependencies_Sets;
       Source : Proof_Dependencies_Sets) is
    begin
       for Kind in Proof_Dependency_Kind loop
          Target (Kind).Union (Source (Kind));
       end loop;
-   end Union_Proof_Dependencies;
+   end Union;
 end Flow_Utility.Proof_Dependencies;

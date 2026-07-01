@@ -551,6 +551,7 @@ package body Flow.Analysis.Sanity is
                Funcalls     : Call_Sets.Set;
                Indcalls     : Node_Sets.Set;
                Proofdeps    : Proof_Dependencies_Sets;
+               Typcontrs    : Type_Contracts_Maps;
                Unused_Locks : Protected_Call_Sets.Set;
 
             begin
@@ -566,6 +567,7 @@ package body Flow.Analysis.Sanity is
                   Function_Calls     => Funcalls,
                   Indirect_Calls     => Indcalls,
                   Proof_Dependencies => Proofdeps,
+                  Type_Contracts     => Typcontrs,
                   Locks              => Unused_Locks,
                   Generating_Globals => False);
 
@@ -623,6 +625,7 @@ package body Flow.Analysis.Sanity is
                   Funcalls     : Call_Sets.Set;
                   Indcalls     : Node_Sets.Set;
                   Proofdeps    : Proof_Dependencies_Sets;
+                  Typcontrs    : Type_Contracts_Maps;
                   Unused_Locks : Protected_Call_Sets.Set;
 
                begin
@@ -637,6 +640,7 @@ package body Flow.Analysis.Sanity is
                      Function_Calls     => Funcalls,
                      Indirect_Calls     => Indcalls,
                      Proof_Dependencies => Proofdeps,
+                     Type_Contracts     => Typcontrs,
                      Locks              => Unused_Locks,
                      Generating_Globals => False);
 

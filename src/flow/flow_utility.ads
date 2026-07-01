@@ -47,6 +47,7 @@ package Flow_Utility is
       Function_Calls     : in out Call_Sets.Set;
       Indirect_Calls     : in out Node_Sets.Set;
       Proof_Dependencies : in out Proof_Dependencies_Sets;
+      Type_Contracts     : in out Type_Contracts_Maps;
       Locks              : in out Protected_Call_Sets.Set;
       Generating_Globals : Boolean)
    with
@@ -899,10 +900,10 @@ private
       Scop               : Flow_Scope;
       Include_Invariant  : Boolean;
       Proof_Dependencies : in out Proof_Dependencies_Sets;
-      Types_Seen         : in out Node_Sets.Set;
+      Type_Contracts     : in out Type_Contracts_Maps;
       Constants_Seen     : in out Node_Sets.Set);
-   --  Like Process_Type_Contracts, with additional parameters Types_Seen and
-   --  Constants_Seen that allows to track which type predicates and constant
-   --  expressions we already traversed to pick proof dependencies.
+   --  Like Process_Type_Contracts, with additional parameter Constants_Seen
+   --  that allows to track which constant expressions we already traversed
+   --  to pick proof dependencies.
 
 end Flow_Utility;

@@ -259,6 +259,7 @@ package body Flow_Generated_Globals.Partial is
      (E                  : Entity_Id;
       Function_Calls     : out Node_Sets.Set;
       Proof_Dependencies : out Proof_Dependencies_Sets;
+      Type_Contracts     : out Type_Contracts_Maps;
       Indirect_Calls     : out Node_Sets.Set)
    with
      Pre  => Ekind (E) in Entry_Kind | E_Function | E_Procedure,
@@ -693,10 +694,15 @@ package body Flow_Generated_Globals.Partial is
             declare
                Function_Calls     : Node_Sets.Set;
                Proof_Dependencies : Proof_Dependencies_Sets;
+               Type_Contracts     : Type_Contracts_Maps;
                Indirect_Calls     : Node_Sets.Set;
             begin
                Contract_Calls
-                 (E, Function_Calls, Proof_Dependencies, Indirect_Calls);
+                 (E,
+                  Function_Calls,
+                  Proof_Dependencies,
+                  Type_Contracts,
+                  Indirect_Calls);
 
                for Call of Function_Calls loop
 
@@ -751,7 +757,8 @@ package body Flow_Generated_Globals.Partial is
                     (Etype (F),
                      Get_Flow_Scope (E),
                      Is_Globally_Visible (E),
-                     Proof_Dependencies);
+                     Proof_Dependencies,
+                     Type_Contracts);
                end loop;
 
                --  Process predicates that apply to the return type if E is a
@@ -762,7 +769,8 @@ package body Flow_Generated_Globals.Partial is
                     (Etype (E),
                      Get_Flow_Scope (E),
                      Is_Globally_Visible (E),
-                     Proof_Dependencies);
+                     Proof_Dependencies,
+                     Type_Contracts);
                end if;
 
                pragma Assert (Contr.Proof_Dependencies.Is_Empty);
@@ -1201,6 +1209,7 @@ package body Flow_Generated_Globals.Partial is
      (E                  : Entity_Id;
       Function_Calls     : out Node_Sets.Set;
       Proof_Dependencies : out Proof_Dependencies_Sets;
+      Type_Contracts     : out Type_Contracts_Maps;
       Indirect_Calls     : out Node_Sets.Set)
    is
 
@@ -1223,6 +1232,7 @@ package body Flow_Generated_Globals.Partial is
             Function_Calls     => Funcalls,
             Indirect_Calls     => Indirect_Calls,
             Proof_Dependencies => Proof_Dependencies,
+            Type_Contracts     => Type_Contracts,
             Locks              => Unused_Locks,
             Generating_Globals => True);
 

@@ -138,19 +138,19 @@ package body Flow_Utility is
       Function_Calls     : in out Call_Sets.Set;
       Indirect_Calls     : in out Node_Sets.Set;
       Proof_Dependencies : in out Proof_Dependencies_Sets;
+      Type_Contracts     : in out Type_Contracts_Maps;
       Locks              : in out Protected_Call_Sets.Set;
-      Types_Seen         : in out Node_Sets.Set;
       Constants_Seen     : in out Node_Sets.Set;
       Generating_Globals : Boolean);
-   --  Like Pick_Generated_Info, with additional parameters Types_Seen and
-   --  Constants_Seen that allows to track which type predicates and constant
-   --  expressions we already traversed to pick proof dependencies.
+   --  Like Pick_Generated_Info, with additional parameter Constants_Seen that
+   --  allows to track which constant expressions we already traversed to pick
+   --  proof dependencies.
 
    procedure Process_Expression
      (Expr               : Node_Id;
       Scop               : Flow_Scope;
       Proof_Dependencies : in out Proof_Dependencies_Sets;
-      Types_Seen         : in out Node_Sets.Set;
+      Type_Contracts     : in out Type_Contracts_Maps;
       Constants_Seen     : in out Node_Sets.Set);
    --  Extract proof dependencies and functions calls from Expr and add
    --  them to Proof_Dependencies.
@@ -271,8 +271,8 @@ package body Flow_Utility is
       Function_Calls     : in out Call_Sets.Set;
       Indirect_Calls     : in out Node_Sets.Set;
       Proof_Dependencies : in out Proof_Dependencies_Sets;
+      Type_Contracts     : in out Type_Contracts_Maps;
       Locks              : in out Protected_Call_Sets.Set;
-      Types_Seen         : in out Node_Sets.Set;
       Constants_Seen     : in out Node_Sets.Set;
       Generating_Globals : Boolean)
    is
@@ -307,6 +307,7 @@ package body Flow_Utility is
             Function_Calls     => Function_Calls,
             Indirect_Calls     => Indirect_Calls,
             Proof_Dependencies => Proof_Dependencies,
+            Type_Contracts     => Type_Contracts,
             Locks              => Locks,
             Generating_Globals => Generating_Globals);
       end Process_Predicate_Expression;
@@ -399,7 +400,7 @@ package body Flow_Utility is
                         Scop               => Scop,
                         Include_Invariant  => False,
                         Proof_Dependencies => Proof_Dependencies,
-                        Types_Seen         => Types_Seen,
+                        Type_Contracts     => Type_Contracts,
                         Constants_Seen     => Constants_Seen);
                      Process_Predicates (Get_Type (P, Scop));
 
@@ -419,7 +420,7 @@ package body Flow_Utility is
                            Scop               => Scop,
                            Include_Invariant  => False,
                            Proof_Dependencies => Proof_Dependencies,
-                           Types_Seen         => Types_Seen,
+                           Type_Contracts     => Type_Contracts,
                            Constants_Seen     => Constants_Seen);
                         Process_Predicates (Get_Type (P, Scop));
                      elsif Alternative_Uses_Eq (P) then
@@ -533,7 +534,7 @@ package body Flow_Utility is
                           not Scope_Within_Or_Same
                                 (Outer => Scop.Ent, Inner => E),
                         Proof_Dependencies => Proof_Dependencies,
-                        Types_Seen         => Types_Seen,
+                        Type_Contracts     => Type_Contracts,
                         Constants_Seen     => Constants_Seen);
 
                      if Generating_Globals and then Ekind (E) = E_Constant then
@@ -552,7 +553,7 @@ package body Flow_Utility is
                   Scop               => Scop,
                   Include_Invariant  => False,
                   Proof_Dependencies => Proof_Dependencies,
-                  Types_Seen         => Types_Seen,
+                  Type_Contracts     => Type_Contracts,
                   Constants_Seen     => Constants_Seen);
 
             --  Pull subprograms referenced through 'Access in the proof
@@ -635,7 +636,7 @@ package body Flow_Utility is
          --  Process the expression of E
          if Inserted then
             Process_Expression
-              (Expr, Scop, Proof_Dependencies, Types_Seen, Constants_Seen);
+              (Expr, Scop, Proof_Dependencies, Type_Contracts, Constants_Seen);
          end if;
       end Process_Constant_Expression;
 
@@ -656,10 +657,11 @@ package body Flow_Utility is
       Function_Calls     : in out Call_Sets.Set;
       Indirect_Calls     : in out Node_Sets.Set;
       Proof_Dependencies : in out Proof_Dependencies_Sets;
+      Type_Contracts     : in out Type_Contracts_Maps;
       Locks              : in out Protected_Call_Sets.Set;
       Generating_Globals : Boolean)
    is
-      Types_Unused, Const_Unused : Node_Sets.Set;
+      Const_Unused : Node_Sets.Set;
    begin
       Pick_Generated_Info_Internal
         (N,
@@ -667,8 +669,8 @@ package body Flow_Utility is
          Function_Calls,
          Indirect_Calls,
          Proof_Dependencies,
+         Type_Contracts,
          Locks,
-         Types_Unused,
          Const_Unused,
          Generating_Globals);
    end Pick_Generated_Info;
@@ -681,7 +683,7 @@ package body Flow_Utility is
      (Expr               : Node_Id;
       Scop               : Flow_Scope;
       Proof_Dependencies : in out Proof_Dependencies_Sets;
-      Types_Seen         : in out Node_Sets.Set;
+      Type_Contracts     : in out Type_Contracts_Maps;
       Constants_Seen     : in out Node_Sets.Set)
    is
       Funcalls     : Call_Sets.Set;
@@ -694,8 +696,8 @@ package body Flow_Utility is
          Function_Calls     => Funcalls,
          Indirect_Calls     => Indcalls,
          Proof_Dependencies => Proof_Dependencies,
+         Type_Contracts     => Type_Contracts,
          Locks              => Unused_Locks,
-         Types_Seen         => Types_Seen,
          Constants_Seen     => Constants_Seen,
          Generating_Globals => True);
 
@@ -726,9 +728,12 @@ package body Flow_Utility is
       Scop               : Flow_Scope;
       Include_Invariant  : Boolean;
       Proof_Dependencies : in out Proof_Dependencies_Sets;
-      Types_Seen         : in out Node_Sets.Set;
+      Type_Contracts     : in out Type_Contracts_Maps;
       Constants_Seen     : in out Node_Sets.Set)
    is
+
+      Type_Proof_Dependencies : Proof_Dependencies_Sets;
+
       procedure Add_Predicates_To_Proof_Deps
         (Type_Instance : Formal_Kind_Id; Pred_Expression : Node_Id)
       with Pre => Nkind (Pred_Expression) in N_Subexpr;
@@ -763,8 +768,8 @@ package body Flow_Utility is
          Process_Expression
            (Pred_Expression,
             Scop,
-            Proof_Dependencies,
-            Types_Seen,
+            Type_Proof_Dependencies,
+            Type_Contracts,
             Constants_Seen);
       end Add_Predicates_To_Proof_Deps;
 
@@ -792,8 +797,8 @@ package body Flow_Utility is
                   Process_Expression
                     (Expr,
                      Scop,
-                     Proof_Dependencies,
-                     Types_Seen,
+                     Type_Proof_Dependencies,
+                     Type_Contracts,
                      Constants_Seen);
                end loop;
             end if;
@@ -820,26 +825,56 @@ package body Flow_Utility is
       --  Local variables
 
       Discard  : Boolean;
-      Position : Node_Sets.Cursor;
+      Position : Entity_To_Proof_Dependencies_Sets.Cursor;
       Inserted : Boolean;
-
    begin
       --  If we didn't analyze Typ yet, and it is not an access-to-subprogram
-      --  type, then we add Typ to Types_Seen and explore it.
+      --  type, then we add an element associated with Typ in Type_Contracts
+      --  and explore the type.
 
-      Types_Seen.Insert (Typ, Position, Inserted);
+      if Include_Invariant then
+         Type_Contracts.With_Invariants.Insert
+           (Typ, Type_Proof_Dependencies, Position, Inserted);
 
-      if Inserted then
-         --  Access-to-subprogram types might be annotated with Pre and Post
-         --  contracts. We process their expressions for proof dependencies.
-
-         if Is_Access_Subprogram_Type (Typ) and then No (Parent_Retysp (Typ))
-         then
-            Process_Access_To_Subprogram_Contracts
-              (Typ, Scop, Proof_Dependencies, True);
+         if not Inserted then
+            Union
+              (Proof_Dependencies, Type_Contracts.With_Invariants (Position));
+            return;
          end if;
+      else
+         Type_Contracts.Without_Invariants.Insert
+           (Typ, Type_Proof_Dependencies, Position, Inserted);
 
-         Discard := Visit_Subcomponents (Typ);
+         if not Inserted then
+            Union
+              (Proof_Dependencies,
+               Type_Contracts.Without_Invariants (Position));
+            return;
+         end if;
+      end if;
+
+      pragma Assert (Inserted);
+
+      --  Access-to-subprogram types might be annotated with Pre and Post
+      --  contracts. We process their expressions for proof dependencies.
+
+      if Is_Access_Subprogram_Type (Typ) and then No (Parent_Retysp (Typ)) then
+         Process_Access_To_Subprogram_Contracts
+           (Typ, Scop, Type_Proof_Dependencies, Type_Contracts, True);
+      end if;
+
+      Discard := Visit_Subcomponents (Typ);
+
+      Union (Proof_Dependencies, Type_Proof_Dependencies);
+
+      --  Add the correct contracts associated with Typ in Type_Contracts
+
+      if Include_Invariant then
+         Type_Contracts.With_Invariants.Replace_Element
+           (Position, Type_Proof_Dependencies);
+      else
+         Type_Contracts.Without_Invariants.Replace_Element
+           (Position, Type_Proof_Dependencies);
       end if;
    end Process_Type_Contracts_Internal;
 
@@ -1709,6 +1744,7 @@ package body Flow_Utility is
       Funcalls     : Call_Sets.Set;
       Indcalls     : Node_Sets.Set;
       Proofdeps    : Proof_Dependencies_Sets;
+      Typcontrs    : Type_Contracts_Maps;
       Unused_Locks : Protected_Call_Sets.Set;
    begin
       Pick_Generated_Info
@@ -1717,6 +1753,7 @@ package body Flow_Utility is
          Function_Calls     => Funcalls,
          Indirect_Calls     => Indcalls,
          Proof_Dependencies => Proofdeps,
+         Type_Contracts     => Typcontrs,
          Locks              => Unused_Locks,
          Generating_Globals => Include_Predicates);
       return To_Subprograms (Funcalls);
