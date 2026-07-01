@@ -38,7 +38,7 @@ package body Assumption_Types is
    function Hash (S : Base_Sloc) return Ada.Containers.Hash_Type;
    function Hash (S : My_Sloc) return Ada.Containers.Hash_Type;
 
-   function From_JSON (Sloc : Sloc_Vectors.Vector) return My_Sloc;
+   function From_Entity_Sloc (Sloc : Sloc_Vectors.Vector) return My_Sloc;
    function From_Entity_Info
      (Info : SPARK_JSON_Entities.Entity_Info) return Subp_Type;
    function To_JSON_Internal (S : Subp_Type) return JSON_Value;
@@ -110,12 +110,12 @@ package body Assumption_Types is
       return
         Mk_Subp
           (Name             => To_String (Info.Name),
-           Sloc             => From_JSON (Info.Sloc),
+           Sloc             => From_Entity_Sloc (Info.Sloc),
            Manifest_Kind    => To_String (Info.Manifest_Kind),
            Manifest_Profile => To_String (Info.Manifest_Profile));
    end From_Entity_Info;
 
-   function From_JSON (Sloc : Sloc_Vectors.Vector) return My_Sloc is
+   function From_Entity_Sloc (Sloc : Sloc_Vectors.Vector) return My_Sloc is
       Result : My_Sloc;
    begin
       for Base of Sloc loop
@@ -123,7 +123,7 @@ package body Assumption_Types is
            (Mk_Base_Sloc (To_String (Base.File), Base.Line, Base.Column));
       end loop;
       return Result;
-   end From_JSON;
+   end From_Entity_Sloc;
 
    --------------
    -- From_Key --
