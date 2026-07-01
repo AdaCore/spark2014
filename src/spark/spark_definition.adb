@@ -3713,7 +3713,7 @@ package body SPARK_Definition is
          --  marking.
 
          when N_Raise_xxx_Error                                      =>
-            null;
+            pragma Assert (No (Condition (N)));
 
          when N_Raise_Expression                                     =>
             declare
