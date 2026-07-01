@@ -1,0 +1,3 @@
+backend_switches.adb:13:13: info: implicit aspect Always_Terminates on "Add" has been proved, subprogram will terminate
+backend_switches.adb:17:10: info: overflow check proved (CVC5: 2 VC)
+backend_switches.adb:22:19: info: assertion proved (Trivial)
