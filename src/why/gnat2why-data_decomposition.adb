@@ -245,13 +245,6 @@ package body Gnat2Why.Data_Decomposition is
       procedure Read_String_Value (Value : in out String_Builder);
       --  Read values of a JSON mapping
 
-      function Unquote (S : String) return String
-      with
-        Pre  =>
-          S'Length >= 2 and then S (S'First) = '"' and then S (S'Last) = '"',
-        Post => Unquote'Result'Length = S'Length - 2;
-      --  Utility routine; removes quotes from its parameter
-
       function UI_From_String (S : String) return Valid_Uint
       with Pre => S'Length > 0 and then (for all C of S => C in '0' .. '9');
       --  Conversion routine to read universal integers
@@ -285,7 +278,13 @@ package body Gnat2Why.Data_Decomposition is
 
       function Current_Token return String is
       begin
-         return GNATCOLL.Buffer.Token (Data, Event.First, Event.Last);
+         if Event.Kind = STRING_VALUE then
+            return
+              GNATCOLL.JSON.Decode_As_String
+                (Event, GNATCOLL.Buffer.Reader (Data));
+         else
+            return GNATCOLL.Buffer.Token (Data, Event.First, Event.Last);
+         end if;
       end Current_Token;
 
       ------------
@@ -424,7 +423,7 @@ package body Gnat2Why.Data_Decomposition is
             --  on discriminants or other values. See comments in repinfo.ads
             --  for details.
 
-            if Unquote (Current_Token) = "??" then
+            if Current_Token = "??" then
                pragma Assert (No (Value));
             else
                Bad_Input;
@@ -449,7 +448,7 @@ package body Gnat2Why.Data_Decomposition is
          Parse_Next_Event;
 
          if Event.Kind = STRING_VALUE then
-            Set (Value, Unquote (Current_Token));
+            Set (Value, Current_Token);
          else
             Bad_Input;
          end if;
@@ -534,7 +533,7 @@ package body Gnat2Why.Data_Decomposition is
             if Event.Kind = OBJECT_END then
                exit;
             elsif Event.Kind = STRING_VALUE then
-               Read_Value (Key => Unquote (Current_Token));
+               Read_Value (Key => Current_Token);
             else
                Bad_Input;
             end if;
@@ -575,15 +574,6 @@ package body Gnat2Why.Data_Decomposition is
             Bad_Input;
          end if;
       end Read_Doc;
-
-      -------------
-      -- Unquote --
-      -------------
-
-      function Unquote (S : String) return String is
-      begin
-         return S (S'First + 1 .. S'Last - 1);
-      end Unquote;
 
       --------------------
       -- UI_From_String --
