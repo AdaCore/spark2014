@@ -1839,25 +1839,23 @@ package body Configuration is
            Table.Get_Or_Null ("profile");
       begin
          if Has_Kind
-           and then Kind_Value /= "package"
-           and then Kind_Value /= "procedure"
-           and then Kind_Value /= "function"
+           and then
+             Kind_Value not in "entry" | "function" | "package" | "procedure"
          then
             Manifest_Error
               (Kind,
-               "field ""kind"" must be one of ""package"", ""procedure"""
-               & " or ""function""");
+               "field ""kind"" must be one of ""entry"", ""package"","
+               & " ""procedure"" or ""function""");
          end if;
 
          if Has_Profile
            and then
              (not Has_Kind
-              or else
-                (Kind_Value /= "procedure" and then Kind_Value /= "function"))
+              or else Kind_Value not in "entry" | "function" | "procedure")
          then
             Manifest_Error
               (Profile,
-               "field ""profile"" requires kind ""procedure"""
+               "field ""profile"" requires kind ""entry"", ""procedure"""
                & " or ""function""");
          end if;
 

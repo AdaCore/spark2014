@@ -89,7 +89,7 @@ kind = "task"
 steps = 1
 --- output ---
 Try "gnatprove --help" for more information.
-error: invalid proof manifest bad_kind/main.toml:5:8: field "kind" must be one of "package", "procedure" or "function"
+error: invalid proof manifest bad_kind/main.toml:5:8: field "kind" must be one of "entry", "package", "procedure" or "function"
 ===== profile without kind =====
 --- manifest main.toml ---
 version = 1
@@ -100,7 +100,7 @@ profile = "()"
 steps = 1
 --- output ---
 Try "gnatprove --help" for more information.
-error: invalid proof manifest profile_without_kind/main.toml:5:11: field "profile" requires kind "procedure" or "function"
+error: invalid proof manifest profile_without_kind/main.toml:5:11: field "profile" requires kind "entry", "procedure" or "function"
 ===== bad hierarchical =====
 --- manifest main.toml ---
 version = 1
@@ -123,7 +123,7 @@ profile = "()"
 steps = 1
 --- output ---
 Try "gnatprove --help" for more information.
-error: invalid proof manifest package_profile/main.toml:6:11: field "profile" requires kind "procedure" or "function"
+error: invalid proof manifest package_profile/main.toml:6:11: field "profile" requires kind "entry", "procedure" or "function"
 ===== no options =====
 --- manifest main.toml ---
 version = 1
