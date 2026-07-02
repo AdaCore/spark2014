@@ -3710,10 +3710,20 @@ package body SPARK_Definition is
          --  an exception, like simple cases of infinite recursion or division
          --  by zero. No condition should be present in SPARK code, but accept
          --  them here as the code should in that case be rejected after
-         --  marking.
+         --  marking. Those conditions are only generated for discriminant
+         --  checks on derived types, which we will reject later anyway.
 
          when N_Raise_xxx_Error                                      =>
-            pragma Assert (No (Condition (N)));
+            pragma
+              Assert
+                (if Present (Condition (N))
+                 then
+                   Nkind (N) = N_Raise_Constraint_Error
+                   and then
+                     Reason (N)
+                     = UI_From_Int
+                         (RT_Exception_Code'Pos
+                            (CE_Discriminant_Check_Failed)));
 
          when N_Raise_Expression                                     =>
             declare
