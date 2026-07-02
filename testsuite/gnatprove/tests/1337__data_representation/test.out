@@ -1,0 +1,4 @@
+main.adb:6:13: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
+main.adb:7:19: info: precondition proved (Trivial: 1 VC)
+main.adb:7:19: info: primitive equality should be callable in any context for type at main.adb:2
+main.adb:24:09: info: precondition proved (Trivial: 1 VC)
