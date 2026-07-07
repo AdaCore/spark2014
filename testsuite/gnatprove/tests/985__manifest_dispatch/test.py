@@ -194,6 +194,27 @@ provers = ["cvc5"]
     opt=["--report=all", "--limit-name=R"],
 )
 
+# Manifest level is expanded before gnat2why sees the policy, with more
+# precise manifest options overriding the level defaults in the same entry.
+lines = inspect(
+    "manifest level expands",
+    """\
+version = 1
+
+[[rule]]
+path = "Pkg.R"
+level = 2
+steps = 777
+""",
+)
+assert_has_options(
+    gnatwhy3_line_for(lines, "pkg__r"),
+    "--timeout 5",
+    "--steps 777",
+    "--memlimit 1000",
+    "--prover cvc5,z3,altergo",
+)
+
 # A package-level prefix entry covers every subprogram it contains.
 lines = inspect(
     "package prefix covers multiple subprograms",

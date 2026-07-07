@@ -64,6 +64,7 @@ provers = ["cvc5"]
 Success: all checks proved (1 check).
 Summary logged in gnatprove/gnatprove.out
 [Ada Analysis]    pkg.adb
+===== manifest level expands =====
 ===== package prefix covers multiple subprograms =====
 ===== nested prefix covers single subprogram =====
 ===== prefix kind applies to anchor only =====

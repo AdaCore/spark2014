@@ -118,8 +118,8 @@ def print_info(info):
     )
 
 
-def run_level_test(level):
-    process = Run(["gnatprove", "-P", "test.gpr", "-d", "--level=" + str(level)])
+def run_test(args):
+    process = Run(args)
     info = {
         "timeout": None,
         "steps": None,
@@ -134,6 +134,10 @@ def run_level_test(level):
     print_info(info)
 
 
+def run_level_test(level):
+    run_test(["gnatprove", "-P", "test.gpr", "-d", "--level=" + str(level)])
+
+
 print("level 0:")
 run_level_test(0)
 print("level 1:")
@@ -144,3 +148,7 @@ print("level 3:")
 run_level_test(3)
 print("level 4:")
 run_level_test(4)
+print("command-line level overrides project steps:")
+run_test(["gnatprove", "-P", "project_steps.gpr", "-d", "--level=2"])
+print("command-line steps override project level:")
+run_test(["gnatprove", "-P", "project_level.gpr", "-d", "--steps=777"])

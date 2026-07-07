@@ -80,7 +80,6 @@ with Nlists;                         use Nlists;
 with Osint.C;                        use Osint.C;
 with Osint;                          use Osint;
 with Outputs;                        use Outputs;
-with Proof_Options;
 with Sem;
 with Sem_Aux;                        use Sem_Aux;
 with Sem_Util;                       use Sem_Util;
@@ -1336,9 +1335,6 @@ package body Gnat2Why.Driver is
       procedure Append_Provers (Provers : String_Lists.List);
       --  Append a gnatwhy3 --prover switch for the given prover list
 
-      procedure Apply_Level (Level : Integer);
-      --  Expand a manifest level into the corresponding gnatwhy3 switches
-
       --------------------
       -- Append_Provers --
       --------------------
@@ -1359,29 +1355,6 @@ package body Gnat2Why.Driver is
          Why3_Args.Append (To_String (Buf));
       end Append_Provers;
 
-      -----------------
-      -- Apply_Level --
-      -----------------
-
-      procedure Apply_Level (Level : Integer) is
-         Settings : Proof_Options.Proof_Level_Settings;
-      begin
-         if Level not in Proof_Options.Proof_Level then
-            raise Program_Error;
-         end if;
-
-         Settings :=
-           Proof_Options.Settings_For_Level
-             (Proof_Options.Proof_Level (Level));
-
-         Why3_Args.Append ("--timeout");
-         Why3_Args.Append (Image (Settings.Timeout, 1));
-         Why3_Args.Append ("--steps");
-         Why3_Args.Append (Image (Settings.Steps, 1));
-         Why3_Args.Append ("--memlimit");
-         Why3_Args.Append (Image (Settings.Memlimit, 1));
-         Append_Provers (Proof_Options.Provers_For (Settings.Provers));
-      end Apply_Level;
    begin
       --  Exit gently if gnat2why3 can't be located, for whatever reason,
       --  e.g. when the PATH is wrong in developer setup.
@@ -1411,10 +1384,6 @@ package body Gnat2Why.Driver is
             Policy : Manifest_Subprogram renames
               Gnat2Why_Args.Proof_Manifest (Manifest_Match_Map (E));
          begin
-            if Policy.Level /= Invalid_Manifest_Level then
-               Apply_Level (Policy.Level);
-            end if;
-
             if Policy.Timeout /= Invalid_Manifest_Timeout then
                Why3_Args.Append ("--timeout");
                Why3_Args.Append (Image (Policy.Timeout, 1));

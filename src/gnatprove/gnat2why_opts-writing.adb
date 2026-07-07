@@ -88,7 +88,6 @@ package body Gnat2Why_Opts.Writing is
             Hash ("timeout", Integer'Image (Policy.Timeout));
             Hash ("steps", Integer'Image (Policy.Steps));
             Hash ("memlimit", Integer'Image (Policy.Memlimit));
-            Hash ("level", Integer'Image (Policy.Level));
             Hash ("provers", Policy.Provers);
          end loop;
       end Hash;
@@ -243,10 +242,6 @@ package body Gnat2Why_Opts.Writing is
 
          if Policy.Memlimit /= Invalid_Manifest_Memlimit then
             Set_Field (Obj, "memlimit", Policy.Memlimit);
-         end if;
-
-         if Policy.Level /= Invalid_Manifest_Level then
-            Set_Field (Obj, "level", Policy.Level);
          end if;
 
          if not Policy.Provers.Is_Empty then
