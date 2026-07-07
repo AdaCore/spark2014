@@ -886,6 +886,8 @@ project file, |GNATprove| uses this project file.  If no project file exists,
 |GNATprove| creates a trivial project file with the name ``default.gpr`` and
 uses that.
 
+.. _manifest_files:
+
 Specifying switches for individual subprograms and packages via Manifest Files
 ------------------------------------------------------------------------------
 
@@ -942,6 +944,15 @@ declarations and body statements.
 
 The manifest file takes precedence over options specified in the project file,
 but is overridden by options specified on the command-line.
+
+Manifest files can also be generated automatically to capture proof settings
+for replaying a proof run. Invoke gnatprove with the desired proof settings,
+such as the selected provers, proof level, step limit, or memory limit, and add
+--generate-manifest-dir=<folder>. GNATprove writes manifest files to the given
+folder with settings to reproduce the successful proofs from that run. During
+generation, it applies heuristics to keep the files compact while avoiding
+excessive increase in proof time. This usage of manifest files is intended as an
+alternative to session files (see :ref:`Sharing Proof Results with Others`).
 
 GNATprove and Manual Proof
 --------------------------
