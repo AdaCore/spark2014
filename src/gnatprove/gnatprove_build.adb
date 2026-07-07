@@ -534,11 +534,7 @@ package body Gnatprove_Build is
       --  ??? Delete why3 conf files.
       --  ??? In debug mode, output should not be buffered.
 
-      --  GNAT style checks enforce the wrong column here
-      --  eng/toolchain/gnat#1796
-      --!format off
-      finally
-      --!format on
+   finally
       Cleanup;
    end Flow_Analysis_And_Proof;
 
