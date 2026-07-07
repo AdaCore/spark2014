@@ -82,6 +82,9 @@ gnatprove advanced switches:
                       providing contracts of functions (c=on*,off)
  --gnattest-values=f  Use file f as the preferred source for counterexample
                       candidates
+ --generate-manifest-dir=d
+                      Generate proof manifest files in directory d from the
+                      .spark files consumed by this run
  --limit-line=f:l     Limit analysis to given file and line
  --limit-line=f:l:c:k Limit analysis to given file, line, column and kind of
                       check
@@ -115,6 +118,7 @@ gnatprove advanced switches:
  --proof-warnings=c   Issue warnings by proof (c=on,off*)
  --proof-warnings-timeout
                       Set the timeout for proof warnings
+ --proof-manifest-dir=d   Use proof manifest files from directory d
  --proof=g[:l]        Set the proof modes for generation of formulas
                       (g=per_check*, per_path, progressive) (l=lazy*, all)
  --prover=s[,s]*      Use given provers (s=altergo, cvc5*, z3, ..., or s=all

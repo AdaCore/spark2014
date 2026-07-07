@@ -85,6 +85,7 @@ package body Configuration is
    Debug_Save_VCs      : Boolean := False;
    Debug_Prover_Errors : Boolean := False;
    File_List           : String_Lists.List;
+   Generate_Manifest   : GNAT.Strings.String_Access;
    Replay              : Boolean := False;
    Proof_Manifest_Path : GNAT.Strings.String_Access;
    Proof_Manifest_Maps : Manifest_Maps.Map;
@@ -291,6 +292,7 @@ package body Configuration is
       Sw_Z3_Counterexample,
       Sw_Gnattest_Values,
       Sw_Debug_Exec_RAC,
+      Sw_Generate_Manifest,
       Sw_Proof_Manifest,
 
       Sw_Level,
@@ -579,6 +581,11 @@ package body Configuration is
         Make_Switch_Metadata
           (Long       => new String'("--debug-exec-rac"),
            Value_Kind => Flag_Value,
+           Layer      => Invocation_Layer),
+      Sw_Generate_Manifest             =>
+        Make_Switch_Metadata
+          (Long       => new String'("--generate-manifest-dir"),
+           Value_Kind => String_Value,
            Layer      => Invocation_Layer),
       Sw_Proof_Manifest                =>
         Make_Switch_Metadata
@@ -1242,6 +1249,8 @@ package body Configuration is
       Debug_Prover_Errors :=
         Parsed.Values (Sw_Debug_Prover_Errors).Boolean_Val;
       Copy_List (Parsed.File_List, File_List);
+      Move_String
+        (Parsed.Values (Sw_Generate_Manifest).String_Val, Generate_Manifest);
       Replay := Parsed.Values (Sw_Replay).Boolean_Val;
       Move_String (Parsed.Values (Sw_Why3_Conf).String_Val, Why3_Conf);
       Move_String (Parsed.Values (Sw_Why3_Debug).String_Val, Why3_Debug);
@@ -1377,6 +1386,15 @@ package body Configuration is
             & GNAT.OS_Lib.Errno_Message);
          GNAT.OS_Lib.OS_Exit (1);
    end Create_Path_Or_Exit;
+
+   ----------------------------
+   -- Generate_Manifest_Path --
+   ----------------------------
+
+   function Generate_Manifest_Path return String is
+   begin
+      return (if Generate_Manifest = null then "" else Generate_Manifest.all);
+   end Generate_Manifest_Path;
 
    ------------------
    -- Display_Help --
@@ -1738,7 +1756,7 @@ package body Configuration is
       function Read_Subprogram
         (Table : TOML.TOML_Value; Unit_Name : String)
          return Manifest_Subprogram;
-      --  Read a single subprogram entry
+      --  Read a single rule entry
 
       function Manifest_Less
         (Left, Right : Manifest_Subprogram) return Boolean;
@@ -2499,7 +2517,9 @@ package body Configuration is
          for Switch in Invocation_Switch_Id loop
             --  Proof manifests are command-line only for now; project file
             --  attributes can get their own syntax once the schema settles.
-            if Mode = All_Switches or else Switch /= Sw_Proof_Manifest then
+            if Mode = All_Switches
+              or else Switch not in Sw_Generate_Manifest | Sw_Proof_Manifest
+            then
                Register_Switch (Switch);
             end if;
          end loop;

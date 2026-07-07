@@ -1,5 +1,5 @@
 large: True
-replay: True
+replay: manifest
 session_opt:
   level: 4
 prove_all:

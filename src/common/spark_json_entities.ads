@@ -42,6 +42,7 @@ package SPARK_JSON_Entities is
 
    type Entity_Info is record
       Key              : Unbounded_String;
+      Key_Index        : Positive;
       Name             : Unbounded_String;
       Sloc             : Sloc_Vectors.Vector;
       Manifest_Kind    : Unbounded_String;

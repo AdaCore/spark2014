@@ -293,6 +293,9 @@ package Configuration is
    --  The name of the file in which the SPARK report is generated:
    --    Out_Dir/gnatprove.out
 
+   function Generate_Manifest_Path return String;
+   --  The folder designated by --generate-manifest-dir, or the empty string
+
    procedure Read_Command_Line (Tree : out Project.Tree.Object);
 
    function To_String (P : Proof_Mode) return String;

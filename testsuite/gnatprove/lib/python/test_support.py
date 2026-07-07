@@ -39,6 +39,7 @@ parallel_procs = 1
 default_project = "test.gpr"
 default_provers = ["cvc5", "altergo", "z3", "colibri"]
 default_ada = 2022
+replay_manifest_dir = "proof/manifest"
 sparklib_project_path_env = "SPARKLIB_PROJECT_PATH"
 sparklib_bodymode_path_env = "SPARKLIB_BODYMODE_PROJECT_PATH"
 
@@ -1897,30 +1898,34 @@ def prove_all(
     fullopt += ["-P", project, "--quiet"]
     if codepeer:
         fullopt += ["--codepeer=on"]
-    if replay and not benchmark_mode():
+
+    if replay is True:
+        replay = "session"
+    manifest_replay = replay == "manifest" and not benchmark_mode()
+    if replay == "session" and not benchmark_mode():
         fullopt += ["--replay"]
 
-    if level is None:
+    if level is None and not manifest_replay:
         # If no proof level is specified, we use the default timeout and
         # step limit unless otherwise specified.
         if steps is None:
             steps = max_steps
         if vc_timeout is None:
             vc_timeout = get_default_timeout()
-    else:
+    elif level is not None and not manifest_replay:
         fullopt += ["--level=%u" % level]
 
-    if steps is not None:
+    if steps is not None and not manifest_replay:
         fullopt += ["--steps=%d" % steps]
-    if memlimit is not None:
+    if memlimit is not None and not manifest_replay:
         fullopt += ["--memlimit=%d" % memlimit]
-    if vc_timeout is not None:
+    if vc_timeout is not None and not manifest_replay:
         fullopt += ["--timeout=%d" % vc_timeout]
 
     if mode is not None:
         fullopt += ["--mode=%s" % (mode)]
     fullopt += ["-j%d" % (procs)]
-    if prover:
+    if prover and not manifest_replay:
         prover_arg = build_prover_switch(prover)
     else:
         prover_arg = []
@@ -1945,6 +1950,8 @@ def prove_all(
     # Add opt last, so that it may include switch -cargs
     if opt is not None:
         fullopt += opt
+    if manifest_replay:
+        fullopt += ["--proof-manifest-dir=%s" % replay_manifest_dir]
     report = report if report is not None else "all" if replay else "provers"
     # limit-switches don't play well with sarif output for now
     has_limit_switch = any("--limit" in s for s in fullopt)

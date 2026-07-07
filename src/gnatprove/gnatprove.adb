@@ -74,6 +74,7 @@ with GPR2;            use GPR2;
 with GPR2.Path_Name;
 with GPR2.Project.Tree;
 with GPR2.Project.View;
+with Manifest_Generator;
 with Spark_Report;
 with String_Utils;    use String_Utils;
 with VC_Kinds;        use VC_Kinds;
@@ -278,6 +279,11 @@ begin
          Fail ("gnatprove: error during " & Phase_Text);
       end if;
    end;
+
+   if Generate_Manifest_Path /= "" then
+      Manifest_Generator.Generate
+        (SPARK_Files => SPARK_Files, Output_Dir => Generate_Manifest_Path);
+   end if;
 
    Generate_SPARK_Report (Tree, Errors => False);
    Cleanup (Tree, "", Success_Exit_Code);
