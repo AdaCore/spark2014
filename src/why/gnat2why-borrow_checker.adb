@@ -1483,19 +1483,7 @@ package body Gnat2Why.Borrow_Checker is
       Dummy       : Boolean := True;
 
    begin
-      --  For function calls with side effects, use the handling of
-      --  procedure calls as there might be parameters of mode OUT.
-      --  Such calls can never be borrows/observes as traversal
-      --  functions cannot have side effects. No need to check the
-      --  assignment for ghost compatibility as the returned object
-      --  is necessarily new.
-
-      if Nkind (Expr) = N_Function_Call
-        and then Is_Function_With_Side_Effects (Get_Called_Entity (Expr))
-      then
-         Check_Call_With_Side_Effects (Call => Expr);
-
-      elsif Is_Anonymous_Access_Object_Type (Target_Typ) then
+      if Is_Anonymous_Access_Object_Type (Target_Typ) then
          Expr_Root := Get_Root_Object (Expr);
 
          if Is_Decl then
@@ -2528,35 +2516,44 @@ package body Gnat2Why.Borrow_Checker is
                   Fun : constant Entity_Id := Get_Called_Entity (Expr);
 
                begin
+                  if Is_Function_With_Side_Effects (Fun) then
+                     --  For function calls with side effects, use the handling
+                     --  of procedure calls as there might be parameters of
+                     --  mode OUT.
+
+                     Check_Call_With_Side_Effects (Expr);
+                     return;
+
                   --  Ignore predicate function calls if the entity is not in
                   --  SPARK.
 
-                  if Ekind (Fun) = E_Function
+                  elsif Ekind (Fun) = E_Function
                     and then Is_Predicate_Function (Fun)
                     and then not Entity_In_SPARK (Fun)
                   then
                      return;
-                  end if;
 
                   --  If the called entity is annotated with At_End_Borrow,
                   --  check that its parameter is rooted at a borrowed
                   --  expression or at a borrower.
 
-                  if Has_At_End_Borrow_Annotation (Fun) then
+                  elsif Has_At_End_Borrow_Annotation (Fun) then
                      Check_At_End_Borrow_Call (Expr);
                   end if;
 
                   Read_Params (Expr);
                   Check_Globals (Fun, Expr);
 
-                  --  For operations directly inside protected objects, check
-                  --  the permission of protected components on internal calls.
+                  --  For operations directly inside protected objects,
+                  --  check the permission of protected components on
+                  --  internal calls.
 
                   if Ekind (Scope (Fun)) = E_Protected_Type
                     and then not Is_External_Call (Expr)
                   then
                      Read_Protected_Components (Fun, Expr);
                   end if;
+
                end;
 
             when N_Qualified_Expression
@@ -2819,24 +2816,64 @@ package body Gnat2Why.Borrow_Checker is
                Cond_Expr : constant Node_Id := First (Expressions (Expr));
                Then_Expr : constant Node_Id := Next (Cond_Expr);
                Else_Expr : constant Node_Id := Next (Then_Expr);
+               Saved_Env : Perm_Env;
+               New_Env   : Perm_Env;
             begin
                Read_Expression (Cond_Expr);
-               Check_Expression (Then_Expr, Mode);
-               Check_Expression (Else_Expr, Mode);
+               if Expr_Has_Side_Effects (Then_Expr)
+                 or else Expr_Has_Side_Effects (Else_Expr)
+               then
+                  Copy_Env (Current_Perm_Env, Saved_Env);
+                  Check_Expression (Then_Expr, Mode);
+                  Move_Env (Current_Perm_Env, New_Env);
+                  Move_Env (Saved_Env, Current_Perm_Env);
+                  Check_Expression (Else_Expr, Mode);
+                  Merge_Env (Current_Perm_Env, New_Env);
+                  Free_Env (Saved_Env);
+               else
+                  Check_Expression (Then_Expr, Mode);
+                  Check_Expression (Else_Expr, Mode);
+               end if;
             end;
 
          when N_Case_Expression                             =>
             declare
-               Cases    : constant List_Id := Alternatives (Expr);
-               Cur_Case : Node_Id := First (Cases);
-
+               Cases     : constant List_Id := Alternatives (Expr);
+               Cur_Case  : Node_Id := First (Cases);
+               Saved_Env : Perm_Env;
+               New_Env   : Perm_Env;
+               Side_Eff  : constant Boolean := Expr_Has_Side_Effects (Expr);
+               First     : Boolean := True;
             begin
+               Read_Expression (Expression (Expr));
+
+               if Side_Eff then
+                  Copy_Env (Current_Perm_Env, Saved_Env);
+               end if;
+
                while Present (Cur_Case) loop
+                  if Side_Eff and then not First then
+                     Copy_Env (Saved_Env, Current_Perm_Env);
+                  end if;
+
                   Check_Expression (Expression (Cur_Case), Mode);
                   Next (Cur_Case);
+
+                  if Side_Eff then
+                     if First then
+                        Move_Env (Current_Perm_Env, New_Env);
+                     else
+                        Merge_Env (Current_Perm_Env, New_Env);
+                     end if;
+                     First := False;
+                  end if;
+
                end loop;
 
-               Read_Expression (Expression (Expr));
+               if Side_Eff then
+                  Move_Env (New_Env, Current_Perm_Env);
+                  Free_Env (Saved_Env);
+               end if;
             end;
 
          when N_Qualified_Expression
@@ -4688,12 +4725,13 @@ package body Gnat2Why.Borrow_Checker is
                end if;
 
             --  No ownership is supported in for loop cursor/objects right now,
-            --  and extended_return cannot declare borrowers nor observers, so
-            --  nothing needs to be done for these cases.
+            --  and extended_return/declare-exprs cannot declare borrowers nor
+            --  observers, so nothing needs to be done for these cases.
 
             when N_Loop_Statement
                | N_Iteration_Scheme
-               | N_Extended_Return_Statement      =>
+               | N_Extended_Return_Statement
+               | N_Expression_With_Actions        =>
                null;
 
             when others                           =>

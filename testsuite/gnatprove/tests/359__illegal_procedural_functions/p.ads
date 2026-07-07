@@ -44,4 +44,8 @@ package P with SPARK_Mode is
      with Side_Effects,
           Depends => (G => (X, G), F11'Result => (X, G));
 
+   function F12 (X : Integer) return Boolean
+     with Side_Effects,
+          Depends => (G => (X, G), F12'Result => (X, G));
+
 end P;

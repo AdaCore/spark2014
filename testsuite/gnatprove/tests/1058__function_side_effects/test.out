@@ -1,0 +1,330 @@
+frame_condition.adb:12:06: warning: postcondition does not mention function result [-gnatw.t]
+frame_condition.adb:35:14: warning: subprogram "Test_If_1" has no effect
+frame_condition.adb:39:24: warning: loop condition is stable
+frame_condition.adb:40:33: info: loop invariant initialization proved (Trivial: 1 VC)
+frame_condition.adb:40:33: info: loop invariant preservation proved (Trivial: 1 VC)
+frame_condition.adb:42:16: info: only expected exception raised (CVC5: 1 VC)
+frame_condition.adb:42:16: warning: assuming "May_Raise" always terminates
+frame_condition.adb:42:16: warning: no Always_Terminates aspect available for "May_Raise" [assumed-always-terminates]
+frame_condition.adb:43:23: medium: overflow check might fail, cannot prove upper bound for Y + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop invariant at line 40 should mention Y]
+frame_condition.adb:46:13: info: no contextual analysis of "Test_If_1" (exception handler)
+frame_condition.adb:50:22: medium: assertion might fail [possible fix: subprogram at line 35 should mention X in a precondition]
+frame_condition.adb:53:14: warning: subprogram "Test_If_2" has no effect
+frame_condition.adb:56:24: warning: loop condition is stable
+frame_condition.adb:58:16: info: only expected exception raised (CVC5: 1 VC)
+frame_condition.adb:58:16: warning: assuming "May_Raise" always terminates
+frame_condition.adb:58:16: warning: no Always_Terminates aspect available for "May_Raise" [assumed-always-terminates]
+frame_condition.adb:62:13: info: no contextual analysis of "Test_If_2" (exception handler)
+frame_condition.adb:63:18: warning: this statement is never reached
+frame_condition.adb:63:23: medium: overflow check might fail, cannot prove upper bound for Y + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 56 should mention Y in a loop invariant]
+frame_condition.adb:66:22: medium: assertion might fail [possible fix: loop at line 56 should mention Y in a loop invariant]
+frame_condition.adb:69:29: info: data dependencies proved
+frame_condition.adb:74:24: warning: loop condition is stable
+frame_condition.adb:76:32: info: only expected exception raised (CVC5: 1 VC)
+frame_condition.adb:76:32: warning: assuming "Pure_Raise" always terminates
+frame_condition.adb:76:32: warning: assuming "Pure_Raise" has no effect on global items
+frame_condition.adb:76:32: warning: no Always_Terminates aspect available for "Pure_Raise" [assumed-always-terminates]
+frame_condition.adb:76:32: warning: no Global contract available for "Pure_Raise" [assumed-global-null]
+frame_condition.adb:76:48: warning: assuming "Writes" always terminates
+frame_condition.adb:76:48: warning: no Always_Terminates aspect available for "Writes" [assumed-always-terminates]
+frame_condition.adb:81:16: warning: this statement is never reached
+frame_condition.adb:81:26: warning: assuming "Writes" always terminates
+frame_condition.adb:81:26: warning: no Always_Terminates aspect available for "Writes" [assumed-always-terminates]
+frame_condition.adb:85:22: info: assertion proved (CVC5: 1 VC)
+frame_condition.adb:86:22: medium: assertion might fail
+frame_condition.adb:92:04: warning: analyzing unreferenced procedure "Test_Case_1" [unreferenced-procedure]
+frame_condition.adb:92:14: warning: subprogram "Test_Case_1" has no effect
+frame_condition.adb:95:24: warning: loop condition is stable
+frame_condition.adb:96:15: warning: assuming "Writes" always terminates
+frame_condition.adb:96:15: warning: no Always_Terminates aspect available for "Writes" [assumed-always-terminates]
+frame_condition.adb:103:22: medium: assertion might fail
+structural_variant.adb:12:14: info: aspect Always_Terminates on "Test" has been proved, subprogram will terminate
+structural_variant.adb:17:23: info: pointer dereference check proved (CVC5: 1 VC)
+structural_variant.adb:18:13: medium: subprogram variant might fail [possible explanation: the call to "Update" might update the value designated by "X"]
+structural_variant.adb:18:20: info: pointer dereference check proved (CVC5: 1 VC)
+structural_variant.adb:24:25: info: data dependencies proved
+structural_variant.adb:29:14: info: pointer dereference check proved (CVC5: 1 VC)
+structural_variant.adb:30:11: info: pointer dereference check proved (CVC5: 1 VC)
+structural_variant.adb:30:17: medium: resource or memory leak might occur [possible fix: subprogram at line 23 should mention X in a precondition]
+structural_variant.adb:33:17: info: subprogram variant proved (Trivial)
+structural_variant.adb:33:30: info: pointer dereference check proved (CVC5: 1 VC)
+test_proof.adb:5:13: info: implicit aspect Always_Terminates on "Test_Exit_OK" has been proved, subprogram will terminate
+test_proof.adb:6:51: info: division check proved (CVC5: 1 VC)
+test_proof.adb:7:16: info: postcondition proved (CVC5: 1 VC)
+test_proof.adb:7:18: info: overflow check proved (CVC5: 2 VC)
+test_proof.adb:7:44: info: overflow check proved (CVC5: 2 VC)
+test_proof.adb:12:17: info: postcondition proved (CVC5: 3 VC)
+test_proof.adb:12:35: info: overflow check proved (CVC5: 2 VC)
+test_proof.adb:15:25: info: overflow check proved (CVC5: 2 VC)
+test_proof.adb:22:33: info: loop invariant initialization proved (CVC5: 1 VC)
+test_proof.adb:22:33: info: loop invariant preservation proved (CVC5: 1 VC)
+test_proof.adb:23:33: info: loop invariant initialization proved (CVC5: 1 VC)
+test_proof.adb:23:33: info: loop invariant preservation proved (CVC5: 1 VC)
+test_proof.adb:23:35: info: overflow check proved (CVC5: 4 VC)
+test_proof.adb:23:47: info: overflow check proved (CVC5: 4 VC)
+test_proof.adb:24:31: info: loop variant proved (CVC5: 1 VC)
+test_proof.adb:24:47: info: overflow check proved (CVC5: 4 VC)
+test_proof.adb:25:21: info: overflow check proved (CVC5: 2 VC)
+test_proof.adb:26:10: warning: loop exit condition is stable
+test_proof.adb:26:20: info: precondition proved (CVC5: 1 VC)
+test_proof.adb:31:13: info: implicit aspect Always_Terminates on "Test_Exit_KO" has been proved, subprogram will terminate
+test_proof.adb:32:51: info: division check proved (CVC5: 1 VC)
+test_proof.adb:33:16: medium: postcondition might fail
+test_proof.adb:33:18: medium: overflow check might fail, cannot prove upper bound for 2 * Test_Exit_KO'Result [reason for check: result of multiplication must fit in a 32-bits machine integer]
+test_proof.adb:33:44: info: overflow check proved (CVC5: 2 VC)
+test_proof.adb:38:17: info: postcondition proved (CVC5: 3 VC)
+test_proof.adb:38:35: info: overflow check proved (CVC5: 2 VC)
+test_proof.adb:41:25: info: overflow check proved (CVC5: 2 VC)
+test_proof.adb:48:33: info: loop invariant initialization proved (CVC5: 1 VC)
+test_proof.adb:48:33: info: loop invariant preservation proved (CVC5: 1 VC)
+test_proof.adb:49:33: info: loop invariant initialization proved (CVC5: 1 VC)
+test_proof.adb:49:33: medium: loop invariant might not be preserved by an arbitrary iteration (e.g. when I = 1)
+test_proof.adb:50:31: info: loop variant proved (CVC5: 1 VC)
+test_proof.adb:50:47: info: overflow check proved (CVC5: 4 VC)
+test_proof.adb:51:21: info: overflow check proved (CVC5: 2 VC)
+test_proof.adb:52:10: warning: loop exit condition is stable
+test_proof.adb:52:20: info: precondition proved (CVC5: 1 VC)
+test_proof.adb:59:28: warning: "A" is not modified, could be IN
+test_proof.adb:61:14: info: postcondition proved (CVC5: 5 VC)
+test_proof.adb:61:42: info: index check proved (CVC5: 2 VC)
+test_proof.adb:61:58: info: index check proved (CVC5: 2 VC)
+test_proof.adb:61:84: info: index check proved (CVC5: 2 VC)
+test_proof.adb:64:49: info: index check proved (CVC5: 2 VC)
+test_proof.adb:65:55: info: index check proved (CVC5: 2 VC)
+test_proof.adb:70:09: info: data dependencies proved
+test_proof.adb:71:09: info: for "A" at test_proof.adb:59
+test_proof.adb:71:09: info: modifies contract proved (CVC5: 2 VC; Trivial: 2 VC)
+test_proof.adb:71:25: info: index check proved (CVC5: 2 VC)
+test_proof.adb:71:25: info: index check proved (CVC5: 2 VC)
+test_proof.adb:71:25: info: on entry of subprogram at test_proof.adb:67
+test_proof.adb:71:25: info: on return of subprogram at test_proof.adb:67
+test_proof.adb:71:36: info: index check proved (CVC5: 2 VC)
+test_proof.adb:72:17: info: postcondition proved (CVC5: 3 VC; Trivial: 1 VC)
+test_proof.adb:72:39: info: index check proved (CVC5: 2 VC)
+test_proof.adb:73:42: info: index check proved (CVC5: 2 VC)
+test_proof.adb:76:35: info: index check proved (CVC5: 2 VC)
+test_proof.adb:78:19: info: index check proved (CVC5: 2 VC)
+test_proof.adb:85:33: info: loop invariant initialization proved (CVC5: 1 VC)
+test_proof.adb:85:33: info: loop invariant preservation proved (CVC5: 1 VC)
+test_proof.adb:85:64: info: index check proved (CVC5: 4 VC)
+test_proof.adb:85:83: info: index check proved (CVC5: 4 VC)
+test_proof.adb:86:33: info: loop invariant initialization proved (CVC5: 1 VC)
+test_proof.adb:86:33: info: loop invariant preservation proved (CVC5: 1 VC)
+test_proof.adb:86:60: info: overflow check proved (CVC5: 4 VC)
+test_proof.adb:87:38: info: index check proved (CVC5: 4 VC)
+test_proof.adb:87:61: info: index check proved (CVC5: 4 VC)
+test_proof.adb:87:94: info: index check proved (CVC5: 4 VC)
+test_proof.adb:89:13: info: loop invariant initialization proved (CVC5: 3 VC; Trivial: 1 VC)
+test_proof.adb:89:13: info: loop invariant preservation proved (CVC5: 3 VC; Trivial: 1 VC)
+test_proof.adb:89:54: info: overflow check proved (CVC5: 4 VC)
+test_proof.adb:89:81: info: index check proved (CVC5: 4 VC)
+test_proof.adb:90:33: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
+test_proof.adb:90:33: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
+test_proof.adb:90:78: info: overflow check proved (CVC5: 4 VC)
+test_proof.adb:91:49: info: index check proved (CVC5: 4 VC)
+test_proof.adb:92:24: info: precondition proved (CVC5: 2 VC)
+test_proof.adb:100:26: warning: "I" is not modified, could be IN
+test_proof.adb:103:14: info: postcondition proved (CVC5: 2 VC)
+test_proof.adb:103:56: info: overflow check proved (CVC5: 2 VC)
+test_proof.adb:108:17: info: postcondition proved (CVC5: 2 VC)
+test_proof.adb:108:55: info: overflow check proved (CVC5: 2 VC)
+test_proof.adb:111:17: info: overflow check proved (CVC5: 2 VC)
+test_proof.adb:115:14: info: precondition proved (CVC5: 1 VC)
+test_proof.adb:118:13: info: implicit aspect Always_Terminates on "Test_Interrupted_Return" has been proved, subprogram will terminate
+test_proof.adb:119:06: info: postcondition proved (CVC5: 1 VC)
+test_proof.adb:122:85: info: exceptional case proved (Trivial: 1 VC)
+test_proof.adb:122:115: info: exit case proved (CVC5: 1 VC; Trivial: 1 VC)
+test_proof.adb:122:115: info: on exceptional exit from "Raise_E" at test_proof.adb:122
+test_proof.adb:126:10: warning: this statement is never reached
+test_proof.adb:129:14: info: only expected exception raised (CVC5: 1 VC)
+test_proof.adb:132:10: warning: this statement is never reached
+test_proof.adb:135:13: info: implicit aspect Always_Terminates on "Test_Interrupted_Return_KO" has been proved, subprogram will terminate
+test_proof.adb:136:19: medium: postcondition might fail
+test_proof.adb:139:85: info: exceptional case proved (Trivial: 1 VC)
+test_proof.adb:139:115: info: exit case proved (CVC5: 1 VC; Trivial: 1 VC)
+test_proof.adb:139:115: info: on exceptional exit from "Raise_E" at test_proof.adb:139
+test_proof.adb:143:10: warning: this statement is never reached
+test_proof.adb:146:14: info: only expected exception raised (CVC5: 1 VC)
+test_proof.adb:149:10: warning: this statement is never reached
+test_proof.adb:152:13: info: implicit aspect Always_Terminates on "Test_Split_Case" has been proved, subprogram will terminate
+test_proof.adb:153:19: info: postcondition proved (CVC5: 1 VC)
+test_proof.adb:164:22: info: postcondition proved (CVC5: 1 VC)
+test_proof.adb:166:37: info: exceptional case proved (CVC5: 1 VC)
+test_proof.adb:172:17: info: range check proved (CVC5: 2 VC)
+test_proof.adb:175:12: info: only expected exception raised (CVC5: 1 VC)
+test_proof.adb:186:10: warning: this statement is never reached
+test_proof.adb:189:13: info: implicit aspect Always_Terminates on "Test_Split_Case_KO" has been proved, subprogram will terminate
+test_proof.adb:190:19: medium: postcondition might fail
+test_proof.adb:194:22: info: postcondition proved (CVC5: 1 VC)
+test_proof.adb:196:37: info: exceptional case proved (CVC5: 1 VC)
+test_proof.adb:202:17: info: range check proved (CVC5: 2 VC)
+test_proof.adb:205:12: info: only expected exception raised (CVC5: 1 VC)
+test_proof.adb:216:10: warning: this statement is never reached
+test_proof.adb:219:22: warning: "A" is not modified, could be IN
+test_proof.adb:221:14: info: postcondition proved (CVC5: 7 VC; Trivial: 1 VC)
+test_proof.adb:224:41: info: index check proved (CVC5: 2 VC)
+test_proof.adb:227:48: info: index check proved (CVC5: 2 VC)
+test_proof.adb:227:60: info: index check proved (CVC5: 2 VC)
+test_proof.adb:227:63: info: overflow check proved (CVC5: 2 VC)
+test_proof.adb:233:09: info: data dependencies proved
+test_proof.adb:234:48: info: exceptional case proved (Trivial: 1 VC)
+test_proof.adb:235:42: info: exit case proved (CVC5: 1 VC)
+test_proof.adb:235:42: info: on exceptional exit from "Found" at test_proof.adb:231
+test_proof.adb:235:67: info: exit case proved (CVC5: 1 VC)
+test_proof.adb:235:67: info: exit case proved (CVC5: 1 VC; Trivial: 1 VC)
+test_proof.adb:235:67: info: on exceptional exit from "Found" at test_proof.adb:231
+test_proof.adb:235:67: info: on normal return from "Found" at test_proof.adb:231
+test_proof.adb:236:09: info: for "A" at test_proof.adb:219
+test_proof.adb:236:09: info: modifies contract proved (CVC5: 2 VC; Trivial: 2 VC)
+test_proof.adb:236:09: info: on exceptional exit at test_proof.adb:240
+test_proof.adb:236:25: info: index check proved (CVC5: 2 VC)
+test_proof.adb:236:25: info: index check proved (CVC5: 2 VC)
+test_proof.adb:236:25: info: on entry of subprogram at test_proof.adb:231
+test_proof.adb:236:25: info: on return of subprogram at test_proof.adb:231
+test_proof.adb:237:17: info: postcondition proved (CVC5: 2 VC)
+test_proof.adb:238:30: info: index check proved (CVC5: 2 VC)
+test_proof.adb:239:26: info: index check proved (CVC5: 2 VC)
+test_proof.adb:239:38: info: index check proved (CVC5: 2 VC)
+test_proof.adb:239:41: info: overflow check proved (CVC5: 2 VC)
+test_proof.adb:245:35: info: index check proved (CVC5: 2 VC)
+test_proof.adb:247:19: info: index check proved (CVC5: 2 VC)
+test_proof.adb:247:28: info: index check proved (CVC5: 2 VC)
+test_proof.adb:247:31: info: overflow check proved (CVC5: 2 VC)
+test_proof.adb:253:33: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
+test_proof.adb:253:33: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
+test_proof.adb:253:81: info: index check proved (CVC5: 4 VC)
+test_proof.adb:253:100: info: index check proved (CVC5: 4 VC)
+test_proof.adb:254:33: info: loop invariant initialization proved (CVC5: 3 VC)
+test_proof.adb:254:33: info: loop invariant preservation proved (CVC5: 2 VC; Z3: 1 VC)
+test_proof.adb:254:53: info: overflow check proved (CVC5: 4 VC)
+test_proof.adb:254:85: info: index check proved (CVC5: 4 VC)
+test_proof.adb:254:104: info: index check proved (CVC5: 4 VC)
+test_proof.adb:254:107: info: overflow check proved (CVC5: 4 VC)
+test_proof.adb:255:13: info: only expected exception raised (CVC5: 1 VC)
+test_proof.adb:262:10: warning: this statement is never reached
+test_proof.adb:265:25: warning: "A" is not modified, could be IN
+test_proof.adb:268:19: high: postcondition might fail, cannot prove Test_If_KO'Result in A'Range (e.g. when A = (0 => 0) and Test_If_KO'Result = -1)
+test_proof.adb:270:44: info: index check proved (CVC5: 2 VC)
+test_proof.adb:272:48: info: index check proved (CVC5: 2 VC)
+test_proof.adb:272:60: info: index check proved (CVC5: 2 VC)
+test_proof.adb:272:63: medium: overflow check might fail, cannot prove upper bound for A'Old (K) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+test_proof.adb:278:09: info: data dependencies proved
+test_proof.adb:279:48: info: exceptional case proved (Trivial: 1 VC)
+test_proof.adb:280:42: info: exit case proved (CVC5: 1 VC)
+test_proof.adb:280:42: info: on exceptional exit from "Found" at test_proof.adb:276
+test_proof.adb:280:67: info: exit case proved (CVC5: 1 VC)
+test_proof.adb:280:67: info: exit case proved (CVC5: 1 VC; Trivial: 1 VC)
+test_proof.adb:280:67: info: on exceptional exit from "Found" at test_proof.adb:276
+test_proof.adb:280:67: info: on normal return from "Found" at test_proof.adb:276
+test_proof.adb:281:09: info: for "A" at test_proof.adb:265
+test_proof.adb:281:09: info: modifies contract proved (CVC5: 2 VC; Trivial: 2 VC)
+test_proof.adb:281:09: info: on exceptional exit at test_proof.adb:285
+test_proof.adb:281:25: info: index check proved (CVC5: 2 VC)
+test_proof.adb:281:25: info: index check proved (CVC5: 2 VC)
+test_proof.adb:281:25: info: on entry of subprogram at test_proof.adb:276
+test_proof.adb:281:25: info: on return of subprogram at test_proof.adb:276
+test_proof.adb:282:17: info: postcondition proved (CVC5: 2 VC)
+test_proof.adb:283:30: info: index check proved (CVC5: 2 VC)
+test_proof.adb:284:26: info: index check proved (CVC5: 2 VC)
+test_proof.adb:284:38: info: index check proved (CVC5: 2 VC)
+test_proof.adb:284:41: info: overflow check proved (CVC5: 2 VC)
+test_proof.adb:290:35: info: index check proved (CVC5: 2 VC)
+test_proof.adb:292:19: info: index check proved (CVC5: 2 VC)
+test_proof.adb:292:28: info: index check proved (CVC5: 2 VC)
+test_proof.adb:292:31: info: overflow check proved (CVC5: 2 VC)
+test_proof.adb:298:33: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
+test_proof.adb:298:33: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
+test_proof.adb:298:81: info: index check proved (CVC5: 4 VC)
+test_proof.adb:298:100: info: index check proved (CVC5: 4 VC)
+test_proof.adb:299:33: info: loop invariant initialization proved (CVC5: 3 VC)
+test_proof.adb:299:33: info: loop invariant preservation proved (CVC5: 2 VC; Z3: 1 VC)
+test_proof.adb:299:53: info: overflow check proved (CVC5: 4 VC)
+test_proof.adb:299:85: info: index check proved (CVC5: 4 VC)
+test_proof.adb:299:104: info: index check proved (CVC5: 4 VC)
+test_proof.adb:299:107: info: overflow check proved (CVC5: 4 VC)
+test_proof.adb:300:13: info: only expected exception raised (CVC5: 1 VC)
+test_proof.adb:307:10: warning: this statement is never reached
+test_proof.adb:310:14: warning: subprogram "Test_Deeply_Nested" has no effect
+test_proof.adb:315:55: info: exceptional case proved (Trivial: 1 VC)
+test_proof.adb:316:41: info: exit case proved (CVC5: 1 VC)
+test_proof.adb:316:41: info: exit case proved (CVC5: 1 VC; Trivial: 1 VC)
+test_proof.adb:316:41: info: on exceptional exit from "Err_E" at test_proof.adb:314
+test_proof.adb:316:41: info: on normal return from "Err_E" at test_proof.adb:314
+test_proof.adb:316:76: info: exit case proved (CVC5: 1 VC)
+test_proof.adb:316:76: info: on exceptional exit from "Err_E" at test_proof.adb:314
+test_proof.adb:317:17: info: postcondition proved (CVC5: 1 VC)
+test_proof.adb:319:55: info: exceptional case proved (Trivial: 1 VC)
+test_proof.adb:320:41: info: exit case proved (CVC5: 1 VC)
+test_proof.adb:320:41: info: exit case proved (CVC5: 1 VC; Trivial: 1 VC)
+test_proof.adb:320:41: info: on exceptional exit from "Err_F" at test_proof.adb:318
+test_proof.adb:320:41: info: on normal return from "Err_F" at test_proof.adb:318
+test_proof.adb:320:76: info: exit case proved (CVC5: 1 VC)
+test_proof.adb:320:76: info: on exceptional exit from "Err_F" at test_proof.adb:318
+test_proof.adb:321:17: info: postcondition proved (CVC5: 1 VC)
+test_proof.adb:322:07: info: no contextual analysis of "Test_Deeply_Nested" (nested subprogram)
+test_proof.adb:336:07: info: initialization of "Y" proved
+test_proof.adb:340:33: info: only expected exception raised (CVC5: 1 VC)
+test_proof.adb:342:35: info: only expected exception raised (CVC5: 1 VC)
+test_proof.adb:347:20: info: only expected exception raised (CVC5: 1 VC)
+test_proof.adb:349:20: info: only expected exception raised (CVC5: 1 VC)
+test_proof.adb:350:22: info: assertion proved (CVC5: 1 VC)
+test_proof.adb:360:25: info: assertion proved (CVC5: 1 VC)
+test_proof.adb:367:25: info: assertion proved (CVC5: 1 VC)
+test_proof.adb:370:14: warning: subprogram "Test_Deeply_Nested_KO" has no effect
+test_proof.adb:375:55: info: exceptional case proved (Trivial: 1 VC)
+test_proof.adb:376:41: info: exit case proved (CVC5: 1 VC)
+test_proof.adb:376:41: info: exit case proved (CVC5: 1 VC; Trivial: 1 VC)
+test_proof.adb:376:41: info: on exceptional exit from "Err_E" at test_proof.adb:374
+test_proof.adb:376:41: info: on normal return from "Err_E" at test_proof.adb:374
+test_proof.adb:376:76: info: exit case proved (CVC5: 1 VC)
+test_proof.adb:376:76: info: on exceptional exit from "Err_E" at test_proof.adb:374
+test_proof.adb:377:17: info: postcondition proved (CVC5: 1 VC)
+test_proof.adb:379:55: info: exceptional case proved (Trivial: 1 VC)
+test_proof.adb:380:41: info: exit case proved (CVC5: 1 VC)
+test_proof.adb:380:41: info: exit case proved (CVC5: 1 VC; Trivial: 1 VC)
+test_proof.adb:380:41: info: on exceptional exit from "Err_F" at test_proof.adb:378
+test_proof.adb:380:41: info: on normal return from "Err_F" at test_proof.adb:378
+test_proof.adb:380:76: info: exit case proved (CVC5: 1 VC)
+test_proof.adb:380:76: info: on exceptional exit from "Err_F" at test_proof.adb:378
+test_proof.adb:381:17: info: postcondition proved (CVC5: 1 VC)
+test_proof.adb:382:07: info: no contextual analysis of "Test_Deeply_Nested_KO" (nested subprogram)
+test_proof.adb:396:07: info: initialization of "Y" proved
+test_proof.adb:400:33: info: only expected exception raised (CVC5: 1 VC)
+test_proof.adb:402:35: info: only expected exception raised (CVC5: 1 VC)
+test_proof.adb:407:20: info: only expected exception raised (CVC5: 1 VC)
+test_proof.adb:409:20: info: only expected exception raised (CVC5: 1 VC)
+test_proof.adb:410:22: medium: assertion might fail (e.g. when Y = 41)
+test_proof.adb:420:25: medium: assertion might fail [possible fix: subprogram at line 370 should mention X in a precondition]
+test_proof.adb:427:25: info: assertion proved (CVC5: 1 VC)
+test_proof.adb:430:14: warning: subprogram "Test_Nested" has no effect
+test_proof.adb:449:33: info: loop invariant initialization proved (CVC5: 1 VC)
+test_proof.adb:449:33: info: loop invariant preservation proved (CVC5: 1 VC)
+test_proof.adb:450:33: info: loop invariant initialization proved (CVC5: 1 VC)
+test_proof.adb:450:33: info: loop invariant preservation proved (CVC5: 1 VC)
+test_proof.adb:452:54: medium: overflow check might fail, cannot prove lower bound for W + X [reason for check: result of addition must fit in a 32-bits machine integer]
+test_proof.adb:452:66: info: overflow check proved (CVC5: 2 VC)
+test_proof.adb:452:77: medium: overflow check might fail, cannot prove lower bound for W - X [reason for check: result of subtraction must fit in a 32-bits machine integer]
+test_proof.adb:456:21: info: only expected exception raised (CVC5: 1 VC)
+test_proof.adb:456:21: warning: assuming "Err_E" always terminates
+test_proof.adb:456:21: warning: no Always_Terminates aspect available for "Err_E" [assumed-always-terminates]
+test_proof.adb:458:21: info: only expected exception raised (CVC5: 1 VC)
+test_proof.adb:458:21: warning: assuming "Err_F" always terminates
+test_proof.adb:458:21: warning: no Always_Terminates aspect available for "Err_F" [assumed-always-terminates]
+test_proof.adb:460:22: info: assertion proved (CVC5: 2 VC)
+test_proof.adb:461:22: medium: assertion might fail
+test_proof.adb:463:07: info: no contextual analysis of "Test_Nested" (exception handler)
+test_proof.adb:464:25: info: assertion proved (CVC5: 1 VC)
+test_proof.adb:465:25: medium: assertion might fail
+test_proof.adb:467:25: info: assertion proved (CVC5: 1 VC)
+test_proof.adb:468:25: medium: assertion might fail
+updated_borrower.adb:17:20: info: pointer dereference check proved (CVC5: 1 VC)
+updated_borrower.adb:18:15: warning: loop exit condition is stable
+updated_borrower.adb:18:30: info: pointer dereference check proved (CVC5: 1 VC)
+updated_borrower.adb:18:37: info: pointer dereference check proved (CVC5: 1 VC)
+updated_borrower.adb:20:15: warning: loop continue condition is stable
+updated_borrower.adb:20:34: info: pointer dereference check proved (CVC5: 1 VC)
+updated_borrower.adb:20:41: info: pointer dereference check proved (CVC5: 1 VC)
+updated_borrower.adb:24:19: info: assertion proved (CVC5: 1 VC)
+updated_borrower.adb:25:19: medium: assertion might fail
+updated_borrower.adb:28:22: info: assertion proved (CVC5: 1 VC)
+updated_borrower.adb:29:22: medium: assertion might fail

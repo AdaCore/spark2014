@@ -8,7 +8,7 @@ procedure Bad_Call with SPARK_Mode is
    X3 : Integer := (if F4 (1) > 0 then (case F5 (F5 (1)) is when 0 => F6 (1), when others => 0) else 0);
    X4, X5, X6 : Integer;
 
-   Y0, Y1, Y2, Y3, Y4, Y5, Y6, Y7, Y8, Y9, Y10, Y11 : Integer;
+   Y0, Y1, Y2, Y3, Y4, Y5, Y6, Y7, Y8, Y9, Y10, Y11, Y12 : Integer;
 
    function Id (X : Integer) return Integer is (X);
 
@@ -41,5 +41,6 @@ begin
    Y9 := F9 (1);
    Y10 := F10 (1);
    Y11 := F11 (1);
+   Y12 := (if F12 (2) then F11 (2) else F10 (3));
 
 end Bad_Call;

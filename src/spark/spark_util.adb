@@ -546,6 +546,9 @@ package body SPARK_Util is
    --  Map from prefixes of conditionally evaluated 'Old attributes to their
    --  evaluation condition.
 
+   Expression_With_Side_Effects : Node_Sets.Set;
+   --  Expressions that have side effects
+
    -------------------------------------
    -- Borrower_For_At_End_Borrow_Call --
    -------------------------------------
@@ -1888,21 +1891,21 @@ package body SPARK_Util is
       end loop;
    end Enclosing_Generic_Instance;
 
-   ---------------------------------------------------------------
-   -- Enclosing_Statement_Of_Call_To_Function_With_Side_Effects --
-   ---------------------------------------------------------------
+   ---------------------------------
+   -- Enclosing_Statement_Or_Decl --
+   ---------------------------------
 
-   function Enclosing_Statement_Of_Call_To_Function_With_Side_Effects
-     (Call : Node_Id) return Node_Id
-   is
-      Par : constant Node_Id := Parent (Call);
+   function Enclosing_Statement_Or_Decl (N : N_Subexpr_Id) return Node_Id is
+      function Is_Statement_Or_Decl (N : Node_Id) return Boolean
+      is (Nkind (N)
+          in N_Statement_Other_Than_Procedure_Call
+           | N_Procedure_Call_Statement
+           | N_Declaration);
+      function Enclosing is new
+        First_Parent_With_Property (Is_Statement_Or_Decl);
    begin
-      --  For now calls to functions with side effects can only occur in
-      --  assignments and object declarations.
-      pragma
-        Assert (Nkind (Par) in N_Assignment_Statement | N_Object_Declaration);
-      return Par;
-   end Enclosing_Statement_Of_Call_To_Function_With_Side_Effects;
+      return Enclosing (N);
+   end Enclosing_Statement_Or_Decl;
 
    --------------------
    -- Enclosing_Unit --
@@ -2368,6 +2371,15 @@ package body SPARK_Util is
             raise Program_Error;
       end case;
    end Expr_Has_Relaxed_Init;
+
+   ---------------------------
+   -- Expr_Has_Side_Effects --
+   ---------------------------
+
+   function Expr_Has_Side_Effects (N : N_Subexpr_Id) return Boolean is
+   begin
+      return Expression_With_Side_Effects.Contains (N);
+   end Expr_Has_Side_Effects;
 
    --------------------------------
    -- First_Parent_With_Property --
@@ -3954,22 +3966,37 @@ package body SPARK_Util is
 
       Stmt : constant Node_Id :=
         (if Nkind (Call) = N_Function_Call
-         then Enclosing_Statement_Of_Call_To_Function_With_Side_Effects (Call)
+         then Enclosing_Statement_Or_Decl (Call)
          else Call);
-      Ent  : constant Entity_Id :=
-        (case Nkind (Stmt) is
-           when N_Assignment_Statement                              =>
-             Get_Enclosing_Ghost_Entity (Name (Stmt)),
-           when N_Object_Declaration                                =>
-             Defining_Entity (Stmt),
-           when N_Procedure_Call_Statement | N_Entry_Call_Statement =>
-             Get_Called_Entity (Stmt),
-           when N_Block_Statement                                   =>
-             Called_Entity_From_Inlined_Call (Stmt),
-           when others                                              =>
-             raise Program_Error);
-
+      Ent  : Entity_Id;
    begin
+      case Nkind (Stmt) is
+
+         --  In these cases, the call occurs in a context that forbids it to
+         --  be ghost (with respect to context) in the first place.
+
+         when N_Simple_Return_Statement
+            | N_If_Statement
+            | N_Case_Statement
+            | N_Exit_Statement
+            | N_Continue_Statement                                =>
+            return False;
+
+         when N_Assignment_Statement                              =>
+            Ent := Get_Enclosing_Ghost_Entity (Name (Stmt));
+
+         when N_Object_Declaration                                =>
+            Ent := Defining_Entity (Stmt);
+
+         when N_Procedure_Call_Statement | N_Entry_Call_Statement =>
+            Ent := Get_Called_Entity (Stmt);
+
+         when N_Block_Statement                                   =>
+            Ent := Called_Entity_From_Inlined_Call (Stmt);
+
+         when others                                              =>
+            raise Program_Error;
+      end case;
       if not Is_Ghost_Entity (Ent) then
          return False;
       else
@@ -5358,6 +5385,9 @@ package body SPARK_Util is
 
                Buffer.Append (Scop);
 
+            when N_Expression_With_Actions        =>
+               Buffer.Append (Scop);
+
             --  Nothing to do in other cases
 
             when others                           =>
@@ -5431,11 +5461,7 @@ package body SPARK_Util is
                return;
             else
                Main_Iteration
-                 ((if Nkind (Source) = N_Function_Call
-                   then
-                     Enclosing_Statement_Of_Call_To_Function_With_Side_Effects
-                       (Source)
-                   else Source),
+                 (Source,
                   Exception_Sources =>
                     Get_Raised_Exceptions (Source, Only_Handled => False));
             end if;
@@ -5502,6 +5528,10 @@ package body SPARK_Util is
 
       function Predecessors (G : Graph_Id; V : Vertex) return Vertex_Sets.Set;
       --  Return predecessors of V in G's control-flow graph.
+
+      function Needs_Effect_Vertex (N : Node_Id) return Boolean;
+      --  Return whether a node needs an effect vertex on top of the
+      --  entrance vertex.
 
       ---------------------------------
       -- Collect_Vertices_Leading_To --
@@ -5637,6 +5667,15 @@ package body SPARK_Util is
          --         (normal end of execution) of Stmt's, set to entry vertex
          --         of Stmt at output.
 
+         procedure Cache_For_Expression
+           (Expr : N_Subexpr_Id; Depth : Natural; Exit_Vertex : in out Vertex);
+         --  Version for Cache_For_Statement for sub-expressions.
+         --  Vertices are only generated for function call with side-effects
+         --  and conditional expressions above them. In particular, Exit_Vertex
+         --  is set to the first vertex in the associated sub-graph, but that
+         --  may not be associated to Expr.
+         --  If Expr has no side effects, this is a no-op.
+
          procedure Cache_For_Statement_List
            (Stmts : List_Id; Depth : Natural; Exit_Vertex : in out Vertex);
          --  Cache vertex information, outgoing control edges, and
@@ -5651,12 +5690,11 @@ package body SPARK_Util is
          --         for execution of the sequence, output value is the vertex
          --         at the start of the sequence.
 
-         procedure Connect_Transfer_Of_Control (Stmt : Node_Id);
-         --  For Stmt a statement or function call that may cause
-         --  transfer-of-control, links its completion (typically the Entrance
-         --  vertex, except for extended return) to all the potential
-         --  targets of the transfer of control. This takes care of linking the
-         --  required finalization sequences in between.
+         procedure Connect_Transfer_Of_Control (Transfer_Vertex : Vertex);
+         --  For Transfer_Vertex.Node a statement or function call that may
+         --  cause transfer-of-control, links Transfer_Vertex to all the
+         --  potential targets of the transfer of control. This takes care of
+         --  linking the required finalization sequences in between.
 
          procedure Insert_Neighborhood (V : Vertex; Depth : Natural);
          --  Insert new neighborhood for vertex V in All_Graphs,
@@ -5672,6 +5710,85 @@ package body SPARK_Util is
               .Ctrl_Predecessors
               .Include (Src);
          end Add_Edge;
+
+         --------------------------
+         -- Cache_For_Expression --
+         --------------------------
+
+         procedure Cache_For_Expression
+           (Expr : N_Subexpr_Id; Depth : Natural; Exit_Vertex : in out Vertex)
+         is
+         begin
+            if Expr_Has_Side_Effects (Expr) then
+               case Nkind (Expr) is
+                  when N_If_Expression           =>
+                     declare
+                        Cond      : constant N_Subexpr_Id :=
+                          First (Expressions (Expr));
+                        Then_Part : constant N_Subexpr_Id := Next (Cond);
+                        Else_Part : constant N_Subexpr_Id := Next (Then_Part);
+                        Then_V    : Vertex := Exit_Vertex;
+                        Else_V    : Vertex := Exit_Vertex;
+                     begin
+                        Cache_For_Expression (Then_Part, Depth, Then_V);
+                        Cache_For_Expression (Else_Part, Depth, Else_V);
+                        Exit_Vertex := Vertex'(Kind => Effect, Node => Expr);
+                        Insert_Neighborhood (Exit_Vertex, Depth);
+                        Add_Edge (Exit_Vertex, Then_V);
+                        Add_Edge (Exit_Vertex, Else_V);
+                        Cache_For_Expression (Cond, Depth, Exit_Vertex);
+                     end;
+
+                  when N_Case_Expression         =>
+                     declare
+                        Alternative   : Node_Id :=
+                          First_Non_Pragma (Alternatives (Expr));
+                        Alternative_V : Vertex;
+                        Join_V        : constant Vertex :=
+                          Vertex'(Kind => Effect, Node => Expr);
+                     begin
+                        Insert_Neighborhood (Join_V, Depth);
+                        while Present (Alternative) loop
+                           Alternative_V := Exit_Vertex;
+                           Cache_For_Expression
+                             (Expression (Alternative), Depth, Alternative_V);
+                           Add_Edge (Join_V, Alternative_V);
+                           Next_Non_Pragma (Alternative);
+                        end loop;
+                        Exit_Vertex := Join_V;
+                        Cache_For_Expression
+                          (Expression (Expr), Depth, Exit_Vertex);
+                     end;
+
+                  when N_Expression_With_Actions =>
+                     Cache_For_Expression
+                       (Expression (Expr), Depth, Exit_Vertex);
+
+                  when N_Function_Call           =>
+                     --  We do not cache parameter sub-expressions, currently
+                     --  they cannot have side-effects.
+
+                     declare
+                        Effect_V : constant Vertex :=
+                          Vertex'(Kind => Effect, Node => Expr);
+                     begin
+                        Insert_Neighborhood (Effect_V, Depth);
+                        if not (Is_Subprogram (Get_Called_Entity (Expr))
+                                and then No_Return (Get_Called_Entity (Expr)))
+                        then
+                           Add_Edge (Effect_V, Exit_Vertex);
+                        end if;
+                        Exit_Vertex := Effect_V;
+                        Connect_Transfer_Of_Control (Effect_V);
+                     end;
+
+                  --  Other cases are currently unsupported.
+
+                  when others                    =>
+                     raise Program_Error;
+               end case;
+            end if;
+         end Cache_For_Expression;
 
          -------------------------
          -- Cache_For_Statement --
@@ -5689,6 +5806,35 @@ package body SPARK_Util is
             Start : constant Vertex := Starting_Vertex (Stmt);
             --  Starting/Entry vertex for Stmt.
 
+            Effect_V : Vertex := Start;
+            --  Will be set to effect vertex for statements that needs it.
+
+            procedure Insert_Preliminary_Expression
+              (Expr : Node_Id; Effect_Vertex : in out Vertex);
+            --  If Stmt requires an Effect vertex, sets that to Effect_Vertex,
+            --  and insert the sub-graph for the expression Expr (if any)
+            --  between Start and Effect_Vertex. Otherwise, do nothing.
+
+            -----------------------------------
+            -- Insert_Preliminary_Expression --
+            -----------------------------------
+
+            procedure Insert_Preliminary_Expression
+              (Expr : Node_Id; Effect_Vertex : in out Vertex)
+            is
+               Temp : Vertex;
+            begin
+               if Needs_Effect_Vertex (Stmt) then
+                  Effect_Vertex := Vertex'(Kind => Effect, Node => Stmt);
+                  Insert_Neighborhood (Effect_Vertex, Depth + 1);
+                  Temp := Effect_Vertex;
+                  if Present (Expr) then
+                     Cache_For_Expression (Expr, Depth + 1, Temp);
+                  end if;
+                  Add_Edge (Start, Temp);
+               end if;
+            end Insert_Preliminary_Expression;
+
          begin
             --  Add neighborhood of start vertex to the table
 
@@ -5704,7 +5850,7 @@ package body SPARK_Util is
             end if;
 
             case Nkind (Stmt) is
-               when N_Block_Statement                       =>
+               when N_Block_Statement                             =>
                   Exit_Temp := Vertex'(Kind => Completion, Node => Stmt);
                   Insert_Neighborhood (Exit_Temp, Depth + 1);
                   Add_Edge (Exit_Temp, Exit_Vertex);
@@ -5714,89 +5860,76 @@ package body SPARK_Util is
                     (Declarations (Stmt), Depth + 1, Exit_Temp);
                   Add_Edge (Start, Exit_Temp);
 
-               when N_Case_Statement                        =>
+               when N_Case_Statement                              =>
                   declare
                      Alternative : Opt_N_Case_Statement_Alternative_Id :=
                        First_Non_Pragma (Alternatives (Stmt));
                   begin
+                     --  Create join point if condition has side effects
+
+                     Insert_Preliminary_Expression
+                       (Expression (Stmt), Effect_V);
+
                      --  Create a path per alternative.
 
                      while Present (Alternative) loop
                         Exit_Temp := Exit_Vertex;
                         Cache_For_Statement_List
                           (Statements (Alternative), Depth + 1, Exit_Temp);
-                        Add_Edge (Start, Exit_Temp);
+                        Add_Edge (Effect_V, Exit_Temp);
                         Next_Non_Pragma (Alternative);
                      end loop;
                   end;
 
-               when N_Assignment_Statement
-                  | N_Entry_Call_Statement
-                  | N_Object_Declaration
+               when N_Assignment_Statement | N_Object_Declaration =>
+                  Insert_Preliminary_Expression (Expression (Stmt), Effect_V);
+                  Add_Edge (Effect_V, Exit_Vertex);
+
+               when N_Entry_Call_Statement
                   | N_Procedure_Call_Statement
-                  | N_Raise_Statement                       =>
-                  declare
-                     Exc_Node : Node_Id := Stmt;
-                  begin
-                     --  Assignment statements and object declarations need
-                     --  special treatment for exception-raising/No_Return only
-                     --  if the RHS is a call to a function with side effects.
-                     --  Identify that case and put function call in Exc_Node
-                     --  (or empty if regular assignment/object declaration).
+                  | N_Raise_Statement                             =>
+                  if Nkind (Stmt) /= N_Entry_Call_Statement then
+                     --  Connect exceptional exits
 
-                     if Nkind (Stmt)
-                        in N_Assignment_Statement | N_Object_Declaration
-                     then
-                        Exc_Node := Expression (Stmt);
-                        if not Is_Function_Call_With_Side_Effects (Exc_Node)
-                        then
-                           Exc_Node := Empty;
-                        end if;
-                     end if;
+                     Connect_Transfer_Of_Control (Start);
+                  end if;
 
-                     if Nkind (Stmt) /= N_Entry_Call_Statement
-                       and then Present (Exc_Node)
-                     then
-                        --  Connect exceptional exits
+                  if Nkind (Stmt) /= N_Raise_Statement
+                    and then
+                      not (Is_Subprogram (Get_Called_Entity (Stmt))
+                           and then No_Return (Get_Called_Entity (Stmt)))
+                  then
+                     --  Connect normal return
 
-                        Connect_Transfer_Of_Control (Exc_Node);
-                     end if;
-
-                     if Nkind (Stmt) /= N_Raise_Statement
-                       and then
-                         not (Present (Exc_Node)
-                              and then
-                                Is_Subprogram (Get_Called_Entity (Exc_Node))
-                              and then
-                                No_Return (Get_Called_Entity (Exc_Node)))
-                     then
-                        --  Connect normal return
-
-                        Add_Edge (Start, Exit_Vertex);
-                     end if;
-                  end;
-
-               when N_Exit_Statement | N_Continue_Statement =>
-                  Connect_Transfer_Of_Control (Stmt);
-                  if Present (Condition (Stmt)) then
                      Add_Edge (Start, Exit_Vertex);
                   end if;
 
-               when N_Extended_Return_Statement             =>
+               when N_Exit_Statement | N_Continue_Statement       =>
+                  declare
+                     Cond : constant Node_Id := Condition (Stmt);
+                  begin
+                     Insert_Preliminary_Expression (Cond, Effect_V);
+                     if Present (Cond) then
+                        Add_Edge (Effect_V, Exit_Vertex);
+                     end if;
+                     Connect_Transfer_Of_Control (Effect_V);
+                  end;
+
+               when N_Extended_Return_Statement                   =>
 
                   Exit_Temp := Vertex'(Kind => Completion, Node => Stmt);
                   Insert_Neighborhood (Exit_Temp, Depth + 1);
+                  Connect_Transfer_Of_Control (Exit_Temp);
                   Cache_For_Statement
                     (Handled_Statement_Sequence (Stmt), Depth + 1, Exit_Temp);
                   Cache_For_Statement_List
                     (Return_Object_Declarations (Stmt), Depth + 1, Exit_Temp);
                   Add_Edge (Start, Exit_Temp);
-                  Connect_Transfer_Of_Control (Stmt);
 
-               when N_Goto_Statement                        =>
-                  Connect_Transfer_Of_Control (Stmt);
+               when N_Goto_Statement                              =>
+                  Connect_Transfer_Of_Control (Start);
 
-               when N_Handled_Sequence_Of_Statements        =>
+               when N_Handled_Sequence_Of_Statements              =>
 
                   Exit_Temp := Exit_Vertex;
 
@@ -5848,31 +5981,36 @@ package body SPARK_Util is
                      Add_Edge (Start, Exit_Temp);
                   end;
 
-               when N_If_Statement                          =>
+               when N_If_Statement                                =>
 
                   declare
                      Elsif_Iter : Node_Id := First (Elsif_Parts (Stmt));
                   begin
+                     --  Create join point if condition has side effects
+
+                     Insert_Preliminary_Expression
+                       (Condition (Stmt), Effect_V);
+
                      --  Like case statements, create one path per alternative.
 
                      Exit_Temp := Exit_Vertex;
                      Cache_For_Statement_List
                        (Then_Statements (Stmt), Depth + 1, Exit_Temp);
-                     Add_Edge (Start, Exit_Temp);
+                     Add_Edge (Effect_V, Exit_Temp);
                      Exit_Temp := Exit_Vertex;
                      Cache_For_Statement_List
                        (Else_Statements (Stmt), Depth + 1, Exit_Temp);
-                     Add_Edge (Start, Exit_Temp);
+                     Add_Edge (Effect_V, Exit_Temp);
                      while Present (Elsif_Iter) loop
                         Exit_Temp := Exit_Vertex;
                         Cache_For_Statement_List
                           (Then_Statements (Elsif_Iter), Depth + 1, Exit_Temp);
-                        Add_Edge (Start, Exit_Temp);
+                        Add_Edge (Effect_V, Exit_Temp);
                         Next (Elsif_Iter);
                      end loop;
                   end;
 
-               when N_Loop_Statement                        =>
+               when N_Loop_Statement                              =>
                   declare
                      Loop_Entity : constant Node_Id :=
                        Entity (Identifier (Stmt));
@@ -5912,9 +6050,10 @@ package body SPARK_Util is
                      Add_Edge (Vertex_Cond, Exit_Temp);
                   end;
 
-               when N_Simple_Return_Statement               =>
+               when N_Simple_Return_Statement                     =>
 
-                  Connect_Transfer_Of_Control (Stmt);
+                  Insert_Preliminary_Expression (Expression (Stmt), Effect_V);
+                  Connect_Transfer_Of_Control (Effect_V);
 
                when N_Ignored_In_SPARK
                   | N_Itype_Reference
@@ -5926,7 +6065,7 @@ package body SPARK_Util is
                   | N_Package_Declaration
                   | N_Subprogram_Body
                   | N_Subprogram_Declaration
-                  | N_Delay_Statement                       =>
+                  | N_Delay_Statement                             =>
                   --  Statements treated as plain instructions/no-ops
 
                   Add_Edge (Start, Exit_Vertex);
@@ -5937,7 +6076,7 @@ package body SPARK_Util is
                      Goto_Targets.Insert (Entity (Identifier (Stmt)), Start);
                   end if;
 
-               when others                                  =>
+               when others                                        =>
                   Ada.Text_IO.Put_Line
                     ("[Spark_Util.Local_CFG.Cache_Graph_Of_Body] kind ="
                      & Node_Kind'Image (Nkind (Stmt)));
@@ -5970,19 +6109,8 @@ package body SPARK_Util is
          -- Connect_Transfer_Of_Control --
          ---------------------------------
 
-         procedure Connect_Transfer_Of_Control (Stmt : Node_Id) is
-            function Enclosing_Stmt (Call : Node_Id) return Node_Id
-            renames Enclosing_Statement_Of_Call_To_Function_With_Side_Effects;
-            Preceding : Vertex :=
-              Vertex'
-                (Node =>
-                   (if Nkind (Stmt) = N_Function_Call
-                    then Enclosing_Stmt (Stmt)
-                    else Stmt),
-                 Kind =>
-                   (if Nkind (Stmt) = N_Extended_Return_Statement
-                    then Completion
-                    else Entrance));
+         procedure Connect_Transfer_Of_Control (Transfer_Vertex : Vertex) is
+            Preceding : Vertex := Transfer_Vertex;
 
             procedure Connect_Scope_Finalization (Scop : Node_Id);
             --  Connect any finalization associated to Scop to Preceding,
@@ -6084,7 +6212,7 @@ package body SPARK_Util is
             end Target_Vertex;
 
          begin
-            Do_Connect (Stmt);
+            Do_Connect (Transfer_Vertex.Node);
          end Connect_Transfer_Of_Control;
 
          -------------------------
@@ -6126,6 +6254,53 @@ package body SPARK_Util is
             Add_Edge (Body_Start, Exit_Temp);
          end;
       end Cache_Graph_Of_Body;
+
+      --------------------
+      -- Is_Main_Vertex --
+      --------------------
+
+      function Is_Main_Vertex (V : Vertex) return Boolean
+      is (case V.Kind is
+            when Effect   => True,
+            when Entrance => not Needs_Effect_Vertex (V.Node),
+            when others   => False);
+
+      -----------------
+      -- Main_Vertex --
+      -----------------
+
+      function Main_Vertex (N : Node_Id) return Vertex
+      is (Kind => (if Needs_Effect_Vertex (N) then Effect else Entrance),
+          Node => N);
+
+      -------------------------
+      -- Needs_Effect_Vertex --
+      -------------------------
+
+      function Needs_Effect_Vertex (N : Node_Id) return Boolean is
+      begin
+         --  ??? We currently choose to not optimize the graph for space, that
+         --  is we always generate an Effect vertex for statements if an
+         --  expression with side effect could be legally placed to mandate it.
+         --  This is a trade-off, simpler and speeds up (Is_)Main_Vertex.
+
+         case Nkind (N) is
+            when N_Function_Call
+               | N_Assignment_Statement
+               | N_If_Statement
+               | N_Case_Statement                                 =>
+               return True;
+
+            when N_Continue_Statement | N_Exit_Statement          =>
+               return Present (Condition (N));
+
+            when N_Object_Declaration | N_Simple_Return_Statement =>
+               return Present (Expression (N));
+
+            when others                                           =>
+               return False;
+         end case;
+      end Needs_Effect_Vertex;
 
       ------------------
       -- Predecessors --
@@ -6180,18 +6355,19 @@ package body SPARK_Util is
 
       function Vertex_Hash (X : Vertex) return Ada.Containers.Hash_Type is
          use type Ada.Containers.Hash_Type;
-         Hash : Ada.Containers.Hash_Type := 7 * Node_Hash (X.Node);
+         Hash : Ada.Containers.Hash_Type := 8 * Node_Hash (X.Node);
       begin
          Hash :=
            Hash
            + (case X.Kind is
                 when Entrance         => 0,
-                when Completion       => 1,
-                when Loop_Cond        => 2,
-                when Loop_Iter        => 3,
-                when Body_Exit        => 4,
-                when Final_Entrance   => 5,
-                when Final_Completion => 6);
+                when Effect           => 1,
+                when Completion       => 2,
+                when Loop_Cond        => 3,
+                when Loop_Iter        => 4,
+                when Body_Exit        => 5,
+                when Final_Entrance   => 6,
+                when Final_Completion => 7);
          return Hash;
       end Vertex_Hash;
 
@@ -6497,12 +6673,13 @@ package body SPARK_Util is
       end Is_Borrower_Of_Variable;
 
    begin
-      for V of Stmts loop
+      --  Actual updates are represented by main vertices
+
+      for V of Stmts when Local_CFG.Is_Main_Vertex (V) loop
          case Nkind (V.Node) is
-            when N_Assignment_Statement                              =>
+            when N_Assignment_Statement                     =>
                declare
                   Lvalue : constant Node_Id := Name (V.Node);
-                  Rvalue : constant Node_Id := Expression (V.Node);
                   Root   : constant Entity_Id := Get_Root_Object (Lvalue);
                begin
                   if (Nkind (Lvalue) not in N_Identifier | N_Expanded_Name
@@ -6527,21 +6704,15 @@ package body SPARK_Util is
                         return False;
                      end;
                   end if;
-                  if Nkind (Rvalue) = N_Function_Call
-                    and then Call_Updates_Deep (Rvalue)
-                  then
-                     Explanation := Call_Explanation (Rvalue);
-                     return False;
-                  end if;
                end;
 
-            when N_Entry_Call_Statement | N_Procedure_Call_Statement =>
+            when N_Entry_Call_Statement | N_Subprogram_Call =>
                if Call_Updates_Deep (V.Node) then
                   Explanation := Call_Explanation (V.Node);
                   return False;
                end if;
 
-            when others                                              =>
+            when others                                     =>
                null;
          end case;
       end loop;
@@ -7292,6 +7463,15 @@ package body SPARK_Util is
       Conditions_Of_Conditional_Old.Include (Prefix, Condition);
    end Set_Conditional_Old_Attribute;
 
+   -------------------------------
+   -- Set_Expr_Has_Side_Effects --
+   -------------------------------
+
+   procedure Set_Expr_Has_Side_Effects (N : N_Subexpr_Id) is
+   begin
+      Expression_With_Side_Effects.Include (N);
+   end Set_Expr_Has_Side_Effects;
+
    -------------------
    -- Shape_Of_Node --
    -------------------
@@ -7967,6 +8147,25 @@ package body SPARK_Util is
                           (Retysp (Etype (Borrower)))
                      then
                         Vertices.Clear;
+
+                        --  Usually we should be using Main_Vertex. However,
+                        --  here we may have to deal with function call without
+                        --  side effects, which have no associated vertex.
+                        --  Evaluation of sub-expression always happens before
+                        --  a statement does anything, so we identify them with
+                        --  the starting vertex of their enclosing statements.
+                        --  This is correct as it is currently impossible for
+                        --  a call to a(nother) function with side effects to
+                        --  happen in between (toplevel dependent
+                        --  sub-expressions are always evaluated last). In
+                        --  contrast, using Main_Vertex would possibly takes
+                        --  into account additional side effects of function
+                        --  calls that cannot happen before the call we are
+                        --  interested in.
+                        --  For procedure calls, the starting vertex and the
+                        --  main vertex coincide, so we do not need a special
+                        --  case.
+
                         Vertices.Insert (Starting_Vertex (Target));
                         declare
                            Graph : constant Graph_Id :=
@@ -8032,6 +8231,11 @@ package body SPARK_Util is
 
                   --  The effect of the current call should not be taken
                   --  into account, so forbids empty paths.
+                  --  ??? Targeting the enclosing statement relies on the
+                  --  current invariant that all side effects within an
+                  --  expression occurs at the end of its evaluation, so no
+                  --  writes to the parameter can happen in the expression
+                  --  itself before a function call is evaluated.
 
                   Collect_Vertices_Leading_To
                     (Caller, Vertices, Empty_Paths => False);

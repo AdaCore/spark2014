@@ -1582,8 +1582,9 @@ package body VC_Kinds is
            "part of effectively volatile object or type annotated with "
            & "relaxed initialization",
          when Vio_Side_Effects_Call_Context                =>
-           "call to a function with side effects outside of assignment or "
-           & "object declaration without a block",
+           "call to a function with side effects not at toplevel or not "
+           & "toplevel dependent sub-expression of a statement or object "
+           & "declaration without a block",
          when Vio_Side_Effects_Eq                          =>
            "function with side effects as user-defined equality on record "
            & "type",
@@ -4144,8 +4145,9 @@ package body VC_Kinds is
            "part of effectively volatile object or type annotated with "
            & "relaxed initialization",
          when Vio_Side_Effects_Call_Context                          =>
-           "call to a function with side effects outside of assignment or "
-           & "object declaration without a block",
+           "call to a function with side effects not at toplevel or not "
+           & "toplevel dependent subexpression of a statement or object "
+           & "declaration without a block",
          when Vio_Side_Effects_Eq                                    =>
            "function with side effects as user-defined equality on record "
            & "type",
