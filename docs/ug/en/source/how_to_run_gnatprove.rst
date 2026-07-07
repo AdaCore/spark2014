@@ -886,6 +886,63 @@ project file, |GNATprove| uses this project file.  If no project file exists,
 |GNATprove| creates a trivial project file with the name ``default.gpr`` and
 uses that.
 
+Specifying switches for individual subprograms and packages via Manifest Files
+------------------------------------------------------------------------------
+
+Proof settings such as selected provers, timeout, steps and memory limit can
+be specified on a per-subprogram or per-package basis via so-called manifest
+files. A folder containing such files can be specified using the
+``--proof-manifest-dir`` option. Only files with the ".toml" ending are
+considered by gnatprove.
+
+Each such file corresponds to an Ada unit in the project tree. The naming of the
+file corresponds to the naming of the unit in all lower-case, and where dots are
+replaced by dashes. So a unit Sorting.Sort becomes ``sorting-sort.toml``.
+
+Each file consists of a list of rules of this form::
+
+   [[rule]]
+   path = "Hashtbl.M.Model"
+   kind = "function"
+   profile = "(_ : Hashtbl.Cell_Arr) return Hashtbl.M.FS.Set"
+   hierarchical = true
+   provers = ["z3", "alt-ergo"]
+   steps = 500
+   timeout = 10
+   memlimit = 2000
+   level = 3
+
+The ``path`` field is mandatory and defines the subprogram
+or package to which the rule applies. In addition, each rule must specify at
+least one proof option (see below). All other fields are optional. The ``kind``
+field can be one of ``function``, ``procedure``, ``entry``, ``package``. The
+``profile`` field describes the arguments and return values of the subprogram
+(only allowed if ``kind`` is one of ``function``, ``procedure`` or ``entry``).
+The syntax of ``profile`` is simply the program text of the subprogram
+declaration, without the leading "function" or "procedure" text, without the
+final semicolon, and with formal parameter names replaced by underscore.
+Together, ``kind`` and ``profile`` help
+disambiguate between overloaded subprograms.
+
+The options ``provers``, ``steps``, ``timeout``, ``memlimit`` can be set for
+each rule, as well as the ``level`` option. They specify the corresponding
+setting for this subprogram or package.
+
+By default, rules are hierarchical, that is, they match every subprogram or
+package whose full path name matches the ``path`` value of the rule, unless a
+more precise rule exists. This mechanism can be disabled by setting the
+``hierarchical`` field to ``false``, making it require an exact match to apply.
+
+For a given path, both a hierarchical and non-hierarchical rule can co-exist.
+In this case the hierarchical rule applies to proof entities below that path
+and provides defaults for the contained subprograms and packages. The
+non-hierarchical rule applies only to the entity named by the path. For a
+package path, this includes checks concerning the package's initial condition,
+declarations and body statements.
+
+The manifest file takes precedence over options specified in the project file,
+but is overridden by options specified on the command-line.
+
 GNATprove and Manual Proof
 --------------------------
 
