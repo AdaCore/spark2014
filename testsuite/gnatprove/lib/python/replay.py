@@ -29,14 +29,14 @@ cmdline_args = parse_options()
 
 # we are assuming to be called from test dir
 curdir = os.getcwd()
-libdir = os.path.join(os.path.dirname(os.path.dirname(curdir)), "lib", "python")
+libdir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(libdir)
 
 if os.path.isfile("test.py"):
     sys.path.insert(0, curdir)
     import test  # noqa this import needs the above changes to sys.path
-else:
-    import test_support  # noqa import only needed in this case
+
+import test_support  # noqa: E402
 
 # The import of test changes the directory (!), change it back
 os.chdir(curdir)
@@ -118,6 +118,9 @@ def configure_test():
 
 
 replayer = configure_test()
+
+path = test_support.prepare_sparklib_bodymode(curdir)
+os.environ[test_support.sparklib_bodymode_path_env] = path
 
 
 def delete(fn, isdir=False):

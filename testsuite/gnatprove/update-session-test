@@ -150,6 +150,7 @@ def gitlab_section_end(testname):
 
 def replay_test(args, testname):
     d = testdir(testname)
+    result = None
     if args.gitlab:
         gitlab_section_start(testname)
     if args.junit:
@@ -172,11 +173,12 @@ def replay_test(args, testname):
                 {
                     "name": testname,
                     "time": duration,
-                    "returncode": result.returncode,
-                    "stdout": result.stdout,
-                    "stderr": result.stderr,
+                    "returncode": result.returncode if result else 1,
+                    "stdout": result.stdout if result else None,
+                    "stderr": result.stderr if result else None,
                 }
             )
+    return result.returncode if result else 1
 
 
 def run_all_tests_again(args):
@@ -243,12 +245,15 @@ def main():
     if len(testnames) == 0:
         print("no tests to replay")
         exit(0)
+    failed = False
     for testname in testnames:
-        replay_test(args, testname)
-    if not args.skip_rerun_tests:
+        failed = replay_test(args, testname) != 0 or failed
+    if not failed and not args.skip_rerun_tests:
         run_all_tests_again(args)
     if args.junit:
         write_junit_report(junits)
+    if failed:
+        sys.exit(1)
 
 
 main()
