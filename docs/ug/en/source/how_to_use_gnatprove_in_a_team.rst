@@ -35,8 +35,8 @@ Multiple workflows allow to use |GNATprove| in a team:
    Configuration Management.
 3. |GNATprove| is run on a server, and textual results are sent to a third-party
    qualimetry tool (like GNATdashboard, SonarQube, SQUORE, etc.)
-4. |GNATprove| is run on a server or locally, and the |GNATprove| session files
-   are shared in Configuration Management.
+4. |GNATprove| is run on a server or locally, and the |GNATprove| proof results
+   (manifest files or session files) are shared in Configuration Management.
 
 In all workflows (but critically for the first workflow), messages can be
 suppressed or justified. Indeed, like every sound and complete verification
@@ -457,6 +457,27 @@ in the verification process.
 
 Sharing Proof Results with Others
 ---------------------------------
+
+There are two ways to share proof results, or make a result by gnatprove
+reproducible: manifest files and session files. Session files are more
+precise, resulting in faster proof replay, but their precision and XML syntax
+make evolution of these files noisy in version control. Manifest files are more
+readable, compact, and less likely to produce version control noise, but are
+less precise, possibly resulting in slower replay. We suggest using manifest
+files unless precision and/or replay speed are desired.
+
+Manifest Files
+^^^^^^^^^^^^^^
+
+Manifest files record proof settings and can be generated automatically from a
+successful proof run, capturing settings that reproduce the proofs. To share
+them, add the generated ``.toml`` files to version control; others can then
+replay the proofs by passing the folder to |GNATprove| via the
+``--proof-manifest-dir`` option. See :ref:`manifest_files` for the format of
+these files and for how to generate them with ``--generate-manifest-dir``.
+
+Session Files
+^^^^^^^^^^^^^
 
 |GNATprove| stores proof results in so-called session files. If session files
 are shared with others (e.g. via Configuration Management), either between
