@@ -140,17 +140,17 @@ package body Test_Vectors with SPARK_Mode is
       pragma Assert (Length (L) = 8);
 
       Insert (L, 5, 6, 2);
-      pragma Assert (M.Constant_Range (Model (L),
+      pragma Assert (SPARKlib_Full => M.Constant_Range (Model (L),
                                        1,
                                        4,
                                        5));
 
-      pragma Assert (M.Constant_Range (Model (L),
+      pragma Assert (SPARKlib_Full => M.Constant_Range (Model (L),
                                        5,
                                        6,
                                        6));
 
-      pragma Assert (M.Constant_Range (Model (L),
+      pragma Assert (SPARKlib_Full => M.Constant_Range (Model (L),
                                        7,
                                        10,
                                        5));
@@ -198,7 +198,7 @@ package body Test_Vectors with SPARK_Mode is
       Delete_Last (L);
 
       pragma Assert (Length (L) = 3);
-      pragma Assert (V.Formal_Model.M.Range_Equal (Model (L), Model (K), 1, 3));
+      pragma Assert (SPARKlib_Full => V.Formal_Model.M.Range_Equal (Model (L), Model (K), 1, 3));
 
       Delete_Last (L, 0);
       pragma Assert (Length (L) = 3);
@@ -213,11 +213,11 @@ package body Test_Vectors with SPARK_Mode is
 
       Delete_First (L);
       pragma Assert (Length (L) = 3);
-      pragma Assert (V.Formal_Model.M.Range_Shifted (Model (L), Model (K), 1, 3, 1));
+      pragma Assert (SPARKlib_Full => V.Formal_Model.M.Range_Shifted (Model (L), Model (K), 1, 3, 1));
 
       Delete_First (L, 0);
       pragma Assert (Length (L) = 3);
-      pragma Assert (V.Formal_Model.M.Range_Shifted (Model (L), Model (K), 1, 3, 1));
+      pragma Assert (SPARKlib_Full => V.Formal_Model.M.Range_Shifted (Model (L), Model (K), 1, 3, 1));
 
       --  First Element
 

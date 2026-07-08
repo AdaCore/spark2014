@@ -2,7 +2,7 @@ from subprocess import call
 from test_support import prove_all, gprbuild
 
 if __name__ == "__main__":
-    prove_all(sparklib=True, sparklib_bodymode=True)
+    prove_all(sparklib=True, sparklib_bodymode=False)
 
     gprbuild(["-q", "-P", "test.gpr"], sparklib_bodymode=True)
     call(["./obj/test"])
