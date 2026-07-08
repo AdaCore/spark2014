@@ -1227,11 +1227,10 @@ package body SPARK_Definition is
                if Nkind (N) = N_Procedure_Call_Statement then
 
                   declare
-                     Proc     : constant E_Procedure_Id :=
+                     Proc         : constant E_Procedure_Id :=
                        Get_Called_Entity (N);
-                     Contract : constant Opt_N_Pragma_Id :=
-                       Find_Contract (Proc, Pragma_Global);
-                     Formal   : Opt_Formal_Kind_Id := First_Formal (Proc);
+                     Proc_Globals : Global_Flow_Ids;
+                     Formal       : Opt_Formal_Kind_Id := First_Formal (Proc);
 
                   begin
                      --  Proc is necessarily Ghost. It is a lemma if
@@ -1246,12 +1245,23 @@ package body SPARK_Definition is
                         Next_Formal (Formal);
                      end loop;
 
-                     if Present (Contract)
-                       and then
-                         Parse_Global_Contract (Proc, Contract)
-                           .Outputs
-                           .Is_Empty
-                     then
+                     --  Postpone check for absence of effect if we are in
+                     --  global generation mode.
+
+                     if Gnat2Why_Args.Global_Gen_Mode then
+                        return;
+                     end if;
+
+                     Get_Globals
+                       (Subprogram          => Proc,
+                        Scope               =>
+                          (Ent => Proc, Part => Visible_Part),
+                        Classwide           => False,
+                        Globals             => Proc_Globals,
+                        Use_Deduced_Globals => True,
+                        Ignore_Depends      => False);
+
+                     if Proc_Globals.Outputs.Is_Empty then
                         return;
                      end if;
 
@@ -6640,11 +6650,18 @@ package body SPARK_Definition is
 
             --  Allow null objects and objects of a named access-to-constant
             --  type as they are not subject to ownership.
+            --  Also allow calls to functions marked with At_End_Borrow, their
+            --  context is verified separately.
 
             if not Is_Null_Owning_Access (Actual)
               and then
                 not (Is_Named_Access_Type (Retysp (Etype (Actual)))
                      and then Is_Access_Constant (Retysp (Etype (Actual))))
+              and then
+                not (Nkind (Actual) = N_Function_Call
+                     and then
+                       Has_At_End_Borrow_Annotation
+                         (Get_Called_Entity (Actual)))
             then
                Check_Source_Of_Borrow_Or_Observe
                  (Actual, Is_Access_Constant (Etype (Formal)));
@@ -6757,12 +6774,6 @@ package body SPARK_Definition is
       --  Is_Allocating_Function afterwards.
       if Etype (E) /= Standard_Void_Type then
          Mark_Entity (Etype (E));
-      end if;
-
-      if Is_Allocating_Function (E)
-        and then not Is_Valid_Allocating_Context (N)
-      then
-         Mark_Violation (Vio_Ownership_Allocator_Invalid_Context, N);
       end if;
 
       if Is_Simple_Shift_Or_Rotate (E) in N_Op_Shift
@@ -7093,6 +7104,12 @@ package body SPARK_Definition is
                   Continuations => [Create (Cont, Names => [E])]);
             end;
          end if;
+      end if;
+
+      if Is_Allocating_Function (E)
+        and then not Is_Valid_Allocating_Context (N)
+      then
+         Mark_Violation (Vio_Ownership_Allocator_Invalid_Context, N);
       end if;
 
       if Has_Program_Exit (E) and then GG_Has_Been_Generated then

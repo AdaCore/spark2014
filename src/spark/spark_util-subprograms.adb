@@ -1112,7 +1112,8 @@ package body SPARK_Util.Subprograms is
         Ekind (E) in E_Function | E_Subprogram_Type
         and then Etype (E) /= Standard_Void_Type
         and then not Is_Anonymous_Access_Object_Type (Etype (E))
-        and then Is_Deep (Etype (E));
+        and then Is_Deep (Etype (E))
+        and then not Has_At_End_Borrow_Annotation (E);
    end Is_Allocating_Function;
 
    ----------------------------------------

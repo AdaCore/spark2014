@@ -39,7 +39,7 @@ procedure Test_At_End_In_Lemma with SPARK_Mode is
       Lemma_Bad_1 (B, L2);
       Lemma_Bad_2 (B);
       Lemma_OK (At_End (B));
-      Lemma_No_Glob (At_End (B));   -- Rejected for now
+      Lemma_No_Glob (At_End (B));   -- OK, assume global null
       Lemma_Bad_1 (At_End (B), L2); -- Rejected
       Lemma_Bad_2 (At_End (B));     -- Rejected
    end Call_Lemmas;
