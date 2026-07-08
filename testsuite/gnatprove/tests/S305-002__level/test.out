@@ -8,3 +8,7 @@ level 3:
 timeout:20, steps:0, memlimit:2000, prover:cvc5,z3,altergo, proof:per_check, counterexample:on
 level 4:
 timeout:60, steps:0, memlimit:2000, prover:cvc5,z3,altergo, proof:per_check, counterexample:on
+command-line level overrides project steps:
+timeout:5, steps:0, memlimit:1000, prover:cvc5,z3,altergo, proof:per_check, counterexample:on
+command-line steps override project level:
+timeout:5, steps:777, memlimit:1000, prover:cvc5,z3,altergo, proof:per_check, counterexample:on

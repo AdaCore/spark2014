@@ -56,7 +56,6 @@ with GPR2.Project.Registry.Pack.Description;
 with GPR2.Reporter.Console;
 
 with Platform;     use Platform;
-with Proof_Options;
 with SPARK2014VSN; use SPARK2014VSN;
 with System.Multiprocessors;
 with TOML;
@@ -69,6 +68,53 @@ package body Configuration is
    Invalid_Level   : constant := -1;
    Invalid_Steps   : constant := -1;
    Invalid_Timeout : constant := -1;
+
+   Default_Steps : constant Natural := 100;
+   --  Default step limit used when neither --steps nor --timeout is set
+
+   subtype Proof_Level is Natural range 0 .. 4;
+
+   type Prover_Set is (CVC5_Only, Main_Automatic_Provers);
+
+   type Proof_Level_Settings is record
+      Provers         : Prover_Set;
+      Timeout         : Natural;
+      Steps           : Natural;
+      Memlimit        : Natural;
+      Counterexamples : Boolean;
+   end record;
+
+   Level_Settings : constant array (Proof_Level) of Proof_Level_Settings :=
+     [0 =>
+        (Provers         => CVC5_Only,
+         Timeout         => 1,
+         Steps           => 0,
+         Memlimit        => 1_000,
+         Counterexamples => False),
+      1 =>
+        (Provers         => Main_Automatic_Provers,
+         Timeout         => 1,
+         Steps           => 0,
+         Memlimit        => 1_000,
+         Counterexamples => False),
+      2 =>
+        (Provers         => Main_Automatic_Provers,
+         Timeout         => 5,
+         Steps           => 0,
+         Memlimit        => 1_000,
+         Counterexamples => True),
+      3 =>
+        (Provers         => Main_Automatic_Provers,
+         Timeout         => 20,
+         Steps           => 0,
+         Memlimit        => 2_000,
+         Counterexamples => True),
+      4 =>
+        (Provers         => Main_Automatic_Provers,
+         Timeout         => 60,
+         Steps           => 0,
+         Memlimit        => 2_000,
+         Counterexamples => True)];
 
    Usage_Message : constant String := "-Pproj [switches] [-cargs switches]";
    --  Used to print part of the help message for gnatprove
@@ -730,6 +776,12 @@ package body Configuration is
    function Initial_Switch_Value (Switch : Switch_Id) return Switch_Value;
    --  Return a default value for all Switches
 
+   function Provers_For (Set : Prover_Set) return String_Lists.List;
+   --  Return the prover names for Set, in command-line order
+
+   function Provers_String (Set : Prover_Set) return String;
+   --  Return the prover names for Set as a comma-separated switch argument
+
    function Switch_Values_Have_Expected_Kinds
      (Values : Switch_Value_Array) return Boolean
    is ((for all Switch in Switch_Id =>
@@ -743,6 +795,11 @@ package body Configuration is
       File_List      : String_Lists.List;
       Warning_Status : Opt_Warning_Status_Array := [others => WS_None];
    end record;
+
+   procedure Expand_Level_Switch (Parsed : in out Parsed_Switches);
+   --  Expand --level into the corresponding detailed switches within Parsed.
+   --  Detailed switches already present in Parsed take precedence over the
+   --  level defaults.
 
    type Parsed_Switches_Access is access all Parsed_Switches;
    --  GNAT.Command_Line Handle_Switch callback doesn't allow extra user data,
@@ -1673,6 +1730,107 @@ package body Configuration is
    end Initial_Switch_Value;
 
    -------------------------
+   -- Expand_Level_Switch --
+   -------------------------
+
+   procedure Expand_Level_Switch (Parsed : in out Parsed_Switches) is
+      procedure Set_String (Switch : Switch_Id; Value : String);
+      --  Set Switch to Value in Parsed
+
+      ----------------
+      -- Set_String --
+      ----------------
+
+      procedure Set_String (Switch : Switch_Id; Value : String) is
+      begin
+         if Parsed.Values (Switch).String_Val /= null then
+            Free (Parsed.Values (Switch).String_Val);
+         end if;
+
+         Parsed.Values (Switch).String_Val := new String'(Value);
+         Parsed.Present (Switch) := True;
+      end Set_String;
+
+      Level    : constant Integer := Parsed.Values (Sw_Level).Integer_Val;
+      Settings : Proof_Level_Settings;
+   begin
+      if not Parsed.Present (Sw_Level) then
+         return;
+      end if;
+
+      if Level not in Proof_Level then
+         Abort_Msg ("error: wrong argument for --level", With_Help => False);
+      end if;
+
+      Settings := Level_Settings (Proof_Level (Level));
+
+      if not Parsed.Present (Sw_Timeout) then
+         Set_String (Sw_Timeout, Image (Settings.Timeout, 1));
+      end if;
+
+      if not Parsed.Present (Sw_Steps) then
+         Parsed.Values (Sw_Steps).Integer_Val := Settings.Steps;
+         Parsed.Present (Sw_Steps) := True;
+      end if;
+
+      if not Parsed.Present (Sw_Memlimit) then
+         Parsed.Values (Sw_Memlimit).Integer_Val := Settings.Memlimit;
+         Parsed.Present (Sw_Memlimit) := True;
+      end if;
+
+      if not Parsed.Present (Sw_Prover) then
+         Set_String (Sw_Prover, Provers_String (Settings.Provers));
+      end if;
+
+      if not Parsed.Present (Sw_Counterexamples) then
+         Set_String
+           (Sw_Counterexamples,
+            (if Settings.Counterexamples then "on" else "off"));
+      end if;
+
+      Parsed.Values (Sw_Level) := Initial_Switch_Value (Sw_Level);
+      Parsed.Present (Sw_Level) := False;
+   end Expand_Level_Switch;
+
+   -----------------
+   -- Provers_For --
+   -----------------
+
+   function Provers_For (Set : Prover_Set) return String_Lists.List is
+      Result : String_Lists.List;
+   begin
+      Result.Append ("cvc5");
+
+      if Set = Main_Automatic_Provers then
+         Result.Append ("z3");
+         Result.Append ("altergo");
+      end if;
+
+      return Result;
+   end Provers_For;
+
+   --------------------
+   -- Provers_String --
+   --------------------
+
+   function Provers_String (Set : Prover_Set) return String is
+      Result : Unbounded_String;
+      First  : Boolean := True;
+   begin
+      for Prover of Provers_For (Set) loop
+         if First then
+            First := False;
+         else
+            Append (Result, ",");
+         end if;
+
+         Append (Result, Prover);
+      end loop;
+
+      return To_String (Result);
+   end Provers_String;
+
+   -------------------------
    -- Load_Proof_Manifest --
    -------------------------
 
@@ -2147,6 +2305,7 @@ package body Configuration is
       is
          Policy  : Manifest_Subprogram;
          Allowed : String_Lists.List;
+         Level   : Integer;
          Path    : Unbounded_String;
       begin
          if Table.Kind /= TOML.TOML_Table then
@@ -2181,16 +2340,37 @@ package body Configuration is
            Get_Optional_Natural (Table, "steps", Invalid_Manifest_Steps);
          Policy.Memlimit :=
            Get_Optional_Natural (Table, "memlimit", Invalid_Manifest_Memlimit);
-         Policy.Level :=
-           Get_Optional_Natural (Table, "level", Invalid_Manifest_Level);
-         if Policy.Level /= Invalid_Manifest_Level
-           and then Policy.Level not in 0 .. 4
-         then
+         Level := Get_Optional_Natural (Table, "level", Invalid_Level);
+         if Level /= Invalid_Level and then Level not in Proof_Level then
             Manifest_Error
               (Table.Get_Or_Null ("level"),
                "field ""level"" must be between 0 and 4");
          end if;
          Read_Optional_Provers (Table, Policy);
+
+         if Level /= Invalid_Level then
+            declare
+               Settings : constant Proof_Level_Settings :=
+                 Level_Settings (Proof_Level (Level));
+            begin
+               if Policy.Timeout = Invalid_Manifest_Timeout then
+                  Policy.Timeout := Settings.Timeout;
+               end if;
+
+               if Policy.Steps = Invalid_Manifest_Steps then
+                  Policy.Steps := Settings.Steps;
+               end if;
+
+               if Policy.Memlimit = Invalid_Manifest_Memlimit then
+                  Policy.Memlimit := Settings.Memlimit;
+               end if;
+
+               if Policy.Provers.Is_Empty then
+                  Policy.Provers := Provers_For (Settings.Provers);
+               end if;
+            end;
+         end if;
+
          Check_Policy (Table, Policy);
 
          return Policy;
@@ -2597,6 +2777,8 @@ package body Configuration is
 
       Free (Config);
       Free_Topmost (Com_Lin_Access);
+
+      Expand_Level_Switch (Parsed);
 
       return Parsed;
    end Parse_Switches_Internal;
@@ -4056,63 +4238,32 @@ package body Configuration is
       -------------------------------------
 
       procedure Set_Level_Timeout_Steps_Provers
-        (Parsed : Parsed_Switches; FS : out File_Specific)
-      is
-         procedure Apply_Level_Settings
-           (Settings : Proof_Options.Proof_Level_Settings);
-         --  Apply settings implied by --level before processing explicit
-         --  switches that may override them.
-
-         --------------------------
-         -- Apply_Level_Settings --
-         --------------------------
-
-         procedure Apply_Level_Settings
-           (Settings : Proof_Options.Proof_Level_Settings) is
-         begin
-            FS.Provers := Proof_Options.Provers_For (Settings.Provers);
-            FS.Steps := Settings.Steps;
-            FS.Timeout := Settings.Timeout;
-            FS.Memlimit := Settings.Memlimit;
-            FS.Counterexamples := Settings.Counterexamples;
-         end Apply_Level_Settings;
+        (Parsed : Parsed_Switches; FS : out File_Specific) is
       begin
+         pragma Assert (Parsed.Values (Sw_Level).Integer_Val = Invalid_Level);
+         pragma Assert (not Parsed.Present (Sw_Level));
 
-         if Parsed.Values (Sw_Level).Integer_Val = Invalid_Level then
+         --  If level switch was not provided, set other switches to their
+         --  default values. If it was provided, Parse_Switches_Internal has
+         --  already expanded it into the detailed switches handled below.
 
-            --  If level switch was not provided, set other switches to their
-            --  default values.
+         FS.Provers := Provers_For (CVC5_Only);
 
-            FS.Provers := Proof_Options.Provers_For (Proof_Options.CVC5_Only);
+         --  Default steps are used only if none of --steps and --timeout
+         --  is used (either explicitly or through --level). Otherwise
+         --  set to zero to indicate steps are not used.
 
-            --  Default steps are used only if none of --steps and --timeout
-            --  is used (either explicitly or through --level). Otherwise
-            --  set to zero to indicate steps are not used.
-
-            if Parsed.Values (Sw_Steps).Integer_Val = Invalid_Steps
-              and then Switch_String (Parsed, Sw_Timeout) = ""
-            then
-               FS.Steps := Proof_Options.Default_Steps;
-            else
-               FS.Steps := 0;
-            end if;
-
-            FS.Timeout := 0;
-            FS.Memlimit := 0;
-            FS.Counterexamples := False;
-
-         elsif Parsed.Values (Sw_Level).Integer_Val
-               in Proof_Options.Proof_Level
+         if Parsed.Values (Sw_Steps).Integer_Val = Invalid_Steps
+           and then Switch_String (Parsed, Sw_Timeout) = ""
          then
-            Apply_Level_Settings
-              (Proof_Options.Settings_For_Level
-                 (Parsed.Values (Sw_Level).Integer_Val));
-
+            FS.Steps := Default_Steps;
          else
-            Abort_Msg
-              ("error: wrong argument for --level", With_Help => False);
+            FS.Steps := 0;
          end if;
 
+         FS.Timeout := 0;
+         FS.Memlimit := 0;
+         FS.Counterexamples := False;
          FS.Check_Counterexamples := True;
          FS.CE_Steps := 0;
          FS.Proof_Warn_Timeout := Invalid_Timeout;
@@ -4410,7 +4561,6 @@ package body Configuration is
       is
          First : Integer;
          S     : constant String := Switch_String (Parsed, Sw_Prover);
-
       begin
          --  This procedure is called when the Provers list is already filled
          --  with the defaults from the --level switch.
@@ -4425,6 +4575,7 @@ package body Configuration is
             end if;
             return;
          end if;
+
          FS.Provers.Clear;
          if S /= "all" then
             First := S'First;

@@ -132,10 +132,6 @@ package body Gnat2Why_Opts.Reading is
                   Policy.Memlimit := Integer'(Get_Opt (Obj, "memlimit"));
                end if;
 
-               if Has_Field (Obj, "level") then
-                  Policy.Level := Integer'(Get_Opt (Obj, "level"));
-               end if;
-
                if Has_Field (Obj, "provers") then
                   declare
                      Provers : constant JSON_Array := Get (Obj, "provers");

@@ -55,6 +55,14 @@ establishes "invocation-level" settings (That influence the behavior of the
 whole run), but also establishes data that will then be used for file-specific
 switches as well.
 
+Within each parsed switch source, ``--level`` is expanded immediately into the
+more precise proof switches that it represents, such as ``--timeout``,
+``--steps``, ``--memlimit``, ``--prover``, and ``--counterexamples``. More
+precise switches in the same source override the corresponding ``--level``
+default. The later merge only combines the expanded detailed switches, so a
+higher-precedence ``--level`` overrides lower-precedence detailed switches in
+the same way as if those detailed switches had been written explicitly.
+
 Then, the switches attributes of the entire project tree are parsed
 into records, and merged according to precedence rules, to establish the
 "file-specific" switches, which can be specified on a per-file basis.
