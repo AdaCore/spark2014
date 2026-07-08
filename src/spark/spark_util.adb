@@ -4317,7 +4317,10 @@ package body SPARK_Util is
 
    function Is_Local_Context (Scop : Entity_Id) return Boolean is
    begin
-      return Is_Subprogram_Or_Entry (Scop) or else Ekind (Scop) = E_Block;
+      return
+        Is_Subprogram_Or_Entry (Scop)
+        or else Ekind (Scop) = E_Block
+        or else Ekind (Scop) = E_Return_Statement;
    end Is_Local_Context;
 
    ---------------------------------

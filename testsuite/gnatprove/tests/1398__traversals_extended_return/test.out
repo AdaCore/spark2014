@@ -1,0 +1,23 @@
+test.adb:5:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
+test.adb:7:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
+test.adb:8:08: info: dynamic accessibility check proved (Trivial)
+test.adb:14:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+test.adb:15:14: info: postcondition proved (CVC5: 1 VC)
+test.adb:15:32: info: pointer dereference check proved (CVC5: 1 VC)
+test.adb:20:25: info: assertion proved (CVC5: 1 VC)
+test.adb:20:36: info: pointer dereference check proved (CVC5: 1 VC)
+test.adb:24:13: info: implicit aspect Always_Terminates on "F2" has been proved, subprogram will terminate
+test.adb:27:25: info: assertion proved (CVC5: 1 VC)
+test.adb:27:36: info: pointer dereference check proved (CVC5: 1 VC)
+test.adb:33:13: info: implicit aspect Always_Terminates on "F3" has been proved, subprogram will terminate
+test.adb:40:13: info: implicit aspect Always_Terminates on "F4" has been proved, subprogram will terminate
+test.adb:54:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
+test.adb:57:13: info: implicit aspect Always_Terminates on "F5" has been proved, subprogram will terminate
+test.adb:58:14: info: postcondition proved (CVC5: 1 VC)
+test.adb:58:33: info: pointer dereference check proved (CVC5: 1 VC)
+test.adb:62:48: info: dynamic accessibility check proved (Trivial)
+test.adb:77:42: info: dynamic accessibility check proved (Trivial)
+test.adb:78:28: medium: implicit aspect Always_Terminates on "F6" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
+test.adb:79:19: info: null exclusion check proved (CVC5: 1 VC)
+test.adb:86:13: info: implicit aspect Always_Terminates on "F7" has been proved, subprogram will terminate
+test.adb:89:45: medium: dynamic accessibility check might fail [possible explanation: part of a local object has a local accessibility level]

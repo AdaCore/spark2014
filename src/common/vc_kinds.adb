@@ -1494,7 +1494,7 @@ package body VC_Kinds is
            "anonymous access variable marked Part_Of a protected object",
          when Vio_Ownership_Anonymous_Object_Context       =>
            "object of anonymous access not declared immediately within a "
-           & "subprogram, entry or block",
+           & "subprogram, entry, block, or extended return",
          when Vio_Ownership_Anonymous_Object_Init          =>
            "uninitialized object of anonymous access type",
          when Vio_Ownership_Anonymous_Result               =>
@@ -4046,8 +4046,8 @@ package body VC_Kinds is
          when Vio_Ownership_Anonymous_Part_Of                        =>
            "anonymous access variable marked Part_Of a protected object",
          when Vio_Ownership_Anonymous_Object_Context                 =>
-           "object of anonymous access not declared "
-           & "immediately within a subprogram, entry or block",
+           "object of anonymous access not declared immediately "
+           & "within a subprogram, entry, block, or extended return",
          when Vio_Ownership_Anonymous_Object_Init                    =>
            "uninitialized object of anonymous access type",
          when Vio_Ownership_Anonymous_Result                         =>

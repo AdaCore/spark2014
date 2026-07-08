@@ -1,0 +1,7 @@
+illegal_extended_returns.adb:8:13: info: implicit aspect Always_Terminates on "Bad_Param" has been proved, subprogram will terminate
+illegal_extended_returns.adb:8:24: warning: unused variable "X"
+illegal_extended_returns.adb:10:54: error: return value of a traversal function should be rooted at "X"
+illegal_extended_returns_2.adb:9:10: error: assignment into a constant object is not allowed in SPARK (SPARK RM 3.10(3))
+illegal_extended_returns_2.adb:9:10: error: the borrowed parameter of a traversal function cannot be modified
+illegal_extended_returns_2.adb:9:10: error: violation of aspect SPARK_Mode at line 1
+gnatprove: error during flow analysis and proof
