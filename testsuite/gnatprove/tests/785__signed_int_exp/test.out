@@ -1,0 +1,432 @@
+====== cvc5 ========
+exponent_natural_check.adb:7:19: medium: overflow check might fail, cannot prove lower bound for Base ** Natural (Exp) [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition (Base ** Natural (Exp) >= Integer'First) to subprogram at exponent_natural_check.ads:12]
+exponent_natural_check.adb:7:31: info: range check proved (CVC5: 2 VC)
+exponent_natural_check.ads:12:13: info: implicit aspect Always_Terminates on "Safe_Power" has been proved, subprogram will terminate
+exponent_natural_check.ads:15:14: info: postcondition proved (CVC5: 1 VC)
+exponent_natural_check.ads:15:39: info: overflow check proved (CVC5: 2 VC)
+exponent_natural_check.ads:15:51: info: range check proved (CVC5: 2 VC)
+fast_exponentiation.adb:11:33: info: loop invariant initialization proved (CVC5: 1 VC)
+fast_exponentiation.adb:11:33: info: loop invariant preservation proved (CVC5: 1 VC)
+fast_exponentiation.adb:11:35: info: overflow check proved (CVC5: 4 VC)
+fast_exponentiation.adb:11:39: medium: overflow check might fail, cannot prove upper bound for P ** E [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+fast_exponentiation.adb:12:31: info: loop variant proved (CVC5: 1 VC)
+fast_exponentiation.adb:14:15: info: division check proved (CVC5: 1 VC)
+fast_exponentiation.adb:15:20: medium: overflow check might fail, cannot prove upper bound for R * P [reason for check: result of multiplication must fit in a 32-bits machine integer]
+fast_exponentiation.adb:18:17: medium: overflow check might fail, cannot prove lower bound for P * P [reason for check: result of multiplication must fit in a 32-bits machine integer]
+fast_exponentiation.adb:19:17: info: division check proved (CVC5: 1 VC)
+fast_exponentiation.adb:21:25: medium: assertion might fail
+fast_exponentiation.adb:21:27: medium: overflow check might fail, cannot prove lower bound for R * P ** E [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+fast_exponentiation.adb:21:31: medium: overflow check might fail, cannot prove lower bound for P ** E [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+fast_exponentiation.adb:34:37: info: subprogram variant proved (CVC5: 1 VC)
+fast_exponentiation.adb:34:62: info: division check proved (CVC5: 1 VC)
+fast_exponentiation.adb:36:18: info: division check proved (CVC5: 1 VC)
+fast_exponentiation.adb:37:25: medium: overflow check might fail, cannot prove upper bound for R * R [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at fast_exponentiation.ads:18 should mention N and X in a precondition]
+fast_exponentiation.adb:39:25: medium: overflow check might fail, cannot prove upper bound for R * R [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at fast_exponentiation.ads:18 should mention N and X in a precondition]
+fast_exponentiation.adb:39:29: medium: overflow check might fail, cannot prove upper bound for R * R * X [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at fast_exponentiation.ads:18 should mention N and X in a precondition]
+fast_exponentiation.ads:14:13: info: implicit aspect Always_Terminates on "Fast_Exp" has been proved, subprogram will terminate
+fast_exponentiation.ads:15:17: info: postcondition proved (CVC5: 1 VC)
+fast_exponentiation.ads:18:13: info: implicit aspect Always_Terminates on "Fast_Exp_Recursive" has been proved, subprogram will terminate
+fast_exponentiation.ads:18:13: warning: "Fast_Exp_Recursive" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
+fast_exponentiation.ads:21:28: medium: postcondition might fail
+fixed_exponent.ads:11:13: info: implicit aspect Always_Terminates on "Square" has been proved, subprogram will terminate
+fixed_exponent.ads:12:17: info: postcondition proved (CVC5: 1 VC)
+fixed_exponent.ads:14:13: info: implicit aspect Always_Terminates on "Cube" has been proved, subprogram will terminate
+fixed_exponent.ads:15:17: info: postcondition proved (CVC5: 1 VC)
+fixed_exponent.ads:19:13: info: implicit aspect Always_Terminates on "Fourth_Power" has been proved, subprogram will terminate
+fixed_exponent.ads:20:17: medium: postcondition might fail
+fixed_exponent.ads:24:13: info: implicit aspect Always_Terminates on "Fifth_Power" has been proved, subprogram will terminate
+monotonicity.adb:8:16: info: overflow check proved (CVC5: 2 VC)
+monotonicity.adb:8:26: medium: overflow check might fail, cannot prove upper bound for X ** N2 [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition (X ** N2 <= Integer'Last) to subprogram at monotonicity.ads:12]
+monotonicity.adb:14:16: info: overflow check proved (CVC5: 2 VC)
+monotonicity.adb:14:27: medium: overflow check might fail, cannot prove upper bound for X ** N2 [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition (X ** N2 <= Integer'Last) to subprogram at monotonicity.ads:18]
+monotonicity.adb:20:17: medium: overflow check might fail, cannot prove upper bound for X1 ** N [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition (X1 ** N <= Integer'Last) to subprogram at monotonicity.ads:26]
+monotonicity.adb:20:28: medium: overflow check might fail, cannot prove upper bound for X2 ** N [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition (X2 ** N <= Integer'Last) to subprogram at monotonicity.ads:26]
+monotonicity.ads:12:13: info: implicit aspect Always_Terminates on "Strictly_Increasing_In_Exponent" has been proved, subprogram will terminate
+monotonicity.ads:16:14: medium: postcondition might fail
+monotonicity.ads:18:13: info: implicit aspect Always_Terminates on "Nondecreasing_In_Exponent" has been proved, subprogram will terminate
+monotonicity.ads:22:14: info: postcondition proved (CVC5: 1 VC)
+monotonicity.ads:26:13: info: implicit aspect Always_Terminates on "Nondecreasing_In_Base" has been proved, subprogram will terminate
+monotonicity.ads:28:51: medium: postcondition might fail
+negative_base.adb:18:15: info: division check proved (CVC5: 1 VC)
+negative_base.adb:18:35: medium: overflow check might fail, cannot prove lower bound for (-X) ** N [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition ((-X) ** N >= Integer'First) to subprogram at negative_base.ads:19]
+negative_base.adb:18:44: medium: overflow check might fail, cannot prove lower bound for X ** N [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition (X ** N >= Integer'First) to subprogram at negative_base.ads:19]
+negative_base.adb:18:59: medium: overflow check might fail, cannot prove lower bound for (-X) ** N [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition ((-X) ** N >= Integer'First) to subprogram at negative_base.ads:19]
+negative_base.adb:18:66: medium: overflow check might fail, cannot prove upper bound for -(X ** N) [reason for check: result of negation must fit in a 32-bits machine integer] [possible fix: add precondition (-(X ** N) <= Integer'Last) to subprogram at negative_base.ads:19]
+negative_base.adb:18:70: medium: overflow check might fail, cannot prove lower bound for (X ** N) [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition ((X ** N) >= Integer'First) to subprogram at negative_base.ads:19]
+negative_base.ads:10:13: info: implicit aspect Always_Terminates on "Neg_Square_Equals_Square" has been proved, subprogram will terminate
+negative_base.ads:11:17: info: postcondition proved (CVC5: 1 VC)
+negative_base.ads:13:13: info: implicit aspect Always_Terminates on "Neg_Cube_Is_Minus_Cube" has been proved, subprogram will terminate
+negative_base.ads:14:17: info: postcondition proved (CVC5: 1 VC)
+negative_base.ads:19:13: info: implicit aspect Always_Terminates on "Neg_Power_Sign" has been proved, subprogram will terminate
+negative_base.ads:20:33: medium: postcondition might fail
+power_of_two.adb:17:21: info: division check proved (CVC5: 1 VC)
+power_of_two.adb:22:16: info: overflow check proved (CVC5: 2 VC)
+power_of_two.adb:22:22: info: overflow check proved (CVC5: 2 VC)
+power_of_two.adb:22:31: medium: overflow check might fail, cannot prove upper bound for 2 * 2 ** N [reason for check: result of multiplication must fit in a 128-bits machine integer] [possible fix: add precondition (2 * 2 ** N <= 170141183460469231731687303715884105727) to subprogram at power_of_two.ads:20]
+power_of_two.adb:22:35: medium: overflow check might fail, cannot prove upper bound for 2 ** N [reason for check: result of exponentiation must fit in a 128-bits machine integer] [possible fix: add precondition (2 ** N <= 170141183460469231731687303715884105727) to subprogram at power_of_two.ads:20]
+power_of_two.adb:27:16: info: overflow check proved (CVC5: 2 VC)
+power_of_two.adb:27:21: medium: overflow check might fail, cannot prove upper bound for 2 ** A * 2 ** B [reason for check: result of multiplication must fit in a 128-bits machine integer] [possible fix: add precondition (2 ** A * 2 ** B <= 170141183460469231731687303715884105727) to subprogram at power_of_two.ads:23]
+power_of_two.adb:27:25: info: overflow check proved (CVC5: 2 VC)
+power_of_two.adb:27:34: medium: overflow check might fail, cannot prove upper bound for 2 ** (A + B) [reason for check: result of exponentiation must fit in a 128-bits machine integer] [possible fix: add precondition (2 ** (A + B) <= 170141183460469231731687303715884105727) to subprogram at power_of_two.ads:23]
+power_of_two.adb:27:40: info: overflow check proved (CVC5: 2 VC)
+power_of_two.ads:11:13: info: implicit aspect Always_Terminates on "Two_Pow" has been proved, subprogram will terminate
+power_of_two.ads:12:17: info: postcondition proved (CVC5: 1 VC)
+power_of_two.ads:14:13: info: implicit aspect Always_Terminates on "Two_Pow_Is_Positive" has been proved, subprogram will terminate
+power_of_two.ads:15:17: info: postcondition proved (CVC5: 1 VC)
+power_of_two.ads:17:13: info: implicit aspect Always_Terminates on "Two_Pow_Even_For_Positive_N" has been proved, subprogram will terminate
+power_of_two.ads:18:32: info: postcondition proved (CVC5: 1 VC)
+power_of_two.ads:20:13: info: implicit aspect Always_Terminates on "Two_Pow_Doubling" has been proved, subprogram will terminate
+power_of_two.ads:21:32: info: postcondition proved (CVC5: 1 VC)
+power_of_two.ads:23:13: info: implicit aspect Always_Terminates on "Two_Pow_Product" has been proved, subprogram will terminate
+power_of_two.ads:24:50: medium: postcondition might fail
+power_of_two.ads:26:13: info: implicit aspect Always_Terminates on "Two_Pow_Strictly_Increasing" has been proved, subprogram will terminate
+power_of_two.ads:27:33: info: postcondition proved (CVC5: 1 VC)
+power_of_two.ads:31:13: info: implicit aspect Always_Terminates on "Range_Bound_Constants" has been proved, subprogram will terminate
+power_of_two.ads:32:17: info: postcondition proved (CVC5: 1 VC)
+variable_exponent.adb:18:19: medium: overflow check might fail, cannot prove lower bound for Base ** Exp_1 [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition (Base ** Exp_1 >= Integer'First) to subprogram at variable_exponent.ads:27]
+variable_exponent.adb:18:28: medium: overflow check might fail, cannot prove lower bound for Base ** Exp_1 * Base ** Exp_2 [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (Base ** Exp_1 * Base ** Exp_2 >= Integer'First) to subprogram at variable_exponent.ads:27]
+variable_exponent.adb:18:35: medium: overflow check might fail, cannot prove lower bound for Base ** Exp_2 [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition (Base ** Exp_2 >= Integer'First) to subprogram at variable_exponent.ads:27]
+variable_exponent.adb:18:51: medium: overflow check might fail, cannot prove lower bound for Base ** (Exp_1 + Exp_2) [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition (Base ** (Exp_1 + Exp_2) >= Integer'First) to subprogram at variable_exponent.ads:27]
+variable_exponent.adb:18:61: info: overflow check proved (CVC5: 2 VC)
+variable_exponent.ads:13:13: info: implicit aspect Always_Terminates on "Power" has been proved, subprogram will terminate
+variable_exponent.ads:14:17: info: postcondition proved (CVC5: 1 VC)
+variable_exponent.ads:19:13: info: implicit aspect Always_Terminates on "Small_Power" has been proved, subprogram will terminate
+variable_exponent.ads:20:17: info: postcondition proved (CVC5: 1 VC)
+variable_exponent.ads:27:13: info: implicit aspect Always_Terminates on "Product_Of_Powers" has been proved, subprogram will terminate
+variable_exponent.ads:31:14: medium: postcondition might fail
+zero_and_edge_cases.adb:17:16: info: overflow check proved (CVC5: 2 VC)
+zero_and_edge_cases.adb:22:20: info: division check proved (CVC5: 1 VC)
+zero_and_edge_cases.adb:22:40: info: overflow check proved (CVC5: 2 VC)
+zero_and_edge_cases.adb:22:59: info: overflow check proved (CVC5: 2 VC)
+zero_and_edge_cases.ads:8:13: info: implicit aspect Always_Terminates on "Any_Power_Zero_Is_One" has been proved, subprogram will terminate
+zero_and_edge_cases.ads:9:17: info: postcondition proved (CVC5: 1 VC)
+zero_and_edge_cases.ads:11:13: info: implicit aspect Always_Terminates on "Zero_To_Positive_Power_Is_Zero" has been proved, subprogram will terminate
+zero_and_edge_cases.ads:12:33: medium: postcondition might fail
+zero_and_edge_cases.ads:14:13: info: implicit aspect Always_Terminates on "One_To_Any_Power_Is_One" has been proved, subprogram will terminate
+zero_and_edge_cases.ads:15:33: info: postcondition proved (CVC5: 1 VC)
+zero_and_edge_cases.ads:18:13: info: implicit aspect Always_Terminates on "Minus_One_Alternates" has been proved, subprogram will terminate
+zero_and_edge_cases.ads:19:33: medium: postcondition might fail
+====== z3 ========
+exponent_natural_check.adb:7:19: medium: overflow check might fail, cannot prove lower bound for Base ** Natural (Exp) [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition (Base ** Natural (Exp) >= Integer'First) to subprogram at exponent_natural_check.ads:12]
+exponent_natural_check.adb:7:31: info: range check proved (Z3: 2 VC)
+exponent_natural_check.ads:12:13: info: implicit aspect Always_Terminates on "Safe_Power" has been proved, subprogram will terminate
+exponent_natural_check.ads:15:14: info: postcondition proved (Z3: 1 VC)
+exponent_natural_check.ads:15:39: info: overflow check proved (Z3: 2 VC)
+exponent_natural_check.ads:15:51: info: range check proved (Z3: 2 VC)
+fast_exponentiation.adb:11:33: info: loop invariant initialization proved (Z3: 1 VC)
+fast_exponentiation.adb:11:33: info: loop invariant preservation proved (Z3: 1 VC)
+fast_exponentiation.adb:11:35: info: overflow check proved (Z3: 4 VC)
+fast_exponentiation.adb:11:39: medium: overflow check might fail, cannot prove lower bound for P ** E [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+fast_exponentiation.adb:12:31: info: loop variant proved (Z3: 1 VC)
+fast_exponentiation.adb:14:15: info: division check proved (Z3: 1 VC)
+fast_exponentiation.adb:15:20: medium: overflow check might fail, cannot prove lower bound for R * P [reason for check: result of multiplication must fit in a 32-bits machine integer]
+fast_exponentiation.adb:18:17: medium: overflow check might fail, cannot prove lower bound for P * P [reason for check: result of multiplication must fit in a 32-bits machine integer]
+fast_exponentiation.adb:19:17: info: division check proved (Z3: 1 VC)
+fast_exponentiation.adb:21:25: medium: assertion might fail
+fast_exponentiation.adb:21:27: medium: overflow check might fail, cannot prove lower bound for R * P ** E [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+fast_exponentiation.adb:21:31: medium: overflow check might fail, cannot prove upper bound for P ** E [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+fast_exponentiation.adb:34:37: info: subprogram variant proved (Z3: 1 VC)
+fast_exponentiation.adb:34:62: info: division check proved (Z3: 1 VC)
+fast_exponentiation.adb:36:18: info: division check proved (Z3: 1 VC)
+fast_exponentiation.adb:37:25: medium: overflow check might fail, cannot prove lower bound for R * R [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at fast_exponentiation.ads:18 should mention N and X in a precondition]
+fast_exponentiation.adb:39:25: medium: overflow check might fail, cannot prove lower bound for R * R [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at fast_exponentiation.ads:18 should mention N and X in a precondition]
+fast_exponentiation.adb:39:29: medium: overflow check might fail, cannot prove lower bound for R * R * X [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at fast_exponentiation.ads:18 should mention N and X in a precondition]
+fast_exponentiation.ads:14:13: info: implicit aspect Always_Terminates on "Fast_Exp" has been proved, subprogram will terminate
+fast_exponentiation.ads:15:17: medium: postcondition might fail
+fast_exponentiation.ads:18:13: info: implicit aspect Always_Terminates on "Fast_Exp_Recursive" has been proved, subprogram will terminate
+fast_exponentiation.ads:18:13: warning: "Fast_Exp_Recursive" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
+fast_exponentiation.ads:21:28: medium: postcondition might fail
+fixed_exponent.ads:11:13: info: implicit aspect Always_Terminates on "Square" has been proved, subprogram will terminate
+fixed_exponent.ads:12:17: info: postcondition proved (Z3: 1 VC)
+fixed_exponent.ads:14:13: info: implicit aspect Always_Terminates on "Cube" has been proved, subprogram will terminate
+fixed_exponent.ads:15:17: info: postcondition proved (Z3: 1 VC)
+fixed_exponent.ads:19:13: info: implicit aspect Always_Terminates on "Fourth_Power" has been proved, subprogram will terminate
+fixed_exponent.ads:20:17: medium: postcondition might fail
+fixed_exponent.ads:24:13: info: implicit aspect Always_Terminates on "Fifth_Power" has been proved, subprogram will terminate
+monotonicity.adb:8:16: medium: overflow check might fail, cannot prove upper bound for X ** N1 [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition (X ** N1 <= Integer'Last) to subprogram at monotonicity.ads:12]
+monotonicity.adb:8:26: medium: overflow check might fail, cannot prove upper bound for X ** N2 [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition (X ** N2 <= Integer'Last) to subprogram at monotonicity.ads:12]
+monotonicity.adb:14:16: medium: overflow check might fail, cannot prove upper bound for X ** N1 [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition (X ** N1 <= Integer'Last) to subprogram at monotonicity.ads:18]
+monotonicity.adb:14:27: medium: overflow check might fail, cannot prove upper bound for X ** N2 [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition (X ** N2 <= Integer'Last) to subprogram at monotonicity.ads:18]
+monotonicity.adb:20:17: medium: overflow check might fail, cannot prove lower bound for X1 ** N [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition (X1 ** N >= Integer'First) to subprogram at monotonicity.ads:26]
+monotonicity.adb:20:28: medium: overflow check might fail, cannot prove lower bound for X2 ** N [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition (X2 ** N >= Integer'First) to subprogram at monotonicity.ads:26]
+monotonicity.ads:12:13: info: implicit aspect Always_Terminates on "Strictly_Increasing_In_Exponent" has been proved, subprogram will terminate
+monotonicity.ads:16:14: medium: postcondition might fail
+monotonicity.ads:18:13: info: implicit aspect Always_Terminates on "Nondecreasing_In_Exponent" has been proved, subprogram will terminate
+monotonicity.ads:22:14: medium: postcondition might fail
+monotonicity.ads:26:13: info: implicit aspect Always_Terminates on "Nondecreasing_In_Base" has been proved, subprogram will terminate
+monotonicity.ads:28:51: medium: postcondition might fail
+negative_base.adb:18:15: info: division check proved (Z3: 1 VC)
+negative_base.adb:18:35: medium: overflow check might fail, cannot prove lower bound for (-X) ** N [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition ((-X) ** N >= Integer'First) to subprogram at negative_base.ads:19]
+negative_base.adb:18:44: medium: overflow check might fail, cannot prove lower bound for X ** N [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition (X ** N >= Integer'First) to subprogram at negative_base.ads:19]
+negative_base.adb:18:59: medium: overflow check might fail, cannot prove lower bound for (-X) ** N [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition ((-X) ** N >= Integer'First) to subprogram at negative_base.ads:19]
+negative_base.adb:18:66: medium: overflow check might fail, cannot prove upper bound for -(X ** N) [reason for check: result of negation must fit in a 32-bits machine integer] [possible fix: add precondition (-(X ** N) <= Integer'Last) to subprogram at negative_base.ads:19]
+negative_base.adb:18:70: medium: overflow check might fail, cannot prove lower bound for (X ** N) [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition ((X ** N) >= Integer'First) to subprogram at negative_base.ads:19]
+negative_base.ads:10:13: info: implicit aspect Always_Terminates on "Neg_Square_Equals_Square" has been proved, subprogram will terminate
+negative_base.ads:11:17: info: postcondition proved (Z3: 1 VC)
+negative_base.ads:13:13: info: implicit aspect Always_Terminates on "Neg_Cube_Is_Minus_Cube" has been proved, subprogram will terminate
+negative_base.ads:14:17: info: postcondition proved (Z3: 1 VC)
+negative_base.ads:19:13: info: implicit aspect Always_Terminates on "Neg_Power_Sign" has been proved, subprogram will terminate
+negative_base.ads:20:33: medium: postcondition might fail
+power_of_two.adb:17:21: info: division check proved (Z3: 1 VC)
+power_of_two.adb:22:16: info: overflow check proved (Z3: 2 VC)
+power_of_two.adb:22:22: info: overflow check proved (Z3: 2 VC)
+power_of_two.adb:22:31: medium: overflow check might fail, cannot prove upper bound for 2 * 2 ** N [reason for check: result of multiplication must fit in a 128-bits machine integer] [possible fix: add precondition (2 * 2 ** N <= 170141183460469231731687303715884105727) to subprogram at power_of_two.ads:20]
+power_of_two.adb:22:35: medium: overflow check might fail, cannot prove upper bound for 2 ** N [reason for check: result of exponentiation must fit in a 128-bits machine integer] [possible fix: add precondition (2 ** N <= 170141183460469231731687303715884105727) to subprogram at power_of_two.ads:20]
+power_of_two.adb:27:16: medium: overflow check might fail, cannot prove lower bound for 2 ** A [reason for check: result of exponentiation must fit in a 128-bits machine integer] [possible fix: add precondition (2 ** A >= -170141183460469231731687303715884105728) to subprogram at power_of_two.ads:23]
+power_of_two.adb:27:21: medium: overflow check might fail, cannot prove lower bound for 2 ** A * 2 ** B [reason for check: result of multiplication must fit in a 128-bits machine integer] [possible fix: add precondition (2 ** A * 2 ** B >= -170141183460469231731687303715884105728) to subprogram at power_of_two.ads:23]
+power_of_two.adb:27:25: medium: overflow check might fail, cannot prove upper bound for 2 ** B [reason for check: result of exponentiation must fit in a 128-bits machine integer] [possible fix: add precondition (2 ** B <= 170141183460469231731687303715884105727) to subprogram at power_of_two.ads:23]
+power_of_two.adb:27:34: medium: overflow check might fail, cannot prove upper bound for 2 ** (A + B) [reason for check: result of exponentiation must fit in a 128-bits machine integer] [possible fix: add precondition (2 ** (A + B) <= 170141183460469231731687303715884105727) to subprogram at power_of_two.ads:23]
+power_of_two.adb:27:40: info: overflow check proved (Z3: 2 VC)
+power_of_two.ads:11:13: info: implicit aspect Always_Terminates on "Two_Pow" has been proved, subprogram will terminate
+power_of_two.ads:12:17: info: postcondition proved (Z3: 1 VC)
+power_of_two.ads:14:13: info: implicit aspect Always_Terminates on "Two_Pow_Is_Positive" has been proved, subprogram will terminate
+power_of_two.ads:15:17: info: postcondition proved (Z3: 1 VC)
+power_of_two.ads:17:13: info: implicit aspect Always_Terminates on "Two_Pow_Even_For_Positive_N" has been proved, subprogram will terminate
+power_of_two.ads:18:32: medium: postcondition might fail
+power_of_two.ads:20:13: info: implicit aspect Always_Terminates on "Two_Pow_Doubling" has been proved, subprogram will terminate
+power_of_two.ads:21:32: info: postcondition proved (Z3: 1 VC)
+power_of_two.ads:23:13: info: implicit aspect Always_Terminates on "Two_Pow_Product" has been proved, subprogram will terminate
+power_of_two.ads:24:50: medium: postcondition might fail
+power_of_two.ads:26:13: info: implicit aspect Always_Terminates on "Two_Pow_Strictly_Increasing" has been proved, subprogram will terminate
+power_of_two.ads:27:33: medium: postcondition might fail
+power_of_two.ads:31:13: info: implicit aspect Always_Terminates on "Range_Bound_Constants" has been proved, subprogram will terminate
+power_of_two.ads:32:17: info: postcondition proved (Z3: 1 VC)
+variable_exponent.adb:18:19: medium: overflow check might fail, cannot prove lower bound for Base ** Exp_1 [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition (Base ** Exp_1 >= Integer'First) to subprogram at variable_exponent.ads:27]
+variable_exponent.adb:18:28: medium: overflow check might fail, cannot prove lower bound for Base ** Exp_1 * Base ** Exp_2 [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (Base ** Exp_1 * Base ** Exp_2 >= Integer'First) to subprogram at variable_exponent.ads:27]
+variable_exponent.adb:18:35: medium: overflow check might fail, cannot prove lower bound for Base ** Exp_2 [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition (Base ** Exp_2 >= Integer'First) to subprogram at variable_exponent.ads:27]
+variable_exponent.adb:18:51: medium: overflow check might fail, cannot prove lower bound for Base ** (Exp_1 + Exp_2) [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition (Base ** (Exp_1 + Exp_2) >= Integer'First) to subprogram at variable_exponent.ads:27]
+variable_exponent.adb:18:61: info: overflow check proved (Z3: 2 VC)
+variable_exponent.ads:13:13: info: implicit aspect Always_Terminates on "Power" has been proved, subprogram will terminate
+variable_exponent.ads:14:17: info: postcondition proved (Z3: 1 VC)
+variable_exponent.ads:19:13: info: implicit aspect Always_Terminates on "Small_Power" has been proved, subprogram will terminate
+variable_exponent.ads:20:17: info: postcondition proved (Z3: 1 VC)
+variable_exponent.ads:27:13: info: implicit aspect Always_Terminates on "Product_Of_Powers" has been proved, subprogram will terminate
+variable_exponent.ads:31:14: medium: postcondition might fail
+zero_and_edge_cases.adb:17:16: info: overflow check proved (Z3: 2 VC)
+zero_and_edge_cases.adb:22:20: info: division check proved (Z3: 1 VC)
+zero_and_edge_cases.adb:22:40: medium: overflow check might fail, cannot prove lower bound for (-1) ** N [reason for check: result of exponentiation must fit in a 128-bits machine integer] [possible fix: add precondition ((-1) ** N >= -170141183460469231731687303715884105728) to subprogram at zero_and_edge_cases.ads:18]
+zero_and_edge_cases.adb:22:59: medium: overflow check might fail, cannot prove lower bound for (-1) ** N [reason for check: result of exponentiation must fit in a 128-bits machine integer] [possible fix: add precondition ((-1) ** N >= -170141183460469231731687303715884105728) to subprogram at zero_and_edge_cases.ads:18]
+zero_and_edge_cases.ads:8:13: info: implicit aspect Always_Terminates on "Any_Power_Zero_Is_One" has been proved, subprogram will terminate
+zero_and_edge_cases.ads:9:17: info: postcondition proved (Z3: 1 VC)
+zero_and_edge_cases.ads:11:13: info: implicit aspect Always_Terminates on "Zero_To_Positive_Power_Is_Zero" has been proved, subprogram will terminate
+zero_and_edge_cases.ads:12:33: medium: postcondition might fail
+zero_and_edge_cases.ads:14:13: info: implicit aspect Always_Terminates on "One_To_Any_Power_Is_One" has been proved, subprogram will terminate
+zero_and_edge_cases.ads:15:33: info: postcondition proved (Z3: 1 VC)
+zero_and_edge_cases.ads:18:13: info: implicit aspect Always_Terminates on "Minus_One_Alternates" has been proved, subprogram will terminate
+zero_and_edge_cases.ads:19:33: medium: postcondition might fail
+====== altergo ========
+exponent_natural_check.adb:7:19: medium: overflow check might fail, cannot prove lower bound for Base ** Natural (Exp) [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition (Base ** Natural (Exp) >= Integer'First) to subprogram at exponent_natural_check.ads:12]
+exponent_natural_check.adb:7:31: info: range check proved (altergo: 2 VC)
+exponent_natural_check.ads:12:13: info: implicit aspect Always_Terminates on "Safe_Power" has been proved, subprogram will terminate
+exponent_natural_check.ads:15:14: info: postcondition proved (altergo: 1 VC)
+exponent_natural_check.ads:15:39: info: overflow check proved (altergo: 2 VC)
+exponent_natural_check.ads:15:51: info: range check proved (altergo: 2 VC)
+fast_exponentiation.adb:11:33: info: loop invariant initialization proved (altergo: 1 VC)
+fast_exponentiation.adb:11:33: info: loop invariant preservation proved (altergo: 1 VC)
+fast_exponentiation.adb:11:35: info: overflow check proved (altergo: 4 VC)
+fast_exponentiation.adb:11:39: medium: overflow check might fail, cannot prove lower bound for P ** E [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+fast_exponentiation.adb:12:31: info: loop variant proved (altergo: 1 VC)
+fast_exponentiation.adb:14:15: info: division check proved (altergo: 1 VC)
+fast_exponentiation.adb:15:20: medium: overflow check might fail, cannot prove upper bound for R * P [reason for check: result of multiplication must fit in a 32-bits machine integer]
+fast_exponentiation.adb:18:17: medium: overflow check might fail, cannot prove upper bound for P * P [reason for check: result of multiplication must fit in a 32-bits machine integer]
+fast_exponentiation.adb:19:17: info: division check proved (altergo: 1 VC)
+fast_exponentiation.adb:21:25: medium: assertion might fail
+fast_exponentiation.adb:21:27: medium: overflow check might fail, cannot prove lower bound for R * P ** E [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+fast_exponentiation.adb:21:31: medium: overflow check might fail, cannot prove lower bound for P ** E [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+fast_exponentiation.adb:34:37: info: subprogram variant proved (altergo: 1 VC)
+fast_exponentiation.adb:34:62: info: division check proved (altergo: 1 VC)
+fast_exponentiation.adb:36:18: info: division check proved (altergo: 1 VC)
+fast_exponentiation.adb:37:25: medium: overflow check might fail, cannot prove upper bound for R * R [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at fast_exponentiation.ads:18 should mention N and X in a precondition]
+fast_exponentiation.adb:39:25: medium: overflow check might fail, cannot prove upper bound for R * R [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at fast_exponentiation.ads:18 should mention N and X in a precondition]
+fast_exponentiation.adb:39:29: medium: overflow check might fail, cannot prove upper bound for R * R * X [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: subprogram at fast_exponentiation.ads:18 should mention N and X in a precondition]
+fast_exponentiation.ads:14:13: info: implicit aspect Always_Terminates on "Fast_Exp" has been proved, subprogram will terminate
+fast_exponentiation.ads:15:17: medium: postcondition might fail
+fast_exponentiation.ads:18:13: info: implicit aspect Always_Terminates on "Fast_Exp_Recursive" has been proved, subprogram will terminate
+fast_exponentiation.ads:18:13: warning: "Fast_Exp_Recursive" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
+fast_exponentiation.ads:21:28: medium: postcondition might fail
+fixed_exponent.ads:11:13: info: implicit aspect Always_Terminates on "Square" has been proved, subprogram will terminate
+fixed_exponent.ads:12:17: info: postcondition proved (altergo: 1 VC)
+fixed_exponent.ads:14:13: info: implicit aspect Always_Terminates on "Cube" has been proved, subprogram will terminate
+fixed_exponent.ads:15:17: info: postcondition proved (altergo: 1 VC)
+fixed_exponent.ads:19:13: info: implicit aspect Always_Terminates on "Fourth_Power" has been proved, subprogram will terminate
+fixed_exponent.ads:20:17: medium: postcondition might fail
+fixed_exponent.ads:24:13: info: implicit aspect Always_Terminates on "Fifth_Power" has been proved, subprogram will terminate
+monotonicity.adb:8:16: medium: overflow check might fail, cannot prove lower bound for X ** N1 [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition (X ** N1 >= Integer'First) to subprogram at monotonicity.ads:12]
+monotonicity.adb:8:26: medium: overflow check might fail, cannot prove lower bound for X ** N2 [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition (X ** N2 >= Integer'First) to subprogram at monotonicity.ads:12]
+monotonicity.adb:14:16: medium: overflow check might fail, cannot prove lower bound for X ** N1 [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition (X ** N1 >= Integer'First) to subprogram at monotonicity.ads:18]
+monotonicity.adb:14:27: medium: overflow check might fail, cannot prove lower bound for X ** N2 [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition (X ** N2 >= Integer'First) to subprogram at monotonicity.ads:18]
+monotonicity.adb:20:17: medium: overflow check might fail, cannot prove lower bound for X1 ** N [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition (X1 ** N >= Integer'First) to subprogram at monotonicity.ads:26]
+monotonicity.adb:20:28: medium: overflow check might fail, cannot prove lower bound for X2 ** N [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition (X2 ** N >= Integer'First) to subprogram at monotonicity.ads:26]
+monotonicity.ads:12:13: info: implicit aspect Always_Terminates on "Strictly_Increasing_In_Exponent" has been proved, subprogram will terminate
+monotonicity.ads:16:14: medium: postcondition might fail
+monotonicity.ads:18:13: info: implicit aspect Always_Terminates on "Nondecreasing_In_Exponent" has been proved, subprogram will terminate
+monotonicity.ads:22:14: medium: postcondition might fail
+monotonicity.ads:26:13: info: implicit aspect Always_Terminates on "Nondecreasing_In_Base" has been proved, subprogram will terminate
+monotonicity.ads:28:51: medium: postcondition might fail
+negative_base.adb:18:15: info: division check proved (altergo: 1 VC)
+negative_base.adb:18:35: medium: overflow check might fail, cannot prove lower bound for (-X) ** N [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition ((-X) ** N >= Integer'First) to subprogram at negative_base.ads:19]
+negative_base.adb:18:44: medium: overflow check might fail, cannot prove lower bound for X ** N [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition (X ** N >= Integer'First) to subprogram at negative_base.ads:19]
+negative_base.adb:18:59: medium: overflow check might fail, cannot prove lower bound for (-X) ** N [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition ((-X) ** N >= Integer'First) to subprogram at negative_base.ads:19]
+negative_base.adb:18:66: medium: overflow check might fail, cannot prove upper bound for -(X ** N) [reason for check: result of negation must fit in a 32-bits machine integer] [possible fix: add precondition (-(X ** N) <= Integer'Last) to subprogram at negative_base.ads:19]
+negative_base.adb:18:70: medium: overflow check might fail, cannot prove lower bound for (X ** N) [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition ((X ** N) >= Integer'First) to subprogram at negative_base.ads:19]
+negative_base.ads:10:13: info: implicit aspect Always_Terminates on "Neg_Square_Equals_Square" has been proved, subprogram will terminate
+negative_base.ads:11:17: info: postcondition proved (altergo: 1 VC)
+negative_base.ads:13:13: info: implicit aspect Always_Terminates on "Neg_Cube_Is_Minus_Cube" has been proved, subprogram will terminate
+negative_base.ads:14:17: info: postcondition proved (altergo: 1 VC)
+negative_base.ads:19:13: info: implicit aspect Always_Terminates on "Neg_Power_Sign" has been proved, subprogram will terminate
+negative_base.ads:20:33: medium: postcondition might fail
+power_of_two.adb:17:21: info: division check proved (altergo: 1 VC)
+power_of_two.adb:22:16: medium: overflow check might fail, cannot prove lower bound for 2 ** (N + 1) [reason for check: result of exponentiation must fit in a 128-bits machine integer] [possible fix: add precondition (2 ** (N + 1) >= -170141183460469231731687303715884105728) to subprogram at power_of_two.ads:20]
+power_of_two.adb:22:22: info: overflow check proved (altergo: 2 VC)
+power_of_two.adb:22:31: medium: overflow check might fail, cannot prove lower bound for 2 * 2 ** N [reason for check: result of multiplication must fit in a 128-bits machine integer] [possible fix: add precondition (2 * 2 ** N >= -170141183460469231731687303715884105728) to subprogram at power_of_two.ads:20]
+power_of_two.adb:22:35: medium: overflow check might fail, cannot prove lower bound for 2 ** N [reason for check: result of exponentiation must fit in a 128-bits machine integer] [possible fix: add precondition (2 ** N >= -170141183460469231731687303715884105728) to subprogram at power_of_two.ads:20]
+power_of_two.adb:27:16: medium: overflow check might fail, cannot prove lower bound for 2 ** A [reason for check: result of exponentiation must fit in a 128-bits machine integer] [possible fix: add precondition (2 ** A >= -170141183460469231731687303715884105728) to subprogram at power_of_two.ads:23]
+power_of_two.adb:27:21: medium: overflow check might fail, cannot prove lower bound for 2 ** A * 2 ** B [reason for check: result of multiplication must fit in a 128-bits machine integer] [possible fix: add precondition (2 ** A * 2 ** B >= -170141183460469231731687303715884105728) to subprogram at power_of_two.ads:23]
+power_of_two.adb:27:25: medium: overflow check might fail, cannot prove lower bound for 2 ** B [reason for check: result of exponentiation must fit in a 128-bits machine integer] [possible fix: add precondition (2 ** B >= -170141183460469231731687303715884105728) to subprogram at power_of_two.ads:23]
+power_of_two.adb:27:34: medium: overflow check might fail, cannot prove lower bound for 2 ** (A + B) [reason for check: result of exponentiation must fit in a 128-bits machine integer] [possible fix: add precondition (2 ** (A + B) >= -170141183460469231731687303715884105728) to subprogram at power_of_two.ads:23]
+power_of_two.adb:27:40: info: overflow check proved (altergo: 2 VC)
+power_of_two.ads:11:13: info: implicit aspect Always_Terminates on "Two_Pow" has been proved, subprogram will terminate
+power_of_two.ads:12:17: info: postcondition proved (altergo: 1 VC)
+power_of_two.ads:14:13: info: implicit aspect Always_Terminates on "Two_Pow_Is_Positive" has been proved, subprogram will terminate
+power_of_two.ads:15:17: medium: postcondition might fail
+power_of_two.ads:17:13: info: implicit aspect Always_Terminates on "Two_Pow_Even_For_Positive_N" has been proved, subprogram will terminate
+power_of_two.ads:18:32: medium: postcondition might fail
+power_of_two.ads:20:13: info: implicit aspect Always_Terminates on "Two_Pow_Doubling" has been proved, subprogram will terminate
+power_of_two.ads:21:32: medium: postcondition might fail
+power_of_two.ads:23:13: info: implicit aspect Always_Terminates on "Two_Pow_Product" has been proved, subprogram will terminate
+power_of_two.ads:24:50: medium: postcondition might fail
+power_of_two.ads:26:13: info: implicit aspect Always_Terminates on "Two_Pow_Strictly_Increasing" has been proved, subprogram will terminate
+power_of_two.ads:27:33: medium: postcondition might fail
+power_of_two.ads:31:13: info: implicit aspect Always_Terminates on "Range_Bound_Constants" has been proved, subprogram will terminate
+power_of_two.ads:32:17: info: postcondition proved (altergo: 1 VC)
+variable_exponent.adb:18:19: medium: overflow check might fail, cannot prove lower bound for Base ** Exp_1 [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition (Base ** Exp_1 >= Integer'First) to subprogram at variable_exponent.ads:27]
+variable_exponent.adb:18:28: medium: overflow check might fail, cannot prove lower bound for Base ** Exp_1 * Base ** Exp_2 [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (Base ** Exp_1 * Base ** Exp_2 >= Integer'First) to subprogram at variable_exponent.ads:27]
+variable_exponent.adb:18:35: medium: overflow check might fail, cannot prove lower bound for Base ** Exp_2 [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition (Base ** Exp_2 >= Integer'First) to subprogram at variable_exponent.ads:27]
+variable_exponent.adb:18:51: medium: overflow check might fail, cannot prove lower bound for Base ** (Exp_1 + Exp_2) [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition (Base ** (Exp_1 + Exp_2) >= Integer'First) to subprogram at variable_exponent.ads:27]
+variable_exponent.adb:18:61: info: overflow check proved (altergo: 2 VC)
+variable_exponent.ads:13:13: info: implicit aspect Always_Terminates on "Power" has been proved, subprogram will terminate
+variable_exponent.ads:14:17: info: postcondition proved (altergo: 1 VC)
+variable_exponent.ads:19:13: info: implicit aspect Always_Terminates on "Small_Power" has been proved, subprogram will terminate
+variable_exponent.ads:20:17: info: postcondition proved (altergo: 1 VC)
+variable_exponent.ads:27:13: info: implicit aspect Always_Terminates on "Product_Of_Powers" has been proved, subprogram will terminate
+variable_exponent.ads:31:14: medium: postcondition might fail
+zero_and_edge_cases.adb:17:16: medium: overflow check might fail, cannot prove lower bound for 1 ** N [reason for check: result of exponentiation must fit in a 128-bits machine integer] [possible fix: add precondition (1 ** N >= -170141183460469231731687303715884105728) to subprogram at zero_and_edge_cases.ads:14]
+zero_and_edge_cases.adb:22:20: info: division check proved (altergo: 1 VC)
+zero_and_edge_cases.adb:22:40: medium: overflow check might fail, cannot prove lower bound for (-1) ** N [reason for check: result of exponentiation must fit in a 128-bits machine integer] [possible fix: add precondition ((-1) ** N >= -170141183460469231731687303715884105728) to subprogram at zero_and_edge_cases.ads:18]
+zero_and_edge_cases.adb:22:59: medium: overflow check might fail, cannot prove lower bound for (-1) ** N [reason for check: result of exponentiation must fit in a 128-bits machine integer] [possible fix: add precondition ((-1) ** N >= -170141183460469231731687303715884105728) to subprogram at zero_and_edge_cases.ads:18]
+zero_and_edge_cases.ads:8:13: info: implicit aspect Always_Terminates on "Any_Power_Zero_Is_One" has been proved, subprogram will terminate
+zero_and_edge_cases.ads:9:17: info: postcondition proved (altergo: 1 VC)
+zero_and_edge_cases.ads:11:13: info: implicit aspect Always_Terminates on "Zero_To_Positive_Power_Is_Zero" has been proved, subprogram will terminate
+zero_and_edge_cases.ads:12:33: medium: postcondition might fail
+zero_and_edge_cases.ads:14:13: info: implicit aspect Always_Terminates on "One_To_Any_Power_Is_One" has been proved, subprogram will terminate
+zero_and_edge_cases.ads:15:33: medium: postcondition might fail
+zero_and_edge_cases.ads:18:13: info: implicit aspect Always_Terminates on "Minus_One_Alternates" has been proved, subprogram will terminate
+zero_and_edge_cases.ads:19:33: medium: postcondition might fail
+====== colibri ========
+exponent_natural_check.adb:7:19: info: overflow check proved (colibri: 2 VC)
+exponent_natural_check.adb:7:31: info: range check proved (colibri: 2 VC)
+exponent_natural_check.ads:12:13: info: implicit aspect Always_Terminates on "Safe_Power" has been proved, subprogram will terminate
+exponent_natural_check.ads:15:14: info: postcondition proved (colibri: 1 VC)
+exponent_natural_check.ads:15:39: info: overflow check proved (colibri: 2 VC)
+exponent_natural_check.ads:15:51: info: range check proved (colibri: 2 VC)
+fast_exponentiation.adb:11:33: info: loop invariant initialization proved (colibri: 1 VC)
+fast_exponentiation.adb:11:33: medium: loop invariant might not be preserved by an arbitrary iteration
+fast_exponentiation.adb:11:35: medium: overflow check might fail, cannot prove upper bound for R * P ** E [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+fast_exponentiation.adb:11:39: medium: overflow check might fail, cannot prove lower bound for P ** E [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+fast_exponentiation.adb:12:31: info: loop variant proved (colibri: 1 VC)
+fast_exponentiation.adb:14:15: info: division check proved (colibri: 1 VC)
+fast_exponentiation.adb:15:20: medium: overflow check might fail, cannot prove upper bound for R * P [reason for check: result of multiplication must fit in a 32-bits machine integer]
+fast_exponentiation.adb:18:17: medium: overflow check might fail, cannot prove upper bound for P * P [reason for check: result of multiplication must fit in a 32-bits machine integer]
+fast_exponentiation.adb:19:17: info: division check proved (colibri: 1 VC)
+fast_exponentiation.adb:21:25: medium: assertion might fail
+fast_exponentiation.adb:21:27: medium: overflow check might fail, cannot prove upper bound for R * P ** E [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+fast_exponentiation.adb:21:31: medium: overflow check might fail, cannot prove lower bound for P ** E [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+fast_exponentiation.adb:34:37: info: subprogram variant proved (colibri: 1 VC)
+fast_exponentiation.adb:34:62: info: division check proved (colibri: 1 VC)
+fast_exponentiation.adb:36:18: info: division check proved (colibri: 1 VC)
+fast_exponentiation.adb:37:25: info: overflow check proved (colibri: 2 VC)
+fast_exponentiation.adb:39:25: info: overflow check proved (colibri: 2 VC)
+fast_exponentiation.adb:39:29: info: overflow check proved (colibri: 2 VC)
+fast_exponentiation.ads:14:13: info: implicit aspect Always_Terminates on "Fast_Exp" has been proved, subprogram will terminate
+fast_exponentiation.ads:15:17: info: postcondition proved (colibri: 1 VC)
+fast_exponentiation.ads:18:13: info: implicit aspect Always_Terminates on "Fast_Exp_Recursive" has been proved, subprogram will terminate
+fast_exponentiation.ads:18:13: warning: "Fast_Exp_Recursive" is recursive; its contract might not be available on recursive calls from contracts and assertions [contracts-recursive]
+fast_exponentiation.ads:21:28: info: postcondition proved (colibri: 1 VC)
+fixed_exponent.ads:11:13: info: implicit aspect Always_Terminates on "Square" has been proved, subprogram will terminate
+fixed_exponent.ads:12:17: info: postcondition proved (colibri: 1 VC)
+fixed_exponent.ads:14:13: info: implicit aspect Always_Terminates on "Cube" has been proved, subprogram will terminate
+fixed_exponent.ads:15:17: info: postcondition proved (colibri: 1 VC)
+fixed_exponent.ads:19:13: info: implicit aspect Always_Terminates on "Fourth_Power" has been proved, subprogram will terminate
+fixed_exponent.ads:20:17: info: postcondition proved (colibri: 1 VC)
+fixed_exponent.ads:24:13: info: implicit aspect Always_Terminates on "Fifth_Power" has been proved, subprogram will terminate
+monotonicity.adb:8:16: info: overflow check proved (colibri: 2 VC)
+monotonicity.adb:8:26: medium: overflow check might fail, cannot prove upper bound for X ** N2 [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition (X ** N2 <= Integer'Last) to subprogram at monotonicity.ads:12]
+monotonicity.adb:14:16: info: overflow check proved (colibri: 2 VC)
+monotonicity.adb:14:27: medium: overflow check might fail, cannot prove upper bound for X ** N2 [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition (X ** N2 <= Integer'Last) to subprogram at monotonicity.ads:18]
+monotonicity.adb:20:17: info: overflow check proved (colibri: 2 VC)
+monotonicity.adb:20:28: medium: overflow check might fail, cannot prove upper bound for X2 ** N [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition (X2 ** N <= Integer'Last) to subprogram at monotonicity.ads:26]
+monotonicity.ads:12:13: info: implicit aspect Always_Terminates on "Strictly_Increasing_In_Exponent" has been proved, subprogram will terminate
+monotonicity.ads:16:14: medium: postcondition might fail
+monotonicity.ads:18:13: info: implicit aspect Always_Terminates on "Nondecreasing_In_Exponent" has been proved, subprogram will terminate
+monotonicity.ads:22:14: medium: postcondition might fail
+monotonicity.ads:26:13: info: implicit aspect Always_Terminates on "Nondecreasing_In_Base" has been proved, subprogram will terminate
+monotonicity.ads:28:51: info: postcondition proved (colibri: 1 VC)
+negative_base.adb:18:15: info: division check proved (colibri: 1 VC)
+negative_base.adb:18:35: info: overflow check proved (colibri: 2 VC)
+negative_base.adb:18:44: medium: overflow check might fail, cannot prove upper bound for X ** N [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition (X ** N <= Integer'Last) to subprogram at negative_base.ads:19]
+negative_base.adb:18:59: info: overflow check proved (colibri: 2 VC)
+negative_base.adb:18:66: info: overflow check proved (colibri: 2 VC)
+negative_base.adb:18:70: medium: overflow check might fail, cannot prove lower bound for (X ** N) [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition ((X ** N) >= Integer'First) to subprogram at negative_base.ads:19]
+negative_base.ads:10:13: info: implicit aspect Always_Terminates on "Neg_Square_Equals_Square" has been proved, subprogram will terminate
+negative_base.ads:11:17: medium: postcondition might fail
+negative_base.ads:13:13: info: implicit aspect Always_Terminates on "Neg_Cube_Is_Minus_Cube" has been proved, subprogram will terminate
+negative_base.ads:14:17: medium: postcondition might fail
+negative_base.ads:19:13: info: implicit aspect Always_Terminates on "Neg_Power_Sign" has been proved, subprogram will terminate
+negative_base.ads:20:33: info: postcondition proved (colibri: 1 VC)
+power_of_two.adb:17:21: info: division check proved (colibri: 1 VC)
+power_of_two.adb:22:16: info: overflow check proved (colibri: 2 VC)
+power_of_two.adb:22:22: info: overflow check proved (colibri: 2 VC)
+power_of_two.adb:22:31: info: overflow check proved (colibri: 2 VC)
+power_of_two.adb:22:35: info: overflow check proved (colibri: 2 VC)
+power_of_two.adb:27:16: info: overflow check proved (colibri: 2 VC)
+power_of_two.adb:27:21: info: overflow check proved (colibri: 2 VC)
+power_of_two.adb:27:25: info: overflow check proved (colibri: 2 VC)
+power_of_two.adb:27:34: info: overflow check proved (colibri: 2 VC)
+power_of_two.adb:27:40: info: overflow check proved (colibri: 2 VC)
+power_of_two.ads:11:13: info: implicit aspect Always_Terminates on "Two_Pow" has been proved, subprogram will terminate
+power_of_two.ads:12:17: info: postcondition proved (colibri: 1 VC)
+power_of_two.ads:14:13: info: implicit aspect Always_Terminates on "Two_Pow_Is_Positive" has been proved, subprogram will terminate
+power_of_two.ads:15:17: info: postcondition proved (colibri: 1 VC)
+power_of_two.ads:17:13: info: implicit aspect Always_Terminates on "Two_Pow_Even_For_Positive_N" has been proved, subprogram will terminate
+power_of_two.ads:18:32: medium: postcondition might fail
+power_of_two.ads:20:13: info: implicit aspect Always_Terminates on "Two_Pow_Doubling" has been proved, subprogram will terminate
+power_of_two.ads:21:32: info: postcondition proved (colibri: 1 VC)
+power_of_two.ads:23:13: info: implicit aspect Always_Terminates on "Two_Pow_Product" has been proved, subprogram will terminate
+power_of_two.ads:24:50: info: postcondition proved (colibri: 1 VC)
+power_of_two.ads:26:13: info: implicit aspect Always_Terminates on "Two_Pow_Strictly_Increasing" has been proved, subprogram will terminate
+power_of_two.ads:27:33: info: postcondition proved (colibri: 1 VC)
+power_of_two.ads:31:13: info: implicit aspect Always_Terminates on "Range_Bound_Constants" has been proved, subprogram will terminate
+power_of_two.ads:32:17: info: postcondition proved (colibri: 1 VC)
+variable_exponent.adb:18:19: info: overflow check proved (colibri: 2 VC)
+variable_exponent.adb:18:28: info: overflow check proved (colibri: 2 VC)
+variable_exponent.adb:18:35: info: overflow check proved (colibri: 2 VC)
+variable_exponent.adb:18:51: info: overflow check proved (colibri: 2 VC)
+variable_exponent.adb:18:61: info: overflow check proved (colibri: 2 VC)
+variable_exponent.ads:13:13: info: implicit aspect Always_Terminates on "Power" has been proved, subprogram will terminate
+variable_exponent.ads:14:17: info: postcondition proved (colibri: 1 VC)
+variable_exponent.ads:19:13: info: implicit aspect Always_Terminates on "Small_Power" has been proved, subprogram will terminate
+variable_exponent.ads:20:17: info: postcondition proved (colibri: 1 VC)
+variable_exponent.ads:27:13: info: implicit aspect Always_Terminates on "Product_Of_Powers" has been proved, subprogram will terminate
+variable_exponent.ads:31:14: medium: postcondition might fail
+zero_and_edge_cases.adb:17:16: info: overflow check proved (colibri: 2 VC)
+zero_and_edge_cases.adb:22:20: info: division check proved (colibri: 1 VC)
+zero_and_edge_cases.adb:22:40: info: overflow check proved (colibri: 2 VC)
+zero_and_edge_cases.adb:22:59: info: overflow check proved (colibri: 2 VC)
+zero_and_edge_cases.ads:8:13: info: implicit aspect Always_Terminates on "Any_Power_Zero_Is_One" has been proved, subprogram will terminate
+zero_and_edge_cases.ads:9:17: info: postcondition proved (colibri: 1 VC)
+zero_and_edge_cases.ads:11:13: info: implicit aspect Always_Terminates on "Zero_To_Positive_Power_Is_Zero" has been proved, subprogram will terminate
+zero_and_edge_cases.ads:12:33: medium: postcondition might fail
+zero_and_edge_cases.ads:14:13: info: implicit aspect Always_Terminates on "One_To_Any_Power_Is_One" has been proved, subprogram will terminate
+zero_and_edge_cases.ads:15:33: info: postcondition proved (colibri: 1 VC)
+zero_and_edge_cases.ads:18:13: info: implicit aspect Always_Terminates on "Minus_One_Alternates" has been proved, subprogram will terminate
+zero_and_edge_cases.ads:19:33: info: postcondition proved (colibri: 1 VC)
