@@ -555,6 +555,30 @@ package body SPARK_Rewrite is
                   Rewrite_Null_Procedure (N);
                end if;
 
+            when N_Object_Declaration                                      =>
+
+               --  A conversion is introduced by the frontend on top of
+               --  'Access in extended return statements which makes them
+               --  illegal in SPARK (as 'Access shall be top level). Eliminate
+               --  them here, as they cannot be necessary - both source and
+               --  target shall be statically matching anonymous access types.
+
+               if Is_Anonymous_Access_Type (Etype (Defining_Identifier (N)))
+                 and then Nkind (Parent (N)) = N_Extended_Return_Statement
+                 and then Present (Expression (N))
+                 and then Nkind (Expression (N)) = N_Type_Conversion
+                 and then
+                   Nkind (Original_Node (Expression (N)))
+                   = N_Attribute_Reference
+                 and then
+                   Attribute_Name (Original_Node (Expression (N)))
+                   = Name_Access
+               then
+                  Set_Etype
+                    (Expression (Expression (N)), Etype (Expression (N)));
+                  Set_Expression (N, Expression (Expression (N)));
+               end if;
+
             when others                                                    =>
                null;
          end case;

@@ -26,7 +26,7 @@ n04.adb:14:12: error: "MyStruct" is not allowed in SPARK (due to component of an
 n04.adb:14:12: error: violation of pragma SPARK_Mode at test.adc:3
 n04.adb:15:07: error: "MyStruct" is not allowed in SPARK (due to component of anonymous access type)
 n04.adb:15:07: error: violation of pragma SPARK_Mode at test.adc:3
-n04.adb:16:07: error: object of anonymous access not declared immediately within a subprogram, entry or block is not allowed in SPARK (SPARK RM 3.10(5))
+n04.adb:16:07: error: object of anonymous access not declared immediately within a subprogram, entry, block, or extended return is not allowed in SPARK (SPARK RM 3.10(5))
 n04.adb:16:07: error: violation of pragma SPARK_Mode at test.adc:3
 n04.adb:22:11: error: "MyStruct" is not allowed in SPARK (due to component of anonymous access type)
 n04.adb:22:11: error: violation of pragma SPARK_Mode at test.adc:3

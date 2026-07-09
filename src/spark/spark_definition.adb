@@ -7979,8 +7979,8 @@ package body SPARK_Definition is
 
          --  A declaration of a stand-alone object of an anonymous access
          --  type shall have an explicit initial value and shall occur
-         --  immediately within a subprogram body, an entry body, or a
-         --  block statement (SPARK RM 3.10(5)).
+         --  immediately within a subprogram body, an entry body, a block
+         --  statement, or an extended return statement (SPARK RM 3.10(5)).
 
          if Nkind (N) = N_Object_Declaration
            and then Is_Anonymous_Access_Object_Type (T)
@@ -13002,12 +13002,6 @@ package body SPARK_Definition is
       Ret_Obj : constant Constant_Or_Variable_Kind_Id := Get_Return_Object (N);
 
    begin
-      --  SPARK RM 3.10(6): return statement of traversal function
-
-      if Is_Traversal_Function (Subp) then
-         Mark_Violation (Vio_Ownership_Traversal_Extended_Return, N);
-      end if;
-
       Mark_Stmt_Or_Decl_List (Return_Object_Declarations (N));
 
       if Present (Handled_Statement_Sequence (N)) then

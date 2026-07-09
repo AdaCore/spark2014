@@ -1091,6 +1091,27 @@ package body Gnat2Why.Expr is
    --  a contract/an assertion fails to prove whereas it actually holds at
    --  runtime, but not the other way around.
 
+   function Generate_Borrowed_Assumption_For_Return
+     (Subp : E_Function_Id; Brower : Entity_Id) return W_Prog_Id
+   with
+     Pre =>
+       Is_Borrowing_Traversal_Function (Subp)
+       and then (Is_Formal (Brower) or else Is_Constant_Borrower (Brower));
+   --  For return of traversal functions, we need to assume equalities to go up
+   --  the chain of constant borrows to simulate the end of scope of the
+   --  result. For a return statement rooted at Brower, itself rooted at V_1,
+   --  itself rooted at V_2 etc. itself rooted at the borrowed parameter, we
+   --  generate:
+   --
+   --     assume { brower_borrowed_at_end = v_1_brower_at_end};
+   --     assume { v_1_borrowed_at_end = v_2_brower_at_end };
+   --     ...
+   --     assume { v_n_borrowed_at_end = subp_borrowed_at_end };
+   --
+   --  If Brower is the borrowed parameter, return Void.
+   --  This is only correct because, in traversal functions, the roots are
+   --  always entirely borrowed.
+
    function Finalization_Actions
      (Scopes  : Node_Lists.List;
       Exiting : Local_CFG.Vertex_Sets.Set;
@@ -10013,6 +10034,61 @@ package body Gnat2Why.Expr is
       return +Res;
    end Finalization_Actions_On_Raise;
 
+   ---------------------------------------------
+   -- Generate_Borrowed_Assumption_For_Return --
+   ---------------------------------------------
+
+   function Generate_Borrowed_Assumption_For_Return
+     (Subp : E_Function_Id; Brower : Entity_Id) return W_Prog_Id
+   is
+      Current_Brower   : Node_Id := Brower;
+      Current_Borrowed : Node_Id;
+      Assumptions      : W_Statement_Sequence_Id := Void_Sequence;
+
+   begin
+      if Is_Formal (Brower) then
+         return +Void;
+      end if;
+
+      --  Go over the chain of local borrowers until we reach the first formal
+      --  of the call to construct the sequence of assumptions.
+
+      loop
+         pragma Assert (Is_Constant_Borrower (Current_Brower));
+
+         Current_Borrowed := Get_Borrowed_Entity (Current_Brower);
+
+         if Is_Formal (Current_Borrowed) then
+            Append
+              (Assumptions,
+               New_Assume_Statement
+                 (Pred =>
+                    New_Comparison
+                      (Symbol => Why_Eq,
+                       Left   => +Get_Borrowed_At_End (Current_Brower),
+                       Right  => +To_Local (Get_Borrowed_At_End (Subp)))));
+            exit;
+         else
+            Append
+              (Assumptions,
+               New_Assume_Statement
+                 (Pred =>
+                    New_Comparison
+                      (Symbol => Why_Eq,
+                       Left   => +Get_Borrowed_At_End (Current_Brower),
+                       Right  =>
+                         New_Deref
+                           (Right => Get_Brower_At_End (Current_Borrowed),
+                            Typ   =>
+                              Get_Typ
+                                (Get_Brower_At_End (Current_Borrowed))))));
+         end if;
+
+         Current_Brower := Current_Borrowed;
+      end loop;
+      return +Assumptions;
+   end Generate_Borrowed_Assumption_For_Return;
+
    ------------------------------
    -- Generate_Case_Expression --
    ------------------------------
@@ -13882,55 +13958,21 @@ package body Gnat2Why.Expr is
                          Typ    => Get_Typ (Brower_At_End),
                          Labels => Symbol_Sets.Empty_Set))));
 
-      --  3.2 For return of traversal functions, we need to assume equalities
-      --  to go up the chain of constant borrows to simulate the end of scope
-      --  of the result. For a return statement rooted at v_1 itself rooted at
-      --  v_2 etc. itself rooted at borrowed, we emit:
+      --  3.2 For return of traversal functions, we emit:
       --     result_at_end := any;
-      --     <at_end_checks> result_at_end;
-      --     assume { w_borrowed = { borrowed with path -> !v_n_at_end } };
-      --     ...
-      --     assume { v_1_at_end = { borrowed with path_1 -> !result_at_end }};
+      --     <at_end_checks> result_at_end;;
 
       elsif Ekind (Brower) = E_Function then
-         declare
-            Current_Brower   : Node_Id := Borrowed_Entity;
-            Current_Borrowed : Node_Id;
-            Assumptions      : W_Statement_Sequence_Id := Void_Sequence;
-         begin
-            Append (Assumptions, At_End_Assume);
-
-            --  Go over the chain of local borrowers until we reach the first
-            --  formal of the call to construct the sequence of assumptions.
-
-            while not Is_Formal (Current_Brower) loop
-               pragma Assert (Is_Constant_Borrower (Current_Brower));
-
-               Current_Borrowed := Get_Borrowed_Entity (Current_Brower);
-               Append
-                 (Assumptions,
-                  New_Assume_Statement
-                    (Pred =>
-                       New_Comparison
-                         (Symbol => Why_Eq,
-                          Left   => +Get_Borrowed_At_End (Current_Brower),
-                          Right  =>
-                            Borrowed_At_End_In_Traversal (Current_Borrowed))));
-
-               Current_Brower := Current_Borrowed;
-            end loop;
-
-            return
-              Sequence
-                ((1 =>
-                    New_Assignment
-                      (Name   => Brower_At_End,
-                       Value  => New_Brower,
-                       Typ    => Get_Typ (Brower_At_End),
-                       Labels => Symbol_Sets.Empty_Set),
-                  2 => At_End_Checks,
-                  3 => +Assumptions));
-         end;
+         return
+           Sequence
+             ((1 =>
+                 New_Assignment
+                   (Name   => Brower_At_End,
+                    Value  => New_Brower,
+                    Typ    => Get_Typ (Brower_At_End),
+                    Labels => Symbol_Sets.Empty_Set),
+               2 => At_End_Checks,
+               3 => At_End_Assume));
 
       --  3.3 In regular borrows, we emit:
       --     brower_at_end := any;
@@ -26801,12 +26843,19 @@ package body Gnat2Why.Expr is
          --  assumes the dynamic invariant of the value of the borrowed object
          --  at the end of the borrow, so it should be done after all checks at
          --  performed for the assignment so that we do not create an
-         --  inconsistency.
+         --  inconsistency. Also simulate exiting the scope of any potential
+         --  intermediate borrowers.
 
          else
-            Append
-              (Result_Stmt,
-               New_Update_For_Borrow_At_End (Brower => Subp, Path => Expr));
+            Result_Stmt :=
+              Sequence
+                ((1 => Result_Stmt,
+                  2 =>
+                    New_Update_For_Borrow_At_End
+                      (Brower => Subp, Path => Expr),
+                  3 =>
+                    Generate_Borrowed_Assumption_For_Return
+                      (Subp, Get_Root_Object (Expr))));
          end if;
       end if;
       return Result_Stmt;
@@ -27100,6 +27149,16 @@ package body Gnat2Why.Expr is
                --  Assign the result name
 
             begin
+               --  On return of traversal functions, perform dynamic
+               --  accessibility checks. We approximate them in a static way.
+
+               if Is_Traversal_Function (Subp) then
+                  Emit_Dynamic_Accessibility_Check
+                    (Returned_Expr =>
+                       Expression (Enclosing_Declaration (Ret_Obj)),
+                     Subp          => Subp);
+               end if;
+
                if Present (Handled_Statement_Sequence (Stmt_Or_Decl)) then
                   Append
                     (Expr,
@@ -27133,6 +27192,33 @@ package body Gnat2Why.Expr is
                              Value  => Ret_Valid_Flag,
                              Labels => Symbol_Sets.Empty_Set,
                              Typ    => Get_Validity_Tree_Type (Etype (Subp))));
+                  end;
+               end if;
+
+               --  If Subp is a borrowing traversal function, we need to set
+               --  the values at end for the result and the borrowed parameter.
+
+               if Is_Borrowing_Traversal_Function (Subp) then
+                  declare
+                     Brower_Assign : constant W_Prog_Id :=
+                       New_Assignment
+                         (Name   => Get_Brower_At_End (Subp),
+                          Value  =>
+                            New_Deref
+                              (Right => Get_Brower_At_End (Ret_Obj),
+                               Typ   => Get_Typ (Get_Brower_At_End (Ret_Obj))),
+                          Typ    => Get_Typ (Get_Brower_At_End (Subp)),
+                          Labels => Symbol_Sets.Empty_Set);
+                     --  The result is set directly from the returned object
+
+                     Borrowed_Assumptions : constant W_Prog_Id :=
+                       Generate_Borrowed_Assumption_For_Return (Subp, Ret_Obj);
+                  begin
+                     Result_Assign :=
+                       Sequence
+                         ((1 => Result_Assign,
+                           2 => Brower_Assign,
+                           3 => Borrowed_Assumptions));
                   end;
                end if;
 

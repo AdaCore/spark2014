@@ -998,7 +998,7 @@ package SPARK_Util is
    --  this routine gives correct results.
 
    function Is_In_Toplevel_Move (N : N_Subexpr_Id) return Boolean;
-   --  Return True if N occurs directly at a place where moves are alloxed, ie
+   --  Return True if N occurs directly at a place where moves are allowed, ie
    --  as the expression of an object declaration occuring outside of a
    --  declare block, as the lefthand side of an assignment, or in a simple
    --  return statement.

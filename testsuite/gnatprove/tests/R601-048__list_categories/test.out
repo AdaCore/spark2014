@@ -380,7 +380,7 @@ violation-ownership-allocator-invalid-context - violation-ownership-allocator-in
 violation-ownership-allocator-uninitialized - violation-ownership-allocator-uninitialized - uninitialized allocator without default initialization - HIGH
 violation-ownership-anonymous-access-to-named - violation-ownership-anonymous-access-to-named - conversion from an anonymous access type to a named access type - HIGH
 violation-ownership-anonymous-part-of - violation-ownership-anonymous-part-of - anonymous access variable marked Part_Of a protected object - HIGH
-violation-ownership-anonymous-object-context - violation-ownership-anonymous-object-context - object of anonymous access not declared immediately within a subprogram, entry or block - HIGH
+violation-ownership-anonymous-object-context - violation-ownership-anonymous-object-context - object of anonymous access not declared immediately within a subprogram, entry, block, or extended return - HIGH
 violation-ownership-anonymous-object-init - violation-ownership-anonymous-object-init - uninitialized object of anonymous access type - HIGH
 violation-ownership-anonymous-result - violation-ownership-anonymous-result - anonymous access type for result for non-traversal functions - HIGH
 violation-ownership-assign-to-expr - violation-ownership-assign-to-expr - assignment to a complex expression - HIGH

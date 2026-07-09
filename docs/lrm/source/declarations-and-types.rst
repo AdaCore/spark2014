@@ -880,13 +880,14 @@ X.Link is poisoned by the assignment to Y.]
 
 5. A declaration of a stand-alone object of an anonymous access type shall have
    an explicit initial value and shall occur immediately within a subprogram
-   body, an entry body, or a block statement.
+   body, an entry body, a block statement, or an extended return statement
+   of a traversal function.
 
    [Redundant: Because such declarations cannot occur immediately within a
    package declaration or body, the associated borrowing/observing operation is
-   limited by the scope of the subprogram, entry or block statement. Thus, it
-   is not necessary to add rules restricting the visibility of such
-   declarations.]
+   limited by the scope of the subprogram, entry, block statement , or return
+   statement. Thus, it is not necessary to add rules restricting the visibility
+   of such declarations.]
 
 
 6. A return statement that applies to a traversal function that has an

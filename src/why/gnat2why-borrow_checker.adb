@@ -836,6 +836,14 @@ package body Gnat2Why.Borrow_Checker is
 
    procedure Check_Pragma (Prag : Node_Id);
 
+   procedure Check_Return_Of_Traversal
+     (Subp : Function_Kind_Id; Expr : Node_Id);
+   --  SPARK RM 3.10(6): A return statement that applies to a traversal
+   --  function that has an anonymous access-to-constant (respectively,
+   --  access-to-variable) result type, shall return either the literal null
+   --  or an access object denoted by a direct or indirect observer
+   --  (respectively, borrower) of the traversed parameter.
+
    procedure Check_Simple_Return_Expression
      (Expr : N_Subexpr_Id; Subp : Entity_Id);
    --  Check a simple return statement with an expression Expr
@@ -4256,6 +4264,43 @@ package body Gnat2Why.Borrow_Checker is
       end case;
    end Check_Pragma;
 
+   -------------------------------
+   -- Check_Return_Of_Traversal --
+   -------------------------------
+
+   procedure Check_Return_Of_Traversal
+     (Subp : Function_Kind_Id; Expr : Node_Id)
+   is
+      Param    : constant Entity_Id := First_Formal (Subp);
+      Root     : Entity_Id := Get_Root_Object (Expr);
+      Path_Bag : Node_Vectors.Vector;
+   begin
+      --  ??? We could possibly allow case and if expressions returning paths
+      --  rooted at the right variable. This is done for observers, but not
+      --  borrowers. TBD when we know how to support them in proof.
+      --  ??? Should we move that to marking? Do we need this check for flow
+      --  analysis?
+
+      while Root /= Param loop
+         Path_Bag := Get (Current_Observers, Root);
+         if not Path_Bag.Is_Empty then
+            Root := Get_Root_Object (Path_Bag.First_Element);
+         else
+            --  We do not need to look in Current_Borrowers. If the
+            --  ultimate root was Param, then the anonymous access
+            --  object would have been classified as an observer.
+
+            BC_Error
+              (Create
+                 ("return value of a traversal function "
+                  & "should be rooted at &",
+                  Names => [Param]),
+               Expr);
+            exit;
+         end if;
+      end loop;
+   end Check_Return_Of_Traversal;
+
    ------------------------------------
    -- Check_Simple_Return_Expression --
    ------------------------------------
@@ -4266,44 +4311,9 @@ package body Gnat2Why.Borrow_Checker is
       Return_Typ : constant Entity_Id := Etype (Subp);
 
    begin
-      --  SPARK RM 3.10(6): A return statement that applies to a traversal
-      --  function that has an anonymous access-to-constant (respectively,
-      --  access-to-variable) result type, shall return either the literal null
-      --  or an access object denoted by a direct or indirect observer
-      --  (respectively, borrower) of the traversed parameter.
-      --
-      --  ??? We could possibly allow case and if expressions returning paths
-      --  rooted at the right variable. This is done for observers, but not
-      --  borrowers. TBD when we know how to support them in proof.
-      --  ??? Should we move that to marking? Do we need this check for flow
-      --  analysis?
-
       if Is_Anonymous_Access_Object_Type (Return_Typ) then
          if Nkind (Expr) /= N_Null then
-            declare
-               Param    : constant Entity_Id := First_Formal (Subp);
-               Root     : Entity_Id := Get_Root_Object (Expr);
-               Path_Bag : Node_Vectors.Vector;
-            begin
-               while Root /= Param loop
-                  Path_Bag := Get (Current_Observers, Root);
-                  if not Path_Bag.Is_Empty then
-                     Root := Get_Root_Object (Path_Bag.First_Element);
-                  else
-                     --  We do not need to look in Current_Borrowers. If the
-                     --  ultimate root was Param, then the anonymous access
-                     --  object would have been classified as an observer.
-
-                     BC_Error
-                       (Create
-                          ("return value of a traversal function "
-                           & "should be rooted at &",
-                           Names => [Param]),
-                        Expr);
-                     exit;
-                  end if;
-               end loop;
-            end;
+            Check_Return_Of_Traversal (Subp, Expr);
          end if;
 
       --  Otherwise, if the return type is deep, we have a move
@@ -4495,14 +4505,11 @@ package body Gnat2Why.Borrow_Checker is
             declare
                Subp      : constant Entity_Id :=
                  Return_Applies_To (Return_Statement_Entity (Stmt));
-               Decls     : constant List_Id :=
-                 Return_Object_Declarations (Stmt);
-               Decl      : constant Node_Id := Last_Non_Pragma (Decls);
-               Obj       : constant Entity_Id := Defining_Identifier (Decl);
+               Obj       : constant Entity_Id := Get_Return_Object (Stmt);
+               Decl      : constant Node_Id := Enclosing_Declaration (Obj);
                Perm_Expl : Perm_And_Expl;
-            begin
-               pragma Assert (not Is_Traversal_Function (Subp));
 
+            begin
                Check_List (Return_Object_Declarations (Stmt));
                Check_Node (Handled_Statement_Sequence (Stmt));
 
@@ -4512,32 +4519,42 @@ package body Gnat2Why.Borrow_Checker is
                  (Current_Extended_Return_Accumulators,
                   Return_Statement_Entity (Stmt));
 
-               declare
-                  E_Obj : constant Expr_Or_Ent :=
-                    (Is_Ent => True, Ent => Obj, Loc => Decl);
-               begin
-                  Perm_Expl := Get_Perm_And_Expl (E_Obj);
+               --  For traversal functions, check that the returned object is
+               --  rooted inside the traversed parameter. No need to check the
+               --  status of the returned object at the end of the return
+               --  statement, it cannot be moved as it is an observer.
 
-                  if Perm_Expl.Perm not in Read_Perm then
-                     Perm_Error_Subprogram_End
-                       (E           => Obj,
-                        Subp        => Subp,
-                        Found_Perm  => Perm_Expl.Perm,
-                        Expl        => Perm_Expl.Expl,
-                        Exceptional => False);
-                  else
-                     Perm_Expl :=
-                       Get_Perm_And_Expl (E_Obj, Under_Dereference => True);
-                     if Perm_Expl.Perm /= Read_Write then
+               if Is_Traversal_Function (Subp) then
+                  Check_Return_Of_Traversal (Subp, Expression (Decl));
+
+               else
+                  declare
+                     E_Obj : constant Expr_Or_Ent :=
+                       (Is_Ent => True, Ent => Obj, Loc => Decl);
+                  begin
+                     Perm_Expl := Get_Perm_And_Expl (E_Obj);
+
+                     if Perm_Expl.Perm not in Read_Perm then
                         Perm_Error_Subprogram_End
                           (E           => Obj,
                            Subp        => Subp,
                            Found_Perm  => Perm_Expl.Perm,
                            Expl        => Perm_Expl.Expl,
                            Exceptional => False);
+                     elsif not Is_Traversal_Function (Subp) then
+                        Perm_Expl :=
+                          Get_Perm_And_Expl (E_Obj, Under_Dereference => True);
+                        if Perm_Expl.Perm /= Read_Write then
+                           Perm_Error_Subprogram_End
+                             (E           => Obj,
+                              Subp        => Subp,
+                              Found_Perm  => Perm_Expl.Perm,
+                              Expl        => Perm_Expl.Expl,
+                              Exceptional => False);
+                        end if;
                      end if;
-                  end if;
-               end;
+                  end;
+               end if;
 
                Check_Transfer_Of_Control (Stmt, Unconditional => True);
             end;
