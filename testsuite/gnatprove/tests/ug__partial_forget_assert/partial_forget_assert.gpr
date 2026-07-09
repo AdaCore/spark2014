@@ -9,7 +9,7 @@ project partial_forget_assert is
    end Compiler;
 
    package Prove is
-      for Proof_Switches ("Ada") use ("--report=all");
+      for Proof_Switches ("Ada") use ("--report=all", "--level=2");
    end Prove;
 
 end partial_forget_assert;
