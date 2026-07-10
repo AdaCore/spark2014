@@ -2466,7 +2466,7 @@ body (see Ada RM 7.2(4))].
 12. If ghost entity is declared inside another ghost entity or as the child of
     another ghost entity, then it shall be assertion-level-dependent
     on its enclosing or parent ghost entity unless the declared entity is a
-    generic instance or a renaming declaration.
+    a renaming declaration or inside a generic instance.
     [This avoids enabled declarations in disabled scope.]
 
 13. A ghost entity E shall only be referenced:
