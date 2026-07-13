@@ -66,18 +66,19 @@ command. See the `UGTestDriver` in `run-tests` for details.
 
 # Replay tests:
 
-Replay tests are tests that store session files and only replay the registered
-proofs during a normal testsuite run. The goal is to make testing faster. The
-script `update-session-test` helps to regenerate a session. There are two ways
-to transform a test into replay test:
+Replay tests are tests that store session or manifist files and use these to
+replay proof results during a normal testsuite run. The goal is to make testing
+faster. The script `update-session-test` helps to regenerate a session or
+manifest. There are two ways to transform a test into replay test:
 
 ## Using yaml
 
-Add `replay:True` at the top-level of the yaml file. The regular `prove_all`
-entry is used to replay the test. A separate top-level entry `session_opt` can
-be used to provide additional options for the session generation. If you do not
-want `update-session-test` to delete the session before starting, set
-`contains_manual_proof` to True at top-level.
+Add `replay: session` at the top-level of the yaml file (or `replay: manifest`
+to replay from the proof manifest directory instead of the why3 sessions). The
+regular `prove_all` entry is used to replay the test. A separate top-level entry
+`session_opt` can be used to provide additional options for the session
+generation. If you do not want `update-session-test` to delete the session
+before starting, set `contains_manual_proof` to True at top-level.
 
 ## Using test.py
 
@@ -87,7 +88,8 @@ You need to add these things to the test.py:
 - a function `replay` which usually calls `prove_all` with appropriate
   arguments for session generation
 - make it so that the "normal" test code (usually a `prove_all` call with
-  `replay` set to `True`) is only run if the script is the main program, e.g.
+  `replay` set to `"session"`) is only run if the script is the main program,
+  e.g.
 using
 ```
 if __name__ == "__main__":
@@ -95,9 +97,11 @@ if __name__ == "__main__":
 
 ## Common requirements for replay tests
 
-The sessions should be stored in a proof dir mostly called "proof". This also
-usually requires adding a project file (if not already present) with the
+Sessions should be stored in a proof dir that's generally called "proof". This
+also usually requires adding a project file (if not already present) with the
 `Proof_Dir` directive. The sessions (xml files) should be committed to git.
+The typical manifest folder is "proof/manifest", and should also be committed
+to git. Only one of session or manifest should be committed.
 
 # Benchmarking
 

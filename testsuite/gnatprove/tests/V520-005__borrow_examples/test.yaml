@@ -1,5 +1,5 @@
 large: True
-replay: True
+replay: session
 prove_all:
   opt: ["--function-sandboxing=off"]
   no_fail: True

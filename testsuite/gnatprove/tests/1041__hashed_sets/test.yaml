@@ -1,6 +1,6 @@
 large: True
 timeout: 8000
-replay: True
+replay: session
 prove_all:
   sparklib: True
 session_opt:

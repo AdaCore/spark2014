@@ -1,5 +1,5 @@
 large: True
-replay: True
+replay: session
 prove_all:
   prover: ["z3", "cvc5", "alt-ergo"]
   no_fail: True

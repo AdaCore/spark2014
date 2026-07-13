@@ -1,6 +1,6 @@
 prove_all:
   counterexample: false
-replay: true
+replay: session
 session_opt:
   level: 4
 timeout: 1500

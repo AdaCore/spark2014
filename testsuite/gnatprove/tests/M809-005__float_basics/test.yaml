@@ -1,5 +1,5 @@
 large: True
-replay: True
+replay: session
 prove_all:
   check_counterexamples: False
 session_opt:

@@ -11,7 +11,7 @@ prove_all(
 print("--------------------------------------")
 prove_all(
     opt=["--function-sandboxing=off", "--counterexamples=off"],
-    replay=True,
+    replay="session",
     sparklib=True,
     cache_allowed=False,
 )

@@ -2,6 +2,6 @@ large: true
 prove_all:
   no_fail: true
   sparklib: true
-replay: true
+replay: session
 session_opt:
   level: 4
