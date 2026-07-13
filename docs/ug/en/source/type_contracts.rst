@@ -601,7 +601,7 @@ ensure that the predicate will hold if ``Stack`` is defined as follows:
 .. code-block:: ada
 
       type Stack (First, Last : Positive) is record
-         Content : Nat_Arr (First .. Last) := 0;
+         Content : Nat_Arr (First .. Last) := (others => 0);
          Top     : Positive := First;
       end record with
         Predicate => Top in Content'Range;

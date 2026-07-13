@@ -578,7 +578,7 @@ a precisely supported address clause.
       Tmp : Integer := X;
    begin
       pragma Assert (Y mod 2 = 0);
-   end P;
+   end Volatile_Init;
 
 
 External State Abstraction
