@@ -200,7 +200,7 @@ property holds, and call it from an assertion:
 
   function Find_Pos (A : Nat_Array) return Positive with Ghost,
     Pre  => A (A'First) = 0 and then A (A'Last) > 0,
-    Post => Find_Pos’Result in A'First .. A'Last - 1 and then
+    Post => Find_Pos'Result in A'First .. A'Last - 1 and then
        A (Find_Pos'Result) = 0 and then A (Find_Pos'Result + 1) > 0;
 
   pragma Assume (A (A'First) = 0 and then A (A'Last) > 0);

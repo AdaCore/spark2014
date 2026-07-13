@@ -76,7 +76,7 @@ compiler from optimizing out the duplicate tests. For example:
 
 .. code-block:: ada
 
-    Cond : Boolean with Volatile, No_Caching := Some_Computation;
+    Cond : Boolean := Some_Computation with Volatile, No_Caching;
 
     if not Cond then
         return;
@@ -598,7 +598,7 @@ equal to its value at loop entry plus one:
       for J in X'Range loop
          X(J) := X(J) + 1;
          pragma Assert (X(J) = X'Loop_Entry(J) + 1);
-      end loop
+      end loop;
    end Increment_Array;
 
 At run time, a copy of the variable ``X`` is made when entering the loop. This
@@ -2060,6 +2060,7 @@ ensure that ``Message_Content`` is always valid when accessed from ``Receive``:
     Post => Invariant and then Mailbox_Status = Empty
         and then Valid (X)
   is
+  begin
     X := Message_Content;
   end Receive;
 
@@ -2087,7 +2088,7 @@ the ``Enqueue`` procedure:
     function Get_Model return Nat_Array with Ghost;
 
     procedure Enqueue (E : Natural) with
-      Post => Get_Model = E & Get_Model'Old (1 .. Max – 1);
+      Post => Get_Model = E & Get_Model'Old (1 .. Max - 1);
   private
     Buffer_Content : Nat_Array;
     Buffer_Top     : Natural;
@@ -2107,7 +2108,7 @@ link the regular data structure to its model:
 
     procedure Enqueue (E : Natural) with
       Pre  => Invariant,
-      Post => Invariant and then Get_Model = E & Get_Model'Old (1 .. Max – 1);
+      Post => Invariant and then Get_Model = E & Get_Model'Old (1 .. Max - 1);
   private
     Buffer_Content : Nat_Array;
     Buffer_Top     : Natural;
@@ -2136,7 +2137,7 @@ be stated as a postcondition of this function:
       Post => Invariant (X, Get_Model'Result);
 
     procedure Enqueue (X : in out Buffer_Type; E : Natural) with
-      Post => Get_Model (X) = E & Get_Model (X)'Old (1 .. Max – 1);
+      Post => Get_Model (X) = E & Get_Model (X)'Old (1 .. Max - 1);
   private
     type Buffer_Type is record
       Content : Nat_Array;

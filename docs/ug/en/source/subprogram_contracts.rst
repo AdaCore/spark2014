@@ -253,7 +253,7 @@ while the correct postcondition uses :ref:`Attribute Result`:
 .. code-block:: ada
 
    function Total_Above_Threshold (Threshold : in Integer) return Boolean with
-     Post => Total_Above_Threshold'Result = Total > Threshold;
+     Post => Total_Above_Threshold'Result = (Total > Threshold);
 
 Both |GNAT Pro| compiler and |GNATprove| issue a warning on the semantically
 correct but likely functionally wrong postcondition.
@@ -1362,7 +1362,7 @@ will be the input value of ``I``, not its output value.
     end record;
 
     procedure Write_G1_I (X : in out AR; I : in out Positive) with
-      Modifies => (X.G1.F1 (I), I);
+      Modifies => (X.G1 (I), I);
 
     procedure Write_G1_I (X : in out AR; I : in out Positive) is
     begin

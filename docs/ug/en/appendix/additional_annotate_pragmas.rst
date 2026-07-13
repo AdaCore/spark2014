@@ -424,7 +424,7 @@ postcondition is simply an equality between its result and an expression:
 .. code-block:: ada
 
     function Is_Positive (X : Integer) return Boolean with
-      Post => Is_Positive'Result = (X > 0)
+      Post => Is_Positive'Result = (X > 0),
       Annotate => (GNATprove, Inline_For_Proof);
 
 In this case, |GNATprove| will introduce a check when verifying the body of
@@ -602,7 +602,7 @@ the list:
       pragma Assert (At_End_Borrow (X.Next.Next) /= null);
       -- Proved, this follows from the relationship between X and Y
 
-      pragma Assert (At_End_Borrow (X.Next.Next.Val) = 3);
+      pragma Assert (At_End_Borrow (X.Next.Next).Val = 3);
       -- Incorrect, X could be modified through Y
 
       X.Val := 42;
@@ -707,8 +707,8 @@ in the following example:
          pragma Assert (At_End_Borrow (X).Next.Val = Z.Val);
          --  Z match prophecy of first reborrow of Y
          pragma Assert (Z.Next.Val = At_End_Borrow (Y).Val);
-      end
-   end
+      end;
+   end;
 
 As ``Z`` serves to save a prophecy variable, it is subject to the same
 usage restrictions as the corresponding ``At_End_Borrow (Y)`` call, in place
@@ -1766,7 +1766,7 @@ When an aggregate ``C`` is encountered, |GNATprove| automatically infers that:
 
 * ``Last (C) - First + 1`` is the number of elements in the aggregate and
 
-* ``Get (First + N - 1)`` returns a copy of the N'th element.
+* ``Get (C, First + N - 1)`` returns a copy of the N'th element.
 
 The ``Predefined_Sets`` pattern can be applied to containers with
 positional aggregates. It supports three kinds of function annotations:
@@ -1919,7 +1919,7 @@ these consistency checks for total maps:
      Annotate => (GNATprove, Container_Aggregates, "Default_Item");
 
    function Get (X : T; K : Key_Type) return Element_Type with
-     Annotate => (GNATprove, Container_Aggregates, "Get";
+     Annotate => (GNATprove, Container_Aggregates, "Get");
 
 And here is a version for partial maps:
 

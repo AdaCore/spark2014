@@ -2161,7 +2161,7 @@ following example, the primitive functions ``Is_Initialized`` and
   function Is_Initialized (Obj : Base_Processor) return Boolean is
     (Obj.Data >= 0);
 
-  function Is_Processed (Obj : Base_Processor) return Boolean
+  function Is_Processed (Obj : Base_Processor) return Boolean is
     (Obj.Data mod 2 = 0);
 
   procedure Initialize (Obj : out Base_Processor)
@@ -2270,7 +2270,7 @@ case statement:
        when Rectangle =>
 	  return Item.Width * Item.Height;
        when Triangle =>
-          return Base * Side_Height / 2.0;
+          return Item.Base * Item.Side_Height / 2.0;
      end case;
   end Get_Area;
 
