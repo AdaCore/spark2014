@@ -15,12 +15,12 @@ provide extended precision. SSE arithmetic is also more efficient. Note that
 the ABI allows free mixing of units using the three types of floating-point, so
 it is not necessary to force all units in a program to use SSE arithmetic.
 
-Several architectures also have fused-multiple-add (FMA) instructions, either
+Several architectures also have fused-multiply-add (FMA) instructions, either
 in the base set (PowerPC, Aarch64) or in extensions (SPARC, x86). You should
 make sure that your compiler is instructed not to use such instructions, whose
 effect on the program semantics cannot be taken into account by SPARK source
 code analysis. On x86, such instructions are enabled in GNAT/GCC by means of an
-explicit switch like ``-fma/-fma4`` or by architecture switches like
+explicit switch like ``-mfma/-mfma4`` or by architecture switches like
 ``-msse4.1`` or ``-mavx512f``, so make sure you're not using these. With
 GNAT/GCC, it is recommended to use switch ``-ffp-contract=off`` to disable all
 floating-point expression contractions, including FMA.

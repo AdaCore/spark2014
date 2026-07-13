@@ -491,7 +491,7 @@ available on line 35:
 
 .. image:: /static/search_prove_line.png
 
-We further increase the ``Proof level`` to 3 to maximize proof precision,
+We further increase the ``Proof level`` to 3 to improve proof precision,
 and click on :menuselection:`Execute`:
 
 .. image:: /static/search_prove_line_by_path.png

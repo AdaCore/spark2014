@@ -223,7 +223,7 @@ part of a public child package is considered to occur immediately
 within the private part of the parent unit. [This follows Ada's visibility
 rules for child units. This means, for example, that if a parent unit's
 private part has a SPARK_Mode of Off, then the private part of a
-public child package shall not have a SPARK_Node of On. Note also that
+public child package shall not have a SPARK_Mode of On. Note also that
 a SPARK_Mode configuration pragma which applies only to the specification
 (not the body) of a child unit is always ineffective; this is a consequence
 of the rules given above for determining the SPARK_Mode of the first

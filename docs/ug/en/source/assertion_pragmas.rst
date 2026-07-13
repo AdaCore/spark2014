@@ -176,7 +176,7 @@ invariant is true but not inductive:
    :language: none
    :lines: 29-36
 
-Note also that not using an assertion (:ref:`Pragma Assert`) instead of a loop
+Note also that using an assertion (:ref:`Pragma Assert`) instead of a loop
 invariant also allows here to fully prove the corresponding property, by
 relying on :ref:`Automatic Unrolling of Simple For-Loops`:
 

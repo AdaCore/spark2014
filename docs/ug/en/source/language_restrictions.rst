@@ -193,7 +193,7 @@ different sizes and ``With_Holes`` has unused bits in its representation:
   through one of its overlays.
 
 |SPARK| allows conversions from (suitable) integer types or
-``System.Address_Type`` to general access-to-object types. When
+``System.Address`` to general access-to-object types. When
 calling such instances of ``Unchecked_Conversion``, |GNATprove| makes
 some assumptions about the result of the call:
 
@@ -207,12 +207,12 @@ At each call to such ``Unchecked_Conversion``, |GNATprove| raises
 warnings to notify the user that these assumptions need to be
 ascertained by other means.
 
-Conversions from integer types or ``System.Address_Type`` to
+Conversions from integer types or ``System.Address`` to
 pool-specific access-to-object types are still forbidden, as these
 pointers should not be deallocated nor considered when checking for
 memory leaks.
 Conversions from access-to-object types to integer
-types or ``System.Address_Type`` are still forbidden, because |SPARK|
+types or ``System.Address`` are still forbidden, because |SPARK|
 does not handle addresses.
 
 .. literalinclude:: /examples/ug__uc_to_access/uc_to_access.ads
