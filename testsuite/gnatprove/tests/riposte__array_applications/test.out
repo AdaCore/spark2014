@@ -23,7 +23,7 @@ array_applications.adb:47:38: info: index check proved
 array_applications.adb:60:09: info: data dependencies proved
 array_applications.adb:61:09: info: flow dependencies proved
 array_applications.adb:62:20: medium: postcondition might fail
-array_applications.adb:69:27: medium: overflow check might fail, cannot prove upper bound for A(I - 1) + A(I - 2) [reason for check: result of addition must fit in a 32-bits machine integer]
+array_applications.adb:69:27: info: overflow check proved
 array_applications.adb:71:13: info: loop invariant initialization proved
 array_applications.adb:71:13: info: loop invariant preservation proved
 array_applications.adb:73:22: info: range check proved
@@ -38,7 +38,7 @@ array_applications.adb:76:38: medium: overflow check might fail, cannot prove up
 array_applications.adb:81:09: info: data dependencies proved
 array_applications.adb:82:09: info: flow dependencies proved
 array_applications.adb:83:20: info: postcondition proved
-array_applications.adb:90:27: medium: overflow check might fail, cannot prove upper bound for A(I - 1) + A(I - 2) [reason for check: result of addition must fit in a 32-bits machine integer]
+array_applications.adb:90:27: info: overflow check proved
 array_applications.adb:92:13: info: loop invariant initialization proved
 array_applications.adb:92:13: info: loop invariant preservation proved
 array_applications.adb:94:22: info: range check proved

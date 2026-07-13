@@ -21913,6 +21913,44 @@ package body Gnat2Why.Expr is
                                 Ada_Node    => Expr);
                         end if;
                      end;
+
+                  --  Translate powers of 2 on mathematical integers using
+                  --  pow2. It benefits from builtin support in cvc5.
+
+                  elsif Has_Integer_Type (Left_Type)
+                    and then not Is_Bitvector_Type_In_Why (Left_Type)
+                    and then Compile_Time_Known_Value (Left)
+                    and then Expr_Value (Left) = Uint_2
+                  then
+                     declare
+                        Expon : constant W_Expr_Id :=
+                          New_Temp_For_Expr
+                            (Insert_Simple_Conversion
+                               (Ada_Node => Expr,
+                                Domain   => Domain,
+                                Expr     => W_Right,
+                                To       => EW_Int_Type));
+                     begin
+                        T :=
+                          New_Call
+                            (Ada_Node => Expr,
+                             Domain   => Domain,
+                             Name     => M_Int_Power.Power_2,
+                             Args     => (1 => Expon),
+                             Typ      => Base_Type);
+                        T := Binding_For_Temp (Expr, Domain, Expon, T);
+
+                        if Domain = EW_Prog
+                          and then Has_No_Wrap_Around_Annotation (Expr_Type)
+                        then
+                           T :=
+                             +Do_Range_Check
+                                (Ada_Node   => Expr,
+                                 Ty         => Expr_Type,
+                                 W_Expr     => T,
+                                 Check_Kind => RCK_Overflow);
+                        end if;
+                     end;
                   else
                      T :=
                        New_Binary_Op_Expr

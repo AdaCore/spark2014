@@ -177,8 +177,9 @@ package Why.Atree.Modules is
    end record;
 
    type M_Int_Power_Type is record
-      Module : W_Module_Id;
-      Power  : W_Identifier_Id;
+      Module  : W_Module_Id;
+      Power   : W_Identifier_Id;
+      Power_2 : W_Identifier_Id;
    end record;
 
    type M_Int_Shift_Type is record

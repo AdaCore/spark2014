@@ -2669,6 +2669,12 @@ package body Why.Atree.Modules is
            Domain => EW_Term,
            Symb   => NID ("power"),
            Typ    => EW_Int_Type);
+      M_Int_Power.Power_2 :=
+        New_Identifier
+          (Module => M,
+           Domain => EW_Term,
+           Symb   => NID ("pow2"),
+           Typ    => EW_Int_Type);
    end Init_Int_Power_Module;
 
    ---------------------------
