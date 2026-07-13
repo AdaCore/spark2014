@@ -11,7 +11,7 @@ project long_perm is
    end Compiler;
 
    package Prove is
-      for Proof_Switches ("Ada") use ("--report=all", "-u", "perm.ads", "perm-lemma_subprograms.adb");
+      for Proof_Switches ("Ada") use ("--report=all", "-u", "perm.ads", "perm-lemma_subprograms.adb", "--level=2");
    end Prove;
 
 end long_perm;

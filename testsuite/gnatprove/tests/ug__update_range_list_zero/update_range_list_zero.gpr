@@ -11,7 +11,7 @@ project update_range_list_zero is
    end Compiler;
 
    package Prove is
-      for Proof_Switches ("Ada") use ("--report=all", "-u", "update_range_list_zero.adb");
+      for Proof_Switches ("Ada") use ("--report=all", "-u", "update_range_list_zero.adb", "--level=2");
    end Prove;
 
 end update_range_list_zero;

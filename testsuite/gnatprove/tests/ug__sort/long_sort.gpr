@@ -11,7 +11,7 @@ project long_sort is
    end Compiler;
 
    package Prove is
-      for Proof_Switches ("Ada") use ("--report=all", "-u", "sort.adb");
+      for Proof_Switches ("Ada") use ("--report=all", "-u", "sort.adb", "--level=2");
    end Prove;
 
 end long_sort;

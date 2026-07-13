@@ -4,4 +4,8 @@ project Invalid_Reads is
       for Switches ("Ada") use ("-gnat2022");
    end Compiler;
 
+   package Prove is
+      for Proof_Switches ("Ada") use ("--level=2");
+   end Prove;
+
 end Invalid_Reads;

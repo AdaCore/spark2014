@@ -9,7 +9,7 @@ project counterex is
    end Compiler;
 
    package Prove is
-      for Proof_Switches ("Ada") use ("--report=fail");
+      for Proof_Switches ("Ada") use ("--report=fail", "--level=2");
    end Prove;
 
 end counterex;

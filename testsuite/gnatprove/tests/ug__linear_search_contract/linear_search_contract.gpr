@@ -11,4 +11,8 @@ project linear_search_contract is
       for Default_Switches ("ada") use ("-aU");
    end Pretty_Printer;
 
+   package Prove is
+      for Proof_Switches ("Ada") use ("--level=2");
+   end Prove;
+
 end linear_search_contract;

@@ -9,7 +9,7 @@ project increment_calls is
    end Compiler;
 
    package Prove is
-      for Proof_Switches ("Ada") use ("--report=all", "-u", "increment_calls.adb");
+      for Proof_Switches ("Ada") use ("--report=all", "-u", "increment_calls.adb", "--level=2");
    end Prove;
 
 end increment_calls;
