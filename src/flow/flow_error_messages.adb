@@ -4537,8 +4537,7 @@ package body Flow_Error_Messages is
 
          when VC_Unchecked_Union_Restriction      =>
             return
-              "operation on unchecked union type will raise"
-              & " Program_Error";
+              "operation on unchecked union type will raise Program_Error";
 
          when VC_UC_Volatile                      =>
             return
@@ -4553,8 +4552,7 @@ package body Flow_Error_Messages is
 
          when VC_Weaker_Pre                       =>
             return
-              "precondition might be stronger than "
-              & "class-wide precondition";
+              "precondition might be stronger than class-wide precondition";
 
          when VC_Trivial_Weaker_Pre               =>
             return
@@ -4563,8 +4561,7 @@ package body Flow_Error_Messages is
 
          when VC_Stronger_Post                    =>
             return
-              "postcondition might be weaker than "
-              & "class-wide postcondition";
+              "postcondition might be weaker than class-wide postcondition";
 
          when VC_Weaker_Classwide_Pre             =>
             return
