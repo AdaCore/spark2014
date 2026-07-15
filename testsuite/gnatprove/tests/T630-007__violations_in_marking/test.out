@@ -24,8 +24,8 @@ bad_access.adb:95:18: error: violation of aspect SPARK_Mode at line 2
 bad_array_conv.adb:7:19: error: conversion between array types with modular and non-modular index types is not yet supported
 bad_array_conv.adb:9:32: error: "Y" is not allowed in SPARK (due to conversion between array types with modular and non-modular index types)
 bad_array_conv.adb:9:32: error: violation of aspect SPARK_Mode at line 2
-bad_at_end_borrow.adb:27:16: error: call to a function annotated with "At_End_Borrow" shall not occur outside of a postcondition, contract cases, or assertion
-bad_at_end_borrow.adb:27:52: error: call to a function annotated with "At_End_Borrow" shall not occur outside of a postcondition, contract cases, or assertion
+bad_at_end_borrow.adb:27:16: error: call to a function annotated with "At_End_Borrow" shall not occur outside of a postcondition-like contract, an assertion, a call to a lemma procedure, or the definition of a ghost constant of an anonymous access-to-constant type
+bad_at_end_borrow.adb:27:52: error: call to a function annotated with "At_End_Borrow" shall not occur outside of a postcondition-like contract, an assertion, a call to a lemma procedure, or the definition of a ghost constant of an anonymous access-to-constant type
 bad_at_end_borrow.adb:29:07: error: "Bad" is not allowed in SPARK (due to incorrect use of "At_End_Borrow" annotation)
 bad_at_end_borrow.adb:29:07: error: violation of aspect SPARK_Mode at line 1
 bad_inheritance.ads:17:13: error: subprogram "Get" is inherited from "Root" and "Inter"

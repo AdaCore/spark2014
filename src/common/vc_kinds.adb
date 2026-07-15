@@ -2290,8 +2290,9 @@ package body VC_Kinds is
            "calls to a function annotated with the "
            & Annot_To_String (Kind)
            & " and references to constants saving such a call shall "
-           & "occur either in a postcondition, as a parameter of a lemma, in "
-           & "an assertion, or as the initial value of a ghost constant",
+           & " occur inside postcondition-like contracts, assertions, "
+           & "calls to lemma procedures, or definitions of a "
+           & "ghost constant of an anonymous access-to-constant type",
          when Annot_At_End_Borrow_No_Contracts                =>
            "a function with the "
            & Annot_To_String (Kind)

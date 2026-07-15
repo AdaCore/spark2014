@@ -1379,11 +1379,9 @@ package body SPARK_Definition is
          Proph,
          Msg =>
            Msg_Prefix
-           & " shall not occur outside of a postcondition, contract cases, or"
-           & " assertion");
-
-      --  Lemma calls/prophecy saves declaration are omitted for default
-      --  error message to keep it reasonably short.
+           & " shall not occur outside of a postcondition-like contract, an "
+           & "assertion, a call to a lemma procedure, or the definition of a "
+           & "ghost constant of an anonymous access-to-constant type");
 
    end Check_Context_Of_Prophecy;
 
