@@ -1,0 +1,43 @@
+test.adb:14:13: info: during checks for quantification at test.adb:6
+test.adb:14:13: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
+test.adb:14:13: info: precondition proved (Trivial: 1 VC)
+test.adb:14:20: warning: unused variable "X"
+test.adb:15:13: info: during checks for quantification at test.adb:6
+test.adb:15:13: info: implicit aspect Always_Terminates on "Next" has been proved, subprogram will terminate
+test.adb:15:13: info: precondition proved (Trivial: 1 VC)
+test.adb:15:19: warning: unused variable "X"
+test.adb:15:80: info: overflow check proved (CVC5: 2 VC)
+test.adb:16:13: info: during checks for quantification at test.adb:6
+test.adb:16:13: info: implicit aspect Always_Terminates on "Has_Element" has been proved, subprogram will terminate
+test.adb:16:13: info: precondition proved (Trivial: 1 VC)
+test.adb:16:26: warning: unused variable "X"
+test.adb:17:13: info: during checks for quantification at test.adb:6
+test.adb:17:13: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
+test.adb:17:13: info: precondition proved (CVC5: 1 VC)
+test.adb:17:66: info: index check proved (CVC5: 2 VC)
+test.adb:23:37: medium: assertion might fail, cannot prove E = 0 (e.g. when E'Loop_Index = 5)
+test_access.adb:14:13: info: during checks for quantification at test_access.adb:7
+test_access.adb:14:13: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
+test_access.adb:14:13: info: precondition proved (Trivial: 1 VC)
+test_access.adb:14:20: warning: unused variable "X"
+test_access.adb:15:13: info: during checks for quantification at test_access.adb:7
+test_access.adb:15:13: info: implicit aspect Always_Terminates on "Next" has been proved, subprogram will terminate
+test_access.adb:15:13: info: precondition proved (Trivial: 1 VC)
+test_access.adb:15:19: warning: unused variable "X"
+test_access.adb:16:13: info: during checks for quantification at test_access.adb:7
+test_access.adb:16:13: info: implicit aspect Always_Terminates on "Has_Element" has been proved, subprogram will terminate
+test_access.adb:16:13: info: precondition proved (Trivial: 1 VC)
+test_access.adb:16:26: warning: unused variable "X"
+test_access.adb:17:13: info: during checks for quantification at test_access.adb:7
+test_access.adb:17:13: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
+test_access.adb:17:13: info: precondition proved (CVC5: 1 VC)
+test_access.adb:22:14: medium: resource or memory leak might occur [possible explanation: allocator for an access-to-constant type leaks memory]
+test_access.adb:27:17: medium: resource or memory leak might occur [possible explanation: allocator for an access-to-constant type leaks memory]
+test_access.adb:27:36: info: overflow check proved (CVC5: 2 VC)
+test_access.adb:29:17: medium: resource or memory leak might occur [possible explanation: allocator for an access-to-constant type leaks memory]
+test_access.adb:33:68: info: index check proved (CVC5: 2 VC)
+test_access.adb:38:37: medium: assertion might fail, cannot prove E = 0 (e.g. when E'Loop_Index.all = 5)
+counterexample expected for check at test.adb:23
+  trace at test.adb:23 --> E'Loop_Index = 5
+counterexample expected for check at test_access.adb:38
+  trace at test_access.adb:38 --> E'Loop_Index.all = 5

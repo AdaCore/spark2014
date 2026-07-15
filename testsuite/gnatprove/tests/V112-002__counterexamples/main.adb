@@ -36,7 +36,7 @@ procedure Main with SPARK_Mode is
      Pre => A (1)'Initialized
    is
    begin
-      pragma Assert (for all E of A => E'Initialized); --@ASSERT:FAIL
+      pragma Assert (for all E of A => E'Initialized); --@ASSERT:FAIL @COUNTEREXAMPLE
    end P4;
 
    type Int_Arr is array (1 .. 6) of Integer;
@@ -45,7 +45,7 @@ procedure Main with SPARK_Mode is
      Pre => A (1) = 1 and A (2) = 1
    is
    begin
-      pragma Assert (for all E of A => E /= 1); --@ASSERT:FAIL
+      pragma Assert (for all E of A => E /= 1); --@ASSERT:FAIL @COUNTEREXAMPLE
    end P5;
 
    type String_Acc is access String;
