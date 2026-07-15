@@ -754,21 +754,39 @@ package body Gnat2Why.Expr.Loops is
                Insert_Item (Loop_Param_Ent, Index_Item);
             end;
          else
-            pragma Assert (Present (Iterator_Specification (Scheme)));
-            Loop_Param_Ent :=
-              Defining_Identifier (Iterator_Specification (Scheme));
-
-            Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-
             declare
-               Index_Item : constant Item_Type :=
-                 Mk_Item_Of_Entity (Loop_Param_Ent);
+               Iter_Spec : constant Node_Id := Iterator_Specification (Scheme);
+               pragma Assert (Present (Iter_Spec));
             begin
-               pragma Assert (Index_Item.Kind = Regular);
+               Loop_Param_Ent := Defining_Identifier (Iter_Spec);
 
-               Loop_Index := Index_Item.Main.B_Name;
-               Loop_Index_Type := Get_Typ (Loop_Index);
-               Insert_Item (Loop_Param_Ent, Index_Item);
+               Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+
+               declare
+                  Index_Item : constant Item_Type :=
+                    Mk_Item_Of_Entity (Loop_Param_Ent);
+               begin
+                  pragma Assert (Index_Item.Kind = Regular);
+
+                  Loop_Index := Index_Item.Main.B_Name;
+                  Loop_Index_Type := Get_Typ (Loop_Index);
+                  Insert_Item (Loop_Param_Ent, Index_Item);
+               end;
+
+               if Of_Present (Iterator_Specification (Scheme)) then
+                  Register_Name_For_Loop_Index
+                    (Loop_Param_Ent,
+                     New_Temp_Identifier
+                       (Ada_Node => Empty,
+                        Typ      =>
+                          Type_Of_Node
+                            (Get_Iterable_Type_Primitive
+                               (Typ =>
+                                  Etype
+                                    (Get_Container_In_Iterator_Specification
+                                       (Iter_Spec)),
+                                Nam => Name_First))));
+               end if;
             end;
          end if;
 
@@ -1045,9 +1063,7 @@ package body Gnat2Why.Expr.Loops is
                Nam_For_Iter : constant W_Identifier_Id :=
                  (if not Need_Iter
                   then Loop_Index
-                  else
-                    New_Temp_Identifier
-                      (Ada_Node => Empty, Typ => Typ_For_Iter));
+                  else Name_For_Loop_Index (Loop_Param_Ent));
                Iter_Deref   : constant W_Prog_Id :=
                  New_Deref
                    (Ada_Node => Stmt,
