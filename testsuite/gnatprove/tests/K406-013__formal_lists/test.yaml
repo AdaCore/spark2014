@@ -1,4 +1,4 @@
-replay: true
+replay: session
 prove_all:
   counterexample: false
   prover: ["cvc5", "z3"]

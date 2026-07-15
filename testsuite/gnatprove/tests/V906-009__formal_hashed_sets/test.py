@@ -9,7 +9,7 @@ def replay():
 
 
 if __name__ == "__main__":
-    prove_all(replay=True, sparklib=True, sparklib_bodymode=True)
+    prove_all(replay="session", sparklib=True, sparklib_bodymode=True)
 
     gprbuild(["-q", "-P", "test.gpr"], sparklib_bodymode=True)
     call(["./obj/test"])

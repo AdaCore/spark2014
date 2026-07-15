@@ -1,6 +1,6 @@
 prove_all:
   opt:
   - --function-sandboxing=off
-replay: true
+replay: session
 session_opt:
   level: 2

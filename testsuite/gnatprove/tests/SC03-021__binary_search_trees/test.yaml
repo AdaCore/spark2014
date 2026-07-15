@@ -3,7 +3,7 @@ prove_all:
   opt:
   - --function-sandboxing=off
   sparklib: true
-replay: true
+replay: session
 session_opt:
   level: 4
   vc_timeout: 120

@@ -31,6 +31,7 @@ from time import sleep
 from pathlib import Path
 from shutil import copy, copytree, move, rmtree, which
 import tempfile
+from typing import Literal
 from test_util import sort_key_for_errors
 
 max_steps = 200
@@ -1864,7 +1865,7 @@ def prove_all(
     codepeer=False,
     exit_status=None,
     ada=default_ada,
-    replay=False,
+    replay: Literal["session", "manifest"] | None = None,
     warnings="continue",
     prover_feedback=False,
     sparklib=False,
@@ -1886,6 +1887,11 @@ def prove_all(
     Advanced users can pass a custom refiners list to override all boolean flags.
     When refiners is not None, all boolean flags are ignored.
 
+    The replay parameter selects how proofs are replayed instead of run afresh:
+    "session" replays the recorded why3 sessions (adds --replay), "manifest"
+    replays from the proof manifest directory, and None (the default) runs the
+    proofs normally.
+
     Note: The timeout parameter is *reserved* for usage by the testing
     framework. If set and the timeout is exceeded TimeoutExpired exception is
     raised. Do *not* pass this argument explicitly from test.py. Use the
@@ -1899,8 +1905,10 @@ def prove_all(
     if codepeer:
         fullopt += ["--codepeer=on"]
 
-    if replay is True:
-        replay = "session"
+    if replay not in (None, "session", "manifest"):
+        raise ValueError(
+            'replay must be None, "session" or "manifest", got %r' % (replay,)
+        )
     manifest_replay = replay == "manifest" and not benchmark_mode()
     if replay == "session" and not benchmark_mode():
         fullopt += ["--replay"]

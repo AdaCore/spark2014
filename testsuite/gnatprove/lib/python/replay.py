@@ -94,7 +94,7 @@ class YamlGenerator(SessionGenerator):
         if "replay" not in yaml or not yaml["replay"]:
             print("replay not set in test.yaml, session generation skipped")
             exit(1)
-        self.replay = "session" if yaml["replay"] is True else yaml["replay"]
+        self.replay = yaml["replay"]
         self.args["procs"] = cmdline_args.procs
 
     @property

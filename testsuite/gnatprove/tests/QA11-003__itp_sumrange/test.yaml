@@ -1,4 +1,4 @@
-replay: True
+replay: session
 contains_manual_proof: True
 prove_all:
   prover: ["cvc5", "z3"]

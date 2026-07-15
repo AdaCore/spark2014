@@ -30,7 +30,7 @@ def process(fn, rewrite):
     )
     with open(fn, "rU") as fd:
         tmp = fd.read()
-    if "replay=True" not in tmp:
+    if 'replay="session"' not in tmp:
         return
     if "def replay" not in tmp:
         bad_files.append(

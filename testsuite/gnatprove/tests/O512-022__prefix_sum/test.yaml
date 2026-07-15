@@ -1,6 +1,6 @@
 large: True
 timeout: 1500
-replay: True
+replay: session
 prove_all:
   opt:
     - --function-sandboxing=off
