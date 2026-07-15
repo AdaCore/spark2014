@@ -2907,6 +2907,12 @@ package body VC_Kinds is
          => "SPARK RM 13.7(2)",
          when Vio_Assert_And_Cut_Context
          => "SPARK RM 5.9",
+         when Vio_At_Attribute_Allocation
+         => "SPARK RM 4.1.4.1(10)",
+         when Vio_At_Attribute_Assert_And_Cut
+         => "SPARK RM 4.1.4.1(11)",
+         when Vio_At_Attribute_Loop_Invariant
+         => "SPARK RM 4.1.4.1(12)",
          when Vio_Backward_Goto
          => "SPARK RM 5.8(1)",
          when Vio_Box_Notation_Without_Init
