@@ -1967,7 +1967,8 @@ package body Gnat2Why.Expr.Loops is
                   Prepend (Construct_Init_Prog, Entire_Loop);
                end if;
 
-               --  Create new variable for iterator if needed
+               --  Create new variable for iterator if needed.
+               --  ??? The 'Index label for CE should be used here.
 
                if Need_Iter then
                   Entire_Loop :=
