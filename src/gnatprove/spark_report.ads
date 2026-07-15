@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Gnatprove_Build;
 with GPR2.Project.Tree;
 with String_Utils;
 use GPR2;
@@ -32,15 +33,16 @@ package Spark_Report is
    procedure Generate_Report
      (Tree              : GPR2.Project.Tree.Object;
       Out_Dir           : String;
-      SPARK_Files       : String_Utils.String_Lists.List;
+      Analyzed_Units    : Gnatprove_Build.Unit_Set;
       SPARK_Error_Files : String_Utils.String_Lists.List;
       Has_Errors        : Boolean;
       Status            : out Integer);
    --  Generate the SPARK analysis report. Out_Dir is where gnatprove.out and
-   --  gnatprove.sarif are written. SPARK_Files is the list of .spark files to
-   --  process. SPARK_Error_Files is the list of .spark_error files carrying
-   --  frontend diagnostics from phase 1. Has_Errors indicates whether earlier
-   --  phases of gnatprove produced errors. Status is set to 0 for success, or
-   --  to a non-zero error code otherwise.
+   --  gnatprove.sarif are written. Analyzed_Units are the units to process;
+   --  each unit's .spark file is derived from it. SPARK_Error_Files is the
+   --  list of .spark_error files carrying frontend diagnostics from phase 1.
+   --  Has_Errors indicates whether earlier phases of gnatprove produced
+   --  errors. Status is set to 0 for success, or to a non-zero error code
+   --  otherwise.
 
 end Spark_Report;

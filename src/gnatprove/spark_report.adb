@@ -40,10 +40,12 @@ with GNATCOLL.JSON;         use GNATCOLL.JSON;
 with GNATCOLL.Utils;        use GNATCOLL.Utils;
 with GPR2.Project.Attribute;
 with Gnat2Why_Opts;         use Gnat2Why_Opts;
+with Gnatprove_Build;       use Gnatprove_Build;
 with Platform;              use Platform;
 with Print_Table;           use Print_Table;
 with Report_Database;       use Report_Database;
 with SPARK2014VSN;          use SPARK2014VSN;
+with SPARK_Artifacts;
 with String_Utils;          use String_Utils;
 with System;
 with System.Storage_Elements;
@@ -74,6 +76,22 @@ package body Spark_Report is
       Error_Code         : Integer;
       Tree               : GPR2.Project.Tree.Object);
 
+   function SPARK_Files_Of (Units : Unit_Set) return String_Lists.List;
+   --  The .spark file path of every unit in Units
+
+   --------------------
+   -- SPARK_Files_Of --
+   --------------------
+
+   function SPARK_Files_Of (Units : Unit_Set) return String_Lists.List is
+      Result : String_Lists.List;
+   begin
+      for Unit of Units loop
+         Result.Append (SPARK_Artifacts.SPARK_File_For_Unit (Unit));
+      end loop;
+      return Result;
+   end SPARK_Files_Of;
+
    ---------------------
    -- Generate_Report --
    ---------------------
@@ -81,11 +99,15 @@ package body Spark_Report is
    procedure Generate_Report
      (Tree              : GPR2.Project.Tree.Object;
       Out_Dir           : String;
-      SPARK_Files       : String_Lists.List;
+      Analyzed_Units    : Unit_Set;
       SPARK_Error_Files : String_Lists.List;
       Has_Errors        : Boolean;
       Status            : out Integer)
    is
+      SPARK_Files : constant String_Lists.List :=
+        SPARK_Files_Of (Analyzed_Units);
+      --  The .spark files to process, one per analyzed unit
+
       SPARK_Mode_OK : Boolean := False;
       --  This variable is set to True when at least one subprogram was
       --  analyzed as being in SPARK.

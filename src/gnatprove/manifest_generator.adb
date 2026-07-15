@@ -35,6 +35,8 @@ with Ada.Text_IO;
 with Call;          use Call;
 with Configuration; use Configuration;
 with GNATCOLL.JSON; use GNATCOLL.JSON;
+with GPR2.Build.Compilation_Unit;
+with SPARK_Artifacts;
 with SPARK_JSON_Entities;
 with String_Utils;  use String_Utils;
 
@@ -174,7 +176,10 @@ package body Manifest_Generator is
       Default_Provers : String_Lists.List) return Manifest_Entry;
    --  Build the manifest entry describing Entity
 
-   procedure Generate_One (SPARK_File : String; Output_Dir : String);
+   procedure Generate_One
+     (SPARK_File : String; Unit_Name : String; Output_Dir : String);
+   --  Generate the manifest for the unit named Unit_Name whose proof data is
+   --  in SPARK_File.
 
    function Has_Entry
      (Data            : Unit_Proof_Data;
@@ -208,8 +213,10 @@ package body Manifest_Generator is
       Entity_Table : SPARK_JSON_Entities.Entity_Vectors.Vector);
    --  Process one proof object, resolving its entity and check tree
 
-   function Read_Unit_Proof_Data (SPARK_File : String) return Unit_Proof_Data;
-   --  Read and normalize manifest-relevant proof data from SPARK_File
+   function Read_Unit_Proof_Data
+     (SPARK_File : String; Unit_Name : String) return Unit_Proof_Data;
+   --  Read and normalize manifest-relevant proof data from SPARK_File, tagging
+   --  it with the dotted (lower-case) Ada unit name Unit_Name.
 
    function Rounded_Steps (Steps : Natural) return Natural;
 
@@ -233,9 +240,6 @@ package body Manifest_Generator is
    --  Sort collected entities into a stable order
 
    function TOML_String (S : String) return String;
-
-   function Unit_Path (SPARK_File : String) return String;
-   --  Return the dotted Ada unit name of the file being generated
 
    function Valid_Manifest_Path (Path : String) return Boolean;
 
@@ -293,15 +297,22 @@ package body Manifest_Generator is
    -- Generate --
    --------------
 
-   procedure Generate
-     (SPARK_Files : String_Utils.String_Lists.List; Output_Dir : String) is
+   procedure Generate (Units : Gnatprove_Build.Unit_Set; Output_Dir : String)
+   is
    begin
       Create_Path_Or_Exit (Output_Dir);
 
-      for SPARK_File of SPARK_Files loop
-         if Ada.Directories.Exists (SPARK_File) then
-            Generate_One (SPARK_File, Output_Dir);
-         end if;
+      for Unit of Units loop
+         declare
+            SPARK_File : constant String :=
+              SPARK_Artifacts.SPARK_File_For_Unit (Unit);
+            Unit_Name  : constant String :=
+              Ada.Characters.Handling.To_Lower (String (Unit.Name));
+         begin
+            if Ada.Directories.Exists (SPARK_File) then
+               Generate_One (SPARK_File, Unit_Name, Output_Dir);
+            end if;
+         end;
       end loop;
    end Generate;
 
@@ -309,10 +320,12 @@ package body Manifest_Generator is
    -- Generate_One --
    ------------------
 
-   procedure Generate_One (SPARK_File : String; Output_Dir : String) is
+   procedure Generate_One
+     (SPARK_File : String; Unit_Name : String; Output_Dir : String)
+   is
       Data : Unit_Proof_Data;
    begin
-      Data := Read_Unit_Proof_Data (SPARK_File);
+      Data := Read_Unit_Proof_Data (SPARK_File, Unit_Name);
 
       if Data.Entities.Is_Empty then
          Write_Manifest (Data, Output_Dir, Entry_Vectors.Empty_Vector);
@@ -1148,11 +1161,12 @@ package body Manifest_Generator is
    -- Read_Unit_Proof_Data --
    --------------------------
 
-   function Read_Unit_Proof_Data (SPARK_File : String) return Unit_Proof_Data
+   function Read_Unit_Proof_Data
+     (SPARK_File : String; Unit_Name : String) return Unit_Proof_Data
    is
       Result : Unit_Proof_Data :=
         (SPARK_File => To_Unbounded_String (SPARK_File),
-         Unit_Path  => To_Unbounded_String (Unit_Path (SPARK_File)),
+         Unit_Path  => To_Unbounded_String (Unit_Name),
          Entities   => Entity_Vectors.Empty_Vector);
       Data   : constant JSON_Value := Read_File_Into_JSON (SPARK_File);
    begin
@@ -1220,31 +1234,6 @@ package body Manifest_Generator is
    begin
       Sorting.Sort (Entities);
    end Sort_Entities;
-
-   ---------------
-   -- Unit_Path --
-   ---------------
-
-   function Unit_Path (SPARK_File : String) return String is
-      Unit_Lower : constant String :=
-        Ada.Characters.Handling.To_Lower
-          (Ada.Directories.Base_Name (SPARK_File));
-      Stem       : constant String :=
-        (if Unit_Lower'Length > 6
-           and then
-             Unit_Lower (Unit_Lower'Last - 5 .. Unit_Lower'Last) = ".spark"
-         then Unit_Lower (Unit_Lower'First .. Unit_Lower'Last - 6)
-         else Unit_Lower);
-      Result     : String := Stem;
-   begin
-      for C of Result loop
-         if C = '-' then
-            C := '.';
-         end if;
-      end loop;
-
-      return Result;
-   end Unit_Path;
 
    -----------------
    -- Output_File --

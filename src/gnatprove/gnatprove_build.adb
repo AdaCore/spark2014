@@ -1,8 +1,6 @@
 with Ada.Containers;
-with Ada.Containers.Indefinite_Hashed_Maps;
 with Ada.Directories;
 with Ada.Environment_Variables;
-with Ada.Strings.Hash;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO;
 with Call;                  use Call;
@@ -12,7 +10,6 @@ with GPR2.Build;
 with GPR2.Build.Actions.Process.Compile.Ada.Analysis;
 with GPR2.Build.Actions.Process.Compile.Ada.Data_Rep;
 with GPR2.Build.Actions.Process.Compile.Ada.Global_Gen;
-with GPR2.Build.Compilation_Unit;
 with GPR2.Build.Compilation_Unit.Maps;
 with GPR2.Build.Actions_Scheduler;
 with GPR2.Build.Actions_Scheduler.JSON;
@@ -56,19 +53,9 @@ package body Gnatprove_Build is
    --  Return a stable key for sets of compilation units. Unit names are not
    --  unique across aggregate project roots.
 
-   package Unit_Maps is new
-     Ada.Containers.Indefinite_Hashed_Maps
-       (Key_Type        => String,
-        Element_Type    => GPR2.Build.Compilation_Unit.Object,
-        Hash            => Ada.Strings.Hash,
-        Equivalent_Keys => "=",
-        "="             => GPR2.Build.Compilation_Unit."=");
-
-   subtype Unit_Set is Unit_Maps.Map;
-
    procedure Include_Unit
      (Units : in out Unit_Set; Unit : GPR2.Build.Compilation_Unit.Object);
-   --  Add Unit to Units using Unit_Key
+   --  Add Unit to Units
 
    procedure Ensure_Object_Directory (View : GPR2.Project.View.Object);
    --  Create View's object directory before scheduling custom actions
@@ -199,8 +186,8 @@ package body Gnatprove_Build is
    -----------------------------
    procedure Flow_Analysis_And_Proof
      (Tree              : Project.Tree.Object;
-      SPARK_Files       : out String_Lists.List;
       SPARK_Error_Files : out String_Lists.List;
+      Analyzed_Units    : out Unit_Set;
       Success           : out Boolean)
    is
       Act_Sched : GPR2.Build.Actions_Scheduler.JSON.Object;
@@ -215,9 +202,10 @@ package body Gnatprove_Build is
       procedure Insert_Actions
         (Mains             : Unit_Set;
          Selected_Units    : Unit_Set;
-         SPARK_Files       : in out String_Lists.List;
-         SPARK_Error_Files : in out String_Lists.List);
-      --  Build the DAG of actions for global gen and analysis
+         SPARK_Error_Files : in out String_Lists.List;
+         Analyzed_Units    : in out Unit_Set);
+      --  Build the DAG of actions for global gen and analysis. Analyzed_Units
+      --  collects the units for which an analysis action was queued.
 
       Object_Path_File : constant String := Create_Object_Path_File (Tree);
 
@@ -261,8 +249,8 @@ package body Gnatprove_Build is
       procedure Insert_Actions
         (Mains             : Unit_Set;
          Selected_Units    : Unit_Set;
-         SPARK_Files       : in out String_Lists.List;
-         SPARK_Error_Files : in out String_Lists.List)
+         SPARK_Error_Files : in out String_Lists.List;
+         Analyzed_Units    : in out Unit_Set)
       is
          To_Analyze    : Unit_Set;
          To_Global_Gen : Unit_Set;
@@ -434,15 +422,10 @@ package body Gnatprove_Build is
                              "Error adding Analysis action for unit "
                              & String (Elt.Name));
                      else
-                        --  Record the expected output path at queue time.
-                        --  The file may not exist if the action fails at
-                        --  runtime; callers must check existence before use.
-                        SPARK_Files.Append
-                          (Analysis_Act
-                             .Object_File
-                             .Path
-                             .Virtual_File
-                             .Display_Full_Name);
+                        --  Record the analyzed unit at queue time. Its .spark
+                        --  file may not exist if the action fails at runtime;
+                        --  callers must check existence before use.
+                        Include_Unit (Analyzed_Units, Elt);
                      end if;
                   end;
                end if;
@@ -524,7 +507,7 @@ package body Gnatprove_Build is
             end loop;
          end if;
          Insert_Actions
-           (Main_Units, Selected_Units, SPARK_Files, SPARK_Error_Files);
+           (Main_Units, Selected_Units, SPARK_Error_Files, Analyzed_Units);
       end;
 
       Success :=

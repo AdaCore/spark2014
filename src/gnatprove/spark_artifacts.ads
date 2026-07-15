@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNATPROVE COMPONENTS                          --
 --                                                                          --
---                  M A N I F E S T _ G E N E R A T O R                     --
+--                       S P A R K _ A R T I F A C T S                      --
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
@@ -23,13 +23,27 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Gnatprove_Build;
+with GPR2; use GPR2;
+with GPR2.Build.Compilation_Unit;
 
-package Manifest_Generator is
+package SPARK_Artifacts is
 
-   procedure Generate (Units : Gnatprove_Build.Unit_Set; Output_Dir : String);
-   --  Generate one proof manifest TOML file per unit in Units, deriving each
-   --  unit's .spark file and skipping the units whose file does not exist.
-   --  The manifests are written into Output_Dir.
+   --  Helpers mapping a compilation unit to the artifact files that
+   --  gnatprove's analysis actions produce for it. Keeping the derivation in
+   --  one place lets the analysis actions and the consumers of their output
+   --  (such as the proof manifest generator) agree on file locations.
 
-end Manifest_Generator;
+   function Artifacts_Base_Name
+     (Unit : GPR2.Build.Compilation_Unit.Object) return Simple_Name;
+   --  Base name (without extension) shared by the artifact files gnatprove
+   --  produces for Unit. This accounts for the multi-unit object separator
+   --  when Unit is one of several units in a single source file.
+
+   function SPARK_File_For_Unit
+     (Unit : GPR2.Build.Compilation_Unit.Object) return String;
+   --  Full path of the .spark file that the analysis action produces for Unit,
+   --  namely Artifacts_Base_Name (Unit) & ".spark" under the object directory
+   --  of Unit's owning view. The file may be absent if the action has not run
+   --  or failed; callers must check existence before use.
+
+end SPARK_Artifacts;
