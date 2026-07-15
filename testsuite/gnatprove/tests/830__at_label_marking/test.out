@@ -10,40 +10,50 @@ test_at_deep.adb:34:10: error: violation of aspect SPARK_Mode at line 3
 test_at_deep.adb:34:19: error: "Y" is not allowed in SPARK (due to borrow or observe of an expression which is not part of stand-alone object or parameter)
 test_at_deep.adb:34:19: error: violation of aspect SPARK_Mode at line 3
 test_at_deep.adb:38:04: warning: analyzing unreferenced procedure "Test_3" [unreferenced-procedure]
-test_at_deep.adb:44:12: error: reference to the "At" attribute on a prefix subject to ownership occuring outside of a pragma or a constant part of an object is not allowed in SPARK (SPARK RM 4.1.4.1(10))
+test_at_deep.adb:44:12: error: launch "gnatprove --explain=E0047" for more information
+test_at_deep.adb:44:12: error: reference to the "At" attribute on a prefix subject to ownership occuring outside of a pragma or a constant part of an object is not allowed in SPARK (SPARK RM 4.1.4.1(10)) [E0047]
 test_at_deep.adb:44:12: error: violation of aspect SPARK_Mode at line 3
 test_at_placement.adb:8:04: warning: analyzing unreferenced procedure "Assert_And_Cut_1" [unreferenced-procedure]
+test_at_placement.adb:15:12: error: launch "gnatprove --explain=E0048" for more information
 test_at_placement.adb:15:12: error: pragma Assert_And_Cut hides label "L1" at line 14
-test_at_placement.adb:15:12: error: reference to the "At" attribute referencing a label located before an Assert_And_Cut pragma is not allowed in SPARK (SPARK RM 4.1.4.1(11))
+test_at_placement.adb:15:12: error: reference to the "At" attribute referencing a label located before an Assert_And_Cut pragma is not allowed in SPARK (SPARK RM 4.1.4.1(11)) [E0048]
 test_at_placement.adb:15:12: error: violation of aspect SPARK_Mode at line 3
 test_at_placement.adb:18:04: warning: analyzing unreferenced procedure "Assert_And_Cut_2" [unreferenced-procedure]
+test_at_placement.adb:26:15: error: launch "gnatprove --explain=E0048" for more information
 test_at_placement.adb:26:15: error: pragma Assert_And_Cut hides label "L1" at line 24
-test_at_placement.adb:26:15: error: reference to the "At" attribute referencing a label located before an Assert_And_Cut pragma is not allowed in SPARK (SPARK RM 4.1.4.1(11))
+test_at_placement.adb:26:15: error: reference to the "At" attribute referencing a label located before an Assert_And_Cut pragma is not allowed in SPARK (SPARK RM 4.1.4.1(11)) [E0048]
 test_at_placement.adb:26:15: error: violation of aspect SPARK_Mode at line 3
 test_at_placement.adb:30:04: warning: analyzing unreferenced procedure "Assert_And_Cut_3" [unreferenced-procedure]
 test_at_placement.adb:44:04: warning: analyzing unreferenced procedure "Assert_And_Cut_4" [unreferenced-procedure]
 test_at_placement.adb:54:04: warning: analyzing unreferenced procedure "Assert_And_Cut_5" [unreferenced-procedure]
+test_at_placement.adb:60:34: error: launch "gnatprove --explain=E0048" for more information
 test_at_placement.adb:60:34: error: pragma Assert_And_Cut hides label "L1" at line 60
-test_at_placement.adb:60:34: error: reference to the "At" attribute referencing a label located before an Assert_And_Cut pragma is not allowed in SPARK (SPARK RM 4.1.4.1(11))
+test_at_placement.adb:60:34: error: reference to the "At" attribute referencing a label located before an Assert_And_Cut pragma is not allowed in SPARK (SPARK RM 4.1.4.1(11)) [E0048]
 test_at_placement.adb:60:34: error: violation of aspect SPARK_Mode at line 3
 test_at_placement.adb:64:04: warning: analyzing unreferenced procedure "Assert_And_Cut_6" [unreferenced-procedure]
 test_at_placement.adb:75:04: warning: analyzing unreferenced procedure "Loop_Invariant_1" [unreferenced-procedure]
-test_at_placement.adb:81:37: error: reference to the "At" attribute referencing a label located before a loop invariant or variant is not allowed in SPARK (SPARK RM 4.1.4.1(12))
+test_at_placement.adb:81:37: error: launch "gnatprove --explain=E0049" for more information
+test_at_placement.adb:81:37: error: reference to the "At" attribute referencing a label located before a loop invariant or variant is not allowed in SPARK (SPARK RM 4.1.4.1(12)) [E0049]
 test_at_placement.adb:81:37: error: violation of aspect SPARK_Mode at line 3
 test_at_placement.adb:85:04: warning: analyzing unreferenced procedure "Loop_Invariant_2" [unreferenced-procedure]
-test_at_placement.adb:92:40: error: reference to the "At" attribute referencing a label located before a loop invariant or variant is not allowed in SPARK (SPARK RM 4.1.4.1(12))
+test_at_placement.adb:92:40: error: launch "gnatprove --explain=E0049" for more information
+test_at_placement.adb:92:40: error: reference to the "At" attribute referencing a label located before a loop invariant or variant is not allowed in SPARK (SPARK RM 4.1.4.1(12)) [E0049]
 test_at_placement.adb:92:40: error: violation of aspect SPARK_Mode at line 3
 test_at_placement.adb:97:04: warning: analyzing unreferenced procedure "Loop_Invariant_3" [unreferenced-procedure]
-test_at_placement.adb:106:18: error: reference to the "At" attribute referencing a label located before a loop invariant or variant is not allowed in SPARK (SPARK RM 4.1.4.1(12))
+test_at_placement.adb:106:18: error: launch "gnatprove --explain=E0049" for more information
+test_at_placement.adb:106:18: error: reference to the "At" attribute referencing a label located before a loop invariant or variant is not allowed in SPARK (SPARK RM 4.1.4.1(12)) [E0049]
 test_at_placement.adb:106:18: error: violation of aspect SPARK_Mode at line 3
 test_at_placement.adb:111:04: warning: analyzing unreferenced procedure "Loop_Invariant_4" [unreferenced-procedure]
-test_at_placement.adb:120:18: error: reference to the "At" attribute referencing a label located before a loop invariant or variant is not allowed in SPARK (SPARK RM 4.1.4.1(12))
+test_at_placement.adb:120:18: error: launch "gnatprove --explain=E0049" for more information
+test_at_placement.adb:120:18: error: reference to the "At" attribute referencing a label located before a loop invariant or variant is not allowed in SPARK (SPARK RM 4.1.4.1(12)) [E0049]
 test_at_placement.adb:120:18: error: violation of aspect SPARK_Mode at line 3
 test_at_placement.adb:125:04: warning: analyzing unreferenced procedure "Loop_Invariant_5" [unreferenced-procedure]
-test_at_placement.adb:134:18: error: reference to the "At" attribute referencing a label located before a loop invariant or variant is not allowed in SPARK (SPARK RM 4.1.4.1(12))
+test_at_placement.adb:134:18: error: launch "gnatprove --explain=E0049" for more information
+test_at_placement.adb:134:18: error: reference to the "At" attribute referencing a label located before a loop invariant or variant is not allowed in SPARK (SPARK RM 4.1.4.1(12)) [E0049]
 test_at_placement.adb:134:18: error: violation of aspect SPARK_Mode at line 3
 test_at_placement.adb:139:04: warning: analyzing unreferenced procedure "Loop_Invariant_6" [unreferenced-procedure]
-test_at_placement.adb:149:15: error: reference to the "At" attribute referencing a label located before a loop invariant or variant is not allowed in SPARK (SPARK RM 4.1.4.1(12))
+test_at_placement.adb:149:15: error: launch "gnatprove --explain=E0049" for more information
+test_at_placement.adb:149:15: error: reference to the "At" attribute referencing a label located before a loop invariant or variant is not allowed in SPARK (SPARK RM 4.1.4.1(12)) [E0049]
 test_at_placement.adb:149:15: error: violation of aspect SPARK_Mode at line 3
 test_at_placement.adb:153:04: warning: analyzing unreferenced procedure "Loop_Invariant_7" [unreferenced-procedure]
 test_at_placement.adb:165:04: warning: analyzing unreferenced procedure "Loop_Invariant_8" [unreferenced-procedure]
@@ -51,12 +61,14 @@ test_at_placement.adb:177:04: warning: analyzing unreferenced procedure "Loop_In
 test_at_placement.adb:191:04: warning: analyzing unreferenced procedure "Loop_Invariant_10" [unreferenced-procedure]
 test_at_placement.adb:203:04: warning: analyzing unreferenced procedure "Loop_Invariant_11" [unreferenced-procedure]
 test_at_placement.adb:242:04: warning: analyzing unreferenced procedure "Test_Allocate_1" [unreferenced-procedure]
-test_at_placement.adb:248:12: error: reference to the "At" attribute on a prefix subject to ownership occuring outside of a pragma or a constant part of an object is not allowed in SPARK (SPARK RM 4.1.4.1(10))
+test_at_placement.adb:248:12: error: launch "gnatprove --explain=E0047" for more information
+test_at_placement.adb:248:12: error: reference to the "At" attribute on a prefix subject to ownership occuring outside of a pragma or a constant part of an object is not allowed in SPARK (SPARK RM 4.1.4.1(10)) [E0047]
 test_at_placement.adb:248:12: error: violation of aspect SPARK_Mode at line 3
 test_at_placement.adb:251:04: warning: analyzing unreferenced procedure "Test_Allocate_2" [unreferenced-procedure]
 test_at_placement.adb:260:04: warning: analyzing unreferenced procedure "Test_Allocate_3" [unreferenced-procedure]
 test_at_placement.adb:272:04: warning: analyzing unreferenced procedure "Test_Allocate_4" [unreferenced-procedure]
-test_at_placement.adb:278:37: error: reference to the "At" attribute on a prefix subject to ownership occuring outside of a pragma or a constant part of an object is not allowed in SPARK (SPARK RM 4.1.4.1(10))
+test_at_placement.adb:278:37: error: launch "gnatprove --explain=E0047" for more information
+test_at_placement.adb:278:37: error: reference to the "At" attribute on a prefix subject to ownership occuring outside of a pragma or a constant part of an object is not allowed in SPARK (SPARK RM 4.1.4.1(10)) [E0047]
 test_at_placement.adb:278:37: error: violation of aspect SPARK_Mode at line 3
 test_at_placement.adb:284:04: warning: analyzing unreferenced procedure "Test_Allocate_5" [unreferenced-procedure]
 test_at_placement.adb:293:04: warning: analyzing unreferenced procedure "Test_Allocate_6" [unreferenced-procedure]

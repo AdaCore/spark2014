@@ -1732,6 +1732,12 @@ package body VC_Kinds is
            EC_Relaxed_Init_Part_Of_Unchecked_Union,
          when Vio_Relaxed_Init_Part_Of_Volatile        =>
            EC_Relaxed_Init_Part_Of_Volatile,
+         when Vio_At_Attribute_Allocation              =>
+           EC_At_Attribute_Allocation,
+         when Vio_At_Attribute_Assert_And_Cut          =>
+           EC_At_Attribute_Assert_And_Cut,
+         when Vio_At_Attribute_Loop_Invariant          =>
+           EC_At_Attribute_Loop_Invariant,
          when others                                   => EC_None);
 
    ---------------
@@ -3438,7 +3444,17 @@ package body VC_Kinds is
            "part of Unchecked_Union type with relaxed initialization",
          when EC_Relaxed_Init_Part_Of_Volatile        =>
            "part of effectively volatile object or type annotated with "
-           & "relaxed initialization");
+           & "relaxed initialization",
+         when EC_At_Attribute_Allocation              =>
+           "reference to the ""At"" attribute on a prefix subject to "
+           & "ownership occuring outside of a pragma or a constant part of an "
+           & "object",
+         when EC_At_Attribute_Assert_And_Cut          =>
+           "reference to the ""At"" attribute referencing a label located "
+           & "before an Assert_And_Cut pragma",
+         when EC_At_Attribute_Loop_Invariant          =>
+           "reference to the ""At"" attribute referencing a label located "
+           & "before a loop invariant or variant");
 
    ---------------------------
    -- Unsupported_Kind_Name --
