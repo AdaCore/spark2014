@@ -1826,10 +1826,11 @@ package body Flow.Control_Flow_Graph is
          Function_Calls     => Funcalls,
          Indirect_Calls     => Indcalls,
          Proof_Dependencies => FA.Proof_Dependencies,
+         Type_Contracts     => FA.Type_Contracts,
          Locks              => FA.Locks,
          Generating_Globals => FA.Generating_Globals);
 
-      Process_Reclamation_Functions (Etype (Name (N)), FA.Proof_Dependencies);
+      FA.Proof_Dependencies (Reclaimed_Types).Include (Etype (Name (N)));
 
       --  Assignment with a function that has side effects is handled like a
       --  subprogram call: the function entity acts like a formal parameter
@@ -2158,6 +2159,7 @@ package body Flow.Control_Flow_Graph is
          Function_Calls     => Funcalls,
          Indirect_Calls     => Indcalls,
          Proof_Dependencies => FA.Proof_Dependencies,
+         Type_Contracts     => FA.Type_Contracts,
          Locks              => FA.Locks,
          Generating_Globals => FA.Generating_Globals);
 
@@ -2316,6 +2318,7 @@ package body Flow.Control_Flow_Graph is
             Function_Calls     => Funcalls,
             Indirect_Calls     => Indcalls,
             Proof_Dependencies => FA.Proof_Dependencies,
+            Type_Contracts     => FA.Type_Contracts,
             Locks              => FA.Locks,
             Generating_Globals => FA.Generating_Globals);
 
@@ -2401,6 +2404,7 @@ package body Flow.Control_Flow_Graph is
          Function_Calls     => Funcalls,
          Indirect_Calls     => Indcalls,
          Proof_Dependencies => FA.Proof_Dependencies,
+         Type_Contracts     => FA.Type_Contracts,
          Locks              => FA.Locks,
          Generating_Globals => FA.Generating_Globals);
 
@@ -2477,6 +2481,7 @@ package body Flow.Control_Flow_Graph is
             Function_Calls     => Funcalls,
             Indirect_Calls     => Indcalls,
             Proof_Dependencies => FA.Proof_Dependencies,
+            Type_Contracts     => FA.Type_Contracts,
             Locks              => FA.Locks,
             Generating_Globals => FA.Generating_Globals);
 
@@ -2840,6 +2845,7 @@ package body Flow.Control_Flow_Graph is
          Function_Calls     => Funcalls,
          Indirect_Calls     => Indcalls,
          Proof_Dependencies => FA.Proof_Dependencies,
+         Type_Contracts     => FA.Type_Contracts,
          Locks              => FA.Locks,
          Generating_Globals => FA.Generating_Globals);
 
@@ -2964,6 +2970,7 @@ package body Flow.Control_Flow_Graph is
                   Function_Calls     => Funcalls,
                   Indirect_Calls     => Indcalls,
                   Proof_Dependencies => FA.Proof_Dependencies,
+                  Type_Contracts     => FA.Type_Contracts,
                   Locks              => FA.Locks,
                   Generating_Globals => FA.Generating_Globals);
 
@@ -3438,6 +3445,7 @@ package body Flow.Control_Flow_Graph is
             Function_Calls     => Funcalls,
             Indirect_Calls     => Indcalls,
             Proof_Dependencies => FA.Proof_Dependencies,
+            Type_Contracts     => FA.Type_Contracts,
             Locks              => FA.Locks,
             Generating_Globals => FA.Generating_Globals);
 
@@ -3519,6 +3527,7 @@ package body Flow.Control_Flow_Graph is
             Function_Calls     => Funcalls,
             Indirect_Calls     => Indcalls,
             Proof_Dependencies => FA.Proof_Dependencies,
+            Type_Contracts     => FA.Type_Contracts,
             Locks              => FA.Locks,
             Generating_Globals => FA.Generating_Globals);
 
@@ -4223,6 +4232,7 @@ package body Flow.Control_Flow_Graph is
             Function_Calls     => Funcalls,
             Indirect_Calls     => Indcalls,
             Proof_Dependencies => FA.Proof_Dependencies,
+            Type_Contracts     => FA.Type_Contracts,
             Locks              => FA.Locks,
             Generating_Globals => FA.Generating_Globals);
 
@@ -4809,6 +4819,7 @@ package body Flow.Control_Flow_Graph is
             Function_Calls     => Funcalls,
             Indirect_Calls     => Indcalls,
             Proof_Dependencies => FA.Proof_Dependencies,
+            Type_Contracts     => FA.Type_Contracts,
             Locks              => FA.Locks,
             Generating_Globals => FA.Generating_Globals);
 
@@ -4890,7 +4901,7 @@ package body Flow.Control_Flow_Graph is
       --  Proof will pull reclamation functions at the end of the scope of
       --  E if its type needs reclamation.
       if not Is_Library_Level_Entity (E) then
-         Process_Reclamation_Functions (Etype (E), FA.Proof_Dependencies);
+         FA.Proof_Dependencies (Reclaimed_Types).Include (Etype (E));
       end if;
 
       case Ekind (E) is
@@ -4941,13 +4952,15 @@ package body Flow.Control_Flow_Graph is
       end case;
 
       --  We pull proof dependencies from the type of the object. Type
-      --  invariants are pulled in the enclosing unit only when the object
-      --  has no initialization, or it is a library-level entity.
+      --  invariants are pulled in the enclosing unit only when the object has
+      --  no initialization, or it is a library-level entity.
+
       Process_Type_Contracts
         (Etype (E),
          FA.B_Scope,
          No (Expr) or else Is_Library_Level_Entity (E),
-         FA.Proof_Dependencies);
+         FA.Proof_Dependencies,
+         FA.Type_Contracts);
 
       --  Declaration with a function that has side effects is handled like a
       --  subprogram call: the function entity acts like a formal parameter of
@@ -4986,6 +4999,7 @@ package body Flow.Control_Flow_Graph is
                Function_Calls     => Funcalls,
                Indirect_Calls     => Indcalls,
                Proof_Dependencies => FA.Proof_Dependencies,
+               Type_Contracts     => FA.Type_Contracts,
                Locks              => FA.Locks,
                Generating_Globals => FA.Generating_Globals);
 
@@ -5137,6 +5151,7 @@ package body Flow.Control_Flow_Graph is
                Function_Calls     => Funcalls,
                Indirect_Calls     => Indcalls,
                Proof_Dependencies => FA.Proof_Dependencies,
+               Type_Contracts     => FA.Type_Contracts,
                Locks              => FA.Locks,
                Generating_Globals => FA.Generating_Globals);
 
@@ -5218,6 +5233,7 @@ package body Flow.Control_Flow_Graph is
                      Function_Calls     => Funcalls,
                      Indirect_Calls     => Indcalls,
                      Proof_Dependencies => FA.Proof_Dependencies,
+                     Type_Contracts     => FA.Type_Contracts,
                      Locks              => FA.Locks,
                      Generating_Globals => FA.Generating_Globals);
 
@@ -5781,6 +5797,7 @@ package body Flow.Control_Flow_Graph is
             Function_Calls     => Funcalls,
             Indirect_Calls     => Indcalls,
             Proof_Dependencies => FA.Proof_Dependencies,
+            Type_Contracts     => FA.Type_Contracts,
             Locks              => FA.Locks,
             Generating_Globals => FA.Generating_Globals);
 
@@ -5887,6 +5904,7 @@ package body Flow.Control_Flow_Graph is
             Function_Calls     => Funcalls,
             Indirect_Calls     => Indcalls,
             Proof_Dependencies => FA.Proof_Dependencies,
+            Type_Contracts     => FA.Type_Contracts,
             Locks              => FA.Locks,
             Generating_Globals => FA.Generating_Globals);
 
@@ -6151,7 +6169,8 @@ package body Flow.Control_Flow_Graph is
 
       if FA.Generating_Globals and then Flow_Classwide.Is_Dispatching_Call (N)
       then
-         Process_Dispatching_Call (N, FA.Proof_Dependencies);
+         FA.Proof_Dependencies (Dispatching_Called_Subprograms).Include
+           (Get_Called_Entity (N));
       end if;
 
       --  Add a cluster to help pretty printing
@@ -6178,6 +6197,7 @@ package body Flow.Control_Flow_Graph is
                Function_Calls     => Funcalls,
                Indirect_Calls     => Indcalls,
                Proof_Dependencies => FA.Proof_Dependencies,
+               Type_Contracts     => FA.Type_Contracts,
                Locks              => FA.Locks,
                Generating_Globals => FA.Generating_Globals);
 
@@ -6496,6 +6516,7 @@ package body Flow.Control_Flow_Graph is
          Function_Calls     => Funcalls,
          Indirect_Calls     => Indcalls,
          Proof_Dependencies => FA.Proof_Dependencies,
+         Type_Contracts     => FA.Type_Contracts,
          Locks              => FA.Locks,
          Generating_Globals => FA.Generating_Globals);
 
@@ -6566,6 +6587,7 @@ package body Flow.Control_Flow_Graph is
             Function_Calls     => Funcalls,
             Indirect_Calls     => Indcalls,
             Proof_Dependencies => FA.Proof_Dependencies,
+            Type_Contracts     => FA.Type_Contracts,
             Locks              => FA.Locks,
             Generating_Globals => FA.Generating_Globals);
 
@@ -6729,6 +6751,7 @@ package body Flow.Control_Flow_Graph is
                Function_Calls     => Funcalls,
                Indirect_Calls     => Indcalls,
                Proof_Dependencies => FA.Proof_Dependencies,
+               Type_Contracts     => FA.Type_Contracts,
                Locks              => FA.Locks,
                Generating_Globals => FA.Generating_Globals);
 
@@ -6818,7 +6841,8 @@ package body Flow.Control_Flow_Graph is
       --  into the proof dependencies of the unit.
 
       if FA.Generating_Globals and then Entity_In_SPARK (Typ) then
-         Process_Type_Contracts (Typ, FA.B_Scope, True, FA.Proof_Dependencies);
+         Process_Type_Contracts
+           (Typ, FA.B_Scope, True, FA.Proof_Dependencies, FA.Type_Contracts);
       end if;
 
       --  In phase 2 check DIC on type definitions that come from source
@@ -7078,6 +7102,7 @@ package body Flow.Control_Flow_Graph is
             Function_Calls     => Funcalls,
             Indirect_Calls     => Indcalls,
             Proof_Dependencies => FA.Proof_Dependencies,
+            Type_Contracts     => FA.Type_Contracts,
             Locks              => FA.Locks,
             Generating_Globals => FA.Generating_Globals);
 
@@ -7108,8 +7133,7 @@ package body Flow.Control_Flow_Graph is
          if Ekind (Formal) in E_In_Out_Parameter | E_Out_Parameter | E_Function
            or else Is_Writable_Parameter (Formal)
          then
-            Process_Reclamation_Functions
-              (Etype (Formal), FA.Proof_Dependencies);
+            FA.Proof_Dependencies (Reclaimed_Types).Include (Etype (Formal));
 
             Add_Vertex
               (FA,
@@ -7189,6 +7213,7 @@ package body Flow.Control_Flow_Graph is
                   Function_Calls     => Funcalls,
                   Indirect_Calls     => Indcalls,
                   Proof_Dependencies => FA.Proof_Dependencies,
+                  Type_Contracts     => FA.Type_Contracts,
                   Locks              => FA.Locks,
                   Generating_Globals => FA.Generating_Globals);
 
@@ -8546,11 +8571,13 @@ package body Flow.Control_Flow_Graph is
          when Kind_Subprogram =>
             for Param of Get_Formals (FA.Spec_Entity) loop
                Create_Initial_And_Final_Vertices (Param, FA);
+
                Process_Type_Contracts
                  (Etype (Param),
                   FA.B_Scope,
                   Is_Globally_Visible (FA.Spec_Entity),
-                  FA.Proof_Dependencies);
+                  FA.Proof_Dependencies,
+                  FA.Type_Contracts);
             end loop;
 
          when Kind_Task       =>
@@ -8689,7 +8716,8 @@ package body Flow.Control_Flow_Graph is
            (Etype (FA.Spec_Entity),
             FA.B_Scope,
             Is_Globally_Visible (FA.Spec_Entity),
-            FA.Proof_Dependencies);
+            FA.Proof_Dependencies,
+            FA.Type_Contracts);
       end if;
 
       --  If you're now wondering where we deal with locally declared objects
@@ -9222,8 +9250,10 @@ package body Flow.Control_Flow_Graph is
                      begin
                         if Calls_Dispatching_Equality (N) then
                            FA.Has_Only_Terminating_Constructs := False;
-                           Process_Indirect_Dispatching_Equality
-                             (Typ, FA.Proof_Dependencies);
+
+                           FA.Proof_Dependencies
+                             (Indirect_Dispatching_Equalities)
+                             .Include (Typ);
 
                         --  Only pick calls that genuinely appear as direct in
                         --  the source code.

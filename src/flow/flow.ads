@@ -194,6 +194,33 @@ package Flow is
         Equivalent_Keys => "=");
    --  Maps from object to 'Initial and 'Final vertices that represent them
 
+   type Proof_Dependency_Kind is
+     (Aggregate_Annotations,
+      Direct_Proof_Dependencies,
+      Dispatching_Called_Subprograms,
+      Indirect_Dispatching_Equalities,
+      Iterable_For_Proof_Annotations,
+      Reclaimed_Types);
+
+   type Proof_Dependencies_Sets is
+     array (Proof_Dependency_Kind) of Entity_Sets.Set;
+   --  Named array type for sets of entities to compute proof dependencies
+   --  at the end of phase 1.
+
+   package Entity_To_Proof_Dependencies_Sets is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Entity_Id,
+        Element_Type    => Proof_Dependencies_Sets,
+        Hash            => Node_Hash,
+        Equivalent_Keys => "=");
+
+   type Type_Contracts_Maps is record
+      With_Invariants    : Entity_To_Proof_Dependencies_Sets.Map;
+      Without_Invariants : Entity_To_Proof_Dependencies_Sets.Map;
+   end record;
+   --  Maps storing information about proof dependencies in type predicates
+   --  and invariants.
+
    type Flow_Analysis_Graphs_Root
      (Kind               : Analyzed_Subject_Kind := Kind_Subprogram;
       Generating_Globals : Boolean := False)
@@ -282,9 +309,15 @@ package Flow is
       Direct_Calls : Node_Sets.Set;
       --  Contains subprograms called and package elaborations
 
-      Proof_Dependencies : Node_Sets.Set;
-      --  Contains additional subprograms and package elaborations whose
-      --  contract is pulled by proof to verify the entity.
+      Proof_Dependencies : Proof_Dependencies_Sets;
+      --  Contains entities from which we will deduce proof dependencies at the
+      --  end of phase 1. Contains additional subprograms and package
+      --  elaborations whose contract is pulled by proof to verify the entity.
+
+      Type_Contracts : Type_Contracts_Maps;
+      --  Contain computed information about proof dependencies of type
+      --  predicates and invariants from the scope of the current compilation
+      --  unit.
 
       GG : Flow_Global_Generation_Info;
       --  Information for globals computation
