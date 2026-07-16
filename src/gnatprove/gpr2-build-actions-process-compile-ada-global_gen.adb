@@ -7,73 +7,11 @@ with GPR2.Build.Actions.Process.Compile.Ada.Data_Rep;
 with GPR2.Build.Artifacts.Object_File;
 with GPR2.Build.Tree_Db;
 with GPR2.Message;
-with GPR2.Project.Attribute;
-with GPR2.Project.Registry.Attribute;
 with GPR2.Source_Reference;
+with SPARK_Artifacts;
 with VC_Kinds;
 
 package body GPR2.Build.Actions.Process.Compile.Ada.Global_Gen is
-
-   package PRA renames GPR2.Project.Registry.Attribute;
-
-   function Artifacts_Base_Name
-     (Unit : GPR2.Build.Compilation_Unit.Object) return Simple_Name;
-   --  ??? copied from gpr2-build-actions-compile-ada.adb
-
-   function Get_Attr
-     (V       : GPR2.Project.View.Object;
-      Name    : Q_Attribute_Id;
-      Idx     : Language_Id;
-      Default : Value_Type) return Value_Type;
-   --  ??? copied from gpr2-build-actions-compile-ada.adb
-
-   -------------------------
-   -- Artifacts_Base_Name --
-   -------------------------
-
-   function Artifacts_Base_Name
-     (Unit : GPR2.Build.Compilation_Unit.Object) return Simple_Name
-   is
-      Main : constant Compilation_Unit.Unit_Location := Unit.Main_Part;
-      BN   : constant Simple_Name := Simple_Name (Main.Source.Base_Name);
-
-   begin
-      if Main.Index = No_Index then
-         return BN;
-      else
-         declare
-            Img : constant String := Main.Index'Image;
-            Sep : constant String :=
-              Get_Attr
-                (Main.View,
-                 PRA.Compiler.Multi_Unit_Object_Separator,
-                 Ada_Language,
-                 "~");
-         begin
-            return BN & Simple_Name (Sep & Img (Img'First + 1 .. Img'Last));
-         end;
-      end if;
-   end Artifacts_Base_Name;
-
-   --------------
-   -- Get_Attr --
-   --------------
-
-   function Get_Attr
-     (V       : GPR2.Project.View.Object;
-      Name    : Q_Attribute_Id;
-      Idx     : Language_Id;
-      Default : Value_Type) return Value_Type
-   is
-      Attr : constant GPR2.Project.Attribute.Object :=
-        V.Attribute (Name, PAI.Create (Idx));
-   begin
-      if Attr.Is_Defined then
-         return Attr.Value.Text;
-      else
-         return Default;
-      end if;
-   end Get_Attr;
 
    ---------------------
    -- Compute_Command --
@@ -146,7 +84,7 @@ package body GPR2.Build.Actions.Process.Compile.Ada.Global_Gen is
       Self.Error_File :=
         GPR2.Build.Artifacts.Files.Create
           (Self.View.Object_Directory.Compose
-             (Artifacts_Base_Name (Unit)
+             (SPARK_Artifacts.Artifacts_Base_Name (Unit)
               & "."
               & Simple_Name (VC_Kinds.SPARK_Error_Suffix)));
    end Initialize;

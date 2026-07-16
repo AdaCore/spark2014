@@ -2,51 +2,9 @@ with Configuration; use Configuration;
 with Gnat2Why_Opts.Writing;
 with GPR2.Build.Actions.Process.Compile.Ada.Data_Rep;
 with GPR2.Build.Artifacts.Source_Files;
-with GPR2.Project.Attribute;
-with GPR2.Project.Registry.Attribute;
+with SPARK_Artifacts;
 
 package body GPR2.Build.Actions.Process.Compile.Ada.Analysis is
-
-   package PRA renames GPR2.Project.Registry.Attribute;
-
-   function Artifacts_Base_Name
-     (Unit : GPR2.Build.Compilation_Unit.Object) return Simple_Name;
-   --  ??? copied from gpr2-build-actions-process-compile-ada.adb
-
-   function Get_Attr
-     (V       : GPR2.Project.View.Object;
-      Name    : Q_Attribute_Id;
-      Idx     : Language_Id;
-      Default : Value_Type) return Value_Type;
-   --  ??? copied from gpr2-build-actions-process-compile-ada.adb
-
-   -------------------------
-   -- Artifacts_Base_Name --
-   -------------------------
-
-   function Artifacts_Base_Name
-     (Unit : GPR2.Build.Compilation_Unit.Object) return Simple_Name
-   is
-      Main : constant Compilation_Unit.Unit_Location := Unit.Main_Part;
-      BN   : constant Simple_Name := Simple_Name (Main.Source.Base_Name);
-
-   begin
-      if Main.Index = No_Index then
-         return BN;
-      else
-         declare
-            Img : constant String := Main.Index'Image;
-            Sep : constant String :=
-              Get_Attr
-                (Main.View,
-                 PRA.Compiler.Multi_Unit_Object_Separator,
-                 Ada_Language,
-                 "~");
-         begin
-            return BN & Simple_Name (Sep & Img (Img'First + 1 .. Img'Last));
-         end;
-      end if;
-   end Artifacts_Base_Name;
 
    ---------------------
    -- Compute_Command --
@@ -150,7 +108,7 @@ package body GPR2.Build.Actions.Process.Compile.Ada.Analysis is
       begin
          return
            CU.Owning_View.Object_Directory.Compose
-             (Artifacts_Base_Name (CU) & ".ali");
+             (SPARK_Artifacts.Artifacts_Base_Name (CU) & ".ali");
       end ALI_For_Unit;
 
    begin
@@ -159,7 +117,7 @@ package body GPR2.Build.Actions.Process.Compile.Ada.Analysis is
       Self.Obj_File :=
         Build.Artifacts.Object_File.Create
           (Self.View.Object_Directory.Compose
-             (Artifacts_Base_Name (Unit) & ".spark"));
+             (SPARK_Artifacts.Artifacts_Base_Name (Unit) & ".spark"));
       Self.ALI_Files.Insert
         (GPR2.Build.Artifacts.Files.Create (ALI_For_Unit (Self.CU)));
       for Dep of Deps loop
@@ -207,26 +165,6 @@ package body GPR2.Build.Actions.Process.Compile.Ada.Analysis is
          Result.Data_Rep_JSON_Files := File_Sets.Empty;
       end return;
    end Extended;
-
-   --------------
-   -- Get_Attr --
-   --------------
-
-   function Get_Attr
-     (V       : GPR2.Project.View.Object;
-      Name    : Q_Attribute_Id;
-      Idx     : Language_Id;
-      Default : Value_Type) return Value_Type
-   is
-      Attr : constant GPR2.Project.Attribute.Object :=
-        V.Attribute (Name, PAI.Create (Idx));
-   begin
-      if Attr.Is_Defined then
-         return Attr.Value.Text;
-      else
-         return Default;
-      end if;
-   end Get_Attr;
 
    -----------------------
    -- On_Tree_Insertion --

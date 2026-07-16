@@ -86,13 +86,14 @@ procedure Gnatprove with SPARK_Mode is
    --  success. This variable is changed to indicate some error situations that
    --  are not signalled via the GNATprove_Failure exception.
 
-   SPARK_Files : String_Lists.List;
-   --  List of .spark files produced by Flow_Analysis_And_Proof, passed to
-   --  Generate_SPARK_Report.
-
    SPARK_Error_Files : String_Lists.List;
    --  List of .spark_error files produced by Global_Gen actions, passed to
    --  Generate_SPARK_Report to include frontend diagnostics.
+
+   Analyzed_Units : Unit_Set;
+   --  Units for which an analysis action was queued by
+   --  Flow_Analysis_And_Proof. Passed to Generate_SPARK_Report and
+   --  Manifest_Generator, both of which derive each unit's .spark file.
 
    procedure Generate_SPARK_Report
      (Tree : Project.Tree.Object; Errors : Boolean);
@@ -141,7 +142,7 @@ procedure Gnatprove with SPARK_Mode is
       Spark_Report.Generate_Report
         (Tree              => Tree,
          Out_Dir           => Obj_Dir,
-         SPARK_Files       => SPARK_Files,
+         Analyzed_Units    => Analyzed_Units,
          SPARK_Error_Files => SPARK_Error_Files,
          Has_Errors        => Errors,
          Status            => Status);
@@ -272,7 +273,8 @@ begin
            when GPM_Prove | GPM_All => "flow analysis and proof");
       Success    : Boolean;
    begin
-      Flow_Analysis_And_Proof (Tree, SPARK_Files, SPARK_Error_Files, Success);
+      Flow_Analysis_And_Proof
+        (Tree, SPARK_Error_Files, Analyzed_Units, Success);
 
       if not Success then
          Generate_SPARK_Report (Tree, Errors => True);
@@ -282,7 +284,7 @@ begin
 
    if Generate_Manifest_Path /= "" then
       Manifest_Generator.Generate
-        (SPARK_Files => SPARK_Files, Output_Dir => Generate_Manifest_Path);
+        (Units => Analyzed_Units, Output_Dir => Generate_Manifest_Path);
    end if;
 
    Generate_SPARK_Report (Tree, Errors => False);
