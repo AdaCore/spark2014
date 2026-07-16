@@ -30,6 +30,9 @@ package Manifest_Generator is
    procedure Generate (Units : Gnatprove_Build.Unit_Set; Output_Dir : String);
    --  Generate one proof manifest TOML file per unit in Units, deriving each
    --  unit's .spark file and skipping the units whose file does not exist.
-   --  The manifests are written into Output_Dir.
+   --  The manifests are written into Output_Dir. Each generated file is named
+   --  after the Ada name of the unit (and entities are attributed to it)
+   --  rather than after the source file, so generation works under a
+   --  non-default naming scheme.
 
 end Manifest_Generator;

@@ -210,7 +210,10 @@ package body Configuration is
 
    function Proof_Manifest_For_Unit
      (Unit_Name : String) return Manifest_Subprogram_Vectors.Vector;
-   --  Return the proof-manifest entries relevant to Unit_Name
+   --  Return the proof-manifest entries relevant to Unit_Name, the
+   --  dot-separated Ada name of the unit. Matching is case-insensitive. The
+   --  Ada unit name is used rather than the source file name so that manifests
+   --  keep working under a non-default naming scheme.
 
    procedure Prepare_Prover_Lib (Obj_Dir : String);
    --  Deal with the why3 libraries manual provers might need.
@@ -1506,8 +1509,7 @@ package body Configuration is
            Obj_Dir        => Obj_Dir,
            Why3_Dir       => Why3_Dir,
            Unit_Name      => File_Specific_Key (Unit),
-           Proof_Manifest =>
-             Proof_Manifest_For_Unit (File_Specific_Key (Unit)));
+           Proof_Manifest => Proof_Manifest_For_Unit (String (Unit.Name)));
    begin
       Opt_File_Set.Include (Opt_File);
       return Opt_File;
@@ -1533,7 +1535,7 @@ package body Configuration is
            Obj_Dir        => Obj_Dir,
            Why3_Dir       => Why3_Dir,
            Unit_Name      => Unit_Name,
-           Proof_Manifest => Proof_Manifest_For_Unit (Unit_Name));
+           Proof_Manifest => Proof_Manifest_For_Unit (String (Unit.Name)));
    end Extra_Args_File_Name_For_Unit;
 
    -----------------
@@ -2540,8 +2542,15 @@ package body Configuration is
    function Proof_Manifest_For_Unit
      (Unit_Name : String) return Manifest_Subprogram_Vectors.Vector
    is
+      --  The map is keyed by the lower-case dot-separated unit name. When a
+      --  manifest is loaded, that key is recovered from the file name by
+      --  Manifest_Unit_Name (lower-casing and turning the dashes of the file
+      --  stem back into dots). Here Unit_Name is already the dot-separated Ada
+      --  unit name, so lower-casing it yields the same key; unit names contain
+      --  no dashes, so no dash handling is needed on this side.
       Position : constant Manifest_Maps.Cursor :=
-        Proof_Manifest_Maps.Find (Manifest_Unit_Name (Unit_Name));
+        Proof_Manifest_Maps.Find
+          (Ada.Characters.Handling.To_Lower (Unit_Name));
    begin
       if Manifest_Maps.Has_Element (Position) then
          return Manifest_Maps.Element (Position);
