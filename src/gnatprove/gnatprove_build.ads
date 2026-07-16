@@ -1,6 +1,6 @@
-with Ada.Containers.Indefinite_Hashed_Maps;
-with Ada.Strings.Hash;
-with GPR2; use GPR2;
+with Ada.Containers; use Ada.Containers;
+with Ada.Containers.Indefinite_Hashed_Sets;
+with GPR2;           use GPR2;
 with GPR2.Build.Compilation_Unit;
 with GPR2.Project.Tree;
 with String_Utils;
@@ -10,17 +10,24 @@ package Gnatprove_Build is
    --  This package contains types and subprograms related to the
    --  build process of Gnatprove.
 
-   package Unit_Maps is new
-     Ada.Containers.Indefinite_Hashed_Maps
-       (Key_Type        => String,
-        Element_Type    => GPR2.Build.Compilation_Unit.Object,
-        Hash            => Ada.Strings.Hash,
-        Equivalent_Keys => "=",
-        "="             => GPR2.Build.Compilation_Unit."=");
+   function Unit_Hash
+     (Unit : GPR2.Build.Compilation_Unit.Object) return Hash_Type;
+   function Unit_Equal
+     (Left, Right : GPR2.Build.Compilation_Unit.Object) return Boolean;
+   --  Hash and equivalence for compilation units. Both are based on a stable
+   --  key (main source path plus index) rather than the unit name, so that
+   --  units stay distinct across aggregate project roots, where names are not
+   --  unique.
 
-   subtype Unit_Set is Unit_Maps.Map;
-   --  A set of compilation units. Units are keyed internally by a stable key
-   --  so that they stay distinct across aggregate project roots.
+   package Unit_Sets is new
+     Ada.Containers.Indefinite_Hashed_Sets
+       (Element_Type        => GPR2.Build.Compilation_Unit.Object,
+        Hash                => Unit_Hash,
+        Equivalent_Elements => Unit_Equal,
+        "="                 => GPR2.Build.Compilation_Unit."=");
+
+   subtype Unit_Set is Unit_Sets.Set;
+   --  A set of compilation units
 
    procedure Flow_Analysis_And_Proof
      (Tree              : Project.Tree.Object;
