@@ -134,7 +134,7 @@ the value of the discriminant depending on the success of the search:
 .. literalinclude:: /examples/ug__linear_search_prove/linear_search.adb
    :language: ada
    :linenos:
-   :lines: 5-24
+   :lines: 5-26
 
 Now re-running |GNATprove| on this unit, using the :menuselection:`SPARK -->
 Examine File` menu, shows that there are no reads of uninitialized data.
@@ -286,8 +286,8 @@ with the switch ``-gnateE``:
    $ gprbuild -gnata -gnateE -f test_search.adb
    $ test_search
    > raised ADA.ASSERTIONS.ASSERTION_ERROR : contract cases overlap for subprogram search
-   >   case guard at linear_search.ads:33 evaluates to True
-   >   case guard at linear_search.ads:35 evaluates to True
+   >   case guard at linear_search.ads:29 evaluates to True
+   >   case guard at linear_search.ads:31 evaluates to True
 
 It shows here that the guards of the first and second contract cases hold at
 the same time. This failure in annotations can be debugged with ``gdb`` like a
@@ -487,7 +487,7 @@ level`` to 2 in the proof panel), and rerun |GNATprove|:
 
 The unproved check remains in the contract cases of ``Linear_Search``. The next
 step is to use the :menuselection:`SPARK --> Prove Line` contextual menu
-available on line 35:
+available on line 31:
 
 .. image:: /static/search_prove_line.png
 
@@ -496,7 +496,7 @@ and click on :menuselection:`Execute`:
 
 .. image:: /static/search_prove_line_by_path.png
 
-This runs |GNATprove| only on the checks that originate from line 35.
+This runs |GNATprove| only on the checks that originate from line 31.
 The check is still not proved.
 This corresponds to a case where the implementation of ``Search`` does not find
 the searched value, but the guard of the second contract case holds, meaning
@@ -509,7 +509,7 @@ value 10 is never considered! We correct this bug by changing the loop test in
    :language: ada
    :lines: 12
 
-On this modified code, we rerun |GNATprove| on line 35, selecting
+On this modified code, we rerun |GNATprove| on line 31, selecting
 value ``all checks with provers used`` for the value of ``Report``
 in the proof panel to get information even when a check is proved. The
 reassuring green or blue color (and the accompanying info message) show that the check

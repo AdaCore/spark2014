@@ -32,7 +32,7 @@ GNATprove at each call.
 The SPARK code is guaranteed to be free from run-time errors (Absence of Run
 Time Errors - AoRTE) plus all the defects already detected at Bronze level: no
 reads of uninitialized variables, no possible interference between parameters
-and/or global variables, no unintended access to global variables, and no
+and global variables, no unintended access to global variables, and no
 infinite loop or recursion in functions. These guarantees extend to code using
 features that require proof for ensuring correct initialization and
 termination, as described in the limitations for :ref:`Bronze Level <Bronze

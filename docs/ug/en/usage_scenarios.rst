@@ -2262,7 +2262,7 @@ case statement:
 
 .. code-block:: ada
 
-  function Get_Area (Item : T) return Float is
+  function Get_Area (Item : Shape) return Float is
   begin
      case Item.Kind is
        when Circle =>

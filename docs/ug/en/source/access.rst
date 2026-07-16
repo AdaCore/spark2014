@@ -84,7 +84,7 @@ Here are overviews and examples of each kind of access type.
      X3 : Gen_Int_Acc := V'Access;  -- This is a Move
      X4 : Gen_Int_Acc := X3;        -- This is a Move
 
-     X3 : Gen_Int_Acc := new Integer'(15);  -- This is an Allocation;
+     X5 : Gen_Int_Acc := new Integer'(15);  -- This is an Allocation;
                                             -- |GNATprove| will flag this as a
                                             -- memory leak because deallocation
                                             -- is not possible
@@ -717,7 +717,7 @@ Contracts for Subprogram Pointers
 
 *Supported in Ada 2022*
 
-The upcoming standard of Ada allows adding contracts to access-to-subprogram
+The Ada 2022 standard allows adding contracts to access-to-subprogram
 types. As an example, here is a named access type ``Update_Proc`` with a
 contract:
 
