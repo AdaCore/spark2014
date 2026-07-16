@@ -1576,7 +1576,10 @@ package VC_Kinds is
       EC_Relaxed_Init_Part_Generic,
       EC_Relaxed_Init_Part_Of_Tagged,
       EC_Relaxed_Init_Part_Of_Unchecked_Union,
-      EC_Relaxed_Init_Part_Of_Volatile);
+      EC_Relaxed_Init_Part_Of_Volatile,
+      EC_At_Attribute_Allocation,
+      EC_At_Attribute_Assert_And_Cut,
+      EC_At_Attribute_Loop_Invariant);
    for Explain_Code_Kind use
      (EC_None                                 => 0,
       EC_Volatile_At_Library_Level            => 1,
@@ -1624,7 +1627,10 @@ package VC_Kinds is
       EC_Relaxed_Init_Part_Generic            => 43,
       EC_Relaxed_Init_Part_Of_Tagged          => 44,
       EC_Relaxed_Init_Part_Of_Unchecked_Union => 45,
-      EC_Relaxed_Init_Part_Of_Volatile        => 46);
+      EC_Relaxed_Init_Part_Of_Volatile        => 46,
+      EC_At_Attribute_Allocation              => 47,
+      EC_At_Attribute_Assert_And_Cut          => 48,
+      EC_At_Attribute_Loop_Invariant          => 49);
 
    function To_String (Code : Explain_Code_Kind) return String
    with Pre => Code /= EC_None;
