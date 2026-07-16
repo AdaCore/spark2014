@@ -1,6 +1,6 @@
-with Ada.Containers;
 with Ada.Directories;
 with Ada.Environment_Variables;
+with Ada.Strings.Hash;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO;
 with Call;                  use Call;
@@ -67,21 +67,13 @@ package body Gnatprove_Build is
    type Edge_Colour_T is (No_Colour);
    pragma Unreferenced (No_Colour);
 
-   function Unit_Hash
-     (Key : GPR2.Build.Compilation_Unit.Object) return Ada.Containers.Hash_Type
-   is (Ada.Strings.Hash (Unit_Key (Key)));
-
-   function Name_Eq
-     (Left, Right : GPR2.Build.Compilation_Unit.Object) return Boolean
-   is (Unit_Key (Left) = Unit_Key (Right));
-
    package Unit_Graphs is new
      Graphs
        (Vertex_Key   => GPR2.Build.Compilation_Unit.Object,
         Edge_Colours => Edge_Colour_T,
         Null_Key     => GPR2.Build.Compilation_Unit.Undefined,
         Key_Hash     => Unit_Hash,
-        Test_Key     => Name_Eq);
+        Test_Key     => Unit_Equal);
 
    Unit_Dependency_Graph : Unit_Graphs.Graph := Unit_Graphs.Create;
 
@@ -97,7 +89,7 @@ package body Gnatprove_Build is
    procedure Include_Unit
      (Units : in out Unit_Set; Unit : GPR2.Build.Compilation_Unit.Object) is
    begin
-      Units.Include (Unit_Key (Unit), Unit);
+      Units.Include (Unit);
    end Include_Unit;
 
    -----------------------------
@@ -141,6 +133,22 @@ package body Gnatprove_Build is
         & "@"
         & Index_Image (Index_Image'First + 1 .. Index_Image'Last);
    end Unit_Key;
+
+   ---------------
+   -- Unit_Hash --
+   ---------------
+
+   function Unit_Hash
+     (Unit : GPR2.Build.Compilation_Unit.Object) return Hash_Type
+   is (Ada.Strings.Hash (Unit_Key (Unit)));
+
+   ----------------
+   -- Unit_Equal --
+   ----------------
+
+   function Unit_Equal
+     (Left, Right : GPR2.Build.Compilation_Unit.Object) return Boolean
+   is (Unit_Key (Left) = Unit_Key (Right));
 
    -----------------------------
    -- Create_Object_Path_File --
@@ -559,8 +567,7 @@ package body Gnatprove_Build is
                   if View_DB.Source_Option >= Sources_Units
                     and then View_DB.Has_Compilation_Unit (Unit.Name)
                     and then
-                      Unit_Key (View_DB.Compilation_Unit (Unit.Name))
-                      = Unit_Key (Unit)
+                      Unit_Equal (View_DB.Compilation_Unit (Unit.Name), Unit)
                   then
                      return NRP;
                   end if;
@@ -640,7 +647,7 @@ package body Gnatprove_Build is
             if View.Kind in GPR2.With_Source_Dirs_Kind then
                for Unit of View.Own_Units loop
                   if Unit.Is_Defined then
-                     if not All_Units.Contains (Unit_Key (Unit)) then
+                     if not All_Units.Contains (Unit) then
                         Include_Unit (All_Units, Unit);
                         Unit_Graphs.Add_Vertex (Unit_Dependency_Graph, Unit);
                      end if;
@@ -657,8 +664,7 @@ package body Gnatprove_Build is
                Dep : constant GPR2.Build.Compilation_Unit.Object :=
                  Dependency (U, Dep_Name);
             begin
-               if Dep.Is_Defined and then All_Units.Contains (Unit_Key (Dep))
-               then
+               if Dep.Is_Defined and then All_Units.Contains (Dep) then
                   Unit_Graphs.Add_Edge (Unit_Dependency_Graph, U, Dep);
                end if;
             end;
