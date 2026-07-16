@@ -9,7 +9,7 @@ Setting Up a Project File
 Basic Project Set Up
 ^^^^^^^^^^^^^^^^^^^^
 
-If not already done, create a GNAT project file (`.gpr`), as documented in the
+If not already done, create a GNAT project file (``.gpr``), as documented in the
 |GNAT Pro| User's Guide, section `GNAT Project Manager`. See also :ref:`Project
 Attributes` for optional project attributes to specify the proof directory and
 other |GNATprove| switches in the project file directly.
@@ -560,14 +560,14 @@ can be used by |GNATprove| when analyzing projects that depend on the library.
 
 When such a library is installed and reused as an externally built library,
 |GNATprove| looks for the summary files in the ``gnatprove`` subdirectory of
-the installed library's ALI directory. Recent versions of `gprinstall` install
+the installed library's ALI directory. Recent versions of ``gprinstall`` install
 these summary files automatically: when a ``gnatprove`` subdirectory is present
 next to the library, it is copied alongside the library, with no additional
 configuration in the library project file. This automatic copy relies on the
 summary files sitting next to the library, that is, on ``Library_ALI_Dir`` not
 being set to a location separate from ``Library_Dir``.
 
-With older versions of `gprinstall` the summary files are not installed
+With older versions of ``gprinstall`` the summary files are not installed
 automatically. In that case, add an ``Install`` package to the library project
 file to copy them explicitly, for example for a library project named
 ``My_Lib``::
@@ -580,7 +580,7 @@ file to copy them explicitly, for example for a library project named
 The source pattern uses ``My_Lib'Library_ALI_Dir`` so that the summary files
 are picked up wherever |GNATprove| produced them, whether or not the project
 sets ``Library_ALI_Dir`` explicitly. The destination is the ``gnatprove``
-subdirectory of the directory where `gprinstall` installs the library's ALI
+subdirectory of the directory where ``gprinstall`` installs the library's ALI
 files; by default this is ``lib/<library-project-name>`` under the installation
 prefix, so it must be adjusted to match the actual installation layout.
 
@@ -1120,6 +1120,6 @@ following::
 
   failed to create semaphore: Permission denied
 
-In this case, you can use the switch `--debug-no-semaphore` to avoid the use of
+In this case, you can use the switch ``--debug-no-semaphore`` to avoid the use of
 semaphores. This switch might reduce the performance of the tool in some cases,
 but otherwise should not affect its behavior.

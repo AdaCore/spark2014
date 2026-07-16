@@ -283,7 +283,7 @@ simplest solution is to specify in your project file::
       for Local_Configuration_Pragmas use "spark.adc";
    end Compiler;
 
-and provide a file `spark.adc` which contains::
+and provide a file ``spark.adc`` which contains::
 
    pragma SPARK_Mode;
 
