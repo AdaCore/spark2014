@@ -1,0 +1,27 @@
+test.adb:14:13: info: implicit aspect Always_Terminates on overriding operator "<=" has been proved, subprogram will terminate
+test.adb:15:14: info: postcondition proved (CVC5: 2 VC)
+test.adb:20:11: info: precondition proved (CVC5: 1 VC)
+test.adb:20:11: info: precondition proved (Trivial: 1 VC)
+test.adb:25:13: info: loop invariant initialization proved (CVC5: 1 VC)
+test.adb:25:13: info: loop invariant preservation proved (CVC5: 1 VC)
+test.adb:25:32: info: precondition proved (CVC5: 2 VC)
+test.adb:26:16: info: precondition proved (CVC5: 4 VC)
+test.adb:33:13: info: implicit aspect Always_Terminates on overriding operator "<=" has been proved, subprogram will terminate
+test.adb:34:14: info: postcondition proved (CVC5: 2 VC)
+test.adb:39:11: info: precondition proved (CVC5: 1 VC)
+test.adb:39:11: info: precondition proved (Trivial: 1 VC)
+test.adb:44:13: info: loop invariant initialization proved (CVC5: 1 VC)
+test.adb:44:13: info: loop invariant preservation proved (CVC5: 1 VC)
+test.adb:44:27: info: precondition proved (CVC5: 2 VC)
+test.adb:45:21: info: precondition proved (CVC5: 4 VC)
+test.adb:45:38: info: range check proved (CVC5: 4 VC)
+test.adb:52:13: info: implicit aspect Always_Terminates on overriding operator "<=" has been proved, subprogram will terminate
+test.adb:53:14: info: postcondition proved (CVC5: 2 VC)
+test.adb:63:13: info: loop invariant initialization proved (CVC5: 1 VC)
+test.adb:63:13: info: loop invariant preservation proved (CVC5: 1 VC)
+test.adb:64:18: info: index check proved (CVC5: 4 VC)
+test.adb:71:13: info: implicit aspect Always_Terminates on overriding operator "<=" has been proved, subprogram will terminate
+test.adb:72:14: info: postcondition proved (CVC5: 2 VC)
+test.adb:82:13: info: loop invariant initialization proved (CVC5: 1 VC)
+test.adb:82:13: info: loop invariant preservation proved (CVC5: 1 VC)
+test.adb:83:23: info: index check proved (CVC5: 4 VC)

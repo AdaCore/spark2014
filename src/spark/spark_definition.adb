@@ -5736,6 +5736,7 @@ package body SPARK_Definition is
             | Attribute_Floor
             | Attribute_Last
             | Attribute_Length
+            | Attribute_Loop_Index
             | Attribute_Max
             | Attribute_Min
             | Attribute_Mod

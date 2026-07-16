@@ -18402,6 +18402,14 @@ package body Gnat2Why.Expr is
                     Typ      => Ty);
             end;
 
+         when Attribute_Loop_Index                                          =>
+            declare
+               Index_Id : constant W_Identifier_Id :=
+                 Name_For_Loop_Index (Entity (Var));
+            begin
+               return New_Deref (Right => Index_Id, Typ => Get_Typ (Index_Id));
+            end;
+
          when others                                                        =>
             Ada.Text_IO.Put_Line
               ("[Transform_Attr] not implemented: "
