@@ -36,7 +36,7 @@ counter ``Total`` can never be negative, which can be expressed in its type:
 
 Any attempt to assign a negative value to variable ``Total`` results in raising
 an exception at run time. During analysis, |GNATprove| checks that all values
-assigned to ``Total`` are positive or null. The anonymous subtype above can
+assigned to ``Total`` are nonnegative. The anonymous subtype above can
 also be given an explicit name:
 
 .. code-block:: ada
@@ -419,7 +419,7 @@ performed:
 * when returning from a subprogram declared in the visible part of ``P``.
 
 For example, let us consider the implementation of a procedure ``Push`` that
-pushes an element of top of a stack. It is declared in the visible part of the
+pushes an element on top of a stack. It is declared in the visible part of the
 specification of ``P``:
 
 .. code-block:: ada

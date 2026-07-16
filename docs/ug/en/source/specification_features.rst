@@ -390,7 +390,7 @@ Unless stated otherwise, functions in |SPARK| cannot have side effects:
 The aspect ``Side_Effects`` can be used to indicate that a function may in fact
 have side effects, among the four possible side effects listed above. A
 `function with side effects` can be called only as the right-hand side of an
-assignment, as part of a list of statements where a procedure could be called:
+assignment, or as part of a list of statements where a procedure could be called:
 
 .. code-block:: ada
 
@@ -455,7 +455,7 @@ discriminants should always be valid even for objects annotated with
 
 As a general rule, a validity check is emitted each time a potentially invalid
 object is evaluated. However, if a composite object is potentially invalid, it
-can be copied into another potentially invalid object without trigerring a
+can be copied into another potentially invalid object without triggering a
 validity check. Instead, the validity status is propagated. This can happen
 in object declarations, assignments, on function return, on actual
 parameters in subprogram calls, and in references to the ``Old`` and
@@ -505,7 +505,7 @@ conversion does not have invalid values. As a result, the example above is
 entirely proved even though ``Nat_8`` has invalid values.
 
 References to potentially invalid objects might not trigger validity checks if
-the object is not evaluated, or at least, only necessarily valid part of the
+the object is not evaluated, or at least, only necessarily valid parts of the
 object are evaluated. It is the case for the prefix of the ``Valid`` and
 ``Valid_Scalars`` attributes and access to array bounds and discriminants of
 potentially invalid objects in particular. No validity checks are emitted in the
@@ -523,7 +523,7 @@ following code as no potentially invalid parts of an object are evaluated:
    end;
 
 All other uses of potentially invalid objects trigger validity checks. A
-reference to the ``Valid`` or ``Valid_Scalar`` on a prefix that is not
+reference to the ``Valid`` or ``Valid_Scalars`` on a prefix that is not
 potentially invalid will result in a warning. The ``Potentially_Invalid_Reads``
 procedure is an example of how the feature might be used. The
 ``Record_Or_Array`` type has a discriminant, it might be either a record or an
@@ -555,14 +555,14 @@ Here |GNATprove| detects that an invalid value might be read in
    with ``Potentially_Invalid``. This might result in incorrectly verified
    checks. If the whole program is in |SPARK|, this cannot happen, as
    |GNATprove| emits checks to ensure that potentially invalid values are never
-   read. If a program is not entirely written is |SPARK|, care should be taken
+   read. If a program is not entirely written in |SPARK|, care should be taken
    to never introduce such assumptions in code visible by |GNATprove|, in
    particular in postconditions of non-|SPARK| subprograms. To help with this
    review, the |GNATprove| tool emits a warning whenever a potentially
    invalid object is read in the postcondition of a non-|SPARK| subprogram,
    unless it can determine that the access is safe. As an example, |GNATprove|
    will emit a warning on the ``Result`` attribute in the postcondition of
-   ``One_Bad`` but not in th  postcondition of ``One_OK`` as it can determine
+   ``One_Bad`` but not in the postcondition of ``One_OK`` as it can determine
    that it is safe, due to the short-circuit conjunction with the ``Valid``
    attribute:
 
@@ -628,7 +628,7 @@ at all indexes not yet seen is unchanged, using :ref:`Quantified Expressions`:
 Attribute ``Loop_Entry`` may be indexed by the name of the loop to which it
 applies, which is useful to refer to the value of a variable on entry to an
 outer loop. When used without loop name, the attribute applies to the closest
-enclosing loop. For examples, ``X'Loop_Entry`` is the same as
+enclosing loop. For example, ``X'Loop_Entry`` is the same as
 ``X'Loop_Entry(Inner)`` in the loop below, which is not the same as
 ``X'Loop_Entry(Outer)`` (although all three assertions are true):
 
@@ -1320,7 +1320,7 @@ from the :ref:`SPARK Libraries`.
 
 .. note::
 
-   So the handling is as precisely as possible, |SPARK| only
+   So the handling is as precise as possible, |SPARK| only
    supports aggregates with distinct values or keys for sets and maps.
 
 .. index:: if-expression, case-expression
@@ -1840,7 +1840,7 @@ to the other:
     Post => A = Apply_Perm (Perm, A'Old)
   is
   begin
-    --  Initalize Perm with the identity
+    --  Initialize Perm with the identity
     Perm := Identity_Perm;
 
     for Current in A'First .. A'Last - 1 loop

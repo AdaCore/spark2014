@@ -17,7 +17,7 @@ simplifications to Ada. The most notable simplifications are:
 
 .. index:: side effects; excluded feature
 
-* All expressions (including function calls) are free of side effects, at the
+* All expressions (including function calls) are free of side effects, with the
   exception of calls to so-called functions with side effects (see :ref:`Aspect
   Side_Effects`) which can only appear as the right-hand side of
   assignments. Allowing functions with side effects everywhere could lead to
@@ -51,7 +51,7 @@ simplifications to Ada. The most notable simplifications are:
 .. index:: termination; excluded feature
 
 * Functions should always terminate when called on inputs satisfying the
-  precondition, at the exception of so-called functions with side effects (see
+  precondition, with the exception of so-called functions with side effects (see
   :ref:`Aspect Side_Effects`).  While care is taken in |GNATprove| to detect
   possibilities of unsoundness resulting from nonterminating functions, it is
   possible that axioms generated for infeasible contracts may lead to
@@ -125,7 +125,7 @@ additional checks on language features that process or potentially produce
 invalid values. SPARK issues checks specific to data validity on two language
 constructs:
 
- * Calls to instances of  ``Unchecked_Conversion``
+ * Calls to instances of ``Unchecked_Conversion``
  * Objects with a supported address clause (so-called overlays). An address
    clause is supported if it is of the form ``with Address => Y'Address``,
    where ``Y`` is another object, and ``Y`` is part of a statically known
@@ -189,7 +189,7 @@ different sizes and ``With_Holes`` has unused bits in its representation:
   ``-W imprecise-unchecked-conversion`` or using the ``--info``
   switch, see :ref:`Proof Limitations`.
   Currently, overlays are always imprecisely supported by |GNATprove|, so
-  nothing will be known about an object after it has been intialized or modified
+  nothing will be known about an object after it has been initialized or modified
   through one of its overlays.
 
 |SPARK| allows conversions from (suitable) integer types or
@@ -263,7 +263,7 @@ Dependencies`) in |SPARK| have a stricter meaning than in Ada:
 Hence, all inputs should be completely initialized at subprogram entry, and all
 outputs should be completely initialized at subprogram output. Similarly, all
 objects should be completely initialized when read (e.g. inside subprograms),
-at the exception of record subcomponents (but not array subcomponents) provided
+with the exception of record subcomponents (but not array subcomponents) provided
 the subcomponents that are read are initialized.
 
 A consequence of the rules above is that a parameter (resp. global variable)
@@ -280,9 +280,9 @@ aforementioned data initialization policy. For example, consider a procedure
    :linenos:
 
 Procedure ``Proc`` should completely initialize its outputs ``P2`` and ``G2``,
-but it only initalizes them partially. Similarly, procedure ``Call_Proc`` which
-calls ``Proc`` should completely initalize all of ``Proc``'s inputs prior to
-the call, but it only initalizes ``G1`` completely.
+but it only initializes them partially. Similarly, procedure ``Call_Proc`` which
+calls ``Proc`` should completely initialize all of ``Proc``'s inputs prior to
+the call, but it only initializes ``G1`` completely.
 
 .. literalinclude:: /examples/ug__data_initialization/data_initialization.adb
    :language: ada
@@ -444,7 +444,7 @@ interference).
 The precise rules detailed in SPARK RM 6.4.2 can be summarized as follows:
 
 * Two mutable parameters should never be aliased.
-* An immutable and a mutable parameters should not be aliased, unless the
+* An immutable and a mutable parameter should not be aliased, unless the
   immutable parameter is always passed by copy.
 * A mutable parameter should never be aliased with a global variable referenced
   by the subprogram.

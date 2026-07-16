@@ -713,7 +713,7 @@ collection that maximizes a given optimality criterion:
                    the recorded maximum over other elements encountered so far.
  ================  ========================
 
-Consider a procedure ``Search_Arr_Max`` that searches an element maximum value
+Consider a procedure ``Search_Arr_Max`` that searches an element with the maximum value
 in array ``A``:
 
 .. literalinclude:: /examples/ug__search_arr_max/search_arr_max.adb
@@ -813,7 +813,7 @@ to hold the current maximum each time it changes.
 
 In the loop invariant of the outer loop, we cannot speak directly about the
 elements of ``L`` that have been traversed to say that they are smaller than
-the current maximum. Instead, we write in the invariant that the all values of
+the current maximum. Instead, we write in the invariant that all values of
 ``L`` are smaller than any given value bigger than the current maximum iff the
 values of ``B`` are. A similar invariant is necessary on the inner loop.
 Thanks to these loop invariants, |GNATprove| is able to verify
@@ -1017,7 +1017,8 @@ Similarly, consider a variant of the same update loop over a list:
 Compared to the vector example, it requires three additional invariants. As the
 loop is done via a cursor, the first two loop invariants are necessary to know
 that the current cursor ``Cu`` stays between ``First`` and ``Last`` in the list.
-The fourth loop invariant states that the position of cursors in ``L`` is not
+The third loop invariant states that the length of the list is not modified
+during the loop. The fourth loop invariant states that the position of cursors in ``L`` is not
 modified during the loop. It is necessary to know that the two cursors ``First`` and
 ``Last`` keep designating the same range after the loop. With this loop invariant,
 |GNATprove| is able to prove the postcondition of ``Update_Range_List_Zero``,

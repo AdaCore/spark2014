@@ -78,9 +78,9 @@ line (see :ref:`Effect of Mode on Output`), except that the effect is limited
 to this entity (and enclosed entities).
 
 If an entity is annotated with ``Skip_Flow_And_Proof``, in addition, no messages
-related to global contracts, initialization and dependency relations are issues
+related to global contracts, initialization and dependency relations are issued
 for this entity and any contained entities. This is similar to specifying
-``--mode=check-all`` on the command line, expect that the effect is limited to
+``--mode=check-all`` on the command line, except that the effect is limited to
 this entity (and enclosed entities).
 
 Note that the ``Skip_Proof`` annotation cannot be used if an enclosing
@@ -173,7 +173,7 @@ type with an ``Iterable`` aspect, and ``Element_Type`` is its element type:
   function Mem (S : Set; E : Element_Type) return Boolean with
     Annotate => (GNATprove, Iterable_For_Proof, "Contains");
 
-This annotation causes ``for ... of`` quandtification to be translated in a
+This annotation causes ``for ... of`` quantification to be translated in a
 simpler way, using logic quantification directly over elements. As an example,
 the property:
 
@@ -195,7 +195,7 @@ With the ``Iterable_For_Proof`` annotation given above, it would become:
 
   (for all E : Element_Type => (if Mem (S, E) then P (E)))
 
-Note that care should be taken to provide an appropriate function contains,
+Note that care should be taken to provide an appropriate ``Contains`` function,
 which returns true if and only if the element ``E`` is present in ``S``. This
 assumption will not be verified by |GNATprove|.
 
@@ -277,7 +277,7 @@ its model. This lifting requires a lot of quantifier reasoning from the prover,
 thus making proofs more difficult.
 
 The |GNATprove| ``Iterable_For_Proof`` annotation can be used to provide
-|GNATprove| with a `Model` function, that will be to translate quantification on
+|GNATprove| with a ``Model`` function, that will be used to translate quantification on
 complex containers toward quantification on their model. For example, on our
 lists, we could write:
 
@@ -310,11 +310,11 @@ quantification on the elements of the result's model (not Ada syntax):
          (if Mem (Model (Init'Result), Elt) then Elt = E));
 
 Like with the previous annotation, care should be taken to define the model
-function such that it always return a model containing exactly the same elements
+function such that it always returns a model containing exactly the same elements
 as ``L``.
 
 Finally, the last variant of the ``Iterable_For_Proof`` annotation is
-specifically targetted at container types that use a ``Constant_Reference``
+specifically targeted at container types that use a ``Constant_Reference``
 function for iteration instead of an ``Element`` function. It allows providing
 an `Element` function that will be used instead of ``Constant_Reference`` in
 quantified expressions. As an example, we might want to make iteration over
@@ -586,7 +586,7 @@ In other words, there is no lookahead when an assertion is to be proved.
    of the borrower and borrowed expression are used when executing assertions
    containing prophecy variables. This is sound. Indeed, |GNATprove| will show
    that the assertion holds for all possible modifications of the borrower. As
-   not modifying the borrower is a valid senario, this is enough to ensure that
+   not modifying the borrower is a valid scenario, this is enough to ensure that
    the assertion necessarily evaluates to True at runtime.
 
 Let us now consider a case where ``X`` is not borrowed completely. In the
@@ -705,7 +705,7 @@ in the following example:
       begin
          Y := Y.Next; -- second reborrow
          pragma Assert (At_End_Borrow (X).Next.Val = Z.Val);
-         --  Z match prophecy of first reborrow of Y
+         --  Z matches prophecy of first reborrow of Y
          pragma Assert (Z.Next.Val = At_End_Borrow (Y).Val);
       end;
    end;
@@ -854,7 +854,7 @@ equality function applies:
   always be used to express that something is preserved as done above.
 
 * There is no way to tell the
-  difference between between two values which are logically equal. Said
+  difference between two values which are logically equal. Said
   otherwise, all |SPARK| compatible functions will return the same result on
   logically equal inputs. Note that Ada functions which do not follow |SPARK|
   assumptions may not, for example, if they compare the address of pointers
@@ -883,7 +883,7 @@ addition, it is necessary to compare the bounds of unconstrained arrays. Since
 the address of access-to-object types is not modeled in SPARK, logical equality
 should return true if either both pointers are null or they designate logically
 equal values.
-This is examplified below:
+This is exemplified below:
 
 .. literalinclude:: /examples/ug__logical_eq_implementation/logical_equality_implementation.ads
    :language: ada
@@ -895,11 +895,11 @@ All logical equality annotations are proved on this example:
    :language: none
    :linenos:
 
-For tagged records, the fact that functions of a specific tagged types might be
-used on any descendent make it impossible to implement the logical equality in
+For tagged records, the fact that functions of a specific tagged type might be
+used on any descendant makes it impossible to implement the logical equality in
 |SPARK| in general. However, it can be done if the tag is specifically known by
 comparing the components like for untagged records. In a similar way, logical
-equality cannot be implemented for partially intialized data-structures
+equality cannot be implemented for partially initialized data-structures
 annotated with ``Relaxed_Initialization``.
 
 Additionally, a user can safely annotate a comparison function on private types
@@ -1153,7 +1153,7 @@ everything is visible except if it is declared in the body of another
 (possibly nested) unit. It assumes values of
 global constants, postconditions of called subprograms, bodies of expression
 functions... This behavior can be tuned either globally or, in some cases,
-specificaly for the analysis of a given unit, using the dual annotations
+specifically for the analysis of a given unit, using the dual annotations
 ``Hide_Info`` and ``Unhide_Info``.
 
 Overriding the Default Handling of Visibility
@@ -1205,7 +1205,7 @@ no other changes, ``Use_Geometry`` becomes impossible to prove:
    :linenos:
 
 Retaining provability can be done for example by introducing ghost functions
-returning the width and the heigth of a rectangle and using them in the
+returning the width and the height of a rectangle and using them in the
 contracts of other functions. The obvious duplication here is the reason why
 abstraction is not enforced on private parts by default:
 
@@ -1292,7 +1292,7 @@ Information hiding is decided at the level of an entity for which checks are
 generated, namely, a subprogram or entry, or the elaboration of a package. It
 cannot be refined in a smaller scope. To state that the body of an expression
 function should be hidden when verifying an entity ``E``, a pragma with the
-``Hide_Info`` annotation should be used either at the begining of the body of
+``Hide_Info`` annotation should be used either at the beginning of the body of
 ``E`` or just after its specification or body. In the following example, the
 body of the expression function ``F`` is hidden when verifying its callers,
 making it impossible to prove their postconditions:
@@ -1351,7 +1351,7 @@ the ``Call_G_2`` function below:
    with Post => Call_G_2'Result = (X and Y); --  Provable, G is no longer hidden
    pragma Annotate (GNATprove, Unhide_Info, "Expression_Function_Body", G);
 
-Remark that, when information is hidden by default, it is even hidden during
+Note that, when information is hidden by default, it is even hidden during
 the verification of the entity whose information we are hiding. For example,
 when verifying a recursive expression function whose body is hidden by default,
 the body of recursive calls is not available. If necessary, it can be disclosed
@@ -1470,7 +1470,7 @@ parameter ``F`` is only called on elements of ``A``.
    end Add_All;
 
 To avoid this kind of issue, it is possible to write a function with no
-preconditions and a fallback value as done below. Remark that this does not
+preconditions and a fallback value as done below. Note that this does not
 prevent the tool from proving the postcondition of ``Add_All``.
 
 .. code-block:: ada
@@ -1683,7 +1683,7 @@ on aggregate usage and as an additional assumption for the consistency checks:
 elements before a call to ``Add`` and it makes sure that the number of elements
 in actual aggregates never exceeds the capacity.
 
-To accomodate containers which can have a different capacity depending on the
+To accommodate containers which can have a different capacity depending on the
 object, Ada allows providing an ``Empty`` function which takes an integer value
 for the capacity as a parameter in the ``Aggregate`` aspect. If a ``Capacity``
 function is specified for such a type, it shall take the container as a
@@ -1699,7 +1699,7 @@ There are three kinds of predefined aggregates patterns:
 provided as a string to the ``Container_Aggregates`` annotation specified on the
 container type. Additional ``Container_Aggregates`` annotations are necessary on
 each specific function supported by the pattern. They also require a string
-encoding its intended use. This usage is examplified in
+encoding its intended use. This usage is exemplified in
 the ``Predefined`` package.
 
 The ``Predefined_Sequences`` pattern can be applied to containers with
@@ -1879,7 +1879,7 @@ The consistency checks ensure that:
   ``Empty``, and ``Length``, if specified, returns 0,
 
 * ``Add`` can be called on a container ``C`` and a key ``K`` such that
-  ``Has_Key (C, K)`` returns False (for patial maps) or
+  ``Has_Key (C, K)`` returns False (for partial maps) or
   ``Get (C, K) = Default_Item`` (for total maps),
 
 * after a call to ``Add`` on a container ``C``, a key ``K``, and an element
@@ -1978,7 +1978,7 @@ When an aggregate ``C`` is encountered, |GNATprove| automatically infers that:
   the aggregate,
 
 * for every key ``K`` which is not equivalent to any key in the aggregate
-  either ``Has_Key (C, K)`` returns False (for patial maps) or ``Get (C, K)``
+  either ``Has_Key (C, K)`` returns False (for partial maps) or ``Get (C, K)``
   returns ``Default_Item`` (for total maps), and
 
 * ``Length (C)``, if supplied, is the number of elements in the aggregate.

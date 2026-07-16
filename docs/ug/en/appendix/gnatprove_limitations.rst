@@ -26,7 +26,7 @@ precise (but sound) analysis.
 
 .. index:: Depends; limitation
 
-* Flow dependencies caused by record assignments is not captured with perfect
+* Flow dependencies caused by record assignments are not captured with perfect
   accuracy. This means that the value of one field might incorrectly be
   considered to participate in the derivation of another field that it does
   not really participate in.

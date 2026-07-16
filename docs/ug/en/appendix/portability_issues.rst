@@ -112,15 +112,14 @@ used, a warning is emitted for every operation that could be re-ordered:
 Base Type of User-Defined Integer Types
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-|GNATprove| follows |GNAT Pro| in choosing as base type
-the smallest multiple-words-size integer type that contains the type
-bounds. For example, a user-defined type ranging from 1 to 100 will be given
-a base type ranging from -128 to 127 by both |GNAT Pro| and |GNATprove|. The
-choice of base types influences in which cases intermediate overflows may be
-raised during computation. The choice made in |GNATprove| is the strictest
-one among existing compilers, as far as we know, which ensures that
-|GNATprove|'s analysis detects a superset of the overflows that may occur at
-run time.
+|GNATprove| follows |GNAT Pro| in choosing as base type the smallest predefined
+integer type (of size 8, 16, 32, 64, or 128 bits) that contains the type bounds.
+For example, a user-defined type ranging from 1 to 100 will be given a base type
+ranging from -128 to 127 by both |GNAT Pro| and |GNATprove|. The choice of base
+types influences in which cases intermediate overflows may be raised during
+computation. The choice made in |GNATprove| is the strictest one among existing
+compilers, as far as we know, which ensures that |GNATprove|'s analysis detects
+a superset of the overflows that may occur at run time.
 
 Size of 'Image and 'Img attributes
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

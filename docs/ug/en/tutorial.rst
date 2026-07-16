@@ -120,7 +120,7 @@ value returned is indeed not initialized. Although that is allowed in Ada,
 initialized (and the value returned by a function is such an output). As a
 solution, we could give a dummy value to component ``At_Index`` when the search
 fails, but we choose here to turn the type ``Search_Result`` in
-``linear_search.ads`` into a discriminant record, so that the component
+``linear_search.ads`` into a discriminated record, so that the component
 ``At_Index`` is only usable when the search succeeds:
 
 .. literalinclude:: /examples/ug__linear_search_prove/linear_search.ads
@@ -333,7 +333,7 @@ Formal verification of |SPARK| programs is a two-step process:
 
 1. the first step checks that flows through the program correctly implement the
    specified flows (if any), and that all values read are initialized.
-2. the second step checks that the program correctly implement its specified
+2. the second step checks that the program correctly implements its specified
    contracts (if any), and that no run-time error can be raised.
 
 Step 1 is implemented as a static analysis pass in the tool |GNATprove|, in

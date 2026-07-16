@@ -60,7 +60,7 @@ Here are overviews and examples of each kind of access type.
   on the heap (this is an Ada rule). |SPARK| enforces a :ref:`Memory Ownership
   Policy` to retain absence of aliasing. Copying into an object of these access
   types represents :ref:`Moving` the designated value of the access type.
-  Designated values of objects of these access type can be deallocated safely.
+  Designated values of objects of these access types can be deallocated safely.
   |GNATprove| generates verification conditions to ensure that no memory can be
   leaked.
 
@@ -74,7 +74,7 @@ Here are overviews and examples of each kind of access type.
   designate data regardless of where it is allocated. They are subject to the
   :ref:`Memory Ownership Policy` of |SPARK|. Copying into an object of these
   access types represents :ref:`Moving` the designated value of the access type.
-  However, they cannot be deallocated, and |GNATprove| will flag a memory leaks
+  However, they cannot be deallocated, and |GNATprove| will flag a memory leak
   if a designated value of such an access type is allocated on the heap.
 
   .. code-block:: ada
@@ -561,7 +561,7 @@ Borrowing Traversal Functions
 
 It is also possible to return a mutable access inside a data structure using a
 `borrowing` traversal function. Just like observing traversal functions,
-their borrowing counterparts has at least one parameter, but they
+their borrowing counterparts have at least one parameter, but they
 have as a result type an anonymous access-to-variable type. The function
 ``Reference`` below is similar to ``Constant_Access`` except that its
 result type is mutable:
@@ -755,7 +755,7 @@ call:
 As the contract of an access type is the only one which is known by |GNATprove|
 when checking indirect callers, |SPARK| requires that this contract is a valid
 approximation of the contract of every subprogram designated by an access
-objects of this type. More precisely, each time a value of a given
+object of this type. More precisely, each time a value of a given
 access-to-subprogram type is created, |GNATprove| makes sure that:
 
 * the precondition of the access-to-subprogram type if any (or the default

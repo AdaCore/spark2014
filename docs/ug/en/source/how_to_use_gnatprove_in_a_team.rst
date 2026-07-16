@@ -68,7 +68,7 @@ Suppressing Warnings
 --------------------
 
 On the command-line, warnings are controlled with the ``-W``, ``-D`` and
-``-A`` switches, as well the ``--warnings`` switch. In addition, users can
+``-A`` switches, as well as the ``--warnings`` switch. In addition, users can
 suppress warnings using the pragma ``Warnings``.
 
 .. index:: Warnings, -W, -A, -D, --warnings
@@ -254,7 +254,7 @@ because any execution that fails the first precondition is not analyzed further
 by |GNATprove|.
 
 This applies to all proof checks, and to a lesser extent to flow analysis
-checks. For example, outputs of a subprogram are considered fully initialtized
+checks. For example, outputs of a subprogram are considered fully initialized
 in a caller, as explained in :ref:`Data Initialization Policy`. In particular,
 such outputs are considered to have values that respect the constraints of
 their type, which is used during proof.
@@ -324,12 +324,12 @@ Placement rules are as follows: in a statement list or declaration list, pragma
 ``Annotate`` applies to the preceding item in the list, ignoring other pragma
 ``Annotate``. If there is no preceding item, the pragma applies to the
 enclosing construct. For example, if the pragma is the first element of the
-then-branch of an if-statement, it will apply to condition in the
+then-branch of an if-statement, it will apply to the condition in the
 if-statement.
 
 If the preceding or enclosing construct is a subprogram
 body, the pragma applies to both the subprogram body and the spec including its
-contract. This allows to place a justification for a check message issued by
+contract. This allows one to place a justification for a check message issued by
 |GNATprove| either on the spec when it is relevant for callers. Note that
 this placement of a justification is ineffective on subprograms analyzed
 only in the context of their calls (see details in

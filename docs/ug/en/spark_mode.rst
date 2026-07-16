@@ -26,7 +26,7 @@ it does not meet these requirements, and so is not amenable to formal
 verification.
 
 Within a single Ada unit, constructs which are "in" and "not in" |SPARK| may be
-mixed at a fine level in accordance with the following two general principles:
+mixed at a fine level in accordance with the following three general principles:
 
 * |SPARK| code shall only reference |SPARK| declarations, but a |SPARK|
   declaration which requires a completion may have a non-|SPARK| completion.
@@ -395,7 +395,7 @@ Consistency Rules
 -----------------
 
 The basic rule is that you cannot turn ``SPARK_Mode`` back On, once you have
-explicitly turned if Off. So the following rules apply:
+explicitly turned it Off. So the following rules apply:
 
 If a subprogram spec has ``SPARK_Mode`` Off, then the body cannot have
 ``SPARK_Mode`` On.
@@ -531,7 +531,7 @@ Off``.
 Note also that the local package ``Non_Critical_Data`` can contain any
 non-|SPARK| types, variables and subprograms, as it is marked ``SPARK_Mode =>
 Off``. It may be convenient to define such a local package to gather
-non-|SPARK| declarations, which allows to mark globally the unit
+non-|SPARK| declarations, which allows one to mark globally the unit
 ``Exclude_Selected_Parts`` with ``SPARK_Mode => On``.
 
 .. literalinclude:: /examples/ug__exclude_selected_parts/exclude_selected_parts.adb
