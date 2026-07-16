@@ -1813,7 +1813,7 @@ to split the specification of a complex procedure into smaller parts:
 
    X_Interm : T with Ghost;
 
-   procedure Do_Two_Thing (X : in out T) with
+   procedure Do_Two_Things (X : in out T) with
      Post => First_Thing_Done (X'Old, X_Interm) and then
              Second_Thing_Done (X_Interm, X)
    is
@@ -2176,7 +2176,7 @@ defined equivalently as a ghost imported function as follows:
 
 .. code-block:: ada
 
-   function Append_To_Log (Log : Log_type; Incr : in Integer) return Log_Type with
+   function Append_To_Log (Log : Log_Type; Incr : in Integer) return Log_Type with
      Ghost,
      Import;
 
@@ -2193,7 +2193,7 @@ private part of the enclosing package as not in |SPARK|:
    is
       type Log_Type is private;
 
-      function Append_To_Log (Log : Log_type; Incr : in Integer) return Log_Type with
+      function Append_To_Log (Log : Log_Type; Incr : in Integer) return Log_Type with
         Import;
 
       ...
@@ -2263,7 +2263,7 @@ cause the code to stop compiling.
 .. code-block:: ada
 
    X : Integer := 12 with Ghost => L1;
-   pragma Assert (L1 => X = 12);  --  Rejected
+   pragma Assert (L2 => X = 12);  --  Rejected
 
 If ghost entities or assertions do not have
 an associated assertion level, then they are not subject to the

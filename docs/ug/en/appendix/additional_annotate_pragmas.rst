@@ -2035,7 +2035,7 @@ The ``Update`` procedure writes a character ``Char`` at position ``Index``
 in the value designated by ``S``. Since the value of the pointer ``S`` is not
 modified by ``Update``, Ada allows it to be a parameter of mode ``in``. However,
 this procedure is not compatible with |SPARK|, as it modifies the value
-designated by ``Item`` which is considered to be part of ``Item`` as per the
+designated by ``S`` which is considered to be part of ``S`` as per the
 :ref:`Memory Ownership Policy`. To make it possible to use this procedure from
 |SPARK| code, a ``pragma Annotate`` is supplied directly after ``Update``:
 
@@ -2044,7 +2044,7 @@ designated by ``Item`` which is considered to be part of ``Item`` as per the
    pragma Annotate (GNATprove, Mutable_In_Parameters, My_String);
 
 Thanks to this annotation, |GNATprove| considers that a call to ``Update`` can
-modify its parameter ``Item``, even if it has mode ``in``.
+modify its parameter ``S``, even if it has mode ``in``.
 
 .. note::
 

@@ -153,7 +153,7 @@ detected by |GNATprove|:
 .. literalinclude:: /examples/ug__bank1/test.out
    :language: none
 
-To avoid this problem, shared variable ``Num_Account`` can be declared atomic:
+To avoid this problem, shared variable ``Num_Accounts`` can be declared atomic:
 
 .. code-block:: ada
 
@@ -164,14 +164,14 @@ To avoid this problem, shared variable ``Num_Account`` can be declared atomic:
    end Account;
 
 With this modification, |GNATprove| now alerts us that the increment of
-``Num_Account`` is not legal, as a volatile variable (which is the case of
+``Num_Accounts`` is not legal, as a volatile variable (which is the case of
 atomic variables) cannot be read as a subexpression of a larger expression in
 |SPARK|:
 
 .. literalinclude:: /examples/ug__account2/test.out
    :language: none
 
-This can be fixed by copying the current value of ``Num_Account`` in a
+This can be fixed by copying the current value of ``Num_Accounts`` in a
 temporary before the increment:
 
 .. code-block:: ada
@@ -404,7 +404,7 @@ initialization).
 
 Just like for tasks, it is possible to directly declare a protected object if
 it is the only one of its type. In this case, an anonymous protected type is
-implicitly declared for it. For example, if ``Num_Account`` is the only
+implicitly declared for it. For example, if ``Num_Accounts`` is the only
 ``Protected_Natural`` we need, we can directly declare:
 
 .. code-block:: ada
@@ -512,7 +512,7 @@ the unsynchronized object should have a ``Part_Of`` aspect referring to the
 protected object. It is then handled as if it was a private variable of the
 protected object. This is typically done so that the address in memory of the
 variable can be specified, using either aspect ``Address`` or a corresponding
-representation clause. Here is how this could be done with ``Num_Account``:
+representation clause. Here is how this could be done with ``Num_Accounts``:
 
 .. code-block:: ada
 

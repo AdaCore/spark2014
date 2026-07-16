@@ -281,7 +281,7 @@ Note that the commented loop invariant expressing that other elements have not
 been modified is not needed, as it is an example of :ref:`Automatically
 Generated Loop Invariants`.
 
-Consider now a variant of the same initialization loop over a vector:
+Consider now a variant of the same mapping loop over a vector:
 
 .. literalinclude:: /examples/ug__map_vec_incr/map_vec_incr.adb
    :language: ada

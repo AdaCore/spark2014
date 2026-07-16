@@ -436,7 +436,7 @@ Here, |GNATprove| generates a data and flow dependencies for procedure
 
 .. code-block:: ada
 
-   procedure Test with
+   procedure Set_Global_Through_Access_To_Procedure with
      Global => (Input => __HEAP);
 
 Since only generated contracts on SPARK subprograms are guaranteed to be correct, and
@@ -1013,7 +1013,7 @@ is not because it could verify it, as it contains exactly the same loop as
 from analysis using ``SPARK_Mode => Off``, |GNATprove| does not attempt to
 prove that it terminates.  When looking at the body of ``P_Call``, we can see
 that it calls a procedure ``Not_SPARK``. Clearly, this procedure always
-returns, as it does not do anything. But, as the body of ``No_SPARK`` has
+returns, as it does not do anything. But, as the body of ``Not_SPARK`` has
 been hidden from analysis using ``SPARK_Mode => Off``, |GNATprove| cannot
 deduce that it terminates. As a result, it stays in the safe side, and assumes
 that ``Not_SPARK`` could loop, which causes the verification of ``P_Call`` to

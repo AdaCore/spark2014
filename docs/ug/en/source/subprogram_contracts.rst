@@ -663,7 +663,7 @@ is rather liberal: subprogram contracts and bodies of expression functions are
 visible except if they occur in the body of another (possibly nested) unit. In
 particular, contracts of subprograms declared in the private part of other units
 are visible. On our example, the precise
-definition of ``Get_Global`` is visible for the verification of ``Account`` no
+definition of ``Get_Total`` is visible for the verification of ``Account`` no
 matter whether it is declared in its private part or its implementation.
 However, it will only be available when verifying units using the
 ``Account`` package if it is declared in its private part. To demonstrate this,
