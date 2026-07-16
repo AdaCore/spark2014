@@ -365,7 +365,7 @@ a type invariant, which can be specified using a ``Type_Invariant`` aspect:
    end P;
 
 Like for subtype predicates, the name of the type can be used inside the invariant
-expression to refer to the current instance of the type. Here the subtype predicate
+expression to refer to the current instance of the type. Here the type invariant
 of ``Stack`` expresses that the ``Max`` field of a valid stack is the maximum of
 the elements stored in the stack.
 

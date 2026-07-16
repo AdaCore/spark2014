@@ -531,7 +531,7 @@ As it can prevent access to a protected object for an unbounded amount of time,
 a task should not be blocked or delayed while inside a protected subprogram.
 Actions that can block a task are said to be `potentially blocking`. For
 example, calling a protected entry, explicitly waiting using a ``delay_until``
-statement (note that ``delay`` statements are forbidden in Ravenscar), or
+statement (note that relative ``delay`` statements are forbidden in Ravenscar), or
 suspending on a suspension object (see :ref:`Suspension Objects`) are
 potentially blocking actions. In Ada, it is an error to do a potentially
 blocking action while inside a protected subprogram. Note that a call to a

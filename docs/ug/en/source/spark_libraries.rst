@@ -139,7 +139,7 @@ that the corresponding Ada libraries ``Ada.Numerics.Big_Numbers.Big_Integers``
 and ``Ada.Numerics.Big_Numbers.Big_Reals`` will be handled in the same way, but
 might be not available under specific runtimes. It is preferable to use the
 units from the SPARK library instead, or use
-``Ada.Numerics.Big_Numbers.Big_Integer_Ghost``.
+``Ada.Numerics.Big_Numbers.Big_Integers_Ghost``.
 
 .. note::
 
@@ -1316,7 +1316,7 @@ Addresses to Access Conversions
 -------------------------------
 
 The run-time library ``System.Address_To_Access_Conversions`` enables
-the user to convert ``System.Address_Type`` values to general access-to-object
+the user to convert ``System.Address`` values to general access-to-object
 types. The conversions are subject to the same rules as
 ``Unchecked_Conversion`` between such types (see :ref:`Data Validity`),
 that is:

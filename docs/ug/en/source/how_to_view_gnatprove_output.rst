@@ -229,7 +229,7 @@ switch, which is explained in detail in the next section.
 Effect of Mode on Output
 ------------------------
 
-|GNATprove| can be run in four different modes, as selected with the switch
+|GNATprove| can be run in five different modes, as selected with the switch
 ``--mode=<mode>``, whose possible values are ``check``, ``check_all``,
 ``flow``, ``prove`` and ``all`` (see :ref:`Running GNATprove from the Command
 Line`). The output depends on the selected mode.

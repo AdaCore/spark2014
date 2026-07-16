@@ -5,7 +5,7 @@ This section describes the environment variables that affect how |GNATprove| ope
 
 * ``GPR_TOOL`` - This environment variable is intended to be used in GPR
   project files, to specify project settings that depend on the tool. Leaving
-  this variable unset when invoking |GNATProve| sets the value to
+  this variable unset when invoking |GNATprove| sets the value to
   ``gnatprove``. See also :ref:`Having Different Switches for Compilation and Verification`.
 
 * ``TMPDIR`` - This variable should contain a path. It controls the place of
@@ -13,7 +13,7 @@ This section describes the environment variables that affect how |GNATprove| ope
   Network File Systems or Shared Folders`.
 
 The following environment variables are for internal use, or use by developers,
-and shouldn't be set when |GNATProve| is run:
+and shouldn't be set when |GNATprove| is run:
 
 * ``GNSA_ROOT``, ``GNAT2WHY_RAC_INFO``, ``GNAT2WHY_RAC_TRACE``,
   ``GNATPROVE_SOCKET``, ``GNATPROVE_SEMAPHORE``

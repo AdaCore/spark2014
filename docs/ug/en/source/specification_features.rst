@@ -243,10 +243,10 @@ evaluates to ``True``.
 
 .. note::
 
-  It is not true that the ``Initialized`` aspect necessarily evaluates to
+  It is not true that the ``Initialized`` attribute necessarily evaluates to
   ``False`` on uninitialized data. This is to comply with execution, where
   some values may happen to be valid even if they have not been initialized.
-  However, it is not possible to prove that the ``Initialized`` aspect
+  However, it is not possible to prove that the ``Initialized`` attribute
   evaluates to ``True`` if the object has not been entirely initialized.
 
 As an example, let's add some contracts to the subprograms presented in the
@@ -789,7 +789,7 @@ the bounds of ``A``, and a default value otherwise.
 
 In that case, the solution is either to rewrite the postcondition using
 non-shortcut boolean operators, so that the expression is not *potentially
-evaluated* anymore, for example:
+unevaluated* anymore, for example:
 
 .. code-block:: ada
 
@@ -797,7 +797,7 @@ evaluated* anymore, for example:
      Post => J not in A'Range or V = Get_If_In_Range(A,J)'Old;
 
 or to rewrite the postcondition using an intermediate expression function, so
-that the expression is not *potentially evaluated* anymore, for example:
+that the expression is not *potentially unevaluated* anymore, for example:
 
 .. code-block:: ada
 

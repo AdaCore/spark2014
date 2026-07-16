@@ -320,9 +320,9 @@ run-time errors:
 .. literalinclude:: /examples/ug__addition_saturated/test.out
    :language: none
 
-Note that we analyzed this function in ELIMINATED overflow mode, using the
-switch ``-gnato13``, otherwise there would be possible overflows in the guard
-expressions of the contract cases.
+Note that we analyzed the assertions of this function in ELIMINATED overflow
+mode, using the switch ``-gnato13``, otherwise there would be possible overflows
+in the guard expressions of the contract cases.
 
 
 .. global/depends + errors
