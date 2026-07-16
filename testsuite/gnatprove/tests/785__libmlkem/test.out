@@ -1,0 +1,14 @@
+pow2.adb:6:37: info: range check proved (CVC5: 2 VC)
+pow2.adb:7:37: info: range check proved (CVC5: 2 VC)
+pow2.adb:9:22: info: assertion proved (CVC5: 1 VC)
+pow2.adb:9:28: info: overflow check proved (CVC5: 2 VC)
+pow2.adb:13:35: info: range check proved (CVC5: 2 VC)
+pow2.adb:15:22: info: assertion proved (CVC5: 1 VC)
+pow2.adb:15:29: info: overflow check proved (CVC5: 2 VC)
+pow2.adb:19:35: info: range check proved (CVC5: 2 VC)
+pow2.adb:21:22: info: assertion proved (CVC5: 1 VC)
+pow2.adb:21:24: info: overflow check proved (CVC5: 2 VC)
+pow2.adb:21:28: info: overflow check proved (CVC5: 2 VC)
+pow2.ads:23:14: warning: subprogram "Stride_Product" has no effect
+pow2.ads:26:14: warning: subprogram "Width_From_Stride" has no effect
+pow2.ads:29:14: warning: subprogram "Inner_Start_Bound" has no effect
