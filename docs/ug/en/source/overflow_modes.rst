@@ -77,7 +77,7 @@ intermediate overflows" mode. Currently, |GNATprove| only supports pragma
 configuration pragma file or directly in a unit.
 
 Additionally, a compiler switch ``-gnato??`` can be used to control the
-checking mode default. Here `?` is one of the digits `1` through `3`:
+checking mode default. Here ``?`` is one of the digits ``1`` through ``3``:
 
 #. use base type for intermediate operations (STRICT)
 #. minimize intermediate overflows (MINIMIZED)

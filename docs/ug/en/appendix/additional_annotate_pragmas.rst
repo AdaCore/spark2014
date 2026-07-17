@@ -164,7 +164,7 @@ quantification is translated. This can be done in several ways. More precisely,
 it allows supplying alternative primitives that will be used to handle
 quantified expression instead of those provided through the ``Iterable`` aspect.
 Three different kinds of primitives can be supplied.
-A `Contains` function can be defined, in particular for set or map like
+A ``Contains`` function can be defined, in particular for set or map like
 structures. It should have the following profile, where ``Set`` is a container
 type with an ``Iterable`` aspect, and ``Element_Type`` is its element type:
 
@@ -297,7 +297,7 @@ quantification on the elements of the result's model (not Ada syntax):
 
 .. note::
 
-   If the return type of a `Model` function supplied through
+   If the return type of a ``Model`` function supplied through
    ``Iterable_For_Proof`` for a container type ``Ty`` itself has an
    ``Iterable_For_Proof`` annotation, then it will be taken into account to
    translate quantified expressions over ``Ty``. As an example, if we use
@@ -316,7 +316,7 @@ as ``L``.
 Finally, the last variant of the ``Iterable_For_Proof`` annotation is
 specifically targeted at container types that use a ``Constant_Reference``
 function for iteration instead of an ``Element`` function. It allows providing
-an `Element` function that will be used instead of ``Constant_Reference`` in
+an ``Element`` function that will be used instead of ``Constant_Reference`` in
 quantified expressions. As an example, we might want to make iteration over
 the ``Sequence`` type more efficient by avoiding a copy of the element:
 

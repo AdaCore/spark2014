@@ -302,7 +302,7 @@ elements (or keys for functional maps).
 
 These containers can easily be used to model user defined data structures. They
 were used to this end to annotate and verify a package of allocators (see
-the `allocators` example provided with a SPARK installation). In
+the ``allocators`` example provided with a SPARK installation). In
 this example, an allocator featuring a free list implemented in an array is
 modeled by a record containing a set of allocated resources and a sequence of
 available resources:
@@ -750,8 +750,8 @@ whose body is simply a null procedure:
 
 This procedure is ghost (as part of a ghost package), which means that the
 procedure body and all calls to the procedure are compiled away when producing
-the final executable without assertions (when switch `-gnata` is not set). On
-the contrary, when compiling with assertions for testing (when switch `-gnata`
+the final executable without assertions (when switch ``-gnata`` is not set). On
+the contrary, when compiling with assertions for testing (when switch ``-gnata``
 is set) the precondition of the procedure is executed, possibly detecting
 invalid uses of the lemma. However, the main purpose of such a lemma is to
 facilitate automatic proof, by providing the prover specific properties

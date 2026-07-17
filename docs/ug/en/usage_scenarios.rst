@@ -358,8 +358,8 @@ verified with manual provers or justified by manual analysis.
 
 |GNATprove| supports this type of combination of results in the summary table
 of :ref:`The Analysis Results Summary File`. Multiple columns display the
-number of checks automatically verified, while the column `Justified` displays
-the number of checks manually justified. The column `Unproved` should be empty
+number of checks automatically verified, while the column ``Justified`` displays
+the number of checks manually justified. The column ``Unproved`` should be empty
 for all checks to be verified.
 
 .. index:: executable contracts; combining proof and test

@@ -50,10 +50,10 @@ Installation under Windows
 --------------------------
 
 If not already done, first run the GNAT Studio installer by e.g. double clicking
-on `gnatstudio-{version}-x86_64-windows64-bin.exe` and follow the instructions.
+on ``gnatstudio-{version}-x86_64-windows64-bin.exe`` and follow the instructions.
 
 Then similarly run the |GNATprove| installer, by e.g. double clicking on
-`spark-pro-{version}-x86_64-windows64-bin.exe`. If you intend to install |GNATprove| in
+``spark-pro-{version}-x86_64-windows64-bin.exe``. If you intend to install |GNATprove| in
 a location where a previous installation of |GNATprove| exists, we recommend
 that you uninstall the previous installation first.
 

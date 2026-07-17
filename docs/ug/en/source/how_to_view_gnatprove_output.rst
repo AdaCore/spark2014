@@ -211,7 +211,7 @@ an error message), the analysis may not be complete.
 
 At the project level, |GNATprove| analyzes the units of a project independently,
 and stops when a unit contains an error. Other units may not be analyzed in
-this case. You can use the command line switch `-k` to analyze all units even
+this case. You can use the command line switch ``-k`` to analyze all units even
 in the presence of errors. Of course this may take more time.
 
 At the unit level, errors in earlier phases stop the analysis and block the
