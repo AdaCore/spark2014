@@ -415,7 +415,10 @@ pre-commit:
     - ln -s $ACI_SUBPROJECTS_ROOT/gnat gnat2why/gnat_src
     - make -C gnat2why setup
 
-check-doc-src-refs:
+# Run the commit-msg pre-commit hooks against every commit in the merge
+# request. These hooks are not exercised by the regular "pre-commit" job,
+# which only runs the default-stage hooks over the file diff.
+commit-level-checks:
   interruptible: true
   services:
      - image:pe-base
@@ -442,4 +445,8 @@ check-doc-src-refs:
           pre-commit run check-doc-src-refs \
             --hook-stage commit-msg \
             --commit-msg-filename .gitlab_commit_msg
+
+        pre-commit run check-issue-trailer \
+          --hook-stage commit-msg \
+          --commit-msg-filename .gitlab_commit_msg
       done

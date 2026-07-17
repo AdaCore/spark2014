@@ -44,6 +44,11 @@ repos:
     - id: black
   - repo: local
     hooks:
+      - id: check-issue-trailer
+        name: Check for Issue trailer in commit message
+        language: system
+        entry: python scripts/check_issue_trailer.py
+        stages: [commit-msg]
       - id: check-opt-syntax
         name: Check opt file syntax
         files: '\.opt$'
