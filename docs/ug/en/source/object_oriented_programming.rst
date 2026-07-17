@@ -61,7 +61,7 @@ Principle:
 
 Units ``Logging`` and ``Range_Logging`` need not be implemented, or available,
 or in |SPARK|. It is sufficient that the specification of ``Logging`` and
-``Range_Logging`` are in |SPARK| for this checking. Here, the postcondition of
+``Range_Logging`` is in |SPARK| for this checking. Here, the postcondition of
 ``Range_Logging.Append_To_Log`` is strictly stronger than the postcondition of
 ``Logging.Append_To_Log``, as it also specifies the new expected value of the
 minimum and maximum values. The preconditions of both procedures are exactly
@@ -205,7 +205,7 @@ If parameter ``Log`` is of dynamic type ``Logging.Log_Type``, then the call to
 ``Append_To_Log`` can safely read those. If parameter ``Log`` is of dynamic
 type ``Range_Logging.Log_Type``, then the call to ``Init_Log`` only initializes
 those components of ``Log`` that come from the parent type
-``Logging.Log_Type``, but since the call to ``Append_To_Log`` only read those,
+``Logging.Log_Type``, but since the call to ``Append_To_Log`` only reads those,
 then there is no read of uninitialized data. This is in contrast with what
 occurs in procedure ``Use_Logging_Classwide``:
 

@@ -112,7 +112,7 @@ numbers. It contains support for:
 
 * Unbounded rational numbers in ``SPARK.Big_Reals``.
 
-Theses libraries define representations for big numbers and basic arithmetic
+These libraries define representations for big numbers and basic arithmetic
 operations over them, as well as conversions from bounded scalar types such as
 floating point numbers or integer types. Conversion from an integer to a big
 integer is provided by:
@@ -143,7 +143,7 @@ units from the SPARK library instead, or use
 
 .. note::
 
-   Some functionality of the library are not precisely supported. This includes
+   Some functionality of the library is not precisely supported. This includes
    in particular conversions to and from strings, conversions of ``Big_Real`` to
    fixed-point or floating-point types, and ``Numerator`` and ``Denominator``
    functions.
@@ -245,9 +245,9 @@ the elements:
     function Length (S : Sequence) return Count_Type;
     function Get (S : Sequence; N : Index_Type) return Element_Type;
 
-The sequences defined in ``Functional.Infinite_Sequences`` behave as the one of
+The sequences defined in ``Functional.Infinite_Sequences`` behave as the ones of
 ``Functional.Vectors``. The difference between them lies in the fact that the
-infinite one are indexed by mathematical integers.
+infinite one is indexed by mathematical integers.
 
 .. code-block:: ada
 
@@ -287,8 +287,8 @@ Multisets are mathematical sets associated with a number of occurrences:
    function Nb_Occurence (S : Multiset; E : Element_Type) return Big_Natural;
    function Cardinality (S : Multiset) return Big_Natural;
 
-Functional trees are recursive mathematical datastructures such that non-empty
-trees contain an element and a child tree par element of the ``Way_Type`` formal
+Functional trees are recursive mathematical data structures such that non-empty
+trees contain an element and a child tree per element of the ``Way_Type`` formal
 parameter type:
 
 .. code-block:: ada
@@ -343,7 +343,7 @@ available resources:
    together in the container. This can sometimes have surprising results.
    For example, ``Contains`` can return ``True`` if an equivalent (but not
    equal) element has been added to a set. Similarly, the quantified
-   expression ``for Some E of S => Cond (E)`` might be proved if Cond is
+   expression ``for some E of S => Cond (E)`` might be proved if Cond is
    ``False`` for all elements that were explicitly added to the set,
    but ``True`` for an object equivalent to such an element.
 
@@ -399,7 +399,7 @@ The Ada Standard Library defines two kinds of containers:
 
 * The controlled containers using dynamic allocation, for example
   ``Ada.Containers.Vectors``. They define containers as
-  controlled tagged types, so that memory for the container is automatic
+  controlled tagged types, so that memory for the container is automatically
   reallocated during assignment and automatically freed when the container
   object's scope ends.
 * The bounded containers not using dynamic allocation, for example
@@ -448,7 +448,7 @@ their internal block of memory when it is full.
 .. note::
 
     The capacity of unbounded containers is not set using a
-    discriminant. Instead, it is implicitly set to it maximum value. All the
+    discriminant. Instead, it is implicitly set to its maximum value. All the
     required memory is not reserved at declaration. As all the formal
     containers are internally indexed by ``Count_Type``, their maximum size is
     ``Count_Type'Last``.
@@ -472,7 +472,7 @@ which cursors remain valid in a container after an operation is specified on
 a case-by-case basis on each operation.
 
 As a consequence of this difference, only procedures and functions that take
-the container as parameter to query its content are vailable on formal
+the container as parameter to query its content are available on formal
 containers. For example, the two-parameters ``Has_Element`` function is
 available on formal containers while the single-parameter one is not:
 
@@ -714,7 +714,7 @@ As a result, logical equality functions used in the specification of formal and
 functional containers are not executable.
 
 For formal containers, as the logical equality is given as a parameter to the
-functional containers used as models, the model themselves are not executable.
+functional containers used as models, the models themselves are not executable.
 As a result, it is not possible to execute ghost code or assertions that mention
 these model functions.
 

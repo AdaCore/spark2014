@@ -239,11 +239,11 @@ maintenance:
 * :ref:`Manual Proof Using Ghost Code` is more costly, as it requires expertise
   and interactions with the tool to guide automatic provers.
 
-* :ref:`Manual Proof Using Coq` is the most costly, as it require expertise in
+* :ref:`Manual Proof Using Coq` is the most costly, as it requires expertise in
   interactive proof as well as knowledge of the syntax of the Coq interactive
   prover.
 
-While the use of manual proof allows to prove any provable property in
+While the use of manual proof allows one to prove any provable property in
 principle, a balance needs to be found between the higher cost of manual proof
 techniques and the benefits they bring compared to testing or manual
 justification.
@@ -346,7 +346,7 @@ vulnerable to the kind of attacks like buffer overflows that plague programs in
 C and C++, which allow attackers to gain control over the system. But in the
 case where run-time checks are disabled (in general for efficiency, but it
 could be for other reasons), proving their absence with |GNATprove| also
-prevents such attacks. This is specially important for ensuring security when
+prevents such attacks. This is especially important for ensuring security when
 some inputs may have been crafted by an attacker.
 
 Few subprogram contracts (:ref:`Preconditions` and :ref:`Postconditions`) are
@@ -417,7 +417,7 @@ the assurance that the actual compiled program behaves as expected.
 
 This strategy has been applied at Capgemini Engineering on UK military projects
 submitted to Def Stan 00-56 certification: AoRTE was proved on all the code,
-and contracts were exercised during integration testing, which allowed to scrap
+and contracts were exercised during integration testing, which made it possible to scrap
 unit testing.
 
 Between Proof and Unit Testing
@@ -761,7 +761,7 @@ program is portable if its observable behavior is exactly the same across a
 change of compiler and/or target. In the more common sense of the word, a
 program is portable if it can be reused without modification on a different
 target, or when changing compiler.  That is consistent with the definition of
-portability in WikiPedia: "Portability in high-level computer programming is
+portability in Wikipedia: "Portability in high-level computer programming is
 the usability of the same software in different environments". As an example of
 a difference between both interpretations, many algorithms which use
 trigonometry are portable in the more common sense, not in the strictest sense.
@@ -1033,7 +1033,7 @@ the corresponding non-portable features are not used in the program:
 .. code-block:: ada
 
    pragma No_Dependence (Ada.Unchecked_Conversion);
-   pragma No_Dependence (System.Machine_code);
+   pragma No_Dependence (System.Machine_Code);
 
 Similarly, the program logic should be carefully reviewed for possible
 dependency on target characteristics (for example, the size of standard integer
@@ -1396,7 +1396,7 @@ process. Various options can be considered for the conversion process:
    changes to the executable code` - Note that some changes to the code may be
    required when converting annotations, for example adding with-clauses in a
    unit to give visibility over entities used in contracts in this unit but
-   defined in another units (which was performed in previous versions of
+   defined in other units (which was performed in previous versions of
    |SPARK| with ``inherit`` annotations). This conversion should be relatively
    straightforward by following the mapping of features between the two
    languages.
@@ -1805,7 +1805,7 @@ code and assertions, and not directly in the program. If a definition or a
 contract is given for these functions for some value of ``T``, it is necessary
 to make sure that it matches their expected semantics. In particular,
 ``Is_Valid`` shall return True if and only if its parameter is a representation
-is a valid value of type ``T``.
+of a valid value of type ``T``.
 
 Dealing with Pointers at the SPARK Boundary
 -------------------------------------------
@@ -1878,7 +1878,7 @@ parameter modes. If the pointers all designate constant data, then nothing
 more is necessary, provided there is no need to reclaim the
 allocated memory. Otherwise, potential aliases that could be visible from the
 |SPARK| part of the program should be accounted for. There are two
-possibilities: either non-aliasing should be inforced between objects or the
+possibilities: either non-aliasing should be enforced between objects or the
 memory accessible should to be modeled as a shared global state.
 
 The shared global solution is simpler to put in place and enforces less
@@ -1887,7 +1887,7 @@ constraints, both on the non-|SPARK| API and on usage of the private type in
 access to a private object will affect the same global state and therefore
 potentially affect all read objects.
 
-The behavior of the API can be modeled usaging an abstract state ``Data_State``
+The behavior of the API can be modeled using an abstract state ``Data_State``
 that represents the values designated by all objects of type ``Message``. It is
 modified by subprograms that write the ``Data`` component of a message, like
 ``Write_Data``, and read by subprograms that access this component:
@@ -1926,7 +1926,7 @@ it is imprecise, as calling ``Write_Data`` on a message will be considered to
 potentially affect the result of ``Read_Data`` on all messages.
 
 To be more precise, it is necessary to enforce non-aliasing between the objects
-that are visible form the |SPARK| part of the program. More precisely, modifying
+that are visible from the |SPARK| part of the program. More precisely, modifying
 an object should not affect other objects. This property should be enforced by
 the API itself. In general, it means that it should not allow creating two
 objects that contain pointers to a single mutable object in memory. The property
@@ -1940,7 +1940,7 @@ change the mode of parameters or global dependencies for subprograms that
 write memory accessible through such a pointer. Indeed, the designated data
 is considered to be part of the object, so the modes should reflect the
 subprogram's effect on it accordingly. Here is how this solution could be used
-on our example. Note the the mode of the parameter of procedure ``Write_Data``
+on our example. Note that the mode of the parameter of procedure ``Write_Data``
 has been changed to ``in out`` to model its write effect on the memory
 accessible from its ``Data`` field:
 
@@ -2052,7 +2052,7 @@ assumption made by the tool on the rest of the program (see
 uses pointers, it might be necessary to prevent the introduction of aliases
 through copies either by making the type limited or by using an
 :ref:`Annotation for Enforcing Ownership Checking on a Private Type`, unless
-memory management is taken care off internally - through controlled types for
+memory management is taken care of internally - through controlled types for
 example.
 
 Mathematical Induction

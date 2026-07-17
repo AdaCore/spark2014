@@ -149,7 +149,7 @@ exception raised by a failed precondition. To support this use case, raising
 an expression in a precondition is considered in |SPARK| to be a failure of the
 precondition, as opposed to a runtime failure, which would not be allowed in
 |SPARK|. As an example, we may want to introduce specific exceptions for the
-the failure of each part of the precondition of ``Add_To_Total``, so as to
+failure of each part of the precondition of ``Add_To_Total``, so as to
 debug them more easily. This can be done by using two raise expressions as in
 the following snippet:
 
@@ -230,7 +230,7 @@ behavior can be expressed in its postcondition:
 The postcondition of a subprogram is used to analyze calls to the
 subprograms. In particular, the default postcondition of ``True`` used by
 |GNATprove| when no explicit one is given may not be precise enough to prove
-properties of its callers, unless it analyzes the subprogam's implementation in
+properties of its callers, unless it analyzes the subprogram's implementation in
 the context of its callers (see :ref:`Contextual Analysis of Subprograms
 Without Contracts`).
 
@@ -240,7 +240,7 @@ subprograms always terminates (a property that is not verified by |GNATprove|),
 then |GNATprove| correctly checks that their postcondition is respected by
 using this postcondition for recursive calls.
 
-Special care should be exercized for functions that return a boolean, as a
+Special care should be exercised for functions that return a boolean, as a
 common mistake is to write the expected boolean result as the postcondition:
 
 .. code-block:: ada
@@ -800,7 +800,7 @@ as can be seen on ``Incr_All_Bad_Init``:
    :language: none
 
 Note that, even though access types are passed by copy, ``in`` parameters of an
-access-to-variable part can be safely used after an exceptional exit as only
+access-to-variable type can be safely used after an exceptional exit as only
 the designated value can be modified.
 
 To make it easier for the user, it is not allowed to mention parameters which
@@ -926,13 +926,13 @@ these ghost functions to the ``Status`` and ``Msg`` parameters of ``Do_Exit``.
 Note that, even if it might terminate the program abruptly, ``Do_Exit`` can be
 annotated with ``Always_Terminates``. Exiting the program abruptly is considered
 as a valid termination. The ``No_Return`` aspect states that ``Do_Exit``
-never returns normally - it is compatible with the ``Always_Terminates``,
-``Do_Exit`` always terminates abnormally.
+never returns normally - it is compatible with the ``Always_Terminates`` aspect,
+as ``Do_Exit`` always terminates abnormally.
 
 These contracts allow verifying other subprograms that use ``Do_Exit`` to
 terminate the program abruptly. As an example, consider the ``Get_Digit``
 procedure that reads a digit on standard input and terminates the program if the
-input is ill-formed and the function which side effects ``Add`` that adds two
+input is ill-formed and the function with side effects ``Add`` that adds two
 digits and terminates the program if the result exceeds 10:
 
 .. literalinclude:: /examples/ug__abrupt_program_exit/use_abrupt_program_exit.ads
@@ -1021,7 +1021,7 @@ As an example, consider the procedure ``Might_Return_Abnormally`` below:
    :linenos:
 
 Its contract states that, if it terminates, it shall return normally if ``X`` is
-1, raise the exception ``E1`` is ``X`` is 2, raise either ``E1`` or ``E2``,
+1, raise the exception ``E1`` if ``X`` is 2, raise either ``E1`` or ``E2``,
 that is, any exception allowed by its exceptional contract, if ``X`` is 3, and
 exit the program abruptly otherwise. The |GNATprove| tool generates verification
 conditions to make sure that these restrictions hold. As can be seen below, in
@@ -1041,7 +1041,7 @@ several cases at the same time), it does not ensure that they are complete
 (there can be inputs which are not satisfying any guards). In this case, there
 are no constraints on how the subprogram is allowed to terminate. As an example,
 the contract of ``Might_Return_Abnormally`` would still be proved if the first
-and last cases where removed:
+and last cases were removed:
 
 .. literalinclude:: /examples/ug__exit_cases_incomplete/exit_cases_incomplete.ads
    :language: ada

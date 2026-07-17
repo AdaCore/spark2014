@@ -6,12 +6,12 @@ Introduction
 
 SPARK is a programming language and a set of verification tools designed
 to meet the needs of high-assurance software development.  SPARK is based
-on Ada, both subsetting the language to remove features that defy
+on Ada, not only subsetting the language to remove features that defy
 verification, but also extending the system of contracts and aspects to support
 modular, formal verification.
 
 The new aspects support abstraction and refinement and facilitate deep static
-analysis to be performed including flow analysis and formal verification of an
+analysis including flow analysis and formal verification of an
 implementation against a specification.
 
 The current version of SPARK, sometimes referred to as SPARK 2014, is a much

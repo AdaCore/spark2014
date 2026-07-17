@@ -18,7 +18,7 @@ cross compilations, as well as |SPARK| analysis.
 .. index:: GPR_PROJECT_PATH; at installation
 
 If you choose to install |GNATprove| in a different location, you should also
-modify the environment variables ``GPR_PROJECT_PATH`` (if you installed GNAT).
+modify the environment variable ``GPR_PROJECT_PATH`` (if you installed GNAT).
 On Windows, edit the value of ``GPR_PROJECT_PATH`` under the Environment
 Variables panel, and add to it the value of ``<GNAT install dir>/lib/gnat`` and
 ``<GNAT install dir>/share/gpr`` (so that |SPARK| can find library projects
@@ -42,9 +42,9 @@ Formal verification is complex and time consuming, so |GNATprove| will benefit
 from all the speed (CPU) and memory (RAM) that can be made available. A minimum
 of 2 GB of RAM per core is recommended. More complex analyses will require more
 memory. A recommended configuration for running |GNATprove| on large systems is
-an x86-64 machine running Linux 64bits or Windows 64bits with at least 8 cores
+an x86-64 machine running Linux 64-bit or Windows 64-bit with at least 8 cores
 and 16 GB of RAM. Slower machines can be used to analyze small subsystems, but
-a minimum of 2.8Ghz CPU and 2 GB of RAM is required.
+a minimum of 2.8 GHz CPU and 2 GB of RAM is required.
 
 Installation under Windows
 --------------------------

@@ -292,7 +292,7 @@ The proof mode set with ``--proof`` can be extended with a qualifier ``all`` or
 should stop at the first unproved formula (to save time) for a check or should
 continue attempting to prove the other formulas related to the same check
 (typically to identify more precisely which formulas are left unproved, which
-can be then be handled with manual proof). The former is most suited for fully
+can then be handled with manual proof). The former is most suited for fully
 automatic proof, it is the default value, and can be explicitly selected with
 ``lazy``. The latter is most suited for combination of automatic and manual
 proof and can be selected with ``all``.
@@ -323,7 +323,7 @@ takes precedence over the value set through ``--level``.
 Note that using ``--level`` does not provide results that are reproducible
 across different machines. For nightly builds or shared repositories, consider
 using the ``--steps`` or ``--replay`` switches instead. The number of steps
-required to proved an example can be accessed by running |GNATprove| with the option
+required to prove an example can be accessed by running |GNATprove| with the option
 ``--report=statistics``.
 
 .. index:: --proof-warnings
@@ -331,7 +331,7 @@ required to proved an example can be accessed by running |GNATprove| with the op
 By default, |GNATprove| doesn't check for dead code in your subprograms nor does
 it verify the logical consistency of subprogram contracts or assumptions. It is
 thus possible to write a contract or assumption that is always false, which may
-render subsequent analysis unsound, since False implies False is True. Contracts
+render subsequent analysis unsound, since from a contradiction the prover can derive anything. Contracts
 or assumptions may be always false because they contain a contradiction (e.g.,
 ``X > 5 and X < 5``) or because their truth value is predetermined, e.g.:
 
@@ -354,7 +354,7 @@ reported as warnings in |GNATprove|'s output.
 
   The warnings issued by ``--proof-warnings=on`` are not guaranteed to
   be complete: an absence of warnings does not guarantee the logical
-  consistently of all subprogram contracts or assumptions; nor does it guarantee
+  consistency of all subprogram contracts or assumptions; nor does it guarantee
   an absence of dead branches or code.
 
 .. index:: -f
@@ -383,7 +383,7 @@ replayed, but the check will still be marked as proved.
 
 .. index:: -k
 
-By default, |GNATprove| stops at the first unit where it detect errors
+By default, |GNATprove| stops at the first unit where it detects errors
 (violations of Ada or |SPARK| legality rules). The option ``-k`` can be used to
 get |GNATprove| to issue errors of the same kind for multiple units. If there
 are any violations of Ada legality rules, |GNATprove| does not attempt any

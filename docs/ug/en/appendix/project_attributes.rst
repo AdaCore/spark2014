@@ -7,19 +7,19 @@ Project Attributes
 is allowed to contain the following attributes:
 
 * ``Proof_Switches``, which defines additional command line switches that are used
-  for the invokation of |GNATprove|. This attribute can be used in two
+  for the invocation of |GNATprove|. This attribute can be used in two
   different settings:
 
   * to define switches that should apply to all files in the project.  As an
     example, the following package in the project file sets the proof level for
-    all units in the project to to 2::
+    all units in the project to 2::
 
       package Prove is
          for Proof_Switches ("Ada") use ("--level=2");
       end Prove;
 
   * to define switches that should apply only to one file. The following
-    example sets timeout for provers run by |GNATprove| to 10 seconds for
+    example sets the timeout for provers run by |GNATprove| to 10 seconds for
     ``file.adb``::
 
       package Prove is

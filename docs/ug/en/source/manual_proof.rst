@@ -83,7 +83,7 @@ check may be generated in the code above to show that ``Y`` is positive.
 
 To apply lemmas to signed or modular integers of different types than the ones
 used in the instances provided in the library, just convert the expressions
-passed in arguments, as follows:
+passed as arguments, as follows:
 
 .. code-block:: ada
 
@@ -102,7 +102,7 @@ Manual Proof Using User Lemmas
 
 If the property to prove is not part of the :ref:`SPARK Lemma Library`, then a
 user can easily add it as a separate lemma in her program. For example, suppose
-you need to have a proof that a fix list of numbers are prime numbers. This can
+you need to have a proof that a fixed list of numbers are prime numbers. This can
 be expressed easily in a lemma as follows:
 
 .. code-block:: ada
@@ -185,8 +185,8 @@ consider the following program:
        I < A'Last and then A (I) = 0 and then A (I + 1) > 0);
 
 Here we assume that the first element of an array ``A`` of type ``Nat_Array``
-is 0, whereas is last element is positive. In such a case, we are sure that
-there is an index ``I`` in the array such ``A (I)`` is 0 but not ``A (I + 1)``.
+is 0, whereas its last element is positive. In such a case, we are sure that
+there is an index ``I`` in the array such that ``A (I)`` is 0 but not ``A (I + 1)``.
 Indeed, we know that ``A`` starts with a non-empty sequence of zeros. The last
 element of this sequence has the expected property. However, automatic solvers
 are unable to prove such a property automatically because they cannot guess
@@ -425,7 +425,7 @@ Here is the state of the proof as displayed in a suitable IDE for Coq::
   (r11 <= r21)%Z
 
 Some expressions are enclosed in ``()%Z``, which means that they are dealing
-with relative integers. This is necessarily in order to use the operators
+with relative integers. This is necessary in order to use the operators
 (e.g. ``<`` or ``+``) on relative integers instead of using the associated Coq
 function or to declare a relative integer constant (e.g. ``0%Z``).
 
@@ -508,7 +508,7 @@ goal, of course this is provided in Coq's standard library:
 Since the lemma's conclusion contains only two variables while it uses three,
 using tactic ``apply Z.le_trans.`` will generate an error stating that Coq was
 not able to find a term for the variable ``m``.  In this case, ``m`` needs to
-be instantiated explicitly, here with the value 1: ``apply Zle_trans with (m:=
+be instantiated explicitly, here with the value 1: ``apply Z.le_trans with (m:=
 1%Z).`` There are two new subgoals, one to prove that ``0 <= 1`` and the other
 that ``1 <= x``::
 

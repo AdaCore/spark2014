@@ -86,7 +86,7 @@ consider a procedure ``Increment_Calls`` that calls the different versions of
    :language: ada
    :linenos:
 
-|GNATprove| proves all preconditions expect the one on the second call to
+|GNATprove| proves all preconditions except the one on the second call to
 ``Increment_Guarded``:
 
 .. literalinclude:: /examples/ug__increment_calls/test.out

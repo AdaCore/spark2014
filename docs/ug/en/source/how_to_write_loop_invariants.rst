@@ -171,7 +171,8 @@ are four properties that a good loop invariant should fulfill:
 #. [AFTER] It should allow proving absence of run-time errors, local assertions
    and the subprogram postcondition after the loop.
 
-#. [PRESERVE] It should be provable after the first iteration of the loop.
+#. [PRESERVE] It should be provable at an arbitrary iteration of the loop,
+   assuming that it held at the previous iteration.
 
 As a first example, here is a variant of the search algorithm described in
 :ref:`spark tutorial`, which returns whether a collection contains a desired
@@ -213,7 +214,7 @@ above:
 #. [AFTER] It allows proving absence of run-time errors after the loop
    (messages on lines 6 and 7) and the subprogram postcondition (message on
    line 5).
-#. [PRESERVE] It is proved after the first iteration (message on line 2).
+#. [PRESERVE] It is proved at an arbitrary iteration (message on line 2).
 
 Note that the loop invariant closely resembles the second line in the
 postcondition of the subprogram, except with a different range of values in the

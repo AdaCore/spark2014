@@ -291,7 +291,7 @@ In the following example, we can verify that the ``while`` loop in the
    :language: ada
    :linenos:
 
-Structural variants are subjects to a number of restrictions.
+Structural variants are subject to a number of restrictions.
 They cannot be combined with other variants, and are checked according to
 a mostly syntactic criterion. When these restrictions cannot be followed,
 structural variants can be systematically replaced by a decreasing numeric

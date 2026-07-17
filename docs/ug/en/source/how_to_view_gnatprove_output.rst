@@ -117,7 +117,7 @@ automated provers. The line may look like this::
 
 .. index:: --steps; max steps used
 
-The use of this line is to help with reproducability of a run of |GNATprove|
+The use of this line is to help with reproducibility of a run of |GNATprove|
 that proved all checks and properties. If the user provides the given number
 via the ``--steps`` option to |GNATprove|, and disables the time and memory
 limits, (if enabled directly or indirectly such as via the ``--level``

@@ -51,7 +51,7 @@ objective:
 
   As a default, procedures and functions with side effects are assumed to not
   terminate the program abruptly  (``Program_Exit => False``). If they have an
-  exit they have an ``Exit_Cases`` aspect mentioning ``Program_Exit``, then the
+  ``Exit_Cases`` aspect mentioning ``Program_Exit``, then the
   subprogram is assumed to potentially terminate the program abruptly
   (``Program_Exit => True``).
 
@@ -184,7 +184,7 @@ Writing Only the Flow Dependencies
 When only the flow dependencies are given on a subprogram, |GNATprove|
 completes it with the only compatible data dependencies.
 
-Take for example procedures ``Add`` and ``Swap`` as previously, expect now flow
+Take for example procedures ``Add`` and ``Swap`` as previously, except now flow
 dependencies are given, but no data dependencies:
 
 .. literalinclude:: /examples/ug__only_flow_dependencies/only_flow_dependencies.ads
@@ -352,7 +352,7 @@ For example, take unit ``Gen_Global`` previously seen, where the body of
    :language: ada
    :linenos:
 
-|GNATprove| generates a data and flow dependencies for procedure
+|GNATprove| generates data and flow dependencies for procedure
 ``Set_Global`` that are equivalent to:
 
 .. code-block:: ada
@@ -401,7 +401,7 @@ might miss the modification:
    :language: ada
    :linenos:
 
-|GNATprove| generates a data and flow dependencies for procedure
+|GNATprove| generates data and flow dependencies for procedure
 ``Test`` that are equivalent to:
 
 .. code-block:: ada
@@ -431,7 +431,7 @@ access-to-subprograms:
    :language: ada
    :linenos:
 
-Here, |GNATprove| generates a data and flow dependencies for procedure
+Here, |GNATprove| generates data and flow dependencies for procedure
 ``Set_Global_Through_Access_To_Procedure`` that are equivalent to:
 
 .. code-block:: ada
@@ -766,7 +766,7 @@ the calling subprogram.
 
   The warnings issued by ``--proof-warnings=on`` are not guaranteed to
   be complete: an absence of warnings does not guarantee the logical
-  consistently of all subprogram contracts or assumptions; nor does it guarantee
+  consistency of all subprogram contracts or assumptions; nor does it guarantee
   an absence of dead branches or code.
 
 Writing Contracts on Main Subprograms
@@ -941,7 +941,7 @@ Depends, Pre, Post, Contract_Cases), and respect the following conditions:
  * without an annotation to hide or unhide information on another entity (see
    :ref:`Pruning the Proof Context on a Case by Case Basis`)
 
-Subprograms that respects all of the above conditions are candidates for
+Subprograms that respect all of the above conditions are candidates for
 contextual analysis, and calls to such subprograms are inlined provided the
 subprogram and its calls respect the following additional conditions:
 

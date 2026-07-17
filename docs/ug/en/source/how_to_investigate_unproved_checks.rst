@@ -26,7 +26,7 @@ Investigating Incorrect Code or Assertion
 
 The first step is to check whether the code is incorrect [CODE] or the
 assertion is incorrect [ASSERT], or both. Since run-time checks and assertions
-can be executed at run time, one way to increase confidence in the correction
+can be executed at run time, one way to increase confidence in the correctness
 of the code and assertions is to test the program on representative inputs. The
 following GNAT switches can be used:
 
@@ -67,7 +67,7 @@ with a text such as::
 A focused manual review of the code and assertions can
 efficiently diagnose many cases of missing annotations. Even when an
 assertion is quite large, |GNATprove| precisely locates the part that it
-cannot prove, which can help figuring out the problem. It may useful to
+cannot prove, which can help figuring out the problem. It may be useful to
 simplify the code during this investigation, for example by adding a
 simpler assertion and trying to prove it.
 
@@ -225,7 +225,7 @@ where:
   program, between the start of the subprogram and the location of the check
 * ``ext`` is the extension corresponding to the file format chosen. The format
   of the file depends on the prover used. For example, files for Alt-Ergo are
-  are in Why3 format, and files for cvc5 are in SMTLIB2 format.
+  in Why3 format, and files for cvc5 are in SMTLIB2 format.
 
 For example, the proof files generated for prover Alt-Ergo for a range check at
 line 160, column 42, of the file ``f.adb`` are stored in::

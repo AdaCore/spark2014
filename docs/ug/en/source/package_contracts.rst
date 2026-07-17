@@ -30,7 +30,7 @@ State Abstraction
 
 The state abstraction of a package specifies a mapping between abstract names
 and concrete global variables defined in the package. State abstraction allows
-to define :ref:`Subprogram Contracts` at an abstract level that does not depend
+one to define :ref:`Subprogram Contracts` at an abstract level that does not depend
 on a particular choice of implementation (see :ref:`Abstraction and
 Contracts`), which is better both for maintenance (no need to change contracts)
 and scalability of analysis (contracts can be much smaller).
@@ -102,7 +102,7 @@ it legal for the package to have a body on which to express state refinement.
 
 In general, an abstract name corresponds to multiple global variables defined
 in the package. For example, we can imagine adding global variables to log
-values passed in argument to procedure ``Add_To_Total``, that are also mapped to
+values passed as arguments to procedure ``Add_To_Total``, that are also mapped to
 abstract name ``State``:
 
 .. code-block:: ada
